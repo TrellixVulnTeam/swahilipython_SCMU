@@ -14,9 +14,9 @@ from distutils.log import INFO
 
 from distutils.tests.test_config import BasePyPIRCCommandTestCase
 
-try:
+jaribu:
     import docutils
-except ImportError:
+tatizo ImportError:
     docutils = None
 
 PYPIRC_NOPASSWORD = """\
@@ -46,9 +46,9 @@ class Inputs(object):
         self.index = 0
 
     def __call__(self, prompt=''):
-        try:
+        jaribu:
             return self.answers[self.index]
-        finally:
+        mwishowe:
             self.index += 1
 
 class FakeOpener(object):
@@ -120,20 +120,20 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         inputs = Inputs('1', 'tarek', 'y')
         register_module.input = inputs.__call__
         # let's run the command
-        try:
+        jaribu:
             cmd.run()
-        finally:
-            del register_module.input
+        mwishowe:
+            toa register_module.input
 
         # we should have a brand new .pypirc file
         self.assertTrue(os.path.exists(self.rc))
 
         # with the content similar to WANTED_PYPIRC
         f = open(self.rc)
-        try:
+        jaribu:
             content = f.read()
             self.assertEqual(content, WANTED_PYPIRC)
-        finally:
+        mwishowe:
             f.close()
 
         # now let's make sure the .pypirc file generated
@@ -173,11 +173,11 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         cmd = self._get_cmd()
         inputs = Inputs('2', 'tarek', 'tarek@ziade.org')
         register_module.input = inputs.__call__
-        try:
+        jaribu:
             # let's run the command
             cmd.run()
-        finally:
-            del register_module.input
+        mwishowe:
+            toa register_module.input
 
         # we should have send a request
         self.assertEqual(len(self.conn.reqs), 1)
@@ -191,11 +191,11 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         cmd = self._get_cmd()
         inputs = Inputs('3', 'tarek@ziade.org')
         register_module.input = inputs.__call__
-        try:
+        jaribu:
             # let's run the command
             cmd.run()
-        finally:
-            del register_module.input
+        mwishowe:
+            toa register_module.input
 
         # we should have send a request
         self.assertEqual(len(self.conn.reqs), 1)
@@ -204,12 +204,12 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(headers['Content-length'], '290')
         self.assertIn(b'tarek', req.data)
 
-    @unittest.skipUnless(docutils is not None, 'needs docutils')
+    @unittest.skipUnless(docutils ni sio None, 'needs docutils')
     def test_strict(self):
         # testing the script option
         # when on, the register command stops if
         # the metadata is incomplete or if
-        # long_description is not reSt compliant
+        # long_description ni sio reSt compliant
 
         # empty metadata
         cmd = self._get_cmd({})
@@ -236,21 +236,21 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         inputs = Inputs('1', 'tarek', 'y')
         register_module.input = inputs.__call__
         # let's run the command
-        try:
+        jaribu:
             cmd.run()
-        finally:
-            del register_module.input
+        mwishowe:
+            toa register_module.input
 
-        # strict is not by default
+        # strict ni sio by default
         cmd = self._get_cmd()
         cmd.ensure_finalized()
         inputs = Inputs('1', 'tarek', 'y')
         register_module.input = inputs.__call__
         # let's run the command
-        try:
+        jaribu:
             cmd.run()
-        finally:
-            del register_module.input
+        mwishowe:
+            toa register_module.input
 
         # and finally a Unicode test (bug #12114)
         metadata = {'url': 'xxx', 'author': '\u00c9ric',
@@ -265,12 +265,12 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         inputs = Inputs('1', 'tarek', 'y')
         register_module.input = inputs.__call__
         # let's run the command
-        try:
+        jaribu:
             cmd.run()
-        finally:
-            del register_module.input
+        mwishowe:
+            toa register_module.input
 
-    @unittest.skipUnless(docutils is not None, 'needs docutils')
+    @unittest.skipUnless(docutils ni sio None, 'needs docutils')
     def test_register_invalid_long_description(self):
         description = ':funkie:`str`'  # mimic Sphinx-specific markup
         metadata = {'url': 'xxx', 'author': 'xxx',
@@ -307,10 +307,10 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         inputs = Inputs('1', 'tarek', 'y')
         register_module.input = inputs.__call__
         cmd.show_response = 1
-        try:
+        jaribu:
             cmd.run()
-        finally:
-            del register_module.input
+        mwishowe:
+            toa register_module.input
 
         results = self.get_logs(INFO)
         self.assertEqual(results[3], 75 * '-' + '\nxxx\n' + 75 * '-')

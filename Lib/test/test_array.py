@@ -13,16 +13,16 @@ agiza sys
 agiza warnings
 
 agiza array
-kutoka array agiza _array_reconstructor as array_reconstructor
+kutoka array agiza _array_reconstructor kama array_reconstructor
 
 sizeof_wchar = array.array('u').itemsize
 
 
 kundi ArraySubclass(array.array):
-    pass
+    pita
 
 kundi ArraySubclassWithKwargs(array.array):
-    eleza __init__(self, typecode, newarg=None):
+    eleza __init__(self, typecode, newarg=Tupu):
         array.array.__init__(self)
 
 typecodes = 'ubBhHiIlLfdqQ'
@@ -36,7 +36,7 @@ kundi MiscTest(unittest.TestCase):
         self.assertRaises(ValueError, array.array, 'x')
 
     eleza test_empty(self):
-        # Exercise code for handling zero-length arrays
+        # Exercise code kila handling zero-length arrays
         a = array.array('B')
         a[:] = a
         self.assertEqual(len(a), 0)
@@ -48,7 +48,7 @@ kundi MiscTest(unittest.TestCase):
 
 # Machine format codes.
 #
-# Search for "enum machine_format_code" in Modules/arraymodule.c to get the
+# Search kila "enum machine_format_code" kwenye Modules/arraymodule.c to get the
 # authoritative values.
 UNKNOWN_FORMAT = -1
 UNSIGNED_INT8 = 0
@@ -124,9 +124,9 @@ kundi ArrayReconstructorTest(unittest.TestCase):
              [-1<<31, (1<<31)-1, 0]),
             (['l'], SIGNED_INT64_BE, '>qqq',
              [-1<<31, (1<<31)-1, 0]),
-            # The following tests for INT64 will raise an OverflowError
+            # The following tests kila INT64 will ashiria an OverflowError
             # when run on a 32-bit machine. The tests are simply skipped
-            # in that case.
+            # kwenye that case.
             (['L'], UNSIGNED_INT64_LE, '<QQQQ',
              [1<<63, (1<<63)-1, 0, (1<<64)-1]),
             (['L'], UNSIGNED_INT64_BE, '>QQQQ',
@@ -144,14 +144,14 @@ kundi ArrayReconstructorTest(unittest.TestCase):
             (['d'], IEEE_754_DOUBLE_BE, '>dddd',
              [9006104071832581.0, float('inf'), float('-inf'), -0.0])
         )
-        for testcase in testcases:
+        kila testcase kwenye testcases:
             valid_typecodes, mformat_code, struct_fmt, values = testcase
             arraystr = struct.pack(struct_fmt, *values)
-            for typecode in valid_typecodes:
-                try:
+            kila typecode kwenye valid_typecodes:
+                jaribu:
                     a = array.array(typecode, values)
-                except OverflowError:
-                    continue  # Skip this test case.
+                tatizo OverflowError:
+                    endelea  # Skip this test case.
                 b = array_reconstructor(
                     array.array, typecode, mformat_code, arraystr)
                 self.assertEqual(a, b,
@@ -165,7 +165,7 @@ kundi ArrayReconstructorTest(unittest.TestCase):
             (UTF32_LE, "UTF-32-LE"),
             (UTF32_BE, "UTF-32-BE")
         )
-        for testcase in testcases:
+        kila testcase kwenye testcases:
             mformat_code, encoding = testcase
             a = array.array('u', teststr)
             b = array_reconstructor(
@@ -177,24 +177,24 @@ kundi ArrayReconstructorTest(unittest.TestCase):
 kundi BaseTest:
     # Required kundi attributes (provided by subclasses
     # typecode: the typecode to test
-    # example: an initializer usable in the constructor for this type
-    # smallerexample: the same length as example, but smaller
-    # biggerexample: the same length as example, but bigger
-    # outside: An entry that is not in example
+    # example: an initializer usable kwenye the constructor kila this type
+    # smallerexample: the same length kama example, but smaller
+    # biggerexample: the same length kama example, but bigger
+    # outside: An entry that ni haiko kwenye example
     # minitemsize: the minimum guaranteed itemsize
 
     eleza assertEntryEqual(self, entry1, entry2):
         self.assertEqual(entry1, entry2)
 
     eleza badtypecode(self):
-        # Return a typecode that is different kutoka our own
+        # Return a typecode that ni different kutoka our own
         rudisha typecodes[(typecodes.index(self.typecode)+1) % len(typecodes)]
 
     eleza test_constructor(self):
         a = array.array(self.typecode)
         self.assertEqual(a.typecode, self.typecode)
         self.assertGreaterEqual(a.itemsize, self.minitemsize)
-        self.assertRaises(TypeError, array.array, self.typecode, None)
+        self.assertRaises(TypeError, array.array, self.typecode, Tupu)
 
     eleza test_len(self):
         a = array.array(self.typecode)
@@ -217,16 +217,16 @@ kundi BaseTest:
     eleza test_byteswap(self):
         ikiwa self.typecode == 'u':
             example = '\U00100100'
-        else:
+        isipokua:
             example = self.example
         a = array.array(self.typecode, example)
         self.assertRaises(TypeError, a.byteswap, 42)
-        ikiwa a.itemsize in (1, 2, 4, 8):
+        ikiwa a.itemsize kwenye (1, 2, 4, 8):
             b = array.array(self.typecode, example)
             b.byteswap()
             ikiwa a.itemsize==1:
                 self.assertEqual(a, b)
-            else:
+            isipokua:
                 self.assertNotEqual(a, b)
             b.byteswap()
             self.assertEqual(a, b)
@@ -247,13 +247,13 @@ kundi BaseTest:
 
     eleza test_reduce_ex(self):
         a = array.array(self.typecode, self.example)
-        for protocol in range(3):
+        kila protocol kwenye range(3):
             self.assertIs(a.__reduce_ex__(protocol)[0], array.array)
-        for protocol in range(3, pickle.HIGHEST_PROTOCOL + 1):
+        kila protocol kwenye range(3, pickle.HIGHEST_PROTOCOL + 1):
             self.assertIs(a.__reduce_ex__(protocol)[0], array_reconstructor)
 
     eleza test_pickle(self):
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila protocol kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             a = array.array(self.typecode, self.example)
             b = pickle.loads(pickle.dumps(a, protocol))
             self.assertNotEqual(id(a), id(b))
@@ -268,7 +268,7 @@ kundi BaseTest:
             self.assertEqual(type(a), type(b))
 
     eleza test_pickle_for_empty_array(self):
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila protocol kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             a = array.array(self.typecode)
             b = pickle.loads(pickle.dumps(a, protocol))
             self.assertNotEqual(id(a), id(b))
@@ -286,7 +286,7 @@ kundi BaseTest:
         orig = array.array(self.typecode, self.example)
         data = list(orig)
         data2 = data[::-1]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = iter(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -304,7 +304,7 @@ kundi BaseTest:
             self.assertEqual(list(it), data[1:] + data2)
 
             # empty iterator
-            for i in range(1, len(data)):
+            kila i kwenye range(1, len(data)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, a = pickle.loads(d)
@@ -324,8 +324,8 @@ kundi BaseTest:
         self.assertEqual(list(a), list(self.example))
         exhit = iter(a)
         empit = iter(a)
-        for x in exhit:  # exhaust the iterator
-            next(empit)  # not exhausted
+        kila x kwenye exhit:  # exhaust the iterator
+            next(empit)  # sio exhausted
         a.append(self.outside)
         self.assertEqual(list(exhit), [])
         self.assertEqual(list(empit), [self.outside])
@@ -337,8 +337,8 @@ kundi BaseTest:
         self.assertEqual(len(a), 1+len(self.example))
         self.assertEqual(a[0], a[1])
         self.assertRaises(TypeError, a.insert)
-        self.assertRaises(TypeError, a.insert, None)
-        self.assertRaises(TypeError, a.insert, 0, None)
+        self.assertRaises(TypeError, a.insert, Tupu)
+        self.assertRaises(TypeError, a.insert, 0, Tupu)
 
         a = array.array(self.typecode, self.example)
         a.insert(-1, self.example[0])
@@ -369,7 +369,7 @@ kundi BaseTest:
         self.assertRaises(TypeError, a.tofile)
         support.unlink(support.TESTFN)
         f = open(support.TESTFN, 'wb')
-        try:
+        jaribu:
             a.tofile(f)
             f.close()
             b = array.array(self.typecode)
@@ -381,26 +381,26 @@ kundi BaseTest:
             self.assertRaises(EOFError, b.kutokafile, f, len(self.example)+1)
             self.assertEqual(a, b)
             f.close()
-        finally:
-            ikiwa not f.closed:
+        mwishowe:
+            ikiwa sio f.closed:
                 f.close()
             support.unlink(support.TESTFN)
 
     eleza test_kutokafile_ioerror(self):
-        # Issue #5395: Check ikiwa kutokafile raises a proper OSError
+        # Issue #5395: Check ikiwa kutokafile ashirias a proper OSError
         # instead of EOFError.
         a = array.array(self.typecode)
         f = open(support.TESTFN, 'wb')
-        try:
+        jaribu:
             self.assertRaises(OSError, a.kutokafile, f, len(self.example))
-        finally:
+        mwishowe:
             f.close()
             support.unlink(support.TESTFN)
 
     eleza test_filewrite(self):
         a = array.array(self.typecode, 2*self.example)
         f = open(support.TESTFN, 'wb')
-        try:
+        jaribu:
             f.write(a)
             f.close()
             b = array.array(self.typecode)
@@ -411,8 +411,8 @@ kundi BaseTest:
             b.kutokafile(f, len(self.example))
             self.assertEqual(a, b)
             f.close()
-        finally:
-            ikiwa not f.closed:
+        mwishowe:
+            ikiwa sio f.closed:
                 f.close()
             support.unlink(support.TESTFN)
 
@@ -422,17 +422,17 @@ kundi BaseTest:
         self.assertRaises(TypeError, a.tolist, 42)
         self.assertRaises(TypeError, b.kutokalist)
         self.assertRaises(TypeError, b.kutokalist, 42)
-        self.assertRaises(TypeError, b.kutokalist, [None])
+        self.assertRaises(TypeError, b.kutokalist, [Tupu])
         b.kutokalist(a.tolist())
         self.assertEqual(a, b)
 
     eleza test_tokutokastring(self):
-        # Warnings not raised when arguments are incorrect as Argument Clinic
-        # handles that before the warning can be raised.
+        # Warnings sio ashiriad when arguments are incorrect kama Argument Clinic
+        # handles that before the warning can be ashiriad.
         nb_warnings = 2
-        with warnings.catch_warnings(record=True) as r:
+        with warnings.catch_warnings(record=Kweli) kama r:
             warnings.filterwarnings("always",
-                                    message=r"(to|kutoka)string\(\) is deprecated",
+                                    message=r"(to|kutoka)string\(\) ni deprecated",
                                     category=DeprecationWarning)
             a = array.array(self.typecode, 2*self.example)
             b = array.array(self.typecode)
@@ -477,39 +477,39 @@ kundi BaseTest:
 
     eleza test_cmp(self):
         a = array.array(self.typecode, self.example)
-        self.assertIs(a == 42, False)
-        self.assertIs(a != 42, True)
+        self.assertIs(a == 42, Uongo)
+        self.assertIs(a != 42, Kweli)
 
-        self.assertIs(a == a, True)
-        self.assertIs(a != a, False)
-        self.assertIs(a < a, False)
-        self.assertIs(a <= a, True)
-        self.assertIs(a > a, False)
-        self.assertIs(a >= a, True)
+        self.assertIs(a == a, Kweli)
+        self.assertIs(a != a, Uongo)
+        self.assertIs(a < a, Uongo)
+        self.assertIs(a <= a, Kweli)
+        self.assertIs(a > a, Uongo)
+        self.assertIs(a >= a, Kweli)
 
         al = array.array(self.typecode, self.smallerexample)
         ab = array.array(self.typecode, self.biggerexample)
 
-        self.assertIs(a == 2*a, False)
-        self.assertIs(a != 2*a, True)
-        self.assertIs(a < 2*a, True)
-        self.assertIs(a <= 2*a, True)
-        self.assertIs(a > 2*a, False)
-        self.assertIs(a >= 2*a, False)
+        self.assertIs(a == 2*a, Uongo)
+        self.assertIs(a != 2*a, Kweli)
+        self.assertIs(a < 2*a, Kweli)
+        self.assertIs(a <= 2*a, Kweli)
+        self.assertIs(a > 2*a, Uongo)
+        self.assertIs(a >= 2*a, Uongo)
 
-        self.assertIs(a == al, False)
-        self.assertIs(a != al, True)
-        self.assertIs(a < al, False)
-        self.assertIs(a <= al, False)
-        self.assertIs(a > al, True)
-        self.assertIs(a >= al, True)
+        self.assertIs(a == al, Uongo)
+        self.assertIs(a != al, Kweli)
+        self.assertIs(a < al, Uongo)
+        self.assertIs(a <= al, Uongo)
+        self.assertIs(a > al, Kweli)
+        self.assertIs(a >= al, Kweli)
 
-        self.assertIs(a == ab, False)
-        self.assertIs(a != ab, True)
-        self.assertIs(a < ab, True)
-        self.assertIs(a <= ab, True)
-        self.assertIs(a > ab, False)
-        self.assertIs(a >= ab, False)
+        self.assertIs(a == ab, Uongo)
+        self.assertIs(a != ab, Kweli)
+        self.assertIs(a < ab, Kweli)
+        self.assertIs(a <= ab, Kweli)
+        self.assertIs(a > ab, Uongo)
+        self.assertIs(a >= ab, Uongo)
 
     eleza test_add(self):
         a = array.array(self.typecode, self.example) \
@@ -645,8 +645,8 @@ kundi BaseTest:
         self.assertEntryEqual(a[0], a[-1])
 
         self.assertRaises(TypeError, a.__setitem__)
-        self.assertRaises(TypeError, a.__setitem__, None)
-        self.assertRaises(TypeError, a.__setitem__, 0, None)
+        self.assertRaises(TypeError, a.__setitem__, Tupu)
+        self.assertRaises(TypeError, a.__setitem__, 0, Tupu)
         self.assertRaises(
             IndexError,
             a.__setitem__,
@@ -660,35 +660,35 @@ kundi BaseTest:
 
     eleza test_delitem(self):
         a = array.array(self.typecode, self.example)
-        del a[0]
+        toa a[0]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[1:])
         )
 
         a = array.array(self.typecode, self.example)
-        del a[-1]
+        toa a[-1]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[:-1])
         )
 
         a = array.array(self.typecode, self.example)
-        del a[len(self.example)-1]
+        toa a[len(self.example)-1]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[:-1])
         )
 
         a = array.array(self.typecode, self.example)
-        del a[-len(self.example)]
+        toa a[-len(self.example)]
         self.assertEqual(
             a,
             array.array(self.typecode, self.example[1:])
         )
 
         self.assertRaises(TypeError, a.__delitem__)
-        self.assertRaises(TypeError, a.__delitem__, None)
+        self.assertRaises(TypeError, a.__delitem__, Tupu)
         self.assertRaises(IndexError, a.__delitem__, len(self.example))
         self.assertRaises(IndexError, a.__delitem__, -len(self.example)-1)
 
@@ -746,11 +746,11 @@ kundi BaseTest:
         # Test extended slicing by comparing with list slicing
         # (Assumes list conversion works correctly, too)
         a = array.array(self.typecode, self.example)
-        indices = (0, None, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
-        for start in indices:
-            for stop in indices:
-                # Everything except the initial 0 (invalid step)
-                for step in indices[1:]:
+        indices = (0, Tupu, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
+        kila start kwenye indices:
+            kila stop kwenye indices:
+                # Everything tatizo the initial 0 (invalid step)
+                kila step kwenye indices[1:]:
                     self.assertEqual(list(a[start:stop:step]),
                                      list(a)[start:stop:step])
 
@@ -836,19 +836,19 @@ kundi BaseTest:
         )
 
         a = array.array(self.typecode, self.example)
-        self.assertRaises(TypeError, a.__setitem__, slice(0, 0), None)
-        self.assertRaises(TypeError, a.__setitem__, slice(0, 1), None)
+        self.assertRaises(TypeError, a.__setitem__, slice(0, 0), Tupu)
+        self.assertRaises(TypeError, a.__setitem__, slice(0, 1), Tupu)
 
         b = array.array(self.badtypecode())
         self.assertRaises(TypeError, a.__setitem__, slice(0, 0), b)
         self.assertRaises(TypeError, a.__setitem__, slice(0, 1), b)
 
     eleza test_extended_set_del_slice(self):
-        indices = (0, None, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
-        for start in indices:
-            for stop in indices:
-                # Everything except the initial 0 (invalid step)
-                for step in indices[1:]:
+        indices = (0, Tupu, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
+        kila start kwenye indices:
+            kila stop kwenye indices:
+                # Everything tatizo the initial 0 (invalid step)
+                kila step kwenye indices[1:]:
                     a = array.array(self.typecode, self.example)
                     L = list(a)
                     # Make sure we have a slice of exactly the right length,
@@ -859,30 +859,30 @@ kundi BaseTest:
                     a[start:stop:step] = array.array(self.typecode, data)
                     self.assertEqual(a, array.array(self.typecode, L))
 
-                    del L[start:stop:step]
-                    del a[start:stop:step]
+                    toa L[start:stop:step]
+                    toa a[start:stop:step]
                     self.assertEqual(a, array.array(self.typecode, L))
 
     eleza test_index(self):
         example = 2*self.example
         a = array.array(self.typecode, example)
         self.assertRaises(TypeError, a.index)
-        for x in example:
+        kila x kwenye example:
             self.assertEqual(a.index(x), example.index(x))
-        self.assertRaises(ValueError, a.index, None)
+        self.assertRaises(ValueError, a.index, Tupu)
         self.assertRaises(ValueError, a.index, self.outside)
 
     eleza test_count(self):
         example = 2*self.example
         a = array.array(self.typecode, example)
         self.assertRaises(TypeError, a.count)
-        for x in example:
+        kila x kwenye example:
             self.assertEqual(a.count(x), example.count(x))
         self.assertEqual(a.count(self.outside), 0)
-        self.assertEqual(a.count(None), 0)
+        self.assertEqual(a.count(Tupu), 0)
 
     eleza test_remove(self):
-        for x in self.example:
+        kila x kwenye self.example:
             example = 2*self.example
             a = array.array(self.typecode, example)
             pos = example.index(x)
@@ -893,7 +893,7 @@ kundi BaseTest:
         a = array.array(self.typecode, self.example)
         self.assertRaises(ValueError, a.remove, self.outside)
 
-        self.assertRaises(ValueError, a.remove, None)
+        self.assertRaises(ValueError, a.remove, Tupu)
 
     eleza test_pop(self):
         a = array.array(self.typecode)
@@ -901,7 +901,7 @@ kundi BaseTest:
 
         a = array.array(self.typecode, 2*self.example)
         self.assertRaises(TypeError, a.pop, 42, 42)
-        self.assertRaises(TypeError, a.pop, None)
+        self.assertRaises(TypeError, a.pop, Tupu)
         self.assertRaises(IndexError, a.pop, len(a))
         self.assertRaises(IndexError, a.pop, -len(a)-1)
 
@@ -965,23 +965,23 @@ kundi BaseTest:
         # non-iterable argument
         self.assertRaises(TypeError, array.array, self.typecode, 10)
 
-        # pass through errors raised in __iter__
+        # pita through errors ashiriad kwenye __iter__
         kundi A:
             eleza __iter__(self):
-                raise UnicodeError
+                ashiria UnicodeError
         self.assertRaises(UnicodeError, array.array, self.typecode, A())
 
-        # pass through errors raised in next()
+        # pita through errors ashiriad kwenye next()
         eleza B():
-            raise UnicodeError
-            yield None
+            ashiria UnicodeError
+            tuma Tupu
         self.assertRaises(UnicodeError, array.array, self.typecode, B())
 
     eleza test_coveritertraverse(self):
-        try:
+        jaribu:
             agiza gc
-        except ImportError:
-            self.skipTest('gc module not available')
+        tatizo ImportError:
+            self.skipTest('gc module sio available')
         a = array.array(self.typecode)
         l = [iter(a)]
         l.append(l)
@@ -993,9 +993,9 @@ kundi BaseTest:
         expected = m.tobytes()
         self.assertEqual(a.tobytes(), expected)
         self.assertEqual(a.tobytes()[0], expected[0])
-        # Resizing is forbidden when there are buffer exports.
+        # Resizing ni forbidden when there are buffer exports.
         # For issue 4509, we also check after each error that
-        # the array was not modified.
+        # the array was sio modified.
         self.assertRaises(BufferError, a.append, a[0])
         self.assertEqual(m.tobytes(), expected)
         self.assertRaises(BufferError, a.extend, a[0:1])
@@ -1026,25 +1026,25 @@ kundi BaseTest:
         s = array.array(self.typecode, self.example)
         p = weakref.proxy(s)
         self.assertEqual(p.tobytes(), s.tobytes())
-        s = None
+        s = Tupu
         self.assertRaises(ReferenceError, len, p)
 
     @unittest.skipUnless(hasattr(sys, 'getrefcount'),
                          'test needs sys.getrefcount()')
     eleza test_bug_782369(self):
-        for i in range(10):
+        kila i kwenye range(10):
             b = array.array('B', range(64))
         rc = sys.getrefcount(10)
-        for i in range(10):
+        kila i kwenye range(10):
             b = array.array('B', range(64))
         self.assertEqual(rc, sys.getrefcount(10))
 
     eleza test_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously raise a TypeError
+        # SF bug #1486663 -- this used to erroneously ashiria a TypeError
         ArraySubclassWithKwargs('b', newarg=1)
 
     eleza test_create_kutoka_bytes(self):
-        # XXX This test probably needs to be moved in a subkundi or
+        # XXX This test probably needs to be moved kwenye a subkundi or
         # generalized to use self.typecode.
         a = array.array('H', b"1234")
         self.assertEqual(len(a) * a.itemsize, 4)
@@ -1064,13 +1064,13 @@ kundi BaseTest:
 
     eleza test_initialize_with_unicode(self):
         ikiwa self.typecode != 'u':
-            with self.assertRaises(TypeError) as cm:
+            with self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, 'foo')
             self.assertIn("cannot use a str", str(cm.exception))
-            with self.assertRaises(TypeError) as cm:
+            with self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, array.array('u', 'foo'))
             self.assertIn("cannot use a unicode array", str(cm.exception))
-        else:
+        isipokua:
             a = array.array(self.typecode, "foo")
             a = array.array(self.typecode, array.array('u', 'foo'))
 
@@ -1124,9 +1124,9 @@ kundi UnicodeTest(StringTest, unittest.TestCase):
     eleza test_issue17223(self):
         # this used to crash
         ikiwa sizeof_wchar == 4:
-            # U+FFFFFFFF is an invalid code point in Unicode 6.0
+            # U+FFFFFFFF ni an invalid code point kwenye Unicode 6.0
             invalid_str = b'\xff\xff\xff\xff'
-        else:
+        isipokua:
             # PyUnicode_FromUnicode() cannot fail with 16-bit wchar_t
             self.skipTest("specific to 32-bit wchar_t")
         a = array.array('u', invalid_str)
@@ -1151,20 +1151,20 @@ kundi NumberTest(BaseTest):
 
     eleza test_delslice(self):
         a = array.array(self.typecode, range(5))
-        del a[::2]
+        toa a[::2]
         self.assertEqual(a, array.array(self.typecode, [1,3]))
         a = array.array(self.typecode, range(5))
-        del a[1::2]
+        toa a[1::2]
         self.assertEqual(a, array.array(self.typecode, [0,2,4]))
         a = array.array(self.typecode, range(5))
-        del a[1::-2]
+        toa a[1::-2]
         self.assertEqual(a, array.array(self.typecode, [0,2,3,4]))
         a = array.array(self.typecode, range(10))
-        del a[::1000]
+        toa a[::1000]
         self.assertEqual(a, array.array(self.typecode, [1,2,3,4,5,6,7,8,9]))
         # test issue7788
         a = array.array(self.typecode, range(10))
-        del a[9::1<<333]
+        toa a[9::1<<333]
 
     eleza test_assignment(self):
         a = array.array(self.typecode, range(10))
@@ -1188,19 +1188,19 @@ kundi NumberTest(BaseTest):
         a = array.array(self.typecode, range(10))
         self.assertEqual(list(a), list(range(10)))
         b = array.array(self.typecode, [20])
-        self.assertEqual(a[-1] in a, True)
-        self.assertEqual(b[0] not in a, True)
+        self.assertEqual(a[-1] kwenye a, Kweli)
+        self.assertEqual(b[0] haiko kwenye a, Kweli)
 
     eleza check_overflow(self, lower, upper):
         # method to be used by subclasses
 
-        # should not overflow assigning lower limit
+        # should sio overflow assigning lower limit
         a = array.array(self.typecode, [lower])
         a[0] = lower
         # should overflow assigning less than lower limit
         self.assertRaises(OverflowError, array.array, self.typecode, [lower-1])
         self.assertRaises(OverflowError, a.__setitem__, 0, lower-1)
-        # should not overflow assigning upper limit
+        # should sio overflow assigning upper limit
         a = array.array(self.typecode, [upper])
         a[0] = upper
         # should overflow assigning more than upper limit
@@ -1348,24 +1348,24 @@ kundi FPTest(NumberTest):
     eleza test_nan(self):
         a = array.array(self.typecode, [float('nan')])
         b = array.array(self.typecode, [float('nan')])
-        self.assertIs(a != b, True)
-        self.assertIs(a == b, False)
-        self.assertIs(a > b, False)
-        self.assertIs(a >= b, False)
-        self.assertIs(a < b, False)
-        self.assertIs(a <= b, False)
+        self.assertIs(a != b, Kweli)
+        self.assertIs(a == b, Uongo)
+        self.assertIs(a > b, Uongo)
+        self.assertIs(a >= b, Uongo)
+        self.assertIs(a < b, Uongo)
+        self.assertIs(a <= b, Uongo)
 
     eleza test_byteswap(self):
         a = array.array(self.typecode, self.example)
         self.assertRaises(TypeError, a.byteswap, 42)
-        ikiwa a.itemsize in (1, 2, 4, 8):
+        ikiwa a.itemsize kwenye (1, 2, 4, 8):
             b = array.array(self.typecode, self.example)
             b.byteswap()
             ikiwa a.itemsize==1:
                 self.assertEqual(a, b)
-            else:
+            isipokua:
                 # On alphas treating the byte swapped bit patters as
-                # floats/doubles results in floating point exceptions
+                # floats/doubles results kwenye floating point exceptions
                 # => compare the 8bit string values instead
                 self.assertNotEqual(a.tobytes(), b.tobytes())
             b.byteswap()
@@ -1382,18 +1382,18 @@ kundi DoubleTest(FPTest, unittest.TestCase):
     eleza test_alloc_overflow(self):
         kutoka sys agiza maxsize
         a = array.array('d', [-1]*65536)
-        try:
+        jaribu:
             a *= maxsize//65536 + 1
-        except MemoryError:
-            pass
-        else:
+        tatizo MemoryError:
+            pita
+        isipokua:
             self.fail("Array of size > maxsize created - MemoryError expected")
         b = array.array('d', [ 2.71828183, 3.14159265, -1])
-        try:
+        jaribu:
             b * (maxsize//3 + 1)
-        except MemoryError:
-            pass
-        else:
+        tatizo MemoryError:
+            pita
+        isipokua:
             self.fail("Array of size > maxsize created - MemoryError expected")
 
 
@@ -1401,7 +1401,7 @@ kundi LargeArrayTest(unittest.TestCase):
     typecode = 'b'
 
     eleza example(self, size):
-        # We assess a base memuse of <=2.125 for constructing this array
+        # We assess a base memuse of <=2.125 kila constructing this array
         base = array.array(self.typecode, [0, 1, 2, 3, 4, 5, 6, 7]) * (size // 8)
         base += array.array(self.typecode, [99]*(size % 8) + [8, 9, 10, 11])
         rudisha base
@@ -1430,13 +1430,13 @@ kundi LargeArrayTest(unittest.TestCase):
         self.assertEqual(len(part), size+2)
         self.assertEqual(part[0], 1)
         self.assertEqual(part[-1], 10)
-        del part
+        toa part
         part = example[::2]
         self.assertEqual(len(part), (size+5)//2)
         self.assertEqual(list(part[:4]), [0, 2, 4, 6])
         ikiwa size % 2:
             self.assertEqual(list(part[-2:]), [9, 11])
-        else:
+        isipokua:
             self.assertEqual(list(part[-2:]), [8, 10])
 
     @support.bigmemtest(_2G, memuse=2.125)

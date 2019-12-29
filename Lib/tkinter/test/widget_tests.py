@@ -29,14 +29,14 @@ class AbstractWidgetTest(AbstractTkTest):
 
     @property
     def scaling(self):
-        try:
+        jaribu:
             return self._scaling
-        except AttributeError:
+        tatizo AttributeError:
             self._scaling = float(self.root.call('tk', 'scaling'))
             return self._scaling
 
     def _str(self, value):
-        if not self._stringify and self.wantobjects and tcl_version >= (8, 6):
+        if sio self._stringify and self.wantobjects and tcl_version >= (8, 6):
             return value
         if isinstance(value, tuple):
             return ' '.join(map(self._str, value))
@@ -54,17 +54,17 @@ class AbstractWidgetTest(AbstractTkTest):
             expected = value
         if conv:
             expected = conv(expected)
-        if self._stringify or not self.wantobjects:
+        if self._stringify or sio self.wantobjects:
             if isinstance(expected, tuple):
                 expected = tkinter._join(expected)
-            else:
+            isipokua:
                 expected = str(expected)
         if eq is None:
             eq = tcl_obj_eq
         self.assertEqual2(widget[name], expected, eq=eq)
         self.assertEqual2(widget.cget(name), expected, eq=eq)
         # XXX
-        if not isinstance(widget, Scale):
+        if sio isinstance(widget, Scale):
             t = widget.configure(name)
             self.assertEqual(len(t), 5)
             self.assertEqual2(t[4], expected, eq=eq)
@@ -72,23 +72,23 @@ class AbstractWidgetTest(AbstractTkTest):
     def checkInvalidParam(self, widget, name, value, errmsg=None, *,
                           keep_orig=True):
         orig = widget[name]
-        if errmsg is not None:
+        if errmsg ni sio None:
             errmsg = errmsg.format(value)
         with self.assertRaises(tkinter.TclError) as cm:
             widget[name] = value
-        if errmsg is not None:
+        if errmsg ni sio None:
             self.assertEqual(str(cm.exception), errmsg)
         if keep_orig:
             self.assertEqual(widget[name], orig)
-        else:
+        isipokua:
             widget[name] = orig
         with self.assertRaises(tkinter.TclError) as cm:
             widget.configure({name: value})
-        if errmsg is not None:
+        if errmsg ni sio None:
             self.assertEqual(str(cm.exception), errmsg)
         if keep_orig:
             self.assertEqual(widget[name], orig)
-        else:
+        isipokua:
             widget[name] = orig
 
     def checkParams(self, widget, name, *values, **kwargs):
@@ -165,7 +165,7 @@ class AbstractWidgetTest(AbstractTkTest):
             expected = _sentinel
             conv1 = conv
             if isinstance(value, str):
-                if conv1 and conv1 is not str:
+                if conv1 and conv1 ni sio str:
                     expected = pixels_conv(value) * self.scaling
                     conv1 = round
             self.checkParam(widget, name, value, expected=expected,
@@ -201,16 +201,16 @@ class AbstractWidgetTest(AbstractTkTest):
         if len(bbox) != 4:
             self.fail('Invalid bounding box: %r' % (bbox,))
         for item in bbox:
-            if not isinstance(item, int):
+            if sio isinstance(item, int):
                 self.fail('Invalid bounding box: %r' % (bbox,))
-                break
+                koma
 
 
     def test_keys(self):
         widget = self.create()
         keys = widget.keys()
         # XXX
-        if not isinstance(widget, Scale):
+        if sio isinstance(widget, Scale):
             self.assertEqual(sorted(keys), sorted(widget.configure()))
         for k in keys:
             widget[k]
@@ -226,7 +226,7 @@ class AbstractWidgetTest(AbstractTkTest):
             keys = set(keys)
             expected = set(self.OPTIONS)
             for k in sorted(keys - expected):
-                if not (k in aliases and
+                if sio (k in aliases and
                         aliases[k] in keys and
                         aliases[k] in expected):
                     print('%s.OPTIONS doesn\'t contain "%s"' %
@@ -280,10 +280,10 @@ class StandardOptionsTests:
         self.checkParam(widget, 'bitmap', '@' + filename)
         # Cocoa Tk widgets don't detect invalid -bitmap values
         # See https://core.tcl.tk/tk/info/31cd33dbf0
-        if not ('aqua' in self.root.tk.call('tk', 'windowingsystem') and
+        if sio ('aqua' in self.root.tk.call('tk', 'windowingsystem') and
                 'AppKit' in self.root.winfo_server()):
             self.checkInvalidParam(widget, 'bitmap', 'spam',
-                    errmsg='bitmap "spam" not defined')
+                    errmsg='bitmap "spam" sio defined')
 
     def test_borderwidth(self):
         widget = self.create()
@@ -521,21 +521,21 @@ class PixelSizeTests:
 
 def add_standard_options(*source_classes):
     # This decorator adds test_xxx methods from source classes for every xxx
-    # option in the OPTIONS class attribute if they are not defined explicitly.
+    # option in the OPTIONS class attribute if they are sio defined explicitly.
     def decorator(cls):
         for option in cls.OPTIONS:
             methodname = 'test_' + option
-            if not hasattr(cls, methodname):
+            if sio hasattr(cls, methodname):
                 for source_class in source_classes:
                     if hasattr(source_class, methodname):
                         setattr(cls, methodname,
                                 getattr(source_class, methodname))
-                        break
-                else:
+                        koma
+                isipokua:
                     def test(self, option=option):
                         widget = self.create()
                         widget[option]
-                        raise AssertionError('Option "%s" is not tested in %s' %
+                        raise AssertionError('Option "%s" ni sio tested in %s' %
                                              (option, cls.__name__))
                     test.__name__ = methodname
                     setattr(cls, methodname, test)

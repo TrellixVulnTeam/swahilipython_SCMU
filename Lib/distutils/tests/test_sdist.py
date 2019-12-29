@@ -8,17 +8,17 @@ from os.path import join
 from textwrap import dedent
 from test.support import captured_stdout, check_warnings, run_unittest
 
-try:
+jaribu:
     import zlib
     ZLIB_SUPPORT = True
-except ImportError:
+tatizo ImportError:
     ZLIB_SUPPORT = False
 
-try:
+jaribu:
     import grp
     import pwd
     UID_GID_SUPPORT = True
-except ImportError:
+tatizo ImportError:
     UID_GID_SUPPORT = False
 
 from distutils.command.sdist import sdist, show_formats
@@ -110,7 +110,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         dist, cmd = self.get_cmd()
 
         # zip is available universally
-        # (tar might not be installed under win32)
+        # (tar might sio be installed under win32)
         cmd.formats = ['zip']
 
         cmd.ensure_finalized()
@@ -122,9 +122,9 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(files, ['fake-1.0.zip'])
 
         zip_file = zipfile.ZipFile(join(dist_folder, 'fake-1.0.zip'))
-        try:
+        jaribu:
             content = zip_file.namelist()
-        finally:
+        mwishowe:
             zip_file.close()
 
         # making sure everything has been pruned correctly
@@ -134,9 +134,9 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
     @unittest.skipIf(find_executable('tar') is None,
-                     "The tar command is not found")
+                     "The tar command ni sio found")
     @unittest.skipIf(find_executable('gzip') is None,
-                     "The gzip command is not found")
+                     "The gzip command ni sio found")
     def test_make_distribution(self):
         # now building a sdist
         dist, cmd = self.get_cmd()
@@ -222,9 +222,9 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(files, ['fake-1.0.zip'])
 
         zip_file = zipfile.ZipFile(join(dist_folder, 'fake-1.0.zip'))
-        try:
+        jaribu:
             content = zip_file.namelist()
-        finally:
+        mwishowe:
             zip_file.close()
 
         # making sure everything was added
@@ -238,9 +238,9 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
 
         # checking the MANIFEST
         f = open(join(self.tmp_dir, 'MANIFEST'))
-        try:
+        jaribu:
             manifest = f.read()
-        finally:
+        mwishowe:
             f.close()
         self.assertEqual(manifest, MANIFEST % {'sep': os.sep})
 
@@ -327,7 +327,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
 
     @unittest.skipIf(os.name != 'nt', 'test relevant for Windows only')
     def test_invalid_template_wrong_path(self):
-        # on Windows, trailing slashes are not allowed
+        # on Windows, trailing slashes are sio allowed
         # this used to crash instead of raising a warning: #8286
         self._check_template('include examples/')
 
@@ -344,10 +344,10 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         cmd.run()
 
         f = open(cmd.manifest)
-        try:
+        jaribu:
             manifest = [line.strip() for line in f.read().split('\n')
                         if line.strip() != '']
-        finally:
+        mwishowe:
             f.close()
 
         self.assertEqual(len(manifest), 5)
@@ -363,10 +363,10 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         cmd.run()
 
         f = open(cmd.manifest)
-        try:
+        jaribu:
             manifest2 = [line.strip() for line in f.read().split('\n')
                          if line.strip() != '']
-        finally:
+        mwishowe:
             f.close()
 
         # do we have the new file in MANIFEST ?
@@ -381,10 +381,10 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         cmd.run()
 
         f = open(cmd.manifest)
-        try:
+        jaribu:
             manifest = [line.strip() for line in f.read().split('\n')
                         if line.strip() != '']
-        finally:
+        mwishowe:
             f.close()
 
         self.assertEqual(manifest[0],
@@ -420,19 +420,19 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(cmd.filelist.files, ['README.manual'])
 
         f = open(cmd.manifest)
-        try:
+        jaribu:
             manifest = [line.strip() for line in f.read().split('\n')
                         if line.strip() != '']
-        finally:
+        mwishowe:
             f.close()
 
         self.assertEqual(manifest, ['README.manual'])
 
         archive_name = join(self.tmp_dir, 'dist', 'fake-1.0.tar.gz')
         archive = tarfile.open(archive_name)
-        try:
+        jaribu:
             filenames = [tarinfo.name for tarinfo in archive]
-        finally:
+        mwishowe:
             archive.close()
         self.assertEqual(sorted(filenames), ['fake-1.0', 'fake-1.0/PKG-INFO',
                                              'fake-1.0/README.manual'])
@@ -440,9 +440,9 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
     @unittest.skipUnless(ZLIB_SUPPORT, "requires zlib")
     @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp and pwd support")
     @unittest.skipIf(find_executable('tar') is None,
-                     "The tar command is not found")
+                     "The tar command ni sio found")
     @unittest.skipIf(find_executable('gzip') is None,
-                     "The gzip command is not found")
+                     "The gzip command ni sio found")
     def test_make_distribution_owner_group(self):
         # now building a sdist
         dist, cmd = self.get_cmd()
@@ -457,11 +457,11 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         # making sure we have the good rights
         archive_name = join(self.tmp_dir, 'dist', 'fake-1.0.tar.gz')
         archive = tarfile.open(archive_name)
-        try:
+        jaribu:
             for member in archive.getmembers():
                 self.assertEqual(member.uid, 0)
                 self.assertEqual(member.gid, 0)
-        finally:
+        mwishowe:
             archive.close()
 
         # building a sdist again
@@ -476,13 +476,13 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         archive_name = join(self.tmp_dir, 'dist', 'fake-1.0.tar.gz')
         archive = tarfile.open(archive_name)
 
-        # note that we are not testing the group ownership here
+        # note that we are sio testing the group ownership here
         # because, depending on the platforms and the container
         # rights (see #7408)
-        try:
+        jaribu:
             for member in archive.getmembers():
                 self.assertEqual(member.uid, os.getuid())
-        finally:
+        mwishowe:
             archive.close()
 
 def test_suite():

@@ -50,7 +50,7 @@ class CommandTestCase(unittest.TestCase):
 
         cmd = self.cmd
 
-        # making sure it raises when infiles is not a string or a list/tuple
+        # making sure it raises when infiles ni sio a string or a list/tuple
         self.assertRaises(TypeError, cmd.make_file,
                           infiles=1, outfile='', func='func', args=())
 
@@ -111,12 +111,12 @@ class CommandTestCase(unittest.TestCase):
         self.assertEqual(stdout.read(), '')
 
         debug.DEBUG = True
-        try:
+        jaribu:
             with captured_stdout() as stdout:
                 cmd.debug_print('xxx')
             stdout.seek(0)
             self.assertEqual(stdout.read(), 'xxx\n')
-        finally:
+        mwishowe:
             debug.DEBUG = False
 
 def test_suite():

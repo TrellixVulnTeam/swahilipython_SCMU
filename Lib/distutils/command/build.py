@@ -72,7 +72,7 @@ class build(Command):
     def finalize_options(self):
         if self.plat_name is None:
             self.plat_name = get_platform()
-        else:
+        isipokua:
             # plat-name only supported for windows (other platforms are
             # supported via ./configure flags, if at all).  Avoid misleading
             # other platforms.
@@ -104,7 +104,7 @@ class build(Command):
         if self.build_lib is None:
             if self.distribution.ext_modules:
                 self.build_lib = self.build_platlib
-            else:
+            isipokua:
                 self.build_lib = self.build_purelib
 
         # 'build_temp' -- temporary directory for compiler turds,
@@ -120,9 +120,9 @@ class build(Command):
             self.executable = os.path.normpath(sys.executable)
 
         if isinstance(self.parallel, str):
-            try:
+            jaribu:
                 self.parallel = int(self.parallel)
-            except ValueError:
+            tatizo ValueError:
                 raise DistutilsOptionError("parallel should be an integer")
 
     def run(self):

@@ -22,28 +22,28 @@ kutoka test.support agiza _4G, bigmemtest, import_fresh_module
 kutoka test.support agiza requires_hashdigest
 kutoka http.client agiza HTTPException
 
-# Were we compiled --with-pydebug or with #define Py_DEBUG?
+# Were we compiled --with-pydebug ama with #define Py_DEBUG?
 COMPILED_WITH_PYDEBUG = hasattr(sys, 'gettotalrefcount')
 
 c_hashlib = import_fresh_module('hashlib', fresh=['_hashlib'])
 py_hashlib = import_fresh_module('hashlib', blocked=['_hashlib'])
 
-try:
+jaribu:
     kutoka _hashlib agiza HASH
-except ImportError:
-    HASH = None
+tatizo ImportError:
+    HASH = Tupu
 
-try:
+jaribu:
     agiza _blake2
-except ImportError:
-    _blake2 = None
+tatizo ImportError:
+    _blake2 = Tupu
 
 requires_blake2 = unittest.skipUnless(_blake2, 'requires _blake2')
 
-try:
+jaribu:
     agiza _sha3
-except ImportError:
-    _sha3 = None
+tatizo ImportError:
+    _sha3 = Tupu
 
 requires_sha3 = unittest.skipUnless(_sha3, 'requires _sha3')
 
@@ -52,7 +52,7 @@ eleza hexstr(s):
     assert isinstance(s, bytes), repr(s)
     h = "0123456789abcdef"
     r = ''
-    for i in s:
+    kila i kwenye s:
         r += h[(i >> 4) & 0xF] + h[i & 0xF]
     rudisha r
 
@@ -61,18 +61,18 @@ URL = "http://www.pythontest.net/hashlib/{}.txt"
 
 eleza read_vectors(hash_name):
     url = URL.format(hash_name)
-    try:
+    jaribu:
         testdata = support.open_urlresource(url)
-    except (OSError, HTTPException):
-        raise unittest.SkipTest("Could not retrieve {}".format(url))
+    tatizo (OSError, HTTPException):
+        ashiria unittest.SkipTest("Could sio retrieve {}".format(url))
     with testdata:
-        for line in testdata:
+        kila line kwenye testdata:
             line = line.strip()
-            ikiwa line.startswith('#') or not line:
-                continue
+            ikiwa line.startswith('#') ama sio line:
+                endelea
             parts = line.split(',')
             parts[0] = bytes.kutokahex(parts[0])
-            yield parts
+            tuma parts
 
 
 kundi HashLibTestCase(unittest.TestCase):
@@ -86,20 +86,20 @@ kundi HashLibTestCase(unittest.TestCase):
     shakes = {'shake_128', 'shake_256'}
 
     # Issue #14693: fallback modules are always compiled under POSIX
-    _warn_on_extension_agiza = os.name == 'posix' or COMPILED_WITH_PYDEBUG
+    _warn_on_extension_agiza = os.name == 'posix' ama COMPILED_WITH_PYDEBUG
 
     eleza _conditional_import_module(self, module_name):
-        """Import a module and rudisha a reference to it or None on failure."""
-        try:
+        """Import a module na rudisha a reference to it ama Tupu on failure."""
+        jaribu:
             rudisha importlib.import_module(module_name)
-        except ModuleNotFoundError as error:
+        tatizo ModuleNotFoundError kama error:
             ikiwa self._warn_on_extension_agiza:
                 warnings.warn('Did a C extension fail to compile? %s' % error)
-        rudisha None
+        rudisha Tupu
 
     eleza __init__(self, *args, **kwargs):
         algorithms = set()
-        for algorithm in self.supported_hash_names:
+        kila algorithm kwenye self.supported_hash_names:
             algorithms.add(algorithm.lower())
 
         _blake2 = self._conditional_import_module('_blake2')
@@ -107,15 +107,15 @@ kundi HashLibTestCase(unittest.TestCase):
             algorithms.update({'blake2b', 'blake2s'})
 
         self.constructors_to_test = {}
-        for algorithm in algorithms:
+        kila algorithm kwenye algorithms:
             self.constructors_to_test[algorithm] = set()
 
-        # For each algorithm, test the direct constructor and the use
+        # For each algorithm, test the direct constructor na the use
         # of hashlib.new given the algorithm name.
-        for algorithm, constructors in self.constructors_to_test.items():
+        kila algorithm, constructors kwenye self.constructors_to_test.items():
             constructors.add(getattr(hashlib, algorithm))
-            eleza _test_algorithm_via_hashlib_new(data=None, _alg=algorithm, **kwargs):
-                ikiwa data is None:
+            eleza _test_algorithm_via_hashlib_new(data=Tupu, _alg=algorithm, **kwargs):
+                ikiwa data ni Tupu:
                     rudisha hashlib.new(_alg, **kwargs)
                 rudisha hashlib.new(_alg, data, **kwargs)
             constructors.add(_test_algorithm_via_hashlib_new)
@@ -124,18 +124,18 @@ kundi HashLibTestCase(unittest.TestCase):
         self._hashlib = _hashlib
         ikiwa _hashlib:
             # These two algorithms should always be present when this module
-            # is compiled.  If not, something was compiled wrong.
-            self.assertTrue(hasattr(_hashlib, 'openssl_md5'))
-            self.assertTrue(hasattr(_hashlib, 'openssl_sha1'))
-            for algorithm, constructors in self.constructors_to_test.items():
-                constructor = getattr(_hashlib, 'openssl_'+algorithm, None)
+            # ni compiled.  If not, something was compiled wrong.
+            self.assertKweli(hasattr(_hashlib, 'openssl_md5'))
+            self.assertKweli(hasattr(_hashlib, 'openssl_sha1'))
+            kila algorithm, constructors kwenye self.constructors_to_test.items():
+                constructor = getattr(_hashlib, 'openssl_'+algorithm, Tupu)
                 ikiwa constructor:
-                    try:
+                    jaribu:
                         constructor()
-                    except ValueError:
+                    tatizo ValueError:
                         # default constructor blocked by crypto policy
-                        pass
-                    else:
+                        pita
+                    isipokua:
                         constructors.add(constructor)
 
         eleza add_builtin_constructor(name):
@@ -177,31 +177,31 @@ kundi HashLibTestCase(unittest.TestCase):
         rudisha itertools.chain.kutoka_iterable(constructors)
 
     @support.refcount_test
-    @unittest.skipIf(c_hashlib is None, 'Require _hashlib module')
+    @unittest.skipIf(c_hashlib ni Tupu, 'Require _hashlib module')
     eleza test_refleaks_in_hash___init__(self):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         sha1_hash = c_hashlib.new('sha1')
         refs_before = gettotalrefcount()
-        for i in range(100):
+        kila i kwenye range(100):
             sha1_hash.__init__('sha1')
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
     eleza test_hash_array(self):
         a = array.array("b", range(10))
-        for cons in self.hash_constructors:
+        kila cons kwenye self.hash_constructors:
             c = cons(a)
-            ikiwa c.name in self.shakes:
+            ikiwa c.name kwenye self.shakes:
                 c.hexdigest(16)
-            else:
+            isipokua:
                 c.hexdigest()
 
     eleza test_algorithms_guaranteed(self):
         self.assertEqual(hashlib.algorithms_guaranteed,
-            set(_algo for _algo in self.supported_hash_names
+            set(_algo kila _algo kwenye self.supported_hash_names
                   ikiwa _algo.islower()))
 
     eleza test_algorithms_available(self):
-        self.assertTrue(set(hashlib.algorithms_guaranteed).
+        self.assertKweli(set(hashlib.algorithms_guaranteed).
                             issubset(hashlib.algorithms_available))
 
     eleza test_unknown_hash(self):
@@ -217,56 +217,56 @@ kundi HashLibTestCase(unittest.TestCase):
         builtin_constructor_cache = getattr(hashlib,
                                             '__builtin_constructor_cache')
         self.assertRaises(ValueError, get_builtin_constructor, 'test')
-        try:
+        jaribu:
             agiza _md5
-        except ImportError:
-            self.skipTest("_md5 module not available")
-        # This forces an ImportError for "agiza _md5" statements
-        sys.modules['_md5'] = None
+        tatizo ImportError:
+            self.skipTest("_md5 module sio available")
+        # This forces an ImportError kila "agiza _md5" statements
+        sys.modules['_md5'] = Tupu
         # clear the cache
         builtin_constructor_cache.clear()
-        try:
+        jaribu:
             self.assertRaises(ValueError, get_builtin_constructor, 'md5')
-        finally:
-            ikiwa '_md5' in locals():
+        mwishowe:
+            ikiwa '_md5' kwenye locals():
                 sys.modules['_md5'] = _md5
-            else:
-                del sys.modules['_md5']
+            isipokua:
+                toa sys.modules['_md5']
         self.assertRaises(TypeError, get_builtin_constructor, 3)
         constructor = get_builtin_constructor('md5')
         self.assertIs(constructor, _md5.md5)
         self.assertEqual(sorted(builtin_constructor_cache), ['MD5', 'md5'])
 
     eleza test_hexdigest(self):
-        for cons in self.hash_constructors:
+        kila cons kwenye self.hash_constructors:
             h = cons()
-            ikiwa h.name in self.shakes:
+            ikiwa h.name kwenye self.shakes:
                 self.assertIsInstance(h.digest(16), bytes)
                 self.assertEqual(hexstr(h.digest(16)), h.hexdigest(16))
-            else:
+            isipokua:
                 self.assertIsInstance(h.digest(), bytes)
                 self.assertEqual(hexstr(h.digest()), h.hexdigest())
 
     eleza test_digest_length_overflow(self):
         # See issue #34922
         large_sizes = (2**29, 2**32-10, 2**32+10, 2**61, 2**64-10, 2**64+10)
-        for cons in self.hash_constructors:
+        kila cons kwenye self.hash_constructors:
             h = cons()
-            ikiwa h.name not in self.shakes:
-                continue
-            for digest in h.digest, h.hexdigest:
+            ikiwa h.name haiko kwenye self.shakes:
+                endelea
+            kila digest kwenye h.digest, h.hexdigest:
                 self.assertRaises(ValueError, digest, -10)
-                for length in large_sizes:
+                kila length kwenye large_sizes:
                     with self.assertRaises((ValueError, OverflowError)):
                         digest(length)
 
     eleza test_name_attribute(self):
-        for cons in self.hash_constructors:
+        kila cons kwenye self.hash_constructors:
             h = cons()
             self.assertIsInstance(h.name, str)
-            ikiwa h.name in self.supported_hash_names:
+            ikiwa h.name kwenye self.supported_hash_names:
                 self.assertIn(h.name, self.supported_hash_names)
-            else:
+            isipokua:
                 self.assertNotIn(h.name, self.supported_hash_names)
             self.assertEqual(h.name, hashlib.new(h.name).name)
 
@@ -276,15 +276,15 @@ kundi HashLibTestCase(unittest.TestCase):
         cees = b'c' * 126
         dees = b'd' * 2048 #  HASHLIB_GIL_MINSIZE
 
-        for cons in self.hash_constructors:
+        kila cons kwenye self.hash_constructors:
             m1 = cons()
             m1.update(aas)
             m1.update(bees)
             m1.update(cees)
             m1.update(dees)
-            ikiwa m1.name in self.shakes:
+            ikiwa m1.name kwenye self.shakes:
                 args = (16,)
-            else:
+            isipokua:
                 args = ()
 
             m2 = cons()
@@ -302,31 +302,31 @@ kundi HashLibTestCase(unittest.TestCase):
             self.assertEqual(m1.digest(*args), m4_copy.digest(*args))
             self.assertEqual(m4.digest(*args), m4_digest)
 
-    eleza check(self, name, data, hexdigest, shake=False, **kwargs):
+    eleza check(self, name, data, hexdigest, shake=Uongo, **kwargs):
         length = len(hexdigest)//2
         hexdigest = hexdigest.lower()
         constructors = self.constructors_to_test[name]
-        # 2 is for hashlib.name(...) and hashlib.new(name, ...)
+        # 2 ni kila hashlib.name(...) na hashlib.new(name, ...)
         self.assertGreaterEqual(len(constructors), 2)
-        for hash_object_constructor in constructors:
+        kila hash_object_constructor kwenye constructors:
             m = hash_object_constructor(data, **kwargs)
-            computed = m.hexdigest() ikiwa not shake else m.hexdigest(length)
+            computed = m.hexdigest() ikiwa sio shake else m.hexdigest(length)
             self.assertEqual(
                     computed, hexdigest,
-                    "Hash algorithm %s constructed using %s returned hexdigest"
-                    " %r for %d byte input data that should have hashed to %r."
+                    "Hash algorithm %s constructed using %s rudishaed hexdigest"
+                    " %r kila %d byte input data that should have hashed to %r."
                     % (name, hash_object_constructor,
                        computed, len(data), hexdigest))
-            computed = m.digest() ikiwa not shake else m.digest(length)
+            computed = m.digest() ikiwa sio shake else m.digest(length)
             digest = bytes.kutokahex(hexdigest)
             self.assertEqual(computed, digest)
-            ikiwa not shake:
+            ikiwa sio shake:
                 self.assertEqual(len(digest), m.digest_size)
 
     eleza check_no_unicode(self, algorithm_name):
-        # Unicode objects are not allowed as input.
+        # Unicode objects are sio allowed kama input.
         constructors = self.constructors_to_test[algorithm_name]
-        for hash_object_constructor in constructors:
+        kila hash_object_constructor kwenye constructors:
             self.assertRaises(TypeError, hash_object_constructor, 'spam')
 
     eleza test_no_unicode(self):
@@ -352,9 +352,9 @@ kundi HashLibTestCase(unittest.TestCase):
         self.check_no_unicode('shake_256')
 
     eleza check_blocksize_name(self, name, block_size=0, digest_size=0,
-                             digest_length=None):
+                             digest_length=Tupu):
         constructors = self.constructors_to_test[name]
-        for hash_object_constructor in constructors:
+        kila hash_object_constructor kwenye constructors:
             m = hash_object_constructor()
             self.assertEqual(m.block_size, block_size)
             self.assertEqual(m.digest_size, digest_size)
@@ -363,11 +363,11 @@ kundi HashLibTestCase(unittest.TestCase):
                                  digest_length)
                 self.assertEqual(len(m.hexdigest(digest_length)),
                                  2*digest_length)
-            else:
+            isipokua:
                 self.assertEqual(len(m.digest()), digest_size)
                 self.assertEqual(len(m.hexdigest()), 2*digest_size)
             self.assertEqual(m.name, name)
-            # split for sha3_512 / _sha3.sha3 object
+            # split kila sha3_512 / _sha3.sha3 object
             self.assertIn(name.split("_")[0], repr(m))
 
     eleza test_blocksize_name(self):
@@ -389,11 +389,11 @@ kundi HashLibTestCase(unittest.TestCase):
 
     eleza check_sha3(self, name, capacity, rate, suffix):
         constructors = self.constructors_to_test[name]
-        for hash_object_constructor in constructors:
+        kila hash_object_constructor kwenye constructors:
             m = hash_object_constructor()
-            ikiwa HASH is not None and isinstance(m, HASH):
-                # _hashopenssl's variant does not have extra SHA3 attributes
-                continue
+            ikiwa HASH ni sio Tupu na isinstance(m, HASH):
+                # _hashopenssl's variant does sio have extra SHA3 attributes
+                endelea
             self.assertEqual(capacity + rate, 1600)
             self.assertEqual(m._capacity_bits, capacity)
             self.assertEqual(m._rate_bits, rate)
@@ -425,12 +425,12 @@ kundi HashLibTestCase(unittest.TestCase):
                    'd174ab98d277d9f5a5611c2c9f419d9f')
 
     @unittest.skipIf(sys.maxsize < _4G + 5, 'test cannot run on 32-bit systems')
-    @bigmemtest(size=_4G + 5, memuse=1, dry_run=False)
+    @bigmemtest(size=_4G + 5, memuse=1, dry_run=Uongo)
     eleza test_case_md5_huge(self, size):
         self.check('md5', b'A'*size, 'c9af2dff37468ce5dfee8f2cfc0a9c6d')
 
     @unittest.skipIf(sys.maxsize < _4G - 1, 'test cannot run on 32-bit systems')
-    @bigmemtest(size=_4G - 1, memuse=1, dry_run=False)
+    @bigmemtest(size=_4G - 1, memuse=1, dry_run=Uongo)
     eleza test_case_md5_uintmax(self, size):
         self.check('md5', b'A'*size, '28138d306ff1b8281f1a9067e1a1a2b3')
 
@@ -544,49 +544,49 @@ kundi HashLibTestCase(unittest.TestCase):
     eleza check_blake2(self, constructor, salt_size, person_size, key_size,
                      digest_size, max_offset):
         self.assertEqual(constructor.SALT_SIZE, salt_size)
-        for i in range(salt_size + 1):
+        kila i kwenye range(salt_size + 1):
             constructor(salt=b'a' * i)
         salt = b'a' * (salt_size + 1)
         self.assertRaises(ValueError, constructor, salt=salt)
 
         self.assertEqual(constructor.PERSON_SIZE, person_size)
-        for i in range(person_size+1):
+        kila i kwenye range(person_size+1):
             constructor(person=b'a' * i)
         person = b'a' * (person_size + 1)
         self.assertRaises(ValueError, constructor, person=person)
 
         self.assertEqual(constructor.MAX_DIGEST_SIZE, digest_size)
-        for i in range(1, digest_size + 1):
+        kila i kwenye range(1, digest_size + 1):
             constructor(digest_size=i)
         self.assertRaises(ValueError, constructor, digest_size=-1)
         self.assertRaises(ValueError, constructor, digest_size=0)
         self.assertRaises(ValueError, constructor, digest_size=digest_size+1)
 
         self.assertEqual(constructor.MAX_KEY_SIZE, key_size)
-        for i in range(key_size+1):
+        kila i kwenye range(key_size+1):
             constructor(key=b'a' * i)
         key = b'a' * (key_size + 1)
         self.assertRaises(ValueError, constructor, key=key)
         self.assertEqual(constructor().hexdigest(),
                          constructor(key=b'').hexdigest())
 
-        for i in range(0, 256):
+        kila i kwenye range(0, 256):
             constructor(fanout=i)
         self.assertRaises(ValueError, constructor, fanout=-1)
         self.assertRaises(ValueError, constructor, fanout=256)
 
-        for i in range(1, 256):
+        kila i kwenye range(1, 256):
             constructor(depth=i)
         self.assertRaises(ValueError, constructor, depth=-1)
         self.assertRaises(ValueError, constructor, depth=0)
         self.assertRaises(ValueError, constructor, depth=256)
 
-        for i in range(0, 256):
+        kila i kwenye range(0, 256):
             constructor(node_depth=i)
         self.assertRaises(ValueError, constructor, node_depth=-1)
         self.assertRaises(ValueError, constructor, node_depth=256)
 
-        for i in range(0, digest_size + 1):
+        kila i kwenye range(0, digest_size + 1):
             constructor(inner_size=i)
         self.assertRaises(ValueError, constructor, inner_size=-1)
         self.assertRaises(ValueError, constructor, inner_size=digest_size+1)
@@ -617,7 +617,7 @@ kundi HashLibTestCase(unittest.TestCase):
             node_offset=512,
             node_depth=1,
             inner_size=7,
-            last_node=True
+            last_node=Kweli
         )
 
     eleza blake2_rfc7693(self, constructor, md_len, in_len):
@@ -626,14 +626,14 @@ kundi HashLibTestCase(unittest.TestCase):
             a = (0xDEAD4BAD * seed) & mask
             b = 1
             out = bytearray(length)
-            for i in range(length):
+            kila i kwenye range(length):
                 t = (a + b) & mask
                 a, b = b, t
                 out[i] = (t >> 24) & 0xFF
             rudisha out
         outer = constructor(digest_size=32)
-        for outlen in md_len:
-            for inlen in in_len:
+        kila outlen kwenye md_len:
+            kila inlen kwenye in_len:
                 indata = selftest_seq(inlen, inlen)
                 key = selftest_seq(outlen, outlen)
                 unkeyed = constructor(indata, digest_size=outlen)
@@ -665,7 +665,7 @@ kundi HashLibTestCase(unittest.TestCase):
 
     @requires_blake2
     eleza test_case_blake2b_all_parameters(self):
-        # This checks that all the parameters work in general, and also that
+        # This checks that all the parameters work kwenye general, na also that
         # parameter byte order doesn't get confused on big endian platforms.
         self.check('blake2b', b"foo",
           "920568b0c5873b2f0ab67bedb6cf1b2b",
@@ -679,11 +679,11 @@ kundi HashLibTestCase(unittest.TestCase):
           node_offset=5,
           node_depth=6,
           inner_size=7,
-          last_node=True)
+          last_node=Kweli)
 
     @requires_blake2
     eleza test_blake2b_vectors(self):
-        for msg, key, md in read_vectors('blake2b'):
+        kila msg, key, md kwenye read_vectors('blake2b'):
             key = bytes.kutokahex(key)
             self.check('blake2b', msg, md, key=key)
 
@@ -708,7 +708,7 @@ kundi HashLibTestCase(unittest.TestCase):
 
     @requires_blake2
     eleza test_case_blake2s_all_parameters(self):
-        # This checks that all the parameters work in general, and also that
+        # This checks that all the parameters work kwenye general, na also that
         # parameter byte order doesn't get confused on big endian platforms.
         self.check('blake2s', b"foo",
           "bf2a8f7fe3c555012a6f8046e646bc75",
@@ -722,11 +722,11 @@ kundi HashLibTestCase(unittest.TestCase):
           node_offset=5,
           node_depth=6,
           inner_size=7,
-          last_node=True)
+          last_node=Kweli)
 
     @requires_blake2
     eleza test_blake2s_vectors(self):
-        for msg, key, md in read_vectors('blake2s'):
+        kila msg, key, md kwenye read_vectors('blake2s'):
             key = bytes.kutokahex(key)
             self.check('blake2s', msg, md, key=key)
 
@@ -737,7 +737,7 @@ kundi HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     eleza test_case_sha3_224_vector(self):
-        for msg, md in read_vectors('sha3_224'):
+        kila msg, md kwenye read_vectors('sha3_224'):
             self.check('sha3_224', msg, md)
 
     @requires_sha3
@@ -747,7 +747,7 @@ kundi HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     eleza test_case_sha3_256_vector(self):
-        for msg, md in read_vectors('sha3_256'):
+        kila msg, md kwenye read_vectors('sha3_256'):
             self.check('sha3_256', msg, md)
 
     @requires_sha3
@@ -758,7 +758,7 @@ kundi HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     eleza test_case_sha3_384_vector(self):
-        for msg, md in read_vectors('sha3_384'):
+        kila msg, md kwenye read_vectors('sha3_384'):
             self.check('sha3_384', msg, md)
 
     @requires_sha3
@@ -769,39 +769,39 @@ kundi HashLibTestCase(unittest.TestCase):
 
     @requires_sha3
     eleza test_case_sha3_512_vector(self):
-        for msg, md in read_vectors('sha3_512'):
+        kila msg, md kwenye read_vectors('sha3_512'):
             self.check('sha3_512', msg, md)
 
     @requires_sha3
     eleza test_case_shake_128_0(self):
         self.check('shake_128', b"",
           "7f9c2ba4e88f827d616045507605853ed73b8093f6efbc88eb1a6eacfa66ef26",
-          True)
-        self.check('shake_128', b"", "7f9c", True)
+          Kweli)
+        self.check('shake_128', b"", "7f9c", Kweli)
 
     @requires_sha3
     eleza test_case_shake128_vector(self):
-        for msg, md in read_vectors('shake_128'):
-            self.check('shake_128', msg, md, True)
+        kila msg, md kwenye read_vectors('shake_128'):
+            self.check('shake_128', msg, md, Kweli)
 
     @requires_sha3
     eleza test_case_shake_256_0(self):
         self.check('shake_256', b"",
           "46b9dd2b0ba88d13233b3feb743eeb243fcd52ea62b81b82b50c27646ed5762f",
-          True)
-        self.check('shake_256', b"", "46b9", True)
+          Kweli)
+        self.check('shake_256', b"", "46b9", Kweli)
 
     @requires_sha3
     eleza test_case_shake256_vector(self):
-        for msg, md in read_vectors('shake_256'):
-            self.check('shake_256', msg, md, True)
+        kila msg, md kwenye read_vectors('shake_256'):
+            self.check('shake_256', msg, md, Kweli)
 
     eleza test_gil(self):
         # Check things work fine with an input larger than the size required
-        # for multithreaded operation (which is hardwired to 2048).
+        # kila multithreaded operation (which ni hardwired to 2048).
         gil_minsize = 2048
 
-        for cons in self.hash_constructors:
+        kila cons kwenye self.hash_constructors:
             m = cons()
             m.update(b'1')
             m.update(b'#' * gil_minsize)
@@ -826,7 +826,7 @@ kundi HashLibTestCase(unittest.TestCase):
         #
         # If the internal locks are working to prevent multiple
         # updates on the same object kutoka running at once, the resulting
-        # hash will be the same as doing it single threaded upfront.
+        # hash will be the same kama doing it single threaded upfront.
         hasher = hashlib.sha1()
         num_threads = 5
         smallest_data = b'swineflu'
@@ -835,12 +835,12 @@ kundi HashLibTestCase(unittest.TestCase):
 
         eleza hash_in_chunks(chunk_size):
             index = 0
-            while index < len(data):
+            wakati index < len(data):
                 hasher.update(data[index:index + chunk_size])
                 index += chunk_size
 
         threads = []
-        for threadnum in range(num_threads):
+        kila threadnum kwenye range(num_threads):
             chunk_size = len(data) // (10 ** threadnum)
             self.assertGreater(chunk_size, 0)
             self.assertEqual(chunk_size % len(smallest_data), 0)
@@ -848,9 +848,9 @@ kundi HashLibTestCase(unittest.TestCase):
                                       args=(chunk_size,))
             threads.append(thread)
 
-        for thread in threads:
+        kila thread kwenye threads:
             thread.start()
-        for thread in threads:
+        kila thread kwenye threads:
             thread.join()
 
         self.assertEqual(expected_hash, hasher.hexdigest())
@@ -859,90 +859,90 @@ kundi HashLibTestCase(unittest.TestCase):
 kundi KDFTests(unittest.TestCase):
 
     pbkdf2_test_vectors = [
-        (b'password', b'salt', 1, None),
-        (b'password', b'salt', 2, None),
-        (b'password', b'salt', 4096, None),
+        (b'pitaword', b'salt', 1, Tupu),
+        (b'pitaword', b'salt', 2, Tupu),
+        (b'pitaword', b'salt', 4096, Tupu),
         # too slow, it takes over a minute on a fast CPU.
-        #(b'password', b'salt', 16777216, None),
-        (b'passwordPASSWORDpassword', b'saltSALTsaltSALTsaltSALTsaltSALTsalt',
+        #(b'pitaword', b'salt', 16777216, Tupu),
+        (b'pitawordPASSWORDpitaword', b'saltSALTsaltSALTsaltSALTsaltSALTsalt',
          4096, -1),
-        (b'pass\0word', b'sa\0lt', 4096, 16),
+        (b'pita\0word', b'sa\0lt', 4096, 16),
     ]
 
     scrypt_test_vectors = [
         (b'', b'', 16, 1, 1, unhexlify('77d6576238657b203b19ca42c18a0497f16b4844e3074ae8dfdffa3fede21442fcd0069ded0948f8326a753a0fc81f17e8d3e0fb2e0d3628cf35e20c38d18906')),
-        (b'password', b'NaCl', 1024, 8, 16, unhexlify('fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640')),
+        (b'pitaword', b'NaCl', 1024, 8, 16, unhexlify('fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640')),
         (b'pleaseletmein', b'SodiumChloride', 16384, 8, 1, unhexlify('7023bdcb3afd7348461c06cd81fd38ebfda8fbba904f8e3ea9b543f6545da1f2d5432955613f0fcf62d49705242a9af9e61e85dc0d651e40dfcf017b45575887')),
    ]
 
     pbkdf2_results = {
         "sha1": [
             # official test vectors kutoka RFC 6070
-            (bytes.kutokahex('0c60c80f961f0e71f3a9b524af6012062fe037a6'), None),
-            (bytes.kutokahex('ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957'), None),
-            (bytes.kutokahex('4b007901b765489abead49d926f721d065a429c1'), None),
-            #(bytes.kutokahex('eefe3d61cd4da4e4e9945b3d6ba2158c2634e984'), None),
+            (bytes.kutokahex('0c60c80f961f0e71f3a9b524af6012062fe037a6'), Tupu),
+            (bytes.kutokahex('ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957'), Tupu),
+            (bytes.kutokahex('4b007901b765489abead49d926f721d065a429c1'), Tupu),
+            #(bytes.kutokahex('eefe3d61cd4da4e4e9945b3d6ba2158c2634e984'), Tupu),
             (bytes.kutokahex('3d2eec4fe41c849b80c8d83662c0e44a8b291a964c'
                            'f2f07038'), 25),
-            (bytes.kutokahex('56fa6aa75548099dcc37d7f03425e0c3'), None),],
+            (bytes.kutokahex('56fa6aa75548099dcc37d7f03425e0c3'), Tupu),],
         "sha256": [
             (bytes.kutokahex('120fb6cffcf8b32c43e7225256c4f837'
-                           'a86548c92ccc35480805987cb70be17b'), None),
+                           'a86548c92ccc35480805987cb70be17b'), Tupu),
             (bytes.kutokahex('ae4d0c95af6b46d32d0adff928f06dd0'
-                           '2a303f8ef3c251dfd6e2d85a95474c43'), None),
+                           '2a303f8ef3c251dfd6e2d85a95474c43'), Tupu),
             (bytes.kutokahex('c5e478d59288c841aa530db6845c4c8d'
-                           '962893a001ce4e11a4963873aa98134a'), None),
+                           '962893a001ce4e11a4963873aa98134a'), Tupu),
             #(bytes.kutokahex('cf81c66fe8cfc04d1f31ecb65dab4089'
-            #               'f7f179e89b3b0bcb17ad10e3ac6eba46'), None),
+            #               'f7f179e89b3b0bcb17ad10e3ac6eba46'), Tupu),
             (bytes.kutokahex('348c89dbcbd32b2f32d814b8116e84cf2b17'
                            '347ebc1800181c4e2a1fb8dd53e1c635518c7dac47e9'), 40),
-            (bytes.kutokahex('89b69d0516f829893c696226650a8687'), None),],
+            (bytes.kutokahex('89b69d0516f829893c696226650a8687'), Tupu),],
         "sha512": [
             (bytes.kutokahex('867f70cf1ade02cff3752599a3a53dc4af34c7a669815ae5'
                            'd513554e1c8cf252c02d470a285a0501bad999bfe943c08f'
-                           '050235d7d68b1da55e63f73b60a57fce'), None),
+                           '050235d7d68b1da55e63f73b60a57fce'), Tupu),
             (bytes.kutokahex('e1d9c16aa681708a45f5c7c4e215ceb66e011a2e9f004071'
                            '3f18aefdb866d53cf76cab2868a39b9f7840edce4fef5a82'
-                           'be67335c77a6068e04112754f27ccf4e'), None),
+                           'be67335c77a6068e04112754f27ccf4e'), Tupu),
             (bytes.kutokahex('d197b1b33db0143e018b12f3d1d1479e6cdebdcc97c5c0f8'
                            '7f6902e072f457b5143f30602641b3d55cd335988cb36b84'
-                           '376060ecd532e039b742a239434af2d5'), None),
+                           '376060ecd532e039b742a239434af2d5'), Tupu),
             (bytes.kutokahex('8c0511f4c6e597c6ac6315d8f0362e225f3c501495ba23b8'
                            '68c005174dc4ee71115b59f9e60cd9532fa33e0f75aefe30'
                            '225c583a186cd82bd4daea9724a3d3b8'), 64),
-            (bytes.kutokahex('9d9e9c4cd21fe4be24d5b8244c759665'), None),],
+            (bytes.kutokahex('9d9e9c4cd21fe4be24d5b8244c759665'), Tupu),],
     }
 
     eleza _test_pbkdf2_hmac(self, pbkdf2):
-        for digest_name, results in self.pbkdf2_results.items():
-            for i, vector in enumerate(self.pbkdf2_test_vectors):
-                password, salt, rounds, dklen = vector
+        kila digest_name, results kwenye self.pbkdf2_results.items():
+            kila i, vector kwenye enumerate(self.pbkdf2_test_vectors):
+                pitaword, salt, rounds, dklen = vector
                 expected, overwrite_dklen = results[i]
                 ikiwa overwrite_dklen:
                     dklen = overwrite_dklen
-                out = pbkdf2(digest_name, password, salt, rounds, dklen)
+                out = pbkdf2(digest_name, pitaword, salt, rounds, dklen)
                 self.assertEqual(out, expected,
-                                 (digest_name, password, salt, rounds, dklen))
-                out = pbkdf2(digest_name, memoryview(password),
+                                 (digest_name, pitaword, salt, rounds, dklen))
+                out = pbkdf2(digest_name, memoryview(pitaword),
                              memoryview(salt), rounds, dklen)
-                out = pbkdf2(digest_name, bytearray(password),
+                out = pbkdf2(digest_name, bytearray(pitaword),
                              bytearray(salt), rounds, dklen)
                 self.assertEqual(out, expected)
-                ikiwa dklen is None:
-                    out = pbkdf2(digest_name, password, salt, rounds)
+                ikiwa dklen ni Tupu:
+                    out = pbkdf2(digest_name, pitaword, salt, rounds)
                     self.assertEqual(out, expected,
-                                     (digest_name, password, salt, rounds))
+                                     (digest_name, pitaword, salt, rounds))
 
-        self.assertRaises(TypeError, pbkdf2, b'sha1', b'pass', b'salt', 1)
-        self.assertRaises(TypeError, pbkdf2, 'sha1', 'pass', 'salt', 1)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', 0)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', -1)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', 1, 0)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', 1, -1)
+        self.assertRaises(TypeError, pbkdf2, b'sha1', b'pita', b'salt', 1)
+        self.assertRaises(TypeError, pbkdf2, 'sha1', 'pita', 'salt', 1)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 0)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', -1)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 1, 0)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 1, -1)
         with self.assertRaisesRegex(ValueError, 'unsupported hash type'):
-            pbkdf2('unknown', b'pass', b'salt', 1)
-        out = pbkdf2(hash_name='sha1', password=b'password', salt=b'salt',
-            iterations=1, dklen=None)
+            pbkdf2('unknown', b'pita', b'salt', 1)
+        out = pbkdf2(hash_name='sha1', pitaword=b'pitaword', salt=b'salt',
+            iterations=1, dklen=Tupu)
         self.assertEqual(out, self.pbkdf2_results['sha1'][0][0])
 
     eleza test_pbkdf2_hmac_py(self):
@@ -957,40 +957,40 @@ kundi KDFTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(c_hashlib, 'scrypt'),
                      '   test requires OpenSSL > 1.1')
     eleza test_scrypt(self):
-        for password, salt, n, r, p, expected in self.scrypt_test_vectors:
-            result = hashlib.scrypt(password, salt=salt, n=n, r=r, p=p)
+        kila pitaword, salt, n, r, p, expected kwenye self.scrypt_test_vectors:
+            result = hashlib.scrypt(pitaword, salt=salt, n=n, r=r, p=p)
             self.assertEqual(result, expected)
 
         # this values should work
-        hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1)
-        # password and salt must be bytes-like
+        hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1)
+        # pitaword na salt must be bytes-like
         with self.assertRaises(TypeError):
-            hashlib.scrypt('password', salt=b'salt', n=2, r=8, p=1)
+            hashlib.scrypt('pitaword', salt=b'salt', n=2, r=8, p=1)
         with self.assertRaises(TypeError):
-            hashlib.scrypt(b'password', salt='salt', n=2, r=8, p=1)
+            hashlib.scrypt(b'pitaword', salt='salt', n=2, r=8, p=1)
         # require keyword args
         with self.assertRaises(TypeError):
-            hashlib.scrypt(b'password')
+            hashlib.scrypt(b'pitaword')
         with self.assertRaises(TypeError):
-            hashlib.scrypt(b'password', b'salt')
+            hashlib.scrypt(b'pitaword', b'salt')
         with self.assertRaises(TypeError):
-            hashlib.scrypt(b'password', 2, 8, 1, salt=b'salt')
-        for n in [-1, 0, 1, None]:
+            hashlib.scrypt(b'pitaword', 2, 8, 1, salt=b'salt')
+        kila n kwenye [-1, 0, 1, Tupu]:
             with self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'password', salt=b'salt', n=n, r=8, p=1)
-        for r in [-1, 0, None]:
+                hashlib.scrypt(b'pitaword', salt=b'salt', n=n, r=8, p=1)
+        kila r kwenye [-1, 0, Tupu]:
             with self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'password', salt=b'salt', n=2, r=r, p=1)
-        for p in [-1, 0, None]:
+                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=r, p=1)
+        kila p kwenye [-1, 0, Tupu]:
             with self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=p)
-        for maxmem in [-1, None]:
+                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=p)
+        kila maxmem kwenye [-1, Tupu]:
             with self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1,
+                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
                                maxmem=maxmem)
-        for dklen in [-1, None]:
+        kila dklen kwenye [-1, Tupu]:
             with self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1,
+                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
                                dklen=dklen)
 
     eleza test_normalized_name(self):

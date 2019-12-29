@@ -1,6 +1,6 @@
 #
 # test_codecencodings_kr.py
-#   Codec encoding tests for ROK encodings.
+#   Codec encoding tests kila ROK encodings.
 #
 
 kutoka test agiza multibytecodec_support
@@ -11,8 +11,8 @@ kundi Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
     tstring = multibytecodec_support.load_teststring('cp949')
     codectests = (
         # invalid bytes
-        (b"abc\x80\x80\xc1\xc4", "strict",  None),
-        (b"abc\xc8", "strict",  None),
+        (b"abc\x80\x80\xc1\xc4", "strict",  Tupu),
+        (b"abc\xc8", "strict",  Tupu),
         (b"abc\x80\x80\xc1\xc4", "replace", "abc\ufffd\ufffd\uc894"),
         (b"abc\x80\x80\xc1\xc4\xc8", "replace", "abc\ufffd\ufffd\uc894\ufffd"),
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\uc894"),
@@ -23,25 +23,25 @@ kundi Test_EUCKR(multibytecodec_support.TestBase, unittest.TestCase):
     tstring = multibytecodec_support.load_teststring('euc_kr')
     codectests = (
         # invalid bytes
-        (b"abc\x80\x80\xc1\xc4", "strict",  None),
-        (b"abc\xc8", "strict",  None),
+        (b"abc\x80\x80\xc1\xc4", "strict",  Tupu),
+        (b"abc\xc8", "strict",  Tupu),
         (b"abc\x80\x80\xc1\xc4", "replace", 'abc\ufffd\ufffd\uc894'),
         (b"abc\x80\x80\xc1\xc4\xc8", "replace", "abc\ufffd\ufffd\uc894\ufffd"),
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\uc894"),
 
         # composed make-up sequence errors
-        (b"\xa4\xd4", "strict", None),
-        (b"\xa4\xd4\xa4", "strict", None),
-        (b"\xa4\xd4\xa4\xb6", "strict", None),
-        (b"\xa4\xd4\xa4\xb6\xa4", "strict", None),
-        (b"\xa4\xd4\xa4\xb6\xa4\xd0", "strict", None),
-        (b"\xa4\xd4\xa4\xb6\xa4\xd0\xa4", "strict", None),
+        (b"\xa4\xd4", "strict", Tupu),
+        (b"\xa4\xd4\xa4", "strict", Tupu),
+        (b"\xa4\xd4\xa4\xb6", "strict", Tupu),
+        (b"\xa4\xd4\xa4\xb6\xa4", "strict", Tupu),
+        (b"\xa4\xd4\xa4\xb6\xa4\xd0", "strict", Tupu),
+        (b"\xa4\xd4\xa4\xb6\xa4\xd0\xa4", "strict", Tupu),
         (b"\xa4\xd4\xa4\xb6\xa4\xd0\xa4\xd4", "strict", "\uc4d4"),
         (b"\xa4\xd4\xa4\xb6\xa4\xd0\xa4\xd4x", "strict", "\uc4d4x"),
         (b"a\xa4\xd4\xa4\xb6\xa4", "replace", 'a\ufffd'),
-        (b"\xa4\xd4\xa3\xb6\xa4\xd0\xa4\xd4", "strict", None),
-        (b"\xa4\xd4\xa4\xb6\xa3\xd0\xa4\xd4", "strict", None),
-        (b"\xa4\xd4\xa4\xb6\xa4\xd0\xa3\xd4", "strict", None),
+        (b"\xa4\xd4\xa3\xb6\xa4\xd0\xa4\xd4", "strict", Tupu),
+        (b"\xa4\xd4\xa4\xb6\xa3\xd0\xa4\xd4", "strict", Tupu),
+        (b"\xa4\xd4\xa4\xb6\xa4\xd0\xa3\xd4", "strict", Tupu),
         (b"\xa4\xd4\xa4\xff\xa4\xd0\xa4\xd4", "replace", '\ufffd\u6e21\ufffd\u3160\ufffd'),
         (b"\xa4\xd4\xa4\xb6\xa4\xff\xa4\xd4", "replace", '\ufffd\u6e21\ub544\ufffd\ufffd'),
         (b"\xa4\xd4\xa4\xb6\xa4\xd0\xa4\xff", "replace", '\ufffd\u6e21\ub544\u572d\ufffd'),
@@ -54,8 +54,8 @@ kundi Test_JOHAB(multibytecodec_support.TestBase, unittest.TestCase):
     tstring = multibytecodec_support.load_teststring('johab')
     codectests = (
         # invalid bytes
-        (b"abc\x80\x80\xc1\xc4", "strict",  None),
-        (b"abc\xc8", "strict",  None),
+        (b"abc\x80\x80\xc1\xc4", "strict",  Tupu),
+        (b"abc\xc8", "strict",  Tupu),
         (b"abc\x80\x80\xc1\xc4", "replace", "abc\ufffd\ufffd\ucd27"),
         (b"abc\x80\x80\xc1\xc4\xc8", "replace", "abc\ufffd\ufffd\ucd27\ufffd"),
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\ucd27"),

@@ -1,28 +1,28 @@
 #-*- coding: iso-8859-1 -*-
-# pysqlite2/test/factory.py: tests for the various factories in pysqlite
+# pysqlite2/test/factory.py: tests kila the various factories kwenye pysqlite
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ni part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# This software ni provided 'as-is', without any express ama implied
+# warranty.  In no event will the authors be held liable kila any damages
 # arising kutoka the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
+# Permission ni granted to anyone to use this software kila any purpose,
+# including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered kutoka any source distribution.
+#    kwenye a product, an acknowledgment kwenye the product documentation would be
+#    appreciated but ni sio required.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
+# 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 kutoka collections.abc agiza Sequence
 
 kundi MyConnection(sqlite.Connection):
@@ -31,7 +31,7 @@ kundi MyConnection(sqlite.Connection):
 
 eleza dict_factory(cursor, row):
     d = {}
-    for idx, col in enumerate(cursor.description):
+    kila idx, col kwenye enumerate(cursor.description):
         d[col[0]] = row[idx]
     rudisha d
 
@@ -66,12 +66,12 @@ kundi CursorFactoryTests(unittest.TestCase):
         self.assertIsInstance(cur, MyCursor)
 
     eleza CheckInvalidFactory(self):
-        # not a callable at all
-        self.assertRaises(TypeError, self.con.cursor, None)
-        # invalid callable with not exact one argument
-        self.assertRaises(TypeError, self.con.cursor, lambda: None)
-        # invalid callable returning non-cursor
-        self.assertRaises(TypeError, self.con.cursor, lambda con: None)
+        # sio a callable at all
+        self.assertRaises(TypeError, self.con.cursor, Tupu)
+        # invalid callable with sio exact one argument
+        self.assertRaises(TypeError, self.con.cursor, lambda: Tupu)
+        # invalid callable rudishaing non-cursor
+        self.assertRaises(TypeError, self.con.cursor, lambda con: Tupu)
 
 kundi RowFactoryTestsBackwardsCompat(unittest.TestCase):
     eleza setUp(self):
@@ -79,7 +79,7 @@ kundi RowFactoryTestsBackwardsCompat(unittest.TestCase):
 
     eleza CheckIsProducedByFactory(self):
         cur = self.con.cursor(factory=MyCursor)
-        cur.execute("select 4+5 as foo")
+        cur.execute("select 4+5 kama foo")
         row = cur.fetchone()
         self.assertIsInstance(row, dict)
         cur.close()
@@ -98,19 +98,19 @@ kundi RowFactoryTests(unittest.TestCase):
 
     eleza CheckSqliteRowIndex(self):
         self.con.row_factory = sqlite.Row
-        row = self.con.execute("select 1 as a_1, 2 as b").fetchone()
+        row = self.con.execute("select 1 kama a_1, 2 kama b").fetchone()
         self.assertIsInstance(row, sqlite.Row)
 
-        self.assertEqual(row["a_1"], 1, "by name: wrong result for column 'a_1'")
-        self.assertEqual(row["b"], 2, "by name: wrong result for column 'b'")
+        self.assertEqual(row["a_1"], 1, "by name: wrong result kila column 'a_1'")
+        self.assertEqual(row["b"], 2, "by name: wrong result kila column 'b'")
 
-        self.assertEqual(row["A_1"], 1, "by name: wrong result for column 'A_1'")
-        self.assertEqual(row["B"], 2, "by name: wrong result for column 'B'")
+        self.assertEqual(row["A_1"], 1, "by name: wrong result kila column 'A_1'")
+        self.assertEqual(row["B"], 2, "by name: wrong result kila column 'B'")
 
-        self.assertEqual(row[0], 1, "by index: wrong result for column 0")
-        self.assertEqual(row[1], 2, "by index: wrong result for column 1")
-        self.assertEqual(row[-1], 2, "by index: wrong result for column -1")
-        self.assertEqual(row[-2], 1, "by index: wrong result for column -2")
+        self.assertEqual(row[0], 1, "by index: wrong result kila column 0")
+        self.assertEqual(row[1], 2, "by index: wrong result kila column 1")
+        self.assertEqual(row[-1], 2, "by index: wrong result kila column -1")
+        self.assertEqual(row[-2], 1, "by index: wrong result kila column -2")
 
         with self.assertRaises(IndexError):
             row['c']
@@ -127,7 +127,7 @@ kundi RowFactoryTests(unittest.TestCase):
 
     eleza CheckSqliteRowIndexUnicode(self):
         self.con.row_factory = sqlite.Row
-        row = self.con.execute("select 1 as \xff").fetchone()
+        row = self.con.execute("select 1 kama \xff").fetchone()
         self.assertEqual(row["\xff"], 1)
         with self.assertRaises(IndexError):
             row['\u0178']
@@ -153,49 +153,49 @@ kundi RowFactoryTests(unittest.TestCase):
         self.assertEqual(row[3:0:-2], (4, 2))
 
     eleza CheckSqliteRowIter(self):
-        """Checks ikiwa the row object is iterable"""
+        """Checks ikiwa the row object ni iterable"""
         self.con.row_factory = sqlite.Row
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
-        for col in row:
-            pass
+        row = self.con.execute("select 1 kama a, 2 kama b").fetchone()
+        kila col kwenye row:
+            pita
 
     eleza CheckSqliteRowAsTuple(self):
         """Checks ikiwa the row object can be converted to a tuple"""
         self.con.row_factory = sqlite.Row
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        row = self.con.execute("select 1 kama a, 2 kama b").fetchone()
         t = tuple(row)
         self.assertEqual(t, (row['a'], row['b']))
 
     eleza CheckSqliteRowAsDict(self):
         """Checks ikiwa the row object can be correctly converted to a dictionary"""
         self.con.row_factory = sqlite.Row
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        row = self.con.execute("select 1 kama a, 2 kama b").fetchone()
         d = dict(row)
         self.assertEqual(d["a"], row["a"])
         self.assertEqual(d["b"], row["b"])
 
     eleza CheckSqliteRowHashCmp(self):
-        """Checks ikiwa the row object compares and hashes correctly"""
+        """Checks ikiwa the row object compares na hashes correctly"""
         self.con.row_factory = sqlite.Row
-        row_1 = self.con.execute("select 1 as a, 2 as b").fetchone()
-        row_2 = self.con.execute("select 1 as a, 2 as b").fetchone()
-        row_3 = self.con.execute("select 1 as a, 3 as b").fetchone()
-        row_4 = self.con.execute("select 1 as b, 2 as a").fetchone()
-        row_5 = self.con.execute("select 2 as b, 1 as a").fetchone()
+        row_1 = self.con.execute("select 1 kama a, 2 kama b").fetchone()
+        row_2 = self.con.execute("select 1 kama a, 2 kama b").fetchone()
+        row_3 = self.con.execute("select 1 kama a, 3 kama b").fetchone()
+        row_4 = self.con.execute("select 1 kama b, 2 kama a").fetchone()
+        row_5 = self.con.execute("select 2 kama b, 1 kama a").fetchone()
 
-        self.assertTrue(row_1 == row_1)
-        self.assertTrue(row_1 == row_2)
-        self.assertFalse(row_1 == row_3)
-        self.assertFalse(row_1 == row_4)
-        self.assertFalse(row_1 == row_5)
-        self.assertFalse(row_1 == object())
+        self.assertKweli(row_1 == row_1)
+        self.assertKweli(row_1 == row_2)
+        self.assertUongo(row_1 == row_3)
+        self.assertUongo(row_1 == row_4)
+        self.assertUongo(row_1 == row_5)
+        self.assertUongo(row_1 == object())
 
-        self.assertFalse(row_1 != row_1)
-        self.assertFalse(row_1 != row_2)
-        self.assertTrue(row_1 != row_3)
-        self.assertTrue(row_1 != row_4)
-        self.assertTrue(row_1 != row_5)
-        self.assertTrue(row_1 != object())
+        self.assertUongo(row_1 != row_1)
+        self.assertUongo(row_1 != row_2)
+        self.assertKweli(row_1 != row_3)
+        self.assertKweli(row_1 != row_4)
+        self.assertKweli(row_1 != row_5)
+        self.assertKweli(row_1 != object())
 
         with self.assertRaises(TypeError):
             row_1 > row_2
@@ -211,7 +211,7 @@ kundi RowFactoryTests(unittest.TestCase):
     eleza CheckSqliteRowAsSequence(self):
         """ Checks ikiwa the row object can act like a sequence """
         self.con.row_factory = sqlite.Row
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        row = self.con.execute("select 1 kama a, 2 kama b").fetchone()
 
         as_tuple = tuple(row)
         self.assertEqual(list(reversed(row)), list(reversed(as_tuple)))
@@ -220,7 +220,7 @@ kundi RowFactoryTests(unittest.TestCase):
     eleza CheckFakeCursorClass(self):
         # Issue #24257: Incorrect use of PyObject_IsInstance() caused
         # segmentation fault.
-        # Issue #27861: Also applies for cursor factory.
+        # Issue #27861: Also applies kila cursor factory.
         kundi FakeCursor(str):
             __class__ = sqlite.Cursor
         self.con.row_factory = sqlite.Row
@@ -244,18 +244,18 @@ kundi TextFactoryTests(unittest.TestCase):
         austria = "Österreich"
         row = self.con.execute("select ?", (austria,)).fetchone()
         self.assertEqual(type(row[0]), bytes, "type of row[0] must be bytes")
-        self.assertEqual(row[0], austria.encode("utf-8"), "column must equal original data in UTF-8")
+        self.assertEqual(row[0], austria.encode("utf-8"), "column must equal original data kwenye UTF-8")
 
     eleza CheckCustom(self):
         self.con.text_factory = lambda x: str(x, "utf-8", "ignore")
         austria = "Österreich"
         row = self.con.execute("select ?", (austria,)).fetchone()
         self.assertEqual(type(row[0]), str, "type of row[0] must be unicode")
-        self.assertTrue(row[0].endswith("reich"), "column must contain original data")
+        self.assertKweli(row[0].endswith("reich"), "column must contain original data")
 
     eleza CheckOptimizedUnicode(self):
-        # In py3k, str objects are always returned when text_factory
-        # is OptimizedUnicode
+        # In py3k, str objects are always rudishaed when text_factory
+        # ni OptimizedUnicode
         self.con.text_factory = sqlite.OptimizedUnicode
         austria = "Österreich"
         germany = "Deutchland"

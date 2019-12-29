@@ -1,6 +1,6 @@
 """\
-A library of useful helper classes to the SAX classes, for the
-convenience of application and driver writers.
+A library of useful helper classes to the SAX classes, kila the
+convenience of application na driver writers.
 """
 
 agiza os, urllib.parse, urllib.request
@@ -11,15 +11,15 @@ kutoka . agiza xmlreader
 
 eleza __dict_replace(s, d):
     """Replace substrings of a string using a dictionary."""
-    for key, value in d.items():
+    kila key, value kwenye d.items():
         s = s.replace(key, value)
     rudisha s
 
 eleza escape(data, entities={}):
-    """Escape &, <, and > in a string of data.
+    """Escape &, <, na > kwenye a string of data.
 
-    You can escape other strings of data by passing a dictionary as
-    the optional entities parameter.  The keys and values must all be
+    You can escape other strings of data by pitaing a dictionary as
+    the optional entities parameter.  The keys na values must all be
     strings; each key will be replaced with its corresponding value.
     """
 
@@ -32,10 +32,10 @@ eleza escape(data, entities={}):
     rudisha data
 
 eleza unescape(data, entities={}):
-    """Unescape &amp;, &lt;, and &gt; in a string of data.
+    """Unescape &amp;, &lt;, na &gt; kwenye a string of data.
 
-    You can unescape other strings of data by passing a dictionary as
-    the optional entities parameter.  The keys and values must all be
+    You can unescape other strings of data by pitaing a dictionary as
+    the optional entities parameter.  The keys na values must all be
     strings; each key will be replaced with its corresponding value.
     """
     data = data.replace("&lt;", "<")
@@ -46,39 +46,39 @@ eleza unescape(data, entities={}):
     rudisha data.replace("&amp;", "&")
 
 eleza quoteattr(data, entities={}):
-    """Escape and quote an attribute value.
+    """Escape na quote an attribute value.
 
-    Escape &, <, and > in a string of data, then quote it for use as
-    an attribute value.  The \" character will be escaped as well, if
+    Escape &, <, na > kwenye a string of data, then quote it kila use as
+    an attribute value.  The \" character will be escaped kama well, if
     necessary.
 
-    You can escape other strings of data by passing a dictionary as
-    the optional entities parameter.  The keys and values must all be
+    You can escape other strings of data by pitaing a dictionary as
+    the optional entities parameter.  The keys na values must all be
     strings; each key will be replaced with its corresponding value.
     """
     entities = {**entities, '\n': '&#10;', '\r': '&#13;', '\t':'&#9;'}
     data = escape(data, entities)
-    ikiwa '"' in data:
-        ikiwa "'" in data:
+    ikiwa '"' kwenye data:
+        ikiwa "'" kwenye data:
             data = '"%s"' % data.replace('"', "&quot;")
-        else:
+        isipokua:
             data = "'%s'" % data
-    else:
+    isipokua:
         data = '"%s"' % data
     rudisha data
 
 
 eleza _gettextwriter(out, encoding):
-    ikiwa out is None:
+    ikiwa out ni Tupu:
         agiza sys
         rudisha sys.stdout
 
     ikiwa isinstance(out, io.TextIOBase):
-        # use a text writer as is
+        # use a text writer kama is
         rudisha out
 
     ikiwa isinstance(out, (codecs.StreamWriter, codecs.StreamReaderWriter)):
-        # use a codecs stream writer as is
+        # use a codecs stream writer kama is
         rudisha out
 
     # wrap a binary writer with TextIOWrapper
@@ -90,28 +90,28 @@ eleza _gettextwriter(out, encoding):
             eleza __getattr__(self, name):
                 rudisha getattr(out, name)
         buffer = _wrapper()
-        buffer.close = lambda: None
-    else:
-        # This is to handle passed objects that aren't in the
+        buffer.close = lambda: Tupu
+    isipokua:
+        # This ni to handle pitaed objects that aren't kwenye the
         # IOBase hierarchy, but just have a write method
         buffer = io.BufferedIOBase()
-        buffer.writable = lambda: True
+        buffer.writable = lambda: Kweli
         buffer.write = out.write
-        try:
+        jaribu:
             # TextIOWrapper uses this methods to determine
-            # ikiwa BOM (for UTF-16, etc) should be added
+            # ikiwa BOM (kila UTF-16, etc) should be added
             buffer.seekable = out.seekable
             buffer.tell = out.tell
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     rudisha io.TextIOWrapper(buffer, encoding=encoding,
                             errors='xmlcharrefreplace',
                             newline='\n',
-                            write_through=True)
+                            write_through=Kweli)
 
 kundi XMLGenerator(handler.ContentHandler):
 
-    eleza __init__(self, out=None, encoding="iso-8859-1", short_empty_elements=False):
+    eleza __init__(self, out=Tupu, encoding="iso-8859-1", short_empty_elements=Uongo):
         handler.ContentHandler.__init__(self)
         out = _gettextwriter(out, encoding)
         self._write = out.write
@@ -121,29 +121,29 @@ kundi XMLGenerator(handler.ContentHandler):
         self._undeclared_ns_maps = []
         self._encoding = encoding
         self._short_empty_elements = short_empty_elements
-        self._pending_start_element = False
+        self._pending_start_element = Uongo
 
     eleza _qname(self, name):
         """Builds a qualified name kutoka a (ns_url, localname) pair"""
         ikiwa name[0]:
             # Per http://www.w3.org/XML/1998/namespace, The 'xml' prefix is
             # bound by definition to http://www.w3.org/XML/1998/namespace.  It
-            # does not need to be declared and will not usually be found in
+            # does sio need to be declared na will sio usually be found in
             # self._current_context.
             ikiwa 'http://www.w3.org/XML/1998/namespace' == name[0]:
                 rudisha 'xml:' + name[1]
-            # The name is in a non-empty namespace
+            # The name ni kwenye a non-empty namespace
             prefix = self._current_context[name[0]]
             ikiwa prefix:
-                # If it is not the default namespace, prepend the prefix
+                # If it ni sio the default namespace, prepend the prefix
                 rudisha prefix + ":" + name[1]
         # Return the unqualified name
         rudisha name[1]
 
-    eleza _finish_pending_start_element(self,endElement=False):
+    eleza _finish_pending_start_element(self,endElement=Uongo):
         ikiwa self._pending_start_element:
             self._write('>')
-            self._pending_start_element = False
+            self._pending_start_element = Uongo
 
     # ContentHandler methods
 
@@ -161,61 +161,61 @@ kundi XMLGenerator(handler.ContentHandler):
 
     eleza endPrefixMapping(self, prefix):
         self._current_context = self._ns_contexts[-1]
-        del self._ns_contexts[-1]
+        toa self._ns_contexts[-1]
 
     eleza startElement(self, name, attrs):
         self._finish_pending_start_element()
         self._write('<' + name)
-        for (name, value) in attrs.items():
+        kila (name, value) kwenye attrs.items():
             self._write(' %s=%s' % (name, quoteattr(value)))
         ikiwa self._short_empty_elements:
-            self._pending_start_element = True
-        else:
+            self._pending_start_element = Kweli
+        isipokua:
             self._write(">")
 
     eleza endElement(self, name):
         ikiwa self._pending_start_element:
             self._write('/>')
-            self._pending_start_element = False
-        else:
+            self._pending_start_element = Uongo
+        isipokua:
             self._write('</%s>' % name)
 
     eleza startElementNS(self, name, qname, attrs):
         self._finish_pending_start_element()
         self._write('<' + self._qname(name))
 
-        for prefix, uri in self._undeclared_ns_maps:
+        kila prefix, uri kwenye self._undeclared_ns_maps:
             ikiwa prefix:
                 self._write(' xmlns:%s="%s"' % (prefix, uri))
-            else:
+            isipokua:
                 self._write(' xmlns="%s"' % uri)
         self._undeclared_ns_maps = []
 
-        for (name, value) in attrs.items():
+        kila (name, value) kwenye attrs.items():
             self._write(' %s=%s' % (self._qname(name), quoteattr(value)))
         ikiwa self._short_empty_elements:
-            self._pending_start_element = True
-        else:
+            self._pending_start_element = Kweli
+        isipokua:
             self._write(">")
 
     eleza endElementNS(self, name, qname):
         ikiwa self._pending_start_element:
             self._write('/>')
-            self._pending_start_element = False
-        else:
+            self._pending_start_element = Uongo
+        isipokua:
             self._write('</%s>' % self._qname(name))
 
     eleza characters(self, content):
         ikiwa content:
             self._finish_pending_start_element()
-            ikiwa not isinstance(content, str):
+            ikiwa sio isinstance(content, str):
                 content = str(content, self._encoding)
             self._write(escape(content))
 
     eleza ignorableWhitespace(self, content):
         ikiwa content:
             self._finish_pending_start_element()
-            ikiwa not isinstance(content, str):
+            ikiwa sio isinstance(content, str):
                 content = str(content, self._encoding)
             self._write(content)
 
@@ -225,14 +225,14 @@ kundi XMLGenerator(handler.ContentHandler):
 
 
 kundi XMLFilterBase(xmlreader.XMLReader):
-    """This kundi is designed to sit between an XMLReader and the
+    """This kundi ni designed to sit between an XMLReader na the
     client application's event handlers.  By default, it does nothing
-    but pass requests up to the reader and events on to the handlers
+    but pita requests up to the reader na events on to the handlers
     unmodified, but subclasses can override specific methods to modify
-    the event stream or the configuration requests as they pass
+    the event stream ama the configuration requests kama they pita
     through."""
 
-    eleza __init__(self, parent = None):
+    eleza __init__(self, parent = Tupu):
         xmlreader.XMLReader.__init__(self)
         self._parent = parent
 
@@ -336,8 +336,8 @@ kundi XMLFilterBase(xmlreader.XMLReader):
 # --- Utility functions
 
 eleza prepare_input_source(source, base=""):
-    """This function takes an InputSource and an optional base URL and
-    returns a fully resolved InputSource object ready for reading."""
+    """This function takes an InputSource na an optional base URL and
+    rudishas a fully resolved InputSource object ready kila reading."""
 
     ikiwa isinstance(source, os.PathLike):
         source = os.fspath(source)
@@ -348,19 +348,19 @@ eleza prepare_input_source(source, base=""):
         source = xmlreader.InputSource()
         ikiwa isinstance(f.read(0), str):
             source.setCharacterStream(f)
-        else:
+        isipokua:
             source.setByteStream(f)
-        ikiwa hasattr(f, "name") and isinstance(f.name, str):
+        ikiwa hasattr(f, "name") na isinstance(f.name, str):
             source.setSystemId(f.name)
 
-    ikiwa source.getCharacterStream() is None and source.getByteStream() is None:
+    ikiwa source.getCharacterStream() ni Tupu na source.getByteStream() ni Tupu:
         sysid = source.getSystemId()
         basehead = os.path.dirname(os.path.normpath(base))
         sysidfilename = os.path.join(basehead, sysid)
         ikiwa os.path.isfile(sysidfilename):
             source.setSystemId(sysidfilename)
             f = open(sysidfilename, "rb")
-        else:
+        isipokua:
             source.setSystemId(urllib.parse.urljoin(base, sysid))
             f = urllib.request.urlopen(source.getSystemId())
 

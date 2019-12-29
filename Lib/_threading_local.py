@@ -79,7 +79,7 @@ an initial color:
 
   >>> mydata.color
   'red'
-  >>> del mydata.color
+  >>> toa mydata.color
 
 And a method that operates on the data:
 
@@ -104,7 +104,7 @@ without affecting this thread's data:
   ...
   AttributeError: 'MyLocal' object has no attribute 'color'
 
-Note that subclasses can define slots, but they are not thread
+Note that subclasses can define slots, but they are sio thread
 local. They are shared across threads:
 
   >>> kundi MyLocal(local):
@@ -125,7 +125,7 @@ affects what we see:
   >>> mydata.number
   11
 
->>> del mydata
+>>> toa mydata
 """
 
 kutoka weakref agiza ref
@@ -170,15 +170,15 @@ kundi _localimpl:
         def local_deleted(_, key=key):
             # When the localimpl is deleted, remove the thread attribute.
             thread = wrthread()
-            if thread is not None:
-                del thread.__dict__[key]
+            if thread ni sio None:
+                toa thread.__dict__[key]
         def thread_deleted(_, idt=idt):
             # When the thread is deleted, remove the local dict.
             # Note that this is suboptimal if the thread object gets
             # caught in a reference loop. We would like to be called
             # as soon as the OS-level thread ends instead.
             local = wrlocal()
-            if local is not None:
+            if local ni sio None:
                 dct = local.dicts.pop(idt)
         wrlocal = ref(self, local_deleted)
         wrthread = ref(thread, thread_deleted)
@@ -190,9 +190,9 @@ kundi _localimpl:
 @contextmanager
 def _patch(self):
     impl = object.__getattribute__(self, '_local__impl')
-    try:
+    jaribu:
         dct = impl.get_dict()
-    except KeyError:
+    tatizo KeyError:
         dct = impl.create_dict()
         args, kw = impl.localargs
         self.__init__(*args, **kw)
@@ -206,7 +206,7 @@ kundi local:
 
     def __new__(cls, /, *args, **kw):
         if (args or kw) and (cls.__init__ is object.__init__):
-            raise TypeError("Initialization arguments are not supported")
+            raise TypeError("Initialization arguments are sio supported")
         self = object.__new__(cls)
         impl = _localimpl()
         impl.localargs = (args, kw)

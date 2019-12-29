@@ -1,12 +1,12 @@
 #
-# Test script for the curses module
+# Test script kila the curses module
 #
 # This script doesn't actually display anything very coherent. but it
-# does call (nearly) every method and function.
+# does call (nearly) every method na function.
 #
-# Functions not tested: {def,reset}_{shell,prog}_mode, getch(), getstr(),
+# Functions sio tested: {def,reset}_{shell,prog}_mode, getch(), getstr(),
 # init_color()
-# Only called, not tested: getmouse(), ungetmouse()
+# Only called, sio tested: getmouse(), ungetmouse()
 #
 
 agiza os
@@ -19,7 +19,7 @@ kutoka test.support agiza requires, import_module, verbose, SaveSignals
 
 # Optionally test curses module.  This currently requires that the
 # 'curses' resource be given on the regrtest command line using the -u
-# option.  If not available, nothing after this line will be executed.
+# option.  If sio available, nothing after this line will be executed.
 agiza inspect
 requires('curses')
 
@@ -27,10 +27,10 @@ requires('curses')
 curses = import_module('curses')
 import_module('curses.ascii')
 import_module('curses.textpad')
-try:
+jaribu:
     agiza curses.panel
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 eleza requires_curses_func(name):
     rudisha unittest.skipUnless(hasattr(curses, name),
@@ -38,8 +38,8 @@ eleza requires_curses_func(name):
 
 term = os.environ.get('TERM')
 
-# If newterm was supported we could use it instead of initscr and not exit
-@unittest.skipIf(not term or term == 'unknown',
+# If newterm was supported we could use it instead of initscr na sio exit
+@unittest.skipIf(not term ama term == 'unknown',
                  "$TERM=%r, calling initscr() may cause exit" % term)
 @unittest.skipIf(sys.platform == "cygwin",
                  "cygwin's curses mostly just hangs")
@@ -47,23 +47,23 @@ kundi TestCurses(unittest.TestCase):
 
     @classmethod
     eleza setUpClass(cls):
-        ikiwa not sys.__stdout__.isatty():
+        ikiwa sio sys.__stdout__.isatty():
             # Temporary skip tests on non-tty
-            raise unittest.SkipTest('sys.__stdout__ is not a tty')
+            ashiria unittest.SkipTest('sys.__stdout__ ni sio a tty')
             cls.tmp = tempfile.TemporaryFile()
             fd = cls.tmp.fileno()
-        else:
-            cls.tmp = None
+        isipokua:
+            cls.tmp = Tupu
             fd = sys.__stdout__.fileno()
         # testing setupterm() inside initscr/endwin
-        # causes terminal breakage
+        # causes terminal komaage
         curses.setupterm(fd=fd)
 
     @classmethod
     eleza tearDownClass(cls):
         ikiwa cls.tmp:
             cls.tmp.close()
-            del cls.tmp
+            toa cls.tmp
 
     eleza setUp(self):
         self.save_signals = SaveSignals()
@@ -86,13 +86,13 @@ kundi TestCurses(unittest.TestCase):
         win = curses.newwin(5,5, 5,5)
         win2 = curses.newwin(15,15, 5,5)
 
-        for meth in [stdscr.addch, stdscr.addstr]:
-            for args in [('a',), ('a', curses.A_BOLD),
+        kila meth kwenye [stdscr.addch, stdscr.addstr]:
+            kila args kwenye [('a',), ('a', curses.A_BOLD),
                          (4,4, 'a'), (5,5, 'a', curses.A_BOLD)]:
                 with self.subTest(meth=meth.__qualname__, args=args):
                     meth(*args)
 
-        for meth in [stdscr.clear, stdscr.clrtobot,
+        kila meth kwenye [stdscr.clear, stdscr.clrtobot,
                      stdscr.clrtoeol, stdscr.cursyncup, stdscr.delch,
                      stdscr.deleteln, stdscr.erase, stdscr.getbegyx,
                      stdscr.getbkgd, stdscr.getkey, stdscr.getmaxyx,
@@ -122,7 +122,7 @@ kundi TestCurses(unittest.TestCase):
         win.border('|', '!', '-', '_',
                    '+', '\\', '#', '/')
         with self.assertRaises(TypeError,
-                               msg="Expected win.border() to raise TypeError"):
+                               msg="Expected win.border() to ashiria TypeError"):
             win.border(65, 66, 67, 68,
                        69, [], 71, 72)
 
@@ -184,7 +184,7 @@ kundi TestCurses(unittest.TestCase):
         stdscr.setscrreg(10,15)
         win3 = stdscr.subwin(10,10)
         win3 = stdscr.subwin(10,10, 5,5)
-        ikiwa hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
+        ikiwa hasattr(stdscr, 'syncok') na sio sys.platform.startswith("sunos"):
             stdscr.syncok(1)
         stdscr.timeout(5)
         stdscr.touchline(5,5)
@@ -212,9 +212,9 @@ kundi TestCurses(unittest.TestCase):
         self.assertRaises(ValueError, stdscr.instr, 2, 3, -2)
 
     eleza test_embedded_null_chars(self):
-        # reject embedded null bytes and characters
+        # reject embedded null bytes na characters
         stdscr = self.stdscr
-        for arg in ['a', b'a']:
+        kila arg kwenye ['a', b'a']:
             with self.subTest(arg=arg):
                 self.assertRaises(ValueError, stdscr.addstr, 'a\0')
                 self.assertRaises(ValueError, stdscr.addnstr, 'a\0', 1)
@@ -223,12 +223,12 @@ kundi TestCurses(unittest.TestCase):
 
     eleza test_module_funcs(self):
         "Test module-level functions"
-        for func in [curses.baudrate, curses.beep, curses.can_change_color,
-                     curses.cbreak, curses.def_prog_mode, curses.doupdate,
+        kila func kwenye [curses.baudrate, curses.beep, curses.can_change_color,
+                     curses.ckoma, curses.def_prog_mode, curses.doupdate,
                      curses.flash, curses.flushinp,
                      curses.has_colors, curses.has_ic, curses.has_il,
                      curses.isendwin, curses.killchar, curses.longname,
-                     curses.nocbreak, curses.noecho, curses.nonl,
+                     curses.nockoma, curses.noecho, curses.nonl,
                      curses.noqiflush, curses.noraw,
                      curses.reset_prog_mode, curses.termattrs,
                      curses.termname, curses.erasechar]:
@@ -245,7 +245,7 @@ kundi TestCurses(unittest.TestCase):
         curses.delay_output(1)
         curses.echo() ; curses.echo(1)
 
-        with tempfile.TemporaryFile() as f:
+        with tempfile.TemporaryFile() kama f:
             self.stdscr.putwin(f)
             f.seek(0)
             curses.getwin(f)
@@ -276,7 +276,7 @@ kundi TestCurses(unittest.TestCase):
 
     # Functions only available on a few platforms
     eleza test_colors_funcs(self):
-        ikiwa not curses.has_colors():
+        ikiwa sio curses.has_colors():
             self.skipTest('requires colors support')
         curses.start_color()
         curses.init_pair(2, 1,1)
@@ -300,7 +300,7 @@ kundi TestCurses(unittest.TestCase):
     eleza test_getmouse(self):
         (availmask, oldmask) = curses.mousemask(curses.BUTTON1_PRESSED)
         ikiwa availmask == 0:
-            self.skipTest('mouse stuff not available')
+            self.skipTest('mouse stuff sio available')
         curses.mouseinterval(10)
         # just verify these don't cause errors
         curses.ungetmouse(0, 0, 0, 0, curses.BUTTON1_PRESSED)
@@ -312,7 +312,7 @@ kundi TestCurses(unittest.TestCase):
         p = curses.panel.new_panel(w)
         # try to access userptr() before calling set_userptr() -- segfaults
         with self.assertRaises(curses.panel.error,
-                               msg='userptr should fail since not set'):
+                               msg='userptr should fail since sio set'):
             p.userptr()
 
     @requires_curses_func('panel')
@@ -321,10 +321,10 @@ kundi TestCurses(unittest.TestCase):
         p = curses.panel.new_panel(w)
         obj = object()
         nrefs = sys.getrefcount(obj)
-        for i in range(100):
+        kila i kwenye range(100):
             p.set_userptr(obj)
 
-        p.set_userptr(None)
+        p.set_userptr(Tupu)
         self.assertEqual(sys.getrefcount(obj), nrefs,
                          "set_userptr leaked references")
 
@@ -334,9 +334,9 @@ kundi TestCurses(unittest.TestCase):
         panel = curses.panel.new_panel(w)
         kundi A:
             eleza __del__(self):
-                panel.set_userptr(None)
+                panel.set_userptr(Tupu)
         panel.set_userptr(A())
-        panel.set_userptr(None)
+        panel.set_userptr(Tupu)
 
     @requires_curses_func('panel')
     eleza test_new_curses_panel(self):
@@ -369,18 +369,18 @@ kundi TestCurses(unittest.TestCase):
 
     @requires_curses_func('unget_wch')
     @unittest.skipIf(getattr(curses, 'ncurses_version', (99,)) < (5, 8),
-                     "unget_wch is broken in ncurses 5.7 and earlier")
+                     "unget_wch ni broken kwenye ncurses 5.7 na earlier")
     eleza test_unget_wch(self):
         stdscr = self.stdscr
         encoding = stdscr.encoding
-        for ch in ('a', '\xe9', '\u20ac', '\U0010FFFF'):
-            try:
+        kila ch kwenye ('a', '\xe9', '\u20ac', '\U0010FFFF'):
+            jaribu:
                 ch.encode(encoding)
-            except UnicodeEncodeError:
-                continue
-            try:
+            tatizo UnicodeEncodeError:
+                endelea
+            jaribu:
                 curses.unget_wch(ch)
-            except Exception as err:
+            tatizo Exception kama err:
                 self.fail("unget_wch(%a) failed with encoding %s: %s"
                           % (ch, stdscr.encoding, err))
             read = stdscr.get_wch()
@@ -404,7 +404,7 @@ kundi TestCurses(unittest.TestCase):
             stdscr.encoding = 10
         stdscr.encoding = encoding
         with self.assertRaises(TypeError):
-            del stdscr.encoding
+            toa stdscr.encoding
 
     eleza test_issue21088(self):
         stdscr = self.stdscr
@@ -417,18 +417,18 @@ kundi TestCurses(unittest.TestCase):
 
         # ikiwa someday we can represent the signature of addch
         # we will need to rewrite this test.
-        try:
+        jaribu:
             signature = inspect.signature(stdscr.addch)
-            self.assertFalse(signature)
-        except ValueError:
-            # not generating a signature is fine.
-            pass
+            self.assertUongo(signature)
+        tatizo ValueError:
+            # sio generating a signature ni fine.
+            pita
 
-        # So.  No signature for addch.
+        # So.  No signature kila addch.
         # But Argument Clinic gave us a human-readable equivalent
-        # as the first line of the docstring.  So we parse that,
-        # and ensure that the parameters appear in the correct order.
-        # Since this is parsing output kutoka Argument Clinic, we can
+        # kama the first line of the docstring.  So we parse that,
+        # na ensure that the parameters appear kwenye the correct order.
+        # Since this ni parsing output kutoka Argument Clinic, we can
         # be reasonably certain the generated parsing code will be
         # correct too.
         human_readable_signature = stdscr.addch.__doc__.split("\n")[0]
@@ -436,9 +436,9 @@ kundi TestCurses(unittest.TestCase):
 
     eleza test_issue13051(self):
         stdscr = self.stdscr
-        ikiwa not hasattr(stdscr, 'resize'):
-            raise unittest.SkipTest('requires curses.window.resize')
-        box = curses.textpad.Textbox(stdscr, insert_mode=True)
+        ikiwa sio hasattr(stdscr, 'resize'):
+            ashiria unittest.SkipTest('requires curses.window.resize')
+        box = curses.textpad.Textbox(stdscr, insert_mode=Kweli)
         lines, cols = stdscr.getmaxyx()
         stdscr.resize(lines-2, cols-2)
         # this may cause infinite recursion, leading to a RuntimeError
@@ -449,7 +449,7 @@ kundi MiscTests(unittest.TestCase):
 
     @requires_curses_func('update_lines_cols')
     eleza test_update_lines_cols(self):
-        # this doesn't actually test that LINES and COLS are updated,
+        # this doesn't actually test that LINES na COLS are updated,
         # because we can't automate changing them. See Issue #4254 for
         # a manual test script. We can only test that the function
         # can be called.
@@ -476,8 +476,8 @@ kundi MiscTests(unittest.TestCase):
 kundi TestAscii(unittest.TestCase):
 
     eleza test_controlnames(self):
-        for name in curses.ascii.controlnames:
-            self.assertTrue(hasattr(curses.ascii, name), name)
+        kila name kwenye curses.ascii.controlnames:
+            self.assertKweli(hasattr(curses.ascii, name), name)
 
     eleza test_ctypes(self):
         eleza check(func, expected):
@@ -485,7 +485,7 @@ kundi TestAscii(unittest.TestCase):
                 self.assertEqual(func(i), expected)
                 self.assertEqual(func(c), expected)
 
-        for i in range(256):
+        kila i kwenye range(256):
             c = chr(i)
             b = bytes([i])
             check(curses.ascii.isalnum, b.isalnum())
@@ -498,31 +498,31 @@ kundi TestAscii(unittest.TestCase):
             check(curses.ascii.isascii, i < 128)
             check(curses.ascii.ismeta, i >= 128)
             check(curses.ascii.isctrl, i < 32)
-            check(curses.ascii.iscntrl, i < 32 or i == 127)
-            check(curses.ascii.isblank, c in ' \t')
+            check(curses.ascii.iscntrl, i < 32 ama i == 127)
+            check(curses.ascii.isblank, c kwenye ' \t')
             check(curses.ascii.isgraph, 32 < i <= 126)
             check(curses.ascii.isprint, 32 <= i <= 126)
-            check(curses.ascii.ispunct, c in string.punctuation)
-            check(curses.ascii.isxdigit, c in string.hexdigits)
+            check(curses.ascii.ispunct, c kwenye string.punctuation)
+            check(curses.ascii.isxdigit, c kwenye string.hexdigits)
 
-        for i in (-2, -1, 256, sys.maxunicode, sys.maxunicode+1):
-            self.assertFalse(curses.ascii.isalnum(i))
-            self.assertFalse(curses.ascii.isalpha(i))
-            self.assertFalse(curses.ascii.isdigit(i))
-            self.assertFalse(curses.ascii.islower(i))
-            self.assertFalse(curses.ascii.isspace(i))
-            self.assertFalse(curses.ascii.isupper(i))
+        kila i kwenye (-2, -1, 256, sys.maxunicode, sys.maxunicode+1):
+            self.assertUongo(curses.ascii.isalnum(i))
+            self.assertUongo(curses.ascii.isalpha(i))
+            self.assertUongo(curses.ascii.isdigit(i))
+            self.assertUongo(curses.ascii.islower(i))
+            self.assertUongo(curses.ascii.isspace(i))
+            self.assertUongo(curses.ascii.isupper(i))
 
-            self.assertFalse(curses.ascii.isascii(i))
-            self.assertFalse(curses.ascii.isctrl(i))
-            self.assertFalse(curses.ascii.iscntrl(i))
-            self.assertFalse(curses.ascii.isblank(i))
-            self.assertFalse(curses.ascii.isgraph(i))
-            self.assertFalse(curses.ascii.isandika(i))
-            self.assertFalse(curses.ascii.ispunct(i))
-            self.assertFalse(curses.ascii.isxdigit(i))
+            self.assertUongo(curses.ascii.isascii(i))
+            self.assertUongo(curses.ascii.isctrl(i))
+            self.assertUongo(curses.ascii.iscntrl(i))
+            self.assertUongo(curses.ascii.isblank(i))
+            self.assertUongo(curses.ascii.isgraph(i))
+            self.assertUongo(curses.ascii.isandika(i))
+            self.assertUongo(curses.ascii.ispunct(i))
+            self.assertUongo(curses.ascii.isxdigit(i))
 
-        self.assertFalse(curses.ascii.ismeta(-1))
+        self.assertUongo(curses.ascii.ismeta(-1))
 
     eleza test_ascii(self):
         ascii = curses.ascii.ascii

@@ -1,29 +1,29 @@
-"""Parse a Python module and describe its classes and functions.
+"""Parse a Python module na describe its classes na functions.
 
-Parse enough of a Python file to recognize agizas and kundi and
-function definitions, and to find out the superclasses of a class.
+Parse enough of a Python file to recognize agizas na kundi and
+function definitions, na to find out the superclasses of a class.
 
 The interface consists of a single function:
-    readmodule_ex(module, path=None)
-where module is the name of a Python module, and path is an optional
-list of directories where the module is to be searched.  If present,
-path is prepended to the system search path sys.path.  The rudisha value
+    readmodule_ex(module, path=Tupu)
+where module ni the name of a Python module, na path ni an optional
+list of directories where the module ni to be searched.  If present,
+path ni prepended to the system search path sys.path.  The rudisha value
 is a dictionary.  The keys of the dictionary are the names of the
-classes and functions defined in the module (including classes that are
+classes na functions defined kwenye the module (including classes that are
 defined via the kutoka XXX agiza YYY construct).  The values are
-instances of classes Class and Function.  One special key/value pair is
-present for packages: the key '__path__' has a list as its value which
+instances of classes Class na Function.  One special key/value pair is
+present kila packages: the key '__path__' has a list kama its value which
 contains the package search path.
 
-Classes and Functions have a common superclass: _Object.  Every instance
+Classes na Functions have a common superclass: _Object.  Every instance
 has the following attributes:
     module  -- name of the module;
     name    -- name of the object;
-    file    -- file in which the object is defined;
-    lineno  -- line in the file where the object's definition starts;
+    file    -- file kwenye which the object ni defined;
+    lineno  -- line kwenye the file where the object's definition starts;
     parent  -- parent of this object, ikiwa any;
-    children -- nested objects contained in this object.
-The 'children' attribute is a dictionary mapping names to objects.
+    children -- nested objects contained kwenye this object.
+The 'children' attribute ni a dictionary mapping names to objects.
 
 Instances of Function describe functions with the attributes kutoka _Object.
 
@@ -31,10 +31,10 @@ Instances of Class describe classes with the attributes kutoka _Object,
 plus the following:
     super   -- list of super classes (Class instances ikiwa possible);
     methods -- mapping of method names to beginning line numbers.
-If the name of a super kundi is not recognized, the corresponding
-entry in the list of super classes is not a kundi instance but a
+If the name of a super kundi ni sio recognized, the corresponding
+entry kwenye the list of super classes ni sio a kundi instance but a
 string giving the name of the super class.  Since agiza statements
-are recognized and imported modules are scanned as well, this
+are recognized na imported modules are scanned kama well, this
 shouldn't happen often.
 """
 
@@ -50,7 +50,7 @@ _modules = {}  # Initialize cache of modules we've seen.
 
 
 kundi _Object:
-    "Information about Python kundi or function."
+    "Information about Python kundi ama function."
     eleza __init__(self, module, name, file, lineno, parent):
         self.module = module
         self.name = name
@@ -65,15 +65,15 @@ kundi _Object:
 
 kundi Function(_Object):
     "Information about a Python function, including methods."
-    eleza __init__(self, module, name, file, lineno, parent=None):
+    eleza __init__(self, module, name, file, lineno, parent=Tupu):
         _Object.__init__(self, module, name, file, lineno, parent)
 
 
 kundi Class(_Object):
     "Information about a Python class."
-    eleza __init__(self, module, name, super, file, lineno, parent=None):
+    eleza __init__(self, module, name, super, file, lineno, parent=Tupu):
         _Object.__init__(self, module, name, file, lineno, parent)
-        self.super = [] ikiwa super is None else super
+        self.super = [] ikiwa super ni Tupu else super
         self.methods = {}
 
     eleza _addmethod(self, name, lineno):
@@ -88,91 +88,91 @@ eleza _nest_function(ob, func_name, lineno):
         ob._addmethod(func_name, lineno)
     rudisha newfunc
 
-eleza _nest_class(ob, class_name, lineno, super=None):
+eleza _nest_class(ob, class_name, lineno, super=Tupu):
     "Return a Class after nesting within ob."
     newkundi = Class(ob.module, class_name, super, ob.file, lineno, ob)
     ob._addchild(class_name, newclass)
     rudisha newclass
 
-eleza readmodule(module, path=None):
-    """Return Class objects for the top-level classes in module.
+eleza readmodule(module, path=Tupu):
+    """Return Class objects kila the top-level classes kwenye module.
 
-    This is the original interface, before Functions were added.
+    This ni the original interface, before Functions were added.
     """
 
     res = {}
-    for key, value in _readmodule(module, path or []).items():
+    kila key, value kwenye _readmodule(module, path ama []).items():
         ikiwa isinstance(value, Class):
             res[key] = value
     rudisha res
 
-eleza readmodule_ex(module, path=None):
-    """Return a dictionary with all functions and classes in module.
+eleza readmodule_ex(module, path=Tupu):
+    """Return a dictionary with all functions na classes kwenye module.
 
-    Search for module in PATH + sys.path.
+    Search kila module kwenye PATH + sys.path.
     If possible, include imported superclasses.
     Do this by reading source, without agizaing (and executing) it.
     """
-    rudisha _readmodule(module, path or [])
+    rudisha _readmodule(module, path ama [])
 
-eleza _readmodule(module, path, inpackage=None):
-    """Do the hard work for readmodule[_ex].
+eleza _readmodule(module, path, inpackage=Tupu):
+    """Do the hard work kila readmodule[_ex].
 
-    If inpackage is given, it must be the dotted name of the package in
-    which we are searching for a submodule, and then PATH must be the
-    package search path; otherwise, we are searching for a top-level
-    module, and path is combined with sys.path.
+    If inpackage ni given, it must be the dotted name of the package in
+    which we are searching kila a submodule, na then PATH must be the
+    package search path; otherwise, we are searching kila a top-level
+    module, na path ni combined with sys.path.
     """
     # Compute the full module name (prepending inpackage ikiwa set).
-    ikiwa inpackage is not None:
+    ikiwa inpackage ni sio Tupu:
         fullmodule = "%s.%s" % (inpackage, module)
-    else:
+    isipokua:
         fullmodule = module
 
-    # Check in the cache.
-    ikiwa fullmodule in _modules:
+    # Check kwenye the cache.
+    ikiwa fullmodule kwenye _modules:
         rudisha _modules[fullmodule]
 
-    # Initialize the dict for this module's contents.
+    # Initialize the dict kila this module's contents.
     tree = {}
 
-    # Check ikiwa it is a built-in module; we don't do much for these.
-    ikiwa module in sys.builtin_module_names and inpackage is None:
+    # Check ikiwa it ni a built-in module; we don't do much kila these.
+    ikiwa module kwenye sys.builtin_module_names na inpackage ni Tupu:
         _modules[module] = tree
         rudisha tree
 
-    # Check for a dotted module name.
+    # Check kila a dotted module name.
     i = module.rfind('.')
     ikiwa i >= 0:
         package = module[:i]
         submodule = module[i+1:]
         parent = _readmodule(package, path, inpackage)
-        ikiwa inpackage is not None:
+        ikiwa inpackage ni sio Tupu:
             package = "%s.%s" % (inpackage, package)
-        ikiwa not '__path__' in parent:
-            raise ImportError('No package named {}'.format(package))
+        ikiwa sio '__path__' kwenye parent:
+            ashiria ImportError('No package named {}'.format(package))
         rudisha _readmodule(submodule, parent['__path__'], package)
 
-    # Search the path for the module.
-    f = None
-    ikiwa inpackage is not None:
+    # Search the path kila the module.
+    f = Tupu
+    ikiwa inpackage ni sio Tupu:
         search_path = path
-    else:
+    isipokua:
         search_path = path + sys.path
     spec = importlib.util._find_spec_kutoka_path(fullmodule, search_path)
-    ikiwa spec is None:
-        raise ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
+    ikiwa spec ni Tupu:
+        ashiria ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
     # Is module a package?
-    ikiwa spec.submodule_search_locations is not None:
+    ikiwa spec.submodule_search_locations ni sio Tupu:
         tree['__path__'] = spec.submodule_search_locations
-    try:
+    jaribu:
         source = spec.loader.get_source(fullmodule)
-    except (AttributeError, ImportError):
-        # If module is not Python source, we cannot do anything.
+    tatizo (AttributeError, ImportError):
+        # If module ni sio Python source, we cannot do anything.
         rudisha tree
-    else:
-        ikiwa source is None:
+    isipokua:
+        ikiwa source ni Tupu:
             rudisha tree
 
     fname = spec.loader.get_filename(fullmodule)
@@ -180,78 +180,78 @@ eleza _readmodule(module, path, inpackage=None):
 
 
 eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
-    """Return the tree for a particular module.
+    """Return the tree kila a particular module.
 
     fullmodule (full module name), inpackage+module, becomes o.module.
-    path is passed to recursive calls of _readmodule.
+    path ni pitaed to recursive calls of _readmodule.
     fname becomes o.file.
-    source is tokenized.  Imports cause recursive calls to _readmodule.
-    tree is {} or {'__path__': <submodule search locations>}.
-    inpackage, None or string, is passed to recursive calls of _readmodule.
+    source ni tokenized.  Imports cause recursive calls to _readmodule.
+    tree ni {} ama {'__path__': <submodule search locations>}.
+    inpackage, Tupu ama string, ni pitaed to recursive calls of _readmodule.
 
-    The effect of recursive calls is mutation of global _modules.
+    The effect of recursive calls ni mutation of global _modules.
     """
     f = io.StringIO(source)
 
     stack = [] # Initialize stack of (class, indent) pairs.
 
     g = tokenize.generate_tokens(f.readline)
-    try:
-        for tokentype, token, start, _end, _line in g:
+    jaribu:
+        kila tokentype, token, start, _end, _line kwenye g:
             ikiwa tokentype == DEDENT:
                 lineno, thisindent = start
-                # Close previous nested classes and defs.
-                while stack and stack[-1][1] >= thisindent:
-                    del stack[-1]
+                # Close previous nested classes na defs.
+                wakati stack na stack[-1][1] >= thisindent:
+                    toa stack[-1]
             elikiwa token == 'def':
                 lineno, thisindent = start
-                # Close previous nested classes and defs.
-                while stack and stack[-1][1] >= thisindent:
-                    del stack[-1]
+                # Close previous nested classes na defs.
+                wakati stack na stack[-1][1] >= thisindent:
+                    toa stack[-1]
                 tokentype, func_name, start = next(g)[0:3]
                 ikiwa tokentype != NAME:
-                    continue  # Skip eleza with syntax error.
-                cur_func = None
+                    endelea  # Skip eleza with syntax error.
+                cur_func = Tupu
                 ikiwa stack:
                     cur_obj = stack[-1][0]
                     cur_func = _nest_function(cur_obj, func_name, lineno)
-                else:
-                    # It is just a function.
+                isipokua:
+                    # It ni just a function.
                     cur_func = Function(fullmodule, func_name, fname, lineno)
                     tree[func_name] = cur_func
                 stack.append((cur_func, thisindent))
             elikiwa token == 'class':
                 lineno, thisindent = start
-                # Close previous nested classes and defs.
-                while stack and stack[-1][1] >= thisindent:
-                    del stack[-1]
+                # Close previous nested classes na defs.
+                wakati stack na stack[-1][1] >= thisindent:
+                    toa stack[-1]
                 tokentype, class_name, start = next(g)[0:3]
                 ikiwa tokentype != NAME:
-                    continue # Skip kundi with syntax error.
+                    endelea # Skip kundi with syntax error.
                 # Parse what follows the kundi name.
                 tokentype, token, start = next(g)[0:3]
-                inherit = None
+                inherit = Tupu
                 ikiwa token == '(':
                     names = [] # Initialize list of superclasses.
                     level = 1
                     super = [] # Tokens making up current superclass.
-                    while True:
+                    wakati Kweli:
                         tokentype, token, start = next(g)[0:3]
-                        ikiwa token in (')', ',') and level == 1:
+                        ikiwa token kwenye (')', ',') na level == 1:
                             n = "".join(super)
-                            ikiwa n in tree:
+                            ikiwa n kwenye tree:
                                 # We know this super class.
                                 n = tree[n]
-                            else:
+                            isipokua:
                                 c = n.split('.')
                                 ikiwa len(c) > 1:
-                                    # Super kundi form is module.class:
-                                    # look in module for class.
+                                    # Super kundi form ni module.class:
+                                    # look kwenye module kila class.
                                     m = c[-2]
                                     c = c[-1]
-                                    ikiwa m in _modules:
+                                    ikiwa m kwenye _modules:
                                         d = _modules[m]
-                                        ikiwa c in d:
+                                        ikiwa c kwenye d:
                                             n = d[c]
                             names.append(n)
                             super = []
@@ -260,112 +260,112 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                         elikiwa token == ')':
                             level -= 1
                             ikiwa level == 0:
-                                break
-                        elikiwa token == ',' and level == 1:
-                            pass
-                        # Only use NAME and OP (== dot) tokens for type name.
-                        elikiwa tokentype in (NAME, OP) and level == 1:
+                                koma
+                        elikiwa token == ',' na level == 1:
+                            pita
+                        # Only use NAME na OP (== dot) tokens kila type name.
+                        elikiwa tokentype kwenye (NAME, OP) na level == 1:
                             super.append(token)
-                        # Expressions in the base list are not supported.
+                        # Expressions kwenye the base list are sio supported.
                     inherit = names
                 ikiwa stack:
                     cur_obj = stack[-1][0]
                     cur_kundi = _nest_class(
                             cur_obj, class_name, lineno, inherit)
-                else:
+                isipokua:
                     cur_kundi = Class(fullmodule, class_name, inherit,
                                       fname, lineno)
                     tree[class_name] = cur_class
                 stack.append((cur_class, thisindent))
-            elikiwa token == 'agiza' and start[1] == 0:
+            elikiwa token == 'agiza' na start[1] == 0:
                 modules = _getnamelist(g)
-                for mod, _mod2 in modules:
-                    try:
+                kila mod, _mod2 kwenye modules:
+                    jaribu:
                         # Recursively read the imported module.
-                        ikiwa inpackage is None:
+                        ikiwa inpackage ni Tupu:
                             _readmodule(mod, path)
-                        else:
-                            try:
+                        isipokua:
+                            jaribu:
                                 _readmodule(mod, path, inpackage)
-                            except ImportError:
+                            tatizo ImportError:
                                 _readmodule(mod, [])
                     except:
-                        # If we can't find or parse the imported module,
+                        # If we can't find ama parse the imported module,
                         # too bad -- don't die here.
-                        pass
-            elikiwa token == 'kutoka' and start[1] == 0:
+                        pita
+            elikiwa token == 'kutoka' na start[1] == 0:
                 mod, token = _getname(g)
-                ikiwa not mod or token != "agiza":
-                    continue
+                ikiwa sio mod ama token != "agiza":
+                    endelea
                 names = _getnamelist(g)
-                try:
+                jaribu:
                     # Recursively read the imported module.
                     d = _readmodule(mod, path, inpackage)
                 except:
-                    # If we can't find or parse the imported module,
+                    # If we can't find ama parse the imported module,
                     # too bad -- don't die here.
-                    continue
-                # Add any classes that were defined in the imported module
-                # to our name space ikiwa they were mentioned in the list.
-                for n, n2 in names:
-                    ikiwa n in d:
-                        tree[n2 or n] = d[n]
+                    endelea
+                # Add any classes that were defined kwenye the imported module
+                # to our name space ikiwa they were mentioned kwenye the list.
+                kila n, n2 kwenye names:
+                    ikiwa n kwenye d:
+                        tree[n2 ama n] = d[n]
                     elikiwa n == '*':
                         # Don't add names that start with _.
-                        for n in d:
+                        kila n kwenye d:
                             ikiwa n[0] != '_':
                                 tree[n] = d[n]
-    except StopIteration:
-        pass
+    tatizo StopIteration:
+        pita
 
     f.close()
     rudisha tree
 
 
 eleza _getnamelist(g):
-    """Return list of (dotted-name, as-name or None) tuples for token source g.
+    """Return list of (dotted-name, as-name ama Tupu) tuples kila token source g.
 
-    An as-name is the name that follows 'as' in an as clause.
+    An as-name ni the name that follows 'as' kwenye an kama clause.
     """
     names = []
-    while True:
+    wakati Kweli:
         name, token = _getname(g)
-        ikiwa not name:
-            break
+        ikiwa sio name:
+            koma
         ikiwa token == 'as':
             name2, token = _getname(g)
-        else:
-            name2 = None
+        isipokua:
+            name2 = Tupu
         names.append((name, name2))
-        while token != "," and "\n" not in token:
+        wakati token != "," na "\n" haiko kwenye token:
             token = next(g)[1]
         ikiwa token != ",":
-            break
+            koma
     rudisha names
 
 
 eleza _getname(g):
-    "Return (dotted-name or None, next-token) tuple for token source g."
+    "Return (dotted-name ama Tupu, next-token) tuple kila token source g."
     parts = []
     tokentype, token = next(g)[0:2]
-    ikiwa tokentype != NAME and token != '*':
-        rudisha (None, token)
+    ikiwa tokentype != NAME na token != '*':
+        rudisha (Tupu, token)
     parts.append(token)
-    while True:
+    wakati Kweli:
         tokentype, token = next(g)[0:2]
         ikiwa token != '.':
-            break
+            koma
         tokentype, token = next(g)[0:2]
         ikiwa tokentype != NAME:
-            break
+            koma
         parts.append(token)
     rudisha (".".join(parts), token)
 
 
 eleza _main():
-    "Print module output (default this file) for quick visual check."
+    "Print module output (default this file) kila quick visual check."
     agiza os
-    try:
+    jaribu:
         mod = sys.argv[1]
     except:
         mod = __file__
@@ -374,24 +374,24 @@ eleza _main():
         mod = os.path.basename(mod)
         ikiwa mod.lower().endswith(".py"):
             mod = mod[:-3]
-    else:
+    isipokua:
         path = []
     tree = readmodule_ex(mod, path)
     lineno_key = lambda a: getattr(a, 'lineno', 0)
-    objs = sorted(tree.values(), key=lineno_key, reverse=True)
+    objs = sorted(tree.values(), key=lineno_key, reverse=Kweli)
     indent_level = 2
-    while objs:
+    wakati objs:
         obj = objs.pop()
         ikiwa isinstance(obj, list):
-            # Value is a __path__ key.
-            continue
-        ikiwa not hasattr(obj, 'indent'):
+            # Value ni a __path__ key.
+            endelea
+        ikiwa sio hasattr(obj, 'indent'):
             obj.indent = 0
 
         ikiwa isinstance(obj, _Object):
             new_objs = sorted(obj.children.values(),
-                              key=lineno_key, reverse=True)
-            for ob in new_objs:
+                              key=lineno_key, reverse=Kweli)
+            kila ob kwenye new_objs:
                 ob.indent = obj.indent + indent_level
             objs.extend(new_objs)
         ikiwa isinstance(obj, Class):

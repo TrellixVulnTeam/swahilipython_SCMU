@@ -1,5 +1,5 @@
 #
-# Support for the API of the multiprocessing package using threads
+# Support kila the API of the multiprocessing package using threads
 #
 # multiprocessing/dummy/__init__.py
 #
@@ -33,29 +33,29 @@ kutoka queue agiza Queue
 
 kundi DummyProcess(threading.Thread):
 
-    eleza __init__(self, group=None, target=None, name=None, args=(), kwargs={}):
+    eleza __init__(self, group=Tupu, target=Tupu, name=Tupu, args=(), kwargs={}):
         threading.Thread.__init__(self, group, target, name, args, kwargs)
-        self._pid = None
+        self._pid = Tupu
         self._children = weakref.WeakKeyDictionary()
-        self._start_called = False
+        self._start_called = Uongo
         self._parent = current_process()
 
     eleza start(self):
-        ikiwa self._parent is not current_process():
-            raise RuntimeError(
-                "Parent is {0!r} but current_process is {1!r}".format(
+        ikiwa self._parent ni sio current_process():
+            ashiria RuntimeError(
+                "Parent ni {0!r} but current_process ni {1!r}".format(
                     self._parent, current_process()))
-        self._start_called = True
+        self._start_called = Kweli
         ikiwa hasattr(self._parent, '_children'):
-            self._parent._children[self] = None
+            self._parent._children[self] = Tupu
         threading.Thread.start(self)
 
     @property
     eleza exitcode(self):
-        ikiwa self._start_called and not self.is_alive():
+        ikiwa self._start_called na sio self.is_alive():
             rudisha 0
-        else:
-            rudisha None
+        isipokua:
+            rudisha Tupu
 
 #
 #
@@ -67,13 +67,13 @@ current_process()._children = weakref.WeakKeyDictionary()
 
 eleza active_children():
     children = current_process()._children
-    for p in list(children):
-        ikiwa not p.is_alive():
-            children.pop(p, None)
+    kila p kwenye list(children):
+        ikiwa sio p.is_alive():
+            children.pop(p, Tupu)
     rudisha list(children)
 
 eleza freeze_support():
-    pass
+    pita
 
 #
 #
@@ -85,8 +85,8 @@ kundi Namespace(object):
     eleza __repr__(self):
         items = list(self.__dict__.items())
         temp = []
-        for name, value in items:
-            ikiwa not name.startswith('_'):
+        kila name, value kwenye items:
+            ikiwa sio name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
         rudisha '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
@@ -94,11 +94,11 @@ kundi Namespace(object):
 dict = dict
 list = list
 
-eleza Array(typecode, sequence, lock=True):
+eleza Array(typecode, sequence, lock=Kweli):
     rudisha array.array(typecode, sequence)
 
 kundi Value(object):
-    eleza __init__(self, typecode, value, lock=True):
+    eleza __init__(self, typecode, value, lock=Kweli):
         self._typecode = typecode
         self._value = value
 
@@ -117,9 +117,9 @@ eleza Manager():
     rudisha sys.modules[__name__]
 
 eleza shutdown():
-    pass
+    pita
 
-eleza Pool(processes=None, initializer=None, initargs=()):
+eleza Pool(processes=Tupu, initializer=Tupu, initargs=()):
     kutoka ..pool agiza ThreadPool
     rudisha ThreadPool(processes, initializer, initargs)
 

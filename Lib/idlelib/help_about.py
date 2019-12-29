@@ -1,4 +1,4 @@
-"""About Dialog for IDLE
+"""About Dialog kila IDLE
 
 """
 agiza os
@@ -12,22 +12,22 @@ kutoka idlelib agiza textview
 
 
 eleza build_bits():
-    "Return bits for platform."
+    "Return bits kila platform."
     ikiwa sys.platform == 'darwin':
         rudisha '64' ikiwa sys.maxsize > 2**32 else '32'
-    else:
+    isipokua:
         rudisha architecture()[0][:2]
 
 
 kundi AboutDialog(Toplevel):
-    """Modal about dialog for idle
+    """Modal about dialog kila idle
 
     """
-    eleza __init__(self, parent, title=None, *, _htest=False, _utest=False):
-        """Create popup, do not rudisha until tk widget destroyed.
+    eleza __init__(self, parent, title=Tupu, *, _htest=Uongo, _utest=Uongo):
+        """Create popup, do sio rudisha until tk widget destroyed.
 
         parent - parent of this dialog
-        title - string which is title of popup dialog
+        title - string which ni title of popup dialog
         _htest - bool, change box location when running htest
         _utest - bool, don't wait_window when running unittest
         """
@@ -36,11 +36,11 @@ kundi AboutDialog(Toplevel):
         # place dialog below parent ikiwa running htest
         self.geometry("+%d+%d" % (
                         parent.winfo_rootx()+30,
-                        parent.winfo_rooty()+(30 ikiwa not _htest else 100)))
+                        parent.winfo_rooty()+(30 ikiwa sio _htest else 100)))
         self.bg = "#bbbbbb"
         self.fg = "#000000"
         self.create_widgets()
-        self.resizable(height=False, width=False)
+        self.resizable(height=Uongo, width=Uongo)
         self.title(title or
                    f'About IDLE {python_version()} ({build_bits()} bit)')
         self.transient(parent)
@@ -50,10 +50,10 @@ kundi AboutDialog(Toplevel):
         self.button_ok.focus_set()
         self.bind('<Return>', self.ok)  # dismiss dialog
         self.bind('<Escape>', self.ok)  # dismiss dialog
-        self._current_textview = None
+        self._current_textview = Tupu
         self._utest = _utest
 
-        ikiwa not _utest:
+        ikiwa sio _utest:
             self.deiconify()
             self.wait_window()
 
@@ -61,13 +61,13 @@ kundi AboutDialog(Toplevel):
         frame = Frame(self, borderwidth=2, relief=SUNKEN)
         frame_buttons = Frame(self)
         frame_buttons.pack(side=BOTTOM, fill=X)
-        frame.pack(side=TOP, expand=True, fill=BOTH)
+        frame.pack(side=TOP, expand=Kweli, fill=BOTH)
         self.button_ok = Button(frame_buttons, text='Close',
                                 command=self.ok)
         self.button_ok.pack(padx=5, pady=5)
 
         frame_background = Frame(frame, bg=self.bg)
-        frame_background.pack(expand=True, fill=BOTH)
+        frame_background.pack(expand=Kweli, fill=BOTH)
 
         header = Label(frame_background, text='IDLE', fg=self.fg,
                        bg=self.bg, font=('courier', 24, 'bold'))
@@ -142,7 +142,7 @@ kundi AboutDialog(Toplevel):
                                    command=self.show_idle_credits)
         self.idle_credits.pack(side=LEFT, padx=10, pady=10)
 
-    # License, copyright, and credits are of type _sitebuiltins._Printer
+    # License, copyright, na credits are of type _sitebuiltins._Printer
     eleza show_py_license(self):
         "Handle License button event."
         self.display_printer_text('About - License', license)
@@ -155,8 +155,8 @@ kundi AboutDialog(Toplevel):
         "Handle Python Credits button event."
         self.display_printer_text('About - Python Credits', credits)
 
-    # Encode CREDITS.txt to utf-8 for proper version of Loewis.
-    # Specify others as ascii until need utf-8, so catch errors.
+    # Encode CREDITS.txt to utf-8 kila proper version of Loewis.
+    # Specify others kama ascii until need utf-8, so catch errors.
     eleza show_idle_credits(self):
         "Handle Idle Credits button event."
         self.display_file_text('About - Credits', 'CREDITS.txt', 'utf-8')
@@ -170,11 +170,11 @@ kundi AboutDialog(Toplevel):
         self.display_file_text('About - NEWS', 'NEWS.txt', 'utf-8')
 
     eleza display_printer_text(self, title, printer):
-        """Create textview for built-in constants.
+        """Create textview kila built-in constants.
 
         Built-in constants have type _sitebuiltins._Printer.  The
-        text is extracted kutoka the built-in and then sent to a text
-        viewer with self as the parent and title as the title of
+        text ni extracted kutoka the built-in na then sent to a text
+        viewer with self kama the parent na title kama the title of
         the popup.
         """
         printer._Printer__setup()
@@ -182,18 +182,18 @@ kundi AboutDialog(Toplevel):
         self._current_textview = textview.view_text(
             self, title, text, _utest=self._utest)
 
-    eleza display_file_text(self, title, filename, encoding=None):
-        """Create textview for filename.
+    eleza display_file_text(self, title, filename, encoding=Tupu):
+        """Create textview kila filename.
 
-        The filename needs to be in the current directory.  The path
-        is sent to a text viewer with self as the parent, title as
-        the title of the popup, and the file encoding.
+        The filename needs to be kwenye the current directory.  The path
+        ni sent to a text viewer with self kama the parent, title as
+        the title of the popup, na the file encoding.
         """
         fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
         self._current_textview = textview.view_file(
             self, title, fn, encoding, _utest=self._utest)
 
-    eleza ok(self, event=None):
+    eleza ok(self, event=Tupu):
         "Dismiss help_about dialog."
         self.grab_release()
         self.destroy()
@@ -201,7 +201,7 @@ kundi AboutDialog(Toplevel):
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_help_about', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_help_about', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(AboutDialog)

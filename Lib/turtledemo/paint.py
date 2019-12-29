@@ -9,9 +9,9 @@ A simple  event-driven paint program
 - middle mouse button changes color
 - right mouse button toggles between pen up
 (no line drawn when the turtle moves) and
-pen down (line is drawn). If pen up follows
+pen down (line ni drawn). If pen up follows
 at least two pen-down moves, the polygon that
-includes the starting point is filled.
+includes the starting point ni filled.
  -------------------------------------------
  Play around by clicking into the canvas
  using all three mouse buttons.
@@ -25,7 +25,7 @@ eleza switchupdown(x=0, y=0):
     ikiwa pen()["pendown"]:
         end_fill()
         up()
-    else:
+    isipokua:
         down()
         begin_fill()
 

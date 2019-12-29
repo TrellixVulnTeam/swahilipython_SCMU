@@ -1,4 +1,4 @@
-"""Tests for binary operators on subtypes of built-in types."""
+"""Tests kila binary operators on subtypes of built-in types."""
 
 agiza unittest
 kutoka operator agiza eq, le, ne
@@ -6,55 +6,55 @@ kutoka abc agiza ABCMeta
 
 eleza gcd(a, b):
     """Greatest common divisor using Euclid's algorithm."""
-    while a:
+    wakati a:
         a, b = b%a, a
     rudisha b
 
 eleza isint(x):
-    """Test whether an object is an instance of int."""
+    """Test whether an object ni an instance of int."""
     rudisha isinstance(x, int)
 
 eleza isnum(x):
-    """Test whether an object is an instance of a built-in numeric type."""
-    for T in int, float, complex:
+    """Test whether an object ni an instance of a built-in numeric type."""
+    kila T kwenye int, float, complex:
         ikiwa isinstance(x, T):
             rudisha 1
     rudisha 0
 
 eleza isRat(x):
-    """Test whether an object is an instance of the Rat class."""
+    """Test whether an object ni an instance of the Rat class."""
     rudisha isinstance(x, Rat)
 
 kundi Rat(object):
 
-    """Rational number implemented as a normalized pair of ints."""
+    """Rational number implemented kama a normalized pair of ints."""
 
     __slots__ = ['_Rat__num', '_Rat__den']
 
     eleza __init__(self, num=0, den=1):
         """Constructor: Rat([num[, den]]).
 
-        The arguments must be ints, and default to (0, 1)."""
-        ikiwa not isint(num):
-            raise TypeError("Rat numerator must be int (%r)" % num)
-        ikiwa not isint(den):
-            raise TypeError("Rat denominator must be int (%r)" % den)
-        # But the zero is always on
+        The arguments must be ints, na default to (0, 1)."""
+        ikiwa sio isint(num):
+            ashiria TypeError("Rat numerator must be int (%r)" % num)
+        ikiwa sio isint(den):
+            ashiria TypeError("Rat denominator must be int (%r)" % den)
+        # But the zero ni always on
         ikiwa den == 0:
-            raise ZeroDivisionError("zero denominator")
+            ashiria ZeroDivisionError("zero denominator")
         g = gcd(den, num)
         self.__num = int(num//g)
         self.__den = int(den//g)
 
     eleza _get_num(self):
-        """Accessor function for read-only 'num' attribute of Rat."""
+        """Accessor function kila read-only 'num' attribute of Rat."""
         rudisha self.__num
-    num = property(_get_num, None)
+    num = property(_get_num, Tupu)
 
     eleza _get_den(self):
-        """Accessor function for read-only 'den' attribute of Rat."""
+        """Accessor function kila read-only 'den' attribute of Rat."""
         rudisha self.__den
-    den = property(_get_den, None)
+    den = property(_get_den, Tupu)
 
     eleza __repr__(self):
         """Convert a Rat to a string resembling a Rat constructor call."""
@@ -71,15 +71,15 @@ kundi Rat(object):
     eleza __int__(self):
         """Convert a Rat to an int; self.den must be 1."""
         ikiwa self.__den == 1:
-            try:
+            jaribu:
                 rudisha int(self.__num)
-            except OverflowError:
-                raise OverflowError("%s too large to convert to int" %
+            tatizo OverflowError:
+                ashiria OverflowError("%s too large to convert to int" %
                                       repr(self))
-        raise ValueError("can't convert %s to int" % repr(self))
+        ashiria ValueError("can't convert %s to int" % repr(self))
 
     eleza __add__(self, other):
-        """Add two Rats, or a Rat and a number."""
+        """Add two Rats, ama a Rat na a number."""
         ikiwa isint(other):
             other = Rat(other)
         ikiwa isRat(other):
@@ -92,7 +92,7 @@ kundi Rat(object):
     __radd__ = __add__
 
     eleza __sub__(self, other):
-        """Subtract two Rats, or a Rat and a number."""
+        """Subtract two Rats, ama a Rat na a number."""
         ikiwa isint(other):
             other = Rat(other)
         ikiwa isRat(other):
@@ -103,7 +103,7 @@ kundi Rat(object):
         rudisha NotImplemented
 
     eleza __rsub__(self, other):
-        """Subtract two Rats, or a Rat and a number (reversed args)."""
+        """Subtract two Rats, ama a Rat na a number (reversed args)."""
         ikiwa isint(other):
             other = Rat(other)
         ikiwa isRat(other):
@@ -114,7 +114,7 @@ kundi Rat(object):
         rudisha NotImplemented
 
     eleza __mul__(self, other):
-        """Multiply two Rats, or a Rat and a number."""
+        """Multiply two Rats, ama a Rat na a number."""
         ikiwa isRat(other):
             rudisha Rat(self.__num*other.__num, self.__den*other.__den)
         ikiwa isint(other):
@@ -126,7 +126,7 @@ kundi Rat(object):
     __rmul__ = __mul__
 
     eleza __truediv__(self, other):
-        """Divide two Rats, or a Rat and a number."""
+        """Divide two Rats, ama a Rat na a number."""
         ikiwa isRat(other):
             rudisha Rat(self.__num*other.__den, self.__den*other.__num)
         ikiwa isint(other):
@@ -136,7 +136,7 @@ kundi Rat(object):
         rudisha NotImplemented
 
     eleza __rtruediv__(self, other):
-        """Divide two Rats, or a Rat and a number (reversed args)."""
+        """Divide two Rats, ama a Rat na a number (reversed args)."""
         ikiwa isRat(other):
             rudisha Rat(other.__num*self.__den, other.__den*self.__num)
         ikiwa isint(other):
@@ -146,33 +146,33 @@ kundi Rat(object):
         rudisha NotImplemented
 
     eleza __floordiv__(self, other):
-        """Divide two Rats, returning the floored result."""
+        """Divide two Rats, rudishaing the floored result."""
         ikiwa isint(other):
             other = Rat(other)
-        elikiwa not isRat(other):
+        elikiwa sio isRat(other):
             rudisha NotImplemented
         x = self/other
         rudisha x.__num // x.__den
 
     eleza __rfloordiv__(self, other):
-        """Divide two Rats, returning the floored result (reversed args)."""
+        """Divide two Rats, rudishaing the floored result (reversed args)."""
         x = other/self
         rudisha x.__num // x.__den
 
     eleza __divmod__(self, other):
-        """Divide two Rats, returning quotient and remainder."""
+        """Divide two Rats, rudishaing quotient na remainder."""
         ikiwa isint(other):
             other = Rat(other)
-        elikiwa not isRat(other):
+        elikiwa sio isRat(other):
             rudisha NotImplemented
         x = self//other
         rudisha (x, self - other * x)
 
     eleza __rdivmod__(self, other):
-        """Divide two Rats, returning quotient and remainder (reversed args)."""
+        """Divide two Rats, rudishaing quotient na remainder (reversed args)."""
         ikiwa isint(other):
             other = Rat(other)
-        elikiwa not isRat(other):
+        elikiwa sio isRat(other):
             rudisha NotImplemented
         rudisha divmod(other, self)
 
@@ -185,17 +185,17 @@ kundi Rat(object):
         rudisha divmod(other, self)[1]
 
     eleza __eq__(self, other):
-        """Compare two Rats for equality."""
+        """Compare two Rats kila equality."""
         ikiwa isint(other):
-            rudisha self.__den == 1 and self.__num == other
+            rudisha self.__den == 1 na self.__num == other
         ikiwa isRat(other):
-            rudisha self.__num == other.__num and self.__den == other.__den
+            rudisha self.__num == other.__num na self.__den == other.__den
         ikiwa isnum(other):
             rudisha float(self) == other
         rudisha NotImplemented
 
 kundi RatTestCase(unittest.TestCase):
-    """Unit tests for Rat kundi and its support utilities."""
+    """Unit tests kila Rat kundi na its support utilities."""
 
     eleza test_gcd(self):
         self.assertEqual(gcd(10, 12), 2)
@@ -205,12 +205,12 @@ kundi RatTestCase(unittest.TestCase):
         self.assertEqual(gcd(-10, 2), -2)
         self.assertEqual(gcd(10, -2), 2)
         self.assertEqual(gcd(-10, -2), -2)
-        for i in range(1, 20):
-            for j in range(1, 20):
-                self.assertTrue(gcd(i, j) > 0)
-                self.assertTrue(gcd(-i, j) < 0)
-                self.assertTrue(gcd(i, -j) > 0)
-                self.assertTrue(gcd(-i, -j) < 0)
+        kila i kwenye range(1, 20):
+            kila j kwenye range(1, 20):
+                self.assertKweli(gcd(i, j) > 0)
+                self.assertKweli(gcd(-i, j) < 0)
+                self.assertKweli(gcd(i, -j) > 0)
+                self.assertKweli(gcd(-i, -j) < 0)
 
     eleza test_constructor(self):
         a = Rat(10, 15)
@@ -228,25 +228,25 @@ kundi RatTestCase(unittest.TestCase):
         a = Rat(7)
         self.assertEqual(a.num, 7)
         self.assertEqual(a.den, 1)
-        try:
+        jaribu:
             a = Rat(1, 0)
-        except ZeroDivisionError:
-            pass
-        else:
-            self.fail("Rat(1, 0) didn't raise ZeroDivisionError")
-        for bad in "0", 0.0, 0j, (), [], {}, None, Rat, unittest:
-            try:
+        tatizo ZeroDivisionError:
+            pita
+        isipokua:
+            self.fail("Rat(1, 0) didn't ashiria ZeroDivisionError")
+        kila bad kwenye "0", 0.0, 0j, (), [], {}, Tupu, Rat, unittest:
+            jaribu:
                 a = Rat(bad)
-            except TypeError:
-                pass
-            else:
-                self.fail("Rat(%r) didn't raise TypeError" % bad)
-            try:
+            tatizo TypeError:
+                pita
+            isipokua:
+                self.fail("Rat(%r) didn't ashiria TypeError" % bad)
+            jaribu:
                 a = Rat(1, bad)
-            except TypeError:
-                pass
-            else:
-                self.fail("Rat(1, %r) didn't raise TypeError" % bad)
+            tatizo TypeError:
+                pita
+            isipokua:
+                self.fail("Rat(1, %r) didn't ashiria TypeError" % bad)
 
     eleza test_add(self):
         self.assertEqual(Rat(2, 3) + Rat(1, 3), 1)
@@ -301,7 +301,7 @@ kundi RatTestCase(unittest.TestCase):
 
 
 kundi OperationLogger:
-    """Base kundi for classes with operation logging."""
+    """Base kundi kila classes with operation logging."""
     eleza __init__(self, logger):
         self.logger = logger
     eleza log_operation(self, *args):
@@ -312,13 +312,13 @@ eleza op_sequence(op, *classes):
     the operation `op` to instances of the given classes."""
     log = []
     instances = []
-    for c in classes:
+    kila c kwenye classes:
         instances.append(c(log.append))
 
-    try:
+    jaribu:
         op(*instances)
-    except TypeError:
-        pass
+    tatizo TypeError:
+        pita
     rudisha log
 
 kundi A(OperationLogger):
@@ -373,7 +373,7 @@ kundi OperationOrderTests(unittest.TestCase):
         self.assertEqual(op_sequence(eq, A, A), ['A.__eq__', 'A.__eq__'])
         self.assertEqual(op_sequence(eq, A, B), ['A.__eq__', 'B.__eq__'])
         self.assertEqual(op_sequence(eq, B, A), ['B.__eq__', 'A.__eq__'])
-        # C is a subkundi of B, so C.__eq__ is called first
+        # C ni a subkundi of B, so C.__eq__ ni called first
         self.assertEqual(op_sequence(eq, B, C), ['C.__eq__', 'B.__eq__'])
         self.assertEqual(op_sequence(eq, C, B), ['C.__eq__', 'B.__eq__'])
 
@@ -383,57 +383,57 @@ kundi OperationOrderTests(unittest.TestCase):
         self.assertEqual(op_sequence(le, B, C), ['C.__ge__', 'B.__le__'])
         self.assertEqual(op_sequence(le, C, B), ['C.__le__', 'B.__ge__'])
 
-        self.assertTrue(issubclass(V, B))
+        self.assertKweli(issubclass(V, B))
         self.assertEqual(op_sequence(eq, B, V), ['B.__eq__', 'V.__eq__'])
         self.assertEqual(op_sequence(le, B, V), ['B.__le__', 'V.__ge__'])
 
 kundi SupEq(object):
     """Class that can test equality"""
     eleza __eq__(self, other):
-        rudisha True
+        rudisha Kweli
 
 kundi S(SupEq):
     """Subkundi of SupEq that should fail"""
-    __eq__ = None
+    __eq__ = Tupu
 
 kundi F(object):
     """Independent kundi that should fall back"""
 
 kundi X(object):
     """Independent kundi that should fail"""
-    __eq__ = None
+    __eq__ = Tupu
 
 kundi SN(SupEq):
-    """Subkundi of SupEq that can test equality, but not non-equality"""
-    __ne__ = None
+    """Subkundi of SupEq that can test equality, but sio non-equality"""
+    __ne__ = Tupu
 
 kundi XN:
-    """Independent kundi that can test equality, but not non-equality"""
+    """Independent kundi that can test equality, but sio non-equality"""
     eleza __eq__(self, other):
-        rudisha True
-    __ne__ = None
+        rudisha Kweli
+    __ne__ = Tupu
 
 kundi FallbackBlockingTests(unittest.TestCase):
-    """Unit tests for None method blocking"""
+    """Unit tests kila Tupu method blocking"""
 
     eleza test_fallback_rmethod_blocking(self):
         e, f, s, x = SupEq(), F(), S(), X()
         self.assertEqual(e, e)
         self.assertEqual(e, f)
         self.assertEqual(f, e)
-        # left operand is checked first
+        # left operand ni checked first
         self.assertEqual(e, x)
         self.assertRaises(TypeError, eq, x, e)
-        # S is a subclass, so it's always checked first
+        # S ni a subclass, so it's always checked first
         self.assertRaises(TypeError, eq, e, s)
         self.assertRaises(TypeError, eq, s, e)
 
     eleza test_fallback_ne_blocking(self):
         e, sn, xn = SupEq(), SN(), XN()
-        self.assertFalse(e != e)
+        self.assertUongo(e != e)
         self.assertRaises(TypeError, ne, e, sn)
         self.assertRaises(TypeError, ne, sn, e)
-        self.assertFalse(e != xn)
+        self.assertUongo(e != xn)
         self.assertRaises(TypeError, ne, xn, e)
 
 ikiwa __name__ == "__main__":

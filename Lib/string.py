@@ -20,7 +20,7 @@ __all__ = ["ascii_letters", "ascii_lowercase", "ascii_uppercase", "capwords",
 
 agiza _string
 
-# Some strings for ctype-style character classification
+# Some strings kila ctype-style character classification
 whitespace = ' \t\n\r\v\f'
 ascii_lowercase = 'abcdefghijklmnopqrstuvwxyz'
 ascii_uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -31,26 +31,26 @@ octdigits = '01234567'
 punctuation = r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
 printable = digits + ascii_letters + punctuation + whitespace
 
-# Functions which aren't available as string methods.
+# Functions which aren't available kama string methods.
 
-# Capitalize the words in a string, e.g. " aBc  dEf " -> "Abc Def".
-eleza capwords(s, sep=None):
+# Capitalize the words kwenye a string, e.g. " aBc  dEf " -> "Abc Def".
+eleza capwords(s, sep=Tupu):
     """capwords(s [,sep]) -> string
 
     Split the argument into words using split, capitalize each
-    word using capitalize, and join the capitalized words using
-    join.  If the optional second argument sep is absent or None,
+    word using capitalize, na join the capitalized words using
+    join.  If the optional second argument sep ni absent ama Tupu,
     runs of whitespace characters are replaced by a single space
-    and leading and trailing whitespace are removed, otherwise
-    sep is used to split and join the words.
+    na leading na trailing whitespace are removed, otherwise
+    sep ni used to split na join the words.
 
     """
-    rudisha (sep or ' ').join(x.capitalize() for x in s.split(sep))
+    rudisha (sep ama ' ').join(x.capitalize() kila x kwenye s.split(sep))
 
 
 ####################################################################
-agiza re as _re
-kutoka collections agiza ChainMap as _ChainMap
+agiza re kama _re
+kutoka collections agiza ChainMap kama _ChainMap
 
 _sentinel_dict = {}
 
@@ -58,91 +58,91 @@ kundi _TemplateMetaclass(type):
     pattern = r"""
     %(delim)s(?:
       (?P<escaped>%(delim)s) |   # Escape sequence of two delimiters
-      (?P<named>%(id)s)      |   # delimiter and a Python identifier
-      {(?P<braced>%(bid)s)}  |   # delimiter and a braced identifier
+      (?P<named>%(id)s)      |   # delimiter na a Python identifier
+      {(?P<braced>%(bid)s)}  |   # delimiter na a braced identifier
       (?P<invalid>)              # Other ill-formed delimiter exprs
     )
     """
 
     eleza __init__(cls, name, bases, dct):
         super(_TemplateMetaclass, cls).__init__(name, bases, dct)
-        ikiwa 'pattern' in dct:
+        ikiwa 'pattern' kwenye dct:
             pattern = cls.pattern
-        else:
+        isipokua:
             pattern = _TemplateMetaclass.pattern % {
                 'delim' : _re.escape(cls.delimiter),
                 'id'    : cls.idpattern,
-                'bid'   : cls.braceidpattern or cls.idpattern,
+                'bid'   : cls.braceidpattern ama cls.idpattern,
                 }
         cls.pattern = _re.compile(pattern, cls.flags | _re.VERBOSE)
 
 
 kundi Template(metaclass=_TemplateMetaclass):
-    """A string kundi for supporting $-substitutions."""
+    """A string kundi kila supporting $-substitutions."""
 
     delimiter = '$'
     # r'[a-z]' matches to non-ASCII letters when used with IGNORECASE, but
     # without the ASCII flag.  We can't add re.ASCII to flags because of
-    # backward compatibility.  So we use the ?a local flag and [a-z] pattern.
+    # backward compatibility.  So we use the ?a local flag na [a-z] pattern.
     # See https://bugs.python.org/issue31672
     idpattern = r'(?a:[_a-z][_a-z0-9]*)'
-    braceidpattern = None
+    braceidpattern = Tupu
     flags = _re.IGNORECASE
 
     eleza __init__(self, template):
         self.template = template
 
-    # Search for $$, $identifier, ${identifier}, and any bare $'s
+    # Search kila $$, $identifier, ${identifier}, na any bare $'s
 
     eleza _invalid(self, mo):
         i = mo.start('invalid')
-        lines = self.template[:i].splitlines(keepends=True)
-        ikiwa not lines:
+        lines = self.template[:i].splitlines(keepends=Kweli)
+        ikiwa sio lines:
             colno = 1
             lineno = 1
-        else:
+        isipokua:
             colno = i - len(''.join(lines[:-1]))
             lineno = len(lines)
-        raise ValueError('Invalid placeholder in string: line %d, col %d' %
+        ashiria ValueError('Invalid placeholder kwenye string: line %d, col %d' %
                          (lineno, colno))
 
     eleza substitute(self, mapping=_sentinel_dict, /, **kws):
-        ikiwa mapping is _sentinel_dict:
+        ikiwa mapping ni _sentinel_dict:
             mapping = kws
         elikiwa kws:
             mapping = _ChainMap(kws, mapping)
-        # Helper function for .sub()
+        # Helper function kila .sub()
         eleza convert(mo):
             # Check the most common path first.
-            named = mo.group('named') or mo.group('braced')
-            ikiwa named is not None:
+            named = mo.group('named') ama mo.group('braced')
+            ikiwa named ni sio Tupu:
                 rudisha str(mapping[named])
-            ikiwa mo.group('escaped') is not None:
+            ikiwa mo.group('escaped') ni sio Tupu:
                 rudisha self.delimiter
-            ikiwa mo.group('invalid') is not None:
+            ikiwa mo.group('invalid') ni sio Tupu:
                 self._invalid(mo)
-            raise ValueError('Unrecognized named group in pattern',
+            ashiria ValueError('Unrecognized named group kwenye pattern',
                              self.pattern)
         rudisha self.pattern.sub(convert, self.template)
 
     eleza safe_substitute(self, mapping=_sentinel_dict, /, **kws):
-        ikiwa mapping is _sentinel_dict:
+        ikiwa mapping ni _sentinel_dict:
             mapping = kws
         elikiwa kws:
             mapping = _ChainMap(kws, mapping)
-        # Helper function for .sub()
+        # Helper function kila .sub()
         eleza convert(mo):
-            named = mo.group('named') or mo.group('braced')
-            ikiwa named is not None:
-                try:
+            named = mo.group('named') ama mo.group('braced')
+            ikiwa named ni sio Tupu:
+                jaribu:
                     rudisha str(mapping[named])
-                except KeyError:
+                tatizo KeyError:
                     rudisha mo.group()
-            ikiwa mo.group('escaped') is not None:
+            ikiwa mo.group('escaped') ni sio Tupu:
                 rudisha self.delimiter
-            ikiwa mo.group('invalid') is not None:
+            ikiwa mo.group('invalid') ni sio Tupu:
                 rudisha mo.group()
-            raise ValueError('Unrecognized named group in pattern',
+            ashiria ValueError('Unrecognized named group kwenye pattern',
                              self.pattern)
         rudisha self.pattern.sub(convert, self.template)
 
@@ -150,13 +150,13 @@ kundi Template(metaclass=_TemplateMetaclass):
 
 ########################################################################
 # the Formatter class
-# see PEP 3101 for details and purpose of this class
+# see PEP 3101 kila details na purpose of this class
 
-# The hard parts are reused kutoka the C implementation.  They're exposed as "_"
+# The hard parts are reused kutoka the C implementation.  They're exposed kama "_"
 # prefixed methods of str.
 
-# The overall parser is implemented in _string.formatter_parser.
-# The field name parser is implemented in _string.formatter_field_name_split
+# The overall parser ni implemented kwenye _string.formatter_parser.
+# The field name parser ni implemented kwenye _string.formatter_field_name_split
 
 kundi Formatter:
     eleza format(self, format_string, /, *args, **kwargs):
@@ -171,9 +171,9 @@ kundi Formatter:
     eleza _vformat(self, format_string, args, kwargs, used_args, recursion_depth,
                  auto_arg_index=0):
         ikiwa recursion_depth < 0:
-            raise ValueError('Max string recursion exceeded')
+            ashiria ValueError('Max string recursion exceeded')
         result = []
-        for literal_text, field_name, format_spec, conversion in \
+        kila literal_text, field_name, format_spec, conversion kwenye \
                 self.parse(format_string):
 
             # output the literal text
@@ -181,29 +181,29 @@ kundi Formatter:
                 result.append(literal_text)
 
             # ikiwa there's a field, output it
-            ikiwa field_name is not None:
-                # this is some markup, find the object and do
+            ikiwa field_name ni sio Tupu:
+                # this ni some markup, find the object na do
                 #  the formatting
 
                 # handle arg indexing when empty field_names are given.
                 ikiwa field_name == '':
-                    ikiwa auto_arg_index is False:
-                        raise ValueError('cannot switch kutoka manual field '
+                    ikiwa auto_arg_index ni Uongo:
+                        ashiria ValueError('cannot switch kutoka manual field '
                                          'specification to automatic field '
                                          'numbering')
                     field_name = str(auto_arg_index)
                     auto_arg_index += 1
                 elikiwa field_name.isdigit():
                     ikiwa auto_arg_index:
-                        raise ValueError('cannot switch kutoka manual field '
+                        ashiria ValueError('cannot switch kutoka manual field '
                                          'specification to automatic field '
                                          'numbering')
                     # disable auto arg incrementing, ikiwa it gets
-                    # used later on, then an exception will be raised
-                    auto_arg_index = False
+                    # used later on, then an exception will be ashiriad
+                    auto_arg_index = Uongo
 
                 # given the field_name, find the object it references
-                #  and the argument it came kutoka
+                #  na the argument it came kutoka
                 obj, arg_used = self.get_field(field_name, args, kwargs)
                 used_args.add(arg_used)
 
@@ -216,7 +216,7 @@ kundi Formatter:
                     used_args, recursion_depth-1,
                     auto_arg_index=auto_arg_index)
 
-                # format the object and append to the result
+                # format the object na append to the result
                 result.append(self.format_field(obj, format_spec))
 
         rudisha ''.join(result), auto_arg_index
@@ -225,12 +225,12 @@ kundi Formatter:
     eleza get_value(self, key, args, kwargs):
         ikiwa isinstance(key, int):
             rudisha args[key]
-        else:
+        isipokua:
             rudisha kwargs[key]
 
 
     eleza check_unused_args(self, used_args, args, kwargs):
-        pass
+        pita
 
 
     eleza format_field(self, value, format_spec):
@@ -239,7 +239,7 @@ kundi Formatter:
 
     eleza convert_field(self, value, conversion):
         # do any conversion on the resulting object
-        ikiwa conversion is None:
+        ikiwa conversion ni Tupu:
             rudisha value
         elikiwa conversion == 's':
             rudisha str(value)
@@ -247,36 +247,36 @@ kundi Formatter:
             rudisha repr(value)
         elikiwa conversion == 'a':
             rudisha ascii(value)
-        raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
+        ashiria ValueError("Unknown conversion specifier {0!s}".format(conversion))
 
 
-    # returns an iterable that contains tuples of the form:
+    # rudishas an iterable that contains tuples of the form:
     # (literal_text, field_name, format_spec, conversion)
     # literal_text can be zero length
-    # field_name can be None, in which case there's no
-    #  object to format and output
-    # ikiwa field_name is not None, it is looked up, formatted
-    #  with format_spec and conversion and then used
+    # field_name can be Tupu, kwenye which case there's no
+    #  object to format na output
+    # ikiwa field_name ni sio Tupu, it ni looked up, formatted
+    #  with format_spec na conversion na then used
     eleza parse(self, format_string):
         rudisha _string.formatter_parser(format_string)
 
 
     # given a field_name, find the object it references.
     #  field_name:   the field being looked up, e.g. "0.name"
-    #                 or "lookup[3]"
+    #                 ama "lookup[3]"
     #  used_args:    a set of which args have been used
-    #  args, kwargs: as passed in to vformat
+    #  args, kwargs: kama pitaed kwenye to vformat
     eleza get_field(self, field_name, args, kwargs):
         first, rest = _string.formatter_field_name_split(field_name)
 
         obj = self.get_value(first, args, kwargs)
 
         # loop through the rest of the field_name, doing
-        #  getattr or getitem as needed
-        for is_attr, i in rest:
+        #  getattr ama getitem kama needed
+        kila is_attr, i kwenye rest:
             ikiwa is_attr:
                 obj = getattr(obj, i)
-            else:
+            isipokua:
                 obj = obj[i]
 
         rudisha obj, first

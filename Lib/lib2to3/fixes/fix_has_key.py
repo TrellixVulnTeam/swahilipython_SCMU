@@ -1,32 +1,32 @@
 # Copyright 2006 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Fixer for has_key().
+"""Fixer kila has_key().
 
-Calls to .has_key() methods are expressed in terms of the 'in'
+Calls to .has_key() methods are expressed kwenye terms of the 'in'
 operator:
 
-    d.has_key(k) -> k in d
+    d.has_key(k) -> k kwenye d
 
 CAVEATS:
-1) While the primary target of this fixer is dict.has_key(), the
+1) While the primary target of this fixer ni dict.has_key(), the
    fixer will change any has_key() method call, regardless of its
    class.
 
-2) Cases like this will not be converted:
+2) Cases like this will sio be converted:
 
     m = d.has_key
     ikiwa m(k):
         ...
 
-   Only *calls* to has_key() are converted. While it is possible to
+   Only *calls* to has_key() are converted. While it ni possible to
    convert the above to something like
 
     m = d.__contains__
     ikiwa m(k):
         ...
 
-   this is currently not done.
+   this ni currently sio done.
 """
 
 # Local agizas
@@ -36,7 +36,7 @@ kutoka ..fixer_util agiza Name, parenthesize
 
 
 kundi FixHasKey(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     anchor=power<
@@ -75,21 +75,21 @@ kundi FixHasKey(fixer_base.BaseFix):
             self.pattern.match(node.parent)):
             # Don't transform a node matching the first alternative of the
             # pattern when its parent matches the second alternative
-            rudisha None
+            rudisha Tupu
         negation = results.get("negation")
         anchor = results["anchor"]
         prefix = node.prefix
-        before = [n.clone() for n in results["before"]]
+        before = [n.clone() kila n kwenye results["before"]]
         arg = results["arg"].clone()
         after = results.get("after")
         ikiwa after:
-            after = [n.clone() for n in after]
-        ikiwa arg.type in (syms.comparison, syms.not_test, syms.and_test,
+            after = [n.clone() kila n kwenye after]
+        ikiwa arg.type kwenye (syms.comparison, syms.not_test, syms.and_test,
                         syms.or_test, syms.test, syms.lambdef, syms.argument):
             arg = parenthesize(arg)
         ikiwa len(before) == 1:
             before = before[0]
-        else:
+        isipokua:
             before = pytree.Node(syms.power, before)
         before.prefix = " "
         n_op = Name("in", prefix=" ")
@@ -100,7 +100,7 @@ kundi FixHasKey(fixer_base.BaseFix):
         ikiwa after:
             new = parenthesize(new)
             new = pytree.Node(syms.power, (new,) + tuple(after))
-        ikiwa node.parent.type in (syms.comparison, syms.expr, syms.xor_expr,
+        ikiwa node.parent.type kwenye (syms.comparison, syms.expr, syms.xor_expr,
                                 syms.and_expr, syms.shift_expr,
                                 syms.arith_expr, syms.term,
                                 syms.factor, syms.power):

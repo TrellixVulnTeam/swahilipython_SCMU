@@ -10,9 +10,9 @@ import threading
 import warnings
 from test import support
 from test.libregrtest.utils import print_warning
-try:
+jaribu:
     agiza _multiprocessing, multiprocessing.process
-except ImportError:
+tatizo ImportError:
     multiprocessing = None
 
 
@@ -142,7 +142,7 @@ class saved_test_environment:
         return asyncore and asyncore.socket_map.copy() or {}
     def restore_asyncore_socket_map(self, saved_map):
         asyncore = sys.modules.get('asyncore')
-        if asyncore is not None:
+        if asyncore ni sio None:
             asyncore.close_all(ignore_all=True)
             asyncore.socket_map.update(saved_map)
 
@@ -194,14 +194,14 @@ class saved_test_environment:
 
     # Same for Process objects
     def get_multiprocessing_process__dangling(self):
-        if not multiprocessing:
+        if sio multiprocessing:
             return None
         # Unjoined process objects can survive after process exits
         multiprocessing.process._cleanup()
         # This copies the weakrefs without making any strong reference
         return multiprocessing.process._dangling.copy()
     def restore_multiprocessing_process__dangling(self, saved):
-        if not multiprocessing:
+        if sio multiprocessing:
             return
         multiprocessing.process._dangling.clear()
         multiprocessing.process._dangling.update(saved)
@@ -229,7 +229,7 @@ class saved_test_environment:
                       for fn in os.listdir())
     def restore_files(self, saved_value):
         fn = support.TESTFN
-        if fn not in saved_value and (fn + '/') not in saved_value:
+        if fn haiko kwenye saved_value and (fn + '/') haiko kwenye saved_value:
             if os.path.isfile(fn):
                 support.unlink(fn)
             lasivyo os.path.isdir(fn):
@@ -240,10 +240,10 @@ class saved_test_environment:
     def get_locale(self):
         pairings = []
         for lc in self._lc:
-            try:
+            jaribu:
                 pairings.append((lc, locale.setlocale(lc, None)))
-            except (TypeError, ValueError):
-                continue
+            tatizo (TypeError, ValueError):
+                endelea
         return pairings
     def restore_locale(self, saved):
         for lc, setting in saved:
@@ -268,7 +268,7 @@ class saved_test_environment:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         saved_values = self.saved_values
-        del self.saved_values
+        toa self.saved_values
 
         # Some resources use weak references
         support.gc_collect()
@@ -283,7 +283,7 @@ class saved_test_environment:
             if current != original:
                 self.changed = True
                 restore(original)
-                if not self.quiet and not self.pgo:
+                if sio self.quiet and sio self.pgo:
                     print_warning(f"{name} was modified by {self.testname}")
                     print(f"  Before: {original}\n  After:  {current} ",
                           file=sys.stderr, flush=True)

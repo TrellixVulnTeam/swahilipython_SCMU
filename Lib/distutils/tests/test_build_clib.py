@@ -30,7 +30,7 @@ class BuildCLibTestCase(support.TempdirManager,
         self.assertRaises(DistutilsSetupError, cmd.check_library_list,
                           [(1, 'foo1'), ('name', 'foo2')])
 
-        # library name may not contain directory separators
+        # library name may sio contain directory separators
         self.assertRaises(DistutilsSetupError, cmd.check_library_list,
                           [('name', 'foo1'),
                            ('another/name', 'foo2')])
@@ -119,8 +119,8 @@ class BuildCLibTestCase(support.TempdirManager,
         # Before we run the command, we want to make sure
         # all commands are present on the system.
         ccmd = missing_compiler_executable()
-        if ccmd is not None:
-            self.skipTest('The %r command is not found' % ccmd)
+        if ccmd ni sio None:
+            self.skipTest('The %r command ni sio found' % ccmd)
 
         # this should work
         cmd.run()

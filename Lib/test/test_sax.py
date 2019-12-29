@@ -1,15 +1,15 @@
-# regression test for SAX 2.0
+# regression test kila SAX 2.0
 # $Id$
 
 kutoka xml.sax agiza make_parser, ContentHandler, \
                     SAXException, SAXReaderNotAvailable, SAXParseException
 agiza unittest
 kutoka unittest agiza mock
-try:
+jaribu:
     make_parser()
-except SAXReaderNotAvailable:
+tatizo SAXReaderNotAvailable:
     # don't try to test this module ikiwa we cannot create a parser
-    raise unittest.SkipTest("no XML parsers available")
+    ashiria unittest.SkipTest("no XML parsers available")
 kutoka xml.sax.saxutils agiza XMLGenerator, escape, unescape, quoteattr, \
                              XMLFilterBase, prepare_input_source
 kutoka xml.sax.expatreader agiza create_parser
@@ -25,20 +25,20 @@ kutoka test.support agiza findfile, run_unittest, FakePath, TESTFN
 
 TEST_XMLFILE = findfile("test.xml", subdir="xmltestdata")
 TEST_XMLFILE_OUT = findfile("test.xml.out", subdir="xmltestdata")
-try:
+jaribu:
     TEST_XMLFILE.encode("utf-8")
     TEST_XMLFILE_OUT.encode("utf-8")
-except UnicodeEncodeError:
-    raise unittest.SkipTest("filename is not encodable to utf8")
+tatizo UnicodeEncodeError:
+    ashiria unittest.SkipTest("filename ni sio encodable to utf8")
 
-supports_nonascii_filenames = True
-ikiwa not os.path.supports_unicode_filenames:
-    try:
+supports_nonascii_filenames = Kweli
+ikiwa sio os.path.supports_unicode_filenames:
+    jaribu:
         support.TESTFN_UNICODE.encode(support.TESTFN_ENCODING)
-    except (UnicodeError, TypeError):
-        # Either the file system encoding is None, or the file name
-        # cannot be encoded in the file system encoding.
-        supports_nonascii_filenames = False
+    tatizo (UnicodeError, TypeError):
+        # Either the file system encoding ni Tupu, ama the file name
+        # cannot be encoded kwenye the file system encoding.
+        supports_nonascii_filenames = Uongo
 requires_nonascii_filenames = unittest.skipUnless(
         supports_nonascii_filenames,
         'Requires non-ascii filenames support')
@@ -58,7 +58,7 @@ kundi XmlTestBase(unittest.TestCase):
         self.assertEqual(len(attrs), 0)
         self.assertNotIn("attr", attrs)
         self.assertEqual(list(attrs.keys()), [])
-        self.assertEqual(attrs.get("attrs"), None)
+        self.assertEqual(attrs.get("attrs"), Tupu)
         self.assertEqual(attrs.get("attrs", 25), 25)
         self.assertEqual(list(attrs.items()), [])
         self.assertEqual(list(attrs.values()), [])
@@ -75,7 +75,7 @@ kundi XmlTestBase(unittest.TestCase):
         self.assertEqual(len(attrs), 0)
         self.assertNotIn((ns_uri, "attr"), attrs)
         self.assertEqual(list(attrs.keys()), [])
-        self.assertEqual(attrs.get((ns_uri, "attr")), None)
+        self.assertEqual(attrs.get((ns_uri, "attr")), Tupu)
         self.assertEqual(attrs.get((ns_uri, "attr"), 25), 25)
         self.assertEqual(list(attrs.items()), [])
         self.assertEqual(list(attrs.values()), [])
@@ -98,20 +98,20 @@ kundi XmlTestBase(unittest.TestCase):
         self.assertEqual(attrs.getQNameByName("attr"), "attr")
 
 
-eleza xml_str(doc, encoding=None):
-    ikiwa encoding is None:
+eleza xml_str(doc, encoding=Tupu):
+    ikiwa encoding ni Tupu:
         rudisha doc
     rudisha '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
 eleza xml_bytes(doc, encoding, decl_encoding=...):
-    ikiwa decl_encoding is ...:
+    ikiwa decl_encoding ni ...:
         decl_encoding = encoding
     rudisha xml_str(doc, decl_encoding).encode(encoding, 'xmlcharrefreplace')
 
 eleza make_xml_file(doc, encoding, decl_encoding=...):
-    ikiwa decl_encoding is ...:
+    ikiwa decl_encoding ni ...:
         decl_encoding = encoding
-    with open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') as f:
+    with open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') kama f:
         f.write(xml_str(doc, decl_encoding))
 
 
@@ -130,66 +130,66 @@ kundi ParseTest(unittest.TestCase):
     eleza test_parse_text(self):
         encodings = ('us-ascii', 'iso-8859-1', 'utf-8',
                      'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        kila encoding kwenye encodings:
             self.check_parse(StringIO(xml_str(self.data, encoding)))
             make_xml_file(self.data, encoding)
-            with open(TESTFN, 'r', encoding=encoding) as f:
+            with open(TESTFN, 'r', encoding=encoding) kama f:
                 self.check_parse(f)
             self.check_parse(StringIO(self.data))
-            make_xml_file(self.data, encoding, None)
-            with open(TESTFN, 'r', encoding=encoding) as f:
+            make_xml_file(self.data, encoding, Tupu)
+            with open(TESTFN, 'r', encoding=encoding) kama f:
                 self.check_parse(f)
 
     eleza test_parse_bytes(self):
-        # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
-        # UTF-16 is autodetected
+        # UTF-8 ni default encoding, US-ASCII ni compatible with UTF-8,
+        # UTF-16 ni autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        kila encoding kwenye encodings:
             self.check_parse(BytesIO(xml_bytes(self.data, encoding)))
             make_xml_file(self.data, encoding)
             self.check_parse(TESTFN)
-            with open(TESTFN, 'rb') as f:
+            with open(TESTFN, 'rb') kama f:
                 self.check_parse(f)
-            self.check_parse(BytesIO(xml_bytes(self.data, encoding, None)))
-            make_xml_file(self.data, encoding, None)
+            self.check_parse(BytesIO(xml_bytes(self.data, encoding, Tupu)))
+            make_xml_file(self.data, encoding, Tupu)
             self.check_parse(TESTFN)
-            with open(TESTFN, 'rb') as f:
+            with open(TESTFN, 'rb') kama f:
                 self.check_parse(f)
         # accept UTF-8 with BOM
         self.check_parse(BytesIO(xml_bytes(self.data, 'utf-8-sig', 'utf-8')))
         make_xml_file(self.data, 'utf-8-sig', 'utf-8')
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        with open(TESTFN, 'rb') kama f:
             self.check_parse(f)
-        self.check_parse(BytesIO(xml_bytes(self.data, 'utf-8-sig', None)))
-        make_xml_file(self.data, 'utf-8-sig', None)
+        self.check_parse(BytesIO(xml_bytes(self.data, 'utf-8-sig', Tupu)))
+        make_xml_file(self.data, 'utf-8-sig', Tupu)
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        with open(TESTFN, 'rb') kama f:
             self.check_parse(f)
         # accept data with declared encoding
         self.check_parse(BytesIO(xml_bytes(self.data, 'iso-8859-1')))
         make_xml_file(self.data, 'iso-8859-1')
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        with open(TESTFN, 'rb') kama f:
             self.check_parse(f)
         # fail on non-UTF-8 incompatible data without declared encoding
         with self.assertRaises(SAXException):
-            self.check_parse(BytesIO(xml_bytes(self.data, 'iso-8859-1', None)))
-        make_xml_file(self.data, 'iso-8859-1', None)
+            self.check_parse(BytesIO(xml_bytes(self.data, 'iso-8859-1', Tupu)))
+        make_xml_file(self.data, 'iso-8859-1', Tupu)
         with self.assertRaises(SAXException):
             self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        with open(TESTFN, 'rb') kama f:
             with self.assertRaises(SAXException):
                 self.check_parse(f)
 
     eleza test_parse_path_object(self):
-        make_xml_file(self.data, 'utf-8', None)
+        make_xml_file(self.data, 'utf-8', Tupu)
         self.check_parse(FakePath(TESTFN))
 
     eleza test_parse_InputSource(self):
         # accept data without declared but with explicitly specified encoding
-        make_xml_file(self.data, 'iso-8859-1', None)
-        with open(TESTFN, 'rb') as f:
+        make_xml_file(self.data, 'iso-8859-1', Tupu)
+        with open(TESTFN, 'rb') kama f:
             input = InputSource()
             input.setByteStream(f)
             input.setEncoding('iso-8859-1')
@@ -197,7 +197,7 @@ kundi ParseTest(unittest.TestCase):
 
     eleza test_parse_close_source(self):
         builtin_open = open
-        fileobj = None
+        fileobj = Tupu
 
         eleza mock_open(*args):
             nonlocal fileobj
@@ -205,10 +205,10 @@ kundi ParseTest(unittest.TestCase):
             rudisha fileobj
 
         with mock.patch('xml.sax.saxutils.open', side_effect=mock_open):
-            make_xml_file(self.data, 'iso-8859-1', None)
+            make_xml_file(self.data, 'iso-8859-1', Tupu)
             with self.assertRaises(SAXException):
                 self.check_parse(TESTFN)
-            self.assertTrue(fileobj.closed)
+            self.assertKweli(fileobj.closed)
 
     eleza check_parseString(self, s):
         kutoka xml.sax agiza parseString
@@ -219,29 +219,29 @@ kundi ParseTest(unittest.TestCase):
     eleza test_parseString_text(self):
         encodings = ('us-ascii', 'iso-8859-1', 'utf-8',
                      'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        kila encoding kwenye encodings:
             self.check_parseString(xml_str(self.data, encoding))
         self.check_parseString(self.data)
 
     eleza test_parseString_bytes(self):
-        # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
-        # UTF-16 is autodetected
+        # UTF-8 ni default encoding, US-ASCII ni compatible with UTF-8,
+        # UTF-16 ni autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
-        for encoding in encodings:
+        kila encoding kwenye encodings:
             self.check_parseString(xml_bytes(self.data, encoding))
-            self.check_parseString(xml_bytes(self.data, encoding, None))
+            self.check_parseString(xml_bytes(self.data, encoding, Tupu))
         # accept UTF-8 with BOM
         self.check_parseString(xml_bytes(self.data, 'utf-8-sig', 'utf-8'))
-        self.check_parseString(xml_bytes(self.data, 'utf-8-sig', None))
+        self.check_parseString(xml_bytes(self.data, 'utf-8-sig', Tupu))
         # accept data with declared encoding
         self.check_parseString(xml_bytes(self.data, 'iso-8859-1'))
         # fail on non-UTF-8 incompatible data without declared encoding
         with self.assertRaises(SAXException):
-            self.check_parseString(xml_bytes(self.data, 'iso-8859-1', None))
+            self.check_parseString(xml_bytes(self.data, 'iso-8859-1', Tupu))
 
 kundi MakeParserTest(unittest.TestCase):
     eleza test_make_parser2(self):
-        # Creating parsers several times in a row should succeed.
+        # Creating parsers several times kwenye a row should succeed.
         # Testing this because there have been failures of this kind
         # before.
         kutoka xml.sax agiza make_parser
@@ -264,7 +264,7 @@ kundi MakeParserTest(unittest.TestCase):
         make_parser(('module', ))
         make_parser({'module'})
         make_parser(frozenset({'module'}))
-        make_parser({'module': None})
+        make_parser({'module': Tupu})
         make_parser(iter(['module']))
 
     eleza test_make_parser4(self):
@@ -283,7 +283,7 @@ kundi MakeParserTest(unittest.TestCase):
         make_parser(('module1', 'module2'))
         make_parser({'module1', 'module2'})
         make_parser(frozenset({'module1', 'module2'}))
-        make_parser({'module1': None, 'module2': None})
+        make_parser({'module1': Tupu, 'module2': Tupu})
         make_parser(iter(['module1', 'module2']))
 
 # ===========================================================================
@@ -334,8 +334,8 @@ kundi SaxutilsTest(unittest.TestCase):
                          "\"Includes 'single' quotes\"")
 
     eleza test_single_double_quoteattr(self):
-        self.assertEqual(quoteattr("Includes 'single' and \"double\" quotes"),
-                         "\"Includes 'single' and &quot;double&quot; quotes\"")
+        self.assertEqual(quoteattr("Includes 'single' na \"double\" quotes"),
+                         "\"Includes 'single' na &quot;double&quot; quotes\"")
 
     # ===== make_parser
     eleza test_make_parser(self):
@@ -348,81 +348,81 @@ kundi PrepareInputSourceTest(unittest.TestCase):
 
     eleza setUp(self):
         self.file = support.TESTFN
-        with open(self.file, "w") as tmp:
+        with open(self.file, "w") kama tmp:
             tmp.write("This was read kutoka a file.")
 
     eleza tearDown(self):
         support.unlink(self.file)
 
     eleza make_byte_stream(self):
-        rudisha BytesIO(b"This is a byte stream.")
+        rudisha BytesIO(b"This ni a byte stream.")
 
     eleza make_character_stream(self):
-        rudisha StringIO("This is a character stream.")
+        rudisha StringIO("This ni a character stream.")
 
     eleza checkContent(self, stream, content):
-        self.assertIsNotNone(stream)
+        self.assertIsNotTupu(stream)
         self.assertEqual(stream.read(), content)
         stream.close()
 
 
     eleza test_character_stream(self):
-        # If the source is an InputSource with a character stream, use it.
+        # If the source ni an InputSource with a character stream, use it.
         src = InputSource(self.file)
         src.setCharacterStream(self.make_character_stream())
         prep = prepare_input_source(src)
-        self.assertIsNone(prep.getByteStream())
+        self.assertIsTupu(prep.getByteStream())
         self.checkContent(prep.getCharacterStream(),
-                          "This is a character stream.")
+                          "This ni a character stream.")
 
     eleza test_byte_stream(self):
-        # If the source is an InputSource that does not have a character
+        # If the source ni an InputSource that does sio have a character
         # stream but does have a byte stream, use the byte stream.
         src = InputSource(self.file)
         src.setByteStream(self.make_byte_stream())
         prep = prepare_input_source(src)
-        self.assertIsNone(prep.getCharacterStream())
+        self.assertIsTupu(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
-                          b"This is a byte stream.")
+                          b"This ni a byte stream.")
 
     eleza test_system_id(self):
-        # If the source is an InputSource that has neither a character
+        # If the source ni an InputSource that has neither a character
         # stream nor a byte stream, open the system ID.
         src = InputSource(self.file)
         prep = prepare_input_source(src)
-        self.assertIsNone(prep.getCharacterStream())
+        self.assertIsTupu(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read kutoka a file.")
 
     eleza test_string(self):
-        # If the source is a string, use it as a system ID and open it.
+        # If the source ni a string, use it kama a system ID na open it.
         prep = prepare_input_source(self.file)
-        self.assertIsNone(prep.getCharacterStream())
+        self.assertIsTupu(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read kutoka a file.")
 
     eleza test_path_objects(self):
-        # If the source is a Path object, use it as a system ID and open it.
+        # If the source ni a Path object, use it kama a system ID na open it.
         prep = prepare_input_source(FakePath(self.file))
-        self.assertIsNone(prep.getCharacterStream())
+        self.assertIsTupu(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read kutoka a file.")
 
     eleza test_binary_file(self):
-        # If the source is a binary file-like object, use it as a byte
+        # If the source ni a binary file-like object, use it kama a byte
         # stream.
         prep = prepare_input_source(self.make_byte_stream())
-        self.assertIsNone(prep.getCharacterStream())
+        self.assertIsTupu(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
-                          b"This is a byte stream.")
+                          b"This ni a byte stream.")
 
     eleza test_text_file(self):
-        # If the source is a text file-like object, use it as a character
+        # If the source ni a text file-like object, use it kama a character
         # stream.
         prep = prepare_input_source(self.make_character_stream())
-        self.assertIsNone(prep.getByteStream())
+        self.assertIsTupu(prep.getByteStream())
         self.checkContent(prep.getCharacterStream(),
-                          "This is a character stream.")
+                          "This ni a character stream.")
 
 
 # ===== XMLGenerator
@@ -440,7 +440,7 @@ kundi XmlgenTest:
 
     eleza test_xmlgen_basic_empty(self):
         result = self.ioclass()
-        gen = XMLGenerator(result, short_empty_elements=True)
+        gen = XMLGenerator(result, short_empty_elements=Kweli)
         gen.startDocument()
         gen.startElement("doc", {})
         gen.endElement("doc")
@@ -462,7 +462,7 @@ kundi XmlgenTest:
 
     eleza test_xmlgen_content_empty(self):
         result = self.ioclass()
-        gen = XMLGenerator(result, short_empty_elements=True)
+        gen = XMLGenerator(result, short_empty_elements=Kweli)
 
         gen.startDocument()
         gen.startElement("doc", {})
@@ -522,7 +522,7 @@ kundi XmlgenTest:
         encodings = ('iso-8859-15', 'utf-8', 'utf-8-sig',
                      'utf-16', 'utf-16be', 'utf-16le',
                      'utf-32', 'utf-32be', 'utf-32le')
-        for encoding in encodings:
+        kila encoding kwenye encodings:
             result = self.ioclass()
             gen = XMLGenerator(result, encoding=encoding)
 
@@ -562,7 +562,7 @@ kundi XmlgenTest:
 
     eleza test_xmlgen_ignorable_empty(self):
         result = self.ioclass()
-        gen = XMLGenerator(result, short_empty_elements=True)
+        gen = XMLGenerator(result, short_empty_elements=Kweli)
 
         gen.startDocument()
         gen.startElement("doc", {})
@@ -576,7 +576,7 @@ kundi XmlgenTest:
         encodings = ('iso-8859-15', 'utf-8', 'utf-8-sig',
                      'utf-16', 'utf-16be', 'utf-16le',
                      'utf-32', 'utf-32be', 'utf-32le')
-        for encoding in encodings:
+        kila encoding kwenye encodings:
             result = self.ioclass()
             gen = XMLGenerator(result, encoding=encoding)
 
@@ -598,8 +598,8 @@ kundi XmlgenTest:
         gen.startPrefixMapping("ns1", ns_uri)
         gen.startElementNS((ns_uri, "doc"), "ns1:doc", {})
         # add an unqualified name
-        gen.startElementNS((None, "udoc"), None, {})
-        gen.endElementNS((None, "udoc"), None)
+        gen.startElementNS((Tupu, "udoc"), Tupu, {})
+        gen.endElementNS((Tupu, "udoc"), Tupu)
         gen.endElementNS((ns_uri, "doc"), "ns1:doc")
         gen.endPrefixMapping("ns1")
         gen.endDocument()
@@ -610,14 +610,14 @@ kundi XmlgenTest:
 
     eleza test_xmlgen_ns_empty(self):
         result = self.ioclass()
-        gen = XMLGenerator(result, short_empty_elements=True)
+        gen = XMLGenerator(result, short_empty_elements=Kweli)
 
         gen.startDocument()
         gen.startPrefixMapping("ns1", ns_uri)
         gen.startElementNS((ns_uri, "doc"), "ns1:doc", {})
         # add an unqualified name
-        gen.startElementNS((None, "udoc"), None, {})
-        gen.endElementNS((None, "udoc"), None)
+        gen.startElementNS((Tupu, "udoc"), Tupu, {})
+        gen.endElementNS((Tupu, "udoc"), Tupu)
         gen.endElementNS((ns_uri, "doc"), "ns1:doc")
         gen.endPrefixMapping("ns1")
         gen.endDocument()
@@ -631,19 +631,19 @@ kundi XmlgenTest:
         gen = XMLGenerator(result)
 
         gen.startDocument()
-        gen.startElementNS((None, 'a'), 'a', {(None, 'b'):'c'})
-        gen.endElementNS((None, 'a'), 'a')
+        gen.startElementNS((Tupu, 'a'), 'a', {(Tupu, 'b'):'c'})
+        gen.endElementNS((Tupu, 'a'), 'a')
         gen.endDocument()
 
         self.assertEqual(result.getvalue(), self.xml('<a b="c"></a>'))
 
     eleza test_1463026_1_empty(self):
         result = self.ioclass()
-        gen = XMLGenerator(result, short_empty_elements=True)
+        gen = XMLGenerator(result, short_empty_elements=Kweli)
 
         gen.startDocument()
-        gen.startElementNS((None, 'a'), 'a', {(None, 'b'):'c'})
-        gen.endElementNS((None, 'a'), 'a')
+        gen.startElementNS((Tupu, 'a'), 'a', {(Tupu, 'b'):'c'})
+        gen.endElementNS((Tupu, 'a'), 'a')
         gen.endDocument()
 
         self.assertEqual(result.getvalue(), self.xml('<a b="c"/>'))
@@ -653,23 +653,23 @@ kundi XmlgenTest:
         gen = XMLGenerator(result)
 
         gen.startDocument()
-        gen.startPrefixMapping(None, 'qux')
+        gen.startPrefixMapping(Tupu, 'qux')
         gen.startElementNS(('qux', 'a'), 'a', {})
         gen.endElementNS(('qux', 'a'), 'a')
-        gen.endPrefixMapping(None)
+        gen.endPrefixMapping(Tupu)
         gen.endDocument()
 
         self.assertEqual(result.getvalue(), self.xml('<a xmlns="qux"></a>'))
 
     eleza test_1463026_2_empty(self):
         result = self.ioclass()
-        gen = XMLGenerator(result, short_empty_elements=True)
+        gen = XMLGenerator(result, short_empty_elements=Kweli)
 
         gen.startDocument()
-        gen.startPrefixMapping(None, 'qux')
+        gen.startPrefixMapping(Tupu, 'qux')
         gen.startElementNS(('qux', 'a'), 'a', {})
         gen.endElementNS(('qux', 'a'), 'a')
-        gen.endPrefixMapping(None)
+        gen.endPrefixMapping(Tupu)
         gen.endDocument()
 
         self.assertEqual(result.getvalue(), self.xml('<a xmlns="qux"/>'))
@@ -680,7 +680,7 @@ kundi XmlgenTest:
 
         gen.startDocument()
         gen.startPrefixMapping('my', 'qux')
-        gen.startElementNS(('qux', 'a'), 'a', {(None, 'b'):'c'})
+        gen.startElementNS(('qux', 'a'), 'a', {(Tupu, 'b'):'c'})
         gen.endElementNS(('qux', 'a'), 'a')
         gen.endPrefixMapping('my')
         gen.endDocument()
@@ -690,11 +690,11 @@ kundi XmlgenTest:
 
     eleza test_1463026_3_empty(self):
         result = self.ioclass()
-        gen = XMLGenerator(result, short_empty_elements=True)
+        gen = XMLGenerator(result, short_empty_elements=Kweli)
 
         gen.startDocument()
         gen.startPrefixMapping('my', 'qux')
-        gen.startElementNS(('qux', 'a'), 'a', {(None, 'b'):'c'})
+        gen.startElementNS(('qux', 'a'), 'a', {(Tupu, 'b'):'c'})
         gen.endElementNS(('qux', 'a'), 'a')
         gen.endPrefixMapping('my')
         gen.endDocument()
@@ -703,9 +703,9 @@ kundi XmlgenTest:
             self.xml('<my:a xmlns:my="qux" b="c"/>'))
 
     eleza test_5027_1(self):
-        # The xml prefix (as in xml:lang below) is reserved and bound by
+        # The xml prefix (as kwenye xml:lang below) ni reserved na bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
-        # a bug whereby a KeyError is raised because this namespace is missing
+        # a bug whereby a KeyError ni ashiriad because this namespace ni missing
         # kutoka a dictionary.
         #
         # This test demonstrates the bug by parsing a document.
@@ -716,7 +716,7 @@ kundi XmlgenTest:
             '</a:g1>')
 
         parser = make_parser()
-        parser.setFeature(feature_namespaces, True)
+        parser.setFeature(feature_namespaces, Kweli)
         result = self.ioclass()
         gen = XMLGenerator(result)
         parser.setContentHandler(gen)
@@ -729,9 +729,9 @@ kundi XmlgenTest:
                          '</a:g1>'))
 
     eleza test_5027_2(self):
-        # The xml prefix (as in xml:lang below) is reserved and bound by
+        # The xml prefix (as kwenye xml:lang below) ni reserved na bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
-        # a bug whereby a KeyError is raised because this namespace is missing
+        # a bug whereby a KeyError ni ashiriad because this namespace ni missing
         # kutoka a dictionary.
         #
         # This test demonstrates the bug by direct manipulation of the
@@ -763,7 +763,7 @@ kundi XmlgenTest:
             gen.startDocument()
             gen.startElement("doc", {})
         func(result)
-        self.assertFalse(result.closed)
+        self.assertUongo(result.closed)
 
     eleza test_xmlgen_fragment(self):
         result = self.ioclass()
@@ -786,7 +786,7 @@ kundi StringXmlgenTest(XmlgenTest, unittest.TestCase):
     eleza xml(self, doc, encoding='iso-8859-1'):
         rudisha '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
-    test_xmlgen_unencodable = None
+    test_xmlgen_unencodable = Tupu
 
 kundi BytesXmlgenTest(XmlgenTest, unittest.TestCase):
     iokundi = BytesIO
@@ -798,13 +798,13 @@ kundi BytesXmlgenTest(XmlgenTest, unittest.TestCase):
 kundi WriterXmlgenTest(BytesXmlgenTest):
     kundi ioclass(list):
         write = list.append
-        closed = False
+        closed = Uongo
 
         eleza seekable(self):
-            rudisha True
+            rudisha Kweli
 
         eleza tell(self):
-            # rudisha 0 at start and not 0 after start
+            # rudisha 0 at start na sio 0 after start
             rudisha len(self)
 
         eleza getvalue(self):
@@ -832,9 +832,9 @@ kundi StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
             support.unlink(self.fname)
         self.addCleanup(cleanup)
         eleza getvalue():
-            # Windows will not let use reopen without first closing
+            # Windows will sio let use reopen without first closing
             writer.close()
-            with open(writer.name, 'rb') as f:
+            with open(writer.name, 'rb') kama f:
                 rudisha f.read()
         writer.getvalue = getvalue
         rudisha writer
@@ -868,7 +868,7 @@ kundi XMLFilterBaseTest(unittest.TestCase):
 #
 # ===========================================================================
 
-with open(TEST_XMLFILE_OUT, 'rb') as f:
+with open(TEST_XMLFILE_OUT, 'rb') kama f:
     xml_test_out = f.read()
 
 kundi ExpatReaderTest(XmlTestBase):
@@ -881,7 +881,7 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rb') as f:
+        with open(TEST_XMLFILE, 'rb') kama f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -892,7 +892,7 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') as f:
+        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') kama f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -919,7 +919,7 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(fname, 'rb') as f:
+        with open(fname, 'rb') kama f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -930,8 +930,8 @@ kundi ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rb') as f:
-            with open(f.fileno(), 'rb', closefd=False) as f2:
+        with open(TEST_XMLFILE, 'rb') kama f:
+            with open(f.fileno(), 'rb', closefd=Uongo) kama f2:
                 parser.parse(f2)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -975,12 +975,12 @@ kundi ExpatReaderTest(XmlTestBase):
         parser.close()
 
         self.assertEqual(handler._notations,
-            [("GIF", "-//CompuServe//NOTATION Graphics Interchange Format 89a//EN", None)])
-        self.assertEqual(handler._entities, [("img", None, "expat.gif", "GIF")])
+            [("GIF", "-//CompuServe//NOTATION Graphics Interchange Format 89a//EN", Tupu)])
+        self.assertEqual(handler._entities, [("img", Tupu, "expat.gif", "GIF")])
 
     eleza test_expat_external_dtd_enabled(self):
         parser = create_parser()
-        parser.setFeature(feature_external_ges, True)
+        parser.setFeature(feature_external_ges, Kweli)
         resolver = self.TestEntityRecorder()
         parser.setEntityResolver(resolver)
 
@@ -989,7 +989,7 @@ kundi ExpatReaderTest(XmlTestBase):
                 '<!DOCTYPE external SYSTEM "unsupported://non-existing">\n'
             )
         self.assertEqual(
-            resolver.entities, [(None, 'unsupported://non-existing')]
+            resolver.entities, [(Tupu, 'unsupported://non-existing')]
         )
 
     eleza test_expat_external_dtd_default(self):
@@ -1015,7 +1015,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
     eleza test_expat_entityresolver_enabled(self):
         parser = create_parser()
-        parser.setFeature(feature_external_ges, True)
+        parser.setFeature(feature_external_ges, Kweli)
         parser.setEntityResolver(self.TestEntityResolver())
         result = BytesIO()
         parser.setContentHandler(XMLGenerator(result))
@@ -1031,7 +1031,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
     eleza test_expat_entityresolver_default(self):
         parser = create_parser()
-        self.assertEqual(parser.getFeature(feature_external_ges), False)
+        self.assertEqual(parser.getFeature(feature_external_ges), Uongo)
         parser.setEntityResolver(self.TestEntityResolver())
         result = BytesIO()
         parser.setContentHandler(XMLGenerator(result))
@@ -1097,7 +1097,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(attrs.getLength(), 1)
         self.assertEqual(attrs.getNames(), [(ns_uri, "attr")])
-        self.assertTrue((attrs.getQNames() == [] or
+        self.assertKweli((attrs.getQNames() == [] or
                          attrs.getQNames() == ["ns:attr"]))
         self.assertEqual(len(attrs), 1)
         self.assertIn((ns_uri, "attr"), attrs)
@@ -1152,7 +1152,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
         parser.setContentHandler(xmlgen)
         inpsrc = InputSource()
-        with open(TEST_XMLFILE, 'rb') as f:
+        with open(TEST_XMLFILE, 'rb') kama f:
             inpsrc.setByteStream(f)
             parser.parse(inpsrc)
 
@@ -1165,7 +1165,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
         parser.setContentHandler(xmlgen)
         inpsrc = InputSource()
-        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') as f:
+        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') kama f:
             inpsrc.setCharacterStream(f)
             parser.parse(inpsrc)
 
@@ -1218,8 +1218,8 @@ kundi ExpatReaderTest(XmlTestBase):
         parser.feed("</doc>")
         parser.close()
 
-        self.assertEqual(parser.getSystemId(), None)
-        self.assertEqual(parser.getPublicId(), None)
+        self.assertEqual(parser.getSystemId(), Tupu)
+        self.assertEqual(parser.getPublicId(), Tupu)
         self.assertEqual(parser.getLineNumber(), 1)
 
     eleza test_expat_locator_withinfo(self):
@@ -1230,7 +1230,7 @@ kundi ExpatReaderTest(XmlTestBase):
         parser.parse(TEST_XMLFILE)
 
         self.assertEqual(parser.getSystemId(), TEST_XMLFILE)
-        self.assertEqual(parser.getPublicId(), None)
+        self.assertEqual(parser.getPublicId(), Tupu)
 
     @requires_nonascii_filenames
     eleza test_expat_locator_withinfo_nonascii(self):
@@ -1245,7 +1245,7 @@ kundi ExpatReaderTest(XmlTestBase):
         parser.parse(fname)
 
         self.assertEqual(parser.getSystemId(), fname)
-        self.assertEqual(parser.getPublicId(), None)
+        self.assertEqual(parser.getPublicId(), Tupu)
 
 
 # ===========================================================================
@@ -1262,10 +1262,10 @@ kundi ErrorReportingTest(unittest.TestCase):
         source.setByteStream(BytesIO(b"<foo bar foobar>"))   #ill-formed
         name = "a file name"
         source.setSystemId(name)
-        try:
+        jaribu:
             parser.parse(source)
             self.fail()
-        except SAXException as e:
+        tatizo SAXException kama e:
             self.assertEqual(e.getSystemId(), name)
 
     eleza test_expat_incomplete(self):
@@ -1276,22 +1276,22 @@ kundi ErrorReportingTest(unittest.TestCase):
         self.assertEqual(parser.getLineNumber(), 1)
 
     eleza test_sax_parse_exception_str(self):
-        # pass various values kutoka a locator to the SAXParseException to
-        # make sure that the __str__() doesn't fall apart when None is
-        # passed instead of an integer line and column number
+        # pita various values kutoka a locator to the SAXParseException to
+        # make sure that the __str__() doesn't fall apart when Tupu is
+        # pitaed instead of an integer line na column number
         #
-        # use "normal" values for the locator:
-        str(SAXParseException("message", None,
+        # use "normal" values kila the locator:
+        str(SAXParseException("message", Tupu,
                               self.DummyLocator(1, 1)))
-        # use None for the line number:
-        str(SAXParseException("message", None,
-                              self.DummyLocator(None, 1)))
-        # use None for the column number:
-        str(SAXParseException("message", None,
-                              self.DummyLocator(1, None)))
-        # use None for both:
-        str(SAXParseException("message", None,
-                              self.DummyLocator(None, None)))
+        # use Tupu kila the line number:
+        str(SAXParseException("message", Tupu,
+                              self.DummyLocator(Tupu, 1)))
+        # use Tupu kila the column number:
+        str(SAXParseException("message", Tupu,
+                              self.DummyLocator(1, Tupu)))
+        # use Tupu kila both:
+        str(SAXParseException("message", Tupu,
+                              self.DummyLocator(Tupu, Tupu)))
 
     kundi DummyLocator:
         eleza __init__(self, lineno, colno):

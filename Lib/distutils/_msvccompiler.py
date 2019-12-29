@@ -28,29 +28,29 @@ from distutils.util import get_platform
 from itertools import count
 
 def _find_vc2015():
-    try:
+    jaribu:
         key = winreg.OpenKeyEx(
             winreg.HKEY_LOCAL_MACHINE,
             r"Software\Microsoft\VisualStudio\SxS\VC7",
             access=winreg.KEY_READ | winreg.KEY_WOW64_32KEY
         )
-    except OSError:
-        log.debug("Visual C++ is not registered")
+    tatizo OSError:
+        log.debug("Visual C++ ni sio registered")
         return None, None
 
     best_version = 0
     best_dir = None
     with key:
         for i in count():
-            try:
+            jaribu:
                 v, vc_dir, vt = winreg.EnumValue(key, i)
-            except OSError:
-                break
+            tatizo OSError:
+                koma
             if v and vt == winreg.REG_SZ and os.path.isdir(vc_dir):
-                try:
+                jaribu:
                     version = int(float(v))
-                except (ValueError, TypeError):
-                    continue
+                tatizo (ValueError, TypeError):
+                    endelea
                 if version >= 14 and version > best_version:
                     best_version, best_dir = version, vc_dir
     return best_version, best_dir
@@ -60,18 +60,18 @@ def _find_vc2017():
     If no install is found, returns "None, None"
 
     The version is returned to avoid unnecessarily changing the function
-    result. It may be ignored when the path is not None.
+    result. It may be ignored when the path ni sio None.
 
-    If vswhere.exe is not available, by definition, VS 2017 is not
+    If vswhere.exe ni sio available, by definition, VS 2017 is not
     installed.
     """
     import json
 
     root = os.environ.get("ProgramFiles(x86)") or os.environ.get("ProgramFiles")
-    if not root:
+    if sio root:
         return None, None
 
-    try:
+    jaribu:
         path = subprocess.check_output([
             os.path.join(root, "Microsoft Visual Studio", "Installer", "vswhere.exe"),
             "-latest",
@@ -80,7 +80,7 @@ def _find_vc2017():
             "-property", "installationPath",
             "-products", "*",
         ], encoding="mbcs", errors="strict").strip()
-    except (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
+    tatizo (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
         return None, None
 
     path = os.path.join(path, "VC", "Auxiliary", "Build")
@@ -102,34 +102,34 @@ def _find_vcvarsall(plat_spec):
 
     if plat_spec in PLAT_SPEC_TO_RUNTIME:
         vcruntime_plat = PLAT_SPEC_TO_RUNTIME[plat_spec]
-    else:
+    isipokua:
         vcruntime_plat = 'x64' if 'amd64' in plat_spec else 'x86'
 
     if best_dir:
         vcredist = os.path.join(best_dir, "..", "..", "redist", "MSVC", "**",
             vcruntime_plat, "Microsoft.VC14*.CRT", "vcruntime140.dll")
-        try:
+        jaribu:
             import glob
             vcruntime = glob.glob(vcredist, recursive=True)[-1]
-        except (ImportError, OSError, LookupError):
+        tatizo (ImportError, OSError, LookupError):
             vcruntime = None
 
-    if not best_dir:
+    if sio best_dir:
         best_version, best_dir = _find_vc2015()
         if best_version:
             vcruntime = os.path.join(best_dir, 'redist', vcruntime_plat,
                 "Microsoft.VC140.CRT", "vcruntime140.dll")
 
-    if not best_dir:
+    if sio best_dir:
         log.debug("No suitable Visual C++ version found")
         return None, None
 
     vcvarsall = os.path.join(best_dir, "vcvarsall.bat")
-    if not os.path.isfile(vcvarsall):
+    if sio os.path.isfile(vcvarsall):
         log.debug("%s cannot be found", vcvarsall)
         return None, None
 
-    if not vcruntime or not os.path.isfile(vcruntime):
+    if sio vcruntime or sio os.path.isfile(vcruntime):
         log.debug("%s cannot be found", vcruntime)
         vcruntime = None
 
@@ -143,15 +143,15 @@ def _get_vc_env(plat_spec):
         }
 
     vcvarsall, vcruntime = _find_vcvarsall(plat_spec)
-    if not vcvarsall:
+    if sio vcvarsall:
         raise DistutilsPlatformError("Unable to find vcvarsall.bat")
 
-    try:
+    jaribu:
         out = subprocess.check_output(
             'cmd /u /c "{}" {} && set'.format(vcvarsall, plat_spec),
             stderr=subprocess.STDOUT,
         ).decode('utf-16le', errors='replace')
-    except subprocess.CalledProcessError as exc:
+    tatizo subprocess.CalledProcessError as exc:
         log.error(exc.output)
         raise DistutilsPlatformError("Error executing {}"
                 .format(exc.cmd))
@@ -176,7 +176,7 @@ def _find_exe(exe, paths=None):
     absolute path that is known to exist.  If none of them work, just
     return the original program name, 'exe'.
     """
-    if not paths:
+    if sio paths:
         paths = os.getenv('path').split(os.pathsep)
     for p in paths:
         fn = os.path.join(os.path.abspath(p), exe)
@@ -186,7 +186,7 @@ def _find_exe(exe, paths=None):
 
 # A map keyed by get_platform() return values to values accepted by
 # 'vcvarsall.bat'. Always cross-compile from x86 to work with the
-# lighter-weight MSVC installs that do not include native 64-bit tools.
+# lighter-weight MSVC installs that do sio include native 64-bit tools.
 PLAT_TO_VCVARS = {
     'win32' : 'x86',
     'win-amd64' : 'x86_amd64',
@@ -196,7 +196,7 @@ PLAT_TO_VCVARS = {
 
 # A set containing the DLLs that are guaranteed to be available for
 # all micro versions of this Python version. Known extension
-# dependencies that are not in this set will be copied to the output
+# dependencies that are haiko kwenye this set will be copied to the output
 # path.
 _BUNDLED_DLLS = frozenset(['vcruntime140.dll'])
 
@@ -239,11 +239,11 @@ class MSVCCompiler(CCompiler) :
 
     def initialize(self, plat_name=None):
         # multi-init means we would need to check platform same each time...
-        assert not self.initialized, "don't init multiple times"
+        assert sio self.initialized, "don't init multiple times"
         if plat_name is None:
             plat_name = get_platform()
         # sanity check for platforms to prevent obscure errors later.
-        if plat_name not in PLAT_TO_VCVARS:
+        if plat_name haiko kwenye PLAT_TO_VCVARS:
             raise DistutilsPlatformError("--plat-name must be one of {}"
                                          .format(tuple(PLAT_TO_VCVARS)))
 
@@ -251,7 +251,7 @@ class MSVCCompiler(CCompiler) :
         plat_spec = PLAT_TO_VCVARS[plat_name]
 
         vc_env = _get_vc_env(plat_spec)
-        if not vc_env:
+        if sio vc_env:
             raise DistutilsPlatformError("Unable to find a compatible "
                 "Visual Studio installation.")
 
@@ -276,7 +276,7 @@ class MSVCCompiler(CCompiler) :
         self.preprocess_options = None
         # If vcruntime_redist is available, link against it dynamically. Otherwise,
         # use /MT[d] to build statically, then switch from libucrt[d].lib to ucrt[d].lib
-        # later to dynamically link to ucrtbase but not vcruntime.
+        # later to dynamically link to ucrtbase but sio vcruntime.
         self.compile_options = [
             '/nologo', '/Ox', '/W3', '/GL', '/DNDEBUG'
         ]
@@ -289,7 +289,7 @@ class MSVCCompiler(CCompiler) :
         ldflags = [
             '/nologo', '/INCREMENTAL:NO', '/LTCG'
         ]
-        if not self._vcruntime_redist:
+        if sio self._vcruntime_redist:
             ldflags.extend(('/nodefaultlib:libucrt.lib', 'ucrt.lib'))
 
         ldflags_debug = [
@@ -334,16 +334,16 @@ class MSVCCompiler(CCompiler) :
             base, ext = os.path.splitext(p)
             if strip_dir:
                 base = os.path.basename(base)
-            else:
+            isipokua:
                 _, base = os.path.splitdrive(base)
                 if base.startswith((os.path.sep, os.path.altsep)):
                     base = base[1:]
-            try:
+            jaribu:
                 # XXX: This may produce absurdly long paths. We should check
                 # the length of the result and trim base until we fit within
                 # 260 characters.
                 return os.path.join(output_dir, base + ext_map[ext])
-            except LookupError:
+            tatizo LookupError:
                 # Better to raise an exception instead of silently continuing
                 # and later complain about sources and targets having
                 # different lengths
@@ -356,7 +356,7 @@ class MSVCCompiler(CCompiler) :
                 output_dir=None, macros=None, include_dirs=None, debug=0,
                 extra_preargs=None, extra_postargs=None, depends=None):
 
-        if not self.initialized:
+        if sio self.initialized:
             self.initialize()
         compile_info = self._setup_compile(output_dir, macros, include_dirs,
                                            sources, depends, extra_postargs)
@@ -366,17 +366,17 @@ class MSVCCompiler(CCompiler) :
         compile_opts.append('/c')
         if debug:
             compile_opts.extend(self.compile_options_debug)
-        else:
+        isipokua:
             compile_opts.extend(self.compile_options)
 
 
         add_cpp_opts = False
 
         for obj in objects:
-            try:
+            jaribu:
                 src, ext = build[obj]
-            except KeyError:
-                continue
+            tatizo KeyError:
+                endelea
             if debug:
                 # pass the full pathname to MSVC in debug mode,
                 # this allows the debugger to find the source file
@@ -392,11 +392,11 @@ class MSVCCompiler(CCompiler) :
                 # compile .RC to .RES file
                 input_opt = src
                 output_opt = "/fo" + obj
-                try:
+                jaribu:
                     self.spawn([self.rc] + pp_opts + [output_opt, input_opt])
-                except DistutilsExecError as msg:
+                tatizo DistutilsExecError as msg:
                     raise CompileError(msg)
-                continue
+                endelea
             lasivyo ext in self._mc_extensions:
                 # Compile .MC to .RC file to .RES file.
                 #   * '-h dir' specifies the directory for the
@@ -411,7 +411,7 @@ class MSVCCompiler(CCompiler) :
                 # resources. This works at least for win32all.
                 h_dir = os.path.dirname(src)
                 rc_dir = os.path.dirname(obj)
-                try:
+                jaribu:
                     # first compile .MC to .RC and .H file
                     self.spawn([self.mc, '-h', h_dir, '-r', rc_dir, src])
                     base, _ = os.path.splitext(os.path.basename (src))
@@ -419,10 +419,10 @@ class MSVCCompiler(CCompiler) :
                     # then compile .RC to .RES file
                     self.spawn([self.rc, "/fo" + obj, rc_file])
 
-                except DistutilsExecError as msg:
+                tatizo DistutilsExecError as msg:
                     raise CompileError(msg)
-                continue
-            else:
+                endelea
+            isipokua:
                 # how to handle this file?
                 raise CompileError("Don't know how to compile {} to {}"
                                    .format(src, obj))
@@ -434,9 +434,9 @@ class MSVCCompiler(CCompiler) :
             args.append("/Fo" + obj)
             args.extend(extra_postargs)
 
-            try:
+            jaribu:
                 self.spawn(args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise CompileError(msg)
 
         return objects
@@ -449,7 +449,7 @@ class MSVCCompiler(CCompiler) :
                           debug=0,
                           target_lang=None):
 
-        if not self.initialized:
+        if sio self.initialized:
             self.initialize()
         objects, output_dir = self._fix_object_args(objects, output_dir)
         output_filename = self.library_filename(output_libname,
@@ -459,12 +459,12 @@ class MSVCCompiler(CCompiler) :
             lib_args = objects + ['/OUT:' + output_filename]
             if debug:
                 pass # XXX what goes here?
-            try:
+            jaribu:
                 log.debug('Executing "%s" %s', self.lib, ' '.join(lib_args))
                 self.spawn([self.lib] + lib_args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise LibError(msg)
-        else:
+        isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
 
@@ -483,7 +483,7 @@ class MSVCCompiler(CCompiler) :
              build_temp=None,
              target_lang=None):
 
-        if not self.initialized:
+        if sio self.initialized:
             self.initialize()
         objects, output_dir = self._fix_object_args(objects, output_dir)
         fixed_args = self._fix_lib_args(libraries, library_dirs,
@@ -497,7 +497,7 @@ class MSVCCompiler(CCompiler) :
         lib_opts = gen_lib_options(self,
                                    library_dirs, runtime_library_dirs,
                                    libraries)
-        if output_dir is not None:
+        if output_dir ni sio None:
             output_filename = os.path.join(output_dir, output_filename)
 
         if self._need_link(objects, output_filename):
@@ -514,7 +514,7 @@ class MSVCCompiler(CCompiler) :
             # directory. Since they have different names for debug and release
             # builds, they can go into the same directory.
             build_temp = os.path.dirname(objects[0])
-            if export_symbols is not None:
+            if export_symbols ni sio None:
                 (dll_name, dll_ext) = os.path.splitext(
                     os.path.basename(output_filename))
                 implib_file = os.path.join(
@@ -529,18 +529,18 @@ class MSVCCompiler(CCompiler) :
 
             output_dir = os.path.dirname(os.path.abspath(output_filename))
             self.mkpath(output_dir)
-            try:
+            jaribu:
                 log.debug('Executing "%s" %s', self.linker, ' '.join(ld_args))
                 self.spawn([self.linker] + ld_args)
                 self._copy_vcruntime(output_dir)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise LinkError(msg)
-        else:
+        isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
     def _copy_vcruntime(self, output_dir):
         vcruntime = self._vcruntime_redist
-        if not vcruntime or not os.path.isfile(vcruntime):
+        if sio vcruntime or sio os.path.isfile(vcruntime):
             return
 
         if os.path.basename(vcruntime).lower() in _BUNDLED_DLLS:
@@ -552,10 +552,10 @@ class MSVCCompiler(CCompiler) :
 
     def spawn(self, cmd):
         old_path = os.getenv('path')
-        try:
+        jaribu:
             os.environ['path'] = self._paths
             return super().spawn(cmd)
-        finally:
+        mwishowe:
             os.environ['path'] = old_path
 
     # -- Miscellaneous methods -----------------------------------------
@@ -577,13 +577,13 @@ class MSVCCompiler(CCompiler) :
         # with it if we don't have one.
         if debug:
             try_names = [lib + "_d", lib]
-        else:
+        isipokua:
             try_names = [lib]
         for dir in dirs:
             for name in try_names:
                 libfile = os.path.join(dir, self.library_filename(name))
                 if os.path.isfile(libfile):
                     return libfile
-        else:
+        isipokua:
             # Oops, didn't find it in *any* of 'dirs'
             return None

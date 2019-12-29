@@ -9,9 +9,9 @@ import platform
 import re
 import signal
 import socket
-try:
+jaribu:
     import ssl
-except ImportError:
+tatizo ImportError:
     ssl = None
 import subprocess
 import sys
@@ -80,7 +80,7 @@ class MyBaseProto(asyncio.Protocol):
         self.transport = None
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop is not None:
+        if loop ni sio None:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
@@ -118,7 +118,7 @@ class MyDatagramProto(asyncio.DatagramProtocol):
     def __init__(self, loop=None):
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop is not None:
+        if loop ni sio None:
             self.done = loop.create_future()
 
     def connection_made(self, transport):
@@ -147,7 +147,7 @@ class MyReadPipeProto(asyncio.Protocol):
         self.state = ['INITIAL']
         self.nbytes = 0
         self.transport = None
-        if loop is not None:
+        if loop ni sio None:
             self.done = loop.create_future()
 
     def connection_made(self, transport):
@@ -164,7 +164,7 @@ class MyReadPipeProto(asyncio.Protocol):
         self.state.append('EOF')
 
     def connection_lost(self, exc):
-        if 'EOF' not in self.state:
+        if 'EOF' haiko kwenye self.state:
             self.state.append('EOF')  # It is okay if EOF is missed.
         assert self.state == ['INITIAL', 'CONNECTED', 'EOF'], self.state
         self.state.append('CLOSED')
@@ -178,7 +178,7 @@ class MyWritePipeProto(asyncio.BaseProtocol):
     def __init__(self, loop=None):
         self.state = 'INITIAL'
         self.transport = None
-        if loop is not None:
+        if loop ni sio None:
             self.done = loop.create_future()
 
     def connection_made(self, transport):
@@ -226,7 +226,7 @@ class MySubprocessProtocol(asyncio.SubprocessProtocol):
         assert self.state == 'CONNECTED', self.state
         if exc:
             self.disconnects[fd].set_exception(exc)
-        else:
+        isipokua:
             self.disconnects[fd].set_result(exc)
 
     def process_exited(self):
@@ -243,7 +243,7 @@ class EventLoopTestsMixin:
 
     def tearDown(self):
         # just in case if we have transport close callbacks
-        if not self.loop.is_closed():
+        if sio self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -372,15 +372,15 @@ class EventLoopTestsMixin:
         bytes_read = bytearray()
 
         def reader():
-            try:
+            jaribu:
                 data = r.recv(1024)
-            except BlockingIOError:
+            tatizo BlockingIOError:
                 # Spurious readiness notifications are possible
                 # at least on Linux -- see man select.
                 return
             if data:
                 bytes_read.extend(data)
-            else:
+            isipokua:
                 self.assertTrue(self.loop.remove_reader(r.fileno()))
                 r.close()
 
@@ -514,7 +514,7 @@ class EventLoopTestsMixin:
     def test_create_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
         # zero-length address for UNIX socket.
-        check_sockname = not broken_unix_getsockname()
+        check_sockname = sio broken_unix_getsockname()
 
         with test_utils.run_test_unix_server() as httpd:
             conn_fut = self.loop.create_unix_connection(
@@ -528,7 +528,7 @@ class EventLoopTestsMixin:
         if peername:
             self.assertEqual(peername,
                              client.get_extra_info('peername'))
-        else:
+        isipokua:
             self.assertIsNotNone(client.get_extra_info('peername'))
         self.assertEqual(peercert,
                          client.get_extra_info('peercert'))
@@ -617,7 +617,7 @@ class EventLoopTestsMixin:
     def test_create_ssl_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
         # zero-length address for UNIX socket.
-        check_sockname = not broken_unix_getsockname()
+        check_sockname = sio broken_unix_getsockname()
 
         with test_utils.run_test_unix_server(use_ssl=True) as httpd:
             create_connection = functools.partial(
@@ -672,15 +672,15 @@ class EventLoopTestsMixin:
 
         def client():
             nonlocal response
-            try:
+            jaribu:
                 csock = socket.socket()
-                if client_ssl is not None:
+                if client_ssl ni sio None:
                     csock = client_ssl.wrap_socket(csock)
                 csock.connect(addr)
                 csock.sendall(message)
                 response = csock.recv(99)
                 csock.close()
-            except Exception as exc:
+            tatizo Exception as exc:
                 print(
                     "Failure in client thread in test_connect_accepted_socket",
                     exc)
@@ -711,7 +711,7 @@ class EventLoopTestsMixin:
             isinstance(self.loop, proactor_events.BaseProactorEventLoop)
             ):
             raise unittest.SkipTest(
-                'SSL not supported with proactor event loops before Python 3.5'
+                'SSL sio supported with proactor event loops before Python 3.5'
                 )
 
         server_context = test_utils.simple_server_sslcontext()
@@ -734,7 +734,7 @@ class EventLoopTestsMixin:
         async def getaddrinfo(host, port, *args, **kw):
             if family == socket.AF_INET:
                 return [(family, socket.SOCK_STREAM, 6, '', (host, port))]
-            else:
+            isipokua:
                 return [(family, socket.SOCK_STREAM, 6, '', (host, port, 0, 0))]
 
         def getaddrinfo_task(*args, **kwds):
@@ -745,7 +745,7 @@ class EventLoopTestsMixin:
         if family == socket.AF_INET:
             mock_sock.socket().getsockbyname.side_effect = [
                 (host, 80) for host in unique_hosts]
-        else:
+        isipokua:
             mock_sock.socket().getsockbyname.side_effect = [
                 (host, 80, 0, 0) for host in unique_hosts]
         self.loop.getaddrinfo = getaddrinfo_task
@@ -871,7 +871,7 @@ class EventLoopTestsMixin:
         with sock:
             f = self.loop.create_unix_server(lambda: proto, '/test', sock=sock)
             with self.assertRaisesRegex(ValueError,
-                                        'path and sock can not be specified '
+                                        'path and sock can sio be specified '
                                         'at the same time'):
                 self.loop.run_until_complete(f)
 
@@ -1039,7 +1039,7 @@ class EventLoopTestsMixin:
             with test_utils.disable_logger():
                 with self.assertRaisesRegex(
                         ssl.CertificateError,
-                        "IP address mismatch, certificate is not valid for "
+                        "IP address mismatch, certificate ni sio valid for "
                         "'127.0.0.1'"):
                     self.loop.run_until_complete(f_c)
 
@@ -1141,7 +1141,7 @@ class EventLoopTestsMixin:
 
         server.close()
 
-    @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 not supported or enabled')
+    @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 sio supported or enabled')
     def test_create_server_dual_stack(self):
         f_proto = self.loop.create_future()
 
@@ -1151,20 +1151,20 @@ class EventLoopTestsMixin:
                 f_proto.set_result(self)
 
         try_count = 0
-        while True:
-            try:
+        wakati True:
+            jaribu:
                 port = support.find_unused_port()
                 f = self.loop.create_server(TestMyProto, host=None, port=port)
                 server = self.loop.run_until_complete(f)
-            except OSError as ex:
+            tatizo OSError as ex:
                 if ex.errno == errno.EADDRINUSE:
                     try_count += 1
                     self.assertGreaterEqual(5, try_count)
-                    continue
-                else:
+                    endelea
+                isipokua:
                     raise
-            else:
-                break
+            isipokua:
+                koma
         client = socket.socket()
         client.connect(('127.0.0.1', port))
         client.send(b'xxx')
@@ -1253,16 +1253,16 @@ class EventLoopTestsMixin:
             self.loop.getaddrinfo(
                 *local_address, type=socket.SOCK_DGRAM))
         for family, type, proto, cname, address in infos:
-            try:
+            jaribu:
                 sock = socket.socket(family=family, type=type, proto=proto)
                 sock.setblocking(False)
                 sock.bind(address)
             except:
                 pass
-            else:
-                break
-        else:
-            assert False, 'Can not create socket.'
+            isipokua:
+                koma
+        isipokua:
+            assert False, 'Can sio create socket.'
 
         f = self.loop.create_datagram_endpoint(
             lambda: MyDatagramProto(loop=self.loop), sock=sock)
@@ -1274,9 +1274,9 @@ class EventLoopTestsMixin:
 
     def test_internal_fds(self):
         loop = self.create_event_loop()
-        if not isinstance(loop, selector_events.BaseSelectorEventLoop):
+        if sio isinstance(loop, selector_events.BaseSelectorEventLoop):
             loop.close()
-            self.skipTest('loop is not a BaseSelectorEventLoop')
+            self.skipTest('loop ni sio a BaseSelectorEventLoop')
 
         self.assertEqual(1, loop._internal_fds)
         loop.close()
@@ -1571,18 +1571,18 @@ class EventLoopTestsMixin:
         r.setblocking(False)
         f = self.loop.create_task(self.loop.sock_recv(r, 1))
         ov = getattr(f, 'ov', None)
-        if ov is not None:
+        if ov ni sio None:
             self.assertTrue(ov.pending)
 
         async def main():
-            try:
+            jaribu:
                 self.loop.call_soon(f.cancel)
                 await f
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 res = 'cancelled'
-            else:
+            isipokua:
                 res = None
-            finally:
+            mwishowe:
                 self.loop.stop()
             return res
 
@@ -1594,7 +1594,7 @@ class EventLoopTestsMixin:
         self.assertLess(elapsed, 0.1)
         self.assertEqual(t.result(), 'cancelled')
         self.assertRaises(asyncio.CancelledError, f.result)
-        if ov is not None:
+        if ov ni sio None:
             self.assertFalse(ov.pending)
         self.loop._stop_serving(r)
 
@@ -1702,14 +1702,14 @@ class SubprocessTestsMixin:
         if sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
-        else:
+        isipokua:
             self.assertEqual(-signal.SIGTERM, returncode)
 
     def check_killed(self, returncode):
         if sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
-        else:
+        isipokua:
             self.assertEqual(-signal.SIGKILL, returncode)
 
     def test_subprocess_exec(self):
@@ -1844,7 +1844,7 @@ class SubprocessTestsMixin:
         # the process). The parent process may have decided to ignore SIGHUP,
         # and signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
-        try:
+        jaribu:
             prog = os.path.join(os.path.dirname(__file__), 'echo.py')
 
             connect = self.loop.subprocess_exec(
@@ -1860,7 +1860,7 @@ class SubprocessTestsMixin:
                 self.loop.run_until_complete(proto.completed)
                 self.assertEqual(-signal.SIGHUP, proto.returncode)
                 transp.close()
-        finally:
+        mwishowe:
             signal.signal(signal.SIGHUP, old_handler)
 
     def test_subprocess_stderr(self):
@@ -1933,7 +1933,7 @@ class SubprocessTestsMixin:
             self.loop.run_until_complete(proto.got_data[2].wait())
             if sys.platform != 'win32':
                 self.assertEqual(b'ERR:BrokenPipeError', proto.data[2])
-            else:
+            isipokua:
                 # After closing the read-end of a pipe, writing to the
                 # write-end using os.write() fails with errno==EINVAL and
                 # GetLastError()==ERROR_INVALID_NAME on Windows!?!  (Using
@@ -1971,7 +1971,7 @@ class SubprocessTestsMixin:
     def test_subprocess_shell_invalid_args(self):
 
         async def connect(cmd=None, **kwds):
-            if not cmd:
+            if sio cmd:
                 cmd = 'pwd'
             await self.loop.subprocess_shell(
                 asyncio.SubprocessProtocol,
@@ -2003,20 +2003,20 @@ if sys.platform == 'win32':
             return asyncio.ProactorEventLoop()
 
         def test_reader_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
+            raise unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
         def test_reader_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
+            raise unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
         def test_writer_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_writer()")
+            raise unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
         def test_writer_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_writer()")
+            raise unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
         def test_remove_fds_after_closing(self):
-            raise unittest.SkipTest("IocpEventLoop does not have add_reader()")
-else:
+            raise unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+isipokua:
     import selectors
 
     class UnixEventLoopTestsMixin(EventLoopTestsMixin):
@@ -2256,7 +2256,7 @@ class HandleTests(test_utils.TestCase):
 
         coro = CoroLike()
         coro.__qualname__ = 'CoroLike'
-        # Some coroutines might not have '__name__', such as
+        # Some coroutines might sio have '__name__', such as
         # built-in async_gen.asend().
         self.assertEqual(coroutines._format_coroutine(coro), 'CoroLike()')
 
@@ -2609,12 +2609,12 @@ class GetEventLoopTestsMixin:
             asyncio.set_child_watcher(watcher)
 
     def tearDown(self):
-        try:
+        jaribu:
             if sys.platform != 'win32':
                 asyncio.set_child_watcher(None)
 
             super().tearDown()
-        finally:
+        mwishowe:
             self.loop.close()
             asyncio.set_event_loop(None)
 
@@ -2632,7 +2632,7 @@ class GetEventLoopTestsMixin:
 
         def test_get_event_loop_new_process(self):
             # Issue bpo-32126: The multiprocessing module used by
-            # ProcessPoolExecutor is not functional when the
+            # ProcessPoolExecutor ni sio functional when the
             # multiprocessing.synchronize module cannot be imported.
             support.import_module('multiprocessing.synchronize')
 
@@ -2656,7 +2656,7 @@ class GetEventLoopTestsMixin:
                 raise TestError
 
         old_policy = asyncio.get_event_loop_policy()
-        try:
+        jaribu:
             asyncio.set_event_loop_policy(Policy())
             loop = asyncio.new_event_loop()
 
@@ -2685,9 +2685,9 @@ class GetEventLoopTestsMixin:
             with self.assertRaises(TestError):
                 asyncio.get_event_loop()
 
-        finally:
+        mwishowe:
             asyncio.set_event_loop_policy(old_policy)
-            if loop is not None:
+            if loop ni sio None:
                 loop.close()
 
         with self.assertRaisesRegex(RuntimeError, 'no running'):
@@ -2704,11 +2704,11 @@ class TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
     get_event_loop_impl = events._py_get_event_loop
 
 
-try:
+jaribu:
     agiza _asyncio  # NoQA
-except ImportError:
+tatizo ImportError:
     pass
-else:
+isipokua:
 
     class TestCGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 

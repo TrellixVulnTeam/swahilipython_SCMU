@@ -25,8 +25,8 @@ class MIMEMessage(MIMENonMultipart):
         the term "rfc822" is technically outdated by RFC 2822).
         """
         MIMENonMultipart.__init__(self, 'message', _subtype, policy=policy)
-        if not isinstance(_msg, message.Message):
-            raise TypeError('Argument is not an instance of Message')
+        if sio isinstance(_msg, message.Message):
+            raise TypeError('Argument ni sio an instance of Message')
         # It's convenient to use this base class method.  We need to do it
         # this way or we'll get an exception
         message.Message.attach(self, _msg)

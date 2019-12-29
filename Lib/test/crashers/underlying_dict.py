@@ -9,7 +9,7 @@ class A(object):
 r = gc.get_referrers(thingy)
 if "__module__" in r[0]:
     dct = r[0]
-else:
+isipokua:
     dct = r[1]
 
 a = A()

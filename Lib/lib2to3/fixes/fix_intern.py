@@ -1,7 +1,7 @@
 # Copyright 2006 Georg Brandl.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Fixer for intern().
+"""Fixer kila intern().
 
 intern(s) -> sys.intern(s)"""
 
@@ -11,7 +11,7 @@ kutoka ..fixer_util agiza ImportAndCall, touch_agiza
 
 
 kundi FixIntern(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     order = "pre"
 
     PATTERN = """
@@ -26,7 +26,7 @@ kundi FixIntern(fixer_base.BaseFix):
 
     eleza transform(self, node, results):
         ikiwa results:
-            # I feel like we should be able to express this logic in the
+            # I feel like we should be able to express this logic kwenye the
             # PATTERN above but I don't know how to do it so...
             obj = results['obj']
             ikiwa obj:
@@ -37,5 +37,5 @@ kundi FixIntern(fixer_base.BaseFix):
                     rudisha  # Make no change.
         names = ('sys', 'intern')
         new = ImportAndCall(node, results, names)
-        touch_agiza(None, 'sys', node)
+        touch_agiza(Tupu, 'sys', node)
         rudisha new

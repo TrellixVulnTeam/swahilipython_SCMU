@@ -28,26 +28,26 @@ _ForkingPickler = context.reduction.ForkingPickler
 kutoka .util agiza debug, info, Finalize, register_after_fork, is_exiting
 
 #
-# Queue type using a pipe, buffer and thread
+# Queue type using a pipe, buffer na thread
 #
 
 kundi Queue(object):
 
     eleza __init__(self, maxsize=0, *, ctx):
         ikiwa maxsize <= 0:
-            # Can raise ImportError (see issues #3770 and #23400)
-            kutoka .synchronize agiza SEM_VALUE_MAX as maxsize
+            # Can ashiria ImportError (see issues #3770 na #23400)
+            kutoka .synchronize agiza SEM_VALUE_MAX kama maxsize
         self._maxsize = maxsize
-        self._reader, self._writer = connection.Pipe(duplex=False)
+        self._reader, self._writer = connection.Pipe(duplex=Uongo)
         self._rlock = ctx.Lock()
         self._opid = os.getpid()
         ikiwa sys.platform == 'win32':
-            self._wlock = None
-        else:
+            self._wlock = Tupu
+        isipokua:
             self._wlock = ctx.Lock()
         self._sem = ctx.BoundedSemaphore(maxsize)
         # For use by concurrent.futures
-        self._ignore_epipe = False
+        self._ignore_epipe = Uongo
 
         self._after_fork()
 
@@ -68,49 +68,49 @@ kundi Queue(object):
         debug('Queue._after_fork()')
         self._notempty = threading.Condition(threading.Lock())
         self._buffer = collections.deque()
-        self._thread = None
-        self._jointhread = None
-        self._joincancelled = False
-        self._closed = False
-        self._close = None
+        self._thread = Tupu
+        self._jointhread = Tupu
+        self._joincancelled = Uongo
+        self._closed = Uongo
+        self._close = Tupu
         self._send_bytes = self._writer.send_bytes
         self._recv_bytes = self._reader.recv_bytes
         self._poll = self._reader.poll
 
-    eleza put(self, obj, block=True, timeout=None):
+    eleza put(self, obj, block=Kweli, timeout=Tupu):
         ikiwa self._closed:
-            raise ValueError(f"Queue {self!r} is closed")
-        ikiwa not self._sem.acquire(block, timeout):
-            raise Full
+            ashiria ValueError(f"Queue {self!r} ni closed")
+        ikiwa sio self._sem.acquire(block, timeout):
+            ashiria Full
 
         with self._notempty:
-            ikiwa self._thread is None:
+            ikiwa self._thread ni Tupu:
                 self._start_thread()
             self._buffer.append(obj)
             self._notempty.notify()
 
-    eleza get(self, block=True, timeout=None):
+    eleza get(self, block=Kweli, timeout=Tupu):
         ikiwa self._closed:
-            raise ValueError(f"Queue {self!r} is closed")
-        ikiwa block and timeout is None:
+            ashiria ValueError(f"Queue {self!r} ni closed")
+        ikiwa block na timeout ni Tupu:
             with self._rlock:
                 res = self._recv_bytes()
             self._sem.release()
-        else:
+        isipokua:
             ikiwa block:
                 deadline = time.monotonic() + timeout
-            ikiwa not self._rlock.acquire(block, timeout):
-                raise Empty
-            try:
+            ikiwa sio self._rlock.acquire(block, timeout):
+                ashiria Empty
+            jaribu:
                 ikiwa block:
                     timeout = deadline - time.monotonic()
-                    ikiwa not self._poll(timeout):
-                        raise Empty
-                elikiwa not self._poll():
-                    raise Empty
+                    ikiwa sio self._poll(timeout):
+                        ashiria Empty
+                elikiwa sio self._poll():
+                    ashiria Empty
                 res = self._recv_bytes()
                 self._sem.release()
-            finally:
+            mwishowe:
                 self._rlock.release()
         # unserialize the data after having released the lock
         rudisha _ForkingPickler.loads(res)
@@ -120,40 +120,40 @@ kundi Queue(object):
         rudisha self._maxsize - self._sem._semlock._get_value()
 
     eleza empty(self):
-        rudisha not self._poll()
+        rudisha sio self._poll()
 
     eleza full(self):
         rudisha self._sem._semlock._is_zero()
 
     eleza get_nowait(self):
-        rudisha self.get(False)
+        rudisha self.get(Uongo)
 
     eleza put_nowait(self, obj):
-        rudisha self.put(obj, False)
+        rudisha self.put(obj, Uongo)
 
     eleza close(self):
-        self._closed = True
-        try:
+        self._closed = Kweli
+        jaribu:
             self._reader.close()
-        finally:
+        mwishowe:
             close = self._close
             ikiwa close:
-                self._close = None
+                self._close = Tupu
                 close()
 
     eleza join_thread(self):
         debug('Queue.join_thread()')
-        assert self._closed, "Queue {0!r} not closed".format(self)
+        assert self._closed, "Queue {0!r} sio closed".format(self)
         ikiwa self._jointhread:
             self._jointhread()
 
     eleza cancel_join_thread(self):
         debug('Queue.cancel_join_thread()')
-        self._joincancelled = True
-        try:
+        self._joincancelled = Kweli
+        jaribu:
             self._jointhread.cancel()
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza _start_thread(self):
         debug('Queue._start_thread()')
@@ -167,13 +167,13 @@ kundi Queue(object):
                   self._on_queue_feeder_error, self._sem),
             name='QueueFeederThread'
         )
-        self._thread.daemon = True
+        self._thread.daemon = Kweli
 
         debug('doing self._thread.start()')
         self._thread.start()
         debug('... done self._thread.start()')
 
-        ikiwa not self._joincancelled:
+        ikiwa sio self._joincancelled:
             self._jointhread = Finalize(
                 self._thread, Queue._finalize_join,
                 [weakref.ref(self._thread)],
@@ -191,10 +191,10 @@ kundi Queue(object):
     eleza _finalize_join(twr):
         debug('joining queue thread')
         thread = twr()
-        ikiwa thread is not None:
+        ikiwa thread ni sio Tupu:
             thread.join()
             debug('... queue thread joined')
-        else:
+        isipokua:
             debug('... queue thread already dead')
 
     @staticmethod
@@ -216,52 +216,52 @@ kundi Queue(object):
         ikiwa sys.platform != 'win32':
             wacquire = writelock.acquire
             wrelease = writelock.release
-        else:
-            wacquire = None
+        isipokua:
+            wacquire = Tupu
 
-        while 1:
-            try:
+        wakati 1:
+            jaribu:
                 nacquire()
-                try:
-                    ikiwa not buffer:
+                jaribu:
+                    ikiwa sio buffer:
                         nwait()
-                finally:
+                mwishowe:
                     nrelease()
-                try:
-                    while 1:
+                jaribu:
+                    wakati 1:
                         obj = bpopleft()
-                        ikiwa obj is sentinel:
+                        ikiwa obj ni sentinel:
                             debug('feeder thread got sentinel -- exiting')
                             close()
-                            return
+                            rudisha
 
                         # serialize the data before acquiring the lock
                         obj = _ForkingPickler.dumps(obj)
-                        ikiwa wacquire is None:
+                        ikiwa wacquire ni Tupu:
                             send_bytes(obj)
-                        else:
+                        isipokua:
                             wacquire()
-                            try:
+                            jaribu:
                                 send_bytes(obj)
-                            finally:
+                            mwishowe:
                                 wrelease()
-                except IndexError:
-                    pass
-            except Exception as e:
-                ikiwa ignore_epipe and getattr(e, 'errno', 0) == errno.EPIPE:
-                    return
-                # Since this runs in a daemon thread the resources it uses
-                # may be become unusable while the process is cleaning up.
+                tatizo IndexError:
+                    pita
+            tatizo Exception kama e:
+                ikiwa ignore_epipe na getattr(e, 'errno', 0) == errno.EPIPE:
+                    rudisha
+                # Since this runs kwenye a daemon thread the resources it uses
+                # may be become unusable wakati the process ni cleaning up.
                 # We ignore errors which happen after the process has
                 # started to cleanup.
                 ikiwa is_exiting():
-                    info('error in queue thread: %s', e)
-                    return
-                else:
-                    # Since the object has not been sent in the queue, we need
+                    info('error kwenye queue thread: %s', e)
+                    rudisha
+                isipokua:
+                    # Since the object has sio been sent kwenye the queue, we need
                     # to decrease the size of the queue. The error acts as
                     # ikiwa the object had been silently removed kutoka the queue
-                    # and this step is necessary to have a properly working
+                    # na this step ni necessary to have a properly working
                     # queue.
                     queue_sem.release()
                     onerror(e, obj)
@@ -269,8 +269,8 @@ kundi Queue(object):
     @staticmethod
     eleza _on_queue_feeder_error(e, obj):
         """
-        Private API hook called when feeding data in the background thread
-        raises an exception.  For overriding by concurrent.futures.
+        Private API hook called when feeding data kwenye the background thread
+        ashirias an exception.  For overriding by concurrent.futures.
         """
         agiza traceback
         traceback.print_exc()
@@ -279,9 +279,9 @@ kundi Queue(object):
 _sentinel = object()
 
 #
-# A queue type which also supports join() and task_done() methods
+# A queue type which also supports join() na task_done() methods
 #
-# Note that ikiwa you do not call task_done() for each finished task then
+# Note that ikiwa you do sio call task_done() kila each finished task then
 # eventually the counter's semaphore may overflow causing Bad Things
 # to happen.
 #
@@ -300,14 +300,14 @@ kundi JoinableQueue(Queue):
         Queue.__setstate__(self, state[:-2])
         self._cond, self._unfinished_tasks = state[-2:]
 
-    eleza put(self, obj, block=True, timeout=None):
+    eleza put(self, obj, block=Kweli, timeout=Tupu):
         ikiwa self._closed:
-            raise ValueError(f"Queue {self!r} is closed")
-        ikiwa not self._sem.acquire(block, timeout):
-            raise Full
+            ashiria ValueError(f"Queue {self!r} ni closed")
+        ikiwa sio self._sem.acquire(block, timeout):
+            ashiria Full
 
         with self._notempty, self._cond:
-            ikiwa self._thread is None:
+            ikiwa self._thread ni Tupu:
                 self._start_thread()
             self._buffer.append(obj)
             self._unfinished_tasks.release()
@@ -315,14 +315,14 @@ kundi JoinableQueue(Queue):
 
     eleza task_done(self):
         with self._cond:
-            ikiwa not self._unfinished_tasks.acquire(False):
-                raise ValueError('task_done() called too many times')
+            ikiwa sio self._unfinished_tasks.acquire(Uongo):
+                ashiria ValueError('task_done() called too many times')
             ikiwa self._unfinished_tasks._semlock._is_zero():
                 self._cond.notify_all()
 
     eleza join(self):
         with self._cond:
-            ikiwa not self._unfinished_tasks._semlock._is_zero():
+            ikiwa sio self._unfinished_tasks._semlock._is_zero():
                 self._cond.wait()
 
 #
@@ -332,16 +332,16 @@ kundi JoinableQueue(Queue):
 kundi SimpleQueue(object):
 
     eleza __init__(self, *, ctx):
-        self._reader, self._writer = connection.Pipe(duplex=False)
+        self._reader, self._writer = connection.Pipe(duplex=Uongo)
         self._rlock = ctx.Lock()
         self._poll = self._reader.poll
         ikiwa sys.platform == 'win32':
-            self._wlock = None
-        else:
+            self._wlock = Tupu
+        isipokua:
             self._wlock = ctx.Lock()
 
     eleza empty(self):
-        rudisha not self._poll()
+        rudisha sio self._poll()
 
     eleza __getstate__(self):
         context.assert_spawning(self)
@@ -360,9 +360,9 @@ kundi SimpleQueue(object):
     eleza put(self, obj):
         # serialize the data before acquiring the lock
         obj = _ForkingPickler.dumps(obj)
-        ikiwa self._wlock is None:
+        ikiwa self._wlock ni Tupu:
             # writes to a message oriented win32 pipe are atomic
             self._writer.send_bytes(obj)
-        else:
+        isipokua:
             with self._wlock:
                 self._writer.send_bytes(obj)

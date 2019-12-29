@@ -20,9 +20,9 @@ c_coll = support.import_fresh_module('collections', fresh=['_collections'])
 eleza replaced_module(name, replacement):
     original_module = sys.modules[name]
     sys.modules[name] = replacement
-    try:
-        yield
-    finally:
+    jaribu:
+        tuma
+    mwishowe:
         sys.modules[name] = original_module
 
 
@@ -31,7 +31,7 @@ kundi OrderedDictTests:
     eleza test_init(self):
         OrderedDict = self.OrderedDict
         with self.assertRaises(TypeError):
-            OrderedDict([('a', 1), ('b', 2)], None)                                 # too many args
+            OrderedDict([('a', 1), ('b', 2)], Tupu)                                 # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         self.assertEqual(sorted(OrderedDict(dict(pairs)).items()), pairs)           # dict input
         self.assertEqual(sorted(OrderedDict(**dict(pairs)).items()), pairs)         # kwds input
@@ -46,7 +46,7 @@ kundi OrderedDictTests:
         self.assertRaises(TypeError, OrderedDict, (), ())
         self.assertRaises(TypeError, OrderedDict.__init__)
 
-        # Make sure that direct calls to __init__ do not clear previous contents
+        # Make sure that direct calls to __init__ do sio clear previous contents
         d = OrderedDict([('a', 1), ('b', 2), ('c', 3), ('d', 44), ('e', 55)])
         d.__init__([('e', 5), ('f', 6)], g=7, d=4)
         self.assertEqual(list(d.items()),
@@ -63,7 +63,7 @@ kundi OrderedDictTests:
     eleza test_update(self):
         OrderedDict = self.OrderedDict
         with self.assertRaises(TypeError):
-            OrderedDict().update([('a', 1), ('b', 2)], None)                        # too many args
+            OrderedDict().update([('a', 1), ('b', 2)], Tupu)                        # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict()
         od.update(dict(pairs))
@@ -78,7 +78,7 @@ kundi OrderedDictTests:
         od.update([('a', 1), ('b', 2), ('c', 9), ('d', 4)], c=3, e=5)
         self.assertEqual(list(od.items()), pairs)                                   # mixed input
 
-        # Issue 9137: Named argument called 'other' or 'self'
+        # Issue 9137: Named argument called 'other' ama 'self'
         # shouldn't be treated specially.
         od = OrderedDict()
         od.update(self=23)
@@ -91,8 +91,8 @@ kundi OrderedDictTests:
         self.assertEqual(sorted(list(od.items())),
                          [('blue', 6), ('other', 7), ('red', 5), ('self', 8)])
 
-        # Make sure that direct calls to update do not clear previous contents
-        # add that updates items are not moved to the end
+        # Make sure that direct calls to update do sio clear previous contents
+        # add that updates items are sio moved to the end
         d = OrderedDict([('a', 1), ('b', 2), ('c', 3), ('d', 44), ('e', 55)])
         d.update([('e', 5), ('f', 6)], g=7, d=4)
         self.assertEqual(list(d.items()),
@@ -122,16 +122,16 @@ kundi OrderedDictTests:
     eleza test_kutokakeys(self):
         OrderedDict = self.OrderedDict
         od = OrderedDict.kutokakeys('abc')
-        self.assertEqual(list(od.items()), [(c, None) for c in 'abc'])
-        od = OrderedDict.kutokakeys('abc', value=None)
-        self.assertEqual(list(od.items()), [(c, None) for c in 'abc'])
+        self.assertEqual(list(od.items()), [(c, Tupu) kila c kwenye 'abc'])
+        od = OrderedDict.kutokakeys('abc', value=Tupu)
+        self.assertEqual(list(od.items()), [(c, Tupu) kila c kwenye 'abc'])
         od = OrderedDict.kutokakeys('abc', value=0)
-        self.assertEqual(list(od.items()), [(c, 0) for c in 'abc'])
+        self.assertEqual(list(od.items()), [(c, 0) kila c kwenye 'abc'])
 
     eleza test_abc(self):
         OrderedDict = self.OrderedDict
         self.assertIsInstance(OrderedDict(), MutableMapping)
-        self.assertTrue(issubclass(OrderedDict, MutableMapping))
+        self.assertKweli(issubclass(OrderedDict, MutableMapping))
 
     eleza test_clear(self):
         OrderedDict = self.OrderedDict
@@ -146,10 +146,10 @@ kundi OrderedDictTests:
         OrderedDict = self.OrderedDict
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
-        del od['a']
+        toa od['a']
         self.assertNotIn('a', od)
         with self.assertRaises(KeyError):
-            del od['a']
+            toa od['a']
         self.assertEqual(list(od.items()), pairs[:2] + pairs[3:])
 
     eleza test_setitem(self):
@@ -165,16 +165,16 @@ kundi OrderedDictTests:
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         shuffle(pairs)
         od = OrderedDict(pairs)
-        self.assertEqual(list(od), [t[0] for t in pairs])
-        self.assertEqual(list(od.keys()), [t[0] for t in pairs])
-        self.assertEqual(list(od.values()), [t[1] for t in pairs])
+        self.assertEqual(list(od), [t[0] kila t kwenye pairs])
+        self.assertEqual(list(od.keys()), [t[0] kila t kwenye pairs])
+        self.assertEqual(list(od.values()), [t[1] kila t kwenye pairs])
         self.assertEqual(list(od.items()), pairs)
         self.assertEqual(list(reversed(od)),
-                         [t[0] for t in reversed(pairs)])
+                         [t[0] kila t kwenye reversed(pairs)])
         self.assertEqual(list(reversed(od.keys())),
-                         [t[0] for t in reversed(pairs)])
+                         [t[0] kila t kwenye reversed(pairs)])
         self.assertEqual(list(reversed(od.values())),
-                         [t[1] for t in reversed(pairs)])
+                         [t[1] kila t kwenye reversed(pairs)])
         self.assertEqual(list(reversed(od.items())), list(reversed(pairs)))
 
     eleza test_detect_deletion_during_iteration(self):
@@ -182,24 +182,24 @@ kundi OrderedDictTests:
         od = OrderedDict.kutokakeys('abc')
         it = iter(od)
         key = next(it)
-        del od[key]
+        toa od[key]
         with self.assertRaises(Exception):
-            # Note, the exact exception raised is not guaranteed
-            # The only guarantee that the next() will not succeed
+            # Note, the exact exception ashiriad ni sio guaranteed
+            # The only guarantee that the next() will sio succeed
             next(it)
 
     eleza test_sorted_iterators(self):
         OrderedDict = self.OrderedDict
         with self.assertRaises(TypeError):
-            OrderedDict([('a', 1), ('b', 2)], None)
+            OrderedDict([('a', 1), ('b', 2)], Tupu)
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict(pairs)
-        self.assertEqual(sorted(od), [t[0] for t in pairs])
-        self.assertEqual(sorted(od.keys()), [t[0] for t in pairs])
-        self.assertEqual(sorted(od.values()), [t[1] for t in pairs])
+        self.assertEqual(sorted(od), [t[0] kila t kwenye pairs])
+        self.assertEqual(sorted(od.keys()), [t[0] kila t kwenye pairs])
+        self.assertEqual(sorted(od.values()), [t[1] kila t kwenye pairs])
         self.assertEqual(sorted(od.items()), pairs)
         self.assertEqual(sorted(reversed(od)),
-                         sorted([t[0] for t in reversed(pairs)]))
+                         sorted([t[0] kila t kwenye reversed(pairs)]))
 
     eleza test_iterators_empty(self):
         OrderedDict = self.OrderedDict
@@ -219,7 +219,7 @@ kundi OrderedDictTests:
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         shuffle(pairs)
         od = OrderedDict(pairs)
-        while pairs:
+        wakati pairs:
             self.assertEqual(od.popitem(), pairs.pop())
         with self.assertRaises(KeyError):
             od.popitem()
@@ -227,13 +227,13 @@ kundi OrderedDictTests:
 
     eleza test_popitem_last(self):
         OrderedDict = self.OrderedDict
-        pairs = [(i, i) for i in range(30)]
+        pairs = [(i, i) kila i kwenye range(30)]
 
         obj = OrderedDict(pairs)
-        for i in range(8):
-            obj.popitem(True)
-        obj.popitem(True)
-        obj.popitem(last=True)
+        kila i kwenye range(8):
+            obj.popitem(Kweli)
+        obj.popitem(Kweli)
+        obj.popitem(last=Kweli)
         self.assertEqual(len(obj), 20)
 
     eleza test_pop(self):
@@ -242,7 +242,7 @@ kundi OrderedDictTests:
         shuffle(pairs)
         od = OrderedDict(pairs)
         shuffle(pairs)
-        while pairs:
+        wakati pairs:
             k, v = pairs.pop()
             self.assertEqual(od.pop(k), v)
         with self.assertRaises(KeyError):
@@ -250,7 +250,7 @@ kundi OrderedDictTests:
         self.assertEqual(len(od), 0)
         self.assertEqual(od.pop(k, 12345), 12345)
 
-        # make sure pop still works when __missing__ is defined
+        # make sure pop still works when __missing__ ni defined
         kundi Missing(OrderedDict):
             eleza __missing__(self, key):
                 rudisha 0
@@ -272,7 +272,7 @@ kundi OrderedDictTests:
         pairs = pairs[2:] + pairs[:2]
         od2 = OrderedDict(pairs)
         self.assertNotEqual(od1, od2)       # different order implies inequality
-        # comparison to regular dict is not order sensitive
+        # comparison to regular dict ni sio order sensitive
         self.assertEqual(od1, dict(od2))
         self.assertEqual(dict(od2), od1)
         # different length implied inequality
@@ -281,7 +281,7 @@ kundi OrderedDictTests:
     eleza test_copying(self):
         OrderedDict = self.OrderedDict
         # Check that ordered dicts are copyable, deepcopyable, picklable,
-        # and have a repr/eval round-trip
+        # na have a repr/eval round-trip
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
         eleza check(dup):
@@ -296,7 +296,7 @@ kundi OrderedDictTests:
         check(copy.deepcopy(od))
         # pickle directly pulls the module, so we have to fake it
         with replaced_module('collections', self.module):
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(proto=proto):
                     check(pickle.loads(pickle.dumps(od, proto)))
         check(eval(repr(od)))
@@ -307,21 +307,21 @@ kundi OrderedDictTests:
 
     eleza test_yaml_linkage(self):
         OrderedDict = self.OrderedDict
-        # Verify that __reduce__ is setup in a way that supports PyYAML's dump() feature.
+        # Verify that __reduce__ ni setup kwenye a way that supports PyYAML's dump() feature.
         # In yaml, lists are native but tuples are not.
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
         # yaml.dump(od) -->
         # '!!python/object/apply:__main__.OrderedDict\n- - [a, 1]\n  - [b, 2]\n'
-        self.assertTrue(all(type(pair)==list for pair in od.__reduce__()[1]))
+        self.assertKweli(all(type(pair)==list kila pair kwenye od.__reduce__()[1]))
 
     eleza test_reduce_not_too_fat(self):
         OrderedDict = self.OrderedDict
-        # do not save instance dictionary ikiwa not needed
+        # do sio save instance dictionary ikiwa sio needed
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
         self.assertIsInstance(od.__dict__, dict)
-        self.assertIsNone(od.__reduce__()[2])
+        self.assertIsTupu(od.__reduce__()[2])
         od.x = 10
         self.assertEqual(od.__dict__['x'], 10)
         self.assertEqual(od.__reduce__()[2], {'x': 10})
@@ -333,7 +333,7 @@ kundi OrderedDictTests:
 
         # pickle directly pulls the module, so we have to fake it
         with replaced_module('collections', self.module):
-            for proto in range(-1, pickle.HIGHEST_PROTOCOL + 1):
+            kila proto kwenye range(-1, pickle.HIGHEST_PROTOCOL + 1):
                 dup = pickle.loads(pickle.dumps(od, proto))
                 self.assertIsNot(dup, od)
                 self.assertEqual(list(dup.keys()), [1])
@@ -353,16 +353,16 @@ kundi OrderedDictTests:
         od = OrderedDict.kutokakeys('abc')
         od['x'] = od
         self.assertEqual(repr(od),
-            "OrderedDict([('a', None), ('b', None), ('c', None), ('x', ...)])")
+            "OrderedDict([('a', Tupu), ('b', Tupu), ('c', Tupu), ('x', ...)])")
 
     eleza test_repr_recursive_values(self):
         OrderedDict = self.OrderedDict
         od = OrderedDict()
         od[42] = od.values()
         r = repr(od)
-        # Cannot perform a stronger test, as the contents of the repr
-        # are implementation-dependent.  All we can say is that we
-        # want a str result, not an exception of any sort.
+        # Cannot perform a stronger test, kama the contents of the repr
+        # are implementation-dependent.  All we can say ni that we
+        # want a str result, sio an exception of any sort.
         self.assertIsInstance(r, str)
         od[42] = od.items()
         r = repr(od)
@@ -379,11 +379,11 @@ kundi OrderedDictTests:
         # make sure order didn't change
         self.assertEqual(list(od.items()), pair_order)
         self.assertEqual(od.setdefault('x', 10), 10)
-        # make sure 'x' is added to the end
+        # make sure 'x' ni added to the end
         self.assertEqual(list(od.items())[-1], ('x', 10))
         self.assertEqual(od.setdefault('g', default=9), 9)
 
-        # make sure setdefault still works when __missing__ is defined
+        # make sure setdefault still works when __missing__ ni defined
         kundi Missing(OrderedDict):
             eleza __missing__(self, key):
                 rudisha 0
@@ -392,11 +392,11 @@ kundi OrderedDictTests:
     eleza test_reinsert(self):
         OrderedDict = self.OrderedDict
         # Given insert a, insert b, delete a, re-insert a,
-        # verify that a is now later than b.
+        # verify that a ni now later than b.
         od = OrderedDict()
         od['a'] = 1
         od['b'] = 2
-        del od['a']
+        toa od['a']
         self.assertEqual(list(od.items()), [('b', 2)])
         od['a'] = 1
         self.assertEqual(list(od.items()), [('b', 2), ('a', 1)])
@@ -413,7 +413,7 @@ kundi OrderedDictTests:
         self.assertEqual(list(od), list('cabde'))
         od.move_to_end('e')
         self.assertEqual(list(od), list('cabde'))
-        od.move_to_end('b', last=False)
+        od.move_to_end('b', last=Uongo)
         self.assertEqual(list(od), list('bcade'))
         with self.assertRaises(KeyError):
             od.move_to_end('x')
@@ -423,9 +423,9 @@ kundi OrderedDictTests:
     eleza test_move_to_end_issue25406(self):
         OrderedDict = self.OrderedDict
         od = OrderedDict.kutokakeys('abc')
-        od.move_to_end('c', last=False)
+        od.move_to_end('c', last=Uongo)
         self.assertEqual(list(od), list('cab'))
-        od.move_to_end('a', last=False)
+        od.move_to_end('a', last=Uongo)
         self.assertEqual(list(od), list('acb'))
 
         od = OrderedDict.kutokakeys('abc')
@@ -436,7 +436,7 @@ kundi OrderedDictTests:
 
     eleza test_sizeof(self):
         OrderedDict = self.OrderedDict
-        # Wimpy test: Just verify the reported size is larger than a regular dict
+        # Wimpy test: Just verify the reported size ni larger than a regular dict
         d = dict(a=1)
         od = OrderedDict(**d)
         self.assertGreater(sys.getsizeof(od), sys.getsizeof(d))
@@ -451,38 +451,38 @@ kundi OrderedDictTests:
 
     eleza test_override_update(self):
         OrderedDict = self.OrderedDict
-        # Verify that subclasses can override update() without breaking __init__()
+        # Verify that subclasses can override update() without komaing __init__()
         kundi MyOD(OrderedDict):
             eleza update(self, *args, **kwds):
-                raise Exception()
+                ashiria Exception()
         items = [('a', 1), ('c', 3), ('b', 2)]
         self.assertEqual(list(MyOD(items).items()), items)
 
     eleza test_highly_nested(self):
-        # Issues 25395 and 35983: test that the trashcan mechanism works
-        # correctly for OrderedDict: deleting a highly nested OrderDict
-        # should not crash Python.
+        # Issues 25395 na 35983: test that the trashcan mechanism works
+        # correctly kila OrderedDict: deleting a highly nested OrderDict
+        # should sio crash Python.
         OrderedDict = self.OrderedDict
-        obj = None
-        for _ in range(1000):
-            obj = OrderedDict([(None, obj)])
-        del obj
+        obj = Tupu
+        kila _ kwenye range(1000):
+            obj = OrderedDict([(Tupu, obj)])
+        toa obj
         support.gc_collect()
 
     eleza test_highly_nested_subclass(self):
-        # Issues 25395 and 35983: test that the trashcan mechanism works
-        # correctly for OrderedDict: deleting a highly nested OrderDict
-        # should not crash Python.
+        # Issues 25395 na 35983: test that the trashcan mechanism works
+        # correctly kila OrderedDict: deleting a highly nested OrderDict
+        # should sio crash Python.
         OrderedDict = self.OrderedDict
         deleted = []
         kundi MyOD(OrderedDict):
             eleza __del__(self):
                 deleted.append(self.i)
-        obj = None
-        for i in range(100):
-            obj = MyOD([(None, obj)])
+        obj = Tupu
+        kila i kwenye range(100):
+            obj = MyOD([(Tupu, obj)])
             obj.i = i
-        del obj
+        toa obj
         support.gc_collect()
         self.assertEqual(deleted, list(reversed(range(100))))
 
@@ -496,15 +496,15 @@ kundi OrderedDictTests:
             eleza __hash__(self):
                 rudisha self._hash
             eleza __eq__(self, other):
-                try:
+                jaribu:
                     rudisha self.value == other.value
-                except AttributeError:
-                    rudisha False
+                tatizo AttributeError:
+                    rudisha Uongo
             eleza __repr__(self):
                 rudisha self.value
 
         eleza blocking_hash(hash):
-            # See the collision-handling in lookdict (in Objects/dictobject.c).
+            # See the collision-handling kwenye lookdict (in Objects/dictobject.c).
             MINSIZE = 8
             i = (hash & MINSIZE-1)
             rudisha (i << 2) + i + hash + 1
@@ -521,8 +521,8 @@ kundi OrderedDictTests:
         od[colliding] = ...
         od['after'] = ...
 
-        del od[blocking]
-        del od[colliding]
+        toa od[blocking]
+        toa od[colliding]
         self.assertEqual(list(od.items()), [(key, ...), ('after', ...)])
 
     eleza test_issue24347(self):
@@ -533,11 +533,11 @@ kundi OrderedDictTests:
                 rudisha randrange(100000)
 
         od = OrderedDict()
-        for i in range(100):
+        kila i kwenye range(100):
             key = Key()
             od[key] = i
 
-        # These should not crash.
+        # These should sio crash.
         with self.assertRaises(KeyError):
             list(od.values())
         with self.assertRaises(KeyError):
@@ -556,17 +556,17 @@ kundi OrderedDictTests:
 
         od = OrderedDict()
         od[Key()] = 0
-        # This should not crash.
+        # This should sio crash.
         od.popitem()
 
     eleza test_issue24667(self):
         """
         dict resizes after a certain number of insertion operations,
-        whether or not there were deletions that freed up slots in the
+        whether ama sio there were deletions that freed up slots kwenye the
         hash table.  During fast node lookup, OrderedDict must correctly
-        respond to all resizes, even ikiwa the current "size" is the same
-        as the old one.  We verify that here by forcing a dict resize
-        on a sparse odict and then perform an operation that should
+        respond to all resizes, even ikiwa the current "size" ni the same
+        kama the old one.  We verify that here by forcing a dict resize
+        on a sparse odict na then perform an operation that should
         trigger an odict resize (e.g. popitem).  One key aspect here is
         that we will keep the size of the odict the same at each popitem
         call.  This verifies that we handled the dict resize properly.
@@ -574,11 +574,11 @@ kundi OrderedDictTests:
         OrderedDict = self.OrderedDict
 
         od = OrderedDict()
-        for c0 in '0123456789ABCDEF':
-            for c1 in '0123456789ABCDEF':
+        kila c0 kwenye '0123456789ABCDEF':
+            kila c1 kwenye '0123456789ABCDEF':
                 ikiwa len(od) == 4:
-                    # This should not raise a KeyError.
-                    od.popitem(last=False)
+                    # This should sio ashiria a KeyError.
+                    od.popitem(last=Uongo)
                 key = c0 + c1
                 od[key] = key
 
@@ -642,11 +642,11 @@ kundi OrderedDictTests:
         OrderedDict = self.OrderedDict
         kundi A:
             od = OrderedDict()
-        A.od[A] = None
+        A.od[A] = Tupu
         r = weakref.ref(A)
-        del A
+        toa A
         gc.collect()
-        self.assertIsNone(r())
+        self.assertIsTupu(r())
 
     eleza test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.OrderedDict)
@@ -664,20 +664,20 @@ kundi PurePythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
 kundi CPythonBuiltinDictTests(unittest.TestCase):
     """Builtin dict preserves insertion order.
 
-    Reuse some of tests in OrderedDict selectively.
+    Reuse some of tests kwenye OrderedDict selectively.
     """
 
     module = builtins
     OrderedDict = dict
 
-for method in (
+kila method kwenye (
     "test_init test_update test_abc test_clear test_delitem " +
     "test_setitem test_detect_deletion_during_iteration " +
     "test_popitem test_reinsert test_override_update " +
     "test_highly_nested test_highly_nested_subkundi " +
     "test_delitem_hash_collision ").split():
     setattr(CPythonBuiltinDictTests, method, getattr(OrderedDictTests, method))
-del method
+toa method
 
 
 @unittest.skipUnless(c_coll, 'requires the C version of the collections module')
@@ -704,9 +704,9 @@ kundi CPythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
         check(od, basicsize + 8 + 5*entrysize)  # 8byte indices + 8*2//3 * entry table
         od.x = 1
         check(od, basicsize + 8 + 5*entrysize)
-        od.update([(i, i) for i in range(3)])
+        od.update([(i, i) kila i kwenye range(3)])
         check(od, basicsize + 8*p + 8 + 5*entrysize + 3*nodesize)
-        od.update([(i, i) for i in range(3, 10)])
+        od.update([(i, i) kila i kwenye range(3, 10)])
         check(od, basicsize + 16*p + 16 + 10*entrysize + 10*nodesize)
 
         check(od.keys(), size('P'))
@@ -725,15 +725,15 @@ kundi CPythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
         od = OrderedDict.kutokakeys('abcde')
         self.assertEqual(list(od), list('abcde'))
         with self.assertRaises(RuntimeError):
-            for i, k in enumerate(od):
+            kila i, k kwenye enumerate(od):
                 od.move_to_end(k)
                 self.assertLess(i, 5)
         with self.assertRaises(RuntimeError):
-            for k in od:
-                od['f'] = None
+            kila k kwenye od:
+                od['f'] = Tupu
         with self.assertRaises(RuntimeError):
-            for k in od:
-                del od['c']
+            kila k kwenye od:
+                toa od['c']
         self.assertEqual(list(od), list('bdeaf'))
 
     eleza test_iterators_pickling(self):
@@ -741,10 +741,10 @@ kundi CPythonOrderedDictTests(OrderedDictTests, unittest.TestCase):
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
 
-        for method_name in ('keys', 'values', 'items'):
+        kila method_name kwenye ('keys', 'values', 'items'):
             meth = getattr(od, method_name)
             expected = list(meth())[1:]
-            for i in range(pickle.HIGHEST_PROTOCOL + 1):
+            kila i kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(method_name=method_name, protocol=i):
                     it = iter(meth())
                     next(it)
@@ -758,14 +758,14 @@ kundi PurePythonOrderedDictSubclassTests(PurePythonOrderedDictTests):
 
     module = py_coll
     kundi OrderedDict(py_coll.OrderedDict):
-        pass
+        pita
 
 
 kundi CPythonOrderedDictSubclassTests(CPythonOrderedDictTests):
 
     module = c_coll
     kundi OrderedDict(c_coll.OrderedDict):
-        pass
+        pita
 
 
 kundi PurePythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
@@ -796,7 +796,7 @@ kundi PurePythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     @classmethod
     eleza setUpClass(cls):
         kundi MyOrderedDict(py_coll.OrderedDict):
-            pass
+            pita
         cls.type2test = MyOrderedDict
 
     eleza test_popitem(self):
@@ -810,7 +810,7 @@ kundi CPythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     @classmethod
     eleza setUpClass(cls):
         kundi MyOrderedDict(c_coll.OrderedDict):
-            pass
+            pita
         cls.type2test = MyOrderedDict
 
     eleza test_popitem(self):

@@ -32,9 +32,9 @@ class MyTestCase(unittest.TestCase):
             p = p.next[0]
         self.assertEqual(result, [b"foo", b"bar"] * 4)
 
-        # to not leak references, we must clean _pointer_type_cache
+        # to sio leak references, we must clean _pointer_type_cache
         from ctypes agiza _pointer_type_cache
-        del _pointer_type_cache[cell]
+        toa _pointer_type_cache[cell]
 
 ################################################################
 

@@ -49,7 +49,7 @@ class DistributionTestCase(support.LoggingSilencer,
     def setUp(self):
         super(DistributionTestCase, self).setUp()
         self.argv = sys.argv, sys.argv[:]
-        del sys.argv[1:]
+        toa sys.argv[1:]
 
     def tearDown(self):
         sys.argv = self.argv[0]
@@ -145,10 +145,10 @@ class DistributionTestCase(support.LoggingSilencer,
         sys.argv.append("build")
         self.addCleanup(os.unlink, TESTFN)
         f = open(TESTFN, "w")
-        try:
+        jaribu:
             print("[global]", file=f)
             print("command_packages = foo.bar, splat", file=f)
-        finally:
+        mwishowe:
             f.close()
 
         d = self.create_distribution([TESTFN])
@@ -162,13 +162,13 @@ class DistributionTestCase(support.LoggingSilencer,
                          ["distutils.command", "spork"])
 
         # Setting --command-packages to '' should cause the default to
-        # be used even if a config file specified something else:
+        # be used even if a config file specified something isipokua:
         sys.argv[1:] = ["--command-packages", "", "build"]
         d = self.create_distribution([TESTFN])
         self.assertEqual(d.get_command_packages(), ["distutils.command"])
 
     def test_empty_options(self):
-        # an empty options dictionary should not stay in the
+        # an empty options dictionary should sio stay in the
         # list of attributes
 
         # catching warnings
@@ -229,7 +229,7 @@ class DistributionTestCase(support.LoggingSilencer,
         temp_home = self.mkdtemp()
         if os.name == 'posix':
             user_filename = os.path.join(temp_home, ".pydistutils.cfg")
-        else:
+        isipokua:
             user_filename = os.path.join(temp_home, "pydistutils.cfg")
 
         with open(user_filename, 'w') as f:
@@ -240,13 +240,13 @@ class DistributionTestCase(support.LoggingSilencer,
 
         old_expander = os.path.expanduser
         os.path.expanduser = _expander
-        try:
+        jaribu:
             d = Distribution()
             all_files = d.find_config_files()
 
             d = Distribution(attrs={'script_args': ['--no-user-cfg']})
             files = d.find_config_files()
-        finally:
+        mwishowe:
             os.path.expanduser = old_expander
 
         # make sure --no-user-cfg disables the user cfg file
@@ -424,7 +424,7 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         long_desc = textwrap.dedent("""\
         example::
               We start here
-            and continue here
+            and endelea here
           and end here.""")
         attrs = {"name": "package",
                  "version": "1.0",
@@ -440,18 +440,18 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         # make sure pydistutils.cfg is found
         if os.name == 'posix':
             user_filename = ".pydistutils.cfg"
-        else:
+        isipokua:
             user_filename = "pydistutils.cfg"
 
         temp_dir = self.mkdtemp()
         user_filename = os.path.join(temp_dir, user_filename)
         f = open(user_filename, 'w')
-        try:
+        jaribu:
             f.write('.')
-        finally:
+        mwishowe:
             f.close()
 
-        try:
+        jaribu:
             dist = Distribution()
 
             # linux-style
@@ -466,8 +466,8 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
                 os.environ['USERPROFILE'] = temp_dir
                 files = dist.find_config_files()
                 self.assertIn(user_filename, files,
-                              '%r not found in %r' % (user_filename, files))
-        finally:
+                              '%r sio found in %r' % (user_filename, files))
+        mwishowe:
             os.remove(user_filename)
 
     def test_fix_help_options(self):

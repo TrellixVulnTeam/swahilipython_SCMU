@@ -5,9 +5,9 @@ agiza _ctypes_test
 
 dll = CDLL(_ctypes_test.__file__)
 
-try:
+jaribu:
     CALLBACK_FUNCTYPE = WINFUNCTYPE
-except NameError:
+tatizo NameError:
     # fake to enable this test on Linux
     CALLBACK_FUNCTYPE = CFUNCTYPE
 
@@ -32,7 +32,7 @@ class BasicWrapTestCase(unittest.TestCase):
         f.argtypes = [POINTER(c_int)]
 
         # This only works if the value c_int(42) passed to the
-        # function is still alive while the pointer (the result) is
+        # function is still alive wakati the pointer (the result) is
         # used.
 
         v = c_int(42)

@@ -18,7 +18,7 @@ kundi Test(unittest.TestCase):
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         bar = statusbar.MultiStatusBar(self.root)

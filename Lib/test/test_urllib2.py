@@ -11,11 +11,11 @@ agiza tempfile
 agiza subprocess
 
 agiza urllib.request
-# The proxy bypass method imported below has logic specific to the OSX
-# proxy config data structure but is testable on all platforms.
+# The proxy bypita method imported below has logic specific to the OSX
+# proxy config data structure but ni testable on all platforms.
 kutoka urllib.request agiza (Request, OpenerDirector, HTTPBasicAuthHandler,
                             HTTPPasswordMgrWithPriorAuth, _parse_proxy,
-                            _proxy_bypass_macosx_sysconf,
+                            _proxy_bypita_macosx_sysconf,
                             AbstractDigestAuthHandler)
 kutoka urllib.parse agiza urlparse
 agiza urllib.error
@@ -31,17 +31,17 @@ kundi TrivialTests(unittest.TestCase):
 
     eleza test___all__(self):
         # Verify which names are exposed
-        for module in 'request', 'response', 'parse', 'error', 'robotparser':
+        kila module kwenye 'request', 'response', 'parse', 'error', 'robotparser':
             context = {}
             exec('kutoka urllib.%s agiza *' % module, context)
-            del context['__builtins__']
-            ikiwa module == 'request' and os.name == 'nt':
+            toa context['__builtins__']
+            ikiwa module == 'request' na os.name == 'nt':
                 u, p = context.pop('url2pathname'), context.pop('pathname2url')
                 self.assertEqual(u.__module__, 'nturl2path')
                 self.assertEqual(p.__module__, 'nturl2path')
-            for k, v in context.items():
+            kila k, v kwenye context.items():
                 self.assertEqual(v.__module__, 'urllib.%s' % module,
-                    "%r is exposed in 'urllib.%s' but defined in %r" %
+                    "%r ni exposed kwenye 'urllib.%s' but defined kwenye %r" %
                     (k, module, v.__module__))
 
     eleza test_trivial(self):
@@ -54,10 +54,10 @@ kundi TrivialTests(unittest.TestCase):
 
         ikiwa os.name == 'nt':
             file_url = "file:///%s" % fname
-        else:
+        isipokua:
             file_url = "file://%s" % fname
 
-        with urllib.request.urlopen(file_url) as f:
+        with urllib.request.urlopen(file_url) kama f:
             f.read()
 
     eleza test_parse_http_list(self):
@@ -68,7 +68,7 @@ kundi TrivialTests(unittest.TestCase):
              ['a', 'b', '"c"', '"d"', '"e,f"', 'g', 'h']),
             ('a="b\\"c", d="e\\,f", g="h\\\\i"',
              ['a="b"c"', 'd="e,f"', 'g="h\\i"'])]
-        for string, list in tests:
+        kila string, list kwenye tests:
             self.assertEqual(urllib.request.parse_http_list(string), list)
 
     eleza test_URLError_reasonstr(self):
@@ -80,13 +80,13 @@ kundi RequestHdrsTests(unittest.TestCase):
 
     eleza test_request_headers_dict(self):
         """
-        The Request.headers dictionary is not a documented interface.  It
+        The Request.headers dictionary ni sio a documented interface.  It
         should stay that way, because the complete set of headers are only
         accessible through the .get_header(), .has_header(), .header_items()
-        interface.  However, .headers pre-dates those methods, and so real code
+        interface.  However, .headers pre-dates those methods, na so real code
         will be using the dictionary.
 
-        The introduction in 2.4 of those methods was a mistake for the same
+        The introduction kwenye 2.4 of those methods was a mistake kila the same
         reason: code that previously saw all (urllib2 user)-provided headers in
         .headers now sees only a subset.
 
@@ -104,11 +104,11 @@ kundi RequestHdrsTests(unittest.TestCase):
         Note the case normalization of header names here, to
         .capitalize()-case.  This should be preserved for
         backwards-compatibility.  (In the HTTP case, normalization to
-        .title()-case is done by urllib2 before sending headers to
+        .title()-case ni done by urllib2 before sending headers to
         http.client).
 
-        Note that e.g. r.has_header("spam-EggS") is currently False, and
-        r.get_header("spam-EggS") returns None, but that could be changed in
+        Note that e.g. r.has_header("spam-EggS") ni currently Uongo, and
+        r.get_header("spam-EggS") rudishas Tupu, but that could be changed in
         future.
 
         Method r.remove_header should remove items both kutoka r.headers and
@@ -116,141 +116,141 @@ kundi RequestHdrsTests(unittest.TestCase):
         """
         url = "http://example.com"
         req = Request(url, headers={"Spam-eggs": "blah"})
-        self.assertTrue(req.has_header("Spam-eggs"))
+        self.assertKweli(req.has_header("Spam-eggs"))
         self.assertEqual(req.header_items(), [('Spam-eggs', 'blah')])
 
         req.add_header("Foo-Bar", "baz")
         self.assertEqual(sorted(req.header_items()),
                          [('Foo-bar', 'baz'), ('Spam-eggs', 'blah')])
-        self.assertFalse(req.has_header("Not-there"))
-        self.assertIsNone(req.get_header("Not-there"))
+        self.assertUongo(req.has_header("Not-there"))
+        self.assertIsTupu(req.get_header("Not-there"))
         self.assertEqual(req.get_header("Not-there", "default"), "default")
 
         req.remove_header("Spam-eggs")
-        self.assertFalse(req.has_header("Spam-eggs"))
+        self.assertUongo(req.has_header("Spam-eggs"))
 
         req.add_unredirected_header("Unredirected-spam", "Eggs")
-        self.assertTrue(req.has_header("Unredirected-spam"))
+        self.assertKweli(req.has_header("Unredirected-spam"))
 
         req.remove_header("Unredirected-spam")
-        self.assertFalse(req.has_header("Unredirected-spam"))
+        self.assertUongo(req.has_header("Unredirected-spam"))
 
-    eleza test_password_manager(self):
+    eleza test_pitaword_manager(self):
         mgr = urllib.request.HTTPPasswordMgr()
-        add = mgr.add_password
-        find_user_pass = mgr.find_user_password
+        add = mgr.add_pitaword
+        find_user_pita = mgr.find_user_pitaword
 
-        add("Some Realm", "http://example.com/", "joe", "password")
+        add("Some Realm", "http://example.com/", "joe", "pitaword")
         add("Some Realm", "http://example.com/ni", "ni", "ni")
         add("Some Realm", "http://c.example.com:3128", "3", "c")
         add("Some Realm", "d.example.com", "4", "d")
         add("Some Realm", "e.example.com:3128", "5", "e")
 
-        # For the same realm, password set the highest path is the winner.
-        self.assertEqual(find_user_pass("Some Realm", "example.com"),
-                         ('joe', 'password'))
-        self.assertEqual(find_user_pass("Some Realm", "http://example.com/ni"),
-                         ('joe', 'password'))
-        self.assertEqual(find_user_pass("Some Realm", "http://example.com"),
-                         ('joe', 'password'))
-        self.assertEqual(find_user_pass("Some Realm", "http://example.com/"),
-                         ('joe', 'password'))
-        self.assertEqual(find_user_pass("Some Realm",
+        # For the same realm, pitaword set the highest path ni the winner.
+        self.assertEqual(find_user_pita("Some Realm", "example.com"),
+                         ('joe', 'pitaword'))
+        self.assertEqual(find_user_pita("Some Realm", "http://example.com/ni"),
+                         ('joe', 'pitaword'))
+        self.assertEqual(find_user_pita("Some Realm", "http://example.com"),
+                         ('joe', 'pitaword'))
+        self.assertEqual(find_user_pita("Some Realm", "http://example.com/"),
+                         ('joe', 'pitaword'))
+        self.assertEqual(find_user_pita("Some Realm",
                                         "http://example.com/spam"),
-                         ('joe', 'password'))
+                         ('joe', 'pitaword'))
 
-        self.assertEqual(find_user_pass("Some Realm",
+        self.assertEqual(find_user_pita("Some Realm",
                                         "http://example.com/spam/spam"),
-                         ('joe', 'password'))
+                         ('joe', 'pitaword'))
 
-        # You can have different passwords for different paths.
+        # You can have different pitawords kila different paths.
 
         add("c", "http://example.com/foo", "foo", "ni")
         add("c", "http://example.com/bar", "bar", "nini")
 
-        self.assertEqual(find_user_pass("c", "http://example.com/foo"),
+        self.assertEqual(find_user_pita("c", "http://example.com/foo"),
                          ('foo', 'ni'))
 
-        self.assertEqual(find_user_pass("c", "http://example.com/bar"),
+        self.assertEqual(find_user_pita("c", "http://example.com/bar"),
                          ('bar', 'nini'))
 
-        # For the same path, newer password should be considered.
+        # For the same path, newer pitaword should be considered.
 
         add("b", "http://example.com/", "first", "blah")
         add("b", "http://example.com/", "second", "spam")
 
-        self.assertEqual(find_user_pass("b", "http://example.com/"),
+        self.assertEqual(find_user_pita("b", "http://example.com/"),
                          ('second', 'spam'))
 
-        # No special relationship between a.example.com and example.com:
+        # No special relationship between a.example.com na example.com:
 
         add("a", "http://example.com", "1", "a")
-        self.assertEqual(find_user_pass("a", "http://example.com/"),
+        self.assertEqual(find_user_pita("a", "http://example.com/"),
                          ('1', 'a'))
 
-        self.assertEqual(find_user_pass("a", "http://a.example.com/"),
-                         (None, None))
+        self.assertEqual(find_user_pita("a", "http://a.example.com/"),
+                         (Tupu, Tupu))
 
         # Ports:
 
-        self.assertEqual(find_user_pass("Some Realm", "c.example.com"),
-                         (None, None))
-        self.assertEqual(find_user_pass("Some Realm", "c.example.com:3128"),
+        self.assertEqual(find_user_pita("Some Realm", "c.example.com"),
+                         (Tupu, Tupu))
+        self.assertEqual(find_user_pita("Some Realm", "c.example.com:3128"),
                          ('3', 'c'))
         self.assertEqual(
-            find_user_pass("Some Realm", "http://c.example.com:3128"),
+            find_user_pita("Some Realm", "http://c.example.com:3128"),
             ('3', 'c'))
-        self.assertEqual(find_user_pass("Some Realm", "d.example.com"),
+        self.assertEqual(find_user_pita("Some Realm", "d.example.com"),
                          ('4', 'd'))
-        self.assertEqual(find_user_pass("Some Realm", "e.example.com:3128"),
+        self.assertEqual(find_user_pita("Some Realm", "e.example.com:3128"),
                          ('5', 'e'))
 
-    eleza test_password_manager_default_port(self):
+    eleza test_pitaword_manager_default_port(self):
         """
-        The point to note here is that we can't guess the default port if
-        there's no scheme.  This applies to both add_password and
-        find_user_password.
+        The point to note here ni that we can't guess the default port if
+        there's no scheme.  This applies to both add_pitaword and
+        find_user_pitaword.
         """
         mgr = urllib.request.HTTPPasswordMgr()
-        add = mgr.add_password
-        find_user_pass = mgr.find_user_password
+        add = mgr.add_pitaword
+        find_user_pita = mgr.find_user_pitaword
         add("f", "http://g.example.com:80", "10", "j")
         add("g", "http://h.example.com", "11", "k")
         add("h", "i.example.com:80", "12", "l")
         add("i", "j.example.com", "13", "m")
-        self.assertEqual(find_user_pass("f", "g.example.com:100"),
-                         (None, None))
-        self.assertEqual(find_user_pass("f", "g.example.com:80"),
+        self.assertEqual(find_user_pita("f", "g.example.com:100"),
+                         (Tupu, Tupu))
+        self.assertEqual(find_user_pita("f", "g.example.com:80"),
                          ('10', 'j'))
-        self.assertEqual(find_user_pass("f", "g.example.com"),
-                         (None, None))
-        self.assertEqual(find_user_pass("f", "http://g.example.com:100"),
-                         (None, None))
-        self.assertEqual(find_user_pass("f", "http://g.example.com:80"),
+        self.assertEqual(find_user_pita("f", "g.example.com"),
+                         (Tupu, Tupu))
+        self.assertEqual(find_user_pita("f", "http://g.example.com:100"),
+                         (Tupu, Tupu))
+        self.assertEqual(find_user_pita("f", "http://g.example.com:80"),
                          ('10', 'j'))
-        self.assertEqual(find_user_pass("f", "http://g.example.com"),
+        self.assertEqual(find_user_pita("f", "http://g.example.com"),
                          ('10', 'j'))
-        self.assertEqual(find_user_pass("g", "h.example.com"), ('11', 'k'))
-        self.assertEqual(find_user_pass("g", "h.example.com:80"), ('11', 'k'))
-        self.assertEqual(find_user_pass("g", "http://h.example.com:80"),
+        self.assertEqual(find_user_pita("g", "h.example.com"), ('11', 'k'))
+        self.assertEqual(find_user_pita("g", "h.example.com:80"), ('11', 'k'))
+        self.assertEqual(find_user_pita("g", "http://h.example.com:80"),
                          ('11', 'k'))
-        self.assertEqual(find_user_pass("h", "i.example.com"), (None, None))
-        self.assertEqual(find_user_pass("h", "i.example.com:80"), ('12', 'l'))
-        self.assertEqual(find_user_pass("h", "http://i.example.com:80"),
+        self.assertEqual(find_user_pita("h", "i.example.com"), (Tupu, Tupu))
+        self.assertEqual(find_user_pita("h", "i.example.com:80"), ('12', 'l'))
+        self.assertEqual(find_user_pita("h", "http://i.example.com:80"),
                          ('12', 'l'))
-        self.assertEqual(find_user_pass("i", "j.example.com"), ('13', 'm'))
-        self.assertEqual(find_user_pass("i", "j.example.com:80"),
-                         (None, None))
-        self.assertEqual(find_user_pass("i", "http://j.example.com"),
+        self.assertEqual(find_user_pita("i", "j.example.com"), ('13', 'm'))
+        self.assertEqual(find_user_pita("i", "j.example.com:80"),
+                         (Tupu, Tupu))
+        self.assertEqual(find_user_pita("i", "http://j.example.com"),
                          ('13', 'm'))
-        self.assertEqual(find_user_pass("i", "http://j.example.com:80"),
-                         (None, None))
+        self.assertEqual(find_user_pita("i", "http://j.example.com:80"),
+                         (Tupu, Tupu))
 
 
 kundi MockOpener:
     addheaders = []
 
-    eleza open(self, req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+    eleza open(self, req, data=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         self.req, self.data, self.timeout = req, data, timeout
 
     eleza error(self, proto, *args):
@@ -258,14 +258,14 @@ kundi MockOpener:
 
 
 kundi MockFile:
-    eleza read(self, count=None):
-        pass
+    eleza read(self, count=Tupu):
+        pita
 
-    eleza readline(self, count=None):
-        pass
+    eleza readline(self, count=Tupu):
+        pita
 
     eleza close(self):
-        pass
+        pita
 
 
 kundi MockHeaders(dict):
@@ -274,7 +274,7 @@ kundi MockHeaders(dict):
 
 
 kundi MockResponse(io.StringIO):
-    eleza __init__(self, code, msg, headers, data, url=None):
+    eleza __init__(self, code, msg, headers, data, url=Tupu):
         io.StringIO.__init__(self, data)
         self.code, self.msg, self.headers, self.url = code, msg, headers, url
 
@@ -325,9 +325,9 @@ kundi MockHTTPClass:
     eleza __init__(self):
         self.level = 0
         self.req_headers = []
-        self.data = None
-        self.raise_on_endheaders = False
-        self.sock = None
+        self.data = Tupu
+        self.ashiria_on_endheaders = Uongo
+        self.sock = Tupu
         self._tunnel_headers = {}
 
     eleza __call__(self, host, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
@@ -338,36 +338,36 @@ kundi MockHTTPClass:
     eleza set_debuglevel(self, level):
         self.level = level
 
-    eleza set_tunnel(self, host, port=None, headers=None):
+    eleza set_tunnel(self, host, port=Tupu, headers=Tupu):
         self._tunnel_host = host
         self._tunnel_port = port
         ikiwa headers:
             self._tunnel_headers = headers
-        else:
+        isipokua:
             self._tunnel_headers.clear()
 
-    eleza request(self, method, url, body=None, headers=None, *,
-                encode_chunked=False):
+    eleza request(self, method, url, body=Tupu, headers=Tupu, *,
+                encode_chunked=Uongo):
         self.method = method
         self.selector = url
-        ikiwa headers is not None:
+        ikiwa headers ni sio Tupu:
             self.req_headers += headers.items()
         self.req_headers.sort()
         ikiwa body:
             self.data = body
         self.encode_chunked = encode_chunked
-        ikiwa self.raise_on_endheaders:
-            raise OSError()
+        ikiwa self.ashiria_on_endheaders:
+            ashiria OSError()
 
     eleza getresponse(self):
         rudisha MockHTTPResponse(MockFile(), {}, 200, "OK")
 
     eleza close(self):
-        pass
+        pita
 
 
 kundi MockHandler:
-    # useful for testing handler machinery
+    # useful kila testing handler machinery
     # see add_ordered_mock_handlers() docstring
     handler_order = 500
 
@@ -375,18 +375,18 @@ kundi MockHandler:
         self._define_methods(methods)
 
     eleza _define_methods(self, methods):
-        for spec in methods:
+        kila spec kwenye methods:
             ikiwa len(spec) == 2:
                 name, action = spec
-            else:
-                name, action = spec, None
+            isipokua:
+                name, action = spec, Tupu
             meth = FakeMethod(name, action, self.handle)
             setattr(self.__class__, name, meth)
 
     eleza handle(self, fn_name, action, *args, **kwds):
         self.parent.calls.append((self, fn_name, args, kwds))
-        ikiwa action is None:
-            rudisha None
+        ikiwa action ni Tupu:
+            rudisha Tupu
         elikiwa action == "rudisha self":
             rudisha self
         elikiwa action == "rudisha response":
@@ -396,54 +396,54 @@ kundi MockHandler:
             rudisha Request("http://blah/")
         elikiwa action.startswith("error"):
             code = action[action.rfind(" ")+1:]
-            try:
+            jaribu:
                 code = int(code)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
             res = MockResponse(200, "OK", {}, "")
             rudisha self.parent.error("http", args[0], res, code, "", {})
-        elikiwa action == "raise":
-            raise urllib.error.URLError("blah")
-        assert False
+        elikiwa action == "ashiria":
+            ashiria urllib.error.URLError("blah")
+        assert Uongo
 
     eleza close(self):
-        pass
+        pita
 
     eleza add_parent(self, parent):
         self.parent = parent
         self.parent.calls = []
 
     eleza __lt__(self, other):
-        ikiwa not hasattr(other, "handler_order"):
-            # No handler_order, leave in original order.  Yuck.
-            rudisha True
+        ikiwa sio hasattr(other, "handler_order"):
+            # No handler_order, leave kwenye original order.  Yuck.
+            rudisha Kweli
         rudisha self.handler_order < other.handler_order
 
 
 eleza add_ordered_mock_handlers(opener, meth_spec):
-    """Create MockHandlers and add them to an OpenerDirector.
+    """Create MockHandlers na add them to an OpenerDirector.
 
-    meth_spec: list of lists of tuples and strings defining methods to define
+    meth_spec: list of lists of tuples na strings defining methods to define
     on handlers.  eg:
 
     [["http_error", "ftp_open"], ["http_open"]]
 
-    defines methods .http_error() and .ftp_open() on one handler, and
+    defines methods .http_error() na .ftp_open() on one handler, and
     .http_open() on another.  These methods just record their arguments and
-    rudisha None.  Using a tuple instead of a string causes the method to
+    rudisha Tupu.  Using a tuple instead of a string causes the method to
     perform some action (see MockHandler.handle()), eg:
 
     [["http_error"], [("http_open", "rudisha request")]]
 
-    defines .http_error() on one handler (which simply returns None), and
-    .http_open() on another handler, which returns a Request object.
+    defines .http_error() on one handler (which simply rudishas Tupu), and
+    .http_open() on another handler, which rudishas a Request object.
 
     """
     handlers = []
     count = 0
-    for meths in meth_spec:
+    kila meths kwenye meth_spec:
         kundi MockHandlerSubclass(MockHandler):
-            pass
+            pita
 
         h = MockHandlerSubclass(meths)
         h.handler_order += count
@@ -456,15 +456,15 @@ eleza add_ordered_mock_handlers(opener, meth_spec):
 
 eleza build_test_opener(*handler_instances):
     opener = OpenerDirector()
-    for h in handler_instances:
+    kila h kwenye handler_instances:
         opener.add_handler(h)
     rudisha opener
 
 
 kundi MockHTTPHandler(urllib.request.BaseHandler):
-    # useful for testing redirections and auth
-    # sends supplied headers and code as first response
-    # sends 200 OK as second response
+    # useful kila testing redirections na auth
+    # sends supplied headers na code kama first response
+    # sends 200 OK kama second response
     eleza __init__(self, code, headers):
         self.code = code
         self.headers = headers
@@ -483,14 +483,14 @@ kundi MockHTTPHandler(urllib.request.BaseHandler):
             msg = email.message_kutoka_string(self.headers)
             rudisha self.parent.error(
                 "http", req, MockFile(), self.code, name, msg)
-        else:
+        isipokua:
             self.req = req
             msg = email.message_kutoka_string("\r\n\r\n")
             rudisha MockResponse(200, "OK", msg, "", req.get_full_url())
 
 
 kundi MockHTTPSHandler(urllib.request.AbstractHTTPHandler):
-    # Useful for testing the Proxy-Authorization request by verifying the
+    # Useful kila testing the Proxy-Authorization request by verifying the
     # properties of httpcon
 
     eleza __init__(self, debuglevel=0):
@@ -502,53 +502,53 @@ kundi MockHTTPSHandler(urllib.request.AbstractHTTPHandler):
 
 
 kundi MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
-    # useful for testing auth
+    # useful kila testing auth
     # sends supplied code response
-    # checks ikiwa auth header is specified in request
+    # checks ikiwa auth header ni specified kwenye request
     eleza __init__(self, code):
         self.code = code
-        self.has_auth_header = False
+        self.has_auth_header = Uongo
 
     eleza reset(self):
-        self.has_auth_header = False
+        self.has_auth_header = Uongo
 
     eleza http_open(self, req):
         ikiwa req.has_header('Authorization'):
-            self.has_auth_header = True
+            self.has_auth_header = Kweli
         name = http.client.responses[self.code]
         rudisha MockResponse(self.code, name, MockFile(), "", req.get_full_url())
 
 
 
 kundi MockPasswordManager:
-    eleza add_password(self, realm, uri, user, password):
+    eleza add_pitaword(self, realm, uri, user, pitaword):
         self.realm = realm
         self.url = uri
         self.user = user
-        self.password = password
+        self.pitaword = pitaword
 
-    eleza find_user_password(self, realm, authuri):
+    eleza find_user_pitaword(self, realm, authuri):
         self.target_realm = realm
         self.target_url = authuri
-        rudisha self.user, self.password
+        rudisha self.user, self.pitaword
 
 
 kundi OpenerDirectorTests(unittest.TestCase):
 
     eleza test_add_non_handler(self):
         kundi NonHandler(object):
-            pass
+            pita
         self.assertRaises(TypeError,
                           OpenerDirector().add_handler, NonHandler())
 
     eleza test_badly_named_methods(self):
-        # test work-around for three methods that accidentally follow the
-        # naming conventions for handler methods
+        # test work-around kila three methods that accidentally follow the
+        # naming conventions kila handler methods
         # (*_open() / *_request() / *_response())
 
         # These used to call the accidentally-named methods, causing a
-        # TypeError in real code; here, returning self kutoka these mock
-        # methods would either cause no exception, or AttributeError.
+        # TypeError kwenye real code; here, rudishaing self kutoka these mock
+        # methods would either cause no exception, ama AttributeError.
 
         kutoka urllib.error agiza URLError
 
@@ -559,11 +559,11 @@ kundi OpenerDirectorTests(unittest.TestCase):
             ]
         add_ordered_mock_handlers(o, meth_spec)
         o.add_handler(urllib.request.UnknownHandler())
-        for scheme in "do", "proxy", "redirect":
+        kila scheme kwenye "do", "proxy", "redirect":
             self.assertRaises(URLError, o.open, scheme+"://example.com/")
 
     eleza test_handled(self):
-        # handler returning non-None means no more handlers will be called
+        # handler rudishaing non-Tupu means no more handlers will be called
         o = OpenerDirector()
         meth_spec = [
             ["http_open", "ftp_open", "http_error_302"],
@@ -575,15 +575,15 @@ kundi OpenerDirectorTests(unittest.TestCase):
 
         req = Request("http://example.com/")
         r = o.open(req)
-        # Second .http_open() gets called, third doesn't, since second returned
-        # non-None.  Handlers without .http_open() never get any methods called
+        # Second .http_open() gets called, third doesn't, since second rudishaed
+        # non-Tupu.  Handlers without .http_open() never get any methods called
         # on them.
-        # In fact, second mock handler defining .http_open() returns self
-        # (instead of response), which becomes the OpenerDirector's return
+        # In fact, second mock handler defining .http_open() rudishas self
+        # (instead of response), which becomes the OpenerDirector's rudisha
         # value.
         self.assertEqual(r, handlers[2])
         calls = [(handlers[0], "http_open"), (handlers[2], "http_open")]
-        for expected, got in zip(calls, o.calls):
+        kila expected, got kwenye zip(calls, o.calls):
             handler, name, args, kwds = got
             self.assertEqual((handler, name), expected)
             self.assertEqual(args, (req,))
@@ -591,10 +591,10 @@ kundi OpenerDirectorTests(unittest.TestCase):
     eleza test_handler_order(self):
         o = OpenerDirector()
         handlers = []
-        for meths, handler_order in [([("http_open", "rudisha self")], 500),
+        kila meths, handler_order kwenye [([("http_open", "rudisha self")], 500),
                                      (["http_open"], 0)]:
             kundi MockHandlerSubclass(MockHandler):
-                pass
+                pita
 
             h = MockHandlerSubclass(meths)
             h.handler_order = handler_order
@@ -602,15 +602,15 @@ kundi OpenerDirectorTests(unittest.TestCase):
             o.add_handler(h)
 
         o.open("http://example.com/")
-        # handlers called in reverse order, thanks to their sort order
+        # handlers called kwenye reverse order, thanks to their sort order
         self.assertEqual(o.calls[0][0], handlers[1])
         self.assertEqual(o.calls[1][0], handlers[0])
 
-    eleza test_raise(self):
+    eleza test_ashiria(self):
         # raising URLError stops processing of request
         o = OpenerDirector()
         meth_spec = [
-            [("http_open", "raise")],
+            [("http_open", "ashiria")],
             [("http_open", "rudisha self")],
             ]
         handlers = add_ordered_mock_handlers(o, meth_spec)
@@ -625,7 +625,7 @@ kundi OpenerDirectorTests(unittest.TestCase):
         o = OpenerDirector()
         meth_spec = [
             [("http_open", "error 302")],
-            [("http_error_400", "raise"), "http_open"],
+            [("http_error_400", "ashiria"), "http_open"],
             [("http_error_302", "rudisha response"), "http_error_303",
              "http_error"],
             [("http_error_302")],
@@ -634,7 +634,7 @@ kundi OpenerDirectorTests(unittest.TestCase):
 
         kundi Unknown:
             eleza __eq__(self, other):
-                rudisha True
+                rudisha Kweli
 
         req = Request("http://example.com/")
         o.open(req)
@@ -642,7 +642,7 @@ kundi OpenerDirectorTests(unittest.TestCase):
         calls = [(handlers[0], "http_open", (req,)),
                  (handlers[2], "http_error_302",
                   (req, Unknown(), 302, "", {}))]
-        for expected, got in zip(calls, o.calls):
+        kila expected, got kwenye zip(calls, o.calls):
             handler, method_name, args = expected
             self.assertEqual((handler, method_name), got[:2])
             self.assertEqual(args, got[2])
@@ -661,35 +661,35 @@ kundi OpenerDirectorTests(unittest.TestCase):
         req = Request("http://example.com/")
         o.open(req)
         # processor methods are called on *all* handlers that define them,
-        # not just the first handler that handles the request
+        # sio just the first handler that handles the request
         calls = [
             (handlers[0], "http_request"), (handlers[1], "http_request"),
             (handlers[0], "http_response"), (handlers[1], "http_response")]
 
-        for i, (handler, name, args, kwds) in enumerate(o.calls):
+        kila i, (handler, name, args, kwds) kwenye enumerate(o.calls):
             ikiwa i < 2:
                 # *_request
                 self.assertEqual((handler, name), calls[i])
                 self.assertEqual(len(args), 1)
                 self.assertIsInstance(args[0], Request)
-            else:
+            isipokua:
                 # *_response
                 self.assertEqual((handler, name), calls[i])
                 self.assertEqual(len(args), 2)
                 self.assertIsInstance(args[0], Request)
-                # response kutoka opener.open is None, because there's no
+                # response kutoka opener.open ni Tupu, because there's no
                 # handler that defines http_open to handle it
-                ikiwa args[1] is not None:
+                ikiwa args[1] ni sio Tupu:
                     self.assertIsInstance(args[1], MockResponse)
 
 
 eleza sanepathname2url(path):
-    try:
+    jaribu:
         path.encode("utf-8")
-    except UnicodeEncodeError:
-        raise unittest.SkipTest("path is not encodable to utf8")
+    tatizo UnicodeEncodeError:
+        ashiria unittest.SkipTest("path ni sio encodable to utf8")
     urlpath = urllib.request.pathname2url(path)
-    ikiwa os.name == "nt" and urlpath.startswith("///"):
+    ikiwa os.name == "nt" na urlpath.startswith("///"):
         urlpath = urlpath[2:]
     # XXX don't ask me about the mac...
     rudisha urlpath
@@ -707,15 +707,15 @@ kundi HandlerTests(unittest.TestCase):
                 rudisha io.StringIO(self.data), len(self.data)
 
             eleza close(self):
-                pass
+                pita
 
         kundi NullFTPHandler(urllib.request.FTPHandler):
             eleza __init__(self, data):
                 self.data = data
 
-            eleza connect_ftp(self, user, passwd, host, port, dirs,
+            eleza connect_ftp(self, user, pitawd, host, port, dirs,
                             timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
-                self.user, self.passwd = user, passwd
+                self.user, self.pitawd = user, pitawd
                 self.host, self.port = host, port
                 self.dirs = dirs
                 self.ftpwrapper = MockFTPWrapper(self.data)
@@ -726,7 +726,7 @@ kundi HandlerTests(unittest.TestCase):
         h = NullFTPHandler(data)
         h.parent = MockOpener()
 
-        for url, host, port, user, passwd, type_, dirs, filename, mimetype in [
+        kila url, host, port, user, pitawd, type_, dirs, filename, mimetype kwenye [
             ("ftp://localhost/foo/bar/baz.html",
              "localhost", ftplib.FTP_PORT, "", "", "I",
              ["foo", "bar"], "baz.html", "text/html"),
@@ -741,17 +741,17 @@ kundi HandlerTests(unittest.TestCase):
              ["foo", "bar"], "baz.html", "text/html"),
             ("ftp://localhost:80/foo/bar/",
              "localhost", 80, "", "", "D",
-             ["foo", "bar"], "", None),
+             ["foo", "bar"], "", Tupu),
             ("ftp://localhost/baz.gif;type=a",
              "localhost", ftplib.FTP_PORT, "", "", "A",
-             [], "baz.gif", None),  # XXX really this should guess image/gif
+             [], "baz.gif", Tupu),  # XXX really this should guess image/gif
             ]:
             req = Request(url)
-            req.timeout = None
+            req.timeout = Tupu
             r = h.ftp_open(req)
-            # ftp authentication not yet implemented by FTPHandler
+            # ftp authentication sio yet implemented by FTPHandler
             self.assertEqual(h.user, user)
-            self.assertEqual(h.passwd, passwd)
+            self.assertEqual(h.pitawd, pitawd)
             self.assertEqual(h.host, socket.gethostbyname(host))
             self.assertEqual(h.port, port)
             self.assertEqual(h.dirs, dirs)
@@ -774,31 +774,31 @@ kundi HandlerTests(unittest.TestCase):
             "file://%s" % urlpath,
             "file://%s%s" % (socket.gethostbyname('localhost'), urlpath),
             ]
-        try:
+        jaribu:
             localaddr = socket.gethostbyname(socket.gethostname())
-        except socket.gaierror:
+        tatizo socket.gaierror:
             localaddr = ''
         ikiwa localaddr:
             urls.append("file://%s%s" % (localaddr, urlpath))
 
-        for url in urls:
+        kila url kwenye urls:
             f = open(TESTFN, "wb")
-            try:
-                try:
+            jaribu:
+                jaribu:
                     f.write(towrite)
-                finally:
+                mwishowe:
                     f.close()
 
                 r = h.file_open(Request(url))
-                try:
+                jaribu:
                     data = r.read()
                     headers = r.info()
                     respurl = r.geturl()
-                finally:
+                mwishowe:
                     r.close()
                 stats = os.stat(TESTFN)
-                modified = email.utils.formatdate(stats.st_mtime, usegmt=True)
-            finally:
+                modified = email.utils.formatdate(stats.st_mtime, usegmt=Kweli)
+            mwishowe:
                 os.remove(TESTFN)
             self.assertEqual(data, towrite)
             self.assertEqual(headers["Content-type"], "text/plain")
@@ -806,7 +806,7 @@ kundi HandlerTests(unittest.TestCase):
             self.assertEqual(headers["Last-modified"], modified)
             self.assertEqual(respurl, url)
 
-        for url in [
+        kila url kwenye [
             "file://localhost:80%s" % urlpath,
             "file:///file_does_not_exist.txt",
             "file://not-a-local-host.com//dir/file.txt",
@@ -815,40 +815,40 @@ kundi HandlerTests(unittest.TestCase):
             "file://somerandomhost.ontheinternet.com%s/%s" %
             (os.getcwd(), TESTFN),
             ]:
-            try:
+            jaribu:
                 f = open(TESTFN, "wb")
-                try:
+                jaribu:
                     f.write(towrite)
-                finally:
+                mwishowe:
                     f.close()
 
                 self.assertRaises(urllib.error.URLError,
                                   h.file_open, Request(url))
-            finally:
+            mwishowe:
                 os.remove(TESTFN)
 
         h = urllib.request.FileHandler()
         o = h.parent = MockOpener()
-        # XXXX why does // mean ftp (and /// mean not ftp!), and where
-        #  is file: scheme specified?  I think this is really a bug, and
+        # XXXX why does // mean ftp (and /// mean sio ftp!), na where
+        #  ni file: scheme specified?  I think this ni really a bug, and
         #  what was intended was to distinguish between URLs like:
         # file:/blah.txt (a file)
         # file://localhost/blah.txt (a file)
         # file:///blah.txt (a file)
         # file://ftp.example.com/blah.txt (an ftp URL)
-        for url, ftp in [
-            ("file://ftp.example.com//foo.txt", False),
-            ("file://ftp.example.com///foo.txt", False),
-            ("file://ftp.example.com/foo.txt", False),
-            ("file://somehost//foo/something.txt", False),
-            ("file://localhost//foo/something.txt", False),
+        kila url, ftp kwenye [
+            ("file://ftp.example.com//foo.txt", Uongo),
+            ("file://ftp.example.com///foo.txt", Uongo),
+            ("file://ftp.example.com/foo.txt", Uongo),
+            ("file://somehost//foo/something.txt", Uongo),
+            ("file://localhost//foo/something.txt", Uongo),
             ]:
             req = Request(url)
-            try:
+            jaribu:
                 h.file_open(req)
-            except urllib.error.URLError:
-                self.assertFalse(ftp)
-            else:
+            tatizo urllib.error.URLError:
+                self.assertUongo(ftp)
+            isipokua:
                 self.assertIs(o.req, req)
                 self.assertEqual(req.type, "ftp")
             self.assertEqual(req.type == "ftp", ftp)
@@ -859,9 +859,9 @@ kundi HandlerTests(unittest.TestCase):
         o = h.parent = MockOpener()
 
         url = "http://example.com/"
-        for method, data in [("GET", None), ("POST", b"blah")]:
+        kila method, data kwenye [("GET", Tupu), ("POST", b"blah")]:
             req = Request(url, data, {"Foo": "bar"})
-            req.timeout = None
+            req.timeout = Tupu
             req.add_unredirected_header("Spam", "eggs")
             http = MockHTTPClass()
             r = h.do_open(http, req)
@@ -884,23 +884,23 @@ kundi HandlerTests(unittest.TestCase):
             self.assertEqual(http.data, data)
 
         # check OSError converted to URLError
-        http.raise_on_endheaders = True
+        http.ashiria_on_endheaders = Kweli
         self.assertRaises(urllib.error.URLError, h.do_open, http, req)
 
-        # Check for TypeError on POST data which is str.
+        # Check kila TypeError on POST data which ni str.
         req = Request("http://example.com/","badpost")
         self.assertRaises(TypeError, h.do_request_, req)
 
         # check adding of standard headers
         o.addheaders = [("Spam", "eggs")]
-        for data in b"", None:  # POST, GET
+        kila data kwenye b"", Tupu:  # POST, GET
             req = Request("http://example.com/", data)
             r = MockResponse(200, "OK", {}, "")
             newreq = h.do_request_(req)
-            ikiwa data is None:  # GET
+            ikiwa data ni Tupu:  # GET
                 self.assertNotIn("Content-length", req.unredirected_hdrs)
                 self.assertNotIn("Content-type", req.unredirected_hdrs)
-            else:  # POST
+            isipokua:  # POST
                 self.assertEqual(req.unredirected_hdrs["Content-length"], "0")
                 self.assertEqual(req.unredirected_hdrs["Content-type"],
                              "application/x-www-form-urlencoded")
@@ -920,35 +920,35 @@ kundi HandlerTests(unittest.TestCase):
             self.assertEqual(req.unredirected_hdrs["Spam"], "foo")
 
     eleza test_http_body_file(self):
-        # A regular file - chunked encoding is used unless Content Length is
+        # A regular file - chunked encoding ni used unless Content Length is
         # already set.
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
 
-        file_obj = tempfile.NamedTemporaryFile(mode='w+b', delete=False)
+        file_obj = tempfile.NamedTemporaryFile(mode='w+b', delete=Uongo)
         file_path = file_obj.name
         file_obj.close()
         self.addCleanup(os.unlink, file_path)
 
-        with open(file_path, "rb") as f:
+        with open(file_path, "rb") kama f:
             req = Request("http://example.com/", f, {})
             newreq = h.do_request_(req)
             te = newreq.get_header('Transfer-encoding')
             self.assertEqual(te, "chunked")
-            self.assertFalse(newreq.has_header('Content-length'))
+            self.assertUongo(newreq.has_header('Content-length'))
 
-        with open(file_path, "rb") as f:
+        with open(file_path, "rb") kama f:
             req = Request("http://example.com/", f, {"Content-Length": 30})
             newreq = h.do_request_(req)
             self.assertEqual(int(newreq.get_header('Content-length')), 30)
-            self.assertFalse(newreq.has_header("Transfer-encoding"))
+            self.assertUongo(newreq.has_header("Transfer-encoding"))
 
     eleza test_http_body_fileobj(self):
-        # A file object - chunked encoding is used
-        # unless Content Length is already set.
+        # A file object - chunked encoding ni used
+        # unless Content Length ni already set.
         # (Note that there are some subtle differences to a regular
-        # file, that is why we are testing both cases.)
+        # file, that ni why we are testing both cases.)
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
@@ -957,56 +957,56 @@ kundi HandlerTests(unittest.TestCase):
         req = Request("http://example.com/", file_obj, {})
         newreq = h.do_request_(req)
         self.assertEqual(newreq.get_header('Transfer-encoding'), 'chunked')
-        self.assertFalse(newreq.has_header('Content-length'))
+        self.assertUongo(newreq.has_header('Content-length'))
 
         headers = {"Content-Length": 30}
         req = Request("http://example.com/", file_obj, headers)
         newreq = h.do_request_(req)
         self.assertEqual(int(newreq.get_header('Content-length')), 30)
-        self.assertFalse(newreq.has_header("Transfer-encoding"))
+        self.assertUongo(newreq.has_header("Transfer-encoding"))
 
         file_obj.close()
 
     eleza test_http_body_pipe(self):
         # A file reading kutoka a pipe.
-        # A pipe cannot be seek'ed.  There is no way to determine the
+        # A pipe cannot be seek'ed.  There ni no way to determine the
         # content length up front.  Thus, do_request_() should fall
         # back to Transfer-encoding chunked.
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
 
-        cmd = [sys.executable, "-c", r"pass"]
-        for headers in {}, {"Content-Length": 30}:
-            with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+        cmd = [sys.executable, "-c", r"pita"]
+        kila headers kwenye {}, {"Content-Length": 30}:
+            with subprocess.Popen(cmd, stdout=subprocess.PIPE) kama proc:
                 req = Request("http://example.com/", proc.stdout, headers)
                 newreq = h.do_request_(req)
-                ikiwa not headers:
-                    self.assertEqual(newreq.get_header('Content-length'), None)
+                ikiwa sio headers:
+                    self.assertEqual(newreq.get_header('Content-length'), Tupu)
                     self.assertEqual(newreq.get_header('Transfer-encoding'),
                                      'chunked')
-                else:
+                isipokua:
                     self.assertEqual(int(newreq.get_header('Content-length')),
                                      30)
 
     eleza test_http_body_iterable(self):
-        # Generic iterable.  There is no way to determine the content
+        # Generic iterable.  There ni no way to determine the content
         # length up front.  Fall back to Transfer-encoding chunked.
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
 
         eleza iterable_body():
-            yield b"one"
+            tuma b"one"
 
-        for headers in {}, {"Content-Length": 11}:
+        kila headers kwenye {}, {"Content-Length": 11}:
             req = Request("http://example.com/", iterable_body(), headers)
             newreq = h.do_request_(req)
-            ikiwa not headers:
-                self.assertEqual(newreq.get_header('Content-length'), None)
+            ikiwa sio headers:
+                self.assertEqual(newreq.get_header('Content-length'), Tupu)
                 self.assertEqual(newreq.get_header('Transfer-encoding'),
                                  'chunked')
-            else:
+            isipokua:
                 self.assertEqual(int(newreq.get_header('Content-length')), 11)
 
     eleza test_http_body_empty_seq(self):
@@ -1015,17 +1015,17 @@ kundi HandlerTests(unittest.TestCase):
         h.parent = MockOpener()
         req = h.do_request_(Request("http://example.com/", ()))
         self.assertEqual(req.get_header("Transfer-encoding"), "chunked")
-        self.assertFalse(req.has_header("Content-length"))
+        self.assertUongo(req.has_header("Content-length"))
 
     eleza test_http_body_array(self):
-        # array.array Iterable - Content Length is calculated
+        # array.array Iterable - Content Length ni calculated
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
 
         iterable_array = array.array("I",[1,2,3,4])
 
-        for headers in {}, {"Content-Length": 16}:
+        kila headers kwenye {}, {"Content-Length": 16}:
             req = Request("http://example.com/", iterable_array, headers)
             newreq = h.do_request_(req)
             self.assertEqual(int(newreq.get_header('Content-length')),16)
@@ -1038,8 +1038,8 @@ kundi HandlerTests(unittest.TestCase):
         self.assertEqual(h._debuglevel, 1)
 
     eleza test_http_doubleslash(self):
-        # Checks the presence of any unnecessary double slash in url does not
-        # break anything. Previously, a double slash directly after the host
+        # Checks the presence of any unnecessary double slash kwenye url does not
+        # koma anything. Previously, a double slash directly after the host
         # could cause incorrect parsing.
         h = urllib.request.AbstractHTTPHandler()
         h.parent = MockOpener()
@@ -1052,15 +1052,15 @@ kundi HandlerTests(unittest.TestCase):
             "http://example.com/foo/bar//baz.html"
             ]
 
-        for ds_url in ds_urls:
+        kila ds_url kwenye ds_urls:
             ds_req = Request(ds_url, data)
 
-            # Check whether host is determined correctly ikiwa there is no proxy
+            # Check whether host ni determined correctly ikiwa there ni no proxy
             np_ds_req = h.do_request_(ds_req)
             self.assertEqual(np_ds_req.unredirected_hdrs["Host"], "example.com")
 
-            # Check whether host is determined correctly ikiwa there is a proxy
-            ds_req.set_proxy("someproxy:3128", None)
+            # Check whether host ni determined correctly ikiwa there ni a proxy
+            ds_req.set_proxy("someproxy:3128", Tupu)
             p_ds_req = h.do_request_(ds_req)
             self.assertEqual(p_ds_req.unredirected_hdrs["Host"], "example.com")
 
@@ -1077,21 +1077,21 @@ kundi HandlerTests(unittest.TestCase):
         # testing a reusable request instance, but the url parameter is
         # required, so just use a dummy one to instantiate
         r = Request('http://example.com')
-        for url in urls:
+        kila url kwenye urls:
             r.full_url = url
             parsed = urlparse(url)
 
             self.assertEqual(r.get_full_url(), url)
             # full_url setter uses splittag to split into components.
-            # splittag sets the fragment as None while urlparse sets it to ''
-            self.assertEqual(r.fragment or '', parsed.fragment)
+            # splittag sets the fragment kama Tupu wakati urlparse sets it to ''
+            self.assertEqual(r.fragment ama '', parsed.fragment)
             self.assertEqual(urlparse(r.get_full_url()).query, parsed.query)
 
     eleza test_full_url_deleter(self):
         r = Request('http://www.example.com')
-        del r.full_url
-        self.assertIsNone(r.full_url)
-        self.assertIsNone(r.fragment)
+        toa r.full_url
+        self.assertIsTupu(r.full_url)
+        self.assertIsTupu(r.fragment)
         self.assertEqual(r.selector, '')
 
     eleza test_fixpath_in_weirdurls(self):
@@ -1119,22 +1119,22 @@ kundi HandlerTests(unittest.TestCase):
 
         url = "http://example.com/"
         req = Request(url)
-        # all 2xx are passed through
+        # all 2xx are pitaed through
         r = MockResponse(200, "OK", {}, "", url)
         newr = h.http_response(req, r)
         self.assertIs(r, newr)
-        self.assertFalse(hasattr(o, "proto"))  # o.error not called
+        self.assertUongo(hasattr(o, "proto"))  # o.error sio called
         r = MockResponse(202, "Accepted", {}, "", url)
         newr = h.http_response(req, r)
         self.assertIs(r, newr)
-        self.assertFalse(hasattr(o, "proto"))  # o.error not called
+        self.assertUongo(hasattr(o, "proto"))  # o.error sio called
         r = MockResponse(206, "Partial content", {}, "", url)
         newr = h.http_response(req, r)
         self.assertIs(r, newr)
-        self.assertFalse(hasattr(o, "proto"))  # o.error not called
-        # anything else calls o.error (and MockOpener returns None, here)
+        self.assertUongo(hasattr(o, "proto"))  # o.error sio called
+        # anything else calls o.error (and MockOpener rudishas Tupu, here)
         r = MockResponse(502, "Bad gateway", {}, "", url)
-        self.assertIsNone(h.http_response(req, r))
+        self.assertIsTupu(h.http_response(req, r))
         self.assertEqual(o.proto, "http")  # o.error called
         self.assertEqual(o.args, (req, r, 502, "Bad gateway", {}))
 
@@ -1149,7 +1149,7 @@ kundi HandlerTests(unittest.TestCase):
         self.assertIs(cj.ach_req, req)
         self.assertIs(cj.ach_req, newreq)
         self.assertEqual(req.origin_req_host, "example.com")
-        self.assertFalse(req.unverifiable)
+        self.assertUongo(req.unverifiable)
         newr = h.http_response(req, r)
         self.assertIs(cj.ec_req, req)
         self.assertIs(cj.ec_r, r)
@@ -1162,31 +1162,31 @@ kundi HandlerTests(unittest.TestCase):
         o = h.parent = MockOpener()
 
         # ordinary redirect behaviour
-        for code in 301, 302, 303, 307:
-            for data in None, "blah\nblah\n":
+        kila code kwenye 301, 302, 303, 307:
+            kila data kwenye Tupu, "blah\nblah\n":
                 method = getattr(h, "http_error_%s" % code)
                 req = Request(kutoka_url, data)
                 req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
                 req.add_header("Nonsense", "viking=withhold")
-                ikiwa data is not None:
+                ikiwa data ni sio Tupu:
                     req.add_header("Content-Length", str(len(data)))
                 req.add_unredirected_header("Spam", "spam")
-                try:
+                jaribu:
                     method(req, MockFile(), code, "Blah",
                            MockHeaders({"location": to_url}))
-                except urllib.error.HTTPError:
-                    # 307 in response to POST requires user OK
+                tatizo urllib.error.HTTPError:
+                    # 307 kwenye response to POST requires user OK
                     self.assertEqual(code, 307)
-                    self.assertIsNotNone(data)
+                    self.assertIsNotTupu(data)
                 self.assertEqual(o.req.get_full_url(), to_url)
-                try:
+                jaribu:
                     self.assertEqual(o.req.get_method(), "GET")
-                except AttributeError:
-                    self.assertFalse(o.req.data)
+                tatizo AttributeError:
+                    self.assertUongo(o.req.data)
 
-                # now it's a GET, there should not be headers regarding content
+                # now it's a GET, there should sio be headers regarding content
                 # (possibly dragged kutoka before being a POST)
-                headers = [x.lower() for x in o.req.headers]
+                headers = [x.lower() kila x kwenye o.req.headers]
                 self.assertNotIn("content-length", headers)
                 self.assertNotIn("content-type", headers)
 
@@ -1209,11 +1209,11 @@ kundi HandlerTests(unittest.TestCase):
         req = Request(kutoka_url, origin_req_host="example.com")
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
-        try:
-            while 1:
+        jaribu:
+            wakati 1:
                 redirect(h, req, "http://example.com/")
                 count = count + 1
-        except urllib.error.HTTPError:
+        tatizo urllib.error.HTTPError:
             # don't stop until max_repeats, because cookies may introduce state
             self.assertEqual(count, urllib.request.HTTPRedirectHandler.max_repeats)
 
@@ -1221,11 +1221,11 @@ kundi HandlerTests(unittest.TestCase):
         req = Request(kutoka_url, origin_req_host="example.com")
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
-        try:
-            while 1:
+        jaribu:
+            wakati 1:
                 redirect(h, req, "http://example.com/%d" % count)
                 count = count + 1
-        except urllib.error.HTTPError:
+        tatizo urllib.error.HTTPError:
             self.assertEqual(count,
                              urllib.request.HTTPRedirectHandler.max_redirections)
 
@@ -1239,13 +1239,13 @@ kundi HandlerTests(unittest.TestCase):
         req = Request(kutoka_url)
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
 
-        for scheme in invalid_schemes:
+        kila scheme kwenye invalid_schemes:
             invalid_url = scheme + '://' + schemeless_url
             self.assertRaises(urllib.error.HTTPError, h.http_error_302,
                     req, MockFile(), 302, "Security Loophole",
                     MockHeaders({"location": invalid_url}))
 
-        for scheme in valid_schemes:
+        kila scheme kwenye valid_schemes:
             valid_url = scheme + '://' + schemeless_url
             h.http_error_302(req, MockFile(), 302, "That's fine",
                 MockHeaders({"location": valid_url}))
@@ -1277,7 +1277,7 @@ kundi HandlerTests(unittest.TestCase):
         cp = urllib.request.HTTPCookieProcessor(cj)
         o = build_test_opener(hh, hdeh, hrh, cp)
         o.open("http://www.example.com/")
-        self.assertFalse(hh.req.has_header("Cookie"))
+        self.assertUongo(hh.req.has_header("Cookie"))
 
     eleza test_redirect_fragment(self):
         redirected_url = 'http://www.example.com/index.html#OK\r\n\r\n'
@@ -1298,20 +1298,20 @@ kundi HandlerTests(unittest.TestCase):
         eleza request(conn, method, url, *pos, **kw):
             self.assertEqual(url, next(urls))
             real_class.request(conn, method, url, *pos, **kw)
-            # Change response for subsequent connection
+            # Change response kila subsequent connection
             conn.__class__.fakedata = b"HTTP/1.1 200 OK\r\n\r\nHello!"
         http.client.HTTPConnection.request = request
         fp = urllib.request.urlopen("http://python.org/path")
         self.assertEqual(fp.geturl(), "http://python.org/path?query")
 
     eleza test_redirect_encoding(self):
-        # Some characters in the redirect target may need special handling,
-        # but most ASCII characters should be treated as already encoded
+        # Some characters kwenye the redirect target may need special handling,
+        # but most ASCII characters should be treated kama already encoded
         kundi Handler(urllib.request.HTTPHandler):
             eleza http_open(self, req):
                 result = self.do_open(self.connection, req)
                 self.last_buf = self.connection.buf
-                # Set up a normal response for the next request
+                # Set up a normal response kila the next request
                 self.connection = test_urllib.fakehttp(
                     b'HTTP/1.1 200 OK\r\n'
                     b'Content-Length: 3\r\n'
@@ -1327,7 +1327,7 @@ kundi HandlerTests(unittest.TestCase):
             (b'/spaced path/', b'/spaced%20path/'),
             (b'/?p\xC3\xA5-dansk', b'/?p%C3%A5-dansk'),
         )
-        for [location, result] in tests:
+        kila [location, result] kwenye tests:
             with self.subTest(repr(location)):
                 handler.connection = test_urllib.fakehttp(
                     b'HTTP/1.1 302 Redirect\r\n'
@@ -1337,11 +1337,11 @@ kundi HandlerTests(unittest.TestCase):
                 response = opener.open('http://example.com/')
                 expected = b'GET ' + result + b' '
                 request = handler.last_buf
-                self.assertTrue(request.startswith(expected), repr(request))
+                self.assertKweli(request.startswith(expected), repr(request))
 
     eleza test_proxy(self):
         u = "proxy.example.com:3128"
-        for d in dict(http=u), dict(HTTP=u):
+        kila d kwenye dict(http=u), dict(HTTP=u):
             o = OpenerDirector()
             ph = urllib.request.ProxyHandler(d)
             o.add_handler(ph)
@@ -1355,7 +1355,7 @@ kundi HandlerTests(unittest.TestCase):
             o.open(req)
             self.assertEqual(req.host, u)
             self.assertEqual([(handlers[0], "http_open")],
-                             [tup[0:2] for tup in o.calls])
+                             [tup[0:2] kila tup kwenye o.calls])
 
     eleza test_proxy_no_proxy(self):
         os.environ['no_proxy'] = 'python.org'
@@ -1370,7 +1370,7 @@ kundi HandlerTests(unittest.TestCase):
         self.assertEqual(req.host, "www.python.org")
         o.open(req)
         self.assertEqual(req.host, "www.python.org")
-        del os.environ['no_proxy']
+        toa os.environ['no_proxy']
 
     eleza test_proxy_no_proxy_all(self):
         os.environ['no_proxy'] = '*'
@@ -1381,7 +1381,7 @@ kundi HandlerTests(unittest.TestCase):
         self.assertEqual(req.host, "www.python.org")
         o.open(req)
         self.assertEqual(req.host, "www.python.org")
-        del os.environ['no_proxy']
+        toa os.environ['no_proxy']
 
     eleza test_proxy_https(self):
         o = OpenerDirector()
@@ -1397,7 +1397,7 @@ kundi HandlerTests(unittest.TestCase):
         o.open(req)
         self.assertEqual(req.host, "proxy.example.com:3128")
         self.assertEqual([(handlers[0], "https_open")],
-                         [tup[0:2] for tup in o.calls])
+                         [tup[0:2] kila tup kwenye o.calls])
 
     eleza test_proxy_https_proxy_authorization(self):
         o = OpenerDirector()
@@ -1409,45 +1409,45 @@ kundi HandlerTests(unittest.TestCase):
         req.add_header("Proxy-Authorization", "FooBar")
         req.add_header("User-Agent", "Grail")
         self.assertEqual(req.host, "www.example.com")
-        self.assertIsNone(req._tunnel_host)
+        self.assertIsTupu(req._tunnel_host)
         o.open(req)
         # Verify Proxy-Authorization gets tunneled to request.
-        # httpsconn req_headers do not have the Proxy-Authorization header but
+        # httpsconn req_headers do sio have the Proxy-Authorization header but
         # the req will have.
         self.assertNotIn(("Proxy-Authorization", "FooBar"),
                          https_handler.httpconn.req_headers)
         self.assertIn(("User-Agent", "Grail"),
                       https_handler.httpconn.req_headers)
-        self.assertIsNotNone(req._tunnel_host)
+        self.assertIsNotTupu(req._tunnel_host)
         self.assertEqual(req.host, "proxy.example.com:3128")
         self.assertEqual(req.get_header("Proxy-authorization"), "FooBar")
 
-    @unittest.skipUnless(sys.platform == 'darwin', "only relevant for OSX")
-    eleza test_osx_proxy_bypass(self):
-        bypass = {
-            'exclude_simple': False,
+    @unittest.skipUnless(sys.platform == 'darwin', "only relevant kila OSX")
+    eleza test_osx_proxy_bypita(self):
+        bypita = {
+            'exclude_simple': Uongo,
             'exceptions': ['foo.bar', '*.bar.com', '127.0.0.1', '10.10',
                            '10.0/16']
         }
-        # Check hosts that should trigger the proxy bypass
-        for host in ('foo.bar', 'www.bar.com', '127.0.0.1', '10.10.0.1',
+        # Check hosts that should trigger the proxy bypita
+        kila host kwenye ('foo.bar', 'www.bar.com', '127.0.0.1', '10.10.0.1',
                      '10.0.0.1'):
-            self.assertTrue(_proxy_bypass_macosx_sysconf(host, bypass),
-                            'expected bypass of %s to be True' % host)
-        # Check hosts that should not trigger the proxy bypass
-        for host in ('abc.foo.bar', 'bar.com', '127.0.0.2', '10.11.0.1',
-                'notinbypass'):
-            self.assertFalse(_proxy_bypass_macosx_sysconf(host, bypass),
-                             'expected bypass of %s to be False' % host)
+            self.assertKweli(_proxy_bypita_macosx_sysconf(host, bypita),
+                            'expected bypita of %s to be Kweli' % host)
+        # Check hosts that should sio trigger the proxy bypita
+        kila host kwenye ('abc.foo.bar', 'bar.com', '127.0.0.2', '10.11.0.1',
+                'notinbypita'):
+            self.assertUongo(_proxy_bypita_macosx_sysconf(host, bypita),
+                             'expected bypita of %s to be Uongo' % host)
 
         # Check the exclude_simple flag
-        bypass = {'exclude_simple': True, 'exceptions': []}
-        self.assertTrue(_proxy_bypass_macosx_sysconf('test', bypass))
+        bypita = {'exclude_simple': Kweli, 'exceptions': []}
+        self.assertKweli(_proxy_bypita_macosx_sysconf('test', bypita))
 
     eleza test_basic_auth(self, quote_char='"'):
         opener = OpenerDirector()
-        password_manager = MockPasswordManager()
-        auth_handler = urllib.request.HTTPBasicAuthHandler(password_manager)
+        pitaword_manager = MockPasswordManager()
+        auth_handler = urllib.request.HTTPBasicAuthHandler(pitaword_manager)
         realm = "ACME Widget Store"
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: Basic realm=%s%s%s\r\n\r\n' %
@@ -1455,7 +1455,7 @@ kundi HandlerTests(unittest.TestCase):
         opener.add_handler(auth_handler)
         opener.add_handler(http_handler)
         self._test_basic_auth(opener, auth_handler, "Authorization",
-                              realm, http_handler, password_manager,
+                              realm, http_handler, pitaword_manager,
                               "http://acme.example.com/protected",
                               "http://acme.example.com/protected",
                               )
@@ -1465,8 +1465,8 @@ kundi HandlerTests(unittest.TestCase):
 
     eleza test_basic_auth_with_unquoted_realm(self):
         opener = OpenerDirector()
-        password_manager = MockPasswordManager()
-        auth_handler = urllib.request.HTTPBasicAuthHandler(password_manager)
+        pitaword_manager = MockPasswordManager()
+        auth_handler = urllib.request.HTTPBasicAuthHandler(pitaword_manager)
         realm = "ACME Widget Store"
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: Basic realm=%s\r\n\r\n' % realm)
@@ -1474,7 +1474,7 @@ kundi HandlerTests(unittest.TestCase):
         opener.add_handler(http_handler)
         with self.assertWarns(UserWarning):
             self._test_basic_auth(opener, auth_handler, "Authorization",
-                                realm, http_handler, password_manager,
+                                realm, http_handler, pitaword_manager,
                                 "http://acme.example.com/protected",
                                 "http://acme.example.com/protected",
                                 )
@@ -1483,23 +1483,23 @@ kundi HandlerTests(unittest.TestCase):
         opener = OpenerDirector()
         ph = urllib.request.ProxyHandler(dict(http="proxy.example.com:3128"))
         opener.add_handler(ph)
-        password_manager = MockPasswordManager()
-        auth_handler = urllib.request.ProxyBasicAuthHandler(password_manager)
+        pitaword_manager = MockPasswordManager()
+        auth_handler = urllib.request.ProxyBasicAuthHandler(pitaword_manager)
         realm = "ACME Networks"
         http_handler = MockHTTPHandler(
             407, 'Proxy-Authenticate: Basic realm="%s"\r\n\r\n' % realm)
         opener.add_handler(auth_handler)
         opener.add_handler(http_handler)
         self._test_basic_auth(opener, auth_handler, "Proxy-authorization",
-                              realm, http_handler, password_manager,
+                              realm, http_handler, pitaword_manager,
                               "http://acme.example.com:3128/protected",
                               "proxy.example.com:3128",
                               )
 
     eleza test_basic_and_digest_auth_handlers(self):
-        # HTTPDigestAuthHandler raised an exception ikiwa it couldn't handle a 40*
+        # HTTPDigestAuthHandler ashiriad an exception ikiwa it couldn't handle a 40*
         # response (http://python.org/sf/1479302), where it should instead
-        # rudisha None to allow another handler (especially
+        # rudisha Tupu to allow another handler (especially
         # HTTPBasicAuthHandler) to handle the response.
 
         # Also (http://python.org/sf/14797027, RFC 2617 section 1.2), we must
@@ -1526,9 +1526,9 @@ kundi HandlerTests(unittest.TestCase):
                                                             *args, **kwds)
 
         opener = RecordingOpenerDirector()
-        password_manager = MockPasswordManager()
-        digest_handler = TestDigestAuthHandler(password_manager)
-        basic_handler = TestBasicAuthHandler(password_manager)
+        pitaword_manager = MockPasswordManager()
+        digest_handler = TestDigestAuthHandler(pitaword_manager)
+        basic_handler = TestBasicAuthHandler(pitaword_manager)
         realm = "ACME Networks"
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: Basic realm="%s"\r\n\r\n' % realm)
@@ -1538,7 +1538,7 @@ kundi HandlerTests(unittest.TestCase):
 
         # check basic auth isn't blocked by digest handler failing
         self._test_basic_auth(opener, basic_handler, "Authorization",
-                              realm, http_handler, password_manager,
+                              realm, http_handler, pitaword_manager,
                               "http://acme.example.com/protected",
                               "http://acme.example.com/protected",
                               )
@@ -1549,7 +1549,7 @@ kundi HandlerTests(unittest.TestCase):
     eleza test_unsupported_auth_digest_handler(self):
         opener = OpenerDirector()
         # While using DigestAuthHandler
-        digest_auth_handler = urllib.request.HTTPDigestAuthHandler(None)
+        digest_auth_handler = urllib.request.HTTPDigestAuthHandler(Tupu)
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: Kerberos\r\n\r\n')
         opener.add_handler(digest_auth_handler)
@@ -1559,7 +1559,7 @@ kundi HandlerTests(unittest.TestCase):
     eleza test_unsupported_auth_basic_handler(self):
         # While using BasicAuthHandler
         opener = OpenerDirector()
-        basic_auth_handler = urllib.request.HTTPBasicAuthHandler(None)
+        basic_auth_handler = urllib.request.HTTPBasicAuthHandler(Tupu)
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: NTLM\r\n\r\n')
         opener.add_handler(basic_auth_handler)
@@ -1567,58 +1567,58 @@ kundi HandlerTests(unittest.TestCase):
         self.assertRaises(ValueError, opener.open, "http://www.example.com")
 
     eleza _test_basic_auth(self, opener, auth_handler, auth_header,
-                         realm, http_handler, password_manager,
+                         realm, http_handler, pitaword_manager,
                          request_url, protected_url):
         agiza base64
-        user, password = "wile", "coyote"
+        user, pitaword = "wile", "coyote"
 
-        # .add_password() fed through to password manager
-        auth_handler.add_password(realm, request_url, user, password)
-        self.assertEqual(realm, password_manager.realm)
-        self.assertEqual(request_url, password_manager.url)
-        self.assertEqual(user, password_manager.user)
-        self.assertEqual(password, password_manager.password)
+        # .add_pitaword() fed through to pitaword manager
+        auth_handler.add_pitaword(realm, request_url, user, pitaword)
+        self.assertEqual(realm, pitaword_manager.realm)
+        self.assertEqual(request_url, pitaword_manager.url)
+        self.assertEqual(user, pitaword_manager.user)
+        self.assertEqual(pitaword, pitaword_manager.pitaword)
 
         opener.open(request_url)
 
-        # should have asked the password manager for the username/password
-        self.assertEqual(password_manager.target_realm, realm)
-        self.assertEqual(password_manager.target_url, protected_url)
+        # should have asked the pitaword manager kila the username/pitaword
+        self.assertEqual(pitaword_manager.target_realm, realm)
+        self.assertEqual(pitaword_manager.target_url, protected_url)
 
         # expect one request without authorization, then one with
         self.assertEqual(len(http_handler.requests), 2)
-        self.assertFalse(http_handler.requests[0].has_header(auth_header))
-        userpass = bytes('%s:%s' % (user, password), "ascii")
+        self.assertUongo(http_handler.requests[0].has_header(auth_header))
+        userpita = bytes('%s:%s' % (user, pitaword), "ascii")
         auth_hdr_value = ('Basic ' +
-            base64.encodebytes(userpass).strip().decode())
+            base64.encodebytes(userpita).strip().decode())
         self.assertEqual(http_handler.requests[1].get_header(auth_header),
                          auth_hdr_value)
         self.assertEqual(http_handler.requests[1].unredirected_hdrs[auth_header],
                          auth_hdr_value)
-        # ikiwa the password manager can't find a password, the handler won't
+        # ikiwa the pitaword manager can't find a pitaword, the handler won't
         # handle the HTTP auth error
-        password_manager.user = password_manager.password = None
+        pitaword_manager.user = pitaword_manager.pitaword = Tupu
         http_handler.reset()
         opener.open(request_url)
         self.assertEqual(len(http_handler.requests), 1)
-        self.assertFalse(http_handler.requests[0].has_header(auth_header))
+        self.assertUongo(http_handler.requests[0].has_header(auth_header))
 
     eleza test_basic_prior_auth_auto_send(self):
-        # Assume already authenticated ikiwa is_authenticated=True
-        # for APIs like Github that don't rudisha 401
+        # Assume already authenticated ikiwa is_authenticated=Kweli
+        # kila APIs like Github that don't rudisha 401
 
-        user, password = "wile", "coyote"
+        user, pitaword = "wile", "coyote"
         request_url = "http://acme.example.com/protected"
 
         http_handler = MockHTTPHandlerCheckAuth(200)
 
         pwd_manager = HTTPPasswordMgrWithPriorAuth()
         auth_prior_handler = HTTPBasicAuthHandler(pwd_manager)
-        auth_prior_handler.add_password(
-            None, request_url, user, password, is_authenticated=True)
+        auth_prior_handler.add_pitaword(
+            Tupu, request_url, user, pitaword, is_authenticated=Kweli)
 
         is_auth = pwd_manager.is_authenticated(request_url)
-        self.assertTrue(is_auth)
+        self.assertKweli(is_auth)
 
         opener = OpenerDirector()
         opener.add_handler(auth_prior_handler)
@@ -1627,51 +1627,51 @@ kundi HandlerTests(unittest.TestCase):
         opener.open(request_url)
 
         # expect request to be sent with auth header
-        self.assertTrue(http_handler.has_auth_header)
+        self.assertKweli(http_handler.has_auth_header)
 
     eleza test_basic_prior_auth_send_after_first_success(self):
-        # Auto send auth header after authentication is successful once
+        # Auto send auth header after authentication ni successful once
 
-        user, password = 'wile', 'coyote'
+        user, pitaword = 'wile', 'coyote'
         request_url = 'http://acme.example.com/protected'
         realm = 'ACME'
 
         pwd_manager = HTTPPasswordMgrWithPriorAuth()
         auth_prior_handler = HTTPBasicAuthHandler(pwd_manager)
-        auth_prior_handler.add_password(realm, request_url, user, password)
+        auth_prior_handler.add_pitaword(realm, request_url, user, pitaword)
 
         is_auth = pwd_manager.is_authenticated(request_url)
-        self.assertFalse(is_auth)
+        self.assertUongo(is_auth)
 
         opener = OpenerDirector()
         opener.add_handler(auth_prior_handler)
 
         http_handler = MockHTTPHandler(
-            401, 'WWW-Authenticate: Basic realm="%s"\r\n\r\n' % None)
+            401, 'WWW-Authenticate: Basic realm="%s"\r\n\r\n' % Tupu)
         opener.add_handler(http_handler)
 
         opener.open(request_url)
 
         is_auth = pwd_manager.is_authenticated(request_url)
-        self.assertTrue(is_auth)
+        self.assertKweli(is_auth)
 
         http_handler = MockHTTPHandlerCheckAuth(200)
-        self.assertFalse(http_handler.has_auth_header)
+        self.assertUongo(http_handler.has_auth_header)
 
         opener = OpenerDirector()
         opener.add_handler(auth_prior_handler)
         opener.add_handler(http_handler)
 
         # After getting 200 kutoka MockHTTPHandler
-        # Next request sends header in the first request
+        # Next request sends header kwenye the first request
         opener.open(request_url)
 
         # expect request to be sent with auth header
-        self.assertTrue(http_handler.has_auth_header)
+        self.assertKweli(http_handler.has_auth_header)
 
     eleza test_http_closed(self):
-        """Test the connection is cleaned up when the response is closed"""
-        for (transfer, data) in (
+        """Test the connection ni cleaned up when the response ni closed"""
+        kila (transfer, data) kwenye (
             ("Connection: close", b"data"),
             ("Transfer-Encoding: chunked", b"4\r\ndata\r\n0\r\n\r\n"),
             ("Content-Length: 4", b"data"),
@@ -1680,40 +1680,40 @@ kundi HandlerTests(unittest.TestCase):
             conn = test_urllib.fakehttp(header.encode() + data)
             handler = urllib.request.AbstractHTTPHandler()
             req = Request("http://dummy/")
-            req.timeout = None
-            with handler.do_open(conn, req) as resp:
+            req.timeout = Tupu
+            with handler.do_open(conn, req) kama resp:
                 resp.read()
-            self.assertTrue(conn.fakesock.closed,
-                "Connection not closed with {!r}".format(transfer))
+            self.assertKweli(conn.fakesock.closed,
+                "Connection sio closed with {!r}".format(transfer))
 
     eleza test_invalid_closed(self):
-        """Test the connection is cleaned up after an invalid response"""
+        """Test the connection ni cleaned up after an invalid response"""
         conn = test_urllib.fakehttp(b"")
         handler = urllib.request.AbstractHTTPHandler()
         req = Request("http://dummy/")
-        req.timeout = None
+        req.timeout = Tupu
         with self.assertRaises(http.client.BadStatusLine):
             handler.do_open(conn, req)
-        self.assertTrue(conn.fakesock.closed, "Connection not closed")
+        self.assertKweli(conn.fakesock.closed, "Connection sio closed")
 
 
 kundi MiscTests(unittest.TestCase):
 
     eleza opener_has_handler(self, opener, handler_class):
-        self.assertTrue(any(h.__class__ == handler_class
-                            for h in opener.handlers))
+        self.assertKweli(any(h.__class__ == handler_class
+                            kila h kwenye opener.handlers))
 
     eleza test_build_opener(self):
         kundi MyHTTPHandler(urllib.request.HTTPHandler):
-            pass
+            pita
 
         kundi FooHandler(urllib.request.BaseHandler):
             eleza foo_open(self):
-                pass
+                pita
 
         kundi BarHandler(urllib.request.BaseHandler):
             eleza bar_open(self):
-                pass
+                pita
 
         build_opener = urllib.request.build_opener
 
@@ -1721,7 +1721,7 @@ kundi MiscTests(unittest.TestCase):
         self.opener_has_handler(o, FooHandler)
         self.opener_has_handler(o, BarHandler)
 
-        # can take a mix of classes and instances
+        # can take a mix of classes na instances
         o = build_opener(FooHandler, BarHandler())
         self.opener_has_handler(o, FooHandler)
         self.opener_has_handler(o, BarHandler)
@@ -1730,8 +1730,8 @@ kundi MiscTests(unittest.TestCase):
         o = build_opener(MyHTTPHandler)
         self.opener_has_handler(o, MyHTTPHandler)
 
-        # a particular case of overriding: default handlers can be passed
-        # in explicitly
+        # a particular case of overriding: default handlers can be pitaed
+        # kwenye explicitly
         o = build_opener()
         self.opener_has_handler(o, urllib.request.HTTPHandler)
         o = build_opener(urllib.request.HTTPHandler)
@@ -1741,7 +1741,7 @@ kundi MiscTests(unittest.TestCase):
 
         # Issue2670: multiple handlers sharing the same base class
         kundi MyOtherHTTPHandler(urllib.request.HTTPHandler):
-            pass
+            pita
 
         o = build_opener(MyHTTPHandler, MyOtherHTTPHandler)
         self.opener_has_handler(o, MyHTTPHandler)
@@ -1753,7 +1753,7 @@ kundi MiscTests(unittest.TestCase):
         with support.transient_internet("http://www.example.com/"):
             opener = urllib.request.build_opener()
             request = urllib.request.Request("http://www.example.com/")
-            self.assertEqual(None, request.data)
+            self.assertEqual(Tupu, request.data)
 
             opener.open(request, "1".encode("us-ascii"))
             self.assertEqual(b"1", request.data)
@@ -1766,15 +1766,15 @@ kundi MiscTests(unittest.TestCase):
     eleza test_HTTPError_interface(self):
         """
         Issue 13211 reveals that HTTPError didn't implement the URLError
-        interface even though HTTPError is a subkundi of URLError.
+        interface even though HTTPError ni a subkundi of URLError.
         """
         msg = 'something bad happened'
-        url = code = fp = None
+        url = code = fp = Tupu
         hdrs = 'Content-Length: 42'
         err = urllib.error.HTTPError(url, code, msg, hdrs, fp)
-        self.assertTrue(hasattr(err, 'reason'))
+        self.assertKweli(hasattr(err, 'reason'))
         self.assertEqual(err.reason, 'something bad happened')
-        self.assertTrue(hasattr(err, 'headers'))
+        self.assertKweli(hasattr(err, 'headers'))
         self.assertEqual(err.headers, 'Content-Length: 42')
         expected_errmsg = 'HTTP Error %s: %s' % (err.code, err.msg)
         self.assertEqual(str(err), expected_errmsg)
@@ -1784,43 +1784,43 @@ kundi MiscTests(unittest.TestCase):
     eleza test_parse_proxy(self):
         parse_proxy_test_cases = [
             ('proxy.example.com',
-             (None, None, None, 'proxy.example.com')),
+             (Tupu, Tupu, Tupu, 'proxy.example.com')),
             ('proxy.example.com:3128',
-             (None, None, None, 'proxy.example.com:3128')),
-            ('proxy.example.com', (None, None, None, 'proxy.example.com')),
+             (Tupu, Tupu, Tupu, 'proxy.example.com:3128')),
+            ('proxy.example.com', (Tupu, Tupu, Tupu, 'proxy.example.com')),
             ('proxy.example.com:3128',
-             (None, None, None, 'proxy.example.com:3128')),
+             (Tupu, Tupu, Tupu, 'proxy.example.com:3128')),
             # The authority component may optionally include userinfo
-            # (assumed to be # username:password):
-            ('joe:password@proxy.example.com',
-             (None, 'joe', 'password', 'proxy.example.com')),
-            ('joe:password@proxy.example.com:3128',
-             (None, 'joe', 'password', 'proxy.example.com:3128')),
+            # (assumed to be # username:pitaword):
+            ('joe:pitaword@proxy.example.com',
+             (Tupu, 'joe', 'pitaword', 'proxy.example.com')),
+            ('joe:pitaword@proxy.example.com:3128',
+             (Tupu, 'joe', 'pitaword', 'proxy.example.com:3128')),
             #Examples with URLS
             ('http://proxy.example.com/',
-             ('http', None, None, 'proxy.example.com')),
+             ('http', Tupu, Tupu, 'proxy.example.com')),
             ('http://proxy.example.com:3128/',
-             ('http', None, None, 'proxy.example.com:3128')),
-            ('http://joe:password@proxy.example.com/',
-             ('http', 'joe', 'password', 'proxy.example.com')),
-            ('http://joe:password@proxy.example.com:3128',
-             ('http', 'joe', 'password', 'proxy.example.com:3128')),
-            # Everything after the authority is ignored
-            ('ftp://joe:password@proxy.example.com/rubbish:3128',
-             ('ftp', 'joe', 'password', 'proxy.example.com')),
-            # Test for no trailing '/' case
-            ('http://joe:password@proxy.example.com',
-             ('http', 'joe', 'password', 'proxy.example.com'))
+             ('http', Tupu, Tupu, 'proxy.example.com:3128')),
+            ('http://joe:pitaword@proxy.example.com/',
+             ('http', 'joe', 'pitaword', 'proxy.example.com')),
+            ('http://joe:pitaword@proxy.example.com:3128',
+             ('http', 'joe', 'pitaword', 'proxy.example.com:3128')),
+            # Everything after the authority ni ignored
+            ('ftp://joe:pitaword@proxy.example.com/rubbish:3128',
+             ('ftp', 'joe', 'pitaword', 'proxy.example.com')),
+            # Test kila no trailing '/' case
+            ('http://joe:pitaword@proxy.example.com',
+             ('http', 'joe', 'pitaword', 'proxy.example.com'))
         ]
 
-        for tc, expected in parse_proxy_test_cases:
+        kila tc, expected kwenye parse_proxy_test_cases:
             self.assertEqual(_parse_proxy(tc), expected)
 
         self.assertRaises(ValueError, _parse_proxy, 'file:/ftp.example.com'),
 
     eleza test_unsupported_algorithm(self):
         handler = AbstractDigestAuthHandler()
-        with self.assertRaises(ValueError) as exc:
+        with self.assertRaises(ValueError) kama exc:
             handler.get_algorithm_impls('invalid')
         self.assertEqual(
             str(exc.exception),
@@ -1850,15 +1850,15 @@ kundi RequestTests(unittest.TestCase):
         self.assertEqual("POST", self.force_post.get_method())
 
     eleza test_data(self):
-        self.assertFalse(self.get.data)
+        self.assertUongo(self.get.data)
         self.assertEqual("GET", self.get.get_method())
         self.get.data = "spam"
-        self.assertTrue(self.get.data)
+        self.assertKweli(self.get.data)
         self.assertEqual("POST", self.get.get_method())
 
     # issue 16464
     # ikiwa we change data we need to remove content-length header
-    # (cause it's most probably calculated for previous value)
+    # (cause it's most probably calculated kila previous value)
     eleza test_setting_data_should_remove_content_length(self):
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
         self.get.add_unredirected_header("Content-length", 42)
@@ -1866,13 +1866,13 @@ kundi RequestTests(unittest.TestCase):
         self.get.data = "spam"
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
 
-    # issue 17485 same for deleting data.
+    # issue 17485 same kila deleting data.
     eleza test_deleting_data_should_remove_content_length(self):
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
         self.get.data = 'foo'
         self.get.add_unredirected_header("Content-length", 3)
         self.assertEqual(3, self.get.unredirected_hdrs["Content-length"])
-        del self.get.data
+        toa self.get.data
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
 
     eleza test_get_full_url(self):
@@ -1895,9 +1895,9 @@ kundi RequestTests(unittest.TestCase):
         self.assertEqual("www.python.org", req.host)
 
     eleza test_proxy(self):
-        self.assertFalse(self.get.has_proxy())
+        self.assertUongo(self.get.has_proxy())
         self.get.set_proxy("www.perl.org", "http")
-        self.assertTrue(self.get.has_proxy())
+        self.assertKweli(self.get.has_proxy())
         self.assertEqual("www.python.org", self.get.origin_req_host)
         self.assertEqual("www.perl.org", self.get.host)
 
@@ -1911,7 +1911,7 @@ kundi RequestTests(unittest.TestCase):
         req = Request("http://www.python.org/#fun=true")
         self.assertEqual("/", req.selector)
 
-        # Issue 11703: geturl() omits fragment in the original URL.
+        # Issue 11703: geturl() omits fragment kwenye the original URL.
         url = 'http://docs.python.org/library/urllib2.html#OK'
         req = Request(url)
         self.assertEqual(req.get_full_url(), url)
@@ -1920,7 +1920,7 @@ kundi RequestTests(unittest.TestCase):
         urls = ['http://docs.python.org',
                 'http://docs.python.org/library/urllib2.html#OK',
                 'http://www.python.org/?qs=query#fragment=true']
-        for url in urls:
+        kila url kwenye urls:
             req = Request(url)
             self.assertEqual(req.get_full_url(), req.full_url)
 

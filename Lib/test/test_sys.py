@@ -17,7 +17,7 @@ agiza warnings
 
 
 # count the number of test runs, used to create unique
-# strings to intern in test_intern()
+# strings to intern kwenye test_intern()
 INTERN_NUMRUNS = 0
 
 
@@ -26,42 +26,42 @@ kundi DisplayHookTest(unittest.TestCase):
     eleza test_original_displayhook(self):
         dh = sys.__displayhook__
 
-        with support.captured_stdout() as out:
+        with support.captured_stdout() kama out:
             dh(42)
 
         self.assertEqual(out.getvalue(), "42\n")
         self.assertEqual(builtins._, 42)
 
-        del builtins._
+        toa builtins._
 
-        with support.captured_stdout() as out:
-            dh(None)
+        with support.captured_stdout() kama out:
+            dh(Tupu)
 
         self.assertEqual(out.getvalue(), "")
-        self.assertTrue(not hasattr(builtins, "_"))
+        self.assertKweli(not hasattr(builtins, "_"))
 
         # sys.displayhook() requires arguments
         self.assertRaises(TypeError, dh)
 
         stdout = sys.stdout
-        try:
-            del sys.stdout
+        jaribu:
+            toa sys.stdout
             self.assertRaises(RuntimeError, dh, 42)
-        finally:
+        mwishowe:
             sys.stdout = stdout
 
     eleza test_lost_displayhook(self):
         displayhook = sys.displayhook
-        try:
-            del sys.displayhook
+        jaribu:
+            toa sys.displayhook
             code = compile("42", "<string>", "single")
             self.assertRaises(RuntimeError, eval, code)
-        finally:
+        mwishowe:
             sys.displayhook = displayhook
 
     eleza test_custom_displayhook(self):
         eleza baddisplayhook(obj):
-            raise ValueError
+            ashiria ValueError
 
         with support.swap_attr(sys, 'displayhook', baddisplayhook):
             code = compile("42", "<string>", "single")
@@ -71,41 +71,41 @@ kundi DisplayHookTest(unittest.TestCase):
 kundi ExceptHookTest(unittest.TestCase):
 
     eleza test_original_excepthook(self):
-        try:
-            raise ValueError(42)
-        except ValueError as exc:
-            with support.captured_stderr() as err:
+        jaribu:
+            ashiria ValueError(42)
+        tatizo ValueError kama exc:
+            with support.captured_stderr() kama err:
                 sys.__excepthook__(*sys.exc_info())
 
-        self.assertTrue(err.getvalue().endswith("ValueError: 42\n"))
+        self.assertKweli(err.getvalue().endswith("ValueError: 42\n"))
 
         self.assertRaises(TypeError, sys.__excepthook__)
 
     eleza test_excepthook_bytes_filename(self):
-        # bpo-37467: sys.excepthook() must not crash ikiwa a filename
-        # is a bytes string
+        # bpo-37467: sys.excepthook() must sio crash ikiwa a filename
+        # ni a bytes string
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', BytesWarning)
 
-            try:
-                raise SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
-            except SyntaxError as exc:
-                with support.captured_stderr() as err:
+            jaribu:
+                ashiria SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
+            tatizo SyntaxError kama exc:
+                with support.captured_stderr() kama err:
                     sys.__excepthook__(*sys.exc_info())
 
         err = err.getvalue()
         self.assertIn("""  File "b'bytes_filename'", line 123\n""", err)
         self.assertIn("""    text\n""", err)
-        self.assertTrue(err.endswith("SyntaxError: msg\n"))
+        self.assertKweli(err.endswith("SyntaxError: msg\n"))
 
     eleza test_excepthook(self):
-        with test.support.captured_output("stderr") as stderr:
+        with test.support.captured_output("stderr") kama stderr:
             sys.excepthook(1, '1', 1)
-        self.assertTrue("TypeError: print_exception(): Exception expected for " \
-                         "value, str found" in stderr.getvalue())
+        self.assertKweli("TypeError: print_exception(): Exception expected kila " \
+                         "value, str found" kwenye stderr.getvalue())
 
-    # FIXME: testing the code for a lost or replaced excepthook in
-    # Python/pythonrun.c::PyErr_PrintEx() is tricky.
+    # FIXME: testing the code kila a lost ama replaced excepthook in
+    # Python/pythonrun.c::PyErr_PrintEx() ni tricky.
 
 
 kundi SysModuleTest(unittest.TestCase):
@@ -118,9 +118,9 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertRaises(TypeError, sys.exit, 42, 42)
 
         # call without argument
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) kama cm:
             sys.exit()
-        self.assertIsNone(cm.exception.code)
+        self.assertIsTupu(cm.exception.code)
 
         rc, out, err = assert_python_ok('-c', 'agiza sys; sys.exit()')
         self.assertEqual(rc, 0)
@@ -128,28 +128,28 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertEqual(err, b'')
 
         # call with integer argument
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) kama cm:
             sys.exit(42)
         self.assertEqual(cm.exception.code, 42)
 
         # call with tuple argument with one entry
         # entry will be unpacked
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) kama cm:
             sys.exit((42,))
         self.assertEqual(cm.exception.code, 42)
 
         # call with string argument
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) kama cm:
             sys.exit("exit")
         self.assertEqual(cm.exception.code, "exit")
 
         # call with tuple argument with two entries
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) kama cm:
             sys.exit((17, 23))
         self.assertEqual(cm.exception.code, (17, 23))
 
         # test that the exit machinery handles SystemExits properly
-        rc, out, err = assert_python_failure('-c', 'raise SystemExit(47)')
+        rc, out, err = assert_python_failure('-c', 'ashiria SystemExit(47)')
         self.assertEqual(rc, 47)
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
@@ -158,22 +158,22 @@ kundi SysModuleTest(unittest.TestCase):
             rc, out, err = assert_python_failure('-c', code, **env_vars)
             self.assertEqual(rc, 1)
             self.assertEqual(out, b'')
-            self.assertTrue(err.startswith(expected),
+            self.assertKweli(err.startswith(expected),
                 "%s doesn't start with %s" % (ascii(err), ascii(expected)))
 
-        # test that stderr buffer is flushed before the exit message is written
+        # test that stderr buffer ni flushed before the exit message ni written
         # into stderr
         check_exit_message(
             r'agiza sys; sys.stderr.write("unflushed,"); sys.exit("message")',
             b"unflushed,message")
 
-        # test that the exit message is written with backslashreplace error
+        # test that the exit message ni written with backslashreplace error
         # handler to stderr
         check_exit_message(
             r'agiza sys; sys.exit("surrogates:\uDCFF")',
             b"surrogates:\\udcff")
 
-        # test that the unicode message is encoded to the stderr encoding
+        # test that the unicode message ni encoded to the stderr encoding
         # instead of the default encoding (utf8)
         check_exit_message(
             r'agiza sys; sys.exit("h\xe9")',
@@ -181,18 +181,18 @@ kundi SysModuleTest(unittest.TestCase):
 
     eleza test_getdefaultencoding(self):
         self.assertRaises(TypeError, sys.getdefaultencoding, 42)
-        # can't check more than the type, as the user might have changed it
+        # can't check more than the type, kama the user might have changed it
         self.assertIsInstance(sys.getdefaultencoding(), str)
 
-    # testing sys.settrace() is done in test_sys_settrace.py
-    # testing sys.setprofile() is done in test_sys_setprofile.py
+    # testing sys.settrace() ni done kwenye test_sys_settrace.py
+    # testing sys.setprofile() ni done kwenye test_sys_setprofile.py
 
     eleza test_setcheckinterval(self):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             self.assertRaises(TypeError, sys.setcheckinterval)
             orig = sys.getcheckinterval()
-            for n in 0, 100, 120, orig: # orig last to restore starting state
+            kila n kwenye 0, 100, 120, orig: # orig last to restore starting state
                 sys.setcheckinterval(n)
                 self.assertEqual(sys.getcheckinterval(), n)
 
@@ -203,12 +203,12 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertRaises(ValueError, sys.setswitchinterval, 0.0)
         orig = sys.getswitchinterval()
         # sanity check
-        self.assertTrue(orig < 0.5, orig)
-        try:
-            for n in 0.00001, 0.05, 3.0, orig:
+        self.assertKweli(orig < 0.5, orig)
+        jaribu:
+            kila n kwenye 0.00001, 0.05, 3.0, orig:
                 sys.setswitchinterval(n)
                 self.assertAlmostEqual(sys.getswitchinterval(), n)
-        finally:
+        mwishowe:
             sys.setswitchinterval(orig)
 
     eleza test_recursionlimit(self):
@@ -221,33 +221,33 @@ kundi SysModuleTest(unittest.TestCase):
         sys.setrecursionlimit(oldlimit)
 
     eleza test_recursionlimit_recovery(self):
-        ikiwa hasattr(sys, 'gettrace') and sys.gettrace():
+        ikiwa hasattr(sys, 'gettrace') na sys.gettrace():
             self.skipTest('fatal error ikiwa run with a trace function')
 
         oldlimit = sys.getrecursionlimit()
         eleza f():
             f()
-        try:
-            for depth in (10, 25, 50, 75, 100, 250, 1000):
-                try:
+        jaribu:
+            kila depth kwenye (10, 25, 50, 75, 100, 250, 1000):
+                jaribu:
                     sys.setrecursionlimit(depth)
-                except RecursionError:
-                    # Issue #25274: The recursion limit is too low at the
+                tatizo RecursionError:
+                    # Issue #25274: The recursion limit ni too low at the
                     # current recursion depth
-                    continue
+                    endelea
 
                 # Issue #5392: test stack overflow after hitting recursion
                 # limit twice
                 self.assertRaises(RecursionError, f)
                 self.assertRaises(RecursionError, f)
-        finally:
+        mwishowe:
             sys.setrecursionlimit(oldlimit)
 
     @test.support.cpython_only
     eleza test_setrecursionlimit_recursion_depth(self):
         # Issue #25274: Setting a low recursion limit must be blocked ikiwa the
-        # current recursion depth is already higher than the "lower-water
-        # mark". Otherwise, it may not be possible anymore to
+        # current recursion depth ni already higher than the "lower-water
+        # mark". Otherwise, it may sio be possible anymore to
         # reset the overflowed flag to 0.
 
         kutoka _testcapi agiza get_recursion_depth
@@ -255,49 +255,49 @@ kundi SysModuleTest(unittest.TestCase):
         eleza set_recursion_limit_at_depth(depth, limit):
             recursion_depth = get_recursion_depth()
             ikiwa recursion_depth >= depth:
-                with self.assertRaises(RecursionError) as cm:
+                with self.assertRaises(RecursionError) kama cm:
                     sys.setrecursionlimit(limit)
                 self.assertRegex(str(cm.exception),
                                  "cannot set the recursion limit to [0-9]+ "
                                  "at the recursion depth [0-9]+: "
-                                 "the limit is too low")
-            else:
+                                 "the limit ni too low")
+            isipokua:
                 set_recursion_limit_at_depth(depth, limit)
 
         oldlimit = sys.getrecursionlimit()
-        try:
+        jaribu:
             sys.setrecursionlimit(1000)
 
-            for limit in (10, 25, 50, 75, 100, 150, 200):
+            kila limit kwenye (10, 25, 50, 75, 100, 150, 200):
                 # formula extracted kutoka _Py_RecursionLimitLowerWaterMark()
                 ikiwa limit > 200:
                     depth = limit - 50
-                else:
+                isipokua:
                     depth = limit * 3 // 4
                 set_recursion_limit_at_depth(depth, limit)
-        finally:
+        mwishowe:
             sys.setrecursionlimit(oldlimit)
 
     eleza test_recursionlimit_fatalerror(self):
-        # A fatal error occurs ikiwa a second recursion limit is hit when recovering
+        # A fatal error occurs ikiwa a second recursion limit ni hit when recovering
         # kutoka a first one.
         code = textwrap.dedent("""
             agiza sys
 
             eleza f():
-                try:
+                jaribu:
                     f()
-                except RecursionError:
+                tatizo RecursionError:
                     f()
 
             sys.setrecursionlimit(%d)
             f()""")
         with test.support.SuppressCrashReport():
-            for i in (50, 1000):
+            kila i kwenye (50, 1000):
                 sub = subprocess.Popen([sys.executable, '-c', code % i],
                     stderr=subprocess.PIPE)
                 err = sub.communicate()[1]
-                self.assertTrue(sub.returncode, sub.returncode)
+                self.assertKweli(sub.returncode, sub.returncode)
                 self.assertIn(
                     b"Fatal Python error: Cannot recover kutoka stack overflow",
                     err)
@@ -328,7 +328,7 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertEqual(v[3], v.platform)
         self.assertEqual(v[4], v.service_pack)
 
-        # This is how platform.py calls it. Make sure tuple
+        # This ni how platform.py calls it. Make sure tuple
         #  still has 5 elements
         maj, min, buildno, plat, csd = sys.getwindowsversion()
 
@@ -338,7 +338,7 @@ kundi SysModuleTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(sys, "setdlopenflags"),
                          'test needs sys.setdlopenflags()')
     eleza test_dlopenflags(self):
-        self.assertTrue(hasattr(sys, "getdlopenflags"))
+        self.assertKweli(hasattr(sys, "getdlopenflags"))
         self.assertRaises(TypeError, sys.getdlopenflags, 42)
         oldflags = sys.getdlopenflags()
         self.assertRaises(TypeError, sys.setdlopenflags)
@@ -348,37 +348,37 @@ kundi SysModuleTest(unittest.TestCase):
 
     @test.support.refcount_test
     eleza test_refcount(self):
-        # n here must be a global in order for this test to pass while
+        # n here must be a global kwenye order kila this test to pita while
         # tracing with a python function.  Tracing calls PyFrame_FastToLocals
         # which will add a copy of any locals to the frame object, causing
         # the reference count to increase by 2 instead of 1.
         global n
         self.assertRaises(TypeError, sys.getrefcount)
-        c = sys.getrefcount(None)
-        n = None
-        self.assertEqual(sys.getrefcount(None), c+1)
-        del n
-        self.assertEqual(sys.getrefcount(None), c)
+        c = sys.getrefcount(Tupu)
+        n = Tupu
+        self.assertEqual(sys.getrefcount(Tupu), c+1)
+        toa n
+        self.assertEqual(sys.getrefcount(Tupu), c)
         ikiwa hasattr(sys, "gettotalrefcount"):
             self.assertIsInstance(sys.gettotalrefcount(), int)
 
     eleza test_getframe(self):
         self.assertRaises(TypeError, sys._getframe, 42, 42)
         self.assertRaises(ValueError, sys._getframe, 2000000000)
-        self.assertTrue(
+        self.assertKweli(
             SysModuleTest.test_getframe.__code__ \
-            is sys._getframe().f_code
+            ni sys._getframe().f_code
         )
 
-    # sys._current_frames() is a CPython-only gimmick.
+    # sys._current_frames() ni a CPython-only gimmick.
     @test.support.reap_threads
     eleza test_current_frames(self):
         agiza threading
         agiza traceback
 
         # Spawn a thread that blocks at a known place.  Then the main
-        # thread does sys._current_frames(), and verifies that the frames
-        # returned make sense.
+        # thread does sys._current_frames(), na verifies that the frames
+        # rudishaed make sense.
         entered_g = threading.Event()
         leave_g = threading.Event()
         thread_info = []  # the thread's id
@@ -396,13 +396,13 @@ kundi SysModuleTest(unittest.TestCase):
         entered_g.wait()
 
         # At this point, t has finished its entered_g.set(), although it's
-        # impossible to guess whether it's still on that line or has moved on
+        # impossible to guess whether it's still on that line ama has moved on
         # to its leave_g.wait().
         self.assertEqual(len(thread_info), 1)
         thread_id = thread_info[0]
 
         d = sys._current_frames()
-        for tid in d:
+        kila tid kwenye d:
             self.assertIsInstance(tid, int)
             self.assertGreater(tid, 0)
 
@@ -410,24 +410,24 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertIn(main_id, d)
         self.assertIn(thread_id, d)
 
-        # Verify that the captured main-thread frame is _this_ frame.
+        # Verify that the captured main-thread frame ni _this_ frame.
         frame = d.pop(main_id)
-        self.assertTrue(frame is sys._getframe())
+        self.assertKweli(frame ni sys._getframe())
 
-        # Verify that the captured thread frame is blocked in g456, called
-        # kutoka f123.  This is a litte tricky, since various bits of
-        # threading.py are also in the thread's call stack.
+        # Verify that the captured thread frame ni blocked kwenye g456, called
+        # kutoka f123.  This ni a litte tricky, since various bits of
+        # threading.py are also kwenye the thread's call stack.
         frame = d.pop(thread_id)
         stack = traceback.extract_stack(frame)
-        for i, (filename, lineno, funcname, sourceline) in enumerate(stack):
+        kila i, (filename, lineno, funcname, sourceline) kwenye enumerate(stack):
             ikiwa funcname == "f123":
-                break
-        else:
+                koma
+        isipokua:
             self.fail("didn't find f123() on thread's call stack")
 
         self.assertEqual(sourceline, "g456()")
 
-        # And the next record must be for g456().
+        # And the next record must be kila g456().
         filename, lineno, funcname, sourceline = stack[i+1]
         self.assertEqual(funcname, "g456")
         self.assertIn(sourceline, ["leave_g.wait()", "entered_g.set()"])
@@ -448,8 +448,8 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertEqual(len(sys.float_info), 11)
         self.assertEqual(sys.float_info.radix, 2)
         self.assertEqual(len(sys.int_info), 2)
-        self.assertTrue(sys.int_info.bits_per_digit % 5 == 0)
-        self.assertTrue(sys.int_info.sizeof_digit >= 1)
+        self.assertKweli(sys.int_info.bits_per_digit % 5 == 0)
+        self.assertKweli(sys.int_info.sizeof_digit >= 1)
         self.assertEqual(type(sys.int_info.bits_per_digit), int)
         self.assertEqual(type(sys.int_info.sizeof_digit), int)
         self.assertIsInstance(sys.hexversion, int)
@@ -459,18 +459,18 @@ kundi SysModuleTest(unittest.TestCase):
         # sys.hash_info.modulus should be a prime; we do a quick
         # probable primality test (doesn't exclude the possibility of
         # a Carmichael number)
-        for x in range(1, 100):
+        kila x kwenye range(1, 100):
             self.assertEqual(
                 pow(x, sys.hash_info.modulus-1, sys.hash_info.modulus),
                 1,
-                "sys.hash_info.modulus {} is a non-prime".format(
+                "sys.hash_info.modulus {} ni a non-prime".format(
                     sys.hash_info.modulus)
                 )
         self.assertIsInstance(sys.hash_info.inf, int)
         self.assertIsInstance(sys.hash_info.nan, int)
         self.assertIsInstance(sys.hash_info.imag, int)
         algo = sysconfig.get_config_var("Py_HASH_ALGORITHM")
-        ikiwa sys.hash_info.algorithm in {"fnv", "siphash24"}:
+        ikiwa sys.hash_info.algorithm kwenye {"fnv", "siphash24"}:
             self.assertIn(sys.hash_info.hash_bits, {32, 64})
             self.assertIn(sys.hash_info.seed_bits, {32, 64, 128})
 
@@ -478,9 +478,9 @@ kundi SysModuleTest(unittest.TestCase):
                 self.assertEqual(sys.hash_info.algorithm, "siphash24")
             elikiwa algo == 2:
                 self.assertEqual(sys.hash_info.algorithm, "fnv")
-            else:
+            isipokua:
                 self.assertIn(sys.hash_info.algorithm, {"fnv", "siphash24"})
-        else:
+        isipokua:
             # PY_HASH_EXTERNAL
             self.assertEqual(algo, 0)
         self.assertGreaterEqual(sys.hash_info.cutoff, 0)
@@ -511,20 +511,20 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertEqual(vi[2], vi.micro)
         self.assertEqual(vi[3], vi.releaselevel)
         self.assertEqual(vi[4], vi.serial)
-        self.assertTrue(vi > (1,0,0))
+        self.assertKweli(vi > (1,0,0))
         self.assertIsInstance(sys.float_repr_style, str)
         self.assertIn(sys.float_repr_style, ('short', 'legacy'))
-        ikiwa not sys.platform.startswith('win'):
+        ikiwa sio sys.platform.startswith('win'):
             self.assertIsInstance(sys.abiflags, str)
 
     eleza test_thread_info(self):
         info = sys.thread_info
         self.assertEqual(len(info), 3)
-        self.assertIn(info.name, ('nt', 'pthread', 'solaris', None))
-        self.assertIn(info.lock, ('semaphore', 'mutex+cond', None))
+        self.assertIn(info.name, ('nt', 'pthread', 'solaris', Tupu))
+        self.assertIn(info.lock, ('semaphore', 'mutex+cond', Tupu))
 
     eleza test_43581(self):
-        # Can't use sys.stdout, as this is a StringIO object when
+        # Can't use sys.stdout, kama this ni a StringIO object when
         # the test runs under regrtest.
         self.assertEqual(sys.__stdout__.encoding, sys.__stderr__.encoding)
 
@@ -533,13 +533,13 @@ kundi SysModuleTest(unittest.TestCase):
         INTERN_NUMRUNS += 1
         self.assertRaises(TypeError, sys.intern)
         s = "never interned before" + str(INTERN_NUMRUNS)
-        self.assertTrue(sys.intern(s) is s)
+        self.assertKweli(sys.intern(s) ni s)
         s2 = s.swapcase().swapcase()
-        self.assertTrue(sys.intern(s2) is s)
+        self.assertKweli(sys.intern(s2) ni s)
 
         # Subclasses of string can't be interned, because they
-        # provide too much opportunity for insane things to happen.
-        # We don't want them in the interned dict and ikiwa they aren't
+        # provide too much opportunity kila insane things to happen.
+        # We don't want them kwenye the interned dict na ikiwa they aren't
         # actually interned, we don't want to create the appearance
         # that they are by allowing intern() to succeed.
         kundi S(str):
@@ -549,24 +549,24 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertRaises(TypeError, sys.intern, S("abc"))
 
     eleza test_sys_flags(self):
-        self.assertTrue(sys.flags)
+        self.assertKweli(sys.flags)
         attrs = ("debug",
                  "inspect", "interactive", "optimize", "dont_write_bytecode",
                  "no_user_site", "no_site", "ignore_environment", "verbose",
                  "bytes_warning", "quiet", "hash_randomization", "isolated",
                  "dev_mode", "utf8_mode")
-        for attr in attrs:
-            self.assertTrue(hasattr(sys.flags, attr), attr)
+        kila attr kwenye attrs:
+            self.assertKweli(hasattr(sys.flags, attr), attr)
             attr_type = bool ikiwa attr == "dev_mode" else int
             self.assertEqual(type(getattr(sys.flags, attr)), attr_type, attr)
-        self.assertTrue(repr(sys.flags))
+        self.assertKweli(repr(sys.flags))
         self.assertEqual(len(sys.flags), len(attrs))
 
         self.assertIn(sys.flags.utf8_mode, {0, 1, 2})
 
-    eleza assert_raise_on_new_sys_type(self, sys_attr):
+    eleza assert_ashiria_on_new_sys_type(self, sys_attr):
         # Users are intentionally prevented kutoka creating new instances of
-        # sys.flags, sys.version_info, and sys.getwindowsversion.
+        # sys.flags, sys.version_info, na sys.getwindowsversion.
         attr_type = type(sys_attr)
         with self.assertRaises(TypeError):
             attr_type()
@@ -574,15 +574,15 @@ kundi SysModuleTest(unittest.TestCase):
             attr_type.__new__(attr_type)
 
     eleza test_sys_flags_no_instantiation(self):
-        self.assert_raise_on_new_sys_type(sys.flags)
+        self.assert_ashiria_on_new_sys_type(sys.flags)
 
     eleza test_sys_version_info_no_instantiation(self):
-        self.assert_raise_on_new_sys_type(sys.version_info)
+        self.assert_ashiria_on_new_sys_type(sys.version_info)
 
     eleza test_sys_getwindowsversion_no_instantiation(self):
-        # Skip ikiwa not being run on Windows.
+        # Skip ikiwa sio being run on Windows.
         test.support.get_attribute(sys, "getwindowsversion")
-        self.assert_raise_on_new_sys_type(sys.getwindowsversion())
+        self.assert_ashiria_on_new_sys_type(sys.getwindowsversion())
 
     @test.support.cpython_only
     eleza test_clear_type_cache(self):
@@ -591,8 +591,8 @@ kundi SysModuleTest(unittest.TestCase):
     eleza test_ioencoding(self):
         env = dict(os.environ)
 
-        # Test character: cent sign, encoded as 0x4A (ASCII J) in CP424,
-        # not representable in ASCII.
+        # Test character: cent sign, encoded kama 0x4A (ASCII J) kwenye CP424,
+        # sio representable kwenye ASCII.
 
         env["PYTHONIOENCODING"] = "cp424"
         p = subprocess.Popen([sys.executable, "-c", 'andika(chr(0xa2))'],
@@ -633,7 +633,7 @@ kundi SysModuleTest(unittest.TestCase):
 
     @unittest.skipUnless(test.support.FS_NONASCII,
                          'requires OS support of non-ASCII encodings')
-    @unittest.skipUnless(sys.getfilesystemencoding() == locale.getpreferredencoding(False),
+    @unittest.skipUnless(sys.getfilesystemencoding() == locale.getpreferredencoding(Uongo),
                          'requires FS encoding to match locale')
     eleza test_ioencoding_nonascii(self):
         env = dict(os.environ)
@@ -646,17 +646,17 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertEqual(out, os.fsencode(test.support.FS_NONASCII))
 
     @unittest.skipIf(sys.base_prefix != sys.prefix,
-                     'Test is not venv-compatible')
+                     'Test ni sio venv-compatible')
     eleza test_executable(self):
         # sys.executable should be absolute
         self.assertEqual(os.path.abspath(sys.executable), sys.executable)
 
-        # Issue #7774: Ensure that sys.executable is an empty string ikiwa argv[0]
-        # has been set to a non existent program name and Python is unable to
+        # Issue #7774: Ensure that sys.executable ni an empty string ikiwa argv[0]
+        # has been set to a non existent program name na Python ni unable to
         # retrieve the real program name
 
         # For a normal installation, it should work without 'cwd'
-        # argument. For test runs in the build directory, see #7774.
+        # argument. For test runs kwenye the build directory, see #7774.
         python_dir = os.path.dirname(os.path.realpath(sys.executable))
         p = subprocess.Popen(
             ["nonexistent", "-c",
@@ -667,8 +667,8 @@ kundi SysModuleTest(unittest.TestCase):
         p.wait()
         self.assertIn(executable, ["b''", repr(sys.executable.encode("ascii", "backslashreplace"))])
 
-    eleza check_fsencoding(self, fs_encoding, expected=None):
-        self.assertIsNotNone(fs_encoding)
+    eleza check_fsencoding(self, fs_encoding, expected=Tupu):
+        self.assertIsNotTupu(fs_encoding)
         codecs.lookup(fs_encoding)
         ikiwa expected:
             self.assertEqual(fs_encoding, expected)
@@ -677,11 +677,11 @@ kundi SysModuleTest(unittest.TestCase):
         fs_encoding = sys.getfilesystemencoding()
         ikiwa sys.platform == 'darwin':
             expected = 'utf-8'
-        else:
-            expected = None
+        isipokua:
+            expected = Tupu
         self.check_fsencoding(fs_encoding, expected)
 
-    eleza c_locale_get_error_handler(self, locale, isolated=False, encoding=None):
+    eleza c_locale_get_error_handler(self, locale, isolated=Uongo, encoding=Tupu):
         # Force the POSIX locale
         env = os.environ.copy()
         env["LC_ALL"] = locale
@@ -698,20 +698,20 @@ kundi SysModuleTest(unittest.TestCase):
         args = [sys.executable, "-X", "utf8=0", "-c", code]
         ikiwa isolated:
             args.append("-I")
-        ikiwa encoding is not None:
+        ikiwa encoding ni sio Tupu:
             env['PYTHONIOENCODING'] = encoding
-        else:
-            env.pop('PYTHONIOENCODING', None)
+        isipokua:
+            env.pop('PYTHONIOENCODING', Tupu)
         p = subprocess.Popen(args,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT,
                               env=env,
-                              universal_newlines=True)
+                              universal_newlines=Kweli)
         stdout, stderr = p.communicate()
         rudisha stdout
 
     eleza check_locale_surrogateescape(self, locale):
-        out = self.c_locale_get_error_handler(locale, isolated=True)
+        out = self.c_locale_get_error_handler(locale, isolated=Kweli)
         self.assertEqual(out,
                          'stdin: surrogateescape\n'
                          'stdout: surrogateescape\n'
@@ -759,10 +759,10 @@ kundi SysModuleTest(unittest.TestCase):
 
         levels = {'alpha': 0xA, 'beta': 0xB, 'candidate': 0xC, 'final': 0xF}
 
-        self.assertTrue(hasattr(sys.implementation, 'name'))
-        self.assertTrue(hasattr(sys.implementation, 'version'))
-        self.assertTrue(hasattr(sys.implementation, 'hexversion'))
-        self.assertTrue(hasattr(sys.implementation, 'cache_tag'))
+        self.assertKweli(hasattr(sys.implementation, 'name'))
+        self.assertKweli(hasattr(sys.implementation, 'version'))
+        self.assertKweli(hasattr(sys.implementation, 'hexversion'))
+        self.assertKweli(hasattr(sys.implementation, 'cache_tag'))
 
         version = sys.implementation.version
         self.assertEqual(version[:2], (version.major, version.minor))
@@ -785,42 +785,42 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertIn(b"free PyDictObjects", err)
 
         # The function has no parameter
-        self.assertRaises(TypeError, sys._debugmallocstats, True)
+        self.assertRaises(TypeError, sys._debugmallocstats, Kweli)
 
     @unittest.skipUnless(hasattr(sys, "getallocatedblocks"),
                          "sys.getallocatedblocks unavailable on this build")
     eleza test_getallocatedblocks(self):
-        try:
+        jaribu:
             agiza _testcapi
-        except ImportError:
+        tatizo ImportError:
             with_pymalloc = support.with_pymalloc()
-        else:
-            try:
+        isipokua:
+            jaribu:
                 alloc_name = _testcapi.pymem_getallocatorsname()
-            except RuntimeError as exc:
-                # "cannot get allocators name" (ex: tracemalloc is used)
-                with_pymalloc = True
-            else:
-                with_pymalloc = (alloc_name in ('pymalloc', 'pymalloc_debug'))
+            tatizo RuntimeError kama exc:
+                # "cannot get allocators name" (ex: tracemalloc ni used)
+                with_pymalloc = Kweli
+            isipokua:
+                with_pymalloc = (alloc_name kwenye ('pymalloc', 'pymalloc_debug'))
 
         # Some sanity checks
         a = sys.getallocatedblocks()
         self.assertIs(type(a), int)
         ikiwa with_pymalloc:
             self.assertGreater(a, 0)
-        else:
+        isipokua:
             # When WITH_PYMALLOC isn't available, we don't know anything
             # about the underlying implementation: the function might
-            # rudisha 0 or something greater.
+            # rudisha 0 ama something greater.
             self.assertGreaterEqual(a, 0)
-        try:
+        jaribu:
             # While we could imagine a Python session where the number of
             # multiple buffer objects would exceed the sharing of references,
-            # it is unlikely to happen in a normal test run.
+            # it ni unlikely to happen kwenye a normal test run.
             self.assertLess(a, sys.gettotalrefcount())
-        except AttributeError:
-            # gettotalrefcount() not available
-            pass
+        tatizo AttributeError:
+            # gettotalrefcount() sio available
+            pita
         gc.collect()
         b = sys.getallocatedblocks()
         self.assertLessEqual(b, a)
@@ -830,8 +830,8 @@ kundi SysModuleTest(unittest.TestCase):
 
     @test.support.requires_type_collecting
     eleza test_is_finalizing(self):
-        self.assertIs(sys.is_finalizing(), False)
-        # Don't use the atexit module because _Py_Finalizing is only set
+        self.assertIs(sys.is_finalizing(), Uongo)
+        # Don't use the atexit module because _Py_Finalizing ni only set
         # after calling atexit callbacks
         code = """ikiwa 1:
             agiza sys
@@ -841,18 +841,18 @@ kundi SysModuleTest(unittest.TestCase):
                 print = print
 
                 eleza __del__(self):
-                    self.andika(self.is_finalizing(), flush=True)
+                    self.andika(self.is_finalizing(), flush=Kweli)
 
-            # Keep a reference in the __main__ module namespace, so the
+            # Keep a reference kwenye the __main__ module namespace, so the
             # AtExit destructor will be called at Python exit
             ref = AtExit()
         """
         rc, stdout, stderr = assert_python_ok('-c', code)
-        self.assertEqual(stdout.rstrip(), b'True')
+        self.assertEqual(stdout.rstrip(), b'Kweli')
 
     @test.support.requires_type_collecting
     eleza test_issue20602(self):
-        # sys.flags and sys.float_info were wiped during shutdown.
+        # sys.flags na sys.float_info were wiped during shutdown.
         code = """ikiwa 1:
             agiza sys
             kundi A:
@@ -891,9 +891,9 @@ kundi SysModuleTest(unittest.TestCase):
 
         traceback = [
             b'Traceback (most recent call last):',
-            b'  File "<string>", line 8, in <module>',
-            b'  File "<string>", line 6, in f2',
-            b'  File "<string>", line 4, in f1',
+            b'  File "<string>", line 8, kwenye <module>',
+            b'  File "<string>", line 6, kwenye f2',
+            b'  File "<string>", line 4, kwenye f1',
             b'ZeroDivisionError: division by zero'
         ]
         check(10, traceback)
@@ -904,7 +904,7 @@ kundi SysModuleTest(unittest.TestCase):
         check(-1, [traceback[-1]])
         check(1<<1000, traceback)
         check(-1<<1000, [traceback[-1]])
-        check(None, traceback)
+        check(Tupu, traceback)
 
     eleza test_no_duplicates_in_meta_path(self):
         self.assertEqual(len(sys.meta_path), len(set(sys.meta_path)))
@@ -926,31 +926,31 @@ kundi UnraisableHookTest(unittest.TestCase):
         agiza _testcapi
         agiza types
         err_msg2 = f"Exception ignored {err_msg}"
-        try:
+        jaribu:
             _testcapi.write_unraisable_exc(exc, err_msg, obj)
             rudisha types.SimpleNamespace(exc_type=type(exc),
                                          exc_value=exc,
                                          exc_traceback=exc.__traceback__,
                                          err_msg=err_msg2,
                                          object=obj)
-        finally:
-            # Explicitly break any reference cycle
-            exc = None
+        mwishowe:
+            # Explicitly koma any reference cycle
+            exc = Tupu
 
     eleza test_original_unraisablehook(self):
-        for err_msg in (None, "original hook"):
+        kila err_msg kwenye (Tupu, "original hook"):
             with self.subTest(err_msg=err_msg):
                 obj = "an object"
 
-                with test.support.captured_output("stderr") as stderr:
+                with test.support.captured_output("stderr") kama stderr:
                     with test.support.swap_attr(sys, 'unraisablehook',
                                                 sys.__unraisablehook__):
                         self.write_unraisable_exc(ValueError(42), err_msg, obj)
 
                 err = stderr.getvalue()
-                ikiwa err_msg is not None:
+                ikiwa err_msg ni sio Tupu:
                     self.assertIn(f'Exception ignored {err_msg}: {obj!r}\n', err)
-                else:
+                isipokua:
                     self.assertIn(f'Exception ignored in: {obj!r}\n', err)
                 self.assertIn('Traceback (most recent call last):\n', err)
                 self.assertIn('ValueError: 42\n', err)
@@ -959,41 +959,41 @@ kundi UnraisableHookTest(unittest.TestCase):
         # bpo-22836: PyErr_WriteUnraisable() should give sensible reports
         kundi BrokenDel:
             eleza __del__(self):
-                exc = ValueError("del is broken")
-                # The following line is included in the traceback report:
-                raise exc
+                exc = ValueError("toa ni broken")
+                # The following line ni included kwenye the traceback report:
+                ashiria exc
 
         kundi BrokenStrException(Exception):
             eleza __str__(self):
-                raise Exception("str() is broken")
+                ashiria Exception("str() ni broken")
 
         kundi BrokenExceptionDel:
             eleza __del__(self):
                 exc = BrokenStrException()
-                # The following line is included in the traceback report:
-                raise exc
+                # The following line ni included kwenye the traceback report:
+                ashiria exc
 
-        for test_kundi in (BrokenDel, BrokenExceptionDel):
+        kila test_kundi kwenye (BrokenDel, BrokenExceptionDel):
             with self.subTest(test_class):
                 obj = test_class()
-                with test.support.captured_stderr() as stderr, \
+                with test.support.captured_stderr() kama stderr, \
                      test.support.swap_attr(sys, 'unraisablehook',
                                             sys.__unraisablehook__):
                     # Trigger obj.__del__()
-                    del obj
+                    toa obj
 
                 report = stderr.getvalue()
                 self.assertIn("Exception ignored", report)
                 self.assertIn(test_class.__del__.__qualname__, report)
                 self.assertIn("test_sys.py", report)
-                self.assertIn("raise exc", report)
-                ikiwa test_kundi is BrokenExceptionDel:
+                self.assertIn("ashiria exc", report)
+                ikiwa test_kundi ni BrokenExceptionDel:
                     self.assertIn("BrokenStrException", report)
                     self.assertIn("<exception str() failed>", report)
-                else:
+                isipokua:
                     self.assertIn("ValueError", report)
-                    self.assertIn("del is broken", report)
-                self.assertTrue(report.endswith("\n"))
+                    self.assertIn("toa ni broken", report)
+                self.assertKweli(report.endswith("\n"))
 
 
     eleza test_original_unraisablehook_wrong_type(self):
@@ -1004,37 +1004,37 @@ kundi UnraisableHookTest(unittest.TestCase):
                 sys.unraisablehook(exc)
 
     eleza test_custom_unraisablehook(self):
-        hook_args = None
+        hook_args = Tupu
 
         eleza hook_func(args):
             nonlocal hook_args
             hook_args = args
 
         obj = object()
-        try:
+        jaribu:
             with test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 expected = self.write_unraisable_exc(ValueError(42),
                                                      "custom hook", obj)
-                for attr in "exc_type exc_value exc_traceback err_msg object".split():
+                kila attr kwenye "exc_type exc_value exc_traceback err_msg object".split():
                     self.assertEqual(getattr(hook_args, attr),
                                      getattr(expected, attr),
                                      (hook_args, expected))
-        finally:
-            # expected and hook_args contain an exception: break reference cycle
-            expected = None
-            hook_args = None
+        mwishowe:
+            # expected na hook_args contain an exception: koma reference cycle
+            expected = Tupu
+            hook_args = Tupu
 
     eleza test_custom_unraisablehook_fail(self):
         eleza hook_func(*args):
-            raise Exception("hook_func failed")
+            ashiria Exception("hook_func failed")
 
-        with test.support.captured_output("stderr") as stderr:
+        with test.support.captured_output("stderr") kama stderr:
             with test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 self.write_unraisable_exc(ValueError(42),
-                                          "custom hook fail", None)
+                                          "custom hook fail", Tupu)
 
         err = stderr.getvalue()
-        self.assertIn(f'Exception ignored in sys.unraisablehook: '
+        self.assertIn(f'Exception ignored kwenye sys.unraisablehook: '
                       f'{hook_func!r}\n',
                       err)
         self.assertIn('Traceback (most recent call last):\n', err)
@@ -1053,23 +1053,23 @@ kundi SizeofTest(unittest.TestCase):
     check_sizeof = test.support.check_sizeof
 
     eleza test_gc_head_size(self):
-        # Check that the gc header size is added to objects tracked by the gc.
+        # Check that the gc header size ni added to objects tracked by the gc.
         vsize = test.support.calcvobjsize
         gc_header_size = self.gc_headsize
-        # bool objects are not gc tracked
-        self.assertEqual(sys.getsizeof(True), vsize('') + self.longdigit)
+        # bool objects are sio gc tracked
+        self.assertEqual(sys.getsizeof(Kweli), vsize('') + self.longdigit)
         # but lists are
         self.assertEqual(sys.getsizeof([]), vsize('Pn') + gc_header_size)
 
     eleza test_errors(self):
         kundi BadSizeof:
             eleza __sizeof__(self):
-                raise ValueError
+                ashiria ValueError
         self.assertRaises(ValueError, sys.getsizeof, BadSizeof())
 
         kundi InvalidSizeof:
             eleza __sizeof__(self):
-                rudisha None
+                rudisha Tupu
         self.assertRaises(TypeError, sys.getsizeof, InvalidSizeof())
         sentinel = ["sentinel"]
         self.assertIs(sys.getsizeof(InvalidSizeof(), sentinel), sentinel)
@@ -1094,24 +1094,24 @@ kundi SizeofTest(unittest.TestCase):
 
     eleza test_default(self):
         size = test.support.calcvobjsize
-        self.assertEqual(sys.getsizeof(True), size('') + self.longdigit)
-        self.assertEqual(sys.getsizeof(True, -1), size('') + self.longdigit)
+        self.assertEqual(sys.getsizeof(Kweli), size('') + self.longdigit)
+        self.assertEqual(sys.getsizeof(Kweli, -1), size('') + self.longdigit)
 
     eleza test_objecttypes(self):
-        # check all types defined in Objects/
+        # check all types defined kwenye Objects/
         calcsize = struct.calcsize
         size = test.support.calcobjsize
         vsize = test.support.calcvobjsize
         check = self.check_sizeof
         # bool
-        check(True, vsize('') + self.longdigit)
+        check(Kweli, vsize('') + self.longdigit)
         # buffer
         # XXX
         # builtin_function_or_method
         check(len, size('5P'))
         # bytearray
         samples = [b'', b'u'*100000]
-        for sample in samples:
+        kila sample kwenye samples:
             x = bytearray(sample)
             check(x, vsize('n2Pi') + x.__alloc__())
         # bytearray_iterator
@@ -1173,7 +1173,7 @@ kundi SizeofTest(unittest.TestCase):
         # dictionary-itemiterator
         check(iter({}.items()), size('P2nPn'))
         # dictproxy
-        kundi C(object): pass
+        kundi C(object): pita
         check(C.__dict__, size('P'))
         # BaseException
         check(BaseException(), size('5Pb'))
@@ -1207,21 +1207,21 @@ kundi SizeofTest(unittest.TestCase):
                   ncells + nfrees - 1
         check(x, vsize('5P2c4P3ic' + CO_MAXBLOCKS*'3i' + 'P' + extras*'P'))
         # function
-        eleza func(): pass
+        eleza func(): pita
         check(func, size('13P'))
         kundi c():
             @staticmethod
             eleza foo():
-                pass
+                pita
             @classmethod
             eleza bar(cls):
-                pass
+                pita
             # staticmethod
             check(foo, size('PP'))
             # classmethod
             check(bar, size('PP'))
         # generator
-        eleza get_gen(): yield 1
+        eleza get_gen(): tuma 1
         check(get_gen(), size('Pb2PPP4P'))
         # iterator
         check(iter('abc'), size('lP'))
@@ -1230,7 +1230,7 @@ kundi SizeofTest(unittest.TestCase):
         check(re.finditer('',''), size('2P'))
         # list
         samples = [[], [1,2,3], ['1', '2', '3']]
-        for sample in samples:
+        kila sample kwenye samples:
             check(sample, vsize('Pn') + len(sample)*self.P)
         # sortwrapper (list)
         # XXX
@@ -1250,8 +1250,8 @@ kundi SizeofTest(unittest.TestCase):
         check(int(PyLong_BASE**2), vsize('') + 3*self.longdigit)
         # module
         check(unittest, size('PnPPP'))
-        # None
-        check(None, size(''))
+        # Tupu
+        check(Tupu, size(''))
         # NotImplementedType
         check(NotImplemented, size(''))
         # object
@@ -1260,7 +1260,7 @@ kundi SizeofTest(unittest.TestCase):
         kundi C(object):
             eleza getx(self): rudisha self.__x
             eleza setx(self, value): self.__x = value
-            eleza delx(self): del self.__x
+            eleza delx(self): toa self.__x
             x = property(getx, setx, delx, "")
             check(x, size('4Pi'))
         # PyCapsule
@@ -1277,19 +1277,19 @@ kundi SizeofTest(unittest.TestCase):
         PySet_MINSIZE = 8
         samples = [[], range(10), range(50)]
         s = size('3nP' + PySet_MINSIZE*'nP' + '2nP')
-        for sample in samples:
+        kila sample kwenye samples:
             minused = len(sample)
             ikiwa minused == 0: tmp = 1
-            # the computation of minused is actually a bit more complicated
-            # but this suffices for the sizeof test
+            # the computation of minused ni actually a bit more complicated
+            # but this suffices kila the sizeof test
             minused = minused*2
             newsize = PySet_MINSIZE
-            while newsize <= minused:
+            wakati newsize <= minused:
                 newsize = newsize << 1
             ikiwa newsize <= 8:
                 check(set(sample), s)
                 check(frozenset(sample), s)
-            else:
+            isipokua:
                 check(set(sample), s + newsize*calcsize('nP'))
                 check(frozenset(sample), s + newsize*calcsize('nP'))
         # setiterator
@@ -1316,28 +1316,28 @@ kundi SizeofTest(unittest.TestCase):
                   '10P'                 # PySequenceMethods
                   '2P'                  # PyBufferProcs
                   '4P')
-        kundi newstyleclass(object): pass
-        # Separate block for PyDictKeysObject with 8 keys and 5 entries
+        kundi newstyleclass(object): pita
+        # Separate block kila PyDictKeysObject with 8 keys na 5 entries
         check(newstyleclass, s + calcsize("2nP2n0P") + 8 + 5*calcsize("n2P"))
         # dict with shared keys
         check(newstyleclass().__dict__, size('nQ2P') + 5*self.P)
         o = newstyleclass()
         o.a = o.b = o.c = o.d = o.e = o.f = o.g = o.h = 1
-        # Separate block for PyDictKeysObject with 16 keys and 10 entries
+        # Separate block kila PyDictKeysObject with 16 keys na 10 entries
         check(newstyleclass, s + calcsize("2nP2n0P") + 16 + 10*calcsize("n2P"))
         # dict with shared keys
         check(newstyleclass().__dict__, size('nQ2P') + 10*self.P)
         # unicode
-        # each tuple contains a string and its expected character size
-        # don't put any static strings here, as they may contain
-        # wchar_t or UTF-8 representations
+        # each tuple contains a string na its expected character size
+        # don't put any static strings here, kama they may contain
+        # wchar_t ama UTF-8 representations
         samples = ['1'*100, '\xff'*50,
                    '\u0100'*40, '\uffff'*100,
                    '\U00010000'*30, '\U0010ffff'*100]
         asciifields = "nnbP"
         compactfields = asciifields + "nPn"
         unicodefields = compactfields + "P"
-        for s in samples:
+        kila s kwenye samples:
             maxchar = ord(max(s))
             ikiwa maxchar < 128:
                 L = size(asciifields) + len(s) + 1
@@ -1345,14 +1345,14 @@ kundi SizeofTest(unittest.TestCase):
                 L = size(compactfields) + len(s) + 1
             elikiwa maxchar < 65536:
                 L = size(compactfields) + 2*(len(s) + 1)
-            else:
+            isipokua:
                 L = size(compactfields) + 4*(len(s) + 1)
             check(s, L)
-        # verify that the UTF-8 size is accounted for
+        # verify that the UTF-8 size ni accounted for
         s = chr(0x4000)   # 4 bytes canonical representation
         check(s, size(compactfields) + 4)
         # compile() will trigger the generation of the UTF-8
-        # representation as a side effect
+        # representation kama a side effect
         compile(s, "<stdin>", "eval")
         check(s, size(compactfields) + 4 + 4)
         # TODO: add check that forces the presence of wchar_t representation
@@ -1367,12 +1367,12 @@ kundi SizeofTest(unittest.TestCase):
 
     eleza check_slots(self, obj, base, extra):
         expected = sys.getsizeof(base) + struct.calcsize(extra)
-        ikiwa gc.is_tracked(obj) and not gc.is_tracked(base):
+        ikiwa gc.is_tracked(obj) na sio gc.is_tracked(base):
             expected += self.gc_headsize
         self.assertEqual(sys.getsizeof(obj), expected)
 
     eleza test_slots(self):
-        # check all subclassable types defined in Objects/ that allow
+        # check all subclassable types defined kwenye Objects/ that allow
         # non-empty __slots__
         check = self.check_slots
         kundi BA(bytearray):
@@ -1396,19 +1396,19 @@ kundi SizeofTest(unittest.TestCase):
         check(OD(x=[]), OrderedDict(x=[]), '3P')
 
     eleza test_pythontypes(self):
-        # check all types defined in Python/
+        # check all types defined kwenye Python/
         size = test.support.calcobjsize
         vsize = test.support.calcvobjsize
         check = self.check_sizeof
         # _ast.AST
         agiza _ast
         check(_ast.AST(), size('P'))
-        try:
-            raise TypeError
-        except TypeError:
+        jaribu:
+            ashiria TypeError
+        tatizo TypeError:
             tb = sys.exc_info()[2]
             # traceback
-            ikiwa tb is not None:
+            ikiwa tb ni sio Tupu:
                 check(tb, size('2P2i'))
         # symtable entry
         # XXX
@@ -1417,18 +1417,18 @@ kundi SizeofTest(unittest.TestCase):
 
     eleza test_asyncgen_hooks(self):
         old = sys.get_asyncgen_hooks()
-        self.assertIsNone(old.firstiter)
-        self.assertIsNone(old.finalizer)
+        self.assertIsTupu(old.firstiter)
+        self.assertIsTupu(old.finalizer)
 
-        firstiter = lambda *a: None
+        firstiter = lambda *a: Tupu
         sys.set_asyncgen_hooks(firstiter=firstiter)
         hooks = sys.get_asyncgen_hooks()
         self.assertIs(hooks.firstiter, firstiter)
         self.assertIs(hooks[0], firstiter)
-        self.assertIs(hooks.finalizer, None)
-        self.assertIs(hooks[1], None)
+        self.assertIs(hooks.finalizer, Tupu)
+        self.assertIs(hooks[1], Tupu)
 
-        finalizer = lambda *a: None
+        finalizer = lambda *a: Tupu
         sys.set_asyncgen_hooks(finalizer=finalizer)
         hooks = sys.get_asyncgen_hooks()
         self.assertIs(hooks.firstiter, firstiter)
@@ -1438,8 +1438,8 @@ kundi SizeofTest(unittest.TestCase):
 
         sys.set_asyncgen_hooks(*old)
         cur = sys.get_asyncgen_hooks()
-        self.assertIsNone(cur.firstiter)
-        self.assertIsNone(cur.finalizer)
+        self.assertIsTupu(cur.firstiter)
+        self.assertIsTupu(cur.finalizer)
 
 
 ikiwa __name__ == "__main__":

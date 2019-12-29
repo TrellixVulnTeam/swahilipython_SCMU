@@ -15,7 +15,7 @@ class Test_OpenGL_libs(unittest.TestCase):
             lib_glu = find_library("Glu32")
         lasivyo sys.platform == "darwin":
             lib_gl = lib_glu = find_library("OpenGL")
-        else:
+        isipokua:
             lib_gl = find_library("GL")
             lib_glu = find_library("GLU")
             lib_gle = find_library("gle")
@@ -30,19 +30,19 @@ class Test_OpenGL_libs(unittest.TestCase):
 
         cls.gl = cls.glu = cls.gle = None
         if lib_gl:
-            try:
+            jaribu:
                 cls.gl = CDLL(lib_gl, mode=RTLD_GLOBAL)
-            except OSError:
+            tatizo OSError:
                 pass
         if lib_glu:
-            try:
+            jaribu:
                 cls.glu = CDLL(lib_glu, RTLD_GLOBAL)
-            except OSError:
+            tatizo OSError:
                 pass
         if lib_gle:
-            try:
+            jaribu:
                 cls.gle = CDLL(lib_gle)
-            except OSError:
+            tatizo OSError:
                 pass
 
     @classmethod
@@ -51,17 +51,17 @@ class Test_OpenGL_libs(unittest.TestCase):
 
     def test_gl(self):
         if self.gl is None:
-            self.skipTest('lib_gl not available')
+            self.skipTest('lib_gl sio available')
         self.gl.glClearIndex
 
     def test_glu(self):
         if self.glu is None:
-            self.skipTest('lib_glu not available')
+            self.skipTest('lib_glu sio available')
         self.glu.gluBeginCurve
 
     def test_gle(self):
         if self.gle is None:
-            self.skipTest('lib_gle not available')
+            self.skipTest('lib_gle sio available')
         self.gle.gleGetJoinStyle
 
     def test_shell_injection(self):
@@ -77,12 +77,12 @@ class LibPathFindTest(unittest.TestCase):
         import subprocess
         import tempfile
 
-        try:
+        jaribu:
             p = subprocess.Popen(['gcc', '--version'], stdout=subprocess.PIPE,
                                  stderr=subprocess.DEVNULL)
             out, _ = p.communicate()
-        except OSError:
-            raise unittest.SkipTest('gcc, needed for test, not available')
+        tatizo OSError:
+            raise unittest.SkipTest('gcc, needed for test, sio available')
         with tempfile.TemporaryDirectory() as d:
             # create an empty temporary file
             srcname = os.path.join(d, 'dummy.c')
@@ -96,15 +96,15 @@ class LibPathFindTest(unittest.TestCase):
                    '-Wl,-soname,lib%s.so' % libname, srcname]
             out = subprocess.check_output(cmd)
             self.assertTrue(os.path.exists(dstname))
-            # now check that the .so can't be found (since not in
+            # now check that the .so can't be found (since sio in
             # LD_LIBRARY_PATH)
             self.assertIsNone(find_library(libname))
             # now add the location to LD_LIBRARY_PATH
             with test.support.EnvironmentVarGuard() as env:
                 KEY = 'LD_LIBRARY_PATH'
-                if KEY not in env:
+                if KEY haiko kwenye env:
                     v = d
-                else:
+                isipokua:
                     v = '%s:%s' % (env[KEY], d)
                 env.set(KEY, v)
                 # now check that the .so can be found (since in

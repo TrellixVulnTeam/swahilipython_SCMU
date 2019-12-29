@@ -1,8 +1,8 @@
-"""ParenMatch -- for parenthesis matching.
+"""ParenMatch -- kila parenthesis matching.
 
 When you hit a right paren, the cursor should move briefly to the left
-paren.  Paren here is used generically; the matching applies to
-parentheses, square brackets, and curly braces.
+paren.  Paren here ni used generically; the matching applies to
+parentheses, square brackets, na curly braces.
 """
 kutoka idlelib.hyperparser agiza HyperParser
 kutoka idlelib.config agiza idleConf
@@ -11,23 +11,23 @@ _openers = {')':'(',']':'[','}':'{'}
 CHECK_DELAY = 100 # milliseconds
 
 kundi ParenMatch:
-    """Highlight matching openers and closers, (), [], and {}.
+    """Highlight matching openers na closers, (), [], na {}.
 
     There are three supported styles of paren matching.  When a right
-    paren (opener) is typed:
+    paren (opener) ni typed:
 
     opener -- highlight the matching left paren (closer);
-    parens -- highlight the left and right parens (opener and closer);
+    parens -- highlight the left na right parens (opener na closer);
     expression -- highlight the entire expression kutoka opener to closer.
-    (For back compatibility, 'default' is a synonym for 'opener').
+    (For back compatibility, 'default' ni a synonym kila 'opener').
 
-    Flash-delay is the maximum milliseconds the highlighting remains.
-    Any cursor movement (key press or click) before that removes the
-    highlight.  If flash-delay is 0, there is no maximum.
+    Flash-delay ni the maximum milliseconds the highlighting remains.
+    Any cursor movement (key press ama click) before that removes the
+    highlight.  If flash-delay ni 0, there ni no maximum.
 
     TODO:
-    - Augment bell() with mismatch warning in status window.
-    - Highlight when cursor is moved to the right of a closer.
+    - Augment bell() with mismatch warning kwenye status window.
+    - Highlight when cursor ni moved to the right of a closer.
       This might be too expensive to check.
     """
 
@@ -42,7 +42,7 @@ kundi ParenMatch:
         self.text = editwin.text
         # Bind the check-restore event to the function restore_event,
         # so that we can then use activate_restore (which calls event_add)
-        # and deactivate_restore (which calls event_delete).
+        # na deactivate_restore (which calls event_delete).
         editwin.text.bind(self.RESTORE_VIRTUAL_EVENT_NAME,
                           self.restore_event)
         self.counter = 0
@@ -61,42 +61,42 @@ kundi ParenMatch:
 
     eleza activate_restore(self):
         "Activate mechanism to restore text kutoka highlighting."
-        ikiwa not self.is_restore_active:
-            for seq in self.RESTORE_SEQUENCES:
+        ikiwa sio self.is_restore_active:
+            kila seq kwenye self.RESTORE_SEQUENCES:
                 self.text.event_add(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
-            self.is_restore_active = True
+            self.is_restore_active = Kweli
 
     eleza deactivate_restore(self):
         "Remove restore event bindings."
         ikiwa self.is_restore_active:
-            for seq in self.RESTORE_SEQUENCES:
+            kila seq kwenye self.RESTORE_SEQUENCES:
                 self.text.event_delete(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
-            self.is_restore_active = False
+            self.is_restore_active = Uongo
 
     eleza flash_paren_event(self, event):
-        "Handle editor 'show surrounding parens' event (menu or shortcut)."
+        "Handle editor 'show surrounding parens' event (menu ama shortcut)."
         indices = (HyperParser(self.editwin, "insert")
                    .get_surrounding_brackets())
         self.finish_paren_event(indices)
-        rudisha "break"
+        rudisha "koma"
 
     eleza paren_closed_event(self, event):
         "Handle user input of closer."
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
-        ikiwa closer not in _openers:
-            return
+        ikiwa closer haiko kwenye _openers:
+            rudisha
         hp = HyperParser(self.editwin, "insert-1c")
-        ikiwa not hp.is_in_code():
-            return
-        indices = hp.get_surrounding_brackets(_openers[closer], True)
+        ikiwa sio hp.is_in_code():
+            rudisha
+        indices = hp.get_surrounding_brackets(_openers[closer], Kweli)
         self.finish_paren_event(indices)
         rudisha  # Allow calltips to see ')'
 
     eleza finish_paren_event(self, indices):
-        ikiwa indices is None and self.BELL:
+        ikiwa indices ni Tupu na self.BELL:
             self.text.bell()
-            return
+            rudisha
         self.activate_restore()
         # self.create_tag(indices)
         self.tagfuncs.get(self.STYLE, self.create_tag_expression)(self, indices)
@@ -104,11 +104,11 @@ kundi ParenMatch:
         (self.set_timeout_last ikiwa self.FLASH_DELAY else
                             self.set_timeout_none)()
 
-    eleza restore_event(self, event=None):
+    eleza restore_event(self, event=Tupu):
         "Remove effect of doing match."
         self.text.tag_delete("paren")
         self.deactivate_restore()
-        self.counter += 1   # disable the last timer, ikiwa there is one.
+        self.counter += 1   # disable the last timer, ikiwa there ni one.
 
     eleza handle_restore_timer(self, timer_count):
         ikiwa timer_count == self.counter:
@@ -123,19 +123,19 @@ kundi ParenMatch:
         self.text.tag_config("paren", self.HILITE_CONFIG)
 
     eleza create_tag_parens(self, indices):
-        """Highlight the left and right parens"""
-        ikiwa self.text.get(indices[1]) in (')', ']', '}'):
+        """Highlight the left na right parens"""
+        ikiwa self.text.get(indices[1]) kwenye (')', ']', '}'):
             rightindex = indices[1]+"+1c"
-        else:
+        isipokua:
             rightindex = indices[1]
         self.text.tag_add("paren", indices[0], indices[0]+"+1c", rightindex+"-1c", rightindex)
         self.text.tag_config("paren", self.HILITE_CONFIG)
 
     eleza create_tag_expression(self, indices):
         """Highlight the entire expression"""
-        ikiwa self.text.get(indices[1]) in (')', ']', '}'):
+        ikiwa self.text.get(indices[1]) kwenye (')', ']', '}'):
             rightindex = indices[1]+"+1c"
-        else:
+        isipokua:
             rightindex = indices[1]
         self.text.tag_add("paren", indices[0], rightindex)
         self.text.tag_config("paren", self.HILITE_CONFIG)
@@ -152,23 +152,23 @@ kundi ParenMatch:
 
     eleza set_timeout_none(self):
         """Highlight will remain until user input turns it off
-        or the insert has moved"""
+        ama the insert has moved"""
         # After CHECK_DELAY, call a function which disables the "paren" tag
-        # ikiwa the event is for the most recent timer and the insert has changed,
-        # or schedules another call for itself.
+        # ikiwa the event ni kila the most recent timer na the insert has changed,
+        # ama schedules another call kila itself.
         self.counter += 1
         eleza callme(callme, self=self, c=self.counter,
                    index=self.text.index("insert")):
             ikiwa index != self.text.index("insert"):
                 self.handle_restore_timer(c)
-            else:
+            isipokua:
                 self.editwin.text_frame.after(CHECK_DELAY, callme, callme)
         self.editwin.text_frame.after(CHECK_DELAY, callme, callme)
 
     eleza set_timeout_last(self):
         """The last highlight created will be removed after FLASH_DELAY millisecs"""
         # associate a counter with an event; only disable the "paren"
-        # tag ikiwa the event is for the most recent timer.
+        # tag ikiwa the event ni kila the most recent timer.
         self.counter += 1
         self.editwin.text_frame.after(
             self.FLASH_DELAY,

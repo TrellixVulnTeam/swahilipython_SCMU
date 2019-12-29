@@ -13,19 +13,19 @@ agiza modulefinder
 TEST_DIR = tempfile.mkdtemp()
 TEST_PATH = [TEST_DIR, os.path.dirname(tempfile.__file__)]
 
-# Each test description is a list of 5 items:
+# Each test description ni a list of 5 items:
 #
 # 1. a module name that will be imported by modulefinder
-# 2. a list of module names that modulefinder is required to find
+# 2. a list of module names that modulefinder ni required to find
 # 3. a list of module names that modulefinder should complain
-#    about because they are not found
+#    about because they are sio found
 # 4. a list of module names that modulefinder should complain
-#    about because they MAY be not found
-# 5. a string specifying packages to create; the format is obvious imo.
+#    about because they MAY be sio found
+# 5. a string specifying packages to create; the format ni obvious imo.
 #
-# Each package will be created in TEST_DIR, and TEST_DIR will be
+# Each package will be created kwenye TEST_DIR, na TEST_DIR will be
 # removed after the tests again.
-# Modulefinder searches in a path that contains TEST_DIR, plus
+# Modulefinder searches kwenye a path that contains TEST_DIR, plus
 # the standard Lib directory.
 
 maybe_test = [
@@ -69,12 +69,12 @@ a/__init__.py
                                 agiza c
 a/module.py
                                 agiza sys
-                                kutoka a agiza b as x
+                                kutoka a agiza b kama x
                                 kutoka a.c agiza sillyname
 a/b.py
 a/c.py
                                 kutoka a.module agiza x
-                                agiza mymodule as sillyname
+                                agiza mymodule kama sillyname
                                 kutoka sys agiza version_info
 """]
 
@@ -192,7 +192,7 @@ relative_import_test_3 = [
     [],
     """\
 a/__init__.py
-                                eleza foo(): pass
+                                eleza foo(): pita
 a/module.py
                                 kutoka . agiza foo
                                 kutoka . agiza bar
@@ -205,7 +205,7 @@ relative_import_test_4 = [
     [],
     """\
 a/__init__.py
-                                eleza foo(): pass
+                                eleza foo(): pita
 a/module.py
                                 kutoka . agiza *
 """]
@@ -248,58 +248,58 @@ b/c.py
 
 eleza open_file(path):
     dirname = os.path.dirname(path)
-    try:
+    jaribu:
         os.makedirs(dirname)
-    except OSError as e:
+    tatizo OSError kama e:
         ikiwa e.errno != errno.EEXIST:
-            raise
+            ashiria
     rudisha open(path, "w")
 
 
 eleza create_package(source):
-    ofi = None
-    try:
-        for line in source.splitlines():
-            ikiwa line.startswith(" ") or line.startswith("\t"):
+    ofi = Tupu
+    jaribu:
+        kila line kwenye source.splitlines():
+            ikiwa line.startswith(" ") ama line.startswith("\t"):
                 ofi.write(line.strip() + "\n")
-            else:
+            isipokua:
                 ikiwa ofi:
                     ofi.close()
                 ofi = open_file(os.path.join(TEST_DIR, line.strip()))
-    finally:
+    mwishowe:
         ikiwa ofi:
             ofi.close()
 
 
 kundi ModuleFinderTest(unittest.TestCase):
-    eleza _do_test(self, info, report=False, debug=0, replace_paths=[]):
+    eleza _do_test(self, info, report=Uongo, debug=0, replace_paths=[]):
         import_this, modules, missing, maybe_missing, source = info
         create_package(source)
-        try:
+        jaribu:
             mf = modulefinder.ModuleFinder(path=TEST_PATH, debug=debug,
                                            replace_paths=replace_paths)
             mf.import_hook(import_this)
             ikiwa report:
                 mf.report()
-##                # This wouldn't work in general when executed several times:
+##                # This wouldn't work kwenye general when executed several times:
 ##                opath = sys.path[:]
 ##                sys.path = TEST_PATH
-##                try:
+##                jaribu:
 ##                    __import__(import_this)
 ##                except:
 ##                    agiza traceback; traceback.print_exc()
 ##                sys.path = opath
-##                return
+##                rudisha
             modules = sorted(set(modules))
             found = sorted(mf.modules)
-            # check ikiwa we found what we expected, not more, not less
+            # check ikiwa we found what we expected, sio more, sio less
             self.assertEqual(found, modules)
 
-            # check for missing and maybe missing modules
+            # check kila missing na maybe missing modules
             bad, maybe = mf.any_missing_maybe()
             self.assertEqual(bad, missing)
             self.assertEqual(maybe, maybe_missing)
-        finally:
+        mwishowe:
             shutil.rmtree(TEST_DIR)
 
     eleza test_package(self):
@@ -336,8 +336,8 @@ kundi ModuleFinderTest(unittest.TestCase):
         base_path = os.path.join(TEST_DIR, 'a')
         source_path = base_path + importlib.machinery.SOURCE_SUFFIXES[0]
         bytecode_path = base_path + importlib.machinery.BYTECODE_SUFFIXES[0]
-        with open_file(source_path) as file:
-            file.write('testing_modulefinder = True\n')
+        with open_file(source_path) kama file:
+            file.write('testing_modulefinder = Kweli\n')
         py_compile.compile(source_path, cfile=bytecode_path)
         os.remove(source_path)
         self._do_test(bytecode_test)
@@ -345,7 +345,7 @@ kundi ModuleFinderTest(unittest.TestCase):
     eleza test_replace_paths(self):
         old_path = os.path.join(TEST_DIR, 'a', 'module.py')
         new_path = os.path.join(TEST_DIR, 'a', 'spam.py')
-        with support.captured_stdout() as output:
+        with support.captured_stdout() kama output:
             self._do_test(maybe_test, debug=2,
                           replace_paths=[(old_path, new_path)])
         output = output.getvalue()

@@ -31,7 +31,7 @@ kundi BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
 
 kundi ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
     eleza test_import_nonexistent_module(self):
-        # Ensure that the MetadataPathFinder does not crash an agiza of a
+        # Ensure that the MetadataPathFinder does sio crash an agiza of a
         # non-existent module.
         with self.assertRaises(ImportError):
             importlib.import_module('does_not_exist')
@@ -52,7 +52,7 @@ kundi ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
             value='importlib.metadata',
             group='grp',
             )
-        assert ep.load() is importlib.metadata
+        assert ep.load() ni importlib.metadata
 
 
 kundi NameNormalizationTests(
@@ -60,20 +60,20 @@ kundi NameNormalizationTests(
     @staticmethod
     eleza pkg_with_dashes(site_dir):
         """
-        Create minimal metadata for a package with dashes
-        in the name (and thus underscores in the filename).
+        Create minimal metadata kila a package with dashes
+        kwenye the name (and thus underscores kwenye the filename).
         """
         metadata_dir = site_dir / 'my_pkg.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w') as strm:
+        with metadata.open('w') kama strm:
             strm.write('Version: 1.0\n')
         rudisha 'my-pkg'
 
     eleza test_dashes_in_dist_name_found_as_underscores(self):
         """
-        For a package with a dash in the name, the dist-info metadata
-        uses underscores in the name. Ensure the metadata loads.
+        For a package with a dash kwenye the name, the dist-info metadata
+        uses underscores kwenye the name. Ensure the metadata loads.
         """
         pkg_name = self.pkg_with_dashes(self.site_dir)
         assert version(pkg_name) == '1.0'
@@ -81,13 +81,13 @@ kundi NameNormalizationTests(
     @staticmethod
     eleza pkg_with_mixed_case(site_dir):
         """
-        Create minimal metadata for a package with mixed case
-        in the name.
+        Create minimal metadata kila a package with mixed case
+        kwenye the name.
         """
         metadata_dir = site_dir / 'CherryPy.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w') as strm:
+        with metadata.open('w') kama strm:
             strm.write('Version: 1.0\n')
         rudisha 'CherryPy'
 
@@ -105,26 +105,26 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     eleza pkg_with_non_ascii_description(site_dir):
         """
-        Create minimal metadata for a package with non-ASCII in
+        Create minimal metadata kila a package with non-ASCII in
         the description.
         """
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w', encoding='utf-8') as fp:
+        with metadata.open('w', encoding='utf-8') kama fp:
             fp.write('Description: pôrˈtend\n')
         rudisha 'portend'
 
     @staticmethod
     eleza pkg_with_non_ascii_description_egg_info(site_dir):
         """
-        Create minimal metadata for an egg-info package with
-        non-ASCII in the description.
+        Create minimal metadata kila an egg-info package with
+        non-ASCII kwenye the description.
         """
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        with metadata.open('w', encoding='utf-8') as fp:
+        with metadata.open('w', encoding='utf-8') kama fp:
             fp.write(textwrap.dedent("""
                 Name: portend
 
@@ -151,15 +151,15 @@ kundi DiscoveryTests(fixtures.EggInfoPkg,
         dists = list(distributions())
         assert all(
             isinstance(dist, Distribution)
-            for dist in dists
+            kila dist kwenye dists
             )
         assert any(
             dist.metadata['Name'] == 'egginfo-pkg'
-            for dist in dists
+            kila dist kwenye dists
             )
         assert any(
             dist.metadata['Name'] == 'distinfo-pkg'
-            for dist in dists
+            kila dist kwenye dists
             )
 
     eleza test_invalid_usage(self):

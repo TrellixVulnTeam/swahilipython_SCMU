@@ -1,6 +1,6 @@
-"""Unit tests for the bytes and bytearray types.
+"""Unit tests kila the bytes na bytearray types.
 
-XXX This is a mess.  Common tests should be unified with string_tests.py (and
+XXX This ni a mess.  Common tests should be unified with string_tests.py (and
 the latter should be modernized).
 """
 
@@ -27,7 +27,7 @@ ikiwa sys.flags.bytes_warning:
             with test.support.check_warnings(('', BytesWarning)):
                 rudisha func(*args, **kw)
         rudisha wrapper
-else:
+isipokua:
     # no-op
     eleza check_bytes_warnings(func):
         rudisha func
@@ -49,7 +49,7 @@ kundi BaseBytesTest:
 
     eleza test_copy(self):
         a = self.type2test(b"abcd")
-        for copy_method in (copy.copy, copy.deepcopy):
+        kila copy_method kwenye (copy.copy, copy.deepcopy):
             b = copy_method(a)
             self.assertEqual(a, b)
             self.assertEqual(type(a), type(b))
@@ -86,7 +86,7 @@ kundi BaseBytesTest:
         self.assertEqual(list(b), list(range(256)))
 
         # Iterator that doesn't have a __length_hint__.
-        b = self.type2test(i for i in range(256) ikiwa i % 2)
+        b = self.type2test(i kila i kwenye range(256) ikiwa i % 2)
         self.assertEqual(len(b), 128)
         self.assertEqual(list(b), list(range(256))[1::2])
 
@@ -98,7 +98,7 @@ kundi BaseBytesTest:
         self.assertEqual(b, b"\x01\x02\x03")
 
     eleza test_kutoka_tuple(self):
-        # There is a special case for tuples.
+        # There ni a special case kila tuples.
         b = self.type2test(tuple(range(256)))
         self.assertEqual(len(b), 256)
         self.assertEqual(list(b), list(range(256)))
@@ -106,7 +106,7 @@ kundi BaseBytesTest:
         self.assertEqual(b, b"\x01\x02\x03")
 
     eleza test_kutoka_list(self):
-        # There is a special case for lists.
+        # There ni a special case kila lists.
         b = self.type2test(list(range(256)))
         self.assertEqual(len(b), 256)
         self.assertEqual(list(b), list(range(256)))
@@ -114,7 +114,7 @@ kundi BaseBytesTest:
         self.assertEqual(b, b"\x01\x02\x03")
 
     eleza test_kutoka_mutating_list(self):
-        # Issue #34973: Crash in bytes constructor with mutating list.
+        # Issue #34973: Crash kwenye bytes constructor with mutating list.
         kundi X:
             eleza __index__(self):
                 a.clear()
@@ -128,7 +128,7 @@ kundi BaseBytesTest:
                     a.append(self)
                 rudisha 42
         a = [Y()]
-        self.assertEqual(bytes(a), b'*' * 1000)  # should not crash
+        self.assertEqual(bytes(a), b'*' * 1000)  # should sio crash
 
     eleza test_kutoka_index(self):
         b = self.type2test([Indexable(), Indexable(1), Indexable(254),
@@ -143,11 +143,11 @@ kundi BaseBytesTest:
         a = self.type2test(b"\x01\x02\x03")
         self.assertEqual(a, b"\x01\x02\x03")
 
-        # Issues #29159 and #34974.
-        # Fallback when __index__ raises a TypeError
+        # Issues #29159 na #34974.
+        # Fallback when __index__ ashirias a TypeError
         kundi B(bytes):
             eleza __index__(self):
-                raise TypeError
+                ashiria TypeError
 
         self.assertEqual(self.type2test(B(b"foobar")), b"foobar")
 
@@ -164,10 +164,10 @@ kundi BaseBytesTest:
     eleza test_constructor_type_errors(self):
         self.assertRaises(TypeError, self.type2test, 0.0)
         kundi C:
-            pass
+            pita
         self.assertRaises(TypeError, self.type2test, ["0"])
         self.assertRaises(TypeError, self.type2test, [0.0])
-        self.assertRaises(TypeError, self.type2test, [None])
+        self.assertRaises(TypeError, self.type2test, [Tupu])
         self.assertRaises(TypeError, self.type2test, [C()])
         self.assertRaises(TypeError, self.type2test, encoding='ascii')
         self.assertRaises(TypeError, self.type2test, errors='ignore')
@@ -196,15 +196,15 @@ kundi BaseBytesTest:
     eleza test_constructor_overflow(self):
         size = MAX_Py_ssize_t
         self.assertRaises((OverflowError, MemoryError), self.type2test, size)
-        try:
-            # Should either pass or raise an error (e.g. on debug builds with
+        jaribu:
+            # Should either pita ama ashiria an error (e.g. on debug builds with
             # additional malloc() overhead), but shouldn't crash.
             bytearray(size - 4)
-        except (OverflowError, MemoryError):
-            pass
+        tatizo (OverflowError, MemoryError):
+            pita
 
     eleza test_constructor_exceptions(self):
-        # Issue #34974: bytes and bytearray constructors replace unexpected
+        # Issue #34974: bytes na bytearray constructors replace unexpected
         # exceptions.
         kundi BadInt:
             eleza __index__(self):
@@ -223,36 +223,36 @@ kundi BaseBytesTest:
         b3 = self.type2test([1, 3])
 
         self.assertEqual(b1, b2)
-        self.assertTrue(b2 != b3)
-        self.assertTrue(b1 <= b2)
-        self.assertTrue(b1 <= b3)
-        self.assertTrue(b1 <  b3)
-        self.assertTrue(b1 >= b2)
-        self.assertTrue(b3 >= b2)
-        self.assertTrue(b3 >  b2)
+        self.assertKweli(b2 != b3)
+        self.assertKweli(b1 <= b2)
+        self.assertKweli(b1 <= b3)
+        self.assertKweli(b1 <  b3)
+        self.assertKweli(b1 >= b2)
+        self.assertKweli(b3 >= b2)
+        self.assertKweli(b3 >  b2)
 
-        self.assertFalse(b1 != b2)
-        self.assertFalse(b2 == b3)
-        self.assertFalse(b1 >  b2)
-        self.assertFalse(b1 >  b3)
-        self.assertFalse(b1 >= b3)
-        self.assertFalse(b1 <  b2)
-        self.assertFalse(b3 <  b2)
-        self.assertFalse(b3 <= b2)
+        self.assertUongo(b1 != b2)
+        self.assertUongo(b2 == b3)
+        self.assertUongo(b1 >  b2)
+        self.assertUongo(b1 >  b3)
+        self.assertUongo(b1 >= b3)
+        self.assertUongo(b1 <  b2)
+        self.assertUongo(b3 <  b2)
+        self.assertUongo(b3 <= b2)
 
     @check_bytes_warnings
     eleza test_compare_to_str(self):
         # Byte comparisons with unicode should always fail!
-        # Test this for all expected byte orders and Unicode character
+        # Test this kila all expected byte orders na Unicode character
         # sizes.
-        self.assertEqual(self.type2test(b"\0a\0b\0c") == "abc", False)
+        self.assertEqual(self.type2test(b"\0a\0b\0c") == "abc", Uongo)
         self.assertEqual(self.type2test(b"\0\0\0a\0\0\0b\0\0\0c") == "abc",
-                            False)
-        self.assertEqual(self.type2test(b"a\0b\0c\0") == "abc", False)
+                            Uongo)
+        self.assertEqual(self.type2test(b"a\0b\0c\0") == "abc", Uongo)
         self.assertEqual(self.type2test(b"a\0\0\0b\0\0\0c\0\0\0") == "abc",
-                            False)
-        self.assertEqual(self.type2test() == str(), False)
-        self.assertEqual(self.type2test() != str(), True)
+                            Uongo)
+        self.assertEqual(self.type2test() == str(), Uongo)
+        self.assertEqual(self.type2test() != str(), Kweli)
 
     eleza test_reversed(self):
         input = list(map(ord, "Hello"))
@@ -285,16 +285,16 @@ kundi BaseBytesTest:
         # Test extended slicing by comparing with list slicing.
         L = list(range(255))
         b = self.type2test(L)
-        indices = (0, None, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
-        for start in indices:
-            for stop in indices:
+        indices = (0, Tupu, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
+        kila start kwenye indices:
+            kila stop kwenye indices:
                 # Skip step 0 (invalid)
-                for step in indices[1:]:
+                kila step kwenye indices[1:]:
                     self.assertEqual(b[start:stop:step], self.type2test(L[start:stop:step]))
 
     eleza test_encoding(self):
         sample = "Hello world\n\u1234\u5678\u9abc"
-        for enc in ("utf-8", "utf-16"):
+        kila enc kwenye ("utf-8", "utf-16"):
             b = self.type2test(sample, enc)
             self.assertEqual(b, self.type2test(sample.encode(enc)))
         self.assertRaises(UnicodeEncodeError, self.type2test, sample, "latin-1")
@@ -303,7 +303,7 @@ kundi BaseBytesTest:
 
     eleza test_decode(self):
         sample = "Hello world\n\u1234\u5678\u9abc"
-        for enc in ("utf-8", "utf-16"):
+        kila enc kwenye ("utf-8", "utf-16"):
             b = self.type2test(sample, enc)
             self.assertEqual(b.decode(enc), sample)
         sample = "Hello world\n\x80\x81\xfe\xff"
@@ -312,7 +312,7 @@ kundi BaseBytesTest:
         self.assertEqual(b.decode("utf-8", "ignore"), "Hello world\n")
         self.assertEqual(b.decode(errors="ignore", encoding="utf-8"),
                          "Hello world\n")
-        # Default encoding is utf-8
+        # Default encoding ni utf-8
         self.assertEqual(self.type2test(b'\xe2\x98\x83').decode(), '\u2603')
 
     eleza test_kutoka_int(self):
@@ -333,13 +333,13 @@ kundi BaseBytesTest:
         self.assertRaises(TypeError, lambda: "abc" + b2)
 
     eleza test_repeat(self):
-        for b in b"abc", self.type2test(b"abc"):
+        kila b kwenye b"abc", self.type2test(b"abc"):
             self.assertEqual(b * 3, b"abcabcabc")
             self.assertEqual(b * 0, b"")
             self.assertEqual(b * -1, b"")
             self.assertRaises(TypeError, lambda: b * 3.14)
             self.assertRaises(TypeError, lambda: 3.14 * b)
-            # XXX Shouldn't bytes and bytearray agree on what to raise?
+            # XXX Shouldn't bytes na bytearray agree on what to ashiria?
             with self.assertRaises((OverflowError, MemoryError)):
                 c = b * sys.maxsize
             with self.assertRaises((OverflowError, MemoryError)):
@@ -353,13 +353,13 @@ kundi BaseBytesTest:
         self.assertIn(ord('a'), b)
         self.assertIn(int(ord('a')), b)
         self.assertNotIn(200, b)
-        self.assertRaises(ValueError, lambda: 300 in b)
-        self.assertRaises(ValueError, lambda: -1 in b)
-        self.assertRaises(ValueError, lambda: sys.maxsize+1 in b)
-        self.assertRaises(TypeError, lambda: None in b)
-        self.assertRaises(TypeError, lambda: float(ord('a')) in b)
-        self.assertRaises(TypeError, lambda: "a" in b)
-        for f in bytes, bytearray:
+        self.assertRaises(ValueError, lambda: 300 kwenye b)
+        self.assertRaises(ValueError, lambda: -1 kwenye b)
+        self.assertRaises(ValueError, lambda: sys.maxsize+1 kwenye b)
+        self.assertRaises(TypeError, lambda: Tupu kwenye b)
+        self.assertRaises(TypeError, lambda: float(ord('a')) kwenye b)
+        self.assertRaises(TypeError, lambda: "a" kwenye b)
+        kila f kwenye bytes, bytearray:
             self.assertIn(f(b""), b)
             self.assertIn(f(b"a"), b)
             self.assertIn(f(b"b"), b)
@@ -380,11 +380,11 @@ kundi BaseBytesTest:
         self.assertEqual(self.type2test.kutokahex('1a2B30'), b)
         self.assertEqual(self.type2test.kutokahex('  1A 2B  30   '), b)
 
-        # check that ASCII whitespace is ignored
+        # check that ASCII whitespace ni ignored
         self.assertEqual(self.type2test.kutokahex(' 1A\n2B\t30\v'), b)
-        for c in "\x09\x0A\x0B\x0C\x0D\x20":
+        kila c kwenye "\x09\x0A\x0B\x0C\x0D\x20":
             self.assertEqual(self.type2test.kutokahex(c), self.type2test())
-        for c in "\x1C\x1D\x1E\x1F\x85\xa0\u2000\u2002\u2028":
+        kila c kwenye "\x1C\x1D\x1E\x1F\x85\xa0\u2000\u2002\u2028":
             self.assertRaises(ValueError, self.type2test.kutokahex, c)
 
         self.assertEqual(self.type2test.kutokahex('0000'), b'\0\0')
@@ -395,7 +395,7 @@ kundi BaseBytesTest:
         self.assertRaises(ValueError, self.type2test.kutokahex, '\x00')
         self.assertRaises(ValueError, self.type2test.kutokahex, '12   \x00   34')
 
-        for data, pos in (
+        kila data, pos kwenye (
             # invalid first hexadecimal character
             ('12 x4 56', 3),
             # invalid second hexadecimal character
@@ -405,7 +405,7 @@ kundi BaseBytesTest:
             # test non-ASCII string
             ('12 3\xff 56', 4),
         ):
-            with self.assertRaises(ValueError) as cm:
+            with self.assertRaises(ValueError) kama cm:
                 self.type2test.kutokahex(data)
             self.assertIn('at position %s' % pos, str(cm.exception))
 
@@ -426,7 +426,7 @@ kundi BaseBytesTest:
             three_bytes.hex('xx')
         self.assertEqual(three_bytes.hex(':', 0), 'b901ef')
         with self.assertRaises(TypeError):
-            three_bytes.hex(None, 0)
+            three_bytes.hex(Tupu, 0)
         with self.assertRaises(ValueError):
             three_bytes.hex('\xff')
         with self.assertRaises(ValueError):
@@ -459,7 +459,7 @@ kundi BaseBytesTest:
         self.assertEqual(five_bytes.hex(), '5a5b5c5d5e')
 
     eleza test_hex_separator_six_bytes(self):
-        six_bytes = self.type2test(x*3 for x in range(1, 7))
+        six_bytes = self.type2test(x*3 kila x kwenye range(1, 7))
         self.assertEqual(six_bytes.hex(), '0306090c0f12')
         self.assertEqual(six_bytes.hex('.', 1), '03.06.09.0c.0f.12')
         self.assertEqual(six_bytes.hex(' ', 2), '0306 090c 0f12')
@@ -477,7 +477,7 @@ kundi BaseBytesTest:
     eleza test_join(self):
         self.assertEqual(self.type2test(b"").join([]), b"")
         self.assertEqual(self.type2test(b"").join([b""]), b"")
-        for lst in [[b"abc"], [b"a", b"bc"], [b"ab", b"c"], [b"a", b"b", b"c"]]:
+        kila lst kwenye [[b"abc"], [b"a", b"bc"], [b"ab", b"c"], [b"a", b"b", b"c"]]:
             lst = list(map(self.type2test, lst))
             self.assertEqual(self.type2test(b"").join(lst), b"abc")
             self.assertEqual(self.type2test(b"").join(tuple(lst)), b"abc")
@@ -492,8 +492,8 @@ kundi BaseBytesTest:
         seq = [b"abc"] * 1000
         expected = b"abc" + b".:abc" * 999
         self.assertEqual(dot_join(seq), expected)
-        self.assertRaises(TypeError, self.type2test(b" ").join, None)
-        # Error handling and cleanup when some item in the middle of the
+        self.assertRaises(TypeError, self.type2test(b" ").join, Tupu)
+        # Error handling na cleanup when some item kwenye the middle of the
         # sequence has the wrong type.
         with self.assertRaises(TypeError):
             dot_join([bytearray(b"ab"), "cd", b"ef"])
@@ -525,13 +525,13 @@ kundi BaseBytesTest:
 
     eleza test_startswith(self):
         b = self.type2test(b'hello')
-        self.assertFalse(self.type2test().startswith(b"anything"))
-        self.assertTrue(b.startswith(b"hello"))
-        self.assertTrue(b.startswith(b"hel"))
-        self.assertTrue(b.startswith(b"h"))
-        self.assertFalse(b.startswith(b"hellow"))
-        self.assertFalse(b.startswith(b"ha"))
-        with self.assertRaises(TypeError) as cm:
+        self.assertUongo(self.type2test().startswith(b"anything"))
+        self.assertKweli(b.startswith(b"hello"))
+        self.assertKweli(b.startswith(b"hel"))
+        self.assertKweli(b.startswith(b"h"))
+        self.assertUongo(b.startswith(b"hellow"))
+        self.assertUongo(b.startswith(b"ha"))
+        with self.assertRaises(TypeError) kama cm:
             b.startswith([b'h'])
         exc = str(cm.exception)
         self.assertIn('bytes', exc)
@@ -539,13 +539,13 @@ kundi BaseBytesTest:
 
     eleza test_endswith(self):
         b = self.type2test(b'hello')
-        self.assertFalse(bytearray().endswith(b"anything"))
-        self.assertTrue(b.endswith(b"hello"))
-        self.assertTrue(b.endswith(b"llo"))
-        self.assertTrue(b.endswith(b"o"))
-        self.assertFalse(b.endswith(b"whello"))
-        self.assertFalse(b.endswith(b"no"))
-        with self.assertRaises(TypeError) as cm:
+        self.assertUongo(bytearray().endswith(b"anything"))
+        self.assertKweli(b.endswith(b"hello"))
+        self.assertKweli(b.endswith(b"llo"))
+        self.assertKweli(b.endswith(b"o"))
+        self.assertUongo(b.endswith(b"whello"))
+        self.assertUongo(b.endswith(b"no"))
+        with self.assertRaises(TypeError) kama cm:
             b.endswith([b'o'])
         exc = str(cm.exception)
         self.assertIn('bytes', exc)
@@ -571,9 +571,9 @@ kundi BaseBytesTest:
         self.assertEqual(b.find(i, 1, 3), 1)
         self.assertEqual(b.find(w, 1, 3), -1)
 
-        for index in (-1, 256, sys.maxsize + 1):
+        kila index kwenye (-1, 256, sys.maxsize + 1):
             self.assertRaisesRegex(
-                ValueError, r'byte must be in range\(0, 256\)',
+                ValueError, r'byte must be kwenye range\(0, 256\)',
                 b.find, index)
 
     eleza test_rfind(self):
@@ -640,7 +640,7 @@ kundi BaseBytesTest:
         b = b % b'world'
         self.assertEqual(b, b'hello, world!')
         self.assertEqual(orig, b'hello, %b!')
-        self.assertFalse(b is orig)
+        self.assertUongo(b ni orig)
         b = self.type2test(b'%s / 100 = %d%%')
         a = b % (b'seventy-nine', 79)
         self.assertEqual(a, b'seventy-nine / 100 = 79%')
@@ -657,7 +657,7 @@ kundi BaseBytesTest:
         b %= b'world'
         self.assertEqual(b, b'hello, world!')
         self.assertEqual(orig, b'hello, %b!')
-        self.assertFalse(b is orig)
+        self.assertUongo(b ni orig)
         b = self.type2test(b'%s / 100 = %d%%')
         b %= (b'seventy-nine', 79)
         self.assertEqual(b, b'seventy-nine / 100 = 79%')
@@ -690,7 +690,7 @@ kundi BaseBytesTest:
         self.assertRaises(TypeError, self.type2test(b'a b').rsplit, 32)
 
     eleza test_split_unicodewhitespace(self):
-        for b in (b'a\x1Cb', b'a\x1Db', b'a\x1Eb', b'a\x1Fb'):
+        kila b kwenye (b'a\x1Cb', b'a\x1Db', b'a\x1Eb', b'a\x1Fb'):
             b = self.type2test(b)
             self.assertEqual(b.split(), [b])
         b = self.type2test(b"\x09\x0A\x0B\x0C\x0D\x1C\x1D\x1E\x1F")
@@ -720,16 +720,16 @@ kundi BaseBytesTest:
         self.assertRaises(TypeError, self.type2test(b'a b').rpartition, 32)
 
     eleza test_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            for b in b"", b"a", b"abc", b"\xffab\x80", b"\0\0\377\0\0":
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
+            kila b kwenye b"", b"a", b"abc", b"\xffab\x80", b"\0\0\377\0\0":
                 b = self.type2test(b)
                 ps = pickle.dumps(b, proto)
                 q = pickle.loads(ps)
                 self.assertEqual(b, q)
 
     eleza test_iterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            for b in b"", b"a", b"abc", b"\xffab\x80", b"\0\0\377\0\0":
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
+            kila b kwenye b"", b"a", b"abc", b"\xffab\x80", b"\0\0\377\0\0":
                 it = itorg = iter(self.type2test(b))
                 data = list(self.type2test(b))
                 d = pickle.dumps(it, proto)
@@ -738,8 +738,8 @@ kundi BaseBytesTest:
                 self.assertEqual(list(it), data)
 
                 it = pickle.loads(d)
-                ikiwa not b:
-                    continue
+                ikiwa sio b:
+                    endelea
                 next(it)
                 d = pickle.dumps(it, proto)
                 it = pickle.loads(d)
@@ -761,23 +761,23 @@ kundi BaseBytesTest:
         self.assertRaises(TypeError, self.type2test(b' abc ').rstrip, 32)
 
     eleza test_center(self):
-        # Fill character can be either bytes or bytearray (issue 12380)
+        # Fill character can be either bytes ama bytearray (issue 12380)
         b = self.type2test(b'abc')
-        for fill_type in (bytes, bytearray):
+        kila fill_type kwenye (bytes, bytearray):
             self.assertEqual(b.center(7, fill_type(b'-')),
                              self.type2test(b'--abc--'))
 
     eleza test_ljust(self):
-        # Fill character can be either bytes or bytearray (issue 12380)
+        # Fill character can be either bytes ama bytearray (issue 12380)
         b = self.type2test(b'abc')
-        for fill_type in (bytes, bytearray):
+        kila fill_type kwenye (bytes, bytearray):
             self.assertEqual(b.ljust(7, fill_type(b'-')),
                              self.type2test(b'abc----'))
 
     eleza test_rjust(self):
-        # Fill character can be either bytes or bytearray (issue 12380)
+        # Fill character can be either bytes ama bytearray (issue 12380)
         b = self.type2test(b'abc')
-        for fill_type in (bytes, bytearray):
+        kila fill_type kwenye (bytes, bytearray):
             self.assertEqual(b.rjust(7, fill_type(b'-')),
                              self.type2test(b'----abc'))
 
@@ -788,7 +788,7 @@ kundi BaseBytesTest:
 
     eleza test_ord(self):
         b = self.type2test(b'\0A\x7f\x80\xff')
-        self.assertEqual([ord(b[i:i+1]) for i in range(len(b))],
+        self.assertEqual([ord(b[i:i+1]) kila i kwenye range(len(b))],
                          [0, 65, 127, 128, 255])
 
     eleza test_maketrans(self):
@@ -807,67 +807,67 @@ kundi BaseBytesTest:
         x = self.type2test(b'x')
         o = self.type2test(b'o')
 
-        self.assertEqual(2, b.find(l, None))
-        self.assertEqual(3, b.find(l, -2, None))
-        self.assertEqual(2, b.find(l, None, -2))
-        self.assertEqual(0, b.find(h, None, None))
+        self.assertEqual(2, b.find(l, Tupu))
+        self.assertEqual(3, b.find(l, -2, Tupu))
+        self.assertEqual(2, b.find(l, Tupu, -2))
+        self.assertEqual(0, b.find(h, Tupu, Tupu))
 
-        self.assertEqual(3, b.rfind(l, None))
-        self.assertEqual(3, b.rfind(l, -2, None))
-        self.assertEqual(2, b.rfind(l, None, -2))
-        self.assertEqual(0, b.rfind(h, None, None))
+        self.assertEqual(3, b.rfind(l, Tupu))
+        self.assertEqual(3, b.rfind(l, -2, Tupu))
+        self.assertEqual(2, b.rfind(l, Tupu, -2))
+        self.assertEqual(0, b.rfind(h, Tupu, Tupu))
 
-        self.assertEqual(2, b.index(l, None))
-        self.assertEqual(3, b.index(l, -2, None))
-        self.assertEqual(2, b.index(l, None, -2))
-        self.assertEqual(0, b.index(h, None, None))
+        self.assertEqual(2, b.index(l, Tupu))
+        self.assertEqual(3, b.index(l, -2, Tupu))
+        self.assertEqual(2, b.index(l, Tupu, -2))
+        self.assertEqual(0, b.index(h, Tupu, Tupu))
 
-        self.assertEqual(3, b.rindex(l, None))
-        self.assertEqual(3, b.rindex(l, -2, None))
-        self.assertEqual(2, b.rindex(l, None, -2))
-        self.assertEqual(0, b.rindex(h, None, None))
+        self.assertEqual(3, b.rindex(l, Tupu))
+        self.assertEqual(3, b.rindex(l, -2, Tupu))
+        self.assertEqual(2, b.rindex(l, Tupu, -2))
+        self.assertEqual(0, b.rindex(h, Tupu, Tupu))
 
-        self.assertEqual(2, b.count(l, None))
-        self.assertEqual(1, b.count(l, -2, None))
-        self.assertEqual(1, b.count(l, None, -2))
-        self.assertEqual(0, b.count(x, None, None))
+        self.assertEqual(2, b.count(l, Tupu))
+        self.assertEqual(1, b.count(l, -2, Tupu))
+        self.assertEqual(1, b.count(l, Tupu, -2))
+        self.assertEqual(0, b.count(x, Tupu, Tupu))
 
-        self.assertEqual(True, b.endswith(o, None))
-        self.assertEqual(True, b.endswith(o, -2, None))
-        self.assertEqual(True, b.endswith(l, None, -2))
-        self.assertEqual(False, b.endswith(x, None, None))
+        self.assertEqual(Kweli, b.endswith(o, Tupu))
+        self.assertEqual(Kweli, b.endswith(o, -2, Tupu))
+        self.assertEqual(Kweli, b.endswith(l, Tupu, -2))
+        self.assertEqual(Uongo, b.endswith(x, Tupu, Tupu))
 
-        self.assertEqual(True, b.startswith(h, None))
-        self.assertEqual(True, b.startswith(l, -2, None))
-        self.assertEqual(True, b.startswith(h, None, -2))
-        self.assertEqual(False, b.startswith(x, None, None))
+        self.assertEqual(Kweli, b.startswith(h, Tupu))
+        self.assertEqual(Kweli, b.startswith(l, -2, Tupu))
+        self.assertEqual(Kweli, b.startswith(h, Tupu, -2))
+        self.assertEqual(Uongo, b.startswith(x, Tupu, Tupu))
 
     eleza test_integer_arguments_out_of_byte_range(self):
         b = self.type2test(b'hello')
 
-        for method in (b.count, b.find, b.index, b.rfind, b.rindex):
+        kila method kwenye (b.count, b.find, b.index, b.rfind, b.rindex):
             self.assertRaises(ValueError, method, -1)
             self.assertRaises(ValueError, method, 256)
             self.assertRaises(ValueError, method, 9999)
 
-    eleza test_find_etc_raise_correct_error_messages(self):
+    eleza test_find_etc_ashiria_correct_error_messages(self):
         # issue 11828
         b = self.type2test(b'hello')
         x = self.type2test(b'x')
         self.assertRaisesRegex(TypeError, r'\bfind\b', b.find,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'\brfind\b', b.rfind,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'\bindex\b', b.index,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'\brindex\b', b.rindex,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'\bcount\b', b.count,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'\bstartswith\b', b.startswith,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'\bendswith\b', b.endswith,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
 
     eleza test_free_after_iterating(self):
         test.support.check_free_after_iterating(self, iter, self.type2test)
@@ -879,7 +879,7 @@ kundi BaseBytesTest:
         rosetta[ord('o')] = ord('e')
 
         self.assertRaises(TypeError, b.translate)
-        self.assertRaises(TypeError, b.translate, None, None)
+        self.assertRaises(TypeError, b.translate, Tupu, Tupu)
         self.assertRaises(ValueError, b.translate, bytes(range(255)))
 
         c = b.translate(rosetta, b'hello')
@@ -893,15 +893,15 @@ kundi BaseBytesTest:
 
         c = b.translate(rosetta, b'l')
         self.assertEqual(c, b'hee')
-        c = b.translate(None, b'e')
+        c = b.translate(Tupu, b'e')
         self.assertEqual(c, b'hllo')
 
-        # test delete as a keyword argument
+        # test delete kama a keyword argument
         c = b.translate(rosetta, delete=b'')
         self.assertEqual(c, b'helle')
         c = b.translate(rosetta, delete=b'l')
         self.assertEqual(c, b'hee')
-        c = b.translate(None, delete=b'e')
+        c = b.translate(Tupu, delete=b'e')
         self.assertEqual(c, b'hllo')
 
 
@@ -910,13 +910,13 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
 
     eleza test_getitem_error(self):
         b = b'python'
-        msg = "byte indices must be integers or slices"
+        msg = "byte indices must be integers ama slices"
         with self.assertRaisesRegex(TypeError, msg):
             b['a']
 
     eleza test_buffer_is_readonly(self):
         fd = os.open(__file__, os.O_RDONLY)
-        with open(fd, "rb", buffering=0) as f:
+        with open(fd, "rb", buffering=0) kama f:
             self.assertRaises(TypeError, f.readinto, b"")
 
     eleza test_custom(self):
@@ -924,11 +924,11 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
             eleza __bytes__(self):
                 rudisha b'abc'
         self.assertEqual(bytes(A()), b'abc')
-        kundi A: pass
+        kundi A: pita
         self.assertRaises(TypeError, bytes, A())
         kundi A:
             eleza __bytes__(self):
-                rudisha None
+                rudisha Tupu
         self.assertRaises(TypeError, bytes, A())
         kundi A:
             eleza __bytes__(self):
@@ -1004,7 +1004,7 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
             ptr_format = '0x%0{}X'.format(2 * sizeof_ptr)
             eleza ptr_formatter(ptr):
                 rudisha (ptr_format % ptr)
-        else:
+        isipokua:
             # UNIX (glibc)
             eleza ptr_formatter(ptr):
                 rudisha '%#x' % ptr
@@ -1015,9 +1015,9 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(PyBytes_FromFormat(b's=%s', c_char_p(b'cstr')),
                          b's=cstr')
 
-        # test minimum and maximum integer values
+        # test minimum na maximum integer values
         size_max = c_size_t(-1).value
-        for formatstr, ctypes_type, value, py_formatter in (
+        kila formatstr, ctypes_type, value, py_formatter kwenye (
             (b'%d', c_int, _testcapi.INT_MIN, str),
             (b'%d', c_int, _testcapi.INT_MAX, str),
             (b'%ld', c_long, _testcapi.LONG_MIN, str),
@@ -1031,7 +1031,7 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
             self.assertEqual(PyBytes_FromFormat(formatstr, ctypes_type(value)),
                              py_formatter(value).encode('ascii')),
 
-        # width and precision (width is currently ignored)
+        # width na precision (width ni currently ignored)
         self.assertEqual(PyBytes_FromFormat(b'%5s', b'a'),
                          b'a')
         self.assertEqual(PyBytes_FromFormat(b'%.3s', b'abcdef'),
@@ -1047,13 +1047,13 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(PyBytes_FromFormat(b'%%s'),
                          b'%s')
 
-        # Invalid formats and partial formatting
+        # Invalid formats na partial formatting
         self.assertEqual(PyBytes_FromFormat(b'%'), b'%')
         self.assertEqual(PyBytes_FromFormat(b'x=%i y=%', c_int(2), c_int(3)),
                          b'x=2 y=%')
 
-        # Issue #19969: %c must raise OverflowError for values
-        # not in the range [0; 255]
+        # Issue #19969: %c must ashiria OverflowError kila values
+        # haiko kwenye the range [0; 255]
         self.assertRaises(OverflowError,
                           PyBytes_FromFormat, b'%c', c_int(-1))
         self.assertRaises(OverflowError,
@@ -1067,30 +1067,30 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
 
     eleza test_bytes_blocking(self):
         kundi IterationBlocked(list):
-            __bytes__ = None
+            __bytes__ = Tupu
         i = [0, 1, 2, 3]
         self.assertEqual(bytes(i), b'\x00\x01\x02\x03')
         self.assertRaises(TypeError, bytes, IterationBlocked(i))
 
-        # At least in CPython, because bytes.__new__ and the C API
+        # At least kwenye CPython, because bytes.__new__ na the C API
         # PyBytes_FromObject have different fallback rules, integer
-        # fallback is handled specially, so test separately.
+        # fallback ni handled specially, so test separately.
         kundi IntBlocked(int):
-            __bytes__ = None
+            __bytes__ = Tupu
         self.assertEqual(bytes(3), b'\0\0\0')
         self.assertRaises(TypeError, bytes, IntBlocked(3))
 
-        # While there is no separately-defined rule for handling bytes
+        # While there ni no separately-defined rule kila handling bytes
         # subclasses differently kutoka other buffer-interface classes,
         # an implementation may well special-case them (as CPython 2.x
         # str did), so test them separately.
         kundi BytesSubclassBlocked(bytes):
-            __bytes__ = None
+            __bytes__ = Tupu
         self.assertEqual(bytes(b'ab'), b'ab')
         self.assertRaises(TypeError, bytes, BytesSubclassBlocked(b'ab'))
 
         kundi BufferBlocked(bytearray):
-            __bytes__ = None
+            __bytes__ = Tupu
         ba, bb = bytearray(b'ab'), BufferBlocked(b'ab')
         self.assertEqual(bytes(ba), b'ab')
         self.assertRaises(TypeError, bytes, bb)
@@ -1101,13 +1101,13 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
 
     eleza test_getitem_error(self):
         b = bytearray(b'python')
-        msg = "bytearray indices must be integers or slices"
+        msg = "bytearray indices must be integers ama slices"
         with self.assertRaisesRegex(TypeError, msg):
             b['a']
 
     eleza test_setitem_error(self):
         b = bytearray(b'python')
-        msg = "bytearray indices must be integers or slices"
+        msg = "bytearray indices must be integers ama slices"
         with self.assertRaisesRegex(TypeError, msg):
             b['a'] = "python"
 
@@ -1118,38 +1118,38 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         short_sample = b"Hello world\n"
         sample = short_sample + b"\0"*(20 - len(short_sample))
         tfn = tempfile.mktemp()
-        try:
+        jaribu:
             # Prepare
-            with open(tfn, "wb") as f:
+            with open(tfn, "wb") kama f:
                 f.write(short_sample)
             # Test readinto
-            with open(tfn, "rb") as f:
+            with open(tfn, "rb") kama f:
                 b = bytearray(20)
                 n = f.readinto(b)
             self.assertEqual(n, len(short_sample))
             self.assertEqual(list(b), list(sample))
-            # Test writing in binary mode
-            with open(tfn, "wb") as f:
+            # Test writing kwenye binary mode
+            with open(tfn, "wb") kama f:
                 f.write(b)
-            with open(tfn, "rb") as f:
+            with open(tfn, "rb") kama f:
                 self.assertEqual(f.read(), sample)
-            # Text mode is ambiguous; don't test
-        finally:
-            try:
+            # Text mode ni ambiguous; don't test
+        mwishowe:
+            jaribu:
                 os.remove(tfn)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     eleza test_reverse(self):
         b = bytearray(b'hello')
-        self.assertEqual(b.reverse(), None)
+        self.assertEqual(b.reverse(), Tupu)
         self.assertEqual(b, b'olleh')
         b = bytearray(b'hello1') # test even number of items
         b.reverse()
         self.assertEqual(b, b'1olleh')
         b = bytearray()
         b.reverse()
-        self.assertFalse(b)
+        self.assertUongo(b)
 
     eleza test_clear(self):
         b = bytearray(b'python')
@@ -1175,7 +1175,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         bb = b.copy()
         self.assertEqual(bb, b'')
 
-        # test that it's indeed a copy and not a reference
+        # test that it's indeed a copy na sio a reference
         b = bytearray(b'abc')
         bb = b.copy()
         self.assertEqual(b, bb)
@@ -1198,39 +1198,39 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(b, bytearray([1, 100, 200]))
         b[0] = Indexable(10)
         self.assertEqual(b, bytearray([10, 100, 200]))
-        try:
+        jaribu:
             b[3] = 0
-            self.fail("Didn't raise IndexError")
-        except IndexError:
-            pass
-        try:
+            self.fail("Didn't ashiria IndexError")
+        tatizo IndexError:
+            pita
+        jaribu:
             b[-10] = 0
-            self.fail("Didn't raise IndexError")
-        except IndexError:
-            pass
-        try:
+            self.fail("Didn't ashiria IndexError")
+        tatizo IndexError:
+            pita
+        jaribu:
             b[0] = 256
-            self.fail("Didn't raise ValueError")
-        except ValueError:
-            pass
-        try:
+            self.fail("Didn't ashiria ValueError")
+        tatizo ValueError:
+            pita
+        jaribu:
             b[0] = Indexable(-1)
-            self.fail("Didn't raise ValueError")
-        except ValueError:
-            pass
-        try:
-            b[0] = None
-            self.fail("Didn't raise TypeError")
-        except TypeError:
-            pass
+            self.fail("Didn't ashiria ValueError")
+        tatizo ValueError:
+            pita
+        jaribu:
+            b[0] = Tupu
+            self.fail("Didn't ashiria TypeError")
+        tatizo TypeError:
+            pita
 
     eleza test_delitem(self):
         b = bytearray(range(10))
-        del b[0]
+        toa b[0]
         self.assertEqual(b, bytearray(range(1, 10)))
-        del b[-1]
+        toa b[-1]
         self.assertEqual(b, bytearray(range(1, 9)))
-        del b[4]
+        toa b[4]
         self.assertEqual(b, bytearray([1, 2, 3, 4, 6, 7, 8]))
 
     eleza test_setslice(self):
@@ -1240,7 +1240,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         b[0:5] = bytearray([1, 1, 1, 1, 1])
         self.assertEqual(b, bytearray([1, 1, 1, 1, 1, 5, 6, 7, 8, 9]))
 
-        del b[0:-5]
+        toa b[0:-5]
         self.assertEqual(b, bytearray([5, 6, 7, 8, 9]))
 
         b[0:0] = bytearray([0, 1, 2, 3, 4])
@@ -1264,12 +1264,12 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         b[3:4] = []
         self.assertEqual(b, bytearray([102, 111, 111, 111, 111]))
 
-        for elem in [5, -5, 0, int(10e20), 'str', 2.3,
+        kila elem kwenye [5, -5, 0, int(10e20), 'str', 2.3,
                      ['a', 'b'], [b'a', b'b'], [[]]]:
             with self.assertRaises(TypeError):
                 b[3:4] = elem
 
-        for elem in [[254, 255, 256], [-256, 9000]]:
+        kila elem kwenye [[254, 255, 256], [-256, 9000]]:
             with self.assertRaises(ValueError):
                 b[3:4] = elem
 
@@ -1277,34 +1277,34 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         # Exercise the resizing logic (see issue #19087)
         b = bytearray(range(100))
         self.assertEqual(list(b), list(range(100)))
-        del b[:10]
+        toa b[:10]
         self.assertEqual(list(b), list(range(10, 100)))
         b.extend(range(100, 110))
         self.assertEqual(list(b), list(range(10, 110)))
 
     eleza test_fifo_overrun(self):
-        # Test for issue #23985, a buffer overrun when implementing a FIFO
-        # Build Python in pydebug mode for best results.
+        # Test kila issue #23985, a buffer overrun when implementing a FIFO
+        # Build Python kwenye pydebug mode kila best results.
         b = bytearray(10)
         b.pop()        # Defeat expanding buffer off-by-one quirk
-        del b[:1]      # Advance start pointer without reallocating
+        toa b[:1]      # Advance start pointer without reallocating
         b += bytes(2)  # Append exactly the number of deleted bytes
-        del b          # Free memory buffer, allowing pydebug verification
+        toa b          # Free memory buffer, allowing pydebug verification
 
     eleza test_del_expand(self):
-        # Reducing the size should not expand the buffer (issue #23985)
+        # Reducing the size should sio expand the buffer (issue #23985)
         b = bytearray(10)
         size = sys.getsizeof(b)
-        del b[:1]
+        toa b[:1]
         self.assertLessEqual(sys.getsizeof(b), size)
 
     eleza test_extended_set_del_slice(self):
-        indices = (0, None, 1, 3, 19, 300, 1<<333, sys.maxsize,
+        indices = (0, Tupu, 1, 3, 19, 300, 1<<333, sys.maxsize,
             -1, -2, -31, -300)
-        for start in indices:
-            for stop in indices:
+        kila start kwenye indices:
+            kila stop kwenye indices:
                 # Skip invalid step 0
-                for step in indices[1:]:
+                kila step kwenye indices[1:]:
                     L = list(range(255))
                     b = bytearray(L)
                     # Make sure we have a slice of exactly the right length,
@@ -1315,8 +1315,8 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
                     b[start:stop:step] = data
                     self.assertEqual(b, bytearray(L))
 
-                    del L[start:stop:step]
-                    del b[start:stop:step]
+                    toa L[start:stop:step]
+                    toa b[start:stop:step]
                     self.assertEqual(b, bytearray(L))
 
     eleza test_setslice_trap(self):
@@ -1335,12 +1335,12 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         self.assertIs(b, b1)
         b += b"xyz"
         self.assertEqual(b, b"abcdefxyz")
-        try:
+        jaribu:
             b += ""
-        except TypeError:
-            pass
-        else:
-            self.fail("bytes += unicode didn't raise TypeError")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("bytes += unicode didn't ashiria TypeError")
 
     eleza test_irepeat(self):
         b = bytearray(b"abc")
@@ -1363,18 +1363,18 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         alloc = b.__alloc__()
         self.assertGreaterEqual(alloc, 0)
         seq = [alloc]
-        for i in range(100):
+        kila i kwenye range(100):
             b += b"x"
             alloc = b.__alloc__()
             self.assertGreater(alloc, len(b))  # including trailing null byte
-            ikiwa alloc not in seq:
+            ikiwa alloc haiko kwenye seq:
                 seq.append(alloc)
 
     eleza test_init_alloc(self):
         b = bytearray()
         eleza g():
-            for i in range(1, 100):
-                yield i
+            kila i kwenye range(1, 100):
+                tuma i
                 a = list(b)
                 self.assertEqual(a, list(range(1, len(a)+1)))
                 self.assertEqual(len(b), len(a))
@@ -1396,7 +1396,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         a = bytearray(b'')
         # Test iterators that don't have a __length_hint__
         a.extend(map(int, orig * 25))
-        a.extend(int(x) for x in orig * 25)
+        a.extend(int(x) kila x kwenye orig * 25)
         self.assertEqual(a, orig * 50)
         self.assertEqual(a[-5:], orig)
         a = bytearray(b'')
@@ -1424,7 +1424,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         self.assertRaises(ValueError, lambda: b.remove(ord('l')))
         self.assertRaises(ValueError, lambda: b.remove(400))
         self.assertRaises(TypeError, lambda: b.remove('e'))
-        # remove first and last
+        # remove first na last
         b.remove(ord('o'))
         b.remove(ord('h'))
         self.assertEqual(b, b'e')
@@ -1446,7 +1446,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         self.assertEqual(b.pop(-2), ord('r'))
         self.assertRaises(IndexError, lambda: b.pop(10))
         self.assertRaises(IndexError, lambda: bytearray().pop())
-        # test for issue #6846
+        # test kila issue #6846
         self.assertEqual(bytearray(b'\xff').pop(), 0xff)
 
     eleza test_nosort(self):
@@ -1456,7 +1456,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         b = bytearray(b'hell')
         b.append(ord('o'))
         self.assertEqual(b, b'hello')
-        self.assertEqual(b.append(100), None)
+        self.assertEqual(b.append(100), Tupu)
         b = bytearray()
         b.append(ord('A'))
         self.assertEqual(len(b), 1)
@@ -1483,7 +1483,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         b = bytearray(b'abc')
         self.assertIsNot(b, b.replace(b'abc', b'cde', 0))
 
-        t = bytearray([i for i in range(256)])
+        t = bytearray([i kila i kwenye range(256)])
         x = bytearray(b'')
         self.assertIsNot(x, x.translate(t))
 
@@ -1497,7 +1497,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         a, b, c = bytearray(b"x").partition(b"y")
         self.assertEqual(b, b"")
         self.assertEqual(c, b"")
-        # Same for rpartition
+        # Same kila rpartition
         b, c, a = bytearray(b"x").rpartition(b"y")
         self.assertEqual(b, b"")
         self.assertEqual(c, b"")
@@ -1531,7 +1531,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         self.assertRaises(BufferError, b.remove, b[1])
         self.assertEqual(b, orig)
         eleza delitem():
-            del b[1]
+            toa b[1]
         self.assertRaises(BufferError, delitem)
         self.assertEqual(b, orig)
         # deleting a non-contiguous slice
@@ -1548,7 +1548,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
     eleza test_iterator_pickling2(self):
         orig = bytearray(b'abc')
         data = list(b'qwerty')
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = iter(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -1566,7 +1566,7 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
             self.assertEqual(list(it), data[1:])
 
             # empty iterator
-            for i in range(1, len(orig)):
+            kila i kwenye range(1, len(orig)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, b = pickle.loads(d)
@@ -1589,18 +1589,18 @@ kundi ByteArrayTest(BaseBytesTest, unittest.TestCase):
         it = iter(ba)
         next(it)
         ba.clear()
-        # Shouldn't raise an error
+        # Shouldn't ashiria an error
         self.assertEqual(list(it), [])
 
 
 kundi AssortedBytesTest(unittest.TestCase):
     #
-    # Test various combinations of bytes and bytearray
+    # Test various combinations of bytes na bytearray
     #
 
     @check_bytes_warnings
     eleza test_repr_str(self):
-        for f in str, repr:
+        kila f kwenye str, repr:
             self.assertEqual(f(bytearray()), "bytearray(b'')")
             self.assertEqual(f(bytearray([0])), "bytearray(b'\\x00')")
             self.assertEqual(f(bytearray([0, 1, 254, 255])),
@@ -1611,7 +1611,7 @@ kundi AssortedBytesTest(unittest.TestCase):
 
     @check_bytes_warnings
     eleza test_format(self):
-        for b in b'abc', bytearray(b'abc'):
+        kila b kwenye b'abc', bytearray(b'abc'):
             self.assertEqual(format(b), str(b))
             self.assertEqual(format(b, ''), str(b))
             with self.assertRaisesRegex(TypeError,
@@ -1619,40 +1619,40 @@ kundi AssortedBytesTest(unittest.TestCase):
                 format(b, 's')
 
     eleza test_compare_bytes_to_bytearray(self):
-        self.assertEqual(b"abc" == bytes(b"abc"), True)
-        self.assertEqual(b"ab" != bytes(b"abc"), True)
-        self.assertEqual(b"ab" <= bytes(b"abc"), True)
-        self.assertEqual(b"ab" < bytes(b"abc"), True)
-        self.assertEqual(b"abc" >= bytes(b"ab"), True)
-        self.assertEqual(b"abc" > bytes(b"ab"), True)
+        self.assertEqual(b"abc" == bytes(b"abc"), Kweli)
+        self.assertEqual(b"ab" != bytes(b"abc"), Kweli)
+        self.assertEqual(b"ab" <= bytes(b"abc"), Kweli)
+        self.assertEqual(b"ab" < bytes(b"abc"), Kweli)
+        self.assertEqual(b"abc" >= bytes(b"ab"), Kweli)
+        self.assertEqual(b"abc" > bytes(b"ab"), Kweli)
 
-        self.assertEqual(b"abc" != bytes(b"abc"), False)
-        self.assertEqual(b"ab" == bytes(b"abc"), False)
-        self.assertEqual(b"ab" > bytes(b"abc"), False)
-        self.assertEqual(b"ab" >= bytes(b"abc"), False)
-        self.assertEqual(b"abc" < bytes(b"ab"), False)
-        self.assertEqual(b"abc" <= bytes(b"ab"), False)
+        self.assertEqual(b"abc" != bytes(b"abc"), Uongo)
+        self.assertEqual(b"ab" == bytes(b"abc"), Uongo)
+        self.assertEqual(b"ab" > bytes(b"abc"), Uongo)
+        self.assertEqual(b"ab" >= bytes(b"abc"), Uongo)
+        self.assertEqual(b"abc" < bytes(b"ab"), Uongo)
+        self.assertEqual(b"abc" <= bytes(b"ab"), Uongo)
 
-        self.assertEqual(bytes(b"abc") == b"abc", True)
-        self.assertEqual(bytes(b"ab") != b"abc", True)
-        self.assertEqual(bytes(b"ab") <= b"abc", True)
-        self.assertEqual(bytes(b"ab") < b"abc", True)
-        self.assertEqual(bytes(b"abc") >= b"ab", True)
-        self.assertEqual(bytes(b"abc") > b"ab", True)
+        self.assertEqual(bytes(b"abc") == b"abc", Kweli)
+        self.assertEqual(bytes(b"ab") != b"abc", Kweli)
+        self.assertEqual(bytes(b"ab") <= b"abc", Kweli)
+        self.assertEqual(bytes(b"ab") < b"abc", Kweli)
+        self.assertEqual(bytes(b"abc") >= b"ab", Kweli)
+        self.assertEqual(bytes(b"abc") > b"ab", Kweli)
 
-        self.assertEqual(bytes(b"abc") != b"abc", False)
-        self.assertEqual(bytes(b"ab") == b"abc", False)
-        self.assertEqual(bytes(b"ab") > b"abc", False)
-        self.assertEqual(bytes(b"ab") >= b"abc", False)
-        self.assertEqual(bytes(b"abc") < b"ab", False)
-        self.assertEqual(bytes(b"abc") <= b"ab", False)
+        self.assertEqual(bytes(b"abc") != b"abc", Uongo)
+        self.assertEqual(bytes(b"ab") == b"abc", Uongo)
+        self.assertEqual(bytes(b"ab") > b"abc", Uongo)
+        self.assertEqual(bytes(b"ab") >= b"abc", Uongo)
+        self.assertEqual(bytes(b"abc") < b"ab", Uongo)
+        self.assertEqual(bytes(b"abc") <= b"ab", Uongo)
 
     @test.support.requires_docstrings
     eleza test_doc(self):
-        self.assertIsNotNone(bytearray.__doc__)
-        self.assertTrue(bytearray.__doc__.startswith("bytearray("), bytearray.__doc__)
-        self.assertIsNotNone(bytes.__doc__)
-        self.assertTrue(bytes.__doc__.startswith("bytes("), bytes.__doc__)
+        self.assertIsNotTupu(bytearray.__doc__)
+        self.assertKweli(bytearray.__doc__.startswith("bytearray("), bytearray.__doc__)
+        self.assertIsNotTupu(bytes.__doc__)
+        self.assertKweli(bytes.__doc__.startswith("bytes("), bytes.__doc__)
 
     eleza test_kutoka_bytearray(self):
         sample = bytes(b"Hello world\n\x80\x81\xfe\xff")
@@ -1676,9 +1676,9 @@ kundi AssortedBytesTest(unittest.TestCase):
             (b"\xaa\x00\000\200", "\xaa\x00\000\200"),
             (br"\xaa\x00\000\200", r"\xaa\x00\000\200"),
         ]
-        for b, s in tests:
+        kila b, s kwenye tests:
             self.assertEqual(b, bytearray(s, 'latin-1'))
-        for c in range(128, 256):
+        kila c kwenye range(128, 256):
             self.assertRaises(SyntaxError, eval,
                               'b"%s"' % chr(c))
 
@@ -1688,13 +1688,13 @@ kundi AssortedBytesTest(unittest.TestCase):
     eleza test_rsplit_bytearray(self):
         self.assertEqual(b'a b'.rsplit(memoryview(b' ')), [b'a', b'b'])
 
-    eleza test_return_self(self):
+    eleza test_rudisha_self(self):
         # bytearray.replace must always rudisha a new bytearray
         b = bytearray()
         self.assertIsNot(b.replace(b'', b''), b)
 
     @unittest.skipUnless(sys.flags.bytes_warning,
-                         "BytesWarning is needed for this test: use -bb option")
+                         "BytesWarning ni needed kila this test: use -bb option")
     eleza test_compare(self):
         eleza bytes_warning():
             rudisha test.support.check_warnings(('', BytesWarning))
@@ -1729,10 +1729,10 @@ kundi AssortedBytesTest(unittest.TestCase):
 
     # XXX More string methods?  (Those that don't use character properties)
 
-    # There are tests in string_tests.py that are more
-    # comprehensive for things like partition, etc.
+    # There are tests kwenye string_tests.py that are more
+    # comprehensive kila things like partition, etc.
     # Unfortunately they are all bundled with tests that
-    # are not appropriate for bytes
+    # are sio appropriate kila bytes
 
     # I've started porting some of those into bytearray_tests.py, we should port
     # the rest that make sense (the code can be cleaned up to use modern
@@ -1742,23 +1742,23 @@ kundi BytearrayPEP3137Test(unittest.TestCase):
     eleza marshal(self, x):
         rudisha bytearray(x)
 
-    eleza test_returns_new_copy(self):
+    eleza test_rudishas_new_copy(self):
         val = self.marshal(b'1234')
         # On immutable types these MAY rudisha a reference to themselves
         # but on mutable types like bytearray they MUST rudisha a new copy.
-        for methname in ('zfill', 'rjust', 'ljust', 'center'):
+        kila methname kwenye ('zfill', 'rjust', 'ljust', 'center'):
             method = getattr(val, methname)
             newval = method(3)
             self.assertEqual(val, newval)
             self.assertIsNot(val, newval,
-                            methname+' returned self on a mutable object')
-        for expr in ('val.split()[0]', 'val.rsplit()[0]',
+                            methname+' rudishaed self on a mutable object')
+        kila expr kwenye ('val.split()[0]', 'val.rsplit()[0]',
                      'val.partition(b".")[0]', 'val.rpartition(b".")[2]',
                      'val.splitlines()[0]', 'val.replace(b"", b"")'):
             newval = eval(expr)
             self.assertEqual(val, newval)
             self.assertIsNot(val, newval,
-                            expr+' returned val on a mutable object')
+                            expr+' rudishaed val on a mutable object')
         sep = self.marshal(b'')
         newval = sep.join([val])
         self.assertEqual(val, newval)
@@ -1771,7 +1771,7 @@ kundi FixedStringTest(test.string_tests.BaseTest):
             rudisha self.type2test(obj.encode("utf-8"))
         rudisha super().fixtype(obj)
 
-    contains_bytes = True
+    contains_bytes = Kweli
 
 kundi ByteArrayAsStringTest(FixedStringTest, unittest.TestCase):
     type2test = bytearray
@@ -1783,19 +1783,19 @@ kundi BytesAsStringTest(FixedStringTest, unittest.TestCase):
 kundi SubclassTest:
 
     eleza test_basic(self):
-        self.assertTrue(issubclass(self.type2test, self.basetype))
+        self.assertKweli(issubclass(self.type2test, self.basetype))
         self.assertIsInstance(self.type2test(), self.basetype)
 
         a, b = b"abcd", b"efgh"
         _a, _b = self.type2test(a), self.type2test(b)
 
         # test comparison operators with subkundi instances
-        self.assertTrue(_a == _a)
-        self.assertTrue(_a != _b)
-        self.assertTrue(_a < _b)
-        self.assertTrue(_a <= _b)
-        self.assertTrue(_b >= _a)
-        self.assertTrue(_b > _a)
+        self.assertKweli(_a == _a)
+        self.assertKweli(_a != _b)
+        self.assertKweli(_a < _b)
+        self.assertKweli(_a <= _b)
+        self.assertKweli(_b >= _a)
+        self.assertKweli(_b > _a)
         self.assertIsNot(_a, a)
 
         # test concat of subkundi instances
@@ -1804,12 +1804,12 @@ kundi SubclassTest:
         self.assertEqual(a + b, _a + b)
 
         # test repeat
-        self.assertTrue(a*5 == _a*5)
+        self.assertKweli(a*5 == _a*5)
 
     eleza test_join(self):
-        # Make sure join returns a NEW object for single item sequences
+        # Make sure join rudishas a NEW object kila single item sequences
         # involving a subclass.
-        # Make sure that it is of the appropriate type.
+        # Make sure that it ni of the appropriate type.
         s1 = self.type2test(b"abcd")
         s2 = self.basetype().join([s1])
         self.assertIsNot(s1, s2)
@@ -1823,7 +1823,7 @@ kundi SubclassTest:
         a = self.type2test(b"abcd")
         a.x = 10
         a.y = self.type2test(b"efgh")
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             b = pickle.loads(pickle.dumps(a, proto))
             self.assertNotEqual(id(a), id(b))
             self.assertEqual(a, b)
@@ -1836,7 +1836,7 @@ kundi SubclassTest:
         a = self.type2test(b"abcd")
         a.x = 10
         a.y = self.type2test(b"efgh")
-        for copy_method in (copy.copy, copy.deepcopy):
+        kila copy_method kwenye (copy.copy, copy.deepcopy):
             b = copy_method(a)
             self.assertNotEqual(id(a), id(b))
             self.assertEqual(a, b)
@@ -1863,7 +1863,7 @@ kundi SubclassTest:
 
         kundi B2(self.basetype):
             eleza __init__(me, *args, **kwargs):
-                ikiwa self.basetype is not bytes:
+                ikiwa self.basetype ni sio bytes:
                     self.basetype.__init__(me, *args, **kwargs)
                 me.foo = 'bar'
 
@@ -1874,13 +1874,13 @@ kundi SubclassTest:
 
 
 kundi ByteArraySubclass(bytearray):
-    pass
+    pita
 
 kundi BytesSubclass(bytes):
-    pass
+    pita
 
 kundi OtherBytesSubclass(bytes):
-    pass
+    pita
 
 kundi ByteArraySubclassTest(SubclassTest, unittest.TestCase):
     basetype = bytearray

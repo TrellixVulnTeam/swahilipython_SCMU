@@ -1,4 +1,4 @@
-"""Test script for the grp module."""
+"""Test script kila the grp module."""
 
 agiza unittest
 kutoka test agiza support
@@ -13,8 +13,8 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
         self.assertEqual(len(value), 4)
         self.assertEqual(value[0], value.gr_name)
         self.assertIsInstance(value.gr_name, str)
-        self.assertEqual(value[1], value.gr_passwd)
-        self.assertIsInstance(value.gr_passwd, str)
+        self.assertEqual(value[1], value.gr_pitawd)
+        self.assertIsInstance(value.gr_pitawd, str)
         self.assertEqual(value[2], value.gr_gid)
         self.assertIsInstance(value.gr_gid, int)
         self.assertEqual(value[3], value.gr_mem)
@@ -23,7 +23,7 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
     eleza test_values(self):
         entries = grp.getgrall()
 
-        for e in entries:
+        kila e kwenye entries:
             self.check_value(e)
 
     eleza test_values_extended(self):
@@ -31,18 +31,18 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
         ikiwa len(entries) > 1000:  # Huge group file (NIS?) -- skip the rest
             self.skipTest('huge group file, extended test skipped')
 
-        for e in entries:
+        kila e kwenye entries:
             e2 = grp.getgrgid(e.gr_gid)
             self.check_value(e2)
             self.assertEqual(e2.gr_gid, e.gr_gid)
             name = e.gr_name
-            ikiwa name.startswith('+') or name.startswith('-'):
+            ikiwa name.startswith('+') ama name.startswith('-'):
                 # NIS-related entry
-                continue
+                endelea
             e2 = grp.getgrnam(name)
             self.check_value(e2)
-            # There are instances where getgrall() returns group names in
-            # lowercase while getgrgid() returns proper casing.
+            # There are instances where getgrall() rudishas group names in
+            # lowercase wakati getgrgid() rudishas proper casing.
             # Discovered on Ubuntu 5.04 (custom).
             self.assertEqual(e2.gr_name.lower(), name.lower())
 
@@ -56,47 +56,47 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
         # try to get some errors
         bynames = {}
         bygids = {}
-        for (n, p, g, mem) in grp.getgrall():
-            ikiwa not n or n == '+':
-                continue # skip NIS entries etc.
+        kila (n, p, g, mem) kwenye grp.getgrall():
+            ikiwa sio n ama n == '+':
+                endelea # skip NIS entries etc.
             bynames[n] = g
             bygids[g] = n
 
         allnames = list(bynames.keys())
         namei = 0
         fakename = allnames[namei]
-        while fakename in bynames:
+        wakati fakename kwenye bynames:
             chars = list(fakename)
-            for i in range(len(chars)):
+            kila i kwenye range(len(chars)):
                 ikiwa chars[i] == 'z':
                     chars[i] = 'A'
-                    break
+                    koma
                 elikiwa chars[i] == 'Z':
-                    continue
-                else:
+                    endelea
+                isipokua:
                     chars[i] = chr(ord(chars[i]) + 1)
-                    break
-            else:
+                    koma
+            isipokua:
                 namei = namei + 1
-                try:
+                jaribu:
                     fakename = allnames[namei]
-                except IndexError:
+                tatizo IndexError:
                     # should never happen... ikiwa so, just forget it
-                    break
+                    koma
             fakename = ''.join(chars)
 
         self.assertRaises(KeyError, grp.getgrnam, fakename)
 
         # Choose a non-existent gid.
         fakegid = 4127
-        while fakegid in bygids:
+        wakati fakegid kwenye bygids:
             fakegid = (fakegid * 3) % 0x10000
 
         self.assertRaises(KeyError, grp.getgrgid, fakegid)
 
     eleza test_noninteger_gid(self):
         entries = grp.getgrall()
-        ikiwa not entries:
+        ikiwa sio entries:
             self.skipTest('no groups')
         # Choose an existent gid.
         gid = entries[0][2]

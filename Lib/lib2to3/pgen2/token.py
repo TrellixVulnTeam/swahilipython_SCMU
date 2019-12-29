@@ -2,8 +2,8 @@
 
 """Token constants (kutoka "token.h")."""
 
-#  Taken kutoka Python (r53757) and modified to include some tokens
-#   originally monkeypatched in by pgen2.tokenize
+#  Taken kutoka Python (r53757) na modified to include some tokens
+#   originally monkeypatched kwenye by pgen2.tokenize
 
 #--start constants--
 ENDMARKER = 0
@@ -70,8 +70,8 @@ NT_OFFSET = 256
 #--end constants--
 
 tok_name = {}
-for _name, _value in list(globals().items()):
-    ikiwa type(_value) is type(0):
+kila _name, _value kwenye list(globals().items()):
+    ikiwa type(_value) ni type(0):
         tok_name[_value] = _name
 
 

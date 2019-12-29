@@ -7,8 +7,8 @@ kutoka tkinter agiza Tk, Text
 agiza os
 agiza __main__
 
-agiza idlelib.autocomplete as ac
-agiza idlelib.autocomplete_w as acw
+agiza idlelib.autocomplete kama ac
+agiza idlelib.autocomplete_w kama acw
 kutoka idlelib.idle_test.mock_idle agiza Func
 kutoka idlelib.idle_test.mock_tk agiza Event
 
@@ -19,7 +19,7 @@ kundi DummyEditwin:
         self.text = text
         self.indentwidth = 8
         self.tabwidth = 8
-        self.prompt_last_line = '>>>'  # Currently not used by autocomplete.
+        self.prompt_last_line = '>>>'  # Currently sio used by autocomplete.
 
 
 kundi AutoCompleteTest(unittest.TestCase):
@@ -34,10 +34,10 @@ kundi AutoCompleteTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.editor, cls.text
+        toa cls.editor, cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.text.delete('1.0', 'end')
@@ -56,45 +56,45 @@ kundi AutoCompleteTest(unittest.TestCase):
         acp.autocompletewindow = m = Mock()
         acp._remove_autocomplete_window()
         m.hide_window.assert_called_once()
-        self.assertIsNone(acp.autocompletewindow)
+        self.assertIsTupu(acp.autocompletewindow)
 
     eleza test_force_open_completions_event(self):
-        # Call _open_completions and break.
+        # Call _open_completions na koma.
         acp = self.autocomplete
         open_c = Func()
         acp.open_completions = open_c
-        self.assertEqual(acp.force_open_completions_event('event'), 'break')
+        self.assertEqual(acp.force_open_completions_event('event'), 'koma')
         self.assertEqual(open_c.args[0], ac.FORCE)
 
     eleza test_autocomplete_event(self):
         Equal = self.assertEqual
         acp = self.autocomplete
 
-        # Result of autocomplete event: If modified tab, None.
-        ev = Event(mc_state=True)
-        self.assertIsNone(acp.autocomplete_event(ev))
-        del ev.mc_state
+        # Result of autocomplete event: If modified tab, Tupu.
+        ev = Event(mc_state=Kweli)
+        self.assertIsTupu(acp.autocomplete_event(ev))
+        toa ev.mc_state
 
-        # If tab after whitespace, None.
+        # If tab after whitespace, Tupu.
         self.text.insert('1.0', '        """Docstring.\n    ')
-        self.assertIsNone(acp.autocomplete_event(ev))
+        self.assertIsTupu(acp.autocomplete_event(ev))
         self.text.delete('1.0', 'end')
 
-        # If active autocomplete window, complete() and 'break'.
+        # If active autocomplete window, complete() na 'koma'.
         self.text.insert('1.0', 're.')
         acp.autocompletewindow = mock = Mock()
-        mock.is_active = Mock(return_value=True)
-        Equal(acp.autocomplete_event(ev), 'break')
+        mock.is_active = Mock(rudisha_value=Kweli)
+        Equal(acp.autocomplete_event(ev), 'koma')
         mock.complete.assert_called_once()
-        acp.autocompletewindow = None
+        acp.autocompletewindow = Tupu
 
-        # If no active autocomplete window, open_completions(), None/break.
-        open_c = Func(result=False)
+        # If no active autocomplete window, open_completions(), Tupu/koma.
+        open_c = Func(result=Uongo)
         acp.open_completions = open_c
-        Equal(acp.autocomplete_event(ev), None)
+        Equal(acp.autocomplete_event(ev), Tupu)
         Equal(open_c.args[0], ac.TAB)
-        open_c.result = True
-        Equal(acp.autocomplete_event(ev), 'break')
+        open_c.result = Kweli
+        Equal(acp.autocomplete_event(ev), 'koma')
         Equal(open_c.args[0], ac.TAB)
 
     eleza test_try_open_completions_event(self):
@@ -105,7 +105,7 @@ kundi AutoCompleteTest(unittest.TestCase):
         after = Func(result='after1')
         acp.text.after = after
 
-        # If no text or trigger, after not called.
+        # If no text ama trigger, after sio called.
         trycompletions()
         Equal(after.called, 0)
         text.insert('1.0', 're')
@@ -114,7 +114,7 @@ kundi AutoCompleteTest(unittest.TestCase):
 
         # Attribute needed, no existing callback.
         text.insert('insert', ' re.')
-        acp._delayed_completion_id = None
+        acp._delayed_completion_id = Tupu
         trycompletions()
         Equal(acp._delayed_completion_index, text.index('insert'))
         Equal(after.args,
@@ -141,12 +141,12 @@ kundi AutoCompleteTest(unittest.TestCase):
         acp.open_completions = open_c
         self.text.insert('1.0', '"dict.')
 
-        # Set autocomplete._delayed_completion_id to None.
+        # Set autocomplete._delayed_completion_id to Tupu.
         # Text index changed, don't call open_completions.
         acp._delayed_completion_id = 'after'
         acp._delayed_completion_index = self.text.index('insert+1c')
         acp._delayed_open_completions('dummy')
-        self.assertIsNone(acp._delayed_completion_id)
+        self.assertIsTupu(acp._delayed_completion_id)
         Equal(open_c.called, 0)
 
         # Text index unchanged, call open_completions.
@@ -155,10 +155,10 @@ kundi AutoCompleteTest(unittest.TestCase):
         self.assertEqual(open_c.args[0], (1, 2, 3, ac.FILES))
 
     eleza test_oc_cancel_comment(self):
-        none = self.assertIsNone
+        none = self.assertIsTupu
         acp = self.autocomplete
 
-        # Comment is in neither code or string.
+        # Comment ni kwenye neither code ama string.
         acp._delayed_completion_id = 'after'
         after = Func(result='after')
         acp.text.after_cancel = after
@@ -171,37 +171,37 @@ kundi AutoCompleteTest(unittest.TestCase):
         fetch = Func(result=([],[]))
         acp.fetch_completions = fetch
         self.text.insert('1.0', 'object')
-        self.assertIsNone(acp.open_completions(ac.TAB))
+        self.assertIsTupu(acp.open_completions(ac.TAB))
         self.text.insert('insert', '.')
-        self.assertIsNone(acp.open_completions(ac.TAB))
+        self.assertIsTupu(acp.open_completions(ac.TAB))
         self.assertEqual(fetch.called, 2)
 
 
     eleza test_open_completions_none(self):
-        # Test other two None returns.
-        none = self.assertIsNone
+        # Test other two Tupu rudishas.
+        none = self.assertIsTupu
         acp = self.autocomplete
 
-        # No object for attributes or need call not allowed.
+        # No object kila attributes ama need call sio allowed.
         self.text.insert(1.0, '.')
         none(acp.open_completions(ac.TAB))
         self.text.insert('insert', ' int().')
         none(acp.open_completions(ac.TAB))
 
-        # Blank or quote trigger 'ikiwa complete ...'.
+        # Blank ama quote trigger 'ikiwa complete ...'.
         self.text.delete(1.0, 'end')
-        self.assertFalse(acp.open_completions(ac.TAB))
+        self.assertUongo(acp.open_completions(ac.TAB))
         self.text.insert('1.0', '"')
-        self.assertFalse(acp.open_completions(ac.TAB))
+        self.assertUongo(acp.open_completions(ac.TAB))
         self.text.delete('1.0', 'end')
 
     kundi dummy_acw():
         __init__ = Func()
-        show_window = Func(result=False)
+        show_window = Func(result=Uongo)
         hide_window = Func()
 
     eleza test_open_completions(self):
-        # Test completions of files and attributes.
+        # Test completions of files na attributes.
         acp = self.autocomplete
         fetch = Func(result=(['tem'],['tem', '_tem']))
         acp.fetch_completions = fetch
@@ -215,15 +215,15 @@ kundi AutoCompleteTest(unittest.TestCase):
 
         # Test files.
         self.text.insert('1.0', '"t')
-        self.assertTrue(acp.open_completions(ac.TAB))
+        self.assertKweli(acp.open_completions(ac.TAB))
         self.text.delete('1.0', 'end')
 
     eleza test_fetch_completions(self):
-        # Test that fetch_completions returns 2 lists:
+        # Test that fetch_completions rudishas 2 lists:
         # For attribute completion, a large list containing all variables, and
         # a small list containing non-private variables.
-        # For file completion, a large list containing all files in the path,
-        # and a small list containing files that do not start with '.'.
+        # For file completion, a large list containing all files kwenye the path,
+        # na a small list containing files that do sio start with '.'.
         acp = self.autocomplete
         small, large = acp.fetch_completions(
                 '', ac.ATTRS)
@@ -233,8 +233,8 @@ kundi AutoCompleteTest(unittest.TestCase):
         # Test attributes
         s, b = acp.fetch_completions('', ac.ATTRS)
         self.assertLess(len(small), len(large))
-        self.assertTrue(all(filter(lambda x: x.startswith('_'), s)))
-        self.assertTrue(any(filter(lambda x: x.startswith('_'), b)))
+        self.assertKweli(all(filter(lambda x: x.startswith('_'), s)))
+        self.assertKweli(any(filter(lambda x: x.startswith('_'), b)))
 
         # Test smalll should respect to __all__.
         with patch.dict('__main__.__dict__', {'__all__': ['a', 'b']}):
@@ -250,12 +250,12 @@ kundi AutoCompleteTest(unittest.TestCase):
             s, b = acp.fetch_completions('foo', ac.ATTRS)
             self.assertNotIn('_private', s)
             self.assertIn('_private', b)
-            self.assertEqual(s, [i for i in sorted(dir(mock)) ikiwa i[:1] != '_'])
+            self.assertEqual(s, [i kila i kwenye sorted(dir(mock)) ikiwa i[:1] != '_'])
             self.assertEqual(b, sorted(dir(mock)))
 
         # Test files
         eleza _listdir(path):
-            # This will be patch and used in fetch_completions.
+            # This will be patch na used kwenye fetch_completions.
             ikiwa path == '.':
                 rudisha ['foo', 'bar', '.hidden']
             rudisha ['monty', 'python', '.hidden']
@@ -270,7 +270,7 @@ kundi AutoCompleteTest(unittest.TestCase):
             self.assertEqual(b, ['.hidden', 'monty', 'python'])
 
     eleza test_get_entity(self):
-        # Test that a name is in the namespace of sys.modules and
+        # Test that a name ni kwenye the namespace of sys.modules and
         # __main__.__dict__.
         acp = self.autocomplete
         Equal = self.assertEqual
@@ -287,7 +287,7 @@ kundi AutoCompleteTest(unittest.TestCase):
         with patch.dict('__main__.__dict__', {'d': di}):
             Equal(acp.get_entity('d'), di)
 
-        # Test name not in namespace.
+        # Test name haiko kwenye namespace.
         with patch.dict('__main__.__dict__', {}):
             with self.assertRaises(NameError):
                 acp.get_entity('not_exist')

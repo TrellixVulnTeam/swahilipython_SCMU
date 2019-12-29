@@ -8,14 +8,14 @@ kutoka .. agiza util
 
 kundi SpecLoaderMock:
 
-    eleza find_spec(self, fullname, path=None, target=None):
+    eleza find_spec(self, fullname, path=Tupu, target=Tupu):
         rudisha machinery.ModuleSpec(fullname, self)
 
     eleza create_module(self, spec):
-        rudisha None
+        rudisha Tupu
 
     eleza exec_module(self, module):
-        pass
+        pita
 
 
 kundi SpecLoaderAttributeTests:
@@ -34,7 +34,7 @@ kundi SpecLoaderAttributeTests:
 
 kundi LoaderMock:
 
-    eleza find_module(self, fullname, path=None):
+    eleza find_module(self, fullname, path=Tupu):
         rudisha self
 
     eleza load_module(self, fullname):
@@ -46,23 +46,23 @@ kundi LoaderAttributeTests:
 
     eleza test___loader___missing(self):
         module = types.ModuleType('blah')
-        try:
-            del module.__loader__
-        except AttributeError:
-            pass
+        jaribu:
+            toa module.__loader__
+        tatizo AttributeError:
+            pita
         loader = LoaderMock()
         loader.module = module
         with util.uncache('blah'), util.import_state(meta_path=[loader]):
             module = self.__import__('blah')
         self.assertEqual(loader, module.__loader__)
 
-    eleza test___loader___is_None(self):
+    eleza test___loader___is_Tupu(self):
         module = types.ModuleType('blah')
-        module.__loader__ = None
+        module.__loader__ = Tupu
         loader = LoaderMock()
         loader.module = module
         with util.uncache('blah'), util.import_state(meta_path=[loader]):
-            returned_module = self.__import__('blah')
+            rudishaed_module = self.__import__('blah')
         self.assertEqual(loader, module.__loader__)
 
 

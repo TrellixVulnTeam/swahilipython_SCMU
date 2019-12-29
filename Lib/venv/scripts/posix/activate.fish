@@ -1,7 +1,7 @@
 # This file must be used with ". bin/activate.fish" *kutoka fish* (http://fishshell.org)
 # you cannot run it directly
 
-function deactivate  -d "Exit virtualenv and rudisha to normal shell environment"
+function deactivate  -d "Exit virtualenv na rudisha to normal shell environment"
     # reset old environment variables
     ikiwa test -n "$_OLD_VIRTUAL_PATH"
         set -gx PATH $_OLD_VIRTUAL_PATH
@@ -43,7 +43,7 @@ end
 ikiwa test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
     # fish uses a function instead of an env var to generate the prompt.
 
-    # save the current fish_prompt function as the function _old_fish_prompt
+    # save the current fish_prompt function kama the function _old_fish_prompt
     functions -c fish_prompt _old_fish_prompt
 
     # with the original prompt function renamed, we can override with our own.
@@ -58,7 +58,7 @@ ikiwa test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
             # ...Otherwise, prepend env
             set -l _checkbase (basename "$VIRTUAL_ENV")
             ikiwa test $_checkbase = "__"
-                # special case for Aspen magic directories
+                # special case kila Aspen magic directories
                 # see http://www.zetadev.com/software/aspen/
                 printf "%s[%s]%s " (set_color -b blue white) (basename (dirname "$VIRTUAL_ENV")) (set_color normal)
             else

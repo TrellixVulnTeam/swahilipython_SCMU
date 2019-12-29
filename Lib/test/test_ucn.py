@@ -1,7 +1,7 @@
-""" Test script for the Unicode implementation.
+""" Test script kila the Unicode implementation.
 
 Written by Bill Tutt.
-Modified for Python 2.0 by Fredrik Lundh (fredrik@pythonware.com)
+Modified kila Python 2.0 by Fredrik Lundh (fredrik@pythonware.com)
 
 (c) Copyright CNRI, All Rights Reserved. NO WARRANTY.
 
@@ -14,9 +14,9 @@ kutoka test agiza support
 kutoka http.client agiza HTTPException
 kutoka test.test_normalization agiza check_version
 
-try:
+jaribu:
     kutoka _testcapi agiza INT_MAX, PY_SSIZE_T_MAX, UINT_MAX
-except ImportError:
+tatizo ImportError:
     INT_MAX = PY_SSIZE_T_MAX = UINT_MAX = 2**64 - 1
 
 kundi UnicodeNamesTest(unittest.TestCase):
@@ -30,7 +30,7 @@ kundi UnicodeNamesTest(unittest.TestCase):
         rudisha res
 
     eleza test_general(self):
-        # General and case insensitivity test:
+        # General na case insensitivity test:
         chars = [
             "LATIN CAPITAL LETTER T",
             "LATIN SMALL LETTER H",
@@ -62,12 +62,12 @@ kundi UnicodeNamesTest(unittest.TestCase):
         string = "The rEd fOx ate the sheep."
 
         self.assertEqual(
-            "".join([self.checkletter(*args) for args in zip(chars, string)]),
+            "".join([self.checkletter(*args) kila args kwenye zip(chars, string)]),
             string
         )
 
     eleza test_ascii_letters(self):
-        for char in "".join(map(chr, range(ord("a"), ord("z")))):
+        kila char kwenye "".join(map(chr, range(ord("a"), ord("z")))):
             name = "LATIN SMALL LETTER %s" % char.upper()
             code = unicodedata.lookup(name)
             self.assertEqual(unicodedata.name(code), name)
@@ -102,10 +102,10 @@ kundi UnicodeNamesTest(unittest.TestCase):
         self.checkletter("CJK UNIFIED IDEOGRAPH-2B81D", "\U0002B81D")
 
     eleza test_bmp_characters(self):
-        for code in range(0x10000):
+        kila code kwenye range(0x10000):
             char = chr(code)
-            name = unicodedata.name(char, None)
-            ikiwa name is not None:
+            name = unicodedata.name(char, Tupu)
+            ikiwa name ni sio Tupu:
                 self.assertEqual(unicodedata.lookup(name), char)
 
     eleza test_misc_symbols(self):
@@ -115,9 +115,9 @@ kundi UnicodeNamesTest(unittest.TestCase):
         self.checkletter("FULLWIDTH LATIN SMALL LETTER A", "\uFF41")
 
     eleza test_aliases(self):
-        # Check that the aliases defined in the NameAliases.txt file work.
-        # This should be updated when new aliases are added or the file
-        # should be downloaded and parsed instead.  See #12753.
+        # Check that the aliases defined kwenye the NameAliases.txt file work.
+        # This should be updated when new aliases are added ama the file
+        # should be downloaded na parsed instead.  See #12753.
         aliases = [
             ('LATIN CAPITAL LETTER GHA', 0x01A2),
             ('LATIN SMALL LETTER GHA', 0x01A3),
@@ -131,7 +131,7 @@ kundi UnicodeNamesTest(unittest.TestCase):
             ('PRESENTATION FORM FOR VERTICAL RIGHT WHITE LENTICULAR BRACKET', 0xFE18),
             ('BYZANTINE MUSICAL SYMBOL FTHORA SKLIRON CHROMA VASIS', 0x1D0C5)
         ]
-        for alias, codepoint in aliases:
+        kila alias, codepoint kwenye aliases:
             self.checkletter(alias, chr(codepoint))
             name = unicodedata.name(chr(codepoint))
             self.assertNotEqual(name, alias)
@@ -141,16 +141,16 @@ kundi UnicodeNamesTest(unittest.TestCase):
                 unicodedata.ucd_3_2_0.lookup(alias)
 
     eleza test_aliases_names_in_pua_range(self):
-        # We are storing aliases in the PUA 15, but their names shouldn't leak
-        for cp in range(0xf0000, 0xf0100):
-            with self.assertRaises(ValueError) as cm:
+        # We are storing aliases kwenye the PUA 15, but their names shouldn't leak
+        kila cp kwenye range(0xf0000, 0xf0100):
+            with self.assertRaises(ValueError) kama cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
     eleza test_named_sequences_names_in_pua_range(self):
-        # We are storing named seq in the PUA 15, but their names shouldn't leak
-        for cp in range(0xf0100, 0xf0fff):
-            with self.assertRaises(ValueError) as cm:
+        # We are storing named seq kwenye the PUA 15, but their names shouldn't leak
+        kila cp kwenye range(0xf0100, 0xf0fff):
+            with self.assertRaises(ValueError) kama cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
@@ -163,10 +163,10 @@ kundi UnicodeNamesTest(unittest.TestCase):
             ('TAMIL SYLLABLE NNOO', '\u0BA3\u0BCB'),
             ('TAMIL CONSONANT KSS', '\u0B95\u0BCD\u0BB7\u0BCD'),
         ]
-        for seqname, codepoints in sequences:
+        kila seqname, codepoints kwenye sequences:
             self.assertEqual(unicodedata.lookup(seqname), codepoints)
             with self.assertRaises(SyntaxError):
-                self.checkletter(seqname, None)
+                self.checkletter(seqname, Tupu)
             with self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
@@ -174,21 +174,21 @@ kundi UnicodeNamesTest(unittest.TestCase):
         # Check all the named sequences
         url = ("http://www.pythontest.net/unicode/%s/NamedSequences.txt" %
                unicodedata.unidata_version)
-        try:
+        jaribu:
             testdata = support.open_urlresource(url, encoding="utf-8",
                                                 check=check_version)
-        except (OSError, HTTPException):
-            self.skipTest("Could not retrieve " + url)
+        tatizo (OSError, HTTPException):
+            self.skipTest("Could sio retrieve " + url)
         self.addCleanup(testdata.close)
-        for line in testdata:
+        kila line kwenye testdata:
             line = line.strip()
-            ikiwa not line or line.startswith('#'):
-                continue
+            ikiwa sio line ama line.startswith('#'):
+                endelea
             seqname, codepoints = line.split(';')
-            codepoints = ''.join(chr(int(cp, 16)) for cp in codepoints.split())
+            codepoints = ''.join(chr(int(cp, 16)) kila cp kwenye codepoints.split())
             self.assertEqual(unicodedata.lookup(seqname), codepoints)
             with self.assertRaises(SyntaxError):
-                self.checkletter(seqname, None)
+                self.checkletter(seqname, Tupu)
             with self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
@@ -222,7 +222,7 @@ kundi UnicodeNamesTest(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=UINT_MAX + 1, memuse=2 + 1, dry_run=False)
+    @support.bigmemtest(size=UINT_MAX + 1, memuse=2 + 1, dry_run=Uongo)
     eleza test_issue16335(self, size):
         # very very long bogus character name
         x = b'\\N{SPACE' + b'x' * (UINT_MAX + 1) + b'}'

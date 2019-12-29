@@ -39,7 +39,7 @@ typecode_to_type = {
 eleza _new_value(type_):
     size = ctypes.sizeof(type_)
     wrapper = heap.BufferWrapper(size)
-    rudisha rebuild_ctype(type_, wrapper, None)
+    rudisha rebuild_ctype(type_, wrapper, Tupu)
 
 eleza RawValue(typecode_or_type, *args):
     '''
@@ -61,38 +61,38 @@ eleza RawArray(typecode_or_type, size_or_initializer):
         obj = _new_value(type_)
         ctypes.memset(ctypes.addressof(obj), 0, ctypes.sizeof(obj))
         rudisha obj
-    else:
+    isipokua:
         type_ = type_ * len(size_or_initializer)
         result = _new_value(type_)
         result.__init__(*size_or_initializer)
         rudisha result
 
-eleza Value(typecode_or_type, *args, lock=True, ctx=None):
+eleza Value(typecode_or_type, *args, lock=Kweli, ctx=Tupu):
     '''
-    Return a synchronization wrapper for a Value
+    Return a synchronization wrapper kila a Value
     '''
     obj = RawValue(typecode_or_type, *args)
-    ikiwa lock is False:
+    ikiwa lock ni Uongo:
         rudisha obj
-    ikiwa lock in (True, None):
-        ctx = ctx or get_context()
+    ikiwa lock kwenye (Kweli, Tupu):
+        ctx = ctx ama get_context()
         lock = ctx.RLock()
-    ikiwa not hasattr(lock, 'acquire'):
-        raise AttributeError("%r has no method 'acquire'" % lock)
+    ikiwa sio hasattr(lock, 'acquire'):
+        ashiria AttributeError("%r has no method 'acquire'" % lock)
     rudisha synchronized(obj, lock, ctx=ctx)
 
-eleza Array(typecode_or_type, size_or_initializer, *, lock=True, ctx=None):
+eleza Array(typecode_or_type, size_or_initializer, *, lock=Kweli, ctx=Tupu):
     '''
-    Return a synchronization wrapper for a RawArray
+    Return a synchronization wrapper kila a RawArray
     '''
     obj = RawArray(typecode_or_type, size_or_initializer)
-    ikiwa lock is False:
+    ikiwa lock ni Uongo:
         rudisha obj
-    ikiwa lock in (True, None):
-        ctx = ctx or get_context()
+    ikiwa lock kwenye (Kweli, Tupu):
+        ctx = ctx ama get_context()
         lock = ctx.RLock()
-    ikiwa not hasattr(lock, 'acquire'):
-        raise AttributeError("%r has no method 'acquire'" % lock)
+    ikiwa sio hasattr(lock, 'acquire'):
+        ashiria AttributeError("%r has no method 'acquire'" % lock)
     rudisha synchronized(obj, lock, ctx=ctx)
 
 eleza copy(obj):
@@ -100,40 +100,40 @@ eleza copy(obj):
     ctypes.pointer(new_obj)[0] = obj
     rudisha new_obj
 
-eleza synchronized(obj, lock=None, ctx=None):
-    assert not isinstance(obj, SynchronizedBase), 'object already synchronized'
-    ctx = ctx or get_context()
+eleza synchronized(obj, lock=Tupu, ctx=Tupu):
+    assert sio isinstance(obj, SynchronizedBase), 'object already synchronized'
+    ctx = ctx ama get_context()
 
     ikiwa isinstance(obj, ctypes._SimpleCData):
         rudisha Synchronized(obj, lock, ctx)
     elikiwa isinstance(obj, ctypes.Array):
-        ikiwa obj._type_ is ctypes.c_char:
+        ikiwa obj._type_ ni ctypes.c_char:
             rudisha SynchronizedString(obj, lock, ctx)
         rudisha SynchronizedArray(obj, lock, ctx)
-    else:
+    isipokua:
         cls = type(obj)
-        try:
+        jaribu:
             scls = class_cache[cls]
-        except KeyError:
-            names = [field[0] for field in cls._fields_]
-            d = {name: make_property(name) for name in names}
+        tatizo KeyError:
+            names = [field[0] kila field kwenye cls._fields_]
+            d = {name: make_property(name) kila name kwenye names}
             classname = 'Synchronized' + cls.__name__
             scls = class_cache[cls] = type(classname, (SynchronizedBase,), d)
         rudisha scls(obj, lock, ctx)
 
 #
-# Functions for pickling/unpickling
+# Functions kila pickling/unpickling
 #
 
 eleza reduce_ctype(obj):
     assert_spawning(obj)
     ikiwa isinstance(obj, ctypes.Array):
         rudisha rebuild_ctype, (obj._type_, obj._wrapper, obj._length_)
-    else:
-        rudisha rebuild_ctype, (type(obj), obj._wrapper, None)
+    isipokua:
+        rudisha rebuild_ctype, (type(obj), obj._wrapper, Tupu)
 
 eleza rebuild_ctype(type_, wrapper, length):
-    ikiwa length is not None:
+    ikiwa length ni sio Tupu:
         type_ = type_ * length
     _ForkingPickler.register(type_, reduce_ctype)
     buf = wrapper.create_memoryview()
@@ -146,9 +146,9 @@ eleza rebuild_ctype(type_, wrapper, length):
 #
 
 eleza make_property(name):
-    try:
+    jaribu:
         rudisha prop_cache[name]
-    except KeyError:
+    tatizo KeyError:
         d = {}
         exec(template % ((name,)*7), d)
         prop_cache[name] = d[name]
@@ -157,15 +157,15 @@ eleza make_property(name):
 template = '''
 eleza get%s(self):
     self.acquire()
-    try:
+    jaribu:
         rudisha self._obj.%s
-    finally:
+    mwishowe:
         self.release()
 eleza set%s(self, value):
     self.acquire()
-    try:
+    jaribu:
         self._obj.%s = value
-    finally:
+    mwishowe:
         self.release()
 %s = property(get%s, set%s)
 '''
@@ -179,12 +179,12 @@ class_cache = weakref.WeakKeyDictionary()
 
 kundi SynchronizedBase(object):
 
-    eleza __init__(self, obj, lock=None, ctx=None):
+    eleza __init__(self, obj, lock=Tupu, ctx=Tupu):
         self._obj = obj
         ikiwa lock:
             self._lock = lock
-        else:
-            ctx = ctx or get_context(force=True)
+        isipokua:
+            ctx = ctx ama get_context(force=Kweli)
             self._lock = ctx.RLock()
         self.acquire = self._lock.acquire
         self.release = self._lock.release
@@ -206,7 +206,7 @@ kundi SynchronizedBase(object):
         rudisha self._lock
 
     eleza __repr__(self):
-        rudisha '<%s wrapper for %s>' % (type(self).__name__, self._obj)
+        rudisha '<%s wrapper kila %s>' % (type(self).__name__, self._obj)
 
 
 kundi Synchronized(SynchronizedBase):

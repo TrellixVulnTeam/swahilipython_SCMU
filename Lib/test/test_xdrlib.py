@@ -13,8 +13,8 @@ kundi XDRTest(unittest.TestCase):
         p.pack_int(42)
         p.pack_int(-17)
         p.pack_uint(9)
-        p.pack_bool(True)
-        p.pack_bool(False)
+        p.pack_bool(Kweli)
+        p.pack_bool(Uongo)
         p.pack_uhyper(45)
         p.pack_float(1.9)
         p.pack_double(1.9)
@@ -31,15 +31,15 @@ kundi XDRTest(unittest.TestCase):
         self.assertEqual(up.unpack_int(), 42)
         self.assertEqual(up.unpack_int(), -17)
         self.assertEqual(up.unpack_uint(), 9)
-        self.assertTrue(up.unpack_bool() is True)
+        self.assertKweli(up.unpack_bool() ni Kweli)
 
         # remember position
         pos = up.get_position()
-        self.assertTrue(up.unpack_bool() is False)
+        self.assertKweli(up.unpack_bool() ni Uongo)
 
-        # rewind and unpack again
+        # rewind na unpack again
         up.set_position(pos)
-        self.assertTrue(up.unpack_bool() is False)
+        self.assertKweli(up.unpack_bool() ni Uongo)
 
         self.assertEqual(up.unpack_uhyper(), 45)
         self.assertAlmostEqual(up.unpack_float(), 1.9)

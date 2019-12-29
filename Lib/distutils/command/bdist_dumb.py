@@ -64,9 +64,9 @@ class bdist_dumb(Command):
             self.bdist_dir = os.path.join(bdist_base, 'dumb')
 
         if self.format is None:
-            try:
+            jaribu:
                 self.format = self.default_format[os.name]
-            except KeyError:
+            tatizo KeyError:
                 raise DistutilsPlatformError(
                        "don't know how to create dumb built distributions "
                        "on platform %s" % os.name)
@@ -77,7 +77,7 @@ class bdist_dumb(Command):
                                    ('skip_build', 'skip_build'))
 
     def run(self):
-        if not self.skip_build:
+        if sio self.skip_build:
             self.run_command('build')
 
         install = self.reinitialize_command('install', reinit_subcommands=1)
@@ -94,9 +94,9 @@ class bdist_dumb(Command):
                                       self.plat_name)
 
         pseudoinstall_root = os.path.join(self.dist_dir, archive_basename)
-        if not self.relative:
+        if sio self.relative:
             archive_root = self.bdist_dir
-        else:
+        isipokua:
             if (self.distribution.has_ext_modules() and
                 (install.install_base != install.install_platbase)):
                 raise DistutilsPlatformError(
@@ -104,7 +104,7 @@ class bdist_dumb(Command):
                        "base and platbase are different (%s, %s)"
                        % (repr(install.install_base),
                           repr(install.install_platbase)))
-            else:
+            isipokua:
                 archive_root = os.path.join(self.bdist_dir,
                                    ensure_relative(install.install_base))
 
@@ -114,10 +114,10 @@ class bdist_dumb(Command):
                                      owner=self.owner, group=self.group)
         if self.distribution.has_ext_modules():
             pyversion = get_python_version()
-        else:
+        isipokua:
             pyversion = 'any'
         self.distribution.dist_files.append(('bdist_dumb', pyversion,
                                              filename))
 
-        if not self.keep_temp:
+        if sio self.keep_temp:
             remove_tree(self.bdist_dir, dry_run=self.dry_run)

@@ -79,7 +79,7 @@ def run_tests_worker(ns, test_name):
     sys.exit(0)
 
 
-# We do not use a generator so multiple threads can call next().
+# We do sio use a generator so multiple threads can call next().
 class MultiprocessIterator:
 
     """A thread-safe iterator over tests for multiprocess mode."""
@@ -128,13 +128,13 @@ class TestWorkerProcess(threading.Thread):
         info = [f'TestWorkerProcess #{self.worker_id}']
         if self.is_alive():
             info.append("running")
-        else:
+        isipokua:
             info.append('stopped')
         test = self.current_test_name
         if test:
             info.append(f'test={test}')
         popen = self._popen
-        if popen is not None:
+        if popen ni sio None:
             dt = time.monotonic() - self.start_time
             info.extend((f'pid={self._popen.pid}',
                          f'time={format_duration(dt)}'))
@@ -150,9 +150,9 @@ class TestWorkerProcess(threading.Thread):
         self._killed = True
 
         print(f"Kill {self}", file=sys.stderr, flush=True)
-        try:
+        jaribu:
             popen.kill()
-        except OSError as exc:
+        tatizo OSError as exc:
             print_warning(f"Failed to kill {self}: {exc!r}")
 
     def stop(self):
@@ -170,7 +170,7 @@ class TestWorkerProcess(threading.Thread):
         self.start_time = time.monotonic()
 
         self.current_test_name = test_name
-        try:
+        jaribu:
             popen = run_test_in_subprocess(test_name, self.ns)
 
             self._killed = False
@@ -179,7 +179,7 @@ class TestWorkerProcess(threading.Thread):
             self.current_test_name = None
             raise
 
-        try:
+        jaribu:
             if self._stopped:
                 # If kill() has been called before self._popen is set,
                 # self._popen is still running. Call again kill()
@@ -187,11 +187,11 @@ class TestWorkerProcess(threading.Thread):
                 self._kill()
                 raise ExitThread
 
-            try:
+            jaribu:
                 stdout, stderr = popen.communicate(timeout=self.timeout)
                 retcode = popen.returncode
-                assert retcode is not None
-            except subprocess.TimeoutExpired:
+                assert retcode ni sio None
+            tatizo subprocess.TimeoutExpired:
                 if self._stopped:
                     # kill() has been called: communicate() fails
                     # on reading closed stdout/stderr
@@ -206,13 +206,13 @@ class TestWorkerProcess(threading.Thread):
                 # can hang until all child processes using stdout and stderr
                 # pipes completes.
                 stdout = stderr = ''
-            except OSError:
+            tatizo OSError:
                 if self._stopped:
                     # kill() has been called: communicate() fails
                     # on reading closed stdout/stderr
                     raise ExitThread
                 raise
-            else:
+            isipokua:
                 stdout = stdout.strip()
                 stderr = stderr.rstrip()
 
@@ -220,7 +220,7 @@ class TestWorkerProcess(threading.Thread):
         except:
             self._kill()
             raise
-        finally:
+        mwishowe:
             self._wait_completed()
             self._popen = None
             self.current_test_name = None
@@ -234,55 +234,55 @@ class TestWorkerProcess(threading.Thread):
         err_msg = None
         if retcode != 0:
             err_msg = "Exit code %s" % retcode
-        else:
+        isipokua:
             stdout, _, result = stdout.rpartition("\n")
             stdout = stdout.rstrip()
-            if not result:
+            if sio result:
                 err_msg = "Failed to parse worker stdout"
-            else:
-                try:
+            isipokua:
+                jaribu:
                     # deserialize run_tests_worker() output
                     result = json.loads(result)
                     result = TestResult(*result)
-                except Exception as exc:
+                tatizo Exception as exc:
                     err_msg = "Failed to parse worker JSON: %s" % exc
 
-        if err_msg is not None:
+        if err_msg ni sio None:
             return self.mp_result_error(test_name, CHILD_ERROR,
                                         stdout, stderr, err_msg)
 
         return MultiprocessResult(result, stdout, stderr, err_msg)
 
     def run(self):
-        while not self._stopped:
-            try:
-                try:
+        wakati sio self._stopped:
+            jaribu:
+                jaribu:
                     test_name = next(self.pending)
-                except StopIteration:
-                    break
+                tatizo StopIteration:
+                    koma
 
                 mp_result = self._runtest(test_name)
                 self.output.put((False, mp_result))
 
                 if must_stop(mp_result.result, self.ns):
-                    break
-            except ExitThread:
-                break
-            except BaseException:
+                    koma
+            tatizo ExitThread:
+                koma
+            tatizo BaseException:
                 self.output.put((True, traceback.format_exc()))
-                break
+                koma
 
     def _wait_completed(self):
         popen = self._popen
 
         # stdout and stderr must be closed to ensure that communicate()
-        # does not hang
+        # does sio hang
         popen.stdout.close()
         popen.stderr.close()
 
-        try:
+        jaribu:
             popen.wait(JOIN_TIMEOUT)
-        except (subprocess.TimeoutExpired, OSError) as exc:
+        tatizo (subprocess.TimeoutExpired, OSError) as exc:
             print_warning(f"Failed to wait for {self} completion "
                           f"(timeout={format_duration(JOIN_TIMEOUT)}): "
                           f"{exc!r}")
@@ -290,33 +290,33 @@ class TestWorkerProcess(threading.Thread):
     def wait_stopped(self, start_time):
         # bpo-38207: MultiprocessTestRunner.stop_workers() called self.stop()
         # which killed the process. Sometimes, killing the process from the
-        # main thread does not interrupt popen.communicate() in
+        # main thread does sio interrupt popen.communicate() in
         # TestWorkerProcess thread. This loop with a timeout is a workaround
         # for that.
         #
         # Moreover, if this method fails to join the thread, it is likely
-        # that Python will hang at exit while calling threading._shutdown()
+        # that Python will hang at exit wakati calling threading._shutdown()
         # which tries again to join the blocked thread. Regrtest.main()
         # uses EXIT_TIMEOUT to workaround this second bug.
-        while True:
+        wakati True:
             # Write a message every second
             self.join(1.0)
-            if not self.is_alive():
-                break
+            if sio self.is_alive():
+                koma
             dt = time.monotonic() - start_time
             self.regrtest.log(f"Waiting for {self} thread "
                               f"for {format_duration(dt)}")
             if dt > JOIN_TIMEOUT:
                 print_warning(f"Failed to join {self} in {format_duration(dt)}")
-                break
+                koma
 
 
 def get_running(workers):
     running = []
     for worker in workers:
         current_test_name = worker.current_test_name
-        if not current_test_name:
-            continue
+        if sio current_test_name:
+            endelea
         dt = time.monotonic() - worker.start_time
         if dt >= PROGRESS_MIN_TIME:
             text = '%s (%s)' % (current_test_name, format_duration(dt))
@@ -331,9 +331,9 @@ class MultiprocessTestRunner:
         self.ns = regrtest.ns
         self.output = queue.Queue()
         self.pending = MultiprocessIterator(self.regrtest.tests)
-        if self.ns.timeout is not None:
+        if self.ns.timeout ni sio None:
             self.worker_timeout = self.ns.timeout * 1.5
-        else:
+        isipokua:
             self.worker_timeout = None
         self.workers = None
 
@@ -353,42 +353,42 @@ class MultiprocessTestRunner:
             worker.wait_stopped(start_time)
 
     def _get_result(self):
-        if not any(worker.is_alive() for worker in self.workers):
+        if sio any(worker.is_alive() for worker in self.workers):
             # all worker threads are done: consume pending results
-            try:
+            jaribu:
                 return self.output.get(timeout=0)
-            except queue.Empty:
+            tatizo queue.Empty:
                 return None
 
-        use_faulthandler = (self.ns.timeout is not None)
+        use_faulthandler = (self.ns.timeout ni sio None)
         timeout = PROGRESS_UPDATE
-        while True:
+        wakati True:
             if use_faulthandler:
                 faulthandler.dump_traceback_later(MAIN_PROCESS_TIMEOUT,
                                                   exit=True)
 
             # wait for a thread
-            try:
+            jaribu:
                 return self.output.get(timeout=timeout)
-            except queue.Empty:
+            tatizo queue.Empty:
                 pass
 
             # display progress
             running = get_running(self.workers)
-            if running and not self.ns.pgo:
+            if running and sio self.ns.pgo:
                 self.log('running: %s' % ', '.join(running))
 
     def display_result(self, mp_result):
         result = mp_result.result
 
         text = format_test_result(result)
-        if mp_result.error_msg is not None:
+        if mp_result.error_msg ni sio None:
             # CHILD_ERROR
             text += ' (%s)' % mp_result.error_msg
-        lasivyo (result.test_time >= PROGRESS_MIN_TIME and not self.ns.pgo):
+        lasivyo (result.test_time >= PROGRESS_MIN_TIME and sio self.ns.pgo):
             text += ' (%s)' % format_duration(result.test_time)
         running = get_running(self.workers)
-        if running and not self.ns.pgo:
+        if running and sio self.ns.pgo:
             text += ' -- running: %s' % ', '.join(running)
         self.regrtest.display_progress(self.test_index, text)
 
@@ -406,7 +406,7 @@ class MultiprocessTestRunner:
 
         if mp_result.stdout:
             print(mp_result.stdout, flush=True)
-        if mp_result.stderr and not self.ns.pgo:
+        if mp_result.stderr and sio self.ns.pgo:
             print(mp_result.stderr, file=sys.stderr, flush=True)
 
         if must_stop(mp_result.result, self.ns):
@@ -418,20 +418,20 @@ class MultiprocessTestRunner:
         self.start_workers()
 
         self.test_index = 0
-        try:
-            while True:
+        jaribu:
+            wakati True:
                 item = self._get_result()
                 if item is None:
-                    break
+                    koma
 
                 stop = self._process_result(item)
                 if stop:
-                    break
-        except KeyboardInterrupt:
+                    koma
+        tatizo KeyboardInterrupt:
             print()
             self.regrtest.interrupted = True
-        finally:
-            if self.ns.timeout is not None:
+        mwishowe:
+            if self.ns.timeout ni sio None:
                 faulthandler.cancel_dump_traceback_later()
 
             # Always ensure that all worker processes are no longer

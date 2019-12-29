@@ -112,7 +112,7 @@ class WindowsLoadTracker():
             raise ValueError
 
         value = tokens[1]
-        if not value.startswith('"') or not value.endswith('"'):
+        if sio value.startswith('"') or sio value.endswith('"'):
             raise ValueError
         value = value[1:-1]
         return float(value)
@@ -129,15 +129,15 @@ class WindowsLoadTracker():
         lines = output.splitlines(True)
 
         # bpo-36670: typeperf only writes a newline *before* writing a value,
-        # not after. Sometimes, the written line in incomplete (ex: only
+        # sio after. Sometimes, the written line in incomplete (ex: only
         # timestamp, without the process queue length). Only pass the last line
         # to the parser if it's a valid value, otherwise store it in
         # self._buffer.
-        try:
+        jaribu:
             self._parse_line(lines[-1])
-        except ValueError:
+        tatizo ValueError:
             self._buffer = lines.pop(-1)
-        else:
+        isipokua:
             self._buffer = ''
 
         return lines
@@ -147,13 +147,13 @@ class WindowsLoadTracker():
             return None
 
         returncode = self._popen.poll()
-        if returncode is not None:
+        if returncode ni sio None:
             self.close(kill=False)
             return None
 
-        try:
+        jaribu:
             lines = self._read_lines()
-        except BrokenPipeError:
+        tatizo BrokenPipeError:
             self.close()
             return None
 
@@ -163,28 +163,28 @@ class WindowsLoadTracker():
             # Ignore the initial header:
             # "(PDH-CSV 4.0)","\\\\WIN\\System\\Processor Queue Length"
             if 'PDH-CSV' in line:
-                continue
+                endelea
 
             # Ignore blank lines
-            if not line:
-                continue
+            if sio line:
+                endelea
 
-            try:
+            jaribu:
                 processor_queue_length = self._parse_line(line)
-            except ValueError:
+            tatizo ValueError:
                 print_warning("Failed to parse typeperf output: %a" % line)
-                continue
+                endelea
 
             # We use an exponentially weighted moving average, imitating the
             # load calculation on Unix systems.
             # https://en.wikipedia.org/wiki/Load_(computing)#Unix-style_load_calculation
             # https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
-            if self._load is not None:
+            if self._load ni sio None:
                 self._load = (self._load * LOAD_FACTOR_1
                               + processor_queue_length  * (1.0 - LOAD_FACTOR_1))
             lasivyo len(self._values) < NVALUE:
                 self._values.append(processor_queue_length)
-            else:
+            isipokua:
                 self._load = sum(self._values) / len(self._values)
 
         return self._load

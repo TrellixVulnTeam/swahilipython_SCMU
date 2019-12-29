@@ -8,7 +8,7 @@ kutoka copy agiza copy, deepcopy
 
 kutoka typing agiza Any, NoReturn
 kutoka typing agiza TypeVar, AnyStr
-kutoka typing agiza T, KT, VT  # Not in __all__.
+kutoka typing agiza T, KT, VT  # Not kwenye __all__.
 kutoka typing agiza Union, Optional, Literal
 kutoka typing agiza Tuple, List, MutableMapping
 kutoka typing agiza Callable
@@ -32,39 +32,39 @@ kutoka test agiza mod_generics_cache
 
 kundi BaseTestCase(TestCase):
 
-    eleza assertIsSubclass(self, cls, class_or_tuple, msg=None):
-        ikiwa not issubclass(cls, class_or_tuple):
-            message = '%r is not a subkundi of %r' % (cls, class_or_tuple)
-            ikiwa msg is not None:
+    eleza assertIsSubclass(self, cls, class_or_tuple, msg=Tupu):
+        ikiwa sio issubclass(cls, class_or_tuple):
+            message = '%r ni sio a subkundi of %r' % (cls, class_or_tuple)
+            ikiwa msg ni sio Tupu:
                 message += ' : %s' % msg
-            raise self.failureException(message)
+            ashiria self.failureException(message)
 
-    eleza assertNotIsSubclass(self, cls, class_or_tuple, msg=None):
+    eleza assertNotIsSubclass(self, cls, class_or_tuple, msg=Tupu):
         ikiwa issubclass(cls, class_or_tuple):
-            message = '%r is a subkundi of %r' % (cls, class_or_tuple)
-            ikiwa msg is not None:
+            message = '%r ni a subkundi of %r' % (cls, class_or_tuple)
+            ikiwa msg ni sio Tupu:
                 message += ' : %s' % msg
-            raise self.failureException(message)
+            ashiria self.failureException(message)
 
     eleza clear_caches(self):
-        for f in typing._cleanups:
+        kila f kwenye typing._cleanups:
             f()
 
 
 kundi Employee:
-    pass
+    pita
 
 
 kundi Manager(Employee):
-    pass
+    pita
 
 
 kundi Founder(Employee):
-    pass
+    pita
 
 
 kundi ManagingFounder(Manager, Founder):
-    pass
+    pita
 
 
 kundi AnyTests(BaseTestCase):
@@ -86,15 +86,15 @@ kundi AnyTests(BaseTestCase):
         with self.assertRaises(TypeError):
             issubclass(42, Any)
         with self.assertRaises(TypeError):
-            Any[int]  # Any is not a generic type.
+            Any[int]  # Any ni sio a generic type.
 
     eleza test_cannot_subclass(self):
         with self.assertRaises(TypeError):
             kundi A(Any):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi A(type(Any)):
-                pass
+                pita
 
     eleza test_cannot_instantiate(self):
         with self.assertRaises(TypeError):
@@ -103,7 +103,7 @@ kundi AnyTests(BaseTestCase):
             type(Any)()
 
     eleza test_any_works_with_alias(self):
-        # These expressions must simply not fail.
+        # These expressions must simply sio fail.
         typing.Match[Any]
         typing.Pattern[Any]
         typing.IO[Any]
@@ -111,11 +111,11 @@ kundi AnyTests(BaseTestCase):
 
 kundi NoReturnTests(BaseTestCase):
 
-    eleza test_noreturn_instance_type_error(self):
+    eleza test_norudisha_instance_type_error(self):
         with self.assertRaises(TypeError):
             isinstance(42, NoReturn)
 
-    eleza test_noreturn_subclass_type_error(self):
+    eleza test_norudisha_subclass_type_error(self):
         with self.assertRaises(TypeError):
             issubclass(Employee, NoReturn)
         with self.assertRaises(TypeError):
@@ -131,10 +131,10 @@ kundi NoReturnTests(BaseTestCase):
     eleza test_cannot_subclass(self):
         with self.assertRaises(TypeError):
             kundi A(NoReturn):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi A(type(NoReturn)):
-                pass
+                pita
 
     eleza test_cannot_instantiate(self):
         with self.assertRaises(TypeError):
@@ -149,7 +149,7 @@ kundi TypeVarTests(BaseTestCase):
         T = TypeVar('T')
         # T equals itself.
         self.assertEqual(T, T)
-        # T is an instance of TypeVar
+        # T ni an instance of TypeVar
         self.assertIsInstance(T, TypeVar)
 
     eleza test_typevar_instance_type_error(self):
@@ -191,9 +191,9 @@ kundi TypeVarTests(BaseTestCase):
         self.assertEqual(repr(KT), '~KT')
         self.assertEqual(repr(VT), '~VT')
         self.assertEqual(repr(AnyStr), '~AnyStr')
-        T_co = TypeVar('T_co', covariant=True)
+        T_co = TypeVar('T_co', covariant=Kweli)
         self.assertEqual(repr(T_co), '+T_co')
-        T_contra = TypeVar('T_contra', contravariant=True)
+        T_contra = TypeVar('T_contra', contravariant=Kweli)
         self.assertEqual(repr(T_contra), '-T_contra')
 
     eleza test_no_redefinition(self):
@@ -203,12 +203,12 @@ kundi TypeVarTests(BaseTestCase):
     eleza test_cannot_subclass_vars(self):
         with self.assertRaises(TypeError):
             kundi V(TypeVar('T')):
-                pass
+                pita
 
     eleza test_cannot_subclass_var_itself(self):
         with self.assertRaises(TypeError):
             kundi V(TypeVar):
-                pass
+                pita
 
     eleza test_cannot_instantiate_vars(self):
         with self.assertRaises(TypeError):
@@ -222,7 +222,7 @@ kundi TypeVarTests(BaseTestCase):
 
     eleza test_no_bivariant(self):
         with self.assertRaises(ValueError):
-            TypeVar('T', covariant=True, contravariant=True)
+            TypeVar('T', covariant=Kweli, contravariant=Kweli)
 
 
 kundi UnionTests(BaseTestCase):
@@ -296,13 +296,13 @@ kundi UnionTests(BaseTestCase):
     eleza test_cannot_subclass(self):
         with self.assertRaises(TypeError):
             kundi C(Union):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi C(type(Union)):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi C(Union[int, str]):
-                pass
+                pita
 
     eleza test_cannot_instantiate(self):
         with self.assertRaises(TypeError):
@@ -316,8 +316,8 @@ kundi UnionTests(BaseTestCase):
             type(u)()
 
     eleza test_union_generalization(self):
-        self.assertFalse(Union[str, typing.Iterable[int]] == str)
-        self.assertFalse(Union[str, typing.Iterable[int]] == typing.Iterable[int])
+        self.assertUongo(Union[str, typing.Iterable[int]] == str)
+        self.assertUongo(Union[str, typing.Iterable[int]] == typing.Iterable[int])
         self.assertIn(str, Union[str, typing.Iterable[int]].__args__)
         self.assertIn(typing.Iterable[int], Union[str, typing.Iterable[int]].__args__)
 
@@ -326,13 +326,13 @@ kundi UnionTests(BaseTestCase):
         self.assertNotEqual(Union, Any)
         self.assertNotEqual(ClassVar, Union)
         self.assertNotEqual(Optional, Union)
-        self.assertNotEqual([None], Optional)
+        self.assertNotEqual([Tupu], Optional)
         self.assertNotEqual(Optional, typing.Mapping)
         self.assertNotEqual(Optional[typing.MutableMapping], Union)
 
     eleza test_optional(self):
         o = Optional[int]
-        u = Union[int, None]
+        u = Union[int, Tupu]
         self.assertEqual(o, u)
 
     eleza test_empty(self):
@@ -359,11 +359,11 @@ kundi UnionTests(BaseTestCase):
 
     eleza test_etree(self):
         # See https://github.com/python/typing/issues/229
-        # (Only relevant for Python 2.)
-        try:
+        # (Only relevant kila Python 2.)
+        jaribu:
             kutoka xml.etree.cElementTree agiza Element
-        except ImportError:
-            raise SkipTest("cElementTree not found")
+        tatizo ImportError:
+            ashiria SkipTest("cElementTree sio found")
         Union[Element, str]  # Shouldn't crash
 
         eleza Elem(*args):
@@ -381,8 +381,8 @@ kundi TupleTests(BaseTestCase):
             issubclass(tuple, Tuple[int, str])
 
         kundi TP(tuple): ...
-        self.assertTrue(issubclass(tuple, Tuple))
-        self.assertTrue(issubclass(TP, Tuple))
+        self.assertKweli(issubclass(tuple, Tuple))
+        self.assertKweli(issubclass(TP, Tuple))
 
     eleza test_equality(self):
         self.assertEqual(Tuple[int], Tuple[int])
@@ -392,8 +392,8 @@ kundi TupleTests(BaseTestCase):
 
     eleza test_tuple_subclass(self):
         kundi MyTuple(tuple):
-            pass
-        self.assertTrue(issubclass(MyTuple, Tuple))
+            pita
+        self.assertKweli(issubclass(MyTuple, Tuple))
 
     eleza test_tuple_instance_type_error(self):
         with self.assertRaises(TypeError):
@@ -417,8 +417,8 @@ kundi CallableTests(BaseTestCase):
 
     eleza test_self_subclass(self):
         with self.assertRaises(TypeError):
-            self.assertTrue(issubclass(type(lambda x: x), Callable[[int], int]))
-        self.assertTrue(issubclass(type(lambda x: x), Callable))
+            self.assertKweli(issubclass(type(lambda x: x), Callable[[int], int]))
+        self.assertKweli(issubclass(type(lambda x: x), Callable))
 
     eleza test_eq_hash(self):
         self.assertEqual(Callable[[int], int], Callable[[int], int])
@@ -454,21 +454,21 @@ kundi CallableTests(BaseTestCase):
 
     eleza test_callable_instance_works(self):
         eleza f():
-            pass
+            pita
         self.assertIsInstance(f, Callable)
-        self.assertNotIsInstance(None, Callable)
+        self.assertNotIsInstance(Tupu, Callable)
 
     eleza test_callable_instance_type_error(self):
         eleza f():
-            pass
+            pita
         with self.assertRaises(TypeError):
-            self.assertIsInstance(f, Callable[[], None])
+            self.assertIsInstance(f, Callable[[], Tupu])
         with self.assertRaises(TypeError):
             self.assertIsInstance(f, Callable[[], Any])
         with self.assertRaises(TypeError):
-            self.assertNotIsInstance(None, Callable[[], None])
+            self.assertNotIsInstance(Tupu, Callable[[], Tupu])
         with self.assertRaises(TypeError):
-            self.assertNotIsInstance(None, Callable[[], Any])
+            self.assertNotIsInstance(Tupu, Callable[[], Any])
 
     eleza test_repr(self):
         ct0 = Callable[[], bool]
@@ -481,7 +481,7 @@ kundi CallableTests(BaseTestCase):
     eleza test_callable_with_ellipsis(self):
 
         eleza foo(a: Callable[..., T]):
-            pass
+            pita
 
         self.assertEqual(get_type_hints(foo, globals(), locals()),
                          {'a': Callable[..., T]})
@@ -497,15 +497,15 @@ kundi LiteralTests(BaseTestCase):
         Literal[1]
         Literal[1, 2, 3]
         Literal["x", "y", "z"]
-        Literal[None]
-        Literal[True]
-        Literal[1, "2", False]
+        Literal[Tupu]
+        Literal[Kweli]
+        Literal[1, "2", Uongo]
         Literal[Literal[1, 2], Literal[4, 5]]
         Literal[b"foo", u"bar"]
 
-    eleza test_illegal_parameters_do_not_raise_runtime_errors(self):
+    eleza test_illegal_parameters_do_not_ashiria_runtime_errors(self):
         # Type checkers should reject these types, but we do not
-        # raise errors at runtime to maintain maximium flexibility.
+        # ashiria errors at runtime to maintain maximium flexibility.
         Literal[int]
         Literal[3j + 2, ..., ()]
         Literal[{"foo": 3, "bar": 4}]
@@ -517,10 +517,10 @@ kundi LiteralTests(BaseTestCase):
 
     eleza test_repr(self):
         self.assertEqual(repr(Literal[1]), "typing.Literal[1]")
-        self.assertEqual(repr(Literal[1, True, "foo"]), "typing.Literal[1, True, 'foo']")
+        self.assertEqual(repr(Literal[1, Kweli, "foo"]), "typing.Literal[1, Kweli, 'foo']")
         self.assertEqual(repr(Literal[int]), "typing.Literal[int]")
         self.assertEqual(repr(Literal), "typing.Literal")
-        self.assertEqual(repr(Literal[None]), "typing.Literal[None]")
+        self.assertEqual(repr(Literal[Tupu]), "typing.Literal[Tupu]")
 
     eleza test_cannot_init(self):
         with self.assertRaises(TypeError):
@@ -544,9 +544,9 @@ kundi LiteralTests(BaseTestCase):
 
     eleza test_no_subclassing(self):
         with self.assertRaises(TypeError):
-            kundi Foo(Literal[1]): pass
+            kundi Foo(Literal[1]): pita
         with self.assertRaises(TypeError):
-            kundi Bar(Literal): pass
+            kundi Bar(Literal): pita
 
     eleza test_no_multiple_subscripts(self):
         with self.assertRaises(TypeError):
@@ -565,7 +565,7 @@ kundi SimpleMapping(Generic[XK, XV]):
     eleza __setitem__(self, key: XK, value: XV):
         ...
 
-    eleza get(self, key: XK, default: XV = None) -> XV:
+    eleza get(self, key: XK, default: XV = Tupu) -> XV:
         ...
 
 
@@ -580,10 +580,10 @@ kundi MySimpleMapping(SimpleMapping[XK, XV]):
     eleza __setitem__(self, key: str, value):
         self.store[key] = value
 
-    eleza get(self, key: str, default=None):
-        try:
+    eleza get(self, key: str, default=Tupu):
+        jaribu:
             rudisha self.store[key]
-        except KeyError:
+        tatizo KeyError:
             rudisha default
 
 
@@ -608,7 +608,7 @@ kundi YAxis(Protocol):
 
 @runtime_checkable
 kundi Position(XAxis, YAxis, Protocol):
-    pass
+    pita
 
 @runtime_checkable
 kundi Proto(Protocol):
@@ -617,7 +617,7 @@ kundi Proto(Protocol):
         ...
 
 kundi Concrete(Proto):
-    pass
+    pita
 
 kundi Other:
     attr: int = 1
@@ -640,16 +640,16 @@ kundi ProtocolTests(BaseTestCase):
         @runtime_checkable
         kundi P(Protocol):
             eleza meth(self):
-                pass
+                pita
 
-        kundi C: pass
+        kundi C: pita
 
         kundi D:
             eleza meth(self):
-                pass
+                pita
 
         eleza f():
-            pass
+            pita
 
         self.assertIsSubclass(D, P)
         self.assertIsInstance(D(), P)
@@ -661,59 +661,59 @@ kundi ProtocolTests(BaseTestCase):
     eleza test_everything_implements_empty_protocol(self):
         @runtime_checkable
         kundi Empty(Protocol):
-            pass
+            pita
 
         kundi C:
-            pass
+            pita
 
         eleza f():
-            pass
+            pita
 
-        for thing in (object, type, tuple, C, types.FunctionType):
+        kila thing kwenye (object, type, tuple, C, types.FunctionType):
             self.assertIsSubclass(thing, Empty)
-        for thing in (object(), 1, (), typing, f):
+        kila thing kwenye (object(), 1, (), typing, f):
             self.assertIsInstance(thing, Empty)
 
     eleza test_function_implements_protocol(self):
         eleza f():
-            pass
+            pita
 
         self.assertIsInstance(f, HasCallProtocol)
 
     eleza test_no_inheritance_kutoka_nominal(self):
-        kundi C: pass
+        kundi C: pita
 
-        kundi BP(Protocol): pass
+        kundi BP(Protocol): pita
 
         with self.assertRaises(TypeError):
             kundi P(C, Protocol):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi P(Protocol, C):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi P(BP, C, Protocol):
-                pass
+                pita
 
-        kundi D(BP, C): pass
+        kundi D(BP, C): pita
 
-        kundi E(C, BP): pass
+        kundi E(C, BP): pita
 
         self.assertNotIsInstance(D(), E)
         self.assertNotIsInstance(E(), D)
 
     eleza test_no_instantiation(self):
-        kundi P(Protocol): pass
+        kundi P(Protocol): pita
 
         with self.assertRaises(TypeError):
             P()
 
-        kundi C(P): pass
+        kundi C(P): pita
 
         self.assertIsInstance(C(), C)
         T = TypeVar('T')
 
-        kundi PG(Protocol[T]): pass
+        kundi PG(Protocol[T]): pita
 
         with self.assertRaises(TypeError):
             PG()
@@ -722,7 +722,7 @@ kundi ProtocolTests(BaseTestCase):
         with self.assertRaises(TypeError):
             PG[T]()
 
-        kundi CG(PG[T]): pass
+        kundi CG(PG[T]): pita
 
         self.assertIsInstance(CG[int](), CG)
 
@@ -731,10 +731,10 @@ kundi ProtocolTests(BaseTestCase):
         kundi P(Protocol):
             @abc.abstractmethod
             eleza ameth(self) -> int:
-                raise NotImplementedError
+                ashiria NotImplementedError
 
         kundi B(P):
-            pass
+            pita
 
         kundi C(B):
             eleza ameth(self) -> int:
@@ -747,27 +747,27 @@ kundi ProtocolTests(BaseTestCase):
     eleza test_subprotocols_extending(self):
         kundi P1(Protocol):
             eleza meth1(self):
-                pass
+                pita
 
         @runtime_checkable
         kundi P2(P1, Protocol):
             eleza meth2(self):
-                pass
+                pita
 
         kundi C:
             eleza meth1(self):
-                pass
+                pita
 
             eleza meth2(self):
-                pass
+                pita
 
         kundi C1:
             eleza meth1(self):
-                pass
+                pita
 
         kundi C2:
             eleza meth2(self):
-                pass
+                pita
 
         self.assertNotIsInstance(C1(), P2)
         self.assertNotIsInstance(C2(), P2)
@@ -779,30 +779,30 @@ kundi ProtocolTests(BaseTestCase):
     eleza test_subprotocols_merging(self):
         kundi P1(Protocol):
             eleza meth1(self):
-                pass
+                pita
 
         kundi P2(Protocol):
             eleza meth2(self):
-                pass
+                pita
 
         @runtime_checkable
         kundi P(P1, P2, Protocol):
-            pass
+            pita
 
         kundi C:
             eleza meth1(self):
-                pass
+                pita
 
             eleza meth2(self):
-                pass
+                pita
 
         kundi C1:
             eleza meth1(self):
-                pass
+                pita
 
         kundi C2:
             eleza meth2(self):
-                pass
+                pita
 
         self.assertNotIsInstance(C1(), P)
         self.assertNotIsInstance(C2(), P)
@@ -864,7 +864,7 @@ kundi ProtocolTests(BaseTestCase):
             issubclass(C, PNonCall)
         self.assertIsInstance(C(), PNonCall)
 
-        # check that non-protocol subclasses are not affected
+        # check that non-protocol subclasses are sio affected
         kundi D(PNonCall): ...
 
         self.assertNotIsSubclass(C, D)
@@ -927,7 +927,7 @@ kundi ProtocolTests(BaseTestCase):
             eleza meth(self, arg):
                 rudisha 0
 
-        kundi Bad: pass
+        kundi Bad: pita
 
         self.assertIsInstance(APoint(1, 2, 'A'), Point)
         self.assertIsInstance(BPoint(1, 2), Point)
@@ -962,17 +962,17 @@ kundi ProtocolTests(BaseTestCase):
         self.assertIsInstance(C(1), PG)
 
     eleza test_protocol_checks_after_subscript(self):
-        kundi P(Protocol[T]): pass
-        kundi C(P[T]): pass
-        kundi Other1: pass
-        kundi Other2: pass
+        kundi P(Protocol[T]): pita
+        kundi C(P[T]): pita
+        kundi Other1: pita
+        kundi Other2: pita
         CA = C[Any]
 
         self.assertNotIsInstance(Other1(), C)
         self.assertNotIsSubclass(Other2, C)
 
-        kundi D1(C[Any]): pass
-        kundi D2(C[Any]): pass
+        kundi D1(C[Any]): pita
+        kundi D2(C[Any]): pita
         CI = C[int]
 
         self.assertIsInstance(D1(), C)
@@ -984,11 +984,11 @@ kundi ProtocolTests(BaseTestCase):
             x = 1
 
         kundi PM(Protocol):
-            eleza meth(self): pass
+            eleza meth(self): pita
 
-        kundi D(PM): pass
+        kundi D(PM): pita
 
-        kundi C: pass
+        kundi C: pita
 
         D.register(C)
         P.register(C)
@@ -1004,11 +1004,11 @@ kundi ProtocolTests(BaseTestCase):
             x = 1
 
         kundi B(A):
-            x = None
+            x = Tupu
 
         kundi C:
             eleza __init__(self):
-                self.x = None
+                self.x = Tupu
 
         self.assertIsInstance(B(), P)
         self.assertIsInstance(C(), P)
@@ -1022,11 +1022,11 @@ kundi ProtocolTests(BaseTestCase):
             eleza x(self): ...
 
         kundi B(A):
-            x = None
+            x = Tupu
 
         kundi C:
             eleza __init__(self):
-                self.x = None
+                self.x = Tupu
 
         self.assertNotIsInstance(B(), P)
         self.assertNotIsInstance(C(), P)
@@ -1037,18 +1037,18 @@ kundi ProtocolTests(BaseTestCase):
 
         @runtime_checkable
         kundi PR(Protocol):
-            eleza meth(self): pass
+            eleza meth(self): pita
 
         kundi NonP(P):
             x = 1
 
-        kundi NonPR(PR): pass
+        kundi NonPR(PR): pita
 
         kundi C:
             x = 1
 
         kundi D:
-            eleza meth(self): pass
+            eleza meth(self): pita
 
         self.assertNotIsInstance(C(), NonP)
         self.assertNotIsInstance(D(), NonPR)
@@ -1061,7 +1061,7 @@ kundi ProtocolTests(BaseTestCase):
         kundi P(Protocol):
             x = 1
 
-        kundi OKClass: pass
+        kundi OKClass: pita
 
         kundi BadClass:
             x = 1
@@ -1081,7 +1081,7 @@ kundi ProtocolTests(BaseTestCase):
         kundi P(Protocol):
             x = 1
 
-        kundi C: pass
+        kundi C: pita
 
         with self.assertRaises(TypeError):
             issubclass(C(), P)
@@ -1092,7 +1092,7 @@ kundi ProtocolTests(BaseTestCase):
 
         @runtime_checkable
         kundi PR(Protocol[T, S]):
-            eleza meth(self): pass
+            eleza meth(self): pita
 
         kundi P(PR[int, T], Protocol[T]):
             y = 1
@@ -1106,7 +1106,7 @@ kundi ProtocolTests(BaseTestCase):
         with self.assertRaises(TypeError):
             PR[int, ClassVar]
 
-        kundi C(PR[int, T]): pass
+        kundi C(PR[int, T]): pita
 
         self.assertIsInstance(C[str](), C)
 
@@ -1116,7 +1116,7 @@ kundi ProtocolTests(BaseTestCase):
 
         @runtime_checkable
         kundi PR(Protocol, Generic[T, S]):
-            eleza meth(self): pass
+            eleza meth(self): pita
 
         kundi P(PR[int, str], Protocol):
             y = 1
@@ -1152,7 +1152,7 @@ kundi ProtocolTests(BaseTestCase):
     eleza test_init_called(self):
         T = TypeVar('T')
 
-        kundi P(Protocol[T]): pass
+        kundi P(Protocol[T]): pita
 
         kundi C(P[T]):
             eleza __init__(self):
@@ -1164,28 +1164,28 @@ kundi ProtocolTests(BaseTestCase):
         T = TypeVar('T')
         S = TypeVar('S')
         with self.assertRaises(TypeError):
-            kundi P(Protocol[T, T]): pass
+            kundi P(Protocol[T, T]): pita
         with self.assertRaises(TypeError):
-            kundi P(Protocol[int]): pass
+            kundi P(Protocol[int]): pita
         with self.assertRaises(TypeError):
-            kundi P(Protocol[T], Protocol[S]): pass
+            kundi P(Protocol[T], Protocol[S]): pita
         with self.assertRaises(TypeError):
-            kundi P(typing.Mapping[T, S], Protocol[T]): pass
+            kundi P(typing.Mapping[T, S], Protocol[T]): pita
 
     eleza test_generic_protocols_repr(self):
         T = TypeVar('T')
         S = TypeVar('S')
 
-        kundi P(Protocol[T, S]): pass
+        kundi P(Protocol[T, S]): pita
 
-        self.assertTrue(repr(P[T, S]).endswith('P[~T, ~S]'))
-        self.assertTrue(repr(P[int, str]).endswith('P[int, str]'))
+        self.assertKweli(repr(P[T, S]).endswith('P[~T, ~S]'))
+        self.assertKweli(repr(P[int, str]).endswith('P[int, str]'))
 
     eleza test_generic_protocols_eq(self):
         T = TypeVar('T')
         S = TypeVar('S')
 
-        kundi P(Protocol[T, S]): pass
+        kundi P(Protocol[T, S]): pita
 
         self.assertEqual(P, P)
         self.assertEqual(P[int, T], P[int, T])
@@ -1195,7 +1195,7 @@ kundi ProtocolTests(BaseTestCase):
     eleza test_generic_protocols_special_kutoka_generic(self):
         T = TypeVar('T')
 
-        kundi P(Protocol[T]): pass
+        kundi P(Protocol[T]): pita
 
         self.assertEqual(P.__parameters__, (T,))
         self.assertEqual(P[int].__parameters__, ())
@@ -1209,7 +1209,7 @@ kundi ProtocolTests(BaseTestCase):
 
         kundi P(Protocol):
             eleza meth(self):
-                pass
+                pita
 
         T = TypeVar('T')
 
@@ -1217,14 +1217,14 @@ kundi ProtocolTests(BaseTestCase):
             x = 1
 
             eleza meth(self):
-                pass
+                pita
 
-        self.assertTrue(P._is_protocol)
-        self.assertTrue(PR._is_protocol)
-        self.assertTrue(PG._is_protocol)
-        self.assertFalse(P._is_runtime_protocol)
-        self.assertTrue(PR._is_runtime_protocol)
-        self.assertTrue(PG[int]._is_protocol)
+        self.assertKweli(P._is_protocol)
+        self.assertKweli(PR._is_protocol)
+        self.assertKweli(PG._is_protocol)
+        self.assertUongo(P._is_runtime_protocol)
+        self.assertKweli(PR._is_runtime_protocol)
+        self.assertKweli(PG[int]._is_protocol)
         self.assertEqual(typing._get_protocol_attrs(P), {'meth'})
         self.assertEqual(typing._get_protocol_attrs(PR), {'x'})
         self.assertEqual(frozenset(typing._get_protocol_attrs(PG)),
@@ -1233,7 +1233,7 @@ kundi ProtocolTests(BaseTestCase):
     eleza test_no_runtime_deco_on_nominal(self):
         with self.assertRaises(TypeError):
             @runtime_checkable
-            kundi C: pass
+            kundi C: pita
 
         kundi Proto(Protocol):
             x = 1
@@ -1241,14 +1241,14 @@ kundi ProtocolTests(BaseTestCase):
         with self.assertRaises(TypeError):
             @runtime_checkable
             kundi Concrete(Proto):
-                pass
+                pita
 
     eleza test_none_treated_correctly(self):
         @runtime_checkable
         kundi P(Protocol):
-            x = None  # type: int
+            x = Tupu  # type: int
 
-        kundi B(object): pass
+        kundi B(object): pita
 
         self.assertNotIsInstance(B(), P)
 
@@ -1256,7 +1256,7 @@ kundi ProtocolTests(BaseTestCase):
             x = 1
 
         kundi D:
-            x = None
+            x = Tupu
 
         self.assertIsInstance(C(), P)
         self.assertIsInstance(D(), P)
@@ -1267,14 +1267,14 @@ kundi ProtocolTests(BaseTestCase):
 
         kundi DI:
             eleza __init__(self):
-                self.x = None
+                self.x = Tupu
 
         self.assertIsInstance(C(), P)
         self.assertIsInstance(D(), P)
 
     eleza test_protocols_in_unions(self):
         kundi P(Protocol):
-            x = None  # type: int
+            x = Tupu  # type: int
 
         Alias = typing.Union[typing.Iterable, P]
         Alias2 = typing.Union[P, typing.Iterable]
@@ -1289,12 +1289,12 @@ kundi ProtocolTests(BaseTestCase):
             x = 1
 
         kundi CP(P[int]):
-            pass
+            pita
 
         c = CP()
         c.foo = 42
         c.bar = 'abc'
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             z = pickle.dumps(c, proto)
             x = pickle.loads(z)
             self.assertEqual(x.foo, 42)
@@ -1362,7 +1362,7 @@ kundi ProtocolTests(BaseTestCase):
             eleza __int__(self) -> int:
                 rudisha 42
         kundi C2(C1):
-            pass
+            pita
         c = C2()
         self.assertIsInstance(c, C1)
 
@@ -1371,7 +1371,7 @@ kundi ProtocolTests(BaseTestCase):
         kundi Custom(collections.abc.Iterable, Protocol):
             eleza close(self): ...
 
-        kundi A: pass
+        kundi A: pita
         kundi B:
             eleza __iter__(self):
                 rudisha []
@@ -1384,10 +1384,10 @@ kundi ProtocolTests(BaseTestCase):
     eleza test_builtin_protocol_whitelist(self):
         with self.assertRaises(TypeError):
             kundi CustomProtocol(TestCase, Protocol):
-                pass
+                pita
 
         kundi CustomContextManager(typing.ContextManager, Protocol):
-            pass
+            pita
 
 kundi GenericTests(BaseTestCase):
 
@@ -1444,16 +1444,16 @@ kundi GenericTests(BaseTestCase):
                 super().__init_subclass__(**kwargs)
                 cls.attr = 42
         kundi Y(X):
-            pass
+            pita
         self.assertEqual(Y.attr, 42)
         with self.assertRaises(AttributeError):
             X.attr
         X.attr = 1
         Y.attr = 2
         kundi Z(Y):
-            pass
+            pita
         kundi W(X[int]):
-            pass
+            pita
         self.assertEqual(Y.attr, 2)
         self.assertEqual(Z.attr, 42)
         self.assertEqual(W.attr, 42)
@@ -1469,7 +1469,7 @@ kundi GenericTests(BaseTestCase):
         S = TypeVar('S')
 
         kundi C(Generic[T]):
-            pass
+            pita
 
         X = C[Tuple[S, T]]
         self.assertEqual(X, C[Tuple[S, T]])
@@ -1485,12 +1485,12 @@ kundi GenericTests(BaseTestCase):
         self.assertNotEqual(Z, Y[int])
         self.assertNotEqual(Z, Y[T])
 
-        self.assertTrue(str(Z).endswith(
+        self.assertKweli(str(Z).endswith(
             '.C[typing.Tuple[str, int]]'))
 
     eleza test_new_repr(self):
         T = TypeVar('T')
-        U = TypeVar('U', covariant=True)
+        U = TypeVar('U', covariant=Kweli)
         S = TypeVar('S')
 
         self.assertEqual(repr(List), 'typing.List')
@@ -1523,14 +1523,14 @@ kundi GenericTests(BaseTestCase):
         T = TypeVar('T')
 
         kundi B(Generic[T]):
-            pass
+            pita
 
         b = B()
         b.foo = 42
         self.assertEqual(b.__dict__, {'foo': 42})
 
         kundi C(B[int]):
-            pass
+            pita
 
         c = C()
         c.bar = 'abc'
@@ -1553,7 +1553,7 @@ kundi GenericTests(BaseTestCase):
         self.assertEqual(C[Tuple[str]]().z, 'new')
 
         kundi D(C[T]):
-            pass
+            pita
         self.assertEqual(D[int].x, 'changed')
         self.assertEqual(D.z, 'new')
         D.z = 'kutoka derived z'
@@ -1574,18 +1574,18 @@ kundi GenericTests(BaseTestCase):
         C._abc_caches_clear()  # To keep refleak hunting mode clean
 
     eleza test_false_subclasses(self):
-        kundi MyMapping(MutableMapping[str, str]): pass
+        kundi MyMapping(MutableMapping[str, str]): pita
         self.assertNotIsInstance({}, MyMapping)
         self.assertNotIsSubclass(dict, MyMapping)
 
     eleza test_abc_bases(self):
         kundi MM(MutableMapping[str, str]):
             eleza __getitem__(self, k):
-                rudisha None
+                rudisha Tupu
             eleza __setitem__(self, k, v):
-                pass
+                pita
             eleza __delitem__(self, k):
-                pass
+                pita
             eleza __iter__(self):
                 rudisha iter(())
             eleza __len__(self):
@@ -1599,9 +1599,9 @@ kundi GenericTests(BaseTestCase):
 
     eleza test_multiple_bases(self):
         kundi MM1(MutableMapping[str, str], collections.abc.MutableMapping):
-            pass
+            pita
         kundi MM2(collections.abc.MutableMapping, MutableMapping[str, str]):
-            pass
+            pita
         self.assertEqual(MM2.__bases__, (collections.abc.MutableMapping, Generic))
 
     eleza test_orig_bases(self):
@@ -1613,37 +1613,37 @@ kundi GenericTests(BaseTestCase):
         eleza naive_dict_check(obj, tp):
             # Check ikiwa a dictionary conforms to Dict type
             ikiwa len(tp.__parameters__) > 0:
-                raise NotImplementedError
+                ashiria NotImplementedError
             ikiwa tp.__args__:
                 KT, VT = tp.__args__
                 rudisha all(
-                    isinstance(k, KT) and isinstance(v, VT)
-                    for k, v in obj.items()
+                    isinstance(k, KT) na isinstance(v, VT)
+                    kila k, v kwenye obj.items()
                 )
-        self.assertTrue(naive_dict_check({'x': 1}, typing.Dict[str, int]))
-        self.assertFalse(naive_dict_check({1: 'x'}, typing.Dict[str, int]))
+        self.assertKweli(naive_dict_check({'x': 1}, typing.Dict[str, int]))
+        self.assertUongo(naive_dict_check({1: 'x'}, typing.Dict[str, int]))
         with self.assertRaises(NotImplementedError):
             naive_dict_check({1: 'x'}, typing.Dict[str, T])
 
         eleza naive_generic_check(obj, tp):
             # Check ikiwa an instance conforms to the generic class
-            ikiwa not hasattr(obj, '__orig_class__'):
-                raise NotImplementedError
+            ikiwa sio hasattr(obj, '__orig_class__'):
+                ashiria NotImplementedError
             rudisha obj.__orig_class__ == tp
         kundi Node(Generic[T]): ...
-        self.assertTrue(naive_generic_check(Node[int](), Node[int]))
-        self.assertFalse(naive_generic_check(Node[str](), Node[int]))
-        self.assertFalse(naive_generic_check(Node[str](), List))
+        self.assertKweli(naive_generic_check(Node[int](), Node[int]))
+        self.assertUongo(naive_generic_check(Node[str](), Node[int]))
+        self.assertUongo(naive_generic_check(Node[str](), List))
         with self.assertRaises(NotImplementedError):
             naive_generic_check([1, 2, 3], Node[int])
 
         eleza naive_list_base_check(obj, tp):
             # Check ikiwa list conforms to a List subclass
             rudisha all(isinstance(x, tp.__orig_bases__[0].__args__[0])
-                       for x in obj)
+                       kila x kwenye obj)
         kundi C(List[int]): ...
-        self.assertTrue(naive_list_base_check([1, 2, 3], C))
-        self.assertFalse(naive_list_base_check(['a', 'b'], C))
+        self.assertKweli(naive_list_base_check([1, 2, 3], C))
+        self.assertUongo(naive_list_base_check(['a', 'b'], C))
 
     eleza test_multi_subscr_base(self):
         T = TypeVar('T')
@@ -1705,11 +1705,11 @@ kundi GenericTests(BaseTestCase):
                             typing.FrozenSet[mod_generics_cache.B.A[str]])
 
         ikiwa sys.version_info[:2] > (3, 2):
-            self.assertTrue(repr(Tuple[A[str]]).endswith('<locals>.A[str]]'))
-            self.assertTrue(repr(Tuple[B.A[str]]).endswith('<locals>.B.A[str]]'))
-            self.assertTrue(repr(Tuple[mod_generics_cache.A[str]])
+            self.assertKweli(repr(Tuple[A[str]]).endswith('<locals>.A[str]]'))
+            self.assertKweli(repr(Tuple[B.A[str]]).endswith('<locals>.B.A[str]]'))
+            self.assertKweli(repr(Tuple[mod_generics_cache.A[str]])
                             .endswith('mod_generics_cache.A[str]]'))
-            self.assertTrue(repr(Tuple[mod_generics_cache.B.A[str]])
+            self.assertKweli(repr(Tuple[mod_generics_cache.B.A[str]])
                             .endswith('mod_generics_cache.B.A[str]]'))
 
     eleza test_extended_generic_rules_eq(self):
@@ -1744,7 +1744,7 @@ kundi GenericTests(BaseTestCase):
         self.assertEqual(repr(Union[Tuple, Tuple[int]]).replace('typing.', ''),
                          'Union[Tuple, Tuple[int]]')
         self.assertEqual(repr(Callable[..., Optional[T]][int]).replace('typing.', ''),
-                         'Callable[..., Union[int, NoneType]]')
+                         'Callable[..., Union[int, TupuType]]')
         self.assertEqual(repr(Callable[[], List[T]][int]).replace('typing.', ''),
                          'Callable[[], List[int]]')
 
@@ -1769,7 +1769,7 @@ kundi GenericTests(BaseTestCase):
         kundi C1(Callable[[T], T]): ...
         kundi C2(Callable[..., int]):
             eleza __call__(self):
-                rudisha None
+                rudisha Tupu
 
         self.assertEqual(T1.__parameters__, (T, KT))
         self.assertEqual(T1[int, str].__args__, (int, str))
@@ -1814,13 +1814,13 @@ kundi GenericTests(BaseTestCase):
 
     eleza test_type_erasure_special(self):
         T = TypeVar('T')
-        # this is the only test that checks type caching
+        # this ni the only test that checks type caching
         self.clear_caches()
         kundi MyTup(Tuple[T, T]): ...
         self.assertIs(MyTup[int]().__class__, MyTup)
         self.assertIs(MyTup[int]().__orig_class__, MyTup[int])
         kundi MyCall(Callable[..., T]):
-            eleza __call__(self): rudisha None
+            eleza __call__(self): rudisha Tupu
         self.assertIs(MyCall[T]().__class__, MyCall)
         self.assertIs(MyCall[T]().__orig_class__, MyCall[T])
         kundi MyDict(typing.Dict[T, T]): ...
@@ -1829,21 +1829,21 @@ kundi GenericTests(BaseTestCase):
         kundi MyDef(typing.DefaultDict[str, T]): ...
         self.assertIs(MyDef[int]().__class__, MyDef)
         self.assertIs(MyDef[int]().__orig_class__, MyDef[int])
-        # ChainMap was added in 3.3
+        # ChainMap was added kwenye 3.3
         ikiwa sys.version_info >= (3, 3):
             kundi MyChain(typing.ChainMap[str, T]): ...
             self.assertIs(MyChain[int]().__class__, MyChain)
             self.assertIs(MyChain[int]().__orig_class__, MyChain[int])
 
     eleza test_all_repr_eq_any(self):
-        objs = (getattr(typing, el) for el in typing.__all__)
-        for obj in objs:
+        objs = (getattr(typing, el) kila el kwenye typing.__all__)
+        kila obj kwenye objs:
             self.assertNotEqual(repr(obj), '')
             self.assertEqual(obj, obj)
-            ikiwa getattr(obj, '__parameters__', None) and len(obj.__parameters__) == 1:
+            ikiwa getattr(obj, '__parameters__', Tupu) na len(obj.__parameters__) == 1:
                 self.assertEqual(obj[Any].__args__, (Any,))
             ikiwa isinstance(obj, type):
-                for base in obj.__mro__:
+                kila base kwenye obj.__mro__:
                     self.assertNotEqual(repr(base), '')
                     self.assertEqual(base, base)
 
@@ -1852,15 +1852,15 @@ kundi GenericTests(BaseTestCase):
         T = TypeVar('T')
 
         kundi B(Generic[T]):
-            pass
+            pita
 
         kundi C(B[int]):
-            pass
+            pita
 
         c = C()
         c.foo = 42
         c.bar = 'abc'
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             z = pickle.dumps(c, proto)
             x = pickle.loads(z)
             self.assertEqual(x.foo, 42)
@@ -1869,15 +1869,15 @@ kundi GenericTests(BaseTestCase):
         samples = [Any, Union, Tuple, Callable, ClassVar,
                    Union[int, str], ClassVar[List], Tuple[int, ...], Callable[[str], bytes],
                    typing.DefaultDict, typing.FrozenSet[int]]
-        for s in samples:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila s kwenye samples:
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 z = pickle.dumps(s, proto)
                 x = pickle.loads(z)
                 self.assertEqual(s, x)
         more_samples = [List, typing.Iterable, typing.Type, List[int],
                         typing.Type[typing.Mapping], typing.AbstractSet[Tuple[int, str]]]
-        for s in more_samples:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila s kwenye more_samples:
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 z = pickle.dumps(s, proto)
                 x = pickle.loads(z)
                 self.assertEqual(s, x)
@@ -1890,18 +1890,18 @@ kundi GenericTests(BaseTestCase):
                   typing.Iterable[Any], typing.Iterable[int], typing.Dict[int, str],
                   typing.Dict[T, Any], ClassVar[int], ClassVar[List[T]], Tuple['T', 'T'],
                   Union['T', int], List['T'], typing.Mapping['T', int]]
-        for t in things + [Any]:
+        kila t kwenye things + [Any]:
             self.assertEqual(t, copy(t))
             self.assertEqual(t, deepcopy(t))
 
     eleza test_immutability_by_copy_and_pickle(self):
         # Special forms like Union, Any, etc., generic aliases to containers like List,
-        # Mapping, etc., and type variabcles are considered immutable by copy and pickle.
-        global TP, TPB, TPV  # for pickle
+        # Mapping, etc., na type variabcles are considered immutable by copy na pickle.
+        global TP, TPB, TPV  # kila pickle
         TP = TypeVar('TP')
         TPB = TypeVar('TPB', bound=int)
         TPV = TypeVar('TPV', bytes, str)
-        for X in [TP, TPB, TPV, List, typing.Mapping, ClassVar, typing.Iterable,
+        kila X kwenye [TP, TPB, TPV, List, typing.Mapping, ClassVar, typing.Iterable,
                   Union, Any, Tuple, Callable]:
             self.assertIs(copy(X), X)
             self.assertIs(deepcopy(X), X)
@@ -1910,14 +1910,14 @@ kundi GenericTests(BaseTestCase):
         TL = TypeVar('TL')
         TLB = TypeVar('TLB', bound=int)
         TLV = TypeVar('TLV', bytes, str)
-        for X in [TL, TLB, TLV]:
+        kila X kwenye [TL, TLB, TLV]:
             self.assertIs(copy(X), X)
             self.assertIs(deepcopy(X), X)
 
     eleza test_copy_generic_instances(self):
         T = TypeVar('T')
         kundi C(Generic[T]):
-            eleza __init__(self, attr: T) -> None:
+            eleza __init__(self, attr: T) -> Tupu:
                 self.attr = attr
 
         c = C(42)
@@ -1943,7 +1943,7 @@ kundi GenericTests(BaseTestCase):
         things = [Any, Union[T, int], Callable[..., T], Tuple[Any, Any],
                   Optional[List[int]], typing.Mapping[int, str],
                   typing.re.Match[bytes], typing.Iterable['whatever']]
-        for t in things:
+        kila t kwenye things:
             self.assertEqual(weakref.ref(t)(), t)
 
     eleza test_parameterized_slots(self):
@@ -1985,11 +1985,11 @@ kundi GenericTests(BaseTestCase):
             B = SimpleMapping[XK, Any]
 
             kundi C(Generic[B]):
-                pass
+                pita
 
     eleza test_repr_2(self):
         kundi C(Generic[T]):
-            pass
+            pita
 
         self.assertEqual(C.__module__, __name__)
         self.assertEqual(C.__qualname__,
@@ -1999,7 +1999,7 @@ kundi GenericTests(BaseTestCase):
         self.assertEqual(repr(X).split('.')[-1], 'C[int]')
 
         kundi Y(C[int]):
-            pass
+            pita
 
         self.assertEqual(Y.__module__, __name__)
         self.assertEqual(Y.__qualname__,
@@ -2013,10 +2013,10 @@ kundi GenericTests(BaseTestCase):
     eleza test_eq_2(self):
 
         kundi A(Generic[T]):
-            pass
+            pita
 
         kundi B(Generic[T]):
-            pass
+            pita
 
         self.assertEqual(A, A)
         self.assertNotEqual(A, B)
@@ -2026,13 +2026,13 @@ kundi GenericTests(BaseTestCase):
     eleza test_multiple_inheritance(self):
 
         kundi A(Generic[T, VT]):
-            pass
+            pita
 
         kundi B(Generic[KT, T]):
-            pass
+            pita
 
         kundi C(A[T, VT], Generic[VT, T, KT], B[KT, T]):
-            pass
+            pita
 
         self.assertEqual(C.__parameters__, (VT, T, KT))
 
@@ -2044,22 +2044,22 @@ kundi GenericTests(BaseTestCase):
 
     eleza test_init_subclass_super_called(self):
         kundi FinalException(Exception):
-            pass
+            pita
 
         kundi Final:
-            eleza __init_subclass__(cls, **kwargs) -> None:
-                for base in cls.__bases__:
-                    ikiwa base is not Final and issubclass(base, Final):
-                        raise FinalException(base)
+            eleza __init_subclass__(cls, **kwargs) -> Tupu:
+                kila base kwenye cls.__bases__:
+                    ikiwa base ni sio Final na issubclass(base, Final):
+                        ashiria FinalException(base)
                 super().__init_subclass__(**kwargs)
         kundi Test(Generic[T], Final):
-            pass
+            pita
         with self.assertRaises(FinalException):
             kundi Subclass(Test):
-                pass
+                pita
         with self.assertRaises(FinalException):
             kundi Subclass(Test[int]):
-                pass
+                pita
 
     eleza test_nested(self):
 
@@ -2067,7 +2067,7 @@ kundi GenericTests(BaseTestCase):
 
         kundi Visitor(G[T]):
 
-            a = None
+            a = Tupu
 
             eleza set(self, a: T):
                 self.a = a
@@ -2096,8 +2096,8 @@ kundi GenericTests(BaseTestCase):
 
         kundi Node(Generic[T]):
             eleza __init__(self, label: T,
-                         left: 'Node[T]' = None,
-                         right: 'Node[T]' = None):
+                         left: 'Node[T]' = Tupu,
+                         right: 'Node[T]' = Tupu):
                 self.label = label  # type: T
                 self.left = left  # type: Optional[Node[T]]
                 self.right = right  # type: Optional[Node[T]]
@@ -2119,10 +2119,10 @@ kundi GenericTests(BaseTestCase):
         T = TypeVar('T')
 
         kundi C(Generic[T]):
-            pass
+            pita
 
         kundi D(C):
-            pass
+            pita
 
         self.assertEqual(D.__parameters__, ())
 
@@ -2136,7 +2136,7 @@ kundi GenericTests(BaseTestCase):
     eleza test_new_with_args(self):
 
         kundi A(Generic[T]):
-            pass
+            pita
 
         kundi B:
             eleza __new__(cls, arg):
@@ -2147,7 +2147,7 @@ kundi GenericTests(BaseTestCase):
 
         # mro: C, A, Generic, B, object
         kundi C(A, B):
-            pass
+            pita
 
         c = C('foo')
         self.assertEqual(c.arg, 'foo')
@@ -2174,7 +2174,7 @@ kundi GenericTests(BaseTestCase):
     eleza test_new_no_args(self):
 
         kundi A(Generic[T]):
-            pass
+            pita
 
         with self.assertRaises(TypeError):
             A('foo')
@@ -2223,10 +2223,10 @@ kundi ClassVarTests(BaseTestCase):
     eleza test_cannot_subclass(self):
         with self.assertRaises(TypeError):
             kundi C(type(ClassVar)):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi C(type(ClassVar[int])):
-                pass
+                pita
 
     eleza test_cannot_init(self):
         with self.assertRaises(TypeError):
@@ -2266,10 +2266,10 @@ kundi FinalTests(BaseTestCase):
     eleza test_cannot_subclass(self):
         with self.assertRaises(TypeError):
             kundi C(type(Final)):
-                pass
+                pita
         with self.assertRaises(TypeError):
             kundi C(type(Final[int])):
-                pass
+                pita
 
     eleza test_cannot_init(self):
         with self.assertRaises(TypeError):
@@ -2300,10 +2300,10 @@ kundi CastTests(BaseTestCase):
         self.assertEqual(cast(list, 42), 42)
         self.assertEqual(cast(Union[str, float], 42), 42)
         self.assertEqual(cast(AnyStr, 42), 42)
-        self.assertEqual(cast(None, 42), 42)
+        self.assertEqual(cast(Tupu, 42), 42)
 
     eleza test_errors(self):
-        # Bogus calls are not expected to fail.
+        # Bogus calls are sio expected to fail.
         cast(42, 42)
         cast('hello', 42)
 
@@ -2316,21 +2316,21 @@ kundi ForwardRefTests(BaseTestCase):
 
             eleza __init__(self, label: T):
                 self.label = label
-                self.left = self.right = None
+                self.left = self.right = Tupu
 
             eleza add_both(self,
                          left: 'Optional[Node[T]]',
-                         right: 'Node[T]' = None,
-                         stuff: int = None,
-                         blah=None):
+                         right: 'Node[T]' = Tupu,
+                         stuff: int = Tupu,
+                         blah=Tupu):
                 self.left = left
                 self.right = right
 
             eleza add_left(self, node: Optional['Node[T]']):
-                self.add_both(node, None)
+                self.add_both(node, Tupu)
 
-            eleza add_right(self, node: 'Node[T]' = None):
-                self.add_both(None, node)
+            eleza add_right(self, node: 'Node[T]' = Tupu):
+                self.add_both(Tupu, node)
 
         t = Node[int]
         both_hints = get_type_hints(t.add_both, globals(), locals())
@@ -2368,9 +2368,9 @@ kundi ForwardRefTests(BaseTestCase):
         c2_gth = typing.ForwardRef('C')
 
         kundi C:
-            pass
+            pita
         eleza foo(a: c1_gth, b: c2_gth):
-            pass
+            pita
 
         self.assertEqual(get_type_hints(foo, globals(), locals()), {'a': C, 'b': C})
         self.assertEqual(c1, c2)
@@ -2389,7 +2389,7 @@ kundi ForwardRefTests(BaseTestCase):
         c2_gth = typing.ForwardRef('int')
 
         eleza foo(a: c1_gth, b: c2_gth):
-            pass
+            pita
         get_type_hints(foo, globals(), locals())
 
         self.assertEqual(hash(c1), hash(c2))
@@ -2398,11 +2398,11 @@ kundi ForwardRefTests(BaseTestCase):
 
     eleza test_forward_equality_namespace(self):
         kundi A:
-            pass
+            pita
         eleza namespace1():
             a = typing.ForwardRef('A')
             eleza fun(x: a):
-                pass
+                pita
             get_type_hints(fun, globals(), locals())
             rudisha a
 
@@ -2410,9 +2410,9 @@ kundi ForwardRefTests(BaseTestCase):
             a = typing.ForwardRef('A')
 
             kundi A:
-                pass
+                pita
             eleza fun(x: a):
-                pass
+                pita
 
             get_type_hints(fun, globals(), locals())
             rudisha a
@@ -2426,7 +2426,7 @@ kundi ForwardRefTests(BaseTestCase):
     eleza test_union_forward(self):
 
         eleza foo(a: Union['T']):
-            pass
+            pita
 
         self.assertEqual(get_type_hints(foo, globals(), locals()),
                          {'a': Union[T]})
@@ -2434,7 +2434,7 @@ kundi ForwardRefTests(BaseTestCase):
     eleza test_tuple_forward(self):
 
         eleza foo(a: Tuple['T']):
-            pass
+            pita
 
         self.assertEqual(get_type_hints(foo, globals(), locals()),
                          {'a': Tuple[T]})
@@ -2443,7 +2443,7 @@ kundi ForwardRefTests(BaseTestCase):
         eleza namespace1():
             a = typing.ForwardRef('A')
             A = a
-            eleza fun(x: a): pass
+            eleza fun(x: a): pita
 
             ret = get_type_hints(fun, globals(), locals())
             rudisha a
@@ -2451,7 +2451,7 @@ kundi ForwardRefTests(BaseTestCase):
         eleza namespace2():
             a = typing.ForwardRef('A')
             A = a
-            eleza fun(x: a): pass
+            eleza fun(x: a): pita
 
             ret = get_type_hints(fun, globals(), locals())
             rudisha a
@@ -2499,7 +2499,7 @@ kundi ForwardRefTests(BaseTestCase):
     eleza test_callable_forward(self):
 
         eleza foo(a: Callable[['T'], 'T']):
-            pass
+            pita
 
         self.assertEqual(get_type_hints(foo, globals(), locals()),
                          {'a': Callable[[T], T]})
@@ -2507,7 +2507,7 @@ kundi ForwardRefTests(BaseTestCase):
     eleza test_callable_with_ellipsis_forward(self):
 
         eleza foo(a: 'Callable[..., T]'):
-            pass
+            pita
 
         self.assertEqual(get_type_hints(foo, globals(), locals()),
                          {'a': Callable[..., T]})
@@ -2520,7 +2520,7 @@ kundi ForwardRefTests(BaseTestCase):
     eleza test_delayed_syntax_error(self):
 
         eleza foo(a: 'Node[T'):
-            pass
+            pita
 
         with self.assertRaises(SyntaxError):
             get_type_hints(foo)
@@ -2528,7 +2528,7 @@ kundi ForwardRefTests(BaseTestCase):
     eleza test_type_error(self):
 
         eleza foo(a: Tuple['42']):
-            pass
+            pita
 
         with self.assertRaises(TypeError):
             get_type_hints(foo)
@@ -2536,7 +2536,7 @@ kundi ForwardRefTests(BaseTestCase):
     eleza test_name_error(self):
 
         eleza foo(a: 'Noode[T]'):
-            pass
+            pita
 
         with self.assertRaises(NameError):
             get_type_hints(foo, locals())
@@ -2545,7 +2545,7 @@ kundi ForwardRefTests(BaseTestCase):
 
         @no_type_check
         eleza foo(a: 'whatevers') -> {}:
-            pass
+            pita
 
         th = get_type_hints(foo)
         self.assertEqual(th, {})
@@ -2555,7 +2555,7 @@ kundi ForwardRefTests(BaseTestCase):
         @no_type_check
         kundi C:
             eleza foo(a: 'whatevers') -> {}:
-                pass
+                pita
 
         cth = get_type_hints(C.foo)
         self.assertEqual(cth, {})
@@ -2582,7 +2582,7 @@ kundi ForwardRefTests(BaseTestCase):
             foo: 'ClassVar[int]' = 7
 
         expected_result = {'foo': typing.ClassVar[int]}
-        for clazz in [C, D, E, F]:
+        kila clazz kwenye [C, D, E, F]:
             self.assertEqual(get_type_hints(clazz), expected_result)
 
     eleza test_nested_classvar_fails_forward_ref_check(self):
@@ -2591,7 +2591,7 @@ kundi ForwardRefTests(BaseTestCase):
         kundi F:
             foo: ClassVar['ClassVar[int]'] = 7
 
-        for clazz in [E, F]:
+        kila clazz kwenye [E, F]:
             with self.assertRaises(TypeError):
                 get_type_hints(clazz)
 
@@ -2605,12 +2605,12 @@ kundi ForwardRefTests(BaseTestCase):
 
         @magic_decorator
         eleza foo(a: 'whatevers') -> {}:
-            pass
+            pita
 
         @magic_decorator
         kundi C:
             eleza foo(a: 'whatevers') -> {}:
-                pass
+                pita
 
         self.assertEqual(foo.__name__, 'foo')
         th = get_type_hints(foo)
@@ -2622,14 +2622,14 @@ kundi ForwardRefTests(BaseTestCase):
 
     eleza test_default_globals(self):
         code = ("kundi C:\n"
-                "    eleza foo(self, a: 'C') -> 'D': pass\n"
+                "    eleza foo(self, a: 'C') -> 'D': pita\n"
                 "kundi D:\n"
-                "    eleza bar(self, b: 'D') -> C: pass\n"
+                "    eleza bar(self, b: 'D') -> C: pita\n"
                 )
         ns = {}
         exec(code, ns)
         hints = get_type_hints(ns['C'].foo)
-        self.assertEqual(hints, {'a': ns['C'], 'return': ns['D']})
+        self.assertEqual(hints, {'a': ns['C'], 'rudisha': ns['D']})
 
     eleza test_final_forward_ref(self):
         self.assertEqual(gth(Loop, globals())['attr'], Final[Loop])
@@ -2646,7 +2646,7 @@ kundi OverloadTests(BaseTestCase):
 
             @overload
             eleza blah():
-                pass
+                pita
 
             blah()
 
@@ -2655,10 +2655,10 @@ kundi OverloadTests(BaseTestCase):
 
         @overload
         eleza blah():
-            pass
+            pita
 
         eleza blah():
-            pass
+            pita
 
         blah()
 
@@ -2674,7 +2674,7 @@ kundi AwaitableWrapper(typing.Awaitable[T_a]):
         self.value = value
 
     eleza __await__(self) -> typing.Iterator[T_a]:
-        yield
+        tuma
         rudisha self.value
 
 kundi AsyncIteratorWrapper(typing.AsyncIterator[T_a]):
@@ -2689,24 +2689,24 @@ kundi AsyncIteratorWrapper(typing.AsyncIterator[T_a]):
         data = await self.value
         ikiwa data:
             rudisha data
-        else:
-            raise StopAsyncIteration
+        isipokua:
+            ashiria StopAsyncIteration
 
 kundi ACM:
     async eleza __aenter__(self) -> int:
         rudisha 42
     async eleza __aexit__(self, etype, eval, tb):
-        rudisha None
+        rudisha Tupu
 """
 
-try:
+jaribu:
     exec(ASYNCIO_TESTS)
-except ImportError:
-    ASYNCIO = False  # multithreading is not enabled
-else:
-    ASYNCIO = True
+tatizo ImportError:
+    ASYNCIO = Uongo  # multithreading ni sio enabled
+isipokua:
+    ASYNCIO = Kweli
 
-# Definitions needed for features introduced in Python 3.6
+# Definitions needed kila features introduced kwenye Python 3.6
 
 kutoka test agiza ann_module, ann_module2, ann_module3
 kutoka typing agiza AsyncContextManager
@@ -2714,7 +2714,7 @@ kutoka typing agiza AsyncContextManager
 kundi A:
     y: float
 kundi B(A):
-    x: ClassVar[Optional['B']] = None
+    x: ClassVar[Optional['B']] = Tupu
     y: int
     b: int
 kundi CSub(B):
@@ -2725,9 +2725,9 @@ kundi G(Generic[T]):
 kundi Loop:
     attr: Final['Loop']
 
-kundi NoneAndForward:
-    parent: 'NoneAndForward'
-    meaning: None
+kundi TupuAndForward:
+    parent: 'TupuAndForward'
+    meaning: Tupu
 
 kundi CoolEmployee(NamedTuple):
     name: str
@@ -2758,7 +2758,7 @@ kundi Point2D(TypedDict):
 
 kundi LabelPoint2D(Point2D, Label): ...
 
-kundi Options(TypedDict, total=False):
+kundi Options(TypedDict, total=Uongo):
     log_level: int
     log_path: str
 
@@ -2768,12 +2768,12 @@ kundi HasForeignBaseClass(mod_generics_cache.A):
 
 async eleza g_with(am: AsyncContextManager[int]):
     x: int
-    async with am as x:
+    async with am kama x:
         rudisha x
 
-try:
-    g_with(ACM()).send(None)
-except StopIteration as e:
+jaribu:
+    g_with(ACM()).send(Tupu)
+tatizo StopIteration kama e:
     assert e.args[0] == 42
 
 gth = get_type_hints
@@ -2787,7 +2787,7 @@ kundi GetTypeHintTests(BaseTestCase):
         with self.assertRaises(TypeError):
             gth('abc')
         with self.assertRaises(TypeError):
-            gth(None)
+            gth(Tupu)
 
     eleza test_get_type_hints_modules(self):
         ann_module_type_hints = {1: 2, 'f': Tuple[int, int], 'x': int, 'y': str}
@@ -2797,9 +2797,9 @@ kundi GetTypeHintTests(BaseTestCase):
 
     @skip("known bug")
     eleza test_get_type_hints_modules_forwardref(self):
-        # FIXME: This currently exposes a bug in typing. Cached forward references
-        # don't account for the case where there are multiple types of the same
-        # name coming kutoka different modules in the same program.
+        # FIXME: This currently exposes a bug kwenye typing. Cached forward references
+        # don't account kila the case where there are multiple types of the same
+        # name coming kutoka different modules kwenye the same program.
         mgc_hints = {'default_a': Optional[mod_generics_cache.A],
                      'default_b': Optional[mod_generics_cache.B]}
         self.assertEqual(gth(mod_generics_cache), mgc_hints)
@@ -2816,8 +2816,8 @@ kundi GetTypeHintTests(BaseTestCase):
                          {'y': Optional[ann_module.C]})
         self.assertEqual(gth(ann_module.S), {'x': str, 'y': str})
         self.assertEqual(gth(ann_module.foo), {'x': int})
-        self.assertEqual(gth(NoneAndForward),
-                         {'parent': NoneAndForward, 'meaning': type(None)})
+        self.assertEqual(gth(TupuAndForward),
+                         {'parent': TupuAndForward, 'meaning': type(Tupu)})
         self.assertEqual(gth(HasForeignBaseClass),
                          {'some_xrepr': XRepr, 'other_a': mod_generics_cache.A,
                           'some_b': mod_generics_cache.B})
@@ -2833,8 +2833,8 @@ kundi GetTypeHintTests(BaseTestCase):
         kundi NoTpCheck:
             kundi Inn:
                 eleza __init__(self, x: 'not a type'): ...
-        self.assertTrue(NoTpCheck.__no_type_check__)
-        self.assertTrue(NoTpCheck.Inn.__init__.__no_type_check__)
+        self.assertKweli(NoTpCheck.__no_type_check__)
+        self.assertKweli(NoTpCheck.Inn.__init__.__no_type_check__)
         self.assertEqual(gth(ann_module2.NTC.meth), {})
         kundi ABase(Generic[T]):
             eleza meth(x: int): ...
@@ -2843,7 +2843,7 @@ kundi GetTypeHintTests(BaseTestCase):
         self.assertEqual(gth(ABase.meth), {'x': int})
 
     eleza test_get_type_hints_for_builtins(self):
-        # Should not fail for built-in classes and functions.
+        # Should sio fail kila built-in classes na functions.
         self.assertEqual(gth(int), {})
         self.assertEqual(gth(type), {})
         self.assertEqual(gth(dir), {})
@@ -2856,8 +2856,8 @@ kundi GetTypeHintTests(BaseTestCase):
         eleza testf(x, y): ...
         testf.__annotations__['x'] = 'int'
         self.assertEqual(gth(testf), {'x': int})
-        eleza testg(x: None): ...
-        self.assertEqual(gth(testg), {'x': type(None)})
+        eleza testg(x: Tupu): ...
+        self.assertEqual(gth(testg), {'x': type(Tupu)})
 
     eleza test_get_type_hints_for_object_with_annotations(self):
         kundi A: ...
@@ -2880,10 +2880,10 @@ kundi GetTypeHintTests(BaseTestCase):
 kundi GetUtilitiesTestCase(TestCase):
     eleza test_get_origin(self):
         T = TypeVar('T')
-        kundi C(Generic[T]): pass
+        kundi C(Generic[T]): pita
         self.assertIs(get_origin(C[int]), C)
         self.assertIs(get_origin(C[T]), C)
-        self.assertIs(get_origin(int), None)
+        self.assertIs(get_origin(int), Tupu)
         self.assertIs(get_origin(ClassVar[int]), ClassVar)
         self.assertIs(get_origin(Union[int, str]), Union)
         self.assertIs(get_origin(Literal[42, 43]), Literal)
@@ -2894,7 +2894,7 @@ kundi GetUtilitiesTestCase(TestCase):
 
     eleza test_get_args(self):
         T = TypeVar('T')
-        kundi C(Generic[T]): pass
+        kundi C(Generic[T]): pita
         self.assertEqual(get_args(C[int]), (int,))
         self.assertEqual(get_args(C[T]), (T,))
         self.assertEqual(get_args(int), ())
@@ -2922,11 +2922,11 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_iterable(self):
         self.assertIsInstance([], typing.Iterable)
         # Due to ABC caching, the second time takes a separate code
-        # path and could fail.  So call this a few times.
+        # path na could fail.  So call this a few times.
         self.assertIsInstance([], typing.Iterable)
         self.assertIsInstance([], typing.Iterable)
         self.assertNotIsInstance(42, typing.Iterable)
-        # Just in case, also test issubclass() a few times.
+        # Just kwenye case, also test issubclass() a few times.
         self.assertIsSubclass(list, typing.Iterable)
         self.assertIsSubclass(list, typing.Iterable)
 
@@ -2935,7 +2935,7 @@ kundi CollectionsAbcTests(BaseTestCase):
         self.assertIsInstance(it, typing.Iterator)
         self.assertNotIsInstance(42, typing.Iterator)
 
-    @skipUnless(ASYNCIO, 'Python 3.5 and multithreading required')
+    @skipUnless(ASYNCIO, 'Python 3.5 na multithreading required')
     eleza test_awaitable(self):
         ns = {}
         exec(
@@ -2946,14 +2946,14 @@ kundi CollectionsAbcTests(BaseTestCase):
         g = foo()
         self.assertIsInstance(g, typing.Awaitable)
         self.assertNotIsInstance(foo, typing.Awaitable)
-        g.send(None)  # Run foo() till completion, to avoid warning.
+        g.send(Tupu)  # Run foo() till completion, to avoid warning.
 
-    @skipUnless(ASYNCIO, 'Python 3.5 and multithreading required')
+    @skipUnless(ASYNCIO, 'Python 3.5 na multithreading required')
     eleza test_coroutine(self):
         ns = {}
         exec(
             "async eleza foo():\n"
-            "    return\n",
+            "    rudisha\n",
             globals(), ns)
         foo = ns['foo']
         g = foo()
@@ -2961,12 +2961,12 @@ kundi CollectionsAbcTests(BaseTestCase):
         with self.assertRaises(TypeError):
             isinstance(g, typing.Coroutine[int])
         self.assertNotIsInstance(foo, typing.Coroutine)
-        try:
-            g.send(None)
-        except StopIteration:
-            pass
+        jaribu:
+            g.send(Tupu)
+        tatizo StopIteration:
+            pita
 
-    @skipUnless(ASYNCIO, 'Python 3.5 and multithreading required')
+    @skipUnless(ASYNCIO, 'Python 3.5 na multithreading required')
     eleza test_async_iterable(self):
         base_it = range(10)  # type: Iterator[int]
         it = AsyncIteratorWrapper(base_it)
@@ -2974,7 +2974,7 @@ kundi CollectionsAbcTests(BaseTestCase):
         self.assertIsInstance(it, typing.AsyncIterable)
         self.assertNotIsInstance(42, typing.AsyncIterable)
 
-    @skipUnless(ASYNCIO, 'Python 3.5 and multithreading required')
+    @skipUnless(ASYNCIO, 'Python 3.5 na multithreading required')
     eleza test_async_iterator(self):
         base_it = range(10)  # type: Iterator[int]
         it = AsyncIteratorWrapper(base_it)
@@ -3057,7 +3057,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_list_subclass(self):
 
         kundi MyList(typing.List[int]):
-            pass
+            pita
 
         a = MyList()
         self.assertIsInstance(a, MyList)
@@ -3077,7 +3077,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_dict_subclass(self):
 
         kundi MyDict(typing.Dict[str, int]):
-            pass
+            pita
 
         d = MyDict()
         self.assertIsInstance(d, MyDict)
@@ -3094,7 +3094,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_defaultdict_subclass(self):
 
         kundi MyDefDict(typing.DefaultDict[str, int]):
-            pass
+            pita
 
         dd = MyDefDict()
         self.assertIsInstance(dd, MyDefDict)
@@ -3110,7 +3110,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_ordereddict_subclass(self):
 
         kundi MyOrdDict(typing.OrderedDict[str, int]):
-            pass
+            pita
 
         od = MyOrdDict()
         self.assertIsInstance(od, MyOrdDict)
@@ -3118,7 +3118,7 @@ kundi CollectionsAbcTests(BaseTestCase):
         self.assertIsSubclass(MyOrdDict, collections.OrderedDict)
         self.assertNotIsSubclass(collections.OrderedDict, MyOrdDict)
 
-    @skipUnless(sys.version_info >= (3, 3), 'ChainMap was added in 3.3')
+    @skipUnless(sys.version_info >= (3, 3), 'ChainMap was added kwenye 3.3')
     eleza test_chainmap_instantiation(self):
         self.assertIs(type(typing.ChainMap()), collections.ChainMap)
         self.assertIs(type(typing.ChainMap[KT, VT]()), collections.ChainMap)
@@ -3126,11 +3126,11 @@ kundi CollectionsAbcTests(BaseTestCase):
         kundi CM(typing.ChainMap[KT, VT]): ...
         self.assertIs(type(CM[int, str]()), CM)
 
-    @skipUnless(sys.version_info >= (3, 3), 'ChainMap was added in 3.3')
+    @skipUnless(sys.version_info >= (3, 3), 'ChainMap was added kwenye 3.3')
     eleza test_chainmap_subclass(self):
 
         kundi MyChainMap(typing.ChainMap[str, int]):
-            pass
+            pita
 
         cm = MyChainMap()
         self.assertIsInstance(cm, MyChainMap)
@@ -3155,7 +3155,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_counter_subclass_instantiation(self):
 
         kundi MyCounter(typing.Counter[int]):
-            pass
+            pita
 
         d = MyCounter()
         self.assertIsInstance(d, MyCounter)
@@ -3173,7 +3173,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_set_subclass_instantiation(self):
 
         kundi MySet(typing.Set[int]):
-            pass
+            pita
 
         d = MySet()
         self.assertIsInstance(d, MySet)
@@ -3189,7 +3189,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_frozenset_subclass_instantiation(self):
 
         kundi MyFrozenSet(typing.FrozenSet[int]):
-            pass
+            pita
 
         d = MyFrozenSet()
         self.assertIsInstance(d, MyFrozenSet)
@@ -3204,7 +3204,7 @@ kundi CollectionsAbcTests(BaseTestCase):
 
     eleza test_generator(self):
         eleza foo():
-            yield 42
+            tuma 42
         g = foo()
         self.assertIsSubclass(type(g), typing.Generator)
 
@@ -3219,7 +3219,7 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_async_generator(self):
         ns = {}
         exec("async eleza f():\n"
-             "    yield 42\n", globals(), ns)
+             "    tuma 42\n", globals(), ns)
         g = ns['f']()
         self.assertIsSubclass(type(g), typing.AsyncGenerator)
 
@@ -3234,18 +3234,18 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_subclassing(self):
 
         kundi MMA(typing.MutableMapping):
-            pass
+            pita
 
         with self.assertRaises(TypeError):  # It's abstract
             MMA()
 
         kundi MMC(MMA):
             eleza __getitem__(self, k):
-                rudisha None
+                rudisha Tupu
             eleza __setitem__(self, k, v):
-                pass
+                pita
             eleza __delitem__(self, k):
-                pass
+                pita
             eleza __iter__(self):
                 rudisha iter(())
             eleza __len__(self):
@@ -3257,11 +3257,11 @@ kundi CollectionsAbcTests(BaseTestCase):
 
         kundi MMB(typing.MutableMapping[KT, VT]):
             eleza __getitem__(self, k):
-                rudisha None
+                rudisha Tupu
             eleza __setitem__(self, k, v):
-                pass
+                pita
             eleza __delitem__(self, k):
-                pass
+                pita
             eleza __iter__(self):
                 rudisha iter(())
             eleza __len__(self):
@@ -3293,7 +3293,7 @@ kundi CollectionsAbcTests(BaseTestCase):
         self.assertNotIsSubclass(list, I)
 
         kundi G(typing.Generator[int, int, int]): ...
-        eleza g(): yield 0
+        eleza g(): tuma 0
         self.assertIsSubclass(G, typing.Generator)
         self.assertIsSubclass(G, typing.Iterable)
         self.assertIsSubclass(G, collections.abc.Generator)
@@ -3303,12 +3303,12 @@ kundi CollectionsAbcTests(BaseTestCase):
     eleza test_subclassing_async_generator(self):
         kundi G(typing.AsyncGenerator[int, int]):
             eleza asend(self, value):
-                pass
-            eleza athrow(self, typ, val=None, tb=None):
-                pass
+                pita
+            eleza athrow(self, typ, val=Tupu, tb=Tupu):
+                pita
 
         ns = {}
-        exec('async eleza g(): yield 0', globals(), ns)
+        exec('async eleza g(): tuma 0', globals(), ns)
         g = ns['g']
         self.assertIsSubclass(G, typing.AsyncGenerator)
         self.assertIsSubclass(G, typing.AsyncIterable)
@@ -3330,9 +3330,9 @@ kundi CollectionsAbcTests(BaseTestCase):
             @classmethod
             eleza __subclasshook__(cls, other):
                 ikiwa other.__name__ == 'Foo':
-                    rudisha True
-                else:
-                    rudisha False
+                    rudisha Kweli
+                isipokua:
+                    rudisha Uongo
 
         kundi C(Base): ...
         kundi Foo: ...
@@ -3384,7 +3384,7 @@ kundi OtherABCTests(BaseTestCase):
     eleza test_contextmanager(self):
         @contextlib.contextmanager
         eleza manager():
-            yield 42
+            tuma 42
 
         cm = manager()
         self.assertIsInstance(cm, typing.ContextManager)
@@ -3393,12 +3393,12 @@ kundi OtherABCTests(BaseTestCase):
     @skipUnless(ASYNCIO, 'Python 3.5 required')
     eleza test_async_contextmanager(self):
         kundi NotACM:
-            pass
+            pita
         self.assertIsInstance(ACM(), typing.AsyncContextManager)
         self.assertNotIsInstance(NotACM(), typing.AsyncContextManager)
         @contextlib.contextmanager
         eleza manager():
-            yield 42
+            tuma 42
 
         cm = manager()
         self.assertNotIsInstance(cm, typing.AsyncContextManager)
@@ -3413,9 +3413,9 @@ kundi TypeTests(BaseTestCase):
 
     eleza test_type_basic(self):
 
-        kundi User: pass
-        kundi BasicUser(User): pass
-        kundi ProUser(User): pass
+        kundi User: pita
+        kundi BasicUser(User): pita
+        kundi ProUser(User): pita
 
         eleza new_user(user_class: Type[User]) -> User:
             rudisha user_class()
@@ -3424,9 +3424,9 @@ kundi TypeTests(BaseTestCase):
 
     eleza test_type_typevar(self):
 
-        kundi User: pass
-        kundi BasicUser(User): pass
-        kundi ProUser(User): pass
+        kundi User: pita
+        kundi BasicUser(User): pita
+        kundi ProUser(User): pita
 
         U = TypeVar('U', bound=User)
 
@@ -3439,13 +3439,13 @@ kundi TypeTests(BaseTestCase):
         A = Optional[Type[BaseException]]
 
         eleza foo(a: A) -> Optional[BaseException]:
-            ikiwa a is None:
-                rudisha None
-            else:
+            ikiwa a ni Tupu:
+                rudisha Tupu
+            isipokua:
                 rudisha a()
 
         assert isinstance(foo(KeyboardInterrupt), KeyboardInterrupt)
-        assert foo(None) is None
+        assert foo(Tupu) ni Tupu
 
 
 kundi NewTypeTests(BaseTestCase):
@@ -3464,7 +3464,7 @@ kundi NewTypeTests(BaseTestCase):
             issubclass(UserId, int)
         with self.assertRaises(TypeError):
             kundi D(UserName):
-                pass
+                pita
 
 
 kundi NamedTupleTests(BaseTestCase):
@@ -3541,7 +3541,7 @@ kundi NonDefaultAfterDefault(NamedTuple):
 kundi XMethBad(NamedTuple):
     x: int
     eleza _fields(self):
-        rudisha 'no chance for this'
+        rudisha 'no chance kila this'
 """)
 
         with self.assertRaises(AttributeError):
@@ -3549,7 +3549,7 @@ kundi XMethBad(NamedTuple):
 kundi XMethBad2(NamedTuple):
     x: int
     eleza _source(self):
-        rudisha 'no chance for this as well'
+        rudisha 'no chance kila this kama well'
 """)
 
     eleza test_namedtuple_keyword_usage(self):
@@ -3582,7 +3582,7 @@ kundi XMethBad2(NamedTuple):
         with self.assertRaises(TypeError):
             NamedTuple()
         with self.assertRaises(TypeError):
-            NamedTuple('Emp', [('name', str)], None)
+            NamedTuple('Emp', [('name', str)], Tupu)
         with self.assertRaises(ValueError):
             NamedTuple('Emp', [('_name', str)])
 
@@ -3599,10 +3599,10 @@ kundi XMethBad2(NamedTuple):
     eleza test_copy_and_pickle(self):
         global Emp  # pickle wants to reference the kundi by name
         Emp = NamedTuple('Emp', [('name', str), ('cool', int)])
-        for cls in Emp, CoolEmployee, self.NestedEmployee:
+        kila cls kwenye Emp, CoolEmployee, self.NestedEmployee:
             with self.subTest(cls=cls):
                 jane = cls('jane', 37)
-                for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+                kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                     z = pickle.dumps(jane, proto)
                     jane2 = pickle.loads(z)
                     self.assertEqual(jane2, jane)
@@ -3631,7 +3631,7 @@ kundi TypedDictTests(BaseTestCase):
         self.assertEqual(Emp.__module__, __name__)
         self.assertEqual(Emp.__bases__, (dict,))
         self.assertEqual(Emp.__annotations__, {'name': str, 'id': int})
-        self.assertEqual(Emp.__total__, True)
+        self.assertEqual(Emp.__total__, Kweli)
 
     eleza test_basics_keywords_syntax(self):
         Emp = TypedDict('Emp', name=str, id=int)
@@ -3646,7 +3646,7 @@ kundi TypedDictTests(BaseTestCase):
         self.assertEqual(Emp.__module__, __name__)
         self.assertEqual(Emp.__bases__, (dict,))
         self.assertEqual(Emp.__annotations__, {'name': str, 'id': int})
-        self.assertEqual(Emp.__total__, True)
+        self.assertEqual(Emp.__total__, Kweli)
 
     eleza test_typeddict_special_keyword_names(self):
         TD = TypedDict("TD", cls=type, self=object, typename=str, _typename=int, fields=list, _fields=dict)
@@ -3666,7 +3666,7 @@ kundi TypedDictTests(BaseTestCase):
         with self.assertRaises(TypeError):
             TypedDict()
         with self.assertRaises(TypeError):
-            TypedDict('Emp', [('name', str)], None)
+            TypedDict('Emp', [('name', str)], Tupu)
         with self.assertRaises(TypeError):
             TypedDict(_typename='Emp', name=str, id=int)
         with self.assertRaises(TypeError):
@@ -3694,7 +3694,7 @@ kundi TypedDictTests(BaseTestCase):
         self.assertEqual(LabelPoint2D.__module__, __name__)
         self.assertEqual(LabelPoint2D.__annotations__, {'x': int, 'y': int, 'label': str})
         self.assertEqual(LabelPoint2D.__bases__, (dict,))
-        self.assertEqual(LabelPoint2D.__total__, True)
+        self.assertEqual(LabelPoint2D.__total__, Kweli)
         self.assertNotIsSubclass(LabelPoint2D, typing.Sequence)
         not_origin = Point2D(x=0, y=1)
         self.assertEqual(not_origin['x'], 0)
@@ -3706,7 +3706,7 @@ kundi TypedDictTests(BaseTestCase):
         global EmpD  # pickle wants to reference the kundi by name
         EmpD = TypedDict('EmpD', name=str, id=int)
         jane = EmpD({'name': 'jane', 'id': 37})
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             z = pickle.dumps(jane, proto)
             jane2 = pickle.loads(z)
             self.assertEqual(jane2, jane)
@@ -3718,18 +3718,18 @@ kundi TypedDictTests(BaseTestCase):
     eleza test_optional(self):
         EmpD = TypedDict('EmpD', name=str, id=int)
 
-        self.assertEqual(typing.Optional[EmpD], typing.Union[None, EmpD])
+        self.assertEqual(typing.Optional[EmpD], typing.Union[Tupu, EmpD])
         self.assertNotEqual(typing.List[EmpD], typing.Tuple[EmpD])
 
     eleza test_total(self):
-        D = TypedDict('D', {'x': int}, total=False)
+        D = TypedDict('D', {'x': int}, total=Uongo)
         self.assertEqual(D(), {})
         self.assertEqual(D(x=1), {'x': 1})
-        self.assertEqual(D.__total__, False)
+        self.assertEqual(D.__total__, Uongo)
 
         self.assertEqual(Options(), {})
         self.assertEqual(Options(log_level=2), {'log_level': 2})
-        self.assertEqual(Options.__total__, False)
+        self.assertEqual(Options.__total__, Uongo)
 
 
 kundi IOTests(BaseTestCase):
@@ -3768,7 +3768,7 @@ kundi IOTests(BaseTestCase):
 
 
 kundi RETests(BaseTestCase):
-    # Much of this is really testing _TypeAlias.
+    # Much of this ni really testing _TypeAlias.
 
     eleza test_basics(self):
         pat = re.compile('[a-z]+', re.I)
@@ -3818,34 +3818,34 @@ kundi RETests(BaseTestCase):
         self.assertEqual(__name__, 'typing.re')
 
     eleza test_cannot_subclass(self):
-        with self.assertRaises(TypeError) as ex:
+        with self.assertRaises(TypeError) kama ex:
 
             kundi A(typing.Match):
-                pass
+                pita
 
         self.assertEqual(str(ex.exception),
-                         "type 're.Match' is not an acceptable base type")
+                         "type 're.Match' ni sio an acceptable base type")
 
 
 kundi AllTests(BaseTestCase):
-    """Tests for __all__."""
+    """Tests kila __all__."""
 
     eleza test_all(self):
-        kutoka typing agiza __all__ as a
-        # Just spot-check the first and last of every category.
+        kutoka typing agiza __all__ kama a
+        # Just spot-check the first na last of every category.
         self.assertIn('AbstractSet', a)
         self.assertIn('ValuesView', a)
         self.assertIn('cast', a)
         self.assertIn('overload', a)
         ikiwa hasattr(contextlib, 'AbstractContextManager'):
             self.assertIn('ContextManager', a)
-        # Check that io and re are not exported.
+        # Check that io na re are sio exported.
         self.assertNotIn('io', a)
         self.assertNotIn('re', a)
         # Spot-check that stdlib modules aren't exported.
         self.assertNotIn('os', a)
         self.assertNotIn('sys', a)
-        # Check that Text is defined.
+        # Check that Text ni defined.
         self.assertIn('Text', a)
         # Check previously missing classes.
         self.assertIn('SupportsBytes', a)
@@ -3856,20 +3856,20 @@ kundi AllTests(BaseTestCase):
 
         actual_all = set(typing.__all__)
         computed_all = {
-            k for k, v in vars(typing).items()
-            # explicitly exported, not a thing with __module__
-            ikiwa k in actual_all or (
+            k kila k, v kwenye vars(typing).items()
+            # explicitly exported, sio a thing with __module__
+            ikiwa k kwenye actual_all ama (
                 # avoid private names
-                not k.startswith('_') and
-                # avoid things in the io / re typing submodules
-                k not in typing.io.__all__ and
-                k not in typing.re.__all__ and
-                k not in {'io', 're'} and
-                # there's a few types and metaclasses that aren't exported
-                not k.endswith(('Meta', '_contra', '_co')) and
-                not k.upper() == k and
+                sio k.startswith('_') and
+                # avoid things kwenye the io / re typing submodules
+                k haiko kwenye typing.io.__all__ and
+                k haiko kwenye typing.re.__all__ and
+                k haiko kwenye {'io', 're'} and
+                # there's a few types na metaclasses that aren't exported
+                sio k.endswith(('Meta', '_contra', '_co')) and
+                sio k.upper() == k and
                 # but export all things that have __module__ == 'typing'
-                getattr(v, '__module__', None) == typing.__name__
+                getattr(v, '__module__', Tupu) == typing.__name__
             )
         }
         self.assertSetEqual(computed_all, actual_all)

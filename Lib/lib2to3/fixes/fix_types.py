@@ -1,15 +1,15 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Fixer for removing uses of the types module.
+"""Fixer kila removing uses of the types module.
 
-These work for only the known names in the types module.  The forms above
-can include types. or not.  ie, It is assumed the module is imported either as:
+These work kila only the known names kwenye the types module.  The forms above
+can include types. ama not.  ie, It ni assumed the module ni imported either as:
 
     agiza types
-    kutoka types agiza ... # either * or specific types
+    kutoka types agiza ... # either * ama specific types
 
-The agiza statements are not modified.
+The agiza statements are sio modified.
 
 There should be another fixer that handles at least the following constants:
 
@@ -37,7 +37,7 @@ _TYPE_MAPPING = {
         'ListType': 'list',
         'LongType': 'int',
         'ObjectType' : 'object',
-        'NoneType': 'type(None)',
+        'TupuType': 'type(Tupu)',
         'NotImplementedType' : 'type(NotImplemented)',
         'SliceType' : 'slice',
         'StringType': 'bytes', # XXX ?
@@ -48,14 +48,14 @@ _TYPE_MAPPING = {
         'XRangeType' : 'range',
     }
 
-_pats = ["power< 'types' trailer< '.' name='%s' > >" % t for t in _TYPE_MAPPING]
+_pats = ["power< 'types' trailer< '.' name='%s' > >" % t kila t kwenye _TYPE_MAPPING]
 
 kundi FixTypes(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = '|'.join(_pats)
 
     eleza transform(self, node, results):
         new_value = _TYPE_MAPPING.get(results["name"].value)
         ikiwa new_value:
             rudisha Name(new_value, prefix=node.prefix)
-        rudisha None
+        rudisha Tupu

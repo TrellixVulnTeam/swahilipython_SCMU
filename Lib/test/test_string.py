@@ -6,8 +6,8 @@ kutoka string agiza Template
 kundi ModuleTest(unittest.TestCase):
 
     eleza test_attrs(self):
-        # While the exact order of the items in these attributes is not
-        # technically part of the "language spec", in practice there is almost
+        # While the exact order of the items kwenye these attributes ni not
+        # technically part of the "language spec", kwenye practice there ni almost
         # certainly user code that depends on the order, so de-facto it *is*
         # part of the spec.
         self.assertEqual(string.whitespace, ' \t\n\r\x0b\x0c')
@@ -55,8 +55,8 @@ kundi ModuleTest(unittest.TestCase):
         fmt = string.Formatter()
         self.assertEqual(fmt.format('foo{}{}', 'bar', 6),
                          'foo{}{}'.format('bar', 6))
-        self.assertEqual(fmt.format('foo{1}{num}{1}', None, 'bar', num=6),
-                         'foo{1}{num}{1}'.format(None, 'bar', num=6))
+        self.assertEqual(fmt.format('foo{1}{num}{1}', Tupu, 'bar', num=6),
+                         'foo{1}{num}{1}'.format(Tupu, 'bar', num=6))
         self.assertEqual(fmt.format('{:^{}}', 'bar', 6),
                          '{:^{}}'.format('bar', 6))
         self.assertEqual(fmt.format('{:^{}} {}', 'bar', 6, 'X'),
@@ -109,12 +109,12 @@ kundi ModuleTest(unittest.TestCase):
 
             eleza get_value(self, key, args, kwds):
                 ikiwa isinstance(key, str):
-                    try:
-                        # Check explicitly passed arguments first
+                    jaribu:
+                        # Check explicitly pitaed arguments first
                         rudisha kwds[key]
-                    except KeyError:
+                    tatizo KeyError:
                         rudisha self.namespace[key]
-                else:
+                isipokua:
                     string.Formatter.get_value(key, args, kwds)
 
         fmt = NamespaceFormatter({'greeting':'hello'})
@@ -134,25 +134,25 @@ kundi ModuleTest(unittest.TestCase):
         kundi XFormatter(string.Formatter):
             eleza convert_field(self, value, conversion):
                 ikiwa conversion == 'x':
-                    rudisha None
+                    rudisha Tupu
                 rudisha super().convert_field(value, conversion)
 
         fmt = XFormatter()
-        self.assertEqual(fmt.format("{0!r}:{0!x}", 'foo', 'foo'), "'foo':None")
+        self.assertEqual(fmt.format("{0!r}:{0!x}", 'foo', 'foo'), "'foo':Tupu")
 
 
     eleza test_override_parse(self):
         kundi BarFormatter(string.Formatter):
-            # returns an iterable that contains tuples of the form:
+            # rudishas an iterable that contains tuples of the form:
             # (literal_text, field_name, format_spec, conversion)
             eleza parse(self, format_string):
-                for field in format_string.split('|'):
+                kila field kwenye format_string.split('|'):
                     ikiwa field[0] == '+':
                         # it's markup
                         field_name, _, format_spec = field[1:].partition(':')
-                        yield '', field_name, format_spec, None
-                    else:
-                        yield field, None, None, None
+                        tuma '', field_name, format_spec, Tupu
+                    isipokua:
+                        tuma field, Tupu, Tupu, Tupu
 
         fmt = BarFormatter()
         self.assertEqual(fmt.format('*|+0:^10s|*', 'foo'), '*   foo    *')
@@ -164,11 +164,11 @@ kundi ModuleTest(unittest.TestCase):
                 unused_args = set(kwargs.keys())
                 unused_args.update(range(0, len(args)))
 
-                for arg in used_args:
+                kila arg kwenye used_args:
                     unused_args.remove(arg)
 
                 ikiwa unused_args:
-                    raise ValueError("unused arguments")
+                    ashiria ValueError("unused arguments")
 
         fmt = CheckAllUsedFormatter()
         self.assertEqual(fmt.format("{0}", 10), "10")
@@ -183,24 +183,24 @@ kundi ModuleTest(unittest.TestCase):
         fmt = string.Formatter()
         args = ()
         kwargs = dict(i=100)
-        with self.assertRaises(ValueError) as err:
+        with self.assertRaises(ValueError) kama err:
             fmt._vformat("{i}", args, kwargs, set(), -1)
         self.assertIn("recursion", str(err.exception))
 
 
-# Template tests (formerly housed in test_pep292.py)
+# Template tests (formerly housed kwenye test_pep292.py)
 
 kundi Bag:
-    pass
+    pita
 
 kundi Mapping:
     eleza __getitem__(self, name):
         obj = self
-        for part in name.split('.'):
-            try:
+        kila part kwenye name.split('.'):
+            jaribu:
                 obj = getattr(obj, part)
-            except AttributeError:
-                raise KeyError(name)
+            tatizo AttributeError:
+                ashiria KeyError(name)
         rudisha obj
 
 
@@ -213,21 +213,21 @@ kundi TestTemplate(unittest.TestCase):
         self.assertRaises(TypeError, Template.substitute)
 
     eleza test_regular_templates_with_braces(self):
-        s = Template('$who likes ${what} for ${meal}')
+        s = Template('$who likes ${what} kila ${meal}')
         d = dict(who='tim', what='ham', meal='dinner')
-        self.assertEqual(s.substitute(d), 'tim likes ham for dinner')
+        self.assertEqual(s.substitute(d), 'tim likes ham kila dinner')
         self.assertRaises(KeyError, s.substitute,
                           dict(who='tim', what='ham'))
 
     eleza test_regular_templates_with_upper_case(self):
-        s = Template('$WHO likes ${WHAT} for ${MEAL}')
+        s = Template('$WHO likes ${WHAT} kila ${MEAL}')
         d = dict(WHO='tim', WHAT='ham', MEAL='dinner')
-        self.assertEqual(s.substitute(d), 'tim likes ham for dinner')
+        self.assertEqual(s.substitute(d), 'tim likes ham kila dinner')
 
     eleza test_regular_templates_with_non_letters(self):
-        s = Template('$_wh0_ likes ${_w_h_a_t_} for ${mea1}')
+        s = Template('$_wh0_ likes ${_w_h_a_t_} kila ${mea1}')
         d = dict(_wh0_='tim', _w_h_a_t_='ham', mea1='dinner')
-        self.assertEqual(s.substitute(d), 'tim likes ham for dinner')
+        self.assertEqual(s.substitute(d), 'tim likes ham kila dinner')
 
     eleza test_escapes(self):
         eq = self.assertEqual
@@ -262,30 +262,30 @@ kundi TestTemplate(unittest.TestCase):
 
     eleza test_SafeTemplate(self):
         eq = self.assertEqual
-        s = Template('$who likes ${what} for ${meal}')
-        eq(s.safe_substitute(dict(who='tim')), 'tim likes ${what} for ${meal}')
-        eq(s.safe_substitute(dict(what='ham')), '$who likes ham for ${meal}')
+        s = Template('$who likes ${what} kila ${meal}')
+        eq(s.safe_substitute(dict(who='tim')), 'tim likes ${what} kila ${meal}')
+        eq(s.safe_substitute(dict(what='ham')), '$who likes ham kila ${meal}')
         eq(s.safe_substitute(dict(what='ham', meal='dinner')),
-           '$who likes ham for dinner')
+           '$who likes ham kila dinner')
         eq(s.safe_substitute(dict(who='tim', what='ham')),
-           'tim likes ham for ${meal}')
+           'tim likes ham kila ${meal}')
         eq(s.safe_substitute(dict(who='tim', what='ham', meal='dinner')),
-           'tim likes ham for dinner')
+           'tim likes ham kila dinner')
 
     eleza test_invalid_placeholders(self):
-        raises = self.assertRaises
+        ashirias = self.assertRaises
         s = Template('$who likes $')
-        raises(ValueError, s.substitute, dict(who='tim'))
+        ashirias(ValueError, s.substitute, dict(who='tim'))
         s = Template('$who likes ${what)')
-        raises(ValueError, s.substitute, dict(who='tim'))
+        ashirias(ValueError, s.substitute, dict(who='tim'))
         s = Template('$who likes $100')
-        raises(ValueError, s.substitute, dict(who='tim'))
+        ashirias(ValueError, s.substitute, dict(who='tim'))
         # Template.idpattern should match to only ASCII characters.
         # https://bugs.python.org/issue31672
         s = Template("$who likes $\u0131")  # (DOTLESS I)
-        raises(ValueError, s.substitute, dict(who='tim'))
+        ashirias(ValueError, s.substitute, dict(who='tim'))
         s = Template("$who likes $\u0130")  # (LATIN CAPITAL LETTER I WITH DOT ABOVE)
-        raises(ValueError, s.substitute, dict(who='tim'))
+        ashirias(ValueError, s.substitute, dict(who='tim'))
 
     eleza test_idpattern_override(self):
         kundi PathPattern(Template):
@@ -301,13 +301,13 @@ kundi TestTemplate(unittest.TestCase):
     eleza test_flags_override(self):
         kundi MyPattern(Template):
             flags = 0
-        s = MyPattern('$wHO likes ${WHAT} for ${meal}')
+        s = MyPattern('$wHO likes ${WHAT} kila ${meal}')
         d = dict(wHO='tim', WHAT='ham', meal='dinner', w='fred')
         self.assertRaises(ValueError, s.substitute, d)
-        self.assertEqual(s.safe_substitute(d), 'fredHO likes ${WHAT} for dinner')
+        self.assertEqual(s.safe_substitute(d), 'fredHO likes ${WHAT} kila dinner')
 
     eleza test_idpattern_override_inside_outside(self):
-        # bpo-1198569: Allow the regexp inside and outside braces to be
+        # bpo-1198569: Allow the regexp inside na outside braces to be
         # different when deriving kutoka Template.
         kundi MyPattern(Template):
             idpattern = r'[a-z]+'
@@ -318,7 +318,7 @@ kundi TestTemplate(unittest.TestCase):
         self.assertEqual(s.substitute(m), 'foo BAR')
 
     eleza test_idpattern_override_inside_outside_invalid_unbraced(self):
-        # bpo-1198569: Allow the regexp inside and outside braces to be
+        # bpo-1198569: Allow the regexp inside na outside braces to be
         # different when deriving kutoka Template.
         kundi MyPattern(Template):
             idpattern = r'[a-z]+'
@@ -369,11 +369,11 @@ kundi TestTemplate(unittest.TestCase):
            )
            """
 
-        tmpl = 'PyCon in $@@location@@'
+        tmpl = 'PyCon kwenye $@@location@@'
         t = MyTemplate(tmpl)
         self.assertRaises(KeyError, t.substitute, {})
         val = t.substitute({'location': 'Cleveland'})
-        self.assertEqual(val, 'PyCon in Cleveland')
+        self.assertEqual(val, 'PyCon kwenye Cleveland')
 
     eleza test_braced_override_safe(self):
         kundi MyTemplate(Template):
@@ -386,17 +386,17 @@ kundi TestTemplate(unittest.TestCase):
            )
            """
 
-        tmpl = 'PyCon in $@@location@@'
+        tmpl = 'PyCon kwenye $@@location@@'
         t = MyTemplate(tmpl)
         self.assertEqual(t.safe_substitute(), tmpl)
         val = t.safe_substitute({'location': 'Cleveland'})
-        self.assertEqual(val, 'PyCon in Cleveland')
+        self.assertEqual(val, 'PyCon kwenye Cleveland')
 
     eleza test_invalid_with_no_lines(self):
-        # The error formatting for invalid templates
-        # has a special case for no data that the default
+        # The error formatting kila invalid templates
+        # has a special case kila no data that the default
         # pattern can't trigger (always has at least '$')
-        # So we craft a pattern that is always invalid
+        # So we craft a pattern that ni always invalid
         # with no leading data.
         kundi MyTemplate(Template):
             pattern = r"""
@@ -408,7 +408,7 @@ kundi TestTemplate(unittest.TestCase):
               )
             """
         s = MyTemplate('')
-        with self.assertRaises(ValueError) as err:
+        with self.assertRaises(ValueError) kama err:
             s.substitute({})
         self.assertIn('line 1, col 1', str(err.exception))
 
@@ -425,49 +425,49 @@ kundi TestTemplate(unittest.TestCase):
         eq(s.substitute(dict(who='fred', what='kung pao'),
                         who='tim', what='ham'),
            'tim likes ham')
-        s = Template('the mapping is $mapping')
+        s = Template('the mapping ni $mapping')
         eq(s.substitute(dict(foo='none'), mapping='bozo'),
-           'the mapping is bozo')
+           'the mapping ni bozo')
         eq(s.substitute(dict(mapping='one'), mapping='two'),
-           'the mapping is two')
+           'the mapping ni two')
 
-        s = Template('the self is $self')
-        eq(s.substitute(self='bozo'), 'the self is bozo')
+        s = Template('the self ni $self')
+        eq(s.substitute(self='bozo'), 'the self ni bozo')
 
     eleza test_keyword_arguments_safe(self):
         eq = self.assertEqual
-        raises = self.assertRaises
+        ashirias = self.assertRaises
         s = Template('$who likes $what')
         eq(s.safe_substitute(who='tim', what='ham'), 'tim likes ham')
         eq(s.safe_substitute(dict(who='tim'), what='ham'), 'tim likes ham')
         eq(s.safe_substitute(dict(who='fred', what='kung pao'),
                         who='tim', what='ham'),
            'tim likes ham')
-        s = Template('the mapping is $mapping')
+        s = Template('the mapping ni $mapping')
         eq(s.safe_substitute(dict(foo='none'), mapping='bozo'),
-           'the mapping is bozo')
+           'the mapping ni bozo')
         eq(s.safe_substitute(dict(mapping='one'), mapping='two'),
-           'the mapping is two')
+           'the mapping ni two')
         d = dict(mapping='one')
-        raises(TypeError, s.substitute, d, {})
-        raises(TypeError, s.safe_substitute, d, {})
+        ashirias(TypeError, s.substitute, d, {})
+        ashirias(TypeError, s.safe_substitute, d, {})
 
-        s = Template('the self is $self')
-        eq(s.safe_substitute(self='bozo'), 'the self is bozo')
+        s = Template('the self ni $self')
+        eq(s.safe_substitute(self='bozo'), 'the self ni bozo')
 
     eleza test_delimiter_override(self):
         eq = self.assertEqual
-        raises = self.assertRaises
+        ashirias = self.assertRaises
         kundi AmpersandTemplate(Template):
             delimiter = '&'
-        s = AmpersandTemplate('this &gift is for &{who} &&')
-        eq(s.substitute(gift='bud', who='you'), 'this bud is for you &')
-        raises(KeyError, s.substitute)
-        eq(s.safe_substitute(gift='bud', who='you'), 'this bud is for you &')
-        eq(s.safe_substitute(), 'this &gift is for &{who} &')
-        s = AmpersandTemplate('this &gift is for &{who} &')
-        raises(ValueError, s.substitute, dict(gift='bud', who='you'))
-        eq(s.safe_substitute(), 'this &gift is for &{who} &')
+        s = AmpersandTemplate('this &gift ni kila &{who} &&')
+        eq(s.substitute(gift='bud', who='you'), 'this bud ni kila you &')
+        ashirias(KeyError, s.substitute)
+        eq(s.safe_substitute(gift='bud', who='you'), 'this bud ni kila you &')
+        eq(s.safe_substitute(), 'this &gift ni kila &{who} &')
+        s = AmpersandTemplate('this &gift ni kila &{who} &')
+        ashirias(ValueError, s.substitute, dict(gift='bud', who='you'))
+        eq(s.safe_substitute(), 'this &gift ni kila &{who} &')
 
         kundi PieDelims(Template):
             delimiter = '@'

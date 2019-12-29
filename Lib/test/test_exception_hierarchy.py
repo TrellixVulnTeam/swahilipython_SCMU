@@ -8,7 +8,7 @@ kutoka errno agiza EEXIST
 
 
 kundi SubOSError(OSError):
-    pass
+    pita
 
 kundi SubOSErrorWithInit(OSError):
     eleza __init__(self, message, bar):
@@ -22,14 +22,14 @@ kundi SubOSErrorWithNew(OSError):
         rudisha self
 
 kundi SubOSErrorCombinedInitFirst(SubOSErrorWithInit, SubOSErrorWithNew):
-    pass
+    pita
 
 kundi SubOSErrorCombinedNewFirst(SubOSErrorWithNew, SubOSErrorWithInit):
-    pass
+    pita
 
 kundi SubOSErrorWithStandaloneInit(OSError):
     eleza __init__(self):
-        pass
+        pita
 
 
 kundi HierarchyTest(unittest.TestCase):
@@ -48,7 +48,7 @@ kundi HierarchyTest(unittest.TestCase):
     eleza test_select_error(self):
         self.assertIs(select.error, OSError)
 
-    # mmap.error is tested in test_mmap
+    # mmap.error ni tested kwenye test_mmap
 
     _pep_map = """
         +-- BlockingIOError        EAGAIN, EALREADY, EWOULDBLOCK, EINPROGRESS
@@ -69,52 +69,52 @@ kundi HierarchyTest(unittest.TestCase):
     """
     eleza _make_map(s):
         _map = {}
-        for line in s.splitlines():
+        kila line kwenye s.splitlines():
             line = line.strip('+- ')
-            ikiwa not line:
-                continue
+            ikiwa sio line:
+                endelea
             excname, _, errnames = line.partition(' ')
-            for errname in filter(None, errnames.strip().split(', ')):
+            kila errname kwenye filter(Tupu, errnames.strip().split(', ')):
                 _map[getattr(errno, errname)] = getattr(builtins, excname)
         rudisha _map
     _map = _make_map(_pep_map)
 
     eleza test_errno_mapping(self):
         # The OSError constructor maps errnos to subclasses
-        # A sample test for the basic functionality
+        # A sample test kila the basic functionality
         e = OSError(EEXIST, "Bad file descriptor")
         self.assertIs(type(e), FileExistsError)
         # Exhaustive testing
-        for errcode, exc in self._map.items():
+        kila errcode, exc kwenye self._map.items():
             e = OSError(errcode, "Some message")
             self.assertIs(type(e), exc)
         othercodes = set(errno.errorcode) - set(self._map)
-        for errcode in othercodes:
+        kila errcode kwenye othercodes:
             e = OSError(errcode, "Some message")
             self.assertIs(type(e), OSError)
 
     eleza test_try_except(self):
         filename = "some_hopefully_non_existing_file"
 
-        # This checks that try .. except checks the concrete exception
-        # (FileNotFoundError) and not the base type specified when
+        # This checks that try .. tatizo checks the concrete exception
+        # (FileNotFoundError) na sio the base type specified when
         # PyErr_SetFromErrnoWithFilenameObject was called.
-        # (it is therefore deliberate that it doesn't use assertRaises)
-        try:
+        # (it ni therefore deliberate that it doesn't use assertRaises)
+        jaribu:
             open(filename)
-        except FileNotFoundError:
-            pass
-        else:
-            self.fail("should have raised a FileNotFoundError")
+        tatizo FileNotFoundError:
+            pita
+        isipokua:
+            self.fail("should have ashiriad a FileNotFoundError")
 
-        # Another test for PyErr_SetExcFromWindowsErrWithFilenameObject()
-        self.assertFalse(os.path.exists(filename))
-        try:
+        # Another test kila PyErr_SetExcFromWindowsErrWithFilenameObject()
+        self.assertUongo(os.path.exists(filename))
+        jaribu:
             os.unlink(filename)
-        except FileNotFoundError:
-            pass
-        else:
-            self.fail("should have raised a FileNotFoundError")
+        tatizo FileNotFoundError:
+            pita
+        isipokua:
+            self.fail("should have ashiriad a FileNotFoundError")
 
 
 kundi AttributesTest(unittest.TestCase):
@@ -122,7 +122,7 @@ kundi AttributesTest(unittest.TestCase):
     eleza test_windows_error(self):
         ikiwa os.name == "nt":
             self.assertIn('winerror', dir(OSError))
-        else:
+        isipokua:
             self.assertNotIn('winerror', dir(OSError))
 
     eleza test_posix_error(self):
@@ -132,7 +132,7 @@ kundi AttributesTest(unittest.TestCase):
         self.assertEqual(e.strerror, "File already exists")
         self.assertEqual(e.filename, "foo.txt")
         ikiwa os.name == "nt":
-            self.assertEqual(e.winerror, None)
+            self.assertEqual(e.winerror, Tupu)
 
     @unittest.skipUnless(os.name == "nt", "Windows-specific test")
     eleza test_errno_translation(self):
@@ -146,17 +146,17 @@ kundi AttributesTest(unittest.TestCase):
 
     eleza test_blockingioerror(self):
         args = ("a", "b", "c", "d", "e")
-        for n in range(6):
+        kila n kwenye range(6):
             e = BlockingIOError(*args[:n])
             with self.assertRaises(AttributeError):
                 e.characters_written
             with self.assertRaises(AttributeError):
-                del e.characters_written
+                toa e.characters_written
         e = BlockingIOError("a", "b", 3)
         self.assertEqual(e.characters_written, 3)
         e.characters_written = 5
         self.assertEqual(e.characters_written, 5)
-        del e.characters_written
+        toa e.characters_written
         with self.assertRaises(AttributeError):
             e.characters_written
 

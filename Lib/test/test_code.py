@@ -17,7 +17,7 @@ cellvars: ('x',)
 freevars: ()
 nlocals: 2
 flags: 3
-consts: ('None', '<code object g>', "'f.<locals>.g'")
+consts: ('Tupu', '<code object g>', "'f.<locals>.g'")
 
 >>> dump(f(4).__code__)
 name: g
@@ -30,7 +30,7 @@ cellvars: ()
 freevars: ('x',)
 nlocals: 1
 flags: 19
-consts: ('None',)
+consts: ('Tupu',)
 
 >>> eleza h(x, y):
 ...     a = x + y
@@ -50,7 +50,7 @@ cellvars: ()
 freevars: ()
 nlocals: 5
 flags: 67
-consts: ('None',)
+consts: ('Tupu',)
 
 >>> eleza attrs(obj):
 ...     andika(obj.attr1)
@@ -68,7 +68,7 @@ cellvars: ()
 freevars: ()
 nlocals: 1
 flags: 67
-consts: ('None',)
+consts: ('Tupu',)
 
 >>> eleza optimize_away():
 ...     'doc string'
@@ -87,7 +87,7 @@ cellvars: ()
 freevars: ()
 nlocals: 0
 flags: 67
-consts: ("'doc string'", 'None')
+consts: ("'doc string'", 'Tupu')
 
 >>> eleza keywordonly_args(a,b,*,k1):
 ...     rudisha a,b,k1
@@ -104,7 +104,7 @@ cellvars: ()
 freevars: ()
 nlocals: 3
 flags: 67
-consts: ('None',)
+consts: ('Tupu',)
 
 >>> eleza posonly_args(a,b,/,c):
 ...     rudisha a,b,c
@@ -121,7 +121,7 @@ cellvars: ()
 freevars: ()
 nlocals: 3
 flags: 67
-consts: ('None',)
+consts: ('Tupu',)
 
 """
 
@@ -131,32 +131,32 @@ agiza threading
 agiza unittest
 agiza weakref
 agiza opcode
-try:
+jaribu:
     agiza ctypes
-except ImportError:
-    ctypes = None
+tatizo ImportError:
+    ctypes = Tupu
 kutoka test.support agiza (run_doctest, run_unittest, cpython_only,
                           check_impl_detail)
 
 
 eleza consts(t):
     """Yield a doctest-safe sequence of object reprs."""
-    for elt in t:
+    kila elt kwenye t:
         r = repr(elt)
         ikiwa r.startswith("<code object"):
-            yield "<code object %s>" % elt.co_name
-        else:
-            yield r
+            tuma "<code object %s>" % elt.co_name
+        isipokua:
+            tuma r
 
 eleza dump(co):
     """Print out a text representation of a code object."""
-    for attr in ["name", "argcount", "posonlyargcount",
+    kila attr kwenye ["name", "argcount", "posonlyargcount",
                  "kwonlyargcount", "names", "varnames",
                  "cellvars", "freevars", "nlocals", "flags"]:
         andika("%s: %s" % (attr, getattr(co, "co_" + attr)))
     andika("consts:", tuple(consts(co.co_consts)))
 
-# Needed for test_closure_injection below
+# Needed kila test_closure_injection below
 # Defined at global scope to avoid implicitly closing over __class__
 eleza external_getitem(self, i):
     rudisha f"Foreign getitem: {super().__getitem__(i)}"
@@ -185,13 +185,13 @@ kundi CodeTest(unittest.TestCase):
 
         eleza add_foreign_method(cls, name, f):
             code = new_code(f.__code__)
-            assert not f.__closure__
+            assert sio f.__closure__
             closure = create_closure(cls)
             defaults = f.__defaults__
             setattr(cls, name, FunctionType(code, globals(), name, defaults, closure))
 
         kundi List(list):
-            pass
+            pita
 
         add_foreign_method(List, "__getitem__", external_getitem)
 
@@ -201,15 +201,15 @@ kundi CodeTest(unittest.TestCase):
         self.assertIs(class_ref, List)
 
         # Ensure the code correctly indicates it accesses a free variable
-        self.assertFalse(function.__code__.co_flags & inspect.CO_NOFREE,
+        self.assertUongo(function.__code__.co_flags & inspect.CO_NOFREE,
                          hex(function.__code__.co_flags))
 
-        # Ensure the zero-arg super() call in the injected method works
+        # Ensure the zero-arg super() call kwenye the injected method works
         obj = List([1, 2, 3])
         self.assertEqual(obj[0], "Foreign getitem: 1")
 
     eleza test_constructor(self):
-        eleza func(): pass
+        eleza func(): pita
         co = func.__code__
         CodeType = type(co)
 
@@ -243,7 +243,7 @@ kundi CodeTest(unittest.TestCase):
             rudisha y
         code2 = func.__code__
 
-        for attr, value in (
+        kila attr, value kwenye (
             ("co_argcount", 0),
             ("co_posonlyargcount", 0),
             ("co_kwonlyargcount", 0),
@@ -267,24 +267,24 @@ kundi CodeTest(unittest.TestCase):
 
 
 eleza isinterned(s):
-    rudisha s is sys.intern(('_' + s + '_')[1:-1])
+    rudisha s ni sys.intern(('_' + s + '_')[1:-1])
 
 kundi CodeConstsTest(unittest.TestCase):
 
     eleza find_const(self, consts, value):
-        for v in consts:
+        kila v kwenye consts:
             ikiwa v == value:
                 rudisha v
-        self.assertIn(value, consts)  # raises an exception
+        self.assertIn(value, consts)  # ashirias an exception
         self.fail('Should never be reached')
 
     eleza assertIsInterned(self, s):
-        ikiwa not isinterned(s):
-            self.fail('String %r is not interned' % (s,))
+        ikiwa sio isinterned(s):
+            self.fail('String %r ni sio interned' % (s,))
 
     eleza assertIsNotInterned(self, s):
         ikiwa isinterned(s):
-            self.fail('String %r is interned' % (s,))
+            self.fail('String %r ni interned' % (s,))
 
     @cpython_only
     eleza test_interned_string(self):
@@ -300,7 +300,7 @@ kundi CodeConstsTest(unittest.TestCase):
 
     @cpython_only
     eleza test_interned_string_in_frozenset(self):
-        co = compile('res = a in {"str_value"}', '?', 'exec')
+        co = compile('res = a kwenye {"str_value"}', '?', 'exec')
         v = self.find_const(co.co_consts, frozenset(('str_value',)))
         self.assertIsInterned(tuple(v)[0])
 
@@ -320,31 +320,31 @@ kundi CodeConstsTest(unittest.TestCase):
 kundi CodeWeakRefTest(unittest.TestCase):
 
     eleza test_basic(self):
-        # Create a code object in a clean environment so that we know we have
+        # Create a code object kwenye a clean environment so that we know we have
         # the only reference to it left.
         namespace = {}
-        exec("eleza f(): pass", globals(), namespace)
+        exec("eleza f(): pita", globals(), namespace)
         f = namespace["f"]
-        del namespace
+        toa namespace
 
-        self.called = False
+        self.called = Uongo
         eleza callback(code):
-            self.called = True
+            self.called = Kweli
 
-        # f is now the last reference to the function, and through it, the code
+        # f ni now the last reference to the function, na through it, the code
         # object.  While we hold it, check that we can create a weakref and
-        # deref it.  Then delete it, and check that the callback gets called and
+        # deref it.  Then delete it, na check that the callback gets called and
         # the reference dies.
         coderef = weakref.ref(f.__code__, callback)
-        self.assertTrue(bool(coderef()))
-        del f
-        self.assertFalse(bool(coderef()))
-        self.assertTrue(self.called)
+        self.assertKweli(bool(coderef()))
+        toa f
+        self.assertUongo(bool(coderef()))
+        self.assertKweli(self.called)
 
 
-ikiwa check_impl_detail(cpython=True) and ctypes is not None:
+ikiwa check_impl_detail(cpython=Kweli) na ctypes ni sio Tupu:
     py = ctypes.pythonapi
-    freefunc = ctypes.CFUNCTYPE(None,ctypes.c_voidp)
+    freefunc = ctypes.CFUNCTYPE(Tupu,ctypes.c_voidp)
 
     RequestCodeExtraIndex = py._PyEval_RequestCodeExtraIndex
     RequestCodeExtraIndex.argtypes = (freefunc,)
@@ -359,7 +359,7 @@ ikiwa check_impl_detail(cpython=True) and ctypes is not None:
                          ctypes.POINTER(ctypes.c_voidp))
     GetExtra.restype = ctypes.c_int
 
-    LAST_FREED = None
+    LAST_FREED = Tupu
     eleza myfree(ptr):
         global LAST_FREED
         LAST_FREED = ptr
@@ -391,11 +391,11 @@ ikiwa check_impl_detail(cpython=True) and ctypes is not None:
 
         eleza test_free_called(self):
             # Verify that the provided free function gets invoked
-            # when the code object is cleaned up.
+            # when the code object ni cleaned up.
             f = self.get_func()
 
             SetExtra(f.__code__, FREE_INDEX, ctypes.c_voidp(100))
-            del f
+            toa f
             self.assertEqual(LAST_FREED, 100)
 
         eleza test_get_set(self):
@@ -412,7 +412,7 @@ ikiwa check_impl_detail(cpython=True) and ctypes is not None:
             extra = ctypes.c_voidp()
             GetExtra(f.__code__, FREE_INDEX, extra)
             self.assertEqual(extra.value, 300)
-            del f
+            toa f
 
         eleza test_free_different_thread(self):
             # Freeing a code object on a different thread then
@@ -424,18 +424,18 @@ ikiwa check_impl_detail(cpython=True) and ctypes is not None:
                     self.f = f
                     self.test = test
                 eleza run(self):
-                    del self.f
+                    toa self.f
                     self.test.assertEqual(LAST_FREED, 500)
 
             SetExtra(f.__code__, FREE_INDEX, ctypes.c_voidp(500))
             tt = ThreadTest(f, self)
-            del f
+            toa f
             tt.start()
             tt.join()
             self.assertEqual(LAST_FREED, 500)
 
         @cpython_only
-        eleza test_clean_stack_on_return(self):
+        eleza test_clean_stack_on_rudisha(self):
 
             eleza f(x):
                 rudisha x
@@ -444,7 +444,7 @@ ikiwa check_impl_detail(cpython=True) and ctypes is not None:
             ct = type(f.__code__)
 
             # Insert an extra LOAD_FAST, this duplicates the value of
-            # 'x' in the stack, leaking it ikiwa the frame is not properly
+            # 'x' kwenye the stack, leaking it ikiwa the frame ni sio properly
             # cleaned up upon exit.
 
             bytecode = list(code.co_code)
@@ -460,22 +460,22 @@ ikiwa check_impl_detail(cpython=True) and ctypes is not None:
             new_function = type(f)(c, f.__globals__, 'nf', f.__defaults__, f.__closure__)
 
             kundi Var:
-                pass
+                pita
             the_object = Var()
             var = weakref.ref(the_object)
 
             new_function(the_object)
 
-            # Check ikiwa the_object is leaked
-            del the_object
-            assert var() is None
+            # Check ikiwa the_object ni leaked
+            toa the_object
+            assert var() ni Tupu
 
 
-eleza test_main(verbose=None):
+eleza test_main(verbose=Tupu):
     kutoka test agiza test_code
     run_doctest(test_code, verbose)
     tests = [CodeTest, CodeConstsTest, CodeWeakRefTest]
-    ikiwa check_impl_detail(cpython=True) and ctypes is not None:
+    ikiwa check_impl_detail(cpython=Kweli) na ctypes ni sio Tupu:
         tests.append(CoExtra)
     run_unittest(*tests)
 

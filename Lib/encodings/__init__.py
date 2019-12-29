@@ -1,17 +1,17 @@
 """ Standard "encodings" Package
 
-    Standard Python encoding modules are stored in this package
+    Standard Python encoding modules are stored kwenye this package
     directory.
 
     Codec modules must have names corresponding to normalized encoding
-    names as defined in the normalize_encoding() function below, e.g.
+    names as defined kwenye the normalize_encoding() function below, e.g.
     'utf-8' must be implemented by the module 'utf_8.py'.
 
     Each codec module must export the following interface:
 
     * getregentry() -> codecs.CodecInfo object
-    The getregentry() API must return a CodecInfo object with encoder, decoder,
-    incrementalencoder, incrementaldecoder, streamwriter and streamreader
+    The getregentry() API must rudisha a CodecInfo object with encoder, decoder,
+    incrementalencoder, incrementaldecoder, streamwriter na streamreader
     attributes which adhere to the Python Codec Interface Standard.
 
     In addition, a module may optionally also define the following
@@ -40,39 +40,39 @@ _aliases = aliases.aliases
 kundi CodecRegistryError(LookupError, SystemError):
     pita
 
-def normalize_encoding(encoding):
+eleza normalize_encoding(encoding):
 
     """ Normalize an encoding name.
 
         Normalization works as follows: all non-alphanumeric
-        characters except the dot used for Python package names are
-        collapsed and replaced with a single underscore, e.g. '  -;#'
-        becomes '_'. Leading and trailing underscores are removed.
+        characters tatizo the dot used kila Python package names are
+        collapsed na replaced with a single underscore, e.g. '  -;#'
+        becomes '_'. Leading na trailing underscores are removed.
 
         Note that encoding names should be ASCII only.
 
     """
-    if isinstance(encoding, bytes):
+    ikiwa isinstance(encoding, bytes):
         encoding = str(encoding, "ascii")
 
     chars = []
-    punct = False
-    for c in encoding:
-        if c.isalnum() or c == '.':
-            if punct and chars:
+    punct = Uongo
+    kila c kwenye encoding:
+        ikiwa c.isalnum() ama c == '.':
+            ikiwa punct na chars:
                 chars.append('_')
             chars.append(c)
-            punct = False
-        else:
-            punct = True
-    return ''.join(chars)
+            punct = Uongo
+        isipokua:
+            punct = Kweli
+    rudisha ''.join(chars)
 
-def search_function(encoding):
+eleza search_function(encoding):
 
     # Cache lookup
     entry = _cache.get(encoding, _unknown)
-    if entry is not _unknown:
-        return entry
+    ikiwa entry ni sio _unknown:
+        rudisha entry
 
     # Import the module:
     #
@@ -82,56 +82,56 @@ def search_function(encoding):
     # try in the encodings package, then at top-level.
     #
     norm_encoding = normalize_encoding(encoding)
-    aliased_encoding = _aliases.get(norm_encoding) or \
+    aliased_encoding = _aliases.get(norm_encoding) ama \
                        _aliases.get(norm_encoding.replace('.', '_'))
-    if aliased_encoding is not None:
+    ikiwa aliased_encoding ni sio Tupu:
         modnames = [aliased_encoding,
                     norm_encoding]
-    else:
+    isipokua:
         modnames = [norm_encoding]
-    for modname in modnames:
-        if not modname or '.' in modname:
-            continue
-        try:
-            # Import is absolute to prevent the possibly malicious import of a
+    kila modname kwenye modnames:
+        ikiwa sio modname ama '.' kwenye modname:
+            endelea
+        jaribu:
+            # Import ni absolute to prevent the possibly malicious import of a
             # module with side-effects that is not in the 'encodings' package.
             mod = __import__('encodings.' + modname, fromlist=_import_tail,
                              level=0)
-        except ImportError:
+        tatizo ImportError:
             # ImportError may occur because 'encodings.(modname)' does not exist,
             # or because it imports a name that does not exist (see mbcs and oem)
-            pass
-        else:
-            break
-    else:
-        mod = None
+            pita
+        isipokua:
+            koma
+    isipokua:
+        mod = Tupu
 
-    try:
+    jaribu:
         getregentry = mod.getregentry
-    except AttributeError:
+    tatizo AttributeError:
         # Not a codec module
-        mod = None
+        mod = Tupu
 
-    if mod is None:
+    ikiwa mod ni Tupu:
         # Cache misses
-        _cache[encoding] = None
-        return None
+        _cache[encoding] = Tupu
+        rudisha Tupu
 
-    # Now ask the module for the registry entry
+    # Now ask the module kila the registry entry
     entry = getregentry()
-    if not isinstance(entry, codecs.CodecInfo):
-        if not 4 <= len(entry) <= 7:
-            raise CodecRegistryError('module "%s" (%s) failed to register'
+    ikiwa sio isinstance(entry, codecs.CodecInfo):
+        ikiwa sio 4 <= len(entry) <= 7:
+            ashiria CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
-        if not callable(entry[0]) or not callable(entry[1]) or \
-           (entry[2] is not None and not callable(entry[2])) or \
-           (entry[3] is not None and not callable(entry[3])) or \
-           (len(entry) > 4 and entry[4] is not None and not callable(entry[4])) or \
-           (len(entry) > 5 and entry[5] is not None and not callable(entry[5])):
-            raise CodecRegistryError('incompatible codecs in module "%s" (%s)'
+        ikiwa sio callable(entry[0]) ama sio callable(entry[1]) ama \
+           (entry[2] ni sio Tupu na sio callable(entry[2])) ama \
+           (entry[3] ni sio Tupu na sio callable(entry[3])) ama \
+           (len(entry) > 4 na entry[4] ni sio Tupu na sio callable(entry[4])) ama \
+           (len(entry) > 5 na entry[5] ni sio Tupu na sio callable(entry[5])):
+            ashiria CodecRegistryError('incompatible codecs kwenye module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
-        if len(entry)<7 or entry[6] is None:
-            entry += (None,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
+        ikiwa len(entry)<7 ama entry[6] ni Tupu:
+            entry += (Tupu,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
         entry = codecs.CodecInfo(*entry)
 
     # Cache the codec registry entry
@@ -139,31 +139,31 @@ def search_function(encoding):
 
     # Register its aliases (without overwriting previously registered
     # aliases)
-    try:
+    jaribu:
         codecaliases = mod.getaliases()
-    except AttributeError:
-        pass
-    else:
-        for alias in codecaliases:
-            if alias not in _aliases:
+    tatizo AttributeError:
+        pita
+    isipokua:
+        kila alias kwenye codecaliases:
+            ikiwa alias haiko kwenye _aliases:
                 _aliases[alias] = modname
 
     # Return the registry entry
-    return entry
+    rudisha entry
 
-# Register the search_function in the Python codec registry
+# Register the search_function kwenye the Python codec registry
 codecs.register(search_function)
 
-if sys.platform == 'win32':
-    def _alias_mbcs(encoding):
-        try:
+ikiwa sys.platform == 'win32':
+    eleza _alias_mbcs(encoding):
+        jaribu:
             agiza _winapi
             ansi_code_page = "cp%s" % _winapi.GetACP()
-            if encoding == ansi_code_page:
-                import encodings.mbcs
-                return encodings.mbcs.getregentry()
-        except ImportError:
-            # Imports may fail while we are shutting down
-            pass
+            ikiwa encoding == ansi_code_page:
+                agiza encodings.mbcs
+                rudisha encodings.mbcs.getregentry()
+        tatizo ImportError:
+            # Imports may fail wakati we are shutting down
+            pita
 
     codecs.register(_alias_mbcs)

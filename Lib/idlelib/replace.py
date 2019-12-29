@@ -1,5 +1,5 @@
-"""Replace dialog for IDLE. Inherits SearchDialogBase for GUI.
-Uses idlelib.searchengine.SearchEngine for search capability.
+"""Replace dialog kila IDLE. Inherits SearchDialogBase kila GUI.
+Uses idlelib.searchengine.SearchEngine kila search capability.
 Defines various replace related functions like replace, replace all,
 and replace+find.
 """
@@ -12,9 +12,9 @@ kutoka idlelib agiza searchengine
 
 
 eleza replace(text):
-    """Create or reuse a singleton ReplaceDialog instance.
+    """Create ama reuse a singleton ReplaceDialog instance.
 
-    The singleton dialog saves user entries and preferences
+    The singleton dialog saves user entries na preferences
     across instances.
 
     Args:
@@ -22,129 +22,129 @@ eleza replace(text):
     """
     root = text._root()
     engine = searchengine.get(root)
-    ikiwa not hasattr(engine, "_replacedialog"):
+    ikiwa sio hasattr(engine, "_replacedialog"):
         engine._replacedialog = ReplaceDialog(root, engine)
     dialog = engine._replacedialog
     dialog.open(text)
 
 
 kundi ReplaceDialog(SearchDialogBase):
-    "Dialog for finding and replacing a pattern in text."
+    "Dialog kila finding na replacing a pattern kwenye text."
 
     title = "Replace Dialog"
     icon = "Replace"
 
     eleza __init__(self, root, engine):
-        """Create search dialog for finding and replacing text.
+        """Create search dialog kila finding na replacing text.
 
-        Uses SearchDialogBase as the basis for the GUI and a
+        Uses SearchDialogBase kama the basis kila the GUI na a
         searchengine instance to prepare the search.
 
         Attributes:
             replvar: StringVar containing 'Replace with:' value.
-            replent: Entry widget for replvar.  Created in
+            replent: Entry widget kila replvar.  Created in
                 create_entries().
-            ok: Boolean used in searchengine.search_text to indicate
+            ok: Boolean used kwenye searchengine.search_text to indicate
                 whether the search includes the selection.
         """
         super().__init__(root, engine)
         self.replvar = StringVar(root)
 
     eleza open(self, text):
-        """Make dialog visible on top of others and ready to use.
+        """Make dialog visible on top of others na ready to use.
 
-        Also, highlight the currently selected text and set the
+        Also, highlight the currently selected text na set the
         search to include the current selection (self.ok).
 
         Args:
             text: Text widget being searched.
         """
         SearchDialogBase.open(self, text)
-        try:
+        jaribu:
             first = text.index("sel.first")
-        except TclError:
-            first = None
-        try:
+        tatizo TclError:
+            first = Tupu
+        jaribu:
             last = text.index("sel.last")
-        except TclError:
-            last = None
-        first = first or text.index("insert")
-        last = last or first
+        tatizo TclError:
+            last = Tupu
+        first = first ama text.index("insert")
+        last = last ama first
         self.show_hit(first, last)
-        self.ok = True
+        self.ok = Kweli
 
     eleza create_entries(self):
-        "Create base and additional label and text entry widgets."
+        "Create base na additional label na text entry widgets."
         SearchDialogBase.create_entries(self)
         self.replent = self.make_entry("Replace with:", self.replvar)[0]
 
     eleza create_command_buttons(self):
-        """Create base and additional command buttons.
+        """Create base na additional command buttons.
 
-        The additional buttons are for Find, Replace,
-        Replace+Find, and Replace All.
+        The additional buttons are kila Find, Replace,
+        Replace+Find, na Replace All.
         """
         SearchDialogBase.create_command_buttons(self)
         self.make_button("Find", self.find_it)
         self.make_button("Replace", self.replace_it)
-        self.make_button("Replace+Find", self.default_command, isdef=True)
+        self.make_button("Replace+Find", self.default_command, isdef=Kweli)
         self.make_button("Replace All", self.replace_all)
 
-    eleza find_it(self, event=None):
+    eleza find_it(self, event=Tupu):
         "Handle the Find button."
-        self.do_find(False)
+        self.do_find(Uongo)
 
-    eleza replace_it(self, event=None):
+    eleza replace_it(self, event=Tupu):
         """Handle the Replace button.
 
-        If the find is successful, then perform replace.
+        If the find ni successful, then perform replace.
         """
         ikiwa self.do_find(self.ok):
             self.do_replace()
 
-    eleza default_command(self, event=None):
-        """Handle the Replace+Find button as the default command.
+    eleza default_command(self, event=Tupu):
+        """Handle the Replace+Find button kama the default command.
 
-        First performs a replace and then, ikiwa the replace was
+        First performs a replace na then, ikiwa the replace was
         successful, a find next.
         """
         ikiwa self.do_find(self.ok):
             ikiwa self.do_replace():  # Only find next match ikiwa replace succeeded.
                                    # A bad re can cause it to fail.
-                self.do_find(False)
+                self.do_find(Uongo)
 
     eleza _replace_expand(self, m, repl):
         "Expand replacement text ikiwa regular expression."
         ikiwa self.engine.isre():
-            try:
+            jaribu:
                 new = m.expand(repl)
-            except re.error:
+            tatizo re.error:
                 self.engine.report_error(repl, 'Invalid Replace Expression')
-                new = None
-        else:
+                new = Tupu
+        isipokua:
             new = repl
 
         rudisha new
 
-    eleza replace_all(self, event=None):
+    eleza replace_all(self, event=Tupu):
         """Handle the Replace All button.
 
-        Search text for occurrences of the Find value and replace
+        Search text kila occurrences of the Find value na replace
         each of them.  The 'wrap around' value controls the start
-        point for searching.  If wrap isn't set, then the searching
+        point kila searching.  If wrap isn't set, then the searching
         starts at the first occurrence after the current selection;
-        ikiwa wrap is set, the replacement starts at the first line.
-        The replacement is always done top-to-bottom in the text.
+        ikiwa wrap ni set, the replacement starts at the first line.
+        The replacement ni always done top-to-bottom kwenye the text.
         """
         prog = self.engine.getprog()
-        ikiwa not prog:
-            return
+        ikiwa sio prog:
+            rudisha
         repl = self.replvar.get()
         text = self.text
         res = self.engine.search_text(text, prog)
-        ikiwa not res:
+        ikiwa sio res:
             self.bell()
-            return
+            rudisha
         text.tag_remove("sel", "1.0", "end")
         text.tag_remove("hit", "1.0", "end")
         line = res[0]
@@ -152,80 +152,80 @@ kundi ReplaceDialog(SearchDialogBase):
         ikiwa self.engine.iswrap():
             line = 1
             col = 0
-        ok = True
-        first = last = None
+        ok = Kweli
+        first = last = Tupu
         # XXX ought to replace circular instead of top-to-bottom when wrapping
         text.undo_block_start()
-        while True:
+        wakati Kweli:
             res = self.engine.search_forward(text, prog, line, col,
-                                             wrap=False, ok=ok)
-            ikiwa not res:
-                break
+                                             wrap=Uongo, ok=ok)
+            ikiwa sio res:
+                koma
             line, m = res
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
             orig = m.group()
             new = self._replace_expand(m, repl)
-            ikiwa new is None:
-                break
+            ikiwa new ni Tupu:
+                koma
             i, j = m.span()
             first = "%d.%d" % (line, i)
             last = "%d.%d" % (line, j)
             ikiwa new == orig:
                 text.mark_set("insert", last)
-            else:
+            isipokua:
                 text.mark_set("insert", first)
                 ikiwa first != last:
                     text.delete(first, last)
                 ikiwa new:
                     text.insert(first, new)
             col = i + len(new)
-            ok = False
+            ok = Uongo
         text.undo_block_stop()
-        ikiwa first and last:
+        ikiwa first na last:
             self.show_hit(first, last)
         self.close()
 
-    eleza do_find(self, ok=False):
-        """Search for and highlight next occurrence of pattern in text.
+    eleza do_find(self, ok=Uongo):
+        """Search kila na highlight next occurrence of pattern kwenye text.
 
-        No text replacement is done with this option.
+        No text replacement ni done with this option.
         """
-        ikiwa not self.engine.getprog():
-            rudisha False
+        ikiwa sio self.engine.getprog():
+            rudisha Uongo
         text = self.text
-        res = self.engine.search_text(text, None, ok)
-        ikiwa not res:
+        res = self.engine.search_text(text, Tupu, ok)
+        ikiwa sio res:
             self.bell()
-            rudisha False
+            rudisha Uongo
         line, m = res
         i, j = m.span()
         first = "%d.%d" % (line, i)
         last = "%d.%d" % (line, j)
         self.show_hit(first, last)
-        self.ok = True
-        rudisha True
+        self.ok = Kweli
+        rudisha Kweli
 
     eleza do_replace(self):
-        "Replace search pattern in text with replacement value."
+        "Replace search pattern kwenye text with replacement value."
         prog = self.engine.getprog()
-        ikiwa not prog:
-            rudisha False
+        ikiwa sio prog:
+            rudisha Uongo
         text = self.text
-        try:
+        jaribu:
             first = pos = text.index("sel.first")
             last = text.index("sel.last")
-        except TclError:
-            pos = None
-        ikiwa not pos:
+        tatizo TclError:
+            pos = Tupu
+        ikiwa sio pos:
             first = last = pos = text.index("insert")
         line, col = searchengine.get_line_col(pos)
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
         m = prog.match(chars, col)
-        ikiwa not prog:
-            rudisha False
+        ikiwa sio prog:
+            rudisha Uongo
         new = self._replace_expand(m, self.replvar.get())
-        ikiwa new is None:
-            rudisha False
+        ikiwa new ni Tupu:
+            rudisha Uongo
         text.mark_set("insert", first)
         text.undo_block_start()
         ikiwa m.group():
@@ -234,19 +234,19 @@ kundi ReplaceDialog(SearchDialogBase):
             text.insert(first, new)
         text.undo_block_stop()
         self.show_hit(first, text.index("insert"))
-        self.ok = False
-        rudisha True
+        self.ok = Uongo
+        rudisha Kweli
 
     eleza show_hit(self, first, last):
-        """Highlight text between first and last indices.
+        """Highlight text between first na last indices.
 
-        Text is highlighted via the 'hit' tag and the marked
-        section is brought into view.
+        Text ni highlighted via the 'hit' tag na the marked
+        section ni brought into view.
 
         The colors kutoka the 'hit' tag aren't currently shown
-        when the text is displayed.  This is due to the 'sel'
-        tag being added first, so the colors in the 'sel'
-        config are seen instead of the colors for 'hit'.
+        when the text ni displayed.  This ni due to the 'sel'
+        tag being added first, so the colors kwenye the 'sel'
+        config are seen instead of the colors kila 'hit'.
         """
         text = self.text
         text.mark_set("insert", first)
@@ -255,13 +255,13 @@ kundi ReplaceDialog(SearchDialogBase):
         text.tag_remove("hit", "1.0", "end")
         ikiwa first == last:
             text.tag_add("hit", first)
-        else:
+        isipokua:
             text.tag_add("hit", first, last)
         text.see("insert")
         text.update_idletasks()
 
-    eleza close(self, event=None):
-        "Close the dialog and remove hit tags."
+    eleza close(self, event=Tupu):
+        "Close the dialog na remove hit tags."
         SearchDialogBase.close(self, event)
         self.text.tag_remove("hit", "1.0", "end")
 
@@ -277,10 +277,10 @@ eleza _replace_dialog(parent):  # htest #
 
     # mock undo delegator methods
     eleza undo_block_start():
-        pass
+        pita
 
     eleza undo_block_stop():
-        pass
+        pita
 
     frame = Frame(top)
     frame.pack()
@@ -288,7 +288,7 @@ eleza _replace_dialog(parent):  # htest #
     text.undo_block_start = undo_block_start
     text.undo_block_stop = undo_block_stop
     text.pack()
-    text.insert("insert","This is a sample sTring\nPlus MORE.")
+    text.insert("insert","This ni a sample sTring\nPlus MORE.")
     text.focus_set()
 
     eleza show_replace():
@@ -301,7 +301,7 @@ eleza _replace_dialog(parent):  # htest #
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_replace', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_replace', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_replace_dialog)

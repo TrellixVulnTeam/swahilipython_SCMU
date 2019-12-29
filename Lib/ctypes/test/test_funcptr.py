@@ -1,9 +1,9 @@
 import unittest
 from ctypes import *
 
-try:
+jaribu:
     WINFUNCTYPE
-except NameError:
+tatizo NameError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 
@@ -39,7 +39,7 @@ class CFuncPtrTestCase(unittest.TestCase):
         # possible, as in C, to call cdecl functions with more parameters.
         #self.assertRaises(TypeError, c, 1, 2, 3)
         self.assertEqual(c(1, 2, 3, 4, 5, 6), 3)
-        if not WINFUNCTYPE is CFUNCTYPE:
+        if sio WINFUNCTYPE is CFUNCTYPE:
             self.assertRaises(TypeError, s, 1, 2, 3)
 
     def test_structures(self):
@@ -82,15 +82,15 @@ class CFuncPtrTestCase(unittest.TestCase):
 
         f = wndclass.lpfnWndProc
 
-        del wndclass
-        del wndproc
+        toa wndclass
+        toa wndproc
 
         self.assertEqual(f(10, 11, 12, 13), 46)
 
     def test_dllfunctions(self):
 
         def NoNullHandle(value):
-            if not value:
+            if sio value:
                 raise WinError()
             return value
 

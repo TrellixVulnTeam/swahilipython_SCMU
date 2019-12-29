@@ -6,7 +6,7 @@ def start():
     gc.collect(2)
     l = []
     l.append(l)
-    del l
+    toa l
     gc.collect(2)
 
 gc.collect()

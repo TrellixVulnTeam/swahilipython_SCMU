@@ -3,14 +3,14 @@
 
         xtx_lindenmayer_indian.py
 
-Each morning women in Tamil Nadu, in southern
+Each morning women kwenye Tamil Nadu, kwenye southern
 India, place designs, created by using rice
-flour and known as kolam on the thresholds of
+flour na known kama kolam on the thresholds of
 their homes.
 
 These can be described by Lindenmayer systems,
 which can easily be implemented with turtle
-graphics and Python.
+graphics na Python.
 
 Two examples are shown here:
 (1) the snake kolam
@@ -28,22 +28,22 @@ Cultures
 kutoka turtle agiza *
 
 eleza replace( seq, replacementRules, n ):
-    for i in range(n):
+    kila i kwenye range(n):
         newseq = ""
-        for element in seq:
+        kila element kwenye seq:
             newseq = newseq + replacementRules.get(element,element)
         seq = newseq
     rudisha seq
 
 eleza draw( commands, rules ):
-    for b in commands:
-        try:
+    kila b kwenye commands:
+        jaribu:
             rules[b]()
-        except TypeError:
-            try:
+        tatizo TypeError:
+            jaribu:
                 draw(rules[b], rules)
             except:
-                pass
+                pita
 
 
 eleza main():

@@ -13,32 +13,32 @@ agiza codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+kundi Codec(codecs.Codec):
 
-    def encode(self,input,errors='strict'):
+    eleza encode(self,input,errors='strict'):
         raise UnicodeError("undefined encoding")
 
-    def decode(self,input,errors='strict'):
+    eleza decode(self,input,errors='strict'):
         raise UnicodeError("undefined encoding")
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza encode(self, input, final=False):
         raise UnicodeError("undefined encoding")
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+kundi IncrementalDecoder(codecs.IncrementalDecoder):
+    eleza decode(self, input, final=False):
         raise UnicodeError("undefined encoding")
 
-class StreamWriter(Codec,codecs.StreamWriter):
+kundi StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+kundi StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='undefined',
         encode=Codec().encode,
         decode=Codec().decode,

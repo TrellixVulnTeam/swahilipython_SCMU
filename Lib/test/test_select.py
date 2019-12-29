@@ -10,7 +10,7 @@ kutoka test agiza support
 kundi SelectTestCase(unittest.TestCase):
 
     kundi Nope:
-        pass
+        pita
 
     kundi Almost:
         eleza fileno(self):
@@ -27,17 +27,17 @@ kundi SelectTestCase(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('freebsd'),
                      'skip because of a FreeBSD bug: kern/155606')
     eleza test_errno(self):
-        with open(__file__, 'rb') as fp:
+        with open(__file__, 'rb') kama fp:
             fd = fp.fileno()
             fp.close()
-            try:
+            jaribu:
                 select.select([fd], [], [], 0)
-            except OSError as err:
+            tatizo OSError kama err:
                 self.assertEqual(err.errno, errno.EBADF)
-            else:
-                self.fail("exception not raised")
+            isipokua:
+                self.fail("exception sio ashiriad")
 
-    eleza test_returned_list_identity(self):
+    eleza test_rudishaed_list_identity(self):
         # See issue #8329
         r, w, x = select.select([], [], [], 1)
         self.assertIsNot(r, w)
@@ -45,23 +45,23 @@ kundi SelectTestCase(unittest.TestCase):
         self.assertIsNot(w, x)
 
     eleza test_select(self):
-        cmd = 'for i in 0 1 2 3 4 5 6 7 8 9; do echo testing...; sleep 1; done'
-        with os.popen(cmd) as p:
-            for tout in (0, 1, 2, 4, 8, 16) + (None,)*10:
+        cmd = 'kila i kwenye 0 1 2 3 4 5 6 7 8 9; do echo testing...; sleep 1; done'
+        with os.popen(cmd) kama p:
+            kila tout kwenye (0, 1, 2, 4, 8, 16) + (Tupu,)*10:
                 ikiwa support.verbose:
                     andika('timeout =', tout)
                 rfd, wfd, xfd = select.select([p], [], [], tout)
                 ikiwa (rfd, wfd, xfd) == ([], [], []):
-                    continue
+                    endelea
                 ikiwa (rfd, wfd, xfd) == ([p], [], []):
                     line = p.readline()
                     ikiwa support.verbose:
                         andika(repr(line))
-                    ikiwa not line:
+                    ikiwa sio line:
                         ikiwa support.verbose:
                             andika('EOF')
-                        break
-                    continue
+                        koma
+                    endelea
                 self.fail('Unexpected rudisha values kutoka select():', rfd, wfd, xfd)
 
     # Issue 16230: Crash on select resized list
@@ -69,7 +69,7 @@ kundi SelectTestCase(unittest.TestCase):
         a = []
         kundi F:
             eleza fileno(self):
-                del a[-1]
+                toa a[-1]
                 rudisha sys.__stdout__.fileno()
         a[:] = [F()] * 10
         self.assertEqual(select.select([], a, []), ([], a[:5], []))

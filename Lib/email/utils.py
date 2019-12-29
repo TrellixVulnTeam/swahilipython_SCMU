@@ -53,10 +53,10 @@ def _has_surrogates(s):
     # This check is based on the fact that unless there are surrogates, utf8
     # (Python's default encoding) can encode any string.  This is the fastest
     # way to check for surrogates, see issue 11454 for timings.
-    try:
+    jaribu:
         s.encode()
         return False
-    except UnicodeEncodeError:
+    tatizo UnicodeEncodeError:
         return True
 
 # How to deal with a string containing bytes before handing it to the
@@ -65,7 +65,7 @@ def _sanitize(string):
     # Turn any escaped bytes into unicode 'unknown' char.  If the escaped
     # bytes happen to be utf-8 they will instead get decoded, even if they
     # were invalid in the charset the source was supposed to be in.  This
-    # seems like it is not a bad thing; a defect was still registered.
+    # seems like it ni sio a bad thing; a defect was still registered.
     original_bytes = string.encode('utf-8', 'surrogateescape')
     return original_bytes.decode('utf-8', 'replace')
 
@@ -82,7 +82,7 @@ def formataddr(pair, charset='utf-8'):
     returned unmodified.
 
     Optional charset if given is the character set that is used to encode
-    realname in case realname is not ASCII safe.  Can be an instance of str or
+    realname in case realname ni sio ASCII safe.  Can be an instance of str or
     a Charset-like object which has a header_encode method.  Default is
     'utf-8'.
     """
@@ -90,14 +90,14 @@ def formataddr(pair, charset='utf-8'):
     # The address MUST (per RFC) be ascii, so raise a UnicodeError if it isn't.
     address.encode('ascii')
     if name:
-        try:
+        jaribu:
             name.encode('ascii')
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             if isinstance(charset, str):
                 charset = Charset(charset)
             encoded_name = charset.header_encode(name)
             return "%s <%s>" % (encoded_name, address)
-        else:
+        isipokua:
             quotes = ''
             if specialsre.search(name):
                 quotes = '"'
@@ -136,7 +136,7 @@ def formatdate(timeval=None, localtime=False, usegmt=False):
     taking daylight savings time into account.
 
     Optional argument usegmt means that the timezone is written out as
-    an ascii string, not numeric one (so "GMT" instead of "+0000"). This
+    an ascii string, sio numeric one (so "GMT" instead of "+0000"). This
     is needed for HTTP, and is only used when localtime==False.
     """
     # Note: we cannot use strftime() because that honors the locale and RFC
@@ -145,7 +145,7 @@ def formatdate(timeval=None, localtime=False, usegmt=False):
         timeval = time.time()
     if localtime or usegmt:
         dt = datetime.datetime.fromtimestamp(timeval, datetime.timezone.utc)
-    else:
+    isipokua:
         dt = datetime.datetime.utcfromtimestamp(timeval)
     if localtime:
         dt = dt.astimezone()
@@ -166,7 +166,7 @@ def format_datetime(dt, usegmt=False):
         zone = 'GMT'
     lasivyo dt.tzinfo is None:
         zone = '-0000'
-    else:
+    isipokua:
         zone = dt.strftime("%z")
     return _format_timetuple_and_zone(now, zone)
 
@@ -186,7 +186,7 @@ def make_msgid(idstring=None, domain=None):
     randint = random.getrandbits(64)
     if idstring is None:
         idstring = ''
-    else:
+    isipokua:
         idstring = '.' + idstring
     if domain is None:
         domain = socket.getfqdn()
@@ -210,7 +210,7 @@ def parseaddr(addr):
     which case return a 2-tuple of ('', '').
     """
     addrs = _AddressList(addr).addresslist
-    if not addrs:
+    if sio addrs:
         return '', ''
     return addrs[0]
 
@@ -240,7 +240,7 @@ def encode_rfc2231(s, charset=None, language=None):
     """Encode string according to RFC 2231.
 
     If neither charset nor language is given, then s is returned as-is.  If
-    charset is given but not language, the string is encoded using the empty
+    charset is given but sio language, the string is encoded using the empty
     string for language.
     """
     s = urllib.parse.quote(s, safe='', encoding=charset or 'ascii')
@@ -268,20 +268,20 @@ def decode_params(params):
     rfc2231_params = {}
     name, value = params.pop(0)
     new_params.append((name, value))
-    while params:
+    wakati params:
         name, value = params.pop(0)
         if name.endswith('*'):
             encoded = True
-        else:
+        isipokua:
             encoded = False
         value = unquote(value)
         mo = rfc2231_continuation.match(name)
         if mo:
             name, num = mo.group('name', 'num')
-            if num is not None:
+            if num ni sio None:
                 num = int(num)
             rfc2231_params.setdefault(name, []).append((num, value, encoded))
-        else:
+        isipokua:
             new_params.append((name, '"%s"' % quote(value)))
     if rfc2231_params:
         for name, continuations in rfc2231_params.items():
@@ -306,16 +306,16 @@ def decode_params(params):
             if extended:
                 charset, language, value = decode_rfc2231(value)
                 new_params.append((name, (charset, language, '"%s"' % value)))
-            else:
+            isipokua:
                 new_params.append((name, '"%s"' % value))
     return new_params
 
 def collapse_rfc2231_value(value, errors='replace',
                            fallback_charset='us-ascii'):
-    if not isinstance(value, tuple) or len(value) != 3:
+    if sio isinstance(value, tuple) or len(value) != 3:
         return unquote(value)
     # While value comes to us as a unicode string, we need it to be a bytes
-    # object.  We do not want bytes() normal utf-8 decoder, we want a straight
+    # object.  We do sio want bytes() normal utf-8 decoder, we want a straight
     # interpretation of the string as character bytes.
     charset, language, text = value
     if charset is None:
@@ -323,17 +323,17 @@ def collapse_rfc2231_value(value, errors='replace',
         # the value, so use the fallback_charset.
         charset = fallback_charset
     rawbytes = bytes(text, 'raw-unicode-escape')
-    try:
+    jaribu:
         return str(rawbytes, charset, errors)
-    except LookupError:
-        # charset is not a known codec.
+    tatizo LookupError:
+        # charset ni sio a known codec.
         return unquote(text)
 
 
 #
 # datetime doesn't provide a localtime function yet, so provide one.  Code
-# adapted from the patch in issue 9527.  This may not be perfect, but it is
-# better than not having it.
+# adapted from the patch in issue 9527.  This may sio be perfect, but it is
+# better than sio having it.
 #
 
 def localtime(dt=None, isdst=-1):
@@ -345,14 +345,14 @@ def localtime(dt=None, isdst=-1):
     naive (that is, dt.tzinfo is None), it is assumed to be in local time.
     In this case, a positive or zero value for *isdst* causes localtime to
     presume initially that summer time (for example, Daylight Saving Time)
-    is or is not (respectively) in effect for the specified time.  A
+    is or ni sio (respectively) in effect for the specified time.  A
     negative value for *isdst* causes the localtime() function to attempt
     to divine whether summer time is in effect for the specified time.
 
     """
     if dt is None:
         return datetime.datetime.now(datetime.timezone.utc).astimezone()
-    if dt.tzinfo is not None:
+    if dt.tzinfo ni sio None:
         return dt.astimezone()
     # We have a naive datetime.  Convert to a (localtime) timetuple and pass to
     # system mktime together with the isdst hint.  System mktime will return
@@ -360,10 +360,10 @@ def localtime(dt=None, isdst=-1):
     tm = dt.timetuple()[:-1] + (isdst,)
     seconds = time.mktime(tm)
     localtm = time.localtime(seconds)
-    try:
+    jaribu:
         delta = datetime.timedelta(seconds=localtm.tm_gmtoff)
         tz = datetime.timezone(delta, localtm.tm_zone)
-    except AttributeError:
+    tatizo AttributeError:
         # Compute UTC offset and compare with the value implied by tm_isdst.
         # If the values match, use the zone name implied by tm_isdst.
         delta = dt - datetime.datetime(*time.gmtime(seconds)[:6])
@@ -371,6 +371,6 @@ def localtime(dt=None, isdst=-1):
         gmtoff = -(time.altzone if dst else time.timezone)
         if delta == datetime.timedelta(seconds=gmtoff):
             tz = datetime.timezone(delta, time.tzname[dst])
-        else:
+        isipokua:
             tz = datetime.timezone(delta)
     return dt.replace(tzinfo=tz)

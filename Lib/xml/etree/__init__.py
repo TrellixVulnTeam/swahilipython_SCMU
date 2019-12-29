@@ -8,14 +8,14 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# na will comply with the following terms na conditions:
 #
-# Permission to use, copy, modify, and distribute this software and
-# its associated documentation for any purpose and without fee is
+# Permission to use, copy, modify, na distribute this software and
+# its associated documentation kila any purpose na without fee is
 # hereby granted, provided that the above copyright notice appears in
-# all copies, and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Secret Labs AB or the author not be used in advertising or publicity
+# all copies, na that both that copyright notice na this permission
+# notice appear kwenye supporting documentation, na that the name of
+# Secret Labs AB ama the author sio be used kwenye advertising ama publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #
@@ -30,4 +30,4 @@
 # --------------------------------------------------------------------
 
 # Licensed to PSF under a Contributor Agreement.
-# See http://www.python.org/psf/license for licensing details.
+# See http://www.python.org/psf/license kila licensing details.

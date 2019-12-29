@@ -26,8 +26,8 @@ kundi SymbolTableFactory:
 
     eleza __call__(self, table, filename):
         key = table, filename
-        obj = self.__memo.get(key, None)
-        ikiwa obj is None:
+        obj = self.__memo.get(key, Tupu)
+        ikiwa obj ni Tupu:
             obj = self.__memo[key] = self.new(table, filename)
         rudisha obj
 
@@ -44,13 +44,13 @@ kundi SymbolTable(object):
     eleza __repr__(self):
         ikiwa self.__class__ == SymbolTable:
             kind = ""
-        else:
+        isipokua:
             kind = "%s " % self.__class__.__name__
 
         ikiwa self._table.name == "global":
-            rudisha "<{0}SymbolTable for module {1}>".format(kind, self._filename)
-        else:
-            rudisha "<{0}SymbolTable for {1} in {2}>".format(kind,
+            rudisha "<{0}SymbolTable kila module {1}>".format(kind, self._filename)
+        isipokua:
+            rudisha "<{0}SymbolTable kila {1} kwenye {2}>".format(kind,
                                                             self._table.name,
                                                             self._filename)
 
@@ -61,7 +61,7 @@ kundi SymbolTable(object):
             rudisha "function"
         ikiwa self._table.type == _symtable.TYPE_CLASS:
             rudisha "class"
-        assert self._table.type in (1, 2, 3), \
+        assert self._table.type kwenye (1, 2, 3), \
                "unexpected type: {0}".format(self._table.type)
 
     eleza get_id(self):
@@ -84,71 +84,71 @@ kundi SymbolTable(object):
 
     eleza has_exec(self):
         """Return true ikiwa the scope uses exec.  Deprecated method."""
-        rudisha False
+        rudisha Uongo
 
     eleza get_identifiers(self):
         rudisha self._table.symbols.keys()
 
     eleza lookup(self, name):
         sym = self._symbols.get(name)
-        ikiwa sym is None:
+        ikiwa sym ni Tupu:
             flags = self._table.symbols[name]
             namespaces = self.__check_children(name)
             sym = self._symbols[name] = Symbol(name, flags, namespaces)
         rudisha sym
 
     eleza get_symbols(self):
-        rudisha [self.lookup(ident) for ident in self.get_identifiers()]
+        rudisha [self.lookup(ident) kila ident kwenye self.get_identifiers()]
 
     eleza __check_children(self, name):
         rudisha [_newSymbolTable(st, self._filename)
-                for st in self._table.children
+                kila st kwenye self._table.children
                 ikiwa st.name == name]
 
     eleza get_children(self):
         rudisha [_newSymbolTable(st, self._filename)
-                for st in self._table.children]
+                kila st kwenye self._table.children]
 
 
 kundi Function(SymbolTable):
 
-    # Default values for instance variables
-    __params = None
-    __locals = None
-    __frees = None
-    __globals = None
-    __nonlocals = None
+    # Default values kila instance variables
+    __params = Tupu
+    __locals = Tupu
+    __frees = Tupu
+    __globals = Tupu
+    __nonlocals = Tupu
 
     eleza __idents_matching(self, test_func):
-        rudisha tuple(ident for ident in self.get_identifiers()
+        rudisha tuple(ident kila ident kwenye self.get_identifiers()
                      ikiwa test_func(self._table.symbols[ident]))
 
     eleza get_parameters(self):
-        ikiwa self.__params is None:
+        ikiwa self.__params ni Tupu:
             self.__params = self.__idents_matching(lambda x:x & DEF_PARAM)
         rudisha self.__params
 
     eleza get_locals(self):
-        ikiwa self.__locals is None:
+        ikiwa self.__locals ni Tupu:
             locs = (LOCAL, CELL)
-            test = lambda x: ((x >> SCOPE_OFF) & SCOPE_MASK) in locs
+            test = lambda x: ((x >> SCOPE_OFF) & SCOPE_MASK) kwenye locs
             self.__locals = self.__idents_matching(test)
         rudisha self.__locals
 
     eleza get_globals(self):
-        ikiwa self.__globals is None:
+        ikiwa self.__globals ni Tupu:
             glob = (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT)
-            test = lambda x:((x >> SCOPE_OFF) & SCOPE_MASK) in glob
+            test = lambda x:((x >> SCOPE_OFF) & SCOPE_MASK) kwenye glob
             self.__globals = self.__idents_matching(test)
         rudisha self.__globals
 
     eleza get_nonlocals(self):
-        ikiwa self.__nonlocals is None:
+        ikiwa self.__nonlocals ni Tupu:
             self.__nonlocals = self.__idents_matching(lambda x:x & DEF_NONLOCAL)
         rudisha self.__nonlocals
 
     eleza get_frees(self):
-        ikiwa self.__frees is None:
+        ikiwa self.__frees ni Tupu:
             is_free = lambda x:((x >> SCOPE_OFF) & SCOPE_MASK) == FREE
             self.__frees = self.__idents_matching(is_free)
         rudisha self.__frees
@@ -156,12 +156,12 @@ kundi Function(SymbolTable):
 
 kundi Class(SymbolTable):
 
-    __methods = None
+    __methods = Tupu
 
     eleza get_methods(self):
-        ikiwa self.__methods is None:
+        ikiwa self.__methods ni Tupu:
             d = {}
-            for st in self._table.children:
+            kila st kwenye self._table.children:
                 d[st.name] = 1
             self.__methods = tuple(d)
         rudisha self.__methods
@@ -169,11 +169,11 @@ kundi Class(SymbolTable):
 
 kundi Symbol(object):
 
-    eleza __init__(self, name, flags, namespaces=None):
+    eleza __init__(self, name, flags, namespaces=Tupu):
         self.__name = name
         self.__flags = flags
         self.__scope = (flags >> SCOPE_OFF) & SCOPE_MASK # like PyST_GetScope()
-        self.__namespaces = namespaces or ()
+        self.__namespaces = namespaces ama ()
 
     eleza __repr__(self):
         rudisha "<symbol {0!r}>".format(self.__name)
@@ -188,7 +188,7 @@ kundi Symbol(object):
         rudisha bool(self.__flags & DEF_PARAM)
 
     eleza is_global(self):
-        rudisha bool(self.__scope in (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT))
+        rudisha bool(self.__scope kwenye (GLOBAL_IMPLICIT, GLOBAL_EXPLICIT))
 
     eleza is_nonlocal(self):
         rudisha bool(self.__flags & DEF_NONLOCAL)
@@ -214,12 +214,12 @@ kundi Symbol(object):
     eleza is_namespace(self):
         """Returns true ikiwa name binding introduces new namespace.
 
-        If the name is used as the target of a function or class
+        If the name ni used kama the target of a function ama class
         statement, this will be true.
 
         Note that a single name can be bound to multiple objects.  If
-        is_namespace() is true, the name may also be bound to other
-        objects, like an int or list, that does not introduce a new
+        is_namespace() ni true, the name may also be bound to other
+        objects, like an int ama list, that does sio introduce a new
         namespace.
         """
         rudisha bool(self.__namespaces)
@@ -231,17 +231,17 @@ kundi Symbol(object):
     eleza get_namespace(self):
         """Returns the single namespace bound to this name.
 
-        Raises ValueError ikiwa the name is bound to multiple namespaces.
+        Raises ValueError ikiwa the name ni bound to multiple namespaces.
         """
         ikiwa len(self.__namespaces) != 1:
-            raise ValueError("name is bound to multiple namespaces")
+            ashiria ValueError("name ni bound to multiple namespaces")
         rudisha self.__namespaces[0]
 
 ikiwa __name__ == "__main__":
     agiza os, sys
-    with open(sys.argv[0]) as f:
+    with open(sys.argv[0]) kama f:
         src = f.read()
     mod = symtable(src, os.path.split(sys.argv[0])[1], "exec")
-    for ident in mod.get_identifiers():
+    kila ident kwenye mod.get_identifiers():
         info = mod.lookup(ident)
         andika(info, info.is_local(), info.is_namespace())

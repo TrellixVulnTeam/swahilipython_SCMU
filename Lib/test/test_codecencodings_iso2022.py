@@ -1,4 +1,4 @@
-# Codec encoding tests for ISO 2022 encodings.
+# Codec encoding tests kila ISO 2022 encodings.
 
 kutoka test agiza multibytecodec_support
 agiza unittest
@@ -32,10 +32,10 @@ kundi Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
     )
 
     # iso2022_kr.txt cannot be used to test "chunk coding": the escape
-    # sequence is only written on the first line
+    # sequence ni only written on the first line
     @unittest.skip('iso2022_kr.txt cannot be used to test "chunk coding"')
     eleza test_chunkcoding(self):
-        pass
+        pita
 
 ikiwa __name__ == "__main__":
     unittest.main()

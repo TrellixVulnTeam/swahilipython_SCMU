@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -22,7 +22,7 @@ version: 2.59
 -- Most of the tests here assume a "regular pattern", where the
 -- sign and coefficient are +1.
 -- 2004.03.15 Underflow for quantize is suppressed
--- 2005.06.08 More extensive tests for 'does not fit'
+-- 2005.06.08 More extensive tests for 'does sio fit'
 -- [Forked from quantize.decTest 2006.11.25]
 
 extended:    1

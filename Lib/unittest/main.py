@@ -7,7 +7,7 @@ agiza os
 kutoka . agiza loader, runner
 kutoka .signals agiza installHandler
 
-__unittest = True
+__unittest = Kweli
 
 MAIN_EXAMPLES = """\
 Examples:
@@ -23,75 +23,75 @@ Examples:
   %(prog)s MyTestSuite               - run suite 'MyTestSuite'
   %(prog)s MyTestCase.testSomething  - run MyTestCase.testSomething
   %(prog)s MyTestCase                - run all 'test*' test methods
-                                       in MyTestCase
+                                       kwenye MyTestCase
 """
 
 eleza _convert_name(name):
-    # on Linux / Mac OS X 'foo.PY' is not agizaable, but on
+    # on Linux / Mac OS X 'foo.PY' ni sio agizaable, but on
     # Windows it is. Simpler to do a case insensitive match
-    # a better check would be to check that the name is a
+    # a better check would be to check that the name ni a
     # valid Python module name.
-    ikiwa os.path.isfile(name) and name.lower().endswith('.py'):
+    ikiwa os.path.isfile(name) na name.lower().endswith('.py'):
         ikiwa os.path.isabs(name):
             rel_path = os.path.relpath(name, os.getcwd())
-            ikiwa os.path.isabs(rel_path) or rel_path.startswith(os.pardir):
+            ikiwa os.path.isabs(rel_path) ama rel_path.startswith(os.pardir):
                 rudisha name
             name = rel_path
-        # on Windows both '\' and '/' are used as path
+        # on Windows both '\' na '/' are used kama path
         # separators. Better to replace both than rely on os.path.sep
         rudisha name[:-3].replace('\\', '.').replace('/', '.')
     rudisha name
 
 eleza _convert_names(names):
-    rudisha [_convert_name(name) for name in names]
+    rudisha [_convert_name(name) kila name kwenye names]
 
 
 eleza _convert_select_pattern(pattern):
-    ikiwa not '*' in pattern:
+    ikiwa sio '*' kwenye pattern:
         pattern = '*%s*' % pattern
     rudisha pattern
 
 
 kundi TestProgram(object):
-    """A command-line program that runs a set of tests; this is primarily
-       for making test modules conveniently executable.
+    """A command-line program that runs a set of tests; this ni primarily
+       kila making test modules conveniently executable.
     """
-    # defaults for testing
-    module=None
+    # defaults kila testing
+    module=Tupu
     verbosity = 1
-    failfast = catchbreak = buffer = progName = warnings = testNamePatterns = None
-    _discovery_parser = None
+    failfast = catchkoma = buffer = progName = warnings = testNamePatterns = Tupu
+    _discovery_parser = Tupu
 
-    eleza __init__(self, module='__main__', defaultTest=None, argv=None,
-                    testRunner=None, testLoader=loader.defaultTestLoader,
-                    exit=True, verbosity=1, failfast=None, catchbreak=None,
-                    buffer=None, warnings=None, *, tb_locals=False):
+    eleza __init__(self, module='__main__', defaultTest=Tupu, argv=Tupu,
+                    testRunner=Tupu, testLoader=loader.defaultTestLoader,
+                    exit=Kweli, verbosity=1, failfast=Tupu, catchkoma=Tupu,
+                    buffer=Tupu, warnings=Tupu, *, tb_locals=Uongo):
         ikiwa isinstance(module, str):
             self.module = __import__(module)
-            for part in module.split('.')[1:]:
+            kila part kwenye module.split('.')[1:]:
                 self.module = getattr(self.module, part)
-        else:
+        isipokua:
             self.module = module
-        ikiwa argv is None:
+        ikiwa argv ni Tupu:
             argv = sys.argv
 
         self.exit = exit
         self.failfast = failfast
-        self.catchbreak = catchbreak
+        self.catchkoma = catchkoma
         self.verbosity = verbosity
         self.buffer = buffer
         self.tb_locals = tb_locals
-        ikiwa warnings is None and not sys.warnoptions:
+        ikiwa warnings ni Tupu na sio sys.warnoptions:
             # even ikiwa DeprecationWarnings are ignored by default
             # print them anyway unless other warnings settings are
-            # specified by the warnings arg or the -W python flag
+            # specified by the warnings arg ama the -W python flag
             self.warnings = 'default'
-        else:
-            # here self.warnings is set either to the value passed
-            # to the warnings args or to None.
-            # If the user didn't pass a value self.warnings will
-            # be None. This means that the behavior is unchanged
-            # and depends on the values passed to -W.
+        isipokua:
+            # here self.warnings ni set either to the value pitaed
+            # to the warnings args ama to Tupu.
+            # If the user didn't pita a value self.warnings will
+            # be Tupu. This means that the behavior ni unchanged
+            # na depends on the values pitaed to -W.
             self.warnings = warnings
         self.defaultTest = defaultTest
         self.testRunner = testRunner
@@ -100,61 +100,61 @@ kundi TestProgram(object):
         self.parseArgs(argv)
         self.runTests()
 
-    eleza usageExit(self, msg=None):
+    eleza usageExit(self, msg=Tupu):
         ikiwa msg:
             andika(msg)
-        ikiwa self._discovery_parser is None:
+        ikiwa self._discovery_parser ni Tupu:
             self._initArgParsers()
         self._print_help()
         sys.exit(2)
 
     eleza _print_help(self, *args, **kwargs):
-        ikiwa self.module is None:
+        ikiwa self.module ni Tupu:
             andika(self._main_parser.format_help())
             andika(MAIN_EXAMPLES % {'prog': self.progName})
             self._discovery_parser.print_help()
-        else:
+        isipokua:
             andika(self._main_parser.format_help())
             andika(MODULE_EXAMPLES % {'prog': self.progName})
 
     eleza parseArgs(self, argv):
         self._initArgParsers()
-        ikiwa self.module is None:
-            ikiwa len(argv) > 1 and argv[1].lower() == 'discover':
+        ikiwa self.module ni Tupu:
+            ikiwa len(argv) > 1 na argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
-                return
+                rudisha
             self._main_parser.parse_args(argv[1:], self)
-            ikiwa not self.tests:
+            ikiwa sio self.tests:
                 # this allows "python -m unittest -v" to still work for
                 # test discovery.
                 self._do_discovery([])
-                return
-        else:
+                rudisha
+        isipokua:
             self._main_parser.parse_args(argv[1:], self)
 
         ikiwa self.tests:
             self.testNames = _convert_names(self.tests)
             ikiwa __name__ == '__main__':
                 # to support python -m unittest ...
-                self.module = None
-        elikiwa self.defaultTest is None:
+                self.module = Tupu
+        elikiwa self.defaultTest ni Tupu:
             # createTests will load tests kutoka self.module
-            self.testNames = None
+            self.testNames = Tupu
         elikiwa isinstance(self.defaultTest, str):
             self.testNames = (self.defaultTest,)
-        else:
+        isipokua:
             self.testNames = list(self.defaultTest)
         self.createTests()
 
-    eleza createTests(self, kutoka_discovery=False, Loader=None):
+    eleza createTests(self, kutoka_discovery=Uongo, Loader=Tupu):
         ikiwa self.testNamePatterns:
             self.testLoader.testNamePatterns = self.testNamePatterns
         ikiwa kutoka_discovery:
-            loader = self.testLoader ikiwa Loader is None else Loader()
+            loader = self.testLoader ikiwa Loader ni Tupu else Loader()
             self.test = loader.discover(self.start, self.pattern, self.top)
-        elikiwa self.testNames is None:
+        elikiwa self.testNames ni Tupu:
             self.test = self.testLoader.loadTestsFromModule(self.module)
-        else:
+        isipokua:
             self.test = self.testLoader.loadTestsFromNames(self.testNames,
                                                            self.module)
 
@@ -164,7 +164,7 @@ kundi TestProgram(object):
         self._discovery_parser = self._getDiscoveryArgParser(parent_parser)
 
     eleza _getParentArgParser(self):
-        parser = argparse.ArgumentParser(add_help=False)
+        parser = argparse.ArgumentParser(add_help=Uongo)
 
         parser.add_argument('-v', '--verbose', dest='verbosity',
                             action='store_const', const=2,
@@ -174,23 +174,23 @@ kundi TestProgram(object):
                             help='Quiet output')
         parser.add_argument('--locals', dest='tb_locals',
                             action='store_true',
-                            help='Show local variables in tracebacks')
-        ikiwa self.failfast is None:
+                            help='Show local variables kwenye tracebacks')
+        ikiwa self.failfast ni Tupu:
             parser.add_argument('-f', '--failfast', dest='failfast',
                                 action='store_true',
-                                help='Stop on first fail or error')
-            self.failfast = False
-        ikiwa self.catchbreak is None:
-            parser.add_argument('-c', '--catch', dest='catchbreak',
+                                help='Stop on first fail ama error')
+            self.failfast = Uongo
+        ikiwa self.catchkoma ni Tupu:
+            parser.add_argument('-c', '--catch', dest='catchkoma',
                                 action='store_true',
-                                help='Catch Ctrl-C and display results so far')
-            self.catchbreak = False
-        ikiwa self.buffer is None:
+                                help='Catch Ctrl-C na display results so far')
+            self.catchkoma = Uongo
+        ikiwa self.buffer ni Tupu:
             parser.add_argument('-b', '--buffer', dest='buffer',
                                 action='store_true',
-                                help='Buffer stdout and stderr during tests')
-            self.buffer = False
-        ikiwa self.testNamePatterns is None:
+                                help='Buffer stdout na stderr during tests')
+            self.buffer = Uongo
+        ikiwa self.testNamePatterns ni Tupu:
             parser.add_argument('-k', dest='testNamePatterns',
                                 action='append', type=_convert_select_pattern,
                                 help='Only run tests which match the given substring')
@@ -205,7 +205,7 @@ kundi TestProgram(object):
 
         parser.add_argument('tests', nargs='*',
                             help='a list of any number of test modules, '
-                            'classes and test methods.')
+                            'classes na test methods.')
 
         rudisha parser
 
@@ -223,50 +223,50 @@ kundi TestProgram(object):
         parser.add_argument('-t', '--top-level-directory', dest='top',
                             help='Top level directory of project (defaults to '
                                  'start directory)')
-        for arg in ('start', 'pattern', 'top'):
+        kila arg kwenye ('start', 'pattern', 'top'):
             parser.add_argument(arg, nargs='?',
                                 default=argparse.SUPPRESS,
                                 help=argparse.SUPPRESS)
 
         rudisha parser
 
-    eleza _do_discovery(self, argv, Loader=None):
+    eleza _do_discovery(self, argv, Loader=Tupu):
         self.start = '.'
         self.pattern = 'test*.py'
-        self.top = None
-        ikiwa argv is not None:
-            # handle command line args for test discovery
-            ikiwa self._discovery_parser is None:
-                # for testing
+        self.top = Tupu
+        ikiwa argv ni sio Tupu:
+            # handle command line args kila test discovery
+            ikiwa self._discovery_parser ni Tupu:
+                # kila testing
                 self._initArgParsers()
             self._discovery_parser.parse_args(argv, self)
 
-        self.createTests(kutoka_discovery=True, Loader=Loader)
+        self.createTests(kutoka_discovery=Kweli, Loader=Loader)
 
     eleza runTests(self):
-        ikiwa self.catchbreak:
+        ikiwa self.catchkoma:
             installHandler()
-        ikiwa self.testRunner is None:
+        ikiwa self.testRunner ni Tupu:
             self.testRunner = runner.TextTestRunner
         ikiwa isinstance(self.testRunner, type):
-            try:
-                try:
+            jaribu:
+                jaribu:
                     testRunner = self.testRunner(verbosity=self.verbosity,
                                                  failfast=self.failfast,
                                                  buffer=self.buffer,
                                                  warnings=self.warnings,
                                                  tb_locals=self.tb_locals)
-                except TypeError:
+                tatizo TypeError:
                     # didn't accept the tb_locals argument
                     testRunner = self.testRunner(verbosity=self.verbosity,
                                                  failfast=self.failfast,
                                                  buffer=self.buffer,
                                                  warnings=self.warnings)
-            except TypeError:
-                # didn't accept the verbosity, buffer or failfast arguments
+            tatizo TypeError:
+                # didn't accept the verbosity, buffer ama failfast arguments
                 testRunner = self.testRunner()
-        else:
-            # it is assumed to be a TestRunner instance
+        isipokua:
+            # it ni assumed to be a TestRunner instance
             testRunner = self.testRunner
         self.result = testRunner.run(self.test)
         ikiwa self.exit:

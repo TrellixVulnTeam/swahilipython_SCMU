@@ -2,8 +2,8 @@ agiza unittest
 agiza colorsys
 
 eleza frange(start, stop, step):
-    while start <= stop:
-        yield start
+    wakati start <= stop:
+        tuma start
         start += step
 
 kundi ColorsysTest(unittest.TestCase):
@@ -16,9 +16,9 @@ kundi ColorsysTest(unittest.TestCase):
         self.assertAlmostEqual(tr1[2], tr2[2])
 
     eleza test_hsv_roundtrip(self):
-        for r in frange(0.0, 1.0, 0.2):
-            for g in frange(0.0, 1.0, 0.2):
-                for b in frange(0.0, 1.0, 0.2):
+        kila r kwenye frange(0.0, 1.0, 0.2):
+            kila g kwenye frange(0.0, 1.0, 0.2):
+                kila b kwenye frange(0.0, 1.0, 0.2):
                     rgb = (r, g, b)
                     self.assertTripleEqual(
                         rgb,
@@ -38,14 +38,14 @@ kundi ColorsysTest(unittest.TestCase):
             ((1.0, 1.0, 1.0), (  0  , 0.0, 1.0)), # white
             ((0.5, 0.5, 0.5), (  0  , 0.0, 0.5)), # grey
         ]
-        for (rgb, hsv) in values:
+        kila (rgb, hsv) kwenye values:
             self.assertTripleEqual(hsv, colorsys.rgb_to_hsv(*rgb))
             self.assertTripleEqual(rgb, colorsys.hsv_to_rgb(*hsv))
 
     eleza test_hls_roundtrip(self):
-        for r in frange(0.0, 1.0, 0.2):
-            for g in frange(0.0, 1.0, 0.2):
-                for b in frange(0.0, 1.0, 0.2):
+        kila r kwenye frange(0.0, 1.0, 0.2):
+            kila g kwenye frange(0.0, 1.0, 0.2):
+                kila b kwenye frange(0.0, 1.0, 0.2):
                     rgb = (r, g, b)
                     self.assertTripleEqual(
                         rgb,
@@ -65,14 +65,14 @@ kundi ColorsysTest(unittest.TestCase):
             ((1.0, 1.0, 1.0), (  0  , 1.0, 0.0)), # white
             ((0.5, 0.5, 0.5), (  0  , 0.5, 0.0)), # grey
         ]
-        for (rgb, hls) in values:
+        kila (rgb, hls) kwenye values:
             self.assertTripleEqual(hls, colorsys.rgb_to_hls(*rgb))
             self.assertTripleEqual(rgb, colorsys.hls_to_rgb(*hls))
 
     eleza test_yiq_roundtrip(self):
-        for r in frange(0.0, 1.0, 0.2):
-            for g in frange(0.0, 1.0, 0.2):
-                for b in frange(0.0, 1.0, 0.2):
+        kila r kwenye frange(0.0, 1.0, 0.2):
+            kila g kwenye frange(0.0, 1.0, 0.2):
+                kila b kwenye frange(0.0, 1.0, 0.2):
                     rgb = (r, g, b)
                     self.assertTripleEqual(
                         rgb,
@@ -92,7 +92,7 @@ kundi ColorsysTest(unittest.TestCase):
             ((1.0, 1.0, 1.0), (1.0, 0.0, 0.0)), # white
             ((0.5, 0.5, 0.5), (0.5, 0.0, 0.0)), # grey
         ]
-        for (rgb, yiq) in values:
+        kila (rgb, yiq) kwenye values:
             self.assertTripleEqual(yiq, colorsys.rgb_to_yiq(*rgb))
             self.assertTripleEqual(rgb, colorsys.yiq_to_rgb(*yiq))
 

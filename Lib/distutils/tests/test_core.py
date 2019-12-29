@@ -70,9 +70,9 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
 
     def write_setup(self, text, path=test.support.TESTFN):
         f = open(path, "w")
-        try:
+        jaribu:
             f.write(text)
-        finally:
+        mwishowe:
             f.close()
         return path
 
@@ -83,7 +83,7 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
             self.write_setup(setup_using___file__))
 
     def test_run_setup_preserves_sys_argv(self):
-        # Make sure run_setup does not clobber sys.argv
+        # Make sure run_setup does sio clobber sys.argv
         argv_copy = sys.argv.copy()
         distutils.core.run_setup(
             self.write_setup(setup_does_nothing))
@@ -100,7 +100,7 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
     def test_run_setup_uses_current_dir(self):
         # This tests that the setup script is run with the current directory
         # as its own current directory; this was temporarily broken by a
-        # previous patch when TESTFN did not use the current directory.
+        # previous patch when TESTFN did sio use the current directory.
         sys.stdout = io.StringIO()
         cwd = os.getcwd()
 
@@ -124,10 +124,10 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
         self.assertEqual(stdout.read(), 'bar\n')
 
         distutils.core.DEBUG = True
-        try:
+        jaribu:
             with captured_stdout() as stdout:
                 distutils.core.setup(name='bar')
-        finally:
+        mwishowe:
             distutils.core.DEBUG = False
         stdout.seek(0)
         wanted = "options (after parsing config files):\n"

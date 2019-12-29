@@ -19,7 +19,7 @@ kundi Quitter(object):
     def __call__(self, code=None):
         # Shells like IDLE catch the SystemExit, but listen when their
         # stdin wrapper is closed.
-        try:
+        jaribu:
             sys.stdin.close()
         except:
             pass
@@ -46,13 +46,13 @@ kundi _Printer(object):
             return
         data = None
         for filename in self.__filenames:
-            try:
+            jaribu:
                 with open(filename, "r") as fp:
                     data = fp.read()
-                break
-            except OSError:
+                koma
+            tatizo OSError:
                 pass
-        if not data:
+        if sio data:
             data = self.__data
         self.__lines = data.split('\n')
         self.__linecnt = len(self.__lines)
@@ -61,28 +61,28 @@ kundi _Printer(object):
         self.__setup()
         if len(self.__lines) <= self.MAXLINES:
             return "\n".join(self.__lines)
-        else:
+        isipokua:
             return "Type %s() to see the full %s text" % ((self.__name,)*2)
 
     def __call__(self):
         self.__setup()
         prompt = 'Hit Return for more, or q (and Return) to quit: '
         lineno = 0
-        while 1:
-            try:
+        wakati 1:
+            jaribu:
                 for i in range(lineno, lineno + self.MAXLINES):
                     print(self.__lines[i])
-            except IndexError:
-                break
-            else:
+            tatizo IndexError:
+                koma
+            isipokua:
                 lineno += self.MAXLINES
                 key = None
-                while key is None:
+                wakati key is None:
                     key = input(prompt)
-                    if key not in ('', 'q'):
+                    if key haiko kwenye ('', 'q'):
                         key = None
                 if key == 'q':
-                    break
+                    koma
 
 
 kundi _Helper(object):

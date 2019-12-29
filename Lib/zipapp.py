@@ -26,7 +26,7 @@ agiza {module}
 # On Unix, use the filesystem encoding.
 if sys.platform.startswith('win'):
     shebang_encoding = 'utf-8'
-else:
+isipokua:
     shebang_encoding = sys.getfilesystemencoding()
 
 
@@ -39,7 +39,7 @@ def _maybe_open(archive, mode):
     if isinstance(archive, (str, os.PathLike)):
         with open(archive, mode) as f:
             yield f
-    else:
+    isipokua:
         yield archive
 
 
@@ -88,7 +88,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
     The created application archive will have a shebang line specifying
     that it should run with INTERPRETER (there will be no shebang line if
     INTERPRETER is None), and a __main__.py which runs MAIN (if MAIN is
-    not specified, an existing __main__.py will be used).  It is an error
+    sio specified, an existing __main__.py will be used).  It is an error
     to specify MAIN for anything other than a directory source with no
     __main__.py, and it is an error to omit MAIN if the directory has no
     __main__.py.
@@ -97,7 +97,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
     source_is_file = False
     if hasattr(source, 'read') and hasattr(source, 'readline'):
         source_is_file = True
-    else:
+    isipokua:
         source = pathlib.Path(source)
         if source.is_file():
             source_is_file = True
@@ -107,13 +107,13 @@ def create_archive(source, target=None, interpreter=None, main=None,
         return
 
     # We are creating a new archive kutoka a directory.
-    if not source.exists():
-        raise ZipAppError("Source does not exist")
+    if sio source.exists():
+        raise ZipAppError("Source does sio exist")
     has_main = (source / '__main__.py').is_file()
     if main and has_main:
         raise ZipAppError(
             "Cannot specify entry point if the source has __main__.py")
-    if not (main or has_main):
+    if sio (main or has_main):
         raise ZipAppError("Archive has no entry point")
 
     main_py = None
@@ -122,13 +122,13 @@ def create_archive(source, target=None, interpreter=None, main=None,
         mod, sep, fn = main.partition(':')
         mod_ok = all(part.isidentifier() for part in mod.split('.'))
         fn_ok = all(part.isidentifier() for part in fn.split('.'))
-        if not (sep == ':' and mod_ok and fn_ok):
+        if sio (sep == ':' and mod_ok and fn_ok):
             raise ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
     if target is None:
         target = source.with_suffix('.pyz')
-    lasivyo not hasattr(target, 'write'):
+    lasivyo sio hasattr(target, 'write'):
         target = pathlib.Path(target)
 
     with _maybe_open(target, 'wb') as fd:
@@ -143,7 +143,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
             if main_py:
                 z.writestr('__main__.py', main_py.encode('utf-8'))
 
-    if interpreter and not hasattr(target, 'write'):
+    if interpreter and sio hasattr(target, 'write'):
         target.chmod(target.stat().st_mode | stat.S_IEXEC)
 
 
@@ -184,7 +184,7 @@ def main(args=None):
 
     # Handle `python -m zipapp archive.pyz --info`.
     if args.info:
-        if not os.path.isfile(args.source):
+        if sio os.path.isfile(args.source):
             raise SystemExit("Can only get info for an archive file")
         interpreter = get_interpreter(args.source)
         print("Interpreter: {}".format(interpreter or "<none>"))
@@ -193,7 +193,7 @@ def main(args=None):
     if os.path.isfile(args.source):
         if args.output is None or (os.path.exists(args.output) and
                                    os.path.samefile(args.source, args.output)):
-            raise SystemExit("In-place editing of archives is not supported")
+            raise SystemExit("In-place editing of archives ni sio supported")
         if args.main:
             raise SystemExit("Cannot change the main function when copying")
 

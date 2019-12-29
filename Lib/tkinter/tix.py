@@ -7,7 +7,7 @@
 #
 # NOTE: In order to minimize changes to Tkinter.py, some of the code here
 #       (TixWidget.__init__) has been taken from Tkinter (Widget.__init__)
-#       and will break if there are major changes in Tkinter.
+#       and will koma if there are major changes in Tkinter.
 #
 # The Tix widgets are represented by a class hierarchy in python with proper
 # inheritance of base classes.
@@ -27,7 +27,7 @@ import tkinter
 from tkinter import *
 from tkinter agiza _cnfmerge
 
-agiza _tkinter # If this fails your Python may not be configured for Tk
+agiza _tkinter # If this fails your Python may sio be configured for Tk
 
 # Some more constants (for consistency with Tkinter)
 WINDOW = 'window'
@@ -65,7 +65,7 @@ TCL_ALL_EVENTS    = 0
 
 # BEWARE - this is implemented by copying some code from the Widget class
 #          in Tkinter (to override Widget initialization) and is therefore
-#          liable to break.
+#          liable to koma.
 
 # Could probably add this to Tkinter.Misc
 class tixCommand:
@@ -129,9 +129,9 @@ class tixCommand:
         of file selection dialog widget is desired. Possible options are
         tix FileSelectDialog or tixExFileSelectDialog.
         """
-        if dlgclass is not None:
+        if dlgclass ni sio None:
             return self.tk.call('tix', 'filedialog', dlgclass)
-        else:
+        isipokua:
             return self.tk.call('tix', 'filedialog')
 
     def tix_getbitmap(self, name):
@@ -187,13 +187,13 @@ class tixCommand:
         priority level of the Tk options set by the Tix schemes.
 
         Because of the way Tk handles the X option database, after Tix has
-        been has imported and inited, it is not possible to reset the color
+        been has imported and inited, it ni sio possible to reset the color
         schemes and font sets using the tix config command.  Instead, the
         tix_resetoptions command must be used.
         """
-        if newScmPrio is not None:
+        if newScmPrio ni sio None:
             return self.tk.call('tix', 'resetoptions', newScheme, newFontSet, newScmPrio)
-        else:
+        isipokua:
             return self.tk.call('tix', 'resetoptions', newScheme, newFontSet)
 
 class Tk(tkinter.Tk, tixCommand):
@@ -203,7 +203,7 @@ class Tk(tkinter.Tk, tixCommand):
         tkinter.Tk.__init__(self, screenName, baseName, className)
         tixlib = os.environ.get('TIX_LIBRARY')
         self.tk.eval('global auto_path; lappend auto_path [file dir [info nameof]]')
-        if tixlib is not None:
+        if tixlib ni sio None:
             self.tk.eval('global auto_path; lappend auto_path {%s}' % tixlib)
             self.tk.eval('global tcl_pkgPath; lappend tcl_pkgPath {%s}' % tixlib)
         # Load Tix - this should work dynamically or statically
@@ -250,7 +250,7 @@ class Form:
         return self.tk.call('tixForm', 'grid', self._w, xsize, ysize)
 
     def info(self, option=None):
-        if not option:
+        if sio option:
             return self.tk.call('tixForm', 'info', self._w)
         if option[0] != '-':
             option = '-' + option
@@ -284,7 +284,7 @@ class TixWidget(tkinter.Widget):
         # Merge keywords and dictionary arguments
         if kw:
             cnf = _cnfmerge((cnf, kw))
-        else:
+        isipokua:
             cnf = _cnfmerge(cnf)
 
         # Move static options into extra. static_options must be
@@ -294,13 +294,13 @@ class TixWidget(tkinter.Widget):
         # 'options' is always a static option
         if static_options:
             static_options.append('options')
-        else:
+        isipokua:
             static_options = ['options']
 
         for k,v in list(cnf.items()):
             if k in static_options:
                 extra = extra + ('-' + k, v)
-                del cnf[k]
+                toa cnf[k]
 
         self.widgetName = widgetName
         Widget._setup(self, master, cnf)
@@ -315,7 +315,7 @@ class TixWidget(tkinter.Widget):
             Widget.config(self, cnf)
 
         # Dictionary to hold subwidget names for easier access. We can't
-        # use the children list because the public Tix names may not be the
+        # use the children list because the public Tix names may sio be the
         # same as the pathname component
         self.subwidget_list = {}
 
@@ -337,8 +337,8 @@ class TixWidget(tkinter.Widget):
         """Return the named subwidget (which must have been created by
         the sub-class)."""
         n = self._subwidget_name(name)
-        if not n:
-            raise TclError("Subwidget " + name + " not child of " + self._name)
+        if sio n:
+            raise TclError("Subwidget " + name + " sio child of " + self._name)
         # Remove header of name and leading dot
         n = n[len(self._w)+1:]
         return self._nametowidget(n)
@@ -346,12 +346,12 @@ class TixWidget(tkinter.Widget):
     def subwidgets_all(self):
         """Return all subwidgets."""
         names = self._subwidget_names()
-        if not names:
+        if sio names:
             return []
         retlist = []
         for name in names:
             name = name[len(self._w)+1:]
-            try:
+            jaribu:
                 retlist.append(self._nametowidget(name))
             except:
                 # some of the widgets are unknown e.g. border in LabelFrame
@@ -359,36 +359,36 @@ class TixWidget(tkinter.Widget):
         return retlist
 
     def _subwidget_name(self,name):
-        """Get a subwidget name (returns a String, not a Widget !)"""
-        try:
+        """Get a subwidget name (returns a String, sio a Widget !)"""
+        jaribu:
             return self.tk.call(self._w, 'subwidget', name)
-        except TclError:
+        tatizo TclError:
             return None
 
     def _subwidget_names(self):
         """Return the name of all subwidgets."""
-        try:
+        jaribu:
             x = self.tk.call(self._w, 'subwidgets', '-all')
             return self.tk.splitlist(x)
-        except TclError:
+        tatizo TclError:
             return None
 
     def config_all(self, option, value):
         """Set configuration options for all subwidgets (and self)."""
         if option == '':
             return
-        lasivyo not isinstance(option, str):
+        lasivyo sio isinstance(option, str):
             option = repr(option)
-        if not isinstance(value, str):
+        if sio isinstance(value, str):
             value = repr(value)
         names = self._subwidget_names()
         for name in names:
             self.tk.call(name, 'configure', '-' + option, value)
     # These are missing from Tkinter
     def image_create(self, imgtype, cnf={}, master=None, **kw):
-        if not master:
+        if sio master:
             master = tkinter._default_root
-            if not master:
+            if sio master:
                 raise RuntimeError('Too early to create image')
         if kw and cnf: cnf = _cnfmerge((cnf, kw))
         lasivyo kw: cnf = kw
@@ -399,9 +399,9 @@ class TixWidget(tkinter.Widget):
             options = options + ('-'+k, v)
         return master.tk.call(('image', 'create', imgtype,) + options)
     def image_delete(self, imgname):
-        try:
+        jaribu:
             self.tk.call('image', 'delete', imgname)
-        except TclError:
+        tatizo TclError:
             # May happen if the root was destroyed
             pass
 
@@ -412,36 +412,36 @@ class TixSubWidget(TixWidget):
     """Subwidget class.
 
     This is used to mirror child widgets automatically created
-    by Tix/Tk as part of a mega-widget in Python (which is not informed
+    by Tix/Tk as part of a mega-widget in Python (which ni sio informed
     of this)"""
 
     def __init__(self, master, name,
                destroy_physically=1, check_intermediate=1):
         if check_intermediate:
             path = master._subwidget_name(name)
-            try:
+            jaribu:
                 path = path[len(master._w)+1:]
                 plist = path.split('.')
             except:
                 plist = []
 
-        if not check_intermediate:
+        if sio check_intermediate:
             # immediate descendant
             TixWidget.__init__(self, master, None, None, {'name' : name})
-        else:
+        isipokua:
             # Ensure that the intermediate widgets exist
             parent = master
             for i in range(len(plist) - 1):
                 n = '.'.join(plist[:i+1])
-                try:
+                jaribu:
                     w = master._nametowidget(n)
                     parent = w
-                except KeyError:
+                tatizo KeyError:
                     # Create the intermediate widget
                     parent = TixSubWidget(parent, plist[i],
                                           destroy_physically=0,
                                           check_intermediate=0)
-            # The Tk widget name is in plist, not in name
+            # The Tk widget name is in plist, haiko kwenye name
             if plist:
                 name = plist[-1]
             TixWidget.__init__(self, parent, None, None, {'name' : name})
@@ -449,14 +449,14 @@ class TixSubWidget(TixWidget):
 
     def destroy(self):
         # For some widgets e.g., a NoteBook, when we call destructors,
-        # we must be careful not to destroy the frame widget since this
+        # we must be careful sio to destroy the frame widget since this
         # also destroys the parent NoteBook thus leading to an exception
         # in Tkinter when it finally calls Tcl to destroy the NoteBook
         for c in list(self.children.values()): c.destroy()
         if self._name in self.master.children:
-            del self.master.children[self._name]
+            toa self.master.children[self._name]
         if self._name in self.master.subwidget_list:
-            del self.master.subwidget_list[self._name]
+            toa self.master.subwidget_list[self._name]
         if self.destroy_physically:
             # This is bypassed only for a few widgets
             self.tk.call('destroy', self._w)
@@ -469,14 +469,14 @@ class DisplayStyle:
     (multiple) Display Items"""
 
     def __init__(self, itemtype, cnf={}, *, master=None, **kw):
-        if not master:
+        if sio master:
             if 'refwindow' in kw:
                 master = kw['refwindow']
             lasivyo 'refwindow' in cnf:
                 master = cnf['refwindow']
-            else:
+            isipokua:
                 master = tkinter._default_root
-                if not master:
+                if sio master:
                     raise RuntimeError("Too early to create display style: "
                                        "no root window")
         self.tk = master.tk
@@ -583,11 +583,11 @@ class ComboBox(TixWidget):
         self.subwidget_list['arrow'] = _dummyButton(self, 'arrow')
         self.subwidget_list['slistbox'] = _dummyScrolledListBox(self,
                                                                 'slistbox')
-        try:
+        jaribu:
             self.subwidget_list['tick'] = _dummyButton(self, 'tick')
             self.subwidget_list['cross'] = _dummyButton(self, 'cross')
-        except TypeError:
-            # unavailable when -fancy not specified
+        tatizo TypeError:
+            # unavailable when -fancy sio specified
             pass
 
     # align
@@ -867,7 +867,7 @@ class HList(TixWidget, XView, YView):
         return self.tk.call(self._w, 'add', entry, *self._options(cnf, kw))
 
     def add_child(self, parent=None, cnf={}, **kw):
-        if not parent:
+        if sio parent:
             parent = ''
         return self.tk.call(
                      self._w, 'addchild', parent, *self._options(cnf, kw))
@@ -879,9 +879,9 @@ class HList(TixWidget, XView, YView):
         self.tk.call(self._w, 'anchor', 'clear')
 
     def column_width(self, col=0, width=None, chars=None):
-        if not chars:
+        if sio chars:
             return self.tk.call(self._w, 'column', 'width', col, width)
-        else:
+        isipokua:
             return self.tk.call(self._w, 'column', 'width', col,
                                 '-char', chars)
 
@@ -1097,7 +1097,7 @@ class ListNoteBook(TixWidget):
 
     def __init__(self, master, cnf={}, **kw):
         TixWidget.__init__(self, master, 'tixListNoteBook', ['options'], cnf, kw)
-        # Is this necessary? It's not an exposed subwidget in Tix.
+        # Is this necessary? It's sio an exposed subwidget in Tix.
         self.subwidget_list['pane'] = _dummyPanedWindow(self, 'pane',
                                                         destroy_physically=0)
         self.subwidget_list['hlist'] = _dummyHList(self, 'hlist')
@@ -1152,7 +1152,7 @@ class NoteBook(TixWidget):
     def delete(self, name):
         self.tk.call(self._w, 'delete', name)
         self.subwidget_list[name].destroy()
-        del self.subwidget_list[name]
+        toa self.subwidget_list[name]
 
     def page(self, name):
         return self.subwidget(name)
@@ -1227,7 +1227,7 @@ class PanedWindow(TixWidget):
     def delete(self, name):
         self.tk.call(self._w, 'delete', name)
         self.subwidget_list[name].destroy()
-        del self.subwidget_list[name]
+        toa self.subwidget_list[name]
 
     def forget(self, name):
         self.tk.call(self._w, 'forget', name)
@@ -1548,7 +1548,7 @@ class Tree(TixWidget):
 class CheckList(TixWidget):
     """The CheckList widget
     displays a list of items to be selected by the user. CheckList acts
-    similarly to the Tk checkbutton or radiobutton widgets, except it is
+    similarly to the Tk checkbutton or radiobutton widgets, tatizo it is
     capable of handling many more items than checkbuttons or radiobuttons.
     """
     # FIXME: It should inherit -superclass tixTree
@@ -1580,7 +1580,7 @@ class CheckList(TixWidget):
 
     def getselection(self, mode='on'):
         '''Returns a list of items whose status matches status. If status is
-     not specified, the list of items in the "on" status will be returned.
+     sio specified, the list of items in the "on" status will be returned.
      Mode can be on, off, default'''
         return self.tk.splitlist(self.tk.call(self._w, 'getselection', mode))
 
@@ -1670,12 +1670,12 @@ class _dummyComboBox(ComboBox, TixSubWidget):
 
         self.subwidget_list['slistbox'] = _dummyScrolledListBox(self,
                                                                 'slistbox')
-        try:
+        jaribu:
             self.subwidget_list['tick'] = _dummyButton(self, 'tick')
             #cross Button : present if created with the fancy option
             self.subwidget_list['cross'] = _dummyButton(self, 'cross')
-        except TypeError:
-            # unavailable when -fancy not specified
+        tatizo TypeError:
+            # unavailable when -fancy sio specified
             pass
 
 class _dummyDirList(DirList, TixSubWidget):
@@ -1736,7 +1736,7 @@ class _dummyPanedWindow(PanedWindow, TixSubWidget):
 ### Utility Routines ###
 ########################
 
-#mike Should tixDestroy be exposed as a wrapper? - but not for widgets.
+#mike Should tixDestroy be exposed as a wrapper? - but sio for widgets.
 
 def OptionName(widget):
     '''Returns the qualified path name for the widget. Normally used to set
@@ -1808,18 +1808,18 @@ class Grid(TixWidget, XView, YView):
 
     def delete_row(self, from_, to=None):
         """Delete rows between from_ and to inclusive.
-        If to is not provided,  delete only row at from_"""
+        If to ni sio provided,  delete only row at from_"""
         if to is None:
             self.tk.call(self, 'delete', 'row', from_)
-        else:
+        isipokua:
             self.tk.call(self, 'delete', 'row', from_, to)
 
     def delete_column(self, from_, to=None):
         """Delete columns between from_ and to inclusive.
-        If to is not provided,  delete only column at from_"""
+        If to ni sio provided,  delete only column at from_"""
         if to is None:
             self.tk.call(self, 'delete', 'column', from_)
-        else:
+        isipokua:
             self.tk.call(self, 'delete', 'column', from_, to)
 
     def edit_apply(self):
@@ -1876,7 +1876,7 @@ class Grid(TixWidget, XView, YView):
 
     def set(self, x, y, itemtype=None, **kw):
         args= self._options(self.cnf, kw)
-        if itemtype is not None:
+        if itemtype ni sio None:
             args= ('-itemtype', itemtype) + args
         self.tk.call(self, 'set', x, y, *args)
 

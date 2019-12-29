@@ -1,6 +1,6 @@
-"""This is a sample module used for testing doctest.
+"""This ni a sample module used kila testing doctest.
 
-This module is for testing how doctest handles a module with docstrings
+This module ni kila testing how doctest handles a module with docstrings
 but no doctest examples.
 
 """
@@ -12,4 +12,4 @@ kundi Foo(object):
     """
 
     eleza __init__(self):
-        pass
+        pita

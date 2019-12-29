@@ -1,8 +1,8 @@
-# This is a helper module for test_threaded_agiza.  The test agizas this
-# module, and this module tries to run various Python library functions in
-# their own thread, as a side effect of being imported.  If the spawned
-# thread doesn't complete in TIMEOUT seconds, an "appeared to hang" message
-# is appended to the module-global `errors` list.  That list remains empty
+# This ni a helper module kila test_threaded_agiza.  The test agizas this
+# module, na this module tries to run various Python library functions in
+# their own thread, kama a side effect of being imported.  If the spawned
+# thread doesn't complete kwenye TIMEOUT seconds, an "appeared to hang" message
+# ni appended to the module-global `errors` list.  That list remains empty
 # ikiwa (and only if) all functions tested complete.
 
 TIMEOUT = 10
@@ -14,9 +14,9 @@ agiza os.path
 
 errors = []
 
-# This kundi merely runs a function in its own thread T.  The thread agizaing
+# This kundi merely runs a function kwenye its own thread T.  The thread agizaing
 # this module holds the agiza lock, so ikiwa the function called by T tries
-# to do its own agizas it will block waiting for this module's agiza
+# to do its own agizas it will block waiting kila this module's agiza
 # to complete.
 kundi Worker(threading.Thread):
     eleza __init__(self, function, args):
@@ -27,19 +27,19 @@ kundi Worker(threading.Thread):
     eleza run(self):
         self.function(*self.args)
 
-for name, func, args in [
-        # Bug 147376:  TemporaryFile hung on Windows, starting in Python 2.4.
+kila name, func, args kwenye [
+        # Bug 147376:  TemporaryFile hung on Windows, starting kwenye Python 2.4.
         ("tempfile.TemporaryFile", lambda: tempfile.TemporaryFile().close(), ()),
 
-        # The real cause for bug 147376:  ntpath.abspath() caused the hang.
+        # The real cause kila bug 147376:  ntpath.abspath() caused the hang.
         ("os.path.abspath", os.path.abspath, ('.',)),
         ]:
 
-    try:
+    jaribu:
         t = Worker(func, args)
         t.start()
         t.join(TIMEOUT)
         ikiwa t.is_alive():
             errors.append("%s appeared to hang" % name)
-    finally:
-        del t
+    mwishowe:
+        toa t

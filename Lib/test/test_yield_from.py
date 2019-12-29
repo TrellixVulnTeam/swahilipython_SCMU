@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-Test suite for PEP 380 implementation
+Test suite kila PEP 380 implementation
 
 adapted kutoka original tests written by Greg Ewing
-see <http://www.cosc.canterbury.ac.nz/greg.ewing/python/yield-kutoka/YieldFrom-Python3.1.2-rev5.zip>
+see <http://www.cosc.canterbury.ac.nz/greg.ewing/python/tuma-kutoka/YieldFrom-Python3.1.2-rev5.zip>
 """
 
 agiza unittest
@@ -25,13 +25,13 @@ kundi TestPEP380Operation(unittest.TestCase):
         trace = []
         eleza g1():
             trace.append("Starting g1")
-            yield kutoka g2()
+            tuma kutoka g2()
             trace.append("Finishing g1")
         eleza g2():
             trace.append("Starting g2")
-            yield 42
+            tuma 42
             trace.append("Finishing g2")
-        for x in g1():
+        kila x kwenye g1():
             trace.append("Yielded %s" % (x,))
         self.assertEqual(trace,[
             "Starting g1",
@@ -43,28 +43,28 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_raising_exception_in_initial_next_call(self):
         """
-        Test raising exception in initial next() call
+        Test raising exception kwenye initial next() call
         """
         trace = []
         eleza g1():
-            try:
+            jaribu:
                 trace.append("Starting g1")
-                yield kutoka g2()
-            finally:
+                tuma kutoka g2()
+            mwishowe:
                 trace.append("Finishing g1")
         eleza g2():
-            try:
+            jaribu:
                 trace.append("Starting g2")
-                raise ValueError("spanish inquisition occurred")
-            finally:
+                ashiria ValueError("spanish inquisition occurred")
+            mwishowe:
                 trace.append("Finishing g2")
-        try:
-            for x in g1():
+        jaribu:
+            kila x kwenye g1():
                 trace.append("Yielded %s" % (x,))
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.assertEqual(e.args[0], "spanish inquisition occurred")
-        else:
-            self.fail("subgenerator failed to raise ValueError")
+        isipokua:
+            self.fail("subgenerator failed to ashiria ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Starting g2",
@@ -79,16 +79,16 @@ kundi TestPEP380Operation(unittest.TestCase):
         trace = []
         eleza g1():
             trace.append("Starting g1")
-            yield "g1 ham"
-            yield kutoka g2()
-            yield "g1 eggs"
+            tuma "g1 ham"
+            tuma kutoka g2()
+            tuma "g1 eggs"
             trace.append("Finishing g1")
         eleza g2():
             trace.append("Starting g2")
-            yield "g2 spam"
-            yield "g2 more spam"
+            tuma "g2 spam"
+            tuma "g2 more spam"
             trace.append("Finishing g2")
-        for x in g1():
+        kila x kwenye g1():
             trace.append("Yielded %s" % (x,))
         self.assertEqual(trace,[
             "Starting g1",
@@ -103,32 +103,32 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_raising_exception_in_delegated_next_call(self):
         """
-        Test raising exception in delegated next() call
+        Test raising exception kwenye delegated next() call
         """
         trace = []
         eleza g1():
-            try:
+            jaribu:
                 trace.append("Starting g1")
-                yield "g1 ham"
-                yield kutoka g2()
-                yield "g1 eggs"
-            finally:
+                tuma "g1 ham"
+                tuma kutoka g2()
+                tuma "g1 eggs"
+            mwishowe:
                 trace.append("Finishing g1")
         eleza g2():
-            try:
+            jaribu:
                 trace.append("Starting g2")
-                yield "g2 spam"
-                raise ValueError("hovercraft is full of eels")
-                yield "g2 more spam"
-            finally:
+                tuma "g2 spam"
+                ashiria ValueError("hovercraft ni full of eels")
+                tuma "g2 more spam"
+            mwishowe:
                 trace.append("Finishing g2")
-        try:
-            for x in g1():
+        jaribu:
+            kila x kwenye g1():
                 trace.append("Yielded %s" % (x,))
-        except ValueError as e:
-            self.assertEqual(e.args[0], "hovercraft is full of eels")
-        else:
-            self.fail("subgenerator failed to raise ValueError")
+        tatizo ValueError kama e:
+            self.assertEqual(e.args[0], "hovercraft ni full of eels")
+        isipokua:
+            self.fail("subgenerator failed to ashiria ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Yielded g1 ham",
@@ -145,29 +145,29 @@ kundi TestPEP380Operation(unittest.TestCase):
         trace = []
         eleza g1():
             trace.append("Starting g1")
-            x = yield "g1 ham"
+            x = tuma "g1 ham"
             trace.append("g1 received %s" % (x,))
-            yield kutoka g2()
-            x = yield "g1 eggs"
+            tuma kutoka g2()
+            x = tuma "g1 eggs"
             trace.append("g1 received %s" % (x,))
             trace.append("Finishing g1")
         eleza g2():
             trace.append("Starting g2")
-            x = yield "g2 spam"
+            x = tuma "g2 spam"
             trace.append("g2 received %s" % (x,))
-            x = yield "g2 more spam"
+            x = tuma "g2 more spam"
             trace.append("g2 received %s" % (x,))
             trace.append("Finishing g2")
         g = g1()
         y = next(g)
         x = 1
-        try:
-            while 1:
+        jaribu:
+            wakati 1:
                 y = g.send(x)
                 trace.append("Yielded %s" % (y,))
                 x += 1
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         self.assertEqual(trace,[
             "Starting g1",
             "g1 received 1",
@@ -184,35 +184,35 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_handling_exception_while_delegating_send(self):
         """
-        Test handling exception while delegating 'send'
+        Test handling exception wakati delegating 'send'
         """
         trace = []
         eleza g1():
             trace.append("Starting g1")
-            x = yield "g1 ham"
+            x = tuma "g1 ham"
             trace.append("g1 received %s" % (x,))
-            yield kutoka g2()
-            x = yield "g1 eggs"
+            tuma kutoka g2()
+            x = tuma "g1 eggs"
             trace.append("g1 received %s" % (x,))
             trace.append("Finishing g1")
         eleza g2():
             trace.append("Starting g2")
-            x = yield "g2 spam"
+            x = tuma "g2 spam"
             trace.append("g2 received %s" % (x,))
-            raise ValueError("hovercraft is full of eels")
-            x = yield "g2 more spam"
+            ashiria ValueError("hovercraft ni full of eels")
+            x = tuma "g2 more spam"
             trace.append("g2 received %s" % (x,))
             trace.append("Finishing g2")
         eleza run():
             g = g1()
             y = next(g)
             x = 1
-            try:
-                while 1:
+            jaribu:
+                wakati 1:
                     y = g.send(x)
                     trace.append("Yielded %s" % (y,))
                     x += 1
-            except StopIteration:
+            tatizo StopIteration:
                 trace.append("StopIteration")
         self.assertRaises(ValueError,run)
         self.assertEqual(trace,[
@@ -229,22 +229,22 @@ kundi TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         eleza g1():
-            try:
+            jaribu:
                 trace.append("Starting g1")
-                yield "g1 ham"
-                yield kutoka g2()
-                yield "g1 eggs"
-            finally:
+                tuma "g1 ham"
+                tuma kutoka g2()
+                tuma "g1 eggs"
+            mwishowe:
                 trace.append("Finishing g1")
         eleza g2():
-            try:
+            jaribu:
                 trace.append("Starting g2")
-                yield "g2 spam"
-                yield "g2 more spam"
-            finally:
+                tuma "g2 spam"
+                tuma "g2 more spam"
+            mwishowe:
                 trace.append("Finishing g2")
         g = g1()
-        for i in range(2):
+        kila i kwenye range(2):
             x = next(g)
             trace.append("Yielded %s" % (x,))
         g.close()
@@ -259,36 +259,36 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_handing_exception_while_delegating_close(self):
         """
-        Test handling exception while delegating 'close'
+        Test handling exception wakati delegating 'close'
         """
         trace = []
         eleza g1():
-            try:
+            jaribu:
                 trace.append("Starting g1")
-                yield "g1 ham"
-                yield kutoka g2()
-                yield "g1 eggs"
-            finally:
+                tuma "g1 ham"
+                tuma kutoka g2()
+                tuma "g1 eggs"
+            mwishowe:
                 trace.append("Finishing g1")
         eleza g2():
-            try:
+            jaribu:
                 trace.append("Starting g2")
-                yield "g2 spam"
-                yield "g2 more spam"
-            finally:
+                tuma "g2 spam"
+                tuma "g2 more spam"
+            mwishowe:
                 trace.append("Finishing g2")
-                raise ValueError("nybbles have exploded with delight")
-        try:
+                ashiria ValueError("nybbles have exploded with delight")
+        jaribu:
             g = g1()
-            for i in range(2):
+            kila i kwenye range(2):
                 x = next(g)
                 trace.append("Yielded %s" % (x,))
             g.close()
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.assertEqual(e.args[0], "nybbles have exploded with delight")
             self.assertIsInstance(e.__context__, GeneratorExit)
-        else:
-            self.fail("subgenerator failed to raise ValueError")
+        isipokua:
+            self.fail("subgenerator failed to ashiria ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Yielded g1 ham",
@@ -304,31 +304,31 @@ kundi TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         eleza g1():
-            try:
+            jaribu:
                 trace.append("Starting g1")
-                yield "g1 ham"
-                yield kutoka g2()
-                yield "g1 eggs"
-            finally:
+                tuma "g1 ham"
+                tuma kutoka g2()
+                tuma "g1 eggs"
+            mwishowe:
                 trace.append("Finishing g1")
         eleza g2():
-            try:
+            jaribu:
                 trace.append("Starting g2")
-                yield "g2 spam"
-                yield "g2 more spam"
-            finally:
+                tuma "g2 spam"
+                tuma "g2 more spam"
+            mwishowe:
                 trace.append("Finishing g2")
-        try:
+        jaribu:
             g = g1()
-            for i in range(2):
+            kila i kwenye range(2):
                 x = next(g)
                 trace.append("Yielded %s" % (x,))
             e = ValueError("tomato ejected")
             g.throw(e)
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.assertEqual(e.args[0], "tomato ejected")
-        else:
-            self.fail("subgenerator failed to raise ValueError")
+        isipokua:
+            self.fail("subgenerator failed to ashiria ValueError")
         self.assertEqual(trace,[
             "Starting g1",
             "Yielded g1 ham",
@@ -354,7 +354,7 @@ kundi TestPEP380Operation(unittest.TestCase):
         pex(e)
         self.assertEqual(trace,[
             "StopIteration: ",
-            "value = None",
+            "value = Tupu",
             "StopIteration: spam",
             "value = spam",
             "StopIteration: spam",
@@ -364,38 +364,38 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_exception_value_crash(self):
         # There used to be a refcount error when the rudisha value
-        # stored in the StopIteration has a refcount of 1.
+        # stored kwenye the StopIteration has a refcount of 1.
         eleza g1():
-            yield kutoka g2()
+            tuma kutoka g2()
         eleza g2():
-            yield "g2"
+            tuma "g2"
             rudisha [42]
         self.assertEqual(list(g1()), ["g2"])
 
 
-    eleza test_generator_return_value(self):
+    eleza test_generator_rudisha_value(self):
         """
         Test generator rudisha value
         """
         trace = []
         eleza g1():
             trace.append("Starting g1")
-            yield "g1 ham"
-            ret = yield kutoka g2()
-            trace.append("g2 returned %r" % (ret,))
-            for v in 1, (2,), StopIteration(3):
-                ret = yield kutoka g2(v)
-                trace.append("g2 returned %r" % (ret,))
-            yield "g1 eggs"
+            tuma "g1 ham"
+            ret = tuma kutoka g2()
+            trace.append("g2 rudishaed %r" % (ret,))
+            kila v kwenye 1, (2,), StopIteration(3):
+                ret = tuma kutoka g2(v)
+                trace.append("g2 rudishaed %r" % (ret,))
+            tuma "g1 eggs"
             trace.append("Finishing g1")
-        eleza g2(v = None):
+        eleza g2(v = Tupu):
             trace.append("Starting g2")
-            yield "g2 spam"
-            yield "g2 more spam"
+            tuma "g2 spam"
+            tuma "g2 more spam"
             trace.append("Finishing g2")
             ikiwa v:
                 rudisha v
-        for x in g1():
+        kila x kwenye g1():
             trace.append("Yielded %s" % (x,))
         self.assertEqual(trace,[
             "Starting g1",
@@ -404,22 +404,22 @@ kundi TestPEP380Operation(unittest.TestCase):
             "Yielded g2 spam",
             "Yielded g2 more spam",
             "Finishing g2",
-            "g2 returned None",
+            "g2 rudishaed Tupu",
             "Starting g2",
             "Yielded g2 spam",
             "Yielded g2 more spam",
             "Finishing g2",
-            "g2 returned 1",
+            "g2 rudishaed 1",
             "Starting g2",
             "Yielded g2 spam",
             "Yielded g2 more spam",
             "Finishing g2",
-            "g2 returned (2,)",
+            "g2 rudishaed (2,)",
             "Starting g2",
             "Yielded g2 spam",
             "Yielded g2 more spam",
             "Finishing g2",
-            "g2 returned StopIteration(3)",
+            "g2 rudishaed StopIteration(3)",
             "Yielded g1 eggs",
             "Finishing g1",
         ])
@@ -430,8 +430,8 @@ kundi TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         eleza g():
-            yield kutoka range(3)
-        for x in g():
+            tuma kutoka range(3)
+        kila x kwenye g():
             trace.append("Yielded %s" % (x,))
         self.assertEqual(trace,[
             "Yielded 0",
@@ -440,16 +440,16 @@ kundi TestPEP380Operation(unittest.TestCase):
         ])
 
 
-    eleza test_conversion_of_sendNone_to_next(self):
+    eleza test_conversion_of_sendTupu_to_next(self):
         """
-        Test conversion of send(None) to next()
+        Test conversion of send(Tupu) to next()
         """
         trace = []
         eleza g():
-            yield kutoka range(3)
+            tuma kutoka range(3)
         gi = g()
-        for x in range(3):
-            y = gi.send(None)
+        kila x kwenye range(3):
+            y = gi.send(Tupu)
             trace.append("Yielded: %s" % (y,))
         self.assertEqual(trace,[
             "Yielded: 0",
@@ -463,15 +463,15 @@ kundi TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         eleza g():
-            try:
+            jaribu:
                 trace.append("starting g")
-                yield kutoka range(3)
-                trace.append("g should not be here")
-            finally:
+                tuma kutoka range(3)
+                trace.append("g should sio be here")
+            mwishowe:
                 trace.append("finishing g")
         gi = g()
         next(gi)
-        with captured_stderr() as output:
+        with captured_stderr() kama output:
             gi.close()
         self.assertEqual(output.getvalue(), '')
         self.assertEqual(trace,[
@@ -485,22 +485,22 @@ kundi TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         eleza g():
-            try:
+            jaribu:
                 trace.append("Starting g")
-                yield kutoka range(10)
-            finally:
+                tuma kutoka range(10)
+            mwishowe:
                 trace.append("Finishing g")
-        try:
+        jaribu:
             gi = g()
-            for i in range(5):
+            kila i kwenye range(5):
                 x = next(gi)
                 trace.append("Yielded %s" % (x,))
             e = ValueError("tomato ejected")
             gi.throw(e)
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.assertEqual(e.args[0],"tomato ejected")
-        else:
-            self.fail("subgenerator failed to raise ValueError")
+        isipokua:
+            self.fail("subgenerator failed to ashiria ValueError")
         self.assertEqual(trace,[
             "Starting g",
             "Yielded 0",
@@ -517,21 +517,21 @@ kundi TestPEP380Operation(unittest.TestCase):
         """
         trace = []
         eleza g():
-            try:
+            jaribu:
                 trace.append("starting g")
-                yield kutoka range(3)
-                trace.append("g should not be here")
-            finally:
+                tuma kutoka range(3)
+                trace.append("g should sio be here")
+            mwishowe:
                 trace.append("finishing g")
-        try:
+        jaribu:
             gi = g()
             next(gi)
-            for x in range(3):
+            kila x kwenye range(3):
                 y = gi.send(42)
-                trace.append("Should not have yielded: %s" % (y,))
-        except AttributeError as e:
+                trace.append("Should sio have tumaed: %s" % (y,))
+        tatizo AttributeError kama e:
             self.assertIn("send", e.args[0])
-        else:
+        isipokua:
             self.fail("was able to send into non-generator")
         self.assertEqual(trace,[
             "starting g",
@@ -551,7 +551,7 @@ kundi TestPEP380Operation(unittest.TestCase):
                 1/0
 
         eleza g():
-            yield kutoka Broken()
+            tuma kutoka Broken()
 
         with self.assertRaises(ZeroDivisionError):
             gi = g()
@@ -563,7 +563,7 @@ kundi TestPEP380Operation(unittest.TestCase):
             self.assertEqual(next(gi), 1)
             gi.throw(AttributeError)
 
-        with support.catch_unraisable_exception() as cm:
+        with support.catch_unraisable_exception() kama cm:
             gi = g()
             self.assertEqual(next(gi), 1)
             gi.close()
@@ -572,164 +572,164 @@ kundi TestPEP380Operation(unittest.TestCase):
 
     eleza test_exception_in_initial_next_call(self):
         """
-        Test exception in initial next() call
+        Test exception kwenye initial next() call
         """
         trace = []
         eleza g1():
-            trace.append("g1 about to yield kutoka g2")
-            yield kutoka g2()
-            trace.append("g1 should not be here")
+            trace.append("g1 about to tuma kutoka g2")
+            tuma kutoka g2()
+            trace.append("g1 should sio be here")
         eleza g2():
-            yield 1/0
+            tuma 1/0
         eleza run():
             gi = g1()
             next(gi)
         self.assertRaises(ZeroDivisionError,run)
         self.assertEqual(trace,[
-            "g1 about to yield kutoka g2"
+            "g1 about to tuma kutoka g2"
         ])
 
-    eleza test_attempted_yield_kutoka_loop(self):
+    eleza test_attempted_tuma_kutoka_loop(self):
         """
-        Test attempted yield-kutoka loop
+        Test attempted tuma-kutoka loop
         """
         trace = []
         eleza g1():
             trace.append("g1: starting")
-            yield "y1"
-            trace.append("g1: about to yield kutoka g2")
-            yield kutoka g2()
-            trace.append("g1 should not be here")
+            tuma "y1"
+            trace.append("g1: about to tuma kutoka g2")
+            tuma kutoka g2()
+            trace.append("g1 should sio be here")
 
         eleza g2():
             trace.append("g2: starting")
-            yield "y2"
-            trace.append("g2: about to yield kutoka g1")
-            yield kutoka gi
-            trace.append("g2 should not be here")
-        try:
+            tuma "y2"
+            trace.append("g2: about to tuma kutoka g1")
+            tuma kutoka gi
+            trace.append("g2 should sio be here")
+        jaribu:
             gi = g1()
-            for y in gi:
+            kila y kwenye gi:
                 trace.append("Yielded: %s" % (y,))
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.assertEqual(e.args[0],"generator already executing")
-        else:
-            self.fail("subgenerator didn't raise ValueError")
+        isipokua:
+            self.fail("subgenerator didn't ashiria ValueError")
         self.assertEqual(trace,[
             "g1: starting",
             "Yielded: y1",
-            "g1: about to yield kutoka g2",
+            "g1: about to tuma kutoka g2",
             "g2: starting",
             "Yielded: y2",
-            "g2: about to yield kutoka g1",
+            "g2: about to tuma kutoka g1",
         ])
 
-    eleza test_returning_value_kutoka_delegated_throw(self):
+    eleza test_rudishaing_value_kutoka_delegated_throw(self):
         """
-        Test returning value kutoka delegated 'throw'
+        Test rudishaing value kutoka delegated 'throw'
         """
         trace = []
         eleza g1():
-            try:
+            jaribu:
                 trace.append("Starting g1")
-                yield "g1 ham"
-                yield kutoka g2()
-                yield "g1 eggs"
-            finally:
+                tuma "g1 ham"
+                tuma kutoka g2()
+                tuma "g1 eggs"
+            mwishowe:
                 trace.append("Finishing g1")
         eleza g2():
-            try:
+            jaribu:
                 trace.append("Starting g2")
-                yield "g2 spam"
-                yield "g2 more spam"
-            except LunchError:
-                trace.append("Caught LunchError in g2")
-                yield "g2 lunch saved"
-                yield "g2 yet more spam"
+                tuma "g2 spam"
+                tuma "g2 more spam"
+            tatizo LunchError:
+                trace.append("Caught LunchError kwenye g2")
+                tuma "g2 lunch saved"
+                tuma "g2 yet more spam"
         kundi LunchError(Exception):
-            pass
+            pita
         g = g1()
-        for i in range(2):
+        kila i kwenye range(2):
             x = next(g)
             trace.append("Yielded %s" % (x,))
         e = LunchError("tomato ejected")
         g.throw(e)
-        for x in g:
+        kila x kwenye g:
             trace.append("Yielded %s" % (x,))
         self.assertEqual(trace,[
             "Starting g1",
             "Yielded g1 ham",
             "Starting g2",
             "Yielded g2 spam",
-            "Caught LunchError in g2",
+            "Caught LunchError kwenye g2",
             "Yielded g2 yet more spam",
             "Yielded g1 eggs",
             "Finishing g1",
         ])
 
-    eleza test_next_and_return_with_value(self):
+    eleza test_next_and_rudisha_with_value(self):
         """
-        Test next and rudisha with value
+        Test next na rudisha with value
         """
         trace = []
         eleza f(r):
             gi = g(r)
             next(gi)
-            try:
+            jaribu:
                 trace.append("f resuming g")
                 next(gi)
                 trace.append("f SHOULD NOT BE HERE")
-            except StopIteration as e:
+            tatizo StopIteration kama e:
                 trace.append("f caught %r" % (e,))
         eleza g(r):
             trace.append("g starting")
-            yield
-            trace.append("g returning %r" % (r,))
+            tuma
+            trace.append("g rudishaing %r" % (r,))
             rudisha r
-        f(None)
+        f(Tupu)
         f(1)
         f((2,))
         f(StopIteration(3))
         self.assertEqual(trace,[
             "g starting",
             "f resuming g",
-            "g returning None",
+            "g rudishaing Tupu",
             "f caught StopIteration()",
             "g starting",
             "f resuming g",
-            "g returning 1",
+            "g rudishaing 1",
             "f caught StopIteration(1)",
             "g starting",
             "f resuming g",
-            "g returning (2,)",
+            "g rudishaing (2,)",
             "f caught StopIteration((2,))",
             "g starting",
             "f resuming g",
-            "g returning StopIteration(3)",
+            "g rudishaing StopIteration(3)",
             "f caught StopIteration(StopIteration(3))",
         ])
 
-    eleza test_send_and_return_with_value(self):
+    eleza test_send_and_rudisha_with_value(self):
         """
-        Test send and rudisha with value
+        Test send na rudisha with value
         """
         trace = []
         eleza f(r):
             gi = g(r)
             next(gi)
-            try:
+            jaribu:
                 trace.append("f sending spam to g")
                 gi.send("spam")
                 trace.append("f SHOULD NOT BE HERE")
-            except StopIteration as e:
+            tatizo StopIteration kama e:
                 trace.append("f caught %r" % (e,))
         eleza g(r):
             trace.append("g starting")
-            x = yield
+            x = tuma
             trace.append("g received %r" % (x,))
-            trace.append("g returning %r" % (r,))
+            trace.append("g rudishaing %r" % (r,))
             rudisha r
-        f(None)
+        f(Tupu)
         f(1)
         f((2,))
         f(StopIteration(3))
@@ -737,43 +737,43 @@ kundi TestPEP380Operation(unittest.TestCase):
             "g starting",
             "f sending spam to g",
             "g received 'spam'",
-            "g returning None",
+            "g rudishaing Tupu",
             "f caught StopIteration()",
             "g starting",
             "f sending spam to g",
             "g received 'spam'",
-            "g returning 1",
+            "g rudishaing 1",
             'f caught StopIteration(1)',
             'g starting',
             'f sending spam to g',
             "g received 'spam'",
-            'g returning (2,)',
+            'g rudishaing (2,)',
             'f caught StopIteration((2,))',
             'g starting',
             'f sending spam to g',
             "g received 'spam'",
-            'g returning StopIteration(3)',
+            'g rudishaing StopIteration(3)',
             'f caught StopIteration(StopIteration(3))'
         ])
 
-    eleza test_catching_exception_kutoka_subgen_and_returning(self):
+    eleza test_catching_exception_kutoka_subgen_and_rudishaing(self):
         """
         Test catching an exception thrown into a
-        subgenerator and returning a value
+        subgenerator na rudishaing a value
         """
         eleza inner():
-            try:
-                yield 1
-            except ValueError:
+            jaribu:
+                tuma 1
+            tatizo ValueError:
                 trace.append("inner caught ValueError")
             rudisha value
 
         eleza outer():
-            v = yield kutoka inner()
-            trace.append("inner returned %r to outer" % (v,))
-            yield v
+            v = tuma kutoka inner()
+            trace.append("inner rudishaed %r to outer" % (v,))
+            tuma v
 
-        for value in 2, (2,), StopIteration(2):
+        kila value kwenye 2, (2,), StopIteration(2):
             trace = []
             g = outer()
             trace.append(next(g))
@@ -781,163 +781,163 @@ kundi TestPEP380Operation(unittest.TestCase):
             self.assertEqual(trace, [
                 1,
                 "inner caught ValueError",
-                "inner returned %r to outer" % (value,),
+                "inner rudishaed %r to outer" % (value,),
                 repr(value),
             ])
 
-    eleza test_throwing_GeneratorExit_into_subgen_that_returns(self):
+    eleza test_throwing_GeneratorExit_into_subgen_that_rudishas(self):
         """
         Test throwing GeneratorExit into a subgenerator that
-        catches it and returns normally.
+        catches it na rudishas normally.
         """
         trace = []
         eleza f():
-            try:
+            jaribu:
                 trace.append("Enter f")
-                yield
+                tuma
                 trace.append("Exit f")
-            except GeneratorExit:
-                return
+            tatizo GeneratorExit:
+                rudisha
         eleza g():
             trace.append("Enter g")
-            yield kutoka f()
+            tuma kutoka f()
             trace.append("Exit g")
-        try:
+        jaribu:
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except GeneratorExit:
-            pass
-        else:
-            self.fail("subgenerator failed to raise GeneratorExit")
+        tatizo GeneratorExit:
+            pita
+        isipokua:
+            self.fail("subgenerator failed to ashiria GeneratorExit")
         self.assertEqual(trace,[
             "Enter g",
             "Enter f",
         ])
 
-    eleza test_throwing_GeneratorExit_into_subgenerator_that_yields(self):
+    eleza test_throwing_GeneratorExit_into_subgenerator_that_tumas(self):
         """
         Test throwing GeneratorExit into a subgenerator that
-        catches it and yields.
+        catches it na tumas.
         """
         trace = []
         eleza f():
-            try:
+            jaribu:
                 trace.append("Enter f")
-                yield
+                tuma
                 trace.append("Exit f")
-            except GeneratorExit:
-                yield
+            tatizo GeneratorExit:
+                tuma
         eleza g():
             trace.append("Enter g")
-            yield kutoka f()
+            tuma kutoka f()
             trace.append("Exit g")
-        try:
+        jaribu:
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except RuntimeError as e:
+        tatizo RuntimeError kama e:
             self.assertEqual(e.args[0], "generator ignored GeneratorExit")
-        else:
-            self.fail("subgenerator failed to raise GeneratorExit")
+        isipokua:
+            self.fail("subgenerator failed to ashiria GeneratorExit")
         self.assertEqual(trace,[
             "Enter g",
             "Enter f",
         ])
 
-    eleza test_throwing_GeneratorExit_into_subgen_that_raises(self):
+    eleza test_throwing_GeneratorExit_into_subgen_that_ashirias(self):
         """
         Test throwing GeneratorExit into a subgenerator that
-        catches it and raises a different exception.
+        catches it na ashirias a different exception.
         """
         trace = []
         eleza f():
-            try:
+            jaribu:
                 trace.append("Enter f")
-                yield
+                tuma
                 trace.append("Exit f")
-            except GeneratorExit:
-                raise ValueError("Vorpal bunny encountered")
+            tatizo GeneratorExit:
+                ashiria ValueError("Vorpal bunny encountered")
         eleza g():
             trace.append("Enter g")
-            yield kutoka f()
+            tuma kutoka f()
             trace.append("Exit g")
-        try:
+        jaribu:
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.assertEqual(e.args[0], "Vorpal bunny encountered")
             self.assertIsInstance(e.__context__, GeneratorExit)
-        else:
-            self.fail("subgenerator failed to raise ValueError")
+        isipokua:
+            self.fail("subgenerator failed to ashiria ValueError")
         self.assertEqual(trace,[
             "Enter g",
             "Enter f",
         ])
 
-    eleza test_yield_kutoka_empty(self):
+    eleza test_tuma_kutoka_empty(self):
         eleza g():
-            yield kutoka ()
+            tuma kutoka ()
         self.assertRaises(StopIteration, next, g())
 
     eleza test_delegating_generators_claim_to_be_running(self):
         # Check with basic iteration
         eleza one():
-            yield 0
-            yield kutoka two()
-            yield 3
+            tuma 0
+            tuma kutoka two()
+            tuma 3
         eleza two():
-            yield 1
-            try:
-                yield kutoka g1
-            except ValueError:
-                pass
-            yield 2
+            tuma 1
+            jaribu:
+                tuma kutoka g1
+            tatizo ValueError:
+                pita
+            tuma 2
         g1 = one()
         self.assertEqual(list(g1), [0, 1, 2, 3])
         # Check with send
         g1 = one()
         res = [next(g1)]
-        try:
-            while True:
+        jaribu:
+            wakati Kweli:
                 res.append(g1.send(42))
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         self.assertEqual(res, [0, 1, 2, 3])
         # Check with throw
         kundi MyErr(Exception):
-            pass
+            pita
         eleza one():
-            try:
-                yield 0
-            except MyErr:
-                pass
-            yield kutoka two()
-            try:
-                yield 3
-            except MyErr:
-                pass
+            jaribu:
+                tuma 0
+            tatizo MyErr:
+                pita
+            tuma kutoka two()
+            jaribu:
+                tuma 3
+            tatizo MyErr:
+                pita
         eleza two():
-            try:
-                yield 1
-            except MyErr:
-                pass
-            try:
-                yield kutoka g1
-            except ValueError:
-                pass
-            try:
-                yield 2
-            except MyErr:
-                pass
+            jaribu:
+                tuma 1
+            tatizo MyErr:
+                pita
+            jaribu:
+                tuma kutoka g1
+            tatizo ValueError:
+                pita
+            jaribu:
+                tuma 2
+            tatizo MyErr:
+                pita
         g1 = one()
         res = [next(g1)]
-        try:
-            while True:
+        jaribu:
+            wakati Kweli:
                 res.append(g1.throw(MyErr))
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         # Check with close
         kundi MyIt(object):
             eleza __iter__(self):
@@ -945,46 +945,46 @@ kundi TestPEP380Operation(unittest.TestCase):
             eleza __next__(self):
                 rudisha 42
             eleza close(self_):
-                self.assertTrue(g1.gi_running)
+                self.assertKweli(g1.gi_running)
                 self.assertRaises(ValueError, next, g1)
         eleza one():
-            yield kutoka MyIt()
+            tuma kutoka MyIt()
         g1 = one()
         next(g1)
         g1.close()
 
     eleza test_delegator_is_visible_to_debugger(self):
         eleza call_stack():
-            rudisha [f[3] for f in inspect.stack()]
+            rudisha [f[3] kila f kwenye inspect.stack()]
 
         eleza gen():
-            yield call_stack()
-            yield call_stack()
-            yield call_stack()
+            tuma call_stack()
+            tuma call_stack()
+            tuma call_stack()
 
         eleza spam(g):
-            yield kutoka g
+            tuma kutoka g
 
         eleza eggs(g):
-            yield kutoka g
+            tuma kutoka g
 
-        for stack in spam(gen()):
-            self.assertTrue('spam' in stack)
+        kila stack kwenye spam(gen()):
+            self.assertKweli('spam' kwenye stack)
 
-        for stack in spam(eggs(gen())):
-            self.assertTrue('spam' in stack and 'eggs' in stack)
+        kila stack kwenye spam(eggs(gen())):
+            self.assertKweli('spam' kwenye stack na 'eggs' kwenye stack)
 
-    eleza test_custom_iterator_return(self):
+    eleza test_custom_iterator_rudisha(self):
         # See issue #15568
         kundi MyIter:
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                raise StopIteration(42)
+                ashiria StopIteration(42)
         eleza gen():
             nonlocal ret
-            ret = yield kutoka MyIter()
-        ret = None
+            ret = tuma kutoka MyIter()
+        ret = Tupu
         list(gen())
         self.assertEqual(ret, 42)
 
@@ -992,39 +992,39 @@ kundi TestPEP380Operation(unittest.TestCase):
         # See issue #17669.
         #
         # Create a stack of generators: outer() delegating to inner()
-        # delegating to innermost(). The key point is that the instance of
-        # inner is created first: this ensures that its frame appears before
-        # the instance of outer in the GC linked list.
+        # delegating to innermost(). The key point ni that the instance of
+        # inner ni created first: this ensures that its frame appears before
+        # the instance of outer kwenye the GC linked list.
         #
         # At the gc.collect call:
-        #   - frame_clear is called on the inner_gen frame.
-        #   - gen_dealloc is called on the outer_gen generator (the only
-        #     reference is in the frame's locals).
-        #   - gen_close is called on the outer_gen generator.
-        #   - gen_close_iter is called to close the inner_gen generator, which
-        #     in turn calls gen_close, and gen_yf.
+        #   - frame_clear ni called on the inner_gen frame.
+        #   - gen_dealloc ni called on the outer_gen generator (the only
+        #     reference ni kwenye the frame's locals).
+        #   - gen_close ni called on the outer_gen generator.
+        #   - gen_close_iter ni called to close the inner_gen generator, which
+        #     kwenye turn calls gen_close, na gen_yf.
         #
         # Previously, gen_yf would crash since inner_gen's frame had been
-        # cleared (and in particular f_stacktop was NULL).
+        # cleared (and kwenye particular f_stacktop was NULL).
 
         eleza innermost():
-            yield
+            tuma
         eleza inner():
-            outer_gen = yield
-            yield kutoka innermost()
+            outer_gen = tuma
+            tuma kutoka innermost()
         eleza outer():
-            inner_gen = yield
-            yield kutoka inner_gen
+            inner_gen = tuma
+            tuma kutoka inner_gen
 
         with disable_gc():
             inner_gen = inner()
             outer_gen = outer()
-            outer_gen.send(None)
+            outer_gen.send(Tupu)
             outer_gen.send(inner_gen)
             outer_gen.send(outer_gen)
 
-            del outer_gen
-            del inner_gen
+            toa outer_gen
+            toa inner_gen
             gc_collect()
 
     eleza test_send_tuple_with_custom_generator(self):
@@ -1037,12 +1037,12 @@ kundi TestPEP380Operation(unittest.TestCase):
             eleza send(self, what):
                 nonlocal v
                 v = what
-                rudisha None
+                rudisha Tupu
         eleza outer():
-            v = yield kutoka MyGen()
+            v = tuma kutoka MyGen()
         g = outer()
         next(g)
-        v = None
+        v = Tupu
         g.send((1, 2, 3, 4))
         self.assertEqual(v, (1, 2, 3, 4))
 

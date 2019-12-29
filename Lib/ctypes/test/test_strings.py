@@ -58,7 +58,7 @@ class StringArrayTestCase(unittest.TestCase):
         BUF = c_char * 4
         buf = BUF()
         with self.assertRaises(AttributeError):
-            del buf.raw
+            toa buf.raw
 
 
 @need_symbol('c_wchar')

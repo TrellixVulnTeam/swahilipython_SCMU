@@ -3,39 +3,39 @@ agiza abc
 
 kundi FinderTests(metaclass=abc.ABCMeta):
 
-    """Basic tests for a finder to pass."""
+    """Basic tests kila a finder to pita."""
 
     @abc.abstractmethod
     eleza test_module(self):
         # Test agizaing a top-level module.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_package(self):
         # Test agizaing a package.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_module_in_package(self):
         # Test agizaing a module contained within a package.
-        # A value for 'path' should be used ikiwa for a meta_path finder.
-        pass
+        # A value kila 'path' should be used ikiwa kila a meta_path finder.
+        pita
 
     @abc.abstractmethod
     eleza test_package_in_package(self):
         # Test agizaing a subpackage.
-        # A value for 'path' should be used ikiwa for a meta_path finder.
-        pass
+        # A value kila 'path' should be used ikiwa kila a meta_path finder.
+        pita
 
     @abc.abstractmethod
     eleza test_package_over_module(self):
         # Test that packages are chosen over modules.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_failure(self):
         # Test trying to find a module that cannot be handled.
-        pass
+        pita
 
 
 kundi LoaderTests(metaclass=abc.ABCMeta):
@@ -44,7 +44,7 @@ kundi LoaderTests(metaclass=abc.ABCMeta):
     eleza test_module(self):
         """A module should load without issue.
 
-        After the loader returns the module should be in sys.modules.
+        After the loader rudishas the module should be kwenye sys.modules.
 
         Attributes to verify:
 
@@ -54,13 +54,13 @@ kundi LoaderTests(metaclass=abc.ABCMeta):
             * No __path__
 
         """
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_package(self):
         """Loading a package should work.
 
-        After the loader returns the module should be in sys.modules.
+        After the loader rudishas the module should be kwenye sys.modules.
 
         Attributes to verify:
 
@@ -71,23 +71,23 @@ kundi LoaderTests(metaclass=abc.ABCMeta):
             * __loader__
 
         """
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_lacking_parent(self):
-        """A loader should not be dependent on it's parent package being
+        """A loader should sio be dependent on it's parent package being
         imported."""
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_state_after_failure(self):
-        """If a module is already in sys.modules and a reload fails
-        (e.g. a SyntaxError), the module should be in the state it was before
+        """If a module ni already kwenye sys.modules na a reload fails
+        (e.g. a SyntaxError), the module should be kwenye the state it was before
         the reload began."""
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_unloadable(self):
-        """Test ImportError is raised when the loader is asked to load a module
+        """Test ImportError ni ashiriad when the loader ni asked to load a module
         it can't."""
-        pass
+        pita

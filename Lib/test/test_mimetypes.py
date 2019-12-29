@@ -10,7 +10,7 @@ kutoka platform agiza win32_edition
 
 # Tell it we don't know about external files:
 mimetypes.knownfiles = []
-mimetypes.inited = False
+mimetypes.inited = Uongo
 mimetypes._default_mime_types()
 
 
@@ -20,7 +20,7 @@ kundi MimeTypesTestCase(unittest.TestCase):
 
     eleza test_default_data(self):
         eq = self.assertEqual
-        eq(self.db.guess_type("foo.html"), ("text/html", None))
+        eq(self.db.guess_type("foo.html"), ("text/html", Tupu))
         eq(self.db.guess_type("foo.tgz"), ("application/x-tar", "gzip"))
         eq(self.db.guess_type("foo.tar.gz"), ("application/x-tar", "gzip"))
         eq(self.db.guess_type("foo.tar.Z"), ("application/x-tar", "compress"))
@@ -30,41 +30,41 @@ kundi MimeTypesTestCase(unittest.TestCase):
     eleza test_data_urls(self):
         eq = self.assertEqual
         guess_type = self.db.guess_type
-        eq(guess_type("data:,thisIsTextPlain"), ("text/plain", None))
-        eq(guess_type("data:;base64,thisIsTextPlain"), ("text/plain", None))
-        eq(guess_type("data:text/x-foo,thisIsTextXFoo"), ("text/x-foo", None))
+        eq(guess_type("data:,thisIsTextPlain"), ("text/plain", Tupu))
+        eq(guess_type("data:;base64,thisIsTextPlain"), ("text/plain", Tupu))
+        eq(guess_type("data:text/x-foo,thisIsTextXFoo"), ("text/x-foo", Tupu))
 
     eleza test_file_parsing(self):
         eq = self.assertEqual
         sio = io.StringIO("x-application/x-unittest pyunit\n")
         self.db.readfp(sio)
         eq(self.db.guess_type("foo.pyunit"),
-           ("x-application/x-unittest", None))
+           ("x-application/x-unittest", Tupu))
         eq(self.db.guess_extension("x-application/x-unittest"), ".pyunit")
 
     eleza test_non_standard_types(self):
         eq = self.assertEqual
         # First try strict
-        eq(self.db.guess_type('foo.xul', strict=True), (None, None))
-        eq(self.db.guess_extension('image/jpg', strict=True), None)
+        eq(self.db.guess_type('foo.xul', strict=Kweli), (Tupu, Tupu))
+        eq(self.db.guess_extension('image/jpg', strict=Kweli), Tupu)
         # And then non-strict
-        eq(self.db.guess_type('foo.xul', strict=False), ('text/xul', None))
-        eq(self.db.guess_extension('image/jpg', strict=False), '.jpg')
+        eq(self.db.guess_type('foo.xul', strict=Uongo), ('text/xul', Tupu))
+        eq(self.db.guess_extension('image/jpg', strict=Uongo), '.jpg')
 
     eleza test_guess_all_types(self):
         eq = self.assertEqual
-        unless = self.assertTrue
-        # First try strict.  Use a set here for testing the results because if
-        # test_urllib2 is run before test_mimetypes, global state is modified
-        # such that the 'all' set will have more items in it.
-        all = set(self.db.guess_all_extensions('text/plain', strict=True))
+        unless = self.assertKweli
+        # First try strict.  Use a set here kila testing the results because if
+        # test_urllib2 ni run before test_mimetypes, global state ni modified
+        # such that the 'all' set will have more items kwenye it.
+        all = set(self.db.guess_all_extensions('text/plain', strict=Kweli))
         unless(all >= set(['.bat', '.c', '.h', '.ksh', '.pl', '.txt']))
         # And now non-strict
-        all = self.db.guess_all_extensions('image/jpg', strict=False)
+        all = self.db.guess_all_extensions('image/jpg', strict=Uongo)
         all.sort()
         eq(all, ['.jpg'])
-        # And now for no hits
-        all = self.db.guess_all_extensions('image/jpg', strict=True)
+        # And now kila no hits
+        all = self.db.guess_all_extensions('image/jpg', strict=Kweli)
         eq(all, [])
 
     eleza test_encoding(self):
@@ -76,7 +76,7 @@ kundi MimeTypesTestCase(unittest.TestCase):
         filename = support.findfile("mime.types")
         mimes = mimetypes.MimeTypes([filename])
         exts = mimes.guess_all_extensions('application/vnd.geocube+xml',
-                                          strict=True)
+                                          strict=Kweli)
         self.assertEqual(exts, ['.g3', '.g\xb3'])
 
     eleza test_init_reinitializes(self):
@@ -87,7 +87,7 @@ kundi MimeTypesTestCase(unittest.TestCase):
         # Reinitialize
         mimetypes.init()
         # Poison should be gone.
-        self.assertEqual(mimetypes.guess_extension('foo/bar'), None)
+        self.assertEqual(mimetypes.guess_extension('foo/bar'), Tupu)
 
     eleza test_preferred_extension(self):
         eleza check_extensions():
@@ -143,15 +143,15 @@ kundi MimeTypesTestCase(unittest.TestCase):
         self.assertEqual(self.db.guess_type(
             filepath_with_abs_dir), expected)
         self.assertEqual(self.db.guess_type(filepath_relative), expected)
-        self.assertEqual(self.db.guess_type(path_dir), (None, None))
+        self.assertEqual(self.db.guess_type(path_dir), (Tupu, Tupu))
 
     eleza test_keywords_args_api(self):
         self.assertEqual(self.db.guess_type(
-            url="foo.html", strict=True), ("text/html", None))
+            url="foo.html", strict=Kweli), ("text/html", Tupu))
         self.assertEqual(self.db.guess_all_extensions(
-            type='image/jpg', strict=True), [])
+            type='image/jpg', strict=Kweli), [])
         self.assertEqual(self.db.guess_extension(
-            type='image/jpg', strict=False), '.jpg')
+            type='image/jpg', strict=Uongo), '.jpg')
 
 
 @unittest.skipUnless(sys.platform.startswith("win"), "Windows only")
@@ -168,16 +168,16 @@ kundi Win32MimeTypesTestCase(unittest.TestCase):
         mimetypes.types_map.clear()
         mimetypes.types_map.update(self.original_types_map)
 
-    @unittest.skipIf(win32_edition() in ('NanoServer', 'WindowsCoreHeadless', 'IoTEdgeOS'),
+    @unittest.skipIf(win32_edition() kwenye ('NanoServer', 'WindowsCoreHeadless', 'IoTEdgeOS'),
                                          "MIME types registry keys unavailable")
     eleza test_registry_parsing(self):
-        # the original, minimum contents of the MIME database in the
-        # Windows registry is undocumented AFAIK.
+        # the original, minimum contents of the MIME database kwenye the
+        # Windows registry ni undocumented AFAIK.
         # Use file types that should *always* exist:
         eq = self.assertEqual
-        eq(self.db.guess_type("foo.txt"), ("text/plain", None))
-        eq(self.db.guess_type("image.jpg"), ("image/jpeg", None))
-        eq(self.db.guess_type("image.png"), ("image/png", None))
+        eq(self.db.guess_type("foo.txt"), ("text/plain", Tupu))
+        eq(self.db.guess_type("image.jpg"), ("image/jpeg", Tupu))
+        eq(self.db.guess_type("image.png"), ("image/png", Tupu))
 
 
 kundi MiscTestCase(unittest.TestCase):

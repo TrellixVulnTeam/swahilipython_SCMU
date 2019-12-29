@@ -13,14 +13,14 @@ agiza unittest
 
 clinic_path = os.path.join(os.path.dirname(__file__), '..', '..', 'Tools', 'clinic')
 clinic_path = os.path.normpath(clinic_path)
-ikiwa not os.path.exists(clinic_path):
-    raise unittest.SkipTest(f'{clinic_path!r} path does not exist')
+ikiwa sio os.path.exists(clinic_path):
+    ashiria unittest.SkipTest(f'{clinic_path!r} path does sio exist')
 sys.path.append(clinic_path)
-try:
+jaribu:
     agiza clinic
     kutoka clinic agiza DSLParser
-finally:
-    del sys.path[-1]
+mwishowe:
+    toa sys.path[-1]
 
 
 kundi FakeConverter:
@@ -50,8 +50,8 @@ kundi FakeClinic:
     eleza __init__(self):
         self.converters = FakeConvertersDict()
         self.legacy_converters = FakeConvertersDict()
-        self.language = clinic.CLanguage(None)
-        self.filename = None
+        self.language = clinic.CLanguage(Tupu)
+        self.filename = Tupu
         self.destination_buffers = {}
         self.block_parser = clinic.BlockParser('', self.language)
         self.modules = collections.OrderedDict()
@@ -76,12 +76,12 @@ kundi FakeClinic:
 
     eleza get_destination(self, name):
         d = self.destinations.get(name)
-        ikiwa not d:
-            sys.exit("Destination does not exist: " + repr(name))
+        ikiwa sio d:
+            sys.exit("Destination does sio exist: " + repr(name))
         rudisha d
 
     eleza add_destination(self, name, type, *args):
-        ikiwa name in self.destinations:
+        ikiwa name kwenye self.destinations:
             sys.exit("Destination already exists: " + repr(name))
         self.destinations[name] = clinic.Destination(name, type, self, *args)
 
@@ -97,17 +97,17 @@ kundi ClinicWholeFileTest(TestCase):
     eleza test_eol(self):
         # regression test:
         # clinic's block parser didn't recognize
-        # the "end line" for the block ikiwa it
-        # didn't end in "\n" (as in, the last)
+        # the "end line" kila the block ikiwa it
+        # didn't end kwenye "\n" (as in, the last)
         # byte of the file was '/'.
-        # so it would spit out an end line for you.
-        # and since you really already had one,
+        # so it would spit out an end line kila you.
+        # na since you really already had one,
         # the last line of the block got corrupted.
-        c = clinic.Clinic(clinic.CLanguage(None), filename="file")
+        c = clinic.Clinic(clinic.CLanguage(Tupu), filename="file")
         raw = "/*[clinic]\nfoo\n[clinic]*/"
         cooked = c.parse(raw).splitlines()
         end_line = cooked[2].rstrip()
-        # this test is redundant, it's just here explicitly to catch
+        # this test ni redundant, it's just here explicitly to catch
         # the regression test so we don't forget what it looked like
         self.assertNotEqual(end_line, "[clinic]*/[clinic]*/")
         self.assertEqual(end_line, "[clinic]*/")
@@ -216,14 +216,14 @@ kundi ClinicLinearFormatTest(TestCase):
 
 kundi InertParser:
     eleza __init__(self, clinic):
-        pass
+        pita
 
     eleza parse(self, block):
-        pass
+        pita
 
 kundi CopyParser:
     eleza __init__(self, clinic):
-        pass
+        pita
 
     eleza parse(self, block):
         block.output = block.input
@@ -231,11 +231,11 @@ kundi CopyParser:
 
 kundi ClinicBlockParserTest(TestCase):
     eleza _test(self, input, output):
-        language = clinic.CLanguage(None)
+        language = clinic.CLanguage(Tupu)
 
         blocks = list(clinic.BlockParser(input, language))
         writer = clinic.BlockPrinter(language)
-        for block in blocks:
+        kila block kwenye blocks:
             writer.print_block(block)
         output = writer.f.getvalue()
         assert output == input, "output != input!\n\noutput " + repr(output) + "\n\n input " + repr(input)
@@ -261,7 +261,7 @@ xyz
 """)
 
     eleza _test_clinic(self, input, output):
-        language = clinic.CLanguage(None)
+        language = clinic.CLanguage(Tupu)
         c = clinic.Clinic(language, filename="file")
         c.parsers['inert'] = InertParser(c)
         c.parsers['copy'] = CopyParser(c)
@@ -314,14 +314,14 @@ kundi ClinicParserTest(TestCase):
         self.assertIsInstance(p.converter, clinic.int_converter)
 
     eleza test_param_default(self):
-        function = self.parse_function("module os\nos.access\n    follow_symlinks: bool = True")
+        function = self.parse_function("module os\nos.access\n    follow_symlinks: bool = Kweli")
         p = function.parameters['follow_symlinks']
-        self.assertEqual(True, p.default)
+        self.assertEqual(Kweli, p.default)
 
     eleza test_param_with_continuations(self):
-        function = self.parse_function("module os\nos.access\n    follow_symlinks: \\\n   bool \\\n   =\\\n    True")
+        function = self.parse_function("module os\nos.access\n    follow_symlinks: \\\n   bool \\\n   =\\\n    Kweli")
         p = function.parameters['follow_symlinks']
-        self.assertEqual(True, p.default)
+        self.assertEqual(Kweli, p.default)
 
     eleza test_param_default_expression(self):
         function = self.parse_function("module os\nos.access\n    follow_symlinks: int(c_default='MAXSIZE') = sys.maxsize")
@@ -330,14 +330,14 @@ kundi ClinicParserTest(TestCase):
         self.assertEqual("MAXSIZE", p.converter.c_default)
 
         s = self.parse_function_should_fail("module os\nos.access\n    follow_symlinks: int = sys.maxsize")
-        self.assertEqual(s, "Error on line 0:\nWhen you specify a named constant ('sys.maxsize') as your default value,\nyou MUST specify a valid c_default.\n")
+        self.assertEqual(s, "Error on line 0:\nWhen you specify a named constant ('sys.maxsize') kama your default value,\nyou MUST specify a valid c_default.\n")
 
     eleza test_param_no_docstring(self):
         function = self.parse_function("""
 module os
 os.access
-    follow_symlinks: bool = True
-    something_else: str = ''""")
+    follow_symlinks: bool = Kweli
+    something_isipokua: str = ''""")
         p = function.parameters['follow_symlinks']
         self.assertEqual(3, len(function.parameters))
         self.assertIsInstance(function.parameters['something_else'].converter, clinic.str_converter)
@@ -346,8 +346,8 @@ os.access
         s = self.parse_function_should_fail("""
 module os
 os.access
-    follow_symlinks: bool = True
-    something_else: str""")
+    follow_symlinks: bool = Kweli
+    something_isipokua: str""")
         self.assertEqual(s, """Error on line 0:
 Can't have a parameter without a default ('something_else')
 after a parameter with a default!
@@ -361,7 +361,7 @@ after a parameter with a default!
     eleza test_function_docstring(self):
         function = self.parse_function("""
 module os
-os.stat as os_stat_fn
+os.stat kama os_stat_fn
 
    path: str
        Path to be examined
@@ -382,10 +382,10 @@ Perform a stat system call on the given path.
 module foo
 foo.bar
   x: int
-     Documentation for x.
+     Documentation kila x.
   y: int
 
-This is the documentation for foo.
+This ni the documentation kila foo.
 
 Okay, we're done here.
 """)
@@ -393,10 +393,10 @@ Okay, we're done here.
 bar($module, /, x, y)
 --
 
-This is the documentation for foo.
+This ni the documentation kila foo.
 
   x
-    Documentation for x.
+    Documentation kila x.
 
 Okay, we're done here.
 """.strip(), function.docstring)
@@ -406,20 +406,20 @@ Okay, we're done here.
 module os
 os.stat
     path: str
-This/used to break Clinic!
+This/used to koma Clinic!
 """)
-        self.assertEqual("stat($module, /, path)\n--\n\nThis/used to break Clinic!", function.docstring)
+        self.assertEqual("stat($module, /, path)\n--\n\nThis/used to koma Clinic!", function.docstring)
 
     eleza test_c_name(self):
-        function = self.parse_function("module os\nos.stat as os_stat_fn")
+        function = self.parse_function("module os\nos.stat kama os_stat_fn")
         self.assertEqual("os_stat_fn", function.c_basename)
 
-    eleza test_return_converter(self):
+    eleza test_rudisha_converter(self):
         function = self.parse_function("module os\nos.stat -> int")
-        self.assertIsInstance(function.return_converter, clinic.int_return_converter)
+        self.assertIsInstance(function.rudisha_converter, clinic.int_rudisha_converter)
 
     eleza test_star(self):
-        function = self.parse_function("module os\nos.access\n    *\n    follow_symlinks: bool = True")
+        function = self.parse_function("module os\nos.access\n    *\n    follow_symlinks: bool = Kweli")
         p = function.parameters['follow_symlinks']
         self.assertEqual(inspect.Parameter.KEYWORD_ONLY, p.kind)
         self.assertEqual(0, p.group)
@@ -443,11 +443,11 @@ curses.addch
      Character to add.
    [
    attr: long
-     Attributes for the character.
+     Attributes kila the character.
    ]
    /
 """)
-        for name, group in (
+        kila name, group kwenye (
             ('y', -1), ('x', -1),
             ('ch', 0),
             ('attr', 1),
@@ -466,7 +466,7 @@ addch([y, x,] ch, [attr])
   ch
     Character to add.
   attr
-    Attributes for the character.
+    Attributes kila the character.
             """.strip())
 
     eleza test_nested_groups(self):
@@ -489,23 +489,23 @@ curses.imaginary
      Character to add.
    [
    attr1: long
-     Attributes for the character.
+     Attributes kila the character.
    attr2: long
-     Attributes for the character.
+     Attributes kila the character.
    attr3: long
-     Attributes for the character.
+     Attributes kila the character.
    [
    attr4: long
-     Attributes for the character.
+     Attributes kila the character.
    attr5: long
-     Attributes for the character.
+     Attributes kila the character.
    attr6: long
-     Attributes for the character.
+     Attributes kila the character.
    ]
    ]
    /
 """)
-        for name, group in (
+        kila name, group kwenye (
             ('y1', -2), ('y2', -2),
             ('x1', -1), ('x2', -1),
             ('ch', 0),
@@ -532,21 +532,21 @@ imaginary([[y1, y2,] x1, x2,] ch, [attr1, attr2, attr3, [attr4, attr5,
   ch
     Character to add.
   attr1
-    Attributes for the character.
+    Attributes kila the character.
   attr2
-    Attributes for the character.
+    Attributes kila the character.
   attr3
-    Attributes for the character.
+    Attributes kila the character.
   attr4
-    Attributes for the character.
+    Attributes kila the character.
   attr5
-    Attributes for the character.
+    Attributes kila the character.
   attr6
-    Attributes for the character.
+    Attributes kila the character.
                 """.strip())
 
     eleza parse_function_should_fail(self, s):
-        with support.captured_stdout() as stdout:
+        with support.captured_stdout() kama stdout:
             with self.assertRaises(SystemExit):
                 self.parse_function(s)
         rudisha stdout.getvalue()
@@ -650,7 +650,7 @@ foo.Bar.__init__
 Docstring
 
 """, signatures_in_block=3, function_index=2)
-        # self is not in the signature
+        # self ni haiko kwenye the signature
         self.assertEqual("Bar()\n--\n\nDocstring", function.docstring)
         # but it *is* a parameter
         self.assertEqual(1, len(function.parameters))
@@ -665,7 +665,7 @@ foo.bar => int
     eleza test_illegal_c_basename(self):
         self.parse_function_should_fail("""
 module foo
-foo.bar as 935
+foo.bar kama 935
     /
 """)
 
@@ -759,11 +759,11 @@ Not at column 0!
     eleza test_directive(self):
         c = FakeClinic()
         parser = DSLParser(c)
-        parser.flag = False
-        parser.directives['setflag'] = lambda : setattr(parser, 'flag', True)
+        parser.flag = Uongo
+        parser.directives['setflag'] = lambda : setattr(parser, 'flag', Kweli)
         block = clinic.Block("setflag")
         parser.parse(block)
-        self.assertTrue(parser.flag)
+        self.assertKweli(parser.flag)
 
     eleza test_legacy_converters(self):
         block = self.parse('module os\nos.access\n   path: "s"')
@@ -791,25 +791,25 @@ Not at column 0!
         self.assertEqual(repr(clinic.NULL), '<Null>')
 
         # test that fail fails
-        with support.captured_stdout() as stdout:
+        with support.captured_stdout() kama stdout:
             with self.assertRaises(SystemExit):
                 clinic.fail('The igloos are melting!', filename='clown.txt', line_number=69)
-        self.assertEqual(stdout.getvalue(), 'Error in file "clown.txt" on line 69:\nThe igloos are melting!\n')
+        self.assertEqual(stdout.getvalue(), 'Error kwenye file "clown.txt" on line 69:\nThe igloos are melting!\n')
 
 
 kundi ClinicExternalTest(TestCase):
-    maxDiff = None
+    maxDiff = Tupu
 
     eleza test_external(self):
         source = support.findfile('clinic.test')
-        with open(source, 'r', encoding='utf-8') as f:
+        with open(source, 'r', encoding='utf-8') kama f:
             original = f.read()
-        with support.temp_dir() as testdir:
+        with support.temp_dir() kama testdir:
             testfile = os.path.join(testdir, 'clinic.test.c')
-            with open(testfile, 'w', encoding='utf-8') as f:
+            with open(testfile, 'w', encoding='utf-8') kama f:
                 f.write(original)
-            clinic.parse_file(testfile, force=True)
-            with open(testfile, 'r', encoding='utf-8') as f:
+            clinic.parse_file(testfile, force=Kweli)
+            with open(testfile, 'r', encoding='utf-8') kama f:
                 result = f.read()
             self.assertEqual(result, original)
 

@@ -1,4 +1,4 @@
-"""Test suite for the cProfile module."""
+"""Test suite kila the cProfile module."""
 
 agiza sys
 agiza unittest
@@ -22,7 +22,7 @@ kundi CProfileTest(ProfileTest):
         # bpo-3895
         agiza _lsprof
 
-        with support.catch_unraisable_exception() as cm:
+        with support.catch_unraisable_exception() kama cm:
             obj = _lsprof.Profiler(lambda: int)
             obj.enable()
             obj = _lsprof.Profiler(1)
@@ -33,30 +33,30 @@ kundi CProfileTest(ProfileTest):
 
     eleza test_profile_enable_disable(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up ikiwa the test fails for some reason.
+        # Make sure we clean ourselves up ikiwa the test fails kila some reason.
         self.addCleanup(prof.disable)
 
         prof.enable()
         self.assertIs(sys.getprofile(), prof)
 
         prof.disable()
-        self.assertIs(sys.getprofile(), None)
+        self.assertIs(sys.getprofile(), Tupu)
 
     eleza test_profile_as_context_manager(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up ikiwa the test fails for some reason.
+        # Make sure we clean ourselves up ikiwa the test fails kila some reason.
         self.addCleanup(prof.disable)
 
-        with prof as __enter__return_value:
+        with prof kama __enter__rudisha_value:
             # profile.__enter__ should rudisha itself.
-            self.assertIs(prof, __enter__return_value)
+            self.assertIs(prof, __enter__rudisha_value)
 
-            # profile should be set as the global profiler inside the
+            # profile should be set kama the global profiler inside the
             # with-block
             self.assertIs(sys.getprofile(), prof)
 
         # profile shouldn't be set once we leave the with-block.
-        self.assertIs(sys.getprofile(), None)
+        self.assertIs(sys.getprofile(), Tupu)
 
 kundi TestCommandLine(unittest.TestCase):
     eleza test_sort(self):
@@ -66,13 +66,13 @@ kundi TestCommandLine(unittest.TestCase):
 
 
 eleza main():
-    ikiwa '-r' not in sys.argv:
+    ikiwa '-r' haiko kwenye sys.argv:
         unittest.main()
-    else:
+    isipokua:
         regenerate_expected_output(__file__, CProfileTest)
 
 
-# Don't remove this comment. Everything below it is auto-generated.
+# Don't remove this comment. Everything below it ni auto-generated.
 #--cut--------------------------------------------------------------------------
 _ProfileOutput = {}
 _ProfileOutput['print_stats'] = """\

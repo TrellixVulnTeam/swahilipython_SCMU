@@ -19,10 +19,10 @@ setup(name='foo', version='0.1', py_modules=['foo'],
 
 """
 
-try:
+jaribu:
     import zlib
     ZLIB_SUPPORT = True
-except ImportError:
+tatizo ImportError:
     ZLIB_SUPPORT = False
 
 
@@ -79,14 +79,14 @@ class BuildDumbTestCase(support.TempdirManager,
 
         # now let's check what we have in the zip file
         fp = zipfile.ZipFile(os.path.join('dist', base))
-        try:
+        jaribu:
             contents = fp.namelist()
-        finally:
+        mwishowe:
             fp.close()
 
         contents = sorted(filter(None, map(os.path.basename, contents)))
         wanted = ['foo-0.1-py%s.%s.egg-info' % sys.version_info[:2], 'foo.py']
-        if not sys.dont_write_bytecode:
+        if sio sys.dont_write_bytecode:
             wanted.append('foo.%s.pyc' % sys.implementation.cache_tag)
         self.assertEqual(contents, sorted(wanted))
 

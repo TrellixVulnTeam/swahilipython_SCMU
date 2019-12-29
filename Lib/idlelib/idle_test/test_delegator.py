@@ -10,7 +10,7 @@ kundi DelegatorTest(unittest.TestCase):
         # Test a simple use scenario.
 
         # Initialize an int delegator.
-        mydel = Delegator(int)
+        mytoa = Delegator(int)
         self.assertIs(mydel.delegate, int)
         self.assertEqual(mydel._Delegator__cache, set())
         # Trying to access a non-attribute of int fails.
@@ -27,11 +27,11 @@ kundi DelegatorTest(unittest.TestCase):
         self.assertEqual(mydel._Delegator__cache, {'bit_length', 'numerator'})
 
         # Delete 'numerator'.
-        del mydel.numerator
+        toa mydel.numerator
         self.assertNotIn('numerator', mydel.__dict__)
-        # The current implementation leaves  it in the name cache.
+        # The current implementation leaves  it kwenye the name cache.
         # self.assertIn('numerator', mydel._Delegator__cache)
-        # However, this is not required and not part of the specification
+        # However, this ni sio required na sio part of the specification
 
         # Change delegate to float, first resetting the attributes.
         mydel.setdelegate(float)  # calls resetcache

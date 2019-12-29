@@ -5,7 +5,7 @@ agiza binascii
 agiza array
 agiza re
 
-# Note: "*_hex" functions are aliases for "(un)hexlify"
+# Note: "*_hex" functions are aliases kila "(un)hexlify"
 b2a_functions = ['b2a_base64', 'b2a_hex', 'b2a_hqx', 'b2a_qp', 'b2a_uu',
                  'hexlify', 'rlecode_hqx']
 a2b_functions = ['a2b_base64', 'a2b_hex', 'a2b_hqx', 'a2b_qp', 'a2b_uu',
@@ -27,29 +27,29 @@ kundi BinASCIITest(unittest.TestCase):
 
     eleza test_exceptions(self):
         # Check module exceptions
-        self.assertTrue(issubclass(binascii.Error, Exception))
-        self.assertTrue(issubclass(binascii.Incomplete, Exception))
+        self.assertKweli(issubclass(binascii.Error, Exception))
+        self.assertKweli(issubclass(binascii.Incomplete, Exception))
 
     eleza test_functions(self):
         # Check presence of all functions
-        for name in all_functions:
-            self.assertTrue(hasattr(getattr(binascii, name), '__call__'))
+        kila name kwenye all_functions:
+            self.assertKweli(hasattr(getattr(binascii, name), '__call__'))
             self.assertRaises(TypeError, getattr(binascii, name))
 
-    eleza test_returned_value(self):
+    eleza test_rudishaed_value(self):
         # Limit to the minimum of all limits (b2a_uu)
         MAX_ALL = 45
         raw = self.rawdata[:MAX_ALL]
-        for fa, fb in zip(a2b_functions, b2a_functions):
+        kila fa, fb kwenye zip(a2b_functions, b2a_functions):
             a2b = getattr(binascii, fa)
             b2a = getattr(binascii, fb)
-            try:
+            jaribu:
                 a = b2a(self.type2test(raw))
                 res = a2b(self.type2test(a))
-            except Exception as err:
-                self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
+            tatizo Exception kama err:
+                self.fail("{}/{} conversion ashirias {!r}".format(fb, fa, err))
             ikiwa fb == 'b2a_hqx':
-                # b2a_hqx returns a tuple
+                # b2a_hqx rudishas a tuple
                 res, _ = res
             self.assertEqual(res, raw, "{}/{} conversion: "
                              "{!r} != {!r}".format(fb, fa, res, raw))
@@ -63,12 +63,12 @@ kundi BinASCIITest(unittest.TestCase):
         # Test base64 with valid data
         MAX_BASE64 = 57
         lines = []
-        for i in range(0, len(self.rawdata), MAX_BASE64):
+        kila i kwenye range(0, len(self.rawdata), MAX_BASE64):
             b = self.type2test(self.rawdata[i:i+MAX_BASE64])
             a = binascii.b2a_base64(b)
             lines.append(a)
         res = bytes()
-        for line in lines:
+        kila line kwenye lines:
             a = self.type2test(line)
             b = binascii.a2b_base64(a)
             res += b
@@ -79,36 +79,36 @@ kundi BinASCIITest(unittest.TestCase):
         # (This requires a new version of binascii.)
         MAX_BASE64 = 57
         lines = []
-        for i in range(0, len(self.data), MAX_BASE64):
+        kila i kwenye range(0, len(self.data), MAX_BASE64):
             b = self.type2test(self.rawdata[i:i+MAX_BASE64])
             a = binascii.b2a_base64(b)
             lines.append(a)
 
         fillers = bytearray()
         valid = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"
-        for i in range(256):
-            ikiwa i not in valid:
+        kila i kwenye range(256):
+            ikiwa i haiko kwenye valid:
                 fillers.append(i)
         eleza addnoise(line):
             noise = fillers
             ratio = len(line) // len(noise)
             res = bytearray()
-            while line and noise:
+            wakati line na noise:
                 ikiwa len(line) // len(noise) > ratio:
                     c, line = line[0], line[1:]
-                else:
+                isipokua:
                     c, noise = noise[0], noise[1:]
                 res.append(c)
             rudisha res + noise + line
         res = bytearray()
-        for line in map(addnoise, lines):
+        kila line kwenye map(addnoise, lines):
             a = self.type2test(line)
             b = binascii.a2b_base64(a)
             res += b
         self.assertEqual(res, self.rawdata)
 
-        # Test base64 with just invalid characters, which should return
-        # empty strings. TBD: shouldn't it raise an exception instead ?
+        # Test base64 with just invalid characters, which should rudisha
+        # empty strings. TBD: shouldn't it ashiria an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 
     eleza test_base64errors(self):
@@ -144,14 +144,14 @@ kundi BinASCIITest(unittest.TestCase):
 
     eleza test_uu(self):
         MAX_UU = 45
-        for backtick in (True, False):
+        kila backtick kwenye (Kweli, Uongo):
             lines = []
-            for i in range(0, len(self.data), MAX_UU):
+            kila i kwenye range(0, len(self.data), MAX_UU):
                 b = self.type2test(self.rawdata[i:i+MAX_UU])
                 a = binascii.b2a_uu(b, backtick=backtick)
                 lines.append(a)
             res = bytes()
-            for line in lines:
+            kila line kwenye lines:
                 a = self.type2test(line)
                 b = binascii.a2b_uu(a)
                 res += b
@@ -168,16 +168,16 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(binascii.b2a_uu(b'x'), b'!>   \n')
 
         self.assertEqual(binascii.b2a_uu(b''), b' \n')
-        self.assertEqual(binascii.b2a_uu(b'', backtick=True), b'`\n')
+        self.assertEqual(binascii.b2a_uu(b'', backtick=Kweli), b'`\n')
         self.assertEqual(binascii.a2b_uu(b' \n'), b'')
         self.assertEqual(binascii.a2b_uu(b'`\n'), b'')
         self.assertEqual(binascii.b2a_uu(b'\x00Cat'), b'$ $-A=   \n')
-        self.assertEqual(binascii.b2a_uu(b'\x00Cat', backtick=True),
+        self.assertEqual(binascii.b2a_uu(b'\x00Cat', backtick=Kweli),
                          b'$`$-A=```\n')
         self.assertEqual(binascii.a2b_uu(b'$`$-A=```\n'),
                          binascii.a2b_uu(b'$ $-A=   \n'))
         with self.assertRaises(TypeError):
-            binascii.b2a_uu(b"", True)
+            binascii.b2a_uu(b"", Kweli)
 
     eleza test_crc_hqx(self):
         crc = binascii.crc_hqx(self.type2test(b"Test the CRC-32 of"), 0)
@@ -187,7 +187,7 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertRaises(TypeError, binascii.crc_hqx)
         self.assertRaises(TypeError, binascii.crc_hqx, self.type2test(b''))
 
-        for crc in 0, 1, 0x1234, 0x12345, 0x12345678, -1:
+        kila crc kwenye 0, 1, 0x1234, 0x12345, 0x12345678, -1:
             self.assertEqual(binascii.crc_hqx(self.type2test(b''), crc),
                              crc & 0xffff)
 
@@ -236,14 +236,14 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertRaises(binascii.Error, binascii.a2b_hex, b'G0')
         self.assertRaises(binascii.Error, binascii.a2b_hex, b'g0')
 
-        # Confirm that b2a_hex == hexlify and a2b_hex == unhexlify
+        # Confirm that b2a_hex == hexlify na a2b_hex == unhexlify
         self.assertEqual(binascii.hexlify(self.type2test(s)), t)
         self.assertEqual(binascii.unhexlify(self.type2test(t)), u)
 
     eleza test_hex_separator(self):
-        """Test that hexlify and b2a_hex are binary versions of bytes.hex."""
-        # Logic of separators is tested in test_bytes.py.  This checks that
-        # arg parsing works and exercises the direct to bytes object code
+        """Test that hexlify na b2a_hex are binary versions of bytes.hex."""
+        # Logic of separators ni tested kwenye test_bytes.py.  This checks that
+        # arg parsing works na exercises the direct to bytes object code
         # path within pystrhex.c.
         s = b'{s\005\000\000\000worldi\002\000\000\000s\005\000\000\000helloi\001\000\000\0000'
         self.assertEqual(binascii.hexlify(self.type2test(s)), s.hex().encode('ascii'))
@@ -257,15 +257,15 @@ kundi BinASCIITest(unittest.TestCase):
         a2b_qp = binascii.a2b_qp
         b2a_qp = binascii.b2a_qp
 
-        a2b_qp(data=b"", header=False)  # Keyword arguments allowed
+        a2b_qp(data=b"", header=Uongo)  # Keyword arguments allowed
 
-        # A test for SF bug 534347 (segfaults without the proper fix)
-        try:
+        # A test kila SF bug 534347 (segfaults without the proper fix)
+        jaribu:
             a2b_qp(b"", **{1:1})
-        except TypeError:
-            pass
-        else:
-            self.fail("binascii.a2b_qp(**{1:1}) didn't raise TypeError")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("binascii.a2b_qp(**{1:1}) didn't ashiria TypeError")
 
         self.assertEqual(a2b_qp(type2test(b"=")), b"")
         self.assertEqual(a2b_qp(type2test(b"= ")), b"= ")
@@ -281,7 +281,7 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(a2b_qp(type2test(b"=AB")[:-1]), b"=A")
 
         self.assertEqual(a2b_qp(type2test(b'_')), b'_')
-        self.assertEqual(a2b_qp(type2test(b'_'), header=True), b' ')
+        self.assertEqual(a2b_qp(type2test(b'_'), header=Kweli), b' ')
 
         self.assertRaises(TypeError, b2a_qp, foo="bar")
         self.assertEqual(a2b_qp(type2test(b"=00\r\n=00")), b"\x00\r\n\x00")
@@ -294,12 +294,12 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(b2a_qp(type2test(b'=')), b'=3D')
 
         self.assertEqual(b2a_qp(type2test(b'_')), b'_')
-        self.assertEqual(b2a_qp(type2test(b'_'), header=True), b'=5F')
-        self.assertEqual(b2a_qp(type2test(b'x y'), header=True), b'x_y')
-        self.assertEqual(b2a_qp(type2test(b'x '), header=True), b'x=20')
-        self.assertEqual(b2a_qp(type2test(b'x y'), header=True, quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'_'), header=Kweli), b'=5F')
+        self.assertEqual(b2a_qp(type2test(b'x y'), header=Kweli), b'x_y')
+        self.assertEqual(b2a_qp(type2test(b'x '), header=Kweli), b'x=20')
+        self.assertEqual(b2a_qp(type2test(b'x y'), header=Kweli, quotetabs=Kweli),
                          b'x=20y')
-        self.assertEqual(b2a_qp(type2test(b'x\ty'), header=True), b'x\ty')
+        self.assertEqual(b2a_qp(type2test(b'x\ty'), header=Kweli), b'x\ty')
 
         self.assertEqual(b2a_qp(type2test(b' ')), b'=20')
         self.assertEqual(b2a_qp(type2test(b'\t')), b'=09')
@@ -310,41 +310,41 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(b2a_qp(type2test(b'\0')), b'=00')
 
         self.assertEqual(b2a_qp(type2test(b'\0\n')), b'=00\n')
-        self.assertEqual(b2a_qp(type2test(b'\0\n'), quotetabs=True), b'=00\n')
+        self.assertEqual(b2a_qp(type2test(b'\0\n'), quotetabs=Kweli), b'=00\n')
 
         self.assertEqual(b2a_qp(type2test(b'x y\tz')), b'x y\tz')
-        self.assertEqual(b2a_qp(type2test(b'x y\tz'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x y\tz'), quotetabs=Kweli),
                          b'x=20y=09z')
-        self.assertEqual(b2a_qp(type2test(b'x y\tz'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x y\tz'), istext=Uongo),
                          b'x y\tz')
         self.assertEqual(b2a_qp(type2test(b'x \ny\t\n')),
                          b'x=20\ny=09\n')
-        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), quotetabs=Kweli),
                          b'x=20\ny=09\n')
-        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), istext=Uongo),
                          b'x =0Ay\t=0A')
         self.assertEqual(b2a_qp(type2test(b'x \ry\t\r')),
                          b'x \ry\t\r')
-        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), quotetabs=Kweli),
                          b'x=20\ry=09\r')
-        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), istext=Uongo),
                          b'x =0Dy\t=0D')
         self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n')),
                          b'x=20\r\ny=09\r\n')
-        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), quotetabs=Kweli),
                          b'x=20\r\ny=09\r\n')
-        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), istext=Uongo),
                          b'x =0D=0Ay\t=0D=0A')
 
         self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1]), b'x \r')
         self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1]), b'x\t\r')
-        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], quotetabs=Kweli),
                          b'x=20\r')
-        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], quotetabs=Kweli),
                          b'x=09\r')
-        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], istext=Uongo),
                          b'x =0D')
-        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], istext=Uongo),
                          b'x\t=0D')
 
         self.assertEqual(b2a_qp(type2test(b'.')), b'=2E')
@@ -355,26 +355,26 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(b2a_qp(type2test(b'.a')[:-1]), b'=2E')
 
     eleza test_empty_string(self):
-        # A test for SF bug #1022953.  Make sure SystemError is not raised.
+        # A test kila SF bug #1022953.  Make sure SystemError ni sio ashiriad.
         empty = self.type2test(b'')
-        for func in all_functions:
+        kila func kwenye all_functions:
             ikiwa func == 'crc_hqx':
                 # crc_hqx needs 2 arguments
                 binascii.crc_hqx(empty, 0)
-                continue
+                endelea
             f = getattr(binascii, func)
-            try:
+            jaribu:
                 f(empty)
-            except Exception as err:
-                self.fail("{}({!r}) raises {!r}".format(func, empty, err))
+            tatizo Exception kama err:
+                self.fail("{}({!r}) ashirias {!r}".format(func, empty, err))
 
     eleza test_unicode_b2a(self):
-        # Unicode strings are not accepted by b2a_* functions.
-        for func in set(all_functions) - set(a2b_functions) | {'rledecode_hqx'}:
-            try:
+        # Unicode strings are sio accepted by b2a_* functions.
+        kila func kwenye set(all_functions) - set(a2b_functions) | {'rledecode_hqx'}:
+            jaribu:
                 self.assertRaises(TypeError, getattr(binascii, func), "test")
-            except Exception as err:
-                self.fail('{}("test") raises {!r}'.format(func, err))
+            tatizo Exception kama err:
+                self.fail('{}("test") ashirias {!r}'.format(func, err))
         # crc_hqx needs 2 arguments
         self.assertRaises(TypeError, binascii.crc_hqx, "test", 0)
 
@@ -382,21 +382,21 @@ kundi BinASCIITest(unittest.TestCase):
         # Unicode strings are accepted by a2b_* functions.
         MAX_ALL = 45
         raw = self.rawdata[:MAX_ALL]
-        for fa, fb in zip(a2b_functions, b2a_functions):
+        kila fa, fb kwenye zip(a2b_functions, b2a_functions):
             ikiwa fa == 'rledecode_hqx':
                 # Takes non-ASCII data
-                continue
+                endelea
             a2b = getattr(binascii, fa)
             b2a = getattr(binascii, fb)
-            try:
+            jaribu:
                 a = b2a(self.type2test(raw))
                 binary_res = a2b(a)
                 a = a.decode('ascii')
                 res = a2b(a)
-            except Exception as err:
-                self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
+            tatizo Exception kama err:
+                self.fail("{}/{} conversion ashirias {!r}".format(fb, fa, err))
             ikiwa fb == 'b2a_hqx':
-                # b2a_hqx returns a tuple
+                # b2a_hqx rudishas a tuple
                 res, _ = res
                 binary_res, _ = binary_res
             self.assertEqual(res, raw, "{}/{} conversion: "
@@ -411,9 +411,9 @@ kundi BinASCIITest(unittest.TestCase):
         b = self.type2test(b'hello')
         self.assertEqual(binascii.b2a_base64(b),
                          b'aGVsbG8=\n')
-        self.assertEqual(binascii.b2a_base64(b, newline=True),
+        self.assertEqual(binascii.b2a_base64(b, newline=Kweli),
                          b'aGVsbG8=\n')
-        self.assertEqual(binascii.b2a_base64(b, newline=False),
+        self.assertEqual(binascii.b2a_base64(b, newline=Uongo),
                          b'aGVsbG8=')
 
 

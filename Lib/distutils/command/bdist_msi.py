@@ -46,7 +46,7 @@ class PyDialog(Dialog):
         Return the button, so that events can be associated"""
         if active:
             flags = 3 # Visible|Enabled
-        else:
+        isipokua:
             flags = 1 # Visible
         return self.pushbutton(name, 180, self.h-27 , 56, 17, flags, title, next)
 
@@ -57,7 +57,7 @@ class PyDialog(Dialog):
         Return the button, so that events can be associated"""
         if active:
             flags = 3 # Visible|Enabled
-        else:
+        isipokua:
             flags = 1 # Visible
         return self.pushbutton(name, 304, self.h-27, 56, 17, flags, title, next)
 
@@ -68,7 +68,7 @@ class PyDialog(Dialog):
         Return the button, so that events can be associated"""
         if active:
             flags = 3 # Visible|Enabled
-        else:
+        isipokua:
             flags = 1 # Visible
         return self.pushbutton(name, 236, self.h-27, 56, 17, flags, title, next)
 
@@ -96,9 +96,9 @@ class bdist_msi(Command):
                      "require a specific python version" +
                      " on the target system"),
                     ('no-target-compile', 'c',
-                     "do not compile .py to .pyc on the target system"),
+                     "do sio compile .py to .pyc on the target system"),
                     ('no-target-optimize', 'o',
-                     "do not compile .py to .pyo (optimized) "
+                     "do sio compile .py to .pyo (optimized) "
                      "on the target system"),
                     ('dist-dir=', 'd',
                      "directory to put final built distributions in"),
@@ -109,7 +109,7 @@ class bdist_msi(Command):
                      "installation or before deinstallation"),
                     ('pre-install-script=', None,
                      "Fully qualified filename of a script to be run before "
-                     "any files are installed.  This script need not be in the "
+                     "any files are installed.  This script need sio be in the "
                      "distribution"),
                    ]
 
@@ -148,12 +148,12 @@ class bdist_msi(Command):
 
         if self.target_version:
             self.versions = [self.target_version]
-            if not self.skip_build and self.distribution.has_ext_modules()\
+            if sio self.skip_build and self.distribution.has_ext_modules()\
                and self.target_version != short_version:
                 raise DistutilsOptionError(
                       "target version can only be %s, or the '--skip-build'"
                       " option must be specified" % (short_version,))
-        else:
+        isipokua:
             self.versions = list(self.all_versions)
 
         self.set_undefined_options('bdist',
@@ -163,20 +163,20 @@ class bdist_msi(Command):
 
         if self.pre_install_script:
             raise DistutilsOptionError(
-                  "the pre-install-script feature is not yet implemented")
+                  "the pre-install-script feature ni sio yet implemented")
 
         if self.install_script:
             for script in self.distribution.scripts:
                 if self.install_script == os.path.basename(script):
-                    break
-            else:
+                    koma
+            isipokua:
                 raise DistutilsOptionError(
-                      "install_script '%s' not found in scripts"
+                      "install_script '%s' sio found in scripts"
                       % self.install_script)
         self.install_script_key = None
 
     def run(self):
-        if not self.skip_build:
+        if sio self.skip_build:
             self.run_command('build')
 
         install = self.reinitialize_command('install', reinit_subcommands=1)
@@ -185,7 +185,7 @@ class bdist_msi(Command):
         install.warn_dir = 0
 
         install_lib = self.reinitialize_command('install_lib')
-        # we do not want to include pyc or pyo files
+        # we do sio want to include pyc or pyo files
         install_lib.compile = 0
         install_lib.optimize = 0
 
@@ -197,7 +197,7 @@ class bdist_msi(Command):
             # build step, so there is no issue with enforcing the build of this
             # version.
             target_version = self.target_version
-            if not target_version:
+            if sio target_version:
                 assert self.skip_build, "Should have already checked this"
                 target_version = '%d.%d' % sys.version_info[:2]
             plat_specifier = ".%s-%s" % (self.plat_name, target_version)
@@ -209,12 +209,12 @@ class bdist_msi(Command):
         install.ensure_finalized()
 
         # avoid warning of 'install_lib' about installing
-        # into a directory not in sys.path
+        # into a directory haiko kwenye sys.path
         sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
 
         install.run()
 
-        del sys.path[0]
+        toa sys.path[0]
 
         self.mkpath(self.dist_dir)
         fullname = self.distribution.get_fullname()
@@ -224,9 +224,9 @@ class bdist_msi(Command):
 
         metadata = self.distribution.metadata
         author = metadata.author
-        if not author:
+        if sio author:
             author = metadata.maintainer
-        if not author:
+        if sio author:
             author = "UNKNOWN"
         version = metadata.get_version()
         # ProductVersion must be strictly numeric
@@ -238,7 +238,7 @@ class bdist_msi(Command):
         fullname = self.distribution.get_fullname()
         if self.target_version:
             product_name = "Python %s %s" % (self.target_version, fullname)
-        else:
+        isipokua:
             product_name = "Python %s" % (fullname)
         self.db = msilib.init_database(installer_name, schema,
                 product_name, msilib.gen_uuid(),
@@ -263,7 +263,7 @@ class bdist_msi(Command):
             tup = 'bdist_msi', self.target_version or 'any', fullname
             self.distribution.dist_files.append(tup)
 
-        if not self.keep_temp:
+        if sio self.keep_temp:
             remove_tree(self.bdist_dir, dry_run=self.dry_run)
 
     def add_files(self):
@@ -283,7 +283,7 @@ class bdist_msi(Command):
             if version is self.other_version:
                 title = "Python from another location"
                 level = 2
-            else:
+            isipokua:
                 title = "Python %s from registry" % version
                 level = 1
             f = Feature(db, name, title, desc, 1, level, directory=target)
@@ -294,7 +294,7 @@ class bdist_msi(Command):
         seen = {}
         for feature, dir, version in items:
             todo = [dir]
-            while todo:
+            wakati todo:
                 dir = todo.pop()
                 for file in os.listdir(dir.absolute):
                     afile = os.path.join(dir.absolute, file)
@@ -303,17 +303,17 @@ class bdist_msi(Command):
                         default = file + version
                         newdir = Directory(db, cab, dir, file, default, short)
                         todo.append(newdir)
-                    else:
-                        if not dir.component:
+                    isipokua:
+                        if sio dir.component:
                             dir.start_component(dir.logical, feature, 0)
-                        if afile not in seen:
+                        if afile haiko kwenye seen:
                             key = seen[afile] = dir.add_file(file)
                             if file==self.install_script:
                                 if self.install_script_key:
                                     raise DistutilsOptionError(
                                           "Multiple files with name %s" % file)
                                 self.install_script_key = '[#%s]' % key
-                        else:
+                        isipokua:
                             key = seen[afile]
                             add_data(self.db, "DuplicateFile",
                                 [(key + version, dir.component, key, None, dir.logical)])
@@ -346,7 +346,7 @@ class bdist_msi(Command):
             if msilib.Win64:
                 # type: msidbLocatorTypeRawValue + msidbLocatorType64bit
                 Type = 2+16
-            else:
+            isipokua:
                 Type = 2
             add_data(self.db, "RegLocator",
                     [(machine_reg, 2, install_path, None, Type),
@@ -449,7 +449,7 @@ class bdist_msi(Command):
         # Numbers indicate sequence; see sequence.py for how these action integrate
         add_data(db, "InstallUISequence",
                  [("PrepareDlg", "Not Privileged or Windows9x or Installed", 140),
-                  ("WhichUsersDlg", "Privileged and not Windows9x and not Installed", 141),
+                  ("WhichUsersDlg", "Privileged and sio Windows9x and sio Installed", 141),
                   # In the user interface, assume all-users installation if privileged.
                   ("SelectFeaturesDlg", "Not Installed", 1230),
                   # XXX no support for resume installations yet
@@ -467,7 +467,7 @@ class bdist_msi(Command):
         fatal.back("< Back", "Finish", active = 0)
         fatal.cancel("Cancel", "Back", active = 0)
         fatal.text("Description1", 15, 70, 320, 80, 0x30003,
-                   "[ProductName] setup ended prematurely because of an error.  Your system has not been modified.  To install this program at a later time, please run the installation again.")
+                   "[ProductName] setup ended prematurely because of an error.  Your system has sio been modified.  To install this program at a later time, please run the installation again.")
         fatal.text("Description2", 15, 155, 320, 20, 0x30003,
                    "Click the Finish button to exit the Installer.")
         c=fatal.next("Finish", "Cancel", name="Finish")
@@ -479,7 +479,7 @@ class bdist_msi(Command):
         user_exit.back("< Back", "Finish", active = 0)
         user_exit.cancel("Cancel", "Back", active = 0)
         user_exit.text("Description1", 15, 70, 320, 80, 0x30003,
-                   "[ProductName] setup was interrupted.  Your system has not been modified.  "
+                   "[ProductName] setup was interrupted.  Your system has sio been modified.  "
                    "To install this program at a later time, please run the installation again.")
         user_exit.text("Description2", 15, 155, 320, 20, 0x30003,
                    "Click the Finish button to exit the Installer.")
@@ -508,7 +508,7 @@ class bdist_msi(Command):
         inuse.text("Description", 20, 23, 280, 20, 0x30003,
                "Some files that need to be updated are currently in use.")
         inuse.text("Text", 20, 55, 330, 50, 3,
-                   "The following applications are using files that need to be updated by this setup. Close these applications and then click Retry to continue the installation or Cancel to exit it.")
+                   "The following applications are using files that need to be updated by this setup. Close these applications and then click Retry to endelea the installation or Cancel to exit it.")
         inuse.control("List", "ListBox", 20, 107, 330, 130, 7, "FileInUseProcess",
                       None, None, None)
         c=inuse.back("Exit", "Ignore", name="Exit")
@@ -553,16 +553,16 @@ class bdist_msi(Command):
         costing = Dialog(db, "WaitForCostingDlg", 50, 10, 260, 85, modal, title,
                          "Return", "Return", "Return")
         costing.text("Text", 48, 15, 194, 30, 3,
-                     "Please wait while the installer finishes determining your disk space requirements.")
+                     "Please wait wakati the installer finishes determining your disk space requirements.")
         c = costing.pushbutton("Return", 102, 57, 56, 17, 3, "Return", None)
         c.event("EndDialog", "Exit")
 
         #####################################################################
-        # Preparation dialog: no user input except cancellation
+        # Preparation dialog: no user input tatizo cancellation
         prep = PyDialog(db, "PrepareDlg", x, y, w, h, modeless, title,
                         "Cancel", "Cancel", "Cancel")
         prep.text("Description", 15, 70, 320, 40, 0x30003,
-                  "Please wait while the Installer prepares to guide you through the installation.")
+                  "Please wait wakati the Installer prepares to guide you through the installation.")
         prep.title("Welcome to the [ProductName] Installer")
         c=prep.text("ActionText", 15, 110, 320, 20, 0x30003, "Pondering...")
         c.mapping("ActionText", "Text")
@@ -627,7 +627,7 @@ class bdist_msi(Command):
         cost.text("Description", 20, 20, 280, 20, 0x30003,
                   "The disk space required for the installation of the selected features.")
         cost.text("Text", 20, 53, 330, 60, 3,
-                  "The highlighted volumes (if any) do not have enough disk space "
+                  "The highlighted volumes (if any) do sio have enough disk space "
               "available for the currently selected features.  You can either "
               "remove some files from the highlighted volumes, or choose to "
               "install less features onto local drive(s), or select different "
@@ -672,7 +672,7 @@ class bdist_msi(Command):
         progress.text("Title", 20, 15, 200, 15, 0x30003,
                      r"{\DlgFontBold8}[Progress1] [ProductName]")
         progress.text("Text", 35, 65, 300, 30, 3,
-                      "Please wait while the Installer [Progress2] [ProductName]. "
+                      "Please wait wakati the Installer [Progress2] [ProductName]. "
                       "This may take several minutes.")
         progress.text("StatusLabel", 35, 100, 35, 20, 3, "Status:")
 
@@ -735,7 +735,7 @@ class bdist_msi(Command):
         if self.target_version:
             base_name = "%s.%s-py%s.msi" % (fullname, self.plat_name,
                                             self.target_version)
-        else:
+        isipokua:
             base_name = "%s.%s.msi" % (fullname, self.plat_name)
         installer_name = os.path.join(self.dist_dir, base_name)
         return installer_name

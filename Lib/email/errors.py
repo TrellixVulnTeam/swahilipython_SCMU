@@ -14,7 +14,7 @@ class MessageParseError(MessageError):
 
 
 class HeaderParseError(MessageParseError):
-    """Error while parsing headers."""
+    """Error wakati parsing headers."""
 
 
 class BoundaryError(MessageParseError):
@@ -34,7 +34,7 @@ class MessageDefect(ValueError):
     """Base class for a message defect."""
 
     def __init__(self, line=None):
-        if line is not None:
+        if line ni sio None:
             super().__init__(line)
         self.line = line
 
@@ -45,7 +45,7 @@ class StartBoundaryNotFoundDefect(MessageDefect):
     """The claimed start boundary was never found."""
 
 class CloseBoundaryNotFoundDefect(MessageDefect):
-    """A start boundary was found, but not the corresponding close boundary."""
+    """A start boundary was found, but sio the corresponding close boundary."""
 
 class FirstHeaderLineIsContinuationDefect(MessageDefect):
     """A message had a continuation line as its first header line."""
@@ -65,13 +65,13 @@ class InvalidMultipartContentTransferEncodingDefect(MessageDefect):
     """An invalid content transfer encoding was set on the multipart itself."""
 
 class UndecodableBytesDefect(MessageDefect):
-    """Header contained bytes that could not be decoded"""
+    """Header contained bytes that could sio be decoded"""
 
 class InvalidBase64PaddingDefect(MessageDefect):
     """base64 encoded sequence had an incorrect length"""
 
 class InvalidBase64CharactersDefect(MessageDefect):
-    """base64 encoded sequence had characters not in base64 alphabet"""
+    """base64 encoded sequence had characters haiko kwenye base64 alphabet"""
 
 class InvalidBase64LengthDefect(MessageDefect):
     """base64 encoded sequence had invalid length (1 mod 4)"""
@@ -85,7 +85,7 @@ class HeaderDefect(MessageDefect):
         super().__init__(*args, **kw)
 
 class InvalidHeaderDefect(HeaderDefect):
-    """Header is not valid, message gives details."""
+    """Header ni sio valid, message gives details."""
 
 class HeaderMissingRequiredValue(HeaderDefect):
     """A header that must have a value had none"""
@@ -106,5 +106,5 @@ class ObsoleteHeaderDefect(HeaderDefect):
 
 class NonASCIILocalPartDefect(HeaderDefect):
     """local_part contains non-ASCII characters"""
-    # This defect only occurs during unicode parsing, not when
+    # This defect only occurs during unicode parsing, sio when
     # parsing messages decoded from binary.

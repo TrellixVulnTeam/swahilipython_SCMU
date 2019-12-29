@@ -1,6 +1,6 @@
 """Fix changes agizas of urllib which are now incompatible.
-   This is rather similar to fix_agizas, but because of the more
-   complex nature of the fixing for urllib, it has its own fixer.
+   This ni rather similar to fix_agizas, but because of the more
+   complex nature of the fixing kila urllib, it has its own fixer.
 """
 # Author: Nick Edds
 
@@ -17,7 +17,7 @@ MAPPING = {"urllib":  [
                 ("urllib.parse",
                     ["quote", "quote_plus", "unquote", "unquote_plus",
                      "urlencode", "splitattr", "splithost", "splitnport",
-                     "splitpasswd", "splitport", "splitquery", "splittag",
+                     "splitpitawd", "splitport", "splitquery", "splittag",
                      "splittype", "splituser", "splitvalue", ]),
                 ("urllib.error",
                     ["ContentTooShortError"])],
@@ -41,30 +41,30 @@ MAPPING = {"urllib":  [
            ]
 }
 
-# Duplicate the url parsing functions for urllib2.
+# Duplicate the url parsing functions kila urllib2.
 MAPPING["urllib2"].append(MAPPING["urllib"][1])
 
 
 eleza build_pattern():
     bare = set()
-    for old_module, changes in MAPPING.items():
-        for change in changes:
+    kila old_module, changes kwenye MAPPING.items():
+        kila change kwenye changes:
             new_module, members = change
             members = alternates(members)
-            yield """import_name< 'agiza' (module=%r
+            tuma """import_name< 'agiza' (module=%r
                                   | dotted_as_names< any* module=%r any* >) >
                   """ % (old_module, old_module)
-            yield """import_kutoka< 'kutoka' mod_member=%r 'agiza'
+            tuma """import_kutoka< 'kutoka' mod_member=%r 'agiza'
                        ( member=%s | import_as_name< member=%s 'as' any > |
                          import_as_names< members=any*  >) >
                   """ % (old_module, members, members)
-            yield """import_kutoka< 'kutoka' module_star=%r 'agiza' star='*' >
+            tuma """import_kutoka< 'kutoka' module_star=%r 'agiza' star='*' >
                   """ % old_module
-            yield """import_name< 'agiza'
+            tuma """import_name< 'agiza'
                                   dotted_as_name< module_as=%r 'as' any > >
                   """ % old_module
-            # bare_with_attr has a special significance for FixImports.match().
-            yield """power< bare_with_attr=%r trailer< '.' member=%s > any* >
+            # bare_with_attr has a special significance kila FixImports.match().
+            tuma """power< bare_with_attr=%r trailer< '.' member=%s > any* >
                   """ % (old_module, members)
 
 
@@ -74,7 +74,7 @@ kundi FixUrllib(FixImports):
         rudisha "|".join(build_pattern())
 
     eleza transform_agiza(self, node, results):
-        """Transform for the basic agiza case. Replaces the old
+        """Transform kila the basic agiza case. Replaces the old
            agiza name with a comma separated list of its
            replacements.
         """
@@ -84,13 +84,13 @@ kundi FixUrllib(FixImports):
         names = []
 
         # create a Node list of the replacement modules
-        for name in MAPPING[import_mod.value][:-1]:
+        kila name kwenye MAPPING[import_mod.value][:-1]:
             names.extend([Name(name[0], prefix=pref), Comma()])
         names.append(Name(MAPPING[import_mod.value][-1][0], prefix=pref))
         import_mod.replace(names)
 
     eleza transform_member(self, node, results):
-        """Transform for agizas of specific module elements. Replaces
+        """Transform kila agizas of specific module elements. Replaces
            the module to be imported kutoka with the appropriate new
            module.
         """
@@ -100,43 +100,43 @@ kundi FixUrllib(FixImports):
 
         # Simple case with only a single member being imported
         ikiwa member:
-            # this may be a list of length one, or just a node
+            # this may be a list of length one, ama just a node
             ikiwa isinstance(member, list):
                 member = member[0]
-            new_name = None
-            for change in MAPPING[mod_member.value]:
-                ikiwa member.value in change[1]:
+            new_name = Tupu
+            kila change kwenye MAPPING[mod_member.value]:
+                ikiwa member.value kwenye change[1]:
                     new_name = change[0]
-                    break
+                    koma
             ikiwa new_name:
                 mod_member.replace(Name(new_name, prefix=pref))
-            else:
-                self.cannot_convert(node, "This is an invalid module element")
+            isipokua:
+                self.cannot_convert(node, "This ni an invalid module element")
 
         # Multiple members being imported
-        else:
-            # a dictionary for replacements, order matters
+        isipokua:
+            # a dictionary kila replacements, order matters
             modules = []
             mod_dict = {}
             members = results["members"]
-            for member in members:
+            kila member kwenye members:
                 # we only care about the actual members
                 ikiwa member.type == syms.import_as_name:
                     as_name = member.children[2].value
                     member_name = member.children[0].value
-                else:
+                isipokua:
                     member_name = member.value
-                    as_name = None
+                    as_name = Tupu
                 ikiwa member_name != ",":
-                    for change in MAPPING[mod_member.value]:
-                        ikiwa member_name in change[1]:
-                            ikiwa change[0] not in mod_dict:
+                    kila change kwenye MAPPING[mod_member.value]:
+                        ikiwa member_name kwenye change[1]:
+                            ikiwa change[0] haiko kwenye mod_dict:
                                 modules.append(change[0])
                             mod_dict.setdefault(change[0], []).append(member)
 
             new_nodes = []
             indentation = find_indentation(node)
-            first = True
+            first = Kweli
             eleza handle_name(name, prefix):
                 ikiwa name.type == syms.import_as_name:
                     kids = [Name(name.children[0].value, prefix=prefix),
@@ -144,43 +144,43 @@ kundi FixUrllib(FixImports):
                             name.children[2].clone()]
                     rudisha [Node(syms.import_as_name, kids)]
                 rudisha [Name(name.value, prefix=prefix)]
-            for module in modules:
+            kila module kwenye modules:
                 elts = mod_dict[module]
                 names = []
-                for elt in elts[:-1]:
+                kila elt kwenye elts[:-1]:
                     names.extend(handle_name(elt, pref))
                     names.append(Comma())
                 names.extend(handle_name(elts[-1], pref))
                 new = FromImport(module, names)
-                ikiwa not first or node.parent.prefix.endswith(indentation):
+                ikiwa sio first ama node.parent.prefix.endswith(indentation):
                     new.prefix = indentation
                 new_nodes.append(new)
-                first = False
+                first = Uongo
             ikiwa new_nodes:
                 nodes = []
-                for new_node in new_nodes[:-1]:
+                kila new_node kwenye new_nodes[:-1]:
                     nodes.extend([new_node, Newline()])
                 nodes.append(new_nodes[-1])
                 node.replace(nodes)
-            else:
+            isipokua:
                 self.cannot_convert(node, "All module elements are invalid")
 
     eleza transform_dot(self, node, results):
-        """Transform for calls to module members in code."""
+        """Transform kila calls to module members kwenye code."""
         module_dot = results.get("bare_with_attr")
         member = results.get("member")
-        new_name = None
+        new_name = Tupu
         ikiwa isinstance(member, list):
             member = member[0]
-        for change in MAPPING[module_dot.value]:
-            ikiwa member.value in change[1]:
+        kila change kwenye MAPPING[module_dot.value]:
+            ikiwa member.value kwenye change[1]:
                 new_name = change[0]
-                break
+                koma
         ikiwa new_name:
             module_dot.replace(Name(new_name,
                                     prefix=module_dot.prefix))
-        else:
-            self.cannot_convert(node, "This is an invalid module element")
+        isipokua:
+            self.cannot_convert(node, "This ni an invalid module element")
 
     eleza transform(self, node, results):
         ikiwa results.get("module"):
@@ -189,8 +189,8 @@ kundi FixUrllib(FixImports):
             self.transform_member(node, results)
         elikiwa results.get("bare_with_attr"):
             self.transform_dot(node, results)
-        # Renaming and star agizas are not supported for these modules.
+        # Renaming na star agizas are sio supported kila these modules.
         elikiwa results.get("module_star"):
             self.cannot_convert(node, "Cannot handle star agizas.")
         elikiwa results.get("module_as"):
-            self.cannot_convert(node, "This module is now multiple modules")
+            self.cannot_convert(node, "This module ni now multiple modules")

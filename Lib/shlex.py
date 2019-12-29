@@ -1,8 +1,8 @@
-"""A lexical analyzer kundi for simple shell-like syntaxes."""
+"""A lexical analyzer kundi kila simple shell-like syntaxes."""
 
-# Module and documentation by Eric S. Raymond, 21 Dec 1998
-# Input stacking and error message cleanup added by ESR, March 2000
-# push_source() and pop_source() made explicit by ESR, January 2001.
+# Module na documentation by Eric S. Raymond, 21 Dec 1998
+# Input stacking na error message cleanup added by ESR, March 2000
+# push_source() na pop_source() made explicit by ESR, January 2001.
 # Posix compliance, split(), string arguments, and
 # iterator interface by Gustavo Niemeyer, April 2003.
 # changes to tokenize more like Posix shells by Vinay Sajip, July 2016.
@@ -17,21 +17,21 @@ kutoka io agiza StringIO
 __all__ = ["shlex", "split", "quote", "join"]
 
 kundi shlex:
-    "A lexical analyzer kundi for simple shell-like syntaxes."
-    eleza __init__(self, instream=None, infile=None, posix=False,
-                 punctuation_chars=False):
+    "A lexical analyzer kundi kila simple shell-like syntaxes."
+    eleza __init__(self, instream=Tupu, infile=Tupu, posix=Uongo,
+                 punctuation_chars=Uongo):
         ikiwa isinstance(instream, str):
             instream = StringIO(instream)
-        ikiwa instream is not None:
+        ikiwa instream ni sio Tupu:
             self.instream = instream
             self.infile = infile
-        else:
+        isipokua:
             self.instream = sys.stdin
-            self.infile = None
+            self.infile = Tupu
         self.posix = posix
         ikiwa posix:
-            self.eof = None
-        else:
+            self.eof = Tupu
+        isipokua:
             self.eof = ''
         self.commenters = '#'
         self.wordchars = ('abcdfeghijklmnopqrstuvwxyz'
@@ -40,7 +40,7 @@ kundi shlex:
             self.wordchars += ('ßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ'
                                'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ')
         self.whitespace = ' \t\r\n'
-        self.whitespace_split = False
+        self.whitespace_split = Uongo
         self.quotes = '\'"'
         self.escape = '\\'
         self.escapedquotes = '"'
@@ -50,16 +50,16 @@ kundi shlex:
         self.debug = 0
         self.token = ''
         self.filestack = deque()
-        self.source = None
-        ikiwa not punctuation_chars:
+        self.source = Tupu
+        ikiwa sio punctuation_chars:
             punctuation_chars = ''
-        elikiwa punctuation_chars is True:
+        elikiwa punctuation_chars ni Kweli:
             punctuation_chars = '();<>|&'
         self._punctuation_chars = punctuation_chars
         ikiwa punctuation_chars:
-            # _pushback_chars is a push back queue used by lookahead logic
+            # _pushback_chars ni a push back queue used by lookahead logic
             self._pushback_chars = deque()
-            # these chars added because allowed in file names, args, wildcards
+            # these chars added because allowed kwenye file names, args, wildcards
             self.wordchars += '~-./*?='
             #remove any punctuation chars kutoka wordchars
             t = self.wordchars.maketrans(dict.kutokakeys(punctuation_chars))
@@ -75,7 +75,7 @@ kundi shlex:
             andika("shlex: pushing token " + repr(tok))
         self.pushback.appendleft(tok)
 
-    eleza push_source(self, newstream, newfile=None):
+    eleza push_source(self, newstream, newfile=Tupu):
         "Push an input source onto the lexer's input source stack."
         ikiwa isinstance(newstream, str):
             newstream = StringIO(newstream)
@@ -84,9 +84,9 @@ kundi shlex:
         self.instream = newstream
         self.lineno = 1
         ikiwa self.debug:
-            ikiwa newfile is not None:
+            ikiwa newfile ni sio Tupu:
                 andika('shlex: pushing to file %s' % (self.infile,))
-            else:
+            isipokua:
                 andika('shlex: pushing to stream %s' % (self.instream,))
 
     eleza pop_source(self):
@@ -108,171 +108,171 @@ kundi shlex:
         # No pushback.  Get a token.
         raw = self.read_token()
         # Handle inclusions
-        ikiwa self.source is not None:
-            while raw == self.source:
+        ikiwa self.source ni sio Tupu:
+            wakati raw == self.source:
                 spec = self.sourcehook(self.read_token())
                 ikiwa spec:
                     (newfile, newstream) = spec
                     self.push_source(newstream, newfile)
                 raw = self.get_token()
         # Maybe we got EOF instead?
-        while raw == self.eof:
-            ikiwa not self.filestack:
+        wakati raw == self.eof:
+            ikiwa sio self.filestack:
                 rudisha self.eof
-            else:
+            isipokua:
                 self.pop_source()
                 raw = self.get_token()
         # Neither inclusion nor EOF
         ikiwa self.debug >= 1:
             ikiwa raw != self.eof:
                 andika("shlex: token=" + repr(raw))
-            else:
+            isipokua:
                 andika("shlex: token=EOF")
         rudisha raw
 
     eleza read_token(self):
-        quoted = False
+        quoted = Uongo
         escapedstate = ' '
-        while True:
-            ikiwa self.punctuation_chars and self._pushback_chars:
+        wakati Kweli:
+            ikiwa self.punctuation_chars na self._pushback_chars:
                 nextchar = self._pushback_chars.pop()
-            else:
+            isipokua:
                 nextchar = self.instream.read(1)
             ikiwa nextchar == '\n':
                 self.lineno += 1
             ikiwa self.debug >= 3:
-                andika("shlex: in state %r I see character: %r" % (self.state,
+                andika("shlex: kwenye state %r I see character: %r" % (self.state,
                                                                   nextchar))
-            ikiwa self.state is None:
+            ikiwa self.state ni Tupu:
                 self.token = ''        # past end of file
-                break
+                koma
             elikiwa self.state == ' ':
-                ikiwa not nextchar:
-                    self.state = None  # end of file
-                    break
-                elikiwa nextchar in self.whitespace:
+                ikiwa sio nextchar:
+                    self.state = Tupu  # end of file
+                    koma
+                elikiwa nextchar kwenye self.whitespace:
                     ikiwa self.debug >= 2:
-                        andika("shlex: I see whitespace in whitespace state")
-                    ikiwa self.token or (self.posix and quoted):
-                        break   # emit current token
-                    else:
-                        continue
-                elikiwa nextchar in self.commenters:
+                        andika("shlex: I see whitespace kwenye whitespace state")
+                    ikiwa self.token ama (self.posix na quoted):
+                        koma   # emit current token
+                    isipokua:
+                        endelea
+                elikiwa nextchar kwenye self.commenters:
                     self.instream.readline()
                     self.lineno += 1
-                elikiwa self.posix and nextchar in self.escape:
+                elikiwa self.posix na nextchar kwenye self.escape:
                     escapedstate = 'a'
                     self.state = nextchar
-                elikiwa nextchar in self.wordchars:
+                elikiwa nextchar kwenye self.wordchars:
                     self.token = nextchar
                     self.state = 'a'
-                elikiwa nextchar in self.punctuation_chars:
+                elikiwa nextchar kwenye self.punctuation_chars:
                     self.token = nextchar
                     self.state = 'c'
-                elikiwa nextchar in self.quotes:
-                    ikiwa not self.posix:
+                elikiwa nextchar kwenye self.quotes:
+                    ikiwa sio self.posix:
                         self.token = nextchar
                     self.state = nextchar
                 elikiwa self.whitespace_split:
                     self.token = nextchar
                     self.state = 'a'
-                else:
+                isipokua:
                     self.token = nextchar
-                    ikiwa self.token or (self.posix and quoted):
-                        break   # emit current token
-                    else:
-                        continue
-            elikiwa self.state in self.quotes:
-                quoted = True
-                ikiwa not nextchar:      # end of file
+                    ikiwa self.token ama (self.posix na quoted):
+                        koma   # emit current token
+                    isipokua:
+                        endelea
+            elikiwa self.state kwenye self.quotes:
+                quoted = Kweli
+                ikiwa sio nextchar:      # end of file
                     ikiwa self.debug >= 2:
-                        andika("shlex: I see EOF in quotes state")
-                    # XXX what error should be raised here?
-                    raise ValueError("No closing quotation")
+                        andika("shlex: I see EOF kwenye quotes state")
+                    # XXX what error should be ashiriad here?
+                    ashiria ValueError("No closing quotation")
                 ikiwa nextchar == self.state:
-                    ikiwa not self.posix:
+                    ikiwa sio self.posix:
                         self.token += nextchar
                         self.state = ' '
-                        break
-                    else:
+                        koma
+                    isipokua:
                         self.state = 'a'
-                elikiwa (self.posix and nextchar in self.escape and self.state
-                      in self.escapedquotes):
+                elikiwa (self.posix na nextchar kwenye self.escape na self.state
+                      kwenye self.escapedquotes):
                     escapedstate = self.state
                     self.state = nextchar
-                else:
+                isipokua:
                     self.token += nextchar
-            elikiwa self.state in self.escape:
-                ikiwa not nextchar:      # end of file
+            elikiwa self.state kwenye self.escape:
+                ikiwa sio nextchar:      # end of file
                     ikiwa self.debug >= 2:
-                        andika("shlex: I see EOF in escape state")
-                    # XXX what error should be raised here?
-                    raise ValueError("No escaped character")
-                # In posix shells, only the quote itself or the escape
+                        andika("shlex: I see EOF kwenye escape state")
+                    # XXX what error should be ashiriad here?
+                    ashiria ValueError("No escaped character")
+                # In posix shells, only the quote itself ama the escape
                 # character may be escaped within quotes.
-                ikiwa (escapedstate in self.quotes and
-                        nextchar != self.state and nextchar != escapedstate):
+                ikiwa (escapedstate kwenye self.quotes and
+                        nextchar != self.state na nextchar != escapedstate):
                     self.token += self.state
                 self.token += nextchar
                 self.state = escapedstate
-            elikiwa self.state in ('a', 'c'):
-                ikiwa not nextchar:
-                    self.state = None   # end of file
-                    break
-                elikiwa nextchar in self.whitespace:
+            elikiwa self.state kwenye ('a', 'c'):
+                ikiwa sio nextchar:
+                    self.state = Tupu   # end of file
+                    koma
+                elikiwa nextchar kwenye self.whitespace:
                     ikiwa self.debug >= 2:
-                        andika("shlex: I see whitespace in word state")
+                        andika("shlex: I see whitespace kwenye word state")
                     self.state = ' '
-                    ikiwa self.token or (self.posix and quoted):
-                        break   # emit current token
-                    else:
-                        continue
-                elikiwa nextchar in self.commenters:
+                    ikiwa self.token ama (self.posix na quoted):
+                        koma   # emit current token
+                    isipokua:
+                        endelea
+                elikiwa nextchar kwenye self.commenters:
                     self.instream.readline()
                     self.lineno += 1
                     ikiwa self.posix:
                         self.state = ' '
-                        ikiwa self.token or (self.posix and quoted):
-                            break   # emit current token
-                        else:
-                            continue
+                        ikiwa self.token ama (self.posix na quoted):
+                            koma   # emit current token
+                        isipokua:
+                            endelea
                 elikiwa self.state == 'c':
-                    ikiwa nextchar in self.punctuation_chars:
+                    ikiwa nextchar kwenye self.punctuation_chars:
                         self.token += nextchar
-                    else:
-                        ikiwa nextchar not in self.whitespace:
+                    isipokua:
+                        ikiwa nextchar haiko kwenye self.whitespace:
                             self._pushback_chars.append(nextchar)
                         self.state = ' '
-                        break
-                elikiwa self.posix and nextchar in self.quotes:
+                        koma
+                elikiwa self.posix na nextchar kwenye self.quotes:
                     self.state = nextchar
-                elikiwa self.posix and nextchar in self.escape:
+                elikiwa self.posix na nextchar kwenye self.escape:
                     escapedstate = 'a'
                     self.state = nextchar
-                elikiwa (nextchar in self.wordchars or nextchar in self.quotes
-                      or (self.whitespace_split and
-                          nextchar not in self.punctuation_chars)):
+                elikiwa (nextchar kwenye self.wordchars ama nextchar kwenye self.quotes
+                      ama (self.whitespace_split and
+                          nextchar haiko kwenye self.punctuation_chars)):
                     self.token += nextchar
-                else:
+                isipokua:
                     ikiwa self.punctuation_chars:
                         self._pushback_chars.append(nextchar)
-                    else:
+                    isipokua:
                         self.pushback.appendleft(nextchar)
                     ikiwa self.debug >= 2:
-                        andika("shlex: I see punctuation in word state")
+                        andika("shlex: I see punctuation kwenye word state")
                     self.state = ' '
-                    ikiwa self.token or (self.posix and quoted):
-                        break   # emit current token
-                    else:
-                        continue
+                    ikiwa self.token ama (self.posix na quoted):
+                        koma   # emit current token
+                    isipokua:
+                        endelea
         result = self.token
         self.token = ''
-        ikiwa self.posix and not quoted and result == '':
-            result = None
+        ikiwa self.posix na sio quoted na result == '':
+            result = Tupu
         ikiwa self.debug > 1:
             ikiwa result:
                 andika("shlex: raw token=" + repr(result))
-            else:
+            isipokua:
                 andika("shlex: raw token=EOF")
         rudisha result
 
@@ -280,16 +280,16 @@ kundi shlex:
         "Hook called on a filename to be sourced."
         ikiwa newfile[0] == '"':
             newfile = newfile[1:-1]
-        # This implements cpp-like semantics for relative-path inclusion.
-        ikiwa isinstance(self.infile, str) and not os.path.isabs(newfile):
+        # This implements cpp-like semantics kila relative-path inclusion.
+        ikiwa isinstance(self.infile, str) na sio os.path.isabs(newfile):
             newfile = os.path.join(os.path.dirname(self.infile), newfile)
         rudisha (newfile, open(newfile, "r"))
 
-    eleza error_leader(self, infile=None, lineno=None):
+    eleza error_leader(self, infile=Tupu, lineno=Tupu):
         "Emit a C-compiler-like, Emacs-friendly error-message leader."
-        ikiwa infile is None:
+        ikiwa infile ni Tupu:
             infile = self.infile
-        ikiwa lineno is None:
+        ikiwa lineno ni Tupu:
             lineno = self.lineno
         rudisha "\"%s\", line %d: " % (infile, lineno)
 
@@ -299,47 +299,47 @@ kundi shlex:
     eleza __next__(self):
         token = self.get_token()
         ikiwa token == self.eof:
-            raise StopIteration
+            ashiria StopIteration
         rudisha token
 
-eleza split(s, comments=False, posix=True):
+eleza split(s, comments=Uongo, posix=Kweli):
     lex = shlex(s, posix=posix)
-    lex.whitespace_split = True
-    ikiwa not comments:
+    lex.whitespace_split = Kweli
+    ikiwa sio comments:
         lex.commenters = ''
     rudisha list(lex)
 
 
 eleza join(split_command):
     """Return a shell-escaped string kutoka *split_command*."""
-    rudisha ' '.join(quote(arg) for arg in split_command)
+    rudisha ' '.join(quote(arg) kila arg kwenye split_command)
 
 
 _find_unsafe = re.compile(r'[^\w@%+=:,./-]', re.ASCII).search
 
 eleza quote(s):
     """Return a shell-escaped version of the string *s*."""
-    ikiwa not s:
+    ikiwa sio s:
         rudisha "''"
-    ikiwa _find_unsafe(s) is None:
+    ikiwa _find_unsafe(s) ni Tupu:
         rudisha s
 
-    # use single quotes, and put single quotes into double quotes
-    # the string $'b is then quoted as '$'"'"'b'
+    # use single quotes, na put single quotes into double quotes
+    # the string $'b ni then quoted kama '$'"'"'b'
     rudisha "'" + s.replace("'", "'\"'\"'") + "'"
 
 
 eleza _print_tokens(lexer):
-    while 1:
+    wakati 1:
         tt = lexer.get_token()
-        ikiwa not tt:
-            break
+        ikiwa sio tt:
+            koma
         andika("Token: " + repr(tt))
 
 ikiwa __name__ == '__main__':
     ikiwa len(sys.argv) == 1:
         _print_tokens(shlex())
-    else:
+    isipokua:
         fn = sys.argv[1]
-        with open(fn) as f:
+        with open(fn) kama f:
             _print_tokens(shlex(f, fn))

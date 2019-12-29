@@ -12,12 +12,12 @@ HOST = support.HOST
 eleza server(evt, serv):
     serv.listen()
     evt.set()
-    try:
+    jaribu:
         conn, addr = serv.accept()
         conn.close()
-    except socket.timeout:
-        pass
-    finally:
+    tatizo socket.timeout:
+        pita
+    mwishowe:
         serv.close()
 
 kundi GeneralTests(unittest.TestCase):
@@ -28,13 +28,13 @@ kundi GeneralTests(unittest.TestCase):
         self.sock.settimeout(60)  # Safety net. Look issue 11812
         self.port = support.bind_port(self.sock)
         self.thread = threading.Thread(target=server, args=(self.evt,self.sock))
-        self.thread.setDaemon(True)
+        self.thread.setDaemon(Kweli)
         self.thread.start()
         self.evt.wait()
 
     eleza tearDown(self):
         self.thread.join()
-        del self.thread  # Clear out any dangling Thread objects.
+        toa self.thread  # Clear out any dangling Thread objects.
 
     eleza testBasic(self):
         # connects
@@ -42,29 +42,29 @@ kundi GeneralTests(unittest.TestCase):
         telnet.sock.close()
 
     eleza testContextManager(self):
-        with telnetlib.Telnet(HOST, self.port) as tn:
-            self.assertIsNotNone(tn.get_socket())
-        self.assertIsNone(tn.get_socket())
+        with telnetlib.Telnet(HOST, self.port) kama tn:
+            self.assertIsNotTupu(tn.get_socket())
+        self.assertIsTupu(tn.get_socket())
 
     eleza testTimeoutDefault(self):
-        self.assertTrue(socket.getdefaulttimeout() is None)
+        self.assertKweli(socket.getdefaulttimeout() ni Tupu)
         socket.setdefaulttimeout(30)
-        try:
+        jaribu:
             telnet = telnetlib.Telnet(HOST, self.port)
-        finally:
-            socket.setdefaulttimeout(None)
+        mwishowe:
+            socket.setdefaulttimeout(Tupu)
         self.assertEqual(telnet.sock.gettimeout(), 30)
         telnet.sock.close()
 
-    eleza testTimeoutNone(self):
-        # None, having other default
-        self.assertTrue(socket.getdefaulttimeout() is None)
+    eleza testTimeoutTupu(self):
+        # Tupu, having other default
+        self.assertKweli(socket.getdefaulttimeout() ni Tupu)
         socket.setdefaulttimeout(30)
-        try:
-            telnet = telnetlib.Telnet(HOST, self.port, timeout=None)
-        finally:
-            socket.setdefaulttimeout(None)
-        self.assertTrue(telnet.sock.gettimeout() is None)
+        jaribu:
+            telnet = telnetlib.Telnet(HOST, self.port, timeout=Tupu)
+        mwishowe:
+            socket.setdefaulttimeout(Tupu)
+        self.assertKweli(telnet.sock.gettimeout() ni Tupu)
         telnet.sock.close()
 
     eleza testTimeoutValue(self):
@@ -91,12 +91,12 @@ kundi SocketStub(object):
     eleza __init__(self, reads=()):
         self.reads = list(reads)  # Intentionally make a copy.
         self.writes = []
-        self.block = False
+        self.block = Uongo
     eleza sendall(self, data):
         self.writes.append(data)
     eleza recv(self, size):
         out = b''
-        while self.reads and len(out) < size:
+        wakati self.reads na len(out) < size:
             out += self.reads.pop(0)
         ikiwa len(out) > size:
             self.reads.insert(0, out[size:])
@@ -105,15 +105,15 @@ kundi SocketStub(object):
 
 kundi TelnetAlike(telnetlib.Telnet):
     eleza fileno(self):
-        raise NotImplementedError()
-    eleza close(self): pass
+        ashiria NotImplementedError()
+    eleza close(self): pita
     eleza sock_avail(self):
         rudisha (not self.sock.block)
     eleza msg(self, msg, *args):
-        with support.captured_stdout() as out:
+        with support.captured_stdout() kama out:
             telnetlib.Telnet.msg(self, msg, *args)
         self._messages += out.getvalue()
-        return
+        rudisha
 
 kundi MockSelector(selectors.BaseSelector):
 
@@ -124,7 +124,7 @@ kundi MockSelector(selectors.BaseSelector):
     eleza resolution(self):
         rudisha 1e-3
 
-    eleza register(self, fileobj, events, data=None):
+    eleza register(self, fileobj, events, data=Tupu):
         key = selectors.SelectorKey(fileobj, 0, events, data)
         self.keys[fileobj] = key
         rudisha key
@@ -132,16 +132,16 @@ kundi MockSelector(selectors.BaseSelector):
     eleza unregister(self, fileobj):
         rudisha self.keys.pop(fileobj)
 
-    eleza select(self, timeout=None):
-        block = False
-        for fileobj in self.keys:
+    eleza select(self, timeout=Tupu):
+        block = Uongo
+        kila fileobj kwenye self.keys:
             ikiwa isinstance(fileobj, TelnetAlike):
                 block = fileobj.sock.block
-                break
+                koma
         ikiwa block:
             rudisha []
-        else:
-            rudisha [(key, key.events) for key in self.keys.values()]
+        isipokua:
+            rudisha [(key, key.events) kila key kwenye self.keys.values()]
 
     eleza get_map(self):
         rudisha self.keys
@@ -151,19 +151,19 @@ kundi MockSelector(selectors.BaseSelector):
 eleza test_socket(reads):
     eleza new_conn(*ignored):
         rudisha SocketStub(reads)
-    try:
+    jaribu:
         old_conn = socket.create_connection
         socket.create_connection = new_conn
-        yield None
-    finally:
+        tuma Tupu
+    mwishowe:
         socket.create_connection = old_conn
-    return
+    rudisha
 
 eleza test_telnet(reads=(), cls=TelnetAlike):
     ''' rudisha a telnetlib.Telnet object that uses a SocketStub with
         reads queued up to be read '''
-    for x in reads:
-        assert type(x) is bytes, x
+    kila x kwenye reads:
+        assert type(x) ni bytes, x
     with test_socket(reads):
         telnet = cls('dummy', 0)
         telnet._messages = '' # debuglevel output
@@ -179,7 +179,7 @@ kundi ExpectAndReadTestCase(unittest.TestCase):
 kundi ReadTests(ExpectAndReadTestCase):
     eleza test_read_until(self):
         """
-        read_until(expected, timeout=None)
+        read_until(expected, timeout=Tupu)
         test the blocking version of read_util
         """
         want = [b'xxxmatchyyy']
@@ -204,17 +204,17 @@ kundi ReadTests(ExpectAndReadTestCase):
         telnet = test_telnet(reads)
         data = telnet.read_all()
         self.assertEqual(data, expect)
-        return
+        rudisha
 
     eleza test_read_some(self):
         """
         read_some()
-          Read at least one byte or EOF; may block.
+          Read at least one byte ama EOF; may block.
         """
         # test 'at least one byte'
         telnet = test_telnet([b'x' * 500])
         data = telnet.read_some()
-        self.assertTrue(len(data) >= 1)
+        self.assertKweli(len(data) >= 1)
         # test EOF
         telnet = test_telnet()
         data = telnet.read_some()
@@ -223,36 +223,36 @@ kundi ReadTests(ExpectAndReadTestCase):
     eleza _read_eager(self, func_name):
         """
         read_*_eager()
-          Read all data available already queued or on the socket,
+          Read all data available already queued ama on the socket,
           without blocking.
         """
         want = b'x' * 100
         telnet = test_telnet([want])
         func = getattr(telnet, func_name)
-        telnet.sock.block = True
+        telnet.sock.block = Kweli
         self.assertEqual(b'', func())
-        telnet.sock.block = False
+        telnet.sock.block = Uongo
         data = b''
-        while True:
-            try:
+        wakati Kweli:
+            jaribu:
                 data += func()
-            except EOFError:
-                break
+            tatizo EOFError:
+                koma
         self.assertEqual(data, want)
 
     eleza test_read_eager(self):
-        # read_eager and read_very_eager make the same guarantees
+        # read_eager na read_very_eager make the same guarantees
         # (they behave differently but we only test the guarantees)
         self._read_eager('read_eager')
         self._read_eager('read_very_eager')
-        # NB -- we need to test the IAC block which is mentioned in the
-        # docstring but not in the module docs
+        # NB -- we need to test the IAC block which ni mentioned kwenye the
+        # docstring but haiko kwenye the module docs
 
     eleza read_very_lazy(self):
         want = b'x' * 100
         telnet = test_telnet([want])
         self.assertEqual(b'', telnet.read_very_lazy())
-        while telnet.sock.reads:
+        wakati telnet.sock.reads:
             telnet.fill_rawq()
         data = telnet.read_very_lazy()
         self.assertEqual(want, data)
@@ -263,33 +263,33 @@ kundi ReadTests(ExpectAndReadTestCase):
         telnet = test_telnet([want])
         self.assertEqual(b'', telnet.read_lazy())
         data = b''
-        while True:
-            try:
+        wakati Kweli:
+            jaribu:
                 read_data = telnet.read_lazy()
                 data += read_data
-                ikiwa not read_data:
+                ikiwa sio read_data:
                     telnet.fill_rawq()
-            except EOFError:
-                break
-            self.assertTrue(want.startswith(data))
+            tatizo EOFError:
+                koma
+            self.assertKweli(want.startswith(data))
         self.assertEqual(data, want)
 
 kundi nego_collector(object):
-    eleza __init__(self, sb_getter=None):
+    eleza __init__(self, sb_getter=Tupu):
         self.seen = b''
         self.sb_getter = sb_getter
         self.sb_seen = b''
 
     eleza do_nego(self, sock, cmd, opt):
         self.seen += cmd + opt
-        ikiwa cmd == tl.SE and self.sb_getter:
+        ikiwa cmd == tl.SE na self.sb_getter:
             sb_data = self.sb_getter()
             self.sb_seen += sb_data
 
 tl = telnetlib
 
 kundi WriteTests(unittest.TestCase):
-    '''The only thing that write does is replace each tl.IAC for
+    '''The only thing that write does ni replace each tl.IAC for
     tl.IAC+tl.IAC'''
 
     eleza test_write(self):
@@ -298,7 +298,7 @@ kundi WriteTests(unittest.TestCase):
                        b'a few' + tl.IAC + tl.IAC + b' iacs' + tl.IAC,
                        tl.IAC,
                        b'']
-        for data in data_sample:
+        kila data kwenye data_sample:
             telnet = test_telnet()
             telnet.write(data)
             written = b''.join(telnet.sock.writes)
@@ -309,26 +309,26 @@ kundi OptionTests(unittest.TestCase):
     cmds = [tl.AO, tl.AYT, tl.BRK, tl.EC, tl.EL, tl.GA, tl.IP, tl.NOP]
 
     eleza _test_command(self, data):
-        """ helper for testing IAC + cmd """
+        """ helper kila testing IAC + cmd """
         telnet = test_telnet(data)
         data_len = len(b''.join(data))
         nego = nego_collector()
         telnet.set_option_negotiation_callback(nego.do_nego)
         txt = telnet.read_all()
         cmd = nego.seen
-        self.assertTrue(len(cmd) > 0) # we expect at least one command
+        self.assertKweli(len(cmd) > 0) # we expect at least one command
         self.assertIn(cmd[:1], self.cmds)
         self.assertEqual(cmd[1:2], tl.NOOPT)
         self.assertEqual(data_len, len(txt + cmd))
-        nego.sb_getter = None # break the nego => telnet cycle
+        nego.sb_getter = Tupu # koma the nego => telnet cycle
 
     eleza test_IAC_commands(self):
-        for cmd in self.cmds:
+        kila cmd kwenye self.cmds:
             self._test_command([tl.IAC, cmd])
             self._test_command([b'x' * 100, tl.IAC, cmd, b'y'*100])
             self._test_command([b'x' * 10, tl.IAC, cmd, b'y'*10])
         # all at once
-        self._test_command([tl.IAC + cmd for (cmd) in self.cmds])
+        self._test_command([tl.IAC + cmd kila (cmd) kwenye self.cmds])
 
     eleza test_SB_commands(self):
         # RFC 855, subnegotiations portion
@@ -346,26 +346,26 @@ kundi OptionTests(unittest.TestCase):
         want_sb_data = tl.IAC + tl.IAC + b'aabb' + tl.IAC + b'cc' + tl.IAC + b'dd'
         self.assertEqual(nego.sb_seen, want_sb_data)
         self.assertEqual(b'', telnet.read_sb_data())
-        nego.sb_getter = None # break the nego => telnet cycle
+        nego.sb_getter = Tupu # koma the nego => telnet cycle
 
     eleza test_debuglevel_reads(self):
-        # test all the various places that self.msg(...) is called
+        # test all the various places that self.msg(...) ni called
         given_a_expect_b = [
             # Telnet.fill_rawq
             (b'a', ": recv b''\n"),
             # Telnet.process_rawq
-            (tl.IAC + bytes([88]), ": IAC 88 not recognized\n"),
+            (tl.IAC + bytes([88]), ": IAC 88 sio recognized\n"),
             (tl.IAC + tl.DO + bytes([1]), ": IAC DO 1\n"),
             (tl.IAC + tl.DONT + bytes([1]), ": IAC DONT 1\n"),
             (tl.IAC + tl.WILL + bytes([1]), ": IAC WILL 1\n"),
             (tl.IAC + tl.WONT + bytes([1]), ": IAC WONT 1\n"),
            ]
-        for a, b in given_a_expect_b:
+        kila a, b kwenye given_a_expect_b:
             telnet = test_telnet([a])
             telnet.set_debuglevel(1)
             txt = telnet.read_all()
             self.assertIn(b, telnet._messages)
-        return
+        rudisha
 
     eleza test_debuglevel_write(self):
         telnet = test_telnet()
@@ -388,8 +388,8 @@ kundi ExpectTests(ExpectAndReadTestCase):
     eleza test_expect(self):
         """
         expect(expected, [timeout])
-          Read until the expected string has been seen, or a timeout is
-          hit (default is no timeout); may block.
+          Read until the expected string has been seen, ama a timeout is
+          hit (default ni no timeout); may block.
         """
         want = [b'x' * 10, b'match', b'y' * 10]
         telnet = test_telnet(want)

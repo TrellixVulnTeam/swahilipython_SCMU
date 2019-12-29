@@ -40,7 +40,7 @@ kundi APITests(
 
     eleza test_read_text(self):
         top_level = [
-            path for path in files('egginfo-pkg')
+            path kila path kwenye files('egginfo-pkg')
             ikiwa path.name == 'top_level.txt'
             ][0]
         self.assertEqual(top_level.read_text(), 'mod\n')
@@ -57,16 +57,16 @@ kundi APITests(
         assert md['LICENSE'] == 'Unknown'
         assert md['Name'] == 'egginfo-pkg'
         classifiers = md.get_all('Classifier')
-        assert 'Topic :: Software Development :: Libraries' in classifiers
+        assert 'Topic :: Software Development :: Libraries' kwenye classifiers
 
     @staticmethod
     eleza _test_files(files):
         root = files[0].root
-        for file in files:
+        kila file kwenye files:
             assert file.root == root
-            assert not file.hash or file.hash.value
-            assert not file.hash or file.hash.mode == 'sha256'
-            assert not file.size or file.size >= 0
+            assert sio file.hash ama file.hash.value
+            assert sio file.hash ama file.hash.mode == 'sha256'
+            assert sio file.size ama file.size >= 0
             assert file.locate().exists()
             assert isinstance(file.read_binary(), bytes)
             ikiwa file.name.endswith('.py'):
@@ -76,7 +76,7 @@ kundi APITests(
         assertRegex = self.assertRegex
 
         util = [
-            p for p in files('distinfo-pkg')
+            p kila p kwenye files('distinfo-pkg')
             ikiwa p.name == 'mod.py'
             ][0]
         assertRegex(
@@ -94,22 +94,22 @@ kundi APITests(
 
     eleza test_requires_egg_info_file(self):
         requirements = requires('egginfo-file')
-        self.assertIsNone(requirements)
+        self.assertIsTupu(requirements)
 
     eleza test_requires_egg_info(self):
         deps = requires('egginfo-pkg')
         assert len(deps) == 2
         assert any(
             dep == 'wheel >= 1.0; python_version >= "2.7"'
-            for dep in deps
+            kila dep kwenye deps
             )
 
     eleza test_requires_dist_info(self):
         deps = requires('distinfo-pkg')
         assert len(deps) == 2
         assert all(deps)
-        assert 'wheel >= 1.0' in deps
-        assert "pytest; extra == 'test'" in deps
+        assert 'wheel >= 1.0' kwenye deps
+        assert "pytest; extra == 'test'" kwenye deps
 
     eleza test_more_complex_deps_requires_text(self):
         requires = textwrap.dedent("""
@@ -131,10 +131,10 @@ kundi APITests(
             'dep2',
             'dep3; python_version < "3"',
             'dep4; extra == "extra1"',
-            'dep5; (python_version < "3") and extra == "extra2"',
+            'dep5; (python_version < "3") na extra == "extra2"',
             ]
         # It's agizaant that the environment marker expression be
-        # wrapped in parentheses to avoid the following 'and' binding more
+        # wrapped kwenye parentheses to avoid the following 'and' binding more
         # tightly than some other part of the environment expression.
 
         assert deps == expected
@@ -145,7 +145,7 @@ kundi OffSysPathTests(fixtures.DistInfoPkgOffPath, unittest.TestCase):
         dists = Distribution.discover(path=[str(self.site_dir)])
         assert any(
             dist.metadata['Name'] == 'distinfo-pkg'
-            for dist in dists
+            kila dist kwenye dists
             )
 
     eleza test_distribution_at_pathlib(self):

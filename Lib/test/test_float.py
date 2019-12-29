@@ -22,14 +22,14 @@ requires_setformat = unittest.skipUnless(hasattr(float, "__setformat__"),
                                          "requires __setformat__")
 
 #locate file with float format test values
-test_dir = os.path.dirname(__file__) or os.curdir
+test_dir = os.path.dirname(__file__) ama os.curdir
 format_testfile = os.path.join(test_dir, 'formatfloat_testcases.txt')
 
 kundi FloatSubclass(float):
-    pass
+    pita
 
 kundi OtherFloatSubclass(float):
-    pass
+    pita
 
 kundi GeneralFloatCases(unittest.TestCase):
 
@@ -57,7 +57,7 @@ kundi GeneralFloatCases(unittest.TestCase):
         self.assertRaises(ValueError, float, "3D-14")
         self.assertEqual(float("  \u0663.\u0661\u0664  "), 3.14)
         self.assertEqual(float("\N{EM SPACE}3.14\N{EN SPACE}"), 3.14)
-        # extra long strings should not be a problem
+        # extra long strings should sio be a problem
         float(b'.' + b'1'*1000)
         float('.' + '1'*1000)
         # Invalid unicode string
@@ -65,18 +65,18 @@ kundi GeneralFloatCases(unittest.TestCase):
         self.assertRaises(ValueError, float, '\u3053\u3093\u306b\u3061\u306f')
 
     eleza test_underscores(self):
-        for lit in VALID_UNDERSCORE_LITERALS:
-            ikiwa not any(ch in lit for ch in 'jJxXoObB'):
+        kila lit kwenye VALID_UNDERSCORE_LITERALS:
+            ikiwa sio any(ch kwenye lit kila ch kwenye 'jJxXoObB'):
                 self.assertEqual(float(lit), eval(lit))
                 self.assertEqual(float(lit), float(lit.replace('_', '')))
-        for lit in INVALID_UNDERSCORE_LITERALS:
-            ikiwa lit in ('0_7', '09_99'):  # octals are not recognized here
-                continue
-            ikiwa not any(ch in lit for ch in 'jJxXoObB'):
+        kila lit kwenye INVALID_UNDERSCORE_LITERALS:
+            ikiwa lit kwenye ('0_7', '09_99'):  # octals are sio recognized here
+                endelea
+            ikiwa sio any(ch kwenye lit kila ch kwenye 'jJxXoObB'):
                 self.assertRaises(ValueError, float, lit)
-        # Additional test cases; nan and inf are never valid as literals,
-        # only in the float() constructor, but we don't allow underscores
-        # in or around them.
+        # Additional test cases; nan na inf are never valid kama literals,
+        # only kwenye the float() constructor, but we don't allow underscores
+        # kwenye ama around them.
         self.assertRaises(ValueError, float, '_NaN')
         self.assertRaises(ValueError, float, 'Na_N')
         self.assertRaises(ValueError, float, 'IN_F')
@@ -86,11 +86,11 @@ kundi GeneralFloatCases(unittest.TestCase):
         self.assertRaises(ValueError, float, b'0_.\xff9')
 
     eleza test_non_numeric_input_types(self):
-        # Test possible non-numeric types for the argument x, including
+        # Test possible non-numeric types kila the argument x, including
         # subclasses of the explicitly documented accepted types.
-        kundi CustomStr(str): pass
-        kundi CustomBytes(bytes): pass
-        kundi CustomByteArray(bytearray): pass
+        kundi CustomStr(str): pita
+        kundi CustomBytes(bytes): pita
+        kundi CustomByteArray(bytearray): pita
 
         factories = [
             bytes,
@@ -100,18 +100,18 @@ kundi GeneralFloatCases(unittest.TestCase):
             CustomByteArray,
             memoryview,
         ]
-        try:
+        jaribu:
             kutoka array agiza array
-        except ImportError:
-            pass
-        else:
+        tatizo ImportError:
+            pita
+        isipokua:
             factories.append(lambda b: array('B', b))
 
-        for f in factories:
+        kila f kwenye factories:
             x = f(b" 3.14  ")
             with self.subTest(type(x)):
                 self.assertEqual(float(x), 3.14)
-                with self.assertRaisesRegex(ValueError, "could not convert"):
+                with self.assertRaisesRegex(ValueError, "could sio convert"):
                     float(f(b'A' * 0x10))
 
     eleza test_float_memoryview(self):
@@ -123,10 +123,10 @@ kundi GeneralFloatCases(unittest.TestCase):
 
     eleza test_error_message(self):
         eleza check(s):
-            with self.assertRaises(ValueError, msg='float(%r)' % (s,)) as cm:
+            with self.assertRaises(ValueError, msg='float(%r)' % (s,)) kama cm:
                 float(s)
             self.assertEqual(str(cm.exception),
-                'could not convert string to float: %r' % (s,))
+                'could sio convert string to float: %r' % (s,))
 
         check('\xbd')
         check('123\xbd')
@@ -146,12 +146,12 @@ kundi GeneralFloatCases(unittest.TestCase):
 
     @support.run_with_locale('LC_NUMERIC', 'fr_FR', 'de_DE')
     eleza test_float_with_comma(self):
-        # set locale to something that doesn't use '.' for the decimal point
-        # float must not accept the locale specific decimal point but
+        # set locale to something that doesn't use '.' kila the decimal point
+        # float must sio accept the locale specific decimal point but
         # it still has to accept the normal python syntax
         agiza locale
-        ikiwa not locale.localeconv()['decimal_point'] == ',':
-            self.skipTest('decimal_point is not ","')
+        ikiwa sio locale.localeconv()['decimal_point'] == ',':
+            self.skipTest('decimal_point ni sio ","')
 
         self.assertEqual(float("  3.14  "), 3.14)
         self.assertEqual(float("+3.14  "), 3.14)
@@ -192,7 +192,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             eleza __float__(self):
                 rudisha 42
 
-        # Issue 5759: __float__ not called on str subclasses (though it is on
+        # Issue 5759: __float__ sio called on str subclasses (though it ni on
         # unicode subclasses).
         kundi FooStr(str):
             eleza __float__(self):
@@ -243,13 +243,13 @@ kundi GeneralFloatCases(unittest.TestCase):
             float(x='3.14')
 
     eleza test_is_integer(self):
-        self.assertFalse((1.1).is_integer())
-        self.assertTrue((1.).is_integer())
-        self.assertFalse(float("nan").is_integer())
-        self.assertFalse(float("inf").is_integer())
+        self.assertUongo((1.1).is_integer())
+        self.assertKweli((1.).is_integer())
+        self.assertUongo(float("nan").is_integer())
+        self.assertUongo(float("inf").is_integer())
 
     eleza test_floatasratio(self):
-        for f, ratio in [
+        kila f, ratio kwenye [
                 (0.875, (7, 8)),
                 (-0.875, (-7, 8)),
                 (0.0, (0, 1)),
@@ -257,7 +257,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             ]:
             self.assertEqual(f.as_integer_ratio(), ratio)
 
-        for i in range(10000):
+        kila i kwenye range(10000):
             f = random.random()
             f *= 10 ** random.randint(-100, 100)
             n, d = f.as_integer_ratio()
@@ -283,38 +283,38 @@ kundi GeneralFloatCases(unittest.TestCase):
 
     eleza test_float_containment(self):
         floats = (INF, -INF, 0.0, 1.0, NAN)
-        for f in floats:
+        kila f kwenye floats:
             self.assertIn(f, [f])
             self.assertIn(f, (f,))
             self.assertIn(f, {f})
-            self.assertIn(f, {f: None})
+            self.assertIn(f, {f: Tupu})
             self.assertEqual([f].count(f), 1, "[].count('%r') != 1" % f)
             self.assertIn(f, floats)
 
-        for f in floats:
+        kila f kwenye floats:
             # nonidentical containers, same type, same contents
-            self.assertTrue([f] == [f], "[%r] != [%r]" % (f, f))
-            self.assertTrue((f,) == (f,), "(%r,) != (%r,)" % (f, f))
-            self.assertTrue({f} == {f}, "{%r} != {%r}" % (f, f))
-            self.assertTrue({f : None} == {f: None}, "{%r : None} != "
-                                                   "{%r : None}" % (f, f))
+            self.assertKweli([f] == [f], "[%r] != [%r]" % (f, f))
+            self.assertKweli((f,) == (f,), "(%r,) != (%r,)" % (f, f))
+            self.assertKweli({f} == {f}, "{%r} != {%r}" % (f, f))
+            self.assertKweli({f : Tupu} == {f: Tupu}, "{%r : Tupu} != "
+                                                   "{%r : Tupu}" % (f, f))
 
             # identical containers
-            l, t, s, d = [f], (f,), {f}, {f: None}
-            self.assertTrue(l == l, "[%r] not equal to itself" % f)
-            self.assertTrue(t == t, "(%r,) not equal to itself" % f)
-            self.assertTrue(s == s, "{%r} not equal to itself" % f)
-            self.assertTrue(d == d, "{%r : None} not equal to itself" % f)
+            l, t, s, d = [f], (f,), {f}, {f: Tupu}
+            self.assertKweli(l == l, "[%r] sio equal to itself" % f)
+            self.assertKweli(t == t, "(%r,) sio equal to itself" % f)
+            self.assertKweli(s == s, "{%r} sio equal to itself" % f)
+            self.assertKweli(d == d, "{%r : Tupu} sio equal to itself" % f)
 
     eleza assertEqualAndEqualSign(self, a, b):
-        # fail unless a == b and a and b have the same sign bit;
-        # the only difference kutoka assertEqual is that this test
-        # distinguishes -0.0 and 0.0.
+        # fail unless a == b na a na b have the same sign bit;
+        # the only difference kutoka assertEqual ni that this test
+        # distinguishes -0.0 na 0.0.
         self.assertEqual((a, copysign(1.0, a)), (b, copysign(1.0, b)))
 
     @support.requires_IEEE_754
     eleza test_float_mod(self):
-        # Check behaviour of % operator for IEEE 754 special cases.
+        # Check behaviour of % operator kila IEEE 754 special cases.
         # In particular, check signs of zeros.
         mod = operator.mod
 
@@ -334,58 +334,58 @@ kundi GeneralFloatCases(unittest.TestCase):
 
     @support.requires_IEEE_754
     eleza test_float_pow(self):
-        # test builtin pow and ** operator for IEEE 754 special cases.
+        # test builtin pow na ** operator kila IEEE 754 special cases.
         # Special cases taken kutoka section F.9.4.4 of the C99 specification
 
-        for pow_op in pow, operator.pow:
-            # x**NAN is NAN for any x except 1
-            self.assertTrue(isnan(pow_op(-INF, NAN)))
-            self.assertTrue(isnan(pow_op(-2.0, NAN)))
-            self.assertTrue(isnan(pow_op(-1.0, NAN)))
-            self.assertTrue(isnan(pow_op(-0.5, NAN)))
-            self.assertTrue(isnan(pow_op(-0.0, NAN)))
-            self.assertTrue(isnan(pow_op(0.0, NAN)))
-            self.assertTrue(isnan(pow_op(0.5, NAN)))
-            self.assertTrue(isnan(pow_op(2.0, NAN)))
-            self.assertTrue(isnan(pow_op(INF, NAN)))
-            self.assertTrue(isnan(pow_op(NAN, NAN)))
+        kila pow_op kwenye pow, operator.pow:
+            # x**NAN ni NAN kila any x tatizo 1
+            self.assertKweli(isnan(pow_op(-INF, NAN)))
+            self.assertKweli(isnan(pow_op(-2.0, NAN)))
+            self.assertKweli(isnan(pow_op(-1.0, NAN)))
+            self.assertKweli(isnan(pow_op(-0.5, NAN)))
+            self.assertKweli(isnan(pow_op(-0.0, NAN)))
+            self.assertKweli(isnan(pow_op(0.0, NAN)))
+            self.assertKweli(isnan(pow_op(0.5, NAN)))
+            self.assertKweli(isnan(pow_op(2.0, NAN)))
+            self.assertKweli(isnan(pow_op(INF, NAN)))
+            self.assertKweli(isnan(pow_op(NAN, NAN)))
 
-            # NAN**y is NAN for any y except +-0
-            self.assertTrue(isnan(pow_op(NAN, -INF)))
-            self.assertTrue(isnan(pow_op(NAN, -2.0)))
-            self.assertTrue(isnan(pow_op(NAN, -1.0)))
-            self.assertTrue(isnan(pow_op(NAN, -0.5)))
-            self.assertTrue(isnan(pow_op(NAN, 0.5)))
-            self.assertTrue(isnan(pow_op(NAN, 1.0)))
-            self.assertTrue(isnan(pow_op(NAN, 2.0)))
-            self.assertTrue(isnan(pow_op(NAN, INF)))
+            # NAN**y ni NAN kila any y tatizo +-0
+            self.assertKweli(isnan(pow_op(NAN, -INF)))
+            self.assertKweli(isnan(pow_op(NAN, -2.0)))
+            self.assertKweli(isnan(pow_op(NAN, -1.0)))
+            self.assertKweli(isnan(pow_op(NAN, -0.5)))
+            self.assertKweli(isnan(pow_op(NAN, 0.5)))
+            self.assertKweli(isnan(pow_op(NAN, 1.0)))
+            self.assertKweli(isnan(pow_op(NAN, 2.0)))
+            self.assertKweli(isnan(pow_op(NAN, INF)))
 
-            # (+-0)**y raises ZeroDivisionError for y a negative odd integer
+            # (+-0)**y ashirias ZeroDivisionError kila y a negative odd integer
             self.assertRaises(ZeroDivisionError, pow_op, -0.0, -1.0)
             self.assertRaises(ZeroDivisionError, pow_op, 0.0, -1.0)
 
-            # (+-0)**y raises ZeroDivisionError for y finite and negative
-            # but not an odd integer
+            # (+-0)**y ashirias ZeroDivisionError kila y finite na negative
+            # but sio an odd integer
             self.assertRaises(ZeroDivisionError, pow_op, -0.0, -2.0)
             self.assertRaises(ZeroDivisionError, pow_op, -0.0, -0.5)
             self.assertRaises(ZeroDivisionError, pow_op, 0.0, -2.0)
             self.assertRaises(ZeroDivisionError, pow_op, 0.0, -0.5)
 
-            # (+-0)**y is +-0 for y a positive odd integer
+            # (+-0)**y ni +-0 kila y a positive odd integer
             self.assertEqualAndEqualSign(pow_op(-0.0, 1.0), -0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, 1.0), 0.0)
 
-            # (+-0)**y is 0 for y finite and positive but not an odd integer
+            # (+-0)**y ni 0 kila y finite na positive but sio an odd integer
             self.assertEqualAndEqualSign(pow_op(-0.0, 0.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(-0.0, 2.0), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, 0.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, 2.0), 0.0)
 
-            # (-1)**+-inf is 1
+            # (-1)**+-inf ni 1
             self.assertEqualAndEqualSign(pow_op(-1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, INF), 1.0)
 
-            # 1**y is 1 for any y, even ikiwa y is an infinity or nan
+            # 1**y ni 1 kila any y, even ikiwa y ni an infinity ama nan
             self.assertEqualAndEqualSign(pow_op(1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -2.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -1.0), 1.0)
@@ -398,7 +398,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(1.0, INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, NAN), 1.0)
 
-            # x**+-0 is 1 for any x, even ikiwa x is a zero, infinity, or nan
+            # x**+-0 ni 1 kila any x, even ikiwa x ni a zero, infinity, ama nan
             self.assertEqualAndEqualSign(pow_op(-INF, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-2.0, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, 0.0), 1.0)
@@ -422,7 +422,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(INF, -0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(NAN, -0.0), 1.0)
 
-            # x**y defers to complex pow for finite negative x and
+            # x**y defers to complex pow kila finite negative x and
             # non-integral y.
             self.assertEqual(type(pow_op(-2.0, -0.5)), complex)
             self.assertEqual(type(pow_op(-2.0, 0.5)), complex)
@@ -431,55 +431,55 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqual(type(pow_op(-0.5, -0.5)), complex)
             self.assertEqual(type(pow_op(-0.5, 0.5)), complex)
 
-            # x**-INF is INF for abs(x) < 1
+            # x**-INF ni INF kila abs(x) < 1
             self.assertEqualAndEqualSign(pow_op(-0.5, -INF), INF)
             self.assertEqualAndEqualSign(pow_op(-0.0, -INF), INF)
             self.assertEqualAndEqualSign(pow_op(0.0, -INF), INF)
             self.assertEqualAndEqualSign(pow_op(0.5, -INF), INF)
 
-            # x**-INF is 0 for abs(x) > 1
+            # x**-INF ni 0 kila abs(x) > 1
             self.assertEqualAndEqualSign(pow_op(-INF, -INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(-2.0, -INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(2.0, -INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(INF, -INF), 0.0)
 
-            # x**INF is 0 for abs(x) < 1
+            # x**INF ni 0 kila abs(x) < 1
             self.assertEqualAndEqualSign(pow_op(-0.5, INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(-0.0, INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.0, INF), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.5, INF), 0.0)
 
-            # x**INF is INF for abs(x) > 1
+            # x**INF ni INF kila abs(x) > 1
             self.assertEqualAndEqualSign(pow_op(-INF, INF), INF)
             self.assertEqualAndEqualSign(pow_op(-2.0, INF), INF)
             self.assertEqualAndEqualSign(pow_op(2.0, INF), INF)
             self.assertEqualAndEqualSign(pow_op(INF, INF), INF)
 
-            # (-INF)**y is -0.0 for y a negative odd integer
+            # (-INF)**y ni -0.0 kila y a negative odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, -1.0), -0.0)
 
-            # (-INF)**y is 0.0 for y negative but not an odd integer
+            # (-INF)**y ni 0.0 kila y negative but sio an odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, -0.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(-INF, -2.0), 0.0)
 
-            # (-INF)**y is -INF for y a positive odd integer
+            # (-INF)**y ni -INF kila y a positive odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, 1.0), -INF)
 
-            # (-INF)**y is INF for y positive but not an odd integer
+            # (-INF)**y ni INF kila y positive but sio an odd integer
             self.assertEqualAndEqualSign(pow_op(-INF, 0.5), INF)
             self.assertEqualAndEqualSign(pow_op(-INF, 2.0), INF)
 
-            # INF**y is INF for y positive
+            # INF**y ni INF kila y positive
             self.assertEqualAndEqualSign(pow_op(INF, 0.5), INF)
             self.assertEqualAndEqualSign(pow_op(INF, 1.0), INF)
             self.assertEqualAndEqualSign(pow_op(INF, 2.0), INF)
 
-            # INF**y is 0.0 for y negative
+            # INF**y ni 0.0 kila y negative
             self.assertEqualAndEqualSign(pow_op(INF, -2.0), 0.0)
             self.assertEqualAndEqualSign(pow_op(INF, -1.0), 0.0)
             self.assertEqualAndEqualSign(pow_op(INF, -0.5), 0.0)
 
-            # basic checks not covered by the special cases above
+            # basic checks sio covered by the special cases above
             self.assertEqualAndEqualSign(pow_op(-2.0, -2.0), 0.25)
             self.assertEqualAndEqualSign(pow_op(-2.0, -1.0), -0.5)
             self.assertEqualAndEqualSign(pow_op(-2.0, -0.0), 1.0)
@@ -499,14 +499,14 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(2.0, 1.0), 2.0)
             self.assertEqualAndEqualSign(pow_op(2.0, 2.0), 4.0)
 
-            # 1 ** large and -1 ** large; some libms apparently
+            # 1 ** large na -1 ** large; some libms apparently
             # have problems with these
             self.assertEqualAndEqualSign(pow_op(1.0, -1e100), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, 1e100), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, -1e100), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, 1e100), 1.0)
 
-            # check sign for results that underflow to 0
+            # check sign kila results that underflow to 0
             self.assertEqualAndEqualSign(pow_op(-2.0, -2000.0), 0.0)
             self.assertEqual(type(pow_op(-2.0, -2000.5)), complex)
             self.assertEqualAndEqualSign(pow_op(-2.0, -2001.0), -0.0)
@@ -520,18 +520,18 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(0.5, 2000.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.5, 2001.0), 0.0)
 
-            # check we don't raise an exception for subnormal results,
-            # and validate signs.  Tests currently disabled, since
+            # check we don't ashiria an exception kila subnormal results,
+            # na validate signs.  Tests currently disabled, since
             # they fail on systems where a subnormal result kutoka pow
-            # is flushed to zero (e.g. Debian/ia64.)
-            #self.assertTrue(0.0 < pow_op(0.5, 1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(-0.5, 1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(0.5, 1047) < 1e-315)
-            #self.assertTrue(0.0 > pow_op(-0.5, 1047) > -1e-315)
-            #self.assertTrue(0.0 < pow_op(2.0, -1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(-2.0, -1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(2.0, -1047) < 1e-315)
-            #self.assertTrue(0.0 > pow_op(-2.0, -1047) > -1e-315)
+            # ni flushed to zero (e.g. Debian/ia64.)
+            #self.assertKweli(0.0 < pow_op(0.5, 1048) < 1e-315)
+            #self.assertKweli(0.0 < pow_op(-0.5, 1048) < 1e-315)
+            #self.assertKweli(0.0 < pow_op(0.5, 1047) < 1e-315)
+            #self.assertKweli(0.0 > pow_op(-0.5, 1047) > -1e-315)
+            #self.assertKweli(0.0 < pow_op(2.0, -1048) < 1e-315)
+            #self.assertKweli(0.0 < pow_op(-2.0, -1048) < 1e-315)
+            #self.assertKweli(0.0 < pow_op(2.0, -1047) < 1e-315)
+            #self.assertKweli(0.0 > pow_op(-2.0, -1047) > -1e-315)
 
 
 @requires_setformat
@@ -554,7 +554,7 @@ kundi FormatFunctionsTestCase(unittest.TestCase):
         self.assertRaises(TypeError, float.__getformat__, 1)
 
     eleza test_setformat(self):
-        for t in 'double', 'float':
+        kila t kwenye 'double', 'float':
             float.__setformat__(t, 'unknown')
             ikiwa self.save_formats[t] == 'IEEE, big-endian':
                 self.assertRaises(ValueError, float.__setformat__,
@@ -562,7 +562,7 @@ kundi FormatFunctionsTestCase(unittest.TestCase):
             elikiwa self.save_formats[t] == 'IEEE, little-endian':
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, big-endian')
-            else:
+            isipokua:
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, big-endian')
                 self.assertRaises(ValueError, float.__setformat__,
@@ -583,7 +583,7 @@ BE_FLOAT_NAN = b'\x7f\xc0\x00\x00'
 LE_FLOAT_NAN = bytes(reversed(BE_FLOAT_NAN))
 
 # on non-IEEE platforms, attempting to unpack a bit pattern
-# representing an infinity or a NaN should raise an exception.
+# representing an infinity ama a NaN should ashiria an exception.
 
 @requires_setformat
 kundi UnknownFormatTestCase(unittest.TestCase):
@@ -598,30 +598,30 @@ kundi UnknownFormatTestCase(unittest.TestCase):
         float.__setformat__('float', self.save_formats['float'])
 
     eleza test_double_specials_dont_unpack(self):
-        for fmt, data in [('>d', BE_DOUBLE_INF),
+        kila fmt, data kwenye [('>d', BE_DOUBLE_INF),
                           ('>d', BE_DOUBLE_NAN),
                           ('<d', LE_DOUBLE_INF),
                           ('<d', LE_DOUBLE_NAN)]:
             self.assertRaises(ValueError, struct.unpack, fmt, data)
 
     eleza test_float_specials_dont_unpack(self):
-        for fmt, data in [('>f', BE_FLOAT_INF),
+        kila fmt, data kwenye [('>f', BE_FLOAT_INF),
                           ('>f', BE_FLOAT_NAN),
                           ('<f', LE_FLOAT_INF),
                           ('<f', LE_FLOAT_NAN)]:
             self.assertRaises(ValueError, struct.unpack, fmt, data)
 
 
-# on an IEEE platform, all we guarantee is that bit patterns
-# representing infinities or NaNs do not raise an exception; all else
-# is accident (today).
-# let's also try to guarantee that -0.0 and 0.0 don't get confused.
+# on an IEEE platform, all we guarantee ni that bit patterns
+# representing infinities ama NaNs do sio ashiria an exception; all else
+# ni accident (today).
+# let's also try to guarantee that -0.0 na 0.0 don't get confused.
 
 kundi IEEEFormatTestCase(unittest.TestCase):
 
     @support.requires_IEEE_754
     eleza test_double_specials_do_unpack(self):
-        for fmt, data in [('>d', BE_DOUBLE_INF),
+        kila fmt, data kwenye [('>d', BE_DOUBLE_INF),
                           ('>d', BE_DOUBLE_NAN),
                           ('<d', LE_DOUBLE_INF),
                           ('<d', LE_DOUBLE_NAN)]:
@@ -629,7 +629,7 @@ kundi IEEEFormatTestCase(unittest.TestCase):
 
     @support.requires_IEEE_754
     eleza test_float_specials_do_unpack(self):
-        for fmt, data in [('>f', BE_FLOAT_INF),
+        kila fmt, data kwenye [('>f', BE_FLOAT_INF),
                           ('>f', BE_FLOAT_NAN),
                           ('<f', LE_FLOAT_INF),
                           ('<f', LE_FLOAT_NAN)]:
@@ -649,12 +649,12 @@ kundi FormatTestCase(unittest.TestCase):
 
         self.assertEqual(format(0.0, 'f'), '0.000000')
 
-        # the default is 'g', except for empty format spec
+        # the default ni 'g', tatizo kila empty format spec
         self.assertEqual(format(0.0, ''), '0.0')
         self.assertEqual(format(0.01, ''), '0.01')
         self.assertEqual(format(0.01, 'g'), '0.01')
 
-        # empty presentation type should format in the same way as str
+        # empty presentation type should format kwenye the same way kama str
         # (issue 5920)
         x = 100/7.
         self.assertEqual(format(x, ''), str(x))
@@ -678,10 +678,10 @@ kundi FormatTestCase(unittest.TestCase):
         self.assertRaises(ValueError, format, 3.0, "s")
 
         # other format specifiers shouldn't work on floats,
-        #  in particular int specifiers
-        for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
-                            [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            ikiwa not format_spec in 'eEfFgGn%':
+        #  kwenye particular int specifiers
+        kila format_spec kwenye ([chr(x) kila x kwenye range(ord('a'), ord('z')+1)] +
+                            [chr(x) kila x kwenye range(ord('A'), ord('Z')+1)]):
+            ikiwa sio format_spec kwenye 'eEfFgGn%':
                 self.assertRaises(ValueError, format, 0.0, format_spec)
                 self.assertRaises(ValueError, format, 1.0, format_spec)
                 self.assertRaises(ValueError, format, -1.0, format_spec)
@@ -698,13 +698,13 @@ kundi FormatTestCase(unittest.TestCase):
 
     @support.requires_IEEE_754
     eleza test_format_testfile(self):
-        with open(format_testfile) as testfile:
-            for line in testfile:
+        with open(format_testfile) kama testfile:
+            kila line kwenye testfile:
                 ikiwa line.startswith('--'):
-                    continue
+                    endelea
                 line = line.strip()
-                ikiwa not line:
-                    continue
+                ikiwa sio line:
+                    endelea
 
                 lhs, rhs = map(str.strip, line.split('->'))
                 fmt, arg = lhs.split()
@@ -738,27 +738,27 @@ kundi FormatTestCase(unittest.TestCase):
 kundi ReprTestCase(unittest.TestCase):
     eleza test_repr(self):
         with open(os.path.join(os.path.split(__file__)[0],
-                  'floating_points.txt')) as floats_file:
-            for line in floats_file:
+                  'floating_points.txt')) kama floats_file:
+            kila line kwenye floats_file:
                 line = line.strip()
-                ikiwa not line or line.startswith('#'):
-                    continue
+                ikiwa sio line ama line.startswith('#'):
+                    endelea
                 v = eval(line)
                 self.assertEqual(v, eval(repr(v)))
 
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
     eleza test_short_repr(self):
-        # test short float repr introduced in Python 3.1.  One aspect
-        # of this repr is that we get some degree of str -> float ->
-        # str roundtripping.  In particular, for any numeric string
-        # containing 15 or fewer significant digits, those exact same
-        # digits (modulo trailing zeros) should appear in the output.
+        # test short float repr introduced kwenye Python 3.1.  One aspect
+        # of this repr ni that we get some degree of str -> float ->
+        # str roundtripping.  In particular, kila any numeric string
+        # containing 15 ama fewer significant digits, those exact same
+        # digits (modulo trailing zeros) should appear kwenye the output.
         # No more repr(0.03) -> "0.029999999999999999"!
 
         test_strings = [
-            # output always includes *either* a decimal point and at
-            # least one digit after that point, or an exponent.
+            # output always includes *either* a decimal point na at
+            # least one digit after that point, ama an exponent.
             '0.0',
             '1.0',
             '0.01',
@@ -774,7 +774,7 @@ kundi ReprTestCase(unittest.TestCase):
             '9999999999999990.0',
             '1e+16',
             '1e+17',
-            # ... and so do values < 1e-4
+            # ... na so do values < 1e-4
             '0.001',
             '0.001001',
             '0.00010000000000001',
@@ -790,11 +790,11 @@ kundi ReprTestCase(unittest.TestCase):
             '3.08578087079232e+35',
             ]
 
-        for s in test_strings:
+        kila s kwenye test_strings:
             negs = '-'+s
             self.assertEqual(s, repr(float(s)))
             self.assertEqual(negs, repr(float(negs)))
-            # Since Python 3.2, repr and str are identical
+            # Since Python 3.2, repr na str are identical
             self.assertEqual(repr(float(s)), str(float(s)))
             self.assertEqual(repr(float(negs)), str(float(negs)))
 
@@ -811,7 +811,7 @@ kundi RoundTestCase(unittest.TestCase):
         self.assertRaises(TypeError, round, -0.0, 1j)
 
     eleza test_large_n(self):
-        for n in [324, 325, 400, 2**31-1, 2**31, 2**32, 2**100]:
+        kila n kwenye [324, 325, 400, 2**31-1, 2**31, 2**32, 2**100]:
             self.assertEqual(round(123.456, n), 123.456)
             self.assertEqual(round(-123.456, n), -123.456)
             self.assertEqual(round(1e300, n), 1e300)
@@ -823,7 +823,7 @@ kundi RoundTestCase(unittest.TestCase):
         self.assertEqual(round(1.4e-315, 315), 1e-315)
 
     eleza test_small_n(self):
-        for n in [-308, -309, -400, 1-2**31, -2**31, -2**31-1, -2**100]:
+        kila n kwenye [-308, -309, -400, 1-2**31, -2**31, -2**31-1, -2**100]:
             self.assertEqual(round(123.456, n), 0.0)
             self.assertEqual(round(-123.456, n), -0.0)
             self.assertEqual(round(1e300, n), 0.0)
@@ -836,7 +836,7 @@ kundi RoundTestCase(unittest.TestCase):
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
     eleza test_previous_round_bugs(self):
-        # particular cases that have occurred in bug reports
+        # particular cases that have occurred kwenye bug reports
         self.assertEqual(round(562949953421312.5, 1),
                           562949953421312.5)
         self.assertEqual(round(56294995342131.5, 3),
@@ -854,22 +854,22 @@ kundi RoundTestCase(unittest.TestCase):
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
     eleza test_matches_float_format(self):
-        # round should give the same results as float formatting
-        for i in range(500):
+        # round should give the same results kama float formatting
+        kila i kwenye range(500):
             x = i/1000.
             self.assertEqual(float(format(x, '.0f')), round(x, 0))
             self.assertEqual(float(format(x, '.1f')), round(x, 1))
             self.assertEqual(float(format(x, '.2f')), round(x, 2))
             self.assertEqual(float(format(x, '.3f')), round(x, 3))
 
-        for i in range(5, 5000, 10):
+        kila i kwenye range(5, 5000, 10):
             x = i/1000.
             self.assertEqual(float(format(x, '.0f')), round(x, 0))
             self.assertEqual(float(format(x, '.1f')), round(x, 1))
             self.assertEqual(float(format(x, '.2f')), round(x, 2))
             self.assertEqual(float(format(x, '.3f')), round(x, 3))
 
-        for i in range(500):
+        kila i kwenye range(500):
             x = random.random()
             self.assertEqual(float(format(x, '.0f')), round(x, 0))
             self.assertEqual(float(format(x, '.1f')), round(x, 1))
@@ -877,15 +877,15 @@ kundi RoundTestCase(unittest.TestCase):
             self.assertEqual(float(format(x, '.3f')), round(x, 3))
 
     eleza test_format_specials(self):
-        # Test formatting of nans and infs.
+        # Test formatting of nans na infs.
 
         eleza test(fmt, value, expected):
-            # Test with both % and format().
+            # Test with both % na format().
             self.assertEqual(fmt % value, expected, fmt)
             fmt = fmt[1:] # strip off the %
             self.assertEqual(format(value, fmt), expected, fmt)
 
-        for fmt in ['%e', '%f', '%g', '%.0e', '%.6f', '%.20g',
+        kila fmt kwenye ['%e', '%f', '%g', '%.0e', '%.6f', '%.20g',
                     '%#e', '%#f', '%#g', '%#.20e', '%#.15f', '%#.3g']:
             pfmt = '%+' + fmt[1:]
             sfmt = '% ' + fmt[1:]
@@ -893,38 +893,38 @@ kundi RoundTestCase(unittest.TestCase):
             test(fmt, -INF, '-inf')
             test(fmt, NAN, 'nan')
             test(fmt, -NAN, 'nan')
-            # When asking for a sign, it's always provided. nans are
+            # When asking kila a sign, it's always provided. nans are
             #  always positive.
             test(pfmt, INF, '+inf')
             test(pfmt, -INF, '-inf')
             test(pfmt, NAN, '+nan')
             test(pfmt, -NAN, '+nan')
-            # When using ' ' for a sign code, only infs can be negative.
+            # When using ' ' kila a sign code, only infs can be negative.
             #  Others have a space.
             test(sfmt, INF, ' inf')
             test(sfmt, -INF, '-inf')
             test(sfmt, NAN, ' nan')
             test(sfmt, -NAN, ' nan')
 
-    eleza test_None_ndigits(self):
-        for x in round(1.23), round(1.23, None), round(1.23, ndigits=None):
+    eleza test_Tupu_ndigits(self):
+        kila x kwenye round(1.23), round(1.23, Tupu), round(1.23, ndigits=Tupu):
             self.assertEqual(x, 1)
             self.assertIsInstance(x, int)
-        for x in round(1.78), round(1.78, None), round(1.78, ndigits=None):
+        kila x kwenye round(1.78), round(1.78, Tupu), round(1.78, ndigits=Tupu):
             self.assertEqual(x, 2)
             self.assertIsInstance(x, int)
 
 
 # Beginning with Python 2.6 float has cross platform compatible
-# ways to create and represent inf and nan
+# ways to create na represent inf na nan
 kundi InfNanTest(unittest.TestCase):
     eleza test_inf_kutoka_str(self):
-        self.assertTrue(isinf(float("inf")))
-        self.assertTrue(isinf(float("+inf")))
-        self.assertTrue(isinf(float("-inf")))
-        self.assertTrue(isinf(float("infinity")))
-        self.assertTrue(isinf(float("+infinity")))
-        self.assertTrue(isinf(float("-infinity")))
+        self.assertKweli(isinf(float("inf")))
+        self.assertKweli(isinf(float("+inf")))
+        self.assertKweli(isinf(float("-inf")))
+        self.assertKweli(isinf(float("infinity")))
+        self.assertKweli(isinf(float("+infinity")))
+        self.assertKweli(isinf(float("-infinity")))
 
         self.assertEqual(repr(float("inf")), "inf")
         self.assertEqual(repr(float("+inf")), "inf")
@@ -971,9 +971,9 @@ kundi InfNanTest(unittest.TestCase):
         self.assertEqual(str(-1e300 * 1e300), "-inf")
 
     eleza test_nan_kutoka_str(self):
-        self.assertTrue(isnan(float("nan")))
-        self.assertTrue(isnan(float("+nan")))
-        self.assertTrue(isnan(float("-nan")))
+        self.assertKweli(isnan(float("nan")))
+        self.assertKweli(isnan(float("+nan")))
+        self.assertKweli(isnan(float("-nan")))
 
         self.assertEqual(repr(float("nan")), "nan")
         self.assertEqual(repr(float("+nan")), "nan")
@@ -1025,17 +1025,17 @@ kundi HexFloatTestCase(unittest.TestCase):
     MAX = kutokaHex('0x.fffffffffffff8p+1024')  # max normal
     MIN = kutokaHex('0x1p-1022')                # min normal
     TINY = kutokaHex('0x0.0000000000001p-1022') # min subnormal
-    EPS = kutokaHex('0x0.0000000000001p0') # diff between 1.0 and next float up
+    EPS = kutokaHex('0x0.0000000000001p0') # diff between 1.0 na next float up
 
     eleza identical(self, x, y):
-        # check that floats x and y are identical, or that both
+        # check that floats x na y are identical, ama that both
         # are NaNs
-        ikiwa isnan(x) or isnan(y):
+        ikiwa isnan(x) ama isnan(y):
             ikiwa isnan(x) == isnan(y):
-                return
-        elikiwa x == y and (x != 0.0 or copysign(1.0, x) == copysign(1.0, y)):
-            return
-        self.fail('%r not identical to %r' % (x, y))
+                rudisha
+        elikiwa x == y na (x != 0.0 ama copysign(1.0, x) == copysign(1.0, y)):
+            rudisha
+        self.fail('%r sio identical to %r' % (x, y))
 
     eleza test_ends(self):
         self.identical(self.MIN, ldexp(1.0, -1022))
@@ -1045,7 +1045,7 @@ kundi HexFloatTestCase(unittest.TestCase):
 
     eleza test_invalid_inputs(self):
         invalid_inputs = [
-            'infi',   # misspelt infinities and nans
+            'infi',   # misspelt infinities na nans
             '-Infinit',
             '++inf',
             '-+Inf',
@@ -1087,7 +1087,7 @@ kundi HexFloatTestCase(unittest.TestCase):
             '-0x1.0p-+0',
             '0x1.0p--0',
             '0x1.0.p0',
-            '0x.p0', # no hex digits before or after point
+            '0x.p0', # no hex digits before ama after point
             '0x1,p0', # wrong decimal point character
             '0x1pa',
             '0x1p\uff10',  # fullwidth Unicode digits
@@ -1095,15 +1095,15 @@ kundi HexFloatTestCase(unittest.TestCase):
             '0x\uff11p0',
             '0x1.\uff10p0',
             '0x1p0 \n 0x2p0',
-            '0x1p0\0 0x1p0',  # embedded null byte is not end of string
+            '0x1p0\0 0x1p0',  # embedded null byte ni sio end of string
             ]
-        for x in invalid_inputs:
-            try:
+        kila x kwenye invalid_inputs:
+            jaribu:
                 result = kutokaHex(x)
-            except ValueError:
-                pass
-            else:
-                self.fail('Expected float.kutokahex(%r) to raise ValueError; '
+            tatizo ValueError:
+                pita
+            isipokua:
+                self.fail('Expected float.kutokahex(%r) to ashiria ValueError; '
                           'got %r instead' % (x, result))
 
 
@@ -1126,9 +1126,9 @@ kundi HexFloatTestCase(unittest.TestCase):
             '\v',
             '\r'
             ]
-        for inp, expected in value_pairs:
-            for lead in whitespace:
-                for trail in whitespace:
+        kila inp, expected kwenye value_pairs:
+            kila lead kwenye whitespace:
+                kila trail kwenye whitespace:
                     got = kutokaHex(lead + inp + trail)
                     self.identical(got, expected)
 
@@ -1155,7 +1155,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         self.identical(kutokaHex('-NaN'), NAN)
         self.identical(kutokaHex('-nAN'), NAN)
 
-        # variations in input format
+        # variations kwenye input format
         self.identical(kutokaHex('1'), 1.0)
         self.identical(kutokaHex('+1'), 1.0)
         self.identical(kutokaHex('1.'), 1.0)
@@ -1289,7 +1289,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         self.identical(kutokaHex('-0x1.1p-1075'), -TINY)
         self.identical(kutokaHex('0x1.fffffffffffffffffp-1075'), TINY)
 
-        # check round-half-even is working correctly near 0 ...
+        # check round-half-even ni working correctly near 0 ...
         self.identical(kutokaHex('0x1p-1076'), 0.0)
         self.identical(kutokaHex('0X2p-1076'), 0.0)
         self.identical(kutokaHex('0X3p-1076'), TINY)
@@ -1323,7 +1323,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         self.identical(kutokaHex('-0Xfp-1076'), -4*TINY)
         self.identical(kutokaHex('-0X10p-1076'), -4*TINY)
 
-        # ... and near MIN ...
+        # ... na near MIN ...
         self.identical(kutokaHex('0x0.ffffffffffffd6p-1022'), MIN-3*TINY)
         self.identical(kutokaHex('0x0.ffffffffffffd8p-1022'), MIN-2*TINY)
         self.identical(kutokaHex('0x0.ffffffffffffdap-1022'), MIN-2*TINY)
@@ -1359,7 +1359,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         self.identical(kutokaHex('0x1.00000000000016p-1022'), MIN+TINY)
         self.identical(kutokaHex('0x1.00000000000018p-1022'), MIN+2*TINY)
 
-        # ... and near 1.0.
+        # ... na near 1.0.
         self.identical(kutokaHex('0x0.fffffffffffff0p0'), 1.0-EPS)
         self.identical(kutokaHex('0x0.fffffffffffff1p0'), 1.0-EPS)
         self.identical(kutokaHex('0X0.fffffffffffff2p0'), 1.0-EPS)
@@ -1422,21 +1422,21 @@ kundi HexFloatTestCase(unittest.TestCase):
         eleza roundtrip(x):
             rudisha kutokaHex(toHex(x))
 
-        for x in [NAN, INF, self.MAX, self.MIN, self.MIN-self.TINY, self.TINY, 0.0]:
+        kila x kwenye [NAN, INF, self.MAX, self.MIN, self.MIN-self.TINY, self.TINY, 0.0]:
             self.identical(x, roundtrip(x))
             self.identical(-x, roundtrip(-x))
 
-        # kutokaHex(toHex(x)) should exactly recover x, for any non-NaN float x.
+        # kutokaHex(toHex(x)) should exactly recover x, kila any non-NaN float x.
         agiza random
-        for i in range(10000):
+        kila i kwenye range(10000):
             e = random.randrange(-1200, 1200)
             m = random.random()
             s = random.choice([1.0, -1.0])
-            try:
+            jaribu:
                 x = s*ldexp(m, e)
-            except OverflowError:
-                pass
-            else:
+            tatizo OverflowError:
+                pita
+            isipokua:
                 self.identical(x, kutokaHex(toHex(x)))
 
     eleza test_subclass(self):

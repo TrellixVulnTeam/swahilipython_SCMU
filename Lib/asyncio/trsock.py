@@ -4,9 +4,9 @@ agiza warnings
 
 kundi TransportSocket:
 
-    """A socket-like wrapper for exposing real transport sockets.
+    """A socket-like wrapper kila exposing real transport sockets.
 
-    These objects can be safely returned by APIs like
+    These objects can be safely rudishaed by APIs like
     `transport.get_extra_info('socket')`.  All potentially disruptive
     operations (like "socket.close()") are banned.
     """
@@ -18,8 +18,8 @@ kundi TransportSocket:
 
     eleza _na(self, what):
         warnings.warn(
-            f"Using {what} on sockets returned kutoka get_extra_info('socket') "
-            f"will be prohibited in asyncio 3.9. Please report your use case "
+            f"Using {what} on sockets rudishaed kutoka get_extra_info('socket') "
+            f"will be prohibited kwenye asyncio 3.9. Please report your use case "
             f"to bugs.python.org.",
             DeprecationWarning, source=self)
 
@@ -43,23 +43,23 @@ kundi TransportSocket:
         )
 
         ikiwa self.fileno() != -1:
-            try:
+            jaribu:
                 laddr = self.getsockname()
                 ikiwa laddr:
                     s = f"{s}, laddr={laddr}"
-            except socket.error:
-                pass
-            try:
+            tatizo socket.error:
+                pita
+            jaribu:
                 raddr = self.getpeername()
                 ikiwa raddr:
                     s = f"{s}, raddr={raddr}"
-            except socket.error:
-                pass
+            tatizo socket.error:
+                pita
 
         rudisha f"{s}>"
 
     eleza __getstate__(self):
-        raise TypeError("Cannot serialize asyncio.TransportSocket object")
+        ashiria TypeError("Cannot serialize asyncio.TransportSocket object")
 
     eleza fileno(self):
         rudisha self._sock.fileno()
@@ -184,17 +184,17 @@ kundi TransportSocket:
 
     eleza settimeout(self, value):
         ikiwa value == 0:
-            return
-        raise ValueError(
-            'settimeout(): only 0 timeout is allowed on transport sockets')
+            rudisha
+        ashiria ValueError(
+            'settimeout(): only 0 timeout ni allowed on transport sockets')
 
     eleza gettimeout(self):
         rudisha 0
 
     eleza setblocking(self, flag):
-        ikiwa not flag:
-            return
-        raise ValueError(
+        ikiwa sio flag:
+            rudisha
+        ashiria ValueError(
             'setblocking(): transport sockets cannot be blocking')
 
     eleza __enter__(self):

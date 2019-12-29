@@ -7,7 +7,7 @@ Use
 
 The returned object is a dbm.gnu, dbm.ndbm or dbm.dumb object, dependent on the
 type of database being opened (determined by the whichdb function) in the case
-of an existing dbm. If the dbm does not exist and the create or new flag ('c'
+of an existing dbm. If the dbm does sio exist and the create or new flag ('c'
 or 'n') was specified, the dbm type will be determined by the availability of
 the modules (tested in the above order).
 
@@ -17,7 +17,7 @@ It has the following interface (key and data are strings):
                         # existing key)
         data = d[key]   # retrieve data at key (raise KeyError if no
                         # such key)
-        del d[key]      # delete data stored at key (raises KeyError
+        toa d[key]      # delete data stored at key (raises KeyError
                         # if no such key)
         flag = key in d # true if the key exists
         list = d.keys() # return a list of all existing keys (slow!)
@@ -44,9 +44,9 @@ _modules = {}
 
 error = (error, OSError)
 
-try:
+jaribu:
     from dbm import ndbm
-except ImportError:
+tatizo ImportError:
     ndbm = None
 
 
@@ -64,33 +64,33 @@ def open(file, flag='r', mode=0o666):
     global _defaultmod
     if _defaultmod is None:
         for name in _names:
-            try:
+            jaribu:
                 mod = __import__(name, fromlist=['open'])
-            except ImportError:
-                continue
-            if not _defaultmod:
+            tatizo ImportError:
+                endelea
+            if sio _defaultmod:
                 _defaultmod = mod
             _modules[name] = mod
-        if not _defaultmod:
+        if sio _defaultmod:
             raise ImportError("no dbm clone found; tried %s" % _names)
 
-    # guess the type of an existing database, if not creating a new one
-    result = whichdb(file) if 'n' not in flag else None
+    # guess the type of an existing database, if sio creating a new one
+    result = whichdb(file) if 'n' haiko kwenye flag else None
     if result is None:
         # db doesn't exist or 'n' flag was specified to create a new db
         if 'c' in flag or 'n' in flag:
             # file doesn't exist and the new flag was used so use default type
             mod = _defaultmod
-        else:
+        isipokua:
             raise error[0]("db file doesn't exist; "
                            "use 'c' or 'n' flag to create a new db")
     lasivyo result == "":
         # db type cannot be determined
-        raise error[0]("db type could not be determined")
-    lasivyo result not in _modules:
-        raise error[0]("db type is {0}, but the module is not "
+        raise error[0]("db type could sio be determined")
+    lasivyo result haiko kwenye _modules:
+        raise error[0]("db type is {0}, but the module ni sio "
                        "available".format(result))
-    else:
+    isipokua:
         mod = _modules[result]
     return mod.open(file, flag, mode)
 
@@ -109,30 +109,30 @@ def whichdb(filename):
     """
 
     # Check for ndbm first -- this has a .pag and a .dir file
-    try:
+    jaribu:
         f = io.open(filename + ".pag", "rb")
         f.close()
         f = io.open(filename + ".dir", "rb")
         f.close()
         return "dbm.ndbm"
-    except OSError:
+    tatizo OSError:
         # some dbm emulations based on Berkeley DB generate a .db file
         # some do not, but they should be caught by the bsd checks
-        try:
+        jaribu:
             f = io.open(filename + ".db", "rb")
             f.close()
             # guarantee we can actually open the file using dbm
             # kind of overkill, but since we are dealing with emulations
             # it seems like a prudent step
-            if ndbm is not None:
+            if ndbm ni sio None:
                 d = ndbm.open(filename)
                 d.close()
                 return "dbm.ndbm"
-        except OSError:
+        tatizo OSError:
             pass
 
     # Check for dumbdbm next -- this has a .dir and a .dat file
-    try:
+    jaribu:
         # First check for presence of files
         os.stat(filename + ".dat")
         size = os.stat(filename + ".dir").st_size
@@ -140,18 +140,18 @@ def whichdb(filename):
         if size == 0:
             return "dbm.dumb"
         f = io.open(filename + ".dir", "rb")
-        try:
+        jaribu:
             if f.read(1) in (b"'", b'"'):
                 return "dbm.dumb"
-        finally:
+        mwishowe:
             f.close()
-    except OSError:
+    tatizo OSError:
         pass
 
     # See if the file exists, return None if not
-    try:
+    jaribu:
         f = io.open(filename, "rb")
-    except OSError:
+    tatizo OSError:
         return None
 
     with f:
@@ -159,14 +159,14 @@ def whichdb(filename):
         s16 = f.read(16)
     s = s16[0:4]
 
-    # Return "" if not at least 4 bytes
+    # Return "" if sio at least 4 bytes
     if len(s) != 4:
         return ""
 
     # Convert to 4-byte int in native byte order -- return "" if impossible
-    try:
+    jaribu:
         (magic,) = struct.unpack("=l", s)
-    except struct.error:
+    tatizo struct.error:
         return ""
 
     # Check for GNU dbm
@@ -175,9 +175,9 @@ def whichdb(filename):
 
     # Later versions of Berkeley db hash file have a 12-byte pad in
     # front of the file type
-    try:
+    jaribu:
         (magic,) = struct.unpack("=l", s16[-4:])
-    except struct.error:
+    tatizo struct.error:
         return ""
 
     # Unknown

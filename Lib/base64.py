@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-"""Base16, Base32, Base64 (RFC 3548), Base85 and Ascii85 data encodings"""
+"""Base16, Base32, Base64 (RFC 3548), Base85 na Ascii85 data encodings"""
 
 # Modified 04-Oct-1995 by Jack Jansen to use binascii module
 # Modified 30-Dec-2003 by Barry Warsaw to add full RFC 3548 support
@@ -14,10 +14,10 @@ agiza binascii
 __all__ = [
     # Legacy interface exports traditional RFC 2045 Base64 encodings
     'encode', 'decode', 'encodebytes', 'decodebytes',
-    # Generalized interface for other encodings
+    # Generalized interface kila other encodings
     'b64encode', 'b64decode', 'b32encode', 'b32decode',
     'b16encode', 'b16decode',
-    # Base85 and Ascii85 encodings
+    # Base85 na Ascii85 encodings
     'b85encode', 'b85decode', 'a85encode', 'a85decode',
     # Standard Base64 encoding
     'standard_b64encode', 'standard_b64decode',
@@ -29,77 +29,77 @@ __all__ = [
     ]
 
 
-bytes_types = (bytes, bytearray)  # Types acceptable as binary data
+bytes_types = (bytes, bytearray)  # Types acceptable kama binary data
 
 eleza _bytes_kutoka_decode_data(s):
     ikiwa isinstance(s, str):
-        try:
+        jaribu:
             rudisha s.encode('ascii')
-        except UnicodeEncodeError:
-            raise ValueError('string argument should contain only ASCII characters')
+        tatizo UnicodeEncodeError:
+            ashiria ValueError('string argument should contain only ASCII characters')
     ikiwa isinstance(s, bytes_types):
         rudisha s
-    try:
+    jaribu:
         rudisha memoryview(s).tobytes()
-    except TypeError:
-        raise TypeError("argument should be a bytes-like object or ASCII "
-                        "string, not %r" % s.__class__.__name__) kutoka None
+    tatizo TypeError:
+        ashiria TypeError("argument should be a bytes-like object ama ASCII "
+                        "string, sio %r" % s.__class__.__name__) kutoka Tupu
 
 
 # Base64 encoding/decoding uses binascii
 
-eleza b64encode(s, altchars=None):
-    """Encode the bytes-like object s using Base64 and rudisha a bytes object.
+eleza b64encode(s, altchars=Tupu):
+    """Encode the bytes-like object s using Base64 na rudisha a bytes object.
 
     Optional altchars should be a byte string of length 2 which specifies an
-    alternative alphabet for the '+' and '/' characters.  This allows an
-    application to e.g. generate url or filesystem safe Base64 strings.
+    alternative alphabet kila the '+' na '/' characters.  This allows an
+    application to e.g. generate url ama filesystem safe Base64 strings.
     """
-    encoded = binascii.b2a_base64(s, newline=False)
-    ikiwa altchars is not None:
+    encoded = binascii.b2a_base64(s, newline=Uongo)
+    ikiwa altchars ni sio Tupu:
         assert len(altchars) == 2, repr(altchars)
         rudisha encoded.translate(bytes.maketrans(b'+/', altchars))
     rudisha encoded
 
 
-eleza b64decode(s, altchars=None, validate=False):
-    """Decode the Base64 encoded bytes-like object or ASCII string s.
+eleza b64decode(s, altchars=Tupu, validate=Uongo):
+    """Decode the Base64 encoded bytes-like object ama ASCII string s.
 
-    Optional altchars must be a bytes-like object or ASCII string of length 2
-    which specifies the alternative alphabet used instead of the '+' and '/'
+    Optional altchars must be a bytes-like object ama ASCII string of length 2
+    which specifies the alternative alphabet used instead of the '+' na '/'
     characters.
 
-    The result is returned as a bytes object.  A binascii.Error is raised if
-    s is incorrectly padded.
+    The result ni rudishaed kama a bytes object.  A binascii.Error ni ashiriad if
+    s ni incorrectly padded.
 
-    If validate is False (the default), characters that are neither in the
+    If validate ni Uongo (the default), characters that are neither kwenye the
     normal base-64 alphabet nor the alternative alphabet are discarded prior
-    to the padding check.  If validate is True, these non-alphabet characters
-    in the input result in a binascii.Error.
+    to the padding check.  If validate ni Kweli, these non-alphabet characters
+    kwenye the input result kwenye a binascii.Error.
     """
     s = _bytes_kutoka_decode_data(s)
-    ikiwa altchars is not None:
+    ikiwa altchars ni sio Tupu:
         altchars = _bytes_kutoka_decode_data(altchars)
         assert len(altchars) == 2, repr(altchars)
         s = s.translate(bytes.maketrans(altchars, b'+/'))
-    ikiwa validate and not re.match(b'^[A-Za-z0-9+/]*={0,2}$', s):
-        raise binascii.Error('Non-base64 digit found')
+    ikiwa validate na sio re.match(b'^[A-Za-z0-9+/]*={0,2}$', s):
+        ashiria binascii.Error('Non-base64 digit found')
     rudisha binascii.a2b_base64(s)
 
 
 eleza standard_b64encode(s):
     """Encode bytes-like object s using the standard Base64 alphabet.
 
-    The result is returned as a bytes object.
+    The result ni rudishaed kama a bytes object.
     """
     rudisha b64encode(s)
 
 eleza standard_b64decode(s):
     """Decode bytes encoded with the standard Base64 alphabet.
 
-    Argument s is a bytes-like object or ASCII string to decode.  The result
-    is returned as a bytes object.  A binascii.Error is raised ikiwa the input
-    is incorrectly padded.  Characters that are not in the standard alphabet
+    Argument s ni a bytes-like object ama ASCII string to decode.  The result
+    ni rudishaed kama a bytes object.  A binascii.Error ni ashiriad ikiwa the input
+    ni incorrectly padded.  Characters that are haiko kwenye the standard alphabet
     are discarded prior to the padding check.
     """
     rudisha b64decode(s)
@@ -109,24 +109,24 @@ _urlsafe_encode_translation = bytes.maketrans(b'+/', b'-_')
 _urlsafe_decode_translation = bytes.maketrans(b'-_', b'+/')
 
 eleza urlsafe_b64encode(s):
-    """Encode bytes using the URL- and filesystem-safe Base64 alphabet.
+    """Encode bytes using the URL- na filesystem-safe Base64 alphabet.
 
-    Argument s is a bytes-like object to encode.  The result is returned as a
-    bytes object.  The alphabet uses '-' instead of '+' and '_' instead of
+    Argument s ni a bytes-like object to encode.  The result ni rudishaed kama a
+    bytes object.  The alphabet uses '-' instead of '+' na '_' instead of
     '/'.
     """
     rudisha b64encode(s).translate(_urlsafe_encode_translation)
 
 eleza urlsafe_b64decode(s):
-    """Decode bytes using the URL- and filesystem-safe Base64 alphabet.
+    """Decode bytes using the URL- na filesystem-safe Base64 alphabet.
 
-    Argument s is a bytes-like object or ASCII string to decode.  The result
-    is returned as a bytes object.  A binascii.Error is raised ikiwa the input
-    is incorrectly padded.  Characters that are not in the URL-safe base-64
-    alphabet, and are not a plus '+' or slash '/', are discarded prior to the
+    Argument s ni a bytes-like object ama ASCII string to decode.  The result
+    ni rudishaed kama a bytes object.  A binascii.Error ni ashiriad ikiwa the input
+    ni incorrectly padded.  Characters that are haiko kwenye the URL-safe base-64
+    alphabet, na are sio a plus '+' ama slash '/', are discarded prior to the
     padding check.
 
-    The alphabet uses '-' instead of '+' and '_' instead of '/'.
+    The alphabet uses '-' instead of '+' na '_' instead of '/'.
     """
     s = _bytes_kutoka_decode_data(s)
     s = s.translate(_urlsafe_decode_translation)
@@ -134,23 +134,23 @@ eleza urlsafe_b64decode(s):
 
 
 
-# Base32 encoding/decoding must be done in Python
+# Base32 encoding/decoding must be done kwenye Python
 _b32alphabet = b'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
-_b32tab2 = None
-_b32rev = None
+_b32tab2 = Tupu
+_b32rev = Tupu
 
 eleza b32encode(s):
-    """Encode the bytes-like object s using Base32 and rudisha a bytes object.
+    """Encode the bytes-like object s using Base32 na rudisha a bytes object.
     """
     global _b32tab2
-    # Delay the initialization of the table to not waste memory
-    # ikiwa the function is never called
-    ikiwa _b32tab2 is None:
-        b32tab = [bytes((i,)) for i in _b32alphabet]
-        _b32tab2 = [a + b for a in b32tab for b in b32tab]
-        b32tab = None
+    # Delay the initialization of the table to sio waste memory
+    # ikiwa the function ni never called
+    ikiwa _b32tab2 ni Tupu:
+        b32tab = [bytes((i,)) kila i kwenye _b32alphabet]
+        _b32tab2 = [a + b kila a kwenye b32tab kila b kwenye b32tab]
+        b32tab = Tupu
 
-    ikiwa not isinstance(s, bytes_types):
+    ikiwa sio isinstance(s, bytes_types):
         s = memoryview(s).tobytes()
     leftover = len(s) % 5
     # Pad the last quantum with zero bits ikiwa necessary
@@ -159,14 +159,14 @@ eleza b32encode(s):
     encoded = bytearray()
     kutoka_bytes = int.kutoka_bytes
     b32tab2 = _b32tab2
-    for i in range(0, len(s), 5):
+    kila i kwenye range(0, len(s), 5):
         c = kutoka_bytes(s[i: i + 5], 'big')
         encoded += (b32tab2[c >> 30] +           # bits 1 - 10
                     b32tab2[(c >> 20) & 0x3ff] + # bits 11 - 20
                     b32tab2[(c >> 10) & 0x3ff] + # bits 21 - 30
                     b32tab2[c & 0x3ff]           # bits 31 - 40
                    )
-    # Adjust for any leftover partial quanta
+    # Adjust kila any leftover partial quanta
     ikiwa leftover == 1:
         encoded[-6:] = b'======'
     elikiwa leftover == 2:
@@ -177,36 +177,36 @@ eleza b32encode(s):
         encoded[-1:] = b'='
     rudisha bytes(encoded)
 
-eleza b32decode(s, casefold=False, map01=None):
-    """Decode the Base32 encoded bytes-like object or ASCII string s.
+eleza b32decode(s, casefold=Uongo, map01=Tupu):
+    """Decode the Base32 encoded bytes-like object ama ASCII string s.
 
-    Optional casefold is a flag specifying whether a lowercase alphabet is
-    acceptable as input.  For security purposes, the default is False.
+    Optional casefold ni a flag specifying whether a lowercase alphabet is
+    acceptable kama input.  For security purposes, the default ni Uongo.
 
-    RFC 3548 allows for optional mapping of the digit 0 (zero) to the
-    letter O (oh), and for optional mapping of the digit 1 (one) to
-    either the letter I (eye) or letter L (el).  The optional argument
-    map01 when not None, specifies which letter the digit 1 should be
-    mapped to (when map01 is not None, the digit 0 is always mapped to
-    the letter O).  For security purposes the default is None, so that
-    0 and 1 are not allowed in the input.
+    RFC 3548 allows kila optional mapping of the digit 0 (zero) to the
+    letter O (oh), na kila optional mapping of the digit 1 (one) to
+    either the letter I (eye) ama letter L (el).  The optional argument
+    map01 when sio Tupu, specifies which letter the digit 1 should be
+    mapped to (when map01 ni sio Tupu, the digit 0 ni always mapped to
+    the letter O).  For security purposes the default ni Tupu, so that
+    0 na 1 are sio allowed kwenye the input.
 
-    The result is returned as a bytes object.  A binascii.Error is raised if
-    the input is incorrectly padded or ikiwa there are non-alphabet
-    characters present in the input.
+    The result ni rudishaed kama a bytes object.  A binascii.Error ni ashiriad if
+    the input ni incorrectly padded ama ikiwa there are non-alphabet
+    characters present kwenye the input.
     """
     global _b32rev
-    # Delay the initialization of the table to not waste memory
-    # ikiwa the function is never called
-    ikiwa _b32rev is None:
-        _b32rev = {v: k for k, v in enumerate(_b32alphabet)}
+    # Delay the initialization of the table to sio waste memory
+    # ikiwa the function ni never called
+    ikiwa _b32rev ni Tupu:
+        _b32rev = {v: k kila k, v kwenye enumerate(_b32alphabet)}
     s = _bytes_kutoka_decode_data(s)
     ikiwa len(s) % 8:
-        raise binascii.Error('Incorrect padding')
-    # Handle section 2.4 zero and one mapping.  The flag map01 will be either
-    # False, or the character to map the digit 1 (one) to.  It should be
-    # either L (el) or I (eye).
-    ikiwa map01 is not None:
+        ashiria binascii.Error('Incorrect padding')
+    # Handle section 2.4 zero na one mapping.  The flag map01 will be either
+    # Uongo, ama the character to map the digit 1 (one) to.  It should be
+    # either L (el) ama I (eye).
+    ikiwa map01 ni sio Tupu:
         map01 = _bytes_kutoka_decode_data(map01)
         assert len(map01) == 1, repr(map01)
         s = s.translate(bytes.maketrans(b'01', b'O' + map01))
@@ -221,19 +221,19 @@ eleza b32decode(s, casefold=False, map01=None):
     # Now decode the full quanta
     decoded = bytearray()
     b32rev = _b32rev
-    for i in range(0, len(s), 8):
+    kila i kwenye range(0, len(s), 8):
         quanta = s[i: i + 8]
         acc = 0
-        try:
-            for c in quanta:
+        jaribu:
+            kila c kwenye quanta:
                 acc = (acc << 5) + b32rev[c]
-        except KeyError:
-            raise binascii.Error('Non-base32 digit found') kutoka None
+        tatizo KeyError:
+            ashiria binascii.Error('Non-base32 digit found') kutoka Tupu
         decoded += acc.to_bytes(5, 'big')
     # Process the last, partial quanta
-    ikiwa l % 8 or padchars not in {0, 1, 3, 4, 6}:
-        raise binascii.Error('Incorrect padding')
-    ikiwa padchars and decoded:
+    ikiwa l % 8 ama padchars haiko kwenye {0, 1, 3, 4, 6}:
+        ashiria binascii.Error('Incorrect padding')
+    ikiwa padchars na decoded:
         acc <<= 5 * padchars
         last = acc.to_bytes(5, 'big')
         leftover = (43 - 5 * padchars) // 8  # 1: 4, 3: 3, 4: 2, 6: 1
@@ -241,44 +241,44 @@ eleza b32decode(s, casefold=False, map01=None):
     rudisha bytes(decoded)
 
 
-# RFC 3548, Base 16 Alphabet specifies uppercase, but hexlify() returns
+# RFC 3548, Base 16 Alphabet specifies uppercase, but hexlify() rudishas
 # lowercase.  The RFC also recommends against accepting input case
 # insensitively.
 eleza b16encode(s):
-    """Encode the bytes-like object s using Base16 and rudisha a bytes object.
+    """Encode the bytes-like object s using Base16 na rudisha a bytes object.
     """
     rudisha binascii.hexlify(s).upper()
 
 
-eleza b16decode(s, casefold=False):
-    """Decode the Base16 encoded bytes-like object or ASCII string s.
+eleza b16decode(s, casefold=Uongo):
+    """Decode the Base16 encoded bytes-like object ama ASCII string s.
 
-    Optional casefold is a flag specifying whether a lowercase alphabet is
-    acceptable as input.  For security purposes, the default is False.
+    Optional casefold ni a flag specifying whether a lowercase alphabet is
+    acceptable kama input.  For security purposes, the default ni Uongo.
 
-    The result is returned as a bytes object.  A binascii.Error is raised if
-    s is incorrectly padded or ikiwa there are non-alphabet characters present
-    in the input.
+    The result ni rudishaed kama a bytes object.  A binascii.Error ni ashiriad if
+    s ni incorrectly padded ama ikiwa there are non-alphabet characters present
+    kwenye the input.
     """
     s = _bytes_kutoka_decode_data(s)
     ikiwa casefold:
         s = s.upper()
     ikiwa re.search(b'[^0-9A-F]', s):
-        raise binascii.Error('Non-base16 digit found')
+        ashiria binascii.Error('Non-base16 digit found')
     rudisha binascii.unhexlify(s)
 
 #
 # Ascii85 encoding/decoding
 #
 
-_a85chars = None
-_a85chars2 = None
+_a85chars = Tupu
+_a85chars2 = Tupu
 _A85START = b"<~"
 _A85END = b"~>"
 
-eleza _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
-    # Helper function for a85encode and b85encode
-    ikiwa not isinstance(b, bytes_types):
+eleza _85encode(b, chars, chars2, pad=Uongo, foldnuls=Uongo, foldspaces=Uongo):
+    # Helper function kila a85encode na b85encode
+    ikiwa sio isinstance(b, bytes_types):
         b = memoryview(b).tobytes()
 
     padding = (-len(b)) % 4
@@ -286,52 +286,52 @@ eleza _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
         b = b + b'\0' * padding
     words = struct.Struct('!%dI' % (len(b) // 4)).unpack(b)
 
-    chunks = [b'z' ikiwa foldnuls and not word else
-              b'y' ikiwa foldspaces and word == 0x20202020 else
+    chunks = [b'z' ikiwa foldnuls na sio word else
+              b'y' ikiwa foldspaces na word == 0x20202020 else
               (chars2[word // 614125] +
                chars2[word // 85 % 7225] +
                chars[word % 85])
-              for word in words]
+              kila word kwenye words]
 
-    ikiwa padding and not pad:
+    ikiwa padding na sio pad:
         ikiwa chunks[-1] == b'z':
             chunks[-1] = chars[0] * 5
         chunks[-1] = chunks[-1][:-padding]
 
     rudisha b''.join(chunks)
 
-eleza a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
-    """Encode bytes-like object b using Ascii85 and rudisha a bytes object.
+eleza a85encode(b, *, foldspaces=Uongo, wrapcol=0, pad=Uongo, adobe=Uongo):
+    """Encode bytes-like object b using Ascii85 na rudisha a bytes object.
 
-    foldspaces is an optional flag that uses the special short sequence 'y'
-    instead of 4 consecutive spaces (ASCII 0x20) as supported by 'btoa'. This
-    feature is not supported by the "standard" Adobe encoding.
+    foldspaces ni an optional flag that uses the special short sequence 'y'
+    instead of 4 consecutive spaces (ASCII 0x20) kama supported by 'btoa'. This
+    feature ni sio supported by the "standard" Adobe encoding.
 
     wrapcol controls whether the output should have newline (b'\\n') characters
-    added to it. If this is non-zero, each output line will be at most this
+    added to it. If this ni non-zero, each output line will be at most this
     many characters long.
 
-    pad controls whether the input is padded to a multiple of 4 before
+    pad controls whether the input ni padded to a multiple of 4 before
     encoding. Note that the btoa implementation always pads.
 
-    adobe controls whether the encoded byte sequence is framed with <~ and ~>,
-    which is used by the Adobe implementation.
+    adobe controls whether the encoded byte sequence ni framed with <~ na ~>,
+    which ni used by the Adobe implementation.
     """
     global _a85chars, _a85chars2
-    # Delay the initialization of tables to not waste memory
-    # ikiwa the function is never called
-    ikiwa _a85chars is None:
-        _a85chars = [bytes((i,)) for i in range(33, 118)]
-        _a85chars2 = [(a + b) for a in _a85chars for b in _a85chars]
+    # Delay the initialization of tables to sio waste memory
+    # ikiwa the function ni never called
+    ikiwa _a85chars ni Tupu:
+        _a85chars = [bytes((i,)) kila i kwenye range(33, 118)]
+        _a85chars2 = [(a + b) kila a kwenye _a85chars kila b kwenye _a85chars]
 
-    result = _85encode(b, _a85chars, _a85chars2, pad, True, foldspaces)
+    result = _85encode(b, _a85chars, _a85chars2, pad, Kweli, foldspaces)
 
     ikiwa adobe:
         result = _A85START + result
     ikiwa wrapcol:
         wrapcol = max(2 ikiwa adobe else 1, wrapcol)
         chunks = [result[i: i + wrapcol]
-                  for i in range(0, len(result), wrapcol)]
+                  kila i kwenye range(0, len(result), wrapcol)]
         ikiwa adobe:
             ikiwa len(chunks[-1]) + 2 > wrapcol:
                 chunks.append(b'')
@@ -341,35 +341,35 @@ eleza a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
 
     rudisha result
 
-eleza a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
-    """Decode the Ascii85 encoded bytes-like object or ASCII string b.
+eleza a85decode(b, *, foldspaces=Uongo, adobe=Uongo, ignorechars=b' \t\n\r\v'):
+    """Decode the Ascii85 encoded bytes-like object ama ASCII string b.
 
-    foldspaces is a flag that specifies whether the 'y' short sequence should be
-    accepted as shorthand for 4 consecutive spaces (ASCII 0x20). This feature is
-    not supported by the "standard" Adobe encoding.
+    foldspaces ni a flag that specifies whether the 'y' short sequence should be
+    accepted kama shorthand kila 4 consecutive spaces (ASCII 0x20). This feature is
+    sio supported by the "standard" Adobe encoding.
 
-    adobe controls whether the input sequence is in Adobe Ascii85 format (i.e.
-    is framed with <~ and ~>).
+    adobe controls whether the input sequence ni kwenye Adobe Ascii85 format (i.e.
+    ni framed with <~ na ~>).
 
     ignorechars should be a byte string containing characters to ignore kutoka the
-    input. This should only contain whitespace characters, and by default
-    contains all whitespace characters in ASCII.
+    input. This should only contain whitespace characters, na by default
+    contains all whitespace characters kwenye ASCII.
 
-    The result is returned as a bytes object.
+    The result ni rudishaed kama a bytes object.
     """
     b = _bytes_kutoka_decode_data(b)
     ikiwa adobe:
-        ikiwa not b.endswith(_A85END):
-            raise ValueError(
+        ikiwa sio b.endswith(_A85END):
+            ashiria ValueError(
                 "Ascii85 encoded byte sequences must end "
                 "with {!r}".format(_A85END)
                 )
         ikiwa b.startswith(_A85START):
             b = b[2:-2]  # Strip off start/end markers
-        else:
+        isipokua:
             b = b[:-2]
     #
-    # We have to go through this stepwise, so as to ignore spaces and handle
+    # We have to go through this stepwise, so kama to ignore spaces na handle
     # special short sequences
     #
     packI = struct.Struct('!I').pack
@@ -378,31 +378,31 @@ eleza a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
     curr = []
     curr_append = curr.append
     curr_clear = curr.clear
-    for x in b + b'u' * 4:
+    kila x kwenye b + b'u' * 4:
         ikiwa b'!'[0] <= x <= b'u'[0]:
             curr_append(x)
             ikiwa len(curr) == 5:
                 acc = 0
-                for x in curr:
+                kila x kwenye curr:
                     acc = 85 * acc + (x - 33)
-                try:
+                jaribu:
                     decoded_append(packI(acc))
-                except struct.error:
-                    raise ValueError('Ascii85 overflow') kutoka None
+                tatizo struct.error:
+                    ashiria ValueError('Ascii85 overflow') kutoka Tupu
                 curr_clear()
         elikiwa x == b'z'[0]:
             ikiwa curr:
-                raise ValueError('z inside Ascii85 5-tuple')
+                ashiria ValueError('z inside Ascii85 5-tuple')
             decoded_append(b'\0\0\0\0')
-        elikiwa foldspaces and x == b'y'[0]:
+        elikiwa foldspaces na x == b'y'[0]:
             ikiwa curr:
-                raise ValueError('y inside Ascii85 5-tuple')
+                ashiria ValueError('y inside Ascii85 5-tuple')
             decoded_append(b'\x20\x20\x20\x20')
-        elikiwa x in ignorechars:
+        elikiwa x kwenye ignorechars:
             # Skip whitespace
-            continue
-        else:
-            raise ValueError('Non-Ascii85 digit found: %c' % x)
+            endelea
+        isipokua:
+            ashiria ValueError('Non-Ascii85 digit found: %c' % x)
 
     result = b''.join(decoded)
     padding = 4 - len(curr)
@@ -411,39 +411,39 @@ eleza a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
         result = result[:-padding]
     rudisha result
 
-# The following code is originally taken (with permission) kutoka Mercurial
+# The following code ni originally taken (with permission) kutoka Mercurial
 
 _b85alphabet = (b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 b"abcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~")
-_b85chars = None
-_b85chars2 = None
-_b85dec = None
+_b85chars = Tupu
+_b85chars2 = Tupu
+_b85dec = Tupu
 
-eleza b85encode(b, pad=False):
-    """Encode bytes-like object b in base85 format and rudisha a bytes object.
+eleza b85encode(b, pad=Uongo):
+    """Encode bytes-like object b kwenye base85 format na rudisha a bytes object.
 
-    If pad is true, the input is padded with b'\\0' so its length is a multiple of
+    If pad ni true, the input ni padded with b'\\0' so its length ni a multiple of
     4 bytes before encoding.
     """
     global _b85chars, _b85chars2
-    # Delay the initialization of tables to not waste memory
-    # ikiwa the function is never called
-    ikiwa _b85chars is None:
-        _b85chars = [bytes((i,)) for i in _b85alphabet]
-        _b85chars2 = [(a + b) for a in _b85chars for b in _b85chars]
+    # Delay the initialization of tables to sio waste memory
+    # ikiwa the function ni never called
+    ikiwa _b85chars ni Tupu:
+        _b85chars = [bytes((i,)) kila i kwenye _b85alphabet]
+        _b85chars2 = [(a + b) kila a kwenye _b85chars kila b kwenye _b85chars]
     rudisha _85encode(b, _b85chars, _b85chars2, pad)
 
 eleza b85decode(b):
-    """Decode the base85-encoded bytes-like object or ASCII string b
+    """Decode the base85-encoded bytes-like object ama ASCII string b
 
-    The result is returned as a bytes object.
+    The result ni rudishaed kama a bytes object.
     """
     global _b85dec
-    # Delay the initialization of tables to not waste memory
-    # ikiwa the function is never called
-    ikiwa _b85dec is None:
-        _b85dec = [None] * 256
-        for i, c in enumerate(_b85alphabet):
+    # Delay the initialization of tables to sio waste memory
+    # ikiwa the function ni never called
+    ikiwa _b85dec ni Tupu:
+        _b85dec = [Tupu] * 256
+        kila i, c kwenye enumerate(_b85alphabet):
             _b85dec[c] = i
 
     b = _bytes_kutoka_decode_data(b)
@@ -451,23 +451,23 @@ eleza b85decode(b):
     b = b + b'~' * padding
     out = []
     packI = struct.Struct('!I').pack
-    for i in range(0, len(b), 5):
+    kila i kwenye range(0, len(b), 5):
         chunk = b[i:i + 5]
         acc = 0
-        try:
-            for c in chunk:
+        jaribu:
+            kila c kwenye chunk:
                 acc = acc * 85 + _b85dec[c]
-        except TypeError:
-            for j, c in enumerate(chunk):
-                ikiwa _b85dec[c] is None:
-                    raise ValueError('bad base85 character at position %d'
-                                    % (i + j)) kutoka None
-            raise
-        try:
+        tatizo TypeError:
+            kila j, c kwenye enumerate(chunk):
+                ikiwa _b85dec[c] ni Tupu:
+                    ashiria ValueError('bad base85 character at position %d'
+                                    % (i + j)) kutoka Tupu
+            ashiria
+        jaribu:
             out.append(packI(acc))
-        except struct.error:
-            raise ValueError('base85 overflow in hunk starting at byte %d'
-                             % i) kutoka None
+        tatizo struct.error:
+            ashiria ValueError('base85 overflow kwenye hunk starting at byte %d'
+                             % i) kutoka Tupu
 
     result = b''.join(out)
     ikiwa padding:
@@ -476,49 +476,49 @@ eleza b85decode(b):
 
 # Legacy interface.  This code could be cleaned up since I don't believe
 # binascii has any line length limitations.  It just doesn't seem worth it
-# though.  The files should be opened in binary mode.
+# though.  The files should be opened kwenye binary mode.
 
 MAXLINESIZE = 76 # Excluding the CRLF
 MAXBINSIZE = (MAXLINESIZE//4)*3
 
 eleza encode(input, output):
-    """Encode a file; input and output are binary files."""
-    while True:
+    """Encode a file; input na output are binary files."""
+    wakati Kweli:
         s = input.read(MAXBINSIZE)
-        ikiwa not s:
-            break
-        while len(s) < MAXBINSIZE:
+        ikiwa sio s:
+            koma
+        wakati len(s) < MAXBINSIZE:
             ns = input.read(MAXBINSIZE-len(s))
-            ikiwa not ns:
-                break
+            ikiwa sio ns:
+                koma
             s += ns
         line = binascii.b2a_base64(s)
         output.write(line)
 
 
 eleza decode(input, output):
-    """Decode a file; input and output are binary files."""
-    while True:
+    """Decode a file; input na output are binary files."""
+    wakati Kweli:
         line = input.readline()
-        ikiwa not line:
-            break
+        ikiwa sio line:
+            koma
         s = binascii.a2b_base64(line)
         output.write(s)
 
 eleza _input_type_check(s):
-    try:
+    jaribu:
         m = memoryview(s)
-    except TypeError as err:
-        msg = "expected bytes-like object, not %s" % s.__class__.__name__
-        raise TypeError(msg) kutoka err
-    ikiwa m.format not in ('c', 'b', 'B'):
-        msg = ("expected single byte elements, not %r kutoka %s" %
+    tatizo TypeError kama err:
+        msg = "expected bytes-like object, sio %s" % s.__class__.__name__
+        ashiria TypeError(msg) kutoka err
+    ikiwa m.format haiko kwenye ('c', 'b', 'B'):
+        msg = ("expected single byte elements, sio %r kutoka %s" %
                                           (m.format, s.__class__.__name__))
-        raise TypeError(msg)
+        ashiria TypeError(msg)
     ikiwa m.ndim != 1:
-        msg = ("expected 1-D data, not %d-D data kutoka %s" %
+        msg = ("expected 1-D data, sio %d-D data kutoka %s" %
                                           (m.ndim, s.__class__.__name__))
-        raise TypeError(msg)
+        ashiria TypeError(msg)
 
 
 eleza encodebytes(s):
@@ -526,7 +526,7 @@ eleza encodebytes(s):
     of base-64 data."""
     _input_type_check(s)
     pieces = []
-    for i in range(0, len(s), MAXBINSIZE):
+    kila i kwenye range(0, len(s), MAXBINSIZE):
         chunk = s[i : i + MAXBINSIZE]
         pieces.append(binascii.b2a_base64(chunk))
     rudisha b"".join(pieces)
@@ -534,7 +534,7 @@ eleza encodebytes(s):
 eleza encodestring(s):
     """Legacy alias of encodebytes()."""
     agiza warnings
-    warnings.warn("encodestring() is a deprecated alias since 3.1, "
+    warnings.warn("encodestring() ni a deprecated alias since 3.1, "
                   "use encodebytes()",
                   DeprecationWarning, 2)
     rudisha encodebytes(s)
@@ -548,36 +548,36 @@ eleza decodebytes(s):
 eleza decodestring(s):
     """Legacy alias of decodebytes()."""
     agiza warnings
-    warnings.warn("decodestring() is a deprecated alias since Python 3.1, "
+    warnings.warn("decodestring() ni a deprecated alias since Python 3.1, "
                   "use decodebytes()",
                   DeprecationWarning, 2)
     rudisha decodebytes(s)
 
 
-# Usable as a script...
+# Usable kama a script...
 eleza main():
     """Small main program"""
     agiza sys, getopt
-    try:
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'deut')
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         sys.stdout = sys.stderr
         andika(msg)
         andika("""usage: %s [-d|-e|-u|-t] [file|-]
         -d, -u: decode
         -e: encode (default)
-        -t: encode and decode string 'Aladdin:open sesame'"""%sys.argv[0])
+        -t: encode na decode string 'Aladdin:open sesame'"""%sys.argv[0])
         sys.exit(2)
     func = encode
-    for o, a in opts:
+    kila o, a kwenye opts:
         ikiwa o == '-e': func = encode
         ikiwa o == '-d': func = decode
         ikiwa o == '-u': func = decode
-        ikiwa o == '-t': test(); return
-    ikiwa args and args[0] != '-':
-        with open(args[0], 'rb') as f:
+        ikiwa o == '-t': test(); rudisha
+    ikiwa args na args[0] != '-':
+        with open(args[0], 'rb') kama f:
             func(f, sys.stdout.buffer)
-    else:
+    isipokua:
         func(sys.stdin.buffer, sys.stdout.buffer)
 
 

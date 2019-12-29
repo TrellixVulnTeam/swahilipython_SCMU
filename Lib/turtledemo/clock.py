@@ -43,12 +43,12 @@ eleza make_hand_shape(name, laenge, spitze):
 eleza clockface(radius):
     reset()
     pensize(7)
-    for i in range(60):
+    kila i kwenye range(60):
         jump(radius)
         ikiwa i % 5 == 0:
             fd(25)
             jump(-radius-25)
-        else:
+        isipokua:
             dot(3)
             jump(-radius)
         rt(6)
@@ -69,7 +69,7 @@ eleza setup():
     hour_hand = Turtle()
     hour_hand.shape("hour_hand")
     hour_hand.color("blue3", "red3")
-    for hand in second_hand, minute_hand, hour_hand:
+    kila hand kwenye second_hand, minute_hand, hour_hand:
         hand.resizemode("user")
         hand.shapesize(1, 1, 3)
         hand.speed(0)
@@ -98,8 +98,8 @@ eleza tick():
     sekunde = t.second + t.microsecond*0.000001
     minute = t.minute + sekunde/60.0
     stunde = t.hour + minute/60.0
-    try:
-        tracer(False)  # Terminator can occur here
+    jaribu:
+        tracer(Uongo)  # Terminator can occur here
         writer.clear()
         writer.home()
         writer.forward(65)
@@ -109,19 +109,19 @@ eleza tick():
         writer.write(datum(t),
                      align="center", font=("Courier", 14, "bold"))
         writer.forward(85)
-        tracer(True)
-        second_hand.setheading(6*sekunde)  # or here
+        tracer(Kweli)
+        second_hand.setheading(6*sekunde)  # ama here
         minute_hand.setheading(6*minute)
         hour_hand.setheading(30*stunde)
-        tracer(True)
+        tracer(Kweli)
         ontimer(tick, 100)
-    except Terminator:
-        pass  # turtledemo user pressed STOP
+    tatizo Terminator:
+        pita  # turtledemo user pressed STOP
 
 eleza main():
-    tracer(False)
+    tracer(Uongo)
     setup()
-    tracer(True)
+    tracer(Kweli)
     tick()
     rudisha "EVENTLOOP"
 

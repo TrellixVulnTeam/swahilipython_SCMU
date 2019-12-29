@@ -1,9 +1,9 @@
-# This is the Python mapping for interface NodeFilter kutoka
+# This ni the Python mapping kila interface NodeFilter kutoka
 # DOM2-Traversal-Range. It contains only constants.
 
 kundi NodeFilter:
     """
-    This is the DOM2 NodeFilter interface. It contains only constants.
+    This ni the DOM2 NodeFilter interface. It contains only constants.
     """
     FILTER_ACCEPT = 1
     FILTER_REJECT = 2
@@ -24,4 +24,4 @@ kundi NodeFilter:
     SHOW_NOTATION               = 0x00000800
 
     eleza acceptNode(self, node):
-        raise NotImplementedError
+        ashiria NotImplementedError

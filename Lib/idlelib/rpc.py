@@ -1,8 +1,8 @@
-"""RPC Implementation, originally written for the Python Idle IDE
+"""RPC Implementation, originally written kila the Python Idle IDE
 
 For security reasons, GvR requested that Idle's Python execution server process
-connect to the Idle process, which listens for the connection.  Since Idle has
-only one client per server, this was not a limitation.
+connect to the Idle process, which listens kila the connection.  Since Idle has
+only one client per server, this was sio a limitation.
 
    +---------------------------------+ +-------------+
    | socketserver.BaseRequestHandler | | SocketIO    |
@@ -19,11 +19,11 @@ only one client per server, this was not a limitation.
    | [attribute of RPCServer]|        |                 |
    +-------------------------+        +-----------------+
 
-The RPCServer handler kundi is expected to provide register/unregister methods.
+The RPCServer handler kundi ni expected to provide register/unregister methods.
 RPCHandler inherits the mix-in kundi SocketIO, which provides these methods.
 
-See the Idle run.main() docstring for further information on how this was
-accomplished in Idle.
+See the Idle run.main() docstring kila further information on how this was
+accomplished kwenye Idle.
 
 """
 agiza builtins
@@ -49,14 +49,14 @@ eleza unpickle_code(ms):
     rudisha co
 
 eleza pickle_code(co):
-    "Return unpickle function and tuple with marshalled co code object."
+    "Return unpickle function na tuple with marshalled co code object."
     assert isinstance(co, types.CodeType)
     ms = marshal.dumps(co)
     rudisha unpickle_code, (ms,)
 
-eleza dumps(obj, protocol=None):
-    "Return pickled (or marshalled) string for obj."
-    # IDLE passes 'None' to select pickle.DEFAULT_PROTOCOL.
+eleza dumps(obj, protocol=Tupu):
+    "Return pickled (or marshalled) string kila obj."
+    # IDLE pitaes 'Tupu' to select pickle.DEFAULT_PROTOCOL.
     f = io.BytesIO()
     p = CodePickler(f, protocol)
     p.dump(obj)
@@ -72,19 +72,19 @@ LOCALHOST = '127.0.0.1'
 
 kundi RPCServer(socketserver.TCPServer):
 
-    eleza __init__(self, addr, handlerclass=None):
-        ikiwa handlerkundi is None:
+    eleza __init__(self, addr, handlerclass=Tupu):
+        ikiwa handlerkundi ni Tupu:
             handlerkundi = RPCHandler
         socketserver.TCPServer.__init__(self, addr, handlerclass)
 
     eleza server_bind(self):
-        "Override TCPServer method, no bind() phase for connecting entity"
-        pass
+        "Override TCPServer method, no bind() phase kila connecting entity"
+        pita
 
     eleza server_activate(self):
         """Override TCPServer method, connect() instead of listen()
 
-        Due to the reversed connection, self.server_address is actually the
+        Due to the reversed connection, self.server_address ni actually the
         address of the Idle Client to which we are connecting.
 
         """
@@ -98,14 +98,14 @@ kundi RPCServer(socketserver.TCPServer):
         """Override TCPServer method
 
         Error message goes to __stderr__.  No error message ikiwa exiting
-        normally or socket raised EOF.  Other exceptions not handled in
+        normally ama socket ashiriad EOF.  Other exceptions sio handled in
         server code will cause os._exit.
 
         """
-        try:
-            raise
-        except SystemExit:
-            raise
+        jaribu:
+            ashiria
+        tatizo SystemExit:
+            ashiria
         except:
             erf = sys.__stderr__
             andika('\n' + '-'*40, file=erf)
@@ -129,12 +129,12 @@ kundi SocketIO(object):
 
     nextseq = 0
 
-    eleza __init__(self, sock, objtable=None, debugging=None):
+    eleza __init__(self, sock, objtable=Tupu, debugging=Tupu):
         self.sockthread = threading.current_thread()
-        ikiwa debugging is not None:
+        ikiwa debugging ni sio Tupu:
             self.debugging = debugging
         self.sock = sock
-        ikiwa objtable is None:
+        ikiwa objtable ni Tupu:
             objtable = objecttable
         self.objtable = objtable
         self.responses = {}
@@ -142,19 +142,19 @@ kundi SocketIO(object):
 
     eleza close(self):
         sock = self.sock
-        self.sock = None
-        ikiwa sock is not None:
+        self.sock = Tupu
+        ikiwa sock ni sio Tupu:
             sock.close()
 
     eleza exithook(self):
-        "override for specific exit action"
+        "override kila specific exit action"
         os._exit(0)
 
     eleza debug(self, *args):
-        ikiwa not self.debugging:
-            return
+        ikiwa sio self.debugging:
+            rudisha
         s = self.location + " " + str(threading.current_thread().name)
-        for a in args:
+        kila a kwenye args:
             s = s + " " + str(a)
         andika(s, file=sys.__stderr__)
 
@@ -162,18 +162,18 @@ kundi SocketIO(object):
         self.objtable[oid] = object
 
     eleza unregister(self, oid):
-        try:
-            del self.objtable[oid]
-        except KeyError:
-            pass
+        jaribu:
+            toa self.objtable[oid]
+        tatizo KeyError:
+            pita
 
     eleza localcall(self, seq, request):
         self.debug("localcall:", request)
-        try:
+        jaribu:
             how, (oid, methodname, args, kwargs) = request
-        except TypeError:
+        tatizo TypeError:
             rudisha ("ERROR", "Bad request format")
-        ikiwa oid not in self.objtable:
+        ikiwa oid haiko kwenye self.objtable:
             rudisha ("ERROR", "Unknown object id: %r" % (oid,))
         obj = self.objtable[oid]
         ikiwa methodname == "__methods__":
@@ -184,10 +184,10 @@ kundi SocketIO(object):
             attributes = {}
             _getattributes(obj, attributes)
             rudisha ("OK", attributes)
-        ikiwa not hasattr(obj, methodname):
+        ikiwa sio hasattr(obj, methodname):
             rudisha ("ERROR", "Unsupported method name: %r" % (methodname,))
         method = getattr(obj, methodname)
-        try:
+        jaribu:
             ikiwa how == 'CALL':
                 ret = method(*args, **kwargs)
                 ikiwa isinstance(ret, RemoteObject):
@@ -195,33 +195,33 @@ kundi SocketIO(object):
                 rudisha ("OK", ret)
             elikiwa how == 'QUEUE':
                 request_queue.put((seq, (method, args, kwargs)))
-                return("QUEUED", None)
-            else:
+                rudisha("QUEUED", Tupu)
+            isipokua:
                 rudisha ("ERROR", "Unsupported message type: %s" % how)
-        except SystemExit:
-            raise
-        except KeyboardInterrupt:
-            raise
-        except OSError:
-            raise
-        except Exception as ex:
+        tatizo SystemExit:
+            ashiria
+        tatizo KeyboardInterrupt:
+            ashiria
+        tatizo OSError:
+            ashiria
+        tatizo Exception kama ex:
             rudisha ("CALLEXC", ex)
         except:
             msg = "*** Internal Error: rpc.py:SocketIO.localcall()\n\n"\
                   " Object: %s \n Method: %s \n Args: %s\n"
             andika(msg % (oid, method, args), file=sys.__stderr__)
             traceback.print_exc(file=sys.__stderr__)
-            rudisha ("EXCEPTION", None)
+            rudisha ("EXCEPTION", Tupu)
 
     eleza remotecall(self, oid, methodname, args, kwargs):
         self.debug("remotecall:asynccall: ", oid, methodname)
         seq = self.asynccall(oid, methodname, args, kwargs)
-        rudisha self.asyncreturn(seq)
+        rudisha self.asyncrudisha(seq)
 
     eleza remotequeue(self, oid, methodname, args, kwargs):
         self.debug("remotequeue:asyncqueue: ", oid, methodname)
         seq = self.asyncqueue(oid, methodname, args, kwargs)
-        rudisha self.asyncreturn(seq)
+        rudisha self.asyncrudisha(seq)
 
     eleza asynccall(self, oid, methodname, args, kwargs):
         request = ("CALL", (oid, methodname, args, kwargs))
@@ -243,10 +243,10 @@ kundi SocketIO(object):
         self.putmessage((seq, request))
         rudisha seq
 
-    eleza asyncreturn(self, seq):
-        self.debug("asyncreturn:%d:call getresponse(): " % seq)
+    eleza asyncrudisha(self, seq):
+        self.debug("asyncrudisha:%d:call getresponse(): " % seq)
         response = self.getresponse(seq, wait=0.05)
-        self.debug(("asyncreturn:%d:response: " % seq), response)
+        self.debug(("asyncrudisha:%d:response: " % seq), response)
         rudisha self.decoderesponse(response)
 
     eleza decoderesponse(self, response):
@@ -254,42 +254,42 @@ kundi SocketIO(object):
         ikiwa how == "OK":
             rudisha what
         ikiwa how == "QUEUED":
-            rudisha None
+            rudisha Tupu
         ikiwa how == "EXCEPTION":
             self.debug("decoderesponse: EXCEPTION")
-            rudisha None
+            rudisha Tupu
         ikiwa how == "EOF":
             self.debug("decoderesponse: EOF")
             self.decode_interrupthook()
-            rudisha None
+            rudisha Tupu
         ikiwa how == "ERROR":
             self.debug("decoderesponse: Internal ERROR:", what)
-            raise RuntimeError(what)
+            ashiria RuntimeError(what)
         ikiwa how == "CALLEXC":
             self.debug("decoderesponse: Call Exception:", what)
-            raise what
-        raise SystemError(how, what)
+            ashiria what
+        ashiria SystemError(how, what)
 
     eleza decode_interrupthook(self):
         ""
-        raise EOFError
+        ashiria EOFError
 
     eleza mainloop(self):
-        """Listen on socket until I/O not ready or EOF
+        """Listen on socket until I/O sio ready ama EOF
 
-        pollresponse() will loop looking for seq number None, which
-        never comes, and exit on EOFError.
+        pollresponse() will loop looking kila seq number Tupu, which
+        never comes, na exit on EOFError.
 
         """
-        try:
-            self.getresponse(myseq=None, wait=0.05)
-        except EOFError:
-            self.debug("mainloop:return")
-            return
+        jaribu:
+            self.getresponse(myseq=Tupu, wait=0.05)
+        tatizo EOFError:
+            self.debug("mainloop:rudisha")
+            rudisha
 
     eleza getresponse(self, myseq, wait):
         response = self._getresponse(myseq, wait)
-        ikiwa response is not None:
+        ikiwa response ni sio Tupu:
             how, what = response
             ikiwa how == "OK":
                 response = how, self._proxify(what)
@@ -300,28 +300,28 @@ kundi SocketIO(object):
             rudisha RPCProxy(self, obj.oid)
         ikiwa isinstance(obj, list):
             rudisha list(map(self._proxify, obj))
-        # XXX Check for other types -- not currently needed
+        # XXX Check kila other types -- sio currently needed
         rudisha obj
 
     eleza _getresponse(self, myseq, wait):
         self.debug("_getresponse:myseq:", myseq)
-        ikiwa threading.current_thread() is self.sockthread:
-            # this thread does all reading of requests or responses
-            while 1:
+        ikiwa threading.current_thread() ni self.sockthread:
+            # this thread does all reading of requests ama responses
+            wakati 1:
                 response = self.pollresponse(myseq, wait)
-                ikiwa response is not None:
+                ikiwa response ni sio Tupu:
                     rudisha response
-        else:
-            # wait for notification kutoka socket handling thread
+        isipokua:
+            # wait kila notification kutoka socket handling thread
             cvar = self.cvars[myseq]
             cvar.acquire()
-            while myseq not in self.responses:
+            wakati myseq haiko kwenye self.responses:
                 cvar.wait()
             response = self.responses[myseq]
             self.debug("_getresponse:%s: thread woke up: response: %s" %
                        (myseq, response))
-            del self.responses[myseq]
-            del self.cvars[myseq]
+            toa self.responses[myseq]
+            toa self.cvars[myseq]
             cvar.release()
             rudisha response
 
@@ -331,18 +331,18 @@ kundi SocketIO(object):
 
     eleza putmessage(self, message):
         self.debug("putmessage:%d:" % message[0])
-        try:
+        jaribu:
             s = dumps(message)
-        except pickle.PicklingError:
+        tatizo pickle.PicklingError:
             andika("Cannot pickle:", repr(message), file=sys.__stderr__)
-            raise
+            ashiria
         s = struct.pack("<i", len(s)) + s
-        while len(s) > 0:
-            try:
+        wakati len(s) > 0:
+            jaribu:
                 r, w, x = select.select([], [self.sock], [])
                 n = self.sock.send(s[:BUFSIZE])
-            except (AttributeError, TypeError):
-                raise OSError("socket no longer exists")
+            tatizo (AttributeError, TypeError):
+                ashiria OSError("socket no longer exists")
             s = s[n:]
 
     buff = b''
@@ -354,26 +354,26 @@ kundi SocketIO(object):
         ikiwa len(self.buff) < self.bufneed:
             r, w, x = select.select([self.sock.fileno()], [], [], wait)
             ikiwa len(r) == 0:
-                rudisha None
-            try:
+                rudisha Tupu
+            jaribu:
                 s = self.sock.recv(BUFSIZE)
-            except OSError:
-                raise EOFError
+            tatizo OSError:
+                ashiria EOFError
             ikiwa len(s) == 0:
-                raise EOFError
+                ashiria EOFError
             self.buff += s
             self._stage0()
         rudisha self._stage1()
 
     eleza _stage0(self):
-        ikiwa self.bufstate == 0 and len(self.buff) >= 4:
+        ikiwa self.bufstate == 0 na len(self.buff) >= 4:
             s = self.buff[:4]
             self.buff = self.buff[4:]
             self.bufneed = struct.unpack("<i", s)[0]
             self.bufstate = 1
 
     eleza _stage1(self):
-        ikiwa self.bufstate == 1 and len(self.buff) >= self.bufneed:
+        ikiwa self.bufstate == 1 na len(self.buff) >= self.bufneed:
             packet = self.buff[:self.bufneed]
             self.buff = self.buff[self.bufneed:]
             self.bufneed = 4
@@ -382,66 +382,66 @@ kundi SocketIO(object):
 
     eleza pollmessage(self, wait):
         packet = self.pollpacket(wait)
-        ikiwa packet is None:
-            rudisha None
-        try:
+        ikiwa packet ni Tupu:
+            rudisha Tupu
+        jaribu:
             message = pickle.loads(packet)
-        except pickle.UnpicklingError:
+        tatizo pickle.UnpicklingError:
             andika("-----------------------", file=sys.__stderr__)
             andika("cannot unpickle packet:", repr(packet), file=sys.__stderr__)
             traceback.print_stack(file=sys.__stderr__)
             andika("-----------------------", file=sys.__stderr__)
-            raise
+            ashiria
         rudisha message
 
     eleza pollresponse(self, myseq, wait):
         """Handle messages received on the socket.
 
-        Some messages received may be asynchronous 'call' or 'queue' requests,
-        and some may be responses for other threads.
+        Some messages received may be asynchronous 'call' ama 'queue' requests,
+        na some may be responses kila other threads.
 
-        'call' requests are passed to self.localcall() with the expectation of
-        immediate execution, during which time the socket is not serviced.
+        'call' requests are pitaed to self.localcall() with the expectation of
+        immediate execution, during which time the socket ni sio serviced.
 
-        'queue' requests are used for tasks (which may block or hang) to be
-        processed in a different thread.  These requests are fed into
+        'queue' requests are used kila tasks (which may block ama hang) to be
+        processed kwenye a different thread.  These requests are fed into
         request_queue by self.localcall().  Responses to queued requests are
-        taken kutoka response_queue and sent across the link with the associated
-        sequence numbers.  Messages in the queues are (sequence_number,
-        request/response) tuples and code using this module removing messages
-        kutoka the request_queue is responsible for returning the correct
-        sequence number in the response_queue.
+        taken kutoka response_queue na sent across the link with the associated
+        sequence numbers.  Messages kwenye the queues are (sequence_number,
+        request/response) tuples na code using this module removing messages
+        kutoka the request_queue ni responsible kila rudishaing the correct
+        sequence number kwenye the response_queue.
 
         pollresponse() will loop until a response message with the myseq
-        sequence number is received, and will save other responses in
-        self.responses and notify the owning thread.
+        sequence number ni received, na will save other responses in
+        self.responses na notify the owning thread.
 
         """
-        while 1:
-            # send queued response ikiwa there is one available
-            try:
+        wakati 1:
+            # send queued response ikiwa there ni one available
+            jaribu:
                 qmsg = response_queue.get(0)
-            except queue.Empty:
-                pass
-            else:
+            tatizo queue.Empty:
+                pita
+            isipokua:
                 seq, response = qmsg
                 message = (seq, ('OK', response))
                 self.putmessage(message)
-            # poll for message on link
-            try:
+            # poll kila message on link
+            jaribu:
                 message = self.pollmessage(wait)
-                ikiwa message is None:  # socket not ready
-                    rudisha None
-            except EOFError:
+                ikiwa message ni Tupu:  # socket sio ready
+                    rudisha Tupu
+            tatizo EOFError:
                 self.handle_EOF()
-                rudisha None
-            except AttributeError:
-                rudisha None
+                rudisha Tupu
+            tatizo AttributeError:
+                rudisha Tupu
             seq, resq = message
             how = resq[0]
             self.debug("pollresponse:%d:myseq:%s" % (seq, myseq))
-            # process or queue a request
-            ikiwa how in ("CALL", "QUEUE"):
+            # process ama queue a request
+            ikiwa how kwenye ("CALL", "QUEUE"):
                 self.debug("pollresponse:%d:localcall:call:" % seq)
                 response = self.localcall(seq, resq)
                 self.debug("pollresponse:%d:localcall:response:%s"
@@ -450,31 +450,31 @@ kundi SocketIO(object):
                     self.putmessage((seq, response))
                 elikiwa how == "QUEUE":
                     # don't acknowledge the 'queue' request!
-                    pass
-                continue
+                    pita
+                endelea
             # rudisha ikiwa completed message transaction
             elikiwa seq == myseq:
                 rudisha resq
-            # must be a response for a different thread:
-            else:
-                cv = self.cvars.get(seq, None)
-                # response involving unknown sequence number is discarded,
-                # probably intended for prior incarnation of server
-                ikiwa cv is not None:
+            # must be a response kila a different thread:
+            isipokua:
+                cv = self.cvars.get(seq, Tupu)
+                # response involving unknown sequence number ni discarded,
+                # probably intended kila prior incarnation of server
+                ikiwa cv ni sio Tupu:
                     cv.acquire()
                     self.responses[seq] = resq
                     cv.notify()
                     cv.release()
-                continue
+                endelea
 
     eleza handle_EOF(self):
         "action taken upon link being closed by peer"
         self.EOFhook()
         self.debug("handle_EOF")
-        for key in self.cvars:
+        kila key kwenye self.cvars:
             cv = self.cvars[key]
             cv.acquire()
-            self.responses[key] = ('EOF', None)
+            self.responses[key] = ('EOF', Tupu)
             cv.notify()
             cv.release()
         # call our (possibly overridden) exit function
@@ -482,13 +482,13 @@ kundi SocketIO(object):
 
     eleza EOFhook(self):
         "Classes using rpc client/server can override to augment EOF action"
-        pass
+        pita
 
 #----------------- end kundi SocketIO --------------------
 
 kundi RemoteObject(object):
     # Token mix-in class
-    pass
+    pita
 
 
 eleza remoteref(obj):
@@ -505,7 +505,7 @@ kundi RemoteProxy(object):
 
 kundi RPCHandler(socketserver.BaseRequestHandler, SocketIO):
 
-    debugging = False
+    debugging = Uongo
     location = "#S"  # Server
 
     eleza __init__(self, sock, addr, svr):
@@ -523,7 +523,7 @@ kundi RPCHandler(socketserver.BaseRequestHandler, SocketIO):
 
 kundi RPCClient(SocketIO):
 
-    debugging = False
+    debugging = Uongo
     location = "#C"  # Client
 
     nextseq = 1 # Requests coming kutoka the client are odd numbered
@@ -539,9 +539,9 @@ kundi RPCClient(SocketIO):
             andika("****** Connection request kutoka ", address, file=sys.__stderr__)
         ikiwa address[0] == LOCALHOST:
             SocketIO.__init__(self, working_sock)
-        else:
+        isipokua:
             andika("** Invalid host: ", address, file=sys.__stderr__)
-            raise OSError
+            ashiria OSError
 
     eleza get_remote_proxy(self, oid):
         rudisha RPCProxy(self, oid)
@@ -549,26 +549,26 @@ kundi RPCClient(SocketIO):
 
 kundi RPCProxy(object):
 
-    __methods = None
-    __attributes = None
+    __methods = Tupu
+    __attributes = Tupu
 
     eleza __init__(self, sockio, oid):
         self.sockio = sockio
         self.oid = oid
 
     eleza __getattr__(self, name):
-        ikiwa self.__methods is None:
+        ikiwa self.__methods ni Tupu:
             self.__getmethods()
         ikiwa self.__methods.get(name):
             rudisha MethodProxy(self.sockio, self.oid, name)
-        ikiwa self.__attributes is None:
+        ikiwa self.__attributes ni Tupu:
             self.__getattributes()
-        ikiwa name in self.__attributes:
+        ikiwa name kwenye self.__attributes:
             value = self.sockio.remotecall(self.oid, '__getattribute__',
                                            (name,), {})
             rudisha value
-        else:
-            raise AttributeError(name)
+        isipokua:
+            ashiria AttributeError(name)
 
     eleza __getattributes(self):
         self.__attributes = self.sockio.remotecall(self.oid,
@@ -581,18 +581,18 @@ kundi RPCProxy(object):
 eleza _getmethods(obj, methods):
     # Helper to get a list of methods kutoka an object
     # Adds names to dictionary argument 'methods'
-    for name in dir(obj):
+    kila name kwenye dir(obj):
         attr = getattr(obj, name)
         ikiwa callable(attr):
             methods[name] = 1
     ikiwa isinstance(obj, type):
-        for super in obj.__bases__:
+        kila super kwenye obj.__bases__:
             _getmethods(super, methods)
 
 eleza _getattributes(obj, attributes):
-    for name in dir(obj):
+    kila name kwenye dir(obj):
         attr = getattr(obj, name)
-        ikiwa not callable(attr):
+        ikiwa sio callable(attr):
             attributes[name] = 1
 
 
@@ -608,20 +608,20 @@ kundi MethodProxy(object):
         rudisha value
 
 
-# XXX KBK 09Sep03  We need a proper unit test for this module.  Previously
+# XXX KBK 09Sep03  We need a proper unit test kila this module.  Previously
 #                  existing test code was removed at Rev 1.27 (r34098).
 
 eleza displayhook(value):
     """Override standard display hook to use non-locale encoding"""
-    ikiwa value is None:
-        return
-    # Set '_' to None to avoid recursion
-    builtins._ = None
+    ikiwa value ni Tupu:
+        rudisha
+    # Set '_' to Tupu to avoid recursion
+    builtins._ = Tupu
     text = repr(value)
-    try:
+    jaribu:
         sys.stdout.write(text)
-    except UnicodeEncodeError:
-        # let's use ascii while utf8-bmp codec doesn't present
+    tatizo UnicodeEncodeError:
+        # let's use ascii wakati utf8-bmp codec doesn't present
         encoding = 'ascii'
         bytes = text.encode(encoding, 'backslashreplace')
         text = bytes.decode(encoding, 'strict')

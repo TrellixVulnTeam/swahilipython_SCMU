@@ -1,12 +1,12 @@
 """IDLE Configuration Dialog: support user customization of IDLE by GUI
 
-Customize font faces, sizes, and colorization attributes.  Set indentation
-defaults.  Customize keybindings.  Colorization and keybindings can be
-saved as user defined sets.  Select startup options including shell/editor
+Customize font faces, sizes, na colorization attributes.  Set indentation
+defaults.  Customize keybindings.  Colorization na keybindings can be
+saved kama user defined sets.  Select startup options including shell/editor
 and default window size.  Define additional help sources.
 
-Note that tab width in IDLE is currently fixed at eight due to Tk issues.
-Refer to comments in EditorWindow autoindent code for details.
+Note that tab width kwenye IDLE ni currently fixed at eight due to Tk issues.
+Refer to comments kwenye EditorWindow autoindent code kila details.
 
 """
 agiza re
@@ -18,8 +18,8 @@ kutoka tkinter agiza (Toplevel, Listbox, Text, Scale, Canvas,
                      HORIZONTAL, VERTICAL, ANCHOR, ACTIVE, END)
 kutoka tkinter.ttk agiza (Frame, LabelFrame, Button, Checkbutton, Entry, Label,
                          OptionMenu, Notebook, Radiobutton, Scrollbar, Style)
-agiza tkinter.colorchooser as tkColorChooser
-agiza tkinter.font as tkFont
+agiza tkinter.colorchooser kama tkColorChooser
+agiza tkinter.font kama tkFont
 kutoka tkinter agiza messagebox
 
 kutoka idlelib.config agiza idleConf, ConfigChanges
@@ -36,21 +36,21 @@ kutoka idlelib.squeezer agiza Squeezer
 kutoka idlelib.textview agiza ScrollableTextFrame
 
 changes = ConfigChanges()
-# Reload changed options in the following classes.
+# Reload changed options kwenye the following classes.
 reloadables = (AutoComplete, CodeContext, ParenMatch, FormatParagraph,
                Squeezer)
 
 
 kundi ConfigDialog(Toplevel):
-    """Config dialog for IDLE.
+    """Config dialog kila IDLE.
     """
 
-    eleza __init__(self, parent, title='', *, _htest=False, _utest=False):
-        """Show the tabbed dialog for user configuration.
+    eleza __init__(self, parent, title='', *, _htest=Uongo, _utest=Uongo):
+        """Show the tabbed dialog kila user configuration.
 
         Args:
             parent - parent of this dialog
-            title - string which is the title of this popup dialog
+            title - string which ni the title of this popup dialog
             _htest - bool, change box location when running htest
             _utest - bool, don't wait_window when running unittest
 
@@ -64,37 +64,37 @@ kundi ConfigDialog(Toplevel):
         self.parent = parent
         ikiwa _htest:
             parent.instance_dict = {}
-        ikiwa not _utest:
+        ikiwa sio _utest:
             self.withdraw()
 
         self.configure(borderwidth=5)
-        self.title(title or 'IDLE Preferences')
+        self.title(title ama 'IDLE Preferences')
         x = parent.winfo_rootx() + 20
-        y = parent.winfo_rooty() + (30 ikiwa not _htest else 150)
+        y = parent.winfo_rooty() + (30 ikiwa sio _htest else 150)
         self.geometry(f'+{x}+{y}')
-        # Each theme element key is its display name.
-        # The first value of the tuple is the sample area tag name.
-        # The second value is the display name list sort index.
+        # Each theme element key ni its display name.
+        # The first value of the tuple ni the sample area tag name.
+        # The second value ni the display name list sort index.
         self.create_widgets()
         self.resizable(height=FALSE, width=FALSE)
         self.transient(parent)
         self.protocol("WM_DELETE_WINDOW", self.cancel)
         self.fontpage.fontlist.focus_set()
-        # XXX Decide whether to keep or delete these key bindings.
-        # Key bindings for this dialog.
+        # XXX Decide whether to keep ama delete these key bindings.
+        # Key bindings kila this dialog.
         # self.bind('<Escape>', self.Cancel) #dismiss dialog, no save
         # self.bind('<Alt-a>', self.Apply) #apply changes, save
         # self.bind('<F1>', self.Help) #context help
         # Attach callbacks after loading config to avoid calling them.
         tracers.attach()
 
-        ikiwa not _utest:
+        ikiwa sio _utest:
             self.grab_set()
             self.wm_deiconify()
             self.wait_window()
 
     eleza create_widgets(self):
-        """Create and place widgets for tabbed dialog.
+        """Create na place widgets kila tabbed dialog.
 
         Widgets Bound to self:
             note: Notebook
@@ -106,7 +106,7 @@ kundi ConfigDialog(Toplevel):
 
         Methods:
             create_action_buttons
-            load_configs: Load pages except for extensions.
+            load_configs: Load pages tatizo kila extensions.
             activate_config_changes: Tell editors to reload.
         """
         self.note = note = Notebook(self)
@@ -125,7 +125,7 @@ kundi ConfigDialog(Toplevel):
         self.create_action_buttons().pack(side=BOTTOM)
 
     eleza create_action_buttons(self):
-        """Return frame of action buttons for dialog.
+        """Return frame of action buttons kila dialog.
 
         Methods:
             ok
@@ -143,14 +143,14 @@ kundi ConfigDialog(Toplevel):
                 (no assignment): Frame
         """
         ikiwa macosx.isAquaTk():
-            # Changing the default padding on OSX results in unreadable
-            # text in the buttons.
+            # Changing the default padding on OSX results kwenye unreadable
+            # text kwenye the buttons.
             padding_args = {}
-        else:
+        isipokua:
             padding_args = {'padding': (6, 3)}
         outer = Frame(self, padding=2)
         buttons = Frame(outer, padding=2)
-        for txt, cmd in (
+        kila txt, cmd kwenye (
             ('Ok', self.ok),
             ('Apply', self.apply),
             ('Cancel', self.cancel),
@@ -173,7 +173,7 @@ kundi ConfigDialog(Toplevel):
         self.destroy()
 
     eleza apply(self):
-        """Apply config changes and leave dialog open.
+        """Apply config changes na leave dialog open.
 
         Methods:
             deactivate_current_config
@@ -200,7 +200,7 @@ kundi ConfigDialog(Toplevel):
         super().destroy()
 
     eleza help(self):
-        """Create textview for config dialog help.
+        """Create textview kila config dialog help.
 
         Attributes accessed:
             note
@@ -209,18 +209,18 @@ kundi ConfigDialog(Toplevel):
             view_text: Method kutoka textview module.
         """
         page = self.note.tab(self.note.select(), option='text').strip()
-        view_text(self, title='Help for IDLE preferences',
+        view_text(self, title='Help kila IDLE preferences',
                  text=help_common+help_pages.get(page, ''))
 
     eleza deactivate_current_config(self):
         """Remove current key bindings.
-        Iterate over window instances defined in parent and remove
+        Iterate over window instances defined kwenye parent na remove
         the keybindings.
         """
-        # Before a config is saved, some cleanup of current
+        # Before a config ni saved, some cleanup of current
         # config must be done - remove the previous keybindings.
         win_instances = self.parent.instance_dict.keys()
-        for instance in win_instances:
+        kila instance kwenye win_instances:
             instance.RemoveKeybindings()
 
     eleza activate_config_changes(self):
@@ -230,37 +230,37 @@ kundi ConfigDialog(Toplevel):
         with some of the configuration changes.
         """
         win_instances = self.parent.instance_dict.keys()
-        for instance in win_instances:
+        kila instance kwenye win_instances:
             instance.ResetColorizer()
             instance.ResetFont()
             instance.set_notabs_indentwidth()
             instance.ApplyKeybindings()
             instance.reset_help_menu_entries()
-        for klass in reloadables:
+        kila klass kwenye reloadables:
             klass.reload()
 
     eleza create_page_extensions(self):
-        """Part of the config dialog used for configuring IDLE extensions.
+        """Part of the config dialog used kila configuring IDLE extensions.
 
-        This code is generic - it works for any and all IDLE extensions.
+        This code ni generic - it works kila any na all IDLE extensions.
 
         IDLE extensions save their configuration options using idleConf.
         This code reads the current configuration using idleConf, supplies a
-        GUI interface to change the configuration values, and saves the
+        GUI interface to change the configuration values, na saves the
         changes using idleConf.
 
         Not all changes take effect immediately - some may require restarting IDLE.
         This depends on each extension's implementation.
 
-        All values are treated as text, and it is up to the user to supply
+        All values are treated kama text, na it ni up to the user to supply
         reasonable values. The only exception to this are the 'enable*' options,
-        which are boolean, and can be toggled with a True/False button.
+        which are boolean, na can be toggled with a Kweli/Uongo button.
 
         Methods:
             load_extensions:
             extension_selected: Handle selection kutoka list.
-            create_extension_frame: Hold widgets for one extension.
-            set_extension_value: Set in userCfg['extensions'].
+            create_extension_frame: Hold widgets kila one extension.
+            set_extension_value: Set kwenye userCfg['extensions'].
             save_all_changed_extensions: Call extension page Save().
         """
         parent = self.parent
@@ -270,7 +270,7 @@ kundi ConfigDialog(Toplevel):
         self.is_int = self.register(is_int)
         self.load_extensions()
         # Create widgets - a listbox shows all available extensions, with the
-        # controls for the extension selected in the listbox to the right.
+        # controls kila the extension selected kwenye the listbox to the right.
         self.extension_names = StringVar(self)
         frame.rowconfigure(0, weight=1)
         frame.columnconfigure(2, weight=1)
@@ -285,57 +285,57 @@ kundi ConfigDialog(Toplevel):
         self.details_frame.grid(column=2, row=0, sticky='nsew', padx=[10, 0])
         frame.configure(padding=10)
         self.config_frame = {}
-        self.current_extension = None
+        self.current_extension = Tupu
 
         self.outerframe = self                      # TEMPORARY
         self.tabbed_page_set = self.extension_list  # TEMPORARY
 
-        # Create the frame holding controls for each extension.
+        # Create the frame holding controls kila each extension.
         ext_names = ''
-        for ext_name in sorted(self.extensions):
+        kila ext_name kwenye sorted(self.extensions):
             self.create_extension_frame(ext_name)
             ext_names = ext_names + '{' + ext_name + '} '
         self.extension_names.set(ext_names)
         self.extension_list.selection_set(0)
-        self.extension_selected(None)
+        self.extension_selected(Tupu)
 
         rudisha frame
 
     eleza load_extensions(self):
-        "Fill self.extensions with data kutoka the default and user configs."
+        "Fill self.extensions with data kutoka the default na user configs."
         self.extensions = {}
-        for ext_name in idleConf.GetExtensions(active_only=False):
+        kila ext_name kwenye idleConf.GetExtensions(active_only=Uongo):
             # Former built-in extensions are already filtered out.
             self.extensions[ext_name] = []
 
-        for ext_name in self.extensions:
+        kila ext_name kwenye self.extensions:
             opt_list = sorted(self.ext_defaultCfg.GetOptionList(ext_name))
 
             # Bring 'enable' options to the beginning of the list.
-            enables = [opt_name for opt_name in opt_list
+            enables = [opt_name kila opt_name kwenye opt_list
                        ikiwa opt_name.startswith('enable')]
-            for opt_name in enables:
+            kila opt_name kwenye enables:
                 opt_list.remove(opt_name)
             opt_list = enables + opt_list
 
-            for opt_name in opt_list:
+            kila opt_name kwenye opt_list:
                 def_str = self.ext_defaultCfg.Get(
-                        ext_name, opt_name, raw=True)
-                try:
-                    def_obj = {'True':True, 'False':False}[def_str]
+                        ext_name, opt_name, raw=Kweli)
+                jaribu:
+                    def_obj = {'Kweli':Kweli, 'Uongo':Uongo}[def_str]
                     opt_type = 'bool'
-                except KeyError:
-                    try:
+                tatizo KeyError:
+                    jaribu:
                         def_obj = int(def_str)
                         opt_type = 'int'
-                    except ValueError:
+                    tatizo ValueError:
                         def_obj = def_str
-                        opt_type = None
-                try:
+                        opt_type = Tupu
+                jaribu:
                     value = self.ext_userCfg.Get(
-                            ext_name, opt_name, type=opt_type, raw=True,
+                            ext_name, opt_name, type=opt_type, raw=Kweli,
                             default=def_obj)
-                except ValueError:  # Need this until .Get fixed.
+                tatizo ValueError:  # Need this until .Get fixed.
                     value = def_obj  # Bad values overwritten by entry.
                 var = StringVar(self)
                 var.set(str(value))
@@ -352,11 +352,11 @@ kundi ConfigDialog(Toplevel):
         newsel = self.extension_list.curselection()
         ikiwa newsel:
             newsel = self.extension_list.get(newsel)
-        ikiwa newsel is None or newsel != self.current_extension:
+        ikiwa newsel ni Tupu ama newsel != self.current_extension:
             ikiwa self.current_extension:
                 self.details_frame.config(text='')
                 self.config_frame[self.current_extension].grid_forget()
-                self.current_extension = None
+                self.current_extension = Tupu
         ikiwa newsel:
             self.details_frame.config(text=newsel)
             self.config_frame[newsel].grid(column=0, row=0, sticky='nsew')
@@ -367,39 +367,39 @@ kundi ConfigDialog(Toplevel):
         f = VerticalScrolledFrame(self.details_frame, height=250, width=250)
         self.config_frame[ext_name] = f
         entry_area = f.interior
-        # Create an entry for each configuration option.
-        for row, opt in enumerate(self.extensions[ext_name]):
-            # Create a row with a label and entry/checkbutton.
+        # Create an entry kila each configuration option.
+        kila row, opt kwenye enumerate(self.extensions[ext_name]):
+            # Create a row with a label na entry/checkbutton.
             label = Label(entry_area, text=opt['name'])
             label.grid(row=row, column=0, sticky=NW)
             var = opt['var']
             ikiwa opt['type'] == 'bool':
                 Checkbutton(entry_area, variable=var,
-                            onvalue='True', offvalue='False', width=8
+                            onvalue='Kweli', offvalue='Uongo', width=8
                             ).grid(row=row, column=1, sticky=W, padx=7)
             elikiwa opt['type'] == 'int':
                 Entry(entry_area, textvariable=var, validate='key',
                       validatecommand=(self.is_int, '%P'), width=10
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
 
-            else:  # type == 'str'
+            isipokua:  # type == 'str'
                 # Limit size to fit non-expanding space with larger font.
                 Entry(entry_area, textvariable=var, width=15
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
-        return
+        rudisha
 
     eleza set_extension_value(self, section, opt):
-        """Return True ikiwa the configuration was added or changed.
+        """Return Kweli ikiwa the configuration was added ama changed.
 
-        If the value is the same as the default, then remove it
+        If the value ni the same kama the default, then remove it
         kutoka user config file.
         """
         name = opt['name']
         default = opt['default']
-        value = opt['var'].get().strip() or default
+        value = opt['var'].get().strip() ama default
         opt['var'].set(value)
         # ikiwa self.defaultCfg.has_section(section):
-        # Currently, always true; ikiwa not, indent to return.
+        # Currently, always true; ikiwa not, indent to rudisha.
         ikiwa (value == default):
             rudisha self.ext_userCfg.RemoveOption(section, name)
         # Set the option.
@@ -414,24 +414,24 @@ kundi ConfigDialog(Toplevel):
         Methods:
             set_extension_value
         """
-        has_changes = False
-        for ext_name in self.extensions:
+        has_changes = Uongo
+        kila ext_name kwenye self.extensions:
             options = self.extensions[ext_name]
-            for opt in options:
+            kila opt kwenye options:
                 ikiwa self.set_extension_value(ext_name, opt):
-                    has_changes = True
+                    has_changes = Kweli
         ikiwa has_changes:
             self.ext_userCfg.Save()
 
 
-# kundi TabPage(Frame):  # A template for Page classes.
+# kundi TabPage(Frame):  # A template kila Page classes.
 #     eleza __init__(self, master):
 #         super().__init__(master)
 #         self.create_page_tab()
 #         self.load_tab_cfg()
 #     eleza create_page_tab(self):
-#         # Define tk vars and register var and callback with tracers.
-#         # Create subframes and widgets.
+#         # Define tk vars na register var na callback with tracers.
+#         # Create subframes na widgets.
 #         # Pack widgets.
 #     eleza load_tab_cfg(self):
 #         # Initialize widgets with data kutoka idleConf.
@@ -480,36 +480,36 @@ kundi FontPage(Frame):
         self.load_tab_cfg()
 
     eleza create_page_font_tab(self):
-        """Return frame of widgets for Font/Tabs tab.
+        """Return frame of widgets kila Font/Tabs tab.
 
         Fonts: Enable users to provisionally change font face, size, or
-        boldness and to see the consequence of proposed choices.  Each
-        action set 3 options in changes structuree and changes the
+        boldness na to see the consequence of proposed choices.  Each
+        action set 3 options kwenye changes structuree na changes the
         corresponding aspect of the font sample on this page and
         highlight sample on highlight page.
 
-        Function load_font_cfg initializes font vars and widgets kutoka
-        idleConf entries and tk.
+        Function load_font_cfg initializes font vars na widgets kutoka
+        idleConf entries na tk.
 
-        Fontlist: mouse button 1 click or up or down key invoke
+        Fontlist: mouse button 1 click ama up ama down key invoke
         on_fontlist_select(), which sets var font_name.
 
         Sizelist: clicking the menubutton opens the dropdown menu. A
-        mouse button 1 click or rudisha key sets var font_size.
+        mouse button 1 click ama rudisha key sets var font_size.
 
         Bold_toggle: clicking the box toggles var font_bold.
 
         Changing any of the font vars invokes var_changed_font, which
-        adds all 3 font options to changes and calls set_samples.
+        adds all 3 font options to changes na calls set_samples.
         Set_samples applies a new font constructed kutoka the font vars to
-        font_sample and to highlight_sample on the highlight page.
+        font_sample na to highlight_sample on the highlight page.
 
-        Tabs: Enable users to change spaces entered for indent tabs.
+        Tabs: Enable users to change spaces entered kila indent tabs.
         Changing indent_scale value with the mouse sets Var space_num,
         which invokes the default callback to add an entry to
         changes.  Load_tab_cfg initializes space_num to default.
 
-        Widgets for FontPage(Frame):  (*) widgets bound to self
+        Widgets kila FontPage(Frame):  (*) widgets bound to self
             frame_font: LabelFrame
                 frame_font_name: Frame
                     font_name_title: Label
@@ -530,7 +530,7 @@ kundi FontPage(Frame):
         self.font_bold = tracers.add(BooleanVar(self), self.var_changed_font)
         self.space_num = tracers.add(IntVar(self), ('main', 'Indent', 'num-spaces'))
 
-        # Define frames and widgets.
+        # Define frames na widgets.
         frame_font = LabelFrame(
                 self, borderwidth=2, relief=GROOVE, text=' Shell/Editor Font ')
         frame_sample = LabelFrame(
@@ -544,7 +544,7 @@ kundi FontPage(Frame):
         font_name_title = Label(
                 frame_font_name, justify=LEFT, text='Font Face :')
         self.fontlist = Listbox(frame_font_name, height=15,
-                                takefocus=True, exportselection=FALSE)
+                                takefocus=Kweli, exportselection=FALSE)
         self.fontlist.bind('<ButtonRelease-1>', self.on_fontlist_select)
         self.fontlist.bind('<KeyRelease-Up>', self.on_fontlist_select)
         self.fontlist.bind('<KeyRelease-Down>', self.on_fontlist_select)
@@ -552,7 +552,7 @@ kundi FontPage(Frame):
         scroll_font.config(command=self.fontlist.yview)
         self.fontlist.config(yscrollcommand=scroll_font.set)
         font_size_title = Label(frame_font_param, text='Size :')
-        self.sizelist = DynOptionMenu(frame_font_param, self.font_size, None)
+        self.sizelist = DynOptionMenu(frame_font_param, self.font_size, Tupu)
         self.bold_toggle = Checkbutton(
                 frame_font_param, variable=self.font_bold,
                 onvalue=1, offvalue=0, text='Bold')
@@ -569,7 +569,7 @@ kundi FontPage(Frame):
                 frame_indent, variable=self.space_num,
                 orient='horizontal', tickinterval=2, kutoka_=2, to=16)
 
-        # Grid and pack widgets:
+        # Grid na pack widgets:
         self.columnconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
         frame_font.grid(row=0, column=0, padx=5, pady=5)
@@ -592,10 +592,10 @@ kundi FontPage(Frame):
         self.indent_scale.pack(side=TOP, padx=5, fill=X)
 
     eleza load_font_cfg(self):
-        """Load current configuration settings for the font options.
+        """Load current configuration settings kila the font options.
 
-        Retrieve current font with idleConf.GetFont and font families
-        kutoka tk. Setup fontlist and set font_name.  Setup sizelist,
+        Retrieve current font with idleConf.GetFont na font families
+        kutoka tk. Setup fontlist na set font_name.  Setup sizelist,
         which sets font_size.  Set font_bold.  Call set_samples.
         """
         configured_font = idleConf.GetFont(self, 'main', 'EditorWindow')
@@ -603,21 +603,21 @@ kundi FontPage(Frame):
         font_size = configured_font[1]
         font_bold  = configured_font[2]=='bold'
 
-        # Set editor font selection list and font_name.
+        # Set editor font selection list na font_name.
         fonts = list(tkFont.families(self))
         fonts.sort()
-        for font in fonts:
+        kila font kwenye fonts:
             self.fontlist.insert(END, font)
         self.font_name.set(font_name)
-        lc_fonts = [s.lower() for s in fonts]
-        try:
+        lc_fonts = [s.lower() kila s kwenye fonts]
+        jaribu:
             current_font_index = lc_fonts.index(font_name)
             self.fontlist.see(current_font_index)
             self.fontlist.select_set(current_font_index)
             self.fontlist.select_anchor(current_font_index)
             self.fontlist.activate(current_font_index)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         # Set font size dropdown.
         self.sizelist.SetMenu(('7', '8', '9', '10', '11', '12', '13', '14',
                                '16', '18', '20', '22', '25', '29', '34', '40'),
@@ -629,8 +629,8 @@ kundi FontPage(Frame):
     eleza var_changed_font(self, *params):
         """Store changes to font attributes.
 
-        When one font attribute changes, save them all, as they are
-        not independent kutoka each other. In particular, when we are
+        When one font attribute changes, save them all, kama they are
+        sio independent kutoka each other. In particular, when we are
         overriding the default font, we need to write out everything.
         """
         value = self.font_name.get()
@@ -644,19 +644,19 @@ kundi FontPage(Frame):
     eleza on_fontlist_select(self, event):
         """Handle selecting a font kutoka the list.
 
-        Event can result kutoka either mouse click or Up or Down key.
-        Set font_name and example displays to selection.
+        Event can result kutoka either mouse click ama Up ama Down key.
+        Set font_name na example displays to selection.
         """
         font = self.fontlist.get(
                 ACTIVE ikiwa event.type.name == 'KeyRelease' else ANCHOR)
         self.font_name.set(font.lower())
 
-    eleza set_samples(self, event=None):
+    eleza set_samples(self, event=Tupu):
         """Update update both screen samples with the font settings.
 
-        Called on font initialization and change events.
-        Accesses font_name, font_size, and font_bold Variables.
-        Updates font_sample and highlight page highlight_sample.
+        Called on font initialization na change events.
+        Accesses font_name, font_size, na font_bold Variables.
+        Updates font_sample na highlight page highlight_sample.
         """
         font_name = self.font_name.get()
         font_weight = tkFont.BOLD ikiwa self.font_bold.get() else tkFont.NORMAL
@@ -665,7 +665,7 @@ kundi FontPage(Frame):
         self.highlight_sample['font'] = new_font
 
     eleza load_tab_cfg(self):
-        """Load current configuration settings for the tab options.
+        """Load current configuration settings kila the tab options.
 
         Attributes updated:
             space_num: Set to value kutoka idleConf.
@@ -691,48 +691,48 @@ kundi HighPage(Frame):
         self.load_theme_cfg()
 
     eleza create_page_highlight(self):
-        """Return frame of widgets for Highlighting tab.
+        """Return frame of widgets kila Highlighting tab.
 
-        Enable users to provisionally change foreground and background
+        Enable users to provisionally change foreground na background
         colors applied to textual tags.  Color mappings are stored in
         complete listings called themes.  Built-in themes in
-        idlelib/config-highlight.eleza are fixed as far as the dialog is
-        concerned. Any theme can be used as the base for a new custom
-        theme, stored in .idlerc/config-highlight.cfg.
+        idlelib/config-highlight.eleza are fixed kama far kama the dialog is
+        concerned. Any theme can be used kama the base kila a new custom
+        theme, stored kwenye .idlerc/config-highlight.cfg.
 
-        Function load_theme_cfg() initializes tk variables and theme
-        lists and calls paint_theme_sample() and set_highlight_target()
-        for the current theme.  Radiobuttons builtin_theme_on and
+        Function load_theme_cfg() initializes tk variables na theme
+        lists na calls paint_theme_sample() na set_highlight_target()
+        kila the current theme.  Radiobuttons builtin_theme_on and
         custom_theme_on toggle var theme_source, which controls ikiwa the
-        current set of colors are kutoka a builtin or custom theme.
-        DynOptionMenus builtinlist and customlist contain lists of the
-        builtin and custom themes, respectively, and the current item
-        kutoka each list is stored in vars builtin_name and custom_name.
+        current set of colors are kutoka a builtin ama custom theme.
+        DynOptionMenus builtinlist na customlist contain lists of the
+        builtin na custom themes, respectively, na the current item
+        kutoka each list ni stored kwenye vars builtin_name na custom_name.
 
         Function paint_theme_sample() applies the colors kutoka the theme
-        to the tags in text widget highlight_sample and then invokes
+        to the tags kwenye text widget highlight_sample na then invokes
         set_color_sample().  Function set_highlight_target() sets the state
-        of the radiobuttons fg_on and bg_on based on the tag and it also
+        of the radiobuttons fg_on na bg_on based on the tag na it also
         invokes set_color_sample().
 
-        Function set_color_sample() sets the background color for the frame
+        Function set_color_sample() sets the background color kila the frame
         holding the color selector.  This provides a larger visual of the
-        color for the current tag and plane (foreground/background).
+        color kila the current tag na plane (foreground/background).
 
-        Note: set_color_sample() is called kutoka many places and is often
-        called more than once when a change is made.  It is invoked when
-        foreground or background is selected (radiobuttons), kutoka
-        paint_theme_sample() (theme is changed or load_cfg is called), and
-        kutoka set_highlight_target() (target tag is changed or load_cfg called).
+        Note: set_color_sample() ni called kutoka many places na ni often
+        called more than once when a change ni made.  It ni invoked when
+        foreground ama background ni selected (radiobuttons), kutoka
+        paint_theme_sample() (theme ni changed ama load_cfg ni called), and
+        kutoka set_highlight_target() (target tag ni changed ama load_cfg called).
 
         Button delete_custom invokes delete_custom() to delete
-        a custom theme kutoka idleConf.userCfg['highlight'] and changes.
+        a custom theme kutoka idleConf.userCfg['highlight'] na changes.
         Button save_custom invokes save_as_new_theme() which calls
-        get_new_theme_name() and create_new() to save a custom theme
-        and its colors to idleConf.userCfg['highlight'].
+        get_new_theme_name() na create_new() to save a custom theme
+        na its colors to idleConf.userCfg['highlight'].
 
-        Radiobuttons fg_on and bg_on toggle var fg_bg_toggle to control
-        ikiwa the current selected color for a tag is for the foreground or
+        Radiobuttons fg_on na bg_on toggle var fg_bg_toggle to control
+        ikiwa the current selected color kila a tag ni kila the foreground or
         background.
 
         DynOptionMenu targetlist contains a readable description of the
@@ -741,36 +741,36 @@ kundi HighPage(Frame):
         function set_highlight_target().
 
         Text widget highlight_sample displays a block of text (which is
-        mock Python code) in which is embedded the defined tags and reflects
-        the color attributes of the current theme and changes for those tags.
-        Mouse button 1 allows for selection of a tag and updates
+        mock Python code) kwenye which ni embedded the defined tags na reflects
+        the color attributes of the current theme na changes kila those tags.
+        Mouse button 1 allows kila selection of a tag na updates
         highlight_target with that tag value.
 
-        Note: The font in highlight_sample is set through the config in
+        Note: The font kwenye highlight_sample ni set through the config in
         the fonts tab.
 
         In other words, a tag can be selected either kutoka targetlist or
         by clicking on the sample text within highlight_sample.  The
-        plane (foreground/background) is selected via the radiobutton.
-        Together, these two (tag and plane) control what color is
-        shown in set_color_sample() for the current theme.  Button set_color
+        plane (foreground/background) ni selected via the radiobutton.
+        Together, these two (tag na plane) control what color is
+        shown kwenye set_color_sample() kila the current theme.  Button set_color
         invokes get_color() which displays a ColorChooser to change the
-        color for the selected tag/plane.  If a new color is picked,
-        it will be saved to changes and the highlight_sample and
+        color kila the selected tag/plane.  If a new color ni picked,
+        it will be saved to changes na the highlight_sample and
         frame background will be updated.
 
         Tk Variables:
             color: Color of selected target.
-            builtin_name: Menu variable for built-in theme.
-            custom_name: Menu variable for custom theme.
-            fg_bg_toggle: Toggle for foreground/background color.
+            builtin_name: Menu variable kila built-in theme.
+            custom_name: Menu variable kila custom theme.
+            fg_bg_toggle: Toggle kila foreground/background color.
                 Note: this has no callback.
-            theme_source: Selector for built-in or custom theme.
-            highlight_target: Menu variable for the highlight tag target.
+            theme_source: Selector kila built-in ama custom theme.
+            highlight_target: Menu variable kila the highlight tag target.
 
         Instance Data Attributes:
-            theme_elements: Dictionary of tags for text highlighting.
-                The key is the display name and the value is a tuple of
+            theme_elements: Dictionary of tags kila text highlighting.
+                The key ni the display name na the value ni a tuple of
                 (tag name, display sort order).
 
         Methods [attachment]:
@@ -779,12 +779,12 @@ kundi HighPage(Frame):
             set_color_sample_binding: Call set_color_sample [fg_bg_toggle].
             set_highlight_target: set fg_bg_toggle, set_color_sample().
             set_color_sample: Set frame background to target.
-            on_new_color_set: Set new color and add option.
+            on_new_color_set: Set new color na add option.
             paint_theme_sample: Recolor sample.
             get_new_theme_name: Get kutoka popup.
-            create_new: Combine theme with changes and save.
+            create_new: Combine theme with changes na save.
             save_as_new_theme: Save [button_save_custom].
-            set_theme_type: Command for [theme_source].
+            set_theme_type: Command kila [theme_source].
             delete_custom: Activate default [button_delete_custom].
             save_new: Save to userCfg['theme'] (is function).
 
@@ -808,7 +808,7 @@ kundi HighPage(Frame):
                 (*)theme_message: Label
         """
         self.theme_elements = {
-            'Normal Code or Text': ('normal', '00'),
+            'Normal Code ama Text': ('normal', '00'),
             'Code Context': ('context', '01'),
             'Python Keywords': ('keyword', '02'),
             'Python Definitions': ('definition', '03'),
@@ -818,7 +818,7 @@ kundi HighPage(Frame):
             'Selected Text': ('hilite', '07'),
             'Found Text': ('hit', '08'),
             'Cursor': ('cursor', '09'),
-            'Editor Breakpoint': ('break', '10'),
+            'Editor Breakpoint': ('koma', '10'),
             'Shell Prompt': ('console', '11'),
             'Error Text': ('error', '12'),
             'Shell User Output': ('stdout', '13'),
@@ -838,7 +838,7 @@ kundi HighPage(Frame):
                 StringVar(self), self.var_changed_highlight_target)
 
         # Create widgets:
-        # body frame and section frames.
+        # body frame na section frames.
         frame_custom = LabelFrame(self, borderwidth=2, relief=GROOVE,
                                   text=' Custom Highlighting ')
         frame_theme = LabelFrame(self, borderwidth=2, relief=GROOVE,
@@ -850,34 +850,34 @@ kundi HighPage(Frame):
         text.configure(
                 font=('courier', 12, ''), cursor='hand2', width=1, height=1,
                 takefocus=FALSE, highlightthickness=0, wrap=NONE)
-        text.bind('<Double-Button-1>', lambda e: 'break')
-        text.bind('<B1-Motion>', lambda e: 'break')
+        text.bind('<Double-Button-1>', lambda e: 'koma')
+        text.bind('<B1-Motion>', lambda e: 'koma')
         string_tags=(
             ('# Click selects item.', 'comment'), ('\n', 'normal'),
             ('code context section', 'context'), ('\n', 'normal'),
             ('| cursor', 'cursor'), ('\n', 'normal'),
             ('def', 'keyword'), (' ', 'normal'),
             ('func', 'definition'), ('(param):\n  ', 'normal'),
-            ('"Return None."', 'string'), ('\n  var0 = ', 'normal'),
+            ('"Return Tupu."', 'string'), ('\n  var0 = ', 'normal'),
             ("'string'", 'string'), ('\n  var1 = ', 'normal'),
             ("'selected'", 'hilite'), ('\n  var2 = ', 'normal'),
             ("'found'", 'hit'), ('\n  var3 = ', 'normal'),
             ('list', 'builtin'), ('(', 'normal'),
-            ('None', 'keyword'), (')\n', 'normal'),
-            ('  breakpoint("line")', 'break'), ('\n\n', 'normal'),
+            ('Tupu', 'keyword'), (')\n', 'normal'),
+            ('  komapoint("line")', 'koma'), ('\n\n', 'normal'),
             ('>>>', 'console'), (' 3.14**2\n', 'normal'),
             ('9.8596', 'stdout'), ('\n', 'normal'),
             ('>>>', 'console'), (' pri ', 'normal'),
             ('n', 'error'), ('t(\n', 'normal'),
             ('SyntaxError', 'stderr'), ('\n', 'normal'))
-        for string, tag in string_tags:
+        kila string, tag kwenye string_tags:
             text.insert(END, string, tag)
         n_lines = len(text.get('1.0', END).splitlines())
-        for lineno in range(1, n_lines):
+        kila lineno kwenye range(1, n_lines):
             text.insert(f'{lineno}.0',
                         f'{lineno:{len(str(n_lines))}d} ',
                         'linenumber')
-        for element in self.theme_elements:
+        kila element kwenye self.theme_elements:
             eleza tem(event, elem=element):
                 # event.widget.winfo_top_level().highlight_target.set(elem)
                 self.highlight_target.set(elem)
@@ -889,10 +889,10 @@ kundi HighPage(Frame):
         self.frame_color_set = Frame(frame_custom, style='frame_color_set.TFrame')
         frame_fg_bg_toggle = Frame(frame_custom)
         self.button_set_color = Button(
-                self.frame_color_set, text='Choose Color for :',
+                self.frame_color_set, text='Choose Color kila :',
                 command=self.get_color)
         self.targetlist = DynOptionMenu(
-                self.frame_color_set, self.highlight_target, None,
+                self.frame_color_set, self.highlight_target, Tupu,
                 highlightthickness=0) #, command=self.set_highlight_targetBinding
         self.fg_on = Radiobutton(
                 frame_fg_bg_toggle, variable=self.fg_bg_toggle, value=1,
@@ -902,7 +902,7 @@ kundi HighPage(Frame):
                 text='Background', command=self.set_color_sample_binding)
         self.fg_bg_toggle.set(1)
         self.button_save_custom = Button(
-                frame_custom, text='Save as New Custom Theme',
+                frame_custom, text='Save kama New Custom Theme',
                 command=self.save_as_new_theme)
         # frame_theme.
         theme_type_title = Label(frame_theme, text='Select : ')
@@ -913,9 +913,9 @@ kundi HighPage(Frame):
                 frame_theme, variable=self.theme_source, value=0,
                 command=self.set_theme_type, text='a Custom Theme')
         self.builtinlist = DynOptionMenu(
-                frame_theme, self.builtin_name, None, command=None)
+                frame_theme, self.builtin_name, Tupu, command=Tupu)
         self.customlist = DynOptionMenu(
-                frame_theme, self.custom_name, None, command=None)
+                frame_theme, self.custom_name, Tupu, command=Tupu)
         self.button_delete_custom = Button(
                 frame_theme, text='Delete Custom Theme',
                 command=self.delete_custom)
@@ -944,10 +944,10 @@ kundi HighPage(Frame):
         self.theme_message.pack(side=TOP, fill=X, pady=5)
 
     eleza load_theme_cfg(self):
-        """Load current configuration settings for the theme options.
+        """Load current configuration settings kila the theme options.
 
-        Based on the theme_source toggle, the theme is set as
-        either builtin or custom and the initial widget values
+        Based on the theme_source toggle, the theme ni set as
+        either builtin ama custom na the initial widget values
         reflect the current settings kutoka idleConf.
 
         Attributes updated:
@@ -975,12 +975,12 @@ kundi HighPage(Frame):
             self.builtinlist.SetMenu(item_list, current_option)
             item_list = idleConf.GetSectionList('user', 'highlight')
             item_list.sort()
-            ikiwa not item_list:
+            ikiwa sio item_list:
                 self.custom_theme_on.state(('disabled',))
                 self.custom_name.set('- no custom themes -')
-            else:
+            isipokua:
                 self.customlist.SetMenu(item_list, item_list[0])
-        else:  # User theme selected.
+        isipokua:  # User theme selected.
             item_list = idleConf.GetSectionList('user', 'highlight')
             item_list.sort()
             self.customlist.SetMenu(item_list, current_option)
@@ -998,17 +998,17 @@ kundi HighPage(Frame):
     eleza var_changed_builtin_name(self, *params):
         """Process new builtin theme selection.
 
-        Add the changed theme's name to the changed_items and recreate
+        Add the changed theme's name to the changed_items na recreate
         the sample with the values kutoka the selected theme.
         """
         old_themes = ('IDLE Classic', 'IDLE New')
         value = self.builtin_name.get()
-        ikiwa value not in old_themes:
-            ikiwa idleConf.GetOption('main', 'Theme', 'name') not in old_themes:
+        ikiwa value haiko kwenye old_themes:
+            ikiwa idleConf.GetOption('main', 'Theme', 'name') haiko kwenye old_themes:
                 changes.add_option('main', 'Theme', 'name', old_themes[0])
             changes.add_option('main', 'Theme', 'name2', value)
             self.theme_message['text'] = 'New theme, see Help'
-        else:
+        isipokua:
             changes.add_option('main', 'Theme', 'name', value)
             changes.add_option('main', 'Theme', 'name2', '')
             self.theme_message['text'] = ''
@@ -1017,8 +1017,8 @@ kundi HighPage(Frame):
     eleza var_changed_custom_name(self, *params):
         """Process new custom theme selection.
 
-        If a new custom theme is selected, add the name to the
-        changed_items and apply the theme to the sample.
+        If a new custom theme ni selected, add the name to the
+        changed_items na apply the theme to the sample.
         """
         value = self.custom_name.get()
         ikiwa value != '- no custom themes -':
@@ -1026,16 +1026,16 @@ kundi HighPage(Frame):
             self.paint_theme_sample()
 
     eleza var_changed_theme_source(self, *params):
-        """Process toggle between builtin and custom theme.
+        """Process toggle between builtin na custom theme.
 
-        Update the default toggle value and apply the newly
+        Update the default toggle value na apply the newly
         selected theme type.
         """
         value = self.theme_source.get()
         changes.add_option('main', 'Theme', 'default', value)
         ikiwa value:
             self.var_changed_builtin_name()
-        else:
+        isipokua:
             self.var_changed_custom_name()
 
     eleza var_changed_color(self, *params):
@@ -1043,11 +1043,11 @@ kundi HighPage(Frame):
         self.on_new_color_set()
 
     eleza var_changed_highlight_target(self, *params):
-        "Process selection of new target tag for highlighting."
+        "Process selection of new target tag kila highlighting."
         self.set_highlight_target()
 
     eleza set_theme_type(self):
-        """Set available screen options based on builtin or custom theme.
+        """Set available screen options based on builtin ama custom theme.
 
         Attributes accessed:
             theme_source
@@ -1059,7 +1059,7 @@ kundi HighPage(Frame):
             custom_theme_on
 
         Called kutoka:
-            handler for builtin_theme_on and custom_theme_on
+            handler kila builtin_theme_on na custom_theme_on
             delete_custom
             create_new
             load_theme_cfg
@@ -1068,16 +1068,16 @@ kundi HighPage(Frame):
             self.builtinlist['state'] = 'normal'
             self.customlist['state'] = 'disabled'
             self.button_delete_custom.state(('disabled',))
-        else:
+        isipokua:
             self.builtinlist['state'] = 'disabled'
             self.custom_theme_on.state(('!disabled',))
             self.customlist['state'] = 'normal'
             self.button_delete_custom.state(('!disabled',))
 
     eleza get_color(self):
-        """Handle button to select a new color for the target tag.
+        """Handle button to select a new color kila the target tag.
 
-        If a new color is selected while using a builtin theme, a
+        If a new color ni selected wakati using a builtin theme, a
         name must be supplied to create a custom theme.
 
         Attributes accessed:
@@ -1096,20 +1096,20 @@ kundi HighPage(Frame):
         prev_color = self.style.lookup(self.frame_color_set['style'],
                                        'background')
         rgbTuplet, color_string = tkColorChooser.askcolor(
-                parent=self, title='Pick new color for : '+target,
+                parent=self, title='Pick new color kila : '+target,
                 initialcolor=prev_color)
-        ikiwa color_string and (color_string != prev_color):
-            # User didn't cancel and they chose a new color.
-            ikiwa self.theme_source.get():  # Current theme is a built-in.
-                message = ('Your changes will be saved as a new Custom Theme. '
-                           'Enter a name for your new Custom Theme below.')
+        ikiwa color_string na (color_string != prev_color):
+            # User didn't cancel na they chose a new color.
+            ikiwa self.theme_source.get():  # Current theme ni a built-in.
+                message = ('Your changes will be saved kama a new Custom Theme. '
+                           'Enter a name kila your new Custom Theme below.')
                 new_theme = self.get_new_theme_name(message)
-                ikiwa not new_theme:  # User cancelled custom theme creation.
-                    return
-                else:  # Create new custom theme based on previously active theme.
+                ikiwa sio new_theme:  # User cancelled custom theme creation.
+                    rudisha
+                isipokua:  # Create new custom theme based on previously active theme.
                     self.create_new(new_theme)
                     self.color.set(color_string)
-            else:  # Current theme is user defined.
+            isipokua:  # Current theme ni user defined.
                 self.color.set(color_string)
 
     eleza on_new_color_set(self):
@@ -1132,7 +1132,7 @@ kundi HighPage(Frame):
         rudisha new_theme
 
     eleza save_as_new_theme(self):
-        """Prompt for new theme name and create the theme.
+        """Prompt kila new theme name na create the theme.
 
         Methods:
             get_new_theme_name
@@ -1146,7 +1146,7 @@ kundi HighPage(Frame):
         """Create a new custom theme with the given name.
 
         Create the new theme based on the previously active theme
-        with the current changes applied.  Once it is saved, then
+        with the current changes applied.  Once it ni saved, then
         activate the new theme.
 
         Attributes accessed:
@@ -1164,14 +1164,14 @@ kundi HighPage(Frame):
         ikiwa self.theme_source.get():
             theme_type = 'default'
             theme_name = self.builtin_name.get()
-        else:
+        isipokua:
             theme_type = 'user'
             theme_name = self.custom_name.get()
         new_theme = idleConf.GetThemeDict(theme_type, theme_name)
         # Apply any of the old theme's unsaved changes to the new theme.
-        ikiwa theme_name in changes['highlight']:
+        ikiwa theme_name kwenye changes['highlight']:
             theme_changes = changes['highlight'][theme_name]
-            for element in theme_changes:
+            kila element kwenye theme_changes:
                 new_theme[element] = theme_changes[element]
         # Save the new theme.
         self.save_new(new_theme_name, new_theme)
@@ -1183,7 +1183,7 @@ kundi HighPage(Frame):
         self.set_theme_type()
 
     eleza set_highlight_target(self):
-        """Set fg/bg toggle and color based on highlight tag target.
+        """Set fg/bg toggle na color based on highlight tag target.
 
         Instance variables accessed:
             highlight_target
@@ -1200,11 +1200,11 @@ kundi HighPage(Frame):
             var_changed_highlight_target
             load_theme_cfg
         """
-        ikiwa self.highlight_target.get() == 'Cursor':  # bg not possible
+        ikiwa self.highlight_target.get() == 'Cursor':  # bg sio possible
             self.fg_on.state(('disabled',))
             self.bg_on.state(('disabled',))
             self.fg_bg_toggle.set(1)
-        else:  # Both fg and bg can be set.
+        isipokua:  # Both fg na bg can be set.
             self.fg_on.state(('!disabled',))
             self.bg_on.state(('!disabled',))
             self.fg_bg_toggle.set(1)
@@ -1237,7 +1237,7 @@ kundi HighPage(Frame):
         self.style.configure('frame_color_set.TFrame', background=color)
 
     eleza paint_theme_sample(self):
-        """Apply the theme colors to each element tag in the sample text.
+        """Apply the theme colors to each element tag kwenye the sample text.
 
         Instance attributes accessed:
             theme_elements
@@ -1258,20 +1258,20 @@ kundi HighPage(Frame):
         """
         ikiwa self.theme_source.get():  # Default theme
             theme = self.builtin_name.get()
-        else:  # User theme
+        isipokua:  # User theme
             theme = self.custom_name.get()
-        for element_title in self.theme_elements:
+        kila element_title kwenye self.theme_elements:
             element = self.theme_elements[element_title][0]
             colors = idleConf.GetHighlight(theme, element)
             ikiwa element == 'cursor':  # Cursor sample needs special painting.
                 colors['background'] = idleConf.GetHighlight(
                         theme, 'normal')['background']
             # Handle any unsaved changes to this theme.
-            ikiwa theme in changes['highlight']:
+            ikiwa theme kwenye changes['highlight']:
                 theme_dict = changes['highlight'][theme]
-                ikiwa element + '-foreground' in theme_dict:
+                ikiwa element + '-foreground' kwenye theme_dict:
                     colors['foreground'] = theme_dict[element + '-foreground']
-                ikiwa element + '-background' in theme_dict:
+                ikiwa element + '-background' kwenye theme_dict:
                     colors['background'] = theme_dict[element + '-background']
             self.highlight_sample.tag_config(element, **colors)
         self.set_color_sample()
@@ -1282,9 +1282,9 @@ kundi HighPage(Frame):
         theme_name - string, the name of the new theme
         theme - dictionary containing the new theme
         """
-        ikiwa not idleConf.userCfg['highlight'].has_section(theme_name):
+        ikiwa sio idleConf.userCfg['highlight'].has_section(theme_name):
             idleConf.userCfg['highlight'].add_section(theme_name)
-        for element in theme:
+        kila element kwenye theme:
             value = theme[element]
             idleConf.userCfg['highlight'].SetOption(theme_name, element, value)
 
@@ -1295,8 +1295,8 @@ kundi HighPage(Frame):
     eleza delete_custom(self):
         """Handle event to delete custom theme.
 
-        The current theme is deactivated and the default theme is
-        activated.  The custom theme is permanently removed kutoka
+        The current theme ni deactivated na the default theme is
+        activated.  The custom theme ni permanently removed kutoka
         the config file.
 
         Attributes accessed:
@@ -1316,19 +1316,19 @@ kundi HighPage(Frame):
         """
         theme_name = self.custom_name.get()
         delmsg = 'Are you sure you wish to delete the theme %r ?'
-        ikiwa not self.askyesno(
+        ikiwa sio self.askyesno(
                 'Delete Theme',  delmsg % theme_name, parent=self):
-            return
+            rudisha
         self.cd.deactivate_current_config()
-        # Remove theme kutoka changes, config, and file.
+        # Remove theme kutoka changes, config, na file.
         changes.delete_section('highlight', theme_name)
         # Reload user theme list.
         item_list = idleConf.GetSectionList('user', 'highlight')
         item_list.sort()
-        ikiwa not item_list:
+        ikiwa sio item_list:
             self.custom_theme_on.state(('disabled',))
             self.customlist.SetMenu(item_list, '- no custom themes -')
-        else:
+        isipokua:
             self.customlist.SetMenu(item_list, item_list[0])
         # Revert to default theme.
         self.theme_source.set(idleConf.defaultCfg['main'].Get('Theme', 'default'))
@@ -1349,67 +1349,67 @@ kundi KeysPage(Frame):
         self.load_key_cfg()
 
     eleza create_page_keys(self):
-        """Return frame of widgets for Keys tab.
+        """Return frame of widgets kila Keys tab.
 
-        Enable users to provisionally change both individual and sets of
-        keybindings (shortcut keys). Except for features implemented as
-        extensions, keybindings are stored in complete sets called
-        keysets. Built-in keysets in idlelib/config-keys.eleza are fixed
-        as far as the dialog is concerned. Any keyset can be used as the
-        base for a new custom keyset, stored in .idlerc/config-keys.cfg.
+        Enable users to provisionally change both individual na sets of
+        keybindings (shortcut keys). Except kila features implemented as
+        extensions, keybindings are stored kwenye complete sets called
+        keysets. Built-in keysets kwenye idlelib/config-keys.eleza are fixed
+        kama far kama the dialog ni concerned. Any keyset can be used kama the
+        base kila a new custom keyset, stored kwenye .idlerc/config-keys.cfg.
 
-        Function load_key_cfg() initializes tk variables and keyset
-        lists and calls load_keys_list for the current keyset.
-        Radiobuttons builtin_keyset_on and custom_keyset_on toggle var
+        Function load_key_cfg() initializes tk variables na keyset
+        lists na calls load_keys_list kila the current keyset.
+        Radiobuttons builtin_keyset_on na custom_keyset_on toggle var
         keyset_source, which controls ikiwa the current set of keybindings
-        are kutoka a builtin or custom keyset. DynOptionMenus builtinlist
-        and customlist contain lists of the builtin and custom keysets,
-        respectively, and the current item kutoka each list is stored in
-        vars builtin_name and custom_name.
+        are kutoka a builtin ama custom keyset. DynOptionMenus builtinlist
+        na customlist contain lists of the builtin na custom keysets,
+        respectively, na the current item kutoka each list ni stored in
+        vars builtin_name na custom_name.
 
         Button delete_custom_keys invokes delete_custom_keys() to delete
-        a custom keyset kutoka idleConf.userCfg['keys'] and changes.  Button
+        a custom keyset kutoka idleConf.userCfg['keys'] na changes.  Button
         save_custom_keys invokes save_as_new_key_set() which calls
-        get_new_keys_name() and create_new_key_set() to save a custom keyset
-        and its keybindings to idleConf.userCfg['keys'].
+        get_new_keys_name() na create_new_key_set() to save a custom keyset
+        na its keybindings to idleConf.userCfg['keys'].
 
-        Listbox bindingslist contains all of the keybindings for the
-        selected keyset.  The keybindings are loaded in load_keys_list()
-        and are pairs of (event, [keys]) where keys can be a list
-        of one or more key combinations to bind to the same event.
+        Listbox bindingslist contains all of the keybindings kila the
+        selected keyset.  The keybindings are loaded kwenye load_keys_list()
+        na are pairs of (event, [keys]) where keys can be a list
+        of one ama more key combinations to bind to the same event.
         Mouse button 1 click invokes on_bindingslist_select(), which
         allows button_new_keys to be clicked.
 
-        So, an item is selected in listbindings, which activates
-        button_new_keys, and clicking button_new_keys calls function
+        So, an item ni selected kwenye listbindings, which activates
+        button_new_keys, na clicking button_new_keys calls function
         get_new_keys().  Function get_new_keys() gets the key mappings kutoka the
-        current keyset for the binding event item that was selected.  The
+        current keyset kila the binding event item that was selected.  The
         function then displays another dialog, GetKeysDialog, with the
-        selected binding event and current keys and allows new key sequences
-        to be entered for that binding event.  If the keys aren't
-        changed, nothing happens.  If the keys are changed and the keyset
-        is a builtin, function get_new_keys_name() will be called
-        for input of a custom keyset name.  If no name is given, then the
-        change to the keybinding will abort and no updates will be made.  If
-        a custom name is entered in the prompt or ikiwa the current keyset was
+        selected binding event na current keys na allows new key sequences
+        to be entered kila that binding event.  If the keys aren't
+        changed, nothing happens.  If the keys are changed na the keyset
+        ni a builtin, function get_new_keys_name() will be called
+        kila input of a custom keyset name.  If no name ni given, then the
+        change to the keybinding will abort na no updates will be made.  If
+        a custom name ni entered kwenye the prompt ama ikiwa the current keyset was
         already custom (and thus didn't require a prompt), then
-        idleConf.userCfg['keys'] is updated in function create_new_key_set()
-        with the change to the event binding.  The item listing in bindingslist
-        is updated with the new keys.  Var keybinding is also set which invokes
+        idleConf.userCfg['keys'] ni updated kwenye function create_new_key_set()
+        with the change to the event binding.  The item listing kwenye bindingslist
+        ni updated with the new keys.  Var keybinding ni also set which invokes
         the callback function, var_changed_keybinding, to add the change to
-        the 'keys' or 'extensions' changes tracker based on the binding type.
+        the 'keys' ama 'extensions' changes tracker based on the binding type.
 
         Tk Variables:
             keybinding: Action/key bindings.
 
         Methods:
             load_keys_list: Reload active set.
-            create_new_key_set: Combine active keyset and changes.
-            set_keys_type: Command for keyset_source.
+            create_new_key_set: Combine active keyset na changes.
+            set_keys_type: Command kila keyset_source.
             save_new_key_set: Save to idleConf.userCfg['keys'] (is function).
-            deactivate_current_config: Remove keys bindings in editors.
+            deactivate_current_config: Remove keys bindings kwenye editors.
 
-        Widgets for KeysPage(frame):  (*) widgets bound to self
+        Widgets kila KeysPage(frame):  (*) widgets bound to self
             frame_key_sets: LabelFrame
                 frames[0]: Frame
                     (*)builtin_keyset_on: Radiobutton - var keyset_source
@@ -1440,7 +1440,7 @@ kundi KeysPage(Frame):
                 StringVar(self), self.var_changed_keybinding)
 
         # Create widgets:
-        # body and section frames.
+        # body na section frames.
         frame_custom = LabelFrame(
                 self, borderwidth=2, relief=GROOVE,
                 text=' Custom Key Bindings ')
@@ -1460,11 +1460,11 @@ kundi KeysPage(Frame):
         self.bindingslist['yscrollcommand'] = scroll_target_y.set
         self.bindingslist['xscrollcommand'] = scroll_target_x.set
         self.button_new_keys = Button(
-                frame_custom, text='Get New Keys for Selection',
+                frame_custom, text='Get New Keys kila Selection',
                 command=self.get_new_keys, state='disabled')
         # frame_key_sets.
         frames = [Frame(frame_key_sets, padding=2, borderwidth=0)
-                  for i in range(2)]
+                  kila i kwenye range(2)]
         self.builtin_keyset_on = Radiobutton(
                 frames[0], variable=self.keyset_source, value=1,
                 command=self.set_keys_type, text='Use a Built-in Key Set')
@@ -1472,14 +1472,14 @@ kundi KeysPage(Frame):
                 frames[0], variable=self.keyset_source, value=0,
                 command=self.set_keys_type, text='Use a Custom Key Set')
         self.builtinlist = DynOptionMenu(
-                frames[0], self.builtin_name, None, command=None)
+                frames[0], self.builtin_name, Tupu, command=Tupu)
         self.customlist = DynOptionMenu(
-                frames[0], self.custom_name, None, command=None)
+                frames[0], self.custom_name, Tupu, command=Tupu)
         self.button_delete_custom_keys = Button(
                 frames[1], text='Delete Custom Key Set',
                 command=self.delete_custom_keys)
         self.button_save_custom_keys = Button(
-                frames[1], text='Save as New Custom Key Set',
+                frames[1], text='Save kama New Custom Key Set',
                 command=self.save_as_new_key_set)
         self.keys_message = Label(frames[0], borderwidth=2)
 
@@ -1503,13 +1503,13 @@ kundi KeysPage(Frame):
         self.builtinlist.grid(row=0, column=1, sticky=NSEW)
         self.customlist.grid(row=1, column=1, sticky=NSEW)
         self.keys_message.grid(row=0, column=2, sticky=NSEW, padx=5, pady=5)
-        self.button_delete_custom_keys.pack(side=LEFT, fill=X, expand=True, padx=2)
-        self.button_save_custom_keys.pack(side=LEFT, fill=X, expand=True, padx=2)
-        frames[0].pack(side=TOP, fill=BOTH, expand=True)
-        frames[1].pack(side=TOP, fill=X, expand=True, pady=2)
+        self.button_delete_custom_keys.pack(side=LEFT, fill=X, expand=Kweli, padx=2)
+        self.button_save_custom_keys.pack(side=LEFT, fill=X, expand=Kweli, padx=2)
+        frames[0].pack(side=TOP, fill=BOTH, expand=Kweli)
+        frames[1].pack(side=TOP, fill=X, expand=Kweli, pady=2)
 
     eleza load_key_cfg(self):
-        "Load current configuration settings for the keybinding options."
+        "Load current configuration settings kila the keybinding options."
         # Set current keys type radiobutton.
         self.keyset_source.set(idleConf.GetOption(
                 'main', 'Keys', 'default', type='bool', default=1))
@@ -1522,12 +1522,12 @@ kundi KeysPage(Frame):
             self.builtinlist.SetMenu(item_list, current_option)
             item_list = idleConf.GetSectionList('user', 'keys')
             item_list.sort()
-            ikiwa not item_list:
+            ikiwa sio item_list:
                 self.custom_keyset_on.state(('disabled',))
                 self.custom_name.set('- no custom keys -')
-            else:
+            isipokua:
                 self.customlist.SetMenu(item_list, item_list[0])
-        else:  # User key set selected.
+        isipokua:  # User key set selected.
             item_list = idleConf.GetSectionList('user', 'keys')
             item_list.sort()
             self.customlist.SetMenu(item_list, current_option)
@@ -1548,12 +1548,12 @@ kundi KeysPage(Frame):
             'IDLE Classic OSX',
         )
         value = self.builtin_name.get()
-        ikiwa value not in old_keys:
-            ikiwa idleConf.GetOption('main', 'Keys', 'name') not in old_keys:
+        ikiwa value haiko kwenye old_keys:
+            ikiwa idleConf.GetOption('main', 'Keys', 'name') haiko kwenye old_keys:
                 changes.add_option('main', 'Keys', 'name', old_keys[0])
             changes.add_option('main', 'Keys', 'name2', value)
             self.keys_message['text'] = 'New key set, see Help'
-        else:
+        isipokua:
             changes.add_option('main', 'Keys', 'name', value)
             changes.add_option('main', 'Keys', 'name2', '')
             self.keys_message['text'] = ''
@@ -1567,12 +1567,12 @@ kundi KeysPage(Frame):
             self.load_keys_list(value)
 
     eleza var_changed_keyset_source(self, *params):
-        "Process toggle between builtin key set and custom key set."
+        "Process toggle between builtin key set na custom key set."
         value = self.keyset_source.get()
         changes.add_option('main', 'Keys', 'default', value)
         ikiwa value:
             self.var_changed_builtin_name()
-        else:
+        isipokua:
             self.var_changed_custom_name()
 
     eleza var_changed_keybinding(self, *params):
@@ -1582,64 +1582,64 @@ kundi KeysPage(Frame):
         event = self.bindingslist.get(ANCHOR).split()[0]
         ikiwa idleConf.IsCoreBinding(event):
             changes.add_option('keys', key_set, event, value)
-        else:  # Event is an extension binding.
+        isipokua:  # Event ni an extension binding.
             ext_name = idleConf.GetExtnNameForEvent(event)
             ext_keybind_section = ext_name + '_cfgBindings'
             changes.add_option('extensions', ext_keybind_section, event, value)
 
     eleza set_keys_type(self):
-        "Set available screen options based on builtin or custom key set."
+        "Set available screen options based on builtin ama custom key set."
         ikiwa self.keyset_source.get():
             self.builtinlist['state'] = 'normal'
             self.customlist['state'] = 'disabled'
             self.button_delete_custom_keys.state(('disabled',))
-        else:
+        isipokua:
             self.builtinlist['state'] = 'disabled'
             self.custom_keyset_on.state(('!disabled',))
             self.customlist['state'] = 'normal'
             self.button_delete_custom_keys.state(('!disabled',))
 
     eleza get_new_keys(self):
-        """Handle event to change key binding for selected line.
+        """Handle event to change key binding kila selected line.
 
-        A selection of a key/binding in the list of current
+        A selection of a key/binding kwenye the list of current
         bindings pops up a dialog to enter a new binding.  If
-        the current key set is builtin and a binding has
-        changed, then a name for a custom key set needs to be
-        entered for the change to be applied.
+        the current key set ni builtin na a binding has
+        changed, then a name kila a custom key set needs to be
+        entered kila the change to be applied.
         """
         list_index = self.bindingslist.index(ANCHOR)
         binding = self.bindingslist.get(list_index)
         bind_name = binding.split()[0]
         ikiwa self.keyset_source.get():
             current_key_set_name = self.builtin_name.get()
-        else:
+        isipokua:
             current_key_set_name = self.custom_name.get()
         current_bindings = idleConf.GetCurrentKeySet()
-        ikiwa current_key_set_name in changes['keys']:  # unsaved changes
+        ikiwa current_key_set_name kwenye changes['keys']:  # unsaved changes
             key_set_changes = changes['keys'][current_key_set_name]
-            for event in key_set_changes:
+            kila event kwenye key_set_changes:
                 current_bindings[event] = key_set_changes[event].split()
         current_key_sequences = list(current_bindings.values())
         new_keys = GetKeysDialog(self, 'Get New Keys', bind_name,
                 current_key_sequences).result
         ikiwa new_keys:
-            ikiwa self.keyset_source.get():  # Current key set is a built-in.
-                message = ('Your changes will be saved as a new Custom Key Set.'
-                           ' Enter a name for your new Custom Key Set below.')
+            ikiwa self.keyset_source.get():  # Current key set ni a built-in.
+                message = ('Your changes will be saved kama a new Custom Key Set.'
+                           ' Enter a name kila your new Custom Key Set below.')
                 new_keyset = self.get_new_keys_name(message)
-                ikiwa not new_keyset:  # User cancelled custom key set creation.
+                ikiwa sio new_keyset:  # User cancelled custom key set creation.
                     self.bindingslist.select_set(list_index)
                     self.bindingslist.select_anchor(list_index)
-                    return
-                else:  # Create new custom key set based on previously active key set.
+                    rudisha
+                isipokua:  # Create new custom key set based on previously active key set.
                     self.create_new_key_set(new_keyset)
             self.bindingslist.delete(list_index)
             self.bindingslist.insert(list_index, bind_name+' - '+new_keys)
             self.bindingslist.select_set(list_index)
             self.bindingslist.select_anchor(list_index)
             self.keybinding.set(new_keys)
-        else:
+        isipokua:
             self.bindingslist.select_set(list_index)
             self.bindingslist.select_anchor(list_index)
 
@@ -1652,7 +1652,7 @@ kundi KeysPage(Frame):
         rudisha new_keyset
 
     eleza save_as_new_key_set(self):
-        "Prompt for name of new key set and save changes using that name."
+        "Prompt kila name of new key set na save changes using that name."
         new_keys_name = self.get_new_keys_name('New Key Set Name:')
         ikiwa new_keys_name:
             self.create_new_key_set(new_keys_name)
@@ -1665,22 +1665,22 @@ kundi KeysPage(Frame):
         """Create a new custom key set with the given name.
 
         Copy the bindings/keys kutoka the previously active keyset
-        to the new keyset and activate the new custom keyset.
+        to the new keyset na activate the new custom keyset.
         """
         ikiwa self.keyset_source.get():
             prev_key_set_name = self.builtin_name.get()
-        else:
+        isipokua:
             prev_key_set_name = self.custom_name.get()
         prev_keys = idleConf.GetCoreKeys(prev_key_set_name)
         new_keys = {}
-        for event in prev_keys:  # Add key set to changed items.
+        kila event kwenye prev_keys:  # Add key set to changed items.
             event_name = event[2:-2]  # Trim off the angle brackets.
             binding = ' '.join(prev_keys[event])
             new_keys[event_name] = binding
         # Handle any unsaved changes to prev key set.
-        ikiwa prev_key_set_name in changes['keys']:
+        ikiwa prev_key_set_name kwenye changes['keys']:
             key_set_changes = changes['keys'][prev_key_set_name]
-            for event in key_set_changes:
+            kila event kwenye key_set_changes:
                 new_keys[event] = key_set_changes[event]
         # Save the new key set.
         self.save_new_key_set(new_key_set_name, new_keys)
@@ -1692,24 +1692,24 @@ kundi KeysPage(Frame):
         self.set_keys_type()
 
     eleza load_keys_list(self, keyset_name):
-        """Reload the list of action/key binding pairs for the active key set.
+        """Reload the list of action/key binding pairs kila the active key set.
 
         An action/key binding can be selected to change the key binding.
         """
-        reselect = False
+        reselect = Uongo
         ikiwa self.bindingslist.curselection():
-            reselect = True
+            reselect = Kweli
             list_index = self.bindingslist.index(ANCHOR)
         keyset = idleConf.GetKeySet(keyset_name)
         bind_names = list(keyset.keys())
         bind_names.sort()
         self.bindingslist.delete(0, END)
-        for bind_name in bind_names:
+        kila bind_name kwenye bind_names:
             key = ' '.join(keyset[bind_name])
             bind_name = bind_name[2:-2]  # Trim off the angle brackets.
-            ikiwa keyset_name in changes['keys']:
+            ikiwa keyset_name kwenye changes['keys']:
                 # Handle any unsaved changes to this key set.
-                ikiwa bind_name in changes['keys'][keyset_name]:
+                ikiwa bind_name kwenye changes['keys'][keyset_name]:
                     key = changes['keys'][keyset_name][bind_name]
             self.bindingslist.insert(END, bind_name+' - '+key)
         ikiwa reselect:
@@ -1721,16 +1721,16 @@ kundi KeysPage(Frame):
     eleza save_new_key_set(keyset_name, keyset):
         """Save a newly created core key set.
 
-        Add keyset to idleConf.userCfg['keys'], not to disk.
-        If the keyset doesn't exist, it is created.  The
+        Add keyset to idleConf.userCfg['keys'], sio to disk.
+        If the keyset doesn't exist, it ni created.  The
         binding/keys are taken kutoka the keyset argument.
 
         keyset_name - string, the name of the new key set
         keyset - dictionary containing the new keybindings
         """
-        ikiwa not idleConf.userCfg['keys'].has_section(keyset_name):
+        ikiwa sio idleConf.userCfg['keys'].has_section(keyset_name):
             idleConf.userCfg['keys'].add_section(keyset_name)
-        for event in keyset:
+        kila event kwenye keyset:
             value = keyset[event]
             idleConf.userCfg['keys'].SetOption(keyset_name, event, value)
 
@@ -1742,30 +1742,30 @@ kundi KeysPage(Frame):
         """Handle event to delete a custom key set.
 
         Applying the delete deactivates the current configuration and
-        reverts to the default.  The custom key set is permanently
+        reverts to the default.  The custom key set ni permanently
         deleted kutoka the config file.
         """
         keyset_name = self.custom_name.get()
         delmsg = 'Are you sure you wish to delete the key set %r ?'
-        ikiwa not self.askyesno(
+        ikiwa sio self.askyesno(
                 'Delete Key Set',  delmsg % keyset_name, parent=self):
-            return
+            rudisha
         self.cd.deactivate_current_config()
-        # Remove key set kutoka changes, config, and file.
+        # Remove key set kutoka changes, config, na file.
         changes.delete_section('keys', keyset_name)
         # Reload user key set list.
         item_list = idleConf.GetSectionList('user', 'keys')
         item_list.sort()
-        ikiwa not item_list:
+        ikiwa sio item_list:
             self.custom_keyset_on.state(('disabled',))
             self.customlist.SetMenu(item_list, '- no custom keys -')
-        else:
+        isipokua:
             self.customlist.SetMenu(item_list, item_list[0])
         # Revert to default key set.
         self.keyset_source.set(idleConf.defaultCfg['main']
                                .Get('Keys', 'default'))
         self.builtin_name.set(idleConf.defaultCfg['main'].Get('Keys', 'name')
-                              or idleConf.default_keys())
+                              ama idleConf.default_keys())
         # User can't back out of these changes, they must be applied now.
         changes.save_all()
         self.cd.save_all_changed_extensions()
@@ -1785,30 +1785,30 @@ kundi GenPage(Frame):
     eleza init_validators(self):
         digits_or_empty_re = re.compile(r'[0-9]*')
         eleza is_digits_or_empty(s):
-            "Return 's is blank or contains only digits'"
-            rudisha digits_or_empty_re.fullmatch(s) is not None
+            "Return 's ni blank ama contains only digits'"
+            rudisha digits_or_empty_re.fullmatch(s) ni sio Tupu
         self.digits_only = (self.register(is_digits_or_empty), '%P',)
 
     eleza create_page_general(self):
-        """Return frame of widgets for General tab.
+        """Return frame of widgets kila General tab.
 
         Enable users to provisionally change general options. Function
-        load_general_cfg initializes tk variables and helplist using
-        idleConf.  Radiobuttons startup_shell_on and startup_editor_on
-        set var startup_edit. Radiobuttons save_ask_on and save_auto_on
-        set var autosave. Entry boxes win_width_int and win_height_int
-        set var win_width and win_height.  Setting var_name invokes the
+        load_general_cfg initializes tk variables na helplist using
+        idleConf.  Radiobuttons startup_shell_on na startup_editor_on
+        set var startup_edit. Radiobuttons save_ask_on na save_auto_on
+        set var autosave. Entry boxes win_width_int na win_height_int
+        set var win_width na win_height.  Setting var_name invokes the
         default callback that adds option to changes.
 
         Helplist: load_general_cfg loads list user_helplist with
-        name, position pairs and copies names to listbox helplist.
+        name, position pairs na copies names to listbox helplist.
         Clicking a name invokes help_source selected. Clicking
         button_helplist_name invokes helplist_item_name, which also
         changes user_helplist.  These functions all call
         set_add_delete_state. All but load call update_help_changes to
         rewrite changes['main']['HelpFiles'].
 
-        Widgets for GenPage(Frame):  (*) widgets bound to self
+        Widgets kila GenPage(Frame):  (*) widgets bound to self
             frame_window: LabelFrame
                 frame_run: Frame
                     startup_title: Label
@@ -1857,7 +1857,7 @@ kundi GenPage(Frame):
                     (*)helplist: ListBox
                     scroll_helplist: Scrollbar
         """
-        # Integer values need StringVar because int('') raises.
+        # Integer values need StringVar because int('') ashirias.
         self.startup_edit = tracers.add(
                 IntVar(self), ('main', 'General', 'editor-on-startup'))
         self.win_width = tracers.add(
@@ -1937,7 +1937,7 @@ kundi GenPage(Frame):
         frame_paren2 = Frame(frame_window, borderwidth=0)
         paren_time_title = Label(
                 frame_paren2, text='Time Match Displayed (milliseconds)\n'
-                                  '(0 is until next input)')
+                                  '(0 ni until next input)')
         self.paren_flash_time = Entry(
                 frame_paren2, textvariable=self.flash_delay, width=6)
         self.bell_on = Checkbutton(
@@ -1963,7 +1963,7 @@ kundi GenPage(Frame):
 
         frame_line_numbers_default = Frame(frame_editor, borderwidth=0)
         line_numbers_default_title = Label(
-            frame_line_numbers_default, text='Show line numbers in new windows')
+            frame_line_numbers_default, text='Show line numbers kwenye new windows')
         self.line_numbers_default_bool = Checkbutton(
                 frame_line_numbers_default,
                 variable=self.line_numbers_default,
@@ -1990,7 +1990,7 @@ kundi GenPage(Frame):
         frame_helplist = Frame(frame_help)
         frame_helplist_buttons = Frame(frame_helplist)
         self.helplist = Listbox(
-                frame_helplist, height=5, takefocus=True,
+                frame_helplist, height=5, takefocus=Kweli,
                 exportselection=FALSE)
         scroll_helplist = Scrollbar(frame_helplist)
         scroll_helplist['command'] = self.helplist.yview
@@ -2070,8 +2070,8 @@ kundi GenPage(Frame):
         self.button_helplist_remove.pack(side=TOP, anchor=W, pady=5)
 
     eleza load_general_cfg(self):
-        "Load current configuration settings for the general options."
-        # Set variables for all windows.
+        "Load current configuration settings kila the general options."
+        # Set variables kila all windows.
         self.startup_edit.set(idleConf.GetOption(
                 'main', 'General', 'editor-on-startup', type='bool'))
         self.win_width.set(idleConf.GetOption(
@@ -2087,7 +2087,7 @@ kundi GenPage(Frame):
         self.paren_bell.set(idleConf.GetOption(
                 'extensions', 'ParenMatch', 'bell'))
 
-        # Set variables for editor windows.
+        # Set variables kila editor windows.
         self.autosave.set(idleConf.GetOption(
                 'main', 'General', 'autosave', default=0, type='bool'))
         self.format_width.set(idleConf.GetOption(
@@ -2097,38 +2097,38 @@ kundi GenPage(Frame):
         self.context_lines.set(idleConf.GetOption(
                 'extensions', 'CodeContext', 'maxlines', type='int'))
 
-        # Set variables for shell windows.
+        # Set variables kila shell windows.
         self.auto_squeeze_min_lines.set(idleConf.GetOption(
                 'main', 'PyShell', 'auto-squeeze-min-lines', type='int'))
 
         # Set additional help sources.
         self.user_helplist = idleConf.GetAllExtraHelpSourcesList()
         self.helplist.delete(0, 'end')
-        for help_item in self.user_helplist:
+        kila help_item kwenye self.user_helplist:
             self.helplist.insert(END, help_item[0])
         self.set_add_delete_state()
 
     eleza help_source_selected(self, event):
-        "Handle event for selecting additional help."
+        "Handle event kila selecting additional help."
         self.set_add_delete_state()
 
     eleza set_add_delete_state(self):
-        "Toggle the state for the help list buttons based on list entries."
-        ikiwa self.helplist.size() < 1:  # No entries in list.
+        "Toggle the state kila the help list buttons based on list entries."
+        ikiwa self.helplist.size() < 1:  # No entries kwenye list.
             self.button_helplist_edit.state(('disabled',))
             self.button_helplist_remove.state(('disabled',))
-        else:  # Some entries.
-            ikiwa self.helplist.curselection():  # There currently is a selection.
+        isipokua:  # Some entries.
+            ikiwa self.helplist.curselection():  # There currently ni a selection.
                 self.button_helplist_edit.state(('!disabled',))
                 self.button_helplist_remove.state(('!disabled',))
-            else:  # There currently is not a selection.
+            isipokua:  # There currently ni sio a selection.
                 self.button_helplist_edit.state(('disabled',))
                 self.button_helplist_remove.state(('disabled',))
 
     eleza helplist_item_add(self):
-        """Handle add button for the help list.
+        """Handle add button kila the help list.
 
-        Query for name and location of new help sources and add
+        Query kila name na location of new help sources na add
         them to the list.
         """
         help_source = HelpSource(self, 'New Help Source').result
@@ -2138,9 +2138,9 @@ kundi GenPage(Frame):
             self.update_help_changes()
 
     eleza helplist_item_edit(self):
-        """Handle edit button for the help list.
+        """Handle edit button kila the help list.
 
-        Query with existing help source information and update
+        Query with existing help source information na update
         config ikiwa the values are changed.
         """
         item_index = self.helplist.index(ANCHOR)
@@ -2150,7 +2150,7 @@ kundi GenPage(Frame):
                 menuitem=help_source[0],
                 filepath=help_source[1],
                 ).result
-        ikiwa new_help_source and new_help_source != help_source:
+        ikiwa new_help_source na new_help_source != help_source:
             self.user_helplist[item_index] = new_help_source
             self.helplist.delete(item_index)
             self.helplist.insert(item_index, new_help_source[0])
@@ -2158,7 +2158,7 @@ kundi GenPage(Frame):
             self.set_add_delete_state()  # Selected will be un-selected
 
     eleza helplist_item_remove(self):
-        """Handle remove button for the help list.
+        """Handle remove button kila the help list.
 
         Delete the help list item kutoka config.
         """
@@ -2169,9 +2169,9 @@ kundi GenPage(Frame):
         self.set_add_delete_state()
 
     eleza update_help_changes(self):
-        "Clear and rebuild the HelpFiles section in changes"
+        "Clear na rebuild the HelpFiles section kwenye changes"
         changes['main']['HelpFiles'] = {}
-        for num in range(1, len(self.user_helplist) + 1):
+        kila num kwenye range(1, len(self.user_helplist) + 1):
             changes.add_option(
                     'main', 'HelpFiles', str(num),
                     ';'.join(self.user_helplist[num-1][:2]))
@@ -2181,10 +2181,10 @@ kundi VarTrace:
     """Maintain Tk variables trace state."""
 
     eleza __init__(self):
-        """Store Tk variables and callbacks.
+        """Store Tk variables na callbacks.
 
         untraced: List of tuples (var, callback)
-            that do not have the callback attached
+            that do sio have the callback attached
             to the Tk var.
         traced: List of tuples (var, callback) where
             that callback has been attached to the var.
@@ -2193,8 +2193,8 @@ kundi VarTrace:
         self.traced = []
 
     eleza clear(self):
-        "Clear lists (for tests)."
-        # Call after all tests in a module to avoid memory leaks.
+        "Clear lists (kila tests)."
+        # Call after all tests kwenye a module to avoid memory leaks.
         self.untraced.clear()
         self.traced.clear()
 
@@ -2203,9 +2203,9 @@ kundi VarTrace:
 
         Args:
             var: Tk variable instance.
-            callback: Either function name to be used as a callback
-                or a tuple with IdleConf config-type, section, and
-                option names used in the default callback.
+            callback: Either function name to be used kama a callback
+                ama a tuple with IdleConf config-type, section, and
+                option names used kwenye the default callback.
 
         Return:
             Tk variable instance.
@@ -2224,15 +2224,15 @@ kundi VarTrace:
         rudisha default_callback
 
     eleza attach(self):
-        "Attach callback to all vars that are not traced."
-        while self.untraced:
+        "Attach callback to all vars that are sio traced."
+        wakati self.untraced:
             var, callback = self.untraced.pop()
             var.trace_add('write', callback)
             self.traced.append((var, callback))
 
     eleza detach(self):
         "Remove callback kutoka traced vars."
-        while self.traced:
+        wakati self.traced:
             var, callback = self.traced.pop()
             var.trace_remove('write', var.trace_info()[0][1])
             self.untraced.append((var, callback))
@@ -2241,88 +2241,88 @@ kundi VarTrace:
 tracers = VarTrace()
 
 help_common = '''\
-When you click either the Apply or Ok buttons, settings in this
+When you click either the Apply ama Ok buttons, settings kwenye this
 dialog that are different kutoka IDLE's default are saved in
-a .idlerc directory in your home directory. Except as noted,
+a .idlerc directory kwenye your home directory. Except kama noted,
 these changes apply to all versions of IDLE installed on this
 machine. [Cancel] only cancels changes made since the last save.
 '''
 help_pages = {
     'Fonts/Tabs':'''
 Font sample: This shows what a selection of Basic Multilingual Plane
-unicode characters look like for the current font selection.  If the
-selected font does not define a character, Tk attempts to find another
-font that does.  Substitute glyphs depend on what is available on a
-particular system and will not necessarily have the same size as the
+unicode characters look like kila the current font selection.  If the
+selected font does sio define a character, Tk attempts to find another
+font that does.  Substitute glyphs depend on what ni available on a
+particular system na will sio necessarily have the same size kama the
 font selected.  Line contains 20 characters up to Devanagari, 14 for
-Tamil, and 10 for East Asia.
+Tamil, na 10 kila East Asia.
 
-Hebrew and Arabic letters should display right to left, starting with
-alef, \u05d0 and \u0627.  Arabic digits display left to right.  The
-Devanagari and Tamil lines start with digits.  The East Asian lines
-are Chinese digits, Chinese Hanzi, Korean Hangul, and Japanese
-Hiragana and Katakana.
+Hebrew na Arabic letters should display right to left, starting with
+alef, \u05d0 na \u0627.  Arabic digits display left to right.  The
+Devanagari na Tamil lines start with digits.  The East Asian lines
+are Chinese digits, Chinese Hanzi, Korean Hangul, na Japanese
+Hiragana na Katakana.
 
-You can edit the font sample. Changes remain until IDLE is closed.
+You can edit the font sample. Changes remain until IDLE ni closed.
 ''',
     'Highlights': '''
 Highlighting:
-The IDLE Dark color theme is new in October 2015.  It can only
-be used with older IDLE releases ikiwa it is saved as a custom
+The IDLE Dark color theme ni new kwenye October 2015.  It can only
+be used with older IDLE releases ikiwa it ni saved kama a custom
 theme, with a different name.
 ''',
     'Keys': '''
 Keys:
-The IDLE Modern Unix key set is new in June 2016.  It can only
-be used with older IDLE releases ikiwa it is saved as a custom
+The IDLE Modern Unix key set ni new kwenye June 2016.  It can only
+be used with older IDLE releases ikiwa it ni saved kama a custom
 key set, with a different name.
 ''',
      'General': '''
 General:
 
-AutoComplete: Popupwait is milliseconds to wait after key char, without
-cursor movement, before popping up completion box.  Key char is '.' after
-identifier or a '/' (or '\\' on Windows) within a string.
+AutoComplete: Popupwait ni milliseconds to wait after key char, without
+cursor movement, before popping up completion box.  Key char ni '.' after
+identifier ama a '/' (or '\\' on Windows) within a string.
 
-FormatParagraph: Max-width is max chars in lines after re-formatting.
-Use with paragraphs in both strings and comment blocks.
+FormatParagraph: Max-width ni max chars kwenye lines after re-formatting.
+Use with paragraphs kwenye both strings na comment blocks.
 
-ParenMatch: Style indicates what is highlighted when closer is entered:
+ParenMatch: Style indicates what ni highlighted when closer ni entered:
 'opener' - opener '({[' corresponding to closer; 'parens' - both chars;
-'expression' (default) - also everything in between.  Flash-delay is how
-long to highlight ikiwa cursor is not moved (0 means forever).
+'expression' (default) - also everything kwenye between.  Flash-delay ni how
+long to highlight ikiwa cursor ni sio moved (0 means forever).
 
-CodeContext: Maxlines is the maximum number of code context lines to
-display when Code Context is turned on for an editor window.
+CodeContext: Maxlines ni the maximum number of code context lines to
+display when Code Context ni turned on kila an editor window.
 
-Shell Preferences: Auto-Squeeze Min. Lines is the minimum number of lines
+Shell Preferences: Auto-Squeeze Min. Lines ni the minimum number of lines
 of output to automatically "squeeze".
 '''
 }
 
 
 eleza is_int(s):
-    "Return 's is blank or represents an int'"
-    ikiwa not s:
-        rudisha True
-    try:
+    "Return 's ni blank ama represents an int'"
+    ikiwa sio s:
+        rudisha Kweli
+    jaribu:
         int(s)
-        rudisha True
-    except ValueError:
-        rudisha False
+        rudisha Kweli
+    tatizo ValueError:
+        rudisha Uongo
 
 
 kundi VerticalScrolledFrame(Frame):
     """A pure Tkinter vertically scrollable frame.
 
     * Use the 'interior' attribute to place widgets inside the scrollable frame
-    * Construct and pack/place/grid normally
+    * Construct na pack/place/grid normally
     * This frame only allows vertical scrolling
     """
     eleza __init__(self, parent, *args, **kw):
         Frame.__init__(self, parent, *args, **kw)
 
-        # Create a canvas object and a vertical scrollbar for scrolling it.
+        # Create a canvas object na a vertical scrollbar kila scrolling it.
         vscrollbar = Scrollbar(self, orient=VERTICAL)
         vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
         canvas = Canvas(self, borderwidth=0, highlightthickness=0,
@@ -2338,7 +2338,7 @@ kundi VerticalScrolledFrame(Frame):
         self.interior = interior = Frame(canvas)
         interior_id = canvas.create_window(0, 0, window=interior, anchor=NW)
 
-        # Track changes to the canvas and frame width and sync them,
+        # Track changes to the canvas na frame width na sync them,
         # also updating the scrollbar.
         eleza _configure_interior(event):
             # Update the scrollbars to match the size of the inner frame.
@@ -2352,12 +2352,12 @@ kundi VerticalScrolledFrame(Frame):
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
         canvas.bind('<Configure>', _configure_canvas)
 
-        return
+        rudisha
 
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_configdialog', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_configdialog', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(ConfigDialog)

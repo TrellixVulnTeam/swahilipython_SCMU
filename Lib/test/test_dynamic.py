@@ -14,19 +14,19 @@ kundi RebindBuiltinsTests(unittest.TestCase):
         """Perform TestCase-specific configuration on a function before testing.
 
         By default, this does nothing. Example usage: spinning a function so
-        that a JIT will optimize it. Subclasses should override this as needed.
+        that a JIT will optimize it. Subclasses should override this kama needed.
 
         Args:
             func: function to configure.
-            *args: any arguments that should be passed to func, ikiwa calling it.
+            *args: any arguments that should be pitaed to func, ikiwa calling it.
 
         Returns:
             Nothing. Work will be performed on func in-place.
         """
-        pass
+        pita
 
     eleza test_globals_shadow_builtins(self):
-        # Modify globals() to shadow an entry in builtins.
+        # Modify globals() to shadow an entry kwenye builtins.
         eleza foo():
             rudisha len([1, 2, 3])
         self.configure_func(foo)
@@ -49,8 +49,8 @@ kundi RebindBuiltinsTests(unittest.TestCase):
         # Modify the builtins out kutoka under a live generator.
         eleza foo():
             x = range(3)
-            yield len(x)
-            yield len(x)
+            tuma len(x)
+            tuma len(x)
         self.configure_func(foo)
 
         g = foo()
@@ -71,7 +71,7 @@ kundi RebindBuiltinsTests(unittest.TestCase):
                 modifier()
                 l.append(len(range(7)))
                 rudisha l
-            self.configure_func(foo, lambda: None)
+            self.configure_func(foo, lambda: Tupu)
 
             self.assertEqual(foo(bar), [7, 4])
 
@@ -108,8 +108,8 @@ kundi RebindBuiltinsTests(unittest.TestCase):
     eleza test_cannot_replace_builtins_dict_while_active(self):
         eleza foo():
             x = range(3)
-            yield len(x)
-            yield len(x)
+            tuma len(x)
+            tuma len(x)
         self.configure_func(foo)
 
         g = foo()

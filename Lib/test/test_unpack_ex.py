@@ -1,4 +1,4 @@
-# Tests for extended unpacking, starred expressions.
+# Tests kila extended unpacking, starred expressions.
 
 doctests = """
 
@@ -6,70 +6,70 @@ Unpack tuple
 
     >>> t = (1, 2, 3)
     >>> a, *b, c = t
-    >>> a == 1 and b == [2] and c == 3
-    True
+    >>> a == 1 na b == [2] na c == 3
+    Kweli
 
 Unpack list
 
     >>> l = [4, 5, 6]
     >>> a, *b = l
-    >>> a == 4 and b == [5, 6]
-    True
+    >>> a == 4 na b == [5, 6]
+    Kweli
 
 Unpack implied tuple
 
     >>> *a, = 7, 8, 9
     >>> a == [7, 8, 9]
-    True
+    Kweli
 
 Unpack string... fun!
 
     >>> a, *b = 'one'
-    >>> a == 'o' and b == ['n', 'e']
-    True
+    >>> a == 'o' na b == ['n', 'e']
+    Kweli
 
 Unpack long sequence
 
     >>> a, b, c, *d, e, f, g = range(10)
     >>> (a, b, c, d, e, f, g) == (0, 1, 2, [3, 4, 5, 6], 7, 8, 9)
-    True
+    Kweli
 
 Unpack short sequence
 
     >>> a, *b, c = (1, 2)
-    >>> a == 1 and c == 2 and b == []
-    True
+    >>> a == 1 na c == 2 na b == []
+    Kweli
 
 Unpack generic sequence
 
     >>> kundi Seq:
     ...     eleza __getitem__(self, i):
-    ...         ikiwa i >= 0 and i < 3: rudisha i
-    ...         raise IndexError
+    ...         ikiwa i >= 0 na i < 3: rudisha i
+    ...         ashiria IndexError
     ...
     >>> a, *b = Seq()
-    >>> a == 0 and b == [1, 2]
-    True
+    >>> a == 0 na b == [1, 2]
+    Kweli
 
-Unpack in for statement
+Unpack kwenye kila statement
 
-    >>> for a, *b, c in [(1,2,3), (4,5,6,7)]:
+    >>> kila a, *b, c kwenye [(1,2,3), (4,5,6,7)]:
     ...     andika(a, b, c)
     ...
     1 [2] 3
     4 [5, 6] 7
 
-Unpack in list
+Unpack kwenye list
 
     >>> [a, *b, c] = range(5)
-    >>> a == 0 and b == [1, 2, 3] and c == 4
-    True
+    >>> a == 0 na b == [1, 2, 3] na c == 4
+    Kweli
 
 Multiple targets
 
     >>> a, *b, c = *d, e = range(5)
-    >>> a == 0 and b == [1, 2, 3] and c == 4 and d == [0, 1, 2, 3] and e == 4
-    True
+    >>> a == 0 na b == [1, 2, 3] na c == 4 na d == [0, 1, 2, 3] na e == 4
+    Kweli
 
 Assignment unpacking
 
@@ -89,7 +89,7 @@ Set display element unpacking
     >>> {1, *1, 0, 4}
     Traceback (most recent call last):
       ...
-    TypeError: 'int' object is not iterable
+    TypeError: 'int' object ni sio iterable
 
 Dict display element unpacking
 
@@ -117,15 +117,15 @@ Dict display element unpacking
     >>> {**1}
     Traceback (most recent call last):
     ...
-    TypeError: 'int' object is not a mapping
+    TypeError: 'int' object ni sio a mapping
 
     >>> {**[]}
     Traceback (most recent call last):
     ...
-    TypeError: 'list' object is not a mapping
+    TypeError: 'list' object ni sio a mapping
 
     >>> len(eval("{" + ", ".join("**{{{}: {}}}".format(i, i)
-    ...                          for i in range(1000)) + "}"))
+    ...                          kila i kwenye range(1000)) + "}"))
     1000
 
     >>> {0:1, **{0:2}, 0:3, 0:4}
@@ -137,40 +137,40 @@ List comprehension element unpacking
     >>> [*a, b, c]
     [0, 1, 2, 3, 4]
 
-    >>> l = [a, (3, 4), {5}, {6: None}, (i for i in range(7, 10))]
-    >>> [*item for item in l]
+    >>> l = [a, (3, 4), {5}, {6: Tupu}, (i kila i kwenye range(7, 10))]
+    >>> [*item kila item kwenye l]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used in comprehension
+    SyntaxError: iterable unpacking cannot be used kwenye comprehension
 
-    >>> [*[0, 1] for i in range(10)]
+    >>> [*[0, 1] kila i kwenye range(10)]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used in comprehension
+    SyntaxError: iterable unpacking cannot be used kwenye comprehension
 
-    >>> [*'a' for i in range(10)]
+    >>> [*'a' kila i kwenye range(10)]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used in comprehension
+    SyntaxError: iterable unpacking cannot be used kwenye comprehension
 
-    >>> [*[] for i in range(10)]
+    >>> [*[] kila i kwenye range(10)]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used in comprehension
+    SyntaxError: iterable unpacking cannot be used kwenye comprehension
 
-Generator expression in function arguments
+Generator expression kwenye function arguments
 
-    >>> list(*x for x in (range(5) for i in range(3)))
+    >>> list(*x kila x kwenye (range(5) kila i kwenye range(3)))
     Traceback (most recent call last):
     ...
-        list(*x for x in (range(5) for i in range(3)))
+        list(*x kila x kwenye (range(5) kila i kwenye range(3)))
                   ^
     SyntaxError: invalid syntax
 
-    >>> dict(**x for x in [{1:2}])
+    >>> dict(**x kila x kwenye [{1:2}])
     Traceback (most recent call last):
     ...
-        dict(**x for x in [{1:2}])
+        dict(**x kila x kwenye [{1:2}])
                    ^
     SyntaxError: invalid syntax
 
@@ -179,7 +179,7 @@ Iterable argument unpacking
     >>> andika(*[1], *[2], 3)
     1 2 3
 
-Make sure that they don't corrupt the passed-in dicts.
+Make sure that they don't corrupt the pitaed-in dicts.
 
     >>> eleza f(x, y):
     ...     andika(x, y)
@@ -190,9 +190,9 @@ Make sure that they don't corrupt the passed-in dicts.
     >>> original_dict
     {'x': 1}
 
-Now for some failures
+Now kila some failures
 
-Make sure the raised errors are right for keyword argument unpackings
+Make sure the ashiriad errors are right kila keyword argument unpackings
 
     >>> kutoka collections.abc agiza MutableMapping
     >>> kundi CrazyDict(MutableMapping):
@@ -200,10 +200,10 @@ Make sure the raised errors are right for keyword argument unpackings
     ...         self.d = {}
     ...
     ...     eleza __iter__(self):
-    ...         for x in self.d.__iter__():
+    ...         kila x kwenye self.d.__iter__():
     ...             ikiwa x == 'c':
     ...                 self.d['z'] = 10
-    ...             yield x
+    ...             tuma x
     ...
     ...     eleza __getitem__(self, k):
     ...         rudisha self.d[k]
@@ -215,16 +215,16 @@ Make sure the raised errors are right for keyword argument unpackings
     ...         self.d[k] = v
     ...
     ...     eleza __delitem__(self, k):
-    ...         del self.d[k]
+    ...         toa self.d[k]
     ...
     >>> d = CrazyDict()
-    >>> d.d = {chr(ord('a') + x): x for x in range(5)}
+    >>> d.d = {chr(ord('a') + x): x kila x kwenye range(5)}
     >>> e = {**d}
     Traceback (most recent call last):
     ...
     RuntimeError: dictionary changed size during iteration
 
-    >>> d.d = {chr(ord('a') + x): x for x in range(5)}
+    >>> d.d = {chr(ord('a') + x): x kila x kwenye range(5)}
     >>> eleza f(**kwargs): andika(kwargs)
     >>> f(**d)
     Traceback (most recent call last):
@@ -236,22 +236,22 @@ Overridden parameters
     >>> f(x=5, **{'x': 3}, y=2)
     Traceback (most recent call last):
       ...
-    TypeError: f() got multiple values for keyword argument 'x'
+    TypeError: f() got multiple values kila keyword argument 'x'
 
     >>> f(**{'x': 3}, x=5, y=2)
     Traceback (most recent call last):
       ...
-    TypeError: f() got multiple values for keyword argument 'x'
+    TypeError: f() got multiple values kila keyword argument 'x'
 
     >>> f(**{'x': 3}, **{'x': 5}, y=2)
     Traceback (most recent call last):
       ...
-    TypeError: f() got multiple values for keyword argument 'x'
+    TypeError: f() got multiple values kila keyword argument 'x'
 
     >>> f(x=5, **{'x': 3}, **{'x': 2})
     Traceback (most recent call last):
       ...
-    TypeError: f() got multiple values for keyword argument 'x'
+    TypeError: f() got multiple values kila keyword argument 'x'
 
     >>> f(**{1: 3}, **{1: 5})
     Traceback (most recent call last):
@@ -270,32 +270,32 @@ Unpacking sequence too short
     >>> a, *b, c, d, e = Seq()
     Traceback (most recent call last):
       ...
-    ValueError: not enough values to unpack (expected at least 4, got 3)
+    ValueError: sio enough values to unpack (expected at least 4, got 3)
 
-Unpacking sequence too short and target appears last
+Unpacking sequence too short na target appears last
 
     >>> a, b, c, d, *e = Seq()
     Traceback (most recent call last):
       ...
-    ValueError: not enough values to unpack (expected at least 4, got 3)
+    ValueError: sio enough values to unpack (expected at least 4, got 3)
 
-Unpacking a sequence where the test for too long raises a different kind of
+Unpacking a sequence where the test kila too long ashirias a different kind of
 error
 
     >>> kundi BozoError(Exception):
-    ...     pass
+    ...     pita
     ...
     >>> kundi BadSeq:
     ...     eleza __getitem__(self, i):
-    ...         ikiwa i >= 0 and i < 3:
+    ...         ikiwa i >= 0 na i < 3:
     ...             rudisha i
     ...         elikiwa i == 3:
-    ...             raise BozoError
-    ...         else:
-    ...             raise IndexError
+    ...             ashiria BozoError
+    ...         isipokua:
+    ...             ashiria IndexError
     ...
 
-Trigger code while not expecting an IndexError (unpack sequence too long, wrong
+Trigger code wakati sio expecting an IndexError (unpack sequence too long, wrong
 error)
 
     >>> a, *b, c, d, e = BadSeq()
@@ -308,17 +308,17 @@ Now some general starred expressions (all fail).
     >>> a, *b, c, *d, e = range(10) # doctest:+ELLIPSIS
     Traceback (most recent call last):
       ...
-    SyntaxError: two starred expressions in assignment
+    SyntaxError: two starred expressions kwenye assignment
 
     >>> [*b, *c] = range(10) # doctest:+ELLIPSIS
     Traceback (most recent call last):
       ...
-    SyntaxError: two starred expressions in assignment
+    SyntaxError: two starred expressions kwenye assignment
 
     >>> *a = range(10) # doctest:+ELLIPSIS
     Traceback (most recent call last):
       ...
-    SyntaxError: starred assignment target must be in a list or tuple
+    SyntaxError: starred assignment target must be kwenye a list ama tuple
 
     >>> *a # doctest:+ELLIPSIS
     Traceback (most recent call last):
@@ -337,29 +337,29 @@ Now some general starred expressions (all fail).
 
 Some size constraints (all fail.)
 
-    >>> s = ", ".join("a%d" % i for i in range(1<<8)) + ", *rest = range(1<<8 + 1)"
+    >>> s = ", ".join("a%d" % i kila i kwenye range(1<<8)) + ", *rest = range(1<<8 + 1)"
     >>> compile(s, 'test', 'exec') # doctest:+ELLIPSIS
     Traceback (most recent call last):
      ...
-    SyntaxError: too many expressions in star-unpacking assignment
+    SyntaxError: too many expressions kwenye star-unpacking assignment
 
-    >>> s = ", ".join("a%d" % i for i in range(1<<8 + 1)) + ", *rest = range(1<<8 + 2)"
+    >>> s = ", ".join("a%d" % i kila i kwenye range(1<<8 + 1)) + ", *rest = range(1<<8 + 2)"
     >>> compile(s, 'test', 'exec') # doctest:+ELLIPSIS
     Traceback (most recent call last):
      ...
-    SyntaxError: too many expressions in star-unpacking assignment
+    SyntaxError: too many expressions kwenye star-unpacking assignment
 
-(there is an additional limit, on the number of expressions after the
-'*rest', but it's 1<<24 and testing it takes too much memory.)
+(there ni an additional limit, on the number of expressions after the
+'*rest', but it's 1<<24 na testing it takes too much memory.)
 
 """
 
 __test__ = {'doctests' : doctests}
 
-eleza test_main(verbose=False):
+eleza test_main(verbose=Uongo):
     kutoka test agiza support
     kutoka test agiza test_unpack_ex
     support.run_doctest(test_unpack_ex, verbose)
 
 ikiwa __name__ == "__main__":
-    test_main(verbose=True)
+    test_main(verbose=Kweli)

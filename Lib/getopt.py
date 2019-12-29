@@ -1,16 +1,16 @@
-"""Parser for command line options.
+"""Parser kila command line options.
 
 This module helps scripts to parse the command line arguments in
-sys.argv.  It supports the same conventions as the Unix getopt()
+sys.argv.  It supports the same conventions kama the Unix getopt()
 function (including the special meanings of arguments of the form `-'
 and `--').  Long options similar to those supported by GNU software
-may be used as well via an optional third argument.  This module
-provides two functions and an exception:
+may be used kama well via an optional third argument.  This module
+provides two functions na an exception:
 
 getopt() -- Parse command line options
-gnu_getopt() -- Like getopt(), but allow option and non-option arguments
+gnu_getopt() -- Like getopt(), but allow option na non-option arguments
 to be intermixed.
-GetoptError -- exception (class) raised with 'opt' attribute, which is the
+GetoptError -- exception (class) ashiriad with 'opt' attribute, which ni the
 option involved with the exception.
 """
 
@@ -21,23 +21,23 @@ option involved with the exception.
 #
 # Peter Åstrand <astrand@lysator.liu.se> added gnu_getopt().
 #
-# TODO for gnu_getopt():
+# TODO kila gnu_getopt():
 #
 # - GNU getopt_long_only mechanism
 # - allow the caller to specify ordering
 # - RETURN_IN_ORDER option
-# - GNU extension with '-' as first character of option string
+# - GNU extension with '-' kama first character of option string
 # - optional arguments, specified by double colons
 # - an option string with a W followed by semicolon should
-#   treat "-W foo" as "--foo"
+#   treat "-W foo" kama "--foo"
 
 __all__ = ["GetoptError","error","getopt","gnu_getopt"]
 
 agiza os
-try:
-    kutoka gettext agiza gettext as _
-except ImportError:
-    # Bootstrapping Python: gettext's dependencies not built yet
+jaribu:
+    kutoka gettext agiza gettext kama _
+tatizo ImportError:
+    # Bootstrapping Python: gettext's dependencies sio built yet
     eleza _(s): rudisha s
 
 kundi GetoptError(Exception):
@@ -56,42 +56,42 @@ error = GetoptError # backward compatibility
 eleza getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
 
-    Parses command line options and parameter list.  args is the
+    Parses command line options na parameter list.  args ni the
     argument list to be parsed, without the leading reference to the
     running program.  Typically, this means "sys.argv[1:]".  shortopts
-    is the string of option letters that the script wants to
+    ni the string of option letters that the script wants to
     recognize, with options that require an argument followed by a
     colon (i.e., the same format that Unix getopt() uses).  If
-    specified, longopts is a list of strings with the names of the
+    specified, longopts ni a list of strings with the names of the
     long options which should be supported.  The leading '--'
-    characters should not be included in the option name.  Options
+    characters should sio be included kwenye the option name.  Options
     which require an argument should be followed by an equal sign
     ('=').
 
-    The rudisha value consists of two elements: the first is a list of
-    (option, value) pairs; the second is the list of program arguments
-    left after the option list was stripped (this is a trailing slice
-    of the first argument).  Each option-and-value pair returned has
-    the option as its first element, prefixed with a hyphen (e.g.,
-    '-x'), and the option argument as its second element, or an empty
-    string ikiwa the option has no argument.  The options occur in the
-    list in the same order in which they were found, thus allowing
-    multiple occurrences.  Long and short options may be mixed.
+    The rudisha value consists of two elements: the first ni a list of
+    (option, value) pairs; the second ni the list of program arguments
+    left after the option list was stripped (this ni a trailing slice
+    of the first argument).  Each option-and-value pair rudishaed has
+    the option kama its first element, prefixed with a hyphen (e.g.,
+    '-x'), na the option argument kama its second element, ama an empty
+    string ikiwa the option has no argument.  The options occur kwenye the
+    list kwenye the same order kwenye which they were found, thus allowing
+    multiple occurrences.  Long na short options may be mixed.
 
     """
 
     opts = []
     ikiwa type(longopts) == type(""):
         longopts = [longopts]
-    else:
+    isipokua:
         longopts = list(longopts)
-    while args and args[0].startswith('-') and args[0] != '-':
+    wakati args na args[0].startswith('-') na args[0] != '-':
         ikiwa args[0] == '--':
             args = args[1:]
-            break
+            koma
         ikiwa args[0].startswith('--'):
             opts, args = do_longs(opts, args[0][2:], longopts, args[1:])
-        else:
+        isipokua:
             opts, args = do_shorts(opts, args[0][1:], shortopts, args[1:])
 
     rudisha opts, args
@@ -99,15 +99,15 @@ eleza getopt(args, shortopts, longopts = []):
 eleza gnu_getopt(args, shortopts, longopts = []):
     """getopt(args, options[, long_options]) -> opts, args
 
-    This function works like getopt(), except that GNU style scanning
-    mode is used by default. This means that option and non-option
+    This function works like getopt(), tatizo that GNU style scanning
+    mode ni used by default. This means that option na non-option
     arguments may be intermixed. The getopt() function stops
-    processing options as soon as a non-option argument is
+    processing options kama soon kama a non-option argument is
     encountered.
 
-    If the first character of the option string is `+', or ikiwa the
-    environment variable POSIXLY_CORRECT is set, then option
-    processing stops as soon as a non-option argument is encountered.
+    If the first character of the option string ni `+', ama ikiwa the
+    environment variable POSIXLY_CORRECT ni set, then option
+    processing stops kama soon kama a non-option argument ni encountered.
 
     """
 
@@ -115,73 +115,73 @@ eleza gnu_getopt(args, shortopts, longopts = []):
     prog_args = []
     ikiwa isinstance(longopts, str):
         longopts = [longopts]
-    else:
+    isipokua:
         longopts = list(longopts)
 
     # Allow options after non-option arguments?
     ikiwa shortopts.startswith('+'):
         shortopts = shortopts[1:]
-        all_options_first = True
+        all_options_first = Kweli
     elikiwa os.environ.get("POSIXLY_CORRECT"):
-        all_options_first = True
-    else:
-        all_options_first = False
+        all_options_first = Kweli
+    isipokua:
+        all_options_first = Uongo
 
-    while args:
+    wakati args:
         ikiwa args[0] == '--':
             prog_args += args[1:]
-            break
+            koma
 
         ikiwa args[0][:2] == '--':
             opts, args = do_longs(opts, args[0][2:], longopts, args[1:])
-        elikiwa args[0][:1] == '-' and args[0] != '-':
+        elikiwa args[0][:1] == '-' na args[0] != '-':
             opts, args = do_shorts(opts, args[0][1:], shortopts, args[1:])
-        else:
+        isipokua:
             ikiwa all_options_first:
                 prog_args += args
-                break
-            else:
+                koma
+            isipokua:
                 prog_args.append(args[0])
                 args = args[1:]
 
     rudisha opts, prog_args
 
 eleza do_longs(opts, opt, longopts, args):
-    try:
+    jaribu:
         i = opt.index('=')
-    except ValueError:
-        optarg = None
-    else:
+    tatizo ValueError:
+        optarg = Tupu
+    isipokua:
         opt, optarg = opt[:i], opt[i+1:]
 
     has_arg, opt = long_has_args(opt, longopts)
     ikiwa has_arg:
-        ikiwa optarg is None:
-            ikiwa not args:
-                raise GetoptError(_('option --%s requires argument') % opt, opt)
+        ikiwa optarg ni Tupu:
+            ikiwa sio args:
+                ashiria GetoptError(_('option --%s requires argument') % opt, opt)
             optarg, args = args[0], args[1:]
-    elikiwa optarg is not None:
-        raise GetoptError(_('option --%s must not have an argument') % opt, opt)
-    opts.append(('--' + opt, optarg or ''))
+    elikiwa optarg ni sio Tupu:
+        ashiria GetoptError(_('option --%s must sio have an argument') % opt, opt)
+    opts.append(('--' + opt, optarg ama ''))
     rudisha opts, args
 
 # Return:
 #   has_arg?
 #   full option name
 eleza long_has_args(opt, longopts):
-    possibilities = [o for o in longopts ikiwa o.startswith(opt)]
-    ikiwa not possibilities:
-        raise GetoptError(_('option --%s not recognized') % opt, opt)
+    possibilities = [o kila o kwenye longopts ikiwa o.startswith(opt)]
+    ikiwa sio possibilities:
+        ashiria GetoptError(_('option --%s sio recognized') % opt, opt)
     # Is there an exact match?
-    ikiwa opt in possibilities:
-        rudisha False, opt
-    elikiwa opt + '=' in possibilities:
-        rudisha True, opt
+    ikiwa opt kwenye possibilities:
+        rudisha Uongo, opt
+    elikiwa opt + '=' kwenye possibilities:
+        rudisha Kweli, opt
     # No exact match, so better be unique.
     ikiwa len(possibilities) > 1:
         # XXX since possibilities contains all valid continuations, might be
         # nice to work them into the error msg
-        raise GetoptError(_('option --%s not a unique prefix') % opt, opt)
+        ashiria GetoptError(_('option --%s sio a unique prefix') % opt, opt)
     assert len(possibilities) == 1
     unique_match = possibilities[0]
     has_arg = unique_match.endswith('=')
@@ -190,25 +190,25 @@ eleza long_has_args(opt, longopts):
     rudisha has_arg, unique_match
 
 eleza do_shorts(opts, optstring, shortopts, args):
-    while optstring != '':
+    wakati optstring != '':
         opt, optstring = optstring[0], optstring[1:]
         ikiwa short_has_arg(opt, shortopts):
             ikiwa optstring == '':
-                ikiwa not args:
-                    raise GetoptError(_('option -%s requires argument') % opt,
+                ikiwa sio args:
+                    ashiria GetoptError(_('option -%s requires argument') % opt,
                                       opt)
                 optstring, args = args[0], args[1:]
             optarg, optstring = optstring, ''
-        else:
+        isipokua:
             optarg = ''
         opts.append(('-' + opt, optarg))
     rudisha opts, args
 
 eleza short_has_arg(opt, shortopts):
-    for i in range(len(shortopts)):
+    kila i kwenye range(len(shortopts)):
         ikiwa opt == shortopts[i] != ':':
             rudisha shortopts.startswith(':', i+1)
-    raise GetoptError(_('option -%s not recognized') % opt, opt)
+    ashiria GetoptError(_('option -%s sio recognized') % opt, opt)
 
 ikiwa __name__ == '__main__':
     agiza sys

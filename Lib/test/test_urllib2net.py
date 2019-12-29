@@ -14,13 +14,13 @@ TIMEOUT = 60  # seconds
 
 
 eleza _retry_thrice(func, exc, *args, **kwargs):
-    for i in range(3):
-        try:
+    kila i kwenye range(3):
+        jaribu:
             rudisha func(*args, **kwargs)
-        except exc as e:
+        tatizo exc kama e:
             last_exc = e
-            continue
-    raise last_exc
+            endelea
+    ashiria last_exc
 
 eleza _wrap_with_retry_thrice(func, exc):
     eleza wrapped(*args, **kwargs):
@@ -29,12 +29,12 @@ eleza _wrap_with_retry_thrice(func, exc):
 
 # bpo-35411: FTP tests of test_urllib2net randomly fail
 # with "425 Security: Bad IP connecting" on Travis CI
-skip_ftp_test_on_travis = unittest.skipIf('TRAVIS' in os.environ,
+skip_ftp_test_on_travis = unittest.skipIf('TRAVIS' kwenye os.environ,
                                           'bpo-35411: skip FTP test '
                                           'on Travis CI')
 
 
-# Connecting to remote hosts is flaky.  Make it more robust by retrying
+# Connecting to remote hosts ni flaky.  Make it more robust by retrying
 # the connection several times.
 _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
                                               urllib.error.URLError)
@@ -43,7 +43,7 @@ _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
 kundi AuthTests(unittest.TestCase):
     """Tests urllib2 authentication features."""
 
-## Disabled at the moment since there is no page under python.org which
+## Disabled at the moment since there ni no page under python.org which
 ## could be used to HTTP authentication.
 #
 #    eleza test_basic_auth(self):
@@ -53,27 +53,27 @@ kundi AuthTests(unittest.TestCase):
 #        test_hostport = "www.python.org"
 #        test_realm = 'Test Realm'
 #        test_user = 'test.test_urllib2net'
-#        test_password = 'blah'
+#        test_pitaword = 'blah'
 #
 #        # failure
-#        try:
+#        jaribu:
 #            _urlopen_with_retry(test_url)
-#        except urllib2.HTTPError, exc:
+#        tatizo urllib2.HTTPError, exc:
 #            self.assertEqual(exc.code, 401)
-#        else:
+#        isipokua:
 #            self.fail("urlopen() should have failed with 401")
 #
 #        # success
 #        auth_handler = urllib2.HTTPBasicAuthHandler()
-#        auth_handler.add_password(test_realm, test_hostport,
-#                                  test_user, test_password)
+#        auth_handler.add_pitaword(test_realm, test_hostport,
+#                                  test_user, test_pitaword)
 #        opener = urllib2.build_opener(auth_handler)
 #        f = opener.open('http://localhost/')
 #        response = _urlopen_with_retry("http://www.python.org/")
 #
-#        # The 'userinfo' URL component is deprecated by RFC 3986 for security
-#        # reasons, let's not implement it!  (it's already implemented for proxy
-#        # specification strings (that is, URLs or authorities specifying a
+#        # The 'userinfo' URL component ni deprecated by RFC 3986 kila security
+#        # reasons, let's sio implement it!  (it's already implemented kila proxy
+#        # specification strings (that is, URLs ama authorities specifying a
 #        # proxy), so we must keep that)
 #        self.assertRaises(http.client.InvalidURL,
 #                          urllib2.urlopen, "http://evil:thing@example.com")
@@ -88,13 +88,13 @@ kundi CloseSocketTest(unittest.TestCase):
         with support.transient_internet(url):
             response = _urlopen_with_retry(url)
             sock = response.fp
-            self.assertFalse(sock.closed)
+            self.assertUongo(sock.closed)
             response.close()
-            self.assertTrue(sock.closed)
+            self.assertKweli(sock.closed)
 
 kundi OtherNetworkTests(unittest.TestCase):
     eleza setUp(self):
-        ikiwa 0:  # for debugging
+        ikiwa 0:  # kila debugging
             agiza logging
             logger = logging.getLogger("test_urllib2net")
             logger.addHandler(logging.StreamHandler())
@@ -107,52 +107,52 @@ kundi OtherNetworkTests(unittest.TestCase):
         urls = [
             'ftp://www.pythontest.net/README',
             ('ftp://www.pythontest.net/non-existent-file',
-             None, urllib.error.URLError),
+             Tupu, urllib.error.URLError),
             ]
         self._test_urls(urls, self._extra_handlers())
 
     eleza test_file(self):
         TESTFN = support.TESTFN
         f = open(TESTFN, 'w')
-        try:
+        jaribu:
             f.write('hi there\n')
             f.close()
             urls = [
                 'file:' + sanepathname2url(os.path.abspath(TESTFN)),
-                ('file:///nonsensename/etc/passwd', None,
+                ('file:///nonsensename/etc/pitawd', Tupu,
                  urllib.error.URLError),
                 ]
-            self._test_urls(urls, self._extra_handlers(), retry=True)
-        finally:
+            self._test_urls(urls, self._extra_handlers(), retry=Kweli)
+        mwishowe:
             os.remove(TESTFN)
 
         self.assertRaises(ValueError, urllib.request.urlopen,'./relative_path/to/file')
 
     # XXX Following test depends on machine configurations that are internal
     # to CNRI.  Need to set up a public server with the right authentication
-    # configuration for test purposes.
+    # configuration kila test purposes.
 
 ##     eleza test_cnri(self):
 ##         ikiwa socket.gethostname() == 'bitdiddle':
 ##             localhost = 'bitdiddle.cnri.reston.va.us'
 ##         elikiwa socket.gethostname() == 'bitdiddle.concentric.net':
 ##             localhost = 'localhost'
-##         else:
-##             localhost = None
-##         ikiwa localhost is not None:
+##         isipokua:
+##             localhost = Tupu
+##         ikiwa localhost ni sio Tupu:
 ##             urls = [
-##                 'file://%s/etc/passwd' % localhost,
+##                 'file://%s/etc/pitawd' % localhost,
 ##                 'http://%s/simple/' % localhost,
 ##                 'http://%s/digest/' % localhost,
 ##                 'http://%s/not/found.h' % localhost,
 ##                 ]
 
 ##             bauth = HTTPBasicAuthHandler()
-##             bauth.add_password('basic_test_realm', localhost, 'jhylton',
-##                                'password')
+##             bauth.add_pitaword('basic_test_realm', localhost, 'jhylton',
+##                                'pitaword')
 ##             dauth = HTTPDigestAuthHandler()
-##             dauth.add_password('digest_test_realm', localhost, 'jhylton',
-##                                'password')
+##             dauth.add_pitaword('digest_test_realm', localhost, 'jhylton',
+##                                'pitaword')
 
 ##             self._test_urls(urls, self._extra_handlers()+[bauth, dauth])
 
@@ -177,70 +177,70 @@ kundi OtherNetworkTests(unittest.TestCase):
         with support.transient_internet(url):
             opener = urllib.request.build_opener()
             request = urllib.request.Request(url)
-            self.assertFalse(request.header_items())
+            self.assertUongo(request.header_items())
             opener.open(request)
-            self.assertTrue(request.header_items())
-            self.assertTrue(request.has_header('User-agent'))
+            self.assertKweli(request.header_items())
+            self.assertKweli(request.has_header('User-agent'))
             request.add_header('User-Agent','Test-Agent')
             opener.open(request)
             self.assertEqual(request.get_header('User-agent'),'Test-Agent')
 
-    @unittest.skip('XXX: http://www.imdb.com is gone')
+    @unittest.skip('XXX: http://www.imdb.com ni gone')
     eleza test_sites_no_connection_close(self):
-        # Some sites do not send Connection: close header.
+        # Some sites do sio send Connection: close header.
         # Verify that those work properly. (#issue12576)
 
         URL = 'http://www.imdb.com' # mangles Connection:close
 
         with support.transient_internet(URL):
-            try:
-                with urllib.request.urlopen(URL) as res:
-                    pass
-            except ValueError as e:
-                self.fail("urlopen failed for site not sending \
+            jaribu:
+                with urllib.request.urlopen(URL) kama res:
+                    pita
+            tatizo ValueError kama e:
+                self.fail("urlopen failed kila site sio sending \
                            Connection:close")
-            else:
-                self.assertTrue(res)
+            isipokua:
+                self.assertKweli(res)
 
             req = urllib.request.urlopen(URL)
             res = req.read()
-            self.assertTrue(res)
+            self.assertKweli(res)
 
-    eleza _test_urls(self, urls, handlers, retry=True):
+    eleza _test_urls(self, urls, handlers, retry=Kweli):
         agiza time
         agiza logging
         debug = logging.getLogger("test_urllib2").debug
 
         urlopen = urllib.request.build_opener(*handlers).open
-        ikiwa retry:
+        ikiwa rejaribu:
             urlopen = _wrap_with_retry_thrice(urlopen, urllib.error.URLError)
 
-        for url in urls:
+        kila url kwenye urls:
             with self.subTest(url=url):
                 ikiwa isinstance(url, tuple):
                     url, req, expected_err = url
-                else:
-                    req = expected_err = None
+                isipokua:
+                    req = expected_err = Tupu
 
                 with support.transient_internet(url):
-                    try:
+                    jaribu:
                         f = urlopen(url, req, TIMEOUT)
-                    # urllib.error.URLError is a subkundi of OSError
-                    except OSError as err:
+                    # urllib.error.URLError ni a subkundi of OSError
+                    tatizo OSError kama err:
                         ikiwa expected_err:
-                            msg = ("Didn't get expected error(s) %s for %s %s, got %s: %s" %
+                            msg = ("Didn't get expected error(s) %s kila %s %s, got %s: %s" %
                                    (expected_err, url, req, type(err), err))
                             self.assertIsInstance(err, expected_err, msg)
-                        else:
-                            raise
-                    else:
-                        try:
+                        isipokua:
+                            ashiria
+                    isipokua:
+                        jaribu:
                             with support.time_out, \
                                  support.socket_peer_reset, \
                                  support.ioerror_peer_reset:
                                 buf = f.read()
                                 debug("read %d bytes" % len(buf))
-                        except socket.timeout:
+                        tatizo socket.timeout:
                             andika("<timeout: %s>" % url, file=sys.stderr)
                         f.close()
                 time.sleep(0.1)
@@ -258,36 +258,36 @@ kundi OtherNetworkTests(unittest.TestCase):
 
 kundi TimeoutTest(unittest.TestCase):
     eleza test_http_basic(self):
-        self.assertIsNone(socket.getdefaulttimeout())
+        self.assertIsTupu(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
-        with support.transient_internet(url, timeout=None):
+        with support.transient_internet(url, timeout=Tupu):
             u = _urlopen_with_retry(url)
             self.addCleanup(u.close)
-            self.assertIsNone(u.fp.raw._sock.gettimeout())
+            self.assertIsTupu(u.fp.raw._sock.gettimeout())
 
     eleza test_http_default_timeout(self):
-        self.assertIsNone(socket.getdefaulttimeout())
+        self.assertIsTupu(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
         with support.transient_internet(url):
             socket.setdefaulttimeout(60)
-            try:
+            jaribu:
                 u = _urlopen_with_retry(url)
                 self.addCleanup(u.close)
-            finally:
-                socket.setdefaulttimeout(None)
+            mwishowe:
+                socket.setdefaulttimeout(Tupu)
             self.assertEqual(u.fp.raw._sock.gettimeout(), 60)
 
     eleza test_http_no_timeout(self):
-        self.assertIsNone(socket.getdefaulttimeout())
+        self.assertIsTupu(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
         with support.transient_internet(url):
             socket.setdefaulttimeout(60)
-            try:
-                u = _urlopen_with_retry(url, timeout=None)
+            jaribu:
+                u = _urlopen_with_retry(url, timeout=Tupu)
                 self.addCleanup(u.close)
-            finally:
-                socket.setdefaulttimeout(None)
-            self.assertIsNone(u.fp.raw._sock.gettimeout())
+            mwishowe:
+                socket.setdefaulttimeout(Tupu)
+            self.assertIsTupu(u.fp.raw._sock.gettimeout())
 
     eleza test_http_timeout(self):
         url = support.TEST_HTTP_URL
@@ -300,35 +300,35 @@ kundi TimeoutTest(unittest.TestCase):
 
     @skip_ftp_test_on_travis
     eleza test_ftp_basic(self):
-        self.assertIsNone(socket.getdefaulttimeout())
-        with support.transient_internet(self.FTP_HOST, timeout=None):
+        self.assertIsTupu(socket.getdefaulttimeout())
+        with support.transient_internet(self.FTP_HOST, timeout=Tupu):
             u = _urlopen_with_retry(self.FTP_HOST)
             self.addCleanup(u.close)
-            self.assertIsNone(u.fp.fp.raw._sock.gettimeout())
+            self.assertIsTupu(u.fp.fp.raw._sock.gettimeout())
 
     @skip_ftp_test_on_travis
     eleza test_ftp_default_timeout(self):
-        self.assertIsNone(socket.getdefaulttimeout())
+        self.assertIsTupu(socket.getdefaulttimeout())
         with support.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
-            try:
+            jaribu:
                 u = _urlopen_with_retry(self.FTP_HOST)
                 self.addCleanup(u.close)
-            finally:
-                socket.setdefaulttimeout(None)
+            mwishowe:
+                socket.setdefaulttimeout(Tupu)
             self.assertEqual(u.fp.fp.raw._sock.gettimeout(), 60)
 
     @skip_ftp_test_on_travis
     eleza test_ftp_no_timeout(self):
-        self.assertIsNone(socket.getdefaulttimeout())
+        self.assertIsTupu(socket.getdefaulttimeout())
         with support.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
-            try:
-                u = _urlopen_with_retry(self.FTP_HOST, timeout=None)
+            jaribu:
+                u = _urlopen_with_retry(self.FTP_HOST, timeout=Tupu)
                 self.addCleanup(u.close)
-            finally:
-                socket.setdefaulttimeout(None)
-            self.assertIsNone(u.fp.fp.raw._sock.gettimeout())
+            mwishowe:
+                socket.setdefaulttimeout(Tupu)
+            self.assertIsTupu(u.fp.fp.raw._sock.gettimeout())
 
     @skip_ftp_test_on_travis
     eleza test_ftp_timeout(self):

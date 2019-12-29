@@ -8,17 +8,17 @@ hexbin(inputfilename, outputfilename)
 #
 # Jack Jansen, CWI, August 1995.
 #
-# The module is supposed to be as compatible as possible. Especially the
+# The module ni supposed to be kama compatible kama possible. Especially the
 # easy interface should work "as expected" on any platform.
-# XXXX Note: currently, textfiles appear in mac-form on all platforms.
-# We seem to lack a simple character-translate in python.
+# XXXX Note: currently, textfiles appear kwenye mac-form on all platforms.
+# We seem to lack a simple character-translate kwenye python.
 # (we should probably use ISO-Latin-1 on all but the mac platform).
 # XXXX The simple routines are too simple: they expect to hold the complete
 # files in-core. Should be fixed.
 # XXXX It would be nice to handle AppleDouble format on unix
-# (for servers serving macs).
+# (kila servers serving macs).
 # XXXX I don't understand what happens when you get 0x90 times the same byte on
-# input. The resulting code (xx 90 90) would appear to be interpreted as an
+# input. The resulting code (xx 90 90) would appear to be interpreted kama an
 # escaped *value* of 0x90. All coders I've seen appear to ignore this nicety...
 #
 agiza io
@@ -29,19 +29,19 @@ agiza binascii
 __all__ = ["binhex","hexbin","Error"]
 
 kundi Error(Exception):
-    pass
+    pita
 
 # States (what have we written)
 _DID_HEADER = 0
 _DID_DATA = 1
 
 # Various constants
-REASONABLY_LARGE = 32768  # Minimal amount we pass the rle-coder
+REASONABLY_LARGE = 32768  # Minimal amount we pita the rle-coder
 LINELEN = 64
 RUNCHAR = b"\x90"
 
 #
-# This code is no longer byte-order dependent
+# This code ni no longer byte-order dependent
 
 
 kundi FInfo:
@@ -52,10 +52,10 @@ kundi FInfo:
 
 eleza getfileinfo(name):
     finfo = FInfo()
-    with io.open(name, 'rb') as fp:
-        # Quick check for textfile
+    with io.open(name, 'rb') kama fp:
+        # Quick check kila textfile
         data = fp.read(512)
-        ikiwa 0 not in data:
+        ikiwa 0 haiko kwenye data:
             finfo.Type = 'TEXT'
         fp.seek(0, 2)
         dsize = fp.tell()
@@ -65,19 +65,19 @@ eleza getfileinfo(name):
 
 kundi openrsrc:
     eleza __init__(self, *args):
-        pass
+        pita
 
     eleza read(self, *args):
         rudisha b''
 
     eleza write(self, *args):
-        pass
+        pita
 
     eleza close(self):
-        pass
+        pita
 
 kundi _Hqxcoderengine:
-    """Write data to the coder in 3-byte chunks"""
+    """Write data to the coder kwenye 3-byte chunks"""
 
     eleza __init__(self, ofp):
         self.ofp = ofp
@@ -91,14 +91,14 @@ kundi _Hqxcoderengine:
         todo = (datalen // 3) * 3
         data = self.data[:todo]
         self.data = self.data[todo:]
-        ikiwa not data:
-            return
+        ikiwa sio data:
+            rudisha
         self.hqxdata = self.hqxdata + binascii.b2a_hqx(data)
         self._flush(0)
 
     eleza _flush(self, force):
         first = 0
-        while first <= len(self.hqxdata) - self.linelen:
+        wakati first <= len(self.hqxdata) - self.linelen:
             last = first + self.linelen
             self.ofp.write(self.hqxdata[first:last] + b'\n')
             self.linelen = LINELEN
@@ -112,10 +112,10 @@ kundi _Hqxcoderengine:
             self.hqxdata = self.hqxdata + binascii.b2a_hqx(self.data)
         self._flush(1)
         self.ofp.close()
-        del self.ofp
+        toa self.ofp
 
 kundi _Rlecoderengine:
-    """Write data to the RLE-coder in suitably large chunks"""
+    """Write data to the RLE-coder kwenye suitably large chunks"""
 
     eleza __init__(self, ofp):
         self.ofp = ofp
@@ -124,7 +124,7 @@ kundi _Rlecoderengine:
     eleza write(self, data):
         self.data = self.data + data
         ikiwa len(self.data) < REASONABLY_LARGE:
-            return
+            rudisha
         rledata = binascii.rlecode_hqx(self.data)
         self.ofp.write(rledata)
         self.data = b''
@@ -134,22 +134,22 @@ kundi _Rlecoderengine:
             rledata = binascii.rlecode_hqx(self.data)
             self.ofp.write(rledata)
         self.ofp.close()
-        del self.ofp
+        toa self.ofp
 
 kundi BinHex:
     eleza __init__(self, name_finfo_dlen_rlen, ofp):
         name, finfo, dlen, rlen = name_finfo_dlen_rlen
-        close_on_error = False
+        close_on_error = Uongo
         ikiwa isinstance(ofp, str):
             ofname = ofp
             ofp = io.open(ofname, 'wb')
-            close_on_error = True
-        try:
+            close_on_error = Kweli
+        jaribu:
             ofp.write(b'(This file must be converted with BinHex 4.0)\r\r:')
             hqxer = _Hqxcoderengine(ofp)
             self.ofp = _Rlecoderengine(hqxer)
             self.crc = 0
-            ikiwa finfo is None:
+            ikiwa finfo ni Tupu:
                 finfo = FInfo()
             self.dlen = dlen
             self.rlen = rlen
@@ -158,12 +158,12 @@ kundi BinHex:
         except:
             ikiwa close_on_error:
                 ofp.close()
-            raise
+            ashiria
 
     eleza _writeinfo(self, name, finfo):
         nl = len(name)
         ikiwa nl > 63:
-            raise Error('Filename too long')
+            ashiria Error('Filename too long')
         d = bytes([nl]) + name.encode("latin-1") + b'\0'
         tp, cr = finfo.Type, finfo.Creator
         ikiwa isinstance(tp, str):
@@ -188,20 +188,20 @@ kundi BinHex:
         # self.crc = binascii.crc_hqx('\0\0', self.crc)
         ikiwa self.crc < 0:
             fmt = '>h'
-        else:
+        isipokua:
             fmt = '>H'
         self.ofp.write(struct.pack(fmt, self.crc))
         self.crc = 0
 
     eleza write(self, data):
         ikiwa self.state != _DID_HEADER:
-            raise Error('Writing data at the wrong time')
+            ashiria Error('Writing data at the wrong time')
         self.dlen = self.dlen - len(data)
         self._write(data)
 
     eleza close_data(self):
         ikiwa self.dlen != 0:
-            raise Error('Incorrect data size, diff=%r' % (self.rlen,))
+            ashiria Error('Incorrect data size, diff=%r' % (self.rlen,))
         self._writecrc()
         self.state = _DID_DATA
 
@@ -209,25 +209,25 @@ kundi BinHex:
         ikiwa self.state < _DID_DATA:
             self.close_data()
         ikiwa self.state != _DID_DATA:
-            raise Error('Writing resource data at the wrong time')
+            ashiria Error('Writing resource data at the wrong time')
         self.rlen = self.rlen - len(data)
         self._write(data)
 
     eleza close(self):
-        ikiwa self.state is None:
-            return
-        try:
+        ikiwa self.state ni Tupu:
+            rudisha
+        jaribu:
             ikiwa self.state < _DID_DATA:
                 self.close_data()
             ikiwa self.state != _DID_DATA:
-                raise Error('Close at the wrong time')
+                ashiria Error('Close at the wrong time')
             ikiwa self.rlen != 0:
-                raise Error("Incorrect resource-datasize, diff=%r" % (self.rlen,))
+                ashiria Error("Incorrect resource-datasize, diff=%r" % (self.rlen,))
             self._writecrc()
-        finally:
-            self.state = None
+        mwishowe:
+            self.state = Tupu
             ofp = self.ofp
-            del self.ofp
+            toa self.ofp
             ofp.close()
 
 eleza binhex(inp, out):
@@ -235,24 +235,24 @@ eleza binhex(inp, out):
     finfo = getfileinfo(inp)
     ofp = BinHex(finfo, out)
 
-    with io.open(inp, 'rb') as ifp:
+    with io.open(inp, 'rb') kama ifp:
         # XXXX Do textfile translation on non-mac systems
-        while True:
+        wakati Kweli:
             d = ifp.read(128000)
-            ikiwa not d: break
+            ikiwa sio d: koma
             ofp.write(d)
         ofp.close_data()
 
     ifp = openrsrc(inp, 'rb')
-    while True:
+    wakati Kweli:
         d = ifp.read(128000)
-        ikiwa not d: break
+        ikiwa sio d: koma
         ofp.write_rsrc(d)
     ofp.close()
     ifp.close()
 
 kundi _Hqxdecoderengine:
-    """Read data via the decoder in 4-byte chunks"""
+    """Read data via the decoder kwenye 4-byte chunks"""
 
     eleza __init__(self, ifp):
         self.ifp = ifp
@@ -263,31 +263,31 @@ kundi _Hqxdecoderengine:
         decdata = b''
         wtd = totalwtd
         #
-        # The loop here is convoluted, since we don't really now how
-        # much to decode: there may be newlines in the incoming data.
-        while wtd > 0:
+        # The loop here ni convoluted, since we don't really now how
+        # much to decode: there may be newlines kwenye the incoming data.
+        wakati wtd > 0:
             ikiwa self.eof: rudisha decdata
             wtd = ((wtd + 2) // 3) * 4
             data = self.ifp.read(wtd)
             #
-            # Next problem: there may not be a complete number of
-            # bytes in what we pass to a2b. Solve by yet another
+            # Next problem: there may sio be a complete number of
+            # bytes kwenye what we pita to a2b. Solve by yet another
             # loop.
             #
-            while True:
-                try:
+            wakati Kweli:
+                jaribu:
                     decdatacur, self.eof = binascii.a2b_hqx(data)
-                    break
-                except binascii.Incomplete:
-                    pass
+                    koma
+                tatizo binascii.Incomplete:
+                    pita
                 newdata = self.ifp.read(1)
-                ikiwa not newdata:
-                    raise Error('Premature EOF on binhex file')
+                ikiwa sio newdata:
+                    ashiria Error('Premature EOF on binhex file')
                 data = data + newdata
             decdata = decdata + decdatacur
             wtd = totalwtd - len(decdata)
-            ikiwa not decdata and not self.eof:
-                raise Error('Premature EOF on binhex file')
+            ikiwa sio decdata na sio self.eof:
+                ashiria Error('Premature EOF on binhex file')
         rudisha decdata
 
     eleza close(self):
@@ -315,14 +315,14 @@ kundi _Rledecoderengine:
             self.post_buffer = self.post_buffer + \
                 binascii.rledecode_hqx(self.pre_buffer)
             self.pre_buffer = b''
-            return
+            rudisha
 
         #
         # Obfuscated code ahead. We have to take care that we don't
         # end up with an orphaned RUNCHAR later on. So, we keep a couple
-        # of bytes in the buffer, depending on what the end of
+        # of bytes kwenye the buffer, depending on what the end of
         # the buffer looks like:
-        # '\220\0\220' - Keep 3 bytes: repeated \220 (escaped as \220\0)
+        # '\220\0\220' - Keep 3 bytes: repeated \220 (escaped kama \220\0)
         # '?\220' - Keep 2 bytes: repeated something-else
         # '\220\0' - Escaped \220: Keep 2 bytes.
         # '?\220?' - Complete repeat sequence: decode all
@@ -336,8 +336,8 @@ kundi _Rledecoderengine:
         elikiwa self.pre_buffer[-2:] == RUNCHAR + b'\0':
             mark = mark - 2
         elikiwa self.pre_buffer[-2:-1] == RUNCHAR:
-            pass # Decode all
-        else:
+            pita # Decode all
+        isipokua:
             mark = mark - 1
 
         self.post_buffer = self.post_buffer + \
@@ -354,16 +354,16 @@ kundi HexBin:
         #
         # Find initial colon.
         #
-        while True:
+        wakati Kweli:
             ch = ifp.read(1)
-            ikiwa not ch:
-                raise Error("No binhex data found")
-            # Cater for \r\n terminated lines (which show up as \n\r, hence
+            ikiwa sio ch:
+                ashiria Error("No binhex data found")
+            # Cater kila \r\n terminated lines (which show up kama \n\r, hence
             # all lines start with \r)
             ikiwa ch == b'\r':
-                continue
+                endelea
             ikiwa ch == b':':
-                break
+                koma
 
         hqxifp = _Hqxdecoderengine(ifp)
         self.ifp = _Rledecoderengine(hqxifp)
@@ -381,7 +381,7 @@ kundi HexBin:
         # XXXX Is this needed??
         self.crc = self.crc & 0xffff
         ikiwa filecrc != self.crc:
-            raise Error('CRC error, computed %x, read %x'
+            ashiria Error('CRC error, computed %x, read %x'
                         % (self.crc, filecrc))
         self.crc = 0
 
@@ -407,21 +407,21 @@ kundi HexBin:
 
     eleza read(self, *n):
         ikiwa self.state != _DID_HEADER:
-            raise Error('Read data at wrong time')
+            ashiria Error('Read data at wrong time')
         ikiwa n:
             n = n[0]
             n = min(n, self.dlen)
-        else:
+        isipokua:
             n = self.dlen
         rv = b''
-        while len(rv) < n:
+        wakati len(rv) < n:
             rv = rv + self._read(n-len(rv))
         self.dlen = self.dlen - n
         rudisha rv
 
     eleza close_data(self):
         ikiwa self.state != _DID_HEADER:
-            raise Error('close_data at wrong time')
+            ashiria Error('close_data at wrong time')
         ikiwa self.dlen:
             dummy = self._read(self.dlen)
         self._checkcrc()
@@ -431,38 +431,38 @@ kundi HexBin:
         ikiwa self.state == _DID_HEADER:
             self.close_data()
         ikiwa self.state != _DID_DATA:
-            raise Error('Read resource data at wrong time')
+            ashiria Error('Read resource data at wrong time')
         ikiwa n:
             n = n[0]
             n = min(n, self.rlen)
-        else:
+        isipokua:
             n = self.rlen
         self.rlen = self.rlen - n
         rudisha self._read(n)
 
     eleza close(self):
-        ikiwa self.state is None:
-            return
-        try:
+        ikiwa self.state ni Tupu:
+            rudisha
+        jaribu:
             ikiwa self.rlen:
                 dummy = self.read_rsrc(self.rlen)
             self._checkcrc()
-        finally:
-            self.state = None
+        mwishowe:
+            self.state = Tupu
             self.ifp.close()
 
 eleza hexbin(inp, out):
     """hexbin(infilename, outfilename) - Decode binhexed file"""
     ifp = HexBin(inp)
     finfo = ifp.FInfo
-    ikiwa not out:
+    ikiwa sio out:
         out = ifp.FName
 
-    with io.open(out, 'wb') as ofp:
+    with io.open(out, 'wb') kama ofp:
         # XXXX Do translation on non-mac systems
-        while True:
+        wakati Kweli:
             d = ifp.read(128000)
-            ikiwa not d: break
+            ikiwa sio d: koma
             ofp.write(d)
     ifp.close_data()
 
@@ -470,9 +470,9 @@ eleza hexbin(inp, out):
     ikiwa d:
         ofp = openrsrc(out, 'wb')
         ofp.write(d)
-        while True:
+        wakati Kweli:
             d = ifp.read_rsrc(128000)
-            ikiwa not d: break
+            ikiwa sio d: koma
             ofp.write(d)
         ofp.close()
 

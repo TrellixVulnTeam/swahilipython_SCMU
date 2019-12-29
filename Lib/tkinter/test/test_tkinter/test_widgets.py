@@ -78,9 +78,9 @@ class ToplevelTest(AbstractToplevelTest, unittest.TestCase):
     def test_screen(self):
         widget = self.create()
         self.assertEqual(widget['screen'], '')
-        try:
+        jaribu:
             display = os.environ['DISPLAY']
-        except KeyError:
+        tatizo KeyError:
             self.skipTest('No $DISPLAY set.')
         self.checkInvalidParam(widget, 'screen', display,
                 errmsg="can't modify -screen option after widget is created")
@@ -274,11 +274,11 @@ class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         errmsg = 'image "spam" doesn\'t exist'
         with self.assertRaises(tkinter.TclError) as cm:
             widget['image'] = 'spam'
-        if errmsg is not None:
+        if errmsg ni sio None:
             self.assertEqual(str(cm.exception), errmsg)
         with self.assertRaises(tkinter.TclError) as cm:
             widget.configure({'image': 'spam'})
-        if errmsg is not None:
+        if errmsg ni sio None:
             self.assertEqual(str(cm.exception), errmsg)
 
     def test_menu(self):
@@ -344,7 +344,7 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
         self.checkParam(widget, 'insertwidth', -2, expected=2)
         if pixels_round(0.9) <= 0:
             self.checkParam(widget, 'insertwidth', 0.9, expected=2)
-        else:
+        isipokua:
             self.checkParam(widget, 'insertwidth', 0.9, expected=1)
 
     def test_invalidcommand(self):
@@ -636,7 +636,7 @@ class TextTest(AbstractWidgetTest, unittest.TestCase):
         widget = self.create()
         if tcl_version < (8, 5):
             self.checkParams(widget, 'state', 'disabled', 'normal')
-        else:
+        isipokua:
             self.checkEnumParam(widget, 'state', 'disabled', 'normal')
 
     def test_tabs(self):
@@ -644,7 +644,7 @@ class TextTest(AbstractWidgetTest, unittest.TestCase):
         if get_tk_patchlevel() < (8, 5, 11):
             self.checkParam(widget, 'tabs', (10.2, 20.7, '1i', '2i'),
                             expected=('10.2', '20.7', '1i', '2i'))
-        else:
+        isipokua:
             self.checkParam(widget, 'tabs', (10.2, 20.7, '1i', '2i'))
         self.checkParam(widget, 'tabs', '10.2 20.7 1i 2i',
                         expected=('10.2', '20.7', '1i', '2i'))
@@ -673,7 +673,7 @@ class TextTest(AbstractWidgetTest, unittest.TestCase):
         widget = self.create()
         if tcl_version < (8, 5):
             self.checkParams(widget, 'wrap', 'char', 'none', 'word')
-        else:
+        isipokua:
             self.checkEnumParam(widget, 'wrap', 'char', 'none', 'word')
 
     def test_bbox(self):
@@ -1125,7 +1125,7 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
     def check_paneconfigure(self, p, b, name, value, expected, stringify=False):
         conv = lambda x: x
-        if not self.wantobjects or stringify:
+        if sio self.wantobjects or stringify:
             expected = str(expected)
         if self.wantobjects and stringify:
             conv = str

@@ -11,7 +11,7 @@ kutoka _testcapi agiza _test_structmembersType, \
     LLONG_MAX, LLONG_MIN, ULLONG_MAX, \
     PY_SSIZE_T_MAX, PY_SSIZE_T_MIN
 
-ts=_test_structmembersType(False,  # T_BOOL
+ts=_test_structmembersType(Uongo,  # T_BOOL
                           1,      # T_BYTE
                           2,      # T_UBYTE
                           3,      # T_SHORT
@@ -29,10 +29,10 @@ ts=_test_structmembersType(False,  # T_BOOL
 kundi ReadWriteTests(unittest.TestCase):
 
     eleza test_bool(self):
-        ts.T_BOOL = True
-        self.assertEqual(ts.T_BOOL, True)
-        ts.T_BOOL = False
-        self.assertEqual(ts.T_BOOL, False)
+        ts.T_BOOL = Kweli
+        self.assertEqual(ts.T_BOOL, Kweli)
+        ts.T_BOOL = Uongo
+        self.assertEqual(ts.T_BOOL, Uongo)
         self.assertRaises(TypeError, setattr, ts, 'T_BOOL', 1)
 
     eleza test_byte(self):
@@ -73,7 +73,7 @@ kundi ReadWriteTests(unittest.TestCase):
         ts.T_PYSSIZET = PY_SSIZE_T_MIN
         self.assertEqual(ts.T_PYSSIZET, PY_SSIZE_T_MIN)
 
-    @unittest.skipUnless(hasattr(ts, "T_LONGLONG"), "long long not present")
+    @unittest.skipUnless(hasattr(ts, "T_LONGLONG"), "long long sio present")
     eleza test_longlong(self):
         ts.T_LONGLONG = LLONG_MAX
         self.assertEqual(ts.T_LONGLONG, LLONG_MAX)
@@ -83,7 +83,7 @@ kundi ReadWriteTests(unittest.TestCase):
         ts.T_ULONGLONG = ULLONG_MAX
         self.assertEqual(ts.T_ULONGLONG, ULLONG_MAX)
 
-        ## make sure these will accept a plain int as well as a long
+        ## make sure these will accept a plain int kama well kama a long
         ts.T_LONGLONG = 3
         self.assertEqual(ts.T_LONGLONG, 3)
         ts.T_ULONGLONG = 4
@@ -103,8 +103,8 @@ kundi ReadWriteTests(unittest.TestCase):
 
         # issue8014: this produced 'bad argument to internal function'
         # internal error
-        for nonint in None, 3.2j, "full of eels", {}, []:
-            for attr in integer_attributes:
+        kila nonint kwenye Tupu, 3.2j, "full of eels", {}, []:
+            kila attr kwenye integer_attributes:
                 self.assertRaises(TypeError, setattr, ts, attr, nonint)
 
     eleza test_inplace_string(self):

@@ -33,7 +33,7 @@ def _whatsnd(data):
     fakefile = BytesIO(hdr)
     for testfn in sndhdr.tests:
         res = testfn(hdr, fakefile)
-        if res is not None:
+        if res ni sio None:
             return _sndhdr_MIMEmap.get(res[0])
     return None
 
@@ -50,7 +50,7 @@ class MIMEAudio(MIMENonMultipart):
         can be decoded by the standard Python `sndhdr' module, then the
         subtype will be automatically included in the Content-Type header.
         Otherwise, you can specify  the specific audio subtype via the
-        _subtype parameter.  If _subtype is not given, and no subtype can be
+        _subtype parameter.  If _subtype ni sio given, and no subtype can be
         guessed, a TypeError is raised.
 
         _encoder is a function which will perform the actual encoding for
@@ -67,7 +67,7 @@ class MIMEAudio(MIMENonMultipart):
         if _subtype is None:
             _subtype = _whatsnd(_audiodata)
         if _subtype is None:
-            raise TypeError('Could not find audio MIME subtype')
+            raise TypeError('Could sio find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_audiodata)

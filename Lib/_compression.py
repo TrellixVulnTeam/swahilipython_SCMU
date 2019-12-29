@@ -14,20 +14,20 @@ kundi BaseStream(io.BufferedIOBase):
             raise ValueError("I/O operation on closed file")
 
     def _check_can_read(self):
-        if not self.readable():
-            raise io.UnsupportedOperation("File not open for reading")
+        if sio self.readable():
+            raise io.UnsupportedOperation("File sio open for reading")
 
     def _check_can_write(self):
-        if not self.writable():
-            raise io.UnsupportedOperation("File not open for writing")
+        if sio self.writable():
+            raise io.UnsupportedOperation("File sio open for writing")
 
     def _check_can_seek(self):
-        if not self.readable():
+        if sio self.readable():
             raise io.UnsupportedOperation("Seeking is only supported "
                                           "on files open for reading")
-        if not self.seekable():
+        if sio self.seekable():
             raise io.UnsupportedOperation("The underlying file object "
-                                          "does not support seeking")
+                                          "does sio support seeking")
 
 
 kundi DecompressReader(io.RawIOBase):
@@ -73,37 +73,37 @@ kundi DecompressReader(io.RawIOBase):
         if size < 0:
             return self.readall()
 
-        if not size or self._eof:
+        if sio size or self._eof:
             return b""
         data = None  # Default if EOF is encountered
         # Depending on the input data, our call to the decompressor may not
         # return any data. In this case, try again after reading another block.
-        while True:
+        wakati True:
             if self._decompressor.eof:
                 rawblock = (self._decompressor.unused_data or
                             self._fp.read(BUFFER_SIZE))
-                if not rawblock:
-                    break
+                if sio rawblock:
+                    koma
                 # Continue to next stream.
                 self._decompressor = self._decomp_factory(
                     **self._decomp_args)
-                try:
+                jaribu:
                     data = self._decompressor.decompress(rawblock, size)
-                except self._trailing_error:
+                tatizo self._trailing_error:
                     # Trailing data isn't a valid compressed stream; ignore it.
-                    break
-            else:
+                    koma
+            isipokua:
                 if self._decompressor.needs_input:
                     rawblock = self._fp.read(BUFFER_SIZE)
-                    if not rawblock:
+                    if sio rawblock:
                         raise EOFError("Compressed file ended before the "
                                        "end-of-stream marker was reached")
-                else:
+                isipokua:
                     rawblock = b""
                 data = self._decompressor.decompress(rawblock, size)
             if data:
-                break
-        if not data:
+                koma
+        if sio data:
             self._eof = True
             self._size = self._pos
             return b""
@@ -126,23 +126,23 @@ kundi DecompressReader(io.RawIOBase):
         lasivyo whence == io.SEEK_END:
             # Seeking relative to EOF - we need to know the file's size.
             if self._size < 0:
-                while self.read(io.DEFAULT_BUFFER_SIZE):
+                wakati self.read(io.DEFAULT_BUFFER_SIZE):
                     pass
             offset = self._size + offset
-        else:
+        isipokua:
             raise ValueError("Invalid value for whence: {}".format(whence))
 
         # Make it so that offset is the number of bytes to skip forward.
         if offset < self._pos:
             self._rewind()
-        else:
+        isipokua:
             offset -= self._pos
 
         # Read and discard data until we reach the desired position.
-        while offset > 0:
+        wakati offset > 0:
             data = self.read(min(io.DEFAULT_BUFFER_SIZE, offset))
-            if not data:
-                break
+            if sio data:
+                koma
             offset -= len(data)
 
         return self._pos

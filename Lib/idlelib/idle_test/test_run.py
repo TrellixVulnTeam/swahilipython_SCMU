@@ -14,19 +14,19 @@ kundi RunTest(unittest.TestCase):
     eleza test_print_exception_unhashable(self):
         kundi UnhashableException(Exception):
             eleza __eq__(self, other):
-                rudisha True
+                rudisha Kweli
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
-        try:
-            raise ex2 kutoka ex1
-        except UnhashableException:
-            try:
-                raise ex1
-            except UnhashableException:
-                with captured_stderr() as output:
+        jaribu:
+            ashiria ex2 kutoka ex1
+        tatizo UnhashableException:
+            jaribu:
+                ashiria ex1
+            tatizo UnhashableException:
+                with captured_stderr() kama output:
                     with mock.patch.object(run,
-                                           'cleanup_traceback') as ct:
+                                           'cleanup_traceback') kama ct:
                         ct.side_effect = lambda t, e: t
                         run.print_exception()
 
@@ -61,7 +61,7 @@ kundi MockShell:
     eleza readline(self):
         rudisha self.lines.pop()
     eleza close(self):
-        pass
+        pita
     eleza reset(self):
         self.written = []
     eleza push(self, lines):
@@ -76,13 +76,13 @@ kundi StdInputFilesTest(unittest.TestCase):
         self.assertIsInstance(f, io.TextIOBase)
         self.assertEqual(f.encoding, 'utf-8')
         self.assertEqual(f.errors, 'strict')
-        self.assertIsNone(f.newlines)
+        self.assertIsTupu(f.newlines)
         self.assertEqual(f.name, '<stdin>')
-        self.assertFalse(f.closed)
-        self.assertTrue(f.isatty())
-        self.assertTrue(f.readable())
-        self.assertFalse(f.writable())
-        self.assertFalse(f.seekable())
+        self.assertUongo(f.closed)
+        self.assertKweli(f.isatty())
+        self.assertKweli(f.readable())
+        self.assertUongo(f.writable())
+        self.assertUongo(f.seekable())
 
     eleza test_unsupported(self):
         shell = MockShell()
@@ -101,7 +101,7 @@ kundi StdInputFilesTest(unittest.TestCase):
         shell.push(['one\n', 'two\n', ''])
         self.assertEqual(f.read(-1), 'one\ntwo\n')
         shell.push(['one\n', 'two\n', ''])
-        self.assertEqual(f.read(None), 'one\ntwo\n')
+        self.assertEqual(f.read(Tupu), 'one\ntwo\n')
         shell.push(['one\n', 'two\n', 'three\n', ''])
         self.assertEqual(f.read(2), 'on')
         self.assertEqual(f.read(3), 'e\nt')
@@ -119,7 +119,7 @@ kundi StdInputFilesTest(unittest.TestCase):
         shell.push(['one\n', 'two\n', 'three\n', 'four\n'])
         self.assertEqual(f.readline(), 'one\n')
         self.assertEqual(f.readline(-1), 'two\n')
-        self.assertEqual(f.readline(None), 'three\n')
+        self.assertEqual(f.readline(Tupu), 'three\n')
         shell.push(['one\ntwo\n'])
         self.assertEqual(f.readline(), 'one\n')
         self.assertEqual(f.readline(), 'two\n')
@@ -146,7 +146,7 @@ kundi StdInputFilesTest(unittest.TestCase):
         shell.push(['one\n', 'two\n', ''])
         self.assertEqual(f.readlines(-1), ['one\n', 'two\n'])
         shell.push(['one\n', 'two\n', ''])
-        self.assertEqual(f.readlines(None), ['one\n', 'two\n'])
+        self.assertEqual(f.readlines(Tupu), ['one\n', 'two\n'])
         shell.push(['one\n', 'two\n', ''])
         self.assertEqual(f.readlines(0), ['one\n', 'two\n'])
         shell.push(['one\n', 'two\n', ''])
@@ -163,10 +163,10 @@ kundi StdInputFilesTest(unittest.TestCase):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         shell.push(['one\n', 'two\n', ''])
-        self.assertFalse(f.closed)
+        self.assertUongo(f.closed)
         self.assertEqual(f.readline(), 'one\n')
         f.close()
-        self.assertFalse(f.closed)
+        self.assertUongo(f.closed)
         self.assertEqual(f.readline(), 'two\n')
         self.assertRaises(TypeError, f.close, 1)
 
@@ -179,13 +179,13 @@ kundi StdOutputFilesTest(unittest.TestCase):
         self.assertIsInstance(f, io.TextIOBase)
         self.assertEqual(f.encoding, 'utf-8')
         self.assertEqual(f.errors, 'strict')
-        self.assertIsNone(f.newlines)
+        self.assertIsTupu(f.newlines)
         self.assertEqual(f.name, '<stdout>')
-        self.assertFalse(f.closed)
-        self.assertTrue(f.isatty())
-        self.assertFalse(f.readable())
-        self.assertTrue(f.writable())
-        self.assertFalse(f.seekable())
+        self.assertUongo(f.closed)
+        self.assertKweli(f.isatty())
+        self.assertUongo(f.readable())
+        self.assertKweli(f.writable())
+        self.assertUongo(f.seekable())
 
     eleza test_unsupported(self):
         shell = MockShell()
@@ -272,10 +272,10 @@ kundi StdOutputFilesTest(unittest.TestCase):
     eleza test_close(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stdout')
-        self.assertFalse(f.closed)
+        self.assertUongo(f.closed)
         f.write('test')
         f.close()
-        self.assertTrue(f.closed)
+        self.assertKweli(f.closed)
         self.assertRaises(ValueError, f.write, 'x')
         self.assertEqual(shell.written, [('test', 'stdout')])
         f.close()
@@ -301,7 +301,7 @@ kundi TestSysRecursionLimitWrappers(unittest.TestCase):
         self.addCleanup(sys.setrecursionlimit, orig_reclimit)
         sys.setrecursionlimit(orig_reclimit + 3)
 
-        # check that the new limit is returned by sys.getrecursionlimit()
+        # check that the new limit ni rudishaed by sys.getrecursionlimit()
         new_reclimit = sys.getrecursionlimit()
         self.assertEqual(new_reclimit, orig_reclimit + 3)
 
@@ -316,7 +316,7 @@ kundi TestSysRecursionLimitWrappers(unittest.TestCase):
         eleza func(): "docstring"
         run.fixdoc(func, "more")
         self.assertEqual(func.__doc__, "docstring\n\nmore")
-        func.__doc__ = None
+        func.__doc__ = Tupu
         run.fixdoc(func, "more")
         self.assertEqual(func.__doc__, "more")
 

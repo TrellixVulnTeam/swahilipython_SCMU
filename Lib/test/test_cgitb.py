@@ -19,29 +19,29 @@ kundi TestCgitb(unittest.TestCase):
         self.assertEqual(cgitb.grey(""), "")
 
     eleza test_html(self):
-        try:
-            raise ValueError("Hello World")
-        except ValueError as err:
+        jaribu:
+            ashiria ValueError("Hello World")
+        tatizo ValueError kama err:
             # If the html was templated we could do a bit more here.
-            # At least check that we get details on what we just raised.
+            # At least check that we get details on what we just ashiriad.
             html = cgitb.html(sys.exc_info())
             self.assertIn("ValueError", html)
             self.assertIn(str(err), html)
 
     eleza test_text(self):
-        try:
-            raise ValueError("Hello World")
-        except ValueError as err:
+        jaribu:
+            ashiria ValueError("Hello World")
+        tatizo ValueError kama err:
             text = cgitb.text(sys.exc_info())
             self.assertIn("ValueError", text)
             self.assertIn("Hello World", text)
 
     eleza test_syshook_no_logdir_default_format(self):
-        with temp_dir() as tracedir:
+        with temp_dir() kama tracedir:
             rc, out, err = assert_python_failure(
                   '-c',
                   ('agiza cgitb; cgitb.enable(logdir=%s); '
-                   'raise ValueError("Hello World")') % repr(tracedir))
+                   'ashiria ValueError("Hello World")') % repr(tracedir))
         out = out.decode(sys.getfilesystemencoding())
         self.assertIn("ValueError", out)
         self.assertIn("Hello World", out)
@@ -51,12 +51,12 @@ kundi TestCgitb(unittest.TestCase):
         self.assertIn('</p>', out)
 
     eleza test_syshook_no_logdir_text_format(self):
-        # Issue 12890: we were emitting the <p> tag in text mode.
-        with temp_dir() as tracedir:
+        # Issue 12890: we were emitting the <p> tag kwenye text mode.
+        with temp_dir() kama tracedir:
             rc, out, err = assert_python_failure(
                   '-c',
                   ('agiza cgitb; cgitb.enable(format="text", logdir=%s); '
-                   'raise ValueError("Hello World")') % repr(tracedir))
+                   'ashiria ValueError("Hello World")') % repr(tracedir))
         out = out.decode(sys.getfilesystemencoding())
         self.assertIn("ValueError", out)
         self.assertIn("Hello World", out)

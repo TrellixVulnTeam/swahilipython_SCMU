@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -3577,7 +3577,7 @@ sqtx8544 squareroot 1.000000E-18 -> 1.00E-9 Rounded
 sqtx8545 squareroot 1.01E-18 -> 1.00E-9 Inexact Rounded
 sqtx8546 squareroot 1.02E-18 -> 1.01E-9 Inexact Rounded
 
--- result exactly representable with precision p, but not necessarily
+-- result exactly representable with precision p, but sio necessarily
 -- exactly representable as a subnormal;  check the correct flags are raised
 precision: 2
 sqtx8547 squareroot 1.21E-20 -> 1E-10 Underflow Subnormal Inexact Rounded

@@ -18,9 +18,9 @@ kundi InitCloseTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text
+        toa cls.text
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         redir = WidgetRedirector(self.text)
@@ -34,7 +34,7 @@ kundi InitCloseTest(unittest.TestCase):
         redir.register('insert', Func)
         redir.close()
         self.assertEqual(redir._operations, {})
-        self.assertFalse(hasattr(self.text, 'widget'))
+        self.assertUongo(hasattr(self.text, 'widget'))
 
 
 kundi WidgetRedirectorTest(unittest.TestCase):
@@ -48,10 +48,10 @@ kundi WidgetRedirectorTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text
+        toa cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.redir = WidgetRedirector(self.text)
@@ -63,7 +63,7 @@ kundi WidgetRedirectorTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
         self.redir.close()
 
-    eleza test_repr(self):  # partly for 100% coverage
+    eleza test_repr(self):  # partly kila 100% coverage
         self.assertIn('Redirector', repr(self.redir))
         self.assertIn('Original', repr(self.orig_insert))
 
@@ -81,29 +81,29 @@ kundi WidgetRedirectorTest(unittest.TestCase):
         self.assertEqual(self.text.get('1.0', 'end'), 'asdf\n')
 
     eleza test_unregister(self):
-        self.assertIsNone(self.redir.unregister('invalid operation name'))
+        self.assertIsTupu(self.redir.unregister('invalid operation name'))
         self.assertEqual(self.redir.unregister('insert'), self.func)
         self.assertNotIn('insert', self.redir._operations)
         self.assertNotIn('insert', self.text.__dict__)
 
     eleza test_unregister_no_attribute(self):
-        del self.text.insert
+        toa self.text.insert
         self.assertEqual(self.redir.unregister('insert'), self.func)
 
     eleza test_dispatch_intercept(self):
-        self.func.__init__(True)
-        self.assertTrue(self.redir.dispatch('insert', False))
-        self.assertFalse(self.func.args[0])
+        self.func.__init__(Kweli)
+        self.assertKweli(self.redir.dispatch('insert', Uongo))
+        self.assertUongo(self.func.args[0])
 
-    eleza test_dispatch_bypass(self):
+    eleza test_dispatch_bypita(self):
         self.orig_insert('insert', 'asdf')
-        # tk.call returns '' where Python would rudisha None
+        # tk.call rudishas '' where Python would rudisha Tupu
         self.assertEqual(self.redir.dispatch('delete', '1.0', 'end'), '')
         self.assertEqual(self.text.get('1.0', 'end'), '\n')
 
     eleza test_dispatch_error(self):
         self.func.__init__(TclError())
-        self.assertEqual(self.redir.dispatch('insert', False), '')
+        self.assertEqual(self.redir.dispatch('insert', Uongo), '')
         self.assertEqual(self.redir.dispatch('invalid'), '')
 
     eleza test_command_dispatch(self):
@@ -112,8 +112,8 @@ kundi WidgetRedirectorTest(unittest.TestCase):
         self.root.call(self.text._w, 'insert', 'hello')
         self.assertEqual(self.func.args, ('hello',))
         self.assertEqual(self.text.get('1.0', 'end'), '\n')
-        # Ensure that called through redir .dispatch and not through
-        # self.text.insert by having mock raise TclError.
+        # Ensure that called through redir .dispatch na sio through
+        # self.text.insert by having mock ashiria TclError.
         self.func.__init__(TclError())
         self.assertEqual(self.root.call(self.text._w, 'insert', 'boo'), '')
 

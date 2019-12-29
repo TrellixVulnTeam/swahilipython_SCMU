@@ -22,12 +22,12 @@ kutoka . agiza process
 kutoka . agiza util
 
 # Try to agiza the mp.synchronize module cleanly, ikiwa it fails
-# raise ImportError for platforms lacking a working sem_open implementation.
+# ashiria ImportError kila platforms lacking a working sem_open implementation.
 # See issue 3770
-try:
+jaribu:
     kutoka _multiprocessing agiza SemLock, sem_unlink
-except (ImportError):
-    raise ImportError("This platform lacks a functioning sem_open" +
+tatizo (ImportError):
+    ashiria ImportError("This platform lacks a functioning sem_open" +
                       " implementation, therefore, the required" +
                       " synchronization primitives needed will not" +
                       " function, see issue 3770.")
@@ -40,7 +40,7 @@ RECURSIVE_MUTEX, SEMAPHORE = list(range(2))
 SEM_VALUE_MAX = _multiprocessing.SemLock.SEM_VALUE_MAX
 
 #
-# Base kundi for semaphores and mutexes; wraps `_multiprocessing.SemLock`
+# Base kundi kila semaphores na mutexes; wraps `_multiprocessing.SemLock`
 #
 
 kundi SemLock(object):
@@ -48,21 +48,21 @@ kundi SemLock(object):
     _rand = tempfile._RandomNameSequence()
 
     eleza __init__(self, kind, value, maxvalue, *, ctx):
-        ikiwa ctx is None:
+        ikiwa ctx ni Tupu:
             ctx = context._default_context.get_context()
         name = ctx.get_start_method()
-        unlink_now = sys.platform == 'win32' or name == 'fork'
-        for i in range(100):
-            try:
+        unlink_now = sys.platform == 'win32' ama name == 'fork'
+        kila i kwenye range(100):
+            jaribu:
                 sl = self._semlock = _multiprocessing.SemLock(
                     kind, value, maxvalue, self._make_name(),
                     unlink_now)
-            except FileExistsError:
-                pass
-            else:
-                break
-        else:
-            raise FileExistsError('cannot find name for semaphore')
+            tatizo FileExistsError:
+                pita
+            isipokua:
+                koma
+        isipokua:
+            ashiria FileExistsError('cannot find name kila semaphore')
 
         util.debug('created semlock with handle %s' % sl.handle)
         self._make_methods()
@@ -72,9 +72,9 @@ kundi SemLock(object):
                 obj._semlock._after_fork()
             util.register_after_fork(self, _after_fork)
 
-        ikiwa self._semlock.name is not None:
+        ikiwa self._semlock.name ni sio Tupu:
             # We only get here ikiwa we are on Unix with forking
-            # disabled.  When the object is garbage collected or the
+            # disabled.  When the object ni garbage collected ama the
             # process shuts down we unlink the semaphore name
             kutoka .resource_tracker agiza register
             register(self._semlock.name, "semaphore")
@@ -102,7 +102,7 @@ kundi SemLock(object):
         sl = self._semlock
         ikiwa sys.platform == 'win32':
             h = context.get_spawning_popen().duplicate_for_child(sl.handle)
-        else:
+        isipokua:
             h = sl.handle
         rudisha (h, sl.kind, sl.maxvalue, sl.name)
 
@@ -129,9 +129,9 @@ kundi Semaphore(SemLock):
         rudisha self._semlock._get_value()
 
     eleza __repr__(self):
-        try:
+        jaribu:
             value = self._semlock._get_value()
-        except Exception:
+        tatizo Exception:
             value = 'unknown'
         rudisha '<%s(value=%s)>' % (self.__class__.__name__, value)
 
@@ -145,9 +145,9 @@ kundi BoundedSemaphore(Semaphore):
         SemLock.__init__(self, SEMAPHORE, value, value, ctx=ctx)
 
     eleza __repr__(self):
-        try:
+        jaribu:
             value = self._semlock._get_value()
-        except Exception:
+        tatizo Exception:
             value = 'unknown'
         rudisha '<%s(value=%s, maxvalue=%s)>' % \
                (self.__class__.__name__, value, self._semlock.maxvalue)
@@ -162,18 +162,18 @@ kundi Lock(SemLock):
         SemLock.__init__(self, SEMAPHORE, 1, 1, ctx=ctx)
 
     eleza __repr__(self):
-        try:
+        jaribu:
             ikiwa self._semlock._is_mine():
                 name = process.current_process().name
                 ikiwa threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
             elikiwa self._semlock._get_value() == 1:
-                name = 'None'
+                name = 'Tupu'
             elikiwa self._semlock._count() > 0:
                 name = 'SomeOtherThread'
-            else:
+            isipokua:
                 name = 'SomeOtherProcess'
-        except Exception:
+        tatizo Exception:
             name = 'unknown'
         rudisha '<%s(owner=%s)>' % (self.__class__.__name__, name)
 
@@ -187,19 +187,19 @@ kundi RLock(SemLock):
         SemLock.__init__(self, RECURSIVE_MUTEX, 1, 1, ctx=ctx)
 
     eleza __repr__(self):
-        try:
+        jaribu:
             ikiwa self._semlock._is_mine():
                 name = process.current_process().name
                 ikiwa threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
                 count = self._semlock._count()
             elikiwa self._semlock._get_value() == 1:
-                name, count = 'None', 0
+                name, count = 'Tupu', 0
             elikiwa self._semlock._count() > 0:
                 name, count = 'SomeOtherThread', 'nonzero'
-            else:
+            isipokua:
                 name, count = 'SomeOtherProcess', 'nonzero'
-        except Exception:
+        tatizo Exception:
             name, count = 'unknown', 'unknown'
         rudisha '<%s(%s, %s)>' % (self.__class__.__name__, name, count)
 
@@ -209,8 +209,8 @@ kundi RLock(SemLock):
 
 kundi Condition(object):
 
-    eleza __init__(self, lock=None, *, ctx):
-        self._lock = lock or ctx.RLock()
+    eleza __init__(self, lock=Tupu, *, ctx):
+        self._lock = lock ama ctx.RLock()
         self._sleeping_count = ctx.Semaphore(0)
         self._woken_count = ctx.Semaphore(0)
         self._wait_semaphore = ctx.Semaphore(0)
@@ -237,79 +237,79 @@ kundi Condition(object):
         self.release = self._lock.release
 
     eleza __repr__(self):
-        try:
+        jaribu:
             num_waiters = (self._sleeping_count._semlock._get_value() -
                            self._woken_count._semlock._get_value())
-        except Exception:
+        tatizo Exception:
             num_waiters = 'unknown'
         rudisha '<%s(%s, %s)>' % (self.__class__.__name__, self._lock, num_waiters)
 
-    eleza wait(self, timeout=None):
+    eleza wait(self, timeout=Tupu):
         assert self._lock._semlock._is_mine(), \
                'must acquire() condition before using wait()'
 
-        # indicate that this thread is going to sleep
+        # indicate that this thread ni going to sleep
         self._sleeping_count.release()
 
         # release lock
         count = self._lock._semlock._count()
-        for i in range(count):
+        kila i kwenye range(count):
             self._lock.release()
 
-        try:
-            # wait for notification or timeout
-            rudisha self._wait_semaphore.acquire(True, timeout)
-        finally:
+        jaribu:
+            # wait kila notification ama timeout
+            rudisha self._wait_semaphore.acquire(Kweli, timeout)
+        mwishowe:
             # indicate that this thread has woken
             self._woken_count.release()
 
             # reacquire lock
-            for i in range(count):
+            kila i kwenye range(count):
                 self._lock.acquire()
 
     eleza notify(self, n=1):
-        assert self._lock._semlock._is_mine(), 'lock is not owned'
-        assert not self._wait_semaphore.acquire(
-            False), ('notify: Should not have been able to acquire'
+        assert self._lock._semlock._is_mine(), 'lock ni sio owned'
+        assert sio self._wait_semaphore.acquire(
+            Uongo), ('notify: Should sio have been able to acquire'
                      + '_wait_semaphore')
 
         # to take account of timeouts since last notify*() we subtract
-        # woken_count kutoka sleeping_count and rezero woken_count
-        while self._woken_count.acquire(False):
-            res = self._sleeping_count.acquire(False)
-            assert res, ('notify: Bug in sleeping_count.acquire'
-                         + '- res should not be False')
+        # woken_count kutoka sleeping_count na rezero woken_count
+        wakati self._woken_count.acquire(Uongo):
+            res = self._sleeping_count.acquire(Uongo)
+            assert res, ('notify: Bug kwenye sleeping_count.acquire'
+                         + '- res should sio be Uongo')
 
         sleepers = 0
-        while sleepers < n and self._sleeping_count.acquire(False):
+        wakati sleepers < n na self._sleeping_count.acquire(Uongo):
             self._wait_semaphore.release()        # wake up one sleeper
             sleepers += 1
 
         ikiwa sleepers:
-            for i in range(sleepers):
-                self._woken_count.acquire()       # wait for a sleeper to wake
+            kila i kwenye range(sleepers):
+                self._woken_count.acquire()       # wait kila a sleeper to wake
 
-            # rezero wait_semaphore in case some timeouts just happened
-            while self._wait_semaphore.acquire(False):
-                pass
+            # rezero wait_semaphore kwenye case some timeouts just happened
+            wakati self._wait_semaphore.acquire(Uongo):
+                pita
 
     eleza notify_all(self):
         self.notify(n=sys.maxsize)
 
-    eleza wait_for(self, predicate, timeout=None):
+    eleza wait_for(self, predicate, timeout=Tupu):
         result = predicate()
         ikiwa result:
             rudisha result
-        ikiwa timeout is not None:
+        ikiwa timeout ni sio Tupu:
             endtime = time.monotonic() + timeout
-        else:
-            endtime = None
-            waittime = None
-        while not result:
-            ikiwa endtime is not None:
+        isipokua:
+            endtime = Tupu
+            waittime = Tupu
+        wakati sio result:
+            ikiwa endtime ni sio Tupu:
                 waittime = endtime - time.monotonic()
                 ikiwa waittime <= 0:
-                    break
+                    koma
             self.wait(waittime)
             result = predicate()
         rudisha result
@@ -326,32 +326,32 @@ kundi Event(object):
 
     eleza is_set(self):
         with self._cond:
-            ikiwa self._flag.acquire(False):
+            ikiwa self._flag.acquire(Uongo):
                 self._flag.release()
-                rudisha True
-            rudisha False
+                rudisha Kweli
+            rudisha Uongo
 
     eleza set(self):
         with self._cond:
-            self._flag.acquire(False)
+            self._flag.acquire(Uongo)
             self._flag.release()
             self._cond.notify_all()
 
     eleza clear(self):
         with self._cond:
-            self._flag.acquire(False)
+            self._flag.acquire(Uongo)
 
-    eleza wait(self, timeout=None):
+    eleza wait(self, timeout=Tupu):
         with self._cond:
-            ikiwa self._flag.acquire(False):
+            ikiwa self._flag.acquire(Uongo):
                 self._flag.release()
-            else:
+            isipokua:
                 self._cond.wait(timeout)
 
-            ikiwa self._flag.acquire(False):
+            ikiwa self._flag.acquire(Uongo):
                 self._flag.release()
-                rudisha True
-            rudisha False
+                rudisha Kweli
+            rudisha Uongo
 
 #
 # Barrier
@@ -359,7 +359,7 @@ kundi Event(object):
 
 kundi Barrier(threading.Barrier):
 
-    eleza __init__(self, parties, action=None, timeout=None, *, ctx):
+    eleza __init__(self, parties, action=Tupu, timeout=Tupu, *, ctx):
         agiza struct
         kutoka .heap agiza BufferWrapper
         wrapper = BufferWrapper(struct.calcsize('i') * 2)

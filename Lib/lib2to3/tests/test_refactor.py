@@ -1,5 +1,5 @@
 """
-Unit tests for refactor.py.
+Unit tests kila refactor.py.
 """
 
 agiza sys
@@ -19,9 +19,9 @@ TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 FIXER_DIR = os.path.join(TEST_DATA_DIR, "fixers")
 
 sys.path.append(FIXER_DIR)
-try:
+jaribu:
     _DEFAULT_FIXERS = refactor.get_fixers_kutoka_package("myfixes")
-finally:
+mwishowe:
     sys.path.pop()
 
 _2TO3_FIXERS = refactor.get_fixers_kutoka_package("lib2to3.fixes")
@@ -35,34 +35,34 @@ kundi TestRefactoringTool(unittest.TestCase):
         sys.path.pop()
 
     eleza check_instances(self, instances, classes):
-        for inst, cls in zip(instances, classes):
-            ikiwa not isinstance(inst, cls):
-                self.fail("%s are not instances of %s" % instances, classes)
+        kila inst, cls kwenye zip(instances, classes):
+            ikiwa sio isinstance(inst, cls):
+                self.fail("%s are sio instances of %s" % instances, classes)
 
-    eleza rt(self, options=None, fixers=_DEFAULT_FIXERS, explicit=None):
+    eleza rt(self, options=Tupu, fixers=_DEFAULT_FIXERS, explicit=Tupu):
         rudisha refactor.RefactoringTool(fixers, options, explicit)
 
     eleza test_print_function_option(self):
-        rt = self.rt({"print_function" : True})
+        rt = self.rt({"print_function" : Kweli})
         self.assertIs(rt.grammar, pygram.python_grammar_no_print_statement)
         self.assertIs(rt.driver.grammar,
                       pygram.python_grammar_no_print_statement)
 
     eleza test_write_unchanged_files_option(self):
         rt = self.rt()
-        self.assertFalse(rt.write_unchanged_files)
-        rt = self.rt({"write_unchanged_files" : True})
-        self.assertTrue(rt.write_unchanged_files)
+        self.assertUongo(rt.write_unchanged_files)
+        rt = self.rt({"write_unchanged_files" : Kweli})
+        self.assertKweli(rt.write_unchanged_files)
 
     eleza test_fixer_loading_helpers(self):
         contents = ["explicit", "first", "last", "parrot", "preorder"]
         non_prefixed = refactor.get_all_fix_names("myfixes")
-        prefixed = refactor.get_all_fix_names("myfixes", False)
+        prefixed = refactor.get_all_fix_names("myfixes", Uongo)
         full_names = refactor.get_fixers_kutoka_package("myfixes")
-        self.assertEqual(prefixed, ["fix_" + name for name in contents])
+        self.assertEqual(prefixed, ["fix_" + name kila name kwenye contents])
         self.assertEqual(non_prefixed, contents)
         self.assertEqual(full_names,
-                         ["myfixes.fix_" + name for name in contents])
+                         ["myfixes.fix_" + name kila name kwenye contents])
 
     eleza test_detect_future_features(self):
         run = refactor._detect_future_features
@@ -96,7 +96,7 @@ kutoka __future__ agiza print_function"""
                    "kutoka x agiza",
                    "kutoka x agiza 4",
                    )
-        for inp in invalid:
+        kila inp kwenye invalid:
             self.assertEqual(run(inp), empty)
         inp = "'docstring'\nkutoka __future__ agiza print_function"
         self.assertEqual(run(inp), fs(("print_function",)))
@@ -106,12 +106,12 @@ kutoka __future__ agiza print_function"""
         self.assertEqual(run(inp), fs(("print_function",)))
         inp = "# comment\n'doc'\nkutoka __future__ agiza print_function"
         self.assertEqual(run(inp), fs(("print_function",)))
-        inp = "kundi x: pass\nkutoka __future__ agiza print_function"
+        inp = "kundi x: pita\nkutoka __future__ agiza print_function"
         self.assertEqual(run(inp), empty)
 
     eleza test_get_headnode_dict(self):
-        kundi NoneFix(fixer_base.BaseFix):
-            pass
+        kundi TupuFix(fixer_base.BaseFix):
+            pita
 
         kundi FileInputFix(fixer_base.BaseFix):
             PATTERN = "file_input< any * >"
@@ -119,7 +119,7 @@ kutoka __future__ agiza print_function"""
         kundi SimpleFix(fixer_base.BaseFix):
             PATTERN = "'name'"
 
-        no_head = NoneFix({}, [])
+        no_head = TupuFix({}, [])
         with_head = FileInputFix({}, [])
         simple = SimpleFix({}, [])
         d = refactor._get_headnode_dict([no_head, with_head, simple])
@@ -127,7 +127,7 @@ kutoka __future__ agiza print_function"""
         self.assertEqual(top_fixes, [with_head, no_head])
         name_fixes = d.pop(token.NAME)
         self.assertEqual(name_fixes, [simple, no_head])
-        for fixes in d.values():
+        kila fixes kwenye d.values():
             self.assertEqual(fixes, [no_head])
 
     eleza test_fixer_loading(self):
@@ -149,11 +149,11 @@ kutoka __future__ agiza print_function"""
 
     eleza test_refactor_string(self):
         rt = self.rt()
-        input = "eleza parrot(): pass\n\n"
+        input = "eleza parrot(): pita\n\n"
         tree = rt.refactor_string(input, "<test>")
         self.assertNotEqual(str(tree), input)
 
-        input = "eleza f(): pass\n\n"
+        input = "eleza f(): pita\n\n"
         tree = rt.refactor_string(input, "<test>")
         self.assertEqual(str(tree), input)
 
@@ -167,19 +167,19 @@ kutoka __future__ agiza print_function"""
         results = []
         rt = MyRT(_DEFAULT_FIXERS)
         save = sys.stdin
-        sys.stdin = io.StringIO("eleza parrot(): pass\n\n")
-        try:
+        sys.stdin = io.StringIO("eleza parrot(): pita\n\n")
+        jaribu:
             rt.refactor_stdin()
-        finally:
+        mwishowe:
             sys.stdin = save
-        expected = ["eleza parrot(): pass\n\n",
-                    "eleza cheese(): pass\n\n",
-                    "<stdin>", False]
+        expected = ["eleza parrot(): pita\n\n",
+                    "eleza cheese(): pita\n\n",
+                    "<stdin>", Uongo]
         self.assertEqual(results, expected)
 
     eleza check_file_refactoring(self, test_file, fixers=_2TO3_FIXERS,
-                               options=None, mock_log_debug=None,
-                               actually_write=True):
+                               options=Tupu, mock_log_debug=Tupu,
+                               actually_write=Kweli):
         test_file = self.init_test_file(test_file)
         old_contents = self.read_file(test_file)
         rt = self.rt(fixers=fixers, options=options)
@@ -189,9 +189,9 @@ kutoka __future__ agiza print_function"""
         rt.refactor_file(test_file)
         self.assertEqual(old_contents, self.read_file(test_file))
 
-        ikiwa not actually_write:
-            return
-        rt.refactor_file(test_file, True)
+        ikiwa sio actually_write:
+            rudisha
+        rt.refactor_file(test_file, Kweli)
         new_contents = self.read_file(test_file)
         self.assertNotEqual(old_contents, new_contents)
         rudisha new_contents
@@ -205,14 +205,14 @@ kutoka __future__ agiza print_function"""
         rudisha test_file
 
     eleza read_file(self, test_file):
-        with open(test_file, "rb") as fp:
+        with open(test_file, "rb") kama fp:
             rudisha fp.read()
 
     eleza refactor_file(self, test_file, fixers=_2TO3_FIXERS):
         test_file = self.init_test_file(test_file)
         old_contents = self.read_file(test_file)
         rt = self.rt(fixers=fixers)
-        rt.refactor_file(test_file, True)
+        rt.refactor_file(test_file, Kweli)
         new_contents = self.read_file(test_file)
         rudisha old_contents, new_contents
 
@@ -226,19 +226,19 @@ kutoka __future__ agiza print_function"""
         eleza recording_log_debug(msg, *args):
             debug_messages.append(msg % args)
         self.check_file_refactoring(test_file, fixers=(),
-                                    options={"write_unchanged_files": True},
+                                    options={"write_unchanged_files": Kweli},
                                     mock_log_debug=recording_log_debug,
-                                    actually_write=False)
-        # Testing that it logged this message when write=False was passed is
-        # sufficient to see that it did not bail early after "No changes".
+                                    actually_write=Uongo)
+        # Testing that it logged this message when write=Uongo was pitaed is
+        # sufficient to see that it did sio bail early after "No changes".
         message_regex = r"Not writing changes to .*%s" % \
                 re.escape(os.sep + os.path.basename(test_file))
-        for message in debug_messages:
-            ikiwa "Not writing changes" in message:
+        kila message kwenye debug_messages:
+            ikiwa "Not writing changes" kwenye message:
                 self.assertRegex(message, message_regex)
-                break
-        else:
-            self.fail("%r not matched in %r" % (message_regex, debug_messages))
+                koma
+        isipokua:
+            self.fail("%r sio matched kwenye %r" % (message_regex, debug_messages))
 
     eleza test_refactor_dir(self):
         eleza check(structure, expected):
@@ -249,16 +249,16 @@ kutoka __future__ agiza print_function"""
             rt = self.rt()
             got = []
             dir = tempfile.mkdtemp(prefix="2to3-test_refactor")
-            try:
+            jaribu:
                 os.mkdir(os.path.join(dir, "a_dir"))
-                for fn in structure:
+                kila fn kwenye structure:
                     open(os.path.join(dir, fn), "wb").close()
                 rt.refactor_dir(dir)
-            finally:
+            mwishowe:
                 refactor.RefactoringTool.refactor_file = save_func
                 shutil.rmtree(dir)
             self.assertEqual(got,
-                             [os.path.join(dir, path) for path in expected])
+                             [os.path.join(dir, path) kila path kwenye expected])
         check([], [])
         tree = ["nothing",
                 "hi.py",
@@ -283,16 +283,16 @@ kutoka __future__ agiza print_function"""
     eleza test_bom(self):
         fn = os.path.join(TEST_DATA_DIR, "bom.py")
         data = self.check_file_refactoring(fn)
-        self.assertTrue(data.startswith(codecs.BOM_UTF8))
+        self.assertKweli(data.startswith(codecs.BOM_UTF8))
 
     eleza test_crlf_newlines(self):
         old_sep = os.linesep
         os.linesep = "\r\n"
-        try:
+        jaribu:
             fn = os.path.join(TEST_DATA_DIR, "crlf.py")
             fixes = refactor.get_fixers_kutoka_package("lib2to3.fixes")
             self.check_file_refactoring(fn, fixes)
-        finally:
+        mwishowe:
             os.linesep = old_sep
 
     eleza test_crlf_unchanged(self):
@@ -326,8 +326,8 @@ kutoka __future__ agiza print_function"""
         self.assertEqual(len(rt.post_order), 0)
 
         rt = self.rt(explicit=["myfixes.fix_explicit"])
-        for fix in rt.post_order:
+        kila fix kwenye rt.post_order:
             ikiwa isinstance(fix, FixExplicit):
-                break
-        else:
-            self.fail("explicit fixer not loaded")
+                koma
+        isipokua:
+            self.fail("explicit fixer sio loaded")

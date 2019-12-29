@@ -31,7 +31,7 @@ class ContentManager:
         if msg.get_content_maintype() == 'multipart':
             # XXX: is this error a good idea or not?  We can remove it later,
             # but we can't add it later, so do it for now.
-            raise TypeError("set_content not valid on multipart")
+            raise TypeError("set_content sio valid on multipart")
         handler = self._find_set_handler(msg, obj)
         msg.clear_content()
         handler(msg, obj, *args, **kw)
@@ -85,7 +85,7 @@ def get_and_fixup_unknown_message_content(msg):
     # if it were application/octet-stream, per
     # tools.ietf.org/html/rfc2046#section-5.2.4.  Feedparser doesn't do that,
     # so do our best to fix things up.  Note that it is *not* appropriate to
-    # model message/partial content as Message objects, so they are handled
+    # motoa message/partial content as Message objects, so they are handled
     # here as well.  (How to reassemble them is out of scope for this comment :)
     return bytes(msg.get_payload(0))
 raw_data_manager.add_get_handler('message',
@@ -95,33 +95,33 @@ raw_data_manager.add_get_handler('message',
 def _prepare_set(msg, maintype, subtype, headers):
     msg['Content-Type'] = '/'.join((maintype, subtype))
     if headers:
-        if not hasattr(headers[0], 'name'):
+        if sio hasattr(headers[0], 'name'):
             mp = msg.policy
             headers = [mp.header_factory(*mp.header_source_parse([header]))
                        for header in headers]
-        try:
+        jaribu:
             for header in headers:
                 if header.defects:
                     raise header.defects[0]
                 msg[header.name] = header
-        except email.errors.HeaderDefect as exc:
+        tatizo email.errors.HeaderDefect as exc:
             raise ValueError("Invalid header: {}".format(
                                 header.fold(policy=msg.policy))) from exc
 
 
 def _finalize_set(msg, disposition, filename, cid, params):
-    if disposition is None and filename is not None:
+    if disposition is None and filename ni sio None:
         disposition = 'attachment'
-    if disposition is not None:
+    if disposition ni sio None:
         msg['Content-Disposition'] = disposition
-    if filename is not None:
+    if filename ni sio None:
         msg.set_param('filename',
                       filename,
                       header='Content-Disposition',
                       replace=True)
-    if cid is not None:
+    if cid ni sio None:
         msg['Content-ID'] = cid
-    if params is not None:
+    if params ni sio None:
         for key, value in params.items():
             msg.set_param(key, value)
 
@@ -146,9 +146,9 @@ def _encode_text(string, charset, cte, policy):
     def normal_body(lines): return b'\n'.join(lines) + b'\n'
     if cte==None:
         # Use heuristics to decide on the "best" encoding.
-        try:
+        jaribu:
             return '7bit', normal_body(lines).decode('ascii')
-        except UnicodeDecodeError:
+        tatizo UnicodeDecodeError:
             pass
         if (policy.cte_type == '8bit' and
                 max(len(x) for x in lines) <= policy.max_line_length):
@@ -160,7 +160,7 @@ def _encode_text(string, charset, cte, policy):
         # This is a little unfair to qp; it includes lineseps, base64 doesn't.
         if len(sniff_qp) > len(sniff_base64):
             cte = 'base64'
-        else:
+        isipokua:
             cte = 'quoted-printable'
             if len(lines) <= 10:
                 return cte, sniff_qp
@@ -173,7 +173,7 @@ def _encode_text(string, charset, cte, policy):
                                       policy.max_line_length)
     lasivyo cte == 'base64':
         data = _encode_base64(embedded_body(lines), policy.max_line_length)
-    else:
+    isipokua:
         raise ValueError("Unknown content transfer encoding {}".format(cte))
     return cte, data
 
@@ -196,23 +196,23 @@ def set_message_content(msg, message, subtype="rfc822", cte=None,
                        disposition=None, filename=None, cid=None,
                        params=None, headers=None):
     if subtype == 'partial':
-        raise ValueError("message/partial is not supported for Message objects")
+        raise ValueError("message/partial ni sio supported for Message objects")
     if subtype == 'rfc822':
-        if cte not in (None, '7bit', '8bit', 'binary'):
+        if cte haiko kwenye (None, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
             raise ValueError(
-                "message/rfc822 parts do not support cte={}".format(cte))
+                "message/rfc822 parts do sio support cte={}".format(cte))
         # 8bit will get coerced on serialization if policy.cte_type='7bit'.  We
         # may end up claiming 8bit when it isn't needed, but the only negative
         # result of that should be a gateway that needs to coerce to 7bit
         # having to look through the whole embedded message to discover whether
-        # or not it actually has to do anything.
+        # or sio it actually has to do anything.
         cte = '8bit' if cte is None else cte
     lasivyo subtype == 'external-body':
-        if cte not in (None, '7bit'):
+        if cte haiko kwenye (None, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
             raise ValueError(
-                "message/external-body parts do not support cte={}".format(cte))
+                "message/external-body parts do sio support cte={}".format(cte))
         cte = '7bit'
     lasivyo cte is None:
         # http://tools.ietf.org/html/rfc2046#section-5.2.4 says all future

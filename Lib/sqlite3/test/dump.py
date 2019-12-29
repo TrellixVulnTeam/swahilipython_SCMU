@@ -1,7 +1,7 @@
 # Author: Paul Kippes <kippesp@gmail.com>
 
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 kundi DumpTests(unittest.TestCase):
     eleza setUp(self):
@@ -22,7 +22,7 @@ kundi DumpTests(unittest.TestCase):
                 """INSERT INTO "quoted""table" VALUES('quoted''value');"""
                 ,
                 "CREATE TABLE t1(id integer primary key, s1 text, " \
-                "t1_i1 integer not null, i2 integer, unique (s1), " \
+                "t1_i1 integer sio null, i2 integer, unique (s1), " \
                 "constraint t1_idx1 unique (i2));"
                 ,
                 "INSERT INTO \"t1\" VALUES(1,'foo',10,20);"
@@ -38,16 +38,16 @@ kundi DumpTests(unittest.TestCase):
                 "update t2 set t2_i1 = new.t1_i1 where t2_i1 = old.t1_i1; " \
                 "end;"
                 ,
-                "CREATE VIEW v1 as select * kutoka t1 left join t2 " \
+                "CREATE VIEW v1 kama select * kutoka t1 left join t2 " \
                 "using (id);"
                 ]
-        [self.cu.execute(s) for s in expected_sqls]
+        [self.cu.execute(s) kila s kwenye expected_sqls]
         i = self.cx.iterdump()
-        actual_sqls = [s for s in i]
+        actual_sqls = [s kila s kwenye i]
         expected_sqls = ['BEGIN TRANSACTION;'] + expected_sqls + \
             ['COMMIT;']
         [self.assertEqual(expected_sqls[i], actual_sqls[i])
-            for i in range(len(expected_sqls))]
+            kila i kwenye range(len(expected_sqls))]
 
     eleza CheckUnorderableRow(self):
         # iterdump() should be able to cope with unorderable row types (issue #15545)

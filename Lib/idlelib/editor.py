@@ -12,8 +12,8 @@ agiza webbrowser
 kutoka tkinter agiza *
 kutoka tkinter.font agiza Font
 kutoka tkinter.ttk agiza Scrollbar
-agiza tkinter.simpledialog as tkSimpleDialog
-agiza tkinter.messagebox as tkMessageBox
+agiza tkinter.simpledialog kama tkSimpleDialog
+agiza tkinter.messagebox kama tkMessageBox
 
 kutoka idlelib.config agiza idleConf
 kutoka idlelib agiza configdialog
@@ -29,7 +29,7 @@ kutoka idlelib agiza search
 kutoka idlelib.tree agiza wheel_event
 kutoka idlelib agiza window
 
-# The default tab setting for a Text widget, in average-width characters.
+# The default tab setting kila a Text widget, kwenye average-width characters.
 TK_TABWIDTH_DEFAULT = 8
 _py_version = ' (%s)' % platform.python_version()
 darwin = sys.platform == 'darwin'
@@ -63,24 +63,24 @@ kundi EditorWindow(object):
     kutoka idlelib.squeezer agiza Squeezer
     kutoka idlelib.zoomheight agiza ZoomHeight
 
-    filesystemencoding = sys.getfilesystemencoding()  # for file names
-    help_url = None
+    filesystemencoding = sys.getfilesystemencoding()  # kila file names
+    help_url = Tupu
 
-    allow_code_context = True
-    allow_line_numbers = True
+    allow_code_context = Kweli
+    allow_line_numbers = Kweli
 
-    eleza __init__(self, flist=None, filename=None, key=None, root=None):
+    eleza __init__(self, flist=Tupu, filename=Tupu, key=Tupu, root=Tupu):
         # Delay agiza: runscript agizas pyshell agizas EditorWindow.
         kutoka idlelib.runscript agiza ScriptBinding
 
-        ikiwa EditorWindow.help_url is None:
+        ikiwa EditorWindow.help_url ni Tupu:
             dochome =  os.path.join(sys.base_prefix, 'Doc', 'index.html')
             ikiwa sys.platform.count('linux'):
-                # look for html docs in a couple of standard places
+                # look kila html docs kwenye a couple of standard places
                 pyver = 'python-docs-' + '%s.%s.%s' % sys.version_info[:3]
                 ikiwa os.path.isdir('/var/www/html/python/'):  # "python2" rpm
                     dochome = '/var/www/html/python/index.html'
-                else:
+                isipokua:
                     basepath = '/usr/share/doc/'  # standard location
                     dochome = os.path.join(basepath, pyver,
                                            'Doc', 'index.html')
@@ -99,11 +99,11 @@ kundi EditorWindow(object):
                 ikiwa sys.platform == 'darwin':
                     # Safari requires real file:-URLs
                     EditorWindow.help_url = 'file://' + EditorWindow.help_url
-            else:
+            isipokua:
                 EditorWindow.help_url = ("https://docs.python.org/%d.%d/"
                                          % sys.version_info[:2])
         self.flist = flist
-        root = root or flist.root
+        root = root ama flist.root
         self.root = root
         self.menubar = Menu(root)
         self.top = top = window.ListedToplevel(root, menu=self.menubar)
@@ -112,14 +112,14 @@ kundi EditorWindow(object):
             #self.top.instance_dict makes flist.inversedict available to
             #configdialog.py so it can access all EditorWindow instances
             self.top.instance_dict = flist.inversedict
-        else:
+        isipokua:
             self.tkinter_vars = {}  # keys: Tkinter event names
                                     # values: Tkinter variable instances
             self.top.instance_dict = {}
-        self.recent_files_path = idleConf.userdir and os.path.join(
+        self.recent_files_path = idleConf.userdir na os.path.join(
                 idleConf.userdir, 'recent-files.lst')
 
-        self.prompt_last_line = ''  # Override in PyShell
+        self.prompt_last_line = ''  # Override kwenye PyShell
         self.text_frame = text_frame = Frame(top)
         self.vbar = vbar = Scrollbar(text_frame, name='vbar')
         width = idleConf.GetOption('main', 'EditorWindow', 'width', type='int')
@@ -129,7 +129,7 @@ kundi EditorWindow(object):
                 'wrap': 'none',
                 'highlightthickness': 0,
                 'width': width,
-                'tabstyle': 'wordprocessor',  # new in 8.5
+                'tabstyle': 'wordprocessor',  # new kwenye 8.5
                 'height': idleConf.GetOption(
                         'main', 'EditorWindow', 'height', type='int'),
                 }
@@ -145,12 +145,12 @@ kundi EditorWindow(object):
             # Command-W on editor windows doesn't work without this.
             text.bind('<<close-window>>', self.close_event)
             # Some OS X systems have only one mouse button, so use
-            # control-click for popup context menus there. For two
-            # buttons, AquaTk defines <2> as the right button, not <3>.
+            # control-click kila popup context menus there. For two
+            # buttons, AquaTk defines <2> kama the right button, sio <3>.
             text.bind("<Control-Button-1>",self.right_menu_event)
             text.bind("<2>", self.right_menu_event)
-        else:
-            # Elsewhere, use right-click for popup menus.
+        isipokua:
+            # Elsewhere, use right-click kila popup menus.
             text.bind("<3>",self.right_menu_event)
 
         text.bind('<MouseWheel>', wheel_event)
@@ -166,7 +166,7 @@ kundi EditorWindow(object):
         text.bind("<<about-idle>>", self.about_dialog)
         text.bind("<<open-config-dialog>>", self.config_dialog)
         text.bind("<<open-module>>", self.open_module_event)
-        text.bind("<<do-nothing>>", lambda event: "break")
+        text.bind("<<do-nothing>>", lambda event: "koma")
         text.bind("<<select-all>>", self.select_all)
         text.bind("<<remove-selection>>", self.remove_selection)
         text.bind("<<find>>", self.find_event)
@@ -179,7 +179,7 @@ kundi EditorWindow(object):
         text.bind("<<newline-and-indent>>",self.newline_and_indent_event)
         text.bind("<<smart-indent>>",self.smart_indent_event)
         self.fregion = fregion = self.FormatRegion(self)
-        # self.fregion used in smart_indent_event to access indent_region.
+        # self.fregion used kwenye smart_indent_event to access indent_region.
         text.bind("<<indent-region>>", fregion.indent_region_event)
         text.bind("<<dedent-region>>", fregion.dedent_region_event)
         text.bind("<<comment-region>>", fregion.comment_region_event)
@@ -218,33 +218,33 @@ kundi EditorWindow(object):
 
         # usetabs true  -> literal tab characters are used by indent and
         #                  dedent cmds, possibly mixed with spaces if
-        #                  indentwidth is not a multiple of tabwidth,
+        #                  indentwidth ni sio a multiple of tabwidth,
         #                  which will cause Tabnanny to nag!
         #         false -> tab characters are converted to spaces by indent
-        #                  and dedent cmds, and ditto TAB keystrokes
-        # Although use-spaces=0 can be configured manually in config-main.def,
-        # configuration of tabs v. spaces is not supported in the configuration
+        #                  na dedent cmds, na ditto TAB keystrokes
+        # Although use-spaces=0 can be configured manually kwenye config-main.def,
+        # configuration of tabs v. spaces ni sio supported kwenye the configuration
         # dialog.  IDLE promotes the preferred Python indentation: use spaces!
         usespaces = idleConf.GetOption('main', 'Indent',
                                        'use-spaces', type='bool')
-        self.usetabs = not usespaces
+        self.usetabs = sio usespaces
 
-        # tabwidth is the display width of a literal tab character.
+        # tabwidth ni the display width of a literal tab character.
         # CAUTION:  telling Tk to use anything other than its default
         # tab setting causes it to use an entirely different tabbing algorithm,
-        # treating tab stops as fixed distances kutoka the left margin.
-        # Nobody expects this, so for now tabwidth should never be changed.
-        self.tabwidth = 8    # must remain 8 until Tk is fixed.
+        # treating tab stops kama fixed distances kutoka the left margin.
+        # Nobody expects this, so kila now tabwidth should never be changed.
+        self.tabwidth = 8    # must remain 8 until Tk ni fixed.
 
-        # indentwidth is the number of screen characters per indent level.
-        # The recommended Python indentation is four spaces.
+        # indentwidth ni the number of screen characters per indent level.
+        # The recommended Python indentation ni four spaces.
         self.indentwidth = self.tabwidth
         self.set_notabs_indentwidth()
 
-        # When searching backwards for a reliable place to begin parsing,
+        # When searching backwards kila a reliable place to begin parsing,
         # first start num_context_lines[0] lines back, then
-        # num_context_lines[1] lines back ikiwa that didn't work, and so on.
-        # The last value should be huge (larger than the # of lines in a
+        # num_context_lines[1] lines back ikiwa that didn't work, na so on.
+        # The last value should be huge (larger than the # of lines kwenye a
         # conceivable file).
         # Making the initial values larger slows things down more often.
         self.num_context_lines = 50, 500, 5000000
@@ -254,23 +254,23 @@ kundi EditorWindow(object):
         text.undo_block_start = undo.undo_block_start
         text.undo_block_stop = undo.undo_block_stop
         undo.set_saved_change_hook(self.saved_change_hook)
-        # IOBinding implements file I/O and printing functionality
+        # IOBinding implements file I/O na printing functionality
         self.io = io = self.IOBinding(self)
         io.set_filename_change_hook(self.filename_change_hook)
-        self.good_load = False
-        self.set_indentation_params(False)
-        self.color = None # initialized below in self.ResetColorizer
-        self.code_context = None # optionally initialized later below
-        self.line_numbers = None # optionally initialized later below
+        self.good_load = Uongo
+        self.set_indentation_params(Uongo)
+        self.color = Tupu # initialized below kwenye self.ResetColorizer
+        self.code_context = Tupu # optionally initialized later below
+        self.line_numbers = Tupu # optionally initialized later below
         ikiwa filename:
-            ikiwa os.path.exists(filename) and not os.path.isdir(filename):
+            ikiwa os.path.exists(filename) na sio os.path.isdir(filename):
                 ikiwa io.loadfile(filename):
-                    self.good_load = True
+                    self.good_load = Kweli
                     is_py_src = self.ispythonsource(filename)
                     self.set_indentation_params(is_py_src)
-            else:
+            isipokua:
                 io.set_filename(filename)
-                self.good_load = True
+                self.good_load = Kweli
 
         self.ResetColorizer()
         self.saved_change_hook()
@@ -279,7 +279,7 @@ kundi EditorWindow(object):
         menu = self.menudict.get('window')
         ikiwa menu:
             end = menu.index("end")
-            ikiwa end is None:
+            ikiwa end ni Tupu:
                 end = -1
             ikiwa end >= 0:
                 menu.add_separator()
@@ -292,8 +292,8 @@ kundi EditorWindow(object):
         self.askinteger = tkSimpleDialog.askinteger
         self.showerror = tkMessageBox.showerror
 
-        # Add pseudoevents for former extension fixed keys.
-        # (This probably needs to be done once in the process.)
+        # Add pseudoevents kila former extension fixed keys.
+        # (This probably needs to be done once kwenye the process.)
         text.event_add('<<autocomplete>>', '<Key-Tab>')
         text.event_add('<<try-open-completions>>', '<KeyRelease-period>',
                        '<KeyRelease-slash>', '<KeyRelease-backslash>')
@@ -331,7 +331,7 @@ kundi EditorWindow(object):
             self.code_context = self.CodeContext(self)
             text.bind("<<toggle-code-context>>",
                       self.code_context.toggle_code_context_event)
-        else:
+        isipokua:
             self.update_menu_state('options', '*Code Context', 'disabled')
         ikiwa self.allow_line_numbers:
             self.line_numbers = self.LineNumbers(self)
@@ -339,10 +339,10 @@ kundi EditorWindow(object):
                                   'line-numbers-default', type='bool'):
                 self.toggle_line_numbers_event()
             text.bind("<<toggle-line-numbers>>", self.toggle_line_numbers_event)
-        else:
+        isipokua:
             self.update_menu_state('options', '*Line Numbers', 'disabled')
 
-    eleza handle_winconfig(self, event=None):
+    eleza handle_winconfig(self, event=Tupu):
         self.set_width()
 
     eleza set_width(self):
@@ -352,7 +352,7 @@ kundi EditorWindow(object):
         pixel_width = text.winfo_width() - 2 * inner_padding
 
         # Divide the width of the Text widget by the font width,
-        # which is taken to be the width of '0' (zero).
+        # which ni taken to be the width of '0' (zero).
         # http://www.tcl.tk/man/tcl8.6/TkCmd/text.htm#M21
         zero_char_width = \
             Font(text, font=text.cget('font')).measure('0')
@@ -361,40 +361,40 @@ kundi EditorWindow(object):
     eleza new_callback(self, event):
         dirname, basename = self.io.defaultfilename()
         self.flist.new(dirname)
-        rudisha "break"
+        rudisha "koma"
 
     eleza home_callback(self, event):
-        ikiwa (event.state & 4) != 0 and event.keysym == "Home":
+        ikiwa (event.state & 4) != 0 na event.keysym == "Home":
             # state&4==Control. If <Control-Home>, use the Tk binding.
-            rudisha None
-        ikiwa self.text.index("iomark") and \
-           self.text.compare("iomark", "<=", "insert lineend") and \
+            rudisha Tupu
+        ikiwa self.text.index("iomark") na \
+           self.text.compare("iomark", "<=", "insert lineend") na \
            self.text.compare("insert linestart", "<=", "iomark"):
             # In Shell on input line, go to just after prompt
             insertpt = int(self.text.index("iomark").split(".")[1])
-        else:
+        isipokua:
             line = self.text.get("insert linestart", "insert lineend")
-            for insertpt in range(len(line)):
-                ikiwa line[insertpt] not in (' ','\t'):
-                    break
-            else:
+            kila insertpt kwenye range(len(line)):
+                ikiwa line[insertpt] haiko kwenye (' ','\t'):
+                    koma
+            isipokua:
                 insertpt=len(line)
         lineat = int(self.text.index("insert").split('.')[1])
         ikiwa insertpt == lineat:
             insertpt = 0
         dest = "insert linestart+"+str(insertpt)+"c"
         ikiwa (event.state&1) == 0:
-            # shift was not pressed
+            # shift was sio pressed
             self.text.tag_remove("sel", "1.0", "end")
-        else:
-            ikiwa not self.text.index("sel.first"):
+        isipokua:
+            ikiwa sio self.text.index("sel.first"):
                 # there was no previous selection
                 self.text.mark_set("my_anchor", "insert")
-            else:
+            isipokua:
                 ikiwa self.text.compare(self.text.index("sel.first"), "<",
                                      self.text.index("insert")):
                     self.text.mark_set("my_anchor", "sel.first") # extend back
-                else:
+                isipokua:
                     self.text.mark_set("my_anchor", "sel.last") # extend forward
             first = self.text.index(dest)
             last = self.text.index("my_anchor")
@@ -404,7 +404,7 @@ kundi EditorWindow(object):
             self.text.tag_add("sel", first, last)
         self.text.mark_set("insert", dest)
         self.text.see("insert")
-        rudisha "break"
+        rudisha "koma"
 
     eleza set_status_bar(self):
         self.status_bar = self.MultiStatusBar(self.top)
@@ -422,7 +422,7 @@ kundi EditorWindow(object):
                             "<KeyRelease>", "<ButtonRelease>")
         self.text.after_idle(self.set_line_and_column)
 
-    eleza set_line_and_column(self, event=None):
+    eleza set_line_and_column(self, event=Tupu):
         line, column = self.text.index(INSERT).split('.')
         self.status_bar.set_label('column', 'Col: %s' % column)
         self.status_bar.set_label('line', 'Ln: %s' % line)
@@ -441,7 +441,7 @@ kundi EditorWindow(object):
     eleza createmenubar(self):
         mbar = self.menubar
         self.menudict = menudict = {}
-        for name, label in self.menu_specs:
+        kila name, label kwenye self.menu_specs:
             underline, label = prepstr(label)
             menudict[name] = menu = Menu(mbar, name=name, tearoff=0)
             mbar.add_cascade(label=label, menu=menu, underline=underline)
@@ -462,19 +462,19 @@ kundi EditorWindow(object):
         # Only called when Window menu exists
         menu = self.menudict['window']
         end = menu.index("end")
-        ikiwa end is None:
+        ikiwa end ni Tupu:
             end = -1
         ikiwa end > self.wmenu_end:
             menu.delete(self.wmenu_end+1, end)
         window.add_windows_to_menu(menu)
 
     eleza update_menu_label(self, menu, index, label):
-        "Update label for menu item at index."
+        "Update label kila menu item at index."
         menuitem = self.menudict[menu]
         menuitem.entryconfig(index, label=label)
 
     eleza update_menu_state(self, menu, index, state):
-        "Update state for menu item at index."
+        "Update state kila menu item at index."
         menuitem = self.menudict[menu]
         menuitem.entryconfig(index, state=state)
 
@@ -487,13 +487,13 @@ kundi EditorWindow(object):
             event = 'scroll'
             args = (lines, 'units')
         self.text.yview(event, *args)
-        rudisha 'break'
+        rudisha 'koma'
 
-    rmenu = None
+    rmenu = Tupu
 
     eleza right_menu_event(self, event):
         self.text.mark_set("insert", "@%d,%d" % (event.x, event.y))
-        ikiwa not self.rmenu:
+        ikiwa sio self.rmenu:
             self.make_rmenu()
         rmenu = self.rmenu
         self.event = event
@@ -501,14 +501,14 @@ kundi EditorWindow(object):
         ikiwa iswin:
             self.text.config(cursor="arrow")
 
-        for item in self.rmenu_specs:
-            try:
+        kila item kwenye self.rmenu_specs:
+            jaribu:
                 label, eventname, verify_state = item
-            except ValueError: # see issue1207589
-                continue
+            tatizo ValueError: # see issue1207589
+                endelea
 
-            ikiwa verify_state is None:
-                continue
+            ikiwa verify_state ni Tupu:
+                endelea
             state = getattr(self, verify_state)()
             rmenu.entryconfigure(label, state=state)
 
@@ -516,22 +516,22 @@ kundi EditorWindow(object):
         rmenu.tk_popup(event.x_root, event.y_root)
         ikiwa iswin:
             self.text.config(cursor="ibeam")
-        rudisha "break"
+        rudisha "koma"
 
     rmenu_specs = [
         # ("Label", "<<virtual-event>>", "statefuncname"), ...
-        ("Close", "<<close-window>>", None), # Example
+        ("Close", "<<close-window>>", Tupu), # Example
     ]
 
     eleza make_rmenu(self):
         rmenu = Menu(self.text, tearoff=0)
-        for item in self.rmenu_specs:
+        kila item kwenye self.rmenu_specs:
             label, eventname = item[0], item[1]
-            ikiwa label is not None:
+            ikiwa label ni sio Tupu:
                 eleza command(text=self.text, eventname=eventname):
                     text.event_generate(eventname)
                 rmenu.add_command(label=label, command=command)
-            else:
+            isipokua:
                 rmenu.add_separator()
         self.rmenu = rmenu
 
@@ -539,85 +539,85 @@ kundi EditorWindow(object):
         rudisha self.rmenu_check_copy()
 
     eleza rmenu_check_copy(self):
-        try:
+        jaribu:
             indx = self.text.index('sel.first')
-        except TclError:
+        tatizo TclError:
             rudisha 'disabled'
-        else:
+        isipokua:
             rudisha 'normal' ikiwa indx else 'disabled'
 
     eleza rmenu_check_paste(self):
-        try:
+        jaribu:
             self.text.tk.call('tk::GetSelection', self.text, 'CLIPBOARD')
-        except TclError:
+        tatizo TclError:
             rudisha 'disabled'
-        else:
+        isipokua:
             rudisha 'normal'
 
-    eleza about_dialog(self, event=None):
+    eleza about_dialog(self, event=Tupu):
         "Handle Help 'About IDLE' event."
         # Synchronize with macosx.overrideRootMenu.about_dialog.
         help_about.AboutDialog(self.top)
-        rudisha "break"
+        rudisha "koma"
 
-    eleza config_dialog(self, event=None):
+    eleza config_dialog(self, event=Tupu):
         "Handle Options 'Configure IDLE' event."
         # Synchronize with macosx.overrideRootMenu.config_dialog.
         configdialog.ConfigDialog(self.top,'Settings')
-        rudisha "break"
+        rudisha "koma"
 
-    eleza help_dialog(self, event=None):
+    eleza help_dialog(self, event=Tupu):
         "Handle Help 'IDLE Help' event."
         # Synchronize with macosx.overrideRootMenu.help_dialog.
         ikiwa self.root:
             parent = self.root
-        else:
+        isipokua:
             parent = self.top
         help.show_idlehelp(parent)
-        rudisha "break"
+        rudisha "koma"
 
-    eleza python_docs(self, event=None):
+    eleza python_docs(self, event=Tupu):
         ikiwa sys.platform[:3] == 'win':
-            try:
+            jaribu:
                 os.startfile(self.help_url)
-            except OSError as why:
+            tatizo OSError kama why:
                 tkMessageBox.showerror(title='Document Start Failure',
                     message=str(why), parent=self.text)
-        else:
+        isipokua:
             webbrowser.open(self.help_url)
-        rudisha "break"
+        rudisha "koma"
 
     eleza cut(self,event):
         self.text.event_generate("<<Cut>>")
-        rudisha "break"
+        rudisha "koma"
 
     eleza copy(self,event):
-        ikiwa not self.text.tag_ranges("sel"):
-            # There is no selection, so do nothing and maybe interrupt.
-            rudisha None
+        ikiwa sio self.text.tag_ranges("sel"):
+            # There ni no selection, so do nothing na maybe interrupt.
+            rudisha Tupu
         self.text.event_generate("<<Copy>>")
-        rudisha "break"
+        rudisha "koma"
 
     eleza paste(self,event):
         self.text.event_generate("<<Paste>>")
         self.text.see("insert")
-        rudisha "break"
+        rudisha "koma"
 
-    eleza select_all(self, event=None):
+    eleza select_all(self, event=Tupu):
         self.text.tag_add("sel", "1.0", "end-1c")
         self.text.mark_set("insert", "1.0")
         self.text.see("insert")
-        rudisha "break"
+        rudisha "koma"
 
-    eleza remove_selection(self, event=None):
+    eleza remove_selection(self, event=Tupu):
         self.text.tag_remove("sel", "1.0", "end")
         self.text.see("insert")
-        rudisha "break"
+        rudisha "koma"
 
     eleza move_at_edge_if_selection(self, edge_index):
-        """Cursor move begins at start or end of selection
+        """Cursor move begins at start ama end of selection
 
-        When a left/right cursor key is pressed create and rudisha to Tkinter a
+        When a left/right cursor key ni pressed create na rudisha to Tkinter a
         function which causes a cursor move kutoka the associated edge of the
         selection.
 
@@ -626,128 +626,128 @@ kundi EditorWindow(object):
         self_text_mark_set = self.text.mark_set
         edges_table = ("sel.first+1c", "sel.last-1c")
         eleza move_at_edge(event):
-            ikiwa (event.state & 5) == 0: # no shift(==1) or control(==4) pressed
-                try:
+            ikiwa (event.state & 5) == 0: # no shift(==1) ama control(==4) pressed
+                jaribu:
                     self_text_index("sel.first")
                     self_text_mark_set("insert", edges_table[edge_index])
-                except TclError:
-                    pass
+                tatizo TclError:
+                    pita
         rudisha move_at_edge
 
     eleza del_word_left(self, event):
         self.text.event_generate('<Meta-Delete>')
-        rudisha "break"
+        rudisha "koma"
 
     eleza del_word_right(self, event):
         self.text.event_generate('<Meta-d>')
-        rudisha "break"
+        rudisha "koma"
 
     eleza find_event(self, event):
         search.find(self.text)
-        rudisha "break"
+        rudisha "koma"
 
     eleza find_again_event(self, event):
         search.find_again(self.text)
-        rudisha "break"
+        rudisha "koma"
 
     eleza find_selection_event(self, event):
         search.find_selection(self.text)
-        rudisha "break"
+        rudisha "koma"
 
     eleza find_in_files_event(self, event):
         grep.grep(self.text, self.io, self.flist)
-        rudisha "break"
+        rudisha "koma"
 
     eleza replace_event(self, event):
         replace.replace(self.text)
-        rudisha "break"
+        rudisha "koma"
 
     eleza goto_line_event(self, event):
         text = self.text
         lineno = tkSimpleDialog.askinteger("Goto",
                 "Go to line number:",parent=text)
-        ikiwa lineno is None:
-            rudisha "break"
+        ikiwa lineno ni Tupu:
+            rudisha "koma"
         ikiwa lineno <= 0:
             text.bell()
-            rudisha "break"
+            rudisha "koma"
         text.mark_set("insert", "%d.0" % lineno)
         text.see("insert")
-        rudisha "break"
+        rudisha "koma"
 
     eleza open_module(self):
-        """Get module name kutoka user and open it.
+        """Get module name kutoka user na open it.
 
-        Return module path or None for calls by open_module_browser
-        when latter is not invoked in named editor window.
+        Return module path ama Tupu kila calls by open_module_browser
+        when latter ni sio invoked kwenye named editor window.
         """
-        # XXX This, open_module_browser, and open_path_browser
-        # would fit better in iomenu.IOBinding.
-        try:
+        # XXX This, open_module_browser, na open_path_browser
+        # would fit better kwenye iomenu.IOBinding.
+        jaribu:
             name = self.text.get("sel.first", "sel.last").strip()
-        except TclError:
+        tatizo TclError:
             name = ''
         file_path = query.ModuleName(
                 self.text, "Open Module",
                 "Enter the name of a Python module\n"
-                "to search on sys.path and open:",
+                "to search on sys.path na open:",
                 name).result
-        ikiwa file_path is not None:
+        ikiwa file_path ni sio Tupu:
             ikiwa self.flist:
                 self.flist.open(file_path)
-            else:
+            isipokua:
                 self.io.loadfile(file_path)
         rudisha file_path
 
     eleza open_module_event(self, event):
         self.open_module()
-        rudisha "break"
+        rudisha "koma"
 
-    eleza open_module_browser(self, event=None):
+    eleza open_module_browser(self, event=Tupu):
         filename = self.io.filename
-        ikiwa not (self.__class__.__name__ == 'PyShellEditorWindow'
-                and filename):
+        ikiwa sio (self.__class__.__name__ == 'PyShellEditorWindow'
+                na filename):
             filename = self.open_module()
-            ikiwa filename is None:
-                rudisha "break"
+            ikiwa filename ni Tupu:
+                rudisha "koma"
         kutoka idlelib agiza browser
         browser.ModuleBrowser(self.root, filename)
-        rudisha "break"
+        rudisha "koma"
 
-    eleza open_path_browser(self, event=None):
+    eleza open_path_browser(self, event=Tupu):
         kutoka idlelib agiza pathbrowser
         pathbrowser.PathBrowser(self.root)
-        rudisha "break"
+        rudisha "koma"
 
-    eleza open_turtle_demo(self, event = None):
+    eleza open_turtle_demo(self, event = Tupu):
         agiza subprocess
 
         cmd = [sys.executable,
                '-c',
                'kutoka turtledemo.__main__ agiza main; main()']
-        subprocess.Popen(cmd, shell=False)
-        rudisha "break"
+        subprocess.Popen(cmd, shell=Uongo)
+        rudisha "koma"
 
     eleza gotoline(self, lineno):
-        ikiwa lineno is not None and lineno > 0:
+        ikiwa lineno ni sio Tupu na lineno > 0:
             self.text.mark_set("insert", "%d.0" % lineno)
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", "insert", "insert +1l")
             self.center()
 
     eleza ispythonsource(self, filename):
-        ikiwa not filename or os.path.isdir(filename):
-            rudisha True
+        ikiwa sio filename ama os.path.isdir(filename):
+            rudisha Kweli
         base, ext = os.path.splitext(os.path.basename(filename))
-        ikiwa os.path.normcase(ext) in (".py", ".pyw"):
-            rudisha True
+        ikiwa os.path.normcase(ext) kwenye (".py", ".pyw"):
+            rudisha Kweli
         line = self.text.get('1.0', '1.0 lineend')
-        rudisha line.startswith('#!') and 'python' in line
+        rudisha line.startswith('#!') na 'python' kwenye line
 
     eleza close_hook(self):
         ikiwa self.flist:
             self.flist.unregister_maybe_terminate(self)
-            self.flist = None
+            self.flist = Tupu
 
     eleza set_close_hook(self, close_hook):
         self.close_hook = close_hook
@@ -761,7 +761,7 @@ kundi EditorWindow(object):
 
     eleza _addcolorizer(self):
         ikiwa self.color:
-            return
+            rudisha
         ikiwa self.ispythonsource(self.io.filename):
             self.color = self.ColorDelegator()
         # can add more colorizers here...
@@ -771,23 +771,23 @@ kundi EditorWindow(object):
             self.per.insertfilter(self.undo)
 
     eleza _rmcolorizer(self):
-        ikiwa not self.color:
-            return
+        ikiwa sio self.color:
+            rudisha
         self.color.removecolors()
         self.per.removefilter(self.color)
-        self.color = None
+        self.color = Tupu
 
     eleza ResetColorizer(self):
         "Update the color theme"
-        # Called kutoka self.filename_change_hook and kutoka configdialog.py
+        # Called kutoka self.filename_change_hook na kutoka configdialog.py
         self._rmcolorizer()
         self._addcolorizer()
         EditorWindow.color_config(self.text)
 
-        ikiwa self.code_context is not None:
+        ikiwa self.code_context ni sio Tupu:
             self.code_context.update_highlight_colors()
 
-        ikiwa self.line_numbers is not None:
+        ikiwa self.line_numbers ni sio Tupu:
             self.line_numbers.update_colors()
 
     IDENTCHARS = string.ascii_letters + string.digits + "_"
@@ -795,25 +795,25 @@ kundi EditorWindow(object):
     eleza colorize_syntax_error(self, text, pos):
         text.tag_add("ERROR", pos)
         char = text.get(pos)
-        ikiwa char and char in self.IDENTCHARS:
+        ikiwa char na char kwenye self.IDENTCHARS:
             text.tag_add("ERROR", pos + " wordstart", pos)
         ikiwa '\n' == text.get(pos):   # error at line end
             text.mark_set("insert", pos)
-        else:
+        isipokua:
             text.mark_set("insert", pos + "+1c")
         text.see(pos)
 
     eleza ResetFont(self):
-        "Update the text widgets' font ikiwa it is changed"
+        "Update the text widgets' font ikiwa it ni changed"
         # Called kutoka configdialog.py
 
         # Update the code context widget first, since its height affects
         # the height of the text widget.  This avoids double re-rendering.
-        ikiwa self.code_context is not None:
+        ikiwa self.code_context ni sio Tupu:
             self.code_context.update_font()
         # Next, update the line numbers widget, since its width affects
         # the width of the text widget.
-        ikiwa self.line_numbers is not None:
+        ikiwa self.line_numbers ni sio Tupu:
             self.line_numbers.update_font()
         # Finally, update the main text widget.
         new_font = idleConf.GetFont(self.root, 'main', 'EditorWindow')
@@ -824,12 +824,12 @@ kundi EditorWindow(object):
         "Remove the keybindings before they are changed."
         # Called kutoka configdialog.py
         self.mainmenu.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
-        for event, keylist in keydefs.items():
+        kila event, keylist kwenye keydefs.items():
             self.text.event_delete(event, *keylist)
-        for extensionName in self.get_standard_extension_names():
+        kila extensionName kwenye self.get_standard_extension_names():
             xkeydefs = idleConf.GetExtensionBindings(extensionName)
             ikiwa xkeydefs:
-                for event, keylist in xkeydefs.items():
+                kila event, keylist kwenye xkeydefs.items():
                     self.text.event_delete(event, *keylist)
 
     eleza ApplyKeybindings(self):
@@ -837,41 +837,41 @@ kundi EditorWindow(object):
         # Called kutoka configdialog.py
         self.mainmenu.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
         self.apply_bindings()
-        for extensionName in self.get_standard_extension_names():
+        kila extensionName kwenye self.get_standard_extension_names():
             xkeydefs = idleConf.GetExtensionBindings(extensionName)
             ikiwa xkeydefs:
                 self.apply_bindings(xkeydefs)
         #update menu accelerators
         menuEventDict = {}
-        for menu in self.mainmenu.menudefs:
+        kila menu kwenye self.mainmenu.menudefs:
             menuEventDict[menu[0]] = {}
-            for item in menu[1]:
+            kila item kwenye menu[1]:
                 ikiwa item:
                     menuEventDict[menu[0]][prepstr(item[0])[1]] = item[1]
-        for menubarItem in self.menudict:
+        kila menubarItem kwenye self.menudict:
             menu = self.menudict[menubarItem]
             end = menu.index(END)
-            ikiwa end is None:
+            ikiwa end ni Tupu:
                 # Skip empty menus
-                continue
+                endelea
             end += 1
-            for index in range(0, end):
+            kila index kwenye range(0, end):
                 ikiwa menu.type(index) == 'command':
                     accel = menu.entrycget(index, 'accelerator')
                     ikiwa accel:
                         itemName = menu.entrycget(index, 'label')
                         event = ''
-                        ikiwa menubarItem in menuEventDict:
-                            ikiwa itemName in menuEventDict[menubarItem]:
+                        ikiwa menubarItem kwenye menuEventDict:
+                            ikiwa itemName kwenye menuEventDict[menubarItem]:
                                 event = menuEventDict[menubarItem][itemName]
                         ikiwa event:
                             accel = get_accelerator(keydefs, event)
                             menu.entryconfig(index, accelerator=accel)
 
     eleza set_notabs_indentwidth(self):
-        "Update the indentwidth ikiwa changed and not using tabs in this window"
+        "Update the indentwidth ikiwa changed na sio using tabs kwenye this window"
         # Called kutoka configdialog.py
-        ikiwa not self.usetabs:
+        ikiwa sio self.usetabs:
             self.indentwidth = idleConf.GetOption('main', 'Indent','num-spaces',
                                                   type='int')
 
@@ -886,67 +886,67 @@ kundi EditorWindow(object):
         # then rebuild them
         ikiwa help_list:
             helpmenu.add_separator()
-            for entry in help_list:
+            kila entry kwenye help_list:
                 cmd = self.__extra_help_callback(entry[1])
                 helpmenu.add_command(label=entry[0], command=cmd)
-        # and update the menu dictionary
+        # na update the menu dictionary
         self.menudict['help'] = helpmenu
 
     eleza __extra_help_callback(self, helpfile):
         "Create a callback with the helpfile value frozen at definition time"
         eleza display_extra_help(helpfile=helpfile):
-            ikiwa not helpfile.startswith(('www', 'http')):
+            ikiwa sio helpfile.startswith(('www', 'http')):
                 helpfile = os.path.normpath(helpfile)
             ikiwa sys.platform[:3] == 'win':
-                try:
+                jaribu:
                     os.startfile(helpfile)
-                except OSError as why:
+                tatizo OSError kama why:
                     tkMessageBox.showerror(title='Document Start Failure',
                         message=str(why), parent=self.text)
-            else:
+            isipokua:
                 webbrowser.open(helpfile)
         rudisha display_extra_help
 
-    eleza update_recent_files_list(self, new_file=None):
-        "Load and update the recent files list and menus"
+    eleza update_recent_files_list(self, new_file=Tupu):
+        "Load na update the recent files list na menus"
         # TODO: move to iomenu.
         rf_list = []
         file_path = self.recent_files_path
-        ikiwa file_path and os.path.exists(file_path):
+        ikiwa file_path na os.path.exists(file_path):
             with open(file_path, 'r',
-                      encoding='utf_8', errors='replace') as rf_list_file:
+                      encoding='utf_8', errors='replace') kama rf_list_file:
                 rf_list = rf_list_file.readlines()
         ikiwa new_file:
             new_file = os.path.abspath(new_file) + '\n'
-            ikiwa new_file in rf_list:
+            ikiwa new_file kwenye rf_list:
                 rf_list.remove(new_file)  # move to top
             rf_list.insert(0, new_file)
-        # clean and save the recent files list
+        # clean na save the recent files list
         bad_paths = []
-        for path in rf_list:
-            ikiwa '\0' in path or not os.path.exists(path[0:-1]):
+        kila path kwenye rf_list:
+            ikiwa '\0' kwenye path ama sio os.path.exists(path[0:-1]):
                 bad_paths.append(path)
-        rf_list = [path for path in rf_list ikiwa path not in bad_paths]
+        rf_list = [path kila path kwenye rf_list ikiwa path haiko kwenye bad_paths]
         ulchars = "1234567890ABCDEFGHIJK"
         rf_list = rf_list[0:len(ulchars)]
         ikiwa file_path:
-            try:
+            jaribu:
                 with open(file_path, 'w',
-                          encoding='utf_8', errors='replace') as rf_file:
+                          encoding='utf_8', errors='replace') kama rf_file:
                     rf_file.writelines(rf_list)
-            except OSError as err:
-                ikiwa not getattr(self.root, "recentfiles_message", False):
-                    self.root.recentfiles_message = True
+            tatizo OSError kama err:
+                ikiwa sio getattr(self.root, "recentfiles_message", Uongo):
+                    self.root.recentfiles_message = Kweli
                     tkMessageBox.showwarning(title='IDLE Warning',
                         message="Cannot save Recent Files list to disk.\n"
                                 f"  {err}\n"
-                                "Select OK to continue.",
+                                "Select OK to endelea.",
                         parent=self.text)
-        # for each edit window instance, construct the recent files menu
-        for instance in self.top.instance_dict:
+        # kila each edit window instance, construct the recent files menu
+        kila instance kwenye self.top.instance_dict:
             menu = instance.recent_files_menu
-            menu.delete(0, END)  # clear, and rebuild:
-            for i, file_name in enumerate(rf_list):
+            menu.delete(0, END)  # clear, na rebuild:
+            kila i, file_name kwenye enumerate(rf_list):
                 file_name = file_name.rstrip()  # zap \n
                 callback = instance.__recent_file_callback(file_name)
                 menu.add_command(label=ulchars[i] + " " + file_name,
@@ -961,16 +961,16 @@ kundi EditorWindow(object):
     eleza saved_change_hook(self):
         short = self.short_title()
         long = self.long_title()
-        ikiwa short and long:
+        ikiwa short na long:
             title = short + " - " + long + _py_version
         elikiwa short:
             title = short
         elikiwa long:
             title = long
-        else:
+        isipokua:
             title = "untitled"
-        icon = short or long or title
-        ikiwa not self.get_saved():
+        icon = short ama long ama title
+        ikiwa sio self.get_saved():
             title = "*%s*" % title
             icon = "*%s" % icon
         self.top.wm_title(title)
@@ -990,11 +990,11 @@ kundi EditorWindow(object):
         rudisha os.path.basename(filename) ikiwa filename else "untitled"
 
     eleza long_title(self):
-        rudisha self.io.filename or ""
+        rudisha self.io.filename ama ""
 
     eleza center_insert_event(self, event):
         self.center()
-        rudisha "break"
+        rudisha "koma"
 
     eleza center(self, mark="insert"):
         text = self.text
@@ -1008,7 +1008,7 @@ kundi EditorWindow(object):
         text = self.text
         top = self.getlineno("@0,0")
         bot = self.getlineno("@0,65535")
-        ikiwa top == bot and text.winfo_height() == 1:
+        ikiwa top == bot na text.winfo_height() == 1:
             # Geometry manager hasn't run yet
             height = int(text['height'])
             bot = top + height - 1
@@ -1026,11 +1026,11 @@ kundi EditorWindow(object):
 
     eleza close_event(self, event):
         self.close()
-        rudisha "break"
+        rudisha "koma"
 
     eleza maybesave(self):
         ikiwa self.io:
-            ikiwa not self.get_saved():
+            ikiwa sio self.get_saved():
                 ikiwa self.top.state()!='normal':
                     self.top.deiconify()
                 self.top.lower()
@@ -1038,13 +1038,13 @@ kundi EditorWindow(object):
             rudisha self.io.maybesave()
 
     eleza close(self):
-        try:
+        jaribu:
             reply = self.maybesave()
             ikiwa str(reply) != "cancel":
                 self._close()
             rudisha reply
-        except AttributeError:  # bpo-35379: close called twice
-            pass
+        tatizo AttributeError:  # bpo-35379: close called twice
+            pita
 
     eleza _close(self):
         ikiwa self.io.filename:
@@ -1052,15 +1052,15 @@ kundi EditorWindow(object):
         window.unregister_callback(self.postwindowsmenu)
         self.unload_extensions()
         self.io.close()
-        self.io = None
-        self.undo = None
+        self.io = Tupu
+        self.undo = Tupu
         ikiwa self.color:
             self.color.close()
-            self.color = None
-        self.text = None
-        self.tkinter_vars = None
+            self.color = Tupu
+        self.text = Tupu
+        self.tkinter_vars = Tupu
         self.per.close()
-        self.per = None
+        self.per = Tupu
         self.top.destroy()
         ikiwa self.close_hook:
             # unless override: unregister kutoka flist, terminate ikiwa last window
@@ -1071,21 +1071,21 @@ kundi EditorWindow(object):
         self.load_standard_extensions()
 
     eleza unload_extensions(self):
-        for ins in list(self.extensions.values()):
+        kila ins kwenye list(self.extensions.values()):
             ikiwa hasattr(ins, "close"):
                 ins.close()
         self.extensions = {}
 
     eleza load_standard_extensions(self):
-        for name in self.get_standard_extension_names():
-            try:
+        kila name kwenye self.get_standard_extension_names():
+            jaribu:
                 self.load_extension(name)
             except:
                 andika("Failed to load extension", repr(name))
                 traceback.print_exc()
 
     eleza get_standard_extension_names(self):
-        rudisha idleConf.GetExtensions(editor_only=True)
+        rudisha idleConf.GetExtensions(editor_only=Kweli)
 
     extfiles = {  # Map built-in config-extension section names to file names.
         'ZzDummy': 'zzdummy',
@@ -1093,14 +1093,14 @@ kundi EditorWindow(object):
 
     eleza load_extension(self, name):
         fname = self.extfiles.get(name, name)
-        try:
-            try:
+        jaribu:
+            jaribu:
                 mod = importlib.import_module('.' + fname, package=__package__)
-            except (ImportError, TypeError):
+            tatizo (ImportError, TypeError):
                 mod = importlib.import_module(fname)
-        except ImportError:
+        tatizo ImportError:
             andika("\nFailed to agiza extension: ", name)
-            raise
+            ashiria
         cls = getattr(mod, name)
         keydefs = idleConf.GetExtensionBindings(name)
         ikiwa hasattr(cls, "menudefs"):
@@ -1109,44 +1109,44 @@ kundi EditorWindow(object):
         self.extensions[name] = ins
         ikiwa keydefs:
             self.apply_bindings(keydefs)
-            for vevent in keydefs:
+            kila vevent kwenye keydefs:
                 methodname = vevent.replace("-", "_")
-                while methodname[:1] == '<':
+                wakati methodname[:1] == '<':
                     methodname = methodname[1:]
-                while methodname[-1:] == '>':
+                wakati methodname[-1:] == '>':
                     methodname = methodname[:-1]
                 methodname = methodname + "_event"
                 ikiwa hasattr(ins, methodname):
                     self.text.bind(vevent, getattr(ins, methodname))
 
-    eleza apply_bindings(self, keydefs=None):
-        ikiwa keydefs is None:
+    eleza apply_bindings(self, keydefs=Tupu):
+        ikiwa keydefs ni Tupu:
             keydefs = self.mainmenu.default_keydefs
         text = self.text
         text.keydefs = keydefs
-        for event, keylist in keydefs.items():
+        kila event, keylist kwenye keydefs.items():
             ikiwa keylist:
                 text.event_add(event, *keylist)
 
-    eleza fill_menus(self, menudefs=None, keydefs=None):
-        """Add appropriate entries to the menus and submenus
+    eleza fill_menus(self, menudefs=Tupu, keydefs=Tupu):
+        """Add appropriate entries to the menus na submenus
 
-        Menus that are absent or None in self.menudict are ignored.
+        Menus that are absent ama Tupu kwenye self.menudict are ignored.
         """
-        ikiwa menudefs is None:
+        ikiwa menudefs ni Tupu:
             menudefs = self.mainmenu.menudefs
-        ikiwa keydefs is None:
+        ikiwa keydefs ni Tupu:
             keydefs = self.mainmenu.default_keydefs
         menudict = self.menudict
         text = self.text
-        for mname, entrylist in menudefs:
+        kila mname, entrylist kwenye menudefs:
             menu = menudict.get(mname)
-            ikiwa not menu:
-                continue
-            for entry in entrylist:
-                ikiwa not entry:
+            ikiwa sio menu:
+                endelea
+            kila entry kwenye entrylist:
+                ikiwa sio enjaribu:
                     menu.add_separator()
-                else:
+                isipokua:
                     label, eventname = entry
                     checkbutton = (label[:1] == '!')
                     ikiwa checkbutton:
@@ -1160,7 +1160,7 @@ kundi EditorWindow(object):
                         menu.add_checkbutton(label=label, underline=underline,
                             command=command, accelerator=accelerator,
                             variable=var)
-                    else:
+                    isipokua:
                         menu.add_command(label=label, underline=underline,
                                          command=command,
                                          accelerator=accelerator)
@@ -1170,57 +1170,57 @@ kundi EditorWindow(object):
         ikiwa var:
             value = var.get()
             rudisha value
-        else:
-            raise NameError(name)
+        isipokua:
+            ashiria NameError(name)
 
-    eleza setvar(self, name, value, vartype=None):
+    eleza setvar(self, name, value, vartype=Tupu):
         var = self.get_var_obj(name, vartype)
         ikiwa var:
             var.set(value)
-        else:
-            raise NameError(name)
+        isipokua:
+            ashiria NameError(name)
 
-    eleza get_var_obj(self, name, vartype=None):
+    eleza get_var_obj(self, name, vartype=Tupu):
         var = self.tkinter_vars.get(name)
-        ikiwa not var and vartype:
-            # create a Tkinter variable object with self.text as master:
+        ikiwa sio var na vartype:
+            # create a Tkinter variable object with self.text kama master:
             self.tkinter_vars[name] = var = vartype(self.text)
         rudisha var
 
     # Tk implementations of "virtual text methods" -- each platform
-    # reusing IDLE's support code needs to define these for its GUI's
+    # reusing IDLE's support code needs to define these kila its GUI's
     # flavor of widget.
 
-    # Is character at text_index in a Python string?  Return 0 for
-    # "guaranteed no", true for anything else.  This info is expensive
-    # to compute ab initio, but is probably already known by the
+    # Is character at text_index kwenye a Python string?  Return 0 for
+    # "guaranteed no", true kila anything else.  This info ni expensive
+    # to compute ab initio, but ni probably already known by the
     # platform's colorizer.
 
     eleza is_char_in_string(self, text_index):
         ikiwa self.color:
             # Return true iff colorizer hasn't (re)gotten this far
-            # yet, or the character is tagged as being in a string
-            rudisha self.text.tag_prevrange("TODO", text_index) or \
-                   "STRING" in self.text.tag_names(text_index)
-        else:
-            # The colorizer is missing: assume the worst
+            # yet, ama the character ni tagged kama being kwenye a string
+            rudisha self.text.tag_prevrange("TODO", text_index) ama \
+                   "STRING" kwenye self.text.tag_names(text_index)
+        isipokua:
+            # The colorizer ni missing: assume the worst
             rudisha 1
 
-    # If a selection is defined in the text widget, rudisha (start,
-    # end) as Tkinter text indices, otherwise rudisha (None, None)
+    # If a selection ni defined kwenye the text widget, rudisha (start,
+    # end) kama Tkinter text indices, otherwise rudisha (Tupu, Tupu)
     eleza get_selection_indices(self):
-        try:
+        jaribu:
             first = self.text.index("sel.first")
             last = self.text.index("sel.last")
             rudisha first, last
-        except TclError:
-            rudisha None, None
+        tatizo TclError:
+            rudisha Tupu, Tupu
 
     # Return the text widget's current view of what a tab stop means
-    # (equivalent width in spaces).
+    # (equivalent width kwenye spaces).
 
     eleza get_tk_tabwidth(self):
-        current = self.text['tabs'] or TK_TABWIDTH_DEFAULT
+        current = self.text['tabs'] ama TK_TABWIDTH_DEFAULT
         rudisha int(current)
 
     # Set the text widget's current view of what a tab stop means.
@@ -1236,71 +1236,71 @@ kundi EditorWindow(object):
 
 ### begin autoindent code ###  (configuration was moved to beginning of class)
 
-    eleza set_indentation_params(self, is_py_src, guess=True):
-        ikiwa is_py_src and guess:
+    eleza set_indentation_params(self, is_py_src, guess=Kweli):
+        ikiwa is_py_src na guess:
             i = self.guess_indent()
             ikiwa 2 <= i <= 8:
                 self.indentwidth = i
             ikiwa self.indentwidth != self.tabwidth:
-                self.usetabs = False
+                self.usetabs = Uongo
         self.set_tk_tabwidth(self.tabwidth)
 
     eleza smart_backspace_event(self, event):
         text = self.text
         first, last = self.get_selection_indices()
-        ikiwa first and last:
+        ikiwa first na last:
             text.delete(first, last)
             text.mark_set("insert", first)
-            rudisha "break"
-        # Delete whitespace left, until hitting a real char or closest
+            rudisha "koma"
+        # Delete whitespace left, until hitting a real char ama closest
         # preceding virtual tab stop.
         chars = text.get("insert linestart", "insert")
         ikiwa chars == '':
             ikiwa text.compare("insert", ">", "1.0"):
                 # easy: delete preceding newline
                 text.delete("insert-1c")
-            else:
+            isipokua:
                 text.bell()     # at start of buffer
-            rudisha "break"
-        ikiwa  chars[-1] not in " \t":
+            rudisha "koma"
+        ikiwa  chars[-1] haiko kwenye " \t":
             # easy: delete preceding real char
             text.delete("insert-1c")
-            rudisha "break"
+            rudisha "koma"
         # Ick.  It may require *inserting* spaces ikiwa we back up over a
-        # tab character!  This is written to be clear, not fast.
+        # tab character!  This ni written to be clear, sio fast.
         tabwidth = self.tabwidth
         have = len(chars.expandtabs(tabwidth))
         assert have > 0
         want = ((have - 1) // self.indentwidth) * self.indentwidth
-        # Debug prompt is multilined....
+        # Debug prompt ni multilined....
         ncharsdeleted = 0
-        while 1:
+        wakati 1:
             ikiwa chars == self.prompt_last_line:  # '' unless PyShell
-                break
+                koma
             chars = chars[:-1]
             ncharsdeleted = ncharsdeleted + 1
             have = len(chars.expandtabs(tabwidth))
-            ikiwa have <= want or chars[-1] not in " \t":
-                break
+            ikiwa have <= want ama chars[-1] haiko kwenye " \t":
+                koma
         text.undo_block_start()
         text.delete("insert-%dc" % ncharsdeleted, "insert")
         ikiwa have < want:
             text.insert("insert", ' ' * (want - have))
         text.undo_block_stop()
-        rudisha "break"
+        rudisha "koma"
 
     eleza smart_indent_event(self, event):
         # ikiwa intraline selection:
         #     delete it
         # elikiwa multiline selection:
         #     do indent-region
-        # else:
+        # isipokua:
         #     indent one level
         text = self.text
         first, last = self.get_selection_indices()
         text.undo_block_start()
-        try:
-            ikiwa first and last:
+        jaribu:
+            ikiwa first na last:
                 ikiwa index2line(first) != index2line(last):
                     rudisha self.fregion.indent_region_event(event)
                 text.delete(first, last)
@@ -1310,71 +1310,71 @@ kundi EditorWindow(object):
             ikiwa raw == len(prefix):
                 # only whitespace to the left
                 self.reindent_to(effective + self.indentwidth)
-            else:
-                # tab to the next 'stop' within or to right of line's text:
+            isipokua:
+                # tab to the next 'stop' within ama to right of line's text:
                 ikiwa self.usetabs:
                     pad = '\t'
-                else:
+                isipokua:
                     effective = len(prefix.expandtabs(self.tabwidth))
                     n = self.indentwidth
                     pad = ' ' * (n - effective % n)
                 text.insert("insert", pad)
             text.see("insert")
-            rudisha "break"
-        finally:
+            rudisha "koma"
+        mwishowe:
             text.undo_block_stop()
 
     eleza newline_and_indent_event(self, event):
         text = self.text
         first, last = self.get_selection_indices()
         text.undo_block_start()
-        try:
-            ikiwa first and last:
+        jaribu:
+            ikiwa first na last:
                 text.delete(first, last)
                 text.mark_set("insert", first)
             line = text.get("insert linestart", "insert")
             i, n = 0, len(line)
-            while i < n and line[i] in " \t":
+            wakati i < n na line[i] kwenye " \t":
                 i = i+1
             ikiwa i == n:
-                # the cursor is in or at leading indentation in a continuation
+                # the cursor ni kwenye ama at leading indentation kwenye a continuation
                 # line; just inject an empty line at the start
                 text.insert("insert linestart", '\n')
-                rudisha "break"
+                rudisha "koma"
             indent = line[:i]
-            # strip whitespace before insert point unless it's in the prompt
+            # strip whitespace before insert point unless it's kwenye the prompt
             i = 0
-            while line and line[-1] in " \t" and line != self.prompt_last_line:
+            wakati line na line[-1] kwenye " \t" na line != self.prompt_last_line:
                 line = line[:-1]
                 i = i+1
             ikiwa i:
                 text.delete("insert - %d chars" % i, "insert")
             # strip whitespace after insert point
-            while text.get("insert") in " \t":
+            wakati text.get("insert") kwenye " \t":
                 text.delete("insert")
             # start new line
             text.insert("insert", '\n')
 
-            # adjust indentation for continuations and block
+            # adjust indentation kila continuations na block
             # open/close first need to find the last stmt
             lno = index2line(text.index('insert'))
             y = pyparse.Parser(self.indentwidth, self.tabwidth)
-            ikiwa not self.prompt_last_line:
-                for context in self.num_context_lines:
+            ikiwa sio self.prompt_last_line:
+                kila context kwenye self.num_context_lines:
                     startat = max(lno - context, 1)
                     startatindex = repr(startat) + ".0"
                     rawtext = text.get(startatindex, "insert")
                     y.set_code(rawtext)
                     bod = y.find_good_parse_start(
                               self._build_char_in_string_func(startatindex))
-                    ikiwa bod is not None or startat == 1:
-                        break
-                y.set_lo(bod or 0)
-            else:
+                    ikiwa bod ni sio Tupu ama startat == 1:
+                        koma
+                y.set_lo(bod ama 0)
+            isipokua:
                 r = text.tag_prevrange("console", "insert")
                 ikiwa r:
                     startatindex = r[1]
-                else:
+                isipokua:
                     startatindex = "1.0"
                 rawtext = text.get(startatindex, "insert")
                 y.set_code(rawtext)
@@ -1384,8 +1384,8 @@ kundi EditorWindow(object):
             ikiwa c != pyparse.C_NONE:
                 # The current stmt hasn't ended yet.
                 ikiwa c == pyparse.C_STRING_FIRST_LINE:
-                    # after the first line of a string; do not indent at all
-                    pass
+                    # after the first line of a string; do sio indent at all
+                    pita
                 elikiwa c == pyparse.C_STRING_NEXT_LINES:
                     # inside a string which started before this line;
                     # just mimic the current indent
@@ -1397,18 +1397,18 @@ kundi EditorWindow(object):
                     # last open bracket
                     self.reindent_to(y.compute_bracket_indent())
                 elikiwa c == pyparse.C_BACKSLASH:
-                    # ikiwa more than one line in this stmt already, just
+                    # ikiwa more than one line kwenye this stmt already, just
                     # mimic the current indent; else ikiwa initial line
                     # has a start on an assignment stmt, indent to
                     # beyond leftmost =; else to beyond first chunk of
                     # non-whitespace on initial line
                     ikiwa y.get_num_lines_in_stmt() > 1:
                         text.insert("insert", indent)
-                    else:
+                    isipokua:
                         self.reindent_to(y.compute_backslash_indent())
-                else:
+                isipokua:
                     assert 0, "bogus continuation type %r" % (c,)
-                rudisha "break"
+                rudisha "koma"
 
             # This line starts a brand new stmt; indent relative to
             # indentation of initial line of closest preceding
@@ -1417,16 +1417,16 @@ kundi EditorWindow(object):
             text.insert("insert", indent)
             ikiwa y.is_block_opener():
                 self.smart_indent_event(event)
-            elikiwa indent and y.is_block_closer():
+            elikiwa indent na y.is_block_closer():
                 self.smart_backspace_event(event)
-            rudisha "break"
-        finally:
+            rudisha "koma"
+        mwishowe:
             text.see("insert")
             text.undo_block_stop()
 
     # Our editwin provides an is_char_in_string function that works
     # with a Tk text index, but PyParse only knows about offsets into
-    # a string. This builds a function for PyParse that accepts an
+    # a string. This builds a function kila PyParse that accepts an
     # offset.
 
     eleza _build_char_in_string_func(self, startindex):
@@ -1441,15 +1441,15 @@ kundi EditorWindow(object):
 ##         ikiwa new != self.tabwidth:
 ##             self.tabwidth = new
 ##             self.set_indentation_params(0, guess=0)
-##         rudisha "break"
+##         rudisha "koma"
 
-    # Make string that displays as n leading blanks.
+    # Make string that displays kama n leading blanks.
 
     eleza _make_blanks(self, n):
         ikiwa self.usetabs:
             ntabs, nspaces = divmod(n, self.tabwidth)
             rudisha '\t' * ntabs + ' ' * nspaces
-        else:
+        isipokua:
             rudisha ' ' * n
 
     # Delete kutoka beginning of line to insert point, then reinsert
@@ -1465,43 +1465,43 @@ kundi EditorWindow(object):
         text.undo_block_stop()
 
     # Guess indentwidth kutoka text content.
-    # Return guessed indentwidth.  This should not be believed unless
-    # it's in a reasonable range (e.g., it will be 0 ikiwa no indented
+    # Return guessed indentwidth.  This should sio be believed unless
+    # it's kwenye a reasonable range (e.g., it will be 0 ikiwa no indented
     # blocks are found).
 
     eleza guess_indent(self):
         opener, indented = IndentSearcher(self.text, self.tabwidth).run()
-        ikiwa opener and indented:
+        ikiwa opener na indented:
             raw, indentsmall = get_line_indent(opener, self.tabwidth)
             raw, indentlarge = get_line_indent(indented, self.tabwidth)
-        else:
+        isipokua:
             indentsmall = indentlarge = 0
         rudisha indentlarge - indentsmall
 
-    eleza toggle_line_numbers_event(self, event=None):
-        ikiwa self.line_numbers is None:
-            return
+    eleza toggle_line_numbers_event(self, event=Tupu):
+        ikiwa self.line_numbers ni Tupu:
+            rudisha
 
         ikiwa self.line_numbers.is_shown:
             self.line_numbers.hide_sidebar()
             menu_label = "Show"
-        else:
+        isipokua:
             self.line_numbers.show_sidebar()
             menu_label = "Hide"
         self.update_menu_label(menu='options', index='*Line Numbers',
                                label=f'{menu_label} Line Numbers')
 
-# "line.col" -> line, as an int
+# "line.col" -> line, kama an int
 eleza index2line(index):
     rudisha int(float(index))
 
 
 _line_indent_re = re.compile(r'[ \t]*')
 eleza get_line_indent(line, tabwidth):
-    """Return a line's indentation as (# chars, effective # of spaces).
+    """Return a line's indentation kama (# chars, effective # of spaces).
 
-    The effective # of spaces is the length after properly "expanding"
-    the tabs into spaces, as done by str.expandtabs(tabwidth).
+    The effective # of spaces ni the length after properly "expanding"
+    the tabs into spaces, kama done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
     rudisha m.end(), len(m.group().expandtabs(tabwidth))
@@ -1509,16 +1509,16 @@ eleza get_line_indent(line, tabwidth):
 
 kundi IndentSearcher(object):
 
-    # .run() chews over the Text widget, looking for a block opener
-    # and the stmt following it.  Returns a pair,
+    # .run() chews over the Text widget, looking kila a block opener
+    # na the stmt following it.  Returns a pair,
     #     (line containing block opener, line containing stmt)
-    # Either or both may be None.
+    # Either ama both may be Tupu.
 
     eleza __init__(self, text, tabwidth):
         self.text = text
         self.tabwidth = tabwidth
         self.i = self.finished = 0
-        self.blkopenline = self.indentedline = None
+        self.blkopenline = self.indentedline = Tupu
 
     eleza readline(self):
         ikiwa self.finished:
@@ -1534,26 +1534,26 @@ kundi IndentSearcher(object):
                    NAME=tokenize.NAME,
                    OPENERS=('class', 'def', 'for', 'if', 'try', 'while')):
         ikiwa self.finished:
-            pass
-        elikiwa type == NAME and token in OPENERS:
+            pita
+        elikiwa type == NAME na token kwenye OPENERS:
             self.blkopenline = line
-        elikiwa type == INDENT and self.blkopenline:
+        elikiwa type == INDENT na self.blkopenline:
             self.indentedline = line
             self.finished = 1
 
     eleza run(self):
         save_tabsize = tokenize.tabsize
         tokenize.tabsize = self.tabwidth
-        try:
-            try:
+        jaribu:
+            jaribu:
                 tokens = tokenize.generate_tokens(self.readline)
-                for token in tokens:
+                kila token kwenye tokens:
                     self.tokeneater(*token)
-            except (tokenize.TokenError, SyntaxError):
+            tatizo (tokenize.TokenError, SyntaxError):
                 # since we cut off the tokenizer early, we can trigger
                 # spurious errors
-                pass
-        finally:
+                pita
+        mwishowe:
             tokenize.tabsize = save_tabsize
         rudisha self.blkopenline, self.indentedline
 
@@ -1561,7 +1561,7 @@ kundi IndentSearcher(object):
 
 eleza prepstr(s):
     # Helper to extract the underscore kutoka a string, e.g.
-    # prepstr("Co_py") returns (2, "Copy").
+    # prepstr("Co_py") rudishas (2, "Copy").
     i = s.find('_')
     ikiwa i >= 0:
         s = s[:i] + s[i+1:]
@@ -1577,8 +1577,8 @@ keynames = {
 eleza get_accelerator(keydefs, eventname):
     keylist = keydefs.get(eventname)
     # issue10940: temporary workaround to prevent hang with OS X Cocoa Tk 8.5
-    # ikiwa not keylist:
-    ikiwa (not keylist) or (macosx.isCocoaTk() and eventname in {
+    # ikiwa sio keylist:
+    ikiwa (not keylist) ama (macosx.isCocoaTk() na eventname kwenye {
                             "<<open-module>>",
                             "<<goto-line>>",
                             "<<change-indentwidth>>"}):
@@ -1596,11 +1596,11 @@ eleza get_accelerator(keydefs, eventname):
     rudisha s
 
 
-eleza fixwordbreaks(root):
-    # On Windows, tcl/tk breaks 'words' only on spaces, as in Command Prompt.
-    # We want Motikiwa style everywhere. See #21474, msg218992 and followup.
+eleza fixwordkomas(root):
+    # On Windows, tcl/tk komas 'words' only on spaces, kama kwenye Command Prompt.
+    # We want Motikiwa style everywhere. See #21474, msg218992 na followup.
     tk = root.tk
-    tk.call('tcl_wordBreakAfter', 'a b', 0) # make sure word.tcl is loaded
+    tk.call('tcl_wordBreakAfter', 'a b', 0) # make sure word.tcl ni loaded
     tk.call('set', 'tcl_wordchars', r'\w')
     tk.call('set', 'tcl_nonwordchars', r'\W')
 
@@ -1608,24 +1608,24 @@ eleza fixwordbreaks(root):
 eleza _editor_window(parent):  # htest #
     # error ikiwa close master window first - timer event, after script
     root = parent
-    fixwordbreaks(root)
+    fixwordkomas(root)
     ikiwa sys.argv[1:]:
         filename = sys.argv[1]
-    else:
-        filename = None
-    macosx.setupApp(root, None)
+    isipokua:
+        filename = Tupu
+    macosx.setupApp(root, Tupu)
     edit = EditorWindow(root=root, filename=filename)
     text = edit.text
     text['height'] = 10
-    for i in range(20):
+    kila i kwenye range(20):
         text.insert('insert', '  '*i + str(i) + '\n')
     # text.bind("<<close-all-windows>>", edit.close_event)
-    # Does not stop error, neither does following
+    # Does sio stop error, neither does following
     # edit.text.bind("<<close-window>>", edit.close_event)
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_editor', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_editor', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_editor_window)

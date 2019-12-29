@@ -14,16 +14,16 @@ TYPE_ALTERNATIVES = -2
 TYPE_GROUP = -3
 
 kundi MinNode(object):
-    """This kundi serves as an intermediate representation of the
+    """This kundi serves kama an intermediate representation of the
     pattern tree during the conversion to sets of leaf-to-root
     subpatterns"""
 
-    eleza __init__(self, type=None, name=None):
+    eleza __init__(self, type=Tupu, name=Tupu):
         self.type = type
         self.name = name
         self.children = []
-        self.leaf = False
-        self.parent = None
+        self.leaf = Uongo
+        self.parent = Tupu
         self.alternatives = []
         self.group = []
 
@@ -32,11 +32,11 @@ kundi MinNode(object):
 
     eleza leaf_to_root(self):
         """Internal method. Returns a characteristic path of the
-        pattern tree. This method must be run for all leaves until the
+        pattern tree. This method must be run kila all leaves until the
         linear subpatterns are merged into a single"""
         node = self
         subp = []
-        while node:
+        wakati node:
             ikiwa node.type == TYPE_ALTERNATIVES:
                 node.alternatives.append(subp)
                 ikiwa len(node.alternatives) == len(node.children):
@@ -44,11 +44,11 @@ kundi MinNode(object):
                     subp = [tuple(node.alternatives)]
                     node.alternatives = []
                     node = node.parent
-                    continue
-                else:
+                    endelea
+                isipokua:
                     node = node.parent
-                    subp = None
-                    break
+                    subp = Tupu
+                    koma
 
             ikiwa node.type == TYPE_GROUP:
                 node.group.append(subp)
@@ -57,16 +57,16 @@ kundi MinNode(object):
                     subp = get_characteristic_subpattern(node.group)
                     node.group = []
                     node = node.parent
-                    continue
-                else:
+                    endelea
+                isipokua:
                     node = node.parent
-                    subp = None
-                    break
+                    subp = Tupu
+                    koma
 
-            ikiwa node.type == token_labels.NAME and node.name:
+            ikiwa node.type == token_labels.NAME na node.name:
                 #in case of type=name, use the name instead
                 subp.append(node.name)
-            else:
+            isipokua:
                 subp.append(node.type)
 
             node = node.parent
@@ -74,8 +74,8 @@ kundi MinNode(object):
 
     eleza get_linear_subpattern(self):
         """Drives the leaf_to_root method. The reason that
-        leaf_to_root must be run multiple times is because we need to
-        reject 'group' matches; for example the alternative form
+        leaf_to_root must be run multiple times ni because we need to
+        reject 'group' matches; kila example the alternative form
         (a | b c) creates a group [b c] that needs to be matched. Since
         matching multiple linear patterns overcomes the automaton's
         capabilities, leaf_to_root merges each group into a single
@@ -84,31 +84,31 @@ kundi MinNode(object):
         i.e. (a|b c) -> (a|b) ikiwa b more characteristic than c
 
         Returns: The most 'characteristic'(as defined by
-          get_characteristic_subpattern) path for the compiled pattern
+          get_characteristic_subpattern) path kila the compiled pattern
           tree.
         """
 
-        for l in self.leaves():
+        kila l kwenye self.leaves():
             subp = l.leaf_to_root()
             ikiwa subp:
                 rudisha subp
 
     eleza leaves(self):
-        "Generator that returns the leaves of the tree"
-        for child in self.children:
-            yield kutoka child.leaves()
-        ikiwa not self.children:
-            yield self
+        "Generator that rudishas the leaves of the tree"
+        kila child kwenye self.children:
+            tuma kutoka child.leaves()
+        ikiwa sio self.children:
+            tuma self
 
-eleza reduce_tree(node, parent=None):
+eleza reduce_tree(node, parent=Tupu):
     """
     Internal function. Reduces a compiled pattern tree to an
-    intermediate representation suitable for feeding the
+    intermediate representation suitable kila feeding the
     automaton. This also trims off any optional pattern elements(like
     [a], a*).
     """
 
-    new_node = None
+    new_node = Tupu
     #switch on the node type
     ikiwa node.type == syms.Matcher:
         #skip
@@ -119,29 +119,29 @@ eleza reduce_tree(node, parent=None):
         ikiwa len(node.children) <= 2:
             #just a single 'Alternative', skip this node
             new_node = reduce_tree(node.children[0], parent)
-        else:
+        isipokua:
             #real alternatives
             new_node = MinNode(type=TYPE_ALTERNATIVES)
             #skip odd children('|' tokens)
-            for child in node.children:
+            kila child kwenye node.children:
                 ikiwa node.children.index(child)%2:
-                    continue
+                    endelea
                 reduced = reduce_tree(child, new_node)
-                ikiwa reduced is not None:
+                ikiwa reduced ni sio Tupu:
                     new_node.children.append(reduced)
     elikiwa node.type == syms.Alternative:
         ikiwa len(node.children) > 1:
 
             new_node = MinNode(type=TYPE_GROUP)
-            for child in node.children:
+            kila child kwenye node.children:
                 reduced = reduce_tree(child, new_node)
                 ikiwa reduced:
                     new_node.children.append(reduced)
-            ikiwa not new_node.children:
-                # delete the group ikiwa all of the children were reduced to None
-                new_node = None
+            ikiwa sio new_node.children:
+                # delete the group ikiwa all of the children were reduced to Tupu
+                new_node = Tupu
 
-        else:
+        isipokua:
             new_node = reduce_tree(node.children[0], parent)
 
     elikiwa node.type == syms.Unit:
@@ -156,55 +156,55 @@ eleza reduce_tree(node, parent=None):
                hasattr(node.children[1], "value") and
                node.children[1].value == '[')):
             #skip whole unit ikiwa its optional
-            rudisha None
+            rudisha Tupu
 
-        leaf = True
-        details_node = None
-        alternatives_node = None
-        has_repeater = False
-        repeater_node = None
-        has_variable_name = False
+        leaf = Kweli
+        details_node = Tupu
+        alternatives_node = Tupu
+        has_repeater = Uongo
+        repeater_node = Tupu
+        has_variable_name = Uongo
 
-        for child in node.children:
+        kila child kwenye node.children:
             ikiwa child.type == syms.Details:
-                leaf = False
+                leaf = Uongo
                 details_node = child
             elikiwa child.type == syms.Repeater:
-                has_repeater = True
+                has_repeater = Kweli
                 repeater_node = child
             elikiwa child.type == syms.Alternatives:
                 alternatives_node = child
-            ikiwa hasattr(child, 'value') and child.value == '=': # variable name
-                has_variable_name = True
+            ikiwa hasattr(child, 'value') na child.value == '=': # variable name
+                has_variable_name = Kweli
 
         #skip variable name
         ikiwa has_variable_name:
             #skip variable name, '='
             name_leaf = node.children[2]
-            ikiwa hasattr(name_leaf, 'value') and name_leaf.value == '(':
+            ikiwa hasattr(name_leaf, 'value') na name_leaf.value == '(':
                 # skip parenthesis
                 name_leaf = node.children[3]
-        else:
+        isipokua:
             name_leaf = node.children[0]
 
         #set node type
         ikiwa name_leaf.type == token_labels.NAME:
-            #(python) non-name or wildcard
+            #(python) non-name ama wildcard
             ikiwa name_leaf.value == 'any':
                 new_node = MinNode(type=TYPE_ANY)
-            else:
+            isipokua:
                 ikiwa hasattr(token_labels, name_leaf.value):
                     new_node = MinNode(type=getattr(token_labels, name_leaf.value))
-                else:
+                isipokua:
                     new_node = MinNode(type=getattr(pysyms, name_leaf.value))
 
         elikiwa name_leaf.type == token_labels.STRING:
-            #(python) name or character; remove the apostrophes kutoka
+            #(python) name ama character; remove the apostrophes kutoka
             #the string value
             name = name_leaf.value.strip("'")
-            ikiwa name in tokens:
+            ikiwa name kwenye tokens:
                 new_node = MinNode(type=tokens[name])
-            else:
+            isipokua:
                 new_node = MinNode(type=token_labels.NAME, name=name)
         elikiwa name_leaf.type == syms.Alternatives:
             new_node = reduce_tree(alternatives_node, parent)
@@ -212,22 +212,22 @@ eleza reduce_tree(node, parent=None):
         #handle repeaters
         ikiwa has_repeater:
             ikiwa repeater_node.children[0].value == '*':
-                #reduce to None
-                new_node = None
+                #reduce to Tupu
+                new_node = Tupu
             elikiwa repeater_node.children[0].value == '+':
                 #reduce to a single occurrence i.e. do nothing
-                pass
-            else:
+                pita
+            isipokua:
                 #TODO: handle {min, max} repeaters
-                raise NotImplementedError
-                pass
+                ashiria NotImplementedError
+                pita
 
         #add children
-        ikiwa details_node and new_node is not None:
-            for child in details_node.children[1:-1]:
+        ikiwa details_node na new_node ni sio Tupu:
+            kila child kwenye details_node.children[1:-1]:
                 #skip '<', '>' markers
                 reduced = reduce_tree(child, new_node)
-                ikiwa reduced is not None:
+                ikiwa reduced ni sio Tupu:
                     new_node.children.append(reduced)
     ikiwa new_node:
         new_node.parent = parent
@@ -239,7 +239,7 @@ eleza get_characteristic_subpattern(subpatterns):
     Current order used is:
     names > common_names > common_chars
     """
-    ikiwa not isinstance(subpatterns, list):
+    ikiwa sio isinstance(subpatterns, list):
         rudisha subpatterns
     ikiwa len(subpatterns)==1:
         rudisha subpatterns[0]
@@ -247,19 +247,19 @@ eleza get_characteristic_subpattern(subpatterns):
     # first pick out the ones containing variable names
     subpatterns_with_names = []
     subpatterns_with_common_names = []
-    common_names = ['in', 'for', 'if' , 'not', 'None']
+    common_names = ['in', 'for', 'if' , 'not', 'Tupu']
     subpatterns_with_common_chars = []
     common_chars = "[]().,:"
-    for subpattern in subpatterns:
-        ikiwa any(rec_test(subpattern, lambda x: type(x) is str)):
+    kila subpattern kwenye subpatterns:
+        ikiwa any(rec_test(subpattern, lambda x: type(x) ni str)):
             ikiwa any(rec_test(subpattern,
-                            lambda x: isinstance(x, str) and x in common_chars)):
+                            lambda x: isinstance(x, str) na x kwenye common_chars)):
                 subpatterns_with_common_chars.append(subpattern)
             elikiwa any(rec_test(subpattern,
-                              lambda x: isinstance(x, str) and x in common_names)):
+                              lambda x: isinstance(x, str) na x kwenye common_names)):
                 subpatterns_with_common_names.append(subpattern)
 
-            else:
+            isipokua:
                 subpatterns_with_names.append(subpattern)
 
     ikiwa subpatterns_with_names:
@@ -272,10 +272,10 @@ eleza get_characteristic_subpattern(subpatterns):
     rudisha max(subpatterns, key=len)
 
 eleza rec_test(sequence, test_func):
-    """Tests test_func on all items of sequence and items of included
+    """Tests test_func on all items of sequence na items of included
     sub-iterables"""
-    for x in sequence:
+    kila x kwenye sequence:
         ikiwa isinstance(x, (list, tuple)):
-            yield kutoka rec_test(x, test_func)
-        else:
-            yield test_func(x)
+            tuma kutoka rec_test(x, test_func)
+        isipokua:
+            tuma test_func(x)

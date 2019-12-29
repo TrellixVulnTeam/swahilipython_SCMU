@@ -27,9 +27,9 @@ class LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         x.destroy()
         if self.wantobjects:
             self.assertEqual(x.tk.globalgetvar(name), myvar.get())
-        else:
+        isipokua:
             self.assertEqual(float(x.tk.globalgetvar(name)), myvar.get())
-        del myvar
+        toa myvar
         self.assertRaises(tkinter.TclError, x.tk.globalgetvar, name)
 
         # checking that the tracing callback is properly removed
@@ -41,7 +41,7 @@ class LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         # LabeledScale with the same var will cause an error now. This
         # happens because the variable will be set to (possibly) a new
         # value which causes the tracing callback to be called and then
-        # it tries calling instance attributes not yet defined.
+        # it tries calling instance attributes sio yet defined.
         ttk.LabeledScale(self.root, variable=myvar)
         if hasattr(sys, 'last_type'):
             self.assertNotEqual(sys.last_type, tkinter.TclError)
@@ -51,13 +51,13 @@ class LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         # no master passing
         with swap_attr(tkinter, '_default_root', None), \
              swap_attr(tkinter, '_support_default_root', True):
-            try:
+            jaribu:
                 x = ttk.LabeledScale()
                 self.assertIsNotNone(tkinter._default_root)
                 self.assertEqual(x.master, tkinter._default_root)
                 self.assertEqual(x.tk, tkinter._default_root.tk)
                 x.destroy()
-            finally:
+            mwishowe:
                 destroy_default_root()
 
     def test_initialization(self):
@@ -164,7 +164,7 @@ class LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         # value outside range
         if self.wantobjects:
             conv = lambda x: x
-        else:
+        isipokua:
             conv = int
         x.value = conv(x.scale['to']) + 1 # no changes shouldn't happen
         x.update()
@@ -211,7 +211,7 @@ class OptionMenuTest(AbstractTkTest, unittest.TestCase):
         self.textvar = tkinter.StringVar(self.root)
 
     def tearDown(self):
-        del self.textvar
+        toa self.textvar
         super().tearDown()
 
 
@@ -222,7 +222,7 @@ class OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu.update_idletasks()
         optmenu.destroy()
         self.assertEqual(optmenu.tk.globalgetvar(name), var.get())
-        del var
+        toa var
         self.assertRaises(tkinter.TclError, optmenu.tk.globalgetvar, name)
 
 
@@ -252,16 +252,16 @@ class OptionMenuTest(AbstractTkTest, unittest.TestCase):
         self.assertTrue(found_default)
         optmenu.destroy()
 
-        # default shouldn't be in menu if it is not part of values
+        # default shouldn't be in menu if it ni sio part of values
         default = 'd'
         optmenu = ttk.OptionMenu(self.root, self.textvar, default, *items)
         curr = None
         i = 0
-        while True:
+        wakati True:
             last, curr = curr, optmenu['menu'].entryconfigure(i, 'value')
             if last == curr:
                 # no more menu entries
-                break
+                koma
             self.assertNotEqual(curr, default)
             i += 1
         self.assertEqual(i, len(items))
@@ -286,8 +286,8 @@ class OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu = ttk.OptionMenu(self.root, self.textvar, 'a', command=cb_test,
             *items)
         optmenu['menu'].invoke(1)
-        if not success:
-            self.fail("Menu callback not invoked")
+        if sio success:
+            self.fail("Menu callback sio invoked")
 
         optmenu.destroy()
 

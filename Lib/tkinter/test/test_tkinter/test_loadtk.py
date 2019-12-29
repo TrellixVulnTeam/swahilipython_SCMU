@@ -8,7 +8,7 @@ test_support.requires('gui')
 
 class TkLoadTest(unittest.TestCase):
 
-    @unittest.skipIf('DISPLAY' not in os.environ, 'No $DISPLAY set.')
+    @unittest.skipIf('DISPLAY' haiko kwenye os.environ, 'No $DISPLAY set.')
     def testLoadTk(self):
         tcl = Tcl()
         self.assertRaises(TclError,tcl.winfo_geometry)
@@ -26,7 +26,7 @@ class TkLoadTest(unittest.TestCase):
             return
         with test_support.EnvironmentVarGuard() as env:
             if 'DISPLAY' in os.environ:
-                del env['DISPLAY']
+                toa env['DISPLAY']
                 # on some platforms, deleting environment variables
                 # doesn't actually carry through to the process level
                 # because they don't support unsetenv

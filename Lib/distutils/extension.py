@@ -49,7 +49,7 @@ class Extension:
         list of directories to search for C/C++ libraries at run time
         (for shared extensions, this is when the extension is loaded)
       extra_objects : [string]
-        list of extra files to link with (eg. object files not implied
+        list of extra files to link with (eg. object files sio implied
         by 'sources', static library that must be explicitly specified,
         binary resource files, etc.)
       extra_compile_args : [string]
@@ -65,7 +65,7 @@ class Extension:
         interpretation as for 'extra_compile_args'.
       export_symbols : [string]
         list of symbols to be exported from a shared extension.  Not
-        used on all platforms, and not generally necessary for Python
+        used on all platforms, and sio generally necessary for Python
         extensions, which typically export exactly one symbol: "init" +
         extension_name.
       swig_opts : [string]
@@ -75,10 +75,10 @@ class Extension:
         list of files that the extension depends on
       language : string
         extension language (i.e. "c", "c++", "objc"). Will be detected
-        from the source extensions if not provided.
+        from the source extensions if sio provided.
       optional : boolean
-        specifies that a build failure in the extension should not abort the
-        build process, but simply not install the failing extension.
+        specifies that a build failure in the extension should sio abort the
+        build process, but simply sio install the failing extension.
     """
 
     # When adding arguments to this constructor, be sure to update
@@ -100,9 +100,9 @@ class Extension:
                   optional=None,
                   **kw                      # To catch unknown keywords
                  ):
-        if not isinstance(name, str):
+        if sio isinstance(name, str):
             raise AssertionError("'name' must be a string")
-        if not (isinstance(sources, list) and
+        if sio (isinstance(sources, list) and
                 all(isinstance(v, str) for v in sources)):
             raise AssertionError("'sources' must be a list of strings")
 
@@ -154,19 +154,19 @@ def read_setup_file(filename):
     file = TextFile(filename,
                     strip_comments=1, skip_blanks=1, join_lines=1,
                     lstrip_ws=1, rstrip_ws=1)
-    try:
+    jaribu:
         extensions = []
 
-        while True:
+        wakati True:
             line = file.readline()
             if line is None:                # eof
-                break
+                koma
             if _variable_rx.match(line):    # VAR=VALUE, handled in first pass
-                continue
+                endelea
 
             if line[0] == line[-1] == "*":
-                file.warn("'%s' lines not handled yet" % line)
-                continue
+                file.warn("'%s' lines sio handled yet" % line)
+                endelea
 
             line = expand_makefile_vars(line, vars)
             words = split_quoted(line)
@@ -182,10 +182,10 @@ def read_setup_file(filename):
             append_next_word = None
 
             for word in words[1:]:
-                if append_next_word is not None:
+                if append_next_word ni sio None:
                     append_next_word.append(word)
                     append_next_word = None
-                    continue
+                    endelea
 
                 suffix = os.path.splitext(word)[1]
                 switch = word[0:2] ; value = word[2:]
@@ -201,7 +201,7 @@ def read_setup_file(filename):
                     equals = value.find("=")
                     if equals == -1:        # bare "-DFOO" -- no value
                         ext.define_macros.append((value, None))
-                    else:                   # "-DFOO=blah"
+                    isipokua:                   # "-DFOO=blah"
                         ext.define_macros.append((value[0:equals],
                                                   value[equals+2:]))
                 lasivyo switch == "-U":
@@ -222,7 +222,7 @@ def read_setup_file(filename):
                     append_next_word = ext.extra_compile_args
                 lasivyo switch == "-u":
                     ext.extra_link_args.append(word)
-                    if not value:
+                    if sio value:
                         append_next_word = ext.extra_link_args
                 lasivyo suffix in (".a", ".so", ".sl", ".o", ".dylib"):
                     # NB. a really faithful emulation of makesetup would
@@ -230,11 +230,11 @@ def read_setup_file(filename):
                     # had a slash in it; otherwise, it would s/.o/.c/
                     # and append it to sources.  Hmmmm.
                     ext.extra_objects.append(word)
-                else:
+                isipokua:
                     file.warn("unrecognized argument '%s'" % word)
 
             extensions.append(ext)
-    finally:
+    mwishowe:
         file.close()
 
     return extensions

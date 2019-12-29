@@ -1,6 +1,6 @@
-"""Grep dialog for Find in Files functionality.
+"""Grep dialog kila Find kwenye Files functionality.
 
-   Inherits kutoka SearchDialogBase for GUI and uses searchengine
+   Inherits kutoka SearchDialogBase kila GUI na uses searchengine
    to prepare search pattern.
 """
 agiza fnmatch
@@ -8,7 +8,7 @@ agiza os
 agiza sys
 
 kutoka tkinter agiza StringVar, BooleanVar
-kutoka tkinter.ttk agiza Checkbutton  # Frame imported in ...Base
+kutoka tkinter.ttk agiza Checkbutton  # Frame imported kwenye ...Base
 
 kutoka idlelib.searchbase agiza SearchDialogBase
 kutoka idlelib agiza searchengine
@@ -17,23 +17,23 @@ kutoka idlelib agiza searchengine
 # EditorWindow -> GrepDialog -> OutputWindow -> EditorWindow
 
 
-eleza grep(text, io=None, flist=None):
-    """Open the Find in Files dialog.
+eleza grep(text, io=Tupu, flist=Tupu):
+    """Open the Find kwenye Files dialog.
 
     Module-level function to access the singleton GrepDialog
-    instance and open the dialog.  If text is selected, it is
-    used as the search phrase; otherwise, the previous entry
-    is used.
+    instance na open the dialog.  If text ni selected, it is
+    used kama the search phrase; otherwise, the previous entry
+    ni used.
 
     Args:
         text: Text widget that contains the selected text for
               default search phrase.
         io: iomenu.IOBinding instance with default path to search.
-        flist: filelist.FileList instance for OutputWindow parent.
+        flist: filelist.FileList instance kila OutputWindow parent.
     """
     root = text._root()
     engine = searchengine.get(root)
-    ikiwa not hasattr(engine, "_grepdialog"):
+    ikiwa sio hasattr(engine, "_grepdialog"):
         engine._grepdialog = GrepDialog(root, engine, flist)
     dialog = engine._grepdialog
     searchphrase = text.get("sel.first", "sel.last")
@@ -46,38 +46,38 @@ eleza walk_error(msg):
 
 
 eleza findfiles(folder, pattern, recursive):
-    """Generate file names in dir that match pattern.
+    """Generate file names kwenye dir that match pattern.
 
     Args:
         folder: Root directory to search.
         pattern: File pattern to match.
-        recursive: True to include subdirectories.
+        recursive: Kweli to include subdirectories.
     """
-    for dirpath, _, filenames in os.walk(folder, onerror=walk_error):
-        yield kutoka (os.path.join(dirpath, name)
-                    for name in filenames
+    kila dirpath, _, filenames kwenye os.walk(folder, onerror=walk_error):
+        tuma kutoka (os.path.join(dirpath, name)
+                    kila name kwenye filenames
                     ikiwa fnmatch.fnmatch(name, pattern))
-        ikiwa not recursive:
-            break
+        ikiwa sio recursive:
+            koma
 
 
 kundi GrepDialog(SearchDialogBase):
-    "Dialog for searching multiple files."
+    "Dialog kila searching multiple files."
 
-    title = "Find in Files Dialog"
+    title = "Find kwenye Files Dialog"
     icon = "Grep"
     needwrapbutton = 0
 
     eleza __init__(self, root, engine, flist):
-        """Create search dialog for searching for a phrase in the file system.
+        """Create search dialog kila searching kila a phrase kwenye the file system.
 
-        Uses SearchDialogBase as the basis for the GUI and a
+        Uses SearchDialogBase kama the basis kila the GUI na a
         searchengine instance to prepare the search.
 
         Attributes:
-            flist: filelist.Filelist instance for OutputWindow parent.
-            globvar: String value of Entry widget for path to search.
-            globent: Entry widget for globvar.  Created in
+            flist: filelist.Filelist instance kila OutputWindow parent.
+            globvar: String value of Entry widget kila path to search.
+            globent: Entry widget kila globvar.  Created in
                 create_entries().
             recvar: Boolean value of Checkbutton widget for
                 traversing through subdirectories.
@@ -87,11 +87,11 @@ kundi GrepDialog(SearchDialogBase):
         self.globvar = StringVar(root)
         self.recvar = BooleanVar(root)
 
-    eleza open(self, text, searchphrase, io=None):
-        """Make dialog visible on top of others and ready to use.
+    eleza open(self, text, searchphrase, io=Tupu):
+        """Make dialog visible on top of others na ready to use.
 
         Extend the SearchDialogBase open() to set the initial value
-        for globvar.
+        kila globvar.
 
         Args:
             text: Multicall object containing the text information.
@@ -100,17 +100,17 @@ kundi GrepDialog(SearchDialogBase):
         """
         SearchDialogBase.open(self, text, searchphrase)
         ikiwa io:
-            path = io.filename or ""
-        else:
+            path = io.filename ama ""
+        isipokua:
             path = ""
         dir, base = os.path.split(path)
         head, tail = os.path.splitext(base)
-        ikiwa not tail:
+        ikiwa sio tail:
             tail = ".py"
         self.globvar.set(os.path.join(dir, "*" + tail))
 
     eleza create_entries(self):
-        "Create base entry widgets and add widget for search path."
+        "Create base entry widgets na add widget kila search path."
         SearchDialogBase.create_entries(self)
         self.globent = self.make_entry("In files:", self.globvar)[0]
 
@@ -122,71 +122,71 @@ kundi GrepDialog(SearchDialogBase):
         btn.pack(side="top", fill="both")
 
     eleza create_command_buttons(self):
-        "Create base command buttons and add button for Search Files."
+        "Create base command buttons na add button kila Search Files."
         SearchDialogBase.create_command_buttons(self)
-        self.make_button("Search Files", self.default_command, isdef=True)
+        self.make_button("Search Files", self.default_command, isdef=Kweli)
 
-    eleza default_command(self, event=None):
-        """Grep for search pattern in file path. The default command is bound
+    eleza default_command(self, event=Tupu):
+        """Grep kila search pattern kwenye file path. The default command ni bound
         to <Return>.
 
-        If entry values are populated, set OutputWindow as stdout
-        and perform search.  The search dialog is closed automatically
+        If entry values are populated, set OutputWindow kama stdout
+        na perform search.  The search dialog ni closed automatically
         when the search begins.
         """
         prog = self.engine.getprog()
-        ikiwa not prog:
-            return
+        ikiwa sio prog:
+            rudisha
         path = self.globvar.get()
-        ikiwa not path:
+        ikiwa sio path:
             self.top.bell()
-            return
+            rudisha
         kutoka idlelib.outwin agiza OutputWindow  # leave here!
         save = sys.stdout
-        try:
+        jaribu:
             sys.stdout = OutputWindow(self.flist)
             self.grep_it(prog, path)
-        finally:
+        mwishowe:
             sys.stdout = save
 
     eleza grep_it(self, prog, path):
-        """Search for prog within the lines of the files in path.
+        """Search kila prog within the lines of the files kwenye path.
 
-        For the each file in the path directory, open the file and
-        search each line for the matching pattern.  If the pattern is
-        found,  write the file and line information to stdout (which
-        is an OutputWindow).
+        For the each file kwenye the path directory, open the file and
+        search each line kila the matching pattern.  If the pattern is
+        found,  write the file na line information to stdout (which
+        ni an OutputWindow).
 
         Args:
             prog: The compiled, cooked search pattern.
             path: String containing the search path.
         """
         folder, filepat = os.path.split(path)
-        ikiwa not folder:
+        ikiwa sio folder:
             folder = os.curdir
         filelist = sorted(findfiles(folder, filepat, self.recvar.get()))
         self.close()
         pat = self.engine.getpat()
-        andika(f"Searching {pat!r} in {path} ...")
+        andika(f"Searching {pat!r} kwenye {path} ...")
         hits = 0
-        try:
-            for fn in filelist:
-                try:
-                    with open(fn, errors='replace') as f:
-                        for lineno, line in enumerate(f, 1):
+        jaribu:
+            kila fn kwenye filelist:
+                jaribu:
+                    with open(fn, errors='replace') kama f:
+                        kila lineno, line kwenye enumerate(f, 1):
                             ikiwa line[-1:] == '\n':
                                 line = line[:-1]
                             ikiwa prog.search(line):
                                 sys.stdout.write(f"{fn}: {lineno}: {line}\n")
                                 hits += 1
-                except OSError as msg:
+                tatizo OSError kama msg:
                     andika(msg)
             andika(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
                   ikiwa hits else "No hits.")
-        except AttributeError:
-            # Tk window has been closed, OutputWindow.text = None,
-            # so in OW.write, OW.text.insert fails.
-            pass
+        tatizo AttributeError:
+            # Tk window has been closed, OutputWindow.text = Tupu,
+            # so kwenye OW.write, OW.text.insert fails.
+            pita
 
 
 eleza _grep_dialog(parent):  # htest #
@@ -215,7 +215,7 @@ eleza _grep_dialog(parent):  # htest #
 
 ikiwa __name__ == "__main__":
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_grep', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_grep', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_grep_dialog)

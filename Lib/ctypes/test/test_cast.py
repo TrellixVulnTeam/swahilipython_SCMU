@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
             if sys.byteorder == "little":
                 self.assertEqual([ptr[i] for i in range(6)],
                                      [42, 0, 17, 0, 2, 0])
-            else:
+            isipokua:
                 self.assertEqual([ptr[i] for i in range(6)],
                                      [0, 42, 0, 17, 0, 2])
 

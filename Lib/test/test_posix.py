@@ -3,7 +3,7 @@
 kutoka test agiza support
 kutoka test.support.script_helper agiza assert_python_ok
 
-# Skip these tests ikiwa there is no posix module.
+# Skip these tests ikiwa there ni no posix module.
 posix = support.import_module('posix')
 
 agiza errno
@@ -23,17 +23,17 @@ _DUMMY_SYMLINK = os.path.join(tempfile.gettempdir(),
                               support.TESTFN + '-dummy-symlink')
 
 requires_32b = unittest.skipUnless(sys.maxsize < 2**32,
-        'test is only meaningful on 32-bit builds')
+        'test ni only meaningful on 32-bit builds')
 
 eleza _supports_sched():
-    ikiwa not hasattr(posix, 'sched_getscheduler'):
-        rudisha False
-    try:
+    ikiwa sio hasattr(posix, 'sched_getscheduler'):
+        rudisha Uongo
+    jaribu:
         posix.sched_getscheduler(0)
-    except OSError as e:
+    tatizo OSError kama e:
         ikiwa e.errno == errno.ENOSYS:
-            rudisha False
-    rudisha True
+            rudisha Uongo
+    rudisha Kweli
 
 requires_sched = unittest.skipUnless(_supports_sched(), 'requires POSIX scheduler API')
 
@@ -50,12 +50,12 @@ kundi PosixTester(unittest.TestCase):
                                 RuntimeWarning)
 
     eleza tearDown(self):
-        for teardown_file in self.teardown_files:
+        kila teardown_file kwenye self.teardown_files:
             support.unlink(teardown_file)
-        self._warnings_manager.__exit__(None, None, None)
+        self._warnings_manager.__exit__(Tupu, Tupu, Tupu)
 
     eleza testNoArgFunctions(self):
-        # test posix functions which take no arguments and have
+        # test posix functions which take no arguments na have
         # no side-effects which we need to cleanup (e.g., fork, wait, abort)
         NO_ARG_FUNCTIONS = [ "ctermid", "getcwd", "getcwdb", "uname",
                              "times", "getloadavg",
@@ -63,9 +63,9 @@ kundi PosixTester(unittest.TestCase):
                              "getpid", "getpgrp", "getppid", "getuid", "sync",
                            ]
 
-        for name in NO_ARG_FUNCTIONS:
-            posix_func = getattr(posix, name, None)
-            ikiwa posix_func is not None:
+        kila name kwenye NO_ARG_FUNCTIONS:
+            posix_func = getattr(posix, name, Tupu)
+            ikiwa posix_func ni sio Tupu:
                 posix_func()
                 self.assertRaises(TypeError, posix_func, 1)
 
@@ -74,7 +74,7 @@ kundi PosixTester(unittest.TestCase):
     eleza test_getresuid(self):
         user_ids = posix.getresuid()
         self.assertEqual(len(user_ids), 3)
-        for val in user_ids:
+        kila val kwenye user_ids:
             self.assertGreaterEqual(val, 0)
 
     @unittest.skipUnless(hasattr(posix, 'getresgid'),
@@ -82,23 +82,23 @@ kundi PosixTester(unittest.TestCase):
     eleza test_getresgid(self):
         group_ids = posix.getresgid()
         self.assertEqual(len(group_ids), 3)
-        for val in group_ids:
+        kila val kwenye group_ids:
             self.assertGreaterEqual(val, 0)
 
     @unittest.skipUnless(hasattr(posix, 'setresuid'),
                          'test needs posix.setresuid()')
     eleza test_setresuid(self):
         current_user_ids = posix.getresuid()
-        self.assertIsNone(posix.setresuid(*current_user_ids))
+        self.assertIsTupu(posix.setresuid(*current_user_ids))
         # -1 means don't change that value.
-        self.assertIsNone(posix.setresuid(-1, -1, -1))
+        self.assertIsTupu(posix.setresuid(-1, -1, -1))
 
     @unittest.skipUnless(hasattr(posix, 'setresuid'),
                          'test needs posix.setresuid()')
     eleza test_setresuid_exception(self):
-        # Don't do this test ikiwa someone is silly enough to run us as root.
+        # Don't do this test ikiwa someone ni silly enough to run us kama root.
         current_user_ids = posix.getresuid()
-        ikiwa 0 not in current_user_ids:
+        ikiwa 0 haiko kwenye current_user_ids:
             new_user_ids = (current_user_ids[0]+1, -1, -1)
             self.assertRaises(OSError, posix.setresuid, *new_user_ids)
 
@@ -106,91 +106,91 @@ kundi PosixTester(unittest.TestCase):
                          'test needs posix.setresgid()')
     eleza test_setresgid(self):
         current_group_ids = posix.getresgid()
-        self.assertIsNone(posix.setresgid(*current_group_ids))
+        self.assertIsTupu(posix.setresgid(*current_group_ids))
         # -1 means don't change that value.
-        self.assertIsNone(posix.setresgid(-1, -1, -1))
+        self.assertIsTupu(posix.setresgid(-1, -1, -1))
 
     @unittest.skipUnless(hasattr(posix, 'setresgid'),
                          'test needs posix.setresgid()')
     eleza test_setresgid_exception(self):
-        # Don't do this test ikiwa someone is silly enough to run us as root.
+        # Don't do this test ikiwa someone ni silly enough to run us kama root.
         current_group_ids = posix.getresgid()
-        ikiwa 0 not in current_group_ids:
+        ikiwa 0 haiko kwenye current_group_ids:
             new_group_ids = (current_group_ids[0]+1, -1, -1)
             self.assertRaises(OSError, posix.setresgid, *new_group_ids)
 
     @unittest.skipUnless(hasattr(posix, 'initgroups'),
                          "test needs os.initgroups()")
     eleza test_initgroups(self):
-        # It takes a string and an integer; check that it raises a TypeError
-        # for other argument lists.
+        # It takes a string na an integer; check that it ashirias a TypeError
+        # kila other argument lists.
         self.assertRaises(TypeError, posix.initgroups)
-        self.assertRaises(TypeError, posix.initgroups, None)
+        self.assertRaises(TypeError, posix.initgroups, Tupu)
         self.assertRaises(TypeError, posix.initgroups, 3, "foo")
         self.assertRaises(TypeError, posix.initgroups, "foo", 3, object())
 
         # If a non-privileged user invokes it, it should fail with OSError
         # EPERM.
         ikiwa os.getuid() != 0:
-            try:
+            jaribu:
                 name = pwd.getpwuid(posix.getuid()).pw_name
-            except KeyError:
-                # the current UID may not have a pwd entry
-                raise unittest.SkipTest("need a pwd entry")
-            try:
+            tatizo KeyError:
+                # the current UID may sio have a pwd entry
+                ashiria unittest.SkipTest("need a pwd entry")
+            jaribu:
                 posix.initgroups(name, 13)
-            except OSError as e:
+            tatizo OSError kama e:
                 self.assertEqual(e.errno, errno.EPERM)
-            else:
-                self.fail("Expected OSError to be raised by initgroups")
+            isipokua:
+                self.fail("Expected OSError to be ashiriad by initgroups")
 
     @unittest.skipUnless(hasattr(posix, 'statvfs'),
                          'test needs posix.statvfs()')
     eleza test_statvfs(self):
-        self.assertTrue(posix.statvfs(os.curdir))
+        self.assertKweli(posix.statvfs(os.curdir))
 
     @unittest.skipUnless(hasattr(posix, 'fstatvfs'),
                          'test needs posix.fstatvfs()')
     eleza test_fstatvfs(self):
         fp = open(support.TESTFN)
-        try:
-            self.assertTrue(posix.fstatvfs(fp.fileno()))
-            self.assertTrue(posix.statvfs(fp.fileno()))
-        finally:
+        jaribu:
+            self.assertKweli(posix.fstatvfs(fp.fileno()))
+            self.assertKweli(posix.statvfs(fp.fileno()))
+        mwishowe:
             fp.close()
 
     @unittest.skipUnless(hasattr(posix, 'ftruncate'),
                          'test needs posix.ftruncate()')
     eleza test_ftruncate(self):
         fp = open(support.TESTFN, 'w+')
-        try:
+        jaribu:
             # we need to have some data to truncate
             fp.write('test')
             fp.flush()
             posix.ftruncate(fp.fileno(), 0)
-        finally:
+        mwishowe:
             fp.close()
 
     @unittest.skipUnless(hasattr(posix, 'truncate'), "test needs posix.truncate()")
     eleza test_truncate(self):
-        with open(support.TESTFN, 'w') as fp:
+        with open(support.TESTFN, 'w') kama fp:
             fp.write('test')
             fp.flush()
         posix.truncate(support.TESTFN, 0)
 
-    @unittest.skipUnless(getattr(os, 'execve', None) in os.supports_fd, "test needs execve() to support the fd parameter")
+    @unittest.skipUnless(getattr(os, 'execve', Tupu) kwenye os.supports_fd, "test needs execve() to support the fd parameter")
     @unittest.skipUnless(hasattr(os, 'fork'), "test needs os.fork()")
     @unittest.skipUnless(hasattr(os, 'waitpid'), "test needs os.waitpid()")
     eleza test_fexecve(self):
         fp = os.open(sys.executable, os.O_RDONLY)
-        try:
+        jaribu:
             pid = os.fork()
             ikiwa pid == 0:
                 os.chdir(os.path.split(sys.executable)[0])
-                posix.execve(fp, [sys.executable, '-c', 'pass'], os.environ)
-            else:
+                posix.execve(fp, [sys.executable, '-c', 'pita'], os.environ)
+            isipokua:
                 self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        finally:
+        mwishowe:
             os.close(fp)
 
 
@@ -200,35 +200,35 @@ kundi PosixTester(unittest.TestCase):
         pid = os.fork()
         ikiwa pid == 0:
             os.chdir(os.path.split(sys.executable)[0])
-            posix.execve(sys.executable, [sys.executable, '-c', 'pass'], os.environ)
-        else:
+            posix.execve(sys.executable, [sys.executable, '-c', 'pita'], os.environ)
+        isipokua:
             res = posix.waitid(posix.P_PID, pid, posix.WEXITED)
             self.assertEqual(pid, res.si_pid)
 
     @unittest.skipUnless(hasattr(os, 'fork'), "test needs os.fork()")
     eleza test_register_at_fork(self):
-        with self.assertRaises(TypeError, msg="Positional args not allowed"):
-            os.register_at_fork(lambda: None)
+        with self.assertRaises(TypeError, msg="Positional args sio allowed"):
+            os.register_at_fork(lambda: Tupu)
         with self.assertRaises(TypeError, msg="Args must be callable"):
             os.register_at_fork(before=2)
         with self.assertRaises(TypeError, msg="Args must be callable"):
             os.register_at_fork(after_in_child="three")
         with self.assertRaises(TypeError, msg="Args must be callable"):
             os.register_at_fork(after_in_parent=b"Five")
-        with self.assertRaises(TypeError, msg="Args must not be None"):
-            os.register_at_fork(before=None)
-        with self.assertRaises(TypeError, msg="Args must not be None"):
-            os.register_at_fork(after_in_child=None)
-        with self.assertRaises(TypeError, msg="Args must not be None"):
-            os.register_at_fork(after_in_parent=None)
+        with self.assertRaises(TypeError, msg="Args must sio be Tupu"):
+            os.register_at_fork(before=Tupu)
+        with self.assertRaises(TypeError, msg="Args must sio be Tupu"):
+            os.register_at_fork(after_in_child=Tupu)
+        with self.assertRaises(TypeError, msg="Args must sio be Tupu"):
+            os.register_at_fork(after_in_parent=Tupu)
         with self.assertRaises(TypeError, msg="Invalid arg was allowed"):
-            # Ensure a combination of valid and invalid is an error.
-            os.register_at_fork(before=None, after_in_parent=lambda: 3)
+            # Ensure a combination of valid na invalid ni an error.
+            os.register_at_fork(before=Tupu, after_in_parent=lambda: 3)
         with self.assertRaises(TypeError, msg="Invalid arg was allowed"):
-            # Ensure a combination of valid and invalid is an error.
-            os.register_at_fork(before=lambda: None, after_in_child='')
-        # We test actual registrations in their own process so as not to
-        # pollute this one.  There is no way to unregister for cleanup.
+            # Ensure a combination of valid na invalid ni an error.
+            os.register_at_fork(before=lambda: Tupu, after_in_child='')
+        # We test actual registrations kwenye their own process so kama sio to
+        # pollute this one.  There ni no way to unregister kila cleanup.
         code = """ikiwa 1:
             agiza os
 
@@ -246,13 +246,13 @@ kundi PosixTester(unittest.TestCase):
             ikiwa pid == 0:
                 # At this point, after-forkers have already been executed
                 os.close(w)
-                # Wait for parent to tell us to exit
+                # Wait kila parent to tell us to exit
                 os.read(fin_r, 1)
                 os._exit(0)
-            else:
-                try:
+            isipokua:
+                jaribu:
                     os.close(w)
-                    with open(r, "rb") as f:
+                    with open(r, "rb") kama f:
                         data = f.read()
                         assert len(data) == 6, data
                         # Check before-fork callbacks
@@ -261,7 +261,7 @@ kundi PosixTester(unittest.TestCase):
                         assert sorted(data[2:]) == list(b'CDEF'), data
                         assert data.index(b'C') < data.index(b'D'), data
                         assert data.index(b'E') < data.index(b'F'), data
-                finally:
+                mwishowe:
                     os.write(fin_w, b'!')
             """
         assert_python_ok('-c', code)
@@ -269,88 +269,88 @@ kundi PosixTester(unittest.TestCase):
     @unittest.skipUnless(hasattr(posix, 'lockf'), "test needs posix.lockf()")
     eleza test_lockf(self):
         fd = os.open(support.TESTFN, os.O_WRONLY | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd, b'test')
             os.lseek(fd, 0, os.SEEK_SET)
             posix.lockf(fd, posix.F_LOCK, 4)
-            # section is locked
+            # section ni locked
             posix.lockf(fd, posix.F_ULOCK, 4)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'pread'), "test needs posix.pread()")
     eleza test_pread(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd, b'test')
             os.lseek(fd, 0, os.SEEK_SET)
             self.assertEqual(b'es', posix.pread(fd, 2, 1))
             # the first pread() shouldn't disturb the file offset
             self.assertEqual(b'te', posix.read(fd, 2))
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'preadv'), "test needs posix.preadv()")
     eleza test_preadv(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd, b'test1tt2t3t5t6t6t8')
-            buf = [bytearray(i) for i in [5, 3, 2]]
+            buf = [bytearray(i) kila i kwenye [5, 3, 2]]
             self.assertEqual(posix.preadv(fd, buf, 3), 10)
             self.assertEqual([b't1tt2', b't3t', b'5t'], list(buf))
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'preadv'), "test needs posix.preadv()")
     @unittest.skipUnless(hasattr(posix, 'RWF_HIPRI'), "test needs posix.RWF_HIPRI")
     eleza test_preadv_flags(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd, b'test1tt2t3t5t6t6t8')
-            buf = [bytearray(i) for i in [5, 3, 2]]
+            buf = [bytearray(i) kila i kwenye [5, 3, 2]]
             self.assertEqual(posix.preadv(fd, buf, 3, os.RWF_HIPRI), 10)
             self.assertEqual([b't1tt2', b't3t', b'5t'], list(buf))
-        except NotImplementedError:
-            self.skipTest("preadv2 not available")
-        except OSError as inst:
+        tatizo NotImplementedError:
+            self.skipTest("preadv2 sio available")
+        tatizo OSError kama inst:
             # Is possible that the macro RWF_HIPRI was defined at compilation time
-            # but the option is not supported by the kernel or the runtime libc shared
+            # but the option ni sio supported by the kernel ama the runtime libc shared
             # library.
-            ikiwa inst.errno in {errno.EINVAL, errno.ENOTSUP}:
-                raise unittest.SkipTest("RWF_HIPRI is not supported by the current system")
-            else:
-                raise
-        finally:
+            ikiwa inst.errno kwenye {errno.EINVAL, errno.ENOTSUP}:
+                ashiria unittest.SkipTest("RWF_HIPRI ni sio supported by the current system")
+            isipokua:
+                ashiria
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'preadv'), "test needs posix.preadv()")
     @requires_32b
     eleza test_preadv_overflow_32bits(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             buf = [bytearray(2**16)] * 2**15
-            with self.assertRaises(OSError) as cm:
+            with self.assertRaises(OSError) kama cm:
                 os.preadv(fd, buf, 0)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
             self.assertEqual(bytes(buf[0]), b'\0'* 2**16)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'pwrite'), "test needs posix.pwrite()")
     eleza test_pwrite(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd, b'test')
             os.lseek(fd, 0, os.SEEK_SET)
             posix.pwrite(fd, b'xx', 1)
             self.assertEqual(b'txxt', posix.read(fd, 4))
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'pwritev'), "test needs posix.pwritev()")
     eleza test_pwritev(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd, b"xx")
             os.lseek(fd, 0, os.SEEK_SET)
             n = os.pwritev(fd, [b'test1', b'tt2', b't3'], 2)
@@ -358,14 +358,14 @@ kundi PosixTester(unittest.TestCase):
 
             os.lseek(fd, 0, os.SEEK_SET)
             self.assertEqual(b'xxtest1tt2t3', posix.read(fd, 100))
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'pwritev'), "test needs posix.pwritev()")
     @unittest.skipUnless(hasattr(posix, 'os.RWF_SYNC'), "test needs os.RWF_SYNC")
     eleza test_pwritev_flags(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd,b"xx")
             os.lseek(fd, 0, os.SEEK_SET)
             n = os.pwritev(fd, [b'test1', b'tt2', b't3'], 2, os.RWF_SYNC)
@@ -373,192 +373,192 @@ kundi PosixTester(unittest.TestCase):
 
             os.lseek(fd, 0, os.SEEK_SET)
             self.assertEqual(b'xxtest1tt2', posix.read(fd, 100))
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'pwritev'), "test needs posix.pwritev()")
     @requires_32b
     eleza test_pwritev_overflow_32bits(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
-            with self.assertRaises(OSError) as cm:
+        jaribu:
+            with self.assertRaises(OSError) kama cm:
                 os.pwritev(fd, [b"x" * 2**16] * 2**15, 0)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'posix_fallocate'),
         "test needs posix.posix_fallocate()")
     eleza test_posix_fallocate(self):
         fd = os.open(support.TESTFN, os.O_WRONLY | os.O_CREAT)
-        try:
+        jaribu:
             posix.posix_fallocate(fd, 0, 10)
-        except OSError as inst:
+        tatizo OSError kama inst:
             # issue10812, ZFS doesn't appear to support posix_fallocate,
             # so skip Solaris-based since they are likely to have ZFS.
-            # issue33655: Also ignore EINVAL on *BSD since ZFS is also
+            # issue33655: Also ignore EINVAL on *BSD since ZFS ni also
             # often used there.
-            ikiwa inst.errno == errno.EINVAL and sys.platform.startswith(
+            ikiwa inst.errno == errno.EINVAL na sys.platform.startswith(
                 ('sunos', 'freebsd', 'netbsd', 'openbsd', 'gnukfreebsd')):
-                raise unittest.SkipTest("test may fail on ZFS filesystems")
-            else:
-                raise
-        finally:
+                ashiria unittest.SkipTest("test may fail on ZFS filesystems")
+            isipokua:
+                ashiria
+        mwishowe:
             os.close(fd)
 
-    # issue31106 - posix_fallocate() does not set error in errno.
+    # issue31106 - posix_fallocate() does sio set error kwenye errno.
     @unittest.skipUnless(hasattr(posix, 'posix_fallocate'),
         "test needs posix.posix_fallocate()")
     eleza test_posix_fallocate_errno(self):
-        try:
+        jaribu:
             posix.posix_fallocate(-42, 0, 10)
-        except OSError as inst:
+        tatizo OSError kama inst:
             ikiwa inst.errno != errno.EBADF:
-                raise
+                ashiria
 
     @unittest.skipUnless(hasattr(posix, 'posix_fadvise'),
         "test needs posix.posix_fadvise()")
     eleza test_posix_fadvise(self):
         fd = os.open(support.TESTFN, os.O_RDONLY)
-        try:
+        jaribu:
             posix.posix_fadvise(fd, 0, 0, posix.POSIX_FADV_WILLNEED)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'posix_fadvise'),
         "test needs posix.posix_fadvise()")
     eleza test_posix_fadvise_errno(self):
-        try:
+        jaribu:
             posix.posix_fadvise(-42, 0, 0, posix.POSIX_FADV_WILLNEED)
-        except OSError as inst:
+        tatizo OSError kama inst:
             ikiwa inst.errno != errno.EBADF:
-                raise
+                ashiria
 
-    @unittest.skipUnless(os.utime in os.supports_fd, "test needs fd support in os.utime")
+    @unittest.skipUnless(os.utime kwenye os.supports_fd, "test needs fd support kwenye os.utime")
     eleza test_utime_with_fd(self):
         now = time.time()
         fd = os.open(support.TESTFN, os.O_RDONLY)
-        try:
+        jaribu:
             posix.utime(fd)
-            posix.utime(fd, None)
-            self.assertRaises(TypeError, posix.utime, fd, (None, None))
-            self.assertRaises(TypeError, posix.utime, fd, (now, None))
-            self.assertRaises(TypeError, posix.utime, fd, (None, now))
+            posix.utime(fd, Tupu)
+            self.assertRaises(TypeError, posix.utime, fd, (Tupu, Tupu))
+            self.assertRaises(TypeError, posix.utime, fd, (now, Tupu))
+            self.assertRaises(TypeError, posix.utime, fd, (Tupu, now))
             posix.utime(fd, (int(now), int(now)))
             posix.utime(fd, (now, now))
             self.assertRaises(ValueError, posix.utime, fd, (now, now), ns=(now, now))
-            self.assertRaises(ValueError, posix.utime, fd, (now, 0), ns=(None, None))
-            self.assertRaises(ValueError, posix.utime, fd, (None, None), ns=(now, 0))
+            self.assertRaises(ValueError, posix.utime, fd, (now, 0), ns=(Tupu, Tupu))
+            self.assertRaises(ValueError, posix.utime, fd, (Tupu, Tupu), ns=(now, 0))
             posix.utime(fd, (int(now), int((now - int(now)) * 1e9)))
             posix.utime(fd, ns=(int(now), int((now - int(now)) * 1e9)))
 
-        finally:
+        mwishowe:
             os.close(fd)
 
-    @unittest.skipUnless(os.utime in os.supports_follow_symlinks, "test needs follow_symlinks support in os.utime")
+    @unittest.skipUnless(os.utime kwenye os.supports_follow_symlinks, "test needs follow_symlinks support kwenye os.utime")
     eleza test_utime_nofollow_symlinks(self):
         now = time.time()
-        posix.utime(support.TESTFN, None, follow_symlinks=False)
-        self.assertRaises(TypeError, posix.utime, support.TESTFN, (None, None), follow_symlinks=False)
-        self.assertRaises(TypeError, posix.utime, support.TESTFN, (now, None), follow_symlinks=False)
-        self.assertRaises(TypeError, posix.utime, support.TESTFN, (None, now), follow_symlinks=False)
-        posix.utime(support.TESTFN, (int(now), int(now)), follow_symlinks=False)
-        posix.utime(support.TESTFN, (now, now), follow_symlinks=False)
-        posix.utime(support.TESTFN, follow_symlinks=False)
+        posix.utime(support.TESTFN, Tupu, follow_symlinks=Uongo)
+        self.assertRaises(TypeError, posix.utime, support.TESTFN, (Tupu, Tupu), follow_symlinks=Uongo)
+        self.assertRaises(TypeError, posix.utime, support.TESTFN, (now, Tupu), follow_symlinks=Uongo)
+        self.assertRaises(TypeError, posix.utime, support.TESTFN, (Tupu, now), follow_symlinks=Uongo)
+        posix.utime(support.TESTFN, (int(now), int(now)), follow_symlinks=Uongo)
+        posix.utime(support.TESTFN, (now, now), follow_symlinks=Uongo)
+        posix.utime(support.TESTFN, follow_symlinks=Uongo)
 
     @unittest.skipUnless(hasattr(posix, 'writev'), "test needs posix.writev()")
     eleza test_writev(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             n = os.writev(fd, (b'test1', b'tt2', b't3'))
             self.assertEqual(n, 10)
 
             os.lseek(fd, 0, os.SEEK_SET)
             self.assertEqual(b'test1tt2t3', posix.read(fd, 10))
 
-            # Issue #20113: empty list of buffers should not crash
-            try:
+            # Issue #20113: empty list of buffers should sio crash
+            jaribu:
                 size = posix.writev(fd, [])
-            except OSError:
-                # writev(fd, []) raises OSError(22, "Invalid argument")
+            tatizo OSError:
+                # writev(fd, []) ashirias OSError(22, "Invalid argument")
                 # on OpenIndiana
-                pass
-            else:
+                pita
+            isipokua:
                 self.assertEqual(size, 0)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'writev'), "test needs posix.writev()")
     @requires_32b
     eleza test_writev_overflow_32bits(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
-            with self.assertRaises(OSError) as cm:
+        jaribu:
+            with self.assertRaises(OSError) kama cm:
                 os.writev(fd, [b"x" * 2**16] * 2**15)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'readv'), "test needs posix.readv()")
     eleza test_readv(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             os.write(fd, b'test1tt2t3')
             os.lseek(fd, 0, os.SEEK_SET)
-            buf = [bytearray(i) for i in [5, 3, 2]]
+            buf = [bytearray(i) kila i kwenye [5, 3, 2]]
             self.assertEqual(posix.readv(fd, buf), 10)
-            self.assertEqual([b'test1', b'tt2', b't3'], [bytes(i) for i in buf])
+            self.assertEqual([b'test1', b'tt2', b't3'], [bytes(i) kila i kwenye buf])
 
-            # Issue #20113: empty list of buffers should not crash
-            try:
+            # Issue #20113: empty list of buffers should sio crash
+            jaribu:
                 size = posix.readv(fd, [])
-            except OSError:
-                # readv(fd, []) raises OSError(22, "Invalid argument")
+            tatizo OSError:
+                # readv(fd, []) ashirias OSError(22, "Invalid argument")
                 # on OpenIndiana
-                pass
-            else:
+                pita
+            isipokua:
                 self.assertEqual(size, 0)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'readv'), "test needs posix.readv()")
     @requires_32b
     eleza test_readv_overflow_32bits(self):
         fd = os.open(support.TESTFN, os.O_RDWR | os.O_CREAT)
-        try:
+        jaribu:
             buf = [bytearray(2**16)] * 2**15
-            with self.assertRaises(OSError) as cm:
+            with self.assertRaises(OSError) kama cm:
                 os.readv(fd, buf)
             self.assertEqual(cm.exception.errno, errno.EINVAL)
             self.assertEqual(bytes(buf[0]), b'\0'* 2**16)
-        finally:
+        mwishowe:
             os.close(fd)
 
     @unittest.skipUnless(hasattr(posix, 'dup'),
                          'test needs posix.dup()')
     eleza test_dup(self):
         fp = open(support.TESTFN)
-        try:
+        jaribu:
             fd = posix.dup(fp.fileno())
             self.assertIsInstance(fd, int)
             os.close(fd)
-        finally:
+        mwishowe:
             fp.close()
 
     @unittest.skipUnless(hasattr(posix, 'confstr'),
                          'test needs posix.confstr()')
     eleza test_confstr(self):
         self.assertRaises(ValueError, posix.confstr, "CS_garbage")
-        self.assertEqual(len(posix.confstr("CS_PATH")) > 0, True)
+        self.assertEqual(len(posix.confstr("CS_PATH")) > 0, Kweli)
 
     @unittest.skipUnless(hasattr(posix, 'dup2'),
                          'test needs posix.dup2()')
     eleza test_dup2(self):
         fp1 = open(support.TESTFN)
         fp2 = open(support.TESTFN)
-        try:
+        jaribu:
             posix.dup2(fp1.fileno(), fp2.fileno())
-        finally:
+        mwishowe:
             fp1.close()
             fp2.close()
 
@@ -567,7 +567,7 @@ kundi PosixTester(unittest.TestCase):
     eleza test_oscloexec(self):
         fd = os.open(support.TESTFN, os.O_RDONLY|os.O_CLOEXEC)
         self.addCleanup(os.close, fd)
-        self.assertFalse(os.get_inheritable(fd))
+        self.assertUongo(os.get_inheritable(fd))
 
     @unittest.skipUnless(hasattr(posix, 'O_EXLOCK'),
                          'test needs posix.O_EXLOCK')
@@ -606,64 +606,64 @@ kundi PosixTester(unittest.TestCase):
                          'test needs posix.fstat()')
     eleza test_fstat(self):
         fp = open(support.TESTFN)
-        try:
-            self.assertTrue(posix.fstat(fp.fileno()))
-            self.assertTrue(posix.stat(fp.fileno()))
+        jaribu:
+            self.assertKweli(posix.fstat(fp.fileno()))
+            self.assertKweli(posix.stat(fp.fileno()))
 
             self.assertRaisesRegex(TypeError,
-                    'should be string, bytes, os.PathLike or integer, not',
+                    'should be string, bytes, os.PathLike ama integer, not',
                     posix.stat, float(fp.fileno()))
-        finally:
+        mwishowe:
             fp.close()
 
     eleza test_stat(self):
-        self.assertTrue(posix.stat(support.TESTFN))
-        self.assertTrue(posix.stat(os.fsencode(support.TESTFN)))
+        self.assertKweli(posix.stat(support.TESTFN))
+        self.assertKweli(posix.stat(os.fsencode(support.TESTFN)))
 
         self.assertWarnsRegex(DeprecationWarning,
-                'should be string, bytes, os.PathLike or integer, not',
+                'should be string, bytes, os.PathLike ama integer, not',
                 posix.stat, bytearray(os.fsencode(support.TESTFN)))
         self.assertRaisesRegex(TypeError,
-                'should be string, bytes, os.PathLike or integer, not',
-                posix.stat, None)
+                'should be string, bytes, os.PathLike ama integer, not',
+                posix.stat, Tupu)
         self.assertRaisesRegex(TypeError,
-                'should be string, bytes, os.PathLike or integer, not',
+                'should be string, bytes, os.PathLike ama integer, not',
                 posix.stat, list(support.TESTFN))
         self.assertRaisesRegex(TypeError,
-                'should be string, bytes, os.PathLike or integer, not',
+                'should be string, bytes, os.PathLike ama integer, not',
                 posix.stat, list(os.fsencode(support.TESTFN)))
 
     @unittest.skipUnless(hasattr(posix, 'mkfifo'), "don't have mkfifo()")
     eleza test_mkfifo(self):
         support.unlink(support.TESTFN)
-        try:
+        jaribu:
             posix.mkfifo(support.TESTFN, stat.S_IRUSR | stat.S_IWUSR)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('posix.mkfifo(): %s' % e)
-        self.assertTrue(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
+        self.assertKweli(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
 
-    @unittest.skipUnless(hasattr(posix, 'mknod') and hasattr(stat, 'S_IFIFO'),
+    @unittest.skipUnless(hasattr(posix, 'mknod') na hasattr(stat, 'S_IFIFO'),
                          "don't have mknod()/S_IFIFO")
     eleza test_mknod(self):
         # Test using mknod() to create a FIFO (the only use specified
         # by POSIX).
         support.unlink(support.TESTFN)
         mode = stat.S_IFIFO | stat.S_IRUSR | stat.S_IWUSR
-        try:
+        jaribu:
             posix.mknod(support.TESTFN, mode, 0)
-        except OSError as e:
+        tatizo OSError kama e:
             # Some old systems don't allow unprivileged users to use
-            # mknod(), or only support creating device nodes.
+            # mknod(), ama only support creating device nodes.
             self.assertIn(e.errno, (errno.EPERM, errno.EINVAL, errno.EACCES))
-        else:
-            self.assertTrue(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
+        isipokua:
+            self.assertKweli(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
 
         # Keyword arguments are also supported
         support.unlink(support.TESTFN)
-        try:
+        jaribu:
             posix.mknod(path=support.TESTFN, mode=mode, device=0,
-                dir_fd=None)
-        except OSError as e:
+                dir_fd=Tupu)
+        tatizo OSError kama e:
             self.assertIn(e.errno, (errno.EPERM, errno.EINVAL, errno.EACCES))
 
     @unittest.skipUnless(hasattr(posix, 'makedev'), 'test needs posix.makedev()')
@@ -696,9 +696,9 @@ kundi PosixTester(unittest.TestCase):
         self.assertRaises(TypeError, posix.makedev)
 
     eleza _test_all_chown_common(self, chown_func, first_param, stat_func):
-        """Common code for chown, fchown and lchown tests."""
+        """Common code kila chown, fchown na lchown tests."""
         eleza check_stat(uid, gid):
-            ikiwa stat_func is not None:
+            ikiwa stat_func ni sio Tupu:
                 stat = stat_func(first_param)
                 self.assertEqual(stat.st_uid, uid)
                 self.assertEqual(stat.st_gid, gid)
@@ -721,10 +721,10 @@ kundi PosixTester(unittest.TestCase):
             #   http://bugs.python.org/issue1747858
             #   http://bugs.python.org/issue4591
             #   http://bugs.python.org/issue15301
-            # Hopefully the fix in 4591 fixes it for good!
+            # Hopefully the fix kwenye 4591 fixes it kila good!
             #
-            # This part of the test only runs when run as root.
-            # Only scary people run their tests as root.
+            # This part of the test only runs when run kama root.
+            # Only scary people run their tests kama root.
 
             big_value = 2**31
             chown_func(first_param, big_value, big_value)
@@ -733,22 +733,22 @@ kundi PosixTester(unittest.TestCase):
             check_stat(big_value, big_value)
             chown_func(first_param, uid, gid)
             check_stat(uid, gid)
-        elikiwa platform.system() in ('HP-UX', 'SunOS'):
-            # HP-UX and Solaris can allow a non-root user to chown() to root
+        elikiwa platform.system() kwenye ('HP-UX', 'SunOS'):
+            # HP-UX na Solaris can allow a non-root user to chown() to root
             # (issue #5113)
-            raise unittest.SkipTest("Skipping because of non-standard chown() "
+            ashiria unittest.SkipTest("Skipping because of non-standard chown() "
                                     "behavior")
-        else:
-            # non-root cannot chown to root, raises OSError
+        isipokua:
+            # non-root cannot chown to root, ashirias OSError
             self.assertRaises(OSError, chown_func, first_param, 0, 0)
             check_stat(uid, gid)
             self.assertRaises(OSError, chown_func, first_param, 0, -1)
             check_stat(uid, gid)
-            ikiwa 0 not in os.getgroups():
+            ikiwa 0 haiko kwenye os.getgroups():
                 self.assertRaises(OSError, chown_func, first_param, -1, 0)
                 check_stat(uid, gid)
         # test illegal types
-        for t in str, float:
+        kila t kwenye str, float:
             self.assertRaises(TypeError, chown_func, first_param, t(uid), gid)
             check_stat(uid, gid)
             self.assertRaises(TypeError, chown_func, first_param, uid, t(gid))
@@ -756,7 +756,7 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(posix, 'chown'), "test needs os.chown()")
     eleza test_chown(self):
-        # raise an OSError ikiwa the file does not exist
+        # ashiria an OSError ikiwa the file does sio exist
         os.unlink(support.TESTFN)
         self.assertRaises(OSError, posix.chown, support.TESTFN, -1, -1)
 
@@ -770,11 +770,11 @@ kundi PosixTester(unittest.TestCase):
 
         # re-create the file
         test_file = open(support.TESTFN, 'w')
-        try:
+        jaribu:
             fd = test_file.fileno()
             self._test_all_chown_common(posix.fchown, fd,
-                                        getattr(posix, 'fstat', None))
-        finally:
+                                        getattr(posix, 'fstat', Tupu))
+        mwishowe:
             test_file.close()
 
     @unittest.skipUnless(hasattr(posix, 'lchown'), "test needs os.lchown()")
@@ -783,7 +783,7 @@ kundi PosixTester(unittest.TestCase):
         # create a symlink
         os.symlink(_DUMMY_SYMLINK, support.TESTFN)
         self._test_all_chown_common(posix.lchown, support.TESTFN,
-                                    getattr(posix, 'lstat', None))
+                                    getattr(posix, 'lstat', Tupu))
 
     @unittest.skipUnless(hasattr(posix, 'chdir'), 'test needs posix.chdir()')
     eleza test_chdir(self):
@@ -794,25 +794,25 @@ kundi PosixTester(unittest.TestCase):
         self.assertIn(support.TESTFN, posix.listdir(os.curdir))
 
     eleza test_listdir_default(self):
-        # When listdir is called without argument,
-        # it's the same as listdir(os.curdir).
+        # When listdir ni called without argument,
+        # it's the same kama listdir(os.curdir).
         self.assertIn(support.TESTFN, posix.listdir())
 
     eleza test_listdir_bytes(self):
-        # When listdir is called with a bytes object,
-        # the returned strings are of type bytes.
+        # When listdir ni called with a bytes object,
+        # the rudishaed strings are of type bytes.
         self.assertIn(os.fsencode(support.TESTFN), posix.listdir(b'.'))
 
     eleza test_listdir_bytes_like(self):
-        for cls in bytearray, memoryview:
+        kila cls kwenye bytearray, memoryview:
             with self.assertWarns(DeprecationWarning):
                 names = posix.listdir(cls(b'.'))
             self.assertIn(os.fsencode(support.TESTFN), names)
-            for name in names:
+            kila name kwenye names:
                 self.assertIs(type(name), bytes)
 
-    @unittest.skipUnless(posix.listdir in os.supports_fd,
-                         "test needs fd support for posix.listdir()")
+    @unittest.skipUnless(posix.listdir kwenye os.supports_fd,
+                         "test needs fd support kila posix.listdir()")
     eleza test_listdir_fd(self):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
         self.addCleanup(posix.close, f)
@@ -828,7 +828,7 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(posix, 'access'), 'test needs posix.access()')
     eleza test_access(self):
-        self.assertTrue(posix.access(support.TESTFN, os.R_OK))
+        self.assertKweli(posix.access(support.TESTFN, os.R_OK))
 
     @unittest.skipUnless(hasattr(posix, 'umask'), 'test needs posix.umask()')
     eleza test_umask(self):
@@ -839,7 +839,7 @@ kundi PosixTester(unittest.TestCase):
     @unittest.skipUnless(hasattr(posix, 'strerror'),
                          'test needs posix.strerror()')
     eleza test_strerror(self):
-        self.assertTrue(posix.strerror(0))
+        self.assertKweli(posix.strerror(0))
 
     @unittest.skipUnless(hasattr(posix, 'pipe'), 'test needs posix.pipe()')
     eleza test_pipe(self):
@@ -862,18 +862,18 @@ kundi PosixTester(unittest.TestCase):
         r, w = os.pipe2(os.O_CLOEXEC|os.O_NONBLOCK)
         self.addCleanup(os.close, r)
         self.addCleanup(os.close, w)
-        self.assertFalse(os.get_inheritable(r))
-        self.assertFalse(os.get_inheritable(w))
-        self.assertFalse(os.get_blocking(r))
-        self.assertFalse(os.get_blocking(w))
-        # try reading kutoka an empty pipe: this should fail, not block
+        self.assertUongo(os.get_inheritable(r))
+        self.assertUongo(os.get_inheritable(w))
+        self.assertUongo(os.get_blocking(r))
+        self.assertUongo(os.get_blocking(w))
+        # try reading kutoka an empty pipe: this should fail, sio block
         self.assertRaises(OSError, os.read, r, 1)
         # try a write big enough to fill-up the pipe: this should either
-        # fail or perform a partial write, not block
-        try:
+        # fail ama perform a partial write, sio block
+        jaribu:
             os.write(w, b'x' * support.PIPE_MAX_SIZE)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     @support.cpython_only
     @unittest.skipUnless(hasattr(os, 'pipe2'), "test needs os.pipe2()")
@@ -887,35 +887,35 @@ kundi PosixTester(unittest.TestCase):
     @unittest.skipUnless(hasattr(posix, 'utime'), 'test needs posix.utime()')
     eleza test_utime(self):
         now = time.time()
-        posix.utime(support.TESTFN, None)
-        self.assertRaises(TypeError, posix.utime, support.TESTFN, (None, None))
-        self.assertRaises(TypeError, posix.utime, support.TESTFN, (now, None))
-        self.assertRaises(TypeError, posix.utime, support.TESTFN, (None, now))
+        posix.utime(support.TESTFN, Tupu)
+        self.assertRaises(TypeError, posix.utime, support.TESTFN, (Tupu, Tupu))
+        self.assertRaises(TypeError, posix.utime, support.TESTFN, (now, Tupu))
+        self.assertRaises(TypeError, posix.utime, support.TESTFN, (Tupu, now))
         posix.utime(support.TESTFN, (int(now), int(now)))
         posix.utime(support.TESTFN, (now, now))
 
     eleza _test_chflags_regular_file(self, chflags_func, target_file, **kwargs):
         st = os.stat(target_file)
-        self.assertTrue(hasattr(st, 'st_flags'))
+        self.assertKweli(hasattr(st, 'st_flags'))
 
-        # ZFS returns EOPNOTSUPP when attempting to set flag UF_IMMUTABLE.
+        # ZFS rudishas EOPNOTSUPP when attempting to set flag UF_IMMUTABLE.
         flags = st.st_flags | stat.UF_IMMUTABLE
-        try:
+        jaribu:
             chflags_func(target_file, flags, **kwargs)
-        except OSError as err:
+        tatizo OSError kama err:
             ikiwa err.errno != errno.EOPNOTSUPP:
-                raise
-            msg = 'chflag UF_IMMUTABLE not supported by underlying fs'
+                ashiria
+            msg = 'chflag UF_IMMUTABLE sio supported by underlying fs'
             self.skipTest(msg)
 
-        try:
+        jaribu:
             new_st = os.stat(target_file)
             self.assertEqual(st.st_flags | stat.UF_IMMUTABLE, new_st.st_flags)
-            try:
+            jaribu:
                 fd = open(target_file, 'w+')
-            except OSError as e:
+            tatizo OSError kama e:
                 self.assertEqual(e.errno, errno.EPERM)
-        finally:
+        mwishowe:
             posix.chflags(target_file, st.st_flags)
 
     @unittest.skipUnless(hasattr(posix, 'chflags'), 'test needs os.chflags()')
@@ -925,47 +925,47 @@ kundi PosixTester(unittest.TestCase):
     @unittest.skipUnless(hasattr(posix, 'lchflags'), 'test needs os.lchflags()')
     eleza test_lchflags_regular_file(self):
         self._test_chflags_regular_file(posix.lchflags, support.TESTFN)
-        self._test_chflags_regular_file(posix.chflags, support.TESTFN, follow_symlinks=False)
+        self._test_chflags_regular_file(posix.chflags, support.TESTFN, follow_symlinks=Uongo)
 
     @unittest.skipUnless(hasattr(posix, 'lchflags'), 'test needs os.lchflags()')
     eleza test_lchflags_symlink(self):
         testfn_st = os.stat(support.TESTFN)
 
-        self.assertTrue(hasattr(testfn_st, 'st_flags'))
+        self.assertKweli(hasattr(testfn_st, 'st_flags'))
 
         os.symlink(support.TESTFN, _DUMMY_SYMLINK)
         self.teardown_files.append(_DUMMY_SYMLINK)
         dummy_symlink_st = os.lstat(_DUMMY_SYMLINK)
 
         eleza chflags_nofollow(path, flags):
-            rudisha posix.chflags(path, flags, follow_symlinks=False)
+            rudisha posix.chflags(path, flags, follow_symlinks=Uongo)
 
-        for fn in (posix.lchflags, chflags_nofollow):
-            # ZFS returns EOPNOTSUPP when attempting to set flag UF_IMMUTABLE.
+        kila fn kwenye (posix.lchflags, chflags_nofollow):
+            # ZFS rudishas EOPNOTSUPP when attempting to set flag UF_IMMUTABLE.
             flags = dummy_symlink_st.st_flags | stat.UF_IMMUTABLE
-            try:
+            jaribu:
                 fn(_DUMMY_SYMLINK, flags)
-            except OSError as err:
+            tatizo OSError kama err:
                 ikiwa err.errno != errno.EOPNOTSUPP:
-                    raise
-                msg = 'chflag UF_IMMUTABLE not supported by underlying fs'
+                    ashiria
+                msg = 'chflag UF_IMMUTABLE sio supported by underlying fs'
                 self.skipTest(msg)
-            try:
+            jaribu:
                 new_testfn_st = os.stat(support.TESTFN)
                 new_dummy_symlink_st = os.lstat(_DUMMY_SYMLINK)
 
                 self.assertEqual(testfn_st.st_flags, new_testfn_st.st_flags)
                 self.assertEqual(dummy_symlink_st.st_flags | stat.UF_IMMUTABLE,
                                  new_dummy_symlink_st.st_flags)
-            finally:
+            mwishowe:
                 fn(_DUMMY_SYMLINK, dummy_symlink_st.st_flags)
 
     eleza test_environ(self):
         ikiwa os.name == "nt":
             item_type = str
-        else:
+        isipokua:
             item_type = bytes
-        for k, v in posix.environ.items():
+        kila k, v kwenye posix.environ.items():
             self.assertEqual(type(k), item_type)
             self.assertEqual(type(v), item_type)
 
@@ -990,33 +990,33 @@ kundi PosixTester(unittest.TestCase):
         curdir = os.getcwd()
         base_path = os.path.abspath(support.TESTFN) + '.getcwd'
 
-        try:
+        jaribu:
             os.mkdir(base_path)
             os.chdir(base_path)
         except:
-            #  Just returning nothing instead of the SkipTest exception, because
-            #  the test results in Error in that case.  Is that ok?
-            #  raise unittest.SkipTest("cannot create directory for testing")
-            return
+            #  Just rudishaing nothing instead of the SkipTest exception, because
+            #  the test results kwenye Error kwenye that case.  Is that ok?
+            #  ashiria unittest.SkipTest("cannot create directory kila testing")
+            rudisha
 
             eleza _create_and_do_getcwd(dirname, current_path_length = 0):
-                try:
+                jaribu:
                     os.mkdir(dirname)
                 except:
-                    raise unittest.SkipTest("mkdir cannot create directory sufficiently deep for getcwd test")
+                    ashiria unittest.SkipTest("mkdir cannot create directory sufficiently deep kila getcwd test")
 
                 os.chdir(dirname)
-                try:
+                jaribu:
                     os.getcwd()
                     ikiwa current_path_length < 1027:
                         _create_and_do_getcwd(dirname, current_path_length + len(dirname) + 1)
-                finally:
+                mwishowe:
                     os.chdir('..')
                     os.rmdir(dirname)
 
             _create_and_do_getcwd(dirname)
 
-        finally:
+        mwishowe:
             os.chdir(curdir)
             support.rmtree(base_path)
 
@@ -1031,98 +1031,98 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, 'getegid'), "test needs os.getegid()")
     eleza test_getgroups(self):
-        with os.popen('id -G 2>/dev/null') as idg:
+        with os.popen('id -G 2>/dev/null') kama idg:
             groups = idg.read().strip()
             ret = idg.close()
 
-        try:
-            idg_groups = set(int(g) for g in groups.split())
-        except ValueError:
+        jaribu:
+            idg_groups = set(int(g) kila g kwenye groups.split())
+        tatizo ValueError:
             idg_groups = set()
-        ikiwa ret is not None or not idg_groups:
-            raise unittest.SkipTest("need working 'id -G'")
+        ikiwa ret ni sio Tupu ama sio idg_groups:
+            ashiria unittest.SkipTest("need working 'id -G'")
 
         # Issues 16698: OS X ABIs prior to 10.6 have limits on getgroups()
         ikiwa sys.platform == 'darwin':
             agiza sysconfig
-            dt = sysconfig.get_config_var('MACOSX_DEPLOYMENT_TARGET') or '10.0'
-            ikiwa tuple(int(n) for n in dt.split('.')[0:2]) < (10, 6):
-                raise unittest.SkipTest("getgroups(2) is broken prior to 10.6")
+            dt = sysconfig.get_config_var('MACOSX_DEPLOYMENT_TARGET') ama '10.0'
+            ikiwa tuple(int(n) kila n kwenye dt.split('.')[0:2]) < (10, 6):
+                ashiria unittest.SkipTest("getgroups(2) ni broken prior to 10.6")
 
-        # 'id -G' and 'os.getgroups()' should rudisha the same
-        # groups, ignoring order, duplicates, and the effective gid.
-        # #10822/#26944 - It is implementation defined whether
+        # 'id -G' na 'os.getgroups()' should rudisha the same
+        # groups, ignoring order, duplicates, na the effective gid.
+        # #10822/#26944 - It ni implementation defined whether
         # posix.getgroups() includes the effective gid.
         symdiff = idg_groups.symmetric_difference(posix.getgroups())
-        self.assertTrue(not symdiff or symdiff == {posix.getegid()})
+        self.assertKweli(not symdiff ama symdiff == {posix.getegid()})
 
-    # tests for the posix *at functions follow
+    # tests kila the posix *at functions follow
 
-    @unittest.skipUnless(os.access in os.supports_dir_fd, "test needs dir_fd support for os.access()")
+    @unittest.skipUnless(os.access kwenye os.supports_dir_fd, "test needs dir_fd support kila os.access()")
     eleza test_access_dir_fd(self):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
-            self.assertTrue(posix.access(support.TESTFN, os.R_OK, dir_fd=f))
-        finally:
+        jaribu:
+            self.assertKweli(posix.access(support.TESTFN, os.R_OK, dir_fd=f))
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.chmod in os.supports_dir_fd, "test needs dir_fd support in os.chmod()")
+    @unittest.skipUnless(os.chmod kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.chmod()")
     eleza test_chmod_dir_fd(self):
         os.chmod(support.TESTFN, stat.S_IRUSR)
 
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             posix.chmod(support.TESTFN, stat.S_IRUSR | stat.S_IWUSR, dir_fd=f)
 
             s = posix.stat(support.TESTFN)
             self.assertEqual(s[0] & stat.S_IRWXU, stat.S_IRUSR | stat.S_IWUSR)
-        finally:
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.chown in os.supports_dir_fd, "test needs dir_fd support in os.chown()")
+    @unittest.skipUnless(os.chown kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.chown()")
     eleza test_chown_dir_fd(self):
         support.unlink(support.TESTFN)
         support.create_empty_file(support.TESTFN)
 
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             posix.chown(support.TESTFN, os.getuid(), os.getgid(), dir_fd=f)
-        finally:
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.stat in os.supports_dir_fd, "test needs dir_fd support in os.stat()")
+    @unittest.skipUnless(os.stat kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.stat()")
     eleza test_stat_dir_fd(self):
         support.unlink(support.TESTFN)
-        with open(support.TESTFN, 'w') as outfile:
+        with open(support.TESTFN, 'w') kama outfile:
             outfile.write("testline\n")
 
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             s1 = posix.stat(support.TESTFN)
             s2 = posix.stat(support.TESTFN, dir_fd=f)
             self.assertEqual(s1, s2)
-            s2 = posix.stat(support.TESTFN, dir_fd=None)
+            s2 = posix.stat(support.TESTFN, dir_fd=Tupu)
             self.assertEqual(s1, s2)
-            self.assertRaisesRegex(TypeError, 'should be integer or None, not',
+            self.assertRaisesRegex(TypeError, 'should be integer ama Tupu, not',
                     posix.stat, support.TESTFN, dir_fd=posix.getcwd())
-            self.assertRaisesRegex(TypeError, 'should be integer or None, not',
+            self.assertRaisesRegex(TypeError, 'should be integer ama Tupu, not',
                     posix.stat, support.TESTFN, dir_fd=float(f))
             self.assertRaises(OverflowError,
                     posix.stat, support.TESTFN, dir_fd=10**20)
-        finally:
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.utime in os.supports_dir_fd, "test needs dir_fd support in os.utime()")
+    @unittest.skipUnless(os.utime kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.utime()")
     eleza test_utime_dir_fd(self):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             now = time.time()
-            posix.utime(support.TESTFN, None, dir_fd=f)
+            posix.utime(support.TESTFN, Tupu, dir_fd=f)
             posix.utime(support.TESTFN, dir_fd=f)
             self.assertRaises(TypeError, posix.utime, support.TESTFN, now, dir_fd=f)
-            self.assertRaises(TypeError, posix.utime, support.TESTFN, (None, None), dir_fd=f)
-            self.assertRaises(TypeError, posix.utime, support.TESTFN, (now, None), dir_fd=f)
-            self.assertRaises(TypeError, posix.utime, support.TESTFN, (None, now), dir_fd=f)
+            self.assertRaises(TypeError, posix.utime, support.TESTFN, (Tupu, Tupu), dir_fd=f)
+            self.assertRaises(TypeError, posix.utime, support.TESTFN, (now, Tupu), dir_fd=f)
+            self.assertRaises(TypeError, posix.utime, support.TESTFN, (Tupu, now), dir_fd=f)
             self.assertRaises(TypeError, posix.utime, support.TESTFN, (now, "x"), dir_fd=f)
             posix.utime(support.TESTFN, (int(now), int(now)), dir_fd=f)
             posix.utime(support.TESTFN, (now, now), dir_fd=f)
@@ -1131,149 +1131,149 @@ kundi PosixTester(unittest.TestCase):
             posix.utime(support.TESTFN, dir_fd=f,
                             times=(int(now), int((now - int(now)) * 1e9)))
 
-            # try dir_fd and follow_symlinks together
-            ikiwa os.utime in os.supports_follow_symlinks:
-                try:
-                    posix.utime(support.TESTFN, follow_symlinks=False, dir_fd=f)
-                except ValueError:
-                    # whoops!  using both together not supported on this platform.
-                    pass
+            # try dir_fd na follow_symlinks together
+            ikiwa os.utime kwenye os.supports_follow_symlinks:
+                jaribu:
+                    posix.utime(support.TESTFN, follow_symlinks=Uongo, dir_fd=f)
+                tatizo ValueError:
+                    # whoops!  using both together sio supported on this platform.
+                    pita
 
-        finally:
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.link in os.supports_dir_fd, "test needs dir_fd support in os.link()")
+    @unittest.skipUnless(os.link kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.link()")
     eleza test_link_dir_fd(self):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             posix.link(support.TESTFN, support.TESTFN + 'link', src_dir_fd=f, dst_dir_fd=f)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('posix.link(): %s' % e)
-        else:
+        isipokua:
             # should have same inodes
             self.assertEqual(posix.stat(support.TESTFN)[1],
                 posix.stat(support.TESTFN + 'link')[1])
-        finally:
+        mwishowe:
             posix.close(f)
             support.unlink(support.TESTFN + 'link')
 
-    @unittest.skipUnless(os.mkdir in os.supports_dir_fd, "test needs dir_fd support in os.mkdir()")
+    @unittest.skipUnless(os.mkdir kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.mkdir()")
     eleza test_mkdir_dir_fd(self):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             posix.mkdir(support.TESTFN + 'dir', dir_fd=f)
-            posix.stat(support.TESTFN + 'dir') # should not raise exception
-        finally:
+            posix.stat(support.TESTFN + 'dir') # should sio ashiria exception
+        mwishowe:
             posix.close(f)
             support.rmtree(support.TESTFN + 'dir')
 
-    @unittest.skipUnless((os.mknod in os.supports_dir_fd) and hasattr(stat, 'S_IFIFO'),
-                         "test requires both stat.S_IFIFO and dir_fd support for os.mknod()")
+    @unittest.skipUnless((os.mknod kwenye os.supports_dir_fd) na hasattr(stat, 'S_IFIFO'),
+                         "test requires both stat.S_IFIFO na dir_fd support kila os.mknod()")
     eleza test_mknod_dir_fd(self):
         # Test using mknodat() to create a FIFO (the only use specified
         # by POSIX).
         support.unlink(support.TESTFN)
         mode = stat.S_IFIFO | stat.S_IRUSR | stat.S_IWUSR
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             posix.mknod(support.TESTFN, mode, 0, dir_fd=f)
-        except OSError as e:
+        tatizo OSError kama e:
             # Some old systems don't allow unprivileged users to use
-            # mknod(), or only support creating device nodes.
+            # mknod(), ama only support creating device nodes.
             self.assertIn(e.errno, (errno.EPERM, errno.EINVAL, errno.EACCES))
-        else:
-            self.assertTrue(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
-        finally:
+        isipokua:
+            self.assertKweli(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.open in os.supports_dir_fd, "test needs dir_fd support in os.open()")
+    @unittest.skipUnless(os.open kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.open()")
     eleza test_open_dir_fd(self):
         support.unlink(support.TESTFN)
-        with open(support.TESTFN, 'w') as outfile:
+        with open(support.TESTFN, 'w') kama outfile:
             outfile.write("testline\n")
         a = posix.open(posix.getcwd(), posix.O_RDONLY)
         b = posix.open(support.TESTFN, posix.O_RDONLY, dir_fd=a)
-        try:
+        jaribu:
             res = posix.read(b, 9).decode(encoding="utf-8")
             self.assertEqual("testline\n", res)
-        finally:
+        mwishowe:
             posix.close(a)
             posix.close(b)
 
-    @unittest.skipUnless(os.readlink in os.supports_dir_fd, "test needs dir_fd support in os.readlink()")
+    @unittest.skipUnless(os.readlink kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.readlink()")
     eleza test_readlink_dir_fd(self):
         os.symlink(support.TESTFN, support.TESTFN + 'link')
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             self.assertEqual(posix.readlink(support.TESTFN + 'link'),
                 posix.readlink(support.TESTFN + 'link', dir_fd=f))
-        finally:
+        mwishowe:
             support.unlink(support.TESTFN + 'link')
             posix.close(f)
 
-    @unittest.skipUnless(os.rename in os.supports_dir_fd, "test needs dir_fd support in os.rename()")
+    @unittest.skipUnless(os.rename kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.rename()")
     eleza test_rename_dir_fd(self):
         support.unlink(support.TESTFN)
         support.create_empty_file(support.TESTFN + 'ren')
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             posix.rename(support.TESTFN + 'ren', support.TESTFN, src_dir_fd=f, dst_dir_fd=f)
         except:
             posix.rename(support.TESTFN + 'ren', support.TESTFN)
-            raise
-        else:
-            posix.stat(support.TESTFN) # should not raise exception
-        finally:
+            ashiria
+        isipokua:
+            posix.stat(support.TESTFN) # should sio ashiria exception
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.symlink in os.supports_dir_fd, "test needs dir_fd support in os.symlink()")
+    @unittest.skipUnless(os.symlink kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.symlink()")
     eleza test_symlink_dir_fd(self):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
+        jaribu:
             posix.symlink(support.TESTFN, support.TESTFN + 'link', dir_fd=f)
             self.assertEqual(posix.readlink(support.TESTFN + 'link'), support.TESTFN)
-        finally:
+        mwishowe:
             posix.close(f)
             support.unlink(support.TESTFN + 'link')
 
-    @unittest.skipUnless(os.unlink in os.supports_dir_fd, "test needs dir_fd support in os.unlink()")
+    @unittest.skipUnless(os.unlink kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.unlink()")
     eleza test_unlink_dir_fd(self):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
         support.create_empty_file(support.TESTFN + 'del')
-        posix.stat(support.TESTFN + 'del') # should not raise exception
-        try:
+        posix.stat(support.TESTFN + 'del') # should sio ashiria exception
+        jaribu:
             posix.unlink(support.TESTFN + 'del', dir_fd=f)
         except:
             support.unlink(support.TESTFN + 'del')
-            raise
-        else:
+            ashiria
+        isipokua:
             self.assertRaises(OSError, posix.stat, support.TESTFN + 'link')
-        finally:
+        mwishowe:
             posix.close(f)
 
-    @unittest.skipUnless(os.mkfifo in os.supports_dir_fd, "test needs dir_fd support in os.mkfifo()")
+    @unittest.skipUnless(os.mkfifo kwenye os.supports_dir_fd, "test needs dir_fd support kwenye os.mkfifo()")
     eleza test_mkfifo_dir_fd(self):
         support.unlink(support.TESTFN)
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
-        try:
-            try:
+        jaribu:
+            jaribu:
                 posix.mkfifo(support.TESTFN,
                              stat.S_IRUSR | stat.S_IWUSR, dir_fd=f)
-            except PermissionError as e:
+            tatizo PermissionError kama e:
                 self.skipTest('posix.mkfifo(): %s' % e)
-            self.assertTrue(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
-        finally:
+            self.assertKweli(stat.S_ISFIFO(posix.stat(support.TESTFN).st_mode))
+        mwishowe:
             posix.close(f)
 
-    requires_sched_h = unittest.skipUnless(hasattr(posix, 'sched_yield'),
+    requires_sched_h = unittest.skipUnless(hasattr(posix, 'sched_tuma'),
                                            "don't have scheduling support")
     requires_sched_affinity = unittest.skipUnless(hasattr(posix, 'sched_setaffinity'),
                                                   "don't have sched affinity support")
 
     @requires_sched_h
-    eleza test_sched_yield(self):
+    eleza test_sched_tuma(self):
         # This has no error conditions (at least on Linux).
-        posix.sched_yield()
+        posix.sched_tuma()
 
     @requires_sched_h
     @unittest.skipUnless(hasattr(posix, 'sched_get_priority_max'),
@@ -1286,45 +1286,45 @@ kundi PosixTester(unittest.TestCase):
         self.assertIsInstance(lo, int)
         self.assertIsInstance(hi, int)
         self.assertGreaterEqual(hi, lo)
-        # OSX evidently just returns 15 without checking the argument.
+        # OSX evidently just rudishas 15 without checking the argument.
         ikiwa sys.platform != "darwin":
             self.assertRaises(OSError, posix.sched_get_priority_min, -23)
             self.assertRaises(OSError, posix.sched_get_priority_max, -23)
 
     @requires_sched
     eleza test_get_and_set_scheduler_and_param(self):
-        possible_schedulers = [sched for name, sched in posix.__dict__.items()
+        possible_schedulers = [sched kila name, sched kwenye posix.__dict__.items()
                                ikiwa name.startswith("SCHED_")]
         mine = posix.sched_getscheduler(0)
         self.assertIn(mine, possible_schedulers)
-        try:
+        jaribu:
             parent = posix.sched_getscheduler(os.getppid())
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno != errno.EPERM:
-                raise
-        else:
+                ashiria
+        isipokua:
             self.assertIn(parent, possible_schedulers)
         self.assertRaises(OSError, posix.sched_getscheduler, -1)
         self.assertRaises(OSError, posix.sched_getparam, -1)
         param = posix.sched_getparam(0)
         self.assertIsInstance(param.sched_priority, int)
 
-        # POSIX states that calling sched_setparam() or sched_setscheduler() on
-        # a process with a scheduling policy other than SCHED_FIFO or SCHED_RR
-        # is implementation-defined: NetBSD and FreeBSD can rudisha EINVAL.
-        ikiwa not sys.platform.startswith(('freebsd', 'netbsd')):
-            try:
+        # POSIX states that calling sched_setparam() ama sched_setscheduler() on
+        # a process with a scheduling policy other than SCHED_FIFO ama SCHED_RR
+        # ni implementation-defined: NetBSD na FreeBSD can rudisha EINVAL.
+        ikiwa sio sys.platform.startswith(('freebsd', 'netbsd')):
+            jaribu:
                 posix.sched_setscheduler(0, mine, param)
                 posix.sched_setparam(0, param)
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno != errno.EPERM:
-                    raise
+                    ashiria
             self.assertRaises(OSError, posix.sched_setparam, -1, param)
 
         self.assertRaises(OSError, posix.sched_setscheduler, -1, mine, param)
-        self.assertRaises(TypeError, posix.sched_setscheduler, 0, mine, None)
+        self.assertRaises(TypeError, posix.sched_setscheduler, 0, mine, Tupu)
         self.assertRaises(TypeError, posix.sched_setparam, 0, 43)
-        param = posix.sched_param(None)
+        param = posix.sched_param(Tupu)
         self.assertRaises(TypeError, posix.sched_setparam, 0, param)
         large = 214748364700
         param = posix.sched_param(large)
@@ -1334,13 +1334,13 @@ kundi PosixTester(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(posix, "sched_rr_get_interval"), "no function")
     eleza test_sched_rr_get_interval(self):
-        try:
+        jaribu:
             interval = posix.sched_rr_get_interval(0)
-        except OSError as e:
-            # This likely means that sched_rr_get_interval is only valid for
-            # processes with the SCHED_RR scheduler in effect.
+        tatizo OSError kama e:
+            # This likely means that sched_rr_get_interval ni only valid for
+            # processes with the SCHED_RR scheduler kwenye effect.
             ikiwa e.errno != errno.EINVAL:
-                raise
+                ashiria
             self.skipTest("only works on SCHED_RR processes")
         self.assertIsInstance(interval, float)
         # Reasonable constraints, I think.
@@ -1353,7 +1353,7 @@ kundi PosixTester(unittest.TestCase):
         self.assertIsInstance(mask, set)
         self.assertGreaterEqual(len(mask), 1)
         self.assertRaises(OSError, posix.sched_getaffinity, -1)
-        for cpu in mask:
+        kila cpu kwenye mask:
             self.assertIsInstance(cpu, int)
             self.assertGreaterEqual(cpu, 0)
             self.assertLess(cpu, 1 << 32)
@@ -1384,61 +1384,61 @@ kundi PosixTester(unittest.TestCase):
     eleza test_fs_holes(self):
         # Even ikiwa the filesystem doesn't report holes,
         # ikiwa the OS supports it the SEEK_* constants
-        # will be defined and will have a consistent
+        # will be defined na will have a consistent
         # behaviour:
         # os.SEEK_DATA = current position
         # os.SEEK_HOLE = end of file position
-        with open(support.TESTFN, 'r+b') as fp:
+        with open(support.TESTFN, 'r+b') kama fp:
             fp.write(b"hello")
             fp.flush()
             size = fp.tell()
             fno = fp.fileno()
             try :
-                for i in range(size):
+                kila i kwenye range(size):
                     self.assertEqual(i, os.lseek(fno, i, os.SEEK_DATA))
                     self.assertLessEqual(size, os.lseek(fno, i, os.SEEK_HOLE))
                 self.assertRaises(OSError, os.lseek, fno, size, os.SEEK_DATA)
                 self.assertRaises(OSError, os.lseek, fno, size, os.SEEK_HOLE)
-            except OSError :
+            tatizo OSError :
                 # Some OSs claim to support SEEK_HOLE/SEEK_DATA
-                # but it is not true.
+                # but it ni sio true.
                 # For instance:
                 # http://lists.freebsd.org/pipermail/freebsd-amd64/2012-January/014332.html
-                raise unittest.SkipTest("OSError raised!")
+                ashiria unittest.SkipTest("OSError ashiriad!")
 
     eleza test_path_error2(self):
         """
-        Test functions that call path_error2(), providing two filenames in their exceptions.
+        Test functions that call path_error2(), providing two filenames kwenye their exceptions.
         """
-        for name in ("rename", "replace", "link"):
-            function = getattr(os, name, None)
-            ikiwa function is None:
-                continue
+        kila name kwenye ("rename", "replace", "link"):
+            function = getattr(os, name, Tupu)
+            ikiwa function ni Tupu:
+                endelea
 
-            for dst in ("noodly2", support.TESTFN):
-                try:
+            kila dst kwenye ("noodly2", support.TESTFN):
+                jaribu:
                     function('doesnotexistfilename', dst)
-                except OSError as e:
+                tatizo OSError kama e:
                     self.assertIn("'doesnotexistfilename' -> '{}'".format(dst), str(e))
-                    break
-            else:
-                self.fail("No valid path_error2() test for os." + name)
+                    koma
+            isipokua:
+                self.fail("No valid path_error2() test kila os." + name)
 
     eleza test_path_with_null_character(self):
         fn = support.TESTFN
         fn_with_NUL = fn + '\0'
         self.addCleanup(support.unlink, fn)
         support.unlink(fn)
-        fd = None
-        try:
+        fd = Tupu
+        jaribu:
             with self.assertRaises(ValueError):
-                fd = os.open(fn_with_NUL, os.O_WRONLY | os.O_CREAT) # raises
-        finally:
-            ikiwa fd is not None:
+                fd = os.open(fn_with_NUL, os.O_WRONLY | os.O_CREAT) # ashirias
+        mwishowe:
+            ikiwa fd ni sio Tupu:
                 os.close(fd)
-        self.assertFalse(os.path.exists(fn))
+        self.assertUongo(os.path.exists(fn))
         self.assertRaises(ValueError, os.mkdir, fn_with_NUL)
-        self.assertFalse(os.path.exists(fn))
+        self.assertUongo(os.path.exists(fn))
         open(fn, 'wb').close()
         self.assertRaises(ValueError, os.stat, fn_with_NUL)
 
@@ -1447,16 +1447,16 @@ kundi PosixTester(unittest.TestCase):
         fn_with_NUL = fn + b'\0'
         self.addCleanup(support.unlink, fn)
         support.unlink(fn)
-        fd = None
-        try:
+        fd = Tupu
+        jaribu:
             with self.assertRaises(ValueError):
-                fd = os.open(fn_with_NUL, os.O_WRONLY | os.O_CREAT) # raises
-        finally:
-            ikiwa fd is not None:
+                fd = os.open(fn_with_NUL, os.O_WRONLY | os.O_CREAT) # ashirias
+        mwishowe:
+            ikiwa fd ni sio Tupu:
                 os.close(fd)
-        self.assertFalse(os.path.exists(fn))
+        self.assertUongo(os.path.exists(fn))
         self.assertRaises(ValueError, os.mkdir, fn_with_NUL)
-        self.assertFalse(os.path.exists(fn))
+        self.assertUongo(os.path.exists(fn))
         open(fn, 'wb').close()
         self.assertRaises(ValueError, os.stat, fn_with_NUL)
 
@@ -1464,11 +1464,11 @@ kundi PosixGroupsTester(unittest.TestCase):
 
     eleza setUp(self):
         ikiwa posix.getuid() != 0:
-            raise unittest.SkipTest("not enough privileges")
-        ikiwa not hasattr(posix, 'getgroups'):
-            raise unittest.SkipTest("need posix.getgroups")
+            ashiria unittest.SkipTest("not enough privileges")
+        ikiwa sio hasattr(posix, 'getgroups'):
+            ashiria unittest.SkipTest("need posix.getgroups")
         ikiwa sys.platform == 'darwin':
-            raise unittest.SkipTest("getgroups(2) is broken on OSX")
+            ashiria unittest.SkipTest("getgroups(2) ni broken on OSX")
         self.saved_groups = posix.getgroups()
 
     eleza tearDown(self):
@@ -1483,7 +1483,7 @@ kundi PosixGroupsTester(unittest.TestCase):
     eleza test_initgroups(self):
         # find missing group
 
-        g = max(self.saved_groups or [0]) + 1
+        g = max(self.saved_groups ama [0]) + 1
         name = pwd.getpwuid(posix.getuid()).pw_name
         posix.initgroups(name, g)
         self.assertIn(g, posix.getgroups())
@@ -1491,49 +1491,49 @@ kundi PosixGroupsTester(unittest.TestCase):
     @unittest.skipUnless(hasattr(posix, 'setgroups'),
                          "test needs posix.setgroups()")
     eleza test_setgroups(self):
-        for groups in [[0], list(range(16))]:
+        kila groups kwenye [[0], list(range(16))]:
             posix.setgroups(groups)
             self.assertListEqual(groups, posix.getgroups())
 
 
 kundi _PosixSpawnMixin:
-    # Program which does nothing and exits with status 0 (success)
-    NOOP_PROGRAM = (sys.executable, '-I', '-S', '-c', 'pass')
-    spawn_func = None
+    # Program which does nothing na exits with status 0 (success)
+    NOOP_PROGRAM = (sys.executable, '-I', '-S', '-c', 'pita')
+    spawn_func = Tupu
 
     eleza python_args(self, *args):
         # Disable site module to avoid side effects. For example,
-        # on Fedora 28, ikiwa the HOME environment variable is not set,
+        # on Fedora 28, ikiwa the HOME environment variable ni sio set,
         # site._getuserbase() calls pwd.getpwuid() which opens
-        # /var/lib/sss/mc/passwd but then leaves the file open which makes
+        # /var/lib/sss/mc/pitawd but then leaves the file open which makes
         # test_close_file() to fail.
         rudisha (sys.executable, '-I', '-S', *args)
 
-    eleza test_returns_pid(self):
+    eleza test_rudishas_pid(self):
         pidfile = support.TESTFN
         self.addCleanup(support.unlink, pidfile)
         script = f"""ikiwa 1:
             agiza os
-            with open({pidfile!r}, "w") as pidfile:
+            with open({pidfile!r}, "w") kama pidfile:
                 pidfile.write(str(os.getpid()))
             """
         args = self.python_args('-c', script)
         pid = self.spawn_func(args[0], args, os.environ)
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(pidfile) as f:
+        with open(pidfile) kama f:
             self.assertEqual(f.read(), str(pid))
 
     eleza test_no_such_executable(self):
         no_such_executable = 'no_such_executable'
-        try:
+        jaribu:
             pid = self.spawn_func(no_such_executable,
                                   [no_such_executable],
                                   os.environ)
-        # bpo-35794: PermissionError can be raised ikiwa there are
-        # directories in the $PATH that are not accessible.
-        except (FileNotFoundError, PermissionError) as exc:
+        # bpo-35794: PermissionError can be ashiriad ikiwa there are
+        # directories kwenye the $PATH that are sio accessible.
+        tatizo (FileNotFoundError, PermissionError) kama exc:
             self.assertEqual(exc.filename, no_such_executable)
-        else:
+        isipokua:
             pid2, status = os.waitpid(pid, 0)
             self.assertEqual(pid2, pid)
             self.assertNotEqual(status, 0)
@@ -1543,14 +1543,14 @@ kundi _PosixSpawnMixin:
         self.addCleanup(support.unlink, envfile)
         script = f"""ikiwa 1:
             agiza os
-            with open({envfile!r}, "w") as envfile:
+            with open({envfile!r}, "w") kama envfile:
                 envfile.write(os.environ['foo'])
         """
         args = self.python_args('-c', script)
         pid = self.spawn_func(args[0], args,
                               {**os.environ, 'foo': 'bar'})
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(envfile) as f:
+        with open(envfile) kama f:
             self.assertEqual(f.read(), 'bar')
 
     eleza test_none_file_actions(self):
@@ -1558,7 +1558,7 @@ kundi _PosixSpawnMixin:
             self.NOOP_PROGRAM[0],
             self.NOOP_PROGRAM,
             os.environ,
-            file_actions=None
+            file_actions=Tupu
         )
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
 
@@ -1574,31 +1574,31 @@ kundi _PosixSpawnMixin:
     eleza test_resetids_explicit_default(self):
         pid = self.spawn_func(
             sys.executable,
-            [sys.executable, '-c', 'pass'],
+            [sys.executable, '-c', 'pita'],
             os.environ,
-            resetids=False
+            resetids=Uongo
         )
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
 
     eleza test_resetids(self):
         pid = self.spawn_func(
             sys.executable,
-            [sys.executable, '-c', 'pass'],
+            [sys.executable, '-c', 'pita'],
             os.environ,
-            resetids=True
+            resetids=Kweli
         )
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
 
     eleza test_resetids_wrong_type(self):
         with self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
-                            os.environ, resetids=None)
+                            [sys.executable, "-c", "pita"],
+                            os.environ, resetids=Tupu)
 
     eleza test_setpgroup(self):
         pid = self.spawn_func(
             sys.executable,
-            [sys.executable, '-c', 'pass'],
+            [sys.executable, '-c', 'pita'],
             os.environ,
             setpgroup=os.getpgrp()
         )
@@ -1607,7 +1607,7 @@ kundi _PosixSpawnMixin:
     eleza test_setpgroup_wrong_type(self):
         with self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
+                            [sys.executable, "-c", "pita"],
                             os.environ, setpgroup="023")
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
@@ -1615,7 +1615,7 @@ kundi _PosixSpawnMixin:
     eleza test_setsigmask(self):
         code = textwrap.dedent("""\
             agiza signal
-            signal.raise_signal(signal.SIGUSR1)""")
+            signal.ashiria_signal(signal.SIGUSR1)""")
 
         pid = self.spawn_func(
             sys.executable,
@@ -1628,23 +1628,23 @@ kundi _PosixSpawnMixin:
     eleza test_setsigmask_wrong_type(self):
         with self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
+                            [sys.executable, "-c", "pita"],
                             os.environ, setsigmask=34)
         with self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
+                            [sys.executable, "-c", "pita"],
                             os.environ, setsigmask=["j"])
         with self.assertRaises(ValueError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
+                            [sys.executable, "-c", "pita"],
                             os.environ, setsigmask=[signal.NSIG,
                                                     signal.NSIG+1])
 
     eleza test_setsid(self):
         rfd, wfd = os.pipe()
         self.addCleanup(os.close, rfd)
-        try:
-            os.set_inheritable(wfd, True)
+        jaribu:
+            os.set_inheritable(wfd, Kweli)
 
             code = textwrap.dedent(f"""
                 agiza os
@@ -1653,15 +1653,15 @@ kundi _PosixSpawnMixin:
                 os.write(fd, str(sid).encode())
             """)
 
-            try:
+            jaribu:
                 pid = self.spawn_func(sys.executable,
                                       [sys.executable, "-c", code],
-                                      os.environ, setsid=True)
-            except NotImplementedError as exc:
-                self.skipTest(f"setsid is not supported: {exc!r}")
-            except PermissionError as exc:
+                                      os.environ, setsid=Kweli)
+            tatizo NotImplementedError kama exc:
+                self.skipTest(f"setsid ni sio supported: {exc!r}")
+            tatizo PermissionError kama exc:
                 self.skipTest(f"setsid failed with: {exc!r}")
-        finally:
+        mwishowe:
             os.close(wfd)
 
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
@@ -1676,34 +1676,34 @@ kundi _PosixSpawnMixin:
         original_handler = signal.signal(signal.SIGUSR1, signal.SIG_IGN)
         code = textwrap.dedent("""\
             agiza signal
-            signal.raise_signal(signal.SIGUSR1)""")
-        try:
+            signal.ashiria_signal(signal.SIGUSR1)""")
+        jaribu:
             pid = self.spawn_func(
                 sys.executable,
                 [sys.executable, '-c', code],
                 os.environ,
                 setsigdef=[signal.SIGUSR1]
             )
-        finally:
+        mwishowe:
             signal.signal(signal.SIGUSR1, original_handler)
 
         pid2, status = os.waitpid(pid, 0)
         self.assertEqual(pid2, pid)
-        self.assertTrue(os.WIFSIGNALED(status), status)
+        self.assertKweli(os.WIFSIGNALED(status), status)
         self.assertEqual(os.WTERMSIG(status), signal.SIGUSR1)
 
     eleza test_setsigdef_wrong_type(self):
         with self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
+                            [sys.executable, "-c", "pita"],
                             os.environ, setsigdef=34)
         with self.assertRaises(TypeError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
+                            [sys.executable, "-c", "pita"],
                             os.environ, setsigdef=["j"])
         with self.assertRaises(ValueError):
             self.spawn_func(sys.executable,
-                            [sys.executable, "-c", "pass"],
+                            [sys.executable, "-c", "pita"],
                             os.environ, setsigdef=[signal.NSIG, signal.NSIG+1])
 
     @requires_sched
@@ -1722,7 +1722,7 @@ kundi _PosixSpawnMixin:
             sys.executable,
             [sys.executable, '-c', code],
             os.environ,
-            scheduler=(None, os.sched_param(priority))
+            scheduler=(Tupu, os.sched_param(priority))
         )
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
 
@@ -1762,13 +1762,13 @@ kundi _PosixSpawnMixin:
         args = self.NOOP_PROGRAM
         with self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
-                            file_actions=[None])
+                            file_actions=[Tupu])
         with self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[()])
         with self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
-                            file_actions=[(None,)])
+                            file_actions=[(Tupu,)])
         with self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(12345,)])
@@ -1780,7 +1780,7 @@ kundi _PosixSpawnMixin:
                             file_actions=[(os.POSIX_SPAWN_CLOSE, 1, 2)])
         with self.assertRaises(TypeError):
             self.spawn_func(args[0], args, os.environ,
-                            file_actions=[(os.POSIX_SPAWN_CLOSE, None)])
+                            file_actions=[(os.POSIX_SPAWN_CLOSE, Tupu)])
         with self.assertRaises(ValueError):
             self.spawn_func(args[0], args, os.environ,
                             file_actions=[(os.POSIX_SPAWN_OPEN,
@@ -1803,7 +1803,7 @@ kundi _PosixSpawnMixin:
         pid = self.spawn_func(args[0], args, os.environ,
                               file_actions=file_actions)
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(outfile) as f:
+        with open(outfile) kama f:
             self.assertEqual(f.read(), 'hello')
 
     eleza test_close_file(self):
@@ -1811,17 +1811,17 @@ kundi _PosixSpawnMixin:
         self.addCleanup(support.unlink, closefile)
         script = f"""ikiwa 1:
             agiza os
-            try:
+            jaribu:
                 os.fstat(0)
-            except OSError as e:
-                with open({closefile!r}, 'w') as closefile:
+            tatizo OSError kama e:
+                with open({closefile!r}, 'w') kama closefile:
                     closefile.write('is closed %d' % e.errno)
             """
         args = self.python_args('-c', script)
         pid = self.spawn_func(args[0], args, os.environ,
                               file_actions=[(os.POSIX_SPAWN_CLOSE, 0)])
         self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(closefile) as f:
+        with open(closefile) kama f:
             self.assertEqual(f.read(), 'is closed %d' % errno.EBADF)
 
     eleza test_dup2(self):
@@ -1831,7 +1831,7 @@ kundi _PosixSpawnMixin:
             agiza sys
             sys.stdout.write("hello")
             """
-        with open(dupfile, "wb") as childfile:
+        with open(dupfile, "wb") kama childfile:
             file_actions = [
                 (os.POSIX_SPAWN_DUP2, childfile.fileno(), 1),
             ]
@@ -1839,22 +1839,22 @@ kundi _PosixSpawnMixin:
             pid = self.spawn_func(args[0], args, os.environ,
                                   file_actions=file_actions)
             self.assertEqual(os.waitpid(pid, 0), (pid, 0))
-        with open(dupfile) as f:
+        with open(dupfile) kama f:
             self.assertEqual(f.read(), 'hello')
 
 
 @unittest.skipUnless(hasattr(os, 'posix_spawn'), "test needs os.posix_spawn")
 kundi TestPosixSpawn(unittest.TestCase, _PosixSpawnMixin):
-    spawn_func = getattr(posix, 'posix_spawn', None)
+    spawn_func = getattr(posix, 'posix_spawn', Tupu)
 
 
 @unittest.skipUnless(hasattr(os, 'posix_spawnp'), "test needs os.posix_spawnp")
 kundi TestPosixSpawnP(unittest.TestCase, _PosixSpawnMixin):
-    spawn_func = getattr(posix, 'posix_spawnp', None)
+    spawn_func = getattr(posix, 'posix_spawnp', Tupu)
 
     @support.skip_unless_symlink
     eleza test_posix_spawnp(self):
-        # Use a symlink to create a program in its own temporary directory
+        # Use a symlink to create a program kwenye its own temporary directory
         temp_dir = tempfile.mkdtemp()
         self.addCleanup(support.rmtree, temp_dir)
 
@@ -1862,39 +1862,39 @@ kundi TestPosixSpawnP(unittest.TestCase, _PosixSpawnMixin):
         program_fullpath = os.path.join(temp_dir, program)
         os.symlink(sys.executable, program_fullpath)
 
-        try:
+        jaribu:
             path = os.pathsep.join((temp_dir, os.environ['PATH']))
-        except KeyError:
-            path = temp_dir   # PATH is not set
+        tatizo KeyError:
+            path = temp_dir   # PATH ni sio set
 
-        spawn_args = (program, '-I', '-S', '-c', 'pass')
+        spawn_args = (program, '-I', '-S', '-c', 'pita')
         code = textwrap.dedent("""
             agiza os
             args = %a
             pid = os.posix_spawnp(args[0], args, os.environ)
             pid2, status = os.waitpid(pid, 0)
             ikiwa pid2 != pid:
-                raise Exception(f"pid {pid2} != {pid}")
+                ashiria Exception(f"pid {pid2} != {pid}")
             ikiwa status != 0:
-                raise Exception(f"status {status} != 0")
+                ashiria Exception(f"status {status} != 0")
         """ % (spawn_args,))
 
         # Use a subprocess to test os.posix_spawnp() with a modified PATH
         # environment variable: posix_spawnp() uses the current environment
-        # to locate the program, not its environment argument.
+        # to locate the program, sio its environment argument.
         args = ('-c', code)
         assert_python_ok(*args, PATH=path)
 
 
 eleza test_main():
-    try:
+    jaribu:
         support.run_unittest(
             PosixTester,
             PosixGroupsTester,
             TestPosixSpawn,
             TestPosixSpawnP,
         )
-    finally:
+    mwishowe:
         support.reap_children()
 
 ikiwa __name__ == '__main__':

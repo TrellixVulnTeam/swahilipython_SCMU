@@ -17,5 +17,5 @@ kutoka ._bootstrap_external agiza ExtensionFileLoader
 
 
 eleza all_suffixes():
-    """Returns a list of all recognized module suffixes for this process"""
+    """Returns a list of all recognized module suffixes kila this process"""
     rudisha SOURCE_SUFFIXES + BYTECODE_SUFFIXES + EXTENSION_SUFFIXES

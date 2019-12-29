@@ -7,19 +7,19 @@ kutoka itertools agiza islice
 kutoka _thread agiza get_ident
 
 eleza recursive_repr(fillvalue='...'):
-    'Decorator to make a repr function rudisha fillvalue for a recursive call'
+    'Decorator to make a repr function rudisha fillvalue kila a recursive call'
 
     eleza decorating_function(user_function):
         repr_running = set()
 
         eleza wrapper(self):
             key = id(self), get_ident()
-            ikiwa key in repr_running:
+            ikiwa key kwenye repr_running:
                 rudisha fillvalue
             repr_running.add(key)
-            try:
+            jaribu:
                 result = user_function(self)
-            finally:
+            mwishowe:
                 repr_running.discard(key)
             rudisha result
 
@@ -53,25 +53,25 @@ kundi Repr:
 
     eleza repr1(self, x, level):
         typename = type(x).__name__
-        ikiwa ' ' in typename:
+        ikiwa ' ' kwenye typename:
             parts = typename.split()
             typename = '_'.join(parts)
         ikiwa hasattr(self, 'repr_' + typename):
             rudisha getattr(self, 'repr_' + typename)(x, level)
-        else:
+        isipokua:
             rudisha self.repr_instance(x, level)
 
     eleza _repr_iterable(self, x, level, left, right, maxiter, trail=''):
         n = len(x)
-        ikiwa level <= 0 and n:
+        ikiwa level <= 0 na n:
             s = '...'
-        else:
+        isipokua:
             newlevel = level - 1
             repr1 = self.repr1
-            pieces = [repr1(elem, newlevel) for elem in islice(x, maxiter)]
+            pieces = [repr1(elem, newlevel) kila elem kwenye islice(x, maxiter)]
             ikiwa n > maxiter:  pieces.append('...')
             s = ', '.join(pieces)
-            ikiwa n == 1 and trail:  right = trail + right
+            ikiwa n == 1 na trail:  right = trail + right
         rudisha '%s%s%s' % (left, s, right)
 
     eleza repr_tuple(self, x, level):
@@ -81,19 +81,19 @@ kundi Repr:
         rudisha self._repr_iterable(x, level, '[', ']', self.maxlist)
 
     eleza repr_array(self, x, level):
-        ikiwa not x:
+        ikiwa sio x:
             rudisha "array('%s')" % x.typecode
         header = "array('%s', [" % x.typecode
         rudisha self._repr_iterable(x, level, header, '])', self.maxarray)
 
     eleza repr_set(self, x, level):
-        ikiwa not x:
+        ikiwa sio x:
             rudisha 'set()'
         x = _possibly_sorted(x)
         rudisha self._repr_iterable(x, level, '{', '}', self.maxset)
 
     eleza repr_frozenset(self, x, level):
-        ikiwa not x:
+        ikiwa sio x:
             rudisha 'frozenset()'
         x = _possibly_sorted(x)
         rudisha self._repr_iterable(x, level, 'frozenset({', '})',
@@ -109,7 +109,7 @@ kundi Repr:
         newlevel = level - 1
         repr1 = self.repr1
         pieces = []
-        for key in islice(_possibly_sorted(x), self.maxdict):
+        kila key kwenye islice(_possibly_sorted(x), self.maxdict):
             keyrepr = repr1(key, newlevel)
             valrepr = repr1(x[key], newlevel)
             pieces.append('%s: %s' % (keyrepr, valrepr))
@@ -135,11 +135,11 @@ kundi Repr:
         rudisha s
 
     eleza repr_instance(self, x, level):
-        try:
+        jaribu:
             s = builtins.repr(x)
-            # Bugs in x.__repr__() can cause arbitrary
+            # Bugs kwenye x.__repr__() can cause arbitrary
             # exceptions -- then make up something
-        except Exception:
+        tatizo Exception:
             rudisha '<%s instance at %#x>' % (x.__class__.__name__, id(x))
         ikiwa len(s) > self.maxother:
             i = max(0, (self.maxother-3)//2)
@@ -149,12 +149,12 @@ kundi Repr:
 
 
 eleza _possibly_sorted(x):
-    # Since not all sequences of items can be sorted and comparison
-    # functions may raise arbitrary exceptions, rudisha an unsorted
-    # sequence in that case.
-    try:
+    # Since sio all sequences of items can be sorted na comparison
+    # functions may ashiria arbitrary exceptions, rudisha an unsorted
+    # sequence kwenye that case.
+    jaribu:
         rudisha sorted(x)
-    except Exception:
+    tatizo Exception:
         rudisha list(x)
 
 aRepr = Repr()

@@ -39,9 +39,9 @@ class AnonTest(unittest.TestCase):
     @test.support.cpython_only
     def test_issue31490(self):
         # There shouldn't be an assertion failure in case the class has an
-        # attribute whose name is specified in _anonymous_ but not in _fields_.
+        # attribute whose name is specified in _anonymous_ but haiko kwenye _fields_.
 
-        # AttributeError: 'x' is specified in _anonymous_ but not in _fields_
+        # AttributeError: 'x' is specified in _anonymous_ but haiko kwenye _fields_
         with self.assertRaises(AttributeError):
             class Name(Structure):
                 _fields_ = []

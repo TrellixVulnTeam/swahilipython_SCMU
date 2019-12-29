@@ -8,7 +8,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
 kundi FixGetcwdu(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
               power< 'os' trailer< dot='.' name='getcwdu' > any* >

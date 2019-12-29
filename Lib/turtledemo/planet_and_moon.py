@@ -17,7 +17,7 @@ pressing the left mouse button with the
 mouse over the scrollbar of the canvas.
 
 """
-kutoka turtle agiza Shape, Turtle, mainloop, Vec2D as Vec
+kutoka turtle agiza Shape, Turtle, mainloop, Vec2D kama Vec
 
 G = 8
 
@@ -27,12 +27,12 @@ kundi GravSys(object):
         self.t = 0
         self.dt = 0.01
     eleza init(self):
-        for p in self.planets:
+        kila p kwenye self.planets:
             p.init()
     eleza start(self):
-        for i in range(10000):
+        kila i kwenye range(10000):
             self.t += self.dt
-            for p in self.planets:
+            kila p kwenye self.planets:
                 p.step()
 
 kundi Star(Turtle):
@@ -52,7 +52,7 @@ kundi Star(Turtle):
         self.v = self.v + 0.5*dt*self.a
     eleza acc(self):
         a = Vec(0,0)
-        for planet in self.gravSys.planets:
+        kila planet kwenye self.gravSys.planets:
             ikiwa planet != self:
                 v = planet.pos()-self.pos()
                 a += (G*planet.m/abs(v)**3)*v
@@ -65,7 +65,7 @@ kundi Star(Turtle):
         self.a = self.acc()
         self.v = self.v + dt*self.a
 
-## create compound yellow/blue turtleshape for planets
+## create compound yellow/blue turtleshape kila planets
 
 eleza main():
     s = Turtle()

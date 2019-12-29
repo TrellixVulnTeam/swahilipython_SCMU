@@ -1,7 +1,7 @@
 
-"""Doctest for method/function calls.
+"""Doctest kila method/function calls.
 
-We're going the use these types for extra testing
+We're going the use these types kila extra testing
 
     >>> kutoka collections agiza UserList
     >>> kutoka collections agiza UserDict
@@ -52,15 +52,15 @@ Here we add keyword arguments
     >>> f(1, 2, **{'a': -1, 'b': 5}, **{'a': 4, 'c': 6})
     Traceback (most recent call last):
         ...
-    TypeError: f() got multiple values for keyword argument 'a'
+    TypeError: f() got multiple values kila keyword argument 'a'
     >>> f(1, 2, **{'a': -1, 'b': 5}, a=4, c=6)
     Traceback (most recent call last):
         ...
-    TypeError: f() got multiple values for keyword argument 'a'
+    TypeError: f() got multiple values kila keyword argument 'a'
     >>> f(1, 2, a=3, **{'a': 4}, **{'a': 5})
     Traceback (most recent call last):
         ...
-    TypeError: f() got multiple values for keyword argument 'a'
+    TypeError: f() got multiple values kila keyword argument 'a'
     >>> f(1, 2, 3, *[4, 5], **{'a':6, 'b':7})
     (1, 2, 3, 4, 5) {'a': 6, 'b': 7}
     >>> f(1, 2, 3, x=4, y=5, *(6, 7), **{'a':8, 'b': 9})
@@ -80,7 +80,7 @@ Here we add keyword arguments
     (1, 2, 3, 4, 5) {'a': 8, 'b': 9, 'x': 6, 'y': 7}
 
 Examples with invalid arguments (TypeErrors). We're also testing the function
-names in the exception messages.
+names kwenye the exception messages.
 
 Verify clearing of SF bug #733667
 
@@ -113,12 +113,12 @@ Verify clearing of SF bug #733667
     >>> g(1, 2, 3, *(4, 5))
     1 (2, 3, 4, 5) {}
 
-    >>> kundi Nothing: pass
+    >>> kundi Nothing: pita
     ...
     >>> g(*Nothing())
     Traceback (most recent call last):
       ...
-    TypeError: g() argument after * must be an iterable, not Nothing
+    TypeError: g() argument after * must be an iterable, sio Nothing
 
     >>> kundi Nothing:
     ...     eleza __len__(self): rudisha 5
@@ -127,13 +127,13 @@ Verify clearing of SF bug #733667
     >>> g(*Nothing())
     Traceback (most recent call last):
       ...
-    TypeError: g() argument after * must be an iterable, not Nothing
+    TypeError: g() argument after * must be an iterable, sio Nothing
 
     >>> kundi Nothing():
     ...     eleza __len__(self): rudisha 5
     ...     eleza __getitem__(self, i):
     ...         ikiwa i<3: rudisha i
-    ...         else: raise IndexError(i)
+    ...         isipokua: ashiria IndexError(i)
     ...
 
     >>> g(*Nothing())
@@ -144,7 +144,7 @@ Verify clearing of SF bug #733667
     ...     eleza __iter__(self): rudisha self
     ...     eleza __next__(self):
     ...         ikiwa self.c == 4:
-    ...             raise StopIteration
+    ...             ashiria StopIteration
     ...         c = self.c
     ...         self.c += 1
     ...         rudisha c
@@ -153,24 +153,24 @@ Verify clearing of SF bug #733667
     >>> g(*Nothing())
     0 (1, 2, 3) {}
 
-Check for issue #4806: Does a TypeError in a generator get propagated with the
+Check kila issue #4806: Does a TypeError kwenye a generator get propagated with the
 right error message? (Also check with other iterables.)
 
-    >>> eleza broken(): raise TypeError("myerror")
+    >>> eleza broken(): ashiria TypeError("myerror")
     ...
 
-    >>> g(*(broken() for i in range(1)))
+    >>> g(*(broken() kila i kwenye range(1)))
     Traceback (most recent call last):
       ...
     TypeError: myerror
-    >>> g(*range(1), *(broken() for i in range(1)))
+    >>> g(*range(1), *(broken() kila i kwenye range(1)))
     Traceback (most recent call last):
       ...
     TypeError: myerror
 
     >>> kundi BrokenIterable1:
     ...     eleza __iter__(self):
-    ...         raise TypeError('myerror')
+    ...         ashiria TypeError('myerror')
     ...
     >>> g(*BrokenIterable1())
     Traceback (most recent call last):
@@ -183,8 +183,8 @@ right error message? (Also check with other iterables.)
 
     >>> kundi BrokenIterable2:
     ...     eleza __iter__(self):
-    ...         yield 0
-    ...         raise TypeError('myerror')
+    ...         tuma 0
+    ...         ashiria TypeError('myerror')
     ...
     >>> g(*BrokenIterable2())
     Traceback (most recent call last):
@@ -197,7 +197,7 @@ right error message? (Also check with other iterables.)
 
     >>> kundi BrokenSequence:
     ...     eleza __getitem__(self, idx):
-    ...         raise TypeError('myerror')
+    ...         ashiria TypeError('myerror')
     ...
     >>> g(*BrokenSequence())
     Traceback (most recent call last):
@@ -215,7 +215,7 @@ Make sure that the function doesn't stomp the dictionary
     >>> g(1, d=4, **d)
     1 () {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     >>> d == d2
-    True
+    Kweli
 
 What about willful misconduct?
 
@@ -232,7 +232,7 @@ What about willful misconduct?
     >>> g(1, 2, 3, **{'x': 4, 'y': 5})
     Traceback (most recent call last):
       ...
-    TypeError: g() got multiple values for argument 'x'
+    TypeError: g() got multiple values kila argument 'x'
 
     >>> f(**{1:2})
     Traceback (most recent call last):
@@ -247,75 +247,75 @@ What about willful misconduct?
     >>> h(*h)
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after * must be an iterable, not function
+    TypeError: h() argument after * must be an iterable, sio function
 
     >>> h(1, *h)
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after * must be an iterable, not function
+    TypeError: h() argument after * must be an iterable, sio function
 
     >>> h(*[1], *h)
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after * must be an iterable, not function
+    TypeError: h() argument after * must be an iterable, sio function
 
     >>> dir(*h)
     Traceback (most recent call last):
       ...
-    TypeError: dir() argument after * must be an iterable, not function
+    TypeError: dir() argument after * must be an iterable, sio function
 
-    >>> nothing = None
+    >>> nothing = Tupu
     >>> nothing(*h)
     Traceback (most recent call last):
       ...
-    TypeError: NoneType object argument after * must be an iterable, \
+    TypeError: TupuType object argument after * must be an iterable, \
 not function
 
     >>> h(**h)
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after ** must be a mapping, not function
+    TypeError: h() argument after ** must be a mapping, sio function
 
     >>> h(**[])
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after ** must be a mapping, not list
+    TypeError: h() argument after ** must be a mapping, sio list
 
     >>> h(a=1, **h)
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after ** must be a mapping, not function
+    TypeError: h() argument after ** must be a mapping, sio function
 
     >>> h(a=1, **[])
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after ** must be a mapping, not list
+    TypeError: h() argument after ** must be a mapping, sio list
 
     >>> h(**{'a': 1}, **h)
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after ** must be a mapping, not function
+    TypeError: h() argument after ** must be a mapping, sio function
 
     >>> h(**{'a': 1}, **[])
     Traceback (most recent call last):
       ...
-    TypeError: h() argument after ** must be a mapping, not list
+    TypeError: h() argument after ** must be a mapping, sio list
 
     >>> dir(**h)
     Traceback (most recent call last):
       ...
-    TypeError: dir() argument after ** must be a mapping, not function
+    TypeError: dir() argument after ** must be a mapping, sio function
 
     >>> nothing(**h)
     Traceback (most recent call last):
       ...
-    TypeError: NoneType object argument after ** must be a mapping, \
+    TypeError: TupuType object argument after ** must be a mapping, \
 not function
 
     >>> dir(b=1, **{'b': 1})
     Traceback (most recent call last):
       ...
-    TypeError: dir() got multiple values for keyword argument 'b'
+    TypeError: dir() got multiple values kila keyword argument 'b'
 
 Test a kwargs mapping with duplicated keys.
 
@@ -325,25 +325,25 @@ Test a kwargs mapping with duplicated keys.
     ...         self._items = items
     ...
     ...     eleza __iter__(self):
-    ...         rudisha (k for k, v in self._items)
+    ...         rudisha (k kila k, v kwenye self._items)
     ...
     ...     eleza __getitem__(self, key):
-    ...         for k, v in self._items:
+    ...         kila k, v kwenye self._items:
     ...             ikiwa k == key:
     ...                 rudisha v
-    ...         raise KeyError(key)
+    ...         ashiria KeyError(key)
     ...
     ...     eleza __len__(self):
     ...         rudisha len(self._items)
     ...
     ...     eleza keys(self):
-    ...         rudisha [k for k, v in self._items]
+    ...         rudisha [k kila k, v kwenye self._items]
     ...
     ...     eleza values(self):
-    ...         rudisha [v for k, v in self._items]
+    ...         rudisha [v kila k, v kwenye self._items]
     ...
     ...     eleza items(self):
-    ...         rudisha [(k, v) for k, v in self._items]
+    ...         rudisha [(k, v) kila k, v kwenye self._items]
     ...
     >>> g(**MultiDict([('x', 1), ('y', 2)]))
     1 () {'y': 2}
@@ -351,17 +351,17 @@ Test a kwargs mapping with duplicated keys.
     >>> g(**MultiDict([('x', 1), ('x', 2)]))
     Traceback (most recent call last):
       ...
-    TypeError: g() got multiple values for keyword argument 'x'
+    TypeError: g() got multiple values kila keyword argument 'x'
 
     >>> g(a=3, **MultiDict([('x', 1), ('x', 2)]))
     Traceback (most recent call last):
       ...
-    TypeError: g() got multiple values for keyword argument 'x'
+    TypeError: g() got multiple values kila keyword argument 'x'
 
     >>> g(**MultiDict([('a', 3)]), **MultiDict([('x', 1), ('x', 2)]))
     Traceback (most recent call last):
       ...
-    TypeError: g() got multiple values for keyword argument 'x'
+    TypeError: g() got multiple values kila keyword argument 'x'
 
 Another helper function
 
@@ -370,12 +370,12 @@ Another helper function
 
 
     >>> d = {}
-    >>> for i in range(512):
+    >>> kila i kwenye range(512):
     ...     key = 'k%d' % i
     ...     d[key] = i
     >>> a, b = f2(1, *(2,3), **d)
     >>> len(a), len(b), b == d
-    (3, 512, True)
+    (3, 512, Kweli)
 
     >>> kundi Foo:
     ...     eleza method(self, arg1, arg2):
@@ -392,15 +392,15 @@ Another helper function
     5
 
 A PyCFunction that takes only positional parameters should allow an
-empty keyword dictionary to pass without a complaint, but raise a
-TypeError ikiwa te dictionary is not empty
+empty keyword dictionary to pita without a complaint, but ashiria a
+TypeError ikiwa te dictionary ni sio empty
 
-    >>> try:
+    >>> jaribu:
     ...     silence = id(1, *{})
-    ...     True
+    ...     Kweli
     ... except:
-    ...     False
-    True
+    ...     Uongo
+    Kweli
 
     >>> id(1, **{'foo': 1})
     Traceback (most recent call last):
@@ -412,10 +412,10 @@ the function call setup. See <http://bugs.python.org/issue2016>.
 
     >>> kundi Name(str):
     ...     eleza __eq__(self, other):
-    ...         try:
-    ...              del x[self]
-    ...         except KeyError:
-    ...              pass
+    ...         jaribu:
+    ...              toa x[self]
+    ...         tatizo KeyError:
+    ...              pita
     ...         rudisha str.__eq__(self, other)
     ...     eleza __hash__(self):
     ...         rudisha str.__hash__(self)
@@ -428,60 +428,60 @@ the function call setup. See <http://bugs.python.org/issue2016>.
 
 Too many arguments:
 
-    >>> eleza f(): pass
+    >>> eleza f(): pita
     >>> f(1)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 1 was given
-    >>> eleza f(a): pass
+    >>> eleza f(a): pita
     >>> f(1, 2)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 1 positional argument but 2 were given
-    >>> eleza f(a, b=1): pass
+    >>> eleza f(a, b=1): pita
     >>> f(1, 2, 3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes kutoka 1 to 2 positional arguments but 3 were given
-    >>> eleza f(*, kw): pass
+    >>> eleza f(*, kw): pita
     >>> f(1, kw=3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 1 positional argument (and 1 keyword-only argument) were given
-    >>> eleza f(*, kw, b): pass
+    >>> eleza f(*, kw, b): pita
     >>> f(1, 2, 3, b=3, kw=3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 3 positional arguments (and 2 keyword-only arguments) were given
-    >>> eleza f(a, b=2, *, kw): pass
+    >>> eleza f(a, b=2, *, kw): pita
     >>> f(2, 3, 4, kw=4)
     Traceback (most recent call last):
       ...
     TypeError: f() takes kutoka 1 to 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given
 
-Too few and missing arguments:
+Too few na missing arguments:
 
-    >>> eleza f(a): pass
+    >>> eleza f(a): pita
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 1 required positional argument: 'a'
-    >>> eleza f(a, b): pass
+    >>> eleza f(a, b): pita
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 2 required positional arguments: 'a' and 'b'
-    >>> eleza f(a, b, c): pass
+    TypeError: f() missing 2 required positional arguments: 'a' na 'b'
+    >>> eleza f(a, b, c): pita
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 3 required positional arguments: 'a', 'b', and 'c'
-    >>> eleza f(a, b, c, d, e): pass
+    TypeError: f() missing 3 required positional arguments: 'a', 'b', na 'c'
+    >>> eleza f(a, b, c, d, e): pita
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 5 required positional arguments: 'a', 'b', 'c', 'd', and 'e'
-    >>> eleza f(a, b=4, c=5, d=5): pass
+    TypeError: f() missing 5 required positional arguments: 'a', 'b', 'c', 'd', na 'e'
+    >>> eleza f(a, b=4, c=5, d=5): pita
     >>> f(c=12, b=9)
     Traceback (most recent call last):
       ...
@@ -489,16 +489,16 @@ Too few and missing arguments:
 
 Same with keyword only args:
 
-    >>> eleza f(*, w): pass
+    >>> eleza f(*, w): pita
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 1 required keyword-only argument: 'w'
-    >>> eleza f(*, a, b, c, d, e): pass
+    >>> eleza f(*, a, b, c, d, e): pita
     >>> f()
     Traceback (most recent call last):
       ...
-    TypeError: f() missing 5 required keyword-only arguments: 'a', 'b', 'c', 'd', and 'e'
+    TypeError: f() missing 5 required keyword-only arguments: 'a', 'b', 'c', 'd', na 'e'
 
 """
 
@@ -506,7 +506,7 @@ agiza sys
 kutoka test agiza support
 
 eleza test_main():
-    support.run_doctest(sys.modules[__name__], True)
+    support.run_doctest(sys.modules[__name__], Kweli)
 
 ikiwa __name__ == '__main__':
     test_main()

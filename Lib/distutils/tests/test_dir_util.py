@@ -19,7 +19,7 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
     def _log(self, msg, *args):
         if len(args) > 0:
             self._logs.append(msg % args)
-        else:
+        isipokua:
             self._logs.append(msg)
 
     def setUp(self):
@@ -118,7 +118,7 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         if os.sep == '/':
             self.assertEqual(ensure_relative('/home/foo'), 'home/foo')
             self.assertEqual(ensure_relative('some/path'), 'some/path')
-        else:   # \\
+        isipokua:   # \\
             self.assertEqual(ensure_relative('c:\\home\\foo'), 'c:home\\foo')
             self.assertEqual(ensure_relative('home\\foo'), 'home\\foo')
 

@@ -1,7 +1,7 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Tests for the raise statement."""
+"""Tests kila the ashiria statement."""
 
 kutoka test agiza support
 agiza sys
@@ -10,8 +10,8 @@ agiza unittest
 
 
 eleza get_tb():
-    try:
-        raise OSError()
+    jaribu:
+        ashiria OSError()
     except:
         rudisha sys.exc_info()[2]
 
@@ -20,101 +20,101 @@ kundi Context:
     eleza __enter__(self):
         rudisha self
     eleza __exit__(self, exc_type, exc_value, exc_tb):
-        rudisha True
+        rudisha Kweli
 
 
 kundi TestRaise(unittest.TestCase):
-    eleza test_invalid_reraise(self):
-        try:
-            raise
-        except RuntimeError as e:
+    eleza test_invalid_reashiria(self):
+        jaribu:
+            ashiria
+        tatizo RuntimeError kama e:
             self.assertIn("No active exception", str(e))
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_reraise(self):
-        try:
-            try:
-                raise IndexError()
-            except IndexError as e:
+    eleza test_reashiria(self):
+        jaribu:
+            jaribu:
+                ashiria IndexError()
+            tatizo IndexError kama e:
                 exc1 = e
-                raise
-        except IndexError as exc2:
+                ashiria
+        tatizo IndexError kama exc2:
             self.assertIs(exc1, exc2)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_except_reraise(self):
-        eleza reraise():
-            try:
-                raise TypeError("foo")
+    eleza test_except_reashiria(self):
+        eleza reashiria():
+            jaribu:
+                ashiria TypeError("foo")
             except:
-                try:
-                    raise KeyError("caught")
-                except KeyError:
-                    pass
-                raise
-        self.assertRaises(TypeError, reraise)
+                jaribu:
+                    ashiria KeyError("caught")
+                tatizo KeyError:
+                    pita
+                ashiria
+        self.assertRaises(TypeError, reashiria)
 
-    eleza test_finally_reraise(self):
-        eleza reraise():
-            try:
-                raise TypeError("foo")
+    eleza test_finally_reashiria(self):
+        eleza reashiria():
+            jaribu:
+                ashiria TypeError("foo")
             except:
-                try:
-                    raise KeyError("caught")
-                finally:
-                    raise
-        self.assertRaises(KeyError, reraise)
+                jaribu:
+                    ashiria KeyError("caught")
+                mwishowe:
+                    ashiria
+        self.assertRaises(KeyError, reashiria)
 
-    eleza test_nested_reraise(self):
-        eleza nested_reraise():
-            raise
-        eleza reraise():
-            try:
-                raise TypeError("foo")
+    eleza test_nested_reashiria(self):
+        eleza nested_reashiria():
+            ashiria
+        eleza reashiria():
+            jaribu:
+                ashiria TypeError("foo")
             except:
-                nested_reraise()
-        self.assertRaises(TypeError, reraise)
+                nested_reashiria()
+        self.assertRaises(TypeError, reashiria)
 
-    eleza test_raise_kutoka_None(self):
-        try:
-            try:
-                raise TypeError("foo")
+    eleza test_ashiria_kutoka_Tupu(self):
+        jaribu:
+            jaribu:
+                ashiria TypeError("foo")
             except:
-                raise ValueError() kutoka None
-        except ValueError as e:
+                ashiria ValueError() kutoka Tupu
+        tatizo ValueError kama e:
             self.assertIsInstance(e.__context__, TypeError)
-            self.assertIsNone(e.__cause__)
+            self.assertIsTupu(e.__cause__)
 
-    eleza test_with_reraise1(self):
-        eleza reraise():
-            try:
-                raise TypeError("foo")
+    eleza test_with_reashiria1(self):
+        eleza reashiria():
+            jaribu:
+                ashiria TypeError("foo")
             except:
                 with Context():
-                    pass
-                raise
-        self.assertRaises(TypeError, reraise)
+                    pita
+                ashiria
+        self.assertRaises(TypeError, reashiria)
 
-    eleza test_with_reraise2(self):
-        eleza reraise():
-            try:
-                raise TypeError("foo")
+    eleza test_with_reashiria2(self):
+        eleza reashiria():
+            jaribu:
+                ashiria TypeError("foo")
             except:
                 with Context():
-                    raise KeyError("caught")
-                raise
-        self.assertRaises(TypeError, reraise)
+                    ashiria KeyError("caught")
+                ashiria
+        self.assertRaises(TypeError, reashiria)
 
-    eleza test_yield_reraise(self):
-        eleza reraise():
-            try:
-                raise TypeError("foo")
+    eleza test_tuma_reashiria(self):
+        eleza reashiria():
+            jaribu:
+                ashiria TypeError("foo")
             except:
-                yield 1
-                raise
-        g = reraise()
+                tuma 1
+                ashiria
+        g = reashiria()
         next(g)
         self.assertRaises(TypeError, lambda: next(g))
         self.assertRaises(StopIteration, lambda: next(g))
@@ -122,28 +122,28 @@ kundi TestRaise(unittest.TestCase):
     eleza test_erroneous_exception(self):
         kundi MyException(Exception):
             eleza __init__(self):
-                raise RuntimeError()
+                ashiria RuntimeError()
 
-        try:
-            raise MyException
-        except RuntimeError:
-            pass
-        else:
-            self.fail("No exception raised")
+        jaribu:
+            ashiria MyException
+        tatizo RuntimeError:
+            pita
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_new_returns_invalid_instance(self):
+    eleza test_new_rudishas_invalid_instance(self):
         # See issue #11627.
         kundi MyException(Exception):
             eleza __new__(cls, *args):
                 rudisha object()
 
         with self.assertRaises(TypeError):
-            raise MyException
+            ashiria MyException
 
     eleza test_assert_with_tuple_arg(self):
-        try:
-            assert False, (3,)
-        except AssertionError as e:
+        jaribu:
+            assert Uongo, (3,)
+        tatizo AssertionError kama e:
             self.assertEqual(str(e), "(3,)")
 
 
@@ -151,92 +151,92 @@ kundi TestRaise(unittest.TestCase):
 kundi TestCause(unittest.TestCase):
 
     eleza testCauseSyntax(self):
-        try:
-            try:
-                try:
-                    raise TypeError
-                except Exception:
-                    raise ValueError kutoka None
-            except ValueError as exc:
-                self.assertIsNone(exc.__cause__)
-                self.assertTrue(exc.__suppress_context__)
-                exc.__suppress_context__ = False
-                raise exc
-        except ValueError as exc:
+        jaribu:
+            jaribu:
+                jaribu:
+                    ashiria TypeError
+                tatizo Exception:
+                    ashiria ValueError kutoka Tupu
+            tatizo ValueError kama exc:
+                self.assertIsTupu(exc.__cause__)
+                self.assertKweli(exc.__suppress_context__)
+                exc.__suppress_context__ = Uongo
+                ashiria exc
+        tatizo ValueError kama exc:
             e = exc
 
-        self.assertIsNone(e.__cause__)
-        self.assertFalse(e.__suppress_context__)
+        self.assertIsTupu(e.__cause__)
+        self.assertUongo(e.__suppress_context__)
         self.assertIsInstance(e.__context__, TypeError)
 
     eleza test_invalid_cause(self):
-        try:
-            raise IndexError kutoka 5
-        except TypeError as e:
+        jaribu:
+            ashiria IndexError kutoka 5
+        tatizo TypeError kama e:
             self.assertIn("exception cause", str(e))
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_class_cause(self):
-        try:
-            raise IndexError kutoka KeyError
-        except IndexError as e:
+        jaribu:
+            ashiria IndexError kutoka KeyError
+        tatizo IndexError kama e:
             self.assertIsInstance(e.__cause__, KeyError)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_instance_cause(self):
         cause = KeyError()
-        try:
-            raise IndexError kutoka cause
-        except IndexError as e:
+        jaribu:
+            ashiria IndexError kutoka cause
+        tatizo IndexError kama e:
             self.assertIs(e.__cause__, cause)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_erroneous_cause(self):
         kundi MyException(Exception):
             eleza __init__(self):
-                raise RuntimeError()
+                ashiria RuntimeError()
 
-        try:
-            raise IndexError kutoka MyException
-        except RuntimeError:
-            pass
-        else:
-            self.fail("No exception raised")
+        jaribu:
+            ashiria IndexError kutoka MyException
+        tatizo RuntimeError:
+            pita
+        isipokua:
+            self.fail("No exception ashiriad")
 
 
 kundi TestTraceback(unittest.TestCase):
 
     eleza test_sets_traceback(self):
-        try:
-            raise IndexError()
-        except IndexError as e:
+        jaribu:
+            ashiria IndexError()
+        tatizo IndexError kama e:
             self.assertIsInstance(e.__traceback__, types.TracebackType)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_accepts_traceback(self):
         tb = get_tb()
-        try:
-            raise IndexError().with_traceback(tb)
-        except IndexError as e:
+        jaribu:
+            ashiria IndexError().with_traceback(tb)
+        tatizo IndexError kama e:
             self.assertNotEqual(e.__traceback__, tb)
             self.assertEqual(e.__traceback__.tb_next, tb)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
 
 kundi TestTracebackType(unittest.TestCase):
 
-    eleza raiser(self):
-        raise ValueError
+    eleza ashiriar(self):
+        ashiria ValueError
 
     eleza test_attrs(self):
-        try:
-            self.raiser()
-        except Exception as exc:
+        jaribu:
+            self.ashiriar()
+        tatizo Exception kama exc:
             tb = exc.__traceback__
 
         self.assertIsInstance(tb.tb_next, types.TracebackType)
@@ -244,11 +244,11 @@ kundi TestTracebackType(unittest.TestCase):
         self.assertIsInstance(tb.tb_lasti, int)
         self.assertIsInstance(tb.tb_lineno, int)
 
-        self.assertIs(tb.tb_next.tb_next, None)
+        self.assertIs(tb.tb_next.tb_next, Tupu)
 
         # Invalid assignments
         with self.assertRaises(TypeError):
-            del tb.tb_next
+            toa tb.tb_next
 
         with self.assertRaises(TypeError):
             tb.tb_next = "asdf"
@@ -261,8 +261,8 @@ kundi TestTracebackType(unittest.TestCase):
             tb.tb_next.tb_next = tb
 
         # Valid assignments
-        tb.tb_next = None
-        self.assertIs(tb.tb_next, None)
+        tb.tb_next = Tupu
+        self.assertIs(tb.tb_next, Tupu)
 
         new_tb = get_tb()
         tb.tb_next = new_tb
@@ -278,8 +278,8 @@ kundi TestTracebackType(unittest.TestCase):
         self.assertEqual(tb.tb_lasti, 1)
         self.assertEqual(tb.tb_lineno, 2)
 
-        tb = types.TracebackType(None, frame, 1, 2)
-        self.assertEqual(tb.tb_next, None)
+        tb = types.TracebackType(Tupu, frame, 1, 2)
+        self.assertEqual(tb.tb_next, Tupu)
 
         with self.assertRaises(TypeError):
             types.TracebackType("no", frame, 1, 2)
@@ -295,171 +295,171 @@ kundi TestTracebackType(unittest.TestCase):
 
 
 kundi TestContext(unittest.TestCase):
-    eleza test_instance_context_instance_raise(self):
+    eleza test_instance_context_instance_ashiria(self):
         context = IndexError()
-        try:
-            try:
-                raise context
+        jaribu:
+            jaribu:
+                ashiria context
             except:
-                raise OSError()
-        except OSError as e:
+                ashiria OSError()
+        tatizo OSError kama e:
             self.assertEqual(e.__context__, context)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_class_context_instance_raise(self):
+    eleza test_class_context_instance_ashiria(self):
         context = IndexError
-        try:
-            try:
-                raise context
+        jaribu:
+            jaribu:
+                ashiria context
             except:
-                raise OSError()
-        except OSError as e:
+                ashiria OSError()
+        tatizo OSError kama e:
             self.assertNotEqual(e.__context__, context)
             self.assertIsInstance(e.__context__, context)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_class_context_class_raise(self):
+    eleza test_class_context_class_ashiria(self):
         context = IndexError
-        try:
-            try:
-                raise context
+        jaribu:
+            jaribu:
+                ashiria context
             except:
-                raise OSError
-        except OSError as e:
+                ashiria OSError
+        tatizo OSError kama e:
             self.assertNotEqual(e.__context__, context)
             self.assertIsInstance(e.__context__, context)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_c_exception_context(self):
-        try:
-            try:
+        jaribu:
+            jaribu:
                 1/0
             except:
-                raise OSError
-        except OSError as e:
+                ashiria OSError
+        tatizo OSError kama e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_c_exception_raise(self):
-        try:
-            try:
+    eleza test_c_exception_ashiria(self):
+        jaribu:
+            jaribu:
                 1/0
             except:
                 xyzzy
-        except NameError as e:
+        tatizo NameError kama e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_noraise_finally(self):
-        try:
-            try:
-                pass
-            finally:
-                raise OSError
-        except OSError as e:
-            self.assertIsNone(e.__context__)
-        else:
-            self.fail("No exception raised")
+    eleza test_noashiria_finally(self):
+        jaribu:
+            jaribu:
+                pita
+            mwishowe:
+                ashiria OSError
+        tatizo OSError kama e:
+            self.assertIsTupu(e.__context__)
+        isipokua:
+            self.fail("No exception ashiriad")
 
-    eleza test_raise_finally(self):
-        try:
-            try:
+    eleza test_ashiria_finally(self):
+        jaribu:
+            jaribu:
                 1/0
-            finally:
-                raise OSError
-        except OSError as e:
+            mwishowe:
+                ashiria OSError
+        tatizo OSError kama e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_context_manager(self):
         kundi ContextManager:
             eleza __enter__(self):
-                pass
+                pita
             eleza __exit__(self, t, v, tb):
                 xyzzy
-        try:
+        jaribu:
             with ContextManager():
                 1/0
-        except NameError as e:
+        tatizo NameError kama e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_cycle_broken(self):
         # Self-cycles (when re-raising a caught exception) are broken
-        try:
-            try:
+        jaribu:
+            jaribu:
                 1/0
-            except ZeroDivisionError as e:
-                raise e
-        except ZeroDivisionError as e:
-            self.assertIsNone(e.__context__)
+            tatizo ZeroDivisionError kama e:
+                ashiria e
+        tatizo ZeroDivisionError kama e:
+            self.assertIsTupu(e.__context__)
 
-    eleza test_reraise_cycle_broken(self):
+    eleza test_reashiria_cycle_broken(self):
         # Non-trivial context cycles (through re-raising a previous exception)
         # are broken too.
-        try:
-            try:
+        jaribu:
+            jaribu:
                 xyzzy
-            except NameError as a:
-                try:
+            tatizo NameError kama a:
+                jaribu:
                     1/0
-                except ZeroDivisionError:
-                    raise a
-        except NameError as e:
-            self.assertIsNone(e.__context__.__context__)
+                tatizo ZeroDivisionError:
+                    ashiria a
+        tatizo NameError kama e:
+            self.assertIsTupu(e.__context__.__context__)
 
     eleza test_3118(self):
         # deleting the generator caused the __context__ to be cleared
         eleza gen():
-            try:
-                yield 1
-            finally:
-                pass
+            jaribu:
+                tuma 1
+            mwishowe:
+                pita
 
         eleza f():
             g = gen()
             next(g)
-            try:
-                try:
-                    raise ValueError
+            jaribu:
+                jaribu:
+                    ashiria ValueError
                 except:
-                    del g
-                    raise KeyError
-            except Exception as e:
+                    toa g
+                    ashiria KeyError
+            tatizo Exception kama e:
                 self.assertIsInstance(e.__context__, ValueError)
 
         f()
 
     eleza test_3611(self):
-        # A re-raised exception in a __del__ caused the __context__
+        # A re-ashiriad exception kwenye a __del__ caused the __context__
         # to be cleared
         kundi C:
             eleza __del__(self):
-                try:
+                jaribu:
                     1/0
                 except:
-                    raise
+                    ashiria
 
         eleza f():
             x = C()
-            try:
-                try:
+            jaribu:
+                jaribu:
                     x.x
-                except AttributeError:
-                    del x
-                    raise TypeError
-            except Exception as e:
-                self.assertNotEqual(e.__context__, None)
+                tatizo AttributeError:
+                    toa x
+                    ashiria TypeError
+            tatizo Exception kama e:
+                self.assertNotEqual(e.__context__, Tupu)
                 self.assertIsInstance(e.__context__, AttributeError)
 
-        with support.catch_unraisable_exception() as cm:
+        with support.catch_unraisable_exception() kama cm:
             f()
 
             self.assertEqual(ZeroDivisionError, cm.unraisable.exc_type)
@@ -467,20 +467,20 @@ kundi TestContext(unittest.TestCase):
 
 kundi TestRemovedFunctionality(unittest.TestCase):
     eleza test_tuples(self):
-        try:
-            raise (IndexError, KeyError) # This should be a tuple!
-        except TypeError:
-            pass
-        else:
-            self.fail("No exception raised")
+        jaribu:
+            ashiria (IndexError, KeyError) # This should be a tuple!
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza test_strings(self):
-        try:
-            raise "foo"
-        except TypeError:
-            pass
-        else:
-            self.fail("No exception raised")
+        jaribu:
+            ashiria "foo"
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("No exception ashiriad")
 
 
 ikiwa __name__ == "__main__":

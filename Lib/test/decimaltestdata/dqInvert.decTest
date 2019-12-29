@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -145,7 +145,7 @@ dqinv156 invert 1011111111111111110100000000000000 ->   100000000000000001011111
 dqinv157 invert 1101111111111111110111111111111111 ->    10000000000000001000000000000000
 dqinv158 invert 1110111111111111110011111111111111 ->     1000000000000001100000000000000
 
--- non-0/1 should not be accepted, nor should signs
+-- non-0/1 should sio be accepted, nor should signs
 dqinv220 invert 111111112   ->  NaN Invalid_operation
 dqinv221 invert 333333333   ->  NaN Invalid_operation
 dqinv222 invert 555555555   ->  NaN Invalid_operation

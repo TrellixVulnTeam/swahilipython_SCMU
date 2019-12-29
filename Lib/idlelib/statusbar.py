@@ -8,11 +8,11 @@ kundi MultiStatusBar(Frame):
         self.labels = {}
 
     eleza set_label(self, name, text='', side='left', width=0):
-        ikiwa name not in self.labels:
+        ikiwa name haiko kwenye self.labels:
             label = Label(self, borderwidth=0, anchor='w')
             label.pack(side=side, pady=0, padx=4)
             self.labels[name] = label
-        else:
+        isipokua:
             label = self.labels[name]
         ikiwa width != 0:
             label.config(width=width)
@@ -43,7 +43,7 @@ eleza _multistatus_bar(parent):  # htest #
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_statusbar', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_statusbar', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_multistatus_bar)

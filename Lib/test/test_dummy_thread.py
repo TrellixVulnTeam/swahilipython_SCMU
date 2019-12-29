@@ -1,4 +1,4 @@
-agiza _dummy_thread as _thread
+agiza _dummy_thread kama _thread
 agiza time
 agiza queue
 agiza random
@@ -18,54 +18,54 @@ kundi LockTests(unittest.TestCase):
 
     eleza test_initlock(self):
         #Make sure locks start locked
-        self.assertFalse(self.lock.locked(),
-                        "Lock object is not initialized unlocked.")
+        self.assertUongo(self.lock.locked(),
+                        "Lock object ni sio initialized unlocked.")
 
     eleza test_release(self):
         # Test self.lock.release()
         self.lock.acquire()
         self.lock.release()
-        self.assertFalse(self.lock.locked(),
-                        "Lock object did not release properly.")
+        self.assertUongo(self.lock.locked(),
+                        "Lock object did sio release properly.")
 
     eleza test_LockType_context_manager(self):
         with _thread.LockType():
-            pass
-        self.assertFalse(self.lock.locked(),
-                         "Acquired Lock was not released")
+            pita
+        self.assertUongo(self.lock.locked(),
+                         "Acquired Lock was sio released")
 
     eleza test_improper_release(self):
-        #Make sure release of an unlocked thread raises RuntimeError
+        #Make sure release of an unlocked thread ashirias RuntimeError
         self.assertRaises(RuntimeError, self.lock.release)
 
     eleza test_cond_acquire_success(self):
         #Make sure the conditional acquiring of the lock works.
-        self.assertTrue(self.lock.acquire(0),
+        self.assertKweli(self.lock.acquire(0),
                         "Conditional acquiring of the lock failed.")
 
     eleza test_cond_acquire_fail(self):
-        #Test acquiring locked lock returns False
+        #Test acquiring locked lock rudishas Uongo
         self.lock.acquire(0)
-        self.assertFalse(self.lock.acquire(0),
+        self.assertUongo(self.lock.acquire(0),
                         "Conditional acquiring of a locked lock incorrectly "
                          "succeeded.")
 
     eleza test_uncond_acquire_success(self):
         #Make sure unconditional acquiring of a lock works.
         self.lock.acquire()
-        self.assertTrue(self.lock.locked(),
+        self.assertKweli(self.lock.locked(),
                         "Uncondional locking failed.")
 
-    eleza test_uncond_acquire_return_val(self):
-        #Make sure that an unconditional locking returns True.
-        self.assertIs(self.lock.acquire(1), True,
-                        "Unconditional locking did not rudisha True.")
-        self.assertIs(self.lock.acquire(), True)
+    eleza test_uncond_acquire_rudisha_val(self):
+        #Make sure that an unconditional locking rudishas Kweli.
+        self.assertIs(self.lock.acquire(1), Kweli,
+                        "Unconditional locking did sio rudisha Kweli.")
+        self.assertIs(self.lock.acquire(), Kweli)
 
     eleza test_uncond_acquire_blocking(self):
         #Make sure that unconditional acquiring of a locked lock blocks.
         eleza delay_unlock(to_unlock, delay):
-            """Hold on to lock for a set amount of time before unlocking."""
+            """Hold on to lock kila a set amount of time before unlocking."""
             time.sleep(delay)
             to_unlock.release()
 
@@ -74,7 +74,7 @@ kundi LockTests(unittest.TestCase):
         _thread.start_new_thread(delay_unlock,(self.lock, DELAY))
         ikiwa support.verbose:
             andika()
-            andika("*** Waiting for thread to release the lock "\
+            andika("*** Waiting kila thread to release the lock "\
             "(approx. %s sec.) ***" % DELAY)
         self.lock.acquire()
         end_time = int(time.monotonic())
@@ -86,14 +86,14 @@ kundi LockTests(unittest.TestCase):
     @mock.patch('time.sleep')
     eleza test_acquire_timeout(self, mock_sleep):
         """Test invoking acquire() with a positive timeout when the lock is
-        already acquired. Ensure that time.sleep() is invoked with the given
-        timeout and that False is returned."""
+        already acquired. Ensure that time.sleep() ni invoked with the given
+        timeout na that Uongo ni rudishaed."""
 
         self.lock.acquire()
         retval = self.lock.acquire(waitflag=0, timeout=1)
-        self.assertTrue(mock_sleep.called)
+        self.assertKweli(mock_sleep.called)
         mock_sleep.assert_called_once_with(1)
-        self.assertEqual(retval, False)
+        self.assertEqual(retval, Uongo)
 
     eleza test_lock_representation(self):
         self.lock.acquire()
@@ -128,22 +128,22 @@ kundi MiscTests(unittest.TestCase):
 
     eleza test_ident(self):
         self.assertIsInstance(_thread.get_ident(), int,
-                              "_thread.get_ident() returned a non-integer")
+                              "_thread.get_ident() rudishaed a non-integer")
         self.assertGreater(_thread.get_ident(), 0)
 
     eleza test_LockType(self):
         self.assertIsInstance(_thread.allocate_lock(), _thread.LockType,
-                              "_thread.LockType is not an instance of what "
-                              "is returned by _thread.allocate_lock()")
+                              "_thread.LockType ni sio an instance of what "
+                              "is rudishaed by _thread.allocate_lock()")
 
     eleza test_set_sentinel(self):
         self.assertIsInstance(_thread._set_sentinel(), _thread.LockType,
-                              "_thread._set_sentinel() did not rudisha a "
+                              "_thread._set_sentinel() did sio rudisha a "
                               "LockType instance.")
 
     eleza test_interrupt_main(self):
         #Calling start_new_thread with a function that executes interrupt_main
-        # should raise KeyboardInterrupt upon completion.
+        # should ashiria KeyboardInterrupt upon completion.
         eleza call_interrupt():
             _thread.interrupt_main()
 
@@ -155,52 +155,52 @@ kundi MiscTests(unittest.TestCase):
     eleza test_interrupt_in_main(self):
         self.assertRaises(KeyboardInterrupt, _thread.interrupt_main)
 
-    eleza test_stack_size_None(self):
-        retval = _thread.stack_size(None)
+    eleza test_stack_size_Tupu(self):
+        retval = _thread.stack_size(Tupu)
         self.assertEqual(retval, 0)
 
-    eleza test_stack_size_not_None(self):
-        with self.assertRaises(_thread.error) as cm:
+    eleza test_stack_size_not_Tupu(self):
+        with self.assertRaises(_thread.error) kama cm:
             _thread.stack_size("")
         self.assertEqual(cm.exception.args[0],
-                         "setting thread stack size not supported")
+                         "setting thread stack size sio supported")
 
 
 kundi ThreadTests(unittest.TestCase):
     """Test thread creation."""
 
-    eleza test_arg_passing(self):
-        #Make sure that parameter passing works.
-        eleza arg_tester(queue, arg1=False, arg2=False):
-            """Use to test _thread.start_new_thread() passes args properly."""
+    eleza test_arg_pitaing(self):
+        #Make sure that parameter pitaing works.
+        eleza arg_tester(queue, arg1=Uongo, arg2=Uongo):
+            """Use to test _thread.start_new_thread() pitaes args properly."""
             queue.put((arg1, arg2))
 
         testing_queue = queue.Queue(1)
-        _thread.start_new_thread(arg_tester, (testing_queue, True, True))
+        _thread.start_new_thread(arg_tester, (testing_queue, Kweli, Kweli))
         result = testing_queue.get()
-        self.assertTrue(result[0] and result[1],
-                        "Argument passing for thread creation "
+        self.assertKweli(result[0] na result[1],
+                        "Argument pitaing kila thread creation "
                         "using tuple failed")
 
         _thread.start_new_thread(
                 arg_tester,
                 tuple(),
-                {'queue':testing_queue, 'arg1':True, 'arg2':True})
+                {'queue':testing_queue, 'arg1':Kweli, 'arg2':Kweli})
 
         result = testing_queue.get()
-        self.assertTrue(result[0] and result[1],
-                        "Argument passing for thread creation "
+        self.assertKweli(result[0] na result[1],
+                        "Argument pitaing kila thread creation "
                         "using kwargs failed")
 
         _thread.start_new_thread(
                 arg_tester,
-                (testing_queue, True),
-                {'arg2':True})
+                (testing_queue, Kweli),
+                {'arg2':Kweli})
 
         result = testing_queue.get()
-        self.assertTrue(result[0] and result[1],
-                        "Argument passing for thread creation using both tuple"
-                        " and kwargs failed")
+        self.assertKweli(result[0] na result[1],
+                        "Argument pitaing kila thread creation using both tuple"
+                        " na kwargs failed")
 
     eleza test_multi_thread_creation(self):
         eleza queue_mark(queue, delay):
@@ -216,10 +216,10 @@ kundi ThreadTests(unittest.TestCase):
                   "(will take approx. %s to %s sec.) ***" % (
                     DELAY, thread_count))
 
-        for count in range(thread_count):
+        kila count kwenye range(thread_count):
             ikiwa DELAY:
                 local_delay = round(random.random(), 1)
-            else:
+            isipokua:
                 local_delay = 0
             _thread.start_new_thread(queue_mark,
                                      (testing_queue, local_delay))
@@ -232,45 +232,45 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza test_args_not_tuple(self):
         """
-        Test invoking start_new_thread() with a non-tuple value for "args".
-        Expect TypeError with a meaningful error message to be raised.
+        Test invoking start_new_thread() with a non-tuple value kila "args".
+        Expect TypeError with a meaningful error message to be ashiriad.
         """
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) kama cm:
             _thread.start_new_thread(mock.Mock(), [])
         self.assertEqual(cm.exception.args[0], "2nd arg must be a tuple")
 
     eleza test_kwargs_not_dict(self):
         """
-        Test invoking start_new_thread() with a non-dict value for "kwargs".
-        Expect TypeError with a meaningful error message to be raised.
+        Test invoking start_new_thread() with a non-dict value kila "kwargs".
+        Expect TypeError with a meaningful error message to be ashiriad.
         """
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) kama cm:
             _thread.start_new_thread(mock.Mock(), tuple(), kwargs=[])
         self.assertEqual(cm.exception.args[0], "3rd arg must be a dict")
 
     eleza test_SystemExit(self):
         """
-        Test invoking start_new_thread() with a function that raises
+        Test invoking start_new_thread() with a function that ashirias
         SystemExit.
         The exception should be discarded.
         """
         func = mock.Mock(side_effect=SystemExit())
-        try:
+        jaribu:
             _thread.start_new_thread(func, tuple())
-        except SystemExit:
-            self.fail("start_new_thread raised SystemExit.")
+        tatizo SystemExit:
+            self.fail("start_new_thread ashiriad SystemExit.")
 
     @mock.patch('traceback.print_exc')
     eleza test_RaiseException(self, mock_print_exc):
         """
-        Test invoking start_new_thread() with a function that raises exception.
+        Test invoking start_new_thread() with a function that ashirias exception.
 
-        The exception should be discarded and the traceback should be printed
+        The exception should be discarded na the traceback should be printed
         via traceback.print_exc()
         """
         func = mock.Mock(side_effect=Exception)
         _thread.start_new_thread(func, tuple())
-        self.assertTrue(mock_print_exc.called)
+        self.assertKweli(mock_print_exc.called)
 
 ikiwa __name__ == '__main__':
     unittest.main()

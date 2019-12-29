@@ -4,24 +4,24 @@ agiza unittest
 
 kundi Test_iskeyword(unittest.TestCase):
     eleza test_true_is_a_keyword(self):
-        self.assertTrue(keyword.iskeyword('True'))
+        self.assertKweli(keyword.iskeyword('Kweli'))
 
     eleza test_uppercase_true_is_not_a_keyword(self):
-        self.assertFalse(keyword.iskeyword('TRUE'))
+        self.assertUongo(keyword.iskeyword('TRUE'))
 
     eleza test_none_value_is_not_a_keyword(self):
-        self.assertFalse(keyword.iskeyword(None))
+        self.assertUongo(keyword.iskeyword(Tupu))
 
-    # This is probably an accident of the current implementation, but should be
-    # preserved for backward compatibility.
+    # This ni probably an accident of the current implementation, but should be
+    # preserved kila backward compatibility.
     eleza test_changing_the_kwlist_does_not_affect_iskeyword(self):
         oldlist = keyword.kwlist
         self.addCleanup(setattr, keyword, 'kwlist', oldlist)
         keyword.kwlist = ['its', 'all', 'eggs', 'beans', 'and', 'a', 'slice']
-        self.assertFalse(keyword.iskeyword('eggs'))
+        self.assertUongo(keyword.iskeyword('eggs'))
 
     eleza test_all_keywords_fail_to_be_used_as_names(self):
-        for key in keyword.kwlist:
+        kila key kwenye keyword.kwlist:
             with self.assertRaises(SyntaxError):
                 exec(f"{key} = 42")
 

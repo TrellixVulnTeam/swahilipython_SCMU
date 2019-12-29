@@ -1,4 +1,4 @@
-"""Tests for the asdl parser in Parser/asdl.py"""
+"""Tests kila the asdl parser kwenye Parser/asdl.py"""
 
 agiza importlib.machinery
 agiza os
@@ -8,9 +8,9 @@ agiza sysconfig
 agiza unittest
 
 
-# This test is only relevant for kutoka-source builds of Python.
-ikiwa not sysconfig.is_python_build():
-    raise unittest.SkipTest('test irrelevant for an installed Python')
+# This test ni only relevant kila kutoka-source builds of Python.
+ikiwa sio sysconfig.is_python_build():
+    ashiria unittest.SkipTest('test irrelevant kila an installed Python')
 
 src_base = dirname(dirname(dirname(__file__)))
 parser_dir = os.path.join(src_base, 'Parser')
@@ -19,23 +19,23 @@ parser_dir = os.path.join(src_base, 'Parser')
 kundi TestAsdlParser(unittest.TestCase):
     @classmethod
     eleza setUpClass(cls):
-        # Loads the asdl module dynamically, since it's not in a real agizaable
+        # Loads the asdl module dynamically, since it's haiko kwenye a real agizaable
         # package.
-        # Parses Python.asdl into an ast.Module and run the check on it.
-        # There's no need to do this for each test method, hence setUpClass.
+        # Parses Python.asdl into an ast.Module na run the check on it.
+        # There's no need to do this kila each test method, hence setUpClass.
         sys.path.insert(0, parser_dir)
         loader = importlib.machinery.SourceFileLoader(
                 'asdl', os.path.join(parser_dir, 'asdl.py'))
         cls.asdl = loader.load_module()
         cls.mod = cls.asdl.parse(os.path.join(parser_dir, 'Python.asdl'))
-        cls.assertTrue(cls.asdl.check(cls.mod), 'Module validation failed')
+        cls.assertKweli(cls.asdl.check(cls.mod), 'Module validation failed')
 
     @classmethod
     eleza tearDownClass(cls):
-        del sys.path[0]
+        toa sys.path[0]
 
     eleza setUp(self):
-        # alias stuff kutoka the class, for convenience
+        # alias stuff kutoka the class, kila convenience
         self.asdl = TestAsdlParser.asdl
         self.mod = TestAsdlParser.mod
         self.types = self.mod.types
@@ -58,15 +58,15 @@ kundi TestAsdlParser(unittest.TestCase):
         alias = self.types['alias']
         self.assertEqual(
             str(alias),
-            'Product([Field(identifier, name), Field(identifier, asname, opt=True)])')
+            'Product([Field(identifier, name), Field(identifier, asname, opt=Kweli)])')
 
     eleza test_attributes(self):
         stmt = self.types['stmt']
         self.assertEqual(len(stmt.attributes), 4)
         self.assertEqual(str(stmt.attributes[0]), 'Field(int, lineno)')
         self.assertEqual(str(stmt.attributes[1]), 'Field(int, col_offset)')
-        self.assertEqual(str(stmt.attributes[2]), 'Field(int, end_lineno, opt=True)')
-        self.assertEqual(str(stmt.attributes[3]), 'Field(int, end_col_offset, opt=True)')
+        self.assertEqual(str(stmt.attributes[2]), 'Field(int, end_lineno, opt=Kweli)')
+        self.assertEqual(str(stmt.attributes[3]), 'Field(int, end_col_offset, opt=Kweli)')
 
     eleza test_constructor_fields(self):
         ehandler = self.types['excepthandler']
@@ -80,18 +80,18 @@ kundi TestAsdlParser(unittest.TestCase):
         f0 = cons.fields[0]
         self.assertEqual(f0.type, 'expr')
         self.assertEqual(f0.name, 'type')
-        self.assertTrue(f0.opt)
+        self.assertKweli(f0.opt)
 
         f1 = cons.fields[1]
         self.assertEqual(f1.type, 'identifier')
         self.assertEqual(f1.name, 'name')
-        self.assertTrue(f1.opt)
+        self.assertKweli(f1.opt)
 
         f2 = cons.fields[2]
         self.assertEqual(f2.type, 'stmt')
         self.assertEqual(f2.name, 'body')
-        self.assertFalse(f2.opt)
-        self.assertTrue(f2.seq)
+        self.assertUongo(f2.opt)
+        self.assertKweli(f2.seq)
 
     eleza test_visitor(self):
         kundi CustomVisitor(self.asdl.VisitorBase):
@@ -100,18 +100,18 @@ kundi TestAsdlParser(unittest.TestCase):
                 self.names_with_seq = []
 
             eleza visitModule(self, mod):
-                for dfn in mod.dfns:
+                kila dfn kwenye mod.dfns:
                     self.visit(dfn)
 
             eleza visitType(self, type):
                 self.visit(type.value)
 
             eleza visitSum(self, sum):
-                for t in sum.types:
+                kila t kwenye sum.types:
                     self.visit(t)
 
             eleza visitConstructor(self, cons):
-                for f in cons.fields:
+                kila f kwenye cons.fields:
                     ikiwa f.seq:
                         self.names_with_seq.append(cons.name)
 

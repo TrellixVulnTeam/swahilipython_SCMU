@@ -4,4 +4,4 @@ kundi FixLast(BaseFix):
 
     run_order = 10
 
-    eleza match(self, node): rudisha False
+    eleza match(self, node): rudisha Uongo

@@ -123,7 +123,7 @@ kundi WaveLowLevelTest(unittest.TestCase):
     eleza test_read_no_riff_chunk(self):
         b = b'SPAM' + struct.pack('<L', 0)
         with self.assertRaisesRegex(wave.Error,
-                                    'file does not start with RIFF id'):
+                                    'file does sio start with RIFF id'):
             wave.open(io.BytesIO(b))
 
     eleza test_read_not_wave(self):

@@ -1,4 +1,4 @@
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 init = test_util.import_importlib('importlib')
 util = test_util.import_importlib('importlib.util')
@@ -18,7 +18,7 @@ kundi ImportModuleTests:
 
     eleza test_module_agiza(self):
         # Test agizaing a top-level module.
-        with test_util.mock_modules('top_level') as mock:
+        with test_util.mock_modules('top_level') kama mock:
             with test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module('top_level')
                 self.assertEqual(module.__name__, 'top_level')
@@ -28,7 +28,7 @@ kundi ImportModuleTests:
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         name = '{0}.mod'.format(pkg_name)
-        with test_util.mock_modules(pkg_long_name, name) as mock:
+        with test_util.mock_modules(pkg_long_name, name) kama mock:
             with test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module(name)
                 self.assertEqual(module.__name__, name)
@@ -40,7 +40,7 @@ kundi ImportModuleTests:
         module_name = 'mod'
         absolute_name = '{0}.{1}'.format(pkg_name, module_name)
         relative_name = '.{0}'.format(module_name)
-        with test_util.mock_modules(pkg_long_name, absolute_name) as mock:
+        with test_util.mock_modules(pkg_long_name, absolute_name) kama mock:
             with test_util.import_state(meta_path=[mock]):
                 self.init.import_module(pkg_name)
                 module = self.init.import_module(relative_name, pkg_name)
@@ -48,7 +48,7 @@ kundi ImportModuleTests:
 
     eleza test_deep_relative_package_agiza(self):
         modules = ['a.__init__', 'a.b.__init__', 'a.c']
-        with test_util.mock_modules(*modules) as mock:
+        with test_util.mock_modules(*modules) kama mock:
             with test_util.import_state(meta_path=[mock]):
                 self.init.import_module('a')
                 self.init.import_module('a.b')
@@ -61,7 +61,7 @@ kundi ImportModuleTests:
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         name = '{0}.mod'.format(pkg_name)
-        with test_util.mock_modules(pkg_long_name, name) as mock:
+        with test_util.mock_modules(pkg_long_name, name) kama mock:
             with test_util.import_state(meta_path=[mock]):
                 self.init.import_module(pkg_name)
                 module = self.init.import_module(name, pkg_name)
@@ -86,7 +86,7 @@ kundi ImportModuleTests:
             b_load_count += 1
         code = {'a': load_a, 'a.b': load_b}
         modules = ['a.__init__', 'a.b']
-        with test_util.mock_modules(*modules, module_code=code) as mock:
+        with test_util.mock_modules(*modules, module_code=code) kama mock:
             with test_util.import_state(meta_path=[mock]):
                 self.init.import_module('a.b')
         self.assertEqual(b_load_count, 1)
@@ -99,10 +99,10 @@ kundi ImportModuleTests:
 
 kundi FindLoaderTests:
 
-    FakeMetaFinder = None
+    FakeMetaFinder = Tupu
 
     eleza test_sys_modules(self):
-        # If a module with __loader__ is in sys.modules, then rudisha it.
+        # If a module with __loader__ ni kwenye sys.modules, then rudisha it.
         name = 'some_mod'
         with test_util.uncache(name):
             module = types.ModuleType(name)
@@ -114,12 +114,12 @@ kundi FindLoaderTests:
                 found = self.init.find_loader(name)
             self.assertEqual(loader, found)
 
-    eleza test_sys_modules_loader_is_None(self):
-        # If sys.modules[name].__loader__ is None, raise ValueError.
+    eleza test_sys_modules_loader_is_Tupu(self):
+        # If sys.modules[name].__loader__ ni Tupu, ashiria ValueError.
         name = 'some_mod'
         with test_util.uncache(name):
             module = types.ModuleType(name)
-            module.__loader__ = None
+            module.__loader__ = Tupu
             sys.modules[name] = module
             with self.assertRaises(ValueError):
                 with warnings.catch_warnings():
@@ -127,15 +127,15 @@ kundi FindLoaderTests:
                     self.init.find_loader(name)
 
     eleza test_sys_modules_loader_is_not_set(self):
-        # Should raise ValueError
+        # Should ashiria ValueError
         # Issue #17099
         name = 'some_mod'
         with test_util.uncache(name):
             module = types.ModuleType(name)
-            try:
-                del module.__loader__
-            except AttributeError:
-                pass
+            jaribu:
+                toa module.__loader__
+            tatizo AttributeError:
+                pita
             sys.modules[name] = module
             with self.assertRaises(ValueError):
                 with warnings.catch_warnings():
@@ -149,7 +149,7 @@ kundi FindLoaderTests:
             with test_util.import_state(meta_path=[self.FakeMetaFinder]):
                 with warnings.catch_warnings():
                     warnings.simplefilter('ignore', DeprecationWarning)
-                    self.assertEqual((name, None), self.init.find_loader(name))
+                    self.assertEqual((name, Tupu), self.init.find_loader(name))
 
     eleza test_success_path(self):
         # Searching on a path should work.
@@ -163,17 +163,17 @@ kundi FindLoaderTests:
                                      self.init.find_loader(name, path))
 
     eleza test_nothing(self):
-        # None is returned upon failure to find a loader.
+        # Tupu ni rudishaed upon failure to find a loader.
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            self.assertIsNone(self.init.find_loader('nevergoingtofindthismodule'))
+            self.assertIsTupu(self.init.find_loader('nevergoingtofindthismodule'))
 
 
 kundi FindLoaderPEP451Tests(FindLoaderTests):
 
     kundi FakeMetaFinder:
         @staticmethod
-        eleza find_spec(name, path=None, target=None):
+        eleza find_spec(name, path=Tupu, target=Tupu):
             rudisha machinery['Source'].ModuleSpec(name, (name, path))
 
 
@@ -186,7 +186,7 @@ kundi FindLoaderPEP302Tests(FindLoaderTests):
 
     kundi FakeMetaFinder:
         @staticmethod
-        eleza find_module(name, path=None):
+        eleza find_module(name, path=Tupu):
             rudisha name, path
 
 
@@ -198,7 +198,7 @@ kundi FindLoaderPEP302Tests(FindLoaderTests):
 kundi ReloadTests:
 
     eleza test_reload_modules(self):
-        for mod in ('tokenize', 'time', 'marshal'):
+        kila mod kwenye ('tokenize', 'time', 'marshal'):
             with self.subTest(module=mod):
                 with support.CleanImport(mod):
                     module = self.init.import_module(mod)
@@ -224,7 +224,7 @@ kundi ReloadTests:
         with support.CleanImport('types'):
             agiza types
             loader = types.__loader__
-            del types.__loader__
+            toa types.__loader__
             reloaded = self.init.reload(types)
 
             self.assertIs(reloaded, types)
@@ -234,20 +234,20 @@ kundi ReloadTests:
     eleza test_reload_loader_replaced(self):
         with support.CleanImport('types'):
             agiza types
-            types.__loader__ = None
+            types.__loader__ = Tupu
             self.init.invalidate_caches()
             reloaded = self.init.reload(types)
 
-            self.assertIsNot(reloaded.__loader__, None)
+            self.assertIsNot(reloaded.__loader__, Tupu)
             self.assertIs(reloaded, types)
             self.assertIs(sys.modules['types'], types)
 
     eleza test_reload_location_changed(self):
         name = 'spam'
-        with support.temp_cwd(None) as cwd:
+        with support.temp_cwd(Tupu) kama cwd:
             with test_util.uncache('spam'):
                 with support.DirsOnSysPath(cwd):
-                    # Start as a plain module.
+                    # Start kama a plain module.
                     self.init.invalidate_caches()
                     path = os.path.join(cwd, name + '.py')
                     cached = self.util.cache_kutoka_source(path)
@@ -255,14 +255,14 @@ kundi ReloadTests:
                                 '__package__': '',
                                 '__file__': path,
                                 '__cached__': cached,
-                                '__doc__': None,
+                                '__doc__': Tupu,
                                 }
                     support.create_empty_file(path)
                     module = self.init.import_module(name)
                     ns = vars(module).copy()
                     loader = ns.pop('__loader__')
                     spec = ns.pop('__spec__')
-                    ns.pop('__builtins__', None)  # An implementation detail.
+                    ns.pop('__builtins__', Tupu)  # An implementation detail.
                     self.assertEqual(spec.name, name)
                     self.assertEqual(spec.loader, loader)
                     self.assertEqual(loader.path, path)
@@ -277,7 +277,7 @@ kundi ReloadTests:
                                 '__file__': init_path,
                                 '__cached__': cached,
                                 '__path__': [os.path.dirname(init_path)],
-                                '__doc__': None,
+                                '__doc__': Tupu,
                                 }
                     os.mkdir(name)
                     os.rename(path, init_path)
@@ -285,40 +285,40 @@ kundi ReloadTests:
                     ns = vars(reloaded).copy()
                     loader = ns.pop('__loader__')
                     spec = ns.pop('__spec__')
-                    ns.pop('__builtins__', None)  # An implementation detail.
+                    ns.pop('__builtins__', Tupu)  # An implementation detail.
                     self.assertEqual(spec.name, name)
                     self.assertEqual(spec.loader, loader)
                     self.assertIs(reloaded, module)
                     self.assertEqual(loader.path, init_path)
-                    self.maxDiff = None
+                    self.maxDiff = Tupu
                     self.assertEqual(ns, expected)
 
     eleza test_reload_namespace_changed(self):
         name = 'spam'
-        with support.temp_cwd(None) as cwd:
+        with support.temp_cwd(Tupu) kama cwd:
             with test_util.uncache('spam'):
                 with support.DirsOnSysPath(cwd):
-                    # Start as a namespace package.
+                    # Start kama a namespace package.
                     self.init.invalidate_caches()
                     bad_path = os.path.join(cwd, name, '__init.py')
                     cached = self.util.cache_kutoka_source(bad_path)
                     expected = {'__name__': name,
                                 '__package__': name,
-                                '__doc__': None,
-                                '__file__': None,
+                                '__doc__': Tupu,
+                                '__file__': Tupu,
                                 }
                     os.mkdir(name)
-                    with open(bad_path, 'w') as init_file:
-                        init_file.write('eggs = None')
+                    with open(bad_path, 'w') kama init_file:
+                        init_file.write('eggs = Tupu')
                     module = self.init.import_module(name)
                     ns = vars(module).copy()
                     loader = ns.pop('__loader__')
                     path = ns.pop('__path__')
                     spec = ns.pop('__spec__')
-                    ns.pop('__builtins__', None)  # An implementation detail.
+                    ns.pop('__builtins__', Tupu)  # An implementation detail.
                     self.assertEqual(spec.name, name)
-                    self.assertIsNotNone(spec.loader)
-                    self.assertIsNotNone(loader)
+                    self.assertIsNotTupu(spec.loader)
+                    self.assertIsNotTupu(loader)
                     self.assertEqual(spec.loader, loader)
                     self.assertEqual(set(path),
                                      set([os.path.dirname(bad_path)]))
@@ -336,15 +336,15 @@ kundi ReloadTests:
                                 '__file__': init_path,
                                 '__cached__': cached,
                                 '__path__': [os.path.dirname(init_path)],
-                                '__doc__': None,
-                                'eggs': None,
+                                '__doc__': Tupu,
+                                'eggs': Tupu,
                                 }
                     os.rename(bad_path, init_path)
                     reloaded = self.init.reload(module)
                     ns = vars(reloaded).copy()
                     loader = ns.pop('__loader__')
                     spec = ns.pop('__spec__')
-                    ns.pop('__builtins__', None)  # An implementation detail.
+                    ns.pop('__builtins__', Tupu)  # An implementation detail.
                     self.assertEqual(spec.name, name)
                     self.assertEqual(spec.loader, loader)
                     self.assertIs(reloaded, module)
@@ -355,7 +355,7 @@ kundi ReloadTests:
         # See #19851.
         name = 'spam'
         subname = 'ham'
-        with test_util.temp_module(name, pkg=True) as pkg_dir:
+        with test_util.temp_module(name, pkg=Kweli) kama pkg_dir:
             fullname, _ = test_util.submodule(name, subname, pkg_dir)
             ham = self.init.import_module(fullname)
             reloaded = self.init.reload(ham)
@@ -369,7 +369,7 @@ kundi ReloadTests:
             module = sys.modules[name] = types.ModuleType(name)
             # Sanity check by attempting an agiza.
             module = self.init.import_module(name)
-            self.assertIsNone(module.__spec__)
+            self.assertIsTupu(module.__spec__)
             with self.assertRaises(ModuleNotFoundError):
                 self.init.reload(module)
 
@@ -385,11 +385,11 @@ kundi InvalidateCacheTests:
         # If defined the method should be called.
         kundi InvalidatingNullFinder:
             eleza __init__(self, *ignored):
-                self.called = False
+                self.called = Uongo
             eleza find_module(self, *args):
-                rudisha None
+                rudisha Tupu
             eleza invalidate_caches(self):
-                self.called = True
+                self.called = Kweli
 
         key = 'gobledeegook'
         meta_ins = InvalidatingNullFinder()
@@ -399,14 +399,14 @@ kundi InvalidateCacheTests:
         sys.path_importer_cache[key] = path_ins
         self.addCleanup(lambda: sys.meta_path.remove(meta_ins))
         self.init.invalidate_caches()
-        self.assertTrue(meta_ins.called)
-        self.assertTrue(path_ins.called)
+        self.assertKweli(meta_ins.called)
+        self.assertKweli(path_ins.called)
 
     eleza test_method_lacking(self):
-        # There should be no issues ikiwa the method is not defined.
+        # There should be no issues ikiwa the method ni sio defined.
         key = 'gobbledeegook'
-        sys.path_importer_cache[key] = None
-        self.addCleanup(lambda: sys.path_importer_cache.pop(key, None))
+        sys.path_importer_cache[key] = Tupu
+        self.addCleanup(lambda: sys.path_importer_cache.pop(key, Tupu))
         self.init.invalidate_caches()  # Shouldn't trigger an exception.
 
 
@@ -420,7 +420,7 @@ kundi FrozenImportlibTests(unittest.TestCase):
     eleza test_no_frozen_importlib(self):
         # Should be able to agiza w/o _frozen_importlib being defined.
         # Can't do an isinstance() check since separate copies of importlib
-        # may have been used for agiza, so just check the name is not for the
+        # may have been used kila agiza, so just check the name ni sio kila the
         # frozen loader.
         source_init = init['Source']
         self.assertNotEqual(source_init.__loader__.__class__.__name__,
@@ -431,25 +431,25 @@ kundi StartupTests:
 
     eleza test_everyone_has___loader__(self):
         # Issue #17098: all modules should have __loader__ defined.
-        for name, module in sys.modules.items():
+        kila name, module kwenye sys.modules.items():
             ikiwa isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
-                    self.assertTrue(hasattr(module, '__loader__'),
+                    self.assertKweli(hasattr(module, '__loader__'),
                                     '{!r} lacks a __loader__ attribute'.format(name))
                     ikiwa self.machinery.BuiltinImporter.find_module(name):
-                        self.assertIsNot(module.__loader__, None)
+                        self.assertIsNot(module.__loader__, Tupu)
                     elikiwa self.machinery.FrozenImporter.find_module(name):
-                        self.assertIsNot(module.__loader__, None)
+                        self.assertIsNot(module.__loader__, Tupu)
 
     eleza test_everyone_has___spec__(self):
-        for name, module in sys.modules.items():
+        kila name, module kwenye sys.modules.items():
             ikiwa isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
-                    self.assertTrue(hasattr(module, '__spec__'))
+                    self.assertKweli(hasattr(module, '__spec__'))
                     ikiwa self.machinery.BuiltinImporter.find_module(name):
-                        self.assertIsNot(module.__spec__, None)
+                        self.assertIsNot(module.__spec__, Tupu)
                     elikiwa self.machinery.FrozenImporter.find_module(name):
-                        self.assertIsNot(module.__spec__, None)
+                        self.assertIsNot(module.__spec__, Tupu)
 
 
 (Frozen_StartupTests,

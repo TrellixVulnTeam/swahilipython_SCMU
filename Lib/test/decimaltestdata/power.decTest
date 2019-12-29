@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -53,12 +53,12 @@ powx022 power    '2'  '12'        -> '4096'
 powx023 power    '2'  '15'        -> '32768'
 powx024 power    '2'  '16'        -> '65536'
 powx025 power    '2'  '31'        -> '2147483648'
--- NB 0 not stripped in next
+-- NB 0 sio stripped in next
 powx026 power    '2'  '32'        -> '4294967296'
 
 precision: 9
 powx027 power    '2'  '31'        -> '2.14748365E+9' Inexact Rounded
--- NB 0 not stripped in next
+-- NB 0 sio stripped in next
 powx028 power    '2'  '32'        -> '4.29496730E+9' Inexact Rounded
 precision: 10
 powx029 power    '2'  '31'        -> '2147483648'
@@ -106,7 +106,7 @@ powx071 power  '0.3'  '1'           -> '0.3'
 powx072 power  '0.3'  '1.00'        -> '0.3'
 powx073 power  '0.3'  '2.00'        -> '0.09'
 powx074 power  '0.3'  '2.000000000' -> '0.09'
-powx075 power  '6.0'  '1'           -> '6.0'     -- NB zeros not stripped
+powx075 power  '6.0'  '1'           -> '6.0'     -- NB zeros sio stripped
 powx076 power  '6.0'  '2'           -> '36.00'   -- ..
 powx077 power   '-3'  '2'           -> '9'       -- from NetRexx book
 powx078 power    '4'  '3'           -> '64'      -- .. (sort of)
@@ -678,7 +678,7 @@ powx901 power  # 1 -> NaN Invalid_operation
 ----------------------------------------------------------------------
 -- Below here are tests with a precision or context outside of the  --
 -- decNumber 'mathematical functions' restricted range.  These      --
--- remain supported in decNumber to minimize breakage, but may be   --
+-- remain supported in decNumber to minimize komaage, but may be   --
 -- outside the range of other implementations.                      --
 ----------------------------------------------------------------------
 maxexponent: 999999999
@@ -703,7 +703,7 @@ powx1182 power   '7'   '999999999'   -> 1.47624619E+845098039 Inexact Rounded
 powx1189 power   '7'   '-999999999'  -> 6.77393787E-845098040 Inexact Rounded
 powx1190 power   '7'   '-999999998'  -> 4.74175651E-845098039 Inexact Rounded
 
--- A (rare) case where the last digit is not within 0.5 ULP with classic precision
+-- A (rare) case where the last digit ni sio within 0.5 ULP with classic precision
 precision: 9
 powx1215 power "-21971575.0E+31454441" "-7" -> "-4.04549502E-220181139" Inexact Rounded
 precision: 20
@@ -888,7 +888,7 @@ powx2054 power 1 -1234567896  -> 1
 powx2055 power 1 1000000000   -> 1
 powx2056 power 1 4300000000   -> 1
 powx2057 power 1 -1000000000  -> 1
--- negatives ... but not out of range for decNumber
+-- negatives ... but sio out of range for decNumber
 powx2061 power -1 100000   -> 1
 powx2062 power -1 999999   -> -1
 powx2063 power -1 1278000  -> 1

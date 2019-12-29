@@ -13,7 +13,7 @@ from io import BytesIO
 
 ### Codec APIs
 
-def uu_encode(input, errors='strict', filename='<data>', mode=0o666):
+eleza uu_encode(input, errors='strict', filename='<data>', mode=0o666):
     assert errors == 'strict'
     infile = BytesIO(input)
     outfile = BytesIO()
@@ -23,14 +23,14 @@ def uu_encode(input, errors='strict', filename='<data>', mode=0o666):
     # Encode
     write(('begin %o %s\n' % (mode & 0o777, filename)).encode('ascii'))
     chunk = read(45)
-    while chunk:
+    wakati chunk:
         write(binascii.b2a_uu(chunk))
         chunk = read(45)
     write(b' \nend\n')
 
-    return (outfile.getvalue(), len(input))
+    rudisha (outfile.getvalue(), len(input))
 
-def uu_decode(input, errors='strict'):
+eleza uu_decode(input, errors='strict'):
     assert errors == 'strict'
     infile = BytesIO(input)
     outfile = BytesIO()
@@ -38,56 +38,56 @@ def uu_decode(input, errors='strict'):
     write = outfile.write
 
     # Find start of encoded data
-    while 1:
+    wakati 1:
         s = readline()
-        if not s:
+        if sio s:
             raise ValueError('Missing "begin" line in input data')
         if s[:5] == b'begin':
-            break
+            koma
 
     # Decode
-    while True:
+    wakati True:
         s = readline()
-        if not s or s == b'end\n':
-            break
-        try:
+        if sio s or s == b'end\n':
+            koma
+        jaribu:
             data = binascii.a2b_uu(s)
-        except binascii.Error as v:
+        tatizo binascii.Error as v:
             # Workaround for broken uuencoders by /Fredrik Lundh
             nbytes = (((s[0]-32) & 63) * 4 + 5) // 3
             data = binascii.a2b_uu(s[:nbytes])
             #sys.stderr.write("Warning: %s\n" % str(v))
         write(data)
-    if not s:
+    if sio s:
         raise ValueError('Truncated input data')
 
-    return (outfile.getvalue(), len(input))
+    rudisha (outfile.getvalue(), len(input))
 
-class Codec(codecs.Codec):
-    def encode(self, input, errors='strict'):
-        return uu_encode(input, errors)
+kundi Codec(codecs.Codec):
+    eleza encode(self, input, errors='strict'):
+        rudisha uu_encode(input, errors)
 
-    def decode(self, input, errors='strict'):
-        return uu_decode(input, errors)
+    eleza decode(self, input, errors='strict'):
+        rudisha uu_decode(input, errors)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
-        return uu_encode(input, self.errors)[0]
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza encode(self, input, final=False):
+        rudisha uu_encode(input, self.errors)[0]
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
-        return uu_decode(input, self.errors)[0]
+kundi IncrementalDecoder(codecs.IncrementalDecoder):
+    eleza decode(self, input, final=False):
+        rudisha uu_decode(input, self.errors)[0]
 
-class StreamWriter(Codec, codecs.StreamWriter):
+kundi StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
 
-class StreamReader(Codec, codecs.StreamReader):
+kundi StreamReader(Codec, codecs.StreamReader):
     charbuffertype = bytes
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='uu',
         encode=uu_encode,
         decode=uu_decode,

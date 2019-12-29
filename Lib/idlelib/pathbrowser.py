@@ -8,7 +8,7 @@ kutoka idlelib.tree agiza TreeItem
 
 kundi PathBrowser(ModuleBrowser):
 
-    eleza __init__(self, master, *, _htest=False, _utest=False):
+    eleza __init__(self, master, *, _htest=Uongo, _utest=Uongo):
         """
         _htest - bool, change box location when running htest
         """
@@ -33,7 +33,7 @@ kundi PathBrowserTreeItem(TreeItem):
 
     eleza GetSubList(self):
         sublist = []
-        for dir in sys.path:
+        kila dir kwenye sys.path:
             item = DirBrowserTreeItem(dir)
             sublist.append(item)
         rudisha sublist
@@ -46,36 +46,36 @@ kundi DirBrowserTreeItem(TreeItem):
         self.packages = packages
 
     eleza GetText(self):
-        ikiwa not self.packages:
+        ikiwa sio self.packages:
             rudisha self.dir
-        else:
+        isipokua:
             rudisha self.packages[-1] + ": package"
 
     eleza GetSubList(self):
-        try:
-            names = os.listdir(self.dir or os.curdir)
-        except OSError:
+        jaribu:
+            names = os.listdir(self.dir ama os.curdir)
+        tatizo OSError:
             rudisha []
         packages = []
-        for name in names:
+        kila name kwenye names:
             file = os.path.join(self.dir, name)
             ikiwa self.ispackagedir(file):
                 nn = os.path.normcase(name)
                 packages.append((nn, name, file))
         packages.sort()
         sublist = []
-        for nn, name, file in packages:
+        kila nn, name, file kwenye packages:
             item = DirBrowserTreeItem(file, self.packages + [name])
             sublist.append(item)
-        for nn, name in self.listmodules(names):
+        kila nn, name kwenye self.listmodules(names):
             item = ModuleBrowserTreeItem(os.path.join(self.dir, name))
             sublist.append(item)
         rudisha sublist
 
     eleza ispackagedir(self, file):
-        " Return true for directories that are packages."
-        ikiwa not os.path.isdir(file):
-            rudisha False
+        " Return true kila directories that are packages."
+        ikiwa sio os.path.isdir(file):
+            rudisha Uongo
         init = os.path.join(file, "__init__.py")
         rudisha os.path.exists(init)
 
@@ -85,14 +85,14 @@ kundi DirBrowserTreeItem(TreeItem):
         suffixes += importlib.machinery.SOURCE_SUFFIXES
         suffixes += importlib.machinery.BYTECODE_SUFFIXES
         sorted = []
-        for suff in suffixes:
+        kila suff kwenye suffixes:
             i = -len(suff)
-            for name in allnames[:]:
+            kila name kwenye allnames[:]:
                 normed_name = os.path.normcase(name)
                 ikiwa normed_name[i:] == suff:
                     mod_name = name[:i]
-                    ikiwa mod_name not in modules:
-                        modules[mod_name] = None
+                    ikiwa mod_name haiko kwenye modules:
+                        modules[mod_name] = Tupu
                         sorted.append((normed_name, name))
                         allnames.remove(name)
         sorted.sort()
@@ -100,12 +100,12 @@ kundi DirBrowserTreeItem(TreeItem):
 
 
 eleza _path_browser(parent):  # htest #
-    PathBrowser(parent, _htest=True)
+    PathBrowser(parent, _htest=Kweli)
     parent.mainloop()
 
 ikiwa __name__ == "__main__":
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_pathbrowser', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_pathbrowser', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_path_browser)

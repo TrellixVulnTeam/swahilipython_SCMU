@@ -16,46 +16,46 @@ kutoka unittest.mock agiza (
 kundi TestCallable(unittest.TestCase):
 
     eleza assertNotCallable(self, mock):
-        self.assertTrue(is_instance(mock, NonCallableMagicMock))
-        self.assertFalse(is_instance(mock, CallableMixin))
+        self.assertKweli(is_instance(mock, NonCallableMagicMock))
+        self.assertUongo(is_instance(mock, CallableMixin))
 
 
     eleza test_non_callable(self):
-        for mock in NonCallableMagicMock(), NonCallableMock():
+        kila mock kwenye NonCallableMagicMock(), NonCallableMock():
             self.assertRaises(TypeError, mock)
-            self.assertFalse(hasattr(mock, '__call__'))
+            self.assertUongo(hasattr(mock, '__call__'))
             self.assertIn(mock.__class__.__name__, repr(mock))
 
 
     eleza test_hierarchy(self):
-        self.assertTrue(issubclass(MagicMock, Mock))
-        self.assertTrue(issubclass(NonCallableMagicMock, NonCallableMock))
+        self.assertKweli(issubclass(MagicMock, Mock))
+        self.assertKweli(issubclass(NonCallableMagicMock, NonCallableMock))
 
 
     eleza test_attributes(self):
         one = NonCallableMock()
-        self.assertTrue(issubclass(type(one.one), Mock))
+        self.assertKweli(issubclass(type(one.one), Mock))
 
         two = NonCallableMagicMock()
-        self.assertTrue(issubclass(type(two.two), MagicMock))
+        self.assertKweli(issubclass(type(two.two), MagicMock))
 
 
     eleza test_subclasses(self):
         kundi MockSub(Mock):
-            pass
+            pita
 
         one = MockSub()
-        self.assertTrue(issubclass(type(one.one), MockSub))
+        self.assertKweli(issubclass(type(one.one), MockSub))
 
         kundi MagicSub(MagicMock):
-            pass
+            pita
 
         two = MagicSub()
-        self.assertTrue(issubclass(type(two.two), MagicSub))
+        self.assertKweli(issubclass(type(two.two), MagicSub))
 
 
     eleza test_patch_spec(self):
-        patcher = patch('%s.X' % __name__, spec=True)
+        patcher = patch('%s.X' % __name__, spec=Kweli)
         mock = patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -67,7 +67,7 @@ kundi TestCallable(unittest.TestCase):
 
 
     eleza test_patch_spec_set(self):
-        patcher = patch('%s.X' % __name__, spec_set=True)
+        patcher = patch('%s.X' % __name__, spec_set=Kweli)
         mock = patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -98,27 +98,27 @@ kundi TestCallable(unittest.TestCase):
 
     eleza test_patch_spec_callable_class(self):
         kundi CallableX(X):
-            eleza __call__(self): pass
+            eleza __call__(self): pita
 
         kundi Sub(CallableX):
-            pass
+            pita
 
         kundi Multi(SomeClass, Sub):
-            pass
+            pita
 
-        for arg in 'spec', 'spec_set':
-            for Klass in CallableX, Sub, Multi:
-                with patch('%s.X' % __name__, **{arg: Klass}) as mock:
+        kila arg kwenye 'spec', 'spec_set':
+            kila Klass kwenye CallableX, Sub, Multi:
+                with patch('%s.X' % __name__, **{arg: Klass}) kama mock:
                     instance = mock()
                     mock.assert_called_once_with()
 
-                    self.assertTrue(is_instance(instance, MagicMock))
+                    self.assertKweli(is_instance(instance, MagicMock))
                     # inherited spec
                     self.assertRaises(AttributeError, getattr, instance,
                                       'foobarbaz')
 
                     result = instance()
-                    # instance is callable, result has no spec
+                    # instance ni callable, result has no spec
                     instance.assert_called_once_with()
 
                     result(3, 2, 1)
@@ -137,7 +137,7 @@ kundi TestCallable(unittest.TestCase):
 
 
     eleza test_create_autospec_instance(self):
-        mock = create_autospec(SomeClass, instance=True)
+        mock = create_autospec(SomeClass, instance=Kweli)
 
         self.assertRaises(TypeError, mock)
         mock.wibble()

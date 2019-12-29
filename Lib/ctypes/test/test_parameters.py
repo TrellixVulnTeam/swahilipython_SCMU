@@ -6,19 +6,19 @@ class SimpleTypesTestCase(unittest.TestCase):
 
     def setUp(self):
         import ctypes
-        try:
+        jaribu:
             from _ctypes import set_conversion_mode
-        except ImportError:
+        tatizo ImportError:
             pass
-        else:
+        isipokua:
             self.prev_conv_mode = set_conversion_mode("ascii", "strict")
 
     def tearDown(self):
-        try:
+        jaribu:
             from _ctypes import set_conversion_mode
-        except ImportError:
+        tatizo ImportError:
             pass
-        else:
+        isipokua:
             set_conversion_mode(*self.prev_conv_mode)
 
     def test_subclasses(self):

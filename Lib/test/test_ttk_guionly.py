@@ -12,23 +12,23 @@ kutoka _tkinter agiza TclError
 kutoka tkinter agiza ttk
 kutoka tkinter.test agiza runtktests
 
-root = None
-try:
+root = Tupu
+jaribu:
     root = tkinter.Tk()
     button = ttk.Button(root)
     button.destroy()
-    del button
-except TclError as msg:
-    # assuming ttk is not available
-    raise unittest.SkipTest("ttk not available: %s" % msg)
-finally:
-    ikiwa root is not None:
+    toa button
+tatizo TclError kama msg:
+    # assuming ttk ni sio available
+    ashiria unittest.SkipTest("ttk sio available: %s" % msg)
+mwishowe:
+    ikiwa root ni sio Tupu:
         root.destroy()
-    del root
+    toa root
 
 eleza test_main():
     support.run_unittest(
-            *runtktests.get_tests(text=False, packages=['test_ttk']))
+            *runtktests.get_tests(text=Uongo, packages=['test_ttk']))
 
 ikiwa __name__ == '__main__':
     test_main()

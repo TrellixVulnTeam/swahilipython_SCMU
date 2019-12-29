@@ -11,11 +11,11 @@ from email.message import EmailMessage
 from email.generator import BytesGenerator
 from test.test_email import TestEmailBase, parameterize
 
-# This is like textwrap.dedent for bytes, except that it uses \r\n for the line
+# This is like textwrap.dedent for bytes, tatizo that it uses \r\n for the line
 # separators on the rebuilt string.
 def dedent(bstr):
     lines = bstr.splitlines()
-    if not lines[0].strip():
+    if sio lines[0].strip():
         raise ValueError("First line must contain text")
     stripamt = len(lines[0]) - len(lines[0].lstrip())
     return b'\r\n'.join(
@@ -36,7 +36,7 @@ class TestInversion(TestEmailBase):
         g.flatten(m)
         self.assertEqual(b.getvalue(), msg)
 
-    # XXX: spaces are not preserved correctly here yet in the general case.
+    # XXX: spaces are sio preserved correctly here yet in the general case.
     msg_params = {
         'header_with_one_space_body': (dedent(b"""\
             From: abc@xyz.com

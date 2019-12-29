@@ -9,14 +9,14 @@ support.requires("network")
 
 eleza check_ssl_verifiy(host, port):
     context = ssl.create_default_context()
-    with socket.create_connection((host, port)) as sock:
-        try:
+    with socket.create_connection((host, port)) kama sock:
+        jaribu:
             sock = context.wrap_socket(sock, server_hostname=host)
-        except Exception:
-            rudisha False
-        else:
+        tatizo Exception:
+            rudisha Uongo
+        isipokua:
             sock.close()
-            rudisha True
+            rudisha Kweli
 
 
 kundi SmtpTest(unittest.TestCase):
@@ -26,17 +26,17 @@ kundi SmtpTest(unittest.TestCase):
     eleza test_connect_starttls(self):
         support.get_attribute(smtplib, 'SMTP_SSL')
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.check_hostname = False
+        context.check_hostname = Uongo
         context.verify_mode = ssl.CERT_NONE
         with support.transient_internet(self.testServer):
             server = smtplib.SMTP(self.testServer, self.remotePort)
-            try:
+            jaribu:
                 server.starttls(context=context)
-            except smtplib.SMTPException as e:
-                ikiwa e.args[0] == 'STARTTLS extension not supported by server.':
+            tatizo smtplib.SMTPException kama e:
+                ikiwa e.args[0] == 'STARTTLS extension sio supported by server.':
                     unittest.skip(e.args[0])
-                else:
-                    raise
+                isipokua:
+                    ashiria
             server.ehlo()
             server.quit()
 
@@ -61,7 +61,7 @@ kundi SmtpSSLTest(unittest.TestCase):
 
     eleza test_connect_using_sslcontext(self):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.check_hostname = False
+        context.check_hostname = Uongo
         context.verify_mode = ssl.CERT_NONE
         support.get_attribute(smtplib, 'SMTP_SSL')
         with support.transient_internet(self.testServer):
@@ -72,7 +72,7 @@ kundi SmtpSSLTest(unittest.TestCase):
     eleza test_connect_using_sslcontext_verified(self):
         with support.transient_internet(self.testServer):
             can_verify = check_ssl_verifiy(self.testServer, self.remotePort)
-            ikiwa not can_verify:
+            ikiwa sio can_verify:
                 self.skipTest("SSL certificate can't be verified")
 
         support.get_attribute(smtplib, 'SMTP_SSL')

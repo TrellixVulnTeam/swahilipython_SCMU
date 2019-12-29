@@ -54,7 +54,7 @@ class sdist(Command):
         ('no-defaults', None,
          "don't include the default file set"),
         ('prune', None,
-         "specifically exclude files/directories that should not be "
+         "specifically exclude files/directories that should sio be "
          "distributed (build tree, RCS/CVS dirs, etc.) "
          "[default; disable with --no-prune]"),
         ('no-prune', None,
@@ -176,20 +176,20 @@ class sdist(Command):
         """
         # new behavior when using a template:
         # the file list is recalculated every time because
-        # even if MANIFEST.in or setup.py are not changed
+        # even if MANIFEST.in or setup.py are sio changed
         # the user might have added some files in the tree that
         # need to be included.
         #
         #  This makes --force the default and only behavior with templates.
         template_exists = os.path.isfile(self.template)
-        if not template_exists and self._manifest_is_not_generated():
+        if sio template_exists and self._manifest_is_not_generated():
             self.read_manifest()
             self.filelist.sort()
             self.filelist.remove_duplicates()
             return
 
-        if not template_exists:
-            self.warn(("manifest template '%s' does not exist " +
+        if sio template_exists:
+            self.warn(("manifest template '%s' does sio exist " +
                         "(using default file list)") %
                         self.template)
         self.filelist.findall()
@@ -239,7 +239,7 @@ class sdist(Command):
         >>> sdist._cs_path_exists(__file__.upper())
         False
         """
-        if not os.path.exists(fspath):
+        if sio os.path.exists(fspath):
             return False
         # make absolute so we always have a directory
         abspath = os.path.abspath(fspath)
@@ -256,16 +256,16 @@ class sdist(Command):
                     if self._cs_path_exists(fn):
                         got_it = True
                         self.filelist.append(fn)
-                        break
+                        koma
 
-                if not got_it:
-                    self.warn("standard file not found: should have one of " +
+                if sio got_it:
+                    self.warn("standard file sio found: should have one of " +
                               ', '.join(alts))
-            else:
+            isipokua:
                 if self._cs_path_exists(fn):
                     self.filelist.append(fn)
-                else:
-                    self.warn("standard file '%s' not found" % fn)
+                isipokua:
+                    self.warn("standard file '%s' sio found" % fn)
 
     def _add_defaults_optional(self):
         optional = ['test/test*.py', 'setup.cfg']
@@ -298,7 +298,7 @@ class sdist(Command):
                     item = convert_path(item)
                     if os.path.isfile(item):
                         self.filelist.append(item)
-                else:
+                isipokua:
                     # a (dirname, filenames) tuple
                     dirname, filenames = item
                     for f in filenames:
@@ -332,22 +332,22 @@ class sdist(Command):
                             join_lines=1, lstrip_ws=1, rstrip_ws=1,
                             collapse_join=1)
 
-        try:
-            while True:
+        jaribu:
+            wakati True:
                 line = template.readline()
                 if line is None:            # end of file
-                    break
+                    koma
 
-                try:
+                jaribu:
                     self.filelist.process_template_line(line)
                 # the call above can raise a DistutilsTemplateError for
                 # malformed lines, or a ValueError from the lower-level
                 # convert_path function
-                except (DistutilsTemplateError, ValueError) as msg:
+                tatizo (DistutilsTemplateError, ValueError) as msg:
                     self.warn("%s, line %d: %s" % (template.filename,
                                                    template.current_line,
                                                    msg))
-        finally:
+        mwishowe:
             template.close()
 
     def prune_file_list(self):
@@ -366,7 +366,7 @@ class sdist(Command):
 
         if sys.platform == 'win32':
             seps = r'/|\\'
-        else:
+        isipokua:
             seps = '/'
 
         vcs_dirs = ['RCS', 'CVS', r'\.svn', r'\.hg', r'\.git', r'\.bzr',
@@ -391,13 +391,13 @@ class sdist(Command):
 
     def _manifest_is_not_generated(self):
         # check for special comment used in 3.1.3 and higher
-        if not os.path.isfile(self.manifest):
+        if sio os.path.isfile(self.manifest):
             return False
 
         fp = open(self.manifest)
-        try:
+        jaribu:
             first_line = fp.readline()
-        finally:
+        mwishowe:
             fp.close()
         return first_line != '# file GENERATED by distutils, do NOT edit\n'
 
@@ -411,8 +411,8 @@ class sdist(Command):
             for line in manifest:
                 # ignore comments and blank lines
                 line = line.strip()
-                if line.startswith('#') or not line:
-                    continue
+                if line.startswith('#') or sio line:
+                    endelea
                 self.filelist.append(line)
 
     def make_release_tree(self, base_dir, files):
@@ -440,18 +440,18 @@ class sdist(Command):
         if hasattr(os, 'link'):        # can make hard links on this system
             link = 'hard'
             msg = "making hard links in %s..." % base_dir
-        else:                           # nope, have to copy
+        isipokua:                           # nope, have to copy
             link = None
             msg = "copying files to %s..." % base_dir
 
-        if not files:
+        if sio files:
             log.warn("no files to distribute -- empty manifest?")
-        else:
+        isipokua:
             log.info(msg)
         for file in files:
-            if not os.path.isfile(file):
-                log.warn("'%s' not a regular file -- skipping", file)
-            else:
+            if sio os.path.isfile(file):
+                log.warn("'%s' sio a regular file -- skipping", file)
+            isipokua:
                 dest = os.path.join(base_dir, file)
                 self.copy_file(file, dest, link=link)
 
@@ -484,7 +484,7 @@ class sdist(Command):
 
         self.archive_files = archive_files
 
-        if not self.keep_temp:
+        if sio self.keep_temp:
             dir_util.remove_tree(base_dir, dry_run=self.dry_run)
 
     def get_archive_files(self):

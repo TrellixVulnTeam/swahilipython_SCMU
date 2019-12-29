@@ -1,8 +1,8 @@
 # Copyright (C) 2002-2004 Python Software Foundation
 #
-# A torture test of the email package.  This should not be run as part of the
+# A torture test of the email package.  This should sio be run as part of the
 # standard Python test suite since it requires several meg of email messages
-# collected in the wild.  These source messages are not checked into the
+# collected in the wild.  These source messages are sio checked into the
 # Python distro, but are available as part of the standalone email package at
 # http://sf.net/projects/mimelib
 
@@ -24,9 +24,9 @@ def openfile(filename):
     return open(path, 'r')
 
 # Prevent this test from running in the Python distro
-try:
+jaribu:
     openfile('crispin-torture.txt')
-except OSError:
+tatizo OSError:
     raise unittest.SkipTest
 
 
@@ -34,9 +34,9 @@ except OSError:
 class TortureBase(TestEmailBase):
     def _msgobj(self, filename):
         fp = openfile(filename)
-        try:
+        jaribu:
             msg = email.message_from_file(fp)
-        finally:
+        mwishowe:
             fp.close()
         return msg
 

@@ -19,29 +19,29 @@ kundi AutoExpandTest(unittest.TestCase):
         cls.tk = Tk()
         cls.text = Text(cls.tk)
         cls.auto_expand = AutoExpand(DummyEditwin(cls.text))
-        cls.auto_expand.bell = lambda: None
+        cls.auto_expand.bell = lambda: Tupu
 
 # If mock_tk.Text._decode understood indexes 'insert' with suffixed 'linestart',
-# 'wordstart', and 'lineend', used by autoexpand, we could use the following
+# 'wordstart', na 'lineend', used by autoexpand, we could use the following
 # to run these test on non-gui machines (but check bell).
-##        try:
+##        jaribu:
 ##            requires('gui')
-##            #raise ResourceDenied()  # Uncomment to test mock.
-##        except ResourceDenied:
+##            #ashiria ResourceDenied()  # Uncomment to test mock.
+##        tatizo ResourceDenied:
 ##            kutoka idlelib.idle_test.mock_tk agiza Text
 ##            cls.text = Text()
-##            cls.text.bell = lambda: None
-##        else:
+##            cls.text.bell = lambda: Tupu
+##        isipokua:
 ##            kutoka tkinter agiza Tk, Text
 ##            cls.tk = Tk()
 ##            cls.text = Text(cls.tk)
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text, cls.auto_expand
+        toa cls.text, cls.auto_expand
         ikiwa hasattr(cls, 'tk'):
             cls.tk.destroy()
-            del cls.tk
+            toa cls.tk
 
     eleza tearDown(self):
         self.text.delete('1.0', 'end')
@@ -134,13 +134,13 @@ kundi AutoExpandTest(unittest.TestCase):
 
         # no expansion candidate found
         equal(self.auto_expand.getwords(), [])
-        equal(expand('event'), 'break')
+        equal(expand('event'), 'koma')
 
         text.insert('insert', 'bx cy dz a')
         equal(self.auto_expand.getwords(), [])
 
         # reset state by successfully expanding once
-        # move cursor to another position and expand again
+        # move cursor to another position na expand again
         text.insert('insert', 'ac xy a ac ad a')
         text.mark_set('insert', '1.7')
         expand('event')

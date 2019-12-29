@@ -36,7 +36,7 @@ class CCompiler:
     # responsible for updating 'compiler_class'!
     compiler_type = None
 
-    # XXX things not handled by this compiler abstraction model:
+    # XXX things sio handled by this compiler abstraction model:
     #   * client can't provide additional options for a compiler,
     #     e.g. warning, optimization, debugging flags.  Perhaps this
     #     should be the domain of concrete compiler abstraction classes
@@ -44,7 +44,7 @@ class CCompiler:
     #     class should have methods for the common ones.
     #   * can't completely override the include or library searchg
     #     path, ie. no "cc -I -Idir1 -Idir2" or "cc -L -Ldir1 -Ldir2".
-    #     I'm not sure how widely supported this is even by Unix
+    #     I'm sio sure how widely supported this is even by Unix
     #     compilers, much less on other platforms.  And I'm even less
     #     sure how useful it is; maybe for cross-compiling, but
     #     support for that is a ways off.  (And anyways, cross
@@ -101,7 +101,7 @@ class CCompiler:
         self.include_dirs = []
 
         # 'libraries': a list of libraries to include in any link
-        # (library names, not filenames: eg. "foo" not "libfoo.a")
+        # (library names, sio filenames: eg. "foo" sio "libfoo.a")
         self.libraries = []
 
         # 'library_dirs': a list of directories to search for libraries
@@ -145,7 +145,7 @@ class CCompiler:
         # basically the same things with Unix C compilers.
 
         for key in kwargs:
-            if key not in self.executables:
+            if key haiko kwenye self.executables:
                 raise ValueError("unknown executable '%s' for class %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
@@ -153,7 +153,7 @@ class CCompiler:
     def set_executable(self, key, value):
         if isinstance(value, str):
             setattr(self, key, split_quoted(value))
-        else:
+        isipokua:
             setattr(self, key, value)
 
     def _find_macro(self, name):
@@ -170,7 +170,7 @@ class CCompiler:
         nothing if all definitions are OK, raise TypeError otherwise.
         """
         for defn in definitions:
-            if not (isinstance(defn, tuple) and
+            if sio (isinstance(defn, tuple) and
                     (len(defn) in (1, 2) and
                       (isinstance (defn[1], str) or defn[1] is None)) and
                     isinstance (defn[0], str)):
@@ -184,15 +184,15 @@ class CCompiler:
     def define_macro(self, name, value=None):
         """Define a preprocessor macro for all compilations driven by this
         compiler object.  The optional parameter 'value' should be a
-        string; if it is not supplied, then the macro will be defined
+        string; if it ni sio supplied, then the macro will be defined
         without an explicit value and the exact outcome depends on the
         compiler used (XXX true? does ANSI say anything about this?)
         """
         # Delete from the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        if i is not None:
-            del self.macros[i]
+        if i ni sio None:
+            toa self.macros[i]
 
         self.macros.append((name, value))
 
@@ -208,8 +208,8 @@ class CCompiler:
         # Delete from the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        if i is not None:
-            del self.macros[i]
+        if i ni sio None:
+            toa self.macros[i]
 
         undefn = (name,)
         self.macros.append(undefn)
@@ -226,7 +226,7 @@ class CCompiler:
         """Set the list of directories that will be searched to 'dirs' (a
         list of strings).  Overrides any preceding calls to
         'add_include_dir()'; subsequence calls to 'add_include_dir()' add
-        to the list passed to 'set_include_dirs()'.  This does not affect
+        to the list passed to 'set_include_dirs()'.  This does sio affect
         any list of standard include directories that the compiler may
         search by default.
         """
@@ -251,7 +251,7 @@ class CCompiler:
     def set_libraries(self, libnames):
         """Set the list of libraries to be included in all links driven by
         this compiler object to 'libnames' (a list of strings).  This does
-        not affect any standard system libraries that the linker may
+        sio affect any standard system libraries that the linker may
         include by default.
         """
         self.libraries = libnames[:]
@@ -266,7 +266,7 @@ class CCompiler:
 
     def set_library_dirs(self, dirs):
         """Set the list of library search directories to 'dirs' (a list of
-        strings).  This does not affect any standard library search path
+        strings).  This does sio affect any standard library search path
         that the linker may search by default.
         """
         self.library_dirs = dirs[:]
@@ -279,7 +279,7 @@ class CCompiler:
 
     def set_runtime_library_dirs(self, dirs):
         """Set the list of directories to search for shared libraries at
-        runtime to 'dirs' (a list of strings).  This does not affect any
+        runtime to 'dirs' (a list of strings).  This does sio affect any
         standard search path that the runtime linker may search by
         default.
         """
@@ -295,7 +295,7 @@ class CCompiler:
 
     def set_link_objects(self, objects):
         """Set the list of object files (or analogues) to be included in
-        every link to 'objects'.  This does not affect any standard object
+        every link to 'objects'.  This does sio affect any standard object
         files that the linker may include by default (such as system
         libraries).
         """
@@ -312,21 +312,21 @@ class CCompiler:
         """Process arguments and decide which source files to compile."""
         if outdir is None:
             outdir = self.output_dir
-        lasivyo not isinstance(outdir, str):
+        lasivyo sio isinstance(outdir, str):
             raise TypeError("'output_dir' must be a string or None")
 
         if macros is None:
             macros = self.macros
         lasivyo isinstance(macros, list):
             macros = macros + (self.macros or [])
-        else:
+        isipokua:
             raise TypeError("'macros' (if supplied) must be a list of tuples")
 
         if incdirs is None:
             incdirs = self.include_dirs
         lasivyo isinstance(incdirs, (list, tuple)):
             incdirs = list(incdirs) + (self.include_dirs or [])
-        else:
+        isipokua:
             raise TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
 
@@ -371,21 +371,21 @@ class CCompiler:
         """
         if output_dir is None:
             output_dir = self.output_dir
-        lasivyo not isinstance(output_dir, str):
+        lasivyo sio isinstance(output_dir, str):
             raise TypeError("'output_dir' must be a string or None")
 
         if macros is None:
             macros = self.macros
         lasivyo isinstance(macros, list):
             macros = macros + (self.macros or [])
-        else:
+        isipokua:
             raise TypeError("'macros' (if supplied) must be a list of tuples")
 
         if include_dirs is None:
             include_dirs = self.include_dirs
         lasivyo isinstance(include_dirs, (list, tuple)):
             include_dirs = list(include_dirs) + (self.include_dirs or [])
-        else:
+        isipokua:
             raise TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
 
@@ -413,13 +413,13 @@ class CCompiler:
         None, replace with self.output_dir.  Return fixed versions of
         'objects' and 'output_dir'.
         """
-        if not isinstance(objects, (list, tuple)):
+        if sio isinstance(objects, (list, tuple)):
             raise TypeError("'objects' must be a list or tuple of strings")
         objects = list(objects)
 
         if output_dir is None:
             output_dir = self.output_dir
-        lasivyo not isinstance(output_dir, str):
+        lasivyo sio isinstance(output_dir, str):
             raise TypeError("'output_dir' must be a string or None")
 
         return (objects, output_dir)
@@ -435,7 +435,7 @@ class CCompiler:
             libraries = self.libraries
         lasivyo isinstance(libraries, (list, tuple)):
             libraries = list (libraries) + (self.libraries or [])
-        else:
+        isipokua:
             raise TypeError(
                   "'libraries' (if supplied) must be a list of strings")
 
@@ -443,7 +443,7 @@ class CCompiler:
             library_dirs = self.library_dirs
         lasivyo isinstance(library_dirs, (list, tuple)):
             library_dirs = list (library_dirs) + (self.library_dirs or [])
-        else:
+        isipokua:
             raise TypeError(
                   "'library_dirs' (if supplied) must be a list of strings")
 
@@ -452,7 +452,7 @@ class CCompiler:
         lasivyo isinstance(runtime_library_dirs, (list, tuple)):
             runtime_library_dirs = (list(runtime_library_dirs) +
                                     (self.runtime_library_dirs or []))
-        else:
+        isipokua:
             raise TypeError("'runtime_library_dirs' (if supplied) "
                             "must be a list of strings")
 
@@ -464,10 +464,10 @@ class CCompiler:
         """
         if self.force:
             return True
-        else:
+        isipokua:
             if self.dry_run:
                 newer = newer_group (objects, output_file, missing='newer')
-            else:
+            isipokua:
                 newer = newer_group (objects, output_file)
             return newer
 
@@ -475,19 +475,19 @@ class CCompiler:
         """Detect the language of a given file, or list of files. Uses
         language_map, and language_order to do the job.
         """
-        if not isinstance(sources, list):
+        if sio isinstance(sources, list):
             sources = [sources]
         lang = None
         index = len(self.language_order)
         for source in sources:
             base, ext = os.path.splitext(source)
             extlang = self.language_map.get(ext)
-            try:
+            jaribu:
                 extindex = self.language_order.index(extlang)
                 if extindex < index:
                     lang = extlang
                     index = extindex
-            except ValueError:
+            tatizo ValueError:
                 pass
         return lang
 
@@ -499,7 +499,7 @@ class CCompiler:
                    include_dirs=None, extra_preargs=None, extra_postargs=None):
         """Preprocess a single C/C++ source file, named in 'source'.
         Output will be written to file named 'output_file', or stdout if
-        'output_file' not supplied.  'macros' is a list of macro
+        'output_file' sio supplied.  'macros' is a list of macro
         definitions as for 'compile()', which will augment the macros set
         with 'define_macro()' and 'undefine_macro()'.  'include_dirs' is a
         list of directory names that will be added to the default list.
@@ -518,7 +518,7 @@ class CCompiler:
         particular compiler and compiler class (eg. MSVCCompiler can
         handle resource files in 'sources').  Return a list of object
         filenames, one per source filename in 'sources'.  Depending on
-        the implementation, not all source files will necessarily be
+        the implementation, sio all source files will necessarily be
         compiled, but all corresponding object filenames will be
         returned.
 
@@ -567,18 +567,18 @@ class CCompiler:
         cc_args = self._get_cc_args(pp_opts, debug, extra_preargs)
 
         for obj in objects:
-            try:
+            jaribu:
                 src, ext = build[obj]
-            except KeyError:
-                continue
+            tatizo KeyError:
+                endelea
             self._compile(obj, src, ext, cc_args, extra_postargs, pp_opts)
 
-        # Return *all* object filenames, not just the ones we just built.
+        # Return *all* object filenames, sio just the ones we just built.
         return objects
 
     def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         """Compile 'src' to product 'obj'."""
-        # A concrete compiler class that does not override compile()
+        # A concrete compiler class that does sio override compile()
         # should implement _compile().
         pass
 
@@ -591,7 +591,7 @@ class CCompiler:
         supplied to 'add_library()' and/or 'set_libraries()', and the
         libraries supplied as 'libraries' (if any).
 
-        'output_libname' should be a library name, not a filename; the
+        'output_libname' should be a library name, sio a filename; the
         filename will be inferred from the library name.  'output_dir' is
         the directory where the library file will be put.
 
@@ -638,7 +638,7 @@ class CCompiler:
         needed).
 
         'libraries' is a list of libraries to link against.  These are
-        library names, not filenames, since they're translated into
+        library names, sio filenames, since they're translated into
         filenames in a platform-specific way (eg. "foo" becomes "libfoo.a"
         on Unix and "foo.lib" on DOS/Windows).  However, they can include a
         directory component, which means the linker will look in that
@@ -764,7 +764,7 @@ class CCompiler:
         augment the compilation environment.
         """
         # this can't be included at module scope because it tries to
-        # import math which might not be available at that point - maybe
+        # import math which might sio be available at that point - maybe
         # the necessary logic should just be inlined?
         import tempfile
         if includes is None:
@@ -777,7 +777,7 @@ class CCompiler:
             library_dirs = []
         fd, fname = tempfile.mkstemp(".c", funcname, text=True)
         f = os.fdopen(fd, "w")
-        try:
+        jaribu:
             for incl in includes:
                 f.write("""#include "%s"\n""" % incl)
             f.write("""\
@@ -786,18 +786,18 @@ int main (int argc, char **argv) {
     return 0;
 }
 """ % funcname)
-        finally:
+        mwishowe:
             f.close()
-        try:
+        jaribu:
             objects = self.compile([fname], include_dirs=include_dirs)
-        except CompileError:
+        tatizo CompileError:
             return False
 
-        try:
+        jaribu:
             self.link_executable(objects, "a.out",
                                  libraries=libraries,
                                  library_dirs=library_dirs)
-        except (LinkError, TypeError):
+        tatizo (LinkError, TypeError):
             return False
         return True
 
@@ -852,7 +852,7 @@ int main (int argc, char **argv) {
             base, ext = os.path.splitext(src_name)
             base = os.path.splitdrive(base)[1] # Chop off the drive
             base = base[os.path.isabs(base):]  # If abs, chop off leading /
-            if ext not in self.src_extensions:
+            if ext haiko kwenye self.src_extensions:
                 raise UnknownFileError(
                       "unknown file type '%s' (from '%s')" % (ext, src_name))
             if strip_dir:
@@ -862,21 +862,21 @@ int main (int argc, char **argv) {
         return obj_names
 
     def shared_object_filename(self, basename, strip_dir=0, output_dir=''):
-        assert output_dir is not None
+        assert output_dir ni sio None
         if strip_dir:
             basename = os.path.basename(basename)
         return os.path.join(output_dir, basename + self.shared_lib_extension)
 
     def executable_filename(self, basename, strip_dir=0, output_dir=''):
-        assert output_dir is not None
+        assert output_dir ni sio None
         if strip_dir:
             basename = os.path.basename(basename)
         return os.path.join(output_dir, basename + (self.exe_extension or ''))
 
     def library_filename(self, libname, lib_type='static',     # or 'shared'
                          strip_dir=0, output_dir=''):
-        assert output_dir is not None
-        if lib_type not in ("static", "shared", "dylib", "xcode_stub"):
+        assert output_dir ni sio None
+        if lib_type haiko kwenye ("static", "shared", "dylib", "xcode_stub"):
             raise ValueError(
                   "'lib_type' must be \"static\", \"shared\", \"dylib\", or \"xcode_stub\"")
         fmt = getattr(self, lib_type + "_lib_format")
@@ -942,15 +942,15 @@ def get_default_compiler(osname=None, platform=None):
        returned by sys.platform for the platform in question.
 
        The default values are os.name and sys.platform in case the
-       parameters are not given.
+       parameters are sio given.
     """
     if osname is None:
         osname = os.name
     if platform is None:
         platform = sys.platform
     for pattern, compiler in _default_compilers:
-        if re.match(pattern, platform) is not None or \
-           re.match(pattern, osname) is not None:
+        if re.match(pattern, platform) ni sio None or \
+           re.match(pattern, osname) ni sio None:
             return compiler
     # Default to Unix compiler
     return 'unix'
@@ -1001,27 +1001,27 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
     if plat is None:
         plat = os.name
 
-    try:
+    jaribu:
         if compiler is None:
             compiler = get_default_compiler(plat)
 
         (module_name, class_name, long_description) = compiler_class[compiler]
-    except KeyError:
+    tatizo KeyError:
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
-        if compiler is not None:
+        if compiler ni sio None:
             msg = msg + " with '%s' compiler" % compiler
         raise DistutilsPlatformError(msg)
 
-    try:
+    jaribu:
         module_name = "distutils." + module_name
         __import__ (module_name)
         module = sys.modules[module_name]
         klass = vars(module)[class_name]
-    except ImportError:
+    tatizo ImportError:
         raise DistutilsModuleError(
               "can't compile C/C++ code: unable to load module '%s'" % \
               module_name)
-    except KeyError:
+    tatizo KeyError:
         raise DistutilsModuleError(
                "can't compile C/C++ code: unable to find class '%s' "
                "in module '%s'" % (class_name, module_name))
@@ -1055,7 +1055,7 @@ def gen_preprocess_options(macros, include_dirs):
     # and therefore common to all CCompiler classes.
     pp_opts = []
     for macro in macros:
-        if not (isinstance(macro, tuple) and 1 <= len(macro) <= 2):
+        if sio (isinstance(macro, tuple) and 1 <= len(macro) <= 2):
             raise TypeError(
                   "bad macro definition '%s': "
                   "each element of 'macros' list must be a 1- or 2-tuple"
@@ -1066,7 +1066,7 @@ def gen_preprocess_options(macros, include_dirs):
         lasivyo len(macro) == 2:
             if macro[1] is None:    # define with no explicit value
                 pp_opts.append("-D%s" % macro[0])
-            else:
+            isipokua:
                 # XXX *don't* need to be clever about quoting the
                 # macro value here, because we're going to avoid the
                 # shell at all costs when we spawn the command!
@@ -1093,7 +1093,7 @@ def gen_lib_options (compiler, library_dirs, runtime_library_dirs, libraries):
         opt = compiler.runtime_library_dir_option(dir)
         if isinstance(opt, list):
             lib_opts = lib_opts + opt
-        else:
+        isipokua:
             lib_opts.append(opt)
 
     # XXX it's important that we *not* remove redundant library mentions!
@@ -1108,9 +1108,9 @@ def gen_lib_options (compiler, library_dirs, runtime_library_dirs, libraries):
             lib_file = compiler.find_library_file([lib_dir], lib_name)
             if lib_file:
                 lib_opts.append(lib_file)
-            else:
+            isipokua:
                 compiler.warn("no library file corresponding to "
                               "'%s' found (skipping)" % lib)
-        else:
+        isipokua:
             lib_opts.append(compiler.library_option (lib))
     return lib_opts

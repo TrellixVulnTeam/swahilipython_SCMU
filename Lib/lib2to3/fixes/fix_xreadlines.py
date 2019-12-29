@@ -1,4 +1,4 @@
-"""Fix "for x in f.xreadlines()" -> "for x in f".
+"""Fix "kila x kwenye f.xreadlines()" -> "kila x kwenye f".
 
 This fixer will also convert g(f.xreadlines) into g(f.__iter__)."""
 # Author: Collin Winter
@@ -9,7 +9,7 @@ kutoka ..fixer_util agiza Name
 
 
 kundi FixXreadlines(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
     power< call=any+ trailer< '.' 'xreadlines' > trailer< '(' ')' > >
     |
@@ -21,5 +21,5 @@ kundi FixXreadlines(fixer_base.BaseFix):
 
         ikiwa no_call:
             no_call.replace(Name("__iter__", prefix=no_call.prefix))
-        else:
-            node.replace([x.clone() for x in results["call"]])
+        isipokua:
+            node.replace([x.clone() kila x kwenye results["call"]])

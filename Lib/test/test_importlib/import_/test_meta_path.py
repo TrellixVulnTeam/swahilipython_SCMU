@@ -8,42 +8,42 @@ agiza warnings
 
 kundi CallingOrder:
 
-    """Calls to the importers on sys.meta_path happen in order that they are
-    specified in the sequence, starting with the first importer
-    [first called], and then continuing on down until one is found that doesn't
-    rudisha None [continuing]."""
+    """Calls to the importers on sys.meta_path happen kwenye order that they are
+    specified kwenye the sequence, starting with the first importer
+    [first called], na then continuing on down until one ni found that doesn't
+    rudisha Tupu [continuing]."""
 
 
     eleza test_first_called(self):
         # [first called]
         mod = 'top_level'
-        with util.mock_spec(mod) as first, util.mock_spec(mod) as second:
+        with util.mock_spec(mod) kama first, util.mock_spec(mod) kama second:
             with util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod), first.modules[mod])
 
     eleza test_continuing(self):
         # [continuing]
         mod_name = 'for_real'
-        with util.mock_spec('nonexistent') as first, \
-             util.mock_spec(mod_name) as second:
-            first.find_spec = lambda self, fullname, path=None, parent=None: None
+        with util.mock_spec('nonexistent') kama first, \
+             util.mock_spec(mod_name) kama second:
+            first.find_spec = lambda self, fullname, path=Tupu, parent=Tupu: Tupu
             with util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod_name), second.modules[mod_name])
 
     eleza test_empty(self):
-        # Raise an ImportWarning ikiwa sys.meta_path is empty.
+        # Raise an ImportWarning ikiwa sys.meta_path ni empty.
         module_name = 'nothing'
-        try:
-            del sys.modules[module_name]
-        except KeyError:
-            pass
+        jaribu:
+            toa sys.modules[module_name]
+        tatizo KeyError:
+            pita
         with util.import_state(meta_path=[]):
-            with warnings.catch_warnings(record=True) as w:
+            with warnings.catch_warnings(record=Kweli) kama w:
                 warnings.simplefilter('always')
-                self.assertIsNone(importlib._bootstrap._find_spec('nothing',
-                                                                  None))
+                self.assertIsTupu(importlib._bootstrap._find_spec('nothing',
+                                                                  Tupu))
                 self.assertEqual(len(w), 1)
-                self.assertTrue(issubclass(w[-1].category, ImportWarning))
+                self.assertKweli(issubclass(w[-1].category, ImportWarning))
 
 
 (Frozen_CallingOrder,
@@ -53,8 +53,8 @@ kundi CallingOrder:
 
 kundi CallSignature:
 
-    """If there is no __path__ entry on the parent module, then 'path' is None
-    [no path]. Otherwise, the value for __path__ is passed in for the 'path'
+    """If there ni no __path__ entry on the parent module, then 'path' ni Tupu
+    [no path]. Otherwise, the value kila __path__ ni pitaed kwenye kila the 'path'
     argument [path set]."""
 
     eleza log_finder(self, importer):
@@ -68,8 +68,8 @@ kundi CallSignature:
     eleza test_no_path(self):
         # [no path]
         mod_name = 'top_level'
-        assert '.' not in mod_name
-        with self.mock_modules(mod_name) as importer:
+        assert '.' haiko kwenye mod_name
+        with self.mock_modules(mod_name) kama importer:
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))
             with util.import_state(meta_path=[importer]):
@@ -78,15 +78,15 @@ kundi CallSignature:
                 args = log[0][0]
                 # Assuming all arguments are positional.
                 self.assertEqual(args[0], mod_name)
-                self.assertIsNone(args[1])
+                self.assertIsTupu(args[1])
 
     eleza test_with_path(self):
         # [path set]
         pkg_name = 'pkg'
         mod_name = pkg_name + '.module'
         path = [42]
-        assert '.' in mod_name
-        with self.mock_modules(pkg_name+'.__init__', mod_name) as importer:
+        assert '.' kwenye mod_name
+        with self.mock_modules(pkg_name+'.__init__', mod_name) kama importer:
             importer.modules[pkg_name].__path__ = path
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))
@@ -96,7 +96,7 @@ kundi CallSignature:
                 args = log[1][0]
                 kwargs = log[1][1]
                 # Assuming all arguments are positional.
-                self.assertFalse(kwargs)
+                self.assertUongo(kwargs)
                 self.assertEqual(args[0], mod_name)
                 self.assertIs(args[1], path)
 

@@ -12,9 +12,9 @@ from unittest import mock
 from test import support
 from test.test_asyncio import utils as test_utils
 
-try:
+jaribu:
     import ssl
-except ImportError:
+tatizo ImportError:
     ssl = None
 
 
@@ -28,7 +28,7 @@ class MySendfileProto(asyncio.Protocol):
         self.transport = None
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop is not None:
+        if loop ni sio None:
             self.connected = loop.create_future()
             self.done = loop.create_future()
         self.data = bytearray()
@@ -115,7 +115,7 @@ class SendfileBase:
 
     def tearDown(self):
         # just in case if we have transport close callbacks
-        if not self.loop.is_closed():
+        if sio self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -158,7 +158,7 @@ class SockSendfileMixin(SendfileBase):
         # should be called after the socket is connected.
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.BUF_SIZE)
 
-        if transport is not None:
+        if transport ni sio None:
             transport.set_write_buffer_limits(high=self.BUF_SIZE)
 
     def prepare_socksendfile(self):
@@ -175,7 +175,7 @@ class SockSendfileMixin(SendfileBase):
         self.reduce_send_buffer_size(sock)
 
         def cleanup():
-            if proto.transport is not None:
+            if proto.transport ni sio None:
                 # can be None if the task was cancelled before
                 # connection_made callback
                 proto.transport.close()
@@ -244,11 +244,11 @@ class SendfileMixin(SendfileBase):
         srv_proto = MySendfileProto(loop=self.loop,
                                     close_after=close_after)
         if is_ssl:
-            if not ssl:
+            if sio ssl:
                 self.skipTest("No ssl module")
             srv_ctx = test_utils.simple_server_sslcontext()
             cli_ctx = test_utils.simple_client_sslcontext()
-        else:
+        isipokua:
             srv_ctx = None
             cli_ctx = None
         srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -259,7 +259,7 @@ class SendfileMixin(SendfileBase):
 
         if is_ssl:
             server_hostname = support.HOST
-        else:
+        isipokua:
             server_hostname = None
         cli_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         cli_sock.connect((support.HOST, port))
@@ -282,18 +282,18 @@ class SendfileMixin(SendfileBase):
         self.addCleanup(cleanup)
         return srv_proto, cli_proto
 
-    @unittest.skipIf(sys.platform == 'win32', "UDP sockets are not supported")
+    @unittest.skipIf(sys.platform == 'win32', "UDP sockets are sio supported")
     def test_sendfile_not_supported(self):
         tr, pr = self.run_loop(
             self.loop.create_datagram_endpoint(
                 asyncio.DatagramProtocol,
                 family=socket.AF_INET))
-        try:
+        jaribu:
             with self.assertRaisesRegex(RuntimeError, "not supported"):
                 self.run_loop(
                     self.loop.sendfile(tr, self.file))
             self.assertEqual(0, self.file.tell())
-        finally:
+        mwishowe:
             # don't use self.addCleanup because it produces resource warning
             tr.close()
 
@@ -522,7 +522,7 @@ if sys.platform == 'win32':
         def create_event_loop(self):
             return asyncio.ProactorEventLoop()
 
-else:
+isipokua:
     import selectors
 
     if hasattr(selectors, 'KqueueSelector'):

@@ -7,12 +7,12 @@
 #
 #                         All Rights Reserved
 #
-# Permission to use, copy, modify, and distribute this software and
-# its documentation for any purpose and without fee is hereby
-# granted, provided that the above copyright notice appear in all
-# copies and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of Sam
-# Rushing not be used in advertising or publicity pertaining to
+# Permission to use, copy, modify, na distribute this software and
+# its documentation kila any purpose na without fee ni hereby
+# granted, provided that the above copyright notice appear kwenye all
+# copies na that both that copyright notice na this permission
+# notice appear kwenye supporting documentation, na that the name of Sam
+# Rushing sio be used kwenye advertising ama publicity pertaining to
 # distribution of the software without specific, written prior
 # permission.
 #
@@ -27,22 +27,22 @@
 
 r"""A kundi supporting chat-style (command/response) protocols.
 
-This kundi adds support for 'chat' style protocols - where one side
-sends a 'command', and the other sends a response (examples would be
+This kundi adds support kila 'chat' style protocols - where one side
+sends a 'command', na the other sends a response (examples would be
 the common internet protocols - smtp, nntp, ftp, etc..).
 
-The handle_read() method looks at the input stream for the current
-'terminator' (usually '\r\n' for single-line responses, '\r\n.\r\n'
-for multi-line output), calling self.found_terminator() on its
+The handle_read() method looks at the input stream kila the current
+'terminator' (usually '\r\n' kila single-line responses, '\r\n.\r\n'
+kila multi-line output), calling self.found_terminator() on its
 receipt.
 
-for example:
+kila example:
 Say you build an async nntp client using this class.  At the start
 of the connection, you'll have self.terminator set to '\r\n', in
 order to process the single-line greeting.  Just before issuing a
 'LIST' command you'll set it to '\r\n.\r\n'.  The output of the LIST
 command will be accumulated (using your own 'collect_incoming_data'
-method) up to the terminator, and then control will be returned to
+method) up to the terminator, na then control will be rudishaed to
 you - by calling your self.found_terminator() method.
 """
 agiza asyncore
@@ -50,57 +50,57 @@ kutoka collections agiza deque
 
 
 kundi async_chat(asyncore.dispatcher):
-    """This is an abstract class.  You must derive kutoka this class, and add
-    the two methods collect_incoming_data() and found_terminator()"""
+    """This ni an abstract class.  You must derive kutoka this class, na add
+    the two methods collect_incoming_data() na found_terminator()"""
 
     # these are overridable defaults
 
     ac_in_buffer_size = 65536
     ac_out_buffer_size = 65536
 
-    # we don't want to enable the use of encoding by default, because that is a
-    # sign of an application bug that we don't want to pass silently
+    # we don't want to enable the use of encoding by default, because that ni a
+    # sign of an application bug that we don't want to pita silently
 
     use_encoding = 0
     encoding = 'latin-1'
 
-    eleza __init__(self, sock=None, map=None):
-        # for string terminator matching
+    eleza __init__(self, sock=Tupu, map=Tupu):
+        # kila string terminator matching
         self.ac_in_buffer = b''
 
-        # we use a list here rather than io.BytesIO for a few reasons...
-        # del lst[:] is faster than bio.truncate(0)
-        # lst = [] is faster than bio.truncate(0)
+        # we use a list here rather than io.BytesIO kila a few reasons...
+        # toa lst[:] ni faster than bio.truncate(0)
+        # lst = [] ni faster than bio.truncate(0)
         self.incoming = []
 
-        # we toss the use of the "simple producer" and replace it with
+        # we toss the use of the "simple producer" na replace it with
         # a pure deque, which the original fifo was a wrapping of
         self.producer_fifo = deque()
         asyncore.dispatcher.__init__(self, sock, map)
 
     eleza collect_incoming_data(self, data):
-        raise NotImplementedError("must be implemented in subclass")
+        ashiria NotImplementedError("must be implemented kwenye subclass")
 
     eleza _collect_incoming_data(self, data):
         self.incoming.append(data)
 
     eleza _get_data(self):
         d = b''.join(self.incoming)
-        del self.incoming[:]
+        toa self.incoming[:]
         rudisha d
 
     eleza found_terminator(self):
-        raise NotImplementedError("must be implemented in subclass")
+        ashiria NotImplementedError("must be implemented kwenye subclass")
 
     eleza set_terminator(self, term):
         """Set the input delimiter.
 
-        Can be a fixed string of any length, an integer, or None.
+        Can be a fixed string of any length, an integer, ama Tupu.
         """
-        ikiwa isinstance(term, str) and self.use_encoding:
+        ikiwa isinstance(term, str) na self.use_encoding:
             term = bytes(term, self.encoding)
-        elikiwa isinstance(term, int) and term < 0:
-            raise ValueError('the number of received bytes must be positive')
+        elikiwa isinstance(term, int) na term < 0:
+            ashiria ValueError('the number of received bytes must be positive')
         self.terminator = term
 
     eleza get_terminator(self):
@@ -108,32 +108,32 @@ kundi async_chat(asyncore.dispatcher):
 
     # grab some more data kutoka the socket,
     # throw it to the collector method,
-    # check for the terminator,
+    # check kila the terminator,
     # ikiwa found, transition to the next state.
 
     eleza handle_read(self):
 
-        try:
+        jaribu:
             data = self.recv(self.ac_in_buffer_size)
-        except BlockingIOError:
-            return
-        except OSError as why:
+        tatizo BlockingIOError:
+            rudisha
+        tatizo OSError kama why:
             self.handle_error()
-            return
+            rudisha
 
-        ikiwa isinstance(data, str) and self.use_encoding:
+        ikiwa isinstance(data, str) na self.use_encoding:
             data = bytes(str, self.encoding)
         self.ac_in_buffer = self.ac_in_buffer + data
 
-        # Continue to search for self.terminator in self.ac_in_buffer,
-        # while calling self.collect_incoming_data.  The while loop
-        # is necessary because we might read several data+terminator
+        # Continue to search kila self.terminator kwenye self.ac_in_buffer,
+        # wakati calling self.collect_incoming_data.  The wakati loop
+        # ni necessary because we might read several data+terminator
         # combos with a single recv(4096).
 
-        while self.ac_in_buffer:
+        wakati self.ac_in_buffer:
             lb = len(self.ac_in_buffer)
             terminator = self.get_terminator()
-            ikiwa not terminator:
+            ikiwa sio terminator:
                 # no terminator, collect it all
                 self.collect_incoming_data(self.ac_in_buffer)
                 self.ac_in_buffer = b''
@@ -144,18 +144,18 @@ kundi async_chat(asyncore.dispatcher):
                     self.collect_incoming_data(self.ac_in_buffer)
                     self.ac_in_buffer = b''
                     self.terminator = self.terminator - lb
-                else:
+                isipokua:
                     self.collect_incoming_data(self.ac_in_buffer[:n])
                     self.ac_in_buffer = self.ac_in_buffer[n:]
                     self.terminator = 0
                     self.found_terminator()
-            else:
+            isipokua:
                 # 3 cases:
                 # 1) end of buffer matches terminator exactly:
                 #    collect data, transition
                 # 2) end of buffer matches some prefix:
                 #    collect data to the prefix
-                # 3) end of buffer does not match any prefix:
+                # 3) end of buffer does sio match any prefix:
                 #    collect data
                 terminator_len = len(terminator)
                 index = self.ac_in_buffer.find(terminator)
@@ -167,18 +167,18 @@ kundi async_chat(asyncore.dispatcher):
                         self.collect_incoming_data(self.ac_in_buffer[:index])
                     self.ac_in_buffer = self.ac_in_buffer[index+terminator_len:]
                     # This does the Right Thing ikiwa the terminator
-                    # is changed here.
+                    # ni changed here.
                     self.found_terminator()
-                else:
-                    # check for a prefix of the terminator
+                isipokua:
+                    # check kila a prefix of the terminator
                     index = find_prefix_at_end(self.ac_in_buffer, terminator)
                     ikiwa index:
                         ikiwa index != lb:
                             # we found a prefix, collect up to the prefix
                             self.collect_incoming_data(self.ac_in_buffer[:-index])
                             self.ac_in_buffer = self.ac_in_buffer[-index:]
-                        break
-                    else:
+                        koma
+                    isipokua:
                         # no prefix, collect it all
                         self.collect_incoming_data(self.ac_in_buffer)
                         self.ac_in_buffer = b''
@@ -190,14 +190,14 @@ kundi async_chat(asyncore.dispatcher):
         self.close()
 
     eleza push(self, data):
-        ikiwa not isinstance(data, (bytes, bytearray, memoryview)):
-            raise TypeError('data argument must be byte-ish (%r)',
+        ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
+            ashiria TypeError('data argument must be byte-ish (%r)',
                             type(data))
         sabs = self.ac_out_buffer_size
         ikiwa len(data) > sabs:
-            for i in range(0, len(data), sabs):
+            kila i kwenye range(0, len(data), sabs):
                 self.producer_fifo.append(data[i:i+sabs])
-        else:
+        isipokua:
             self.producer_fifo.append(data)
         self.initiate_send()
 
@@ -206,7 +206,7 @@ kundi async_chat(asyncore.dispatcher):
         self.initiate_send()
 
     eleza readable(self):
-        "predicate for inclusion in the readable for select()"
+        "predicate kila inclusion kwenye the readable kila select()"
         # cannot use the old predicate, it violates the claim of the
         # set_terminator method.
 
@@ -214,57 +214,57 @@ kundi async_chat(asyncore.dispatcher):
         rudisha 1
 
     eleza writable(self):
-        "predicate for inclusion in the writable for select()"
-        rudisha self.producer_fifo or (not self.connected)
+        "predicate kila inclusion kwenye the writable kila select()"
+        rudisha self.producer_fifo ama (not self.connected)
 
     eleza close_when_done(self):
-        "automatically close this channel once the outgoing queue is empty"
-        self.producer_fifo.append(None)
+        "automatically close this channel once the outgoing queue ni empty"
+        self.producer_fifo.append(Tupu)
 
     eleza initiate_send(self):
-        while self.producer_fifo and self.connected:
+        wakati self.producer_fifo na self.connected:
             first = self.producer_fifo[0]
-            # handle empty string/buffer or None entry
-            ikiwa not first:
-                del self.producer_fifo[0]
-                ikiwa first is None:
+            # handle empty string/buffer ama Tupu entry
+            ikiwa sio first:
+                toa self.producer_fifo[0]
+                ikiwa first ni Tupu:
                     self.handle_close()
-                    return
+                    rudisha
 
             # handle classic producer behavior
             obs = self.ac_out_buffer_size
-            try:
+            jaribu:
                 data = first[:obs]
-            except TypeError:
+            tatizo TypeError:
                 data = first.more()
                 ikiwa data:
                     self.producer_fifo.appendleft(data)
-                else:
-                    del self.producer_fifo[0]
-                continue
+                isipokua:
+                    toa self.producer_fifo[0]
+                endelea
 
-            ikiwa isinstance(data, str) and self.use_encoding:
+            ikiwa isinstance(data, str) na self.use_encoding:
                 data = bytes(data, self.encoding)
 
             # send the data
-            try:
+            jaribu:
                 num_sent = self.send(data)
-            except OSError:
+            tatizo OSError:
                 self.handle_error()
-                return
+                rudisha
 
             ikiwa num_sent:
-                ikiwa num_sent < len(data) or obs < len(first):
+                ikiwa num_sent < len(data) ama obs < len(first):
                     self.producer_fifo[0] = first[num_sent:]
-                else:
-                    del self.producer_fifo[0]
+                isipokua:
+                    toa self.producer_fifo[0]
             # we tried to send some actual data
-            return
+            rudisha
 
     eleza discard_buffers(self):
         # Emergencies only!
         self.ac_in_buffer = b''
-        del self.incoming[:]
+        toa self.incoming[:]
         self.producer_fifo.clear()
 
 
@@ -279,16 +279,16 @@ kundi simple_producer:
             result = self.data[:self.buffer_size]
             self.data = self.data[self.buffer_size:]
             rudisha result
-        else:
+        isipokua:
             result = self.data
             self.data = b''
             rudisha result
 
 
-# Given 'haystack', see ikiwa any prefix of 'needle' is at its end.  This
+# Given 'haystack', see ikiwa any prefix of 'needle' ni at its end.  This
 # assumes an exact match has already been checked.  Return the number of
 # characters matched.
-# for example:
+# kila example:
 # f_p_a_e("qwerty\r", "\r\n") => 1
 # f_p_a_e("qwertydkjf", "\r\n") => 0
 # f_p_a_e("qwerty\r\n", "\r\n") => <undefined>
@@ -302,6 +302,6 @@ kundi simple_producer:
 
 eleza find_prefix_at_end(haystack, needle):
     l = len(needle) - 1
-    while l and not haystack.endswith(needle[:l]):
+    wakati l na sio haystack.endswith(needle[:l]):
         l -= 1
     rudisha l

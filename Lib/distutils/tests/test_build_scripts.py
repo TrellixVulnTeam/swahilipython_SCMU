@@ -72,9 +72,9 @@ class BuildScriptsTestCase(support.TempdirManager,
 
     def write_script(self, dir, name, text):
         f = open(os.path.join(dir, name), "w")
-        try:
+        jaribu:
             f.write(text)
-        finally:
+        mwishowe:
             f.close()
 
     def test_version_int(self):
@@ -95,10 +95,10 @@ class BuildScriptsTestCase(support.TempdirManager,
         # failed when writing the name of the executable
         old = sysconfig.get_config_vars().get('VERSION')
         sysconfig._config_vars['VERSION'] = 4
-        try:
+        jaribu:
             cmd.run()
-        finally:
-            if old is not None:
+        mwishowe:
+            if old ni sio None:
                 sysconfig._config_vars['VERSION'] = old
 
         built = os.listdir(target)

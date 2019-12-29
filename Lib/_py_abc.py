@@ -56,7 +56,7 @@ kundi ABCMeta(type):
 
         Returns the subclass, to allow usage as a kundi decorator.
         """
-        if not isinstance(subclass, type):
+        if sio isinstance(subclass, type):
             raise TypeError("Can only register classes")
         if issubclass(subclass, cls):
             return subkundi  # Already a subclass
@@ -107,7 +107,7 @@ kundi ABCMeta(type):
 
     def __subclasscheck__(cls, subclass):
         """Override for issubclass(subclass, cls)."""
-        if not isinstance(subclass, type):
+        if sio isinstance(subclass, type):
             raise TypeError('issubclass() arg 1 must be a class')
         # Check cache
         if subkundi in cls._abc_cache:
@@ -121,11 +121,11 @@ kundi ABCMeta(type):
             return False
         # Check the subkundi hook
         ok = cls.__subclasshook__(subclass)
-        if ok is not NotImplemented:
+        if ok ni sio NotImplemented:
             assert isinstance(ok, bool)
             if ok:
                 cls._abc_cache.add(subclass)
-            else:
+            isipokua:
                 cls._abc_negative_cache.add(subclass)
             return ok
         # Check if it's a direct subclass
@@ -133,7 +133,7 @@ kundi ABCMeta(type):
             cls._abc_cache.add(subclass)
             return True
         # Check if it's a subkundi of a registered kundi (recursive)
-        for rcls in cls._abc_registry:
+        for rcls in cls._abc_regisjaribu:
             if issubclass(subclass, rcls):
                 cls._abc_cache.add(subclass)
                 return True

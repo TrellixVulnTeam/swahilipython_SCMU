@@ -28,7 +28,7 @@ __all__ = ["Button", "Checkbutton", "Combobox", "Entry", "Frame", "Label",
 import tkinter
 from tkinter agiza _flatten, _join, _stringify, _splitdict
 
-# Verify if Tk is new enough to not need the Tile package
+# Verify if Tk is new enough to sio need the Tile package
 _REQUIRE_TILE = True if tkinter.TkVersion < 8.5 else False
 
 def _load_tile(master):
@@ -65,9 +65,9 @@ def _format_optdict(optdict, script=False, ignore=None):
 
     opts = []
     for opt, value in optdict.items():
-        if not ignore or opt not in ignore:
+        if sio ignore or opt haiko kwenye ignore:
             opts.append("-%s" % opt)
-            if value is not None:
+            if value ni sio None:
                 opts.append(_format_optvalue(value, script))
 
     return _flatten(opts)
@@ -87,11 +87,11 @@ def _mapdict_values(items):
             # if it is empty (something that evaluates to False), then
             # format it to Tcl code to denote the "normal" state
             state = state[0] or ''
-        else:
+        isipokua:
             # group multiple states
-            state = ' '.join(state) # raise TypeError if not str
+            state = ' '.join(state) # raise TypeError if sio str
         opt_val.append(state)
-        if val is not None:
+        if val ni sio None:
             opt_val.append(val)
     return opt_val
 
@@ -125,7 +125,7 @@ def _format_elemcreate(etype, script=False, *args, **kw):
             imagespec = _join(_mapdict_values(args[1:]))
             spec = "%s %s" % (iname, imagespec)
 
-        else:
+        isipokua:
             # define an element whose visual appearance is drawn using the
             # Microsoft Visual Styles API which is responsible for the
             # themed styles on Windows XP and Vista.
@@ -193,7 +193,7 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
             script.append(newscript)
             indent -= indent_size
             script.append('%s}' % (' ' * indent))
-        else:
+        isipokua:
             script.append(head)
 
     return '\n'.join(script), indent
@@ -216,9 +216,9 @@ def _script_from_settings(settings):
             script.append("ttk::style map %s %s;" % (name, s))
 
         if 'layout' in opts: # format 'layout' which may be empty
-            if not opts['layout']:
+            if sio opts['layout']:
                 s = 'null' # could be any other word, but this one makes sense
-            else:
+            isipokua:
                 s, _ = _format_layoutlist(opts['layout'])
             script.append("ttk::style layout %s {\n%s\n}" % (name, s))
 
@@ -228,7 +228,7 @@ def _script_from_settings(settings):
 
             # find where args end, and where kwargs start
             argc = 1 # etype was the first one
-            while argc < len(eopts) and not hasattr(eopts[argc], 'items'):
+            wakati argc < len(eopts) and sio hasattr(eopts[argc], 'items'):
                 argc += 1
 
             elemargs = eopts[1:argc]
@@ -248,7 +248,7 @@ def _list_from_statespec(stuple):
         typename = getattr(val, 'typename', None)
         if typename is None:
             nval.append(val)
-        else: # this is a Tcl object
+        isipokua: # this is a Tcl object
             val = str(val)
             if typename == 'StateSpec':
                 val = val.split()
@@ -264,16 +264,16 @@ def _list_from_layouttuple(tk, ltuple):
     res = []
 
     indx = 0
-    while indx < len(ltuple):
+    wakati indx < len(ltuple):
         name = ltuple[indx]
         opts = {}
         res.append((name, opts))
         indx += 1
 
-        while indx < len(ltuple): # grab name's options
+        wakati indx < len(ltuple): # grab name's options
             opt, val = ltuple[indx:indx + 2]
-            if not opt.startswith('-'): # found next name
-                break
+            if sio opt.startswith('-'): # found next name
+                koma
 
             opt = opt[1:] # remove the '-' from the option
             indx += 2
@@ -304,9 +304,9 @@ def _val_or_dict(tk, options, *args):
 def _convert_stringval(value):
     """Converts a value to, hopefully, a more appropriate Python object."""
     value = str(value)
-    try:
+    jaribu:
         value = int(value)
-    except (ValueError, TypeError):
+    tatizo (ValueError, TypeError):
         pass
 
     return value
@@ -315,16 +315,16 @@ def _to_number(x):
     if isinstance(x, str):
         if '.' in x:
             x = float(x)
-        else:
+        isipokua:
             x = int(x)
     return x
 
 def _tclobj_to_py(val):
     """Return value converted from Tcl object to Python object."""
-    if val and hasattr(val, '__len__') and not isinstance(val, str):
+    if val and hasattr(val, '__len__') and sio isinstance(val, str):
         if getattr(val[0], 'typename', None) == 'StateSpec':
             val = _list_from_statespec(val)
-        else:
+        isipokua:
             val = list(map(_convert_stringval, val))
 
     lasivyo hasattr(val, 'typename'): # some other (single) Tcl object
@@ -341,19 +341,19 @@ def tclobjs_to_py(adict):
     return adict
 
 def setup_master(master=None):
-    """If master is not None, itself is returned. If master is None,
+    """If master ni sio None, itself is returned. If master is None,
     the default master is returned if there is one, otherwise a new
     master is created and returned.
 
-    If it is not allowed to use the default root and master is None,
+    If it ni sio allowed to use the default root and master is None,
     RuntimeError is raised."""
     if master is None:
         if tkinter._support_default_root:
             master = tkinter._default_root or tkinter.Tk()
-        else:
+        isipokua:
             raise RuntimeError(
                     "No master specified and tkinter is "
-                    "configured to not support default root")
+                    "configured to sio support default root")
     return master
 
 
@@ -365,7 +365,7 @@ class Style(object):
     def __init__(self, master=None):
         master = setup_master(master)
 
-        if not getattr(master, '_tile_loaded', False):
+        if sio getattr(master, '_tile_loaded', False):
             # Load tile now, if needed
             _load_tile(master)
 
@@ -379,7 +379,7 @@ class Style(object):
 
         Each key in kw is an option and each value is either a string or
         a sequence identifying the value for that option."""
-        if query_opt is not None:
+        if query_opt ni sio None:
             kw[query_opt] = None
         result = _val_or_dict(self.tk, kw, self._name, "configure", style)
         if result or query_opt:
@@ -394,7 +394,7 @@ class Style(object):
         tuple (usually) containing statespecs grouped in tuples, or list,
         or something else of your preference. A statespec is compound of
         one or more states and then a value."""
-        if query_opt is not None:
+        if query_opt ni sio None:
             return _list_from_statespec(self.tk.splitlist(
                 self.tk.call(self._name, "map", style, '-%s' % query_opt)))
 
@@ -451,7 +451,7 @@ class Style(object):
         lspec = None
         if layoutspec:
             lspec = _format_layoutlist(layoutspec)[0]
-        lasivyo layoutspec is not None: # will disable the layout ({}, '', etc)
+        lasivyo layoutspec ni sio None: # will disable the layout ({}, '', etc)
             lspec = "null" # could be any other word, but this may make sense
                            # when calling layout(style) later
 
@@ -490,7 +490,7 @@ class Style(object):
         if parent:
             self.tk.call(self._name, "theme", "create", themename,
                 "-parent", parent, "-settings", script)
-        else:
+        isipokua:
             self.tk.call(self._name, "theme", "create", themename,
                 "-settings", script)
 
@@ -551,7 +551,7 @@ class Widget(tkinter.Widget):
             readonly, alternate, invalid
         """
         master = setup_master(master)
-        if not getattr(master, '_tile_loaded', False):
+        if sio getattr(master, '_tile_loaded', False):
             # Load tile now, if needed
             _load_tile(master)
         tkinter.Widget.__init__(self, master, widgetname, kw=kw)
@@ -559,7 +559,7 @@ class Widget(tkinter.Widget):
 
     def identify(self, x, y):
         """Returns the name of the element at position x, y, or the empty
-        string if the point does not lie within any element.
+        string if the point does sio lie within any element.
 
         x and y are pixel coordinates relative to the widget."""
         return self.tk.call(self._w, "identify", x, y)
@@ -568,7 +568,7 @@ class Widget(tkinter.Widget):
     def instate(self, statespec, callback=None, *args, **kw):
         """Test the widget's state.
 
-        If callback is not specified, returns True if the widget state
+        If callback ni sio specified, returns True if the widget state
         matches statespec and False otherwise. If callback is specified,
         then it will be invoked with *args, **kw if the widget state
         matches statespec. statespec is expected to be a sequence."""
@@ -587,7 +587,7 @@ class Widget(tkinter.Widget):
         set according to the statespec flags and then a new state spec
         is returned indicating which flags were changed. statespec is
         expected to be a sequence."""
-        if statespec is not None:
+        if statespec ni sio None:
             statespec = ' '.join(statespec)
 
         return self.tk.splitlist(str(self.tk.call(self._w, "state", statespec)))
@@ -711,7 +711,7 @@ class Combobox(Entry):
         """If newindex is supplied, sets the combobox value to the
         element at position newindex in the list of values. Otherwise,
         returns the index of the current value in the list of values
-        or -1 if the current value does not appear in the list."""
+        or -1 if the current value does sio appear in the list."""
         if newindex is None:
             return self.tk.getint(self.tk.call(self._w, "current"))
         return self.tk.call(self._w, "current", newindex)
@@ -853,7 +853,7 @@ class Notebook(Widget):
     def hide(self, tab_id):
         """Hides the tab specified by tab_id.
 
-        The tab will not be displayed, but the associated window remains
+        The tab will sio be displayed, but the associated window remains
         managed by the notebook and its configuration remembered. Hidden
         tabs may be restored with the add command."""
         self.tk.call(self._w, "hide", tab_id)
@@ -893,10 +893,10 @@ class Notebook(Widget):
     def tab(self, tab_id, option=None, **kw):
         """Query or modify the options of the specific tab_id.
 
-        If kw is not given, returns a dict of the tab option values. If option
+        If kw ni sio given, returns a dict of the tab option values. If option
         is specified, returns the value of that option. Otherwise, sets the
         options to the corresponding values."""
-        if option is not None:
+        if option ni sio None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "tab", tab_id)
 
@@ -970,10 +970,10 @@ class Panedwindow(Widget, tkinter.PanedWindow):
         """Query or modify the options of the specified pane.
 
         pane is either an integer index or the name of a managed subwindow.
-        If kw is not given, returns a dict of the pane option values. If
+        If kw ni sio given, returns a dict of the pane option values. If
         option is specified then the value for that option is returned.
         Otherwise, sets the options to the corresponding values."""
-        if option is not None:
+        if option ni sio None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "pane", pane)
 
@@ -1211,7 +1211,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         window) of the specified item in the form x y width height.
 
         If column is specified, returns the bounding box of that cell.
-        If the item is not visible (i.e., if it is a descendant of a
+        If the item ni sio visible (i.e., if it is a descendant of a
         closed item or is scrolled offscreen), returns an empty string."""
         return self._getints(self.tk.call(self._w, "bbox", item, column)) or ''
 
@@ -1219,7 +1219,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
     def get_children(self, item=None):
         """Returns a tuple of children belonging to item.
 
-        If item is not specified, returns root children."""
+        If item ni sio specified, returns root children."""
         return self.tk.splitlist(
                 self.tk.call(self._w, "children", item or '') or ())
 
@@ -1227,7 +1227,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
     def set_children(self, item, *newchildren):
         """Replaces item's child with newchildren.
 
-        Children present in item that are not present in newchildren
+        Children present in item that are sio present in newchildren
         are detached from tree. No items in newchildren may be an
         ancestor of item."""
         self.tk.call(self._w, "children", item, newchildren)
@@ -1236,17 +1236,17 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
     def column(self, column, option=None, **kw):
         """Query or modify the options for the specified column.
 
-        If kw is not given, returns a dict of the column option values. If
+        If kw ni sio given, returns a dict of the column option values. If
         option is specified then the value for that option is returned.
         Otherwise, sets the options to the corresponding values."""
-        if option is not None:
+        if option ni sio None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "column", column)
 
 
     def delete(self, *items):
         """Delete all specified items and all their descendants. The root
-        item may not be deleted."""
+        item may sio be deleted."""
         self.tk.call(self._w, "delete", items)
 
 
@@ -1254,8 +1254,8 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         """Unlinks all of the specified items from the tree.
 
         The items and all of their descendants are still present, and may
-        be reinserted at another point in the tree, but will not be
-        displayed. The root item may not be detached."""
+        be reinserted at another point in the tree, but will sio be
+        displayed. The root item may sio be detached."""
         self.tk.call(self._w, "detach", items)
 
 
@@ -1274,7 +1274,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
     def heading(self, column, option=None, **kw):
         """Query or modify the heading options for the specified column.
 
-        If kw is not given, returns a dict of the heading option values. If
+        If kw ni sio given, returns a dict of the heading option values. If
         option is specified then the value for that option is returned.
         Otherwise, sets the options to the corresponding values.
 
@@ -1293,11 +1293,11 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
 
         To configure the tree column heading, call this with column = "#0" """
         cmd = kw.get('command')
-        if cmd and not isinstance(cmd, str):
-            # callback not registered yet, do it now
+        if cmd and sio isinstance(cmd, str):
+            # callback sio registered yet, do it now
             kw['command'] = self.master.register(cmd, self._substitute)
 
-        if option is not None:
+        if option ni sio None:
             kw[option] = None
 
         return _val_or_dict(self.tk, kw, self._w, 'heading', column)
@@ -1361,10 +1361,10 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         already exist in the tree. Otherwise, a new unique identifier
         is generated."""
         opts = _format_optdict(kw)
-        if iid is not None:
+        if iid ni sio None:
             res = self.tk.call(self._w, "insert", parent, index,
                 "-id", iid, *opts)
-        else:
+        isipokua:
             res = self.tk.call(self._w, "insert", parent, index, *opts)
 
         return res
@@ -1377,7 +1377,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         is returned. If option is specified then the value for that option
         is returned. Otherwise, sets the options to the corresponding
         values as given by kw."""
-        if option is not None:
+        if option ni sio None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "item", item)
 
@@ -1464,7 +1464,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         if column is None and value is None:
             return _splitdict(self.tk, res,
                               cut_minus=False, conv=_tclobj_to_py)
-        else:
+        isipokua:
             return res
 
 
@@ -1478,11 +1478,11 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
     def tag_configure(self, tagname, option=None, **kw):
         """Query or modify the options for the specified tagname.
 
-        If kw is not given, returns a dict of the option settings for tagname.
+        If kw ni sio given, returns a dict of the option settings for tagname.
         If option is specified, returns the value for that option for the
         specified tagname. Otherwise, sets the options to the corresponding
         values for the given tagname."""
-        if option is not None:
+        if option ni sio None:
             kw[option] = None
         return _val_or_dict(self.tk, kw, self._w, "tag", "configure",
             tagname)
@@ -1497,7 +1497,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         if item is None:
             return self.tk.splitlist(
                 self.tk.call(self._w, "tag", "has", tagname))
-        else:
+        isipokua:
             return self.tk.getboolean(
                 self.tk.call(self._w, "tag", "has", tagname, item))
 
@@ -1514,7 +1514,7 @@ class LabeledScale(Frame):
     def __init__(self, master=None, variable=None, from_=0, to=10, **kw):
         """Construct a horizontal LabeledScale with parent master, a
         variable to be associated with the Ttk Scale widget and its range.
-        If variable is not specified, a tkinter.IntVar is created.
+        If variable ni sio specified, a tkinter.IntVar is created.
 
         WIDGET-SPECIFIC OPTIONS
 
@@ -1548,12 +1548,12 @@ class LabeledScale(Frame):
 
     def destroy(self):
         """Destroy this widget and possibly its associated variable."""
-        try:
+        jaribu:
             self._variable.trace_vdelete('w', self.__tracecb)
-        except AttributeError:
+        tatizo AttributeError:
             pass
-        else:
-            del self._variable
+        isipokua:
+            toa self._variable
         super().destroy()
         self.label = None
         self.scale = None
@@ -1567,7 +1567,7 @@ class LabeledScale(Frame):
             x, y = self.scale.coords()
             if self._label_top:
                 y = self.scale.winfo_y() - self.label.winfo_reqheight()
-            else:
+            isipokua:
                 y = self.scale.winfo_reqheight() + self.label.winfo_reqheight()
 
             self.label.place_configure(x=x, y=y)
@@ -1577,7 +1577,7 @@ class LabeledScale(Frame):
         if to < from_:
             from_, to = to, from_
         newval = self._variable.get()
-        if not from_ <= newval <= to:
+        if sio from_ <= newval <= to:
             # value outside range, set value back to the last valid one
             self.value = self._last_valid
             return
@@ -1653,8 +1653,8 @@ class OptionMenu(Menubutton):
 
     def destroy(self):
         """Destroy this widget and its associated variable."""
-        try:
-            del self._variable
-        except AttributeError:
+        jaribu:
+            toa self._variable
+        tatizo AttributeError:
             pass
         super().destroy()

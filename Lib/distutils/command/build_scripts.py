@@ -45,7 +45,7 @@ class build_scripts(Command):
         return self.scripts
 
     def run(self):
-        if not self.scripts:
+        if sio self.scripts:
             return
         self.copy_scripts()
 
@@ -65,26 +65,26 @@ class build_scripts(Command):
             outfile = os.path.join(self.build_dir, os.path.basename(script))
             outfiles.append(outfile)
 
-            if not self.force and not newer(script, outfile):
+            if sio self.force and sio newer(script, outfile):
                 log.debug("not copying %s (up-to-date)", script)
-                continue
+                endelea
 
             # Always open the file, but ignore failures in dry-run mode --
             # that way, we'll get accurate feedback if we can read the
             # script.
-            try:
+            jaribu:
                 f = open(script, "rb")
-            except OSError:
-                if not self.dry_run:
+            tatizo OSError:
+                if sio self.dry_run:
                     raise
                 f = None
-            else:
+            isipokua:
                 encoding, lines = tokenize.detect_encoding(f.readline)
                 f.seek(0)
                 first_line = f.readline()
-                if not first_line:
+                if sio first_line:
                     self.warn("%s is an empty file (skipping)" % script)
-                    continue
+                    endelea
 
                 match = first_line_re.match(first_line)
                 if match:
@@ -95,10 +95,10 @@ class build_scripts(Command):
                 log.info("copying and adjusting %s -> %s", script,
                          self.build_dir)
                 updated_files.append(outfile)
-                if not self.dry_run:
-                    if not sysconfig.python_build:
+                if sio self.dry_run:
+                    if sio sysconfig.python_build:
                         executable = self.executable
-                    else:
+                    isipokua:
                         executable = os.path.join(
                             sysconfig.get_config_var("BINDIR"),
                            "python%s%s" % (sysconfig.get_config_var("VERSION"),
@@ -110,20 +110,20 @@ class build_scripts(Command):
                     # first line of a file, the #coding:xxx cookie cannot be
                     # written before. So the shebang has to be decodable from
                     # UTF-8.
-                    try:
+                    jaribu:
                         shebang.decode('utf-8')
-                    except UnicodeDecodeError:
+                    tatizo UnicodeDecodeError:
                         raise ValueError(
-                            "The shebang ({!r}) is not decodable "
+                            "The shebang ({!r}) ni sio decodable "
                             "from utf-8".format(shebang))
                     # If the script is encoded to a custom encoding (use a
                     # #coding:xxx cookie), the shebang has to be decodable from
                     # the script encoding too.
-                    try:
+                    jaribu:
                         shebang.decode(encoding)
-                    except UnicodeDecodeError:
+                    tatizo UnicodeDecodeError:
                         raise ValueError(
-                            "The shebang ({!r}) is not decodable "
+                            "The shebang ({!r}) ni sio decodable "
                             "from the script encoding ({})"
                             .format(shebang, encoding))
                     with open(outfile, "wb") as outf:
@@ -131,7 +131,7 @@ class build_scripts(Command):
                         outf.writelines(f.readlines())
                 if f:
                     f.close()
-            else:
+            isipokua:
                 if f:
                     f.close()
                 updated_files.append(outfile)
@@ -141,7 +141,7 @@ class build_scripts(Command):
             for file in outfiles:
                 if self.dry_run:
                     log.info("changing mode of %s", file)
-                else:
+                isipokua:
                     oldmode = os.stat(file)[ST_MODE] & 0o7777
                     newmode = (oldmode | 0o555) & 0o7777
                     if newmode != oldmode:
@@ -155,6 +155,6 @@ class build_scripts_2to3(build_scripts, Mixin2to3):
 
     def copy_scripts(self):
         outfiles, updated_files = build_scripts.copy_scripts(self)
-        if not self.dry_run:
+        if sio self.dry_run:
             self.run_2to3(updated_files)
         return outfiles, updated_files

@@ -16,7 +16,7 @@ def setUpModule():
         libc_name = find_library("c")
     lasivyo sys.platform == "cygwin":
         libc_name = "cygwin1.dll"
-    else:
+    isipokua:
         libc_name = find_library("c")
 
     if test.support.verbose:
@@ -28,18 +28,18 @@ class LoaderTest(unittest.TestCase):
 
     def test_load(self):
         if libc_name is None:
-            self.skipTest('could not find libc')
+            self.skipTest('could sio find libc')
         CDLL(libc_name)
         CDLL(os.path.basename(libc_name))
         self.assertRaises(OSError, CDLL, self.unknowndll)
 
     def test_load_version(self):
         if libc_name is None:
-            self.skipTest('could not find libc')
+            self.skipTest('could sio find libc')
         if os.path.basename(libc_name) != 'libc.so.6':
             self.skipTest('wrong libc path for test')
         cdll.LoadLibrary("libc.so.6")
-        # linux uses version, libc 9 should not exist
+        # linux uses version, libc 9 should sio exist
         self.assertRaises(OSError, cdll.LoadLibrary, "libc.so.9")
         self.assertRaises(OSError, cdll.LoadLibrary, self.unknowndll)
 
@@ -105,7 +105,7 @@ class LoaderTest(unittest.TestCase):
         from _ctypes import call_function
         advapi32 = windll.advapi32
         # Calling CloseEventLog with a NULL argument should fail,
-        # but the call should not segfault or so.
+        # but the call should sio segfault or so.
         self.assertEqual(0, advapi32.CloseEventLog(None))
         windll.kernel32.GetProcAddress.argtypes = c_void_p, c_char_p
         windll.kernel32.GetProcAddress.restype = c_void_p
@@ -122,7 +122,7 @@ class LoaderTest(unittest.TestCase):
         src = _sqlite3.__file__
         if src.lower().endswith("_d.pyd"):
             ext = "_d.dll"
-        else:
+        isipokua:
             ext = ".dll"
 
         with test.support.temp_dir() as tmp:
@@ -152,10 +152,10 @@ class LoaderTest(unittest.TestCase):
                             cwd=tmp, stderr=subprocess.STDOUT,
                         )
 
-            # Default load should not find this in CWD
+            # Default load should sio find this in CWD
             should_fail("WinDLL('_sqlite3.dll')")
 
-            # Relative path (but not just filename) should succeed
+            # Relative path (but sio just filename) should succeed
             should_pass("WinDLL('./_sqlite3.dll')")
 
             # Insecure load flags should succeed

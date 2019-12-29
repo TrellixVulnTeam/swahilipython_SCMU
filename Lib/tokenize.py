@@ -1,6 +1,6 @@
 """Tokenization help for Python programs.
 
-tokenize(readline) is a generator that breaks a stream of bytes into
+tokenize(readline) is a generator that komas a stream of bytes into
 Python tokens.  It decodes the bytes according to PEP-0263 for
 determining source file encoding.
 
@@ -40,7 +40,7 @@ blank_re = re.compile(br'^[ \t\f]*(?:[#\r\n]|$)', re.ASCII)
 agiza token
 __all__ = token.__all__ + ["tokenize", "generate_tokens", "detect_encoding",
                            "untokenize", "TokenInfo"]
-del token
+toa token
 
 kundi TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line')):
     def __repr__(self):
@@ -52,7 +52,7 @@ kundi TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line'
     def exact_type(self):
         if self.type == OP and self.string in EXACT_TOKEN_TYPES:
             return EXACT_TOKEN_TYPES[self.string]
-        else:
+        isipokua:
             return self.type
 
 def group(*choices): return '(' + '|'.join(choices) + ')'
@@ -187,20 +187,20 @@ kundi Untokenizer:
         for t in it:
             if len(t) == 2:
                 self.compat(t, it)
-                break
+                koma
             tok_type, token, start, end, line = t
             if tok_type == ENCODING:
                 self.encoding = token
-                continue
+                endelea
             if tok_type == ENDMARKER:
-                break
+                koma
             if tok_type == INDENT:
                 indents.append(token)
-                continue
+                endelea
             lasivyo tok_type == DEDENT:
                 indents.pop()
                 self.prev_row, self.prev_col = end
-                continue
+                endelea
             lasivyo tok_type in (NEWLINE, NL):
                 startline = True
             lasivyo startline and indents:
@@ -227,7 +227,7 @@ kundi Untokenizer:
             toknum, tokval = tok[:2]
             if toknum == ENCODING:
                 self.encoding = tokval
-                continue
+                endelea
 
             if toknum in (NAME, NUMBER):
                 tokval += ' '
@@ -237,15 +237,15 @@ kundi Untokenizer:
                 if prevstring:
                     tokval = ' ' + tokval
                 prevstring = True
-            else:
+            isipokua:
                 prevstring = False
 
             if toknum == INDENT:
                 indents.append(tokval)
-                continue
+                endelea
             lasivyo toknum == DEDENT:
                 indents.pop()
-                continue
+                endelea
             lasivyo toknum in (NEWLINE, NL):
                 startline = True
             lasivyo startline and indents:
@@ -276,7 +276,7 @@ def untokenize(iterable):
     """
     ut = Untokenizer()
     out = ut.untokenize(iterable)
-    if ut.encoding is not None:
+    if ut.encoding ni sio None:
         out = out.encode(ut.encoding)
     return out
 
@@ -309,42 +309,42 @@ def detect_encoding(readline):
 
     If no encoding is specified, then the default of 'utf-8' will be returned.
     """
-    try:
+    jaribu:
         filename = readline.__self__.name
-    except AttributeError:
+    tatizo AttributeError:
         filename = None
     bom_found = False
     encoding = None
     default = 'utf-8'
     def read_or_stop():
-        try:
+        jaribu:
             return readline()
-        except StopIteration:
+        tatizo StopIteration:
             return b''
 
     def find_cookie(line):
-        try:
+        jaribu:
             # Decode as UTF-8. Either the line is an encoding declaration,
             # in which case it should be pure ASCII, or it must be UTF-8
             # per default encoding.
             line_string = line.decode('utf-8')
-        except UnicodeDecodeError:
+        tatizo UnicodeDecodeError:
             msg = "invalid or missing encoding declaration"
-            if filename is not None:
+            if filename ni sio None:
                 msg = '{} for {!r}'.format(msg, filename)
             raise SyntaxError(msg)
 
         match = cookie_re.match(line_string)
-        if not match:
+        if sio match:
             return None
         encoding = _get_normal_name(match.group(1))
-        try:
+        jaribu:
             codec = lookup(encoding)
-        except LookupError:
+        tatizo LookupError:
             # This behaviour mimics the Python interpreter
             if filename is None:
                 msg = "unknown encoding: " + encoding
-            else:
+            isipokua:
                 msg = "unknown encoding for {!r}: {}".format(filename,
                         encoding)
             raise SyntaxError(msg)
@@ -354,7 +354,7 @@ def detect_encoding(readline):
                 # This behaviour mimics the Python interpreter
                 if filename is None:
                     msg = 'encoding problem: utf-8'
-                else:
+                isipokua:
                     msg = 'encoding problem for {!r}: utf-8'.format(filename)
                 raise SyntaxError(msg)
             encoding += '-sig'
@@ -365,17 +365,17 @@ def detect_encoding(readline):
         bom_found = True
         first = first[3:]
         default = 'utf-8-sig'
-    if not first:
+    if sio first:
         return default, []
 
     encoding = find_cookie(first)
     if encoding:
         return encoding, [first]
-    if not blank_re.match(first):
+    if sio blank_re.match(first):
         return default, [first]
 
     second = read_or_stop()
-    if not second:
+    if sio second:
         return default, [first]
 
     encoding = find_cookie(second)
@@ -390,7 +390,7 @@ def open(filename):
     detect_encoding().
     """
     buffer = _builtin_open(filename, 'rb')
-    try:
+    jaribu:
         encoding, lines = detect_encoding(buffer.readline)
         buffer.seek(0)
         text = TextIOWrapper(buffer, encoding, line_buffering=True)
@@ -427,37 +427,37 @@ def tokenize(readline):
 
 
 def _tokenize(readline, encoding):
-    lnum = parenlev = continued = 0
+    lnum = parenlev = endelead = 0
     numchars = '0123456789'
     contstr, needcont = '', 0
     contline = None
     indents = [0]
 
-    if encoding is not None:
+    if encoding ni sio None:
         if encoding == "utf-8-sig":
             # BOM will already have been stripped.
             encoding = "utf-8"
         yield TokenInfo(ENCODING, encoding, (0, 0), (0, 0), '')
     last_line = b''
     line = b''
-    while True:                                # loop over lines in stream
-        try:
+    wakati True:                                # loop over lines in stream
+        jaribu:
             # We capture the value of the line variable here because
             # readline uses the empty string '' to signal end of input,
             # hence `line` itself will always be overwritten at the end
             # of this loop.
             last_line = line
             line = readline()
-        except StopIteration:
+        tatizo StopIteration:
             line = b''
 
-        if encoding is not None:
+        if encoding ni sio None:
             line = line.decode(encoding)
         lnum += 1
         pos, max = 0, len(line)
 
-        if contstr:                            # continued string
-            if not line:
+        if contstr:                            # endelead string
+            if sio line:
                 raise TokenError("EOF in multi-line string", strstart)
             endmatch = endprog.match(line)
             if endmatch:
@@ -471,27 +471,27 @@ def _tokenize(readline, encoding):
                            strstart, (lnum, len(line)), contline)
                 contstr = ''
                 contline = None
-                continue
-            else:
+                endelea
+            isipokua:
                 contstr = contstr + line
                 contline = contline + line
-                continue
+                endelea
 
-        lasivyo parenlev == 0 and not continued:  # new statement
-            if not line: break
+        lasivyo parenlev == 0 and sio endelead:  # new statement
+            if sio line: koma
             column = 0
-            while pos < max:                   # measure leading whitespace
+            wakati pos < max:                   # measure leading whitespace
                 if line[pos] == ' ':
                     column += 1
                 lasivyo line[pos] == '\t':
                     column = (column//tabsize + 1)*tabsize
                 lasivyo line[pos] == '\f':
                     column = 0
-                else:
-                    break
+                isipokua:
+                    koma
                 pos += 1
             if pos == max:
-                break
+                koma
 
             if line[pos] in '#\r\n':           # skip comments or blank lines
                 if line[pos] == '#':
@@ -502,32 +502,32 @@ def _tokenize(readline, encoding):
 
                 yield TokenInfo(NL, line[pos:],
                            (lnum, pos), (lnum, len(line)), line)
-                continue
+                endelea
 
             if column > indents[-1]:           # count indents or dedents
                 indents.append(column)
                 yield TokenInfo(INDENT, line[:pos], (lnum, 0), (lnum, pos), line)
-            while column < indents[-1]:
-                if column not in indents:
+            wakati column < indents[-1]:
+                if column haiko kwenye indents:
                     raise IndentationError(
-                        "unindent does not match any outer indentation level",
+                        "unindent does sio match any outer indentation level",
                         ("<tokenize>", lnum, pos, line))
                 indents = indents[:-1]
 
                 yield TokenInfo(DEDENT, '', (lnum, pos), (lnum, pos), line)
 
-        else:                                  # continued statement
-            if not line:
+        isipokua:                                  # endelead statement
+            if sio line:
                 raise TokenError("EOF in multi-line statement", (lnum, 0))
-            continued = 0
+            endelead = 0
 
-        while pos < max:
+        wakati pos < max:
             pseudomatch = _compile(PseudoToken).match(line, pos)
             if pseudomatch:                                # scan for tokens
                 start, end = pseudomatch.span(1)
                 spos, epos, pos = (lnum, start), (lnum, end), end
                 if start == end:
-                    continue
+                    endelea
                 token, initial = line[start:end], line[start]
 
                 if (initial in numchars or                 # ordinary number
@@ -536,11 +536,11 @@ def _tokenize(readline, encoding):
                 lasivyo initial in '\r\n':
                     if parenlev > 0:
                         yield TokenInfo(NL, token, spos, epos, line)
-                    else:
+                    isipokua:
                         yield TokenInfo(NEWLINE, token, spos, epos, line)
 
                 lasivyo initial == '#':
-                    assert not token.endswith("\n")
+                    assert sio token.endswith("\n")
                     yield TokenInfo(COMMENT, token, spos, epos, line)
 
                 lasivyo token in triple_quoted:
@@ -550,11 +550,11 @@ def _tokenize(readline, encoding):
                         pos = endmatch.end(0)
                         token = line[start:pos]
                         yield TokenInfo(STRING, token, spos, (lnum, pos), line)
-                    else:
+                    isipokua:
                         strstart = (lnum, start)           # multiple lines
                         contstr = line[start:]
                         contline = line
-                        break
+                        koma
 
                 # Check up to the first 3 chars of the token to see if
                 #  they're in the single_quoted set. If so, they start
@@ -569,7 +569,7 @@ def _tokenize(readline, encoding):
                 lasivyo (initial in single_quoted or
                       token[:2] in single_quoted or
                       token[:3] in single_quoted):
-                    if token[-1] == '\n':                  # continued string
+                    if token[-1] == '\n':                  # endelead string
                         strstart = (lnum, start)
                         # Again, using the first 3 chars of the
                         #  token. This is looking for the matching end
@@ -582,27 +582,27 @@ def _tokenize(readline, encoding):
                                            endpats.get(token[2]))
                         contstr, needcont = line[start:], 1
                         contline = line
-                        break
-                    else:                                  # ordinary string
+                        koma
+                    isipokua:                                  # ordinary string
                         yield TokenInfo(STRING, token, spos, epos, line)
 
                 lasivyo initial.isidentifier():               # ordinary name
                     yield TokenInfo(NAME, token, spos, epos, line)
-                lasivyo initial == '\\':                      # continued stmt
-                    continued = 1
-                else:
+                lasivyo initial == '\\':                      # endelead stmt
+                    endelead = 1
+                isipokua:
                     if initial in '([{':
                         parenlev += 1
                     lasivyo initial in ')]}':
                         parenlev -= 1
                     yield TokenInfo(OP, token, spos, epos, line)
-            else:
+            isipokua:
                 yield TokenInfo(ERRORTOKEN, line[pos],
                            (lnum, pos), (lnum, pos+1), line)
                 pos += 1
 
     # Add an implicit NEWLINE if the input doesn't end in one
-    if last_line and last_line[-1] not in '\r\n':
+    if last_line and last_line[-1] haiko kwenye '\r\n':
         yield TokenInfo(NEWLINE, '', (lnum - 1, len(last_line)), (lnum - 1, len(last_line) + 1), '')
     for indent in indents[1:]:                 # pop remaining indent levels
         yield TokenInfo(DEDENT, '', (lnum, 0), (lnum, 0), '')
@@ -612,7 +612,7 @@ def _tokenize(readline, encoding):
 def generate_tokens(readline):
     """Tokenize a source reading Python code as unicode strings.
 
-    This has the same API as tokenize(), except that it expects the *readline*
+    This has the same API as tokenize(), tatizo that it expects the *readline*
     callable to return str objects instead of bytes.
     """
     return _tokenize(readline, None)
@@ -631,7 +631,7 @@ def main():
             perror("%s:%d:%d: error: %s" % args)
         lasivyo filename:
             perror("%s: error: %s" % (filename, message))
-        else:
+        isipokua:
             perror("error: %s" % message)
         sys.exit(1)
 
@@ -644,13 +644,13 @@ def main():
                         help='display token names using the exact type')
     args = parser.parse_args()
 
-    try:
+    jaribu:
         # Tokenize the input
         if args.filename:
             filename = args.filename
             with _builtin_open(filename, 'rb') as f:
                 tokens = list(tokenize(f.readline))
-        else:
+        isipokua:
             filename = "<stdin>"
             tokens = _tokenize(sys.stdin.readline, None)
 
@@ -662,19 +662,19 @@ def main():
             token_range = "%d,%d-%d,%d:" % (token.start + token.end)
             print("%-20s%-15s%-15r" %
                   (token_range, tok_name[token_type], token.string))
-    except IndentationError as err:
+    tatizo IndentationError as err:
         line, column = err.args[1][1:3]
         error(err.args[0], filename, (line, column))
-    except TokenError as err:
+    tatizo TokenError as err:
         line, column = err.args[1]
         error(err.args[0], filename, (line, column))
-    except SyntaxError as err:
+    tatizo SyntaxError as err:
         error(err, filename)
-    except OSError as err:
+    tatizo OSError as err:
         error(err)
-    except KeyboardInterrupt:
+    tatizo KeyboardInterrupt:
         print("interrupted\n")
-    except Exception as err:
+    tatizo Exception as err:
         perror("unexpected error: %s" % err)
         raise
 

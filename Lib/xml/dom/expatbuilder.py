@@ -1,31 +1,31 @@
 """Facility to use the Expat parser to load a minidom instance
-kutoka a string or file.
+kutoka a string ama file.
 
-This avoids all the overhead of SAX and pulldom to gain performance.
+This avoids all the overhead of SAX na pulldom to gain performance.
 """
 
 # Warning!
 #
-# This module is tightly bound to the implementation details of the
-# minidom DOM and can't be used with other DOM implementations.  This
-# is due, in part, to a lack of appropriate methods in the DOM (there is
-# no way to create Entity and Notation nodes via the DOM Level 2
-# interface), and for performance.  The latter is the cause of some fairly
+# This module ni tightly bound to the implementation details of the
+# minidom DOM na can't be used with other DOM implementations.  This
+# ni due, kwenye part, to a lack of appropriate methods kwenye the DOM (there is
+# no way to create Entity na Notation nodes via the DOM Level 2
+# interface), na kila performance.  The latter ni the cause of some fairly
 # cryptic code.
 #
 # Performance hacks:
 #
-#   -  .character_data_handler() has an extra case in which continuing
-#      data is appended to an existing Text node; this can be a
-#      speedup since pyexpat can break up character data into multiple
+#   -  .character_data_handler() has an extra case kwenye which continuing
+#      data ni appended to an existing Text node; this can be a
+#      speedup since pyexpat can koma up character data into multiple
 #      callbacks even though we set the buffer_text attribute on the
 #      parser.  This also gives us the advantage that we don't need a
-#      separate normalization pass.
+#      separate normalization pita.
 #
-#   -  Determining that a node exists is done using an identity comparison
-#      with None rather than a truth test; this avoids searching for and
+#   -  Determining that a node exists ni done using an identity comparison
+#      with Tupu rather than a truth test; this avoids searching kila and
 #      calling any methods on the node object ikiwa it exists.  (A rather
-#      nice speedup is achieved this way as well!)
+#      nice speedup ni achieved this way kama well!)
 
 kutoka xml.dom agiza xmlbuilder, minidom, Node
 kutoka xml.dom agiza EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE
@@ -46,24 +46,24 @@ theDOMImplementation = minidom.getDOMImplementation()
 
 # Expat typename -> TypeInfo
 _typeinfo_map = {
-    "CDATA":    minidom.TypeInfo(None, "cdata"),
-    "ENUM":     minidom.TypeInfo(None, "enumeration"),
-    "ENTITY":   minidom.TypeInfo(None, "entity"),
-    "ENTITIES": minidom.TypeInfo(None, "entities"),
-    "ID":       minidom.TypeInfo(None, "id"),
-    "IDREF":    minidom.TypeInfo(None, "idref"),
-    "IDREFS":   minidom.TypeInfo(None, "idrefs"),
-    "NMTOKEN":  minidom.TypeInfo(None, "nmtoken"),
-    "NMTOKENS": minidom.TypeInfo(None, "nmtokens"),
+    "CDATA":    minidom.TypeInfo(Tupu, "cdata"),
+    "ENUM":     minidom.TypeInfo(Tupu, "enumeration"),
+    "ENTITY":   minidom.TypeInfo(Tupu, "entity"),
+    "ENTITIES": minidom.TypeInfo(Tupu, "entities"),
+    "ID":       minidom.TypeInfo(Tupu, "id"),
+    "IDREF":    minidom.TypeInfo(Tupu, "idref"),
+    "IDREFS":   minidom.TypeInfo(Tupu, "idrefs"),
+    "NMTOKEN":  minidom.TypeInfo(Tupu, "nmtoken"),
+    "NMTOKENS": minidom.TypeInfo(Tupu, "nmtokens"),
     }
 
 kundi ElementInfo(object):
     __slots__ = '_attr_info', '_model', 'tagName'
 
-    eleza __init__(self, tagName, model=None):
+    eleza __init__(self, tagName, model=Tupu):
         self.tagName = tagName
         self._attr_info = []
-        self._model = model
+        self._motoa = model
 
     eleza __getstate__(self):
         rudisha self._attr_info, self._model, self.tagName
@@ -72,12 +72,12 @@ kundi ElementInfo(object):
         self._attr_info, self._model, self.tagName = state
 
     eleza getAttributeType(self, aname):
-        for info in self._attr_info:
+        kila info kwenye self._attr_info:
             ikiwa info[1] == aname:
                 t = info[-2]
                 ikiwa t[0] == "(":
                     rudisha _typeinfo_map["ENUM"]
-                else:
+                isipokua:
                     rudisha _typeinfo_map[info[-2]]
         rudisha minidom._no_type
 
@@ -87,32 +87,32 @@ kundi ElementInfo(object):
     eleza isElementContent(self):
         ikiwa self._model:
             type = self._model[0]
-            rudisha type not in (expat.model.XML_CTYPE_ANY,
+            rudisha type haiko kwenye (expat.model.XML_CTYPE_ANY,
                                 expat.model.XML_CTYPE_MIXED)
-        else:
-            rudisha False
+        isipokua:
+            rudisha Uongo
 
     eleza isEmpty(self):
         ikiwa self._model:
             rudisha self._model[0] == expat.model.XML_CTYPE_EMPTY
-        else:
-            rudisha False
+        isipokua:
+            rudisha Uongo
 
     eleza isId(self, aname):
-        for info in self._attr_info:
+        kila info kwenye self._attr_info:
             ikiwa info[1] == aname:
                 rudisha info[-2] == "ID"
-        rudisha False
+        rudisha Uongo
 
     eleza isIdNS(self, euri, ename, auri, aname):
-        # not sure this is meaningful
+        # sio sure this ni meaningful
         rudisha self.isId((auri, aname))
 
 eleza _intern(builder, s):
     rudisha builder._intern_setdefault(s, s)
 
 eleza _parse_ns_name(builder, name):
-    assert ' ' in name
+    assert ' ' kwenye name
     parts = name.split(' ')
     intern = builder._intern_setdefault
     ikiwa len(parts) == 3:
@@ -125,8 +125,8 @@ eleza _parse_ns_name(builder, name):
         uri, localname = parts
         prefix = EMPTY_PREFIX
         qname = localname = intern(localname, localname)
-    else:
-        raise ValueError("Unsupported syntax: spaces in URIs not supported: %r" % name)
+    isipokua:
+        ashiria ValueError("Unsupported syntax: spaces kwenye URIs sio supported: %r" % name)
     rudisha intern(uri, uri), localname, prefix, qname
 
 
@@ -134,18 +134,18 @@ kundi ExpatBuilder:
     """Document builder that uses Expat to build a ParsedXML.DOM document
     instance."""
 
-    eleza __init__(self, options=None):
-        ikiwa options is None:
+    eleza __init__(self, options=Tupu):
+        ikiwa options ni Tupu:
             options = xmlbuilder.Options()
         self._options = options
-        ikiwa self._options.filter is not None:
+        ikiwa self._options.filter ni sio Tupu:
             self._filter = FilterVisibilityController(self._options.filter)
-        else:
-            self._filter = None
-            # This *really* doesn't do anything in this case, so
+        isipokua:
+            self._filter = Tupu
+            # This *really* doesn't do anything kwenye this case, so
             # override it with something fast & minimal.
             self._finish_start_element = id
-        self._parser = None
+        self._parser = Tupu
         self.reset()
 
     eleza createParser(self):
@@ -154,22 +154,22 @@ kundi ExpatBuilder:
 
     eleza getParser(self):
         """Return the parser object, creating a new one ikiwa needed."""
-        ikiwa not self._parser:
+        ikiwa sio self._parser:
             self._parser = self.createParser()
             self._intern_setdefault = self._parser.intern.setdefault
-            self._parser.buffer_text = True
-            self._parser.ordered_attributes = True
-            self._parser.specified_attributes = True
+            self._parser.buffer_text = Kweli
+            self._parser.ordered_attributes = Kweli
+            self._parser.specified_attributes = Kweli
             self.install(self._parser)
         rudisha self._parser
 
     eleza reset(self):
         """Free all data structures used during DOM construction."""
         self.document = theDOMImplementation.createDocument(
-            EMPTY_NAMESPACE, None, None)
+            EMPTY_NAMESPACE, Tupu, Tupu)
         self.curNode = self.document
         self._elem_info = self.document._elem_info
-        self._cdata = False
+        self._cdata = Uongo
 
     eleza install(self, parser):
         """Install the callbacks needed to build the DOM into the parser."""
@@ -187,7 +187,7 @@ kundi ExpatBuilder:
             parser.StartCdataSectionHandler = self.start_cdata_section_handler
             parser.EndCdataSectionHandler = self.end_cdata_section_handler
             parser.CharacterDataHandler = self.character_data_handler_cdata
-        else:
+        isipokua:
             parser.CharacterDataHandler = self.character_data_handler
         parser.ExternalEntityRefHandler = self.external_entity_ref_handler
         parser.XmlDeclHandler = self.xml_decl_handler
@@ -195,38 +195,38 @@ kundi ExpatBuilder:
         parser.AttlistDeclHandler = self.attlist_decl_handler
 
     eleza parseFile(self, file):
-        """Parse a document kutoka a file object, returning the document
+        """Parse a document kutoka a file object, rudishaing the document
         node."""
         parser = self.getParser()
-        first_buffer = True
-        try:
-            while 1:
+        first_buffer = Kweli
+        jaribu:
+            wakati 1:
                 buffer = file.read(16*1024)
-                ikiwa not buffer:
-                    break
+                ikiwa sio buffer:
+                    koma
                 parser.Parse(buffer, 0)
-                ikiwa first_buffer and self.document.documentElement:
+                ikiwa first_buffer na self.document.documentElement:
                     self._setup_subset(buffer)
-                first_buffer = False
-            parser.Parse("", True)
-        except ParseEscape:
-            pass
+                first_buffer = Uongo
+            parser.Parse("", Kweli)
+        tatizo ParseEscape:
+            pita
         doc = self.document
         self.reset()
-        self._parser = None
+        self._parser = Tupu
         rudisha doc
 
     eleza parseString(self, string):
-        """Parse a document kutoka a string, returning the document node."""
+        """Parse a document kutoka a string, rudishaing the document node."""
         parser = self.getParser()
-        try:
-            parser.Parse(string, True)
+        jaribu:
+            parser.Parse(string, Kweli)
             self._setup_subset(string)
-        except ParseEscape:
-            pass
+        tatizo ParseEscape:
+            pita
         doc = self.document
         self.reset()
-        self._parser = None
+        self._parser = Tupu
         rudisha doc
 
     eleza _setup_subset(self, buffer):
@@ -244,48 +244,48 @@ kundi ExpatBuilder:
         doctype.ownerDocument = self.document
         _append_child(self.document, doctype)
         self.document.doctype = doctype
-        ikiwa self._filter and self._filter.acceptNode(doctype) == FILTER_REJECT:
-            self.document.doctype = None
-            del self.document.childNodes[-1]
-            doctype = None
-            self._parser.EntityDeclHandler = None
-            self._parser.NotationDeclHandler = None
+        ikiwa self._filter na self._filter.acceptNode(doctype) == FILTER_REJECT:
+            self.document.doctype = Tupu
+            toa self.document.childNodes[-1]
+            doctype = Tupu
+            self._parser.EntityDeclHandler = Tupu
+            self._parser.NotationDeclHandler = Tupu
         ikiwa has_internal_subset:
-            ikiwa doctype is not None:
+            ikiwa doctype ni sio Tupu:
                 doctype.entities._seq = []
                 doctype.notations._seq = []
-            self._parser.CommentHandler = None
-            self._parser.ProcessingInstructionHandler = None
+            self._parser.CommentHandler = Tupu
+            self._parser.ProcessingInstructionHandler = Tupu
             self._parser.EndDoctypeDeclHandler = self.end_doctype_decl_handler
 
     eleza end_doctype_decl_handler(self):
         ikiwa self._options.comments:
             self._parser.CommentHandler = self.comment_handler
         self._parser.ProcessingInstructionHandler = self.pi_handler
-        ikiwa not (self._elem_info or self._filter):
+        ikiwa sio (self._elem_info ama self._filter):
             self._finish_end_element = id
 
     eleza pi_handler(self, target, data):
         node = self.document.createProcessingInstruction(target, data)
         _append_child(self.curNode, node)
-        ikiwa self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
+        ikiwa self._filter na self._filter.acceptNode(node) == FILTER_REJECT:
             self.curNode.removeChild(node)
 
     eleza character_data_handler_cdata(self, data):
         childNodes = self.curNode.childNodes
         ikiwa self._cdata:
-            ikiwa (  self._cdata_continue
-                  and childNodes[-1].nodeType == CDATA_SECTION_NODE):
+            ikiwa (  self._cdata_endelea
+                  na childNodes[-1].nodeType == CDATA_SECTION_NODE):
                 childNodes[-1].appendData(data)
-                return
+                rudisha
             node = self.document.createCDATASection(data)
-            self._cdata_continue = True
-        elikiwa childNodes and childNodes[-1].nodeType == TEXT_NODE:
+            self._cdata_endelea = Kweli
+        elikiwa childNodes na childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             value = node.data + data
             node.data = value
-            return
-        else:
+            rudisha
+        isipokua:
             node = minidom.Text()
             node.data = data
             node.ownerDocument = self.document
@@ -293,10 +293,10 @@ kundi ExpatBuilder:
 
     eleza character_data_handler(self, data):
         childNodes = self.curNode.childNodes
-        ikiwa childNodes and childNodes[-1].nodeType == TEXT_NODE:
+        ikiwa childNodes na childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             node.data = node.data + data
-            return
+            rudisha
         node = minidom.Text()
         node.data = node.data + data
         node.ownerDocument = self.document
@@ -305,46 +305,46 @@ kundi ExpatBuilder:
     eleza entity_decl_handler(self, entityName, is_parameter_entity, value,
                             base, systemId, publicId, notationName):
         ikiwa is_parameter_entity:
-            # we don't care about parameter entities for the DOM
-            return
-        ikiwa not self._options.entities:
-            return
+            # we don't care about parameter entities kila the DOM
+            rudisha
+        ikiwa sio self._options.entities:
+            rudisha
         node = self.document._create_entity(entityName, publicId,
                                             systemId, notationName)
-        ikiwa value is not None:
+        ikiwa value ni sio Tupu:
             # internal entity
             # node *should* be readonly, but we'll cheat
             child = self.document.createTextNode(value)
             node.childNodes.append(child)
         self.document.doctype.entities._seq.append(node)
-        ikiwa self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
-            del self.document.doctype.entities._seq[-1]
+        ikiwa self._filter na self._filter.acceptNode(node) == FILTER_REJECT:
+            toa self.document.doctype.entities._seq[-1]
 
     eleza notation_decl_handler(self, notationName, base, systemId, publicId):
         node = self.document._create_notation(notationName, publicId, systemId)
         self.document.doctype.notations._seq.append(node)
-        ikiwa self._filter and self._filter.acceptNode(node) == FILTER_ACCEPT:
-            del self.document.doctype.notations._seq[-1]
+        ikiwa self._filter na self._filter.acceptNode(node) == FILTER_ACCEPT:
+            toa self.document.doctype.notations._seq[-1]
 
     eleza comment_handler(self, data):
         node = self.document.createComment(data)
         _append_child(self.curNode, node)
-        ikiwa self._filter and self._filter.acceptNode(node) == FILTER_REJECT:
+        ikiwa self._filter na self._filter.acceptNode(node) == FILTER_REJECT:
             self.curNode.removeChild(node)
 
     eleza start_cdata_section_handler(self):
-        self._cdata = True
-        self._cdata_continue = False
+        self._cdata = Kweli
+        self._cdata_endelea = Uongo
 
     eleza end_cdata_section_handler(self):
-        self._cdata = False
-        self._cdata_continue = False
+        self._cdata = Uongo
+        self._cdata_endelea = Uongo
 
     eleza external_entity_ref_handler(self, context, base, systemId, publicId):
         rudisha 1
 
     eleza first_element_handler(self, name, attributes):
-        ikiwa self._filter is None and not self._elem_info:
+        ikiwa self._filter ni Tupu na sio self._elem_info:
             self._finish_end_element = id
         self.getParser().StartElementHandler = self.start_element_handler
         self.start_element_handler(name, attributes)
@@ -355,23 +355,23 @@ kundi ExpatBuilder:
         self.curNode = node
 
         ikiwa attributes:
-            for i in range(0, len(attributes), 2):
+            kila i kwenye range(0, len(attributes), 2):
                 a = minidom.Attr(attributes[i], EMPTY_NAMESPACE,
-                                 None, EMPTY_PREFIX)
+                                 Tupu, EMPTY_PREFIX)
                 value = attributes[i+1]
                 a.value = value
                 a.ownerDocument = self.document
                 _set_attribute_node(node, a)
 
-        ikiwa node is not self.document.documentElement:
+        ikiwa node ni sio self.document.documentElement:
             self._finish_start_element(node)
 
     eleza _finish_start_element(self, node):
         ikiwa self._filter:
             # To be general, we'd have to call isSameNode(), but this
-            # is sufficient for minidom:
-            ikiwa node is self.document.documentElement:
-                return
+            # ni sufficient kila minidom:
+            ikiwa node ni self.document.documentElement:
+                rudisha
             filt = self._filter.startContainer(node)
             ikiwa filt == FILTER_REJECT:
                 # ignore this node & all descendents
@@ -380,8 +380,8 @@ kundi ExpatBuilder:
                 # ignore this node, but make it's children become
                 # children of the parent node
                 Skipper(self)
-            else:
-                return
+            isipokua:
+                rudisha
             self.curNode = node.parentNode
             node.parentNode.removeChild(node)
             node.unlink()
@@ -399,54 +399,54 @@ kundi ExpatBuilder:
         ikiwa info:
             self._handle_white_text_nodes(curNode, info)
         ikiwa self._filter:
-            ikiwa curNode is self.document.documentElement:
-                return
+            ikiwa curNode ni self.document.documentElement:
+                rudisha
             ikiwa self._filter.acceptNode(curNode) == FILTER_REJECT:
                 self.curNode.removeChild(curNode)
                 curNode.unlink()
 
     eleza _handle_white_text_nodes(self, node, info):
         ikiwa (self._options.whitespace_in_element_content
-            or not info.isElementContent()):
-            return
+            ama sio info.isElementContent()):
+            rudisha
 
-        # We have element type information and should remove ignorable
-        # whitespace; identify for text nodes which contain only
+        # We have element type information na should remove ignorable
+        # whitespace; identify kila text nodes which contain only
         # whitespace.
         L = []
-        for child in node.childNodes:
-            ikiwa child.nodeType == TEXT_NODE and not child.data.strip():
+        kila child kwenye node.childNodes:
+            ikiwa child.nodeType == TEXT_NODE na sio child.data.strip():
                 L.append(child)
 
         # Remove ignorable whitespace kutoka the tree.
-        for child in L:
+        kila child kwenye L:
             node.removeChild(child)
 
     eleza element_decl_handler(self, name, model):
         info = self._elem_info.get(name)
-        ikiwa info is None:
+        ikiwa info ni Tupu:
             self._elem_info[name] = ElementInfo(name, model)
-        else:
-            assert info._model is None
-            info._model = model
+        isipokua:
+            assert info._motoa ni Tupu
+            info._motoa = model
 
     eleza attlist_decl_handler(self, elem, name, type, default, required):
         info = self._elem_info.get(elem)
-        ikiwa info is None:
+        ikiwa info ni Tupu:
             info = ElementInfo(elem)
             self._elem_info[elem] = info
         info._attr_info.append(
-            [None, name, None, None, default, 0, type, required])
+            [Tupu, name, Tupu, Tupu, default, 0, type, required])
 
     eleza xml_decl_handler(self, version, encoding, standalone):
         self.document.version = version
         self.document.encoding = encoding
-        # This is still a little ugly, thanks to the pyexpat API. ;-(
+        # This ni still a little ugly, thanks to the pyexpat API. ;-(
         ikiwa standalone >= 0:
             ikiwa standalone:
-                self.document.standalone = True
-            else:
-                self.document.standalone = False
+                self.document.standalone = Kweli
+            isipokua:
+                self.document.standalone = Uongo
 
 
 # Don't include FILTER_INTERRUPT, since that's checked separately
@@ -467,12 +467,12 @@ kundi FilterVisibilityController(object):
         ikiwa self.filter.whatToShow & mask:
             val = self.filter.startContainer(node)
             ikiwa val == FILTER_INTERRUPT:
-                raise ParseEscape
-            ikiwa val not in _ALLOWED_FILTER_RETURNS:
-                raise ValueError(
-                      "startContainer() returned illegal value: " + repr(val))
+                ashiria ParseEscape
+            ikiwa val haiko kwenye _ALLOWED_FILTER_RETURNS:
+                ashiria ValueError(
+                      "startContainer() rudishaed illegal value: " + repr(val))
             rudisha val
-        else:
+        isipokua:
             rudisha FILTER_ACCEPT
 
     eleza acceptNode(self, node):
@@ -480,19 +480,19 @@ kundi FilterVisibilityController(object):
         ikiwa self.filter.whatToShow & mask:
             val = self.filter.acceptNode(node)
             ikiwa val == FILTER_INTERRUPT:
-                raise ParseEscape
+                ashiria ParseEscape
             ikiwa val == FILTER_SKIP:
-                # move all child nodes to the parent, and remove this node
+                # move all child nodes to the parent, na remove this node
                 parent = node.parentNode
-                for child in node.childNodes[:]:
+                kila child kwenye node.childNodes[:]:
                     parent.appendChild(child)
-                # node is handled by the caller
+                # node ni handled by the caller
                 rudisha FILTER_REJECT
-            ikiwa val not in _ALLOWED_FILTER_RETURNS:
-                raise ValueError(
-                      "acceptNode() returned illegal value: " + repr(val))
+            ikiwa val haiko kwenye _ALLOWED_FILTER_RETURNS:
+                ashiria ValueError(
+                      "acceptNode() rudishaed illegal value: " + repr(val))
             rudisha val
-        else:
+        isipokua:
             rudisha FILTER_ACCEPT
 
     _nodetype_mask = {
@@ -529,14 +529,14 @@ kundi Rejecter(FilterCrutch):
     eleza __init__(self, builder):
         FilterCrutch.__init__(self, builder)
         parser = builder._parser
-        for name in ("ProcessingInstructionHandler",
+        kila name kwenye ("ProcessingInstructionHandler",
                      "CommentHandler",
                      "CharacterDataHandler",
                      "StartCdataSectionHandler",
                      "EndCdataSectionHandler",
                      "ExternalEntityRefHandler",
                      ):
-            setattr(parser, name, None)
+            setattr(parser, name, Tupu)
 
     eleza start_element_handler(self, *args):
         self._level = self._level + 1
@@ -548,7 +548,7 @@ kundi Rejecter(FilterCrutch):
             self._builder.install(parser)
             parser.StartElementHandler = self._old_start
             parser.EndElementHandler = self._old_end
-        else:
+        isipokua:
             self._level = self._level - 1
 
 kundi Skipper(FilterCrutch):
@@ -557,7 +557,7 @@ kundi Skipper(FilterCrutch):
     eleza start_element_handler(self, *args):
         node = self._builder.curNode
         self._old_start(*args)
-        ikiwa self._builder.curNode is not node:
+        ikiwa self._builder.curNode ni sio node:
             self._level = self._level + 1
 
     eleza end_element_handler(self, *args):
@@ -566,14 +566,14 @@ kundi Skipper(FilterCrutch):
             # shouldn't need to do anything but reset the handlers.
             self._builder._parser.StartElementHandler = self._old_start
             self._builder._parser.EndElementHandler = self._old_end
-            self._builder = None
-        else:
+            self._builder = Tupu
+        isipokua:
             self._level = self._level - 1
             self._old_end(*args)
 
 
 # framework document used by the fragment builder.
-# Takes a string for the doctype, subset string, and namespace attrs string.
+# Takes a string kila the doctype, subset string, na namespace attrs string.
 
 _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID = \
     "http://xml.python.org/entities/fragment-builder/internal"
@@ -593,69 +593,69 @@ _FRAGMENT_BUILDER_TEMPLATE = (
 
 kundi FragmentBuilder(ExpatBuilder):
     """Builder which constructs document fragments given XML source
-    text and a context node.
+    text na a context node.
 
-    The context node is expected to provide information about the
-    namespace declarations which are in scope at the start of the
+    The context node ni expected to provide information about the
+    namespace declarations which are kwenye scope at the start of the
     fragment.
     """
 
-    eleza __init__(self, context, options=None):
+    eleza __init__(self, context, options=Tupu):
         ikiwa context.nodeType == DOCUMENT_NODE:
             self.originalDocument = context
             self.context = context
-        else:
+        isipokua:
             self.originalDocument = context.ownerDocument
             self.context = context
         ExpatBuilder.__init__(self, options)
 
     eleza reset(self):
         ExpatBuilder.reset(self)
-        self.fragment = None
+        self.fragment = Tupu
 
     eleza parseFile(self, file):
-        """Parse a document fragment kutoka a file object, returning the
+        """Parse a document fragment kutoka a file object, rudishaing the
         fragment node."""
         rudisha self.parseString(file.read())
 
     eleza parseString(self, string):
-        """Parse a document fragment kutoka a string, returning the
+        """Parse a document fragment kutoka a string, rudishaing the
         fragment node."""
         self._source = string
         parser = self.getParser()
         doctype = self.originalDocument.doctype
         ident = ""
         ikiwa doctype:
-            subset = doctype.internalSubset or self._getDeclarations()
+            subset = doctype.internalSubset ama self._getDeclarations()
             ikiwa doctype.publicId:
                 ident = ('PUBLIC "%s" "%s"'
                          % (doctype.publicId, doctype.systemId))
             elikiwa doctype.systemId:
                 ident = 'SYSTEM "%s"' % doctype.systemId
-        else:
+        isipokua:
             subset = ""
         nsattrs = self._getNSattrs() # get ns decls kutoka node's ancestors
         document = _FRAGMENT_BUILDER_TEMPLATE % (ident, subset, nsattrs)
-        try:
+        jaribu:
             parser.Parse(document, 1)
         except:
             self.reset()
-            raise
+            ashiria
         fragment = self.fragment
         self.reset()
-##         self._parser = None
+##         self._parser = Tupu
         rudisha fragment
 
     eleza _getDeclarations(self):
         """Re-create the internal subset kutoka the DocumentType node.
 
-        This is only needed ikiwa we don't already have the
-        internalSubset as a string.
+        This ni only needed ikiwa we don't already have the
+        internalSubset kama a string.
         """
         doctype = self.context.ownerDocument.doctype
         s = ""
         ikiwa doctype:
-            for i in range(doctype.notations.length):
+            kila i kwenye range(doctype.notations.length):
                 notation = doctype.notations.item(i)
                 ikiwa s:
                     s = s + "\n  "
@@ -663,9 +663,9 @@ kundi FragmentBuilder(ExpatBuilder):
                 ikiwa notation.publicId:
                     s = '%s PUBLIC "%s"\n             "%s">' \
                         % (s, notation.publicId, notation.systemId)
-                else:
+                isipokua:
                     s = '%s SYSTEM "%s">' % (s, notation.systemId)
-            for i in range(doctype.entities.length):
+            kila i kwenye range(doctype.entities.length):
                 entity = doctype.entities.item(i)
                 ikiwa s:
                     s = s + "\n  "
@@ -675,7 +675,7 @@ kundi FragmentBuilder(ExpatBuilder):
                         % (s, entity.publicId, entity.systemId)
                 elikiwa entity.systemId:
                     s = '%s SYSTEM "%s"' % (s, entity.systemId)
-                else:
+                isipokua:
                     s = '%s "%s"' % (s, entity.firstChild.data)
                 ikiwa entity.notationName:
                     s = "%s NOTATION %s" % (s, entity.notationName)
@@ -687,39 +687,39 @@ kundi FragmentBuilder(ExpatBuilder):
 
     eleza external_entity_ref_handler(self, context, base, systemId, publicId):
         ikiwa systemId == _FRAGMENT_BUILDER_INTERNAL_SYSTEM_ID:
-            # this entref is the one that we made to put the subtree
-            # in; all of our given input is parsed in here.
+            # this entref ni the one that we made to put the subtree
+            # in; all of our given input ni parsed kwenye here.
             old_document = self.document
             old_cur_node = self.curNode
             parser = self._parser.ExternalEntityParserCreate(context)
-            # put the real document back, parse into the fragment to return
+            # put the real document back, parse into the fragment to rudisha
             self.document = self.originalDocument
             self.fragment = self.document.createDocumentFragment()
             self.curNode = self.fragment
-            try:
+            jaribu:
                 parser.Parse(self._source, 1)
-            finally:
+            mwishowe:
                 self.curNode = old_cur_node
                 self.document = old_document
-                self._source = None
+                self._source = Tupu
             rudisha -1
-        else:
+        isipokua:
             rudisha ExpatBuilder.external_entity_ref_handler(
                 self, context, base, systemId, publicId)
 
 
 kundi Namespaces:
-    """Mix-in kundi for builders; adds support for namespaces."""
+    """Mix-in kundi kila builders; adds support kila namespaces."""
 
     eleza _initNamespaces(self):
         # list of (prefix, uri) ns declarations.  Namespace attrs are
-        # constructed kutoka this and added to the element's attrs.
+        # constructed kutoka this na added to the element's attrs.
         self._ns_ordered_prefixes = []
 
     eleza createParser(self):
         """Create a new namespace-handling parser."""
         parser = expat.ParserCreate(namespace_separator=" ")
-        parser.namespace_prefixes = True
+        parser.namespace_prefixes = Kweli
         rudisha parser
 
     eleza install(self, parser):
@@ -734,12 +734,12 @@ kundi Namespaces:
         self._ns_ordered_prefixes.append((prefix, uri))
 
     eleza start_element_handler(self, name, attributes):
-        ikiwa ' ' in name:
+        ikiwa ' ' kwenye name:
             uri, localname, prefix, qname = _parse_ns_name(self, name)
-        else:
+        isipokua:
             uri = EMPTY_NAMESPACE
             qname = name
-            localname = None
+            localname = Tupu
             prefix = EMPTY_PREFIX
         node = minidom.Element(qname, uri, prefix, localname)
         node.ownerDocument = self.document
@@ -747,31 +747,31 @@ kundi Namespaces:
         self.curNode = node
 
         ikiwa self._ns_ordered_prefixes:
-            for prefix, uri in self._ns_ordered_prefixes:
+            kila prefix, uri kwenye self._ns_ordered_prefixes:
                 ikiwa prefix:
                     a = minidom.Attr(_intern(self, 'xmlns:' + prefix),
                                      XMLNS_NAMESPACE, prefix, "xmlns")
-                else:
+                isipokua:
                     a = minidom.Attr("xmlns", XMLNS_NAMESPACE,
                                      "xmlns", EMPTY_PREFIX)
                 a.value = uri
                 a.ownerDocument = self.document
                 _set_attribute_node(node, a)
-            del self._ns_ordered_prefixes[:]
+            toa self._ns_ordered_prefixes[:]
 
         ikiwa attributes:
             node._ensure_attributes()
             _attrs = node._attrs
             _attrsNS = node._attrsNS
-            for i in range(0, len(attributes), 2):
+            kila i kwenye range(0, len(attributes), 2):
                 aname = attributes[i]
                 value = attributes[i+1]
-                ikiwa ' ' in aname:
+                ikiwa ' ' kwenye aname:
                     uri, localname, prefix, qname = _parse_ns_name(self, aname)
                     a = minidom.Attr(qname, uri, localname, prefix)
                     _attrs[qname] = a
                     _attrsNS[(uri, localname)] = a
-                else:
+                isipokua:
                     a = minidom.Attr(aname, EMPTY_NAMESPACE,
                                      aname, EMPTY_PREFIX)
                     _attrs[aname] = a
@@ -782,19 +782,19 @@ kundi Namespaces:
 
     ikiwa __debug__:
         # This only adds some asserts to the original
-        # end_element_handler(), so we only define this when -O is not
+        # end_element_handler(), so we only define this when -O ni not
         # used.  If changing one, be sure to check the other to see if
-        # it needs to be changed as well.
+        # it needs to be changed kama well.
         #
         eleza end_element_handler(self, name):
             curNode = self.curNode
-            ikiwa ' ' in name:
+            ikiwa ' ' kwenye name:
                 uri, localname, prefix, qname = _parse_ns_name(self, name)
                 assert (curNode.namespaceURI == uri
-                        and curNode.localName == localname
-                        and curNode.prefix == prefix), \
+                        na curNode.localName == localname
+                        na curNode.prefix == prefix), \
                         "element stack messed up! (namespace)"
-            else:
+            isipokua:
                 assert curNode.nodeName == name, \
                        "element stack messed up - bad nodeName"
                 assert curNode.namespaceURI == EMPTY_NAMESPACE, \
@@ -823,55 +823,55 @@ kundi FragmentBuilderNS(Namespaces, FragmentBuilder):
         ancestors."""
         # XXX This needs to be re-written to walk the ancestors of the
         # context to build up the namespace information kutoka
-        # declarations, elements, and attributes found in context.
+        # declarations, elements, na attributes found kwenye context.
         # Otherwise we have to store a bunch more data on the DOM
-        # (though that *might* be more reliable -- not clear).
+        # (though that *might* be more reliable -- sio clear).
         attrs = ""
         context = self.context
         L = []
-        while context:
+        wakati context:
             ikiwa hasattr(context, '_ns_prefix_uri'):
-                for prefix, uri in context._ns_prefix_uri.items():
-                    # add every new NS decl kutoka context to L and attrs string
-                    ikiwa prefix in L:
-                        continue
+                kila prefix, uri kwenye context._ns_prefix_uri.items():
+                    # add every new NS decl kutoka context to L na attrs string
+                    ikiwa prefix kwenye L:
+                        endelea
                     L.append(prefix)
                     ikiwa prefix:
                         declname = "xmlns:" + prefix
-                    else:
+                    isipokua:
                         declname = "xmlns"
                     ikiwa attrs:
                         attrs = "%s\n    %s='%s'" % (attrs, declname, uri)
-                    else:
+                    isipokua:
                         attrs = " %s='%s'" % (declname, uri)
             context = context.parentNode
         rudisha attrs
 
 
 kundi ParseEscape(Exception):
-    """Exception raised to short-circuit parsing in InternalSubsetExtractor."""
-    pass
+    """Exception ashiriad to short-circuit parsing kwenye InternalSubsetExtractor."""
+    pita
 
 kundi InternalSubsetExtractor(ExpatBuilder):
     """XML processor which can rip out the internal document type subset."""
 
-    subset = None
+    subset = Tupu
 
     eleza getSubset(self):
-        """Return the internal subset as a string."""
+        """Return the internal subset kama a string."""
         rudisha self.subset
 
     eleza parseFile(self, file):
-        try:
+        jaribu:
             ExpatBuilder.parseFile(self, file)
-        except ParseEscape:
-            pass
+        tatizo ParseEscape:
+            pita
 
     eleza parseString(self, string):
-        try:
+        jaribu:
             ExpatBuilder.parseString(self, string)
-        except ParseEscape:
-            pass
+        tatizo ParseEscape:
+            pita
 
     eleza install(self, parser):
         parser.StartDoctypeDeclHandler = self.start_doctype_decl_handler
@@ -884,75 +884,75 @@ kundi InternalSubsetExtractor(ExpatBuilder):
             self.subset = []
             parser.DefaultHandler = self.subset.append
             parser.EndDoctypeDeclHandler = self.end_doctype_decl_handler
-        else:
-            raise ParseEscape()
+        isipokua:
+            ashiria ParseEscape()
 
     eleza end_doctype_decl_handler(self):
         s = ''.join(self.subset).replace('\r\n', '\n').replace('\r', '\n')
         self.subset = s
-        raise ParseEscape()
+        ashiria ParseEscape()
 
     eleza start_element_handler(self, name, attrs):
-        raise ParseEscape()
+        ashiria ParseEscape()
 
 
-eleza parse(file, namespaces=True):
-    """Parse a document, returning the resulting Document node.
+eleza parse(file, namespaces=Kweli):
+    """Parse a document, rudishaing the resulting Document node.
 
-    'file' may be either a file name or an open file object.
+    'file' may be either a file name ama an open file object.
     """
     ikiwa namespaces:
         builder = ExpatBuilderNS()
-    else:
+    isipokua:
         builder = ExpatBuilder()
 
     ikiwa isinstance(file, str):
-        with open(file, 'rb') as fp:
+        with open(file, 'rb') kama fp:
             result = builder.parseFile(fp)
-    else:
+    isipokua:
         result = builder.parseFile(file)
     rudisha result
 
 
-eleza parseString(string, namespaces=True):
-    """Parse a document kutoka a string, returning the resulting
+eleza parseString(string, namespaces=Kweli):
+    """Parse a document kutoka a string, rudishaing the resulting
     Document node.
     """
     ikiwa namespaces:
         builder = ExpatBuilderNS()
-    else:
+    isipokua:
         builder = ExpatBuilder()
     rudisha builder.parseString(string)
 
 
-eleza parseFragment(file, context, namespaces=True):
+eleza parseFragment(file, context, namespaces=Kweli):
     """Parse a fragment of a document, given the context kutoka which it
     was originally extracted.  context should be the parent of the
-    node(s) which are in the fragment.
+    node(s) which are kwenye the fragment.
 
-    'file' may be either a file name or an open file object.
+    'file' may be either a file name ama an open file object.
     """
     ikiwa namespaces:
         builder = FragmentBuilderNS(context)
-    else:
+    isipokua:
         builder = FragmentBuilder(context)
 
     ikiwa isinstance(file, str):
-        with open(file, 'rb') as fp:
+        with open(file, 'rb') kama fp:
             result = builder.parseFile(fp)
-    else:
+    isipokua:
         result = builder.parseFile(file)
     rudisha result
 
 
-eleza parseFragmentString(string, context, namespaces=True):
+eleza parseFragmentString(string, context, namespaces=Kweli):
     """Parse a fragment of a document kutoka a string, given the context
     kutoka which it was originally extracted.  context should be the
-    parent of the node(s) which are in the fragment.
+    parent of the node(s) which are kwenye the fragment.
     """
     ikiwa namespaces:
         builder = FragmentBuilderNS(context)
-    else:
+    isipokua:
         builder = FragmentBuilder(context)
     rudisha builder.parseString(string)
 
@@ -961,5 +961,5 @@ eleza makeBuilder(options):
     """Create a builder based on an Options object."""
     ikiwa options.namespaces:
         rudisha ExpatBuilderNS(options)
-    else:
+    isipokua:
         rudisha ExpatBuilder(options)

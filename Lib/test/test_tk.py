@@ -9,7 +9,7 @@ kutoka tkinter.test agiza runtktests
 
 eleza test_main():
     support.run_unittest(
-            *runtktests.get_tests(text=False, packages=['test_tkinter']))
+            *runtktests.get_tests(text=Uongo, packages=['test_tkinter']))
 
 ikiwa __name__ == '__main__':
     test_main()

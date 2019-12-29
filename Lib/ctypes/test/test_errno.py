@@ -12,7 +12,7 @@ class Test(unittest.TestCase):
         libc = CDLL(libc_name, use_errno=True)
         if os.name == "nt":
             libc_open = libc._open
-        else:
+        isipokua:
             libc_open = libc.open
 
         libc_open.argtypes = c_char_p, c_int
@@ -29,7 +29,7 @@ class Test(unittest.TestCase):
             libc = CDLL(libc_name, use_errno=False)
             if os.name == "nt":
                 libc_open = libc._open
-            else:
+            isipokua:
                 libc_open = libc.open
             libc_open.argtypes = c_char_p, c_int
             self.assertEqual(libc_open(b"", 0), -1)

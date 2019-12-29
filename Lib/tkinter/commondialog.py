@@ -18,7 +18,7 @@ class Dialog:
     def __init__(self, master=None, **options):
         self.master  = master
         self.options = options
-        if not master and options.get('parent'):
+        if sio master and options.get('parent'):
             self.master = options['parent']
 
     def _fixoptions(self):
@@ -39,15 +39,15 @@ class Dialog:
         # (at least as long as we use Tkinter 1.63)
         w = Frame(self.master)
 
-        try:
+        jaribu:
 
             s = w.tk.call(self.command, *w._options(self.options))
 
             s = self._fixresult(w, s)
 
-        finally:
+        mwishowe:
 
-            try:
+            jaribu:
                 # get rid of the widget
                 w.destroy()
             except:

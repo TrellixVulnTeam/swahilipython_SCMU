@@ -1,6 +1,6 @@
 """Selectors module.
 
-This module allows high-level and efficient I/O multiplexing, built upon the
+This module allows high-level na efficient I/O multiplexing, built upon the
 `select` module primitives.
 """
 
@@ -22,24 +22,24 @@ eleza _fileobj_to_fd(fileobj):
     """Return a file descriptor kutoka a file object.
 
     Parameters:
-    fileobj -- file object or file descriptor
+    fileobj -- file object ama file descriptor
 
     Returns:
     corresponding file descriptor
 
     Raises:
-    ValueError ikiwa the object is invalid
+    ValueError ikiwa the object ni invalid
     """
     ikiwa isinstance(fileobj, int):
         fd = fileobj
-    else:
-        try:
+    isipokua:
+        jaribu:
             fd = int(fileobj.fileno())
-        except (AttributeError, TypeError, ValueError):
-            raise ValueError("Invalid file object: "
-                             "{!r}".format(fileobj)) kutoka None
+        tatizo (AttributeError, TypeError, ValueError):
+            ashiria ValueError("Invalid file object: "
+                             "{!r}".format(fileobj)) kutoka Tupu
     ikiwa fd < 0:
-        raise ValueError("Invalid file descriptor: {}".format(fd))
+        ashiria ValueError("Invalid file descriptor: {}".format(fd))
     rudisha fd
 
 
@@ -48,12 +48,12 @@ SelectorKey = namedtuple('SelectorKey', ['fileobj', 'fd', 'events', 'data'])
 SelectorKey.__doc__ = """SelectorKey(fileobj, fd, events, data)
 
     Object used to associate a file object to its backing
-    file descriptor, selected event mask, and attached data.
+    file descriptor, selected event mask, na attached data.
 """
 ikiwa sys.version_info >= (3, 5):
     SelectorKey.fileobj.__doc__ = 'File object registered.'
     SelectorKey.fd.__doc__ = 'Underlying file descriptor.'
-    SelectorKey.events.__doc__ = 'Events that must be waited for on this file object.'
+    SelectorKey.events.__doc__ = 'Events that must be waited kila on this file object.'
     SelectorKey.data.__doc__ = ('''Optional opaque data associated to this file object.
     For example, this could be used to store a per-client session ID.''')
 
@@ -67,11 +67,11 @@ kundi _SelectorMapping(Mapping):
         rudisha len(self._selector._fd_to_key)
 
     eleza __getitem__(self, fileobj):
-        try:
+        jaribu:
             fd = self._selector._fileobj_lookup(fileobj)
             rudisha self._selector._fd_to_key[fd]
-        except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) kutoka None
+        tatizo KeyError:
+            ashiria KeyError("{!r} ni sio registered".format(fileobj)) kutoka Tupu
 
     eleza __iter__(self):
         rudisha iter(self._selector._fd_to_key)
@@ -80,12 +80,12 @@ kundi _SelectorMapping(Mapping):
 kundi BaseSelector(metaclass=ABCMeta):
     """Selector abstract base class.
 
-    A selector supports registering file objects to be monitored for specific
+    A selector supports registering file objects to be monitored kila specific
     I/O events.
 
-    A file object is a file descriptor or any object with a `fileno()` method.
+    A file object ni a file descriptor ama any object with a `fileno()` method.
     An arbitrary object can be attached to the file object, which can be used
-    for example to store context information, a callback, etc.
+    kila example to store context information, a callback, etc.
 
     A selector can use various implementations (select(), poll(), epoll()...)
     depending on the platform. The default `Selector` kundi uses the most
@@ -93,11 +93,11 @@ kundi BaseSelector(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    eleza register(self, fileobj, events, data=None):
+    eleza register(self, fileobj, events, data=Tupu):
         """Register a file object.
 
         Parameters:
-        fileobj -- file object or file descriptor
+        fileobj -- file object ama file descriptor
         events  -- events to monitor (bitwise mask of EVENT_READ|EVENT_WRITE)
         data    -- attached data
 
@@ -105,40 +105,40 @@ kundi BaseSelector(metaclass=ABCMeta):
         SelectorKey instance
 
         Raises:
-        ValueError ikiwa events is invalid
-        KeyError ikiwa fileobj is already registered
-        OSError ikiwa fileobj is closed or otherwise is unacceptable to
-                the underlying system call (ikiwa a system call is made)
+        ValueError ikiwa events ni invalid
+        KeyError ikiwa fileobj ni already registered
+        OSError ikiwa fileobj ni closed ama otherwise ni unacceptable to
+                the underlying system call (ikiwa a system call ni made)
 
         Note:
-        OSError may or may not be raised
+        OSError may ama may sio be ashiriad
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza unregister(self, fileobj):
         """Unregister a file object.
 
         Parameters:
-        fileobj -- file object or file descriptor
+        fileobj -- file object ama file descriptor
 
         Returns:
         SelectorKey instance
 
         Raises:
-        KeyError ikiwa fileobj is not registered
+        KeyError ikiwa fileobj ni sio registered
 
         Note:
-        If fileobj is registered but has since been closed this does
-        *not* raise OSError (even ikiwa the wrapped syscall does)
+        If fileobj ni registered but has since been closed this does
+        *not* ashiria OSError (even ikiwa the wrapped syscall does)
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
-    eleza modify(self, fileobj, events, data=None):
-        """Change a registered file object monitored events or attached data.
+    eleza modify(self, fileobj, events, data=Tupu):
+        """Change a registered file object monitored events ama attached data.
 
         Parameters:
-        fileobj -- file object or file descriptor
+        fileobj -- file object ama file descriptor
         events  -- events to monitor (bitwise mask of EVENT_READ|EVENT_WRITE)
         data    -- attached data
 
@@ -146,55 +146,55 @@ kundi BaseSelector(metaclass=ABCMeta):
         SelectorKey instance
 
         Raises:
-        Anything that unregister() or register() raises
+        Anything that unregister() ama register() ashirias
         """
         self.unregister(fileobj)
         rudisha self.register(fileobj, events, data)
 
     @abstractmethod
-    eleza select(self, timeout=None):
+    eleza select(self, timeout=Tupu):
         """Perform the actual selection, until some monitored file objects are
-        ready or a timeout expires.
+        ready ama a timeout expires.
 
         Parameters:
         timeout -- ikiwa timeout > 0, this specifies the maximum wait time, in
                    seconds
-                   ikiwa timeout <= 0, the select() call won't block, and will
+                   ikiwa timeout <= 0, the select() call won't block, na will
                    report the currently ready file objects
-                   ikiwa timeout is None, select() will block until a monitored
+                   ikiwa timeout ni Tupu, select() will block until a monitored
                    file object becomes ready
 
         Returns:
-        list of (key, events) for ready file objects
-        `events` is a bitwise mask of EVENT_READ|EVENT_WRITE
+        list of (key, events) kila ready file objects
+        `events` ni a bitwise mask of EVENT_READ|EVENT_WRITE
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza close(self):
         """Close the selector.
 
-        This must be called to make sure that any underlying resource is freed.
+        This must be called to make sure that any underlying resource ni freed.
         """
-        pass
+        pita
 
     eleza get_key(self, fileobj):
         """Return the key associated to a registered file object.
 
         Returns:
-        SelectorKey for this file object
+        SelectorKey kila this file object
         """
         mapping = self.get_map()
-        ikiwa mapping is None:
-            raise RuntimeError('Selector is closed')
-        try:
+        ikiwa mapping ni Tupu:
+            ashiria RuntimeError('Selector ni closed')
+        jaribu:
             rudisha mapping[fileobj]
-        except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) kutoka None
+        tatizo KeyError:
+            ashiria KeyError("{!r} ni sio registered".format(fileobj)) kutoka Tupu
 
     @abstractmethod
     eleza get_map(self):
         """Return a mapping of file objects to selector keys."""
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza __enter__(self):
         rudisha self
@@ -209,53 +209,53 @@ kundi _BaseSelectorImpl(BaseSelector):
     eleza __init__(self):
         # this maps file descriptors to keys
         self._fd_to_key = {}
-        # read-only mapping returned by get_map()
+        # read-only mapping rudishaed by get_map()
         self._map = _SelectorMapping(self)
 
     eleza _fileobj_lookup(self, fileobj):
         """Return a file descriptor kutoka a file object.
 
-        This wraps _fileobj_to_fd() to do an exhaustive search in case
-        the object is invalid but we still have it in our map.  This
-        is used by unregister() so we can unregister an object that
-        was previously registered even ikiwa it is closed.  It is also
+        This wraps _fileobj_to_fd() to do an exhaustive search kwenye case
+        the object ni invalid but we still have it kwenye our map.  This
+        ni used by unregister() so we can unregister an object that
+        was previously registered even ikiwa it ni closed.  It ni also
         used by _SelectorMapping.
         """
-        try:
+        jaribu:
             rudisha _fileobj_to_fd(fileobj)
-        except ValueError:
+        tatizo ValueError:
             # Do an exhaustive search.
-            for key in self._fd_to_key.values():
-                ikiwa key.fileobj is fileobj:
+            kila key kwenye self._fd_to_key.values():
+                ikiwa key.fileobj ni fileobj:
                     rudisha key.fd
             # Raise ValueError after all.
-            raise
+            ashiria
 
-    eleza register(self, fileobj, events, data=None):
-        ikiwa (not events) or (events & ~(EVENT_READ | EVENT_WRITE)):
-            raise ValueError("Invalid events: {!r}".format(events))
+    eleza register(self, fileobj, events, data=Tupu):
+        ikiwa (not events) ama (events & ~(EVENT_READ | EVENT_WRITE)):
+            ashiria ValueError("Invalid events: {!r}".format(events))
 
         key = SelectorKey(fileobj, self._fileobj_lookup(fileobj), events, data)
 
-        ikiwa key.fd in self._fd_to_key:
-            raise KeyError("{!r} (FD {}) is already registered"
+        ikiwa key.fd kwenye self._fd_to_key:
+            ashiria KeyError("{!r} (FD {}) ni already registered"
                            .format(fileobj, key.fd))
 
         self._fd_to_key[key.fd] = key
         rudisha key
 
     eleza unregister(self, fileobj):
-        try:
+        jaribu:
             key = self._fd_to_key.pop(self._fileobj_lookup(fileobj))
-        except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) kutoka None
+        tatizo KeyError:
+            ashiria KeyError("{!r} ni sio registered".format(fileobj)) kutoka Tupu
         rudisha key
 
-    eleza modify(self, fileobj, events, data=None):
-        try:
+    eleza modify(self, fileobj, events, data=Tupu):
+        jaribu:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
-        except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) kutoka None
+        tatizo KeyError:
+            ashiria KeyError("{!r} ni sio registered".format(fileobj)) kutoka Tupu
         ikiwa events != key.events:
             self.unregister(fileobj)
             key = self.register(fileobj, events, data)
@@ -267,7 +267,7 @@ kundi _BaseSelectorImpl(BaseSelector):
 
     eleza close(self):
         self._fd_to_key.clear()
-        self._map = None
+        self._map = Tupu
 
     eleza get_map(self):
         rudisha self._map
@@ -279,12 +279,12 @@ kundi _BaseSelectorImpl(BaseSelector):
         fd -- file descriptor
 
         Returns:
-        corresponding key, or None ikiwa not found
+        corresponding key, ama Tupu ikiwa sio found
         """
-        try:
+        jaribu:
             rudisha self._fd_to_key[fd]
-        except KeyError:
-            rudisha None
+        tatizo KeyError:
+            rudisha Tupu
 
 
 kundi SelectSelector(_BaseSelectorImpl):
@@ -295,7 +295,7 @@ kundi SelectSelector(_BaseSelectorImpl):
         self._readers = set()
         self._writers = set()
 
-    eleza register(self, fileobj, events, data=None):
+    eleza register(self, fileobj, events, data=Tupu):
         key = super().register(fileobj, events, data)
         ikiwa events & EVENT_READ:
             self._readers.add(key.fd)
@@ -310,26 +310,26 @@ kundi SelectSelector(_BaseSelectorImpl):
         rudisha key
 
     ikiwa sys.platform == 'win32':
-        eleza _select(self, r, w, _, timeout=None):
+        eleza _select(self, r, w, _, timeout=Tupu):
             r, w, x = select.select(r, w, w, timeout)
             rudisha r, w + x, []
-    else:
+    isipokua:
         _select = select.select
 
-    eleza select(self, timeout=None):
-        timeout = None ikiwa timeout is None else max(timeout, 0)
+    eleza select(self, timeout=Tupu):
+        timeout = Tupu ikiwa timeout ni Tupu else max(timeout, 0)
         ready = []
-        try:
+        jaribu:
             r, w, _ = self._select(self._readers, self._writers, [], timeout)
-        except InterruptedError:
+        tatizo InterruptedError:
             rudisha ready
         r = set(r)
         w = set(w)
-        for fd in r | w:
+        kila fd kwenye r | w:
             events = 0
-            ikiwa fd in r:
+            ikiwa fd kwenye r:
                 events |= EVENT_READ
-            ikiwa fd in w:
+            ikiwa fd kwenye w:
                 events |= EVENT_WRITE
 
             key = self._key_kutoka_fd(fd)
@@ -339,83 +339,83 @@ kundi SelectSelector(_BaseSelectorImpl):
 
 
 kundi _PollLikeSelector(_BaseSelectorImpl):
-    """Base kundi shared between poll, epoll and devpoll selectors."""
-    _selector_cls = None
-    _EVENT_READ = None
-    _EVENT_WRITE = None
+    """Base kundi shared between poll, epoll na devpoll selectors."""
+    _selector_cls = Tupu
+    _EVENT_READ = Tupu
+    _EVENT_WRITE = Tupu
 
     eleza __init__(self):
         super().__init__()
         self._selector = self._selector_cls()
 
-    eleza register(self, fileobj, events, data=None):
+    eleza register(self, fileobj, events, data=Tupu):
         key = super().register(fileobj, events, data)
         poller_events = 0
         ikiwa events & EVENT_READ:
             poller_events |= self._EVENT_READ
         ikiwa events & EVENT_WRITE:
             poller_events |= self._EVENT_WRITE
-        try:
+        jaribu:
             self._selector.register(key.fd, poller_events)
         except:
             super().unregister(fileobj)
-            raise
+            ashiria
         rudisha key
 
     eleza unregister(self, fileobj):
         key = super().unregister(fileobj)
-        try:
+        jaribu:
             self._selector.unregister(key.fd)
-        except OSError:
+        tatizo OSError:
             # This can happen ikiwa the FD was closed since it
             # was registered.
-            pass
+            pita
         rudisha key
 
-    eleza modify(self, fileobj, events, data=None):
-        try:
+    eleza modify(self, fileobj, events, data=Tupu):
+        jaribu:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
-        except KeyError:
-            raise KeyError(f"{fileobj!r} is not registered") kutoka None
+        tatizo KeyError:
+            ashiria KeyError(f"{fileobj!r} ni sio registered") kutoka Tupu
 
-        changed = False
+        changed = Uongo
         ikiwa events != key.events:
             selector_events = 0
             ikiwa events & EVENT_READ:
                 selector_events |= self._EVENT_READ
             ikiwa events & EVENT_WRITE:
                 selector_events |= self._EVENT_WRITE
-            try:
+            jaribu:
                 self._selector.modify(key.fd, selector_events)
             except:
                 super().unregister(fileobj)
-                raise
-            changed = True
+                ashiria
+            changed = Kweli
         ikiwa data != key.data:
-            changed = True
+            changed = Kweli
 
         ikiwa changed:
             key = key._replace(events=events, data=data)
             self._fd_to_key[key.fd] = key
         rudisha key
 
-    eleza select(self, timeout=None):
-        # This is shared between poll() and epoll().
-        # epoll() has a different signature and handling of timeout parameter.
-        ikiwa timeout is None:
-            timeout = None
+    eleza select(self, timeout=Tupu):
+        # This ni shared between poll() na epoll().
+        # epoll() has a different signature na handling of timeout parameter.
+        ikiwa timeout ni Tupu:
+            timeout = Tupu
         elikiwa timeout <= 0:
             timeout = 0
-        else:
+        isipokua:
             # poll() has a resolution of 1 millisecond, round away kutoka
             # zero to wait *at least* timeout seconds.
             timeout = math.ceil(timeout * 1e3)
         ready = []
-        try:
+        jaribu:
             fd_event_list = self._selector.poll(timeout)
-        except InterruptedError:
+        tatizo InterruptedError:
             rudisha ready
-        for fd, event in fd_event_list:
+        kila fd, event kwenye fd_event_list:
             events = 0
             ikiwa event & ~self._EVENT_READ:
                 events |= EVENT_WRITE
@@ -448,27 +448,27 @@ ikiwa hasattr(select, 'epoll'):
         eleza fileno(self):
             rudisha self._selector.fileno()
 
-        eleza select(self, timeout=None):
-            ikiwa timeout is None:
+        eleza select(self, timeout=Tupu):
+            ikiwa timeout ni Tupu:
                 timeout = -1
             elikiwa timeout <= 0:
                 timeout = 0
-            else:
+            isipokua:
                 # epoll_wait() has a resolution of 1 millisecond, round away
                 # kutoka zero to wait *at least* timeout seconds.
                 timeout = math.ceil(timeout * 1e3) * 1e-3
 
             # epoll_wait() expects `maxevents` to be greater than zero;
             # we want to make sure that `select()` can be called when no
-            # FD is registered.
+            # FD ni registered.
             max_ev = max(len(self._fd_to_key), 1)
 
             ready = []
-            try:
+            jaribu:
                 fd_event_list = self._selector.poll(timeout, max_ev)
-            except InterruptedError:
+            tatizo InterruptedError:
                 rudisha ready
-            for fd, event in fd_event_list:
+            kila fd, event kwenye fd_event_list:
                 events = 0
                 ikiwa event & ~select.EPOLLIN:
                     events |= EVENT_WRITE
@@ -513,9 +513,9 @@ ikiwa hasattr(select, 'kqueue'):
         eleza fileno(self):
             rudisha self._selector.fileno()
 
-        eleza register(self, fileobj, events, data=None):
+        eleza register(self, fileobj, events, data=Tupu):
             key = super().register(fileobj, events, data)
-            try:
+            jaribu:
                 ikiwa events & EVENT_READ:
                     kev = select.kevent(key.fd, select.KQ_FILTER_READ,
                                         select.KQ_EV_ADD)
@@ -526,7 +526,7 @@ ikiwa hasattr(select, 'kqueue'):
                     self._selector.control([kev], 0, 0)
             except:
                 super().unregister(fileobj)
-                raise
+                ashiria
             rudisha key
 
         eleza unregister(self, fileobj):
@@ -534,31 +534,31 @@ ikiwa hasattr(select, 'kqueue'):
             ikiwa key.events & EVENT_READ:
                 kev = select.kevent(key.fd, select.KQ_FILTER_READ,
                                     select.KQ_EV_DELETE)
-                try:
+                jaribu:
                     self._selector.control([kev], 0, 0)
-                except OSError:
+                tatizo OSError:
                     # This can happen ikiwa the FD was closed since it
                     # was registered.
-                    pass
+                    pita
             ikiwa key.events & EVENT_WRITE:
                 kev = select.kevent(key.fd, select.KQ_FILTER_WRITE,
                                     select.KQ_EV_DELETE)
-                try:
+                jaribu:
                     self._selector.control([kev], 0, 0)
-                except OSError:
+                tatizo OSError:
                     # See comment above.
-                    pass
+                    pita
             rudisha key
 
-        eleza select(self, timeout=None):
-            timeout = None ikiwa timeout is None else max(timeout, 0)
+        eleza select(self, timeout=Tupu):
+            timeout = Tupu ikiwa timeout ni Tupu else max(timeout, 0)
             max_ev = len(self._fd_to_key)
             ready = []
-            try:
-                kev_list = self._selector.control(None, max_ev, timeout)
-            except InterruptedError:
+            jaribu:
+                kev_list = self._selector.control(Tupu, max_ev, timeout)
+            tatizo InterruptedError:
                 rudisha ready
-            for kev in kev_list:
+            kila kev kwenye kev_list:
                 fd = kev.ident
                 flag = kev.filter
                 events = 0
@@ -580,13 +580,13 @@ ikiwa hasattr(select, 'kqueue'):
 # Choose the best implementation, roughly:
 #    epoll|kqueue|devpoll > poll > select.
 # select() also can't accept a FD > FD_SETSIZE (usually around 1024)
-ikiwa 'KqueueSelector' in globals():
+ikiwa 'KqueueSelector' kwenye globals():
     DefaultSelector = KqueueSelector
-elikiwa 'EpollSelector' in globals():
+elikiwa 'EpollSelector' kwenye globals():
     DefaultSelector = EpollSelector
-elikiwa 'DevpollSelector' in globals():
+elikiwa 'DevpollSelector' kwenye globals():
     DefaultSelector = DevpollSelector
-elikiwa 'PollSelector' in globals():
+elikiwa 'PollSelector' kwenye globals():
     DefaultSelector = PollSelector
-else:
+isipokua:
     DefaultSelector = SelectSelector

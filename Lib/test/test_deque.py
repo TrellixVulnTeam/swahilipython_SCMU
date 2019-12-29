@@ -11,12 +11,12 @@ agiza struct
 BIG = 100000
 
 eleza fail():
-    raise SyntaxError
-    yield 1
+    ashiria SyntaxError
+    tuma 1
 
 kundi BadCmp:
     eleza __eq__(self, other):
-        raise RuntimeError
+        ashiria RuntimeError
 
 kundi MutateCmp:
     eleza __init__(self, deque, result):
@@ -31,18 +31,18 @@ kundi TestBasic(unittest.TestCase):
     eleza test_basics(self):
         d = deque(range(-5125, -5000))
         d.__init__(range(200))
-        for i in range(200, 400):
+        kila i kwenye range(200, 400):
             d.append(i)
-        for i in reversed(range(-200, 0)):
+        kila i kwenye reversed(range(-200, 0)):
             d.appendleft(i)
         self.assertEqual(list(d), list(range(-200, 400)))
         self.assertEqual(len(d), 600)
 
-        left = [d.popleft() for i in range(250)]
+        left = [d.popleft() kila i kwenye range(250)]
         self.assertEqual(left, list(range(-200, 50)))
         self.assertEqual(list(d), list(range(50, 400)))
 
-        right = [d.pop() for i in range(250)]
+        right = [d.pop() kila i kwenye range(250)]
         right.reverse()
         self.assertEqual(right, list(range(150, 400)))
         self.assertEqual(list(d), list(range(50, 150)))
@@ -68,24 +68,24 @@ kundi TestBasic(unittest.TestCase):
         d.append(d)
         support.unlink(support.TESTFN)
         fo = open(support.TESTFN, "w")
-        try:
+        jaribu:
             fo.write(str(d))
             fo.close()
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), repr(d))
-        finally:
+        mwishowe:
             fo.close()
             support.unlink(support.TESTFN)
 
-        d = deque(range(10), maxlen=None)
+        d = deque(range(10), maxlen=Tupu)
         self.assertEqual(repr(d), 'deque([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])')
         fo = open(support.TESTFN, "w")
-        try:
+        jaribu:
             fo.write(str(d))
             fo.close()
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), repr(d))
-        finally:
+        mwishowe:
             fo.close()
             support.unlink(support.TESTFN)
 
@@ -105,8 +105,8 @@ kundi TestBasic(unittest.TestCase):
         self.assertEqual(list(it), [])
 
     eleza test_maxlen_attribute(self):
-        self.assertEqual(deque().maxlen, None)
-        self.assertEqual(deque('abc').maxlen, None)
+        self.assertEqual(deque().maxlen, Tupu)
+        self.assertEqual(deque('abc').maxlen, Tupu)
         self.assertEqual(deque('abc', maxlen=4).maxlen, 4)
         self.assertEqual(deque('abc', maxlen=2).maxlen, 2)
         self.assertEqual(deque('abc', maxlen=0).maxlen, 0)
@@ -115,16 +115,16 @@ kundi TestBasic(unittest.TestCase):
             d.maxlen = 10
 
     eleza test_count(self):
-        for s in ('', 'abracadabra', 'simsalabim'*500+'abc'):
+        kila s kwenye ('', 'abracadabra', 'simsalabim'*500+'abc'):
             s = list(s)
             d = deque(s)
-            for letter in 'abcdefghijklmnopqrstuvwxyz':
+            kila letter kwenye 'abcdefghijklmnopqrstuvwxyz':
                 self.assertEqual(s.count(letter), d.count(letter), (s, d, letter))
         self.assertRaises(TypeError, d.count)       # too few args
         self.assertRaises(TypeError, d.count, 1, 2) # too many args
         kundi BadCompare:
             eleza __eq__(self, other):
-                raise ArithmeticError
+                ashiria ArithmeticError
         d = deque([1, 2, BadCompare(), 3])
         self.assertRaises(ArithmeticError, d.count, 2)
         d = deque([1, 2, 3])
@@ -132,7 +132,7 @@ kundi TestBasic(unittest.TestCase):
         kundi MutatingCompare:
             eleza __eq__(self, other):
                 self.d.pop()
-                rudisha True
+                rudisha Kweli
         m = MutatingCompare()
         d = deque([1, 2, 3, m, 4, 5])
         m.d = d
@@ -140,22 +140,22 @@ kundi TestBasic(unittest.TestCase):
 
         # test issue11004
         # block advance failed after rotation aligned elements on right side of block
-        d = deque([None]*16)
-        for i in range(len(d)):
+        d = deque([Tupu]*16)
+        kila i kwenye range(len(d)):
             d.rotate(-1)
         d.rotate(1)
         self.assertEqual(d.count(1), 0)
-        self.assertEqual(d.count(None), 16)
+        self.assertEqual(d.count(Tupu), 16)
 
     eleza test_comparisons(self):
         d = deque('xabc'); d.popleft()
-        for e in [d, deque('abc'), deque('ab'), deque(), list(d)]:
-            self.assertEqual(d==e, type(d)==type(e) and list(d)==list(e))
-            self.assertEqual(d!=e, not(type(d)==type(e) and list(d)==list(e)))
+        kila e kwenye [d, deque('abc'), deque('ab'), deque(), list(d)]:
+            self.assertEqual(d==e, type(d)==type(e) na list(d)==list(e))
+            self.assertEqual(d!=e, not(type(d)==type(e) na list(d)==list(e)))
 
         args = map(deque, ('', 'a', 'b', 'ab', 'ba', 'abc', 'xba', 'xabc', 'cba'))
-        for x in args:
-            for y in args:
+        kila x kwenye args:
+            kila y kwenye args:
                 self.assertEqual(x == y, list(x) == list(y), (x,y))
                 self.assertEqual(x != y, list(x) != list(y), (x,y))
                 self.assertEqual(x <  y, list(x) <  list(y), (x,y))
@@ -167,21 +167,21 @@ kundi TestBasic(unittest.TestCase):
         n = 200
 
         d = deque(range(n))
-        for i in range(n):
-            self.assertTrue(i in d)
-        self.assertTrue((n+1) not in d)
+        kila i kwenye range(n):
+            self.assertKweli(i kwenye d)
+        self.assertKweli((n+1) haiko kwenye d)
 
         # Test detection of mutation during iteration
         d = deque(range(n))
-        d[n//2] = MutateCmp(d, False)
+        d[n//2] = MutateCmp(d, Uongo)
         with self.assertRaises(RuntimeError):
-            n in d
+            n kwenye d
 
         # Test detection of comparison exceptions
         d = deque(range(n))
         d[n//2] = BadCmp()
         with self.assertRaises(RuntimeError):
-            n in d
+            n kwenye d
 
     eleza test_extend(self):
         d = deque('a')
@@ -234,13 +234,13 @@ kundi TestBasic(unittest.TestCase):
         n = 200
         d = deque(range(n))
         l = list(range(n))
-        for i in range(n):
+        kila i kwenye range(n):
             d.popleft()
             l.pop(0)
             ikiwa random.random() < 0.5:
                 d.append(i)
                 l.append(i)
-            for j in range(1-len(l), len(l)):
+            kila j kwenye range(1-len(l), len(l)):
                 assert d[j] == l[j]
 
         d = deque('superman')
@@ -251,10 +251,10 @@ kundi TestBasic(unittest.TestCase):
         self.assertRaises(IndexError, d.__getitem__, -1)
 
     eleza test_index(self):
-        for n in 1, 2, 30, 40, 200:
+        kila n kwenye 1, 2, 30, 40, 200:
 
             d = deque(range(n))
-            for i in range(n):
+            kila i kwenye range(n):
                 self.assertEqual(d.index(i), i)
 
             with self.assertRaises(ValueError):
@@ -262,7 +262,7 @@ kundi TestBasic(unittest.TestCase):
 
             # Test detection of mutation during iteration
             d = deque(range(n))
-            d[n//2] = MutateCmp(d, False)
+            d[n//2] = MutateCmp(d, Uongo)
             with self.assertRaises(RuntimeError):
                 d.index(n)
 
@@ -272,25 +272,25 @@ kundi TestBasic(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 d.index(n)
 
-        # Test start and stop arguments behavior matches list.index()
+        # Test start na stop arguments behavior matches list.index()
         elements = 'ABCDEFGHI'
         nonelement = 'Z'
         d = deque(elements * 2)
         s = list(elements * 2)
-        for start in range(-5 - len(s)*2, 5 + len(s) * 2):
-            for stop in range(-5 - len(s)*2, 5 + len(s) * 2):
-                for element in elements + 'Z':
-                    try:
+        kila start kwenye range(-5 - len(s)*2, 5 + len(s) * 2):
+            kila stop kwenye range(-5 - len(s)*2, 5 + len(s) * 2):
+                kila element kwenye elements + 'Z':
+                    jaribu:
                         target = s.index(element, start, stop)
-                    except ValueError:
+                    tatizo ValueError:
                         with self.assertRaises(ValueError):
                             d.index(element, start, stop)
-                    else:
+                    isipokua:
                         self.assertEqual(d.index(element, start, stop), target)
 
         # Test large start argument
         d = deque(range(0, 10000, 10))
-        for step in range(100):
+        kila step kwenye range(100):
             i = d.index(8500, 700)
             self.assertEqual(d[i], 8500)
             # Repeat test with a different internal offset
@@ -304,7 +304,7 @@ kundi TestBasic(unittest.TestCase):
     eleza test_insert(self):
         # Test to make sure insert behaves like lists
         elements = 'ABCDEFGHI'
-        for i in range(-5 - len(elements)*2, 5 + len(elements) * 2):
+        kila i kwenye range(-5 - len(elements)*2, 5 + len(elements) * 2):
             d = deque('ABCDEFGHI')
             s = list('ABCDEFGHI')
             d.insert(i, 'Z')
@@ -315,43 +315,43 @@ kundi TestBasic(unittest.TestCase):
         data = 'ABC'
         d = deque(data, maxlen=len(data))
         with self.assertRaises(IndexError):
-            d.insert(2, None)
+            d.insert(2, Tupu)
 
         elements = 'ABCDEFGHI'
-        for i in range(-len(elements), len(elements)):
+        kila i kwenye range(-len(elements), len(elements)):
             d = deque(elements, maxlen=len(elements)+1)
             d.insert(i, 'Z')
             ikiwa i >= 0:
                 self.assertEqual(d[i], 'Z')
-            else:
+            isipokua:
                 self.assertEqual(d[i-1], 'Z')
 
     eleza test_imul(self):
-        for n in (-10, -1, 0, 1, 2, 10, 1000):
+        kila n kwenye (-10, -1, 0, 1, 2, 10, 1000):
             d = deque()
             d *= n
             self.assertEqual(d, deque())
-            self.assertIsNone(d.maxlen)
+            self.assertIsTupu(d.maxlen)
 
-        for n in (-10, -1, 0, 1, 2, 10, 1000):
+        kila n kwenye (-10, -1, 0, 1, 2, 10, 1000):
             d = deque('a')
             d *= n
             self.assertEqual(d, deque('a' * n))
-            self.assertIsNone(d.maxlen)
+            self.assertIsTupu(d.maxlen)
 
-        for n in (-10, -1, 0, 1, 2, 10, 499, 500, 501, 1000):
+        kila n kwenye (-10, -1, 0, 1, 2, 10, 499, 500, 501, 1000):
             d = deque('a', 500)
             d *= n
             self.assertEqual(d, deque('a' * min(n, 500)))
             self.assertEqual(d.maxlen, 500)
 
-        for n in (-10, -1, 0, 1, 2, 10, 1000):
+        kila n kwenye (-10, -1, 0, 1, 2, 10, 1000):
             d = deque('abcdef')
             d *= n
             self.assertEqual(d, deque('abcdef' * n))
-            self.assertIsNone(d.maxlen)
+            self.assertIsTupu(d.maxlen)
 
-        for n in (-10, -1, 0, 1, 2, 10, 499, 500, 501, 1000):
+        kila n kwenye (-10, -1, 0, 1, 2, 10, 499, 500, 501, 1000):
             d = deque('abcdef', 500)
             d *= n
             self.assertEqual(d, deque(('abcdef' * n)[-500:]))
@@ -386,11 +386,11 @@ kundi TestBasic(unittest.TestCase):
     eleza test_setitem(self):
         n = 200
         d = deque(range(n))
-        for i in range(n):
+        kila i kwenye range(n):
             d[i] = 10 * i
-        self.assertEqual(list(d), [10*i for i in range(n)])
+        self.assertEqual(list(d), [10*i kila i kwenye range(n)])
         l = list(d)
-        for i in range(1-n, 0, -1):
+        kila i kwenye range(1-n, 0, -1):
             d[i] = 7*i
             l[i] = 7*i
         self.assertEqual(list(d), l)
@@ -400,26 +400,26 @@ kundi TestBasic(unittest.TestCase):
         d = deque(range(n))
         self.assertRaises(IndexError, d.__delitem__, -n-1)
         self.assertRaises(IndexError, d.__delitem__, n)
-        for i in range(n):
+        kila i kwenye range(n):
             self.assertEqual(len(d), n-i)
             j = random.randrange(-len(d), len(d))
             val = d[j]
             self.assertIn(val, d)
-            del d[j]
+            toa d[j]
             self.assertNotIn(val, d)
         self.assertEqual(len(d), 0)
 
     eleza test_reverse(self):
         n = 500         # O(n**2) test, don't make this too big
-        data = [random.random() for i in range(n)]
-        for i in range(n):
+        data = [random.random() kila i kwenye range(n)]
+        kila i kwenye range(n):
             d = deque(data[:i])
             r = d.reverse()
             self.assertEqual(list(d), list(reversed(data[:i])))
-            self.assertIs(r, None)
+            self.assertIs(r, Tupu)
             d.reverse()
             self.assertEqual(list(d), data[:i])
-        self.assertRaises(TypeError, d.reverse, 1)          # Arity is zero
+        self.assertRaises(TypeError, d.reverse, 1)          # Arity ni zero
 
     eleza test_rotate(self):
         s = tuple('abcde')
@@ -435,26 +435,26 @@ kundi TestBasic(unittest.TestCase):
         d.rotate()              # check default to 1
         self.assertEqual(tuple(d), s)
 
-        for i in range(n*3):
+        kila i kwenye range(n*3):
             d = deque(s)
             e = deque(d)
             d.rotate(i)         # check vs. rot(1) n times
-            for j in range(i):
+            kila j kwenye range(i):
                 e.rotate(1)
             self.assertEqual(tuple(d), tuple(e))
-            d.rotate(-i)        # check that it works in reverse
+            d.rotate(-i)        # check that it works kwenye reverse
             self.assertEqual(tuple(d), s)
             e.rotate(n-i)       # check that it wraps forward
             self.assertEqual(tuple(e), s)
 
-        for i in range(n*3):
+        kila i kwenye range(n*3):
             d = deque(s)
             e = deque(d)
             d.rotate(-i)
-            for j in range(i):
+            kila j kwenye range(i):
                 e.rotate(-1)    # check vs. rot(-1) n times
             self.assertEqual(tuple(d), tuple(e))
-            d.rotate(i)         # check that it works in reverse
+            d.rotate(i)         # check that it works kwenye reverse
             self.assertEqual(tuple(d), s)
             e.rotate(i-n)       # check that it wraps backaround
             self.assertEqual(tuple(e), s)
@@ -463,7 +463,7 @@ kundi TestBasic(unittest.TestCase):
         e = deque(s)
         e.rotate(BIG+17)        # verify on long series of rotates
         dr = d.rotate
-        for i in range(BIG+17):
+        kila i kwenye range(BIG+17):
             dr()
         self.assertEqual(tuple(d), tuple(e))
 
@@ -517,12 +517,12 @@ kundi TestBasic(unittest.TestCase):
         d = deque(['a', 'b', BadCmp(), 'c'])
         e = deque(d)
         self.assertRaises(RuntimeError, d.remove, 'c')
-        for x, y in zip(d, e):
-            # verify that original order and values are retained.
-            self.assertTrue(x is y)
+        kila x, y kwenye zip(d, e):
+            # verify that original order na values are retained.
+            self.assertKweli(x ni y)
 
         # Handle evil mutator
-        for match in (True, False):
+        kila match kwenye (Kweli, Uongo):
             d = deque(['ab'])
             d.extend([MutateCmp(d, match), 'c'])
             self.assertRaises(IndexError, d.remove, 'c')
@@ -538,14 +538,14 @@ kundi TestBasic(unittest.TestCase):
     eleza test_andika(self):
         d = deque(range(200))
         d.append(d)
-        try:
+        jaribu:
             support.unlink(support.TESTFN)
             fo = open(support.TESTFN, "w")
             andika(d, file=fo, end='')
             fo.close()
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), repr(d))
-        finally:
+        mwishowe:
             fo.close()
             support.unlink(support.TESTFN)
 
@@ -557,10 +557,10 @@ kundi TestBasic(unittest.TestCase):
         self.assertRaises(TypeError, hash, deque('abc'))
 
     eleza test_long_steadystate_queue_popleft(self):
-        for size in (0, 1, 2, 100, 1000):
+        kila size kwenye (0, 1, 2, 100, 1000):
             d = deque(range(size))
             append, pop = d.append, d.popleft
-            for i in range(size, BIG):
+            kila i kwenye range(size, BIG):
                 append(i)
                 x = pop()
                 ikiwa x != i - size:
@@ -568,10 +568,10 @@ kundi TestBasic(unittest.TestCase):
             self.assertEqual(list(d), list(range(BIG-size, BIG)))
 
     eleza test_long_steadystate_queue_popright(self):
-        for size in (0, 1, 2, 100, 1000):
+        kila size kwenye (0, 1, 2, 100, 1000):
             d = deque(reversed(range(size)))
             append, pop = d.appendleft, d.pop
-            for i in range(size, BIG):
+            kila i kwenye range(size, BIG):
                 append(i)
                 x = pop()
                 ikiwa x != i - size:
@@ -580,12 +580,12 @@ kundi TestBasic(unittest.TestCase):
                              list(range(BIG-size, BIG)))
 
     eleza test_big_queue_popleft(self):
-        pass
+        pita
         d = deque()
         append, pop = d.append, d.popleft
-        for i in range(BIG):
+        kila i kwenye range(BIG):
             append(i)
-        for i in range(BIG):
+        kila i kwenye range(BIG):
             x = pop()
             ikiwa x != i:
                 self.assertEqual(x, i)
@@ -593,9 +593,9 @@ kundi TestBasic(unittest.TestCase):
     eleza test_big_queue_popright(self):
         d = deque()
         append, pop = d.appendleft, d.pop
-        for i in range(BIG):
+        kila i kwenye range(BIG):
             append(i)
-        for i in range(BIG):
+        kila i kwenye range(BIG):
             x = pop()
             ikiwa x != i:
                 self.assertEqual(x, i)
@@ -603,9 +603,9 @@ kundi TestBasic(unittest.TestCase):
     eleza test_big_stack_right(self):
         d = deque()
         append, pop = d.append, d.pop
-        for i in range(BIG):
+        kila i kwenye range(BIG):
             append(i)
-        for i in reversed(range(BIG)):
+        kila i kwenye reversed(range(BIG)):
             x = pop()
             ikiwa x != i:
                 self.assertEqual(x, i)
@@ -614,9 +614,9 @@ kundi TestBasic(unittest.TestCase):
     eleza test_big_stack_left(self):
         d = deque()
         append, pop = d.appendleft, d.popleft
-        for i in range(BIG):
+        kila i kwenye range(BIG):
             append(i)
-        for i in reversed(range(BIG)):
+        kila i kwenye reversed(range(BIG)):
             x = pop()
             ikiwa x != i:
                 self.assertEqual(x, i)
@@ -629,8 +629,8 @@ kundi TestBasic(unittest.TestCase):
         self.assertEqual(list(d), list(e))
 
     eleza test_pickle(self):
-        for d in deque(range(200)), deque(range(200), 100):
-            for i in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila d kwenye deque(range(200)), deque(range(200), 100):
+            kila i kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 s = pickle.dumps(d, i)
                 e = pickle.loads(s)
                 self.assertNotEqual(id(e), id(d))
@@ -638,9 +638,9 @@ kundi TestBasic(unittest.TestCase):
                 self.assertEqual(e.maxlen, d.maxlen)
 
     eleza test_pickle_recursive(self):
-        for d in deque('abc'), deque('abc', 3):
+        kila d kwenye deque('abc'), deque('abc', 3):
             d.append(d)
-            for i in range(pickle.HIGHEST_PROTOCOL + 1):
+            kila i kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 e = pickle.loads(pickle.dumps(d, i))
                 self.assertNotEqual(id(e), id(d))
                 self.assertEqual(id(e[-1]), id(e))
@@ -648,13 +648,13 @@ kundi TestBasic(unittest.TestCase):
 
     eleza test_iterator_pickle(self):
         orig = deque(range(200))
-        data = [i*1.01 for i in orig]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        data = [i*1.01 kila i kwenye orig]
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorg = iter(orig)
             dump = pickle.dumps((itorg, orig), proto)
             it, d = pickle.loads(dump)
-            for i, x in enumerate(data):
+            kila i, x kwenye enumerate(data):
                 d[i] = x
             self.assertEqual(type(it), type(itorg))
             self.assertEqual(list(it), data)
@@ -663,17 +663,17 @@ kundi TestBasic(unittest.TestCase):
             next(itorg)
             dump = pickle.dumps((itorg, orig), proto)
             it, d = pickle.loads(dump)
-            for i, x in enumerate(data):
+            kila i, x kwenye enumerate(data):
                 d[i] = x
             self.assertEqual(type(it), type(itorg))
             self.assertEqual(list(it), data[1:])
 
             # empty iterator
-            for i in range(1, len(data)):
+            kila i kwenye range(1, len(data)):
                 next(itorg)
             dump = pickle.dumps((itorg, orig), proto)
             it, d = pickle.loads(dump)
-            for i, x in enumerate(data):
+            kila i, x kwenye enumerate(data):
                 d[i] = x
             self.assertEqual(type(it), type(itorg))
             self.assertEqual(list(it), [])
@@ -682,7 +682,7 @@ kundi TestBasic(unittest.TestCase):
             self.assertRaises(StopIteration, next, itorg)
             dump = pickle.dumps((itorg, orig), proto)
             it, d = pickle.loads(dump)
-            for i, x in enumerate(data):
+            kila i, x kwenye enumerate(data):
                 d[i] = x
             self.assertEqual(type(it), type(itorg))
             self.assertEqual(list(it), [])
@@ -705,14 +705,14 @@ kundi TestBasic(unittest.TestCase):
         self.assertNotEqual(id(d), id(e))
         self.assertEqual(list(d), list(e))
 
-        for i in range(5):
-            for maxlen in range(-1, 6):
-                s = [random.random() for j in range(i)]
+        kila i kwenye range(5):
+            kila maxlen kwenye range(-1, 6):
+                s = [random.random() kila j kwenye range(i)]
                 d = deque(s) ikiwa maxlen == -1 else deque(s, maxlen)
                 e = d.copy()
                 self.assertEqual(d, e)
                 self.assertEqual(d.maxlen, e.maxlen)
-                self.assertTrue(all(x is y for x, y in zip(d, e)))
+                self.assertKweli(all(x ni y kila x, y kwenye zip(d, e)))
 
     eleza test_copy_method(self):
         mut = [10]
@@ -724,38 +724,38 @@ kundi TestBasic(unittest.TestCase):
         self.assertEqual(list(d), list(e))
 
     eleza test_reversed(self):
-        for s in ('abcd', range(2000)):
+        kila s kwenye ('abcd', range(2000)):
             self.assertEqual(list(reversed(deque(s))), list(reversed(s)))
 
     eleza test_reversed_new(self):
         klass = type(reversed(deque()))
-        for s in ('abcd', range(2000)):
+        kila s kwenye ('abcd', range(2000)):
             self.assertEqual(list(klass(deque(s))), list(reversed(s)))
 
     eleza test_gc_doesnt_blowup(self):
         agiza gc
-        # This used to assert-fail in deque_traverse() under a debug
-        # build, or run wild with a NULL pointer in a release build.
+        # This used to assert-fail kwenye deque_traverse() under a debug
+        # build, ama run wild with a NULL pointer kwenye a release build.
         d = deque()
-        for i in range(100):
+        kila i kwenye range(100):
             d.append(1)
             gc.collect()
 
     eleza test_container_iterator(self):
-        # Bug #3680: tp_traverse was not implemented for deque iterator objects
+        # Bug #3680: tp_traverse was sio implemented kila deque iterator objects
         kundi C(object):
-            pass
-        for i in range(2):
+            pita
+        kila i kwenye range(2):
             obj = C()
             ref = weakref.ref(obj)
             ikiwa i == 0:
                 container = deque([obj, 1])
-            else:
+            isipokua:
                 container = reversed(deque([obj, 1]))
             obj.x = iter(container)
-            del obj, container
+            toa obj, container
             gc.collect()
-            self.assertTrue(ref() is None, "Cycle was not collected")
+            self.assertKweli(ref() ni Tupu, "Cycle was sio collected")
 
     check_sizeof = support.check_sizeof
 
@@ -775,8 +775,8 @@ kundi TestBasic(unittest.TestCase):
 kundi TestVariousIteratorArgs(unittest.TestCase):
 
     eleza test_constructor(self):
-        for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
-            for g in (seq_tests.Sequence, seq_tests.IterFunc,
+        kila s kwenye ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
+            kila g kwenye (seq_tests.Sequence, seq_tests.IterFunc,
                       seq_tests.IterGen, seq_tests.IterFuncStop,
                       seq_tests.itermulti, seq_tests.iterfunc):
                 self.assertEqual(list(deque(g(s))), list(g(s)))
@@ -797,29 +797,29 @@ kundi TestVariousIteratorArgs(unittest.TestCase):
         self.assertRaises(RuntimeError, next, it)
 
 kundi Deque(deque):
-    pass
+    pita
 
 kundi DequeWithBadIter(deque):
     eleza __iter__(self):
-        raise TypeError
+        ashiria TypeError
 
 kundi TestSubclass(unittest.TestCase):
 
     eleza test_basics(self):
         d = Deque(range(25))
         d.__init__(range(200))
-        for i in range(200, 400):
+        kila i kwenye range(200, 400):
             d.append(i)
-        for i in reversed(range(-200, 0)):
+        kila i kwenye reversed(range(-200, 0)):
             d.appendleft(i)
         self.assertEqual(list(d), list(range(-200, 400)))
         self.assertEqual(len(d), 600)
 
-        left = [d.popleft() for i in range(250)]
+        left = [d.popleft() kila i kwenye range(250)]
         self.assertEqual(left, list(range(-200, 50)))
         self.assertEqual(list(d), list(range(50, 400)))
 
-        right = [d.pop() for i in range(250)]
+        right = [d.pop() kila i kwenye range(250)]
         right.reverse()
         self.assertEqual(right, list(range(150, 400)))
         self.assertEqual(list(d), list(range(50, 150)))
@@ -839,7 +839,7 @@ kundi TestSubclass(unittest.TestCase):
         self.assertEqual(type(d), type(e))
         self.assertEqual(list(d), list(e))
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(d, proto)
             e = pickle.loads(s)
             self.assertNotEqual(id(d), id(e))
@@ -856,7 +856,7 @@ kundi TestSubclass(unittest.TestCase):
         self.assertEqual(type(d), type(e))
         self.assertEqual(list(d), list(e))
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(d, proto)
             e = pickle.loads(s)
             self.assertNotEqual(id(d), id(e))
@@ -864,8 +864,8 @@ kundi TestSubclass(unittest.TestCase):
             self.assertEqual(list(d), list(e))
 
     eleza test_pickle_recursive(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            for d in Deque('abc'), Deque('abc', 3):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
+            kila d kwenye Deque('abc'), Deque('abc', 3):
                 d.append(d)
 
                 e = pickle.loads(pickle.dumps(d, proto))
@@ -881,14 +881,14 @@ kundi TestSubclass(unittest.TestCase):
                 e = pickle.loads(pickle.dumps(d, proto))
                 self.assertEqual(id(e.x), id(e))
 
-            for d in DequeWithBadIter('abc'), DequeWithBadIter('abc', 2):
+            kila d kwenye DequeWithBadIter('abc'), DequeWithBadIter('abc', 2):
                 self.assertRaises(TypeError, pickle.dumps, d, proto)
 
     eleza test_weakref(self):
         d = deque('gallahad')
         p = weakref.proxy(d)
         self.assertEqual(str(p), str(d))
-        d = None
+        d = Tupu
         self.assertRaises(ReferenceError, str, p)
 
     eleza test_strange_subclass(self):
@@ -897,15 +897,15 @@ kundi TestSubclass(unittest.TestCase):
                 rudisha iter([])
         d1 = X([1,2,3])
         d2 = X([4,5,6])
-        d1 == d2   # not clear ikiwa this is supposed to be True or False,
+        d1 == d2   # sio clear ikiwa this ni supposed to be Kweli ama Uongo,
                    # but it used to give a SystemError
 
     @support.cpython_only
     eleza test_bug_31608(self):
-        # The interpreter used to crash in specific cases where a deque
-        # subkundi returned a non-deque.
+        # The interpreter used to crash kwenye specific cases where a deque
+        # subkundi rudishaed a non-deque.
         kundi X(deque):
-            pass
+            pita
         d = X()
         eleza bad___new__(cls, *args, **kwargs):
             rudisha [42]
@@ -922,26 +922,26 @@ kundi SubclassWithKwargs(deque):
 
 kundi TestSubclassWithKwargs(unittest.TestCase):
     eleza test_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously raise a TypeError
+        # SF bug #1486663 -- this used to erroneously ashiria a TypeError
         SubclassWithKwargs(newarg=1)
 
 kundi TestSequence(seq_tests.CommonTest):
     type2test = deque
 
     eleza test_getitem(self):
-        # For now, bypass tests that require slicing
-        pass
+        # For now, bypita tests that require slicing
+        pita
 
     eleza test_getslice(self):
-        # For now, bypass tests that require slicing
-        pass
+        # For now, bypita tests that require slicing
+        pita
 
     eleza test_subscript(self):
-        # For now, bypass tests that require slicing
-        pass
+        # For now, bypita tests that require slicing
+        pita
 
     eleza test_free_after_iterating(self):
-        # For now, bypass tests that require slicing
+        # For now, bypita tests that require slicing
         self.skipTest("Exhausted deque iterator doesn't free a deque")
 
 #==============================================================================
@@ -951,7 +951,7 @@ Example kutoka the Library Reference:  Doc/lib/libcollections.tex
 
 >>> kutoka collections agiza deque
 >>> d = deque('ghi')                 # make a new deque with three items
->>> for elem in d:                   # iterate over the deque's elements
+>>> kila elem kwenye d:                   # iterate over the deque's elements
 ...     andika(elem.upper())
 G
 H
@@ -960,9 +960,9 @@ I
 >>> d.appendleft('f')                # add a new entry to the left side
 >>> d                                # show the representation of the deque
 deque(['f', 'g', 'h', 'i', 'j'])
->>> d.pop()                          # rudisha and remove the rightmost item
+>>> d.pop()                          # rudisha na remove the rightmost item
 'j'
->>> d.popleft()                      # rudisha and remove the leftmost item
+>>> d.popleft()                      # rudisha na remove the leftmost item
 'f'
 >>> list(d)                          # list the contents of the deque
 ['g', 'h', 'i']
@@ -970,10 +970,10 @@ deque(['f', 'g', 'h', 'i', 'j'])
 'g'
 >>> d[-1]                            # peek at rightmost item
 'i'
->>> list(reversed(d))                # list the contents of a deque in reverse
+>>> list(reversed(d))                # list the contents of a deque kwenye reverse
 ['i', 'h', 'g']
->>> 'h' in d                         # search the deque
-True
+>>> 'h' kwenye d                         # search the deque
+Kweli
 >>> d.extend('jkl')                  # add multiple elements at once
 >>> d
 deque(['g', 'h', 'i', 'j', 'k', 'l'])
@@ -983,12 +983,12 @@ deque(['l', 'g', 'h', 'i', 'j', 'k'])
 >>> d.rotate(-1)                     # left rotation
 >>> d
 deque(['g', 'h', 'i', 'j', 'k', 'l'])
->>> deque(reversed(d))               # make a new deque in reverse order
+>>> deque(reversed(d))               # make a new deque kwenye reverse order
 deque(['l', 'k', 'j', 'i', 'h', 'g'])
 >>> d.clear()                        # empty the deque
 >>> d.pop()                          # cannot pop kutoka an empty deque
 Traceback (most recent call last):
-  File "<pyshell#6>", line 1, in -toplevel-
+  File "<pyshell#6>", line 1, kwenye -toplevel-
     d.pop()
 IndexError: pop kutoka an empty deque
 
@@ -1011,17 +1011,17 @@ deque(['a', 'b', 'd', 'e', 'f'])
 
 
 >>> eleza roundrobin(*iterables):
-...     pending = deque(iter(i) for i in iterables)
-...     while pending:
+...     pending = deque(iter(i) kila i kwenye iterables)
+...     wakati pending:
 ...         task = pending.popleft()
-...         try:
-...             yield next(task)
-...         except StopIteration:
-...             continue
+...         jaribu:
+...             tuma next(task)
+...         tatizo StopIteration:
+...             endelea
 ...         pending.append(task)
 ...
 
->>> for value in roundrobin('abc', 'd', 'efgh'):
+>>> kila value kwenye roundrobin('abc', 'd', 'efgh'):
 ...     andika(value)
 ...
 a
@@ -1036,7 +1036,7 @@ h
 
 >>> eleza maketree(iterable):
 ...     d = deque(iterable)
-...     while len(d) > 1:
+...     wakati len(d) > 1:
 ...         pair = [d.popleft(), d.popleft()]
 ...         d.append(pair)
 ...     rudisha list(d)
@@ -1051,7 +1051,7 @@ h
 
 __test__ = {'libreftest' : libreftest}
 
-eleza test_main(verbose=None):
+eleza test_main(verbose=Tupu):
     agiza sys
     test_classes = (
         TestBasic,
@@ -1064,10 +1064,10 @@ eleza test_main(verbose=None):
     support.run_unittest(*test_classes)
 
     # verify reference counting
-    ikiwa verbose and hasattr(sys, "gettotalrefcount"):
+    ikiwa verbose na hasattr(sys, "gettotalrefcount"):
         agiza gc
-        counts = [None] * 5
-        for i in range(len(counts)):
+        counts = [Tupu] * 5
+        kila i kwenye range(len(counts)):
             support.run_unittest(*test_classes)
             gc.collect()
             counts[i] = sys.gettotalrefcount()
@@ -1078,4 +1078,4 @@ eleza test_main(verbose=None):
     support.run_doctest(test_deque, verbose)
 
 ikiwa __name__ == "__main__":
-    test_main(verbose=True)
+    test_main(verbose=Kweli)

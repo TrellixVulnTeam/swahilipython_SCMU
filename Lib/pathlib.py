@@ -10,19 +10,19 @@ kutoka _collections_abc agiza Sequence
 kutoka errno agiza EINVAL, ENOENT, ENOTDIR, EBADF, ELOOP
 kutoka operator agiza attrgetter
 kutoka stat agiza S_ISDIR, S_ISLNK, S_ISREG, S_ISSOCK, S_ISBLK, S_ISCHR, S_ISFIFO
-kutoka urllib.parse agiza quote_kutoka_bytes as urlquote_kutoka_bytes
+kutoka urllib.parse agiza quote_kutoka_bytes kama urlquote_kutoka_bytes
 
 
-supports_symlinks = True
+supports_symlinks = Kweli
 ikiwa os.name == 'nt':
     agiza nt
     ikiwa sys.getwindowsversion()[:2] >= (6, 0):
         kutoka nt agiza _getfinalpathname
-    else:
-        supports_symlinks = False
-        _getfinalpathname = None
-else:
-    nt = None
+    isipokua:
+        supports_symlinks = Uongo
+        _getfinalpathname = Tupu
+isipokua:
+    nt = Tupu
 
 
 __all__ = [
@@ -38,19 +38,19 @@ __all__ = [
 _IGNORED_ERROS = (ENOENT, ENOTDIR, EBADF, ELOOP)
 
 _IGNORED_WINERRORS = (
-    21,  # ERROR_NOT_READY - drive exists but is not accessible
-    1921,  # ERROR_CANT_RESOLVE_FILENAME - fix for broken symlink pointing to itself
+    21,  # ERROR_NOT_READY - drive exists but ni sio accessible
+    1921,  # ERROR_CANT_RESOLVE_FILENAME - fix kila broken symlink pointing to itself
 )
 
 eleza _ignore_error(exception):
-    rudisha (getattr(exception, 'errno', None) in _IGNORED_ERROS or
-            getattr(exception, 'winerror', None) in _IGNORED_WINERRORS)
+    rudisha (getattr(exception, 'errno', Tupu) kwenye _IGNORED_ERROS or
+            getattr(exception, 'winerror', Tupu) kwenye _IGNORED_WINERRORS)
 
 
 eleza _is_wildcard_pattern(pat):
-    # Whether this pattern needs actual matching using fnmatch, or can
-    # be looked up directly as a file.
-    rudisha "*" in pat or "?" in pat or "[" in pat
+    # Whether this pattern needs actual matching using fnmatch, ama can
+    # be looked up directly kama a file.
+    rudisha "*" kwenye pat ama "?" kwenye pat ama "[" kwenye pat
 
 
 kundi _Flavour(object):
@@ -66,34 +66,34 @@ kundi _Flavour(object):
         altsep = self.altsep
         drv = root = ''
         it = reversed(parts)
-        for part in it:
-            ikiwa not part:
-                continue
+        kila part kwenye it:
+            ikiwa sio part:
+                endelea
             ikiwa altsep:
                 part = part.replace(altsep, sep)
             drv, root, rel = self.splitroot(part)
-            ikiwa sep in rel:
-                for x in reversed(rel.split(sep)):
-                    ikiwa x and x != '.':
+            ikiwa sep kwenye rel:
+                kila x kwenye reversed(rel.split(sep)):
+                    ikiwa x na x != '.':
                         parsed.append(sys.intern(x))
-            else:
-                ikiwa rel and rel != '.':
+            isipokua:
+                ikiwa rel na rel != '.':
                     parsed.append(sys.intern(rel))
-            ikiwa drv or root:
-                ikiwa not drv:
-                    # If no drive is present, try to find one in the previous
+            ikiwa drv ama root:
+                ikiwa sio drv:
+                    # If no drive ni present, try to find one kwenye the previous
                     # parts. This makes the result of parsing e.g.
                     # ("C:", "/", "a") reasonably intuitive.
-                    for part in it:
-                        ikiwa not part:
-                            continue
+                    kila part kwenye it:
+                        ikiwa sio part:
+                            endelea
                         ikiwa altsep:
                             part = part.replace(altsep, sep)
                         drv = self.splitroot(part)[0]
                         ikiwa drv:
-                            break
-                break
-        ikiwa drv or root:
+                            koma
+                koma
+        ikiwa drv ama root:
             parsed.append(drv + root)
         parsed.reverse()
         rudisha drv, root, parsed
@@ -104,25 +104,25 @@ kundi _Flavour(object):
         (drive, root, parts) tuples.  Return a new (drive, root, parts) tuple.
         """
         ikiwa root2:
-            ikiwa not drv2 and drv:
+            ikiwa sio drv2 na drv:
                 rudisha drv, root2, [drv + root2] + parts2[1:]
         elikiwa drv2:
-            ikiwa drv2 == drv or self.casefold(drv2) == self.casefold(drv):
-                # Same drive => second path is relative to the first
+            ikiwa drv2 == drv ama self.casefold(drv2) == self.casefold(drv):
+                # Same drive => second path ni relative to the first
                 rudisha drv, root, parts + parts2[1:]
-        else:
-            # Second path is non-anchored (common case)
+        isipokua:
+            # Second path ni non-anchored (common case)
             rudisha drv, root, parts + parts2
         rudisha drv2, root2, parts2
 
 
 kundi _WindowsFlavour(_Flavour):
-    # Reference for Windows paths can be found at
+    # Reference kila Windows paths can be found at
     # http://msdn.microsoft.com/en-us/library/aa365247%28v=vs.85%29.aspx
 
     sep = '\\'
     altsep = '/'
-    has_drv = True
+    has_drv = Kweli
     pathmod = ntpath
 
     is_supported = (os.name == 'nt')
@@ -132,47 +132,47 @@ kundi _WindowsFlavour(_Flavour):
 
     reserved_names = (
         {'CON', 'PRN', 'AUX', 'NUL'} |
-        {'COM%d' % i for i in range(1, 10)} |
-        {'LPT%d' % i for i in range(1, 10)}
+        {'COM%d' % i kila i kwenye range(1, 10)} |
+        {'LPT%d' % i kila i kwenye range(1, 10)}
         )
 
     # Interesting findings about extended paths:
-    # - '\\?\c:\a', '//?/c:\a' and '//?/c:/a' are all supported
-    #   but '\\?\c:/a' is not
+    # - '\\?\c:\a', '//?/c:\a' na '//?/c:/a' are all supported
+    #   but '\\?\c:/a' ni not
     # - extended paths are always absolute; "relative" extended paths will
     #   fail.
 
     eleza splitroot(self, part, sep=sep):
         first = part[0:1]
         second = part[1:2]
-        ikiwa (second == sep and first == sep):
+        ikiwa (second == sep na first == sep):
             # XXX extended paths should also disable the collapsing of "."
             # components (according to MSDN docs).
             prefix, part = self._split_extended_path(part)
             first = part[0:1]
             second = part[1:2]
-        else:
+        isipokua:
             prefix = ''
         third = part[2:3]
-        ikiwa (second == sep and first == sep and third != sep):
-            # is a UNC path:
+        ikiwa (second == sep na first == sep na third != sep):
+            # ni a UNC path:
             # vvvvvvvvvvvvvvvvvvvvv root
             # \\machine\mountpoint\directory\etc\...
             #            directory ^^^^^^^^^^^^^^
             index = part.find(sep, 2)
             ikiwa index != -1:
                 index2 = part.find(sep, index + 1)
-                # a UNC path can't have two slashes in a row
+                # a UNC path can't have two slashes kwenye a row
                 # (after the initial two)
                 ikiwa index2 != index + 1:
                     ikiwa index2 == -1:
                         index2 = len(part)
                     ikiwa prefix:
                         rudisha prefix + part[1:index2], sep, part[index2+1:]
-                    else:
+                    isipokua:
                         rudisha part[:index2], sep, part[index2+1:]
         drv = root = ''
-        ikiwa second == ':' and first in self.drive_letters:
+        ikiwa second == ':' na first kwenye self.drive_letters:
             drv = part[:2]
             part = part[2:]
             first = third
@@ -185,31 +185,31 @@ kundi _WindowsFlavour(_Flavour):
         rudisha s.lower()
 
     eleza casefold_parts(self, parts):
-        rudisha [p.lower() for p in parts]
+        rudisha [p.lower() kila p kwenye parts]
 
-    eleza resolve(self, path, strict=False):
+    eleza resolve(self, path, strict=Uongo):
         s = str(path)
-        ikiwa not s:
+        ikiwa sio s:
             rudisha os.getcwd()
-        previous_s = None
-        ikiwa _getfinalpathname is not None:
+        previous_s = Tupu
+        ikiwa _getfinalpathname ni sio Tupu:
             ikiwa strict:
                 rudisha self._ext_to_normal(_getfinalpathname(s))
-            else:
-                tail_parts = []  # End of the path after the first one not found
-                while True:
-                    try:
+            isipokua:
+                tail_parts = []  # End of the path after the first one sio found
+                wakati Kweli:
+                    jaribu:
                         s = self._ext_to_normal(_getfinalpathname(s))
-                    except FileNotFoundError:
+                    tatizo FileNotFoundError:
                         previous_s = s
                         s, tail = os.path.split(s)
                         tail_parts.append(tail)
                         ikiwa previous_s == s:
                             rudisha path
-                    else:
+                    isipokua:
                         rudisha os.path.join(s, *reversed(tail_parts))
         # Means fallback on absolute
-        rudisha None
+        rudisha Tupu
 
     eleza _split_extended_path(self, s, ext_prefix=ext_namespace_prefix):
         prefix = ''
@@ -226,81 +226,81 @@ kundi _WindowsFlavour(_Flavour):
         rudisha self._split_extended_path(s)[1]
 
     eleza is_reserved(self, parts):
-        # NOTE: the rules for reserved names seem somewhat complicated
-        # (e.g. r"..\NUL" is reserved but not r"foo\NUL").
-        # We err on the side of caution and rudisha True for paths which are
-        # not considered reserved by Windows.
-        ikiwa not parts:
-            rudisha False
+        # NOTE: the rules kila reserved names seem somewhat complicated
+        # (e.g. r"..\NUL" ni reserved but sio r"foo\NUL").
+        # We err on the side of caution na rudisha Kweli kila paths which are
+        # sio considered reserved by Windows.
+        ikiwa sio parts:
+            rudisha Uongo
         ikiwa parts[0].startswith('\\\\'):
             # UNC paths are never reserved
-            rudisha False
-        rudisha parts[-1].partition('.')[0].upper() in self.reserved_names
+            rudisha Uongo
+        rudisha parts[-1].partition('.')[0].upper() kwenye self.reserved_names
 
     eleza make_uri(self, path):
         # Under Windows, file URIs use the UTF-8 encoding.
         drive = path.drive
-        ikiwa len(drive) == 2 and drive[1] == ':':
+        ikiwa len(drive) == 2 na drive[1] == ':':
             # It's a path on a local drive => 'file:///c:/a/b'
             rest = path.as_posix()[2:].lstrip('/')
             rudisha 'file:///%s/%s' % (
                 drive, urlquote_kutoka_bytes(rest.encode('utf-8')))
-        else:
+        isipokua:
             # It's a path on a network drive => 'file://host/share/a/b'
             rudisha 'file:' + urlquote_kutoka_bytes(path.as_posix().encode('utf-8'))
 
     eleza gethomedir(self, username):
-        ikiwa 'HOME' in os.environ:
+        ikiwa 'HOME' kwenye os.environ:
             userhome = os.environ['HOME']
-        elikiwa 'USERPROFILE' in os.environ:
+        elikiwa 'USERPROFILE' kwenye os.environ:
             userhome = os.environ['USERPROFILE']
-        elikiwa 'HOMEPATH' in os.environ:
-            try:
+        elikiwa 'HOMEPATH' kwenye os.environ:
+            jaribu:
                 drv = os.environ['HOMEDRIVE']
-            except KeyError:
+            tatizo KeyError:
                 drv = ''
             userhome = drv + os.environ['HOMEPATH']
-        else:
-            raise RuntimeError("Can't determine home directory")
+        isipokua:
+            ashiria RuntimeError("Can't determine home directory")
 
         ikiwa username:
             # Try to guess user home directory.  By default all users
-            # directories are located in the same place and are named by
+            # directories are located kwenye the same place na are named by
             # corresponding usernames.  If current user home directory points
-            # to nonstandard place, this guess is likely wrong.
+            # to nonstandard place, this guess ni likely wrong.
             ikiwa os.environ['USERNAME'] != username:
                 drv, root, parts = self.parse_parts((userhome,))
                 ikiwa parts[-1] != os.environ['USERNAME']:
-                    raise RuntimeError("Can't determine home directory "
-                                       "for %r" % username)
+                    ashiria RuntimeError("Can't determine home directory "
+                                       "kila %r" % username)
                 parts[-1] = username
-                ikiwa drv or root:
+                ikiwa drv ama root:
                     userhome = drv + root + self.join(parts[1:])
-                else:
+                isipokua:
                     userhome = self.join(parts)
         rudisha userhome
 
 kundi _PosixFlavour(_Flavour):
     sep = '/'
     altsep = ''
-    has_drv = False
+    has_drv = Uongo
     pathmod = posixpath
 
     is_supported = (os.name != 'nt')
 
     eleza splitroot(self, part, sep=sep):
-        ikiwa part and part[0] == sep:
+        ikiwa part na part[0] == sep:
             stripped_part = part.lstrip(sep)
             # According to POSIX path resolution:
             # http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap04.html#tag_04_11
             # "A pathname that begins with two successive slashes may be
-            # interpreted in an implementation-defined manner, although more
-            # than two leading slashes shall be treated as a single slash".
+            # interpreted kwenye an implementation-defined manner, although more
+            # than two leading slashes shall be treated kama a single slash".
             ikiwa len(part) - len(stripped_part) == 2:
                 rudisha '', sep * 2, stripped_part
-            else:
+            isipokua:
                 rudisha '', sep, stripped_part
-        else:
+        isipokua:
             rudisha '', '', part
 
     eleza casefold(self, s):
@@ -309,7 +309,7 @@ kundi _PosixFlavour(_Flavour):
     eleza casefold_parts(self, parts):
         rudisha parts
 
-    eleza resolve(self, path, strict=False):
+    eleza resolve(self, path, strict=Uongo):
         sep = self.sep
         accessor = path._accessor
         seen = {}
@@ -317,34 +317,34 @@ kundi _PosixFlavour(_Flavour):
             ikiwa rest.startswith(sep):
                 path = ''
 
-            for name in rest.split(sep):
-                ikiwa not name or name == '.':
+            kila name kwenye rest.split(sep):
+                ikiwa sio name ama name == '.':
                     # current dir
-                    continue
+                    endelea
                 ikiwa name == '..':
                     # parent dir
                     path, _, _ = path.rpartition(sep)
-                    continue
+                    endelea
                 newpath = path + sep + name
-                ikiwa newpath in seen:
+                ikiwa newpath kwenye seen:
                     # Already seen this path
                     path = seen[newpath]
-                    ikiwa path is not None:
+                    ikiwa path ni sio Tupu:
                         # use cached value
-                        continue
-                    # The symlink is not resolved, so we must have a symlink loop.
-                    raise RuntimeError("Symlink loop kutoka %r" % newpath)
+                        endelea
+                    # The symlink ni sio resolved, so we must have a symlink loop.
+                    ashiria RuntimeError("Symlink loop kutoka %r" % newpath)
                 # Resolve the symbolic link
-                try:
+                jaribu:
                     target = accessor.readlink(newpath)
-                except OSError as e:
-                    ikiwa e.errno != EINVAL and strict:
-                        raise
-                    # Not a symlink, or non-strict mode. We just leave the path
+                tatizo OSError kama e:
+                    ikiwa e.errno != EINVAL na strict:
+                        ashiria
+                    # Not a symlink, ama non-strict mode. We just leave the path
                     # untouched.
                     path = newpath
-                else:
-                    seen[newpath] = None # not resolved symlink
+                isipokua:
+                    seen[newpath] = Tupu # sio resolved symlink
                     path = _resolve(path, target)
                     seen[newpath] = path # resolved symlink
 
@@ -352,31 +352,31 @@ kundi _PosixFlavour(_Flavour):
         # NOTE: according to POSIX, getcwd() cannot contain path components
         # which are symlinks.
         base = '' ikiwa path.is_absolute() else os.getcwd()
-        rudisha _resolve(base, str(path)) or sep
+        rudisha _resolve(base, str(path)) ama sep
 
     eleza is_reserved(self, parts):
-        rudisha False
+        rudisha Uongo
 
     eleza make_uri(self, path):
         # We represent the path using the local filesystem encoding,
-        # for portability to other applications.
+        # kila portability to other applications.
         bpath = bytes(path)
         rudisha 'file://' + urlquote_kutoka_bytes(bpath)
 
     eleza gethomedir(self, username):
-        ikiwa not username:
-            try:
+        ikiwa sio username:
+            jaribu:
                 rudisha os.environ['HOME']
-            except KeyError:
+            tatizo KeyError:
                 agiza pwd
                 rudisha pwd.getpwuid(os.getuid()).pw_dir
-        else:
+        isipokua:
             agiza pwd
-            try:
+            jaribu:
                 rudisha pwd.getpwnam(username).pw_dir
-            except KeyError:
-                raise RuntimeError("Can't determine home directory "
-                                   "for %r" % username)
+            tatizo KeyError:
+                ashiria RuntimeError("Can't determine home directory "
+                                   "kila %r" % username)
 
 
 _windows_flavour = _WindowsFlavour()
@@ -384,7 +384,7 @@ _posix_flavour = _PosixFlavour()
 
 
 kundi _Accessor:
-    """An accessor implements a particular (system-specific or not) way of
+    """An accessor implements a particular (system-specific ama not) way of
     accessing paths on the filesystem."""
 
 
@@ -404,9 +404,9 @@ kundi _NormalAccessor(_Accessor):
 
     ikiwa hasattr(os, "lchmod"):
         lchmod = os.lchmod
-    else:
+    isipokua:
         eleza lchmod(self, pathobj, mode):
-            raise NotImplementedError("lchmod() not available on this system")
+            ashiria NotImplementedError("lchmod() sio available on this system")
 
     mkdir = os.mkdir
 
@@ -423,10 +423,10 @@ kundi _NormalAccessor(_Accessor):
     ikiwa nt:
         ikiwa supports_symlinks:
             symlink = os.symlink
-        else:
+        isipokua:
             eleza symlink(a, b, target_is_directory):
-                raise NotImplementedError("symlink() not available on this system")
-    else:
+                ashiria NotImplementedError("symlink() sio available on this system")
+    isipokua:
         # Under POSIX, os.symlink() takes two args
         @staticmethod
         eleza symlink(a, b, target_is_directory):
@@ -434,7 +434,7 @@ kundi _NormalAccessor(_Accessor):
 
     utime = os.utime
 
-    # Helper for resolve()
+    # Helper kila resolve()
     eleza readlink(self, path):
         rudisha os.readlink(path)
 
@@ -451,11 +451,11 @@ eleza _make_selector(pattern_parts):
     child_parts = pattern_parts[1:]
     ikiwa pat == '**':
         cls = _RecursiveWildcardSelector
-    elikiwa '**' in pat:
-        raise ValueError("Invalid pattern: '**' can only be an entire path component")
+    elikiwa '**' kwenye pat:
+        ashiria ValueError("Invalid pattern: '**' can only be an entire path component")
     elikiwa _is_wildcard_pattern(pat):
         cls = _WildcardSelector
-    else:
+    isipokua:
         cls = _PreciseSelector
     rudisha cls(pat, child_parts)
 
@@ -471,10 +471,10 @@ kundi _Selector:
         self.child_parts = child_parts
         ikiwa child_parts:
             self.successor = _make_selector(child_parts)
-            self.dironly = True
-        else:
+            self.dironly = Kweli
+        isipokua:
             self.successor = _TerminatingSelector()
-            self.dironly = False
+            self.dironly = Uongo
 
     eleza select_kutoka(self, parent_path):
         """Iterate over all child paths of `parent_path` matched by this
@@ -483,7 +483,7 @@ kundi _Selector:
         is_dir = path_cls.is_dir
         exists = path_cls.exists
         scandir = parent_path._accessor.scandir
-        ikiwa not is_dir(parent_path):
+        ikiwa sio is_dir(parent_path):
             rudisha iter([])
         rudisha self._select_kutoka(parent_path, is_dir, exists, scandir)
 
@@ -491,7 +491,7 @@ kundi _Selector:
 kundi _TerminatingSelector:
 
     eleza _select_kutoka(self, parent_path, is_dir, exists, scandir):
-        yield parent_path
+        tuma parent_path
 
 
 kundi _PreciseSelector(_Selector):
@@ -501,13 +501,13 @@ kundi _PreciseSelector(_Selector):
         _Selector.__init__(self, child_parts)
 
     eleza _select_kutoka(self, parent_path, is_dir, exists, scandir):
-        try:
+        jaribu:
             path = parent_path._make_child_relpath(self.name)
             ikiwa (is_dir ikiwa self.dironly else exists)(path):
-                for p in self.successor._select_kutoka(path, is_dir, exists, scandir):
-                    yield p
-        except PermissionError:
-            return
+                kila p kwenye self.successor._select_kutoka(path, is_dir, exists, scandir):
+                    tuma p
+        tatizo PermissionError:
+            rudisha
 
 
 kundi _WildcardSelector(_Selector):
@@ -517,25 +517,25 @@ kundi _WildcardSelector(_Selector):
         _Selector.__init__(self, child_parts)
 
     eleza _select_kutoka(self, parent_path, is_dir, exists, scandir):
-        try:
+        jaribu:
             cf = parent_path._flavour.casefold
             entries = list(scandir(parent_path))
-            for entry in entries:
-                entry_is_dir = False
-                try:
+            kila entry kwenye entries:
+                entry_is_dir = Uongo
+                jaribu:
                     entry_is_dir = entry.is_dir()
-                except OSError as e:
-                    ikiwa not _ignore_error(e):
-                        raise
-                ikiwa not self.dironly or entry_is_dir:
+                tatizo OSError kama e:
+                    ikiwa sio _ignore_error(e):
+                        ashiria
+                ikiwa sio self.dironly ama entry_is_dir:
                     name = entry.name
                     casefolded = cf(name)
                     ikiwa self.pat.match(casefolded):
                         path = parent_path._make_child_relpath(name)
-                        for p in self.successor._select_kutoka(path, is_dir, exists, scandir):
-                            yield p
-        except PermissionError:
-            return
+                        kila p kwenye self.successor._select_kutoka(path, is_dir, exists, scandir):
+                            tuma p
+        tatizo PermissionError:
+            rudisha
 
 
 
@@ -545,37 +545,37 @@ kundi _RecursiveWildcardSelector(_Selector):
         _Selector.__init__(self, child_parts)
 
     eleza _iterate_directories(self, parent_path, is_dir, scandir):
-        yield parent_path
-        try:
+        tuma parent_path
+        jaribu:
             entries = list(scandir(parent_path))
-            for entry in entries:
-                entry_is_dir = False
-                try:
+            kila entry kwenye entries:
+                entry_is_dir = Uongo
+                jaribu:
                     entry_is_dir = entry.is_dir()
-                except OSError as e:
-                    ikiwa not _ignore_error(e):
-                        raise
-                ikiwa entry_is_dir and not entry.is_symlink():
+                tatizo OSError kama e:
+                    ikiwa sio _ignore_error(e):
+                        ashiria
+                ikiwa entry_is_dir na sio entry.is_symlink():
                     path = parent_path._make_child_relpath(entry.name)
-                    for p in self._iterate_directories(path, is_dir, scandir):
-                        yield p
-        except PermissionError:
-            return
+                    kila p kwenye self._iterate_directories(path, is_dir, scandir):
+                        tuma p
+        tatizo PermissionError:
+            rudisha
 
     eleza _select_kutoka(self, parent_path, is_dir, exists, scandir):
-        try:
-            yielded = set()
-            try:
+        jaribu:
+            tumaed = set()
+            jaribu:
                 successor_select = self.successor._select_kutoka
-                for starting_point in self._iterate_directories(parent_path, is_dir, scandir):
-                    for p in successor_select(starting_point, is_dir, exists, scandir):
-                        ikiwa p not in yielded:
-                            yield p
-                            yielded.add(p)
-            finally:
-                yielded.clear()
-        except PermissionError:
-            return
+                kila starting_point kwenye self._iterate_directories(parent_path, is_dir, scandir):
+                    kila p kwenye successor_select(starting_point, is_dir, exists, scandir):
+                        ikiwa p haiko kwenye tumaed:
+                            tuma p
+                            tumaed.add(p)
+            mwishowe:
+                tumaed.clear()
+        tatizo PermissionError:
+            rudisha
 
 
 #
@@ -595,14 +595,14 @@ kundi _PathParents(Sequence):
         self._parts = path._parts
 
     eleza __len__(self):
-        ikiwa self._drv or self._root:
+        ikiwa self._drv ama self._root:
             rudisha len(self._parts) - 1
-        else:
+        isipokua:
             rudisha len(self._parts)
 
     eleza __getitem__(self, idx):
-        ikiwa idx < 0 or idx >= len(self):
-            raise IndexError(idx)
+        ikiwa idx < 0 ama idx >= len(self):
+            ashiria IndexError(idx)
         rudisha self._pathcls._kutoka_parsed_parts(self._drv, self._root,
                                                 self._parts[:-idx - 1])
 
@@ -611,11 +611,11 @@ kundi _PathParents(Sequence):
 
 
 kundi PurePath(object):
-    """Base kundi for manipulating paths without I/O.
+    """Base kundi kila manipulating paths without I/O.
 
-    PurePath represents a filesystem path and offers operations which
+    PurePath represents a filesystem path na offers operations which
     don't imply any actual filesystem I/O.  Depending on your system,
-    instantiating a PurePath will rudisha either a PurePosixPath or a
+    instantiating a PurePath will rudisha either a PurePosixPath ama a
     PureWindowsPath object.  You can also instantiate either of these classes
     directly, regardless of your system.
     """
@@ -625,12 +625,12 @@ kundi PurePath(object):
     )
 
     eleza __new__(cls, *args):
-        """Construct a PurePath kutoka one or several strings and or existing
-        PurePath objects.  The strings and path objects are combined so as
-        to yield a canonicalized path, which is incorporated into the
+        """Construct a PurePath kutoka one ama several strings na ama existing
+        PurePath objects.  The strings na path objects are combined so as
+        to tuma a canonicalized path, which ni incorporated into the
         new PurePath object.
         """
-        ikiwa cls is PurePath:
+        ikiwa cls ni PurePath:
             cls = PureWindowsPath ikiwa os.name == 'nt' else PurePosixPath
         rudisha cls._kutoka_parts(args)
 
@@ -641,27 +641,27 @@ kundi PurePath(object):
 
     @classmethod
     eleza _parse_args(cls, args):
-        # This is useful when you don't want to create an instance, just
+        # This ni useful when you don't want to create an instance, just
         # canonicalize some constructor arguments.
         parts = []
-        for a in args:
+        kila a kwenye args:
             ikiwa isinstance(a, PurePath):
                 parts += a._parts
-            else:
+            isipokua:
                 a = os.fspath(a)
                 ikiwa isinstance(a, str):
                     # Force-cast str subclasses to str (issue #21127)
                     parts.append(str(a))
-                else:
-                    raise TypeError(
-                        "argument should be a str object or an os.PathLike "
-                        "object returning str, not %r"
+                isipokua:
+                    ashiria TypeError(
+                        "argument should be a str object ama an os.PathLike "
+                        "object rudishaing str, sio %r"
                         % type(a))
         rudisha cls._flavour.parse_parts(parts)
 
     @classmethod
-    eleza _kutoka_parts(cls, args, init=True):
-        # We need to call _parse_args on the instance, so as to get the
+    eleza _kutoka_parts(cls, args, init=Kweli):
+        # We need to call _parse_args on the instance, so kama to get the
         # right flavour.
         self = object.__new__(cls)
         drv, root, parts = self._parse_args(args)
@@ -673,7 +673,7 @@ kundi PurePath(object):
         rudisha self
 
     @classmethod
-    eleza _kutoka_parsed_parts(cls, drv, root, parts, init=True):
+    eleza _kutoka_parsed_parts(cls, drv, root, parts, init=Kweli):
         self = object.__new__(cls)
         self._drv = drv
         self._root = root
@@ -684,14 +684,14 @@ kundi PurePath(object):
 
     @classmethod
     eleza _format_parsed_parts(cls, drv, root, parts):
-        ikiwa drv or root:
+        ikiwa drv ama root:
             rudisha drv + root + cls._flavour.join(parts[1:])
-        else:
+        isipokua:
             rudisha cls._flavour.join(parts)
 
     eleza _init(self):
-        # Overridden in concrete Path
-        pass
+        # Overridden kwenye concrete Path
+        pita
 
     eleza _make_child(self, args):
         drv, root, parts = self._parse_args(args)
@@ -701,12 +701,12 @@ kundi PurePath(object):
 
     eleza __str__(self):
         """Return the string representation of the path, suitable for
-        passing to system calls."""
-        try:
+        pitaing to system calls."""
+        jaribu:
             rudisha self._str
-        except AttributeError:
+        tatizo AttributeError:
             self._str = self._format_parsed_parts(self._drv, self._root,
-                                                  self._parts) or '.'
+                                                  self._parts) ama '.'
             rudisha self._str
 
     eleza __fspath__(self):
@@ -719,7 +719,7 @@ kundi PurePath(object):
         rudisha str(self).replace(f.sep, '/')
 
     eleza __bytes__(self):
-        """Return the bytes representation of the path.  This is only
+        """Return the bytes representation of the path.  This ni only
         recommended to use under Unix."""
         rudisha os.fsencode(self)
 
@@ -727,61 +727,61 @@ kundi PurePath(object):
         rudisha "{}({!r})".format(self.__class__.__name__, self.as_posix())
 
     eleza as_uri(self):
-        """Return the path as a 'file' URI."""
-        ikiwa not self.is_absolute():
-            raise ValueError("relative path can't be expressed as a file URI")
+        """Return the path kama a 'file' URI."""
+        ikiwa sio self.is_absolute():
+            ashiria ValueError("relative path can't be expressed kama a file URI")
         rudisha self._flavour.make_uri(self)
 
     @property
     eleza _cparts(self):
-        # Cached casefolded parts, for hashing and comparison
-        try:
+        # Cached casefolded parts, kila hashing na comparison
+        jaribu:
             rudisha self._cached_cparts
-        except AttributeError:
+        tatizo AttributeError:
             self._cached_cparts = self._flavour.casefold_parts(self._parts)
             rudisha self._cached_cparts
 
     eleza __eq__(self, other):
-        ikiwa not isinstance(other, PurePath):
+        ikiwa sio isinstance(other, PurePath):
             rudisha NotImplemented
-        rudisha self._cparts == other._cparts and self._flavour is other._flavour
+        rudisha self._cparts == other._cparts na self._flavour ni other._flavour
 
     eleza __hash__(self):
-        try:
+        jaribu:
             rudisha self._hash
-        except AttributeError:
+        tatizo AttributeError:
             self._hash = hash(tuple(self._cparts))
             rudisha self._hash
 
     eleza __lt__(self, other):
-        ikiwa not isinstance(other, PurePath) or self._flavour is not other._flavour:
+        ikiwa sio isinstance(other, PurePath) ama self._flavour ni sio other._flavour:
             rudisha NotImplemented
         rudisha self._cparts < other._cparts
 
     eleza __le__(self, other):
-        ikiwa not isinstance(other, PurePath) or self._flavour is not other._flavour:
+        ikiwa sio isinstance(other, PurePath) ama self._flavour ni sio other._flavour:
             rudisha NotImplemented
         rudisha self._cparts <= other._cparts
 
     eleza __gt__(self, other):
-        ikiwa not isinstance(other, PurePath) or self._flavour is not other._flavour:
+        ikiwa sio isinstance(other, PurePath) ama self._flavour ni sio other._flavour:
             rudisha NotImplemented
         rudisha self._cparts > other._cparts
 
     eleza __ge__(self, other):
-        ikiwa not isinstance(other, PurePath) or self._flavour is not other._flavour:
+        ikiwa sio isinstance(other, PurePath) ama self._flavour ni sio other._flavour:
             rudisha NotImplemented
         rudisha self._cparts >= other._cparts
 
     drive = property(attrgetter('_drv'),
-                     doc="""The drive prefix (letter or UNC path), ikiwa any.""")
+                     doc="""The drive prefix (letter ama UNC path), ikiwa any.""")
 
     root = property(attrgetter('_root'),
                     doc="""The root of the path, ikiwa any.""")
 
     @property
     eleza anchor(self):
-        """The concatenation of the drive and root, or ''."""
+        """The concatenation of the drive na root, ama ''."""
         anchor = self._drv + self._root
         rudisha anchor
 
@@ -789,7 +789,7 @@ kundi PurePath(object):
     eleza name(self):
         """The final path component, ikiwa any."""
         parts = self._parts
-        ikiwa len(parts) == (1 ikiwa (self._drv or self._root) else 0):
+        ikiwa len(parts) == (1 ikiwa (self._drv ama self._root) else 0):
             rudisha ''
         rudisha parts[-1]
 
@@ -800,7 +800,7 @@ kundi PurePath(object):
         i = name.rfind('.')
         ikiwa 0 < i < len(name) - 1:
             rudisha name[i:]
-        else:
+        isipokua:
             rudisha ''
 
     @property
@@ -810,7 +810,7 @@ kundi PurePath(object):
         ikiwa name.endswith('.'):
             rudisha []
         name = name.lstrip('.')
-        rudisha ['.' + suffix for suffix in name.split('.')[1:]]
+        rudisha ['.' + suffix kila suffix kwenye name.split('.')[1:]]
 
     @property
     eleza stem(self):
@@ -819,69 +819,69 @@ kundi PurePath(object):
         i = name.rfind('.')
         ikiwa 0 < i < len(name) - 1:
             rudisha name[:i]
-        else:
+        isipokua:
             rudisha name
 
     eleza with_name(self, name):
         """Return a new path with the file name changed."""
-        ikiwa not self.name:
-            raise ValueError("%r has an empty name" % (self,))
+        ikiwa sio self.name:
+            ashiria ValueError("%r has an empty name" % (self,))
         drv, root, parts = self._flavour.parse_parts((name,))
-        ikiwa (not name or name[-1] in [self._flavour.sep, self._flavour.altsep]
-            or drv or root or len(parts) != 1):
-            raise ValueError("Invalid name %r" % (name))
+        ikiwa (not name ama name[-1] kwenye [self._flavour.sep, self._flavour.altsep]
+            ama drv ama root ama len(parts) != 1):
+            ashiria ValueError("Invalid name %r" % (name))
         rudisha self._kutoka_parsed_parts(self._drv, self._root,
                                        self._parts[:-1] + [name])
 
     eleza with_suffix(self, suffix):
         """Return a new path with the file suffix changed.  If the path
-        has no suffix, add given suffix.  If the given suffix is an empty
+        has no suffix, add given suffix.  If the given suffix ni an empty
         string, remove the suffix kutoka the path.
         """
         f = self._flavour
-        ikiwa f.sep in suffix or f.altsep and f.altsep in suffix:
-            raise ValueError("Invalid suffix %r" % (suffix,))
-        ikiwa suffix and not suffix.startswith('.') or suffix == '.':
-            raise ValueError("Invalid suffix %r" % (suffix))
+        ikiwa f.sep kwenye suffix ama f.altsep na f.altsep kwenye suffix:
+            ashiria ValueError("Invalid suffix %r" % (suffix,))
+        ikiwa suffix na sio suffix.startswith('.') ama suffix == '.':
+            ashiria ValueError("Invalid suffix %r" % (suffix))
         name = self.name
-        ikiwa not name:
-            raise ValueError("%r has an empty name" % (self,))
+        ikiwa sio name:
+            ashiria ValueError("%r has an empty name" % (self,))
         old_suffix = self.suffix
-        ikiwa not old_suffix:
+        ikiwa sio old_suffix:
             name = name + suffix
-        else:
+        isipokua:
             name = name[:-len(old_suffix)] + suffix
         rudisha self._kutoka_parsed_parts(self._drv, self._root,
                                        self._parts[:-1] + [name])
 
     eleza relative_to(self, *other):
-        """Return the relative path to another path identified by the passed
-        arguments.  If the operation is not possible (because this is not
-        a subpath of the other path), raise ValueError.
+        """Return the relative path to another path identified by the pitaed
+        arguments.  If the operation ni sio possible (because this ni not
+        a subpath of the other path), ashiria ValueError.
         """
-        # For the purpose of this method, drive and root are considered
+        # For the purpose of this method, drive na root are considered
         # separate parts, i.e.:
         #   Path('c:/').relative_to('c:')  gives Path('/')
-        #   Path('c:/').relative_to('/')   raise ValueError
-        ikiwa not other:
-            raise TypeError("need at least one argument")
+        #   Path('c:/').relative_to('/')   ashiria ValueError
+        ikiwa sio other:
+            ashiria TypeError("need at least one argument")
         parts = self._parts
         drv = self._drv
         root = self._root
         ikiwa root:
             abs_parts = [drv, root] + parts[1:]
-        else:
+        isipokua:
             abs_parts = parts
         to_drv, to_root, to_parts = self._parse_args(other)
         ikiwa to_root:
             to_abs_parts = [to_drv, to_root] + to_parts[1:]
-        else:
+        isipokua:
             to_abs_parts = to_parts
         n = len(to_abs_parts)
         cf = self._flavour.casefold_parts
-        ikiwa (root or drv) ikiwa n == 0 else cf(abs_parts[:n]) != cf(to_abs_parts):
+        ikiwa (root ama drv) ikiwa n == 0 else cf(abs_parts[:n]) != cf(to_abs_parts):
             formatted = self._format_parsed_parts(to_drv, to_root, to_parts)
-            raise ValueError("{!r} does not start with {!r}"
+            ashiria ValueError("{!r} does sio start with {!r}"
                              .format(str(self), str(formatted)))
         rudisha self._kutoka_parsed_parts('', root ikiwa n == 1 else '',
                                        abs_parts[n:])
@@ -889,33 +889,33 @@ kundi PurePath(object):
     @property
     eleza parts(self):
         """An object providing sequence-like access to the
-        components in the filesystem path."""
+        components kwenye the filesystem path."""
         # We cache the tuple to avoid building a new one each time .parts
-        # is accessed.  XXX is this necessary?
-        try:
+        # ni accessed.  XXX ni this necessary?
+        jaribu:
             rudisha self._pparts
-        except AttributeError:
+        tatizo AttributeError:
             self._pparts = tuple(self._parts)
             rudisha self._pparts
 
     eleza joinpath(self, *args):
-        """Combine this path with one or several arguments, and rudisha a
+        """Combine this path with one ama several arguments, na rudisha a
         new path representing either a subpath (ikiwa all arguments are relative
-        paths) or a totally different path (ikiwa one of the arguments is
+        paths) ama a totally different path (ikiwa one of the arguments is
         anchored).
         """
         rudisha self._make_child(args)
 
     eleza __truediv__(self, key):
-        try:
+        jaribu:
             rudisha self._make_child((key,))
-        except TypeError:
+        tatizo TypeError:
             rudisha NotImplemented
 
     eleza __rtruediv__(self, key):
-        try:
+        jaribu:
             rudisha self._kutoka_parts([key] + self._parts)
-        except TypeError:
+        tatizo TypeError:
             rudisha NotImplemented
 
     @property
@@ -924,7 +924,7 @@ kundi PurePath(object):
         drv = self._drv
         root = self._root
         parts = self._parts
-        ikiwa len(parts) == 1 and (drv or root):
+        ikiwa len(parts) == 1 na (drv ama root):
             rudisha self
         rudisha self._kutoka_parsed_parts(drv, root, parts[:-1])
 
@@ -934,49 +934,49 @@ kundi PurePath(object):
         rudisha _PathParents(self)
 
     eleza is_absolute(self):
-        """True ikiwa the path is absolute (has both a root and, ikiwa applicable,
+        """Kweli ikiwa the path ni absolute (has both a root and, ikiwa applicable,
         a drive)."""
-        ikiwa not self._root:
-            rudisha False
-        rudisha not self._flavour.has_drv or bool(self._drv)
+        ikiwa sio self._root:
+            rudisha Uongo
+        rudisha sio self._flavour.has_drv ama bool(self._drv)
 
     eleza is_reserved(self):
-        """Return True ikiwa the path contains one of the special names reserved
+        """Return Kweli ikiwa the path contains one of the special names reserved
         by the system, ikiwa any."""
         rudisha self._flavour.is_reserved(self._parts)
 
     eleza match(self, path_pattern):
         """
-        Return True ikiwa this path matches the given pattern.
+        Return Kweli ikiwa this path matches the given pattern.
         """
         cf = self._flavour.casefold
         path_pattern = cf(path_pattern)
         drv, root, pat_parts = self._flavour.parse_parts((path_pattern,))
-        ikiwa not pat_parts:
-            raise ValueError("empty pattern")
-        ikiwa drv and drv != cf(self._drv):
-            rudisha False
-        ikiwa root and root != cf(self._root):
-            rudisha False
+        ikiwa sio pat_parts:
+            ashiria ValueError("empty pattern")
+        ikiwa drv na drv != cf(self._drv):
+            rudisha Uongo
+        ikiwa root na root != cf(self._root):
+            rudisha Uongo
         parts = self._cparts
-        ikiwa drv or root:
+        ikiwa drv ama root:
             ikiwa len(pat_parts) != len(parts):
-                rudisha False
+                rudisha Uongo
             pat_parts = pat_parts[1:]
         elikiwa len(pat_parts) > len(parts):
-            rudisha False
-        for part, pat in zip(reversed(parts), reversed(pat_parts)):
-            ikiwa not fnmatch.fnmatchcase(part, pat):
-                rudisha False
-        rudisha True
+            rudisha Uongo
+        kila part, pat kwenye zip(reversed(parts), reversed(pat_parts)):
+            ikiwa sio fnmatch.fnmatchcase(part, pat):
+                rudisha Uongo
+        rudisha Kweli
 
-# Can't subkundi os.PathLike kutoka PurePath and keep the constructor
-# optimizations in PurePath._parse_args().
+# Can't subkundi os.PathLike kutoka PurePath na keep the constructor
+# optimizations kwenye PurePath._parse_args().
 os.PathLike.register(PurePath)
 
 
 kundi PurePosixPath(PurePath):
-    """PurePath subkundi for non-Windows systems.
+    """PurePath subkundi kila non-Windows systems.
 
     On a POSIX system, instantiating a PurePath should rudisha this object.
     However, you can also instantiate it directly on any system.
@@ -986,7 +986,7 @@ kundi PurePosixPath(PurePath):
 
 
 kundi PureWindowsPath(PurePath):
-    """PurePath subkundi for Windows systems.
+    """PurePath subkundi kila Windows systems.
 
     On a Windows system, instantiating a PurePath should rudisha this object.
     However, you can also instantiate it directly on any system.
@@ -1003,9 +1003,9 @@ kundi Path(PurePath):
 
     Path represents a filesystem path but unlike PurePath, also offers
     methods to do system calls on path objects. Depending on your system,
-    instantiating a Path will rudisha either a PosixPath or a WindowsPath
-    object. You can also instantiate a PosixPath or WindowsPath directly,
-    but cannot instantiate a WindowsPath on a POSIX system or vice versa.
+    instantiating a Path will rudisha either a PosixPath ama a WindowsPath
+    object. You can also instantiate a PosixPath ama WindowsPath directly,
+    but cannot instantiate a WindowsPath on a POSIX system ama vice versa.
     """
     __slots__ = (
         '_accessor',
@@ -1013,53 +1013,53 @@ kundi Path(PurePath):
     )
 
     eleza __new__(cls, *args, **kwargs):
-        ikiwa cls is Path:
+        ikiwa cls ni Path:
             cls = WindowsPath ikiwa os.name == 'nt' else PosixPath
-        self = cls._kutoka_parts(args, init=False)
-        ikiwa not self._flavour.is_supported:
-            raise NotImplementedError("cannot instantiate %r on your system"
+        self = cls._kutoka_parts(args, init=Uongo)
+        ikiwa sio self._flavour.is_supported:
+            ashiria NotImplementedError("cannot instantiate %r on your system"
                                       % (cls.__name__,))
         self._init()
         rudisha self
 
     eleza _init(self,
               # Private non-constructor arguments
-              template=None,
+              template=Tupu,
               ):
-        self._closed = False
-        ikiwa template is not None:
+        self._closed = Uongo
+        ikiwa template ni sio Tupu:
             self._accessor = template._accessor
-        else:
+        isipokua:
             self._accessor = _normal_accessor
 
     eleza _make_child_relpath(self, part):
-        # This is an optimization used for dir walking.  `part` must be
+        # This ni an optimization used kila dir walking.  `part` must be
         # a single part relative to this path.
         parts = self._parts + [part]
         rudisha self._kutoka_parsed_parts(self._drv, self._root, parts)
 
     eleza __enter__(self):
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         rudisha self
 
     eleza __exit__(self, t, v, tb):
-        self._closed = True
+        self._closed = Kweli
 
-    eleza _raise_closed(self):
-        raise ValueError("I/O operation on closed path")
+    eleza _ashiria_closed(self):
+        ashiria ValueError("I/O operation on closed path")
 
     eleza _opener(self, name, flags, mode=0o666):
-        # A stub for the opener argument to built-in open()
+        # A stub kila the opener argument to built-in open()
         rudisha self._accessor.open(self, flags, mode)
 
     eleza _raw_open(self, flags, mode=0o777):
         """
-        Open the file pointed by this path and rudisha a file descriptor,
-        as os.open() does.
+        Open the file pointed by this path na rudisha a file descriptor,
+        kama os.open() does.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         rudisha self._accessor.open(self, flags, mode)
 
     # Public API
@@ -1067,104 +1067,104 @@ kundi Path(PurePath):
     @classmethod
     eleza cwd(cls):
         """Return a new path pointing to the current working directory
-        (as returned by os.getcwd()).
+        (as rudishaed by os.getcwd()).
         """
         rudisha cls(os.getcwd())
 
     @classmethod
     eleza home(cls):
         """Return a new path pointing to the user's home directory (as
-        returned by os.path.expanduser('~')).
+        rudishaed by os.path.expanduser('~')).
         """
-        rudisha cls(cls()._flavour.gethomedir(None))
+        rudisha cls(cls()._flavour.gethomedir(Tupu))
 
     eleza samefile(self, other_path):
-        """Return whether other_path is the same or not as this file
-        (as returned by os.path.samefile()).
+        """Return whether other_path ni the same ama sio kama this file
+        (as rudishaed by os.path.samefile()).
         """
         st = self.stat()
-        try:
+        jaribu:
             other_st = other_path.stat()
-        except AttributeError:
+        tatizo AttributeError:
             other_st = os.stat(other_path)
         rudisha os.path.samestat(st, other_st)
 
     eleza iterdir(self):
-        """Iterate over the files in this directory.  Does not yield any
-        result for the special paths '.' and '..'.
+        """Iterate over the files kwenye this directory.  Does sio tuma any
+        result kila the special paths '.' na '..'.
         """
         ikiwa self._closed:
-            self._raise_closed()
-        for name in self._accessor.listdir(self):
-            ikiwa name in {'.', '..'}:
-                # Yielding a path object for these makes little sense
-                continue
-            yield self._make_child_relpath(name)
+            self._ashiria_closed()
+        kila name kwenye self._accessor.listdir(self):
+            ikiwa name kwenye {'.', '..'}:
+                # Yielding a path object kila these makes little sense
+                endelea
+            tuma self._make_child_relpath(name)
             ikiwa self._closed:
-                self._raise_closed()
+                self._ashiria_closed()
 
     eleza glob(self, pattern):
-        """Iterate over this subtree and yield all existing files (of any
+        """Iterate over this subtree na tuma all existing files (of any
         kind, including directories) matching the given relative pattern.
         """
-        ikiwa not pattern:
-            raise ValueError("Unacceptable pattern: {!r}".format(pattern))
+        ikiwa sio pattern:
+            ashiria ValueError("Unacceptable pattern: {!r}".format(pattern))
         pattern = self._flavour.casefold(pattern)
         drv, root, pattern_parts = self._flavour.parse_parts((pattern,))
-        ikiwa drv or root:
-            raise NotImplementedError("Non-relative patterns are unsupported")
+        ikiwa drv ama root:
+            ashiria NotImplementedError("Non-relative patterns are unsupported")
         selector = _make_selector(tuple(pattern_parts))
-        for p in selector.select_kutoka(self):
-            yield p
+        kila p kwenye selector.select_kutoka(self):
+            tuma p
 
     eleza rglob(self, pattern):
-        """Recursively yield all existing files (of any kind, including
+        """Recursively tuma all existing files (of any kind, including
         directories) matching the given relative pattern, anywhere in
         this subtree.
         """
         pattern = self._flavour.casefold(pattern)
         drv, root, pattern_parts = self._flavour.parse_parts((pattern,))
-        ikiwa drv or root:
-            raise NotImplementedError("Non-relative patterns are unsupported")
+        ikiwa drv ama root:
+            ashiria NotImplementedError("Non-relative patterns are unsupported")
         selector = _make_selector(("**",) + tuple(pattern_parts))
-        for p in selector.select_kutoka(self):
-            yield p
+        kila p kwenye selector.select_kutoka(self):
+            tuma p
 
     eleza absolute(self):
         """Return an absolute version of this path.  This function works
         even ikiwa the path doesn't point to anything.
 
-        No normalization is done, i.e. all '.' and '..' will be kept along.
+        No normalization ni done, i.e. all '.' na '..' will be kept along.
         Use resolve() to get the canonical path to a file.
         """
         # XXX untested yet!
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         ikiwa self.is_absolute():
             rudisha self
         # FIXME this must defer to the specific flavour (and, under Windows,
         # use nt._getfullpathname())
-        obj = self._kutoka_parts([os.getcwd()] + self._parts, init=False)
+        obj = self._kutoka_parts([os.getcwd()] + self._parts, init=Uongo)
         obj._init(template=self)
         rudisha obj
 
-    eleza resolve(self, strict=False):
+    eleza resolve(self, strict=Uongo):
         """
-        Make the path absolute, resolving all symlinks on the way and also
-        normalizing it (for example turning slashes into backslashes under
+        Make the path absolute, resolving all symlinks on the way na also
+        normalizing it (kila example turning slashes into backslashes under
         Windows).
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         s = self._flavour.resolve(self, strict=strict)
-        ikiwa s is None:
-            # No symlink resolution => for consistency, raise an error if
-            # the path doesn't exist or is forbidden
+        ikiwa s ni Tupu:
+            # No symlink resolution => kila consistency, ashiria an error if
+            # the path doesn't exist ama ni forbidden
             self.stat()
             s = str(self.absolute())
-        # Now we have no symlinks in the path, it's safe to normalize it.
+        # Now we have no symlinks kwenye the path, it's safe to normalize it.
         normed = self._flavour.pathmod.normpath(s)
-        obj = self._kutoka_parts((normed,), init=False)
+        obj = self._kutoka_parts((normed,), init=Uongo)
         obj._init(template=self)
         rudisha obj
 
@@ -1189,137 +1189,137 @@ kundi Path(PurePath):
         agiza grp
         rudisha grp.getgrgid(self.stat().st_gid).gr_name
 
-    eleza open(self, mode='r', buffering=-1, encoding=None,
-             errors=None, newline=None):
+    eleza open(self, mode='r', buffering=-1, encoding=Tupu,
+             errors=Tupu, newline=Tupu):
         """
-        Open the file pointed by this path and rudisha a file object, as
+        Open the file pointed by this path na rudisha a file object, as
         the built-in open() function does.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         rudisha io.open(self, mode, buffering, encoding, errors, newline,
                        opener=self._opener)
 
     eleza read_bytes(self):
         """
-        Open the file in bytes mode, read it, and close the file.
+        Open the file kwenye bytes mode, read it, na close the file.
         """
-        with self.open(mode='rb') as f:
+        with self.open(mode='rb') kama f:
             rudisha f.read()
 
-    eleza read_text(self, encoding=None, errors=None):
+    eleza read_text(self, encoding=Tupu, errors=Tupu):
         """
-        Open the file in text mode, read it, and close the file.
+        Open the file kwenye text mode, read it, na close the file.
         """
-        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+        with self.open(mode='r', encoding=encoding, errors=errors) kama f:
             rudisha f.read()
 
     eleza write_bytes(self, data):
         """
-        Open the file in bytes mode, write to it, and close the file.
+        Open the file kwenye bytes mode, write to it, na close the file.
         """
-        # type-check for the buffer interface before truncating the file
+        # type-check kila the buffer interface before truncating the file
         view = memoryview(data)
-        with self.open(mode='wb') as f:
+        with self.open(mode='wb') kama f:
             rudisha f.write(view)
 
-    eleza write_text(self, data, encoding=None, errors=None):
+    eleza write_text(self, data, encoding=Tupu, errors=Tupu):
         """
-        Open the file in text mode, write to it, and close the file.
+        Open the file kwenye text mode, write to it, na close the file.
         """
-        ikiwa not isinstance(data, str):
-            raise TypeError('data must be str, not %s' %
+        ikiwa sio isinstance(data, str):
+            ashiria TypeError('data must be str, sio %s' %
                             data.__class__.__name__)
-        with self.open(mode='w', encoding=encoding, errors=errors) as f:
+        with self.open(mode='w', encoding=encoding, errors=errors) kama f:
             rudisha f.write(data)
 
-    eleza touch(self, mode=0o666, exist_ok=True):
+    eleza touch(self, mode=0o666, exist_ok=Kweli):
         """
         Create this file with the given access mode, ikiwa it doesn't exist.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         ikiwa exist_ok:
             # First try to bump modification time
             # Implementation note: GNU touch uses the UTIME_NOW option of
             # the utimensat() / futimens() functions.
-            try:
-                self._accessor.utime(self, None)
-            except OSError:
+            jaribu:
+                self._accessor.utime(self, Tupu)
+            tatizo OSError:
                 # Avoid exception chaining
-                pass
-            else:
-                return
+                pita
+            isipokua:
+                rudisha
         flags = os.O_CREAT | os.O_WRONLY
-        ikiwa not exist_ok:
+        ikiwa sio exist_ok:
             flags |= os.O_EXCL
         fd = self._raw_open(flags, mode)
         os.close(fd)
 
-    eleza mkdir(self, mode=0o777, parents=False, exist_ok=False):
+    eleza mkdir(self, mode=0o777, parents=Uongo, exist_ok=Uongo):
         """
         Create a new directory at this given path.
         """
         ikiwa self._closed:
-            self._raise_closed()
-        try:
+            self._ashiria_closed()
+        jaribu:
             self._accessor.mkdir(self, mode)
-        except FileNotFoundError:
-            ikiwa not parents or self.parent == self:
-                raise
-            self.parent.mkdir(parents=True, exist_ok=True)
-            self.mkdir(mode, parents=False, exist_ok=exist_ok)
-        except OSError:
-            # Cannot rely on checking for EEXIST, since the operating system
-            # could give priority to other errors like EACCES or EROFS
-            ikiwa not exist_ok or not self.is_dir():
-                raise
+        tatizo FileNotFoundError:
+            ikiwa sio parents ama self.parent == self:
+                ashiria
+            self.parent.mkdir(parents=Kweli, exist_ok=Kweli)
+            self.mkdir(mode, parents=Uongo, exist_ok=exist_ok)
+        tatizo OSError:
+            # Cannot rely on checking kila EEXIST, since the operating system
+            # could give priority to other errors like EACCES ama EROFS
+            ikiwa sio exist_ok ama sio self.is_dir():
+                ashiria
 
     eleza chmod(self, mode):
         """
         Change the permissions of the path, like os.chmod().
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         self._accessor.chmod(self, mode)
 
     eleza lchmod(self, mode):
         """
-        Like chmod(), except ikiwa the path points to a symlink, the symlink's
+        Like chmod(), tatizo ikiwa the path points to a symlink, the symlink's
         permissions are changed, rather than its target's.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         self._accessor.lchmod(self, mode)
 
-    eleza unlink(self, missing_ok=False):
+    eleza unlink(self, missing_ok=Uongo):
         """
-        Remove this file or link.
-        If the path is a directory, use rmdir() instead.
+        Remove this file ama link.
+        If the path ni a directory, use rmdir() instead.
         """
         ikiwa self._closed:
-            self._raise_closed()
-        try:
+            self._ashiria_closed()
+        jaribu:
             self._accessor.unlink(self)
-        except FileNotFoundError:
-            ikiwa not missing_ok:
-                raise
+        tatizo FileNotFoundError:
+            ikiwa sio missing_ok:
+                ashiria
 
     eleza rmdir(self):
         """
         Remove this directory.  The directory must be empty.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         self._accessor.rmdir(self)
 
     eleza lstat(self):
         """
-        Like stat(), except ikiwa the path points to a symlink, the symlink's
-        status information is returned, rather than its target's.
+        Like stat(), tatizo ikiwa the path points to a symlink, the symlink's
+        status information ni rudishaed, rather than its target's.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         rudisha self._accessor.lstat(self)
 
     eleza link_to(self, target):
@@ -1327,195 +1327,195 @@ kundi Path(PurePath):
         Create a hard link pointing to a path named target.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         self._accessor.link_to(self, target)
 
     eleza rename(self, target):
         """
         Rename this path to the given path,
-        and rudisha a new Path instance pointing to the given path.
+        na rudisha a new Path instance pointing to the given path.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         self._accessor.rename(self, target)
         rudisha self.__class__(target)
 
     eleza replace(self, target):
         """
         Rename this path to the given path, clobbering the existing
-        destination ikiwa it exists, and rudisha a new Path instance
+        destination ikiwa it exists, na rudisha a new Path instance
         pointing to the given path.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         self._accessor.replace(self, target)
         rudisha self.__class__(target)
 
-    eleza symlink_to(self, target, target_is_directory=False):
+    eleza symlink_to(self, target, target_is_directory=Uongo):
         """
         Make this path a symlink pointing to the given path.
-        Note the order of arguments (self, target) is the reverse of os.symlink's.
+        Note the order of arguments (self, target) ni the reverse of os.symlink's.
         """
         ikiwa self._closed:
-            self._raise_closed()
+            self._ashiria_closed()
         self._accessor.symlink(target, self, target_is_directory)
 
-    # Convenience functions for querying the stat results
+    # Convenience functions kila querying the stat results
 
     eleza exists(self):
         """
         Whether this path exists.
         """
-        try:
+        jaribu:
             self.stat()
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
-            rudisha False
-        except ValueError:
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
-        rudisha True
+            rudisha Uongo
+        rudisha Kweli
 
     eleza is_dir(self):
         """
-        Whether this path is a directory.
+        Whether this path ni a directory.
         """
-        try:
+        jaribu:
             rudisha S_ISDIR(self.stat().st_mode)
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
-            # Path doesn't exist or is a broken symlink
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
+            # Path doesn't exist ama ni a broken symlink
             # (see https://bitbucket.org/pitrou/pathlib/issue/12/)
-            rudisha False
-        except ValueError:
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
+            rudisha Uongo
 
     eleza is_file(self):
         """
-        Whether this path is a regular file (also True for symlinks pointing
+        Whether this path ni a regular file (also Kweli kila symlinks pointing
         to regular files).
         """
-        try:
+        jaribu:
             rudisha S_ISREG(self.stat().st_mode)
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
-            # Path doesn't exist or is a broken symlink
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
+            # Path doesn't exist ama ni a broken symlink
             # (see https://bitbucket.org/pitrou/pathlib/issue/12/)
-            rudisha False
-        except ValueError:
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
+            rudisha Uongo
 
     eleza is_mount(self):
         """
-        Check ikiwa this path is a POSIX mount point
+        Check ikiwa this path ni a POSIX mount point
         """
-        # Need to exist and be a dir
-        ikiwa not self.exists() or not self.is_dir():
-            rudisha False
+        # Need to exist na be a dir
+        ikiwa sio self.exists() ama sio self.is_dir():
+            rudisha Uongo
 
         parent = Path(self.parent)
-        try:
+        jaribu:
             parent_dev = parent.stat().st_dev
-        except OSError:
-            rudisha False
+        tatizo OSError:
+            rudisha Uongo
 
         dev = self.stat().st_dev
         ikiwa dev != parent_dev:
-            rudisha True
+            rudisha Kweli
         ino = self.stat().st_ino
         parent_ino = parent.stat().st_ino
         rudisha ino == parent_ino
 
     eleza is_symlink(self):
         """
-        Whether this path is a symbolic link.
+        Whether this path ni a symbolic link.
         """
-        try:
+        jaribu:
             rudisha S_ISLNK(self.lstat().st_mode)
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
             # Path doesn't exist
-            rudisha False
-        except ValueError:
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
+            rudisha Uongo
 
     eleza is_block_device(self):
         """
-        Whether this path is a block device.
+        Whether this path ni a block device.
         """
-        try:
+        jaribu:
             rudisha S_ISBLK(self.stat().st_mode)
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
-            # Path doesn't exist or is a broken symlink
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
+            # Path doesn't exist ama ni a broken symlink
             # (see https://bitbucket.org/pitrou/pathlib/issue/12/)
-            rudisha False
-        except ValueError:
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
+            rudisha Uongo
 
     eleza is_char_device(self):
         """
-        Whether this path is a character device.
+        Whether this path ni a character device.
         """
-        try:
+        jaribu:
             rudisha S_ISCHR(self.stat().st_mode)
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
-            # Path doesn't exist or is a broken symlink
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
+            # Path doesn't exist ama ni a broken symlink
             # (see https://bitbucket.org/pitrou/pathlib/issue/12/)
-            rudisha False
-        except ValueError:
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
+            rudisha Uongo
 
     eleza is_fifo(self):
         """
-        Whether this path is a FIFO.
+        Whether this path ni a FIFO.
         """
-        try:
+        jaribu:
             rudisha S_ISFIFO(self.stat().st_mode)
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
-            # Path doesn't exist or is a broken symlink
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
+            # Path doesn't exist ama ni a broken symlink
             # (see https://bitbucket.org/pitrou/pathlib/issue/12/)
-            rudisha False
-        except ValueError:
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
+            rudisha Uongo
 
     eleza is_socket(self):
         """
-        Whether this path is a socket.
+        Whether this path ni a socket.
         """
-        try:
+        jaribu:
             rudisha S_ISSOCK(self.stat().st_mode)
-        except OSError as e:
-            ikiwa not _ignore_error(e):
-                raise
-            # Path doesn't exist or is a broken symlink
+        tatizo OSError kama e:
+            ikiwa sio _ignore_error(e):
+                ashiria
+            # Path doesn't exist ama ni a broken symlink
             # (see https://bitbucket.org/pitrou/pathlib/issue/12/)
-            rudisha False
-        except ValueError:
+            rudisha Uongo
+        tatizo ValueError:
             # Non-encodable path
-            rudisha False
+            rudisha Uongo
 
     eleza expanduser(self):
-        """ Return a new path with expanded ~ and ~user constructs
-        (as returned by os.path.expanduser)
+        """ Return a new path with expanded ~ na ~user constructs
+        (as rudishaed by os.path.expanduser)
         """
-        ikiwa (not (self._drv or self._root) and
-            self._parts and self._parts[0][:1] == '~'):
+        ikiwa (not (self._drv ama self._root) and
+            self._parts na self._parts[0][:1] == '~'):
             homedir = self._flavour.gethomedir(self._parts[0][1:])
             rudisha self._kutoka_parts([homedir] + self._parts[1:])
 
@@ -1523,24 +1523,24 @@ kundi Path(PurePath):
 
 
 kundi PosixPath(Path, PurePosixPath):
-    """Path subkundi for non-Windows systems.
+    """Path subkundi kila non-Windows systems.
 
     On a POSIX system, instantiating a Path should rudisha this object.
     """
     __slots__ = ()
 
 kundi WindowsPath(Path, PureWindowsPath):
-    """Path subkundi for Windows systems.
+    """Path subkundi kila Windows systems.
 
     On a Windows system, instantiating a Path should rudisha this object.
     """
     __slots__ = ()
 
     eleza owner(self):
-        raise NotImplementedError("Path.owner() is unsupported on this system")
+        ashiria NotImplementedError("Path.owner() ni unsupported on this system")
 
     eleza group(self):
-        raise NotImplementedError("Path.group() is unsupported on this system")
+        ashiria NotImplementedError("Path.group() ni unsupported on this system")
 
     eleza is_mount(self):
-        raise NotImplementedError("Path.is_mount() is unsupported on this system")
+        ashiria NotImplementedError("Path.is_mount() ni unsupported on this system")

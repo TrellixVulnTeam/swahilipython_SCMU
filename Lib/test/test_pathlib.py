@@ -14,10 +14,10 @@ kutoka unittest agiza mock
 kutoka test agiza support
 kutoka test.support agiza TESTFN, FakePath
 
-try:
+jaribu:
     agiza grp, pwd
-except ImportError:
-    grp = pwd = None
+tatizo ImportError:
+    grp = pwd = Tupu
 
 
 kundi _BaseFlavourTest(object):
@@ -26,10 +26,10 @@ kundi _BaseFlavourTest(object):
         f = self.flavour.parse_parts
         sep = self.flavour.sep
         altsep = self.flavour.altsep
-        actual = f([x.replace('/', sep) for x in arg])
+        actual = f([x.replace('/', sep) kila x kwenye arg])
         self.assertEqual(actual, expected)
         ikiwa altsep:
-            actual = f([x.replace('/', altsep) for x in arg])
+            actual = f([x.replace('/', altsep) kila x kwenye arg])
             self.assertEqual(actual, expected)
 
     eleza test_parse_parts_common(self):
@@ -44,7 +44,7 @@ kundi _BaseFlavourTest(object):
         check(['a/b'],              ('', '', ['a', 'b']))
         check(['a/b/'],             ('', '', ['a', 'b']))
         check(['a', 'b/c', 'd'],    ('', '', ['a', 'b', 'c', 'd']))
-        # Collapsing and stripping excess slashes.
+        # Collapsing na stripping excess slashes.
         check(['a', 'b//c', 'd'],   ('', '', ['a', 'b', 'c', 'd']))
         check(['a', 'b/c/', 'd'],   ('', '', ['a', 'b', 'c', 'd']))
         # Eliminating standalone dots.
@@ -52,7 +52,7 @@ kundi _BaseFlavourTest(object):
         check(['.', '.', 'b'],      ('', '', ['b']))
         check(['a', '.', 'b'],      ('', '', ['a', 'b']))
         check(['a', '.', '.'],      ('', '', ['a']))
-        # The first part is anchored.
+        # The first part ni anchored.
         check(['/a/b'],             ('', sep, [sep, 'a', 'b']))
         check(['/a', 'b'],          ('', sep, [sep, 'a', 'b']))
         check(['/a/', 'b'],         ('', sep, [sep, 'a', 'b']))
@@ -66,7 +66,7 @@ kundi PosixFlavourTest(_BaseFlavourTest, unittest.TestCase):
 
     eleza test_parse_parts(self):
         check = self._check_parse_parts
-        # Collapsing of excess leading slashes, except for the double-slash
+        # Collapsing of excess leading slashes, tatizo kila the double-slash
         # special case.
         check(['//a', 'b'],             ('', '//', ['//', 'a', 'b']))
         check(['///a', 'b'],            ('', '/', ['/', 'a', 'b']))
@@ -85,9 +85,9 @@ kundi PosixFlavourTest(_BaseFlavourTest, unittest.TestCase):
         self.assertEqual(f('/a'), ('', '/', 'a'))
         self.assertEqual(f('/a/b'), ('', '/', 'a/b'))
         self.assertEqual(f('/a/b/'), ('', '/', 'a/b/'))
-        # The root is collapsed when there are redundant slashes
-        # except when there are exactly two leading slashes, which
-        # is a special case in POSIX.
+        # The root ni collapsed when there are redundant slashes
+        # tatizo when there are exactly two leading slashes, which
+        # ni a special case kwenye POSIX.
         self.assertEqual(f('//a'), ('', '//', 'a'))
         self.assertEqual(f('///a'), ('', '/', 'a'))
         self.assertEqual(f('///a/b'), ('', '/', 'a/b'))
@@ -102,7 +102,7 @@ kundi NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
 
     eleza test_parse_parts(self):
         check = self._check_parse_parts
-        # First part is anchored.
+        # First part ni anchored.
         check(['c:'],                   ('c:', '', ['c:']))
         check(['c:/'],                  ('c:', '\\', ['c:\\']))
         check(['/'],                    ('', '\\', ['\\']))
@@ -113,12 +113,12 @@ kundi NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
         check(['//a/b'],                ('\\\\a\\b', '\\', ['\\\\a\\b\\']))
         check(['//a/b/'],               ('\\\\a\\b', '\\', ['\\\\a\\b\\']))
         check(['//a/b/c'],              ('\\\\a\\b', '\\', ['\\\\a\\b\\', 'c']))
-        # Second part is anchored, so that the first part is ignored.
+        # Second part ni anchored, so that the first part ni ignored.
         check(['a', 'Z:b', 'c'],        ('Z:', '', ['Z:', 'b', 'c']))
         check(['a', 'Z:/b', 'c'],       ('Z:', '\\', ['Z:\\', 'b', 'c']))
         # UNC paths.
         check(['a', '//b/c', 'd'],      ('\\\\b\\c', '\\', ['\\\\b\\c\\', 'd']))
-        # Collapsing and stripping excess slashes.
+        # Collapsing na stripping excess slashes.
         check(['a', 'Z://b//c/', 'd/'], ('Z:', '\\', ['Z:\\', 'b', 'c', 'd']))
         # UNC paths.
         check(['a', '//b/c//', 'd'],    ('\\\\b\\c', '\\', ['\\\\b\\c\\', 'd']))
@@ -126,10 +126,10 @@ kundi NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
         check(['//?/c:/'],              ('\\\\?\\c:', '\\', ['\\\\?\\c:\\']))
         check(['//?/c:/a'],             ('\\\\?\\c:', '\\', ['\\\\?\\c:\\', 'a']))
         check(['//?/c:/a', '/b'],       ('\\\\?\\c:', '\\', ['\\\\?\\c:\\', 'b']))
-        # Extended UNC paths (format is "\\?\UNC\server\share").
+        # Extended UNC paths (format ni "\\?\UNC\server\share").
         check(['//?/UNC/b/c'],          ('\\\\?\\UNC\\b\\c', '\\', ['\\\\?\\UNC\\b\\c\\']))
         check(['//?/UNC/b/c/d'],        ('\\\\?\\UNC\\b\\c', '\\', ['\\\\?\\UNC\\b\\c\\', 'd']))
-        # Second part has a root but not drive.
+        # Second part has a root but sio drive.
         check(['a', '/b', 'c'],         ('', '\\', ['\\', 'b', 'c']))
         check(['Z:/a', '/b', 'c'],      ('Z:', '\\', ['Z:\\', 'b', 'c']))
         check(['//?/Z:/a', '/b', 'c'],  ('\\\\?\\Z:', '\\', ['\\\\?\\Z:\\', 'b', 'c']))
@@ -143,7 +143,7 @@ kundi NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
         self.assertEqual(f('\\a\\b'), ('', '\\', 'a\\b'))
         self.assertEqual(f('c:a\\b'), ('c:', '', 'a\\b'))
         self.assertEqual(f('c:\\a\\b'), ('c:', '\\', 'a\\b'))
-        # Redundant slashes in the root are collapsed.
+        # Redundant slashes kwenye the root are collapsed.
         self.assertEqual(f('\\\\a'), ('', '\\', 'a'))
         self.assertEqual(f('\\\\\\a/b'), ('', '\\', 'a/b'))
         self.assertEqual(f('c:\\\\a'), ('c:', '\\', 'a'))
@@ -152,7 +152,7 @@ kundi NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
         self.assertEqual(f('\\\\a\\b'), ('\\\\a\\b', '\\', ''))
         self.assertEqual(f('\\\\a\\b\\'), ('\\\\a\\b', '\\', ''))
         self.assertEqual(f('\\\\a\\b\\c\\d'), ('\\\\a\\b', '\\', 'c\\d'))
-        # These are non-UNC paths (according to ntpath.py and test_ntpath).
+        # These are non-UNC paths (according to ntpath.py na test_ntpath).
         # However, command.com says such paths are invalid, so it's
         # difficult to know what the right semantics are.
         self.assertEqual(f('\\\\\\a\\b'), ('', '\\', 'a\\b'))
@@ -160,7 +160,7 @@ kundi NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
 
 
 #
-# Tests for the pure classes.
+# Tests kila the pure classes.
 #
 
 kundi _BasePurePathTest(object):
@@ -204,14 +204,14 @@ kundi _BasePurePathTest(object):
 
     eleza _check_str_subclass(self, *args):
         # Issue #21127: it should be possible to construct a PurePath object
-        # kutoka a str subkundi instance, and it then gets converted to
+        # kutoka a str subkundi instance, na it then gets converted to
         # a pure str object.
         kundi StrSubclass(str):
-            pass
+            pita
         P = self.cls
-        p = P(*(StrSubclass(x) for x in args))
+        p = P(*(StrSubclass(x) kila x kwenye args))
         self.assertEqual(p, P(*args))
-        for part in p.parts:
+        kila part kwenye p.parts:
             self.assertIs(type(part), str)
 
     eleza test_str_subclass_common(self):
@@ -235,7 +235,7 @@ kundi _BasePurePathTest(object):
         self.assertEqual(pp, P('/c'))
 
     eleza test_div_common(self):
-        # Basically the same as joinpath().
+        # Basically the same kama joinpath().
         P = self.cls
         p = P('a/b')
         pp = p / 'c'
@@ -258,17 +258,17 @@ kundi _BasePurePathTest(object):
 
     eleza test_str_common(self):
         # Canonicalized paths roundtrip.
-        for pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
+        kila pathstr kwenye ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
             self._check_str(pathstr, (pathstr,))
-        # Special case for the empty path.
+        # Special case kila the empty path.
         self._check_str('.', ('',))
-        # Other tests for str() are in test_equivalences().
+        # Other tests kila str() are kwenye test_equivalences().
 
     eleza test_as_posix_common(self):
         P = self.cls
-        for pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
+        kila pathstr kwenye ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
             self.assertEqual(P(pathstr).as_posix(), pathstr)
-        # Other tests for as_posix() are in test_equivalences().
+        # Other tests kila as_posix() are kwenye test_equivalences().
 
     eleza test_as_bytes_common(self):
         sep = os.fsencode(self.sep)
@@ -283,13 +283,13 @@ kundi _BasePurePathTest(object):
             P().as_uri()
 
     eleza test_repr_common(self):
-        for pathstr in ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
+        kila pathstr kwenye ('a', 'a/b', 'a/b/c', '/', '/a/b', '/a/b/c'):
             p = self.cls(pathstr)
             clsname = p.__class__.__name__
             r = repr(p)
-            # The repr() is in the form ClassName("forward-slashes path").
-            self.assertTrue(r.startswith(clsname + '('), r)
-            self.assertTrue(r.endswith(')'), r)
+            # The repr() ni kwenye the form ClassName("forward-slashes path").
+            self.assertKweli(r.startswith(clsname + '('), r)
+            self.assertKweli(r.endswith(')'), r)
             inner = r[len(clsname) + 1 : -1]
             self.assertEqual(eval(inner), p.as_posix())
             # The repr() roundtrips.
@@ -316,41 +316,41 @@ kundi _BasePurePathTest(object):
         self.assertRaises(ValueError, P('a').match, '')
         self.assertRaises(ValueError, P('a').match, '.')
         # Simple relative pattern.
-        self.assertTrue(P('b.py').match('b.py'))
-        self.assertTrue(P('a/b.py').match('b.py'))
-        self.assertTrue(P('/a/b.py').match('b.py'))
-        self.assertFalse(P('a.py').match('b.py'))
-        self.assertFalse(P('b/py').match('b.py'))
-        self.assertFalse(P('/a.py').match('b.py'))
-        self.assertFalse(P('b.py/c').match('b.py'))
+        self.assertKweli(P('b.py').match('b.py'))
+        self.assertKweli(P('a/b.py').match('b.py'))
+        self.assertKweli(P('/a/b.py').match('b.py'))
+        self.assertUongo(P('a.py').match('b.py'))
+        self.assertUongo(P('b/py').match('b.py'))
+        self.assertUongo(P('/a.py').match('b.py'))
+        self.assertUongo(P('b.py/c').match('b.py'))
         # Wilcard relative pattern.
-        self.assertTrue(P('b.py').match('*.py'))
-        self.assertTrue(P('a/b.py').match('*.py'))
-        self.assertTrue(P('/a/b.py').match('*.py'))
-        self.assertFalse(P('b.pyc').match('*.py'))
-        self.assertFalse(P('b./py').match('*.py'))
-        self.assertFalse(P('b.py/c').match('*.py'))
+        self.assertKweli(P('b.py').match('*.py'))
+        self.assertKweli(P('a/b.py').match('*.py'))
+        self.assertKweli(P('/a/b.py').match('*.py'))
+        self.assertUongo(P('b.pyc').match('*.py'))
+        self.assertUongo(P('b./py').match('*.py'))
+        self.assertUongo(P('b.py/c').match('*.py'))
         # Multi-part relative pattern.
-        self.assertTrue(P('ab/c.py').match('a*/*.py'))
-        self.assertTrue(P('/d/ab/c.py').match('a*/*.py'))
-        self.assertFalse(P('a.py').match('a*/*.py'))
-        self.assertFalse(P('/dab/c.py').match('a*/*.py'))
-        self.assertFalse(P('ab/c.py/d').match('a*/*.py'))
+        self.assertKweli(P('ab/c.py').match('a*/*.py'))
+        self.assertKweli(P('/d/ab/c.py').match('a*/*.py'))
+        self.assertUongo(P('a.py').match('a*/*.py'))
+        self.assertUongo(P('/dab/c.py').match('a*/*.py'))
+        self.assertUongo(P('ab/c.py/d').match('a*/*.py'))
         # Absolute pattern.
-        self.assertTrue(P('/b.py').match('/*.py'))
-        self.assertFalse(P('b.py').match('/*.py'))
-        self.assertFalse(P('a/b.py').match('/*.py'))
-        self.assertFalse(P('/a/b.py').match('/*.py'))
+        self.assertKweli(P('/b.py').match('/*.py'))
+        self.assertUongo(P('b.py').match('/*.py'))
+        self.assertUongo(P('a/b.py').match('/*.py'))
+        self.assertUongo(P('/a/b.py').match('/*.py'))
         # Multi-part absolute pattern.
-        self.assertTrue(P('/a/b.py').match('/a/*.py'))
-        self.assertFalse(P('/ab.py').match('/a/*.py'))
-        self.assertFalse(P('/a/b/c.py').match('/a/*.py'))
+        self.assertKweli(P('/a/b.py').match('/a/*.py'))
+        self.assertUongo(P('/ab.py').match('/a/*.py'))
+        self.assertUongo(P('/a/b/c.py').match('/a/*.py'))
         # Multi-part glob-style pattern.
-        self.assertFalse(P('/a/b/c.py').match('/**/*.py'))
-        self.assertTrue(P('/a/b/c.py').match('/a/**/*.py'))
+        self.assertUongo(P('/a/b/c.py').match('/**/*.py'))
+        self.assertKweli(P('/a/b/c.py').match('/a/**/*.py'))
 
     eleza test_ordering_common(self):
-        # Ordering is tuple-alike.
+        # Ordering ni tuple-alike.
         eleza assertLess(a, b):
             self.assertLess(a, b)
             self.assertGreater(b, a)
@@ -378,7 +378,7 @@ kundi _BasePurePathTest(object):
             P() < {}
 
     eleza test_parts_common(self):
-        # `parts` returns a tuple.
+        # `parts` rudishas a tuple.
         sep = self.sep
         P = self.cls
         p = P('a/b')
@@ -386,7 +386,7 @@ kundi _BasePurePathTest(object):
         self.assertEqual(parts, ('a', 'b'))
         # The object gets reused.
         self.assertIs(parts, p.parts)
-        # When the path is absolute, the anchor is a separate part.
+        # When the path ni absolute, the anchor ni a separate part.
         p = P('/a/b')
         parts = p.parts
         self.assertEqual(parts, (sep, 'a', 'b'))
@@ -398,17 +398,17 @@ kundi _BasePurePathTest(object):
         self._check_str(os.fspath(p), ('a/b',))
 
     eleza test_equivalences(self):
-        for k, tuples in self.equivalences.items():
+        kila k, tuples kwenye self.equivalences.items():
             canon = k.replace('/', self.sep)
             posix = k.replace(self.sep, '/')
             ikiwa canon != posix:
                 tuples = tuples + [
-                    tuple(part.replace('/', self.sep) for part in t)
-                    for t in tuples
+                    tuple(part.replace('/', self.sep) kila part kwenye t)
+                    kila t kwenye tuples
                     ]
                 tuples.append((posix, ))
             pcanon = self.cls(canon)
-            for t in tuples:
+            kila t kwenye tuples:
                 p = self.cls(*t)
                 self.assertEqual(p, pcanon, "failed with args {}".format(t))
                 self.assertEqual(hash(p), hash(pcanon))
@@ -622,7 +622,7 @@ kundi _BasePurePathTest(object):
     eleza test_pickling_common(self):
         P = self.cls
         p = P('/a/b')
-        for proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(0, pickle.HIGHEST_PROTOCOL + 1):
             dumped = pickle.dumps(p, proto)
             pp = pickle.loads(dumped)
             self.assertIs(pp.__class__, p.__class__)
@@ -638,7 +638,7 @@ kundi PurePosixPathTest(_BasePurePathTest, unittest.TestCase):
         P = self.cls
         self.assertEqual(P('/a/b').root, '/')
         self.assertEqual(P('///a/b').root, '/')
-        # POSIX special case for two leading slashes.
+        # POSIX special case kila two leading slashes.
         self.assertEqual(P('//a/b').root, '//')
 
     eleza test_eq(self):
@@ -656,34 +656,34 @@ kundi PurePosixPathTest(_BasePurePathTest, unittest.TestCase):
     eleza test_as_uri_non_ascii(self):
         kutoka urllib.parse agiza quote_kutoka_bytes
         P = self.cls
-        try:
+        jaribu:
             os.fsencode('\xe9')
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             self.skipTest("\\xe9 cannot be encoded to the filesystem encoding")
         self.assertEqual(P('/a/b\xe9').as_uri(),
                          'file:///a/b' + quote_kutoka_bytes(os.fsencode('\xe9')))
 
     eleza test_match(self):
         P = self.cls
-        self.assertFalse(P('A.py').match('a.PY'))
+        self.assertUongo(P('A.py').match('a.PY'))
 
     eleza test_is_absolute(self):
         P = self.cls
-        self.assertFalse(P().is_absolute())
-        self.assertFalse(P('a').is_absolute())
-        self.assertFalse(P('a/b/').is_absolute())
-        self.assertTrue(P('/').is_absolute())
-        self.assertTrue(P('/a').is_absolute())
-        self.assertTrue(P('/a/b/').is_absolute())
-        self.assertTrue(P('//a').is_absolute())
-        self.assertTrue(P('//a/b').is_absolute())
+        self.assertUongo(P().is_absolute())
+        self.assertUongo(P('a').is_absolute())
+        self.assertUongo(P('a/b/').is_absolute())
+        self.assertKweli(P('/').is_absolute())
+        self.assertKweli(P('/a').is_absolute())
+        self.assertKweli(P('/a/b/').is_absolute())
+        self.assertKweli(P('//a').is_absolute())
+        self.assertKweli(P('//a/b').is_absolute())
 
     eleza test_is_reserved(self):
         P = self.cls
-        self.assertIs(False, P('').is_reserved())
-        self.assertIs(False, P('/').is_reserved())
-        self.assertIs(False, P('/foo/bar').is_reserved())
-        self.assertIs(False, P('/dev/con/PRN/NUL').is_reserved())
+        self.assertIs(Uongo, P('').is_reserved())
+        self.assertIs(Uongo, P('/').is_reserved())
+        self.assertIs(Uongo, P('/foo/bar').is_reserved())
+        self.assertIs(Uongo, P('/dev/con/PRN/NUL').is_reserved())
 
     eleza test_join(self):
         P = self.cls
@@ -696,7 +696,7 @@ kundi PurePosixPathTest(_BasePurePathTest, unittest.TestCase):
         self.assertEqual(pp, P('/c'))
 
     eleza test_div(self):
-        # Basically the same as joinpath().
+        # Basically the same kama joinpath().
         P = self.cls
         p = P('//a')
         pp = p / 'b'
@@ -777,26 +777,26 @@ kundi PureWindowsPathTest(_BasePurePathTest, unittest.TestCase):
     eleza test_match_common(self):
         P = self.cls
         # Absolute patterns.
-        self.assertTrue(P('c:/b.py').match('/*.py'))
-        self.assertTrue(P('c:/b.py').match('c:*.py'))
-        self.assertTrue(P('c:/b.py').match('c:/*.py'))
-        self.assertFalse(P('d:/b.py').match('c:/*.py'))  # wrong drive
-        self.assertFalse(P('b.py').match('/*.py'))
-        self.assertFalse(P('b.py').match('c:*.py'))
-        self.assertFalse(P('b.py').match('c:/*.py'))
-        self.assertFalse(P('c:b.py').match('/*.py'))
-        self.assertFalse(P('c:b.py').match('c:/*.py'))
-        self.assertFalse(P('/b.py').match('c:*.py'))
-        self.assertFalse(P('/b.py').match('c:/*.py'))
+        self.assertKweli(P('c:/b.py').match('/*.py'))
+        self.assertKweli(P('c:/b.py').match('c:*.py'))
+        self.assertKweli(P('c:/b.py').match('c:/*.py'))
+        self.assertUongo(P('d:/b.py').match('c:/*.py'))  # wrong drive
+        self.assertUongo(P('b.py').match('/*.py'))
+        self.assertUongo(P('b.py').match('c:*.py'))
+        self.assertUongo(P('b.py').match('c:/*.py'))
+        self.assertUongo(P('c:b.py').match('/*.py'))
+        self.assertUongo(P('c:b.py').match('c:/*.py'))
+        self.assertUongo(P('/b.py').match('c:*.py'))
+        self.assertUongo(P('/b.py').match('c:/*.py'))
         # UNC patterns.
-        self.assertTrue(P('//some/share/a.py').match('/*.py'))
-        self.assertTrue(P('//some/share/a.py').match('//some/share/*.py'))
-        self.assertFalse(P('//other/share/a.py').match('//some/share/*.py'))
-        self.assertFalse(P('//some/share/a/b.py').match('//some/share/*.py'))
+        self.assertKweli(P('//some/share/a.py').match('/*.py'))
+        self.assertKweli(P('//some/share/a.py').match('//some/share/*.py'))
+        self.assertUongo(P('//other/share/a.py').match('//some/share/*.py'))
+        self.assertUongo(P('//some/share/a/b.py').match('//some/share/*.py'))
         # Case-insensitivity.
-        self.assertTrue(P('B.py').match('b.PY'))
-        self.assertTrue(P('c:/a/B.Py').match('C:/A/*.pY'))
-        self.assertTrue(P('//Some/Share/B.Py').match('//somE/sharE/*.pY'))
+        self.assertKweli(P('B.py').match('b.PY'))
+        self.assertKweli(P('c:/a/B.Py').match('C:/A/*.pY'))
+        self.assertKweli(P('//Some/Share/B.Py').match('//somE/sharE/*.pY'))
 
     eleza test_ordering_common(self):
         # Case-insensitivity.
@@ -807,13 +807,13 @@ kundi PureWindowsPathTest(_BasePurePathTest, unittest.TestCase):
         p = P('c:A/b')
         q = P('C:a/B')
         assertOrderedEqual(p, q)
-        self.assertFalse(p < q)
-        self.assertFalse(p > q)
+        self.assertUongo(p < q)
+        self.assertUongo(p > q)
         p = P('//some/Share/A/b')
         q = P('//Some/SHARE/a/B')
         assertOrderedEqual(p, q)
-        self.assertFalse(p < q)
-        self.assertFalse(p > q)
+        self.assertUongo(p < q)
+        self.assertUongo(p > q)
 
     eleza test_parts(self):
         P = self.cls
@@ -1064,24 +1064,24 @@ kundi PureWindowsPathTest(_BasePurePathTest, unittest.TestCase):
 
     eleza test_is_absolute(self):
         P = self.cls
-        # Under NT, only paths with both a drive and a root are absolute.
-        self.assertFalse(P().is_absolute())
-        self.assertFalse(P('a').is_absolute())
-        self.assertFalse(P('a/b/').is_absolute())
-        self.assertFalse(P('/').is_absolute())
-        self.assertFalse(P('/a').is_absolute())
-        self.assertFalse(P('/a/b/').is_absolute())
-        self.assertFalse(P('c:').is_absolute())
-        self.assertFalse(P('c:a').is_absolute())
-        self.assertFalse(P('c:a/b/').is_absolute())
-        self.assertTrue(P('c:/').is_absolute())
-        self.assertTrue(P('c:/a').is_absolute())
-        self.assertTrue(P('c:/a/b/').is_absolute())
+        # Under NT, only paths with both a drive na a root are absolute.
+        self.assertUongo(P().is_absolute())
+        self.assertUongo(P('a').is_absolute())
+        self.assertUongo(P('a/b/').is_absolute())
+        self.assertUongo(P('/').is_absolute())
+        self.assertUongo(P('/a').is_absolute())
+        self.assertUongo(P('/a/b/').is_absolute())
+        self.assertUongo(P('c:').is_absolute())
+        self.assertUongo(P('c:a').is_absolute())
+        self.assertUongo(P('c:a/b/').is_absolute())
+        self.assertKweli(P('c:/').is_absolute())
+        self.assertKweli(P('c:/a').is_absolute())
+        self.assertKweli(P('c:/a/b/').is_absolute())
         # UNC paths are absolute by definition.
-        self.assertTrue(P('//a/b').is_absolute())
-        self.assertTrue(P('//a/b/').is_absolute())
-        self.assertTrue(P('//a/b/c').is_absolute())
-        self.assertTrue(P('//a/b/c/d').is_absolute())
+        self.assertKweli(P('//a/b').is_absolute())
+        self.assertKweli(P('//a/b/').is_absolute())
+        self.assertKweli(P('//a/b/c').is_absolute())
+        self.assertKweli(P('//a/b/c/d').is_absolute())
 
     eleza test_join(self):
         P = self.cls
@@ -1090,59 +1090,59 @@ kundi PureWindowsPathTest(_BasePurePathTest, unittest.TestCase):
         self.assertEqual(pp, P('C:/a/b/x/y'))
         pp = p.joinpath('/x/y')
         self.assertEqual(pp, P('C:/x/y'))
-        # Joining with a different drive => the first path is ignored, even
-        # ikiwa the second path is relative.
+        # Joining with a different drive => the first path ni ignored, even
+        # ikiwa the second path ni relative.
         pp = p.joinpath('D:x/y')
         self.assertEqual(pp, P('D:x/y'))
         pp = p.joinpath('D:/x/y')
         self.assertEqual(pp, P('D:/x/y'))
         pp = p.joinpath('//host/share/x/y')
         self.assertEqual(pp, P('//host/share/x/y'))
-        # Joining with the same drive => the first path is appended to if
-        # the second path is relative.
+        # Joining with the same drive => the first path ni appended to if
+        # the second path ni relative.
         pp = p.joinpath('c:x/y')
         self.assertEqual(pp, P('C:/a/b/x/y'))
         pp = p.joinpath('c:/x/y')
         self.assertEqual(pp, P('C:/x/y'))
 
     eleza test_div(self):
-        # Basically the same as joinpath().
+        # Basically the same kama joinpath().
         P = self.cls
         p = P('C:/a/b')
         self.assertEqual(p / 'x/y', P('C:/a/b/x/y'))
         self.assertEqual(p / 'x' / 'y', P('C:/a/b/x/y'))
         self.assertEqual(p / '/x/y', P('C:/x/y'))
         self.assertEqual(p / '/x' / 'y', P('C:/x/y'))
-        # Joining with a different drive => the first path is ignored, even
-        # ikiwa the second path is relative.
+        # Joining with a different drive => the first path ni ignored, even
+        # ikiwa the second path ni relative.
         self.assertEqual(p / 'D:x/y', P('D:x/y'))
         self.assertEqual(p / 'D:' / 'x/y', P('D:x/y'))
         self.assertEqual(p / 'D:/x/y', P('D:/x/y'))
         self.assertEqual(p / 'D:' / '/x/y', P('D:/x/y'))
         self.assertEqual(p / '//host/share/x/y', P('//host/share/x/y'))
-        # Joining with the same drive => the first path is appended to if
-        # the second path is relative.
+        # Joining with the same drive => the first path ni appended to if
+        # the second path ni relative.
         self.assertEqual(p / 'c:x/y', P('C:/a/b/x/y'))
         self.assertEqual(p / 'c:/x/y', P('C:/x/y'))
 
     eleza test_is_reserved(self):
         P = self.cls
-        self.assertIs(False, P('').is_reserved())
-        self.assertIs(False, P('/').is_reserved())
-        self.assertIs(False, P('/foo/bar').is_reserved())
-        self.assertIs(True, P('con').is_reserved())
-        self.assertIs(True, P('NUL').is_reserved())
-        self.assertIs(True, P('NUL.txt').is_reserved())
-        self.assertIs(True, P('com1').is_reserved())
-        self.assertIs(True, P('com9.bar').is_reserved())
-        self.assertIs(False, P('bar.com9').is_reserved())
-        self.assertIs(True, P('lpt1').is_reserved())
-        self.assertIs(True, P('lpt9.bar').is_reserved())
-        self.assertIs(False, P('bar.lpt9').is_reserved())
+        self.assertIs(Uongo, P('').is_reserved())
+        self.assertIs(Uongo, P('/').is_reserved())
+        self.assertIs(Uongo, P('/foo/bar').is_reserved())
+        self.assertIs(Kweli, P('con').is_reserved())
+        self.assertIs(Kweli, P('NUL').is_reserved())
+        self.assertIs(Kweli, P('NUL.txt').is_reserved())
+        self.assertIs(Kweli, P('com1').is_reserved())
+        self.assertIs(Kweli, P('com9.bar').is_reserved())
+        self.assertIs(Uongo, P('bar.com9').is_reserved())
+        self.assertIs(Kweli, P('lpt1').is_reserved())
+        self.assertIs(Kweli, P('lpt9.bar').is_reserved())
+        self.assertIs(Uongo, P('bar.lpt9').is_reserved())
         # Only the last component matters.
-        self.assertIs(False, P('c:/NUL/con/baz').is_reserved())
+        self.assertIs(Uongo, P('c:/NUL/con/baz').is_reserved())
         # UNC paths are never reserved.
-        self.assertIs(False, P('//my/share/nul/con/aux').is_reserved())
+        self.assertIs(Uongo, P('//my/share/nul/con/aux').is_reserved())
 
 kundi PurePathTest(_BasePurePathTest, unittest.TestCase):
     cls = pathlib.PurePath
@@ -1171,10 +1171,10 @@ kundi PurePathTest(_BasePurePathTest, unittest.TestCase):
 
 
 #
-# Tests for the concrete classes.
+# Tests kila the concrete classes.
 #
 
-# Make sure any symbolic links in the base test path are resolved.
+# Make sure any symbolic links kwenye the base test path are resolved.
 BASE = os.path.realpath(TESTFN)
 join = lambda *x: os.path.join(BASE, *x)
 rel_join = lambda *x: os.path.join(TESTFN, *x)
@@ -1204,7 +1204,7 @@ kundi WindowsPathAsPureTest(PureWindowsPathTest):
 
 
 kundi _BasePathTest(object):
-    """Tests for the FS-accessing functionalities of the Path classes."""
+    """Tests kila the FS-accessing functionalities of the Path classes."""
 
     # (BASE)
     #  |
@@ -1236,14 +1236,14 @@ kundi _BasePathTest(object):
         os.mkdir(join('dirC'))
         os.mkdir(join('dirC', 'dirD'))
         os.mkdir(join('dirE'))
-        with open(join('fileA'), 'wb') as f:
-            f.write(b"this is file A\n")
-        with open(join('dirB', 'fileB'), 'wb') as f:
-            f.write(b"this is file B\n")
-        with open(join('dirC', 'fileC'), 'wb') as f:
-            f.write(b"this is file C\n")
-        with open(join('dirC', 'dirD', 'fileD'), 'wb') as f:
-            f.write(b"this is file D\n")
+        with open(join('fileA'), 'wb') kama f:
+            f.write(b"this ni file A\n")
+        with open(join('dirB', 'fileB'), 'wb') kama f:
+            f.write(b"this ni file B\n")
+        with open(join('dirC', 'fileC'), 'wb') kama f:
+            f.write(b"this ni file C\n")
+        with open(join('dirC', 'dirD', 'fileD'), 'wb') kama f:
+            f.write(b"this ni file D\n")
         os.chmod(join('dirE'), 0)
         ikiwa support.can_symlink():
             # Relative symlinks.
@@ -1257,20 +1257,20 @@ kundi _BasePathTest(object):
             os.symlink('brokenLinkLoop',  join('brokenLinkLoop'))
 
     ikiwa os.name == 'nt':
-        # Workaround for http://bugs.python.org/issue13772.
+        # Workaround kila http://bugs.python.org/issue13772.
         eleza dirlink(self, src, dest):
-            os.symlink(src, dest, target_is_directory=True)
-    else:
+            os.symlink(src, dest, target_is_directory=Kweli)
+    isipokua:
         eleza dirlink(self, src, dest):
             os.symlink(src, dest)
 
     eleza assertSame(self, path_a, path_b):
-        self.assertTrue(os.path.samefile(str(path_a), str(path_b)),
-                        "%r and %r don't point to the same file" %
+        self.assertKweli(os.path.samefile(str(path_a), str(path_b)),
+                        "%r na %r don't point to the same file" %
                         (path_a, path_b))
 
     eleza assertFileNotFound(self, func, *args, **kwargs):
-        with self.assertRaises(FileNotFoundError) as cm:
+        with self.assertRaises(FileNotFoundError) kama cm:
             func(*args, **kwargs)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
 
@@ -1282,7 +1282,7 @@ kundi _BasePathTest(object):
         self.assertEqual(p, q)
         self.assertEqualNormCase(str(p), str(q))
         self.assertIs(type(p), type(q))
-        self.assertTrue(p.is_absolute())
+        self.assertKweli(p.is_absolute())
 
     eleza test_cwd(self):
         p = self.cls.cwd()
@@ -1293,7 +1293,7 @@ kundi _BasePathTest(object):
         self.assertEqual(p, q)
         self.assertEqualNormCase(str(p), str(q))
         self.assertIs(type(p), type(q))
-        self.assertTrue(p.is_absolute())
+        self.assertKweli(p.is_absolute())
 
     eleza test_home(self):
         p = self.cls.home()
@@ -1305,10 +1305,10 @@ kundi _BasePathTest(object):
         p = self.cls(fileA_path)
         pp = self.cls(fileA_path)
         q = self.cls(fileB_path)
-        self.assertTrue(p.samefile(fileA_path))
-        self.assertTrue(p.samefile(pp))
-        self.assertFalse(p.samefile(fileB_path))
-        self.assertFalse(p.samefile(q))
+        self.assertKweli(p.samefile(fileA_path))
+        self.assertKweli(p.samefile(pp))
+        self.assertUongo(p.samefile(fileB_path))
+        self.assertUongo(p.samefile(q))
         # Test the non-existent file case
         non_existent = os.path.join(BASE, 'foo')
         r = self.cls(non_existent)
@@ -1340,37 +1340,37 @@ kundi _BasePathTest(object):
     eleza test_exists(self):
         P = self.cls
         p = P(BASE)
-        self.assertIs(True, p.exists())
-        self.assertIs(True, (p / 'dirA').exists())
-        self.assertIs(True, (p / 'fileA').exists())
-        self.assertIs(False, (p / 'fileA' / 'bah').exists())
+        self.assertIs(Kweli, p.exists())
+        self.assertIs(Kweli, (p / 'dirA').exists())
+        self.assertIs(Kweli, (p / 'fileA').exists())
+        self.assertIs(Uongo, (p / 'fileA' / 'bah').exists())
         ikiwa support.can_symlink():
-            self.assertIs(True, (p / 'linkA').exists())
-            self.assertIs(True, (p / 'linkB').exists())
-            self.assertIs(True, (p / 'linkB' / 'fileB').exists())
-            self.assertIs(False, (p / 'linkA' / 'bah').exists())
-        self.assertIs(False, (p / 'foo').exists())
-        self.assertIs(False, P('/xyzzy').exists())
-        self.assertIs(False, P(BASE + '\udfff').exists())
-        self.assertIs(False, P(BASE + '\x00').exists())
+            self.assertIs(Kweli, (p / 'linkA').exists())
+            self.assertIs(Kweli, (p / 'linkB').exists())
+            self.assertIs(Kweli, (p / 'linkB' / 'fileB').exists())
+            self.assertIs(Uongo, (p / 'linkA' / 'bah').exists())
+        self.assertIs(Uongo, (p / 'foo').exists())
+        self.assertIs(Uongo, P('/xyzzy').exists())
+        self.assertIs(Uongo, P(BASE + '\udfff').exists())
+        self.assertIs(Uongo, P(BASE + '\x00').exists())
 
     eleza test_open_common(self):
         p = self.cls(BASE)
-        with (p / 'fileA').open('r') as f:
+        with (p / 'fileA').open('r') kama f:
             self.assertIsInstance(f, io.TextIOBase)
-            self.assertEqual(f.read(), "this is file A\n")
-        with (p / 'fileA').open('rb') as f:
+            self.assertEqual(f.read(), "this ni file A\n")
+        with (p / 'fileA').open('rb') kama f:
             self.assertIsInstance(f, io.BufferedIOBase)
-            self.assertEqual(f.read().strip(), b"this is file A")
-        with (p / 'fileA').open('rb', buffering=0) as f:
+            self.assertEqual(f.read().strip(), b"this ni file A")
+        with (p / 'fileA').open('rb', buffering=0) kama f:
             self.assertIsInstance(f, io.RawIOBase)
-            self.assertEqual(f.read().strip(), b"this is file A")
+            self.assertEqual(f.read().strip(), b"this ni file A")
 
     eleza test_read_write_bytes(self):
         p = self.cls(BASE)
         (p / 'fileA').write_bytes(b'abcdefg')
         self.assertEqual((p / 'fileA').read_bytes(), b'abcdefg')
-        # Check that trying to write str does not truncate the file.
+        # Check that trying to write str does sio truncate the file.
         self.assertRaises(TypeError, (p / 'fileA').write_bytes, 'somestr')
         self.assertEqual((p / 'fileA').read_bytes(), b'abcdefg')
 
@@ -1379,7 +1379,7 @@ kundi _BasePathTest(object):
         (p / 'fileA').write_text('äbcdefg', encoding='latin-1')
         self.assertEqual((p / 'fileA').read_text(
             encoding='utf-8', errors='ignore'), 'bcdefg')
-        # Check that trying to write bytes does not truncate the file.
+        # Check that trying to write bytes does sio truncate the file.
         self.assertRaises(TypeError, (p / 'fileA').write_text, b'somebytes')
         self.assertEqual((p / 'fileA').read_text(encoding='latin-1'), 'äbcdefg')
 
@@ -1391,7 +1391,7 @@ kundi _BasePathTest(object):
         expected = ['dirA', 'dirB', 'dirC', 'dirE', 'fileA']
         ikiwa support.can_symlink():
             expected += ['linkA', 'linkB', 'brokenLink', 'brokenLinkLoop']
-        self.assertEqual(paths, { P(BASE, q) for q in expected })
+        self.assertEqual(paths, { P(BASE, q) kila q kwenye expected })
 
     @support.skip_unless_symlink
     eleza test_iterdir_symlink(self):
@@ -1399,22 +1399,22 @@ kundi _BasePathTest(object):
         P = self.cls
         p = P(BASE, 'linkB')
         paths = set(p.iterdir())
-        expected = { P(BASE, 'linkB', q) for q in ['fileB', 'linkD'] }
+        expected = { P(BASE, 'linkB', q) kila q kwenye ['fileB', 'linkD'] }
         self.assertEqual(paths, expected)
 
     eleza test_iterdir_nodir(self):
-        # __iter__ on something that is not a directory.
+        # __iter__ on something that ni sio a directory.
         p = self.cls(BASE, 'fileA')
-        with self.assertRaises(OSError) as cm:
+        with self.assertRaises(OSError) kama cm:
             next(p.iterdir())
-        # ENOENT or EINVAL under Windows, ENOTDIR otherwise
+        # ENOENT ama EINVAL under Windows, ENOTDIR otherwise
         # (see issue #12802).
         self.assertIn(cm.exception.errno, (errno.ENOTDIR,
                                            errno.ENOENT, errno.EINVAL))
 
     eleza test_glob_common(self):
         eleza _check(glob, expected):
-            self.assertEqual(set(glob), { P(BASE, q) for q in expected })
+            self.assertEqual(set(glob), { P(BASE, q) kila q kwenye expected })
         P = self.cls
         p = P(BASE)
         it = p.glob("fileA")
@@ -1422,23 +1422,23 @@ kundi _BasePathTest(object):
         _check(it, ["fileA"])
         _check(p.glob("fileB"), [])
         _check(p.glob("dir*/file*"), ["dirB/fileB", "dirC/fileC"])
-        ikiwa not support.can_symlink():
+        ikiwa sio support.can_symlink():
             _check(p.glob("*A"), ['dirA', 'fileA'])
-        else:
+        isipokua:
             _check(p.glob("*A"), ['dirA', 'fileA', 'linkA'])
-        ikiwa not support.can_symlink():
+        ikiwa sio support.can_symlink():
             _check(p.glob("*B/*"), ['dirB/fileB'])
-        else:
+        isipokua:
             _check(p.glob("*B/*"), ['dirB/fileB', 'dirB/linkD',
                                     'linkB/fileB', 'linkB/linkD'])
-        ikiwa not support.can_symlink():
+        ikiwa sio support.can_symlink():
             _check(p.glob("*/fileB"), ['dirB/fileB'])
-        else:
+        isipokua:
             _check(p.glob("*/fileB"), ['dirB/fileB', 'linkB/fileB'])
 
     eleza test_rglob_common(self):
         eleza _check(glob, expected):
-            self.assertEqual(set(glob), { P(BASE, q) for q in expected })
+            self.assertEqual(set(glob), { P(BASE, q) kila q kwenye expected })
         P = self.cls
         p = P(BASE)
         it = p.rglob("fileA")
@@ -1446,9 +1446,9 @@ kundi _BasePathTest(object):
         _check(it, ["fileA"])
         _check(p.rglob("fileB"), ["dirB/fileB"])
         _check(p.rglob("*/fileA"), [])
-        ikiwa not support.can_symlink():
+        ikiwa sio support.can_symlink():
             _check(p.rglob("*/fileB"), ["dirB/fileB"])
-        else:
+        isipokua:
             _check(p.rglob("*/fileB"), ["dirB/fileB", "dirB/linkD/fileB",
                                         "linkB/fileB", "dirA/linkC/fileB"])
         _check(p.rglob("file*"), ["fileA", "dirB/fileB",
@@ -1473,27 +1473,27 @@ kundi _BasePathTest(object):
                   'linkB',
                   'brokenLinkLoop',
                   }
-        self.assertEqual(given, {p / x for x in expect})
+        self.assertEqual(given, {p / x kila x kwenye expect})
 
     eleza test_glob_many_open_files(self):
         depth = 30
         P = self.cls
         base = P(BASE) / 'deep'
         p = P(base, *(['d']*depth))
-        p.mkdir(parents=True)
+        p.mkdir(parents=Kweli)
         pattern = '/'.join(['*'] * depth)
-        iters = [base.glob(pattern) for j in range(100)]
-        for it in iters:
+        iters = [base.glob(pattern) kila j kwenye range(100)]
+        kila it kwenye iters:
             self.assertEqual(next(it), p)
-        iters = [base.rglob('d') for j in range(100)]
+        iters = [base.rglob('d') kila j kwenye range(100)]
         p = base
-        for i in range(depth):
+        kila i kwenye range(depth):
             p = p / 'd'
-            for it in iters:
+            kila it kwenye iters:
                 self.assertEqual(next(it), p)
 
     eleza test_glob_dotdot(self):
-        # ".." is not special in globs.
+        # ".." ni sio special kwenye globs.
         P = self.cls
         p = P(BASE)
         self.assertEqual(set(p.glob("..")), { P(BASE, "..") })
@@ -1501,28 +1501,28 @@ kundi _BasePathTest(object):
         self.assertEqual(set(p.glob("../xyzzy")), set())
 
 
-    eleza _check_resolve(self, p, expected, strict=True):
+    eleza _check_resolve(self, p, expected, strict=Kweli):
         q = p.resolve(strict)
         self.assertEqual(q, expected)
 
-    # This can be used to check both relative and absolute resolutions.
+    # This can be used to check both relative na absolute resolutions.
     _check_resolve_relative = _check_resolve_absolute = _check_resolve
 
     @support.skip_unless_symlink
     eleza test_resolve_common(self):
         P = self.cls
         p = P(BASE, 'foo')
-        with self.assertRaises(OSError) as cm:
-            p.resolve(strict=True)
+        with self.assertRaises(OSError) kama cm:
+            p.resolve(strict=Kweli)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
         # Non-strict
-        self.assertEqualNormCase(str(p.resolve(strict=False)),
+        self.assertEqualNormCase(str(p.resolve(strict=Uongo)),
                                  os.path.join(BASE, 'foo'))
         p = P(BASE, 'foo', 'in', 'spam')
-        self.assertEqualNormCase(str(p.resolve(strict=False)),
+        self.assertEqualNormCase(str(p.resolve(strict=Uongo)),
                                  os.path.join(BASE, 'foo', 'in', 'spam'))
         p = P(BASE, '..', 'foo', 'in', 'spam')
-        self.assertEqualNormCase(str(p.resolve(strict=False)),
+        self.assertEqualNormCase(str(p.resolve(strict=Uongo)),
                                  os.path.abspath(os.path.join('foo', 'in', 'spam')))
         # These are all relative symlinks.
         p = P(BASE, 'dirB', 'fileB')
@@ -1536,17 +1536,17 @@ kundi _BasePathTest(object):
         # Non-strict
         p = P(BASE, 'dirA', 'linkC', 'fileB', 'foo', 'in', 'spam')
         self._check_resolve_relative(p, P(BASE, 'dirB', 'fileB', 'foo', 'in',
-                                          'spam'), False)
+                                          'spam'), Uongo)
         p = P(BASE, 'dirA', 'linkC', '..', 'foo', 'in', 'spam')
         ikiwa os.name == 'nt':
             # In Windows, ikiwa linkY points to dirB, 'dirA\linkY\..'
             # resolves to 'dirA' without resolving linkY first.
             self._check_resolve_relative(p, P(BASE, 'dirA', 'foo', 'in',
-                                              'spam'), False)
-        else:
+                                              'spam'), Uongo)
+        isipokua:
             # In Posix, ikiwa linkY points to dirB, 'dirA/linkY/..'
             # resolves to 'dirB/..' first before resolving to parent of dirB.
-            self._check_resolve_relative(p, P(BASE, 'foo', 'in', 'spam'), False)
+            self._check_resolve_relative(p, P(BASE, 'foo', 'in', 'spam'), Uongo)
         # Now create absolute symlinks.
         d = support._longpath(tempfile.mkdtemp(suffix='-dirD', dir=os.getcwd()))
         self.addCleanup(support.rmtree, d)
@@ -1557,16 +1557,16 @@ kundi _BasePathTest(object):
         # Non-strict
         p = P(BASE, 'dirA', 'linkX', 'linkY', 'foo', 'in', 'spam')
         self._check_resolve_relative(p, P(BASE, 'dirB', 'foo', 'in', 'spam'),
-                                     False)
+                                     Uongo)
         p = P(BASE, 'dirA', 'linkX', 'linkY', '..', 'foo', 'in', 'spam')
         ikiwa os.name == 'nt':
             # In Windows, ikiwa linkY points to dirB, 'dirA\linkY\..'
             # resolves to 'dirA' without resolving linkY first.
-            self._check_resolve_relative(p, P(d, 'foo', 'in', 'spam'), False)
-        else:
+            self._check_resolve_relative(p, P(d, 'foo', 'in', 'spam'), Uongo)
+        isipokua:
             # In Posix, ikiwa linkY points to dirB, 'dirA/linkY/..'
             # resolves to 'dirB/..' first before resolving to parent of dirB.
-            self._check_resolve_relative(p, P(BASE, 'foo', 'in', 'spam'), False)
+            self._check_resolve_relative(p, P(BASE, 'foo', 'in', 'spam'), Uongo)
 
     @support.skip_unless_symlink
     eleza test_resolve_dot(self):
@@ -1576,11 +1576,11 @@ kundi _BasePathTest(object):
         self.dirlink(os.path.join('0', '0'), join('1'))
         self.dirlink(os.path.join('1', '1'), join('2'))
         q = p / '2'
-        self.assertEqual(q.resolve(strict=True), p)
+        self.assertEqual(q.resolve(strict=Kweli), p)
         r = q / '3' / '4'
-        self.assertRaises(FileNotFoundError, r.resolve, strict=True)
+        self.assertRaises(FileNotFoundError, r.resolve, strict=Kweli)
         # Non-strict
-        self.assertEqual(r.resolve(strict=False), p / '3' / '4')
+        self.assertEqual(r.resolve(strict=Uongo), p / '3' / '4')
 
     eleza test_with(self):
         p = self.cls(BASE)
@@ -1588,7 +1588,7 @@ kundi _BasePathTest(object):
         it2 = p.iterdir()
         next(it2)
         with p:
-            pass
+            pita
         # I/O operation on closed path.
         self.assertRaises(ValueError, next, it)
         self.assertRaises(ValueError, next, it2)
@@ -1609,7 +1609,7 @@ kundi _BasePathTest(object):
         p.chmod(new_mode)
         self.assertEqual(p.stat().st_mode, new_mode)
 
-    # XXX also need a test for lchmod.
+    # XXX also need a test kila lchmod.
 
     eleza test_stat(self):
         p = self.cls(BASE) / 'fileA'
@@ -1631,26 +1631,26 @@ kundi _BasePathTest(object):
         st = p.stat()
         self.assertEqual(st, p.lstat())
 
-    @unittest.skipUnless(pwd, "the pwd module is needed for this test")
+    @unittest.skipUnless(pwd, "the pwd module ni needed kila this test")
     eleza test_owner(self):
         p = self.cls(BASE) / 'fileA'
         uid = p.stat().st_uid
-        try:
+        jaribu:
             name = pwd.getpwuid(uid).pw_name
-        except KeyError:
+        tatizo KeyError:
             self.skipTest(
-                "user %d doesn't have an entry in the system database" % uid)
+                "user %d doesn't have an entry kwenye the system database" % uid)
         self.assertEqual(name, p.owner())
 
-    @unittest.skipUnless(grp, "the grp module is needed for this test")
+    @unittest.skipUnless(grp, "the grp module ni needed kila this test")
     eleza test_group(self):
         p = self.cls(BASE) / 'fileA'
         gid = p.stat().st_gid
-        try:
+        jaribu:
             name = grp.getgrgid(gid).gr_name
-        except KeyError:
+        tatizo KeyError:
             self.skipTest(
-                "group %d doesn't have an entry in the system database" % gid)
+                "group %d doesn't have an entry kwenye the system database" % gid)
         self.assertEqual(name, p.group())
 
     eleza test_unlink(self):
@@ -1662,11 +1662,11 @@ kundi _BasePathTest(object):
     eleza test_unlink_missing_ok(self):
         p = self.cls(BASE) / 'fileAAA'
         self.assertFileNotFound(p.unlink)
-        p.unlink(missing_ok=True)
+        p.unlink(missing_ok=Kweli)
 
     eleza test_rmdir(self):
         p = self.cls(BASE) / 'dirA'
-        for q in p.iterdir():
+        kila q kwenye p.iterdir():
             q.unlink()
         p.rmdir()
         self.assertFileNotFound(p.stat)
@@ -1678,18 +1678,18 @@ kundi _BasePathTest(object):
         size = p.stat().st_size
         # linking to another path.
         q = P / 'dirA' / 'fileAA'
-        try:
+        jaribu:
             p.link_to(q)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.link(): %s' % e)
         self.assertEqual(q.stat().st_size, size)
-        self.assertEqual(os.path.samefile(p, q), True)
-        self.assertTrue(p.stat)
+        self.assertEqual(os.path.samefile(p, q), Kweli)
+        self.assertKweli(p.stat)
         # Linking to a str of a relative path.
         r = rel_join('fileAAA')
         q.link_to(r)
         self.assertEqual(os.stat(r).st_size, size)
-        self.assertTrue(q.stat)
+        self.assertKweli(q.stat)
 
     eleza test_rename(self):
         P = self.cls(BASE)
@@ -1728,13 +1728,13 @@ kundi _BasePathTest(object):
     eleza test_touch_common(self):
         P = self.cls(BASE)
         p = P / 'newfileA'
-        self.assertFalse(p.exists())
+        self.assertUongo(p.exists())
         p.touch()
-        self.assertTrue(p.exists())
+        self.assertKweli(p.exists())
         st = p.stat()
         old_mtime = st.st_mtime
         old_mtime_ns = st.st_mtime_ns
-        # Rewind the mtime sufficiently far in the past to work around
+        # Rewind the mtime sufficiently far kwenye the past to work around
         # filesystem-specific timestamp granularity.
         os.utime(str(p), (old_mtime - 10, old_mtime - 10))
         # The file mtime should be refreshed by calling touch() again.
@@ -1742,50 +1742,50 @@ kundi _BasePathTest(object):
         st = p.stat()
         self.assertGreaterEqual(st.st_mtime_ns, old_mtime_ns)
         self.assertGreaterEqual(st.st_mtime, old_mtime)
-        # Now with exist_ok=False.
+        # Now with exist_ok=Uongo.
         p = P / 'newfileB'
-        self.assertFalse(p.exists())
-        p.touch(mode=0o700, exist_ok=False)
-        self.assertTrue(p.exists())
-        self.assertRaises(OSError, p.touch, exist_ok=False)
+        self.assertUongo(p.exists())
+        p.touch(mode=0o700, exist_ok=Uongo)
+        self.assertKweli(p.exists())
+        self.assertRaises(OSError, p.touch, exist_ok=Uongo)
 
     eleza test_touch_nochange(self):
         P = self.cls(BASE)
         p = P / 'fileA'
         p.touch()
-        with p.open('rb') as f:
-            self.assertEqual(f.read().strip(), b"this is file A")
+        with p.open('rb') kama f:
+            self.assertEqual(f.read().strip(), b"this ni file A")
 
     eleza test_mkdir(self):
         P = self.cls(BASE)
         p = P / 'newdirA'
-        self.assertFalse(p.exists())
+        self.assertUongo(p.exists())
         p.mkdir()
-        self.assertTrue(p.exists())
-        self.assertTrue(p.is_dir())
-        with self.assertRaises(OSError) as cm:
+        self.assertKweli(p.exists())
+        self.assertKweli(p.is_dir())
+        with self.assertRaises(OSError) kama cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
     eleza test_mkdir_parents(self):
         # Creating a chain of directories.
         p = self.cls(BASE, 'newdirB', 'newdirC')
-        self.assertFalse(p.exists())
-        with self.assertRaises(OSError) as cm:
+        self.assertUongo(p.exists())
+        with self.assertRaises(OSError) kama cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.ENOENT)
-        p.mkdir(parents=True)
-        self.assertTrue(p.exists())
-        self.assertTrue(p.is_dir())
-        with self.assertRaises(OSError) as cm:
-            p.mkdir(parents=True)
+        p.mkdir(parents=Kweli)
+        self.assertKweli(p.exists())
+        self.assertKweli(p.is_dir())
+        with self.assertRaises(OSError) kama cm:
+            p.mkdir(parents=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
         # Test `mode` arg.
         mode = stat.S_IMODE(p.stat().st_mode)  # Default mode.
         p = self.cls(BASE, 'newdirD', 'newdirE')
-        p.mkdir(0o555, parents=True)
-        self.assertTrue(p.exists())
-        self.assertTrue(p.is_dir())
+        p.mkdir(0o555, parents=Kweli)
+        self.assertKweli(p.exists())
+        self.assertKweli(p.is_dir())
         ikiwa os.name != 'nt':
             # The directory's permissions follow the mode argument.
             self.assertEqual(stat.S_IMODE(p.stat().st_mode), 0o7555 & mode)
@@ -1795,100 +1795,100 @@ kundi _BasePathTest(object):
     eleza test_mkdir_exist_ok(self):
         p = self.cls(BASE, 'dirB')
         st_ctime_first = p.stat().st_ctime
-        self.assertTrue(p.exists())
-        self.assertTrue(p.is_dir())
-        with self.assertRaises(FileExistsError) as cm:
+        self.assertKweli(p.exists())
+        self.assertKweli(p.is_dir())
+        with self.assertRaises(FileExistsError) kama cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
-        p.mkdir(exist_ok=True)
-        self.assertTrue(p.exists())
+        p.mkdir(exist_ok=Kweli)
+        self.assertKweli(p.exists())
         self.assertEqual(p.stat().st_ctime, st_ctime_first)
 
     eleza test_mkdir_exist_ok_with_parent(self):
         p = self.cls(BASE, 'dirC')
-        self.assertTrue(p.exists())
-        with self.assertRaises(FileExistsError) as cm:
+        self.assertKweli(p.exists())
+        with self.assertRaises(FileExistsError) kama cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
         p = p / 'newdirC'
-        p.mkdir(parents=True)
+        p.mkdir(parents=Kweli)
         st_ctime_first = p.stat().st_ctime
-        self.assertTrue(p.exists())
-        with self.assertRaises(FileExistsError) as cm:
-            p.mkdir(parents=True)
+        self.assertKweli(p.exists())
+        with self.assertRaises(FileExistsError) kama cm:
+            p.mkdir(parents=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
-        p.mkdir(parents=True, exist_ok=True)
-        self.assertTrue(p.exists())
+        p.mkdir(parents=Kweli, exist_ok=Kweli)
+        self.assertKweli(p.exists())
         self.assertEqual(p.stat().st_ctime, st_ctime_first)
 
     eleza test_mkdir_exist_ok_root(self):
-        # Issue #25803: A drive root could raise PermissionError on Windows.
-        self.cls('/').resolve().mkdir(exist_ok=True)
-        self.cls('/').resolve().mkdir(parents=True, exist_ok=True)
+        # Issue #25803: A drive root could ashiria PermissionError on Windows.
+        self.cls('/').resolve().mkdir(exist_ok=Kweli)
+        self.cls('/').resolve().mkdir(parents=Kweli, exist_ok=Kweli)
 
-    @only_nt  # XXX: not sure how to test this on POSIX.
+    @only_nt  # XXX: sio sure how to test this on POSIX.
     eleza test_mkdir_with_unknown_drive(self):
-        for d in 'ZYXWVUTSRQPONMLKJIHGFEDCBA':
+        kila d kwenye 'ZYXWVUTSRQPONMLKJIHGFEDCBA':
             p = self.cls(d + ':\\')
-            ikiwa not p.is_dir():
-                break
-        else:
+            ikiwa sio p.is_dir():
+                koma
+        isipokua:
             self.skipTest("cannot find a drive that doesn't exist")
         with self.assertRaises(OSError):
-            (p / 'child' / 'path').mkdir(parents=True)
+            (p / 'child' / 'path').mkdir(parents=Kweli)
 
     eleza test_mkdir_with_child_file(self):
         p = self.cls(BASE, 'dirB', 'fileB')
-        self.assertTrue(p.exists())
-        # An exception is raised when the last path component is an existing
-        # regular file, regardless of whether exist_ok is true or not.
-        with self.assertRaises(FileExistsError) as cm:
-            p.mkdir(parents=True)
+        self.assertKweli(p.exists())
+        # An exception ni ashiriad when the last path component ni an existing
+        # regular file, regardless of whether exist_ok ni true ama not.
+        with self.assertRaises(FileExistsError) kama cm:
+            p.mkdir(parents=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
-        with self.assertRaises(FileExistsError) as cm:
-            p.mkdir(parents=True, exist_ok=True)
+        with self.assertRaises(FileExistsError) kama cm:
+            p.mkdir(parents=Kweli, exist_ok=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
     eleza test_mkdir_no_parents_file(self):
         p = self.cls(BASE, 'fileA')
-        self.assertTrue(p.exists())
-        # An exception is raised when the last path component is an existing
-        # regular file, regardless of whether exist_ok is true or not.
-        with self.assertRaises(FileExistsError) as cm:
+        self.assertKweli(p.exists())
+        # An exception ni ashiriad when the last path component ni an existing
+        # regular file, regardless of whether exist_ok ni true ama not.
+        with self.assertRaises(FileExistsError) kama cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
-        with self.assertRaises(FileExistsError) as cm:
-            p.mkdir(exist_ok=True)
+        with self.assertRaises(FileExistsError) kama cm:
+            p.mkdir(exist_ok=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
     eleza test_mkdir_concurrent_parent_creation(self):
-        for pattern_num in range(32):
+        kila pattern_num kwenye range(32):
             p = self.cls(BASE, 'dirCPC%d' % pattern_num)
-            self.assertFalse(p.exists())
+            self.assertUongo(p.exists())
 
             eleza my_mkdir(path, mode=0o777):
                 path = str(path)
                 # Emulate another process that would create the directory
                 # just before we try to create it ourselves.  We do it
-                # in all possible pattern combinations, assuming that this
-                # function is called at most 5 times (dirCPC/dir1/dir2,
+                # kwenye all possible pattern combinations, assuming that this
+                # function ni called at most 5 times (dirCPC/dir1/dir2,
                 # dirCPC/dir1, dirCPC, dirCPC/dir1, dirCPC/dir1/dir2).
                 ikiwa pattern.pop():
                     os.mkdir(path, mode)  # From another process.
                     concurrently_created.add(path)
                 os.mkdir(path, mode)  # Our real call.
 
-            pattern = [bool(pattern_num & (1 << n)) for n in range(5)]
+            pattern = [bool(pattern_num & (1 << n)) kila n kwenye range(5)]
             concurrently_created = set()
             p12 = p / 'dir1' / 'dir2'
-            try:
+            jaribu:
                 with mock.patch("pathlib._normal_accessor.mkdir", my_mkdir):
-                    p12.mkdir(parents=True, exist_ok=False)
-            except FileExistsError:
+                    p12.mkdir(parents=Kweli, exist_ok=Uongo)
+            tatizo FileExistsError:
                 self.assertIn(str(p12), concurrently_created)
-            else:
+            isipokua:
                 self.assertNotIn(str(p12), concurrently_created)
-            self.assertTrue(p.exists())
+            self.assertKweli(p.exists())
 
     @support.skip_unless_symlink
     eleza test_symlink_to(self):
@@ -1904,152 +1904,152 @@ kundi _BasePathTest(object):
         link.symlink_to(str(target))
         self.assertEqual(link.stat(), target.stat())
         self.assertNotEqual(link.lstat(), target.stat())
-        self.assertFalse(link.is_dir())
+        self.assertUongo(link.is_dir())
         # Symlinking to a directory.
         target = P / 'dirB'
         link = P / 'dirA' / 'linkAAAA'
-        link.symlink_to(target, target_is_directory=True)
+        link.symlink_to(target, target_is_directory=Kweli)
         self.assertEqual(link.stat(), target.stat())
         self.assertNotEqual(link.lstat(), target.stat())
-        self.assertTrue(link.is_dir())
-        self.assertTrue(list(link.iterdir()))
+        self.assertKweli(link.is_dir())
+        self.assertKweli(list(link.iterdir()))
 
     eleza test_is_dir(self):
         P = self.cls(BASE)
-        self.assertTrue((P / 'dirA').is_dir())
-        self.assertFalse((P / 'fileA').is_dir())
-        self.assertFalse((P / 'non-existing').is_dir())
-        self.assertFalse((P / 'fileA' / 'bah').is_dir())
+        self.assertKweli((P / 'dirA').is_dir())
+        self.assertUongo((P / 'fileA').is_dir())
+        self.assertUongo((P / 'non-existing').is_dir())
+        self.assertUongo((P / 'fileA' / 'bah').is_dir())
         ikiwa support.can_symlink():
-            self.assertFalse((P / 'linkA').is_dir())
-            self.assertTrue((P / 'linkB').is_dir())
-            self.assertFalse((P/ 'brokenLink').is_dir(), False)
-        self.assertIs((P / 'dirA\udfff').is_dir(), False)
-        self.assertIs((P / 'dirA\x00').is_dir(), False)
+            self.assertUongo((P / 'linkA').is_dir())
+            self.assertKweli((P / 'linkB').is_dir())
+            self.assertUongo((P/ 'brokenLink').is_dir(), Uongo)
+        self.assertIs((P / 'dirA\udfff').is_dir(), Uongo)
+        self.assertIs((P / 'dirA\x00').is_dir(), Uongo)
 
     eleza test_is_file(self):
         P = self.cls(BASE)
-        self.assertTrue((P / 'fileA').is_file())
-        self.assertFalse((P / 'dirA').is_file())
-        self.assertFalse((P / 'non-existing').is_file())
-        self.assertFalse((P / 'fileA' / 'bah').is_file())
+        self.assertKweli((P / 'fileA').is_file())
+        self.assertUongo((P / 'dirA').is_file())
+        self.assertUongo((P / 'non-existing').is_file())
+        self.assertUongo((P / 'fileA' / 'bah').is_file())
         ikiwa support.can_symlink():
-            self.assertTrue((P / 'linkA').is_file())
-            self.assertFalse((P / 'linkB').is_file())
-            self.assertFalse((P/ 'brokenLink').is_file())
-        self.assertIs((P / 'fileA\udfff').is_file(), False)
-        self.assertIs((P / 'fileA\x00').is_file(), False)
+            self.assertKweli((P / 'linkA').is_file())
+            self.assertUongo((P / 'linkB').is_file())
+            self.assertUongo((P/ 'brokenLink').is_file())
+        self.assertIs((P / 'fileA\udfff').is_file(), Uongo)
+        self.assertIs((P / 'fileA\x00').is_file(), Uongo)
 
     @only_posix
     eleza test_is_mount(self):
         P = self.cls(BASE)
         R = self.cls('/')  # TODO: Work out Windows.
-        self.assertFalse((P / 'fileA').is_mount())
-        self.assertFalse((P / 'dirA').is_mount())
-        self.assertFalse((P / 'non-existing').is_mount())
-        self.assertFalse((P / 'fileA' / 'bah').is_mount())
-        self.assertTrue(R.is_mount())
+        self.assertUongo((P / 'fileA').is_mount())
+        self.assertUongo((P / 'dirA').is_mount())
+        self.assertUongo((P / 'non-existing').is_mount())
+        self.assertUongo((P / 'fileA' / 'bah').is_mount())
+        self.assertKweli(R.is_mount())
         ikiwa support.can_symlink():
-            self.assertFalse((P / 'linkA').is_mount())
-        self.assertIs(self.cls('/\udfff').is_mount(), False)
-        self.assertIs(self.cls('/\x00').is_mount(), False)
+            self.assertUongo((P / 'linkA').is_mount())
+        self.assertIs(self.cls('/\udfff').is_mount(), Uongo)
+        self.assertIs(self.cls('/\x00').is_mount(), Uongo)
 
     eleza test_is_symlink(self):
         P = self.cls(BASE)
-        self.assertFalse((P / 'fileA').is_symlink())
-        self.assertFalse((P / 'dirA').is_symlink())
-        self.assertFalse((P / 'non-existing').is_symlink())
-        self.assertFalse((P / 'fileA' / 'bah').is_symlink())
+        self.assertUongo((P / 'fileA').is_symlink())
+        self.assertUongo((P / 'dirA').is_symlink())
+        self.assertUongo((P / 'non-existing').is_symlink())
+        self.assertUongo((P / 'fileA' / 'bah').is_symlink())
         ikiwa support.can_symlink():
-            self.assertTrue((P / 'linkA').is_symlink())
-            self.assertTrue((P / 'linkB').is_symlink())
-            self.assertTrue((P/ 'brokenLink').is_symlink())
-        self.assertIs((P / 'fileA\udfff').is_file(), False)
-        self.assertIs((P / 'fileA\x00').is_file(), False)
+            self.assertKweli((P / 'linkA').is_symlink())
+            self.assertKweli((P / 'linkB').is_symlink())
+            self.assertKweli((P/ 'brokenLink').is_symlink())
+        self.assertIs((P / 'fileA\udfff').is_file(), Uongo)
+        self.assertIs((P / 'fileA\x00').is_file(), Uongo)
         ikiwa support.can_symlink():
-            self.assertIs((P / 'linkA\udfff').is_file(), False)
-            self.assertIs((P / 'linkA\x00').is_file(), False)
+            self.assertIs((P / 'linkA\udfff').is_file(), Uongo)
+            self.assertIs((P / 'linkA\x00').is_file(), Uongo)
 
     eleza test_is_fifo_false(self):
         P = self.cls(BASE)
-        self.assertFalse((P / 'fileA').is_fifo())
-        self.assertFalse((P / 'dirA').is_fifo())
-        self.assertFalse((P / 'non-existing').is_fifo())
-        self.assertFalse((P / 'fileA' / 'bah').is_fifo())
-        self.assertIs((P / 'fileA\udfff').is_fifo(), False)
-        self.assertIs((P / 'fileA\x00').is_fifo(), False)
+        self.assertUongo((P / 'fileA').is_fifo())
+        self.assertUongo((P / 'dirA').is_fifo())
+        self.assertUongo((P / 'non-existing').is_fifo())
+        self.assertUongo((P / 'fileA' / 'bah').is_fifo())
+        self.assertIs((P / 'fileA\udfff').is_fifo(), Uongo)
+        self.assertIs((P / 'fileA\x00').is_fifo(), Uongo)
 
     @unittest.skipUnless(hasattr(os, "mkfifo"), "os.mkfifo() required")
     eleza test_is_fifo_true(self):
         P = self.cls(BASE, 'myfifo')
-        try:
+        jaribu:
             os.mkfifo(str(P))
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.mkfifo(): %s' % e)
-        self.assertTrue(P.is_fifo())
-        self.assertFalse(P.is_socket())
-        self.assertFalse(P.is_file())
-        self.assertIs(self.cls(BASE, 'myfifo\udfff').is_fifo(), False)
-        self.assertIs(self.cls(BASE, 'myfifo\x00').is_fifo(), False)
+        self.assertKweli(P.is_fifo())
+        self.assertUongo(P.is_socket())
+        self.assertUongo(P.is_file())
+        self.assertIs(self.cls(BASE, 'myfifo\udfff').is_fifo(), Uongo)
+        self.assertIs(self.cls(BASE, 'myfifo\x00').is_fifo(), Uongo)
 
     eleza test_is_socket_false(self):
         P = self.cls(BASE)
-        self.assertFalse((P / 'fileA').is_socket())
-        self.assertFalse((P / 'dirA').is_socket())
-        self.assertFalse((P / 'non-existing').is_socket())
-        self.assertFalse((P / 'fileA' / 'bah').is_socket())
-        self.assertIs((P / 'fileA\udfff').is_socket(), False)
-        self.assertIs((P / 'fileA\x00').is_socket(), False)
+        self.assertUongo((P / 'fileA').is_socket())
+        self.assertUongo((P / 'dirA').is_socket())
+        self.assertUongo((P / 'non-existing').is_socket())
+        self.assertUongo((P / 'fileA' / 'bah').is_socket())
+        self.assertIs((P / 'fileA\udfff').is_socket(), Uongo)
+        self.assertIs((P / 'fileA\x00').is_socket(), Uongo)
 
     @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
     eleza test_is_socket_true(self):
         P = self.cls(BASE, 'mysock')
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.addCleanup(sock.close)
-        try:
+        jaribu:
             sock.bind(str(P))
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa (isinstance(e, PermissionError) or
-                    "AF_UNIX path too long" in str(e)):
+                    "AF_UNIX path too long" kwenye str(e)):
                 self.skipTest("cannot bind Unix socket: " + str(e))
-        self.assertTrue(P.is_socket())
-        self.assertFalse(P.is_fifo())
-        self.assertFalse(P.is_file())
-        self.assertIs(self.cls(BASE, 'mysock\udfff').is_socket(), False)
-        self.assertIs(self.cls(BASE, 'mysock\x00').is_socket(), False)
+        self.assertKweli(P.is_socket())
+        self.assertUongo(P.is_fifo())
+        self.assertUongo(P.is_file())
+        self.assertIs(self.cls(BASE, 'mysock\udfff').is_socket(), Uongo)
+        self.assertIs(self.cls(BASE, 'mysock\x00').is_socket(), Uongo)
 
     eleza test_is_block_device_false(self):
         P = self.cls(BASE)
-        self.assertFalse((P / 'fileA').is_block_device())
-        self.assertFalse((P / 'dirA').is_block_device())
-        self.assertFalse((P / 'non-existing').is_block_device())
-        self.assertFalse((P / 'fileA' / 'bah').is_block_device())
-        self.assertIs((P / 'fileA\udfff').is_block_device(), False)
-        self.assertIs((P / 'fileA\x00').is_block_device(), False)
+        self.assertUongo((P / 'fileA').is_block_device())
+        self.assertUongo((P / 'dirA').is_block_device())
+        self.assertUongo((P / 'non-existing').is_block_device())
+        self.assertUongo((P / 'fileA' / 'bah').is_block_device())
+        self.assertIs((P / 'fileA\udfff').is_block_device(), Uongo)
+        self.assertIs((P / 'fileA\x00').is_block_device(), Uongo)
 
     eleza test_is_char_device_false(self):
         P = self.cls(BASE)
-        self.assertFalse((P / 'fileA').is_char_device())
-        self.assertFalse((P / 'dirA').is_char_device())
-        self.assertFalse((P / 'non-existing').is_char_device())
-        self.assertFalse((P / 'fileA' / 'bah').is_char_device())
-        self.assertIs((P / 'fileA\udfff').is_char_device(), False)
-        self.assertIs((P / 'fileA\x00').is_char_device(), False)
+        self.assertUongo((P / 'fileA').is_char_device())
+        self.assertUongo((P / 'dirA').is_char_device())
+        self.assertUongo((P / 'non-existing').is_char_device())
+        self.assertUongo((P / 'fileA' / 'bah').is_char_device())
+        self.assertIs((P / 'fileA\udfff').is_char_device(), Uongo)
+        self.assertIs((P / 'fileA\x00').is_char_device(), Uongo)
 
     eleza test_is_char_device_true(self):
         # Under Unix, /dev/null should generally be a char device.
         P = self.cls('/dev/null')
-        ikiwa not P.exists():
+        ikiwa sio P.exists():
             self.skipTest("/dev/null required")
-        self.assertTrue(P.is_char_device())
-        self.assertFalse(P.is_block_device())
-        self.assertFalse(P.is_file())
-        self.assertIs(self.cls('/dev/null\udfff').is_char_device(), False)
-        self.assertIs(self.cls('/dev/null\x00').is_char_device(), False)
+        self.assertKweli(P.is_char_device())
+        self.assertUongo(P.is_block_device())
+        self.assertUongo(P.is_file())
+        self.assertIs(self.cls('/dev/null\udfff').is_char_device(), Uongo)
+        self.assertIs(self.cls('/dev/null\x00').is_char_device(), Uongo)
 
     eleza test_pickling_common(self):
         p = self.cls(BASE, 'fileA')
-        for proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(0, pickle.HIGHEST_PROTOCOL + 1):
             dumped = pickle.dumps(p, proto)
             pp = pickle.loads(dumped)
             self.assertEqual(pp.stat(), p.stat())
@@ -2088,7 +2088,7 @@ kundi _BasePathTest(object):
         # Resolve relative paths.
         old_path = os.getcwd()
         os.chdir(BASE)
-        try:
+        jaribu:
             p = self.cls('link0').resolve()
             self.assertEqual(p, P)
             self.assertEqualNormCase(str(p), BASE)
@@ -2101,7 +2101,7 @@ kundi _BasePathTest(object):
             p = self.cls('link3').resolve()
             self.assertEqual(p, P)
             self.assertEqualNormCase(str(p), BASE)
-        finally:
+        mwishowe:
             os.chdir(old_path)
 
     @support.skip_unless_symlink
@@ -2128,7 +2128,7 @@ kundi PathTest(_BasePathTest, unittest.TestCase):
     eleza test_unsupported_flavour(self):
         ikiwa os.name == 'nt':
             self.assertRaises(NotImplementedError, pathlib.PosixPath)
-        else:
+        isipokua:
             self.assertRaises(NotImplementedError, pathlib.WindowsPath)
 
     eleza test_glob_empty_pattern(self):
@@ -2141,7 +2141,7 @@ kundi PathTest(_BasePathTest, unittest.TestCase):
 kundi PosixPathTest(_BasePathTest, unittest.TestCase):
     cls = pathlib.PosixPath
 
-    eleza _check_symlink_loop(self, *args, strict=True):
+    eleza _check_symlink_loop(self, *args, strict=Kweli):
         path = self.cls(*args)
         with self.assertRaises(RuntimeError):
             andika(path.resolve(strict))
@@ -2151,12 +2151,12 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
         self.addCleanup(os.umask, old_mask)
         p = self.cls(BASE)
         with (p / 'new_file').open('wb'):
-            pass
+            pita
         st = os.stat(join('new_file'))
         self.assertEqual(stat.S_IMODE(st.st_mode), 0o666)
         os.umask(0o022)
         with (p / 'other_new_file').open('wb'):
-            pass
+            pita
         st = os.stat(join('other_new_file'))
         self.assertEqual(stat.S_IMODE(st.st_mode), 0o644)
 
@@ -2185,7 +2185,7 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
         os.symlink('linkZ/../linkZ', join('linkZ'))
         self._check_symlink_loop(BASE, 'linkZ')
         # Non-strict
-        self._check_symlink_loop(BASE, 'linkZ', 'foo', strict=False)
+        self._check_symlink_loop(BASE, 'linkZ', 'foo', strict=Uongo)
         # Loops with absolute symlinks.
         os.symlink(join('linkU/inside'), join('linkU'))
         self._check_symlink_loop(BASE, 'linkU')
@@ -2194,13 +2194,13 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
         os.symlink(join('linkW/../linkW'), join('linkW'))
         self._check_symlink_loop(BASE, 'linkW')
         # Non-strict
-        self._check_symlink_loop(BASE, 'linkW', 'foo', strict=False)
+        self._check_symlink_loop(BASE, 'linkW', 'foo', strict=Uongo)
 
     eleza test_glob(self):
         P = self.cls
         p = P(BASE)
         given = set(p.glob("FILEa"))
-        expect = set() ikiwa not support.fs_is_case_insensitive(BASE) else given
+        expect = set() ikiwa sio support.fs_is_case_insensitive(BASE) else given
         self.assertEqual(given, expect)
         self.assertEqual(set(p.glob("FILEa*")), set())
 
@@ -2208,26 +2208,26 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
         P = self.cls
         p = P(BASE, "dirC")
         given = set(p.rglob("FILEd"))
-        expect = set() ikiwa not support.fs_is_case_insensitive(BASE) else given
+        expect = set() ikiwa sio support.fs_is_case_insensitive(BASE) else given
         self.assertEqual(given, expect)
         self.assertEqual(set(p.rglob("FILEd*")), set())
 
     @unittest.skipUnless(hasattr(pwd, 'getpwall'),
-                         'pwd module does not expose getpwall()')
+                         'pwd module does sio expose getpwall()')
     eleza test_expanduser(self):
         P = self.cls
         support.import_module('pwd')
         agiza pwd
         pwdent = pwd.getpwuid(os.getuid())
         username = pwdent.pw_name
-        userhome = pwdent.pw_dir.rstrip('/') or '/'
+        userhome = pwdent.pw_dir.rstrip('/') ama '/'
         # Find arbitrary different user (ikiwa exists).
-        for pwdent in pwd.getpwall():
+        kila pwdent kwenye pwd.getpwall():
             othername = pwdent.pw_name
             otherhome = pwdent.pw_dir.rstrip('/')
-            ikiwa othername != username and otherhome:
-                break
-        else:
+            ikiwa othername != username na otherhome:
+                koma
+        isipokua:
             othername = username
             otherhome = userhome
 
@@ -2239,8 +2239,8 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
         p6 = P('')
         p7 = P('~fakeuser/Documents')
 
-        with support.EnvironmentVarGuard() as env:
-            env.pop('HOME', None)
+        with support.EnvironmentVarGuard() kama env:
+            env.pop('HOME', Tupu)
 
             self.assertEqual(p1.expanduser(), P(userhome) / 'Documents')
             self.assertEqual(p2.expanduser(), P(userhome) / 'Documents')
@@ -2260,15 +2260,15 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
             self.assertRaises(RuntimeError, p7.expanduser)
 
     @unittest.skipIf(sys.platform != "darwin",
-                     "Bad file descriptor in /dev/fd affects only macOS")
+                     "Bad file descriptor kwenye /dev/fd affects only macOS")
     eleza test_handling_bad_descriptor(self):
-        try:
+        jaribu:
             file_descriptors = list(pathlib.Path('/dev/fd').rglob("*"))[3:]
-            ikiwa not file_descriptors:
-                self.skipTest("no file descriptors - issue was not reproduced")
-            # Checking all file descriptors because there is no guarantee
+            ikiwa sio file_descriptors:
+                self.skipTest("no file descriptors - issue was sio reproduced")
+            # Checking all file descriptors because there ni no guarantee
             # which one will fail.
-            for f in file_descriptors:
+            kila f kwenye file_descriptors:
                 f.exists()
                 f.is_dir()
                 f.is_file()
@@ -2277,10 +2277,10 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
                 f.is_char_device()
                 f.is_fifo()
                 f.is_socket()
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.EBADF:
-                self.fail("Bad file descriptor not handled.")
-            raise
+                self.fail("Bad file descriptor sio handled.")
+            ashiria
 
 
 @only_nt
@@ -2299,14 +2299,14 @@ kundi WindowsPathTest(_BasePathTest, unittest.TestCase):
 
     eleza test_expanduser(self):
         P = self.cls
-        with support.EnvironmentVarGuard() as env:
-            env.pop('HOME', None)
-            env.pop('USERPROFILE', None)
-            env.pop('HOMEPATH', None)
-            env.pop('HOMEDRIVE', None)
+        with support.EnvironmentVarGuard() kama env:
+            env.pop('HOME', Tupu)
+            env.pop('USERPROFILE', Tupu)
+            env.pop('HOMEPATH', Tupu)
+            env.pop('HOMEDRIVE', Tupu)
             env['USERNAME'] = 'alice'
 
-            # test that the path returns unchanged
+            # test that the path rudishas unchanged
             p1 = P('~/My Documents')
             p2 = P('~alice/My Documents')
             p3 = P('~bob/My Documents')
@@ -2321,7 +2321,7 @@ kundi WindowsPathTest(_BasePathTest, unittest.TestCase):
             self.assertEqual(p6.expanduser(), p6)
 
             eleza check():
-                env.pop('USERNAME', None)
+                env.pop('USERNAME', Tupu)
                 self.assertEqual(p1.expanduser(),
                                  P('C:/Users/alice/My Documents'))
                 self.assertRaises(KeyError, p2.expanduser)
@@ -2334,12 +2334,12 @@ kundi WindowsPathTest(_BasePathTest, unittest.TestCase):
                 self.assertEqual(p5.expanduser(), p5)
                 self.assertEqual(p6.expanduser(), p6)
 
-            # Test the first lookup key in the env vars.
+            # Test the first lookup key kwenye the env vars.
             env['HOME'] = 'C:\\Users\\alice'
             check()
 
-            # Test that HOMEPATH is available instead.
-            env.pop('HOME', None)
+            # Test that HOMEPATH ni available instead.
+            env.pop('HOME', Tupu)
             env['HOMEPATH'] = 'C:\\Users\\alice'
             check()
 
@@ -2347,8 +2347,8 @@ kundi WindowsPathTest(_BasePathTest, unittest.TestCase):
             env['HOMEPATH'] = 'Users\\alice'
             check()
 
-            env.pop('HOMEDRIVE', None)
-            env.pop('HOMEPATH', None)
+            env.pop('HOMEDRIVE', Tupu)
+            env.pop('HOMEPATH', Tupu)
             env['USERPROFILE'] = 'C:\\Users\\alice'
             check()
 
@@ -2363,7 +2363,7 @@ kundi CompatiblePathTest(unittest.TestCase):
         """
         Minimum viable kundi to test PurePath compatibility.
         Simply uses the division operator to join a given
-        string and the string value of another object with
+        string na the string value of another object with
         a forward slash.
         """
         eleza __init__(self, string):
@@ -2381,7 +2381,7 @@ kundi CompatiblePathTest(unittest.TestCase):
         self.assertEqual(result.string, "test/right")
 
         with self.assertRaises(TypeError):
-            # Verify improper operations still raise a TypeError
+            # Verify improper operations still ashiria a TypeError
             pathlib.PurePath("test") / 10
 
     eleza test_rtruediv(self):
@@ -2390,7 +2390,7 @@ kundi CompatiblePathTest(unittest.TestCase):
         self.assertEqual(result.string, "left/test")
 
         with self.assertRaises(TypeError):
-            # Verify improper operations still raise a TypeError
+            # Verify improper operations still ashiria a TypeError
             10 / pathlib.PurePath("test")
 
 

@@ -1,7 +1,7 @@
-"""Functions that read and write gzipped files.
+"""Functions that read na write gzipped files.
 
 The user of the file doesn't have to worry about the compression,
-but random access is not allowed."""
+but random access ni sio allowed."""
 
 # based on Andrew Kuchling's minigzip.py distributed with the zlib module
 
@@ -23,57 +23,57 @@ _COMPRESS_LEVEL_BEST = 9
 
 
 eleza open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_BEST,
-         encoding=None, errors=None, newline=None):
-    """Open a gzip-compressed file in binary or text mode.
+         encoding=Tupu, errors=Tupu, newline=Tupu):
+    """Open a gzip-compressed file kwenye binary ama text mode.
 
-    The filename argument can be an actual filename (a str or bytes object), or
-    an existing file object to read kutoka or write to.
+    The filename argument can be an actual filename (a str ama bytes object), or
+    an existing file object to read kutoka ama write to.
 
-    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or "ab" for
-    binary mode, or "rt", "wt", "xt" or "at" for text mode. The default mode is
-    "rb", and the default compresslevel is 9.
+    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" ama "ab" for
+    binary mode, ama "rt", "wt", "xt" ama "at" kila text mode. The default mode is
+    "rb", na the default compresslevel ni 9.
 
-    For binary mode, this function is equivalent to the GzipFile constructor:
+    For binary mode, this function ni equivalent to the GzipFile constructor:
     GzipFile(filename, mode, compresslevel). In this case, the encoding, errors
-    and newline arguments must not be provided.
+    na newline arguments must sio be provided.
 
-    For text mode, a GzipFile object is created, and wrapped in an
+    For text mode, a GzipFile object ni created, na wrapped kwenye an
     io.TextIOWrapper instance with the specified encoding, error handling
-    behavior, and line ending(s).
+    behavior, na line ending(s).
 
     """
-    ikiwa "t" in mode:
-        ikiwa "b" in mode:
-            raise ValueError("Invalid mode: %r" % (mode,))
-    else:
-        ikiwa encoding is not None:
-            raise ValueError("Argument 'encoding' not supported in binary mode")
-        ikiwa errors is not None:
-            raise ValueError("Argument 'errors' not supported in binary mode")
-        ikiwa newline is not None:
-            raise ValueError("Argument 'newline' not supported in binary mode")
+    ikiwa "t" kwenye mode:
+        ikiwa "b" kwenye mode:
+            ashiria ValueError("Invalid mode: %r" % (mode,))
+    isipokua:
+        ikiwa encoding ni sio Tupu:
+            ashiria ValueError("Argument 'encoding' sio supported kwenye binary mode")
+        ikiwa errors ni sio Tupu:
+            ashiria ValueError("Argument 'errors' sio supported kwenye binary mode")
+        ikiwa newline ni sio Tupu:
+            ashiria ValueError("Argument 'newline' sio supported kwenye binary mode")
 
     gz_mode = mode.replace("t", "")
     ikiwa isinstance(filename, (str, bytes, os.PathLike)):
         binary_file = GzipFile(filename, gz_mode, compresslevel)
-    elikiwa hasattr(filename, "read") or hasattr(filename, "write"):
-        binary_file = GzipFile(None, gz_mode, compresslevel, filename)
-    else:
-        raise TypeError("filename must be a str or bytes object, or a file")
+    elikiwa hasattr(filename, "read") ama hasattr(filename, "write"):
+        binary_file = GzipFile(Tupu, gz_mode, compresslevel, filename)
+    isipokua:
+        ashiria TypeError("filename must be a str ama bytes object, ama a file")
 
-    ikiwa "t" in mode:
+    ikiwa "t" kwenye mode:
         rudisha io.TextIOWrapper(binary_file, encoding, errors, newline)
-    else:
+    isipokua:
         rudisha binary_file
 
 eleza write32u(output, value):
     # The L format writes the bit pattern correctly whether signed
-    # or unsigned.
+    # ama unsigned.
     output.write(struct.pack("<L", value))
 
 kundi _PaddedFile:
     """Minimal read-only file object that prepends a string to the contents
-    of an actual file. Shouldn't be used outside of gzip.py, as it lacks
+    of an actual file. Shouldn't be used outside of gzip.py, kama it lacks
     essential functionality."""
 
     eleza __init__(self, f, prepend=b''):
@@ -83,101 +83,101 @@ kundi _PaddedFile:
         self._read = 0
 
     eleza read(self, size):
-        ikiwa self._read is None:
+        ikiwa self._read ni Tupu:
             rudisha self.file.read(size)
         ikiwa self._read + size <= self._length:
             read = self._read
             self._read += size
             rudisha self._buffer[read:self._read]
-        else:
+        isipokua:
             read = self._read
-            self._read = None
+            self._read = Tupu
             rudisha self._buffer[read:] + \
                    self.file.read(size-self._length+read)
 
     eleza prepend(self, prepend=b''):
-        ikiwa self._read is None:
+        ikiwa self._read ni Tupu:
             self._buffer = prepend
-        else:  # Assume data was read since the last prepend() call
+        isipokua:  # Assume data was read since the last prepend() call
             self._read -= len(prepend)
-            return
+            rudisha
         self._length = len(self._buffer)
         self._read = 0
 
     eleza seek(self, off):
-        self._read = None
-        self._buffer = None
+        self._read = Tupu
+        self._buffer = Tupu
         rudisha self.file.seek(off)
 
     eleza seekable(self):
-        rudisha True  # Allows fast-forwarding even in unseekable streams
+        rudisha Kweli  # Allows fast-forwarding even kwenye unseekable streams
 
 
 kundi BadGzipFile(OSError):
-    """Exception raised in some cases for invalid gzip files."""
+    """Exception ashiriad kwenye some cases kila invalid gzip files."""
 
 
 kundi GzipFile(_compression.BaseStream):
     """The GzipFile kundi simulates most of the methods of a file object with
     the exception of the truncate() method.
 
-    This kundi only supports opening files in binary mode. If you need to open a
-    compressed file in text mode, use the gzip.open() function.
+    This kundi only supports opening files kwenye binary mode. If you need to open a
+    compressed file kwenye text mode, use the gzip.open() function.
 
     """
 
     # Overridden with internal file object to be closed, ikiwa only a filename
-    # is passed in
-    myfileobj = None
+    # ni pitaed in
+    myfileobj = Tupu
 
-    eleza __init__(self, filename=None, mode=None,
-                 compresslevel=_COMPRESS_LEVEL_BEST, fileobj=None, mtime=None):
-        """Constructor for the GzipFile class.
+    eleza __init__(self, filename=Tupu, mode=Tupu,
+                 compresslevel=_COMPRESS_LEVEL_BEST, fileobj=Tupu, mtime=Tupu):
+        """Constructor kila the GzipFile class.
 
-        At least one of fileobj and filename must be given a
+        At least one of fileobj na filename must be given a
         non-trivial value.
 
-        The new kundi instance is based on fileobj, which can be a regular
-        file, an io.BytesIO object, or any other object which simulates a file.
-        It defaults to None, in which case filename is opened to provide
+        The new kundi instance ni based on fileobj, which can be a regular
+        file, an io.BytesIO object, ama any other object which simulates a file.
+        It defaults to Tupu, kwenye which case filename ni opened to provide
         a file object.
 
-        When fileobj is not None, the filename argument is only used to be
-        included in the gzip file header, which may include the original
+        When fileobj ni sio Tupu, the filename argument ni only used to be
+        included kwenye the gzip file header, which may include the original
         filename of the uncompressed file.  It defaults to the filename of
         fileobj, ikiwa discernible; otherwise, it defaults to the empty string,
-        and in this case the original filename is not included in the header.
+        na kwenye this case the original filename ni sio included kwenye the header.
 
         The mode argument can be any of 'r', 'rb', 'a', 'ab', 'w', 'wb', 'x', or
-        'xb' depending on whether the file will be read or written.  The default
-        is the mode of fileobj ikiwa discernible; otherwise, the default is 'rb'.
-        A mode of 'r' is equivalent to one of 'rb', and similarly for 'w' and
-        'wb', 'a' and 'ab', and 'x' and 'xb'.
+        'xb' depending on whether the file will be read ama written.  The default
+        ni the mode of fileobj ikiwa discernible; otherwise, the default ni 'rb'.
+        A mode of 'r' ni equivalent to one of 'rb', na similarly kila 'w' and
+        'wb', 'a' na 'ab', na 'x' na 'xb'.
 
-        The compresslevel argument is an integer kutoka 0 to 9 controlling the
-        level of compression; 1 is fastest and produces the least compression,
-        and 9 is slowest and produces the most compression. 0 is no compression
-        at all. The default is 9.
+        The compresslevel argument ni an integer kutoka 0 to 9 controlling the
+        level of compression; 1 ni fastest na produces the least compression,
+        na 9 ni slowest na produces the most compression. 0 ni no compression
+        at all. The default ni 9.
 
-        The mtime argument is an optional numeric timestamp to be written
-        to the last modification time field in the stream when compressing.
-        If omitted or None, the current time is used.
+        The mtime argument ni an optional numeric timestamp to be written
+        to the last modification time field kwenye the stream when compressing.
+        If omitted ama Tupu, the current time ni used.
 
         """
 
-        ikiwa mode and ('t' in mode or 'U' in mode):
-            raise ValueError("Invalid mode: {!r}".format(mode))
-        ikiwa mode and 'b' not in mode:
+        ikiwa mode na ('t' kwenye mode ama 'U' kwenye mode):
+            ashiria ValueError("Invalid mode: {!r}".format(mode))
+        ikiwa mode na 'b' haiko kwenye mode:
             mode += 'b'
-        ikiwa fileobj is None:
-            fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
-        ikiwa filename is None:
+        ikiwa fileobj ni Tupu:
+            fileobj = self.myfileobj = builtins.open(filename, mode ama 'rb')
+        ikiwa filename ni Tupu:
             filename = getattr(fileobj, 'name', '')
-            ikiwa not isinstance(filename, (str, bytes)):
+            ikiwa sio isinstance(filename, (str, bytes)):
                 filename = ''
-        else:
+        isipokua:
             filename = os.fspath(filename)
-        ikiwa mode is None:
+        ikiwa mode ni Tupu:
             mode = getattr(fileobj, 'mode', 'rb')
 
         ikiwa mode.startswith('r'):
@@ -195,8 +195,8 @@ kundi GzipFile(_compression.BaseStream):
                                              zlib.DEF_MEM_LEVEL,
                                              0)
             self._write_mtime = mtime
-        else:
-            raise ValueError("Invalid mode: {!r}".format(mode))
+        isipokua:
+            ashiria ValueError("Invalid mode: {!r}".format(mode))
 
         self.fileobj = fileobj
 
@@ -207,13 +207,13 @@ kundi GzipFile(_compression.BaseStream):
     eleza filename(self):
         agiza warnings
         warnings.warn("use the name attribute", DeprecationWarning, 2)
-        ikiwa self.mode == WRITE and self.name[-3:] != ".gz":
+        ikiwa self.mode == WRITE na self.name[-3:] != ".gz":
             rudisha self.name + ".gz"
         rudisha self.name
 
     @property
     eleza mtime(self):
-        """Last modification time read kutoka stream, or None"""
+        """Last modification time read kutoka stream, ama Tupu"""
         rudisha self._buffer.raw._last_mtime
 
     eleza __repr__(self):
@@ -226,27 +226,27 @@ kundi GzipFile(_compression.BaseStream):
         self.size = 0
         self.writebuf = []
         self.bufsize = 0
-        self.offset = 0  # Current file offset for seek(), tell(), etc
+        self.offset = 0  # Current file offset kila seek(), tell(), etc
 
     eleza _write_gzip_header(self):
         self.fileobj.write(b'\037\213')             # magic header
         self.fileobj.write(b'\010')                 # compression method
-        try:
+        jaribu:
             # RFC 1952 requires the FNAME field to be Latin-1. Do not
             # include filenames that cannot be represented that way.
             fname = os.path.basename(self.name)
-            ikiwa not isinstance(fname, bytes):
+            ikiwa sio isinstance(fname, bytes):
                 fname = fname.encode('latin-1')
             ikiwa fname.endswith(b'.gz'):
                 fname = fname[:-3]
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             fname = b''
         flags = 0
         ikiwa fname:
             flags = FNAME
         self.fileobj.write(chr(flags).encode('latin-1'))
         mtime = self._write_mtime
-        ikiwa mtime is None:
+        ikiwa mtime ni Tupu:
             mtime = time.time()
         write32u(self.fileobj, int(mtime))
         self.fileobj.write(b'\002')
@@ -258,14 +258,14 @@ kundi GzipFile(_compression.BaseStream):
         self._check_not_closed()
         ikiwa self.mode != WRITE:
             agiza errno
-            raise OSError(errno.EBADF, "write() on read-only GzipFile object")
+            ashiria OSError(errno.EBADF, "write() on read-only GzipFile object")
 
-        ikiwa self.fileobj is None:
-            raise ValueError("write() on closed GzipFile object")
+        ikiwa self.fileobj ni Tupu:
+            ashiria ValueError("write() on closed GzipFile object")
 
         ikiwa isinstance(data, bytes):
             length = len(data)
-        else:
+        isipokua:
             # accept any data that supports the buffer protocol
             data = memoryview(data)
             length = data.nbytes
@@ -282,17 +282,17 @@ kundi GzipFile(_compression.BaseStream):
         self._check_not_closed()
         ikiwa self.mode != READ:
             agiza errno
-            raise OSError(errno.EBADF, "read() on write-only GzipFile object")
+            ashiria OSError(errno.EBADF, "read() on write-only GzipFile object")
         rudisha self._buffer.read(size)
 
     eleza read1(self, size=-1):
         """Implements BufferedIOBase.read1()
 
-        Reads up to a buffer's worth of data ikiwa size is negative."""
+        Reads up to a buffer's worth of data ikiwa size ni negative."""
         self._check_not_closed()
         ikiwa self.mode != READ:
             agiza errno
-            raise OSError(errno.EBADF, "read1() on write-only GzipFile object")
+            ashiria OSError(errno.EBADF, "read1() on write-only GzipFile object")
 
         ikiwa size < 0:
             size = io.DEFAULT_BUFFER_SIZE
@@ -302,43 +302,43 @@ kundi GzipFile(_compression.BaseStream):
         self._check_not_closed()
         ikiwa self.mode != READ:
             agiza errno
-            raise OSError(errno.EBADF, "peek() on write-only GzipFile object")
+            ashiria OSError(errno.EBADF, "peek() on write-only GzipFile object")
         rudisha self._buffer.peek(n)
 
     @property
     eleza closed(self):
-        rudisha self.fileobj is None
+        rudisha self.fileobj ni Tupu
 
     eleza close(self):
         fileobj = self.fileobj
-        ikiwa fileobj is None:
-            return
-        self.fileobj = None
-        try:
+        ikiwa fileobj ni Tupu:
+            rudisha
+        self.fileobj = Tupu
+        jaribu:
             ikiwa self.mode == WRITE:
                 fileobj.write(self.compress.flush())
                 write32u(fileobj, self.crc)
-                # self.size may exceed 2 GiB, or even 4 GiB
+                # self.size may exceed 2 GiB, ama even 4 GiB
                 write32u(fileobj, self.size & 0xffffffff)
             elikiwa self.mode == READ:
                 self._buffer.close()
-        finally:
+        mwishowe:
             myfileobj = self.myfileobj
             ikiwa myfileobj:
-                self.myfileobj = None
+                self.myfileobj = Tupu
                 myfileobj.close()
 
     eleza flush(self,zlib_mode=zlib.Z_SYNC_FLUSH):
         self._check_not_closed()
         ikiwa self.mode == WRITE:
-            # Ensure the compressor's buffer is flushed
+            # Ensure the compressor's buffer ni flushed
             self.fileobj.write(self.compress.flush(zlib_mode))
             self.fileobj.flush()
 
     eleza fileno(self):
         """Invoke the underlying file object's fileno() method.
 
-        This will raise AttributeError ikiwa the underlying file object
+        This will ashiria AttributeError ikiwa the underlying file object
         doesn't support fileno().
         """
         rudisha self.fileobj.fileno()
@@ -347,7 +347,7 @@ kundi GzipFile(_compression.BaseStream):
         '''Return the uncompressed stream file position indicator to the
         beginning of the file'''
         ikiwa self.mode != READ:
-            raise OSError("Can't rewind in write mode")
+            ashiria OSError("Can't rewind kwenye write mode")
         self._buffer.seek(0)
 
     eleza readable(self):
@@ -357,20 +357,20 @@ kundi GzipFile(_compression.BaseStream):
         rudisha self.mode == WRITE
 
     eleza seekable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza seek(self, offset, whence=io.SEEK_SET):
         ikiwa self.mode == WRITE:
             ikiwa whence != io.SEEK_SET:
                 ikiwa whence == io.SEEK_CUR:
                     offset = self.offset + offset
-                else:
-                    raise ValueError('Seek kutoka end not supported')
+                isipokua:
+                    ashiria ValueError('Seek kutoka end sio supported')
             ikiwa offset < self.offset:
-                raise OSError('Negative seek in write mode')
+                ashiria OSError('Negative seek kwenye write mode')
             count = offset - self.offset
             chunk = b'\0' * 1024
-            for i in range(count // 1024):
+            kila i kwenye range(count // 1024):
                 self.write(chunk)
             self.write(b'\0' * (count % 1024))
         elikiwa self.mode == READ:
@@ -389,8 +389,8 @@ kundi _GzipReader(_compression.DecompressReader):
         super().__init__(_PaddedFile(fp), zlib.decompressobj,
                          wbits=-zlib.MAX_WBITS)
         # Set flag indicating start of a new member
-        self._new_member = True
-        self._last_mtime = None
+        self._new_member = Kweli
+        self._last_mtime = Tupu
 
     eleza _init_read(self):
         self._crc = zlib.crc32(b"")
@@ -399,15 +399,15 @@ kundi _GzipReader(_compression.DecompressReader):
     eleza _read_exact(self, n):
         '''Read exactly *n* bytes kutoka `self._fp`
 
-        This method is required because self._fp may be unbuffered,
+        This method ni required because self._fp may be unbuffered,
         i.e. rudisha short reads.
         '''
 
         data = self._fp.read(n)
-        while len(data) < n:
+        wakati len(data) < n:
             b = self._fp.read(n - len(data))
-            ikiwa not b:
-                raise EOFError("Compressed file ended before the "
+            ikiwa sio b:
+                ashiria EOFError("Compressed file ended before the "
                                "end-of-stream marker was reached")
             data += b
         rudisha data
@@ -415,65 +415,65 @@ kundi _GzipReader(_compression.DecompressReader):
     eleza _read_gzip_header(self):
         magic = self._fp.read(2)
         ikiwa magic == b'':
-            rudisha False
+            rudisha Uongo
 
         ikiwa magic != b'\037\213':
-            raise BadGzipFile('Not a gzipped file (%r)' % magic)
+            ashiria BadGzipFile('Not a gzipped file (%r)' % magic)
 
         (method, flag,
          self._last_mtime) = struct.unpack("<BBIxx", self._read_exact(8))
         ikiwa method != 8:
-            raise BadGzipFile('Unknown compression method')
+            ashiria BadGzipFile('Unknown compression method')
 
         ikiwa flag & FEXTRA:
             # Read & discard the extra field, ikiwa present
             extra_len, = struct.unpack("<H", self._read_exact(2))
             self._read_exact(extra_len)
         ikiwa flag & FNAME:
-            # Read and discard a null-terminated string containing the filename
-            while True:
+            # Read na discard a null-terminated string containing the filename
+            wakati Kweli:
                 s = self._fp.read(1)
-                ikiwa not s or s==b'\000':
-                    break
+                ikiwa sio s ama s==b'\000':
+                    koma
         ikiwa flag & FCOMMENT:
-            # Read and discard a null-terminated string containing a comment
-            while True:
+            # Read na discard a null-terminated string containing a comment
+            wakati Kweli:
                 s = self._fp.read(1)
-                ikiwa not s or s==b'\000':
-                    break
+                ikiwa sio s ama s==b'\000':
+                    koma
         ikiwa flag & FHCRC:
             self._read_exact(2)     # Read & discard the 16-bit header CRC
-        rudisha True
+        rudisha Kweli
 
     eleza read(self, size=-1):
         ikiwa size < 0:
             rudisha self.readall()
-        # size=0 is special because decompress(max_length=0) is not supported
-        ikiwa not size:
+        # size=0 ni special because decompress(max_length=0) ni sio supported
+        ikiwa sio size:
             rudisha b""
 
         # For certain input data, a single
-        # call to decompress() may not return
-        # any data. In this case, retry until we get some data or reach EOF.
-        while True:
+        # call to decompress() may sio rudisha
+        # any data. In this case, retry until we get some data ama reach EOF.
+        wakati Kweli:
             ikiwa self._decompressor.eof:
-                # Ending case: we've come to the end of a member in the file,
-                # so finish up this member, and read a new gzip header.
-                # Check the CRC and file size, and set the flag so we read
+                # Ending case: we've come to the end of a member kwenye the file,
+                # so finish up this member, na read a new gzip header.
+                # Check the CRC na file size, na set the flag so we read
                 # a new member
                 self._read_eof()
-                self._new_member = True
+                self._new_member = Kweli
                 self._decompressor = self._decomp_factory(
                     **self._decomp_args)
 
             ikiwa self._new_member:
-                # If the _new_member flag is set, we have to
-                # jump to the next member, ikiwa there is one.
+                # If the _new_member flag ni set, we have to
+                # jump to the next member, ikiwa there ni one.
                 self._init_read()
-                ikiwa not self._read_gzip_header():
+                ikiwa sio self._read_gzip_header():
                     self._size = self._pos
                     rudisha b""
-                self._new_member = False
+                self._new_member = Uongo
 
             # Read a chunk of data kutoka the file
             buf = self._fp.read(io.DEFAULT_BUFFER_SIZE)
@@ -483,13 +483,13 @@ kundi _GzipReader(_compression.DecompressReader):
                 self._fp.prepend(self._decompressor.unconsumed_tail)
             elikiwa self._decompressor.unused_data != b"":
                 # Prepend the already read bytes to the fileobj so they can
-                # be seen by _read_eof() and _read_gzip_header()
+                # be seen by _read_eof() na _read_gzip_header()
                 self._fp.prepend(self._decompressor.unused_data)
 
             ikiwa uncompress != b"":
-                break
+                koma
             ikiwa buf == b"":
-                raise EOFError("Compressed file ended before the "
+                ashiria EOFError("Compressed file ended before the "
                                "end-of-stream marker was reached")
 
         self._add_read_data( uncompress )
@@ -502,51 +502,51 @@ kundi _GzipReader(_compression.DecompressReader):
 
     eleza _read_eof(self):
         # We've read to the end of the file
-        # We check the that the computed CRC and size of the
+        # We check the that the computed CRC na size of the
         # uncompressed data matches the stored values.  Note that the size
-        # stored is the true file size mod 2**32.
+        # stored ni the true file size mod 2**32.
         crc32, isize = struct.unpack("<II", self._read_exact(8))
         ikiwa crc32 != self._crc:
-            raise BadGzipFile("CRC check failed %s != %s" % (hex(crc32),
+            ashiria BadGzipFile("CRC check failed %s != %s" % (hex(crc32),
                                                              hex(self._crc)))
         elikiwa isize != (self._stream_size & 0xffffffff):
-            raise BadGzipFile("Incorrect length of data produced")
+            ashiria BadGzipFile("Incorrect length of data produced")
 
-        # Gzip files can be padded with zeroes and still have archives.
-        # Consume all zero bytes and set the file position to the first
+        # Gzip files can be padded with zeroes na still have archives.
+        # Consume all zero bytes na set the file position to the first
         # non-zero byte. See http://www.gzip.org/#faq8
         c = b"\x00"
-        while c == b"\x00":
+        wakati c == b"\x00":
             c = self._fp.read(1)
         ikiwa c:
             self._fp.prepend(c)
 
     eleza _rewind(self):
         super()._rewind()
-        self._new_member = True
+        self._new_member = Kweli
 
-eleza compress(data, compresslevel=_COMPRESS_LEVEL_BEST, *, mtime=None):
-    """Compress data in one shot and rudisha the compressed string.
-    Optional argument is the compression level, in range of 0-9.
+eleza compress(data, compresslevel=_COMPRESS_LEVEL_BEST, *, mtime=Tupu):
+    """Compress data kwenye one shot na rudisha the compressed string.
+    Optional argument ni the compression level, kwenye range of 0-9.
     """
     buf = io.BytesIO()
-    with GzipFile(fileobj=buf, mode='wb', compresslevel=compresslevel, mtime=mtime) as f:
+    with GzipFile(fileobj=buf, mode='wb', compresslevel=compresslevel, mtime=mtime) kama f:
         f.write(data)
     rudisha buf.getvalue()
 
 eleza decompress(data):
-    """Decompress a gzip compressed string in one shot.
+    """Decompress a gzip compressed string kwenye one shot.
     Return the decompressed string.
     """
-    with GzipFile(fileobj=io.BytesIO(data)) as f:
+    with GzipFile(fileobj=io.BytesIO(data)) kama f:
         rudisha f.read()
 
 
 eleza main():
     kutoka argparse agiza ArgumentParser
     parser = ArgumentParser(description=
-        "A simple command line interface for the gzip module: act like gzip, "
-        "but do not delete the input file.")
+        "A simple command line interface kila the gzip module: act like gzip, "
+        "but do sio delete the input file.")
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--fast', action='store_true', help='compress faster')
     group.add_argument('--best', action='store_true', help='compress better')
@@ -562,33 +562,33 @@ eleza main():
     elikiwa args.best:
         compresslevel = _COMPRESS_LEVEL_BEST
 
-    for arg in args.args:
+    kila arg kwenye args.args:
         ikiwa args.decompress:
             ikiwa arg == "-":
                 f = GzipFile(filename="", mode="rb", fileobj=sys.stdin.buffer)
                 g = sys.stdout.buffer
-            else:
+            isipokua:
                 ikiwa arg[-3:] != ".gz":
-                    andika("filename doesn't end in .gz:", repr(arg))
-                    continue
+                    andika("filename doesn't end kwenye .gz:", repr(arg))
+                    endelea
                 f = open(arg, "rb")
                 g = builtins.open(arg[:-3], "wb")
-        else:
+        isipokua:
             ikiwa arg == "-":
                 f = sys.stdin.buffer
                 g = GzipFile(filename="", mode="wb", fileobj=sys.stdout.buffer,
                              compresslevel=compresslevel)
-            else:
+            isipokua:
                 f = builtins.open(arg, "rb")
                 g = open(arg + ".gz", "wb")
-        while True:
+        wakati Kweli:
             chunk = f.read(1024)
-            ikiwa not chunk:
-                break
+            ikiwa sio chunk:
+                koma
             g.write(chunk)
-        ikiwa g is not sys.stdout.buffer:
+        ikiwa g ni sio sys.stdout.buffer:
             g.close()
-        ikiwa f is not sys.stdin.buffer:
+        ikiwa f ni sio sys.stdin.buffer:
             f.close()
 
 ikiwa __name__ == '__main__':

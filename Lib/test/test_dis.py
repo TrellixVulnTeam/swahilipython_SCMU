@@ -1,4 +1,4 @@
-# Minimal tests for dis module
+# Minimal tests kila dis module
 
 kutoka test.support agiza captured_stdout
 kutoka test.bytecode_helper agiza BytecodeTestCase
@@ -12,14 +12,14 @@ agiza contextlib
 
 eleza get_tb():
     eleza _error():
-        try:
+        jaribu:
             1 / 0
-        except Exception as e:
+        tatizo Exception kama e:
             tb = e.__traceback__
         rudisha tb
 
     tb = _error()
-    while tb.tb_next:
+    wakati tb.tb_next:
         tb = tb.tb_next
     rudisha tb
 
@@ -43,7 +43,7 @@ dis_c_instance_method = """\
               4 COMPARE_OP               2 (==)
               6 LOAD_FAST                0 (self)
               8 STORE_ATTR               0 (x)
-             10 LOAD_CONST               0 (None)
+             10 LOAD_CONST               0 (Tupu)
              12 RETURN_VALUE
 """ % (_C.__init__.__code__.co_firstlineno + 1,)
 
@@ -63,7 +63,7 @@ dis_c_class_method = """\
               4 COMPARE_OP               2 (==)
               6 LOAD_FAST                0 (cls)
               8 STORE_ATTR               0 (x)
-             10 LOAD_CONST               0 (None)
+             10 LOAD_CONST               0 (Tupu)
              12 RETURN_VALUE
 """ % (_C.cm.__code__.co_firstlineno + 2,)
 
@@ -72,7 +72,7 @@ dis_c_static_method = """\
               2 LOAD_CONST               1 (1)
               4 COMPARE_OP               2 (==)
               6 STORE_FAST               0 (x)
-              8 LOAD_CONST               0 (None)
+              8 LOAD_CONST               0 (Tupu)
              10 RETURN_VALUE
 """ % (_C.sm.__code__.co_firstlineno + 2,)
 
@@ -115,9 +115,9 @@ dis_f_co_code = """\
 
 
 eleza bug708901():
-    for res in range(1,
+    kila res kwenye range(1,
                      10):
-        pass
+        pita
 
 dis_bug708901 = """\
 %3d           0 LOAD_GLOBAL              0 (range)
@@ -131,7 +131,7 @@ dis_bug708901 = """\
              12 STORE_FAST               0 (res)
 
 %3d          14 JUMP_ABSOLUTE           10
-        >>   16 LOAD_CONST               0 (None)
+        >>   16 LOAD_CONST               0 (Tupu)
              18 RETURN_VALUE
 """ % (bug708901.__code__.co_firstlineno + 1,
        bug708901.__code__.co_firstlineno + 2,
@@ -140,9 +140,9 @@ dis_bug708901 = """\
 
 
 eleza bug1333982(x=[]):
-    assert 0, ([s for s in x] +
+    assert 0, ([s kila s kwenye x] +
               1)
-    pass
+    pita
 
 dis_bug1333982 = """\
 %3d           0 LOAD_CONST               1 (0)
@@ -161,7 +161,7 @@ dis_bug1333982 = """\
              22 CALL_FUNCTION            1
              24 RAISE_VARARGS            1
 
-%3d     >>   26 LOAD_CONST               0 (None)
+%3d     >>   26 LOAD_CONST               0 (Tupu)
              28 RETURN_VALUE
 """ % (bug1333982.__code__.co_firstlineno + 1,
        __file__,
@@ -173,24 +173,24 @@ dis_bug1333982 = """\
 _BIG_LINENO_FORMAT = """\
 %3d           0 LOAD_GLOBAL              0 (spam)
               2 POP_TOP
-              4 LOAD_CONST               0 (None)
+              4 LOAD_CONST               0 (Tupu)
               6 RETURN_VALUE
 """
 
 _BIG_LINENO_FORMAT2 = """\
 %4d           0 LOAD_GLOBAL              0 (spam)
                2 POP_TOP
-               4 LOAD_CONST               0 (None)
+               4 LOAD_CONST               0 (Tupu)
                6 RETURN_VALUE
 """
 
 dis_module_expected_results = """\
 Disassembly of f:
-  4           0 LOAD_CONST               0 (None)
+  4           0 LOAD_CONST               0 (Tupu)
               2 RETURN_VALUE
 
 Disassembly of g:
-  5           0 LOAD_CONST               0 (None)
+  5           0 LOAD_CONST               0 (Tupu)
               2 RETURN_VALUE
 
 """
@@ -211,7 +211,7 @@ dis_simple_stmt_str = """\
               2 LOAD_CONST               0 (1)
               4 BINARY_ADD
               6 STORE_NAME               0 (x)
-              8 LOAD_CONST               1 (None)
+              8 LOAD_CONST               1 (Tupu)
              10 RETURN_VALUE
 """
 
@@ -221,7 +221,7 @@ x: int = 1
 y: fun(1)
 lst[fun(0)]: int = 1
 """
-# leading newline is for a reason (tests lineno)
+# leading newline ni kila a reason (tests lineno)
 
 dis_annot_stmt_str = """\
   2           0 SETUP_ANNOTATIONS
@@ -247,13 +247,13 @@ dis_annot_stmt_str = """\
              36 STORE_SUBSCR
              38 LOAD_NAME                1 (int)
              40 POP_TOP
-             42 LOAD_CONST               4 (None)
+             42 LOAD_CONST               4 (Tupu)
              44 RETURN_VALUE
 """
 
 compound_stmt_str = """\
 x = 0
-while 1:
+wakati 1:
     x += 1"""
 # Trailing newline has been deliberately omitted
 
@@ -266,7 +266,7 @@ dis_compound_stmt_str = """\
               8 INPLACE_ADD
              10 STORE_NAME               0 (x)
              12 JUMP_ABSOLUTE            4
-             14 LOAD_CONST               2 (None)
+             14 LOAD_CONST               2 (Tupu)
              16 RETURN_VALUE
 """
 
@@ -294,7 +294,7 @@ dis_traceback = """\
              34 STORE_FAST               1 (tb)
              36 POP_BLOCK
              38 BEGIN_FINALLY
-        >>   40 LOAD_CONST               0 (None)
+        >>   40 LOAD_CONST               0 (Tupu)
              42 STORE_FAST               0 (e)
              44 DELETE_FAST              0 (e)
              46 END_FINALLY
@@ -332,19 +332,19 @@ dis_fstring = """\
 """ % (_fstring.__code__.co_firstlineno + 1,)
 
 eleza _g(x):
-    yield x
+    tuma x
 
 async eleza _ag(x):
-    yield x
+    tuma x
 
 async eleza _co(x):
-    async for item in _ag(x):
-        pass
+    async kila item kwenye _ag(x):
+        pita
 
 eleza _h(y):
     eleza foo(x):
         '''funcdoc'''
-        rudisha [x + z for z in y]
+        rudisha [x + z kila z kwenye y]
     rudisha foo
 
 dis_nested_0 = """\
@@ -403,20 +403,20 @@ Disassembly of <code object <listcomp> at 0x..., file "%s", line %d>:
 
 kundi DisTests(unittest.TestCase):
 
-    maxDiff = None
+    maxDiff = Tupu
 
-    eleza get_disassembly(self, func, lasti=-1, wrapper=True, **kwargs):
-        # We want to test the default printing behaviour, not the file arg
+    eleza get_disassembly(self, func, lasti=-1, wrapper=Kweli, **kwargs):
+        # We want to test the default printing behaviour, sio the file arg
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             ikiwa wrapper:
                 dis.dis(func, **kwargs)
-            else:
+            isipokua:
                 dis.disassemble(func, lasti, **kwargs)
         rudisha output.getvalue()
 
     eleza get_disassemble_as_string(self, func, lasti=-1):
-        rudisha self.get_disassembly(func, lasti, False)
+        rudisha self.get_disassembly(func, lasti, Uongo)
 
     eleza strip_addresses(self, text):
         rudisha re.sub(r'\b0x[0-9A-Fa-f]+\b', '0x...', text)
@@ -440,10 +440,10 @@ kundi DisTests(unittest.TestCase):
         self.assertEqual(dis.opmap["STORE_NAME"], dis.HAVE_ARGUMENT)
 
     eleza test_widths(self):
-        for opcode, opname in enumerate(dis.opname):
-            ikiwa opname in ('BUILD_MAP_UNPACK_WITH_CALL',
+        kila opcode, opname kwenye enumerate(dis.opname):
+            ikiwa opname kwenye ('BUILD_MAP_UNPACK_WITH_CALL',
                           'BUILD_TUPLE_UNPACK_WITH_CALL'):
-                continue
+                endelea
             with self.subTest(opname=opname):
                 width = dis._OPNAME_WIDTH
                 ikiwa opcode < dis.HAVE_ARGUMENT:
@@ -457,9 +457,9 @@ kundi DisTests(unittest.TestCase):
         self.do_disassembly_test(bug708901, dis_bug708901)
 
     eleza test_bug_1333982(self):
-        # This one is checking bytecodes generated for an `assert` statement,
+        # This one ni checking bytecodes generated kila an `assert` statement,
         # so fails ikiwa the tests are run with -O.  Skip this test then.
-        ikiwa not __debug__:
+        ikiwa sio __debug__:
             self.skipTest('need asserts, run without -O')
 
         self.do_disassembly_test(bug1333982, dis_bug1333982)
@@ -472,16 +472,16 @@ kundi DisTests(unittest.TestCase):
             rudisha namespace['foo']
 
         # Test all small ranges
-        for i in range(1, 300):
+        kila i kwenye range(1, 300):
             expected = _BIG_LINENO_FORMAT % (i + 2)
             self.do_disassembly_test(func(i), expected)
 
         # Test some larger ranges too
-        for i in range(300, 1000, 10):
+        kila i kwenye range(300, 1000, 10):
             expected = _BIG_LINENO_FORMAT % (i + 2)
             self.do_disassembly_test(func(i), expected)
 
-        for i in range(1000, 5000, 10):
+        kila i kwenye range(1000, 5000, 10):
             expected = _BIG_LINENO_FORMAT2 % (i + 2)
             self.do_disassembly_test(func(i), expected)
 
@@ -502,7 +502,7 @@ kundi DisTests(unittest.TestCase):
            %*d BINARY_ADD
            %*d STORE_FAST               0 (x)
 ''' % (w, 8*i, w, 8*i + 2, w, 8*i + 4, w, 8*i + 6)
-                 for i in range(count)]
+                 kila i kwenye range(count)]
             s += ['''\
 
   3        %*d LOAD_FAST                0 (x)
@@ -511,7 +511,7 @@ kundi DisTests(unittest.TestCase):
             s[0] = '  2' + s[0][3:]
             rudisha ''.join(s)
 
-        for i in range(1, 5):
+        kila i kwenye range(1, 5):
             self.do_disassembly_test(func(i), expected(i, 4))
         self.do_disassembly_test(func(1249), expected(1249, 4))
         self.do_disassembly_test(func(1250), expected(1250, 5))
@@ -562,26 +562,26 @@ kundi DisTests(unittest.TestCase):
         self.do_disassembly_test(_fstring, dis_fstring)
 
     eleza test_dis_none(self):
-        try:
-            del sys.last_traceback
-        except AttributeError:
-            pass
-        self.assertRaises(RuntimeError, dis.dis, None)
+        jaribu:
+            toa sys.last_traceback
+        tatizo AttributeError:
+            pita
+        self.assertRaises(RuntimeError, dis.dis, Tupu)
 
     eleza test_dis_traceback(self):
-        try:
-            del sys.last_traceback
-        except AttributeError:
-            pass
+        jaribu:
+            toa sys.last_traceback
+        tatizo AttributeError:
+            pita
 
-        try:
+        jaribu:
             1/0
-        except Exception as e:
+        tatizo Exception kama e:
             tb = e.__traceback__
             sys.last_traceback = tb
 
         tb_dis = self.get_disassemble_as_string(tb.tb_frame.f_code, tb.tb_lasti)
-        self.do_disassembly_test(None, tb_dis)
+        self.do_disassembly_test(Tupu, tb_dis)
 
     eleza test_dis_object(self):
         self.assertRaises(TypeError, dis.dis, object())
@@ -596,18 +596,18 @@ kundi DisTests(unittest.TestCase):
         check(dis_nested_1, depth=1)
         check(dis_nested_2, depth=2)
         check(dis_nested_2, depth=3)
-        check(dis_nested_2, depth=None)
+        check(dis_nested_2, depth=Tupu)
         check(dis_nested_2)
 
 
 kundi DisWithFileTests(DisTests):
 
     # Run the tests again, using the file arg instead of print
-    eleza get_disassembly(self, func, lasti=-1, wrapper=True, **kwargs):
+    eleza get_disassembly(self, func, lasti=-1, wrapper=Kweli, **kwargs):
         output = io.StringIO()
         ikiwa wrapper:
             dis.dis(func, file=output, **kwargs)
-        else:
+        isipokua:
             dis.disassemble(func, lasti, file=output, **kwargs)
         rudisha output.getvalue()
 
@@ -628,14 +628,14 @@ Names:
    0: _format_code_info
    1: _get_code_object
 Variable names:
-   0: x""" % (('Formatted details of methods, functions, or code.',)
-              ikiwa sys.flags.optimize < 2 else (None,))
+   0: x""" % (('Formatted details of methods, functions, ama code.',)
+              ikiwa sys.flags.optimize < 2 else (Tupu,))
 
 @staticmethod
-eleza tricky(a, b, /, x, y, z=True, *args, c, d, e=[], **kwds):
+eleza tricky(a, b, /, x, y, z=Kweli, *args, c, d, e=[], **kwds):
     eleza f(c=c):
         andika(a, b, x, y, z, c, d, e, f)
-    yield a, b, x, y, z, c, d, e, f
+    tuma a, b, x, y, z, c, d, e, f
 
 code_info_tricky = """\
 Name:              tricky
@@ -647,7 +647,7 @@ Number of locals:  10
 Stack size:        9
 Flags:             OPTIMIZED, NEWLOCALS, VARARGS, VARKEYWORDS, GENERATOR
 Constants:
-   0: None
+   0: Tupu
    1: <code object f at (.*), file "(.*)", line (.*)>
    2: 'tricky.<locals>.f'
 Variable names:
@@ -681,7 +681,7 @@ Number of locals:  1
 Stack size:        10
 Flags:             OPTIMIZED, NEWLOCALS, NESTED
 Constants:
-   0: None
+   0: Tupu
 Names:
    0: print
 Variable names:
@@ -719,7 +719,7 @@ Stack size:        2
 Flags:             NOFREE
 Constants:
    0: 1
-   1: None
+   1: Tupu
 Names:
    0: x"""
 
@@ -735,15 +735,15 @@ Flags:             NOFREE
 Constants:
    0: 0
    1: 1
-   2: None
+   2: Tupu
 Names:
    0: x"""
 
 
 async eleza async_def():
     await 1
-    async for a in b: pass
-    async with c as d: pass
+    async kila a kwenye b: pita
+    async with c kama d: pita
 
 code_info_async_eleza = """\
 Name:              async_def
@@ -755,7 +755,7 @@ Number of locals:  2
 Stack size:        10
 Flags:             OPTIMIZED, NEWLOCALS, NOFREE, COROUTINE
 Constants:
-   0: None
+   0: Tupu
    1: 1
 Names:
    0: b
@@ -777,13 +777,13 @@ kundi CodeInfoTests(unittest.TestCase):
 
     eleza test_code_info(self):
         self.maxDiff = 1000
-        for x, expected in self.test_pairs:
+        kila x, expected kwenye self.test_pairs:
             self.assertRegex(dis.code_info(x), expected)
 
     eleza test_show_code(self):
         self.maxDiff = 1000
-        for x, expected in self.test_pairs:
-            with captured_stdout() as output:
+        kila x, expected kwenye self.test_pairs:
+            with captured_stdout() kama output:
                 dis.show_code(x)
             self.assertRegex(output.getvalue(), expected+"\n")
             output = io.StringIO()
@@ -797,7 +797,7 @@ kundi CodeInfoTests(unittest.TestCase):
         self.assertEqual(dis.pretty_flags(0), '0x0')
 
 
-# Fodder for instruction introspection tests
+# Fodder kila instruction introspection tests
 #   Editing any of these may require recalculating the expected output
 eleza outer(a=1, b=2):
     eleza f(c=3, d=4):
@@ -810,34 +810,34 @@ eleza outer(a=1, b=2):
 
 eleza jumpy():
     # This won't actually run (but that's OK, we only disassemble it)
-    for i in range(10):
+    kila i kwenye range(10):
         andika(i)
         ikiwa i < 4:
-            continue
+            endelea
         ikiwa i > 6:
-            break
-    else:
+            koma
+    isipokua:
         andika("I can haz else clause?")
-    while i:
+    wakati i:
         andika(i)
         i -= 1
         ikiwa i > 6:
-            continue
+            endelea
         ikiwa i < 4:
-            break
-    else:
+            koma
+    isipokua:
         andika("Who let lolcatz into this test suite?")
-    try:
+    jaribu:
         1 / 0
-    except ZeroDivisionError:
+    tatizo ZeroDivisionError:
         andika("Here we go, here we go, here we go...")
-    else:
-        with i as dodgy:
+    isipokua:
+        with i kama dodgy:
             andika("Never reach this")
-    finally:
+    mwishowe:
         andika("OK, now we're done")
 
-# End fodder for opinfo generation tests
+# End fodder kila opinfo generation tests
 expected_outer_line = 1
 _line_offset = outer.__code__.co_firstlineno - 1
 code_object_f = outer.__code__.co_consts[3]
@@ -847,7 +847,7 @@ expected_inner_line = code_object_inner.co_firstlineno - _line_offset
 expected_jumpy_line = 1
 
 # The following lines are useful to regenerate the expected results after
-# either the fodder is modified or the bytecode generation changes
+# either the fodder ni modified ama the bytecode generation changes
 # After regeneration, update the references to code_object_f and
 # code_object_inner before rerunning the tests
 
@@ -867,166 +867,166 @@ expected_jumpy_line = 1
 
 Instruction = dis.Instruction
 expected_opinfo_outer = [
-  Instruction(opname='LOAD_CONST', opcode=100, arg=8, argval=(3, 4), argrepr='(3, 4)', offset=0, starts_line=2, is_jump_target=False),
-  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=0, argval='a', argrepr='a', offset=2, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=1, argval='b', argrepr='b', offset=4, starts_line=None, is_jump_target=False),
-  Instruction(opname='BUILD_TUPLE', opcode=102, arg=2, argval=2, argrepr='', offset=6, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=code_object_f, argrepr=repr(code_object_f), offset=8, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='outer.<locals>.f', argrepr="'outer.<locals>.f'", offset=10, starts_line=None, is_jump_target=False),
-  Instruction(opname='MAKE_FUNCTION', opcode=132, arg=9, argval=9, argrepr='defaults, closure', offset=12, starts_line=None, is_jump_target=False),
-  Instruction(opname='STORE_FAST', opcode=125, arg=2, argval='f', argrepr='f', offset=14, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='print', argrepr='print', offset=16, starts_line=7, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=0, argval='a', argrepr='a', offset=18, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=1, argval='b', argrepr='b', offset=20, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval='', argrepr="''", offset=22, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=6, argval=1, argrepr='1', offset=24, starts_line=None, is_jump_target=False),
-  Instruction(opname='BUILD_LIST', opcode=103, arg=0, argval=0, argrepr='', offset=26, starts_line=None, is_jump_target=False),
-  Instruction(opname='BUILD_MAP', opcode=105, arg=0, argval=0, argrepr='', offset=28, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=7, argval='Hello world!', argrepr="'Hello world!'", offset=30, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=7, argval=7, argrepr='', offset=32, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=34, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=2, argval='f', argrepr='f', offset=36, starts_line=8, is_jump_target=False),
-  Instruction(opname='RETURN_VALUE', opcode=83, arg=None, argval=None, argrepr='', offset=38, starts_line=None, is_jump_target=False),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=8, argval=(3, 4), argrepr='(3, 4)', offset=0, starts_line=2, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=0, argval='a', argrepr='a', offset=2, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=1, argval='b', argrepr='b', offset=4, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='BUILD_TUPLE', opcode=102, arg=2, argval=2, argrepr='', offset=6, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=code_object_f, argrepr=repr(code_object_f), offset=8, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='outer.<locals>.f', argrepr="'outer.<locals>.f'", offset=10, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='MAKE_FUNCTION', opcode=132, arg=9, argval=9, argrepr='defaults, closure', offset=12, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='STORE_FAST', opcode=125, arg=2, argval='f', argrepr='f', offset=14, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='print', argrepr='print', offset=16, starts_line=7, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=0, argval='a', argrepr='a', offset=18, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=1, argval='b', argrepr='b', offset=20, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval='', argrepr="''", offset=22, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=6, argval=1, argrepr='1', offset=24, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='BUILD_LIST', opcode=103, arg=0, argval=0, argrepr='', offset=26, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='BUILD_MAP', opcode=105, arg=0, argval=0, argrepr='', offset=28, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=7, argval='Hello world!', argrepr="'Hello world!'", offset=30, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=7, argval=7, argrepr='', offset=32, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=34, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=2, argval='f', argrepr='f', offset=36, starts_line=8, is_jump_target=Uongo),
+  Instruction(opname='RETURN_VALUE', opcode=83, arg=Tupu, argval=Tupu, argrepr='', offset=38, starts_line=Tupu, is_jump_target=Uongo),
 ]
 
 expected_opinfo_f = [
-  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval=(5, 6), argrepr='(5, 6)', offset=0, starts_line=3, is_jump_target=False),
-  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=2, argval='a', argrepr='a', offset=2, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=3, argval='b', argrepr='b', offset=4, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=0, argval='c', argrepr='c', offset=6, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=1, argval='d', argrepr='d', offset=8, starts_line=None, is_jump_target=False),
-  Instruction(opname='BUILD_TUPLE', opcode=102, arg=4, argval=4, argrepr='', offset=10, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=code_object_inner, argrepr=repr(code_object_inner), offset=12, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='outer.<locals>.f.<locals>.inner', argrepr="'outer.<locals>.f.<locals>.inner'", offset=14, starts_line=None, is_jump_target=False),
-  Instruction(opname='MAKE_FUNCTION', opcode=132, arg=9, argval=9, argrepr='defaults, closure', offset=16, starts_line=None, is_jump_target=False),
-  Instruction(opname='STORE_FAST', opcode=125, arg=2, argval='inner', argrepr='inner', offset=18, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='print', argrepr='print', offset=20, starts_line=5, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=2, argval='a', argrepr='a', offset=22, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=3, argval='b', argrepr='b', offset=24, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=0, argval='c', argrepr='c', offset=26, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=1, argval='d', argrepr='d', offset=28, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=4, argval=4, argrepr='', offset=30, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=32, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=2, argval='inner', argrepr='inner', offset=34, starts_line=6, is_jump_target=False),
-  Instruction(opname='RETURN_VALUE', opcode=83, arg=None, argval=None, argrepr='', offset=36, starts_line=None, is_jump_target=False),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval=(5, 6), argrepr='(5, 6)', offset=0, starts_line=3, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=2, argval='a', argrepr='a', offset=2, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=3, argval='b', argrepr='b', offset=4, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=0, argval='c', argrepr='c', offset=6, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CLOSURE', opcode=135, arg=1, argval='d', argrepr='d', offset=8, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='BUILD_TUPLE', opcode=102, arg=4, argval=4, argrepr='', offset=10, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=code_object_inner, argrepr=repr(code_object_inner), offset=12, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='outer.<locals>.f.<locals>.inner', argrepr="'outer.<locals>.f.<locals>.inner'", offset=14, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='MAKE_FUNCTION', opcode=132, arg=9, argval=9, argrepr='defaults, closure', offset=16, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='STORE_FAST', opcode=125, arg=2, argval='inner', argrepr='inner', offset=18, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='print', argrepr='print', offset=20, starts_line=5, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=2, argval='a', argrepr='a', offset=22, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=3, argval='b', argrepr='b', offset=24, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=0, argval='c', argrepr='c', offset=26, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=1, argval='d', argrepr='d', offset=28, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=4, argval=4, argrepr='', offset=30, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=32, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=2, argval='inner', argrepr='inner', offset=34, starts_line=6, is_jump_target=Uongo),
+  Instruction(opname='RETURN_VALUE', opcode=83, arg=Tupu, argval=Tupu, argrepr='', offset=36, starts_line=Tupu, is_jump_target=Uongo),
 ]
 
 expected_opinfo_inner = [
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='print', argrepr='print', offset=0, starts_line=4, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=0, argval='a', argrepr='a', offset=2, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=1, argval='b', argrepr='b', offset=4, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=2, argval='c', argrepr='c', offset=6, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_DEREF', opcode=136, arg=3, argval='d', argrepr='d', offset=8, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='e', argrepr='e', offset=10, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=1, argval='f', argrepr='f', offset=12, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=6, argval=6, argrepr='', offset=14, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=16, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=None, argrepr='None', offset=18, starts_line=None, is_jump_target=False),
-  Instruction(opname='RETURN_VALUE', opcode=83, arg=None, argval=None, argrepr='', offset=20, starts_line=None, is_jump_target=False),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='print', argrepr='print', offset=0, starts_line=4, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=0, argval='a', argrepr='a', offset=2, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=1, argval='b', argrepr='b', offset=4, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=2, argval='c', argrepr='c', offset=6, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_DEREF', opcode=136, arg=3, argval='d', argrepr='d', offset=8, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='e', argrepr='e', offset=10, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=1, argval='f', argrepr='f', offset=12, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=6, argval=6, argrepr='', offset=14, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=16, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=Tupu, argrepr='Tupu', offset=18, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='RETURN_VALUE', opcode=83, arg=Tupu, argval=Tupu, argrepr='', offset=20, starts_line=Tupu, is_jump_target=Uongo),
 ]
 
 expected_opinfo_jumpy = [
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='range', argrepr='range', offset=0, starts_line=3, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=1, argval=10, argrepr='10', offset=2, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=4, starts_line=None, is_jump_target=False),
-  Instruction(opname='GET_ITER', opcode=68, arg=None, argval=None, argrepr='', offset=6, starts_line=None, is_jump_target=False),
-  Instruction(opname='FOR_ITER', opcode=93, arg=34, argval=44, argrepr='to 44', offset=8, starts_line=None, is_jump_target=True),
-  Instruction(opname='STORE_FAST', opcode=125, arg=0, argval='i', argrepr='i', offset=10, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=12, starts_line=4, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=14, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=16, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=18, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=20, starts_line=5, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=2, argval=4, argrepr='4', offset=22, starts_line=None, is_jump_target=False),
-  Instruction(opname='COMPARE_OP', opcode=107, arg=0, argval='<', argrepr='<', offset=24, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=30, argval=30, argrepr='', offset=26, starts_line=None, is_jump_target=False),
-  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=8, argval=8, argrepr='', offset=28, starts_line=6, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=30, starts_line=7, is_jump_target=True),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=6, argrepr='6', offset=32, starts_line=None, is_jump_target=False),
-  Instruction(opname='COMPARE_OP', opcode=107, arg=4, argval='>', argrepr='>', offset=34, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=8, argval=8, argrepr='', offset=36, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=38, starts_line=8, is_jump_target=False),
-  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=52, argval=52, argrepr='', offset=40, starts_line=None, is_jump_target=False),
-  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=8, argval=8, argrepr='', offset=42, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=44, starts_line=10, is_jump_target=True),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='I can haz else clause?', argrepr="'I can haz else clause?'", offset=46, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=48, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=50, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=52, starts_line=11, is_jump_target=True),
-  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=94, argval=94, argrepr='', offset=54, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=56, starts_line=12, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=58, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=60, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=62, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=64, starts_line=13, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval=1, argrepr='1', offset=66, starts_line=None, is_jump_target=False),
-  Instruction(opname='INPLACE_SUBTRACT', opcode=56, arg=None, argval=None, argrepr='', offset=68, starts_line=None, is_jump_target=False),
-  Instruction(opname='STORE_FAST', opcode=125, arg=0, argval='i', argrepr='i', offset=70, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=72, starts_line=14, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=6, argrepr='6', offset=74, starts_line=None, is_jump_target=False),
-  Instruction(opname='COMPARE_OP', opcode=107, arg=4, argval='>', argrepr='>', offset=76, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=82, argval=82, argrepr='', offset=78, starts_line=None, is_jump_target=False),
-  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=52, argval=52, argrepr='', offset=80, starts_line=15, is_jump_target=False),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=82, starts_line=16, is_jump_target=True),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=2, argval=4, argrepr='4', offset=84, starts_line=None, is_jump_target=False),
-  Instruction(opname='COMPARE_OP', opcode=107, arg=0, argval='<', argrepr='<', offset=86, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=52, argval=52, argrepr='', offset=88, starts_line=None, is_jump_target=False),
-  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=102, argval=102, argrepr='', offset=90, starts_line=17, is_jump_target=False),
-  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=52, argval=52, argrepr='', offset=92, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=94, starts_line=19, is_jump_target=True),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=6, argval='Who let lolcatz into this test suite?', argrepr="'Who let lolcatz into this test suite?'", offset=96, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=98, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=100, starts_line=None, is_jump_target=False),
-  Instruction(opname='SETUP_FINALLY', opcode=122, arg=70, argval=174, argrepr='to 174', offset=102, starts_line=20, is_jump_target=True),
-  Instruction(opname='SETUP_FINALLY', opcode=122, arg=12, argval=118, argrepr='to 118', offset=104, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval=1, argrepr='1', offset=106, starts_line=21, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=8, argval=0, argrepr='0', offset=108, starts_line=None, is_jump_target=False),
-  Instruction(opname='BINARY_TRUE_DIVIDE', opcode=27, arg=None, argval=None, argrepr='', offset=110, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=112, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_BLOCK', opcode=87, arg=None, argval=None, argrepr='', offset=114, starts_line=None, is_jump_target=False),
-  Instruction(opname='JUMP_FORWARD', opcode=110, arg=28, argval=146, argrepr='to 146', offset=116, starts_line=None, is_jump_target=False),
-  Instruction(opname='DUP_TOP', opcode=4, arg=None, argval=None, argrepr='', offset=118, starts_line=22, is_jump_target=True),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=2, argval='ZeroDivisionError', argrepr='ZeroDivisionError', offset=120, starts_line=None, is_jump_target=False),
-  Instruction(opname='COMPARE_OP', opcode=107, arg=10, argval='exception match', argrepr='exception match', offset=122, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=144, argval=144, argrepr='', offset=124, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=126, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=128, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=130, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=132, starts_line=23, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=9, argval='Here we go, here we go, here we go...', argrepr="'Here we go, here we go, here we go...'", offset=134, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=136, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=138, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_EXCEPT', opcode=89, arg=None, argval=None, argrepr='', offset=140, starts_line=None, is_jump_target=False),
-  Instruction(opname='JUMP_FORWARD', opcode=110, arg=26, argval=170, argrepr='to 170', offset=142, starts_line=None, is_jump_target=False),
-  Instruction(opname='END_FINALLY', opcode=88, arg=None, argval=None, argrepr='', offset=144, starts_line=None, is_jump_target=True),
-  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=146, starts_line=25, is_jump_target=True),
-  Instruction(opname='SETUP_WITH', opcode=143, arg=14, argval=164, argrepr='to 164', offset=148, starts_line=None, is_jump_target=False),
-  Instruction(opname='STORE_FAST', opcode=125, arg=1, argval='dodgy', argrepr='dodgy', offset=150, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=152, starts_line=26, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=10, argval='Never reach this', argrepr="'Never reach this'", offset=154, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=156, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=158, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_BLOCK', opcode=87, arg=None, argval=None, argrepr='', offset=160, starts_line=None, is_jump_target=False),
-  Instruction(opname='BEGIN_FINALLY', opcode=53, arg=None, argval=None, argrepr='', offset=162, starts_line=None, is_jump_target=False),
-  Instruction(opname='WITH_CLEANUP_START', opcode=81, arg=None, argval=None, argrepr='', offset=164, starts_line=None, is_jump_target=True),
-  Instruction(opname='WITH_CLEANUP_FINISH', opcode=82, arg=None, argval=None, argrepr='', offset=166, starts_line=None, is_jump_target=False),
-  Instruction(opname='END_FINALLY', opcode=88, arg=None, argval=None, argrepr='', offset=168, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_BLOCK', opcode=87, arg=None, argval=None, argrepr='', offset=170, starts_line=None, is_jump_target=True),
-  Instruction(opname='BEGIN_FINALLY', opcode=53, arg=None, argval=None, argrepr='', offset=172, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=174, starts_line=28, is_jump_target=True),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=7, argval="OK, now we're done", argrepr='"OK, now we\'re done"', offset=176, starts_line=None, is_jump_target=False),
-  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=178, starts_line=None, is_jump_target=False),
-  Instruction(opname='POP_TOP', opcode=1, arg=None, argval=None, argrepr='', offset=180, starts_line=None, is_jump_target=False),
-  Instruction(opname='END_FINALLY', opcode=88, arg=None, argval=None, argrepr='', offset=182, starts_line=None, is_jump_target=False),
-  Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=None, argrepr='None', offset=184, starts_line=None, is_jump_target=False),
-  Instruction(opname='RETURN_VALUE', opcode=83, arg=None, argval=None, argrepr='', offset=186, starts_line=None, is_jump_target=False),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=0, argval='range', argrepr='range', offset=0, starts_line=3, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=1, argval=10, argrepr='10', offset=2, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=4, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='GET_ITER', opcode=68, arg=Tupu, argval=Tupu, argrepr='', offset=6, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='FOR_ITER', opcode=93, arg=34, argval=44, argrepr='to 44', offset=8, starts_line=Tupu, is_jump_target=Kweli),
+  Instruction(opname='STORE_FAST', opcode=125, arg=0, argval='i', argrepr='i', offset=10, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=12, starts_line=4, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=14, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=16, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=18, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=20, starts_line=5, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=2, argval=4, argrepr='4', offset=22, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='COMPARE_OP', opcode=107, arg=0, argval='<', argrepr='<', offset=24, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=30, argval=30, argrepr='', offset=26, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=8, argval=8, argrepr='', offset=28, starts_line=6, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=30, starts_line=7, is_jump_target=Kweli),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=6, argrepr='6', offset=32, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='COMPARE_OP', opcode=107, arg=4, argval='>', argrepr='>', offset=34, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=8, argval=8, argrepr='', offset=36, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=38, starts_line=8, is_jump_target=Uongo),
+  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=52, argval=52, argrepr='', offset=40, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=8, argval=8, argrepr='', offset=42, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=44, starts_line=10, is_jump_target=Kweli),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=4, argval='I can haz else clause?', argrepr="'I can haz else clause?'", offset=46, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=48, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=50, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=52, starts_line=11, is_jump_target=Kweli),
+  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=94, argval=94, argrepr='', offset=54, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=56, starts_line=12, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=58, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=60, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=62, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=64, starts_line=13, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval=1, argrepr='1', offset=66, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='INPLACE_SUBTRACT', opcode=56, arg=Tupu, argval=Tupu, argrepr='', offset=68, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='STORE_FAST', opcode=125, arg=0, argval='i', argrepr='i', offset=70, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=72, starts_line=14, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=3, argval=6, argrepr='6', offset=74, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='COMPARE_OP', opcode=107, arg=4, argval='>', argrepr='>', offset=76, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=82, argval=82, argrepr='', offset=78, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=52, argval=52, argrepr='', offset=80, starts_line=15, is_jump_target=Uongo),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=82, starts_line=16, is_jump_target=Kweli),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=2, argval=4, argrepr='4', offset=84, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='COMPARE_OP', opcode=107, arg=0, argval='<', argrepr='<', offset=86, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=52, argval=52, argrepr='', offset=88, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=102, argval=102, argrepr='', offset=90, starts_line=17, is_jump_target=Uongo),
+  Instruction(opname='JUMP_ABSOLUTE', opcode=113, arg=52, argval=52, argrepr='', offset=92, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=94, starts_line=19, is_jump_target=Kweli),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=6, argval='Who let lolcatz into this test suite?', argrepr="'Who let lolcatz into this test suite?'", offset=96, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=98, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=100, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='SETUP_FINALLY', opcode=122, arg=70, argval=174, argrepr='to 174', offset=102, starts_line=20, is_jump_target=Kweli),
+  Instruction(opname='SETUP_FINALLY', opcode=122, arg=12, argval=118, argrepr='to 118', offset=104, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=5, argval=1, argrepr='1', offset=106, starts_line=21, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=8, argval=0, argrepr='0', offset=108, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='BINARY_TRUE_DIVIDE', opcode=27, arg=Tupu, argval=Tupu, argrepr='', offset=110, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=112, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_BLOCK', opcode=87, arg=Tupu, argval=Tupu, argrepr='', offset=114, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='JUMP_FORWARD', opcode=110, arg=28, argval=146, argrepr='to 146', offset=116, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='DUP_TOP', opcode=4, arg=Tupu, argval=Tupu, argrepr='', offset=118, starts_line=22, is_jump_target=Kweli),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=2, argval='ZeroDivisionError', argrepr='ZeroDivisionError', offset=120, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='COMPARE_OP', opcode=107, arg=10, argval='exception match', argrepr='exception match', offset=122, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_JUMP_IF_FALSE', opcode=114, arg=144, argval=144, argrepr='', offset=124, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=126, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=128, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=130, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=132, starts_line=23, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=9, argval='Here we go, here we go, here we go...', argrepr="'Here we go, here we go, here we go...'", offset=134, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=136, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=138, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_EXCEPT', opcode=89, arg=Tupu, argval=Tupu, argrepr='', offset=140, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='JUMP_FORWARD', opcode=110, arg=26, argval=170, argrepr='to 170', offset=142, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='END_FINALLY', opcode=88, arg=Tupu, argval=Tupu, argrepr='', offset=144, starts_line=Tupu, is_jump_target=Kweli),
+  Instruction(opname='LOAD_FAST', opcode=124, arg=0, argval='i', argrepr='i', offset=146, starts_line=25, is_jump_target=Kweli),
+  Instruction(opname='SETUP_WITH', opcode=143, arg=14, argval=164, argrepr='to 164', offset=148, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='STORE_FAST', opcode=125, arg=1, argval='dodgy', argrepr='dodgy', offset=150, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=152, starts_line=26, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=10, argval='Never reach this', argrepr="'Never reach this'", offset=154, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=156, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=158, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_BLOCK', opcode=87, arg=Tupu, argval=Tupu, argrepr='', offset=160, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='BEGIN_FINALLY', opcode=53, arg=Tupu, argval=Tupu, argrepr='', offset=162, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='WITH_CLEANUP_START', opcode=81, arg=Tupu, argval=Tupu, argrepr='', offset=164, starts_line=Tupu, is_jump_target=Kweli),
+  Instruction(opname='WITH_CLEANUP_FINISH', opcode=82, arg=Tupu, argval=Tupu, argrepr='', offset=166, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='END_FINALLY', opcode=88, arg=Tupu, argval=Tupu, argrepr='', offset=168, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_BLOCK', opcode=87, arg=Tupu, argval=Tupu, argrepr='', offset=170, starts_line=Tupu, is_jump_target=Kweli),
+  Instruction(opname='BEGIN_FINALLY', opcode=53, arg=Tupu, argval=Tupu, argrepr='', offset=172, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_GLOBAL', opcode=116, arg=1, argval='print', argrepr='print', offset=174, starts_line=28, is_jump_target=Kweli),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=7, argval="OK, now we're done", argrepr='"OK, now we\'re done"', offset=176, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='CALL_FUNCTION', opcode=131, arg=1, argval=1, argrepr='', offset=178, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='POP_TOP', opcode=1, arg=Tupu, argval=Tupu, argrepr='', offset=180, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='END_FINALLY', opcode=88, arg=Tupu, argval=Tupu, argrepr='', offset=182, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=Tupu, argrepr='Tupu', offset=184, starts_line=Tupu, is_jump_target=Uongo),
+  Instruction(opname='RETURN_VALUE', opcode=83, arg=Tupu, argval=Tupu, argrepr='', offset=186, starts_line=Tupu, is_jump_target=Uongo),
 ]
 
 # One last piece of inspect fodder to check the default line number handling
-eleza simple(): pass
+eleza simple(): pita
 expected_opinfo_simple = [
-  Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=None, argrepr='None', offset=0, starts_line=simple.__code__.co_firstlineno, is_jump_target=False),
-  Instruction(opname='RETURN_VALUE', opcode=83, arg=None, argval=None, argrepr='', offset=2, starts_line=None, is_jump_target=False)
+  Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=Tupu, argrepr='Tupu', offset=0, starts_line=simple.__code__.co_firstlineno, is_jump_target=Uongo),
+  Instruction(opname='RETURN_VALUE', opcode=83, arg=Tupu, argval=Tupu, argrepr='', offset=2, starts_line=Tupu, is_jump_target=Uongo)
 ]
 
 
@@ -1036,8 +1036,8 @@ kundi InstructionTests(BytecodeTestCase):
         actual = dis.get_instructions(simple)
         self.assertEqual(list(actual), expected_opinfo_simple)
 
-    eleza test_first_line_set_to_None(self):
-        actual = dis.get_instructions(simple, first_line=None)
+    eleza test_first_line_set_to_Tupu(self):
+        actual = dis.get_instructions(simple, first_line=Tupu)
         self.assertEqual(list(actual), expected_opinfo_simple)
 
     eleza test_outer(self):
@@ -1064,8 +1064,8 @@ kundi InstructionTests(BytecodeTestCase):
 # the object oriented API
 kundi BytecodeTests(unittest.TestCase):
     eleza test_instantiation(self):
-        # Test with function, method, code string and code object
-        for obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
+        # Test with function, method, code string na code object
+        kila obj kwenye [_f, _C(1).__init__, "a=1", _f.__code__]:
             with self.subTest(obj=obj):
                 b = dis.Bytecode(obj)
                 self.assertIsInstance(b.codeobj, types.CodeType)
@@ -1073,7 +1073,7 @@ kundi BytecodeTests(unittest.TestCase):
         self.assertRaises(TypeError, dis.Bytecode, object())
 
     eleza test_iteration(self):
-        for obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
+        kila obj kwenye [_f, _C(1).__init__, "a=1", _f.__code__]:
             with self.subTest(obj=obj):
                 via_object = list(dis.Bytecode(obj))
                 via_generator = list(dis.get_instructions(obj))
@@ -1084,7 +1084,7 @@ kundi BytecodeTests(unittest.TestCase):
         self.assertEqual(list(actual), expected_opinfo_outer)
 
     eleza test_source_line_in_disassembly(self):
-        # Use the line in the source code
+        # Use the line kwenye the source code
         actual = dis.Bytecode(simple).dis()
         actual = actual.strip().partition(" ")[0]  # extract the line no
         expected = str(simple.__code__.co_firstlineno)
@@ -1096,7 +1096,7 @@ kundi BytecodeTests(unittest.TestCase):
 
     eleza test_info(self):
         self.maxDiff = 1000
-        for x, expected in CodeInfoTests.test_pairs:
+        kila x, expected kwenye CodeInfoTests.test_pairs:
             b = dis.Bytecode(x)
             self.assertRegex(b.info(), expected)
 
@@ -1107,7 +1107,7 @@ kundi BytecodeTests(unittest.TestCase):
     eleza test_kutoka_traceback(self):
         tb = get_tb()
         b = dis.Bytecode.kutoka_traceback(tb)
-        while tb.tb_next: tb = tb.tb_next
+        wakati tb.tb_next: tb = tb.tb_next
 
         self.assertEqual(b.current_offset, tb.tb_lasti)
 

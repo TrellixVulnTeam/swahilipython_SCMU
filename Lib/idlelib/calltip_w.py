@@ -1,4 +1,4 @@
-"""A call-tip window kundi for Tkinter/IDLE.
+"""A call-tip window kundi kila Tkinter/IDLE.
 
 After tooltip.py, which uses ideas gleaned kutoka PySol.
 Used by calltip.py.
@@ -17,30 +17,30 @@ MARK_RIGHT = "calltipwindowregion_right"
 
 
 kundi CalltipWindow(TooltipBase):
-    """A call-tip widget for tkinter text widgets."""
+    """A call-tip widget kila tkinter text widgets."""
 
     eleza __init__(self, text_widget):
         """Create a call-tip; shown by showtip().
 
-        text_widget: a Text widget with code for which call-tips are desired
+        text_widget: a Text widget with code kila which call-tips are desired
         """
-        # Note: The Text widget will be accessible as self.anchor_widget
+        # Note: The Text widget will be accessible kama self.anchor_widget
         super(CalltipWindow, self).__init__(text_widget)
 
-        self.label = self.text = None
-        self.parenline = self.parencol = self.lastline = None
-        self.hideid = self.checkhideid = None
-        self.checkhide_after_id = None
+        self.label = self.text = Tupu
+        self.parenline = self.parencol = self.lastline = Tupu
+        self.hideid = self.checkhideid = Tupu
+        self.checkhide_after_id = Tupu
 
     eleza get_position(self):
         """Choose the position of the call-tip."""
         curline = int(self.anchor_widget.index("insert").split('.')[0])
         ikiwa curline == self.parenline:
             anchor_index = (self.parenline, self.parencol)
-        else:
+        isipokua:
             anchor_index = (curline, 0)
         box = self.anchor_widget.bbox("%d.%d" % anchor_index)
-        ikiwa not box:
+        ikiwa sio box:
             box = list(self.anchor_widget.bbox("insert"))
             # align to left of window
             box[0] = 0
@@ -51,23 +51,23 @@ kundi CalltipWindow(TooltipBase):
         "Reposition the window ikiwa needed."
         curline = int(self.anchor_widget.index("insert").split('.')[0])
         ikiwa curline == self.lastline:
-            return
+            rudisha
         self.lastline = curline
         self.anchor_widget.see("insert")
         super(CalltipWindow, self).position_window()
 
     eleza showtip(self, text, parenleft, parenright):
-        """Show the call-tip, bind events which will close it and reposition it.
+        """Show the call-tip, bind events which will close it na reposition it.
 
-        text: the text to display in the call-tip
-        parenleft: index of the opening parenthesis in the text widget
-        parenright: index of the closing parenthesis in the text widget,
-                    or the end of the line ikiwa there is no closing parenthesis
+        text: the text to display kwenye the call-tip
+        parenleft: index of the opening parenthesis kwenye the text widget
+        parenright: index of the closing parenthesis kwenye the text widget,
+                    ama the end of the line ikiwa there ni no closing parenthesis
         """
-        # Only called in calltip.Calltip, where lines are truncated
+        # Only called kwenye calltip.Calltip, where lines are truncated
         self.text = text
-        ikiwa self.tipwindow or not self.text:
-            return
+        ikiwa self.tipwindow ama sio self.text:
+            rudisha
 
         self.anchor_widget.mark_set(MARK_RIGHT, parenright)
         self.parenline, self.parencol = map(
@@ -85,63 +85,63 @@ kundi CalltipWindow(TooltipBase):
                            font=self.anchor_widget['font'])
         self.label.pack()
 
-    eleza checkhide_event(self, event=None):
-        """Handle CHECK_HIDE_EVENT: call hidetip or reschedule."""
-        ikiwa not self.tipwindow:
+    eleza checkhide_event(self, event=Tupu):
+        """Handle CHECK_HIDE_EVENT: call hidetip ama reschedule."""
+        ikiwa sio self.tipwindow:
             # If the event was triggered by the same event that unbound
             # this function, the function will be called nevertheless,
-            # so do nothing in this case.
-            rudisha None
+            # so do nothing kwenye this case.
+            rudisha Tupu
 
         # Hide the call-tip ikiwa the insertion cursor moves outside of the
         # parenthesis.
         curline, curcol = map(int, self.anchor_widget.index("insert").split('.'))
-        ikiwa curline < self.parenline or \
-           (curline == self.parenline and curcol <= self.parencol) or \
+        ikiwa curline < self.parenline ama \
+           (curline == self.parenline na curcol <= self.parencol) ama \
            self.anchor_widget.compare("insert", ">", MARK_RIGHT):
             self.hidetip()
-            rudisha "break"
+            rudisha "koma"
 
         # Not hiding the call-tip.
 
         self.position_window()
-        # Re-schedule this function to be called again in a short while.
-        ikiwa self.checkhide_after_id is not None:
+        # Re-schedule this function to be called again kwenye a short while.
+        ikiwa self.checkhide_after_id ni sio Tupu:
             self.anchor_widget.after_cancel(self.checkhide_after_id)
         self.checkhide_after_id = \
             self.anchor_widget.after(CHECKHIDE_TIME, self.checkhide_event)
-        rudisha None
+        rudisha Tupu
 
     eleza hide_event(self, event):
         """Handle HIDE_EVENT by calling hidetip."""
-        ikiwa not self.tipwindow:
-            # See the explanation in checkhide_event.
-            rudisha None
+        ikiwa sio self.tipwindow:
+            # See the explanation kwenye checkhide_event.
+            rudisha Tupu
         self.hidetip()
-        rudisha "break"
+        rudisha "koma"
 
     eleza hidetip(self):
         """Hide the call-tip."""
-        ikiwa not self.tipwindow:
-            return
+        ikiwa sio self.tipwindow:
+            rudisha
 
-        try:
+        jaribu:
             self.label.destroy()
-        except TclError:
-            pass
-        self.label = None
+        tatizo TclError:
+            pita
+        self.label = Tupu
 
-        self.parenline = self.parencol = self.lastline = None
-        try:
+        self.parenline = self.parencol = self.lastline = Tupu
+        jaribu:
             self.anchor_widget.mark_unset(MARK_RIGHT)
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
 
-        try:
+        jaribu:
             self._unbind_events()
-        except (TclError, ValueError):
-            # ValueError may be raised by MultiCall
-            pass
+        tatizo (TclError, ValueError):
+            # ValueError may be ashiriad by MultiCall
+            pita
 
         super(CalltipWindow, self).hidetip()
 
@@ -149,24 +149,24 @@ kundi CalltipWindow(TooltipBase):
         """Bind event handlers."""
         self.checkhideid = self.anchor_widget.bind(CHECKHIDE_EVENT,
                                                    self.checkhide_event)
-        for seq in CHECKHIDE_SEQUENCES:
+        kila seq kwenye CHECKHIDE_SEQUENCES:
             self.anchor_widget.event_add(CHECKHIDE_EVENT, seq)
         self.anchor_widget.after(CHECKHIDE_TIME, self.checkhide_event)
         self.hideid = self.anchor_widget.bind(HIDE_EVENT,
                                               self.hide_event)
-        for seq in HIDE_SEQUENCES:
+        kila seq kwenye HIDE_SEQUENCES:
             self.anchor_widget.event_add(HIDE_EVENT, seq)
 
     eleza _unbind_events(self):
         """Unbind event handlers."""
-        for seq in CHECKHIDE_SEQUENCES:
+        kila seq kwenye CHECKHIDE_SEQUENCES:
             self.anchor_widget.event_delete(CHECKHIDE_EVENT, seq)
         self.anchor_widget.unbind(CHECKHIDE_EVENT, self.checkhideid)
-        self.checkhideid = None
-        for seq in HIDE_SEQUENCES:
+        self.checkhideid = Tupu
+        kila seq kwenye HIDE_SEQUENCES:
             self.anchor_widget.event_delete(HIDE_EVENT, seq)
         self.anchor_widget.unbind(HIDE_EVENT, self.hideid)
-        self.hideid = None
+        self.hideid = Tupu
 
 
 eleza _calltip_window(parent):  # htest #
@@ -195,7 +195,7 @@ eleza _calltip_window(parent):  # htest #
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_calltip_w', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_calltip_w', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_calltip_window)

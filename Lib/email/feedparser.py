@@ -33,7 +33,7 @@ NLCRE_bol = re.compile(r'(\r\n|\r|\n)')
 NLCRE_eol = re.compile(r'(\r\n|\r|\n)\Z')
 NLCRE_crack = re.compile(r'(\r\n|\r|\n)')
 # RFC 2822 $3.6.8 Optional fields.  ftext is %d33-57 / %d59-126, Any character
-# except controls, SP, and ":".
+# tatizo controls, SP, and ":".
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 EMPTYSTRING = ''
 NL = '\n'
@@ -52,7 +52,7 @@ class BufferedSubFile(object):
     """
     def __init__(self):
         # Text stream of the last partial line pushed into this object.
-        # See issue 22233 for why this is a text stream and not a list.
+        # See issue 22233 for why this is a text stream and sio a list.
         self._partial = StringIO(newline='')
         # A deque of full, pushed lines
         self._lines = deque()
@@ -76,7 +76,7 @@ class BufferedSubFile(object):
         self._closed = True
 
     def readline(self):
-        if not self._lines:
+        if sio self._lines:
             if self._closed:
                 return ''
             return NeedMoreData
@@ -95,13 +95,13 @@ class BufferedSubFile(object):
 
     def unreadline(self, line):
         # Let the consumer push a line back into the buffer.
-        assert line is not NeedMoreData
+        assert line ni sio NeedMoreData
         self._lines.appendleft(line)
 
     def push(self, data):
         """Push some new data into this object."""
         self._partial.write(data)
-        if '\n' not in data and '\r' not in data:
+        if '\n' haiko kwenye data and '\r' haiko kwenye data:
             # No new complete lines, wait for more.
             return
 
@@ -111,11 +111,11 @@ class BufferedSubFile(object):
         self._partial.seek(0)
         self._partial.truncate()
 
-        # If the last element of the list does not end in a newline, then treat
+        # If the last element of the list does sio end in a newline, then treat
         # it as a partial line.  We only check for '\n' here because a line
         # ending with '\r' might be a line that was split in the middle of a
         # '\r\n' sequence (see bugs 1555570 and 1721862).
-        if not parts[-1].endswith('\n'):
+        if sio parts[-1].endswith('\n'):
             self._partial.write(parts.pop())
         self.pushlines(parts)
 
@@ -150,13 +150,13 @@ class FeedParser:
             if policy.message_factory is None:
                 from email.message import Message
                 self._factory = Message
-            else:
+            isipokua:
                 self._factory = policy.message_factory
-        else:
+        isipokua:
             self._factory = _factory
-            try:
+            jaribu:
                 _factory(policy=self.policy)
-            except TypeError:
+            tatizo TypeError:
                 # Assume this is an old-style factory
                 self._old_style_factory = True
         self._input = BufferedSubFile()
@@ -176,9 +176,9 @@ class FeedParser:
         self._call_parse()
 
     def _call_parse(self):
-        try:
+        jaribu:
             self._parse()
-        except StopIteration:
+        tatizo StopIteration:
             pass
 
     def close(self):
@@ -186,10 +186,10 @@ class FeedParser:
         self._input.close()
         self._call_parse()
         root = self._pop_message()
-        assert not self._msgstack
+        assert sio self._msgstack
         # Look for final set of defects
         if root.get_content_maintype() == 'multipart' \
-               and not root.is_multipart():
+               and sio root.is_multipart():
             defect = errors.MultipartInvariantViolationDefect()
             self.policy.handle_defect(root, defect)
         return root
@@ -197,7 +197,7 @@ class FeedParser:
     def _new_message(self):
         if self._old_style_factory:
             msg = self._factory()
-        else:
+        isipokua:
             msg = self._factory(policy=self.policy)
         if self._cur and self._cur.get_content_type() == 'multipart/digest':
             msg.set_default_type('message/rfc822')
@@ -211,7 +211,7 @@ class FeedParser:
         retval = self._msgstack.pop()
         if self._msgstack:
             self._cur = self._msgstack[-1]
-        else:
+        isipokua:
             self._cur = None
         return retval
 
@@ -224,16 +224,16 @@ class FeedParser:
         for line in self._input:
             if line is NeedMoreData:
                 yield NeedMoreData
-                continue
-            if not headerRE.match(line):
+                endelea
+            if sio headerRE.match(line):
                 # If we saw the RFC defined header/body separator
                 # (i.e. newline), just throw it away. Otherwise the line is
                 # part of the body so push it back.
-                if not NLCRE.match(line):
+                if sio NLCRE.match(line):
                     defect = errors.MissingHeaderBodySeparatorDefect()
                     self.policy.handle_defect(self._cur, defect)
                     self._input.unreadline(line)
-                break
+                koma
             headers.append(line)
         # Done with the headers, so parse them and figure out what we're
         # supposed to see in the body of the message.
@@ -243,13 +243,13 @@ class FeedParser:
         # remaining lines in the input are thrown into the message body.
         if self._headersonly:
             lines = []
-            while True:
+            wakati True:
                 line = self._input.readline()
                 if line is NeedMoreData:
                     yield NeedMoreData
-                    continue
+                    endelea
                 if line == '':
-                    break
+                    koma
                 lines.append(line)
             self._cur.set_payload(EMPTYSTRING.join(lines))
             return
@@ -259,36 +259,36 @@ class FeedParser:
             # nested message object, but the processing is a bit different
             # than standard message/* types because there is no body for the
             # nested messages.  A blank line separates the subparts.
-            while True:
+            wakati True:
                 self._input.push_eof_matcher(NLCRE.match)
                 for retval in self._parsegen():
                     if retval is NeedMoreData:
                         yield NeedMoreData
-                        continue
-                    break
+                        endelea
+                    koma
                 msg = self._pop_message()
                 # We need to pop the EOF matcher in order to tell if we're at
-                # the end of the current file, not the end of the last block
+                # the end of the current file, sio the end of the last block
                 # of message headers.
                 self._input.pop_eof_matcher()
                 # The input stream must be sitting at the newline or at the
                 # EOF.  We want to see if we're at the end of this subpart, so
                 # first consume the blank line, then test the next line to see
                 # if we're at this subpart's EOF.
-                while True:
+                wakati True:
                     line = self._input.readline()
                     if line is NeedMoreData:
                         yield NeedMoreData
-                        continue
-                    break
-                while True:
+                        endelea
+                    koma
+                wakati True:
                     line = self._input.readline()
                     if line is NeedMoreData:
                         yield NeedMoreData
-                        continue
-                    break
+                        endelea
+                    koma
                 if line == '':
-                    break
+                    koma
                 # Not at EOF so this is a line we're going to need.
                 self._input.unreadline(line)
             return
@@ -298,8 +298,8 @@ class FeedParser:
             for retval in self._parsegen():
                 if retval is NeedMoreData:
                     yield NeedMoreData
-                    continue
-                break
+                    endelea
+                koma
             self._pop_message()
             return
         if self._cur.get_content_maintype() == 'multipart':
@@ -315,13 +315,13 @@ class FeedParser:
                 for line in self._input:
                     if line is NeedMoreData:
                         yield NeedMoreData
-                        continue
+                        endelea
                     lines.append(line)
                 self._cur.set_payload(EMPTYSTRING.join(lines))
                 return
             # Make sure a valid content type was specified per RFC 2045:6.4.
             if (str(self._cur.get('content-transfer-encoding', '8bit')).lower()
-                    not in ('7bit', '8bit', 'binary')):
+                    haiko kwenye ('7bit', '8bit', 'binary')):
                 defect = errors.InvalidMultipartContentTransferEncodingDefect()
                 self.policy.handle_defect(self._cur, defect)
             # Create a line match predicate which matches the inter-part
@@ -336,13 +336,13 @@ class FeedParser:
             preamble = []
             linesep = False
             close_boundary_seen = False
-            while True:
+            wakati True:
                 line = self._input.readline()
                 if line is NeedMoreData:
                     yield NeedMoreData
-                    continue
+                    endelea
                 if line == '':
-                    break
+                    koma
                 mo = boundaryre.match(line)
                 if mo:
                     # If we're looking at the end boundary, we're done with
@@ -352,7 +352,7 @@ class FeedParser:
                     if mo.group('end'):
                         close_boundary_seen = True
                         linesep = mo.group('linesep')
-                        break
+                        koma
                     # We saw an inter-part boundary.  Were we in the preamble?
                     if capturing_preamble:
                         if preamble:
@@ -365,42 +365,42 @@ class FeedParser:
                             self._cur.preamble = EMPTYSTRING.join(preamble)
                         capturing_preamble = False
                         self._input.unreadline(line)
-                        continue
+                        endelea
                     # We saw a boundary separating two parts.  Consume any
                     # multiple boundary lines that may be following.  Our
-                    # interpretation of RFC 2046 BNF grammar does not produce
+                    # interpretation of RFC 2046 BNF grammar does sio produce
                     # body parts within such double boundaries.
-                    while True:
+                    wakati True:
                         line = self._input.readline()
                         if line is NeedMoreData:
                             yield NeedMoreData
-                            continue
+                            endelea
                         mo = boundaryre.match(line)
-                        if not mo:
+                        if sio mo:
                             self._input.unreadline(line)
-                            break
+                            koma
                     # Recurse to parse this subpart; the input stream points
                     # at the subpart's first line.
                     self._input.push_eof_matcher(boundaryre.match)
                     for retval in self._parsegen():
                         if retval is NeedMoreData:
                             yield NeedMoreData
-                            continue
-                        break
+                            endelea
+                        koma
                     # Because of RFC 2046, the newline preceding the boundary
-                    # separator actually belongs to the boundary, not the
+                    # separator actually belongs to the boundary, sio the
                     # previous subpart's payload (or epilogue if the previous
                     # part is a multipart).
                     if self._last.get_content_maintype() == 'multipart':
                         epilogue = self._last.epilogue
                         if epilogue == '':
                             self._last.epilogue = None
-                        lasivyo epilogue is not None:
+                        lasivyo epilogue ni sio None:
                             mo = NLCRE_eol.search(epilogue)
                             if mo:
                                 end = len(mo.group(0))
                                 self._last.epilogue = epilogue[:-end]
-                    else:
+                    isipokua:
                         payload = self._last._payload
                         if isinstance(payload, str):
                             mo = NLCRE_eol.search(payload)
@@ -412,7 +412,7 @@ class FeedParser:
                     # Set the multipart up for newline cleansing, which will
                     # happen if we're in a nested multipart.
                     self._last = self._cur
-                else:
+                isipokua:
                     # I think we must be in the preamble
                     assert capturing_preamble
                     preamble.append(line)
@@ -427,12 +427,12 @@ class FeedParser:
                 for line in self._input:
                     if line is NeedMoreData:
                         yield NeedMoreData
-                        continue
+                        endelea
                 self._cur.epilogue = EMPTYSTRING.join(epilogue)
                 return
-            # If we're not processing the preamble, then we might have seen
+            # If we're sio processing the preamble, then we might have seen
             # EOF without seeing that end boundary...that is also a defect.
-            if not close_boundary_seen:
+            if sio close_boundary_seen:
                 defect = errors.CloseBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
                 return
@@ -441,14 +441,14 @@ class FeedParser:
             # None
             if linesep:
                 epilogue = ['']
-            else:
+            isipokua:
                 epilogue = []
             for line in self._input:
                 if line is NeedMoreData:
                     yield NeedMoreData
-                    continue
+                    endelea
                 epilogue.append(line)
-            # Any CRLF at the front of the epilogue is not technically part of
+            # Any CRLF at the front of the epilogue ni sio technically part of
             # the epilogue.  Also, watch out for an empty string epilogue,
             # which means a single newline.
             if epilogue:
@@ -464,7 +464,7 @@ class FeedParser:
         for line in self._input:
             if line is NeedMoreData:
                 yield NeedMoreData
-                continue
+                endelea
             lines.append(line)
         self._cur.set_payload(EMPTYSTRING.join(lines))
 
@@ -475,15 +475,15 @@ class FeedParser:
         for lineno, line in enumerate(lines):
             # Check for continuation
             if line[0] in ' \t':
-                if not lastheader:
+                if sio lastheader:
                     # The first line of the headers was a continuation.  This
                     # is illegal, so let's note the defect, store the illegal
                     # line, and ignore it for purposes of headers.
                     defect = errors.FirstHeaderLineIsContinuationDefect(line)
                     self.policy.handle_defect(self._cur, defect)
-                    continue
+                    endelea
                 lastvalue.append(line)
-                continue
+                endelea
             if lastheader:
                 self._cur.set_raw(*self.policy.header_source_parse(lastvalue))
                 lastheader, lastvalue = '', []
@@ -495,19 +495,19 @@ class FeedParser:
                     if mo:
                         line = line[:-len(mo.group(0))]
                     self._cur.set_unixfrom(line)
-                    continue
+                    endelea
                 lasivyo lineno == len(lines) - 1:
                     # Something looking like a unix-from at the end - it's
                     # probably the first line of the body, so push back the
                     # line and stop.
                     self._input.unreadline(line)
                     return
-                else:
+                isipokua:
                     # Weirdly placed unix-from line.  Note this as a defect
                     # and ignore it.
                     defect = errors.MisplacedEnvelopeHeaderDefect(line)
                     self._cur.defects.append(defect)
-                    continue
+                    endelea
             # Split the line on the colon separating field name from value.
             # There will always be a colon, because if there wasn't the part of
             # the parser that calls us would have started parsing the body.
@@ -519,7 +519,7 @@ class FeedParser:
             if i == 0:
                 defect = errors.InvalidHeaderDefect("Missing header name.")
                 self._cur.defects.append(defect)
-                continue
+                endelea
 
             assert i>0, "_parse_headers fed line with no : and no leading WS"
             lastheader = line[:i]

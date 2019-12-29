@@ -12,17 +12,17 @@ agiza tkinter
 kutoka tkinter agiza Tcl
 kutoka _tkinter agiza TclError
 
-try:
+jaribu:
     kutoka _testcapi agiza INT_MAX, PY_SSIZE_T_MAX
-except ImportError:
+tatizo ImportError:
     INT_MAX = PY_SSIZE_T_MAX = sys.maxsize
 
 tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
 
-_tk_patchlevel = None
+_tk_patchlevel = Tupu
 eleza get_tk_patchlevel():
     global _tk_patchlevel
-    ikiwa _tk_patchlevel is None:
+    ikiwa _tk_patchlevel ni Tupu:
         tcl = Tcl()
         patchlevel = tcl.call('info', 'patchlevel')
         m = re.fullmatch(r'(\d+)\.(\d+)([ab.])(\d+)', patchlevel)
@@ -31,7 +31,7 @@ eleza get_tk_patchlevel():
         releaselevel = {'a': 'alpha', 'b': 'beta', '.': 'final'}[releaselevel]
         ikiwa releaselevel == 'final':
             _tk_patchlevel = major, minor, serial, releaselevel, 0
-        else:
+        isipokua:
             _tk_patchlevel = major, minor, 0, releaselevel, serial
     rudisha _tk_patchlevel
 
@@ -40,7 +40,7 @@ kundi TkinterTest(unittest.TestCase):
 
     eleza testFlattenLen(self):
         # flatten(<object with no length>)
-        self.assertRaises(TypeError, _tkinter._flatten, True)
+        self.assertRaises(TypeError, _tkinter._flatten, Kweli)
 
 
 kundi TclTest(unittest.TestCase):
@@ -64,7 +64,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza testEvalException2(self):
         tcl = self.interp
-        self.assertRaises(TclError,tcl.eval,'this is wrong')
+        self.assertRaises(TclError,tcl.eval,'this ni wrong')
 
     eleza testCall(self):
         tcl = self.interp
@@ -130,7 +130,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza get_integers(self):
         integers = (0, 1, -1, 2**31-1, -2**31, 2**31, -2**31-1, 2**63-1, -2**63)
-        # bignum was added in Tcl 8.5, but its support is able only since 8.5.8
+        # bignum was added kwenye Tcl 8.5, but its support ni able only since 8.5.8
         ikiwa (get_tk_patchlevel() >= (8, 6, 0, 'final') or
             (8, 5, 8) <= get_tk_patchlevel() < (8, 6)):
             integers += (2**63, -2**63-1, 2**1000, -2**1000)
@@ -138,13 +138,13 @@ kundi TclTest(unittest.TestCase):
 
     eleza test_getint(self):
         tcl = self.interp.tk
-        for i in self.get_integers():
+        kila i kwenye self.get_integers():
             self.assertEqual(tcl.getint(' %d ' % i), i)
             ikiwa tcl_version >= (8, 5):
                 self.assertEqual(tcl.getint(' %#o ' % i), i)
             self.assertEqual(tcl.getint((' %#o ' % i).replace('o', '')), i)
             self.assertEqual(tcl.getint(' %#x ' % i), i)
-        ikiwa tcl_version < (8, 5):  # bignum was added in Tcl 8.5
+        ikiwa tcl_version < (8, 5):  # bignum was added kwenye Tcl 8.5
             self.assertRaises(TclError, tcl.getint, str(2**1000))
         self.assertEqual(tcl.getint(42), 42)
         self.assertRaises(TypeError, tcl.getint)
@@ -174,10 +174,10 @@ kundi TclTest(unittest.TestCase):
 
     eleza test_getboolean(self):
         tcl = self.interp.tk
-        self.assertIs(tcl.getboolean('on'), True)
-        self.assertIs(tcl.getboolean('1'), True)
-        self.assertIs(tcl.getboolean(42), True)
-        self.assertIs(tcl.getboolean(0), False)
+        self.assertIs(tcl.getboolean('on'), Kweli)
+        self.assertIs(tcl.getboolean('1'), Kweli)
+        self.assertIs(tcl.getboolean(42), Kweli)
+        self.assertIs(tcl.getboolean(0), Uongo)
         self.assertRaises(TypeError, tcl.getboolean)
         self.assertRaises(TypeError, tcl.getboolean, 'on', '1')
         self.assertRaises(TypeError, tcl.getboolean, b'on')
@@ -190,7 +190,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza testEvalFile(self):
         tcl = self.interp
-        with open(support.TESTFN, 'w') as f:
+        with open(support.TESTFN, 'w') kama f:
             self.addCleanup(support.unlink, support.TESTFN)
             f.write("""set a 1
             set b 2
@@ -203,7 +203,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza test_evalfile_null_in_result(self):
         tcl = self.interp
-        with open(support.TESTFN, 'w') as f:
+        with open(support.TESTFN, 'w') kama f:
             self.addCleanup(support.unlink, support.TESTFN)
             f.write("""
             set a "a\0b"
@@ -216,10 +216,10 @@ kundi TclTest(unittest.TestCase):
     eleza testEvalFileException(self):
         tcl = self.interp
         filename = "doesnotexists"
-        try:
+        jaribu:
             os.remove(filename)
-        except Exception as e:
-            pass
+        tatizo Exception kama e:
+            pita
         self.assertRaises(TclError,tcl.evalfile,filename)
 
     eleza testPackageRequireException(self):
@@ -234,14 +234,14 @@ kundi TclTest(unittest.TestCase):
 
         fullname = os.path.abspath(sys.executable)
         ikiwa fullname[1] != ':':
-            raise unittest.SkipTest('Absolute path should have drive part')
+            ashiria unittest.SkipTest('Absolute path should have drive part')
         unc_name = r'\\%s\%s$\%s' % (os.environ['COMPUTERNAME'],
                                     fullname[0],
                                     fullname[3:])
-        ikiwa not os.path.exists(unc_name):
-            raise unittest.SkipTest('Cannot connect to UNC Path')
+        ikiwa sio os.path.exists(unc_name):
+            ashiria unittest.SkipTest('Cannot connect to UNC Path')
 
-        with support.EnvironmentVarGuard() as env:
+        with support.EnvironmentVarGuard() kama env:
             env.unset("TCL_LIBRARY")
             stdout = subprocess.check_output(
                     [unc_name, '-c', 'agiza tkinter; andika(tkinter)'])
@@ -280,7 +280,7 @@ kundi TclTest(unittest.TestCase):
         check('"a\xbd\u20ac"', 'a\xbd\u20ac')
         check(r'"a\xbd\u20ac"', 'a\xbd\u20ac')
         check(r'"a\0b"', 'a\x00b')
-        ikiwa tcl_version >= (8, 5):  # bignum was added in Tcl 8.5
+        ikiwa tcl_version >= (8, 5):  # bignum was added kwenye Tcl 8.5
             check('2**64', str(2**64))
 
     eleza test_exprdouble(self):
@@ -312,7 +312,7 @@ kundi TclTest(unittest.TestCase):
         check('[string length "a\xbd\u20ac"]', 3.0)
         check(r'[string length "a\xbd\u20ac"]', 3.0)
         self.assertRaises(TclError, tcl.exprdouble, '"abc"')
-        ikiwa tcl_version >= (8, 5):  # bignum was added in Tcl 8.5
+        ikiwa tcl_version >= (8, 5):  # bignum was added kwenye Tcl 8.5
             check('2**64', float(2**64))
 
     eleza test_exprlong(self):
@@ -344,7 +344,7 @@ kundi TclTest(unittest.TestCase):
         check('[string length "a\xbd\u20ac"]', 3)
         check(r'[string length "a\xbd\u20ac"]', 3)
         self.assertRaises(TclError, tcl.exprlong, '"abc"')
-        ikiwa tcl_version >= (8, 5):  # bignum was added in Tcl 8.5
+        ikiwa tcl_version >= (8, 5):  # bignum was added kwenye Tcl 8.5
             self.assertRaises(TclError, tcl.exprlong, '2**64')
 
     eleza test_exprboolean(self):
@@ -361,32 +361,32 @@ kundi TclTest(unittest.TestCase):
         self.assertRaises(TypeError, tcl.exprboolean, '8.2', '+6')
         self.assertRaises(TypeError, tcl.exprboolean, b'8.2 + 6')
         self.assertRaises(TclError, tcl.exprboolean, 'spam')
-        check('', False)
-        for value in ('0', 'false', 'no', 'off'):
-            check(value, False)
-            check('"%s"' % value, False)
-            check('{%s}' % value, False)
-        for value in ('1', 'true', 'yes', 'on'):
-            check(value, True)
-            check('"%s"' % value, True)
-            check('{%s}' % value, True)
-        check('8.2 + 6', True)
-        check('3.1 + $a', True)
-        check('2 + "$a.$b"', True)
-        check('4*[llength "6 2"]', True)
-        check('{word one} < "word $a"', False)
-        check('4*2 < 7', False)
-        check('hypot($a, 4)', True)
-        check('5 / 4', True)
-        check('5 / 4.0', True)
-        check('5 / ( [string length "abcd"] + 0.0 )', True)
-        check('20.0/5.0', True)
-        check('"0x03" > "2"', True)
-        check('[string length "a\xbd\u20ac"]', True)
-        check(r'[string length "a\xbd\u20ac"]', True)
+        check('', Uongo)
+        kila value kwenye ('0', 'false', 'no', 'off'):
+            check(value, Uongo)
+            check('"%s"' % value, Uongo)
+            check('{%s}' % value, Uongo)
+        kila value kwenye ('1', 'true', 'yes', 'on'):
+            check(value, Kweli)
+            check('"%s"' % value, Kweli)
+            check('{%s}' % value, Kweli)
+        check('8.2 + 6', Kweli)
+        check('3.1 + $a', Kweli)
+        check('2 + "$a.$b"', Kweli)
+        check('4*[llength "6 2"]', Kweli)
+        check('{word one} < "word $a"', Uongo)
+        check('4*2 < 7', Uongo)
+        check('hypot($a, 4)', Kweli)
+        check('5 / 4', Kweli)
+        check('5 / 4.0', Kweli)
+        check('5 / ( [string length "abcd"] + 0.0 )', Kweli)
+        check('20.0/5.0', Kweli)
+        check('"0x03" > "2"', Kweli)
+        check('[string length "a\xbd\u20ac"]', Kweli)
+        check(r'[string length "a\xbd\u20ac"]', Kweli)
         self.assertRaises(TclError, tcl.exprboolean, '"abc"')
-        ikiwa tcl_version >= (8, 5):  # bignum was added in Tcl 8.5
-            check('2**64', True)
+        ikiwa tcl_version >= (8, 5):  # bignum was added kwenye Tcl 8.5
+            check('2**64', Kweli)
 
     @unittest.skipUnless(tcl_version >= (8, 5), 'requires Tcl version >= 8.5')
     eleza test_booleans(self):
@@ -396,89 +396,89 @@ kundi TclTest(unittest.TestCase):
             ikiwa tcl.wantobjects():
                 self.assertEqual(result, expected)
                 self.assertIsInstance(result, int)
-            else:
+            isipokua:
                 self.assertIn(result, (expr, str(int(expected))))
                 self.assertIsInstance(result, str)
-        check('true', True)
-        check('yes', True)
-        check('on', True)
-        check('false', False)
-        check('no', False)
-        check('off', False)
-        check('1 < 2', True)
-        check('1 > 2', False)
+        check('true', Kweli)
+        check('yes', Kweli)
+        check('on', Kweli)
+        check('false', Uongo)
+        check('no', Uongo)
+        check('off', Uongo)
+        check('1 < 2', Kweli)
+        check('1 > 2', Uongo)
 
     eleza test_expr_bignum(self):
         tcl = self.interp
-        for i in self.get_integers():
+        kila i kwenye self.get_integers():
             result = tcl.call('expr', str(i))
             ikiwa self.wantobjects:
                 self.assertEqual(result, i)
                 self.assertIsInstance(result, int)
-            else:
+            isipokua:
                 self.assertEqual(result, str(i))
                 self.assertIsInstance(result, str)
-        ikiwa tcl_version < (8, 5):  # bignum was added in Tcl 8.5
+        ikiwa tcl_version < (8, 5):  # bignum was added kwenye Tcl 8.5
             self.assertRaises(TclError, tcl.call, 'expr', str(2**1000))
 
-    eleza test_passing_values(self):
-        eleza passValue(value):
+    eleza test_pitaing_values(self):
+        eleza pitaValue(value):
             rudisha self.interp.call('set', '_', value)
 
-        self.assertEqual(passValue(True), True ikiwa self.wantobjects else '1')
-        self.assertEqual(passValue(False), False ikiwa self.wantobjects else '0')
-        self.assertEqual(passValue('string'), 'string')
-        self.assertEqual(passValue('string\u20ac'), 'string\u20ac')
-        self.assertEqual(passValue('string\U0001f4bb'), 'string\U0001f4bb')
-        self.assertEqual(passValue('str\x00ing'), 'str\x00ing')
-        self.assertEqual(passValue('str\x00ing\xbd'), 'str\x00ing\xbd')
-        self.assertEqual(passValue('str\x00ing\u20ac'), 'str\x00ing\u20ac')
-        self.assertEqual(passValue('str\x00ing\U0001f4bb'),
+        self.assertEqual(pitaValue(Kweli), Kweli ikiwa self.wantobjects else '1')
+        self.assertEqual(pitaValue(Uongo), Uongo ikiwa self.wantobjects else '0')
+        self.assertEqual(pitaValue('string'), 'string')
+        self.assertEqual(pitaValue('string\u20ac'), 'string\u20ac')
+        self.assertEqual(pitaValue('string\U0001f4bb'), 'string\U0001f4bb')
+        self.assertEqual(pitaValue('str\x00ing'), 'str\x00ing')
+        self.assertEqual(pitaValue('str\x00ing\xbd'), 'str\x00ing\xbd')
+        self.assertEqual(pitaValue('str\x00ing\u20ac'), 'str\x00ing\u20ac')
+        self.assertEqual(pitaValue('str\x00ing\U0001f4bb'),
                          'str\x00ing\U0001f4bb')
-        self.assertEqual(passValue(b'str\x00ing'),
+        self.assertEqual(pitaValue(b'str\x00ing'),
                          b'str\x00ing' ikiwa self.wantobjects else 'str\x00ing')
-        self.assertEqual(passValue(b'str\xc0\x80ing'),
+        self.assertEqual(pitaValue(b'str\xc0\x80ing'),
                          b'str\xc0\x80ing' ikiwa self.wantobjects else 'str\xc0\x80ing')
-        self.assertEqual(passValue(b'str\xbding'),
+        self.assertEqual(pitaValue(b'str\xbding'),
                          b'str\xbding' ikiwa self.wantobjects else 'str\xbding')
-        for i in self.get_integers():
-            self.assertEqual(passValue(i), i ikiwa self.wantobjects else str(i))
-        ikiwa tcl_version < (8, 5):  # bignum was added in Tcl 8.5
-            self.assertEqual(passValue(2**1000), str(2**1000))
-        for f in (0.0, 1.0, -1.0, 1/3,
+        kila i kwenye self.get_integers():
+            self.assertEqual(pitaValue(i), i ikiwa self.wantobjects else str(i))
+        ikiwa tcl_version < (8, 5):  # bignum was added kwenye Tcl 8.5
+            self.assertEqual(pitaValue(2**1000), str(2**1000))
+        kila f kwenye (0.0, 1.0, -1.0, 1/3,
                   sys.float_info.min, sys.float_info.max,
                   -sys.float_info.min, -sys.float_info.max):
             ikiwa self.wantobjects:
-                self.assertEqual(passValue(f), f)
-            else:
-                self.assertEqual(float(passValue(f)), f)
+                self.assertEqual(pitaValue(f), f)
+            isipokua:
+                self.assertEqual(float(pitaValue(f)), f)
         ikiwa self.wantobjects:
-            f = passValue(float('nan'))
+            f = pitaValue(float('nan'))
             self.assertNotEqual(f, f)
-            self.assertEqual(passValue(float('inf')), float('inf'))
-            self.assertEqual(passValue(-float('inf')), -float('inf'))
-        else:
-            self.assertEqual(float(passValue(float('inf'))), float('inf'))
-            self.assertEqual(float(passValue(-float('inf'))), -float('inf'))
-            # XXX NaN representation can be not parsable by float()
-        self.assertEqual(passValue((1, '2', (3.4,))),
+            self.assertEqual(pitaValue(float('inf')), float('inf'))
+            self.assertEqual(pitaValue(-float('inf')), -float('inf'))
+        isipokua:
+            self.assertEqual(float(pitaValue(float('inf'))), float('inf'))
+            self.assertEqual(float(pitaValue(-float('inf'))), -float('inf'))
+            # XXX NaN representation can be sio parsable by float()
+        self.assertEqual(pitaValue((1, '2', (3.4,))),
                          (1, '2', (3.4,)) ikiwa self.wantobjects else '1 2 3.4')
-        self.assertEqual(passValue(['a', ['b', 'c']]),
+        self.assertEqual(pitaValue(['a', ['b', 'c']]),
                          ('a', ('b', 'c')) ikiwa self.wantobjects else 'a {b c}')
 
     eleza test_user_command(self):
-        result = None
+        result = Tupu
         eleza testfunc(arg):
             nonlocal result
             result = arg
             rudisha arg
         self.interp.createcommand('testfunc', testfunc)
         self.addCleanup(self.interp.tk.deletecommand, 'testfunc')
-        eleza check(value, expected=None, *, eq=self.assertEqual):
-            ikiwa expected is None:
+        eleza check(value, expected=Tupu, *, eq=self.assertEqual):
+            ikiwa expected ni Tupu:
                 expected = value
             nonlocal result
-            result = None
+            result = Tupu
             r = self.interp.call('testfunc', value)
             self.assertIsInstance(result, str)
             eq(result, expected)
@@ -488,8 +488,8 @@ kundi TclTest(unittest.TestCase):
             self.assertAlmostEqual(float(actual), expected,
                                    delta=abs(expected) * 1e-10)
 
-        check(True, '1')
-        check(False, '0')
+        check(Kweli, '1')
+        check(Uongo, '0')
         check('string')
         check('string\xbd')
         check('string\u20ac')
@@ -505,18 +505,18 @@ kundi TclTest(unittest.TestCase):
         check(b'str\x00ing', 'str\x00ing')
         check(b'str\xc0\x80ing', 'str\xc0\x80ing')
         check(b'str\xc0\x80ing\xe2\x82\xac', 'str\xc0\x80ing\xe2\x82\xac')
-        for i in self.get_integers():
+        kila i kwenye self.get_integers():
             check(i, str(i))
-        ikiwa tcl_version < (8, 5):  # bignum was added in Tcl 8.5
+        ikiwa tcl_version < (8, 5):  # bignum was added kwenye Tcl 8.5
             check(2**1000, str(2**1000))
-        for f in (0.0, 1.0, -1.0):
+        kila f kwenye (0.0, 1.0, -1.0):
             check(f, repr(f))
-        for f in (1/3.0, sys.float_info.min, sys.float_info.max,
+        kila f kwenye (1/3.0, sys.float_info.min, sys.float_info.max,
                   -sys.float_info.min, -sys.float_info.max):
             check(f, eq=float_eq)
         check(float('inf'), eq=float_eq)
         check(-float('inf'), eq=float_eq)
-        # XXX NaN representation can be not parsable by float()
+        # XXX NaN representation can be sio parsable by float()
         check((), '')
         check((1, (2,), (3, 4), '5 6', ()), '1 2 {3 4} {5 6} {}')
         check([1, [2,], [3, 4], '5 6', []], '1 2 {3 4} {5 6} {}')
@@ -554,10 +554,10 @@ kundi TclTest(unittest.TestCase):
         ]
         tk_patchlevel = get_tk_patchlevel()
         ikiwa tcl_version >= (8, 5):
-            ikiwa not self.wantobjects or tk_patchlevel < (8, 5, 5):
+            ikiwa sio self.wantobjects ama tk_patchlevel < (8, 5, 5):
                 # Before 8.5.5 dicts were converted to lists through string
                 expected = ('12', '\u20ac', '\xe2\x82\xac', '3.4')
-            else:
+            isipokua:
                 expected = (12, '\u20ac', b'\xe2\x82\xac', (3.4,))
             testcases += [
                 (call('dict', 'create', 12, '\u20ac', b'\xe2\x82\xac', (3.4,)),
@@ -565,7 +565,7 @@ kundi TclTest(unittest.TestCase):
             ]
         dbg_info = ('want objects? %s, Tcl version: %s, Tk patchlevel: %s'
                     % (self.wantobjects, tcl_version, tk_patchlevel))
-        for arg, res in testcases:
+        kila arg, res kwenye testcases:
             self.assertEqual(splitlist(arg), res,
                              'arg=%a, %s' % (arg, dbg_info))
         self.assertRaises(TclError, splitlist, '{')
@@ -607,16 +607,16 @@ kundi TclTest(unittest.TestCase):
                 ('1', '2', '3.4')),
         ]
         ikiwa tcl_version >= (8, 5):
-            ikiwa not self.wantobjects or get_tk_patchlevel() < (8, 5, 5):
+            ikiwa sio self.wantobjects ama get_tk_patchlevel() < (8, 5, 5):
                 # Before 8.5.5 dicts were converted to lists through string
                 expected = ('12', '\u20ac', '\xe2\x82\xac', '3.4')
-            else:
+            isipokua:
                 expected = (12, '\u20ac', b'\xe2\x82\xac', (3.4,))
             testcases += [
                 (call('dict', 'create', 12, '\u20ac', b'\xe2\x82\xac', (3.4,)),
                     expected),
             ]
-        for arg, res in testcases:
+        kila arg, res kwenye testcases:
             self.assertEqual(split(arg), res, msg=arg)
 
     eleza test_splitdict(self):
@@ -624,13 +624,13 @@ kundi TclTest(unittest.TestCase):
         tcl = self.interp.tk
 
         arg = '-a {1 2 3} -something foo status {}'
-        self.assertEqual(splitdict(tcl, arg, False),
+        self.assertEqual(splitdict(tcl, arg, Uongo),
             {'-a': '1 2 3', '-something': 'foo', 'status': ''})
         self.assertEqual(splitdict(tcl, arg),
             {'a': '1 2 3', 'something': 'foo', 'status': ''})
 
         arg = ('-a', (1, 2, 3), '-something', 'foo', 'status', '{}')
-        self.assertEqual(splitdict(tcl, arg, False),
+        self.assertEqual(splitdict(tcl, arg, Uongo),
             {'-a': (1, 2, 3), '-something': 'foo', 'status': '{}'})
         self.assertEqual(splitdict(tcl, arg),
             {'a': (1, 2, 3), 'something': 'foo', 'status': '{}'})
@@ -647,10 +647,10 @@ kundi TclTest(unittest.TestCase):
         ikiwa tcl_version >= (8, 5):
             arg = tcl.call('dict', 'create',
                            '-a', (1, 2, 3), '-something', 'foo', 'status', ())
-            ikiwa not self.wantobjects or get_tk_patchlevel() < (8, 5, 5):
+            ikiwa sio self.wantobjects ama get_tk_patchlevel() < (8, 5, 5):
                 # Before 8.5.5 dicts were converted to lists through string
                 expected = {'a': '1 2 3', 'something': 'foo', 'status': ''}
-            else:
+            isipokua:
                 expected = {'a': (1, 2, 3), 'something': 'foo', 'status': ''}
             self.assertEqual(splitdict(tcl, arg), expected)
 
@@ -701,14 +701,14 @@ kundi BigmemTclTest(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=INT_MAX + 1, memuse=5, dry_run=False)
+    @support.bigmemtest(size=INT_MAX + 1, memuse=5, dry_run=Uongo)
     eleza test_huge_string_call(self, size):
         value = ' ' * size
         self.assertRaises(OverflowError, self.interp.call, 'string', 'index', value, 0)
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=INT_MAX + 1, memuse=2, dry_run=False)
+    @support.bigmemtest(size=INT_MAX + 1, memuse=2, dry_run=Uongo)
     eleza test_huge_string_builtins(self, size):
         tk = self.interp.tk
         value = '1' + ' ' * size
@@ -734,9 +734,9 @@ kundi BigmemTclTest(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=INT_MAX + 1, memuse=6, dry_run=False)
+    @support.bigmemtest(size=INT_MAX + 1, memuse=6, dry_run=Uongo)
     eleza test_huge_string_builtins2(self, size):
-        # These commands require larger memory for possible error messages
+        # These commands require larger memory kila possible error messages
         tk = self.interp.tk
         value = '1' + ' ' * size
         self.assertRaises(OverflowError, tk.evalfile, value)

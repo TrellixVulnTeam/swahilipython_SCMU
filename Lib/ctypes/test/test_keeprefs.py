@@ -108,9 +108,9 @@ class DeletePointerTestCase(unittest.TestCase):
             c_int(99)
             x.p[0]
         print(x.p[0])
-##        del x
+##        toa x
 ##        print "2?", grc(i)
-##        del i
+##        toa i
         import gc
         gc.collect()
         for i in range(320):
@@ -147,7 +147,7 @@ class PointerToStructure(unittest.TestCase):
         # to avoid leaking when tests are run several times
         # clean up the types left in the cache.
         from ctypes agiza _pointer_type_cache
-        del _pointer_type_cache[POINT]
+        toa _pointer_type_cache[POINT]
 
 if __name__ == "__main__":
     unittest.main()

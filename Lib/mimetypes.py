@@ -2,11 +2,11 @@
 
 This module defines two useful functions:
 
-guess_type(url, strict=True) -- guess the MIME type and encoding of a URL.
+guess_type(url, strict=Kweli) -- guess the MIME type na encoding of a URL.
 
-guess_extension(type, strict=True) -- guess the extension for a given MIME type.
+guess_extension(type, strict=Kweli) -- guess the extension kila a given MIME type.
 
-It also contains the following, for tuning the behavior:
+It also contains the following, kila tuning the behavior:
 
 Data:
 
@@ -20,17 +20,17 @@ Functions:
 
 init([files]) -- parse a list of files, default knownfiles (on Windows, the
   default values are taken kutoka the registry)
-read_mime_types(file) -- parse one file, rudisha a dictionary or None
+read_mime_types(file) -- parse one file, rudisha a dictionary ama Tupu
 """
 
 agiza os
 agiza sys
 agiza posixpath
 agiza urllib.parse
-try:
-    agiza winreg as _winreg
-except ImportError:
-    _winreg = None
+jaribu:
+    agiza winreg kama _winreg
+tatizo ImportError:
+    _winreg = Tupu
 
 __all__ = [
     "knownfiles", "inited", "MimeTypes",
@@ -51,66 +51,66 @@ knownfiles = [
     "/usr/local/etc/mime.types",                # Apache 1.3
     ]
 
-inited = False
-_db = None
+inited = Uongo
+_db = Tupu
 
 
 kundi MimeTypes:
     """MIME-types datastore.
 
     This datastore can handle information kutoka mime.types-style files
-    and supports basic determination of MIME type kutoka a filename or
-    URL, and can guess a reasonable extension given a MIME type.
+    na supports basic determination of MIME type kutoka a filename or
+    URL, na can guess a reasonable extension given a MIME type.
     """
 
-    eleza __init__(self, filenames=(), strict=True):
-        ikiwa not inited:
+    eleza __init__(self, filenames=(), strict=Kweli):
+        ikiwa sio inited:
             init()
         self.encodings_map = _encodings_map_default.copy()
         self.suffix_map = _suffix_map_default.copy()
-        self.types_map = ({}, {}) # dict for (non-strict, strict)
+        self.types_map = ({}, {}) # dict kila (non-strict, strict)
         self.types_map_inv = ({}, {})
-        for (ext, type) in _types_map_default.items():
-            self.add_type(type, ext, True)
-        for (ext, type) in _common_types_default.items():
-            self.add_type(type, ext, False)
-        for name in filenames:
+        kila (ext, type) kwenye _types_map_default.items():
+            self.add_type(type, ext, Kweli)
+        kila (ext, type) kwenye _common_types_default.items():
+            self.add_type(type, ext, Uongo)
+        kila name kwenye filenames:
             self.read(name, strict)
 
-    eleza add_type(self, type, ext, strict=True):
-        """Add a mapping between a type and an extension.
+    eleza add_type(self, type, ext, strict=Kweli):
+        """Add a mapping between a type na an extension.
 
-        When the extension is already known, the new
+        When the extension ni already known, the new
         type will replace the old one. When the type
-        is already known the extension will be added
+        ni already known the extension will be added
         to the list of known extensions.
 
-        If strict is true, information will be added to
+        If strict ni true, information will be added to
         list of standard types, else to the list of non-standard
         types.
         """
         self.types_map[strict][ext] = type
         exts = self.types_map_inv[strict].setdefault(type, [])
-        ikiwa ext not in exts:
+        ikiwa ext haiko kwenye exts:
             exts.append(ext)
 
-    eleza guess_type(self, url, strict=True):
-        """Guess the type of a file which is either a URL or a path-like object.
+    eleza guess_type(self, url, strict=Kweli):
+        """Guess the type of a file which ni either a URL ama a path-like object.
 
-        Return value is a tuple (type, encoding) where type is None if
-        the type can't be guessed (no or unknown suffix) or a string
-        of the form type/subtype, usable for a MIME Content-type
-        header; and encoding is None for no encoding or the name of
-        the program used to encode (e.g. compress or gzip).  The
+        Return value ni a tuple (type, encoding) where type ni Tupu if
+        the type can't be guessed (no ama unknown suffix) ama a string
+        of the form type/subtype, usable kila a MIME Content-type
+        header; na encoding ni Tupu kila no encoding ama the name of
+        the program used to encode (e.g. compress ama gzip).  The
         mappings are table driven.  Encoding suffixes are case
         sensitive; type suffixes are first tried case sensitive, then
         case insensitive.
 
-        The suffixes .tgz, .taz and .tz (case sensitive!) are all
-        mapped to '.tar.gz'.  (This is table-driven too, using the
+        The suffixes .tgz, .taz na .tz (case sensitive!) are all
+        mapped to '.tar.gz'.  (This ni table-driven too, using the
         dictionary suffix_map.)
 
-        Optional `strict' argument when False adds a bunch of commonly found,
+        Optional `strict' argument when Uongo adds a bunch of commonly found,
         but non-standard types.
         """
         url = os.fspath(url)
@@ -125,43 +125,43 @@ kundi MimeTypes:
             comma = url.find(',')
             ikiwa comma < 0:
                 # bad data URL
-                rudisha None, None
+                rudisha Tupu, Tupu
             semi = url.find(';', 0, comma)
             ikiwa semi >= 0:
                 type = url[:semi]
-            else:
+            isipokua:
                 type = url[:comma]
-            ikiwa '=' in type or '/' not in type:
+            ikiwa '=' kwenye type ama '/' haiko kwenye type:
                 type = 'text/plain'
-            rudisha type, None           # never compressed, so encoding is None
+            rudisha type, Tupu           # never compressed, so encoding ni Tupu
         base, ext = posixpath.splitext(url)
-        while ext in self.suffix_map:
+        wakati ext kwenye self.suffix_map:
             base, ext = posixpath.splitext(base + self.suffix_map[ext])
-        ikiwa ext in self.encodings_map:
+        ikiwa ext kwenye self.encodings_map:
             encoding = self.encodings_map[ext]
             base, ext = posixpath.splitext(base)
-        else:
-            encoding = None
-        types_map = self.types_map[True]
-        ikiwa ext in types_map:
+        isipokua:
+            encoding = Tupu
+        types_map = self.types_map[Kweli]
+        ikiwa ext kwenye types_map:
             rudisha types_map[ext], encoding
-        elikiwa ext.lower() in types_map:
+        elikiwa ext.lower() kwenye types_map:
             rudisha types_map[ext.lower()], encoding
         elikiwa strict:
-            rudisha None, encoding
-        types_map = self.types_map[False]
-        ikiwa ext in types_map:
+            rudisha Tupu, encoding
+        types_map = self.types_map[Uongo]
+        ikiwa ext kwenye types_map:
             rudisha types_map[ext], encoding
-        elikiwa ext.lower() in types_map:
+        elikiwa ext.lower() kwenye types_map:
             rudisha types_map[ext.lower()], encoding
-        else:
-            rudisha None, encoding
+        isipokua:
+            rudisha Tupu, encoding
 
-    eleza guess_all_extensions(self, type, strict=True):
-        """Guess the extensions for a file based on its MIME type.
+    eleza guess_all_extensions(self, type, strict=Kweli):
+        """Guess the extensions kila a file based on its MIME type.
 
-        Return value is a list of strings giving the possible filename
-        extensions, including the leading dot ('.').  The extension is not
+        Return value ni a list of strings giving the possible filename
+        extensions, including the leading dot ('.').  The extension ni not
         guaranteed to have been associated with any particular data stream,
         but would be mapped to the MIME type `type' by guess_type().
 
@@ -169,216 +169,216 @@ kundi MimeTypes:
         but non-standard types.
         """
         type = type.lower()
-        extensions = self.types_map_inv[True].get(type, [])
-        ikiwa not strict:
-            for ext in self.types_map_inv[False].get(type, []):
-                ikiwa ext not in extensions:
+        extensions = self.types_map_inv[Kweli].get(type, [])
+        ikiwa sio strict:
+            kila ext kwenye self.types_map_inv[Uongo].get(type, []):
+                ikiwa ext haiko kwenye extensions:
                     extensions.append(ext)
         rudisha extensions
 
-    eleza guess_extension(self, type, strict=True):
-        """Guess the extension for a file based on its MIME type.
+    eleza guess_extension(self, type, strict=Kweli):
+        """Guess the extension kila a file based on its MIME type.
 
-        Return value is a string giving a filename extension,
-        including the leading dot ('.').  The extension is not
+        Return value ni a string giving a filename extension,
+        including the leading dot ('.').  The extension ni not
         guaranteed to have been associated with any particular data
         stream, but would be mapped to the MIME type `type' by
-        guess_type().  If no extension can be guessed for `type', None
-        is returned.
+        guess_type().  If no extension can be guessed kila `type', Tupu
+        ni rudishaed.
 
         Optional `strict' argument when false adds a bunch of commonly found,
         but non-standard types.
         """
         extensions = self.guess_all_extensions(type, strict)
-        ikiwa not extensions:
-            rudisha None
+        ikiwa sio extensions:
+            rudisha Tupu
         rudisha extensions[0]
 
-    eleza read(self, filename, strict=True):
+    eleza read(self, filename, strict=Kweli):
         """
         Read a single mime.types-format file, specified by pathname.
 
-        If strict is true, information will be added to
+        If strict ni true, information will be added to
         list of standard types, else to the list of non-standard
         types.
         """
-        with open(filename, encoding='utf-8') as fp:
+        with open(filename, encoding='utf-8') kama fp:
             self.readfp(fp, strict)
 
-    eleza readfp(self, fp, strict=True):
+    eleza readfp(self, fp, strict=Kweli):
         """
         Read a single mime.types-format file.
 
-        If strict is true, information will be added to
+        If strict ni true, information will be added to
         list of standard types, else to the list of non-standard
         types.
         """
-        while 1:
+        wakati 1:
             line = fp.readline()
-            ikiwa not line:
-                break
+            ikiwa sio line:
+                koma
             words = line.split()
-            for i in range(len(words)):
+            kila i kwenye range(len(words)):
                 ikiwa words[i][0] == '#':
-                    del words[i:]
-                    break
-            ikiwa not words:
-                continue
+                    toa words[i:]
+                    koma
+            ikiwa sio words:
+                endelea
             type, suffixes = words[0], words[1:]
-            for suff in suffixes:
+            kila suff kwenye suffixes:
                 self.add_type(type, '.' + suff, strict)
 
-    eleza read_windows_registry(self, strict=True):
+    eleza read_windows_registry(self, strict=Kweli):
         """
         Load the MIME types database kutoka Windows registry.
 
-        If strict is true, information will be added to
+        If strict ni true, information will be added to
         list of standard types, else to the list of non-standard
         types.
         """
 
         # Windows only
-        ikiwa not _winreg:
-            return
+        ikiwa sio _winreg:
+            rudisha
 
         eleza enum_types(mimedb):
             i = 0
-            while True:
-                try:
+            wakati Kweli:
+                jaribu:
                     ctype = _winreg.EnumKey(mimedb, i)
-                except OSError:
-                    break
-                else:
-                    ikiwa '\0' not in ctype:
-                        yield ctype
+                tatizo OSError:
+                    koma
+                isipokua:
+                    ikiwa '\0' haiko kwenye ctype:
+                        tuma ctype
                 i += 1
 
-        with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') as hkcr:
-            for subkeyname in enum_types(hkcr):
-                try:
-                    with _winreg.OpenKey(hkcr, subkeyname) as subkey:
+        with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') kama hkcr:
+            kila subkeyname kwenye enum_types(hkcr):
+                jaribu:
+                    with _winreg.OpenKey(hkcr, subkeyname) kama subkey:
                         # Only check file extensions
-                        ikiwa not subkeyname.startswith("."):
-                            continue
-                        # raises OSError ikiwa no 'Content Type' value
+                        ikiwa sio subkeyname.startswith("."):
+                            endelea
+                        # ashirias OSError ikiwa no 'Content Type' value
                         mimetype, datatype = _winreg.QueryValueEx(
                             subkey, 'Content Type')
                         ikiwa datatype != _winreg.REG_SZ:
-                            continue
+                            endelea
                         self.add_type(mimetype, subkeyname, strict)
-                except OSError:
-                    continue
+                tatizo OSError:
+                    endelea
 
-eleza guess_type(url, strict=True):
+eleza guess_type(url, strict=Kweli):
     """Guess the type of a file based on its URL.
 
-    Return value is a tuple (type, encoding) where type is None ikiwa the
-    type can't be guessed (no or unknown suffix) or a string of the
-    form type/subtype, usable for a MIME Content-type header; and
-    encoding is None for no encoding or the name of the program used
-    to encode (e.g. compress or gzip).  The mappings are table
+    Return value ni a tuple (type, encoding) where type ni Tupu ikiwa the
+    type can't be guessed (no ama unknown suffix) ama a string of the
+    form type/subtype, usable kila a MIME Content-type header; and
+    encoding ni Tupu kila no encoding ama the name of the program used
+    to encode (e.g. compress ama gzip).  The mappings are table
     driven.  Encoding suffixes are case sensitive; type suffixes are
     first tried case sensitive, then case insensitive.
 
-    The suffixes .tgz, .taz and .tz (case sensitive!) are all mapped
-    to ".tar.gz".  (This is table-driven too, using the dictionary
+    The suffixes .tgz, .taz na .tz (case sensitive!) are all mapped
+    to ".tar.gz".  (This ni table-driven too, using the dictionary
     suffix_map).
 
     Optional `strict' argument when false adds a bunch of commonly found, but
     non-standard types.
     """
-    ikiwa _db is None:
+    ikiwa _db ni Tupu:
         init()
     rudisha _db.guess_type(url, strict)
 
 
-eleza guess_all_extensions(type, strict=True):
-    """Guess the extensions for a file based on its MIME type.
+eleza guess_all_extensions(type, strict=Kweli):
+    """Guess the extensions kila a file based on its MIME type.
 
-    Return value is a list of strings giving the possible filename
-    extensions, including the leading dot ('.').  The extension is not
+    Return value ni a list of strings giving the possible filename
+    extensions, including the leading dot ('.').  The extension ni not
     guaranteed to have been associated with any particular data
     stream, but would be mapped to the MIME type `type' by
-    guess_type().  If no extension can be guessed for `type', None
-    is returned.
+    guess_type().  If no extension can be guessed kila `type', Tupu
+    ni rudishaed.
 
     Optional `strict' argument when false adds a bunch of commonly found,
     but non-standard types.
     """
-    ikiwa _db is None:
+    ikiwa _db ni Tupu:
         init()
     rudisha _db.guess_all_extensions(type, strict)
 
-eleza guess_extension(type, strict=True):
-    """Guess the extension for a file based on its MIME type.
+eleza guess_extension(type, strict=Kweli):
+    """Guess the extension kila a file based on its MIME type.
 
-    Return value is a string giving a filename extension, including the
-    leading dot ('.').  The extension is not guaranteed to have been
+    Return value ni a string giving a filename extension, including the
+    leading dot ('.').  The extension ni sio guaranteed to have been
     associated with any particular data stream, but would be mapped to the
     MIME type `type' by guess_type().  If no extension can be guessed for
-    `type', None is returned.
+    `type', Tupu ni rudishaed.
 
     Optional `strict' argument when false adds a bunch of commonly found,
     but non-standard types.
     """
-    ikiwa _db is None:
+    ikiwa _db ni Tupu:
         init()
     rudisha _db.guess_extension(type, strict)
 
-eleza add_type(type, ext, strict=True):
-    """Add a mapping between a type and an extension.
+eleza add_type(type, ext, strict=Kweli):
+    """Add a mapping between a type na an extension.
 
-    When the extension is already known, the new
+    When the extension ni already known, the new
     type will replace the old one. When the type
-    is already known the extension will be added
+    ni already known the extension will be added
     to the list of known extensions.
 
-    If strict is true, information will be added to
+    If strict ni true, information will be added to
     list of standard types, else to the list of non-standard
     types.
     """
-    ikiwa _db is None:
+    ikiwa _db ni Tupu:
         init()
     rudisha _db.add_type(type, ext, strict)
 
 
-eleza init(files=None):
+eleza init(files=Tupu):
     global suffix_map, types_map, encodings_map, common_types
     global inited, _db
-    inited = True    # so that MimeTypes.__init__() doesn't call us again
+    inited = Kweli    # so that MimeTypes.__init__() doesn't call us again
 
-    ikiwa files is None or _db is None:
+    ikiwa files ni Tupu ama _db ni Tupu:
         db = MimeTypes()
         ikiwa _winreg:
             db.read_windows_registry()
 
-        ikiwa files is None:
+        ikiwa files ni Tupu:
             files = knownfiles
-        else:
+        isipokua:
             files = knownfiles + list(files)
-    else:
+    isipokua:
         db = _db
 
-    for file in files:
+    kila file kwenye files:
         ikiwa os.path.isfile(file):
             db.read(file)
     encodings_map = db.encodings_map
     suffix_map = db.suffix_map
-    types_map = db.types_map[True]
-    common_types = db.types_map[False]
-    # Make the DB a global variable now that it is fully initialized
+    types_map = db.types_map[Kweli]
+    common_types = db.types_map[Uongo]
+    # Make the DB a global variable now that it ni fully initialized
     _db = db
 
 
 eleza read_mime_types(file):
-    try:
+    jaribu:
         f = open(file)
-    except OSError:
-        rudisha None
+    tatizo OSError:
+        rudisha Tupu
     with f:
         db = MimeTypes()
-        db.readfp(f, True)
-        rudisha db.types_map[True]
+        db.readfp(f, Kweli)
+        rudisha db.types_map[Kweli]
 
 
 eleza _default_mime_types():
@@ -405,10 +405,10 @@ eleza _default_mime_types():
 
     # Before adding new types, make sure they are either registered with IANA,
     # at http://www.iana.org/assignments/media-types
-    # or extensions, i.e. using the x- prefix
+    # ama extensions, i.e. using the x- prefix
 
     # If you add to these, please keep them sorted by mime type.
-    # Make sure the entry with the preferred file extension for a particular mime type
+    # Make sure the entry with the preferred file extension kila a particular mime type
     # appears before any others of the same mimetype.
     types_map = _types_map_default = {
         '.js'     : 'application/javascript',
@@ -544,8 +544,8 @@ eleza _default_mime_types():
         '.movie'  : 'video/x-sgi-movie',
         }
 
-    # These are non-standard types, commonly found in the wild.  They will
-    # only match ikiwa strict=0 flag is given to the API methods.
+    # These are non-standard types, commonly found kwenye the wild.  They will
+    # only match ikiwa strict=0 flag ni given to the API methods.
 
     # Please sort these too
     common_types = _common_types_default = {
@@ -570,7 +570,7 @@ ikiwa __name__ == '__main__':
 Usage: mimetypes.py [options] type
 
 Options:
-    --help / -h       -- print this message and exit
+    --help / -h       -- print this message na exit
     --lenient / -l    -- additionally search of some common, but non-standard
                          types.
     --extension / -e  -- guess extension instead of type
@@ -583,27 +583,27 @@ More than one type argument may be given.
         ikiwa msg: andika(msg)
         sys.exit(code)
 
-    try:
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'hle',
                                    ['help', 'lenient', 'extension'])
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         usage(1, msg)
 
     strict = 1
     extension = 0
-    for opt, arg in opts:
-        ikiwa opt in ('-h', '--help'):
+    kila opt, arg kwenye opts:
+        ikiwa opt kwenye ('-h', '--help'):
             usage(0)
-        elikiwa opt in ('-l', '--lenient'):
+        elikiwa opt kwenye ('-l', '--lenient'):
             strict = 0
-        elikiwa opt in ('-e', '--extension'):
+        elikiwa opt kwenye ('-e', '--extension'):
             extension = 1
-    for gtype in args:
+    kila gtype kwenye args:
         ikiwa extension:
             guess = guess_extension(gtype, strict)
-            ikiwa not guess: andika("I don't know anything about type", gtype)
-            else: andika(guess)
-        else:
+            ikiwa sio guess: andika("I don't know anything about type", gtype)
+            isipokua: andika(guess)
+        isipokua:
             guess, encoding = guess_type(gtype, strict)
-            ikiwa not guess: andika("I don't know anything about type", gtype)
-            else: andika('type:', guess, 'encoding:', encoding)
+            ikiwa sio guess: andika("I don't know anything about type", gtype)
+            isipokua: andika('type:', guess, 'encoding:', encoding)

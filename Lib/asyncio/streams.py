@@ -22,30 +22,30 @@ kutoka .tasks agiza sleep
 _DEFAULT_LIMIT = 2 ** 16  # 64 KiB
 
 
-async eleza open_connection(host=None, port=None, *,
-                          loop=None, limit=_DEFAULT_LIMIT, **kwds):
-    """A wrapper for create_connection() returning a (reader, writer) pair.
+async eleza open_connection(host=Tupu, port=Tupu, *,
+                          loop=Tupu, limit=_DEFAULT_LIMIT, **kwds):
+    """A wrapper kila create_connection() rudishaing a (reader, writer) pair.
 
-    The reader returned is a StreamReader instance; the writer is a
+    The reader rudishaed ni a StreamReader instance; the writer ni a
     StreamWriter instance.
 
     The arguments are all the usual arguments to create_connection()
-    except protocol_factory; most common are positional host and port,
+    tatizo protocol_factory; most common are positional host na port,
     with various optional keyword arguments following.
 
     Additional optional keyword arguments are loop (to set the event loop
-    instance to use) and limit (to set the buffer limit passed to the
+    instance to use) na limit (to set the buffer limit pitaed to the
     StreamReader).
 
     (If you want to customize the StreamReader and/or
     StreamReaderProtocol classes, just copy the code -- there's
-    really nothing special here except some convenience.)
+    really nothing special here tatizo some convenience.)
     """
-    ikiwa loop is None:
+    ikiwa loop ni Tupu:
         loop = events.get_event_loop()
-    else:
-        warnings.warn("The loop argument is deprecated since Python 3.8, "
-                      "and scheduled for removal in Python 3.10.",
+    isipokua:
+        warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                      "and scheduled kila removal kwenye Python 3.10.",
                       DeprecationWarning, stacklevel=2)
     reader = StreamReader(limit=limit, loop=loop)
     protocol = StreamReaderProtocol(reader, loop=loop)
@@ -55,34 +55,34 @@ async eleza open_connection(host=None, port=None, *,
     rudisha reader, writer
 
 
-async eleza start_server(client_connected_cb, host=None, port=None, *,
-                       loop=None, limit=_DEFAULT_LIMIT, **kwds):
-    """Start a socket server, call back for each client connected.
+async eleza start_server(client_connected_cb, host=Tupu, port=Tupu, *,
+                       loop=Tupu, limit=_DEFAULT_LIMIT, **kwds):
+    """Start a socket server, call back kila each client connected.
 
     The first parameter, `client_connected_cb`, takes two parameters:
-    client_reader, client_writer.  client_reader is a StreamReader
-    object, while client_writer is a StreamWriter object.  This
-    parameter can either be a plain callback function or a coroutine;
-    ikiwa it is a coroutine, it will be automatically converted into a
+    client_reader, client_writer.  client_reader ni a StreamReader
+    object, wakati client_writer ni a StreamWriter object.  This
+    parameter can either be a plain callback function ama a coroutine;
+    ikiwa it ni a coroutine, it will be automatically converted into a
     Task.
 
     The rest of the arguments are all the usual arguments to
-    loop.create_server() except protocol_factory; most common are
-    positional host and port, with various optional keyword arguments
-    following.  The rudisha value is the same as loop.create_server().
+    loop.create_server() tatizo protocol_factory; most common are
+    positional host na port, with various optional keyword arguments
+    following.  The rudisha value ni the same kama loop.create_server().
 
     Additional optional keyword arguments are loop (to set the event loop
-    instance to use) and limit (to set the buffer limit passed to the
+    instance to use) na limit (to set the buffer limit pitaed to the
     StreamReader).
 
-    The rudisha value is the same as loop.create_server(), i.e. a
+    The rudisha value ni the same kama loop.create_server(), i.e. a
     Server object which can be used to stop the service.
     """
-    ikiwa loop is None:
+    ikiwa loop ni Tupu:
         loop = events.get_event_loop()
-    else:
-        warnings.warn("The loop argument is deprecated since Python 3.8, "
-                      "and scheduled for removal in Python 3.10.",
+    isipokua:
+        warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                      "and scheduled kila removal kwenye Python 3.10.",
                       DeprecationWarning, stacklevel=2)
 
     eleza factory():
@@ -97,14 +97,14 @@ async eleza start_server(client_connected_cb, host=None, port=None, *,
 ikiwa hasattr(socket, 'AF_UNIX'):
     # UNIX Domain Sockets are supported on this platform
 
-    async eleza open_unix_connection(path=None, *,
-                                   loop=None, limit=_DEFAULT_LIMIT, **kwds):
+    async eleza open_unix_connection(path=Tupu, *,
+                                   loop=Tupu, limit=_DEFAULT_LIMIT, **kwds):
         """Similar to `open_connection` but works with UNIX Domain Sockets."""
-        ikiwa loop is None:
+        ikiwa loop ni Tupu:
             loop = events.get_event_loop()
-        else:
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+        isipokua:
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
         reader = StreamReader(limit=limit, loop=loop)
         protocol = StreamReaderProtocol(reader, loop=loop)
@@ -113,14 +113,14 @@ ikiwa hasattr(socket, 'AF_UNIX'):
         writer = StreamWriter(transport, protocol, reader, loop)
         rudisha reader, writer
 
-    async eleza start_unix_server(client_connected_cb, path=None, *,
-                                loop=None, limit=_DEFAULT_LIMIT, **kwds):
+    async eleza start_unix_server(client_connected_cb, path=Tupu, *,
+                                loop=Tupu, limit=_DEFAULT_LIMIT, **kwds):
         """Similar to `start_server` but works with UNIX Domain Sockets."""
-        ikiwa loop is None:
+        ikiwa loop ni Tupu:
             loop = events.get_event_loop()
-        else:
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+        isipokua:
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
 
         eleza factory():
@@ -133,124 +133,124 @@ ikiwa hasattr(socket, 'AF_UNIX'):
 
 
 kundi FlowControlMixin(protocols.Protocol):
-    """Reusable flow control logic for StreamWriter.drain().
+    """Reusable flow control logic kila StreamWriter.drain().
 
     This implements the protocol methods pause_writing(),
-    resume_writing() and connection_lost().  If the subkundi overrides
+    resume_writing() na connection_lost().  If the subkundi overrides
     these it must call the super methods.
 
-    StreamWriter.drain() must wait for _drain_helper() coroutine.
+    StreamWriter.drain() must wait kila _drain_helper() coroutine.
     """
 
-    eleza __init__(self, loop=None):
-        ikiwa loop is None:
+    eleza __init__(self, loop=Tupu):
+        ikiwa loop ni Tupu:
             self._loop = events.get_event_loop()
-        else:
+        isipokua:
             self._loop = loop
-        self._paused = False
-        self._drain_waiter = None
-        self._connection_lost = False
+        self._paused = Uongo
+        self._drain_waiter = Tupu
+        self._connection_lost = Uongo
 
     eleza pause_writing(self):
-        assert not self._paused
-        self._paused = True
+        assert sio self._paused
+        self._paused = Kweli
         ikiwa self._loop.get_debug():
             logger.debug("%r pauses writing", self)
 
     eleza resume_writing(self):
         assert self._paused
-        self._paused = False
+        self._paused = Uongo
         ikiwa self._loop.get_debug():
             logger.debug("%r resumes writing", self)
 
         waiter = self._drain_waiter
-        ikiwa waiter is not None:
-            self._drain_waiter = None
-            ikiwa not waiter.done():
-                waiter.set_result(None)
+        ikiwa waiter ni sio Tupu:
+            self._drain_waiter = Tupu
+            ikiwa sio waiter.done():
+                waiter.set_result(Tupu)
 
     eleza connection_lost(self, exc):
-        self._connection_lost = True
+        self._connection_lost = Kweli
         # Wake up the writer ikiwa currently paused.
-        ikiwa not self._paused:
-            return
+        ikiwa sio self._paused:
+            rudisha
         waiter = self._drain_waiter
-        ikiwa waiter is None:
-            return
-        self._drain_waiter = None
+        ikiwa waiter ni Tupu:
+            rudisha
+        self._drain_waiter = Tupu
         ikiwa waiter.done():
-            return
-        ikiwa exc is None:
-            waiter.set_result(None)
-        else:
+            rudisha
+        ikiwa exc ni Tupu:
+            waiter.set_result(Tupu)
+        isipokua:
             waiter.set_exception(exc)
 
     async eleza _drain_helper(self):
         ikiwa self._connection_lost:
-            raise ConnectionResetError('Connection lost')
-        ikiwa not self._paused:
-            return
+            ashiria ConnectionResetError('Connection lost')
+        ikiwa sio self._paused:
+            rudisha
         waiter = self._drain_waiter
-        assert waiter is None or waiter.cancelled()
+        assert waiter ni Tupu ama waiter.cancelled()
         waiter = self._loop.create_future()
         self._drain_waiter = waiter
         await waiter
 
     eleza _get_close_waiter(self, stream):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
-    """Helper kundi to adapt between Protocol and StreamReader.
+    """Helper kundi to adapt between Protocol na StreamReader.
 
-    (This is a helper kundi instead of making StreamReader itself a
+    (This ni a helper kundi instead of making StreamReader itself a
     Protocol subclass, because the StreamReader has other potential
-    uses, and to prevent the user of the StreamReader to accidentally
+    uses, na to prevent the user of the StreamReader to accidentally
     call inappropriate methods of the protocol.)
     """
 
-    _source_traceback = None
+    _source_traceback = Tupu
 
-    eleza __init__(self, stream_reader, client_connected_cb=None, loop=None):
+    eleza __init__(self, stream_reader, client_connected_cb=Tupu, loop=Tupu):
         super().__init__(loop=loop)
-        ikiwa stream_reader is not None:
+        ikiwa stream_reader ni sio Tupu:
             self._stream_reader_wr = weakref.ref(stream_reader,
                                                  self._on_reader_gc)
             self._source_traceback = stream_reader._source_traceback
-        else:
-            self._stream_reader_wr = None
-        ikiwa client_connected_cb is not None:
-            # This is a stream created by the `create_server()` function.
+        isipokua:
+            self._stream_reader_wr = Tupu
+        ikiwa client_connected_cb ni sio Tupu:
+            # This ni a stream created by the `create_server()` function.
             # Keep a strong reference to the reader until a connection
-            # is established.
+            # ni established.
             self._strong_reader = stream_reader
-        self._reject_connection = False
-        self._stream_writer = None
-        self._transport = None
+        self._reject_connection = Uongo
+        self._stream_writer = Tupu
+        self._transport = Tupu
         self._client_connected_cb = client_connected_cb
-        self._over_ssl = False
+        self._over_ssl = Uongo
         self._closed = self._loop.create_future()
 
     eleza _on_reader_gc(self, wr):
         transport = self._transport
-        ikiwa transport is not None:
+        ikiwa transport ni sio Tupu:
             # connection_made was called
             context = {
-                'message': ('An open stream object is being garbage '
+                'message': ('An open stream object ni being garbage '
                             'collected; call "stream.close()" explicitly.')
             }
             ikiwa self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
             transport.abort()
-        else:
-            self._reject_connection = True
-        self._stream_reader_wr = None
+        isipokua:
+            self._reject_connection = Kweli
+        self._stream_reader_wr = Tupu
 
     @property
     eleza _stream_reader(self):
-        ikiwa self._stream_reader_wr is None:
-            rudisha None
+        ikiwa self._stream_reader_wr ni Tupu:
+            rudisha Tupu
         rudisha self._stream_reader_wr()
 
     eleza connection_made(self, transport):
@@ -264,13 +264,13 @@ kundi StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
             transport.abort()
-            return
+            rudisha
         self._transport = transport
         reader = self._stream_reader
-        ikiwa reader is not None:
+        ikiwa reader ni sio Tupu:
             reader.set_transport(transport)
-        self._over_ssl = transport.get_extra_info('sslcontext') is not None
-        ikiwa self._client_connected_cb is not None:
+        self._over_ssl = transport.get_extra_info('sslcontext') ni sio Tupu
+        ikiwa self._client_connected_cb ni sio Tupu:
             self._stream_writer = StreamWriter(transport, self,
                                                reader,
                                                self._loop)
@@ -278,49 +278,49 @@ kundi StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
                                             self._stream_writer)
             ikiwa coroutines.iscoroutine(res):
                 self._loop.create_task(res)
-            self._strong_reader = None
+            self._strong_reader = Tupu
 
     eleza connection_lost(self, exc):
         reader = self._stream_reader
-        ikiwa reader is not None:
-            ikiwa exc is None:
+        ikiwa reader ni sio Tupu:
+            ikiwa exc ni Tupu:
                 reader.feed_eof()
-            else:
+            isipokua:
                 reader.set_exception(exc)
-        ikiwa not self._closed.done():
-            ikiwa exc is None:
-                self._closed.set_result(None)
-            else:
+        ikiwa sio self._closed.done():
+            ikiwa exc ni Tupu:
+                self._closed.set_result(Tupu)
+            isipokua:
                 self._closed.set_exception(exc)
         super().connection_lost(exc)
-        self._stream_reader_wr = None
-        self._stream_writer = None
-        self._transport = None
+        self._stream_reader_wr = Tupu
+        self._stream_writer = Tupu
+        self._transport = Tupu
 
     eleza data_received(self, data):
         reader = self._stream_reader
-        ikiwa reader is not None:
+        ikiwa reader ni sio Tupu:
             reader.feed_data(data)
 
     eleza eof_received(self):
         reader = self._stream_reader
-        ikiwa reader is not None:
+        ikiwa reader ni sio Tupu:
             reader.feed_eof()
         ikiwa self._over_ssl:
-            # Prevent a warning in SSLProtocol.eof_received:
-            # "returning true kutoka eof_received()
+            # Prevent a warning kwenye SSLProtocol.eof_received:
+            # "rudishaing true kutoka eof_received()
             # has no effect when using ssl"
-            rudisha False
-        rudisha True
+            rudisha Uongo
+        rudisha Kweli
 
     eleza _get_close_waiter(self, stream):
         rudisha self._closed
 
     eleza __del__(self):
         # Prevent reports about unhandled exceptions.
-        # Better than self._closed._log_traceback = False hack
+        # Better than self._closed._log_traceback = Uongo hack
         closed = self._closed
-        ikiwa closed.done() and not closed.cancelled():
+        ikiwa closed.done() na sio closed.cancelled():
             closed.exception()
 
 
@@ -328,8 +328,8 @@ kundi StreamWriter:
     """Wraps a Transport.
 
     This exposes write(), writelines(), [can_]write_eof(),
-    get_extra_info() and close().  It adds drain() which returns an
-    optional Future on which you can wait for flow control.  It also
+    get_extra_info() na close().  It adds drain() which rudishas an
+    optional Future on which you can wait kila flow control.  It also
     adds a transport property which references the Transport
     directly.
     """
@@ -338,15 +338,15 @@ kundi StreamWriter:
         self._transport = transport
         self._protocol = protocol
         # drain() expects that the reader has an exception() method
-        assert reader is None or isinstance(reader, StreamReader)
+        assert reader ni Tupu ama isinstance(reader, StreamReader)
         self._reader = reader
         self._loop = loop
         self._complete_fut = self._loop.create_future()
-        self._complete_fut.set_result(None)
+        self._complete_fut.set_result(Tupu)
 
     eleza __repr__(self):
         info = [self.__class__.__name__, f'transport={self._transport!r}']
-        ikiwa self._reader is not None:
+        ikiwa self._reader ni sio Tupu:
             info.append(f'reader={self._reader!r}')
         rudisha '<{}>'.format(' '.join(info))
 
@@ -375,57 +375,57 @@ kundi StreamWriter:
     async eleza wait_closed(self):
         await self._protocol._get_close_waiter(self)
 
-    eleza get_extra_info(self, name, default=None):
+    eleza get_extra_info(self, name, default=Tupu):
         rudisha self._transport.get_extra_info(name, default)
 
     async eleza drain(self):
         """Flush the write buffer.
 
-        The intended use is to write
+        The intended use ni to write
 
           w.write(data)
           await w.drain()
         """
-        ikiwa self._reader is not None:
+        ikiwa self._reader ni sio Tupu:
             exc = self._reader.exception()
-            ikiwa exc is not None:
-                raise exc
+            ikiwa exc ni sio Tupu:
+                ashiria exc
         ikiwa self._transport.is_closing():
-            # Wait for protocol.connection_lost() call
+            # Wait kila protocol.connection_lost() call
             # Raise connection closing error ikiwa any,
             # ConnectionResetError otherwise
             # Yield to the event loop so connection_lost() may be
-            # called.  Without this, _drain_helper() would return
-            # immediately, and code that calls
+            # called.  Without this, _drain_helper() would rudisha
+            # immediately, na code that calls
             #     write(...); await drain()
-            # in a loop would never call connection_lost(), so it
-            # would not see an error when the socket is closed.
+            # kwenye a loop would never call connection_lost(), so it
+            # would sio see an error when the socket ni closed.
             await sleep(0)
         await self._protocol._drain_helper()
 
 
 kundi StreamReader:
 
-    _source_traceback = None
+    _source_traceback = Tupu
 
-    eleza __init__(self, limit=_DEFAULT_LIMIT, loop=None):
-        # The line length limit is  a security feature;
-        # it also doubles as half the buffer limit.
+    eleza __init__(self, limit=_DEFAULT_LIMIT, loop=Tupu):
+        # The line length limit ni  a security feature;
+        # it also doubles kama half the buffer limit.
 
         ikiwa limit <= 0:
-            raise ValueError('Limit cannot be <= 0')
+            ashiria ValueError('Limit cannot be <= 0')
 
         self._limit = limit
-        ikiwa loop is None:
+        ikiwa loop ni Tupu:
             self._loop = events.get_event_loop()
-        else:
+        isipokua:
             self._loop = loop
         self._buffer = bytearray()
-        self._eof = False    # Whether we're done.
-        self._waiter = None  # A future used by _wait_for_data()
-        self._exception = None
-        self._transport = None
-        self._paused = False
+        self._eof = Uongo    # Whether we're done.
+        self._waiter = Tupu  # A future used by _wait_for_data()
+        self._exception = Tupu
+        self._transport = Tupu
+        self._paused = Uongo
         ikiwa self._loop.get_debug():
             self._source_traceback = format_helpers.extract_stack(
                 sys._getframe(1))
@@ -455,95 +455,95 @@ kundi StreamReader:
         self._exception = exc
 
         waiter = self._waiter
-        ikiwa waiter is not None:
-            self._waiter = None
-            ikiwa not waiter.cancelled():
+        ikiwa waiter ni sio Tupu:
+            self._waiter = Tupu
+            ikiwa sio waiter.cancelled():
                 waiter.set_exception(exc)
 
     eleza _wakeup_waiter(self):
-        """Wakeup read*() functions waiting for data or EOF."""
+        """Wakeup read*() functions waiting kila data ama EOF."""
         waiter = self._waiter
-        ikiwa waiter is not None:
-            self._waiter = None
-            ikiwa not waiter.cancelled():
-                waiter.set_result(None)
+        ikiwa waiter ni sio Tupu:
+            self._waiter = Tupu
+            ikiwa sio waiter.cancelled():
+                waiter.set_result(Tupu)
 
     eleza set_transport(self, transport):
-        assert self._transport is None, 'Transport already set'
+        assert self._transport ni Tupu, 'Transport already set'
         self._transport = transport
 
     eleza _maybe_resume_transport(self):
-        ikiwa self._paused and len(self._buffer) <= self._limit:
-            self._paused = False
+        ikiwa self._paused na len(self._buffer) <= self._limit:
+            self._paused = Uongo
             self._transport.resume_reading()
 
     eleza feed_eof(self):
-        self._eof = True
+        self._eof = Kweli
         self._wakeup_waiter()
 
     eleza at_eof(self):
-        """Return True ikiwa the buffer is empty and 'feed_eof' was called."""
-        rudisha self._eof and not self._buffer
+        """Return Kweli ikiwa the buffer ni empty na 'feed_eof' was called."""
+        rudisha self._eof na sio self._buffer
 
     eleza feed_data(self, data):
-        assert not self._eof, 'feed_data after feed_eof'
+        assert sio self._eof, 'feed_data after feed_eof'
 
-        ikiwa not data:
-            return
+        ikiwa sio data:
+            rudisha
 
         self._buffer.extend(data)
         self._wakeup_waiter()
 
-        ikiwa (self._transport is not None and
-                not self._paused and
+        ikiwa (self._transport ni sio Tupu and
+                sio self._paused and
                 len(self._buffer) > 2 * self._limit):
-            try:
+            jaribu:
                 self._transport.pause_reading()
-            except NotImplementedError:
+            tatizo NotImplementedError:
                 # The transport can't be paused.
                 # We'll just have to buffer all data.
                 # Forget the transport so we don't keep trying.
-                self._transport = None
-            else:
-                self._paused = True
+                self._transport = Tupu
+            isipokua:
+                self._paused = Kweli
 
     async eleza _wait_for_data(self, func_name):
-        """Wait until feed_data() or feed_eof() is called.
+        """Wait until feed_data() ama feed_eof() ni called.
 
         If stream was paused, automatically resume it.
         """
         # StreamReader uses a future to link the protocol feed_data() method
         # to a read coroutine. Running two read coroutines at the same time
-        # would have an unexpected behaviour. It would not possible to know
+        # would have an unexpected behaviour. It would sio possible to know
         # which coroutine would get the next data.
-        ikiwa self._waiter is not None:
-            raise RuntimeError(
-                f'{func_name}() called while another coroutine is '
-                f'already waiting for incoming data')
+        ikiwa self._waiter ni sio Tupu:
+            ashiria RuntimeError(
+                f'{func_name}() called wakati another coroutine ni '
+                f'already waiting kila incoming data')
 
-        assert not self._eof, '_wait_for_data after EOF'
+        assert sio self._eof, '_wait_for_data after EOF'
 
-        # Waiting for data while paused will make deadlock, so prevent it.
-        # This is essential for readexactly(n) for case when n > self._limit.
+        # Waiting kila data wakati paused will make deadlock, so prevent it.
+        # This ni essential kila readexactly(n) kila case when n > self._limit.
         ikiwa self._paused:
-            self._paused = False
+            self._paused = Uongo
             self._transport.resume_reading()
 
         self._waiter = self._loop.create_future()
-        try:
+        jaribu:
             await self._waiter
-        finally:
-            self._waiter = None
+        mwishowe:
+            self._waiter = Tupu
 
     async eleza readline(self):
-        """Read chunk of data kutoka the stream until newline (b'\n') is found.
+        """Read chunk of data kutoka the stream until newline (b'\n') ni found.
 
         On success, rudisha chunk that ends with newline. If only partial
         line can be read due to EOF, rudisha incomplete line without
-        terminating newline. When EOF was reached while no bytes read, empty
-        bytes object is returned.
+        terminating newline. When EOF was reached wakati no bytes read, empty
+        bytes object ni rudishaed.
 
-        If limit is reached, ValueError will be raised. In that case, if
+        If limit ni reached, ValueError will be ashiriad. In that case, if
         newline was found, complete line including newline will be removed
         kutoka internal buffer. Else, internal buffer will be cleared. Limit is
         compared against part of the line without newline.
@@ -553,156 +553,156 @@ kundi StreamReader:
         """
         sep = b'\n'
         seplen = len(sep)
-        try:
+        jaribu:
             line = await self.readuntil(sep)
-        except exceptions.IncompleteReadError as e:
+        tatizo exceptions.IncompleteReadError kama e:
             rudisha e.partial
-        except exceptions.LimitOverrunError as e:
+        tatizo exceptions.LimitOverrunError kama e:
             ikiwa self._buffer.startswith(sep, e.consumed):
-                del self._buffer[:e.consumed + seplen]
-            else:
+                toa self._buffer[:e.consumed + seplen]
+            isipokua:
                 self._buffer.clear()
             self._maybe_resume_transport()
-            raise ValueError(e.args[0])
+            ashiria ValueError(e.args[0])
         rudisha line
 
     async eleza readuntil(self, separator=b'\n'):
-        """Read data kutoka the stream until ``separator`` is found.
+        """Read data kutoka the stream until ``separator`` ni found.
 
-        On success, the data and separator will be removed kutoka the
+        On success, the data na separator will be removed kutoka the
         internal buffer (consumed). Returned data will include the
         separator at the end.
 
-        Configured stream limit is used to check result. Limit sets the
-        maximal length of data that can be returned, not counting the
+        Configured stream limit ni used to check result. Limit sets the
+        maximal length of data that can be rudishaed, sio counting the
         separator.
 
-        If an EOF occurs and the complete separator is still not found,
-        an IncompleteReadError exception will be raised, and the internal
+        If an EOF occurs na the complete separator ni still sio found,
+        an IncompleteReadError exception will be ashiriad, na the internal
         buffer will be reset.  The IncompleteReadError.partial attribute
         may contain the separator partially.
 
         If the data cannot be read because of over limit, a
-        LimitOverrunError exception  will be raised, and the data
-        will be left in the internal buffer, so it can be read again.
+        LimitOverrunError exception  will be ashiriad, na the data
+        will be left kwenye the internal buffer, so it can be read again.
         """
         seplen = len(separator)
         ikiwa seplen == 0:
-            raise ValueError('Separator should be at least one-byte string')
+            ashiria ValueError('Separator should be at least one-byte string')
 
-        ikiwa self._exception is not None:
-            raise self._exception
+        ikiwa self._exception ni sio Tupu:
+            ashiria self._exception
 
-        # Consume whole buffer except last bytes, which length is
+        # Consume whole buffer tatizo last bytes, which length is
         # one less than seplen. Let's check corner cases with
         # separator='SEPARATOR':
         # * we have received almost complete separator (without last
         #   byte). i.e buffer='some textSEPARATO'. In this case we
         #   can safely consume len(separator) - 1 bytes.
-        # * last byte of buffer is first byte of separator, i.e.
+        # * last byte of buffer ni first byte of separator, i.e.
         #   buffer='abcdefghijklmnopqrS'. We may safely consume
-        #   everything except that last byte, but this require to
+        #   everything tatizo that last byte, but this require to
         #   analyze bytes of buffer that match partial separator.
-        #   This is slow and/or require FSM. For this case our
-        #   implementation is not optimal, since require rescanning
-        #   of data that is known to not belong to separator. In
-        #   real world, separator will not be so long to notice
+        #   This ni slow and/or require FSM. For this case our
+        #   implementation ni sio optimal, since require rescanning
+        #   of data that ni known to sio belong to separator. In
+        #   real world, separator will sio be so long to notice
         #   performance problems. Even when reading MIME-encoded
         #   messages :)
 
-        # `offset` is the number of bytes kutoka the beginning of the buffer
-        # where there is no occurrence of `separator`.
+        # `offset` ni the number of bytes kutoka the beginning of the buffer
+        # where there ni no occurrence of `separator`.
         offset = 0
 
-        # Loop until we find `separator` in the buffer, exceed the buffer size,
-        # or an EOF has happened.
-        while True:
+        # Loop until we find `separator` kwenye the buffer, exceed the buffer size,
+        # ama an EOF has happened.
+        wakati Kweli:
             buflen = len(self._buffer)
 
-            # Check ikiwa we now have enough data in the buffer for `separator` to
+            # Check ikiwa we now have enough data kwenye the buffer kila `separator` to
             # fit.
             ikiwa buflen - offset >= seplen:
                 isep = self._buffer.find(separator, offset)
 
                 ikiwa isep != -1:
-                    # `separator` is in the buffer. `isep` will be used later
+                    # `separator` ni kwenye the buffer. `isep` will be used later
                     # to retrieve the data.
-                    break
+                    koma
 
-                # see upper comment for explanation.
+                # see upper comment kila explanation.
                 offset = buflen + 1 - seplen
                 ikiwa offset > self._limit:
-                    raise exceptions.LimitOverrunError(
-                        'Separator is not found, and chunk exceed the limit',
+                    ashiria exceptions.LimitOverrunError(
+                        'Separator ni sio found, na chunk exceed the limit',
                         offset)
 
-            # Complete message (with full separator) may be present in buffer
-            # even when EOF flag is set. This may happen when the last chunk
+            # Complete message (with full separator) may be present kwenye buffer
+            # even when EOF flag ni set. This may happen when the last chunk
             # adds data which makes separator be found. That's why we check for
             # EOF *ater* inspecting the buffer.
             ikiwa self._eof:
                 chunk = bytes(self._buffer)
                 self._buffer.clear()
-                raise exceptions.IncompleteReadError(chunk, None)
+                ashiria exceptions.IncompleteReadError(chunk, Tupu)
 
             # _wait_for_data() will resume reading ikiwa stream was paused.
             await self._wait_for_data('readuntil')
 
         ikiwa isep > self._limit:
-            raise exceptions.LimitOverrunError(
-                'Separator is found, but chunk is longer than limit', isep)
+            ashiria exceptions.LimitOverrunError(
+                'Separator ni found, but chunk ni longer than limit', isep)
 
         chunk = self._buffer[:isep + seplen]
-        del self._buffer[:isep + seplen]
+        toa self._buffer[:isep + seplen]
         self._maybe_resume_transport()
         rudisha bytes(chunk)
 
     async eleza read(self, n=-1):
         """Read up to `n` bytes kutoka the stream.
 
-        If n is not provided, or set to -1, read until EOF and rudisha all read
-        bytes. If the EOF was received and the internal buffer is empty, return
+        If n ni sio provided, ama set to -1, read until EOF na rudisha all read
+        bytes. If the EOF was received na the internal buffer ni empty, rudisha
         an empty bytes object.
 
-        If n is zero, rudisha empty bytes object immediately.
+        If n ni zero, rudisha empty bytes object immediately.
 
-        If n is positive, this function try to read `n` bytes, and may return
-        less or equal bytes than requested, but at least one byte. If EOF was
-        received before any byte is read, this function returns empty byte
+        If n ni positive, this function try to read `n` bytes, na may rudisha
+        less ama equal bytes than requested, but at least one byte. If EOF was
+        received before any byte ni read, this function rudishas empty byte
         object.
 
-        Returned value is not limited with limit, configured at stream
+        Returned value ni sio limited with limit, configured at stream
         creation.
 
         If stream was paused, this function will automatically resume it if
         needed.
         """
 
-        ikiwa self._exception is not None:
-            raise self._exception
+        ikiwa self._exception ni sio Tupu:
+            ashiria self._exception
 
         ikiwa n == 0:
             rudisha b''
 
         ikiwa n < 0:
             # This used to just loop creating a new waiter hoping to
-            # collect everything in self._buffer, but that would
+            # collect everything kwenye self._buffer, but that would
             # deadlock ikiwa the subprocess sends more than self.limit
             # bytes.  So just call self.read(self._limit) until EOF.
             blocks = []
-            while True:
+            wakati Kweli:
                 block = await self.read(self._limit)
-                ikiwa not block:
-                    break
+                ikiwa sio block:
+                    koma
                 blocks.append(block)
             rudisha b''.join(blocks)
 
-        ikiwa not self._buffer and not self._eof:
+        ikiwa sio self._buffer na sio self._eof:
             await self._wait_for_data('read')
 
-        # This will work right even ikiwa buffer is less than n bytes
+        # This will work right even ikiwa buffer ni less than n bytes
         data = bytes(self._buffer[:n])
-        del self._buffer[:n]
+        toa self._buffer[:n]
 
         self._maybe_resume_transport()
         rudisha data
@@ -710,41 +710,41 @@ kundi StreamReader:
     async eleza readexactly(self, n):
         """Read exactly `n` bytes.
 
-        Raise an IncompleteReadError ikiwa EOF is reached before `n` bytes can be
+        Raise an IncompleteReadError ikiwa EOF ni reached before `n` bytes can be
         read. The IncompleteReadError.partial attribute of the exception will
         contain the partial read bytes.
 
-        ikiwa n is zero, rudisha empty bytes object.
+        ikiwa n ni zero, rudisha empty bytes object.
 
-        Returned value is not limited with limit, configured at stream
+        Returned value ni sio limited with limit, configured at stream
         creation.
 
         If stream was paused, this function will automatically resume it if
         needed.
         """
         ikiwa n < 0:
-            raise ValueError('readexactly size can not be less than zero')
+            ashiria ValueError('readexactly size can sio be less than zero')
 
-        ikiwa self._exception is not None:
-            raise self._exception
+        ikiwa self._exception ni sio Tupu:
+            ashiria self._exception
 
         ikiwa n == 0:
             rudisha b''
 
-        while len(self._buffer) < n:
+        wakati len(self._buffer) < n:
             ikiwa self._eof:
                 incomplete = bytes(self._buffer)
                 self._buffer.clear()
-                raise exceptions.IncompleteReadError(incomplete, n)
+                ashiria exceptions.IncompleteReadError(incomplete, n)
 
             await self._wait_for_data('readexactly')
 
         ikiwa len(self._buffer) == n:
             data = bytes(self._buffer)
             self._buffer.clear()
-        else:
+        isipokua:
             data = bytes(self._buffer[:n])
-            del self._buffer[:n]
+            toa self._buffer[:n]
         self._maybe_resume_transport()
         rudisha data
 
@@ -754,5 +754,5 @@ kundi StreamReader:
     async eleza __anext__(self):
         val = await self.readline()
         ikiwa val == b'':
-            raise StopAsyncIteration
+            ashiria StopAsyncIteration
         rudisha val

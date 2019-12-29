@@ -1,5 +1,5 @@
 # It's intended that this script be run by hand.  It runs speed tests on
-# hashlib functions; it does not test for correctness.
+# hashlib functions; it does sio test kila correctness.
 
 agiza sys
 agiza time
@@ -7,7 +7,7 @@ agiza hashlib
 
 
 eleza creatorFunc():
-    raise RuntimeError("eek, creatorFunc not overridden")
+    ashiria RuntimeError("eek, creatorFunc sio overridden")
 
 eleza test_scaled_msg(scale, name):
     iterations = 106201//scale * 20
@@ -15,7 +15,7 @@ eleza test_scaled_msg(scale, name):
 
     localCF = creatorFunc
     start = time.perf_counter()
-    for f in range(iterations):
+    kila f kwenye range(iterations):
         x = localCF(longStr).digest()
     end = time.perf_counter()
 
@@ -23,7 +23,7 @@ eleza test_scaled_msg(scale, name):
 
 eleza test_create():
     start = time.perf_counter()
-    for f in range(20000):
+    kila f kwenye range(20000):
         d = creatorFunc()
     end = time.perf_counter()
 
@@ -31,7 +31,7 @@ eleza test_create():
 
 eleza test_zero():
     start = time.perf_counter()
-    for f in range(20000):
+    kila f kwenye range(20000):
         x = creatorFunc().digest()
     end = time.perf_counter()
 
@@ -44,37 +44,37 @@ hName = sys.argv[1]
 #
 # setup our creatorFunc to test the requested hash
 #
-ikiwa hName in ('_md5', '_sha'):
+ikiwa hName kwenye ('_md5', '_sha'):
     exec('agiza '+hName)
     exec('creatorFunc = '+hName+'.new')
     andika("testing speed of old", hName, "legacy interface")
-elikiwa hName == '_hashlib' and len(sys.argv) > 3:
+elikiwa hName == '_hashlib' na len(sys.argv) > 3:
     agiza _hashlib
     exec('creatorFunc = _hashlib.%s' % sys.argv[2])
     andika("testing speed of _hashlib.%s" % sys.argv[2], getattr(_hashlib, sys.argv[2]))
-elikiwa hName == '_hashlib' and len(sys.argv) == 3:
+elikiwa hName == '_hashlib' na len(sys.argv) == 3:
     agiza _hashlib
     exec('creatorFunc = lambda x=_hashlib.new : x(%r)' % sys.argv[2])
     andika("testing speed of _hashlib.new(%r)" % sys.argv[2])
-elikiwa hasattr(hashlib, hName) and hasattr(getattr(hashlib, hName), '__call__'):
+elikiwa hasattr(hashlib, hName) na hasattr(getattr(hashlib, hName), '__call__'):
     creatorFunc = getattr(hashlib, hName)
     andika("testing speed of hashlib."+hName, getattr(hashlib, hName))
-else:
+isipokua:
     exec("creatorFunc = lambda x=hashlib.new : x(%r)" % hName)
     andika("testing speed of hashlib.new(%r)" % hName)
 
-try:
+jaribu:
     test_create()
-except ValueError:
+tatizo ValueError:
     andika()
-    andika("pass argument(s) naming the hash to run a speed test on:")
-    andika(" '_md5' and '_sha' test the legacy builtin md5 and sha")
+    andika("pita argument(s) naming the hash to run a speed test on:")
+    andika(" '_md5' na '_sha' test the legacy builtin md5 na sha")
     andika(" '_hashlib' 'openssl_hName' 'fast' tests the builtin _hashlib")
     andika(" '_hashlib' 'hName' tests builtin _hashlib.new(shaFOO)")
     andika(" 'hName' tests the hashlib.hName() implementation ikiwa it exists")
     andika("         otherwise it uses hashlib.new(hName).")
     andika()
-    raise
+    ashiria
 
 test_zero()
 test_scaled_msg(scale=106201, name='[huge data]')

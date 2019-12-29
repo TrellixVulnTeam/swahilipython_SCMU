@@ -11,7 +11,7 @@ kundi Range(object):
     eleza __init__(self, start, stop):
         self.start = start
         self.stop = stop
-        self.last_insert = None
+        self.last_insert = Tupu
 
     eleza __len__(self):
         rudisha self.stop - self.start
@@ -21,7 +21,7 @@ kundi Range(object):
         ikiwa idx < 0:
             idx += n
         ikiwa idx >= n:
-            raise IndexError(idx)
+            ashiria IndexError(idx)
         rudisha self.start + idx
 
     eleza insert(self, idx, item):
@@ -113,7 +113,7 @@ kundi TestBisect:
         ]
 
     eleza test_precomputed(self):
-        for func, data, elem, expected in self.precomputedCases:
+        kila func, data, elem, expected kwenye self.precomputedCases:
             self.assertEqual(func(data, elem), expected)
             self.assertEqual(func(UserList(data), elem), expected)
 
@@ -136,7 +136,7 @@ kundi TestBisect:
         self.assertEqual(mod.bisect_right(data, n-3, n-10, n), n-2)
 
     eleza test_large_pyrange(self):
-        # Same as above, but without C-imposed limits on range() parameters
+        # Same kama above, but without C-imposed limits on range() parameters
         mod = self.module
         n = sys.maxsize
         data = Range(0, n-1)
@@ -153,37 +153,37 @@ kundi TestBisect:
 
     eleza test_random(self, n=25):
         kutoka random agiza randrange
-        for i in range(n):
-            data = [randrange(0, n, 2) for j in range(i)]
+        kila i kwenye range(n):
+            data = [randrange(0, n, 2) kila j kwenye range(i)]
             data.sort()
             elem = randrange(-1, n+1)
             ip = self.module.bisect_left(data, elem)
             ikiwa ip < len(data):
-                self.assertTrue(elem <= data[ip])
+                self.assertKweli(elem <= data[ip])
             ikiwa ip > 0:
-                self.assertTrue(data[ip-1] < elem)
+                self.assertKweli(data[ip-1] < elem)
             ip = self.module.bisect_right(data, elem)
             ikiwa ip < len(data):
-                self.assertTrue(elem < data[ip])
+                self.assertKweli(elem < data[ip])
             ikiwa ip > 0:
-                self.assertTrue(data[ip-1] <= elem)
+                self.assertKweli(data[ip-1] <= elem)
 
     eleza test_optionalSlicing(self):
-        for func, data, elem, expected in self.precomputedCases:
-            for lo in range(4):
+        kila func, data, elem, expected kwenye self.precomputedCases:
+            kila lo kwenye range(4):
                 lo = min(len(data), lo)
-                for hi in range(3,8):
+                kila hi kwenye range(3,8):
                     hi = min(len(data), hi)
                     ip = func(data, elem, lo, hi)
-                    self.assertTrue(lo <= ip <= hi)
-                    ikiwa func is self.module.bisect_left and ip < hi:
-                        self.assertTrue(elem <= data[ip])
-                    ikiwa func is self.module.bisect_left and ip > lo:
-                        self.assertTrue(data[ip-1] < elem)
-                    ikiwa func is self.module.bisect_right and ip < hi:
-                        self.assertTrue(elem < data[ip])
-                    ikiwa func is self.module.bisect_right and ip > lo:
-                        self.assertTrue(data[ip-1] <= elem)
+                    self.assertKweli(lo <= ip <= hi)
+                    ikiwa func ni self.module.bisect_left na ip < hi:
+                        self.assertKweli(elem <= data[ip])
+                    ikiwa func ni self.module.bisect_left na ip > lo:
+                        self.assertKweli(data[ip-1] < elem)
+                    ikiwa func ni self.module.bisect_right na ip < hi:
+                        self.assertKweli(elem < data[ip])
+                    ikiwa func ni self.module.bisect_right na ip > lo:
+                        self.assertKweli(data[ip-1] <= elem)
                     self.assertEqual(ip, max(lo, min(hi, expected)))
 
     eleza test_backcompatibility(self):
@@ -210,12 +210,12 @@ kundi TestBisectC(TestBisect, unittest.TestCase):
 kundi TestInsort:
     eleza test_vsBuiltinSort(self, n=500):
         kutoka random agiza choice
-        for insorted in (list(), UserList()):
-            for i in range(n):
+        kila insorted kwenye (list(), UserList()):
+            kila i kwenye range(n):
                 digit = choice("0123456789")
-                ikiwa digit in "02468":
+                ikiwa digit kwenye "02468":
                     f = self.module.insort_left
-                else:
+                isipokua:
                     f = self.module.insort_right
                 f(insorted, digit)
             self.assertEqual(sorted(insorted), insorted)
@@ -243,19 +243,19 @@ kundi TestInsortC(TestInsort, unittest.TestCase):
 #==============================================================================
 
 kundi LenOnly:
-    "Dummy sequence kundi defining __len__ but not __getitem__."
+    "Dummy sequence kundi defining __len__ but sio __getitem__."
     eleza __len__(self):
         rudisha 10
 
 kundi GetOnly:
-    "Dummy sequence kundi defining __getitem__ but not __len__."
+    "Dummy sequence kundi defining __getitem__ but sio __len__."
     eleza __getitem__(self, ndx):
         rudisha 10
 
 kundi CmpErr:
-    "Dummy element that always raises an error during comparison"
+    "Dummy element that always ashirias an error during comparison"
     eleza __lt__(self, other):
-        raise ZeroDivisionError
+        ashiria ZeroDivisionError
     __gt__ = __lt__
     __le__ = __lt__
     __ge__ = __lt__
@@ -264,28 +264,28 @@ kundi CmpErr:
 
 kundi TestErrorHandling:
     eleza test_non_sequence(self):
-        for f in (self.module.bisect_left, self.module.bisect_right,
+        kila f kwenye (self.module.bisect_left, self.module.bisect_right,
                   self.module.insort_left, self.module.insort_right):
             self.assertRaises(TypeError, f, 10, 10)
 
     eleza test_len_only(self):
-        for f in (self.module.bisect_left, self.module.bisect_right,
+        kila f kwenye (self.module.bisect_left, self.module.bisect_right,
                   self.module.insort_left, self.module.insort_right):
             self.assertRaises(TypeError, f, LenOnly(), 10)
 
     eleza test_get_only(self):
-        for f in (self.module.bisect_left, self.module.bisect_right,
+        kila f kwenye (self.module.bisect_left, self.module.bisect_right,
                   self.module.insort_left, self.module.insort_right):
             self.assertRaises(TypeError, f, GetOnly(), 10)
 
     eleza test_cmp_err(self):
         seq = [CmpErr(), CmpErr(), CmpErr()]
-        for f in (self.module.bisect_left, self.module.bisect_right,
+        kila f kwenye (self.module.bisect_left, self.module.bisect_right,
                   self.module.insort_left, self.module.insort_right):
             self.assertRaises(ZeroDivisionError, f, seq, 10)
 
     eleza test_arg_parsing(self):
-        for f in (self.module.bisect_left, self.module.bisect_right,
+        kila f kwenye (self.module.bisect_left, self.module.bisect_right,
                   self.module.insort_left, self.module.insort_right):
             self.assertRaises(TypeError, f, 10)
 
@@ -299,17 +299,17 @@ kundi TestErrorHandlingC(TestErrorHandling, unittest.TestCase):
 
 kundi TestDocExample:
     eleza test_grades(self):
-        eleza grade(score, breakpoints=[60, 70, 80, 90], grades='FDCBA'):
-            i = self.module.bisect(breakpoints, score)
+        eleza grade(score, komapoints=[60, 70, 80, 90], grades='FDCBA'):
+            i = self.module.bisect(komapoints, score)
             rudisha grades[i]
 
-        result = [grade(score) for score in [33, 99, 77, 70, 89, 90, 100]]
+        result = [grade(score) kila score kwenye [33, 99, 77, 70, 89, 90, 100]]
         self.assertEqual(result, ['F', 'A', 'C', 'C', 'B', 'A', 'A'])
 
     eleza test_colors(self):
         data = [('red', 5), ('blue', 1), ('yellow', 8), ('black', 0)]
         data.sort(key=lambda r: r[1])
-        keys = [r[1] for r in data]
+        keys = [r[1] kila r kwenye data]
         bisect_left = self.module.bisect_left
         self.assertEqual(data[bisect_left(keys, 0)], ('black', 0))
         self.assertEqual(data[bisect_left(keys, 1)], ('blue', 1))

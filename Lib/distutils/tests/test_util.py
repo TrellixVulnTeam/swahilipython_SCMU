@@ -35,7 +35,7 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         if hasattr(os, 'uname'):
             self.uname = os.uname
             self._uname = os.uname()
-        else:
+        isipokua:
             self.uname = None
             self._uname = None
 
@@ -50,10 +50,10 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         os.path.join = self.join
         os.path.isabs = self.isabs
         os.path.splitdrive = self.splitdrive
-        if self.uname is not None:
+        if self.uname ni sio None:
             os.uname = self.uname
-        else:
-            del os.uname
+        isipokua:
+            toa os.uname
         sysconfig._config_vars = copy(self._config_vars)
         super(UtilTestCase, self).tearDown()
 
@@ -96,9 +96,9 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
         cursize = sys.maxsize
         sys.maxsize = (2 ** 31)-1
-        try:
+        jaribu:
             self.assertEqual(get_platform(), 'macosx-10.3-i386')
-        finally:
+        mwishowe:
             sys.maxsize = cursize
 
         # macbook with fat binaries (fat, universal or fat64)
@@ -249,7 +249,7 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
         import pwd
 
-        # only set pw_dir field, other fields are not used
+        # only set pw_dir field, other fields are sio used
         result = pwd.struct_passwd((None, None, None, None, None,
                                     '/home/distutils', None))
         with mock.patch.object(pwd, 'getpwuid', return_value=result):
@@ -290,9 +290,9 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         # if sys.dont_write_bytecode is True
         old_dont_write_bytecode = sys.dont_write_bytecode
         sys.dont_write_bytecode = True
-        try:
+        jaribu:
             self.assertRaises(DistutilsByteCompileError, byte_compile, [])
-        finally:
+        mwishowe:
             sys.dont_write_bytecode = old_dont_write_bytecode
 
     def test_grok_environment_error(self):

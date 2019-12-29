@@ -16,10 +16,10 @@ kundi Test(unittest.TestCase):
 ##    @classmethod
 ##    eleza tearDownClass(cls):
 ##        cls.root.destroy()
-##        del cls.root
+##        toa cls.root
 
     eleza test_init(self):
-        self.assertTrue(True)  # Get coverage of agiza
+        self.assertKweli(Kweli)  # Get coverage of agiza
 
 
 # Classes GUIProxy, IdbAdapter, FrameProxy, CodeProxy, DictProxy,

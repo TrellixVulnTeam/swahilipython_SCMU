@@ -2,7 +2,7 @@
 # Copyright 2006 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Main program for testing the infrastructure."""
+"""Main program kila testing the infrastructure."""
 
 kutoka __future__ agiza print_function
 
@@ -28,66 +28,66 @@ eleza main():
     dr = driver.Driver(gr, convert=pytree.convert)
 
     fn = "example.py"
-    tree = dr.parse_file(fn, debug=True)
-    ikiwa not diff(fn, tree):
+    tree = dr.parse_file(fn, debug=Kweli)
+    ikiwa sio diff(fn, tree):
         andika("No diffs.")
-    ikiwa not sys.argv[1:]:
+    ikiwa sio sys.argv[1:]:
         rudisha # Pass a dummy argument to run the complete test suite below
 
     problems = []
 
     # Process every imported module
-    for name in sys.modules:
+    kila name kwenye sys.modules:
         mod = sys.modules[name]
-        ikiwa mod is None or not hasattr(mod, "__file__"):
-            continue
+        ikiwa mod ni Tupu ama sio hasattr(mod, "__file__"):
+            endelea
         fn = mod.__file__
         ikiwa fn.endswith(".pyc"):
             fn = fn[:-1]
-        ikiwa not fn.endswith(".py"):
-            continue
+        ikiwa sio fn.endswith(".py"):
+            endelea
         andika("Parsing", fn, file=sys.stderr)
-        tree = dr.parse_file(fn, debug=True)
+        tree = dr.parse_file(fn, debug=Kweli)
         ikiwa diff(fn, tree):
             problems.append(fn)
 
-    # Process every single module on sys.path (but not in packages)
-    for dir in sys.path:
-        try:
+    # Process every single module on sys.path (but haiko kwenye packages)
+    kila dir kwenye sys.path:
+        jaribu:
             names = os.listdir(dir)
-        except OSError:
-            continue
+        tatizo OSError:
+            endelea
         andika("Scanning", dir, "...", file=sys.stderr)
-        for name in names:
-            ikiwa not name.endswith(".py"):
-                continue
+        kila name kwenye names:
+            ikiwa sio name.endswith(".py"):
+                endelea
             andika("Parsing", name, file=sys.stderr)
             fn = os.path.join(dir, name)
-            try:
-                tree = dr.parse_file(fn, debug=True)
-            except pgen2.parse.ParseError as err:
+            jaribu:
+                tree = dr.parse_file(fn, debug=Kweli)
+            tatizo pgen2.parse.ParseError kama err:
                 andika("ParseError:", err)
-            else:
+            isipokua:
                 ikiwa diff(fn, tree):
                     problems.append(fn)
 
     # Show summary of problem files
-    ikiwa not problems:
+    ikiwa sio problems:
         andika("No problems.  Congratulations!")
-    else:
-        andika("Problems in following files:")
-        for fn in problems:
+    isipokua:
+        andika("Problems kwenye following files:")
+        kila fn kwenye problems:
             andika("***", fn)
 
 eleza diff(fn, tree):
     f = open("@", "w")
-    try:
+    jaribu:
         f.write(str(tree))
-    finally:
+    mwishowe:
         f.close()
-    try:
+    jaribu:
         rudisha os.system("diff -u %s @" % fn)
-    finally:
+    mwishowe:
         os.remove("@")
 
 ikiwa __name__ == "__main__":

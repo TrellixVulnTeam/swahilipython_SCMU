@@ -1,4 +1,4 @@
-"Test InteractiveConsole and InteractiveInterpreter kutoka code module"
+"Test InteractiveConsole na InteractiveInterpreter kutoka code module"
 agiza sys
 agiza unittest
 kutoka textwrap agiza dedent
@@ -16,20 +16,20 @@ kundi TestInteractiveConsole(unittest.TestCase):
         self.mock_sys()
 
     eleza mock_sys(self):
-        "Mock system environment for InteractiveConsole"
+        "Mock system environment kila InteractiveConsole"
         # use exit stack to match patch context managers to addCleanup
         stack = ExitStack()
         self.addCleanup(stack.close)
         self.infunc = stack.enter_context(mock.patch('code.input',
-                                          create=True))
+                                          create=Kweli))
         self.stdout = stack.enter_context(mock.patch('code.sys.stdout'))
         self.stderr = stack.enter_context(mock.patch('code.sys.stderr'))
         prepatch = mock.patch('code.sys', wraps=code.sys, spec=code.sys)
         self.sysmod = stack.enter_context(prepatch)
-        ikiwa sys.excepthook is sys.__excepthook__:
+        ikiwa sys.excepthook ni sys.__excepthook__:
             self.sysmod.excepthook = self.sysmod.__excepthook__
-        del self.sysmod.ps1
-        del self.sysmod.ps2
+        toa self.sysmod.ps1
+        toa self.sysmod.ps2
 
     eleza test_ps1(self):
         self.infunc.side_effect = EOFError('Finished')
@@ -50,28 +50,28 @@ kundi TestInteractiveConsole(unittest.TestCase):
     eleza test_console_stderr(self):
         self.infunc.side_effect = ["'antioch'", "", EOFError('Finished')]
         self.console.interact()
-        for call in list(self.stdout.method_calls):
-            ikiwa 'antioch' in ''.join(call[1]):
-                break
-        else:
-            raise AssertionError("no console stdout")
+        kila call kwenye list(self.stdout.method_calls):
+            ikiwa 'antioch' kwenye ''.join(call[1]):
+                koma
+        isipokua:
+            ashiria AssertionError("no console stdout")
 
     eleza test_syntax_error(self):
         self.infunc.side_effect = ["undefined", EOFError('Finished')]
         self.console.interact()
-        for call in self.stderr.method_calls:
-            ikiwa 'NameError' in ''.join(call[1]):
-                break
-        else:
-            raise AssertionError("No syntax error kutoka console")
+        kila call kwenye self.stderr.method_calls:
+            ikiwa 'NameError' kwenye ''.join(call[1]):
+                koma
+        isipokua:
+            ashiria AssertionError("No syntax error kutoka console")
 
     eleza test_sysexcepthook(self):
-        self.infunc.side_effect = ["raise ValueError('')",
+        self.infunc.side_effect = ["ashiria ValueError('')",
                                     EOFError('Finished')]
         hook = mock.Mock()
         self.sysmod.excepthook = hook
         self.console.interact()
-        self.assertTrue(hook.called)
+        self.assertKweli(hook.called)
 
     eleza test_banner(self):
         # with banner
@@ -116,36 +116,36 @@ kundi TestInteractiveConsole(unittest.TestCase):
 
 
     eleza test_cause_tb(self):
-        self.infunc.side_effect = ["raise ValueError('') kutoka AttributeError",
+        self.infunc.side_effect = ["ashiria ValueError('') kutoka AttributeError",
                                     EOFError('Finished')]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stderr.method_calls)
+        output = ''.join(''.join(call[1]) kila call kwenye self.stderr.method_calls)
         expected = dedent("""
         AttributeError
 
         The above exception was the direct cause of the following exception:
 
         Traceback (most recent call last):
-          File "<console>", line 1, in <module>
+          File "<console>", line 1, kwenye <module>
         ValueError
         """)
         self.assertIn(expected, output)
 
     eleza test_context_tb(self):
-        self.infunc.side_effect = ["try: ham\nexcept: eggs\n",
+        self.infunc.side_effect = ["jaribu: ham\nexcept: eggs\n",
                                     EOFError('Finished')]
         self.console.interact()
-        output = ''.join(''.join(call[1]) for call in self.stderr.method_calls)
+        output = ''.join(''.join(call[1]) kila call kwenye self.stderr.method_calls)
         expected = dedent("""
         Traceback (most recent call last):
-          File "<console>", line 1, in <module>
-        NameError: name 'ham' is not defined
+          File "<console>", line 1, kwenye <module>
+        NameError: name 'ham' ni sio defined
 
         During handling of the above exception, another exception occurred:
 
         Traceback (most recent call last):
-          File "<console>", line 2, in <module>
-        NameError: name 'eggs' is not defined
+          File "<console>", line 2, kwenye <module>
+        NameError: name 'eggs' ni sio defined
         """)
         self.assertIn(expected, output)
 

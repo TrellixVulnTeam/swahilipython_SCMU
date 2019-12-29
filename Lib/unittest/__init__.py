@@ -1,10 +1,10 @@
 """
-Python unit testing framework, based on Erich Gamma's JUnit and Kent Beck's
+Python unit testing framework, based on Erich Gamma's JUnit na Kent Beck's
 Smalltalk testing framework (used with permission).
 
 This module contains the core framework classes that form the basis of
-specific test cases and suites (TestCase, TestSuite etc.), and also a
-text-based utility kundi for running the tests and reporting the results
+specific test cases na suites (TestCase, TestSuite etc.), na also a
+text-based utility kundi kila running the tests na reporting the results
  (TextTestRunner).
 
 Simple usage:
@@ -22,15 +22,15 @@ Simple usage:
     ikiwa __name__ == '__main__':
         unittest.main()
 
-Further information is available in the bundled documentation, and kutoka
+Further information ni available kwenye the bundled documentation, na kutoka
 
   http://docs.python.org/library/unittest.html
 
 Copyright (c) 1999-2003 Steve Purcell
 Copyright (c) 2003-2010 Python Software Foundation
-This module is free software, and you may redistribute it and/or modify
-it under the same terms as Python itself, so long as this copyright message
-and disclaimer are retained in their original form.
+This module ni free software, na you may redistribute it and/or modify
+it under the same terms kama Python itself, so long kama this copyright message
+and disclaimer are retained kwenye their original form.
 
 IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF
@@ -51,10 +51,10 @@ __all__ = ['TestResult', 'TestCase', 'IsolatedAsyncioTestCase', 'TestSuite',
            'registerResult', 'removeResult', 'removeHandler',
            'addModuleCleanup']
 
-# Expose obsolete functions for backwards compatibility
+# Expose obsolete functions kila backwards compatibility
 __all__.extend(['getTestCaseNames', 'makeSuite', 'findTestCases'])
 
-__unittest = True
+__unittest = Kweli
 
 kutoka .result agiza TestResult
 kutoka .async_case agiza IsolatedAsyncioTestCase

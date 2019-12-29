@@ -10,7 +10,7 @@ kutoka lib2to3.fixer_util agiza is_probably_builtin
 
 
 kundi FixLong(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = "'long'"
 
     eleza transform(self, node, results):

@@ -18,10 +18,10 @@ kundi ScriptBindingTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
-            cls.root.after_cancel(id)  # Need for EditorWindow.
+        kila id kwenye cls.root.tk.call('after', 'info'):
+            cls.root.after_cancel(id)  # Need kila EditorWindow.
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         ew = EditorWindow(root=self.root)

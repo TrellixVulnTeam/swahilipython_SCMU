@@ -13,26 +13,26 @@ kundi FullLoader:
         rudisha "<module '{}' (crafted)>".format(m.__name__)
 
 kundi BareLoader:
-    pass
+    pita
 
 
 kundi ModuleTests(unittest.TestCase):
     eleza test_uninitialized(self):
-        # An uninitialized module has no __dict__ or __name__,
-        # and __doc__ is None
+        # An uninitialized module has no __dict__ ama __name__,
+        # na __doc__ ni Tupu
         foo = ModuleType.__new__(ModuleType)
-        self.assertTrue(foo.__dict__ is None)
+        self.assertKweli(foo.__dict__ ni Tupu)
         self.assertRaises(SystemError, dir, foo)
-        try:
+        jaribu:
             s = foo.__name__
             self.fail("__name__ = %s" % repr(s))
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         self.assertEqual(foo.__doc__, ModuleType.__doc__)
 
     eleza test_uninitialized_missing_getattr(self):
         # Issue 8297
-        # test the text in the AttributeError of an uninitialized module
+        # test the text kwenye the AttributeError of an uninitialized module
         foo = ModuleType.__new__(ModuleType)
         self.assertRaisesRegex(
                 AttributeError, "module has no attribute 'not_here'",
@@ -40,7 +40,7 @@ kundi ModuleTests(unittest.TestCase):
 
     eleza test_missing_getattr(self):
         # Issue 8297
-        # test the text in the AttributeError
+        # test the text kwenye the AttributeError
         foo = ModuleType("foo")
         self.assertRaisesRegex(
                 AttributeError, "module 'foo' has no attribute 'not_here'",
@@ -50,13 +50,13 @@ kundi ModuleTests(unittest.TestCase):
         # Regularly initialized module, no docstring
         foo = ModuleType("foo")
         self.assertEqual(foo.__name__, "foo")
-        self.assertEqual(foo.__doc__, None)
-        self.assertIs(foo.__loader__, None)
-        self.assertIs(foo.__package__, None)
-        self.assertIs(foo.__spec__, None)
-        self.assertEqual(foo.__dict__, {"__name__": "foo", "__doc__": None,
-                                        "__loader__": None, "__package__": None,
-                                        "__spec__": None})
+        self.assertEqual(foo.__doc__, Tupu)
+        self.assertIs(foo.__loader__, Tupu)
+        self.assertIs(foo.__package__, Tupu)
+        self.assertIs(foo.__spec__, Tupu)
+        self.assertEqual(foo.__dict__, {"__name__": "foo", "__doc__": Tupu,
+                                        "__loader__": Tupu, "__package__": Tupu,
+                                        "__spec__": Tupu})
 
     eleza test_ascii_docstring(self):
         # ASCII docstring
@@ -65,8 +65,8 @@ kundi ModuleTests(unittest.TestCase):
         self.assertEqual(foo.__doc__, "foodoc")
         self.assertEqual(foo.__dict__,
                          {"__name__": "foo", "__doc__": "foodoc",
-                          "__loader__": None, "__package__": None,
-                          "__spec__": None})
+                          "__loader__": Tupu, "__package__": Tupu,
+                          "__spec__": Tupu})
 
     eleza test_unicode_docstring(self):
         # Unicode docstring
@@ -75,11 +75,11 @@ kundi ModuleTests(unittest.TestCase):
         self.assertEqual(foo.__doc__, "foodoc\u1234")
         self.assertEqual(foo.__dict__,
                          {"__name__": "foo", "__doc__": "foodoc\u1234",
-                          "__loader__": None, "__package__": None,
-                          "__spec__": None})
+                          "__loader__": Tupu, "__package__": Tupu,
+                          "__spec__": Tupu})
 
     eleza test_reinit(self):
-        # Reinitialization should not replace the __dict__
+        # Reinitialization should sio replace the __dict__
         foo = ModuleType("foo", "foodoc\u1234")
         foo.bar = 42
         d = foo.__dict__
@@ -89,8 +89,8 @@ kundi ModuleTests(unittest.TestCase):
         self.assertEqual(foo.bar, 42)
         self.assertEqual(foo.__dict__,
               {"__name__": "foo", "__doc__": "foodoc", "bar": 42,
-               "__loader__": None, "__package__": None, "__spec__": None})
-        self.assertTrue(foo.__dict__ is d)
+               "__loader__": Tupu, "__package__": Tupu, "__spec__": Tupu})
+        self.assertKweli(foo.__dict__ ni d)
 
     eleza test_dont_clear_dict(self):
         # See issue 7140.
@@ -113,7 +113,7 @@ kundi ModuleTests(unittest.TestCase):
         self.l.append(1)
 a = A(destroyed)"""
         exec(s, m.__dict__)
-        del m
+        toa m
         gc_collect()
         self.assertEqual(destroyed, [1])
 
@@ -121,24 +121,24 @@ a = A(destroyed)"""
         m = ModuleType("foo")
         wr = weakref.ref(m)
         self.assertIs(wr(), m)
-        del m
+        toa m
         gc_collect()
-        self.assertIs(wr(), None)
+        self.assertIs(wr(), Tupu)
 
     eleza test_module_getattr(self):
-        agiza test.good_getattr as gga
+        agiza test.good_getattr kama gga
         kutoka test.good_getattr agiza test
-        self.assertEqual(test, "There is test")
+        self.assertEqual(test, "There ni test")
         self.assertEqual(gga.x, 1)
         self.assertEqual(gga.y, 2)
         with self.assertRaisesRegex(AttributeError,
                                     "Deprecated, use whatever instead"):
             gga.yolo
-        self.assertEqual(gga.whatever, "There is whatever")
-        del sys.modules['test.good_getattr']
+        self.assertEqual(gga.whatever, "There ni whatever")
+        toa sys.modules['test.good_getattr']
 
     eleza test_module_getattr_errors(self):
-        agiza test.bad_getattr as bga
+        agiza test.bad_getattr kama bga
         kutoka test agiza bad_getattr2
         self.assertEqual(bga.x, 1)
         self.assertEqual(bad_getattr2.x, 1)
@@ -146,40 +146,40 @@ a = A(destroyed)"""
             bga.nope
         with self.assertRaises(TypeError):
             bad_getattr2.nope
-        del sys.modules['test.bad_getattr']
-        ikiwa 'test.bad_getattr2' in sys.modules:
-            del sys.modules['test.bad_getattr2']
+        toa sys.modules['test.bad_getattr']
+        ikiwa 'test.bad_getattr2' kwenye sys.modules:
+            toa sys.modules['test.bad_getattr2']
 
     eleza test_module_dir(self):
-        agiza test.good_getattr as gga
+        agiza test.good_getattr kama gga
         self.assertEqual(dir(gga), ['a', 'b', 'c'])
-        del sys.modules['test.good_getattr']
+        toa sys.modules['test.good_getattr']
 
     eleza test_module_dir_errors(self):
-        agiza test.bad_getattr as bga
+        agiza test.bad_getattr kama bga
         kutoka test agiza bad_getattr2
         with self.assertRaises(TypeError):
             dir(bga)
         with self.assertRaises(TypeError):
             dir(bad_getattr2)
-        del sys.modules['test.bad_getattr']
-        ikiwa 'test.bad_getattr2' in sys.modules:
-            del sys.modules['test.bad_getattr2']
+        toa sys.modules['test.bad_getattr']
+        ikiwa 'test.bad_getattr2' kwenye sys.modules:
+            toa sys.modules['test.bad_getattr2']
 
     eleza test_module_getattr_tricky(self):
         kutoka test agiza bad_getattr3
-        # these lookups should not crash
+        # these lookups should sio crash
         with self.assertRaises(AttributeError):
             bad_getattr3.one
         with self.assertRaises(AttributeError):
             bad_getattr3.delgetattr
-        ikiwa 'test.bad_getattr3' in sys.modules:
-            del sys.modules['test.bad_getattr3']
+        ikiwa 'test.bad_getattr3' kwenye sys.modules:
+            toa sys.modules['test.bad_getattr3']
 
     eleza test_module_repr_minimal(self):
-        # reprs when modules have no __file__, __name__, or __loader__
+        # reprs when modules have no __file__, __name__, ama __loader__
         m = ModuleType('foo')
-        del m.__name__
+        toa m.__name__
         self.assertEqual(repr(m), "<module '?'>")
 
     eleza test_module_repr_with_name(self):
@@ -193,19 +193,19 @@ a = A(destroyed)"""
 
     eleza test_module_repr_with_filename_only(self):
         m = ModuleType('foo')
-        del m.__name__
+        toa m.__name__
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module '?' kutoka '/tmp/foo.py'>")
 
-    eleza test_module_repr_with_loader_as_None(self):
+    eleza test_module_repr_with_loader_as_Tupu(self):
         m = ModuleType('foo')
-        assert m.__loader__ is None
+        assert m.__loader__ ni Tupu
         self.assertEqual(repr(m), "<module 'foo'>")
 
     eleza test_module_repr_with_bare_loader_but_no_name(self):
         m = ModuleType('foo')
-        del m.__name__
-        # Yes, a kundi not an instance.
+        toa m.__name__
+        # Yes, a kundi sio an instance.
         m.__loader__ = BareLoader
         loader_repr = repr(BareLoader)
         self.assertEqual(
@@ -213,11 +213,11 @@ a = A(destroyed)"""
 
     eleza test_module_repr_with_full_loader_but_no_name(self):
         # m.__loader__.module_repr() will fail because the module has no
-        # m.__name__.  This exception will get suppressed and instead the
+        # m.__name__.  This exception will get suppressed na instead the
         # loader's repr will be used.
         m = ModuleType('foo')
-        del m.__name__
-        # Yes, a kundi not an instance.
+        toa m.__name__
+        # Yes, a kundi sio an instance.
         m.__loader__ = FullLoader
         loader_repr = repr(FullLoader)
         self.assertEqual(
@@ -225,7 +225,7 @@ a = A(destroyed)"""
 
     eleza test_module_repr_with_bare_loader(self):
         m = ModuleType('foo')
-        # Yes, a kundi not an instance.
+        # Yes, a kundi sio an instance.
         m.__loader__ = BareLoader
         module_repr = repr(BareLoader)
         self.assertEqual(
@@ -233,7 +233,7 @@ a = A(destroyed)"""
 
     eleza test_module_repr_with_full_loader(self):
         m = ModuleType('foo')
-        # Yes, a kundi not an instance.
+        # Yes, a kundi sio an instance.
         m.__loader__ = FullLoader
         self.assertEqual(
             repr(m), "<module 'foo' (crafted)>")
@@ -241,7 +241,7 @@ a = A(destroyed)"""
     eleza test_module_repr_with_bare_loader_and_filename(self):
         # Because the loader has no module_repr(), use the file name.
         m = ModuleType('foo')
-        # Yes, a kundi not an instance.
+        # Yes, a kundi sio an instance.
         m.__loader__ = BareLoader
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module 'foo' kutoka '/tmp/foo.py'>")
@@ -249,7 +249,7 @@ a = A(destroyed)"""
     eleza test_module_repr_with_full_loader_and_filename(self):
         # Even though the module has an __file__, use __loader__.module_repr()
         m = ModuleType('foo')
-        # Yes, a kundi not an instance.
+        # Yes, a kundi sio an instance.
         m.__loader__ = FullLoader
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module 'foo' (crafted)>")
@@ -262,15 +262,15 @@ a = A(destroyed)"""
         starts_with = "<module 'unittest' kutoka '"
         ends_with = "__init__.py'>"
         self.assertEqual(r[:len(starts_with)], starts_with,
-                         '{!r} does not start with {!r}'.format(r, starts_with))
+                         '{!r} does sio start with {!r}'.format(r, starts_with))
         self.assertEqual(r[-len(ends_with):], ends_with,
-                         '{!r} does not end with {!r}'.format(r, ends_with))
+                         '{!r} does sio end with {!r}'.format(r, ends_with))
 
     @requires_type_collecting
     eleza test_module_finalization_at_shutdown(self):
-        # Module globals and builtins should still be available during shutdown
+        # Module globals na builtins should still be available during shutdown
         rc, out, err = assert_python_ok("-c", "kutoka test agiza final_a")
-        self.assertFalse(err)
+        self.assertUongo(err)
         lines = out.splitlines()
         self.assertEqual(set(lines), {
             b"x = a",
@@ -283,12 +283,12 @@ a = A(destroyed)"""
     eleza test_descriptor_errors_propagate(self):
         kundi Descr:
             eleza __get__(self, o, t):
-                raise RuntimeError
+                ashiria RuntimeError
         kundi M(ModuleType):
             melon = Descr()
         self.assertRaises(RuntimeError, getattr, M("mymod"), "melon")
 
-    # frozen and namespace module reprs are tested in importlib.
+    # frozen na namespace module reprs are tested kwenye importlib.
 
 
 ikiwa __name__ == '__main__':

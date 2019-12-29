@@ -1,6 +1,6 @@
 This directory only contains tests for outstanding bugs that cause the
 interpreter to segfault.  Ideally this directory should always be empty, but
-sometimes it may not be easy to fix the underlying cause and the bug is deemed
+sometimes it may sio be easy to fix the underlying cause and the bug is deemed
 too obscure to invest the effort.
 
 Each test should fail when run from the command line:

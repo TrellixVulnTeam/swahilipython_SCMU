@@ -1,48 +1,48 @@
 """Manage HTTP Response Headers
 
-Much of this module is red-handedly pilfered kutoka email.message in the stdlib,
-so portions are Copyright (C) 2001,2002 Python Software Foundation, and were
+Much of this module ni red-handedly pilfered kutoka email.message kwenye the stdlib,
+so portions are Copyright (C) 2001,2002 Python Software Foundation, na were
 written by Barry Warsaw.
 """
 
-# Regular expression that matches `special' characters in parameters, the
+# Regular expression that matches `special' characters kwenye parameters, the
 # existence of which force quoting of the parameter value.
 agiza re
 tspecials = re.compile(r'[ \(\)<>@,;:\\"/\[\]\?=]')
 
-eleza _formatparam(param, value=None, quote=1):
-    """Convenience function to format and rudisha a key=value pair.
+eleza _formatparam(param, value=Tupu, quote=1):
+    """Convenience function to format na rudisha a key=value pair.
 
-    This will quote the value ikiwa needed or ikiwa quote is true.
+    This will quote the value ikiwa needed ama ikiwa quote ni true.
     """
-    ikiwa value is not None and len(value) > 0:
-        ikiwa quote or tspecials.search(value):
+    ikiwa value ni sio Tupu na len(value) > 0:
+        ikiwa quote ama tspecials.search(value):
             value = value.replace('\\', '\\\\').replace('"', r'\"')
             rudisha '%s="%s"' % (param, value)
-        else:
+        isipokua:
             rudisha '%s=%s' % (param, value)
-    else:
+    isipokua:
         rudisha param
 
 
 kundi Headers:
     """Manage a collection of HTTP response headers"""
 
-    eleza __init__(self, headers=None):
-        headers = headers ikiwa headers is not None else []
-        ikiwa type(headers) is not list:
-            raise TypeError("Headers must be a list of name/value tuples")
+    eleza __init__(self, headers=Tupu):
+        headers = headers ikiwa headers ni sio Tupu else []
+        ikiwa type(headers) ni sio list:
+            ashiria TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
         ikiwa __debug__:
-            for k, v in headers:
+            kila k, v kwenye headers:
                 self._convert_string_type(k)
                 self._convert_string_type(v)
 
     eleza _convert_string_type(self, value):
         """Convert/check value type."""
-        ikiwa type(value) is str:
+        ikiwa type(value) ni str:
             rudisha value
-        raise AssertionError("Header names/values must be"
+        ashiria AssertionError("Header names/values must be"
             " of type str (got {0})".format(repr(value)))
 
     eleza __len__(self):
@@ -51,50 +51,50 @@ kundi Headers:
 
     eleza __setitem__(self, name, val):
         """Set the value of a header."""
-        del self[name]
+        toa self[name]
         self._headers.append(
             (self._convert_string_type(name), self._convert_string_type(val)))
 
     eleza __delitem__(self,name):
         """Delete all occurrences of a header, ikiwa present.
 
-        Does *not* raise an exception ikiwa the header is missing.
+        Does *not* ashiria an exception ikiwa the header ni missing.
         """
         name = self._convert_string_type(name.lower())
-        self._headers[:] = [kv for kv in self._headers ikiwa kv[0].lower() != name]
+        self._headers[:] = [kv kila kv kwenye self._headers ikiwa kv[0].lower() != name]
 
     eleza __getitem__(self,name):
-        """Get the first header value for 'name'
+        """Get the first header value kila 'name'
 
-        Return None ikiwa the header is missing instead of raising an exception.
+        Return Tupu ikiwa the header ni missing instead of raising an exception.
 
         Note that ikiwa the header appeared multiple times, the first exactly which
-        occurrence gets returned is undefined.  Use getall() to get all
+        occurrence gets rudishaed ni undefined.  Use getall() to get all
         the values matching a header field name.
         """
         rudisha self.get(name)
 
     eleza __contains__(self, name):
         """Return true ikiwa the message contains the header."""
-        rudisha self.get(name) is not None
+        rudisha self.get(name) ni sio Tupu
 
 
     eleza get_all(self, name):
-        """Return a list of all the values for the named field.
+        """Return a list of all the values kila the named field.
 
-        These will be sorted in the order they appeared in the original header
-        list or were added to this instance, and may contain duplicates.  Any
-        fields deleted and re-inserted are always appended to the header list.
-        If no fields exist with the given name, returns an empty list.
+        These will be sorted kwenye the order they appeared kwenye the original header
+        list ama were added to this instance, na may contain duplicates.  Any
+        fields deleted na re-inserted are always appended to the header list.
+        If no fields exist with the given name, rudishas an empty list.
         """
         name = self._convert_string_type(name.lower())
-        rudisha [kv[1] for kv in self._headers ikiwa kv[0].lower()==name]
+        rudisha [kv[1] kila kv kwenye self._headers ikiwa kv[0].lower()==name]
 
 
-    eleza get(self,name,default=None):
-        """Get the first header value for 'name', or rudisha 'default'"""
+    eleza get(self,name,default=Tupu):
+        """Get the first header value kila 'name', ama rudisha 'default'"""
         name = self._convert_string_type(name.lower())
-        for k,v in self._headers:
+        kila k,v kwenye self._headers:
             ikiwa k.lower()==name:
                 rudisha v
         rudisha default
@@ -103,29 +103,29 @@ kundi Headers:
     eleza keys(self):
         """Return a list of all the header field names.
 
-        These will be sorted in the order they appeared in the original header
-        list, or were added to this instance, and may contain duplicates.
-        Any fields deleted and re-inserted are always appended to the header
+        These will be sorted kwenye the order they appeared kwenye the original header
+        list, ama were added to this instance, na may contain duplicates.
+        Any fields deleted na re-inserted are always appended to the header
         list.
         """
-        rudisha [k for k, v in self._headers]
+        rudisha [k kila k, v kwenye self._headers]
 
     eleza values(self):
         """Return a list of all header values.
 
-        These will be sorted in the order they appeared in the original header
-        list, or were added to this instance, and may contain duplicates.
-        Any fields deleted and re-inserted are always appended to the header
+        These will be sorted kwenye the order they appeared kwenye the original header
+        list, ama were added to this instance, na may contain duplicates.
+        Any fields deleted na re-inserted are always appended to the header
         list.
         """
-        rudisha [v for k, v in self._headers]
+        rudisha [v kila k, v kwenye self._headers]
 
     eleza items(self):
-        """Get all the header fields and values.
+        """Get all the header fields na values.
 
-        These will be sorted in the order they were in the original header
-        list, or were added to this instance, and may contain duplicates.
-        Any fields deleted and re-inserted are always appended to the header
+        These will be sorted kwenye the order they were kwenye the original header
+        list, ama were added to this instance, na may contain duplicates.
+        Any fields deleted na re-inserted are always appended to the header
         list.
         """
         rudisha self._headers[:]
@@ -134,33 +134,33 @@ kundi Headers:
         rudisha "%s(%r)" % (self.__class__.__name__, self._headers)
 
     eleza __str__(self):
-        """str() returns the formatted headers, complete with end line,
-        suitable for direct HTTP transmission."""
-        rudisha '\r\n'.join(["%s: %s" % kv for kv in self._headers]+['',''])
+        """str() rudishas the formatted headers, complete with end line,
+        suitable kila direct HTTP transmission."""
+        rudisha '\r\n'.join(["%s: %s" % kv kila kv kwenye self._headers]+['',''])
 
     eleza __bytes__(self):
         rudisha str(self).encode('iso-8859-1')
 
     eleza setdefault(self,name,value):
-        """Return first matching header value for 'name', or 'value'
+        """Return first matching header value kila 'name', ama 'value'
 
-        If there is no header named 'name', add a new header with name 'name'
-        and value 'value'."""
+        If there ni no header named 'name', add a new header with name 'name'
+        na value 'value'."""
         result = self.get(name)
-        ikiwa result is None:
+        ikiwa result ni Tupu:
             self._headers.append((self._convert_string_type(name),
                 self._convert_string_type(value)))
             rudisha value
-        else:
+        isipokua:
             rudisha result
 
     eleza add_header(self, _name, _value, **_params):
         """Extended header setting.
 
-        _name is the header field to add.  keyword arguments can be used to set
-        additional parameters for the header field, with underscores converted
-        to dashes.  Normally the parameter will be added as key="value" unless
-        value is None, in which case only the key will be added.
+        _name ni the header field to add.  keyword arguments can be used to set
+        additional parameters kila the header field, with underscores converted
+        to dashes.  Normally the parameter will be added kama key="value" unless
+        value ni Tupu, kwenye which case only the key will be added.
 
         Example:
 
@@ -168,17 +168,17 @@ kundi Headers:
 
         Note that unlike the corresponding 'email.message' method, this does
         *not* handle '(charset, language, value)' tuples: all values must be
-        strings or None.
+        strings ama Tupu.
         """
         parts = []
-        ikiwa _value is not None:
+        ikiwa _value ni sio Tupu:
             _value = self._convert_string_type(_value)
             parts.append(_value)
-        for k, v in _params.items():
+        kila k, v kwenye _params.items():
             k = self._convert_string_type(k)
-            ikiwa v is None:
+            ikiwa v ni Tupu:
                 parts.append(k.replace('_', '-'))
-            else:
+            isipokua:
                 v = self._convert_string_type(v)
                 parts.append(_formatparam(k.replace('_', '-'), v))
         self._headers.append((self._convert_string_type(_name), "; ".join(parts)))

@@ -8,8 +8,8 @@ kutoka test agiza support
 
 
 # TODO:
-#  - Add new tests, for example for "dgettext"
-#  - Remove dummy tests, for example testing for single and double quotes
+#  - Add new tests, kila example kila "dgettext"
+#  - Remove dummy tests, kila example testing kila single na double quotes
 #    has no sense, it would have ikiwa we were testing a parser (i.e. pygettext)
 #  - Tests should have only one assert.
 
@@ -38,7 +38,7 @@ bmsgd2luayAoaW4gIm15IG90aGVyIGNvbnRleHQiKQB3aW5rIHdpbmsA
 '''
 
 # This data contains an invalid major version number (5)
-# An unexpected major version number should be treated as an error when
+# An unexpected major version number should be treated kama an error when
 # parsing a .mo file
 
 GNU_MO_DATA_BAD_MAJOR_VERSION = b'''\
@@ -63,7 +63,7 @@ ciBUQUgKdHJnZ3JrZyB6cmZmbnRyIHBuZ255YnQgeXZvZW5lbC4AYmFjb24Ad2luayB3aW5rAA==
 
 # This data contains an invalid minor version number (7)
 # An unexpected minor version number only indicates that some of the file's
-# contents may not be able to be read. It does not indicate an error.
+# contents may sio be able to be read. It does sio indicate an error.
 
 GNU_MO_DATA_BAD_MINOR_VERSION = b'''\
 3hIElQcAAAAGAAAAHAAAAEwAAAALAAAAfAAAAAAAAACoAAAAFQAAAKkAAAAjAAAAvwAAAKEAAADj
@@ -117,17 +117,17 @@ MMOFILE = os.path.join(LOCALEDIR, 'metadata.mo')
 
 kundi GettextBaseTest(unittest.TestCase):
     eleza setUp(self):
-        ikiwa not os.path.isdir(LOCALEDIR):
+        ikiwa sio os.path.isdir(LOCALEDIR):
             os.makedirs(LOCALEDIR)
-        with open(MOFILE, 'wb') as fp:
+        with open(MOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA))
-        with open(MOFILE_BAD_MAJOR_VERSION, 'wb') as fp:
+        with open(MOFILE_BAD_MAJOR_VERSION, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MAJOR_VERSION))
-        with open(MOFILE_BAD_MINOR_VERSION, 'wb') as fp:
+        with open(MOFILE_BAD_MINOR_VERSION, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MINOR_VERSION))
-        with open(UMOFILE, 'wb') as fp:
+        with open(UMOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(UMO_DATA))
-        with open(MMOFILE, 'wb') as fp:
+        with open(MMOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(MMO_DATA))
         self.env = support.EnvironmentVarGuard()
         self.env['LANGUAGE'] = 'xx'
@@ -135,7 +135,7 @@ kundi GettextBaseTest(unittest.TestCase):
 
     eleza tearDown(self):
         self.env.__exit__()
-        del self.env
+        toa self.env
         support.rmtree(os.path.split(LOCALEDIR)[0])
 
 GNU_MO_DATA_ISSUE_17898 = b'''\
@@ -194,8 +194,8 @@ kundi GettextTestCase1(GettextBaseTest):
     eleza test_multiline_strings(self):
         eq = self.assertEqual
         # multiline strings
-        eq(_('''This module provides internationalization and localization
-support for your Python programs by providing an interface to the GNU
+        eq(_('''This module provides internationalization na localization
+support kila your Python programs by providing an interface to the GNU
 gettext message catalog library.'''),
            '''Guvf zbqhyr cebivqrf vagreangvbanyvmngvba naq ybpnyvmngvba
 fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH
@@ -204,7 +204,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
     eleza test_the_alternative_interface(self):
         eq = self.assertEqual
         # test the alternative interface
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         # Install the translation object
         t.install()
@@ -218,8 +218,8 @@ trggrkg zrffntr pngnybt yvoenel.''')
         eq(_, t.gettext)
         eq(builtins.gettext, t.gettext)
         eq(lgettext, t.lgettext)
-        del builtins.gettext
-        del builtins.lgettext
+        toa builtins.gettext
+        toa builtins.lgettext
 
 
 kundi GettextTestCase2(GettextBaseTest):
@@ -239,8 +239,8 @@ kundi GettextTestCase2(GettextBaseTest):
         self.assertEqual(gettext.textdomain(), 'gettext')
 
     eleza test_bad_major_version(self):
-        with open(MOFILE_BAD_MAJOR_VERSION, 'rb') as fp:
-            with self.assertRaises(OSError) as cm:
+        with open(MOFILE_BAD_MAJOR_VERSION, 'rb') kama fp:
+            with self.assertRaises(OSError) kama cm:
                 gettext.GNUTranslations(fp)
 
             exception = cm.exception
@@ -249,8 +249,8 @@ kundi GettextTestCase2(GettextBaseTest):
             self.assertEqual(exception.filename, MOFILE_BAD_MAJOR_VERSION)
 
     eleza test_bad_minor_version(self):
-        with open(MOFILE_BAD_MINOR_VERSION, 'rb') as fp:
-            # Check that no error is thrown with a bad minor version number
+        with open(MOFILE_BAD_MINOR_VERSION, 'rb') kama fp:
+            # Check that no error ni thrown with a bad minor version number
             gettext.GNUTranslations(fp)
 
     eleza test_some_translations(self):
@@ -302,8 +302,8 @@ kundi GettextTestCase2(GettextBaseTest):
     eleza test_multiline_strings(self):
         eq = self.assertEqual
         # multiline strings
-        eq(self._('''This module provides internationalization and localization
-support for your Python programs by providing an interface to the GNU
+        eq(self._('''This module provides internationalization na localization
+support kila your Python programs by providing an interface to the GNU
 gettext message catalog library.'''),
            '''Guvf zbqhyr cebivqrf vagreangvbanyvmngvba naq ybpnyvmngvba
 fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH
@@ -317,38 +317,38 @@ kundi PluralFormsTestCase(GettextBaseTest):
 
     eleza test_plural_forms1(self):
         eq = self.assertEqual
-        x = gettext.ngettext('There is %s file', 'There are %s files', 1)
+        x = gettext.ngettext('There ni %s file', 'There are %s files', 1)
         eq(x, 'Hay %s fichero')
-        x = gettext.ngettext('There is %s file', 'There are %s files', 2)
+        x = gettext.ngettext('There ni %s file', 'There are %s files', 2)
         eq(x, 'Hay %s ficheros')
 
     eleza test_plural_context_forms1(self):
         eq = self.assertEqual
         x = gettext.npgettext('With context',
-                              'There is %s file', 'There are %s files', 1)
+                              'There ni %s file', 'There are %s files', 1)
         eq(x, 'Hay %s fichero (context)')
         x = gettext.npgettext('With context',
-                              'There is %s file', 'There are %s files', 2)
+                              'There ni %s file', 'There are %s files', 2)
         eq(x, 'Hay %s ficheros (context)')
 
     eleza test_plural_forms2(self):
         eq = self.assertEqual
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
-        x = t.ngettext('There is %s file', 'There are %s files', 1)
+        x = t.ngettext('There ni %s file', 'There are %s files', 1)
         eq(x, 'Hay %s fichero')
-        x = t.ngettext('There is %s file', 'There are %s files', 2)
+        x = t.ngettext('There ni %s file', 'There are %s files', 2)
         eq(x, 'Hay %s ficheros')
 
     eleza test_plural_context_forms2(self):
         eq = self.assertEqual
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         x = t.npgettext('With context',
-                        'There is %s file', 'There are %s files', 1)
+                        'There ni %s file', 'There are %s files', 1)
         eq(x, 'Hay %s fichero (context)')
         x = t.npgettext('With context',
-                        'There is %s file', 'There are %s files', 2)
+                        'There ni %s file', 'There are %s files', 2)
         eq(x, 'Hay %s ficheros (context)')
 
     # Examples kutoka http://www.gnu.org/software/gettext/manual/gettext.html
@@ -356,108 +356,108 @@ kundi PluralFormsTestCase(GettextBaseTest):
     eleza test_ja(self):
         eq = self.assertEqual
         f = gettext.c2py('0')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
 
     eleza test_de(self):
         eq = self.assertEqual
         f = gettext.c2py('n != 1')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "10111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
 
     eleza test_fr(self):
         eq = self.assertEqual
         f = gettext.c2py('n>1')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "00111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
 
     eleza test_lv(self):
         eq = self.assertEqual
         f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "20111111111111111111101111111110111111111011111111101111111110111111111011111111101111111110111111111011111111111111111110111111111011111111101111111110111111111011111111101111111110111111111011111111")
 
     eleza test_gd(self):
         eq = self.assertEqual
         f = gettext.c2py('n==1 ? 0 : n==2 ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "20122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
     eleza test_gd2(self):
         eq = self.assertEqual
-        # Tests the combination of parentheses and "?:"
+        # Tests the combination of parentheses na "?:"
         f = gettext.c2py('n==1 ? 0 : (n==2 ? 1 : 2)')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "20122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
     eleza test_ro(self):
         eq = self.assertEqual
         f = gettext.c2py('n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "10111111111111111111222222222222222222222222222222222222222222222222222222222222222222222222222222222111111111111111111122222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
     eleza test_lt(self):
         eq = self.assertEqual
         f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "20111111112222222222201111111120111111112011111111201111111120111111112011111111201111111120111111112011111111222222222220111111112011111111201111111120111111112011111111201111111120111111112011111111")
 
     eleza test_ru(self):
         eq = self.assertEqual
         f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "20111222222222222222201112222220111222222011122222201112222220111222222011122222201112222220111222222011122222222222222220111222222011122222201112222220111222222011122222201112222220111222222011122222")
 
     eleza test_cs(self):
         eq = self.assertEqual
         f = gettext.c2py('(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "20111222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
     eleza test_pl(self):
         eq = self.assertEqual
         f = gettext.c2py('n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "20111222222222222222221112222222111222222211122222221112222222111222222211122222221112222222111222222211122222222222222222111222222211122222221112222222111222222211122222221112222222111222222211122222")
 
     eleza test_sl(self):
         eq = self.assertEqual
         f = gettext.c2py('n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "30122333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333012233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333")
 
     eleza test_ar(self):
         eq = self.assertEqual
         f = gettext.c2py('n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5')
-        s = ''.join([ str(f(x)) for x in range(200) ])
+        s = ''.join([ str(f(x)) kila x kwenye range(200) ])
         eq(s, "01233333333444444444444444444444444444444444444444444444444444444444444444444444444444444444444444445553333333344444444444444444444444444444444444444444444444444444444444444444444444444444444444444444")
 
     eleza test_security(self):
-        raises = self.assertRaises
-        # Test for a dangerous expression
-        raises(ValueError, gettext.c2py, "os.chmod('/etc/passwd',0777)")
+        ashirias = self.assertRaises
+        # Test kila a dangerous expression
+        ashirias(ValueError, gettext.c2py, "os.chmod('/etc/pitawd',0777)")
         # issue28563
-        raises(ValueError, gettext.c2py, '"(eval(foo) && ""')
-        raises(ValueError, gettext.c2py, 'f"{os.system(\'sh\')}"')
+        ashirias(ValueError, gettext.c2py, '"(eval(foo) && ""')
+        ashirias(ValueError, gettext.c2py, 'f"{os.system(\'sh\')}"')
         # Maximum recursion depth exceeded during compilation
-        raises(ValueError, gettext.c2py, 'n+'*10000 + 'n')
+        ashirias(ValueError, gettext.c2py, 'n+'*10000 + 'n')
         self.assertEqual(gettext.c2py('n+'*100 + 'n')(1), 101)
         # MemoryError during compilation
-        raises(ValueError, gettext.c2py, '('*100 + 'n' + ')'*100)
-        # Maximum recursion depth exceeded in C to Python translator
-        raises(ValueError, gettext.c2py, '('*10000 + 'n' + ')'*10000)
+        ashirias(ValueError, gettext.c2py, '('*100 + 'n' + ')'*100)
+        # Maximum recursion depth exceeded kwenye C to Python translator
+        ashirias(ValueError, gettext.c2py, '('*10000 + 'n' + ')'*10000)
         self.assertEqual(gettext.c2py('('*20 + 'n' + ')'*20)(1), 1)
 
     eleza test_chained_comparison(self):
-        # C doesn't chain comparison as Python so 2 == 2 == 2 gets different results
+        # C doesn't chain comparison kama Python so 2 == 2 == 2 gets different results
         f = gettext.c2py('n == n == n')
-        self.assertEqual(''.join(str(f(x)) for x in range(3)), '010')
+        self.assertEqual(''.join(str(f(x)) kila x kwenye range(3)), '010')
         f = gettext.c2py('1 < n == n')
-        self.assertEqual(''.join(str(f(x)) for x in range(3)), '100')
+        self.assertEqual(''.join(str(f(x)) kila x kwenye range(3)), '100')
         f = gettext.c2py('n == n < 2')
-        self.assertEqual(''.join(str(f(x)) for x in range(3)), '010')
+        self.assertEqual(''.join(str(f(x)) kila x kwenye range(3)), '010')
         f = gettext.c2py('0 < n < 2')
-        self.assertEqual(''.join(str(f(x)) for x in range(3)), '111')
+        self.assertEqual(''.join(str(f(x)) kila x kwenye range(3)), '111')
 
     eleza test_decimal_number(self):
         self.assertEqual(gettext.c2py('0123')(1), 123)
@@ -467,7 +467,7 @@ kundi PluralFormsTestCase(GettextBaseTest):
             'x>1', '(n>1', 'n>1)', '42**42**42', '0xa', '1.0', '1e2',
             'n>0x1', '+n', '-n', 'n()', 'n(1)', '1+', 'nn', 'n n',
         ]
-        for expr in invalid_expressions:
+        kila expr kwenye invalid_expressions:
             with self.assertRaises(ValueError):
                 gettext.c2py(expr)
 
@@ -509,8 +509,8 @@ kundi LGettextTestCase(GettextBaseTest):
     @contextlib.contextmanager
     eleza assertDeprecated(self, name):
         with self.assertWarnsRegex(DeprecationWarning,
-                                   fr'^{name}\(\) is deprecated'):
-            yield
+                                   fr'^{name}\(\) ni deprecated'):
+            tuma
 
     eleza test_lgettext(self):
         lgettext = gettext.lgettext
@@ -525,7 +525,7 @@ kundi LGettextTestCase(GettextBaseTest):
             self.assertEqual(ldgettext('gettext', 'spam'), b'spam')
 
     eleza test_lgettext_2(self):
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
         with self.assertDeprecated('lgettext'):
@@ -538,7 +538,7 @@ kundi LGettextTestCase(GettextBaseTest):
         ldgettext = gettext.ldgettext
         with self.assertDeprecated('bind_textdomain_codeset'):
             saved_codeset = gettext.bind_textdomain_codeset('gettext')
-        try:
+        jaribu:
             with self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', 'utf-16')
             with self.assertDeprecated('lgettext'):
@@ -549,13 +549,13 @@ kundi LGettextTestCase(GettextBaseTest):
                 self.assertEqual(ldgettext('gettext', 'mullusk'), 'bacon'.encode('utf-16'))
             with self.assertDeprecated('ldgettext'):
                 self.assertEqual(ldgettext('gettext', 'spam'), 'spam'.encode('utf-16'))
-        finally:
-            del gettext._localecodesets['gettext']
+        mwishowe:
+            toa gettext._localecodesets['gettext']
             with self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
     eleza test_lgettext_output_encoding(self):
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
         with self.assertDeprecated('set_output_charset'):
@@ -569,45 +569,45 @@ kundi LGettextTestCase(GettextBaseTest):
         lngettext = gettext.lngettext
         ldngettext = gettext.ldngettext
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s file', 'There are %s files', 1)
+            x = lngettext('There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, b'Hay %s fichero')
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s file', 'There are %s files', 2)
+            x = lngettext('There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, b'Hay %s ficheros')
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s directory', 'There are %s directories', 1)
-        self.assertEqual(x, b'There is %s directory')
+            x = lngettext('There ni %s directory', 'There are %s directories', 1)
+        self.assertEqual(x, b'There ni %s directory')
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s directory', 'There are %s directories', 2)
+            x = lngettext('There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
         with self.assertDeprecated('ldngettext'):
-            x = ldngettext('gettext', 'There is %s file', 'There are %s files', 1)
+            x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, b'Hay %s fichero')
         with self.assertDeprecated('ldngettext'):
-            x = ldngettext('gettext', 'There is %s file', 'There are %s files', 2)
+            x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, b'Hay %s ficheros')
         with self.assertDeprecated('ldngettext'):
-            x = ldngettext('gettext', 'There is %s directory', 'There are %s directories', 1)
-        self.assertEqual(x, b'There is %s directory')
+            x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 1)
+        self.assertEqual(x, b'There ni %s directory')
         with self.assertDeprecated('ldngettext'):
-            x = ldngettext('gettext', 'There is %s directory', 'There are %s directories', 2)
+            x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
 
     eleza test_lngettext_2(self):
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s file', 'There are %s files', 1)
+            x = lngettext('There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, b'Hay %s fichero')
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s file', 'There are %s files', 2)
+            x = lngettext('There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, b'Hay %s ficheros')
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s directory', 'There are %s directories', 1)
-        self.assertEqual(x, b'There is %s directory')
+            x = lngettext('There ni %s directory', 'There are %s directories', 1)
+        self.assertEqual(x, b'There ni %s directory')
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s directory', 'There are %s directories', 2)
+            x = lngettext('There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
 
     eleza test_lngettext_bind_textdomain_codeset(self):
@@ -615,59 +615,59 @@ kundi LGettextTestCase(GettextBaseTest):
         ldngettext = gettext.ldngettext
         with self.assertDeprecated('bind_textdomain_codeset'):
             saved_codeset = gettext.bind_textdomain_codeset('gettext')
-        try:
+        jaribu:
             with self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', 'utf-16')
             with self.assertDeprecated('lngettext'):
-                x = lngettext('There is %s file', 'There are %s files', 1)
+                x = lngettext('There ni %s file', 'There are %s files', 1)
             self.assertEqual(x, 'Hay %s fichero'.encode('utf-16'))
             with self.assertDeprecated('lngettext'):
-                x = lngettext('There is %s file', 'There are %s files', 2)
+                x = lngettext('There ni %s file', 'There are %s files', 2)
             self.assertEqual(x, 'Hay %s ficheros'.encode('utf-16'))
             with self.assertDeprecated('lngettext'):
-                x = lngettext('There is %s directory', 'There are %s directories', 1)
-            self.assertEqual(x, 'There is %s directory'.encode('utf-16'))
+                x = lngettext('There ni %s directory', 'There are %s directories', 1)
+            self.assertEqual(x, 'There ni %s directory'.encode('utf-16'))
             with self.assertDeprecated('lngettext'):
-                x = lngettext('There is %s directory', 'There are %s directories', 2)
+                x = lngettext('There ni %s directory', 'There are %s directories', 2)
             self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
             with self.assertDeprecated('ldngettext'):
-                x = ldngettext('gettext', 'There is %s file', 'There are %s files', 1)
+                x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 1)
             self.assertEqual(x, 'Hay %s fichero'.encode('utf-16'))
             with self.assertDeprecated('ldngettext'):
-                x = ldngettext('gettext', 'There is %s file', 'There are %s files', 2)
+                x = ldngettext('gettext', 'There ni %s file', 'There are %s files', 2)
             self.assertEqual(x, 'Hay %s ficheros'.encode('utf-16'))
             with self.assertDeprecated('ldngettext'):
-                x = ldngettext('gettext', 'There is %s directory', 'There are %s directories', 1)
-            self.assertEqual(x, 'There is %s directory'.encode('utf-16'))
+                x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 1)
+            self.assertEqual(x, 'There ni %s directory'.encode('utf-16'))
             with self.assertDeprecated('ldngettext'):
-                x = ldngettext('gettext', 'There is %s directory', 'There are %s directories', 2)
+                x = ldngettext('gettext', 'There ni %s directory', 'There are %s directories', 2)
             self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
-        finally:
-            del gettext._localecodesets['gettext']
+        mwishowe:
+            toa gettext._localecodesets['gettext']
             with self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
     eleza test_lngettext_output_encoding(self):
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
         with self.assertDeprecated('set_output_charset'):
             t.set_output_charset('utf-16')
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s file', 'There are %s files', 1)
+            x = lngettext('There ni %s file', 'There are %s files', 1)
         self.assertEqual(x, 'Hay %s fichero'.encode('utf-16'))
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s file', 'There are %s files', 2)
+            x = lngettext('There ni %s file', 'There are %s files', 2)
         self.assertEqual(x, 'Hay %s ficheros'.encode('utf-16'))
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s directory', 'There are %s directories', 1)
-        self.assertEqual(x, 'There is %s directory'.encode('utf-16'))
+            x = lngettext('There ni %s directory', 'There are %s directories', 1)
+        self.assertEqual(x, 'There ni %s directory'.encode('utf-16'))
         with self.assertDeprecated('lngettext'):
-            x = lngettext('There is %s directory', 'There are %s directories', 2)
+            x = lngettext('There ni %s directory', 'There are %s directories', 2)
         self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
 
     eleza test_output_encoding(self):
-        with open(self.mofile, 'rb') as fp:
+        with open(self.mofile, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
         with self.assertDeprecated('set_output_charset'):
             t.set_output_charset('utf-16')
@@ -677,10 +677,10 @@ kundi LGettextTestCase(GettextBaseTest):
 
 kundi GNUTranslationParsingTest(GettextBaseTest):
     eleza test_plural_form_error_issue17898(self):
-        with open(MOFILE, 'wb') as fp:
+        with open(MOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        with open(MOFILE, 'rb') as fp:
-            # If this runs cleanly, the bug is fixed.
+        with open(MOFILE, 'rb') kama fp:
+            # If this runs cleanly, the bug ni fixed.
             t = gettext.GNUTranslations(fp)
 
     eleza test_ignore_comments_in_headers_issue36239(self):
@@ -690,9 +690,9 @@ kundi GNUTranslationParsingTest(GettextBaseTest):
 
         are ignored.
         """
-        with open(MOFILE, 'wb') as fp:
+        with open(MOFILE, 'wb') kama fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        with open(MOFILE, 'rb') as fp:
+        with open(MOFILE, 'rb') kama fp:
             t = gettext.GNUTranslations(fp)
             self.assertEqual(t.info()["plural-forms"], "nplurals=2; plural=(n != 1);")
 
@@ -700,7 +700,7 @@ kundi GNUTranslationParsingTest(GettextBaseTest):
 kundi UnicodeTranslationsTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        with open(UMOFILE, 'rb') as fp:
+        with open(UMOFILE, 'rb') kama fp:
             self.t = gettext.GNUTranslations(fp)
         self._ = self.t.gettext
         self.pgettext = self.t.pgettext
@@ -713,48 +713,48 @@ kundi UnicodeTranslationsTest(GettextBaseTest):
 
     eleza test_unicode_context_msgstr(self):
         t = self.pgettext('mycontext\xde', 'ab\xde')
-        self.assertTrue(isinstance(t, str))
+        self.assertKweli(isinstance(t, str))
         self.assertEqual(t, '\xa4yz (context version)')
 
 
 kundi UnicodeTranslationsPluralTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        with open(MOFILE, 'rb') as fp:
+        with open(MOFILE, 'rb') kama fp:
             self.t = gettext.GNUTranslations(fp)
         self.ngettext = self.t.ngettext
         self.npgettext = self.t.npgettext
 
     eleza test_unicode_msgid(self):
-        unless = self.assertTrue
+        unless = self.assertKweli
         unless(isinstance(self.ngettext('', '', 1), str))
         unless(isinstance(self.ngettext('', '', 2), str))
 
     eleza test_unicode_context_msgid(self):
-        unless = self.assertTrue
+        unless = self.assertKweli
         unless(isinstance(self.npgettext('', '', '', 1), str))
         unless(isinstance(self.npgettext('', '', '', 2), str))
 
     eleza test_unicode_msgstr(self):
         eq = self.assertEqual
-        unless = self.assertTrue
-        t = self.ngettext("There is %s file", "There are %s files", 1)
+        unless = self.assertKweli
+        t = self.ngettext("There ni %s file", "There are %s files", 1)
         unless(isinstance(t, str))
         eq(t, "Hay %s fichero")
         unless(isinstance(t, str))
-        t = self.ngettext("There is %s file", "There are %s files", 5)
+        t = self.ngettext("There ni %s file", "There are %s files", 5)
         unless(isinstance(t, str))
         eq(t, "Hay %s ficheros")
 
     eleza test_unicode_msgstr_with_context(self):
         eq = self.assertEqual
-        unless = self.assertTrue
+        unless = self.assertKweli
         t = self.npgettext("With context",
-                           "There is %s file", "There are %s files", 1)
+                           "There ni %s file", "There are %s files", 1)
         unless(isinstance(t, str))
         eq(t, "Hay %s fichero (context)")
         t = self.npgettext("With context",
-                           "There is %s file", "There are %s files", 5)
+                           "There ni %s file", "There are %s files", 5)
         unless(isinstance(t, str))
         eq(t, "Hay %s ficheros (context)")
 
@@ -762,12 +762,12 @@ kundi UnicodeTranslationsPluralTest(GettextBaseTest):
 kundi WeirdMetadataTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        with open(MMOFILE, 'rb') as fp:
-            try:
+        with open(MMOFILE, 'rb') kama fp:
+            jaribu:
                 self.t = gettext.GNUTranslations(fp)
             except:
                 self.tearDown()
-                raise
+                ashiria
 
     eleza test_weird_metadata(self):
         info = self.t.info()
@@ -833,7 +833,7 @@ ikiwa __name__ == '__main__':
 # pygettext. Later it was manually modified to add plural forms support.
 
 b'''
-# Dummy translation for the Python test_gettext.py module.
+# Dummy translation kila the Python test_gettext.py module.
 # Copyright (C) 2001 Python Software Foundation
 # Barry Warsaw <barry@python.org>, 2000.
 #
@@ -881,25 +881,25 @@ msgstr "bacon"
 
 #: test_gettext.py:40 test_gettext.py:101
 msgid ""
-"This module provides internationalization and localization\n"
-"support for your Python programs by providing an interface to the GNU\n"
+"This module provides internationalization na localization\n"
+"support kila your Python programs by providing an interface to the GNU\n"
 "gettext message catalog library."
 msgstr ""
 "Guvf zbqhyr cebivqrf vagreangvbanyvmngvba naq ybpnyvmngvba\n"
 "fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH\n"
 "trggrkg zrffntr pngnybt yvoenel."
 
-# Manually added, as neither pygettext nor xgettext support plural forms
-# in Python.
-msgid "There is %s file"
+# Manually added, kama neither pygettext nor xgettext support plural forms
+# kwenye Python.
+msgid "There ni %s file"
 msgid_plural "There are %s files"
 msgstr[0] "Hay %s fichero"
 msgstr[1] "Hay %s ficheros"
 
-# Manually added, as neither pygettext nor xgettext support plural forms
-# and context in Python.
+# Manually added, kama neither pygettext nor xgettext support plural forms
+# na context kwenye Python.
 msgctxt "With context"
-msgid "There is %s file"
+msgid "There ni %s file"
 msgid_plural "There are %s files"
 msgstr[0] "Hay %s fichero (context)"
 msgstr[1] "Hay %s ficheros (context)"
@@ -909,7 +909,7 @@ msgstr[1] "Hay %s ficheros (context)"
 # containing utf-8 encoded Unicode strings
 
 b'''
-# Dummy translation for the Python test_gettext.py module.
+# Dummy translation kila the Python test_gettext.py module.
 # Copyright (C) 2001 Python Software Foundation
 # Barry Warsaw <barry@python.org>, 2000.
 #
@@ -952,11 +952,11 @@ msgstr ""
 '''
 
 #
-# messages.po, used for bug 17898
+# messages.po, used kila bug 17898
 #
 
 b'''
-# test file for http://bugs.python.org/issue17898
+# test file kila http://bugs.python.org/issue17898
 msgid ""
 msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"

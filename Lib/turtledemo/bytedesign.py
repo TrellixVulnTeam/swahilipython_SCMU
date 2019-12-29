@@ -6,7 +6,7 @@
 An example adapted kutoka the example-suite
 of PythonCard's turtle graphics.
 
-It's based on an article in BYTE magazine
+It's based on an article kwenye BYTE magazine
 Problem Solving with Logo: Using Turtle
 Graphics to Redraw a Design
 November 1982, p. 118 - 134
@@ -18,20 +18,20 @@ Due to the statement
 t.delay(0)
 
 in line 152, which sets the animation delay
-to 0, this animation runs in "line per line"
-mode as fast as possible.
+to 0, this animation runs kwenye "line per line"
+mode kama fast kama possible.
 """
 
 kutoka turtle agiza Turtle, mainloop
-kutoka time agiza perf_counter as clock
+kutoka time agiza perf_counter kama clock
 
-# wrapper for any additional drawing routines
+# wrapper kila any additional drawing routines
 # that need to know about each other
 kundi Designer(Turtle):
 
     eleza design(self, homePos, scale):
         self.up()
-        for i in range(5):
+        kila i kwenye range(5):
             self.forward(64.65 * scale)
             self.down()
             self.wheel(self.position(), scale)
@@ -45,18 +45,18 @@ kundi Designer(Turtle):
         self.right(198)
         self.down()
         self.centerpiece(46 * scale, 143.4, scale)
-        self.getscreen().tracer(True)
+        self.getscreen().tracer(Kweli)
 
     eleza wheel(self, initpos, scale):
         self.right(54)
-        for i in range(4):
+        kila i kwenye range(4):
             self.pentpiece(initpos, scale)
         self.down()
         self.left(36)
-        for i in range(5):
+        kila i kwenye range(5):
             self.tripiece(initpos, scale)
         self.left(36)
-        for i in range(5):
+        kila i kwenye range(5):
             self.down()
             self.right(72)
             self.forward(28 * scale)
@@ -87,7 +87,7 @@ kundi Designer(Turtle):
         self.up()
         self.forward(29 * scale)
         self.down()
-        for i in range(5):
+        kila i kwenye range(5):
             self.forward(18 * scale)
             self.right(72)
         self.pentr(18 * scale, 75, scale)
@@ -96,7 +96,7 @@ kundi Designer(Turtle):
         self.setheading(oldh)
         self.forward(29 * scale)
         self.down()
-        for i in range(5):
+        kila i kwenye range(5):
             self.forward(18 * scale)
             self.right(72)
         self.pentl(18 * scale, 75, scale)
@@ -107,19 +107,19 @@ kundi Designer(Turtle):
         self.getscreen().update()
 
     eleza pentl(self, side, ang, scale):
-        ikiwa side < (2 * scale): return
+        ikiwa side < (2 * scale): rudisha
         self.forward(side)
         self.left(ang)
         self.pentl(side - (.38 * scale), ang, scale)
 
     eleza pentr(self, side, ang, scale):
-        ikiwa side < (2 * scale): return
+        ikiwa side < (2 * scale): rudisha
         self.forward(side)
         self.right(ang)
         self.pentr(side - (.38 * scale), ang, scale)
 
     eleza tripolyr(self, side, scale):
-        ikiwa side < (4 * scale): return
+        ikiwa side < (4 * scale): rudisha
         self.forward(side)
         self.right(111)
         self.forward(side / 1.78)
@@ -129,7 +129,7 @@ kundi Designer(Turtle):
         self.tripolyr(side * .75, scale)
 
     eleza tripolyl(self, side, scale):
-        ikiwa side < (4 * scale): return
+        ikiwa side < (4 * scale): rudisha
         self.forward(side)
         self.left(111)
         self.forward(side / 1.78)
@@ -141,7 +141,7 @@ kundi Designer(Turtle):
     eleza centerpiece(self, s, a, scale):
         self.forward(s); self.left(a)
         ikiwa s < (7.5 * scale):
-            return
+            rudisha
         self.centerpiece(s - (1.2 * scale), a, scale)
 
 eleza main():

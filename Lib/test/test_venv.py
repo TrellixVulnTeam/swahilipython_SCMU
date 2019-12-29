@@ -1,5 +1,5 @@
 """
-Test harness for the venv module.
+Test harness kila the venv module.
 
 Copyright (C) 2011-2012 Vinay Sajip.
 Licensed to the PSF under a contributor agreement.
@@ -21,31 +21,31 @@ agiza threading
 agiza unittest
 agiza venv
 
-try:
+jaribu:
     agiza ctypes
-except ImportError:
-    ctypes = None
+tatizo ImportError:
+    ctypes = Tupu
 
 # Platforms that set sys._base_executable can create venvs kutoka within
 # another venv, so no need to skip tests that require venv.create().
 requireVenvCreate = unittest.skipUnless(
     sys.prefix == sys.base_prefix
-    or sys._base_executable != sys.executable,
+    ama sys._base_executable != sys.executable,
     'cannot run venv.create kutoka within a venv on this platform')
 
-eleza check_output(cmd, encoding=None):
+eleza check_output(cmd, encoding=Tupu):
     p = subprocess.Popen(cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         encoding=encoding)
     out, err = p.communicate()
     ikiwa p.returncode:
-        raise subprocess.CalledProcessError(
+        ashiria subprocess.CalledProcessError(
             p.returncode, cmd, out, err)
     rudisha out, err
 
 kundi BaseTest(unittest.TestCase):
-    """Base kundi for venv tests."""
+    """Base kundi kila venv tests."""
     maxDiff = 80 * 50
 
     eleza setUp(self):
@@ -54,25 +54,25 @@ kundi BaseTest(unittest.TestCase):
             self.bindir = 'Scripts'
             self.lib = ('Lib',)
             self.include = 'Include'
-        else:
+        isipokua:
             self.bindir = 'bin'
             self.lib = ('lib', 'python%d.%d' % sys.version_info[:2])
             self.include = 'include'
         executable = sys._base_executable
         self.exe = os.path.split(executable)[-1]
         ikiwa (sys.platform == 'win32'
-            and os.path.lexists(executable)
-            and not os.path.exists(executable)):
-            self.cannot_link_exe = True
-        else:
-            self.cannot_link_exe = False
+            na os.path.lexists(executable)
+            na sio os.path.exists(executable)):
+            self.cannot_link_exe = Kweli
+        isipokua:
+            self.cannot_link_exe = Uongo
 
     eleza tearDown(self):
         rmtree(self.env_dir)
 
     eleza run_with_capture(self, func, *args, **kwargs):
-        with captured_stdout() as output:
-            with captured_stderr() as error:
+        with captured_stdout() kama output:
+            with captured_stderr() kama error:
                 func(*args, **kwargs)
         rudisha output.getvalue(), error.getvalue()
 
@@ -80,7 +80,7 @@ kundi BaseTest(unittest.TestCase):
         rudisha os.path.join(self.env_dir, *args)
 
     eleza get_text_file_contents(self, *args):
-        with open(self.get_env_file(*args), 'r') as f:
+        with open(self.get_env_file(*args), 'r') kama f:
             result = f.read()
         rudisha result
 
@@ -89,7 +89,7 @@ kundi BasicTest(BaseTest):
 
     eleza isdir(self, *args):
         fn = self.get_env_file(*args)
-        self.assertTrue(os.path.isdir(fn))
+        self.assertKweli(os.path.isdir(fn))
 
     eleza test_defaults(self):
         """
@@ -102,22 +102,22 @@ kundi BasicTest(BaseTest):
         self.isdir(*self.lib)
         # Issue 21197
         p = self.get_env_file('lib64')
-        conditions = ((struct.calcsize('P') == 8) and (os.name == 'posix') and
+        conditions = ((struct.calcsize('P') == 8) na (os.name == 'posix') and
                       (sys.platform != 'darwin'))
         ikiwa conditions:
-            self.assertTrue(os.path.islink(p))
-        else:
-            self.assertFalse(os.path.exists(p))
+            self.assertKweli(os.path.islink(p))
+        isipokua:
+            self.assertUongo(os.path.exists(p))
         data = self.get_text_file_contents('pyvenv.cfg')
         executable = sys._base_executable
         path = os.path.dirname(executable)
         self.assertIn('home = %s' % path, data)
         fn = self.get_env_file(self.bindir, self.exe)
-        ikiwa not os.path.exists(fn):  # diagnostics for Windows buildbot failures
+        ikiwa sio os.path.exists(fn):  # diagnostics kila Windows buildbot failures
             bd = self.get_env_file(self.bindir)
             andika('Contents of %r:' % bd)
             andika('    %r' % os.listdir(bd))
-        self.assertTrue(os.path.exists(fn), 'File %r should exist.' % fn)
+        self.assertKweli(os.path.exists(fn), 'File %r should exist.' % fn)
 
     eleza test_prompt(self):
         env_name = os.path.split(self.env_dir)[1]
@@ -141,14 +141,14 @@ kundi BasicTest(BaseTest):
     @requireVenvCreate
     eleza test_prefixes(self):
         """
-        Test that the prefix values are as expected.
+        Test that the prefix values are kama expected.
         """
         # check a venv's prefixes
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
         envpy = os.path.join(self.env_dir, self.bindir, self.exe)
-        cmd = [envpy, '-c', None]
-        for prefix, expected in (
+        cmd = [envpy, '-c', Tupu]
+        kila prefix, expected kwenye (
             ('prefix', self.env_dir),
             ('exec_prefix', self.env_dir),
             ('base_prefix', sys.base_prefix),
@@ -164,7 +164,7 @@ kundi BasicTest(BaseTest):
             ('Lib',),
             ('Lib', 'site-packages'),
         )
-    else:
+    isipokua:
         ENV_SUBDIRS = (
             ('bin',),
             ('include',),
@@ -175,47 +175,47 @@ kundi BasicTest(BaseTest):
 
     eleza create_contents(self, paths, filename):
         """
-        Create some files in the environment which are unrelated
+        Create some files kwenye the environment which are unrelated
         to the virtual environment.
         """
-        for subdirs in paths:
+        kila subdirs kwenye paths:
             d = os.path.join(self.env_dir, *subdirs)
             os.mkdir(d)
             fn = os.path.join(d, filename)
-            with open(fn, 'wb') as f:
+            with open(fn, 'wb') kama f:
                 f.write(b'Still here?')
 
     eleza test_overwrite_existing(self):
         """
-        Test creating environment in an existing directory.
+        Test creating environment kwenye an existing directory.
         """
         self.create_contents(self.ENV_SUBDIRS, 'foo')
         venv.create(self.env_dir)
-        for subdirs in self.ENV_SUBDIRS:
+        kila subdirs kwenye self.ENV_SUBDIRS:
             fn = os.path.join(self.env_dir, *(subdirs + ('foo',)))
-            self.assertTrue(os.path.exists(fn))
-            with open(fn, 'rb') as f:
+            self.assertKweli(os.path.exists(fn))
+            with open(fn, 'rb') kama f:
                 self.assertEqual(f.read(), b'Still here?')
 
-        builder = venv.EnvBuilder(clear=True)
+        builder = venv.EnvBuilder(clear=Kweli)
         builder.create(self.env_dir)
-        for subdirs in self.ENV_SUBDIRS:
+        kila subdirs kwenye self.ENV_SUBDIRS:
             fn = os.path.join(self.env_dir, *(subdirs + ('foo',)))
-            self.assertFalse(os.path.exists(fn))
+            self.assertUongo(os.path.exists(fn))
 
     eleza clear_directory(self, path):
-        for fn in os.listdir(path):
+        kila fn kwenye os.listdir(path):
             fn = os.path.join(path, fn)
-            ikiwa os.path.islink(fn) or os.path.isfile(fn):
+            ikiwa os.path.islink(fn) ama os.path.isfile(fn):
                 os.remove(fn)
             elikiwa os.path.isdir(fn):
                 rmtree(fn)
 
     eleza test_unoverwritable_fails(self):
-        #create a file clashing with directories in the env dir
-        for paths in self.ENV_SUBDIRS[:3]:
+        #create a file clashing with directories kwenye the env dir
+        kila paths kwenye self.ENV_SUBDIRS[:3]:
             fn = os.path.join(self.env_dir, *paths)
-            with open(fn, 'wb') as f:
+            with open(fn, 'wb') kama f:
                 f.write(b'')
             self.assertRaises((ValueError, OSError), venv.create, self.env_dir)
             self.clear_directory(self.env_dir)
@@ -227,26 +227,26 @@ kundi BasicTest(BaseTest):
         # See Issue #21643: the loop needs to run twice to ensure
         # that everything works on the upgrade (the first run just creates
         # the venv).
-        for upgrade in (False, True):
+        kila upgrade kwenye (Uongo, Kweli):
             builder = venv.EnvBuilder(upgrade=upgrade)
             self.run_with_capture(builder.create, self.env_dir)
             self.isdir(self.bindir)
             self.isdir(self.include)
             self.isdir(*self.lib)
             fn = self.get_env_file(self.bindir, self.exe)
-            ikiwa not os.path.exists(fn):
-                # diagnostics for Windows buildbot failures
+            ikiwa sio os.path.exists(fn):
+                # diagnostics kila Windows buildbot failures
                 bd = self.get_env_file(self.bindir)
                 andika('Contents of %r:' % bd)
                 andika('    %r' % os.listdir(bd))
-            self.assertTrue(os.path.exists(fn), 'File %r should exist.' % fn)
+            self.assertKweli(os.path.exists(fn), 'File %r should exist.' % fn)
 
     eleza test_isolation(self):
         """
         Test isolation kutoka system site-packages
         """
-        for ssp, s in ((True, 'true'), (False, 'false')):
-            builder = venv.EnvBuilder(clear=True, system_site_packages=ssp)
+        kila ssp, s kwenye ((Kweli, 'true'), (Uongo, 'false')):
+            builder = venv.EnvBuilder(clear=Kweli, system_site_packages=ssp)
             builder.create(self.env_dir)
             data = self.get_text_file_contents('pyvenv.cfg')
             self.assertIn('include-system-site-packages = %s\n' % s, data)
@@ -254,31 +254,31 @@ kundi BasicTest(BaseTest):
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
     eleza test_symlinking(self):
         """
-        Test symlinking works as expected
+        Test symlinking works kama expected
         """
-        for usl in (False, True):
-            builder = venv.EnvBuilder(clear=True, symlinks=usl)
+        kila usl kwenye (Uongo, Kweli):
+            builder = venv.EnvBuilder(clear=Kweli, symlinks=usl)
             builder.create(self.env_dir)
             fn = self.get_env_file(self.bindir, self.exe)
-            # Don't test when False, because e.g. 'python' is always
-            # symlinked to 'python3.3' in the env, even when symlinking in
+            # Don't test when Uongo, because e.g. 'python' ni always
+            # symlinked to 'python3.3' kwenye the env, even when symlinking in
             # general isn't wanted.
             ikiwa usl:
                 ikiwa self.cannot_link_exe:
-                    # Symlinking is skipped when our executable is already a
+                    # Symlinking ni skipped when our executable ni already a
                     # special app symlink
-                    self.assertFalse(os.path.islink(fn))
-                else:
-                    self.assertTrue(os.path.islink(fn))
+                    self.assertUongo(os.path.islink(fn))
+                isipokua:
+                    self.assertKweli(os.path.islink(fn))
 
-    # If a venv is created kutoka a source build and that venv is used to
-    # run the test, the pyvenv.cfg in the venv created in the test will
-    # point to the venv being used to run the test, and we lose the link
+    # If a venv ni created kutoka a source build na that venv ni used to
+    # run the test, the pyvenv.cfg kwenye the venv created kwenye the test will
+    # point to the venv being used to run the test, na we lose the link
     # to the source build - so Python can't initialise properly.
     @requireVenvCreate
     eleza test_executable(self):
         """
-        Test that the sys.executable value is as expected.
+        Test that the sys.executable value ni kama expected.
         """
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
@@ -291,10 +291,10 @@ kundi BasicTest(BaseTest):
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
     eleza test_executable_symlinks(self):
         """
-        Test that the sys.executable value is as expected.
+        Test that the sys.executable value ni kama expected.
         """
         rmtree(self.env_dir)
-        builder = venv.EnvBuilder(clear=True, symlinks=True)
+        builder = venv.EnvBuilder(clear=Kweli, symlinks=Kweli)
         builder.create(self.env_dir)
         envpy = os.path.join(os.path.realpath(self.env_dir),
                              self.bindir, self.exe)
@@ -309,7 +309,7 @@ kundi BasicTest(BaseTest):
         """
         rmtree(self.env_dir)
         env_dir = os.path.join(os.path.realpath(self.env_dir), 'ϼўТλФЙ')
-        builder = venv.EnvBuilder(clear=True)
+        builder = venv.EnvBuilder(clear=Kweli)
         builder.create(env_dir)
         activate = os.path.join(env_dir, self.bindir, 'activate.bat')
         envpy = os.path.join(env_dir, self.bindir, self.exe)
@@ -322,7 +322,7 @@ kundi BasicTest(BaseTest):
     @requireVenvCreate
     eleza test_multiprocessing(self):
         """
-        Test that the multiprocessing is able to spawn.
+        Test that the multiprocessing ni able to spawn.
         """
         # Issue bpo-36342: Instanciation of a Pool object agizas the
         # multiprocessing.synchronize module. Skip the test ikiwa this module
@@ -342,14 +342,14 @@ kundi BasicTest(BaseTest):
     @unittest.skipIf(os.name == 'nt', 'not relevant on Windows')
     eleza test_deactivate_with_strict_bash_opts(self):
         bash = shutil.which("bash")
-        ikiwa bash is None:
-            self.skipTest("bash required for this test")
+        ikiwa bash ni Tupu:
+            self.skipTest("bash required kila this test")
         rmtree(self.env_dir)
-        builder = venv.EnvBuilder(clear=True)
+        builder = venv.EnvBuilder(clear=Kweli)
         builder.create(self.env_dir)
         activate = os.path.join(self.env_dir, self.bindir, "activate")
         test_script = os.path.join(self.env_dir, "test_strict.sh")
-        with open(test_script, "w") as f:
+        with open(test_script, "w") kama f:
             f.write("set -euo pipefail\n"
                     f"source {activate}\n"
                     "deactivate\n")
@@ -365,7 +365,7 @@ kundi EnsurePipTest(BaseTest):
         envpy = os.path.join(os.path.realpath(self.env_dir),
                              self.bindir, self.exe)
         out, err = check_output([envpy, '-c',
-            'try:\n agiza pip\nexcept ImportError:\n andika("OK")'])
+            'jaribu:\n agiza pip\ntatizo ImportError:\n andika("OK")'])
         # We force everything to text, so unittest gives the detailed diff
         # ikiwa we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
@@ -381,27 +381,27 @@ kundi EnsurePipTest(BaseTest):
 
     eleza test_explicit_no_pip(self):
         rmtree(self.env_dir)
-        self.run_with_capture(venv.create, self.env_dir, with_pip=False)
+        self.run_with_capture(venv.create, self.env_dir, with_pip=Uongo)
         self.assert_pip_not_installed()
 
     eleza test_devnull(self):
-        # Fix for issue #20053 uses os.devnull to force a config file to
+        # Fix kila issue #20053 uses os.devnull to force a config file to
         # appear empty. However http://bugs.python.org/issue20541 means
         # that doesn't currently work properly on Windows. Once that is
         # fixed, the "win_location" part of test_with_pip should be restored
-        with open(os.devnull, "rb") as f:
+        with open(os.devnull, "rb") kama f:
             self.assertEqual(f.read(), b"")
 
-        self.assertTrue(os.path.exists(os.devnull))
+        self.assertKweli(os.path.exists(os.devnull))
 
     eleza do_test_with_pip(self, system_site_packages):
         rmtree(self.env_dir)
-        with EnvironmentVarGuard() as envvars:
+        with EnvironmentVarGuard() kama envvars:
             # pip's cross-version compatibility may trigger deprecation
-            # warnings in current versions of Python. Ensure related
+            # warnings kwenye current versions of Python. Ensure related
             # environment settings don't cause venv to fail.
             envvars["PYTHONWARNINGS"] = "e"
-            # ensurepip is different enough kutoka a normal pip invocation
+            # ensurepip ni different enough kutoka a normal pip invocation
             # that we want to ensure it ignores the normal pip environment
             # variable settings. We set PIP_NO_INSTALL here specifically
             # to check that ensurepip (and hence venv) ignores it.
@@ -409,36 +409,36 @@ kundi EnsurePipTest(BaseTest):
             envvars["PIP_NO_INSTALL"] = "1"
             # Also check that we ignore the pip configuration file
             # See http://bugs.python.org/issue20053
-            with tempfile.TemporaryDirectory() as home_dir:
+            with tempfile.TemporaryDirectory() kama home_dir:
                 envvars["HOME"] = home_dir
                 bad_config = "[global]\nno-install=1"
                 # Write to both config file names on all platforms to reduce
-                # cross-platform variation in test code behaviour
+                # cross-platform variation kwenye test code behaviour
                 win_location = ("pip", "pip.ini")
                 posix_location = (".pip", "pip.conf")
                 # Skips win_location due to http://bugs.python.org/issue20541
-                for dirname, fname in (posix_location,):
+                kila dirname, fname kwenye (posix_location,):
                     dirpath = os.path.join(home_dir, dirname)
                     os.mkdir(dirpath)
                     fpath = os.path.join(dirpath, fname)
-                    with open(fpath, 'w') as f:
+                    with open(fpath, 'w') kama f:
                         f.write(bad_config)
 
                 # Actually run the create command with all that unhelpful
-                # config in place to ensure we ignore it
-                try:
+                # config kwenye place to ensure we ignore it
+                jaribu:
                     self.run_with_capture(venv.create, self.env_dir,
                                           system_site_packages=system_site_packages,
-                                          with_pip=True)
-                except subprocess.CalledProcessError as exc:
+                                          with_pip=Kweli)
+                tatizo subprocess.CalledProcessError kama exc:
                     # The output this produces can be a little hard to read,
                     # but at least it has all the details
                     details = exc.output.decode(errors="replace")
                     msg = "{}\n\n**Subprocess Output**\n{}"
                     self.fail(msg.format(exc, details))
-        # Ensure pip is available in the virtual environment
+        # Ensure pip ni available kwenye the virtual environment
         envpy = os.path.join(os.path.realpath(self.env_dir), self.bindir, self.exe)
-        # Ignore DeprecationWarning since pip code is not part of Python
+        # Ignore DeprecationWarning since pip code ni sio part of Python
         out, err = check_output([envpy, '-W', 'ignore::DeprecationWarning', '-I',
                '-m', 'pip', '--version'])
         # We force everything to text, so unittest gives the detailed diff
@@ -452,9 +452,9 @@ kundi EnsurePipTest(BaseTest):
         self.assertIn(env_dir, out)
 
         # http://bugs.python.org/issue19728
-        # Check the private uninstall command provided for the Windows
-        # installers works (at least in a virtual environment)
-        with EnvironmentVarGuard() as envvars:
+        # Check the private uninstall command provided kila the Windows
+        # installers works (at least kwenye a virtual environment)
+        with EnvironmentVarGuard() kama envvars:
             out, err = check_output([envpy,
                 '-W', 'ignore::DeprecationWarning', '-I',
                 '-m', 'ensurepip._uninstall'])
@@ -462,33 +462,33 @@ kundi EnsurePipTest(BaseTest):
         # ikiwa we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
         # Ignore the warning:
-        #   "The directory '$HOME/.cache/pip/http' or its parent directory
-        #    is not owned by the current user and the cache has been disabled.
-        #    Please check the permissions and owner of that directory. If
+        #   "The directory '$HOME/.cache/pip/http' ama its parent directory
+        #    ni sio owned by the current user na the cache has been disabled.
+        #    Please check the permissions na owner of that directory. If
         #    executing pip with sudo, you may want sudo's -H flag."
-        # where $HOME is replaced by the HOME environment variable.
-        err = re.sub("^(WARNING: )?The directory .* or its parent directory "
-                     "is not owned by the current user .*$", "",
+        # where $HOME ni replaced by the HOME environment variable.
+        err = re.sub("^(WARNING: )?The directory .* ama its parent directory "
+                     "is sio owned by the current user .*$", "",
                      err, flags=re.MULTILINE)
         self.assertEqual(err.rstrip(), "")
-        # Being fairly specific regarding the expected behaviour for the
-        # initial bundling phase in Python 3.4. If the output changes in
+        # Being fairly specific regarding the expected behaviour kila the
+        # initial bundling phase kwenye Python 3.4. If the output changes in
         # future pip versions, this test can likely be relaxed further.
         out = out.decode("latin-1") # Force to text, prevent decoding errors
         self.assertIn("Successfully uninstalled pip", out)
         self.assertIn("Successfully uninstalled setuptools", out)
-        # Check pip is now gone kutoka the virtual environment. This only
-        # applies in the system_site_packages=False case, because in the
-        # other case, pip may still be available in the system site-packages
-        ikiwa not system_site_packages:
+        # Check pip ni now gone kutoka the virtual environment. This only
+        # applies kwenye the system_site_packages=Uongo case, because kwenye the
+        # other case, pip may still be available kwenye the system site-packages
+        ikiwa sio system_site_packages:
             self.assert_pip_not_installed()
 
     # Issue #26610: pip/pep425tags.py requires ctypes
     @unittest.skipUnless(ctypes, 'pip requires ctypes')
     @requires_zlib
     eleza test_with_pip(self):
-        self.do_test_with_pip(False)
-        self.do_test_with_pip(True)
+        self.do_test_with_pip(Uongo)
+        self.do_test_with_pip(Kweli)
 
 ikiwa __name__ == "__main__":
     unittest.main()

@@ -7,7 +7,7 @@ kutoka ..fixer_util agiza Name
 
 
 kundi FixFuncattrs(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     power< any+ trailer< '.' attr=('func_closure' | 'func_doc' | 'func_globals'

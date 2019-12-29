@@ -14,61 +14,61 @@ eleza abspath(filename):
 
 
 eleza normalize_trace_output(output):
-    """Normalize DTrace output for comparison.
+    """Normalize DTrace output kila comparison.
 
-    DTrace keeps a per-CPU buffer, and when showing the fired probes, buffers
+    DTrace keeps a per-CPU buffer, na when showing the fired probes, buffers
     are concatenated. So ikiwa the operating system moves our thread around, the
     straight result can be "non-causal". So we add timestamps to the probe
     firing, sort by that field, then strip it kutoka the output"""
 
     # When compiling with '--with-pydebug', strip '[# refs]' debug output.
     output = re.sub(r"\[[0-9]+ refs\]", "", output)
-    try:
+    jaribu:
         result = [
             row.split("\t")
-            for row in output.splitlines()
-            ikiwa row and not row.startswith('#')
+            kila row kwenye output.splitlines()
+            ikiwa row na sio row.startswith('#')
         ]
         result.sort(key=lambda row: int(row[0]))
-        result = [row[1] for row in result]
+        result = [row[1] kila row kwenye result]
         rudisha "\n".join(result)
-    except (IndexError, ValueError):
-        raise AssertionError(
+    tatizo (IndexError, ValueError):
+        ashiria AssertionError(
             "tracer produced unparseable output:\n{}".format(output)
         )
 
 
 kundi TraceBackend:
-    EXTENSION = None
-    COMMAND = None
+    EXTENSION = Tupu
+    COMMAND = Tupu
     COMMAND_ARGS = []
 
-    eleza run_case(self, name, optimize_python=None):
+    eleza run_case(self, name, optimize_python=Tupu):
         actual_output = normalize_trace_output(self.trace_python(
             script_file=abspath(name + self.EXTENSION),
             python_file=abspath(name + ".py"),
             optimize_python=optimize_python))
 
-        with open(abspath(name + self.EXTENSION + ".expected")) as f:
+        with open(abspath(name + self.EXTENSION + ".expected")) kama f:
             expected_output = f.read().rstrip()
 
         rudisha (expected_output, actual_output)
 
-    eleza generate_trace_command(self, script_file, subcommand=None):
+    eleza generate_trace_command(self, script_file, subcommand=Tupu):
         command = self.COMMAND + [script_file]
         ikiwa subcommand:
             command += ["-c", subcommand]
         rudisha command
 
-    eleza trace(self, script_file, subcommand=None):
+    eleza trace(self, script_file, subcommand=Tupu):
         command = self.generate_trace_command(script_file, subcommand)
         stdout, _ = subprocess.Popen(command,
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.STDOUT,
-                                     universal_newlines=True).communicate()
+                                     universal_newlines=Kweli).communicate()
         rudisha stdout
 
-    eleza trace_python(self, script_file, python_file, optimize_python=None):
+    eleza trace_python(self, script_file, python_file, optimize_python=Tupu):
         python_flags = []
         ikiwa optimize_python:
             python_flags.extend(["-O"] * optimize_python)
@@ -76,13 +76,13 @@ kundi TraceBackend:
         rudisha self.trace(script_file, subcommand)
 
     eleza assert_usable(self):
-        try:
+        jaribu:
             output = self.trace(abspath("assert_usable" + self.EXTENSION))
             output = output.strip()
-        except (FileNotFoundError, NotADirectoryError, PermissionError) as fnfe:
+        tatizo (FileNotFoundError, NotADirectoryError, PermissionError) kama fnfe:
             output = str(fnfe)
         ikiwa output != "probe: success":
-            raise unittest.SkipTest(
+            ashiria unittest.SkipTest(
                 "{}(1) failed: {}".format(self.COMMAND[0], output)
             )
 
@@ -99,10 +99,10 @@ kundi SystemTapBackend(TraceBackend):
 
 kundi TraceTests(unittest.TestCase):
     # unittest.TestCase options
-    maxDiff = None
+    maxDiff = Tupu
 
     # TraceTests options
-    backend = None
+    backend = Tupu
     optimize_python = 0
 
     @classmethod
@@ -114,7 +114,7 @@ kundi TraceTests(unittest.TestCase):
             name, optimize_python=self.optimize_python)
         self.assertEqual(actual_output, expected_output)
 
-    eleza test_function_entry_return(self):
+    eleza test_function_entry_rudisha(self):
         self.run_case("call_stack")
 
     eleza test_verify_call_opcodes(self):
@@ -122,7 +122,7 @@ kundi TraceTests(unittest.TestCase):
 
         opcodes = set(["CALL_FUNCTION", "CALL_FUNCTION_EX", "CALL_FUNCTION_KW"])
 
-        with open(abspath("call_stack.py")) as f:
+        with open(abspath("call_stack.py")) kama f:
             code_string = f.read()
 
         eleza get_function_instructions(funcname):
@@ -132,12 +132,12 @@ kundi TraceTests(unittest.TestCase):
                            mode="exec",
                            optimize=self.optimize_python)
 
-            for c in code.co_consts:
-                ikiwa isinstance(c, types.CodeType) and c.co_name == funcname:
+            kila c kwenye code.co_consts:
+                ikiwa isinstance(c, types.CodeType) na c.co_name == funcname:
                     rudisha dis.get_instructions(c)
             rudisha []
 
-        for instruction in get_function_instructions('start'):
+        kila instruction kwenye get_function_instructions('start'):
             opcodes.discard(instruction.opname)
 
         self.assertEqual(set(), opcodes)

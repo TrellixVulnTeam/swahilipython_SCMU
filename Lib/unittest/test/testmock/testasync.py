@@ -8,33 +8,33 @@ kutoka unittest.mock agiza (ANY, call, AsyncMock, patch, MagicMock, Mock,
 
 
 eleza tearDownModule():
-    asyncio.set_event_loop_policy(None)
+    asyncio.set_event_loop_policy(Tupu)
 
 
 kundi AsyncClass:
     eleza __init__(self):
-        pass
+        pita
     async eleza async_method(self):
-        pass
+        pita
     eleza normal_method(self):
-        pass
+        pita
 
 kundi AwaitableClass:
     eleza __await__(self):
-        yield
+        tuma
 
 async eleza async_func():
-    pass
+    pita
 
 async eleza async_func_args(a, b, *, c):
-    pass
+    pita
 
 eleza normal_func():
-    pass
+    pita
 
 kundi NormalClass(object):
     eleza a(self):
-        pass
+        pita
 
 
 async_foo_name = f'{__name__}.AsyncClass'
@@ -45,20 +45,20 @@ kundi AsyncPatchDecoratorTest(unittest.TestCase):
     eleza test_is_coroutine_function_patch(self):
         @patch.object(AsyncClass, 'async_method')
         eleza test_async(mock_method):
-            self.assertTrue(asyncio.iscoroutinefunction(mock_method))
+            self.assertKweli(asyncio.iscoroutinefunction(mock_method))
         test_async()
 
     eleza test_is_async_patch(self):
         @patch.object(AsyncClass, 'async_method')
         eleza test_async(mock_method):
             m = mock_method()
-            self.assertTrue(inspect.isawaitable(m))
+            self.assertKweli(inspect.isawaitable(m))
             asyncio.run(m)
 
         @patch(f'{async_foo_name}.async_method')
         eleza test_no_parent_attribute(mock_method):
             m = mock_method()
-            self.assertTrue(inspect.isawaitable(m))
+            self.assertKweli(inspect.isawaitable(m))
             asyncio.run(m)
 
         test_async()
@@ -77,29 +77,29 @@ kundi AsyncPatchDecoratorTest(unittest.TestCase):
             self.assertIsInstance(async_func, AsyncMock)
 
         asyncio.run(test_async())
-        self.assertTrue(inspect.iscoroutinefunction(async_func))
+        self.assertKweli(inspect.iscoroutinefunction(async_func))
 
 
 kundi AsyncPatchCMTest(unittest.TestCase):
     eleza test_is_async_function_cm(self):
         eleza test_async():
-            with patch.object(AsyncClass, 'async_method') as mock_method:
-                self.assertTrue(asyncio.iscoroutinefunction(mock_method))
+            with patch.object(AsyncClass, 'async_method') kama mock_method:
+                self.assertKweli(asyncio.iscoroutinefunction(mock_method))
 
         test_async()
 
     eleza test_is_async_cm(self):
         eleza test_async():
-            with patch.object(AsyncClass, 'async_method') as mock_method:
+            with patch.object(AsyncClass, 'async_method') kama mock_method:
                 m = mock_method()
-                self.assertTrue(inspect.isawaitable(m))
+                self.assertKweli(inspect.isawaitable(m))
                 asyncio.run(m)
 
         test_async()
 
     eleza test_is_AsyncMock_cm(self):
         eleza test_async():
-            with patch.object(AsyncClass, 'async_method') as mock_method:
+            with patch.object(AsyncClass, 'async_method') kama mock_method:
                 self.assertIsInstance(mock_method, AsyncMock)
 
         test_async()
@@ -108,7 +108,7 @@ kundi AsyncPatchCMTest(unittest.TestCase):
         async eleza test_async():
             with patch(f"{__name__}.async_func", AsyncMock()):
                 self.assertIsInstance(async_func, AsyncMock)
-            self.assertTrue(inspect.iscoroutinefunction(async_func))
+            self.assertKweli(inspect.iscoroutinefunction(async_func))
 
         asyncio.run(test_async())
 
@@ -116,26 +116,26 @@ kundi AsyncPatchCMTest(unittest.TestCase):
 kundi AsyncMockTest(unittest.TestCase):
     eleza test_iscoroutinefunction_default(self):
         mock = AsyncMock()
-        self.assertTrue(asyncio.iscoroutinefunction(mock))
+        self.assertKweli(asyncio.iscoroutinefunction(mock))
 
     eleza test_iscoroutinefunction_function(self):
-        async eleza foo(): pass
+        async eleza foo(): pita
         mock = AsyncMock(foo)
-        self.assertTrue(asyncio.iscoroutinefunction(mock))
-        self.assertTrue(inspect.iscoroutinefunction(mock))
+        self.assertKweli(asyncio.iscoroutinefunction(mock))
+        self.assertKweli(inspect.iscoroutinefunction(mock))
 
     eleza test_isawaitable(self):
         mock = AsyncMock()
         m = mock()
-        self.assertTrue(inspect.isawaitable(m))
+        self.assertKweli(inspect.isawaitable(m))
         asyncio.run(m)
         self.assertIn('assert_awaited', dir(mock))
 
     eleza test_iscoroutinefunction_normal_function(self):
-        eleza foo(): pass
+        eleza foo(): pita
         mock = AsyncMock(foo)
-        self.assertTrue(asyncio.iscoroutinefunction(mock))
-        self.assertTrue(inspect.iscoroutinefunction(mock))
+        self.assertKweli(asyncio.iscoroutinefunction(mock))
+        self.assertKweli(inspect.iscoroutinefunction(mock))
 
     eleza test_future_isfuture(self):
         loop = asyncio.new_event_loop()
@@ -149,12 +149,12 @@ kundi AsyncMockTest(unittest.TestCase):
 
 kundi AsyncAutospecTest(unittest.TestCase):
     eleza test_is_AsyncMock_patch(self):
-        @patch(async_foo_name, autospec=True)
+        @patch(async_foo_name, autospec=Kweli)
         eleza test_async(mock_method):
             self.assertIsInstance(mock_method.async_method, AsyncMock)
             self.assertIsInstance(mock_method, MagicMock)
 
-        @patch(async_foo_name, autospec=True)
+        @patch(async_foo_name, autospec=Kweli)
         eleza test_normal_method(mock_method):
             self.assertIsInstance(mock_method.normal_method, MagicMock)
 
@@ -163,7 +163,7 @@ kundi AsyncAutospecTest(unittest.TestCase):
 
     eleza test_create_autospec_instance(self):
         with self.assertRaises(RuntimeError):
-            create_autospec(async_func, instance=True)
+            create_autospec(async_func, instance=Kweli)
 
     eleza test_create_autospec_awaitable_class(self):
         awaitable_mock = create_autospec(spec=AwaitableClass())
@@ -176,14 +176,14 @@ kundi AsyncAutospecTest(unittest.TestCase):
             await awaitable
 
         self.assertEqual(spec.await_count, 0)
-        self.assertIsNone(spec.await_args)
+        self.assertIsTupu(spec.await_args)
         self.assertEqual(spec.await_args_list, [])
         spec.assert_not_awaited()
 
         asyncio.run(main())
 
-        self.assertTrue(asyncio.iscoroutinefunction(spec))
-        self.assertTrue(asyncio.iscoroutine(awaitable))
+        self.assertKweli(asyncio.iscoroutinefunction(spec))
+        self.assertKweli(asyncio.iscoroutine(awaitable))
         self.assertEqual(spec.await_count, 1)
         self.assertEqual(spec.await_args, call(1, 2, c=3))
         self.assertEqual(spec.await_args_list, [call(1, 2, c=3)])
@@ -195,18 +195,18 @@ kundi AsyncAutospecTest(unittest.TestCase):
     eleza test_patch_with_autospec(self):
 
         async eleza test_async():
-            with patch(f"{__name__}.async_func_args", autospec=True) as mock_method:
+            with patch(f"{__name__}.async_func_args", autospec=Kweli) kama mock_method:
                 awaitable = mock_method(1, 2, c=3)
                 self.assertIsInstance(mock_method.mock, AsyncMock)
 
-                self.assertTrue(asyncio.iscoroutinefunction(mock_method))
-                self.assertTrue(asyncio.iscoroutine(awaitable))
-                self.assertTrue(inspect.isawaitable(awaitable))
+                self.assertKweli(asyncio.iscoroutinefunction(mock_method))
+                self.assertKweli(asyncio.iscoroutine(awaitable))
+                self.assertKweli(inspect.isawaitable(awaitable))
 
                 # Verify the default values during mock setup
                 self.assertEqual(mock_method.await_count, 0)
                 self.assertEqual(mock_method.await_args_list, [])
-                self.assertIsNone(mock_method.await_args)
+                self.assertIsTupu(mock_method.await_args)
                 mock_method.assert_not_awaited()
 
                 await awaitable
@@ -221,7 +221,7 @@ kundi AsyncAutospecTest(unittest.TestCase):
 
             mock_method.reset_mock()
             self.assertEqual(mock_method.await_count, 0)
-            self.assertIsNone(mock_method.await_args)
+            self.assertIsTupu(mock_method.await_args)
             self.assertEqual(mock_method.await_args_list, [])
 
         asyncio.run(test_async())
@@ -234,7 +234,7 @@ kundi AsyncSpecTest(unittest.TestCase):
             self.assertIsInstance(mock.async_method, AsyncMock)
             self.assertIsInstance(mock.normal_method, MagicMock)
 
-        for mock_type in [AsyncMock, MagicMock]:
+        kila mock_type kwenye [AsyncMock, MagicMock]:
             with self.subTest(f"test method types with {mock_type}"):
                 inner_test(mock_type)
 
@@ -248,13 +248,13 @@ kundi AsyncSpecTest(unittest.TestCase):
             async_mock = mock_type(spec=async_func)
             self.assertIsInstance(async_mock, mock_type)
             with self.assertWarns(RuntimeWarning):
-                # Will raise a warning because never awaited
-                self.assertTrue(inspect.isawaitable(async_mock()))
+                # Will ashiria a warning because never awaited
+                self.assertKweli(inspect.isawaitable(async_mock()))
 
             sync_mock = mock_type(spec=normal_func)
             self.assertIsInstance(sync_mock, mock_type)
 
-        for mock_type in [AsyncMock, MagicMock, Mock]:
+        kila mock_type kwenye [AsyncMock, MagicMock, Mock]:
             with self.subTest(f"test spec kwarg with {mock_type}"):
                 inner_test(mock_type)
 
@@ -263,13 +263,13 @@ kundi AsyncSpecTest(unittest.TestCase):
             async_mock = mock_type(async_func)
             self.assertIsInstance(async_mock, mock_type)
             with self.assertWarns(RuntimeWarning):
-                # Will raise a warning because never awaited
-                self.assertTrue(inspect.isawaitable(async_mock()))
+                # Will ashiria a warning because never awaited
+                self.assertKweli(inspect.isawaitable(async_mock()))
 
             sync_mock = mock_type(normal_func)
             self.assertIsInstance(sync_mock, mock_type)
 
-        for mock_type in [AsyncMock, MagicMock, Mock]:
+        kila mock_type kwenye [AsyncMock, MagicMock, Mock]:
             with self.subTest(f"test spec positional with {mock_type}"):
                 inner_test(mock_type)
 
@@ -277,25 +277,25 @@ kundi AsyncSpecTest(unittest.TestCase):
         mock = AsyncMock(spec=normal_func)
         self.assertIsInstance(mock, AsyncMock)
         m = mock()
-        self.assertTrue(inspect.isawaitable(m))
+        self.assertKweli(inspect.isawaitable(m))
         asyncio.run(m)
 
     eleza test_spec_as_normal_positional_AsyncMock(self):
         mock = AsyncMock(normal_func)
         self.assertIsInstance(mock, AsyncMock)
         m = mock()
-        self.assertTrue(inspect.isawaitable(m))
+        self.assertKweli(inspect.isawaitable(m))
         asyncio.run(m)
 
     eleza test_spec_async_mock(self):
-        @patch.object(AsyncClass, 'async_method', spec=True)
+        @patch.object(AsyncClass, 'async_method', spec=Kweli)
         eleza test_async(mock_method):
             self.assertIsInstance(mock_method, AsyncMock)
 
         test_async()
 
     eleza test_spec_parent_not_async_attribute_is(self):
-        @patch(async_foo_name, spec=True)
+        @patch(async_foo_name, spec=Kweli)
         eleza test_async(mock_method):
             self.assertIsInstance(mock_method, MagicMock)
             self.assertIsInstance(mock_method.async_method, AsyncMock)
@@ -306,8 +306,8 @@ kundi AsyncSpecTest(unittest.TestCase):
         @patch.object(AsyncClass, 'async_method', spec=NormalClass.a)
         eleza test_async_attribute(mock_method):
             self.assertIsInstance(mock_method, MagicMock)
-            self.assertFalse(inspect.iscoroutine(mock_method))
-            self.assertFalse(inspect.isawaitable(mock_method))
+            self.assertUongo(inspect.iscoroutine(mock_method))
+            self.assertUongo(inspect.isawaitable(mock_method))
 
         test_async_attribute()
 
@@ -328,19 +328,19 @@ kundi AsyncSpecTest(unittest.TestCase):
 
 kundi AsyncSpecSetTest(unittest.TestCase):
     eleza test_is_AsyncMock_patch(self):
-        @patch.object(AsyncClass, 'async_method', spec_set=True)
+        @patch.object(AsyncClass, 'async_method', spec_set=Kweli)
         eleza test_async(async_method):
             self.assertIsInstance(async_method, AsyncMock)
 
     eleza test_is_async_AsyncMock(self):
         mock = AsyncMock(spec_set=AsyncClass.async_method)
-        self.assertTrue(asyncio.iscoroutinefunction(mock))
+        self.assertKweli(asyncio.iscoroutinefunction(mock))
         self.assertIsInstance(mock, AsyncMock)
 
     eleza test_is_child_AsyncMock(self):
         mock = MagicMock(spec_set=AsyncClass)
-        self.assertTrue(asyncio.iscoroutinefunction(mock.async_method))
-        self.assertFalse(asyncio.iscoroutinefunction(mock.normal_method))
+        self.assertKweli(asyncio.iscoroutinefunction(mock.async_method))
+        self.assertUongo(asyncio.iscoroutinefunction(mock.normal_method))
         self.assertIsInstance(mock.async_method, AsyncMock)
         self.assertIsInstance(mock.normal_method, MagicMock)
         self.assertIsInstance(mock, MagicMock)
@@ -349,16 +349,16 @@ kundi AsyncSpecSetTest(unittest.TestCase):
         mock_obj = MagicMock()
         mock_obj.mock_func = MagicMock(spec=lambda x: x)
 
-        with patch.object(mock_obj, "mock_func") as cm:
+        with patch.object(mock_obj, "mock_func") kama cm:
             self.assertIsInstance(cm, MagicMock)
 
 
 kundi AsyncArguments(unittest.TestCase):
-    eleza test_add_return_value(self):
+    eleza test_add_rudisha_value(self):
         async eleza addition(self, var):
             rudisha var + 1
 
-        mock = AsyncMock(addition, return_value=10)
+        mock = AsyncMock(addition, rudisha_value=10)
         output = asyncio.run(mock(5))
 
         self.assertEqual(output, 10)
@@ -380,27 +380,27 @@ kundi AsyncArguments(unittest.TestCase):
     eleza test_add_side_effect_iterable(self):
         vals = [1, 2, 3]
         mock = AsyncMock(side_effect=vals)
-        for item in vals:
+        kila item kwenye vals:
             self.assertEqual(item, asyncio.run(mock()))
 
-        with self.assertRaises(RuntimeError) as e:
+        with self.assertRaises(RuntimeError) kama e:
             asyncio.run(mock())
             self.assertEqual(
                 e.exception,
-                RuntimeError('coroutine raised StopIteration')
+                RuntimeError('coroutine ashiriad StopIteration')
             )
 
 kundi AsyncMagicMethods(unittest.TestCase):
-    eleza test_async_magic_methods_return_async_mocks(self):
+    eleza test_async_magic_methods_rudisha_async_mocks(self):
         m_mock = MagicMock()
         self.assertIsInstance(m_mock.__aenter__, AsyncMock)
         self.assertIsInstance(m_mock.__aexit__, AsyncMock)
         self.assertIsInstance(m_mock.__anext__, AsyncMock)
-        # __aiter__ is actually a synchronous object
+        # __aiter__ ni actually a synchronous object
         # so should rudisha a MagicMock
         self.assertIsInstance(m_mock.__aiter__, MagicMock)
 
-    eleza test_sync_magic_methods_return_magic_mocks(self):
+    eleza test_sync_magic_methods_rudisha_magic_mocks(self):
         a_mock = AsyncMock()
         self.assertIsInstance(a_mock.__enter__, MagicMock)
         self.assertIsInstance(a_mock.__exit__, MagicMock)
@@ -409,89 +409,89 @@ kundi AsyncMagicMethods(unittest.TestCase):
 
     eleza test_magicmock_has_async_magic_methods(self):
         m_mock = MagicMock()
-        self.assertTrue(hasattr(m_mock, "__aenter__"))
-        self.assertTrue(hasattr(m_mock, "__aexit__"))
-        self.assertTrue(hasattr(m_mock, "__anext__"))
+        self.assertKweli(hasattr(m_mock, "__aenter__"))
+        self.assertKweli(hasattr(m_mock, "__aexit__"))
+        self.assertKweli(hasattr(m_mock, "__anext__"))
 
     eleza test_asyncmock_has_sync_magic_methods(self):
         a_mock = AsyncMock()
-        self.assertTrue(hasattr(a_mock, "__enter__"))
-        self.assertTrue(hasattr(a_mock, "__exit__"))
-        self.assertTrue(hasattr(a_mock, "__next__"))
-        self.assertTrue(hasattr(a_mock, "__len__"))
+        self.assertKweli(hasattr(a_mock, "__enter__"))
+        self.assertKweli(hasattr(a_mock, "__exit__"))
+        self.assertKweli(hasattr(a_mock, "__next__"))
+        self.assertKweli(hasattr(a_mock, "__len__"))
 
     eleza test_magic_methods_are_async_functions(self):
         m_mock = MagicMock()
         self.assertIsInstance(m_mock.__aenter__, AsyncMock)
         self.assertIsInstance(m_mock.__aexit__, AsyncMock)
         # AsyncMocks are also coroutine functions
-        self.assertTrue(asyncio.iscoroutinefunction(m_mock.__aenter__))
-        self.assertTrue(asyncio.iscoroutinefunction(m_mock.__aexit__))
+        self.assertKweli(asyncio.iscoroutinefunction(m_mock.__aenter__))
+        self.assertKweli(asyncio.iscoroutinefunction(m_mock.__aexit__))
 
 kundi AsyncContextManagerTest(unittest.TestCase):
     kundi WithAsyncContextManager:
         async eleza __aenter__(self, *args, **kwargs):
-            self.entered = True
+            self.entered = Kweli
             rudisha self
 
         async eleza __aexit__(self, *args, **kwargs):
-            self.exited = True
+            self.exited = Kweli
 
     kundi WithSyncContextManager:
         eleza __enter__(self, *args, **kwargs):
             rudisha self
 
         eleza __exit__(self, *args, **kwargs):
-            pass
+            pita
 
     kundi ProductionCode:
         # Example real-world(ish) code
         eleza __init__(self):
-            self.session = None
+            self.session = Tupu
 
         async eleza main(self):
-            async with self.session.post('https://python.org') as response:
+            async with self.session.post('https://python.org') kama response:
                 val = await response.json()
                 rudisha val
 
-    eleza test_set_return_value_of_aenter(self):
+    eleza test_set_rudisha_value_of_aenter(self):
         eleza inner_test(mock_type):
             pc = self.ProductionCode()
             pc.session = MagicMock(name='sessionmock')
             cm = mock_type(name='magic_cm')
             response = AsyncMock(name='response')
-            response.json = AsyncMock(return_value={'json': 123})
-            cm.__aenter__.return_value = response
-            pc.session.post.return_value = cm
+            response.json = AsyncMock(rudisha_value={'json': 123})
+            cm.__aenter__.rudisha_value = response
+            pc.session.post.rudisha_value = cm
             result = asyncio.run(pc.main())
             self.assertEqual(result, {'json': 123})
 
-        for mock_type in [AsyncMock, MagicMock]:
+        kila mock_type kwenye [AsyncMock, MagicMock]:
             with self.subTest(f"test set rudisha value of aenter with {mock_type}"):
                 inner_test(mock_type)
 
     eleza test_mock_supports_async_context_manager(self):
         eleza inner_test(mock_type):
-            called = False
+            called = Uongo
             cm = self.WithAsyncContextManager()
             cm_mock = mock_type(cm)
 
             async eleza use_context_manager():
                 nonlocal called
-                async with cm_mock as result:
-                    called = True
+                async with cm_mock kama result:
+                    called = Kweli
                 rudisha result
 
             cm_result = asyncio.run(use_context_manager())
-            self.assertTrue(called)
-            self.assertTrue(cm_mock.__aenter__.called)
-            self.assertTrue(cm_mock.__aexit__.called)
+            self.assertKweli(called)
+            self.assertKweli(cm_mock.__aenter__.called)
+            self.assertKweli(cm_mock.__aexit__.called)
             cm_mock.__aenter__.assert_awaited()
             cm_mock.__aexit__.assert_awaited()
-            # We mock __aenter__ so it does not rudisha self
+            # We mock __aenter__ so it does sio rudisha self
             self.assertIsNot(cm_mock, cm_result)
 
-        for mock_type in [AsyncMock, MagicMock]:
+        kila mock_type kwenye [AsyncMock, MagicMock]:
             with self.subTest(f"test context manager magics with {mock_type}"):
                 inner_test(mock_type)
 
@@ -500,25 +500,25 @@ kundi AsyncContextManagerTest(unittest.TestCase):
         mock_instance = MagicMock(instance)
 
         expected_result = object()
-        mock_instance.__aenter__.return_value = expected_result
+        mock_instance.__aenter__.rudisha_value = expected_result
 
         async eleza use_context_manager():
-            async with mock_instance as result:
+            async with mock_instance kama result:
                 rudisha result
 
         self.assertIs(asyncio.run(use_context_manager()), expected_result)
 
     eleza test_mock_customize_async_context_manager_with_coroutine(self):
-        enter_called = False
-        exit_called = False
+        enter_called = Uongo
+        exit_called = Uongo
 
         async eleza enter_coroutine(*args):
             nonlocal enter_called
-            enter_called = True
+            enter_called = Kweli
 
         async eleza exit_coroutine(*args):
             nonlocal exit_called
-            exit_called = True
+            exit_called = Kweli
 
         instance = self.WithAsyncContextManager()
         mock_instance = MagicMock(instance)
@@ -528,21 +528,21 @@ kundi AsyncContextManagerTest(unittest.TestCase):
 
         async eleza use_context_manager():
             async with mock_instance:
-                pass
+                pita
 
         asyncio.run(use_context_manager())
-        self.assertTrue(enter_called)
-        self.assertTrue(exit_called)
+        self.assertKweli(enter_called)
+        self.assertKweli(exit_called)
 
-    eleza test_context_manager_raise_exception_by_default(self):
-        async eleza raise_in(context_manager):
+    eleza test_context_manager_ashiria_exception_by_default(self):
+        async eleza ashiria_in(context_manager):
             async with context_manager:
-                raise TypeError()
+                ashiria TypeError()
 
         instance = self.WithAsyncContextManager()
         mock_instance = MagicMock(instance)
         with self.assertRaises(TypeError):
-            asyncio.run(raise_in(mock_instance))
+            asyncio.run(ashiria_in(mock_instance))
 
 
 kundi AsyncIteratorTest(unittest.TestCase):
@@ -554,18 +554,18 @@ kundi AsyncIteratorTest(unittest.TestCase):
             rudisha self
 
         async eleza __anext__(self):
-            try:
+            jaribu:
                 rudisha self.items.pop()
-            except IndexError:
-                pass
+            tatizo IndexError:
+                pita
 
-            raise StopAsyncIteration
+            ashiria StopAsyncIteration
 
-    eleza test_aiter_set_return_value(self):
+    eleza test_aiter_set_rudisha_value(self):
         mock_iter = AsyncMock(name="tester")
-        mock_iter.__aiter__.return_value = [1, 2, 3]
+        mock_iter.__aiter__.rudisha_value = [1, 2, 3]
         async eleza main():
-            rudisha [i async for i in mock_iter]
+            rudisha [i async kila i kwenye mock_iter]
         result = asyncio.run(main())
         self.assertEqual(result, [1, 2, 3])
 
@@ -573,23 +573,23 @@ kundi AsyncIteratorTest(unittest.TestCase):
         eleza inner_test(mock_type):
             instance = self.WithAsyncIterator()
             mock_instance = mock_type(instance)
-            # Check that the mock and the real thing bahave the same
-            # __aiter__ is not actually async, so not a coroutinefunction
-            self.assertFalse(asyncio.iscoroutinefunction(instance.__aiter__))
-            self.assertFalse(asyncio.iscoroutinefunction(mock_instance.__aiter__))
-            # __anext__ is async
-            self.assertTrue(asyncio.iscoroutinefunction(instance.__anext__))
-            self.assertTrue(asyncio.iscoroutinefunction(mock_instance.__anext__))
+            # Check that the mock na the real thing bahave the same
+            # __aiter__ ni sio actually async, so sio a coroutinefunction
+            self.assertUongo(asyncio.iscoroutinefunction(instance.__aiter__))
+            self.assertUongo(asyncio.iscoroutinefunction(mock_instance.__aiter__))
+            # __anext__ ni async
+            self.assertKweli(asyncio.iscoroutinefunction(instance.__anext__))
+            self.assertKweli(asyncio.iscoroutinefunction(mock_instance.__anext__))
 
-        for mock_type in [AsyncMock, MagicMock]:
-            with self.subTest(f"test aiter and anext corourtine with {mock_type}"):
+        kila mock_type kwenye [AsyncMock, MagicMock]:
+            with self.subTest(f"test aiter na anext corourtine with {mock_type}"):
                 inner_test(mock_type)
 
 
     eleza test_mock_async_for(self):
         async eleza iterate(iterator):
             accumulator = []
-            async for item in iterator:
+            async kila item kwenye iterator:
                 accumulator.append(item)
 
             rudisha accumulator
@@ -600,25 +600,25 @@ kundi AsyncIteratorTest(unittest.TestCase):
             self.assertEqual(asyncio.run(iterate(mock_instance)), [])
 
 
-        eleza test_set_return_value(mock_type):
+        eleza test_set_rudisha_value(mock_type):
             mock_instance = mock_type(self.WithAsyncIterator())
-            mock_instance.__aiter__.return_value = expected[:]
+            mock_instance.__aiter__.rudisha_value = expected[:]
             self.assertEqual(asyncio.run(iterate(mock_instance)), expected)
 
-        eleza test_set_return_value_iter(mock_type):
+        eleza test_set_rudisha_value_iter(mock_type):
             mock_instance = mock_type(self.WithAsyncIterator())
-            mock_instance.__aiter__.return_value = iter(expected[:])
+            mock_instance.__aiter__.rudisha_value = iter(expected[:])
             self.assertEqual(asyncio.run(iterate(mock_instance)), expected)
 
-        for mock_type in [AsyncMock, MagicMock]:
+        kila mock_type kwenye [AsyncMock, MagicMock]:
             with self.subTest(f"default value with {mock_type}"):
                 test_default(mock_type)
 
-            with self.subTest(f"set return_value with {mock_type}"):
-                test_set_return_value(mock_type)
+            with self.subTest(f"set rudisha_value with {mock_type}"):
+                test_set_rudisha_value(mock_type)
 
-            with self.subTest(f"set return_value iterator with {mock_type}"):
-                test_set_return_value_iter(mock_type)
+            with self.subTest(f"set rudisha_value iterator with {mock_type}"):
+                test_set_rudisha_value_iter(mock_type)
 
 
 kundi AsyncMockAssert(unittest.TestCase):
@@ -634,9 +634,9 @@ kundi AsyncMockAssert(unittest.TestCase):
     eleza test_assert_called_but_not_awaited(self):
         mock = AsyncMock(AsyncClass)
         with self.assertWarns(RuntimeWarning):
-            # Will raise a warning because never awaited
+            # Will ashiria a warning because never awaited
             mock.async_method()
-        self.assertTrue(asyncio.iscoroutinefunction(mock.async_method))
+        self.assertKweli(asyncio.iscoroutinefunction(mock.async_method))
         mock.async_method.assert_called()
         mock.async_method.assert_called_once()
         mock.async_method.assert_called_once_with()
@@ -713,7 +713,7 @@ kundi AsyncMockAssert(unittest.TestCase):
     eleza test_assert_has_calls_not_awaits(self):
         kalls = [call('foo')]
         with self.assertWarns(RuntimeWarning):
-            # Will raise a warning because never awaited
+            # Will ashiria a warning because never awaited
             self.mock('foo')
         self.mock.assert_has_calls(kalls)
         with self.assertRaises(AssertionError):
@@ -721,13 +721,13 @@ kundi AsyncMockAssert(unittest.TestCase):
 
     eleza test_assert_has_mock_calls_on_async_mock_no_spec(self):
         with self.assertWarns(RuntimeWarning):
-            # Will raise a warning because never awaited
+            # Will ashiria a warning because never awaited
             self.mock()
         kalls_empty = [('', (), {})]
         self.assertEqual(self.mock.mock_calls, kalls_empty)
 
         with self.assertWarns(RuntimeWarning):
-            # Will raise a warning because never awaited
+            # Will ashiria a warning because never awaited
             self.mock('foo')
             self.mock('baz')
         mock_kalls = ([call(), call('foo'), call('baz')])
@@ -736,14 +736,14 @@ kundi AsyncMockAssert(unittest.TestCase):
     eleza test_assert_has_mock_calls_on_async_mock_with_spec(self):
         a_class_mock = AsyncMock(AsyncClass)
         with self.assertWarns(RuntimeWarning):
-            # Will raise a warning because never awaited
+            # Will ashiria a warning because never awaited
             a_class_mock.async_method()
         kalls_empty = [('', (), {})]
         self.assertEqual(a_class_mock.async_method.mock_calls, kalls_empty)
         self.assertEqual(a_class_mock.mock_calls, [call.async_method()])
 
         with self.assertWarns(RuntimeWarning):
-            # Will raise a warning because never awaited
+            # Will ashiria a warning because never awaited
             a_class_mock.async_method(1, 2, 3, a=4, b=5)
         method_kalls = [call(), call(1, 2, 3, a=4, b=5)]
         mock_kalls = [call.async_method(), call.async_method(1, 2, 3, a=4, b=5)]
@@ -752,23 +752,23 @@ kundi AsyncMockAssert(unittest.TestCase):
 
     eleza test_async_method_calls_recorded(self):
         with self.assertWarns(RuntimeWarning):
-            # Will raise warnings because never awaited
-            self.mock.something(3, fish=None)
+            # Will ashiria warnings because never awaited
+            self.mock.something(3, fish=Tupu)
             self.mock.something_else.something(6, cake=sentinel.Cake)
 
         self.assertEqual(self.mock.method_calls, [
-            ("something", (3,), {'fish': None}),
+            ("something", (3,), {'fish': Tupu}),
             ("something_else.something", (6,), {'cake': sentinel.Cake})
         ],
-            "method calls not recorded correctly")
+            "method calls sio recorded correctly")
         self.assertEqual(self.mock.something_else.method_calls,
                          [("something", (6,), {'cake': sentinel.Cake})],
-                         "method calls not recorded correctly")
+                         "method calls sio recorded correctly")
 
     eleza test_async_arg_lists(self):
         eleza assert_attrs(mock):
             names = ('call_args_list', 'method_calls', 'mock_calls')
-            for name in names:
+            kila name kwenye names:
                 attr = getattr(mock, name)
                 self.assertIsInstance(attr, _CallList)
                 self.assertIsInstance(attr, list)
@@ -776,7 +776,7 @@ kundi AsyncMockAssert(unittest.TestCase):
 
         assert_attrs(self.mock)
         with self.assertWarns(RuntimeWarning):
-            # Will raise warnings because never awaited
+            # Will ashiria warnings because never awaited
             self.mock()
             self.mock(1, 2)
             self.mock(a=3)
@@ -786,7 +786,7 @@ kundi AsyncMockAssert(unittest.TestCase):
 
         a_mock = AsyncMock(AsyncClass)
         with self.assertWarns(RuntimeWarning):
-            # Will raise warnings because never awaited
+            # Will ashiria warnings because never awaited
             a_mock.async_method()
             a_mock.async_method(1, a=3)
 
@@ -813,7 +813,7 @@ kundi AsyncMockAssert(unittest.TestCase):
 
     eleza test_assert_awaited_with(self):
         asyncio.run(self._runnable_test())
-        msg = 'expected await not found'
+        msg = 'expected await sio found'
         with self.assertRaisesRegex(AssertionError, msg):
             self.mock.assert_awaited_with('foo')
 
@@ -852,7 +852,7 @@ kundi AsyncMockAssert(unittest.TestCase):
     eleza test_assert_has_awaits_no_order(self):
         calls = [call('foo'), call('baz')]
 
-        with self.assertRaises(AssertionError) as cm:
+        with self.assertRaises(AssertionError) kama cm:
             self.mock.assert_has_awaits(calls)
         self.assertEqual(len(cm.exception.args), 1)
 
@@ -873,21 +873,21 @@ kundi AsyncMockAssert(unittest.TestCase):
     eleza test_assert_has_awaits_ordered(self):
         calls = [call('foo'), call('baz')]
         with self.assertRaises(AssertionError):
-            self.mock.assert_has_awaits(calls, any_order=True)
+            self.mock.assert_has_awaits(calls, any_order=Kweli)
 
         asyncio.run(self._runnable_test('baz'))
         with self.assertRaises(AssertionError):
-            self.mock.assert_has_awaits(calls, any_order=True)
+            self.mock.assert_has_awaits(calls, any_order=Kweli)
 
         asyncio.run(self._runnable_test('bamf'))
         with self.assertRaises(AssertionError):
-            self.mock.assert_has_awaits(calls, any_order=True)
+            self.mock.assert_has_awaits(calls, any_order=Kweli)
 
         asyncio.run(self._runnable_test('foo'))
-        self.mock.assert_has_awaits(calls, any_order=True)
+        self.mock.assert_has_awaits(calls, any_order=Kweli)
 
         asyncio.run(self._runnable_test('qux'))
-        self.mock.assert_has_awaits(calls, any_order=True)
+        self.mock.assert_has_awaits(calls, any_order=Kweli)
 
     eleza test_assert_not_awaited(self):
         self.mock.assert_not_awaited()
@@ -897,7 +897,7 @@ kundi AsyncMockAssert(unittest.TestCase):
             self.mock.assert_not_awaited()
 
     eleza test_assert_has_awaits_not_matching_spec_error(self):
-        async eleza f(x=None): pass
+        async eleza f(x=Tupu): pita
 
         self.mock = AsyncMock(spec=f)
         asyncio.run(self._runnable_test(1))
@@ -905,20 +905,20 @@ kundi AsyncMockAssert(unittest.TestCase):
         with self.assertRaisesRegex(
                 AssertionError,
                 '^{}$'.format(
-                    re.escape('Awaits not found.\n'
+                    re.escape('Awaits sio found.\n'
                               'Expected: [call()]\n'
-                              'Actual: [call(1)]'))) as cm:
+                              'Actual: [call(1)]'))) kama cm:
             self.mock.assert_has_awaits([call()])
-        self.assertIsNone(cm.exception.__cause__)
+        self.assertIsTupu(cm.exception.__cause__)
 
         with self.assertRaisesRegex(
                 AssertionError,
                 '^{}$'.format(
                     re.escape(
                         'Error processing expected awaits.\n'
-                        "Errors: [None, TypeError('too many positional "
+                        "Errors: [Tupu, TypeError('too many positional "
                         "arguments')]\n"
                         'Expected: [call(), call(1, 2)]\n'
-                        'Actual: [call(1)]'))) as cm:
+                        'Actual: [call(1)]'))) kama cm:
             self.mock.assert_has_awaits([call(), call(1, 2)])
         self.assertIsInstance(cm.exception.__cause__, TypeError)

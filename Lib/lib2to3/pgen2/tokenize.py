@@ -1,11 +1,11 @@
 # Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006 Python Software Foundation.
 # All rights reserved.
 
-"""Tokenization help for Python programs.
+"""Tokenization help kila Python programs.
 
-generate_tokens(readline) is a generator that breaks a stream of
-text into Python tokens.  It accepts a readline-like method which is called
-repeatedly to get the next line of input (or "" for EOF).  It generates
+generate_tokens(readline) ni a generator that komas a stream of
+text into Python tokens.  It accepts a readline-like method which ni called
+repeatedly to get the next line of input (or "" kila EOF).  It generates
 5-tuples with these members:
 
     the token type (see token.py)
@@ -14,16 +14,16 @@ repeatedly to get the next line of input (or "" for EOF).  It generates
     the ending (row, column) indices of the token (a 2-tuple of ints)
     the original line (string)
 
-It is designed to match the working of the Python tokenizer exactly, except
-that it produces COMMENT tokens for comments and gives type OP for all
+It ni designed to match the working of the Python tokenizer exactly, except
+that it produces COMMENT tokens kila comments na gives type OP kila all
 operators
 
 Older entry points
     tokenize_loop(readline, tokeneater)
     tokenize(readline, tokeneater=printtoken)
-are the same, except instead of generating tokens, tokeneater is a callback
-function to which the 5 fields described above are passed as 5 arguments,
-each time a new token is found."""
+are the same, tatizo instead of generating tokens, tokeneater ni a callback
+function to which the 5 fields described above are pitaed kama 5 arguments,
+each time a new token ni found."""
 
 __author__ = 'Ka-Ping Yee <ping@lfw.org>'
 __credits__ = \
@@ -34,14 +34,14 @@ kutoka codecs agiza BOM_UTF8, lookup
 kutoka lib2to3.pgen2.token agiza *
 
 kutoka . agiza token
-__all__ = [x for x in dir(token) ikiwa x[0] != '_'] + ["tokenize",
+__all__ = [x kila x kwenye dir(token) ikiwa x[0] != '_'] + ["tokenize",
            "generate_tokens", "untokenize"]
-del token
+toa token
 
-try:
+jaribu:
     bytes
-except NameError:
-    # Support bytes type in Python <= 2.5, so 2to3 turns itself into
+tatizo NameError:
+    # Support bytes type kwenye Python <= 2.5, so 2to3 turns itself into
     # valid Python 3 code.
     bytes = str
 
@@ -50,7 +50,7 @@ eleza any(*choices): rudisha group(*choices) + '*'
 eleza maybe(*choices): rudisha group(*choices) + '?'
 eleza _combinations(*l):
     rudisha set(
-        x + y for x in l for y in l + ("",) ikiwa x.casefold() != y.casefold()
+        x + y kila x kwenye l kila y kwenye l + ("",) ikiwa x.casefold() != y.casefold()
     )
 
 Whitespace = r'[ \f\t]*'
@@ -80,13 +80,13 @@ Single3 = r"[^'\\]*(?:(?:\\.|'(?!''))[^'\\]*)*'''"
 Double3 = r'[^"\\]*(?:(?:\\.|"(?!""))[^"\\]*)*"""'
 _litprefix = r"(?:[uUrRbBfF]|[rR][fFbB]|[fFbBuU][rR])?"
 Triple = group(_litprefix + "'''", _litprefix + '"""')
-# Single-line ' or " string.
+# Single-line ' ama " string.
 String = group(_litprefix + r"'[^\n'\\]*(?:\\.[^\n'\\]*)*'",
                _litprefix + r'"[^\n"\\]*(?:\\.[^\n"\\]*)*"')
 
 # Because of leftmost-then-longest match semantics, be sure to put the
 # longest operators first (e.g., ikiwa = came before ==, == would get
-# recognized as two instances of =).
+# recognized kama two instances of =).
 Operator = group(r"\*\*=?", r">>=?", r"<<=?", r"<>", r"!=",
                  r"//=?", r"->",
                  r"[+\-*/%&@|^=<>]=?",
@@ -99,7 +99,7 @@ Funny = group(Operator, Bracket, Special)
 PlainToken = group(Number, Funny, String, Name)
 Token = Ignore + PlainToken
 
-# First (or only) line of ' or " string.
+# First (or only) line of ' ama " string.
 ContStr = group(_litprefix + r"'[^\n'\\]*(?:\\.[^\n'\\]*)*" +
                 group("'", r'\\\r?\n'),
                 _litprefix + r'"[^\n"\\]*(?:\\.[^\n"\\]*)*' +
@@ -118,28 +118,28 @@ _strprefixes = (
 
 endprogs = {"'": re.compile(Single), '"': re.compile(Double),
             "'''": single3prog, '"""': double3prog,
-            **{f"{prefix}'''": single3prog for prefix in _strprefixes},
-            **{f'{prefix}"""': double3prog for prefix in _strprefixes},
-            **{prefix: None for prefix in _strprefixes}}
+            **{f"{prefix}'''": single3prog kila prefix kwenye _strprefixes},
+            **{f'{prefix}"""': double3prog kila prefix kwenye _strprefixes},
+            **{prefix: Tupu kila prefix kwenye _strprefixes}}
 
 triple_quoted = (
     {"'''", '"""'} |
-    {f"{prefix}'''" for prefix in _strprefixes} |
-    {f'{prefix}"""' for prefix in _strprefixes}
+    {f"{prefix}'''" kila prefix kwenye _strprefixes} |
+    {f'{prefix}"""' kila prefix kwenye _strprefixes}
 )
 single_quoted = (
     {"'", '"'} |
-    {f"{prefix}'" for prefix in _strprefixes} |
-    {f'{prefix}"' for prefix in _strprefixes}
+    {f"{prefix}'" kila prefix kwenye _strprefixes} |
+    {f'{prefix}"' kila prefix kwenye _strprefixes}
 )
 
 tabsize = 8
 
-kundi TokenError(Exception): pass
+kundi TokenError(Exception): pita
 
-kundi StopTokenizing(Exception): pass
+kundi StopTokenizing(Exception): pita
 
-eleza printtoken(type, token, xxx_todo_changeme, xxx_todo_changeme1, line): # for testing
+eleza printtoken(type, token, xxx_todo_changeme, xxx_todo_changeme1, line): # kila testing
     (srow, scol) = xxx_todo_changeme
     (erow, ecol) = xxx_todo_changeme1
     andika("%d,%d-%d,%d:\t%s\t%s" % \
@@ -148,24 +148,24 @@ eleza printtoken(type, token, xxx_todo_changeme, xxx_todo_changeme1, line): # fo
 eleza tokenize(readline, tokeneater=printtoken):
     """
     The tokenize() function accepts two parameters: one representing the
-    input stream, and one providing an output mechanism for tokenize().
+    input stream, na one providing an output mechanism kila tokenize().
 
     The first parameter, readline, must be a callable object which provides
-    the same interface as the readline() method of built-in file objects.
-    Each call to the function should rudisha one line of input as a string.
+    the same interface kama the readline() method of built-in file objects.
+    Each call to the function should rudisha one line of input kama a string.
 
     The second parameter, tokeneater, must also be a callable object. It is
-    called once for each token, with five arguments, corresponding to the
+    called once kila each token, with five arguments, corresponding to the
     tuples generated by generate_tokens().
     """
-    try:
+    jaribu:
         tokenize_loop(readline, tokeneater)
-    except StopTokenizing:
-        pass
+    tatizo StopTokenizing:
+        pita
 
 # backwards compatible interface
 eleza tokenize_loop(readline, tokeneater):
-    for token_info in generate_tokens(readline):
+    kila token_info kwenye generate_tokens(readline):
         tokeneater(*token_info)
 
 kundi Untokenizer:
@@ -183,126 +183,126 @@ kundi Untokenizer:
             self.tokens.append(" " * col_offset)
 
     eleza untokenize(self, iterable):
-        for t in iterable:
+        kila t kwenye iterable:
             ikiwa len(t) == 2:
                 self.compat(t, iterable)
-                break
+                koma
             tok_type, token, start, end, line = t
             self.add_whitespace(start)
             self.tokens.append(token)
             self.prev_row, self.prev_col = end
-            ikiwa tok_type in (NEWLINE, NL):
+            ikiwa tok_type kwenye (NEWLINE, NL):
                 self.prev_row += 1
                 self.prev_col = 0
         rudisha "".join(self.tokens)
 
     eleza compat(self, token, iterable):
-        startline = False
+        startline = Uongo
         indents = []
         toks_append = self.tokens.append
         toknum, tokval = token
-        ikiwa toknum in (NAME, NUMBER):
+        ikiwa toknum kwenye (NAME, NUMBER):
             tokval += ' '
-        ikiwa toknum in (NEWLINE, NL):
-            startline = True
-        for tok in iterable:
+        ikiwa toknum kwenye (NEWLINE, NL):
+            startline = Kweli
+        kila tok kwenye iterable:
             toknum, tokval = tok[:2]
 
-            ikiwa toknum in (NAME, NUMBER, ASYNC, AWAIT):
+            ikiwa toknum kwenye (NAME, NUMBER, ASYNC, AWAIT):
                 tokval += ' '
 
             ikiwa toknum == INDENT:
                 indents.append(tokval)
-                continue
+                endelea
             elikiwa toknum == DEDENT:
                 indents.pop()
-                continue
-            elikiwa toknum in (NEWLINE, NL):
-                startline = True
-            elikiwa startline and indents:
+                endelea
+            elikiwa toknum kwenye (NEWLINE, NL):
+                startline = Kweli
+            elikiwa startline na indents:
                 toks_append(indents[-1])
-                startline = False
+                startline = Uongo
             toks_append(tokval)
 
 cookie_re = re.compile(r'^[ \t\f]*#.*?coding[:=][ \t]*([-\w.]+)', re.ASCII)
 blank_re = re.compile(br'^[ \t\f]*(?:[#\r\n]|$)', re.ASCII)
 
 eleza _get_normal_name(orig_enc):
-    """Imitates get_normal_name in tokenizer.c."""
+    """Imitates get_normal_name kwenye tokenizer.c."""
     # Only care about the first 12 characters.
     enc = orig_enc[:12].lower().replace("_", "-")
-    ikiwa enc == "utf-8" or enc.startswith("utf-8-"):
+    ikiwa enc == "utf-8" ama enc.startswith("utf-8-"):
         rudisha "utf-8"
-    ikiwa enc in ("latin-1", "iso-8859-1", "iso-latin-1") or \
+    ikiwa enc kwenye ("latin-1", "iso-8859-1", "iso-latin-1") ama \
        enc.startswith(("latin-1-", "iso-8859-1-", "iso-latin-1-")):
         rudisha "iso-8859-1"
     rudisha orig_enc
 
 eleza detect_encoding(readline):
     """
-    The detect_encoding() function is used to detect the encoding that should
+    The detect_encoding() function ni used to detect the encoding that should
     be used to decode a Python source file. It requires one argument, readline,
-    in the same way as the tokenize() generator.
+    kwenye the same way kama the tokenize() generator.
 
-    It will call readline a maximum of twice, and rudisha the encoding used
-    (as a string) and a list of any lines (left as bytes) it has read
+    It will call readline a maximum of twice, na rudisha the encoding used
+    (as a string) na a list of any lines (left kama bytes) it has read
     in.
 
-    It detects the encoding kutoka the presence of a utf-8 bom or an encoding
-    cookie as specified in pep-0263. If both a bom and a cookie are present, but
-    disagree, a SyntaxError will be raised. If the encoding cookie is an invalid
-    charset, raise a SyntaxError.  Note that ikiwa a utf-8 bom is found,
-    'utf-8-sig' is returned.
+    It detects the encoding kutoka the presence of a utf-8 bom ama an encoding
+    cookie kama specified kwenye pep-0263. If both a bom na a cookie are present, but
+    disagree, a SyntaxError will be ashiriad. If the encoding cookie ni an invalid
+    charset, ashiria a SyntaxError.  Note that ikiwa a utf-8 bom ni found,
+    'utf-8-sig' ni rudishaed.
 
-    If no encoding is specified, then the default of 'utf-8' will be returned.
+    If no encoding ni specified, then the default of 'utf-8' will be rudishaed.
     """
-    bom_found = False
-    encoding = None
+    bom_found = Uongo
+    encoding = Tupu
     default = 'utf-8'
     eleza read_or_stop():
-        try:
+        jaribu:
             rudisha readline()
-        except StopIteration:
+        tatizo StopIteration:
             rudisha bytes()
 
     eleza find_cookie(line):
-        try:
+        jaribu:
             line_string = line.decode('ascii')
-        except UnicodeDecodeError:
-            rudisha None
+        tatizo UnicodeDecodeError:
+            rudisha Tupu
         match = cookie_re.match(line_string)
-        ikiwa not match:
-            rudisha None
+        ikiwa sio match:
+            rudisha Tupu
         encoding = _get_normal_name(match.group(1))
-        try:
+        jaribu:
             codec = lookup(encoding)
-        except LookupError:
+        tatizo LookupError:
             # This behaviour mimics the Python interpreter
-            raise SyntaxError("unknown encoding: " + encoding)
+            ashiria SyntaxError("unknown encoding: " + encoding)
 
         ikiwa bom_found:
             ikiwa codec.name != 'utf-8':
                 # This behaviour mimics the Python interpreter
-                raise SyntaxError('encoding problem: utf-8')
+                ashiria SyntaxError('encoding problem: utf-8')
             encoding += '-sig'
         rudisha encoding
 
     first = read_or_stop()
     ikiwa first.startswith(BOM_UTF8):
-        bom_found = True
+        bom_found = Kweli
         first = first[3:]
         default = 'utf-8-sig'
-    ikiwa not first:
+    ikiwa sio first:
         rudisha default, []
 
     encoding = find_cookie(first)
     ikiwa encoding:
         rudisha encoding, [first]
-    ikiwa not blank_re.match(first):
+    ikiwa sio blank_re.match(first):
         rudisha default, [first]
 
     second = read_or_stop()
-    ikiwa not second:
+    ikiwa sio second:
         rudisha default, [first]
 
     encoding = find_cookie(second)
@@ -314,19 +314,19 @@ eleza detect_encoding(readline):
 eleza untokenize(iterable):
     """Transform tokens back into Python source code.
 
-    Each element returned by the iterable must be a token sequence
-    with at least two elements, a token number and token value.  If
-    only two tokens are passed, the resulting output is poor.
+    Each element rudishaed by the iterable must be a token sequence
+    with at least two elements, a token number na token value.  If
+    only two tokens are pitaed, the resulting output ni poor.
 
-    Round-trip invariant for full input:
+    Round-trip invariant kila full input:
         Untokenized source will match input source exactly
 
-    Round-trip invariant for limited input:
+    Round-trip invariant kila limited input:
         # Output text will tokenize the back to the input
-        t1 = [tok[:2] for tok in generate_tokens(f.readline)]
+        t1 = [tok[:2] kila tok kwenye generate_tokens(f.readline)]
         newcode = untokenize(t1)
         readline = iter(newcode.splitlines(1)).next
-        t2 = [tok[:2] for tokin generate_tokens(readline)]
+        t2 = [tok[:2] kila tokin generate_tokens(readline)]
         assert t1 == t2
     """
     ut = Untokenizer()
@@ -335,229 +335,229 @@ eleza untokenize(iterable):
 eleza generate_tokens(readline):
     """
     The generate_tokens() generator requires one argument, readline, which
-    must be a callable object which provides the same interface as the
+    must be a callable object which provides the same interface kama the
     readline() method of built-in file objects. Each call to the function
-    should rudisha one line of input as a string.  Alternately, readline
+    should rudisha one line of input kama a string.  Alternately, readline
     can be a callable function terminating with StopIteration:
         readline = open(myfile).next    # Example of alternate readline
 
     The generator produces 5-tuples with these members: the token type; the
     token string; a 2-tuple (srow, scol) of ints specifying the row and
-    column where the token begins in the source; a 2-tuple (erow, ecol) of
-    ints specifying the row and column where the token ends in the source;
-    and the line on which the token was found. The line passed is the
+    column where the token begins kwenye the source; a 2-tuple (erow, ecol) of
+    ints specifying the row na column where the token ends kwenye the source;
+    na the line on which the token was found. The line pitaed ni the
     physical line.
     """
-    lnum = parenlev = continued = 0
+    lnum = parenlev = endelead = 0
     contstr, needcont = '', 0
-    contline = None
+    contline = Tupu
     indents = [0]
 
-    # 'stashed' and 'async_*' are used for async/await parsing
-    stashed = None
-    async_eleza = False
+    # 'stashed' na 'async_*' are used kila async/await parsing
+    stashed = Tupu
+    async_eleza = Uongo
     async_def_indent = 0
-    async_def_nl = False
+    async_def_nl = Uongo
 
-    while 1:                                   # loop over lines in stream
-        try:
+    wakati 1:                                   # loop over lines kwenye stream
+        jaribu:
             line = readline()
-        except StopIteration:
+        tatizo StopIteration:
             line = ''
         lnum = lnum + 1
         pos, max = 0, len(line)
 
-        ikiwa contstr:                            # continued string
-            ikiwa not line:
-                raise TokenError("EOF in multi-line string", strstart)
+        ikiwa contstr:                            # endelead string
+            ikiwa sio line:
+                ashiria TokenError("EOF kwenye multi-line string", strstart)
             endmatch = endprog.match(line)
             ikiwa endmatch:
                 pos = end = endmatch.end(0)
-                yield (STRING, contstr + line[:end],
+                tuma (STRING, contstr + line[:end],
                        strstart, (lnum, end), contline + line)
                 contstr, needcont = '', 0
-                contline = None
-            elikiwa needcont and line[-2:] != '\\\n' and line[-3:] != '\\\r\n':
-                yield (ERRORTOKEN, contstr + line,
+                contline = Tupu
+            elikiwa needcont na line[-2:] != '\\\n' na line[-3:] != '\\\r\n':
+                tuma (ERRORTOKEN, contstr + line,
                            strstart, (lnum, len(line)), contline)
                 contstr = ''
-                contline = None
-                continue
-            else:
+                contline = Tupu
+                endelea
+            isipokua:
                 contstr = contstr + line
                 contline = contline + line
-                continue
+                endelea
 
-        elikiwa parenlev == 0 and not continued:  # new statement
-            ikiwa not line: break
+        elikiwa parenlev == 0 na sio endelead:  # new statement
+            ikiwa sio line: koma
             column = 0
-            while pos < max:                   # measure leading whitespace
+            wakati pos < max:                   # measure leading whitespace
                 ikiwa line[pos] == ' ': column = column + 1
                 elikiwa line[pos] == '\t': column = (column//tabsize + 1)*tabsize
                 elikiwa line[pos] == '\f': column = 0
-                else: break
+                isipokua: koma
                 pos = pos + 1
-            ikiwa pos == max: break
+            ikiwa pos == max: koma
 
             ikiwa stashed:
-                yield stashed
-                stashed = None
+                tuma stashed
+                stashed = Tupu
 
-            ikiwa line[pos] in '#\r\n':           # skip comments or blank lines
+            ikiwa line[pos] kwenye '#\r\n':           # skip comments ama blank lines
                 ikiwa line[pos] == '#':
                     comment_token = line[pos:].rstrip('\r\n')
                     nl_pos = pos + len(comment_token)
-                    yield (COMMENT, comment_token,
+                    tuma (COMMENT, comment_token,
                            (lnum, pos), (lnum, pos + len(comment_token)), line)
-                    yield (NL, line[nl_pos:],
+                    tuma (NL, line[nl_pos:],
                            (lnum, nl_pos), (lnum, len(line)), line)
-                else:
-                    yield ((NL, COMMENT)[line[pos] == '#'], line[pos:],
+                isipokua:
+                    tuma ((NL, COMMENT)[line[pos] == '#'], line[pos:],
                            (lnum, pos), (lnum, len(line)), line)
-                continue
+                endelea
 
-            ikiwa column > indents[-1]:           # count indents or dedents
+            ikiwa column > indents[-1]:           # count indents ama dedents
                 indents.append(column)
-                yield (INDENT, line[:pos], (lnum, 0), (lnum, pos), line)
-            while column < indents[-1]:
-                ikiwa column not in indents:
-                    raise IndentationError(
-                        "unindent does not match any outer indentation level",
+                tuma (INDENT, line[:pos], (lnum, 0), (lnum, pos), line)
+            wakati column < indents[-1]:
+                ikiwa column haiko kwenye indents:
+                    ashiria IndentationError(
+                        "unindent does sio match any outer indentation level",
                         ("<tokenize>", lnum, pos, line))
                 indents = indents[:-1]
 
-                ikiwa async_eleza and async_def_indent >= indents[-1]:
-                    async_eleza = False
-                    async_def_nl = False
+                ikiwa async_eleza na async_def_indent >= indents[-1]:
+                    async_eleza = Uongo
+                    async_def_nl = Uongo
                     async_def_indent = 0
 
-                yield (DEDENT, '', (lnum, pos), (lnum, pos), line)
+                tuma (DEDENT, '', (lnum, pos), (lnum, pos), line)
 
-            ikiwa async_eleza and async_def_nl and async_def_indent >= indents[-1]:
-                async_eleza = False
-                async_def_nl = False
+            ikiwa async_eleza na async_def_nl na async_def_indent >= indents[-1]:
+                async_eleza = Uongo
+                async_def_nl = Uongo
                 async_def_indent = 0
 
-        else:                                  # continued statement
-            ikiwa not line:
-                raise TokenError("EOF in multi-line statement", (lnum, 0))
-            continued = 0
+        isipokua:                                  # endelead statement
+            ikiwa sio line:
+                ashiria TokenError("EOF kwenye multi-line statement", (lnum, 0))
+            endelead = 0
 
-        while pos < max:
+        wakati pos < max:
             pseudomatch = pseudoprog.match(line, pos)
-            ikiwa pseudomatch:                                # scan for tokens
+            ikiwa pseudomatch:                                # scan kila tokens
                 start, end = pseudomatch.span(1)
                 spos, epos, pos = (lnum, start), (lnum, end), end
                 token, initial = line[start:end], line[start]
 
-                ikiwa initial in string.digits or \
-                   (initial == '.' and token != '.'):      # ordinary number
-                    yield (NUMBER, token, spos, epos, line)
-                elikiwa initial in '\r\n':
+                ikiwa initial kwenye string.digits ama \
+                   (initial == '.' na token != '.'):      # ordinary number
+                    tuma (NUMBER, token, spos, epos, line)
+                elikiwa initial kwenye '\r\n':
                     newline = NEWLINE
                     ikiwa parenlev > 0:
                         newline = NL
                     elikiwa async_def:
-                        async_def_nl = True
+                        async_def_nl = Kweli
                     ikiwa stashed:
-                        yield stashed
-                        stashed = None
-                    yield (newline, token, spos, epos, line)
+                        tuma stashed
+                        stashed = Tupu
+                    tuma (newline, token, spos, epos, line)
 
                 elikiwa initial == '#':
-                    assert not token.endswith("\n")
+                    assert sio token.endswith("\n")
                     ikiwa stashed:
-                        yield stashed
-                        stashed = None
-                    yield (COMMENT, token, spos, epos, line)
-                elikiwa token in triple_quoted:
+                        tuma stashed
+                        stashed = Tupu
+                    tuma (COMMENT, token, spos, epos, line)
+                elikiwa token kwenye triple_quoted:
                     endprog = endprogs[token]
                     endmatch = endprog.match(line, pos)
                     ikiwa endmatch:                           # all on one line
                         pos = endmatch.end(0)
                         token = line[start:pos]
                         ikiwa stashed:
-                            yield stashed
-                            stashed = None
-                        yield (STRING, token, spos, (lnum, pos), line)
-                    else:
+                            tuma stashed
+                            stashed = Tupu
+                        tuma (STRING, token, spos, (lnum, pos), line)
+                    isipokua:
                         strstart = (lnum, start)           # multiple lines
                         contstr = line[start:]
                         contline = line
-                        break
-                elikiwa initial in single_quoted or \
-                    token[:2] in single_quoted or \
-                    token[:3] in single_quoted:
-                    ikiwa token[-1] == '\n':                  # continued string
+                        koma
+                elikiwa initial kwenye single_quoted ama \
+                    token[:2] kwenye single_quoted ama \
+                    token[:3] kwenye single_quoted:
+                    ikiwa token[-1] == '\n':                  # endelead string
                         strstart = (lnum, start)
-                        endprog = (endprogs[initial] or endprogs[token[1]] or
+                        endprog = (endprogs[initial] ama endprogs[token[1]] or
                                    endprogs[token[2]])
                         contstr, needcont = line[start:], 1
                         contline = line
-                        break
-                    else:                                  # ordinary string
+                        koma
+                    isipokua:                                  # ordinary string
                         ikiwa stashed:
-                            yield stashed
-                            stashed = None
-                        yield (STRING, token, spos, epos, line)
+                            tuma stashed
+                            stashed = Tupu
+                        tuma (STRING, token, spos, epos, line)
                 elikiwa initial.isidentifier():               # ordinary name
-                    ikiwa token in ('async', 'await'):
+                    ikiwa token kwenye ('async', 'await'):
                         ikiwa async_def:
-                            yield (ASYNC ikiwa token == 'async' else AWAIT,
+                            tuma (ASYNC ikiwa token == 'async' else AWAIT,
                                    token, spos, epos, line)
-                            continue
+                            endelea
 
                     tok = (NAME, token, spos, epos, line)
-                    ikiwa token == 'async' and not stashed:
+                    ikiwa token == 'async' na sio stashed:
                         stashed = tok
-                        continue
+                        endelea
 
                     ikiwa token == 'def':
                         ikiwa (stashed
-                                and stashed[0] == NAME
-                                and stashed[1] == 'async'):
+                                na stashed[0] == NAME
+                                na stashed[1] == 'async'):
 
-                            async_eleza = True
+                            async_eleza = Kweli
                             async_def_indent = indents[-1]
 
-                            yield (ASYNC, stashed[1],
+                            tuma (ASYNC, stashed[1],
                                    stashed[2], stashed[3],
                                    stashed[4])
-                            stashed = None
+                            stashed = Tupu
 
                     ikiwa stashed:
-                        yield stashed
-                        stashed = None
+                        tuma stashed
+                        stashed = Tupu
 
-                    yield tok
-                elikiwa initial == '\\':                      # continued stmt
-                    # This yield is new; needed for better idempotency:
+                    tuma tok
+                elikiwa initial == '\\':                      # endelead stmt
+                    # This tuma ni new; needed kila better idempotency:
                     ikiwa stashed:
-                        yield stashed
-                        stashed = None
-                    yield (NL, token, spos, (lnum, pos), line)
-                    continued = 1
-                else:
-                    ikiwa initial in '([{': parenlev = parenlev + 1
-                    elikiwa initial in ')]}': parenlev = parenlev - 1
+                        tuma stashed
+                        stashed = Tupu
+                    tuma (NL, token, spos, (lnum, pos), line)
+                    endelead = 1
+                isipokua:
+                    ikiwa initial kwenye '([{': parenlev = parenlev + 1
+                    elikiwa initial kwenye ')]}': parenlev = parenlev - 1
                     ikiwa stashed:
-                        yield stashed
-                        stashed = None
-                    yield (OP, token, spos, epos, line)
-            else:
-                yield (ERRORTOKEN, line[pos],
+                        tuma stashed
+                        stashed = Tupu
+                    tuma (OP, token, spos, epos, line)
+            isipokua:
+                tuma (ERRORTOKEN, line[pos],
                            (lnum, pos), (lnum, pos+1), line)
                 pos = pos + 1
 
     ikiwa stashed:
-        yield stashed
-        stashed = None
+        tuma stashed
+        stashed = Tupu
 
-    for indent in indents[1:]:                 # pop remaining indent levels
-        yield (DEDENT, '', (lnum, 0), (lnum, 0), '')
-    yield (ENDMARKER, '', (lnum, 0), (lnum, 0), '')
+    kila indent kwenye indents[1:]:                 # pop remaining indent levels
+        tuma (DEDENT, '', (lnum, 0), (lnum, 0), '')
+    tuma (ENDMARKER, '', (lnum, 0), (lnum, 0), '')
 
 ikiwa __name__ == '__main__':                     # testing
     agiza sys
     ikiwa len(sys.argv) > 1: tokenize(open(sys.argv[1]).readline)
-    else: tokenize(sys.stdin.readline)
+    isipokua: tokenize(sys.stdin.readline)

@@ -1,6 +1,6 @@
 # Copyright (C) 2002-2006 Python Software Foundation
 # Contact: email-sig@python.org
-# email package unit tests for (optional) Asian codecs
+# email package unit tests kila (optional) Asian codecs
 
 agiza unittest
 
@@ -11,10 +11,10 @@ kutoka email.message agiza Message
 
 # We're compatible with Python 2.3, but it doesn't have the built-in Asian
 # codecs, so we have to skip all these tests.
-try:
+jaribu:
     str(b'foo', 'euc-jp')
-except LookupError:
-    raise unittest.SkipTest
+tatizo LookupError:
+    ashiria unittest.SkipTest
 
 
 
@@ -31,16 +31,16 @@ kundi TestEmailAsianCodecs(TestEmailBase):
         ghello = str(b'Gr\xfc\xdf Gott!', gcode)
         h.append(jhello, j)
         h.append(ghello, g)
-        # BAW: This used to -- and maybe should -- fold the two iso-8859-1
+        # BAW: This used to -- na maybe should -- fold the two iso-8859-1
         # chunks into a single encoded word.  However it doesn't violate the
-        # standard to have them as two encoded chunks and maybe it's
-        # reasonable <wink> for each .append() call to result in a separate
+        # standard to have them kama two encoded chunks na maybe it's
+        # reasonable <wink> kila each .append() call to result kwenye a separate
         # encoded word.
         eq(h.encode(), """\
 Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
  =?iso-8859-1?q?Gr=FC=DF_Gott!?=""")
         eq(decode_header(h.encode()),
-           [(b'Hello World! ', None),
+           [(b'Hello World! ', Tupu),
             (b'\x1b$B%O%m!<%o!<%k%I!*\x1b(B', 'iso-2022-jp'),
             (b'Gr\xfc\xdf Gott!', gcode)])
         subject_bytes = (b'test-ja \xa4\xd8\xc5\xea\xb9\xc6\xa4\xb5'
@@ -63,7 +63,7 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
                      b'\xa5\xeb\xa5\xc9\xa1\xaa', 'euc-jp')
         msg = Message()
         msg.set_payload(jhello, 'utf-8')
-        ustr = msg.get_payload(decode=True).decode(msg.get_content_charset())
+        ustr = msg.get_payload(decode=Kweli).decode(msg.get_content_charset())
         self.assertEqual(jhello, ustr)
 
     eleza test_payload_encoding(self):
@@ -72,7 +72,7 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
                      b'\xa5\xeb\xa5\xc9\xa1\xaa', jcode)
         msg = Message()
         msg.set_payload(jhello, jcode)
-        ustr = msg.get_payload(decode=True).decode(msg.get_content_charset())
+        ustr = msg.get_payload(decode=Kweli).decode(msg.get_content_charset())
         self.assertEqual(jhello, ustr)
 
 

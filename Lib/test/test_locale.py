@@ -7,7 +7,7 @@ agiza codecs
 
 kundi BaseLocalizedTest(unittest.TestCase):
     #
-    # Base kundi for tests using a real locale
+    # Base kundi kila tests using a real locale
     #
 
     @classmethod
@@ -18,26 +18,26 @@ kundi BaseLocalizedTest(unittest.TestCase):
             ikiwa int(os.uname().release.split('.')[0]) < 10:
                 # The locale test work fine on OSX 10.6, I (ronaldoussoren)
                 # haven't had time yet to verify ikiwa tests work on OSX 10.5
-                # (10.4 is known to be bad)
-                raise unittest.SkipTest("Locale support on MacOSX is minimal")
+                # (10.4 ni known to be bad)
+                ashiria unittest.SkipTest("Locale support on MacOSX ni minimal")
         elikiwa sys.platform.startswith("win"):
             tlocs = ("En", "English")
-        else:
+        isipokua:
             tlocs = ("en_US.UTF-8", "en_US.ISO8859-1",
                      "en_US.US-ASCII", "en_US")
-        try:
+        jaribu:
             oldlocale = locale.setlocale(locale.LC_NUMERIC)
-            for tloc in tlocs:
-                try:
+            kila tloc kwenye tlocs:
+                jaribu:
                     locale.setlocale(locale.LC_NUMERIC, tloc)
-                except locale.Error:
-                    continue
-                break
-            else:
-                raise unittest.SkipTest("Test locale not supported "
+                tatizo locale.Error:
+                    endelea
+                koma
+            isipokua:
+                ashiria unittest.SkipTest("Test locale sio supported "
                                         "(tried %s)" % (', '.join(tlocs)))
             cls.enUS_locale = tloc
-        finally:
+        mwishowe:
             locale.setlocale(locale.LC_NUMERIC, oldlocale)
 
     eleza setUp(self):
@@ -45,12 +45,12 @@ kundi BaseLocalizedTest(unittest.TestCase):
         self.addCleanup(locale.setlocale, self.locale_type, oldlocale)
         locale.setlocale(self.locale_type, self.enUS_locale)
         ikiwa verbose:
-            andika("testing with %r..." % self.enUS_locale, end=' ', flush=True)
+            andika("testing with %r..." % self.enUS_locale, end=' ', flush=Kweli)
 
 
 kundi BaseCookedTest(unittest.TestCase):
     #
-    # Base kundi for tests using cooked localeconv() values
+    # Base kundi kila tests using cooked localeconv() values
     #
 
     eleza setUp(self):
@@ -109,8 +109,8 @@ kundi EnUSCookedTest(BaseCookedTest):
 
 
 kundi FrFRCookedTest(BaseCookedTest):
-    # A cooked "fr_FR" locale with a space character as decimal separator
-    # and a non-ASCII currency symbol.
+    # A cooked "fr_FR" locale with a space character kama decimal separator
+    # na a non-ASCII currency symbol.
 
     cooked_values = {
         'currency_symbol': '\u20ac',
@@ -136,7 +136,7 @@ kundi FrFRCookedTest(BaseCookedTest):
 
 kundi BaseFormattingTest(object):
     #
-    # Utility functions for formatting tests
+    # Utility functions kila formatting tests
     #
 
     eleza _test_formatfunc(self, format, value, out, func, **format_opts):
@@ -157,8 +157,8 @@ kundi BaseFormattingTest(object):
 
 
 kundi EnUSNumberFormatting(BaseFormattingTest):
-    # XXX there is a grouping + padding bug when the thousands separator
-    # is empty but the grouping array contains values (e.g. Solaris 10)
+    # XXX there ni a grouping + padding bug when the thousands separator
+    # ni empty but the grouping array contains values (e.g. Solaris 10)
 
     eleza setUp(self):
         self.sep = locale.localeconv()['thousands_sep']
@@ -178,14 +178,14 @@ kundi EnUSNumberFormatting(BaseFormattingTest):
                 out=('-4%s200' % self.sep).ljust(10))
 
     eleza test_integer_grouping(self):
-        self._test_format("%d", 4200, grouping=True, out='4%s200' % self.sep)
-        self._test_format("%+d", 4200, grouping=True, out='+4%s200' % self.sep)
-        self._test_format("%+d", -4200, grouping=True, out='-4%s200' % self.sep)
+        self._test_format("%d", 4200, grouping=Kweli, out='4%s200' % self.sep)
+        self._test_format("%+d", 4200, grouping=Kweli, out='+4%s200' % self.sep)
+        self._test_format("%+d", -4200, grouping=Kweli, out='-4%s200' % self.sep)
 
     eleza test_integer_grouping_and_padding(self):
-        self._test_format("%10d", 4200, grouping=True,
+        self._test_format("%10d", 4200, grouping=Kweli,
             out=('4%s200' % self.sep).rjust(10))
-        self._test_format("%-10d", -4200, grouping=True,
+        self._test_format("%-10d", -4200, grouping=Kweli,
             out=('-4%s200' % self.sep).ljust(10))
 
     eleza test_simple(self):
@@ -201,15 +201,15 @@ kundi EnUSNumberFormatting(BaseFormattingTest):
 
     eleza test_format_deprecation(self):
         with self.assertWarns(DeprecationWarning):
-            locale.format("%-10.f", 4200, grouping=True)
+            locale.format("%-10.f", 4200, grouping=Kweli)
 
     eleza test_complex_formatting(self):
-        # Spaces in formatting string
-        self._test_format_string("One million is %i", 1000000, grouping=1,
-            out='One million is 1%s000%s000' % (self.sep, self.sep))
-        self._test_format_string("One  million is %i", 1000000, grouping=1,
-            out='One  million is 1%s000%s000' % (self.sep, self.sep))
-        # Dots in formatting string
+        # Spaces kwenye formatting string
+        self._test_format_string("One million ni %i", 1000000, grouping=1,
+            out='One million ni 1%s000%s000' % (self.sep, self.sep))
+        self._test_format_string("One  million ni %i", 1000000, grouping=1,
+            out='One  million ni 1%s000%s000' % (self.sep, self.sep))
+        # Dots kwenye formatting string
         self._test_format_string(".%f.", 1000.0, out='.1000.000000.')
         # Padding
         ikiwa self.sep:
@@ -234,7 +234,7 @@ kundi TestFormatPatternArg(unittest.TestCase):
 
     eleza test_onlyOnePattern(self):
         with check_warnings(('', DeprecationWarning)):
-            # Issue 2522: accept exactly one % pattern, and no extra chars.
+            # Issue 2522: accept exactly one % pattern, na no extra chars.
             self.assertRaises(ValueError, locale.format, "%f\n", 'foo')
             self.assertRaises(ValueError, locale.format, "%f\r", 'foo')
             self.assertRaises(ValueError, locale.format, "%f\r\n", 'foo')
@@ -281,19 +281,19 @@ kundi TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
 
     eleza test_currency(self):
         self._test_currency(50000, "$50000.00")
-        self._test_currency(50000, "$50,000.00", grouping=True)
+        self._test_currency(50000, "$50,000.00", grouping=Kweli)
         self._test_currency(50000, "USD 50,000.00",
-            grouping=True, international=True)
+            grouping=Kweli, international=Kweli)
 
 
 kundi TestCNumberFormatting(CCookedTest, BaseFormattingTest):
     # Test number formatting with a cooked "C" locale.
 
     eleza test_grouping(self):
-        self._test_format("%.2f", 12345.67, grouping=True, out='12345.67')
+        self._test_format("%.2f", 12345.67, grouping=Kweli, out='12345.67')
 
     eleza test_grouping_and_padding(self):
-        self._test_format("%9.2f", 12345.67, grouping=True, out=' 12345.67')
+        self._test_format("%9.2f", 12345.67, grouping=Kweli, out=' 12345.67')
 
 
 kundi TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
@@ -303,40 +303,40 @@ kundi TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
         self._test_format("%.2f", 12345.67, out='12345,67')
 
     eleza test_grouping(self):
-        self._test_format("%.2f", 345.67, grouping=True, out='345,67')
-        self._test_format("%.2f", 12345.67, grouping=True, out='12 345,67')
+        self._test_format("%.2f", 345.67, grouping=Kweli, out='345,67')
+        self._test_format("%.2f", 12345.67, grouping=Kweli, out='12 345,67')
 
     eleza test_grouping_and_padding(self):
-        self._test_format("%6.2f", 345.67, grouping=True, out='345,67')
-        self._test_format("%7.2f", 345.67, grouping=True, out=' 345,67')
-        self._test_format("%8.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format("%9.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format("%10.2f", 12345.67, grouping=True, out=' 12 345,67')
-        self._test_format("%-6.2f", 345.67, grouping=True, out='345,67')
-        self._test_format("%-7.2f", 345.67, grouping=True, out='345,67 ')
-        self._test_format("%-8.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format("%-9.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format("%-10.2f", 12345.67, grouping=True, out='12 345,67 ')
+        self._test_format("%6.2f", 345.67, grouping=Kweli, out='345,67')
+        self._test_format("%7.2f", 345.67, grouping=Kweli, out=' 345,67')
+        self._test_format("%8.2f", 12345.67, grouping=Kweli, out='12 345,67')
+        self._test_format("%9.2f", 12345.67, grouping=Kweli, out='12 345,67')
+        self._test_format("%10.2f", 12345.67, grouping=Kweli, out=' 12 345,67')
+        self._test_format("%-6.2f", 345.67, grouping=Kweli, out='345,67')
+        self._test_format("%-7.2f", 345.67, grouping=Kweli, out='345,67 ')
+        self._test_format("%-8.2f", 12345.67, grouping=Kweli, out='12 345,67')
+        self._test_format("%-9.2f", 12345.67, grouping=Kweli, out='12 345,67')
+        self._test_format("%-10.2f", 12345.67, grouping=Kweli, out='12 345,67 ')
 
     eleza test_integer_grouping(self):
-        self._test_format("%d", 200, grouping=True, out='200')
-        self._test_format("%d", 4200, grouping=True, out='4 200')
+        self._test_format("%d", 200, grouping=Kweli, out='200')
+        self._test_format("%d", 4200, grouping=Kweli, out='4 200')
 
     eleza test_integer_grouping_and_padding(self):
-        self._test_format("%4d", 4200, grouping=True, out='4 200')
-        self._test_format("%5d", 4200, grouping=True, out='4 200')
-        self._test_format("%10d", 4200, grouping=True, out='4 200'.rjust(10))
-        self._test_format("%-4d", 4200, grouping=True, out='4 200')
-        self._test_format("%-5d", 4200, grouping=True, out='4 200')
-        self._test_format("%-10d", 4200, grouping=True, out='4 200'.ljust(10))
+        self._test_format("%4d", 4200, grouping=Kweli, out='4 200')
+        self._test_format("%5d", 4200, grouping=Kweli, out='4 200')
+        self._test_format("%10d", 4200, grouping=Kweli, out='4 200'.rjust(10))
+        self._test_format("%-4d", 4200, grouping=Kweli, out='4 200')
+        self._test_format("%-5d", 4200, grouping=Kweli, out='4 200')
+        self._test_format("%-10d", 4200, grouping=Kweli, out='4 200'.ljust(10))
 
     eleza test_currency(self):
         euro = '\u20ac'
         self._test_currency(50000, "50000,00 " + euro)
-        self._test_currency(50000, "50 000,00 " + euro, grouping=True)
-        # XXX is the trailing space a bug?
+        self._test_currency(50000, "50 000,00 " + euro, grouping=Kweli)
+        # XXX ni the trailing space a bug?
         self._test_currency(50000, "50 000,00 EUR ",
-            grouping=True, international=True)
+            grouping=Kweli, international=Kweli)
 
 
 kundi TestCollation(unittest.TestCase):
@@ -362,12 +362,12 @@ kundi TestEnUSCollation(BaseLocalizedTest, TestCollation):
     locale_type = locale.LC_ALL
 
     eleza setUp(self):
-        enc = codecs.lookup(locale.getpreferredencoding(False) or 'ascii').name
-        ikiwa enc not in ('utf-8', 'iso8859-1', 'cp1252'):
-            raise unittest.SkipTest('encoding not suitable')
-        ikiwa enc != 'iso8859-1' and (sys.platform == 'darwin' or is_android or
+        enc = codecs.lookup(locale.getpreferredencoding(Uongo) ama 'ascii').name
+        ikiwa enc haiko kwenye ('utf-8', 'iso8859-1', 'cp1252'):
+            ashiria unittest.SkipTest('encoding sio suitable')
+        ikiwa enc != 'iso8859-1' na (sys.platform == 'darwin' ama is_android or
                                    sys.platform.startswith('freebsd')):
-            raise unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
+            ashiria unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
         BaseLocalizedTest.setUp(self)
 
     @unittest.skipIf(sys.platform.startswith('aix'),
@@ -386,7 +386,7 @@ kundi NormalizeTest(unittest.TestCase):
         self.assertEqual(locale.normalize(localename), expected, msg=localename)
 
     eleza test_locale_alias(self):
-        for localename, alias in locale.locale_alias.items():
+        kila localename, alias kwenye locale.locale_alias.items():
             with self.subTest(locale=(localename, alias)):
                 self.check(localename, alias)
 
@@ -495,51 +495,51 @@ kundi NormalizeTest(unittest.TestCase):
 kundi TestMiscellaneous(unittest.TestCase):
     eleza test_defaults_UTF8(self):
         # Issue #18378: on (at least) macOS setting LC_CTYPE to "UTF-8" is
-        # valid. Futhermore LC_CTYPE=UTF is used by the UTF-8 locale coercing
+        # valid. Futhermore LC_CTYPE=UTF ni used by the UTF-8 locale coercing
         # during interpreter startup (on macOS).
         agiza _locale
         agiza os
 
-        self.assertEqual(locale._parse_localename('UTF-8'), (None, 'UTF-8'))
+        self.assertEqual(locale._parse_localename('UTF-8'), (Tupu, 'UTF-8'))
 
         ikiwa hasattr(_locale, '_getdefaultlocale'):
             orig_getlocale = _locale._getdefaultlocale
-            del _locale._getdefaultlocale
-        else:
-            orig_getlocale = None
+            toa _locale._getdefaultlocale
+        isipokua:
+            orig_getlocale = Tupu
 
         orig_env = {}
-        try:
-            for key in ('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE'):
-                ikiwa key in os.environ:
+        jaribu:
+            kila key kwenye ('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE'):
+                ikiwa key kwenye os.environ:
                     orig_env[key] = os.environ[key]
-                    del os.environ[key]
+                    toa os.environ[key]
 
             os.environ['LC_CTYPE'] = 'UTF-8'
 
-            self.assertEqual(locale.getdefaultlocale(), (None, 'UTF-8'))
+            self.assertEqual(locale.getdefaultlocale(), (Tupu, 'UTF-8'))
 
-        finally:
-            for k in orig_env:
+        mwishowe:
+            kila k kwenye orig_env:
                 os.environ[k] = orig_env[k]
 
-            ikiwa 'LC_CTYPE' not in orig_env:
-                del os.environ['LC_CTYPE']
+            ikiwa 'LC_CTYPE' haiko kwenye orig_env:
+                toa os.environ['LC_CTYPE']
 
-            ikiwa orig_getlocale is not None:
+            ikiwa orig_getlocale ni sio Tupu:
                 _locale._getdefaultlocale = orig_getlocale
 
     eleza test_getpreferredencoding(self):
-        # Invoke getpreferredencoding to make sure it does not cause exceptions.
+        # Invoke getpreferredencoding to make sure it does sio cause exceptions.
         enc = locale.getpreferredencoding()
         ikiwa enc:
-            # If encoding non-empty, make sure it is valid
+            # If encoding non-empty, make sure it ni valid
             codecs.lookup(enc)
 
     eleza test_strcoll_3303(self):
         # test crasher kutoka bug #3303
-        self.assertRaises(TypeError, locale.strcoll, "a", None)
-        self.assertRaises(TypeError, locale.strcoll, b"a", None)
+        self.assertRaises(TypeError, locale.strcoll, "a", Tupu)
+        self.assertRaises(TypeError, locale.strcoll, b"a", Tupu)
 
     eleza test_setlocale_category(self):
         locale.setlocale(locale.LC_ALL)
@@ -553,17 +553,17 @@ kundi TestMiscellaneous(unittest.TestCase):
         self.assertRaises(locale.Error, locale.setlocale, 12345)
 
     eleza test_getsetlocale_issue1813(self):
-        # Issue #1813: setting and getting the locale under a Turkish locale
+        # Issue #1813: setting na getting the locale under a Turkish locale
         oldlocale = locale.setlocale(locale.LC_CTYPE)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
-        try:
+        jaribu:
             locale.setlocale(locale.LC_CTYPE, 'tr_TR')
-        except locale.Error:
+        tatizo locale.Error:
             # Unsupported locale on this system
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)
         ikiwa verbose:
-            andika('testing with %a' % (loc,), end=' ', flush=True)
+            andika('testing with %a' % (loc,), end=' ', flush=Kweli)
         locale.setlocale(locale.LC_CTYPE, loc)
         self.assertEqual(loc, locale.getlocale(locale.LC_CTYPE))
 

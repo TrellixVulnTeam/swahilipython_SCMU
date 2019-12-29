@@ -18,7 +18,7 @@ agiza _pyio # Python implementation of io
 
 
 kundi AutoFileTests:
-    # file tests for which a test file is automatically set up
+    # file tests kila which a test file ni automatically set up
 
     eleza setUp(self):
         self.f = self.FileIO(TESTFN, 'w')
@@ -34,7 +34,7 @@ kundi AutoFileTests:
         p.write(bytes(range(10)))
         self.assertEqual(self.f.tell(), p.tell())
         self.f.close()
-        self.f = None
+        self.f = Tupu
         self.assertRaises(ReferenceError, getattr, p, 'tell')
 
     eleza testSeekTell(self):
@@ -56,10 +56,10 @@ kundi AutoFileTests:
         f = self.f
 
         self.assertEqual(f.mode, "wb")
-        self.assertEqual(f.closed, False)
+        self.assertEqual(f.closed, Uongo)
 
         # verify the attributes are readonly
-        for attr in 'mode', 'closed':
+        kila attr kwenye 'mode', 'closed':
             self.assertRaises((AttributeError, TypeError),
                               setattr, f, attr, 'oops')
 
@@ -78,7 +78,7 @@ kundi AutoFileTests:
         self.f.close()
 
         ba = bytearray(b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        with self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(ba)
         self.assertEqual(ba, b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
@@ -88,13 +88,13 @@ kundi AutoFileTests:
         self.f.close()
 
         m = memoryview(bytearray(b'abcdefgh'))
-        with self.FileIO(TESTFN, 'r') as f:
+        with self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(m)
         self.assertEqual(m, b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
 
         m = memoryview(bytearray(b'abcdefgh')).cast('H', shape=[2, 2])
-        with self.FileIO(TESTFN, 'r') as f:
+        with self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(m)
         self.assertEqual(bytes(m), b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
@@ -104,19 +104,19 @@ kundi AutoFileTests:
         self.f.close()
 
         a = array('B', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        with self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(a)
         self.assertEqual(a, array('B', [1, 2, 0, 255, 101, 102, 103, 104]))
         self.assertEqual(n, 4)
 
         a = array('b', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        with self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(a)
         self.assertEqual(a, array('b', [1, 2, 0, -1, 101, 102, 103, 104]))
         self.assertEqual(n, 4)
 
         a = array('I', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        with self.FileIO(TESTFN, 'r') kama f:
             n = f.readinto(a)
         self.assertEqual(a, array('I', b'\x01\x02\x00\xffefgh'))
         self.assertEqual(n, 4)
@@ -139,28 +139,28 @@ kundi AutoFileTests:
 
     eleza testWritelinesError(self):
         self.assertRaises(TypeError, self.f.writelines, [1, 2, 3])
-        self.assertRaises(TypeError, self.f.writelines, None)
+        self.assertRaises(TypeError, self.f.writelines, Tupu)
         self.assertRaises(TypeError, self.f.writelines, "abc")
 
     eleza test_none_args(self):
         self.f.write(b"hi\nbye\nabc")
         self.f.close()
         self.f = self.FileIO(TESTFN, 'r')
-        self.assertEqual(self.f.read(None), b"hi\nbye\nabc")
+        self.assertEqual(self.f.read(Tupu), b"hi\nbye\nabc")
         self.f.seek(0)
-        self.assertEqual(self.f.readline(None), b"hi\n")
-        self.assertEqual(self.f.readlines(None), [b"bye\n", b"abc"])
+        self.assertEqual(self.f.readline(Tupu), b"hi\n")
+        self.assertEqual(self.f.readlines(Tupu), [b"bye\n", b"abc"])
 
     eleza test_reject(self):
         self.assertRaises(TypeError, self.f.write, "Hello!")
 
     eleza testRepr(self):
         self.assertEqual(repr(self.f),
-                         "<%s.FileIO name=%r mode=%r closefd=True>" %
+                         "<%s.FileIO name=%r mode=%r closefd=Kweli>" %
                          (self.modulename, self.f.name, self.f.mode))
-        del self.f.name
+        toa self.f.name
         self.assertEqual(repr(self.f),
-                         "<%s.FileIO fd=%r mode=%r closefd=True>" %
+                         "<%s.FileIO fd=%r mode=%r closefd=Kweli>" %
                          (self.modulename, self.f.fileno(), self.f.mode))
         self.f.close()
         self.assertEqual(repr(self.f),
@@ -168,33 +168,33 @@ kundi AutoFileTests:
 
     eleza testReprNoCloseFD(self):
         fd = os.open(TESTFN, os.O_RDONLY)
-        try:
-            with self.FileIO(fd, 'r', closefd=False) as f:
+        jaribu:
+            with self.FileIO(fd, 'r', closefd=Uongo) kama f:
                 self.assertEqual(repr(f),
-                                 "<%s.FileIO name=%r mode=%r closefd=False>" %
+                                 "<%s.FileIO name=%r mode=%r closefd=Uongo>" %
                                  (self.modulename, f.name, f.mode))
-        finally:
+        mwishowe:
             os.close(fd)
 
     eleza testRecursiveRepr(self):
         # Issue #25455
         with swap_attr(self.f, 'name', self.f):
             with self.assertRaises(RuntimeError):
-                repr(self.f)  # Should not crash
+                repr(self.f)  # Should sio crash
 
     eleza testErrors(self):
         f = self.f
-        self.assertFalse(f.isatty())
-        self.assertFalse(f.closed)
+        self.assertUongo(f.isatty())
+        self.assertUongo(f.closed)
         #self.assertEqual(f.name, TESTFN)
-        self.assertRaises(ValueError, f.read, 10) # Open for reading
+        self.assertRaises(ValueError, f.read, 10) # Open kila reading
         f.close()
-        self.assertTrue(f.closed)
+        self.assertKweli(f.closed)
         f = self.FileIO(TESTFN, 'r')
         self.assertRaises(TypeError, f.readinto, "")
-        self.assertFalse(f.closed)
+        self.assertUongo(f.closed)
         f.close()
-        self.assertTrue(f.closed)
+        self.assertKweli(f.closed)
 
     eleza testMethods(self):
         methods = ['fileno', 'isatty', 'seekable', 'readable', 'writable',
@@ -202,11 +202,11 @@ kundi AutoFileTests:
                    'tell', 'truncate', 'flush']
 
         self.f.close()
-        self.assertTrue(self.f.closed)
+        self.assertKweli(self.f.closed)
 
-        for methodname in methods:
+        kila methodname kwenye methods:
             method = getattr(self.f, methodname)
-            # should raise on closed file
+            # should ashiria on closed file
             self.assertRaises(ValueError, method)
 
         self.assertRaises(TypeError, self.f.readinto)
@@ -220,20 +220,20 @@ kundi AutoFileTests:
 
     eleza testOpendir(self):
         # Issue 3703: opening a directory should fill the errno
-        # Windows always returns "[Errno 13]: Permission denied
-        # Unix uses fstat and returns "[Errno 21]: Is a directory"
-        try:
+        # Windows always rudishas "[Errno 13]: Permission denied
+        # Unix uses fstat na rudishas "[Errno 21]: Is a directory"
+        jaribu:
             self.FileIO('.', 'r')
-        except OSError as e:
+        tatizo OSError kama e:
             self.assertNotEqual(e.errno, 0)
             self.assertEqual(e.filename, ".")
-        else:
-            self.fail("Should have raised OSError")
+        isipokua:
+            self.fail("Should have ashiriad OSError")
 
     @unittest.skipIf(os.name == 'nt', "test only works on a POSIX-like system")
     eleza testOpenDirFD(self):
         fd = os.open('.', os.O_RDONLY)
-        with self.assertRaises(OSError) as cm:
+        with self.assertRaises(OSError) kama cm:
             self.FileIO(fd, 'r')
         os.close(fd)
         self.assertEqual(cm.exception.errno, errno.EISDIR)
@@ -246,13 +246,13 @@ kundi AutoFileTests:
             #forcibly close the fd before invoking the problem function
             f = self.f
             os.close(f.fileno())
-            try:
+            jaribu:
                 func(self, f)
-            finally:
-                try:
+            mwishowe:
+                jaribu:
                     self.f.close()
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
         rudisha wrapper
 
     eleza ClosedFDRaises(func):
@@ -261,17 +261,17 @@ kundi AutoFileTests:
             #forcibly close the fd before invoking the problem function
             f = self.f
             os.close(f.fileno())
-            try:
+            jaribu:
                 func(self, f)
-            except OSError as e:
+            tatizo OSError kama e:
                 self.assertEqual(e.errno, errno.EBADF)
-            else:
-                self.fail("Should have raised OSError")
-            finally:
-                try:
+            isipokua:
+                self.fail("Should have ashiriad OSError")
+            mwishowe:
+                jaribu:
                     self.f.close()
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
         rudisha wrapper
 
     @ClosedFDRaises
@@ -312,13 +312,13 @@ kundi AutoFileTests:
 
     @ClosedFD
     eleza testErrnoOnClosedIsatty(self, f):
-        self.assertEqual(f.isatty(), False)
+        self.assertEqual(f.isatty(), Uongo)
 
     eleza ReopenForRead(self):
-        try:
+        jaribu:
             self.f.close()
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
         self.f = self.FileIO(TESTFN, 'r')
         os.close(self.f.fileno())
         rudisha self.f
@@ -351,109 +351,109 @@ kundi PyAutoFileTests(AutoFileTests, unittest.TestCase):
 kundi OtherFileTests:
 
     eleza testAbles(self):
-        try:
+        jaribu:
             f = self.FileIO(TESTFN, "w")
-            self.assertEqual(f.readable(), False)
-            self.assertEqual(f.writable(), True)
-            self.assertEqual(f.seekable(), True)
+            self.assertEqual(f.readable(), Uongo)
+            self.assertEqual(f.writable(), Kweli)
+            self.assertEqual(f.seekable(), Kweli)
             f.close()
 
             f = self.FileIO(TESTFN, "r")
-            self.assertEqual(f.readable(), True)
-            self.assertEqual(f.writable(), False)
-            self.assertEqual(f.seekable(), True)
+            self.assertEqual(f.readable(), Kweli)
+            self.assertEqual(f.writable(), Uongo)
+            self.assertEqual(f.seekable(), Kweli)
             f.close()
 
             f = self.FileIO(TESTFN, "a+")
-            self.assertEqual(f.readable(), True)
-            self.assertEqual(f.writable(), True)
-            self.assertEqual(f.seekable(), True)
-            self.assertEqual(f.isatty(), False)
+            self.assertEqual(f.readable(), Kweli)
+            self.assertEqual(f.writable(), Kweli)
+            self.assertEqual(f.seekable(), Kweli)
+            self.assertEqual(f.isatty(), Uongo)
             f.close()
 
             ikiwa sys.platform != "win32":
-                try:
+                jaribu:
                     f = self.FileIO("/dev/tty", "a")
-                except OSError:
-                    # When run in a cron job there just aren't any
+                tatizo OSError:
+                    # When run kwenye a cron job there just aren't any
                     # ttys, so skip the test.  This also handles other
                     # OS'es that don't support /dev/tty.
-                    pass
-                else:
-                    self.assertEqual(f.readable(), False)
-                    self.assertEqual(f.writable(), True)
-                    ikiwa sys.platform != "darwin" and \
-                       'bsd' not in sys.platform and \
-                       not sys.platform.startswith(('sunos', 'aix')):
+                    pita
+                isipokua:
+                    self.assertEqual(f.readable(), Uongo)
+                    self.assertEqual(f.writable(), Kweli)
+                    ikiwa sys.platform != "darwin" na \
+                       'bsd' haiko kwenye sys.platform na \
+                       sio sys.platform.startswith(('sunos', 'aix')):
                         # Somehow /dev/tty appears seekable on some BSDs
-                        self.assertEqual(f.seekable(), False)
-                    self.assertEqual(f.isatty(), True)
+                        self.assertEqual(f.seekable(), Uongo)
+                    self.assertEqual(f.isatty(), Kweli)
                     f.close()
-        finally:
+        mwishowe:
             os.unlink(TESTFN)
 
     eleza testInvalidModeStrings(self):
         # check invalid mode strings
-        for mode in ("", "aU", "wU+", "rw", "rt"):
-            try:
+        kila mode kwenye ("", "aU", "wU+", "rw", "rt"):
+            jaribu:
                 f = self.FileIO(TESTFN, mode)
-            except ValueError:
-                pass
-            else:
+            tatizo ValueError:
+                pita
+            isipokua:
                 f.close()
-                self.fail('%r is an invalid file mode' % mode)
+                self.fail('%r ni an invalid file mode' % mode)
 
     eleza testModeStrings(self):
-        # test that the mode attribute is correct for various mode strings
-        # given as init args
-        try:
-            for modes in [('w', 'wb'), ('wb', 'wb'), ('wb+', 'rb+'),
+        # test that the mode attribute ni correct kila various mode strings
+        # given kama init args
+        jaribu:
+            kila modes kwenye [('w', 'wb'), ('wb', 'wb'), ('wb+', 'rb+'),
                           ('w+b', 'rb+'), ('a', 'ab'), ('ab', 'ab'),
                           ('ab+', 'ab+'), ('a+b', 'ab+'), ('r', 'rb'),
                           ('rb', 'rb'), ('rb+', 'rb+'), ('r+b', 'rb+')]:
                 # read modes are last so that TESTFN will exist first
-                with self.FileIO(TESTFN, modes[0]) as f:
+                with self.FileIO(TESTFN, modes[0]) kama f:
                     self.assertEqual(f.mode, modes[1])
-        finally:
+        mwishowe:
             ikiwa os.path.exists(TESTFN):
                 os.unlink(TESTFN)
 
     eleza testUnicodeOpen(self):
-        # verify repr works for unicode too
+        # verify repr works kila unicode too
         f = self.FileIO(str(TESTFN), "w")
         f.close()
         os.unlink(TESTFN)
 
     eleza testBytesOpen(self):
         # Opening a bytes filename
-        try:
+        jaribu:
             fn = TESTFN.encode("ascii")
-        except UnicodeEncodeError:
-            self.skipTest('could not encode %r to ascii' % TESTFN)
+        tatizo UnicodeEncodeError:
+            self.skipTest('could sio encode %r to ascii' % TESTFN)
         f = self.FileIO(fn, "w")
-        try:
+        jaribu:
             f.write(b"abc")
             f.close()
-            with open(TESTFN, "rb") as f:
+            with open(TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), b"abc")
-        finally:
+        mwishowe:
             os.unlink(TESTFN)
 
     @unittest.skipIf(sys.getfilesystemencoding() != 'utf-8',
-                     "test only works for utf-8 filesystems")
+                     "test only works kila utf-8 filesystems")
     eleza testUtf8BytesOpen(self):
         # Opening a UTF-8 bytes filename
-        try:
+        jaribu:
             fn = TESTFN_UNICODE.encode("utf-8")
-        except UnicodeEncodeError:
-            self.skipTest('could not encode %r to utf-8' % TESTFN_UNICODE)
+        tatizo UnicodeEncodeError:
+            self.skipTest('could sio encode %r to utf-8' % TESTFN_UNICODE)
         f = self.FileIO(fn, "w")
-        try:
+        jaribu:
             f.write(b"abc")
             f.close()
-            with open(TESTFN_UNICODE, "rb") as f:
+            with open(TESTFN_UNICODE, "rb") kama f:
                 self.assertEqual(f.read(), b"abc")
-        finally:
+        mwishowe:
             os.unlink(TESTFN_UNICODE)
 
     eleza testConstructorHandlesNULChars(self):
@@ -469,20 +469,20 @@ kundi OtherFileTests:
             self.assertRaises(OSError, msvcrt.get_osfhandle, make_bad_fd())
 
     eleza testBadModeArgument(self):
-        # verify that we get a sensible error message for bad mode argument
+        # verify that we get a sensible error message kila bad mode argument
         bad_mode = "qwerty"
-        try:
+        jaribu:
             f = self.FileIO(TESTFN, bad_mode)
-        except ValueError as msg:
+        tatizo ValueError kama msg:
             ikiwa msg.args[0] != 0:
                 s = str(msg)
-                ikiwa TESTFN in s or bad_mode not in s:
-                    self.fail("bad error message for invalid mode: %s" % s)
+                ikiwa TESTFN kwenye s ama bad_mode haiko kwenye s:
+                    self.fail("bad error message kila invalid mode: %s" % s)
             # ikiwa msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
-        else:
+        isipokua:
             f.close()
-            self.fail("no error for invalid mode: %s" % bad_mode)
+            self.fail("no error kila invalid mode: %s" % bad_mode)
 
     eleza testTruncate(self):
         f = self.FileIO(TESTFN, 'w')
@@ -507,7 +507,7 @@ kundi OtherFileTests:
             f = self.FileIO(TESTFN,'r+')
             data = f.read(5)
             ikiwa data != bytes(range(5)):
-                self.fail("Read on file opened for update failed %r" % data)
+                self.fail("Read on file opened kila update failed %r" % data)
             ikiwa f.tell() != 5:
                 self.fail("File pos after read wrong %d" % f.tell())
 
@@ -520,13 +520,13 @@ kundi OtherFileTests:
             ikiwa size != 5:
                 self.fail("File size after ftruncate wrong %d" % size)
 
-        try:
+        jaribu:
             bug801631()
-        finally:
+        mwishowe:
             os.unlink(TESTFN)
 
     eleza testAppend(self):
-        try:
+        jaribu:
             f = open(TESTFN, 'wb')
             f.write(b'spam')
             f.close()
@@ -537,17 +537,17 @@ kundi OtherFileTests:
             d = f.read()
             f.close()
             self.assertEqual(d, b'spameggs')
-        finally:
-            try:
+        mwishowe:
+            jaribu:
                 os.unlink(TESTFN)
             except:
-                pass
+                pita
 
     eleza testInvalidInit(self):
         self.assertRaises(TypeError, self.FileIO, "1", 0, 0)
 
     eleza testWarnings(self):
-        with check_warnings(quiet=True) as w:
+        with check_warnings(quiet=Kweli) kama w:
             self.assertEqual(w.warnings, [])
             self.assertRaises(TypeError, self.FileIO, [])
             self.assertEqual(w.warnings, [])
@@ -555,15 +555,15 @@ kundi OtherFileTests:
             self.assertEqual(w.warnings, [])
 
     eleza testUnclosedFDOnException(self):
-        kundi MyException(Exception): pass
+        kundi MyException(Exception): pita
         kundi MyFileIO(self.FileIO):
             eleza __setattr__(self, name, value):
                 ikiwa name == "name":
-                    raise MyException("blocked setting name")
+                    ashiria MyException("blocked setting name")
                 rudisha super(MyFileIO, self).__setattr__(name, value)
         fd = os.open(__file__, os.O_RDONLY)
         self.assertRaises(MyException, MyFileIO, fd)
-        os.close(fd)  # should not raise OSError(EBADF)
+        os.close(fd)  # should sio ashiria OSError(EBADF)
 
 
 kundi COtherFileTests(OtherFileTests, unittest.TestCase):
@@ -580,9 +580,9 @@ kundi COtherFileTests(OtherFileTests, unittest.TestCase):
     eleza test_open_code(self):
         # Check that the default behaviour of open_code matches
         # open("rb")
-        with self.FileIO(__file__, "rb") as f:
+        with self.FileIO(__file__, "rb") kama f:
             expected = f.read()
-        with _io.open_code(__file__) as f:
+        with _io.open_code(__file__) kama f:
             actual = f.read()
         self.assertEqual(expected, actual)
 
@@ -594,11 +594,11 @@ kundi PyOtherFileTests(OtherFileTests, unittest.TestCase):
     eleza test_open_code(self):
         # Check that the default behaviour of open_code matches
         # open("rb")
-        with self.FileIO(__file__, "rb") as f:
+        with self.FileIO(__file__, "rb") kama f:
             expected = f.read()
-        with check_warnings(quiet=True) as w:
+        with check_warnings(quiet=Kweli) kama w:
             # Always test _open_code_with_warning
-            with _pyio._open_code_with_warning(__file__) as f:
+            with _pyio._open_code_with_warning(__file__) kama f:
                 actual = f.read()
             self.assertEqual(expected, actual)
             self.assertNotEqual(w.warnings, [])
@@ -607,10 +607,10 @@ kundi PyOtherFileTests(OtherFileTests, unittest.TestCase):
 eleza test_main():
     # Historically, these tests have been sloppy about removing TESTFN.
     # So get rid of it no matter what.
-    try:
+    jaribu:
         run_unittest(CAutoFileTests, PyAutoFileTests,
                      COtherFileTests, PyOtherFileTests)
-    finally:
+    mwishowe:
         ikiwa os.path.exists(TESTFN):
             os.unlink(TESTFN)
 

@@ -34,26 +34,26 @@ def get_tests_modules(basepath=this_dir_path, gui=True, packages=None):
 
         if is_package(dirpath) and filenames:
             pkg_name = dirpath[len(basepath) + len(os.sep):].replace('/', '.')
-            if packages and pkg_name not in packages:
-                continue
+            if packages and pkg_name haiko kwenye packages:
+                endelea
 
             filenames = filter(
                     lambda x: x.startswith('test_') and x.endswith(py_ext),
                     filenames)
 
             for name in filenames:
-                try:
+                jaribu:
                     yield importlib.import_module(
                         ".%s.%s" % (pkg_name, name[:-len(py_ext)]),
                         "tkinter.test")
-                except test.support.ResourceDenied:
+                tatizo test.support.ResourceDenied:
                     if gui:
                         raise
 
 def get_tests(text=True, gui=True, packages=None):
     """Yield all the tests in the modules found by get_tests_modules.
 
-    If nogui is True, only tests that do not require a GUI will be
+    If nogui is True, only tests that do sio require a GUI will be
     returned."""
     attrs = []
     if text:

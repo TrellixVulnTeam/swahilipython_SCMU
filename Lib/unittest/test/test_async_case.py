@@ -3,7 +3,7 @@ agiza unittest
 
 
 eleza tearDownModule():
-    asyncio.set_event_loop_policy(None)
+    asyncio.set_event_loop_policy(Tupu)
 
 
 kundi TestAsyncCase(unittest.TestCase):
@@ -61,7 +61,7 @@ kundi TestAsyncCase(unittest.TestCase):
         kundi Test(unittest.IsolatedAsyncioTestCase):
             async eleza asyncSetUp(self):
                 events.append('asyncSetUp')
-                raise Exception()
+                ashiria Exception()
 
             async eleza test_func(self):
                 events.append('test')
@@ -87,7 +87,7 @@ kundi TestAsyncCase(unittest.TestCase):
 
             async eleza test_func(self):
                 events.append('test')
-                raise Exception()
+                ashiria Exception()
                 self.addAsyncCleanup(self.on_cleanup)
 
             async eleza asyncTearDown(self):
@@ -110,7 +110,7 @@ kundi TestAsyncCase(unittest.TestCase):
             async eleza test_func(self):
                 events.append('test')
                 self.addAsyncCleanup(self.on_cleanup)
-                raise Exception()
+                ashiria Exception()
 
             async eleza asyncTearDown(self):
                 events.append('asyncTearDown')
@@ -135,7 +135,7 @@ kundi TestAsyncCase(unittest.TestCase):
 
             async eleza asyncTearDown(self):
                 events.append('asyncTearDown')
-                raise Exception()
+                ashiria Exception()
 
             async eleza on_cleanup(self):
                 events.append('cleanup')
@@ -161,7 +161,7 @@ kundi TestAsyncCase(unittest.TestCase):
 
             async eleza on_cleanup(self):
                 events.append('cleanup')
-                raise Exception()
+                ashiria Exception()
 
         test = Test("test_func")
         test.run()

@@ -1,3 +1,3 @@
-# Fodder for test of issue24748 in test_imp
+# Fodder kila test of issue24748 kwenye test_imp
 
-dummy_name = True
+dummy_name = Kweli

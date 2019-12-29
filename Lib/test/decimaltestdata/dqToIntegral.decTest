@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -26,7 +26,7 @@ version: 2.59
 -- elsewhere; the tests here are for integrity, rounding mode, etc.
 -- Also, it is assumed the test harness will use these tests for both
 -- ToIntegralExact (which does set Inexact) and the fixed-name
--- functions (which do not set Inexact).
+-- functions (which do sio set Inexact).
 
 -- Note that decNumber implements an earlier definition of toIntegral
 -- which never sets Inexact; the decTest operator for that is called

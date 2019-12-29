@@ -1,5 +1,5 @@
 """
-Test suite for _osx_support: shared OS X support functions.
+Test suite kila _osx_support: shared OS X support functions.
 """
 
 agiza os
@@ -16,23 +16,23 @@ agiza _osx_support
 kundi Test_OSXSupport(unittest.TestCase):
 
     eleza setUp(self):
-        self.maxDiff = None
+        self.maxDiff = Tupu
         self.prog_name = 'bogus_program_xxxx'
         self.temp_path_dir = os.path.abspath(os.getcwd())
         self.env = test.support.EnvironmentVarGuard()
         self.addCleanup(self.env.__exit__)
-        for cv in ('CFLAGS', 'LDFLAGS', 'CPPFLAGS',
+        kila cv kwenye ('CFLAGS', 'LDFLAGS', 'CPPFLAGS',
                             'BASECFLAGS', 'BLDSHARED', 'LDSHARED', 'CC',
                             'CXX', 'PY_CFLAGS', 'PY_LDFLAGS', 'PY_CPPFLAGS',
                             'PY_CORE_CFLAGS', 'PY_CORE_LDFLAGS'):
-            ikiwa cv in self.env:
+            ikiwa cv kwenye self.env:
                 self.env.unset(cv)
 
     eleza add_expected_saved_initial_values(self, config_vars, expected_vars):
-        # Ensure that the initial values for all modified config vars
+        # Ensure that the initial values kila all modified config vars
         # are also saved with modified keys.
         expected_vars.update(('_OSX_SUPPORT_INITIAL_'+ k,
-                config_vars[k]) for k in config_vars
+                config_vars[k]) kila k kwenye config_vars
                     ikiwa config_vars[k] != expected_vars[k])
 
     eleza test__find_executable(self):
@@ -40,9 +40,9 @@ kundi Test_OSXSupport(unittest.TestCase):
             self.env['PATH'] = self.env['PATH'] + ':'
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         test.support.unlink(self.prog_name)
-        self.assertIsNone(_osx_support._find_executable(self.prog_name))
+        self.assertIsTupu(_osx_support._find_executable(self.prog_name))
         self.addCleanup(test.support.unlink, self.prog_name)
-        with open(self.prog_name, 'w') as f:
+        with open(self.prog_name, 'w') kama f:
             f.write("#!/bin/sh\n/bin/echo OK\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual(self.prog_name,
@@ -54,7 +54,7 @@ kundi Test_OSXSupport(unittest.TestCase):
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         test.support.unlink(self.prog_name)
         self.addCleanup(test.support.unlink, self.prog_name)
-        with open(self.prog_name, 'w') as f:
+        with open(self.prog_name, 'w') kama f:
             f.write("#!/bin/sh\n/bin/echo ExpectedOutput\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual('ExpectedOutput',
@@ -62,11 +62,11 @@ kundi Test_OSXSupport(unittest.TestCase):
 
     eleza test__find_build_tool(self):
         out = _osx_support._find_build_tool('cc')
-        self.assertTrue(os.path.isfile(out),
-                            'cc not found - check xcode-select')
+        self.assertKweli(os.path.isfile(out),
+                            'cc sio found - check xcode-select')
 
     eleza test__get_system_version(self):
-        self.assertTrue(platform.mac_ver()[0].startswith(
+        self.assertKweli(platform.mac_ver()[0].startswith(
                                     _osx_support._get_system_version()))
 
     eleza test__remove_original_values(self):
@@ -108,7 +108,7 @@ kundi Test_OSXSupport(unittest.TestCase):
 
     eleza test__supports_universal_builds(self):
         agiza platform
-        mac_ver_tuple = tuple(int(i) for i in
+        mac_ver_tuple = tuple(int(i) kila i in
                             platform.mac_ver()[0].split('.')[0:2])
         self.assertEqual(mac_ver_tuple >= (10, 4),
                             _osx_support._supports_universal_builds())
@@ -142,10 +142,10 @@ kundi Test_OSXSupport(unittest.TestCase):
 
         suffix = (':' + self.env['PATH']) ikiwa self.env['PATH'] else ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
-        for c_name, c_output in compilers:
+        kila c_name, c_output kwenye compilers:
             test.support.unlink(c_name)
             self.addCleanup(test.support.unlink, c_name)
-            with open(c_name, 'w') as f:
+            with open(c_name, 'w') kama f:
                 f.write("#!/bin/sh\n/bin/echo " + c_output)
             os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,
@@ -200,8 +200,8 @@ kundi Test_OSXSupport(unittest.TestCase):
         c_name = 'clang'
         test.support.unlink(c_name)
         self.addCleanup(test.support.unlink, c_name)
-        # exit status 255 means no PPC support in this compiler chain
-        with open(c_name, 'w') as f:
+        # exit status 255 means no PPC support kwenye this compiler chain
+        with open(c_name, 'w') kama f:
             f.write("#!/bin/sh\nexit 255")
         os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,
@@ -262,8 +262,8 @@ kundi Test_OSXSupport(unittest.TestCase):
                                     config_vars))
 
     eleza test_get_platform_osx(self):
-        # Note, get_platform_osx is currently tested more extensively
-        # indirectly by test_sysconfig and test_distutils
+        # Note, get_platform_osx ni currently tested more extensively
+        # indirectly by test_sysconfig na test_distutils
         config_vars = {
         'CFLAGS': '-fno-strict-aliasing  -g -O3 -arch ppc -arch i386  '
                         '-isysroot /Developer/SDKs/MacOSX10.1.sdk',

@@ -8,7 +8,7 @@ installed (`apt install zip` on Debian).
 
 These are used to test executable files with an appended zipfile, in a scenario
 where the executable is _not_ a Python interpreter itself so our automatic
-zipimport machinery (that'd look for `__main__.py`) is not being used.
+zipimport machinery (that'd look for `__main__.py`) ni sio being used.
 
 ## Updating the test executables
 

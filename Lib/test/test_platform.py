@@ -12,20 +12,20 @@ kundi PlatformTest(unittest.TestCase):
     eleza clear_caches(self):
         platform._platform_cache.clear()
         platform._sys_version_cache.clear()
-        platform._uname_cache = None
+        platform._uname_cache = Tupu
 
     eleza test_architecture(self):
         res = platform.architecture()
 
     @support.skip_unless_symlink
     eleza test_architecture_via_symlink(self): # issue3762
-        with support.PythonSymlink() as py:
+        with support.PythonSymlink() kama py:
             cmd = "-c", "agiza platform; andika(platform.architecture())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
     eleza test_platform(self):
-        for aliased in (False, True):
-            for terse in (False, True):
+        kila aliased kwenye (Uongo, Kweli):
+            kila terse kwenye (Uongo, Kweli):
                 res = platform.platform(aliased, terse)
 
     eleza test_system(self):
@@ -58,7 +58,7 @@ kundi PlatformTest(unittest.TestCase):
 
     eleza test_sys_version(self):
         # Old test.
-        for input, output in (
+        kila input, output kwenye (
             ('2.4.3 (#1, Jun 21 2006, 13:54:21) \n[GCC 3.3.4 (pre 3.3.5 20040809)]',
              ('CPython', '2.4.3', '', '', '1', 'Jun 21 2006 13:54:21', 'GCC 3.3.4 (pre 3.3.5 20040809)')),
             ('IronPython 1.0.60816 on .NET 2.0.50727.42',
@@ -82,15 +82,15 @@ kundi PlatformTest(unittest.TestCase):
             ('2.4.3 (truncation) \n[GCC]',
              ('CPython', '2.4.3', '', '', 'truncation', '', 'GCC')),
             ):
-            # branch and revision are not "parsed", but fetched
+            # branch na revision are sio "parsed", but fetched
             # kutoka sys._git.  Ignore them
             (name, version, branch, revision, buildno, builddate, compiler) \
                    = platform._sys_version(input)
             self.assertEqual(
                 (name, version, '', '', buildno, builddate, compiler), output)
 
-        # Tests for python_implementation(), python_version(), python_branch(),
-        # python_revision(), python_build(), and python_compiler().
+        # Tests kila python_implementation(), python_version(), python_branch(),
+        # python_revision(), python_build(), na python_compiler().
         sys_versions = {
             ("2.6.1 (r261:67515, Dec  6 2008, 15:26:00) \n[GCC 4.0.1 (Apple Computer, Inc. build 5370)]",
              ('CPython', 'tags/r261', '67515'), self.save_platform)
@@ -99,17 +99,17 @@ kundi PlatformTest(unittest.TestCase):
                  ('r261:67515', 'Dec  6 2008 15:26:00'),
                  'GCC 4.0.1 (Apple Computer, Inc. build 5370)'),
 
-            ("IronPython 2.0 (2.0.0.0) on .NET 2.0.50727.3053", None, "cli")
+            ("IronPython 2.0 (2.0.0.0) on .NET 2.0.50727.3053", Tupu, "cli")
             :
                 ("IronPython", "2.0.0", "", "", ("", ""),
                  ".NET 2.0.50727.3053"),
 
-            ("2.6.1 (IronPython 2.6.1 (2.6.10920.0) on .NET 2.0.50727.1433)", None, "cli")
+            ("2.6.1 (IronPython 2.6.1 (2.6.10920.0) on .NET 2.0.50727.1433)", Tupu, "cli")
             :
                 ("IronPython", "2.6.1", "", "", ("", ""),
                  ".NET 2.0.50727.1433"),
 
-            ("2.7.4 (IronPython 2.7.4 (2.7.0.40) on Mono 4.0.30319.1 (32-bit))", None, "cli")
+            ("2.7.4 (IronPython 2.7.4 (2.7.0.40) on Mono 4.0.30319.1 (32-bit))", Tupu, "cli")
             :
                 ("IronPython", "2.7.4", "", "", ("", ""),
                  "Mono 4.0.30319.1 (32-bit)"),
@@ -126,15 +126,15 @@ kundi PlatformTest(unittest.TestCase):
                 ("PyPy", "2.5.2", "trunk", "63378", ('63378', 'Mar 26 2009'),
                  "")
             }
-        for (version_tag, scm, sys_platform), info in \
+        kila (version_tag, scm, sys_platform), info kwenye \
                 sys_versions.items():
             sys.version = version_tag
-            ikiwa scm is None:
+            ikiwa scm ni Tupu:
                 ikiwa hasattr(sys, "_git"):
-                    del sys._git
-            else:
+                    toa sys._git
+            isipokua:
                 sys._git = scm
-            ikiwa sys_platform is not None:
+            ikiwa sys_platform ni sio Tupu:
                 sys.platform = sys_platform
             self.assertEqual(platform.python_implementation(), info[0])
             self.assertEqual(platform.python_version(), info[1])
@@ -152,7 +152,7 @@ kundi PlatformTest(unittest.TestCase):
 
     eleza test_uname(self):
         res = platform.uname()
-        self.assertTrue(any(res))
+        self.assertKweli(any(res))
         self.assertEqual(res[0], res.system)
         self.assertEqual(res[1], res.node)
         self.assertEqual(res[2], res.release)
@@ -166,25 +166,25 @@ kundi PlatformTest(unittest.TestCase):
         # on 64 bit Windows: ikiwa PROCESSOR_ARCHITEW6432 exists we should be
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
-        try:
-            with support.EnvironmentVarGuard() as environ:
-                ikiwa 'PROCESSOR_ARCHITEW6432' in environ:
-                    del environ['PROCESSOR_ARCHITEW6432']
+        jaribu:
+            with support.EnvironmentVarGuard() kama environ:
+                ikiwa 'PROCESSOR_ARCHITEW6432' kwenye environ:
+                    toa environ['PROCESSOR_ARCHITEW6432']
                 environ['PROCESSOR_ARCHITECTURE'] = 'foo'
-                platform._uname_cache = None
+                platform._uname_cache = Tupu
                 system, node, release, version, machine, processor = platform.uname()
                 self.assertEqual(machine, 'foo')
                 environ['PROCESSOR_ARCHITEW6432'] = 'bar'
-                platform._uname_cache = None
+                platform._uname_cache = Tupu
                 system, node, release, version, machine, processor = platform.uname()
                 self.assertEqual(machine, 'bar')
-        finally:
-            platform._uname_cache = None
+        mwishowe:
+            platform._uname_cache = Tupu
 
     eleza test_java_ver(self):
         res = platform.java_ver()
         ikiwa sys.platform == 'java':
-            self.assertTrue(all(res))
+            self.assertKweli(all(res))
 
     eleza test_win32_ver(self):
         res = platform.win32_ver()
@@ -194,31 +194,31 @@ kundi PlatformTest(unittest.TestCase):
 
         ikiwa platform.uname().system == 'Darwin':
             # We are on a macOS system, check that the right version
-            # information is returned
-            output = subprocess.check_output(['sw_vers'], text=True)
-            for line in output.splitlines():
+            # information ni rudishaed
+            output = subprocess.check_output(['sw_vers'], text=Kweli)
+            kila line kwenye output.splitlines():
                 ikiwa line.startswith('ProductVersion:'):
                     real_ver = line.strip().split()[-1]
-                    break
-            else:
+                    koma
+            isipokua:
                 self.fail(f"failed to parse sw_vers output: {output!r}")
 
             result_list = res[0].split('.')
             expect_list = real_ver.split('.')
             len_diff = len(result_list) - len(expect_list)
-            # On Snow Leopard, sw_vers reports 10.6.0 as 10.6
+            # On Snow Leopard, sw_vers reports 10.6.0 kama 10.6
             ikiwa len_diff > 0:
                 expect_list.extend(['0'] * len_diff)
             self.assertEqual(result_list, expect_list)
 
             # res[1] claims to contain
             # (version, dev_stage, non_release_version)
-            # That information is no longer available
+            # That information ni no longer available
             self.assertEqual(res[1], ('', '', ''))
 
             ikiwa sys.byteorder == 'little':
                 self.assertIn(res[2], ('i386', 'x86_64'))
-            else:
+            isipokua:
                 self.assertEqual(res[2], 'PowerPC')
 
 
@@ -226,7 +226,7 @@ kundi PlatformTest(unittest.TestCase):
     eleza test_mac_ver_with_fork(self):
         # Issue7895: platform.mac_ver() crashes when using fork without exec
         #
-        # This test checks that the fix for that issue works.
+        # This test checks that the fix kila that issue works.
         #
         pid = os.fork()
         ikiwa pid == 0:
@@ -234,54 +234,54 @@ kundi PlatformTest(unittest.TestCase):
             info = platform.mac_ver()
             os._exit(0)
 
-        else:
+        isipokua:
             # parent
             cpid, sts = os.waitpid(pid, 0)
             self.assertEqual(cpid, pid)
             self.assertEqual(sts, 0)
 
     eleza test_libc_ver(self):
-        # check that libc_ver(executable) doesn't raise an exception
-        ikiwa os.path.isdir(sys.executable) and \
+        # check that libc_ver(executable) doesn't ashiria an exception
+        ikiwa os.path.isdir(sys.executable) na \
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror
             executable = sys.executable + '.exe'
-        elikiwa sys.platform == "win32" and not os.path.exists(sys.executable):
-            # App symlink appears to not exist, but we want the
+        elikiwa sys.platform == "win32" na sio os.path.exists(sys.executable):
+            # App symlink appears to sio exist, but we want the
             # real executable here anyway
             agiza _winapi
             executable = _winapi.GetModuleFileName(0)
-        else:
+        isipokua:
             executable = sys.executable
         platform.libc_ver(executable)
 
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
 
-        with mock.patch('os.confstr', create=True, return_value='mock 1.0'):
+        with mock.patch('os.confstr', create=Kweli, rudisha_value='mock 1.0'):
             # test os.confstr() code path
             self.assertEqual(platform.libc_ver(), ('mock', '1.0'))
 
             # test the different regular expressions
-            for data, expected in (
+            kila data, expected kwenye (
                 (b'__libc_init', ('libc', '')),
                 (b'GLIBC_2.9', ('glibc', '2.9')),
                 (b'libc.so.1.2.5', ('libc', '1.2.5')),
                 (b'libc_pthread.so.1.2.5', ('libc', '1.2.5_pthread')),
                 (b'', ('', '')),
             ):
-                with open(filename, 'wb') as fp:
+                with open(filename, 'wb') kama fp:
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
-                # os.confstr() must not be used ikiwa executable is set
+                # os.confstr() must sio be used ikiwa executable ni set
                 self.assertEqual(platform.libc_ver(executable=filename),
                                  expected)
 
         # binary containing multiple versions: get the most recent,
-        # make sure that 1.9 is seen as older than 1.23.4
+        # make sure that 1.9 ni seen kama older than 1.23.4
         chunksize = 16384
-        with open(filename, 'wb') as f:
+        with open(filename, 'wb') kama f:
             # test match at chunk boundary
             f.write(b'x'*(chunksize - 10))
             f.write(b'GLIBC_1.23.4\0GLIBC_1.9\0GLIBC_1.21\0')
@@ -290,7 +290,7 @@ kundi PlatformTest(unittest.TestCase):
 
     @support.cpython_only
     eleza test__comparable_version(self):
-        kutoka platform agiza _comparable_version as V
+        kutoka platform agiza _comparable_version kama V
         self.assertEqual(V('1.2.3'), V('1.2.3'))
         self.assertLess(V('1.2.3'), V('1.2.10'))
         self.assertEqual(V('1.2.3.4'), V('1_2-3+4'))
@@ -334,20 +334,20 @@ kundi PlatformTest(unittest.TestCase):
                   'root:xnu-4570.71.2~1/RELEASE_X86_64'),
                  'x86_64', 'i386')
         arch = ('64bit', '')
-        with mock.patch.object(platform, 'uname', return_value=uname), \
-             mock.patch.object(platform, 'architecture', return_value=arch):
-            for mac_ver, expected_terse, expected in [
-                # darwin: mac_ver() returns empty strings
+        with mock.patch.object(platform, 'uname', rudisha_value=uname), \
+             mock.patch.object(platform, 'architecture', rudisha_value=arch):
+            kila mac_ver, expected_terse, expected kwenye [
+                # darwin: mac_ver() rudishas empty strings
                 (('', '', ''),
                  'Darwin-17.7.0',
                  'Darwin-17.7.0-x86_64-i386-64bit'),
-                # macOS: mac_ver() returns macOS version
+                # macOS: mac_ver() rudishas macOS version
                 (('10.13.6', ('', '', ''), 'x86_64'),
                  'macOS-10.13.6',
                  'macOS-10.13.6-x86_64-i386-64bit'),
             ]:
                 with mock.patch.object(platform, 'mac_ver',
-                                       return_value=mac_ver):
+                                       rudisha_value=mac_ver):
                     self.clear_caches()
                     self.assertEqual(platform.platform(terse=1), expected_terse)
                     self.assertEqual(platform.platform(), expected)

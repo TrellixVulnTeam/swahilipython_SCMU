@@ -20,7 +20,7 @@ kundi CallTipWindowTest(unittest.TestCase):
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.text, cls.root
+        toa cls.text, cls.root
 
     eleza test_init(self):
         self.assertEqual(self.calltip.anchor_widget, self.text)

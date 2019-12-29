@@ -7,9 +7,9 @@ import os
 from warnings import warn
 import sys
 
-try:
+jaribu:
     import zipfile
-except ImportError:
+tatizo ImportError:
     zipfile = None
 
 
@@ -18,25 +18,25 @@ from distutils.spawn import spawn
 from distutils.dir_util import mkpath
 from distutils import log
 
-try:
+jaribu:
     from pwd import getpwnam
-except ImportError:
+tatizo ImportError:
     getpwnam = None
 
-try:
+jaribu:
     from grp import getgrnam
-except ImportError:
+tatizo ImportError:
     getgrnam = None
 
 def _get_gid(name):
     """Returns a gid, given a group name."""
     if getgrnam is None or name is None:
         return None
-    try:
+    jaribu:
         result = getgrnam(name)
-    except KeyError:
+    tatizo KeyError:
         result = None
-    if result is not None:
+    if result ni sio None:
         return result[2]
     return None
 
@@ -44,11 +44,11 @@ def _get_uid(name):
     """Returns an uid, given a user name."""
     if getpwnam is None or name is None:
         return None
-    try:
+    jaribu:
         result = getpwnam(name)
-    except KeyError:
+    tatizo KeyError:
         result = None
-    if result is not None:
+    if result ni sio None:
         return result[2]
     return None
 
@@ -61,7 +61,7 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     None.  ("compress" will be deprecated in Python 3.2)
 
     'owner' and 'group' can be used to define an owner and a group for the
-    archive that is being built. If not provided, the current owner and group
+    archive that is being built. If sio provided, the current owner and group
     will be used.
 
     The output tar file will be named 'base_dir' +  ".tar", possibly plus
@@ -75,7 +75,7 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
                     'compress': '.Z'}
 
     # flags for compression program, each element of list will be an argument
-    if compress is not None and compress not in compress_ext.keys():
+    if compress ni sio None and compress haiko kwenye compress_ext.keys():
         raise ValueError(
               "bad value for 'compress': must be None, 'gzip', 'bzip2', "
               "'xz' or 'compress'")
@@ -87,7 +87,7 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     mkpath(os.path.dirname(archive_name), dry_run=dry_run)
 
     # creating the tarball
-    import tarfile  # late import so Python build itself doesn't break
+    import tarfile  # late import so Python build itself doesn't koma
 
     log.info('Creating tar archive')
 
@@ -95,19 +95,19 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     gid = _get_gid(group)
 
     def _set_uid_gid(tarinfo):
-        if gid is not None:
+        if gid ni sio None:
             tarinfo.gid = gid
             tarinfo.gname = group
-        if uid is not None:
+        if uid ni sio None:
             tarinfo.uid = uid
             tarinfo.uname = owner
         return tarinfo
 
-    if not dry_run:
+    if sio dry_run:
         tar = tarfile.open(archive_name, 'w|%s' % tar_compression[compress])
-        try:
+        jaribu:
             tar.add(base_dir, filter=_set_uid_gid)
-        finally:
+        mwishowe:
             tar.close()
 
     # compression using `compress`
@@ -117,7 +117,7 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
         compressed_name = archive_name + compress_ext[compress]
         if sys.platform == 'win32':
             cmd = [compress, archive_name, compressed_name]
-        else:
+        isipokua:
             cmd = [compress, '-f', archive_name]
         spawn(cmd, dry_run=dry_run)
         return compressed_name
@@ -136,33 +136,33 @@ def make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
     zip_filename = base_name + ".zip"
     mkpath(os.path.dirname(zip_filename), dry_run=dry_run)
 
-    # If zipfile module is not available, try spawning an external
+    # If zipfile module ni sio available, try spawning an external
     # 'zip' command.
     if zipfile is None:
         if verbose:
             zipoptions = "-r"
-        else:
+        isipokua:
             zipoptions = "-rq"
 
-        try:
+        jaribu:
             spawn(["zip", zipoptions, zip_filename, base_dir],
                   dry_run=dry_run)
-        except DistutilsExecError:
+        tatizo DistutilsExecError:
             # XXX really should distinguish between "couldn't find
             # external 'zip' command" and "zip failed".
             raise DistutilsExecError(("unable to create zip file '%s': "
                    "could neither import the 'zipfile' module nor "
                    "find a standalone zip utility") % zip_filename)
 
-    else:
+    isipokua:
         log.info("creating '%s' and adding '%s' to it",
                  zip_filename, base_dir)
 
-        if not dry_run:
-            try:
+        if sio dry_run:
+            jaribu:
                 zip = zipfile.ZipFile(zip_filename, "w",
                                       compression=zipfile.ZIP_DEFLATED)
-            except RuntimeError:
+            tatizo RuntimeError:
                 zip = zipfile.ZipFile(zip_filename, "w",
                                       compression=zipfile.ZIP_STORED)
 
@@ -199,7 +199,7 @@ def check_archive_formats(formats):
     If all formats are known, returns None
     """
     for format in formats:
-        if format not in ARCHIVE_FORMATS:
+        if format haiko kwenye ARCHIVE_FORMATS:
             return format
     return None
 
@@ -222,10 +222,10 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
     uses the current owner and group.
     """
     save_cwd = os.getcwd()
-    if root_dir is not None:
+    if root_dir ni sio None:
         log.debug("changing into '%s'", root_dir)
         base_name = os.path.abspath(base_name)
-        if not dry_run:
+        if sio dry_run:
             os.chdir(root_dir)
 
     if base_dir is None:
@@ -233,9 +233,9 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
 
     kwargs = {'dry_run': dry_run}
 
-    try:
+    jaribu:
         format_info = ARCHIVE_FORMATS[format]
-    except KeyError:
+    tatizo KeyError:
         raise ValueError("unknown archive format '%s'" % format)
 
     func = format_info[0]
@@ -246,10 +246,10 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
         kwargs['owner'] = owner
         kwargs['group'] = group
 
-    try:
+    jaribu:
         filename = func(base_name, base_dir, **kwargs)
-    finally:
-        if root_dir is not None:
+    mwishowe:
+        if root_dir ni sio None:
             log.debug("changing back to '%s'", save_cwd)
             os.chdir(save_cwd)
 

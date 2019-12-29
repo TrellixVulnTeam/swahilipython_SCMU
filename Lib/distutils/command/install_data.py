@@ -46,15 +46,15 @@ class install_data(Command):
                 # it's a simple file, so copy it
                 f = convert_path(f)
                 if self.warn_dir:
-                    self.warn("setup script did not provide a directory for "
+                    self.warn("setup script did sio provide a directory for "
                               "'%s' -- installing right in '%s'" %
                               (f, self.install_dir))
                 (out, _) = self.copy_file(f, self.install_dir)
                 self.outfiles.append(out)
-            else:
+            isipokua:
                 # it's a tuple with path to install to and a list of files
                 dir = convert_path(f[0])
-                if not os.path.isabs(dir):
+                if sio os.path.isabs(dir):
                     dir = os.path.join(self.install_dir, dir)
                 lasivyo self.root:
                     dir = change_root(self.root, dir)
@@ -65,7 +65,7 @@ class install_data(Command):
                     # trying to create an empty directory, so add the
                     # directory to the list of output files.
                     self.outfiles.append(dir)
-                else:
+                isipokua:
                     # Copy files, adding them to the list of output files.
                     for data in f[1]:
                         data = convert_path(data)

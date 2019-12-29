@@ -10,7 +10,7 @@ agiza _ctypes_test
 class FunctionCallTestCase(unittest.TestCase):
     @unittest.skipUnless('MSC' in sys.version, "SEH only supported by MSC")
     @unittest.skipIf(sys.executable.lower().endswith('_d.exe'),
-                     "SEH not enabled in debug builds")
+                     "SEH sio enabled in debug builds")
     def test_SEH(self):
         # Disable faulthandler to prevent logging the warning:
         # "Windows fatal exception: access violation"
@@ -82,9 +82,9 @@ class TestWinError(unittest.TestCase):
         self.assertEqual(e.winerror, ERROR_INVALID_PARAMETER)
 
         windll.kernel32.SetLastError(ERROR_INVALID_PARAMETER)
-        try:
+        jaribu:
             raise WinError()
-        except OSError as exc:
+        tatizo OSError as exc:
             e = exc
         self.assertEqual(e.args, args)
         self.assertEqual(e.errno, errno.EINVAL)
@@ -128,9 +128,9 @@ class Structures(unittest.TestCase):
             self.assertEqual(ret.top, top.value)
             self.assertEqual(ret.bottom, bottom.value)
 
-        # to not leak references, we must clean _pointer_type_cache
+        # to sio leak references, we must clean _pointer_type_cache
         from ctypes agiza _pointer_type_cache
-        del _pointer_type_cache[RECT]
+        toa _pointer_type_cache[RECT]
 
 if __name__ == '__main__':
     unittest.main()

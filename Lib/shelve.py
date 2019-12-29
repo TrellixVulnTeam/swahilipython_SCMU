@@ -1,13 +1,13 @@
 """Manage shelves of pickled objects.
 
-A "shelf" is a persistent, dictionary-like object.  The difference
-with dbm databases is that the values (not the keys!) in a shelf can
+A "shelf" ni a persistent, dictionary-like object.  The difference
+with dbm databases ni that the values (not the keys!) kwenye a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
 module can handle.  This includes most kundi instances, recursive data
-types, and objects containing lots of shared sub-objects.  The keys
+types, na objects containing lots of shared sub-objects.  The keys
 are ordinary strings.
 
-To summarize the interface (key is a string, data is an arbitrary
+To summarize the interface (key ni a string, data ni an arbitrary
 object):
 
         agiza shelve
@@ -15,44 +15,44 @@ object):
 
         d[key] = data   # store data at key (overwrites old data if
                         # using an existing key)
-        data = d[key]   # retrieve a COPY of the data at key (raise
+        data = d[key]   # retrieve a COPY of the data at key (ashiria
                         # KeyError ikiwa no such key) -- NOTE that this
-                        # access returns a *copy* of the entry!
-        del d[key]      # delete data stored at key (raises KeyError
+                        # access rudishas a *copy* of the entry!
+        toa d[key]      # delete data stored at key (ashirias KeyError
                         # ikiwa no such key)
-        flag = key in d # true ikiwa the key exists
+        flag = key kwenye d # true ikiwa the key exists
         list = d.keys() # a list of all existing keys (slow!)
 
         d.close()       # close it
 
 Dependent on the implementation, closing a persistent dictionary may
-or may not be necessary to flush changes to disk.
+or may sio be necessary to flush changes to disk.
 
-Normally, d[key] returns a COPY of the entry.  This needs care when
-mutable entries are mutated: for example, ikiwa d[key] is a list,
+Normally, d[key] rudishas a COPY of the entry.  This needs care when
+mutable entries are mutated: kila example, ikiwa d[key] ni a list,
         d[key].append(anitem)
-does NOT modify the entry d[key] itself, as stored in the persistent
-mapping -- it only modifies the copy, which is then immediately
+does NOT modify the entry d[key] itself, kama stored kwenye the persistent
+mapping -- it only modifies the copy, which ni then immediately
 discarded, so that the append has NO effect whatsoever.  To append an
-item to d[key] in a way that will affect the persistent mapping, use:
+item to d[key] kwenye a way that will affect the persistent mapping, use:
         data = d[key]
         data.append(anitem)
         d[key] = data
 
-To avoid the problem with mutable entries, you may pass the keyword
-argument writeback=True in the call to shelve.open.  When you use:
-        d = shelve.open(filename, writeback=True)
-then d keeps a cache of all entries you access, and writes them all back
+To avoid the problem with mutable entries, you may pita the keyword
+argument writeback=Kweli kwenye the call to shelve.open.  When you use:
+        d = shelve.open(filename, writeback=Kweli)
+then d keeps a cache of all entries you access, na writes them all back
 to the persistent mapping when you call d.close().  This ensures that
-such usage as d[key].append(anitem) works as intended.
+such usage kama d[key].append(anitem) works kama intended.
 
-However, using keyword argument writeback=True may consume vast amount
-of memory for the cache, and it may make d.close() very slow, ikiwa you
-access many of d's entries after opening it in this way: d has no way to
+However, using keyword argument writeback=Kweli may consume vast amount
+of memory kila the cache, na it may make d.close() very slow, ikiwa you
+access many of d's entries after opening it kwenye this way: d has no way to
 check which of the entries you access are mutable and/or which ones you
-actually mutate, so it must cache, and write back at close, all of the
+actually mutate, so it must cache, na write back at close, all of the
 entries that you access.  You can call d.sync() to write back all the
-entries in the cache, and empty the cache (d.sync() also synchronizes
+entries kwenye the cache, na empty the cache (d.sync() also synchronizes
 the persistent dictionary on disk, ikiwa feasible).
 """
 
@@ -64,10 +64,10 @@ agiza collections.abc
 __all__ = ["Shelf", "BsdDbShelf", "DbfilenameShelf", "open"]
 
 kundi _ClosedDict(collections.abc.MutableMapping):
-    'Marker for a closed dict.  Access attempts raise a ValueError.'
+    'Marker kila a closed dict.  Access attempts ashiria a ValueError.'
 
     eleza closed(self, *args):
-        raise ValueError('invalid operation on closed shelf')
+        ashiria ValueError('invalid operation on closed shelf')
     __iter__ = __len__ = __getitem__ = __setitem__ = __delitem__ = keys = closed
 
     eleza __repr__(self):
@@ -75,16 +75,16 @@ kundi _ClosedDict(collections.abc.MutableMapping):
 
 
 kundi Shelf(collections.abc.MutableMapping):
-    """Base kundi for shelf implementations.
+    """Base kundi kila shelf implementations.
 
-    This is initialized with a dictionary-like object.
-    See the module's __doc__ string for an overview of the interface.
+    This ni initialized with a dictionary-like object.
+    See the module's __doc__ string kila an overview of the interface.
     """
 
-    eleza __init__(self, dict, protocol=None, writeback=False,
+    eleza __init__(self, dict, protocol=Tupu, writeback=Uongo,
                  keyencoding="utf-8"):
         self.dict = dict
-        ikiwa protocol is None:
+        ikiwa protocol ni Tupu:
             protocol = 3
         self._protocol = protocol
         self.writeback = writeback
@@ -92,24 +92,24 @@ kundi Shelf(collections.abc.MutableMapping):
         self.keyencoding = keyencoding
 
     eleza __iter__(self):
-        for k in self.dict.keys():
-            yield k.decode(self.keyencoding)
+        kila k kwenye self.dict.keys():
+            tuma k.decode(self.keyencoding)
 
     eleza __len__(self):
         rudisha len(self.dict)
 
     eleza __contains__(self, key):
-        rudisha key.encode(self.keyencoding) in self.dict
+        rudisha key.encode(self.keyencoding) kwenye self.dict
 
-    eleza get(self, key, default=None):
-        ikiwa key.encode(self.keyencoding) in self.dict:
+    eleza get(self, key, default=Tupu):
+        ikiwa key.encode(self.keyencoding) kwenye self.dict:
             rudisha self[key]
         rudisha default
 
     eleza __getitem__(self, key):
-        try:
+        jaribu:
             value = self.cache[key]
-        except KeyError:
+        tatizo KeyError:
             f = BytesIO(self.dict[key.encode(self.keyencoding)])
             value = Unpickler(f).load()
             ikiwa self.writeback:
@@ -125,11 +125,11 @@ kundi Shelf(collections.abc.MutableMapping):
         self.dict[key.encode(self.keyencoding)] = f.getvalue()
 
     eleza __delitem__(self, key):
-        del self.dict[key.encode(self.keyencoding)]
-        try:
-            del self.cache[key]
-        except KeyError:
-            pass
+        toa self.dict[key.encode(self.keyencoding)]
+        jaribu:
+            toa self.cache[key]
+        tatizo KeyError:
+            pita
 
     eleza __enter__(self):
         rudisha self
@@ -138,35 +138,35 @@ kundi Shelf(collections.abc.MutableMapping):
         self.close()
 
     eleza close(self):
-        ikiwa self.dict is None:
-            return
-        try:
+        ikiwa self.dict ni Tupu:
+            rudisha
+        jaribu:
             self.sync()
-            try:
+            jaribu:
                 self.dict.close()
-            except AttributeError:
-                pass
-        finally:
-            # Catch errors that may happen when close is called kutoka __del__
-            # because CPython is in interpreter shutdown.
-            try:
+            tatizo AttributeError:
+                pita
+        mwishowe:
+            # Catch errors that may happen when close ni called kutoka __del__
+            # because CPython ni kwenye interpreter shutdown.
+            jaribu:
                 self.dict = _ClosedDict()
             except:
-                self.dict = None
+                self.dict = Tupu
 
     eleza __del__(self):
-        ikiwa not hasattr(self, 'writeback'):
+        ikiwa sio hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
-            # see http://bugs.python.org/issue1339007 for details
-            return
+            # see http://bugs.python.org/issue1339007 kila details
+            rudisha
         self.close()
 
     eleza sync(self):
-        ikiwa self.writeback and self.cache:
-            self.writeback = False
-            for key, entry in self.cache.items():
+        ikiwa self.writeback na self.cache:
+            self.writeback = Uongo
+            kila key, entry kwenye self.cache.items():
                 self[key] = entry
-            self.writeback = True
+            self.writeback = Kweli
             self.cache = {}
         ikiwa hasattr(self.dict, 'sync'):
             self.dict.sync()
@@ -176,16 +176,16 @@ kundi BsdDbShelf(Shelf):
     """Shelf implementation using the "BSD" db interface.
 
     This adds methods first(), next(), previous(), last() and
-    set_location() that have no counterpart in [g]dbm databases.
+    set_location() that have no counterpart kwenye [g]dbm databases.
 
     The actual database must be opened using one of the "bsddb"
     modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen or
-    bsddb.rnopen) and passed to the constructor.
+    bsddb.rnopen) na pitaed to the constructor.
 
-    See the module's __doc__ string for an overview of the interface.
+    See the module's __doc__ string kila an overview of the interface.
     """
 
-    eleza __init__(self, dict, protocol=None, writeback=False,
+    eleza __init__(self, dict, protocol=Tupu, writeback=Uongo,
                  keyencoding="utf-8"):
         Shelf.__init__(self, dict, protocol, writeback, keyencoding)
 
@@ -218,26 +218,26 @@ kundi BsdDbShelf(Shelf):
 kundi DbfilenameShelf(Shelf):
     """Shelf implementation using the "dbm" generic dbm interface.
 
-    This is initialized with the filename for the dbm database.
-    See the module's __doc__ string for an overview of the interface.
+    This ni initialized with the filename kila the dbm database.
+    See the module's __doc__ string kila an overview of the interface.
     """
 
-    eleza __init__(self, filename, flag='c', protocol=None, writeback=False):
+    eleza __init__(self, filename, flag='c', protocol=Tupu, writeback=Uongo):
         agiza dbm
         Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
 
 
-eleza open(filename, flag='c', protocol=None, writeback=False):
-    """Open a persistent dictionary for reading and writing.
+eleza open(filename, flag='c', protocol=Tupu, writeback=Uongo):
+    """Open a persistent dictionary kila reading na writing.
 
-    The filename parameter is the base filename for the underlying
+    The filename parameter ni the base filename kila the underlying
     database.  As a side-effect, an extension may be added to the
-    filename and more than one file may be created.  The optional flag
-    parameter has the same interpretation as the flag parameter of
+    filename na more than one file may be created.  The optional flag
+    parameter has the same interpretation kama the flag parameter of
     dbm.open(). The optional protocol parameter specifies the
     version of the pickle protocol.
 
-    See the module's __doc__ string for an overview of the interface.
+    See the module's __doc__ string kila an overview of the interface.
     """
 
     rudisha DbfilenameShelf(filename, flag, protocol, writeback)

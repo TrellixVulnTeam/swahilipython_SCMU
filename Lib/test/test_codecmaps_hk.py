@@ -1,6 +1,6 @@
 #
 # test_codecmaps_hk.py
-#   Codec mapping tests for HongKong encodings
+#   Codec mapping tests kila HongKong encodings
 #
 
 kutoka test agiza multibytecodec_support

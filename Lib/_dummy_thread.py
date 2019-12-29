@@ -1,13 +1,13 @@
 """Drop-in replacement for the thread module.
 
 Meant to be used as a brain-dead substitute so that threaded code does
-not need to be rewritten for when the thread module is not present.
+not need to be rewritten for when the thread module ni sio present.
 
 Suggested usage is::
 
-    try:
+    jaribu:
         agiza _thread
-    except ImportError:
+    tatizo ImportError:
         agiza _dummy_thread as _thread
 
 """
@@ -22,7 +22,7 @@ TIMEOUT_MAX = 2**31
 # NOTE: this module can be imported early in the extension building process,
 # and so top level agizas of other modules should be avoided.  Instead, all
 # agizas are done when needed on a function-by-function basis.  Since threads
-# are disabled, the agiza lock should not be an issue anyway (??).
+# are disabled, the agiza lock should sio be an issue anyway (??).
 
 error = RuntimeError
 
@@ -45,9 +45,9 @@ def start_new_thread(function, args, kwargs={}):
         raise TypeError("3rd arg must be a dict")
     global _main
     _main = False
-    try:
+    jaribu:
         function(*args, **kwargs)
-    except SystemExit:
+    tatizo SystemExit:
         pass
     except:
         agiza traceback
@@ -77,8 +77,8 @@ def allocate_lock():
 
 def stack_size(size=None):
     """Dummy implementation of _thread.stack_size()."""
-    if size is not None:
-        raise error("setting thread stack size not supported")
+    if size ni sio None:
+        raise error("setting thread stack size sio supported")
     return 0
 
 def _set_sentinel():
@@ -90,9 +90,9 @@ kundi LockType(object):
 
     Compatibility is maintained by maintaining self.locked_status
     which is a boolean that stores the state of the lock.  Pickling of
-    the lock, though, should not be done since if the _thread module is
+    the lock, though, should sio be done since if the _thread module is
     then used with an unpickled ``lock()`` kutoka here problems could
-    occur kutoka this kundi not having atomic methods.
+    occur kutoka this kundi sio having atomic methods.
 
     """
 
@@ -105,7 +105,7 @@ kundi LockType(object):
         For blocking calls, self.locked_status is automatically set to
         True and returned appropriately based on value of
         ``waitflag``.  If it is non-blocking, then the value is
-        actually checked and not set if it is already acquired.  This
+        actually checked and sio set if it is already acquired.  This
         is all done so that threading.Condition's assert statements
         aren't triggered and throw a little fit.
 
@@ -113,11 +113,11 @@ kundi LockType(object):
         if waitflag is None or waitflag:
             self.locked_status = True
             return True
-        else:
-            if not self.locked_status:
+        isipokua:
+            if sio self.locked_status:
                 self.locked_status = True
                 return True
-            else:
+            isipokua:
                 if timeout > 0:
                     agiza time
                     time.sleep(timeout)
@@ -132,7 +132,7 @@ kundi LockType(object):
         """Release the dummy lock."""
         # XXX Perhaps shouldn't actually bother to test?  Could lead
         #     to problems for complex, threaded code.
-        if not self.locked_status:
+        if sio self.locked_status:
             raise error
         self.locked_status = False
         return True
@@ -153,7 +153,7 @@ kundi RLock(LockType):
     """Dummy implementation of threading._RLock.
 
     Re-entrant lock can be aquired multiple times and needs to be released
-    just as many times. This dummy implemention does not check wheter the
+    just as many times. This dummy implemention does sio check wheter the
     current thread actually owns the lock, but does accounting on the call
     counts.
     """
@@ -180,7 +180,7 @@ kundi RLock(LockType):
 
 # Used to signal that interrupt_main was called in a "thread"
 _interrupt = False
-# True when not executing in a "thread"
+# True when sio executing in a "thread"
 _main = True
 
 def interrupt_main():
@@ -188,6 +188,6 @@ def interrupt_main():
     KeyboardInterrupt upon exiting."""
     if _main:
         raise KeyboardInterrupt
-    else:
+    isipokua:
         global _interrupt
         _interrupt = True

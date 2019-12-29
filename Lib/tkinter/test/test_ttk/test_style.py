@@ -75,8 +75,8 @@ class StyleTest(AbstractTkTest, unittest.TestCase):
             if theme != curr_theme:
                 new_theme = theme
                 self.style.theme_use(theme)
-                break
-        else:
+                koma
+        isipokua:
             # just one theme available, can't go on with tests
             return
 

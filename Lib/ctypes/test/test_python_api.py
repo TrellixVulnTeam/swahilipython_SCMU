@@ -12,7 +12,7 @@ from _ctypes import PyObj_FromPtr
 from sys import getrefcount as grc
 if sys.version_info > (2, 4):
     c_py_ssize_t = c_size_t
-else:
+isipokua:
     c_py_ssize_t = c_int
 
 class PythonAPITestCase(unittest.TestCase):
@@ -35,7 +35,7 @@ class PythonAPITestCase(unittest.TestCase):
         pyob = pythonapi.PyBytes_FromString(s)
         self.assertEqual(grc(s), refcnt)
         self.assertEqual(s, pyob)
-        del pyob
+        toa pyob
         self.assertEqual(grc(s), refcnt)
 
     @support.refcount_test
@@ -51,7 +51,7 @@ class PythonAPITestCase(unittest.TestCase):
 
         res = pythonapi.PyLong_AsLong(42)
         self.assertEqual(grc(res), ref42 + 1)
-        del res
+        toa res
         self.assertEqual(grc(42), ref42)
 
     @support.refcount_test
@@ -63,7 +63,7 @@ class PythonAPITestCase(unittest.TestCase):
         self.assertIs(s, pyobj)
 
         self.assertEqual(grc(s), ref + 1)
-        del pyobj
+        toa pyobj
         self.assertEqual(grc(s), ref)
 
     def test_PyOS_snprintf(self):
@@ -77,7 +77,7 @@ class PythonAPITestCase(unittest.TestCase):
         PyOS_snprintf(buf, sizeof(buf), b"Hello from %s (%d, %d, %d)", b"ctypes", 1, 2, 3)
         self.assertEqual(buf.value, b"Hello from ctypes (1, 2, 3)")
 
-        # not enough arguments
+        # sio enough arguments
         self.assertRaises(TypeError, PyOS_snprintf, buf)
 
     def test_pyobject_repr(self):

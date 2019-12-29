@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -643,7 +643,7 @@ dqadd3037 fma  1  '7000'  '10000e+34' -> '1.000000000000000000000000000000000E+3
 dqadd3038 fma  1  '70000'  '10000e+34' -> '1.000000000000000000000000000000001E+38' Inexact Rounded
 dqadd3039 fma  1  '700000'  '10000e+34' -> '1.000000000000000000000000000000007E+38' Rounded
 
--- symmetry:
+-- symmejaribu:
 dqadd3040 fma  1  '10000e+34'  '70' -> '1.000000000000000000000000000000000E+38' Inexact Rounded
 dqadd3041 fma  1  '10000e+34'  '700' -> '1.000000000000000000000000000000000E+38' Inexact Rounded
 dqadd3042 fma  1  '10000e+34'  '7000' -> '1.000000000000000000000000000000000E+38' Inexact Rounded

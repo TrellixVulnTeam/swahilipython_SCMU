@@ -1,5 +1,5 @@
 """
-Dialog for building Tkinter accelerator key bindings
+Dialog kila building Tkinter accelerator key bindings
 """
 kutoka tkinter agiza Toplevel, Listbox, Text, StringVar, TclError
 kutoka tkinter.ttk agiza Frame, Button, Checkbutton, Entry, Label, Scrollbar
@@ -35,32 +35,32 @@ eleza translate_key(key, modifiers):
             'Left Arrow':'Left', 'Right Arrow':'Right',
             'Up Arrow':'Up', 'Down Arrow': 'Down', 'Tab':'Tab'}
     key = mapping.get(key, key)
-    ikiwa 'Shift' in modifiers and key in string.ascii_lowercase:
+    ikiwa 'Shift' kwenye modifiers na key kwenye string.ascii_lowercase:
         key = key.upper()
     rudisha f'Key-{key}'
 
 
 kundi GetKeysDialog(Toplevel):
 
-    # Dialog title for invalid key sequence
+    # Dialog title kila invalid key sequence
     keyerror_title = 'Key Sequence Error'
 
     eleza __init__(self, parent, title, action, current_key_sequences,
-                 *, _htest=False, _utest=False):
+                 *, _htest=Uongo, _utest=Uongo):
         """
         parent - parent of this dialog
-        title - string which is the title of the popup dialog
+        title - string which ni the title of the popup dialog
         action - string, the name of the virtual event these keys will be
                  mapped to
         current_key_sequences - list, a list of all key sequence lists
-                 currently mapped to virtual events, for overlap checking
+                 currently mapped to virtual events, kila overlap checking
         _htest - bool, change box location when running htest
-        _utest - bool, do not wait when running unittest
+        _utest - bool, do sio wait when running unittest
         """
         Toplevel.__init__(self, parent)
-        self.withdraw()  # Hide while setting geometry.
+        self.withdraw()  # Hide wakati setting geometry.
         self.configure(borderwidth=5)
-        self.resizable(height=False, width=False)
+        self.resizable(height=Uongo, width=Uongo)
         self.title(title)
         self.transient(parent)
         self.grab_set()
@@ -74,11 +74,11 @@ kundi GetKeysDialog(Toplevel):
         # Set self.modifiers, self.modifier_label.
         self.set_modifiers_for_platform()
         self.modifier_vars = []
-        for modifier in self.modifiers:
+        kila modifier kwenye self.modifiers:
             variable = StringVar(self)
             variable.set('')
             self.modifier_vars.append(variable)
-        self.advanced = False
+        self.advanced = Uongo
         self.create_widgets()
         self.update_idletasks()
         self.geometry(
@@ -87,19 +87,19 @@ kundi GetKeysDialog(Toplevel):
                     (parent.winfo_width()/2 - self.winfo_reqwidth()/2),
                     parent.winfo_rooty() +
                     ((parent.winfo_height()/2 - self.winfo_reqheight()/2)
-                    ikiwa not _htest else 150)
+                    ikiwa sio _htest else 150)
                 ) )  # Center dialog over parent (or below htest box).
-        ikiwa not _utest:
+        ikiwa sio _utest:
             self.deiconify()  # Geometry set, unhide.
             self.wait_window()
 
     eleza showerror(self, *args, **kwargs):
-        # Make testing easier.  Replace in #30751.
+        # Make testing easier.  Replace kwenye #30751.
         messagebox.showerror(*args, **kwargs)
 
     eleza create_widgets(self):
         self.frame = frame = Frame(self, borderwidth=2, relief='sunken')
-        frame.pack(side='top', expand=True, fill='both')
+        frame.pack(side='top', expand=Kweli, fill='both')
 
         frame_buttons = Frame(self)
         frame_buttons.pack(side='bottom', fill='x')
@@ -116,7 +116,7 @@ kundi GetKeysDialog(Toplevel):
         self.frame_keyseq_basic.grid(row=0, column=0, sticky='nsew',
                                       padx=5, pady=5)
         basic_title = Label(self.frame_keyseq_basic,
-                            text=f"New keys for '{self.action}' :")
+                            text=f"New keys kila '{self.action}' :")
         basic_title.pack(anchor='w')
 
         basic_keys = Label(self.frame_keyseq_basic, justify='left',
@@ -131,7 +131,7 @@ kundi GetKeysDialog(Toplevel):
         # Basic entry modifiers.
         self.modifier_checkbuttons = {}
         column = 0
-        for modifier, variable in zip(self.modifiers, self.modifier_vars):
+        kila modifier, variable kwenye zip(self.modifiers, self.modifier_vars):
             label = self.modifier_label.get(modifier, modifier)
             check = Checkbutton(self.frame_controls_basic,
                                 command=self.build_key_string, text=label,
@@ -143,7 +143,7 @@ kundi GetKeysDialog(Toplevel):
         # Basic entry help text.
         help_basic = Label(self.frame_controls_basic, justify='left',
                            text="Select the desired modifier keys\n"+
-                                "above, and the final key kutoka the\n"+
+                                "above, na the final key kutoka the\n"+
                                 "list on the right.\n\n" +
                                 "Use upper case Symbols when using\n" +
                                 "the Shift modifier.  (Letters will be\n" +
@@ -171,8 +171,8 @@ kundi GetKeysDialog(Toplevel):
         self.frame_keyseq_advanced.grid(row=0, column=0, sticky='nsew',
                                          padx=5, pady=5)
         advanced_title = Label(self.frame_keyseq_advanced, justify='left',
-                               text=f"Enter new binding(s) for '{self.action}' :\n" +
-                                     "(These bindings will not be checked for validity!)")
+                               text=f"Enter new binding(s) kila '{self.action}' :\n" +
+                                     "(These bindings will sio be checked kila validity!)")
         advanced_title.pack(anchor='w')
         self.advanced_keys = Entry(self.frame_keyseq_advanced,
                                    textvariable=self.key_string)
@@ -185,52 +185,52 @@ kundi GetKeysDialog(Toplevel):
             text="Key bindings are specified using Tkinter keysyms as\n"+
                  "in these samples: <Control-f>, <Shift-F2>, <F12>,\n"
                  "<Control-space>, <Meta-less>, <Control-Alt-Shift-X>.\n"
-                 "Upper case is used when the Shift modifier is present!\n\n" +
+                 "Upper case ni used when the Shift modifier ni present!\n\n" +
                  "'Emacs style' multi-keystroke bindings are specified as\n" +
                  "follows: <Control-x><Control-y>, where the first key\n" +
                  "is the 'do-nothing' keybinding.\n\n" +
-                 "Multiple separate bindings for one action should be\n"+
+                 "Multiple separate bindings kila one action should be\n"+
                  "separated by a space, eg., <Alt-v> <Meta-v>." )
         help_advanced.grid(row=0, column=0, sticky='nsew')
 
-        # Switch between basic and advanced.
+        # Switch between basic na advanced.
         self.button_level = Button(frame, command=self.toggle_level,
                                   text='<< Basic Key Binding Entry')
         self.button_level.grid(row=2, column=0, stick='ew', padx=5, pady=5)
         self.toggle_level()
 
     eleza set_modifiers_for_platform(self):
-        """Determine list of names of key modifiers for this platform.
+        """Determine list of names of key modifiers kila this platform.
 
         The names are used to build Tk bindings -- it doesn't matter ikiwa the
         keyboard has these keys; it matters ikiwa Tk understands them.  The
-        order is also agizaant: key binding equality depends on it, so
+        order ni also agizaant: key binding equality depends on it, so
         config-keys.eleza must use the same ordering.
         """
         ikiwa sys.platform == "darwin":
             self.modifiers = ['Shift', 'Control', 'Option', 'Command']
-        else:
+        isipokua:
             self.modifiers = ['Control', 'Alt', 'Shift']
         self.modifier_label = {'Control': 'Ctrl'}  # Short name.
 
     eleza toggle_level(self):
-        "Toggle between basic and advanced keys."
+        "Toggle between basic na advanced keys."
         ikiwa  self.button_level.cget('text').startswith('Advanced'):
             self.clear_key_seq()
             self.button_level.config(text='<< Basic Key Binding Entry')
             self.frame_keyseq_advanced.lift()
             self.frame_help_advanced.lift()
             self.advanced_keys.focus_set()
-            self.advanced = True
-        else:
+            self.advanced = Kweli
+        isipokua:
             self.clear_key_seq()
             self.button_level.config(text='Advanced Key Binding Entry >>')
             self.frame_keyseq_basic.lift()
             self.frame_controls_basic.lift()
-            self.advanced = False
+            self.advanced = Uongo
 
-    eleza final_key_selected(self, event=None):
-        "Handler for clicking on key in basic settings list."
+    eleza final_key_selected(self, event=Tupu):
+        "Handler kila clicking on key kwenye basic settings list."
         self.build_key_string()
 
     eleza build_key_string(self):
@@ -244,29 +244,29 @@ kundi GetKeysDialog(Toplevel):
 
     eleza get_modifiers(self):
         "Return ordered list of modifiers that have been selected."
-        mod_list = [variable.get() for variable in self.modifier_vars]
-        rudisha [mod for mod in mod_list ikiwa mod]
+        mod_list = [variable.get() kila variable kwenye self.modifier_vars]
+        rudisha [mod kila mod kwenye mod_list ikiwa mod]
 
     eleza clear_key_seq(self):
-        "Clear modifiers and keys selection."
+        "Clear modifiers na keys selection."
         self.list_keys_final.select_clear(0, 'end')
         self.list_keys_final.yview('moveto', '0.0')
-        for variable in self.modifier_vars:
+        kila variable kwenye self.modifier_vars:
             variable.set('')
         self.key_string.set('')
 
-    eleza ok(self, event=None):
+    eleza ok(self, event=Tupu):
         keys = self.key_string.get().strip()
-        ikiwa not keys:
+        ikiwa sio keys:
             self.showerror(title=self.keyerror_title, parent=self,
                            message="No key specified.")
-            return
-        ikiwa (self.advanced or self.keys_ok(keys)) and self.bind_ok(keys):
+            rudisha
+        ikiwa (self.advanced ama self.keys_ok(keys)) na self.bind_ok(keys):
             self.result = keys
         self.grab_release()
         self.destroy()
 
-    eleza cancel(self, event=None):
+    eleza cancel(self, event=Tupu):
         self.result = ''
         self.grab_release()
         self.destroy()
@@ -280,46 +280,46 @@ kundi GetKeysDialog(Toplevel):
         final_key = self.list_keys_final.get('anchor')
         modifiers = self.get_modifiers()
         title = self.keyerror_title
-        key_sequences = [key for keylist in self.current_key_sequences
-                             for key in keylist]
-        ikiwa not keys.endswith('>'):
+        key_sequences = [key kila keylist kwenye self.current_key_sequences
+                             kila key kwenye keylist]
+        ikiwa sio keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
         elikiwa (not modifiers
-              and final_key not in FUNCTION_KEYS + MOVE_KEYS):
+              na final_key haiko kwenye FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
         elikiwa (modifiers == ['Shift']) \
-                 and (final_key not in
+                 na (final_key sio in
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
-            msg = 'The shift modifier by itself may not be used with'\
+            msg = 'The shift modifier by itself may sio be used with'\
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
-        elikiwa keys in key_sequences:
-            msg = 'This key combination is already in use.'
+        elikiwa keys kwenye key_sequences:
+            msg = 'This key combination ni already kwenye use.'
             self.showerror(title=title, parent=self, message=msg)
-        else:
-            rudisha True
-        rudisha False
+        isipokua:
+            rudisha Kweli
+        rudisha Uongo
 
     eleza bind_ok(self, keys):
-        "Return True ikiwa Tcl accepts the new keys else show message."
-        try:
-            binding = self.bind(keys, lambda: None)
-        except TclError as err:
+        "Return Kweli ikiwa Tcl accepts the new keys else show message."
+        jaribu:
+            binding = self.bind(keys, lambda: Tupu)
+        tatizo TclError kama err:
             self.showerror(
                     title=self.keyerror_title, parent=self,
-                    message=(f'The entered key sequence is not accepted.\n\n'
+                    message=(f'The entered key sequence ni sio accepted.\n\n'
                              f'Error: {err}'))
-            rudisha False
-        else:
+            rudisha Uongo
+        isipokua:
             self.unbind(keys, binding)
-            rudisha True
+            rudisha Kweli
 
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_config_key', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_config_key', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(GetKeysDialog)

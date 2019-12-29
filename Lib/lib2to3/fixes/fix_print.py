@@ -1,7 +1,7 @@
 # Copyright 2006 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Fixer for print.
+"""Fixer kila print.
 
 Change:
     'print'          into 'andika()'
@@ -9,7 +9,7 @@ Change:
     'print ... ,'    into 'andika(..., end=" ")'
     'print >>x, ...' into 'andika(..., file=x)'
 
-No changes are applied ikiwa print_function is imported kutoka __future__
+No changes are applied ikiwa print_function ni imported kutoka __future__
 
 """
 
@@ -28,7 +28,7 @@ parend_expr = patcomp.compile_pattern(
 
 kundi FixPrint(fixer_base.BaseFix):
 
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
               simple_stmt< any* bare='print' any* > | print_stmt
@@ -43,32 +43,32 @@ kundi FixPrint(fixer_base.BaseFix):
             # Special-case print all by itself
             bare_print.replace(Call(Name("print"), [],
                                prefix=bare_print.prefix))
-            return
+            rudisha
         assert node.children[0] == Name("print")
         args = node.children[1:]
-        ikiwa len(args) == 1 and parend_expr.match(args[0]):
+        ikiwa len(args) == 1 na parend_expr.match(args[0]):
             # We don't want to keep sticking parens around an
             # already-parenthesised expression.
-            return
+            rudisha
 
-        sep = end = file = None
-        ikiwa args and args[-1] == Comma():
+        sep = end = file = Tupu
+        ikiwa args na args[-1] == Comma():
             args = args[:-1]
             end = " "
-        ikiwa args and args[0] == pytree.Leaf(token.RIGHTSHIFT, ">>"):
+        ikiwa args na args[0] == pytree.Leaf(token.RIGHTSHIFT, ">>"):
             assert len(args) >= 2
             file = args[1].clone()
             args = args[3:] # Strip a possible comma after the file expression
         # Now synthesize a andika(args, sep=..., end=..., file=...) node.
-        l_args = [arg.clone() for arg in args]
+        l_args = [arg.clone() kila arg kwenye args]
         ikiwa l_args:
             l_args[0].prefix = ""
-        ikiwa sep is not None or end is not None or file is not None:
-            ikiwa sep is not None:
+        ikiwa sep ni sio Tupu ama end ni sio Tupu ama file ni sio Tupu:
+            ikiwa sep ni sio Tupu:
                 self.add_kwarg(l_args, "sep", String(repr(sep)))
-            ikiwa end is not None:
+            ikiwa end ni sio Tupu:
                 self.add_kwarg(l_args, "end", String(repr(end)))
-            ikiwa file is not None:
+            ikiwa file ni sio Tupu:
                 self.add_kwarg(l_args, "file", file)
         n_stmt = Call(Name("print"), l_args)
         n_stmt.prefix = node.prefix

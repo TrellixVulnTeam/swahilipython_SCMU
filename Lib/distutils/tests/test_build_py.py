@@ -19,21 +19,21 @@ class BuildPyTestCase(support.TempdirManager,
     def test_package_data(self):
         sources = self.mkdtemp()
         f = open(os.path.join(sources, "__init__.py"), "w")
-        try:
+        jaribu:
             f.write("# Pretend this is a package.")
-        finally:
+        mwishowe:
             f.close()
         f = open(os.path.join(sources, "README.txt"), "w")
-        try:
+        jaribu:
             f.write("Info about this package")
-        finally:
+        mwishowe:
             f.close()
 
         destination = self.mkdtemp()
 
         dist = Distribution({"packages": ["pkg"],
                              "package_dir": {"pkg": sources}})
-        # script_name need not exist, it just need to be initialized
+        # script_name need sio exist, it just need to be initialized
         dist.script_name = os.path.join(sources, "setup.py")
         dist.command_obj["build"] = support.DummyCommand(
             force=0,
@@ -50,7 +50,7 @@ class BuildPyTestCase(support.TempdirManager,
         cmd.run()
 
         # This makes sure the list of outputs includes byte-compiled
-        # files for Python modules but not for package data files
+        # files for Python modules but sio for package data files
         # (there shouldn't *be* byte-code files for those!).
         self.assertEqual(len(cmd.get_outputs()), 3)
         pkgdest = os.path.join(destination, "pkg")
@@ -60,7 +60,7 @@ class BuildPyTestCase(support.TempdirManager,
         self.assertIn("README.txt", files)
         if sys.dont_write_bytecode:
             self.assertFalse(os.path.exists(pycache_dir))
-        else:
+        isipokua:
             pyc_files = os.listdir(pycache_dir)
             self.assertIn("__init__.%s.pyc" % sys.implementation.cache_tag,
                           pyc_files)
@@ -78,14 +78,14 @@ class BuildPyTestCase(support.TempdirManager,
         dist = Distribution({"packages": ["pkg"],
                              "package_dir": {"pkg": ""},
                              "package_data": {"pkg": ["doc/*"]}})
-        # script_name need not exist, it just need to be initialized
+        # script_name need sio exist, it just need to be initialized
         dist.script_name = os.path.join(sources, "setup.py")
         dist.script_args = ["build"]
         dist.parse_command_line()
 
-        try:
+        jaribu:
             dist.run_commands()
-        except DistutilsFileError:
+        tatizo DistutilsFileError:
             self.fail("failed package_data test when package_dir is ''")
 
     @unittest.skipIf(sys.dont_write_bytecode, 'byte-compile disabled')
@@ -125,7 +125,7 @@ class BuildPyTestCase(support.TempdirManager,
 
     def test_dir_in_package_data(self):
         """
-        A directory in package_data should not be added to the filelist.
+        A directory in package_data should sio be added to the filelist.
         """
         # See bug 19286
         sources = self.mkdtemp()
@@ -144,18 +144,18 @@ class BuildPyTestCase(support.TempdirManager,
         os.chdir(sources)
         dist = Distribution({"packages": ["pkg"],
                              "package_data": {"pkg": ["doc/*"]}})
-        # script_name need not exist, it just need to be initialized
+        # script_name need sio exist, it just need to be initialized
         dist.script_name = os.path.join(sources, "setup.py")
         dist.script_args = ["build"]
         dist.parse_command_line()
 
-        try:
+        jaribu:
             dist.run_commands()
-        except DistutilsFileError:
+        tatizo DistutilsFileError:
             self.fail("failed package_data when data dir includes a dir")
 
     def test_dont_write_bytecode(self):
-        # makes sure byte_compile is not used
+        # makes sure byte_compile ni sio used
         dist = self.create_dist()[1]
         cmd = build_py(dist)
         cmd.compile = 1
@@ -163,9 +163,9 @@ class BuildPyTestCase(support.TempdirManager,
 
         old_dont_write_bytecode = sys.dont_write_bytecode
         sys.dont_write_bytecode = True
-        try:
+        jaribu:
             cmd.byte_compile([])
-        finally:
+        mwishowe:
             sys.dont_write_bytecode = old_dont_write_bytecode
 
         self.assertIn('byte-compiling is disabled',

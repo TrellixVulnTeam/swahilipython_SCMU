@@ -11,8 +11,8 @@ agiza aifc
 kundi AifcTest(audiotests.AudioWriteTests,
                audiotests.AudioTestsWithSourceFile):
     module = aifc
-    close_fd = True
-    test_unseekable_read = None
+    close_fd = Kweli
+    test_unseekable_read = Tupu
 
 
 kundi AifcPCM8Test(AifcTest, unittest.TestCase):
@@ -159,7 +159,7 @@ kundi AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
                 # `aifc.open` will fail (without raising a ResourceWarning)
                 self.f = aifc.open(non_aifc_file, 'rb')
 
-            # Aifc_write.initfp() won't raise in normal case.  But some errors
+            # Aifc_write.initfp() won't ashiria kwenye normal case.  But some errors
             # (e.g. MemoryError, KeyboardInterrupt, etc..) can happen.
             with mock.patch.object(aifc.Aifc_write, 'initfp',
                                    side_effect=RuntimeError):
@@ -182,23 +182,23 @@ kundi AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
         self.assertEqual(params.compname, f.getcompname())
 
     eleza test_write_header_comptype_sampwidth(self):
-        for comptype in (b'ULAW', b'ulaw', b'ALAW', b'alaw', b'G722'):
+        kila comptype kwenye (b'ULAW', b'ulaw', b'ALAW', b'alaw', b'G722'):
             fout = aifc.open(io.BytesIO(), 'wb')
             fout.setnchannels(1)
             fout.setframerate(1)
             fout.setcomptype(comptype, b'')
             fout.close()
             self.assertEqual(fout.getsampwidth(), 2)
-            fout.initfp(None)
+            fout.initfp(Tupu)
 
     eleza test_write_markers_values(self):
         fout = aifc.open(io.BytesIO(), 'wb')
-        self.assertEqual(fout.getmarkers(), None)
+        self.assertEqual(fout.getmarkers(), Tupu)
         fout.setmark(1, 0, b'foo1')
         fout.setmark(1, 1, b'foo2')
         self.assertEqual(fout.getmark(1), (1, 1, b'foo2'))
         self.assertEqual(fout.getmarkers(), [(1, 1, b'foo2')])
-        fout.initfp(None)
+        fout.initfp(Tupu)
 
     eleza test_read_markers(self):
         fout = self.fout = aifc.open(TESTFN, 'wb')
@@ -223,29 +223,29 @@ kundi AIFCLowLevelTest(unittest.TestCase):
             getattr(aifc, '_write_' + what)(f, x)
             f.seek(0)
             rudisha getattr(aifc, '_read_' + what)(f)
-        for x in (-1, 0, 0.1, 1):
+        kila x kwenye (-1, 0, 0.1, 1):
             self.assertEqual(read_written(x, 'float'), x)
-        for x in (float('NaN'), float('Inf')):
+        kila x kwenye (float('NaN'), float('Inf')):
             self.assertEqual(read_written(x, 'float'), aifc._HUGE_VAL)
-        for x in (b'', b'foo', b'a' * 255):
+        kila x kwenye (b'', b'foo', b'a' * 255):
             self.assertEqual(read_written(x, 'string'), x)
-        for x in (-0x7FFFFFFF, -1, 0, 1, 0x7FFFFFFF):
+        kila x kwenye (-0x7FFFFFFF, -1, 0, 1, 0x7FFFFFFF):
             self.assertEqual(read_written(x, 'long'), x)
-        for x in (0, 1, 0xFFFFFFFF):
+        kila x kwenye (0, 1, 0xFFFFFFFF):
             self.assertEqual(read_written(x, 'ulong'), x)
-        for x in (-0x7FFF, -1, 0, 1, 0x7FFF):
+        kila x kwenye (-0x7FFF, -1, 0, 1, 0x7FFF):
             self.assertEqual(read_written(x, 'short'), x)
-        for x in (0, 1, 0xFFFF):
+        kila x kwenye (0, 1, 0xFFFF):
             self.assertEqual(read_written(x, 'ushort'), x)
 
-    eleza test_read_raises(self):
+    eleza test_read_ashirias(self):
         f = io.BytesIO(b'\x00')
         self.assertRaises(EOFError, aifc._read_ulong, f)
         self.assertRaises(EOFError, aifc._read_long, f)
         self.assertRaises(EOFError, aifc._read_ushort, f)
         self.assertRaises(EOFError, aifc._read_short, f)
 
-    eleza test_write_long_string_raises(self):
+    eleza test_write_long_string_ashirias(self):
         f = io.BytesIO()
         with self.assertRaises(ValueError):
             aifc._write_string(f, b'too long' * 255)
@@ -281,7 +281,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
         self.assertRaises(aifc.Error, aifc.open, io.BytesIO(b))
 
     eleza test_read_wrong_number_of_channels(self):
-        for nchannels in 0, -1:
+        kila nchannels kwenye 0, -1:
             b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
             b += b'COMM' + struct.pack('>LhlhhLL', 38, nchannels, 0, 8,
                                        0x4000 | 12, 11025<<18, 0)
@@ -291,7 +291,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                 aifc.open(io.BytesIO(b))
 
     eleza test_read_wrong_sample_width(self):
-        for sampwidth in 0, -1:
+        kila sampwidth kwenye 0, -1:
             b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
             b += b'COMM' + struct.pack('>LhlhhLL', 38, 1, 0, sampwidth,
                                        0x4000 | 12, 11025<<18, 0)
@@ -306,11 +306,11 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
         b += b'MARK' + struct.pack('>LhB', 3, 1, 1)
-        with self.assertWarns(UserWarning) as cm:
+        with self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: MARK chunk contains '
                                           'only 0 markers instead of 1')
-        self.assertEqual(f.getmarkers(), None)
+        self.assertEqual(f.getmarkers(), Tupu)
 
     eleza test_read_comm_kludge_compname_even(self):
         b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
@@ -318,7 +318,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'NONE' + struct.pack('B', 4) + b'even' + b'\x00'
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-        with self.assertWarns(UserWarning) as cm:
+        with self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'even')
@@ -329,12 +329,12 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'NONE' + struct.pack('B', 3) + b'odd'
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-        with self.assertWarns(UserWarning) as cm:
+        with self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'odd')
 
-    eleza test_write_params_raises(self):
+    eleza test_write_params_ashirias(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         wrong_params = (0, 0, 0, 0, b'WRNG', '')
         self.assertRaises(aifc.Error, fout.setparams, wrong_params)
@@ -386,9 +386,9 @@ kundi AIFCLowLevelTest(unittest.TestCase):
         p = (1, 2, 3, 4, b'NONE', b'name')
         fout.setparams(p)
         self.assertEqual(fout.getparams(), p)
-        fout.initfp(None)
+        fout.initfp(Tupu)
 
-    eleza test_write_header_raises(self):
+    eleza test_write_header_ashirias(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         self.assertRaises(aifc.Error, fout.close)
         fout = aifc.open(io.BytesIO(), 'wb')
@@ -399,21 +399,21 @@ kundi AIFCLowLevelTest(unittest.TestCase):
         fout.setsampwidth(1)
         self.assertRaises(aifc.Error, fout.close)
 
-    eleza test_write_header_comptype_raises(self):
-        for comptype in (b'ULAW', b'ulaw', b'ALAW', b'alaw', b'G722'):
+    eleza test_write_header_comptype_ashirias(self):
+        kila comptype kwenye (b'ULAW', b'ulaw', b'ALAW', b'alaw', b'G722'):
             fout = aifc.open(io.BytesIO(), 'wb')
             fout.setsampwidth(1)
             fout.setcomptype(comptype, b'')
             self.assertRaises(aifc.Error, fout.close)
-            fout.initfp(None)
+            fout.initfp(Tupu)
 
-    eleza test_write_markers_raises(self):
+    eleza test_write_markers_ashirias(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         self.assertRaises(aifc.Error, fout.setmark, 0, 0, b'')
         self.assertRaises(aifc.Error, fout.setmark, 1, -1, b'')
-        self.assertRaises(aifc.Error, fout.setmark, 1, 0, None)
+        self.assertRaises(aifc.Error, fout.setmark, 1, 0, Tupu)
         self.assertRaises(aifc.Error, fout.getmark, 1)
-        fout.initfp(None)
+        fout.initfp(Tupu)
 
     eleza test_write_aiff_by_extension(self):
         sampwidth = 2

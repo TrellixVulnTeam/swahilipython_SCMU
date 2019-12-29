@@ -1,6 +1,6 @@
-"""Weak reference support for Python.
+"""Weak reference support kila Python.
 
-This module is an implementation of PEP 205:
+This module ni an implementation of PEP 205:
 
 http://www.python.org/dev/peps/pep-0205/
 """
@@ -41,48 +41,48 @@ kundi WeakMethod(ref):
 
     __slots__ = "_func_ref", "_meth_type", "_alive", "__weakref__"
 
-    eleza __new__(cls, meth, callback=None):
-        try:
+    eleza __new__(cls, meth, callback=Tupu):
+        jaribu:
             obj = meth.__self__
             func = meth.__func__
-        except AttributeError:
-            raise TypeError("argument should be a bound method, not {}"
-                            .format(type(meth))) kutoka None
+        tatizo AttributeError:
+            ashiria TypeError("argument should be a bound method, sio {}"
+                            .format(type(meth))) kutoka Tupu
         eleza _cb(arg):
-            # The self-weakref trick is needed to avoid creating a reference
+            # The self-weakref trick ni needed to avoid creating a reference
             # cycle.
             self = self_wr()
             ikiwa self._alive:
-                self._alive = False
-                ikiwa callback is not None:
+                self._alive = Uongo
+                ikiwa callback ni sio Tupu:
                     callback(self)
         self = ref.__new__(cls, obj, _cb)
         self._func_ref = ref(func, _cb)
         self._meth_type = type(meth)
-        self._alive = True
+        self._alive = Kweli
         self_wr = ref(self)
         rudisha self
 
     eleza __call__(self):
         obj = super().__call__()
         func = self._func_ref()
-        ikiwa obj is None or func is None:
-            rudisha None
+        ikiwa obj ni Tupu ama func ni Tupu:
+            rudisha Tupu
         rudisha self._meth_type(func, obj)
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, WeakMethod):
-            ikiwa not self._alive or not other._alive:
-                rudisha self is other
-            rudisha ref.__eq__(self, other) and self._func_ref == other._func_ref
-        rudisha False
+            ikiwa sio self._alive ama sio other._alive:
+                rudisha self ni other
+            rudisha ref.__eq__(self, other) na self._func_ref == other._func_ref
+        rudisha Uongo
 
     eleza __ne__(self, other):
         ikiwa isinstance(other, WeakMethod):
-            ikiwa not self._alive or not other._alive:
-                rudisha self is not other
-            rudisha ref.__ne__(self, other) or self._func_ref != other._func_ref
-        rudisha True
+            ikiwa sio self._alive ama sio other._alive:
+                rudisha self ni sio other
+            rudisha ref.__ne__(self, other) ama self._func_ref != other._func_ref
+        rudisha Kweli
 
     __hash__ = ref.__hash__
 
@@ -90,23 +90,23 @@ kundi WeakMethod(ref):
 kundi WeakValueDictionary(_collections_abc.MutableMapping):
     """Mapping kundi that references values weakly.
 
-    Entries in the dictionary will be discarded when no strong
+    Entries kwenye the dictionary will be discarded when no strong
     reference to the value exists anymore
     """
     # We inherit the constructor without worrying about the input
     # dictionary; since it uses our .update() method, we get the right
-    # checks (ikiwa the other dictionary is a WeakValueDictionary,
-    # objects are unwrapped on the way out, and we always wrap on the
+    # checks (ikiwa the other dictionary ni a WeakValueDictionary,
+    # objects are unwrapped on the way out, na we always wrap on the
     # way in).
 
     eleza __init__(self, other=(), /, **kw):
         eleza remove(wr, selfref=ref(self), _atomic_removal=_remove_dead_weakref):
             self = selfref()
-            ikiwa self is not None:
+            ikiwa self ni sio Tupu:
                 ikiwa self._iterating:
                     self._pending_removals.append(wr.key)
-                else:
-                    # Atomic removal is necessary since this function
+                isipokua:
+                    # Atomic removal ni necessary since this function
                     # can be called asynchronously by the GC
                     _atomic_removal(self.data, wr.key)
         self._remove = remove
@@ -121,7 +121,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
         d = self.data
         # We shouldn't encounter any KeyError, because this method should
         # always be called *before* mutating the dict.
-        while l:
+        wakati l:
             key = l.pop()
             _remove_dead_weakref(d, key)
 
@@ -129,15 +129,15 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
         ikiwa self._pending_removals:
             self._commit_removals()
         o = self.data[key]()
-        ikiwa o is None:
-            raise KeyError(key)
-        else:
+        ikiwa o ni Tupu:
+            ashiria KeyError(key)
+        isipokua:
             rudisha o
 
     eleza __delitem__(self, key):
         ikiwa self._pending_removals:
             self._commit_removals()
-        del self.data[key]
+        toa self.data[key]
 
     eleza __len__(self):
         ikiwa self._pending_removals:
@@ -147,11 +147,11 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
     eleza __contains__(self, key):
         ikiwa self._pending_removals:
             self._commit_removals()
-        try:
+        jaribu:
             o = self.data[key]()
-        except KeyError:
-            rudisha False
-        rudisha o is not None
+        tatizo KeyError:
+            rudisha Uongo
+        rudisha o ni sio Tupu
 
     eleza __repr__(self):
         rudisha "<%s at %#x>" % (self.__class__.__name__, id(self))
@@ -166,9 +166,9 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
             self._commit_removals()
         new = WeakValueDictionary()
         with _IterationGuard(self):
-            for key, wr in self.data.items():
+            kila key, wr kwenye self.data.items():
                 o = wr()
-                ikiwa o is not None:
+                ikiwa o ni sio Tupu:
                     new[key] = o
         rudisha new
 
@@ -180,50 +180,50 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
             self._commit_removals()
         new = self.__class__()
         with _IterationGuard(self):
-            for key, wr in self.data.items():
+            kila key, wr kwenye self.data.items():
                 o = wr()
-                ikiwa o is not None:
+                ikiwa o ni sio Tupu:
                     new[deepcopy(key, memo)] = o
         rudisha new
 
-    eleza get(self, key, default=None):
+    eleza get(self, key, default=Tupu):
         ikiwa self._pending_removals:
             self._commit_removals()
-        try:
+        jaribu:
             wr = self.data[key]
-        except KeyError:
+        tatizo KeyError:
             rudisha default
-        else:
+        isipokua:
             o = wr()
-            ikiwa o is None:
+            ikiwa o ni Tupu:
                 # This should only happen
                 rudisha default
-            else:
+            isipokua:
                 rudisha o
 
     eleza items(self):
         ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
-            for k, wr in self.data.items():
+            kila k, wr kwenye self.data.items():
                 v = wr()
-                ikiwa v is not None:
-                    yield k, v
+                ikiwa v ni sio Tupu:
+                    tuma k, v
 
     eleza keys(self):
         ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
-            for k, wr in self.data.items():
-                ikiwa wr() is not None:
-                    yield k
+            kila k, wr kwenye self.data.items():
+                ikiwa wr() ni sio Tupu:
+                    tuma k
 
     __iter__ = keys
 
     eleza itervaluerefs(self):
-        """Return an iterator that yields the weak references to the values.
+        """Return an iterator that tumas the weak references to the values.
 
-        The references are not guaranteed to be 'live' at the time
+        The references are sio guaranteed to be 'live' at the time
         they are used, so the result of calling the references needs
         to be checked before being used.  This can be used to avoid
         creating references that will cause the garbage collector to
@@ -233,70 +233,70 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
         ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
-            yield kutoka self.data.values()
+            tuma kutoka self.data.values()
 
     eleza values(self):
         ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
-            for wr in self.data.values():
+            kila wr kwenye self.data.values():
                 obj = wr()
-                ikiwa obj is not None:
-                    yield obj
+                ikiwa obj ni sio Tupu:
+                    tuma obj
 
     eleza popitem(self):
         ikiwa self._pending_removals:
             self._commit_removals()
-        while True:
+        wakati Kweli:
             key, wr = self.data.popitem()
             o = wr()
-            ikiwa o is not None:
+            ikiwa o ni sio Tupu:
                 rudisha key, o
 
     eleza pop(self, key, *args):
         ikiwa self._pending_removals:
             self._commit_removals()
-        try:
+        jaribu:
             o = self.data.pop(key)()
-        except KeyError:
-            o = None
-        ikiwa o is None:
+        tatizo KeyError:
+            o = Tupu
+        ikiwa o ni Tupu:
             ikiwa args:
                 rudisha args[0]
-            else:
-                raise KeyError(key)
-        else:
+            isipokua:
+                ashiria KeyError(key)
+        isipokua:
             rudisha o
 
-    eleza setdefault(self, key, default=None):
-        try:
+    eleza setdefault(self, key, default=Tupu):
+        jaribu:
             o = self.data[key]()
-        except KeyError:
-            o = None
-        ikiwa o is None:
+        tatizo KeyError:
+            o = Tupu
+        ikiwa o ni Tupu:
             ikiwa self._pending_removals:
                 self._commit_removals()
             self.data[key] = KeyedRef(default, self._remove, key)
             rudisha default
-        else:
+        isipokua:
             rudisha o
 
-    eleza update(self, other=None, /, **kwargs):
+    eleza update(self, other=Tupu, /, **kwargs):
         ikiwa self._pending_removals:
             self._commit_removals()
         d = self.data
-        ikiwa other is not None:
-            ikiwa not hasattr(other, "items"):
+        ikiwa other ni sio Tupu:
+            ikiwa sio hasattr(other, "items"):
                 other = dict(other)
-            for key, o in other.items():
+            kila key, o kwenye other.items():
                 d[key] = KeyedRef(o, self._remove, key)
-        for key, o in kwargs.items():
+        kila key, o kwenye kwargs.items():
             d[key] = KeyedRef(o, self._remove, key)
 
     eleza valuerefs(self):
         """Return a list of weak references to the values.
 
-        The references are not guaranteed to be 'live' at the time
+        The references are sio guaranteed to be 'live' at the time
         they are used, so the result of calling the references needs
         to be checked before being used.  This can be used to avoid
         creating references that will cause the garbage collector to
@@ -311,8 +311,8 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
 kundi KeyedRef(ref):
     """Specialized reference that includes a key corresponding to the value.
 
-    This is used in the WeakValueDictionary to avoid having to create
-    a function object for each key stored in the mapping.  A shared
+    This ni used kwenye the WeakValueDictionary to avoid having to create
+    a function object kila each key stored kwenye the mapping.  A shared
     callback object can use the 'key' attribute of a KeyedRef instead
     of getting a reference to the key kutoka an enclosing scope.
 
@@ -332,7 +332,7 @@ kundi KeyedRef(ref):
 kundi WeakKeyDictionary(_collections_abc.MutableMapping):
     """ Mapping kundi that references keys weakly.
 
-    Entries in the dictionary will be discarded when there is no
+    Entries kwenye the dictionary will be discarded when there ni no
     longer a strong reference to the key. This can be used to
     associate additional data with an object owned by other parts of
     an application without adding attributes to those objects. This
@@ -340,21 +340,21 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
     accesses.
     """
 
-    eleza __init__(self, dict=None):
+    eleza __init__(self, dict=Tupu):
         self.data = {}
         eleza remove(k, selfref=ref(self)):
             self = selfref()
-            ikiwa self is not None:
+            ikiwa self ni sio Tupu:
                 ikiwa self._iterating:
                     self._pending_removals.append(k)
-                else:
-                    del self.data[k]
+                isipokua:
+                    toa self.data[k]
         self._remove = remove
         # A list of dead weakrefs (keys to be removed)
         self._pending_removals = []
         self._iterating = set()
-        self._dirty_len = False
-        ikiwa dict is not None:
+        self._dirty_len = Uongo
+        ikiwa dict ni sio Tupu:
             self.update(dict)
 
     eleza _commit_removals(self):
@@ -364,26 +364,26 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
         # However, it means keys may already have been removed.
         l = self._pending_removals
         d = self.data
-        while l:
-            try:
-                del d[l.pop()]
-            except KeyError:
-                pass
+        wakati l:
+            jaribu:
+                toa d[l.pop()]
+            tatizo KeyError:
+                pita
 
     eleza _scrub_removals(self):
         d = self.data
-        self._pending_removals = [k for k in self._pending_removals ikiwa k in d]
-        self._dirty_len = False
+        self._pending_removals = [k kila k kwenye self._pending_removals ikiwa k kwenye d]
+        self._dirty_len = Uongo
 
     eleza __delitem__(self, key):
-        self._dirty_len = True
-        del self.data[ref(key)]
+        self._dirty_len = Kweli
+        toa self.data[ref(key)]
 
     eleza __getitem__(self, key):
         rudisha self.data[ref(key)]
 
     eleza __len__(self):
-        ikiwa self._dirty_len and self._pending_removals:
+        ikiwa self._dirty_len na self._pending_removals:
             # self._pending_removals may still contain keys which were
             # explicitly removed, we have to scrub them (see issue #21173).
             self._scrub_removals()
@@ -398,9 +398,9 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
     eleza copy(self):
         new = WeakKeyDictionary()
         with _IterationGuard(self):
-            for key, value in self.data.items():
+            kila key, value kwenye self.data.items():
                 o = key()
-                ikiwa o is not None:
+                ikiwa o ni sio Tupu:
                     new[o] = value
         rudisha new
 
@@ -410,48 +410,48 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
         kutoka copy agiza deepcopy
         new = self.__class__()
         with _IterationGuard(self):
-            for key, value in self.data.items():
+            kila key, value kwenye self.data.items():
                 o = key()
-                ikiwa o is not None:
+                ikiwa o ni sio Tupu:
                     new[o] = deepcopy(value, memo)
         rudisha new
 
-    eleza get(self, key, default=None):
+    eleza get(self, key, default=Tupu):
         rudisha self.data.get(ref(key),default)
 
     eleza __contains__(self, key):
-        try:
+        jaribu:
             wr = ref(key)
-        except TypeError:
-            rudisha False
-        rudisha wr in self.data
+        tatizo TypeError:
+            rudisha Uongo
+        rudisha wr kwenye self.data
 
     eleza items(self):
         with _IterationGuard(self):
-            for wr, value in self.data.items():
+            kila wr, value kwenye self.data.items():
                 key = wr()
-                ikiwa key is not None:
-                    yield key, value
+                ikiwa key ni sio Tupu:
+                    tuma key, value
 
     eleza keys(self):
         with _IterationGuard(self):
-            for wr in self.data:
+            kila wr kwenye self.data:
                 obj = wr()
-                ikiwa obj is not None:
-                    yield obj
+                ikiwa obj ni sio Tupu:
+                    tuma obj
 
     __iter__ = keys
 
     eleza values(self):
         with _IterationGuard(self):
-            for wr, value in self.data.items():
-                ikiwa wr() is not None:
-                    yield value
+            kila wr, value kwenye self.data.items():
+                ikiwa wr() ni sio Tupu:
+                    tuma value
 
     eleza keyrefs(self):
         """Return a list of weak references to the keys.
 
-        The references are not guaranteed to be 'live' at the time
+        The references are sio guaranteed to be 'live' at the time
         they are used, so the result of calling the references needs
         to be checked before being used.  This can be used to avoid
         creating references that will cause the garbage collector to
@@ -461,55 +461,55 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
         rudisha list(self.data)
 
     eleza popitem(self):
-        self._dirty_len = True
-        while True:
+        self._dirty_len = Kweli
+        wakati Kweli:
             key, value = self.data.popitem()
             o = key()
-            ikiwa o is not None:
+            ikiwa o ni sio Tupu:
                 rudisha o, value
 
     eleza pop(self, key, *args):
-        self._dirty_len = True
+        self._dirty_len = Kweli
         rudisha self.data.pop(ref(key), *args)
 
-    eleza setdefault(self, key, default=None):
+    eleza setdefault(self, key, default=Tupu):
         rudisha self.data.setdefault(ref(key, self._remove),default)
 
-    eleza update(self, dict=None, /, **kwargs):
+    eleza update(self, dict=Tupu, /, **kwargs):
         d = self.data
-        ikiwa dict is not None:
-            ikiwa not hasattr(dict, "items"):
+        ikiwa dict ni sio Tupu:
+            ikiwa sio hasattr(dict, "items"):
                 dict = type({})(dict)
-            for key, value in dict.items():
+            kila key, value kwenye dict.items():
                 d[ref(key, self._remove)] = value
         ikiwa len(kwargs):
             self.update(kwargs)
 
 
 kundi finalize:
-    """Class for finalization of weakrefable objects
+    """Class kila finalization of weakrefable objects
 
-    finalize(obj, func, *args, **kwargs) returns a callable finalizer
-    object which will be called when obj is garbage collected. The
-    first time the finalizer is called it evaluates func(*arg, **kwargs)
-    and returns the result. After this the finalizer is dead, and
-    calling it just returns None.
+    finalize(obj, func, *args, **kwargs) rudishas a callable finalizer
+    object which will be called when obj ni garbage collected. The
+    first time the finalizer ni called it evaluates func(*arg, **kwargs)
+    na rudishas the result. After this the finalizer ni dead, and
+    calling it just rudishas Tupu.
 
-    When the program exits any remaining finalizers for which the
-    atexit attribute is true will be run in reverse order of creation.
-    By default atexit is true.
+    When the program exits any remaining finalizers kila which the
+    atexit attribute ni true will be run kwenye reverse order of creation.
+    By default atexit ni true.
     """
 
     # Finalizer objects don't have any state of their own.  They are
-    # just used as keys to lookup _Info objects in the registry.  This
+    # just used kama keys to lookup _Info objects kwenye the registry.  This
     # ensures that they cannot be part of a ref-cycle.
 
     __slots__ = ()
     _registry = {}
-    _shutdown = False
+    _shutdown = Uongo
     _index_iter = itertools.count()
-    _dirty = False
-    _registered_with_atexit = False
+    _dirty = Uongo
+    _registered_with_atexit = Uongo
 
     kundi _Info:
         __slots__ = ("weakref", "func", "args", "kwargs", "atexit", "index")
@@ -517,80 +517,80 @@ kundi finalize:
     eleza __init__(*args, **kwargs):
         ikiwa len(args) >= 3:
             self, obj, func, *args = args
-        elikiwa not args:
-            raise TypeError("descriptor '__init__' of 'finalize' object "
+        elikiwa sio args:
+            ashiria TypeError("descriptor '__init__' of 'finalize' object "
                             "needs an argument")
-        else:
-            ikiwa 'func' not in kwargs:
-                raise TypeError('finalize expected at least 2 positional '
+        isipokua:
+            ikiwa 'func' haiko kwenye kwargs:
+                ashiria TypeError('finalize expected at least 2 positional '
                                 'arguments, got %d' % (len(args)-1))
             func = kwargs.pop('func')
             ikiwa len(args) >= 2:
                 self, obj, *args = args
                 agiza warnings
-                warnings.warn("Passing 'func' as keyword argument is deprecated",
+                warnings.warn("Passing 'func' kama keyword argument ni deprecated",
                               DeprecationWarning, stacklevel=2)
-            else:
-                ikiwa 'obj' not in kwargs:
-                    raise TypeError('finalize expected at least 2 positional '
+            isipokua:
+                ikiwa 'obj' haiko kwenye kwargs:
+                    ashiria TypeError('finalize expected at least 2 positional '
                                     'arguments, got %d' % (len(args)-1))
                 obj = kwargs.pop('obj')
                 self, *args = args
                 agiza warnings
-                warnings.warn("Passing 'obj' as keyword argument is deprecated",
+                warnings.warn("Passing 'obj' kama keyword argument ni deprecated",
                               DeprecationWarning, stacklevel=2)
         args = tuple(args)
 
-        ikiwa not self._registered_with_atexit:
+        ikiwa sio self._registered_with_atexit:
             # We may register the exit function more than once because
-            # of a thread race, but that is harmless
+            # of a thread race, but that ni harmless
             agiza atexit
             atexit.register(self._exitfunc)
-            finalize._registered_with_atexit = True
+            finalize._registered_with_atexit = Kweli
         info = self._Info()
         info.weakref = ref(obj, self)
         info.func = func
         info.args = args
-        info.kwargs = kwargs or None
-        info.atexit = True
+        info.kwargs = kwargs ama Tupu
+        info.atexit = Kweli
         info.index = next(self._index_iter)
         self._registry[self] = info
-        finalize._dirty = True
+        finalize._dirty = Kweli
     __init__.__text_signature__ = '($self, obj, func, /, *args, **kwargs)'
 
-    eleza __call__(self, _=None):
-        """If alive then mark as dead and rudisha func(*args, **kwargs);
-        otherwise rudisha None"""
-        info = self._registry.pop(self, None)
-        ikiwa info and not self._shutdown:
-            rudisha info.func(*info.args, **(info.kwargs or {}))
+    eleza __call__(self, _=Tupu):
+        """If alive then mark kama dead na rudisha func(*args, **kwargs);
+        otherwise rudisha Tupu"""
+        info = self._registry.pop(self, Tupu)
+        ikiwa info na sio self._shutdown:
+            rudisha info.func(*info.args, **(info.kwargs ama {}))
 
     eleza detach(self):
-        """If alive then mark as dead and rudisha (obj, func, args, kwargs);
-        otherwise rudisha None"""
+        """If alive then mark kama dead na rudisha (obj, func, args, kwargs);
+        otherwise rudisha Tupu"""
         info = self._registry.get(self)
-        obj = info and info.weakref()
-        ikiwa obj is not None and self._registry.pop(self, None):
-            rudisha (obj, info.func, info.args, info.kwargs or {})
+        obj = info na info.weakref()
+        ikiwa obj ni sio Tupu na self._registry.pop(self, Tupu):
+            rudisha (obj, info.func, info.args, info.kwargs ama {})
 
     eleza peek(self):
         """If alive then rudisha (obj, func, args, kwargs);
-        otherwise rudisha None"""
+        otherwise rudisha Tupu"""
         info = self._registry.get(self)
-        obj = info and info.weakref()
-        ikiwa obj is not None:
-            rudisha (obj, info.func, info.args, info.kwargs or {})
+        obj = info na info.weakref()
+        ikiwa obj ni sio Tupu:
+            rudisha (obj, info.func, info.args, info.kwargs ama {})
 
     @property
     eleza alive(self):
-        """Whether finalizer is alive"""
-        rudisha self in self._registry
+        """Whether finalizer ni alive"""
+        rudisha self kwenye self._registry
 
     @property
     eleza atexit(self):
         """Whether finalizer should be called at exit"""
         info = self._registry.get(self)
-        rudisha bool(info) and info.atexit
+        rudisha bool(info) na info.atexit
 
     @atexit.setter
     eleza atexit(self, value):
@@ -600,51 +600,51 @@ kundi finalize:
 
     eleza __repr__(self):
         info = self._registry.get(self)
-        obj = info and info.weakref()
-        ikiwa obj is None:
+        obj = info na info.weakref()
+        ikiwa obj ni Tupu:
             rudisha '<%s object at %#x; dead>' % (type(self).__name__, id(self))
-        else:
-            rudisha '<%s object at %#x; for %r at %#x>' % \
+        isipokua:
+            rudisha '<%s object at %#x; kila %r at %#x>' % \
                 (type(self).__name__, id(self), type(obj).__name__, id(obj))
 
     @classmethod
     eleza _select_for_exit(cls):
-        # Return live finalizers marked for exit, oldest first
-        L = [(f,i) for (f,i) in cls._registry.items() ikiwa i.atexit]
+        # Return live finalizers marked kila exit, oldest first
+        L = [(f,i) kila (f,i) kwenye cls._registry.items() ikiwa i.atexit]
         L.sort(key=lambda item:item[1].index)
-        rudisha [f for (f,i) in L]
+        rudisha [f kila (f,i) kwenye L]
 
     @classmethod
     eleza _exitfunc(cls):
-        # At shutdown invoke finalizers for which atexit is true.
-        # This is called once all other non-daemonic threads have been
+        # At shutdown invoke finalizers kila which atexit ni true.
+        # This ni called once all other non-daemonic threads have been
         # joined.
-        reenable_gc = False
-        try:
-            ikiwa cls._registry:
+        reenable_gc = Uongo
+        jaribu:
+            ikiwa cls._regisjaribu:
                 agiza gc
                 ikiwa gc.isenabled():
-                    reenable_gc = True
+                    reenable_gc = Kweli
                     gc.disable()
-                pending = None
-                while True:
-                    ikiwa pending is None or finalize._dirty:
+                pending = Tupu
+                wakati Kweli:
+                    ikiwa pending ni Tupu ama finalize._dirty:
                         pending = cls._select_for_exit()
-                        finalize._dirty = False
-                    ikiwa not pending:
-                        break
+                        finalize._dirty = Uongo
+                    ikiwa sio pending:
+                        koma
                     f = pending.pop()
-                    try:
-                        # gc is disabled, so (assuming no daemonic
-                        # threads) the following is the only line in
+                    jaribu:
+                        # gc ni disabled, so (assuming no daemonic
+                        # threads) the following ni the only line in
                         # this function which might trigger creation
                         # of a new finalizer
                         f()
-                    except Exception:
+                    tatizo Exception:
                         sys.excepthook(*sys.exc_info())
-                    assert f not in cls._registry
-        finally:
+                    assert f haiko kwenye cls._registry
+        mwishowe:
             # prevent any more finalizers kutoka executing during shutdown
-            finalize._shutdown = True
+            finalize._shutdown = Kweli
             ikiwa reenable_gc:
                 gc.enable()

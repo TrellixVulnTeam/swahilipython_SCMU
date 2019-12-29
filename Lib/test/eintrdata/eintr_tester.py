@@ -27,7 +27,7 @@ from test import support
 def kill_on_error(proc):
     """Context manager killing the subprocess if a Python exception is raised."""
     with proc:
-        try:
+        jaribu:
             yield proc
         except:
             proc.kill()
@@ -162,7 +162,7 @@ class OSEINTRTest(EINTRBaseTest):
             'time.sleep(sleep_time)',
             '',
             'read_data = io.BytesIO()',
-            'while len(read_data.getvalue()) < data_len:',
+            'wakati len(read_data.getvalue()) < data_len:',
             '    chunk = os.read(rd, 2 * data_len)',
             '    read_data.write(chunk)',
             '',
@@ -176,7 +176,7 @@ class OSEINTRTest(EINTRBaseTest):
         with kill_on_error(proc):
             os.close(rd)
             written = 0
-            while written < len(data):
+            wakati written < len(data):
                 written += os.write(wr, memoryview(data)[written:])
             self.assertEqual(proc.wait(), 0)
 
@@ -255,7 +255,7 @@ class SocketEINTRTest(EINTRBaseTest):
             '',
             '    received_data = bytearray(data_len)',
             '    n = 0',
-            '    while n < data_len:',
+            '    wakati n < data_len:',
             '        n += rd.recv_into(memoryview(received_data)[n:])',
             '',
             'if received_data != data:',
@@ -268,7 +268,7 @@ class SocketEINTRTest(EINTRBaseTest):
         with kill_on_error(proc):
             rd.close()
             written = 0
-            while written < len(data):
+            wakati written < len(data):
                 sent = send_func(wr, memoryview(data)[written:])
                 # sendall() returns None
                 written += len(data) if sent is None else sent
@@ -320,9 +320,9 @@ class SocketEINTRTest(EINTRBaseTest):
         # Use a fifo: until the child opens it for reading, the parent will
         # block when trying to open it for writing.
         support.unlink(filename)
-        try:
+        jaribu:
             os.mkfifo(filename)
-        except PermissionError as e:
+        tatizo PermissionError as e:
             self.skipTest('os.mkfifo(): %s' % e)
         self.addCleanup(support.unlink, filename)
 
@@ -497,16 +497,16 @@ class FNTLEINTRTest(EINTRBaseTest):
         proc = self.subprocess(code)
         with kill_on_error(proc):
             with open(support.TESTFN, 'wb') as f:
-                while True:  # synchronize the subprocess
+                wakati True:  # synchronize the subprocess
                     dt = time.monotonic() - start_time
                     if dt > 60.0:
                         raise Exception("failed to sync child in %.1f sec" % dt)
-                    try:
+                    jaribu:
                         lock_func(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
                         lock_func(f, fcntl.LOCK_UN)
                         time.sleep(0.01)
-                    except BlockingIOError:
-                        break
+                    tatizo BlockingIOError:
+                        koma
                 # the child locked the file just a moment ago for 'sleep_time' seconds
                 # that means that the lock below will block for 'sleep_time' minus some
                 # potential context switch delay

@@ -114,14 +114,14 @@ class PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         cmd._store_pypirc('tarek', 'xxx')
         self.assertTrue(os.path.exists(rc))
         f = open(rc)
-        try:
+        jaribu:
             content = f.read()
             self.assertEqual(content, WANTED)
-        finally:
+        mwishowe:
             f.close()
 
     def test_config_interpolation(self):
-        # using the % character in .pypirc should not raise an error (#20120)
+        # using the % character in .pypirc should sio raise an error (#20120)
         self.write_file(self.rc, PYPIRC)
         cmd = self._cmd(self.dist)
         cmd.repository = 'server3'

@@ -20,7 +20,7 @@ kundi I:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): raise StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -31,16 +31,16 @@ kundi Ig:
         self.seqn = seqn
         self.i = 0
     eleza __iter__(self):
-        for val in self.seqn:
-            yield val
+        kila val kwenye self.seqn:
+            tuma val
 
 kundi X:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ na __iter__'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): raise StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -66,18 +66,18 @@ kundi N:
 kundi PickleTest:
     # Helper to check picklability
     eleza check_pickle(self, itorg, seq):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             self.assertEqual(type(itorg), type(it))
             self.assertEqual(list(it), seq)
 
             it = pickle.loads(d)
-            try:
+            jaribu:
                 next(it)
-            except StopIteration:
-                self.assertFalse(seq[1:])
-                continue
+            tatizo StopIteration:
+                self.assertUongo(seq[1:])
+                endelea
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
             self.assertEqual(list(it), seq[1:])
@@ -129,13 +129,13 @@ kundi EnumerateTestCase(unittest.TestCase, PickleTest):
 
     @support.cpython_only
     eleza test_tuple_reuse(self):
-        # Tests an implementation detail where tuple is reused
+        # Tests an implementation detail where tuple ni reused
         # whenever nothing else holds a reference to it
         self.assertEqual(len(set(map(id, list(enumerate(self.seq))))), len(self.seq))
         self.assertEqual(len(set(map(id, enumerate(self.seq)))), min(1,len(self.seq)))
 
 kundi MyEnum(enumerate):
-    pass
+    pita
 
 kundi SubclassTestCase(EnumerateTestCase):
 
@@ -157,10 +157,10 @@ kundi TestReversed(unittest.TestCase, PickleTest):
             eleza __getitem__(self, i):
                 ikiwa i < 5:
                     rudisha str(i)
-                raise StopIteration
+                ashiria StopIteration
             eleza __len__(self):
                 rudisha 5
-        for data in ('abc', range(5), tuple(enumerate('abc')), A(),
+        kila data kwenye ('abc', range(5), tuple(enumerate('abc')), A(),
                     range(1,17,5), dict.kutokakeys('abcde')):
             self.assertEqual(list(data)[::-1], list(reversed(data)))
         # don't allow keyword arguments
@@ -171,18 +171,18 @@ kundi TestReversed(unittest.TestCase, PickleTest):
         self.assertEqual(type(reversed(x)), type(iter(x)))
 
     eleza test_len(self):
-        for s in ('hello', tuple('hello'), list('hello'), range(5)):
+        kila s kwenye ('hello', tuple('hello'), list('hello'), range(5)):
             self.assertEqual(operator.length_hint(reversed(s)), len(s))
             r = reversed(s)
             list(r)
             self.assertEqual(operator.length_hint(r), 0)
         kundi SeqWithWeirdLen:
-            called = False
+            called = Uongo
             eleza __len__(self):
-                ikiwa not self.called:
-                    self.called = True
+                ikiwa sio self.called:
+                    self.called = Kweli
                     rudisha 10
-                raise ZeroDivisionError
+                ashiria ZeroDivisionError
             eleza __getitem__(self, index):
                 rudisha index
         r = reversed(SeqWithWeirdLen())
@@ -205,23 +205,23 @@ kundi TestReversed(unittest.TestCase, PickleTest):
 
     @unittest.skipUnless(hasattr(sys, 'getrefcount'), 'test needs sys.getrefcount()')
     eleza test_bug1229429(self):
-        # this bug was never in reversed, it was in
-        # PyObject_CallMethod, and reversed_new calls that sometimes.
+        # this bug was never kwenye reversed, it was in
+        # PyObject_CallMethod, na reversed_new calls that sometimes.
         eleza f():
-            pass
+            pita
         r = f.__reversed__ = object()
         rc = sys.getrefcount(r)
-        for i in range(10):
-            try:
+        kila i kwenye range(10):
+            jaribu:
                 reversed(f)
-            except TypeError:
-                pass
-            else:
-                self.fail("non-callable __reversed__ didn't raise!")
+            tatizo TypeError:
+                pita
+            isipokua:
+                self.fail("non-callable __reversed__ didn't ashiria!")
         self.assertEqual(rc, sys.getrefcount(r))
 
     eleza test_objmethods(self):
-        # Objects must have __len__() and __getitem__() implemented.
+        # Objects must have __len__() na __getitem__() implemented.
         kundi NoLen(object):
             eleza __getitem__(self, i): rudisha 1
         nl = NoLen()
@@ -235,12 +235,12 @@ kundi TestReversed(unittest.TestCase, PickleTest):
         kundi Blocked(object):
             eleza __getitem__(self, i): rudisha 1
             eleza __len__(self): rudisha 2
-            __reversed__ = None
+            __reversed__ = Tupu
         b = Blocked()
         self.assertRaises(TypeError, reversed, b)
 
     eleza test_pickle(self):
-        for data in 'abc', range(5), tuple(enumerate('abc')), range(1,17,5):
+        kila data kwenye 'abc', range(5), tuple(enumerate('abc')), range(1,17,5):
             self.check_pickle(reversed(data), list(data)[::-1])
 
 

@@ -2,7 +2,7 @@
 
 Simplified, pyshell.ModifiedInterpreter spawns a subprocess with
 f'''{sys.executable} -c "__import__('idlelib.run').run.main()"'''
-'.run' is needed because __import__ returns idlelib, not idlelib.run.
+'.run' ni needed because __import__ rudishas idlelib, sio idlelib.run.
 """
 agiza functools
 agiza io
@@ -12,7 +12,7 @@ agiza sys
 agiza textwrap
 agiza time
 agiza traceback
-agiza _thread as thread
+agiza _thread kama thread
 agiza threading
 agiza warnings
 
@@ -26,25 +26,25 @@ kutoka idlelib agiza stackviewer  # StackTreeItem
 agiza __main__
 
 agiza tkinter  # Use tcl and, ikiwa startup fails, messagebox.
-ikiwa not hasattr(sys.modules['idlelib.run'], 'firstrun'):
+ikiwa sio hasattr(sys.modules['idlelib.run'], 'firstrun'):
     # Undo modifications of tkinter by idlelib agizas; see bpo-25507.
-    for mod in ('simpledialog', 'messagebox', 'font',
+    kila mod kwenye ('simpledialog', 'messagebox', 'font',
                 'dialog', 'filedialog', 'commondialog',
                 'ttk'):
         delattr(tkinter, mod)
-        del sys.modules['tkinter.' + mod]
+        toa sys.modules['tkinter.' + mod]
     # Avoid AttributeError ikiwa run again; see bpo-37038.
-    sys.modules['idlelib.run'].firstrun = False
+    sys.modules['idlelib.run'].firstrun = Uongo
 
 LOCALHOST = '127.0.0.1'
 
 
-eleza idle_formatwarning(message, category, filename, lineno, line=None):
+eleza idle_formatwarning(message, category, filename, lineno, line=Tupu):
     """Format warnings the IDLE way."""
 
     s = "\nWarning (kutoka warnings module):\n"
     s += '  File \"%s\", line %s\n' % (filename, lineno)
-    ikiwa line is None:
+    ikiwa line ni Tupu:
         line = linecache.getline(filename, lineno)
     line = line.strip()
     ikiwa line:
@@ -53,145 +53,145 @@ eleza idle_formatwarning(message, category, filename, lineno, line=None):
     rudisha s
 
 eleza idle_showwarning_subproc(
-        message, category, filename, lineno, file=None, line=None):
+        message, category, filename, lineno, file=Tupu, line=Tupu):
     """Show Idle-format warning after replacing warnings.showwarning.
 
-    The only difference is the formatter called.
+    The only difference ni the formatter called.
     """
-    ikiwa file is None:
+    ikiwa file ni Tupu:
         file = sys.stderr
-    try:
+    jaribu:
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line))
-    except OSError:
-        pass # the file (probably stderr) is invalid - this warning gets lost.
+    tatizo OSError:
+        pita # the file (probably stderr) ni invalid - this warning gets lost.
 
-_warnings_showwarning = None
+_warnings_showwarning = Tupu
 
 eleza capture_warnings(capture):
-    "Replace warning.showwarning with idle_showwarning_subproc, or reverse."
+    "Replace warning.showwarning with idle_showwarning_subproc, ama reverse."
 
     global _warnings_showwarning
     ikiwa capture:
-        ikiwa _warnings_showwarning is None:
+        ikiwa _warnings_showwarning ni Tupu:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = idle_showwarning_subproc
-    else:
-        ikiwa _warnings_showwarning is not None:
+    isipokua:
+        ikiwa _warnings_showwarning ni sio Tupu:
             warnings.showwarning = _warnings_showwarning
-            _warnings_showwarning = None
+            _warnings_showwarning = Tupu
 
-capture_warnings(True)
+capture_warnings(Kweli)
 tcl = tkinter.Tcl()
 
 eleza handle_tk_events(tcl=tcl):
     """Process any tk events that are ready to be dispatched ikiwa tkinter
-    has been imported, a tcl interpreter has been created and tk has been
+    has been imported, a tcl interpreter has been created na tk has been
     loaded."""
     tcl.eval("update")
 
 # Thread shared globals: Establish a queue between a subthread (which handles
-# the socket) and the main thread (which runs user code), plus global
-# completion, exit and interruptable (the main thread) flags:
+# the socket) na the main thread (which runs user code), plus global
+# completion, exit na interruptable (the main thread) flags:
 
-exit_now = False
-quitting = False
-interruptable = False
+exit_now = Uongo
+quitting = Uongo
+interruptable = Uongo
 
-eleza main(del_exitfunc=False):
-    """Start the Python execution server in a subprocess
+eleza main(del_exitfunc=Uongo):
+    """Start the Python execution server kwenye a subprocess
 
-    In the Python subprocess, RPCServer is instantiated with handlerclass
+    In the Python subprocess, RPCServer ni instantiated with handlerclass
     MyHandler, which inherits register/unregister methods kutoka RPCHandler via
     the mix-in kundi SocketIO.
 
-    When the RPCServer 'server' is instantiated, the TCPServer initialization
-    creates an instance of run.MyHandler and calls its handle() method.
-    handle() instantiates a run.Executive object, passing it a reference to the
-    MyHandler object.  That reference is saved as attribute rpchandler of the
+    When the RPCServer 'server' ni instantiated, the TCPServer initialization
+    creates an instance of run.MyHandler na calls its handle() method.
+    handle() instantiates a run.Executive object, pitaing it a reference to the
+    MyHandler object.  That reference ni saved kama attribute rpchandler of the
     Executive instance.  The Executive methods have access to the reference and
-    can pass it on to entities that they command
-    (e.g. debugger_r.Debugger.start_debugger()).  The latter, in turn, can
+    can pita it on to entities that they command
+    (e.g. debugger_r.Debugger.start_debugger()).  The latter, kwenye turn, can
     call MyHandler(SocketIO) register/unregister methods via the reference to
-    register and unregister themselves.
+    register na unregister themselves.
 
     """
     global exit_now
     global quitting
     global no_exitfunc
     no_exitfunc = del_exitfunc
-    #time.sleep(15) # test subprocess not responding
-    try:
+    #time.sleep(15) # test subprocess sio responding
+    jaribu:
         assert(len(sys.argv) > 1)
         port = int(sys.argv[-1])
     except:
-        andika("IDLE Subprocess: no IP port passed in sys.argv.",
+        andika("IDLE Subprocess: no IP port pitaed kwenye sys.argv.",
               file=sys.__stderr__)
-        return
+        rudisha
 
-    capture_warnings(True)
+    capture_warnings(Kweli)
     sys.argv[:] = [""]
     sockthread = threading.Thread(target=manage_socket,
                                   name='SockThread',
                                   args=((LOCALHOST, port),))
-    sockthread.daemon = True
+    sockthread.daemon = Kweli
     sockthread.start()
-    while 1:
-        try:
+    wakati 1:
+        jaribu:
             ikiwa exit_now:
-                try:
+                jaribu:
                     exit()
-                except KeyboardInterrupt:
+                tatizo KeyboardInterrupt:
                     # exiting but got an extra KBI? Try again!
-                    continue
-            try:
-                request = rpc.request_queue.get(block=True, timeout=0.05)
-            except queue.Empty:
-                request = None
+                    endelea
+            jaribu:
+                request = rpc.request_queue.get(block=Kweli, timeout=0.05)
+            tatizo queue.Empty:
+                request = Tupu
                 # Issue 32207: calling handle_tk_events here adds spurious
                 # queue.Empty traceback to event handling exceptions.
             ikiwa request:
                 seq, (method, args, kwargs) = request
                 ret = method(*args, **kwargs)
                 rpc.response_queue.put((seq, ret))
-            else:
+            isipokua:
                 handle_tk_events()
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             ikiwa quitting:
-                exit_now = True
-            continue
-        except SystemExit:
-            capture_warnings(False)
-            raise
+                exit_now = Kweli
+            endelea
+        tatizo SystemExit:
+            capture_warnings(Uongo)
+            ashiria
         except:
             type, value, tb = sys.exc_info()
-            try:
+            jaribu:
                 print_exception()
-                rpc.response_queue.put((seq, None))
+                rpc.response_queue.put((seq, Tupu))
             except:
                 # Link didn't work, print same exception to __stderr__
                 traceback.print_exception(type, value, tb, file=sys.__stderr__)
                 exit()
-            else:
-                continue
+            isipokua:
+                endelea
 
 eleza manage_socket(address):
-    for i in range(3):
+    kila i kwenye range(3):
         time.sleep(i)
-        try:
+        jaribu:
             server = MyRPCServer(address, MyHandler)
-            break
-        except OSError as err:
+            koma
+        tatizo OSError kama err:
             andika("IDLE Subprocess: OSError: " + err.args[1] +
                   ", retrying....", file=sys.__stderr__)
             socket_error = err
-    else:
+    isipokua:
         andika("IDLE Subprocess: Connection to "
               "IDLE GUI failed, exiting.", file=sys.__stderr__)
         show_socket_error(socket_error, address)
         global exit_now
-        exit_now = True
-        return
+        exit_now = Kweli
+        rudisha
     server.handle_request() # A single request only
 
 eleza show_socket_error(err, address):
@@ -223,13 +223,13 @@ eleza print_exception():
         seen.add(id(exc))
         context = exc.__context__
         cause = exc.__cause__
-        ikiwa cause is not None and id(cause) not in seen:
+        ikiwa cause ni sio Tupu na id(cause) haiko kwenye seen:
             print_exc(type(cause), cause, cause.__traceback__)
             andika("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        elikiwa (context is not None and
-              not exc.__suppress_context__ and
-              id(context) not in seen):
+        elikiwa (context ni sio Tupu and
+              sio exc.__suppress_context__ and
+              id(context) haiko kwenye seen):
             print_exc(type(context), context, context.__traceback__)
             andika("\nDuring handling of the above exception, "
                   "another exception occurred:\n", file=efile)
@@ -241,7 +241,7 @@ eleza print_exception():
             cleanup_traceback(tbe, exclude)
             traceback.print_list(tbe, file=efile)
         lines = traceback.format_exception_only(typ, exc)
-        for line in lines:
+        kila line kwenye lines:
             andika(line, end='', file=efile)
 
     print_exc(typ, val, tb)
@@ -249,30 +249,30 @@ eleza print_exception():
 eleza cleanup_traceback(tb, exclude):
     "Remove excluded traces kutoka beginning/end of tb; get cached lines"
     orig_tb = tb[:]
-    while tb:
-        for rpcfile in exclude:
+    wakati tb:
+        kila rpcfile kwenye exclude:
             ikiwa tb[0][0].count(rpcfile):
-                break    # found an exclude, break for: and delete tb[0]
-        else:
-            break        # no excludes, have left RPC code, break while:
-        del tb[0]
-    while tb:
-        for rpcfile in exclude:
+                koma    # found an exclude, koma for: na delete tb[0]
+        isipokua:
+            koma        # no excludes, have left RPC code, koma while:
+        toa tb[0]
+    wakati tb:
+        kila rpcfile kwenye exclude:
             ikiwa tb[-1][0].count(rpcfile):
-                break
-        else:
-            break
-        del tb[-1]
+                koma
+        isipokua:
+            koma
+        toa tb[-1]
     ikiwa len(tb) == 0:
-        # exception was in IDLE internals, don't prune!
+        # exception was kwenye IDLE internals, don't prune!
         tb[:] = orig_tb[:]
         andika("** IDLE Internal Exception: ", file=sys.stderr)
     rpchandler = rpc.objecttable['exec'].rpchandler
-    for i in range(len(tb)):
+    kila i kwenye range(len(tb)):
         fn, ln, nm, line = tb[i]
         ikiwa nm == '?':
             nm = "-toplevel-"
-        ikiwa not line and fn.startswith("<pyshell#"):
+        ikiwa sio line na fn.startswith("<pyshell#"):
             line = rpchandler.remotecall('linecache', 'getline',
                                               (fn, ln), {})
         tb[i] = fn, ln, nm, line
@@ -283,7 +283,7 @@ eleza flush_stdout():
 eleza exit():
     """Exit subprocess, possibly after first clearing exit functions.
 
-    If config-main.cfg/.eleza 'General' 'delete-exitfunc' is True, then any
+    If config-main.cfg/.eleza 'General' 'delete-exitfunc' ni Kweli, then any
     functions registered with atexit will be removed before exiting.
     (VPython support)
 
@@ -291,7 +291,7 @@ eleza exit():
     ikiwa no_exitfunc:
         agiza atexit
         atexit._clear()
-    capture_warnings(False)
+    capture_warnings(Uongo)
     sys.exit(0)
 
 
@@ -300,15 +300,15 @@ eleza fix_scaling(root):
     agiza tkinter.font
     scaling = float(root.tk.call('tk', 'scaling'))
     ikiwa scaling > 1.4:
-        for name in tkinter.font.names(root):
-            font = tkinter.font.Font(root=root, name=name, exists=True)
+        kila name kwenye tkinter.font.names(root):
+            font = tkinter.font.Font(root=root, name=name, exists=Kweli)
             size = int(font['size'])
             ikiwa size < 0:
                 font['size'] = round(-0.75*size)
 
 
 eleza fixdoc(fun, text):
-    tem = (fun.__doc__ + '\n\n') ikiwa fun.__doc__ is not None else ''
+    tem = (fun.__doc__ + '\n\n') ikiwa fun.__doc__ ni sio Tupu else ''
     fun.__doc__ = tem + textwrap.fill(textwrap.dedent(text))
 
 RECURSIONLIMIT_DELTA = 30
@@ -321,16 +321,16 @@ eleza install_recursionlimit_wrappers():
     eleza setrecursionlimit(*args, **kwargs):
         # mimic the original sys.setrecursionlimit()'s input handling
         ikiwa kwargs:
-            raise TypeError(
+            ashiria TypeError(
                 "setrecursionlimit() takes no keyword arguments")
-        try:
+        jaribu:
             limit, = args
-        except ValueError:
-            raise TypeError(f"setrecursionlimit() takes exactly one "
+        tatizo ValueError:
+            ashiria TypeError(f"setrecursionlimit() takes exactly one "
                             f"argument ({len(args)} given)")
-        ikiwa not limit > 0:
-            raise ValueError(
-                "recursion limit must be greater or equal than 1")
+        ikiwa sio limit > 0:
+            ashiria ValueError(
+                "recursion limit must be greater ama equal than 1")
 
         rudisha setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
 
@@ -344,7 +344,7 @@ eleza install_recursionlimit_wrappers():
 
     fixdoc(getrecursionlimit, f"""\
             This IDLE wrapper subtracts {RECURSIONLIMIT_DELTA} to compensate
-            for the {RECURSIONLIMIT_DELTA} IDLE adds when setting the limit.""")
+            kila the {RECURSIONLIMIT_DELTA} IDLE adds when setting the limit.""")
 
     # add the delta to the default recursion limit, to compensate
     sys.setrecursionlimit(sys.getrecursionlimit() + RECURSIONLIMIT_DELTA)
@@ -356,12 +356,12 @@ eleza install_recursionlimit_wrappers():
 eleza uninstall_recursionlimit_wrappers():
     """Uninstall the recursion limit wrappers kutoka the sys module.
 
-    IDLE only uses this for tests. Users can agiza run and call
+    IDLE only uses this kila tests. Users can agiza run na call
     this to remove the wrapping.
     """
     ikiwa (
-            getattr(sys.setrecursionlimit, '__wrapped__', None) and
-            getattr(sys.getrecursionlimit, '__wrapped__', None)
+            getattr(sys.setrecursionlimit, '__wrapped__', Tupu) and
+            getattr(sys.getrecursionlimit, '__wrapped__', Tupu)
     ):
         sys.setrecursionlimit = sys.setrecursionlimit.__wrapped__
         sys.getrecursionlimit = sys.getrecursionlimit.__wrapped__
@@ -371,19 +371,19 @@ eleza uninstall_recursionlimit_wrappers():
 kundi MyRPCServer(rpc.RPCServer):
 
     eleza handle_error(self, request, client_address):
-        """Override RPCServer method for IDLE
+        """Override RPCServer method kila IDLE
 
-        Interrupt the MainThread and exit server ikiwa link is dropped.
+        Interrupt the MainThread na exit server ikiwa link ni dropped.
 
         """
         global quitting
-        try:
-            raise
-        except SystemExit:
-            raise
-        except EOFError:
+        jaribu:
+            ashiria
+        tatizo SystemExit:
+            ashiria
+        tatizo EOFError:
             global exit_now
-            exit_now = True
+            exit_now = Kweli
             thread.interrupt_main()
         except:
             erf = sys.__stderr__
@@ -395,11 +395,11 @@ kundi MyRPCServer(rpc.RPCServer):
             traceback.print_exc(file=erf)
             andika('\n*** Unrecoverable, server exiting!', file=erf)
             andika('-'*40, file=erf)
-            quitting = True
+            quitting = Kweli
             thread.interrupt_main()
 
 
-# Pseudofiles for shell-remote communication (also used in pyshell)
+# Pseudofiles kila shell-remote communication (also used kwenye pyshell)
 
 kundi StdioFile(io.TextIOBase):
 
@@ -422,17 +422,17 @@ kundi StdioFile(io.TextIOBase):
         rudisha '<%s>' % self.tags
 
     eleza isatty(self):
-        rudisha True
+        rudisha Kweli
 
 
 kundi StdOutputFile(StdioFile):
 
     eleza writable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza write(self, s):
         ikiwa self.closed:
-            raise ValueError("write to closed file")
+            ashiria ValueError("write to closed file")
         s = str.encode(s, self.encoding, self.errors).decode(self.encoding, self.errors)
         rudisha self.shell.write(s, self.tags)
 
@@ -441,26 +441,26 @@ kundi StdInputFile(StdioFile):
     _line_buffer = ''
 
     eleza readable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza read(self, size=-1):
         ikiwa self.closed:
-            raise ValueError("read kutoka closed file")
-        ikiwa size is None:
+            ashiria ValueError("read kutoka closed file")
+        ikiwa size ni Tupu:
             size = -1
-        elikiwa not isinstance(size, int):
-            raise TypeError('must be int, not ' + type(size).__name__)
+        elikiwa sio isinstance(size, int):
+            ashiria TypeError('must be int, sio ' + type(size).__name__)
         result = self._line_buffer
         self._line_buffer = ''
         ikiwa size < 0:
-            while True:
+            wakati Kweli:
                 line = self.shell.readline()
-                ikiwa not line: break
+                ikiwa sio line: koma
                 result += line
-        else:
-            while len(result) < size:
+        isipokua:
+            wakati len(result) < size:
                 line = self.shell.readline()
-                ikiwa not line: break
+                ikiwa sio line: koma
                 result += line
             self._line_buffer = result[size:]
             result = result[:size]
@@ -468,12 +468,12 @@ kundi StdInputFile(StdioFile):
 
     eleza readline(self, size=-1):
         ikiwa self.closed:
-            raise ValueError("read kutoka closed file")
-        ikiwa size is None:
+            ashiria ValueError("read kutoka closed file")
+        ikiwa size ni Tupu:
             size = -1
-        elikiwa not isinstance(size, int):
-            raise TypeError('must be int, not ' + type(size).__name__)
-        line = self._line_buffer or self.shell.readline()
+        elikiwa sio isinstance(size, int):
+            ashiria TypeError('must be int, sio ' + type(size).__name__)
+        line = self._line_buffer ama self.shell.readline()
         ikiwa size < 0:
             size = len(line)
         eol = line.find('\n', 0, size)
@@ -512,22 +512,22 @@ kundi MyHandler(rpc.RPCHandler):
         install_recursionlimit_wrappers()
 
         self.interp = self.get_remote_proxy("interp")
-        rpc.RPCHandler.getresponse(self, myseq=None, wait=0.05)
+        rpc.RPCHandler.getresponse(self, myseq=Tupu, wait=0.05)
 
     eleza exithook(self):
-        "override SocketIO method - wait for MainThread to shut us down"
+        "override SocketIO method - wait kila MainThread to shut us down"
         time.sleep(10)
 
     eleza EOFhook(self):
-        "Override SocketIO method - terminate wait on callback and exit thread"
+        "Override SocketIO method - terminate wait on callback na exit thread"
         global quitting
-        quitting = True
+        quitting = Kweli
         thread.interrupt_main()
 
     eleza decode_interrupthook(self):
         "interrupt awakened thread"
         global quitting
-        quitting = True
+        quitting = Kweli
         thread.interrupt_main()
 
 
@@ -541,17 +541,17 @@ kundi Executive(object):
 
     eleza runcode(self, code):
         global interruptable
-        try:
-            self.usr_exc_info = None
-            interruptable = True
-            try:
+        jaribu:
+            self.usr_exc_info = Tupu
+            interruptable = Kweli
+            jaribu:
                 exec(code, self.locals)
-            finally:
-                interruptable = False
-        except SystemExit as e:
+            mwishowe:
+                interruptable = Uongo
+        tatizo SystemExit kama e:
             ikiwa e.args:  # SystemExit called with an argument.
                 ob = e.args[0]
-                ikiwa not isinstance(ob, (type(None), int)):
+                ikiwa sio isinstance(ob, (type(Tupu), int)):
                     andika('SystemExit: ' + str(ob), file=sys.stderr)
             # Return to the interactive prompt.
         except:
@@ -562,7 +562,7 @@ kundi Executive(object):
             jit = self.rpchandler.console.getvar("<<toggle-jit-stack-viewer>>")
             ikiwa jit:
                 self.rpchandler.interp.open_remote_stack_viewer()
-        else:
+        isipokua:
             flush_stdout()
 
     eleza interrupt_the_server(self):
@@ -573,7 +573,7 @@ kundi Executive(object):
         rudisha debugger_r.start_debugger(self.rpchandler, gui_adap_oid)
 
     eleza stop_the_debugger(self, idb_adap_oid):
-        "Unregister the Idb Adapter.  Link objects and Idb then subject to GC"
+        "Unregister the Idb Adapter.  Link objects na Idb then subject to GC"
         self.rpchandler.unregister(idb_adap_oid)
 
     eleza get_the_calltip(self, name):
@@ -582,15 +582,15 @@ kundi Executive(object):
     eleza get_the_completion_list(self, what, mode):
         rudisha self.autocomplete.fetch_completions(what, mode)
 
-    eleza stackviewer(self, flist_oid=None):
+    eleza stackviewer(self, flist_oid=Tupu):
         ikiwa self.usr_exc_info:
             typ, val, tb = self.usr_exc_info
-        else:
-            rudisha None
-        flist = None
-        ikiwa flist_oid is not None:
+        isipokua:
+            rudisha Tupu
+        flist = Tupu
+        ikiwa flist_oid ni sio Tupu:
             flist = self.rpchandler.get_remote_proxy(flist_oid)
-        while tb and tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
+        wakati tb na tb.tb_frame.f_globals["__name__"] kwenye ["rpc", "run"]:
             tb = tb.tb_next
         sys.last_type = typ
         sys.last_value = val
@@ -602,4 +602,4 @@ ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_run', verbosity=2)
 
-capture_warnings(False)  # Make sure turned off; see bpo-18081.
+capture_warnings(Uongo)  # Make sure turned off; see bpo-18081.

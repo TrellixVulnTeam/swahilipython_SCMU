@@ -40,7 +40,7 @@ class MIMEImage(MIMENonMultipart):
         if _subtype is None:
             _subtype = imghdr.what(None, _imagedata)
         if _subtype is None:
-            raise TypeError('Could not guess image MIME subtype')
+            raise TypeError('Could sio guess image MIME subtype')
         MIMENonMultipart.__init__(self, 'image', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_imagedata)

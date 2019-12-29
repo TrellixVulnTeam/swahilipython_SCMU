@@ -28,11 +28,11 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
         self.assertEqual(d['u'], '\xf3')
 
     eleza test_issue2301(self):
-        try:
+        jaribu:
             compile(b"# coding: cp932\nprint '\x94\x4e'", "dummy", "exec")
-        except SyntaxError as v:
+        tatizo SyntaxError kama v:
             self.assertEqual(v.text.rstrip('\n'), "print '\u5e74'")
-        else:
+        isipokua:
             self.fail()
 
     eleza test_issue4626(self):
@@ -50,14 +50,14 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
         self.assertEqual(ascii(d['a']), ascii(d['b']))
 
     eleza test_issue7820(self):
-        # Ensure that check_bom() restores all bytes in the right order if
-        # check_bom() fails in pydebug mode: a buffer starts with the first
+        # Ensure that check_bom() restores all bytes kwenye the right order if
+        # check_bom() fails kwenye pydebug mode: a buffer starts with the first
         # byte of a valid BOM, but next bytes are different
 
-        # one byte in common with the UTF-16-LE BOM
+        # one byte kwenye common with the UTF-16-LE BOM
         self.assertRaises(SyntaxError, eval, b'\xff\x20')
 
-        # two bytes in common with the UTF-8 BOM
+        # two bytes kwenye common with the UTF-8 BOM
         self.assertRaises(SyntaxError, eval, b'\xef\xbb\x20')
 
     eleza test_20731(self):
@@ -99,7 +99,7 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
 
         path = os.path.dirname(__file__)
         filename = os.path.join(path, module_name + '.py')
-        with open(filename, "rb") as fp:
+        with open(filename, "rb") kama fp:
             bytes = fp.read()
         self.assertRaises(SyntaxError, compile, bytes, filename, 'exec')
 
@@ -109,13 +109,13 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
         self.assertEqual(d['a'], '\u3047')
 
     eleza test_file_parse(self):
-        # issue1134: all encodings outside latin-1 and utf-8 fail on
-        # multiline strings and long lines (>512 columns)
+        # issue1134: all encodings outside latin-1 na utf-8 fail on
+        # multiline strings na long lines (>512 columns)
         unload(TESTFN)
         filename = TESTFN + ".py"
         f = open(filename, "w", encoding="cp1252")
         sys.path.insert(0, os.curdir)
-        try:
+        jaribu:
             with f:
                 f.write("# -*- coding: cp1252 -*-\n")
                 f.write("'''A short string\n")
@@ -124,8 +124,8 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
 
             importlib.invalidate_caches()
             __import__(TESTFN)
-        finally:
-            del sys.path[0]
+        mwishowe:
+            toa sys.path[0]
             unlink(filename)
             unlink(filename + "c")
             unlink(filename + "o")
@@ -135,11 +135,11 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
     eleza test_error_kutoka_string(self):
         # See http://bugs.python.org/issue6289
         input = "# coding: ascii\n\N{SNOWMAN}".encode('utf-8')
-        with self.assertRaises(SyntaxError) as c:
+        with self.assertRaises(SyntaxError) kama c:
             compile(input, "<string>", "exec")
-        expected = "'ascii' codec can't decode byte 0xe2 in position 16: " \
-                   "ordinal not in range(128)"
-        self.assertTrue(c.exception.args[0].startswith(expected),
+        expected = "'ascii' codec can't decode byte 0xe2 kwenye position 16: " \
+                   "ordinal haiko kwenye range(128)"
+        self.assertKweli(c.exception.args[0].startswith(expected),
                         msg=c.exception.args[0])
 
 
@@ -161,7 +161,7 @@ kundi AbstractSourceEncodingTest:
         self.check_script_output(src, br"'\xc3\u20ac'")
 
     eleza test_third_coding_line(self):
-        # Only first two lines are tested for a magic comment.
+        # Only first two lines are tested kila a magic comment.
         src = (b'#\n'
                b'#\n'
                b'#coding:iso8859-15\n'
@@ -169,7 +169,7 @@ kundi AbstractSourceEncodingTest:
         self.check_script_output(src, br"'\xe4'")
 
     eleza test_double_coding_line(self):
-        # If the first line matches the second line is ignored.
+        # If the first line matches the second line ni ignored.
         src = (b'#coding:iso8859-15\n'
                b'#coding:latin1\n'
                b'andika(ascii("\xc3\xa4"))\n')
@@ -204,7 +204,7 @@ kundi AbstractSourceEncodingTest:
 kundi BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     eleza check_script_output(self, src, expected):
-        with captured_stdout() as stdout:
+        with captured_stdout() kama stdout:
             exec(src)
         out = stdout.getvalue().encode('latin1')
         self.assertEqual(out.rstrip(), expected)
@@ -213,9 +213,9 @@ kundi BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 kundi FileSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     eleza check_script_output(self, src, expected):
-        with tempfile.TemporaryDirectory() as tmpd:
+        with tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, 'test.py')
-            with open(fn, 'wb') as fp:
+            with open(fn, 'wb') kama fp:
                 fp.write(src)
             res = script_helper.assert_python_ok(fn)
         self.assertEqual(res.out.rstrip(), expected)

@@ -1,5 +1,5 @@
 """
-Test script for the 'cmd' module
+Test script kila the 'cmd' module
 Original by Michael Schneider
 """
 
@@ -15,9 +15,9 @@ kundi samplecmdclass(cmd.Cmd):
     Instance the sampleclass:
     >>> mycmd = samplecmdclass()
 
-    Test for the function parseline():
+    Test kila the function parseline():
     >>> mycmd.parseline("")
-    (None, None, '')
+    (Tupu, Tupu, '')
     >>> mycmd.parseline("?")
     ('help', '', 'help ')
     >>> mycmd.parseline("?help")
@@ -32,7 +32,7 @@ kundi samplecmdclass(cmd.Cmd):
     ('func', 'arg1', 'func arg1')
 
 
-    Test for the function onecmd():
+    Test kila the function onecmd():
     >>> mycmd.onecmd("")
     >>> mycmd.onecmd("add 4 5")
     9
@@ -41,27 +41,27 @@ kundi samplecmdclass(cmd.Cmd):
     >>> mycmd.onecmd("test")
     *** Unknown syntax: test
 
-    Test for the function emptyline():
+    Test kila the function emptyline():
     >>> mycmd.emptyline()
     *** Unknown syntax: test
 
-    Test for the function default():
+    Test kila the function default():
     >>> mycmd.default("default")
     *** Unknown syntax: default
 
-    Test for the function completedefault():
+    Test kila the function completedefault():
     >>> mycmd.completedefault()
-    This is the completedefault method
+    This ni the completedefault method
     >>> mycmd.completenames("a")
     ['add']
 
-    Test for the function completenames():
+    Test kila the function completenames():
     >>> mycmd.completenames("12")
     []
     >>> mycmd.completenames("help")
     ['help']
 
-    Test for the function complete_help():
+    Test kila the function complete_help():
     >>> mycmd.complete_help("a")
     ['add']
     >>> mycmd.complete_help("he")
@@ -71,13 +71,13 @@ kundi samplecmdclass(cmd.Cmd):
     >>> sorted(mycmd.complete_help(""))
     ['add', 'exit', 'help', 'shell']
 
-    Test for the function do_help():
+    Test kila the function do_help():
     >>> mycmd.do_help("testet")
     *** No help on testet
     >>> mycmd.do_help("add")
-    help text for add
+    help text kila add
     >>> mycmd.onecmd("help add")
-    help text for add
+    help text kila add
     >>> mycmd.do_help("")
     <BLANKLINE>
     Documented commands (type help <topic>):
@@ -89,7 +89,7 @@ kundi samplecmdclass(cmd.Cmd):
     exit  shell
     <BLANKLINE>
 
-    Test for the function print_topics():
+    Test kila the function print_topics():
     >>> mycmd.print_topics("header", ["command1", "command2"], 2 ,10)
     header
     ======
@@ -97,10 +97,10 @@ kundi samplecmdclass(cmd.Cmd):
     command2
     <BLANKLINE>
 
-    Test for the function columnize():
-    >>> mycmd.columnize([str(i) for i in range(20)])
+    Test kila the function columnize():
+    >>> mycmd.columnize([str(i) kila i kwenye range(20)])
     0  1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19
-    >>> mycmd.columnize([str(i) for i in range(20)], 10)
+    >>> mycmd.columnize([str(i) kila i kwenye range(20)], 10)
     0  7   14
     1  8   15
     2  9   16
@@ -109,15 +109,15 @@ kundi samplecmdclass(cmd.Cmd):
     5  12  19
     6  13
 
-    This is an interactive test, put some commands in the cmdqueue attribute
-    and let it execute
+    This ni an interactive test, put some commands kwenye the cmdqueue attribute
+    na let it execute
     This test includes the preloop(), postloop(), default(), emptyline(),
     parseline(), do_help() functions
     >>> mycmd.use_rawinput=0
     >>> mycmd.cmdqueue=["", "add", "add 4 5", "help", "help add","exit"]
     >>> mycmd.cmdloop()
     Hello kutoka preloop
-    help text for add
+    help text kila add
     *** invalid number of arguments
     9
     <BLANKLINE>
@@ -129,7 +129,7 @@ kundi samplecmdclass(cmd.Cmd):
     ======================
     exit  shell
     <BLANKLINE>
-    help text for add
+    help text kila add
     Hello kutoka postloop
     """
 
@@ -140,32 +140,32 @@ kundi samplecmdclass(cmd.Cmd):
         andika("Hello kutoka postloop")
 
     eleza completedefault(self, *ignored):
-        andika("This is the completedefault method")
+        andika("This ni the completedefault method")
 
     eleza complete_command(self):
         andika("complete command")
 
     eleza do_shell(self, s):
-        pass
+        pita
 
     eleza do_add(self, s):
         l = s.split()
         ikiwa len(l) != 2:
             andika("*** invalid number of arguments")
-            return
-        try:
-            l = [int(i) for i in l]
-        except ValueError:
+            rudisha
+        jaribu:
+            l = [int(i) kila i kwenye l]
+        tatizo ValueError:
             andika("*** arguments should be numbers")
-            return
+            rudisha
         andika(l[0]+l[1])
 
     eleza help_add(self):
-        andika("help text for add")
-        return
+        andika("help text kila add")
+        rudisha
 
     eleza do_exit(self, arg):
-        rudisha True
+        rudisha Kweli
 
 
 kundi TestAlternateInput(unittest.TestCase):
@@ -176,21 +176,21 @@ kundi TestAlternateInput(unittest.TestCase):
             andika(args, file=self.stdout)
 
         eleza do_EOF(self, args):
-            rudisha True
+            rudisha Kweli
 
 
     kundi simplecmd2(simplecmd):
 
         eleza do_EOF(self, args):
             andika('*** Unknown syntax: EOF', file=self.stdout)
-            rudisha True
+            rudisha Kweli
 
 
     eleza test_file_with_missing_final_nl(self):
         input = io.StringIO("print test\nprint test2")
         output = io.StringIO()
         cmd = self.simplecmd(stdin=input, stdout=output)
-        cmd.use_rawinput = False
+        cmd.use_rawinput = Uongo
         cmd.cmdloop()
         self.assertMultiLineEqual(output.getvalue(),
             ("(Cmd) test\n"
@@ -202,7 +202,7 @@ kundi TestAlternateInput(unittest.TestCase):
         input = io.StringIO("print test\nprint test2")
         output = io.StringIO()
         cmd = self.simplecmd2(stdin=input, stdout=output)
-        cmd.use_rawinput = False
+        cmd.use_rawinput = Uongo
         cmd.cmdloop()
         self.assertMultiLineEqual(output.getvalue(),
             ("(Cmd) test\n"
@@ -219,7 +219,7 @@ kundi TestAlternateInput(unittest.TestCase):
              "(Cmd) *** Unknown syntax: EOF\n"))
 
 
-eleza test_main(verbose=None):
+eleza test_main(verbose=Tupu):
     kutoka test agiza test_cmd
     support.run_doctest(test_cmd, verbose)
     support.run_unittest(TestAlternateInput)
@@ -231,12 +231,12 @@ eleza test_coverage(coverdir):
     tracer.run('agiza importlib; importlib.reload(cmd); test_main()')
     r=tracer.results()
     andika("Writing coverage results...")
-    r.write_results(show_missing=True, summary=True, coverdir=coverdir)
+    r.write_results(show_missing=Kweli, summary=Kweli, coverdir=coverdir)
 
 ikiwa __name__ == "__main__":
-    ikiwa "-c" in sys.argv:
+    ikiwa "-c" kwenye sys.argv:
         test_coverage('/tmp/cmd.cover')
-    elikiwa "-i" in sys.argv:
+    elikiwa "-i" kwenye sys.argv:
         samplecmdclass().cmdloop()
-    else:
+    isipokua:
         test_main()

@@ -1,5 +1,5 @@
 kutoka test agiza support
-support.import_module("dbm.ndbm") #skip ikiwa not supported
+support.import_module("dbm.ndbm") #skip ikiwa sio supported
 agiza os
 agiza unittest
 agiza dbm.ndbm
@@ -13,7 +13,7 @@ kundi DbmTestCase(unittest.TestCase):
         self.d.close()
 
     eleza tearDown(self):
-        for suffix in ['', '.pag', '.dir', '.db']:
+        kila suffix kwenye ['', '.pag', '.dir', '.db']:
             support.unlink(self.filename + suffix)
 
     eleza test_keys(self):
@@ -26,9 +26,9 @@ kundi DbmTestCase(unittest.TestCase):
         self.assertIn('a', self.d)
         self.assertIn(b'a', self.d)
         self.assertEqual(self.d[b'bytes'], b'data')
-        # get() and setdefault() work as in the dict interface
+        # get() na setdefault() work kama kwenye the dict interface
         self.assertEqual(self.d.get(b'a'), b'b')
-        self.assertIsNone(self.d.get(b'xxx'))
+        self.assertIsTupu(self.d.get(b'xxx'))
         self.assertEqual(self.d.get(b'xxx', b'foo'), b'foo')
         with self.assertRaises(KeyError):
             self.d['xxx']
@@ -51,53 +51,53 @@ kundi DbmTestCase(unittest.TestCase):
         self.d.close()
 
     eleza test_modes(self):
-        for mode in ['r', 'rw', 'w', 'n']:
-            try:
+        kila mode kwenye ['r', 'rw', 'w', 'n']:
+            jaribu:
                 self.d = dbm.ndbm.open(self.filename, mode)
                 self.d.close()
-            except error:
+            tatizo error:
                 self.fail()
 
     eleza test_context_manager(self):
-        with dbm.ndbm.open(self.filename, 'c') as db:
+        with dbm.ndbm.open(self.filename, 'c') kama db:
             db["ndbm context manager"] = "context manager"
 
-        with dbm.ndbm.open(self.filename, 'r') as db:
+        with dbm.ndbm.open(self.filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b"ndbm context manager"])
 
-        with self.assertRaises(dbm.ndbm.error) as cm:
+        with self.assertRaises(dbm.ndbm.error) kama cm:
             db.keys()
         self.assertEqual(str(cm.exception),
                          "DBM object has already been closed")
 
     eleza test_bytes(self):
-        with dbm.ndbm.open(self.filename, 'c') as db:
+        with dbm.ndbm.open(self.filename, 'c') kama db:
             db[b'bytes key \xbd'] = b'bytes value \xbd'
-        with dbm.ndbm.open(self.filename, 'r') as db:
+        with dbm.ndbm.open(self.filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b'bytes key \xbd'])
-            self.assertTrue(b'bytes key \xbd' in db)
+            self.assertKweli(b'bytes key \xbd' kwenye db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
     eleza test_unicode(self):
-        with dbm.ndbm.open(self.filename, 'c') as db:
+        with dbm.ndbm.open(self.filename, 'c') kama db:
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
-        with dbm.ndbm.open(self.filename, 'r') as db:
+        with dbm.ndbm.open(self.filename, 'r') kama db:
             self.assertEqual(list(db.keys()), ['Unicode key \U0001f40d'.encode()])
-            self.assertTrue('Unicode key \U0001f40d'.encode() in db)
-            self.assertTrue('Unicode key \U0001f40d' in db)
+            self.assertKweli('Unicode key \U0001f40d'.encode() kwenye db)
+            self.assertKweli('Unicode key \U0001f40d' kwenye db)
             self.assertEqual(db['Unicode key \U0001f40d'.encode()],
                              'Unicode value \U0001f40d'.encode())
             self.assertEqual(db['Unicode key \U0001f40d'],
                              'Unicode value \U0001f40d'.encode())
 
     eleza test_write_readonly_file(self):
-        with dbm.ndbm.open(self.filename, 'c') as db:
+        with dbm.ndbm.open(self.filename, 'c') kama db:
             db[b'bytes key'] = b'bytes value'
-        with dbm.ndbm.open(self.filename, 'r') as db:
+        with dbm.ndbm.open(self.filename, 'r') kama db:
             with self.assertRaises(error):
-                del db[b'not exist key']
+                toa db[b'not exist key']
             with self.assertRaises(error):
-                del db[b'bytes key']
+                toa db[b'bytes key']
             with self.assertRaises(error):
                 db[b'not exist key'] = b'not exist value'
 
@@ -105,20 +105,20 @@ kundi DbmTestCase(unittest.TestCase):
                          'requires OS support of non-ASCII encodings')
     eleza test_nonascii_filename(self):
         filename = support.TESTFN_NONASCII
-        for suffix in ['', '.pag', '.dir', '.db']:
+        kila suffix kwenye ['', '.pag', '.dir', '.db']:
             self.addCleanup(support.unlink, filename + suffix)
-        with dbm.ndbm.open(filename, 'c') as db:
+        with dbm.ndbm.open(filename, 'c') kama db:
             db[b'key'] = b'value'
-        self.assertTrue(any(os.path.exists(filename + suffix)
-                            for suffix in ['', '.pag', '.dir', '.db']))
-        with dbm.ndbm.open(filename, 'r') as db:
+        self.assertKweli(any(os.path.exists(filename + suffix)
+                            kila suffix kwenye ['', '.pag', '.dir', '.db']))
+        with dbm.ndbm.open(filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b'key'])
-            self.assertTrue(b'key' in db)
+            self.assertKweli(b'key' kwenye db)
             self.assertEqual(db[b'key'], b'value')
 
     eleza test_nonexisting_file(self):
         nonexisting_file = 'nonexisting-file'
-        with self.assertRaises(dbm.ndbm.error) as cm:
+        with self.assertRaises(dbm.ndbm.error) kama cm:
             dbm.ndbm.open(nonexisting_file)
         self.assertIn(nonexisting_file, str(cm.exception))
         self.assertEqual(cm.exception.filename, nonexisting_file)

@@ -14,9 +14,9 @@ kundi StackBrowserTest(unittest.TestCase):
     @classmethod
     eleza setUpClass(cls):
         svs = stackviewer.sys
-        try:
+        jaribu:
             abc
-        except NameError:
+        tatizo NameError:
             svs.last_type, svs.last_value, svs.last_traceback = (
                 sys.exc_info())
 
@@ -27,13 +27,13 @@ kundi StackBrowserTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         svs = stackviewer.sys
-        del svs.last_traceback, svs.last_type, svs.last_value
+        toa svs.last_traceback, svs.last_type, svs.last_value
 
         cls.root.update_idletasks()
-##        for id in cls.root.tk.call('after', 'info'):
-##            cls.root.after_cancel(id)  # Need for EditorWindow.
+##        kila id kwenye cls.root.tk.call('after', 'info'):
+##            cls.root.after_cancel(id)  # Need kila EditorWindow.
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         sb = stackviewer.StackBrowser(self.root)

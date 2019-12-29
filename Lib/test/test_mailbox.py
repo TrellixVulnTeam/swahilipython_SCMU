@@ -25,18 +25,18 @@ kundi TestBase:
         # Inspect a mailbox.Message representation of the sample message
         self.assertIsInstance(msg, email.message.Message)
         self.assertIsInstance(msg, mailbox.Message)
-        for key, value in _sample_headers.items():
+        kila key, value kwenye _sample_headers.items():
             self.assertIn(value, msg.get_all(key))
-        self.assertTrue(msg.is_multipart())
+        self.assertKweli(msg.is_multipart())
         self.assertEqual(len(msg.get_payload()), len(_sample_payloads))
-        for i, payload in enumerate(_sample_payloads):
+        kila i, payload kwenye enumerate(_sample_payloads):
             part = msg.get_payload(i)
             self.assertIsInstance(part, email.message.Message)
             self.assertNotIsInstance(part, mailbox.Message)
             self.assertEqual(part.get_payload(), payload)
 
     eleza _delete_recursively(self, target):
-        # Delete a file or delete a directory recursively
+        # Delete a file ama delete a directory recursively
         ikiwa os.path.isdir(target):
             support.rmtree(target)
         elikiwa os.path.exists(target):
@@ -45,9 +45,9 @@ kundi TestBase:
 
 kundi TestMailbox(TestBase):
 
-    maxDiff = None
+    maxDiff = Tupu
 
-    _factory = None     # Overridden by subclasses to reuse tests
+    _factory = Tupu     # Overridden by subclasses to reuse tests
     _template = 'From: foo\n\n%s\n'
 
     eleza setUp(self):
@@ -79,7 +79,7 @@ kundi TestMailbox(TestBase):
                 io.TextIOWrapper(io.BytesIO(_bytes_sample_message))))
         self.assertEqual(len(self._box), 7)
         self.assertEqual(self._box.get_string(keys[0]), self._template % 0)
-        for i in (1, 2, 3, 4, 5, 6):
+        kila i kwenye (1, 2, 3, 4, 5, 6):
             self._check_sample(self._box[keys[i]])
 
     _nonascii_msg = textwrap.dedent("""\
@@ -102,17 +102,17 @@ kundi TestMailbox(TestBase):
             'Subject: =?unknown-8bit?b?RmFsaW5hcHThciBo4Xpob3pzeuFsbO104XNz'
             'YWwuIE3hciByZW5kZWx06Ww/?=\n\n')
 
-    eleza test_add_nonascii_string_header_raises(self):
+    eleza test_add_nonascii_string_header_ashirias(self):
         with self.assertRaisesRegex(ValueError, "ASCII-only"):
             self._box.add(self._nonascii_msg)
         self._box.flush()
         self.assertEqual(len(self._box), 0)
         self.assertMailboxEmpty()
 
-    eleza test_add_that_raises_leaves_mailbox_empty(self):
-        eleza raiser(*args, **kw):
-            raise Exception("a fake error")
-        support.patch(self, email.generator.BytesGenerator, 'flatten', raiser)
+    eleza test_add_that_ashirias_leaves_mailbox_empty(self):
+        eleza ashiriar(*args, **kw):
+            ashiria Exception("a fake error")
+        support.patch(self, email.generator.BytesGenerator, 'flatten', ashiriar)
         with self.assertRaises(Exception):
             self._box.add(email.message_kutoka_string("From: Alphöso"))
         self.assertEqual(len(self._box), 0)
@@ -135,7 +135,7 @@ kundi TestMailbox(TestBase):
         key = self._box.add(self._non_latin_bin_msg)
         self.assertEqual(self._box.get_bytes(key),
                          self._non_latin_bin_msg)
-        with self._box.get_file(key) as f:
+        with self._box.get_file(key) kama f:
             self.assertEqual(f.read(),
                              self._non_latin_bin_msg.replace(b'\n',
                                 os.linesep.encode()))
@@ -143,7 +143,7 @@ kundi TestMailbox(TestBase):
                         "Да, они летят.\n")
 
     eleza test_add_binary_file(self):
-        with tempfile.TemporaryFile('wb+') as f:
+        with tempfile.TemporaryFile('wb+') kama f:
             f.write(_bytes_sample_message)
             f.seek(0)
             key = self._box.add(f)
@@ -151,7 +151,7 @@ kundi TestMailbox(TestBase):
             _bytes_sample_message.split(b'\n'))
 
     eleza test_add_binary_nonascii_file(self):
-        with tempfile.TemporaryFile('wb+') as f:
+        with tempfile.TemporaryFile('wb+') kama f:
             f.write(self._non_latin_bin_msg)
             f.seek(0)
             key = self._box.add(f)
@@ -159,7 +159,7 @@ kundi TestMailbox(TestBase):
             self._non_latin_bin_msg.split(b'\n'))
 
     eleza test_add_text_file_warns(self):
-        with tempfile.TemporaryFile('w+') as f:
+        with tempfile.TemporaryFile('w+') kama f:
             f.write(_sample_message)
             f.seek(0)
             with self.assertWarns(DeprecationWarning):
@@ -172,7 +172,7 @@ kundi TestMailbox(TestBase):
             key = self._box.add(io.StringIO(self._template % "0"))
         self.assertEqual(self._box.get_string(key), self._template % "0")
 
-    eleza test_add_nonascii_StringIO_raises(self):
+    eleza test_add_nonascii_StringIO_ashirias(self):
         with self.assertWarns(DeprecationWarning):
             with self.assertRaisesRegex(ValueError, "ASCII-only"):
                 self._box.add(io.StringIO(self._nonascii_msg))
@@ -189,7 +189,7 @@ kundi TestMailbox(TestBase):
         self._test_remove_or_delitem(self._box.__delitem__)
 
     eleza _test_remove_or_delitem(self, method):
-        # (Used by test_remove() and test_delitem().)
+        # (Used by test_remove() na test_delitem().)
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(self._template % 1)
         self.assertEqual(len(self._box), 2)
@@ -228,8 +228,8 @@ kundi TestMailbox(TestBase):
         msg = self._box.get(key0)
         self.assertEqual(msg['kutoka'], 'foo')
         self.assertEqual(msg.get_payload(), '0\n')
-        self.assertIsNone(self._box.get('foo'))
-        self.assertIs(self._box.get('foo', False), False)
+        self.assertIsTupu(self._box.get('foo'))
+        self.assertIs(self._box.get('foo', Uongo), Uongo)
         self._box.close()
         self._box = self._factory(self._path)
         key1 = self._box.add(self._template % 1)
@@ -277,9 +277,9 @@ kundi TestMailbox(TestBase):
         # Get file representations of messages
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(_sample_message)
-        with self._box.get_file(key0) as file:
+        with self._box.get_file(key0) kama file:
             data0 = file.read()
-        with self._box.get_file(key1) as file:
+        with self._box.get_file(key1) kama file:
             data1 = file.read()
         self.assertEqual(data0.decode('ascii').replace(os.linesep, '\n'),
                          self._template % 0)
@@ -295,57 +295,57 @@ kundi TestMailbox(TestBase):
 
     eleza test_iterkeys(self):
         # Get keys using iterkeys()
-        self._check_iteration(self._box.iterkeys, do_keys=True, do_values=False)
+        self._check_iteration(self._box.iterkeys, do_keys=Kweli, do_values=Uongo)
 
     eleza test_keys(self):
         # Get keys using keys()
-        self._check_iteration(self._box.keys, do_keys=True, do_values=False)
+        self._check_iteration(self._box.keys, do_keys=Kweli, do_values=Uongo)
 
     eleza test_itervalues(self):
         # Get values using itervalues()
-        self._check_iteration(self._box.itervalues, do_keys=False,
-                              do_values=True)
+        self._check_iteration(self._box.itervalues, do_keys=Uongo,
+                              do_values=Kweli)
 
     eleza test_iter(self):
         # Get values using __iter__()
-        self._check_iteration(self._box.__iter__, do_keys=False,
-                              do_values=True)
+        self._check_iteration(self._box.__iter__, do_keys=Uongo,
+                              do_values=Kweli)
 
     eleza test_values(self):
         # Get values using values()
-        self._check_iteration(self._box.values, do_keys=False, do_values=True)
+        self._check_iteration(self._box.values, do_keys=Uongo, do_values=Kweli)
 
     eleza test_iteritems(self):
-        # Get keys and values using iteritems()
-        self._check_iteration(self._box.iteritems, do_keys=True,
-                              do_values=True)
+        # Get keys na values using iteritems()
+        self._check_iteration(self._box.iteritems, do_keys=Kweli,
+                              do_values=Kweli)
 
     eleza test_items(self):
-        # Get keys and values using items()
-        self._check_iteration(self._box.items, do_keys=True, do_values=True)
+        # Get keys na values using items()
+        self._check_iteration(self._box.items, do_keys=Kweli, do_values=Kweli)
 
     eleza _check_iteration(self, method, do_keys, do_values, repetitions=10):
-        for value in method():
+        kila value kwenye method():
             self.fail("Not empty")
         keys, values = [], []
-        for i in range(repetitions):
+        kila i kwenye range(repetitions):
             keys.append(self._box.add(self._template % i))
             values.append(self._template % i)
-        ikiwa do_keys and not do_values:
-            returned_keys = list(method())
-        elikiwa do_values and not do_keys:
-            returned_values = list(method())
-        else:
-            returned_keys, returned_values = [], []
-            for key, value in method():
-                returned_keys.append(key)
-                returned_values.append(value)
+        ikiwa do_keys na sio do_values:
+            rudishaed_keys = list(method())
+        elikiwa do_values na sio do_keys:
+            rudishaed_values = list(method())
+        isipokua:
+            rudishaed_keys, rudishaed_values = [], []
+            kila key, value kwenye method():
+                rudishaed_keys.append(key)
+                rudishaed_values.append(value)
         ikiwa do_keys:
-            self.assertEqual(len(keys), len(returned_keys))
-            self.assertEqual(set(keys), set(returned_keys))
+            self.assertEqual(len(keys), len(rudishaed_keys))
+            self.assertEqual(set(keys), set(rudishaed_keys))
         ikiwa do_values:
             count = 0
-            for value in returned_values:
+            kila value kwenye rudishaed_values:
                 self.assertEqual(value['kutoka'], 'foo')
                 self.assertLess(int(value.get_payload()), repetitions)
                 count += 1
@@ -373,11 +373,11 @@ kundi TestMailbox(TestBase):
     eleza test_len(self, repetitions=10):
         # Get message count
         keys = []
-        for i in range(repetitions):
+        kila i kwenye range(repetitions):
             self.assertEqual(len(self._box), i)
             keys.append(self._box.add(self._template % i))
             self.assertEqual(len(self._box), i + 1)
-        for i in range(repetitions):
+        kila i kwenye range(repetitions):
             self.assertEqual(len(self._box), repetitions - i)
             self._box.remove(keys[i])
             self.assertEqual(len(self._box), repetitions - i - 1)
@@ -412,17 +412,17 @@ kundi TestMailbox(TestBase):
     eleza test_clear(self, iterations=10):
         # Remove all messages using clear()
         keys = []
-        for i in range(iterations):
+        kila i kwenye range(iterations):
             self._box.add(self._template % i)
-        for i, key in enumerate(keys):
+        kila i, key kwenye enumerate(keys):
             self.assertEqual(self._box.get_string(key), self._template % i)
         self._box.clear()
         self.assertEqual(len(self._box), 0)
-        for i, key in enumerate(keys):
+        kila i, key kwenye enumerate(keys):
             self.assertRaises(KeyError, lambda: self._box.get_string(key))
 
     eleza test_pop(self):
-        # Get and remove a message using pop()
+        # Get na remove a message using pop()
         key0 = self._box.add(self._template % 0)
         self.assertIn(key0, self._box)
         key1 = self._box.add(self._template % 1)
@@ -440,19 +440,19 @@ kundi TestMailbox(TestBase):
         self.assertEqual(len(self._box), 0)
 
     eleza test_popitem(self, iterations=10):
-        # Get and remove an arbitrary (key, message) using popitem()
+        # Get na remove an arbitrary (key, message) using popitem()
         keys = []
-        for i in range(10):
+        kila i kwenye range(10):
             keys.append(self._box.add(self._template % i))
         seen = []
-        for i in range(10):
+        kila i kwenye range(10):
             key, msg = self._box.popitem()
             self.assertIn(key, keys)
             self.assertNotIn(key, seen)
             seen.append(key)
             self.assertEqual(int(msg.get_payload()), keys.index(key))
         self.assertEqual(len(self._box), 0)
-        for key in keys:
+        kila key kwenye keys:
             self.assertRaises(KeyError, lambda: self._box[key])
 
     eleza test_update(self):
@@ -491,7 +491,7 @@ kundi TestMailbox(TestBase):
 
     eleza test_flush(self):
         # Write changes to disk
-        self._test_flush_or_close(self._box.flush, True)
+        self._test_flush_or_close(self._box.flush, Kweli)
 
     eleza test_popitem_and_flush_twice(self):
         # See #15036.
@@ -505,19 +505,19 @@ kundi TestMailbox(TestBase):
         self._box.flush()
 
     eleza test_lock_unlock(self):
-        # Lock and unlock the mailbox
-        self.assertFalse(os.path.exists(self._get_lock_path()))
+        # Lock na unlock the mailbox
+        self.assertUongo(os.path.exists(self._get_lock_path()))
         self._box.lock()
-        self.assertTrue(os.path.exists(self._get_lock_path()))
+        self.assertKweli(os.path.exists(self._get_lock_path()))
         self._box.unlock()
-        self.assertFalse(os.path.exists(self._get_lock_path()))
+        self.assertUongo(os.path.exists(self._get_lock_path()))
 
     eleza test_close(self):
-        # Close mailbox and flush changes to disk
-        self._test_flush_or_close(self._box.close, False)
+        # Close mailbox na flush changes to disk
+        self._test_flush_or_close(self._box.close, Uongo)
 
     eleza _test_flush_or_close(self, method, should_call_close):
-        contents = [self._template % i for i in range(3)]
+        contents = [self._template % i kila i kwenye range(3)]
         self._box.add(contents[0])
         self._box.add(contents[1])
         self._box.add(contents[2])
@@ -528,13 +528,13 @@ kundi TestMailbox(TestBase):
         self._box = self._factory(self._path)
         keys = self._box.keys()
         self.assertEqual(len(keys), 3)
-        for key in keys:
+        kila key kwenye keys:
             self.assertIn(self._box.get_string(key), contents)
         oldbox.close()
 
     eleza test_dump_message(self):
         # Write message representations to disk
-        for input in (email.message_kutoka_string(_sample_message),
+        kila input kwenye (email.message_kutoka_string(_sample_message),
                       _sample_message, io.BytesIO(_bytes_sample_message)):
             output = io.BytesIO()
             self._box._dump_message(input, output)
@@ -542,7 +542,7 @@ kundi TestMailbox(TestBase):
                 _bytes_sample_message.replace(b'\n', os.linesep.encode()))
         output = io.BytesIO()
         self.assertRaises(TypeError,
-                          lambda: self._box._dump_message(None, output))
+                          lambda: self._box._dump_message(Tupu, output))
 
     eleza _get_lock_path(self):
         # Return the path of the dot lock file. May be overridden.
@@ -552,7 +552,7 @@ kundi TestMailbox(TestBase):
 kundi TestMailboxSuperclass(TestBase, unittest.TestCase):
 
     eleza test_notimplemented(self):
-        # Test that all Mailbox methods raise NotImplementedException.
+        # Test that all Mailbox methods ashiria NotImplementedException.
         box = mailbox.Mailbox('path')
         self.assertRaises(NotImplementedError, lambda: box.add(''))
         self.assertRaises(NotImplementedError, lambda: box.remove(''))
@@ -572,7 +572,7 @@ kundi TestMailboxSuperclass(TestBase, unittest.TestCase):
         self.assertRaises(NotImplementedError, lambda: box.get_string(''))
         self.assertRaises(NotImplementedError, lambda: box.get_bytes(''))
         self.assertRaises(NotImplementedError, lambda: box.get_file(''))
-        self.assertRaises(NotImplementedError, lambda: '' in box)
+        self.assertRaises(NotImplementedError, lambda: '' kwenye box)
         self.assertRaises(NotImplementedError, lambda: box.__contains__(''))
         self.assertRaises(NotImplementedError, lambda: box.__len__())
         self.assertRaises(NotImplementedError, lambda: box.clear())
@@ -587,11 +587,11 @@ kundi TestMailboxSuperclass(TestBase, unittest.TestCase):
 
 kundi TestMaildir(TestMailbox, unittest.TestCase):
 
-    _factory = lambda self, path, factory=None: mailbox.Maildir(path, factory)
+    _factory = lambda self, path, factory=Tupu: mailbox.Maildir(path, factory)
 
     eleza setUp(self):
         TestMailbox.setUp(self)
-        ikiwa (os.name == 'nt') or (sys.platform == 'cygwin'):
+        ikiwa (os.name == 'nt') ama (sys.platform == 'cygwin'):
             self._box.colon = '!'
 
     eleza assertMailboxEmpty(self):
@@ -603,7 +603,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         msg.set_subdir('cur')
         msg.set_info('foo')
         key = self._box.add(msg)
-        self.assertTrue(os.path.exists(os.path.join(self._path, 'cur', '%s%sfoo' %
+        self.assertKweli(os.path.exists(os.path.join(self._path, 'cur', '%s%sfoo' %
                                                  (key, self._box.colon))))
 
     eleza test_get_MM(self):
@@ -612,33 +612,33 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         msg.set_subdir('cur')
         msg.set_flags('RF')
         key = self._box.add(msg)
-        msg_returned = self._box.get_message(key)
-        self.assertIsInstance(msg_returned, mailbox.MaildirMessage)
-        self.assertEqual(msg_returned.get_subdir(), 'cur')
-        self.assertEqual(msg_returned.get_flags(), 'FR')
+        msg_rudishaed = self._box.get_message(key)
+        self.assertIsInstance(msg_rudishaed, mailbox.MaildirMessage)
+        self.assertEqual(msg_rudishaed.get_subdir(), 'cur')
+        self.assertEqual(msg_rudishaed.get_flags(), 'FR')
 
     eleza test_set_MM(self):
         # Set with a MaildirMessage instance
         msg0 = mailbox.MaildirMessage(self._template % 0)
         msg0.set_flags('TP')
         key = self._box.add(msg0)
-        msg_returned = self._box.get_message(key)
-        self.assertEqual(msg_returned.get_subdir(), 'new')
-        self.assertEqual(msg_returned.get_flags(), 'PT')
+        msg_rudishaed = self._box.get_message(key)
+        self.assertEqual(msg_rudishaed.get_subdir(), 'new')
+        self.assertEqual(msg_rudishaed.get_flags(), 'PT')
         msg1 = mailbox.MaildirMessage(self._template % 1)
         self._box[key] = msg1
-        msg_returned = self._box.get_message(key)
-        self.assertEqual(msg_returned.get_subdir(), 'new')
-        self.assertEqual(msg_returned.get_flags(), '')
-        self.assertEqual(msg_returned.get_payload(), '1\n')
+        msg_rudishaed = self._box.get_message(key)
+        self.assertEqual(msg_rudishaed.get_subdir(), 'new')
+        self.assertEqual(msg_rudishaed.get_flags(), '')
+        self.assertEqual(msg_rudishaed.get_payload(), '1\n')
         msg2 = mailbox.MaildirMessage(self._template % 2)
         msg2.set_info('2,S')
         self._box[key] = msg2
         self._box[key] = self._template % 3
-        msg_returned = self._box.get_message(key)
-        self.assertEqual(msg_returned.get_subdir(), 'new')
-        self.assertEqual(msg_returned.get_flags(), 'S')
-        self.assertEqual(msg_returned.get_payload(), '3\n')
+        msg_rudishaed = self._box.get_message(key)
+        self.assertEqual(msg_rudishaed.get_subdir(), 'new')
+        self.assertEqual(msg_rudishaed.get_flags(), 'S')
+        self.assertEqual(msg_rudishaed.get_payload(), '3\n')
 
     eleza test_consistent_factory(self):
         # Add a message.
@@ -649,7 +649,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
         # Create new mailbox with
         kundi FakeMessage(mailbox.MaildirMessage):
-            pass
+            pita
         box = mailbox.Maildir(self._path, factory=FakeMessage)
         box.colon = self._box.colon
         msg2 = box.get_message(key)
@@ -661,25 +661,25 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         self._box = mailbox.Maildir(self._path)
         self._check_basics()
         self._delete_recursively(self._path)
-        self._box = self._factory(self._path, factory=None)
+        self._box = self._factory(self._path, factory=Tupu)
         self._check_basics()
 
     eleza test_initialize_existing(self):
         # Initialize an existing mailbox
         self.tearDown()
-        for subdir in '', 'tmp', 'new', 'cur':
+        kila subdir kwenye '', 'tmp', 'new', 'cur':
             os.mkdir(os.path.normpath(os.path.join(self._path, subdir)))
         self._box = mailbox.Maildir(self._path)
         self._check_basics()
 
-    eleza _check_basics(self, factory=None):
-        # (Used by test_open_new() and test_open_existing().)
+    eleza _check_basics(self, factory=Tupu):
+        # (Used by test_open_new() na test_open_existing().)
         self.assertEqual(self._box._path, os.path.abspath(self._path))
         self.assertEqual(self._box._factory, factory)
-        for subdir in '', 'tmp', 'new', 'cur':
+        kila subdir kwenye '', 'tmp', 'new', 'cur':
             path = os.path.join(self._path, subdir)
             mode = os.stat(path)[stat.ST_MODE]
-            self.assertTrue(stat.S_ISDIR(mode), "Not a directory: '%s'" % path)
+            self.assertKweli(stat.S_ISDIR(mode), "Not a directory: '%s'" % path)
 
     eleza test_list_folders(self):
         # List folders
@@ -695,7 +695,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         self._box.add_folder('foo.bar')
         folder0 = self._box.get_folder('foo.bar')
         folder0.add(self._template % 'bar')
-        self.assertTrue(os.path.isdir(os.path.join(self._path, '.foo.bar')))
+        self.assertKweli(os.path.isdir(os.path.join(self._path, '.foo.bar')))
         folder1 = self._box.get_folder('foo.bar')
         self.assertEqual(folder1.get_string(folder1.keys()[0]),
                          self._template % 'bar')
@@ -723,41 +723,41 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         # Remove old files kutoka 'tmp'
         foo_path = os.path.join(self._path, 'tmp', 'foo')
         bar_path = os.path.join(self._path, 'tmp', 'bar')
-        with open(foo_path, 'w') as f:
+        with open(foo_path, 'w') kama f:
             f.write("@")
-        with open(bar_path, 'w') as f:
+        with open(bar_path, 'w') kama f:
             f.write("@")
         self._box.clean()
-        self.assertTrue(os.path.exists(foo_path))
-        self.assertTrue(os.path.exists(bar_path))
+        self.assertKweli(os.path.exists(foo_path))
+        self.assertKweli(os.path.exists(bar_path))
         foo_stat = os.stat(foo_path)
         os.utime(foo_path, (time.time() - 129600 - 2,
                             foo_stat.st_mtime))
         self._box.clean()
-        self.assertFalse(os.path.exists(foo_path))
-        self.assertTrue(os.path.exists(bar_path))
+        self.assertUongo(os.path.exists(foo_path))
+        self.assertKweli(os.path.exists(bar_path))
 
     eleza test_create_tmp(self, repetitions=10):
-        # Create files in tmp directory
+        # Create files kwenye tmp directory
         hostname = socket.gethostname()
-        ikiwa '/' in hostname:
+        ikiwa '/' kwenye hostname:
             hostname = hostname.replace('/', r'\057')
-        ikiwa ':' in hostname:
+        ikiwa ':' kwenye hostname:
             hostname = hostname.replace(':', r'\072')
         pid = os.getpid()
         pattern = re.compile(r"(?P<time>\d+)\.M(?P<M>\d{1,6})P(?P<P>\d+)"
                              r"Q(?P<Q>\d+)\.(?P<host>[^:/]*)")
-        previous_groups = None
-        for x in range(repetitions):
+        previous_groups = Tupu
+        kila x kwenye range(repetitions):
             tmp_file = self._box._create_tmp()
             head, tail = os.path.split(tmp_file.name)
             self.assertEqual(head, os.path.abspath(os.path.join(self._path,
                                                                 "tmp")),
-                             "File in wrong location: '%s'" % head)
+                             "File kwenye wrong location: '%s'" % head)
             match = pattern.match(tail)
-            self.assertIsNotNone(match, "Invalid file name: '%s'" % tail)
+            self.assertIsNotTupu(match, "Invalid file name: '%s'" % tail)
             groups = match.groups()
-            ikiwa previous_groups is not None:
+            ikiwa previous_groups ni sio Tupu:
                 self.assertGreaterEqual(int(groups[0]), int(previous_groups[0]),
                              "Non-monotonic seconds: '%s' before '%s'" %
                              (previous_groups[0], groups[0]))
@@ -803,17 +803,17 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
     eleza test_refresh_after_safety_period(self):
         # Issue #13254: Call _refresh after the "file system safety
-        # period" of 2 seconds has passed; _toc should still be
-        # updated because this is the first call to _refresh.
+        # period" of 2 seconds has pitaed; _toc should still be
+        # updated because this ni the first call to _refresh.
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(self._template % 1)
 
         self._box = self._factory(self._path)
         self.assertEqual(self._box._toc, {})
 
-        # Emulate sleeping. Instead of sleeping for 2 seconds, use the
+        # Emulate sleeping. Instead of sleeping kila 2 seconds, use the
         # skew factor to make _refresh think that the filesystem
-        # safety period has passed and re-reading the _toc is only
+        # safety period has pitaed na re-reading the _toc ni only
         # required ikiwa mtimes differ.
         self._box._skewfactor = -3
 
@@ -821,28 +821,28 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         self.assertEqual(sorted(self._box._toc.keys()), sorted([key0, key1]))
 
     eleza test_lookup(self):
-        # Look up message subpaths in the TOC
+        # Look up message subpaths kwenye the TOC
         self.assertRaises(KeyError, lambda: self._box._lookup('foo'))
         key0 = self._box.add(self._template % 0)
         self.assertEqual(self._box._lookup(key0), os.path.join('new', key0))
         os.remove(os.path.join(self._path, 'new', key0))
         self.assertEqual(self._box._toc, {key0: os.path.join('new', key0)})
-        # Be sure that the TOC is read back kutoka disk (see issue #6896
+        # Be sure that the TOC ni read back kutoka disk (see issue #6896
         # about bad mtime behaviour on some systems).
         self._box.flush()
         self.assertRaises(KeyError, lambda: self._box._lookup(key0))
         self.assertEqual(self._box._toc, {})
 
     eleza test_lock_unlock(self):
-        # Lock and unlock the mailbox. For Maildir, this does nothing.
+        # Lock na unlock the mailbox. For Maildir, this does nothing.
         self._box.lock()
         self._box.unlock()
 
     eleza test_folder (self):
-        # Test for bug #1569790: verify that folders returned by .get_folder()
+        # Test kila bug #1569790: verify that folders rudishaed by .get_folder()
         # use the same factory function.
         eleza dummy_factory (s):
-            rudisha None
+            rudisha Tupu
         box = self._factory(self._path, factory=dummy_factory)
         folder = box.add_folder('folder1')
         self.assertIs(folder._factory, dummy_factory)
@@ -852,44 +852,44 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
     eleza test_directory_in_folder (self):
         # Test that mailboxes still work ikiwa there's a stray extra directory
-        # in a folder.
-        for i in range(10):
+        # kwenye a folder.
+        kila i kwenye range(10):
             self._box.add(mailbox.Message(_sample_message))
 
         # Create a stray directory
         os.mkdir(os.path.join(self._path, 'cur', 'stray-dir'))
 
         # Check that looping still works with the directory present.
-        for msg in self._box:
-            pass
+        kila msg kwenye self._box:
+            pita
 
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     eleza test_file_permissions(self):
         # Verify that message files are created without execute permissions
         msg = mailbox.MaildirMessage(self._template % 0)
         orig_umask = os.umask(0)
-        try:
+        jaribu:
             key = self._box.add(msg)
-        finally:
+        mwishowe:
             os.umask(orig_umask)
         path = os.path.join(self._path, self._box._lookup(key))
         mode = os.stat(path).st_mode
-        self.assertFalse(mode & 0o111)
+        self.assertUongo(mode & 0o111)
 
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     eleza test_folder_file_perms(self):
         # From bug #3228, we want to verify that the file created inside a Maildir
-        # subfolder isn't marked as executable.
+        # subfolder isn't marked kama executable.
         orig_umask = os.umask(0)
-        try:
+        jaribu:
             subfolder = self._box.add_folder('subfolder')
-        finally:
+        mwishowe:
             os.umask(orig_umask)
 
         path = os.path.join(subfolder._path, 'maildirfolder')
         st = os.stat(path)
         perms = st.st_mode
-        self.assertFalse((perms & 0o111)) # Execute bits should all be off.
+        self.assertUongo((perms & 0o111)) # Execute bits should all be off.
 
     eleza test_reread(self):
         # Do an initial unconditional refresh
@@ -897,18 +897,18 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
         # Put the last modified times more than two seconds into the past
         # (because mtime may have a two second granularity)
-        for subdir in ('cur', 'new'):
+        kila subdir kwenye ('cur', 'new'):
             os.utime(os.path.join(self._box._path, subdir),
                      (time.time()-5,)*2)
 
-        # Because mtime has a two second granularity in worst case (FAT), a
-        # refresh is done unconditionally ikiwa called for within
-        # two-second-plus-a-bit of the last one, just in case the mbox has
-        # changed; so now we have to wait for that interval to expire.
+        # Because mtime has a two second granularity kwenye worst case (FAT), a
+        # refresh ni done unconditionally ikiwa called kila within
+        # two-second-plus-a-bit of the last one, just kwenye case the mbox has
+        # changed; so now we have to wait kila that interval to expire.
         #
-        # Because this is a test, emulate sleeping. Instead of
-        # sleeping for 2 seconds, use the skew factor to make _refresh
-        # think that 2 seconds have passed and re-reading the _toc is
+        # Because this ni a test, emulate sleeping. Instead of
+        # sleeping kila 2 seconds, use the skew factor to make _refresh
+        # think that 2 seconds have pitaed na re-reading the _toc is
         # only required ikiwa mtimes differ.
         self._box._skewfactor = -3
 
@@ -917,30 +917,30 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         # object.
         orig_toc = self._box._toc
         eleza refreshed():
-            rudisha self._box._toc is not orig_toc
+            rudisha self._box._toc ni sio orig_toc
 
         self._box._refresh()
-        self.assertFalse(refreshed())
+        self.assertUongo(refreshed())
 
-        # Now, write something into cur and remove it.  This changes
-        # the mtime and should cause a re-read. Note that "sleep
-        # emulation" is still in effect, as skewfactor is -3.
+        # Now, write something into cur na remove it.  This changes
+        # the mtime na should cause a re-read. Note that "sleep
+        # emulation" ni still kwenye effect, kama skewfactor ni -3.
         filename = os.path.join(self._path, 'cur', 'stray-file')
         support.create_empty_file(filename)
         os.unlink(filename)
         self._box._refresh()
-        self.assertTrue(refreshed())
+        self.assertKweli(refreshed())
 
 
 kundi _TestSingleFile(TestMailbox):
-    '''Common tests for single-file mailboxes'''
+    '''Common tests kila single-file mailboxes'''
 
     eleza test_add_doesnt_rewrite(self):
-        # When only adding messages, flush() should not rewrite the
+        # When only adding messages, flush() should sio rewrite the
         # mailbox file. See issue #9559.
 
         # Inode number changes ikiwa the contents are written to another
-        # file which is then renamed over the original file. So we
+        # file which ni then renamed over the original file. So we
         # must check that the inode number doesn't change.
         inode_before = os.stat(self._path).st_ino
 
@@ -979,11 +979,11 @@ kundi _TestMboxMMDF(_TestSingleFile):
         super().tearDown()
         self._box.close()
         self._delete_recursively(self._path)
-        for lock_remnant in glob.glob(self._path + '.*'):
+        kila lock_remnant kwenye glob.glob(self._path + '.*'):
             support.unlink(lock_remnant)
 
     eleza assertMailboxEmpty(self):
-        with open(self._path) as f:
+        with open(self._path) kama f:
             self.assertEqual(f.readlines(), [])
 
     eleza test_get_bytes_kutoka(self):
@@ -991,13 +991,13 @@ kundi _TestMboxMMDF(_TestSingleFile):
         unixkutoka = 'From foo@bar blah\n'
         key0 = self._box.add(unixkutoka + self._template % 0)
         key1 = self._box.add(unixkutoka + _sample_message)
-        self.assertEqual(self._box.get_bytes(key0, kutoka_=False),
+        self.assertEqual(self._box.get_bytes(key0, kutoka_=Uongo),
             (self._template % 0).encode('ascii'))
-        self.assertEqual(self._box.get_bytes(key1, kutoka_=False),
+        self.assertEqual(self._box.get_bytes(key1, kutoka_=Uongo),
             _bytes_sample_message)
-        self.assertEqual(self._box.get_bytes(key0, kutoka_=True),
+        self.assertEqual(self._box.get_bytes(key0, kutoka_=Kweli),
             (unixkutoka + self._template % 0).encode('ascii'))
-        self.assertEqual(self._box.get_bytes(key1, kutoka_=True),
+        self.assertEqual(self._box.get_bytes(key1, kutoka_=Kweli),
             unixkutoka.encode('ascii') + _bytes_sample_message)
 
     eleza test_get_string_kutoka(self):
@@ -1005,13 +1005,13 @@ kundi _TestMboxMMDF(_TestSingleFile):
         unixkutoka = 'From foo@bar blah\n'
         key0 = self._box.add(unixkutoka + self._template % 0)
         key1 = self._box.add(unixkutoka + _sample_message)
-        self.assertEqual(self._box.get_string(key0, kutoka_=False),
+        self.assertEqual(self._box.get_string(key0, kutoka_=Uongo),
                          self._template % 0)
-        self.assertEqual(self._box.get_string(key1, kutoka_=False).split('\n'),
+        self.assertEqual(self._box.get_string(key1, kutoka_=Uongo).split('\n'),
                          _sample_message.split('\n'))
-        self.assertEqual(self._box.get_string(key0, kutoka_=True),
+        self.assertEqual(self._box.get_string(key0, kutoka_=Kweli),
                          unixkutoka + self._template % 0)
-        self.assertEqual(self._box.get_string(key1, kutoka_=True).split('\n'),
+        self.assertEqual(self._box.get_string(key1, kutoka_=Kweli).split('\n'),
                          (unixkutoka + _sample_message).split('\n'))
 
     eleza test_add_kutoka_string(self):
@@ -1027,21 +1027,21 @@ kundi _TestMboxMMDF(_TestSingleFile):
         self.assertEqual(self._box[key].get_payload(), '0\n')
 
     eleza test_add_mbox_or_mmdf_message(self):
-        # Add an mboxMessage or MMDFMessage
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        # Add an mboxMessage ama MMDFMessage
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             msg = class_('From foo@bar blah\nFrom: foo\n\n0\n')
             key = self._box.add(msg)
 
     eleza test_open_close_open(self):
-        # Open and inspect previously-created mailbox
-        values = [self._template % i for i in range(3)]
-        for value in values:
+        # Open na inspect previously-created mailbox
+        values = [self._template % i kila i kwenye range(3)]
+        kila value kwenye values:
             self._box.add(value)
         self._box.close()
         mtime = os.path.getmtime(self._path)
         self._box = self._factory(self._path)
         self.assertEqual(len(self._box), 3)
-        for key in self._box.iterkeys():
+        kila key kwenye self._box.iterkeys():
             self.assertIn(self._box.get_string(key), values)
         self._box.close()
         self.assertEqual(mtime, os.path.getmtime(self._path))
@@ -1049,14 +1049,14 @@ kundi _TestMboxMMDF(_TestSingleFile):
     eleza test_add_and_close(self):
         # Verifying that closing a mailbox doesn't change added items
         self._box.add(_sample_message)
-        for i in range(3):
+        kila i kwenye range(3):
             self._box.add(self._template % i)
         self._box.add(_sample_message)
         self._box._file.flush()
         self._box._file.seek(0)
         contents = self._box._file.read()
         self._box.close()
-        with open(self._path, 'rb') as f:
+        with open(self._path, 'rb') kama f:
             self.assertEqual(contents, f.read())
         self._box = self._factory(self._path)
 
@@ -1064,7 +1064,7 @@ kundi _TestMboxMMDF(_TestSingleFile):
     @unittest.skipUnless(hasattr(socket, 'socketpair'), "Test needs socketpair().")
     eleza test_lock_conflict(self):
         # Fork off a child process that will lock the mailbox temporarily,
-        # unlock it and exit.
+        # unlock it na exit.
         c, p = socket.socketpair()
         self.addCleanup(c.close)
         self.addCleanup(p.close)
@@ -1072,34 +1072,34 @@ kundi _TestMboxMMDF(_TestSingleFile):
         pid = os.fork()
         ikiwa pid == 0:
             # child
-            try:
-                # lock the mailbox, and signal the parent it can proceed
+            jaribu:
+                # lock the mailbox, na signal the parent it can proceed
                 self._box.lock()
                 c.send(b'c')
 
-                # wait until the parent is done, and unlock the mailbox
+                # wait until the parent ni done, na unlock the mailbox
                 c.recv(1)
                 self._box.unlock()
-            finally:
+            mwishowe:
                 os._exit(0)
 
         # In the parent, wait until the child signals it locked the mailbox.
         p.recv(1)
-        try:
+        jaribu:
             self.assertRaises(mailbox.ExternalClashError,
                               self._box.lock)
-        finally:
-            # Signal the child it can now release the lock and exit.
+        mwishowe:
+            # Signal the child it can now release the lock na exit.
             p.send(b'p')
-            # Wait for child to exit.  Locking should now succeed.
+            # Wait kila child to exit.  Locking should now succeed.
             exited_pid, status = os.waitpid(pid, 0)
 
         self._box.lock()
         self._box.unlock()
 
     eleza test_relock(self):
-        # Test case for bug #1575506: the mailbox kundi was locking the
-        # wrong file object in its flush() method.
+        # Test case kila bug #1575506: the mailbox kundi was locking the
+        # wrong file object kwenye its flush() method.
         msg = "Subject: sub\n\nbody\n"
         key1 = self._box.add(msg)
         self._box.flush()
@@ -1109,32 +1109,32 @@ kundi _TestMboxMMDF(_TestSingleFile):
         self._box.lock()
         key2 = self._box.add(msg)
         self._box.flush()
-        self.assertTrue(self._box._locked)
+        self.assertKweli(self._box._locked)
         self._box.close()
 
 
 kundi TestMbox(_TestMboxMMDF, unittest.TestCase):
 
-    _factory = lambda self, path, factory=None: mailbox.mbox(path, factory)
+    _factory = lambda self, path, factory=Tupu: mailbox.mbox(path, factory)
 
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     eleza test_file_perms(self):
         # From bug #3228, we want to verify that the mailbox file isn't executable,
-        # even ikiwa the umask is set to something that would leave executable bits set.
+        # even ikiwa the umask ni set to something that would leave executable bits set.
         # We only run this test on platforms that support umask.
-        try:
+        jaribu:
             old_umask = os.umask(0o077)
             self._box.close()
             os.unlink(self._path)
-            self._box = mailbox.mbox(self._path, create=True)
+            self._box = mailbox.mbox(self._path, create=Kweli)
             self._box.add('')
             self._box.close()
-        finally:
+        mwishowe:
             os.umask(old_umask)
 
         st = os.stat(self._path)
         perms = st.st_mode
-        self.assertFalse((perms & 0o111)) # Execute bits should all be off.
+        self.assertUongo((perms & 0o111)) # Execute bits should all be off.
 
     eleza test_terminating_newline(self):
         message = email.message.Message()
@@ -1149,24 +1149,24 @@ kundi TestMbox(_TestMboxMMDF, unittest.TestCase):
     eleza test_message_separator(self):
         # Check there's always a single blank line after each message
         self._box.add('From: foo\n\n0')  # No newline at the end
-        with open(self._path) as f:
+        with open(self._path) kama f:
             data = f.read()
             self.assertEqual(data[-3:], '0\n\n')
 
         self._box.add('From: foo\n\n0\n')  # Newline at the end
-        with open(self._path) as f:
+        with open(self._path) kama f:
             data = f.read()
             self.assertEqual(data[-3:], '0\n\n')
 
 
 kundi TestMMDF(_TestMboxMMDF, unittest.TestCase):
 
-    _factory = lambda self, path, factory=None: mailbox.MMDF(path, factory)
+    _factory = lambda self, path, factory=Tupu: mailbox.MMDF(path, factory)
 
 
 kundi TestMH(TestMailbox, unittest.TestCase):
 
-    _factory = lambda self, path, factory=None: mailbox.MH(path, factory)
+    _factory = lambda self, path, factory=Tupu: mailbox.MH(path, factory)
 
     eleza assertMailboxEmpty(self):
         self.assertEqual(os.listdir(self._path), ['.mh_sequences'])
@@ -1183,18 +1183,18 @@ kundi TestMH(TestMailbox, unittest.TestCase):
     eleza test_get_folder(self):
         # Open folders
         eleza dummy_factory (s):
-            rudisha None
+            rudisha Tupu
         self._box = self._factory(self._path, dummy_factory)
 
         new_folder = self._box.add_folder('foo.bar')
         folder0 = self._box.get_folder('foo.bar')
         folder0.add(self._template % 'bar')
-        self.assertTrue(os.path.isdir(os.path.join(self._path, 'foo.bar')))
+        self.assertKweli(os.path.isdir(os.path.join(self._path, 'foo.bar')))
         folder1 = self._box.get_folder('foo.bar')
         self.assertEqual(folder1.get_string(folder1.keys()[0]),
                          self._template % 'bar')
 
-        # Test for bug #1569790: verify that folders returned by .get_folder()
+        # Test kila bug #1569790: verify that folders rudishaed by .get_folder()
         # use the same factory function.
         self.assertIs(new_folder._factory, self._box._factory)
         self.assertIs(folder0._factory, self._box._factory)
@@ -1219,7 +1219,7 @@ kundi TestMH(TestMailbox, unittest.TestCase):
         self.assertEqual(self._box.list_folders(), [])
 
     eleza test_sequences(self):
-        # Get and set sequences
+        # Get na set sequences
         self.assertEqual(self._box.get_sequences(), {})
         msg0 = mailbox.MHMessage(self._template % 0)
         msg0.add_sequence('foo')
@@ -1280,7 +1280,7 @@ kundi TestMH(TestMailbox, unittest.TestCase):
         self.assertEqual(self._box.get_sequences(),
                      {'foo':[1, 2, 3], 'unseen':[1], 'bar':[3], 'replied':[3]})
 
-        # Test case for packing while holding the mailbox locked.
+        # Test case kila packing wakati holding the mailbox locked.
         key0 = self._box.add(msg1)
         key1 = self._box.add(msg1)
         key2 = self._box.add(msg1)
@@ -1301,17 +1301,17 @@ kundi TestMH(TestMailbox, unittest.TestCase):
 
 kundi TestBabyl(_TestSingleFile, unittest.TestCase):
 
-    _factory = lambda self, path, factory=None: mailbox.Babyl(path, factory)
+    _factory = lambda self, path, factory=Tupu: mailbox.Babyl(path, factory)
 
     eleza assertMailboxEmpty(self):
-        with open(self._path) as f:
+        with open(self._path) kama f:
             self.assertEqual(f.readlines(), [])
 
     eleza tearDown(self):
         super().tearDown()
         self._box.close()
         self._delete_recursively(self._path)
-        for lock_remnant in glob.glob(self._path + '.*'):
+        kila lock_remnant kwenye glob.glob(self._path + '.*'):
             support.unlink(lock_remnant)
 
     eleza test_labels(self):
@@ -1336,17 +1336,17 @@ kundi TestBabyl(_TestSingleFile, unittest.TestCase):
 kundi FakeFileLikeObject:
 
     eleza __init__(self):
-        self.closed = False
+        self.closed = Uongo
 
     eleza close(self):
-        self.closed = True
+        self.closed = Kweli
 
 
 kundi FakeMailBox(mailbox.Mailbox):
 
     eleza __init__(self):
-        mailbox.Mailbox.__init__(self, '', lambda file: None)
-        self.files = [FakeFileLikeObject() for i in range(10)]
+        mailbox.Mailbox.__init__(self, '', lambda file: Tupu)
+        self.files = [FakeFileLikeObject() kila i kwenye range(10)]
 
     eleza get_file(self, key):
         rudisha self.files[key]
@@ -1356,12 +1356,12 @@ kundi TestFakeMailBox(unittest.TestCase):
 
     eleza test_closing_fd(self):
         box = FakeMailBox()
-        for i in range(10):
-            self.assertFalse(box.files[i].closed)
-        for i in range(10):
+        kila i kwenye range(10):
+            self.assertUongo(box.files[i].closed)
+        kila i kwenye range(10):
             box[i]
-        for i in range(10):
-            self.assertTrue(box.files[i].closed)
+        kila i kwenye range(10):
+            self.assertKweli(box.files[i].closed)
 
 
 kundi TestMessage(TestBase, unittest.TestCase):
@@ -1389,7 +1389,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_initialize_with_file(self):
         # Initialize based on contents of file
-        with open(self._path, 'w+') as f:
+        with open(self._path, 'w+') kama f:
             f.write(_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1398,7 +1398,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_initialize_with_binary_file(self):
         # Initialize based on contents of binary file
-        with open(self._path, 'wb+') as f:
+        with open(self._path, 'wb+') kama f:
             f.write(_bytes_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1413,8 +1413,8 @@ kundi TestMessage(TestBase, unittest.TestCase):
         self.assertIsInstance(msg, mailbox.Message)
         self.assertIsInstance(msg, self._factory)
         self.assertEqual(msg.keys(), [])
-        self.assertFalse(msg.is_multipart())
-        self.assertIsNone(msg.get_payload())
+        self.assertUongo(msg.is_multipart())
+        self.assertIsTupu(msg.get_payload())
 
     eleza test_initialize_incorrectly(self):
         # Initialize with invalid argument
@@ -1424,9 +1424,9 @@ kundi TestMessage(TestBase, unittest.TestCase):
         # Issue 12537
         eMM = email.message_kutoka_string(_sample_message)
         msg = self._factory(_sample_message)
-        for attr in eMM.__dict__:
+        kila attr kwenye eMM.__dict__:
             self.assertIn(attr, msg.__dict__,
-                '{} attribute does not exist'.format(attr))
+                '{} attribute does sio exist'.format(attr))
 
     eleza test_become_message(self):
         # Take on the state of another message
@@ -1437,9 +1437,9 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_explain_to(self):
         # Copy self's format-specific data to other message formats.
-        # This test is superficial; better ones are in TestMessageConversion.
+        # This test ni superficial; better ones are kwenye TestMessageConversion.
         msg = self._factory()
-        for class_ in self.all_mailbox_types:
+        kila class_ kwenye self.all_mailbox_types:
             other_msg = class_()
             msg._explain_to(other_msg)
         other_msg = email.message.Message()
@@ -1447,7 +1447,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza _post_initialize_hook(self, msg):
         # Overridden by subclasses to check extra things after initialization
-        pass
+        pita
 
 
 kundi TestMaildirMessage(TestMessage, unittest.TestCase):
@@ -1459,7 +1459,7 @@ kundi TestMaildirMessage(TestMessage, unittest.TestCase):
         self.assertEqual(msg._info, '')
 
     eleza test_subdir(self):
-        # Use get_subdir() and set_subdir()
+        # Use get_subdir() na set_subdir()
         msg = mailbox.MaildirMessage(_sample_message)
         self.assertEqual(msg.get_subdir(), 'new')
         msg.set_subdir('cur')
@@ -1490,23 +1490,23 @@ kundi TestMaildirMessage(TestMessage, unittest.TestCase):
         self._check_sample(msg)
 
     eleza test_date(self):
-        # Use get_date() and set_date()
+        # Use get_date() na set_date()
         msg = mailbox.MaildirMessage(_sample_message)
         self.assertLess(abs(msg.get_date() - time.time()), 60)
         msg.set_date(0.0)
         self.assertEqual(msg.get_date(), 0.0)
 
     eleza test_info(self):
-        # Use get_info() and set_info()
+        # Use get_info() na set_info()
         msg = mailbox.MaildirMessage(_sample_message)
         self.assertEqual(msg.get_info(), '')
         msg.set_info('1,foo=bar')
         self.assertEqual(msg.get_info(), '1,foo=bar')
-        self.assertRaises(TypeError, lambda: msg.set_info(None))
+        self.assertRaises(TypeError, lambda: msg.set_info(Tupu))
         self._check_sample(msg)
 
     eleza test_info_and_flags(self):
-        # Test interaction of info and flag methods
+        # Test interaction of info na flag methods
         msg = mailbox.MaildirMessage(_sample_message)
         self.assertEqual(msg.get_info(), '')
         msg.set_flags('SF')
@@ -1539,12 +1539,12 @@ kundi _TestMboxMMDFMessage:
         self.assertEqual(msg.get_kutoka(), 'foo@bar blah', msg.get_kutoka())
 
     eleza test_kutoka(self):
-        # Get and set "From " line
+        # Get na set "From " line
         msg = mailbox.mboxMessage(_sample_message)
         self._check_kutoka(msg)
         msg.set_kutoka('foo bar')
         self.assertEqual(msg.get_kutoka(), 'foo bar')
-        msg.set_kutoka('foo@bar', True)
+        msg.set_kutoka('foo@bar', Kweli)
         self._check_kutoka(msg, 'foo@bar')
         msg.set_kutoka('blah@temp', time.localtime())
         self._check_kutoka(msg, 'blah@temp')
@@ -1563,11 +1563,11 @@ kundi _TestMboxMMDFMessage:
         self.assertEqual(msg.get_flags(), 'RO')
         self._check_sample(msg)
 
-    eleza _check_kutoka(self, msg, sender=None):
+    eleza _check_kutoka(self, msg, sender=Tupu):
         # Check contents of "From " line
-        ikiwa sender is None:
+        ikiwa sender ni Tupu:
             sender = "MAILER-DAEMON"
-        self.assertIsNotNone(re.match(
+        self.assertIsNotTupu(re.match(
                 sender + r" \w{3} \w{3} [\d ]\d [\d ]\d:\d{2}:\d{2} \d{4}",
                 msg.get_kutoka()))
 
@@ -1585,7 +1585,7 @@ kundi TestMHMessage(TestMessage, unittest.TestCase):
         self.assertEqual(msg._sequences, [])
 
     eleza test_sequences(self):
-        # Get, set, join, and leave sequences
+        # Get, set, join, na leave sequences
         msg = mailbox.MHMessage(_sample_message)
         self.assertEqual(msg.get_sequences(), [])
         msg.set_sequences(['foobar'])
@@ -1616,7 +1616,7 @@ kundi TestBabylMessage(TestMessage, unittest.TestCase):
         self.assertEqual(msg._labels, [])
 
     eleza test_labels(self):
-        # Get, set, join, and leave labels
+        # Get, set, join, na leave labels
         msg = mailbox.BabylMessage(_sample_message)
         self.assertEqual(msg.get_labels(), [])
         msg.set_labels(['foobar'])
@@ -1639,11 +1639,11 @@ kundi TestBabylMessage(TestMessage, unittest.TestCase):
         self.assertEqual(msg.get_labels(), ['foobar', 'answered'])
 
     eleza test_visible(self):
-        # Get, set, and update visible headers
+        # Get, set, na update visible headers
         msg = mailbox.BabylMessage(_sample_message)
         visible = msg.get_visible()
         self.assertEqual(visible.keys(), [])
-        self.assertIsNone(visible.get_payload())
+        self.assertIsTupu(visible.get_payload())
         visible['User-Agent'] = 'FooBar 1.0'
         visible['X-Whatever'] = 'Blah'
         self.assertEqual(msg.get_visible().keys(), [])
@@ -1652,14 +1652,14 @@ kundi TestBabylMessage(TestMessage, unittest.TestCase):
         self.assertEqual(visible.keys(), ['User-Agent', 'X-Whatever'])
         self.assertEqual(visible['User-Agent'], 'FooBar 1.0')
         self.assertEqual(visible['X-Whatever'], 'Blah')
-        self.assertIsNone(visible.get_payload())
+        self.assertIsTupu(visible.get_payload())
         msg.update_visible()
         self.assertEqual(visible.keys(), ['User-Agent', 'X-Whatever'])
-        self.assertIsNone(visible.get_payload())
+        self.assertIsTupu(visible.get_payload())
         visible = msg.get_visible()
         self.assertEqual(visible.keys(), ['User-Agent', 'Date', 'From', 'To',
                                           'Subject'])
-        for header in ('User-Agent', 'Date', 'From', 'To', 'Subject'):
+        kila header kwenye ('User-Agent', 'Date', 'From', 'To', 'Subject'):
             self.assertEqual(visible[header], msg[header])
 
 
@@ -1672,43 +1672,43 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
 
     eleza test_plain_to_x(self):
         # Convert Message to all formats
-        for class_ in self.all_mailbox_types:
+        kila class_ kwenye self.all_mailbox_types:
             msg_plain = mailbox.Message(_sample_message)
             msg = class_(msg_plain)
             self._check_sample(msg)
 
     eleza test_x_to_plain(self):
         # Convert all formats to Message
-        for class_ in self.all_mailbox_types:
+        kila class_ kwenye self.all_mailbox_types:
             msg = class_(_sample_message)
             msg_plain = mailbox.Message(msg)
             self._check_sample(msg_plain)
 
     eleza test_x_kutoka_bytes(self):
         # Convert all formats to Message
-        for class_ in self.all_mailbox_types:
+        kila class_ kwenye self.all_mailbox_types:
             msg = class_(_bytes_sample_message)
             self._check_sample(msg)
 
     eleza test_x_to_invalid(self):
         # Convert all formats to an invalid format
-        for class_ in self.all_mailbox_types:
-            self.assertRaises(TypeError, lambda: class_(False))
+        kila class_ kwenye self.all_mailbox_types:
+            self.assertRaises(TypeError, lambda: class_(Uongo))
 
     eleza test_type_specific_attributes_removed_on_conversion(self):
         reference = {class_: class_(_sample_message).__dict__
-                        for class_ in self.all_mailbox_types}
-        for class1 in self.all_mailbox_types:
-            for class2 in self.all_mailbox_types:
-                ikiwa class1 is class2:
-                    continue
+                        kila class_ kwenye self.all_mailbox_types}
+        kila class1 kwenye self.all_mailbox_types:
+            kila class2 kwenye self.all_mailbox_types:
+                ikiwa class1 ni class2:
+                    endelea
                 source = class1(_sample_message)
                 target = class2(source)
-                type_specific = [a for a in reference[class1]
-                                   ikiwa a not in reference[class2]]
-                for attr in type_specific:
+                type_specific = [a kila a kwenye reference[class1]
+                                   ikiwa a haiko kwenye reference[class2]]
+                kila attr kwenye type_specific:
                     self.assertNotIn(attr, target.__dict__,
-                        "while converting {} to {}".format(class1, class2))
+                        "wakati converting {} to {}".format(class1, class2))
 
     eleza test_maildir_to_maildir(self):
         # Convert MaildirMessage to MaildirMessage
@@ -1723,13 +1723,13 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
         self.assertEqual(msg.get_date(), date)
 
     eleza test_maildir_to_mboxmmdf(self):
-        # Convert MaildirMessage to mboxmessage and MMDFMessage
+        # Convert MaildirMessage to mboxmessage na MMDFMessage
         pairs = (('D', ''), ('F', 'F'), ('P', ''), ('R', 'A'), ('S', 'R'),
                  ('T', 'D'), ('DFPRST', 'RDFA'))
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             msg_maildir = mailbox.MaildirMessage(_sample_message)
             msg_maildir.set_date(0.0)
-            for setting, result in pairs:
+            kila setting, result kwenye pairs:
                 msg_maildir.set_flags(setting)
                 msg = class_(msg_maildir)
                 self.assertEqual(msg.get_flags(), result)
@@ -1744,7 +1744,7 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
         pairs = (('D', ['unseen']), ('F', ['unseen', 'flagged']),
                  ('P', ['unseen']), ('R', ['unseen', 'replied']), ('S', []),
                  ('T', ['unseen']), ('DFPRST', ['replied', 'flagged']))
-        for setting, result in pairs:
+        kila setting, result kwenye pairs:
             msg_maildir.set_flags(setting)
             self.assertEqual(mailbox.MHMessage(msg_maildir).get_sequences(),
                              result)
@@ -1756,19 +1756,19 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
                  ('P', ['unseen', 'forwarded']), ('R', ['unseen', 'answered']),
                  ('S', []), ('T', ['unseen', 'deleted']),
                  ('DFPRST', ['deleted', 'answered', 'forwarded']))
-        for setting, result in pairs:
+        kila setting, result kwenye pairs:
             msg_maildir.set_flags(setting)
             self.assertEqual(mailbox.BabylMessage(msg_maildir).get_labels(),
                              result)
 
     eleza test_mboxmmdf_to_maildir(self):
-        # Convert mboxMessage and MMDFMessage to MaildirMessage
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        # Convert mboxMessage na MMDFMessage to MaildirMessage
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             msg_mboxMMDF = class_(_sample_message)
             msg_mboxMMDF.set_kutoka('foo@bar', time.gmtime(0.0))
             pairs = (('R', 'S'), ('O', ''), ('D', 'T'), ('F', 'F'), ('A', 'R'),
                      ('RODFA', 'FRST'))
-            for setting, result in pairs:
+            kila setting, result kwenye pairs:
                 msg_mboxMMDF.set_flags(setting)
                 msg = mailbox.MaildirMessage(msg_mboxMMDF)
                 self.assertEqual(msg.get_flags(), result)
@@ -1778,45 +1778,45 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
                              'cur')
 
     eleza test_mboxmmdf_to_mboxmmdf(self):
-        # Convert mboxMessage and MMDFMessage to mboxMessage and MMDFMessage
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        # Convert mboxMessage na MMDFMessage to mboxMessage na MMDFMessage
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             msg_mboxMMDF = class_(_sample_message)
             msg_mboxMMDF.set_flags('RODFA')
             msg_mboxMMDF.set_kutoka('foo@bar')
-            for class2_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+            kila class2_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
                 msg2 = class2_(msg_mboxMMDF)
                 self.assertEqual(msg2.get_flags(), 'RODFA')
                 self.assertEqual(msg2.get_kutoka(), 'foo@bar')
 
     eleza test_mboxmmdf_to_mh(self):
-        # Convert mboxMessage and MMDFMessage to MHMessage
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        # Convert mboxMessage na MMDFMessage to MHMessage
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             msg_mboxMMDF = class_(_sample_message)
             pairs = (('R', []), ('O', ['unseen']), ('D', ['unseen']),
                      ('F', ['unseen', 'flagged']),
                      ('A', ['unseen', 'replied']),
                      ('RODFA', ['replied', 'flagged']))
-            for setting, result in pairs:
+            kila setting, result kwenye pairs:
                 msg_mboxMMDF.set_flags(setting)
                 self.assertEqual(mailbox.MHMessage(msg_mboxMMDF).get_sequences(),
                                  result)
 
     eleza test_mboxmmdf_to_babyl(self):
-        # Convert mboxMessage and MMDFMessage to BabylMessage
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        # Convert mboxMessage na MMDFMessage to BabylMessage
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             msg = class_(_sample_message)
             pairs = (('R', []), ('O', ['unseen']),
                      ('D', ['unseen', 'deleted']), ('F', ['unseen']),
                      ('A', ['unseen', 'answered']),
                      ('RODFA', ['deleted', 'answered']))
-            for setting, result in pairs:
+            kila setting, result kwenye pairs:
                 msg.set_flags(setting)
                 self.assertEqual(mailbox.BabylMessage(msg).get_labels(), result)
 
     eleza test_mh_to_maildir(self):
         # Convert MHMessage to MaildirMessage
         pairs = (('unseen', ''), ('replied', 'RS'), ('flagged', 'FS'))
-        for setting, result in pairs:
+        kila setting, result kwenye pairs:
             msg = mailbox.MHMessage(_sample_message)
             msg.add_sequence(setting)
             self.assertEqual(mailbox.MaildirMessage(msg).get_flags(), result)
@@ -1829,18 +1829,18 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
         self.assertEqual(mailbox.MaildirMessage(msg).get_subdir(), 'cur')
 
     eleza test_mh_to_mboxmmdf(self):
-        # Convert MHMessage to mboxMessage and MMDFMessage
+        # Convert MHMessage to mboxMessage na MMDFMessage
         pairs = (('unseen', 'O'), ('replied', 'ROA'), ('flagged', 'ROF'))
-        for setting, result in pairs:
+        kila setting, result kwenye pairs:
             msg = mailbox.MHMessage(_sample_message)
             msg.add_sequence(setting)
-            for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+            kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
                 self.assertEqual(class_(msg).get_flags(), result)
         msg = mailbox.MHMessage(_sample_message)
         msg.add_sequence('unseen')
         msg.add_sequence('replied')
         msg.add_sequence('flagged')
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             self.assertEqual(class_(msg).get_flags(), 'OFA')
 
     eleza test_mh_to_mh(self):
@@ -1856,7 +1856,7 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
         # Convert MHMessage to BabylMessage
         pairs = (('unseen', ['unseen']), ('replied', ['answered']),
                  ('flagged', []))
-        for setting, result in pairs:
+        kila setting, result kwenye pairs:
             msg = mailbox.MHMessage(_sample_message)
             msg.add_sequence(setting)
             self.assertEqual(mailbox.BabylMessage(msg).get_labels(), result)
@@ -1872,33 +1872,33 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
         pairs = (('unseen', ''), ('deleted', 'ST'), ('filed', 'S'),
                  ('answered', 'RS'), ('forwarded', 'PS'), ('edited', 'S'),
                  ('resent', 'PS'))
-        for setting, result in pairs:
+        kila setting, result kwenye pairs:
             msg = mailbox.BabylMessage(_sample_message)
             msg.add_label(setting)
             self.assertEqual(mailbox.MaildirMessage(msg).get_flags(), result)
             self.assertEqual(mailbox.MaildirMessage(msg).get_subdir(), 'cur')
         msg = mailbox.BabylMessage(_sample_message)
-        for label in ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
+        kila label kwenye ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
                       'edited', 'resent'):
             msg.add_label(label)
         self.assertEqual(mailbox.MaildirMessage(msg).get_flags(), 'PRT')
         self.assertEqual(mailbox.MaildirMessage(msg).get_subdir(), 'cur')
 
     eleza test_babyl_to_mboxmmdf(self):
-        # Convert BabylMessage to mboxMessage and MMDFMessage
+        # Convert BabylMessage to mboxMessage na MMDFMessage
         pairs = (('unseen', 'O'), ('deleted', 'ROD'), ('filed', 'RO'),
                  ('answered', 'ROA'), ('forwarded', 'RO'), ('edited', 'RO'),
                  ('resent', 'RO'))
-        for setting, result in pairs:
-            for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        kila setting, result kwenye pairs:
+            kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
                 msg = mailbox.BabylMessage(_sample_message)
                 msg.add_label(setting)
                 self.assertEqual(class_(msg).get_flags(), result)
         msg = mailbox.BabylMessage(_sample_message)
-        for label in ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
+        kila label kwenye ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
                       'edited', 'resent'):
             msg.add_label(label)
-        for class_ in (mailbox.mboxMessage, mailbox.MMDFMessage):
+        kila class_ kwenye (mailbox.mboxMessage, mailbox.MMDFMessage):
             self.assertEqual(class_(msg).get_flags(), 'ODA')
 
     eleza test_babyl_to_mh(self):
@@ -1906,12 +1906,12 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
         pairs = (('unseen', ['unseen']), ('deleted', []), ('filed', []),
                  ('answered', ['replied']), ('forwarded', []), ('edited', []),
                  ('resent', []))
-        for setting, result in pairs:
+        kila setting, result kwenye pairs:
             msg = mailbox.BabylMessage(_sample_message)
             msg.add_label(setting)
             self.assertEqual(mailbox.MHMessage(msg).get_sequences(), result)
         msg = mailbox.BabylMessage(_sample_message)
-        for label in ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
+        kila label kwenye ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
                       'edited', 'resent'):
             msg.add_label(label)
         self.assertEqual(mailbox.MHMessage(msg).get_sequences(),
@@ -1921,7 +1921,7 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
         # Convert BabylMessage to BabylMessage
         msg = mailbox.BabylMessage(_sample_message)
         msg.update_visible()
-        for label in ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
+        kila label kwenye ('unseen', 'deleted', 'filed', 'answered', 'forwarded',
                       'edited', 'resent'):
             msg.add_label(label)
         msg2 = mailbox.BabylMessage(msg)
@@ -1929,7 +1929,7 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
                                              'answered', 'forwarded', 'edited',
                                              'resent'])
         self.assertEqual(msg.get_visible().keys(), msg2.get_visible().keys())
-        for key in msg.get_visible().keys():
+        kila key kwenye msg.get_visible().keys():
             self.assertEqual(msg.get_visible()[key], msg2.get_visible()[key])
 
 
@@ -1992,7 +1992,7 @@ kundi TestProxyFileBase(TestBase):
         self.assertRaises(StopIteration, next, iterator)
 
     eleza _test_seek_and_tell(self, proxy):
-        # Seek and use tell to check position
+        # Seek na use tell to check position
         linesep = os.linesep.encode()
         proxy.seek(3)
         self.assertEqual(proxy.tell(), 3)
@@ -2004,16 +2004,16 @@ kundi TestProxyFileBase(TestBase):
         proxy.seek(2, 0)
         self.assertEqual(proxy.read(), b'o' + linesep + b'bar' + linesep)
         proxy.seek(100)
-        self.assertFalse(proxy.read())
+        self.assertUongo(proxy.read())
 
     eleza _test_close(self, proxy):
         # Close a file
-        self.assertFalse(proxy.closed)
+        self.assertUongo(proxy.closed)
         proxy.close()
-        self.assertTrue(proxy.closed)
+        self.assertKweli(proxy.closed)
         # Issue 11700 subsequent closes should be a no-op.
         proxy.close()
-        self.assertTrue(proxy.closed)
+        self.assertKweli(proxy.closed)
 
 
 kundi TestProxyFile(TestProxyFileBase, unittest.TestCase):
@@ -2027,7 +2027,7 @@ kundi TestProxyFile(TestProxyFileBase, unittest.TestCase):
         self._delete_recursively(self._path)
 
     eleza test_initialize(self):
-        # Initialize and check position
+        # Initialize na check position
         self._file.write(b'foo')
         pos = self._file.tell()
         proxy0 = mailbox._ProxyFile(self._file)
@@ -2076,7 +2076,7 @@ kundi TestPartialFile(TestProxyFileBase, unittest.TestCase):
         self._delete_recursively(self._path)
 
     eleza test_initialize(self):
-        # Initialize and check position
+        # Initialize na check position
         self._file.write(bytes('foo' + os.linesep + 'bar', 'ascii'))
         pos = self._file.tell()
         proxy = mailbox._PartialFile(self._file, 2, 5)
@@ -2116,7 +2116,7 @@ kundi TestPartialFile(TestProxyFileBase, unittest.TestCase):
                                               6 + 3 * len(os.linesep)))
 
 
-## Start: tests kutoka the original module (for backward compatibility).
+## Start: tests kutoka the original module (kila backward compatibility).
 
 FROM_ = "From some.body@dummy.domain  Sat Jul 24 13:43:35 2004\n"
 DUMMY_MESSAGE = """\
@@ -2124,7 +2124,7 @@ From: some.body@dummy.domain
 To: me@my.domain
 Subject: Simple Test
 
-This is a dummy message.
+This ni a dummy message.
 """
 
 kundi MaildirTestCase(unittest.TestCase):
@@ -2150,63 +2150,63 @@ kundi MaildirTestCase(unittest.TestCase):
         support.rmdir(os.path.join(self._dir, "new"))
         support.rmdir(self._dir)
 
-    eleza createMessage(self, dir, mbox=False):
+    eleza createMessage(self, dir, mbox=Uongo):
         t = int(time.time() % 1000000)
         pid = self._counter
         self._counter += 1
         filename = ".".join((str(t), str(pid), "myhostname", "mydomain"))
         tmpname = os.path.join(self._dir, "tmp", filename)
         newname = os.path.join(self._dir, dir, filename)
-        with open(tmpname, "w") as fp:
+        with open(tmpname, "w") kama fp:
             self._msgfiles.append(tmpname)
             ikiwa mbox:
                 fp.write(FROM_)
             fp.write(DUMMY_MESSAGE)
-        try:
+        jaribu:
             os.link(tmpname, newname)
-        except (AttributeError, PermissionError):
-            with open(newname, "w") as fp:
+        tatizo (AttributeError, PermissionError):
+            with open(newname, "w") kama fp:
                 fp.write(DUMMY_MESSAGE)
         self._msgfiles.append(newname)
         rudisha tmpname
 
     eleza test_empty_maildir(self):
         """Test an empty maildir mailbox"""
-        # Test for regression on bug #117490:
+        # Test kila regression on bug #117490:
         # Make sure the boxes attribute actually gets set.
         self.mbox = mailbox.Maildir(support.TESTFN)
-        #self.assertTrue(hasattr(self.mbox, "boxes"))
+        #self.assertKweli(hasattr(self.mbox, "boxes"))
         #self.assertEqual(len(self.mbox.boxes), 0)
-        self.assertIsNone(self.mbox.next())
-        self.assertIsNone(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
 
     eleza test_nonempty_maildir_cur(self):
         self.createMessage("cur")
         self.mbox = mailbox.Maildir(support.TESTFN)
         #self.assertEqual(len(self.mbox.boxes), 1)
-        self.assertIsNotNone(self.mbox.next())
-        self.assertIsNone(self.mbox.next())
-        self.assertIsNone(self.mbox.next())
+        self.assertIsNotTupu(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
 
     eleza test_nonempty_maildir_new(self):
         self.createMessage("new")
         self.mbox = mailbox.Maildir(support.TESTFN)
         #self.assertEqual(len(self.mbox.boxes), 1)
-        self.assertIsNotNone(self.mbox.next())
-        self.assertIsNone(self.mbox.next())
-        self.assertIsNone(self.mbox.next())
+        self.assertIsNotTupu(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
 
     eleza test_nonempty_maildir_both(self):
         self.createMessage("cur")
         self.createMessage("new")
         self.mbox = mailbox.Maildir(support.TESTFN)
         #self.assertEqual(len(self.mbox.boxes), 2)
-        self.assertIsNotNone(self.mbox.next())
-        self.assertIsNotNone(self.mbox.next())
-        self.assertIsNone(self.mbox.next())
-        self.assertIsNone(self.mbox.next())
+        self.assertIsNotTupu(self.mbox.next())
+        self.assertIsNotTupu(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
+        self.assertIsTupu(self.mbox.next())
 
-## End: tests kutoka the original module (for backward compatibility).
+## End: tests kutoka the original module (kila backward compatibility).
 
 
 _sample_message = """\
@@ -2215,14 +2215,14 @@ X-Original-To: gkj+person@localhost
 Delivered-To: gkj+person@localhost
 Received: kutoka localhost (localhost [127.0.0.1])
         by andy.gregorykjohnson.com (Postfix) with ESMTP id 356ED9DD17
-        for <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
+        kila <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
 Delivered-To: gkj@sundance.gregorykjohnson.com
 Received: kutoka localhost [127.0.0.1]
         by localhost with POP3 (fetchmail-6.2.5)
-        for gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
+        kila gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
 Received: kutoka andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
         by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
-        for <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
+        kila <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
 Received: by andy.gregorykjohnson.com (Postfix, kutoka userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
 Date: Wed, 13 Jul 2005 17:23:11 -0400
@@ -2240,7 +2240,7 @@ User-Agent: Mutt/1.5.9i
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-This is a sample message.
+This ni a sample message.
 
 --
 Gregory K. Johnson
@@ -2264,14 +2264,14 @@ _sample_headers = {
     "Delivered-To":"gkj+person@localhost",
     "Received":"""kutoka localhost (localhost [127.0.0.1])
         by andy.gregorykjohnson.com (Postfix) with ESMTP id 356ED9DD17
-        for <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)""",
+        kila <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)""",
     "Delivered-To":"gkj@sundance.gregorykjohnson.com",
     "Received":"""kutoka localhost [127.0.0.1]
         by localhost with POP3 (fetchmail-6.2.5)
-        for gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)""",
+        kila gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)""",
     "Received":"""kutoka andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
         by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
-        for <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)""",
+        kila <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)""",
     "Received":"""by andy.gregorykjohnson.com (Postfix, kutoka userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)""",
     "Date":"Wed, 13 Jul 2005 17:23:11 -0400",
@@ -2283,7 +2283,7 @@ _sample_headers = {
     "Content-Disposition":"inline",
     "User-Agent": "Mutt/1.5.9i" }
 
-_sample_payloads = ("""This is a sample message.
+_sample_payloads = ("""This ni a sample message.
 
 --
 Gregory K. Johnson

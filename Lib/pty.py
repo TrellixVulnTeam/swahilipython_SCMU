@@ -1,8 +1,8 @@
 """Pseudo terminal utilities."""
 
-# Bugs: No signal handling.  Doesn't set slave termios and window size.
+# Bugs: No signal handling.  Doesn't set slave termios na window size.
 #       Only tested on Linux.
-# See:  W. Richard Stevens. 1992.  Advanced Programming in the
+# See:  W. Richard Stevens. 1992.  Advanced Programming kwenye the
 #       UNIX Environment.  Chapter 19.
 # Author: Steen Lumholt -- with additions by Guido.
 
@@ -22,24 +22,24 @@ eleza openpty():
     """openpty() -> (master_fd, slave_fd)
     Open a pty master/slave pair, using os.openpty() ikiwa possible."""
 
-    try:
+    jaribu:
         rudisha os.openpty()
-    except (AttributeError, OSError):
-        pass
+    tatizo (AttributeError, OSError):
+        pita
     master_fd, slave_name = _open_terminal()
     slave_fd = slave_open(slave_name)
     rudisha master_fd, slave_fd
 
 eleza master_open():
     """master_open() -> (master_fd, slave_name)
-    Open a pty master and rudisha the fd, and the filename of the slave end.
+    Open a pty master na rudisha the fd, na the filename of the slave end.
     Deprecated, use openpty() instead."""
 
-    try:
+    jaribu:
         master_fd, slave_fd = os.openpty()
-    except (AttributeError, OSError):
-        pass
-    else:
+    tatizo (AttributeError, OSError):
+        pita
+    isipokua:
         slave_name = os.ttyname(slave_fd)
         os.close(slave_fd)
         rudisha master_fd, slave_name
@@ -47,50 +47,50 @@ eleza master_open():
     rudisha _open_terminal()
 
 eleza _open_terminal():
-    """Open pty master and rudisha (master_fd, tty_name)."""
-    for x in 'pqrstuvwxyzPQRST':
-        for y in '0123456789abcdef':
+    """Open pty master na rudisha (master_fd, tty_name)."""
+    kila x kwenye 'pqrstuvwxyzPQRST':
+        kila y kwenye '0123456789abcdef':
             pty_name = '/dev/pty' + x + y
-            try:
+            jaribu:
                 fd = os.open(pty_name, os.O_RDWR)
-            except OSError:
-                continue
+            tatizo OSError:
+                endelea
             rudisha (fd, '/dev/tty' + x + y)
-    raise OSError('out of pty devices')
+    ashiria OSError('out of pty devices')
 
 eleza slave_open(tty_name):
     """slave_open(tty_name) -> slave_fd
-    Open the pty slave and acquire the controlling terminal, returning
+    Open the pty slave na acquire the controlling terminal, rudishaing
     opened filedescriptor.
     Deprecated, use openpty() instead."""
 
     result = os.open(tty_name, os.O_RDWR)
-    try:
+    jaribu:
         kutoka fcntl agiza ioctl, I_PUSH
-    except ImportError:
+    tatizo ImportError:
         rudisha result
-    try:
+    jaribu:
         ioctl(result, I_PUSH, "ptem")
         ioctl(result, I_PUSH, "ldterm")
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
     rudisha result
 
 eleza fork():
     """fork() -> (pid, master_fd)
-    Fork and make the child a session leader with a controlling terminal."""
+    Fork na make the child a session leader with a controlling terminal."""
 
-    try:
+    jaribu:
         pid, fd = os.forkpty()
-    except (AttributeError, OSError):
-        pass
-    else:
+    tatizo (AttributeError, OSError):
+        pita
+    isipokua:
         ikiwa pid == CHILD:
-            try:
+            jaribu:
                 os.setsid()
-            except OSError:
+            tatizo OSError:
                 # os.forkpty() already set us session leader
-                pass
+                pita
         rudisha pid, fd
 
     master_fd, slave_fd = openpty()
@@ -110,15 +110,15 @@ eleza fork():
         # Explicitly open the tty to make it become a controlling tty.
         tmp_fd = os.open(os.ttyname(STDOUT_FILENO), os.O_RDWR)
         os.close(tmp_fd)
-    else:
+    isipokua:
         os.close(slave_fd)
 
-    # Parent and child process.
+    # Parent na child process.
     rudisha pid, master_fd
 
 eleza _writen(fd, data):
     """Write all the data to a descriptor."""
-    while data:
+    wakati data:
         n = os.write(fd, data)
         data = data[n:]
 
@@ -132,19 +132,19 @@ eleza _copy(master_fd, master_read=_read, stdin_read=_read):
             pty master -> standard output   (master_read)
             standard input -> pty master    (stdin_read)"""
     fds = [master_fd, STDIN_FILENO]
-    while True:
+    wakati Kweli:
         rfds, wfds, xfds = select(fds, [], [])
-        ikiwa master_fd in rfds:
+        ikiwa master_fd kwenye rfds:
             data = master_read(master_fd)
-            ikiwa not data:  # Reached EOF.
+            ikiwa sio data:  # Reached EOF.
                 fds.remove(master_fd)
-            else:
+            isipokua:
                 os.write(STDOUT_FILENO, data)
-        ikiwa STDIN_FILENO in rfds:
+        ikiwa STDIN_FILENO kwenye rfds:
             data = stdin_read(STDIN_FILENO)
-            ikiwa not data:
+            ikiwa sio data:
                 fds.remove(STDIN_FILENO)
-            else:
+            isipokua:
                 _writen(master_fd, data)
 
 eleza spawn(argv, master_read=_read, stdin_read=_read):
@@ -154,15 +154,15 @@ eleza spawn(argv, master_read=_read, stdin_read=_read):
     pid, master_fd = fork()
     ikiwa pid == CHILD:
         os.execlp(argv[0], *argv)
-    try:
+    jaribu:
         mode = tty.tcgetattr(STDIN_FILENO)
         tty.setraw(STDIN_FILENO)
         restore = 1
-    except tty.error:    # This is the same as termios.error
+    tatizo tty.error:    # This ni the same kama termios.error
         restore = 0
-    try:
+    jaribu:
         _copy(master_fd, master_read, stdin_read)
-    except OSError:
+    tatizo OSError:
         ikiwa restore:
             tty.tcsetattr(STDIN_FILENO, tty.TCSAFLUSH, mode)
 

@@ -7,23 +7,23 @@ There are four types of string literals:
     b'xyz'            -- normal bytes
     br'xyz' | rb'xyz' -- raw bytes
 
-The difference between normal and raw strings is of course that in a
-raw string, \ escapes (while still used to determine the end of the
-literal) are not interpreted, so that r'\x00' contains four
-characters: a backslash, an x, and two zeros; while '\x00' contains a
+The difference between normal na raw strings ni of course that kwenye a
+raw string, \ escapes (wakati still used to determine the end of the
+literal) are sio interpreted, so that r'\x00' contains four
+characters: a backslash, an x, na two zeros; wakati '\x00' contains a
 single character (code point zero).
 
-The tricky thing is what should happen when non-ASCII bytes are used
-inside literals.  For bytes literals, this is considered illegal.  But
-for str literals, those bytes are supposed to be decoded using the
-encoding declared for the file (UTF-8 by default).
+The tricky thing ni what should happen when non-ASCII bytes are used
+inside literals.  For bytes literals, this ni considered illegal.  But
+kila str literals, those bytes are supposed to be decoded using the
+encoding declared kila the file (UTF-8 by default).
 
 We have to test this with various file encodings.  We also test it with
 exec()/eval(), which uses a different code path.
 
-This file is really about correct treatment of encodings and
+This file ni really about correct treatment of encodings and
 backslashes.  It doesn't concern itself with issues like single
-vs. double quotes or singly- vs. triply-quoted strings: that's dealt
+vs. double quotes ama singly- vs. triply-quoted strings: that's dealt
 with elsewhere (I assume).
 """
 
@@ -72,13 +72,13 @@ kundi TestLiterals(unittest.TestCase):
 
     eleza tearDown(self):
         sys.path[:] = self.save_path
-        shutil.rmtree(self.tmpdir, ignore_errors=True)
+        shutil.rmtree(self.tmpdir, ignore_errors=Kweli)
 
     eleza test_template(self):
         # Check that the template doesn't contain any non-printables
-        # except for \n.
-        for c in TEMPLATE:
-            assert c == '\n' or ' ' <= c <= '~', repr(c)
+        # tatizo kila \n.
+        kila c kwenye TEMPLATE:
+            assert c == '\n' ama ' ' <= c <= '~', repr(c)
 
     eleza test_eval_str_normal(self):
         self.assertEqual(eval(""" 'x' """), 'x')
@@ -108,22 +108,22 @@ kundi TestLiterals(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, r""" '\U0000000' """)
 
     eleza test_eval_str_invalid_escape(self):
-        for b in range(1, 128):
-            ikiwa b in b"""\n\r"'01234567NU\\abfnrtuvx""":
-                continue
+        kila b kwenye range(1, 128):
+            ikiwa b kwenye b"""\n\r"'01234567NU\\abfnrtuvx""":
+                endelea
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"'\%c'" % b), '\\' + chr(b))
 
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('always', category=DeprecationWarning)
             eval("'''\n\\z'''")
         self.assertEqual(len(w), 1)
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('error', category=DeprecationWarning)
-            with self.assertRaises(SyntaxError) as cm:
+            with self.assertRaises(SyntaxError) kama cm:
                 eval("'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
@@ -157,22 +157,22 @@ kundi TestLiterals(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, r""" b'\x0' """)
 
     eleza test_eval_bytes_invalid_escape(self):
-        for b in range(1, 128):
-            ikiwa b in b"""\n\r"'01234567\\abfnrtvx""":
-                continue
+        kila b kwenye range(1, 128):
+            ikiwa b kwenye b"""\n\r"'01234567\\abfnrtvx""":
+                endelea
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"b'\%c'" % b), b'\\' + bytes([b]))
 
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('always', category=DeprecationWarning)
             eval("b'''\n\\z'''")
         self.assertEqual(len(w), 1)
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter('error', category=DeprecationWarning)
-            with self.assertRaises(SyntaxError) as cm:
+            with self.assertRaises(SyntaxError) kama cm:
                 eval("b'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
@@ -218,13 +218,13 @@ kundi TestLiterals(unittest.TestCase):
         modname = "xx_" + encoding.replace("-", "_")
         fn = os.path.join(self.tmpdir, modname + ".py")
         f = open(fn, "w", encoding=encoding)
-        try:
+        jaribu:
             f.write(TEMPLATE % encoding)
             f.write(extra)
-        finally:
+        mwishowe:
             f.close()
         __import__(modname)
-        del sys.modules[modname]
+        toa sys.modules[modname]
 
     eleza test_file_utf_8(self):
         extra = "z = '\u1234'; assert ord(z) == 0x1234\n"

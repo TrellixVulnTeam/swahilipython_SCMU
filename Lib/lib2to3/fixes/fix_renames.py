@@ -20,27 +20,27 @@ eleza alternates(members):
 
 eleza build_pattern():
     #bare = set()
-    for module, replace in list(MAPPING.items()):
-        for old_attr, new_attr in list(replace.items()):
+    kila module, replace kwenye list(MAPPING.items()):
+        kila old_attr, new_attr kwenye list(replace.items()):
             LOOKUP[(module, old_attr)] = new_attr
             #bare.add(module)
             #bare.add(old_attr)
-            #yield """
+            #tuma """
             #      import_name< 'agiza' (module=%r
             #          | dotted_as_names< any* module=%r any* >) >
             #      """ % (module, module)
-            yield """
+            tuma """
                   import_kutoka< 'kutoka' module_name=%r 'agiza'
                       ( attr_name=%r | import_as_name< attr_name=%r 'as' any >) >
                   """ % (module, old_attr, old_attr)
-            yield """
+            tuma """
                   power< module_name=%r trailer< '.' attr_name=%r > any* >
                   """ % (module, old_attr)
-    #yield """bare_name=%s""" % alternates(bare)
+    #tuma """bare_name=%s""" % alternates(bare)
 
 
 kundi FixRenames(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = "|".join(build_pattern())
 
     order = "pre" # Pre-order tree traversal
@@ -50,10 +50,10 @@ kundi FixRenames(fixer_base.BaseFix):
         match = super(FixRenames, self).match
         results = match(node)
         ikiwa results:
-            ikiwa any(match(obj) for obj in attr_chain(node, "parent")):
-                rudisha False
+            ikiwa any(match(obj) kila obj kwenye attr_chain(node, "parent")):
+                rudisha Uongo
             rudisha results
-        rudisha False
+        rudisha Uongo
 
     #eleza start_tree(self, tree, filename):
     #    super(FixRenames, self).start_tree(tree, filename)
@@ -65,6 +65,6 @@ kundi FixRenames(fixer_base.BaseFix):
         #bare_name = results.get("bare_name")
         #import_mod = results.get("module")
 
-        ikiwa mod_name and attr_name:
+        ikiwa mod_name na attr_name:
             new_attr = LOOKUP[(mod_name.value, attr_name.value)]
             attr_name.replace(Name(new_attr, prefix=attr_name.prefix))

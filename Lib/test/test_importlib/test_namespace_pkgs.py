@@ -9,25 +9,25 @@ kutoka test.test_importlib agiza util
 # needed tests:
 #
 # need to test when nested, so that the top-level path isn't sys.path
-# need to test dynamic path detection, both at top-level and nested
-# with dynamic path, check when a loader is returned on path reload (that is,
+# need to test dynamic path detection, both at top-level na nested
+# with dynamic path, check when a loader ni rudishaed on path reload (that is,
 #  trying to switch kutoka a namespace package to a regular package)
 
 
 @contextlib.contextmanager
 eleza sys_modules_context():
     """
-    Make sure sys.modules is the same object and has the same content
-    when exiting the context as when entering.
+    Make sure sys.modules ni the same object na has the same content
+    when exiting the context kama when entering.
 
     Similar to importlib.test.util.uncache, but doesn't require explicit
     names.
     """
     sys_modules_saved = sys.modules
     sys_modules_copy = sys.modules.copy()
-    try:
-        yield
-    finally:
+    jaribu:
+        tuma
+    mwishowe:
         sys.modules = sys_modules_saved
         sys.modules.clear()
         sys.modules.update(sys_modules_copy)
@@ -36,37 +36,37 @@ eleza sys_modules_context():
 @contextlib.contextmanager
 eleza namespace_tree_context(**kwargs):
     """
-    Save agiza state and sys.modules cache and restore it on exit.
+    Save agiza state na sys.modules cache na restore it on exit.
     Typical usage:
 
     >>> with namespace_tree_context(path=['/tmp/xxyy/portion1',
     ...         '/tmp/xxyy/portion2']):
-    ...     pass
+    ...     pita
     """
-    # use default meta_path and path_hooks unless specified otherwise
+    # use default meta_path na path_hooks unless specified otherwise
     kwargs.setdefault('meta_path', sys.meta_path)
     kwargs.setdefault('path_hooks', sys.path_hooks)
     import_context = util.import_state(**kwargs)
     with import_context, sys_modules_context():
-        yield
+        tuma
 
 kundi NamespacePackageTest(unittest.TestCase):
     """
-    Subclasses should define self.root and self.paths (under that root)
+    Subclasses should define self.root na self.paths (under that root)
     to be added to sys.path.
     """
     root = os.path.join(os.path.dirname(__file__), 'namespace_pkgs')
 
     eleza setUp(self):
         self.resolved_paths = [
-            os.path.join(self.root, path) for path in self.paths
+            os.path.join(self.root, path) kila path kwenye self.paths
         ]
         self.ctx = namespace_tree_context(path=self.resolved_paths)
         self.ctx.__enter__()
 
     eleza tearDown(self):
-        # TODO: will we ever want to pass exc_info to __exit__?
-        self.ctx.__exit__(None, None, None)
+        # TODO: will we ever want to pita exc_info to __exit__?
+        self.ctx.__exit__(Tupu, Tupu, Tupu)
 
 
 kundi SingleNamespacePackage(NamespacePackageTest):
@@ -99,7 +99,7 @@ kundi DynamicPathNamespacePackage(NamespacePackageTest):
         # Now modify sys.path
         sys.path.append(os.path.join(self.root, 'portion2'))
 
-        # And make sure foo.two is now agizaable
+        # And make sure foo.two ni now agizaable
         agiza foo.two
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
@@ -266,13 +266,13 @@ kundi ZipWithMissingDirectory(NamespacePackageTest):
         # ---------                     -------
         #        67                     3 files
 
-        # Because there is no 'foo/', the zipimporter currently doesn't
-        #  know that foo is a namespace package
+        # Because there ni no 'foo/', the zipimporter currently doesn't
+        #  know that foo ni a namespace package
 
         agiza foo.one
 
     eleza test_present_directory(self):
-        # This succeeds because there is a "bar/" in the zip file
+        # This succeeds because there ni a "bar/" kwenye the zip file
         agiza bar.two
         self.assertEqual(bar.two.attr, 'missing_directory foo two')
 
@@ -281,7 +281,7 @@ kundi ModuleAndNamespacePackageInSameDir(NamespacePackageTest):
     paths = ['module_and_namespace_package']
 
     eleza test_module_before_namespace_package(self):
-        # Make sure we find the module in preference to the
+        # Make sure we find the module kwenye preference to the
         #  namespace package.
         agiza a_test
         self.assertEqual(a_test.attr, 'in module')
@@ -308,11 +308,11 @@ kundi ReloadTests(NamespacePackageTest):
         with self.assertRaises(ImportError):
             agiza foo.two
 
-        # Now modify sys.path and reload.
+        # Now modify sys.path na reload.
         sys.path.append(os.path.join(self.root, 'portion2'))
         foo = importlib.reload(foo)
 
-        # And make sure foo.two is now agizaable
+        # And make sure foo.two ni now agizaable
         agiza foo.two
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
@@ -324,13 +324,13 @@ kundi LoaderTests(NamespacePackageTest):
         # bpo-32303
         agiza foo
         self.assertEqual(foo.__loader__, foo.__spec__.loader)
-        self.assertIsNotNone(foo.__loader__)
+        self.assertIsNotTupu(foo.__loader__)
 
     eleza test_namespace_origin_consistency(self):
         # bpo-32305
         agiza foo
-        self.assertIsNone(foo.__spec__.origin)
-        self.assertIsNone(foo.__file__)
+        self.assertIsTupu(foo.__spec__.origin)
+        self.assertIsTupu(foo.__file__)
 
     eleza test_path_indexable(self):
         # bpo-35843

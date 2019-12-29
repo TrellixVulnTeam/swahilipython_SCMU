@@ -10,7 +10,7 @@ kutoka ..fixer_util agiza Call, Name, parenthesize
 
 kundi FixRepr(fixer_base.BaseFix):
 
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
               atom < '`' expr=any '`' >
               """

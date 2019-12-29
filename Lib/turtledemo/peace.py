@@ -3,9 +3,9 @@
 
               tdemo_peace.py
 
-A simple drawing suitable as a beginner's
+A simple drawing suitable kama a beginner's
 programming example. Aside kutoka the
-peacecolors assignment and the for loop,
+peacecolors assignment na the kila loop,
 it only uses turtle commands.
 """
 
@@ -22,7 +22,7 @@ eleza main():
     goto(-320,-195)
     width(70)
 
-    for pcolor in peacecolors:
+    kila pcolor kwenye peacecolors:
         color(pcolor)
         down()
         forward(640)
@@ -53,7 +53,7 @@ eleza main():
     forward(170)
     up()
 
-    goto(0,300) # vanish ikiwa hideturtle() is not available ;-)
+    goto(0,300) # vanish ikiwa hideturtle() ni sio available ;-)
     rudisha "Done!"
 
 ikiwa __name__ == "__main__":

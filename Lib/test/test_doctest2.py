@@ -1,10 +1,10 @@
 """A module to test whether doctest recognizes some 2.2 features,
-like static and kundi methods.
+like static na kundi methods.
 
 >>> andika('yup')  # 1
 yup
 
-We include some (random) encoded (utf-8) text in the text surrounding
+We include some (random) encoded (utf-8) text kwenye the text surrounding
 the example.  It should be ignored:
 
 ЉЊЈЁЂ
@@ -15,7 +15,7 @@ agiza sys
 agiza unittest
 kutoka test agiza support
 ikiwa sys.flags.optimize >= 2:
-    raise unittest.SkipTest("Cannot test docstrings with -O2")
+    ashiria unittest.SkipTest("Cannot test docstrings with -O2")
 
 kundi C(object):
     """Class C.
@@ -24,7 +24,7 @@ kundi C(object):
     42
 
 
-    We include some (random) encoded (utf-8) text in the text surrounding
+    We include some (random) encoded (utf-8) text kwenye the text surrounding
     the example.  It should be ignored:
 
         ЉЊЈЁЂ
@@ -112,10 +112,10 @@ eleza test_main():
     EXPECTED = 19
     f, t = support.run_doctest(test_doctest2)
     ikiwa t != EXPECTED:
-        raise support.TestFailed("expected %d tests to run, not %d" %
+        ashiria support.TestFailed("expected %d tests to run, sio %d" %
                                       (EXPECTED, t))
 
-# Pollute the namespace with a bunch of imported functions and classes,
+# Pollute the namespace with a bunch of imported functions na classes,
 # to make sure they don't get tested.
 kutoka doctest agiza *
 

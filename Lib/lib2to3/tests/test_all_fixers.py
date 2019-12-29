@@ -20,7 +20,7 @@ kundi Test_all(support.TestCase):
         self.refactor = support.get_refactorer()
 
     eleza test_all_project_files(self):
-        for filepath in support.all_project_files():
+        kila filepath kwenye support.all_project_files():
             self.refactor.refactor_file(filepath)
 
 ikiwa __name__ == '__main__':

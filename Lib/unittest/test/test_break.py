@@ -11,17 +11,17 @@ agiza unittest
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
 kundi TestBreak(unittest.TestCase):
-    int_handler = None
+    int_handler = Tupu
 
     eleza setUp(self):
         self._default_handler = signal.getsignal(signal.SIGINT)
-        ikiwa self.int_handler is not None:
+        ikiwa self.int_handler ni sio Tupu:
             signal.signal(signal.SIGINT, self.int_handler)
 
     eleza tearDown(self):
         signal.signal(signal.SIGINT, self._default_handler)
         unittest.signals._results = weakref.WeakKeyDictionary()
-        unittest.signals._interrupt_handler = None
+        unittest.signals._interrupt_handler = Tupu
 
 
     eleza testInstallHandler(self):
@@ -29,22 +29,22 @@ kundi TestBreak(unittest.TestCase):
         unittest.installHandler()
         self.assertNotEqual(signal.getsignal(signal.SIGINT), default_handler)
 
-        try:
+        jaribu:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
-            self.fail("KeyboardInterrupt not handled")
+        tatizo KeyboardInterrupt:
+            self.fail("KeyboardInterrupt sio handled")
 
-        self.assertTrue(unittest.signals._interrupt_handler.called)
+        self.assertKweli(unittest.signals._interrupt_handler.called)
 
     eleza testRegisterResult(self):
         result = unittest.TestResult()
         self.assertNotIn(result, unittest.signals._results)
 
         unittest.registerResult(result)
-        try:
+        jaribu:
             self.assertIn(result, unittest.signals._results)
-        finally:
+        mwishowe:
             unittest.removeResult(result)
 
     eleza testInterruptCaught(self):
@@ -59,21 +59,21 @@ kundi TestBreak(unittest.TestCase):
         eleza test(result):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-            result.breakCaught = True
-            self.assertTrue(result.shouldStop)
+            result.komaCaught = Kweli
+            self.assertKweli(result.shouldStop)
 
-        try:
+        jaribu:
             test(result)
-        except KeyboardInterrupt:
-            self.fail("KeyboardInterrupt not handled")
-        self.assertTrue(result.breakCaught)
+        tatizo KeyboardInterrupt:
+            self.fail("KeyboardInterrupt sio handled")
+        self.assertKweli(result.komaCaught)
 
 
     eleza testSecondInterrupt(self):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
         ikiwa signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
-            self.skipTest("test requires SIGINT to not be ignored")
+            self.skipTest("test requires SIGINT to sio be ignored")
         result = unittest.TestResult()
         unittest.installHandler()
         unittest.registerResult(result)
@@ -81,18 +81,18 @@ kundi TestBreak(unittest.TestCase):
         eleza test(result):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-            result.breakCaught = True
-            self.assertTrue(result.shouldStop)
+            result.komaCaught = Kweli
+            self.assertKweli(result.shouldStop)
             os.kill(pid, signal.SIGINT)
-            self.fail("Second KeyboardInterrupt not raised")
+            self.fail("Second KeyboardInterrupt sio ashiriad")
 
-        try:
+        jaribu:
             test(result)
-        except KeyboardInterrupt:
-            pass
-        else:
-            self.fail("Second KeyboardInterrupt not raised")
-        self.assertTrue(result.breakCaught)
+        tatizo KeyboardInterrupt:
+            pita
+        isipokua:
+            self.fail("Second KeyboardInterrupt sio ashiriad")
+        self.assertKweli(result.komaCaught)
 
 
     eleza testTwoResults(self):
@@ -112,24 +112,24 @@ kundi TestBreak(unittest.TestCase):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
 
-        try:
+        jaribu:
             test(result)
-        except KeyboardInterrupt:
-            self.fail("KeyboardInterrupt not handled")
+        tatizo KeyboardInterrupt:
+            self.fail("KeyboardInterrupt sio handled")
 
-        self.assertTrue(result.shouldStop)
-        self.assertTrue(result2.shouldStop)
-        self.assertFalse(result3.shouldStop)
+        self.assertKweli(result.shouldStop)
+        self.assertKweli(result2.shouldStop)
+        self.assertUongo(result3.shouldStop)
 
 
     eleza testHandlerReplacedButCalled(self):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
         ikiwa signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
-            self.skipTest("test requires SIGINT to not be ignored")
+            self.skipTest("test requires SIGINT to sio be ignored")
         # If our handler has been replaced (is no longer installed) but is
         # called by the *new* handler, then it isn't safe to delay the
-        # SIGINT and we should immediately delegate to the default handler
+        # SIGINT na we should immediately delegate to the default handler
         unittest.installHandler()
 
         handler = signal.getsignal(signal.SIGINT)
@@ -137,13 +137,13 @@ kundi TestBreak(unittest.TestCase):
             handler(frame, signum)
         signal.signal(signal.SIGINT, new_handler)
 
-        try:
+        jaribu:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
-            pass
-        else:
-            self.fail("replaced but delegated handler doesn't raise interrupt")
+        tatizo KeyboardInterrupt:
+            pita
+        isipokua:
+            self.fail("replaced but delegated handler doesn't ashiria interrupt")
 
     eleza testRunner(self):
         # Creating a TextTestRunner with the appropriate argument should
@@ -154,16 +154,16 @@ kundi TestBreak(unittest.TestCase):
         self.assertIn(result, unittest.signals._results)
 
     eleza testWeakReferences(self):
-        # Calling registerResult on a result should not keep it alive
+        # Calling registerResult on a result should sio keep it alive
         result = unittest.TestResult()
         unittest.registerResult(result)
 
         ref = weakref.ref(result)
-        del result
+        toa result
 
         # For non-reference counting implementations
         gc.collect();gc.collect()
-        self.assertIsNone(ref())
+        self.assertIsTupu(ref())
 
 
     eleza testRemoveResult(self):
@@ -171,18 +171,18 @@ kundi TestBreak(unittest.TestCase):
         unittest.registerResult(result)
 
         unittest.installHandler()
-        self.assertTrue(unittest.removeResult(result))
+        self.assertKweli(unittest.removeResult(result))
 
-        # Should this raise an error instead?
-        self.assertFalse(unittest.removeResult(unittest.TestResult()))
+        # Should this ashiria an error instead?
+        self.assertUongo(unittest.removeResult(unittest.TestResult()))
 
-        try:
+        jaribu:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
 
-        self.assertFalse(result.shouldStop)
+        self.assertUongo(result.shouldStop)
 
     eleza testMainInstallsHandler(self):
         failfast = object()
@@ -201,24 +201,24 @@ kundi TestBreak(unittest.TestCase):
                 rudisha result
 
         kundi Program(unittest.TestProgram):
-            eleza __init__(self, catchbreak):
-                self.exit = False
+            eleza __init__(self, catchkoma):
+                self.exit = Uongo
                 self.verbosity = verbosity
                 self.failfast = failfast
-                self.catchbreak = catchbreak
-                self.tb_locals = False
+                self.catchkoma = catchkoma
+                self.tb_locals = Uongo
                 self.testRunner = FakeRunner
                 self.test = test
-                self.result = None
+                self.result = Tupu
 
-        p = Program(False)
+        p = Program(Uongo)
         p.runTests()
 
-        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': None,
+        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': Tupu,
                                                      'verbosity': verbosity,
                                                      'failfast': failfast,
-                                                     'tb_locals': False,
-                                                     'warnings': None})])
+                                                     'tb_locals': Uongo,
+                                                     'warnings': Tupu})])
         self.assertEqual(FakeRunner.runArgs, [test])
         self.assertEqual(p.result, result)
 
@@ -226,14 +226,14 @@ kundi TestBreak(unittest.TestCase):
 
         FakeRunner.initArgs = []
         FakeRunner.runArgs = []
-        p = Program(True)
+        p = Program(Kweli)
         p.runTests()
 
-        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': None,
+        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': Tupu,
                                                      'verbosity': verbosity,
                                                      'failfast': failfast,
-                                                     'tb_locals': False,
-                                                     'warnings': None})])
+                                                     'tb_locals': Uongo,
+                                                     'warnings': Tupu})])
         self.assertEqual(FakeRunner.runArgs, [test])
         self.assertEqual(p.result, result)
 

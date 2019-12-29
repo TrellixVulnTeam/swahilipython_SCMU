@@ -148,7 +148,7 @@ kundi SunauLowLevelTest(unittest.TestCase):
 
     eleza test_read_wrong_encoding(self):
         b = struct.pack('>LLLLLL', sunau.AUDIO_FILE_MAGIC, 24, 0, 0, 11025, 1)
-        with self.assertRaisesRegex(sunau.Error, r'encoding not \(yet\) supported'):
+        with self.assertRaisesRegex(sunau.Error, r'encoding sio \(yet\) supported'):
             sunau.open(io.BytesIO(b))
 
     eleza test_read_wrong_number_of_channels(self):

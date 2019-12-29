@@ -14,40 +14,40 @@ skip_if_missing()
 
 
 kundi Test_pygettext(unittest.TestCase):
-    """Tests for the pygettext.py tool"""
+    """Tests kila the pygettext.py tool"""
 
     script = os.path.join(toolsdir,'i18n', 'pygettext.py')
 
     eleza get_header(self, data):
-        """ utility: rudisha the header of a .po file as a dictionary """
+        """ utility: rudisha the header of a .po file kama a dictionary """
         headers = {}
-        for line in data.split('\n'):
-            ikiwa not line or line.startswith(('#', 'msgid','msgstr')):
-                continue
+        kila line kwenye data.split('\n'):
+            ikiwa sio line ama line.startswith(('#', 'msgid','msgstr')):
+                endelea
             line = line.strip('"')
             key, val = line.split(':',1)
             headers[key] = val.strip()
         rudisha headers
 
     eleza get_msgids(self, data):
-        """ utility: rudisha all msgids in .po file as a list of strings """
+        """ utility: rudisha all msgids kwenye .po file kama a list of strings """
         msgids = []
-        reading_msgid = False
+        reading_msgid = Uongo
         cur_msgid = []
-        for line in data.split('\n'):
+        kila line kwenye data.split('\n'):
             ikiwa reading_msgid:
                 ikiwa line.startswith('"'):
                     cur_msgid.append(line.strip('"'))
-                else:
+                isipokua:
                     msgids.append('\n'.join(cur_msgid))
                     cur_msgid = []
-                    reading_msgid = False
-                    continue
+                    reading_msgid = Uongo
+                    endelea
             ikiwa line.startswith('msgid '):
                 line = line[len('msgid '):]
                 cur_msgid.append(line.strip('"'))
-                reading_msgid = True
-        else:
+                reading_msgid = Kweli
+        isipokua:
             ikiwa reading_msgid:
                 msgids.append('\n'.join(cur_msgid))
 
@@ -56,21 +56,21 @@ kundi Test_pygettext(unittest.TestCase):
     eleza extract_docstrings_kutoka_str(self, module_content):
         """ utility: rudisha all msgids extracted kutoka module_content """
         filename = 'test_docstrings.py'
-        with temp_cwd(None) as cwd:
-            with open(filename, 'w') as fp:
+        with temp_cwd(Tupu) kama cwd:
+            with open(filename, 'w') kama fp:
                 fp.write(module_content)
             assert_python_ok(self.script, '-D', filename)
-            with open('messages.pot') as fp:
+            with open('messages.pot') kama fp:
                 data = fp.read()
         rudisha self.get_msgids(data)
 
     eleza test_header(self):
-        """Make sure the required fields are in the header, according to:
+        """Make sure the required fields are kwenye the header, according to:
            http://www.gnu.org/software/gettext/manual/gettext.html#Header-Entry
         """
-        with temp_cwd(None) as cwd:
+        with temp_cwd(Tupu) kama cwd:
             assert_python_ok(self.script)
-            with open('messages.pot') as fp:
+            with open('messages.pot') kama fp:
                 data = fp.read()
             header = self.get_header(data)
 
@@ -84,20 +84,20 @@ kundi Test_pygettext(unittest.TestCase):
             self.assertIn("Content-Transfer-Encoding", header)
             self.assertIn("Generated-By", header)
 
-            # not clear ikiwa these should be required in POT (template) files
+            # sio clear ikiwa these should be required kwenye POT (template) files
             #self.assertIn("Report-Msgid-Bugs-To", header)
             #self.assertIn("Language", header)
 
-            #"Plural-Forms" is optional
+            #"Plural-Forms" ni optional
 
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
     eleza test_POT_Creation_Date(self):
-        """ Match the date format kutoka xgettext for POT-Creation-Date """
+        """ Match the date format kutoka xgettext kila POT-Creation-Date """
         kutoka datetime agiza datetime
-        with temp_cwd(None) as cwd:
+        with temp_cwd(Tupu) kama cwd:
             assert_python_ok(self.script)
-            with open('messages.pot') as fp:
+            with open('messages.pot') kama fp:
                 data = fp.read()
             header = self.get_header(data)
             creationDate = header['POT-Creation-Date']
@@ -106,11 +106,11 @@ kundi Test_pygettext(unittest.TestCase):
             ikiwa creationDate.endswith('\\n'):
                 creationDate = creationDate[:-len('\\n')]
 
-            # This will raise ikiwa the date format does not exactly match.
+            # This will ashiria ikiwa the date format does sio exactly match.
             datetime.strptime(creationDate, '%Y-%m-%d %H:%M%z')
 
     eleza test_funcdocstring(self):
-        for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
+        kila doc kwenye ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
                 msgids = self.extract_docstrings_kutoka_str(dedent('''\
                 eleza foo(bar):
@@ -123,17 +123,17 @@ kundi Test_pygettext(unittest.TestCase):
         eleza foo(bar):
             b"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
+        self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_funcdocstring_fstring(self):
         msgids = self.extract_docstrings_kutoka_str(dedent('''\
         eleza foo(bar):
             f"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
+        self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_classdocstring(self):
-        for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
+        kila doc kwenye ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
                 msgids = self.extract_docstrings_kutoka_str(dedent('''\
                 kundi C:
@@ -146,14 +146,14 @@ kundi Test_pygettext(unittest.TestCase):
         kundi C:
             b"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
+        self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_classdocstring_fstring(self):
         msgids = self.extract_docstrings_kutoka_str(dedent('''\
         kundi C:
             f"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
+        self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_msgid(self):
         msgids = self.extract_docstrings_kutoka_str(
@@ -162,22 +162,22 @@ kundi Test_pygettext(unittest.TestCase):
 
     eleza test_msgid_bytes(self):
         msgids = self.extract_docstrings_kutoka_str('_(b"""doc""")')
-        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
+        self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_msgid_fstring(self):
         msgids = self.extract_docstrings_kutoka_str('_(f"""doc""")')
-        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
+        self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_funcdocstring_annotated_args(self):
-        """ Test docstrings for functions with annotated args """
+        """ Test docstrings kila functions with annotated args """
         msgids = self.extract_docstrings_kutoka_str(dedent('''\
         eleza foo(bar: str):
             """doc"""
         '''))
         self.assertIn('doc', msgids)
 
-    eleza test_funcdocstring_annotated_return(self):
-        """ Test docstrings for functions with annotated rudisha type """
+    eleza test_funcdocstring_annotated_rudisha(self):
+        """ Test docstrings kila functions with annotated rudisha type """
         msgids = self.extract_docstrings_kutoka_str(dedent('''\
         eleza foo(bar) -> str:
             """doc"""
@@ -185,7 +185,7 @@ kundi Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     eleza test_funcdocstring_defvalue_args(self):
-        """ Test docstring for functions with default arg values """
+        """ Test docstring kila functions with default arg values """
         msgids = self.extract_docstrings_kutoka_str(dedent('''\
         eleza foo(bar=()):
             """doc"""
@@ -193,8 +193,8 @@ kundi Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     eleza test_funcdocstring_multiple_funcs(self):
-        """ Test docstring extraction for multiple functions combining
-        annotated args, annotated rudisha types and default arg values
+        """ Test docstring extraction kila multiple functions combining
+        annotated args, annotated rudisha types na default arg values
         """
         msgids = self.extract_docstrings_kutoka_str(dedent('''\
         eleza foo1(bar: tuple=()) -> str:
@@ -211,7 +211,7 @@ kundi Test_pygettext(unittest.TestCase):
         self.assertIn('doc3', msgids)
 
     eleza test_classdocstring_early_colon(self):
-        """ Test docstring extraction for a kundi with colons occurring within
+        """ Test docstring extraction kila a kundi with colons occurring within
         the parentheses.
         """
         msgids = self.extract_docstrings_kutoka_str(dedent('''\
@@ -221,24 +221,24 @@ kundi Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     eleza test_files_list(self):
-        """Make sure the directories are inspected for source files
+        """Make sure the directories are inspected kila source files
            bpo-31920
         """
         text1 = 'Text to translate1'
         text2 = 'Text to translate2'
         text3 = 'Text to ignore'
-        with temp_cwd(None), temp_dir(None) as sdir:
+        with temp_cwd(Tupu), temp_dir(Tupu) kama sdir:
             os.mkdir(os.path.join(sdir, 'pypkg'))
-            with open(os.path.join(sdir, 'pypkg', 'pymod.py'), 'w') as sfile:
+            with open(os.path.join(sdir, 'pypkg', 'pymod.py'), 'w') kama sfile:
                 sfile.write(f'_({text1!r})')
             os.mkdir(os.path.join(sdir, 'pkg.py'))
-            with open(os.path.join(sdir, 'pkg.py', 'pymod2.py'), 'w') as sfile:
+            with open(os.path.join(sdir, 'pkg.py', 'pymod2.py'), 'w') kama sfile:
                 sfile.write(f'_({text2!r})')
             os.mkdir(os.path.join(sdir, 'CVS'))
-            with open(os.path.join(sdir, 'CVS', 'pymod3.py'), 'w') as sfile:
+            with open(os.path.join(sdir, 'CVS', 'pymod3.py'), 'w') kama sfile:
                 sfile.write(f'_({text3!r})')
             assert_python_ok(self.script, sdir)
-            with open('messages.pot') as fp:
+            with open('messages.pot') kama fp:
                 data = fp.read()
             self.assertIn(f'msgid "{text1}"', data)
             self.assertIn(f'msgid "{text2}"', data)

@@ -49,7 +49,7 @@ class RefcountTestCase(unittest.TestCase):
         self.assertGreater(grc(func), 2)
 
         # and may release it again
-        del f
+        toa f
         self.assertGreaterEqual(grc(func), 2)
 
         # but now it must be gone
@@ -65,7 +65,7 @@ class RefcountTestCase(unittest.TestCase):
         self.assertGreater(grc(func), 2)
 
         # and may release it again
-        del x
+        toa x
         self.assertGreaterEqual(grc(func), 2)
 
         # and now it must be gone again
@@ -80,7 +80,7 @@ class RefcountTestCase(unittest.TestCase):
         # create a cycle
         f.cycle = f
 
-        del f
+        toa f
         gc.collect()
         self.assertEqual(grc(func), 2)
 

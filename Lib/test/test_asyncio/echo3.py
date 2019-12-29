@@ -1,11 +1,11 @@
 import os
 
 if __name__ == '__main__':
-    while True:
+    wakati True:
         buf = os.read(0, 1024)
-        if not buf:
-            break
-        try:
+        if sio buf:
+            koma
+        jaribu:
             os.write(1, b'OUT:'+buf)
-        except OSError as ex:
+        tatizo OSError as ex:
             os.write(2, b'ERR:' + ex.__class__.__name__.encode('ascii'))

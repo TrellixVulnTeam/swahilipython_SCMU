@@ -1,4 +1,4 @@
-"""Event loop and event loop policy."""
+"""Event loop na event loop policy."""
 
 __all__ = (
     'AbstractEventLoopPolicy',
@@ -23,32 +23,32 @@ kutoka . agiza exceptions
 
 
 kundi Handle:
-    """Object returned by callback registration methods."""
+    """Object rudishaed by callback registration methods."""
 
     __slots__ = ('_callback', '_args', '_cancelled', '_loop',
                  '_source_traceback', '_repr', '__weakref__',
                  '_context')
 
-    eleza __init__(self, callback, args, loop, context=None):
-        ikiwa context is None:
+    eleza __init__(self, callback, args, loop, context=Tupu):
+        ikiwa context ni Tupu:
             context = contextvars.copy_context()
         self._context = context
         self._loop = loop
         self._callback = callback
         self._args = args
-        self._cancelled = False
-        self._repr = None
+        self._cancelled = Uongo
+        self._repr = Tupu
         ikiwa self._loop.get_debug():
             self._source_traceback = format_helpers.extract_stack(
                 sys._getframe(1))
-        else:
-            self._source_traceback = None
+        isipokua:
+            self._source_traceback = Tupu
 
     eleza _repr_info(self):
         info = [self.__class__.__name__]
         ikiwa self._cancelled:
             info.append('cancelled')
-        ikiwa self._callback is not None:
+        ikiwa self._callback ni sio Tupu:
             info.append(format_helpers._format_callback_source(
                 self._callback, self._args))
         ikiwa self._source_traceback:
@@ -57,34 +57,34 @@ kundi Handle:
         rudisha info
 
     eleza __repr__(self):
-        ikiwa self._repr is not None:
+        ikiwa self._repr ni sio Tupu:
             rudisha self._repr
         info = self._repr_info()
         rudisha '<{}>'.format(' '.join(info))
 
     eleza cancel(self):
-        ikiwa not self._cancelled:
-            self._cancelled = True
+        ikiwa sio self._cancelled:
+            self._cancelled = Kweli
             ikiwa self._loop.get_debug():
-                # Keep a representation in debug mode to keep callback and
+                # Keep a representation kwenye debug mode to keep callback and
                 # parameters. For example, to log the warning
                 # "Executing <Handle...> took 2.5 second"
                 self._repr = repr(self)
-            self._callback = None
-            self._args = None
+            self._callback = Tupu
+            self._args = Tupu
 
     eleza cancelled(self):
         rudisha self._cancelled
 
     eleza _run(self):
-        try:
+        jaribu:
             self._context.run(self._callback, *self._args)
-        except (SystemExit, KeyboardInterrupt):
-            raise
-        except BaseException as exc:
+        tatizo (SystemExit, KeyboardInterrupt):
+            ashiria
+        tatizo BaseException kama exc:
             cb = format_helpers._format_callback_source(
                 self._callback, self._args)
-            msg = f'Exception in callback {cb}'
+            msg = f'Exception kwenye callback {cb}'
             context = {
                 'message': msg,
                 'exception': exc,
@@ -93,21 +93,21 @@ kundi Handle:
             ikiwa self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
-        self = None  # Needed to break cycles when an exception occurs.
+        self = Tupu  # Needed to koma cycles when an exception occurs.
 
 
 kundi TimerHandle(Handle):
-    """Object returned by timed callback registration methods."""
+    """Object rudishaed by timed callback registration methods."""
 
     __slots__ = ['_scheduled', '_when']
 
-    eleza __init__(self, when, callback, args, loop, context=None):
-        assert when is not None
+    eleza __init__(self, when, callback, args, loop, context=Tupu):
+        assert when ni sio Tupu
         super().__init__(callback, args, loop, context)
         ikiwa self._source_traceback:
-            del self._source_traceback[-1]
+            toa self._source_traceback[-1]
         self._when = when
-        self._scheduled = False
+        self._scheduled = Uongo
 
     eleza _repr_info(self):
         info = super()._repr_info()
@@ -123,7 +123,7 @@ kundi TimerHandle(Handle):
 
     eleza __le__(self, other):
         ikiwa self._when < other._when:
-            rudisha True
+            rudisha Kweli
         rudisha self.__eq__(other)
 
     eleza __gt__(self, other):
@@ -131,7 +131,7 @@ kundi TimerHandle(Handle):
 
     eleza __ge__(self, other):
         ikiwa self._when > other._when:
-            rudisha True
+            rudisha Kweli
         rudisha self.__eq__(other)
 
     eleza __eq__(self, other):
@@ -144,55 +144,55 @@ kundi TimerHandle(Handle):
 
     eleza __ne__(self, other):
         equal = self.__eq__(other)
-        rudisha NotImplemented ikiwa equal is NotImplemented else not equal
+        rudisha NotImplemented ikiwa equal ni NotImplemented else sio equal
 
     eleza cancel(self):
-        ikiwa not self._cancelled:
+        ikiwa sio self._cancelled:
             self._loop._timer_handle_cancelled(self)
         super().cancel()
 
     eleza when(self):
         """Return a scheduled callback time.
 
-        The time is an absolute timestamp, using the same time
-        reference as loop.time().
+        The time ni an absolute timestamp, using the same time
+        reference kama loop.time().
         """
         rudisha self._when
 
 
 kundi AbstractServer:
-    """Abstract server returned by create_server()."""
+    """Abstract server rudishaed by create_server()."""
 
     eleza close(self):
         """Stop serving.  This leaves existing connections open."""
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_loop(self):
-        """Get the event loop the Server object is attached to."""
-        raise NotImplementedError
+        """Get the event loop the Server object ni attached to."""
+        ashiria NotImplementedError
 
     eleza is_serving(self):
-        """Return True ikiwa the server is accepting connections."""
-        raise NotImplementedError
+        """Return Kweli ikiwa the server ni accepting connections."""
+        ashiria NotImplementedError
 
     async eleza start_serving(self):
         """Start accepting connections.
 
-        This method is idempotent, so it can be called when
-        the server is already being serving.
+        This method ni idempotent, so it can be called when
+        the server ni already being serving.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza serve_forever(self):
-        """Start accepting connections until the coroutine is cancelled.
+        """Start accepting connections until the coroutine ni cancelled.
 
-        The server is closed when the coroutine is cancelled.
+        The server ni closed when the coroutine ni cancelled.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza wait_closed(self):
-        """Coroutine to wait until service is closed."""
-        raise NotImplementedError
+        """Coroutine to wait until service ni closed."""
+        ashiria NotImplementedError
 
     async eleza __aenter__(self):
         rudisha self
@@ -205,446 +205,446 @@ kundi AbstractServer:
 kundi AbstractEventLoop:
     """Abstract event loop."""
 
-    # Running and stopping the event loop.
+    # Running na stopping the event loop.
 
     eleza run_forever(self):
-        """Run the event loop until stop() is called."""
-        raise NotImplementedError
+        """Run the event loop until stop() ni called."""
+        ashiria NotImplementedError
 
     eleza run_until_complete(self, future):
-        """Run the event loop until a Future is done.
+        """Run the event loop until a Future ni done.
 
-        Return the Future's result, or raise its exception.
+        Return the Future's result, ama ashiria its exception.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza stop(self):
-        """Stop the event loop as soon as reasonable.
+        """Stop the event loop kama soon kama reasonable.
 
-        Exactly how soon that is may depend on the implementation, but
+        Exactly how soon that ni may depend on the implementation, but
         no more I/O callbacks should be scheduled.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza is_running(self):
-        """Return whether the event loop is currently running."""
-        raise NotImplementedError
+        """Return whether the event loop ni currently running."""
+        ashiria NotImplementedError
 
     eleza is_closed(self):
-        """Returns True ikiwa the event loop was closed."""
-        raise NotImplementedError
+        """Returns Kweli ikiwa the event loop was closed."""
+        ashiria NotImplementedError
 
     eleza close(self):
         """Close the loop.
 
-        The loop should not be running.
+        The loop should sio be running.
 
-        This is idempotent and irreversible.
+        This ni idempotent na irreversible.
 
         No other methods should be called after this one.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza shutdown_asyncgens(self):
         """Shutdown all active asynchronous generators."""
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # Methods scheduling callbacks.  All these rudisha Handles.
 
     eleza _timer_handle_cancelled(self, handle):
         """Notification that a TimerHandle has been cancelled."""
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza call_soon(self, callback, *args):
         rudisha self.call_later(0, callback, *args)
 
     eleza call_later(self, delay, callback, *args):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza call_at(self, when, callback, *args):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza time(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza create_future(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # Method scheduling a coroutine object: create a task.
 
-    eleza create_task(self, coro, *, name=None):
-        raise NotImplementedError
+    eleza create_task(self, coro, *, name=Tupu):
+        ashiria NotImplementedError
 
-    # Methods for interacting with threads.
+    # Methods kila interacting with threads.
 
     eleza call_soon_threadsafe(self, callback, *args):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza run_in_executor(self, executor, func, *args):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_default_executor(self, executor):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
-    # Network I/O methods returning Futures.
+    # Network I/O methods rudishaing Futures.
 
     async eleza getaddrinfo(self, host, port, *,
                           family=0, type=0, proto=0, flags=0):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza getnameinfo(self, sockaddr, flags=0):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_connection(
-            self, protocol_factory, host=None, port=None,
-            *, ssl=None, family=0, proto=0,
-            flags=0, sock=None, local_addr=None,
-            server_hostname=None,
-            ssl_handshake_timeout=None,
-            happy_eyeballs_delay=None, interleave=None):
-        raise NotImplementedError
+            self, protocol_factory, host=Tupu, port=Tupu,
+            *, ssl=Tupu, family=0, proto=0,
+            flags=0, sock=Tupu, local_addr=Tupu,
+            server_hostname=Tupu,
+            ssl_handshake_timeout=Tupu,
+            happy_eyeballs_delay=Tupu, interleave=Tupu):
+        ashiria NotImplementedError
 
     async eleza create_server(
-            self, protocol_factory, host=None, port=None,
+            self, protocol_factory, host=Tupu, port=Tupu,
             *, family=socket.AF_UNSPEC,
-            flags=socket.AI_PASSIVE, sock=None, backlog=100,
-            ssl=None, reuse_address=None, reuse_port=None,
-            ssl_handshake_timeout=None,
-            start_serving=True):
-        """A coroutine which creates a TCP server bound to host and port.
+            flags=socket.AI_PASSIVE, sock=Tupu, backlog=100,
+            ssl=Tupu, reuse_address=Tupu, reuse_port=Tupu,
+            ssl_handshake_timeout=Tupu,
+            start_serving=Kweli):
+        """A coroutine which creates a TCP server bound to host na port.
 
-        The rudisha value is a Server object which can be used to stop
+        The rudisha value ni a Server object which can be used to stop
         the service.
 
-        If host is an empty string or None all interfaces are assumed
-        and a list of multiple sockets will be returned (most likely
-        one for IPv4 and another one for IPv6). The host parameter can also be
+        If host ni an empty string ama Tupu all interfaces are assumed
+        na a list of multiple sockets will be rudishaed (most likely
+        one kila IPv4 na another one kila IPv6). The host parameter can also be
         a sequence (e.g. list) of hosts to bind to.
 
-        family can be set to either AF_INET or AF_INET6 to force the
-        socket to use IPv4 or IPv6. If not set it will be determined
+        family can be set to either AF_INET ama AF_INET6 to force the
+        socket to use IPv4 ama IPv6. If sio set it will be determined
         kutoka host (defaults to AF_UNSPEC).
 
-        flags is a bitmask for getaddrinfo().
+        flags ni a bitmask kila getaddrinfo().
 
-        sock can optionally be specified in order to use a preexisting
+        sock can optionally be specified kwenye order to use a preexisting
         socket object.
 
-        backlog is the maximum number of queued connections passed to
+        backlog ni the maximum number of queued connections pitaed to
         listen() (defaults to 100).
 
         ssl can be set to an SSLContext to enable SSL over the
         accepted connections.
 
         reuse_address tells the kernel to reuse a local socket in
-        TIME_WAIT state, without waiting for its natural timeout to
-        expire. If not specified will automatically be set to True on
+        TIME_WAIT state, without waiting kila its natural timeout to
+        expire. If sio specified will automatically be set to Kweli on
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
-        the same port as other existing endpoints are bound to, so long as
-        they all set this flag when being created. This option is not
+        the same port kama other existing endpoints are bound to, so long as
+        they all set this flag when being created. This option ni not
         supported on Windows.
 
-        ssl_handshake_timeout is the time in seconds that an SSL server
-        will wait for completion of the SSL handshake before aborting the
-        connection. Default is 60s.
+        ssl_handshake_timeout ni the time kwenye seconds that an SSL server
+        will wait kila completion of the SSL handshake before aborting the
+        connection. Default ni 60s.
 
-        start_serving set to True (default) causes the created server
-        to start accepting connections immediately.  When set to False,
-        the user should await Server.start_serving() or Server.serve_forever()
+        start_serving set to Kweli (default) causes the created server
+        to start accepting connections immediately.  When set to Uongo,
+        the user should await Server.start_serving() ama Server.serve_forever()
         to make the server to start accepting connections.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
-    async eleza sendfile(self, transport, file, offset=0, count=None,
-                       *, fallback=True):
+    async eleza sendfile(self, transport, file, offset=0, count=Tupu,
+                       *, fallback=Kweli):
         """Send a file through a transport.
 
         Return an amount of sent bytes.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza start_tls(self, transport, protocol, sslcontext, *,
-                        server_side=False,
-                        server_hostname=None,
-                        ssl_handshake_timeout=None):
+                        server_side=Uongo,
+                        server_hostname=Tupu,
+                        ssl_handshake_timeout=Tupu):
         """Upgrade a transport to TLS.
 
         Return a new transport that *protocol* should start using
         immediately.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_unix_connection(
-            self, protocol_factory, path=None, *,
-            ssl=None, sock=None,
-            server_hostname=None,
-            ssl_handshake_timeout=None):
-        raise NotImplementedError
+            self, protocol_factory, path=Tupu, *,
+            ssl=Tupu, sock=Tupu,
+            server_hostname=Tupu,
+            ssl_handshake_timeout=Tupu):
+        ashiria NotImplementedError
 
     async eleza create_unix_server(
-            self, protocol_factory, path=None, *,
-            sock=None, backlog=100, ssl=None,
-            ssl_handshake_timeout=None,
-            start_serving=True):
+            self, protocol_factory, path=Tupu, *,
+            sock=Tupu, backlog=100, ssl=Tupu,
+            ssl_handshake_timeout=Tupu,
+            start_serving=Kweli):
         """A coroutine which creates a UNIX Domain Socket server.
 
-        The rudisha value is a Server object, which can be used to stop
+        The rudisha value ni a Server object, which can be used to stop
         the service.
 
-        path is a str, representing a file systsem path to bind the
+        path ni a str, representing a file systsem path to bind the
         server socket to.
 
-        sock can optionally be specified in order to use a preexisting
+        sock can optionally be specified kwenye order to use a preexisting
         socket object.
 
-        backlog is the maximum number of queued connections passed to
+        backlog ni the maximum number of queued connections pitaed to
         listen() (defaults to 100).
 
         ssl can be set to an SSLContext to enable SSL over the
         accepted connections.
 
-        ssl_handshake_timeout is the time in seconds that an SSL server
-        will wait for the SSL handshake to complete (defaults to 60s).
+        ssl_handshake_timeout ni the time kwenye seconds that an SSL server
+        will wait kila the SSL handshake to complete (defaults to 60s).
 
-        start_serving set to True (default) causes the created server
-        to start accepting connections immediately.  When set to False,
-        the user should await Server.start_serving() or Server.serve_forever()
+        start_serving set to Kweli (default) causes the created server
+        to start accepting connections immediately.  When set to Uongo,
+        the user should await Server.start_serving() ama Server.serve_forever()
         to make the server to start accepting connections.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_datagram_endpoint(self, protocol_factory,
-                                       local_addr=None, remote_addr=None, *,
+                                       local_addr=Tupu, remote_addr=Tupu, *,
                                        family=0, proto=0, flags=0,
-                                       reuse_address=None, reuse_port=None,
-                                       allow_broadcast=None, sock=None):
+                                       reuse_address=Tupu, reuse_port=Tupu,
+                                       allow_broadcast=Tupu, sock=Tupu):
         """A coroutine which creates a datagram endpoint.
 
-        This method will try to establish the endpoint in the background.
-        When successful, the coroutine returns a (transport, protocol) pair.
+        This method will try to establish the endpoint kwenye the background.
+        When successful, the coroutine rudishas a (transport, protocol) pair.
 
-        protocol_factory must be a callable returning a protocol instance.
+        protocol_factory must be a callable rudishaing a protocol instance.
 
-        socket family AF_INET, socket.AF_INET6 or socket.AF_UNIX depending on
+        socket family AF_INET, socket.AF_INET6 ama socket.AF_UNIX depending on
         host (or family ikiwa specified), socket type SOCK_DGRAM.
 
         reuse_address tells the kernel to reuse a local socket in
-        TIME_WAIT state, without waiting for its natural timeout to
-        expire. If not specified it will automatically be set to True on
+        TIME_WAIT state, without waiting kila its natural timeout to
+        expire. If sio specified it will automatically be set to Kweli on
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
-        the same port as other existing endpoints are bound to, so long as
-        they all set this flag when being created. This option is not
-        supported on Windows and some UNIX's. If the
-        :py:data:`~socket.SO_REUSEPORT` constant is not defined then this
-        capability is unsupported.
+        the same port kama other existing endpoints are bound to, so long as
+        they all set this flag when being created. This option ni not
+        supported on Windows na some UNIX's. If the
+        :py:data:`~socket.SO_REUSEPORT` constant ni sio defined then this
+        capability ni unsupported.
 
         allow_broadcast tells the kernel to allow this endpoint to send
         messages to the broadcast address.
 
-        sock can optionally be specified in order to use a preexisting
+        sock can optionally be specified kwenye order to use a preexisting
         socket object.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
-    # Pipes and subprocesses.
+    # Pipes na subprocesses.
 
     async eleza connect_read_pipe(self, protocol_factory, pipe):
-        """Register read pipe in event loop. Set the pipe to non-blocking mode.
+        """Register read pipe kwenye event loop. Set the pipe to non-blocking mode.
 
         protocol_factory should instantiate object with Protocol interface.
-        pipe is a file-like object.
+        pipe ni a file-like object.
         Return pair (transport, protocol), where transport supports the
         ReadTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
-        # is: we need to own pipe and close it at transport finishing
-        # Can got complicated errors ikiwa pass f.fileno(),
-        # close fd in pipe transport then close f and vise versa.
-        raise NotImplementedError
+        # is: we need to own pipe na close it at transport finishing
+        # Can got complicated errors ikiwa pita f.fileno(),
+        # close fd kwenye pipe transport then close f na vise versa.
+        ashiria NotImplementedError
 
     async eleza connect_write_pipe(self, protocol_factory, pipe):
-        """Register write pipe in event loop.
+        """Register write pipe kwenye event loop.
 
         protocol_factory should instantiate object with BaseProtocol interface.
-        Pipe is file-like object already switched to nonblocking.
+        Pipe ni file-like object already switched to nonblocking.
         Return pair (transport, protocol), where transport support
         WriteTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
-        # is: we need to own pipe and close it at transport finishing
-        # Can got complicated errors ikiwa pass f.fileno(),
-        # close fd in pipe transport then close f and vise versa.
-        raise NotImplementedError
+        # is: we need to own pipe na close it at transport finishing
+        # Can got complicated errors ikiwa pita f.fileno(),
+        # close fd kwenye pipe transport then close f na vise versa.
+        ashiria NotImplementedError
 
     async eleza subprocess_shell(self, protocol_factory, cmd, *,
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
                                **kwargs):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza subprocess_exec(self, protocol_factory, *args,
                               stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
                               **kwargs):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # Ready-based callback registration methods.
-    # The add_*() methods rudisha None.
-    # The remove_*() methods rudisha True ikiwa something was removed,
-    # False ikiwa there was nothing to delete.
+    # The add_*() methods rudisha Tupu.
+    # The remove_*() methods rudisha Kweli ikiwa something was removed,
+    # Uongo ikiwa there was nothing to delete.
 
     eleza add_reader(self, fd, callback, *args):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza remove_reader(self, fd):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza add_writer(self, fd, callback, *args):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza remove_writer(self, fd):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
-    # Completion based I/O methods returning Futures.
+    # Completion based I/O methods rudishaing Futures.
 
     async eleza sock_recv(self, sock, nbytes):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_recv_into(self, sock, buf):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_sendall(self, sock, data):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_connect(self, sock, address):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_accept(self, sock):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
-    async eleza sock_sendfile(self, sock, file, offset=0, count=None,
-                            *, fallback=None):
-        raise NotImplementedError
+    async eleza sock_sendfile(self, sock, file, offset=0, count=Tupu,
+                            *, fallback=Tupu):
+        ashiria NotImplementedError
 
     # Signal handling.
 
     eleza add_signal_handler(self, sig, callback, *args):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza remove_signal_handler(self, sig):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # Task factory.
 
     eleza set_task_factory(self, factory):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_task_factory(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # Error handlers.
 
     eleza get_exception_handler(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_exception_handler(self, handler):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza default_exception_handler(self, context):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza call_exception_handler(self, context):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # Debug flag management.
 
     eleza get_debug(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_debug(self, enabled):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi AbstractEventLoopPolicy:
-    """Abstract policy for accessing the event loop."""
+    """Abstract policy kila accessing the event loop."""
 
     eleza get_event_loop(self):
-        """Get the event loop for the current context.
+        """Get the event loop kila the current context.
 
         Returns an event loop object implementing the BaseEventLoop interface,
-        or raises an exception in case no event loop has been set for the
-        current context and the current policy does not specify to create one.
+        ama ashirias an exception kwenye case no event loop has been set kila the
+        current context na the current policy does sio specify to create one.
 
-        It should never rudisha None."""
-        raise NotImplementedError
+        It should never rudisha Tupu."""
+        ashiria NotImplementedError
 
     eleza set_event_loop(self, loop):
-        """Set the event loop for the current context to loop."""
-        raise NotImplementedError
+        """Set the event loop kila the current context to loop."""
+        ashiria NotImplementedError
 
     eleza new_event_loop(self):
-        """Create and rudisha a new event loop object according to this
-        policy's rules. If there's need to set this loop as the event loop for
+        """Create na rudisha a new event loop object according to this
+        policy's rules. If there's need to set this loop kama the event loop for
         the current context, set_event_loop must be called explicitly."""
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # Child processes handling (Unix only).
 
     eleza get_child_watcher(self):
-        "Get the watcher for child processes."
-        raise NotImplementedError
+        "Get the watcher kila child processes."
+        ashiria NotImplementedError
 
     eleza set_child_watcher(self, watcher):
-        """Set the watcher for child processes."""
-        raise NotImplementedError
+        """Set the watcher kila child processes."""
+        ashiria NotImplementedError
 
 
 kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
-    """Default policy implementation for accessing the event loop.
+    """Default policy implementation kila accessing the event loop.
 
     In this policy, each thread has its own event loop.  However, we
-    only automatically create an event loop by default for the main
+    only automatically create an event loop by default kila the main
     thread; other threads by default have no event loop.
 
     Other policies may have different rules (e.g. a single global
-    event loop, or automatically creating an event loop per thread, or
+    event loop, ama automatically creating an event loop per thread, or
     using some other notion of context to which an event loop is
     associated).
     """
 
-    _loop_factory = None
+    _loop_factory = Tupu
 
     kundi _Local(threading.local):
-        _loop = None
-        _set_called = False
+        _loop = Tupu
+        _set_called = Uongo
 
     eleza __init__(self):
         self._local = self._Local()
 
     eleza get_event_loop(self):
-        """Get the event loop for the current context.
+        """Get the event loop kila the current context.
 
-        Returns an instance of EventLoop or raises an exception.
+        Returns an instance of EventLoop ama ashirias an exception.
         """
-        ikiwa (self._local._loop is None and
-                not self._local._set_called and
+        ikiwa (self._local._loop ni Tupu and
+                sio self._local._set_called and
                 isinstance(threading.current_thread(), threading._MainThread)):
             self.set_event_loop(self.new_event_loop())
 
-        ikiwa self._local._loop is None:
-            raise RuntimeError('There is no current event loop in thread %r.'
+        ikiwa self._local._loop ni Tupu:
+            ashiria RuntimeError('There ni no current event loop kwenye thread %r.'
                                % threading.current_thread().name)
 
         rudisha self._local._loop
 
     eleza set_event_loop(self, loop):
         """Set the event loop."""
-        self._local._set_called = True
-        assert loop is None or isinstance(loop, AbstractEventLoop)
+        self._local._set_called = Kweli
+        assert loop ni Tupu ama isinstance(loop, AbstractEventLoop)
         self._local._loop = loop
 
     eleza new_event_loop(self):
@@ -656,69 +656,69 @@ kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
         rudisha self._loop_factory()
 
 
-# Event loop policy.  The policy itself is always global, even ikiwa the
-# policy's rules say that there is an event loop per thread (or other
-# notion of context).  The default policy is installed by the first
+# Event loop policy.  The policy itself ni always global, even ikiwa the
+# policy's rules say that there ni an event loop per thread (or other
+# notion of context).  The default policy ni installed by the first
 # call to get_event_loop_policy().
-_event_loop_policy = None
+_event_loop_policy = Tupu
 
-# Lock for protecting the on-the-fly creation of the event loop policy.
+# Lock kila protecting the on-the-fly creation of the event loop policy.
 _lock = threading.Lock()
 
 
-# A TLS for the running event loop, used by _get_running_loop.
+# A TLS kila the running event loop, used by _get_running_loop.
 kundi _RunningLoop(threading.local):
-    loop_pid = (None, None)
+    loop_pid = (Tupu, Tupu)
 
 
 _running_loop = _RunningLoop()
 
 
 eleza get_running_loop():
-    """Return the running event loop.  Raise a RuntimeError ikiwa there is none.
+    """Return the running event loop.  Raise a RuntimeError ikiwa there ni none.
 
-    This function is thread-specific.
+    This function ni thread-specific.
     """
-    # NOTE: this function is implemented in C (see _asynciomodule.c)
+    # NOTE: this function ni implemented kwenye C (see _asynciomodule.c)
     loop = _get_running_loop()
-    ikiwa loop is None:
-        raise RuntimeError('no running event loop')
+    ikiwa loop ni Tupu:
+        ashiria RuntimeError('no running event loop')
     rudisha loop
 
 
 eleza _get_running_loop():
-    """Return the running event loop or None.
+    """Return the running event loop ama Tupu.
 
-    This is a low-level function intended to be used by event loops.
-    This function is thread-specific.
+    This ni a low-level function intended to be used by event loops.
+    This function ni thread-specific.
     """
-    # NOTE: this function is implemented in C (see _asynciomodule.c)
+    # NOTE: this function ni implemented kwenye C (see _asynciomodule.c)
     running_loop, pid = _running_loop.loop_pid
-    ikiwa running_loop is not None and pid == os.getpid():
+    ikiwa running_loop ni sio Tupu na pid == os.getpid():
         rudisha running_loop
 
 
 eleza _set_running_loop(loop):
     """Set the running event loop.
 
-    This is a low-level function intended to be used by event loops.
-    This function is thread-specific.
+    This ni a low-level function intended to be used by event loops.
+    This function ni thread-specific.
     """
-    # NOTE: this function is implemented in C (see _asynciomodule.c)
+    # NOTE: this function ni implemented kwenye C (see _asynciomodule.c)
     _running_loop.loop_pid = (loop, os.getpid())
 
 
 eleza _init_event_loop_policy():
     global _event_loop_policy
     with _lock:
-        ikiwa _event_loop_policy is None:  # pragma: no branch
+        ikiwa _event_loop_policy ni Tupu:  # pragma: no branch
             kutoka . agiza DefaultEventLoopPolicy
             _event_loop_policy = DefaultEventLoopPolicy()
 
 
 eleza get_event_loop_policy():
     """Get the current event loop policy."""
-    ikiwa _event_loop_policy is None:
+    ikiwa _event_loop_policy ni Tupu:
         _init_event_loop_policy()
     rudisha _event_loop_policy
 
@@ -726,24 +726,24 @@ eleza get_event_loop_policy():
 eleza set_event_loop_policy(policy):
     """Set the current event loop policy.
 
-    If policy is None, the default policy is restored."""
+    If policy ni Tupu, the default policy ni restored."""
     global _event_loop_policy
-    assert policy is None or isinstance(policy, AbstractEventLoopPolicy)
+    assert policy ni Tupu ama isinstance(policy, AbstractEventLoopPolicy)
     _event_loop_policy = policy
 
 
 eleza get_event_loop():
     """Return an asyncio event loop.
 
-    When called kutoka a coroutine or a callback (e.g. scheduled with call_soon
-    or similar API), this function will always rudisha the running event loop.
+    When called kutoka a coroutine ama a callback (e.g. scheduled with call_soon
+    ama similar API), this function will always rudisha the running event loop.
 
-    If there is no running event loop set, the function will return
+    If there ni no running event loop set, the function will rudisha
     the result of `get_event_loop_policy().get_event_loop()` call.
     """
-    # NOTE: this function is implemented in C (see _asynciomodule.c)
+    # NOTE: this function ni implemented kwenye C (see _asynciomodule.c)
     current_loop = _get_running_loop()
-    ikiwa current_loop is not None:
+    ikiwa current_loop ni sio Tupu:
         rudisha current_loop
     rudisha get_event_loop_policy().get_event_loop()
 
@@ -769,23 +769,23 @@ eleza set_child_watcher(watcher):
     rudisha get_event_loop_policy().set_child_watcher(watcher)
 
 
-# Alias pure-Python implementations for testing purposes.
+# Alias pure-Python implementations kila testing purposes.
 _py__get_running_loop = _get_running_loop
 _py__set_running_loop = _set_running_loop
 _py_get_running_loop = get_running_loop
 _py_get_event_loop = get_event_loop
 
 
-try:
-    # get_event_loop() is one of the most frequently called
-    # functions in asyncio.  Pure Python implementation is
+jaribu:
+    # get_event_loop() ni one of the most frequently called
+    # functions kwenye asyncio.  Pure Python implementation is
     # about 4 times slower than C-accelerated.
     kutoka _asyncio agiza (_get_running_loop, _set_running_loop,
                           get_running_loop, get_event_loop)
-except ImportError:
-    pass
-else:
-    # Alias C implementations for testing purposes.
+tatizo ImportError:
+    pita
+isipokua:
+    # Alias C implementations kila testing purposes.
     _c__get_running_loop = _get_running_loop
     _c__set_running_loop = _set_running_loop
     _c_get_running_loop = get_running_loop

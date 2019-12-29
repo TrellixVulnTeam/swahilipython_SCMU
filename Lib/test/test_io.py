@@ -1,11 +1,11 @@
-"""Unit tests for the io module."""
+"""Unit tests kila the io module."""
 
 # Tests of io are scattered over the test suite:
 # * test_bufio - tests file buffering
-# * test_memoryio - tests BytesIO and StringIO
+# * test_memoryio - tests BytesIO na StringIO
 # * test_fileio - tests FileIO
 # * test_file - tests the file interface
-# * test_io - tests everything else in the io module
+# * test_io - tests everything else kwenye the io module
 # * test_univnewlines - tests universal newline support
 # * test_largefile - tests operations on a file greater than 2**32 bytes
 #     (only enabled with -ulargefile)
@@ -13,9 +13,9 @@
 ################################################################################
 # ATTENTION TEST WRITERS!!!
 ################################################################################
-# When writing tests for io, it's agizaant to test both the C and Python
-# implementations. This is usually done by writing a base test that refers to
-# the type it is testing as an attribute. Then it provides custom subclasses to
+# When writing tests kila io, it's agizaant to test both the C na Python
+# implementations. This ni usually done by writing a base test that refers to
+# the type it ni testing kama an attribute. Then it provides custom subclasses to
 # test both implementations. This file has lots of examples.
 ################################################################################
 
@@ -42,44 +42,44 @@ kutoka test.support agiza FakePath
 
 agiza codecs
 agiza io  # C implementation of io
-agiza _pyio as pyio # Python implementation of io
+agiza _pyio kama pyio # Python implementation of io
 
-try:
+jaribu:
     agiza ctypes
-except ImportError:
+tatizo ImportError:
     eleza byteslike(*pos, **kw):
         rudisha array.array("b", bytes(*pos, **kw))
-else:
+isipokua:
     eleza byteslike(*pos, **kw):
-        """Create a bytes-like object having no string or sequence methods"""
+        """Create a bytes-like object having no string ama sequence methods"""
         data = bytes(*pos, **kw)
         obj = EmptyStruct()
         ctypes.resize(obj, len(data))
         memoryview(obj).cast("B")[:] = data
         rudisha obj
     kundi EmptyStruct(ctypes.Structure):
-        pass
+        pita
 
-_cflags = sysconfig.get_config_var('CFLAGS') or ''
-_config_args = sysconfig.get_config_var('CONFIG_ARGS') or ''
+_cflags = sysconfig.get_config_var('CFLAGS') ama ''
+_config_args = sysconfig.get_config_var('CONFIG_ARGS') ama ''
 MEMORY_SANITIZER = (
-    '-fsanitize=memory' in _cflags or
-    '--with-memory-sanitizer' in _config_args
+    '-fsanitize=memory' kwenye _cflags or
+    '--with-memory-sanitizer' kwenye _config_args
 )
 
 # Does io.IOBase finalizer log the exception ikiwa the close() method fails?
-# The exception is ignored silently by default in release build.
-IOBASE_EMITS_UNRAISABLE = (hasattr(sys, "gettotalrefcount") or sys.flags.dev_mode)
+# The exception ni ignored silently by default kwenye release build.
+IOBASE_EMITS_UNRAISABLE = (hasattr(sys, "gettotalrefcount") ama sys.flags.dev_mode)
 
 
 eleza _default_chunk_size():
     """Get the default TextIOWrapper chunk size"""
-    with open(__file__, "r", encoding="latin-1") as f:
+    with open(__file__, "r", encoding="latin-1") kama f:
         rudisha f._CHUNK_SIZE
 
 
 kundi MockRawIOWithoutRead:
-    """A RawIO implementation without read(), so as to exercise the default
+    """A RawIO implementation without read(), so kama to exercise the default
     RawIO.read() which calls readinto()."""
 
     eleza __init__(self, read_stack=()):
@@ -93,76 +93,76 @@ kundi MockRawIOWithoutRead:
         rudisha len(b)
 
     eleza writable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza fileno(self):
         rudisha 42
 
     eleza readable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza seekable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza seek(self, pos, whence):
         rudisha 0   # wrong but we gotta rudisha something
 
     eleza tell(self):
-        rudisha 0   # same comment as above
+        rudisha 0   # same comment kama above
 
     eleza readinto(self, buf):
         self._reads += 1
         max_len = len(buf)
-        try:
+        jaribu:
             data = self._read_stack[0]
-        except IndexError:
+        tatizo IndexError:
             self._extraneous_reads += 1
             rudisha 0
-        ikiwa data is None:
-            del self._read_stack[0]
-            rudisha None
+        ikiwa data ni Tupu:
+            toa self._read_stack[0]
+            rudisha Tupu
         n = len(data)
         ikiwa len(data) <= max_len:
-            del self._read_stack[0]
+            toa self._read_stack[0]
             buf[:n] = data
             rudisha n
-        else:
+        isipokua:
             buf[:] = data[:max_len]
             self._read_stack[0] = data[max_len:]
             rudisha max_len
 
-    eleza truncate(self, pos=None):
+    eleza truncate(self, pos=Tupu):
         rudisha pos
 
 kundi CMockRawIOWithoutRead(MockRawIOWithoutRead, io.RawIOBase):
-    pass
+    pita
 
 kundi PyMockRawIOWithoutRead(MockRawIOWithoutRead, pyio.RawIOBase):
-    pass
+    pita
 
 
 kundi MockRawIO(MockRawIOWithoutRead):
 
-    eleza read(self, n=None):
+    eleza read(self, n=Tupu):
         self._reads += 1
-        try:
+        jaribu:
             rudisha self._read_stack.pop(0)
         except:
             self._extraneous_reads += 1
             rudisha b""
 
 kundi CMockRawIO(MockRawIO, io.RawIOBase):
-    pass
+    pita
 
 kundi PyMockRawIO(MockRawIO, pyio.RawIOBase):
-    pass
+    pita
 
 
 kundi MisbehavedRawIO(MockRawIO):
     eleza write(self, b):
         rudisha super().write(b) * 2
 
-    eleza read(self, n=None):
+    eleza read(self, n=Tupu):
         rudisha super().read(n) * 2
 
     eleza seek(self, pos, whence):
@@ -176,10 +176,10 @@ kundi MisbehavedRawIO(MockRawIO):
         rudisha len(buf) * 5
 
 kundi CMisbehavedRawIO(MisbehavedRawIO, io.RawIOBase):
-    pass
+    pita
 
 kundi PyMisbehavedRawIO(MisbehavedRawIO, pyio.RawIOBase):
-    pass
+    pita
 
 
 kundi SlowFlushRawIO(MockRawIO):
@@ -192,25 +192,25 @@ kundi SlowFlushRawIO(MockRawIO):
         time.sleep(0.25)
 
 kundi CSlowFlushRawIO(SlowFlushRawIO, io.RawIOBase):
-    pass
+    pita
 
 kundi PySlowFlushRawIO(SlowFlushRawIO, pyio.RawIOBase):
-    pass
+    pita
 
 
 kundi CloseFailureIO(MockRawIO):
     closed = 0
 
     eleza close(self):
-        ikiwa not self.closed:
+        ikiwa sio self.closed:
             self.closed = 1
-            raise OSError
+            ashiria OSError
 
 kundi CCloseFailureIO(CloseFailureIO, io.RawIOBase):
-    pass
+    pita
 
 kundi PyCloseFailureIO(CloseFailureIO, pyio.RawIOBase):
-    pass
+    pita
 
 
 kundi MockFileIO:
@@ -219,9 +219,9 @@ kundi MockFileIO:
         self.read_history = []
         super().__init__(data)
 
-    eleza read(self, n=None):
+    eleza read(self, n=Tupu):
         res = super().read(n)
-        self.read_history.append(None ikiwa res is None else len(res))
+        self.read_history.append(Tupu ikiwa res ni Tupu else len(res))
         rudisha res
 
     eleza readinto(self, b):
@@ -230,24 +230,24 @@ kundi MockFileIO:
         rudisha res
 
 kundi CMockFileIO(MockFileIO, io.BytesIO):
-    pass
+    pita
 
 kundi PyMockFileIO(MockFileIO, pyio.BytesIO):
-    pass
+    pita
 
 
 kundi MockUnseekableIO:
     eleza seekable(self):
-        rudisha False
+        rudisha Uongo
 
     eleza seek(self, *args):
-        raise self.UnsupportedOperation("not seekable")
+        ashiria self.UnsupportedOperation("not seekable")
 
     eleza tell(self, *args):
-        raise self.UnsupportedOperation("not seekable")
+        ashiria self.UnsupportedOperation("not seekable")
 
     eleza truncate(self, *args):
-        raise self.UnsupportedOperation("not seekable")
+        ashiria self.UnsupportedOperation("not seekable")
 
 kundi CMockUnseekableIO(MockUnseekableIO, io.BytesIO):
     UnsupportedOperation = io.UnsupportedOperation
@@ -260,7 +260,7 @@ kundi MockNonBlockWriterIO:
 
     eleza __init__(self):
         self._write_stack = []
-        self._blocker_char = None
+        self._blocker_char = Tupu
 
     eleza pop_written(self):
         s = b"".join(self._write_stack)
@@ -268,39 +268,39 @@ kundi MockNonBlockWriterIO:
         rudisha s
 
     eleza block_on(self, char):
-        """Block when a given char is encountered."""
+        """Block when a given char ni encountered."""
         self._blocker_char = char
 
     eleza readable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza seekable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza seek(self, pos, whence=0):
-        # naive implementation, enough for tests
+        # naive implementation, enough kila tests
         rudisha 0
 
     eleza writable(self):
-        rudisha True
+        rudisha Kweli
 
     eleza write(self, b):
         b = bytes(b)
         n = -1
         ikiwa self._blocker_char:
-            try:
+            jaribu:
                 n = b.index(self._blocker_char)
-            except ValueError:
-                pass
-            else:
+            tatizo ValueError:
+                pita
+            isipokua:
                 ikiwa n > 0:
                     # write data up to the first blocker
                     self._write_stack.append(b[:n])
                     rudisha n
-                else:
-                    # cancel blocker and indicate would block
-                    self._blocker_char = None
-                    rudisha None
+                isipokua:
+                    # cancel blocker na indicate would block
+                    self._blocker_char = Tupu
+                    rudisha Tupu
         self._write_stack.append(b)
         rudisha len(b)
 
@@ -343,7 +343,7 @@ kundi IOTest(unittest.TestCase):
         self.assertEqual(f.tell(), 13)
         self.assertRaises(TypeError, f.seek, 0.0)
 
-    eleza read_ops(self, f, buffered=False):
+    eleza read_ops(self, f, buffered=Uongo):
         data = f.read(5)
         self.assertEqual(data, b"hello")
         data = byteslike(data)
@@ -381,9 +381,9 @@ kundi IOTest(unittest.TestCase):
     eleza large_file_ops(self, f):
         assert f.readable()
         assert f.writable()
-        try:
+        jaribu:
             self.assertEqual(f.seek(self.LARGE), self.LARGE)
-        except (OverflowError, ValueError):
+        tatizo (OverflowError, ValueError):
             self.skipTest("no largefile support")
         self.assertEqual(f.tell(), self.LARGE)
         self.assertEqual(f.write(b"xxx"), 3)
@@ -399,37 +399,37 @@ kundi IOTest(unittest.TestCase):
         self.assertEqual(f.read(2), b"x")
 
     eleza test_invalid_operations(self):
-        # Try writing on a file opened in read mode and vice-versa.
+        # Try writing on a file opened kwenye read mode na vice-versa.
         exc = self.UnsupportedOperation
-        for mode in ("w", "wb"):
-            with self.open(support.TESTFN, mode) as fp:
+        kila mode kwenye ("w", "wb"):
+            with self.open(support.TESTFN, mode) kama fp:
                 self.assertRaises(exc, fp.read)
                 self.assertRaises(exc, fp.readline)
-        with self.open(support.TESTFN, "wb", buffering=0) as fp:
+        with self.open(support.TESTFN, "wb", buffering=0) kama fp:
             self.assertRaises(exc, fp.read)
             self.assertRaises(exc, fp.readline)
-        with self.open(support.TESTFN, "rb", buffering=0) as fp:
+        with self.open(support.TESTFN, "rb", buffering=0) kama fp:
             self.assertRaises(exc, fp.write, b"blah")
             self.assertRaises(exc, fp.writelines, [b"blah\n"])
-        with self.open(support.TESTFN, "rb") as fp:
+        with self.open(support.TESTFN, "rb") kama fp:
             self.assertRaises(exc, fp.write, b"blah")
             self.assertRaises(exc, fp.writelines, [b"blah\n"])
-        with self.open(support.TESTFN, "r") as fp:
+        with self.open(support.TESTFN, "r") kama fp:
             self.assertRaises(exc, fp.write, "blah")
             self.assertRaises(exc, fp.writelines, ["blah\n"])
-            # Non-zero seeking kutoka current or end pos
+            # Non-zero seeking kutoka current ama end pos
             self.assertRaises(exc, fp.seek, 1, self.SEEK_CUR)
             self.assertRaises(exc, fp.seek, -1, self.SEEK_END)
 
     eleza test_optional_abilities(self):
-        # Test for OSError when optional APIs are not supported
-        # The purpose of this test is to try fileno(), reading, writing and
+        # Test kila OSError when optional APIs are sio supported
+        # The purpose of this test ni to try fileno(), reading, writing and
         # seeking operations with various objects that indicate they do not
         # support these operations.
 
         eleza pipe_reader():
             [r, w] = os.pipe()
-            os.close(w)  # So that read() is harmless
+            os.close(w)  # So that read() ni harmless
             rudisha self.FileIO(r, "r")
 
         eleza pipe_writer():
@@ -473,55 +473,55 @@ kundi IOTest(unittest.TestCase):
             (text_reader, "r"), (text_writer, "w"),
             (self.BytesIO, "rws"), (self.StringIO, "rws"),
         )
-        for [test, abilities] in tests:
-            with self.subTest(test), test() as obj:
-                readable = "r" in abilities
+        kila [test, abilities] kwenye tests:
+            with self.subTest(test), test() kama obj:
+                readable = "r" kwenye abilities
                 self.assertEqual(obj.readable(), readable)
-                writable = "w" in abilities
+                writable = "w" kwenye abilities
                 self.assertEqual(obj.writable(), writable)
 
                 ikiwa isinstance(obj, self.TextIOBase):
                     data = "3"
                 elikiwa isinstance(obj, (self.BufferedIOBase, self.RawIOBase)):
                     data = b"3"
-                else:
+                isipokua:
                     self.fail("Unknown base class")
 
-                ikiwa "f" in abilities:
+                ikiwa "f" kwenye abilities:
                     obj.fileno()
-                else:
+                isipokua:
                     self.assertRaises(OSError, obj.fileno)
 
                 ikiwa readable:
                     obj.read(1)
                     obj.read()
-                else:
+                isipokua:
                     self.assertRaises(OSError, obj.read, 1)
                     self.assertRaises(OSError, obj.read)
 
                 ikiwa writable:
                     obj.write(data)
-                else:
+                isipokua:
                     self.assertRaises(OSError, obj.write, data)
 
-                ikiwa sys.platform.startswith("win") and test in (
+                ikiwa sys.platform.startswith("win") na test kwenye (
                         pipe_reader, pipe_writer):
-                    # Pipes seem to appear as seekable on Windows
-                    continue
-                seekable = "s" in abilities
+                    # Pipes seem to appear kama seekable on Windows
+                    endelea
+                seekable = "s" kwenye abilities
                 self.assertEqual(obj.seekable(), seekable)
 
                 ikiwa seekable:
                     obj.tell()
                     obj.seek(0)
-                else:
+                isipokua:
                     self.assertRaises(OSError, obj.tell)
                     self.assertRaises(OSError, obj.seek, 0)
 
-                ikiwa writable and seekable:
+                ikiwa writable na seekable:
                     obj.truncate()
                     obj.truncate(0)
-                else:
+                isipokua:
                     self.assertRaises(OSError, obj.truncate)
                     self.assertRaises(OSError, obj.truncate, 0)
 
@@ -535,57 +535,57 @@ kundi IOTest(unittest.TestCase):
             self.assertRaises(ValueError, self.open, bytes_fn, 'w')
 
     eleza test_raw_file_io(self):
-        with self.open(support.TESTFN, "wb", buffering=0) as f:
-            self.assertEqual(f.readable(), False)
-            self.assertEqual(f.writable(), True)
-            self.assertEqual(f.seekable(), True)
+        with self.open(support.TESTFN, "wb", buffering=0) kama f:
+            self.assertEqual(f.readable(), Uongo)
+            self.assertEqual(f.writable(), Kweli)
+            self.assertEqual(f.seekable(), Kweli)
             self.write_ops(f)
-        with self.open(support.TESTFN, "rb", buffering=0) as f:
-            self.assertEqual(f.readable(), True)
-            self.assertEqual(f.writable(), False)
-            self.assertEqual(f.seekable(), True)
+        with self.open(support.TESTFN, "rb", buffering=0) kama f:
+            self.assertEqual(f.readable(), Kweli)
+            self.assertEqual(f.writable(), Uongo)
+            self.assertEqual(f.seekable(), Kweli)
             self.read_ops(f)
 
     eleza test_buffered_file_io(self):
-        with self.open(support.TESTFN, "wb") as f:
-            self.assertEqual(f.readable(), False)
-            self.assertEqual(f.writable(), True)
-            self.assertEqual(f.seekable(), True)
+        with self.open(support.TESTFN, "wb") kama f:
+            self.assertEqual(f.readable(), Uongo)
+            self.assertEqual(f.writable(), Kweli)
+            self.assertEqual(f.seekable(), Kweli)
             self.write_ops(f)
-        with self.open(support.TESTFN, "rb") as f:
-            self.assertEqual(f.readable(), True)
-            self.assertEqual(f.writable(), False)
-            self.assertEqual(f.seekable(), True)
-            self.read_ops(f, True)
+        with self.open(support.TESTFN, "rb") kama f:
+            self.assertEqual(f.readable(), Kweli)
+            self.assertEqual(f.writable(), Uongo)
+            self.assertEqual(f.seekable(), Kweli)
+            self.read_ops(f, Kweli)
 
     eleza test_readline(self):
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             f.write(b"abc\ndef\nxyzzy\nfoo\x00bar\nanother line")
-        with self.open(support.TESTFN, "rb") as f:
+        with self.open(support.TESTFN, "rb") kama f:
             self.assertEqual(f.readline(), b"abc\n")
             self.assertEqual(f.readline(10), b"def\n")
             self.assertEqual(f.readline(2), b"xy")
             self.assertEqual(f.readline(4), b"zzy\n")
             self.assertEqual(f.readline(), b"foo\x00bar\n")
-            self.assertEqual(f.readline(None), b"another line")
+            self.assertEqual(f.readline(Tupu), b"another line")
             self.assertRaises(TypeError, f.readline, 5.3)
-        with self.open(support.TESTFN, "r") as f:
+        with self.open(support.TESTFN, "r") kama f:
             self.assertRaises(TypeError, f.readline, 5.3)
 
     eleza test_readline_nonsizeable(self):
         # Issue #30061
-        # Crash when readline() returns an object without __len__
+        # Crash when readline() rudishas an object without __len__
         kundi R(self.IOBase):
             eleza readline(self):
-                rudisha None
+                rudisha Tupu
         self.assertRaises((TypeError, StopIteration), next, R())
 
     eleza test_next_nonsizeable(self):
         # Issue #30061
-        # Crash when __next__() returns an object without __len__
+        # Crash when __next__() rudishas an object without __len__
         kundi R(self.IOBase):
             eleza __next__(self):
-                rudisha None
+                rudisha Tupu
         self.assertRaises(TypeError, R().readlines, 1)
 
     eleza test_raw_bytes_io(self):
@@ -594,45 +594,45 @@ kundi IOTest(unittest.TestCase):
         data = f.getvalue()
         self.assertEqual(data, b"hello world\n")
         f = self.BytesIO(data)
-        self.read_ops(f, True)
+        self.read_ops(f, Kweli)
 
     eleza test_large_file_ops(self):
-        # On Windows and Mac OSX this test consumes large resources; It takes
-        # a long time to build the >2 GiB file and takes >2 GiB of disk space
+        # On Windows na Mac OSX this test consumes large resources; It takes
+        # a long time to build the >2 GiB file na takes >2 GiB of disk space
         # therefore the resource must be enabled to run this test.
-        ikiwa sys.platform[:3] == 'win' or sys.platform == 'darwin':
+        ikiwa sys.platform[:3] == 'win' ama sys.platform == 'darwin':
             support.requires(
                 'largefile',
-                'test requires %s bytes and a long time to run' % self.LARGE)
-        with self.open(support.TESTFN, "w+b", 0) as f:
+                'test requires %s bytes na a long time to run' % self.LARGE)
+        with self.open(support.TESTFN, "w+b", 0) kama f:
             self.large_file_ops(f)
-        with self.open(support.TESTFN, "w+b") as f:
+        with self.open(support.TESTFN, "w+b") kama f:
             self.large_file_ops(f)
 
     eleza test_with_open(self):
-        for bufsize in (0, 100):
-            f = None
-            with self.open(support.TESTFN, "wb", bufsize) as f:
+        kila bufsize kwenye (0, 100):
+            f = Tupu
+            with self.open(support.TESTFN, "wb", bufsize) kama f:
                 f.write(b"xxx")
-            self.assertEqual(f.closed, True)
-            f = None
-            try:
-                with self.open(support.TESTFN, "wb", bufsize) as f:
+            self.assertEqual(f.closed, Kweli)
+            f = Tupu
+            jaribu:
+                with self.open(support.TESTFN, "wb", bufsize) kama f:
                     1/0
-            except ZeroDivisionError:
-                self.assertEqual(f.closed, True)
-            else:
-                self.fail("1/0 didn't raise an exception")
+            tatizo ZeroDivisionError:
+                self.assertEqual(f.closed, Kweli)
+            isipokua:
+                self.fail("1/0 didn't ashiria an exception")
 
     # issue 5008
     eleza test_append_mode_tell(self):
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             f.write(b"xxx")
-        with self.open(support.TESTFN, "ab", buffering=0) as f:
+        with self.open(support.TESTFN, "ab", buffering=0) kama f:
             self.assertEqual(f.tell(), 3)
-        with self.open(support.TESTFN, "ab") as f:
+        with self.open(support.TESTFN, "ab") kama f:
             self.assertEqual(f.tell(), 3)
-        with self.open(support.TESTFN, "a") as f:
+        with self.open(support.TESTFN, "a") kama f:
             self.assertGreater(f.tell(), 0)
 
     eleza test_destructor(self):
@@ -640,11 +640,11 @@ kundi IOTest(unittest.TestCase):
         kundi MyFileIO(self.FileIO):
             eleza __del__(self):
                 record.append(1)
-                try:
+                jaribu:
                     f = super().__del__
-                except AttributeError:
-                    pass
-                else:
+                tatizo AttributeError:
+                    pita
+                isipokua:
                     f()
             eleza close(self):
                 record.append(2)
@@ -655,10 +655,10 @@ kundi IOTest(unittest.TestCase):
         with support.check_warnings(('', ResourceWarning)):
             f = MyFileIO(support.TESTFN, "wb")
             f.write(b"xxx")
-            del f
+            toa f
             support.gc_collect()
             self.assertEqual(record, [1, 2, 3])
-            with self.open(support.TESTFN, "rb") as f:
+            with self.open(support.TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), b"xxx")
 
     eleza _check_base_destructor(self, base):
@@ -667,18 +667,18 @@ kundi IOTest(unittest.TestCase):
             eleza __init__(self):
                 # This exercises the availability of attributes on object
                 # destruction.
-                # (in the C version, close() is called by the tp_dealloc
-                # function, not by __del__)
-                self.on_del = 1
+                # (in the C version, close() ni called by the tp_dealloc
+                # function, sio by __del__)
+                self.on_toa = 1
                 self.on_close = 2
                 self.on_flush = 3
             eleza __del__(self):
                 record.append(self.on_del)
-                try:
+                jaribu:
                     f = super().__del__
-                except AttributeError:
-                    pass
-                else:
+                tatizo AttributeError:
+                    pita
+                isipokua:
                     f()
             eleza close(self):
                 record.append(self.on_close)
@@ -687,7 +687,7 @@ kundi IOTest(unittest.TestCase):
                 record.append(self.on_flush)
                 super().flush()
         f = MyIO()
-        del f
+        toa f
         support.gc_collect()
         self.assertEqual(record, [1, 2, 3])
 
@@ -704,9 +704,9 @@ kundi IOTest(unittest.TestCase):
         self._check_base_destructor(self.TextIOBase)
 
     eleza test_close_flushes(self):
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             f.write(b"xxx")
-        with self.open(support.TESTFN, "rb") as f:
+        with self.open(support.TESTFN, "rb") kama f:
             self.assertEqual(f.read(), b"xxx")
 
     eleza test_array_writes(self):
@@ -724,74 +724,74 @@ kundi IOTest(unittest.TestCase):
 
     eleza test_closefd(self):
         self.assertRaises(ValueError, self.open, support.TESTFN, 'w',
-                          closefd=False)
+                          closefd=Uongo)
 
     eleza test_read_closed(self):
-        with self.open(support.TESTFN, "w") as f:
+        with self.open(support.TESTFN, "w") kama f:
             f.write("egg\n")
-        with self.open(support.TESTFN, "r") as f:
-            file = self.open(f.fileno(), "r", closefd=False)
+        with self.open(support.TESTFN, "r") kama f:
+            file = self.open(f.fileno(), "r", closefd=Uongo)
             self.assertEqual(file.read(), "egg\n")
             file.seek(0)
             file.close()
             self.assertRaises(ValueError, file.read)
 
     eleza test_no_closefd_with_filename(self):
-        # can't use closefd in combination with a file name
-        self.assertRaises(ValueError, self.open, support.TESTFN, "r", closefd=False)
+        # can't use closefd kwenye combination with a file name
+        self.assertRaises(ValueError, self.open, support.TESTFN, "r", closefd=Uongo)
 
     eleza test_closefd_attr(self):
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             f.write(b"egg\n")
-        with self.open(support.TESTFN, "r") as f:
-            self.assertEqual(f.buffer.raw.closefd, True)
-            file = self.open(f.fileno(), "r", closefd=False)
-            self.assertEqual(file.buffer.raw.closefd, False)
+        with self.open(support.TESTFN, "r") kama f:
+            self.assertEqual(f.buffer.raw.closefd, Kweli)
+            file = self.open(f.fileno(), "r", closefd=Uongo)
+            self.assertEqual(file.buffer.raw.closefd, Uongo)
 
     eleza test_garbage_collection(self):
-        # FileIO objects are collected, and collecting them flushes
+        # FileIO objects are collected, na collecting them flushes
         # all data to disk.
         with support.check_warnings(('', ResourceWarning)):
             f = self.FileIO(support.TESTFN, "wb")
             f.write(b"abcxxx")
             f.f = f
             wr = weakref.ref(f)
-            del f
+            toa f
             support.gc_collect()
-        self.assertIsNone(wr(), wr)
-        with self.open(support.TESTFN, "rb") as f:
+        self.assertIsTupu(wr(), wr)
+        with self.open(support.TESTFN, "rb") kama f:
             self.assertEqual(f.read(), b"abcxxx")
 
     eleza test_unbounded_file(self):
-        # Issue #1174606: reading kutoka an unbounded stream such as /dev/zero.
+        # Issue #1174606: reading kutoka an unbounded stream such kama /dev/zero.
         zero = "/dev/zero"
-        ikiwa not os.path.exists(zero):
-            self.skipTest("{0} does not exist".format(zero))
+        ikiwa sio os.path.exists(zero):
+            self.skipTest("{0} does sio exist".format(zero))
         ikiwa sys.maxsize > 0x7FFFFFFF:
-            self.skipTest("test can only run in a 32-bit address space")
+            self.skipTest("test can only run kwenye a 32-bit address space")
         ikiwa support.real_max_memuse < support._2G:
             self.skipTest("test requires at least 2 GiB of memory")
-        with self.open(zero, "rb", buffering=0) as f:
+        with self.open(zero, "rb", buffering=0) kama f:
             self.assertRaises(OverflowError, f.read)
-        with self.open(zero, "rb") as f:
+        with self.open(zero, "rb") kama f:
             self.assertRaises(OverflowError, f.read)
-        with self.open(zero, "r") as f:
+        with self.open(zero, "r") kama f:
             self.assertRaises(OverflowError, f.read)
 
     eleza check_flush_error_on_close(self, *args, **kwargs):
-        # Test that the file is closed despite failed flush
-        # and that flush() is called before file closed.
+        # Test that the file ni closed despite failed flush
+        # na that flush() ni called before file closed.
         f = self.open(*args, **kwargs)
         closed = []
         eleza bad_flush():
             closed[:] = [f.closed]
-            raise OSError()
+            ashiria OSError()
         f.flush = bad_flush
-        self.assertRaises(OSError, f.close) # exception not swallowed
-        self.assertTrue(f.closed)
-        self.assertTrue(closed)      # flush() called
-        self.assertFalse(closed[0])  # flush() called before file closed
-        f.flush = lambda: None  # break reference loop
+        self.assertRaises(OSError, f.close) # exception sio swallowed
+        self.assertKweli(f.closed)
+        self.assertKweli(closed)      # flush() called
+        self.assertUongo(closed[0])  # flush() called before file closed
+        f.flush = lambda: Tupu  # koma reference loop
 
     eleza test_flush_error_on_close(self):
         # raw file
@@ -800,21 +800,21 @@ kundi IOTest(unittest.TestCase):
         fd = os.open(support.TESTFN, os.O_WRONLY|os.O_CREAT)
         self.check_flush_error_on_close(fd, 'wb', buffering=0)
         fd = os.open(support.TESTFN, os.O_WRONLY|os.O_CREAT)
-        self.check_flush_error_on_close(fd, 'wb', buffering=0, closefd=False)
+        self.check_flush_error_on_close(fd, 'wb', buffering=0, closefd=Uongo)
         os.close(fd)
         # buffered io
         self.check_flush_error_on_close(support.TESTFN, 'wb')
         fd = os.open(support.TESTFN, os.O_WRONLY|os.O_CREAT)
         self.check_flush_error_on_close(fd, 'wb')
         fd = os.open(support.TESTFN, os.O_WRONLY|os.O_CREAT)
-        self.check_flush_error_on_close(fd, 'wb', closefd=False)
+        self.check_flush_error_on_close(fd, 'wb', closefd=Uongo)
         os.close(fd)
         # text io
         self.check_flush_error_on_close(support.TESTFN, 'w')
         fd = os.open(support.TESTFN, os.O_WRONLY|os.O_CREAT)
         self.check_flush_error_on_close(fd, 'w')
         fd = os.open(support.TESTFN, os.O_WRONLY|os.O_CREAT)
-        self.check_flush_error_on_close(fd, 'w', closefd=False)
+        self.check_flush_error_on_close(fd, 'w', closefd=Uongo)
         os.close(fd)
 
     eleza test_multi_close(self):
@@ -827,14 +827,14 @@ kundi IOTest(unittest.TestCase):
     eleza test_RawIOBase_read(self):
         # Exercise the default limited RawIOBase.read(n) implementation (which
         # calls readinto() internally).
-        rawio = self.MockRawIOWithoutRead((b"abc", b"d", None, b"efg", None))
+        rawio = self.MockRawIOWithoutRead((b"abc", b"d", Tupu, b"efg", Tupu))
         self.assertEqual(rawio.read(2), b"ab")
         self.assertEqual(rawio.read(2), b"c")
         self.assertEqual(rawio.read(2), b"d")
-        self.assertEqual(rawio.read(2), None)
+        self.assertEqual(rawio.read(2), Tupu)
         self.assertEqual(rawio.read(2), b"ef")
         self.assertEqual(rawio.read(2), b"g")
-        self.assertEqual(rawio.read(2), None)
+        self.assertEqual(rawio.read(2), Tupu)
         self.assertEqual(rawio.read(2), b"")
 
     eleza test_types_have_dict(self):
@@ -845,43 +845,43 @@ kundi IOTest(unittest.TestCase):
             self.StringIO(),
             self.BytesIO()
         )
-        for obj in test:
-            self.assertTrue(hasattr(obj, "__dict__"))
+        kila obj kwenye test:
+            self.assertKweli(hasattr(obj, "__dict__"))
 
     eleza test_opener(self):
-        with self.open(support.TESTFN, "w") as f:
+        with self.open(support.TESTFN, "w") kama f:
             f.write("egg\n")
         fd = os.open(support.TESTFN, os.O_RDONLY)
         eleza opener(path, flags):
             rudisha fd
-        with self.open("non-existent", "r", opener=opener) as f:
+        with self.open("non-existent", "r", opener=opener) kama f:
             self.assertEqual(f.read(), "egg\n")
 
     eleza test_bad_opener_negative_1(self):
         # Issue #27066.
         eleza badopener(fname, flags):
             rudisha -1
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             open('non-existent', 'r', opener=badopener)
-        self.assertEqual(str(cm.exception), 'opener returned -1')
+        self.assertEqual(str(cm.exception), 'opener rudishaed -1')
 
     eleza test_bad_opener_other_negative(self):
         # Issue #27066.
         eleza badopener(fname, flags):
             rudisha -2
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             open('non-existent', 'r', opener=badopener)
-        self.assertEqual(str(cm.exception), 'opener returned -2')
+        self.assertEqual(str(cm.exception), 'opener rudishaed -2')
 
     eleza test_fileio_closefd(self):
         # Issue #4841
-        with self.open(__file__, 'rb') as f1, \
-             self.open(__file__, 'rb') as f2:
-            fileio = self.FileIO(f1.fileno(), closefd=False)
-            # .__init__() must not close f1
-            fileio.__init__(f2.fileno(), closefd=False)
+        with self.open(__file__, 'rb') kama f1, \
+             self.open(__file__, 'rb') kama f2:
+            fileio = self.FileIO(f1.fileno(), closefd=Uongo)
+            # .__init__() must sio close f1
+            fileio.__init__(f2.fileno(), closefd=Uongo)
             f1.readline()
-            # .close() must not close f2
+            # .close() must sio close f2
             fileio.close()
             f2.readline()
 
@@ -902,7 +902,7 @@ kundi IOTest(unittest.TestCase):
                 rudisha b"12345"
             read1 = read
         stream = Stream()
-        for method in ("readinto", "readinto1"):
+        kila method kwenye ("readinto", "readinto1"):
             with self.subTest(method):
                 buffer = byteslike(5)
                 self.assertEqual(getattr(stream, method)(buffer), 5)
@@ -910,21 +910,21 @@ kundi IOTest(unittest.TestCase):
 
     eleza test_fspath_support(self):
         eleza check_path_succeeds(path):
-            with self.open(path, "w") as f:
+            with self.open(path, "w") kama f:
                 f.write("egg\n")
 
-            with self.open(path, "r") as f:
+            with self.open(path, "r") kama f:
                 self.assertEqual(f.read(), "egg\n")
 
         check_path_succeeds(FakePath(support.TESTFN))
         check_path_succeeds(FakePath(support.TESTFN.encode('utf-8')))
 
-        with self.open(support.TESTFN, "w") as f:
+        with self.open(support.TESTFN, "w") kama f:
             bad_path = FakePath(f.fileno())
             with self.assertRaises(TypeError):
                 self.open(bad_path, 'w')
 
-        bad_path = FakePath(None)
+        bad_path = FakePath(Tupu)
         with self.assertRaises(TypeError):
             self.open(bad_path, 'w')
 
@@ -932,12 +932,12 @@ kundi IOTest(unittest.TestCase):
         with self.assertRaises(FloatingPointError):
             self.open(bad_path, 'w')
 
-        # ensure that refcounting is correct with some error conditions
+        # ensure that refcounting ni correct with some error conditions
         with self.assertRaisesRegex(ValueError, 'read/write/append mode'):
             self.open(FakePath(support.TESTFN), 'rwxa')
 
     eleza test_RawIOBase_readall(self):
-        # Exercise the default unlimited RawIOBase.read() and readall()
+        # Exercise the default unlimited RawIOBase.read() na readall()
         # implementations.
         rawio = self.MockRawIOWithoutRead((b"abc", b"d", b"efg"))
         self.assertEqual(rawio.read(), b"abcdefg")
@@ -945,8 +945,8 @@ kundi IOTest(unittest.TestCase):
         self.assertEqual(rawio.readall(), b"abcdefg")
 
     eleza test_BufferedIOBase_readinto(self):
-        # Exercise the default BufferedIOBase.readinto() and readinto1()
-        # implementations (which call read() or read1() internally).
+        # Exercise the default BufferedIOBase.readinto() na readinto1()
+        # implementations (which call read() ama read1() internally).
         kundi Reader(self.BufferedIOBase):
             eleza __init__(self, avail):
                 self.avail = avail
@@ -961,18 +961,18 @@ kundi IOTest(unittest.TestCase):
             # (test method, total data available, read buffer size, expected
             #     read size)
             ("readinto", 10, 5, 5),
-            ("readinto", 10, 6, 6),  # More than read1() can return
+            ("readinto", 10, 6, 6),  # More than read1() can rudisha
             ("readinto", 5, 6, 5),  # Buffer larger than total available
             ("readinto", 6, 7, 6),
             ("readinto", 10, 0, 0),  # Empty buffer
             ("readinto1", 10, 5, 5),  # Result limited to single read1() call
-            ("readinto1", 10, 6, 5),  # Buffer larger than read1() can return
+            ("readinto1", 10, 6, 5),  # Buffer larger than read1() can rudisha
             ("readinto1", 5, 6, 5),  # Buffer larger than total available
             ("readinto1", 6, 7, 5),
             ("readinto1", 10, 0, 0),  # Empty buffer
         )
         UNUSED_BYTE = 0x81
-        for test in tests:
+        kila test kwenye tests:
             with self.subTest(test):
                 method, avail, request, result = test
                 reader = Reader(bytes(range(avail)))
@@ -988,39 +988,39 @@ kundi IOTest(unittest.TestCase):
     eleza test_close_assert(self):
         kundi R(self.IOBase):
             eleza __setattr__(self, name, value):
-                pass
+                pita
             eleza flush(self):
-                raise OSError()
+                ashiria OSError()
         f = R()
         # This would cause an assertion failure.
         self.assertRaises(OSError, f.close)
 
         # Silence destructor error
-        R.flush = lambda self: None
+        R.flush = lambda self: Tupu
 
 
 kundi CIOTest(IOTest):
 
     eleza test_IOBase_finalize(self):
         # Issue #12149: segmentation fault on _PyIOBase_finalize when both a
-        # kundi which inherits IOBase and an object of this kundi are caught
-        # in a reference cycle and close() is already in the method cache.
+        # kundi which inherits IOBase na an object of this kundi are caught
+        # kwenye a reference cycle na close() ni already kwenye the method cache.
         kundi MyIO(self.IOBase):
             eleza close(self):
-                pass
+                pita
 
         # create an instance to populate the method cache
         MyIO()
         obj = MyIO()
         obj.obj = obj
         wr = weakref.ref(obj)
-        del MyIO
-        del obj
+        toa MyIO
+        toa obj
         support.gc_collect()
-        self.assertIsNone(wr(), wr)
+        self.assertIsTupu(wr(), wr)
 
 kundi PyIOTest(IOTest):
-    pass
+    pita
 
 
 @support.cpython_only
@@ -1030,16 +1030,16 @@ kundi APIMismatchTest(unittest.TestCase):
         """Test that pyio RawIOBase kundi has all c RawIOBase methods"""
         mismatch = support.detect_api_mismatch(pyio.RawIOBase, io.RawIOBase,
                                                ignore=('__weakref__',))
-        self.assertEqual(mismatch, set(), msg='Python RawIOBase does not have all C RawIOBase methods')
+        self.assertEqual(mismatch, set(), msg='Python RawIOBase does sio have all C RawIOBase methods')
 
     eleza test_RawIOBase_pyio_in_io_match(self):
         """Test that c RawIOBase kundi has all pyio RawIOBase methods"""
         mismatch = support.detect_api_mismatch(io.RawIOBase, pyio.RawIOBase)
-        self.assertEqual(mismatch, set(), msg='C RawIOBase does not have all Python RawIOBase methods')
+        self.assertEqual(mismatch, set(), msg='C RawIOBase does sio have all Python RawIOBase methods')
 
 
 kundi CommonBufferedTests:
-    # Tests common to BufferedReader, BufferedWriter and BufferedRandom
+    # Tests common to BufferedReader, BufferedWriter na BufferedRandom
 
     eleza test_detach(self):
         raw = self.MockRawIO()
@@ -1068,11 +1068,11 @@ kundi CommonBufferedTests:
         kundi MyBufferedIO(tp):
             eleza __del__(self):
                 record.append(1)
-                try:
+                jaribu:
                     f = super().__del__
-                except AttributeError:
-                    pass
-                else:
+                tatizo AttributeError:
+                    pita
+                isipokua:
                     f()
             eleza close(self):
                 record.append(2)
@@ -1082,33 +1082,33 @@ kundi CommonBufferedTests:
                 super().flush()
         rawio = self.MockRawIO()
         bufio = MyBufferedIO(rawio)
-        del bufio
+        toa bufio
         support.gc_collect()
         self.assertEqual(record, [1, 2, 3])
 
     eleza test_context_manager(self):
-        # Test usability as a context manager
+        # Test usability kama a context manager
         rawio = self.MockRawIO()
         bufio = self.tp(rawio)
         eleza _with():
             with bufio:
-                pass
+                pita
         _with()
-        # bufio should now be closed, and using it a second time should raise
+        # bufio should now be closed, na using it a second time should ashiria
         # a ValueError.
         self.assertRaises(ValueError, _with)
 
     eleza test_error_through_destructor(self):
-        # Test that the exception state is not modified by a destructor,
+        # Test that the exception state ni sio modified by a destructor,
         # even ikiwa close() fails.
         rawio = self.CloseFailureIO()
-        with support.catch_unraisable_exception() as cm:
+        with support.catch_unraisable_exception() kama cm:
             with self.assertRaises(AttributeError):
                 self.tp(rawio).xyzzy
 
-            ikiwa not IOBASE_EMITS_UNRAISABLE:
-                self.assertIsNone(cm.unraisable)
-            elikiwa cm.unraisable is not None:
+            ikiwa sio IOBASE_EMITS_UNRAISABLE:
+                self.assertIsTupu(cm.unraisable)
+            elikiwa cm.unraisable ni sio Tupu:
                 self.assertEqual(cm.unraisable.exc_type, OSError)
 
     eleza test_repr(self):
@@ -1126,69 +1126,69 @@ kundi CommonBufferedTests:
         raw = self.MockRawIO()
         b = self.tp(raw)
         with support.swap_attr(raw, 'name', b):
-            try:
-                repr(b)  # Should not crash
-            except RuntimeError:
-                pass
+            jaribu:
+                repr(b)  # Should sio crash
+            tatizo RuntimeError:
+                pita
 
     eleza test_flush_error_on_close(self):
-        # Test that buffered file is closed despite failed flush
-        # and that flush() is called before file closed.
+        # Test that buffered file ni closed despite failed flush
+        # na that flush() ni called before file closed.
         raw = self.MockRawIO()
         closed = []
         eleza bad_flush():
             closed[:] = [b.closed, raw.closed]
-            raise OSError()
+            ashiria OSError()
         raw.flush = bad_flush
         b = self.tp(raw)
-        self.assertRaises(OSError, b.close) # exception not swallowed
-        self.assertTrue(b.closed)
-        self.assertTrue(raw.closed)
-        self.assertTrue(closed)      # flush() called
-        self.assertFalse(closed[0])  # flush() called before file closed
-        self.assertFalse(closed[1])
-        raw.flush = lambda: None  # break reference loop
+        self.assertRaises(OSError, b.close) # exception sio swallowed
+        self.assertKweli(b.closed)
+        self.assertKweli(raw.closed)
+        self.assertKweli(closed)      # flush() called
+        self.assertUongo(closed[0])  # flush() called before file closed
+        self.assertUongo(closed[1])
+        raw.flush = lambda: Tupu  # koma reference loop
 
     eleza test_close_error_on_close(self):
         raw = self.MockRawIO()
         eleza bad_flush():
-            raise OSError('flush')
+            ashiria OSError('flush')
         eleza bad_close():
-            raise OSError('close')
+            ashiria OSError('close')
         raw.close = bad_close
         b = self.tp(raw)
         b.flush = bad_flush
-        with self.assertRaises(OSError) as err: # exception not swallowed
+        with self.assertRaises(OSError) kama err: # exception sio swallowed
             b.close()
         self.assertEqual(err.exception.args, ('close',))
         self.assertIsInstance(err.exception.__context__, OSError)
         self.assertEqual(err.exception.__context__.args, ('flush',))
-        self.assertFalse(b.closed)
+        self.assertUongo(b.closed)
 
         # Silence destructor error
-        raw.close = lambda: None
-        b.flush = lambda: None
+        raw.close = lambda: Tupu
+        b.flush = lambda: Tupu
 
     eleza test_nonnormalized_close_error_on_close(self):
         # Issue #21677
         raw = self.MockRawIO()
         eleza bad_flush():
-            raise non_existing_flush
+            ashiria non_existing_flush
         eleza bad_close():
-            raise non_existing_close
+            ashiria non_existing_close
         raw.close = bad_close
         b = self.tp(raw)
         b.flush = bad_flush
-        with self.assertRaises(NameError) as err: # exception not swallowed
+        with self.assertRaises(NameError) kama err: # exception sio swallowed
             b.close()
         self.assertIn('non_existing_close', str(err.exception))
         self.assertIsInstance(err.exception.__context__, NameError)
         self.assertIn('non_existing_flush', str(err.exception.__context__))
-        self.assertFalse(b.closed)
+        self.assertUongo(b.closed)
 
         # Silence destructor error
-        b.flush = lambda: None
-        raw.close = lambda: None
+        b.flush = lambda: Tupu
+        raw.close = lambda: Tupu
 
     eleza test_multi_close(self):
         raw = self.MockRawIO()
@@ -1252,7 +1252,7 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
 
     eleza test_uninitialized(self):
         bufio = self.tp.__new__(self.tp)
-        del bufio
+        toa bufio
         bufio = self.tp.__new__(self.tp)
         self.assertRaisesRegex((ValueError, AttributeError),
                                'uninitialized|has no attribute',
@@ -1261,7 +1261,7 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
         self.assertEqual(bufio.read(0), b'')
 
     eleza test_read(self):
-        for arg in (None, 7):
+        kila arg kwenye (Tupu, 7):
             rawio = self.MockRawIO((b"abc", b"d", b"efg"))
             bufio = self.tp(rawio)
             self.assertEqual(b"abcdefg", bufio.read(arg))
@@ -1309,7 +1309,7 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
         self.assertEqual(b, b"gf")
         self.assertEqual(bufio.readinto(b), 0)
         self.assertEqual(b, b"gf")
-        rawio = self.MockRawIO((b"abc", None))
+        rawio = self.MockRawIO((b"abc", Tupu))
         bufio = self.tp(rawio)
         self.assertEqual(bufio.readinto(b), 2)
         self.assertEqual(b, b"ab")
@@ -1349,8 +1349,8 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
         b = array.array('i', b'x' * 32)
         assert len(b) != 16
 
-        # Read into it. We should get as many *bytes* as we can fit into b
-        # (which is more than the number of elements)
+        # Read into it. We should get kama many *bytes* kama we can fit into b
+        # (which ni more than the number of elements)
         n = bufio.readinto(b)
         self.assertGreater(n, len(b))
 
@@ -1370,8 +1370,8 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
         b = array.array('i', b'x' * 32)
         assert len(b) != 16
 
-        # Read into it. We should get as many *bytes* as we can fit into b
-        # (which is more than the number of elements)
+        # Read into it. We should get kama many *bytes* kama we can fit into b
+        # (which ni more than the number of elements)
         n = bufio.readinto1(b)
         self.assertGreater(n, len(b))
 
@@ -1387,7 +1387,7 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
             rudisha self.tp(rawio)
         self.assertEqual(bufio().readlines(), [b"abc\n", b"d\n", b"ef"])
         self.assertEqual(bufio().readlines(5), [b"abc\n", b"d\n"])
-        self.assertEqual(bufio().readlines(None), [b"abc\n", b"d\n", b"ef"])
+        self.assertEqual(bufio().readlines(Tupu), [b"abc\n", b"d\n", b"ef"])
 
     eleza test_buffering(self):
         data = b"abcdefghi"
@@ -1399,30 +1399,30 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
             [   4, [ 1, 2, 4, 2 ], [ 4, 4, 1 ] ],
         ]
 
-        for bufsize, buf_read_sizes, raw_read_sizes in tests:
+        kila bufsize, buf_read_sizes, raw_read_sizes kwenye tests:
             rawio = self.MockFileIO(data)
             bufio = self.tp(rawio, buffer_size=bufsize)
             pos = 0
-            for nbytes in buf_read_sizes:
+            kila nbytes kwenye buf_read_sizes:
                 self.assertEqual(bufio.read(nbytes), data[pos:pos+nbytes])
                 pos += nbytes
-            # this is mildly implementation-dependent
+            # this ni mildly implementation-dependent
             self.assertEqual(rawio.read_history, raw_read_sizes)
 
     eleza test_read_non_blocking(self):
-        # Inject some None's in there to simulate EWOULDBLOCK
-        rawio = self.MockRawIO((b"abc", b"d", None, b"efg", None, None, None))
+        # Inject some Tupu's kwenye there to simulate EWOULDBLOCK
+        rawio = self.MockRawIO((b"abc", b"d", Tupu, b"efg", Tupu, Tupu, Tupu))
         bufio = self.tp(rawio)
         self.assertEqual(b"abcd", bufio.read(6))
         self.assertEqual(b"e", bufio.read(1))
         self.assertEqual(b"fg", bufio.read())
         self.assertEqual(b"", bufio.peek(1))
-        self.assertIsNone(bufio.read())
+        self.assertIsTupu(bufio.read())
         self.assertEqual(b"", bufio.read())
 
-        rawio = self.MockRawIO((b"a", None, None))
+        rawio = self.MockRawIO((b"a", Tupu, Tupu))
         self.assertEqual(b"a", rawio.readall())
-        self.assertIsNone(rawio.readall())
+        self.assertIsTupu(rawio.readall())
 
     eleza test_read_past_eof(self):
         rawio = self.MockRawIO((b"abc", b"d", b"efg"))
@@ -1438,42 +1438,42 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
 
     @support.requires_resource('cpu')
     eleza test_threads(self):
-        try:
+        jaribu:
             # Write out many bytes with exactly the same number of 0's,
             # 1's... 255's. This will help us check that concurrent reading
-            # doesn't duplicate or forget contents.
+            # doesn't duplicate ama forget contents.
             N = 1000
             l = list(range(256)) * N
             random.shuffle(l)
             s = bytes(bytearray(l))
-            with self.open(support.TESTFN, "wb") as f:
+            with self.open(support.TESTFN, "wb") kama f:
                 f.write(s)
-            with self.open(support.TESTFN, self.read_mode, buffering=0) as raw:
+            with self.open(support.TESTFN, self.read_mode, buffering=0) kama raw:
                 bufio = self.tp(raw, 8)
                 errors = []
                 results = []
                 eleza f():
-                    try:
+                    jaribu:
                         # Intra-buffer read then buffer-flushing read
-                        for n in cycle([1, 19]):
+                        kila n kwenye cycle([1, 19]):
                             s = bufio.read(n)
-                            ikiwa not s:
-                                break
-                            # list.append() is atomic
+                            ikiwa sio s:
+                                koma
+                            # list.append() ni atomic
                             results.append(s)
-                    except Exception as e:
+                    tatizo Exception kama e:
                         errors.append(e)
-                        raise
-                threads = [threading.Thread(target=f) for x in range(20)]
+                        ashiria
+                threads = [threading.Thread(target=f) kila x kwenye range(20)]
                 with support.start_threads(threads):
-                    time.sleep(0.02) # yield
-                self.assertFalse(errors,
+                    time.sleep(0.02) # tuma
+                self.assertUongo(errors,
                     "the following exceptions were caught: %r" % errors)
                 s = b''.join(results)
-                for i in range(256):
+                kila i kwenye range(256):
                     c = bytes(bytearray([i]))
                     self.assertEqual(s.count(c), N)
-        finally:
+        mwishowe:
             support.unlink(support.TESTFN)
 
     eleza test_unseekable(self):
@@ -1491,27 +1491,27 @@ kundi BufferedReaderTest(unittest.TestCase, CommonBufferedTests):
         self.assertRaises(OSError, bufio.tell)
 
         # Silence destructor error
-        bufio.close = lambda: None
+        bufio.close = lambda: Tupu
 
     eleza test_no_extraneous_read(self):
         # Issue #9550; when the raw IO object has satisfied the read request,
-        # we should not issue any additional reads, otherwise it may block
+        # we should sio issue any additional reads, otherwise it may block
         # (e.g. socket).
         bufsize = 16
-        for n in (2, bufsize - 1, bufsize, bufsize + 1, bufsize * 2):
+        kila n kwenye (2, bufsize - 1, bufsize, bufsize + 1, bufsize * 2):
             rawio = self.MockRawIO([b"x" * n])
             bufio = self.tp(rawio, bufsize)
             self.assertEqual(bufio.read(n), b"x" * n)
-            # Simple case: one raw read is enough to satisfy the request.
+            # Simple case: one raw read ni enough to satisfy the request.
             self.assertEqual(rawio._extraneous_reads, 0,
-                             "failed for {}: {} != 0".format(n, rawio._extraneous_reads))
+                             "failed kila {}: {} != 0".format(n, rawio._extraneous_reads))
             # A more complex case where two raw reads are needed to satisfy
             # the request.
             rawio = self.MockRawIO([b"x" * (n - 1), b"x"])
             bufio = self.tp(rawio, bufsize)
             self.assertEqual(bufio.read(n), b"x" * n)
             self.assertEqual(rawio._extraneous_reads, 0,
-                             "failed for {}: {} != 0".format(n, rawio._extraneous_reads))
+                             "failed kila {}: {} != 0".format(n, rawio._extraneous_reads))
 
     eleza test_read_on_closed(self):
         # Issue #23796
@@ -1526,11 +1526,11 @@ kundi CBufferedReaderTest(BufferedReaderTest, SizeofTest):
     tp = io.BufferedReader
 
     @unittest.skipIf(MEMORY_SANITIZER, "MSan defaults to crashing "
-                     "instead of returning NULL for malloc failure.")
+                     "instead of rudishaing NULL kila malloc failure.")
     eleza test_constructor(self):
         BufferedReaderTest.test_constructor(self)
         # The allocation can succeed on 32-bit builds, e.g. with more
-        # than 2 GiB RAM and a 64-bit kernel.
+        # than 2 GiB RAM na a 64-bit kernel.
         ikiwa sys.maxsize > 0x7FFFFFFF:
             rawio = self.MockRawIO()
             bufio = self.tp(rawio)
@@ -1551,7 +1551,7 @@ kundi CBufferedReaderTest(BufferedReaderTest, SizeofTest):
         rawio = self.MisbehavedRawIO((b"abc", b"d", b"efg"))
         bufio = self.tp(rawio)
         # _pyio.BufferedReader seems to implement reading different, so that
-        # checking this is not so easy.
+        # checking this ni sio so easy.
         self.assertRaises(OSError, bufio.read, 10)
 
     eleza test_garbage_collection(self):
@@ -1563,9 +1563,9 @@ kundi CBufferedReaderTest(BufferedReaderTest, SizeofTest):
             f = self.tp(rawio)
             f.f = f
             wr = weakref.ref(f)
-            del f
+            toa f
             support.gc_collect()
-        self.assertIsNone(wr(), wr)
+        self.assertIsTupu(wr(), wr)
 
     eleza test_args_error(self):
         # Issue #17275
@@ -1598,7 +1598,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
 
     eleza test_uninitialized(self):
         bufio = self.tp.__new__(self.tp)
-        del bufio
+        toa bufio
         bufio = self.tp.__new__(self.tp)
         self.assertRaisesRegex((ValueError, AttributeError),
                                'uninitialized|has no attribute',
@@ -1610,7 +1610,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         raw = self.MockRawIO()
         buf = self.tp(raw)
         buf.write(b"howdy!")
-        self.assertFalse(raw._write_stack)
+        self.assertUongo(raw._write_stack)
         buf.detach()
         self.assertEqual(raw._write_stack, [b"howdy!"])
 
@@ -1619,7 +1619,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         writer = self.MockRawIO()
         bufio = self.tp(writer, 8)
         bufio.write(b"abc")
-        self.assertFalse(writer._write_stack)
+        self.assertUongo(writer._write_stack)
         buffer = bytearray(b"def")
         bufio.write(buffer)
         buffer[:] = b"***"  # Overwrite our copy of the data
@@ -1630,26 +1630,26 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         writer = self.MockRawIO()
         bufio = self.tp(writer, 8)
         contents = b"abcdefghijklmnop"
-        for n in range(0, len(contents), 3):
+        kila n kwenye range(0, len(contents), 3):
             bufio.write(contents[n:n+3])
         flushed = b"".join(writer._write_stack)
         # At least (total - 8) bytes were implicitly flushed, perhaps more
         # depending on the implementation.
-        self.assertTrue(flushed.startswith(contents[:-8]), flushed)
+        self.assertKweli(flushed.startswith(contents[:-8]), flushed)
 
     eleza check_writes(self, intermediate_func):
-        # Lots of writes, test the flushed output is as expected.
+        # Lots of writes, test the flushed output ni kama expected.
         contents = bytes(range(256)) * 1000
         n = 0
         writer = self.MockRawIO()
         bufio = self.tp(writer, 13)
         # Generator of write sizes: repeat each N 15 times then proceed to N+1
         eleza gen_sizes():
-            for size in count(1):
-                for i in range(15):
-                    yield size
+            kila size kwenye count(1):
+                kila i kwenye range(15):
+                    tuma size
         sizes = gen_sizes()
-        while n < len(contents):
+        wakati n < len(contents):
             size = min(next(sizes), len(contents) - n)
             self.assertEqual(bufio.write(contents[n:n+size]), size)
             intermediate_func(bufio)
@@ -1658,7 +1658,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         self.assertEqual(contents, b"".join(writer._write_stack))
 
     eleza test_writes(self):
-        self.check_writes(lambda bufio: None)
+        self.check_writes(lambda bufio: Tupu)
 
     eleza test_writes_and_flushes(self):
         self.check_writes(lambda bufio: bufio.flush())
@@ -1690,14 +1690,14 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         raw.block_on(b"k")
         self.assertEqual(bufio.write(b"jklmn"), 5)
 
-        # 8 bytes will be written, 8 will be buffered and the rest will be lost
+        # 8 bytes will be written, 8 will be buffered na the rest will be lost
         raw.block_on(b"0")
-        try:
+        jaribu:
             bufio.write(b"opqrwxyz0123456789")
-        except self.BlockingIOError as e:
+        tatizo self.BlockingIOError kama e:
             written = e.characters_written
-        else:
-            self.fail("BlockingIOError should have been raised")
+        isipokua:
+            self.fail("BlockingIOError should have been ashiriad")
         self.assertEqual(written, 16)
         self.assertEqual(raw.pop_written(),
             b"abcdefghijklmnopqrwxyz")
@@ -1705,7 +1705,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         self.assertEqual(bufio.write(b"ABCDEFGHI"), 9)
         s = raw.pop_written()
         # Previously buffered bytes were flushed
-        self.assertTrue(s.startswith(b"01234567A"), s)
+        self.assertKweli(s.startswith(b"01234567A"), s)
 
     eleza test_write_and_rewind(self):
         raw = io.BytesIO()
@@ -1747,26 +1747,26 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         writer = self.MockRawIO()
         bufio = self.tp(writer, 8)
         self.assertRaises(TypeError, bufio.writelines, [1, 2, 3])
-        self.assertRaises(TypeError, bufio.writelines, None)
+        self.assertRaises(TypeError, bufio.writelines, Tupu)
         self.assertRaises(TypeError, bufio.writelines, 'abc')
 
     eleza test_destructor(self):
         writer = self.MockRawIO()
         bufio = self.tp(writer, 8)
         bufio.write(b"abc")
-        del bufio
+        toa bufio
         support.gc_collect()
         self.assertEqual(b"abc", writer._write_stack[0])
 
     eleza test_truncate(self):
         # Truncate implicitly flushes the buffer.
         self.addCleanup(support.unlink, support.TESTFN)
-        with self.open(support.TESTFN, self.write_mode, buffering=0) as raw:
+        with self.open(support.TESTFN, self.write_mode, buffering=0) kama raw:
             bufio = self.tp(raw, 8)
             bufio.write(b"abcdef")
             self.assertEqual(bufio.truncate(3), 3)
             self.assertEqual(bufio.tell(), 6)
-        with self.open(support.TESTFN, "rb", buffering=0) as f:
+        with self.open(support.TESTFN, "rb", buffering=0) kama f:
             self.assertEqual(f.read(), b"abc")
 
     eleza test_truncate_after_write(self):
@@ -1774,14 +1774,14 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         # writes longer than the buffer size.
         # Issue: https://bugs.python.org/issue32228
         self.addCleanup(support.unlink, support.TESTFN)
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             # Fill with some buffer
             f.write(b'\x00' * 10000)
         buffer_sizes = [8192, 4096, 200]
-        for buffer_size in buffer_sizes:
-            with self.open(support.TESTFN, "r+b", buffering=buffer_size) as f:
+        kila buffer_size kwenye buffer_sizes:
+            with self.open(support.TESTFN, "r+b", buffering=buffer_size) kama f:
                 f.write(b'\x00' * (buffer_size + 1))
-                # After write write_pos and write_end are set to 0
+                # After write write_pos na write_end are set to 0
                 f.read(1)
                 # read operation makes sure that pos != raw_pos
                 f.truncate()
@@ -1789,49 +1789,49 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
 
     @support.requires_resource('cpu')
     eleza test_threads(self):
-        try:
-            # Write out many bytes kutoka many threads and test they were
+        jaribu:
+            # Write out many bytes kutoka many threads na test they were
             # all flushed.
             N = 1000
             contents = bytes(range(256)) * N
             sizes = cycle([1, 19])
             n = 0
             queue = deque()
-            while n < len(contents):
+            wakati n < len(contents):
                 size = next(sizes)
                 queue.append(contents[n:n+size])
                 n += size
-            del contents
+            toa contents
             # We use a real file object because it allows us to
-            # exercise situations where the GIL is released before
-            # writing the buffer to the raw streams. This is in addition
-            # to concurrency issues due to switching threads in the middle
+            # exercise situations where the GIL ni released before
+            # writing the buffer to the raw streams. This ni kwenye addition
+            # to concurrency issues due to switching threads kwenye the middle
             # of Python code.
-            with self.open(support.TESTFN, self.write_mode, buffering=0) as raw:
+            with self.open(support.TESTFN, self.write_mode, buffering=0) kama raw:
                 bufio = self.tp(raw, 8)
                 errors = []
                 eleza f():
-                    try:
-                        while True:
-                            try:
+                    jaribu:
+                        wakati Kweli:
+                            jaribu:
                                 s = queue.popleft()
-                            except IndexError:
-                                return
+                            tatizo IndexError:
+                                rudisha
                             bufio.write(s)
-                    except Exception as e:
+                    tatizo Exception kama e:
                         errors.append(e)
-                        raise
-                threads = [threading.Thread(target=f) for x in range(20)]
+                        ashiria
+                threads = [threading.Thread(target=f) kila x kwenye range(20)]
                 with support.start_threads(threads):
-                    time.sleep(0.02) # yield
-                self.assertFalse(errors,
+                    time.sleep(0.02) # tuma
+                self.assertUongo(errors,
                     "the following exceptions were caught: %r" % errors)
                 bufio.close()
-            with self.open(support.TESTFN, "rb") as f:
+            with self.open(support.TESTFN, "rb") kama f:
                 s = f.read()
-            for i in range(256):
+            kila i kwenye range(256):
                 self.assertEqual(s.count(bytes([i])), N)
-        finally:
+        mwishowe:
             support.unlink(support.TESTFN)
 
     eleza test_misbehaved_io(self):
@@ -1842,7 +1842,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         self.assertRaises(OSError, bufio.write, b"abcdef")
 
         # Silence destructor error
-        bufio.close = lambda: None
+        bufio.close = lambda: Tupu
 
     eleza test_max_buffer_size_removal(self):
         with self.assertRaises(TypeError):
@@ -1851,12 +1851,12 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
     eleza test_write_error_on_close(self):
         raw = self.MockRawIO()
         eleza bad_write(b):
-            raise OSError()
+            ashiria OSError()
         raw.write = bad_write
         b = self.tp(raw)
         b.write(b'spam')
-        self.assertRaises(OSError, b.close) # exception not swallowed
-        self.assertTrue(b.closed)
+        self.assertRaises(OSError, b.close) # exception sio swallowed
+        self.assertKweli(b.closed)
 
     eleza test_slow_close_kutoka_thread(self):
         # Issue #31976
@@ -1866,7 +1866,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         t.start()
         rawio.in_flush.wait()
         self.assertRaises(ValueError, bufio.write, b'spam')
-        self.assertTrue(bufio.closed)
+        self.assertKweli(bufio.closed)
         t.join()
 
 
@@ -1875,11 +1875,11 @@ kundi CBufferedWriterTest(BufferedWriterTest, SizeofTest):
     tp = io.BufferedWriter
 
     @unittest.skipIf(MEMORY_SANITIZER, "MSan defaults to crashing "
-                     "instead of returning NULL for malloc failure.")
+                     "instead of rudishaing NULL kila malloc failure.")
     eleza test_constructor(self):
         BufferedWriterTest.test_constructor(self)
         # The allocation can succeed on 32-bit builds, e.g. with more
-        # than 2 GiB RAM and a 64-bit kernel.
+        # than 2 GiB RAM na a 64-bit kernel.
         ikiwa sys.maxsize > 0x7FFFFFFF:
             rawio = self.MockRawIO()
             bufio = self.tp(rawio)
@@ -1897,7 +1897,7 @@ kundi CBufferedWriterTest(BufferedWriterTest, SizeofTest):
         self.assertRaises(ValueError, bufio.write, b"def")
 
     eleza test_garbage_collection(self):
-        # C BufferedWriter objects are collected, and collecting them flushes
+        # C BufferedWriter objects are collected, na collecting them flushes
         # all data to disk.
         # The Python version has __del__, so it ends into gc.garbage instead
         self.addCleanup(support.unlink, support.TESTFN)
@@ -1907,10 +1907,10 @@ kundi CBufferedWriterTest(BufferedWriterTest, SizeofTest):
             f.write(b"123xxx")
             f.x = f
             wr = weakref.ref(f)
-            del f
+            toa f
             support.gc_collect()
-        self.assertIsNone(wr(), wr)
-        with self.open(support.TESTFN, "rb") as f:
+        self.assertIsTupu(wr(), wr)
+        with self.open(support.TESTFN, "rb") kama f:
             self.assertEqual(f.read(), b"123xxx")
 
     eleza test_args_error(self):
@@ -1926,11 +1926,11 @@ kundi BufferedRWPairTest(unittest.TestCase):
 
     eleza test_constructor(self):
         pair = self.tp(self.MockRawIO(), self.MockRawIO())
-        self.assertFalse(pair.closed)
+        self.assertUongo(pair.closed)
 
     eleza test_uninitialized(self):
         pair = self.tp.__new__(self.tp)
-        del pair
+        toa pair
         pair = self.tp.__new__(self.tp)
         self.assertRaisesRegex((ValueError, AttributeError),
                                'uninitialized|has no attribute',
@@ -1953,14 +1953,14 @@ kundi BufferedRWPairTest(unittest.TestCase):
     eleza test_constructor_with_not_readable(self):
         kundi NotReadable(MockRawIO):
             eleza readable(self):
-                rudisha False
+                rudisha Uongo
 
         self.assertRaises(OSError, self.tp, NotReadable(), self.MockRawIO())
 
     eleza test_constructor_with_not_writeable(self):
         kundi NotWriteable(MockRawIO):
             eleza writable(self):
-                rudisha False
+                rudisha Uongo
 
         self.assertRaises(OSError, self.tp, self.MockRawIO(), NotWriteable())
 
@@ -1971,7 +1971,7 @@ kundi BufferedRWPairTest(unittest.TestCase):
         self.assertEqual(pair.read(1), b"d")
         self.assertEqual(pair.read(), b"ef")
         pair = self.tp(self.BytesIO(b"abc"), self.MockRawIO())
-        self.assertEqual(pair.read(None), b"abc")
+        self.assertEqual(pair.read(Tupu), b"abc")
 
     eleza test_readlines(self):
         pair = lambda: self.tp(self.BytesIO(b"abc\ndef\nh"), self.MockRawIO())
@@ -1980,7 +1980,7 @@ kundi BufferedRWPairTest(unittest.TestCase):
         self.assertEqual(pair().readlines(5), [b"abc\n", b"def\n"])
 
     eleza test_read1(self):
-        # .read1() is delegated to the underlying reader object, so this test
+        # .read1() ni delegated to the underlying reader object, so this test
         # can be shallow.
         pair = self.tp(self.BytesIO(b"abcdef"), self.MockRawIO())
 
@@ -1988,7 +1988,7 @@ kundi BufferedRWPairTest(unittest.TestCase):
         self.assertEqual(pair.read1(), b"def")
 
     eleza test_readinto(self):
-        for method in ("readinto", "readinto1"):
+        kila method kwenye ("readinto", "readinto1"):
             with self.subTest(method):
                 pair = self.tp(self.BytesIO(b"abcdef"), self.MockRawIO())
 
@@ -2011,31 +2011,31 @@ kundi BufferedRWPairTest(unittest.TestCase):
     eleza test_peek(self):
         pair = self.tp(self.BytesIO(b"abcdef"), self.MockRawIO())
 
-        self.assertTrue(pair.peek(3).startswith(b"abc"))
+        self.assertKweli(pair.peek(3).startswith(b"abc"))
         self.assertEqual(pair.read(3), b"abc")
 
     eleza test_readable(self):
         pair = self.tp(self.MockRawIO(), self.MockRawIO())
-        self.assertTrue(pair.readable())
+        self.assertKweli(pair.readable())
 
     eleza test_writeable(self):
         pair = self.tp(self.MockRawIO(), self.MockRawIO())
-        self.assertTrue(pair.writable())
+        self.assertKweli(pair.writable())
 
     eleza test_seekable(self):
-        # BufferedRWPairs are never seekable, even ikiwa their readers and writers
+        # BufferedRWPairs are never seekable, even ikiwa their readers na writers
         # are.
         pair = self.tp(self.MockRawIO(), self.MockRawIO())
-        self.assertFalse(pair.seekable())
+        self.assertUongo(pair.seekable())
 
-    # .flush() is delegated to the underlying writer object and has been
-    # tested in the test_write method.
+    # .flush() ni delegated to the underlying writer object na has been
+    # tested kwenye the test_write method.
 
     eleza test_close_and_closed(self):
         pair = self.tp(self.MockRawIO(), self.MockRawIO())
-        self.assertFalse(pair.closed)
+        self.assertUongo(pair.closed)
         pair.close()
-        self.assertTrue(pair.closed)
+        self.assertKweli(pair.closed)
 
     eleza test_reader_close_error_on_close(self):
         eleza reader_close():
@@ -2044,15 +2044,15 @@ kundi BufferedRWPairTest(unittest.TestCase):
         reader.close = reader_close
         writer = self.MockRawIO()
         pair = self.tp(reader, writer)
-        with self.assertRaises(NameError) as err:
+        with self.assertRaises(NameError) kama err:
             pair.close()
         self.assertIn('reader_non_existing', str(err.exception))
-        self.assertTrue(pair.closed)
-        self.assertFalse(reader.closed)
-        self.assertTrue(writer.closed)
+        self.assertKweli(pair.closed)
+        self.assertUongo(reader.closed)
+        self.assertKweli(writer.closed)
 
         # Silence destructor error
-        reader.close = lambda: None
+        reader.close = lambda: Tupu
 
     eleza test_writer_close_error_on_close(self):
         eleza writer_close():
@@ -2061,22 +2061,22 @@ kundi BufferedRWPairTest(unittest.TestCase):
         writer = self.MockRawIO()
         writer.close = writer_close
         pair = self.tp(reader, writer)
-        with self.assertRaises(NameError) as err:
+        with self.assertRaises(NameError) kama err:
             pair.close()
         self.assertIn('writer_non_existing', str(err.exception))
-        self.assertFalse(pair.closed)
-        self.assertTrue(reader.closed)
-        self.assertFalse(writer.closed)
+        self.assertUongo(pair.closed)
+        self.assertKweli(reader.closed)
+        self.assertUongo(writer.closed)
 
         # Silence destructor error
-        writer.close = lambda: None
-        writer = None
+        writer.close = lambda: Tupu
+        writer = Tupu
 
         # Ignore BufferedWriter (of the BufferedRWPair) unraisable exception
         with support.catch_unraisable_exception():
             # Ignore BufferedRWPair unraisable exception
             with support.catch_unraisable_exception():
-                pair = None
+                pair = Tupu
                 support.gc_collect()
             support.gc_collect()
 
@@ -2090,18 +2090,18 @@ kundi BufferedRWPairTest(unittest.TestCase):
         writer = self.MockRawIO()
         writer.close = writer_close
         pair = self.tp(reader, writer)
-        with self.assertRaises(NameError) as err:
+        with self.assertRaises(NameError) kama err:
             pair.close()
         self.assertIn('reader_non_existing', str(err.exception))
         self.assertIsInstance(err.exception.__context__, NameError)
         self.assertIn('writer_non_existing', str(err.exception.__context__))
-        self.assertFalse(pair.closed)
-        self.assertFalse(reader.closed)
-        self.assertFalse(writer.closed)
+        self.assertUongo(pair.closed)
+        self.assertUongo(reader.closed)
+        self.assertUongo(writer.closed)
 
         # Silence destructor error
-        reader.close = lambda: None
-        writer.close = lambda: None
+        reader.close = lambda: Tupu
+        writer.close = lambda: Tupu
 
     eleza test_isatty(self):
         kundi SelectableIsAtty(MockRawIO):
@@ -2112,23 +2112,23 @@ kundi BufferedRWPairTest(unittest.TestCase):
             eleza isatty(self):
                 rudisha self._isatty
 
-        pair = self.tp(SelectableIsAtty(False), SelectableIsAtty(False))
-        self.assertFalse(pair.isatty())
+        pair = self.tp(SelectableIsAtty(Uongo), SelectableIsAtty(Uongo))
+        self.assertUongo(pair.isatty())
 
-        pair = self.tp(SelectableIsAtty(True), SelectableIsAtty(False))
-        self.assertTrue(pair.isatty())
+        pair = self.tp(SelectableIsAtty(Kweli), SelectableIsAtty(Uongo))
+        self.assertKweli(pair.isatty())
 
-        pair = self.tp(SelectableIsAtty(False), SelectableIsAtty(True))
-        self.assertTrue(pair.isatty())
+        pair = self.tp(SelectableIsAtty(Uongo), SelectableIsAtty(Kweli))
+        self.assertKweli(pair.isatty())
 
-        pair = self.tp(SelectableIsAtty(True), SelectableIsAtty(True))
-        self.assertTrue(pair.isatty())
+        pair = self.tp(SelectableIsAtty(Kweli), SelectableIsAtty(Kweli))
+        self.assertKweli(pair.isatty())
 
     eleza test_weakref_clearing(self):
         brw = self.tp(self.MockRawIO(), self.MockRawIO())
         ref = weakref.ref(brw)
-        brw = None
-        ref = None # Shouldn't segfault.
+        brw = Tupu
+        ref = Tupu # Shouldn't segfault.
 
 kundi CBufferedRWPairTest(BufferedRWPairTest):
     tp = io.BufferedRWPair
@@ -2156,7 +2156,7 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
         self.assertEqual(b"as", rw.read(2))
         rw.write(b"ddd")
         rw.write(b"eee")
-        self.assertFalse(raw._write_stack) # Buffer writes
+        self.assertUongo(raw._write_stack) # Buffer writes
         self.assertEqual(b"ghjk", rw.read())
         self.assertEqual(b"dddeee", raw._write_stack[0])
 
@@ -2270,7 +2270,7 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
     eleza test_write_after_readahead(self):
         # Issue #6629: writing after the buffer was filled by readahead should
         # first rewind the raw stream.
-        for overwrite_size in [1, 5]:
+        kila overwrite_size kwenye [1, 5]:
             raw = self.BytesIO(b"A" * 10)
             bufio = self.tp(raw, 4)
             # Trigger readahead
@@ -2301,8 +2301,8 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
             bufio.write(b'\x01')
 
         b = b"\x80\x81\x82\x83\x84"
-        for i in range(0, len(b)):
-            for j in range(i, len(b)):
+        kila i kwenye range(0, len(b)):
+            kila j kwenye range(i, len(b)):
                 raw = self.BytesIO(b)
                 bufio = self.tp(raw, 100)
                 mutate(bufio, i, j)
@@ -2311,7 +2311,7 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
                 expected[j] = 2
                 expected[i] = 1
                 self.assertEqual(raw.getvalue(), expected,
-                                 "failed result for i=%d, j=%d" % (i, j))
+                                 "failed result kila i=%d, j=%d" % (i, j))
 
     eleza test_truncate_after_read_or_write(self):
         raw = self.BytesIO(b"A" * 10)
@@ -2326,9 +2326,9 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
         BufferedWriterTest.test_misbehaved_io(self)
 
     eleza test_interleaved_read_write(self):
-        # Test for issue #12213
-        with self.BytesIO(b'abcdefgh') as raw:
-            with self.tp(raw, 100) as f:
+        # Test kila issue #12213
+        with self.BytesIO(b'abcdefgh') kama raw:
+            with self.tp(raw, 100) kama f:
                 f.write(b"1")
                 self.assertEqual(f.read(1), b'b')
                 f.write(b'2')
@@ -2342,8 +2342,8 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
                 f.flush()
                 self.assertEqual(raw.getvalue(), b'1b2d3f4h')
 
-        with self.BytesIO(b'abc') as raw:
-            with self.tp(raw, 100) as f:
+        with self.BytesIO(b'abc') kama raw:
+            with self.tp(raw, 100) kama f:
                 self.assertEqual(f.read(1), b'a')
                 f.write(b"2")
                 self.assertEqual(f.read(1), b'c')
@@ -2351,8 +2351,8 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
                 self.assertEqual(raw.getvalue(), b'a2c')
 
     eleza test_interleaved_readline_write(self):
-        with self.BytesIO(b'ab\ncdef\ng\n') as raw:
-            with self.tp(raw) as f:
+        with self.BytesIO(b'ab\ncdef\ng\n') kama raw:
+            with self.tp(raw) kama f:
                 f.write(b'1')
                 self.assertEqual(f.readline(), b'b\n')
                 f.write(b'2')
@@ -2363,18 +2363,18 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
                 self.assertEqual(raw.getvalue(), b'1b\n2def\n3\n')
 
     # You can't construct a BufferedRandom over a non-seekable stream.
-    test_unseekable = None
+    test_unseekable = Tupu
 
 
 kundi CBufferedRandomTest(BufferedRandomTest, SizeofTest):
     tp = io.BufferedRandom
 
     @unittest.skipIf(MEMORY_SANITIZER, "MSan defaults to crashing "
-                     "instead of returning NULL for malloc failure.")
+                     "instead of rudishaing NULL kila malloc failure.")
     eleza test_constructor(self):
         BufferedRandomTest.test_constructor(self)
         # The allocation can succeed on 32-bit builds, e.g. with more
-        # than 2 GiB RAM and a 64-bit kernel.
+        # than 2 GiB RAM na a 64-bit kernel.
         ikiwa sys.maxsize > 0x7FFFFFFF:
             rawio = self.MockRawIO()
             bufio = self.tp(rawio)
@@ -2399,28 +2399,28 @@ kundi PyBufferedRandomTest(BufferedRandomTest):
 # properties:
 #   - A single output character can correspond to many bytes of input.
 #   - The number of input bytes to complete the character can be
-#     undetermined until the last input byte is received.
+#     undetermined until the last input byte ni received.
 #   - The number of input bytes can vary depending on previous input.
 #   - A single input byte can correspond to many characters of output.
 #   - The number of output characters can be undetermined until the
-#     last input byte is received.
+#     last input byte ni received.
 #   - The number of output characters can vary depending on previous input.
 
 kundi StatefulIncrementalDecoder(codecs.IncrementalDecoder):
     """
     For testing seek/tell behavior with a stateful, buffering decoder.
 
-    Input is a sequence of words.  Words may be fixed-length (length set
-    by input) or variable-length (period-terminated).  In variable-length
+    Input ni a sequence of words.  Words may be fixed-length (length set
+    by input) ama variable-length (period-terminated).  In variable-length
     mode, extra periods are ignored.  Possible words are:
       - 'i' followed by a number sets the input length, I (maximum 99).
-        When I is set to 0, words are space-terminated.
+        When I ni set to 0, words are space-terminated.
       - 'o' followed by a number sets the output length, O (maximum 99).
-      - Any other word is converted into a word followed by a period on
+      - Any other word ni converted into a word followed by a period on
         the output.  The output word consists of the input word truncated
-        or padded out with hyphens to make its length equal to O.  If O
-        is 0, the word is output verbatim without truncating or padding.
-    I and O are initially set to 1.  When I changes, any buffered input is
+        ama padded out with hyphens to make its length equal to O.  If O
+        ni 0, the word ni output verbatim without truncating ama padding.
+    I na O are initially set to 1.  When I changes, any buffered input is
     re-scanned according to the new I.  EOF also terminates the last word.
     """
 
@@ -2446,30 +2446,30 @@ kundi StatefulIncrementalDecoder(codecs.IncrementalDecoder):
         i, o = divmod(io, 100)
         self.i, self.o = i ^ 1, o ^ 1
 
-    eleza decode(self, input, final=False):
+    eleza decode(self, input, final=Uongo):
         output = ''
-        for b in input:
+        kila b kwenye input:
             ikiwa self.i == 0: # variable-length, terminated with period
                 ikiwa b == ord('.'):
                     ikiwa self.buffer:
                         output += self.process_word()
-                else:
+                isipokua:
                     self.buffer.append(b)
-            else: # fixed-length, terminate after self.i bytes
+            isipokua: # fixed-length, terminate after self.i bytes
                 self.buffer.append(b)
                 ikiwa len(self.buffer) == self.i:
                     output += self.process_word()
-        ikiwa final and self.buffer: # EOF terminates the last word
+        ikiwa final na self.buffer: # EOF terminates the last word
             output += self.process_word()
         rudisha output
 
     eleza process_word(self):
         output = ''
         ikiwa self.buffer[0] == ord('i'):
-            self.i = min(99, int(self.buffer[1:] or 0)) # set input length
+            self.i = min(99, int(self.buffer[1:] ama 0)) # set input length
         elikiwa self.buffer[0] == ord('o'):
-            self.o = min(99, int(self.buffer[1:] or 0)) # set output length
-        else:
+            self.o = min(99, int(self.buffer[1:] ama 0)) # set output length
+        isipokua:
             output = self.buffer.decode('ascii')
             ikiwa len(output) < self.o:
                 output += '-'*self.o # pad out with hyphens
@@ -2479,19 +2479,19 @@ kundi StatefulIncrementalDecoder(codecs.IncrementalDecoder):
         self.buffer = bytearray()
         rudisha output
 
-    codecEnabled = False
+    codecEnabled = Uongo
 
     @classmethod
     eleza lookupTestDecoder(cls, name):
-        ikiwa cls.codecEnabled and name == 'test_decoder':
+        ikiwa cls.codecEnabled na name == 'test_decoder':
             latin1 = codecs.lookup('latin-1')
             rudisha codecs.CodecInfo(
-                name='test_decoder', encode=latin1.encode, decode=None,
-                incrementalencoder=None,
-                streamreader=None, streamwriter=None,
+                name='test_decoder', encode=latin1.encode, decode=Tupu,
+                incrementalencoder=Tupu,
+                streamreader=Tupu, streamwriter=Tupu,
                 incrementaldecoder=cls)
 
-# Register the previous decoder for testing.
+# Register the previous decoder kila testing.
 # Disabled by default, tests will enable it.
 codecs.register(StatefulIncrementalDecoder.lookupTestDecoder)
 
@@ -2503,19 +2503,19 @@ kundi StatefulIncrementalDecoderTest(unittest.TestCase):
 
     test_cases = [
         # I=1, O=1 (fixed-length input == fixed-length output)
-        (b'abcd', False, 'a.b.c.d.'),
+        (b'abcd', Uongo, 'a.b.c.d.'),
         # I=0, O=0 (variable-length input, variable-length output)
-        (b'oiabcd', True, 'abcd.'),
+        (b'oiabcd', Kweli, 'abcd.'),
         # I=0, O=0 (should ignore extra periods)
-        (b'oi...abcd...', True, 'abcd.'),
+        (b'oi...abcd...', Kweli, 'abcd.'),
         # I=0, O=6 (variable-length input, fixed-length output)
-        (b'i.o6.x.xyz.toolongtofit.', False, 'x-----.xyz---.toolon.'),
+        (b'i.o6.x.xyz.toolongtofit.', Uongo, 'x-----.xyz---.toolon.'),
         # I=2, O=6 (fixed-length input < fixed-length output)
-        (b'i.i2.o6xyz', True, 'xy----.z-----.'),
+        (b'i.i2.o6xyz', Kweli, 'xy----.z-----.'),
         # I=6, O=3 (fixed-length input > fixed-length output)
-        (b'i.o3.i6.abcdefghijklmnop', True, 'abc.ghi.mno.'),
+        (b'i.o3.i6.abcdefghijklmnop', Kweli, 'abc.ghi.mno.'),
         # I=0, then 3; O=29, then 15 (with longer output)
-        (b'i.o29.a.b.cde.o15.abcdefghijabcdefghij.i3.a.b.c.d.ei00k.l.m', True,
+        (b'i.o29.a.b.cde.o15.abcdefghijabcdefghij.i3.a.b.c.d.ei00k.l.m', Kweli,
          'a----------------------------.' +
          'b----------------------------.' +
          'cde--------------------------.' +
@@ -2530,7 +2530,7 @@ kundi StatefulIncrementalDecoderTest(unittest.TestCase):
 
     eleza test_decoder(self):
         # Try a few one-shot test cases.
-        for input, eof, output in self.test_cases:
+        kila input, eof, output kwenye self.test_cases:
             d = StatefulIncrementalDecoder()
             self.assertEqual(d.decode(input, eof), output)
 
@@ -2555,17 +2555,17 @@ kundi TextIOWrapperTest(unittest.TestCase):
         t = self.TextIOWrapper(b)
         t.__init__(b, encoding="latin-1", newline="\r\n")
         self.assertEqual(t.encoding, "latin-1")
-        self.assertEqual(t.line_buffering, False)
-        t.__init__(b, encoding="utf-8", line_buffering=True)
+        self.assertEqual(t.line_buffering, Uongo)
+        t.__init__(b, encoding="utf-8", line_buffering=Kweli)
         self.assertEqual(t.encoding, "utf-8")
-        self.assertEqual(t.line_buffering, True)
+        self.assertEqual(t.line_buffering, Kweli)
         self.assertEqual("\xe9\n", t.readline())
         self.assertRaises(TypeError, t.__init__, b, newline=42)
         self.assertRaises(ValueError, t.__init__, b, newline='xyzzy')
 
     eleza test_uninitialized(self):
         t = self.TextIOWrapper.__new__(self.TextIOWrapper)
-        del t
+        toa t
         t = self.TextIOWrapper.__new__(self.TextIOWrapper)
         self.assertRaises(Exception, repr, t)
         self.assertRaisesRegex((ValueError, AttributeError),
@@ -2575,12 +2575,12 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertEqual(t.read(0), '')
 
     eleza test_non_text_encoding_codecs_are_rejected(self):
-        # Ensure the constructor complains ikiwa passed a codec that isn't
-        # marked as a text encoding
+        # Ensure the constructor complains ikiwa pitaed a codec that isn't
+        # marked kama a text encoding
         # http://bugs.python.org/issue20404
         r = self.BytesIO()
         b = self.BufferedWriter(r)
-        with self.assertRaisesRegex(LookupError, "is not a text encoding"):
+        with self.assertRaisesRegex(LookupError, "is sio a text encoding"):
             self.TextIOWrapper(b, encoding="hex")
 
     eleza test_detach(self):
@@ -2591,7 +2591,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
 
         t = self.TextIOWrapper(b, encoding="ascii")
         t.write("howdy")
-        self.assertFalse(r.getvalue())
+        self.assertUongo(r.getvalue())
         t.detach()
         self.assertEqual(r.getvalue(), b"howdy")
         self.assertRaises(ValueError, t.detach)
@@ -2600,8 +2600,8 @@ kundi TextIOWrapperTest(unittest.TestCase):
         repr(t)
         self.assertEqual(t.encoding, "ascii")
         self.assertEqual(t.errors, "strict")
-        self.assertFalse(t.line_buffering)
-        self.assertFalse(t.write_through)
+        self.assertUongo(t.line_buffering)
+        self.assertUongo(t.write_through)
 
     eleza test_repr(self):
         raw = self.BytesIO("hello".encode("utf-8"))
@@ -2621,22 +2621,22 @@ kundi TextIOWrapperTest(unittest.TestCase):
                          r"<(%s\.)?TextIOWrapper name=b'dummy' mode='r' encoding='utf-8'>" % modname)
 
         t.buffer.detach()
-        repr(t)  # Should not raise an exception
+        repr(t)  # Should sio ashiria an exception
 
     eleza test_recursive_repr(self):
         # Issue #25455
         raw = self.BytesIO()
         t = self.TextIOWrapper(raw)
         with support.swap_attr(raw, 'name', t):
-            try:
-                repr(t)  # Should not crash
-            except RuntimeError:
-                pass
+            jaribu:
+                repr(t)  # Should sio crash
+            tatizo RuntimeError:
+                pita
 
     eleza test_line_buffering(self):
         r = self.BytesIO()
         b = self.BufferedWriter(r, 1000)
-        t = self.TextIOWrapper(b, newline="\n", line_buffering=True)
+        t = self.TextIOWrapper(b, newline="\n", line_buffering=Kweli)
         t.write("X")
         self.assertEqual(r.getvalue(), b"")  # No flush happened
         t.write("Y\nZ")
@@ -2647,51 +2647,51 @@ kundi TextIOWrapperTest(unittest.TestCase):
     eleza test_reconfigure_line_buffering(self):
         r = self.BytesIO()
         b = self.BufferedWriter(r, 1000)
-        t = self.TextIOWrapper(b, newline="\n", line_buffering=False)
+        t = self.TextIOWrapper(b, newline="\n", line_buffering=Uongo)
         t.write("AB\nC")
         self.assertEqual(r.getvalue(), b"")
 
-        t.reconfigure(line_buffering=True)   # implicit flush
+        t.reconfigure(line_buffering=Kweli)   # implicit flush
         self.assertEqual(r.getvalue(), b"AB\nC")
         t.write("DEF\nG")
         self.assertEqual(r.getvalue(), b"AB\nCDEF\nG")
         t.write("H")
         self.assertEqual(r.getvalue(), b"AB\nCDEF\nG")
-        t.reconfigure(line_buffering=False)   # implicit flush
+        t.reconfigure(line_buffering=Uongo)   # implicit flush
         self.assertEqual(r.getvalue(), b"AB\nCDEF\nGH")
         t.write("IJ")
         self.assertEqual(r.getvalue(), b"AB\nCDEF\nGH")
 
         # Keeping default value
         t.reconfigure()
-        t.reconfigure(line_buffering=None)
-        self.assertEqual(t.line_buffering, False)
-        t.reconfigure(line_buffering=True)
+        t.reconfigure(line_buffering=Tupu)
+        self.assertEqual(t.line_buffering, Uongo)
+        t.reconfigure(line_buffering=Kweli)
         t.reconfigure()
-        t.reconfigure(line_buffering=None)
-        self.assertEqual(t.line_buffering, True)
+        t.reconfigure(line_buffering=Tupu)
+        self.assertEqual(t.line_buffering, Kweli)
 
-    @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode is enabled")
+    @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode ni enabled")
     eleza test_default_encoding(self):
         old_environ = dict(os.environ)
-        try:
+        jaribu:
             # try to get a user preferred encoding different than the current
             # locale encoding to check that TextIOWrapper() uses the current
-            # locale encoding and not the user preferred encoding
-            for key in ('LC_ALL', 'LANG', 'LC_CTYPE'):
-                ikiwa key in os.environ:
-                    del os.environ[key]
+            # locale encoding na sio the user preferred encoding
+            kila key kwenye ('LC_ALL', 'LANG', 'LC_CTYPE'):
+                ikiwa key kwenye os.environ:
+                    toa os.environ[key]
 
-            current_locale_encoding = locale.getpreferredencoding(False)
+            current_locale_encoding = locale.getpreferredencoding(Uongo)
             b = self.BytesIO()
             t = self.TextIOWrapper(b)
             self.assertEqual(t.encoding, current_locale_encoding)
-        finally:
+        mwishowe:
             os.environ.clear()
             os.environ.update(old_environ)
 
     @support.cpython_only
-    @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode is enabled")
+    @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode ni enabled")
     eleza test_device_encoding(self):
         # Issue 15989
         agiza _testcapi
@@ -2702,12 +2702,12 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertRaises(OverflowError, self.TextIOWrapper, b)
 
     eleza test_encoding(self):
-        # Check the encoding attribute is always set, and valid
+        # Check the encoding attribute ni always set, na valid
         b = self.BytesIO()
         t = self.TextIOWrapper(b, encoding="utf-8")
         self.assertEqual(t.encoding, "utf-8")
         t = self.TextIOWrapper(b)
-        self.assertIsNotNone(t.encoding)
+        self.assertIsNotTupu(t.encoding)
         codecs.lookup(t.encoding)
 
     eleza test_encoding_errors_reading(self):
@@ -2756,7 +2756,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         input_lines = [ "unix\n", "windows\r\n", "os9\r", "last\n", "nonl" ]
 
         tests = [
-            [ None, [ 'unix\n', 'windows\n', 'os9\n', 'last\n', 'nonl' ] ],
+            [ Tupu, [ 'unix\n', 'windows\n', 'os9\n', 'last\n', 'nonl' ] ],
             [ '', input_lines ],
             [ '\n', [ "unix\n", "windows\r\n", "os9\rlast\n", "nonl" ] ],
             [ '\r\n', [ "unix\nwindows\r\n", "os9\rlast\nnonl" ] ],
@@ -2768,38 +2768,38 @@ kundi TextIOWrapperTest(unittest.TestCase):
             'utf-32', 'utf-32-le', 'utf-32-be',
         )
 
-        # Try a range of buffer sizes to test the case where \r is the last
-        # character in TextIOWrapper._pending_line.
-        for encoding in encodings:
+        # Try a range of buffer sizes to test the case where \r ni the last
+        # character kwenye TextIOWrapper._pending_line.
+        kila encoding kwenye encodings:
             # XXX: str.encode() should rudisha bytes
             data = bytes(''.join(input_lines).encode(encoding))
-            for do_reads in (False, True):
-                for bufsize in range(1, 10):
-                    for newline, exp_lines in tests:
+            kila do_reads kwenye (Uongo, Kweli):
+                kila bufsize kwenye range(1, 10):
+                    kila newline, exp_lines kwenye tests:
                         bufio = self.BufferedReader(self.BytesIO(data), bufsize)
                         textio = self.TextIOWrapper(bufio, newline=newline,
                                                   encoding=encoding)
                         ikiwa do_reads:
                             got_lines = []
-                            while True:
+                            wakati Kweli:
                                 c2 = textio.read(2)
                                 ikiwa c2 == '':
-                                    break
+                                    koma
                                 self.assertEqual(len(c2), 2)
                                 got_lines.append(c2 + textio.readline())
-                        else:
+                        isipokua:
                             got_lines = list(textio)
 
-                        for got_line, exp_line in zip(got_lines, exp_lines):
+                        kila got_line, exp_line kwenye zip(got_lines, exp_lines):
                             self.assertEqual(got_line, exp_line)
                         self.assertEqual(len(got_lines), len(exp_lines))
 
     eleza test_newlines_input(self):
         testdata = b"AAA\nBB\x00B\nCCC\rDDD\rEEE\r\nFFF\r\nGGG"
         normalized = testdata.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
-        for newline, expected in [
-            (None, normalized.decode("ascii").splitlines(keepends=True)),
-            ("", testdata.decode("ascii").splitlines(keepends=True)),
+        kila newline, expected kwenye [
+            (Tupu, normalized.decode("ascii").splitlines(keepends=Kweli)),
+            ("", testdata.decode("ascii").splitlines(keepends=Kweli)),
             ("\n", ["AAA\n", "BB\x00B\n", "CCC\rDDD\rEEE\r\n", "FFF\r\n", "GGG"]),
             ("\r\n", ["AAA\nBB\x00B\nCCC\rDDD\rEEE\r\n", "FFF\r\n", "GGG"]),
             ("\r",  ["AAA\nBB\x00B\nCCC\r", "DDD\r", "EEE\r", "\nFFF\r", "\nGGG"]),
@@ -2817,15 +2817,15 @@ kundi TextIOWrapperTest(unittest.TestCase):
             "\r": b"AAA\rBBB\rCCC\rX\rY\r\rZ",
             "\r\n": b"AAA\r\nBBB\r\nCCC\r\nX\rY\r\r\nZ",
             }
-        tests = [(None, testdict[os.linesep])] + sorted(testdict.items())
-        for newline, expected in tests:
+        tests = [(Tupu, testdict[os.linesep])] + sorted(testdict.items())
+        kila newline, expected kwenye tests:
             buf = self.BytesIO()
             txt = self.TextIOWrapper(buf, encoding="ascii", newline=newline)
             txt.write("AAA\nB")
             txt.write("BB\nCCC\n")
             txt.write("X\rY\r\nZ")
             txt.flush()
-            self.assertEqual(buf.closed, False)
+            self.assertEqual(buf.closed, Uongo)
             self.assertEqual(buf.getvalue(), expected)
 
     eleza test_destructor(self):
@@ -2838,7 +2838,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         b = MyBytesIO()
         t = self.TextIOWrapper(b, encoding="ascii")
         t.write("abc")
-        del t
+        toa t
         support.gc_collect()
         self.assertEqual([b"abc"], l)
 
@@ -2847,11 +2847,11 @@ kundi TextIOWrapperTest(unittest.TestCase):
         kundi MyTextIO(self.TextIOWrapper):
             eleza __del__(self):
                 record.append(1)
-                try:
+                jaribu:
                     f = super().__del__
-                except AttributeError:
-                    pass
-                else:
+                tatizo AttributeError:
+                    pita
+                isipokua:
                     f()
             eleza close(self):
                 record.append(2)
@@ -2861,28 +2861,28 @@ kundi TextIOWrapperTest(unittest.TestCase):
                 super().flush()
         b = self.BytesIO()
         t = MyTextIO(b, encoding="ascii")
-        del t
+        toa t
         support.gc_collect()
         self.assertEqual(record, [1, 2, 3])
 
     eleza test_error_through_destructor(self):
-        # Test that the exception state is not modified by a destructor,
+        # Test that the exception state ni sio modified by a destructor,
         # even ikiwa close() fails.
         rawio = self.CloseFailureIO()
-        with support.catch_unraisable_exception() as cm:
+        with support.catch_unraisable_exception() kama cm:
             with self.assertRaises(AttributeError):
                 self.TextIOWrapper(rawio).xyzzy
 
-            ikiwa not IOBASE_EMITS_UNRAISABLE:
-                self.assertIsNone(cm.unraisable)
-            elikiwa cm.unraisable is not None:
+            ikiwa sio IOBASE_EMITS_UNRAISABLE:
+                self.assertIsTupu(cm.unraisable)
+            elikiwa cm.unraisable ni sio Tupu:
                 self.assertEqual(cm.unraisable.exc_type, OSError)
 
     # Systematic tests of the text I/O API
 
     eleza test_basic_io(self):
-        for chunksize in (1, 2, 3, 4, 5, 15, 16, 17, 31, 32, 33, 63, 64, 65):
-            for enc in "ascii", "latin-1", "utf-8" :# , "utf-16-be", "utf-16-le":
+        kila chunksize kwenye (1, 2, 3, 4, 5, 15, 16, 17, 31, 32, 33, 63, 64, 65):
+            kila enc kwenye "ascii", "latin-1", "utf-8" :# , "utf-16-be", "utf-16-le":
                 f = self.open(support.TESTFN, "w+", encoding=enc)
                 f._CHUNK_SIZE = chunksize
                 self.assertEqual(f.write("abc"), 3)
@@ -2893,7 +2893,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
                 self.assertEqual(f.read(), "abc")
                 cookie = f.tell()
                 self.assertEqual(f.seek(0), 0)
-                self.assertEqual(f.read(None), "abc")
+                self.assertEqual(f.read(Tupu), "abc")
                 f.seek(0)
                 self.assertEqual(f.read(2), "ab")
                 self.assertEqual(f.read(1), "c")
@@ -2914,20 +2914,20 @@ kundi TextIOWrapperTest(unittest.TestCase):
         f.truncate()
         sample = "s\xff\u0fff\uffff"
         wlines = []
-        for size in (0, 1, 2, 3, 4, 5, 30, 31, 32, 33, 62, 63, 64, 65, 1000):
+        kila size kwenye (0, 1, 2, 3, 4, 5, 30, 31, 32, 33, 62, 63, 64, 65, 1000):
             chars = []
-            for i in range(size):
+            kila i kwenye range(size):
                 chars.append(sample[i % len(sample)])
             line = "".join(chars) + "\n"
             wlines.append((f.tell(), line))
             f.write(line)
         f.seek(0)
         rlines = []
-        while True:
+        wakati Kweli:
             pos = f.tell()
             line = f.readline()
-            ikiwa not line:
-                break
+            ikiwa sio line:
+                koma
             rlines.append((pos, line))
         self.assertEqual(rlines, wlines)
 
@@ -2945,7 +2945,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertEqual(f.readline(), "\xff\n")
         self.assertEqual(f.tell(), p2)
         f.seek(0)
-        for line in f:
+        kila line kwenye f:
             self.assertEqual(line, "\xff\n")
             self.assertRaises(OSError, f.tell)
         self.assertEqual(f.tell(), p2)
@@ -2960,20 +2960,20 @@ kundi TextIOWrapperTest(unittest.TestCase):
         u_suffix = "\u8888\n"
         suffix = bytes(u_suffix.encode("utf-8"))
         line = prefix + suffix
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             f.write(line*2)
-        with self.open(support.TESTFN, "r", encoding="utf-8") as f:
+        with self.open(support.TESTFN, "r", encoding="utf-8") kama f:
             s = f.read(prefix_size)
             self.assertEqual(s, str(prefix, "ascii"))
             self.assertEqual(f.tell(), prefix_size)
             self.assertEqual(f.readline(), u_suffix)
 
     eleza test_seeking_too(self):
-        # Regression test for a specific bug
+        # Regression test kila a specific bug
         data = b'\xe0\xbf\xbf\n'
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             f.write(data)
-        with self.open(support.TESTFN, "r", encoding="utf-8") as f:
+        with self.open(support.TESTFN, "r", encoding="utf-8") kama f:
             f._CHUNK_SIZE  # Just test that it exists
             f._CHUNK_SIZE = 2
             f.readline()
@@ -2985,8 +2985,8 @@ kundi TextIOWrapperTest(unittest.TestCase):
         CHUNK_SIZE = 128
 
         eleza test_seek_and_tell_with_data(data, min_pos=0):
-            """Tell/seek to various points within a data stream and ensure
-            that the decoded data returned by read() is consistent."""
+            """Tell/seek to various points within a data stream na ensure
+            that the decoded data rudishaed by read() ni consistent."""
             f = self.open(support.TESTFN, 'wb')
             f.write(data)
             f.close()
@@ -2995,8 +2995,8 @@ kundi TextIOWrapperTest(unittest.TestCase):
             decoded = f.read()
             f.close()
 
-            for i in range(min_pos, len(decoded) + 1): # seek positions
-                for j in [1, 5, len(decoded) - i]: # read lengths
+            kila i kwenye range(min_pos, len(decoded) + 1): # seek positions
+                kila j kwenye [1, 5, len(decoded) - i]: # read lengths
                     f = self.open(support.TESTFN, encoding='test_decoder')
                     self.assertEqual(f.read(i), decoded[:i])
                     cookie = f.tell()
@@ -3009,13 +3009,13 @@ kundi TextIOWrapperTest(unittest.TestCase):
         StatefulIncrementalDecoder.codecEnabled = 1
 
         # Run the tests.
-        try:
+        jaribu:
             # Try each test case.
-            for input, _, _ in StatefulIncrementalDecoderTest.test_cases:
+            kila input, _, _ kwenye StatefulIncrementalDecoderTest.test_cases:
                 test_seek_and_tell_with_data(input)
 
             # Position each test case so that it crosses a chunk boundary.
-            for input, _, _ in StatefulIncrementalDecoderTest.test_cases:
+            kila input, _, _ kwenye StatefulIncrementalDecoderTest.test_cases:
                 offset = CHUNK_SIZE - len(input)//2
                 prefix = b'.'*offset
                 # Don't bother seeking into the prefix (takes too long).
@@ -3023,7 +3023,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
                 test_seek_and_tell_with_data(prefix + input, min_pos)
 
         # Ensure our test decoder won't interfere with subsequent tests.
-        finally:
+        mwishowe:
             StatefulIncrementalDecoder.codecEnabled = 0
 
     eleza test_multibyte_seek_and_tell(self):
@@ -3062,10 +3062,10 @@ kundi TextIOWrapperTest(unittest.TestCase):
                  "utf-32",
                  "utf-32-le",
                  "utf-32-be")
-        for encoding in tests:
+        kila encoding kwenye tests:
             buf = self.BytesIO()
             f = self.TextIOWrapper(buf, encoding=encoding)
-            # Check ikiwa the BOM is written only once (see issue1753).
+            # Check ikiwa the BOM ni written only once (see issue1753).
             f.write(data)
             f.write(data)
             f.seek(0)
@@ -3077,17 +3077,17 @@ kundi TextIOWrapperTest(unittest.TestCase):
     eleza test_unreadable(self):
         kundi UnReadable(self.BytesIO):
             eleza readable(self):
-                rudisha False
+                rudisha Uongo
         txt = self.TextIOWrapper(UnReadable())
         self.assertRaises(OSError, txt.read)
 
     eleza test_read_one_by_one(self):
         txt = self.TextIOWrapper(self.BytesIO(b"AA\r\nBB"))
         reads = ""
-        while True:
+        wakati Kweli:
             c = txt.read(1)
-            ikiwa not c:
-                break
+            ikiwa sio c:
+                koma
             reads += c
         self.assertEqual(reads, "AA\nBB")
 
@@ -3095,19 +3095,19 @@ kundi TextIOWrapperTest(unittest.TestCase):
         txt = self.TextIOWrapper(self.BytesIO(b"AA\nBB\nCC"))
         self.assertEqual(txt.readlines(), ["AA\n", "BB\n", "CC"])
         txt.seek(0)
-        self.assertEqual(txt.readlines(None), ["AA\n", "BB\n", "CC"])
+        self.assertEqual(txt.readlines(Tupu), ["AA\n", "BB\n", "CC"])
         txt.seek(0)
         self.assertEqual(txt.readlines(5), ["AA\n", "BB\n"])
 
-    # read in amounts equal to TextIOWrapper._CHUNK_SIZE which is 128.
+    # read kwenye amounts equal to TextIOWrapper._CHUNK_SIZE which ni 128.
     eleza test_read_by_chunk(self):
         # make sure "\r\n" straddles 128 char boundary.
         txt = self.TextIOWrapper(self.BytesIO(b"A" * 127 + b"\r\nB"))
         reads = ""
-        while True:
+        wakati Kweli:
             c = txt.read(128)
-            ikiwa not c:
-                break
+            ikiwa sio c:
+                koma
             reads += c
         self.assertEqual(reads, "A"*127+"\nB")
 
@@ -3130,7 +3130,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
     eleza test_writelines_error(self):
         txt = self.TextIOWrapper(self.BytesIO())
         self.assertRaises(TypeError, txt.writelines, [1, 2, 3])
-        self.assertRaises(TypeError, txt.writelines, None)
+        self.assertRaises(TypeError, txt.writelines, Tupu)
         self.assertRaises(TypeError, txt.writelines, b'abc')
 
     eleza test_issue1395_1(self):
@@ -3138,10 +3138,10 @@ kundi TextIOWrapperTest(unittest.TestCase):
 
         # read one char at a time
         reads = ""
-        while True:
+        wakati Kweli:
             c = txt.read(1)
-            ikiwa not c:
-                break
+            ikiwa sio c:
+                koma
             reads += c
         self.assertEqual(reads, self.normalized)
 
@@ -3150,10 +3150,10 @@ kundi TextIOWrapperTest(unittest.TestCase):
         txt._CHUNK_SIZE = 4
 
         reads = ""
-        while True:
+        wakati Kweli:
             c = txt.read(4)
-            ikiwa not c:
-                break
+            ikiwa sio c:
+                koma
             reads += c
         self.assertEqual(reads, self.normalized)
 
@@ -3193,129 +3193,129 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertEqual(buffer.seekable(), txt.seekable())
 
     eleza test_append_bom(self):
-        # The BOM is not written again when appending to a non-empty file
+        # The BOM ni sio written again when appending to a non-empty file
         filename = support.TESTFN
-        for charset in ('utf-8-sig', 'utf-16', 'utf-32'):
-            with self.open(filename, 'w', encoding=charset) as f:
+        kila charset kwenye ('utf-8-sig', 'utf-16', 'utf-32'):
+            with self.open(filename, 'w', encoding=charset) kama f:
                 f.write('aaa')
                 pos = f.tell()
-            with self.open(filename, 'rb') as f:
+            with self.open(filename, 'rb') kama f:
                 self.assertEqual(f.read(), 'aaa'.encode(charset))
 
-            with self.open(filename, 'a', encoding=charset) as f:
+            with self.open(filename, 'a', encoding=charset) kama f:
                 f.write('xxx')
-            with self.open(filename, 'rb') as f:
+            with self.open(filename, 'rb') kama f:
                 self.assertEqual(f.read(), 'aaaxxx'.encode(charset))
 
     eleza test_seek_bom(self):
         # Same test, but when seeking manually
         filename = support.TESTFN
-        for charset in ('utf-8-sig', 'utf-16', 'utf-32'):
-            with self.open(filename, 'w', encoding=charset) as f:
+        kila charset kwenye ('utf-8-sig', 'utf-16', 'utf-32'):
+            with self.open(filename, 'w', encoding=charset) kama f:
                 f.write('aaa')
                 pos = f.tell()
-            with self.open(filename, 'r+', encoding=charset) as f:
+            with self.open(filename, 'r+', encoding=charset) kama f:
                 f.seek(pos)
                 f.write('zzz')
                 f.seek(0)
                 f.write('bbb')
-            with self.open(filename, 'rb') as f:
+            with self.open(filename, 'rb') kama f:
                 self.assertEqual(f.read(), 'bbbzzz'.encode(charset))
 
     eleza test_seek_append_bom(self):
-        # Same test, but first seek to the start and then to the end
+        # Same test, but first seek to the start na then to the end
         filename = support.TESTFN
-        for charset in ('utf-8-sig', 'utf-16', 'utf-32'):
-            with self.open(filename, 'w', encoding=charset) as f:
+        kila charset kwenye ('utf-8-sig', 'utf-16', 'utf-32'):
+            with self.open(filename, 'w', encoding=charset) kama f:
                 f.write('aaa')
-            with self.open(filename, 'a', encoding=charset) as f:
+            with self.open(filename, 'a', encoding=charset) kama f:
                 f.seek(0)
                 f.seek(0, self.SEEK_END)
                 f.write('xxx')
-            with self.open(filename, 'rb') as f:
+            with self.open(filename, 'rb') kama f:
                 self.assertEqual(f.read(), 'aaaxxx'.encode(charset))
 
     eleza test_errors_property(self):
-        with self.open(support.TESTFN, "w") as f:
+        with self.open(support.TESTFN, "w") kama f:
             self.assertEqual(f.errors, "strict")
-        with self.open(support.TESTFN, "w", errors="replace") as f:
+        with self.open(support.TESTFN, "w", errors="replace") kama f:
             self.assertEqual(f.errors, "replace")
 
     @support.no_tracing
     eleza test_threads_write(self):
         # Issue6750: concurrent writes could duplicate data
         event = threading.Event()
-        with self.open(support.TESTFN, "w", buffering=1) as f:
+        with self.open(support.TESTFN, "w", buffering=1) kama f:
             eleza run(n):
                 text = "Thread%03d\n" % n
                 event.wait()
                 f.write(text)
             threads = [threading.Thread(target=run, args=(x,))
-                       for x in range(20)]
+                       kila x kwenye range(20)]
             with support.start_threads(threads, event.set):
                 time.sleep(0.02)
-        with self.open(support.TESTFN) as f:
+        with self.open(support.TESTFN) kama f:
             content = f.read()
-            for n in range(20):
+            kila n kwenye range(20):
                 self.assertEqual(content.count("Thread%03d\n" % n), 1)
 
     eleza test_flush_error_on_close(self):
-        # Test that text file is closed despite failed flush
-        # and that flush() is called before file closed.
+        # Test that text file ni closed despite failed flush
+        # na that flush() ni called before file closed.
         txt = self.TextIOWrapper(self.BytesIO(self.testdata), encoding="ascii")
         closed = []
         eleza bad_flush():
             closed[:] = [txt.closed, txt.buffer.closed]
-            raise OSError()
+            ashiria OSError()
         txt.flush = bad_flush
-        self.assertRaises(OSError, txt.close) # exception not swallowed
-        self.assertTrue(txt.closed)
-        self.assertTrue(txt.buffer.closed)
-        self.assertTrue(closed)      # flush() called
-        self.assertFalse(closed[0])  # flush() called before file closed
-        self.assertFalse(closed[1])
-        txt.flush = lambda: None  # break reference loop
+        self.assertRaises(OSError, txt.close) # exception sio swallowed
+        self.assertKweli(txt.closed)
+        self.assertKweli(txt.buffer.closed)
+        self.assertKweli(closed)      # flush() called
+        self.assertUongo(closed[0])  # flush() called before file closed
+        self.assertUongo(closed[1])
+        txt.flush = lambda: Tupu  # koma reference loop
 
     eleza test_close_error_on_close(self):
         buffer = self.BytesIO(self.testdata)
         eleza bad_flush():
-            raise OSError('flush')
+            ashiria OSError('flush')
         eleza bad_close():
-            raise OSError('close')
+            ashiria OSError('close')
         buffer.close = bad_close
         txt = self.TextIOWrapper(buffer, encoding="ascii")
         txt.flush = bad_flush
-        with self.assertRaises(OSError) as err: # exception not swallowed
+        with self.assertRaises(OSError) kama err: # exception sio swallowed
             txt.close()
         self.assertEqual(err.exception.args, ('close',))
         self.assertIsInstance(err.exception.__context__, OSError)
         self.assertEqual(err.exception.__context__.args, ('flush',))
-        self.assertFalse(txt.closed)
+        self.assertUongo(txt.closed)
 
         # Silence destructor error
-        buffer.close = lambda: None
-        txt.flush = lambda: None
+        buffer.close = lambda: Tupu
+        txt.flush = lambda: Tupu
 
     eleza test_nonnormalized_close_error_on_close(self):
         # Issue #21677
         buffer = self.BytesIO(self.testdata)
         eleza bad_flush():
-            raise non_existing_flush
+            ashiria non_existing_flush
         eleza bad_close():
-            raise non_existing_close
+            ashiria non_existing_close
         buffer.close = bad_close
         txt = self.TextIOWrapper(buffer, encoding="ascii")
         txt.flush = bad_flush
-        with self.assertRaises(NameError) as err: # exception not swallowed
+        with self.assertRaises(NameError) kama err: # exception sio swallowed
             txt.close()
         self.assertIn('non_existing_close', str(err.exception))
         self.assertIsInstance(err.exception.__context__, NameError)
         self.assertIn('non_existing_flush', str(err.exception.__context__))
-        self.assertFalse(txt.closed)
+        self.assertUongo(txt.closed)
 
         # Silence destructor error
-        buffer.close = lambda: None
-        txt.flush = lambda: None
+        buffer.close = lambda: Tupu
+        txt.flush = lambda: Tupu
 
     eleza test_multi_close(self):
         txt = self.TextIOWrapper(self.BytesIO(self.testdata), encoding="ascii")
@@ -3338,7 +3338,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
     eleza test_rawio(self):
         # Issue #12591: TextIOWrapper must work with raw I/O objects, so
         # that subprocess.Popen() can have the required unbuffered
-        # semantics with universal_newlines=True.
+        # semantics with universal_newlines=Kweli.
         raw = self.MockRawIO([b'abc', b'def', b'ghi\njkl\nopq\n'])
         txt = self.TextIOWrapper(raw, encoding='ascii', newline='\n')
         # Reads
@@ -3347,73 +3347,73 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertEqual(list(txt), ['jkl\n', 'opq\n'])
 
     eleza test_rawio_write_through(self):
-        # Issue #12591: with write_through=True, writes don't need a flush
+        # Issue #12591: with write_through=Kweli, writes don't need a flush
         raw = self.MockRawIO([b'abc', b'def', b'ghi\njkl\nopq\n'])
         txt = self.TextIOWrapper(raw, encoding='ascii', newline='\n',
-                                 write_through=True)
+                                 write_through=Kweli)
         txt.write('1')
         txt.write('23\n4')
         txt.write('5')
         self.assertEqual(b''.join(raw._write_stack), b'123\n45')
 
     eleza test_bufio_write_through(self):
-        # Issue #21396: write_through=True doesn't force a flush()
+        # Issue #21396: write_through=Kweli doesn't force a flush()
         # on the underlying binary buffered object.
         flush_called, write_called = [], []
         kundi BufferedWriter(self.BufferedWriter):
             eleza flush(self, *args, **kwargs):
-                flush_called.append(True)
+                flush_called.append(Kweli)
                 rudisha super().flush(*args, **kwargs)
             eleza write(self, *args, **kwargs):
-                write_called.append(True)
+                write_called.append(Kweli)
                 rudisha super().write(*args, **kwargs)
 
         rawio = self.BytesIO()
         data = b"a"
         bufio = BufferedWriter(rawio, len(data)*2)
         textio = self.TextIOWrapper(bufio, encoding='ascii',
-                                    write_through=True)
+                                    write_through=Kweli)
         # write to the buffered io but don't overflow the buffer
         text = data.decode('ascii')
         textio.write(text)
 
-        # buffer.flush is not called with write_through=True
-        self.assertFalse(flush_called)
-        # buffer.write *is* called with write_through=True
-        self.assertTrue(write_called)
+        # buffer.flush ni sio called with write_through=Kweli
+        self.assertUongo(flush_called)
+        # buffer.write *is* called with write_through=Kweli
+        self.assertKweli(write_called)
         self.assertEqual(rawio.getvalue(), b"") # no flush
 
         write_called = [] # reset
-        textio.write(text * 10) # total content is larger than bufio buffer
-        self.assertTrue(write_called)
+        textio.write(text * 10) # total content ni larger than bufio buffer
+        self.assertKweli(write_called)
         self.assertEqual(rawio.getvalue(), data * 11) # all flushed
 
     eleza test_reconfigure_write_through(self):
         raw = self.MockRawIO([])
         t = self.TextIOWrapper(raw, encoding='ascii', newline='\n')
         t.write('1')
-        t.reconfigure(write_through=True)  # implied flush
-        self.assertEqual(t.write_through, True)
+        t.reconfigure(write_through=Kweli)  # implied flush
+        self.assertEqual(t.write_through, Kweli)
         self.assertEqual(b''.join(raw._write_stack), b'1')
         t.write('23')
         self.assertEqual(b''.join(raw._write_stack), b'123')
-        t.reconfigure(write_through=False)
-        self.assertEqual(t.write_through, False)
+        t.reconfigure(write_through=Uongo)
+        self.assertEqual(t.write_through, Uongo)
         t.write('45')
         t.flush()
         self.assertEqual(b''.join(raw._write_stack), b'12345')
         # Keeping default value
         t.reconfigure()
-        t.reconfigure(write_through=None)
-        self.assertEqual(t.write_through, False)
-        t.reconfigure(write_through=True)
+        t.reconfigure(write_through=Tupu)
+        self.assertEqual(t.write_through, Uongo)
+        t.reconfigure(write_through=Kweli)
         t.reconfigure()
-        t.reconfigure(write_through=None)
-        self.assertEqual(t.write_through, True)
+        t.reconfigure(write_through=Tupu)
+        self.assertEqual(t.write_through, Kweli)
 
     eleza test_read_nonbytes(self):
         # Issue #17106
-        # Crash when underlying read() returns non-bytes
+        # Crash when underlying read() rudishas non-bytes
         t = self.TextIOWrapper(self.StringIO('a'))
         self.assertRaises(TypeError, t.read, 1)
         t = self.TextIOWrapper(self.StringIO('a'))
@@ -3422,26 +3422,26 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertRaises(TypeError, t.read)
 
     eleza test_illegal_encoder(self):
-        # Issue 31271: Calling write() while the rudisha value of encoder's
-        # encode() is invalid shouldn't cause an assertion failure.
+        # Issue 31271: Calling write() wakati the rudisha value of encoder's
+        # encode() ni invalid shouldn't cause an assertion failure.
         rot13 = codecs.lookup("rot13")
-        with support.swap_attr(rot13, '_is_text_encoding', True):
+        with support.swap_attr(rot13, '_is_text_encoding', Kweli):
             t = io.TextIOWrapper(io.BytesIO(b'foo'), encoding="rot13")
         self.assertRaises(TypeError, t.write, 'bar')
 
     eleza test_illegal_decoder(self):
         # Issue #17106
-        # Bypass the early encoding check added in issue 20404
+        # Bypita the early encoding check added kwenye issue 20404
         eleza _make_illegal_wrapper():
             quopri = codecs.lookup("quopri")
-            quopri._is_text_encoding = True
-            try:
+            quopri._is_text_encoding = Kweli
+            jaribu:
                 t = self.TextIOWrapper(self.BytesIO(b'aaaaaa'),
                                        newline='\n', encoding="quopri")
-            finally:
-                quopri._is_text_encoding = False
+            mwishowe:
+                quopri._is_text_encoding = Uongo
             rudisha t
-        # Crash when decoder returns non-string
+        # Crash when decoder rudishas non-string
         t = _make_illegal_wrapper()
         self.assertRaises(TypeError, t.read, 1)
         t = _make_illegal_wrapper()
@@ -3449,9 +3449,9 @@ kundi TextIOWrapperTest(unittest.TestCase):
         t = _make_illegal_wrapper()
         self.assertRaises(TypeError, t.read)
 
-        # Issue 31243: calling read() while the rudisha value of decoder's
-        # getstate() is invalid should neither crash the interpreter nor
-        # raise a SystemError.
+        # Issue 31243: calling read() wakati the rudisha value of decoder's
+        # getstate() ni invalid should neither crash the interpreter nor
+        # ashiria a SystemError.
         eleza _make_very_illegal_wrapper(getstate_ret_val):
             kundi BadDecoder:
                 eleza getstate(self):
@@ -3475,7 +3475,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         iomod = self.io.__name__
         code = """ikiwa 1:
             agiza codecs
-            agiza {iomod} as io
+            agiza {iomod} kama io
 
             # Avoid looking up codecs at shutdown
             codecs.lookup('utf-8')
@@ -3497,21 +3497,21 @@ kundi TextIOWrapperTest(unittest.TestCase):
             # Can error out with a RuntimeError ikiwa the module state
             # isn't found.
             self.assertIn(self.shutdown_error, err.decode())
-        else:
+        isipokua:
             self.assertEqual("ok", out.decode().strip())
 
     @support.requires_type_collecting
     eleza test_create_at_shutdown_with_encoding(self):
         rc, out, err = self._check_create_at_shutdown(encoding='utf-8',
                                                       errors='strict')
-        self.assertFalse(err)
+        self.assertUongo(err)
         self.assertEqual("ok", out.decode().strip())
 
     eleza test_read_byteslike(self):
         r = MemviewBytesIO(b'Just some random string\n')
         t = self.TextIOWrapper(r, 'utf-8')
 
-        # TextIOwrapper will not read the full string, because
+        # TextIOwrapper will sio read the full string, because
         # we truncate it to a multiple of the native int size
         # so that we can construct a more complex memoryview.
         bytes_val =  _to_memoryview(r.getvalue()).tobytes()
@@ -3520,15 +3520,15 @@ kundi TextIOWrapperTest(unittest.TestCase):
 
     eleza test_issue22849(self):
         kundi F(object):
-            eleza readable(self): rudisha True
-            eleza writable(self): rudisha True
-            eleza seekable(self): rudisha True
+            eleza readable(self): rudisha Kweli
+            eleza writable(self): rudisha Kweli
+            eleza seekable(self): rudisha Kweli
 
-        for i in range(10):
-            try:
+        kila i kwenye range(10):
+            jaribu:
                 self.TextIOWrapper(F(), encoding='utf-8')
-            except Exception:
-                pass
+            tatizo Exception:
+                pita
 
         F.tell = lambda x: 0
         t = self.TextIOWrapper(F(), encoding='utf-8')
@@ -3543,10 +3543,10 @@ kundi TextIOWrapperTest(unittest.TestCase):
         with self.assertRaises(self.UnsupportedOperation):
             txt.reconfigure(encoding='utf-8')
         with self.assertRaises(self.UnsupportedOperation):
-            txt.reconfigure(newline=None)
+            txt.reconfigure(newline=Tupu)
 
     eleza test_reconfigure_write_kutokaascii(self):
-        # ascii has a specific encodefunc in the C implementation,
+        # ascii has a specific encodefunc kwenye the C implementation,
         # but utf-8-sig has not. Make sure that we get rid of the
         # cached encodefunc when we switch encoders.
         raw = self.BytesIO()
@@ -3568,7 +3568,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         txt.flush()
         self.assertEqual(raw.getvalue(), b'abc\xe9\nd\xc3\xa9f\n')
 
-        # ascii -> utf-8-sig: ensure that no BOM is written in the middle of
+        # ascii -> utf-8-sig: ensure that no BOM ni written kwenye the middle of
         # the file
         raw = self.BytesIO()
         txt = self.TextIOWrapper(raw, encoding='ascii', newline='\n')
@@ -3580,20 +3580,20 @@ kundi TextIOWrapperTest(unittest.TestCase):
 
     eleza test_reconfigure_write_non_seekable(self):
         raw = self.BytesIO()
-        raw.seekable = lambda: False
-        raw.seek = None
+        raw.seekable = lambda: Uongo
+        raw.seek = Tupu
         txt = self.TextIOWrapper(raw, encoding='ascii', newline='\n')
         txt.write('abc\n')
         txt.reconfigure(encoding='utf-8-sig')
         txt.write('d\xe9f\n')
         txt.flush()
 
-        # If the raw stream is not seekable, there'll be a BOM
+        # If the raw stream ni sio seekable, there'll be a BOM
         self.assertEqual(raw.getvalue(),  b'abc\n\xef\xbb\xbfd\xc3\xa9f\n')
 
     eleza test_reconfigure_defaults(self):
         txt = self.TextIOWrapper(self.BytesIO(), 'ascii', 'replace', '\n')
-        txt.reconfigure(encoding=None)
+        txt.reconfigure(encoding=Tupu)
         self.assertEqual(txt.encoding, 'ascii')
         self.assertEqual(txt.errors, 'replace')
         txt.write('LF\n')
@@ -3607,7 +3607,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertEqual(txt.errors, 'ignore')
         txt.write('CRLF\n')
 
-        txt.reconfigure(encoding='utf-8', newline=None)
+        txt.reconfigure(encoding='utf-8', newline=Tupu)
         self.assertEqual(txt.errors, 'strict')
         txt.seek(0)
         self.assertEqual(txt.read(), 'LF\nCRLF\n')
@@ -3617,7 +3617,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
     eleza test_reconfigure_newline(self):
         raw = self.BytesIO(b'CR\rEOF')
         txt = self.TextIOWrapper(raw, 'ascii', newline='\n')
-        txt.reconfigure(newline=None)
+        txt.reconfigure(newline=Tupu)
         self.assertEqual(txt.readline(), 'CR\n')
         raw = self.BytesIO(b'CR\rEOF')
         txt = self.TextIOWrapper(raw, 'ascii', newline='\n')
@@ -3637,7 +3637,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertEqual(txt.readline(), 'CR\rCRLF\r\n')
 
         txt = self.TextIOWrapper(self.BytesIO(), 'ascii', newline='\r')
-        txt.reconfigure(newline=None)
+        txt.reconfigure(newline=Tupu)
         txt.write('linesep\n')
         txt.reconfigure(newline='')
         txt.write('LF\n')
@@ -3651,7 +3651,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
         self.assertEqual(txt.detach().getvalue().decode('ascii'), expected)
 
     eleza test_issue25862(self):
-        # Assertion failures occurred in tell() after read() and write().
+        # Assertion failures occurred kwenye tell() after read() na write().
         t = self.TextIOWrapper(self.BytesIO(b'test'), encoding='ascii')
         t.read(1)
         t.read()
@@ -3663,7 +3663,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
 
 
 kundi MemviewBytesIO(io.BytesIO):
-    '''A BytesIO object whose read method returns memoryviews
+    '''A BytesIO object whose read method rudishas memoryviews
        rather than bytes'''
 
     eleza read1(self, len_):
@@ -3683,7 +3683,7 @@ eleza _to_memoryview(buf):
 
 kundi CTextIOWrapperTest(TextIOWrapperTest):
     io = io
-    shutdown_error = "RuntimeError: could not find io module state"
+    shutdown_error = "RuntimeError: could sio find io module state"
 
     eleza test_initialization(self):
         r = self.BytesIO(b"\xc3\xa9\n\n")
@@ -3696,9 +3696,9 @@ kundi CTextIOWrapperTest(TextIOWrapperTest):
         self.assertRaises(Exception, repr, t)
 
     eleza test_garbage_collection(self):
-        # C TextIOWrapper objects are collected, and collecting them flushes
+        # C TextIOWrapper objects are collected, na collecting them flushes
         # all data to disk.
-        # The Python version has __del__, so it ends in gc.garbage instead.
+        # The Python version has __del__, so it ends kwenye gc.garbage instead.
         with support.check_warnings(('', ResourceWarning)):
             rawio = io.FileIO(support.TESTFN, "wb")
             b = self.BufferedWriter(rawio)
@@ -3706,17 +3706,17 @@ kundi CTextIOWrapperTest(TextIOWrapperTest):
             t.write("456def")
             t.x = t
             wr = weakref.ref(t)
-            del t
+            toa t
             support.gc_collect()
-        self.assertIsNone(wr(), wr)
-        with self.open(support.TESTFN, "rb") as f:
+        self.assertIsTupu(wr(), wr)
+        with self.open(support.TESTFN, "rb") kama f:
             self.assertEqual(f.read(), b"456def")
 
     eleza test_rwpair_cleared_before_textio(self):
         # Issue 13070: TextIOWrapper's finalization would crash when called
         # after the reference to the underlying BufferedRWPair's writer got
         # cleared by the GC.
-        for i in range(1000):
+        kila i kwenye range(1000):
             b1 = self.BufferedRWPair(self.MockRawIO(), self.MockRawIO())
             t1 = self.TextIOWrapper(b1, encoding="ascii")
             b2 = self.BufferedRWPair(self.MockRawIO(), self.MockRawIO())
@@ -3729,7 +3729,7 @@ kundi CTextIOWrapperTest(TextIOWrapperTest):
     eleza test_del__CHUNK_SIZE_SystemError(self):
         t = self.TextIOWrapper(self.BytesIO(), encoding='ascii')
         with self.assertRaises(AttributeError):
-            del t._CHUNK_SIZE
+            toa t._CHUNK_SIZE
 
 
 kundi PyTextIOWrapperTest(TextIOWrapperTest):
@@ -3740,9 +3740,9 @@ kundi PyTextIOWrapperTest(TextIOWrapperTest):
 kundi IncrementalNewlineDecoderTest(unittest.TestCase):
 
     eleza check_newline_decoding_utf8(self, decoder):
-        # UTF-8 specific tests for a newline decoder
+        # UTF-8 specific tests kila a newline decoder
         eleza _check_decode(b, s, **kwargs):
-            # We exercise getstate() / setstate() as well as decode()
+            # We exercise getstate() / setstate() kama well kama decode()
             state = decoder.getstate()
             self.assertEqual(decoder.decode(b, **kwargs), s)
             decoder.setstate(state)
@@ -3759,13 +3759,13 @@ kundi IncrementalNewlineDecoderTest(unittest.TestCase):
         _check_decode(b'\x88', "\u8888")
 
         _check_decode(b'\xe8', "")
-        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', final=True)
+        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', final=Kweli)
 
         decoder.reset()
         _check_decode(b'\n', "\n")
         _check_decode(b'\r', "")
-        _check_decode(b'', "\n", final=True)
-        _check_decode(b'\r', "\n", final=True)
+        _check_decode(b'', "\n", final=Kweli)
+        _check_decode(b'\r', "\n", final=Kweli)
 
         _check_decode(b'\r', "")
         _check_decode(b'a', "\na")
@@ -3783,19 +3783,19 @@ kundi IncrementalNewlineDecoderTest(unittest.TestCase):
 
     eleza check_newline_decoding(self, decoder, encoding):
         result = []
-        ikiwa encoding is not None:
+        ikiwa encoding ni sio Tupu:
             encoder = codecs.getincrementalencoder(encoding)()
             eleza _decode_bytewise(s):
                 # Decode one byte at a time
-                for b in encoder.encode(s):
+                kila b kwenye encoder.encode(s):
                     result.append(decoder.decode(bytes([b])))
-        else:
-            encoder = None
+        isipokua:
+            encoder = Tupu
             eleza _decode_bytewise(s):
                 # Decode one char at a time
-                for c in s:
+                kila c kwenye s:
                     result.append(decoder.decode(c))
-        self.assertEqual(decoder.newlines, None)
+        self.assertEqual(decoder.newlines, Tupu)
         _decode_bytewise("abc\n\r")
         self.assertEqual(decoder.newlines, '\n')
         _decode_bytewise("\nabc")
@@ -3808,45 +3808,45 @@ kundi IncrementalNewlineDecoderTest(unittest.TestCase):
         self.assertEqual("".join(result), "abc\n\nabcabc\nabcabc")
         decoder.reset()
         input = "abc"
-        ikiwa encoder is not None:
+        ikiwa encoder ni sio Tupu:
             encoder.reset()
             input = encoder.encode(input)
         self.assertEqual(decoder.decode(input), "abc")
-        self.assertEqual(decoder.newlines, None)
+        self.assertEqual(decoder.newlines, Tupu)
 
     eleza test_newline_decoder(self):
         encodings = (
-            # None meaning the IncrementalNewlineDecoder takes unicode input
+            # Tupu meaning the IncrementalNewlineDecoder takes unicode input
             # rather than bytes input
-            None, 'utf-8', 'latin-1',
+            Tupu, 'utf-8', 'latin-1',
             'utf-16', 'utf-16-le', 'utf-16-be',
             'utf-32', 'utf-32-le', 'utf-32-be',
         )
-        for enc in encodings:
-            decoder = enc and codecs.getincrementaldecoder(enc)()
-            decoder = self.IncrementalNewlineDecoder(decoder, translate=True)
+        kila enc kwenye encodings:
+            decoder = enc na codecs.getincrementaldecoder(enc)()
+            decoder = self.IncrementalNewlineDecoder(decoder, translate=Kweli)
             self.check_newline_decoding(decoder, enc)
         decoder = codecs.getincrementaldecoder("utf-8")()
-        decoder = self.IncrementalNewlineDecoder(decoder, translate=True)
+        decoder = self.IncrementalNewlineDecoder(decoder, translate=Kweli)
         self.check_newline_decoding_utf8(decoder)
         self.assertRaises(TypeError, decoder.setstate, 42)
 
     eleza test_newline_bytes(self):
-        # Issue 5433: Excessive optimization in IncrementalNewlineDecoder
+        # Issue 5433: Excessive optimization kwenye IncrementalNewlineDecoder
         eleza _check(dec):
-            self.assertEqual(dec.newlines, None)
+            self.assertEqual(dec.newlines, Tupu)
             self.assertEqual(dec.decode("\u0D00"), "\u0D00")
-            self.assertEqual(dec.newlines, None)
+            self.assertEqual(dec.newlines, Tupu)
             self.assertEqual(dec.decode("\u0A00"), "\u0A00")
-            self.assertEqual(dec.newlines, None)
-        dec = self.IncrementalNewlineDecoder(None, translate=False)
+            self.assertEqual(dec.newlines, Tupu)
+        dec = self.IncrementalNewlineDecoder(Tupu, translate=Uongo)
         _check(dec)
-        dec = self.IncrementalNewlineDecoder(None, translate=True)
+        dec = self.IncrementalNewlineDecoder(Tupu, translate=Kweli)
         _check(dec)
 
     eleza test_translate(self):
         # issue 35062
-        for translate in (-2, -1, 1, 2):
+        kila translate kwenye (-2, -1, 1, 2):
             decoder = codecs.getincrementaldecoder("utf-8")()
             decoder = self.IncrementalNewlineDecoder(decoder, translate)
             self.check_newline_decoding_utf8(decoder)
@@ -3855,13 +3855,13 @@ kundi IncrementalNewlineDecoderTest(unittest.TestCase):
         self.assertEqual(decoder.decode(b"\r\r\n"), "\r\r\n")
 
 kundi CIncrementalNewlineDecoderTest(IncrementalNewlineDecoderTest):
-    pass
+    pita
 
 kundi PyIncrementalNewlineDecoderTest(IncrementalNewlineDecoderTest):
-    pass
+    pita
 
 
-# XXX Tests for open()
+# XXX Tests kila open()
 
 kundi MiscIOTest(unittest.TestCase):
 
@@ -3869,15 +3869,15 @@ kundi MiscIOTest(unittest.TestCase):
         support.unlink(support.TESTFN)
 
     eleza test___all__(self):
-        for name in self.io.__all__:
-            obj = getattr(self.io, name, None)
-            self.assertIsNotNone(obj, name)
-            ikiwa name in ("open", "open_code"):
-                continue
-            elikiwa "error" in name.lower() or name == "UnsupportedOperation":
-                self.assertTrue(issubclass(obj, Exception), name)
-            elikiwa not name.startswith("SEEK_"):
-                self.assertTrue(issubclass(obj, self.IOBase))
+        kila name kwenye self.io.__all__:
+            obj = getattr(self.io, name, Tupu)
+            self.assertIsNotTupu(obj, name)
+            ikiwa name kwenye ("open", "open_code"):
+                endelea
+            elikiwa "error" kwenye name.lower() ama name == "UnsupportedOperation":
+                self.assertKweli(issubclass(obj, Exception), name)
+            elikiwa sio name.startswith("SEEK_"):
+                self.assertKweli(issubclass(obj, self.IOBase))
 
     eleza test_attributes(self):
         f = self.open(support.TESTFN, "wb", buffering=0)
@@ -3899,7 +3899,7 @@ kundi MiscIOTest(unittest.TestCase):
         self.assertEqual(f.buffer.mode,     "rb+") # Does it really matter?
         self.assertEqual(f.buffer.raw.mode, "rb+")
 
-        g = self.open(f.fileno(), "wb", closefd=False)
+        g = self.open(f.fileno(), "wb", closefd=Uongo)
         self.assertEqual(g.mode,     "wb")
         self.assertEqual(g.raw.mode, "wb")
         self.assertEqual(g.name,     f.fileno())
@@ -3908,7 +3908,7 @@ kundi MiscIOTest(unittest.TestCase):
         g.close()
 
     eleza test_io_after_close(self):
-        for kwargs in [
+        kila kwargs kwenye [
                 {"mode": "w"},
                 {"mode": "wb"},
                 {"mode": "w", "buffering": 1},
@@ -3950,22 +3950,22 @@ kundi MiscIOTest(unittest.TestCase):
             self.assertRaises(ValueError, f.tell)
             self.assertRaises(ValueError, f.truncate)
             self.assertRaises(ValueError, f.write,
-                              b"" ikiwa "b" in kwargs['mode'] else "")
+                              b"" ikiwa "b" kwenye kwargs['mode'] else "")
             self.assertRaises(ValueError, f.writelines, [])
             self.assertRaises(ValueError, next, f)
 
     eleza test_blockingioerror(self):
         # Various BlockingIOError issues
         kundi C(str):
-            pass
+            pita
         c = C("")
         b = self.BlockingIOError(1, c)
         c.b = b
         b.c = c
         wr = weakref.ref(c)
-        del c, b
+        toa c, b
         support.gc_collect()
-        self.assertIsNone(wr(), wr)
+        self.assertIsTupu(wr(), wr)
 
     eleza test_abcs(self):
         # Test the visible base classes are ABCs.
@@ -3975,17 +3975,17 @@ kundi MiscIOTest(unittest.TestCase):
         self.assertIsInstance(self.TextIOBase, abc.ABCMeta)
 
     eleza _check_abc_inheritance(self, abcmodule):
-        with self.open(support.TESTFN, "wb", buffering=0) as f:
+        with self.open(support.TESTFN, "wb", buffering=0) kama f:
             self.assertIsInstance(f, abcmodule.IOBase)
             self.assertIsInstance(f, abcmodule.RawIOBase)
             self.assertNotIsInstance(f, abcmodule.BufferedIOBase)
             self.assertNotIsInstance(f, abcmodule.TextIOBase)
-        with self.open(support.TESTFN, "wb") as f:
+        with self.open(support.TESTFN, "wb") kama f:
             self.assertIsInstance(f, abcmodule.IOBase)
             self.assertNotIsInstance(f, abcmodule.RawIOBase)
             self.assertIsInstance(f, abcmodule.BufferedIOBase)
             self.assertNotIsInstance(f, abcmodule.TextIOBase)
-        with self.open(support.TESTFN, "w") as f:
+        with self.open(support.TESTFN, "w") kama f:
             self.assertIsInstance(f, abcmodule.IOBase)
             self.assertNotIsInstance(f, abcmodule.RawIOBase)
             self.assertNotIsInstance(f, abcmodule.BufferedIOBase)
@@ -4003,8 +4003,8 @@ kundi MiscIOTest(unittest.TestCase):
     eleza _check_warn_on_dealloc(self, *args, **kwargs):
         f = open(*args, **kwargs)
         r = repr(f)
-        with self.assertWarns(ResourceWarning) as cm:
-            f = None
+        with self.assertWarns(ResourceWarning) kama cm:
+            f = Tupu
             support.gc_collect()
         self.assertIn(r, str(cm.warning.args[0]))
 
@@ -4016,21 +4016,21 @@ kundi MiscIOTest(unittest.TestCase):
     eleza _check_warn_on_dealloc_fd(self, *args, **kwargs):
         fds = []
         eleza cleanup_fds():
-            for fd in fds:
-                try:
+            kila fd kwenye fds:
+                jaribu:
                     os.close(fd)
-                except OSError as e:
+                tatizo OSError kama e:
                     ikiwa e.errno != errno.EBADF:
-                        raise
+                        ashiria
         self.addCleanup(cleanup_fds)
         r, w = os.pipe()
         fds += r, w
         self._check_warn_on_dealloc(r, *args, **kwargs)
-        # When using closefd=False, there's no warning
+        # When using closefd=Uongo, there's no warning
         r, w = os.pipe()
         fds += r, w
         with support.check_no_resource_warning(self):
-            open(r, *args, closefd=False, **kwargs)
+            open(r, *args, closefd=Uongo, **kwargs)
 
     eleza test_warn_on_dealloc_fd(self):
         self._check_warn_on_dealloc_fd("rb", buffering=0)
@@ -4039,8 +4039,8 @@ kundi MiscIOTest(unittest.TestCase):
 
 
     eleza test_pickling(self):
-        # Pickling file objects is forbidden
-        for kwargs in [
+        # Pickling file objects ni forbidden
+        kila kwargs kwenye [
                 {"mode": "w"},
                 {"mode": "wb"},
                 {"mode": "wb", "buffering": 0},
@@ -4051,8 +4051,8 @@ kundi MiscIOTest(unittest.TestCase):
                 {"mode": "w+b"},
                 {"mode": "w+b", "buffering": 0},
             ]:
-            for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.open(support.TESTFN, **kwargs) as f:
+            kila protocol kwenye range(pickle.HIGHEST_PROTOCOL + 1):
+                with self.open(support.TESTFN, **kwargs) kama f:
                     self.assertRaises(TypeError, pickle.dumps, f, protocol)
 
     eleza test_nonblock_pipe_write_bigbuf(self):
@@ -4062,32 +4062,32 @@ kundi MiscIOTest(unittest.TestCase):
         self._test_nonblock_pipe_write(1024)
 
     @unittest.skipUnless(hasattr(os, 'set_blocking'),
-                         'os.set_blocking() required for this test')
+                         'os.set_blocking() required kila this test')
     eleza _test_nonblock_pipe_write(self, bufsize):
         sent = []
         received = []
         r, w = os.pipe()
-        os.set_blocking(r, False)
-        os.set_blocking(w, False)
+        os.set_blocking(r, Uongo)
+        os.set_blocking(w, Uongo)
 
-        # To exercise all code paths in the C implementation we need
+        # To exercise all code paths kwenye the C implementation we need
         # to play with buffer sizes.  For instance, ikiwa we choose a
-        # buffer size less than or equal to _PIPE_BUF (4096 on Linux)
+        # buffer size less than ama equal to _PIPE_BUF (4096 on Linux)
         # then we will never get a partial write of the buffer.
-        rf = self.open(r, mode='rb', closefd=True, buffering=bufsize)
-        wf = self.open(w, mode='wb', closefd=True, buffering=bufsize)
+        rf = self.open(r, mode='rb', closefd=Kweli, buffering=bufsize)
+        wf = self.open(w, mode='wb', closefd=Kweli, buffering=bufsize)
 
         with rf, wf:
-            for N in 9999, 73, 7574:
-                try:
+            kila N kwenye 9999, 73, 7574:
+                jaribu:
                     i = 0
-                    while True:
+                    wakati Kweli:
                         msg = bytes([i % 26 + 97]) * N
                         sent.append(msg)
                         wf.write(msg)
                         i += 1
 
-                except self.BlockingIOError as e:
+                tatizo self.BlockingIOError kama e:
                     self.assertEqual(e.args[0], errno.EAGAIN)
                     self.assertEqual(e.args[2], e.characters_written)
                     sent[-1] = sent[-1][:e.characters_written]
@@ -4096,38 +4096,38 @@ kundi MiscIOTest(unittest.TestCase):
                     wf.write(msg)
                     sent.append(msg)
 
-            while True:
-                try:
+            wakati Kweli:
+                jaribu:
                     wf.flush()
-                    break
-                except self.BlockingIOError as e:
+                    koma
+                tatizo self.BlockingIOError kama e:
                     self.assertEqual(e.args[0], errno.EAGAIN)
                     self.assertEqual(e.args[2], e.characters_written)
                     self.assertEqual(e.characters_written, 0)
                     received.append(rf.read())
 
-            received += iter(rf.read, None)
+            received += iter(rf.read, Tupu)
 
         sent, received = b''.join(sent), b''.join(received)
         self.assertEqual(sent, received)
-        self.assertTrue(wf.closed)
-        self.assertTrue(rf.closed)
+        self.assertKweli(wf.closed)
+        self.assertKweli(rf.closed)
 
     eleza test_create_fail(self):
-        # 'x' mode fails ikiwa file is existing
+        # 'x' mode fails ikiwa file ni existing
         with self.open(support.TESTFN, 'w'):
-            pass
+            pita
         self.assertRaises(FileExistsError, self.open, support.TESTFN, 'x')
 
     eleza test_create_writes(self):
-        # 'x' mode opens for writing
-        with self.open(support.TESTFN, 'xb') as f:
+        # 'x' mode opens kila writing
+        with self.open(support.TESTFN, 'xb') kama f:
             f.write(b"spam")
-        with self.open(support.TESTFN, 'rb') as f:
+        with self.open(support.TESTFN, 'rb') kama f:
             self.assertEqual(b"spam", f.read())
 
     eleza test_open_allargs(self):
-        # there used to be a buffer overflow in the parser for rawmode
+        # there used to be a buffer overflow kwenye the parser kila rawmode
         self.assertRaises(ValueError, self.open, support.TESTFN, 'rwax+')
 
 
@@ -4145,7 +4145,7 @@ kundi CMiscIOTest(MiscIOTest):
 
     eleza check_daemon_threads_shutdown_deadlock(self, stream_name):
         # Issue #23309: deadlocks at shutdown should be avoided when a
-        # daemon thread and the main thread both write to a file.
+        # daemon thread na the main thread both write to a file.
         code = """ikiwa 1:
             agiza sys
             agiza time
@@ -4155,7 +4155,7 @@ kundi CMiscIOTest(MiscIOTest):
             file = sys.{stream_name}
 
             eleza run():
-                while True:
+                wakati Kweli:
                     file.write('.')
                     file.flush()
 
@@ -4164,7 +4164,7 @@ kundi CMiscIOTest(MiscIOTest):
             # don't call __exit__(): the crash occurs at Python shutdown
 
             thread = threading.Thread(target=run)
-            thread.daemon = True
+            thread.daemon = Kweli
             thread.start()
 
             time.sleep(0.5)
@@ -4175,13 +4175,13 @@ kundi CMiscIOTest(MiscIOTest):
         err = res.err.decode()
         ikiwa res.rc != 0:
             # Failure: should be a fatal error
-            pattern = (r"Fatal Python error: could not acquire lock "
-                       r"for <(_io\.)?BufferedWriter name='<{stream_name}>'> "
+            pattern = (r"Fatal Python error: could sio acquire lock "
+                       r"kila <(_io\.)?BufferedWriter name='<{stream_name}>'> "
                        r"at interpreter shutdown, possibly due to "
                        r"daemon threads".format_map(locals()))
             self.assertRegex(err, pattern)
-        else:
-            self.assertFalse(err.strip('.!'))
+        isipokua:
+            self.assertUongo(err.strip('.!'))
 
     eleza test_daemon_threads_shutdown_stdout_deadlock(self):
         self.check_daemon_threads_shutdown_deadlock('stdout')
@@ -4194,7 +4194,7 @@ kundi PyMiscIOTest(MiscIOTest):
     io = pyio
 
 
-@unittest.skipIf(os.name == 'nt', 'POSIX signals required for this test.')
+@unittest.skipIf(os.name == 'nt', 'POSIX signals required kila this test.')
 kundi SignalsTest(unittest.TestCase):
 
     eleza setUp(self):
@@ -4208,55 +4208,55 @@ kundi SignalsTest(unittest.TestCase):
 
     eleza check_interrupted_write(self, item, bytes, **fdopen_kwargs):
         """Check that a partial write, when it gets interrupted, properly
-        invokes the signal handler, and bubbles up the exception raised
-        in the latter."""
+        invokes the signal handler, na bubbles up the exception ashiriad
+        kwenye the latter."""
         read_results = []
         eleza _read():
             s = os.read(r, 1)
             read_results.append(s)
 
         t = threading.Thread(target=_read)
-        t.daemon = True
+        t.daemon = Kweli
         r, w = os.pipe()
-        fdopen_kwargs["closefd"] = False
+        fdopen_kwargs["closefd"] = Uongo
         large_data = item * (support.PIPE_MAX_SIZE // len(item) + 1)
-        try:
+        jaribu:
             wio = self.io.open(w, **fdopen_kwargs)
             ikiwa hasattr(signal, 'pthread_sigmask'):
                 # create the thread with SIGALRM signal blocked
                 signal.pthread_sigmask(signal.SIG_BLOCK, [signal.SIGALRM])
                 t.start()
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [signal.SIGALRM])
-            else:
+            isipokua:
                 t.start()
 
             # Fill the pipe enough that the write will be blocking.
             # It will be interrupted by the timer armed above.  Since the
             # other thread has read one byte, the low-level write will
             # rudisha with a successful (partial) result rather than an EINTR.
-            # The buffered IO layer must check for pending signal
-            # handlers, which in this case will invoke alarm_interrupt().
+            # The buffered IO layer must check kila pending signal
+            # handlers, which kwenye this case will invoke alarm_interrupt().
             signal.alarm(1)
-            try:
+            jaribu:
                 self.assertRaises(ZeroDivisionError, wio.write, large_data)
-            finally:
+            mwishowe:
                 signal.alarm(0)
                 t.join()
-            # We got one byte, get another one and check that it isn't a
+            # We got one byte, get another one na check that it isn't a
             # repeat of the first one.
             read_results.append(os.read(r, 1))
             self.assertEqual(read_results, [bytes[0:1], bytes[1:2]])
-        finally:
+        mwishowe:
             os.close(w)
             os.close(r)
-            # This is deliberate. If we didn't close the file descriptor
+            # This ni deliberate. If we didn't close the file descriptor
             # before closing wio, wio would try to flush its internal
-            # buffer, and block again.
-            try:
+            # buffer, na block again.
+            jaribu:
                 wio.close()
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno != errno.EBADF:
-                    raise
+                    ashiria
 
     eleza test_interrupted_write_unbuffered(self):
         self.check_interrupted_write(b"xy", b"xy", mode="wb", buffering=0)
@@ -4276,21 +4276,21 @@ kundi SignalsTest(unittest.TestCase):
         signal.signal(signal.SIGALRM, on_alarm)
         r, w = os.pipe()
         wio = self.io.open(w, **fdopen_kwargs)
-        try:
+        jaribu:
             signal.alarm(1)
             # Either the reentrant call to wio.write() fails with RuntimeError,
-            # or the signal handler raises ZeroDivisionError.
-            with self.assertRaises((ZeroDivisionError, RuntimeError)) as cm:
-                while 1:
-                    for i in range(100):
+            # ama the signal handler ashirias ZeroDivisionError.
+            with self.assertRaises((ZeroDivisionError, RuntimeError)) kama cm:
+                wakati 1:
+                    kila i kwenye range(100):
                         wio.write(data)
                         wio.flush()
-                    # Make sure the buffer doesn't fill up and block further writes
+                    # Make sure the buffer doesn't fill up na block further writes
                     os.read(r, len(data) * 100)
             exc = cm.exception
             ikiwa isinstance(exc, RuntimeError):
-                self.assertTrue(str(exc).startswith("reentrant call"), str(exc))
-        finally:
+                self.assertKweli(str(exc).startswith("reentrant call"), str(exc))
+        mwishowe:
             signal.alarm(0)
             wio.close()
             os.close(r)
@@ -4303,23 +4303,23 @@ kundi SignalsTest(unittest.TestCase):
 
     eleza check_interrupted_read_retry(self, decode, **fdopen_kwargs):
         """Check that a buffered read, when it gets interrupted (either
-        returning a partial result or EINTR), properly invokes the signal
-        handler and retries ikiwa the latter returned successfully."""
+        rudishaing a partial result ama EINTR), properly invokes the signal
+        handler na retries ikiwa the latter rudishaed successfully."""
         r, w = os.pipe()
-        fdopen_kwargs["closefd"] = False
+        fdopen_kwargs["closefd"] = Uongo
         eleza alarm_handler(sig, frame):
             os.write(w, b"bar")
         signal.signal(signal.SIGALRM, alarm_handler)
-        try:
+        jaribu:
             rio = self.io.open(r, **fdopen_kwargs)
             os.write(w, b"foo")
             signal.alarm(1)
             # Expected behaviour:
-            # - first raw read() returns partial b"foo"
-            # - second raw read() returns EINTR
-            # - third raw read() returns b"bar"
+            # - first raw read() rudishas partial b"foo"
+            # - second raw read() rudishas EINTR
+            # - third raw read() rudishas b"bar"
             self.assertEqual(decode(rio.read(6)), "foobar")
-        finally:
+        mwishowe:
             signal.alarm(0)
             rio.close()
             os.close(w)
@@ -4335,33 +4335,33 @@ kundi SignalsTest(unittest.TestCase):
 
     eleza check_interrupted_write_retry(self, item, **fdopen_kwargs):
         """Check that a buffered write, when it gets interrupted (either
-        returning a partial result or EINTR), properly invokes the signal
-        handler and retries ikiwa the latter returned successfully."""
+        rudishaing a partial result ama EINTR), properly invokes the signal
+        handler na retries ikiwa the latter rudishaed successfully."""
         select = support.import_module("select")
 
         # A quantity that exceeds the buffer size of an anonymous pipe's
         # write end.
         N = support.PIPE_MAX_SIZE
         r, w = os.pipe()
-        fdopen_kwargs["closefd"] = False
+        fdopen_kwargs["closefd"] = Uongo
 
-        # We need a separate thread to read kutoka the pipe and allow the
-        # write() to finish.  This thread is started after the SIGALRM is
-        # received (forcing a first EINTR in write()).
+        # We need a separate thread to read kutoka the pipe na allow the
+        # write() to finish.  This thread ni started after the SIGALRM is
+        # received (forcing a first EINTR kwenye write()).
         read_results = []
-        write_finished = False
-        error = None
+        write_finished = Uongo
+        error = Tupu
         eleza _read():
-            try:
-                while not write_finished:
-                    while r in select.select([r], [], [], 1.0)[0]:
+            jaribu:
+                wakati sio write_finished:
+                    wakati r kwenye select.select([r], [], [], 1.0)[0]:
                         s = os.read(r, 1024)
                         read_results.append(s)
-            except BaseException as exc:
+            tatizo BaseException kama exc:
                 nonlocal error
                 error = exc
         t = threading.Thread(target=_read)
-        t.daemon = True
+        t.daemon = Kweli
         eleza alarm1(sig, frame):
             signal.signal(signal.SIGALRM, alarm2)
             signal.alarm(1)
@@ -4370,36 +4370,36 @@ kundi SignalsTest(unittest.TestCase):
 
         large_data = item * N
         signal.signal(signal.SIGALRM, alarm1)
-        try:
+        jaribu:
             wio = self.io.open(w, **fdopen_kwargs)
             signal.alarm(1)
             # Expected behaviour:
-            # - first raw write() is partial (because of the limited pipe buffer
-            #   and the first alarm)
-            # - second raw write() returns EINTR (because of the second alarm)
-            # - subsequent write()s are successful (either partial or complete)
+            # - first raw write() ni partial (because of the limited pipe buffer
+            #   na the first alarm)
+            # - second raw write() rudishas EINTR (because of the second alarm)
+            # - subsequent write()s are successful (either partial ama complete)
             written = wio.write(large_data)
             self.assertEqual(N, written)
 
             wio.flush()
-            write_finished = True
+            write_finished = Kweli
             t.join()
 
-            self.assertIsNone(error)
-            self.assertEqual(N, sum(len(x) for x in read_results))
-        finally:
+            self.assertIsTupu(error)
+            self.assertEqual(N, sum(len(x) kila x kwenye read_results))
+        mwishowe:
             signal.alarm(0)
-            write_finished = True
+            write_finished = Kweli
             os.close(w)
             os.close(r)
-            # This is deliberate. If we didn't close the file descriptor
+            # This ni deliberate. If we didn't close the file descriptor
             # before closing wio, wio would try to flush its internal
-            # buffer, and could block (in case of failure).
-            try:
+            # buffer, na could block (in case of failure).
+            jaribu:
                 wio.close()
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno != errno.EBADF:
-                    raise
+                    ashiria
 
     eleza test_interrupted_write_retry_buffered(self):
         self.check_interrupted_write_retry(b"x", mode="wb")
@@ -4416,8 +4416,8 @@ kundi PySignalsTest(SignalsTest):
 
     # Handling reentrancy issues would slow down _pyio even more, so the
     # tests are disabled.
-    test_reentrant_write_buffered = None
-    test_reentrant_write_text = None
+    test_reentrant_write_buffered = Tupu
+    test_reentrant_write_text = Tupu
 
 
 eleza load_tests(*args):
@@ -4433,28 +4433,28 @@ eleza load_tests(*args):
              CSignalsTest, PySignalsTest,
              )
 
-    # Put the namespaces of the IO module we are testing and some useful mock
-    # classes in the __dict__ of each test.
+    # Put the namespaces of the IO module we are testing na some useful mock
+    # classes kwenye the __dict__ of each test.
     mocks = (MockRawIO, MisbehavedRawIO, MockFileIO, CloseFailureIO,
              MockNonBlockWriterIO, MockUnseekableIO, MockRawIOWithoutRead,
              SlowFlushRawIO)
     all_members = io.__all__ + ["IncrementalNewlineDecoder"]
-    c_io_ns = {name : getattr(io, name) for name in all_members}
-    py_io_ns = {name : getattr(pyio, name) for name in all_members}
+    c_io_ns = {name : getattr(io, name) kila name kwenye all_members}
+    py_io_ns = {name : getattr(pyio, name) kila name kwenye all_members}
     globs = globals()
-    c_io_ns.update((x.__name__, globs["C" + x.__name__]) for x in mocks)
-    py_io_ns.update((x.__name__, globs["Py" + x.__name__]) for x in mocks)
+    c_io_ns.update((x.__name__, globs["C" + x.__name__]) kila x kwenye mocks)
+    py_io_ns.update((x.__name__, globs["Py" + x.__name__]) kila x kwenye mocks)
     # Avoid turning open into a bound method.
     py_io_ns["open"] = pyio.OpenWrapper
-    for test in tests:
+    kila test kwenye tests:
         ikiwa test.__name__.startswith("C"):
-            for name, obj in c_io_ns.items():
+            kila name, obj kwenye c_io_ns.items():
                 setattr(test, name, obj)
         elikiwa test.__name__.startswith("Py"):
-            for name, obj in py_io_ns.items():
+            kila name, obj kwenye py_io_ns.items():
                 setattr(test, name, obj)
 
-    suite = unittest.TestSuite([unittest.makeSuite(test) for test in tests])
+    suite = unittest.TestSuite([unittest.makeSuite(test) kila test kwenye tests])
     rudisha suite
 
 ikiwa __name__ == "__main__":

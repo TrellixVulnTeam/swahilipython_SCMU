@@ -108,11 +108,11 @@ class SlicesTestCase(unittest.TestCase):
 
         dll.my_strdup.restype = allocated_c_char_p
         dll.my_strdup.errcheck = errcheck
-        try:
+        jaribu:
             res = dll.my_strdup(s)
             self.assertEqual(res, s)
-        finally:
-            del dll.my_strdup.errcheck
+        mwishowe:
+            toa dll.my_strdup.errcheck
 
 
     def test_char_array(self):
@@ -151,8 +151,8 @@ class SlicesTestCase(unittest.TestCase):
             dll.my_wcsdup.restype = POINTER(c_int)
         lasivyo sizeof(c_wchar) == sizeof(c_long):
             dll.my_wcsdup.restype = POINTER(c_long)
-        else:
-            self.skipTest('Pointers to c_wchar are not supported')
+        isipokua:
+            self.skipTest('Pointers to c_wchar are sio supported')
         res = dll.my_wcsdup(s[:-1])
         tmpl = list(range(ord("a"), ord("z")+1))
         self.assertEqual(res[:len(s)-1], tmpl)

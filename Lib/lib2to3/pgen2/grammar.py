@@ -6,8 +6,8 @@
 These are a bit arcane because they are derived kutoka the data
 structures used by Python's 'pgen' parser generator.
 
-There's also a table here mapping operators to their names in the
-token module; the Python tokenize module reports all operators as the
+There's also a table here mapping operators to their names kwenye the
+token module; the Python tokenize module reports all operators kama the
 fallback token code OP, but the parser needs the actual token code.
 
 """
@@ -22,47 +22,47 @@ kutoka . agiza token
 kundi Grammar(object):
     """Pgen parsing tables conversion class.
 
-    Once initialized, this kundi supplies the grammar tables for the
+    Once initialized, this kundi supplies the grammar tables kila the
     parsing engine implemented by parse.py.  The parsing engine
     accesses the instance variables directly.  The kundi here does not
     provide initialization of the tables; several subclasses exist to
-    do this (see the conv and pgen modules).
+    do this (see the conv na pgen modules).
 
     The load() method reads the tables kutoka a pickle file, which is
     much faster than the other ways offered by subclasses.  The pickle
-    file is written by calling dump() (after loading the grammar
+    file ni written by calling dump() (after loading the grammar
     tables using a subclass).  The report() method prints a readable
-    representation of the tables to stdout, for debugging.
+    representation of the tables to stdout, kila debugging.
 
-    The instance variables are as follows:
+    The instance variables are kama follows:
 
     symbol2number -- a dict mapping symbol names to numbers.  Symbol
-                     numbers are always 256 or higher, to distinguish
+                     numbers are always 256 ama higher, to distinguish
                      them kutoka token numbers, which are between 0 and
                      255 (inclusive).
 
     number2symbol -- a dict mapping numbers to symbol names;
                      these two are each other's inverse.
 
-    states        -- a list of DFAs, where each DFA is a list of
-                     states, each state is a list of arcs, and each
-                     arc is a (i, j) pair where i is a label and j is
-                     a state number.  The DFA number is the index into
-                     this list.  (This name is slightly confusing.)
+    states        -- a list of DFAs, where each DFA ni a list of
+                     states, each state ni a list of arcs, na each
+                     arc ni a (i, j) pair where i ni a label na j is
+                     a state number.  The DFA number ni the index into
+                     this list.  (This name ni slightly confusing.)
                      Final states are represented by a special arc of
-                     the form (0, j) where j is its own state number.
+                     the form (0, j) where j ni its own state number.
 
     dfas          -- a dict mapping symbol numbers to (DFA, first)
-                     pairs, where DFA is an item kutoka the states list
-                     above, and first is a set of tokens that can
+                     pairs, where DFA ni an item kutoka the states list
+                     above, na first ni a set of tokens that can
                      begin this grammar rule (represented by a dict
                      whose values are always 1).
 
-    labels        -- a list of (x, y) pairs where x is either a token
-                     number or a symbol number, and y is either None
-                     or a string; the strings are keywords.  The label
-                     number is the index in this list; label numbers
-                     are used to mark state transitions (arcs) in the
+    labels        -- a list of (x, y) pairs where x ni either a token
+                     number ama a symbol number, na y ni either Tupu
+                     ama a string; the strings are keywords.  The label
+                     number ni the index kwenye this list; label numbers
+                     are used to mark state transitions (arcs) kwenye the
                      DFAs.
 
     start         -- the number of the grammar's start symbol.
@@ -86,12 +86,12 @@ kundi Grammar(object):
 
     eleza dump(self, filename):
         """Dump the grammar tables to a pickle file."""
-        with open(filename, "wb") as f:
+        with open(filename, "wb") kama f:
             pickle.dump(self.__dict__, f, pickle.HIGHEST_PROTOCOL)
 
     eleza load(self, filename):
         """Load the grammar tables kutoka a pickle file."""
-        with open(filename, "rb") as f:
+        with open(filename, "rb") kama f:
             d = pickle.load(f)
         self.__dict__.update(d)
 
@@ -104,7 +104,7 @@ kundi Grammar(object):
         Copy the grammar.
         """
         new = self.__class__()
-        for dict_attr in ("symbol2number", "number2symbol", "dfas", "keywords",
+        kila dict_attr kwenye ("symbol2number", "number2symbol", "dfas", "keywords",
                           "tokens", "symbol2label"):
             setattr(new, dict_attr, getattr(self, dict_attr).copy())
         new.labels = self.labels[:]
@@ -113,7 +113,7 @@ kundi Grammar(object):
         rudisha new
 
     eleza report(self):
-        """Dump the grammar tables to standard output, for debugging."""
+        """Dump the grammar tables to standard output, kila debugging."""
         kutoka pprint agiza pprint
         andika("s2n")
         pandika(self.symbol2number)
@@ -181,7 +181,7 @@ opmap_raw = """
 """
 
 opmap = {}
-for line in opmap_raw.splitlines():
+kila line kwenye opmap_raw.splitlines():
     ikiwa line:
         op, name = line.split()
         opmap[op] = getattr(token, name)

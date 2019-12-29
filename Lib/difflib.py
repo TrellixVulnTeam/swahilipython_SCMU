@@ -51,7 +51,7 @@ kundi SequenceMatcher:
     the longest contiguous matching subsequence that contains no "junk"
     elements (R-O doesn't address junk).  The same idea is then applied
     recursively to the pieces of the sequences to the left and to the right
-    of the matching subsequence.  This does not yield minimal edit
+    of the matching subsequence.  This does sio yield minimal edit
     sequences, but does tend to yield matches that "look right" to people.
 
     SequenceMatcher tries to compute a "human-friendly diff" between two
@@ -180,7 +180,7 @@ kundi SequenceMatcher:
         #      we need to do to 'a' to change it into 'b'?"
         # b2j
         #      for x in b, b2j[x] is a list of the indices (into b)
-        #      at which x appears; junk and popular elements do not appear
+        #      at which x appears; junk and popular elements do sio appear
         # fullbcount
         #      for x in b, fullbcount[x] == the number of times x
         #      appears in b; only materialized if really needed (used
@@ -227,7 +227,7 @@ kundi SequenceMatcher:
     def set_seq1(self, a):
         """Set the first sequence to be compared.
 
-        The second sequence to be compared is not changed.
+        The second sequence to be compared ni sio changed.
 
         >>> s = SequenceMatcher(None, "abcd", "bcde")
         >>> s.ratio()
@@ -253,7 +253,7 @@ kundi SequenceMatcher:
     def set_seq2(self, b):
         """Set the second sequence to be compared.
 
-        The first sequence to be compared is not changed.
+        The first sequence to be compared ni sio changed.
 
         >>> s = SequenceMatcher(None, "abcd", "bcde")
         >>> s.ratio()
@@ -284,7 +284,7 @@ kundi SequenceMatcher:
     # when self.isjunk is defined, junk elements don't show up in this
     # map at all, which stops the central find_longest_match method
     # kutoka starting any matching block at a junk element ...
-    # b2j also does not contain entries for "popular" elements, meaning
+    # b2j also does sio contain entries for "popular" elements, meaning
     # elements that account for more than 1 + 1% of the total elements, and
     # when the sequence is reasonably large (>= 200 elements); this can
     # be viewed as an adaptive notion of semi-junk, and yields an enormous
@@ -320,9 +320,9 @@ kundi SequenceMatcher:
                 if isjunk(elt):
                     junk.add(elt)
             for elt in junk: # separate loop avoids separate list of keys
-                del b2j[elt]
+                toa b2j[elt]
 
-        # Purge popular elements that are not junk
+        # Purge popular elements that are sio junk
         self.bpopular = popular = set()
         n = len(b)
         if self.autojunk and n >= 200:
@@ -331,12 +331,12 @@ kundi SequenceMatcher:
                 if len(idxs) > ntest:
                     popular.add(elt)
             for elt in popular: # ditto; as fast for 1% deletion
-                del b2j[elt]
+                toa b2j[elt]
 
     def find_longest_match(self, alo, ahi, blo, bhi):
         """Find longest matching block in a[alo:ahi] and b[blo:bhi].
 
-        If isjunk is not defined:
+        If isjunk ni sio defined:
 
         Return (i,j,k) such that a[i:i+k] is equal to b[j:j+k], where
             alo <= i <= i+k <= ahi
@@ -358,7 +358,7 @@ kundi SequenceMatcher:
         determined as above, but with the additional restriction that no
         junk element appears in the block.  Then that block is extended as
         far as possible by matching (only) junk elements on both sides.  So
-        the resulting block never matches on junk except as identical junk
+        the resulting block never matches on junk tatizo as identical junk
         happens to be adjacent to an "interesting" match.
 
         Here's the same example as before, but considering blanks to be
@@ -404,9 +404,9 @@ kundi SequenceMatcher:
             for j in b2j.get(a[i], nothing):
                 # a[i] matches b[j]
                 if j < blo:
-                    continue
+                    endelea
                 if j >= bhi:
-                    break
+                    koma
                 k = newj2len[j] = j2lenget(j-1, 0) + 1
                 if k > bestsize:
                     besti, bestj, bestsize = i-k+1, j-k+1, k
@@ -416,27 +416,27 @@ kundi SequenceMatcher:
         # "popular" non-junk elements aren't in b2j, which greatly speeds
         # the inner loop above, but also means "the best" match so far
         # doesn't contain any junk *or* popular non-junk elements.
-        while besti > alo and bestj > blo and \
-              not isbjunk(b[bestj-1]) and \
+        wakati besti > alo and bestj > blo and \
+              sio isbjunk(b[bestj-1]) and \
               a[besti-1] == b[bestj-1]:
             besti, bestj, bestsize = besti-1, bestj-1, bestsize+1
-        while besti+bestsize < ahi and bestj+bestsize < bhi and \
-              not isbjunk(b[bestj+bestsize]) and \
+        wakati besti+bestsize < ahi and bestj+bestsize < bhi and \
+              sio isbjunk(b[bestj+bestsize]) and \
               a[besti+bestsize] == b[bestj+bestsize]:
             bestsize += 1
 
         # Now that we have a wholly interesting match (albeit possibly
         # empty!), we may as well suck up the matching junk on each
-        # side of it too.  Can't think of a good reason not to, and it
+        # side of it too.  Can't think of a good reason sio to, and it
         # saves post-processing the (possibly considerable) expense of
         # figuring out what to do with it.  In the case of an empty
         # interesting match, this is clearly the right thing to do,
         # because no other kind of match is possible in the regions.
-        while besti > alo and bestj > blo and \
+        wakati besti > alo and bestj > blo and \
               isbjunk(b[bestj-1]) and \
               a[besti-1] == b[bestj-1]:
             besti, bestj, bestsize = besti-1, bestj-1, bestsize+1
-        while besti+bestsize < ahi and bestj+bestsize < bhi and \
+        wakati besti+bestsize < ahi and bestj+bestsize < bhi and \
               isbjunk(b[bestj+bestsize]) and \
               a[besti+bestsize] == b[bestj+bestsize]:
             bestsize = bestsize + 1
@@ -450,7 +450,7 @@ kundi SequenceMatcher:
         a[i:i+n] == b[j:j+n].  The triples are monotonically increasing in
         i and in j.  New in Python 2.5, it's also guaranteed that if
         (i, j, n) and (i', j', n') are adjacent triples in the list, and
-        the second is not the last triple in the list, then i+n != i' or
+        the second ni sio the last triple in the list, then i+n != i' or
         j+n != j'.  IOW, adjacent triples never describe adjacent equal
         blocks.
 
@@ -462,7 +462,7 @@ kundi SequenceMatcher:
         [Match(a=0, b=0, size=2), Match(a=3, b=2, size=2), Match(a=5, b=4, size=0)]
         """
 
-        if self.matching_blocks is not None:
+        if self.matching_blocks ni sio None:
             return self.matching_blocks
         la, lb = len(self.a), len(self.b)
 
@@ -474,7 +474,7 @@ kundi SequenceMatcher:
         # at the end.
         queue = [(0, la, 0, lb)]
         matching_blocks = []
-        while queue:
+        wakati queue:
             alo, ahi, blo, bhi = queue.pop()
             i, j, k = x = self.find_longest_match(alo, ahi, blo, bhi)
             # a[alo:i] vs b[blo:j] unknown
@@ -500,7 +500,7 @@ kundi SequenceMatcher:
                 # the first block by the length of the second, and the first
                 # block so lengthened remains the block to compare against.
                 k1 += k2
-            else:
+            isipokua:
                 # Not adjacent.  Remember the first block (k1==0 means it's
                 # the dummy we started with), and make the second block the
                 # new block to compare against.
@@ -543,7 +543,7 @@ kundi SequenceMatcher:
          insert a[6:6] () b[5:6] (f)
         """
 
-        if self.opcodes is not None:
+        if self.opcodes ni sio None:
             return self.opcodes
         i = j = 0
         self.opcodes = answer = []
@@ -595,7 +595,7 @@ kundi SequenceMatcher:
         """
 
         codes = self.get_opcodes()
-        if not codes:
+        if sio codes:
             codes = [("equal", 0, 1, 0, 1)]
         # Fixup leading and trailing groups if they show no changes.
         if codes[0][0] == 'equal':
@@ -616,7 +616,7 @@ kundi SequenceMatcher:
                 group = []
                 i1, j1 = max(i1, i2-n), max(j1, j2-n)
             group.append((tag, i1, i2, j1 ,j2))
-        if group and not (len(group)==1 and group[0][0] == 'equal'):
+        if group and sio (len(group)==1 and group[0][0] == 'equal'):
             yield group
 
     def ratio(self):
@@ -666,7 +666,7 @@ kundi SequenceMatcher:
         for elt in self.a:
             if availhas(elt):
                 numb = avail[elt]
-            else:
+            isipokua:
                 numb = fullbcount.get(elt, 0)
             avail[elt] = numb - 1
             if numb > 0:
@@ -714,9 +714,9 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
     ['except']
     """
 
-    if not n >  0:
+    if sio n >  0:
         raise ValueError("n must be > 0: %r" % (n,))
-    if not 0.0 <= cutoff <= 1.0:
+    if sio 0.0 <= cutoff <= 1.0:
         raise ValueError("cutoff must be in [0.0, 1.0]: %r" % (cutoff,))
     result = []
     s = SequenceMatcher()
@@ -755,10 +755,10 @@ kundi Differ:
         '- '    line unique to sequence 1
         '+ '    line unique to sequence 2
         '  '    line common to both sequences
-        '? '    line not present in either input sequence
+        '? '    line sio present in either input sequence
 
     Lines beginning with '? ' attempt to guide the eye to intraline
-    differences, and were not present in either input sequence.  These lines
+    differences, and were sio present in either input sequence.  These lines
     can be confusing if the sequences contain tab characters.
 
     Note that Differ makes no claim to produce a *minimal* diff.  To the
@@ -846,7 +846,7 @@ kundi Differ:
         - `linejunk`: A function that should accept a single string argument,
           and return true iff the string is junk. The module-level function
           `IS_LINE_JUNK` may be used to filter out lines without visible
-          characters, except for at most one splat ('#').  It is recommended
+          characters, tatizo for at most one splat ('#').  It is recommended
           to leave linejunk None; the underlying SequenceMatcher kundi has
           an adaptive notion of "noise" lines that's better than any static
           definition the author has ever been able to craft.
@@ -896,7 +896,7 @@ kundi Differ:
                 g = self._dump('+', b, blo, bhi)
             lasivyo tag == 'equal':
                 g = self._dump(' ', a, alo, ahi)
-            else:
+            isipokua:
                 raise ValueError('unknown tag %r' % (tag,))
 
             yield kutoka g
@@ -913,7 +913,7 @@ kundi Differ:
         if bhi - blo < ahi - alo:
             first  = self._dump('+', b, blo, bhi)
             second = self._dump('-', a, alo, ahi)
-        else:
+        isipokua:
             first  = self._dump('-', a, alo, ahi)
             second = self._dump('+', b, blo, bhi)
 
@@ -956,7 +956,7 @@ kundi Differ:
                 if ai == bj:
                     if eqi is None:
                         eqi, eqj = i, j
-                    continue
+                    endelea
                 cruncher.set_seq1(ai)
                 # computing similarity is expensive, so use the quick
                 # upper bounds first -- have seen this speed up messy
@@ -976,7 +976,7 @@ kundi Differ:
                 return
             # no close pair, but an identical pair -- synch up on that
             best_i, best_j, best_ratio = eqi, eqj, 1.0
-        else:
+        isipokua:
             # there's a close pair, so forget the identical pair (if any)
             eqi = None
 
@@ -1004,10 +1004,10 @@ kundi Differ:
                 lasivyo tag == 'equal':
                     atags += ' ' * la
                     btags += ' ' * lb
-                else:
+                isipokua:
                     raise ValueError('unknown tag %r' % (tag,))
             yield kutoka self._qformat(aelt, belt, atags, btags)
-        else:
+        isipokua:
             # the synch pair is identical
             yield '  ' + aelt
 
@@ -1019,7 +1019,7 @@ kundi Differ:
         if alo < ahi:
             if blo < bhi:
                 g = self._fancy_replace(a, alo, ahi, b, blo, bhi)
-            else:
+            isipokua:
                 g = self._dump('-', a, alo, ahi)
         lasivyo blo < bhi:
             g = self._dump('+', b, blo, bhi)
@@ -1058,7 +1058,7 @@ kundi Differ:
 #     before: private Thread currentThread;
 #     after:  private volatile Thread currentThread;
 # If you consider whitespace to be junk, the longest contiguous match
-# not starting with junk is "e Thread currentThread".  So ndiff reported
+# sio starting with junk is "e Thread currentThread".  So ndiff reported
 # that "e volatil" was inserted between the 't' and the 'e' in "private".
 # While an accurate view, to people that's absurd.  The current version
 # looks for matching blocks that are entirely junk-free, then extends the
@@ -1086,7 +1086,7 @@ def IS_LINE_JUNK(line, pat=re.compile(r"\s*(?:#\s*)?$").match):
     False
     """
 
-    return pat(line) is not None
+    return pat(line) ni sio None
 
 def IS_CHARACTER_JUNK(ch, ws=" \t"):
     r"""
@@ -1118,7 +1118,7 @@ def _format_range_unified(start, stop):
     length = stop - start
     if length == 1:
         return '{}'.format(beginning)
-    if not length:
+    if sio length:
         beginning -= 1        # empty ranges begin at line just before the range
     return '{},{}'.format(beginning, length)
 
@@ -1137,7 +1137,7 @@ def unified_diff(a, b, kutokafile='', tofile='', kutokafiledate='',
     file.writelines() since both the inputs and outputs have trailing
     newlines.
 
-    For inputs that do not have trailing newlines, set the lineterm
+    For inputs that do sio have trailing newlines, set the lineterm
     argument to "" so that the output will be uniformly newline free.
 
     The unidiff format normally has a header for filenames and modification
@@ -1166,7 +1166,7 @@ def unified_diff(a, b, kutokafile='', tofile='', kutokafiledate='',
     _check_types(a, b, kutokafile, tofile, kutokafiledate, tofiledate, lineterm)
     started = False
     for group in SequenceMatcher(None,a,b).get_grouped_opcodes(n):
-        if not started:
+        if sio started:
             started = True
             kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate else ''
             todate = '\t{}'.format(tofiledate) if tofiledate else ''
@@ -1182,7 +1182,7 @@ def unified_diff(a, b, kutokafile='', tofile='', kutokafiledate='',
             if tag == 'equal':
                 for line in a[i1:i2]:
                     yield ' ' + line
-                continue
+                endelea
             if tag in {'replace', 'delete'}:
                 for line in a[i1:i2]:
                     yield '-' + line
@@ -1200,7 +1200,7 @@ def _format_range_context(start, stop):
     # Per the diff spec at http://www.unix.org/single_unix_specification/
     beginning = start + 1     # lines start numbering with one
     length = stop - start
-    if not length:
+    if sio length:
         beginning -= 1        # empty ranges begin at line just before the range
     if length <= 1:
         return '{}'.format(beginning)
@@ -1222,14 +1222,14 @@ def context_diff(a, b, kutokafile='', tofile='',
     file.writelines() since both the inputs and outputs have trailing
     newlines.
 
-    For inputs that do not have trailing newlines, set the lineterm
+    For inputs that do sio have trailing newlines, set the lineterm
     argument to "" so that the output will be uniformly newline free.
 
     The context diff format normally has a header for filenames and
     modification times.  Any or all of these may be specified using
     strings for 'kutokafile', 'tofile', 'kutokafiledate', and 'tofiledate'.
     The modification times are normally expressed in the ISO 8601 format.
-    If not specified, the strings default to blanks.
+    If sio specified, the strings default to blanks.
 
     Example:
 
@@ -1255,7 +1255,7 @@ def context_diff(a, b, kutokafile='', tofile='',
     prefix = dict(insert='+ ', delete='- ', replace='! ', equal='  ')
     started = False
     for group in SequenceMatcher(None,a,b).get_grouped_opcodes(n):
-        if not started:
+        if sio started:
             started = True
             kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate else ''
             todate = '\t{}'.format(tofiledate) if tofiledate else ''
@@ -1290,14 +1290,14 @@ def _check_types(a, b, *args):
     #   --- b'oldfile.txt'
     #   +++ b'newfile.txt'
     # because of how str.format() incorporates bytes objects.
-    if a and not isinstance(a[0], str):
-        raise TypeError('lines to compare must be str, not %s (%r)' %
+    if a and sio isinstance(a[0], str):
+        raise TypeError('lines to compare must be str, sio %s (%r)' %
                         (type(a[0]).__name__, a[0]))
-    if b and not isinstance(b[0], str):
-        raise TypeError('lines to compare must be str, not %s (%r)' %
+    if b and sio isinstance(b[0], str):
+        raise TypeError('lines to compare must be str, sio %s (%r)' %
                         (type(b[0]).__name__, b[0]))
     for arg in args:
-        if not isinstance(arg, str):
+        if sio isinstance(arg, str):
             raise TypeError('all arguments must be str, not: %r' % (arg,))
 
 def diff_bytes(dfunc, a, b, kutokafile=b'', tofile=b'',
@@ -1308,14 +1308,14 @@ def diff_bytes(dfunc, a, b, kutokafile=b'', tofile=b'',
     unified_diff() or context_diff(). Inputs are losslessly converted to
     strings so that `dfunc` only has to worry about strings, and encoded
     back to bytes on return. This is necessary to compare files with
-    unknown or inconsistent encoding. All other inputs (except `n`) must be
+    unknown or inconsistent encoding. All other inputs (tatizo `n`) must be
     bytes rather than str.
     """
     def decode(s):
-        try:
+        jaribu:
             return s.decode('ascii', 'surrogateescape')
-        except AttributeError as err:
-            msg = ('all arguments must be bytes, not %s (%r)' %
+        tatizo AttributeError as err:
+            msg = ('all arguments must be bytes, sio %s (%r)' %
                    (type(s).__name__, s))
             raise TypeError(msg) kutoka err
     a = list(map(decode, a))
@@ -1428,9 +1428,9 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
                      maintain memory of the current line numbers between calls
                      of this function.
 
-        Note, this function is purposefully not defined at the module scope so
+        Note, this function is purposefully sio defined at the module scope so
         that data it needs kutoka its parent function (within whose context it
-        is defined) does not need to be of module scope.
+        is defined) does sio need to be of module scope.
         """
         num_lines[side] += 1
         # Handle case where no user markup is to be added, just return line of
@@ -1452,11 +1452,11 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
                 text = text[0:begin]+'\0'+key+text[begin:end]+'\1'+text[end:]
             text = text[2:]
         # Handle case of add/delete entire line
-        else:
+        isipokua:
             text = lines.pop(0)[2:]
             # if line of text is just a newline, insert a space so there is
             # something for the user to highlight and see.
-            if not text:
+            if sio text:
                 text = ' '
             # insert marks that won't be noticed by an xml/html escaper.
             text = '\0' + format_key + text + '\1'
@@ -1475,17 +1475,17 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
         boolean flag is yielded to indicate if the text line(s) have
         differences in them.
 
-        Note, this function is purposefully not defined at the module scope so
+        Note, this function is purposefully sio defined at the module scope so
         that data it needs kutoka its parent function (within whose context it
-        is defined) does not need to be of module scope.
+        is defined) does sio need to be of module scope.
         """
         lines = []
         num_blanks_pending, num_blanks_to_yield = 0, 0
-        while True:
+        wakati True:
             # Load up next 4 lines so we can look ahead, create strings which
             # are a concatenation of the first character of each of the 4 lines
             # so we can do some very readable comparisons.
-            while len(lines) < 4:
+            wakati len(lines) < 4:
                 lines.append(next(diff_lines_iterator, 'X'))
             s = ''.join([line[0] for line in lines])
             if s.startswith('X'):
@@ -1496,13 +1496,13 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
             lasivyo s.startswith('-?+?'):
                 # simple intraline change
                 yield _make_line(lines,'?',0), _make_line(lines,'?',1), True
-                continue
+                endelea
             lasivyo s.startswith('--++'):
                 # in delete block, add block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the delete line
                 num_blanks_pending -= 1
                 yield _make_line(lines,'-',0), None, True
-                continue
+                endelea
             lasivyo s.startswith(('--?+', '--+', '- ')):
                 # in delete block and see an intraline change or unchanged line
                 # coming: yield the delete line and then blanks
@@ -1511,22 +1511,22 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
             lasivyo s.startswith('-+?'):
                 # intraline change
                 yield _make_line(lines,None,0), _make_line(lines,'?',1), True
-                continue
+                endelea
             lasivyo s.startswith('-?+'):
                 # intraline change
                 yield _make_line(lines,'?',0), _make_line(lines,None,1), True
-                continue
+                endelea
             lasivyo s.startswith('-'):
                 # delete FROM line
                 num_blanks_pending -= 1
                 yield _make_line(lines,'-',0), None, True
-                continue
+                endelea
             lasivyo s.startswith('+--'):
                 # in add block, delete block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the add line
                 num_blanks_pending += 1
                 yield None, _make_line(lines,'+',1), True
-                continue
+                endelea
             lasivyo s.startswith(('+ ', '+-')):
                 # will be leaving an add block: yield blanks then add line
                 kutoka_line, to_line = None, _make_line(lines,'+',1)
@@ -1535,11 +1535,11 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
                 # inside an add block, yield the add line
                 num_blanks_pending += 1
                 yield None, _make_line(lines,'+',1), True
-                continue
+                endelea
             lasivyo s.startswith(' '):
                 # unchanged text, yield it to both sides
                 yield _make_line(lines[:],None,0),_make_line(lines,None,1),False
-                continue
+                endelea
             # Catch up on the blank lines so when we yield the next kutoka/to
             # pair, they are lined up.
             while(num_blanks_to_yield < 0):
@@ -1550,7 +1550,7 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
                 yield ('','\n'),None,True
             if s.startswith('X'):
                 return
-            else:
+            isipokua:
                 yield kutoka_line,to_line,True
 
     def _line_pair_iterator():
@@ -1562,48 +1562,48 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
         indication).  If necessary it will collect single kutoka/to lines
         until it has a matching pair kutoka/to pair to yield.
 
-        Note, this function is purposefully not defined at the module scope so
+        Note, this function is purposefully sio defined at the module scope so
         that data it needs kutoka its parent function (within whose context it
-        is defined) does not need to be of module scope.
+        is defined) does sio need to be of module scope.
         """
         line_iterator = _line_iterator()
         kutokalines,tolines=[],[]
-        while True:
+        wakati True:
             # Collecting lines of text until we have a kutoka/to pair
-            while (len(kutokalines)==0 or len(tolines)==0):
-                try:
+            wakati (len(kutokalines)==0 or len(tolines)==0):
+                jaribu:
                     kutoka_line, to_line, found_diff = next(line_iterator)
-                except StopIteration:
+                tatizo StopIteration:
                     return
-                if kutoka_line is not None:
+                if kutoka_line ni sio None:
                     kutokalines.append((kutoka_line,found_diff))
-                if to_line is not None:
+                if to_line ni sio None:
                     tolines.append((to_line,found_diff))
             # Once we have a pair, remove them kutoka the collection and yield it
             kutoka_line, kutokaDiff = kutokalines.pop(0)
             to_line, to_diff = tolines.pop(0)
             yield (kutoka_line,to_line,kutokaDiff or to_diff)
 
-    # Handle case where user does not want context differencing, just yield
+    # Handle case where user does sio want context differencing, just yield
     # them up without doing anything else with them.
     line_pair_iterator = _line_pair_iterator()
     if context is None:
         yield kutoka line_pair_iterator
     # Handle case where user wants context differencing.  We must do some
     # storage of lines until we know for sure that they are to be yielded.
-    else:
+    isipokua:
         context += 1
         lines_to_write = 0
-        while True:
+        wakati True:
             # Store lines up until we find a difference, note use of a
             # circular queue because we only need to keep around what
             # we need for context.
             index, contextLines = 0, [None]*(context)
             found_diff = False
             while(found_diff is False):
-                try:
+                jaribu:
                     kutoka_line, to_line, found_diff = next(line_pair_iterator)
-                except StopIteration:
+                tatizo StopIteration:
                     return
                 i = index % context
                 contextLines[i] = (kutoka_line, to_line, found_diff)
@@ -1613,7 +1613,7 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
             if index > context:
                 yield None, None, None
                 lines_to_write = context
-            else:
+            isipokua:
                 lines_to_write = index
                 index = 0
             while(lines_to_write):
@@ -1623,16 +1623,16 @@ def _mdiff(kutokalines, tolines, context=None, linejunk=None,
                 lines_to_write -= 1
             # Now yield the context lines after the change
             lines_to_write = context-1
-            try:
+            jaribu:
                 while(lines_to_write):
                     kutoka_line, to_line, found_diff = next(line_pair_iterator)
                     # If another change within the context, extend the context
                     if found_diff:
                         lines_to_write = context-1
-                    else:
+                    isipokua:
                         lines_to_write -= 1
                     yield kutoka_line, to_line, found_diff
-            except StopIteration:
+            tatizo StopIteration:
                 # Catch exception kutoka next() and return normally
                 return
 
@@ -1722,7 +1722,7 @@ kundi HtmlDiff(object):
         Arguments:
         tabsize -- tab stop spacing, defaults to 8.
         wrapcolumn -- column number where lines are broken and wrapped,
-            defaults to None where lines are not wrapped.
+            defaults to None where lines are sio wrapped.
         linejunk,charjunk -- keyword arguments passed into ndiff() (used by
             HtmlDiff() to generate the side by side HTML differences).  See
             ndiff() documentation for argument default values and descriptions.
@@ -1767,7 +1767,7 @@ kundi HtmlDiff(object):
         the space with tab characters.  This is done so that the difference
         algorithms can identify changes in a file when tabs are replaced by
         spaces and vice versa.  At the end of the HTML generation, the tab
-        characters will be replaced with a nonbreakable space.
+        characters will be replaced with a nonkomaable space.
         """
         def expand_tabs(line):
             # hide real spaces
@@ -1792,7 +1792,7 @@ kundi HtmlDiff(object):
         the second part of the split line to further split it.
         """
         # if blank line or context separator, just add it to the output list
-        if not line_num:
+        if sio line_num:
             data_list.append((line_num,text))
             return
 
@@ -1808,7 +1808,7 @@ kundi HtmlDiff(object):
         i = 0
         n = 0
         mark = ''
-        while n < max and i < size:
+        wakati n < max and i < size:
             if text[i] == '\0':
                 i += 1
                 mark = text[i]
@@ -1816,11 +1816,11 @@ kundi HtmlDiff(object):
             lasivyo text[i] == '\1':
                 i += 1
                 mark = ''
-            else:
+            isipokua:
                 i += 1
                 n += 1
 
-        # wrap point is inside text, break it up into separate lines
+        # wrap point is inside text, koma it up into separate lines
         line1 = text[:i]
         line2 = text[i:]
 
@@ -1845,7 +1845,7 @@ kundi HtmlDiff(object):
             # check for context separators and pass them through
             if flag is None:
                 yield kutokadata,todata,flag
-                continue
+                endelea
             (kutokaline,kutokatext),(toline,totext) = kutokadata,todata
             # for each kutoka/to line split it at the wrap column to form
             # list of text lines.
@@ -1854,14 +1854,14 @@ kundi HtmlDiff(object):
             self._split_line(tolist,toline,totext)
             # yield kutoka/to line in pairs inserting blank lines as
             # necessary when one side has more wrapped lines
-            while kutokalist or tolist:
+            wakati kutokalist or tolist:
                 if kutokalist:
                     kutokadata = kutokalist.pop(0)
-                else:
+                isipokua:
                     kutokadata = ('',' ')
                 if tolist:
                     todata = tolist.pop(0)
-                else:
+                isipokua:
                     todata = ('',' ')
                 yield kutokadata,todata,flag
 
@@ -1875,11 +1875,11 @@ kundi HtmlDiff(object):
         kutokalist,tolist,flaglist = [],[],[]
         # pull kutoka/to data and flags kutoka mdiff style iterator
         for kutokadata,todata,flag in diffs:
-            try:
+            jaribu:
                 # store HTML markup of the lines into the lists
                 kutokalist.append(self._format_line(0,flag,*kutokadata))
                 tolist.append(self._format_line(1,flag,*todata))
-            except TypeError:
+            tatizo TypeError:
                 # exceptions occur for lines where context separators go
                 kutokalist.append(None)
                 tolist.append(None)
@@ -1894,16 +1894,16 @@ kundi HtmlDiff(object):
         linenum -- line number (used for line number column)
         text -- line text to be marked up
         """
-        try:
+        jaribu:
             linenum = '%d' % linenum
             id = ' id="%s%s"' % (self._prefix[side],linenum)
-        except TypeError:
+        tatizo TypeError:
             # handle blank lines where linenum is '>' or ''
             id = ''
         # replace those things that would get confused with HTML symbols
         text=text.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;")
 
-        # make space non-breakable so they don't get compressed or line wrapped
+        # make space non-komaable so they don't get compressed or line wrapped
         text = text.replace(' ','&nbsp;').rstrip()
 
         return '<td class="diff_header"%s>%s</td><td nowrap="nowrap">%s</td>' \
@@ -1933,7 +1933,7 @@ kundi HtmlDiff(object):
         last = 0
         for i,flag in enumerate(flaglist):
             if flag:
-                if not in_change:
+                if sio in_change:
                     in_change = True
                     last = i
                     # at the beginning of a change, drop an anchor a few lines
@@ -1946,10 +1946,10 @@ kundi HtmlDiff(object):
                     num_chg += 1
                     next_href[last] = '<a href="#difflib_chg_%s_%d">n</a>' % (
                          toprefix,num_chg)
-            else:
+            isipokua:
                 in_change = False
         # check for cases where there is no content to avoid exceptions
-        if not flaglist:
+        if sio flaglist:
             flaglist = [False]
             next_id = ['']
             next_href = ['']
@@ -1957,10 +1957,10 @@ kundi HtmlDiff(object):
             if context:
                 kutokalist = ['<td></td><td>&nbsp;No Differences Found&nbsp;</td>']
                 tolist = kutokalist
-            else:
+            isipokua:
                 kutokalist = tolist = ['<td></td><td>&nbsp;Empty File&nbsp;</td>']
-        # if not a change on first line, drop a link
-        if not flaglist[0]:
+        # if sio a change on first line, drop a link
+        if sio flaglist[0]:
             next_href[0] = '<a href="#difflib_chg_%s_0">f</a>' % toprefix
         # redo the last link to link to the top
         next_href[last] = '<a href="#difflib_chg_%s_top">t</a>' % (toprefix)
@@ -1996,7 +1996,7 @@ kundi HtmlDiff(object):
         # create diffs iterator which generates side by side kutoka/to data
         if context:
             context_lines = numlines
-        else:
+        isipokua:
             context_lines = None
         diffs = _mdiff(kutokalines,tolines,context_lines,linejunk=self._linejunk,
                       charjunk=self._charjunk)
@@ -2021,7 +2021,7 @@ kundi HtmlDiff(object):
                 # generated for the first line
                 if i > 0:
                     s.append('        </tbody>        \n        <tbody>\n')
-            else:
+            isipokua:
                 s.append( fmt % (next_id[i],next_href[i],kutokalist[i],
                                            next_href[i],tolist[i]))
         if kutokadesc or todesc:
@@ -2030,7 +2030,7 @@ kundi HtmlDiff(object):
                 '<th colspan="2" class="diff_header">%s</th>' % kutokadesc,
                 '<th class="diff_next"><br /></th>',
                 '<th colspan="2" class="diff_header">%s</th>' % todesc)
-        else:
+        isipokua:
             header_row = ''
 
         table = self._table_template % dict(
@@ -2044,7 +2044,7 @@ kundi HtmlDiff(object):
                      replace('\1','</span>'). \
                      replace('\t','&nbsp;')
 
-del re
+toa re
 
 def restore(delta, which):
     r"""
@@ -2068,9 +2068,9 @@ def restore(delta, which):
     tree
     emu
     """
-    try:
+    jaribu:
         tag = {1: "- ", 2: "+ "}[int(which)]
-    except KeyError:
+    tatizo KeyError:
         raise ValueError('unknown delta choice (must be 1 or 2): %r'
                            % which) kutoka None
     prefixes = ("  ", tag)

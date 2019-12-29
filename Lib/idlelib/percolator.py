@@ -14,54 +14,54 @@ kundi Percolator:
         self.filters = []
 
     eleza close(self):
-        while self.top is not self.bottom:
+        wakati self.top ni sio self.bottom:
             self.removefilter(self.top)
-        self.top = None
-        self.bottom.setdelegate(None)
-        self.bottom = None
+        self.top = Tupu
+        self.bottom.setdelegate(Tupu)
+        self.bottom = Tupu
         self.redir.close()
-        self.redir = None
-        self.text = None
+        self.redir = Tupu
+        self.text = Tupu
 
-    eleza insert(self, index, chars, tags=None):
+    eleza insert(self, index, chars, tags=Tupu):
         # Could go away ikiwa inheriting kutoka Delegator
         self.top.insert(index, chars, tags)
 
-    eleza delete(self, index1, index2=None):
+    eleza delete(self, index1, index2=Tupu):
         # Could go away ikiwa inheriting kutoka Delegator
         self.top.delete(index1, index2)
 
     eleza insertfilter(self, filter):
         # Perhaps rename to pushfilter()?
         assert isinstance(filter, Delegator)
-        assert filter.delegate is None
+        assert filter.delegate ni Tupu
         filter.setdelegate(self.top)
         self.top = filter
 
     eleza removefilter(self, filter):
         # XXX Perhaps should only support popfilter()?
         assert isinstance(filter, Delegator)
-        assert filter.delegate is not None
+        assert filter.delegate ni sio Tupu
         f = self.top
-        ikiwa f is filter:
+        ikiwa f ni filter:
             self.top = filter.delegate
-            filter.setdelegate(None)
-        else:
-            while f.delegate is not filter:
-                assert f is not self.bottom
+            filter.setdelegate(Tupu)
+        isipokua:
+            wakati f.delegate ni sio filter:
+                assert f ni sio self.bottom
                 f.resetcache()
                 f = f.delegate
             f.setdelegate(filter.delegate)
-            filter.setdelegate(None)
+            filter.setdelegate(Tupu)
 
 
 eleza _percolator(parent):  # htest #
-    agiza tkinter as tk
+    agiza tkinter kama tk
 
     kundi Tracer(Delegator):
         eleza __init__(self, name):
             self.name = name
-            Delegator.__init__(self, None)
+            Delegator.__init__(self, Tupu)
 
         eleza insert(self, *args):
             andika(self.name, ": insert", args)
@@ -97,7 +97,7 @@ eleza _percolator(parent):  # htest #
 
 ikiwa __name__ == "__main__":
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_percolator', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_percolator', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_percolator)

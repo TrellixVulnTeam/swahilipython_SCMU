@@ -9,7 +9,7 @@ kutoka tkinter agiza Text, Tk, END
 
 kundi MyFilter(Delegator):
     eleza __init__(self):
-        Delegator.__init__(self, None)
+        Delegator.__init__(self, Tupu)
 
     eleza insert(self, *args):
         self.insert_called_with = args
@@ -19,16 +19,16 @@ kundi MyFilter(Delegator):
         self.delete_called_with = args
         self.delegate.delete(*args)
 
-    eleza uppercase_insert(self, index, chars, tags=None):
+    eleza uppercase_insert(self, index, chars, tags=Tupu):
         chars = chars.upper()
         self.delegate.insert(index, chars)
 
-    eleza lowercase_insert(self, index, chars, tags=None):
+    eleza lowercase_insert(self, index, chars, tags=Tupu):
         chars = chars.lower()
         self.delegate.insert(index, chars)
 
-    eleza dont_insert(self, index, chars, tags=None):
-        pass
+    eleza dont_insert(self, index, chars, tags=Tupu):
+        pita
 
 
 kundi PercolatorTest(unittest.TestCase):
@@ -40,9 +40,9 @@ kundi PercolatorTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text
+        toa cls.text
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.percolator = Percolator(self.text)
@@ -56,7 +56,7 @@ kundi PercolatorTest(unittest.TestCase):
         self.text.delete('1.0', END)
 
     eleza test_insertfilter(self):
-        self.assertIsNotNone(self.filter_one.delegate)
+        self.assertIsNotTupu(self.filter_one.delegate)
         self.assertEqual(self.percolator.top, self.filter_two)
         self.assertEqual(self.filter_two.delegate, self.filter_one)
         self.assertEqual(self.filter_one.delegate, self.percolator.bottom)
@@ -65,7 +65,7 @@ kundi PercolatorTest(unittest.TestCase):
         filter_three = MyFilter()
         self.percolator.removefilter(self.filter_two)
         self.assertEqual(self.percolator.top, self.filter_one)
-        self.assertIsNone(self.filter_two.delegate)
+        self.assertIsTupu(self.filter_two.delegate)
 
         filter_three = MyFilter()
         self.percolator.insertfilter(self.filter_two)
@@ -74,13 +74,13 @@ kundi PercolatorTest(unittest.TestCase):
         self.assertEqual(self.percolator.top, filter_three)
         self.assertEqual(filter_three.delegate, self.filter_two)
         self.assertEqual(self.filter_two.delegate, self.percolator.bottom)
-        self.assertIsNone(self.filter_one.delegate)
+        self.assertIsTupu(self.filter_one.delegate)
 
     eleza test_insert(self):
         self.text.insert('insert', 'foo')
         self.assertEqual(self.text.get('1.0', END), 'foo\n')
         self.assertTupleEqual(self.filter_one.insert_called_with,
-                              ('insert', 'foo', None))
+                              ('insert', 'foo', Tupu))
 
     eleza test_modify_insert(self):
         self.filter_one.insert = self.filter_one.uppercase_insert

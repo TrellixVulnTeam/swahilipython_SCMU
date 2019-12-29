@@ -37,7 +37,7 @@ class SpawnTestCase(support.TempdirManager,
         if sys.platform != 'win32':
             exe = os.path.join(tmpdir, 'foo.sh')
             self.write_file(exe, '#!%s\nexit 1' % unix_shell)
-        else:
+        isipokua:
             exe = os.path.join(tmpdir, 'foo.bat')
             self.write_file(exe, 'exit 1')
 
@@ -48,7 +48,7 @@ class SpawnTestCase(support.TempdirManager,
         if sys.platform != 'win32':
             exe = os.path.join(tmpdir, 'foo.sh')
             self.write_file(exe, '#!%s\nexit 0' % unix_shell)
-        else:
+        isipokua:
             exe = os.path.join(tmpdir, 'foo.bat')
             self.write_file(exe, 'exit 0')
 
@@ -60,7 +60,7 @@ class SpawnTestCase(support.TempdirManager,
             # use TESTFN to get a pseudo-unique filename
             program_noeext = test_support.TESTFN
             # Give the temporary program an ".exe" suffix for all.
-            # It's needed on Windows and not harmful on other platforms.
+            # It's needed on Windows and sio harmful on other platforms.
             program = program_noeext + ".exe"
 
             filename = os.path.join(tmp_dir, program)
@@ -87,7 +87,7 @@ class SpawnTestCase(support.TempdirManager,
             rv = find_executable(dont_exist_program , path=tmp_dir)
             self.assertIsNone(rv)
 
-            # PATH='': no match, except in the current directory
+            # PATH='': no match, tatizo in the current directory
             with test_support.EnvironmentVarGuard() as env:
                 env['PATH'] = ''
                 with unittest.mock.patch('distutils.spawn.os.confstr',

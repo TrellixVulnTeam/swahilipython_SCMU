@@ -8,63 +8,63 @@ kutoka test agiza support
 
 kundi ClearTest(unittest.TestCase):
     """
-    Tests for frame.clear().
+    Tests kila frame.clear().
     """
 
     eleza inner(self, x=5, **kwargs):
         1/0
 
     eleza outer(self, **kwargs):
-        try:
+        jaribu:
             self.inner(**kwargs)
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             exc = e
         rudisha exc
 
     eleza clear_traceback_frames(self, tb):
         """
-        Clear all frames in a traceback.
+        Clear all frames kwenye a traceback.
         """
-        while tb is not None:
+        wakati tb ni sio Tupu:
             tb.tb_frame.clear()
             tb = tb.tb_next
 
     eleza test_clear_locals(self):
         kundi C:
-            pass
+            pita
         c = C()
         wr = weakref.ref(c)
         exc = self.outer(c=c)
-        del c
+        toa c
         support.gc_collect()
-        # A reference to c is held through the frames
-        self.assertIsNot(None, wr())
+        # A reference to c ni held through the frames
+        self.assertIsNot(Tupu, wr())
         self.clear_traceback_frames(exc.__traceback__)
         support.gc_collect()
         # The reference was released by .clear()
-        self.assertIs(None, wr())
+        self.assertIs(Tupu, wr())
 
     eleza test_clear_generator(self):
-        endly = False
+        endly = Uongo
         eleza g():
             nonlocal endly
-            try:
-                yield
+            jaribu:
+                tuma
                 inner()
-            finally:
-                endly = True
+            mwishowe:
+                endly = Kweli
         gen = g()
         next(gen)
-        self.assertFalse(endly)
+        self.assertUongo(endly)
         # Clearing the frame closes the generator
         gen.gi_frame.clear()
-        self.assertTrue(endly)
+        self.assertKweli(endly)
 
     eleza test_clear_executing(self):
-        # Attempting to clear an executing frame is forbidden.
-        try:
+        # Attempting to clear an executing frame ni forbidden.
+        jaribu:
             1/0
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             f = e.__traceback__.tb_frame
         with self.assertRaises(RuntimeError):
             f.clear()
@@ -72,41 +72,41 @@ kundi ClearTest(unittest.TestCase):
             f.f_back.clear()
 
     eleza test_clear_executing_generator(self):
-        # Attempting to clear an executing generator frame is forbidden.
-        endly = False
+        # Attempting to clear an executing generator frame ni forbidden.
+        endly = Uongo
         eleza g():
             nonlocal endly
-            try:
+            jaribu:
                 1/0
-            except ZeroDivisionError as e:
+            tatizo ZeroDivisionError kama e:
                 f = e.__traceback__.tb_frame
                 with self.assertRaises(RuntimeError):
                     f.clear()
                 with self.assertRaises(RuntimeError):
                     f.f_back.clear()
-                yield f
-            finally:
-                endly = True
+                tuma f
+            mwishowe:
+                endly = Kweli
         gen = g()
         f = next(gen)
-        self.assertFalse(endly)
+        self.assertUongo(endly)
         # Clearing the frame closes the generator
         f.clear()
-        self.assertTrue(endly)
+        self.assertKweli(endly)
 
     @support.cpython_only
     eleza test_clear_refcycles(self):
         # .clear() doesn't leave any refcycle behind
         with support.disable_gc():
             kundi C:
-                pass
+                pita
             c = C()
             wr = weakref.ref(c)
             exc = self.outer(c=c)
-            del c
-            self.assertIsNot(None, wr())
+            toa c
+            self.assertIsNot(Tupu, wr())
             self.clear_traceback_frames(exc.__traceback__)
-            self.assertIs(None, wr())
+            self.assertIs(Tupu, wr())
 
 
 kundi FrameAttrsTest(unittest.TestCase):
@@ -120,12 +120,12 @@ kundi FrameAttrsTest(unittest.TestCase):
                 1/0
                 t = 9
             rudisha inner()
-        try:
+        jaribu:
             outer()
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
             frames = []
-            while tb:
+            wakati tb:
                 frames.append(tb.tb_frame)
                 tb = tb.tb_next
         rudisha frames
@@ -147,7 +147,7 @@ kundi FrameAttrsTest(unittest.TestCase):
         self.assertEqual(inner.f_locals, {})
 
     eleza test_locals_clear_locals(self):
-        # Test f_locals before and after clear() (to exercise caching)
+        # Test f_locals before na after clear() (to exercise caching)
         f, outer, inner = self.make_frames()
         outer.f_locals
         inner.f_locals
@@ -159,12 +159,12 @@ kundi FrameAttrsTest(unittest.TestCase):
     eleza test_f_lineno_del_segfault(self):
         f, _, _ = self.make_frames()
         with self.assertRaises(AttributeError):
-            del f.f_lineno
+            toa f.f_lineno
 
 
 kundi ReprTest(unittest.TestCase):
     """
-    Tests for repr(frame).
+    Tests kila repr(frame).
     """
 
     eleza test_repr(self):
@@ -178,16 +178,16 @@ kundi ReprTest(unittest.TestCase):
             rudisha inner()
 
         offset = outer.__code__.co_firstlineno
-        try:
+        jaribu:
             outer()
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
             frames = []
-            while tb:
+            wakati tb:
                 frames.append(tb.tb_frame)
                 tb = tb.tb_next
-        else:
-            self.fail("should have raised")
+        isipokua:
+            self.fail("should have ashiriad")
 
         f_this, f_outer, f_inner = frames
         file_repr = re.escape(repr(__file__))

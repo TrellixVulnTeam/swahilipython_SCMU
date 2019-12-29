@@ -1,4 +1,4 @@
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 init = test_util.import_importlib('importlib')
 
@@ -14,22 +14,22 @@ kundi ModuleLockAsRLockTests:
     locktype = classmethod(lambda cls: cls.LockType("some_lock"))
 
     # _is_owned() unsupported
-    test__is_owned = None
-    # acquire(blocking=False) unsupported
-    test_try_acquire = None
-    test_try_acquire_contended = None
+    test__is_owned = Tupu
+    # acquire(blocking=Uongo) unsupported
+    test_try_acquire = Tupu
+    test_try_acquire_contended = Tupu
     # `with` unsupported
-    test_with = None
+    test_with = Tupu
     # acquire(timeout=...) unsupported
-    test_timeout = None
+    test_timeout = Tupu
     # _release_save() unsupported
-    test_release_save_unacquired = None
-    # lock status in repr unsupported
-    test_repr = None
-    test_locked_repr = None
+    test_release_save_unacquired = Tupu
+    # lock status kwenye repr unsupported
+    test_repr = Tupu
+    test_locked_repr = Tupu
 
 LOCK_TYPES = {kind: splitinit._bootstrap._ModuleLock
-              for kind, splitinit in init.items()}
+              kila kind, splitinit kwenye init.items()}
 
 (Frozen_ModuleLockAsRLockTests,
  Source_ModuleLockAsRLockTests
@@ -40,36 +40,36 @@ LOCK_TYPES = {kind: splitinit._bootstrap._ModuleLock
 kundi DeadlockAvoidanceTests:
 
     eleza setUp(self):
-        try:
+        jaribu:
             self.old_switchinterval = sys.getswitchinterval()
             support.setswitchinterval(0.000001)
-        except AttributeError:
-            self.old_switchinterval = None
+        tatizo AttributeError:
+            self.old_switchinterval = Tupu
 
     eleza tearDown(self):
-        ikiwa self.old_switchinterval is not None:
+        ikiwa self.old_switchinterval ni sio Tupu:
             sys.setswitchinterval(self.old_switchinterval)
 
     eleza run_deadlock_avoidance_test(self, create_deadlock):
         NLOCKS = 10
-        locks = [self.LockType(str(i)) for i in range(NLOCKS)]
-        pairs = [(locks[i], locks[(i+1)%NLOCKS]) for i in range(NLOCKS)]
+        locks = [self.LockType(str(i)) kila i kwenye range(NLOCKS)]
+        pairs = [(locks[i], locks[(i+1)%NLOCKS]) kila i kwenye range(NLOCKS)]
         ikiwa create_deadlock:
             NTHREADS = NLOCKS
-        else:
+        isipokua:
             NTHREADS = NLOCKS - 1
         barrier = threading.Barrier(NTHREADS)
         results = []
 
         eleza _acquire(lock):
-            """Try to acquire the lock. Return True on success,
-            False on deadlock."""
-            try:
+            """Try to acquire the lock. Return Kweli on success,
+            Uongo on deadlock."""
+            jaribu:
                 lock.acquire()
-            except self.DeadlockError:
-                rudisha False
-            else:
-                rudisha True
+            tatizo self.DeadlockError:
+                rudisha Uongo
+            isipokua:
+                rudisha Kweli
 
         eleza f():
             a, b = pairs.pop()
@@ -86,22 +86,22 @@ kundi DeadlockAvoidanceTests:
         rudisha results
 
     eleza test_deadlock(self):
-        results = self.run_deadlock_avoidance_test(True)
+        results = self.run_deadlock_avoidance_test(Kweli)
         # At least one of the threads detected a potential deadlock on its
         # second acquire() call.  It may be several of them, because the
-        # deadlock avoidance mechanism is conservative.
-        nb_deadlocks = results.count((True, False))
+        # deadlock avoidance mechanism ni conservative.
+        nb_deadlocks = results.count((Kweli, Uongo))
         self.assertGreaterEqual(nb_deadlocks, 1)
-        self.assertEqual(results.count((True, True)), len(results) - nb_deadlocks)
+        self.assertEqual(results.count((Kweli, Kweli)), len(results) - nb_deadlocks)
 
     eleza test_no_deadlock(self):
-        results = self.run_deadlock_avoidance_test(False)
-        self.assertEqual(results.count((True, False)), 0)
-        self.assertEqual(results.count((True, True)), len(results))
+        results = self.run_deadlock_avoidance_test(Uongo)
+        self.assertEqual(results.count((Kweli, Uongo)), 0)
+        self.assertEqual(results.count((Kweli, Kweli)), len(results))
 
 
 DEADLOCK_ERRORS = {kind: splitinit._bootstrap._DeadlockError
-                   for kind, splitinit in init.items()}
+                   kila kind, splitinit kwenye init.items()}
 
 (Frozen_DeadlockAvoidanceTests,
  Source_DeadlockAvoidanceTests
@@ -122,10 +122,10 @@ kundi LifetimeTests:
         lock = self.bootstrap._get_module_lock(name)
         self.assertIn(name, self.bootstrap._module_locks)
         wr = weakref.ref(lock)
-        del lock
+        toa lock
         support.gc_collect()
         self.assertNotIn(name, self.bootstrap._module_locks)
-        self.assertIsNone(wr())
+        self.assertIsTupu(wr())
 
     eleza test_all_locks(self):
         support.gc_collect()

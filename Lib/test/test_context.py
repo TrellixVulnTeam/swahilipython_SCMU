@@ -7,10 +7,10 @@ agiza time
 agiza unittest
 agiza weakref
 
-try:
+jaribu:
     kutoka _testcapi agiza hamt
-except ImportError:
-    hamt = None
+tatizo ImportError:
+    hamt = Tupu
 
 
 eleza isolated_context(func):
@@ -39,7 +39,7 @@ kundi ContextTest(unittest.TestCase):
         self.assertNotEqual(hash(c), hash('aaa'))
 
     eleza test_context_var_new_2(self):
-        self.assertIsNone(contextvars.ContextVar[int])
+        self.assertIsTupu(contextvars.ContextVar[int])
 
     @isolated_context
     eleza test_context_var_repr_1(self):
@@ -65,15 +65,15 @@ kundi ContextTest(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyContextVar(contextvars.ContextVar):
                 # Potentially we might want ContextVars to be subclassable.
-                pass
+                pita
 
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyContext(contextvars.Context):
-                pass
+                pita
 
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyToken(contextvars.Token):
-                pass
+                pita
 
     eleza test_context_new_1(self):
         with self.assertRaisesRegex(TypeError, 'any arguments'):
@@ -90,7 +90,7 @@ kundi ContextTest(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             ctx[1]
         with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
-            1 in ctx
+            1 kwenye ctx
         with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             ctx.get(1)
 
@@ -112,7 +112,7 @@ kundi ContextTest(unittest.TestCase):
             args += ('bar',)
             rudisha args, kwargs
 
-        for f in (func, functools.partial(func)):
+        kila f kwenye (func, functools.partial(func)):
             # partial doesn't support FASTCALL
 
             self.assertEqual(ctx.run(f), (('bar',), {'spam': 'foo'}))
@@ -152,37 +152,37 @@ kundi ContextTest(unittest.TestCase):
         var = contextvars.ContextVar('var')
 
         eleza func2():
-            self.assertIsNone(var.get(None))
+            self.assertIsTupu(var.get(Tupu))
 
         eleza func1():
-            self.assertIsNone(var.get(None))
+            self.assertIsTupu(var.get(Tupu))
             var.set('spam')
             ctx2.run(func2)
-            self.assertEqual(var.get(None), 'spam')
+            self.assertEqual(var.get(Tupu), 'spam')
 
             cur = contextvars.copy_context()
             self.assertEqual(len(cur), 1)
             self.assertEqual(cur[var], 'spam')
             rudisha cur
 
-        returned_ctx = ctx1.run(func1)
-        self.assertEqual(ctx1, returned_ctx)
-        self.assertEqual(returned_ctx[var], 'spam')
-        self.assertIn(var, returned_ctx)
+        rudishaed_ctx = ctx1.run(func1)
+        self.assertEqual(ctx1, rudishaed_ctx)
+        self.assertEqual(rudishaed_ctx[var], 'spam')
+        self.assertIn(var, rudishaed_ctx)
 
     eleza test_context_run_5(self):
         ctx = contextvars.Context()
         var = contextvars.ContextVar('var')
 
         eleza func():
-            self.assertIsNone(var.get(None))
+            self.assertIsTupu(var.get(Tupu))
             var.set('spam')
             1 / 0
 
         with self.assertRaises(ZeroDivisionError):
             ctx.run(func)
 
-        self.assertIsNone(var.get(None))
+        self.assertIsTupu(var.get(Tupu))
 
     eleza test_context_run_6(self):
         ctx = contextvars.Context()
@@ -190,7 +190,7 @@ kundi ContextTest(unittest.TestCase):
 
         eleza fun():
             self.assertEqual(c.get(), 0)
-            self.assertIsNone(ctx.get(c))
+            self.assertIsTupu(ctx.get(c))
 
             c.set(42)
             self.assertEqual(c.get(), 42)
@@ -213,23 +213,23 @@ kundi ContextTest(unittest.TestCase):
         with self.assertRaises(LookupError):
             c.get()
 
-        self.assertIsNone(c.get(None))
+        self.assertIsTupu(c.get(Tupu))
 
         t0 = c.set(42)
         self.assertEqual(c.get(), 42)
-        self.assertEqual(c.get(None), 42)
+        self.assertEqual(c.get(Tupu), 42)
         self.assertIs(t0.old_value, t0.MISSING)
         self.assertIs(t0.old_value, contextvars.Token.MISSING)
         self.assertIs(t0.var, c)
 
         t = c.set('spam')
         self.assertEqual(c.get(), 'spam')
-        self.assertEqual(c.get(None), 'spam')
+        self.assertEqual(c.get(Tupu), 'spam')
         self.assertEqual(t.old_value, 42)
         c.reset(t)
 
         self.assertEqual(c.get(), 42)
-        self.assertEqual(c.get(None), 42)
+        self.assertEqual(c.get(Tupu), 42)
 
         c.set('spam2')
         with self.assertRaisesRegex(RuntimeError, 'has already been used'):
@@ -242,7 +242,7 @@ kundi ContextTest(unittest.TestCase):
         c.reset(t0)
         with self.assertRaisesRegex(RuntimeError, 'has already been used'):
             c.reset(t0)
-        self.assertIsNone(c.get(None))
+        self.assertIsTupu(c.get(Tupu))
 
         self.assertIn(c, ctx1)
         self.assertEqual(ctx1[c], 'spam2')
@@ -279,7 +279,7 @@ kundi ContextTest(unittest.TestCase):
             self.assertEqual(c.get(), 42)
             with self.assertRaises(KeyError):
                 ctx[c]
-            self.assertIsNone(ctx.get(c))
+            self.assertIsTupu(ctx.get(c))
             self.assertEqual(ctx.get(c, 'spam'), 'spam')
             self.assertNotIn(c, ctx)
             self.assertEqual(list(ctx.keys()), [])
@@ -348,16 +348,16 @@ kundi ContextTest(unittest.TestCase):
         cvar = contextvars.ContextVar('cvar')
 
         eleza sub(num):
-            for i in range(10):
+            kila i kwenye range(10):
                 cvar.set(num + i)
                 time.sleep(random.uniform(0.001, 0.05))
                 self.assertEqual(cvar.get(), num + i)
             rudisha num
 
         tp = concurrent.futures.ThreadPoolExecutor(max_workers=10)
-        try:
+        jaribu:
             results = list(tp.map(sub, range(10)))
-        finally:
+        mwishowe:
             tp.shutdown()
         self.assertEqual(results, list(range(10)))
 
@@ -366,9 +366,9 @@ kundi ContextTest(unittest.TestCase):
 
 
 kundi HashKey:
-    _crasher = None
+    _crasher = Tupu
 
-    eleza __init__(self, hash, name, *, error_on_eq_to=None):
+    eleza __init__(self, hash, name, *, error_on_eq_to=Tupu):
         assert hash != -1
         self.name = name
         self.hash = hash
@@ -378,61 +378,61 @@ kundi HashKey:
         rudisha f'<Key name:{self.name} hash:{self.hash}>'
 
     eleza __hash__(self):
-        ikiwa self._crasher is not None and self._crasher.error_on_hash:
-            raise HashingError
+        ikiwa self._crasher ni sio Tupu na self._crasher.error_on_hash:
+            ashiria HashingError
 
         rudisha self.hash
 
     eleza __eq__(self, other):
-        ikiwa not isinstance(other, HashKey):
+        ikiwa sio isinstance(other, HashKey):
             rudisha NotImplemented
 
-        ikiwa self._crasher is not None and self._crasher.error_on_eq:
-            raise EqError
+        ikiwa self._crasher ni sio Tupu na self._crasher.error_on_eq:
+            ashiria EqError
 
-        ikiwa self.error_on_eq_to is not None and self.error_on_eq_to is other:
-            raise ValueError(f'cannot compare {self!r} to {other!r}')
-        ikiwa other.error_on_eq_to is not None and other.error_on_eq_to is self:
-            raise ValueError(f'cannot compare {other!r} to {self!r}')
+        ikiwa self.error_on_eq_to ni sio Tupu na self.error_on_eq_to ni other:
+            ashiria ValueError(f'cannot compare {self!r} to {other!r}')
+        ikiwa other.error_on_eq_to ni sio Tupu na other.error_on_eq_to ni self:
+            ashiria ValueError(f'cannot compare {other!r} to {self!r}')
 
         rudisha (self.name, self.hash) == (other.name, other.hash)
 
 
 kundi KeyStr(str):
     eleza __hash__(self):
-        ikiwa HashKey._crasher is not None and HashKey._crasher.error_on_hash:
-            raise HashingError
+        ikiwa HashKey._crasher ni sio Tupu na HashKey._crasher.error_on_hash:
+            ashiria HashingError
         rudisha super().__hash__()
 
     eleza __eq__(self, other):
-        ikiwa HashKey._crasher is not None and HashKey._crasher.error_on_eq:
-            raise EqError
+        ikiwa HashKey._crasher ni sio Tupu na HashKey._crasher.error_on_eq:
+            ashiria EqError
         rudisha super().__eq__(other)
 
 
 kundi HaskKeyCrasher:
-    eleza __init__(self, *, error_on_hash=False, error_on_eq=False):
+    eleza __init__(self, *, error_on_hash=Uongo, error_on_eq=Uongo):
         self.error_on_hash = error_on_hash
         self.error_on_eq = error_on_eq
 
     eleza __enter__(self):
-        ikiwa HashKey._crasher is not None:
-            raise RuntimeError('cannot nest crashers')
+        ikiwa HashKey._crasher ni sio Tupu:
+            ashiria RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
     eleza __exit__(self, *exc):
-        HashKey._crasher = None
+        HashKey._crasher = Tupu
 
 
 kundi HashingError(Exception):
-    pass
+    pita
 
 
 kundi EqError(Exception):
-    pass
+    pita
 
 
-@unittest.skipIf(hamt is None, '_testcapi lacks "hamt()" function')
+@unittest.skipIf(hamt ni Tupu, '_testcapi lacks "hamt()" function')
 kundi HamtTest(unittest.TestCase):
 
     eleza test_hashkey_helper_1(self):
@@ -451,7 +451,7 @@ kundi HamtTest(unittest.TestCase):
 
     eleza test_hamt_basics_1(self):
         h = hamt()
-        h = None  # NoQA
+        h = Tupu  # NoQA
 
     eleza test_hamt_basics_2(self):
         h = hamt()
@@ -462,7 +462,7 @@ kundi HamtTest(unittest.TestCase):
         self.assertEqual(len(h), 0)
         self.assertEqual(len(h2), 1)
 
-        self.assertIsNone(h.get('a'))
+        self.assertIsTupu(h.get('a'))
         self.assertEqual(h.get('a', 42), 42)
 
         self.assertEqual(h2.get('a'), 'b')
@@ -475,13 +475,13 @@ kundi HamtTest(unittest.TestCase):
         self.assertEqual(h3.get('a'), 'b')
         self.assertEqual(h3.get('b'), 10)
 
-        self.assertIsNone(h.get('b'))
-        self.assertIsNone(h2.get('b'))
+        self.assertIsTupu(h.get('b'))
+        self.assertIsTupu(h2.get('b'))
 
-        self.assertIsNone(h.get('a'))
+        self.assertIsTupu(h.get('a'))
         self.assertEqual(h2.get('a'), 'b')
 
-        h = h2 = h3 = None
+        h = h2 = h3 = Tupu
 
     eleza test_hamt_basics_3(self):
         h = hamt()
@@ -508,11 +508,11 @@ kundi HamtTest(unittest.TestCase):
         h2 = h.set(k1, 'a')
         h3 = h2.set(k2, 'b')
 
-        self.assertEqual(h.get(k1), None)
-        self.assertEqual(h.get(k2), None)
+        self.assertEqual(h.get(k1), Tupu)
+        self.assertEqual(h.get(k2), Tupu)
 
         self.assertEqual(h2.get(k1), 'a')
-        self.assertEqual(h2.get(k2), None)
+        self.assertEqual(h2.get(k2), Tupu)
 
         self.assertEqual(h3.get(k1), 'a')
         self.assertEqual(h3.get(k2), 'b')
@@ -524,7 +524,7 @@ kundi HamtTest(unittest.TestCase):
         self.assertEqual(h3.get(k2), 'b')
         self.assertEqual(h4.get(k1), 'a')
         self.assertEqual(h4.get(k2), 'cc')
-        self.assertEqual(h4.get(k3), None)
+        self.assertEqual(h4.get(k3), Tupu)
         self.assertEqual(h5.get(k1), 'a')
         self.assertEqual(h5.get(k2), 'cc')
         self.assertEqual(h5.get(k2), 'cc')
@@ -543,62 +543,62 @@ kundi HamtTest(unittest.TestCase):
         CRASH_EQ_EVERY = 11
         RUN_XTIMES = 3
 
-        for _ in range(RUN_XTIMES):
+        kila _ kwenye range(RUN_XTIMES):
             h = hamt()
             d = dict()
 
-            for i in range(COLLECTION_SIZE):
+            kila i kwenye range(COLLECTION_SIZE):
                 key = KeyStr(i)
 
-                ikiwa not (i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=True):
+                ikiwa sio (i % CRASH_HASH_EVERY):
+                    with HaskKeyCrasher(error_on_hash=Kweli):
                         with self.assertRaises(HashingError):
                             h.set(key, i)
 
                 h = h.set(key, i)
 
-                ikiwa not (i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=True):
+                ikiwa sio (i % CRASH_EQ_EVERY):
+                    with HaskKeyCrasher(error_on_eq=Kweli):
                         with self.assertRaises(EqError):
                             h.get(KeyStr(i))  # really trigger __eq__
 
                 d[key] = i
                 self.assertEqual(len(d), len(h))
 
-                ikiwa not (i % TEST_ITERS_EVERY):
+                ikiwa sio (i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.items()), set(d.items()))
                     self.assertEqual(len(h.items()), len(d.items()))
 
             self.assertEqual(len(h), COLLECTION_SIZE)
 
-            for key in range(COLLECTION_SIZE):
+            kila key kwenye range(COLLECTION_SIZE):
                 self.assertEqual(h.get(KeyStr(key), 'not found'), key)
 
             keys_to_delete = list(range(COLLECTION_SIZE))
             random.shuffle(keys_to_delete)
-            for iter_i, i in enumerate(keys_to_delete):
+            kila iter_i, i kwenye enumerate(keys_to_delete):
                 key = KeyStr(i)
 
-                ikiwa not (iter_i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=True):
+                ikiwa sio (iter_i % CRASH_HASH_EVERY):
+                    with HaskKeyCrasher(error_on_hash=Kweli):
                         with self.assertRaises(HashingError):
                             h.delete(key)
 
-                ikiwa not (iter_i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=True):
+                ikiwa sio (iter_i % CRASH_EQ_EVERY):
+                    with HaskKeyCrasher(error_on_eq=Kweli):
                         with self.assertRaises(EqError):
                             h.delete(KeyStr(i))
 
                 h = h.delete(key)
                 self.assertEqual(h.get(key, 'not found'), 'not found')
-                del d[key]
+                toa d[key]
                 self.assertEqual(len(d), len(h))
 
                 ikiwa iter_i == COLLECTION_SIZE // 2:
                     hm = h
                     dm = d.copy()
 
-                ikiwa not (iter_i % TEST_ITERS_EVERY):
+                ikiwa sio (iter_i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.keys()), set(d.keys()))
                     self.assertEqual(len(h.keys()), len(d.keys()))
 
@@ -607,17 +607,17 @@ kundi HamtTest(unittest.TestCase):
 
             # ============
 
-            for key in dm:
+            kila key kwenye dm:
                 self.assertEqual(hm.get(str(key)), dm[key])
             self.assertEqual(len(dm), len(hm))
 
-            for i, key in enumerate(keys_to_delete):
+            kila i, key kwenye enumerate(keys_to_delete):
                 hm = hm.delete(str(key))
                 self.assertEqual(hm.get(str(key), 'not found'), 'not found')
-                dm.pop(str(key), None)
+                dm.pop(str(key), Tupu)
                 self.assertEqual(len(d), len(h))
 
-                ikiwa not (i % TEST_ITERS_EVERY):
+                ikiwa sio (i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.values()), set(d.values()))
                     self.assertEqual(len(h.values()), len(d.values()))
 
@@ -804,7 +804,7 @@ kundi HamtTest(unittest.TestCase):
         h = hamt()
 
         keys = []
-        for i in range(17):
+        kila i kwenye range(17):
             key = HashKey(i, str(i))
             keys.append(key)
             h = h.set(key, f'val-{i}')
@@ -845,7 +845,7 @@ kundi HamtTest(unittest.TestCase):
         h = h.delete(keys[1])
         self.assertEqual(len(h), 14)
 
-        for key in keys:
+        kila key kwenye keys:
             h = h.delete(key)
         self.assertEqual(len(h), 0)
 
@@ -931,36 +931,36 @@ kundi HamtTest(unittest.TestCase):
         h2 = hamt()
         h2 = h2.set(A, 'a')
 
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
         h2 = h2.set(B, 'b')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
         h2 = h2.set(C, 'c')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
         h2 = h2.set(D, 'd2')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
         h2 = h2.set(D, 'd')
-        self.assertTrue(h1 == h2)
-        self.assertFalse(h1 != h2)
+        self.assertKweli(h1 == h2)
+        self.assertUongo(h1 != h2)
 
         h2 = h2.set(E, 'e')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
         h2 = h2.delete(D)
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
         h2 = h2.set(E, 'd')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
     eleza test_hamt_eq_2(self):
         A = HashKey(100, 'A')
@@ -982,7 +982,7 @@ kundi HamtTest(unittest.TestCase):
         A = HashKey(100, 'A')
 
         h = hamt()
-        h = h.set(0, 0)  # empty HAMT node is memoized in hamt.c
+        h = h.set(0, 0)  # empty HAMT node ni memoized kwenye hamt.c
         ref = weakref.ref(h)
 
         a = []
@@ -993,13 +993,13 @@ kundi HamtTest(unittest.TestCase):
         b.append(a)
         h = h.set(A, b)
 
-        del h, a, b
+        toa h, a, b
 
         gc.collect()
         gc.collect()
         gc.collect()
 
-        self.assertIsNone(ref())
+        self.assertIsTupu(ref())
 
     eleza test_hamt_gc_2(self):
         A = HashKey(100, 'A')
@@ -1013,13 +1013,13 @@ kundi HamtTest(unittest.TestCase):
         hi = h.items()
         next(hi)
 
-        del h, hi
+        toa h, hi
 
         gc.collect()
         gc.collect()
         gc.collect()
 
-        self.assertIsNone(ref())
+        self.assertIsTupu(ref())
 
     eleza test_hamt_in_1(self):
         A = HashKey(100, 'A')
@@ -1030,16 +1030,16 @@ kundi HamtTest(unittest.TestCase):
         h = hamt()
         h = h.set(A, 1)
 
-        self.assertTrue(A in h)
-        self.assertFalse(B in h)
+        self.assertKweli(A kwenye h)
+        self.assertUongo(B kwenye h)
 
         with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=True):
-                AA in h
+            with HaskKeyCrasher(error_on_eq=Kweli):
+                AA kwenye h
 
         with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=True):
-                AA in h
+            with HaskKeyCrasher(error_on_hash=Kweli):
+                AA kwenye h
 
     eleza test_hamt_getitem_1(self):
         A = HashKey(100, 'A')
@@ -1057,11 +1057,11 @@ kundi HamtTest(unittest.TestCase):
             h[B]
 
         with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=True):
+            with HaskKeyCrasher(error_on_eq=Kweli):
                 h[AA]
 
         with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=True):
+            with HaskKeyCrasher(error_on_hash=Kweli):
                 h[AA]
 
 

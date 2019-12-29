@@ -10,62 +10,62 @@ import zlib # this codec needs the optional zlib module !
 
 ### Codec APIs
 
-def zlib_encode(input, errors='strict'):
+eleza zlib_encode(input, errors='strict'):
     assert errors == 'strict'
-    return (zlib.compress(input), len(input))
+    rudisha (zlib.compress(input), len(input))
 
-def zlib_decode(input, errors='strict'):
+eleza zlib_decode(input, errors='strict'):
     assert errors == 'strict'
-    return (zlib.decompress(input), len(input))
+    rudisha (zlib.decompress(input), len(input))
 
-class Codec(codecs.Codec):
-    def encode(self, input, errors='strict'):
-        return zlib_encode(input, errors)
-    def decode(self, input, errors='strict'):
-        return zlib_decode(input, errors)
+kundi Codec(codecs.Codec):
+    eleza encode(self, input, errors='strict'):
+        rudisha zlib_encode(input, errors)
+    eleza decode(self, input, errors='strict'):
+        rudisha zlib_decode(input, errors)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def __init__(self, errors='strict'):
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza __init__(self, errors='strict'):
         assert errors == 'strict'
         self.errors = errors
         self.compressobj = zlib.compressobj()
 
-    def encode(self, input, final=False):
+    eleza encode(self, input, final=False):
         if final:
             c = self.compressobj.compress(input)
-            return c + self.compressobj.flush()
-        else:
-            return self.compressobj.compress(input)
+            rudisha c + self.compressobj.flush()
+        isipokua:
+            rudisha self.compressobj.compress(input)
 
-    def reset(self):
+    eleza reset(self):
         self.compressobj = zlib.compressobj()
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
-    def __init__(self, errors='strict'):
+kundi IncrementalDecoder(codecs.IncrementalDecoder):
+    eleza __init__(self, errors='strict'):
         assert errors == 'strict'
         self.errors = errors
         self.decompressobj = zlib.decompressobj()
 
-    def decode(self, input, final=False):
+    eleza decode(self, input, final=False):
         if final:
             c = self.decompressobj.decompress(input)
-            return c + self.decompressobj.flush()
-        else:
-            return self.decompressobj.decompress(input)
+            rudisha c + self.decompressobj.flush()
+        isipokua:
+            rudisha self.decompressobj.decompress(input)
 
-    def reset(self):
+    eleza reset(self):
         self.decompressobj = zlib.decompressobj()
 
-class StreamWriter(Codec, codecs.StreamWriter):
+kundi StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
 
-class StreamReader(Codec, codecs.StreamReader):
+kundi StreamReader(Codec, codecs.StreamReader):
     charbuffertype = bytes
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='zlib',
         encode=zlib_encode,
         decode=zlib_decode,

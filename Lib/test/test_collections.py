@@ -1,4 +1,4 @@
-"""Unit tests for collections.py."""
+"""Unit tests kila collections.py."""
 
 agiza collections
 agiza copy
@@ -72,7 +72,7 @@ kundi TestUserObjects(unittest.TestCase):
 
 
 ################################################################################
-### ChainMap (helper kundi for configparser and the string module)
+### ChainMap (helper kundi kila configparser na the string module)
 ################################################################################
 
 kundi TestChainMap(unittest.TestCase):
@@ -87,54 +87,54 @@ kundi TestChainMap(unittest.TestCase):
         self.assertEqual(d.maps, [{'b':20, 'c':30}, {'a':1, 'b':2}])  # check internal state
         self.assertEqual(d.items(), dict(a=1, b=20, c=30).items())    # check items/iter/getitem
         self.assertEqual(len(d), 3)                                   # check len
-        for key in 'abc':                                             # check contains
+        kila key kwenye 'abc':                                             # check contains
             self.assertIn(key, d)
-        for k, v in dict(a=1, b=20, c=30, z=100).items():             # check get
+        kila k, v kwenye dict(a=1, b=20, c=30, z=100).items():             # check get
             self.assertEqual(d.get(k, 100), v)
 
-        del d['b']                                                    # unmask a value
+        toa d['b']                                                    # unmask a value
         self.assertEqual(d.maps, [{'c':30}, {'a':1, 'b':2}])          # check internal state
         self.assertEqual(d.items(), dict(a=1, b=2, c=30).items())     # check items/iter/getitem
         self.assertEqual(len(d), 3)                                   # check len
-        for key in 'abc':                                             # check contains
+        kila key kwenye 'abc':                                             # check contains
             self.assertIn(key, d)
-        for k, v in dict(a=1, b=2, c=30, z=100).items():              # check get
+        kila k, v kwenye dict(a=1, b=2, c=30, z=100).items():              # check get
             self.assertEqual(d.get(k, 100), v)
         self.assertIn(repr(d), [                                      # check repr
             type(d).__name__ + "({'c': 30}, {'a': 1, 'b': 2})",
             type(d).__name__ + "({'c': 30}, {'b': 2, 'a': 1})"
         ])
 
-        for e in d.copy(), copy.copy(d):                               # check shallow copies
+        kila e kwenye d.copy(), copy.copy(d):                               # check shallow copies
             self.assertEqual(d, e)
             self.assertEqual(d.maps, e.maps)
             self.assertIsNot(d, e)
             self.assertIsNot(d.maps[0], e.maps[0])
-            for m1, m2 in zip(d.maps[1:], e.maps[1:]):
+            kila m1, m2 kwenye zip(d.maps[1:], e.maps[1:]):
                 self.assertIs(m1, m2)
 
         # check deep copies
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             e = pickle.loads(pickle.dumps(d, proto))
             self.assertEqual(d, e)
             self.assertEqual(d.maps, e.maps)
             self.assertIsNot(d, e)
-            for m1, m2 in zip(d.maps, e.maps):
+            kila m1, m2 kwenye zip(d.maps, e.maps):
                 self.assertIsNot(m1, m2, e)
-        for e in [copy.deepcopy(d),
+        kila e kwenye [copy.deepcopy(d),
                   eval(repr(d))
                 ]:
             self.assertEqual(d, e)
             self.assertEqual(d.maps, e.maps)
             self.assertIsNot(d, e)
-            for m1, m2 in zip(d.maps, e.maps):
+            kila m1, m2 kwenye zip(d.maps, e.maps):
                 self.assertIsNot(m1, m2, e)
 
         f = d.new_child()
         f['b'] = 5
         self.assertEqual(f.maps, [{'b': 5}, {'c':30}, {'a':1, 'b':2}])
         self.assertEqual(f.parents.maps, [{'c':30}, {'a':1, 'b':2}])   # check parents
-        self.assertEqual(f['b'], 5)                                    # find first in chain
+        self.assertEqual(f['b'], 5)                                    # find first kwenye chain
         self.assertEqual(f.parents['b'], 2)                            # look beyond maps[0]
 
     eleza test_ordering(self):
@@ -156,22 +156,22 @@ kundi TestChainMap(unittest.TestCase):
         self.assertEqual(ChainMap({1:2}).maps, [{1:2}])                # 1 arg --> list
 
     eleza test_bool(self):
-        self.assertFalse(ChainMap())
-        self.assertFalse(ChainMap({}, {}))
-        self.assertTrue(ChainMap({1:2}, {}))
-        self.assertTrue(ChainMap({}, {1:2}))
+        self.assertUongo(ChainMap())
+        self.assertUongo(ChainMap({}, {}))
+        self.assertKweli(ChainMap({1:2}, {}))
+        self.assertKweli(ChainMap({}, {1:2}))
 
     eleza test_missing(self):
         kundi DefaultChainMap(ChainMap):
             eleza __missing__(self, key):
                 rudisha 999
         d = DefaultChainMap(dict(a=1, b=2), dict(b=20, c=30))
-        for k, v in dict(a=1, b=2, c=30, d=999).items():
+        kila k, v kwenye dict(a=1, b=2, c=30, d=999).items():
             self.assertEqual(d[k], v)                                  # check __getitem__ w/missing
-        for k, v in dict(a=1, b=2, c=30, d=77).items():
+        kila k, v kwenye dict(a=1, b=2, c=30, d=77).items():
             self.assertEqual(d.get(k, 77), v)                          # check get() w/ missing
-        for k, v in dict(a=True, b=True, c=True, d=False).items():
-            self.assertEqual(k in d, v)                                # check __contains__ w/missing
+        kila k, v kwenye dict(a=Kweli, b=Kweli, c=Kweli, d=Uongo).items():
+            self.assertEqual(k kwenye d, v)                                # check __contains__ w/missing
         self.assertEqual(d.pop('a', 1001), 1, d)
         self.assertEqual(d.pop('a', 1002), 1002)                       # check pop() w/missing
         self.assertEqual(d.popitem(), ('b', 2))                        # check popitem() w/missing
@@ -201,7 +201,7 @@ kundi TestChainMap(unittest.TestCase):
         self.assertEqual(dict(d.items()), dict(a=1, b=2, c=30))
 
     eleza test_new_child(self):
-        'Tests for changes for issue #16613.'
+        'Tests kila changes kila issue #16613.'
         c = ChainMap()
         c['a'] = 1
         c['b'] = 2
@@ -227,9 +227,9 @@ kundi TestChainMap(unittest.TestCase):
         m = lowerdict(b=20, c=30)
         d = c.new_child(m)
         self.assertIs(m, d.maps[0])
-        for key in 'abc':                                             # check contains
+        kila key kwenye 'abc':                                             # check contains
             self.assertIn(key, d)
-        for k, v in dict(a=1, B=20, C=30, z=100).items():             # check get
+        kila k, v kwenye dict(a=1, B=20, C=30, z=100).items():             # check get
             self.assertEqual(d.get(k, 100), v)
 
 
@@ -237,7 +237,7 @@ kundi TestChainMap(unittest.TestCase):
 ### Named Tuples
 ################################################################################
 
-TestNT = namedtuple('TestNT', 'x y z')    # type used for pickle tests
+TestNT = namedtuple('TestNT', 'x y z')    # type used kila pickle tests
 
 kundi TestNamedTuple(unittest.TestCase):
 
@@ -259,8 +259,8 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertRaises(ValueError, namedtuple, 'abc', '_efg ghi')       # field with leading underscore
         self.assertRaises(ValueError, namedtuple, 'abc', 'efg efg ghi')    # duplicate field
 
-        namedtuple('Point0', 'x1 y2')   # Verify that numbers are allowed in names
-        namedtuple('_', 'a b c')        # Test leading underscores in a typename
+        namedtuple('Point0', 'x1 y2')   # Verify that numbers are allowed kwenye names
+        namedtuple('_', 'a b c')        # Test leading underscores kwenye a typename
 
         nt = namedtuple('nt', 'the quick brown fox')                       # check unicode input
         self.assertNotIn("u'", repr(nt._fields))
@@ -297,11 +297,11 @@ kundi TestNamedTuple(unittest.TestCase):
         with self.assertRaises(TypeError):                                  # non-iterable defaults
             Point = namedtuple('Point', 'x y', defaults=10)
         with self.assertRaises(TypeError):                                  # another non-iterable default
-            Point = namedtuple('Point', 'x y', defaults=False)
+            Point = namedtuple('Point', 'x y', defaults=Uongo)
 
-        Point = namedtuple('Point', 'x y', defaults=None)                   # default is None
+        Point = namedtuple('Point', 'x y', defaults=Tupu)                   # default ni Tupu
         self.assertEqual(Point._field_defaults, {})
-        self.assertIsNone(Point.__new__.__defaults__, None)
+        self.assertIsTupu(Point.__new__.__defaults__, Tupu)
         self.assertEqual(Point(10, 20), (10, 20))
         with self.assertRaises(TypeError):                                  # catch too few args
             Point(10)
@@ -326,16 +326,16 @@ kundi TestNamedTuple(unittest.TestCase):
         with self.assertRaises(AttributeError):
             p.x = 33
         with self.assertRaises(AttributeError):
-            del p.x
+            toa p.x
         with self.assertRaises(TypeError):
             p[0] = 33
         with self.assertRaises(TypeError):
-            del p[0]
+            toa p[0]
         self.assertEqual(p.x, 11)
         self.assertEqual(p[0], 11)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_factory_doc_attr(self):
         Point = namedtuple('Point', 'x y')
         self.assertEqual(Point.__doc__, 'Point(x, y)')
@@ -343,22 +343,22 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(Point.__doc__, '2D point')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_field_doc(self):
         Point = namedtuple('Point', 'x y')
-        self.assertEqual(Point.x.__doc__, 'Alias for field number 0')
-        self.assertEqual(Point.y.__doc__, 'Alias for field number 1')
-        Point.x.__doc__ = 'docstring for Point.x'
-        self.assertEqual(Point.x.__doc__, 'docstring for Point.x')
+        self.assertEqual(Point.x.__doc__, 'Alias kila field number 0')
+        self.assertEqual(Point.y.__doc__, 'Alias kila field number 1')
+        Point.x.__doc__ = 'docstring kila Point.x'
+        self.assertEqual(Point.x.__doc__, 'docstring kila Point.x')
         # namedtuple can mutate doc of descriptors independently
         Vector = namedtuple('Vector', 'x y')
-        self.assertEqual(Vector.x.__doc__, 'Alias for field number 0')
-        Vector.x.__doc__ = 'docstring for Vector.x'
-        self.assertEqual(Vector.x.__doc__, 'docstring for Vector.x')
+        self.assertEqual(Vector.x.__doc__, 'Alias kila field number 0')
+        Vector.x.__doc__ = 'docstring kila Vector.x'
+        self.assertEqual(Vector.x.__doc__, 'docstring kila Vector.x')
 
     @support.cpython_only
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_field_doc_reuse(self):
         P = namedtuple('P', ['m', 'n'])
         Q = namedtuple('Q', ['o', 'p'])
@@ -366,15 +366,15 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertIs(P.n.__doc__, Q.p.__doc__)
 
     eleza test_name_fixer(self):
-        for spec, renamed in [
+        kila spec, renamed kwenye [
             [('efg', 'g%hi'),  ('efg', '_1')],                              # field with non-alpha char
             [('abc', 'class'), ('abc', '_1')],                              # field has keyword
             [('8efg', '9ghi'), ('_0', '_1')],                               # field starts with digit
             [('abc', '_efg'), ('abc', '_1')],                               # field with leading underscore
             [('abc', 'efg', 'efg', 'ghi'), ('abc', 'efg', '_2', 'ghi')],    # duplicate field
-            [('abc', '', 'x'), ('abc', '_1', 'x')],                         # fieldname is a space
+            [('abc', '', 'x'), ('abc', '_1', 'x')],                         # fieldname ni a space
         ]:
-            self.assertEqual(namedtuple('NT', spec, rename=True)._fields, renamed)
+            self.assertEqual(namedtuple('NT', spec, rename=Kweli)._fields, renamed)
 
     eleza test_module_parameter(self):
         NT = namedtuple('NT', ['x', 'y'], module=collections)
@@ -401,12 +401,12 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(p._replace(x=1), (1, 22))      # test _replace method
         self.assertEqual(p._asdict(), dict(x=11, y=22)) # test _asdict method
 
-        try:
+        jaribu:
             p._replace(x=1, error=2)
-        except ValueError:
-            pass
-        else:
-            self._fail('Did not detect an incorrect fieldname')
+        tatizo ValueError:
+            pita
+        isipokua:
+            self._fail('Did sio detect an incorrect fieldname')
 
         # verify that field string can have commas
         Point = namedtuple('Point', 'x, y')
@@ -460,13 +460,13 @@ kundi TestNamedTuple(unittest.TestCase):
 
         n = 5000
         names = list(set(''.join([choice(string.ascii_letters)
-                                  for j in range(10)]) for i in range(n)))
+                                  kila j kwenye range(10)]) kila i kwenye range(n)))
         n = len(names)
         Big = namedtuple('Big', names)
         b = Big(*range(n))
         self.assertEqual(b, tuple(range(n)))
         self.assertEqual(Big._make(range(n)), tuple(range(n)))
-        for pos, name in enumerate(names):
+        kila pos, name kwenye enumerate(names):
             self.assertEqual(getattr(b, name), pos)
         repr(b)                                 # make sure repr() doesn't blow-up
         d = b._asdict()
@@ -481,10 +481,10 @@ kundi TestNamedTuple(unittest.TestCase):
 
     eleza test_pickle(self):
         p = TestNT(x=10, y=20, z=30)
-        for module in (pickle,):
+        kila module kwenye (pickle,):
             loads = getattr(module, 'loads')
             dumps = getattr(module, 'dumps')
-            for protocol in range(-1, module.HIGHEST_PROTOCOL + 1):
+            kila protocol kwenye range(-1, module.HIGHEST_PROTOCOL + 1):
                 q = loads(dumps(p, protocol))
                 self.assertEqual(p, q)
                 self.assertEqual(p._fields, q._fields)
@@ -492,14 +492,14 @@ kundi TestNamedTuple(unittest.TestCase):
 
     eleza test_copy(self):
         p = TestNT(x=10, y=20, z=30)
-        for copier in copy.copy, copy.deepcopy:
+        kila copier kwenye copy.copy, copy.deepcopy:
             q = copier(p)
             self.assertEqual(p, q)
             self.assertEqual(p._fields, q._fields)
 
     eleza test_name_conflicts(self):
-        # Some names like "self", "cls", "tuple", "itemgetter", and "property"
-        # failed when used as field names.  Test to make sure these now work.
+        # Some names like "self", "cls", "tuple", "itemgetter", na "property"
+        # failed when used kama field names.  Test to make sure these now work.
         T = namedtuple('T', 'itemgetter property self cls tuple')
         t = T(1, 2, 3, 4, 5)
         self.assertEqual(t, (1,2,3,4,5))
@@ -507,8 +507,8 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(newt, (10,20,30,40,50))
 
        # Broader test of all interesting names taken kutoka the code, old
-       # template, and an example
-        words = {'Alias', 'At', 'AttributeError', 'Build', 'Bypass', 'Create',
+       # template, na an example
+        words = {'Alias', 'At', 'AttributeError', 'Build', 'Bypita', 'Create',
         'Encountered', 'Expected', 'Field', 'For', 'Got', 'Helper',
         'IronPython', 'Jython', 'KeyError', 'Make', 'Modify', 'Note',
         'OrderedDict', 'Point', 'Return', 'Returns', 'Type', 'TypeError',
@@ -553,7 +553,7 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(t._asdict(), dict(zip(T._fields, values)))
         # test _replace
         t = T._make(values)
-        newvalues = tuple(v*10 for v in values)
+        newvalues = tuple(v*10 kila v kwenye values)
         newt = t._replace(**dict(zip(T._fields, newvalues)))
         self.assertEqual(newt, newvalues)
         # test _fields
@@ -566,22 +566,22 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(repr(A(1)), 'A(x=1)')
         # repr should show the name of the subclass
         kundi B(A):
-            pass
+            pita
         self.assertEqual(repr(B(1)), 'B(x=1)')
 
     eleza test_keyword_only_arguments(self):
         # See issue 25628
         with self.assertRaises(TypeError):
-            NT = namedtuple('NT', ['x', 'y'], True)
+            NT = namedtuple('NT', ['x', 'y'], Kweli)
 
-        NT = namedtuple('NT', ['abc', 'def'], rename=True)
+        NT = namedtuple('NT', ['abc', 'def'], rename=Kweli)
         self.assertEqual(NT._fields, ('abc', '_1'))
         with self.assertRaises(TypeError):
-            NT = namedtuple('NT', ['abc', 'def'], False, True)
+            NT = namedtuple('NT', ['abc', 'def'], Uongo, Kweli)
 
     eleza test_namedtuple_subclass_issue_24931(self):
         kundi Point(namedtuple('_Point', ['x', 'y'])):
-            pass
+            pita
 
         a = Point(3, 4)
         self.assertEqual(a._asdict(), OrderedDict([('x', 3), ('y', 4)]))
@@ -592,7 +592,7 @@ kundi TestNamedTuple(unittest.TestCase):
     eleza test_field_descriptor(self):
         Point = namedtuple('Point', 'x y')
         p = Point(11, 22)
-        self.assertTrue(inspect.isdatadescriptor(Point.x))
+        self.assertKweli(inspect.isdatadescriptor(Point.x))
         self.assertEqual(Point.x.__get__(p), 11)
         self.assertRaises(AttributeError, Point.x.__set__, p, 33)
         self.assertRaises(AttributeError, Point.x.__delete__, p)
@@ -620,38 +620,38 @@ kundi ABCTestCase(unittest.TestCase):
         C = type('C', (abc,), methodstubs)
         C()
 
-        # instantiation should fail ikiwa a required method is missing
-        for name in names:
+        # instantiation should fail ikiwa a required method ni missing
+        kila name kwenye names:
             stubs = methodstubs.copy()
-            del stubs[name]
+            toa stubs[name]
             C = type('C', (abc,), stubs)
             self.assertRaises(TypeError, C, name)
 
     eleza validate_isinstance(self, abc, name):
         stub = lambda s, *args: 0
 
-        C = type('C', (object,), {'__hash__': None})
+        C = type('C', (object,), {'__hash__': Tupu})
         setattr(C, name, stub)
         self.assertIsInstance(C(), abc)
-        self.assertTrue(issubclass(C, abc))
+        self.assertKweli(issubclass(C, abc))
 
-        C = type('C', (object,), {'__hash__': None})
+        C = type('C', (object,), {'__hash__': Tupu})
         self.assertNotIsInstance(C(), abc)
-        self.assertFalse(issubclass(C, abc))
+        self.assertUongo(issubclass(C, abc))
 
     eleza validate_comparison(self, instance):
         ops = ['lt', 'gt', 'le', 'ge', 'ne', 'or', 'and', 'xor', 'sub']
         operators = {}
-        for op in ops:
+        kila op kwenye ops:
             name = '__' + op + '__'
             operators[name] = getattr(operator, name)
 
         kundi Other:
             eleza __init__(self):
-                self.right_side = False
+                self.right_side = Uongo
             eleza __eq__(self, other):
-                self.right_side = True
-                rudisha True
+                self.right_side = Kweli
+                rudisha Kweli
             __lt__ = __eq__
             __gt__ = __eq__
             __le__ = __eq__
@@ -662,51 +662,51 @@ kundi ABCTestCase(unittest.TestCase):
             __rxor__ = __eq__
             __rsub__ = __eq__
 
-        for name, op in operators.items():
-            ikiwa not hasattr(instance, name):
-                continue
+        kila name, op kwenye operators.items():
+            ikiwa sio hasattr(instance, name):
+                endelea
             other = Other()
             op(instance, other)
-            self.assertTrue(other.right_side,'Right side not called for %s.%s'
+            self.assertKweli(other.right_side,'Right side sio called kila %s.%s'
                             % (type(instance), name))
 
 eleza _test_gen():
-    yield
+    tuma
 
 kundi TestOneTrickPonyABCs(ABCTestCase):
 
     eleza test_Awaitable(self):
         eleza gen():
-            yield
+            tuma
 
         @types.coroutine
         eleza coro():
-            yield
+            tuma
 
         async eleza new_coro():
-            pass
+            pita
 
         kundi Bar:
             eleza __await__(self):
-                yield
+                tuma
 
         kundi MinimalCoro(Coroutine):
             eleza send(self, value):
                 rudisha value
-            eleza throw(self, typ, val=None, tb=None):
+            eleza throw(self, typ, val=Tupu, tb=Tupu):
                 super().throw(typ, val, tb)
             eleza __await__(self):
-                yield
+                tuma
 
-        non_samples = [None, int(), gen(), object()]
-        for x in non_samples:
+        non_samples = [Tupu, int(), gen(), object()]
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Awaitable)
-            self.assertFalse(issubclass(type(x), Awaitable), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Awaitable), repr(type(x)))
 
         samples = [Bar(), MinimalCoro()]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Awaitable)
-            self.assertTrue(issubclass(type(x), Awaitable))
+            self.assertKweli(issubclass(type(x), Awaitable))
 
         c = coro()
         # Iterable coroutines (generators with CO_ITERABLE_COROUTINE
@@ -716,47 +716,47 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
 
         c = new_coro()
         self.assertIsInstance(c, Awaitable)
-        c.close() # avoid RuntimeWarning that coro() was not awaited
+        c.close() # avoid RuntimeWarning that coro() was sio awaited
 
-        kundi CoroLike: pass
+        kundi CoroLike: pita
         Coroutine.register(CoroLike)
-        self.assertTrue(isinstance(CoroLike(), Awaitable))
-        self.assertTrue(issubclass(CoroLike, Awaitable))
-        CoroLike = None
+        self.assertKweli(isinstance(CoroLike(), Awaitable))
+        self.assertKweli(issubclass(CoroLike, Awaitable))
+        CoroLike = Tupu
         support.gc_collect() # Kill CoroLike to clean-up ABCMeta cache
 
     eleza test_Coroutine(self):
         eleza gen():
-            yield
+            tuma
 
         @types.coroutine
         eleza coro():
-            yield
+            tuma
 
         async eleza new_coro():
-            pass
+            pita
 
         kundi Bar:
             eleza __await__(self):
-                yield
+                tuma
 
         kundi MinimalCoro(Coroutine):
             eleza send(self, value):
                 rudisha value
-            eleza throw(self, typ, val=None, tb=None):
+            eleza throw(self, typ, val=Tupu, tb=Tupu):
                 super().throw(typ, val, tb)
             eleza __await__(self):
-                yield
+                tuma
 
-        non_samples = [None, int(), gen(), object(), Bar()]
-        for x in non_samples:
+        non_samples = [Tupu, int(), gen(), object(), Bar()]
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Coroutine)
-            self.assertFalse(issubclass(type(x), Coroutine), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Coroutine), repr(type(x)))
 
         samples = [MinimalCoro()]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Awaitable)
-            self.assertTrue(issubclass(type(x), Awaitable))
+            self.assertKweli(issubclass(type(x), Awaitable))
 
         c = coro()
         # Iterable coroutines (generators with CO_ITERABLE_COROUTINE
@@ -766,53 +766,53 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
 
         c = new_coro()
         self.assertIsInstance(c, Coroutine)
-        c.close() # avoid RuntimeWarning that coro() was not awaited
+        c.close() # avoid RuntimeWarning that coro() was sio awaited
 
         kundi CoroLike:
             eleza send(self, value):
-                pass
-            eleza throw(self, typ, val=None, tb=None):
-                pass
+                pita
+            eleza throw(self, typ, val=Tupu, tb=Tupu):
+                pita
             eleza close(self):
-                pass
+                pita
             eleza __await__(self):
-                pass
-        self.assertTrue(isinstance(CoroLike(), Coroutine))
-        self.assertTrue(issubclass(CoroLike, Coroutine))
+                pita
+        self.assertKweli(isinstance(CoroLike(), Coroutine))
+        self.assertKweli(issubclass(CoroLike, Coroutine))
 
         kundi CoroLike:
             eleza send(self, value):
-                pass
+                pita
             eleza close(self):
-                pass
+                pita
             eleza __await__(self):
-                pass
-        self.assertFalse(isinstance(CoroLike(), Coroutine))
-        self.assertFalse(issubclass(CoroLike, Coroutine))
+                pita
+        self.assertUongo(isinstance(CoroLike(), Coroutine))
+        self.assertUongo(issubclass(CoroLike, Coroutine))
 
     eleza test_Hashable(self):
         # Check some non-hashables
         non_samples = [bytearray(), list(), set(), dict()]
-        for x in non_samples:
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Hashable)
-            self.assertFalse(issubclass(type(x), Hashable), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Hashable), repr(type(x)))
         # Check some hashables
-        samples = [None,
+        samples = [Tupu,
                    int(), float(), complex(),
                    str(),
                    tuple(), frozenset(),
                    int, list, object, type, bytes()
                    ]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Hashable)
-            self.assertTrue(issubclass(type(x), Hashable), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Hashable), repr(type(x)))
         self.assertRaises(TypeError, Hashable)
         # Check direct subclassing
         kundi H(Hashable):
             eleza __hash__(self):
                 rudisha super().__hash__()
         self.assertEqual(hash(H()), 0)
-        self.assertFalse(issubclass(int, H))
+        self.assertUongo(issubclass(int, H))
         self.validate_abstract_methods(Hashable, '__hash__')
         self.validate_isinstance(Hashable, '__hash__')
 
@@ -820,13 +820,13 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         kundi AI:
             eleza __aiter__(self):
                 rudisha self
-        self.assertTrue(isinstance(AI(), AsyncIterable))
-        self.assertTrue(issubclass(AI, AsyncIterable))
+        self.assertKweli(isinstance(AI(), AsyncIterable))
+        self.assertKweli(issubclass(AI, AsyncIterable))
         # Check some non-iterables
-        non_samples = [None, object, []]
-        for x in non_samples:
+        non_samples = [Tupu, object, []]
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, AsyncIterable)
-            self.assertFalse(issubclass(type(x), AsyncIterable), repr(type(x)))
+            self.assertUongo(issubclass(type(x), AsyncIterable), repr(type(x)))
         self.validate_abstract_methods(AsyncIterable, '__aiter__')
         self.validate_isinstance(AsyncIterable, '__aiter__')
 
@@ -835,79 +835,79 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             eleza __aiter__(self):
                 rudisha self
             async eleza __anext__(self):
-                raise StopAsyncIteration
-        self.assertTrue(isinstance(AI(), AsyncIterator))
-        self.assertTrue(issubclass(AI, AsyncIterator))
-        non_samples = [None, object, []]
+                ashiria StopAsyncIteration
+        self.assertKweli(isinstance(AI(), AsyncIterator))
+        self.assertKweli(issubclass(AI, AsyncIterator))
+        non_samples = [Tupu, object, []]
         # Check some non-iterables
-        for x in non_samples:
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, AsyncIterator)
-            self.assertFalse(issubclass(type(x), AsyncIterator), repr(type(x)))
+            self.assertUongo(issubclass(type(x), AsyncIterator), repr(type(x)))
         # Similarly to regular iterators (see issue 10565)
         kundi AnextOnly:
             async eleza __anext__(self):
-                raise StopAsyncIteration
+                ashiria StopAsyncIteration
         self.assertNotIsInstance(AnextOnly(), AsyncIterator)
         self.validate_abstract_methods(AsyncIterator, '__anext__', '__aiter__')
 
     eleza test_Iterable(self):
         # Check some non-iterables
-        non_samples = [None, 42, 3.14, 1j]
-        for x in non_samples:
+        non_samples = [Tupu, 42, 3.14, 1j]
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Iterable)
-            self.assertFalse(issubclass(type(x), Iterable), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Iterable), repr(type(x)))
         # Check some iterables
         samples = [bytes(), str(),
                    tuple(), list(), set(), frozenset(), dict(),
                    dict().keys(), dict().items(), dict().values(),
                    _test_gen(),
-                   (x for x in []),
+                   (x kila x kwenye []),
                    ]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Iterable)
-            self.assertTrue(issubclass(type(x), Iterable), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Iterable), repr(type(x)))
         # Check direct subclassing
         kundi I(Iterable):
             eleza __iter__(self):
                 rudisha super().__iter__()
         self.assertEqual(list(I()), [])
-        self.assertFalse(issubclass(str, I))
+        self.assertUongo(issubclass(str, I))
         self.validate_abstract_methods(Iterable, '__iter__')
         self.validate_isinstance(Iterable, '__iter__')
-        # Check None blocking
+        # Check Tupu blocking
         kundi It:
             eleza __iter__(self): rudisha iter([])
         kundi ItBlocked(It):
-            __iter__ = None
-        self.assertTrue(issubclass(It, Iterable))
-        self.assertTrue(isinstance(It(), Iterable))
-        self.assertFalse(issubclass(ItBlocked, Iterable))
-        self.assertFalse(isinstance(ItBlocked(), Iterable))
+            __iter__ = Tupu
+        self.assertKweli(issubclass(It, Iterable))
+        self.assertKweli(isinstance(It(), Iterable))
+        self.assertUongo(issubclass(ItBlocked, Iterable))
+        self.assertUongo(isinstance(ItBlocked(), Iterable))
 
     eleza test_Reversible(self):
         # Check some non-reversibles
-        non_samples = [None, 42, 3.14, 1j, set(), frozenset()]
-        for x in non_samples:
+        non_samples = [Tupu, 42, 3.14, 1j, set(), frozenset()]
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Reversible)
-            self.assertFalse(issubclass(type(x), Reversible), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Reversible), repr(type(x)))
         # Check some non-reversible iterables
-        non_reversibles = [_test_gen(), (x for x in []), iter([]), reversed([])]
-        for x in non_reversibles:
+        non_reversibles = [_test_gen(), (x kila x kwenye []), iter([]), reversed([])]
+        kila x kwenye non_reversibles:
             self.assertNotIsInstance(x, Reversible)
-            self.assertFalse(issubclass(type(x), Reversible), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Reversible), repr(type(x)))
         # Check some reversible iterables
         samples = [bytes(), str(), tuple(), list(), OrderedDict(),
                    OrderedDict().keys(), OrderedDict().items(),
                    OrderedDict().values(), Counter(), Counter().keys(),
                    Counter().items(), Counter().values(), dict(),
                    dict().keys(), dict().items(), dict().values()]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Reversible)
-            self.assertTrue(issubclass(type(x), Reversible), repr(type(x)))
-        # Check also Mapping, MutableMapping, and Sequence
-        self.assertTrue(issubclass(Sequence, Reversible), repr(Sequence))
-        self.assertFalse(issubclass(Mapping, Reversible), repr(Mapping))
-        self.assertFalse(issubclass(MutableMapping, Reversible), repr(MutableMapping))
+            self.assertKweli(issubclass(type(x), Reversible), repr(type(x)))
+        # Check also Mapping, MutableMapping, na Sequence
+        self.assertKweli(issubclass(Sequence, Reversible), repr(Sequence))
+        self.assertUongo(issubclass(Mapping, Reversible), repr(Mapping))
+        self.assertUongo(issubclass(MutableMapping, Reversible), repr(MutableMapping))
         # Check direct subclassing
         kundi R(Reversible):
             eleza __iter__(self):
@@ -915,58 +915,58 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             eleza __reversed__(self):
                 rudisha iter(list())
         self.assertEqual(list(reversed(R())), [])
-        self.assertFalse(issubclass(float, R))
+        self.assertUongo(issubclass(float, R))
         self.validate_abstract_methods(Reversible, '__reversed__', '__iter__')
-        # Check reversible non-iterable (which is not Reversible)
+        # Check reversible non-iterable (which ni sio Reversible)
         kundi RevNoIter:
             eleza __reversed__(self): rudisha reversed([])
         kundi RevPlusIter(RevNoIter):
             eleza __iter__(self): rudisha iter([])
-        self.assertFalse(issubclass(RevNoIter, Reversible))
-        self.assertFalse(isinstance(RevNoIter(), Reversible))
-        self.assertTrue(issubclass(RevPlusIter, Reversible))
-        self.assertTrue(isinstance(RevPlusIter(), Reversible))
-        # Check None blocking
+        self.assertUongo(issubclass(RevNoIter, Reversible))
+        self.assertUongo(isinstance(RevNoIter(), Reversible))
+        self.assertKweli(issubclass(RevPlusIter, Reversible))
+        self.assertKweli(isinstance(RevPlusIter(), Reversible))
+        # Check Tupu blocking
         kundi Rev:
             eleza __iter__(self): rudisha iter([])
             eleza __reversed__(self): rudisha reversed([])
         kundi RevItBlocked(Rev):
-            __iter__ = None
+            __iter__ = Tupu
         kundi RevRevBlocked(Rev):
-            __reversed__ = None
-        self.assertTrue(issubclass(Rev, Reversible))
-        self.assertTrue(isinstance(Rev(), Reversible))
-        self.assertFalse(issubclass(RevItBlocked, Reversible))
-        self.assertFalse(isinstance(RevItBlocked(), Reversible))
-        self.assertFalse(issubclass(RevRevBlocked, Reversible))
-        self.assertFalse(isinstance(RevRevBlocked(), Reversible))
+            __reversed__ = Tupu
+        self.assertKweli(issubclass(Rev, Reversible))
+        self.assertKweli(isinstance(Rev(), Reversible))
+        self.assertUongo(issubclass(RevItBlocked, Reversible))
+        self.assertUongo(isinstance(RevItBlocked(), Reversible))
+        self.assertUongo(issubclass(RevRevBlocked, Reversible))
+        self.assertUongo(isinstance(RevRevBlocked(), Reversible))
 
     eleza test_Collection(self):
         # Check some non-collections
-        non_collections = [None, 42, 3.14, 1j, lambda x: 2*x]
-        for x in non_collections:
+        non_collections = [Tupu, 42, 3.14, 1j, lambda x: 2*x]
+        kila x kwenye non_collections:
             self.assertNotIsInstance(x, Collection)
-            self.assertFalse(issubclass(type(x), Collection), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Collection), repr(type(x)))
         # Check some non-collection iterables
         non_col_iterables = [_test_gen(), iter(b''), iter(bytearray()),
-                             (x for x in [])]
-        for x in non_col_iterables:
+                             (x kila x kwenye [])]
+        kila x kwenye non_col_iterables:
             self.assertNotIsInstance(x, Collection)
-            self.assertFalse(issubclass(type(x), Collection), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Collection), repr(type(x)))
         # Check some collections
         samples = [set(), frozenset(), dict(), bytes(), str(), tuple(),
                    list(), dict().keys(), dict().items(), dict().values()]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Collection)
-            self.assertTrue(issubclass(type(x), Collection), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Collection), repr(type(x)))
         # Check also Mapping, MutableMapping, etc.
-        self.assertTrue(issubclass(Sequence, Collection), repr(Sequence))
-        self.assertTrue(issubclass(Mapping, Collection), repr(Mapping))
-        self.assertTrue(issubclass(MutableMapping, Collection),
+        self.assertKweli(issubclass(Sequence, Collection), repr(Sequence))
+        self.assertKweli(issubclass(Mapping, Collection), repr(Mapping))
+        self.assertKweli(issubclass(MutableMapping, Collection),
                                     repr(MutableMapping))
-        self.assertTrue(issubclass(Set, Collection), repr(Set))
-        self.assertTrue(issubclass(MutableSet, Collection), repr(MutableSet))
-        self.assertTrue(issubclass(Sequence, Collection), repr(MutableSet))
+        self.assertKweli(issubclass(Set, Collection), repr(Set))
+        self.assertKweli(issubclass(MutableSet, Collection), repr(MutableSet))
+        self.assertKweli(issubclass(Sequence, Collection), repr(MutableSet))
         # Check direct subclassing
         kundi Col(Collection):
             eleza __iter__(self):
@@ -974,140 +974,140 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             eleza __len__(self):
                 rudisha 0
             eleza __contains__(self, item):
-                rudisha False
-        kundi DerCol(Col): pass
+                rudisha Uongo
+        kundi DerCol(Col): pita
         self.assertEqual(list(iter(Col())), [])
-        self.assertFalse(issubclass(list, Col))
-        self.assertFalse(issubclass(set, Col))
-        self.assertFalse(issubclass(float, Col))
+        self.assertUongo(issubclass(list, Col))
+        self.assertUongo(issubclass(set, Col))
+        self.assertUongo(issubclass(float, Col))
         self.assertEqual(list(iter(DerCol())), [])
-        self.assertFalse(issubclass(list, DerCol))
-        self.assertFalse(issubclass(set, DerCol))
-        self.assertFalse(issubclass(float, DerCol))
+        self.assertUongo(issubclass(list, DerCol))
+        self.assertUongo(issubclass(set, DerCol))
+        self.assertUongo(issubclass(float, DerCol))
         self.validate_abstract_methods(Collection, '__len__', '__iter__',
                                                    '__contains__')
-        # Check sized container non-iterable (which is not Collection) etc.
+        # Check sized container non-iterable (which ni sio Collection) etc.
         kundi ColNoIter:
             eleza __len__(self): rudisha 0
-            eleza __contains__(self, item): rudisha False
+            eleza __contains__(self, item): rudisha Uongo
         kundi ColNoSize:
             eleza __iter__(self): rudisha iter([])
-            eleza __contains__(self, item): rudisha False
+            eleza __contains__(self, item): rudisha Uongo
         kundi ColNoCont:
             eleza __iter__(self): rudisha iter([])
             eleza __len__(self): rudisha 0
-        self.assertFalse(issubclass(ColNoIter, Collection))
-        self.assertFalse(isinstance(ColNoIter(), Collection))
-        self.assertFalse(issubclass(ColNoSize, Collection))
-        self.assertFalse(isinstance(ColNoSize(), Collection))
-        self.assertFalse(issubclass(ColNoCont, Collection))
-        self.assertFalse(isinstance(ColNoCont(), Collection))
-        # Check None blocking
+        self.assertUongo(issubclass(ColNoIter, Collection))
+        self.assertUongo(isinstance(ColNoIter(), Collection))
+        self.assertUongo(issubclass(ColNoSize, Collection))
+        self.assertUongo(isinstance(ColNoSize(), Collection))
+        self.assertUongo(issubclass(ColNoCont, Collection))
+        self.assertUongo(isinstance(ColNoCont(), Collection))
+        # Check Tupu blocking
         kundi SizeBlock:
             eleza __iter__(self): rudisha iter([])
-            eleza __contains__(self): rudisha False
-            __len__ = None
+            eleza __contains__(self): rudisha Uongo
+            __len__ = Tupu
         kundi IterBlock:
             eleza __len__(self): rudisha 0
-            eleza __contains__(self): rudisha True
-            __iter__ = None
-        self.assertFalse(issubclass(SizeBlock, Collection))
-        self.assertFalse(isinstance(SizeBlock(), Collection))
-        self.assertFalse(issubclass(IterBlock, Collection))
-        self.assertFalse(isinstance(IterBlock(), Collection))
-        # Check None blocking in subclass
+            eleza __contains__(self): rudisha Kweli
+            __iter__ = Tupu
+        self.assertUongo(issubclass(SizeBlock, Collection))
+        self.assertUongo(isinstance(SizeBlock(), Collection))
+        self.assertUongo(issubclass(IterBlock, Collection))
+        self.assertUongo(isinstance(IterBlock(), Collection))
+        # Check Tupu blocking kwenye subclass
         kundi ColImpl:
             eleza __iter__(self):
                 rudisha iter(list())
             eleza __len__(self):
                 rudisha 0
             eleza __contains__(self, item):
-                rudisha False
+                rudisha Uongo
         kundi NonCol(ColImpl):
-            __contains__ = None
-        self.assertFalse(issubclass(NonCol, Collection))
-        self.assertFalse(isinstance(NonCol(), Collection))
+            __contains__ = Tupu
+        self.assertUongo(issubclass(NonCol, Collection))
+        self.assertUongo(isinstance(NonCol(), Collection))
 
 
     eleza test_Iterator(self):
-        non_samples = [None, 42, 3.14, 1j, b"", "", (), [], {}, set()]
-        for x in non_samples:
+        non_samples = [Tupu, 42, 3.14, 1j, b"", "", (), [], {}, set()]
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Iterator)
-            self.assertFalse(issubclass(type(x), Iterator), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Iterator), repr(type(x)))
         samples = [iter(bytes()), iter(str()),
                    iter(tuple()), iter(list()), iter(dict()),
                    iter(set()), iter(frozenset()),
                    iter(dict().keys()), iter(dict().items()),
                    iter(dict().values()),
                    _test_gen(),
-                   (x for x in []),
+                   (x kila x kwenye []),
                    ]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Iterator)
-            self.assertTrue(issubclass(type(x), Iterator), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Iterator), repr(type(x)))
         self.validate_abstract_methods(Iterator, '__next__', '__iter__')
 
         # Issue 10565
         kundi NextOnly:
             eleza __next__(self):
-                yield 1
-                return
+                tuma 1
+                rudisha
         self.assertNotIsInstance(NextOnly(), Iterator)
 
     eleza test_Generator(self):
         kundi NonGen1:
             eleza __iter__(self): rudisha self
-            eleza __next__(self): rudisha None
-            eleza close(self): pass
-            eleza throw(self, typ, val=None, tb=None): pass
+            eleza __next__(self): rudisha Tupu
+            eleza close(self): pita
+            eleza throw(self, typ, val=Tupu, tb=Tupu): pita
 
         kundi NonGen2:
             eleza __iter__(self): rudisha self
-            eleza __next__(self): rudisha None
-            eleza close(self): pass
+            eleza __next__(self): rudisha Tupu
+            eleza close(self): pita
             eleza send(self, value): rudisha value
 
         kundi NonGen3:
-            eleza close(self): pass
+            eleza close(self): pita
             eleza send(self, value): rudisha value
-            eleza throw(self, typ, val=None, tb=None): pass
+            eleza throw(self, typ, val=Tupu, tb=Tupu): pita
 
         non_samples = [
-            None, 42, 3.14, 1j, b"", "", (), [], {}, set(),
+            Tupu, 42, 3.14, 1j, b"", "", (), [], {}, set(),
             iter(()), iter([]), NonGen1(), NonGen2(), NonGen3()]
-        for x in non_samples:
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Generator)
-            self.assertFalse(issubclass(type(x), Generator), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Generator), repr(type(x)))
 
         kundi Gen:
             eleza __iter__(self): rudisha self
-            eleza __next__(self): rudisha None
-            eleza close(self): pass
+            eleza __next__(self): rudisha Tupu
+            eleza close(self): pita
             eleza send(self, value): rudisha value
-            eleza throw(self, typ, val=None, tb=None): pass
+            eleza throw(self, typ, val=Tupu, tb=Tupu): pita
 
         kundi MinimalGen(Generator):
             eleza send(self, value):
                 rudisha value
-            eleza throw(self, typ, val=None, tb=None):
+            eleza throw(self, typ, val=Tupu, tb=Tupu):
                 super().throw(typ, val, tb)
 
         eleza gen():
-            yield 1
+            tuma 1
 
-        samples = [gen(), (lambda: (yield))(), Gen(), MinimalGen()]
-        for x in samples:
+        samples = [gen(), (lambda: (tuma))(), Gen(), MinimalGen()]
+        kila x kwenye samples:
             self.assertIsInstance(x, Iterator)
             self.assertIsInstance(x, Generator)
-            self.assertTrue(issubclass(type(x), Generator), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Generator), repr(type(x)))
         self.validate_abstract_methods(Generator, 'send', 'throw')
 
         # mixin tests
         mgen = MinimalGen()
         self.assertIs(mgen, iter(mgen))
-        self.assertIs(mgen.send(None), next(mgen))
+        self.assertIs(mgen.send(Tupu), next(mgen))
         self.assertEqual(2, mgen.send(2))
-        self.assertIsNone(mgen.close())
+        self.assertIsTupu(mgen.close())
         self.assertRaises(ValueError, mgen.throw, ValueError)
         self.assertRaisesRegex(ValueError, "^huhu$",
                                mgen.throw, ValueError, ValueError("huhu"))
@@ -1115,167 +1115,167 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
 
         kundi FailOnClose(Generator):
             eleza send(self, value): rudisha value
-            eleza throw(self, *args): raise ValueError
+            eleza throw(self, *args): ashiria ValueError
 
         self.assertRaises(ValueError, FailOnClose().close)
 
         kundi IgnoreGeneratorExit(Generator):
             eleza send(self, value): rudisha value
-            eleza throw(self, *args): pass
+            eleza throw(self, *args): pita
 
         self.assertRaises(RuntimeError, IgnoreGeneratorExit().close)
 
     eleza test_AsyncGenerator(self):
         kundi NonAGen1:
             eleza __aiter__(self): rudisha self
-            eleza __anext__(self): rudisha None
-            eleza aclose(self): pass
-            eleza athrow(self, typ, val=None, tb=None): pass
+            eleza __anext__(self): rudisha Tupu
+            eleza aclose(self): pita
+            eleza athrow(self, typ, val=Tupu, tb=Tupu): pita
 
         kundi NonAGen2:
             eleza __aiter__(self): rudisha self
-            eleza __anext__(self): rudisha None
-            eleza aclose(self): pass
+            eleza __anext__(self): rudisha Tupu
+            eleza aclose(self): pita
             eleza asend(self, value): rudisha value
 
         kundi NonAGen3:
-            eleza aclose(self): pass
+            eleza aclose(self): pita
             eleza asend(self, value): rudisha value
-            eleza athrow(self, typ, val=None, tb=None): pass
+            eleza athrow(self, typ, val=Tupu, tb=Tupu): pita
 
         non_samples = [
-            None, 42, 3.14, 1j, b"", "", (), [], {}, set(),
+            Tupu, 42, 3.14, 1j, b"", "", (), [], {}, set(),
             iter(()), iter([]), NonAGen1(), NonAGen2(), NonAGen3()]
-        for x in non_samples:
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, AsyncGenerator)
-            self.assertFalse(issubclass(type(x), AsyncGenerator), repr(type(x)))
+            self.assertUongo(issubclass(type(x), AsyncGenerator), repr(type(x)))
 
         kundi Gen:
             eleza __aiter__(self): rudisha self
-            async eleza __anext__(self): rudisha None
-            async eleza aclose(self): pass
+            async eleza __anext__(self): rudisha Tupu
+            async eleza aclose(self): pita
             async eleza asend(self, value): rudisha value
-            async eleza athrow(self, typ, val=None, tb=None): pass
+            async eleza athrow(self, typ, val=Tupu, tb=Tupu): pita
 
         kundi MinimalAGen(AsyncGenerator):
             async eleza asend(self, value):
                 rudisha value
-            async eleza athrow(self, typ, val=None, tb=None):
+            async eleza athrow(self, typ, val=Tupu, tb=Tupu):
                 await super().athrow(typ, val, tb)
 
         async eleza gen():
-            yield 1
+            tuma 1
 
         samples = [gen(), Gen(), MinimalAGen()]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, AsyncIterator)
             self.assertIsInstance(x, AsyncGenerator)
-            self.assertTrue(issubclass(type(x), AsyncGenerator), repr(type(x)))
+            self.assertKweli(issubclass(type(x), AsyncGenerator), repr(type(x)))
         self.validate_abstract_methods(AsyncGenerator, 'asend', 'athrow')
 
         eleza run_async(coro):
-            result = None
-            while True:
-                try:
-                    coro.send(None)
-                except StopIteration as ex:
-                    result = ex.args[0] ikiwa ex.args else None
-                    break
+            result = Tupu
+            wakati Kweli:
+                jaribu:
+                    coro.send(Tupu)
+                tatizo StopIteration kama ex:
+                    result = ex.args[0] ikiwa ex.args else Tupu
+                    koma
             rudisha result
 
         # mixin tests
         mgen = MinimalAGen()
         self.assertIs(mgen, mgen.__aiter__())
-        self.assertIs(run_async(mgen.asend(None)), run_async(mgen.__anext__()))
+        self.assertIs(run_async(mgen.asend(Tupu)), run_async(mgen.__anext__()))
         self.assertEqual(2, run_async(mgen.asend(2)))
-        self.assertIsNone(run_async(mgen.aclose()))
+        self.assertIsTupu(run_async(mgen.aclose()))
         with self.assertRaises(ValueError):
             run_async(mgen.athrow(ValueError))
 
         kundi FailOnClose(AsyncGenerator):
             async eleza asend(self, value): rudisha value
-            async eleza athrow(self, *args): raise ValueError
+            async eleza athrow(self, *args): ashiria ValueError
 
         with self.assertRaises(ValueError):
             run_async(FailOnClose().aclose())
 
         kundi IgnoreGeneratorExit(AsyncGenerator):
             async eleza asend(self, value): rudisha value
-            async eleza athrow(self, *args): pass
+            async eleza athrow(self, *args): pita
 
         with self.assertRaises(RuntimeError):
             run_async(IgnoreGeneratorExit().aclose())
 
     eleza test_Sized(self):
-        non_samples = [None, 42, 3.14, 1j,
+        non_samples = [Tupu, 42, 3.14, 1j,
                        _test_gen(),
-                       (x for x in []),
+                       (x kila x kwenye []),
                        ]
-        for x in non_samples:
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Sized)
-            self.assertFalse(issubclass(type(x), Sized), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Sized), repr(type(x)))
         samples = [bytes(), str(),
                    tuple(), list(), set(), frozenset(), dict(),
                    dict().keys(), dict().items(), dict().values(),
                    ]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Sized)
-            self.assertTrue(issubclass(type(x), Sized), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Sized), repr(type(x)))
         self.validate_abstract_methods(Sized, '__len__')
         self.validate_isinstance(Sized, '__len__')
 
     eleza test_Container(self):
-        non_samples = [None, 42, 3.14, 1j,
+        non_samples = [Tupu, 42, 3.14, 1j,
                        _test_gen(),
-                       (x for x in []),
+                       (x kila x kwenye []),
                        ]
-        for x in non_samples:
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Container)
-            self.assertFalse(issubclass(type(x), Container), repr(type(x)))
+            self.assertUongo(issubclass(type(x), Container), repr(type(x)))
         samples = [bytes(), str(),
                    tuple(), list(), set(), frozenset(), dict(),
                    dict().keys(), dict().items(),
                    ]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Container)
-            self.assertTrue(issubclass(type(x), Container), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Container), repr(type(x)))
         self.validate_abstract_methods(Container, '__contains__')
         self.validate_isinstance(Container, '__contains__')
 
     eleza test_Callable(self):
-        non_samples = [None, 42, 3.14, 1j,
+        non_samples = [Tupu, 42, 3.14, 1j,
                        "", b"", (), [], {}, set(),
                        _test_gen(),
-                       (x for x in []),
+                       (x kila x kwenye []),
                        ]
-        for x in non_samples:
+        kila x kwenye non_samples:
             self.assertNotIsInstance(x, Callable)
-            self.assertFalse(issubclass(type(x), Callable), repr(type(x)))
-        samples = [lambda: None,
+            self.assertUongo(issubclass(type(x), Callable), repr(type(x)))
+        samples = [lambda: Tupu,
                    type, int, object,
                    len,
                    list.append, [].append,
                    ]
-        for x in samples:
+        kila x kwenye samples:
             self.assertIsInstance(x, Callable)
-            self.assertTrue(issubclass(type(x), Callable), repr(type(x)))
+            self.assertKweli(issubclass(type(x), Callable), repr(type(x)))
         self.validate_abstract_methods(Callable, '__call__')
         self.validate_isinstance(Callable, '__call__')
 
     eleza test_direct_subclassing(self):
-        for B in Hashable, Iterable, Iterator, Reversible, Sized, Container, Callable:
+        kila B kwenye Hashable, Iterable, Iterator, Reversible, Sized, Container, Callable:
             kundi C(B):
-                pass
-            self.assertTrue(issubclass(C, B))
-            self.assertFalse(issubclass(int, C))
+                pita
+            self.assertKweli(issubclass(C, B))
+            self.assertUongo(issubclass(int, C))
 
     eleza test_registration(self):
-        for B in Hashable, Iterable, Iterator, Reversible, Sized, Container, Callable:
+        kila B kwenye Hashable, Iterable, Iterator, Reversible, Sized, Container, Callable:
             kundi C:
-                __hash__ = None  # Make sure it isn't hashable by default
-            self.assertFalse(issubclass(C, B), B.__name__)
+                __hash__ = Tupu  # Make sure it isn't hashable by default
+            self.assertUongo(issubclass(C, B), B.__name__)
             B.register(C)
-            self.assertTrue(issubclass(C, B))
+            self.assertKweli(issubclass(C, B))
 
 kundi WithSet(MutableSet):
 
@@ -1289,7 +1289,7 @@ kundi WithSet(MutableSet):
         rudisha iter(self.data)
 
     eleza __contains__(self, item):
-        rudisha item in self.data
+        rudisha item kwenye self.data
 
     eleza add(self, item):
         self.data.add(item)
@@ -1301,16 +1301,16 @@ kundi TestCollectionABCs(ABCTestCase):
 
     # XXX For now, we only test some virtual inheritance properties.
     # We should also test the proper behavior of the collection ABCs
-    # as real base classes or mix-in classes.
+    # kama real base classes ama mix-in classes.
 
     eleza test_Set(self):
-        for sample in [set, frozenset]:
+        kila sample kwenye [set, frozenset]:
             self.assertIsInstance(sample(), Set)
-            self.assertTrue(issubclass(sample, Set))
+            self.assertKweli(issubclass(sample, Set))
         self.validate_abstract_methods(Set, '__contains__', '__iter__', '__len__')
         kundi MySet(Set):
             eleza __contains__(self, x):
-                rudisha False
+                rudisha Uongo
             eleza __len__(self):
                 rudisha 0
             eleza __iter__(self):
@@ -1322,7 +1322,7 @@ kundi TestCollectionABCs(ABCTestCase):
             eleza __init__(self):
                 self.contents = [1, 2, 3]
             eleza __contains__(self, x):
-                rudisha x in self.contents
+                rudisha x kwenye self.contents
             eleza __len__(self):
                 rudisha len(self.contents)
             eleza __iter__(self):
@@ -1330,43 +1330,43 @@ kundi TestCollectionABCs(ABCTestCase):
             eleza __hash__(self):
                 rudisha self._hash()
         a, b = OneTwoThreeSet(), OneTwoThreeSet()
-        self.assertTrue(hash(a) == hash(b))
+        self.assertKweli(hash(a) == hash(b))
 
     eleza test_isdisjoint_Set(self):
         kundi MySet(Set):
             eleza __init__(self, itr):
                 self.contents = itr
             eleza __contains__(self, x):
-                rudisha x in self.contents
+                rudisha x kwenye self.contents
             eleza __iter__(self):
                 rudisha iter(self.contents)
             eleza __len__(self):
-                rudisha len([x for x in self.contents])
+                rudisha len([x kila x kwenye self.contents])
         s1 = MySet((1, 2, 3))
         s2 = MySet((4, 5, 6))
         s3 = MySet((1, 5, 6))
-        self.assertTrue(s1.isdisjoint(s2))
-        self.assertFalse(s1.isdisjoint(s3))
+        self.assertKweli(s1.isdisjoint(s2))
+        self.assertUongo(s1.isdisjoint(s3))
 
     eleza test_equality_Set(self):
         kundi MySet(Set):
             eleza __init__(self, itr):
                 self.contents = itr
             eleza __contains__(self, x):
-                rudisha x in self.contents
+                rudisha x kwenye self.contents
             eleza __iter__(self):
                 rudisha iter(self.contents)
             eleza __len__(self):
-                rudisha len([x for x in self.contents])
+                rudisha len([x kila x kwenye self.contents])
         s1 = MySet((1,))
         s2 = MySet((1, 2))
         s3 = MySet((3, 4))
         s4 = MySet((3, 4))
-        self.assertTrue(s2 > s1)
-        self.assertTrue(s1 < s2)
-        self.assertFalse(s2 <= s1)
-        self.assertFalse(s2 <= s3)
-        self.assertFalse(s1 >= s2)
+        self.assertKweli(s2 > s1)
+        self.assertKweli(s1 < s2)
+        self.assertUongo(s2 <= s1)
+        self.assertUongo(s2 <= s3)
+        self.assertUongo(s1 >= s2)
         self.assertEqual(s3, s4)
         self.assertNotEqual(s2, s3)
 
@@ -1375,11 +1375,11 @@ kundi TestCollectionABCs(ABCTestCase):
             eleza __init__(self, itr):
                 self.contents = itr
             eleza __contains__(self, x):
-                rudisha x in self.contents
+                rudisha x kwenye self.contents
             eleza __iter__(self):
                 rudisha iter(self.contents)
             eleza __len__(self):
-                rudisha len([x for x in self.contents])
+                rudisha len([x kila x kwenye self.contents])
         s1 = MySet((1, 2, 3))
         s2 = MySet((3, 4, 5))
         s3 = s1 & s2
@@ -1387,9 +1387,9 @@ kundi TestCollectionABCs(ABCTestCase):
 
     eleza test_MutableSet(self):
         self.assertIsInstance(set(), MutableSet)
-        self.assertTrue(issubclass(set, MutableSet))
+        self.assertKweli(issubclass(set, MutableSet))
         self.assertNotIsInstance(frozenset(), MutableSet)
-        self.assertFalse(issubclass(frozenset, MutableSet))
+        self.assertUongo(issubclass(frozenset, MutableSet))
         self.validate_abstract_methods(MutableSet, '__contains__', '__iter__', '__len__',
             'add', 'discard')
 
@@ -1400,25 +1400,25 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertEqual(set(s), set('cd'))
 
     eleza test_issue_4920(self):
-        # MutableSet.pop() method did not work
+        # MutableSet.pop() method did sio work
         kundi MySet(MutableSet):
             __slots__=['__s']
-            eleza __init__(self,items=None):
-                ikiwa items is None:
+            eleza __init__(self,items=Tupu):
+                ikiwa items ni Tupu:
                     items=[]
                 self.__s=set(items)
             eleza __contains__(self,v):
-                rudisha v in self.__s
+                rudisha v kwenye self.__s
             eleza __iter__(self):
                 rudisha iter(self.__s)
             eleza __len__(self):
                 rudisha len(self.__s)
             eleza add(self,v):
-                result=v not in self.__s
+                result=v haiko kwenye self.__s
                 self.__s.add(v)
                 rudisha result
             eleza discard(self,v):
-                result=v in self.__s
+                result=v kwenye self.__s
                 self.__s.discard(v)
                 rudisha result
             eleza __repr__(self):
@@ -1442,18 +1442,18 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertEqual(s, full)
 
     eleza test_issue16373(self):
-        # Recursion error comparing comparable and noncomparable
+        # Recursion error comparing comparable na noncomparable
         # Set instances
         kundi MyComparableSet(Set):
             eleza __contains__(self, x):
-                rudisha False
+                rudisha Uongo
             eleza __len__(self):
                 rudisha 0
             eleza __iter__(self):
                 rudisha iter([])
         kundi MyNonComparableSet(Set):
             eleza __contains__(self, x):
-                rudisha False
+                rudisha Uongo
             eleza __len__(self):
                 rudisha 0
             eleza __iter__(self):
@@ -1465,16 +1465,16 @@ kundi TestCollectionABCs(ABCTestCase):
 
         cs = MyComparableSet()
         ncs = MyNonComparableSet()
-        self.assertFalse(ncs < cs)
-        self.assertTrue(ncs <= cs)
-        self.assertFalse(ncs > cs)
-        self.assertTrue(ncs >= cs)
+        self.assertUongo(ncs < cs)
+        self.assertKweli(ncs <= cs)
+        self.assertUongo(ncs > cs)
+        self.assertKweli(ncs >= cs)
 
     eleza test_issue26915(self):
         # Container membership test should check identity first
         kundi CustomEqualObject:
             eleza __eq__(self, other):
-                rudisha False
+                rudisha Uongo
         kundi CustomSequence(Sequence):
             eleza __init__(self, seq):
                 self._seq = seq
@@ -1491,8 +1491,8 @@ kundi TestCollectionABCs(ABCTestCase):
             ItemsView({1: nan, 2: obj}),
             ValuesView({1: nan, 2: obj})
         ]
-        for container in containers:
-            for elem in container:
+        kila container kwenye containers:
+            kila elem kwenye container:
                 self.assertIn(elem, container)
         self.assertEqual(seq.index(nan), 0)
         self.assertEqual(seq.index(obj), 1)
@@ -1508,11 +1508,11 @@ kundi TestCollectionABCs(ABCTestCase):
         kundi ListSet(Set):
             eleza __init__(self, elements=()):
                 self.data = []
-                for elem in elements:
-                    ikiwa elem not in self.data:
+                kila elem kwenye elements:
+                    ikiwa elem haiko kwenye self.data:
                         self.data.append(elem)
             eleza __contains__(self, elem):
-                rudisha elem in self.data
+                rudisha elem kwenye self.data
             eleza __iter__(self):
                 rudisha iter(self.data)
             eleza __len__(self):
@@ -1559,22 +1559,22 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertSameSet(r2 ^ f1, target)
         self.assertSameSet(f1 ^ l2, target)
 
-        # Don't change the following to use assertLess or other
+        # Don't change the following to use assertLess ama other
         # "more specific" unittest assertions.  The current
-        # assertTrue/assertFalse style makes the pattern of test
-        # case combinations clear and allows us to know for sure
+        # assertKweli/assertUongo style makes the pattern of test
+        # case combinations clear na allows us to know kila sure
         # the exact operator being invoked.
 
         # proper subset
-        self.assertTrue(f1 < f3)
-        self.assertFalse(f1 < f1)
-        self.assertFalse(f1 < f2)
-        self.assertTrue(r1 < f3)
-        self.assertFalse(r1 < f1)
-        self.assertFalse(r1 < f2)
-        self.assertTrue(r1 < r3)
-        self.assertFalse(r1 < r1)
-        self.assertFalse(r1 < r2)
+        self.assertKweli(f1 < f3)
+        self.assertUongo(f1 < f1)
+        self.assertUongo(f1 < f2)
+        self.assertKweli(r1 < f3)
+        self.assertUongo(r1 < f1)
+        self.assertUongo(r1 < f2)
+        self.assertKweli(r1 < r3)
+        self.assertUongo(r1 < r1)
+        self.assertUongo(r1 < r2)
         with self.assertRaises(TypeError):
             f1 < l3
         with self.assertRaises(TypeError):
@@ -1583,15 +1583,15 @@ kundi TestCollectionABCs(ABCTestCase):
             f1 < l2
 
         # any subset
-        self.assertTrue(f1 <= f3)
-        self.assertTrue(f1 <= f1)
-        self.assertFalse(f1 <= f2)
-        self.assertTrue(r1 <= f3)
-        self.assertTrue(r1 <= f1)
-        self.assertFalse(r1 <= f2)
-        self.assertTrue(r1 <= r3)
-        self.assertTrue(r1 <= r1)
-        self.assertFalse(r1 <= r2)
+        self.assertKweli(f1 <= f3)
+        self.assertKweli(f1 <= f1)
+        self.assertUongo(f1 <= f2)
+        self.assertKweli(r1 <= f3)
+        self.assertKweli(r1 <= f1)
+        self.assertUongo(r1 <= f2)
+        self.assertKweli(r1 <= r3)
+        self.assertKweli(r1 <= r1)
+        self.assertUongo(r1 <= r2)
         with self.assertRaises(TypeError):
             f1 <= l3
         with self.assertRaises(TypeError):
@@ -1600,15 +1600,15 @@ kundi TestCollectionABCs(ABCTestCase):
             f1 <= l2
 
         # proper superset
-        self.assertTrue(f3 > f1)
-        self.assertFalse(f1 > f1)
-        self.assertFalse(f2 > f1)
-        self.assertTrue(r3 > r1)
-        self.assertFalse(f1 > r1)
-        self.assertFalse(f2 > r1)
-        self.assertTrue(r3 > r1)
-        self.assertFalse(r1 > r1)
-        self.assertFalse(r2 > r1)
+        self.assertKweli(f3 > f1)
+        self.assertUongo(f1 > f1)
+        self.assertUongo(f2 > f1)
+        self.assertKweli(r3 > r1)
+        self.assertUongo(f1 > r1)
+        self.assertUongo(f2 > r1)
+        self.assertKweli(r3 > r1)
+        self.assertUongo(r1 > r1)
+        self.assertUongo(r2 > r1)
         with self.assertRaises(TypeError):
             f1 > l3
         with self.assertRaises(TypeError):
@@ -1617,15 +1617,15 @@ kundi TestCollectionABCs(ABCTestCase):
             f1 > l2
 
         # any superset
-        self.assertTrue(f3 >= f1)
-        self.assertTrue(f1 >= f1)
-        self.assertFalse(f2 >= f1)
-        self.assertTrue(r3 >= r1)
-        self.assertTrue(f1 >= r1)
-        self.assertFalse(f2 >= r1)
-        self.assertTrue(r3 >= r1)
-        self.assertTrue(r1 >= r1)
-        self.assertFalse(r2 >= r1)
+        self.assertKweli(f3 >= f1)
+        self.assertKweli(f1 >= f1)
+        self.assertUongo(f2 >= f1)
+        self.assertKweli(r3 >= r1)
+        self.assertKweli(f1 >= r1)
+        self.assertUongo(f2 >= r1)
+        self.assertKweli(r3 >= r1)
+        self.assertKweli(r1 >= r1)
+        self.assertUongo(r2 >= r1)
         with self.assertRaises(TypeError):
             f1 >= l3
         with self.assertRaises(TypeError):
@@ -1634,47 +1634,47 @@ kundi TestCollectionABCs(ABCTestCase):
             f1 >= l2
 
         # equality
-        self.assertTrue(f1 == f1)
-        self.assertTrue(r1 == f1)
-        self.assertTrue(f1 == r1)
-        self.assertFalse(f1 == f3)
-        self.assertFalse(r1 == f3)
-        self.assertFalse(f1 == r3)
-        self.assertFalse(f1 == l3)
-        self.assertFalse(f1 == l1)
-        self.assertFalse(f1 == l2)
+        self.assertKweli(f1 == f1)
+        self.assertKweli(r1 == f1)
+        self.assertKweli(f1 == r1)
+        self.assertUongo(f1 == f3)
+        self.assertUongo(r1 == f3)
+        self.assertUongo(f1 == r3)
+        self.assertUongo(f1 == l3)
+        self.assertUongo(f1 == l1)
+        self.assertUongo(f1 == l2)
 
         # inequality
-        self.assertFalse(f1 != f1)
-        self.assertFalse(r1 != f1)
-        self.assertFalse(f1 != r1)
-        self.assertTrue(f1 != f3)
-        self.assertTrue(r1 != f3)
-        self.assertTrue(f1 != r3)
-        self.assertTrue(f1 != l3)
-        self.assertTrue(f1 != l1)
-        self.assertTrue(f1 != l2)
+        self.assertUongo(f1 != f1)
+        self.assertUongo(r1 != f1)
+        self.assertUongo(f1 != r1)
+        self.assertKweli(f1 != f3)
+        self.assertKweli(r1 != f3)
+        self.assertKweli(f1 != r3)
+        self.assertKweli(f1 != l3)
+        self.assertKweli(f1 != l1)
+        self.assertKweli(f1 != l2)
 
     eleza test_Mapping(self):
-        for sample in [dict]:
+        kila sample kwenye [dict]:
             self.assertIsInstance(sample(), Mapping)
-            self.assertTrue(issubclass(sample, Mapping))
+            self.assertKweli(issubclass(sample, Mapping))
         self.validate_abstract_methods(Mapping, '__contains__', '__iter__', '__len__',
             '__getitem__')
         kundi MyMapping(Mapping):
             eleza __len__(self):
                 rudisha 0
             eleza __getitem__(self, i):
-                raise IndexError
+                ashiria IndexError
             eleza __iter__(self):
                 rudisha iter(())
         self.validate_comparison(MyMapping())
         self.assertRaises(TypeError, reversed, MyMapping())
 
     eleza test_MutableMapping(self):
-        for sample in [dict]:
+        kila sample kwenye [dict]:
             self.assertIsInstance(sample(), MutableMapping)
-            self.assertTrue(issubclass(sample, MutableMapping))
+            self.assertKweli(issubclass(sample, MutableMapping))
         self.validate_abstract_methods(MutableMapping, '__contains__', '__iter__', '__len__',
             '__getitem__', '__setitem__', '__delitem__')
 
@@ -1704,14 +1704,14 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertEqual(z, {('orange', 3), ('red', 5)})
 
     eleza test_Sequence(self):
-        for sample in [tuple, list, bytes, str]:
+        kila sample kwenye [tuple, list, bytes, str]:
             self.assertIsInstance(sample(), Sequence)
-            self.assertTrue(issubclass(sample, Sequence))
+            self.assertKweli(issubclass(sample, Sequence))
         self.assertIsInstance(range(10), Sequence)
-        self.assertTrue(issubclass(range, Sequence))
+        self.assertKweli(issubclass(range, Sequence))
         self.assertIsInstance(memoryview(b""), Sequence)
-        self.assertTrue(issubclass(memoryview, Sequence))
-        self.assertTrue(issubclass(str, Sequence))
+        self.assertKweli(issubclass(memoryview, Sequence))
+        self.assertKweli(issubclass(str, Sequence))
         self.validate_abstract_methods(Sequence, '__contains__', '__iter__', '__len__',
             '__getitem__')
 
@@ -1728,46 +1728,46 @@ kundi TestCollectionABCs(ABCTestCase):
 
         # Compare Sequence.index() behavior to (list|str).index() behavior
         eleza assert_index_same(seq1, seq2, index_args):
-            try:
+            jaribu:
                 expected = seq1.index(*index_args)
-            except ValueError:
+            tatizo ValueError:
                 with self.assertRaises(ValueError):
                     seq2.index(*index_args)
-            else:
+            isipokua:
                 actual = seq2.index(*index_args)
                 self.assertEqual(
                     actual, expected, '%r.index%s' % (seq1, index_args))
 
-        for ty in list, str:
+        kila ty kwenye list, str:
             nativeseq = ty('abracadabra')
             indexes = [-10000, -9999] + list(range(-3, len(nativeseq) + 3))
             seqseq = SequenceSubclass(nativeseq)
-            for letter in set(nativeseq) | {'z'}:
+            kila letter kwenye set(nativeseq) | {'z'}:
                 assert_index_same(nativeseq, seqseq, (letter,))
-                for start in range(-3, len(nativeseq) + 3):
+                kila start kwenye range(-3, len(nativeseq) + 3):
                     assert_index_same(nativeseq, seqseq, (letter, start))
-                    for stop in range(-3, len(nativeseq) + 3):
+                    kila stop kwenye range(-3, len(nativeseq) + 3):
                         assert_index_same(
                             nativeseq, seqseq, (letter, start, stop))
 
     eleza test_ByteString(self):
-        for sample in [bytes, bytearray]:
+        kila sample kwenye [bytes, bytearray]:
             self.assertIsInstance(sample(), ByteString)
-            self.assertTrue(issubclass(sample, ByteString))
-        for sample in [str, list, tuple]:
+            self.assertKweli(issubclass(sample, ByteString))
+        kila sample kwenye [str, list, tuple]:
             self.assertNotIsInstance(sample(), ByteString)
-            self.assertFalse(issubclass(sample, ByteString))
+            self.assertUongo(issubclass(sample, ByteString))
         self.assertNotIsInstance(memoryview(b""), ByteString)
-        self.assertFalse(issubclass(memoryview, ByteString))
+        self.assertUongo(issubclass(memoryview, ByteString))
 
     eleza test_MutableSequence(self):
-        for sample in [tuple, str, bytes]:
+        kila sample kwenye [tuple, str, bytes]:
             self.assertNotIsInstance(sample(), MutableSequence)
-            self.assertFalse(issubclass(sample, MutableSequence))
-        for sample in [list, bytearray, deque]:
+            self.assertUongo(issubclass(sample, MutableSequence))
+        kila sample kwenye [list, bytearray, deque]:
             self.assertIsInstance(sample(), MutableSequence)
-            self.assertTrue(issubclass(sample, MutableSequence))
-        self.assertFalse(issubclass(str, MutableSequence))
+            self.assertKweli(issubclass(sample, MutableSequence))
+        self.assertUongo(issubclass(str, MutableSequence))
         self.validate_abstract_methods(MutableSequence, '__contains__', '__iter__',
             '__len__', '__getitem__', '__setitem__', '__delitem__', 'insert')
 
@@ -1788,7 +1788,7 @@ kundi TestCollectionABCs(ABCTestCase):
                 rudisha len(self.lst)
 
             eleza __delitem__(self, index):
-                del self.lst[index]
+                toa self.lst[index]
 
             eleza insert(self, index, value):
                 self.lst.insert(index, value)
@@ -1811,7 +1811,7 @@ kundi TestCollectionABCs(ABCTestCase):
         self.assertEqual(len(mss), 0)
 
         # issue 34427
-        # extending self should not cause infinite loop
+        # extending self should sio cause infinite loop
         items = 'ABCD'
         mss2 = MutableSequenceSubclass()
         mss2.extend(items + items)
@@ -1829,19 +1829,19 @@ kundi TestCollectionABCs(ABCTestCase):
 kundi CounterSubclassWithSetItem(Counter):
     # Test a counter subkundi that overrides __setitem__
     eleza __init__(self, *args, **kwds):
-        self.called = False
+        self.called = Uongo
         Counter.__init__(self, *args, **kwds)
     eleza __setitem__(self, key, value):
-        self.called = True
+        self.called = Kweli
         Counter.__setitem__(self, key, value)
 
 kundi CounterSubclassWithGet(Counter):
     # Test a counter subkundi that overrides get()
     eleza __init__(self, *args, **kwds):
-        self.called = False
+        self.called = Uongo
         Counter.__init__(self, *args, **kwds)
     eleza get(self, key, default):
-        self.called = True
+        self.called = Kweli
         rudisha Counter.get(self, key, default)
 
 kundi TestCounter(unittest.TestCase):
@@ -1852,8 +1852,8 @@ kundi TestCounter(unittest.TestCase):
         self.assertEqual(c, Counter(a=3, b=2, c=1))
         self.assertIsInstance(c, dict)
         self.assertIsInstance(c, Mapping)
-        self.assertTrue(issubclass(Counter, dict))
-        self.assertTrue(issubclass(Counter, Mapping))
+        self.assertKweli(issubclass(Counter, dict))
+        self.assertKweli(issubclass(Counter, Mapping))
         self.assertEqual(len(c), 3)
         self.assertEqual(sum(c.values()), 6)
         self.assertEqual(list(c.values()), [3, 2, 1])
@@ -1863,21 +1863,21 @@ kundi TestCounter(unittest.TestCase):
                          [('a', 3), ('b', 2), ('c', 1)])
         self.assertEqual(c['b'], 2)
         self.assertEqual(c['z'], 0)
-        self.assertEqual(c.__contains__('c'), True)
-        self.assertEqual(c.__contains__('z'), False)
+        self.assertEqual(c.__contains__('c'), Kweli)
+        self.assertEqual(c.__contains__('z'), Uongo)
         self.assertEqual(c.get('b', 10), 2)
         self.assertEqual(c.get('z', 10), 10)
         self.assertEqual(c, dict(a=3, b=2, c=1))
         self.assertEqual(repr(c), "Counter({'a': 3, 'b': 2, 'c': 1})")
         self.assertEqual(c.most_common(), [('a', 3), ('b', 2), ('c', 1)])
-        for i in range(5):
+        kila i kwenye range(5):
             self.assertEqual(c.most_common(i),
                              [('a', 3), ('b', 2), ('c', 1)][:i])
         self.assertEqual(''.join(c.elements()), 'aaabbc')
         c['a'] += 1         # increment an existing value
         c['b'] -= 2         # sub existing value to zero
-        del c['c']          # remove an entry
-        del c['c']          # make sure that del doesn't raise KeyError
+        toa c['c']          # remove an entry
+        toa c['c']          # make sure that toa doesn't ashiria KeyError
         c['d'] -= 2         # sub kutoka a missing value
         c['e'] = -5         # directly assign a missing value
         c['f'] += 4         # add to a missing value
@@ -1885,7 +1885,7 @@ kundi TestCounter(unittest.TestCase):
         self.assertEqual(''.join(c.elements()), 'aaaaffff')
         self.assertEqual(c.pop('f'), 4)
         self.assertNotIn('f', c)
-        for i in range(3):
+        kila i kwenye range(3):
             elem, cnt = c.popitem()
             self.assertNotIn(elem, c)
         c.clear()
@@ -1909,7 +1909,7 @@ kundi TestCounter(unittest.TestCase):
     eleza test_init(self):
         self.assertEqual(list(Counter(self=42).items()), [('self', 42)])
         self.assertEqual(list(Counter(iterable=42).items()), [('iterable', 42)])
-        self.assertEqual(list(Counter(iterable=None).items()), [('iterable', None)])
+        self.assertEqual(list(Counter(iterable=Tupu).items()), [('iterable', Tupu)])
         self.assertRaises(TypeError, Counter, 42)
         self.assertRaises(TypeError, Counter, (), ())
         self.assertRaises(TypeError, Counter.__init__)
@@ -1929,47 +1929,47 @@ kundi TestCounter(unittest.TestCase):
                 ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b', 'b','r',
                  'r', 'c', 'd', ' ', 's', 's', 'i', 'i', 'm', 'm', 'l'])
 
-        # Math operations order first by the order encountered in the left
-        # operand and then by the order encountered in the right operand.
+        # Math operations order first by the order encountered kwenye the left
+        # operand na then by the order encountered kwenye the right operand.
         ps = 'aaabbcdddeefggghhijjjkkl'
         qs = 'abbcccdeefffhkkllllmmnno'
-        order = {letter: i for i, letter in enumerate(dict.kutokakeys(ps + qs))}
+        order = {letter: i kila i, letter kwenye enumerate(dict.kutokakeys(ps + qs))}
         eleza correctly_ordered(seq):
-            'Return true ikiwa the letters occur in the expected order'
-            positions = [order[letter] for letter in seq]
+            'Return true ikiwa the letters occur kwenye the expected order'
+            positions = [order[letter] kila letter kwenye seq]
             rudisha positions == sorted(positions)
 
         p, q = Counter(ps), Counter(qs)
-        self.assertTrue(correctly_ordered(+p))
-        self.assertTrue(correctly_ordered(-p))
-        self.assertTrue(correctly_ordered(p + q))
-        self.assertTrue(correctly_ordered(p - q))
-        self.assertTrue(correctly_ordered(p | q))
-        self.assertTrue(correctly_ordered(p & q))
+        self.assertKweli(correctly_ordered(+p))
+        self.assertKweli(correctly_ordered(-p))
+        self.assertKweli(correctly_ordered(p + q))
+        self.assertKweli(correctly_ordered(p - q))
+        self.assertKweli(correctly_ordered(p | q))
+        self.assertKweli(correctly_ordered(p & q))
 
         p, q = Counter(ps), Counter(qs)
         p += q
-        self.assertTrue(correctly_ordered(p))
+        self.assertKweli(correctly_ordered(p))
 
         p, q = Counter(ps), Counter(qs)
         p -= q
-        self.assertTrue(correctly_ordered(p))
+        self.assertKweli(correctly_ordered(p))
 
         p, q = Counter(ps), Counter(qs)
         p |= q
-        self.assertTrue(correctly_ordered(p))
+        self.assertKweli(correctly_ordered(p))
 
         p, q = Counter(ps), Counter(qs)
         p &= q
-        self.assertTrue(correctly_ordered(p))
+        self.assertKweli(correctly_ordered(p))
 
         p, q = Counter(ps), Counter(qs)
         p.update(q)
-        self.assertTrue(correctly_ordered(p))
+        self.assertKweli(correctly_ordered(p))
 
         p, q = Counter(ps), Counter(qs)
         p.subtract(q)
-        self.assertTrue(correctly_ordered(p))
+        self.assertKweli(correctly_ordered(p))
 
     eleza test_update(self):
         c = Counter()
@@ -1979,8 +1979,8 @@ kundi TestCounter(unittest.TestCase):
         c.update(iterable=42)
         self.assertEqual(list(c.items()), [('iterable', 42)])
         c = Counter()
-        c.update(iterable=None)
-        self.assertEqual(list(c.items()), [('iterable', None)])
+        c.update(iterable=Tupu)
+        self.assertEqual(list(c.items()), [('iterable', Tupu)])
         self.assertRaises(TypeError, Counter().update, 42)
         self.assertRaises(TypeError, Counter().update, {}, {})
         self.assertRaises(TypeError, Counter.update)
@@ -1996,7 +1996,7 @@ kundi TestCounter(unittest.TestCase):
         check(words.copy())
         check(copy.copy(words))
         check(copy.deepcopy(words))
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 check(pickle.loads(pickle.dumps(words, proto)))
         check(eval(repr(words)))
@@ -2007,7 +2007,7 @@ kundi TestCounter(unittest.TestCase):
 
     eleza test_copy_subclass(self):
         kundi MyCounter(Counter):
-            pass
+            pita
         c = MyCounter('slartibartfast')
         d = c.copy()
         self.assertEqual(d, c)
@@ -2024,41 +2024,41 @@ kundi TestCounter(unittest.TestCase):
 
     eleza test_invariant_for_the_in_operator(self):
         c = Counter(a=10, b=-2, c=0)
-        for elem in c:
-            self.assertTrue(elem in c)
+        kila elem kwenye c:
+            self.assertKweli(elem kwenye c)
             self.assertIn(elem, c)
 
     eleza test_multiset_operations(self):
-        # Verify that adding a zero counter will strip zeros and negatives
+        # Verify that adding a zero counter will strip zeros na negatives
         c = Counter(a=10, b=-2, c=0) + Counter()
         self.assertEqual(dict(c), dict(a=10))
 
         elements = 'abcd'
-        for i in range(1000):
+        kila i kwenye range(1000):
             # test random pairs of multisets
-            p = Counter(dict((elem, randrange(-2,4)) for elem in elements))
+            p = Counter(dict((elem, randrange(-2,4)) kila elem kwenye elements))
             p.update(e=1, f=-1, g=0)
-            q = Counter(dict((elem, randrange(-2,4)) for elem in elements))
+            q = Counter(dict((elem, randrange(-2,4)) kila elem kwenye elements))
             q.update(h=1, i=-1, j=0)
-            for counterop, numberop in [
+            kila counterop, numberop kwenye [
                 (Counter.__add__, lambda x, y: max(0, x+y)),
                 (Counter.__sub__, lambda x, y: max(0, x-y)),
                 (Counter.__or__, lambda x, y: max(0,x,y)),
                 (Counter.__and__, lambda x, y: max(0, min(x,y))),
             ]:
                 result = counterop(p, q)
-                for x in elements:
+                kila x kwenye elements:
                     self.assertEqual(numberop(p[x], q[x]), result[x],
                                      (counterop, x, p, q))
                 # verify that results exclude non-positive counts
-                self.assertTrue(x>0 for x in result.values())
+                self.assertKweli(x>0 kila x kwenye result.values())
 
         elements = 'abcdef'
-        for i in range(100):
+        kila i kwenye range(100):
             # verify that random multisets with no repeats are exactly like sets
-            p = Counter(dict((elem, randrange(0, 2)) for elem in elements))
-            q = Counter(dict((elem, randrange(0, 2)) for elem in elements))
-            for counterop, setop in [
+            p = Counter(dict((elem, randrange(0, 2)) kila elem kwenye elements))
+            q = Counter(dict((elem, randrange(0, 2)) kila elem kwenye elements))
+            kila counterop, setop kwenye [
                 (Counter.__sub__, set.__sub__),
                 (Counter.__or__, set.__or__),
                 (Counter.__and__, set.__and__),
@@ -2069,13 +2069,13 @@ kundi TestCounter(unittest.TestCase):
 
     eleza test_inplace_operations(self):
         elements = 'abcd'
-        for i in range(1000):
+        kila i kwenye range(1000):
             # test random pairs of multisets
-            p = Counter(dict((elem, randrange(-2,4)) for elem in elements))
+            p = Counter(dict((elem, randrange(-2,4)) kila elem kwenye elements))
             p.update(e=1, f=-1, g=0)
-            q = Counter(dict((elem, randrange(-2,4)) for elem in elements))
+            q = Counter(dict((elem, randrange(-2,4)) kila elem kwenye elements))
             q.update(h=1, i=-1, j=0)
-            for inplace_op, regular_op in [
+            kila inplace_op, regular_op kwenye [
                 (Counter.__iadd__, Counter.__add__),
                 (Counter.__isub__, Counter.__sub__),
                 (Counter.__ior__, Counter.__or__),
@@ -2115,13 +2115,13 @@ kundi TestCounter(unittest.TestCase):
         self.assertEqual(dict(-c), dict(a=5))
 
     eleza test_repr_nonsortable(self):
-        c = Counter(a=2, b=None)
+        c = Counter(a=2, b=Tupu)
         r = repr(c)
         self.assertIn("'a': 2", r)
-        self.assertIn("'b': None", r)
+        self.assertIn("'b': Tupu", r)
 
     eleza test_helper_function(self):
-        # two paths, one for real dicts and one for other mappings
+        # two paths, one kila real dicts na one kila other mappings
         elems = list('abracadabra')
 
         d = dict()
@@ -2135,10 +2135,10 @@ kundi TestCounter(unittest.TestCase):
 
         # test fidelity to the pure python version
         c = CounterSubclassWithSetItem('abracadabra')
-        self.assertTrue(c.called)
+        self.assertKweli(c.called)
         self.assertEqual(dict(c), {'a': 5, 'b': 2, 'c': 1, 'd': 1, 'r':2 })
         c = CounterSubclassWithGet('abracadabra')
-        self.assertTrue(c.called)
+        self.assertKweli(c.called)
         self.assertEqual(dict(c), {'a': 5, 'b': 2, 'c': 1, 'd': 1, 'r':2 })
 
 
@@ -2146,7 +2146,7 @@ kundi TestCounter(unittest.TestCase):
 ### Run tests
 ################################################################################
 
-eleza test_main(verbose=None):
+eleza test_main(verbose=Tupu):
     NamedTupleDocs = doctest.DocTestSuite(module=collections)
     test_classes = [TestNamedTuple, NamedTupleDocs, TestOneTrickPonyABCs,
                     TestCollectionABCs, TestCounter, TestChainMap,
@@ -2157,4 +2157,4 @@ eleza test_main(verbose=None):
 
 
 ikiwa __name__ == "__main__":
-    test_main(verbose=True)
+    test_main(verbose=Kweli)

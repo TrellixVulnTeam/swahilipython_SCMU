@@ -2,11 +2,11 @@ agiza sys
 agiza unittest
 
 
-try:
+jaribu:
     agiza crypt
-    IMPORT_ERROR = None
-except ImportError as ex:
-    crypt = None
+    IMPORT_ERROR = Tupu
+tatizo ImportError kama ex:
+    crypt = Tupu
     IMPORT_ERROR = str(ex)
 
 
@@ -23,24 +23,24 @@ kundi TestWhyCryptDidNotImport(unittest.TestCase):
 kundi CryptTestCase(unittest.TestCase):
 
     eleza test_crypt(self):
-        cr = crypt.crypt('mypassword')
-        cr2 = crypt.crypt('mypassword', cr)
+        cr = crypt.crypt('mypitaword')
+        cr2 = crypt.crypt('mypitaword', cr)
         self.assertEqual(cr2, cr)
-        cr = crypt.crypt('mypassword', 'ab')
-        ikiwa cr is not None:
-            cr2 = crypt.crypt('mypassword', cr)
+        cr = crypt.crypt('mypitaword', 'ab')
+        ikiwa cr ni sio Tupu:
+            cr2 = crypt.crypt('mypitaword', cr)
             self.assertEqual(cr2, cr)
 
     eleza test_salt(self):
         self.assertEqual(len(crypt._saltchars), 64)
-        for method in crypt.methods:
+        kila method kwenye crypt.methods:
             salt = crypt.mksalt(method)
             self.assertIn(len(salt) - method.salt_chars, {0, 1, 3, 4, 6, 7})
             ikiwa method.ident:
                 self.assertIn(method.ident, salt[:len(salt)-method.salt_chars])
 
     eleza test_saltedcrypt(self):
-        for method in crypt.methods:
+        kila method kwenye crypt.methods:
             cr = crypt.crypt('assword', method)
             self.assertEqual(len(cr), method.total_size)
             cr2 = crypt.crypt('assword', cr)
@@ -49,57 +49,57 @@ kundi CryptTestCase(unittest.TestCase):
             self.assertEqual(len(cr), method.total_size)
 
     eleza test_methods(self):
-        self.assertTrue(len(crypt.methods) >= 1)
+        self.assertKweli(len(crypt.methods) >= 1)
         ikiwa sys.platform.startswith('openbsd'):
             self.assertEqual(crypt.methods, [crypt.METHOD_BLOWFISH])
-        else:
+        isipokua:
             self.assertEqual(crypt.methods[-1], crypt.METHOD_CRYPT)
 
     @unittest.skipUnless(
         crypt
-        and (
-            crypt.METHOD_SHA256 in crypt.methods or crypt.METHOD_SHA512 in crypt.methods
+        na (
+            crypt.METHOD_SHA256 kwenye crypt.methods ama crypt.METHOD_SHA512 kwenye crypt.methods
         ),
         'requires support of SHA-2',
     )
     eleza test_sha2_rounds(self):
-        for method in (crypt.METHOD_SHA256, crypt.METHOD_SHA512):
-            for rounds in 1000, 10_000, 100_000:
+        kila method kwenye (crypt.METHOD_SHA256, crypt.METHOD_SHA512):
+            kila rounds kwenye 1000, 10_000, 100_000:
                 salt = crypt.mksalt(method, rounds=rounds)
                 self.assertIn('$rounds=%d$' % rounds, salt)
                 self.assertEqual(len(salt) - method.salt_chars,
                                  11 + len(str(rounds)))
-                cr = crypt.crypt('mypassword', salt)
-                self.assertTrue(cr)
-                cr2 = crypt.crypt('mypassword', cr)
+                cr = crypt.crypt('mypitaword', salt)
+                self.assertKweli(cr)
+                cr2 = crypt.crypt('mypitaword', cr)
                 self.assertEqual(cr2, cr)
 
     @unittest.skipUnless(
-        crypt and crypt.METHOD_BLOWFISH in crypt.methods, 'requires support of Blowfish'
+        crypt na crypt.METHOD_BLOWFISH kwenye crypt.methods, 'requires support of Blowfish'
     )
     eleza test_blowfish_rounds(self):
-        for log_rounds in range(4, 11):
+        kila log_rounds kwenye range(4, 11):
             salt = crypt.mksalt(crypt.METHOD_BLOWFISH, rounds=1 << log_rounds)
             self.assertIn('$%02d$' % log_rounds, salt)
             self.assertIn(len(salt) - crypt.METHOD_BLOWFISH.salt_chars, {6, 7})
-            cr = crypt.crypt('mypassword', salt)
-            self.assertTrue(cr)
-            cr2 = crypt.crypt('mypassword', cr)
+            cr = crypt.crypt('mypitaword', salt)
+            self.assertKweli(cr)
+            cr2 = crypt.crypt('mypitaword', cr)
             self.assertEqual(cr2, cr)
 
     eleza test_invalid_rounds(self):
-        for method in (crypt.METHOD_SHA256, crypt.METHOD_SHA512,
+        kila method kwenye (crypt.METHOD_SHA256, crypt.METHOD_SHA512,
                        crypt.METHOD_BLOWFISH):
             with self.assertRaises(TypeError):
                 crypt.mksalt(method, rounds='4096')
             with self.assertRaises(TypeError):
                 crypt.mksalt(method, rounds=4096.0)
-            for rounds in (0, 1, -1, 1<<999):
+            kila rounds kwenye (0, 1, -1, 1<<999):
                 with self.assertRaises(ValueError):
                     crypt.mksalt(method, rounds=rounds)
         with self.assertRaises(ValueError):
             crypt.mksalt(crypt.METHOD_BLOWFISH, rounds=1000)
-        for method in (crypt.METHOD_CRYPT, crypt.METHOD_MD5):
+        kila method kwenye (crypt.METHOD_CRYPT, crypt.METHOD_MD5):
             with self.assertRaisesRegex(ValueError, 'support'):
                 crypt.mksalt(method, rounds=4096)
 

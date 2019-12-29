@@ -6,9 +6,9 @@ import sys
 import unittest
 import weakref
 from unittest import mock
-try:
+jaribu:
     import ssl
-except ImportError:
+tatizo ImportError:
     ssl = None
 
 import asyncio
@@ -47,7 +47,7 @@ class SslProtoHandshakeTests(test_utils.TestCase):
         sslpipe.shutdown.return_value = b''
         if do_handshake:
             sslpipe.do_handshake.side_effect = do_handshake
-        else:
+        isipokua:
             def mock_handshake(callback):
                 return []
             sslpipe.do_handshake.side_effect = mock_handshake
@@ -82,15 +82,15 @@ class SslProtoHandshakeTests(test_utils.TestCase):
     def test_fatal_error_no_name_error(self):
         # From issue #363.
         # _fatal_error() generates a NameError if sslproto.py
-        # does not import base_events.
+        # does sio import base_events.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
-        # Temporarily turn off error logging so as not to spoil test output.
+        # Temporarily turn off error logging so as sio to spoil test output.
         log_level = log.logger.getEffectiveLevel()
         log.logger.setLevel(logging.FATAL)
-        try:
+        jaribu:
             ssl_proto._fatal_error(None)
-        finally:
+        mwishowe:
             # Restore error logging.
             log.logger.setLevel(log_level)
 
@@ -141,7 +141,7 @@ class SslProtoHandshakeTests(test_utils.TestCase):
 
         transp.close()
 
-        # should not raise
+        # should sio raise
         self.assertIsNone(ssl_proto.data_received(b'data'))
 
     def test_write_after_closing(self):
@@ -150,7 +150,7 @@ class SslProtoHandshakeTests(test_utils.TestCase):
         transp = ssl_proto._app_transport
         transp.close()
 
-        # should not raise
+        # should sio raise
         self.assertIsNone(transp.write(b'data'))
 
 
@@ -180,13 +180,13 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             def get_buffer(self, sizehint):
                 if self.usemv:
                     return self.mv
-                else:
+                isipokua:
                     return self.buf
 
             def buffer_updated(self, nsize):
                 if self.usemv:
                     self.data += self.mv[:nsize]
-                else:
+                isipokua:
                     self.data += self.buf[:nsize]
 
         for usemv in [False, True]:
@@ -443,13 +443,13 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             data = sock.recv_all(len(HELLO_MSG))
             self.assertEqual(len(data), len(HELLO_MSG))
 
-            try:
+            jaribu:
                 self.loop.call_soon_threadsafe(
                     server_waits_on_handshake.set_result, None)
                 data = sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            tatizo ConnectionAbortedError:
                 pass
-            finally:
+            mwishowe:
                 sock.close()
 
         class ClientProto(asyncio.Protocol):
@@ -501,8 +501,8 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 or sys.platform.startswith('win')
                 or sys.platform.startswith('darwin')):
             # bpo-35031: Some FreeBSD and Windows buildbots fail to run this test
-            # as the eof was not being received by the server if the payload
-            # size is not big enough. This behaviour only appears if the
+            # as the eof was sio being received by the server if the payload
+            # size ni sio big enough. This behaviour only appears if the
             # client is using TLS1.3.  Also seen on macOS.
             client_context.options |= ssl.OP_NO_TLSv1_3
         answer = None
@@ -543,7 +543,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 self.transport = None
                 if exc is None:
                     self.on_con_lost.set_result(None)
-                else:
+                isipokua:
                     self.on_con_lost.set_exception(exc)
 
         async def main(proto, on_con, on_con_lost):
@@ -590,7 +590,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 await self.loop.start_tls(None, None, None)
 
             sslctx = test_utils.simple_server_sslcontext()
-            with self.assertRaisesRegex(TypeError, 'is not supported'):
+            with self.assertRaisesRegex(TypeError, 'is sio supported'):
                 await self.loop.start_tls(None, None, sslctx)
 
         self.loop.run_until_complete(main())
@@ -607,11 +607,11 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         def server(sock):
             nonlocal server_side_aborted
-            try:
+            jaribu:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            tatizo ConnectionAbortedError:
                 server_side_aborted = True
-            finally:
+            mwishowe:
                 sock.close()
 
         async def client(addr):
@@ -633,7 +633,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         self.assertTrue(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must not raise an
+        # Python issue #23197: cancelling a handshake must sio raise an
         # exception or log an error, even if the handshake failed
         self.assertEqual(messages, [])
 
@@ -649,11 +649,11 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
         def server(sock):
-            try:
+            jaribu:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            tatizo ConnectionAbortedError:
                 pass
-            finally:
+            mwishowe:
                 sock.close()
 
         async def client(addr):
@@ -685,15 +685,15 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             disable_verify=False)
 
         def server(sock):
-            try:
+            jaribu:
                 sock.start_tls(
                     sslctx,
                     server_side=True)
-            except ssl.SSLError:
+            tatizo ssl.SSLError:
                 pass
-            except OSError:
+            tatizo OSError:
                 pass
-            finally:
+            mwishowe:
                 sock.close()
 
         async def client(addr):
@@ -720,16 +720,16 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         def server(sock):
             orig_sock = sock.dup()
-            try:
+            jaribu:
                 sock.start_tls(
                     sslctx,
                     server_side=True)
                 sock.sendall(b'A\n')
                 sock.recv_all(1)
                 orig_sock.send(b'please corrupt the SSL connection')
-            except ssl.SSLError:
+            tatizo ssl.SSLError:
                 pass
-            finally:
+            mwishowe:
                 orig_sock.close()
                 sock.close()
 

@@ -1,13 +1,13 @@
 "Test searchbase, coverage 98%."
-# The only thing not covered is inconsequential --
-# testing skipping of suite when self.needwrapbutton is false.
+# The only thing sio covered ni inconsequential --
+# testing skipping of suite when self.needwrapbutton ni false.
 
 agiza unittest
 kutoka test.support agiza requires
 kutoka tkinter agiza Text, Tk, Toplevel
 kutoka tkinter.ttk agiza Frame
-kutoka idlelib agiza searchengine as se
-kutoka idlelib agiza searchbase as sdb
+kutoka idlelib agiza searchengine kama se
+kutoka idlelib agiza searchbase kama sdb
 kutoka idlelib.idle_test.mock_idle agiza Func
 ## kutoka idlelib.idle_test.mock_tk agiza Var
 
@@ -34,10 +34,10 @@ kundi SearchDialogBaseTest(unittest.TestCase):
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
-        self.engine = se.SearchEngine(self.root)  # None also seems to work
+        self.engine = se.SearchEngine(self.root)  # Tupu also seems to work
         self.dialog = sdb.SearchDialogBase(root=self.root, engine=self.engine)
 
     eleza tearDown(self):
@@ -45,7 +45,7 @@ kundi SearchDialogBaseTest(unittest.TestCase):
 
     eleza test_open_and_close(self):
         # open calls create_widgets, which needs default_command
-        self.dialog.default_command = None
+        self.dialog.default_command = Tupu
 
         toplevel = Toplevel(self.root)
         text = Text(toplevel)
@@ -65,13 +65,13 @@ kundi SearchDialogBaseTest(unittest.TestCase):
         self.dialog.create_other_buttons = Func()
         self.dialog.create_command_buttons = Func()
 
-        self.dialog.default_command = None
+        self.dialog.default_command = Tupu
         self.dialog.create_widgets()
 
-        self.assertTrue(self.dialog.create_entries.called)
-        self.assertTrue(self.dialog.create_option_buttons.called)
-        self.assertTrue(self.dialog.create_other_buttons.called)
-        self.assertTrue(self.dialog.create_command_buttons.called)
+        self.assertKweli(self.dialog.create_entries.called)
+        self.assertKweli(self.dialog.create_option_buttons.called)
+        self.assertKweli(self.dialog.create_other_buttons.called)
+        self.assertKweli(self.dialog.create_command_buttons.called)
 
     eleza test_make_entry(self):
         equal = self.assertEqual
@@ -101,8 +101,8 @@ kundi SearchDialogBaseTest(unittest.TestCase):
         frame, label = self.dialog.make_frame()
         self.assertEqual(label, '')
         self.assertEqual(str(type(frame)), "<kundi 'tkinter.ttk.Frame'>")
-        # self.assertIsInstance(frame, Frame) fails when test is run by
-        # test_idle not run kutoka IDLE editor.  See issue 33987 PR.
+        # self.assertIsInstance(frame, Frame) fails when test ni run by
+        # test_idle sio run kutoka IDLE editor.  See issue 33987 PR.
 
         frame, label = self.dialog.make_frame('testlabel')
         self.assertEqual(label['text'], 'testlabel')
@@ -114,24 +114,24 @@ kundi SearchDialogBaseTest(unittest.TestCase):
 
     eleza test_create_option_buttons(self):
         e = self.engine
-        for state in (0, 1):
-            for var in (e.revar, e.casevar, e.wordvar, e.wrapvar):
+        kila state kwenye (0, 1):
+            kila var kwenye (e.revar, e.casevar, e.wordvar, e.wrapvar):
                 var.set(state)
             frame, options = self.btn_test_setup(
                     self.dialog.create_option_buttons)
-            for spec, button in zip (options, frame.pack_slaves()):
+            kila spec, button kwenye zip (options, frame.pack_slaves()):
                 var, label = spec
                 self.assertEqual(button['text'], label)
                 self.assertEqual(var.get(), state)
 
     eleza test_create_other_buttons(self):
-        for state in (False, True):
+        kila state kwenye (Uongo, Kweli):
             var = self.engine.backvar
             var.set(state)
             frame, others = self.btn_test_setup(
                 self.dialog.create_other_buttons)
             buttons = frame.pack_slaves()
-            for spec, button in zip(others, buttons):
+            kila spec, button kwenye zip(others, buttons):
                 val, label = spec
                 self.assertEqual(button['text'], label)
                 ikiwa val == state:
@@ -148,9 +148,9 @@ kundi SearchDialogBaseTest(unittest.TestCase):
     eleza test_create_command_buttons(self):
         self.dialog.top = self.root
         self.dialog.create_command_buttons()
-        # Look for close button command in buttonframe
+        # Look kila close button command kwenye buttonframe
         closebuttoncommand = ''
-        for child in self.dialog.buttonframe.winfo_children():
+        kila child kwenye self.dialog.buttonframe.winfo_children():
             ikiwa child['text'] == 'Close':
                 closebuttoncommand = child['command']
         self.assertIn('close', closebuttoncommand)

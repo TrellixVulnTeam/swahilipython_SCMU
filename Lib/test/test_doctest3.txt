@@ -1,5 +1,5 @@
 
-Here we check that `__file__` is provided:
+Here we check that `__file__` ni provided:
 
   >>> type(__file__)
   <kundi 'str'>

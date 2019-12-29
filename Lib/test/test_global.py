@@ -1,4 +1,4 @@
-"""Verify that warnings are issued for global statements following use."""
+"""Verify that warnings are issued kila global statements following use."""
 
 kutoka test.support agiza run_unittest, check_syntax_error, check_warnings
 agiza unittest
@@ -13,7 +13,7 @@ kundi GlobalTests(unittest.TestCase):
         warnings.filterwarnings("error", module="<test string>")
 
     eleza tearDown(self):
-        self._warnings_manager.__exit__(None, None, None)
+        self._warnings_manager.__exit__(Tupu, Tupu, Tupu)
 
 
     eleza test1(self):

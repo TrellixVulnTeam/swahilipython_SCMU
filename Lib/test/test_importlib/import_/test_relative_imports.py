@@ -6,43 +6,43 @@ agiza warnings
 
 kundi RelativeImports:
 
-    """PEP 328 introduced relative agizas. This allows for agizas to occur
+    """PEP 328 introduced relative agizas. This allows kila agizas to occur
     kutoka within a package without having to specify the actual package name.
 
-    A simple example is to agiza another module within the same package
+    A simple example ni to agiza another module within the same package
     [module kutoka module]::
 
       # From pkg.mod1 with pkg.mod2 being a module.
       kutoka . agiza mod2
 
-    This also works for getting an attribute kutoka a module that is specified
-    in a relative fashion [attr kutoka module]::
+    This also works kila getting an attribute kutoka a module that ni specified
+    kwenye a relative fashion [attr kutoka module]::
 
       # From pkg.mod1.
       kutoka .mod2 agiza attr
 
-    But this is in no way restricted to working between modules; it works
+    But this ni kwenye no way restricted to working between modules; it works
     kutoka [package to module],::
 
-      # From pkg, agizaing pkg.module which is a module.
+      # From pkg, agizaing pkg.module which ni a module.
       kutoka . agiza module
 
     [module to package],::
 
-      # Pull attr kutoka pkg, called kutoka pkg.module which is a module.
+      # Pull attr kutoka pkg, called kutoka pkg.module which ni a module.
       kutoka . agiza attr
 
-    and [package to package]::
+    na [package to package]::
 
       # From pkg.subpkg1 (both pkg.subpkg[1,2] are packages).
       kutoka .. agiza subpkg2
 
-    The number of dots used is in no way restricted [deep agiza]::
+    The number of dots used ni kwenye no way restricted [deep agiza]::
 
       # Import pkg.attr kutoka pkg.pkg1.pkg2.pkg3.pkg4.pkg5.
       kutoka ...... agiza attr
 
-    To prevent someone kutoka accessing code that is outside of a package, one
+    To prevent someone kutoka accessing code that ni outside of a package, one
     cannot reach the location containing the root package itself::
 
       # From pkg.__init__ [too high kutoka package]
@@ -51,24 +51,24 @@ kundi RelativeImports:
       # From pkg.module [too high kutoka module]
       kutoka .. agiza top_level
 
-     Relative agizas are the only type of agiza that allow for an empty
-     module name for an agiza [empty name].
+     Relative agizas are the only type of agiza that allow kila an empty
+     module name kila an agiza [empty name].
 
     """
 
     eleza relative_import_test(self, create, globals_, callback):
-        """Abstract out boilerplace for setting up for an agiza test."""
+        """Abstract out boilerplace kila setting up kila an agiza test."""
         uncache_names = []
-        for name in create:
-            ikiwa not name.endswith('.__init__'):
+        kila name kwenye create:
+            ikiwa sio name.endswith('.__init__'):
                 uncache_names.append(name)
-            else:
+            isipokua:
                 uncache_names.append(name[:-len('.__init__')])
-        with util.mock_spec(*create) as importer:
+        with util.mock_spec(*create) kama importer:
             with util.import_state(meta_path=[importer]):
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore")
-                    for global_ in globals_:
+                    kila global_ kwenye globals_:
                         with util.uncache(*uncache_names):
                             callback(global_)
 
@@ -81,7 +81,7 @@ kundi RelativeImports:
             self.__import__('pkg')  # For __import__().
             module = self.__import__('', global_, kutokalist=['mod2'], level=1)
             self.assertEqual(module.__name__, 'pkg')
-            self.assertTrue(hasattr(module, 'mod2'))
+            self.assertKweli(hasattr(module, 'mod2'))
             self.assertEqual(module.mod2.attr, 'pkg.mod2')
         self.relative_import_test(create, globals_, callback)
 
@@ -107,7 +107,7 @@ kundi RelativeImports:
             module = self.__import__('', global_, kutokalist=['module'],
                              level=1)
             self.assertEqual(module.__name__, 'pkg')
-            self.assertTrue(hasattr(module, 'module'))
+            self.assertKweli(hasattr(module, 'module'))
             self.assertEqual(module.module.attr, 'pkg.module')
         self.relative_import_test(create, globals_, callback)
 
@@ -131,13 +131,13 @@ kundi RelativeImports:
             module = self.__import__('', global_, kutokalist=['subpkg2'],
                                             level=2)
             self.assertEqual(module.__name__, 'pkg')
-            self.assertTrue(hasattr(module, 'subpkg2'))
+            self.assertKweli(hasattr(module, 'subpkg2'))
             self.assertEqual(module.subpkg2.attr, 'pkg.subpkg2.__init__')
 
     eleza test_deep_agiza(self):
         # [deep agiza]
         create = ['pkg.__init__']
-        for count in range(1,6):
+        kila count kwenye range(1,6):
             create.append('{0}.pkg{1}.__init__'.format(
                             create[-1][:-len('.__init__')], count))
         globals_ = ({'__package__': 'pkg.pkg1.pkg2.pkg3.pkg4.pkg5'},
@@ -179,7 +179,7 @@ kundi RelativeImports:
 
     eleza test_import_kutoka_different_package(self):
         # Test agizaing kutoka a different package than the caller.
-        # in pkg.subpkg1.mod
+        # kwenye pkg.subpkg1.mod
         # kutoka ..subpkg2 agiza mod
         create = ['__runpy_pkg__.__init__',
                     '__runpy_pkg__.__runpy_pkg__.__init__',
@@ -206,7 +206,7 @@ kundi RelativeImports:
         self.relative_import_test(create, globals_, callback)
 
     eleza test_relative_import_no_globals(self):
-        # No globals for a relative agiza is an error.
+        # No globals kila a relative agiza ni an error.
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             with self.assertRaises(KeyError):
@@ -214,12 +214,12 @@ kundi RelativeImports:
 
     eleza test_relative_import_no_package(self):
         with self.assertRaises(ImportError):
-            self.__import__('a', {'__package__': '', '__spec__': None},
+            self.__import__('a', {'__package__': '', '__spec__': Tupu},
                             level=1)
 
     eleza test_relative_import_no_package_exists_absolute(self):
         with self.assertRaises(ImportError):
-            self.__import__('sys', {'__package__': '', '__spec__': None},
+            self.__import__('sys', {'__package__': '', '__spec__': Tupu},
                             level=1)
 
 

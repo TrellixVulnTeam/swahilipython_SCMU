@@ -1,5 +1,5 @@
 """
-Tests for kqueue wrapper.
+Tests kila kqueue wrapper.
 """
 agiza errno
 agiza os
@@ -8,16 +8,16 @@ agiza socket
 agiza time
 agiza unittest
 
-ikiwa not hasattr(select, "kqueue"):
-    raise unittest.SkipTest("test works only on BSD")
+ikiwa sio hasattr(select, "kqueue"):
+    ashiria unittest.SkipTest("test works only on BSD")
 
 kundi TestKQueue(unittest.TestCase):
     eleza test_create_queue(self):
         kq = select.kqueue()
-        self.assertTrue(kq.fileno() > 0, kq.fileno())
-        self.assertTrue(not kq.closed)
+        self.assertKweli(kq.fileno() > 0, kq.fileno())
+        self.assertKweli(not kq.closed)
         kq.close()
-        self.assertTrue(kq.closed)
+        self.assertKweli(kq.closed)
         self.assertRaises(ValueError, kq.fileno)
 
     eleza test_create_event(self):
@@ -36,10 +36,10 @@ kundi TestKQueue(unittest.TestCase):
         self.assertEqual(ev.udata, 0)
         self.assertEqual(ev, ev)
         self.assertNotEqual(ev, other)
-        self.assertTrue(ev < other)
-        self.assertTrue(other >= ev)
-        for op in lt, le, gt, ge:
-            self.assertRaises(TypeError, op, ev, None)
+        self.assertKweli(ev < other)
+        self.assertKweli(other >= ev)
+        kila op kwenye lt, le, gt, ge:
+            self.assertRaises(TypeError, op, ev, Tupu)
             self.assertRaises(TypeError, op, ev, 1)
             self.assertRaises(TypeError, op, ev, "ev")
 
@@ -112,14 +112,14 @@ kundi TestKQueue(unittest.TestCase):
     eleza test_queue_event(self):
         serverSocket = socket.create_server(('127.0.0.1', 0))
         client = socket.socket()
-        client.setblocking(False)
-        try:
+        client.setblocking(Uongo)
+        jaribu:
             client.connect(('127.0.0.1', serverSocket.getsockname()[1]))
-        except OSError as e:
+        tatizo OSError kama e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
-        else:
-            #raise AssertionError("Connect should have raised EINPROGRESS")
-            pass # FreeBSD doesn't raise an exception here
+        isipokua:
+            #ashiria AssertionError("Connect should have ashiriad EINPROGRESS")
+            pita # FreeBSD doesn't ashiria an exception here
         server, addr = serverSocket.accept()
 
         kq = select.kqueue()
@@ -142,8 +142,8 @@ kundi TestKQueue(unittest.TestCase):
                            select.KQ_EV_ADD | select.KQ_EV_ENABLE)
         kq2.control([ev], 0)
 
-        events = kq.control(None, 4, 1)
-        events = set((e.ident, e.filter) for e in events)
+        events = kq.control(Tupu, 4, 1)
+        events = set((e.ident, e.filter) kila e kwenye events)
         self.assertEqual(events, set([
             (client.fileno(), select.KQ_FILTER_WRITE),
             (server.fileno(), select.KQ_FILTER_WRITE)]))
@@ -152,22 +152,22 @@ kundi TestKQueue(unittest.TestCase):
         server.send(b"world!!!")
 
         # We may need to call it several times
-        for i in range(10):
-            events = kq.control(None, 4, 1)
+        kila i kwenye range(10):
+            events = kq.control(Tupu, 4, 1)
             ikiwa len(events) == 4:
-                break
+                koma
             time.sleep(1.0)
-        else:
-            self.fail('timeout waiting for event notifications')
+        isipokua:
+            self.fail('timeout waiting kila event notifications')
 
-        events = set((e.ident, e.filter) for e in events)
+        events = set((e.ident, e.filter) kila e kwenye events)
         self.assertEqual(events, set([
             (client.fileno(), select.KQ_FILTER_WRITE),
             (client.fileno(), select.KQ_FILTER_READ),
             (server.fileno(), select.KQ_FILTER_WRITE),
             (server.fileno(), select.KQ_FILTER_READ)]))
 
-        # Remove completely client, and server read part
+        # Remove completely client, na server read part
         ev = select.kevent(client.fileno(),
                            select.KQ_FILTER_WRITE,
                            select.KQ_EV_DELETE)
@@ -182,7 +182,7 @@ kundi TestKQueue(unittest.TestCase):
         kq.control([ev], 0, 0)
 
         events = kq.control([], 4, 0.99)
-        events = set((e.ident, e.filter) for e in events)
+        events = set((e.ident, e.filter) kila e kwenye events)
         self.assertEqual(events, set([
             (server.fileno(), select.KQ_FILTER_WRITE)]))
 
@@ -198,8 +198,8 @@ kundi TestKQueue(unittest.TestCase):
         event1 = select.kevent(a, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
         event2 = select.kevent(b, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
         r = kq.control([event1, event2], 1, 1)
-        self.assertTrue(r)
-        self.assertFalse(r[0].flags & select.KQ_EV_ERROR)
+        self.assertKweli(r)
+        self.assertUongo(r[0].flags & select.KQ_EV_ERROR)
         self.assertEqual(b.recv(r[0].data), b'foo')
 
         a.close()
@@ -213,15 +213,15 @@ kundi TestKQueue(unittest.TestCase):
         ev = select.kevent(a, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
 
         kq.control([ev], 0)
-        # not a list
+        # sio a list
         kq.control((ev,), 0)
-        # __len__ is not consistent with __iter__
+        # __len__ ni sio consistent with __iter__
         kundi BadList:
             eleza __len__(self):
                 rudisha 0
             eleza __iter__(self):
-                for i in range(100):
-                    yield ev
+                kila i kwenye range(100):
+                    tuma ev
         kq.control(BadList(), 0)
         # doesn't have __len__
         kq.control(iter([ev]), 0)
@@ -236,25 +236,25 @@ kundi TestKQueue(unittest.TestCase):
         fd = open_file.fileno()
         kqueue = select.kqueue()
 
-        # test fileno() method and closed attribute
+        # test fileno() method na closed attribute
         self.assertIsInstance(kqueue.fileno(), int)
-        self.assertFalse(kqueue.closed)
+        self.assertUongo(kqueue.closed)
 
         # test close()
         kqueue.close()
-        self.assertTrue(kqueue.closed)
+        self.assertKweli(kqueue.closed)
         self.assertRaises(ValueError, kqueue.fileno)
 
         # close() can be called more than once
         kqueue.close()
 
         # operations must fail with ValueError("I/O operation on closed ...")
-        self.assertRaises(ValueError, kqueue.control, None, 4)
+        self.assertRaises(ValueError, kqueue.control, Tupu, 4)
 
     eleza test_fd_non_inheritable(self):
         kqueue = select.kqueue()
         self.addCleanup(kqueue.close)
-        self.assertEqual(os.get_inheritable(kqueue.fileno()), False)
+        self.assertEqual(os.get_inheritable(kqueue.fileno()), Uongo)
 
 
 ikiwa __name__ == "__main__":

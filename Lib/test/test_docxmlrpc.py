@@ -7,30 +7,30 @@ agiza unittest
 
 eleza make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because
-    # the server created in setUp blocks expecting one to come in.
-    ikiwa not condition:
+    # the server created kwenye setUp blocks expecting one to come in.
+    ikiwa sio condition:
         rudisha lambda func: func
     eleza decorator(func):
         eleza make_request_and_skip(self):
             self.client.request("GET", "/")
             self.client.getresponse()
-            raise unittest.SkipTest(reason)
+            ashiria unittest.SkipTest(reason)
         rudisha make_request_and_skip
     rudisha decorator
 
 
 eleza make_server():
-    serv = DocXMLRPCServer(("localhost", 0), logRequests=False)
+    serv = DocXMLRPCServer(("localhost", 0), logRequests=Uongo)
 
-    try:
+    jaribu:
         # Add some documentation
         serv.set_server_title("DocXMLRPCServer Test Documentation")
         serv.set_server_name("DocXMLRPCServer Test Docs")
         serv.set_server_documentation(
-            "This is an XML-RPC server's documentation, but the server "
+            "This ni an XML-RPC server's documentation, but the server "
             "can be used by POSTing to /RPC2. Try self.add, too.")
 
-        # Create and register classes and functions
+        # Create na register classes na functions
         kundi TestClass(object):
             eleza test_method(self, arg):
                 """Test method's docs. This method truly does very little."""
@@ -41,8 +41,8 @@ eleza make_server():
 
         eleza add(x, y):
             """Add two instances together. This follows PEP008, but has nothing
-            to do with RFC1952. Case should matter: pEp008 and rFC1952.  Things
-            that start with http and ftp should be auto-linked, too:
+            to do with RFC1952. Case should matter: pEp008 na rFC1952.  Things
+            that start with http na ftp should be auto-linked, too:
             http://google.com.
             """
             rudisha x + y
@@ -62,12 +62,12 @@ eleza make_server():
         rudisha serv
     except:
         serv.server_close()
-        raise
+        ashiria
 
 kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
     eleza setUp(self):
         # Enable server feedback
-        DocXMLRPCServer._send_traceback_header = True
+        DocXMLRPCServer._send_traceback_header = Kweli
 
         self.serv = make_server()
         self.thread = threading.Thread(target=self.serv.serve_forever)
@@ -80,7 +80,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.client.close()
 
         # Disable server feedback
-        DocXMLRPCServer._send_traceback_header = False
+        DocXMLRPCServer._send_traceback_header = Uongo
         self.serv.shutdown()
         self.thread.join()
         self.serv.server_close()
@@ -92,7 +92,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertEqual(response.getheader("Content-type"), "text/html")
 
-        # Server raises an exception ikiwa we don't start to read the data
+        # Server ashirias an exception ikiwa we don't start to read the data
         response.read()
 
     eleza test_invalid_get_response(self):
@@ -106,10 +106,10 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
 
     eleza test_lambda(self):
         """Test that lambda functionality stays the same.  The output produced
-        currently is, I suspect invalid because of the unencoded brackets in the
+        currently is, I suspect invalid because of the unencoded brackets kwenye the
         HTML, "<lambda>".
 
-        The subtraction lambda method is tested.
+        The subtraction lambda method ni tested.
         """
         self.client.request("GET", "/")
         response = self.client.getresponse()
@@ -119,13 +119,13 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_autolinking(self):
         """Test that the server correctly automatically wraps references to
-        PEPS and RFCs with links, and that it linkifies text starting with
-        http or ftp protocol prefixes.
+        PEPS na RFCs with links, na that it linkifies text starting with
+        http ama ftp protocol prefixes.
 
-        The documentation for the "add" method contains the test material.
+        The documentation kila the "add" method contains the test material.
         """
         self.client.request("GET", "/")
         response = self.client.getresponse().read()
@@ -143,11 +143,11 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'http://google.com</a>.</tt></dd></dl>'), response)
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_system_methods(self):
         """Test the presence of three consecutive system.* methods.
 
-        This also tests their use of parameter type recognition and the
+        This also tests their use of parameter type recognition na the
         systems related to that process.
         """
         self.client.request("GET", "/")
@@ -167,12 +167,12 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'describing&nbsp;the&nbsp;signature&nbsp;of&nbsp;the&nbsp;method.'
              b'&nbsp;In&nbsp;the<br>\nabove&nbsp;example,&nbsp;the&nbsp;add&nbsp;'
              b'method&nbsp;takes&nbsp;two&nbsp;integers&nbsp;as&nbsp;arguments'
-             b'<br>\nand&nbsp;returns&nbsp;a&nbsp;double&nbsp;result.<br>\n&nbsp;'
+             b'<br>\nand&nbsp;rudishas&nbsp;a&nbsp;double&nbsp;result.<br>\n&nbsp;'
              b'<br>\nThis&nbsp;server&nbsp;does&nbsp;NOT&nbsp;support&nbsp;system'
              b'.methodSignature.</tt></dd></dl>'), response)
 
     eleza test_autolink_dotted_methods(self):
-        """Test that selfdot values are made strong automatically in the
+        """Test that selfdot values are made strong automatically kwenye the
         documentation."""
         self.client.request("GET", "/")
         response = self.client.getresponse()
@@ -181,7 +181,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     eleza test_annotations(self):
-        """ Test that annotations works as expected """
+        """ Test that annotations works kama expected """
         self.client.request("GET", "/")
         response = self.client.getresponse()
         docstring = (b'' ikiwa sys.flags.optimize >= 2 else
@@ -194,8 +194,8 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
             response.read())
 
     eleza test_server_title_escape(self):
-        # bpo-38243: Ensure that the server title and documentation
-        # are escaped for HTML.
+        # bpo-38243: Ensure that the server title na documentation
+        # are escaped kila HTML.
         self.serv.set_server_title('test_title<script>')
         self.serv.set_server_documentation('test_documentation<script>')
         self.assertEqual('test_title<script>', self.serv.server_title)

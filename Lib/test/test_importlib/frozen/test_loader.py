@@ -12,16 +12,16 @@ agiza warnings
 kundi ExecModuleTests(abc.LoaderTests):
 
     eleza exec_module(self, name):
-        with util.uncache(name), captured_stdout() as stdout:
+        with util.uncache(name), captured_stdout() kama stdout:
             spec = self.machinery.ModuleSpec(
                     name, self.machinery.FrozenImporter, origin='frozen',
                     is_package=self.machinery.FrozenImporter.is_package(name))
             module = types.ModuleType(name)
             module.__spec__ = spec
-            assert not hasattr(module, 'initialized')
+            assert sio hasattr(module, 'initialized')
             self.machinery.FrozenImporter.exec_module(module)
-            self.assertTrue(module.initialized)
-            self.assertTrue(hasattr(module, '__spec__'))
+            self.assertKweli(module.initialized)
+            self.assertKweli(hasattr(module, '__spec__'))
             self.assertEqual(module.__spec__.origin, 'frozen')
             rudisha module, stdout.getvalue()
 
@@ -29,19 +29,19 @@ kundi ExecModuleTests(abc.LoaderTests):
         name = '__hello__'
         module, output = self.exec_module(name)
         check = {'__name__': name}
-        for attr, value in check.items():
+        kila attr, value kwenye check.items():
             self.assertEqual(getattr(module, attr), value)
         self.assertEqual(output, 'Hello world!\n')
-        self.assertTrue(hasattr(module, '__spec__'))
+        self.assertKweli(hasattr(module, '__spec__'))
 
     eleza test_package(self):
         name = '__phello__'
         module, output = self.exec_module(name)
         check = {'__name__': name}
-        for attr, value in check.items():
+        kila attr, value kwenye check.items():
             attr_value = getattr(module, attr)
             self.assertEqual(attr_value, value,
-                        'for {name}.{attr}, {given!r} != {expected!r}'.format(
+                        'kila {name}.{attr}, {given!r} != {expected!r}'.format(
                                  name=name, attr=attr, given=attr_value,
                                  expected=value))
         self.assertEqual(output, 'Hello world!\n')
@@ -51,10 +51,10 @@ kundi ExecModuleTests(abc.LoaderTests):
         with util.uncache('__phello__'):
             module, output = self.exec_module(name)
             check = {'__name__': name}
-            for attr, value in check.items():
+            kila attr, value kwenye check.items():
                 attr_value = getattr(module, attr)
                 self.assertEqual(attr_value, value,
-                        'for {name}.{attr}, {given} != {expected!r}'.format(
+                        'kila {name}.{attr}, {given} != {expected!r}'.format(
                                  name=name, attr=attr, given=attr_value,
                                  expected=value))
             self.assertEqual(output, 'Hello world!\n')
@@ -74,12 +74,12 @@ kundi ExecModuleTests(abc.LoaderTests):
         self.assertEqual(repr(module),
                          "<module '__hello__' (frozen)>")
 
-    # No way to trigger an error in a frozen module.
-    test_state_after_failure = None
+    # No way to trigger an error kwenye a frozen module.
+    test_state_after_failure = Tupu
 
     eleza test_unloadable(self):
-        assert self.machinery.FrozenImporter.find_module('_not_real') is None
-        with self.assertRaises(ImportError) as cm:
+        assert self.machinery.FrozenImporter.find_module('_not_real') ni Tupu
+        with self.assertRaises(ImportError) kama cm:
             self.exec_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
 
@@ -92,7 +92,7 @@ kundi ExecModuleTests(abc.LoaderTests):
 kundi LoaderTests(abc.LoaderTests):
 
     eleza test_module(self):
-        with util.uncache('__hello__'), captured_stdout() as stdout:
+        with util.uncache('__hello__'), captured_stdout() kama stdout:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__hello__')
@@ -100,13 +100,13 @@ kundi LoaderTests(abc.LoaderTests):
                     '__package__': '',
                     '__loader__': self.machinery.FrozenImporter,
                     }
-            for attr, value in check.items():
+            kila attr, value kwenye check.items():
                 self.assertEqual(getattr(module, attr), value)
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
-            self.assertFalse(hasattr(module, '__file__'))
+            self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_package(self):
-        with util.uncache('__phello__'),  captured_stdout() as stdout:
+        with util.uncache('__phello__'),  captured_stdout() kama stdout:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__phello__')
@@ -115,17 +115,17 @@ kundi LoaderTests(abc.LoaderTests):
                      '__path__': [],
                      '__loader__': self.machinery.FrozenImporter,
                      }
-            for attr, value in check.items():
+            kila attr, value kwenye check.items():
                 attr_value = getattr(module, attr)
                 self.assertEqual(attr_value, value,
-                                 "for __phello__.%s, %r != %r" %
+                                 "kila __phello__.%s, %r != %r" %
                                  (attr, attr_value, value))
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
-            self.assertFalse(hasattr(module, '__file__'))
+            self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_lacking_parent(self):
         with util.uncache('__phello__', '__phello__.spam'), \
-             captured_stdout() as stdout:
+             captured_stdout() kama stdout:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__phello__.spam')
@@ -133,16 +133,16 @@ kundi LoaderTests(abc.LoaderTests):
                     '__package__': '__phello__',
                     '__loader__': self.machinery.FrozenImporter,
                     }
-            for attr, value in check.items():
+            kila attr, value kwenye check.items():
                 attr_value = getattr(module, attr)
                 self.assertEqual(attr_value, value,
-                                 "for __phello__.spam.%s, %r != %r" %
+                                 "kila __phello__.spam.%s, %r != %r" %
                                  (attr, attr_value, value))
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
-            self.assertFalse(hasattr(module, '__file__'))
+            self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_module_reuse(self):
-        with util.uncache('__hello__'), captured_stdout() as stdout:
+        with util.uncache('__hello__'), captured_stdout() kama stdout:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module1 = self.machinery.FrozenImporter.load_module('__hello__')
@@ -166,12 +166,12 @@ kundi LoaderTests(abc.LoaderTests):
         self.assertEqual(repr(module),
                          "<module '__hello__' (frozen)>")
 
-    # No way to trigger an error in a frozen module.
-    test_state_after_failure = None
+    # No way to trigger an error kwenye a frozen module.
+    test_state_after_failure = Tupu
 
     eleza test_unloadable(self):
-        assert self.machinery.FrozenImporter.find_module('_not_real') is None
-        with self.assertRaises(ImportError) as cm:
+        assert self.machinery.FrozenImporter.find_module('_not_real') ni Tupu
+        with self.assertRaises(ImportError) kama cm:
             self.machinery.FrozenImporter.load_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
 
@@ -183,36 +183,36 @@ kundi LoaderTests(abc.LoaderTests):
 
 kundi InspectLoaderTests:
 
-    """Tests for the InspectLoader methods for FrozenImporter."""
+    """Tests kila the InspectLoader methods kila FrozenImporter."""
 
     eleza test_get_code(self):
-        # Make sure that the code object is good.
+        # Make sure that the code object ni good.
         name = '__hello__'
-        with captured_stdout() as stdout:
+        with captured_stdout() kama stdout:
             code = self.machinery.FrozenImporter.get_code(name)
             mod = types.ModuleType(name)
             exec(code, mod.__dict__)
-            self.assertTrue(hasattr(mod, 'initialized'))
+            self.assertKweli(hasattr(mod, 'initialized'))
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
 
     eleza test_get_source(self):
-        # Should always rudisha None.
+        # Should always rudisha Tupu.
         result = self.machinery.FrozenImporter.get_source('__hello__')
-        self.assertIsNone(result)
+        self.assertIsTupu(result)
 
     eleza test_is_package(self):
-        # Should be able to tell what is a package.
-        test_for = (('__hello__', False), ('__phello__', True),
-                    ('__phello__.spam', False))
-        for name, is_package in test_for:
+        # Should be able to tell what ni a package.
+        test_kila = (('__hello__', Uongo), ('__phello__', Kweli),
+                    ('__phello__.spam', Uongo))
+        kila name, is_package kwenye test_for:
             result = self.machinery.FrozenImporter.is_package(name)
             self.assertEqual(bool(result), is_package)
 
     eleza test_failure(self):
-        # Raise ImportError for modules that are not frozen.
-        for meth_name in ('get_code', 'get_source', 'is_package'):
+        # Raise ImportError kila modules that are sio frozen.
+        kila meth_name kwenye ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.FrozenImporter, meth_name)
-            with self.assertRaises(ImportError) as cm:
+            with self.assertRaises(ImportError) kama cm:
                 method('importlib')
             self.assertEqual(cm.exception.name, 'importlib')
 

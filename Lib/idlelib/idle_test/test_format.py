@@ -1,26 +1,26 @@
 "Test format, coverage 99%."
 
-kutoka idlelib agiza format as ft
+kutoka idlelib agiza format kama ft
 agiza unittest
 kutoka unittest agiza mock
 kutoka test.support agiza requires
 kutoka tkinter agiza Tk, Text
 kutoka idlelib.editor agiza EditorWindow
-kutoka idlelib.idle_test.mock_idle agiza Editor as MockEditor
+kutoka idlelib.idle_test.mock_idle agiza Editor kama MockEditor
 
 
 kundi Is_Get_Test(unittest.TestCase):
-    """Test the is_ and get_ functions"""
-    test_comment = '# This is a comment'
-    test_nocomment = 'This is not a comment'
-    trailingws_comment = '# This is a comment   '
-    leadingws_comment = '    # This is a comment'
-    leadingws_nocomment = '    This is not a comment'
+    """Test the is_ na get_ functions"""
+    test_comment = '# This ni a comment'
+    test_nocomment = 'This ni sio a comment'
+    trailingws_comment = '# This ni a comment   '
+    leadingws_comment = '    # This ni a comment'
+    leadingws_nocomment = '    This ni sio a comment'
 
     eleza test_is_all_white(self):
-        self.assertTrue(ft.is_all_white(''))
-        self.assertTrue(ft.is_all_white('\t\n\r\f\v'))
-        self.assertFalse(ft.is_all_white(self.test_comment))
+        self.assertKweli(ft.is_all_white(''))
+        self.assertKweli(ft.is_all_white('\t\n\r\f\v'))
+        self.assertUongo(ft.is_all_white(self.test_comment))
 
     eleza test_get_indent(self):
         Equal = self.assertEqual
@@ -41,13 +41,13 @@ kundi Is_Get_Test(unittest.TestCase):
 
 
 kundi FindTest(unittest.TestCase):
-    """Test the find_paragraph function in paragraph module.
+    """Test the find_paragraph function kwenye paragraph module.
 
-    Using the runcase() function, find_paragraph() is called with 'mark' set at
-    multiple indexes before and inside the test paragraph.
+    Using the runcase() function, find_paragraph() ni called with 'mark' set at
+    multiple indexes before na inside the test paragraph.
 
-    It appears that code with the same indentation as a quoted string is grouped
-    as part of the same paragraph, which is probably incorrect behavior.
+    It appears that code with the same indentation kama a quoted string ni grouped
+    kama part of the same paragraph, which ni probably incorrect behavior.
     """
 
     @classmethod
@@ -56,14 +56,14 @@ kundi FindTest(unittest.TestCase):
         cls.text = Text()
 
     eleza runcase(self, inserttext, stopline, expected):
-        # Check that find_paragraph returns the expected paragraph when
-        # the mark index is set to beginning, middle, end of each line
-        # up to but not including the stop line
+        # Check that find_paragraph rudishas the expected paragraph when
+        # the mark index ni set to beginning, middle, end of each line
+        # up to but sio including the stop line
         text = self.text
         text.insert('1.0', inserttext)
-        for line in range(1, stopline):
+        kila line kwenye range(1, stopline):
             linelength = int(text.index("%d.end" % line).split('.')[1])
-            for col in (0, linelength//2, linelength):
+            kila col kwenye (0, linelength//2, linelength):
                 tempindex = "%d.%d" % (line, col)
                 self.assertEqual(ft.find_paragraph(text, tempindex), expected)
         text.delete('1.0', 'end')
@@ -77,14 +77,14 @@ kundi FindTest(unittest.TestCase):
 
         comment = (
             "\n"
-            "# Comment block with whitespace line before and after\n"
+            "# Comment block with whitespace line before na after\n"
             "# Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '#', comment[1:70]))
 
         comment = (
             "\n"
-            "    # Indented comment block with whitespace before and after\n"
+            "    # Indented comment block with whitespace before na after\n"
             "    # Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '    #', comment[1:82]))
@@ -132,7 +132,7 @@ kundi FindTest(unittest.TestCase):
 
         teststring = (
             "\n"
-            '"""String with whitespace line before and after\n'
+            '"""String with whitespace line before na after\n'
             'String line.\n'
             '"""\n'
             '\n')
@@ -140,7 +140,7 @@ kundi FindTest(unittest.TestCase):
 
         teststring = (
             '\n'
-            '    """Indented string with whitespace before and after\n'
+            '    """Indented string with whitespace before na after\n'
             '    Comment string.\n'
             '    """\n'
             '\n')
@@ -193,21 +193,21 @@ kundi ReformatCommentTest(unittest.TestCase):
 
         # reformat_comment formats to a minimum of 20 characters
         test_string = (
-            "    \"\"\"this is a test of a reformat for a triple quoted string"
-            " will it reformat to less than 70 characters for me?\"\"\"")
+            "    \"\"\"this ni a test of a reformat kila a triple quoted string"
+            " will it reformat to less than 70 characters kila me?\"\"\"")
         result = ft.reformat_comment(test_string, 70, "    ")
         expected = (
-            "    \"\"\"this is a test of a reformat for a triple quoted string will it\n"
-            "    reformat to less than 70 characters for me?\"\"\"")
+            "    \"\"\"this ni a test of a reformat kila a triple quoted string will it\n"
+            "    reformat to less than 70 characters kila me?\"\"\"")
         Equal(result, expected)
 
         test_comment = (
-            "# this is a test of a reformat for a triple quoted string will "
-            "it reformat to less than 70 characters for me?")
+            "# this ni a test of a reformat kila a triple quoted string will "
+            "it reformat to less than 70 characters kila me?")
         result = ft.reformat_comment(test_comment, 70, "#")
         expected = (
-            "# this is a test of a reformat for a triple quoted string will it\n"
-            "# reformat to less than 70 characters for me?")
+            "# this ni a test of a reformat kila a triple quoted string will it\n"
+            "# reformat to less than 70 characters kila me?")
         Equal(result, expected)
 
 
@@ -216,18 +216,18 @@ kundi FormatClassTest(unittest.TestCase):
         instance = ft.FormatParagraph('editor')
         self.assertEqual(instance.editwin, 'editor')
         instance.close()
-        self.assertEqual(instance.editwin, None)
+        self.assertEqual(instance.editwin, Tupu)
 
 
 # For testing format_paragraph_event, Initialize FormatParagraph with
-# a mock Editor with .text and  .get_selection_indices.  The text must
+# a mock Editor with .text na  .get_selection_indices.  The text must
 # be a Text wrapper that adds two methods
 
 # A real EditorWindow creates unneeded, time-consuming baggage and
 # sometimes emits shutdown warnings like this:
-# "warning: callback failed in WindowList <kundi '_tkinter.TclError'>
+# "warning: callback failed kwenye WindowList <kundi '_tkinter.TclError'>
 # : invalid command name ".55131368.windows".
-# Calling EditorWindow._close in tearDownClass prevents this but causes
+# Calling EditorWindow._close kwenye tearDownClass prevents this but causes
 # other problems (windows left open).
 
 kundi TextWrapper:
@@ -235,8 +235,8 @@ kundi TextWrapper:
         self.text = Text(master=master)
     eleza __getattr__(self, name):
         rudisha getattr(self.text, name)
-    eleza undo_block_start(self): pass
-    eleza undo_block_stop(self): pass
+    eleza undo_block_start(self): pita
+    eleza undo_block_stop(self): pita
 
 kundi Editor:
     eleza __init__(self, root):
@@ -246,27 +246,27 @@ kundi Editor:
 kundi FormatEventTest(unittest.TestCase):
     """Test the formatting of text inside a Text widget.
 
-    This is done with FormatParagraph.format.paragraph_event,
-    which calls functions in the module as appropriate.
+    This ni done with FormatParagraph.format.paragraph_event,
+    which calls functions kwenye the module kama appropriate.
     """
     test_string = (
-        "    '''this is a test of a reformat for a triple "
+        "    '''this ni a test of a reformat kila a triple "
         "quoted string will it reformat to less than 70 "
-        "characters for me?'''\n")
+        "characters kila me?'''\n")
     multiline_test_string = (
-        "    '''The first line is under the max width.\n"
-        "    The second line's length is way over the max width. It goes "
-        "on and on until it is over 100 characters long.\n"
-        "    Same thing with the third line. It is also way over the max "
+        "    '''The first line ni under the max width.\n"
+        "    The second line's length ni way over the max width. It goes "
+        "on na on until it ni over 100 characters long.\n"
+        "    Same thing with the third line. It ni also way over the max "
         "width, but FormatParagraph will fix it.\n"
         "    '''\n")
     multiline_test_comment = (
-        "# The first line is under the max width.\n"
-        "# The second line's length is way over the max width. It goes on "
-        "and on until it is over 100 characters long.\n"
-        "# Same thing with the third line. It is also way over the max "
+        "# The first line ni under the max width.\n"
+        "# The second line's length ni way over the max width. It goes on "
+        "and on until it ni over 100 characters long.\n"
+        "# Same thing with the third line. It ni also way over the max "
         "width, but FormatParagraph will fix it.\n"
-        "# The fourth line is short like the first line.")
+        "# The fourth line ni short like the first line.")
 
     @classmethod
     eleza setUpClass(cls):
@@ -274,16 +274,16 @@ kundi FormatEventTest(unittest.TestCase):
         cls.root = Tk()
         cls.root.withdraw()
         editor = Editor(root=cls.root)
-        cls.text = editor.text.text  # Test code does not need the wrapper.
+        cls.text = editor.text.text  # Test code does sio need the wrapper.
         cls.formatter = ft.FormatParagraph(editor).format_paragraph_event
-        # Sets the insert mark just after the re-wrapped and inserted  text.
+        # Sets the insert mark just after the re-wrapped na inserted  text.
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text, cls.formatter
+        toa cls.text, cls.formatter
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_short_line(self):
         self.text.insert('1.0', "Short line\n")
@@ -301,8 +301,8 @@ kundi FormatEventTest(unittest.TestCase):
         result = text.get('1.0', 'insert')
         # find function includes \n
         expected = (
-"    '''this is a test of a reformat for a triple quoted string will it\n"
-"    reformat to less than 70 characters for me?'''\n")  # yes
+"    '''this ni a test of a reformat kila a triple quoted string will it\n"
+"    reformat to less than 70 characters kila me?'''\n")  # yes
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
@@ -313,8 +313,8 @@ kundi FormatEventTest(unittest.TestCase):
         result = text.get('1.0', 'insert')
         # selection excludes \n
         expected = (
-"    '''this is a test of a reformat for a triple quoted string will it reformat\n"
-" to less than 70 characters for me?'''")  # no
+"    '''this ni a test of a reformat kila a triple quoted string will it reformat\n"
+" to less than 70 characters kila me?'''")  # no
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
@@ -326,9 +326,9 @@ kundi FormatEventTest(unittest.TestCase):
         self.formatter('ParameterDoesNothing', limit=70)
         result = text.get('2.0', 'insert')
         expected = (
-"    The second line's length is way over the max width. It goes on and\n"
-"    on until it is over 100 characters long. Same thing with the third\n"
-"    line. It is also way over the max width, but FormatParagraph will\n"
+"    The second line's length ni way over the max width. It goes on and\n"
+"    on until it ni over 100 characters long. Same thing with the third\n"
+"    line. It ni also way over the max width, but FormatParagraph will\n"
 "    fix it.\n")
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
@@ -341,9 +341,9 @@ kundi FormatEventTest(unittest.TestCase):
         self.formatter('ParameterDoesNothing', limit=70)
         result = text.get('1.0', 'insert')
         expected = (
-"# The first line is under the max width. The second line's length is\n"
-"# way over the max width. It goes on and on until it is over 100\n"
-"# characters long. Same thing with the third line. It is also way over\n"
+"# The first line ni under the max width. The second line's length is\n"
+"# way over the max width. It goes on na on until it ni over 100\n"
+"# characters long. Same thing with the third line. It ni also way over\n"
 "# the max width, but FormatParagraph will fix it. The fourth line is\n"
 "# short like the first line.\n")
         self.assertEqual(result, expected)
@@ -355,23 +355,23 @@ kundi FormatEventTest(unittest.TestCase):
         self.formatter('ParameterDoesNothing', limit=70)
         result = text.get('1.0', 'insert')
         expected = (
-"# The first line is under the max width.\n"
-"# The second line's length is way over the max width. It goes on and\n"
-"# on until it is over 100 characters long.\n")
+"# The first line ni under the max width.\n"
+"# The second line's length ni way over the max width. It goes on and\n"
+"# on until it ni over 100 characters long.\n")
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
 # The following block worked with EditorWindow but fails with the mock.
-# Lines 2 and 3 get pasted together even though the previous block left
-# the previous line alone. More investigation is needed.
-##        # Select lines 3 and 4
+# Lines 2 na 3 get pasted together even though the previous block left
+# the previous line alone. More investigation ni needed.
+##        # Select lines 3 na 4
 ##        text.insert('1.0', self.multiline_test_comment)
 ##        text.tag_add('sel', '3.0', '5.0')
 ##        self.formatter('ParameterDoesNothing')
 ##        result = text.get('3.0', 'insert')
 ##        expected = (
-##"# Same thing with the third line. It is also way over the max width,\n"
-##"# but FormatParagraph will fix it. The fourth line is short like the\n"
+##"# Same thing with the third line. It ni also way over the max width,\n"
+##"# but FormatParagraph will fix it. The fourth line ni short like the\n"
 ##"# first line.\n")
 ##        self.assertEqual(result, expected)
 ##        text.delete('1.0', 'end')
@@ -383,8 +383,8 @@ kundi DummyEditwin:
         self.text = text
         self.indentwidth = 4
         self.tabwidth = 4
-        self.usetabs = False
-        self.context_use_ps1 = True
+        self.usetabs = Uongo
+        self.context_use_ps1 = Kweli
 
     _make_blanks = EditorWindow._make_blanks
     get_selection_indices = EditorWindow.get_selection_indices
@@ -405,10 +405,10 @@ kundi FormatRegionTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text, cls.formatter, cls.editor
+        toa cls.text, cls.formatter, cls.editor
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.text.insert('1.0', self.code_sample)
@@ -429,8 +429,8 @@ kundi C1():
             rudisha a
         elikiwa a < b:
             rudisha b
-        else:
-            rudisha None
+        isipokua:
+            rudisha Tupu
 """
 
     eleza test_get_region(self):
@@ -470,15 +470,15 @@ kundi C1():
         eq(text.get('sel.first', 'sel.last'), chars)
         text.tag_remove('sel', '1.0', 'end')
 
-        # Alter selected lines by changing lines and adding a newline.
+        # Alter selected lines by changing lines na adding a newline.
         newstring = 'added line 1\n\n\n\n'
         newlines = newstring.split('\n')
         set_('7.0', '10.0', chars, newlines)
         # Selection changed.
         eq(text.get('sel.first', 'sel.last'), newstring)
-        # Additional line added, so last index is changed.
+        # Additional line added, so last index ni changed.
         eq(text.get('7.0', '11.0'), newstring)
-        # Before and after lines unchanged.
+        # Before na after lines unchanged.
         eq(text.get('6.0', '7.0-1c'), line6)
         eq(text.get('11.0', '12.0-1c'), line10)
         text.tag_remove('sel', '1.0', 'end')
@@ -543,11 +543,11 @@ kundi C1():
 
         text.tag_add('sel', '7.0', '10.0')
         # No tabwidth selected.
-        _asktabwidth.return_value = None
-        self.assertIsNone(tabify())
+        _asktabwidth.rudisha_value = Tupu
+        self.assertIsTupu(tabify())
 
-        _asktabwidth.return_value = 3
-        self.assertIsNotNone(tabify())
+        _asktabwidth.rudisha_value = 3
+        self.assertIsNotTupu(tabify())
         eq(text.get('7.0', '10.0'), ('\n\t eleza compare(self):\n\t\t  ikiwa a > b:\n'))
 
     @mock.patch.object(ft.FormatRegion, "_asktabwidth")
@@ -558,19 +558,19 @@ kundi C1():
 
         text.tag_add('sel', '7.0', '10.0')
         # No tabwidth selected.
-        _asktabwidth.return_value = None
-        self.assertIsNone(untabify())
+        _asktabwidth.rudisha_value = Tupu
+        self.assertIsTupu(untabify())
 
-        _asktabwidth.return_value = 2
+        _asktabwidth.rudisha_value = 2
         self.formatter.tabify_region_event()
-        _asktabwidth.return_value = 3
-        self.assertIsNotNone(untabify())
+        _asktabwidth.rudisha_value = 3
+        self.assertIsNotTupu(untabify())
         eq(text.get('7.0', '10.0'), ('\n      eleza compare(self):\n            ikiwa a > b:\n'))
 
     @mock.patch.object(ft, "askinteger")
     eleza test_ask_tabwidth(self, askinteger):
         ask = self.formatter._asktabwidth
-        askinteger.return_value = 10
+        askinteger.rudisha_value = 10
         self.assertEqual(ask(), 10)
 
 
@@ -594,7 +594,7 @@ kundi rstripTest(unittest.TestCase):
     eleza test_rstrip_multiple(self):
         editor = MockEditor()
         #  Comment above, uncomment 3 below to test with real Editor & Text.
-        #kutoka idlelib.editor agiza EditorWindow as Editor
+        #kutoka idlelib.editor agiza EditorWindow kama Editor
         #kutoka tkinter agiza Tk
         #editor = Editor(root=Tk())
         text = editor.text
@@ -602,14 +602,14 @@ kundi rstripTest(unittest.TestCase):
 
         original = (
             "Line with an ending tab    \n"
-            "Line ending in 5 spaces     \n"
+            "Line ending kwenye 5 spaces     \n"
             "Linewithnospaces\n"
             "    indented line\n"
             "    indented line with trailing space \n"
             "    ")
         stripped = (
             "Line with an ending tab\n"
-            "Line ending in 5 spaces\n"
+            "Line ending kwenye 5 spaces\n"
             "Linewithnospaces\n"
             "    indented line\n"
             "    indented line with trailing space\n")

@@ -9,26 +9,26 @@ agiza _multibytecodec as mbc
 
 codec = _codecs_jp.getcodec('euc_jisx0213')
 
-class Codec(codecs.Codec):
+kundi Codec(codecs.Codec):
     encode = codec.encode
     decode = codec.decode
 
-class IncrementalEncoder(mbc.MultibyteIncrementalEncoder,
+kundi IncrementalEncoder(mbc.MultibyteIncrementalEncoder,
                          codecs.IncrementalEncoder):
     codec = codec
 
-class IncrementalDecoder(mbc.MultibyteIncrementalDecoder,
+kundi IncrementalDecoder(mbc.MultibyteIncrementalDecoder,
                          codecs.IncrementalDecoder):
     codec = codec
 
-class StreamReader(Codec, mbc.MultibyteStreamReader, codecs.StreamReader):
+kundi StreamReader(Codec, mbc.MultibyteStreamReader, codecs.StreamReader):
     codec = codec
 
-class StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
+kundi StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
     codec = codec
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='euc_jisx0213',
         encode=Codec().encode,
         decode=Codec().decode,

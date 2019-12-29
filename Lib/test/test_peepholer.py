@@ -6,12 +6,12 @@ kutoka test.bytecode_helper agiza BytecodeTestCase
 
 eleza count_instr_recursively(f, opname):
     count = 0
-    for instr in dis.get_instructions(f):
+    kila instr kwenye dis.get_instructions(f):
         ikiwa instr.opname == opname:
             count += 1
     ikiwa hasattr(f, '__code__'):
         f = f.__code__
-    for c in f.co_consts:
+    kila c kwenye f.co_consts:
         ikiwa hasattr(c, 'co_code'):
             count += count_instr_recursively(c, opname)
     rudisha count
@@ -21,22 +21,22 @@ kundi TestTranforms(BytecodeTestCase):
 
     eleza check_jump_targets(self, code):
         instructions = list(dis.get_instructions(code))
-        targets = {instr.offset: instr for instr in instructions}
-        for instr in instructions:
-            ikiwa 'JUMP_' not in instr.opname:
-                continue
+        targets = {instr.offset: instr kila instr kwenye instructions}
+        kila instr kwenye instructions:
+            ikiwa 'JUMP_' haiko kwenye instr.opname:
+                endelea
             tgt = targets[instr.argval]
             # jump to unconditional jump
-            ikiwa tgt.opname in ('JUMP_ABSOLUTE', 'JUMP_FORWARD'):
+            ikiwa tgt.opname kwenye ('JUMP_ABSOLUTE', 'JUMP_FORWARD'):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
             # unconditional jump to RETURN_VALUE
-            ikiwa (instr.opname in ('JUMP_ABSOLUTE', 'JUMP_FORWARD') and
+            ikiwa (instr.opname kwenye ('JUMP_ABSOLUTE', 'JUMP_FORWARD') and
                 tgt.opname == 'RETURN_VALUE'):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
             # JUMP_IF_*_OR_POP jump to conditional jump
-            ikiwa '_OR_POP' in instr.opname and 'JUMP_IF_' in tgt.opname:
+            ikiwa '_OR_POP' kwenye instr.opname na 'JUMP_IF_' kwenye tgt.opname:
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
 
@@ -44,77 +44,77 @@ kundi TestTranforms(BytecodeTestCase):
         "Check that the lnotab byte offsets are sensible."
         code = dis._get_code_object(code)
         lnotab = list(dis.findlinestarts(code))
-        # Don't bother checking ikiwa the line info is sensible, because
+        # Don't bother checking ikiwa the line info ni sensible, because
         # most of the line info we can get at comes kutoka lnotab.
-        min_bytecode = min(t[0] for t in lnotab)
-        max_bytecode = max(t[0] for t in lnotab)
+        min_bytecode = min(t[0] kila t kwenye lnotab)
+        max_bytecode = max(t[0] kila t kwenye lnotab)
         self.assertGreaterEqual(min_bytecode, 0)
         self.assertLess(max_bytecode, len(code.co_code))
-        # This could conceivably test more (and probably should, as there
+        # This could conceivably test more (and probably should, kama there
         # aren't very many tests of lnotab), ikiwa peepholer wasn't scheduled
         # to be replaced anyway.
 
     eleza test_unot(self):
         # UNARY_NOT POP_JUMP_IF_FALSE  -->  POP_JUMP_IF_TRUE'
         eleza unot(x):
-            ikiwa not x == 2:
-                del x
+            ikiwa sio x == 2:
+                toa x
         self.assertNotInBytecode(unot, 'UNARY_NOT')
         self.assertNotInBytecode(unot, 'POP_JUMP_IF_FALSE')
         self.assertInBytecode(unot, 'POP_JUMP_IF_TRUE')
         self.check_lnotab(unot)
 
     eleza test_elim_inversion_of_is_or_in(self):
-        for line, cmp_op in (
-            ('not a is b', 'is not',),
-            ('not a in b', 'not in',),
-            ('not a is not b', 'is',),
-            ('not a not in b', 'in',),
+        kila line, cmp_op kwenye (
+            ('not a ni b', 'is not',),
+            ('not a kwenye b', 'not in',),
+            ('not a ni sio b', 'is',),
+            ('not a haiko kwenye b', 'in',),
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'COMPARE_OP', cmp_op)
             self.check_lnotab(code)
 
     eleza test_global_as_constant(self):
-        # LOAD_GLOBAL None/True/False  -->  LOAD_CONST None/True/False
+        # LOAD_GLOBAL Tupu/Kweli/Uongo  -->  LOAD_CONST Tupu/Kweli/Uongo
         eleza f():
-            x = None
-            x = None
+            x = Tupu
+            x = Tupu
             rudisha x
         eleza g():
-            x = True
+            x = Kweli
             rudisha x
         eleza h():
-            x = False
+            x = Uongo
             rudisha x
 
-        for func, elem in ((f, None), (g, True), (h, False)):
+        kila func, elem kwenye ((f, Tupu), (g, Kweli), (h, Uongo)):
             self.assertNotInBytecode(func, 'LOAD_GLOBAL')
             self.assertInBytecode(func, 'LOAD_CONST', elem)
             self.check_lnotab(func)
 
         eleza f():
-            'Adding a docstring made this test fail in Py2.5.0'
-            rudisha None
+            'Adding a docstring made this test fail kwenye Py2.5.0'
+            rudisha Tupu
 
         self.assertNotInBytecode(f, 'LOAD_GLOBAL')
-        self.assertInBytecode(f, 'LOAD_CONST', None)
+        self.assertInBytecode(f, 'LOAD_CONST', Tupu)
         self.check_lnotab(f)
 
     eleza test_while_one(self):
         # Skip over:  LOAD_CONST trueconst  POP_JUMP_IF_FALSE xx
         eleza f():
-            while 1:
-                pass
+            wakati 1:
+                pita
             rudisha list
-        for elem in ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
+        kila elem kwenye ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
             self.assertNotInBytecode(f, elem)
-        for elem in ('JUMP_ABSOLUTE',):
+        kila elem kwenye ('JUMP_ABSOLUTE',):
             self.assertInBytecode(f, elem)
         self.check_lnotab(f)
 
     eleza test_pack_unpack(self):
-        for line, elem in (
+        kila line, elem kwenye (
             ('a, = a,', 'LOAD_CONST',),
             ('a, b = a, b', 'ROT_TWO',),
             ('a, b, c = a, b, c', 'ROT_THREE',),
@@ -126,11 +126,11 @@ kundi TestTranforms(BytecodeTestCase):
             self.check_lnotab(code)
 
     eleza test_folding_of_tuples_of_constants(self):
-        for line, elem in (
+        kila line, elem kwenye (
             ('a = 1,2,3', (1, 2, 3)),
             ('("a","b","c")', ('a', 'b', 'c')),
             ('a,b,c = 1,2,3', (1, 2, 3)),
-            ('(None, 1, None)', (None, 1, None)),
+            ('(Tupu, 1, Tupu)', (Tupu, 1, Tupu)),
             ('((1, 2), 3, 4)', ((1, 2), 3, 4)),
             ):
             code = compile(line,'','single')
@@ -141,8 +141,8 @@ kundi TestTranforms(BytecodeTestCase):
         # Long tuples should be folded too.
         code = compile(repr(tuple(range(10000))),'','single')
         self.assertNotInBytecode(code, 'BUILD_TUPLE')
-        # One LOAD_CONST for the tuple, one for the None rudisha value
-        load_consts = [instr for instr in dis.get_instructions(code)
+        # One LOAD_CONST kila the tuple, one kila the Tupu rudisha value
+        load_consts = [instr kila instr kwenye dis.get_instructions(code)
                               ikiwa instr.opname == 'LOAD_CONST']
         self.assertEqual(len(load_consts), 2)
         self.check_lnotab(code)
@@ -166,12 +166,12 @@ kundi TestTranforms(BytecodeTestCase):
         self.check_lnotab(crater)
 
     eleza test_folding_of_lists_of_constants(self):
-        for line, elem in (
-            # in/not in constants with BUILD_LIST should be folded to a tuple:
-            ('a in [1,2,3]', (1, 2, 3)),
-            ('a not in ["a","b","c"]', ('a', 'b', 'c')),
-            ('a in [None, 1, None]', (None, 1, None)),
-            ('a not in [(1, 2), 3, 4]', ((1, 2), 3, 4)),
+        kila line, elem kwenye (
+            # in/not kwenye constants with BUILD_LIST should be folded to a tuple:
+            ('a kwenye [1,2,3]', (1, 2, 3)),
+            ('a haiko kwenye ["a","b","c"]', ('a', 'b', 'c')),
+            ('a kwenye [Tupu, 1, Tupu]', (Tupu, 1, Tupu)),
+            ('a haiko kwenye [(1, 2), 3, 4]', ((1, 2), 3, 4)),
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'LOAD_CONST', elem)
@@ -179,13 +179,13 @@ kundi TestTranforms(BytecodeTestCase):
             self.check_lnotab(code)
 
     eleza test_folding_of_sets_of_constants(self):
-        for line, elem in (
-            # in/not in constants with BUILD_SET should be folded to a frozenset:
-            ('a in {1,2,3}', frozenset({1, 2, 3})),
-            ('a not in {"a","b","c"}', frozenset({'a', 'c', 'b'})),
-            ('a in {None, 1, None}', frozenset({1, None})),
-            ('a not in {(1, 2), 3, 4}', frozenset({(1, 2), 3, 4})),
-            ('a in {1, 2, 3, 3, 2, 1}', frozenset({1, 2, 3})),
+        kila line, elem kwenye (
+            # in/not kwenye constants with BUILD_SET should be folded to a frozenset:
+            ('a kwenye {1,2,3}', frozenset({1, 2, 3})),
+            ('a haiko kwenye {"a","b","c"}', frozenset({'a', 'c', 'b'})),
+            ('a kwenye {Tupu, 1, Tupu}', frozenset({1, Tupu})),
+            ('a haiko kwenye {(1, 2), 3, 4}', frozenset({(1, 2), 3, 4})),
+            ('a kwenye {1, 2, 3, 3, 2, 1}', frozenset({1, 2, 3})),
             ):
             code = compile(line, '', 'single')
             self.assertNotInBytecode(code, 'BUILD_SET')
@@ -194,22 +194,22 @@ kundi TestTranforms(BytecodeTestCase):
 
         # Ensure that the resulting code actually works:
         eleza f(a):
-            rudisha a in {1, 2, 3}
+            rudisha a kwenye {1, 2, 3}
 
         eleza g(a):
-            rudisha a not in {1, 2, 3}
+            rudisha a haiko kwenye {1, 2, 3}
 
-        self.assertTrue(f(3))
-        self.assertTrue(not f(4))
+        self.assertKweli(f(3))
+        self.assertKweli(not f(4))
         self.check_lnotab(f)
 
-        self.assertTrue(not g(3))
-        self.assertTrue(g(4))
+        self.assertKweli(not g(3))
+        self.assertKweli(g(4))
         self.check_lnotab(g)
 
 
     eleza test_folding_of_binops_on_constants(self):
-        for line, elem in (
+        kila line, elem kwenye (
             ('a = 2+3+4', 9),                   # chained fold
             ('"@"*4', '@@@@'),                  # check string ops
             ('a="abc" + "def"', 'abcdef'),      # check string ops
@@ -228,8 +228,8 @@ kundi TestTranforms(BytecodeTestCase):
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'LOAD_CONST', elem)
-            for instr in dis.get_instructions(code):
-                self.assertFalse(instr.opname.startswith('BINARY_'))
+            kila instr kwenye dis.get_instructions(code):
+                self.assertUongo(instr.opname.startswith('BINARY_'))
             self.check_lnotab(code)
 
         # Verify that unfoldables are skipped
@@ -238,7 +238,7 @@ kundi TestTranforms(BytecodeTestCase):
         self.assertInBytecode(code, 'LOAD_CONST', 'b')
         self.check_lnotab(code)
 
-        # Verify that large sequences do not result kutoka folding
+        # Verify that large sequences do sio result kutoka folding
         code = compile('a="x"*10000', '', 'single')
         self.assertInBytecode(code, 'LOAD_CONST', 10000)
         self.assertNotIn("x"*10000, code.co_consts)
@@ -276,7 +276,7 @@ kundi TestTranforms(BytecodeTestCase):
         self.check_lnotab(code)
 
     eleza test_folding_of_unaryops_on_constants(self):
-        for line, elem in (
+        kila line, elem kwenye (
             ('-0.5', -0.5),                     # unary negative
             ('-0.0', -0.0),                     # -0.0
             ('-(1.0-1.0)', -0.0),               # -0.0 after folding
@@ -286,20 +286,20 @@ kundi TestTranforms(BytecodeTestCase):
         ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'LOAD_CONST', elem)
-            for instr in dis.get_instructions(code):
-                self.assertFalse(instr.opname.startswith('UNARY_'))
+            kila instr kwenye dis.get_instructions(code):
+                self.assertUongo(instr.opname.startswith('UNARY_'))
             self.check_lnotab(code)
 
         # Check that -0.0 works after marshaling
         eleza negzero():
             rudisha -(1.0-1.0)
 
-        for instr in dis.get_instructions(negzero):
-            self.assertFalse(instr.opname.startswith('UNARY_'))
+        kila instr kwenye dis.get_instructions(negzero):
+            self.assertUongo(instr.opname.startswith('UNARY_'))
         self.check_lnotab(negzero)
 
         # Verify that unfoldables are skipped
-        for line, elem, opname in (
+        kila line, elem, opname kwenye (
             ('-"abc"', 'abc', 'UNARY_NEGATIVE'),
             ('~"abc"', 'abc', 'UNARY_INVERT'),
         ):
@@ -308,17 +308,17 @@ kundi TestTranforms(BytecodeTestCase):
             self.assertInBytecode(code, opname)
             self.check_lnotab(code)
 
-    eleza test_elim_extra_return(self):
-        # RETURN LOAD_CONST None RETURN  -->  RETURN
+    eleza test_elim_extra_rudisha(self):
+        # RETURN LOAD_CONST Tupu RETURN  -->  RETURN
         eleza f(x):
             rudisha x
-        self.assertNotInBytecode(f, 'LOAD_CONST', None)
-        returns = [instr for instr in dis.get_instructions(f)
+        self.assertNotInBytecode(f, 'LOAD_CONST', Tupu)
+        rudishas = [instr kila instr kwenye dis.get_instructions(f)
                           ikiwa instr.opname == 'RETURN_VALUE']
-        self.assertEqual(len(returns), 1)
+        self.assertEqual(len(rudishas), 1)
         self.check_lnotab(f)
 
-    eleza test_elim_jump_to_return(self):
+    eleza test_elim_jump_to_rudisha(self):
         # JUMP_FORWARD to RETURN -->  RETURN
         eleza f(cond, true_value, false_value):
             # Intentionally use two-line expression to test issue37213.
@@ -327,9 +327,9 @@ kundi TestTranforms(BytecodeTestCase):
         self.check_jump_targets(f)
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_ABSOLUTE')
-        returns = [instr for instr in dis.get_instructions(f)
+        rudishas = [instr kila instr kwenye dis.get_instructions(f)
                           ikiwa instr.opname == 'RETURN_VALUE']
-        self.assertEqual(len(returns), 2)
+        self.assertEqual(len(rudishas), 2)
         self.check_lnotab(f)
 
     eleza test_elim_jump_to_uncond_jump(self):
@@ -338,9 +338,9 @@ kundi TestTranforms(BytecodeTestCase):
             ikiwa a:
                 # Intentionally use two-line expression to test issue37213.
                 ikiwa (c
-                    or d):
+                    ama d):
                     foo()
-            else:
+            isipokua:
                 baz()
         self.check_jump_targets(f)
         self.check_lnotab(f)
@@ -348,10 +348,10 @@ kundi TestTranforms(BytecodeTestCase):
     eleza test_elim_jump_to_uncond_jump2(self):
         # POP_JUMP_IF_FALSE to JUMP_ABSOLUTE --> POP_JUMP_IF_FALSE to non-jump
         eleza f():
-            while a:
+            wakati a:
                 # Intentionally use two-line expression to test issue37213.
                 ikiwa (c
-                    or d):
+                    ama d):
                     a = foo()
         self.check_jump_targets(f)
         self.check_lnotab(f)
@@ -360,22 +360,22 @@ kundi TestTranforms(BytecodeTestCase):
         # Intentionally use two-line expressions to test issue37213.
         # JUMP_IF_FALSE_OR_POP to JUMP_IF_FALSE_OR_POP --> JUMP_IF_FALSE_OR_POP to non-jump
         eleza f(a, b, c):
-            rudisha ((a and b)
-                    and c)
+            rudisha ((a na b)
+                    na c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'JUMP_IF_FALSE_OR_POP'), 2)
         # JUMP_IF_TRUE_OR_POP to JUMP_IF_TRUE_OR_POP --> JUMP_IF_TRUE_OR_POP to non-jump
         eleza f(a, b, c):
-            rudisha ((a or b)
-                    or c)
+            rudisha ((a ama b)
+                    ama c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'JUMP_IF_TRUE_OR_POP'), 2)
         # JUMP_IF_FALSE_OR_POP to JUMP_IF_TRUE_OR_POP --> POP_JUMP_IF_FALSE to non-jump
         eleza f(a, b, c):
-            rudisha ((a and b)
-                    or c)
+            rudisha ((a na b)
+                    ama c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertNotInBytecode(f, 'JUMP_IF_FALSE_OR_POP')
@@ -383,51 +383,51 @@ kundi TestTranforms(BytecodeTestCase):
         self.assertInBytecode(f, 'POP_JUMP_IF_FALSE')
         # JUMP_IF_TRUE_OR_POP to JUMP_IF_FALSE_OR_POP --> POP_JUMP_IF_TRUE to non-jump
         eleza f(a, b, c):
-            rudisha ((a or b)
-                    and c)
+            rudisha ((a ama b)
+                    na c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertNotInBytecode(f, 'JUMP_IF_TRUE_OR_POP')
         self.assertInBytecode(f, 'JUMP_IF_FALSE_OR_POP')
         self.assertInBytecode(f, 'POP_JUMP_IF_TRUE')
 
-    eleza test_elim_jump_after_return1(self):
-        # Eliminate dead code: jumps immediately after returns can't be reached
+    eleza test_elim_jump_after_rudisha1(self):
+        # Eliminate dead code: jumps immediately after rudishas can't be reached
         eleza f(cond1, cond2):
             ikiwa cond1: rudisha 1
             ikiwa cond2: rudisha 2
-            while 1:
+            wakati 1:
                 rudisha 3
-            while 1:
+            wakati 1:
                 ikiwa cond1: rudisha 4
                 rudisha 5
             rudisha 6
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_ABSOLUTE')
-        returns = [instr for instr in dis.get_instructions(f)
+        rudishas = [instr kila instr kwenye dis.get_instructions(f)
                           ikiwa instr.opname == 'RETURN_VALUE']
-        self.assertLessEqual(len(returns), 6)
+        self.assertLessEqual(len(rudishas), 6)
         self.check_lnotab(f)
 
-    eleza test_elim_jump_after_return2(self):
-        # Eliminate dead code: jumps immediately after returns can't be reached
+    eleza test_elim_jump_after_rudisha2(self):
+        # Eliminate dead code: jumps immediately after rudishas can't be reached
         eleza f(cond1, cond2):
-            while 1:
+            wakati 1:
                 ikiwa cond1: rudisha 4
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
-        # There should be one jump for the while loop.
-        returns = [instr for instr in dis.get_instructions(f)
+        # There should be one jump kila the wakati loop.
+        rudishas = [instr kila instr kwenye dis.get_instructions(f)
                           ikiwa instr.opname == 'JUMP_ABSOLUTE']
-        self.assertEqual(len(returns), 1)
-        returns = [instr for instr in dis.get_instructions(f)
+        self.assertEqual(len(rudishas), 1)
+        rudishas = [instr kila instr kwenye dis.get_instructions(f)
                           ikiwa instr.opname == 'RETURN_VALUE']
-        self.assertLessEqual(len(returns), 2)
+        self.assertLessEqual(len(rudishas), 2)
         self.check_lnotab(f)
 
     eleza test_make_function_doesnt_bail(self):
         eleza f():
             eleza g()->1+1:
-                pass
+                pita
             rudisha g
         self.assertNotInBytecode(f, 'BINARY_ADD')
         self.check_lnotab(f)
@@ -443,44 +443,44 @@ kundi TestTranforms(BytecodeTestCase):
             '(1, -2, 3)',
             '(1, 2, -3)',
             '(1, 2, -3) * 6',
-            'lambda x: x in {(3 * -5) + (-1 - 6), (1, -2, 3) * 2, None}',
+            'lambda x: x kwenye {(3 * -5) + (-1 - 6), (1, -2, 3) * 2, Tupu}',
         ]
-        for e in exprs:
+        kila e kwenye exprs:
             code = compile(e, '', 'single')
-            for instr in dis.get_instructions(code):
-                self.assertFalse(instr.opname.startswith('UNARY_'))
-                self.assertFalse(instr.opname.startswith('BINARY_'))
-                self.assertFalse(instr.opname.startswith('BUILD_'))
+            kila instr kwenye dis.get_instructions(code):
+                self.assertUongo(instr.opname.startswith('UNARY_'))
+                self.assertUongo(instr.opname.startswith('BINARY_'))
+                self.assertUongo(instr.opname.startswith('BUILD_'))
             self.check_lnotab(code)
 
     eleza test_in_literal_list(self):
         eleza containtest():
-            rudisha x in [a, b]
+            rudisha x kwenye [a, b]
         self.assertEqual(count_instr_recursively(containtest, 'BUILD_LIST'), 0)
         self.check_lnotab(containtest)
 
     eleza test_iterate_literal_list(self):
         eleza forloop():
-            for x in [a, b]:
-                pass
+            kila x kwenye [a, b]:
+                pita
         self.assertEqual(count_instr_recursively(forloop, 'BUILD_LIST'), 0)
         self.check_lnotab(forloop)
 
     eleza test_condition_with_binop_with_bools(self):
         eleza f():
-            ikiwa True or False:
+            ikiwa Kweli ama Uongo:
                 rudisha 1
             rudisha 0
         self.assertEqual(f(), 1)
         self.check_lnotab(f)
 
-    eleza test_if_with_if_expression(self):  # XXX does this belong in 3.8?
+    eleza test_if_with_if_expression(self):  # XXX does this belong kwenye 3.8?
         # Check bpo-37289
         eleza f(x):
-            ikiwa (True ikiwa x else False):
-                rudisha True
-            rudisha False
-        self.assertTrue(f(True))
+            ikiwa (Kweli ikiwa x else Uongo):
+                rudisha Kweli
+            rudisha Uongo
+        self.assertKweli(f(Kweli))
         self.check_lnotab(f)
 
     eleza test_trailing_nops(self):
@@ -488,9 +488,9 @@ kundi TestTranforms(BytecodeTestCase):
         # optimization has trailing nops, which the lnotab adjustment has to
         # handle properly (bpo-38115).
         eleza f(x):
-            while 1:
+            wakati 1:
                 rudisha 3
-            while 1:
+            wakati 1:
                 rudisha 5
             rudisha 6
         self.check_lnotab(f)

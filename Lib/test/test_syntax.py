@@ -1,51 +1,51 @@
 """This module tests SyntaxErrors.
 
-Here's an example of the sort of thing that is tested.
+Here's an example of the sort of thing that ni tested.
 
 >>> eleza f(x):
 ...     global x
 Traceback (most recent call last):
-SyntaxError: name 'x' is parameter and global
+SyntaxError: name 'x' ni parameter na global
 
-The tests are all raise SyntaxErrors.  They were created by checking
-each C call that raises SyntaxError.  There are several modules that
-raise these exceptions-- ast.c, compile.c, future.c, pythonrun.c, and
+The tests are all ashiria SyntaxErrors.  They were created by checking
+each C call that ashirias SyntaxError.  There are several modules that
+ashiria these exceptions-- ast.c, compile.c, future.c, pythonrun.c, and
 symtable.c.
 
-The parser itself outlaws a lot of invalid syntax.  None of these
+The parser itself outlaws a lot of invalid syntax.  Tupu of these
 errors are tested here at the moment.  We should add some tests; since
 there are infinitely many programs with invalid syntax, we would need
-to be judicious in selecting some.
+to be judicious kwenye selecting some.
 
-The compiler generates a synthetic module name for code executed by
+The compiler generates a synthetic module name kila code executed by
 doctest.  Since all the code comes kutoka the same module, a suffix like
-[1] is appended to the module name, As a consequence, changing the
-order of tests in this module means renumbering all the errors after
-it.  (Maybe we should enable the ellipsis option for these tests.)
+[1] ni appended to the module name, As a consequence, changing the
+order of tests kwenye this module means renumbering all the errors after
+it.  (Maybe we should enable the ellipsis option kila these tests.)
 
-In ast.c, syntax errors are raised by calling ast_error().
+In ast.c, syntax errors are ashiriad by calling ast_error().
 
 Errors kutoka set_context():
 
->>> obj.None = 1
+>>> obj.Tupu = 1
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> None = 1
+>>> Tupu = 1
 Traceback (most recent call last):
-SyntaxError: cannot assign to None
+SyntaxError: cannot assign to Tupu
 
->>> obj.True = 1
+>>> obj.Kweli = 1
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> True = 1
+>>> Kweli = 1
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Kweli
 
->>> (True := 1)
+>>> (Kweli := 1)
 Traceback (most recent call last):
-SyntaxError: cannot use named assignment with True
+SyntaxError: cannot use named assignment with Kweli
 
 >>> obj.__debug__ = 1
 Traceback (most recent call last):
@@ -63,7 +63,7 @@ SyntaxError: cannot assign to __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> del f()
+>>> toa f()
 Traceback (most recent call last):
 SyntaxError: cannot delete function call
 
@@ -71,7 +71,7 @@ SyntaxError: cannot delete function call
 Traceback (most recent call last):
 SyntaxError: cannot assign to operator
 
->>> (x for x in x) = 1
+>>> (x kila x kwenye x) = 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to generator expression
 
@@ -95,7 +95,7 @@ SyntaxError: cannot assign to Ellipsis
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
-If the left-hand side of an assignment is a list or tuple, an illegal
+If the left-hand side of an assignment ni a list ama tuple, an illegal
 expression inside that contain should still cause a syntax error.
 This test just checks a couple of cases rather than enumerating all of
 them.
@@ -104,17 +104,17 @@ them.
 Traceback (most recent call last):
 SyntaxError: cannot assign to literal
 
->>> (a, True, c) = (1, 2, 3)
+>>> (a, Kweli, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Kweli
 
 >>> (a, __debug__, c) = (1, 2, 3)
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> (a, *True, c) = (1, 2, 3)
+>>> (a, *Kweli, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Kweli
 
 >>> (a, *__debug__, c) = (1, 2, 3)
 Traceback (most recent call last):
@@ -130,8 +130,8 @@ SyntaxError: cannot assign to conditional expression
 
 From compiler_complex_args():
 
->>> eleza f(None=1):
-...     pass
+>>> eleza f(Tupu=1):
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -139,30 +139,30 @@ SyntaxError: invalid syntax
 From ast_for_arguments():
 
 >>> eleza f(x, y=1, z):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: non-default argument follows default argument
 
->>> eleza f(x, None):
-...     pass
+>>> eleza f(x, Tupu):
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> eleza f(*None):
-...     pass
+>>> eleza f(*Tupu):
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> eleza f(**None):
-...     pass
+>>> eleza f(**Tupu):
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
 
 From ast_for_funcdef():
 
->>> eleza None(x):
-...     pass
+>>> eleza Tupu(x):
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -172,33 +172,33 @@ From ast_for_call():
 >>> eleza f(it, *varargs, **kwargs):
 ...     rudisha list(it)
 >>> L = range(10)
->>> f(x for x in L)
+>>> f(x kila x kwenye L)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
->>> f(x for x in L, 1)
+>>> f(x kila x kwenye L, 1)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, y=1)
+>>> f(x kila x kwenye L, y=1)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, *[])
+>>> f(x kila x kwenye L, *[])
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, **{})
+>>> f(x kila x kwenye L, **{})
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(L, x for x in L)
+>>> f(L, x kila x kwenye L)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L, y for y in L)
+>>> f(x kila x kwenye L, y kila y kwenye L)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f(x for x in L,)
+>>> f(x kila x kwenye L,)
 Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
->>> f((x for x in L), 1)
+>>> f((x kila x kwenye L), 1)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
->>> kundi C(x for x in L):
-...     pass
+>>> kundi C(x kila x kwenye L):
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -301,13 +301,13 @@ SyntaxError: invalid syntax
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 
-The grammar accepts any test (basically, any expression) in the
+The grammar accepts any test (basically, any expression) kwenye the
 keyword slot of a call site.  Test a few different options.
 
 >>> f(x()=2)
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
->>> f(a or b=1)
+>>> f(a ama b=1)
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f(x.y=1)
@@ -316,9 +316,9 @@ SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f((x)=2)
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
->>> f(True=2)
+>>> f(Kweli=2)
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Kweli
 >>> f(__debug__=1)
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
@@ -326,12 +326,12 @@ SyntaxError: cannot assign to __debug__
 
 More set_context():
 
->>> (x for x in x) += 1
+>>> (x kila x kwenye x) += 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to generator expression
->>> None += 1
+>>> Tupu += 1
 Traceback (most recent call last):
-SyntaxError: cannot assign to None
+SyntaxError: cannot assign to Tupu
 >>> __debug__ += 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
@@ -340,137 +340,137 @@ Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
 
-Test continue in finally in weird combinations.
+Test endelea kwenye finally kwenye weird combinations.
 
-continue in for loop under finally should be ok.
+endelea kwenye kila loop under finally should be ok.
 
     >>> eleza test():
-    ...     try:
-    ...         pass
-    ...     finally:
-    ...         for abc in range(10):
-    ...             continue
+    ...     jaribu:
+    ...         pita
+    ...     mwishowe:
+    ...         kila abc kwenye range(10):
+    ...             endelea
     ...     andika(abc)
     >>> test()
     9
 
-continue in a finally should be ok.
+endelea kwenye a finally should be ok.
 
     >>> eleza test():
-    ...    for abc in range(10):
-    ...        try:
-    ...            pass
-    ...        finally:
-    ...            continue
+    ...    kila abc kwenye range(10):
+    ...        jaribu:
+    ...            pita
+    ...        mwishowe:
+    ...            endelea
     ...    andika(abc)
     >>> test()
     9
 
     >>> eleza test():
-    ...    for abc in range(10):
-    ...        try:
-    ...            pass
-    ...        finally:
-    ...            try:
-    ...                continue
+    ...    kila abc kwenye range(10):
+    ...        jaribu:
+    ...            pita
+    ...        mwishowe:
+    ...            jaribu:
+    ...                endelea
     ...            except:
-    ...                pass
+    ...                pita
     ...    andika(abc)
     >>> test()
     9
 
     >>> eleza test():
-    ...    for abc in range(10):
-    ...        try:
-    ...            pass
-    ...        finally:
-    ...            try:
-    ...                pass
+    ...    kila abc kwenye range(10):
+    ...        jaribu:
+    ...            pita
+    ...        mwishowe:
+    ...            jaribu:
+    ...                pita
     ...            except:
-    ...                continue
+    ...                endelea
     ...    andika(abc)
     >>> test()
     9
 
-A continue outside loop should not be allowed.
+A endelea outside loop should sio be allowed.
 
     >>> eleza foo():
-    ...     try:
-    ...         pass
-    ...     finally:
-    ...         continue
+    ...     jaribu:
+    ...         pita
+    ...     mwishowe:
+    ...         endelea
     Traceback (most recent call last):
       ...
-    SyntaxError: 'continue' not properly in loop
+    SyntaxError: 'endelea' sio properly kwenye loop
 
-There is one test for a break that is not in a loop.  The compiler
-uses a single data structure to keep track of try-finally and loops,
-so we need to be sure that a break is actually inside a loop.  If it
+There ni one test kila a koma that ni haiko kwenye a loop.  The compiler
+uses a single data structure to keep track of try-finally na loops,
+so we need to be sure that a koma ni actually inside a loop.  If it
 isn't, there should be a syntax error.
 
-   >>> try:
+   >>> jaribu:
    ...     andika(1)
-   ...     break
+   ...     koma
    ...     andika(2)
-   ... finally:
+   ... mwishowe:
    ...     andika(3)
    Traceback (most recent call last):
      ...
-   SyntaxError: 'break' outside loop
+   SyntaxError: 'koma' outside loop
 
-This raises a SyntaxError, it used to raise a SystemError.
-Context for this change can be found on issue #27514
+This ashirias a SyntaxError, it used to ashiria a SystemError.
+Context kila this change can be found on issue #27514
 
-In 2.5 there was a missing exception and an assert was triggered in a debug
+In 2.5 there was a missing exception na an assert was triggered kwenye a debug
 build.  The number of blocks must be greater than CO_MAXBLOCKS.  SF #1565514
 
-   >>> while 1:
-   ...  while 2:
-   ...   while 3:
-   ...    while 4:
-   ...     while 5:
-   ...      while 6:
-   ...       while 8:
-   ...        while 9:
-   ...         while 10:
-   ...          while 11:
-   ...           while 12:
-   ...            while 13:
-   ...             while 14:
-   ...              while 15:
-   ...               while 16:
-   ...                while 17:
-   ...                 while 18:
-   ...                  while 19:
-   ...                   while 20:
-   ...                    while 21:
-   ...                     while 22:
-   ...                      break
+   >>> wakati 1:
+   ...  wakati 2:
+   ...   wakati 3:
+   ...    wakati 4:
+   ...     wakati 5:
+   ...      wakati 6:
+   ...       wakati 8:
+   ...        wakati 9:
+   ...         wakati 10:
+   ...          wakati 11:
+   ...           wakati 12:
+   ...            wakati 13:
+   ...             wakati 14:
+   ...              wakati 15:
+   ...               wakati 16:
+   ...                wakati 17:
+   ...                 wakati 18:
+   ...                  wakati 19:
+   ...                   wakati 20:
+   ...                    wakati 21:
+   ...                     wakati 22:
+   ...                      koma
    Traceback (most recent call last):
      ...
    SyntaxError: too many statically nested blocks
 
-Misuse of the nonlocal and global statement can lead to a few unique syntax errors.
+Misuse of the nonlocal na global statement can lead to a few unique syntax errors.
 
    >>> eleza f():
    ...     andika(x)
    ...     global x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is used prior to global declaration
+   SyntaxError: name 'x' ni used prior to global declaration
 
    >>> eleza f():
    ...     x = 1
    ...     global x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is assigned to before global declaration
+   SyntaxError: name 'x' ni assigned to before global declaration
 
    >>> eleza f(x):
    ...     global x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is parameter and global
+   SyntaxError: name 'x' ni parameter na global
 
    >>> eleza f():
    ...     x = 1
@@ -479,7 +479,7 @@ Misuse of the nonlocal and global statement can lead to a few unique syntax erro
    ...         nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is used prior to nonlocal declaration
+   SyntaxError: name 'x' ni used prior to nonlocal declaration
 
    >>> eleza f():
    ...     x = 1
@@ -488,32 +488,32 @@ Misuse of the nonlocal and global statement can lead to a few unique syntax erro
    ...         nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is assigned to before nonlocal declaration
+   SyntaxError: name 'x' ni assigned to before nonlocal declaration
 
    >>> eleza f(x):
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is parameter and nonlocal
+   SyntaxError: name 'x' ni parameter na nonlocal
 
    >>> eleza f():
    ...     global x
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: name 'x' is nonlocal and global
+   SyntaxError: name 'x' ni nonlocal na global
 
    >>> eleza f():
    ...     nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: no binding for nonlocal 'x' found
+   SyntaxError: no binding kila nonlocal 'x' found
 
 From SF bug #1705365
    >>> nonlocal x
    Traceback (most recent call last):
      ...
-   SyntaxError: nonlocal declaration not allowed at module level
+   SyntaxError: nonlocal declaration sio allowed at module level
 
 From https://bugs.python.org/issue25973
    >>> kundi A:
@@ -521,23 +521,23 @@ From https://bugs.python.org/issue25973
    ...         nonlocal __x
    Traceback (most recent call last):
      ...
-   SyntaxError: no binding for nonlocal '_A__x' found
+   SyntaxError: no binding kila nonlocal '_A__x' found
 
 
-This tests assignment-context; there was a bug in Python 2.5 where compiling
+This tests assignment-context; there was a bug kwenye Python 2.5 where compiling
 a complex 'if' (one with 'elif') would fail to notice an invalid suite,
 leading to spurious errors.
 
    >>> ikiwa 1:
    ...   x() = 1
    ... elikiwa 1:
-   ...   pass
+   ...   pita
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
-   ...   pass
+   ...   pita
    ... elikiwa 1:
    ...   x() = 1
    Traceback (most recent call last):
@@ -547,39 +547,39 @@ leading to spurious errors.
    >>> ikiwa 1:
    ...   x() = 1
    ... elikiwa 1:
-   ...   pass
-   ... else:
-   ...   pass
+   ...   pita
+   ... isipokua:
+   ...   pita
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
-   ...   pass
+   ...   pita
    ... elikiwa 1:
    ...   x() = 1
-   ... else:
-   ...   pass
+   ... isipokua:
+   ...   pita
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
-   ...   pass
+   ...   pita
    ... elikiwa 1:
-   ...   pass
-   ... else:
+   ...   pita
+   ... isipokua:
    ...   x() = 1
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
-Make sure that the old "raise X, Y[, Z]" form is gone:
-   >>> raise X, Y
+Make sure that the old "ashiria X, Y[, Z]" form ni gone:
+   >>> ashiria X, Y
    Traceback (most recent call last):
      ...
    SyntaxError: invalid syntax
-   >>> raise X, Y, Z
+   >>> ashiria X, Y, Z
    Traceback (most recent call last):
      ...
    SyntaxError: invalid syntax
@@ -606,31 +606,31 @@ SyntaxError: cannot assign to f-string expression
 Traceback (most recent call last):
 SyntaxError: cannot assign to f-string expression
 
-Corner-cases that used to fail to raise the correct error:
+Corner-cases that used to fail to ashiria the correct error:
 
-    >>> eleza f(*, x=lambda __debug__:0): pass
+    >>> eleza f(*, x=lambda __debug__:0): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> eleza f(*args:(lambda __debug__:0)): pass
+    >>> eleza f(*args:(lambda __debug__:0)): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> eleza f(**kwargs:(lambda __debug__:0)): pass
+    >>> eleza f(**kwargs:(lambda __debug__:0)): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> with (lambda *:0): pass
+    >>> with (lambda *:0): pita
     Traceback (most recent call last):
     SyntaxError: named arguments must follow bare *
 
 Corner-cases that used to crash:
 
-    >>> eleza f(**__debug__): pass
+    >>> eleza f(**__debug__): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> eleza f(*xx, __debug__): pass
+    >>> eleza f(*xx, __debug__): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
@@ -644,34 +644,34 @@ kutoka test agiza support
 kundi SyntaxTestCase(unittest.TestCase):
 
     eleza _check_error(self, code, errtext,
-                     filename="<testcase>", mode="exec", subclass=None, lineno=None, offset=None):
-        """Check that compiling code raises SyntaxError with errtext.
+                     filename="<testcase>", mode="exec", subclass=Tupu, lineno=Tupu, offset=Tupu):
+        """Check that compiling code ashirias SyntaxError with errtext.
 
-        errtest is a regular expression that must be present in the
-        test of the exception raised.  If subkundi is specified it
-        is the expected subkundi of SyntaxError (e.g. IndentationError).
+        errtest ni a regular expression that must be present kwenye the
+        test of the exception ashiriad.  If subkundi ni specified it
+        ni the expected subkundi of SyntaxError (e.g. IndentationError).
         """
-        try:
+        jaribu:
             compile(code, filename, mode)
-        except SyntaxError as err:
-            ikiwa subkundi and not isinstance(err, subclass):
-                self.fail("SyntaxError is not a %s" % subclass.__name__)
+        tatizo SyntaxError kama err:
+            ikiwa subkundi na sio isinstance(err, subclass):
+                self.fail("SyntaxError ni sio a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
-            ikiwa mo is None:
-                self.fail("SyntaxError did not contain '%r'" % (errtext,))
+            ikiwa mo ni Tupu:
+                self.fail("SyntaxError did sio contain '%r'" % (errtext,))
             self.assertEqual(err.filename, filename)
-            ikiwa lineno is not None:
+            ikiwa lineno ni sio Tupu:
                 self.assertEqual(err.lineno, lineno)
-            ikiwa offset is not None:
+            ikiwa offset ni sio Tupu:
                 self.assertEqual(err.offset, offset)
-        else:
-            self.fail("compile() did not raise SyntaxError")
+        isipokua:
+            self.fail("compile() did sio ashiria SyntaxError")
 
     eleza test_assign_call(self):
         self._check_error("f() = 1", "assign")
 
     eleza test_assign_del(self):
-        self._check_error("del f()", "delete")
+        self._check_error("toa f()", "delete")
 
     eleza test_global_param_err_first(self):
         source = """ikiwa 1:
@@ -681,7 +681,7 @@ kundi SyntaxTestCase(unittest.TestCase):
                 b = 1
                 global b  # SyntaxError
             """
-        self._check_error(source, "parameter and global", lineno=3)
+        self._check_error(source, "parameter na global", lineno=3)
 
     eleza test_nonlocal_param_err_first(self):
         source = """ikiwa 1:
@@ -691,53 +691,53 @@ kundi SyntaxTestCase(unittest.TestCase):
                 b = 1
                 global b  # SyntaxError
             """
-        self._check_error(source, "parameter and nonlocal", lineno=3)
+        self._check_error(source, "parameter na nonlocal", lineno=3)
 
-    eleza test_break_outside_loop(self):
-        self._check_error("break", "outside loop")
+    eleza test_koma_outside_loop(self):
+        self._check_error("koma", "outside loop")
 
-    eleza test_yield_outside_function(self):
-        self._check_error("ikiwa 0: yield",                "outside function")
-        self._check_error("ikiwa 0: yield\nelse:  x=1",    "outside function")
-        self._check_error("ikiwa 1: pass\nelse: yield",    "outside function")
-        self._check_error("while 0: yield",             "outside function")
-        self._check_error("while 0: yield\nelse:  x=1", "outside function")
-        self._check_error("kundi C:\n  ikiwa 0: yield",    "outside function")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: yield",
+    eleza test_tuma_outside_function(self):
+        self._check_error("ikiwa 0: tuma",                "outside function")
+        self._check_error("ikiwa 0: tuma\nisipokua:  x=1",    "outside function")
+        self._check_error("ikiwa 1: pita\nisipokua: tuma",    "outside function")
+        self._check_error("wakati 0: tuma",             "outside function")
+        self._check_error("wakati 0: tuma\nisipokua:  x=1", "outside function")
+        self._check_error("kundi C:\n  ikiwa 0: tuma",    "outside function")
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: tuma",
                           "outside function")
-        self._check_error("kundi C:\n  while 0: yield", "outside function")
-        self._check_error("kundi C:\n  while 0: yield\n  else:  x = 1",
-                          "outside function")
-
-    eleza test_return_outside_function(self):
-        self._check_error("ikiwa 0: return",                "outside function")
-        self._check_error("ikiwa 0: return\nelse:  x=1",    "outside function")
-        self._check_error("ikiwa 1: pass\nelse: return",    "outside function")
-        self._check_error("while 0: return",             "outside function")
-        self._check_error("kundi C:\n  ikiwa 0: return",    "outside function")
-        self._check_error("kundi C:\n  while 0: return", "outside function")
-        self._check_error("kundi C:\n  while 0: return\n  else:  x=1",
-                          "outside function")
-        self._check_error("kundi C:\n  ikiwa 0: return\n  else: x= 1",
-                          "outside function")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: return",
+        self._check_error("kundi C:\n  wakati 0: tuma", "outside function")
+        self._check_error("kundi C:\n  wakati 0: tuma\n  isipokua:  x = 1",
                           "outside function")
 
-    eleza test_break_outside_loop(self):
-        self._check_error("ikiwa 0: break",             "outside loop")
-        self._check_error("ikiwa 0: break\nelse:  x=1",  "outside loop")
-        self._check_error("ikiwa 1: pass\nelse: break", "outside loop")
-        self._check_error("kundi C:\n  ikiwa 0: break", "outside loop")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: break",
+    eleza test_rudisha_outside_function(self):
+        self._check_error("ikiwa 0: rudisha",                "outside function")
+        self._check_error("ikiwa 0: rudisha\nisipokua:  x=1",    "outside function")
+        self._check_error("ikiwa 1: pita\nisipokua: rudisha",    "outside function")
+        self._check_error("wakati 0: rudisha",             "outside function")
+        self._check_error("kundi C:\n  ikiwa 0: rudisha",    "outside function")
+        self._check_error("kundi C:\n  wakati 0: rudisha", "outside function")
+        self._check_error("kundi C:\n  wakati 0: rudisha\n  isipokua:  x=1",
+                          "outside function")
+        self._check_error("kundi C:\n  ikiwa 0: rudisha\n  isipokua: x= 1",
+                          "outside function")
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: rudisha",
+                          "outside function")
+
+    eleza test_koma_outside_loop(self):
+        self._check_error("ikiwa 0: koma",             "outside loop")
+        self._check_error("ikiwa 0: koma\nisipokua:  x=1",  "outside loop")
+        self._check_error("ikiwa 1: pita\nisipokua: koma", "outside loop")
+        self._check_error("kundi C:\n  ikiwa 0: koma", "outside loop")
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: koma",
                           "outside loop")
 
-    eleza test_continue_outside_loop(self):
-        self._check_error("ikiwa 0: continue",             "not properly in loop")
-        self._check_error("ikiwa 0: continue\nelse:  x=1", "not properly in loop")
-        self._check_error("ikiwa 1: pass\nelse: continue", "not properly in loop")
-        self._check_error("kundi C:\n  ikiwa 0: continue", "not properly in loop")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: continue",
-                          "not properly in loop")
+    eleza test_endelea_outside_loop(self):
+        self._check_error("ikiwa 0: endelea",             "not properly kwenye loop")
+        self._check_error("ikiwa 0: endelea\nisipokua:  x=1", "not properly kwenye loop")
+        self._check_error("ikiwa 1: pita\nisipokua: endelea", "not properly kwenye loop")
+        self._check_error("kundi C:\n  ikiwa 0: endelea", "not properly kwenye loop")
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: endelea",
+                          "not properly kwenye loop")
 
     eleza test_unexpected_indent(self):
         self._check_error("foo()\n bar()\n", "unexpected indent",
@@ -749,7 +749,7 @@ kundi SyntaxTestCase(unittest.TestCase):
 
     eleza test_bad_outdent(self):
         self._check_error("ikiwa 1:\n  foo()\n bar()",
-                          "unindent does not match .* level",
+                          "unindent does sio match .* level",
                           subclass=IndentationError)
 
     eleza test_kwargs_last(self):
@@ -769,7 +769,7 @@ kundi SyntaxTestCase(unittest.TestCase):
 eleza test_main():
     support.run_unittest(SyntaxTestCase)
     kutoka test agiza test_syntax
-    support.run_doctest(test_syntax, verbosity=True)
+    support.run_doctest(test_syntax, verbosity=Kweli)
 
 ikiwa __name__ == "__main__":
     test_main()

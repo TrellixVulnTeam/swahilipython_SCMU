@@ -16,7 +16,7 @@ to a public API if there is demand.
 # (almost?) never happens.  There could be a public API for adding entries
 # to the CTE tables, but YAGNI for now.  'q' is Quoted Printable, 'b' is
 # Base64.  The meaning of encoded_string should be obvious.  'lang' is optional
-# as indicated by the brackets (they are not part of the syntax) but is almost
+# as indicated by the brackets (they are sio part of the syntax) but is almost
 # never encountered in practice.
 #
 # The general interface for a CTE decoder is that it takes the encoded_string
@@ -39,12 +39,12 @@ to a public API if there is demand.
 # select the shortest possible encoding.  See their docstrings below for
 # details.
 
-import re
-import base64
-import binascii
-import functools
-kutoka string import ascii_letters, digits
-kutoka email import errors
+agiza re
+agiza base64
+agiza binascii
+agiza functools
+kutoka string agiza ascii_letters, digits
+kutoka email agiza errors
 
 __all__ = ['decode_q',
            'encode_q',
@@ -77,7 +77,7 @@ class _QByteMap(dict):
     def __missing__(self, key):
         if key in self.safe:
             self[key] = chr(key)
-        else:
+        isipokua:
             self[key] = "={:02X}".format(key)
         return self[key]
 
@@ -102,32 +102,32 @@ def decode_b(encoded):
     # This will succeed only if encoded includes no invalid characters.
     pad_err = len(encoded) % 4
     missing_padding = b'==='[:4-pad_err] if pad_err else b''
-    try:
+    jaribu:
         return (
             base64.b64decode(encoded + missing_padding, validate=True),
             [errors.InvalidBase64PaddingDefect()] if pad_err else [],
         )
-    except binascii.Error:
+    tatizo binascii.Error:
         # Since we had correct padding, this is likely an invalid char error.
         #
         # The non-alphabet characters are ignored as far as padding
         # goes, but we don't know how many there are.  So try without adding
         # padding to see if it works.
-        try:
+        jaribu:
             return (
                 base64.b64decode(encoded, validate=False),
                 [errors.InvalidBase64CharactersDefect()],
             )
-        except binascii.Error:
+        tatizo binascii.Error:
             # Add as much padding as could possibly be necessary (extra padding
             # is ignored).
-            try:
+            jaribu:
                 return (
                     base64.b64decode(encoded + b'==', validate=False),
                     [errors.InvalidBase64CharactersDefect(),
                      errors.InvalidBase64PaddingDefect()],
                 )
-            except binascii.Error:
+            tatizo binascii.Error:
                 # This only happens when the encoded string's length is 1 more
                 # than a multiple of 4, which is invalid.
                 #
@@ -156,13 +156,13 @@ def decode(ew):
 
         =?charset*lang?cte?encoded_string?=
 
-    where '*lang' may be omitted but the other parts may not be.
+    where '*lang' may be omitted but the other parts may sio be.
 
-    This function expects exactly such a string (that is, it does not check the
-    syntax and may raise errors if the string is not well formed), and returns
+    This function expects exactly such a string (that is, it does sio check the
+    syntax and may raise errors if the string ni sio well formed), and returns
     the encoded_string decoded first kutoka its Content Transfer Encoding and
     then kutoka the resulting bytes into unicode using the specified charset.  If
-    the cte-decoded string does not successfully decode using the specified
+    the cte-decoded string does sio successfully decode using the specified
     character set, a defect is added to the defects list and the unknown octets
     are replaced by the unicode 'unknown' character \\uFDFF.
 
@@ -177,13 +177,13 @@ def decode(ew):
     bstring = cte_string.encode('ascii', 'surrogateescape')
     bstring, defects = _cte_decoders[cte](bstring)
     # Turn the CTE decoded bytes into unicode.
-    try:
+    jaribu:
         string = bstring.decode(charset)
-    except UnicodeError:
+    tatizo UnicodeError:
         defects.append(errors.UndecodableBytesDefect("Encoded word "
-            "contains bytes not decodable using {} charset".format(charset)))
+            "contains bytes sio decodable using {} charset".format(charset)))
         string = bstring.decode(charset, 'surrogateescape')
-    except LookupError:
+    tatizo LookupError:
         string = bstring.decode('ascii', 'surrogateescape')
         if charset.lower() != 'unknown-8bit':
             defects.append(errors.CharsetError("Unknown charset {} "
@@ -213,14 +213,14 @@ def encode(string, charset='utf-8', encoding=None, lang=''):
     to encode the string to binary before CTE encoding it.  Optional argument
     'encoding' is the cte specifier for the encoding that should be used ('q'
     or 'b'); if it is None (the default) the encoding which produces the
-    shortest encoded sequence is used, except that 'q' is preferred if it is up
+    shortest encoded sequence is used, tatizo that 'q' is preferred if it is up
     to five characters longer.  Optional argument 'lang' (default '') gives the
     RFC 2243 language string to specify in the encoded word.
 
     """
     if charset == 'unknown-8bit':
         bstring = string.encode('ascii', 'surrogateescape')
-    else:
+    isipokua:
         bstring = string.encode(charset)
     if encoding is None:
         qlen = _cte_encode_length['q'](bstring)

@@ -4,7 +4,7 @@ r"""HTTP/1.1 client library
 <other stuff, too>
 
 HTTPConnection goes through a number of "states", which define when a client
-may legally make another request or fetch the response for a particular
+may legally make another request ama fetch the response kila a particular
 request. This diagram details these state transitions:
 
     (null)
@@ -21,7 +21,7 @@ request. This diagram details these state transitions:
       v
     Request-sent
       |\_____________________________
-      |                              | getresponse() raises
+      |                              | getresponse() ashirias
       | response = getresponse()     | ConnectionError
       v                              v
     Unread-response                Idle
@@ -42,27 +42,27 @@ request. This diagram details these state transitions:
                           Request-sent
 
 This diagram presents the following rules:
-  -- a second request may not be started until {response-headers-read}
+  -- a second request may sio be started until {response-headers-read}
   -- a response [object] cannot be retrieved until {request-sent}
-  -- there is no differentiation between an unread response body and a
+  -- there ni no differentiation between an unread response body na a
      partially read response body
 
-Note: this enforcement is applied by the HTTPConnection class. The
-      HTTPResponse kundi does not enforce this state machine, which
+Note: this enforcement ni applied by the HTTPConnection class. The
+      HTTPResponse kundi does sio enforce this state machine, which
       implies sophisticated clients may accelerate the request/response
       pipeline. Caution should be taken, though: accelerating the states
       beyond the above pattern may imply knowledge of the server's
-      connection-close behavior for certain requests. For example, it
-      is impossible to tell whether the server will close the connection
+      connection-close behavior kila certain requests. For example, it
+      ni impossible to tell whether the server will close the connection
       UNTIL the response headers have been read; this means that further
-      requests cannot be placed into the pipeline until it is known that
+      requests cannot be placed into the pipeline until it ni known that
       the server will NOT be closing the connection.
 
 Logical State                  __state            __response
 -------------                  -------            ----------
-Idle                           _CS_IDLE           None
-Request-started                _CS_REQ_STARTED    None
-Request-sent                   _CS_REQ_SENT       None
+Idle                           _CS_IDLE           Tupu
+Request-started                _CS_REQ_STARTED    Tupu
+Request-sent                   _CS_REQ_SENT       Tupu
 Unread-response                _CS_IDLE           <response_class>
 Req-started-unread-response    _CS_REQ_STARTED    <response_class>
 Req-sent-unread-response       _CS_REQ_SENT       <response_class>
@@ -77,8 +77,8 @@ agiza socket
 agiza collections.abc
 kutoka urllib.parse agiza urlsplit
 
-# HTTPMessage, parse_headers(), and the HTTP status code constants are
-# intentionally omitted for simplicity
+# HTTPMessage, parse_headers(), na the HTTP status code constants are
+# intentionally omitted kila simplicity
 __all__ = ["HTTPResponse", "HTTPConnection",
            "HTTPException", "NotConnected", "UnknownProtocol",
            "UnknownTransferEncoding", "UnimplementedFileMode",
@@ -103,7 +103,7 @@ globals().update(http.HTTPStatus.__members__)
 
 # another hack to maintain backwards compatibility
 # Mapping status codes to official W3C names
-responses = {v: v.phrase for v in http.HTTPStatus.__members__.values()}
+responses = {v: v.phrase kila v kwenye http.HTTPStatus.__members__.values()}
 
 # maximal line length when calling readline().
 _MAXLINE = 65536
@@ -128,47 +128,47 @@ _MAXHEADERS = 100
 # tchar          = "!" / "#" / "$" / "%" / "&" / "'" / "*"
 #                / "+" / "-" / "." / "^" / "_" / "`" / "|" / "~"
 #                / DIGIT / ALPHA
-#                ; any VCHAR, except delimiters
+#                ; any VCHAR, tatizo delimiters
 #
-# VCHAR defined in http://tools.ietf.org/html/rfc5234#appendix-B.1
+# VCHAR defined kwenye http://tools.ietf.org/html/rfc5234#appendix-B.1
 
-# the patterns for both name and value are more lenient than RFC
-# definitions to allow for backwards compatibility
+# the patterns kila both name na value are more lenient than RFC
+# definitions to allow kila backwards compatibility
 _is_legal_header_name = re.compile(rb'[^:\s][^:\r\n]*').fullmatch
 _is_illegal_header_value = re.compile(rb'\n(?![ \t])|\r(?![ \t\n])').search
 
-# These characters are not allowed within HTTP URL paths.
-#  See https://tools.ietf.org/html/rfc3986#section-3.3 and the
+# These characters are sio allowed within HTTP URL paths.
+#  See https://tools.ietf.org/html/rfc3986#section-3.3 na the
 #  https://tools.ietf.org/html/rfc3986#appendix-A pchar definition.
-# Prevents CVE-2019-9740.  Includes control characters such as \r\n.
-# We don't restrict chars above \x7f as putrequest() limits us to ASCII.
+# Prevents CVE-2019-9740.  Includes control characters such kama \r\n.
+# We don't restrict chars above \x7f kama putrequest() limits us to ASCII.
 _contains_disallowed_url_pchar_re = re.compile('[\x00-\x20\x7f]')
 # Arguably only these _should_ allowed:
 #  _is_allowed_url_pchars_re = re.compile(r"^[/!$&'()*+,;=:@%a-zA-Z0-9._~-]+$")
-# We are more lenient for assumed real world compatibility purposes.
+# We are more lenient kila assumed real world compatibility purposes.
 
-# We always set the Content-Length header for these methods because some
+# We always set the Content-Length header kila these methods because some
 # servers will otherwise respond with a 411
 _METHODS_EXPECTING_BODY = {'PATCH', 'POST', 'PUT'}
 
 
 eleza _encode(data, name='data'):
     """Call data.encode("latin-1") but show a better error message."""
-    try:
+    jaribu:
         rudisha data.encode("latin-1")
-    except UnicodeEncodeError as err:
-        raise UnicodeEncodeError(
+    tatizo UnicodeEncodeError kama err:
+        ashiria UnicodeEncodeError(
             err.encoding,
             err.object,
             err.start,
             err.end,
-            "%s (%.20r) is not valid Latin-1. Use %s.encode('utf-8') "
-            "ikiwa you want to send it encoded in UTF-8." %
-            (name.title(), data[err.start:err.end], name)) kutoka None
+            "%s (%.20r) ni sio valid Latin-1. Use %s.encode('utf-8') "
+            "ikiwa you want to send it encoded kwenye UTF-8." %
+            (name.title(), data[err.start:err.end], name)) kutoka Tupu
 
 
 kundi HTTPMessage(email.message.Message):
-    # XXX The only usage of this method is in
+    # XXX The only usage of this method ni in
     # http.server.CGIHTTPRequestHandler.  Maybe move the code there so
     # that it doesn't need to be part of the public API.  The API has
     # never been defined so this could cause backwards compatibility
@@ -177,21 +177,21 @@ kundi HTTPMessage(email.message.Message):
     eleza getallmatchingheaders(self, name):
         """Find all header lines matching a given header name.
 
-        Look through the list of headers and find all lines matching a given
+        Look through the list of headers na find all lines matching a given
         header name (and their continuation lines).  A list of the lines is
-        returned, without interpretation.  If the header does not occur, an
-        empty list is returned.  If the header occurs multiple times, all
-        occurrences are returned.  Case is not agizaant in the header name.
+        rudishaed, without interpretation.  If the header does sio occur, an
+        empty list ni rudishaed.  If the header occurs multiple times, all
+        occurrences are rudishaed.  Case ni sio agizaant kwenye the header name.
 
         """
         name = name.lower() + ':'
         n = len(name)
         lst = []
         hit = 0
-        for line in self.keys():
+        kila line kwenye self.keys():
             ikiwa line[:n].lower() == name:
                 hit = 1
-            elikiwa not line[:1].isspace():
+            elikiwa sio line[:1].isspace():
                 hit = 0
             ikiwa hit:
                 lst.append(line)
@@ -202,219 +202,219 @@ eleza parse_headers(fp, _class=HTTPMessage):
 
     email Parser wants to see strings rather than bytes.
     But a TextIOWrapper around self.rfile would buffer too many bytes
-    kutoka the stream, bytes which we later need to read as bytes.
-    So we read the correct bytes here, as bytes, for email Parser
+    kutoka the stream, bytes which we later need to read kama bytes.
+    So we read the correct bytes here, kama bytes, kila email Parser
     to parse.
 
     """
     headers = []
-    while True:
+    wakati Kweli:
         line = fp.readline(_MAXLINE + 1)
         ikiwa len(line) > _MAXLINE:
-            raise LineTooLong("header line")
+            ashiria LineTooLong("header line")
         headers.append(line)
         ikiwa len(headers) > _MAXHEADERS:
-            raise HTTPException("got more than %d headers" % _MAXHEADERS)
-        ikiwa line in (b'\r\n', b'\n', b''):
-            break
+            ashiria HTTPException("got more than %d headers" % _MAXHEADERS)
+        ikiwa line kwenye (b'\r\n', b'\n', b''):
+            koma
     hstring = b''.join(headers).decode('iso-8859-1')
     rudisha email.parser.Parser(_class=_class).parsestr(hstring)
 
 
 kundi HTTPResponse(io.BufferedIOBase):
 
-    # See RFC 2616 sec 19.6 and RFC 1945 sec 6 for details.
+    # See RFC 2616 sec 19.6 na RFC 1945 sec 6 kila details.
 
     # The bytes kutoka the socket object are iso-8859-1 strings.
-    # See RFC 2616 sec 2.2 which notes an exception for MIME-encoded
+    # See RFC 2616 sec 2.2 which notes an exception kila MIME-encoded
     # text following RFC 2047.  The basic status line parsing only
     # accepts iso-8859-1.
 
-    eleza __init__(self, sock, debuglevel=0, method=None, url=None):
+    eleza __init__(self, sock, debuglevel=0, method=Tupu, url=Tupu):
         # If the response includes a content-length header, we need to
         # make sure that the client doesn't read more than the
         # specified number of bytes.  If it does, it will block until
-        # the server times out and closes the connection.  This will
-        # happen ikiwa a self.fp.read() is done (without a size) whether
-        # self.fp is buffered or not.  So, no self.fp.read() by
+        # the server times out na closes the connection.  This will
+        # happen ikiwa a self.fp.read() ni done (without a size) whether
+        # self.fp ni buffered ama not.  So, no self.fp.read() by
         # clients unless they know what they are doing.
         self.fp = sock.makefile("rb")
         self.debuglevel = debuglevel
         self._method = method
 
-        # The HTTPResponse object is returned via urllib.  The clients
-        # of http and urllib expect different attributes for the
-        # headers.  headers is used here and supports urllib.  msg is
-        # provided as a backwards compatibility layer for http
+        # The HTTPResponse object ni rudishaed via urllib.  The clients
+        # of http na urllib expect different attributes kila the
+        # headers.  headers ni used here na supports urllib.  msg is
+        # provided kama a backwards compatibility layer kila http
         # clients.
 
-        self.headers = self.msg = None
+        self.headers = self.msg = Tupu
 
         # kutoka the Status-Line of the response
         self.version = _UNKNOWN # HTTP-Version
         self.status = _UNKNOWN  # Status-Code
         self.reason = _UNKNOWN  # Reason-Phrase
 
-        self.chunked = _UNKNOWN         # is "chunked" being used?
-        self.chunk_left = _UNKNOWN      # bytes left to read in current chunk
-        self.length = _UNKNOWN          # number of bytes left in response
+        self.chunked = _UNKNOWN         # ni "chunked" being used?
+        self.chunk_left = _UNKNOWN      # bytes left to read kwenye current chunk
+        self.length = _UNKNOWN          # number of bytes left kwenye response
         self.will_close = _UNKNOWN      # conn will close at end of response
 
     eleza _read_status(self):
         line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
         ikiwa len(line) > _MAXLINE:
-            raise LineTooLong("status line")
+            ashiria LineTooLong("status line")
         ikiwa self.debuglevel > 0:
             andika("reply:", repr(line))
-        ikiwa not line:
+        ikiwa sio line:
             # Presumably, the server closed the connection before
             # sending a valid response.
-            raise RemoteDisconnected("Remote end closed connection without"
+            ashiria RemoteDisconnected("Remote end closed connection without"
                                      " response")
-        try:
-            version, status, reason = line.split(None, 2)
-        except ValueError:
-            try:
-                version, status = line.split(None, 1)
+        jaribu:
+            version, status, reason = line.split(Tupu, 2)
+        tatizo ValueError:
+            jaribu:
+                version, status = line.split(Tupu, 1)
                 reason = ""
-            except ValueError:
+            tatizo ValueError:
                 # empty version will cause next test to fail.
                 version = ""
-        ikiwa not version.startswith("HTTP/"):
+        ikiwa sio version.startswith("HTTP/"):
             self._close_conn()
-            raise BadStatusLine(line)
+            ashiria BadStatusLine(line)
 
-        # The status code is a three-digit number
-        try:
+        # The status code ni a three-digit number
+        jaribu:
             status = int(status)
-            ikiwa status < 100 or status > 999:
-                raise BadStatusLine(line)
-        except ValueError:
-            raise BadStatusLine(line)
+            ikiwa status < 100 ama status > 999:
+                ashiria BadStatusLine(line)
+        tatizo ValueError:
+            ashiria BadStatusLine(line)
         rudisha version, status, reason
 
     eleza begin(self):
-        ikiwa self.headers is not None:
+        ikiwa self.headers ni sio Tupu:
             # we've already started reading the response
-            return
+            rudisha
 
         # read until we get a non-100 response
-        while True:
+        wakati Kweli:
             version, status, reason = self._read_status()
             ikiwa status != CONTINUE:
-                break
+                koma
             # skip the header kutoka the 100 response
-            while True:
+            wakati Kweli:
                 skip = self.fp.readline(_MAXLINE + 1)
                 ikiwa len(skip) > _MAXLINE:
-                    raise LineTooLong("header line")
+                    ashiria LineTooLong("header line")
                 skip = skip.strip()
-                ikiwa not skip:
-                    break
+                ikiwa sio skip:
+                    koma
                 ikiwa self.debuglevel > 0:
                     andika("header:", skip)
 
         self.code = self.status = status
         self.reason = reason.strip()
-        ikiwa version in ("HTTP/1.0", "HTTP/0.9"):
-            # Some servers might still rudisha "0.9", treat it as 1.0 anyway
+        ikiwa version kwenye ("HTTP/1.0", "HTTP/0.9"):
+            # Some servers might still rudisha "0.9", treat it kama 1.0 anyway
             self.version = 10
         elikiwa version.startswith("HTTP/1."):
-            self.version = 11   # use HTTP/1.1 code for HTTP/1.x where x>=1
-        else:
-            raise UnknownProtocol(version)
+            self.version = 11   # use HTTP/1.1 code kila HTTP/1.x where x>=1
+        isipokua:
+            ashiria UnknownProtocol(version)
 
         self.headers = self.msg = parse_headers(self.fp)
 
         ikiwa self.debuglevel > 0:
-            for hdr, val in self.headers.items():
+            kila hdr, val kwenye self.headers.items():
                 andika("header:", hdr + ":", val)
 
         # are we using the chunked-style of transfer encoding?
         tr_enc = self.headers.get("transfer-encoding")
-        ikiwa tr_enc and tr_enc.lower() == "chunked":
-            self.chunked = True
-            self.chunk_left = None
-        else:
-            self.chunked = False
+        ikiwa tr_enc na tr_enc.lower() == "chunked":
+            self.chunked = Kweli
+            self.chunk_left = Tupu
+        isipokua:
+            self.chunked = Uongo
 
         # will the connection close at the end of the response?
         self.will_close = self._check_close()
 
         # do we have a Content-Length?
-        # NOTE: RFC 2616, S4.4, #3 says we ignore this ikiwa tr_enc is "chunked"
-        self.length = None
+        # NOTE: RFC 2616, S4.4, #3 says we ignore this ikiwa tr_enc ni "chunked"
+        self.length = Tupu
         length = self.headers.get("content-length")
 
          # are we using the chunked-style of transfer encoding?
         tr_enc = self.headers.get("transfer-encoding")
-        ikiwa length and not self.chunked:
-            try:
+        ikiwa length na sio self.chunked:
+            jaribu:
                 self.length = int(length)
-            except ValueError:
-                self.length = None
-            else:
+            tatizo ValueError:
+                self.length = Tupu
+            isipokua:
                 ikiwa self.length < 0:  # ignore nonsensical negative lengths
-                    self.length = None
-        else:
-            self.length = None
+                    self.length = Tupu
+        isipokua:
+            self.length = Tupu
 
         # does the body have a fixed length? (of zero)
-        ikiwa (status == NO_CONTENT or status == NOT_MODIFIED or
-            100 <= status < 200 or      # 1xx codes
+        ikiwa (status == NO_CONTENT ama status == NOT_MODIFIED or
+            100 <= status < 200 ama      # 1xx codes
             self._method == "HEAD"):
             self.length = 0
 
-        # ikiwa the connection remains open, and we aren't using chunked, and
-        # a content-length was not provided, then assume that the connection
+        # ikiwa the connection remains open, na we aren't using chunked, and
+        # a content-length was sio provided, then assume that the connection
         # WILL close.
         ikiwa (not self.will_close and
-            not self.chunked and
-            self.length is None):
-            self.will_close = True
+            sio self.chunked and
+            self.length ni Tupu):
+            self.will_close = Kweli
 
     eleza _check_close(self):
         conn = self.headers.get("connection")
         ikiwa self.version == 11:
-            # An HTTP/1.1 proxy is assumed to stay open unless
+            # An HTTP/1.1 proxy ni assumed to stay open unless
             # explicitly closed.
-            ikiwa conn and "close" in conn.lower():
-                rudisha True
-            rudisha False
+            ikiwa conn na "close" kwenye conn.lower():
+                rudisha Kweli
+            rudisha Uongo
 
-        # Some HTTP/1.0 implementations have support for persistent
+        # Some HTTP/1.0 implementations have support kila persistent
         # connections, using rules different than HTTP/1.1.
 
         # For older HTTP, Keep-Alive indicates persistent connection.
         ikiwa self.headers.get("keep-alive"):
-            rudisha False
+            rudisha Uongo
 
-        # At least Akamai returns a "Connection: Keep-Alive" header,
+        # At least Akamai rudishas a "Connection: Keep-Alive" header,
         # which was supposed to be sent by the client.
-        ikiwa conn and "keep-alive" in conn.lower():
-            rudisha False
+        ikiwa conn na "keep-alive" kwenye conn.lower():
+            rudisha Uongo
 
-        # Proxy-Connection is a netscape hack.
+        # Proxy-Connection ni a netscape hack.
         pconn = self.headers.get("proxy-connection")
-        ikiwa pconn and "keep-alive" in pconn.lower():
-            rudisha False
+        ikiwa pconn na "keep-alive" kwenye pconn.lower():
+            rudisha Uongo
 
         # otherwise, assume it will close
-        rudisha True
+        rudisha Kweli
 
     eleza _close_conn(self):
         fp = self.fp
-        self.fp = None
+        self.fp = Tupu
         fp.close()
 
     eleza close(self):
-        try:
+        jaribu:
             super().close() # set "closed" flag
-        finally:
+        mwishowe:
             ikiwa self.fp:
                 self._close_conn()
 
-    # These implementations are for the benefit of io.BufferedReader.
+    # These implementations are kila the benefit of io.BufferedReader.
 
     # XXX This kundi should probably be revised to act more like
     # the "raw stream" that BufferedReader expects.
@@ -425,59 +425,59 @@ kundi HTTPResponse(io.BufferedIOBase):
             self.fp.flush()
 
     eleza readable(self):
-        """Always returns True"""
-        rudisha True
+        """Always rudishas Kweli"""
+        rudisha Kweli
 
     # End of "raw stream" methods
 
     eleza isclosed(self):
-        """True ikiwa the connection is closed."""
-        # NOTE: it is possible that we will not ever call self.close(). This
-        #       case occurs when will_close is TRUE, length is None, and we
+        """Kweli ikiwa the connection ni closed."""
+        # NOTE: it ni possible that we will sio ever call self.close(). This
+        #       case occurs when will_close ni TRUE, length ni Tupu, na we
         #       read up to the last byte, but NOT past it.
         #
-        # IMPLIES: ikiwa will_close is FALSE, then self.close() will ALWAYS be
-        #          called, meaning self.isclosed() is meaningful.
-        rudisha self.fp is None
+        # IMPLIES: ikiwa will_close ni FALSE, then self.close() will ALWAYS be
+        #          called, meaning self.isclosed() ni meaningful.
+        rudisha self.fp ni Tupu
 
-    eleza read(self, amt=None):
-        ikiwa self.fp is None:
+    eleza read(self, amt=Tupu):
+        ikiwa self.fp ni Tupu:
             rudisha b""
 
         ikiwa self._method == "HEAD":
             self._close_conn()
             rudisha b""
 
-        ikiwa amt is not None:
-            # Amount is given, implement using readinto
+        ikiwa amt ni sio Tupu:
+            # Amount ni given, implement using readinto
             b = bytearray(amt)
             n = self.readinto(b)
             rudisha memoryview(b)[:n].tobytes()
-        else:
-            # Amount is not given (unbounded read) so we must check self.length
-            # and self.chunked
+        isipokua:
+            # Amount ni sio given (unbounded read) so we must check self.length
+            # na self.chunked
 
             ikiwa self.chunked:
                 rudisha self._readall_chunked()
 
-            ikiwa self.length is None:
+            ikiwa self.length ni Tupu:
                 s = self.fp.read()
-            else:
-                try:
+            isipokua:
+                jaribu:
                     s = self._safe_read(self.length)
-                except IncompleteRead:
+                tatizo IncompleteRead:
                     self._close_conn()
-                    raise
+                    ashiria
                 self.length = 0
             self._close_conn()        # we read everything
             rudisha s
 
     eleza readinto(self, b):
-        """Read up to len(b) bytes into bytearray b and rudisha the number
+        """Read up to len(b) bytes into bytearray b na rudisha the number
         of bytes read.
         """
 
-        ikiwa self.fp is None:
+        ikiwa self.fp ni Tupu:
             rudisha 0
 
         ikiwa self._method == "HEAD":
@@ -487,22 +487,22 @@ kundi HTTPResponse(io.BufferedIOBase):
         ikiwa self.chunked:
             rudisha self._readinto_chunked(b)
 
-        ikiwa self.length is not None:
+        ikiwa self.length ni sio Tupu:
             ikiwa len(b) > self.length:
                 # clip the read to the "end of response"
                 b = memoryview(b)[0:self.length]
 
-        # we do not use _safe_read() here because this may be a .will_close
-        # connection, and the user is reading more bytes than will be provided
-        # (for example, reading in 1k chunks)
+        # we do sio use _safe_read() here because this may be a .will_close
+        # connection, na the user ni reading more bytes than will be provided
+        # (kila example, reading kwenye 1k chunks)
         n = self.fp.readinto(b)
-        ikiwa not n and b:
-            # Ideally, we would raise IncompleteRead ikiwa the content-length
-            # wasn't satisfied, but it might break compatibility.
+        ikiwa sio n na b:
+            # Ideally, we would ashiria IncompleteRead ikiwa the content-length
+            # wasn't satisfied, but it might koma compatibility.
             self._close_conn()
-        elikiwa self.length is not None:
+        elikiwa self.length ni sio Tupu:
             self.length -= n
-            ikiwa not self.length:
+            ikiwa sio self.length:
                 self._close_conn()
         rudisha n
 
@@ -510,78 +510,78 @@ kundi HTTPResponse(io.BufferedIOBase):
         # Read the next chunk size kutoka the file
         line = self.fp.readline(_MAXLINE + 1)
         ikiwa len(line) > _MAXLINE:
-            raise LineTooLong("chunk size")
+            ashiria LineTooLong("chunk size")
         i = line.find(b";")
         ikiwa i >= 0:
             line = line[:i] # strip chunk-extensions
-        try:
+        jaribu:
             rudisha int(line, 16)
-        except ValueError:
-            # close the connection as protocol synchronisation is
+        tatizo ValueError:
+            # close the connection kama protocol synchronisation is
             # probably lost
             self._close_conn()
-            raise
+            ashiria
 
     eleza _read_and_discard_trailer(self):
-        # read and discard trailer up to the CRLF terminator
+        # read na discard trailer up to the CRLF terminator
         ### note: we shouldn't have any trailers!
-        while True:
+        wakati Kweli:
             line = self.fp.readline(_MAXLINE + 1)
             ikiwa len(line) > _MAXLINE:
-                raise LineTooLong("trailer line")
-            ikiwa not line:
+                ashiria LineTooLong("trailer line")
+            ikiwa sio line:
                 # a vanishingly small number of sites EOF without
                 # sending the trailer
-                break
-            ikiwa line in (b'\r\n', b'\n', b''):
-                break
+                koma
+            ikiwa line kwenye (b'\r\n', b'\n', b''):
+                koma
 
     eleza _get_chunk_left(self):
         # rudisha self.chunk_left, reading a new chunk ikiwa necessary.
         # chunk_left == 0: at the end of the current chunk, need to close it
-        # chunk_left == None: No current chunk, should read next.
-        # This function returns non-zero or None ikiwa the last chunk has
+        # chunk_left == Tupu: No current chunk, should read next.
+        # This function rudishas non-zero ama Tupu ikiwa the last chunk has
         # been read.
         chunk_left = self.chunk_left
-        ikiwa not chunk_left: # Can be 0 or None
-            ikiwa chunk_left is not None:
+        ikiwa sio chunk_left: # Can be 0 ama Tupu
+            ikiwa chunk_left ni sio Tupu:
                 # We are at the end of chunk, discard chunk end
                 self._safe_read(2)  # toss the CRLF at the end of the chunk
-            try:
+            jaribu:
                 chunk_left = self._read_next_chunk_size()
-            except ValueError:
-                raise IncompleteRead(b'')
+            tatizo ValueError:
+                ashiria IncompleteRead(b'')
             ikiwa chunk_left == 0:
                 # last chunk: 1*("0") [ chunk-extension ] CRLF
                 self._read_and_discard_trailer()
                 # we read everything; close the "file"
                 self._close_conn()
-                chunk_left = None
+                chunk_left = Tupu
             self.chunk_left = chunk_left
         rudisha chunk_left
 
     eleza _readall_chunked(self):
         assert self.chunked != _UNKNOWN
         value = []
-        try:
-            while True:
+        jaribu:
+            wakati Kweli:
                 chunk_left = self._get_chunk_left()
-                ikiwa chunk_left is None:
-                    break
+                ikiwa chunk_left ni Tupu:
+                    koma
                 value.append(self._safe_read(chunk_left))
                 self.chunk_left = 0
             rudisha b''.join(value)
-        except IncompleteRead:
-            raise IncompleteRead(b''.join(value))
+        tatizo IncompleteRead:
+            ashiria IncompleteRead(b''.join(value))
 
     eleza _readinto_chunked(self, b):
         assert self.chunked != _UNKNOWN
         total_bytes = 0
         mvb = memoryview(b)
-        try:
-            while True:
+        jaribu:
+            wakati Kweli:
                 chunk_left = self._get_chunk_left()
-                ikiwa chunk_left is None:
+                ikiwa chunk_left ni Tupu:
                     rudisha total_bytes
 
                 ikiwa len(mvb) <= chunk_left:
@@ -595,127 +595,127 @@ kundi HTTPResponse(io.BufferedIOBase):
                 total_bytes += n
                 self.chunk_left = 0
 
-        except IncompleteRead:
-            raise IncompleteRead(bytes(b[0:total_bytes]))
+        tatizo IncompleteRead:
+            ashiria IncompleteRead(bytes(b[0:total_bytes]))
 
     eleza _safe_read(self, amt):
         """Read the number of bytes requested.
 
         This function should be used when <amt> bytes "should" be present for
-        reading. If the bytes are truly not available (due to EOF), then the
+        reading. If the bytes are truly sio available (due to EOF), then the
         IncompleteRead exception can be used to detect the problem.
         """
         data = self.fp.read(amt)
         ikiwa len(data) < amt:
-            raise IncompleteRead(data, amt-len(data))
+            ashiria IncompleteRead(data, amt-len(data))
         rudisha data
 
     eleza _safe_readinto(self, b):
-        """Same as _safe_read, but for reading into a buffer."""
+        """Same kama _safe_read, but kila reading into a buffer."""
         amt = len(b)
         n = self.fp.readinto(b)
         ikiwa n < amt:
-            raise IncompleteRead(bytes(b[:n]), amt-n)
+            ashiria IncompleteRead(bytes(b[:n]), amt-n)
         rudisha n
 
     eleza read1(self, n=-1):
         """Read with at most one underlying system call.  If at least one
-        byte is buffered, rudisha that instead.
+        byte ni buffered, rudisha that instead.
         """
-        ikiwa self.fp is None or self._method == "HEAD":
+        ikiwa self.fp ni Tupu ama self._method == "HEAD":
             rudisha b""
         ikiwa self.chunked:
             rudisha self._read1_chunked(n)
-        ikiwa self.length is not None and (n < 0 or n > self.length):
+        ikiwa self.length ni sio Tupu na (n < 0 ama n > self.length):
             n = self.length
         result = self.fp.read1(n)
-        ikiwa not result and n:
+        ikiwa sio result na n:
             self._close_conn()
-        elikiwa self.length is not None:
+        elikiwa self.length ni sio Tupu:
             self.length -= len(result)
         rudisha result
 
     eleza peek(self, n=-1):
         # Having this enables IOBase.readline() to read more than one
         # byte at a time
-        ikiwa self.fp is None or self._method == "HEAD":
+        ikiwa self.fp ni Tupu ama self._method == "HEAD":
             rudisha b""
         ikiwa self.chunked:
             rudisha self._peek_chunked(n)
         rudisha self.fp.peek(n)
 
     eleza readline(self, limit=-1):
-        ikiwa self.fp is None or self._method == "HEAD":
+        ikiwa self.fp ni Tupu ama self._method == "HEAD":
             rudisha b""
         ikiwa self.chunked:
-            # Fallback to IOBase readline which uses peek() and read()
+            # Fallback to IOBase readline which uses peek() na read()
             rudisha super().readline(limit)
-        ikiwa self.length is not None and (limit < 0 or limit > self.length):
+        ikiwa self.length ni sio Tupu na (limit < 0 ama limit > self.length):
             limit = self.length
         result = self.fp.readline(limit)
-        ikiwa not result and limit:
+        ikiwa sio result na limit:
             self._close_conn()
-        elikiwa self.length is not None:
+        elikiwa self.length ni sio Tupu:
             self.length -= len(result)
         rudisha result
 
     eleza _read1_chunked(self, n):
         # Strictly speaking, _get_chunk_left() may cause more than one read,
-        # but that is ok, since that is to satisfy the chunked protocol.
+        # but that ni ok, since that ni to satisfy the chunked protocol.
         chunk_left = self._get_chunk_left()
-        ikiwa chunk_left is None or n == 0:
+        ikiwa chunk_left ni Tupu ama n == 0:
             rudisha b''
-        ikiwa not (0 <= n <= chunk_left):
-            n = chunk_left # ikiwa n is negative or larger than chunk_left
+        ikiwa sio (0 <= n <= chunk_left):
+            n = chunk_left # ikiwa n ni negative ama larger than chunk_left
         read = self.fp.read1(n)
         self.chunk_left -= len(read)
-        ikiwa not read:
-            raise IncompleteRead(b"")
+        ikiwa sio read:
+            ashiria IncompleteRead(b"")
         rudisha read
 
     eleza _peek_chunked(self, n):
         # Strictly speaking, _get_chunk_left() may cause more than one read,
-        # but that is ok, since that is to satisfy the chunked protocol.
-        try:
+        # but that ni ok, since that ni to satisfy the chunked protocol.
+        jaribu:
             chunk_left = self._get_chunk_left()
-        except IncompleteRead:
+        tatizo IncompleteRead:
             rudisha b'' # peek doesn't worry about protocol
-        ikiwa chunk_left is None:
+        ikiwa chunk_left ni Tupu:
             rudisha b'' # eof
-        # peek is allowed to rudisha more than requested.  Just request the
-        # entire chunk, and truncate what we get.
+        # peek ni allowed to rudisha more than requested.  Just request the
+        # entire chunk, na truncate what we get.
         rudisha self.fp.peek(chunk_left)[:chunk_left]
 
     eleza fileno(self):
         rudisha self.fp.fileno()
 
-    eleza getheader(self, name, default=None):
+    eleza getheader(self, name, default=Tupu):
         '''Returns the value of the header matching *name*.
 
         If there are multiple matching headers, the values are
-        combined into a single string separated by commas and spaces.
+        combined into a single string separated by commas na spaces.
 
-        If no matching header is found, returns *default* or None if
-        the *default* is not specified.
+        If no matching header ni found, rudishas *default* ama Tupu if
+        the *default* ni sio specified.
 
-        If the headers are unknown, raises http.client.ResponseNotReady.
+        If the headers are unknown, ashirias http.client.ResponseNotReady.
 
         '''
-        ikiwa self.headers is None:
-            raise ResponseNotReady()
-        headers = self.headers.get_all(name) or default
-        ikiwa isinstance(headers, str) or not hasattr(headers, '__iter__'):
+        ikiwa self.headers ni Tupu:
+            ashiria ResponseNotReady()
+        headers = self.headers.get_all(name) ama default
+        ikiwa isinstance(headers, str) ama sio hasattr(headers, '__iter__'):
             rudisha headers
-        else:
+        isipokua:
             rudisha ', '.join(headers)
 
     eleza getheaders(self):
         """Return list of (header, value) tuples."""
-        ikiwa self.headers is None:
-            raise ResponseNotReady()
+        ikiwa self.headers ni Tupu:
+            ashiria ResponseNotReady()
         rudisha list(self.headers.items())
 
-    # We override IOBase.__iter__ so that it doesn't check for closed-ness
+    # We override IOBase.__iter__ so that it doesn't check kila closed-ness
 
     eleza __iter__(self):
         rudisha self
@@ -726,19 +726,19 @@ kundi HTTPResponse(io.BufferedIOBase):
         '''Returns an instance of the kundi mimetools.Message containing
         meta-information associated with the URL.
 
-        When the method is HTTP, these headers are those returned by
+        When the method ni HTTP, these headers are those rudishaed by
         the server at the head of the retrieved HTML page (including
-        Content-Length and Content-Type).
+        Content-Length na Content-Type).
 
-        When the method is FTP, a Content-Length header will be
-        present ikiwa (as is now usual) the server passed back a file
-        length in response to the FTP retrieval request. A
+        When the method ni FTP, a Content-Length header will be
+        present ikiwa (as ni now usual) the server pitaed back a file
+        length kwenye response to the FTP retrieval request. A
         Content-Type header will be present ikiwa the MIME type can be
         guessed.
 
-        When the method is local-file, returned headers will include
+        When the method ni local-file, rudishaed headers will include
         a Date representing the file's last-modified time, a
-        Content-Length giving file size, and a Content-Type
+        Content-Length giving file size, na a Content-Type
         containing a guess at the file's type. See also the
         description of the mimetools module.
 
@@ -759,7 +759,7 @@ kundi HTTPResponse(io.BufferedIOBase):
 
     eleza getcode(self):
         '''Return the HTTP status code that was sent with the response,
-        or None ikiwa the URL is not an HTTP URL.
+        ama Tupu ikiwa the URL ni sio an HTTP URL.
 
         '''
         rudisha self.status
@@ -776,7 +776,7 @@ kundi HTTPConnection:
 
     @staticmethod
     eleza _is_textIO(stream):
-        """Test whether a file-like object is a text or a binary stream.
+        """Test whether a file-like object ni a text ama a binary stream.
         """
         rudisha isinstance(stream, io.TextIOBase)
 
@@ -784,61 +784,61 @@ kundi HTTPConnection:
     eleza _get_content_length(body, method):
         """Get the content-length based on the body.
 
-        If the body is None, we set Content-Length: 0 for methods that expect
+        If the body ni Tupu, we set Content-Length: 0 kila methods that expect
         a body (RFC 7230, Section 3.3.2). We also set the Content-Length for
-        any method ikiwa the body is a str or bytes-like object and not a file.
+        any method ikiwa the body ni a str ama bytes-like object na sio a file.
         """
-        ikiwa body is None:
-            # do an explicit check for not None here to distinguish
-            # between unset and set but empty
-            ikiwa method.upper() in _METHODS_EXPECTING_BODY:
+        ikiwa body ni Tupu:
+            # do an explicit check kila sio Tupu here to distinguish
+            # between unset na set but empty
+            ikiwa method.upper() kwenye _METHODS_EXPECTING_BODY:
                 rudisha 0
-            else:
-                rudisha None
+            isipokua:
+                rudisha Tupu
 
         ikiwa hasattr(body, 'read'):
             # file-like object.
-            rudisha None
+            rudisha Tupu
 
-        try:
+        jaribu:
             # does it implement the buffer protocol (bytes, bytearray, array)?
             mv = memoryview(body)
             rudisha mv.nbytes
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
         ikiwa isinstance(body, str):
             rudisha len(body)
 
-        rudisha None
+        rudisha Tupu
 
-    eleza __init__(self, host, port=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
-                 source_address=None, blocksize=8192):
+    eleza __init__(self, host, port=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
+                 source_address=Tupu, blocksize=8192):
         self.timeout = timeout
         self.source_address = source_address
         self.blocksize = blocksize
-        self.sock = None
+        self.sock = Tupu
         self._buffer = []
-        self.__response = None
+        self.__response = Tupu
         self.__state = _CS_IDLE
-        self._method = None
-        self._tunnel_host = None
-        self._tunnel_port = None
+        self._method = Tupu
+        self._tunnel_host = Tupu
+        self._tunnel_port = Tupu
         self._tunnel_headers = {}
 
         (self.host, self.port) = self._get_hostport(host, port)
 
-        # This is stored as an instance variable to allow unit
+        # This ni stored kama an instance variable to allow unit
         # tests to replace it with a suitable mockup
         self._create_connection = socket.create_connection
 
-    eleza set_tunnel(self, host, port=None, headers=None):
-        """Set up host and port for HTTP CONNECT tunnelling.
+    eleza set_tunnel(self, host, port=Tupu, headers=Tupu):
+        """Set up host na port kila HTTP CONNECT tunnelling.
 
-        In a connection that uses HTTP CONNECT tunneling, the host passed to the
-        constructor is used as a proxy server that relays all communication to
-        the endpoint passed to `set_tunnel`. This done by sending an HTTP
-        CONNECT request to the proxy server when the connection is established.
+        In a connection that uses HTTP CONNECT tunneling, the host pitaed to the
+        constructor ni used kama a proxy server that relays all communication to
+        the endpoint pitaed to `set_tunnel`. This done by sending an HTTP
+        CONNECT request to the proxy server when the connection ni established.
 
         This method must be called before the HTML connection has been
         established.
@@ -848,30 +848,30 @@ kundi HTTPConnection:
         """
 
         ikiwa self.sock:
-            raise RuntimeError("Can't set up tunnel for established connection")
+            ashiria RuntimeError("Can't set up tunnel kila established connection")
 
         self._tunnel_host, self._tunnel_port = self._get_hostport(host, port)
         ikiwa headers:
             self._tunnel_headers = headers
-        else:
+        isipokua:
             self._tunnel_headers.clear()
 
     eleza _get_hostport(self, host, port):
-        ikiwa port is None:
+        ikiwa port ni Tupu:
             i = host.rfind(':')
             j = host.rfind(']')         # ipv6 addresses have [...]
             ikiwa i > j:
-                try:
+                jaribu:
                     port = int(host[i+1:])
-                except ValueError:
+                tatizo ValueError:
                     ikiwa host[i+1:] == "": # http://foo.com:/ == http://foo.com/
                         port = self.default_port
-                    else:
-                        raise InvalidURL("nonnumeric port: '%s'" % host[i+1:])
+                    isipokua:
+                        ashiria InvalidURL("nonnumeric port: '%s'" % host[i+1:])
                 host = host[:i]
-            else:
+            isipokua:
                 port = self.default_port
-            ikiwa host and host[0] == '[' and host[-1] == ']':
+            ikiwa host na host[0] == '[' na host[-1] == ']':
                 host = host[1:-1]
 
         rudisha (host, port)
@@ -884,7 +884,7 @@ kundi HTTPConnection:
             self._tunnel_port)
         connect_bytes = connect_str.encode("ascii")
         self.send(connect_bytes)
-        for header, value in self._tunnel_headers.items():
+        kila header, value kwenye self._tunnel_headers.items():
             header_str = "%s: %s\r\n" % (header, value)
             header_bytes = header_str.encode("latin-1")
             self.send(header_bytes)
@@ -895,23 +895,23 @@ kundi HTTPConnection:
 
         ikiwa code != http.HTTPStatus.OK:
             self.close()
-            raise OSError("Tunnel connection failed: %d %s" % (code,
+            ashiria OSError("Tunnel connection failed: %d %s" % (code,
                                                                message.strip()))
-        while True:
+        wakati Kweli:
             line = response.fp.readline(_MAXLINE + 1)
             ikiwa len(line) > _MAXLINE:
-                raise LineTooLong("header line")
-            ikiwa not line:
-                # for sites which EOF without sending a trailer
-                break
-            ikiwa line in (b'\r\n', b'\n', b''):
-                break
+                ashiria LineTooLong("header line")
+            ikiwa sio line:
+                # kila sites which EOF without sending a trailer
+                koma
+            ikiwa line kwenye (b'\r\n', b'\n', b''):
+                koma
 
             ikiwa self.debuglevel > 0:
                 andika('header:', line.decode())
 
     eleza connect(self):
-        """Connect to the host and port specified in __init__."""
+        """Connect to the host na port specified kwenye __init__."""
         self.sock = self._create_connection(
             (self.host,self.port), self.timeout, self.source_address)
         self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
@@ -922,28 +922,28 @@ kundi HTTPConnection:
     eleza close(self):
         """Close the connection to the HTTP server."""
         self.__state = _CS_IDLE
-        try:
+        jaribu:
             sock = self.sock
             ikiwa sock:
-                self.sock = None
+                self.sock = Tupu
                 sock.close()   # close it manually... there may be other refs
-        finally:
+        mwishowe:
             response = self.__response
             ikiwa response:
-                self.__response = None
+                self.__response = Tupu
                 response.close()
 
     eleza send(self, data):
         """Send `data' to the server.
         ``data`` can be a string object, a bytes object, an array object, a
-        file-like object that supports a .read() method, or an iterable object.
+        file-like object that supports a .read() method, ama an iterable object.
         """
 
-        ikiwa self.sock is None:
+        ikiwa self.sock ni Tupu:
             ikiwa self.auto_open:
                 self.connect()
-            else:
-                raise NotConnected()
+            isipokua:
+                ashiria NotConnected()
 
         ikiwa self.debuglevel > 0:
             andika("send:", repr(data))
@@ -951,24 +951,24 @@ kundi HTTPConnection:
             ikiwa self.debuglevel > 0:
                 andika("sendIng a read()able")
             encode = self._is_textIO(data)
-            ikiwa encode and self.debuglevel > 0:
+            ikiwa encode na self.debuglevel > 0:
                 andika("encoding file using iso-8859-1")
-            while 1:
+            wakati 1:
                 datablock = data.read(self.blocksize)
-                ikiwa not datablock:
-                    break
+                ikiwa sio datablock:
+                    koma
                 ikiwa encode:
                     datablock = datablock.encode("iso-8859-1")
                 self.sock.sendall(datablock)
-            return
-        try:
+            rudisha
+        jaribu:
             self.sock.sendall(data)
-        except TypeError:
+        tatizo TypeError:
             ikiwa isinstance(data, collections.abc.Iterable):
-                for d in data:
+                kila d kwenye data:
                     self.sock.sendall(d)
-            else:
-                raise TypeError("data should be a bytes-like object "
+            isipokua:
+                ashiria TypeError("data should be a bytes-like object "
                                 "or an iterable, got %r" % type(data))
 
     eleza _output(self, s):
@@ -982,113 +982,113 @@ kundi HTTPConnection:
         ikiwa self.debuglevel > 0:
             andika("sendIng a read()able")
         encode = self._is_textIO(readable)
-        ikiwa encode and self.debuglevel > 0:
+        ikiwa encode na self.debuglevel > 0:
             andika("encoding file using iso-8859-1")
-        while True:
+        wakati Kweli:
             datablock = readable.read(self.blocksize)
-            ikiwa not datablock:
-                break
+            ikiwa sio datablock:
+                koma
             ikiwa encode:
                 datablock = datablock.encode("iso-8859-1")
-            yield datablock
+            tuma datablock
 
-    eleza _send_output(self, message_body=None, encode_chunked=False):
-        """Send the currently buffered request and clear the buffer.
+    eleza _send_output(self, message_body=Tupu, encode_chunked=Uongo):
+        """Send the currently buffered request na clear the buffer.
 
         Appends an extra \\r\\n to the buffer.
         A message_body may be specified, to be appended to the request.
         """
         self._buffer.extend((b"", b""))
         msg = b"\r\n".join(self._buffer)
-        del self._buffer[:]
+        toa self._buffer[:]
         self.send(msg)
 
-        ikiwa message_body is not None:
+        ikiwa message_body ni sio Tupu:
 
             # create a consistent interface to message_body
             ikiwa hasattr(message_body, 'read'):
                 # Let file-like take precedence over byte-like.  This
-                # is needed to allow the current position of mmap'ed
+                # ni needed to allow the current position of mmap'ed
                 # files to be taken into account.
                 chunks = self._read_readable(message_body)
-            else:
-                try:
-                    # this is solely to check to see ikiwa message_body
+            isipokua:
+                jaribu:
+                    # this ni solely to check to see ikiwa message_body
                     # implements the buffer API.  it /would/ be easier
                     # to capture ikiwa PyObject_CheckBuffer was exposed
                     # to Python.
                     memoryview(message_body)
-                except TypeError:
-                    try:
+                tatizo TypeError:
+                    jaribu:
                         chunks = iter(message_body)
-                    except TypeError:
-                        raise TypeError("message_body should be a bytes-like "
-                                        "object or an iterable, got %r"
+                    tatizo TypeError:
+                        ashiria TypeError("message_body should be a bytes-like "
+                                        "object ama an iterable, got %r"
                                         % type(message_body))
-                else:
+                isipokua:
                     # the object implements the buffer interface and
-                    # can be passed directly into socket methods
+                    # can be pitaed directly into socket methods
                     chunks = (message_body,)
 
-            for chunk in chunks:
-                ikiwa not chunk:
+            kila chunk kwenye chunks:
+                ikiwa sio chunk:
                     ikiwa self.debuglevel > 0:
                         andika('Zero length chunk ignored')
-                    continue
+                    endelea
 
-                ikiwa encode_chunked and self._http_vsn == 11:
+                ikiwa encode_chunked na self._http_vsn == 11:
                     # chunked encoding
                     chunk = f'{len(chunk):X}\r\n'.encode('ascii') + chunk \
                         + b'\r\n'
                 self.send(chunk)
 
-            ikiwa encode_chunked and self._http_vsn == 11:
+            ikiwa encode_chunked na self._http_vsn == 11:
                 # end chunked transfer
                 self.send(b'0\r\n\r\n')
 
-    eleza putrequest(self, method, url, skip_host=False,
-                   skip_accept_encoding=False):
+    eleza putrequest(self, method, url, skip_host=Uongo,
+                   skip_accept_encoding=Uongo):
         """Send a request to the server.
 
         `method' specifies an HTTP request method, e.g. 'GET'.
         `url' specifies the object being requested, e.g. '/index.html'.
-        `skip_host' ikiwa True does not add automatically a 'Host:' header
-        `skip_accept_encoding' ikiwa True does not add automatically an
+        `skip_host' ikiwa Kweli does sio add automatically a 'Host:' header
+        `skip_accept_encoding' ikiwa Kweli does sio add automatically an
            'Accept-Encoding:' header
         """
 
         # ikiwa a prior response has been completed, then forget about it.
-        ikiwa self.__response and self.__response.isclosed():
-            self.__response = None
+        ikiwa self.__response na self.__response.isclosed():
+            self.__response = Tupu
 
 
-        # in certain cases, we cannot issue another request on this connection.
+        # kwenye certain cases, we cannot issue another request on this connection.
         # this occurs when:
-        #   1) we are in the process of sending a request.   (_CS_REQ_STARTED)
-        #   2) a response to a previous request has signalled that it is going
+        #   1) we are kwenye the process of sending a request.   (_CS_REQ_STARTED)
+        #   2) a response to a previous request has signalled that it ni going
         #      to close the connection upon completion.
-        #   3) the headers for the previous response have not been read, thus
-        #      we cannot determine whether point (2) is true.   (_CS_REQ_SENT)
+        #   3) the headers kila the previous response have sio been read, thus
+        #      we cannot determine whether point (2) ni true.   (_CS_REQ_SENT)
         #
-        # ikiwa there is no prior response, then we can request at will.
+        # ikiwa there ni no prior response, then we can request at will.
         #
-        # ikiwa point (2) is true, then we will have passed the socket to the
-        # response (effectively meaning, "there is no prior response"), and
-        # will open a new one when a new request is made.
+        # ikiwa point (2) ni true, then we will have pitaed the socket to the
+        # response (effectively meaning, "there ni no prior response"), and
+        # will open a new one when a new request ni made.
         #
         # Note: ikiwa a prior response exists, then we *can* start a new request.
-        #       We are not allowed to begin fetching the response to this new
-        #       request, however, until that prior response is complete.
+        #       We are sio allowed to begin fetching the response to this new
+        #       request, however, until that prior response ni complete.
         #
         ikiwa self.__state == _CS_IDLE:
             self.__state = _CS_REQ_STARTED
-        else:
-            raise CannotSendRequest(self.__state)
+        isipokua:
+            ashiria CannotSendRequest(self.__state)
 
-        # Save the method for use later in the response phase
+        # Save the method kila use later kwenye the response phase
         self._method = method
 
-        url = url or '/'
+        url = url ama '/'
         self._validate_path(url)
 
         request = '%s %s %s' % (method, url, self._http_vsn_str)
@@ -1096,21 +1096,21 @@ kundi HTTPConnection:
         self._output(self._encode_request(request))
 
         ikiwa self._http_vsn == 11:
-            # Issue some standard headers for better HTTP/1.1 compliance
+            # Issue some standard headers kila better HTTP/1.1 compliance
 
-            ikiwa not skip_host:
-                # this header is issued *only* for HTTP/1.1
+            ikiwa sio skip_host:
+                # this header ni issued *only* kila HTTP/1.1
                 # connections. more specifically, this means it is
                 # only issued when the client uses the new
                 # HTTPConnection() class. backwards-compat clients
-                # will be using HTTP/1.0 and those clients may be
+                # will be using HTTP/1.0 na those clients may be
                 # issuing this header themselves. we should NOT issue
-                # it twice; some web servers (such as Apache) barf
+                # it twice; some web servers (such kama Apache) barf
                 # when they see two Host: headers
 
-                # If we need a non-standard port,include it in the
-                # header.  If the request is going through a proxy,
-                # but the host of the actual URL, not the host of the
+                # If we need a non-standard port,include it kwenye the
+                # header.  If the request ni going through a proxy,
+                # but the host of the actual URL, sio the host of the
                 # proxy.
 
                 netloc = ''
@@ -1118,69 +1118,69 @@ kundi HTTPConnection:
                     nil, netloc, nil, nil, nil = urlsplit(url)
 
                 ikiwa netloc:
-                    try:
+                    jaribu:
                         netloc_enc = netloc.encode("ascii")
-                    except UnicodeEncodeError:
+                    tatizo UnicodeEncodeError:
                         netloc_enc = netloc.encode("idna")
                     self.putheader('Host', netloc_enc)
-                else:
+                isipokua:
                     ikiwa self._tunnel_host:
                         host = self._tunnel_host
                         port = self._tunnel_port
-                    else:
+                    isipokua:
                         host = self.host
                         port = self.port
 
-                    try:
+                    jaribu:
                         host_enc = host.encode("ascii")
-                    except UnicodeEncodeError:
+                    tatizo UnicodeEncodeError:
                         host_enc = host.encode("idna")
 
                     # As per RFC 273, IPv6 address should be wrapped with []
-                    # when used as Host header
+                    # when used kama Host header
 
                     ikiwa host.find(':') >= 0:
                         host_enc = b'[' + host_enc + b']'
 
                     ikiwa port == self.default_port:
                         self.putheader('Host', host_enc)
-                    else:
+                    isipokua:
                         host_enc = host_enc.decode("ascii")
                         self.putheader('Host', "%s:%s" % (host_enc, port))
 
-            # note: we are assuming that clients will not attempt to set these
+            # note: we are assuming that clients will sio attempt to set these
             #       headers since *this* library must deal with the
             #       consequences. this also means that when the supporting
             #       libraries are updated to recognize other forms, then this
-            #       code should be changed (removed or updated).
+            #       code should be changed (removed ama updated).
 
             # we only want a Content-Encoding of "identity" since we don't
-            # support encodings such as x-gzip or x-deflate.
-            ikiwa not skip_accept_encoding:
+            # support encodings such kama x-gzip ama x-deflate.
+            ikiwa sio skip_accept_encoding:
                 self.putheader('Accept-Encoding', 'identity')
 
             # we can accept "chunked" Transfer-Encodings, but no others
             # NOTE: no TE header implies *only* "chunked"
             #self.putheader('TE', 'chunked')
 
-            # ikiwa TE is supplied in the header, then it must appear in a
+            # ikiwa TE ni supplied kwenye the header, then it must appear kwenye a
             # Connection header.
             #self.putheader('Connection', 'TE')
 
-        else:
+        isipokua:
             # For HTTP/1.0, the server will assume "not chunked"
-            pass
+            pita
 
     eleza _encode_request(self, request):
         # ASCII also helps prevent CVE-2019-9740.
         rudisha request.encode('ascii')
 
     eleza _validate_path(self, url):
-        """Validate a url for putrequest."""
+        """Validate a url kila putrequest."""
         # Prevent CVE-2019-9740.
         match = _contains_disallowed_url_pchar_re.search(url)
         ikiwa match:
-            raise InvalidURL(f"URL can't contain control characters. {url!r} "
+            ashiria InvalidURL(f"URL can't contain control characters. {url!r} "
                              f"(found at least {match.group()!r})")
 
     eleza putheader(self, header, *values):
@@ -1189,85 +1189,85 @@ kundi HTTPConnection:
         For example: h.putheader('Accept', 'text/html')
         """
         ikiwa self.__state != _CS_REQ_STARTED:
-            raise CannotSendHeader()
+            ashiria CannotSendHeader()
 
         ikiwa hasattr(header, 'encode'):
             header = header.encode('ascii')
 
-        ikiwa not _is_legal_header_name(header):
-            raise ValueError('Invalid header name %r' % (header,))
+        ikiwa sio _is_legal_header_name(header):
+            ashiria ValueError('Invalid header name %r' % (header,))
 
         values = list(values)
-        for i, one_value in enumerate(values):
+        kila i, one_value kwenye enumerate(values):
             ikiwa hasattr(one_value, 'encode'):
                 values[i] = one_value.encode('latin-1')
             elikiwa isinstance(one_value, int):
                 values[i] = str(one_value).encode('ascii')
 
             ikiwa _is_illegal_header_value(values[i]):
-                raise ValueError('Invalid header value %r' % (values[i],))
+                ashiria ValueError('Invalid header value %r' % (values[i],))
 
         value = b'\r\n\t'.join(values)
         header = header + b': ' + value
         self._output(header)
 
-    eleza endheaders(self, message_body=None, *, encode_chunked=False):
+    eleza endheaders(self, message_body=Tupu, *, encode_chunked=Uongo):
         """Indicate that the last header line has been sent to the server.
 
         This method sends the request to the server.  The optional message_body
-        argument can be used to pass a message body associated with the
+        argument can be used to pita a message body associated with the
         request.
         """
         ikiwa self.__state == _CS_REQ_STARTED:
             self.__state = _CS_REQ_SENT
-        else:
-            raise CannotSendHeader()
+        isipokua:
+            ashiria CannotSendHeader()
         self._send_output(message_body, encode_chunked=encode_chunked)
 
-    eleza request(self, method, url, body=None, headers={}, *,
-                encode_chunked=False):
+    eleza request(self, method, url, body=Tupu, headers={}, *,
+                encode_chunked=Uongo):
         """Send a complete request to the server."""
         self._send_request(method, url, body, headers, encode_chunked)
 
     eleza _send_request(self, method, url, body, headers, encode_chunked):
-        # Honor explicitly requested Host: and Accept-Encoding: headers.
-        header_names = frozenset(k.lower() for k in headers)
+        # Honor explicitly requested Host: na Accept-Encoding: headers.
+        header_names = frozenset(k.lower() kila k kwenye headers)
         skips = {}
-        ikiwa 'host' in header_names:
+        ikiwa 'host' kwenye header_names:
             skips['skip_host'] = 1
-        ikiwa 'accept-encoding' in header_names:
+        ikiwa 'accept-encoding' kwenye header_names:
             skips['skip_accept_encoding'] = 1
 
         self.putrequest(method, url, **skips)
 
-        # chunked encoding will happen ikiwa HTTP/1.1 is used and either
-        # the caller passes encode_chunked=True or the following
+        # chunked encoding will happen ikiwa HTTP/1.1 ni used na either
+        # the caller pitaes encode_chunked=Kweli ama the following
         # conditions hold:
-        # 1. content-length has not been explicitly set
-        # 2. the body is a file or iterable, but not a str or bytes-like
+        # 1. content-length has sio been explicitly set
+        # 2. the body ni a file ama iterable, but sio a str ama bytes-like
         # 3. Transfer-Encoding has NOT been explicitly set by the caller
 
-        ikiwa 'content-length' not in header_names:
-            # only chunk body ikiwa not explicitly set for backwards
-            # compatibility, assuming the client code is already handling the
+        ikiwa 'content-length' haiko kwenye header_names:
+            # only chunk body ikiwa sio explicitly set kila backwards
+            # compatibility, assuming the client code ni already handling the
             # chunking
-            ikiwa 'transfer-encoding' not in header_names:
+            ikiwa 'transfer-encoding' haiko kwenye header_names:
                 # ikiwa content-length cannot be automatically determined, fall
                 # back to chunked encoding
-                encode_chunked = False
+                encode_chunked = Uongo
                 content_length = self._get_content_length(body, method)
-                ikiwa content_length is None:
-                    ikiwa body is not None:
+                ikiwa content_length ni Tupu:
+                    ikiwa body ni sio Tupu:
                         ikiwa self.debuglevel > 0:
                             andika('Unable to determine size of %r' % body)
-                        encode_chunked = True
+                        encode_chunked = Kweli
                         self.putheader('Transfer-Encoding', 'chunked')
-                else:
+                isipokua:
                     self.putheader('Content-Length', str(content_length))
-        else:
-            encode_chunked = False
+        isipokua:
+            encode_chunked = Uongo
 
-        for hdr, value in headers.items():
+        kila hdr, value kwenye headers.items():
             self.putheader(hdr, value)
         ikiwa isinstance(body, str):
             # RFC 2616 Section 3.7.1 says that text default has a
@@ -1278,112 +1278,112 @@ kundi HTTPConnection:
     eleza getresponse(self):
         """Get the response kutoka the server.
 
-        If the HTTPConnection is in the correct state, returns an
-        instance of HTTPResponse or of whatever object is returned by
+        If the HTTPConnection ni kwenye the correct state, rudishas an
+        instance of HTTPResponse ama of whatever object ni rudishaed by
         the response_kundi variable.
 
-        If a request has not been sent or ikiwa a previous response has
-        not be handled, ResponseNotReady is raised.  If the HTTP
+        If a request has sio been sent ama ikiwa a previous response has
+        sio be handled, ResponseNotReady ni ashiriad.  If the HTTP
         response indicates that the connection should be closed, then
-        it will be closed before the response is returned.  When the
-        connection is closed, the underlying socket is closed.
+        it will be closed before the response ni rudishaed.  When the
+        connection ni closed, the underlying socket ni closed.
         """
 
         # ikiwa a prior response has been completed, then forget about it.
-        ikiwa self.__response and self.__response.isclosed():
-            self.__response = None
+        ikiwa self.__response na self.__response.isclosed():
+            self.__response = Tupu
 
         # ikiwa a prior response exists, then it must be completed (otherwise, we
         # cannot read this response's header to determine the connection-close
         # behavior)
         #
         # note: ikiwa a prior response existed, but was connection-close, then the
-        # socket and response were made independent of this HTTPConnection
+        # socket na response were made independent of this HTTPConnection
         # object since a new request requires that we open a whole new
         # connection
         #
         # this means the prior response had one of two states:
-        #   1) will_close: this connection was reset and the prior socket and
+        #   1) will_close: this connection was reset na the prior socket and
         #                  response operate independently
-        #   2) persistent: the response was retained and we await its
+        #   2) persistent: the response was retained na we await its
         #                  isclosed() status to become true.
         #
-        ikiwa self.__state != _CS_REQ_SENT or self.__response:
-            raise ResponseNotReady(self.__state)
+        ikiwa self.__state != _CS_REQ_SENT ama self.__response:
+            ashiria ResponseNotReady(self.__state)
 
         ikiwa self.debuglevel > 0:
             response = self.response_class(self.sock, self.debuglevel,
                                            method=self._method)
-        else:
+        isipokua:
             response = self.response_class(self.sock, method=self._method)
 
-        try:
-            try:
+        jaribu:
+            jaribu:
                 response.begin()
-            except ConnectionError:
+            tatizo ConnectionError:
                 self.close()
-                raise
+                ashiria
             assert response.will_close != _UNKNOWN
             self.__state = _CS_IDLE
 
             ikiwa response.will_close:
-                # this effectively passes the connection to the response
+                # this effectively pitaes the connection to the response
                 self.close()
-            else:
-                # remember this, so we can tell when it is complete
+            isipokua:
+                # remember this, so we can tell when it ni complete
                 self.__response = response
 
             rudisha response
         except:
             response.close()
-            raise
+            ashiria
 
-try:
+jaribu:
     agiza ssl
-except ImportError:
-    pass
-else:
+tatizo ImportError:
+    pita
+isipokua:
     kundi HTTPSConnection(HTTPConnection):
         "This kundi allows communication via SSL."
 
         default_port = HTTPS_PORT
 
-        # XXX Should key_file and cert_file be deprecated in favour of context?
+        # XXX Should key_file na cert_file be deprecated kwenye favour of context?
 
-        eleza __init__(self, host, port=None, key_file=None, cert_file=None,
+        eleza __init__(self, host, port=Tupu, key_file=Tupu, cert_file=Tupu,
                      timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
-                     source_address=None, *, context=None,
-                     check_hostname=None, blocksize=8192):
+                     source_address=Tupu, *, context=Tupu,
+                     check_hostname=Tupu, blocksize=8192):
             super(HTTPSConnection, self).__init__(host, port, timeout,
                                                   source_address,
                                                   blocksize=blocksize)
-            ikiwa (key_file is not None or cert_file is not None or
-                        check_hostname is not None):
+            ikiwa (key_file ni sio Tupu ama cert_file ni sio Tupu or
+                        check_hostname ni sio Tupu):
                 agiza warnings
-                warnings.warn("key_file, cert_file and check_hostname are "
+                warnings.warn("key_file, cert_file na check_hostname are "
                               "deprecated, use a custom context instead.",
                               DeprecationWarning, 2)
             self.key_file = key_file
             self.cert_file = cert_file
-            ikiwa context is None:
+            ikiwa context ni Tupu:
                 context = ssl._create_default_https_context()
-                # enable PHA for TLS 1.3 connections ikiwa available
-                ikiwa context.post_handshake_auth is not None:
-                    context.post_handshake_auth = True
+                # enable PHA kila TLS 1.3 connections ikiwa available
+                ikiwa context.post_handshake_auth ni sio Tupu:
+                    context.post_handshake_auth = Kweli
             will_verify = context.verify_mode != ssl.CERT_NONE
-            ikiwa check_hostname is None:
+            ikiwa check_hostname ni Tupu:
                 check_hostname = context.check_hostname
-            ikiwa check_hostname and not will_verify:
-                raise ValueError("check_hostname needs a SSL context with "
-                                 "either CERT_OPTIONAL or CERT_REQUIRED")
-            ikiwa key_file or cert_file:
+            ikiwa check_hostname na sio will_verify:
+                ashiria ValueError("check_hostname needs a SSL context with "
+                                 "either CERT_OPTIONAL ama CERT_REQUIRED")
+            ikiwa key_file ama cert_file:
                 context.load_cert_chain(cert_file, key_file)
-                # cert and key file means the user wants to authenticate.
-                # enable TLS 1.3 PHA implicitly even for custom contexts.
-                ikiwa context.post_handshake_auth is not None:
-                    context.post_handshake_auth = True
+                # cert na key file means the user wants to authenticate.
+                # enable TLS 1.3 PHA implicitly even kila custom contexts.
+                ikiwa context.post_handshake_auth ni sio Tupu:
+                    context.post_handshake_auth = Kweli
             self._context = context
-            ikiwa check_hostname is not None:
+            ikiwa check_hostname ni sio Tupu:
                 self._context.check_hostname = check_hostname
 
         eleza connect(self):
@@ -1393,7 +1393,7 @@ else:
 
             ikiwa self._tunnel_host:
                 server_hostname = self._tunnel_host
-            else:
+            isipokua:
                 server_hostname = self.host
 
             self.sock = self._context.wrap_socket(self.sock,
@@ -1403,14 +1403,14 @@ else:
 
 kundi HTTPException(Exception):
     # Subclasses that define an __init__ must call Exception.__init__
-    # or define self.args.  Otherwise, str() will fail.
-    pass
+    # ama define self.args.  Otherwise, str() will fail.
+    pita
 
 kundi NotConnected(HTTPException):
-    pass
+    pita
 
 kundi InvalidURL(HTTPException):
-    pass
+    pita
 
 kundi UnknownProtocol(HTTPException):
     eleza __init__(self, version):
@@ -1418,40 +1418,40 @@ kundi UnknownProtocol(HTTPException):
         self.version = version
 
 kundi UnknownTransferEncoding(HTTPException):
-    pass
+    pita
 
 kundi UnimplementedFileMode(HTTPException):
-    pass
+    pita
 
 kundi IncompleteRead(HTTPException):
-    eleza __init__(self, partial, expected=None):
+    eleza __init__(self, partial, expected=Tupu):
         self.args = partial,
         self.partial = partial
         self.expected = expected
     eleza __repr__(self):
-        ikiwa self.expected is not None:
+        ikiwa self.expected ni sio Tupu:
             e = ', %i more expected' % self.expected
-        else:
+        isipokua:
             e = ''
         rudisha '%s(%i bytes read%s)' % (self.__class__.__name__,
                                         len(self.partial), e)
     __str__ = object.__str__
 
 kundi ImproperConnectionState(HTTPException):
-    pass
+    pita
 
 kundi CannotSendRequest(ImproperConnectionState):
-    pass
+    pita
 
 kundi CannotSendHeader(ImproperConnectionState):
-    pass
+    pita
 
 kundi ResponseNotReady(ImproperConnectionState):
-    pass
+    pita
 
 kundi BadStatusLine(HTTPException):
     eleza __init__(self, line):
-        ikiwa not line:
+        ikiwa sio line:
             line = repr(line)
         self.args = line,
         self.line = line
@@ -1466,5 +1466,5 @@ kundi RemoteDisconnected(ConnectionResetError, BadStatusLine):
         BadStatusLine.__init__(self, "")
         ConnectionResetError.__init__(self, *pos, **kw)
 
-# for backwards compatibility
+# kila backwards compatibility
 error = HTTPException

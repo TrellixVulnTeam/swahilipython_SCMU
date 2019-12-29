@@ -14,9 +14,9 @@ deactivate () {
         unset _OLD_VIRTUAL_PYTHONHOME
     fi
 
-    # This should detect bash and zsh, which have a hash command that must
+    # This should detect bash na zsh, which have a hash command that must
     # be called to get it to forget past commands.  Without forgetting
-    # past commands the $PATH changes we made may not be respected
+    # past commands the $PATH changes we made may sio be respected
     ikiwa [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ] ; then
         hash -r
     fi
@@ -45,8 +45,8 @@ PATH="$VIRTUAL_ENV/__VENV_BIN_NAME__:$PATH"
 export PATH
 
 # unset PYTHONHOME ikiwa set
-# this will fail ikiwa PYTHONHOME is set to the empty string (which is bad anyway)
-# could use `ikiwa (set -u; : $PYTHONHOME) ;` in bash
+# this will fail ikiwa PYTHONHOME ni set to the empty string (which ni bad anyway)
+# could use `ikiwa (set -u; : $PYTHONHOME) ;` kwenye bash
 ikiwa [ -n "${PYTHONHOME:-}" ] ; then
     _OLD_VIRTUAL_PYTHONHOME="${PYTHONHOME:-}"
     unset PYTHONHOME
@@ -58,7 +58,7 @@ ikiwa [ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" ] ; then
 	PS1="__VENV_PROMPT__${PS1:-}"
     else
     ikiwa [ "`basename \"$VIRTUAL_ENV\"`" = "__" ] ; then
-        # special case for Aspen magic directories
+        # special case kila Aspen magic directories
         # see http://www.zetadev.com/software/aspen/
         PS1="[`basename \`dirname \"$VIRTUAL_ENV\"\``] $PS1"
     else
@@ -68,9 +68,9 @@ ikiwa [ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" ] ; then
     export PS1
 fi
 
-# This should detect bash and zsh, which have a hash command that must
+# This should detect bash na zsh, which have a hash command that must
 # be called to get it to forget past commands.  Without forgetting
-# past commands the $PATH changes we made may not be respected
+# past commands the $PATH changes we made may sio be respected
 ikiwa [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ] ; then
     hash -r
 fi

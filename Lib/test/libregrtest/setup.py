@@ -5,22 +5,22 @@ import signal
 import sys
 import unittest
 from test import support
-try:
+jaribu:
     import gc
-except ImportError:
+tatizo ImportError:
     gc = None
 
 
 def setup_tests(ns):
-    try:
+    jaribu:
         stderr_fd = sys.__stderr__.fileno()
-    except (ValueError, AttributeError):
+    tatizo (ValueError, AttributeError):
         # Catch ValueError to catch io.UnsupportedOperation on TextIOBase
         # and ValueError on a closed stream.
         #
         # Catch AttributeError for stderr being None.
         stderr_fd = None
-    else:
+    isipokua:
         # Display the Python traceback on fatal errors (e.g. segfault)
         faulthandler.enable(all_threads=True, file=stderr_fd)
 
@@ -41,13 +41,13 @@ def setup_tests(ns):
         # to locate tests
         sys.path.insert(0, os.path.abspath(ns.testdir))
 
-    # Some times __path__ and __file__ are not absolute (e.g. while running from
+    # Some times __path__ and __file__ are sio absolute (e.g. wakati running from
     # Lib/) and, if we change the CWD to run the tests in a temporary dir, some
     # imports might fail.  This affects only the modules imported before os.chdir().
     # These modules are searched first in sys.path[0] (so '' -- the CWD) and if
     # they are found in the CWD their __file__ and __path__ will be relative (this
     # happens before the chdir).  All the modules imported after the chdir, are
-    # not found in the CWD, and since the other paths in sys.path[1:] are absolute
+    # sio found in the CWD, and since the other paths in sys.path[1:] are absolute
     # (site.py absolutize them), the __file__ and __path__ will be absolute too.
     # Therefore it is necessary to absolutize manually the __file__ and __path__ of
     # the packages to prevent later imports to fail when the CWD is different.
@@ -61,10 +61,10 @@ def setup_tests(ns):
     if ns.huntrleaks:
         unittest.BaseTestSuite._cleanup = False
 
-    if ns.memlimit is not None:
+    if ns.memlimit ni sio None:
         support.set_memlimit(ns.memlimit)
 
-    if ns.threshold is not None:
+    if ns.threshold ni sio None:
         gc.set_threshold(ns.threshold)
 
     suppress_msvcrt_asserts(ns.verbose and ns.verbose >= 2)
@@ -79,18 +79,18 @@ def setup_tests(ns):
 
 
 def suppress_msvcrt_asserts(verbose):
-    try:
+    jaribu:
         import msvcrt
-    except ImportError:
+    tatizo ImportError:
         return
 
     msvcrt.SetErrorMode(msvcrt.SEM_FAILCRITICALERRORS|
                         msvcrt.SEM_NOALIGNMENTFAULTEXCEPT|
                         msvcrt.SEM_NOGPFAULTERRORBOX|
                         msvcrt.SEM_NOOPENFILEERRORBOX)
-    try:
+    jaribu:
         msvcrt.CrtSetReportMode
-    except AttributeError:
+    tatizo AttributeError:
         # release build
         return
 
@@ -98,7 +98,7 @@ def suppress_msvcrt_asserts(verbose):
         if verbose:
             msvcrt.CrtSetReportMode(m, msvcrt.CRTDBG_MODE_FILE)
             msvcrt.CrtSetReportFile(m, msvcrt.CRTDBG_FILE_STDERR)
-        else:
+        isipokua:
             msvcrt.CrtSetReportMode(m, 0)
 
 
@@ -107,10 +107,10 @@ def replace_stdout():
     """Set stdout encoder error handler to backslashreplace (as stderr error
     handler) to avoid UnicodeEncodeError when printing a traceback"""
     stdout = sys.stdout
-    try:
+    jaribu:
         fd = stdout.fileno()
-    except ValueError:
-        # On IDLE, sys.stdout has no file descriptor and is not a TextIOWrapper
+    tatizo ValueError:
+        # On IDLE, sys.stdout has no file descriptor and ni sio a TextIOWrapper
         # object. Leaving sys.stdout unchanged.
         #
         # Catch ValueError to catch io.UnsupportedOperation on TextIOBase

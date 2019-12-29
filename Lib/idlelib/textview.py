@@ -1,4 +1,4 @@
-"""Simple text browser for IDLE
+"""Simple text browser kila IDLE
 
 """
 kutoka tkinter agiza Toplevel, Text, TclError,\
@@ -11,39 +11,39 @@ kutoka idlelib.colorizer agiza color_config
 
 
 kundi AutoHideScrollbar(Scrollbar):
-    """A scrollbar that is automatically hidden when not needed.
+    """A scrollbar that ni automatically hidden when sio needed.
 
-    Only the grid geometry manager is supported.
+    Only the grid geometry manager ni supported.
     """
     eleza set(self, lo, hi):
-        ikiwa float(lo) > 0.0 or float(hi) < 1.0:
+        ikiwa float(lo) > 0.0 ama float(hi) < 1.0:
             self.grid()
-        else:
+        isipokua:
             self.grid_remove()
         super().set(lo, hi)
 
     eleza pack(self, **kwargs):
-        raise TclError(f'{self.__class__.__name__} does not support "pack"')
+        ashiria TclError(f'{self.__class__.__name__} does sio support "pack"')
 
     eleza place(self, **kwargs):
-        raise TclError(f'{self.__class__.__name__} does not support "place"')
+        ashiria TclError(f'{self.__class__.__name__} does sio support "place"')
 
 
 kundi ScrollableTextFrame(Frame):
     """Display text with scrollbar(s)."""
 
     eleza __init__(self, master, wrap=NONE, **kwargs):
-        """Create a frame for Textview.
+        """Create a frame kila Textview.
 
-        master - master widget for this frame
-        wrap - type of text wrapping to use ('word', 'char' or 'none')
+        master - master widget kila this frame
+        wrap - type of text wrapping to use ('word', 'char' ama 'none')
 
-        All parameters except for 'wrap' are passed to Frame.__init__().
+        All parameters tatizo kila 'wrap' are pitaed to Frame.__init__().
 
-        The Text widget is accessible via the 'text' attribute.
+        The Text widget ni accessible via the 'text' attribute.
 
         Note: Changing the wrapping mode of the text widget after
-        instantiation is not supported.
+        instantiation ni sio supported.
         """
         super().__init__(master, **kwargs)
 
@@ -54,32 +54,32 @@ kundi ScrollableTextFrame(Frame):
 
         # vertical scrollbar
         self.yscroll = AutoHideScrollbar(self, orient=VERTICAL,
-                                         takefocus=False,
+                                         takefocus=Uongo,
                                          command=text.yview)
         self.yscroll.grid(row=0, column=1, sticky=NS)
         text['yscrollcommand'] = self.yscroll.set
 
-        # horizontal scrollbar - only when wrap is set to NONE
+        # horizontal scrollbar - only when wrap ni set to NONE
         ikiwa wrap == NONE:
             self.xscroll = AutoHideScrollbar(self, orient=HORIZONTAL,
-                                             takefocus=False,
+                                             takefocus=Uongo,
                                              command=text.xview)
             self.xscroll.grid(row=1, column=0, sticky=EW)
             text['xscrollcommand'] = self.xscroll.set
-        else:
-            self.xscroll = None
+        isipokua:
+            self.xscroll = Tupu
 
 
 kundi ViewFrame(Frame):
-    "Display TextFrame and Close button."
+    "Display TextFrame na Close button."
     eleza __init__(self, parent, contents, wrap='word'):
-        """Create a frame for viewing text with a "Close" button.
+        """Create a frame kila viewing text with a "Close" button.
 
-        parent - parent widget for this frame
+        parent - parent widget kila this frame
         contents - text to display
-        wrap - type of text wrapping to use ('word', 'char' or 'none')
+        wrap - type of text wrapping to use ('word', 'char' ama 'none')
 
-        The Text widget is accessible via the 'text' attribute.
+        The Text widget ni accessible via the 'text' attribute.
         """
         super().__init__(parent)
         self.parent = parent
@@ -94,29 +94,29 @@ kundi ViewFrame(Frame):
         text.focus_set()
 
         self.button_ok = button_ok = Button(
-                self, text='Close', command=self.ok, takefocus=False)
-        self.textframe.pack(side='top', expand=True, fill='both')
+                self, text='Close', command=self.ok, takefocus=Uongo)
+        self.textframe.pack(side='top', expand=Kweli, fill='both')
         button_ok.pack(side='bottom')
 
-    eleza ok(self, event=None):
+    eleza ok(self, event=Tupu):
         """Dismiss text viewer dialog."""
         self.parent.destroy()
 
 
 kundi ViewWindow(Toplevel):
-    "A simple text viewer dialog for IDLE."
+    "A simple text viewer dialog kila IDLE."
 
-    eleza __init__(self, parent, title, contents, modal=True, wrap=WORD,
-                 *, _htest=False, _utest=False):
-        """Show the given text in a scrollable window with a 'close' button.
+    eleza __init__(self, parent, title, contents, modal=Kweli, wrap=WORD,
+                 *, _htest=Uongo, _utest=Uongo):
+        """Show the given text kwenye a scrollable window with a 'close' button.
 
-        If modal is left True, users cannot interact with other windows
-        until the textview window is closed.
+        If modal ni left Kweli, users cannot interact with other windows
+        until the textview window ni closed.
 
         parent - parent of this dialog
-        title - string which is title of popup dialog
-        contents - text to display in dialog
-        wrap - type of text wrapping to use ('word', 'char' or 'none')
+        title - string which ni title of popup dialog
+        contents - text to display kwenye dialog
+        wrap - type of text wrapping to use ('word', 'char' ama 'none')
         _htest - bool; change box location when running htest.
         _utest - bool; don't wait_window when running unittest.
         """
@@ -124,71 +124,71 @@ kundi ViewWindow(Toplevel):
         self['borderwidth'] = 5
         # Place dialog below parent ikiwa running htest.
         x = parent.winfo_rootx() + 10
-        y = parent.winfo_rooty() + (10 ikiwa not _htest else 100)
+        y = parent.winfo_rooty() + (10 ikiwa sio _htest else 100)
         self.geometry(f'=750x500+{x}+{y}')
 
         self.title(title)
         self.viewframe = ViewFrame(self, contents, wrap=wrap)
         self.protocol("WM_DELETE_WINDOW", self.ok)
         self.button_ok = button_ok = Button(self, text='Close',
-                                            command=self.ok, takefocus=False)
-        self.viewframe.pack(side='top', expand=True, fill='both')
+                                            command=self.ok, takefocus=Uongo)
+        self.viewframe.pack(side='top', expand=Kweli, fill='both')
 
         self.is_modal = modal
         ikiwa self.is_modal:
             self.transient(parent)
             self.grab_set()
-            ikiwa not _utest:
+            ikiwa sio _utest:
                 self.wait_window()
 
-    eleza ok(self, event=None):
+    eleza ok(self, event=Tupu):
         """Dismiss text viewer dialog."""
         ikiwa self.is_modal:
             self.grab_release()
         self.destroy()
 
 
-eleza view_text(parent, title, contents, modal=True, wrap='word', _utest=False):
-    """Create text viewer for given text.
+eleza view_text(parent, title, contents, modal=Kweli, wrap='word', _utest=Uongo):
+    """Create text viewer kila given text.
 
     parent - parent of this dialog
-    title - string which is the title of popup dialog
-    contents - text to display in this dialog
-    wrap - type of text wrapping to use ('word', 'char' or 'none')
-    modal - controls ikiwa users can interact with other windows while this
-            dialog is displayed
+    title - string which ni the title of popup dialog
+    contents - text to display kwenye this dialog
+    wrap - type of text wrapping to use ('word', 'char' ama 'none')
+    modal - controls ikiwa users can interact with other windows wakati this
+            dialog ni displayed
     _utest - bool; controls wait_window on unittest
     """
     rudisha ViewWindow(parent, title, contents, modal, wrap=wrap, _utest=_utest)
 
 
-eleza view_file(parent, title, filename, encoding, modal=True, wrap='word',
-              _utest=False):
-    """Create text viewer for text in filename.
+eleza view_file(parent, title, filename, encoding, modal=Kweli, wrap='word',
+              _utest=Uongo):
+    """Create text viewer kila text kwenye filename.
 
     Return error message ikiwa file cannot be read.  Otherwise calls view_text
     with contents of the file.
     """
-    try:
-        with open(filename, 'r', encoding=encoding) as file:
+    jaribu:
+        with open(filename, 'r', encoding=encoding) kama file:
             contents = file.read()
-    except OSError:
+    tatizo OSError:
         showerror(title='File Load Error',
                   message=f'Unable to load file {filename!r} .',
                   parent=parent)
-    except UnicodeDecodeError as err:
+    tatizo UnicodeDecodeError kama err:
         showerror(title='Unicode Decode Error',
                   message=str(err),
                   parent=parent)
-    else:
+    isipokua:
         rudisha view_text(parent, title, contents, modal, wrap=wrap,
                          _utest=_utest)
-    rudisha None
+    rudisha Tupu
 
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_textview', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_textview', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(ViewWindow)

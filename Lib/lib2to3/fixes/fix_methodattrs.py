@@ -13,7 +13,7 @@ MAP = {
     }
 
 kundi FixMethodattrs(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
     power< any+ trailer< '.' attr=('im_func' | 'im_self' | 'im_class') > any* >
     """

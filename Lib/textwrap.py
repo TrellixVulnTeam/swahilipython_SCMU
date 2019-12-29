@@ -11,7 +11,7 @@ __all__ = ['TextWrapper', 'wrap', 'fill', 'dedent', 'indent', 'shorten']
 
 # Hardcode the recognized whitespace characters to the US-ASCII
 # whitespace characters.  The main reason for doing this is that
-# some Unicode spaces (like \u00a0) are non-breaking whitespaces.
+# some Unicode spaces (like \u00a0) are non-komaing whitespaces.
 _whitespace = '\t\n\x0b\x0c\r '
 
 kundi TextWrapper:
@@ -24,7 +24,7 @@ kundi TextWrapper:
 
     Several instance attributes control various aspects of wrapping:
       width (default: 70)
-        the maximum width of wrapped lines (unless break_long_words
+        the maximum width of wrapped lines (unless koma_long_words
         is false)
       initial_indent (default: "")
         string that will be prepended to the first line of wrapped
@@ -48,11 +48,11 @@ kundi TextWrapper:
         Ensure that sentence-ending punctuation is always followed
         by two spaces.  Off by default because the algorithm is
         (unavoidably) imperfect.
-      break_long_words (default: true)
+      koma_long_words (default: true)
         Break words longer than 'width'.  If false, those words will not
         be broken, and some lines might be longer than 'width'.
-      break_on_hyphens (default: true)
-        Allow breaking hyphenated words. If true, wrapping will occur
+      koma_on_hyphens (default: true)
+        Allow komaing hyphenated words. If true, wrapping will occur
         preferably on whitespaces and right after hyphens part of
         compound words.
       drop_whitespace (default: true)
@@ -96,16 +96,16 @@ kundi TextWrapper:
         )''' % {'wp': word_punct, 'lt': letter,
                 'ws': whitespace, 'nws': nowhitespace},
         re.VERBOSE)
-    del word_punct, letter, nowhitespace
+    toa word_punct, letter, nowhitespace
 
     # This less funky little regex just split on recognized spaces. E.g.
     #   "Hello there -- you goof-ball, use the -b option!"
     # splits into
     #   Hello/ /there/ /--/ /you/ /goof-ball,/ /use/ /the/ /-b/ /option!/
     wordsep_simple_re = re.compile(r'(%s+)' % whitespace)
-    del whitespace
+    toa whitespace
 
-    # XXX this is not locale- or charset-aware -- string.lowercase
+    # XXX this ni sio locale- or charset-aware -- string.lowercase
     # is US-ASCII only (and therefore English-only)
     sentence_end_re = re.compile(r'[a-z]'             # lowercase letter
                                  r'[\.\!\?]'          # sentence-ending punct.
@@ -119,9 +119,9 @@ kundi TextWrapper:
                  expand_tabs=True,
                  replace_whitespace=True,
                  fix_sentence_endings=False,
-                 break_long_words=True,
+                 koma_long_words=True,
                  drop_whitespace=True,
-                 break_on_hyphens=True,
+                 koma_on_hyphens=True,
                  tabsize=8,
                  *,
                  max_lines=None,
@@ -132,9 +132,9 @@ kundi TextWrapper:
         self.expand_tabs = expand_tabs
         self.replace_whitespace = replace_whitespace
         self.fix_sentence_endings = fix_sentence_endings
-        self.break_long_words = break_long_words
+        self.koma_long_words = koma_long_words
         self.drop_whitespace = drop_whitespace
-        self.break_on_hyphens = break_on_hyphens
+        self.koma_on_hyphens = koma_on_hyphens
         self.tabsize = tabsize
         self.max_lines = max_lines
         self.placeholder = placeholder
@@ -161,20 +161,20 @@ kundi TextWrapper:
         """_split(text : string) -> [string]
 
         Split the text to wrap into indivisible chunks.  Chunks are
-        not quite the same as words; see _wrap_chunks() for full
+        sio quite the same as words; see _wrap_chunks() for full
         details.  As an example, the text
           Look, goof-ball -- use the -b option!
-        breaks into the following chunks:
+        komas into the following chunks:
           'Look,', ' ', 'goof-', 'ball', ' ', '--', ' ',
           'use', ' ', 'the', ' ', '-b', ' ', 'option!'
-        if break_on_hyphens is True, or in:
+        if koma_on_hyphens is True, or in:
           'Look,', ' ', 'goof-ball', ' ', '--', ' ',
           'use', ' ', 'the', ' ', '-b', ' ', option!'
         otherwise.
         """
-        if self.break_on_hyphens is True:
+        if self.koma_on_hyphens is True:
             chunks = self.wordsep_re.split(text)
-        else:
+        isipokua:
             chunks = self.wordsep_simple_re.split(text)
         chunks = [c for c in chunks if c]
         return chunks
@@ -190,11 +190,11 @@ kundi TextWrapper:
         """
         i = 0
         patsearch = self.sentence_end_re.search
-        while i < len(chunks)-1:
+        wakati i < len(chunks)-1:
             if chunks[i+1] == " " and patsearch(chunks[i]):
                 chunks[i+1] = "  "
                 i += 2
-            else:
+            isipokua:
                 i += 1
 
     def _handle_long_word(self, reversed_chunks, cur_line, cur_len, width):
@@ -202,29 +202,29 @@ kundi TextWrapper:
                              cur_line : [string],
                              cur_len : int, width : int)
 
-        Handle a chunk of text (most likely a word, not whitespace) that
+        Handle a chunk of text (most likely a word, sio whitespace) that
         is too long to fit in any line.
         """
         # Figure out when indent is larger than the specified width, and make
         # sure at least one character is stripped off on every pass
         if width < 1:
             space_left = 1
-        else:
+        isipokua:
             space_left = width - cur_len
 
-        # If we're allowed to break long words, then do so: put as much
+        # If we're allowed to koma long words, then do so: put as much
         # of the next chunk onto the current line as will fit.
-        if self.break_long_words:
+        if self.koma_long_words:
             cur_line.append(reversed_chunks[-1][:space_left])
             reversed_chunks[-1] = reversed_chunks[-1][space_left:]
 
         # Otherwise, we have to preserve the long word intact.  Only add
         # it to the current line if there's nothing already there --
         # that minimizes how much we violate the width constraint.
-        lasivyo not cur_line:
+        lasivyo sio cur_line:
             cur_line.append(reversed_chunks.pop())
 
-        # If we're not allowed to break long words, and there's already
+        # If we're sio allowed to koma long words, and there's already
         # text on the current line, do nothing.  Next time through the
         # main loop of _wrap_chunks(), we'll wind up here again, but
         # cur_len will be zero, so the next line will be entirely
@@ -234,11 +234,11 @@ kundi TextWrapper:
         """_wrap_chunks(chunks : [string]) -> [string]
 
         Wrap a sequence of text chunks and return a list of lines of
-        length 'self.width' or less.  (If 'break_long_words' is false,
+        length 'self.width' or less.  (If 'koma_long_words' is false,
         some lines may be longer than this.)  Chunks correspond roughly
         to words and the whitespace between them: each chunk is
-        indivisible (modulo 'break_long_words'), but a line break can
-        come between any two chunks.  Chunks should not have internal
+        indivisible (modulo 'koma_long_words'), but a line koma can
+        come between any two chunks.  Chunks should sio have internal
         whitespace; ie. a chunk is either all whitespace or a "word".
         Whitespace chunks will be removed kutoka the beginning and end of
         lines, but apart kutoka that whitespace is preserved.
@@ -246,10 +246,10 @@ kundi TextWrapper:
         lines = []
         if self.width <= 0:
             raise ValueError("invalid width %r (must be > 0)" % self.width)
-        if self.max_lines is not None:
+        if self.max_lines ni sio None:
             if self.max_lines > 1:
                 indent = self.subsequent_indent
-            else:
+            isipokua:
                 indent = self.initial_indent
             if len(indent) + len(self.placeholder.lstrip()) > self.width:
                 raise ValueError("placeholder too large for max width")
@@ -258,7 +258,7 @@ kundi TextWrapper:
         # kutoka a stack of chucks.
         chunks.reverse()
 
-        while chunks:
+        wakati chunks:
 
             # Start the list of chunks that will make up the current line.
             # cur_len is just the length of all the chunks in cur_line.
@@ -268,7 +268,7 @@ kundi TextWrapper:
             # Figure out which static string will prefix this line.
             if lines:
                 indent = self.subsequent_indent
-            else:
+            isipokua:
                 indent = self.initial_indent
 
             # Maximum width for this line.
@@ -277,9 +277,9 @@ kundi TextWrapper:
             # First chunk on line is whitespace -- drop it, unless this
             # is the very beginning of the text (ie. no lines started yet).
             if self.drop_whitespace and chunks[-1].strip() == '' and lines:
-                del chunks[-1]
+                toa chunks[-1]
 
-            while chunks:
+            wakati chunks:
                 l = len(chunks[-1])
 
                 # Can at least squeeze this chunk onto the current line.
@@ -288,8 +288,8 @@ kundi TextWrapper:
                     cur_len += l
 
                 # Nope, this line is full.
-                else:
-                    break
+                isipokua:
+                    koma
 
             # The current line is full, and the next chunk is too big to
             # fit on *any* line (not just this one).
@@ -300,7 +300,7 @@ kundi TextWrapper:
             # If the last chunk on this line is all whitespace, drop it.
             if self.drop_whitespace and cur_line and cur_line[-1].strip() == '':
                 cur_len -= len(cur_line[-1])
-                del cur_line[-1]
+                toa cur_line[-1]
 
             if cur_line:
                 if (self.max_lines is None or
@@ -308,28 +308,28 @@ kundi TextWrapper:
                     (not chunks or
                      self.drop_whitespace and
                      len(chunks) == 1 and
-                     not chunks[0].strip()) and cur_len <= width):
+                     sio chunks[0].strip()) and cur_len <= width):
                     # Convert current line back to a string and store it in
                     # list of all lines (return value).
                     lines.append(indent + ''.join(cur_line))
-                else:
-                    while cur_line:
+                isipokua:
+                    wakati cur_line:
                         if (cur_line[-1].strip() and
                             cur_len + len(self.placeholder) <= width):
                             cur_line.append(self.placeholder)
                             lines.append(indent + ''.join(cur_line))
-                            break
+                            koma
                         cur_len -= len(cur_line[-1])
-                        del cur_line[-1]
-                    else:
+                        toa cur_line[-1]
+                    isipokua:
                         if lines:
                             prev_line = lines[-1].rstrip()
                             if (len(prev_line) + len(self.placeholder) <=
                                     self.width):
                                 lines[-1] = prev_line + self.placeholder
-                                break
+                                koma
                         lines.append(indent + self.placeholder.lstrip())
-                    break
+                    koma
 
         return lines
 
@@ -415,11 +415,11 @@ def dedent(text):
     """Remove any common leading whitespace kutoka every line in `text`.
 
     This can be used to make triple-quoted strings line up with the left
-    edge of the display, while still presenting them in the source code
+    edge of the display, wakati still presenting them in the source code
     in indented form.
 
     Note that tabs and spaces are both treated as whitespace, but they
-    are not equal: the lines "  hello" and "\\thello" are
+    are sio equal: the lines "  hello" and "\\thello" are
     considered to have no common leading whitespace.
 
     Entirely blank lines are normalized to a newline character.
@@ -445,16 +445,16 @@ def dedent(text):
 
         # Find the largest common whitespace between current line and previous
         # winner.
-        else:
+        isipokua:
             for i, (x, y) in enumerate(zip(margin, indent)):
                 if x != y:
                     margin = margin[:i]
-                    break
+                    koma
 
     # sanity check (testing/debugging only)
     if 0 and margin:
         for line in text.split("\n"):
-            assert not line or line.startswith(margin), \
+            assert sio line or line.startswith(margin), \
                    "line = %r, margin = %r" % (line, margin)
 
     if margin:
@@ -466,7 +466,7 @@ def indent(text, prefix, predicate=None):
     """Adds 'prefix' to the beginning of selected lines in 'text'.
 
     If 'predicate' is provided, 'prefix' will only be added to the lines
-    where 'predicate(line)' is True. If 'predicate' is not provided,
+    where 'predicate(line)' is True. If 'predicate' ni sio provided,
     it will default to adding 'prefix' to all non-empty lines that do not
     consist solely of whitespace characters.
     """

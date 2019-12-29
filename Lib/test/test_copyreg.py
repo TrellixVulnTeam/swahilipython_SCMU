@@ -4,11 +4,11 @@ agiza unittest
 kutoka test.pickletester agiza ExtensionSaver
 
 kundi C:
-    pass
+    pita
 
 
 kundi WithoutSlots(object):
-    pass
+    pita
 
 kundi WithWeakref(object):
     __slots__ = ('__weakref__',)
@@ -33,7 +33,7 @@ kundi CopyRegTestCase(unittest.TestCase):
 
     eleza test_class(self):
         self.assertRaises(TypeError, copyreg.pickle,
-                          C, None, None)
+                          C, Tupu, Tupu)
 
     eleza test_noncallable_reduce(self):
         self.assertRaises(TypeError, copyreg.pickle,
@@ -45,20 +45,20 @@ kundi CopyRegTestCase(unittest.TestCase):
 
     eleza test_bool(self):
         agiza copy
-        self.assertEqual(True, copy.copy(True))
+        self.assertEqual(Kweli, copy.copy(Kweli))
 
     eleza test_extension_registry(self):
         mod, func, code = 'junk1 ', ' junk2', 0xabcd
         e = ExtensionSaver(code)
-        try:
-            # Shouldn't be in registry now.
+        jaribu:
+            # Shouldn't be kwenye registry now.
             self.assertRaises(ValueError, copyreg.remove_extension,
                               mod, func, code)
             copyreg.add_extension(mod, func, code)
-            # Should be in the registry.
-            self.assertTrue(copyreg._extension_registry[mod, func] == code)
-            self.assertTrue(copyreg._inverted_registry[code] == (mod, func))
-            # Shouldn't be in the cache.
+            # Should be kwenye the registry.
+            self.assertKweli(copyreg._extension_registry[mod, func] == code)
+            self.assertKweli(copyreg._inverted_registry[code] == (mod, func))
+            # Shouldn't be kwenye the cache.
             self.assertNotIn(code, copyreg._extension_cache)
             # Redundant registration should be OK.
             copyreg.add_extension(mod, func, code)  # shouldn't blow up
@@ -78,30 +78,30 @@ kundi CopyRegTestCase(unittest.TestCase):
             self.assertRaises(ValueError, copyreg.remove_extension,
                               mod, func[1:], code)
             # Can't remove one that isn't registered at all.
-            ikiwa code + 1 not in copyreg._inverted_registry:
+            ikiwa code + 1 haiko kwenye copyreg._inverted_regisjaribu:
                 self.assertRaises(ValueError, copyreg.remove_extension,
                                   mod[1:], func[1:], code + 1)
 
-        finally:
+        mwishowe:
             e.restore()
 
         # Shouldn't be there anymore.
         self.assertNotIn((mod, func), copyreg._extension_registry)
-        # The code *may* be in copyreg._extension_registry, though, if
+        # The code *may* be kwenye copyreg._extension_registry, though, if
         # we happened to pick on a registered code.  So don't check for
         # that.
 
         # Check valid codes at the limits.
-        for code in 1, 0x7fffffff:
+        kila code kwenye 1, 0x7fffffff:
             e = ExtensionSaver(code)
-            try:
+            jaribu:
                 copyreg.add_extension(mod, func, code)
                 copyreg.remove_extension(mod, func, code)
-            finally:
+            mwishowe:
                 e.restore()
 
         # Ensure invalid codes blow up.
-        for code in -1, 0, 0x80000000:
+        kila code kwenye -1, 0, 0x80000000:
             self.assertRaises(ValueError, copyreg.add_extension,
                               mod, func, code)
 

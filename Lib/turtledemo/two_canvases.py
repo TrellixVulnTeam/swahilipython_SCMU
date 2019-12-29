@@ -1,7 +1,7 @@
 """turtledemo.two_canvases
 
-Use TurtleScreen and RawTurtle to draw on two
-distinct canvases in a separate windows. The
+Use TurtleScreen na RawTurtle to draw on two
+distinct canvases kwenye a separate windows. The
 new window must be separately closed in
 addition to pressing the STOP button.
 """
@@ -28,19 +28,19 @@ eleza main():
     q.color("blue", (0.85, 0.85, 1))
     q.width(3)
 
-    for t in p,q:
+    kila t kwenye p,q:
         t.shape("turtle")
         t.lt(36)
 
     q.lt(180)
 
-    for t in p, q:
+    kila t kwenye p, q:
         t.begin_fill()
-    for i in range(5):
-        for t in p, q:
+    kila i kwenye range(5):
+        kila t kwenye p, q:
             t.fd(50)
             t.lt(72)
-    for t in p,q:
+    kila t kwenye p,q:
         t.end_fill()
         t.lt(54)
         t.pu()

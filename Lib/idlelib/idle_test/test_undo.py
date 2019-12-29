@@ -22,9 +22,9 @@ kundi UndoDelegatorTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.percolator.redir.close()
-        del cls.percolator, cls.text
+        toa cls.percolator, cls.text
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.delegator = UndoDelegator()
@@ -56,7 +56,7 @@ kundi UndoDelegatorTest(unittest.TestCase):
         self.assertEqual(text.get('1.0', '1.3'), 'foo')
         text.event_generate('<<undo>>')
         self.delegator.undo_event('event')
-        self.assertTrue(self.delegator.bell.called)
+        self.assertKweli(self.delegator.bell.called)
 
     eleza test_redo_event(self):
         text = self.text
@@ -68,12 +68,12 @@ kundi UndoDelegatorTest(unittest.TestCase):
         text.event_generate('<<redo>>')
         self.assertEqual(text.get('1.0', '1.3'), 'bar')
         text.event_generate('<<redo>>')
-        self.assertTrue(self.delegator.bell.called)
+        self.assertKweli(self.delegator.bell.called)
 
     eleza test_dump_event(self):
         """
         Dump_event cannot be tested directly without changing
-        environment variables. So, test statements in dump_event
+        environment variables. So, test statements kwenye dump_event
         indirectly
         """
         text = self.text
@@ -82,9 +82,9 @@ kundi UndoDelegatorTest(unittest.TestCase):
         text.insert('insert', 'foo')
         text.insert('insert', 'bar')
         text.delete('1.2', '1.4')
-        self.assertTupleEqual((d.pointer, d.can_merge), (3, True))
+        self.assertTupleEqual((d.pointer, d.can_merge), (3, Kweli))
         text.event_generate('<<undo>>')
-        self.assertTupleEqual((d.pointer, d.can_merge), (2, False))
+        self.assertTupleEqual((d.pointer, d.can_merge), (2, Uongo))
 
     eleza test_get_set_saved(self):
         # test the getter method get_saved
@@ -92,21 +92,21 @@ kundi UndoDelegatorTest(unittest.TestCase):
         # indirectly test check_saved
         d = self.delegator
 
-        self.assertTrue(d.get_saved())
+        self.assertKweli(d.get_saved())
         self.text.insert('insert', 'a')
-        self.assertFalse(d.get_saved())
+        self.assertUongo(d.get_saved())
         d.saved_change_hook = Mock()
 
-        d.set_saved(True)
+        d.set_saved(Kweli)
         self.assertEqual(d.pointer, d.saved)
-        self.assertTrue(d.saved_change_hook.called)
+        self.assertKweli(d.saved_change_hook.called)
 
-        d.set_saved(False)
+        d.set_saved(Uongo)
         self.assertEqual(d.saved, -1)
-        self.assertTrue(d.saved_change_hook.called)
+        self.assertKweli(d.saved_change_hook.called)
 
     eleza test_undo_start_stop(self):
-        # test the undo_block_start and undo_block_stop methods
+        # test the undo_block_start na undo_block_stop methods
         text = self.text
 
         text.insert('insert', 'foo')
@@ -126,10 +126,10 @@ kundi UndoDelegatorTest(unittest.TestCase):
         text = self.text
         # when number of undo operations exceeds max_undo
         self.delegator.max_undo = max_undo = 10
-        for i in range(max_undo + 10):
+        kila i kwenye range(max_undo + 10):
             text.insert('insert', 'foo')
             self.assertLessEqual(len(self.delegator.undolist), max_undo)
 
 
 ikiwa __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Uongo)

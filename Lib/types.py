@@ -1,16 +1,16 @@
 """
-Define names for built-in types that aren't directly accessible as a builtin.
+Define names kila built-in types that aren't directly accessible kama a builtin.
 """
 agiza sys
 
-# Iterators in Python aren't a matter of type but of protocol.  A large
-# and changing number of builtin types implement *some* flavor of
-# iterator.  Don't check the type!  Use hasattr to check for both
-# "__iter__" and "__next__" attributes instead.
+# Iterators kwenye Python aren't a matter of type but of protocol.  A large
+# na changing number of builtin types implement *some* flavor of
+# iterator.  Don't check the type!  Use hasattr to check kila both
+# "__iter__" na "__next__" attributes instead.
 
-eleza _f(): pass
+eleza _f(): pita
 FunctionType = type(_f)
-LambdaType = type(lambda: None)         # Same as FunctionType
+LambdaType = type(lambda: Tupu)         # Same kama FunctionType
 CodeType = type(_f.__code__)
 MappingProxyType = type(type.__dict__)
 SimpleNamespace = type(sys.implementation)
@@ -23,25 +23,25 @@ eleza _cell_factory():
 CellType = type(_cell_factory())
 
 eleza _g():
-    yield 1
+    tuma 1
 GeneratorType = type(_g())
 
-async eleza _c(): pass
+async eleza _c(): pita
 _c = _c()
 CoroutineType = type(_c)
 _c.close()  # Prevent ResourceWarning
 
 async eleza _ag():
-    yield
+    tuma
 _ag = _ag()
 AsyncGeneratorType = type(_ag)
 
 kundi _C:
-    eleza _m(self): pass
+    eleza _m(self): pita
 MethodType = type(_C()._m)
 
 BuiltinFunctionType = type(len)
-BuiltinMethodType = type([].append)     # Same as BuiltinFunctionType
+BuiltinMethodType = type([].append)     # Same kama BuiltinFunctionType
 
 WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
@@ -50,97 +50,97 @@ ClassMethodDescriptorType = type(dict.__dict__['kutokakeys'])
 
 ModuleType = type(sys)
 
-try:
-    raise TypeError
-except TypeError:
+jaribu:
+    ashiria TypeError
+tatizo TypeError:
     tb = sys.exc_info()[2]
     TracebackType = type(tb)
     FrameType = type(tb.tb_frame)
-    tb = None; del tb
+    tb = Tupu; toa tb
 
 # For Jython, the following two types are identical
 GetSetDescriptorType = type(FunctionType.__code__)
 MemberDescriptorType = type(FunctionType.__globals__)
 
-del sys, _f, _g, _C, _c, _ag  # Not for export
+toa sys, _f, _g, _C, _c, _ag  # Not kila export
 
 
-# Provide a PEP 3115 compliant mechanism for kundi creation
-eleza new_class(name, bases=(), kwds=None, exec_body=None):
+# Provide a PEP 3115 compliant mechanism kila kundi creation
+eleza new_class(name, bases=(), kwds=Tupu, exec_body=Tupu):
     """Create a kundi object dynamically using the appropriate metaclass."""
     resolved_bases = resolve_bases(bases)
     meta, ns, kwds = prepare_class(name, resolved_bases, kwds)
-    ikiwa exec_body is not None:
+    ikiwa exec_body ni sio Tupu:
         exec_body(ns)
-    ikiwa resolved_bases is not bases:
+    ikiwa resolved_bases ni sio bases:
         ns['__orig_bases__'] = bases
     rudisha meta(name, resolved_bases, ns, **kwds)
 
 eleza resolve_bases(bases):
-    """Resolve MRO entries dynamically as specified by PEP 560."""
+    """Resolve MRO entries dynamically kama specified by PEP 560."""
     new_bases = list(bases)
-    updated = False
+    updated = Uongo
     shift = 0
-    for i, base in enumerate(bases):
+    kila i, base kwenye enumerate(bases):
         ikiwa isinstance(base, type):
-            continue
-        ikiwa not hasattr(base, "__mro_entries__"):
-            continue
+            endelea
+        ikiwa sio hasattr(base, "__mro_entries__"):
+            endelea
         new_base = base.__mro_entries__(bases)
-        updated = True
-        ikiwa not isinstance(new_base, tuple):
-            raise TypeError("__mro_entries__ must rudisha a tuple")
-        else:
+        updated = Kweli
+        ikiwa sio isinstance(new_base, tuple):
+            ashiria TypeError("__mro_entries__ must rudisha a tuple")
+        isipokua:
             new_bases[i+shift:i+shift+1] = new_base
             shift += len(new_base) - 1
-    ikiwa not updated:
+    ikiwa sio updated:
         rudisha bases
     rudisha tuple(new_bases)
 
-eleza prepare_class(name, bases=(), kwds=None):
+eleza prepare_class(name, bases=(), kwds=Tupu):
     """Call the __prepare__ method of the appropriate metaclass.
 
-    Returns (metaclass, namespace, kwds) as a 3-tuple
+    Returns (metaclass, namespace, kwds) kama a 3-tuple
 
-    *metaclass* is the appropriate metaclass
-    *namespace* is the prepared kundi namespace
-    *kwds* is an updated copy of the passed in kwds argument with any
-    'metaclass' entry removed. If no kwds argument is passed in, this will
+    *metaclass* ni the appropriate metaclass
+    *namespace* ni the prepared kundi namespace
+    *kwds* ni an updated copy of the pitaed kwenye kwds argument with any
+    'metaclass' entry removed. If no kwds argument ni pitaed in, this will
     be an empty dict.
     """
-    ikiwa kwds is None:
+    ikiwa kwds ni Tupu:
         kwds = {}
-    else:
+    isipokua:
         kwds = dict(kwds) # Don't alter the provided mapping
-    ikiwa 'metaclass' in kwds:
+    ikiwa 'metaclass' kwenye kwds:
         meta = kwds.pop('metaclass')
-    else:
+    isipokua:
         ikiwa bases:
             meta = type(bases[0])
-        else:
+        isipokua:
             meta = type
     ikiwa isinstance(meta, type):
-        # when meta is a type, we first determine the most-derived metaclass
+        # when meta ni a type, we first determine the most-derived metaclass
         # instead of invoking the initial candidate directly
         meta = _calculate_meta(meta, bases)
     ikiwa hasattr(meta, '__prepare__'):
         ns = meta.__prepare__(name, bases, **kwds)
-    else:
+    isipokua:
         ns = {}
     rudisha meta, ns, kwds
 
 eleza _calculate_meta(meta, bases):
     """Calculate the most derived metaclass."""
     winner = meta
-    for base in bases:
+    kila base kwenye bases:
         base_meta = type(base)
         ikiwa issubclass(winner, base_meta):
-            continue
+            endelea
         ikiwa issubclass(base_meta, winner):
             winner = base_meta
-            continue
-        # else:
-        raise TypeError("metakundi conflict: "
+            endelea
+        # isipokua:
+        ashiria TypeError("metakundi conflict: "
                         "the metakundi of a derived kundi "
                         "must be a (non-strict) subkundi "
                         "of the metaclasses of all its bases")
@@ -149,47 +149,47 @@ eleza _calculate_meta(meta, bases):
 kundi DynamicClassAttribute:
     """Route attribute access on a kundi to __getattr__.
 
-    This is a descriptor, used to define attributes that act differently when
-    accessed through an instance and through a class.  Instance access remains
+    This ni a descriptor, used to define attributes that act differently when
+    accessed through an instance na through a class.  Instance access remains
     normal, but access to an attribute through a kundi will be routed to the
-    class's __getattr__ method; this is done by raising AttributeError.
+    class's __getattr__ method; this ni done by raising AttributeError.
 
-    This allows one to have properties active on an instance, and have virtual
-    attributes on the kundi with the same name (see Enum for an example).
+    This allows one to have properties active on an instance, na have virtual
+    attributes on the kundi with the same name (see Enum kila an example).
 
     """
-    eleza __init__(self, fget=None, fset=None, fdel=None, doc=None):
+    eleza __init__(self, fget=Tupu, fset=Tupu, fdel=Tupu, doc=Tupu):
         self.fget = fget
         self.fset = fset
-        self.fdel = fdel
-        # next two lines make DynamicClassAttribute act the same as property
-        self.__doc__ = doc or fget.__doc__
-        self.overwrite_doc = doc is None
-        # support for abstract methods
-        self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', False))
+        self.ftoa = fdel
+        # next two lines make DynamicClassAttribute act the same kama property
+        self.__doc__ = doc ama fget.__doc__
+        self.overwrite_doc = doc ni Tupu
+        # support kila abstract methods
+        self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', Uongo))
 
-    eleza __get__(self, instance, ownerclass=None):
-        ikiwa instance is None:
+    eleza __get__(self, instance, ownerclass=Tupu):
+        ikiwa instance ni Tupu:
             ikiwa self.__isabstractmethod__:
                 rudisha self
-            raise AttributeError()
-        elikiwa self.fget is None:
-            raise AttributeError("unreadable attribute")
+            ashiria AttributeError()
+        elikiwa self.fget ni Tupu:
+            ashiria AttributeError("unreadable attribute")
         rudisha self.fget(instance)
 
     eleza __set__(self, instance, value):
-        ikiwa self.fset is None:
-            raise AttributeError("can't set attribute")
+        ikiwa self.fset ni Tupu:
+            ashiria AttributeError("can't set attribute")
         self.fset(instance, value)
 
     eleza __delete__(self, instance):
-        ikiwa self.fdel is None:
-            raise AttributeError("can't delete attribute")
+        ikiwa self.ftoa ni Tupu:
+            ashiria AttributeError("can't delete attribute")
         self.fdel(instance)
 
     eleza getter(self, fget):
-        fdoc = fget.__doc__ ikiwa self.overwrite_doc else None
-        result = type(self)(fget, self.fset, self.fdel, fdoc or self.__doc__)
+        fdoc = fget.__doc__ ikiwa self.overwrite_doc else Tupu
+        result = type(self)(fget, self.fset, self.fdel, fdoc ama self.__doc__)
         result.overwrite_doc = self.overwrite_doc
         rudisha result
 
@@ -205,12 +205,12 @@ kundi DynamicClassAttribute:
 
 
 kundi _GeneratorWrapper:
-    # TODO: Implement this in C.
+    # TODO: Implement this kwenye C.
     eleza __init__(self, gen):
         self.__wrapped = gen
-        self.__isgen = gen.__class__ is GeneratorType
-        self.__name__ = getattr(gen, '__name__', None)
-        self.__qualname__ = getattr(gen, '__qualname__', None)
+        self.__isgen = gen.__class__ ni GeneratorType
+        self.__name__ = getattr(gen, '__name__', Tupu)
+        self.__qualname__ = getattr(gen, '__qualname__', Tupu)
     eleza send(self, val):
         rudisha self.__wrapped.send(val)
     eleza throw(self, tp, *rest):
@@ -227,12 +227,12 @@ kundi _GeneratorWrapper:
     eleza gi_running(self):
         rudisha self.__wrapped.gi_running
     @property
-    eleza gi_yieldkutoka(self):
-        rudisha self.__wrapped.gi_yieldkutoka
+    eleza gi_tumakutoka(self):
+        rudisha self.__wrapped.gi_tumakutoka
     cr_code = gi_code
     cr_frame = gi_frame
     cr_running = gi_running
-    cr_await = gi_yieldkutoka
+    cr_await = gi_tumakutoka
     eleza __next__(self):
         rudisha next(self.__wrapped)
     eleza __iter__(self):
@@ -244,53 +244,53 @@ kundi _GeneratorWrapper:
 eleza coroutine(func):
     """Convert regular generator function to a coroutine."""
 
-    ikiwa not callable(func):
-        raise TypeError('types.coroutine() expects a callable')
+    ikiwa sio callable(func):
+        ashiria TypeError('types.coroutine() expects a callable')
 
-    ikiwa (func.__class__ is FunctionType and
-        getattr(func, '__code__', None).__class__ is CodeType):
+    ikiwa (func.__class__ ni FunctionType and
+        getattr(func, '__code__', Tupu).__class__ ni CodeType):
 
         co_flags = func.__code__.co_flags
 
-        # Check ikiwa 'func' is a coroutine function.
+        # Check ikiwa 'func' ni a coroutine function.
         # (0x180 == CO_COROUTINE | CO_ITERABLE_COROUTINE)
         ikiwa co_flags & 0x180:
             rudisha func
 
-        # Check ikiwa 'func' is a generator function.
+        # Check ikiwa 'func' ni a generator function.
         # (0x20 == CO_GENERATOR)
         ikiwa co_flags & 0x20:
-            # TODO: Implement this in C.
+            # TODO: Implement this kwenye C.
             co = func.__code__
             # 0x100 == CO_ITERABLE_COROUTINE
             func.__code__ = co.replace(co_flags=co.co_flags | 0x100)
             rudisha func
 
-    # The following code is primarily to support functions that
-    # rudisha generator-like objects (for instance generators
+    # The following code ni primarily to support functions that
+    # rudisha generator-like objects (kila instance generators
     # compiled with Cython).
 
-    # Delay functools and _collections_abc agiza for speeding up types agiza.
+    # Delay functools na _collections_abc agiza kila speeding up types agiza.
     agiza functools
     agiza _collections_abc
     @functools.wraps(func)
     eleza wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
-        ikiwa (coro.__class__ is CoroutineType or
-            coro.__class__ is GeneratorType and coro.gi_code.co_flags & 0x100):
-            # 'coro' is a native coroutine object or an iterable coroutine
+        ikiwa (coro.__class__ ni CoroutineType or
+            coro.__class__ ni GeneratorType na coro.gi_code.co_flags & 0x100):
+            # 'coro' ni a native coroutine object ama an iterable coroutine
             rudisha coro
         ikiwa (isinstance(coro, _collections_abc.Generator) and
-            not isinstance(coro, _collections_abc.Coroutine)):
-            # 'coro' is either a pure Python generator iterator, or it
-            # implements collections.abc.Generator (and does not implement
+            sio isinstance(coro, _collections_abc.Coroutine)):
+            # 'coro' ni either a pure Python generator iterator, ama it
+            # implements collections.abc.Generator (and does sio implement
             # collections.abc.Coroutine).
             rudisha _GeneratorWrapper(coro)
-        # 'coro' is either an instance of collections.abc.Coroutine or
-        # some other object -- pass it through.
+        # 'coro' ni either an instance of collections.abc.Coroutine or
+        # some other object -- pita it through.
         rudisha coro
 
     rudisha wrapped
 
 
-__all__ = [n for n in globals() ikiwa n[:1] != '_']
+__all__ = [n kila n kwenye globals() ikiwa n[:1] != '_']

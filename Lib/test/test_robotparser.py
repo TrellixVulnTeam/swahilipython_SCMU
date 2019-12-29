@@ -12,7 +12,7 @@ kundi BaseRobotTest:
     agent = 'test_robotparser'
     good = []
     bad = []
-    site_maps = None
+    site_maps = Tupu
 
     eleza setUp(self):
         lines = io.StringIO(self.robots_txt).readlines()
@@ -26,16 +26,16 @@ kundi BaseRobotTest:
         rudisha self.agent, url
 
     eleza test_good_urls(self):
-        for url in self.good:
+        kila url kwenye self.good:
             agent, url = self.get_agent_and_url(url)
             with self.subTest(url=url, agent=agent):
-                self.assertTrue(self.parser.can_fetch(agent, url))
+                self.assertKweli(self.parser.can_fetch(agent, url))
 
     eleza test_bad_urls(self):
-        for url in self.bad:
+        kila url kwenye self.bad:
             agent, url = self.get_agent_and_url(url)
             with self.subTest(url=url, agent=agent):
-                self.assertFalse(self.parser.can_fetch(agent, url))
+                self.assertUongo(self.parser.can_fetch(agent, url))
 
     eleza test_site_maps(self):
         self.assertEqual(self.parser.site_maps(), self.site_maps)
@@ -44,7 +44,7 @@ kundi BaseRobotTest:
 kundi UserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ni an infinite virtual URL space
 Disallow: /tmp/ # these will soon disappear
 Disallow: /foo.html
     """
@@ -54,12 +54,12 @@ Disallow: /foo.html
 
 kundi CrawlDelayAndCustomAgentTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
-# robots.txt for http://www.example.com/
+# robots.txt kila http://www.example.com/
 
 User-agent: *
 Crawl-delay: 1
 Request-rate: 3/15
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ni an infinite virtual URL space
 
 # Cybermapper knows where to go.
 User-agent: cybermapper
@@ -71,13 +71,13 @@ Disallow:
 
 kundi SitemapTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
-# robots.txt for http://www.example.com/
+# robots.txt kila http://www.example.com/
 
 User-agent: *
 Sitemap: http://www.gstatic.com/s2/sitemaps/profiles-sitemap.xml
 Sitemap: http://www.google.com/hostednews/sitemap_index.xml
 Request-rate: 3/15
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ni an infinite virtual URL space
 
     """
     good = ['/', '/test.html']
@@ -97,19 +97,19 @@ Disallow: /
 
 
 kundi BaseRequestRateTest(BaseRobotTest):
-    request_rate = None
-    crawl_delay = None
+    request_rate = Tupu
+    crawl_delay = Tupu
 
     eleza test_request_rate(self):
         parser = self.parser
-        for url in self.good + self.bad:
+        kila url kwenye self.good + self.bad:
             agent, url = self.get_agent_and_url(url)
             with self.subTest(url=url, agent=agent):
                 self.assertEqual(parser.crawl_delay(agent), self.crawl_delay)
 
                 parsed_request_rate = parser.request_rate(agent)
                 self.assertEqual(parsed_request_rate, self.request_rate)
-                ikiwa self.request_rate is not None:
+                ikiwa self.request_rate ni sio Tupu:
                     self.assertIsInstance(
                         parsed_request_rate,
                         urllib.robotparser.RequestRate
@@ -175,12 +175,12 @@ Disallow: /.
 Crawl-delay: pears
     """
     good = ['/foo.html']
-    # bug report says "/" should be denied, but that is not in the RFC
+    # bug report says "/" should be denied, but that ni haiko kwenye the RFC
     bad = []
 
 
 kundi AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
-    # also test that Allow and Diasallow works well with each other
+    # also test that Allow na Diasallow works well with each other
     robots_txt = """\
 User-agent: Googlebot
 Allow: /folder1/myfile.html
@@ -194,7 +194,7 @@ Request-rate: whale/banana
 
 kundi UserAgentOrderingTest(BaseRobotTest, unittest.TestCase):
     # the order of User-agent should be correct. note
-    # that this file is incorrect because "Googlebot" is a
+    # that this file ni incorrect because "Googlebot" ni a
     # substring of "Googlebot-Mobile"
     robots_txt = """\
 User-agent: Googlebot
@@ -225,7 +225,7 @@ Disallow: /folder1/
 
 
 kundi DisallowQueryStringTest(BaseRobotTest, unittest.TestCase):
-    # see issue #6325 for details
+    # see issue #6325 kila details
     robots_txt = """\
 User-agent: *
 Disallow: /some/path?name=value
@@ -276,7 +276,7 @@ kundi StringFormattingTest(BaseRobotTest, unittest.TestCase):
 User-agent: *
 Crawl-delay: 1
 Request-rate: 3/15
-Disallow: /cyberworld/map/ # This is an infinite virtual URL space
+Disallow: /cyberworld/map/ # This ni an infinite virtual URL space
 
 # Cybermapper knows where to go.
 User-agent: cybermapper
@@ -303,7 +303,7 @@ kundi RobotHandler(BaseHTTPRequestHandler):
         self.send_error(403, "Forbidden access")
 
     eleza log_message(self, format, *args):
-        pass
+        pita
 
 
 kundi PasswordProtectedSiteTestCase(unittest.TestCase):
@@ -315,10 +315,10 @@ kundi PasswordProtectedSiteTestCase(unittest.TestCase):
             name='HTTPServer serving',
             target=self.server.serve_forever,
             # Short poll interval to make the test finish quickly.
-            # Time between requests is short enough that we won't wake
+            # Time between requests ni short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval':0.01})
-        self.t.daemon = True  # In case this function raises.
+        self.t.daemon = Kweli  # In case this function ashirias.
         self.t.start()
 
     eleza tearDown(self):
@@ -334,7 +334,7 @@ kundi PasswordProtectedSiteTestCase(unittest.TestCase):
         parser = urllib.robotparser.RobotFileParser()
         parser.set_url(url)
         parser.read()
-        self.assertFalse(parser.can_fetch("*", robots_url))
+        self.assertUongo(parser.can_fetch("*", robots_url))
 
 
 kundi NetworkTestCase(unittest.TestCase):
@@ -351,32 +351,32 @@ kundi NetworkTestCase(unittest.TestCase):
 
     eleza url(self, path):
         rudisha '{}{}{}'.format(
-            self.base_url, path, '/' ikiwa not os.path.splitext(path)[1] else ''
+            self.base_url, path, '/' ikiwa sio os.path.splitext(path)[1] else ''
         )
 
     eleza test_basic(self):
-        self.assertFalse(self.parser.disallow_all)
-        self.assertFalse(self.parser.allow_all)
+        self.assertUongo(self.parser.disallow_all)
+        self.assertUongo(self.parser.allow_all)
         self.assertGreater(self.parser.mtime(), 0)
-        self.assertFalse(self.parser.crawl_delay('*'))
-        self.assertFalse(self.parser.request_rate('*'))
+        self.assertUongo(self.parser.crawl_delay('*'))
+        self.assertUongo(self.parser.request_rate('*'))
 
     eleza test_can_fetch(self):
-        self.assertTrue(self.parser.can_fetch('*', self.url('elsewhere')))
-        self.assertFalse(self.parser.can_fetch('Nutch', self.base_url))
-        self.assertFalse(self.parser.can_fetch('Nutch', self.url('brian')))
-        self.assertFalse(self.parser.can_fetch('Nutch', self.url('webstats')))
-        self.assertFalse(self.parser.can_fetch('*', self.url('webstats')))
-        self.assertTrue(self.parser.can_fetch('*', self.base_url))
+        self.assertKweli(self.parser.can_fetch('*', self.url('elsewhere')))
+        self.assertUongo(self.parser.can_fetch('Nutch', self.base_url))
+        self.assertUongo(self.parser.can_fetch('Nutch', self.url('brian')))
+        self.assertUongo(self.parser.can_fetch('Nutch', self.url('webstats')))
+        self.assertUongo(self.parser.can_fetch('*', self.url('webstats')))
+        self.assertKweli(self.parser.can_fetch('*', self.base_url))
 
     eleza test_read_404(self):
         parser = urllib.robotparser.RobotFileParser(self.url('i-robot.txt'))
         parser.read()
-        self.assertTrue(parser.allow_all)
-        self.assertFalse(parser.disallow_all)
+        self.assertKweli(parser.allow_all)
+        self.assertUongo(parser.disallow_all)
         self.assertEqual(parser.mtime(), 0)
-        self.assertIsNone(parser.crawl_delay('*'))
-        self.assertIsNone(parser.request_rate('*'))
+        self.assertIsTupu(parser.crawl_delay('*'))
+        self.assertIsTupu(parser.request_rate('*'))
 
 ikiwa __name__=='__main__':
     unittest.main()

@@ -1,36 +1,36 @@
-'''Define SearchEngine for search dialogs.'''
+'''Define SearchEngine kila search dialogs.'''
 agiza re
 
 kutoka tkinter agiza StringVar, BooleanVar, TclError
-agiza tkinter.messagebox as tkMessageBox
+agiza tkinter.messagebox kama tkMessageBox
 
 eleza get(root):
-    '''Return the singleton SearchEngine instance for the process.
+    '''Return the singleton SearchEngine instance kila the process.
 
     The single SearchEngine saves settings between dialog instances.
-    If there is not a SearchEngine already, make one.
+    If there ni sio a SearchEngine already, make one.
     '''
-    ikiwa not hasattr(root, "_searchengine"):
+    ikiwa sio hasattr(root, "_searchengine"):
         root._searchengine = SearchEngine(root)
-        # This creates a cycle that persists until root is deleted.
+        # This creates a cycle that persists until root ni deleted.
     rudisha root._searchengine
 
 
 kundi SearchEngine:
-    """Handles searching a text widget for Find, Replace, and Grep."""
+    """Handles searching a text widget kila Find, Replace, na Grep."""
 
     eleza __init__(self, root):
         '''Initialize Variables that save search state.
 
-        The dialogs bind these to the UI elements present in the dialogs.
+        The dialogs bind these to the UI elements present kwenye the dialogs.
         '''
-        self.root = root  # need for report_error()
+        self.root = root  # need kila report_error()
         self.patvar = StringVar(root, '')   # search pattern
-        self.revar = BooleanVar(root, False)   # regular expression?
-        self.casevar = BooleanVar(root, False)   # match case?
-        self.wordvar = BooleanVar(root, False)   # match whole word?
-        self.wrapvar = BooleanVar(root, True)   # wrap around buffer?
-        self.backvar = BooleanVar(root, False)   # search backwards?
+        self.revar = BooleanVar(root, Uongo)   # regular expression?
+        self.casevar = BooleanVar(root, Uongo)   # match case?
+        self.wordvar = BooleanVar(root, Uongo)   # match whole word?
+        self.wrapvar = BooleanVar(root, Kweli)   # wrap around buffer?
+        self.backvar = BooleanVar(root, Uongo)   # search backwards?
 
     # Access methods
 
@@ -59,14 +59,14 @@ kundi SearchEngine:
 
     eleza setcookedpat(self, pat):
         "Set pattern after escaping ikiwa re."
-        # called only in search.py: 66
+        # called only kwenye search.py: 66
         ikiwa self.isre():
             pat = re.escape(pat)
         self.setpat(pat)
 
     eleza getcookedpat(self):
         pat = self.getpat()
-        ikiwa not self.isre():  # ikiwa True, see setcookedpat
+        ikiwa sio self.isre():  # ikiwa Kweli, see setcookedpat
             pat = re.escape(pat)
         ikiwa self.isword():
             pat = r"\b%s\b" % pat
@@ -75,21 +75,21 @@ kundi SearchEngine:
     eleza getprog(self):
         "Return compiled cooked search pattern."
         pat = self.getpat()
-        ikiwa not pat:
+        ikiwa sio pat:
             self.report_error(pat, "Empty regular expression")
-            rudisha None
+            rudisha Tupu
         pat = self.getcookedpat()
         flags = 0
-        ikiwa not self.iscase():
+        ikiwa sio self.iscase():
             flags = flags | re.IGNORECASE
-        try:
+        jaribu:
             prog = re.compile(pat, flags)
-        except re.error as what:
+        tatizo re.error kama what:
             args = what.args
             msg = args[0]
             col = args[1] ikiwa len(args) >= 2 else -1
             self.report_error(pat, msg, col)
-            rudisha None
+            rudisha Tupu
         rudisha prog
 
     eleza report_error(self, pat, msg, col=-1):
@@ -102,41 +102,41 @@ kundi SearchEngine:
         tkMessageBox.showerror("Regular expression error",
                                msg, master=self.root)
 
-    eleza search_text(self, text, prog=None, ok=0):
-        '''Return (lineno, matchobj) or None for forward/backward search.
+    eleza search_text(self, text, prog=Tupu, ok=0):
+        '''Return (lineno, matchobj) ama Tupu kila forward/backward search.
 
         This function calls the right function with the right arguments.
         It directly rudisha the result of that call.
 
-        Text is a text widget. Prog is a precompiled pattern.
-        The ok parameter is a bit complicated as it has two effects.
+        Text ni a text widget. Prog ni a precompiled pattern.
+        The ok parameter ni a bit complicated kama it has two effects.
 
-        If there is a selection, the search begin at either end,
-        depending on the direction setting and ok, with ok meaning that
+        If there ni a selection, the search begin at either end,
+        depending on the direction setting na ok, with ok meaning that
         the search starts with the selection. Otherwise, search begins
         at the insert mark.
 
-        To aid progress, the search functions do not rudisha an empty
-        match at the starting position unless ok is True.
+        To aid progress, the search functions do sio rudisha an empty
+        match at the starting position unless ok ni Kweli.
         '''
 
-        ikiwa not prog:
+        ikiwa sio prog:
             prog = self.getprog()
-            ikiwa not prog:
-                rudisha None # Compilation failed -- stop
+            ikiwa sio prog:
+                rudisha Tupu # Compilation failed -- stop
         wrap = self.wrapvar.get()
         first, last = get_selection(text)
         ikiwa self.isback():
             ikiwa ok:
                 start = last
-            else:
+            isipokua:
                 start = first
             line, col = get_line_col(start)
             res = self.search_backward(text, prog, line, col, wrap, ok)
-        else:
+        isipokua:
             ikiwa ok:
                 start = first
-            else:
+            isipokua:
                 start = last
             line, col = get_line_col(start)
             res = self.search_forward(text, prog, line, col, wrap, ok)
@@ -146,83 +146,83 @@ kundi SearchEngine:
         wrapped = 0
         startline = line
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
-        while chars:
+        wakati chars:
             m = prog.search(chars[:-1], col)
             ikiwa m:
-                ikiwa ok or m.end() > col:
+                ikiwa ok ama m.end() > col:
                     rudisha line, m
             line = line + 1
-            ikiwa wrapped and line > startline:
-                break
+            ikiwa wrapped na line > startline:
+                koma
             col = 0
             ok = 1
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
-            ikiwa not chars and wrap:
+            ikiwa sio chars na wrap:
                 wrapped = 1
                 wrap = 0
                 line = 1
                 chars = text.get("1.0", "2.0")
-        rudisha None
+        rudisha Tupu
 
     eleza search_backward(self, text, prog, line, col, wrap, ok=0):
         wrapped = 0
         startline = line
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
-        while 1:
+        wakati 1:
             m = search_reverse(prog, chars[:-1], col)
             ikiwa m:
-                ikiwa ok or m.start() < col:
+                ikiwa ok ama m.start() < col:
                     rudisha line, m
             line = line - 1
-            ikiwa wrapped and line < startline:
-                break
+            ikiwa wrapped na line < startline:
+                koma
             ok = 1
             ikiwa line <= 0:
-                ikiwa not wrap:
-                    break
+                ikiwa sio wrap:
+                    koma
                 wrapped = 1
                 wrap = 0
                 pos = text.index("end-1c")
                 line, col = map(int, pos.split("."))
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
             col = len(chars) - 1
-        rudisha None
+        rudisha Tupu
 
 
 eleza search_reverse(prog, chars, col):
-    '''Search backwards and rudisha an re match object or None.
+    '''Search backwards na rudisha an re match object ama Tupu.
 
-    This is done by searching forwards until there is no match.
-    Prog: compiled re object with a search method returning a match.
+    This ni done by searching forwards until there ni no match.
+    Prog: compiled re object with a search method rudishaing a match.
     Chars: line of text, without \\n.
-    Col: stop index for the search; the limit for match.end().
+    Col: stop index kila the search; the limit kila match.end().
     '''
     m = prog.search(chars)
-    ikiwa not m:
-        rudisha None
-    found = None
+    ikiwa sio m:
+        rudisha Tupu
+    found = Tupu
     i, j = m.span()  # m.start(), m.end() == match slice indexes
-    while i < col and j <= col:
+    wakati i < col na j <= col:
         found = m
         ikiwa i == j:
             j = j+1
         m = prog.search(chars, j)
-        ikiwa not m:
-            break
+        ikiwa sio m:
+            koma
         i, j = m.span()
     rudisha found
 
 eleza get_selection(text):
-    '''Return tuple of 'line.col' indexes kutoka selection or insert mark.
+    '''Return tuple of 'line.col' indexes kutoka selection ama insert mark.
     '''
-    try:
+    jaribu:
         first = text.index("sel.first")
         last = text.index("sel.last")
-    except TclError:
-        first = last = None
-    ikiwa not first:
+    tatizo TclError:
+        first = last = Tupu
+    ikiwa sio first:
         first = text.index("insert")
-    ikiwa not last:
+    ikiwa sio last:
         last = first
     rudisha first, last
 

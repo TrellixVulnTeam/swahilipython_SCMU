@@ -1,5 +1,5 @@
 #
-# Test suite for Optik.  Supplied by Johannes Gijsbers
+# Test suite kila Optik.  Supplied by Johannes Gijsbers
 # (taradino@softhome.net) -- translated kutoka the original Optik
 # test suite to this PyUnit-based version.
 #
@@ -26,22 +26,22 @@ kutoka optparse agiza _parse_num
 
 kundi InterceptedError(Exception):
     eleza __init__(self,
-                 error_message=None,
-                 exit_status=None,
-                 exit_message=None):
+                 error_message=Tupu,
+                 exit_status=Tupu,
+                 exit_message=Tupu):
         self.error_message = error_message
         self.exit_status = exit_status
         self.exit_message = exit_message
 
     eleza __str__(self):
-        rudisha self.error_message or self.exit_message or "intercepted error"
+        rudisha self.error_message ama self.exit_message ama "intercepted error"
 
 kundi InterceptingOptionParser(OptionParser):
-    eleza exit(self, status=0, msg=None):
-        raise InterceptedError(exit_status=status, exit_message=msg)
+    eleza exit(self, status=0, msg=Tupu):
+        ashiria InterceptedError(exit_status=status, exit_message=msg)
 
     eleza error(self, msg):
-        raise InterceptedError(error_message=msg)
+        ashiria InterceptedError(error_message=msg)
 
 
 kundi BaseTest(unittest.TestCase):
@@ -55,7 +55,7 @@ kundi BaseTest(unittest.TestCase):
         expected_opts -- The options expected.
         expected_positional_args -- The positional arguments expected.
 
-        Returns the options and positional args for further testing.
+        Returns the options na positional args kila further testing.
         """
 
         (options, positional_args) = self.parser.parse_args(args)
@@ -82,38 +82,38 @@ Args were %(args)s.""" % locals ())
                      expected_exception,
                      expected_message):
         """
-        Assert that the expected exception is raised when calling a
-        function, and that the right error message is included with
+        Assert that the expected exception ni ashiriad when calling a
+        function, na that the right error message ni included with
         that exception.
 
         Arguments:
           func -- the function to call
           args -- positional arguments to `func`
           kwargs -- keyword arguments to `func`
-          expected_exception -- exception that should be raised
+          expected_exception -- exception that should be ashiriad
           expected_message -- expected exception message (or pattern
             ikiwa a compiled regex object)
 
-        Returns the exception raised for further testing.
+        Returns the exception ashiriad kila further testing.
         """
-        ikiwa args is None:
+        ikiwa args ni Tupu:
             args = ()
-        ikiwa kwargs is None:
+        ikiwa kwargs ni Tupu:
             kwargs = {}
 
-        try:
+        jaribu:
             func(*args, **kwargs)
-        except expected_exception as err:
+        tatizo expected_exception kama err:
             actual_message = str(err)
             ikiwa isinstance(expected_message, re.Pattern):
-                self.assertTrue(expected_message.search(actual_message),
+                self.assertKweli(expected_message.search(actual_message),
                              """\
 expected exception message pattern:
 /%s/
 actual exception message:
 '''%s'''
 """ % (expected_message.pattern, actual_message))
-            else:
+            isipokua:
                 self.assertEqual(actual_message,
                                  expected_message,
                                  """\
@@ -124,47 +124,47 @@ actual exception message:
 """ % (expected_message, actual_message))
 
             rudisha err
-        else:
-            self.fail("""expected exception %(expected_exception)s not raised
+        isipokua:
+            self.fail("""expected exception %(expected_exception)s sio ashiriad
 called %(func)r
 with args %(args)r
 and kwargs %(kwargs)r
 """ % locals ())
 
 
-    # -- Assertions used in more than one kundi --------------------
+    # -- Assertions used kwenye more than one kundi --------------------
 
     eleza assertParseFail(self, cmdline_args, expected_output):
         """
         Assert the parser fails with the expected message.  Caller
-        must ensure that self.parser is an InterceptingOptionParser.
+        must ensure that self.parser ni an InterceptingOptionParser.
         """
-        try:
+        jaribu:
             self.parser.parse_args(cmdline_args)
-        except InterceptedError as err:
+        tatizo InterceptedError kama err:
             self.assertEqual(err.error_message, expected_output)
-        else:
-            self.assertFalse("expected parse failure")
+        isipokua:
+            self.assertUongo("expected parse failure")
 
     eleza assertOutput(self,
                      cmdline_args,
                      expected_output,
                      expected_status=0,
-                     expected_error=None):
+                     expected_error=Tupu):
         """Assert the parser prints the expected output on stdout."""
         save_stdout = sys.stdout
-        try:
-            try:
+        jaribu:
+            jaribu:
                 sys.stdout = StringIO()
                 self.parser.parse_args(cmdline_args)
-            finally:
+            mwishowe:
                 output = sys.stdout.getvalue()
                 sys.stdout = save_stdout
 
-        except InterceptedError as err:
-            self.assertTrue(
+        tatizo InterceptedError kama err:
+            self.assertKweli(
                 isinstance(output, str),
-                "expected output to be an ordinary string, not %r"
+                "expected output to be an ordinary string, sio %r"
                 % type(output))
 
             ikiwa output != expected_output:
@@ -172,24 +172,24 @@ and kwargs %(kwargs)r
                           "'''\nbut got \n'''\n" + output + "'''")
             self.assertEqual(err.exit_status, expected_status)
             self.assertEqual(err.exit_message, expected_error)
-        else:
-            self.assertFalse("expected parser.exit()")
+        isipokua:
+            self.assertUongo("expected parser.exit()")
 
     eleza assertTypeError(self, func, expected_message, *args):
-        """Assert that TypeError is raised when executing func."""
-        self.assertRaises(func, args, None, TypeError, expected_message)
+        """Assert that TypeError ni ashiriad when executing func."""
+        self.assertRaises(func, args, Tupu, TypeError, expected_message)
 
     eleza assertHelp(self, parser, expected_help):
         actual_help = parser.format_help()
         ikiwa actual_help != expected_help:
-            raise self.failureException(
+            ashiria self.failureException(
                 'help text failure; expected:\n"' +
                 expected_help + '"; got:\n"' +
                 actual_help + '"\n')
 
 # -- Test make_option() aka Option -------------------------------------
 
-# It's not necessary to test correct options here.  All the tests in the
+# It's sio necessary to test correct options here.  All the tests kwenye the
 # parser.parse_args() section deal with those, because they're needed
 # there.
 
@@ -225,7 +225,7 @@ kundi TestOptionChecks(BaseTest):
     eleza test_attr_invalid(self):
         self.assertOptionError(
             "option -b: invalid keyword arguments: bar, foo",
-            ["-b"], {'foo': None, 'bar': None})
+            ["-b"], {'foo': Tupu, 'bar': Tupu})
 
     eleza test_action_invalid(self):
         self.assertOptionError(
@@ -242,13 +242,13 @@ kundi TestOptionChecks(BaseTest):
 
     eleza test_no_type_for_action(self):
         self.assertOptionError(
-            "option -b: must not supply a type for action 'count'",
+            "option -b: must sio supply a type kila action 'count'",
             ["-b"], {'action': 'count', 'type': 'int'})
 
     eleza test_no_choices_list(self):
         self.assertOptionError(
             "option -b/--bad: must supply a list of "
-            "choices for type 'choice'",
+            "choices kila type 'choice'",
             ["-b", "--bad"], {'type': "choice"})
 
     eleza test_bad_choices_list(self):
@@ -261,32 +261,32 @@ kundi TestOptionChecks(BaseTest):
 
     eleza test_no_choices_for_type(self):
         self.assertOptionError(
-            "option -b: must not supply choices for type 'int'",
+            "option -b: must sio supply choices kila type 'int'",
             ["-b"], {'type': 'int', 'choices':"bad"})
 
     eleza test_no_const_for_action(self):
         self.assertOptionError(
-            "option -b: 'const' must not be supplied for action 'store'",
+            "option -b: 'const' must sio be supplied kila action 'store'",
             ["-b"], {'action': 'store', 'const': 1})
 
     eleza test_no_nargs_for_action(self):
         self.assertOptionError(
-            "option -b: 'nargs' must not be supplied for action 'count'",
+            "option -b: 'nargs' must sio be supplied kila action 'count'",
             ["-b"], {'action': 'count', 'nargs': 2})
 
     eleza test_callback_not_callable(self):
         self.assertOptionError(
-            "option -b: callback not callable: 'foo'",
+            "option -b: callback sio callable: 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': 'foo'})
 
     eleza dummy(self):
-        pass
+        pita
 
     eleza test_callback_args_no_tuple(self):
         self.assertOptionError(
             "option -b: callback_args, ikiwa supplied, "
-            "must be a tuple: not 'foo'",
+            "must be a tuple: sio 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': self.dummy,
                      'callback_args': 'foo'})
@@ -294,26 +294,26 @@ kundi TestOptionChecks(BaseTest):
     eleza test_callback_kwargs_no_dict(self):
         self.assertOptionError(
             "option -b: callback_kwargs, ikiwa supplied, "
-            "must be a dict: not 'foo'",
+            "must be a dict: sio 'foo'",
             ["-b"], {'action': 'callback',
                      'callback': self.dummy,
                      'callback_kwargs': 'foo'})
 
     eleza test_no_callback_for_action(self):
         self.assertOptionError(
-            "option -b: callback supplied ('foo') for non-callback option",
+            "option -b: callback supplied ('foo') kila non-callback option",
             ["-b"], {'action': 'store',
                      'callback': 'foo'})
 
     eleza test_no_callback_args_for_action(self):
         self.assertOptionError(
-            "option -b: callback_args supplied for non-callback option",
+            "option -b: callback_args supplied kila non-callback option",
             ["-b"], {'action': 'store',
                      'callback_args': 'foo'})
 
     eleza test_no_callback_kwargs_for_action(self):
         self.assertOptionError(
-            "option -b: callback_kwargs supplied for non-callback option",
+            "option -b: callback_kwargs supplied kila non-callback option",
             ["-b"], {'action': 'store',
                      'callback_kwargs': 'foo'})
 
@@ -343,11 +343,11 @@ kundi TestOptionParser(BaseTest):
 
     eleza test_add_option_no_Option(self):
         self.assertTypeError(self.parser.add_option,
-                             "not an Option instance: None", None)
+                             "not an Option instance: Tupu", Tupu)
 
     eleza test_add_option_invalid_arguments(self):
         self.assertTypeError(self.parser.add_option,
-                             "invalid arguments", None, None)
+                             "invalid arguments", Tupu, Tupu)
 
     eleza test_get_option(self):
         opt1 = self.parser.get_option("-v")
@@ -362,43 +362,43 @@ kundi TestOptionParser(BaseTest):
         opt2 = self.parser.get_option("--verbose")
         opt3 = self.parser.get_option("-n")
         opt4 = self.parser.get_option("--noisy")
-        self.assertTrue(opt1 is opt2 is opt3 is opt4)
+        self.assertKweli(opt1 ni opt2 ni opt3 ni opt4)
 
     eleza test_has_option(self):
-        self.assertTrue(self.parser.has_option("-v"))
-        self.assertTrue(self.parser.has_option("--verbose"))
+        self.assertKweli(self.parser.has_option("-v"))
+        self.assertKweli(self.parser.has_option("--verbose"))
 
-    eleza assertTrueremoved(self):
-        self.assertTrue(self.parser.get_option("-v") is None)
-        self.assertTrue(self.parser.get_option("--verbose") is None)
-        self.assertTrue(self.parser.get_option("-n") is None)
-        self.assertTrue(self.parser.get_option("--noisy") is None)
+    eleza assertKweliremoved(self):
+        self.assertKweli(self.parser.get_option("-v") ni Tupu)
+        self.assertKweli(self.parser.get_option("--verbose") ni Tupu)
+        self.assertKweli(self.parser.get_option("-n") ni Tupu)
+        self.assertKweli(self.parser.get_option("--noisy") ni Tupu)
 
-        self.assertFalse(self.parser.has_option("-v"))
-        self.assertFalse(self.parser.has_option("--verbose"))
-        self.assertFalse(self.parser.has_option("-n"))
-        self.assertFalse(self.parser.has_option("--noisy"))
+        self.assertUongo(self.parser.has_option("-v"))
+        self.assertUongo(self.parser.has_option("--verbose"))
+        self.assertUongo(self.parser.has_option("-n"))
+        self.assertUongo(self.parser.has_option("--noisy"))
 
-        self.assertTrue(self.parser.has_option("-q"))
-        self.assertTrue(self.parser.has_option("--silent"))
+        self.assertKweli(self.parser.has_option("-q"))
+        self.assertKweli(self.parser.has_option("--silent"))
 
     eleza test_remove_short_opt(self):
         self.parser.remove_option("-n")
-        self.assertTrueremoved()
+        self.assertKweliremoved()
 
     eleza test_remove_long_opt(self):
         self.parser.remove_option("--verbose")
-        self.assertTrueremoved()
+        self.assertKweliremoved()
 
     eleza test_remove_nonexistent(self):
-        self.assertRaises(self.parser.remove_option, ('foo',), None,
+        self.assertRaises(self.parser.remove_option, ('foo',), Tupu,
                           ValueError, "no such option 'foo'")
 
-    @support.impl_detail('Relies on sys.getrefcount', cpython=True)
+    @support.impl_detail('Relies on sys.getrefcount', cpython=Kweli)
     eleza test_refleak(self):
-        # If an OptionParser is carrying around a reference to a large
+        # If an OptionParser ni carrying around a reference to a large
         # object, various cycles can prevent it kutoka being GC'd in
-        # a timely fashion.  destroy() breaks the cycles to ensure stuff
+        # a timely fashion.  destroy() komas the cycles to ensure stuff
         # can be cleaned up.
         big_thing = [42]
         refcount = sys.getrefcount(big_thing)
@@ -408,13 +408,13 @@ kundi TestOptionParser(BaseTest):
 
         parser.destroy()
         #self.assertEqual(refcount, sys.getrefcount(big_thing))
-        del parser
+        toa parser
         self.assertEqual(refcount, sys.getrefcount(big_thing))
 
 
 kundi TestOptionValues(BaseTest):
     eleza setUp(self):
-        pass
+        pita
 
     eleza test_basics(self):
         values = Values()
@@ -448,17 +448,17 @@ kundi TestTypeAliases(BaseTest):
         self.assertEqual(self.parser.get_option("-x").type, "int")
 
 
-# Custom type for testing processing of default values.
+# Custom type kila testing processing of default values.
 _time_units = { 's' : 1, 'm' : 60, 'h' : 60*60, 'd' : 60*60*24 }
 
 eleza _check_duration(option, opt, value):
-    try:
+    jaribu:
         ikiwa value[-1].isdigit():
             rudisha int(value)
-        else:
+        isipokua:
             rudisha int(value[:-1]) * _time_units[value[-1]]
-    except (ValueError, IndexError):
-        raise OptionValueError(
+    tatizo (ValueError, IndexError):
+        ashiria OptionValueError(
             'option %s: invalid duration: %r' % (opt, value))
 
 kundi DurationOption(Option):
@@ -469,19 +469,19 @@ kundi DurationOption(Option):
 kundi TestDefaultValues(BaseTest):
     eleza setUp(self):
         self.parser = OptionParser()
-        self.parser.add_option("-v", "--verbose", default=True)
+        self.parser.add_option("-v", "--verbose", default=Kweli)
         self.parser.add_option("-q", "--quiet", dest='verbose')
         self.parser.add_option("-n", type="int", default=37)
         self.parser.add_option("-m", type="int")
         self.parser.add_option("-s", default="foo")
         self.parser.add_option("-t")
-        self.parser.add_option("-u", default=None)
-        self.expected = { 'verbose': True,
+        self.parser.add_option("-u", default=Tupu)
+        self.expected = { 'verbose': Kweli,
                           'n': 37,
-                          'm': None,
+                          'm': Tupu,
                           's': "foo",
-                          't': None,
-                          'u': None }
+                          't': Tupu,
+                          'u': Tupu }
 
     eleza test_basic_defaults(self):
         self.assertEqual(self.parser.get_default_values(), self.expected)
@@ -500,8 +500,8 @@ kundi TestDefaultValues(BaseTest):
         self.assertEqual(self.parser.get_default_values(), self.expected)
 
         self.parser.remove_option("-y")
-        self.parser.add_option("-y", default=None)
-        self.expected.update({'y': None})
+        self.parser.add_option("-y", default=Tupu)
+        self.expected.update({'y': Tupu})
         self.assertEqual(self.parser.get_default_values(), self.expected)
 
     eleza test_process_default(self):
@@ -512,15 +512,15 @@ kundi TestDefaultValues(BaseTest):
         self.expected.update({'d': 300, 'e': 360, 'n': 42})
         self.assertEqual(self.parser.get_default_values(), self.expected)
 
-        self.parser.set_process_default_values(False)
+        self.parser.set_process_default_values(Uongo)
         self.expected.update({'d': 300, 'e': "6m", 'n': "42"})
         self.assertEqual(self.parser.get_default_values(), self.expected)
 
 
 kundi TestProgName(BaseTest):
     """
-    Test that %prog expands to the right thing in usage, version,
-    and help strings.
+    Test that %prog expands to the right thing kwenye usage, version,
+    na help strings.
     """
 
     eleza assertUsage(self, parser, expected_usage):
@@ -533,7 +533,7 @@ kundi TestProgName(BaseTest):
     eleza test_default_progname(self):
         # Make sure that program name taken kutoka sys.argv[0] by default.
         save_argv = sys.argv[:]
-        try:
+        jaribu:
             sys.argv[0] = os.path.join("foo", "bar", "baz.py")
             parser = OptionParser("%prog ...", version="%prog 1.2")
             expected_usage = "Usage: baz.py ...\n"
@@ -542,9 +542,9 @@ kundi TestProgName(BaseTest):
             self.assertHelp(parser,
                             expected_usage + "\n" +
                             "Options:\n"
-                            "  --version   show program's version number and exit\n"
-                            "  -h, --help  show this help message and exit\n")
-        finally:
+                            "  --version   show program's version number na exit\n"
+                            "  -h, --help  show this help message na exit\n")
+        mwishowe:
             sys.argv[:] = save_argv
 
     eleza test_custom_progname(self):
@@ -566,7 +566,7 @@ kundi TestExpandDefaults(BaseTest):
 Usage: test [options]
 
 Options:
-  -h, --help            show this help message and exit
+  -h, --help            show this help message na exit
 """
         self.file_help = "read kutoka FILE [default: %default]"
         self.expected_help_file = self.help_prefix + \
@@ -599,14 +599,14 @@ Options:
 
     eleza test_default_none_1(self):
         self.parser.add_option("-f", "--file",
-                               default=None,
+                               default=Tupu,
                                help=self.file_help)
         self.assertHelp(self.parser, self.expected_help_none)
 
     eleza test_default_none_2(self):
         self.parser.add_option("-f", "--file",
                                help=self.file_help)
-        self.parser.set_defaults(file=None)
+        self.parser.set_defaults(file=Tupu)
         self.assertHelp(self.parser, self.expected_help_none)
 
     eleza test_float_default(self):
@@ -629,7 +629,7 @@ Options:
         self.parser.add_option("-f", "--file",
                                default="foo.txt",
                                help="read kutoka %default file")
-        self.parser.formatter.default_tag = None
+        self.parser.formatter.default_tag = Tupu
         expected_help = self.help_prefix + \
             "  -f FILE, --file=FILE  read kutoka %default file\n"
         self.assertHelp(self.parser, expected_help)
@@ -661,58 +661,58 @@ kundi TestStandard(BaseTest):
                              "option --boo: invalid integer value: 'x5'")
 
     eleza test_empty(self):
-        self.assertParseOK([], {'a': None, 'boo': None, 'foo': None}, [])
+        self.assertParseOK([], {'a': Tupu, 'boo': Tupu, 'foo': Tupu}, [])
 
     eleza test_shortopt_empty_longopt_append(self):
         self.assertParseOK(["-a", "", "--foo=blah", "--foo="],
-                           {'a': "", 'boo': None, 'foo': ["blah", ""]},
+                           {'a': "", 'boo': Tupu, 'foo': ["blah", ""]},
                            [])
 
     eleza test_long_option_append(self):
         self.assertParseOK(["--foo", "bar", "--foo", "", "--foo=x"],
-                           {'a': None,
-                            'boo': None,
+                           {'a': Tupu,
+                            'boo': Tupu,
                             'foo': ["bar", "", "x"]},
                            [])
 
     eleza test_option_argument_joined(self):
         self.assertParseOK(["-abc"],
-                           {'a': "bc", 'boo': None, 'foo': None},
+                           {'a': "bc", 'boo': Tupu, 'foo': Tupu},
                            [])
 
     eleza test_option_argument_split(self):
         self.assertParseOK(["-a", "34"],
-                           {'a': "34", 'boo': None, 'foo': None},
+                           {'a': "34", 'boo': Tupu, 'foo': Tupu},
                            [])
 
     eleza test_option_argument_joined_integer(self):
         self.assertParseOK(["-b34"],
-                           {'a': None, 'boo': 34, 'foo': None},
+                           {'a': Tupu, 'boo': 34, 'foo': Tupu},
                            [])
 
     eleza test_option_argument_split_negative_integer(self):
         self.assertParseOK(["-b", "-5"],
-                           {'a': None, 'boo': -5, 'foo': None},
+                           {'a': Tupu, 'boo': -5, 'foo': Tupu},
                            [])
 
     eleza test_long_option_argument_joined(self):
         self.assertParseOK(["--boo=13"],
-                           {'a': None, 'boo': 13, 'foo': None},
+                           {'a': Tupu, 'boo': 13, 'foo': Tupu},
                            [])
 
     eleza test_long_option_argument_split(self):
         self.assertParseOK(["--boo", "111"],
-                           {'a': None, 'boo': 111, 'foo': None},
+                           {'a': Tupu, 'boo': 111, 'foo': Tupu},
                            [])
 
     eleza test_long_option_short_option(self):
         self.assertParseOK(["--foo=bar", "-axyz"],
-                           {'a': 'xyz', 'boo': None, 'foo': ["bar"]},
+                           {'a': 'xyz', 'boo': Tupu, 'foo': ["bar"]},
                            [])
 
     eleza test_abbrev_long_option(self):
         self.assertParseOK(["--f=bar", "-axyz"],
-                           {'a': 'xyz', 'boo': None, 'foo': ["bar"]},
+                           {'a': 'xyz', 'boo': Tupu, 'foo': ["bar"]},
                            [])
 
     eleza test_defaults(self):
@@ -729,45 +729,45 @@ kundi TestStandard(BaseTest):
 
     eleza test_short_and_long_option_split(self):
         self.assertParseOK(["-a", "xyz", "--foo", "bar"],
-                           {'a': 'xyz', 'boo': None, 'foo': ["bar"]},
+                           {'a': 'xyz', 'boo': Tupu, 'foo': ["bar"]},
                            [])
 
     eleza test_short_option_split_long_option_append(self):
         self.assertParseOK(["--foo=bar", "-b", "123", "--foo", "baz"],
-                           {'a': None, 'boo': 123, 'foo': ["bar", "baz"]},
+                           {'a': Tupu, 'boo': 123, 'foo': ["bar", "baz"]},
                            [])
 
     eleza test_short_option_split_one_positional_arg(self):
         self.assertParseOK(["-a", "foo", "bar"],
-                           {'a': "foo", 'boo': None, 'foo': None},
+                           {'a': "foo", 'boo': Tupu, 'foo': Tupu},
                            ["bar"])
 
     eleza test_short_option_consumes_separator(self):
         self.assertParseOK(["-a", "--", "foo", "bar"],
-                           {'a': "--", 'boo': None, 'foo': None},
+                           {'a': "--", 'boo': Tupu, 'foo': Tupu},
                            ["foo", "bar"])
         self.assertParseOK(["-a", "--", "--foo", "bar"],
-                           {'a': "--", 'boo': None, 'foo': ["bar"]},
+                           {'a': "--", 'boo': Tupu, 'foo': ["bar"]},
                            [])
 
     eleza test_short_option_joined_and_separator(self):
         self.assertParseOK(["-ab", "--", "--foo", "bar"],
-                           {'a': "b", 'boo': None, 'foo': None},
+                           {'a': "b", 'boo': Tupu, 'foo': Tupu},
                            ["--foo", "bar"]),
 
     eleza test_hyphen_becomes_positional_arg(self):
         self.assertParseOK(["-ab", "-", "--foo", "bar"],
-                           {'a': "b", 'boo': None, 'foo': ["bar"]},
+                           {'a': "b", 'boo': Tupu, 'foo': ["bar"]},
                            ["-"])
 
     eleza test_no_append_versus_append(self):
         self.assertParseOK(["-b3", "-b", "5", "--foo=bar", "--foo", "baz"],
-                           {'a': None, 'boo': 5, 'foo': ["bar", "baz"]},
+                           {'a': Tupu, 'boo': 5, 'foo': ["bar", "baz"]},
                            [])
 
     eleza test_option_consumes_optionlike_string(self):
         self.assertParseOK(["-a", "-b3"],
-                           {'a': "-b3", 'boo': None, 'foo': None},
+                           {'a': "-b3", 'boo': Tupu, 'foo': Tupu},
                            [])
 
     eleza test_combined_single_invalid_option(self):
@@ -797,13 +797,13 @@ kundi TestBool(BaseTest):
         (options, args) = self.assertParseOK(["-q"],
                                              {'verbose': 0},
                                              [])
-        self.assertTrue(options.verbose is False)
+        self.assertKweli(options.verbose ni Uongo)
 
     eleza test_bool_true(self):
         (options, args) = self.assertParseOK(["-v"],
                                              {'verbose': 1},
                                              [])
-        self.assertTrue(options.verbose is True)
+        self.assertKweli(options.verbose ni Kweli)
 
     eleza test_bool_flicker_on_and_off(self):
         self.assertParseOK(["-qvq", "-q", "-v"],
@@ -843,7 +843,7 @@ kundi TestCount(BaseTest):
                                action="store_const", dest="verbose", const=0)
 
     eleza test_empty(self):
-        self.assertParseOK([], {'verbose': None}, [])
+        self.assertParseOK([], {'verbose': Tupu}, [])
 
     eleza test_count_one(self):
         self.assertParseOK(["-v"], {'verbose': 1}, [])
@@ -880,7 +880,7 @@ kundi TestCount(BaseTest):
 
     eleza test_count_option_no_value(self):
         self.assertParseFail(["--quiet=3", "-v"],
-                             "--quiet option does not take a value")
+                             "--quiet option does sio take a value")
 
     eleza test_count_with_default(self):
         self.parser.set_default('verbose', 0)
@@ -928,7 +928,7 @@ kundi TestMultipleArgsAppend(BaseTest):
 
     eleza test_nargs_append(self):
         self.assertParseOK(["-f", "4", "-3", "blah", "--foo", "1", "666"],
-                           {'point': None, 'foo': [(4, -3), (1, 666)]},
+                           {'point': Tupu, 'foo': [(4, -3), (1, 666)]},
                            ["blah"])
 
     eleza test_nargs_append_required_values(self):
@@ -937,12 +937,12 @@ kundi TestMultipleArgsAppend(BaseTest):
 
     eleza test_nargs_append_simple(self):
         self.assertParseOK(["--foo=3", "4"],
-                           {'point': None, 'foo':[(3, 4)]},
+                           {'point': Tupu, 'foo':[(3, 4)]},
                            [])
 
     eleza test_nargs_append_const(self):
         self.assertParseOK(["--zero", "--foo", "3", "4", "-z"],
-                           {'point': None, 'foo':[(0, 0), (3, 4), (0, 0)]},
+                           {'point': Tupu, 'foo':[(0, 0), (3, 4), (0, 0)]},
                            [])
 
 kundi TestVersion(BaseTest):
@@ -950,10 +950,10 @@ kundi TestVersion(BaseTest):
         self.parser = InterceptingOptionParser(usage=SUPPRESS_USAGE,
                                                version="%prog 0.1")
         save_argv = sys.argv[:]
-        try:
+        jaribu:
             sys.argv[0] = os.path.join(os.curdir, "foo", "bar")
             self.assertOutput(["--version"], "bar 0.1\n")
-        finally:
+        mwishowe:
             sys.argv[:] = save_argv
 
     eleza test_no_version(self):
@@ -961,7 +961,7 @@ kundi TestVersion(BaseTest):
         self.assertParseFail(["--version"],
                              "no such option: --version")
 
-# -- Test conflicting default values and parser.parse_args() -----------
+# -- Test conflicting default values na parser.parse_args() -----------
 
 kundi TestConflictingDefaults(BaseTest):
     """Conflicting default values: the last one should win."""
@@ -976,8 +976,8 @@ kundi TestConflictingDefaults(BaseTest):
 
     eleza test_conflict_default_none(self):
         self.parser.add_option("-q", action="store_false", dest="verbose",
-                               default=None)
-        self.assertParseOK([], {'verbose': None}, [])
+                               default=Tupu)
+        self.assertParseOK([], {'verbose': Tupu}, [])
 
 kundi TestOptionGroup(BaseTest):
     eleza setUp(self):
@@ -992,16 +992,16 @@ kundi TestOptionGroup(BaseTest):
 
     eleza test_add_group_no_group(self):
         self.assertTypeError(self.parser.add_option_group,
-                             "not an OptionGroup instance: None", None)
+                             "not an OptionGroup instance: Tupu", Tupu)
 
     eleza test_add_group_invalid_arguments(self):
         self.assertTypeError(self.parser.add_option_group,
-                             "invalid arguments", None, None)
+                             "invalid arguments", Tupu, Tupu)
 
     eleza test_add_group_wrong_parser(self):
         group = OptionGroup(self.parser, "Spam")
         group.parser = OptionParser()
-        self.assertRaises(self.parser.add_option_group, (group,), None,
+        self.assertRaises(self.parser.add_option_group, (group,), Tupu,
                           ValueError, "invalid OptionGroup (wrong parser)")
 
     eleza test_group_manipulate(self):
@@ -1009,15 +1009,15 @@ kundi TestOptionGroup(BaseTest):
                                              description="Some more options")
         group.set_title("Bacon")
         group.add_option("--bacon", type="int")
-        self.assertTrue(self.parser.get_option_group("--bacon"), group)
+        self.assertKweli(self.parser.get_option_group("--bacon"), group)
 
-# -- Test extending and parser.parse_args() ----------------------------
+# -- Test extending na parser.parse_args() ----------------------------
 
 kundi TestExtendAddTypes(BaseTest):
     eleza setUp(self):
         self.parser = InterceptingOptionParser(usage=SUPPRESS_USAGE,
                                                option_class=self.MyOption)
-        self.parser.add_option("-a", None, type="string", dest="a")
+        self.parser.add_option("-a", Tupu, type="string", dest="a")
         self.parser.add_option("-f", "--file", type="file", dest="file")
 
     eleza tearDown(self):
@@ -1028,10 +1028,10 @@ kundi TestExtendAddTypes(BaseTest):
 
     kundi MyOption (Option):
         eleza check_file(option, opt, value):
-            ikiwa not os.path.exists(value):
-                raise OptionValueError("%s: file does not exist" % value)
-            elikiwa not os.path.isfile(value):
-                raise OptionValueError("%s: not a regular file" % value)
+            ikiwa sio os.path.exists(value):
+                ashiria OptionValueError("%s: file does sio exist" % value)
+            elikiwa sio os.path.isfile(value):
+                ashiria OptionValueError("%s: sio a regular file" % value)
             rudisha value
 
         TYPES = Option.TYPES + ("file",)
@@ -1046,13 +1046,13 @@ kundi TestExtendAddTypes(BaseTest):
 
     eleza test_filetype_noexist(self):
         self.assertParseFail(["--file", support.TESTFN, "-afoo"],
-                             "%s: file does not exist" %
+                             "%s: file does sio exist" %
                              support.TESTFN)
 
     eleza test_filetype_notfile(self):
         os.mkdir(support.TESTFN)
         self.assertParseFail(["--file", support.TESTFN, "-afoo"],
-                             "%s: not a regular file" %
+                             "%s: sio a regular file" %
                              support.TESTFN)
 
 
@@ -1071,7 +1071,7 @@ kundi TestExtendAddActions(BaseTest):
             ikiwa action == "extend":
                 lvalue = value.split(",")
                 values.ensure_value(dest, []).extend(lvalue)
-            else:
+            isipokua:
                 Option.take_action(self, action, dest, opt, parser, value,
                                    values)
 
@@ -1085,12 +1085,12 @@ kundi TestExtendAddActions(BaseTest):
                            {'apple': ["foo", "bar", "x", "y"]},
                            [])
 
-# -- Test callbacks and parser.parse_args() ----------------------------
+# -- Test callbacks na parser.parse_args() ----------------------------
 
 kundi TestCallback(BaseTest):
     eleza setUp(self):
         options = [make_option("-x",
-                               None,
+                               Tupu,
                                action="callback",
                                callback=self.process_opt),
                    make_option("-f",
@@ -1105,21 +1105,21 @@ kundi TestCallback(BaseTest):
         ikiwa opt == "-x":
             self.assertEqual(option._short_opts, ["-x"])
             self.assertEqual(option._long_opts, [])
-            self.assertTrue(parser_ is self.parser)
-            self.assertTrue(value is None)
-            self.assertEqual(vars(parser_.values), {'filename': None})
+            self.assertKweli(parser_ ni self.parser)
+            self.assertKweli(value ni Tupu)
+            self.assertEqual(vars(parser_.values), {'filename': Tupu})
 
             parser_.values.x = 42
         elikiwa opt == "--file":
             self.assertEqual(option._short_opts, ["-f"])
             self.assertEqual(option._long_opts, ["--file"])
-            self.assertTrue(parser_ is self.parser)
+            self.assertKweli(parser_ ni self.parser)
             self.assertEqual(value, "foo")
-            self.assertEqual(vars(parser_.values), {'filename': None, 'x': 42})
+            self.assertEqual(vars(parser_.values), {'filename': Tupu, 'x': 42})
 
             setattr(parser_.values, option.dest, value)
-        else:
-            self.fail("Unknown option %r in process_opt." % opt)
+        isipokua:
+            self.fail("Unknown option %r kwenye process_opt." % opt)
 
     eleza test_callback(self):
         self.assertParseOK(["-x", "--file=foo"],
@@ -1128,12 +1128,12 @@ kundi TestCallback(BaseTest):
 
     eleza test_callback_help(self):
         # This test was prompted by SF bug #960515 -- the point is
-        # not to inspect the help text, just to make sure that
+        # sio to inspect the help text, just to make sure that
         # format_help() doesn't crash.
         parser = OptionParser(usage=SUPPRESS_USAGE)
         parser.remove_option("-h")
         parser.add_option("-t", "--test", action="callback",
-                          callback=lambda: None, type="string",
+                          callback=lambda: Tupu, type="string",
                           help="foo")
 
         expected_help = ("Options:\n"
@@ -1151,7 +1151,7 @@ kundi TestCallbackExtraArgs(BaseTest):
 
     eleza process_tuple(self, option, opt, value, parser_, len, type):
         self.assertEqual(len, 3)
-        self.assertTrue(type is int)
+        self.assertKweli(type ni int)
 
         ikiwa opt == "-p":
             self.assertEqual(value, "1,2,3")
@@ -1170,20 +1170,20 @@ kundi TestCallbackMeddleArgs(BaseTest):
     eleza setUp(self):
         options = [make_option(str(x), action="callback",
                                callback=self.process_n, dest='things')
-                   for x in range(-1, -6, -1)]
+                   kila x kwenye range(-1, -6, -1)]
         self.parser = OptionParser(option_list=options)
 
-    # Callback that meddles in rargs, largs
+    # Callback that meddles kwenye rargs, largs
     eleza process_n(self, option, opt, value, parser_):
-        # option is -3, -5, etc.
+        # option ni -3, -5, etc.
         nargs = int(opt[1:])
         rargs = parser_.rargs
         ikiwa len(rargs) < nargs:
-            self.fail("Expected %d arguments for %s option." % (nargs, opt))
+            self.fail("Expected %d arguments kila %s option." % (nargs, opt))
         dest = parser_.values.ensure_value(option.dest, [])
         dest.append(tuple(rargs[0:nargs]))
         parser_.largs.append(nargs)
-        del rargs[0:nargs]
+        toa rargs[0:nargs]
 
     eleza test_callback_meddle_args(self):
         self.assertParseOK(["-1", "foo", "-3", "bar", "baz", "qux"],
@@ -1217,7 +1217,7 @@ kundi TestCallbackManyArgs(BaseTest):
         self.assertParseOK(["-a", "foo", "bar", "--apple", "ding", "dong",
                             "-b", "1", "2", "3", "--bob", "-666", "42",
                             "0"],
-                           {"apple": None, "bob": None},
+                           {"apple": Tupu, "bob": Tupu},
                            [])
 
 kundi TestCallbackCheckAbbrev(BaseTest):
@@ -1242,48 +1242,48 @@ kundi TestCallbackVarArgs(BaseTest):
                                                option_list=options)
 
     eleza variable_args(self, option, opt, value, parser):
-        self.assertTrue(value is None)
+        self.assertKweli(value ni Tupu)
         value = []
         rargs = parser.rargs
-        while rargs:
+        wakati rargs:
             arg = rargs[0]
-            ikiwa ((arg[:2] == "--" and len(arg) > 2) or
-                (arg[:1] == "-" and len(arg) > 1 and arg[1] != "-")):
-                break
-            else:
+            ikiwa ((arg[:2] == "--" na len(arg) > 2) or
+                (arg[:1] == "-" na len(arg) > 1 na arg[1] != "-")):
+                koma
+            isipokua:
                 value.append(arg)
-                del rargs[0]
+                toa rargs[0]
         setattr(parser.values, option.dest, value)
 
     eleza test_variable_args(self):
         self.assertParseOK(["-a3", "-5", "--callback", "foo", "bar"],
-                           {'a': (3, -5), 'b': None, 'c': ["foo", "bar"]},
+                           {'a': (3, -5), 'b': Tupu, 'c': ["foo", "bar"]},
                            [])
 
     eleza test_consume_separator_stop_at_option(self):
         self.assertParseOK(["-c", "37", "--", "xxx", "-b", "hello"],
-                           {'a': None,
-                            'b': True,
+                           {'a': Tupu,
+                            'b': Kweli,
                             'c': ["37", "--", "xxx"]},
                            ["hello"])
 
     eleza test_positional_arg_and_variable_args(self):
         self.assertParseOK(["hello", "-c", "foo", "-", "bar"],
-                           {'a': None,
-                            'b': None,
+                           {'a': Tupu,
+                            'b': Tupu,
                             'c':["foo", "-", "bar"]},
                            ["hello"])
 
     eleza test_stop_at_option(self):
         self.assertParseOK(["-c", "foo", "-b"],
-                           {'a': None, 'b': True, 'c': ["foo"]},
+                           {'a': Tupu, 'b': Kweli, 'c': ["foo"]},
                            [])
 
     eleza test_stop_at_invalid_option(self):
         self.assertParseFail(["-c", "3", "-5", "-a"], "no such option: -5")
 
 
-# -- Test conflict handling and parser.parse_args() --------------------
+# -- Test conflict handling na parser.parse_args() --------------------
 
 kundi ConflictBase(BaseTest):
     eleza setUp(self):
@@ -1296,8 +1296,8 @@ kundi ConflictBase(BaseTest):
         parser.values.show_version = 1
 
 kundi TestConflict(ConflictBase):
-    """Use the default conflict resolution for Optik 1.2: error."""
-    eleza assertTrueconflict_error(self, func):
+    """Use the default conflict resolution kila Optik 1.2: error."""
+    eleza assertKweliconflict_error(self, func):
         err = self.assertRaises(
             func, ("-v", "--version"), {'action' : "callback",
                                         'callback' : self.show_version,
@@ -1309,15 +1309,15 @@ kundi TestConflict(ConflictBase):
         self.assertEqual(err.option_id, "-v/--version")
 
     eleza test_conflict_error(self):
-        self.assertTrueconflict_error(self.parser.add_option)
+        self.assertKweliconflict_error(self.parser.add_option)
 
     eleza test_conflict_error_group(self):
         group = OptionGroup(self.parser, "Group 1")
-        self.assertTrueconflict_error(group.add_option)
+        self.assertKweliconflict_error(group.add_option)
 
     eleza test_no_such_conflict_handler(self):
         self.assertRaises(
-            self.parser.set_conflict_handler, ('foo',), None,
+            self.parser.set_conflict_handler, ('foo',), Tupu,
             ValueError, "invalid conflict_resolution value 'foo'")
 
 
@@ -1333,8 +1333,8 @@ kundi TestConflictResolve(ConflictBase):
         verbose_opt = self.parser.get_option("--verbose")
         version_opt = self.parser.get_option("--version")
 
-        self.assertTrue(v_opt is version_opt)
-        self.assertTrue(v_opt is not verbose_opt)
+        self.assertKweli(v_opt ni version_opt)
+        self.assertKweli(v_opt ni sio verbose_opt)
         self.assertEqual(v_opt._long_opts, ["--version"])
         self.assertEqual(version_opt._short_opts, ["-v"])
         self.assertEqual(version_opt._long_opts, ["--version"])
@@ -1345,13 +1345,13 @@ kundi TestConflictResolve(ConflictBase):
         self.assertOutput(["-h"], """\
 Options:
   --verbose      increment verbosity
-  -h, --help     show this help message and exit
+  -h, --help     show this help message na exit
   -v, --version  show version
 """)
 
     eleza test_conflict_resolve_short_opt(self):
         self.assertParseOK(["-v"],
-                           {'verbose': None, 'show_version': 1},
+                           {'verbose': Tupu, 'show_version': 1},
                            [])
 
     eleza test_conflict_resolve_long_opt(self):
@@ -1383,7 +1383,7 @@ kundi TestConflictOverride(BaseTest):
     eleza test_conflict_override_help(self):
         self.assertOutput(["-h"], """\
 Options:
-  -h, --help     show this help message and exit
+  -h, --help     show this help message na exit
   -n, --dry-run  dry run mode
 """)
 
@@ -1400,9 +1400,9 @@ Usage: bar.py [options]
 Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to frighten away all the
-                     evil spirits that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later fooing
-  -h, --help         show this help message and exit
+                     evil spirits that cause trouble na mayhem)
+  --foo=FOO          store FOO kwenye the foo list kila later fooing
+  -h, --help         show this help message na exit
 """
 
 _expected_help_long_opts_first = """\
@@ -1411,9 +1411,9 @@ Usage: bar.py [options]
 Options:
   -a APPLE           throw APPLEs at basket
   --boo=NUM, -b NUM  shout "boo!" NUM times (in order to frighten away all the
-                     evil spirits that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later fooing
-  --help, -h         show this help message and exit
+                     evil spirits that cause trouble na mayhem)
+  --foo=FOO          store FOO kwenye the foo list kila later fooing
+  --help, -h         show this help message na exit
 """
 
 _expected_help_title_formatter = """\
@@ -1425,9 +1425,9 @@ Options
 =======
 -a APPLE           throw APPLEs at basket
 --boo=NUM, -b NUM  shout "boo!" NUM times (in order to frighten away all the
-                   evil spirits that cause trouble and mayhem)
---foo=FOO          store FOO in the foo list for later fooing
---help, -h         show this help message and exit
+                   evil spirits that cause trouble na mayhem)
+--foo=FOO          store FOO kwenye the foo list kila later fooing
+--help, -h         show this help message na exit
 """
 
 _expected_help_short_lines = """\
@@ -1437,10 +1437,10 @@ Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to
                      frighten away all the evil spirits
-                     that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later
+                     that cause trouble na mayhem)
+  --foo=FOO          store FOO kwenye the foo list kila later
                      fooing
-  -h, --help         show this help message and exit
+  -h, --help         show this help message na exit
 """
 
 _expected_very_help_short_lines = """\
@@ -1465,7 +1465,7 @@ Options:
     mayhem)
   --foo=FOO
     store FOO
-    in the foo
+    kwenye the foo
     list for
     later
     fooing
@@ -1488,26 +1488,26 @@ kundi TestHelp(BaseTest):
                         metavar="NUM",
                         help=
                         "shout \"boo!\" NUM times (in order to frighten away "
-                        "all the evil spirits that cause trouble and mayhem)"),
+                        "all the evil spirits that cause trouble na mayhem)"),
             make_option("--foo", action="append", type="string", dest='foo',
-                        help="store FOO in the foo list for later fooing"),
+                        help="store FOO kwenye the foo list kila later fooing"),
             ]
 
-        # We need to set COLUMNS for the OptionParser constructor, but
+        # We need to set COLUMNS kila the OptionParser constructor, but
         # we must restore its original value -- otherwise, this test
-        # screws things up for other tests when it's part of the Python
+        # screws things up kila other tests when it's part of the Python
         # test suite.
-        with support.EnvironmentVarGuard() as env:
+        with support.EnvironmentVarGuard() kama env:
             env['COLUMNS'] = str(columns)
             rudisha InterceptingOptionParser(option_list=options)
 
     eleza assertHelpEquals(self, expected_output):
         save_argv = sys.argv[:]
-        try:
-            # Make optparse believe bar.py is being executed.
+        jaribu:
+            # Make optparse believe bar.py ni being executed.
             sys.argv[0] = os.path.join("foo", "bar.py")
             self.assertOutput(["-h"], expected_output)
-        finally:
+        mwishowe:
             sys.argv[:] = save_argv
 
     eleza test_help(self):
@@ -1522,7 +1522,7 @@ kundi TestHelp(BaseTest):
         self.assertHelpEquals(_expected_help_long_opts_first)
 
     eleza test_help_title_formatter(self):
-        with support.EnvironmentVarGuard() as env:
+        with support.EnvironmentVarGuard() kama env:
             env["COLUMNS"] = "80"
             self.parser.formatter = TitledHelpFormatter()
             self.assertHelpEquals(_expected_help_title_formatter)
@@ -1541,7 +1541,7 @@ kundi TestHelp(BaseTest):
         self.parser.add_option("-a", action="store_true", help="ol\u00E9!")
         expect = """\
 Options:
-  -h, --help  show this help message and exit
+  -h, --help  show this help message na exit
   -a          ol\u00E9!
 """
         self.assertHelpEquals(expect)
@@ -1553,37 +1553,37 @@ Options:
 ol\u00E9!
 
 Options:
-  -h, --help  show this help message and exit
+  -h, --help  show this help message na exit
 """
         self.assertHelpEquals(expect)
 
     eleza test_help_description_groups(self):
         self.parser.set_description(
-            "This is the program description for %prog.  %prog has "
-            "an option group as well as single options.")
+            "This ni the program description kila %prog.  %prog has "
+            "an option group kama well kama single options.")
 
         group = OptionGroup(
             self.parser, "Dangerous Options",
-            "Caution: use of these options is at your own risk.  "
-            "It is believed that some of them bite.")
+            "Caution: use of these options ni at your own risk.  "
+            "It ni believed that some of them bite.")
         group.add_option("-g", action="store_true", help="Group option.")
         self.parser.add_option_group(group)
 
         expect = """\
 Usage: bar.py [options]
 
-This is the program description for bar.py.  bar.py has an option group as
-well as single options.
+This ni the program description kila bar.py.  bar.py has an option group as
+well kama single options.
 
 Options:
   -a APPLE           throw APPLEs at basket
   -b NUM, --boo=NUM  shout "boo!" NUM times (in order to frighten away all the
-                     evil spirits that cause trouble and mayhem)
-  --foo=FOO          store FOO in the foo list for later fooing
-  -h, --help         show this help message and exit
+                     evil spirits that cause trouble na mayhem)
+  --foo=FOO          store FOO kwenye the foo list kila later fooing
+  -h, --help         show this help message na exit
 
   Dangerous Options:
-    Caution: use of these options is at your own risk.  It is believed
+    Caution: use of these options ni at your own risk.  It ni believed
     that some of them bite.
 
     -g               Group option.
@@ -1598,17 +1598,17 @@ Options:
 kundi TestMatchAbbrev(BaseTest):
     eleza test_match_abbrev(self):
         self.assertEqual(_match_abbrev("--f",
-                                       {"--foz": None,
-                                        "--foo": None,
-                                        "--fie": None,
-                                        "--f": None}),
+                                       {"--foz": Tupu,
+                                        "--foo": Tupu,
+                                        "--fie": Tupu,
+                                        "--f": Tupu}),
                          "--f")
 
     eleza test_match_abbrev_error(self):
         s = "--f"
-        wordmap = {"--foz": None, "--foo": None, "--fie": None}
+        wordmap = {"--foz": Tupu, "--foo": Tupu, "--fie": Tupu}
         self.assertRaises(
-            _match_abbrev, (s, wordmap), None,
+            _match_abbrev, (s, wordmap), Tupu,
             BadOptionError, "ambiguous option: --f (--fie, --foo, --foz?)")
 
 
@@ -1622,11 +1622,11 @@ kundi TestParseNumber(BaseTest):
         self.assertRaises(
             _parse_num, ("", int), {},
             ValueError,
-            re.compile(r"invalid literal for int().*: '?'?"))
+            re.compile(r"invalid literal kila int().*: '?'?"))
         self.assertRaises(
             _parse_num, ("0xOoops", int), {},
             ValueError,
-            re.compile(r"invalid literal for int().*: s?'?0xOoops'?"))
+            re.compile(r"invalid literal kila int().*: s?'?0xOoops'?"))
 
     eleza test_parse_num_ok(self):
         self.assertEqual(_parse_num("0", int), 0)

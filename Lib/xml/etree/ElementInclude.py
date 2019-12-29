@@ -2,7 +2,7 @@
 # ElementTree
 # $Id: ElementInclude.py 3375 2008-02-13 08:05:08Z fredrik $
 #
-# limited xinclude support for element trees
+# limited xinclude support kila element trees
 #
 # history:
 # 2003-08-15 fl   created
@@ -20,14 +20,14 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# na will comply with the following terms na conditions:
 #
-# Permission to use, copy, modify, and distribute this software and
-# its associated documentation for any purpose and without fee is
+# Permission to use, copy, modify, na distribute this software and
+# its associated documentation kila any purpose na without fee is
 # hereby granted, provided that the above copyright notice appears in
-# all copies, and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Secret Labs AB or the author not be used in advertising or publicity
+# all copies, na that both that copyright notice na this permission
+# notice appear kwenye supporting documentation, na that the name of
+# Secret Labs AB ama the author sio be used kwenye advertising ama publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #
@@ -42,10 +42,10 @@
 # --------------------------------------------------------------------
 
 # Licensed to PSF under a Contributor Agreement.
-# See http://www.python.org/psf/license for licensing details.
+# See http://www.python.org/psf/license kila licensing details.
 
 ##
-# Limited XInclude support for the ElementTree package.
+# Limited XInclude support kila the ElementTree package.
 ##
 
 agiza copy
@@ -60,28 +60,28 @@ XINCLUDE_FALLBACK = XINCLUDE + "fallback"
 # Fatal include error.
 
 kundi FatalIncludeError(SyntaxError):
-    pass
+    pita
 
 ##
 # Default loader.  This loader reads an included resource kutoka disk.
 #
 # @param href Resource reference.
-# @param parse Parse mode.  Either "xml" or "text".
-# @param encoding Optional text encoding (UTF-8 by default for "text").
-# @rudisha The expanded resource.  If the parse mode is "xml", this
-#    is an ElementTree instance.  If the parse mode is "text", this
-#    is a Unicode string.  If the loader fails, it can rudisha None
-#    or raise an OSError exception.
+# @param parse Parse mode.  Either "xml" ama "text".
+# @param encoding Optional text encoding (UTF-8 by default kila "text").
+# @rudisha The expanded resource.  If the parse mode ni "xml", this
+#    ni an ElementTree instance.  If the parse mode ni "text", this
+#    ni a Unicode string.  If the loader fails, it can rudisha Tupu
+#    ama ashiria an OSError exception.
 # @throws OSError If the loader fails to load the resource.
 
-eleza default_loader(href, parse, encoding=None):
+eleza default_loader(href, parse, encoding=Tupu):
     ikiwa parse == "xml":
-        with open(href, 'rb') as file:
+        with open(href, 'rb') kama file:
             data = ElementTree.parse(file).getroot()
-    else:
-        ikiwa not encoding:
+    isipokua:
+        ikiwa sio encoding:
             encoding = 'UTF-8'
-        with open(href, 'r', encoding=encoding) as file:
+        with open(href, 'r', encoding=encoding) kama file:
             data = file.read()
     rudisha data
 
@@ -91,17 +91,17 @@ eleza default_loader(href, parse, encoding=None):
 # @param elem Root element.
 # @param loader Optional resource loader.  If omitted, it defaults
 #     to {@link default_loader}.  If given, it should be a callable
-#     that implements the same interface as <b>default_loader</b>.
+#     that implements the same interface kama <b>default_loader</b>.
 # @throws FatalIncludeError If the function fails to include a given
-#     resource, or ikiwa the tree contains malformed XInclude elements.
+#     resource, ama ikiwa the tree contains malformed XInclude elements.
 # @throws OSError If the function fails to load a given resource.
 
-eleza include(elem, loader=None):
-    ikiwa loader is None:
+eleza include(elem, loader=Tupu):
+    ikiwa loader ni Tupu:
         loader = default_loader
-    # look for xinclude elements
+    # look kila xinclude elements
     i = 0
-    while i < len(elem):
+    wakati i < len(elem):
         e = elem[i]
         ikiwa e.tag == XINCLUDE_INCLUDE:
             # process xinclude directive
@@ -109,35 +109,35 @@ eleza include(elem, loader=None):
             parse = e.get("parse", "xml")
             ikiwa parse == "xml":
                 node = loader(href, parse)
-                ikiwa node is None:
-                    raise FatalIncludeError(
-                        "cannot load %r as %r" % (href, parse)
+                ikiwa node ni Tupu:
+                    ashiria FatalIncludeError(
+                        "cannot load %r kama %r" % (href, parse)
                         )
                 node = copy.copy(node)
                 ikiwa e.tail:
-                    node.tail = (node.tail or "") + e.tail
+                    node.tail = (node.tail ama "") + e.tail
                 elem[i] = node
             elikiwa parse == "text":
                 text = loader(href, parse, e.get("encoding"))
-                ikiwa text is None:
-                    raise FatalIncludeError(
-                        "cannot load %r as %r" % (href, parse)
+                ikiwa text ni Tupu:
+                    ashiria FatalIncludeError(
+                        "cannot load %r kama %r" % (href, parse)
                         )
                 ikiwa i:
                     node = elem[i-1]
-                    node.tail = (node.tail or "") + text + (e.tail or "")
-                else:
-                    elem.text = (elem.text or "") + text + (e.tail or "")
-                del elem[i]
-                continue
-            else:
-                raise FatalIncludeError(
-                    "unknown parse type in xi:include tag (%r)" % parse
+                    node.tail = (node.tail ama "") + text + (e.tail ama "")
+                isipokua:
+                    elem.text = (elem.text ama "") + text + (e.tail ama "")
+                toa elem[i]
+                endelea
+            isipokua:
+                ashiria FatalIncludeError(
+                    "unknown parse type kwenye xi:include tag (%r)" % parse
                 )
         elikiwa e.tag == XINCLUDE_FALLBACK:
-            raise FatalIncludeError(
+            ashiria FatalIncludeError(
                 "xi:fallback tag must be child of xi:include (%r)" % e.tag
                 )
-        else:
+        isipokua:
             include(e, loader)
         i = i + 1

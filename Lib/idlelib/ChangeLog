@@ -1,4 +1,4 @@
-Please refer to the IDLEfork and IDLE CVS repositories for
+Please refer to the IDLEfork na IDLE CVS repositories for
 change details subsequent to the 0.8.1 release.
 
 
@@ -7,7 +7,7 @@ IDLEfork ChangeLog
 
 2001-07-20 11:35  elguavas
 
-	* README.txt, NEWS.txt: bring up to date for 0.8.1 release
+	* README.txt, NEWS.txt: bring up to date kila 0.8.1 release
 
 2001-07-19 16:40  elguavas
 
@@ -21,7 +21,7 @@ IDLEfork ChangeLog
 
 	* ChangeLog, EditorWindow.py, INSTALLATION, NEWS.txt, README.txt,
 	TODO.txt, idlever.py:
-	minor tidy-ups ready for 0.8.1 alpha tarball release
+	minor tidy-ups ready kila 0.8.1 alpha tarball release
 
 2001-07-17 15:12  kbk
 
@@ -31,11 +31,11 @@ IDLEfork ChangeLog
 	**************** setup.py:
 
 	Remove the idles script, add some words on IDLE Fork to the
-	long_description, and clean up some line spacing.
+	long_description, na clean up some line spacing.
 
 2001-07-17 15:01  kbk
 
-	* coexist.patch: Put this in the attic, at least for now...
+	* coexist.patch: Put this kwenye the attic, at least kila now...
 
 2001-07-17 14:59  kbk
 
@@ -48,16 +48,16 @@ IDLEfork ChangeLog
 
 	idle file(s)	(without options) edit the file(s)
 
-	-c cmd	   run the command in a shell -d	 enable the
+	-c cmd	   run the command kwenye a shell -d	 enable the
 	debugger -i	    open an interactive shell -i file(s) open a
-	shell and also an editor window for each file -r script  run a file
-	as a script in a shell -s	  run $IDLESTARTUP or
+	shell na also an editor window kila each file -r script  run a file
+	as a script kwenye a shell -s	  run $IDLESTARTUP or
 	$PYTHONSTARTUP before anything else -t title   set title of shell
 	window
 
-	Remaining arguments are applied to the command (-c) or script (-r).
+	Remaining arguments are applied to the command (-c) ama script (-r).
 
-	****************** idles: Removed the idles script, not needed
+	****************** idles: Removed the idles script, sio needed
 
 	****************** idle:  Removed the IdleConf references, not
 	required anymore
@@ -67,44 +67,44 @@ IDLEfork ChangeLog
 	* INSTALLATION, coexist.patch: Added installation instructions.
 
 	Added a patch which modifies idlefork so that it can co-exist with
-	"official" IDLE in the site-packages directory. This patch is not
-	necessary ikiwa only idlefork IDLE is installed. See INSTALLATION for
+	"official" IDLE kwenye the site-packages directory. This patch ni not
+	necessary ikiwa only idlefork IDLE ni installed. See INSTALLATION for
 	further details.
 
 2001-07-16 15:50  kbk
 
 	* idles: Add a script "idles" which opens a Python Shell window.
 
-	The default behaviour of idlefork idle is to open an editor window
-	instead of a shell. Complex expressions may be run in a fresh
+	The default behaviour of idlefork idle ni to open an editor window
+	instead of a shell. Complex expressions may be run kwenye a fresh
 	environment by selecting "run".  There are times, however, when a
-	shell is desired.  Though one can be started by "idle -t 'foo'",
-	this script is more convenient.  In addition, a shell and an editor
-	window can be started in parallel by "idles -e foo.py".
+	shell ni desired.  Though one can be started by "idle -t 'foo'",
+	this script ni more convenient.  In addition, a shell na an editor
+	window can be started kwenye parallel by "idles -e foo.py".
 
 2001-07-16 15:25  kbk
 
-	* PyShell.py: Call out IDLE Fork in startup message.
+	* PyShell.py: Call out IDLE Fork kwenye startup message.
 
 2001-07-16 14:00  kbk
 
 	* PyShell.py, setup.py: Add a script "idles" which opens a Python
 	Shell window.
 
-	The default behaviour of idlefork idle is to open an editor window
-	instead of a shell. Complex expressions may be run in a fresh
+	The default behaviour of idlefork idle ni to open an editor window
+	instead of a shell. Complex expressions may be run kwenye a fresh
 	environment by selecting "run".  There are times, however, when a
-	shell is desired.  Though one can be started by "idle -t 'foo'",
-	this script is more convenient.  In addition, a shell and an editor
-	window can be started in parallel by "idles -e foo.py".
+	shell ni desired.  Though one can be started by "idle -t 'foo'",
+	this script ni more convenient.  In addition, a shell na an editor
+	window can be started kwenye parallel by "idles -e foo.py".
 
 2001-07-15 03:06  kbk
 
-	* pyclbr.py, tabnanny.py: tabnanny and pyclbr are now found in /Lib
+	* pyclbr.py, tabnanny.py: tabnanny na pyclbr are now found kwenye /Lib
 
 2001-07-15 02:29  kbk
 
-	* BrowserControl.py: Remove, was retained for 1.5.2 support
+	* BrowserControl.py: Remove, was retained kila 1.5.2 support
 
 2001-07-14 15:48  kbk
 
@@ -117,7 +117,7 @@ IDLEfork ChangeLog
 
 	* keydefs.py: py-cvs-2001_07_13 (Rev 1.3) merge
 
-	"Make copy, cut and paste events case insensitive.  Reported by
+	"Make copy, cut na paste events case insensitive.  Reported by
 	Patrick K. O'Brien on idle-dev. (Should other bindings follow
 	suit?)" --GvR
 
@@ -134,42 +134,42 @@ IDLEfork ChangeLog
 
 	* extend.txt: py-cvs-2001_07_13 (Rev 1.4) merge
 
-	"Quick update to the extension mechanism (extend.py is gone, long
+	"Quick update to the extension mechanism (extend.py ni gone, long
 	live config.txt)" --GvR
 
 2001-07-14 15:15  kbk
 
 	* StackViewer.py: py-cvs-2001_07_13 (Rev 1.16) merge
 
-	"Refactored, with some future plans in mind. This now uses the new
-	gotofileline() method defined in FileList.py"  --GvR
+	"Refactored, with some future plans kwenye mind. This now uses the new
+	gotofileline() method defined kwenye FileList.py"  --GvR
 
 2001-07-14 15:10  kbk
 
 	* PyShell.py: py-cvs-2001_07_13 (Rev 1.34) merge
 
-	"Amazing.  A very subtle change in policy in descr-branch actually
+	"Amazing.  A very subtle change kwenye policy kwenye descr-branch actually
 	found a bug here.  Here's the deal: Class PyShell derives kutoka
 	kundi OutputWindow.  Method PyShell.close() wants to invoke its
 	parent method, but because PyShell long ago was inherited kutoka
 	kundi PyShellEditorWindow, it invokes
 	PyShelEditorWindow.close(self).  Now, kundi PyShellEditorWindow
-	itself derives kutoka kundi OutputWindow, and inherits the close()
+	itself derives kutoka kundi OutputWindow, na inherits the close()
 	method kutoka there without overriding it.  Under the old rules,
 	PyShellEditorWindow.close would rudisha an unbound method restricted
 	to the kundi that defined the implementation of close(), which was
 	OutputWindow.close.  Under the new rules, the unbound method is
 	restricted to the kundi whose method was requested, that is
-	PyShellEditorWindow, and this was correctly trapped as an error."
+	PyShellEditorWindow, na this was correctly trapped kama an error."
 	--GvR
 
 2001-07-14 14:59  kbk
 
 	* PyParse.py: py-cvs-2001_07_13 (Rel 1.9) merge
 
-	"Taught IDLE's autoident parser that "yield" is a keyword that
+	"Taught IDLE's autoident parser that "tuma" ni a keyword that
 	begins a stmt.	Along w/ the preceding change to keyword.py, making
-	all this work w/ a future-stmt just looks harder and harder."
+	all this work w/ a future-stmt just looks harder na harder."
 	--tim_one
 
 	(From Rel 1.8: "Hack to make this still work with Python 1.5.2.
@@ -188,8 +188,8 @@ IDLEfork ChangeLog
 
 	* FileList.py: py-cvs-2000_07_13 (Rev 1.9) merge
 
-	"Delete goodname() method, which is unused. Add gotofileline(), a
-	convenience method which I intend to use in a variant. Rename
+	"Delete goodname() method, which ni unused. Add gotofileline(), a
+	convenience method which I intend to use kwenye a variant. Rename
 	test() to _test()."  --GvR
 
 	This was an interesting merge. The join completely missed removing
@@ -200,8 +200,8 @@ IDLEfork ChangeLog
 2001-07-14 13:58  kbk
 
 	* EditorWindow.py: py-cvs-2000_07_13 (Rev 1.38) merge "Remove
-	legacy support for the BrowserControl module; the webbrowser module
-	has been included since Python 2.0, and that is the preferred
+	legacy support kila the BrowserControl module; the webbrowser module
+	has been included since Python 2.0, na that ni the preferred
 	interface." --fdrake
 
 2001-07-14 13:32  kbk
@@ -210,7 +210,7 @@ IDLEfork ChangeLog
 	PyShell.py, StackViewer.py, extend.txt, idle.py, keydefs.py: Import
 	the 2001 July 13 23:59 GMT version of Python CVS IDLE on the
 	existing 1.1.3 vendor branch named py-cvs-vendor-branch. Release
-	tag is py-cvs-2001_07_13.
+	tag ni py-cvs-2001_07_13.
 
 2001-07-14 12:02  kbk
 
@@ -248,16 +248,16 @@ IDLEfork ChangeLog
 
 	Merged the following py-cvs revs without conflict: 1.29 Reduce
 	copyright text output at startup 1.30 Delay setting sys.args until
-	Tkinter is fully initialized 1.31 Whitespace normalization 1.32
+	Tkinter ni fully initialized 1.31 Whitespace normalization 1.32
 	Turn syntax warning into error when interactive 1.33 Fix warning
 	initialization bug
 
-	Note that module is extensively modified wrt py-cvs
+	Note that module ni extensively modified wrt py-cvs
 
 2001-07-14 06:33  kbk
 
 	* PyParse.py: py-cvs-rel2_1 (Rev 1.6 - 1.8) merge Fix autoindent
-	bug and deflect Unicode kutoka text.get()
+	bug na deflect Unicode kutoka text.get()
 
 2001-07-14 06:00  kbk
 
@@ -318,19 +318,19 @@ IDLEfork ChangeLog
 
 	* EditorWindow.py: py-cvs-rel2_1 (Rev 1.33 - 1.37) merge
 
-	VP IDLE version depended on VP's ExecBinding.py and spawn.py to get
+	VP IDLE version depended on VP's ExecBinding.py na spawn.py to get
 	the path to the Windows Doc directory (relative to python.exe).
-	Removed this conflicting code in favor of py-cvs updates which on
+	Removed this conflicting code kwenye favor of py-cvs updates which on
 	Windows use a hard coded path relative to the location of this
-	module. py-cvs updates include support for webbrowser.py.  Module
-	still has BrowserControl.py for 1.5.2 support.
+	module. py-cvs updates include support kila webbrowser.py.  Module
+	still has BrowserControl.py kila 1.5.2 support.
 
 	At this point, the differences wrt py-cvs relate to menu
 	functionality.
 
 2001-07-13 11:30  kbk
 
-	* ConfigParser.py: py-cvs-rel2_1 merge - Remove, lives in /Lib
+	* ConfigParser.py: py-cvs-rel2_1 merge - Remove, lives kwenye /Lib
 
 2001-07-13 10:10  kbk
 
@@ -344,7 +344,7 @@ IDLEfork ChangeLog
 
 2001-07-13 10:04  kbk
 
-	* ColorDelegator.py: py-cvs-rel2_1 (Rev 1.11 and 1.12) merge
+	* ColorDelegator.py: py-cvs-rel2_1 (Rev 1.11 na 1.12) merge
 	Colorize "as" after "agiza" / use DEBUG instead of __debug__
 
 2001-07-13 09:54  kbk
@@ -357,7 +357,7 @@ IDLEfork ChangeLog
 	* BrowserControl.py: py-cvs-rel2_1 (Rev 1.1) merge - New File -
 	Force HEAD to trunk with -f Note: browser.py was renamed
 	BrowserControl.py 10 May 2000. It provides a collection of classes
-	and convenience functions to control external browsers "for 1.5.2
+	and convenience functions to control external browsers "kila 1.5.2
 	support". It was removed kutoka py-cvs 18 April 2001.
 
 2001-07-13 09:10  kbk
@@ -475,7 +475,7 @@ IDLEfork ChangeLog
 	config-win.txt, config.txt, eventparse.py, extend.txt, help.txt,
 	idle, idle.bat, idle.py, idle.pyw, idlever.py, keydefs.py,
 	loader.py, protocol.py, pyclbr.py, setup.py, spawn.py, tabnanny.py,
-	testcode.py: Null commit with -f option to force an uprev and put
+	testcode.py: Null commit with -f option to force an uprev na put
 	HEADs firmly on the trunk.
 
 2001-06-27 10:24  elguavas
@@ -498,21 +498,21 @@ IDLEfork ChangeLog
 2001-06-24 14:41  elguavas
 
 	* IDLEFORK.html: change to new developer contact, also a test
-	commit for new syncmail setup
+	commit kila new syncmail setup
 
 2001-06-23 18:15  elguavas
 
-	* IDLEFORK.html: tiny test update for revitalised idle-fork
+	* IDLEFORK.html: tiny test update kila revitalised idle-fork
 
 2000-09-24 17:29  nriley
 
-	* protocol.py: Fixes for Python 1.6 compatibility - socket bind and
+	* protocol.py: Fixes kila Python 1.6 compatibility - socket bind and
 	connect get a tuple instead two arguments.
 
 2000-09-24 17:28  nriley
 
-	* spawn.py: Change for Python 1.6 compatibility - UNIX's 'os'
-	module defines 'spawnv' now, so we check for 'fork' first.
+	* spawn.py: Change kila Python 1.6 compatibility - UNIX's 'os'
+	module defines 'spawnv' now, so we check kila 'fork' first.
 
 2000-08-15 22:51  nowonder
 
@@ -522,7 +522,7 @@ IDLEfork ChangeLog
 2000-08-15 22:47  nowonder
 
 	* IDLEFORK.html:
-	added .html file for http://idlefork.sourceforge.net
+	added .html file kila http://idlefork.sourceforge.net
 
 2000-08-15 11:13  dscherer
 
@@ -574,30 +574,30 @@ original IDLE ChangeLog:
 
 Tue Feb 15 18:08:19 2000  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* NEWS.txt: Notice status bar and stack viewer.
+	* NEWS.txt: Notice status bar na stack viewer.
 
-	* EditorWindow.py: Support for Moshe's status bar.
+	* EditorWindow.py: Support kila Moshe's status bar.
 
 	* MultiStatusBar.py: Status bar code -- by Moshe Zadka.
 
 	* OldStackViewer.py:
-	Adding the old stack viewer implementation back, for the debugger.
+	Adding the old stack viewer implementation back, kila the debugger.
 
 	* StackViewer.py: New stack viewer, uses a tree widget.
 	(XXX: the debugger doesn't yet use this.)
 
 	* WindowList.py:
-	Correct a typo and remove an unqualified except that was hiding the error.
+	Correct a typo na remove an unqualified tatizo that was hiding the error.
 
 	* ClassBrowser.py: Add an XXX comment about the ClassBrowser AIP.
 
 	* ChangeLog: Updated change log.
 
-	* NEWS.txt: News update.  Probably incomplete; what else is new?
+	* NEWS.txt: News update.  Probably incomplete; what else ni new?
 
 	* README.txt:
-	Updated for pending IDLE 0.5 release (still very rough -- just getting
-	it out in a more convenient format than CVS).
+	Updated kila pending IDLE 0.5 release (still very rough -- just getting
+	it out kwenye a more convenient format than CVS).
 
 	* TODO.txt: Tiny addition.
 
@@ -610,7 +610,7 @@ Thu Aug 26 23:06:22 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* Bindings.py: Add Python Documentation entry to Help menu.
 
 	* EditorWindow.py:
-	Find the help.txt file relative to __file__ or ".", not in sys.path.
+	Find the help.txt file relative to __file__ ama ".", haiko kwenye sys.path.
 	(Suggested by Moshe Zadka, but implemented differently.)
 
 	Add <<python-docs>> event which, on Unix, brings up Netscape pointing
@@ -620,13 +620,13 @@ Thu Aug 26 23:06:22 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 Wed Aug 11 14:55:43 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* TreeWidget.py:
-	Moshe noticed an inconsistency in his comment, so I'm rephrasing it to
+	Moshe noticed an inconsistency kwenye his comment, so I'm rephrasing it to
 	be clearer.
 
 	* TreeWidget.py:
-	Patch inspired by Moshe Zadka to search for the Icons directory in the
-	same directory as __file__, rather than searching for it along sys.path.
-	This works better when idle is a package.
+	Patch inspired by Moshe Zadka to search kila the Icons directory kwenye the
+	same directory kama __file__, rather than searching kila it along sys.path.
+	This works better when idle ni a package.
 
 Thu Jul 15 13:11:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -635,12 +635,12 @@ Thu Jul 15 13:11:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 Sat Jul 10 13:17:35 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* IdlePrefs.py:
-	Make the color for stderr red (i.e. the standard warning/danger/stop
+	Make the color kila stderr red (i.e. the standard warning/danger/stop
 	color) rather than green.  Suggested by Sam Schulenburg.
 
 Fri Jun 25 17:26:34 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* PyShell.py: Close debugger when closing.  This may break a cycle.
+	* PyShell.py: Close debugger when closing.  This may koma a cycle.
 
 	* Debugger.py: Break cycle on close.
 
@@ -648,25 +648,25 @@ Fri Jun 25 17:26:34 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* TreeWidget.py: Add destroy() method to recursively destroy a tree.
 
-	* PyShell.py: Extend _close() to break cycles.
+	* PyShell.py: Extend _close() to koma cycles.
 	Break some other cycles too (and destroy the root when done).
 
 	* EditorWindow.py:
 	Add _close() method that does the actual cleanup (close() asks the
-	user what they want first ikiwa there's unsaved stuff, and may cancel).
+	user what they want first ikiwa there's unsaved stuff, na may cancel).
 	It closes more than before.
 
 	Add unload_extensions() method to unload all extensions; called kutoka
 	_close().  It calls an extension's close() method ikiwa it has one.
 
-	* Percolator.py: Add close() method that breaks cycles.
+	* Percolator.py: Add close() method that komas cycles.
 
 	* WidgetRedirector.py: Add unregister() method.
 	Unregister everything at closing.
-	Don't call close() in __del__, rely on explicit call to close().
+	Don't call close() kwenye __del__, rely on explicit call to close().
 
 	* IOBinding.py, FormatParagraph.py, CallTips.py:
-	Add close() method that breaks a cycle.
+	Add close() method that komas a cycle.
 
 Fri Jun 11 15:03:00 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -692,11 +692,11 @@ Fri Jun 11 15:03:00 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	+ Rewrote set_indentation_params to use new VTW get/set_tabwidth methods.
 
 	+ Changed smart_backspace_event to delete whitespace back to closest
-	preceding virtual tab stop or real character (note that this may require
+	preceding virtual tab stop ama real character (note that this may require
 	inserting characters ikiwa backspacing over a tab!).
 
-	+ Nuked almost references to the selection tag, in favor of using
-	get_selection_indices.  The sole exception is in set_region, for which no
+	+ Nuked almost references to the selection tag, kwenye favor of using
+	get_selection_indices.  The sole exception ni kwenye set_region, kila which no
 	"set_selection" abstraction has yet been agreed upon.
 
 	+ Had too much fun using the spiffy new features of the format-paragraph
@@ -705,44 +705,44 @@ Fri Jun 11 15:03:00 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 Thu Jun 10 17:48:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* FormatParagraph.py:
-	Code by Mark Hammond to format paragraphs embedded in comments.
+	Code by Mark Hammond to format paragraphs embedded kwenye comments.
 	Read the comments (which I reformatted using the new feature :-)
-	for some limitations.
+	kila some limitations.
 
 	* EditorWindow.py:
 	Added abstraction get_selection_index() (Mark Hammond).  Also
 	reformatted some comment blocks to show off a cool feature I'm about
-	to check in next.
+	to check kwenye next.
 
 	* ClassBrowser.py:
 	Adapt to the new pyclbr's support of listing top-level functions.  If
-	this functionality is not present (e.g. when used with a vintage
-	Python 1.5.2 installation) top-level functions are not listed.
+	this functionality ni sio present (e.g. when used with a vintage
+	Python 1.5.2 installation) top-level functions are sio listed.
 
 	(Hmm...  Any distribution of IDLE 0.5 should probably include a copy
 	of the new pyclbr.py!)
 
 	* AutoIndent.py:
-	Fix off-by-one error in Tim's recent change to comment_region(): the
-	list of lines returned by get_region() contains an empty line at the
-	end representing the start of the next line, and this shouldn't be
+	Fix off-by-one error kwenye Tim's recent change to comment_region(): the
+	list of lines rudishaed by get_region() contains an empty line at the
+	end representing the start of the next line, na this shouldn't be
 	commented out!
 
 	* CallTips.py:
-	Mark Hammond writes: Here is another change that allows it to work for
+	Mark Hammond writes: Here ni another change that allows it to work for
 	kundi creation - tries to locate an __init__ function.  Also updated
 	the test code to reflect your new "***" change.
 
 	* CallTipWindow.py:
-	Mark Hammond writes: Tim's suggestion of copying the font for the
-	CallTipWindow kutoka the text control makes sense, and actually makes
+	Mark Hammond writes: Tim's suggestion of copying the font kila the
+	CallTipWindow kutoka the text control makes sense, na actually makes
 	the control look better IMO.
 
 Wed Jun  9 20:34:57 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* CallTips.py:
-	Append "..." ikiwa the appropriate flag (for varargs) in co_flags is set.
-	Ditto "***" for kwargs.
+	Append "..." ikiwa the appropriate flag (kila varargs) kwenye co_flags ni set.
+	Ditto "***" kila kwargs.
 
 Tue Jun  8 13:06:07 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -750,20 +750,20 @@ Tue Jun  8 13:06:07 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	Hmm...  Tim didn't turn "replace all" into a single undo block.
 	I think I like it better ikiwa it os, so here.
 
-	* ReplaceDialog.py: Tim Peters: made replacement atomic for undo/redo.
+	* ReplaceDialog.py: Tim Peters: made replacement atomic kila undo/redo.
 
 	* AutoIndent.py: Tim Peters:
 
 	+ Set usetabs=1.  Editing pyclbr.py was driving me nuts <0.6 wink>.
-	usetabs=1 is the Emacs pymode default too, and thanks to indentwidth !=
+	usetabs=1 ni the Emacs pymode default too, na thanks to indentwidth !=
 	tabwidth magical usetabs disabling, new files are still created with tabs
-	turned off.  The only implication is that ikiwa you open a file whose first
-	indent is a single tab, IDLE will now magically use tabs for that file (and
+	turned off.  The only implication ni that ikiwa you open a file whose first
+	indent ni a single tab, IDLE will now magically use tabs kila that file (and
 	set indentwidth to 8).  Note that the whole scheme doesn't work right for
 	PythonWin, though, since Windows users typically set tabwidth to 4; Mark
 	probably has to hide the IDLE algorithm kutoka them (which he already knows).
 
-	+ Changed comment_region_event to stick "##" in front of every line.  The
+	+ Changed comment_region_event to stick "##" kwenye front of every line.  The
 	"holes" previously left on blank lines were visually confusing (made it
 	needlessly hard to figure out what to uncomment later).
 
@@ -774,52 +774,52 @@ Mon Jun  7 15:38:40 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* PyParse.py: Tim Peters:
 
-	Smarter logic for finding a parse synch point.
+	Smarter logic kila finding a parse synch point.
 
-	Does a half to a fifth the work in normal cases; don't notice the speedup,
-	but makes  more breathing room for other extensions.
+	Does a half to a fifth the work kwenye normal cases; don't notice the speedup,
+	but makes  more breathing room kila other extensions.
 
 	Speeds terrible cases by at least a factor of 10. "Terrible" == e.g. you put
-	""" at the start of Tkinter.py, undo it, zoom to the bottom, and start
-	typing in code.  Used to take about 8 seconds for ENTER to respond, now some
+	""" at the start of Tkinter.py, undo it, zoom to the bottom, na start
+	typing kwenye code.  Used to take about 8 seconds kila ENTER to respond, now some
 	large fraction of a second.  The new code gets indented correctly, despite
 	that it all remains "string colored" until the colorizer catches up (after
 	which, ENTER appears instantaneous again).
 
 Fri Jun  4 19:21:19 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* extend.py: Might as well enable CallTips by default.
-	If there are too many complaints I'll remove it again or fix it.
+	* extend.py: Might kama well enable CallTips by default.
+	If there are too many complaints I'll remove it again ama fix it.
 
 Thu Jun  3 14:32:16 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* AutoIndent.py, EditorWindow.py, PyParse.py:
 	New offerings by Tim Peters; he writes:
 
-	IDLE is now the first Python editor in the Universe not confused by my
+	IDLE ni now the first Python editor kwenye the Universe sio confused by my
 	doctest.py <wink>.
 
-	As threatened, this defines IDLE's is_char_in_string function as a
+	As threatened, this defines IDLE's is_char_in_string function kama a
 	method of EditorWindow.  You just need to define one similarly in
-	whatever it is you pass as editwin to AutoIndent; looking at the
+	whatever it ni you pita kama editwin to AutoIndent; looking at the
 	EditorWindow.py part of the patch should make this clear.
 
-	* GrepDialog.py: Enclose pattern in quotes in status message.
+	* GrepDialog.py: Enclose pattern kwenye quotes kwenye status message.
 
 	* CallTips.py:
-	Mark Hammond fixed some comments and improved the way the tip text is
+	Mark Hammond fixed some comments na improved the way the tip text is
 	constructed.
 
 Wed Jun  2 18:18:57 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* CallTips.py:
 	My fix to Mark's code: restore the universal check on <KeyRelease>.
-	Always cancel on <Key-Escape> or <ButtonPress>.
+	Always cancel on <Key-Escape> ama <ButtonPress>.
 
 	* CallTips.py:
 	A version that Mark Hammond posted to the newsgroup.  Has some newer
-	stuff for getting the tip.  Had to fix the Key-( and Key-) events
-	for Unix.  Will have to re-apply my patch for catching KeyRelease and
+	stuff kila getting the tip.  Had to fix the Key-( na Key-) events
+	kila Unix.  Will have to re-apply my patch kila catching KeyRelease and
 	ButtonRelease events.
 
 	* CallTipWindow.py, CallTips.py:
@@ -831,56 +831,56 @@ Wed Jun  2 18:18:57 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	in the source; (2) remove duplicate history items.
 
 	* AutoIndent.py:
-	Changes by Mark Hammond to allow using IDLE extensions in PythonWin as
+	Changes by Mark Hammond to allow using IDLE extensions kwenye PythonWin as
 	well: make three dialog routines instance variables.
 
 	* EditorWindow.py:
-	Change by Mark Hammond to allow using IDLE extensions in PythonWin as
+	Change by Mark Hammond to allow using IDLE extensions kwenye PythonWin as
 	well: make three dialog routines instance variables.
 
 Tue Jun  1 20:06:44 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* AutoIndent.py: Hah!  A fix of my own to Tim's code!
-	Unix bindings for <<toggle-tabs>> and <<change-indentwidth>> were
-	missing, and somehow that meant the events were never generated,
-	even though they were in the menu.  The new Unix bindings are now
-	the same as the Windows bindings (M-t and M-u).
+	Unix bindings kila <<toggle-tabs>> na <<change-indentwidth>> were
+	missing, na somehow that meant the events were never generated,
+	even though they were kwenye the menu.  The new Unix bindings are now
+	the same kama the Windows bindings (M-t na M-u).
 
 	* AutoIndent.py, PyParse.py, PyShell.py: Tim Peters again:
 
-	The new version (attached) is fast enough all the time in every real module
+	The new version (attached) ni fast enough all the time kwenye every real module
 	I have <whew!>.  You can make it slow by, e.g., creating an open list with
 	5,000 90-character identifiers (+ trailing comma) each on its own line, then
 	adding an item to the end -- but that still consumes less than a second on
-	my P5-166.  Response time in real code appears instantaneous.
+	my P5-166.  Response time kwenye real code appears instantaneous.
 
 	Fixed some bugs.
 
-	New feature:  when hitting ENTER and the cursor is beyond the line's leading
-	indentation, whitespace is removed on both sides of the cursor; before
+	New feature:  when hitting ENTER na the cursor ni beyond the line's leading
+	indentation, whitespace ni removed on both sides of the cursor; before
 	whitespace was removed only on the left; e.g., assuming the cursor is
-	between the comma and the space:
+	between the comma na the space:
 
 	eleza something(arg1, arg2):
-	                   ^ cursor to the left of here, and hit ENTER
+	                   ^ cursor to the left of here, na hit ENTER
 	               arg2):   # new line used to end up here
 	              arg2):    # but now lines up the way you expect
 
 	New hack:  AutoIndent has grown a context_use_ps1 Boolean config option,
-	defaulting to 0 (false) and set to 1 (only) by PyShell.  Reason:  handling
-	the fancy stuff requires looking backward for a parsing synch point; ps1
-	lines are the only sensible thing to look for in a shell window, but are a
-	bad thing to look for in a file window (ps1 lines show up in my module
+	defaulting to 0 (false) na set to 1 (only) by PyShell.  Reason:  handling
+	the fancy stuff requires looking backward kila a parsing synch point; ps1
+	lines are the only sensible thing to look kila kwenye a shell window, but are a
+	bad thing to look kila kwenye a file window (ps1 lines show up kwenye my module
 	docstrings often).  PythonWin's shell should set this true too.
 
 	Persistent problem:  strings containing def/kundi can still screw things up
-	completely.  No improvement.  Simplest workaround is on the user's head, and
+	completely.  No improvement.  Simplest workaround ni on the user's head, and
 	consists of inserting e.g.
 
-	eleza _(): pass
+	eleza _(): pita
 
 	(or any other def/class) after the end of the multiline string that's
-	screwing them up.  This is especially irksome because IDLE's syntax coloring
+	screwing them up.  This ni especially irksome because IDLE's syntax coloring
 	is *not* confused, so when this happens the colors don't match the
 	indentation behavior they see.
 
@@ -893,8 +893,8 @@ Tue Jun  1 20:06:44 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	> left open on some previous line.
 	> ...
 
-	The attached can, and actually fast enough to use -- most of the time.  The
-	code is tricky beyond belief to achieve that, but it works so far; e.g.,
+	The attached can, na actually fast enough to use -- most of the time.  The
+	code ni tricky beyond belief to achieve that, but it works so far; e.g.,
 
 	        rudisha len(string.expandtabs(str[self.stmt_start :
 	                                         ^ indents to caret
@@ -903,20 +903,20 @@ Tue Jun  1 20:06:44 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	                                     self.tabwidth)) + 1
 	    ^ indents to caret
 
-	It's about as smart as pymode now, wrt both bracket and backslash
-	continuation rules.  It does require reparsing large gobs of text, and ikiwa it
-	happens to find something that looks like a "def" or "class" or sys.ps1
-	buried in a multiline string, but didn't suck up enough preceding text to
+	It's about kama smart kama pymode now, wrt both bracket na backslash
+	continuation rules.  It does require reparsing large gobs of text, na ikiwa it
+	happens to find something that looks like a "def" ama "class" ama sys.ps1
+	buried kwenye a multiline string, but didn't suck up enough preceding text to
 	see the start of the string, it's completely hosed.  I can't repair that --
 	it's just too slow to reparse kutoka the start of the file all the time.
 
 	AutoIndent has grown a new num_context_lines tuple attribute that controls
 	how far to look back, and-- like other params --this could/should be made
-	user-overridable at startup and per-file on the fly.
+	user-overridable at startup na per-file on the fly.
 
 	* PyParse.py: New file by Tim Peters:
 
-	One new file in the attached, PyParse.py.  The LineStudier (whatever it was
+	One new file kwenye the attached, PyParse.py.  The LineStudier (whatever it was
 	called <wink>) kundi was removed kutoka AutoIndent; PyParse subsumes its
 	functionality.
 
@@ -924,19 +924,19 @@ Tue Jun  1 20:06:44 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	Removed "New tabwidth" menu binding.
 
-	Added "a tab means how many spaces?" dialog to block tabify and untabify.  I
-	think prompting for this is good now:  they're usually at-most-once-per-file
-	commands, and IDLE can't let them change tabwidth kutoka the Tk default
+	Added "a tab means how many spaces?" dialog to block tabify na untabify.  I
+	think prompting kila this ni good now:  they're usually at-most-once-per-file
+	commands, na IDLE can't let them change tabwidth kutoka the Tk default
 	anymore, so IDLE can no longer presume to have any idea what a tab means.
 
-	Irony:  for the purpose of keeping comments aligned via tabs, Tk's
-	non-default approach is much nicer than the Emacs/Notepad/Codewright/vi/etc
+	Irony:  kila the purpose of keeping comments aligned via tabs, Tk's
+	non-default approach ni much nicer than the Emacs/Notepad/Codewright/vi/etc
 	approach.
 
 	* EditorWindow.py:
-	1. Catch NameError on agiza (could be raised by case mismatch on Windows).
-	2. No longer need to reset pyclbr cache and show watch cursor when calling
-	   ClassBrowser -- the ClassBrowser takes care of pyclbr and the TreeWidget
+	1. Catch NameError on agiza (could be ashiriad by case mismatch on Windows).
+	2. No longer need to reset pyclbr cache na show watch cursor when calling
+	   ClassBrowser -- the ClassBrowser takes care of pyclbr na the TreeWidget
 	   takes care of the watch cursor.
 	3. Reset the focus to the current window after error message about class
 	   browser on buffer without filename.
@@ -949,15 +949,15 @@ Tue Jun  1 20:06:44 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* TreeWidget.py: Tree widget done right.
 
-	* ToolTip.py: As yet unused code for tool tips.
+	* ToolTip.py: As yet unused code kila tool tips.
 
 	* ScriptBinding.py:
-	Ensure sys.argv[0] is the script name on Run Script.
+	Ensure sys.argv[0] ni the script name on Run Script.
 
 	* ZoomHeight.py: Move zoom height functionality to separate function.
 
 	* Icons/folder.gif, Icons/openfolder.gif, Icons/python.gif, Icons/tk.gif:
-	A few icons used by ../TreeWidget.py and its callers.
+	A few icons used by ../TreeWidget.py na its callers.
 
 	* AutoIndent.py: New version by Tim Peters improves block opening test.
 
@@ -971,7 +971,7 @@ Fri May 21 04:46:17 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* TODO.txt: New wishes
 
 	* AutoIndent.py, EditorWindow.py, PyShell.py:
-	Much improved autoindent and handling of tabs,
+	Much improved autoindent na handling of tabs,
 	by Tim Peters.
 
 Mon May  3 15:49:52 1999  Guido van Rossum  <guido@cnri.reston.va.us>
@@ -981,7 +981,7 @@ Mon May  3 15:49:52 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	I'm still unsure, but couldn't stand the virtual event trickery so tried a
 	different sin (adding undo_block_start/stop methods to the Text instance in
-	EditorWindow.py).  Like it or not, it's efficient and works <wink>.  Better
+	EditorWindow.py).  Like it ama not, it's efficient na works <wink>.  Better
 	idea?
 
 	Give the attached a whirl.  Even ikiwa you hate the implementation, I think
@@ -993,83 +993,83 @@ Mon May  3 15:49:52 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	[W]hile trying to dope out how redirection works, stumbled into two
 	possible glitches.  In the first, it doesn't appear to make sense to try to
-	rename a command that's already been destroyed; in the second, the name
+	rename a command that's already been destroyed; kwenye the second, the name
 	"previous" doesn't really bring to mind "ignore the previous value" <wink>.
 
 Fri Apr 30 19:39:25 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* __init__.py: Support for using idle as a package.
+	* __init__.py: Support kila using idle kama a package.
 
 	* PathBrowser.py:
 	Avoid listing files more than once (e.g. foomodule.so has two hits:
-	once for foo + module.so, once for foomodule + .so).
+	once kila foo + module.so, once kila foomodule + .so).
 
 Mon Apr 26 22:20:38 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ChangeLog, ColorDelegator.py, PyShell.py: Tim Peters strikes again:
 
-	Ho ho ho -- that's trickier than it sounded!  The colorizer is working with
-	"line.col" strings instead of Text marks, and the absolute coordinates of
+	Ho ho ho -- that's trickier than it sounded!  The colorizer ni working with
+	"line.col" strings instead of Text marks, na the absolute coordinates of
 	the point of interest can change across the self.update call (voice of
 	baffled experience, when two quick backspaces no longer fooled it, but a
 	backspace followed by a quick ENTER did <wink>).
 
 	Anyway, the attached appears to do the trick.  CPU usage goes way up when
-	typing quickly into a long triple-quoted string, but the latency is fine for
+	typing quickly into a long triple-quoted string, but the latency ni fine for
 	me (a relatively fast typist on a relatively slow machine).  Most of the
 	changes here are left over kutoka reducing the # of vrbl names to help me
-	reason about the logic better; I hope the code is a *little* easier to
+	reason about the logic better; I hope the code ni a *little* easier to
 
 Fri Apr 23 14:01:25 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* EditorWindow.py:
-	Provide full arguments to __import__ so it works in packagized IDLE.
+	Provide full arguments to __import__ so it works kwenye packagized IDLE.
 
 Thu Apr 22 23:20:17 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
         * help.txt:
-        Bunch of updates necessary due to recent changes; added docs for File
-        menu, command line and color preferences.
+        Bunch of updates necessary due to recent changes; added docs kila File
+        menu, command line na color preferences.
 
         * Bindings.py: Remove obsolete 'script' menu.
 
 	* TODO.txt: Several wishes fulfilled.
 
 	* OutputWindow.py:
-	Moved classes OnDemandOutputWindow and PseudoFile here,
+	Moved classes OnDemandOutputWindow na PseudoFile here,
 	kutoka ScriptBinding.py where they are no longer needed.
 
 	* ScriptBinding.py:
-	Mostly rewritten.  Instead of the old Run module and Debug module,
+	Mostly rewritten.  Instead of the old Run module na Debug module,
 	there are two new commands:
 
-	Import module (F5) agizas or reloads the module and also adds its
-	name to the __main__ namespace.  This gets executed in the PyShell
+	Import module (F5) agizas ama reloads the module na also adds its
+	name to the __main__ namespace.  This gets executed kwenye the PyShell
 	window under control of its debug settings.
 
-	Run script (Control-F5) is similar but executes the contents of the
-	file directly in the __main__ namespace.
+	Run script (Control-F5) ni similar but executes the contents of the
+	file directly kwenye the __main__ namespace.
 
 	* PyShell.py: Nits: document use of $IDLESTARTUP; display idle version
 
 	* idlever.py: New version to celebrate new command line
 
-	* OutputWindow.py: Added flush(), for completeness.
+	* OutputWindow.py: Added flush(), kila completeness.
 
 	* PyShell.py:
 	A lot of changes to make the command line more useful.  You can now do:
 	  idle.py -e file ...    -- to edit files
 	  idle.py script arg ... -- to run a script
 	  idle.py -c cmd arg ... -- to run a command
-	Other options, see also the usage message (also new!) for more details:
+	Other options, see also the usage message (also new!) kila more details:
 	  -d       -- enable debugger
-	  -s       -- run $IDLESTARTUP or $PYTHONSTARTUP
+	  -s       -- run $IDLESTARTUP ama $PYTHONSTARTUP
 	  -t title -- set Python Shell window's title
-	sys.argv is set accordingly, unless -e is used.
-	sys.path is absolutized, and all relevant paths are inserted into it.
+	sys.argv ni set accordingly, unless -e ni used.
+	sys.path ni absolutized, na all relevant paths are inserted into it.
 
 	Other changes:
-	- the environment in which commands are executed is now the
+	- the environment kwenye which commands are executed ni now the
 	  __main__ module
 	- explicitly save sys.stdout etc., don't restore kutoka sys.__stdout__
 	- new interpreter methods execsource(), execfile(), stuffsource()
@@ -1084,7 +1084,7 @@ Thu Apr 22 23:20:17 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	dramatically (up to 15 times he claims).  Works by reading more than
 	one line at a time, up to 100-line chunks (starting with one line and
 	then doubling up to the limit).  On a typical machine (e.g. Tim's
-	P5-166) this doesn't reduce interactive responsiveness in a noticeable
+	P5-166) this doesn't reduce interactive responsiveness kwenye a noticeable
 	way.
 
 Wed Apr 21 15:49:34 1999  Guido van Rossum  <guido@cnri.reston.va.us>
@@ -1106,9 +1106,9 @@ Tue Apr 20 17:32:52 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* SearchEngine.py:
 	Patch by Mark Favas: it fixes the search engine behaviour where an
-	unsuccessful search wraps around and re-searches that part of the file
-	between the start of the search and the end of the file - only really
-	an issue for very large files, but... (also removes a redundant
+	unsuccessful search wraps around na re-searches that part of the file
+	between the start of the search na the end of the file - only really
+	an issue kila very large files, but... (also removes a redundant
 	m.span() call).
 
 Mon Apr 19 16:26:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
@@ -1118,21 +1118,21 @@ Mon Apr 19 16:26:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* AutoIndent.py: Tim Peters implements some of my wishes:
 
 	o Makes the tab key intelligently insert spaces when appropriate
-	(see Help list banter twixt David Ascher and me; idea stolen kutoka
+	(see Help list banter twixt David Ascher na me; idea stolen kutoka
 	every other editor on earth <wink>).
 
 	o newline_and_indent_event trims trailing whitespace on the old
-	line (pymode and Codewright).
+	line (pymode na Codewright).
 
 	o newline_and_indent_event no longer fooled by trailing whitespace or
 	comment after ":" (pymode, PTUI).
 
 	o newline_and_indent_event now reduces the new line's indentation after
-	return, break, continue, raise and pass stmts (pymode).
+	rudisha, koma, endelea, ashiria na pita stmts (pymode).
 
-	The last two are easy to fool in the presence of strings &
+	The last two are easy to fool kwenye the presence of strings &
 	continuations, but pymode requires Emacs's high-powered C parsing
-	functions to avoid that in finite time.
+	functions to avoid that kwenye finite time.
 
 ======================================================================
 	Python release 1.5.2c1, IDLE version 0.4
@@ -1158,9 +1158,9 @@ Thu Mar 11 23:21:23 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* Attic/Outline.py: This file was never supposed to be part of IDLE.
 
 	* PathBrowser.py:
-	- Don't crash in the case where a superkundi is a string instead of a
+	- Don't crash kwenye the case where a superkundi ni a string instead of a
 	pyclbr.Class object; this can happen when the superkundi is
-	unrecognizable (to pyclbr), e.g. when module renaming is used.
+	unrecognizable (to pyclbr), e.g. when module renaming ni used.
 
 	- Show a watch cursor when calling pyclbr (since it may take a while
 	recursively parsing imported modules!).
@@ -1171,24 +1171,24 @@ Wed Mar 10 05:18:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* PathBrowser.py: "Path browser" - 4 scrolled lists displaying:
 	    directories on sys.path
-	    modules in selected directory
-	    classes in selected module
+	    modules kwenye selected directory
+	    classes kwenye selected module
 	    methods of selected class
 
-	Sinlge clicking in a directory, module or kundi item updates the next
-	column with info about the selected item.  Double clicking in a
-	module, kundi or method item opens the file (and selects the clicked
-	item ikiwa it is a kundi or method).
+	Sinlge clicking kwenye a directory, module ama kundi item updates the next
+	column with info about the selected item.  Double clicking kwenye a
+	module, kundi ama method item opens the file (and selects the clicked
+	item ikiwa it ni a kundi ama method).
 
-	I guess eventually I should be using a tree widget for this, but the
-	ones I've seen don't work well enough, so for now I use the old
-	Smalltalk or NeXT style multi-column hierarchical browser.
+	I guess eventually I should be using a tree widget kila this, but the
+	ones I've seen don't work well enough, so kila now I use the old
+	Smalltalk ama NeXT style multi-column hierarchical browser.
 
 	* MultiScrolledLists.py:
-	New utility: multiple scrolled lists in parallel
+	New utility: multiple scrolled lists kwenye parallel
 
 	* ScrolledList.py: - White background.
-	- Display "(None)" (or text of your choosing) when empty.
+	- Display "(Tupu)" (or text of your choosing) when empty.
 	- Don't set the focus.
 
 ======================================================================
@@ -1197,7 +1197,7 @@ Wed Mar 10 05:18:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 Wed Feb 17 22:47:41 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* NEWS.txt: News in 0.3.
+	* NEWS.txt: News kwenye 0.3.
 
 	* README.txt, idlever.py: Bump version to 0.3.
 
@@ -1215,12 +1215,12 @@ Wed Feb 17 22:47:41 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* WindowList.py:
 	Support callbacks to patch up Windows menus everywhere.
 
-	* ChangeLog: Oh, why not.  Checking in the Emacs-generated change log.
+	* ChangeLog: Oh, why not.  Checking kwenye the Emacs-generated change log.
 
 Tue Feb 16 22:34:17 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ScriptBinding.py:
-	Only pop up the stack viewer when requested in the Debug menu.
+	Only pop up the stack viewer when requested kwenye the Debug menu.
 
 Mon Feb  8 22:27:49 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -1230,16 +1230,16 @@ Mon Feb  8 22:27:49 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 Mon Feb  1 23:06:17 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* PyShell.py: Add current dir or paths of file args to sys.path.
+	* PyShell.py: Add current dir ama paths of file args to sys.path.
 
-	* Debugger.py: Add canonic() function -- for brand new bdb.py feature.
+	* Debugger.py: Add canonic() function -- kila brand new bdb.py feature.
 
 	* StackViewer.py: Protect against accessing an empty stack.
 
 Fri Jan 29 20:44:45 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ZoomHeight.py:
-	Use only the height to decide whether to zoom in or out.
+	Use only the height to decide whether to zoom kwenye ama out.
 
 Thu Jan 28 22:24:30 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -1252,7 +1252,7 @@ Thu Jan 28 22:24:30 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	Also add a new feature: ikiwa the first character of a menu label is
 	a '!', it gets a checkbox.  Checkboxes are bound to Boolean Tcl variables
 	that can be accessed through the new getvar/setvar/getrawvar API;
-	the variable is named after the event to which the menu is bound.
+	the variable ni named after the event to which the menu ni bound.
 
 	* Debugger.py: Add Quit button to the debugger window.
 
@@ -1274,11 +1274,11 @@ Tue Jan 12 22:14:34 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	test package kutoka inside IDLE.  (Suggested by Jack Jansen.)
 
 	* EditorWindow.py, ColorDelegator.py:
-	Hack to close a window that is colorizing.
+	Hack to close a window that ni colorizing.
 
 	* Separator.py: Vladimir Marangozov's patch:
-	The separator dances too much and seems to jump by arbitrary amounts
-	in arbitrary directions when I try to move it for resizing the frames.
+	The separator dances too much na seems to jump by arbitrary amounts
+	in arbitrary directions when I try to move it kila resizing the frames.
 	This patch makes it more quiet.
 
 Mon Jan 11 14:52:40 1999  Guido van Rossum  <guido@cnri.reston.va.us>
@@ -1292,7 +1292,7 @@ Mon Jan 11 14:52:40 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	Newer, better center() -- but assumes no wrapping.
 
 	* SearchBinding.py:
-	Got rid of debug print statement in goto_line_event().
+	Got rid of debug print statement kwenye goto_line_event().
 
 	* ScriptBinding.py:
 	I think I like it better ikiwa it prints the traceback even when it displays
@@ -1300,7 +1300,7 @@ Mon Jan 11 14:52:40 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* Debugger.py: Bind ESC to close-window.
 
-	* ClassBrowser.py: Use a HSeparator between the classes and the items.
+	* ClassBrowser.py: Use a HSeparator between the classes na the items.
 	Make the list of classes wider by default (40 chars).
 	Bind ESC to close-window.
 
@@ -1310,9 +1310,9 @@ Mon Jan 11 14:52:40 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 Sat Jan  9 22:01:33 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* WindowList.py:
-	Don't traceback when wakeup() is called when the window has been destroyed.
+	Don't traceback when wakeup() ni called when the window has been destroyed.
 	This can happen when a torn-of Windows menu references closed windows.
-	And Tim Peters claims that the Windows menu is his favorite to tear off...
+	And Tim Peters claims that the Windows menu ni his favorite to tear off...
 
 	* EditorWindow.py: Allow tearing off of the Windows menu.
 
@@ -1324,7 +1324,7 @@ Sat Jan  9 22:01:33 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ScriptBinding.py:
 	This now actually works.  See doc string.  It can run a module (i.e.
-	agiza or reload) or debug it (same with debugger control).  Output
+	agiza ama reload) ama debug it (same with debugger control).  Output
 	goes to a fresh output window, only created when needed.
 
 ======================================================================
@@ -1333,11 +1333,11 @@ Sat Jan  9 22:01:33 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 Fri Jan  8 17:26:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* README.txt, NEWS.txt: What's new in this release.
+	* README.txt, NEWS.txt: What's new kwenye this release.
 
 	* Bindings.py, PyShell.py:
 	Paul Prescod's patches to allow the stack viewer to pop up when a
-	traceback is printed.
+	traceback ni printed.
 
 Thu Jan  7 00:12:15 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -1355,17 +1355,17 @@ Mon Jan  4 21:19:09 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* FormatParagraph.py:
 	Hm.  There was a boundary condition error at the end of the file too.
 
-	* SearchBinding.py: Hm.  Add Unix binding for replace, too.
+	* SearchBinding.py: Hm.  Add Unix binding kila replace, too.
 
 	* keydefs.py: Ran eventparse.py again.
 
 	* FormatParagraph.py: Added Unix Meta-q key binding;
 	fix find_paragraph when at start of file.
 
-	* AutoExpand.py: Added Meta-/ binding for Unix as alt for Alt-/.
+	* AutoExpand.py: Added Meta-/ binding kila Unix kama alt kila Alt-/.
 
 	* SearchBinding.py:
-	Add unix binding for grep (otherwise the menu entry doesn't work!)
+	Add unix binding kila grep (otherwise the menu entry doesn't work!)
 
 	* ZoomHeight.py: Adjusted Unix height to work with fvwm96. :=(
 
@@ -1376,7 +1376,7 @@ Mon Jan  4 21:19:09 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* extend.py, FormatParagraph.py:
 	Add new extension to reformat a (text) paragraph.
 
-	* ZoomHeight.py: Typo in Win specific height setting.
+	* ZoomHeight.py: Typo kwenye Win specific height setting.
 
 Sun Jan  3 00:47:35 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -1387,22 +1387,22 @@ Sun Jan  3 00:47:35 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 Sat Jan  2 21:28:54 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* keydefs.py, idlever.py, idle.pyw, idle.bat, help.txt, extend.txt, extend.py, eventparse.py, ZoomHeight.py, WindowList.py, UndoDelegator.py, StackViewer.py, SearchEngine.py, SearchDialogBase.py, SearchDialog.py, ScrolledList.py, SearchBinding.py, ScriptBinding.py, ReplaceDialog.py, Attic/README, README.txt, PyShell.py, Attic/PopupMenu.py, OutputWindow.py, IOBinding.py, Attic/HelpWindow.py, History.py, GrepDialog.py, FileList.py, FrameViewer.py, EditorWindow.py, Debugger.py, Delegator.py, ColorDelegator.py, Bindings.py, ClassBrowser.py, AutoExpand.py, AutoIndent.py:
-	Checking in IDLE 0.2.
+	Checking kwenye IDLE 0.2.
 
-	Much has changed -- too much, in fact, to write down.
-	The big news is that there's a standard way to write IDLE extensions;
+	Much has changed -- too much, kwenye fact, to write down.
+	The big news ni that there's a standard way to write IDLE extensions;
 	see extend.txt.  Some sample extensions have been provided, and
 	some existing code has been converted to extensions.  Probably the
-	biggest new user feature is a new search dialog with more options,
-	search and replace, and even search in files (grep).
+	biggest new user feature ni a new search dialog with more options,
+	search na replace, na even search kwenye files (grep).
 
-	This is exactly as downloaded kutoka my laptop after returning
+	This ni exactly kama downloaded kutoka my laptop after rudishaing
 	kutoka the holidays -- it hasn't even been tested on Unix yet.
 
 Fri Dec 18 15:52:54 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* FileList.py, ClassBrowser.py:
-	Fix the kundi browser to work even when the file is not on sys.path.
+	Fix the kundi browser to work even when the file ni sio on sys.path.
 
 Tue Dec  8 20:39:36 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -1415,29 +1415,29 @@ Fri Nov 27 03:19:20 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 	* EditorWindow.py, FileList.py: Support underlining of menu labels
 
 	* Bindings.py:
-	New approach, separate tables for menus (platform-independent) and key
-	definitions (platform-specific), and generating accelerator strings
+	New approach, separate tables kila menus (platform-independent) na key
+	definitions (platform-specific), na generating accelerator strings
 	automatically kutoka the key definitions.
 
 Mon Nov 16 18:37:42 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* Attic/README: Clarify portability and main program.
+	* Attic/README: Clarify portability na main program.
 
-	* Attic/README: Added intro for 0.1 release and append Grail notes.
+	* Attic/README: Added intro kila 0.1 release na append Grail notes.
 
 Mon Oct 26 18:49:00 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* Attic/turtle.py: root is now a global called _root
+	* Attic/turtle.py: root ni now a global called _root
 
 Sat Oct 24 16:38:38 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* Attic/turtle.py: Raise the root window on reset().
-	Different action on WM_DELETE_WINDOW is more likely to do the right thing,
+	Different action on WM_DELETE_WINDOW ni more likely to do the right thing,
 	allowing us to destroy old windows.
 
 	* Attic/turtle.py:
-	Split the goto() function in two: _goto() is the internal one,
-	using Canvas coordinates, and goto() uses turtle coordinates
+	Split the goto() function kwenye two: _goto() ni the internal one,
+	using Canvas coordinates, na goto() uses turtle coordinates
 	and accepts variable argument lists.
 
 	* Attic/turtle.py: Cope with destruction of the window
@@ -1454,22 +1454,22 @@ Mon Oct 19 03:33:40 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 	* PyShell.py:
 	Change our special entries kutoka <console#N> to <pyshell#N>.
 	Patch linecache.checkcache() to keep our special entries alive.
-	Add popup menu to all editor windows to set a breakpoint.
+	Add popup menu to all editor windows to set a komapoint.
 
 	* Debugger.py:
-	Use and pass through the 'force' flag to set_dict() where appropriate.
-	Default source and globals checkboxes to false.
-	Don't interact in user_return().
-	Add primitive set_breakpoint() method.
+	Use na pita through the 'force' flag to set_dict() where appropriate.
+	Default source na globals checkboxes to false.
+	Don't interact kwenye user_rudisha().
+	Add primitive set_komapoint() method.
 
 	* ColorDelegator.py:
 	Raise priority of 'sel' tag so its foreground (on Windows) will take
-	priority over text colorization (which on Windows is almost the
-	same color as the selection background).
+	priority over text colorization (which on Windows ni almost the
+	same color kama the selection background).
 
-	Define a tag and color for breakpoints ("BREAK").
+	Define a tag na color kila komapoints ("BREAK").
 
-	* Attic/PopupMenu.py: Disable "Open stack viewer" and "help" commands.
+	* Attic/PopupMenu.py: Disable "Open stack viewer" na "help" commands.
 
 	* StackViewer.py:
 	Add optional 'force' argument (default 0) to load_dict().
@@ -1477,43 +1477,43 @@ Mon Oct 19 03:33:40 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 Fri Oct 16 21:10:12 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* StackViewer.py: Do nothing when loading the same dict as before.
+	* StackViewer.py: Do nothing when loading the same dict kama before.
 
-	* PyShell.py: Details for debugger interface.
+	* PyShell.py: Details kila debugger interface.
 
 	* Debugger.py:
-	Restructured and more consistent.  Save checkboxes across instantiations.
+	Restructured na more consistent.  Save checkboxes across instantiations.
 
 	* EditorWindow.py, Attic/README, Bindings.py:
 	Get rid of conflicting ^X binding.  Use ^W.
 
 	* Debugger.py, StackViewer.py:
-	Debugger can now show local and global variables.
+	Debugger can now show local na global variables.
 
 	* Debugger.py: Oops
 
 	* Debugger.py, PyShell.py: Better debugger support (show stack etc).
 
-	* Attic/PopupMenu.py: Follow renames in StackViewer module
+	* Attic/PopupMenu.py: Follow renames kwenye StackViewer module
 
 	* StackViewer.py:
-	Rename classes to StackViewer (the widget) and StackBrowser (the toplevel).
+	Rename classes to StackViewer (the widget) na StackBrowser (the toplevel).
 
 	* ScrolledList.py: Add close() method
 
 	* EditorWindow.py: Clarify 'Open Module' dialog text
 
-	* StackViewer.py: Restructured into a browser and a widget.
+	* StackViewer.py: Restructured into a browser na a widget.
 
 Thu Oct 15 23:27:08 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ClassBrowser.py, ScrolledList.py:
-	Generalized the scrolled list which is the base for the kundi and
-	method browser into a separate kundi in its own module.
+	Generalized the scrolled list which ni the base kila the kundi and
+	method browser into a separate kundi kwenye its own module.
 
 	* Attic/test.py: Cosmetic change
 
-	* Debugger.py: Don't show function name ikiwa there is none
+	* Debugger.py: Don't show function name ikiwa there ni none
 
 Wed Oct 14 03:43:05 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
@@ -1523,21 +1523,21 @@ Wed Oct 14 03:43:05 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 Tue Oct 13 23:51:13 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* Debugger.py, PyShell.py, Bindings.py:
-	Ad primitive debugger interface (so far it will step and show you the
+	Ad primitive debugger interface (so far it will step na show you the
 	source, but it doesn't yet show the stack).
 
 	* Attic/README: Misc
 
 	* StackViewer.py: Whoops -- referenced self.top before it was set.
 
-	* help.txt: Added history and completion commands.
+	* help.txt: Added history na completion commands.
 
 	* help.txt: Updated
 
 	* FileList.py: Add kundi browser functionality.
 
 	* StackViewer.py:
-	Add a close() method and bind to WM_DELETE_WINDOW protocol
+	Add a close() method na bind to WM_DELETE_WINDOW protocol
 
 	* PyShell.py: Clear the linecache before printing a traceback
 
@@ -1551,21 +1551,21 @@ Tue Oct 13 23:51:13 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 	Adding the beginnings of a Class browser.  Incomplete, yet.
 
 	* EditorWindow.py, Bindings.py:
-	Add new command, "Open module".  You select or type a module name,
+	Add new command, "Open module".  You select ama type a module name,
 	and it opens the source.
 
 Mon Oct 12 23:59:27 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
-	* PyShell.py: Subsume functionality kutoka Popup menu in Debug menu.
+	* PyShell.py: Subsume functionality kutoka Popup menu kwenye Debug menu.
 	Other stuff so the PyShell window can be resurrected kutoka the Windows menu.
 
 	* FileList.py: Get rid of PopUp menu.
 	Create a simple Windows menu.  (Imperfect when Untitled windows exist.)
-	Add wakeup() method: deiconify, raise, focus.
+	Add wakeup() method: deiconify, ashiria, focus.
 
 	* EditorWindow.py: Generalize menu creation.
 
-	* Bindings.py: Add Debug and Help menu items.
+	* Bindings.py: Add Debug na Help menu items.
 
 	* EditorWindow.py: Added a menu bar to every window.
 
@@ -1579,13 +1579,13 @@ Mon Oct 12 23:59:27 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 Sat Oct 10 19:15:32 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* StackViewer.py:
-	Add a label at the top showing (very basic) help for the stack viewer.
+	Add a label at the top showing (very basic) help kila the stack viewer.
 	Add a label at the bottom showing the exception info.
 
-	* Attic/test.py, Attic/idle: Add Unix main script and test program.
+	* Attic/test.py, Attic/idle: Add Unix main script na test program.
 
 	* idle.pyw, help.txt, WidgetRedirector.py, UndoDelegator.py, StackViewer.py, SearchBinding.py, Attic/README, PyShell.py, Attic/PopupMenu.py, Percolator.py, Outline.py, IOBinding.py, History.py, Attic/HelpWindow.py, FrameViewer.py, FileList.py, EditorWindow.py, Delegator.py, ColorDelegator.py, Bindings.py, AutoIndent.py, AutoExpand.py:
 	Initial checking of Tk-based Python IDE.
-	Features: text editor with syntax coloring and undo;
+	Features: text editor with syntax coloring na undo;
 	subclassed into interactive Python shell which adds history.
 

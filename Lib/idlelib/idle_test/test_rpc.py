@@ -16,12 +16,12 @@ kundi CodePicklerTest(unittest.TestCase):
         self.assertEqual(code.co_names, ('a', 'b', 'c'))
 
     eleza test_code_pickler(self):
-        self.assertIn(type((lambda:None).__code__),
+        self.assertIn(type((lambda:Tupu).__code__),
                       rpc.CodePickler.dispatch_table)
 
     eleza test_dumps(self):
-        eleza f(): pass
-        # The main test here is that pickling code does not raise.
+        eleza f(): pita
+        # The main test here ni that pickling code does sio ashiria.
         self.assertIn(b'test_rpc.py', rpc.dumps(f.__code__))
 
 

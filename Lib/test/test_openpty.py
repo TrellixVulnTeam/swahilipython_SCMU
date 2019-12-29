@@ -2,8 +2,8 @@
 
 agiza os, unittest
 
-ikiwa not hasattr(os, "openpty"):
-    raise unittest.SkipTest("os.openpty() not available.")
+ikiwa sio hasattr(os, "openpty"):
+    ashiria unittest.SkipTest("os.openpty() sio available.")
 
 
 kundi OpenptyTest(unittest.TestCase):
@@ -11,8 +11,8 @@ kundi OpenptyTest(unittest.TestCase):
         master, slave = os.openpty()
         self.addCleanup(os.close, master)
         self.addCleanup(os.close, slave)
-        ikiwa not os.isatty(slave):
-            self.fail("Slave-end of pty is not a terminal.")
+        ikiwa sio os.isatty(slave):
+            self.fail("Slave-end of pty ni sio a terminal.")
 
         os.write(slave, b'Ping!')
         self.assertEqual(os.read(master, 1024), b'Ping!')

@@ -20,18 +20,18 @@ kundi DummyEditwin:
 
 kundi HyperParserTest(unittest.TestCase):
     code = (
-            '"""This is a module docstring"""\n'
-            '# this line is a comment\n'
-            'x = "this is a string"\n'
-            "y = 'this is also a string'\n"
-            'l = [i for i in range(10)]\n'
-            'm = [py*py for # comment\n'
-            '       py in l]\n'
+            '"""This ni a module docstring"""\n'
+            '# this line ni a comment\n'
+            'x = "this ni a string"\n'
+            "y = 'this ni also a string'\n"
+            'l = [i kila i kwenye range(10)]\n'
+            'm = [py*py kila # comment\n'
+            '       py kwenye l]\n'
             'x.__len__\n'
             "z = ((r'asdf')+('a')))\n"
-            '[x for x in\n'
-            'for = False\n'
-            'cliché = "this is a string with unicode, what a cliché"'
+            '[x kila x in\n'
+            'kila = Uongo\n'
+            'cliché = "this ni a string with unicode, what a cliché"'
             )
 
     @classmethod
@@ -44,9 +44,9 @@ kundi HyperParserTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text, cls.editwin
+        toa cls.text, cls.editwin
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.text.insert('insert', self.code)
@@ -63,9 +63,9 @@ kundi HyperParserTest(unittest.TestCase):
 
     eleza test_init(self):
         """
-        test corner cases in the init method
+        test corner cases kwenye the init method
         """
-        with self.assertRaises(ValueError) as ve:
+        with self.assertRaises(ValueError) kama ve:
             self.text.tag_add('console', '1.0', '1.end')
             p = self.get_parser('1.5')
         self.assertIn('precedes', str(ve.exception))
@@ -85,52 +85,52 @@ kundi HyperParserTest(unittest.TestCase):
         get = self.get_parser
 
         p = get('1.0')
-        self.assertFalse(p.is_in_string())
+        self.assertUongo(p.is_in_string())
         p = get('1.4')
-        self.assertTrue(p.is_in_string())
+        self.assertKweli(p.is_in_string())
         p = get('2.3')
-        self.assertFalse(p.is_in_string())
+        self.assertUongo(p.is_in_string())
         p = get('3.3')
-        self.assertFalse(p.is_in_string())
+        self.assertUongo(p.is_in_string())
         p = get('3.7')
-        self.assertTrue(p.is_in_string())
+        self.assertKweli(p.is_in_string())
         p = get('4.6')
-        self.assertTrue(p.is_in_string())
+        self.assertKweli(p.is_in_string())
         p = get('12.54')
-        self.assertTrue(p.is_in_string())
+        self.assertKweli(p.is_in_string())
 
     eleza test_is_in_code(self):
         get = self.get_parser
 
         p = get('1.0')
-        self.assertTrue(p.is_in_code())
+        self.assertKweli(p.is_in_code())
         p = get('1.1')
-        self.assertFalse(p.is_in_code())
+        self.assertUongo(p.is_in_code())
         p = get('2.5')
-        self.assertFalse(p.is_in_code())
+        self.assertUongo(p.is_in_code())
         p = get('3.4')
-        self.assertTrue(p.is_in_code())
+        self.assertKweli(p.is_in_code())
         p = get('3.6')
-        self.assertFalse(p.is_in_code())
+        self.assertUongo(p.is_in_code())
         p = get('4.14')
-        self.assertFalse(p.is_in_code())
+        self.assertUongo(p.is_in_code())
 
     eleza test_get_surrounding_bracket(self):
         get = self.get_parser
 
         eleza without_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=False
-            rudisha parser.get_surrounding_brackets(mustclose=False)
+            # with mustclose=Uongo
+            rudisha parser.get_surrounding_brackets(mustclose=Uongo)
 
         eleza with_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=True
-            rudisha parser.get_surrounding_brackets(mustclose=True)
+            # with mustclose=Kweli
+            rudisha parser.get_surrounding_brackets(mustclose=Kweli)
 
         p = get('3.2')
-        self.assertIsNone(with_mustclose(p))
-        self.assertIsNone(without_mustclose(p))
+        self.assertIsTupu(with_mustclose(p))
+        self.assertIsTupu(without_mustclose(p))
 
         p = get('5.6')
         self.assertTupleEqual(without_mustclose(p), ('5.4', '5.25'))
@@ -142,11 +142,11 @@ kundi HyperParserTest(unittest.TestCase):
 
         p = get('6.15')
         self.assertTupleEqual(without_mustclose(p), ('6.4', '6.end'))
-        self.assertIsNone(with_mustclose(p))
+        self.assertIsTupu(with_mustclose(p))
 
         p = get('9.end')
-        self.assertIsNone(with_mustclose(p))
-        self.assertIsNone(without_mustclose(p))
+        self.assertIsTupu(with_mustclose(p))
+        self.assertIsTupu(without_mustclose(p))
 
     eleza test_get_expression(self):
         get = self.get_parser
@@ -155,7 +155,7 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), 'y ')
 
         p = get('4.7')
-        with self.assertRaises(ValueError) as ve:
+        with self.assertRaises(ValueError) kama ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 
@@ -178,7 +178,7 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), "r'asdf'")
 
         p = get('9.17')
-        with self.assertRaises(ValueError) as ve:
+        with self.assertRaises(ValueError) kama ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 
@@ -195,7 +195,7 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), '')
 
         p = get('11.11')
-        self.assertEqual(p.get_expression(), 'False')
+        self.assertEqual(p.get_expression(), 'Uongo')
 
         p = get('12.6')
         self.assertEqual(p.get_expression(), 'cliché')
@@ -204,43 +204,43 @@ kundi HyperParserTest(unittest.TestCase):
         eleza is_valid_id(candidate):
             result = HyperParser._eat_identifier(candidate, 0, len(candidate))
             ikiwa result == len(candidate):
-                rudisha True
+                rudisha Kweli
             elikiwa result == 0:
-                rudisha False
-            else:
-                err_msg = "Unexpected result: {} (expected 0 or {}".format(
+                rudisha Uongo
+            isipokua:
+                err_msg = "Unexpected result: {} (expected 0 ama {}".format(
                     result, len(candidate)
                 )
-                raise Exception(err_msg)
+                ashiria Exception(err_msg)
 
-        # invalid first character which is valid elsewhere in an identifier
-        self.assertFalse(is_valid_id('2notid'))
+        # invalid first character which ni valid elsewhere kwenye an identifier
+        self.assertUongo(is_valid_id('2notid'))
 
         # ASCII-only valid identifiers
-        self.assertTrue(is_valid_id('valid_id'))
-        self.assertTrue(is_valid_id('_valid_id'))
-        self.assertTrue(is_valid_id('valid_id_'))
-        self.assertTrue(is_valid_id('_2valid_id'))
+        self.assertKweli(is_valid_id('valid_id'))
+        self.assertKweli(is_valid_id('_valid_id'))
+        self.assertKweli(is_valid_id('valid_id_'))
+        self.assertKweli(is_valid_id('_2valid_id'))
 
         # keywords which should be "eaten"
-        self.assertTrue(is_valid_id('True'))
-        self.assertTrue(is_valid_id('False'))
-        self.assertTrue(is_valid_id('None'))
+        self.assertKweli(is_valid_id('Kweli'))
+        self.assertKweli(is_valid_id('Uongo'))
+        self.assertKweli(is_valid_id('Tupu'))
 
-        # keywords which should not be "eaten"
-        self.assertFalse(is_valid_id('for'))
-        self.assertFalse(is_valid_id('agiza'))
-        self.assertFalse(is_valid_id('return'))
+        # keywords which should sio be "eaten"
+        self.assertUongo(is_valid_id('for'))
+        self.assertUongo(is_valid_id('agiza'))
+        self.assertUongo(is_valid_id('rudisha'))
 
         # valid unicode identifiers
-        self.assertTrue(is_valid_id('cliche'))
-        self.assertTrue(is_valid_id('cliché'))
-        self.assertTrue(is_valid_id('a٢'))
+        self.assertKweli(is_valid_id('cliche'))
+        self.assertKweli(is_valid_id('cliché'))
+        self.assertKweli(is_valid_id('a٢'))
 
         # invalid unicode identifiers
-        self.assertFalse(is_valid_id('2a'))
-        self.assertFalse(is_valid_id('٢a'))
-        self.assertFalse(is_valid_id('a²'))
+        self.assertUongo(is_valid_id('2a'))
+        self.assertUongo(is_valid_id('٢a'))
+        self.assertUongo(is_valid_id('a²'))
 
         # valid identifier after "punctuation"
         self.assertEqual(HyperParser._eat_identifier('+ var', 0, 5), len('var'))
@@ -248,19 +248,19 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(HyperParser._eat_identifier('.var', 0, 4), len('var'))
 
         # invalid identifiers
-        self.assertFalse(is_valid_id('+'))
-        self.assertFalse(is_valid_id(' '))
-        self.assertFalse(is_valid_id(':'))
-        self.assertFalse(is_valid_id('?'))
-        self.assertFalse(is_valid_id('^'))
-        self.assertFalse(is_valid_id('\\'))
-        self.assertFalse(is_valid_id('"'))
-        self.assertFalse(is_valid_id('"a string"'))
+        self.assertUongo(is_valid_id('+'))
+        self.assertUongo(is_valid_id(' '))
+        self.assertUongo(is_valid_id(':'))
+        self.assertUongo(is_valid_id('?'))
+        self.assertUongo(is_valid_id('^'))
+        self.assertUongo(is_valid_id('\\'))
+        self.assertUongo(is_valid_id('"'))
+        self.assertUongo(is_valid_id('"a string"'))
 
     eleza test_eat_identifier_various_lengths(self):
         eat_id = HyperParser._eat_identifier
 
-        for length in range(1, 21):
+        kila length kwenye range(1, 21):
             self.assertEqual(eat_id('a' * length, 0, length), length)
             self.assertEqual(eat_id('é' * length, 0, length), length)
             self.assertEqual(eat_id('a' + '2' * (length - 1), 0, length), length)

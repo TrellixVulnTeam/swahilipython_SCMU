@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -167,7 +167,7 @@ dqred168 reduce  -9.999999999999999999999999999999999E+6144  -> -9.9999999999999
 dqred169 reduce  -9.999999999999999999999999999999990E+6144  -> -9.999999999999999999999999999999990E+6144
 
 
--- specials (reduce does not affect payload)
+-- specials (reduce does sio affect payload)
 dqred820 reduce 'Inf'    -> 'Infinity'
 dqred821 reduce '-Inf'   -> '-Infinity'
 dqred822 reduce   NaN    ->  NaN

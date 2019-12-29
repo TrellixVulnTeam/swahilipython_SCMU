@@ -22,11 +22,11 @@ kutoka test.pickletester agiza AbstractDispatchTableTests
 kutoka test.pickletester agiza AbstractCustomPicklerClass
 kutoka test.pickletester agiza BigmemPickleTests
 
-try:
+jaribu:
     agiza _pickle
-    has_c_implementation = True
-except ImportError:
-    has_c_implementation = False
+    has_c_implementation = Kweli
+tatizo ImportError:
+    has_c_implementation = Uongo
 
 
 kundi PyPickleTests(AbstractPickleModuleTests):
@@ -57,7 +57,7 @@ kundi PyPicklerTests(AbstractPickleTests):
     pickler = pickle._Pickler
     unpickler = pickle._Unpickler
 
-    eleza dumps(self, arg, proto=None, **kwargs):
+    eleza dumps(self, arg, proto=Tupu, **kwargs):
         f = io.BytesIO()
         p = self.pickler(f, proto, **kwargs)
         p.dump(arg)
@@ -78,18 +78,18 @@ kundi InMemoryPickleTests(AbstractPickleTests, AbstractUnpickleTests,
                         AttributeError, ValueError,
                         struct.error, IndexError, ImportError)
 
-    eleza dumps(self, arg, protocol=None, **kwargs):
+    eleza dumps(self, arg, protocol=Tupu, **kwargs):
         rudisha pickle.dumps(arg, protocol, **kwargs)
 
     eleza loads(self, buf, **kwds):
         rudisha pickle.loads(buf, **kwds)
 
-    test_framed_write_sizes_with_delayed_writer = None
+    test_framed_write_sizes_with_delayed_writer = Tupu
 
 
 kundi PersistentPicklerUnpicklerMixin(object):
 
-    eleza dumps(self, arg, proto=None):
+    eleza dumps(self, arg, proto=Tupu):
         kundi PersPickler(self.pickler):
             eleza persistent_id(subself, obj):
                 rudisha self.persistent_id(obj)
@@ -123,7 +123,7 @@ kundi PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
     @support.cpython_only
     eleza test_pickler_reference_cycle(self):
         eleza check(Pickler):
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 f = io.BytesIO()
                 pickler = Pickler(f, proto)
                 pickler.dump('abc')
@@ -131,8 +131,8 @@ kundi PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             pickler = Pickler(io.BytesIO())
             self.assertEqual(pickler.persistent_id('def'), 'def')
             r = weakref.ref(pickler)
-            del pickler
-            self.assertIsNone(r())
+            toa pickler
+            self.assertIsTupu(r())
 
         kundi PersPickler(self.pickler):
             eleza persistent_id(subself, obj):
@@ -154,14 +154,14 @@ kundi PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
     @support.cpython_only
     eleza test_unpickler_reference_cycle(self):
         eleza check(Unpickler):
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 unpickler = Unpickler(io.BytesIO(self.dumps('abc', proto)))
                 self.assertEqual(unpickler.load(), 'abc')
             unpickler = Unpickler(io.BytesIO())
             self.assertEqual(unpickler.persistent_load('def'), 'def')
             r = weakref.ref(unpickler)
-            del unpickler
-            self.assertIsNone(r())
+            toa unpickler
+            self.assertIsTupu(r())
 
         kundi PersUnpickler(self.unpickler):
             eleza persistent_load(subself, pid):
@@ -206,7 +206,7 @@ kundi PyChainDispatchTableTests(AbstractDispatchTableTests):
 kundi PyPicklerHookTests(AbstractHookTests):
     kundi CustomPyPicklerClass(pickle._Pickler,
                                AbstractCustomPicklerClass):
-        pass
+        pita
     pickler_kundi = CustomPyPicklerClass
 
 
@@ -249,8 +249,8 @@ ikiwa has_c_implementation:
                 unpickler.memo = object
             # used to cause a segfault
             with self.assertRaises(ValueError):
-                unpickler.memo = {-1: None}
-            unpickler.memo = {1: None}
+                unpickler.memo = {-1: Tupu}
+            unpickler.memo = {1: Tupu}
 
     kundi CDispatchTableTests(AbstractDispatchTableTests):
         pickler_kundi = pickle.Pickler
@@ -264,7 +264,7 @@ ikiwa has_c_implementation:
 
     kundi CPicklerHookTests(AbstractHookTests):
         kundi CustomCPicklerClass(_pickle.Pickler, AbstractCustomPicklerClass):
-            pass
+            pita
         pickler_kundi = CustomCPicklerClass
 
     @support.cpython_only
@@ -281,12 +281,12 @@ ikiwa has_c_implementation:
             check(p, basesize +
                 MT_size + 8 * ME_size +  # Minimal memo table size.
                 sys.getsizeof(b'x'*4096))  # Minimal write buffer size.
-            for i in range(6):
+            kila i kwenye range(6):
                 p.dump(chr(i))
             check(p, basesize +
                 MT_size + 32 * ME_size +  # Size of memo table required to
                                           # save references to 6 objects.
-                0)  # Write buffer is cleared after every dump().
+                0)  # Write buffer ni cleared after every dump().
 
         eleza test_unpickler(self):
             basesize = support.calcobjsize('2P2n2P 2P2n2i5P 2P3n8P2n2i')
@@ -294,8 +294,8 @@ ikiwa has_c_implementation:
             P = struct.calcsize('P')  # Size of memo table entry.
             n = struct.calcsize('n')  # Size of mark table entry.
             check = self.check_sizeof
-            for encoding in 'ASCII', 'UTF-16', 'latin-1':
-                for errors in 'strict', 'replace':
+            kila encoding kwenye 'ASCII', 'UTF-16', 'latin-1':
+                kila errors kwenye 'strict', 'replace':
                     u = unpickler(io.BytesIO(),
                                   encoding=encoding, errors=errors)
                     self.assertEqual(object.__sizeof__(u), basesize)
@@ -312,13 +312,13 @@ ikiwa has_c_implementation:
                 check(u, stdsize + memo_size * P + marks_size * n)
 
             check_unpickler(0, 32, 0)
-            # 20 is minimal non-empty mark stack size.
+            # 20 ni minimal non-empty mark stack size.
             check_unpickler([0] * 100, 32, 20)
-            # 128 is memo table size required to save references to 100 objects.
-            check_unpickler([chr(i) for i in range(100)], 128, 20)
+            # 128 ni memo table size required to save references to 100 objects.
+            check_unpickler([chr(i) kila i kwenye range(100)], 128, 20)
             eleza recurse(deep):
                 data = 0
-                for i in range(deep):
+                kila i kwenye range(deep):
                     data = [data, data]
                 rudisha data
             check_unpickler(recurse(0), 32, 0)
@@ -348,104 +348,104 @@ ALT_NAME_MAPPING = {
 }
 
 eleza mapping(module, name):
-    ikiwa (module, name) in NAME_MAPPING:
+    ikiwa (module, name) kwenye NAME_MAPPING:
         module, name = NAME_MAPPING[(module, name)]
-    elikiwa module in IMPORT_MAPPING:
+    elikiwa module kwenye IMPORT_MAPPING:
         module = IMPORT_MAPPING[module]
     rudisha module, name
 
 eleza reverse_mapping(module, name):
-    ikiwa (module, name) in REVERSE_NAME_MAPPING:
+    ikiwa (module, name) kwenye REVERSE_NAME_MAPPING:
         module, name = REVERSE_NAME_MAPPING[(module, name)]
-    elikiwa module in REVERSE_IMPORT_MAPPING:
+    elikiwa module kwenye REVERSE_IMPORT_MAPPING:
         module = REVERSE_IMPORT_MAPPING[module]
     rudisha module, name
 
 eleza getmodule(module):
-    try:
+    jaribu:
         rudisha sys.modules[module]
-    except KeyError:
-        try:
+    tatizo KeyError:
+        jaribu:
             __import__(module)
-        except AttributeError as exc:
+        tatizo AttributeError kama exc:
             ikiwa support.verbose:
                 andika("Can't agiza module %r: %s" % (module, exc))
-            raise ImportError
-        except ImportError as exc:
+            ashiria ImportError
+        tatizo ImportError kama exc:
             ikiwa support.verbose:
                 andika(exc)
-            raise
+            ashiria
         rudisha sys.modules[module]
 
 eleza getattribute(module, name):
     obj = getmodule(module)
-    for n in name.split('.'):
+    kila n kwenye name.split('.'):
         obj = getattr(obj, n)
     rudisha obj
 
 eleza get_exceptions(mod):
-    for name in dir(mod):
+    kila name kwenye dir(mod):
         attr = getattr(mod, name)
-        ikiwa isinstance(attr, type) and issubclass(attr, BaseException):
-            yield name, attr
+        ikiwa isinstance(attr, type) na issubclass(attr, BaseException):
+            tuma name, attr
 
 kundi CompatPickleTests(unittest.TestCase):
     eleza test_agiza(self):
         modules = set(IMPORT_MAPPING.values())
         modules |= set(REVERSE_IMPORT_MAPPING)
-        modules |= {module for module, name in REVERSE_NAME_MAPPING}
-        modules |= {module for module, name in NAME_MAPPING.values()}
-        for module in modules:
-            try:
+        modules |= {module kila module, name kwenye REVERSE_NAME_MAPPING}
+        modules |= {module kila module, name kwenye NAME_MAPPING.values()}
+        kila module kwenye modules:
+            jaribu:
                 getmodule(module)
-            except ImportError:
-                pass
+            tatizo ImportError:
+                pita
 
     eleza test_import_mapping(self):
-        for module3, module2 in REVERSE_IMPORT_MAPPING.items():
+        kila module3, module2 kwenye REVERSE_IMPORT_MAPPING.items():
             with self.subTest((module3, module2)):
-                try:
+                jaribu:
                     getmodule(module3)
-                except ImportError:
-                    pass
+                tatizo ImportError:
+                    pita
                 ikiwa module3[:1] != '_':
                     self.assertIn(module2, IMPORT_MAPPING)
                     self.assertEqual(IMPORT_MAPPING[module2], module3)
 
     eleza test_name_mapping(self):
-        for (module3, name3), (module2, name2) in REVERSE_NAME_MAPPING.items():
+        kila (module3, name3), (module2, name2) kwenye REVERSE_NAME_MAPPING.items():
             with self.subTest(((module3, name3), (module2, name2))):
                 ikiwa (module2, name2) == ('exceptions', 'OSError'):
                     attr = getattribute(module3, name3)
-                    self.assertTrue(issubclass(attr, OSError))
+                    self.assertKweli(issubclass(attr, OSError))
                 elikiwa (module2, name2) == ('exceptions', 'ImportError'):
                     attr = getattribute(module3, name3)
-                    self.assertTrue(issubclass(attr, ImportError))
-                else:
+                    self.assertKweli(issubclass(attr, ImportError))
+                isipokua:
                     module, name = mapping(module2, name2)
                     ikiwa module3[:1] != '_':
                         self.assertEqual((module, name), (module3, name3))
-                    try:
+                    jaribu:
                         attr = getattribute(module3, name3)
-                    except ImportError:
-                        pass
-                    else:
+                    tatizo ImportError:
+                        pita
+                    isipokua:
                         self.assertEqual(getattribute(module, name), attr)
 
     eleza test_reverse_import_mapping(self):
-        for module2, module3 in IMPORT_MAPPING.items():
+        kila module2, module3 kwenye IMPORT_MAPPING.items():
             with self.subTest((module2, module3)):
-                try:
+                jaribu:
                     getmodule(module3)
-                except ImportError as exc:
+                tatizo ImportError kama exc:
                     ikiwa support.verbose:
                         andika(exc)
-                ikiwa ((module2, module3) not in ALT_IMPORT_MAPPING and
-                    REVERSE_IMPORT_MAPPING.get(module3, None) != module2):
-                    for (m3, n3), (m2, n2) in REVERSE_NAME_MAPPING.items():
+                ikiwa ((module2, module3) haiko kwenye ALT_IMPORT_MAPPING and
+                    REVERSE_IMPORT_MAPPING.get(module3, Tupu) != module2):
+                    kila (m3, n3), (m2, n2) kwenye REVERSE_NAME_MAPPING.items():
                         ikiwa (module3, module2) == (m3, m2):
-                            break
-                    else:
+                            koma
+                    isipokua:
                         self.fail('No reverse mapping kutoka %r to %r' %
                                   (module3, module2))
                 module = REVERSE_IMPORT_MAPPING.get(module3, module3)
@@ -453,14 +453,14 @@ kundi CompatPickleTests(unittest.TestCase):
                 self.assertEqual(module, module3)
 
     eleza test_reverse_name_mapping(self):
-        for (module2, name2), (module3, name3) in NAME_MAPPING.items():
+        kila (module2, name2), (module3, name3) kwenye NAME_MAPPING.items():
             with self.subTest(((module2, name2), (module3, name3))):
-                try:
+                jaribu:
                     attr = getattribute(module3, name3)
-                except ImportError:
-                    pass
+                tatizo ImportError:
+                    pita
                 module, name = reverse_mapping(module3, name3)
-                ikiwa (module2, name2, module3, name3) not in ALT_NAME_MAPPING:
+                ikiwa (module2, name2, module3, name3) haiko kwenye ALT_NAME_MAPPING:
                     self.assertEqual((module, name), (module2, name2))
                 module, name = mapping(module, name)
                 self.assertEqual((module, name), (module3, name3))
@@ -477,22 +477,22 @@ kundi CompatPickleTests(unittest.TestCase):
         self.assertEqual(reverse_mapping('builtins', 'OSError'),
                          ('exceptions', 'OSError'))
 
-        for name, exc in get_exceptions(builtins):
+        kila name, exc kwenye get_exceptions(builtins):
             with self.subTest(name):
-                ikiwa exc in (BlockingIOError,
+                ikiwa exc kwenye (BlockingIOError,
                            ResourceWarning,
                            StopAsyncIteration,
                            RecursionError):
-                    continue
-                ikiwa exc is not OSError and issubclass(exc, OSError):
+                    endelea
+                ikiwa exc ni sio OSError na issubclass(exc, OSError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'OSError'))
-                elikiwa exc is not ImportError and issubclass(exc, ImportError):
+                elikiwa exc ni sio ImportError na issubclass(exc, ImportError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'ImportError'))
                     self.assertEqual(mapping('exceptions', name),
                                      ('exceptions', name))
-                else:
+                isipokua:
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', name))
                     self.assertEqual(mapping('exceptions', name),
@@ -500,7 +500,7 @@ kundi CompatPickleTests(unittest.TestCase):
 
     eleza test_multiprocessing_exceptions(self):
         module = support.import_module('multiprocessing.context')
-        for name, exc in get_exceptions(module):
+        kila name, exc kwenye get_exceptions(module):
             with self.subTest(name):
                 self.assertEqual(reverse_mapping('multiprocessing.context', name),
                                  ('multiprocessing', name))

@@ -1,10 +1,10 @@
 #
-# We use a background thread for sharing fds on Unix, and for sharing sockets on
+# We use a background thread kila sharing fds on Unix, na kila sharing sockets on
 # Windows.
 #
 # A client which wants to pickle a resource registers it with the resource
-# sharer and gets an identifier in return.  The unpickling process will connect
-# to the resource sharer, sends the identifier and its pid, and then receives
+# sharer na gets an identifier kwenye rudisha.  The unpickling process will connect
+# to the resource sharer, sends the identifier na its pid, na then receives
 # the resource.
 #
 
@@ -25,7 +25,7 @@ ikiwa sys.platform == 'win32':
     __all__ += ['DupSocket']
 
     kundi DupSocket(object):
-        '''Picklable wrapper for a socket.'''
+        '''Picklable wrapper kila a socket.'''
         eleza __init__(self, sock):
             new_sock = sock.dup()
             eleza send(conn, pid):
@@ -35,15 +35,15 @@ ikiwa sys.platform == 'win32':
 
         eleza detach(self):
             '''Get the socket.  This should only be called once.'''
-            with _resource_sharer.get_connection(self._id) as conn:
+            with _resource_sharer.get_connection(self._id) kama conn:
                 share = conn.recv_bytes()
                 rudisha socket.kutokashare(share)
 
-else:
+isipokua:
     __all__ += ['DupFd']
 
     kundi DupFd(object):
-        '''Wrapper for fd which can be used at any time.'''
+        '''Wrapper kila fd which can be used at any time.'''
         eleza __init__(self, fd):
             new_fd = os.dup(fd)
             eleza send(conn, pid):
@@ -54,26 +54,26 @@ else:
 
         eleza detach(self):
             '''Get the fd.  This should only be called once.'''
-            with _resource_sharer.get_connection(self._id) as conn:
+            with _resource_sharer.get_connection(self._id) kama conn:
                 rudisha reduction.recv_handle(conn)
 
 
 kundi _ResourceSharer(object):
-    '''Manager for resources using background thread.'''
+    '''Manager kila resources using background thread.'''
     eleza __init__(self):
         self._key = 0
         self._cache = {}
         self._old_locks = []
         self._lock = threading.Lock()
-        self._listener = None
-        self._address = None
-        self._thread = None
+        self._listener = Tupu
+        self._address = Tupu
+        self._thread = Tupu
         util.register_after_fork(self, _ResourceSharer._afterfork)
 
     eleza register(self, send, close):
-        '''Register resource, returning an identifier.'''
+        '''Register resource, rudishaing an identifier.'''
         with self._lock:
-            ikiwa self._address is None:
+            ikiwa self._address ni Tupu:
                 self._start()
             self._key += 1
             self._cache[self._key] = (send, close)
@@ -88,69 +88,69 @@ kundi _ResourceSharer(object):
         c.send((key, os.getpid()))
         rudisha c
 
-    eleza stop(self, timeout=None):
-        '''Stop the background thread and clear registered resources.'''
+    eleza stop(self, timeout=Tupu):
+        '''Stop the background thread na clear registered resources.'''
         kutoka .connection agiza Client
         with self._lock:
-            ikiwa self._address is not None:
+            ikiwa self._address ni sio Tupu:
                 c = Client(self._address,
                            authkey=process.current_process().authkey)
-                c.send(None)
+                c.send(Tupu)
                 c.close()
                 self._thread.join(timeout)
                 ikiwa self._thread.is_alive():
                     util.sub_warning('_ResourceSharer thread did '
                                      'not stop when asked')
                 self._listener.close()
-                self._thread = None
-                self._address = None
-                self._listener = None
-                for key, (send, close) in self._cache.items():
+                self._thread = Tupu
+                self._address = Tupu
+                self._listener = Tupu
+                kila key, (send, close) kwenye self._cache.items():
                     close()
                 self._cache.clear()
 
     eleza _afterfork(self):
-        for key, (send, close) in self._cache.items():
+        kila key, (send, close) kwenye self._cache.items():
             close()
         self._cache.clear()
         # If self._lock was locked at the time of the fork, it may be broken
         # -- see issue 6721.  Replace it without letting it be gc'ed.
         self._old_locks.append(self._lock)
         self._lock = threading.Lock()
-        ikiwa self._listener is not None:
+        ikiwa self._listener ni sio Tupu:
             self._listener.close()
-        self._listener = None
-        self._address = None
-        self._thread = None
+        self._listener = Tupu
+        self._address = Tupu
+        self._thread = Tupu
 
     eleza _start(self):
         kutoka .connection agiza Listener
-        assert self._listener is None, "Already have Listener"
-        util.debug('starting listener and thread for sending handles')
+        assert self._listener ni Tupu, "Already have Listener"
+        util.debug('starting listener na thread kila sending handles')
         self._listener = Listener(authkey=process.current_process().authkey)
         self._address = self._listener.address
         t = threading.Thread(target=self._serve)
-        t.daemon = True
+        t.daemon = Kweli
         t.start()
         self._thread = t
 
     eleza _serve(self):
         ikiwa hasattr(signal, 'pthread_sigmask'):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
-        while 1:
-            try:
-                with self._listener.accept() as conn:
+        wakati 1:
+            jaribu:
+                with self._listener.accept() kama conn:
                     msg = conn.recv()
-                    ikiwa msg is None:
-                        break
+                    ikiwa msg ni Tupu:
+                        koma
                     key, destination_pid = msg
                     send, close = self._cache.pop(key)
-                    try:
+                    jaribu:
                         send(conn, destination_pid)
-                    finally:
+                    mwishowe:
                         close()
             except:
-                ikiwa not util.is_exiting():
+                ikiwa sio util.is_exiting():
                     sys.excepthook(*sys.exc_info())
 
 

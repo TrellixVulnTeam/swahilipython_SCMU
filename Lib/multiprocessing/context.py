@@ -12,19 +12,19 @@ __all__ = ()
 #
 
 kundi ProcessError(Exception):
-    pass
+    pita
 
 kundi BufferTooShort(ProcessError):
-    pass
+    pita
 
 kundi TimeoutError(ProcessError):
-    pass
+    pita
 
 kundi AuthenticationError(ProcessError):
-    pass
+    pita
 
 #
-# Base type for contexts. Bound methods of an instance of this type are included in __all__ of __init__.py
+# Base type kila contexts. Bound methods of an instance of this type are included kwenye __all__ of __init__.py
 #
 
 kundi BaseContext(object):
@@ -39,17 +39,17 @@ kundi BaseContext(object):
     active_children = staticmethod(process.active_children)
 
     eleza cpu_count(self):
-        '''Returns the number of CPUs in the system'''
+        '''Returns the number of CPUs kwenye the system'''
         num = os.cpu_count()
-        ikiwa num is None:
-            raise NotImplementedError('cannot determine number of cpus')
-        else:
+        ikiwa num ni Tupu:
+            ashiria NotImplementedError('cannot determine number of cpus')
+        isipokua:
             rudisha num
 
     eleza Manager(self):
         '''Returns a manager associated with a running server process
 
-        The managers methods such as `Lock()`, `Condition()` and `Queue()`
+        The managers methods such kama `Lock()`, `Condition()` na `Queue()`
         can be used to create shared objects.
         '''
         kutoka .managers agiza SyncManager
@@ -57,7 +57,7 @@ kundi BaseContext(object):
         m.start()
         rudisha m
 
-    eleza Pipe(self, duplex=True):
+    eleza Pipe(self, duplex=Kweli):
         '''Returns two connection object connected by a pipe'''
         kutoka .connection agiza Pipe
         rudisha Pipe(duplex)
@@ -72,7 +72,7 @@ kundi BaseContext(object):
         kutoka .synchronize agiza RLock
         rudisha RLock(ctx=self.get_context())
 
-    eleza Condition(self, lock=None):
+    eleza Condition(self, lock=Tupu):
         '''Returns a condition object'''
         kutoka .synchronize agiza Condition
         rudisha Condition(lock, ctx=self.get_context())
@@ -92,7 +92,7 @@ kundi BaseContext(object):
         kutoka .synchronize agiza Event
         rudisha Event(ctx=self.get_context())
 
-    eleza Barrier(self, parties, action=None, timeout=None):
+    eleza Barrier(self, parties, action=Tupu, timeout=Tupu):
         '''Returns a barrier object'''
         kutoka .synchronize agiza Barrier
         rudisha Barrier(parties, action, timeout, ctx=self.get_context())
@@ -112,8 +112,8 @@ kundi BaseContext(object):
         kutoka .queues agiza SimpleQueue
         rudisha SimpleQueue(ctx=self.get_context())
 
-    eleza Pool(self, processes=None, initializer=None, initargs=(),
-             maxtasksperchild=None):
+    eleza Pool(self, processes=Tupu, initializer=Tupu, initargs=(),
+             maxtasksperchild=Tupu):
         '''Returns a process pool object'''
         kutoka .pool agiza Pool
         rudisha Pool(processes, initializer, initargs, maxtasksperchild,
@@ -129,76 +129,76 @@ kundi BaseContext(object):
         kutoka .sharedctypes agiza RawArray
         rudisha RawArray(typecode_or_type, size_or_initializer)
 
-    eleza Value(self, typecode_or_type, *args, lock=True):
+    eleza Value(self, typecode_or_type, *args, lock=Kweli):
         '''Returns a synchronized shared object'''
         kutoka .sharedctypes agiza Value
         rudisha Value(typecode_or_type, *args, lock=lock,
                      ctx=self.get_context())
 
-    eleza Array(self, typecode_or_type, size_or_initializer, *, lock=True):
+    eleza Array(self, typecode_or_type, size_or_initializer, *, lock=Kweli):
         '''Returns a synchronized shared array'''
         kutoka .sharedctypes agiza Array
         rudisha Array(typecode_or_type, size_or_initializer, lock=lock,
                      ctx=self.get_context())
 
     eleza freeze_support(self):
-        '''Check whether this is a fake forked process in a frozen executable.
-        If so then run code specified by commandline and exit.
+        '''Check whether this ni a fake forked process kwenye a frozen executable.
+        If so then run code specified by commandline na exit.
         '''
-        ikiwa sys.platform == 'win32' and getattr(sys, 'frozen', False):
+        ikiwa sys.platform == 'win32' na getattr(sys, 'frozen', Uongo):
             kutoka .spawn agiza freeze_support
             freeze_support()
 
     eleza get_logger(self):
-        '''Return package logger -- ikiwa it does not already exist then
-        it is created.
+        '''Return package logger -- ikiwa it does sio already exist then
+        it ni created.
         '''
         kutoka .util agiza get_logger
         rudisha get_logger()
 
-    eleza log_to_stderr(self, level=None):
-        '''Turn on logging and add a handler which prints to stderr'''
+    eleza log_to_stderr(self, level=Tupu):
+        '''Turn on logging na add a handler which prints to stderr'''
         kutoka .util agiza log_to_stderr
         rudisha log_to_stderr(level)
 
     eleza allow_connection_pickling(self):
-        '''Install support for sending connections and sockets
+        '''Install support kila sending connections na sockets
         between processes
         '''
-        # This is undocumented.  In previous versions of multiprocessing
+        # This ni undocumented.  In previous versions of multiprocessing
         # its only effect was to make socket objects inheritable on Windows.
         kutoka . agiza connection
 
     eleza set_executable(self, executable):
-        '''Sets the path to a python.exe or pythonw.exe binary used to run
+        '''Sets the path to a python.exe ama pythonw.exe binary used to run
         child processes instead of sys.executable when using the 'spawn'
-        start method.  Useful for people embedding Python.
+        start method.  Useful kila people embedding Python.
         '''
         kutoka .spawn agiza set_executable
         set_executable(executable)
 
     eleza set_forkserver_preload(self, module_names):
-        '''Set list of module names to try to load in forkserver process.
-        This is really just a hint.
+        '''Set list of module names to try to load kwenye forkserver process.
+        This ni really just a hint.
         '''
         kutoka .forkserver agiza set_forkserver_preload
         set_forkserver_preload(module_names)
 
-    eleza get_context(self, method=None):
-        ikiwa method is None:
+    eleza get_context(self, method=Tupu):
+        ikiwa method ni Tupu:
             rudisha self
-        try:
+        jaribu:
             ctx = _concrete_contexts[method]
-        except KeyError:
-            raise ValueError('cannot find context for %r' % method) kutoka None
+        tatizo KeyError:
+            ashiria ValueError('cannot find context kila %r' % method) kutoka Tupu
         ctx._check_available()
         rudisha ctx
 
-    eleza get_start_method(self, allow_none=False):
+    eleza get_start_method(self, allow_none=Uongo):
         rudisha self._name
 
-    eleza set_start_method(self, method, force=False):
-        raise ValueError('cannot set start method of concrete context')
+    eleza set_start_method(self, method, force=Uongo):
+        ashiria ValueError('cannot set start method of concrete context')
 
     @property
     eleza reducer(self):
@@ -211,14 +211,14 @@ kundi BaseContext(object):
         globals()['reduction'] = reduction
 
     eleza _check_available(self):
-        pass
+        pita
 
 #
 # Type of default context -- underlying context can be set at most once
 #
 
 kundi Process(process.BaseProcess):
-    _start_method = None
+    _start_method = Tupu
     @staticmethod
     eleza _Popen(process_obj):
         rudisha _default_context.get_context().Process._Popen(process_obj)
@@ -228,42 +228,42 @@ kundi DefaultContext(BaseContext):
 
     eleza __init__(self, context):
         self._default_context = context
-        self._actual_context = None
+        self._actual_context = Tupu
 
-    eleza get_context(self, method=None):
-        ikiwa method is None:
-            ikiwa self._actual_context is None:
+    eleza get_context(self, method=Tupu):
+        ikiwa method ni Tupu:
+            ikiwa self._actual_context ni Tupu:
                 self._actual_context = self._default_context
             rudisha self._actual_context
-        else:
+        isipokua:
             rudisha super().get_context(method)
 
-    eleza set_start_method(self, method, force=False):
-        ikiwa self._actual_context is not None and not force:
-            raise RuntimeError('context has already been set')
-        ikiwa method is None and force:
-            self._actual_context = None
-            return
+    eleza set_start_method(self, method, force=Uongo):
+        ikiwa self._actual_context ni sio Tupu na sio force:
+            ashiria RuntimeError('context has already been set')
+        ikiwa method ni Tupu na force:
+            self._actual_context = Tupu
+            rudisha
         self._actual_context = self.get_context(method)
 
-    eleza get_start_method(self, allow_none=False):
-        ikiwa self._actual_context is None:
+    eleza get_start_method(self, allow_none=Uongo):
+        ikiwa self._actual_context ni Tupu:
             ikiwa allow_none:
-                rudisha None
+                rudisha Tupu
             self._actual_context = self._default_context
         rudisha self._actual_context._name
 
     eleza get_all_start_methods(self):
         ikiwa sys.platform == 'win32':
             rudisha ['spawn']
-        else:
+        isipokua:
             ikiwa reduction.HAVE_SEND_HANDLE:
                 rudisha ['fork', 'spawn', 'forkserver']
-            else:
+            isipokua:
                 rudisha ['fork', 'spawn']
 
 #
-# Context types for fixed start method
+# Context types kila fixed start method
 #
 
 ikiwa sys.platform != 'win32':
@@ -301,8 +301,8 @@ ikiwa sys.platform != 'win32':
         _name = 'forkserver'
         Process = ForkServerProcess
         eleza _check_available(self):
-            ikiwa not reduction.HAVE_SEND_HANDLE:
-                raise ValueError('forkserver start method not available')
+            ikiwa sio reduction.HAVE_SEND_HANDLE:
+                ashiria ValueError('forkserver start method sio available')
 
     _concrete_contexts = {
         'fork': ForkContext(),
@@ -310,13 +310,13 @@ ikiwa sys.platform != 'win32':
         'forkserver': ForkServerContext(),
     }
     ikiwa sys.platform == 'darwin':
-        # bpo-33725: running arbitrary code after fork() is no longer reliable
+        # bpo-33725: running arbitrary code after fork() ni no longer reliable
         # on macOS since macOS 10.14 (Mojave). Use spawn by default instead.
         _default_context = DefaultContext(_concrete_contexts['spawn'])
-    else:
+    isipokua:
         _default_context = DefaultContext(_concrete_contexts['fork'])
 
-else:
+isipokua:
 
     kundi SpawnProcess(process.BaseProcess):
         _start_method = 'spawn'
@@ -342,20 +342,20 @@ eleza _force_start_method(method):
     _default_context._actual_context = _concrete_contexts[method]
 
 #
-# Check that the current thread is spawning a child process
+# Check that the current thread ni spawning a child process
 #
 
 _tls = threading.local()
 
 eleza get_spawning_popen():
-    rudisha getattr(_tls, 'spawning_popen', None)
+    rudisha getattr(_tls, 'spawning_popen', Tupu)
 
 eleza set_spawning_popen(popen):
     _tls.spawning_popen = popen
 
 eleza assert_spawning(obj):
-    ikiwa get_spawning_popen() is None:
-        raise RuntimeError(
+    ikiwa get_spawning_popen() ni Tupu:
+        ashiria RuntimeError(
             '%s objects should only be shared between processes'
             ' through inheritance' % type(obj).__name__
             )

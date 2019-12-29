@@ -10,7 +10,7 @@ kundi FindSpecTests(abc.FinderTests):
 
     """Test finding frozen modules."""
 
-    eleza find(self, name, path=None):
+    eleza find(self, name, path=Tupu):
         finder = self.machinery.FrozenImporter
         rudisha finder.find_spec(name, path)
 
@@ -21,21 +21,21 @@ kundi FindSpecTests(abc.FinderTests):
 
     eleza test_package(self):
         spec = self.find('__phello__')
-        self.assertIsNotNone(spec)
+        self.assertIsNotTupu(spec)
 
     eleza test_module_in_package(self):
         spec = self.find('__phello__.spam', ['__phello__'])
-        self.assertIsNotNone(spec)
+        self.assertIsNotTupu(spec)
 
     # No frozen package within another package to test with.
-    test_package_in_package = None
+    test_package_in_package = Tupu
 
     # No easy way to test.
-    test_package_over_module = None
+    test_package_over_module = Tupu
 
     eleza test_failure(self):
         spec = self.find('<not real>')
-        self.assertIsNone(spec)
+        self.assertIsTupu(spec)
 
 
 (Frozen_FindSpecTests,
@@ -47,32 +47,32 @@ kundi FinderTests(abc.FinderTests):
 
     """Test finding frozen modules."""
 
-    eleza find(self, name, path=None):
+    eleza find(self, name, path=Tupu):
         finder = self.machinery.FrozenImporter
         rudisha finder.find_module(name, path)
 
     eleza test_module(self):
         name = '__hello__'
         loader = self.find(name)
-        self.assertTrue(hasattr(loader, 'load_module'))
+        self.assertKweli(hasattr(loader, 'load_module'))
 
     eleza test_package(self):
         loader = self.find('__phello__')
-        self.assertTrue(hasattr(loader, 'load_module'))
+        self.assertKweli(hasattr(loader, 'load_module'))
 
     eleza test_module_in_package(self):
         loader = self.find('__phello__.spam', ['__phello__'])
-        self.assertTrue(hasattr(loader, 'load_module'))
+        self.assertKweli(hasattr(loader, 'load_module'))
 
     # No frozen package within another package to test with.
-    test_package_in_package = None
+    test_package_in_package = Tupu
 
     # No easy way to test.
-    test_package_over_module = None
+    test_package_over_module = Tupu
 
     eleza test_failure(self):
         loader = self.find('<not real>')
-        self.assertIsNone(loader)
+        self.assertIsTupu(loader)
 
 
 (Frozen_FinderTests,

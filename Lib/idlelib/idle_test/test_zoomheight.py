@@ -1,5 +1,5 @@
 "Test zoomheight, coverage 66%."
-# Some code is system dependent.
+# Some code ni system dependent.
 
 kutoka idlelib agiza zoomheight
 agiza unittest
@@ -21,10 +21,10 @@ kundi Test(unittest.TestCase):
     eleza tearDownClass(cls):
         cls.editwin._close()
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
-            cls.root.after_cancel(id)  # Need for EditorWindow.
+        kila id kwenye cls.root.tk.call('after', 'info'):
+            cls.root.after_cancel(id)  # Need kila EditorWindow.
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         zoom = zoomheight.ZoomHeight(self.editwin)

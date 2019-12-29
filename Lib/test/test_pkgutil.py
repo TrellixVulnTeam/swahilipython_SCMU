@@ -10,11 +10,11 @@ agiza tempfile
 agiza shutil
 agiza zipfile
 
-# Note: pkgutil.walk_packages is currently tested in test_runpy. This is
-# a hack to get a major issue resolved for 3.3b2. Longer term, it should
+# Note: pkgutil.walk_packages ni currently tested kwenye test_runpy. This is
+# a hack to get a major issue resolved kila 3.3b2. Longer term, it should
 # be moved back here, perhaps by factoring out the helper code for
 # creating interesting package layouts to a separate module.
-# Issue #15348 declares this is indeed a dodgy hack ;)
+# Issue #15348 declares this ni indeed a dodgy hack ;)
 
 kundi PkgutilTests(unittest.TestCase):
 
@@ -24,12 +24,12 @@ kundi PkgutilTests(unittest.TestCase):
         sys.path.insert(0, self.dirname)
 
     eleza tearDown(self):
-        del sys.path[0]
+        toa sys.path[0]
 
     eleza test_getdata_filesys(self):
         pkg = 'test_getdata_filesys'
 
-        # Include a LF and a CRLF, to test that binary data is read back
+        # Include a LF na a CRLF, to test that binary data ni read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package with some resources
@@ -53,13 +53,13 @@ kundi PkgutilTests(unittest.TestCase):
         res2 = pkgutil.get_data(pkg, 'sub/res.txt')
         self.assertEqual(res2, RESOURCE_DATA)
 
-        del sys.modules[pkg]
+        toa sys.modules[pkg]
 
     eleza test_getdata_zipfile(self):
         zip = 'test_getdata_zipfile.zip'
         pkg = 'test_getdata_zipfile'
 
-        # Include a LF and a CRLF, to test that binary data is read back
+        # Include a LF na a CRLF, to test that binary data ni read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
         # Make a package with some resources
@@ -81,24 +81,24 @@ kundi PkgutilTests(unittest.TestCase):
         self.assertEqual(res2, RESOURCE_DATA)
 
         names = []
-        for moduleinfo in pkgutil.iter_modules([zip_file]):
+        kila moduleinfo kwenye pkgutil.iter_modules([zip_file]):
             self.assertIsInstance(moduleinfo, pkgutil.ModuleInfo)
             names.append(moduleinfo.name)
         self.assertEqual(names, ['test_getdata_zipfile'])
 
-        del sys.path[0]
+        toa sys.path[0]
 
-        del sys.modules[pkg]
+        toa sys.modules[pkg]
 
     eleza test_unreadable_dir_on_syspath(self):
         # issue7367 - walk_packages failed ikiwa unreadable dir on sys.path
         package_name = "unreadable_package"
         d = os.path.join(self.dirname, package_name)
-        # this does not appear to create an unreadable dir on Windows
-        #   but the test should not fail anyway
+        # this does sio appear to create an unreadable dir on Windows
+        #   but the test should sio fail anyway
         os.mkdir(d, 0)
         self.addCleanup(os.rmdir, d)
-        for t in pkgutil.walk_packages(path=[self.dirname]):
+        kila t kwenye pkgutil.walk_packages(path=[self.dirname]):
             self.fail("unexpected package found")
 
     eleza test_walkpackages_filesys(self):
@@ -133,16 +133,16 @@ kundi PkgutilTests(unittest.TestCase):
             'test_walkpackages_filesys.sub',
             'test_walkpackages_filesys.sub.mod',
         ]
-        actual= [e[1] for e in pkgutil.walk_packages([self.dirname])]
+        actual= [e[1] kila e kwenye pkgutil.walk_packages([self.dirname])]
         self.assertEqual(actual, expected)
 
-        for pkg in expected:
+        kila pkg kwenye expected:
             ikiwa pkg.endswith('mod'):
-                continue
-            del sys.modules[pkg]
+                endelea
+            toa sys.modules[pkg]
 
     eleza test_walkpackages_zipfile(self):
-        """Tests the same as test_walkpackages_filesys, only with a zip file."""
+        """Tests the same kama test_walkpackages_filesys, only with a zip file."""
 
         zip = 'test_walkpackages_zipfile.zip'
         pkg1 = 'test_walkpackages_zipfile'
@@ -167,16 +167,16 @@ kundi PkgutilTests(unittest.TestCase):
             'test_walkpackages_zipfile.sub',
             'test_walkpackages_zipfile.sub.mod',
         ]
-        actual= [e[1] for e in pkgutil.walk_packages([zip_file])]
+        actual= [e[1] kila e kwenye pkgutil.walk_packages([zip_file])]
         self.assertEqual(actual, expected)
-        del sys.path[0]
+        toa sys.path[0]
 
-        for pkg in expected:
+        kila pkg kwenye expected:
             ikiwa pkg.endswith('mod'):
-                continue
-            del sys.modules[pkg]
+                endelea
+            toa sys.modules[pkg]
 
-    eleza test_walk_packages_raises_on_string_or_bytes_input(self):
+    eleza test_walk_packages_ashirias_on_string_or_bytes_input(self):
 
         str_input = 'test_dir'
         with self.assertRaises((TypeError, ValueError)):
@@ -191,17 +191,17 @@ kundi PkgutilPEP302Tests(unittest.TestCase):
 
     kundi MyTestLoader(object):
         eleza create_module(self, spec):
-            rudisha None
+            rudisha Tupu
 
         eleza exec_module(self, mod):
-            # Count how many times the module is reloaded
+            # Count how many times the module ni reloaded
             mod.__dict__['loads'] = mod.__dict__.get('loads', 0) + 1
 
         eleza get_data(self, path):
             rudisha "Hello, world!"
 
     kundi MyTestImporter(object):
-        eleza find_spec(self, fullname, path=None, target=None):
+        eleza find_spec(self, fullname, path=Tupu, target=Tupu):
             loader = PkgutilPEP302Tests.MyTestLoader()
             rudisha spec_kutoka_file_location(fullname,
                                            '<%s>' % loader.__class__.__name__,
@@ -212,26 +212,26 @@ kundi PkgutilPEP302Tests(unittest.TestCase):
         sys.meta_path.insert(0, self.MyTestImporter())
 
     eleza tearDown(self):
-        del sys.meta_path[0]
+        toa sys.meta_path[0]
 
     eleza test_getdata_pep302(self):
         # Use a dummy finder/loader
         self.assertEqual(pkgutil.get_data('foo', 'dummy'), "Hello, world!")
-        del sys.modules['foo']
+        toa sys.modules['foo']
 
     eleza test_alreadyloaded(self):
         # Ensure that get_data works without reloading - the "loads" module
-        # variable in the example loader should count how many times a reload
+        # variable kwenye the example loader should count how many times a reload
         # occurs.
         agiza foo
         self.assertEqual(foo.loads, 1)
         self.assertEqual(pkgutil.get_data('foo', 'dummy'), "Hello, world!")
         self.assertEqual(foo.loads, 1)
-        del sys.modules['foo']
+        toa sys.modules['foo']
 
 
-# These tests, especially the setup and cleanup, are hideous. They
-# need to be cleaned up once issue 14715 is addressed.
+# These tests, especially the setup na cleanup, are hideous. They
+# need to be cleaned up once issue 14715 ni addressed.
 kundi ExtendPathTests(unittest.TestCase):
     eleza create_init(self, pkgname):
         dirname = tempfile.mkdtemp()
@@ -239,14 +239,14 @@ kundi ExtendPathTests(unittest.TestCase):
 
         pkgdir = os.path.join(dirname, pkgname)
         os.mkdir(pkgdir)
-        with open(os.path.join(pkgdir, '__init__.py'), 'w') as fl:
+        with open(os.path.join(pkgdir, '__init__.py'), 'w') kama fl:
             fl.write('kutoka pkgutil agiza extend_path\n__path__ = extend_path(__path__, __name__)\n')
 
         rudisha dirname
 
     eleza create_submodule(self, dirname, pkgname, submodule_name, value):
         module_name = os.path.join(dirname, pkgname, submodule_name + '.py')
-        with open(module_name, 'w') as fl:
+        with open(module_name, 'w') kama fl:
             andika('value={}'.format(value), file=fl)
 
     eleza test_simple(self):
@@ -261,7 +261,7 @@ kundi ExtendPathTests(unittest.TestCase):
         self.assertEqual(foo.bar.value, 0)
         self.assertEqual(foo.baz.value, 1)
 
-        # Ensure the path is set up correctly
+        # Ensure the path ni set up correctly
         self.assertEqual(sorted(foo.__path__),
                          sorted([os.path.join(dirname_0, pkgname),
                                  os.path.join(dirname_1, pkgname)]))
@@ -269,11 +269,11 @@ kundi ExtendPathTests(unittest.TestCase):
         # Cleanup
         shutil.rmtree(dirname_0)
         shutil.rmtree(dirname_1)
-        del sys.path[0]
-        del sys.path[0]
-        del sys.modules['foo']
-        del sys.modules['foo.bar']
-        del sys.modules['foo.baz']
+        toa sys.path[0]
+        toa sys.path[0]
+        toa sys.modules['foo']
+        toa sys.modules['foo.bar']
+        toa sys.modules['foo.baz']
 
 
     # Another awful testing hack to be cleaned up once the test_runpy
@@ -287,43 +287,43 @@ kundi ExtendPathTests(unittest.TestCase):
         dirname = self.create_init(pkgname)
         pathitem = os.path.join(dirname, pkgname)
         fullname = '{}.{}'.format(pkgname, modname)
-        sys.modules.pop(fullname, None)
-        sys.modules.pop(pkgname, None)
-        try:
+        sys.modules.pop(fullname, Tupu)
+        sys.modules.pop(pkgname, Tupu)
+        jaribu:
             self.create_submodule(dirname, pkgname, modname, 0)
 
             importlib.import_module(fullname)
 
             importers = list(iter_importers(fullname))
             expected_importer = get_importer(pathitem)
-            for finder in importers:
+            kila finder kwenye importers:
                 spec = pkgutil._get_spec(finder, fullname)
                 loader = spec.loader
-                try:
+                jaribu:
                     loader = loader.loader
-                except AttributeError:
+                tatizo AttributeError:
                     # For now we still allow raw loaders kutoka
                     # find_module().
-                    pass
+                    pita
                 self.assertIsInstance(finder, importlib.machinery.FileFinder)
                 self.assertEqual(finder, expected_importer)
                 self.assertIsInstance(loader,
                                       importlib.machinery.SourceFileLoader)
-                self.assertIsNone(pkgutil._get_spec(finder, pkgname))
+                self.assertIsTupu(pkgutil._get_spec(finder, pkgname))
 
             with self.assertRaises(ImportError):
                 list(iter_importers('invalid.module'))
 
             with self.assertRaises(ImportError):
                 list(iter_importers('.spam'))
-        finally:
+        mwishowe:
             shutil.rmtree(dirname)
-            del sys.path[0]
-            try:
-                del sys.modules['spam']
-                del sys.modules['spam.eggs']
-            except KeyError:
-                pass
+            toa sys.path[0]
+            jaribu:
+                toa sys.modules['spam']
+                toa sys.modules['spam.eggs']
+            tatizo KeyError:
+                pita
 
 
     eleza test_mixed_namespace(self):
@@ -340,7 +340,7 @@ kundi ExtendPathTests(unittest.TestCase):
         self.assertEqual(foo.bar.value, 0)
         self.assertEqual(foo.baz.value, 1)
 
-        # Ensure the path is set up correctly
+        # Ensure the path ni set up correctly
         self.assertEqual(sorted(foo.__path__),
                          sorted([os.path.join(dirname_0, pkgname),
                                  os.path.join(dirname_1, pkgname)]))
@@ -348,11 +348,11 @@ kundi ExtendPathTests(unittest.TestCase):
         # Cleanup
         shutil.rmtree(dirname_0)
         shutil.rmtree(dirname_1)
-        del sys.path[0]
-        del sys.path[0]
-        del sys.modules['foo']
-        del sys.modules['foo.bar']
-        del sys.modules['foo.baz']
+        toa sys.path[0]
+        toa sys.path[0]
+        toa sys.modules['foo']
+        toa sys.modules['foo.bar']
+        toa sys.modules['foo.baz']
 
     # XXX: test .pkg files
 
@@ -370,8 +370,8 @@ kundi NestedNamespacePackageTest(unittest.TestCase):
     eleza create_module(self, name, contents):
         base, final = name.rsplit('.', 1)
         base_path = os.path.join(self.basedir, base.replace('.', os.path.sep))
-        os.makedirs(base_path, exist_ok=True)
-        with open(os.path.join(base_path, final + ".py"), 'w') as f:
+        os.makedirs(base_path, exist_ok=Kweli)
+        with open(os.path.join(base_path, final + ".py"), 'w') kama f:
             f.write(contents)
 
     eleza test_nested(self):
@@ -399,13 +399,13 @@ kundi NestedNamespacePackageTest(unittest.TestCase):
 
 
 kundi ImportlibMigrationTests(unittest.TestCase):
-    # With full PEP 302 support in the standard agiza machinery, the
-    # PEP 302 emulation in this module is in the process of being
-    # deprecated in favour of importlib proper
+    # With full PEP 302 support kwenye the standard agiza machinery, the
+    # PEP 302 emulation kwenye this module ni kwenye the process of being
+    # deprecated kwenye favour of importlib proper
 
     eleza check_deprecated(self):
         rudisha check_warnings(
-            ("This emulation is deprecated, use 'importlib' instead",
+            ("This emulation ni deprecated, use 'importlib' instead",
              DeprecationWarning))
 
     eleza test_importer_deprecated(self):
@@ -417,79 +417,79 @@ kundi ImportlibMigrationTests(unittest.TestCase):
             pkgutil.ImpLoader("", "", "", "")
 
     eleza test_get_loader_avoids_emulation(self):
-        with check_warnings() as w:
-            self.assertIsNotNone(pkgutil.get_loader("sys"))
-            self.assertIsNotNone(pkgutil.get_loader("os"))
-            self.assertIsNotNone(pkgutil.get_loader("test.support"))
+        with check_warnings() kama w:
+            self.assertIsNotTupu(pkgutil.get_loader("sys"))
+            self.assertIsNotTupu(pkgutil.get_loader("os"))
+            self.assertIsNotTupu(pkgutil.get_loader("test.support"))
             self.assertEqual(len(w.warnings), 0)
 
     @unittest.skipIf(__name__ == '__main__', 'not compatible with __main__')
     eleza test_get_loader_handles_missing_loader_attribute(self):
         global __loader__
         this_loader = __loader__
-        del __loader__
-        try:
-            with check_warnings() as w:
-                self.assertIsNotNone(pkgutil.get_loader(__name__))
+        toa __loader__
+        jaribu:
+            with check_warnings() kama w:
+                self.assertIsNotTupu(pkgutil.get_loader(__name__))
                 self.assertEqual(len(w.warnings), 0)
-        finally:
+        mwishowe:
             __loader__ = this_loader
 
     eleza test_get_loader_handles_missing_spec_attribute(self):
         name = 'spam'
         mod = type(sys)(name)
-        del mod.__spec__
+        toa mod.__spec__
         with CleanImport(name):
             sys.modules[name] = mod
             loader = pkgutil.get_loader(name)
-        self.assertIsNone(loader)
+        self.assertIsTupu(loader)
 
     eleza test_get_loader_handles_spec_attribute_none(self):
         name = 'spam'
         mod = type(sys)(name)
-        mod.__spec__ = None
+        mod.__spec__ = Tupu
         with CleanImport(name):
             sys.modules[name] = mod
             loader = pkgutil.get_loader(name)
-        self.assertIsNone(loader)
+        self.assertIsTupu(loader)
 
-    eleza test_get_loader_None_in_sys_modules(self):
+    eleza test_get_loader_Tupu_in_sys_modules(self):
         name = 'totally bogus'
-        sys.modules[name] = None
-        try:
+        sys.modules[name] = Tupu
+        jaribu:
             loader = pkgutil.get_loader(name)
-        finally:
-            del sys.modules[name]
-        self.assertIsNone(loader)
+        mwishowe:
+            toa sys.modules[name]
+        self.assertIsTupu(loader)
 
     eleza test_find_loader_missing_module(self):
         name = 'totally bogus'
         loader = pkgutil.find_loader(name)
-        self.assertIsNone(loader)
+        self.assertIsTupu(loader)
 
     eleza test_find_loader_avoids_emulation(self):
-        with check_warnings() as w:
-            self.assertIsNotNone(pkgutil.find_loader("sys"))
-            self.assertIsNotNone(pkgutil.find_loader("os"))
-            self.assertIsNotNone(pkgutil.find_loader("test.support"))
+        with check_warnings() kama w:
+            self.assertIsNotTupu(pkgutil.find_loader("sys"))
+            self.assertIsNotTupu(pkgutil.find_loader("os"))
+            self.assertIsNotTupu(pkgutil.find_loader("test.support"))
             self.assertEqual(len(w.warnings), 0)
 
     eleza test_get_importer_avoids_emulation(self):
         # We use an illegal path so *none* of the path hooks should fire
-        with check_warnings() as w:
-            self.assertIsNone(pkgutil.get_importer("*??"))
+        with check_warnings() kama w:
+            self.assertIsTupu(pkgutil.get_importer("*??"))
             self.assertEqual(len(w.warnings), 0)
 
     eleza test_iter_importers_avoids_emulation(self):
-        with check_warnings() as w:
-            for importer in pkgutil.iter_importers(): pass
+        with check_warnings() kama w:
+            kila importer kwenye pkgutil.iter_importers(): pita
             self.assertEqual(len(w.warnings), 0)
 
 
 eleza test_main():
     run_unittest(PkgutilTests, PkgutilPEP302Tests, ExtendPathTests,
                  NestedNamespacePackageTest, ImportlibMigrationTests)
-    # this is necessary ikiwa test is run repeated (like when finding leaks)
+    # this ni necessary ikiwa test ni run repeated (like when finding leaks)
     agiza zipagiza
     agiza importlib
     zipagiza._zip_directory_cache.clear()

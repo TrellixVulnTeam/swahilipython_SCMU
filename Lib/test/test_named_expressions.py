@@ -1,7 +1,7 @@
 agiza os
 agiza unittest
 
-GLOBAL_VAR = None
+GLOBAL_VAR = Tupu
 
 kundi NamedExpressionInvalidTest(unittest.TestCase):
 
@@ -36,13 +36,13 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_07(self):
-        code = """eleza spam(a = b := 42): pass"""
+        code = """eleza spam(a = b := 42): pita"""
 
         with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_08(self):
-        code = """eleza spam(a: b := 42 = 5): pass"""
+        code = """eleza spam(a: b := 42 = 5): pita"""
 
         with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
@@ -94,38 +94,38 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_16(self):
-        code = "[i + 1 for i in i := [1,2]]"
+        code = "[i + 1 kila i kwenye i := [1,2]]"
 
         with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_17(self):
-        code = "[i := 0, j := 1 for i, j in [(1, 2), (3, 4)]]"
+        code = "[i := 0, j := 1 kila i, j kwenye [(1, 2), (3, 4)]]"
 
         with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_in_class_body(self):
         code = """kundi Foo():
-            [(42, 1 + ((( j := i )))) for i in range(5)]
+            [(42, 1 + ((( j := i )))) kila i kwenye range(5)]
         """
 
         with self.assertRaisesRegex(SyntaxError,
-            "assignment expression within a comprehension cannot be used in a kundi body"):
+            "assignment expression within a comprehension cannot be used kwenye a kundi body"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_rebinding_comprehension_iteration_variable(self):
         cases = [
-            ("Local reuse", 'i', "[i := 0 for i in range(5)]"),
-            ("Nested reuse", 'j', "[[(j := 0) for i in range(5)] for j in range(5)]"),
-            ("Reuse inner loop target", 'j', "[(j := 0) for i in range(5) for j in range(5)]"),
-            ("Unpacking reuse", 'i', "[i := 0 for i, j in [(0, 1)]]"),
-            ("Reuse in loop condition", 'i', "[i+1 for i in range(5) ikiwa (i := 0)]"),
-            ("Unreachable reuse", 'i', "[False or (i:=0) for i in range(5)]"),
+            ("Local reuse", 'i', "[i := 0 kila i kwenye range(5)]"),
+            ("Nested reuse", 'j', "[[(j := 0) kila i kwenye range(5)] kila j kwenye range(5)]"),
+            ("Reuse inner loop target", 'j', "[(j := 0) kila i kwenye range(5) kila j kwenye range(5)]"),
+            ("Unpacking reuse", 'i', "[i := 0 kila i, j kwenye [(0, 1)]]"),
+            ("Reuse kwenye loop condition", 'i', "[i+1 kila i kwenye range(5) ikiwa (i := 0)]"),
+            ("Unreachable reuse", 'i', "[Uongo ama (i:=0) kila i kwenye range(5)]"),
             ("Unreachable nested reuse", 'i',
-                "[(i, j) for i in range(5) for j in range(5) ikiwa True or (i:=10)]"),
+                "[(i, j) kila i kwenye range(5) kila j kwenye range(5) ikiwa Kweli ama (i:=10)]"),
         ]
-        for case, target, code in cases:
+        kila case, target, code kwenye cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
             with self.subTest(case=case):
                 with self.assertRaisesRegex(SyntaxError, msg):
@@ -133,10 +133,10 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
 
     eleza test_named_expression_invalid_rebinding_comprehension_inner_loop(self):
         cases = [
-            ("Inner reuse", 'j', "[i for i in range(5) ikiwa (j := 0) for j in range(5)]"),
-            ("Inner unpacking reuse", 'j', "[i for i in range(5) ikiwa (j := 0) for j, k in [(0, 1)]]"),
+            ("Inner reuse", 'j', "[i kila i kwenye range(5) ikiwa (j := 0) kila j kwenye range(5)]"),
+            ("Inner unpacking reuse", 'j', "[i kila i kwenye range(5) ikiwa (j := 0) kila j, k kwenye [(0, 1)]]"),
         ]
-        for case, target, code in cases:
+        kila case, target, code kwenye cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
             with self.subTest(case=case):
                 with self.assertRaisesRegex(SyntaxError, msg):
@@ -148,18 +148,18 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
 
     eleza test_named_expression_invalid_comprehension_iterable_expression(self):
         cases = [
-            ("Top level", "[i for i in (i := range(5))]"),
-            ("Inside tuple", "[i for i in (2, 3, i := range(5))]"),
-            ("Inside list", "[i for i in [2, 3, i := range(5)]]"),
-            ("Different name", "[i for i in (j := range(5))]"),
-            ("Lambda expression", "[i for i in (lambda:(j := range(5)))()]"),
-            ("Inner loop", "[i for i in range(5) for j in (i := range(5))]"),
-            ("Nested comprehension", "[i for i in [j for j in (k := range(5))]]"),
-            ("Nested comprehension condition", "[i for i in [j for j in range(5) ikiwa (j := True)]]"),
-            ("Nested comprehension body", "[i for i in [(j := True) for j in range(5)]]"),
+            ("Top level", "[i kila i kwenye (i := range(5))]"),
+            ("Inside tuple", "[i kila i kwenye (2, 3, i := range(5))]"),
+            ("Inside list", "[i kila i kwenye [2, 3, i := range(5)]]"),
+            ("Different name", "[i kila i kwenye (j := range(5))]"),
+            ("Lambda expression", "[i kila i kwenye (lambda:(j := range(5)))()]"),
+            ("Inner loop", "[i kila i kwenye range(5) kila j kwenye (i := range(5))]"),
+            ("Nested comprehension", "[i kila i kwenye [j kila j kwenye (k := range(5))]]"),
+            ("Nested comprehension condition", "[i kila i kwenye [j kila j kwenye range(5) ikiwa (j := Kweli)]]"),
+            ("Nested comprehension body", "[i kila i kwenye [(j := Kweli) kila j kwenye range(5)]]"),
         ]
-        msg = "assignment expression cannot be used in a comprehension iterable expression"
-        for case, code in cases:
+        msg = "assignment expression cannot be used kwenye a comprehension iterable expression"
+        kila case, code kwenye cases:
             with self.subTest(case=case):
                 with self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
@@ -212,30 +212,30 @@ kundi NamedExpressionAssignmentTest(unittest.TestCase):
     eleza test_named_expression_assignment_08(self):
         ikiwa spam := "eggs":
             self.assertEqual(spam, "eggs")
-        else: self.fail("variable was not assigned using named expression")
+        isipokua: self.fail("variable was sio assigned using named expression")
 
     eleza test_named_expression_assignment_09(self):
-        ikiwa True and (spam := True):
-            self.assertTrue(spam)
-        else: self.fail("variable was not assigned using named expression")
+        ikiwa Kweli na (spam := Kweli):
+            self.assertKweli(spam)
+        isipokua: self.fail("variable was sio assigned using named expression")
 
     eleza test_named_expression_assignment_10(self):
         ikiwa (match := 10) == 10:
-            pass
-        else: self.fail("variable was not assigned using named expression")
+            pita
+        isipokua: self.fail("variable was sio assigned using named expression")
 
     eleza test_named_expression_assignment_11(self):
         eleza spam(a):
             rudisha a
         input_data = [1, 2, 3]
-        res = [(x, y, x/y) for x in input_data ikiwa (y := spam(x)) > 0]
+        res = [(x, y, x/y) kila x kwenye input_data ikiwa (y := spam(x)) > 0]
 
         self.assertEqual(res, [(1, 1, 1.0), (2, 2, 1.0), (3, 3, 1.0)])
 
     eleza test_named_expression_assignment_12(self):
         eleza spam(a):
             rudisha a
-        res = [[y := spam(x), x/y] for x in range(1, 5)]
+        res = [[y := spam(x), x/y] kila x kwenye range(1, 5)]
 
         self.assertEqual(res, [[1, 1.0], [2, 1.0], [3, 1.0], [4, 1.0]])
 
@@ -247,8 +247,8 @@ kundi NamedExpressionAssignmentTest(unittest.TestCase):
 
     eleza test_named_expression_assignment_14(self):
         """
-        Where all variables are positive integers, and a is at least as large
-        as the n'th root of x, this algorithm returns the floor of the n'th
+        Where all variables are positive integers, na a ni at least kama large
+        kama the n'th root of x, this algorithm rudishas the floor of the n'th
         root of x (and roughly doubling the number of accurate bits per
         iteration):
         """
@@ -256,20 +256,20 @@ kundi NamedExpressionAssignmentTest(unittest.TestCase):
         n = 2
         x = 3
 
-        while a > (d := x // a**(n-1)):
+        wakati a > (d := x // a**(n-1)):
             a = ((n-1)*a + d) // n
 
         self.assertEqual(a, 1)
 
     eleza test_named_expression_assignment_15(self):
-        while a := False:
-            pass  # This will not run
+        wakati a := Uongo:
+            pita  # This will sio run
 
-        self.assertEqual(a, False)
+        self.assertEqual(a, Uongo)
 
     eleza test_named_expression_assignment_16(self):
         a, b = 1, 2
-        fib = {(c := a): (a := b) + (b := a + c) - b for __ in range(6)}
+        fib = {(c := a): (a := b) + (b := a + c) - b kila __ kwenye range(6)}
         self.assertEqual(fib, {1: 2, 2: 3, 3: 5, 5: 8, 8: 13, 13: 21})
 
 
@@ -280,26 +280,26 @@ kundi NamedExpressionScopeTest(unittest.TestCase):
     (a := 5)
 andika(a)"""
 
-        with self.assertRaisesRegex(NameError, "name 'a' is not defined"):
+        with self.assertRaisesRegex(NameError, "name 'a' ni sio defined"):
             exec(code, {}, {})
 
     eleza test_named_expression_scope_02(self):
         total = 0
-        partial_sums = [total := total + v for v in range(5)]
+        partial_sums = [total := total + v kila v kwenye range(5)]
 
         self.assertEqual(partial_sums, [0, 1, 3, 6, 10])
         self.assertEqual(total, 10)
 
     eleza test_named_expression_scope_03(self):
-        containsOne = any((lastNum := num) == 1 for num in [1, 2, 3])
+        containsOne = any((lastNum := num) == 1 kila num kwenye [1, 2, 3])
 
-        self.assertTrue(containsOne)
+        self.assertKweli(containsOne)
         self.assertEqual(lastNum, 1)
 
     eleza test_named_expression_scope_04(self):
         eleza spam(a):
             rudisha a
-        res = [[y := spam(x), x/y] for x in range(1, 5)]
+        res = [[y := spam(x), x/y] kila x kwenye range(1, 5)]
 
         self.assertEqual(y, 4)
 
@@ -307,13 +307,13 @@ andika(a)"""
         eleza spam(a):
             rudisha a
         input_data = [1, 2, 3]
-        res = [(x, y, x/y) for x in input_data ikiwa (y := spam(x)) > 0]
+        res = [(x, y, x/y) kila x kwenye input_data ikiwa (y := spam(x)) > 0]
 
         self.assertEqual(res, [(1, 1, 1.0), (2, 2, 1.0), (3, 3, 1.0)])
         self.assertEqual(y, 3)
 
     eleza test_named_expression_scope_06(self):
-        res = [[spam := i for i in range(3)] for j in range(2)]
+        res = [[spam := i kila i kwenye range(3)] kila j kwenye range(2)]
 
         self.assertEqual(res, [[0, 1, 2], [0, 1, 2]])
         self.assertEqual(spam, 2)
@@ -330,7 +330,7 @@ andika(a)"""
         eleza eggs(b):
             rudisha b * 2
 
-        res = [spam(a := eggs(b := h)) for h in range(2)]
+        res = [spam(a := eggs(b := h)) kila h kwenye range(2)]
 
         self.assertEqual(res, [0, 2])
         self.assertEqual(a, 2)
@@ -343,27 +343,27 @@ andika(a)"""
         eleza eggs(b):
             rudisha b * 2
 
-        res = [spam(a := eggs(a := h)) for h in range(2)]
+        res = [spam(a := eggs(a := h)) kila h kwenye range(2)]
 
         self.assertEqual(res, [0, 2])
         self.assertEqual(a, 2)
 
     eleza test_named_expression_scope_10(self):
-        res = [b := [a := 1 for i in range(2)] for j in range(2)]
+        res = [b := [a := 1 kila i kwenye range(2)] kila j kwenye range(2)]
 
         self.assertEqual(res, [[1, 1], [1, 1]])
         self.assertEqual(a, 1)
         self.assertEqual(b, [1, 1])
 
     eleza test_named_expression_scope_11(self):
-        res = [j := i for i in range(5)]
+        res = [j := i kila i kwenye range(5)]
 
         self.assertEqual(res, [0, 1, 2, 3, 4])
         self.assertEqual(j, 4)
 
     eleza test_named_expression_scope_17(self):
         b = 0
-        res = [b := i + b for i in range(5)]
+        res = [b := i + b kila i kwenye range(5)]
 
         self.assertEqual(res, [0, 1, 3, 6, 10])
         self.assertEqual(b, 10)
@@ -444,16 +444,16 @@ spam()"""
         self.assertEqual(ns["a"], 20)
 
     eleza test_named_expression_variable_reuse_in_comprehensions(self):
-        # The compiler is expected to raise syntax error for comprehension
+        # The compiler ni expected to ashiria syntax error kila comprehension
         # iteration variables, but should be fine with rebinding of other
         # names (e.g. globals, nonlocals, other assignment expressions)
 
         # The cases are all defined to produce the same expected result
-        # Each comprehension is checked at both function scope and module scope
-        rebinding = "[x := i for i in range(3) ikiwa (x := i) or not x]"
-        filter_ref = "[x := i for i in range(3) ikiwa x or not x]"
-        body_ref = "[x for i in range(3) ikiwa (x := i) or not x]"
-        nested_ref = "[j for i in range(3) ikiwa x or not x for j in range(3) ikiwa (x := i)][:-3]"
+        # Each comprehension ni checked at both function scope na module scope
+        rebinding = "[x := i kila i kwenye range(3) ikiwa (x := i) ama sio x]"
+        filter_ref = "[x := i kila i kwenye range(3) ikiwa x ama sio x]"
+        body_ref = "[x kila i kwenye range(3) ikiwa (x := i) ama sio x]"
+        nested_ref = "[j kila i kwenye range(3) ikiwa x ama sio x kila j kwenye range(3) ikiwa (x := i)][:-3]"
         cases = [
             ("Rebind global", f"x = 1; result = {rebinding}"),
             ("Rebind nonlocal", f"result, x = (lambda x=1: ({rebinding}, x))()"),
@@ -464,7 +464,7 @@ spam()"""
             ("Nested global", f"x = 1; result = {nested_ref}"),
             ("Nested nonlocal", f"result, x = (lambda x=1: ({nested_ref}, x))()"),
         ]
-        for case, code in cases:
+        kila case, code kwenye cases:
             with self.subTest(case=case):
                 ns = {}
                 exec(code, ns)
@@ -476,30 +476,30 @@ spam()"""
         global GLOBAL_VAR
         eleza f():
             global GLOBAL_VAR
-            [GLOBAL_VAR := sentinel for _ in range(1)]
+            [GLOBAL_VAR := sentinel kila _ kwenye range(1)]
             self.assertEqual(GLOBAL_VAR, sentinel)
-        try:
+        jaribu:
             f()
             self.assertEqual(GLOBAL_VAR, sentinel)
-        finally:
-            GLOBAL_VAR = None
+        mwishowe:
+            GLOBAL_VAR = Tupu
 
     eleza test_named_expression_global_scope_no_global_keyword(self):
         sentinel = object()
         eleza f():
-            GLOBAL_VAR = None
-            [GLOBAL_VAR := sentinel for _ in range(1)]
+            GLOBAL_VAR = Tupu
+            [GLOBAL_VAR := sentinel kila _ kwenye range(1)]
             self.assertEqual(GLOBAL_VAR, sentinel)
         f()
-        self.assertEqual(GLOBAL_VAR, None)
+        self.assertEqual(GLOBAL_VAR, Tupu)
 
     eleza test_named_expression_nonlocal_scope(self):
         sentinel = object()
         eleza f():
-            nonlocal_var = None
+            nonlocal_var = Tupu
             eleza g():
                 nonlocal nonlocal_var
-                [nonlocal_var := sentinel for _ in range(1)]
+                [nonlocal_var := sentinel kila _ kwenye range(1)]
             g()
             self.assertEqual(nonlocal_var, sentinel)
         f()
@@ -507,11 +507,11 @@ spam()"""
     eleza test_named_expression_nonlocal_scope_no_nonlocal_keyword(self):
         sentinel = object()
         eleza f():
-            nonlocal_var = None
+            nonlocal_var = Tupu
             eleza g():
-                [nonlocal_var := sentinel for _ in range(1)]
+                [nonlocal_var := sentinel kila _ kwenye range(1)]
             g()
-            self.assertEqual(nonlocal_var, None)
+            self.assertEqual(nonlocal_var, Tupu)
         f()
 
 

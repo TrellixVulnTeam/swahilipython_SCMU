@@ -1,6 +1,6 @@
 #
 # test_codecmaps_cn.py
-#   Codec mapping tests for PRC encodings
+#   Codec mapping tests kila PRC encodings
 #
 
 kutoka test agiza multibytecodec_support

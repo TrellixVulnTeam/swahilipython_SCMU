@@ -1,4 +1,4 @@
-"""Test program for the fcntl C module.
+"""Test program kila the fcntl C module.
 """
 agiza platform
 agiza os
@@ -12,31 +12,31 @@ kutoka test.support agiza (verbose, TESTFN, unlink, run_unittest, import_module,
 fcntl = import_module('fcntl')
 
 
-# TODO - Write tests for flock() and lockf().
+# TODO - Write tests kila flock() na lockf().
 
 eleza get_lockdata():
-    try:
+    jaribu:
         os.O_LARGEFILE
-    except AttributeError:
+    tatizo AttributeError:
         start_len = "ll"
-    else:
+    isipokua:
         start_len = "qq"
 
     ikiwa (sys.platform.startswith(('netbsd', 'freebsd', 'openbsd'))
-        or sys.platform == 'darwin'):
+        ama sys.platform == 'darwin'):
         ikiwa struct.calcsize('l') == 8:
             off_t = 'l'
             pid_t = 'i'
-        else:
+        isipokua:
             off_t = 'lxxxx'
             pid_t = 'l'
         lockdata = struct.pack(off_t + off_t + pid_t + 'hh', 0, 0, 0,
                                fcntl.F_WRLCK, 0)
     elikiwa sys.platform.startswith('gnukfreebsd'):
         lockdata = struct.pack('qqihhi', 0, 0, 0, fcntl.F_WRLCK, 0, 0)
-    elikiwa sys.platform in ['hp-uxB', 'unixware7']:
+    elikiwa sys.platform kwenye ['hp-uxB', 'unixware7']:
         lockdata = struct.pack('hhlllii', fcntl.F_WRLCK, 0, 0, 0, 0, 0, 0)
-    else:
+    isipokua:
         lockdata = struct.pack('hh'+start_len+'hh', fcntl.F_WRLCK, 0, 0, 0, 0, 0)
     ikiwa lockdata:
         ikiwa verbose:
@@ -54,10 +54,10 @@ kundi BadFile:
 kundi TestFcntl(unittest.TestCase):
 
     eleza setUp(self):
-        self.f = None
+        self.f = Tupu
 
     eleza tearDown(self):
-        ikiwa self.f and not self.f.closed:
+        ikiwa self.f na sio self.f.closed:
             self.f.close()
         unlink(TESTFN)
 
@@ -73,7 +73,7 @@ kundi TestFcntl(unittest.TestCase):
         self.f.close()
 
     eleza test_fcntl_file_descriptor(self):
-        # again, but pass the file rather than numeric descriptor
+        # again, but pita the file rather than numeric descriptor
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f, fcntl.F_SETFL, os.O_NONBLOCK)
         ikiwa verbose:
@@ -107,25 +107,25 @@ kundi TestFcntl(unittest.TestCase):
             fcntl.fcntl(BadFile(INT_MIN - 1), fcntl.F_SETFL, os.O_NONBLOCK)
 
     @unittest.skipIf(
-        platform.machine().startswith('arm') and platform.system() == 'Linux',
-        "ARM Linux returns EINVAL for F_NOTIFY DN_MULTISHOT")
+        platform.machine().startswith('arm') na platform.system() == 'Linux',
+        "ARM Linux rudishas EINVAL kila F_NOTIFY DN_MULTISHOT")
     eleza test_fcntl_64_bit(self):
-        # Issue #1309352: fcntl shouldn't fail when the third arg fits in a
-        # C 'long' but not in a C 'int'.
-        try:
+        # Issue #1309352: fcntl shouldn't fail when the third arg fits kwenye a
+        # C 'long' but haiko kwenye a C 'int'.
+        jaribu:
             cmd = fcntl.F_NOTIFY
-            # This flag is larger than 2**31 in 64-bit builds
+            # This flag ni larger than 2**31 kwenye 64-bit builds
             flags = fcntl.DN_MULTISHOT
-        except AttributeError:
-            self.skipTest("F_NOTIFY or DN_MULTISHOT unavailable")
+        tatizo AttributeError:
+            self.skipTest("F_NOTIFY ama DN_MULTISHOT unavailable")
         fd = os.open(os.path.dirname(os.path.abspath(TESTFN)), os.O_RDONLY)
-        try:
+        jaribu:
             fcntl.fcntl(fd, cmd, flags)
-        finally:
+        mwishowe:
             os.close(fd)
 
     eleza test_flock(self):
-        # Solaris needs readable file for shared lock
+        # Solaris needs readable file kila shared lock
         self.f = open(TESTFN, 'wb+')
         fileno = self.f.fileno()
         fcntl.flock(fileno, fcntl.LOCK_SH)

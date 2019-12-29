@@ -10,7 +10,7 @@ __all__ = ['Popen']
 
 
 #
-# Wrapper for an fd used while launching a process
+# Wrapper kila an fd used wakati launching a process
 #
 
 kundi _DupFd(object):
@@ -42,31 +42,31 @@ kundi Popen(popen_fork.Popen):
         prep_data = spawn.get_preparation_data(process_obj._name)
         fp = io.BytesIO()
         set_spawning_popen(self)
-        try:
+        jaribu:
             reduction.dump(prep_data, fp)
             reduction.dump(process_obj, fp)
-        finally:
-            set_spawning_popen(None)
+        mwishowe:
+            set_spawning_popen(Tupu)
 
-        parent_r = child_w = child_r = parent_w = None
-        try:
+        parent_r = child_w = child_r = parent_w = Tupu
+        jaribu:
             parent_r, child_w = os.pipe()
             child_r, parent_w = os.pipe()
             cmd = spawn.get_command_line(tracker_fd=tracker_fd,
                                          pipe_handle=child_r)
             self._fds.extend([child_r, child_w])
-            self.pid = util.spawnv_passfds(spawn.get_executable(),
+            self.pid = util.spawnv_pitafds(spawn.get_executable(),
                                            cmd, self._fds)
             self.sentinel = parent_r
-            with open(parent_w, 'wb', closefd=False) as f:
+            with open(parent_w, 'wb', closefd=Uongo) kama f:
                 f.write(fp.getbuffer())
-        finally:
+        mwishowe:
             fds_to_close = []
-            for fd in (parent_r, parent_w):
-                ikiwa fd is not None:
+            kila fd kwenye (parent_r, parent_w):
+                ikiwa fd ni sio Tupu:
                     fds_to_close.append(fd)
             self.finalizer = util.Finalize(self, util.close_fds, fds_to_close)
 
-            for fd in (child_r, child_w):
-                ikiwa fd is not None:
+            kila fd kwenye (child_r, child_w):
+                ikiwa fd ni sio Tupu:
                     os.close(fd)

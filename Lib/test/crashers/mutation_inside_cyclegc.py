@@ -5,7 +5,7 @@
 # This means that there are many places in the source where an arbitrary
 # mutation could unexpectedly occur.
 
-# The example below shows list_slice() not expecting the call to
+# The example below shows list_slice() sio expecting the call to
 # PyList_New to mutate the input list.  (Of course there are many
 # more examples like this one.)
 
@@ -16,7 +16,7 @@ class A(object):
     pass
 
 def callback(x):
-    del lst[:]
+    toa lst[:]
 
 
 keepalive = []
@@ -26,6 +26,6 @@ for i in range(100):
     a = A()
     a.cycle = a
     keepalive.append(weakref.ref(a, callback))
-    del a
-    while lst:
+    toa a
+    wakati lst:
         keepalive.append(lst[:])

@@ -4,16 +4,16 @@
              tdemo_forest.py
 
 Displays a 'forest' of 3 breadth-first-trees
-similar to the one in tree.
+similar to the one kwenye tree.
 For further remarks see tree.py
 
-This example is a 'breadth-first'-rewrite of
+This example ni a 'breadth-first'-rewrite of
 a Logo program written by Erich Neuwirth. See
 http://homepage.univie.ac.at/erich.neuwirth/
 """
 kutoka turtle agiza Turtle, colormode, tracer, mainloop
 kutoka random agiza randrange
-kutoka time agiza perf_counter as clock
+kutoka time agiza perf_counter kama clock
 
 eleza symRandom(n):
     rudisha randrange(-n,n+1)
@@ -21,10 +21,10 @@ eleza symRandom(n):
 eleza randomize( branchlist, angledist, sizedist ):
     rudisha [ (angle+symRandom(angledist),
               sizefactor*1.01**symRandom(sizedist))
-                     for angle, sizefactor in branchlist ]
+                     kila angle, sizefactor kwenye branchlist ]
 
 eleza randomfd( t, distance, parts, angledist ):
-    for i in range(parts):
+    kila i kwenye range(parts):
         t.left(symRandom(angledist))
         t.forward( (1.0 * distance)/parts )
 
@@ -34,22 +34,22 @@ eleza tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=
     ikiwa level > 0:
         lst = []
         brs = []
-        for t, branchlist in list(zip(tlist,branchlists)):
+        kila t, branchlist kwenye list(zip(tlist,branchlists)):
             t.pensize( size * widthfactor )
             t.pencolor( 255 - (180 - 11 * level + symRandom(15)),
                         180 - 11 * level + symRandom(15),
                         0 )
             t.pendown()
             randomfd(t, size, level, angledist )
-            yield 1
-            for angle, sizefactor in branchlist:
+            tuma 1
+            kila angle, sizefactor kwenye branchlist:
                 t.left(angle)
                 lst.append(t.clone())
                 brs.append(randomize(branchlist, angledist, sizedist))
                 t.right(angle)
-        for x in tree(lst, size*sizefactor, level-1, widthfactor, brs,
+        kila x kwenye tree(lst, size*sizefactor, level-1, widthfactor, brs,
                       angledist, sizedist):
-            yield None
+            tuma Tupu
 
 
 eleza start(t,x,y):
@@ -89,15 +89,15 @@ eleza main():
     s = doit2(7, Turtle(undobuffersize=1))
     t = doit3(5, Turtle(undobuffersize=1))
     a = clock()
-    while True:
+    wakati Kweli:
         done = 0
-        for b in u,s,t:
-            try:
+        kila b kwenye u,s,t:
+            jaribu:
                 b.__next__()
             except:
                 done += 1
         ikiwa done == 3:
-            break
+            koma
 
     tracer(1,10)
     b = clock()

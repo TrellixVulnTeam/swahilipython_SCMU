@@ -136,7 +136,7 @@ kundi TestMROEntry(unittest.TestCase):
         self.assertEqual(D.__class__, Meta)
 
     eleza test_mro_entry_type_call(self):
-        # Substitution should _not_ happen in direct type call
+        # Substitution should _not_ happen kwenye direct type call
         kundi C:
             eleza __mro_entries__(self, bases):
                 rudisha ()
@@ -153,7 +153,7 @@ kundi TestClassGetitem(unittest.TestCase):
         kundi C:
             eleza __class_getitem__(*args, **kwargs):
                 getitem_args.extend([args, kwargs])
-                rudisha None
+                rudisha Tupu
         C[int, str]
         self.assertEqual(getitem_args[0], (C, (int, str)))
         self.assertEqual(getitem_args[1], {})
@@ -176,7 +176,7 @@ kundi TestClassGetitem(unittest.TestCase):
     eleza test_class_getitem_inheritance_2(self):
         kundi C:
             eleza __class_getitem__(cls, item):
-                rudisha 'Should not see this'
+                rudisha 'Should sio see this'
         kundi D(C):
             eleza __class_getitem__(cls, item):
                 rudisha f'{cls.__name__}[{item.__name__}]'
@@ -204,37 +204,37 @@ kundi TestClassGetitem(unittest.TestCase):
 
     eleza test_class_getitem_with_builtins(self):
         kundi A(dict):
-            called_with = None
+            called_with = Tupu
 
             eleza __class_getitem__(cls, item):
                 cls.called_with = item
         kundi B(A):
-            pass
-        self.assertIs(B.called_with, None)
+            pita
+        self.assertIs(B.called_with, Tupu)
         B[int]
         self.assertIs(B.called_with, int)
 
     eleza test_class_getitem_errors(self):
         kundi C_too_few:
             eleza __class_getitem__(cls):
-                rudisha None
+                rudisha Tupu
         with self.assertRaises(TypeError):
             C_too_few[int]
         kundi C_too_many:
             eleza __class_getitem__(cls, one, two):
-                rudisha None
+                rudisha Tupu
         with self.assertRaises(TypeError):
             C_too_many[int]
 
     eleza test_class_getitem_errors_2(self):
         kundi C:
             eleza __class_getitem__(cls, item):
-                rudisha None
+                rudisha Tupu
         with self.assertRaises(TypeError):
             C()[int]
         kundi E: ...
         e = E()
-        e.__class_getitem__ = lambda cls, item: 'This will not work'
+        e.__class_getitem__ = lambda cls, item: 'This will sio work'
         with self.assertRaises(TypeError):
             e[int]
         kundi C_not_callable:
@@ -249,7 +249,7 @@ kundi TestClassGetitem(unittest.TestCase):
         self.assertEqual(Meta[int], 'Meta[int]')
 
     eleza test_class_getitem_with_metaclass(self):
-        kundi Meta(type): pass
+        kundi Meta(type): pita
         kundi C(metaclass=Meta):
             eleza __class_getitem__(cls, item):
                 rudisha f'{cls.__name__}[{item.__name__}]'
@@ -276,7 +276,7 @@ kundi CAPITest(unittest.TestCase):
         self.assertIs(type(IntGeneric), GenericAlias)
         self.assertEqual(IntGeneric.__mro_entries__(()), (int,))
         kundi C(IntGeneric):
-            pass
+            pita
         self.assertEqual(C.__bases__, (int,))
         self.assertEqual(C.__orig_bases__, (IntGeneric,))
         self.assertEqual(C.__mro__, (C, int, object))

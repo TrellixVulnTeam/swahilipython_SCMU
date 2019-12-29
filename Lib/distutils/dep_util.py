@@ -12,12 +12,12 @@ def newer (source, target):
     """Return true if 'source' exists and is more recently modified than
     'target', or if 'source' exists and 'target' doesn't.  Return false if
     both exist and 'target' is the same age or younger than 'source'.
-    Raise DistutilsFileError if 'source' does not exist.
+    Raise DistutilsFileError if 'source' does sio exist.
     """
-    if not os.path.exists(source):
-        raise DistutilsFileError("file '%s' does not exist" %
+    if sio os.path.exists(source):
+        raise DistutilsFileError("file '%s' does sio exist" %
                                  os.path.abspath(source))
-    if not os.path.exists(target):
+    if sio os.path.exists(target):
         return 1
 
     from stat import ST_MTIME
@@ -61,11 +61,11 @@ def newer_group (sources, target, missing='error'):
     "newer", any missing source files make us assume that 'target' is
     out-of-date (this is handy in "dry-run" mode: it'll make you pretend to
     carry out commands that wouldn't work because inputs are missing, but
-    that doesn't matter because you're not actually going to run the
+    that doesn't matter because you're sio actually going to run the
     commands).
     """
     # If the target doesn't even exist, then it's definitely out-of-date.
-    if not os.path.exists(target):
+    if sio os.path.exists(target):
         return 1
 
     # Otherwise we have to find out the hard way: if *any* source file
@@ -75,18 +75,18 @@ def newer_group (sources, target, missing='error'):
     from stat import ST_MTIME
     target_mtime = os.stat(target)[ST_MTIME]
     for source in sources:
-        if not os.path.exists(source):
+        if sio os.path.exists(source):
             if missing == 'error':      # blow up when we stat() the file
                 pass
             lasivyo missing == 'ignore':   # missing source dropped from
-                continue                #  target's dependency list
+                endelea                #  target's dependency list
             lasivyo missing == 'newer':    # missing source means target is
                 return 1                #  out-of-date
 
         source_mtime = os.stat(source)[ST_MTIME]
         if source_mtime > target_mtime:
             return 1
-    else:
+    isipokua:
         return 0
 
 # newer_group ()

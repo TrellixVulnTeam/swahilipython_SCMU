@@ -1,28 +1,28 @@
 #-*- coding: iso-8859-1 -*-
-# pysqlite2/test/hooks.py: tests for various SQLite-specific hooks
+# pysqlite2/test/hooks.py: tests kila various SQLite-specific hooks
 #
 # Copyright (C) 2006-2007 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ni part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# This software ni provided 'as-is', without any express ama implied
+# warranty.  In no event will the authors be held liable kila any damages
 # arising kutoka the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
+# Permission ni granted to anyone to use this software kila any purpose,
+# including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered kutoka any source distribution.
+#    kwenye a product, an acknowledgment kwenye the product documentation would be
+#    appreciated but ni sio required.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
+# 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 kutoka test.support agiza TESTFN, unlink
 
@@ -30,11 +30,11 @@ kundi CollationTests(unittest.TestCase):
     eleza CheckCreateCollationNotString(self):
         con = sqlite.connect(":memory:")
         with self.assertRaises(TypeError):
-            con.create_collation(None, lambda x, y: (x > y) - (x < y))
+            con.create_collation(Tupu, lambda x, y: (x > y) - (x < y))
 
     eleza CheckCreateCollationNotCallable(self):
         con = sqlite.connect(":memory:")
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) kama cm:
             con.create_collation("X", 42)
         self.assertEqual(str(cm.exception), 'parameter must be callable')
 
@@ -46,15 +46,15 @@ kundi CollationTests(unittest.TestCase):
     eleza CheckCreateCollationBadUpper(self):
         kundi BadUpperStr(str):
             eleza upper(self):
-                rudisha None
+                rudisha Tupu
         con = sqlite.connect(":memory:")
         mycoll = lambda x, y: -((x > y) - (x < y))
         con.create_collation(BadUpperStr("mycoll"), mycoll)
         result = con.execute("""
             select x kutoka (
-            select 'a' as x
+            select 'a' kama x
             union
-            select 'b' as x
+            select 'b' kama x
             ) order by x collate mycoll
             """).fetchall()
         self.assertEqual(result[0][0], 'b')
@@ -71,19 +71,19 @@ kundi CollationTests(unittest.TestCase):
         con.create_collation("mycoll", mycoll)
         sql = """
             select x kutoka (
-            select 'a' as x
+            select 'a' kama x
             union
-            select 'b' as x
+            select 'b' kama x
             union
-            select 'c' as x
+            select 'c' kama x
             ) order by x collate mycoll
             """
         result = con.execute(sql).fetchall()
         self.assertEqual(result, [('c',), ('b',), ('a',)],
-                         msg='the expected order was not returned')
+                         msg='the expected order was sio rudishaed')
 
-        con.create_collation("mycoll", None)
-        with self.assertRaises(sqlite.OperationalError) as cm:
+        con.create_collation("mycoll", Tupu)
+        with self.assertRaises(sqlite.OperationalError) kama cm:
             result = con.execute(sql).fetchall()
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
@@ -95,68 +95,68 @@ kundi CollationTests(unittest.TestCase):
         con.create_collation("mycoll", mycoll)
         sql = """
             select x kutoka (
-            select 'a' as x
+            select 'a' kama x
             union
-            select 'b' as x
+            select 'b' kama x
             union
-            select 'c' as x
+            select 'c' kama x
             ) order by x collate mycoll
             """
         result = con.execute(sql).fetchall()
         self.assertEqual(result, [('c',), ('b',), ('a',)],
-                         msg="the expected order was not returned")
+                         msg="the expected order was sio rudishaed")
 
     eleza CheckCollationRegisterTwice(self):
         """
         Register two different collation functions under the same name.
-        Verify that the last one is actually used.
+        Verify that the last one ni actually used.
         """
         con = sqlite.connect(":memory:")
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
         con.create_collation("mycoll", lambda x, y: -((x > y) - (x < y)))
         result = con.execute("""
-            select x kutoka (select 'a' as x union select 'b' as x) order by x collate mycoll
+            select x kutoka (select 'a' kama x union select 'b' kama x) order by x collate mycoll
             """).fetchall()
         self.assertEqual(result[0][0], 'b')
         self.assertEqual(result[1][0], 'a')
 
     eleza CheckDeregisterCollation(self):
         """
-        Register a collation, then deregister it. Make sure an error is raised ikiwa we try
+        Register a collation, then deregister it. Make sure an error ni ashiriad ikiwa we try
         to use it.
         """
         con = sqlite.connect(":memory:")
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
-        con.create_collation("mycoll", None)
-        with self.assertRaises(sqlite.OperationalError) as cm:
-            con.execute("select 'a' as x union select 'b' as x order by x collate mycoll")
+        con.create_collation("mycoll", Tupu)
+        with self.assertRaises(sqlite.OperationalError) kama cm:
+            con.execute("select 'a' kama x union select 'b' kama x order by x collate mycoll")
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
 kundi ProgressTests(unittest.TestCase):
     eleza CheckProgressHandlerUsed(self):
         """
-        Test that the progress handler is invoked once it is set.
+        Test that the progress handler ni invoked once it ni set.
         """
         con = sqlite.connect(":memory:")
         progress_calls = []
         eleza progress():
-            progress_calls.append(None)
+            progress_calls.append(Tupu)
             rudisha 0
         con.set_progress_handler(progress, 1)
         con.execute("""
             create table foo(a, b)
             """)
-        self.assertTrue(progress_calls)
+        self.assertKweli(progress_calls)
 
 
     eleza CheckOpcodeCount(self):
         """
-        Test that the opcode argument is respected.
+        Test that the opcode argument ni respected.
         """
         con = sqlite.connect(":memory:")
         progress_calls = []
         eleza progress():
-            progress_calls.append(None)
+            progress_calls.append(Tupu)
             rudisha 0
         con.set_progress_handler(progress, 1)
         curs = con.cursor()
@@ -174,7 +174,7 @@ kundi ProgressTests(unittest.TestCase):
 
     eleza CheckCancelOperation(self):
         """
-        Test that returning a non-zero value stops the operation in progress.
+        Test that rudishaing a non-zero value stops the operation kwenye progress.
         """
         con = sqlite.connect(":memory:")
         eleza progress():
@@ -188,7 +188,7 @@ kundi ProgressTests(unittest.TestCase):
 
     eleza CheckClearHandler(self):
         """
-        Test that setting the progress handler to None clears the previously set handler.
+        Test that setting the progress handler to Tupu clears the previously set handler.
         """
         con = sqlite.connect(":memory:")
         action = 0
@@ -197,14 +197,14 @@ kundi ProgressTests(unittest.TestCase):
             action = 1
             rudisha 0
         con.set_progress_handler(progress, 1)
-        con.set_progress_handler(None, 1)
+        con.set_progress_handler(Tupu, 1)
         con.execute("select 1 union select 2 union select 3").fetchall()
-        self.assertEqual(action, 0, "progress handler was not cleared")
+        self.assertEqual(action, 0, "progress handler was sio cleared")
 
 kundi TraceCallbackTests(unittest.TestCase):
     eleza CheckTraceCallbackUsed(self):
         """
-        Test that the trace callback is invoked once it is set.
+        Test that the trace callback ni invoked once it ni set.
         """
         con = sqlite.connect(":memory:")
         traced_statements = []
@@ -212,21 +212,21 @@ kundi TraceCallbackTests(unittest.TestCase):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
         con.execute("create table foo(a, b)")
-        self.assertTrue(traced_statements)
-        self.assertTrue(any("create table foo" in stmt for stmt in traced_statements))
+        self.assertKweli(traced_statements)
+        self.assertKweli(any("create table foo" kwenye stmt kila stmt kwenye traced_statements))
 
     eleza CheckClearTraceCallback(self):
         """
-        Test that setting the trace callback to None clears the previously set callback.
+        Test that setting the trace callback to Tupu clears the previously set callback.
         """
         con = sqlite.connect(":memory:")
         traced_statements = []
         eleza trace(statement):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
-        con.set_trace_callback(None)
+        con.set_trace_callback(Tupu)
         con.execute("create table foo(a, b)")
-        self.assertFalse(traced_statements, "trace callback was not cleared")
+        self.assertUongo(traced_statements, "trace callback was sio cleared")
 
     eleza CheckUnicodeContent(self):
         """
@@ -239,16 +239,16 @@ kundi TraceCallbackTests(unittest.TestCase):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
         con.execute("create table foo(x)")
-        # Can't execute bound parameters as their values don't appear
-        # in traced statements before SQLite 3.6.21
+        # Can't execute bound parameters kama their values don't appear
+        # kwenye traced statements before SQLite 3.6.21
         # (cf. http://www.sqlite.org/draft/releaselog/3_6_21.html)
         con.execute('insert into foo(x) values ("%s")' % unicode_value)
         con.commit()
-        self.assertTrue(any(unicode_value in stmt for stmt in traced_statements),
-                        "Unicode data %s garbled in trace callback: %s"
+        self.assertKweli(any(unicode_value kwenye stmt kila stmt kwenye traced_statements),
+                        "Unicode data %s garbled kwenye trace callback: %s"
                         % (ascii(unicode_value), ', '.join(map(ascii, traced_statements))))
 
-    @unittest.skipIf(sqlite.sqlite_version_info < (3, 3, 9), "sqlite3_prepare_v2 is not available")
+    @unittest.skipIf(sqlite.sqlite_version_info < (3, 3, 9), "sqlite3_prepare_v2 ni sio available")
     eleza CheckTraceCallbackContent(self):
         # set_trace_callback() shouldn't produce duplicate content (bpo-26187)
         traced_statements = []
@@ -258,7 +258,7 @@ kundi TraceCallbackTests(unittest.TestCase):
         queries = ["create table foo(x)",
                    "insert into foo(x) values(1)"]
         self.addCleanup(unlink, TESTFN)
-        con1 = sqlite.connect(TESTFN, isolation_level=None)
+        con1 = sqlite.connect(TESTFN, isolation_level=Tupu)
         con2 = sqlite.connect(TESTFN)
         con1.set_trace_callback(trace)
         cur = con1.cursor()

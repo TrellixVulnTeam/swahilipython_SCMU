@@ -132,7 +132,7 @@ class ArrayTestCase(unittest.TestCase):
         # Array types are cached internally in the _ctypes extension,
         # in a WeakValueDictionary.  Make sure the array type is
         # removed from the cache when the itemtype goes away.  This
-        # test will not fail, but will show a leak in the testsuite.
+        # test will sio fail, but will show a leak in the testsuite.
 
         # Create a new type:
         class my_int(c_int):

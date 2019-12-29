@@ -30,13 +30,13 @@ class RegressionTestResult(unittest.TextTestResult):
 
     @classmethod
     def __getId(cls, test):
-        try:
+        jaribu:
             test_id = test.id
-        except AttributeError:
+        tatizo AttributeError:
             return str(test)
-        try:
+        jaribu:
             return test_id()
-        except TypeError:
+        tatizo TypeError:
             return str(test_id)
         return repr(test)
 
@@ -60,24 +60,24 @@ class RegressionTestResult(unittest.TextTestResult):
             e.set('time', f'{time.perf_counter() - self.__start_time:0.6f}')
 
         if capture:
-            if self._stdout_buffer is not None:
+            if self._stdout_buffer ni sio None:
                 stdout = self._stdout_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-out').text = stdout
-            if self._stderr_buffer is not None:
+            if self._stderr_buffer ni sio None:
                 stderr = self._stderr_buffer.getvalue().rstrip()
                 ET.SubElement(e, 'system-err').text = stderr
 
         for k, v in args.items():
-            if not k or not v:
-                continue
+            if sio k or sio v:
+                endelea
             e2 = ET.SubElement(e, k)
             if hasattr(v, 'items'):
                 for k2, v2 in v.items():
                     if k2:
                         e2.set(k2, str(v2))
-                    else:
+                    isipokua:
                         e2.text = str(v2)
-            else:
+            isipokua:
                 e2.text = str(v)
 
     def __write(self, c, word):
@@ -89,9 +89,9 @@ class RegressionTestResult(unittest.TextTestResult):
         if isinstance(err_type, type):
             if err_type.__module__ == 'builtins':
                 typename = err_type.__name__
-            else:
+            isipokua:
                 typename = f'{err_type.__module__}.{err_type.__name__}'
-        else:
+        isipokua:
             typename = repr(err_type)
 
         msg = traceback.format_exception(err_type, err_value, None)

@@ -1,13 +1,13 @@
 # XXX TO DO:
 # - popup menu
-# - support partial or total redisplay
+# - support partial ama total redisplay
 # - more doc strings
 # - tooltips
 
 # object browser
 
 # XXX TO DO:
-# - for classes/modules, add "open source" to object browser
+# - kila classes/modules, add "open source" to object browser
 kutoka reprlib agiza Repr
 
 kutoka idlelib.tree agiza TreeItem, TreeNode, ScrolledCanvas
@@ -17,7 +17,7 @@ myrepr.maxstring = 100
 myrepr.maxother = 100
 
 kundi ObjectTreeItem(TreeItem):
-    eleza __init__(self, labeltext, object, setfunction=None):
+    eleza __init__(self, labeltext, object, setfunction=Tupu):
         self.labeltext = labeltext
         self.object = object
         self.setfunction = setfunction
@@ -26,28 +26,28 @@ kundi ObjectTreeItem(TreeItem):
     eleza GetText(self):
         rudisha myrepr.repr(self.object)
     eleza GetIconName(self):
-        ikiwa not self.IsExpandable():
+        ikiwa sio self.IsExpandable():
             rudisha "python"
     eleza IsEditable(self):
-        rudisha self.setfunction is not None
+        rudisha self.setfunction ni sio Tupu
     eleza SetText(self, text):
-        try:
+        jaribu:
             value = eval(text)
             self.setfunction(value)
         except:
-            pass
-        else:
+            pita
+        isipokua:
             self.object = value
     eleza IsExpandable(self):
-        rudisha not not dir(self.object)
+        rudisha sio not dir(self.object)
     eleza GetSubList(self):
         keys = dir(self.object)
         sublist = []
-        for key in keys:
-            try:
+        kila key kwenye keys:
+            jaribu:
                 value = getattr(self.object, key)
-            except AttributeError:
-                continue
+            tatizo AttributeError:
+                endelea
             item = make_objecttreeitem(
                 str(key) + " =",
                 value,
@@ -58,20 +58,20 @@ kundi ObjectTreeItem(TreeItem):
 
 kundi ClassTreeItem(ObjectTreeItem):
     eleza IsExpandable(self):
-        rudisha True
+        rudisha Kweli
     eleza GetSubList(self):
         sublist = ObjectTreeItem.GetSubList(self)
         ikiwa len(self.object.__bases__) == 1:
             item = make_objecttreeitem("__bases__[0] =",
                 self.object.__bases__[0])
-        else:
+        isipokua:
             item = make_objecttreeitem("__bases__ =", self.object.__bases__)
         sublist.insert(0, item)
         rudisha sublist
 
 kundi AtomicObjectTreeItem(ObjectTreeItem):
     eleza IsExpandable(self):
-        rudisha False
+        rudisha Uongo
 
 kundi SequenceTreeItem(ObjectTreeItem):
     eleza IsExpandable(self):
@@ -80,11 +80,11 @@ kundi SequenceTreeItem(ObjectTreeItem):
         rudisha range(len(self.object))
     eleza GetSubList(self):
         sublist = []
-        for key in self.keys():
-            try:
+        kila key kwenye self.keys():
+            jaribu:
                 value = self.object[key]
-            except KeyError:
-                continue
+            tatizo KeyError:
+                endelea
             eleza setfunction(value, key=key, object=self.object):
                 object[key] = value
             item = make_objecttreeitem("%r:" % (key,), value, setfunction)
@@ -94,10 +94,10 @@ kundi SequenceTreeItem(ObjectTreeItem):
 kundi DictTreeItem(SequenceTreeItem):
     eleza keys(self):
         keys = list(self.object.keys())
-        try:
+        jaribu:
             keys.sort()
         except:
-            pass
+            pita
         rudisha keys
 
 dispatch = {
@@ -110,11 +110,11 @@ dispatch = {
     type: ClassTreeItem,
 }
 
-eleza make_objecttreeitem(labeltext, object, setfunction=None):
+eleza make_objecttreeitem(labeltext, object, setfunction=Tupu):
     t = type(object)
-    ikiwa t in dispatch:
+    ikiwa t kwenye dispatch:
         c = dispatch[t]
-    else:
+    isipokua:
         c = ObjectTreeItem
     rudisha c(labeltext, object, setfunction)
 
@@ -131,12 +131,12 @@ eleza _object_browser(parent):  # htest #
     sc = ScrolledCanvas(top, bg="white", highlightthickness=0, takefocus=1)
     sc.frame.pack(expand=1, fill="both")
     item = make_objecttreeitem("sys", sys)
-    node = TreeNode(sc.canvas, None, item)
+    node = TreeNode(sc.canvas, Tupu, item)
     node.update()
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_debugobj', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_debugobj', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_object_browser)

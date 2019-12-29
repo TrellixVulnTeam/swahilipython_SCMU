@@ -45,9 +45,9 @@ kundi Dialect:
         self._validate()
 
     def _validate(self):
-        try:
+        jaribu:
             _Dialect(self)
-        except TypeError as e:
+        tatizo TypeError as e:
             # We do this for compatibility with py2.3
             raise Error(str(e))
 
@@ -93,9 +93,9 @@ kundi DictReader:
     @property
     def fieldnames(self):
         if self._fieldnames is None:
-            try:
+            jaribu:
                 self._fieldnames = next(self.reader)
-            except StopIteration:
+            tatizo StopIteration:
                 pass
         self.line_num = self.reader.line_num
         return self._fieldnames
@@ -111,10 +111,10 @@ kundi DictReader:
         row = next(self.reader)
         self.line_num = self.reader.line_num
 
-        # unlike the basic reader, we prefer not to return blanks,
+        # unlike the basic reader, we prefer sio to return blanks,
         # because we will typically wind up with a dict full of None
         # values
-        while row == []:
+        wakati row == []:
             row = next(self.reader)
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
@@ -132,7 +132,7 @@ kundi DictWriter:
                  dialect="excel", *args, **kwds):
         self.fieldnames = fieldnames    # list of keys for the dict
         self.restval = restval          # for writing short dicts
-        if extrasaction.lower() not in ("raise", "ignore"):
+        if extrasaction.lower() haiko kwenye ("raise", "ignore"):
             raise ValueError("extrasaction (%s) must be 'raise' or 'ignore'"
                              % extrasaction)
         self.extrasaction = extrasaction
@@ -146,7 +146,7 @@ kundi DictWriter:
         if self.extrasaction == "raise":
             wrong_fields = rowdict.keys() - self.fieldnames
             if wrong_fields:
-                raise ValueError("dict contains fields not in fieldnames: "
+                raise ValueError("dict contains fields haiko kwenye fieldnames: "
                                  + ", ".join([repr(x) for x in wrong_fields]))
         return (rowdict.get(key, self.restval) for key in self.fieldnames)
 
@@ -157,9 +157,9 @@ kundi DictWriter:
         return self.writer.writerows(map(self._dict_to_list, rowdicts))
 
 # Guard Sniffer's type checking against builds that exclude complex()
-try:
+jaribu:
     complex
-except NameError:
+tatizo NameError:
     complex = float
 
 kundi Sniffer:
@@ -179,12 +179,12 @@ kundi Sniffer:
 
         quotechar, doublequote, delimiter, skipinitialspace = \
                    self._guess_quote_and_delimiter(sample, delimiters)
-        if not delimiter:
+        if sio delimiter:
             delimiter, skipinitialspace = self._guess_delimiter(sample,
                                                                 delimiters)
 
-        if not delimiter:
-            raise Error("Could not determine delimiter")
+        if sio delimiter:
+            raise Error("Could sio determine delimiter")
 
         kundi dialect(Dialect):
             _name = "sniffed"
@@ -221,9 +221,9 @@ kundi Sniffer:
             regexp = re.compile(restr, re.DOTALL | re.MULTILINE)
             matches = regexp.findall(data)
             if matches:
-                break
+                koma
 
-        if not matches:
+        if sio matches:
             # (quotechar, doublequote, delimiter, skipinitialspace)
             return ('', False, None, 0)
         quotes = {}
@@ -235,17 +235,17 @@ kundi Sniffer:
             key = m[n]
             if key:
                 quotes[key] = quotes.get(key, 0) + 1
-            try:
+            jaribu:
                 n = groupindex['delim'] - 1
                 key = m[n]
-            except KeyError:
-                continue
+            tatizo KeyError:
+                endelea
             if key and (delimiters is None or key in delimiters):
                 delims[key] = delims.get(key, 0) + 1
-            try:
+            jaribu:
                 n = groupindex['space'] - 1
-            except KeyError:
-                continue
+            tatizo KeyError:
+                endelea
             if m[n]:
                 spaces += 1
 
@@ -256,7 +256,7 @@ kundi Sniffer:
             skipinitialspace = delims[delim] == spaces
             if delim == '\n': # most likely a file with a single column
                 delim = ''
-        else:
+        isipokua:
             # there is *no* delimiter, it's a single column of quoted data
             delim = ''
             skipinitialspace = 0
@@ -271,7 +271,7 @@ kundi Sniffer:
 
         if dq_regexp.search(data):
             doublequote = True
-        else:
+        isipokua:
             doublequote = False
 
         return (quotechar, doublequote, delim, skipinitialspace)
@@ -307,7 +307,7 @@ kundi Sniffer:
         modes = {}
         delims = {}
         start, end = 0, chunkLength
-        while start < len(data):
+        wakati start < len(data):
             iteration += 1
             for line in data[start:end]:
                 for char in ascii:
@@ -321,7 +321,7 @@ kundi Sniffer:
             for char in charFrequency.keys():
                 items = list(charFrequency[char].items())
                 if len(items) == 1 and items[0][0] == 0:
-                    continue
+                    endelea
                 # get the mode of the frequencies
                 if len(items) > 1:
                     modes[char] = max(items, key=lambda x: x[1])
@@ -330,7 +330,7 @@ kundi Sniffer:
                     items.remove(modes[char])
                     modes[char] = (modes[char][0], modes[char][1]
                                    - sum(item[1] for item in items))
-                else:
+                isipokua:
                     modes[char] = items[0]
 
             # build a list of possible delimiters
@@ -340,7 +340,7 @@ kundi Sniffer:
             consistency = 1.0
             # minimum consistency threshold
             threshold = 0.9
-            while len(delims) == 0 and consistency >= threshold:
+            wakati len(delims) == 0 and consistency >= threshold:
                 for k, v in modeList:
                     if v[0] > 0 and v[1] > 0:
                         if ((v[1]/total) >= consistency and
@@ -358,7 +358,7 @@ kundi Sniffer:
             start = end
             end += chunkLength
 
-        if not delims:
+        if sio delims:
             return ('', 0)
 
         # if there's more than one, fall back to a 'preferred' list
@@ -386,7 +386,7 @@ kundi Sniffer:
         # row, then the first row is presumed to be labels. If the type
         # can't be determined, it is assumed to be a string in which case
         # the length of the string is the determining factor: if all of the
-        # rows except for the first are the same length, it's a header.
+        # rows tatizo for the first are the same length, it's a header.
         # Finally, a 'vote' is taken at the end for each column, adding or
         # subtracting kutoka the likelihood of the first row being a header.
 
@@ -402,31 +402,31 @@ kundi Sniffer:
         for row in rdr:
             # arbitrary number of rows to check, to keep it sane
             if checked > 20:
-                break
+                koma
             checked += 1
 
             if len(row) != columns:
-                continue # skip rows that have irregular number of columns
+                endelea # skip rows that have irregular number of columns
 
             for col in list(columnTypes.keys()):
 
                 for thisType in [int, float, complex]:
-                    try:
+                    jaribu:
                         thisType(row[col])
-                        break
-                    except (ValueError, OverflowError):
+                        koma
+                    tatizo (ValueError, OverflowError):
                         pass
-                else:
+                isipokua:
                     # fallback to length of string
                     thisType = len(row[col])
 
                 if thisType != columnTypes[col]:
                     if columnTypes[col] is None: # add new column type
                         columnTypes[col] = thisType
-                    else:
+                    isipokua:
                         # type is inconsistent, remove column kutoka
                         # consideration
-                        del columnTypes[col]
+                        toa columnTypes[col]
 
         # finally, compare results against first row and "vote"
         # on whether it's a header
@@ -435,14 +435,14 @@ kundi Sniffer:
             if type(colType) == type(0): # it's a length
                 if len(header[col]) != colType:
                     hasHeader += 1
-                else:
+                isipokua:
                     hasHeader -= 1
-            else: # attempt typecast
-                try:
+            isipokua: # attempt typecast
+                jaribu:
                     colType(header[col])
-                except (ValueError, TypeError):
+                tatizo (ValueError, TypeError):
                     hasHeader += 1
-                else:
+                isipokua:
                     hasHeader -= 1
 
         return hasHeader > 0

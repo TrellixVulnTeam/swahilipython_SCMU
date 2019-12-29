@@ -22,15 +22,15 @@ kundi UTF8ModeTests(unittest.TestCase):
     }
 
     eleza posix_locale(self):
-        loc = locale.setlocale(locale.LC_CTYPE, None)
-        rudisha (loc in POSIX_LOCALES)
+        loc = locale.setlocale(locale.LC_CTYPE, Tupu)
+        rudisha (loc kwenye POSIX_LOCALES)
 
-    eleza get_output(self, *args, failure=False, **kw):
+    eleza get_output(self, *args, failure=Uongo, **kw):
         kw = dict(self.DEFAULT_ENV, **kw)
         ikiwa failure:
             out = assert_python_failure(*args, **kw)
             out = out[2]
-        else:
+        isipokua:
             out = assert_python_ok(*args, **kw)
             out = out[1]
         rudisha out.decode().rstrip("\n\r")
@@ -39,7 +39,7 @@ kundi UTF8ModeTests(unittest.TestCase):
     eleza test_posix_locale(self):
         code = 'agiza sys; andika(sys.flags.utf8_mode)'
 
-        for loc in POSIX_LOCALES:
+        kila loc kwenye POSIX_LOCALES:
             with self.subTest(LC_ALL=loc):
                 out = self.get_output('-c', code, LC_ALL=loc)
                 self.assertEqual(out, '1')
@@ -59,7 +59,7 @@ kundi UTF8ModeTests(unittest.TestCase):
 
         ikiwa MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 Mode
-            # and has the priority over -X utf8
+            # na has the priority over -X utf8
             out = self.get_output('-X', 'utf8', '-c', code,
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
@@ -79,20 +79,20 @@ kundi UTF8ModeTests(unittest.TestCase):
 
         ikiwa MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
-            # and has the priority over PYTHONUTF8
+            # na has the priority over PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code, PYTHONUTF8='1',
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
 
         # Cannot test with the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
-        ikiwa not self.posix_locale():
-            # PYTHONUTF8 should be ignored ikiwa -E is used
+        ikiwa sio self.posix_locale():
+            # PYTHONUTF8 should be ignored ikiwa -E ni used
             out = self.get_output('-E', '-c', code, PYTHONUTF8='1')
             self.assertEqual(out, '0')
 
         # invalid mode
-        out = self.get_output('-c', code, PYTHONUTF8='xxx', failure=True)
+        out = self.get_output('-c', code, PYTHONUTF8='xxx', failure=Kweli)
         self.assertIn('invalid PYTHONUTF8 environment variable value',
                       out.rstrip())
 
@@ -104,8 +104,8 @@ kundi UTF8ModeTests(unittest.TestCase):
         ''')
 
         ikiwa MS_WINDOWS:
-            expected = 'utf-8/surrogatepass'
-        else:
+            expected = 'utf-8/surrogatepita'
+        isipokua:
             expected = 'utf-8/surrogateescape'
 
         out = self.get_output('-X', 'utf8', '-c', code)
@@ -113,7 +113,7 @@ kundi UTF8ModeTests(unittest.TestCase):
 
         ikiwa MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
-            # and has the priority over -X utf8 and PYTHONUTF8
+            # na has the priority over -X utf8 na PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code,
                                   PYTHONUTF8='strict',
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
@@ -153,7 +153,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         code = textwrap.dedent('''
             agiza sys
             filename = sys.argv[1]
-            with open(filename) as fp:
+            with open(filename) kama fp:
                 andika(f"{fp.encoding}/{fp.errors}")
         ''')
         filename = __file__
@@ -161,7 +161,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-c', code, filename, PYTHONUTF8='1')
         self.assertEqual(out, 'UTF-8/strict')
 
-    eleza _check_io_encoding(self, module, encoding=None, errors=None):
+    eleza _check_io_encoding(self, module, encoding=Tupu, errors=Tupu):
         filename = __file__
 
         # Encoding explicitly set
@@ -174,15 +174,15 @@ kundi UTF8ModeTests(unittest.TestCase):
             agiza sys
             kutoka %s agiza open
             filename = sys.argv[1]
-            with open(filename, %s) as fp:
+            with open(filename, %s) kama fp:
                 andika(f"{fp.encoding}/{fp.errors}")
         ''') % (module, ', '.join(args))
         out = self.get_output('-c', code, filename,
                               PYTHONUTF8='1')
 
-        ikiwa not encoding:
+        ikiwa sio encoding:
             encoding = 'UTF-8'
-        ikiwa not errors:
+        ikiwa sio errors:
             errors = 'strict'
         self.assertEqual(out, f'{encoding}/{errors}')
 
@@ -199,11 +199,11 @@ kundi UTF8ModeTests(unittest.TestCase):
         self.check_io_encoding('_pyio')
 
     eleza test_locale_getpreferredencoding(self):
-        code = 'agiza locale; andika(locale.getpreferredencoding(False), locale.getpreferredencoding(True))'
+        code = 'agiza locale; andika(locale.getpreferredencoding(Uongo), locale.getpreferredencoding(Kweli))'
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, 'UTF-8 UTF-8')
 
-        for loc in POSIX_LOCALES:
+        kila loc kwenye POSIX_LOCALES:
             with self.subTest(LC_ALL=loc):
                 out = self.get_output('-X', 'utf8', '-c', code, LC_ALL=loc)
                 self.assertEqual(out, 'UTF-8 UTF-8')
@@ -221,17 +221,17 @@ kundi UTF8ModeTests(unittest.TestCase):
             self.assertEqual(args, ascii(expected), out)
 
         check('utf8', [arg_utf8])
-        for loc in POSIX_LOCALES:
+        kila loc kwenye POSIX_LOCALES:
             with self.subTest(LC_ALL=loc):
                 check('utf8', [arg_utf8], LC_ALL=loc)
 
-        ikiwa sys.platform == 'darwin' or support.is_android or VXWORKS:
+        ikiwa sys.platform == 'darwin' ama support.is_android ama VXWORKS:
             c_arg = arg_utf8
         elikiwa sys.platform.startswith("aix"):
             c_arg = arg.decode('iso-8859-1')
-        else:
+        isipokua:
             c_arg = arg_ascii
-        for loc in POSIX_LOCALES:
+        kila loc kwenye POSIX_LOCALES:
             with self.subTest(LC_ALL=loc):
                 check('utf8=0', [c_arg], LC_ALL=loc)
 
@@ -239,7 +239,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         # CPython: check that Py_Main() doesn't increment Py_OptimizeFlag
         # twice when -X utf8 requires to parse the configuration twice (when
         # the encoding changes after reading the configuration, the
-        # configuration is read again with the new encoding).
+        # configuration ni read again with the new encoding).
         code = 'agiza sys; andika(sys.flags.optimize)'
         out = self.get_output('-X', 'utf8', '-O', '-c', code)
         self.assertEqual(out, '1')

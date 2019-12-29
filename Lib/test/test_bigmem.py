@@ -1,10 +1,10 @@
-"""Bigmem tests - tests for the 32-bit boundary in containers.
+"""Bigmem tests - tests kila the 32-bit boundary kwenye containers.
 
-These tests try to exercise the 32-bit boundary that is sometimes, if
-rarely, exceeded in practice, but almost never tested.  They are really only
+These tests try to exercise the 32-bit boundary that ni sometimes, if
+rarely, exceeded kwenye practice, but almost never tested.  They are really only
 meaningful on 64-bit builds on machines with a *lot* of memory, but the
 tests are always run, usually with very low memory limits to make sure the
-tests themselves don't suffer kutoka bitrot.  To run them for real, pass a
+tests themselves don't suffer kutoka bitrot.  To run them kila real, pita a
 high memory limit to regrtest, with the -M option.
 """
 
@@ -16,50 +16,50 @@ agiza operator
 agiza sys
 
 # These tests all use one of the bigmemtest decorators to indicate how much
-# memory they use and how much memory they need to be even meaningful.  The
+# memory they use na how much memory they need to be even meaningful.  The
 # decorators take two arguments: a 'memuse' indicator declaring
-# (approximate) bytes per size-unit the test will use (at peak usage), and a
+# (approximate) bytes per size-unit the test will use (at peak usage), na a
 # 'minsize' indicator declaring a minimum *useful* size.  A test that
 # allocates a bytestring to test various operations near the end will have a
 # minsize of at least 2Gb (or it wouldn't reach the 32-bit limit, so the
-# test wouldn't be very useful) and a memuse of 1 (one byte per size-unit,
+# test wouldn't be very useful) na a memuse of 1 (one byte per size-unit,
 # ikiwa it allocates only one big string at a time.)
 #
 # When run with a memory limit set, both decorators skip tests that need
 # more memory than available to be meaningful.  The precisionbigmemtest will
-# always pass minsize as size, even ikiwa there is much more memory available.
+# always pita minsize kama size, even ikiwa there ni much more memory available.
 # The bigmemtest decorator will scale size upward to fill available memory.
 #
 # Bigmem testing houserules:
 #
-#  - Try not to allocate too many large objects. It's okay to rely on
-#    refcounting semantics, and don't forget that 's = create_largestring()'
+#  - Try sio to allocate too many large objects. It's okay to rely on
+#    refcounting semantics, na don't forget that 's = create_largestring()'
 #    doesn't release the old 's' (ikiwa it exists) until well after its new
-#    value has been created. Use 'del s' before the create_largestring call.
+#    value has been created. Use 'toa s' before the create_largestring call.
 #
-#  - Do *not* compare large objects using assertEqual, assertIn or similar.
-#    It's a lengthy operation and the errormessage will be utterly useless
+#  - Do *not* compare large objects using assertEqual, assertIn ama similar.
+#    It's a lengthy operation na the errormessage will be utterly useless
 #    due to its size.  To make sure whether a result has the right contents,
-#    better to use the strip or count methods, or compare meaningful slices.
+#    better to use the strip ama count methods, ama compare meaningful slices.
 #
-#  - Don't forget to test for large indices, offsets and results and such,
-#    in addition to large sizes. Anything that probes the 32-bit boundary.
+#  - Don't forget to test kila large indices, offsets na results na such,
+#    kwenye addition to large sizes. Anything that probes the 32-bit boundary.
 #
-#  - When repeating an object (say, a substring, or a small list) to create
-#    a large object, make the subobject of a length that is not a power of
+#  - When repeating an object (say, a substring, ama a small list) to create
+#    a large object, make the subobject of a length that ni sio a power of
 #    2. That way, int-wrapping problems are more easily detected.
 #
 #  - Despite the bigmemtest decorator, all tests will actually be called
-#    with a much smaller number too, in the normal test run (5Kb currently.)
-#    This is so the tests themselves get frequent testing.
+#    with a much smaller number too, kwenye the normal test run (5Kb currently.)
+#    This ni so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
-#    passed-in 'size', and don't rely on the size being very large. Also,
+#    pitaed-in 'size', na don't rely on the size being very large. Also,
 #    memuse-per-size should remain sane (less than a few thousand); ikiwa your
 #    test uses more, adjust 'size' upward, instead.
 
-# BEWARE: it seems that one failing test can yield other subsequent tests to
-# fail as well. I do not know whether it is due to memory fragmentation
-# issues, or other specifics of the platform malloc() routine.
+# BEWARE: it seems that one failing test can tuma other subsequent tests to
+# fail kama well. I do sio know whether it ni due to memory fragmentation
+# issues, ama other specifics of the platform malloc() routine.
 
 ascii_char_size = 1
 ucs2_char_size = 2
@@ -106,20 +106,20 @@ kundi BaseStrTest:
         _ = self.kutoka_latin1
         SUBSTR = _(' abc eleza ghi')
         s = _('-') * size + SUBSTR
-        self.assertTrue(s.endswith(SUBSTR))
-        self.assertTrue(s.endswith(s))
+        self.assertKweli(s.endswith(SUBSTR))
+        self.assertKweli(s.endswith(s))
         s2 = _('...') + s
-        self.assertTrue(s2.endswith(s))
-        self.assertFalse(s.endswith(_('a') + SUBSTR))
-        self.assertFalse(SUBSTR.endswith(s))
+        self.assertKweli(s2.endswith(s))
+        self.assertUongo(s.endswith(_('a') + SUBSTR))
+        self.assertUongo(SUBSTR.endswith(s))
 
     @bigmemtest(size=_2G + 10, memuse=2)
     eleza test_expandtabs(self, size):
         _ = self.kutoka_latin1
         s = _('-') * size
         tabsize = 8
-        self.assertTrue(s.expandtabs() == s)
-        del s
+        self.assertKweli(s.expandtabs() == s)
+        toa s
         slen, remainder = divmod(size, tabsize)
         s = _('       \t') * slen
         s = s.expandtabs(tabsize)
@@ -165,38 +165,38 @@ kundi BaseStrTest:
         _ = self.kutoka_latin1
         SUBSTR = _('123456')
         s = _('a') * size + SUBSTR
-        self.assertTrue(s.isalnum())
+        self.assertKweli(s.isalnum())
         s += _('.')
-        self.assertFalse(s.isalnum())
+        self.assertUongo(s.isalnum())
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isalpha(self, size):
         _ = self.kutoka_latin1
         SUBSTR = _('zzzzzzz')
         s = _('a') * size + SUBSTR
-        self.assertTrue(s.isalpha())
+        self.assertKweli(s.isalpha())
         s += _('.')
-        self.assertFalse(s.isalpha())
+        self.assertUongo(s.isalpha())
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isdigit(self, size):
         _ = self.kutoka_latin1
         SUBSTR = _('123456')
         s = _('9') * size + SUBSTR
-        self.assertTrue(s.isdigit())
+        self.assertKweli(s.isdigit())
         s += _('z')
-        self.assertFalse(s.isdigit())
+        self.assertUongo(s.isdigit())
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_islower(self, size):
         _ = self.kutoka_latin1
         chars = _(''.join(
-            chr(c) for c in range(255) ikiwa not chr(c).isupper()))
+            chr(c) kila c kwenye range(255) ikiwa sio chr(c).isupper()))
         repeats = size // len(chars) + 2
         s = chars * repeats
-        self.assertTrue(s.islower())
+        self.assertKweli(s.islower())
         s += _('A')
-        self.assertFalse(s.islower())
+        self.assertUongo(s.islower())
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isspace(self, size):
@@ -204,31 +204,31 @@ kundi BaseStrTest:
         whitespace = _(' \f\n\r\t\v')
         repeats = size // len(whitespace) + 2
         s = whitespace * repeats
-        self.assertTrue(s.isspace())
+        self.assertKweli(s.isspace())
         s += _('j')
-        self.assertFalse(s.isspace())
+        self.assertUongo(s.isspace())
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_istitle(self, size):
         _ = self.kutoka_latin1
         SUBSTR = _('123456')
         s = _('').join([_('A'), _('a') * size, SUBSTR])
-        self.assertTrue(s.istitle())
+        self.assertKweli(s.istitle())
         s += _('A')
-        self.assertTrue(s.istitle())
+        self.assertKweli(s.istitle())
         s += _('aA')
-        self.assertFalse(s.istitle())
+        self.assertUongo(s.istitle())
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isupper(self, size):
         _ = self.kutoka_latin1
         chars = _(''.join(
-            chr(c) for c in range(255) ikiwa not chr(c).islower()))
+            chr(c) kila c kwenye range(255) ikiwa sio chr(c).islower()))
         repeats = size // len(chars) + 2
         s = chars * repeats
-        self.assertTrue(s.isupper())
+        self.assertKweli(s.isupper())
         s += _('a')
-        self.assertFalse(s.isupper())
+        self.assertUongo(s.isupper())
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_join(self, size):
@@ -237,15 +237,15 @@ kundi BaseStrTest:
         x = s.join([_('aaaaa'), _('bbbbb')])
         self.assertEqual(x.count(_('a')), 5)
         self.assertEqual(x.count(_('b')), 5)
-        self.assertTrue(x.startswith(_('aaaaaA')))
-        self.assertTrue(x.endswith(_('Abbbbb')))
+        self.assertKweli(x.startswith(_('aaaaaA')))
+        self.assertKweli(x.endswith(_('Abbbbb')))
 
     @bigmemtest(size=_2G + 10, memuse=1)
     eleza test_ljust(self, size):
         _ = self.kutoka_latin1
         SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
-        self.assertTrue(s.startswith(SUBSTR + _('  ')))
+        self.assertKweli(s.startswith(SUBSTR + _('  ')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
@@ -264,13 +264,13 @@ kundi BaseStrTest:
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
         self.assertEqual(s.lstrip(), SUBSTR.lstrip())
-        del s
+        toa s
         s = SUBSTR.ljust(size)
         self.assertEqual(len(s), size)
         # Type-specific optimization
         ikiwa isinstance(s, (str, bytes)):
             stripped = s.lstrip()
-            self.assertTrue(stripped is s)
+            self.assertKweli(stripped ni s)
 
     @bigmemtest(size=_2G + 10, memuse=2)
     eleza test_replace(self, size):
@@ -325,7 +325,7 @@ kundi BaseStrTest:
         _ = self.kutoka_latin1
         SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
-        self.assertTrue(s.startswith(SUBSTR + _('  ')))
+        self.assertKweli(s.startswith(SUBSTR + _('  ')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
@@ -336,16 +336,16 @@ kundi BaseStrTest:
         s = SUBSTR.ljust(size)
         self.assertEqual(len(s), size)
         self.assertEqual(s.rstrip(), SUBSTR.rstrip())
-        del s
+        toa s
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
         # Type-specific optimization
         ikiwa isinstance(s, (str, bytes)):
             stripped = s.rstrip()
-            self.assertTrue(stripped is s)
+            self.assertKweli(stripped ni s)
 
-    # The test takes about size bytes to build a string, and then about
-    # sqrt(size) substrings of sqrt(size) in size and a list to
+    # The test takes about size bytes to build a string, na then about
+    # sqrt(size) substrings of sqrt(size) kwenye size na a list to
     # hold sqrt(size) items. It's close but just over 2x size.
     @bigmemtest(size=_2G, memuse=2.1)
     eleza test_split_small(self, size):
@@ -358,20 +358,20 @@ kundi BaseStrTest:
         l = s.split()
         self.assertEqual(len(l), chunksize)
         expected = _('a')
-        for item in l:
+        kila item kwenye l:
             self.assertEqual(item, expected)
-        del l
+        toa l
         l = s.split(_('a'))
         self.assertEqual(len(l), chunksize + 1)
         expected = _(' ') * chunksize
-        for item in filter(None, l):
+        kila item kwenye filter(Tupu, l):
             self.assertEqual(item, expected)
 
-    # Allocates a string of twice size (and briefly two) and a list of
+    # Allocates a string of twice size (and briefly two) na a list of
     # size.  Because of internal affairs, the s.split() call produces a
     # list of size times the same one-character string, so we only
-    # suffer for the list size. (Otherwise, it'd cost another 48 times
-    # size in bytes!) Nevertheless, a list of size takes
+    # suffer kila the list size. (Otherwise, it'd cost another 48 times
+    # size kwenye bytes!) Nevertheless, a list of size takes
     # 8*size bytes.
     @bigmemtest(size=_2G + 5, memuse=ascii_char_size * 2 + pointer_size)
     eleza test_split_large(self, size):
@@ -380,7 +380,7 @@ kundi BaseStrTest:
         l = s.split()
         self.assertEqual(len(l), size)
         self.assertEqual(set(l), set([_('a')]))
-        del l
+        toa l
         l = s.split(_('a'))
         self.assertEqual(len(l), size + 1)
         self.assertEqual(set(l), set([_(' ')]))
@@ -396,7 +396,7 @@ kundi BaseStrTest:
         l = s.splitlines()
         self.assertEqual(len(l), chunksize * 4)
         expected = _(' ') * chunksize
-        for item in l:
+        kila item kwenye l:
             self.assertEqual(item, expected)
 
     @bigmemtest(size=_2G, memuse=2)
@@ -404,9 +404,9 @@ kundi BaseStrTest:
         _ = self.kutoka_latin1
         SUBSTR = _(' abc eleza ghi')
         s = _('-') * size + SUBSTR
-        self.assertTrue(s.startswith(s))
-        self.assertTrue(s.startswith(_('-') * size))
-        self.assertFalse(s.startswith(SUBSTR))
+        self.assertKweli(s.startswith(s))
+        self.assertKweli(s.startswith(_('-') * size))
+        self.assertUongo(s.startswith(SUBSTR))
 
     @bigmemtest(size=_2G, memuse=1)
     eleza test_strip(self, size):
@@ -415,7 +415,7 @@ kundi BaseStrTest:
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
-        del s
+        toa s
         s = SUBSTR.ljust(size)
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
@@ -436,8 +436,8 @@ kundi BaseStrTest:
         SUBSTR = _('SpaaHAaaAaham')
         s = SUBSTR * (size // len(SUBSTR) + 2)
         s = s.title()
-        self.assertTrue(s.startswith((SUBSTR * 3).title()))
-        self.assertTrue(s.endswith(SUBSTR.lower() * 3))
+        self.assertKweli(s.startswith((SUBSTR * 3).title()))
+        self.assertKweli(s.endswith(SUBSTR.lower() * 3))
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_translate(self, size):
@@ -468,13 +468,13 @@ kundi BaseStrTest:
         _ = self.kutoka_latin1
         SUBSTR = _('-568324723598234')
         s = SUBSTR.zfill(size)
-        self.assertTrue(s.endswith(_('0') + SUBSTR[1:]))
-        self.assertTrue(s.startswith(_('-0')))
+        self.assertKweli(s.endswith(_('0') + SUBSTR[1:]))
+        self.assertKweli(s.startswith(_('-0')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
-    # This test is meaningful even with size < 2G, as long as the
-    # doubled string is > 2G (but it tests more ikiwa both are > 2G :)
+    # This test ni meaningful even with size < 2G, kama long kama the
+    # doubled string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_concat(self, size):
         _ = self.kutoka_latin1
@@ -484,8 +484,8 @@ kundi BaseStrTest:
         self.assertEqual(len(s), size * 2)
         self.assertEqual(s.count(_('.')), size * 2)
 
-    # This test is meaningful even with size < 2G, as long as the
-    # repeated string is > 2G (but it tests more ikiwa both are > 2G :)
+    # This test ni meaningful even with size < 2G, kama long kama the
+    # repeated string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_repeat(self, size):
         _ = self.kutoka_latin1
@@ -503,14 +503,14 @@ kundi BaseStrTest:
         s = SUBSTR * (size // sublen)
         stepsize = len(s) // 100
         stepsize = stepsize - (stepsize % sublen)
-        for i in range(0, len(s) - stepsize, stepsize):
+        kila i kwenye range(0, len(s) - stepsize, stepsize):
             self.assertEqual(s[i], SUBSTR[0])
             self.assertEqual(s[i:i + sublen], SUBSTR)
             self.assertEqual(s[i:i + sublen:2], SUBSTR[::2])
             ikiwa i > 0:
                 self.assertEqual(s[i + sublen - 1:i - 1:-3],
                                  SUBSTR[sublen::-3])
-        # Make sure we do some slicing and indexing near the end of the
+        # Make sure we do some slicing na indexing near the end of the
         # string, too.
         self.assertEqual(s[len(s) - 1], SUBSTR[-1])
         self.assertEqual(s[-1], SUBSTR[-1])
@@ -535,39 +535,39 @@ kundi BaseStrTest:
         SUBSTR = _('0123456789')
         edge = _('-') * (size // 2)
         s = _('').join([edge, SUBSTR, edge])
-        del edge
-        self.assertTrue(SUBSTR in s)
-        self.assertFalse(SUBSTR * 2 in s)
-        self.assertTrue(_('-') in s)
-        self.assertFalse(_('a') in s)
+        toa edge
+        self.assertKweli(SUBSTR kwenye s)
+        self.assertUongo(SUBSTR * 2 kwenye s)
+        self.assertKweli(_('-') kwenye s)
+        self.assertUongo(_('a') kwenye s)
         s += _('a')
-        self.assertTrue(_('a') in s)
+        self.assertKweli(_('a') kwenye s)
 
     @bigmemtest(size=_2G + 10, memuse=2)
     eleza test_compare(self, size):
         _ = self.kutoka_latin1
         s1 = _('-') * size
         s2 = _('-') * size
-        self.assertTrue(s1 == s2)
-        del s2
+        self.assertKweli(s1 == s2)
+        toa s2
         s2 = s1 + _('a')
-        self.assertFalse(s1 == s2)
-        del s2
+        self.assertUongo(s1 == s2)
+        toa s2
         s2 = _('.') * size
-        self.assertFalse(s1 == s2)
+        self.assertUongo(s1 == s2)
 
     @bigmemtest(size=_2G + 10, memuse=1)
     eleza test_hash(self, size):
         # Not sure ikiwa we can do any meaningful tests here...  Even ikiwa we
         # start relying on the exact algorithm used, the result will be
         # different depending on the size of the C 'long int'.  Even this
-        # test is dodgy (there's no *guarantee* that the two things should
-        # have a different hash, even ikiwa they, in the current
+        # test ni dodgy (there's no *guarantee* that the two things should
+        # have a different hash, even ikiwa they, kwenye the current
         # implementation, almost always do.)
         _ = self.kutoka_latin1
         s = _('\x00') * size
         h1 = hash(s)
-        del s
+        toa s
         s = _('\x00') * (size + 1)
         self.assertNotEqual(h1, hash(s))
 
@@ -577,32 +577,32 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
     eleza kutoka_latin1(self, s):
         rudisha s
 
-    eleza basic_encode_test(self, size, enc, c='.', expectedsize=None):
-        ikiwa expectedsize is None:
+    eleza basic_encode_test(self, size, enc, c='.', expectedsize=Tupu):
+        ikiwa expectedsize ni Tupu:
             expectedsize = size
-        try:
+        jaribu:
             s = c * size
             self.assertEqual(len(s.encode(enc)), expectedsize)
-        finally:
-            s = None
+        mwishowe:
+            s = Tupu
 
     eleza setUp(self):
         # HACK: adjust memory use of tests inherited kutoka BaseStrTest
         # according to character size.
         self._adjusted = {}
-        for name in dir(BaseStrTest):
-            ikiwa not name.startswith('test_'):
-                continue
+        kila name kwenye dir(BaseStrTest):
+            ikiwa sio name.startswith('test_'):
+                endelea
             meth = getattr(type(self), name)
-            try:
+            jaribu:
                 memuse = meth.memuse
-            except AttributeError:
-                continue
+            tatizo AttributeError:
+                endelea
             meth.memuse = ascii_char_size * memuse
             self._adjusted[name] = memuse
 
     eleza tearDown(self):
-        for name, memuse in self._adjusted.items():
+        kila name, memuse kwenye self._adjusted.items():
             getattr(type(self), name).memuse = memuse
 
     @bigmemtest(size=_2G, memuse=ucs4_char_size * 3 + ascii_char_size * 2)
@@ -626,24 +626,24 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
 
     @bigmemtest(size=_4G // 6 + 2, memuse=ascii_char_size + ucs4_char_size + 1)
     eleza test_encode_raw_unicode_escape(self, size):
-        try:
+        jaribu:
             rudisha self.basic_encode_test(size, 'raw_unicode_escape')
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 5 + 70, memuse=ascii_char_size + 8 + 1)
     eleza test_encode_utf7(self, size):
-        try:
+        jaribu:
             rudisha self.basic_encode_test(size, 'utf7')
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 4 + 5, memuse=ascii_char_size + ucs4_char_size + 4)
     eleza test_encode_utf32(self, size):
-        try:
+        jaribu:
             rudisha self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
 
     @bigmemtest(size=_2G - 1, memuse=ascii_char_size + 1)
     eleza test_encode_ascii(self, size):
@@ -655,18 +655,18 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
     eleza test_format(self, size):
         s = '-' * size
         sf = '%s' % (s,)
-        self.assertTrue(s == sf)
-        del sf
+        self.assertKweli(s == sf)
+        toa sf
         sf = '..%s..' % (s,)
         self.assertEqual(len(sf), len(s) + 4)
-        self.assertTrue(sf.startswith('..-'))
-        self.assertTrue(sf.endswith('-..'))
-        del s, sf
+        self.assertKweli(sf.startswith('..-'))
+        self.assertKweli(sf.endswith('-..'))
+        toa s, sf
 
         size //= 2
         edge = '-' * size
         s = ''.join([edge, '%s', edge])
-        del edge
+        toa edge
         s = s % '...'
         self.assertEqual(len(s), size * 2 + 3)
         self.assertEqual(s.count('.'), 3)
@@ -680,10 +680,10 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s[0], "'")
         self.assertEqual(s[-1], "'")
         self.assertEqual(s.count('-'), size)
-        del s
-        # repr() will create a string four times as large as this 'binary
+        toa s
+        # repr() will create a string four times kama large kama this 'binary
         # string', but we don't want to allocate much more than twice
-        # size in total.  (We do extra testing in test_repr_large())
+        # size kwenye total.  (We do extra testing kwenye test_repr_large())
         size = size // 5 * 2
         s = '\x00' * size
         s = repr(s)
@@ -704,40 +704,40 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s.count('0'), size * 2)
 
     # ascii() calls encode('ascii', 'backslashreplace'), which itself
-    # creates a temporary Py_UNICODE representation in addition to the
+    # creates a temporary Py_UNICODE representation kwenye addition to the
     # original (Py_UCS2) one
     # There's also some overallocation when resizing the ascii() result
     # that isn't taken into account here.
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs2_char_size +
                                           ucs4_char_size + ascii_char_size * 6)
     eleza test_unicode_repr(self, size):
-        # Use an assigned, but not printable code point.
-        # It is in the range of the low surrogates \uDC00-\uDFFF.
+        # Use an assigned, but sio printable code point.
+        # It ni kwenye the range of the low surrogates \uDC00-\uDFFF.
         char = "\uDCBA"
         s = char * size
-        try:
-            for f in (repr, ascii):
+        jaribu:
+            kila f kwenye (repr, ascii):
                 r = f(s)
                 self.assertEqual(len(r), 2 + (len(f(char)) - 2) * size)
-                self.assertTrue(r.endswith(r"\udcba'"), r[-10:])
-                r = None
-        finally:
-            r = s = None
+                self.assertKweli(r.endswith(r"\udcba'"), r[-10:])
+                r = Tupu
+        mwishowe:
+            r = s = Tupu
 
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs4_char_size * 2 + ascii_char_size * 10)
     eleza test_unicode_repr_wide(self, size):
         char = "\U0001DCBA"
         s = char * size
-        try:
-            for f in (repr, ascii):
+        jaribu:
+            kila f kwenye (repr, ascii):
                 r = f(s)
                 self.assertEqual(len(r), 2 + (len(f(char)) - 2) * size)
-                self.assertTrue(r.endswith(r"\U0001dcba'"), r[-12:])
-                r = None
-        finally:
-            r = s = None
+                self.assertKweli(r.endswith(r"\U0001dcba'"), r[-12:])
+                r = Tupu
+        mwishowe:
+            r = s = Tupu
 
-    # The original test_translate is overridden here, so as to get the
+    # The original test_translate ni overridden here, so kama to get the
     # correct size estimate: str.translate() uses an intermediate Py_UCS4
     # representation.
 
@@ -807,37 +807,37 @@ kundi BytearrayTest(unittest.TestCase, BaseStrTest):
     eleza test_swapcase(self, size):
         self._test_swapcase(size)
 
-    test_hash = None
-    test_split_large = None
+    test_hash = Tupu
+    test_split_large = Tupu
 
 kundi TupleTest(unittest.TestCase):
 
-    # Tuples have a small, fixed-sized head and an array of pointers to
+    # Tuples have a small, fixed-sized head na an array of pointers to
     # data.  Since we're testing 64-bit addressing, we can assume that the
-    # pointers are 8 bytes, and that thus that the tuples take up 8 bytes
+    # pointers are 8 bytes, na that thus that the tuples take up 8 bytes
     # per size.
 
     # As a side-effect of testing long tuples, these tests happen to test
     # having more than 2<<31 references to any given object. Hence the
-    # use of different types of objects as contents in different tests.
+    # use of different types of objects kama contents kwenye different tests.
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2)
     eleza test_compare(self, size):
         t1 = ('',) * size
         t2 = ('',) * size
-        self.assertTrue(t1 == t2)
-        del t2
+        self.assertKweli(t1 == t2)
+        toa t2
         t2 = ('',) * (size + 1)
-        self.assertFalse(t1 == t2)
-        del t2
+        self.assertUongo(t1 == t2)
+        toa t2
         t2 = (1,) * size
-        self.assertFalse(t1 == t2)
+        self.assertUongo(t1 == t2)
 
-    # Test concatenating into a single tuple of more than 2G in length,
-    # and concatenating a tuple of more than 2G in length separately, so
-    # the smaller test still gets run even ikiwa there isn't memory for the
+    # Test concatenating into a single tuple of more than 2G kwenye length,
+    # na concatenating a tuple of more than 2G kwenye length separately, so
+    # the smaller test still gets run even ikiwa there isn't memory kila the
     # larger test (but we still let the tester know the larger test is
-    # skipped, in verbose mode.)
+    # skipped, kwenye verbose mode.)
     eleza basic_concat_test(self, size):
         t = ((),) * size
         self.assertEqual(len(t), size)
@@ -856,37 +856,37 @@ kundi TupleTest(unittest.TestCase):
     eleza test_contains(self, size):
         t = (1, 2, 3, 4, 5) * size
         self.assertEqual(len(t), size * 5)
-        self.assertTrue(5 in t)
-        self.assertFalse((1, 2, 3, 4, 5) in t)
-        self.assertFalse(0 in t)
+        self.assertKweli(5 kwenye t)
+        self.assertUongo((1, 2, 3, 4, 5) kwenye t)
+        self.assertUongo(0 kwenye t)
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     eleza test_hash(self, size):
         t1 = (0,) * size
         h1 = hash(t1)
-        del t1
+        toa t1
         t2 = (0,) * (size + 1)
-        self.assertFalse(h1 == hash(t2))
+        self.assertUongo(h1 == hash(t2))
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     eleza test_index_and_slice(self, size):
-        t = (None,) * size
+        t = (Tupu,) * size
         self.assertEqual(len(t), size)
-        self.assertEqual(t[-1], None)
-        self.assertEqual(t[5], None)
-        self.assertEqual(t[size - 1], None)
+        self.assertEqual(t[-1], Tupu)
+        self.assertEqual(t[5], Tupu)
+        self.assertEqual(t[size - 1], Tupu)
         self.assertRaises(IndexError, operator.getitem, t, size)
-        self.assertEqual(t[:5], (None,) * 5)
-        self.assertEqual(t[-5:], (None,) * 5)
-        self.assertEqual(t[20:25], (None,) * 5)
-        self.assertEqual(t[-25:-20], (None,) * 5)
-        self.assertEqual(t[size - 5:], (None,) * 5)
-        self.assertEqual(t[size - 5:size], (None,) * 5)
-        self.assertEqual(t[size - 6:size - 2], (None,) * 4)
+        self.assertEqual(t[:5], (Tupu,) * 5)
+        self.assertEqual(t[-5:], (Tupu,) * 5)
+        self.assertEqual(t[20:25], (Tupu,) * 5)
+        self.assertEqual(t[-25:-20], (Tupu,) * 5)
+        self.assertEqual(t[size - 5:], (Tupu,) * 5)
+        self.assertEqual(t[size - 5:size], (Tupu,) * 5)
+        self.assertEqual(t[size - 6:size - 2], (Tupu,) * 4)
         self.assertEqual(t[size:size], ())
         self.assertEqual(t[size:size+5], ())
 
-    # Like test_concat, split in two.
+    # Like test_concat, split kwenye two.
     eleza basic_test_repeat(self, size):
         t = ('',) * size
         self.assertEqual(len(t), size)
@@ -907,34 +907,34 @@ kundi TupleTest(unittest.TestCase):
 
     @bigmemtest(size=_1G - 1, memuse=pointer_size * 2)
     eleza test_kutoka_2G_generator(self, size):
-        try:
+        jaribu:
             t = tuple(iter([42]*size))
-        except MemoryError:
-            pass # acceptable on 32-bit
-        else:
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
+        isipokua:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)
             self.assertEqual(t[-10:], (42,) * 10)
 
     @bigmemtest(size=_1G - 25, memuse=pointer_size * 2)
     eleza test_kutoka_almost_2G_generator(self, size):
-        try:
+        jaribu:
             t = tuple(iter([42]*size))
-        except MemoryError:
-            pass # acceptable on 32-bit
-        else:
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
+        isipokua:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)
             self.assertEqual(t[-10:], (42,) * 10)
 
-    # Like test_concat, split in two.
+    # Like test_concat, split kwenye two.
     eleza basic_test_repr(self, size):
-        t = (False,) * size
+        t = (Uongo,) * size
         s = repr(t)
-        # The repr of a tuple of Falses is exactly 7 times the tuple length.
+        # The repr of a tuple of Uongos ni exactly 7 times the tuple length.
         self.assertEqual(len(s), size * 7)
-        self.assertEqual(s[:10], '(False, Fa')
-        self.assertEqual(s[-10:], 'se, False)')
+        self.assertEqual(s[:10], '(Uongo, Fa')
+        self.assertEqual(s[-10:], 'se, Uongo)')
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
     eleza test_repr_small(self, size):
@@ -946,7 +946,7 @@ kundi TupleTest(unittest.TestCase):
 
 kundi ListTest(unittest.TestCase):
 
-    # Like tuples, lists have a small, fixed-sized head and an array of
+    # Like tuples, lists have a small, fixed-sized head na an array of
     # pointers to data, so 8 bytes per size. Also like tuples, we make the
     # lists hold references to various objects to test their refcount
     # limits.
@@ -955,19 +955,19 @@ kundi ListTest(unittest.TestCase):
     eleza test_compare(self, size):
         l1 = [''] * size
         l2 = [''] * size
-        self.assertTrue(l1 == l2)
-        del l2
+        self.assertKweli(l1 == l2)
+        toa l2
         l2 = [''] * (size + 1)
-        self.assertFalse(l1 == l2)
-        del l2
+        self.assertUongo(l1 == l2)
+        toa l2
         l2 = [2] * size
-        self.assertFalse(l1 == l2)
+        self.assertUongo(l1 == l2)
 
-    # Test concatenating into a single list of more than 2G in length,
-    # and concatenating a list of more than 2G in length separately, so
-    # the smaller test still gets run even ikiwa there isn't memory for the
+    # Test concatenating into a single list of more than 2G kwenye length,
+    # na concatenating a list of more than 2G kwenye length separately, so
+    # the smaller test still gets run even ikiwa there isn't memory kila the
     # larger test (but we still let the tester know the larger test is
-    # skipped, in verbose mode.)
+    # skipped, kwenye verbose mode.)
     eleza basic_test_concat(self, size):
         l = [[]] * size
         self.assertEqual(len(l), size)
@@ -983,13 +983,13 @@ kundi ListTest(unittest.TestCase):
         rudisha self.basic_test_concat(size)
 
     # XXX This tests suffers kutoka overallocation, just like test_append.
-    # This should be fixed in future.
+    # This should be fixed kwenye future.
     eleza basic_test_inplace_concat(self, size):
         l = [sys.stdout] * size
         l += l
         self.assertEqual(len(l), size * 2)
-        self.assertTrue(l[0] is l[-1])
-        self.assertTrue(l[size - 1] is l[size + 1])
+        self.assertKweli(l[0] ni l[-1])
+        self.assertKweli(l[size - 1] ni l[size + 1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     eleza test_inplace_concat_small(self, size):
@@ -1003,9 +1003,9 @@ kundi ListTest(unittest.TestCase):
     eleza test_contains(self, size):
         l = [1, 2, 3, 4, 5] * size
         self.assertEqual(len(l), size * 5)
-        self.assertTrue(5 in l)
-        self.assertFalse([1, 2, 3, 4, 5] in l)
-        self.assertFalse(0 in l)
+        self.assertKweli(5 kwenye l)
+        self.assertUongo([1, 2, 3, 4, 5] kwenye l)
+        self.assertUongo(0 kwenye l)
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     eleza test_hash(self, size):
@@ -1014,25 +1014,25 @@ kundi ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     eleza test_index_and_slice(self, size):
-        l = [None] * size
+        l = [Tupu] * size
         self.assertEqual(len(l), size)
-        self.assertEqual(l[-1], None)
-        self.assertEqual(l[5], None)
-        self.assertEqual(l[size - 1], None)
+        self.assertEqual(l[-1], Tupu)
+        self.assertEqual(l[5], Tupu)
+        self.assertEqual(l[size - 1], Tupu)
         self.assertRaises(IndexError, operator.getitem, l, size)
-        self.assertEqual(l[:5], [None] * 5)
-        self.assertEqual(l[-5:], [None] * 5)
-        self.assertEqual(l[20:25], [None] * 5)
-        self.assertEqual(l[-25:-20], [None] * 5)
-        self.assertEqual(l[size - 5:], [None] * 5)
-        self.assertEqual(l[size - 5:size], [None] * 5)
-        self.assertEqual(l[size - 6:size - 2], [None] * 4)
+        self.assertEqual(l[:5], [Tupu] * 5)
+        self.assertEqual(l[-5:], [Tupu] * 5)
+        self.assertEqual(l[20:25], [Tupu] * 5)
+        self.assertEqual(l[-25:-20], [Tupu] * 5)
+        self.assertEqual(l[size - 5:], [Tupu] * 5)
+        self.assertEqual(l[size - 5:size], [Tupu] * 5)
+        self.assertEqual(l[size - 6:size - 2], [Tupu] * 4)
         self.assertEqual(l[size:size], [])
         self.assertEqual(l[size:size+5], [])
 
         l[size - 2] = 5
         self.assertEqual(len(l), size)
-        self.assertEqual(l[-3:], [None, 5, None])
+        self.assertEqual(l[-3:], [Tupu, 5, Tupu])
         self.assertEqual(l.count(5), 1)
         self.assertRaises(IndexError, operator.setitem, l, size, 6)
         self.assertEqual(len(l), size)
@@ -1040,37 +1040,37 @@ kundi ListTest(unittest.TestCase):
         l[size - 7:] = [1, 2, 3, 4, 5]
         size -= 2
         self.assertEqual(len(l), size)
-        self.assertEqual(l[-7:], [None, None, 1, 2, 3, 4, 5])
+        self.assertEqual(l[-7:], [Tupu, Tupu, 1, 2, 3, 4, 5])
 
         l[:7] = [1, 2, 3, 4, 5]
         size -= 2
         self.assertEqual(len(l), size)
-        self.assertEqual(l[:7], [1, 2, 3, 4, 5, None, None])
+        self.assertEqual(l[:7], [1, 2, 3, 4, 5, Tupu, Tupu])
 
-        del l[size - 1]
+        toa l[size - 1]
         size -= 1
         self.assertEqual(len(l), size)
         self.assertEqual(l[-1], 4)
 
-        del l[-2:]
+        toa l[-2:]
         size -= 2
         self.assertEqual(len(l), size)
         self.assertEqual(l[-1], 2)
 
-        del l[0]
+        toa l[0]
         size -= 1
         self.assertEqual(len(l), size)
         self.assertEqual(l[0], 2)
 
-        del l[:2]
+        toa l[:2]
         size -= 2
         self.assertEqual(len(l), size)
         self.assertEqual(l[0], 4)
 
-    # Like test_concat, split in two.
+    # Like test_concat, split kwenye two.
     eleza basic_test_repeat(self, size):
         l = [] * size
-        self.assertFalse(l)
+        self.assertUongo(l)
         l = [''] * size
         self.assertEqual(len(l), size)
         l = l * 2
@@ -1085,18 +1085,18 @@ kundi ListTest(unittest.TestCase):
         rudisha self.basic_test_repeat(size)
 
     # XXX This tests suffers kutoka overallocation, just like test_append.
-    # This should be fixed in future.
+    # This should be fixed kwenye future.
     eleza basic_test_inplace_repeat(self, size):
         l = ['']
         l *= size
         self.assertEqual(len(l), size)
-        self.assertTrue(l[0] is l[-1])
-        del l
+        self.assertKweli(l[0] ni l[-1])
+        toa l
 
         l = [''] * size
         l *= 2
         self.assertEqual(len(l), size * 2)
-        self.assertTrue(l[size - 1] is l[-1])
+        self.assertKweli(l[size - 1] ni l[-1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     eleza test_inplace_repeat_small(self, size):
@@ -1107,12 +1107,12 @@ kundi ListTest(unittest.TestCase):
         rudisha self.basic_test_inplace_repeat(size)
 
     eleza basic_test_repr(self, size):
-        l = [False] * size
+        l = [Uongo] * size
         s = repr(l)
-        # The repr of a list of Falses is exactly 7 times the list length.
+        # The repr of a list of Uongos ni exactly 7 times the list length.
         self.assertEqual(len(s), size * 7)
-        self.assertEqual(s[:10], '[False, Fa')
-        self.assertEqual(s[-10:], 'se, False]')
+        self.assertEqual(s[:10], '[Uongo, Fa')
+        self.assertEqual(s[-10:], 'se, Uongo]')
         self.assertEqual(s.count('F'), size)
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
@@ -1130,8 +1130,8 @@ kundi ListTest(unittest.TestCase):
         l = [object()] * size
         l.append(object())
         self.assertEqual(len(l), size+1)
-        self.assertTrue(l[-3] is l[-2])
-        self.assertFalse(l[-2] is l[-1])
+        self.assertKweli(l[-3] ni l[-2])
+        self.assertUongo(l[-2] ni l[-1])
 
     @bigmemtest(size=_2G // 5 + 2, memuse=pointer_size * 5)
     eleza test_count(self, size):
@@ -1140,13 +1140,13 @@ kundi ListTest(unittest.TestCase):
         self.assertEqual(l.count("1"), 0)
 
     # XXX This tests suffers kutoka overallocation, just like test_append.
-    # This should be fixed in future.
+    # This should be fixed kwenye future.
     eleza basic_test_extend(self, size):
         l = [object] * size
         l.extend(l)
         self.assertEqual(len(l), size * 2)
-        self.assertTrue(l[0] is l[-1])
-        self.assertTrue(l[size - 1] is l[size + 1])
+        self.assertKweli(l[0] ni l[-1])
+        self.assertKweli(l[size - 1] ni l[size + 1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     eleza test_extend_small(self, size):

@@ -20,7 +20,7 @@ RFC 2045 defines a method for including character set information in an
 `encoded-word' in a header.  This method is commonly used for 8-bit real names
 in To:/From:/Cc: etc. fields, as well as Subject: lines.
 
-This module does not do the line wrapping or end-of-line character
+This module does sio do the line wrapping or end-of-line character
 conversion necessary for proper internationalized headers; it only
 does dumb encoding and decoding.  To deal with the various line
 wrapping issues, use the email.header module.
@@ -84,7 +84,7 @@ def body_check(octet):
 def header_length(bytearray):
     """Return a header quoted-printable encoding length.
 
-    Note that this does not include any RFC 2047 chrome added by
+    Note that this does sio include any RFC 2047 chrome added by
     `header_encode()`.
 
     :param bytearray: An array of bytes (a.k.a. octets).
@@ -105,13 +105,13 @@ def body_length(bytearray):
 
 
 def _max_append(L, s, maxlen, extra=''):
-    if not isinstance(s, str):
+    if sio isinstance(s, str):
         s = chr(s)
-    if not L:
+    if sio L:
         L.append(s.lstrip())
     lasivyo len(L[-1]) + len(s) <= maxlen:
         L[-1] += extra + s
-    else:
+    isipokua:
         L.append(s.lstrip())
 
 
@@ -136,7 +136,7 @@ def header_encode(header_bytes, charset='iso-8859-1'):
     defaults to iso-8859-1.
     """
     # Return empty headers as an empty string.
-    if not header_bytes:
+    if sio header_bytes:
         return ''
     # Iterate over every byte, encoding if necessary.
     encoded = header_bytes.decode('latin1').translate(_QUOPRI_HEADER_MAP)
@@ -158,25 +158,25 @@ def body_encode(body, maxlinelen=76, eol=NL):
 
     Each line will be wrapped at, at most, maxlinelen characters before the
     eol string (maxlinelen defaults to 76 characters, the maximum value
-    permitted by RFC 2045).  Long lines will have the 'soft line break'
+    permitted by RFC 2045).  Long lines will have the 'soft line koma'
     quoted-printable character "=" appended to them, so the decoded text will
     be identical to the original text.
 
     The minimum maxlinelen is 4 to have room for a quoted character ("=XX")
-    followed by a soft line break.  Smaller values will generate a
+    followed by a soft line koma.  Smaller values will generate a
     ValueError.
 
     """
 
     if maxlinelen < 4:
         raise ValueError("maxlinelen must be at least 4")
-    if not body:
+    if sio body:
         return body
 
     # quote special characters
     body = body.translate(_QUOPRI_BODY_ENCODE_MAP)
 
-    soft_break = '=' + eol
+    soft_koma = '=' + eol
     # leave space for the '=' at the end of a line
     maxlinelen1 = maxlinelen - 1
 
@@ -184,19 +184,19 @@ def body_encode(body, maxlinelen=76, eol=NL):
     append = encoded_body.append
 
     for line in body.splitlines():
-        # break up the line into pieces no longer than maxlinelen - 1
+        # koma up the line into pieces no longer than maxlinelen - 1
         start = 0
         laststart = len(line) - 1 - maxlinelen
-        while start <= laststart:
+        wakati start <= laststart:
             stop = start + maxlinelen1
-            # make sure we don't break up an escape sequence
+            # make sure we don't koma up an escape sequence
             if line[stop - 2] == '=':
                 append(line[start:stop - 1])
                 start = stop - 2
             lasivyo line[stop - 1] == '=':
                 append(line[start:stop])
                 start = stop - 1
-            else:
+            isipokua:
                 append(line[start:stop] + '=')
                 start = stop
 
@@ -208,14 +208,14 @@ def body_encode(body, maxlinelen=76, eol=NL):
                 # for the three-character quoted encoding.
                 q = quote(line[-1])
             lasivyo room == 2:
-                # There's room for the whitespace character and a soft break.
-                q = line[-1] + soft_break
-            else:
-                # There's room only for a soft break.  The quoted whitespace
+                # There's room for the whitespace character and a soft koma.
+                q = line[-1] + soft_koma
+            isipokua:
+                # There's room only for a soft koma.  The quoted whitespace
                 # will be the only content on the subsequent line.
-                q = soft_break + quote(line[-1])
+                q = soft_koma + quote(line[-1])
             append(line[start:-1] + q)
-        else:
+        isipokua:
             append(line[start:])
 
     # add back final newline if present
@@ -226,14 +226,14 @@ def body_encode(body, maxlinelen=76, eol=NL):
 
 
 
-# BAW: I'm not sure if the intent was for the signature of this function to be
+# BAW: I'm sio sure if the intent was for the signature of this function to be
 # the same as base64MIME.decode() or not...
 def decode(encoded, eol=NL):
     """Decode a quoted-printable string.
 
     Lines are separated with eol, which defaults to \\n.
     """
-    if not encoded:
+    if sio encoded:
         return encoded
     # BAW: see comment in encode() above.  Again, we're building up the
     # decoded string with string concatenation, which could be done much more
@@ -242,35 +242,35 @@ def decode(encoded, eol=NL):
 
     for line in encoded.splitlines():
         line = line.rstrip()
-        if not line:
+        if sio line:
             decoded += eol
-            continue
+            endelea
 
         i = 0
         n = len(line)
-        while i < n:
+        wakati i < n:
             c = line[i]
             if c != '=':
                 decoded += c
                 i += 1
             # Otherwise, c == "=".  Are we at the end of the line?  If so, add
-            # a soft line break.
+            # a soft line koma.
             lasivyo i+1 == n:
                 i += 1
-                continue
+                endelea
             # Decode if in form =AB
             lasivyo i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
                 decoded += unquote(line[i:i+3])
                 i += 3
-            # Otherwise, not in form =AB, pass literally
-            else:
+            # Otherwise, haiko kwenye form =AB, pass literally
+            isipokua:
                 decoded += c
                 i += 1
 
             if i == n:
                 decoded += eol
-    # Special case if original string did not end with eol
-    if encoded[-1] not in '\r\n' and decoded.endswith(eol):
+    # Special case if original string did sio end with eol
+    if encoded[-1] haiko kwenye '\r\n' and decoded.endswith(eol):
         decoded = decoded[:-1]
     return decoded
 
@@ -291,7 +291,7 @@ def _unquote_match(match):
 def header_decode(s):
     """Decode a string encoded with RFC 2045 MIME header `Q' encoding.
 
-    This function does not parse a full MIME header value encoded with
+    This function does sio parse a full MIME header value encoded with
     quoted-printable (like =?iso-8859-1?q?Hello_World?=) -- please use
     the high level email.header class for that functionality.
     """

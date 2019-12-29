@@ -9,9 +9,9 @@ import os
 import re
 from email import message_from_file
 
-try:
+jaribu:
     import warnings
-except ImportError:
+tatizo ImportError:
     warnings = None
 
 from distutils.errors import *
@@ -20,7 +20,7 @@ from distutils.util import check_environ, strtobool, rfc822_escape
 from distutils import log
 from distutils.debug import DEBUG
 
-# Regex to define acceptable Distutils command names.  This is not *quite*
+# Regex to define acceptable Distutils command names.  This ni sio *quite*
 # the same as a Python NAME -- I don't allow leading underscores.  The fact
 # that they're very similar is no coincidence; the default naming scheme is
 # to look for a Python module named after the command.
@@ -32,7 +32,7 @@ def _ensure_list(value, fieldname):
         # a string containing comma separated values is okay.  It will
         # be converted to a list by Distribution.finalize_options().
         pass
-    lasivyo not isinstance(value, list):
+    lasivyo sio isinstance(value, list):
         # passing a tuple or an iterator perhaps, warn and convert
         typename = type(value).__name__
         msg = f"Warning: '{fieldname}' should be a list, got type '{typename}'"
@@ -81,7 +81,7 @@ Common commands: (see '--help-commands' for more)
   setup.py install    will install the package
 """
 
-    # options that are not propagated to the commands
+    # options that are sio propagated to the commands
     display_options = [
         ('help-commands', None,
          "list all available commands"),
@@ -137,7 +137,7 @@ Common commands: (see '--help-commands' for more)
         """Construct a new Distribution instance: initialize all the
         attributes of a Distribution, and then use 'attrs' (a dictionary
         mapping attribute names to values) to assign some of those
-        attributes their "real" values.  (Any attributes not mentioned in
+        attributes their "real" values.  (Any attributes sio mentioned in
         'attrs' will be assigned to some null value: 0, None, an empty list
         or dictionary, etc.)  Most importantly, initialize the
         'command_obj' attribute to the empty dictionary; this will be
@@ -177,7 +177,7 @@ Common commands: (see '--help-commands' for more)
 
         # 'script_name' and 'script_args' are usually set to sys.argv[0]
         # and sys.argv[1:], but they can be overridden when the caller is
-        # not necessarily a setup script run from the command-line.
+        # sio necessarily a setup script run from the command-line.
         self.script_name = None
         self.script_args = None
 
@@ -194,7 +194,7 @@ Common commands: (see '--help-commands' for more)
         # gives sysconfig.get_python_version() if the dist file is
         # specific to a Python version, 'any' if it is good for all
         # Python versions on the target platform, and '' for a source
-        # file. pyversion should not be used to specify minimum or
+        # file. pyversion should sio be used to specify minimum or
         # maximum required Python versions; use the metainfo for that
         # instead.
         self.dist_files = []
@@ -244,8 +244,8 @@ Common commands: (see '--help-commands' for more)
             # command options will override any supplied redundantly
             # through the general options dictionary.
             options = attrs.get('options')
-            if options is not None:
-                del attrs['options']
+            if options ni sio None:
+                toa attrs['options']
                 for (command, cmd_options) in options.items():
                     opt_dict = self.get_option_dict(command)
                     for (opt, val) in cmd_options.items():
@@ -253,15 +253,15 @@ Common commands: (see '--help-commands' for more)
 
             if 'licence' in attrs:
                 attrs['license'] = attrs['licence']
-                del attrs['licence']
+                toa attrs['licence']
                 msg = "'licence' distribution option is deprecated; use 'license'"
-                if warnings is not None:
+                if warnings ni sio None:
                     warnings.warn(msg)
-                else:
+                isipokua:
                     sys.stderr.write(msg + "\n")
 
             # Now work on the rest of the attributes.  Any attribute that's
-            # not already defined is invalid!
+            # sio already defined is invalid!
             for (key, val) in attrs.items():
                 if hasattr(self.metadata, "set_" + key):
                     getattr(self.metadata, "set_" + key)(val)
@@ -269,7 +269,7 @@ Common commands: (see '--help-commands' for more)
                     setattr(self.metadata, key, val)
                 lasivyo hasattr(self, key):
                     setattr(self, key, val)
-                else:
+                isipokua:
                     msg = "Unknown distribution option: %s" % repr(key)
                     warnings.warn(msg)
 
@@ -281,13 +281,13 @@ Common commands: (see '--help-commands' for more)
         # This also make sure we just look at the global options
         self.want_user_cfg = True
 
-        if self.script_args is not None:
+        if self.script_args ni sio None:
             for arg in self.script_args:
-                if not arg.startswith('-'):
-                    break
+                if sio arg.startswith('-'):
+                    koma
                 if arg == '--no-user-cfg':
                     self.want_user_cfg = False
-                    break
+                    koma
 
         self.finalize_options()
 
@@ -308,11 +308,11 @@ Common commands: (see '--help-commands' for more)
         if commands is None:             # dump all command option dicts
             commands = sorted(self.command_options.keys())
 
-        if header is not None:
+        if header ni sio None:
             self.announce(indent + header)
             indent = indent + "  "
 
-        if not commands:
+        if sio commands:
             self.announce(indent + "no commands known yet")
             return
 
@@ -321,7 +321,7 @@ Common commands: (see '--help-commands' for more)
             if opt_dict is None:
                 self.announce(indent +
                               "no option dict for '%s' command" % cmd_name)
-            else:
+            isipokua:
                 self.announce(indent +
                               "option dict for '%s' command:" % cmd_name)
                 out = pformat(opt_dict)
@@ -359,7 +359,7 @@ Common commands: (see '--help-commands' for more)
         # What to call the per-user config file
         if os.name == 'posix':
             user_filename = ".pydistutils.cfg"
-        else:
+        isipokua:
             user_filename = "pydistutils.cfg"
 
         # And look for the user config file
@@ -388,7 +388,7 @@ Common commands: (see '--help-commands' for more)
                 'install-platlib', 'install-purelib', 'install-headers',
                 'install-scripts', 'install-data', 'prefix', 'exec-prefix',
                 'home', 'user', 'root']
-        else:
+        isipokua:
             ignore_options = []
 
         ignore_options = frozenset(ignore_options)
@@ -409,7 +409,7 @@ Common commands: (see '--help-commands' for more)
                 opt_dict = self.get_option_dict(section)
 
                 for opt in options:
-                    if opt != '__name__' and opt not in ignore_options:
+                    if opt != '__name__' and opt haiko kwenye ignore_options:
                         val = parser.get(section,opt)
                         opt = opt.replace('-', '_')
                         opt_dict[opt] = (filename, val)
@@ -424,14 +424,14 @@ Common commands: (see '--help-commands' for more)
         if 'global' in self.command_options:
             for (opt, (src, val)) in self.command_options['global'].items():
                 alias = self.negative_opt.get(opt)
-                try:
+                jaribu:
                     if alias:
-                        setattr(self, alias, not strtobool(val))
+                        setattr(self, alias, sio strtobool(val))
                     lasivyo opt in ('verbose', 'dry_run'): # ugh!
                         setattr(self, opt, strtobool(val))
-                    else:
+                    isipokua:
                         setattr(self, opt, val)
-                except ValueError as msg:
+                tatizo ValueError as msg:
                     raise DistutilsOptionError(msg)
 
     # -- Command-line parsing methods ----------------------------------
@@ -479,7 +479,7 @@ Common commands: (see '--help-commands' for more)
         # for display options we return immediately
         if self.handle_display_options(option_order):
             return
-        while args:
+        wakati args:
             args = self._parse_command_opts(parser, args)
             if args is None:            # user asked for help (and got it)
                 return
@@ -497,7 +497,7 @@ Common commands: (see '--help-commands' for more)
             return
 
         # Oops, no commands found -- an end-user error
-        if not self.commands:
+        if sio self.commands:
             raise DistutilsArgError("no commands supplied")
 
         # All is well: return true
@@ -528,27 +528,27 @@ Common commands: (see '--help-commands' for more)
 
         # Pull the current command from the head of the command line
         command = args[0]
-        if not command_re.match(command):
+        if sio command_re.match(command):
             raise SystemExit("invalid command name '%s'" % command)
         self.commands.append(command)
 
         # Dig up the command class that implements this command, so we
         # 1) know that it's a valid command, and 2) know which options
         # it takes.
-        try:
+        jaribu:
             cmd_class = self.get_command_class(command)
-        except DistutilsModuleError as msg:
+        tatizo DistutilsModuleError as msg:
             raise DistutilsArgError(msg)
 
         # Require that the command class be derived from Command -- want
         # to be sure that the basic "command" interface is implemented.
-        if not issubclass(cmd_class, Command):
+        if sio issubclass(cmd_class, Command):
             raise DistutilsClassError(
                 "command class %s must subclass Command" % cmd_class)
 
         # Also make sure that the command object provides a list of its
         # known options.
-        if not (hasattr(cmd_class, 'user_options') and
+        if sio (hasattr(cmd_class, 'user_options') and
                 isinstance(cmd_class.user_options, list)):
             msg = ("command class %s must provide "
                 "'user_options' attribute (a list of tuples)")
@@ -566,7 +566,7 @@ Common commands: (see '--help-commands' for more)
         if (hasattr(cmd_class, 'help_options') and
                 isinstance(cmd_class.help_options, list)):
             help_options = fix_help_options(cmd_class.help_options)
-        else:
+        isipokua:
             help_options = []
 
         # All commands support the global options too, just by adding
@@ -588,7 +588,7 @@ Common commands: (see '--help-commands' for more)
                     help_option_found=1
                     if callable(func):
                         func()
-                    else:
+                    isipokua:
                         raise DistutilsClassError(
                             "invalid help function %r for help option '%s': "
                             "must be a callable object (function, etc.)"
@@ -613,7 +613,7 @@ Common commands: (see '--help-commands' for more)
         for attr in ('keywords', 'platforms'):
             value = getattr(self.metadata, attr)
             if value is None:
-                continue
+                endelea
             if isinstance(value, str):
                 value = [elm.strip() for elm in value.split(',')]
                 setattr(self.metadata, attr, value)
@@ -622,7 +622,7 @@ Common commands: (see '--help-commands' for more)
                    commands=[]):
         """Show help for the setup script command-line in the form of
         several lists of command-line options.  'parser' should be a
-        FancyGetopt instance; do not expect it to be returned in the
+        FancyGetopt instance; do sio expect it to be returned in the
         same state, as its option table will be reset to make it
         generate the correct help text.
 
@@ -639,7 +639,7 @@ Common commands: (see '--help-commands' for more)
         if global_options:
             if display_options:
                 options = self._get_toplevel_options()
-            else:
+            isipokua:
                 options = self.global_options
             parser.set_option_table(options)
             parser.print_help(self.common_usage + "\nGlobal options:")
@@ -655,13 +655,13 @@ Common commands: (see '--help-commands' for more)
         for command in self.commands:
             if isinstance(command, type) and issubclass(command, Command):
                 klass = command
-            else:
+            isipokua:
                 klass = self.get_command_class(command)
             if (hasattr(klass, 'help_options') and
                     isinstance(klass.help_options, list)):
                 parser.set_option_table(klass.user_options +
                                         fix_help_options(klass.help_options))
-            else:
+            isipokua:
                 parser.set_option_table(klass.user_options)
             parser.print_help("Options for '%s' command:" % klass.__name__)
             print('')
@@ -702,7 +702,7 @@ Common commands: (see '--help-commands' for more)
                 lasivyo opt in ('classifiers', 'provides', 'requires',
                              'obsoletes'):
                     print('\n'.join(value))
-                else:
+                isipokua:
                     print(value)
                 any_display_options = 1
 
@@ -716,11 +716,11 @@ Common commands: (see '--help-commands' for more)
 
         for cmd in commands:
             klass = self.cmdclass.get(cmd)
-            if not klass:
+            if sio klass:
                 klass = self.get_command_class(cmd)
-            try:
+            jaribu:
                 description = klass.description
-            except AttributeError:
+            tatizo AttributeError:
                 description = "(no description available)"
 
             print("  %-*s  %s" % (max_length, cmd, description))
@@ -729,7 +729,7 @@ Common commands: (see '--help-commands' for more)
         """Print out a help message listing all available commands with a
         description of each.  The list is divided into "standard commands"
         (listed in distutils.command.__all__) and "extra commands"
-        (mentioned in self.cmdclass, but not a standard command).  The
+        (mentioned in self.cmdclass, but sio a standard command).  The
         descriptions come from the command class attribute
         'description'.
         """
@@ -741,7 +741,7 @@ Common commands: (see '--help-commands' for more)
 
         extra_commands = []
         for cmd in self.cmdclass.keys():
-            if not is_std.get(cmd):
+            if sio is_std.get(cmd):
                 extra_commands.append(cmd)
 
         max_length = 0
@@ -762,7 +762,7 @@ Common commands: (see '--help-commands' for more)
         """Get a list of (command, description) tuples.
         The list is divided into "standard commands" (listed in
         distutils.command.__all__) and "extra commands" (mentioned in
-        self.cmdclass, but not a standard command).  The descriptions come
+        self.cmdclass, but sio a standard command).  The descriptions come
         from the command class attribute 'description'.
         """
         # Currently this is only used on Mac OS, for the Mac-only GUI
@@ -775,17 +775,17 @@ Common commands: (see '--help-commands' for more)
 
         extra_commands = []
         for cmd in self.cmdclass.keys():
-            if not is_std.get(cmd):
+            if sio is_std.get(cmd):
                 extra_commands.append(cmd)
 
         rv = []
         for cmd in (std_commands + extra_commands):
             klass = self.cmdclass.get(cmd)
-            if not klass:
+            if sio klass:
                 klass = self.get_command_class(cmd)
-            try:
+            jaribu:
                 description = klass.description
-            except AttributeError:
+            tatizo AttributeError:
                 description = "(no description available)"
             rv.append((cmd, description))
         return rv
@@ -795,11 +795,11 @@ Common commands: (see '--help-commands' for more)
     def get_command_packages(self):
         """Return a list of packages from which commands are loaded."""
         pkgs = self.command_packages
-        if not isinstance(pkgs, list):
+        if sio isinstance(pkgs, list):
             if pkgs is None:
                 pkgs = ''
             pkgs = [pkg.strip() for pkg in pkgs.split(',') if pkg != '']
-            if "distutils.command" not in pkgs:
+            if "distutils.command" haiko kwenye pkgs:
                 pkgs.insert(0, "distutils.command")
             self.command_packages = pkgs
         return pkgs
@@ -813,8 +813,8 @@ Common commands: (see '--help-commands' for more)
         the module.  The loaded class is also stored in 'cmdclass'
         to speed future calls to 'get_command_class()'.
 
-        Raises DistutilsModuleError if the expected module could not be
-        found, or if that module does not define the expected class.
+        Raises DistutilsModuleError if the expected module could sio be
+        found, or if that module does sio define the expected class.
         """
         klass = self.cmdclass.get(command)
         if klass:
@@ -824,15 +824,15 @@ Common commands: (see '--help-commands' for more)
             module_name = "%s.%s" % (pkgname, command)
             klass_name = command
 
-            try:
+            jaribu:
                 __import__(module_name)
                 module = sys.modules[module_name]
-            except ImportError:
-                continue
+            tatizo ImportError:
+                endelea
 
-            try:
+            jaribu:
                 klass = getattr(module, klass_name)
-            except AttributeError:
+            tatizo AttributeError:
                 raise DistutilsModuleError(
                     "invalid command '%s' (no class '%s' in module '%s')"
                     % (command, klass_name, module_name))
@@ -849,7 +849,7 @@ Common commands: (see '--help-commands' for more)
         return it (if 'create' is true) or return None.
         """
         cmd_obj = self.command_obj.get(command)
-        if not cmd_obj and create:
+        if sio cmd_obj and create:
             if DEBUG:
                 self.announce("Distribution.get_command_obj(): "
                               "creating '%s' command object" % command)
@@ -888,34 +888,34 @@ Common commands: (see '--help-commands' for more)
             if DEBUG:
                 self.announce("    %s = %s (from %s)" % (option, value,
                                                          source))
-            try:
+            jaribu:
                 bool_opts = [translate_longopt(o)
                              for o in command_obj.boolean_options]
-            except AttributeError:
+            tatizo AttributeError:
                 bool_opts = []
-            try:
+            jaribu:
                 neg_opt = command_obj.negative_opt
-            except AttributeError:
+            tatizo AttributeError:
                 neg_opt = {}
 
-            try:
+            jaribu:
                 is_string = isinstance(value, str)
                 if option in neg_opt and is_string:
-                    setattr(command_obj, neg_opt[option], not strtobool(value))
+                    setattr(command_obj, neg_opt[option], sio strtobool(value))
                 lasivyo option in bool_opts and is_string:
                     setattr(command_obj, option, strtobool(value))
                 lasivyo hasattr(command_obj, option):
                     setattr(command_obj, option, value)
-                else:
+                isipokua:
                     raise DistutilsOptionError(
                         "error in %s: command '%s' has no such option '%s'"
                         % (source, command_name, option))
-            except ValueError as msg:
+            tatizo ValueError as msg:
                 raise DistutilsOptionError(msg)
 
     def reinitialize_command(self, command, reinit_subcommands=0):
         """Reinitializes a command to the state it was in when first
-        returned by 'get_command_obj()': ie., initialized but not yet
+        returned by 'get_command_obj()': ie., initialized but sio yet
         finalized.  This provides the opportunity to sneak option
         values in programmatically, overriding or supplementing
         user-supplied values from the config files and command line.
@@ -933,13 +933,13 @@ Common commands: (see '--help-commands' for more)
         Returns the reinitialized command object.
         """
         from distutils.cmd import Command
-        if not isinstance(command, Command):
+        if sio isinstance(command, Command):
             command_name = command
             command = self.get_command_obj(command_name)
-        else:
+        isipokua:
             command_name = command.get_command_name()
 
-        if not command.finalized:
+        if sio command.finalized:
             return command
         command.initialize_options()
         command.finalized = 0
@@ -1010,8 +1010,8 @@ Common commands: (see '--help-commands' for more)
 
     def is_pure(self):
         return (self.has_pure_modules() and
-                not self.has_ext_modules() and
-                not self.has_c_libraries())
+                sio self.has_ext_modules() and
+                sio self.has_c_libraries())
 
     # -- Metadata query methods ----------------------------------------
 
@@ -1035,9 +1035,9 @@ class DistributionMetadata:
                          )
 
     def __init__(self, path=None):
-        if path is not None:
+        if path ni sio None:
             self.read_pkg_file(open(path))
-        else:
+        isipokua:
             self.name = None
             self.version = None
             self.author = None
@@ -1087,7 +1087,7 @@ class DistributionMetadata:
 
         if 'download-url' in msg:
             self.download_url = _read_field('download-url')
-        else:
+        isipokua:
             self.download_url = None
 
         self.long_description = _read_field('description')
@@ -1104,7 +1104,7 @@ class DistributionMetadata:
             self.requires = _read_list('requires')
             self.provides = _read_list('provides')
             self.obsoletes = _read_list('obsoletes')
-        else:
+        isipokua:
             self.requires = None
             self.provides = None
             self.obsoletes = None

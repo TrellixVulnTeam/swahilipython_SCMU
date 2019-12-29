@@ -1,4 +1,4 @@
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 machinery = test_util.import_importlib('importlib.machinery')
 
 agiza os
@@ -18,37 +18,37 @@ kutoka winreg agiza (
 )
 
 eleza delete_registry_tree(root, subkey):
-    try:
+    jaribu:
         hkey = OpenKey(root, subkey, access=KEY_ALL_ACCESS)
-    except OSError:
-        # subkey does not exist
-        return
-    while True:
-        try:
+    tatizo OSError:
+        # subkey does sio exist
+        rudisha
+    wakati Kweli:
+        jaribu:
             subsubkey = EnumKey(hkey, 0)
-        except OSError:
+        tatizo OSError:
             # no more subkeys
-            break
+            koma
         delete_registry_tree(hkey, subsubkey)
     CloseKey(hkey)
     DeleteKey(root, subkey)
 
 @contextmanager
-eleza setup_module(machinery, name, path=None):
+eleza setup_module(machinery, name, path=Tupu):
     ikiwa machinery.WindowsRegistryFinder.DEBUG_BUILD:
         root = machinery.WindowsRegistryFinder.REGISTRY_KEY_DEBUG
-    else:
+    isipokua:
         root = machinery.WindowsRegistryFinder.REGISTRY_KEY
     key = root.format(fullname=name,
                       sys_version='%d.%d' % sys.version_info[:2])
-    try:
-        with temp_module(name, "a = 1") as location:
+    jaribu:
+        with temp_module(name, "a = 1") kama location:
             subkey = CreateKey(HKEY_CURRENT_USER, key)
-            ikiwa path is None:
+            ikiwa path ni Tupu:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
-            yield
-    finally:
+            tuma
+    mwishowe:
         ikiwa machinery.WindowsRegistryFinder.DEBUG_BUILD:
             key = os.path.dirname(key)
         delete_registry_tree(HKEY_CURRENT_USER, key)
@@ -56,31 +56,31 @@ eleza setup_module(machinery, name, path=None):
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
 kundi WindowsRegistryFinderTests:
-    # The module name is process-specific, allowing for
+    # The module name ni process-specific, allowing for
     # simultaneous runs of the same test on a single machine.
     test_module = "spamham{}".format(os.getpid())
 
     eleza test_find_spec_missing(self):
         spec = self.machinery.WindowsRegistryFinder.find_spec('spam')
-        self.assertIs(spec, None)
+        self.assertIs(spec, Tupu)
 
     eleza test_find_module_missing(self):
         loader = self.machinery.WindowsRegistryFinder.find_module('spam')
-        self.assertIs(loader, None)
+        self.assertIs(loader, Tupu)
 
     eleza test_module_found(self):
         with setup_module(self.machinery, self.test_module):
             loader = self.machinery.WindowsRegistryFinder.find_module(self.test_module)
             spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
-            self.assertIsNot(loader, None)
-            self.assertIsNot(spec, None)
+            self.assertIsNot(loader, Tupu)
+            self.assertIsNot(spec, Tupu)
 
     eleza test_module_not_found(self):
         with setup_module(self.machinery, self.test_module, path="."):
             loader = self.machinery.WindowsRegistryFinder.find_module(self.test_module)
             spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
-            self.assertIsNone(loader)
-            self.assertIsNone(spec)
+            self.assertIsTupu(loader)
+            self.assertIsTupu(spec)
 
 (Frozen_WindowsRegistryFinderTests,
  Source_WindowsRegistryFinderTests
@@ -92,15 +92,15 @@ kundi WindowsExtensionSuffixTests:
         suffixes = self.machinery.EXTENSION_SUFFIXES
         expected_tag = ".cp{0.major}{0.minor}-{1}.pyd".format(sys.version_info,
             re.sub('[^a-zA-Z0-9]', '_', get_platform()))
-        try:
+        jaribu:
             untagged_i = suffixes.index(".pyd")
-        except ValueError:
+        tatizo ValueError:
             untagged_i = suffixes.index("_d.pyd")
             expected_tag = "_d" + expected_tag
 
         self.assertIn(expected_tag, suffixes)
 
-        # Ensure the tags are in the correct order
+        # Ensure the tags are kwenye the correct order
         tagged_i = suffixes.index(expected_tag)
         self.assertLess(tagged_i, untagged_i)
 

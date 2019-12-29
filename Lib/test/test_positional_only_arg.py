@@ -1,4 +1,4 @@
-"""Unit tests for the positional only argument syntax specified in PEP 570."""
+"""Unit tests kila the positional only argument syntax specified kwenye PEP 570."""
 
 agiza pickle
 agiza unittest
@@ -23,46 +23,46 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
             compile(codestr + "\n", "<test>", "single")
 
     eleza test_invalid_syntax_errors(self):
-        check_syntax_error(self, "eleza f(a, b = 5, /, c): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "eleza f(a = 5, b, /, c): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "eleza f(a = 5, b=1, /, c, *, d=2): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "eleza f(a = 5, b, /): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "eleza f(*args, /): pass")
-        check_syntax_error(self, "eleza f(*args, a, /): pass")
-        check_syntax_error(self, "eleza f(**kwargs, /): pass")
-        check_syntax_error(self, "eleza f(/, a = 1): pass")
-        check_syntax_error(self, "eleza f(/, a): pass")
-        check_syntax_error(self, "eleza f(/): pass")
-        check_syntax_error(self, "eleza f(*, a, /): pass")
-        check_syntax_error(self, "eleza f(*, /, a): pass")
-        check_syntax_error(self, "eleza f(a, /, a): pass", "duplicate argument 'a' in function definition")
-        check_syntax_error(self, "eleza f(a, /, *, a): pass", "duplicate argument 'a' in function definition")
-        check_syntax_error(self, "eleza f(a, b/2, c): pass")
-        check_syntax_error(self, "eleza f(a, /, c, /): pass")
-        check_syntax_error(self, "eleza f(a, /, c, /, d): pass")
-        check_syntax_error(self, "eleza f(a, /, c, /, d, *, e): pass")
-        check_syntax_error(self, "eleza f(a, *, c, /, d, e): pass")
+        check_syntax_error(self, "eleza f(a, b = 5, /, c): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "eleza f(a = 5, b, /, c): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "eleza f(a = 5, b=1, /, c, *, d=2): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "eleza f(a = 5, b, /): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "eleza f(*args, /): pita")
+        check_syntax_error(self, "eleza f(*args, a, /): pita")
+        check_syntax_error(self, "eleza f(**kwargs, /): pita")
+        check_syntax_error(self, "eleza f(/, a = 1): pita")
+        check_syntax_error(self, "eleza f(/, a): pita")
+        check_syntax_error(self, "eleza f(/): pita")
+        check_syntax_error(self, "eleza f(*, a, /): pita")
+        check_syntax_error(self, "eleza f(*, /, a): pita")
+        check_syntax_error(self, "eleza f(a, /, a): pita", "duplicate argument 'a' kwenye function definition")
+        check_syntax_error(self, "eleza f(a, /, *, a): pita", "duplicate argument 'a' kwenye function definition")
+        check_syntax_error(self, "eleza f(a, b/2, c): pita")
+        check_syntax_error(self, "eleza f(a, /, c, /): pita")
+        check_syntax_error(self, "eleza f(a, /, c, /, d): pita")
+        check_syntax_error(self, "eleza f(a, /, c, /, d, *, e): pita")
+        check_syntax_error(self, "eleza f(a, *, c, /, d, e): pita")
 
     eleza test_invalid_syntax_errors_async(self):
-        check_syntax_error(self, "async eleza f(a, b = 5, /, c): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "async eleza f(a = 5, b, /, c): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "async eleza f(a = 5, b=1, /, c, d=2): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "async eleza f(a = 5, b, /): pass", "non-default argument follows default argument")
-        check_syntax_error(self, "async eleza f(*args, /): pass")
-        check_syntax_error(self, "async eleza f(*args, a, /): pass")
-        check_syntax_error(self, "async eleza f(**kwargs, /): pass")
-        check_syntax_error(self, "async eleza f(/, a = 1): pass")
-        check_syntax_error(self, "async eleza f(/, a): pass")
-        check_syntax_error(self, "async eleza f(/): pass")
-        check_syntax_error(self, "async eleza f(*, a, /): pass")
-        check_syntax_error(self, "async eleza f(*, /, a): pass")
-        check_syntax_error(self, "async eleza f(a, /, a): pass", "duplicate argument 'a' in function definition")
-        check_syntax_error(self, "async eleza f(a, /, *, a): pass", "duplicate argument 'a' in function definition")
-        check_syntax_error(self, "async eleza f(a, b/2, c): pass")
-        check_syntax_error(self, "async eleza f(a, /, c, /): pass")
-        check_syntax_error(self, "async eleza f(a, /, c, /, d): pass")
-        check_syntax_error(self, "async eleza f(a, /, c, /, d, *, e): pass")
-        check_syntax_error(self, "async eleza f(a, *, c, /, d, e): pass")
+        check_syntax_error(self, "async eleza f(a, b = 5, /, c): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "async eleza f(a = 5, b, /, c): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "async eleza f(a = 5, b=1, /, c, d=2): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "async eleza f(a = 5, b, /): pita", "non-default argument follows default argument")
+        check_syntax_error(self, "async eleza f(*args, /): pita")
+        check_syntax_error(self, "async eleza f(*args, a, /): pita")
+        check_syntax_error(self, "async eleza f(**kwargs, /): pita")
+        check_syntax_error(self, "async eleza f(/, a = 1): pita")
+        check_syntax_error(self, "async eleza f(/, a): pita")
+        check_syntax_error(self, "async eleza f(/): pita")
+        check_syntax_error(self, "async eleza f(*, a, /): pita")
+        check_syntax_error(self, "async eleza f(*, /, a): pita")
+        check_syntax_error(self, "async eleza f(a, /, a): pita", "duplicate argument 'a' kwenye function definition")
+        check_syntax_error(self, "async eleza f(a, /, *, a): pita", "duplicate argument 'a' kwenye function definition")
+        check_syntax_error(self, "async eleza f(a, b/2, c): pita")
+        check_syntax_error(self, "async eleza f(a, /, c, /): pita")
+        check_syntax_error(self, "async eleza f(a, /, c, /, d): pita")
+        check_syntax_error(self, "async eleza f(a, /, c, /, d, *, e): pita")
+        check_syntax_error(self, "async eleza f(a, *, c, /, d, e): pita")
 
     eleza test_optional_positional_only_args(self):
         eleza f(a, b=10, /, c=100):
@@ -70,11 +70,11 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(f(1, 2, 3), 6)
         self.assertEqual(f(1, 2, c=3), 6)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed as keyword arguments: 'b'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2, c=3)
 
         self.assertEqual(f(1, 2), 103)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed as keyword arguments: 'b'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2)
         self.assertEqual(f(1, c=2), 13)
 
@@ -83,29 +83,29 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(f(1, 2, 3), 6)
         self.assertEqual(f(1, 2, c=3), 6)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed as keyword arguments: 'b'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2, c=3)
 
         self.assertEqual(f(1, 2), 103)
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed as keyword arguments: 'b'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"):
             f(1, b=2)
         self.assertEqual(f(1, c=2), 13)
 
     eleza test_syntax_for_many_positional_only(self):
         # more than 255 positional only arguments, should compile ok
-        funeleza = "eleza f(%s, /):\n  pass\n" % ', '.join('i%d' % i for i in range(300))
+        funeleza = "eleza f(%s, /):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
 
     eleza test_pos_only_definition(self):
         eleza f(a, b, c, /, d, e=1, *, f, g=2):
-            pass
+            pita
 
         self.assertEqual(5, f.__code__.co_argcount)  # 3 posonly + 2 "standard args"
         self.assertEqual(3, f.__code__.co_posonlyargcount)
         self.assertEqual((1,), f.__defaults__)
 
         eleza f(a, b, c=1, /, d=2, e=3, *, f, g=4):
-            pass
+            pita
 
         self.assertEqual(5, f.__code__.co_argcount)  # 3 posonly + 2 "standard args"
         self.assertEqual(3, f.__code__.co_posonlyargcount)
@@ -119,59 +119,59 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
     eleza test_use_positional_as_keyword(self):
         eleza f(a, /):
-            pass
-        expected = r"f\(\) got some positional-only arguments passed as keyword arguments: 'a'"
+            pita
+        expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"
         with self.assertRaisesRegex(TypeError, expected):
             f(a=1)
 
         eleza f(a, /, b):
-            pass
-        expected = r"f\(\) got some positional-only arguments passed as keyword arguments: 'a'"
+            pita
+        expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"
         with self.assertRaisesRegex(TypeError, expected):
             f(a=1, b=2)
 
         eleza f(a, b, /):
-            pass
-        expected = r"f\(\) got some positional-only arguments passed as keyword arguments: 'a, b'"
+            pita
+        expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a, b'"
         with self.assertRaisesRegex(TypeError, expected):
             f(a=1, b=2)
 
     eleza test_positional_only_and_arg_invalid_calls(self):
         eleza f(a, b, /, c):
-            pass
+            pita
         with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
             f(1, 2)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' and 'c'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' na 'c'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 3 required positional arguments: 'a', 'b', and 'c'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) missing 3 required positional arguments: 'a', 'b', na 'c'"):
             f()
         with self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
 
     eleza test_positional_only_and_optional_arg_invalid_calls(self):
         eleza f(a, b, /, c=3):
-            pass
-        f(1, 2)  # does not raise
+            pita
+        f(1, 2)  # does sio ashiria
         with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' and 'b'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
             f()
         with self.assertRaisesRegex(TypeError, r"f\(\) takes kutoka 2 to 3 positional arguments but 4 were given"):
             f(1, 2, 3, 4)
 
     eleza test_positional_only_and_kwonlyargs_invalid_calls(self):
         eleza f(a, b, /, c, *, d, e):
-            pass
-        f(1, 2, 3, d=1, e=2)  # does not raise
+            pita
+        f(1, 2, 3, d=1, e=2)  # does sio ashiria
         with self.assertRaisesRegex(TypeError, r"missing 1 required keyword-only argument: 'd'"):
             f(1, 2, 3, e=2)
-        with self.assertRaisesRegex(TypeError, r"missing 2 required keyword-only arguments: 'd' and 'e'"):
+        with self.assertRaisesRegex(TypeError, r"missing 2 required keyword-only arguments: 'd' na 'e'"):
             f(1, 2, 3)
         with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'c'"):
             f(1, 2)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' and 'c'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'b' na 'c'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r" missing 3 required positional arguments: 'a', 'b', and 'c'"):
+        with self.assertRaisesRegex(TypeError, r" missing 3 required positional arguments: 'a', 'b', na 'c'"):
             f()
         with self.assertRaisesRegex(TypeError, r"f\(\) takes 3 positional arguments but 6 positional arguments "
                                                r"\(and 2 keyword-only arguments\) were given"):
@@ -181,19 +181,19 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
     eleza test_positional_only_invalid_calls(self):
         eleza f(a, b, /):
-            pass
-        f(1, 2)  # does not raise
+            pita
+        f(1, 2)  # does sio ashiria
         with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'b'"):
             f(1)
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' and 'b'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
             f()
         with self.assertRaisesRegex(TypeError, r"f\(\) takes 2 positional arguments but 3 were given"):
             f(1, 2, 3)
 
     eleza test_positional_only_with_optional_invalid_calls(self):
         eleza f(a, b=2, /):
-            pass
-        f(1)  # does not raise
+            pita
+        f(1)  # does sio ashiria
         with self.assertRaisesRegex(TypeError, r"f\(\) missing 1 required positional argument: 'a'"):
             f()
 
@@ -202,7 +202,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
     eleza test_no_standard_args_usage(self):
         eleza f(a, b, /, *, c):
-            pass
+            pita
 
         f(1, 2, c=3)
         with self.assertRaises(TypeError):
@@ -231,23 +231,23 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(x(1, 2), 3)
 
     eleza test_invalid_syntax_lambda(self):
-        check_syntax_error(self, "lambda a, b = 5, /, c: None", "non-default argument follows default argument")
-        check_syntax_error(self, "lambda a = 5, b, /, c: None", "non-default argument follows default argument")
-        check_syntax_error(self, "lambda a = 5, b, /: None", "non-default argument follows default argument")
-        check_syntax_error(self, "lambda *args, /: None")
-        check_syntax_error(self, "lambda *args, a, /: None")
-        check_syntax_error(self, "lambda **kwargs, /: None")
-        check_syntax_error(self, "lambda /, a = 1: None")
-        check_syntax_error(self, "lambda /, a: None")
-        check_syntax_error(self, "lambda /: None")
-        check_syntax_error(self, "lambda *, a, /: None")
-        check_syntax_error(self, "lambda *, /, a: None")
-        check_syntax_error(self, "lambda a, /, a: None", "duplicate argument 'a' in function definition")
-        check_syntax_error(self, "lambda a, /, *, a: None", "duplicate argument 'a' in function definition")
-        check_syntax_error(self, "lambda a, /, b, /: None")
-        check_syntax_error(self, "lambda a, /, b, /, c: None")
-        check_syntax_error(self, "lambda a, /, b, /, c, *, d: None")
-        check_syntax_error(self, "lambda a, *, b, /, c: None")
+        check_syntax_error(self, "lambda a, b = 5, /, c: Tupu", "non-default argument follows default argument")
+        check_syntax_error(self, "lambda a = 5, b, /, c: Tupu", "non-default argument follows default argument")
+        check_syntax_error(self, "lambda a = 5, b, /: Tupu", "non-default argument follows default argument")
+        check_syntax_error(self, "lambda *args, /: Tupu")
+        check_syntax_error(self, "lambda *args, a, /: Tupu")
+        check_syntax_error(self, "lambda **kwargs, /: Tupu")
+        check_syntax_error(self, "lambda /, a = 1: Tupu")
+        check_syntax_error(self, "lambda /, a: Tupu")
+        check_syntax_error(self, "lambda /: Tupu")
+        check_syntax_error(self, "lambda *, a, /: Tupu")
+        check_syntax_error(self, "lambda *, /, a: Tupu")
+        check_syntax_error(self, "lambda a, /, a: Tupu", "duplicate argument 'a' kwenye function definition")
+        check_syntax_error(self, "lambda a, /, *, a: Tupu", "duplicate argument 'a' kwenye function definition")
+        check_syntax_error(self, "lambda a, /, b, /: Tupu")
+        check_syntax_error(self, "lambda a, /, b, /, c: Tupu")
+        check_syntax_error(self, "lambda a, /, b, /, c, *, d: Tupu")
+        check_syntax_error(self, "lambda a, *, b, /, c: Tupu")
 
     eleza test_posonly_methods(self):
         kundi Example:
@@ -257,7 +257,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(Example().f(1, 2), (1, 2))
         self.assertEqual(Example.f(Example(), 1, 2), (1, 2))
         self.assertRaises(TypeError, Example.f, 1, 2)
-        expected = r"f\(\) got some positional-only arguments passed as keyword arguments: 'b'"
+        expected = r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'b'"
         with self.assertRaisesRegex(TypeError, expected):
             Example().f(1, b=2)
 
@@ -268,7 +268,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(X().f(), 42)
 
     eleza test_module_function(self):
-        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' and 'b'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) missing 2 required positional arguments: 'a' na 'b'"):
             global_pos_only_f()
 
 
@@ -330,7 +330,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
     eleza test_too_many_arguments(self):
         # more than 255 positional-only arguments, should compile ok
-        funeleza = "eleza f(%s, /):\n  pass\n" % ', '.join('i%d' % i for i in range(300))
+        funeleza = "eleza f(%s, /):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
 
     eleza test_serialization(self):
@@ -344,19 +344,19 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
         self.assertEqual(unpickled_posonly(1,2), (1,2))
         expected = r"global_pos_only_f\(\) got some positional-only arguments "\
-                   r"passed as keyword arguments: 'a, b'"
+                   r"pitaed kama keyword arguments: 'a, b'"
         with self.assertRaisesRegex(TypeError, expected):
             unpickled_posonly(a=1,b=2)
 
         self.assertEqual(unpickled_optional(1,2), (1,2))
         expected = r"global_pos_only_and_normal\(\) got some positional-only arguments "\
-                   r"passed as keyword arguments: 'a'"
+                   r"pitaed kama keyword arguments: 'a'"
         with self.assertRaisesRegex(TypeError, expected):
             unpickled_optional(a=1,b=2)
 
         self.assertEqual(unpickled_defaults(), (1,2))
         expected = r"global_pos_only_defaults\(\) got some positional-only arguments "\
-                   r"passed as keyword arguments: 'a'"
+                   r"pitaed kama keyword arguments: 'a'"
         with self.assertRaisesRegex(TypeError, expected):
             unpickled_defaults(a=1,b=2)
 
@@ -365,14 +365,14 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
         async eleza f(a=1, /, b=2):
             rudisha a, b
 
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed as keyword arguments: 'a'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"):
             f(a=1, b=2)
 
         eleza _check_call(*args, **kwargs):
-            try:
+            jaribu:
                 coro = f(*args, **kwargs)
-                coro.send(None)
-            except StopIteration as e:
+                coro.send(Tupu)
+            tatizo StopIteration kama e:
                 result = e.value
             self.assertEqual(result, (1, 2))
 
@@ -384,9 +384,9 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
     eleza test_generator(self):
 
         eleza f(a=1, /, b=2):
-            yield a, b
+            tuma a, b
 
-        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments passed as keyword arguments: 'a'"):
+        with self.assertRaisesRegex(TypeError, r"f\(\) got some positional-only arguments pitaed kama keyword arguments: 'a'"):
             f(a=1, b=2)
 
         gen = f(1, 2)

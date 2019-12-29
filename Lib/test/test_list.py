@@ -12,34 +12,34 @@ kundi ListTest(list_tests.CommonTest):
         l0_3 = [0, 1, 2, 3]
         l0_3_bis = list(l0_3)
         self.assertEqual(l0_3, l0_3_bis)
-        self.assertTrue(l0_3 is not l0_3_bis)
+        self.assertKweli(l0_3 ni sio l0_3_bis)
         self.assertEqual(list(()), [])
         self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
         self.assertEqual(list(''), [])
         self.assertEqual(list('spam'), ['s', 'p', 'a', 'm'])
-        self.assertEqual(list(x for x in range(10) ikiwa x % 2),
+        self.assertEqual(list(x kila x kwenye range(10) ikiwa x % 2),
                          [1, 3, 5, 7, 9])
 
         ikiwa sys.maxsize == 0x7fffffff:
             # This test can currently only work on 32-bit machines.
-            # XXX If/when PySequence_Length() returns a ssize_t, it should be
+            # XXX If/when PySequence_Length() rudishas a ssize_t, it should be
             # XXX re-enabled.
             # Verify clearing of bug #556025.
             # This assumes that the max data size (sys.maxint) == max
-            # address size this also assumes that the address size is at
-            # least 4 bytes with 8 byte addresses, the bug is not well
+            # address size this also assumes that the address size ni at
+            # least 4 bytes with 8 byte addresses, the bug ni sio well
             # tested
             #
-            # Note: This test is expected to SEGV under Cygwin 1.3.12 or
+            # Note: This test ni expected to SEGV under Cygwin 1.3.12 or
             # earlier due to a newlib bug.  See the following mailing list
-            # thread for the details:
+            # thread kila the details:
 
             #     http://sources.redhat.com/ml/newlib/2002/msg00369.html
             self.assertRaises(MemoryError, list, range(sys.maxsize // 2))
 
-        # This code used to segfault in Py2.4a3
+        # This code used to segfault kwenye Py2.4a3
         x = []
-        x.extend(-y for y in x)
+        x.extend(-y kila y kwenye x)
         self.assertEqual(x, [])
 
     eleza test_keyword_args(self):
@@ -48,11 +48,11 @@ kundi ListTest(list_tests.CommonTest):
 
     eleza test_truth(self):
         super().test_truth()
-        self.assertTrue(not [])
-        self.assertTrue([42])
+        self.assertKweli(not [])
+        self.assertKweli([42])
 
     eleza test_identity(self):
-        self.assertTrue([] is not [])
+        self.assertKweli([] ni sio [])
 
     eleza test_len(self):
         super().test_len()
@@ -81,7 +81,7 @@ kundi ListTest(list_tests.CommonTest):
     eleza test_iterator_pickle(self):
         orig = self.type2test([4, 5, 6, 7])
         data = [10, 11, 12, 13, 14, 15]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = iter(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -99,7 +99,7 @@ kundi ListTest(list_tests.CommonTest):
             self.assertEqual(list(it), data[1:])
 
             # empty iterator
-            for i in range(1, len(orig)):
+            kila i kwenye range(1, len(orig)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, a = pickle.loads(d)
@@ -117,7 +117,7 @@ kundi ListTest(list_tests.CommonTest):
     eleza test_reversed_pickle(self):
         orig = self.type2test([4, 5, 6, 7])
         data = [10, 11, 12, 13, 14, 15]
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
             itorig = reversed(orig)
             d = pickle.dumps((itorig, orig), proto)
@@ -135,7 +135,7 @@ kundi ListTest(list_tests.CommonTest):
             self.assertEqual(list(it), data[len(orig)-2::-1])
 
             # empty iterator
-            for i in range(1, len(orig)):
+            kila i kwenye range(1, len(orig)):
                 next(itorig)
             d = pickle.dumps((itorig, orig), proto)
             it, a = pickle.loads(d)
@@ -152,9 +152,9 @@ kundi ListTest(list_tests.CommonTest):
 
     eleza test_no_comdat_folding(self):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
-        # optimization causes failures in code that relies on distinct
+        # optimization causes failures kwenye code that relies on distinct
         # function addresses.
-        kundi L(list): pass
+        kundi L(list): pita
         with self.assertRaises(TypeError):
             (3,) + L([1,2])
 

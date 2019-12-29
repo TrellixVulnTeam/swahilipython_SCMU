@@ -11,26 +11,26 @@ agiza codecs
 
 encode = oem_encode
 
-def decode(input, errors='strict'):
-    return oem_decode(input, errors, True)
+eleza decode(input, errors='strict'):
+    rudisha oem_decode(input, errors, True)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
-        return oem_encode(input, self.errors)[0]
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza encode(self, input, final=False):
+        rudisha oem_encode(input, self.errors)[0]
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     _buffer_decode = oem_decode
 
-class StreamWriter(codecs.StreamWriter):
+kundi StreamWriter(codecs.StreamWriter):
     encode = oem_encode
 
-class StreamReader(codecs.StreamReader):
+kundi StreamReader(codecs.StreamReader):
     decode = oem_decode
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='oem',
         encode=encode,
         decode=decode,

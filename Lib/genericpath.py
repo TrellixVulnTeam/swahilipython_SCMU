@@ -1,6 +1,6 @@
 """
 Path operations common to more than one OS
-Do not use directly.  The OS specific modules agiza the appropriate
+Do sio use directly.  The OS specific modules agiza the appropriate
 functions kutoka this module themselves.
 """
 agiza os
@@ -12,36 +12,36 @@ __all__ = ['commonprefix', 'exists', 'getatime', 'getctime', 'getmtime',
 
 
 # Does a path exist?
-# This is false for dangling symbolic links on systems that support them.
+# This ni false kila dangling symbolic links on systems that support them.
 eleza exists(path):
-    """Test whether a path exists.  Returns False for broken symbolic links"""
-    try:
+    """Test whether a path exists.  Returns Uongo kila broken symbolic links"""
+    jaribu:
         os.stat(path)
-    except (OSError, ValueError):
-        rudisha False
-    rudisha True
+    tatizo (OSError, ValueError):
+        rudisha Uongo
+    rudisha Kweli
 
 
-# This follows symbolic links, so both islink() and isdir() can be true
-# for the same path on systems that support symlinks
+# This follows symbolic links, so both islink() na isdir() can be true
+# kila the same path on systems that support symlinks
 eleza isfile(path):
-    """Test whether a path is a regular file"""
-    try:
+    """Test whether a path ni a regular file"""
+    jaribu:
         st = os.stat(path)
-    except (OSError, ValueError):
-        rudisha False
+    tatizo (OSError, ValueError):
+        rudisha Uongo
     rudisha stat.S_ISREG(st.st_mode)
 
 
 # Is a path a directory?
-# This follows symbolic links, so both islink() and isdir()
-# can be true for the same path on systems that support symlinks
+# This follows symbolic links, so both islink() na isdir()
+# can be true kila the same path on systems that support symlinks
 eleza isdir(s):
     """Return true ikiwa the pathname refers to an existing directory."""
-    try:
+    jaribu:
         st = os.stat(s)
-    except (OSError, ValueError):
-        rudisha False
+    tatizo (OSError, ValueError):
+        rudisha Uongo
     rudisha stat.S_ISDIR(st.st_mode)
 
 
@@ -67,22 +67,22 @@ eleza getctime(filename):
 
 # Return the longest prefix of all list elements.
 eleza commonprefix(m):
-    "Given a list of pathnames, returns the longest common leading component"
-    ikiwa not m: rudisha ''
-    # Some people pass in a list of pathname parts to operate in an OS-agnostic
-    # fashion; don't try to translate in that case as that's an abuse of the
-    # API and they are already doing what they need to be OS-agnostic and so
-    # they most likely won't be using an os.PathLike object in the sublists.
-    ikiwa not isinstance(m[0], (list, tuple)):
+    "Given a list of pathnames, rudishas the longest common leading component"
+    ikiwa sio m: rudisha ''
+    # Some people pita kwenye a list of pathname parts to operate kwenye an OS-agnostic
+    # fashion; don't try to translate kwenye that case kama that's an abuse of the
+    # API na they are already doing what they need to be OS-agnostic na so
+    # they most likely won't be using an os.PathLike object kwenye the sublists.
+    ikiwa sio isinstance(m[0], (list, tuple)):
         m = tuple(map(os.fspath, m))
     s1 = min(m)
     s2 = max(m)
-    for i, c in enumerate(s1):
+    kila i, c kwenye enumerate(s1):
         ikiwa c != s2[i]:
             rudisha s1[:i]
     rudisha s1
 
-# Are two stat buffers (obtained kutoka stat, fstat or lstat)
+# Are two stat buffers (obtained kutoka stat, fstat ama lstat)
 # describing the same file?
 eleza samestat(s1, s2):
     """Test whether two stat buffers reference the same file"""
@@ -92,10 +92,10 @@ eleza samestat(s1, s2):
 
 # Are two filenames really pointing to the same file?
 eleza samefile(f1, f2):
-    """Test whether two pathnames reference the same actual file or directory
+    """Test whether two pathnames reference the same actual file ama directory
 
-    This is determined by the device number and i-node number and
-    raises an exception ikiwa an os.stat() call on either pathname fails.
+    This ni determined by the device number na i-node number and
+    ashirias an exception ikiwa an os.stat() call on either pathname fails.
     """
     s1 = os.stat(f1)
     s2 = os.stat(f2)
@@ -111,19 +111,19 @@ eleza sameopenfile(fp1, fp2):
     rudisha samestat(s1, s2)
 
 
-# Split a path in root and extension.
-# The extension is everything starting at the last dot in the last
-# pathname component; the root is everything before that.
-# It is always true that root + ext == p.
+# Split a path kwenye root na extension.
+# The extension ni everything starting at the last dot kwenye the last
+# pathname component; the root ni everything before that.
+# It ni always true that root + ext == p.
 
 # Generic implementation of splitext, to be parametrized with
 # the separators
 eleza _splitext(p, sep, altsep, extsep):
     """Split the extension kutoka a pathname.
 
-    Extension is everything kutoka the last dot to the end, ignoring
+    Extension ni everything kutoka the last dot to the end, ignoring
     leading dots.  Returns "(root, ext)"; ext may be empty."""
-    # NOTE: This code must work for text and bytes strings.
+    # NOTE: This code must work kila text na bytes strings.
 
     sepIndex = p.rfind(sep)
     ikiwa altsep:
@@ -134,7 +134,7 @@ eleza _splitext(p, sep, altsep, extsep):
     ikiwa dotIndex > sepIndex:
         # skip all leading dots
         filenameIndex = sepIndex + 1
-        while filenameIndex < dotIndex:
+        wakati filenameIndex < dotIndex:
             ikiwa p[filenameIndex:filenameIndex+1] != extsep:
                 rudisha p[:dotIndex], p[dotIndex:]
             filenameIndex += 1
@@ -142,14 +142,14 @@ eleza _splitext(p, sep, altsep, extsep):
     rudisha p, p[:0]
 
 eleza _check_arg_types(funcname, *args):
-    hasstr = hasbytes = False
-    for s in args:
+    hasstr = hasbytes = Uongo
+    kila s kwenye args:
         ikiwa isinstance(s, str):
-            hasstr = True
+            hasstr = Kweli
         elikiwa isinstance(s, bytes):
-            hasbytes = True
-        else:
-            raise TypeError('%s() argument must be str or bytes, not %r' %
-                            (funcname, s.__class__.__name__)) kutoka None
-    ikiwa hasstr and hasbytes:
-        raise TypeError("Can't mix strings and bytes in path components") kutoka None
+            hasbytes = Kweli
+        isipokua:
+            ashiria TypeError('%s() argument must be str ama bytes, sio %r' %
+                            (funcname, s.__class__.__name__)) kutoka Tupu
+    ikiwa hasstr na hasbytes:
+        ashiria TypeError("Can't mix strings na bytes kwenye path components") kutoka Tupu

@@ -9,19 +9,19 @@ kundi DictComprehensionTest(unittest.TestCase):
     eleza test_basics(self):
         expected = {0: 10, 1: 11, 2: 12, 3: 13, 4: 14, 5: 15, 6: 16, 7: 17,
                     8: 18, 9: 19}
-        actual = {k: k + 10 for k in range(10)}
+        actual = {k: k + 10 kila k kwenye range(10)}
         self.assertEqual(actual, expected)
 
         expected = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9}
-        actual = {k: v for k in range(10) for v in range(10) ikiwa k == v}
+        actual = {k: v kila k kwenye range(10) kila v kwenye range(10) ikiwa k == v}
         self.assertEqual(actual, expected)
 
     eleza test_scope_isolation(self):
         k = "Local Variable"
 
-        expected = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None,
-                    6: None, 7: None, 8: None, 9: None}
-        actual = {k: None for k in range(10)}
+        expected = {0: Tupu, 1: Tupu, 2: Tupu, 3: Tupu, 4: Tupu, 5: Tupu,
+                    6: Tupu, 7: Tupu, 8: Tupu, 9: Tupu}
+        actual = {k: Tupu kila k kwenye range(10)}
         self.assertEqual(actual, expected)
         self.assertEqual(k, "Local Variable")
 
@@ -31,14 +31,14 @@ kundi DictComprehensionTest(unittest.TestCase):
                     66: 7, 67: 7, 68: 7, 69: 7, 72: 8, 73: 8, 74: 8, 75: 8,
                     76: 8, 77: 8, 78: 8, 79: 8, 81: 9, 82: 9, 83: 9, 84: 9,
                     85: 9, 86: 9, 87: 9, 88: 9, 89: 9}
-        actual = {k: v for v in range(10) for k in range(v * 9, v * 10)}
+        actual = {k: v kila v kwenye range(10) kila k kwenye range(v * 9, v * 10)}
         self.assertEqual(k, "Local Variable")
         self.assertEqual(actual, expected)
 
     eleza test_scope_isolation_kutoka_global(self):
-        expected = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None,
-                    6: None, 7: None, 8: None, 9: None}
-        actual = {g: None for g in range(10)}
+        expected = {0: Tupu, 1: Tupu, 2: Tupu, 3: Tupu, 4: Tupu, 5: Tupu,
+                    6: Tupu, 7: Tupu, 8: Tupu, 9: Tupu}
+        actual = {g: Tupu kila g kwenye range(10)}
         self.assertEqual(actual, expected)
         self.assertEqual(g, "Global variable")
 
@@ -48,7 +48,7 @@ kundi DictComprehensionTest(unittest.TestCase):
                     66: 7, 67: 7, 68: 7, 69: 7, 72: 8, 73: 8, 74: 8, 75: 8,
                     76: 8, 77: 8, 78: 8, 79: 8, 81: 9, 82: 9, 83: 9, 84: 9,
                     85: 9, 86: 9, 87: 9, 88: 9, 89: 9}
-        actual = {g: v for v in range(10) for g in range(v * 9, v * 10)}
+        actual = {g: v kila v kwenye range(10) kila g kwenye range(v * 9, v * 10)}
         self.assertEqual(g, "Global variable")
         self.assertEqual(actual, expected)
 
@@ -58,7 +58,7 @@ kundi DictComprehensionTest(unittest.TestCase):
                     4: 'Global variable', 5: 'Global variable',
                     6: 'Global variable', 7: 'Global variable',
                     8: 'Global variable', 9: 'Global variable'}
-        actual = {k: g for k in range(10)}
+        actual = {k: g kila k kwenye range(10)}
         self.assertEqual(actual, expected)
 
     eleza test_local_visibility(self):
@@ -68,17 +68,17 @@ kundi DictComprehensionTest(unittest.TestCase):
                     4: 'Local variable', 5: 'Local variable',
                     6: 'Local variable', 7: 'Local variable',
                     8: 'Local variable', 9: 'Local variable'}
-        actual = {k: v for k in range(10)}
+        actual = {k: v kila k kwenye range(10)}
         self.assertEqual(actual, expected)
         self.assertEqual(v, "Local variable")
 
     eleza test_illegal_assignment(self):
         with self.assertRaisesRegex(SyntaxError, "cannot assign"):
-            compile("{x: y for y, x in ((1, 2), (3, 4))} = 5", "<test>",
+            compile("{x: y kila y, x kwenye ((1, 2), (3, 4))} = 5", "<test>",
                     "exec")
 
         with self.assertRaisesRegex(SyntaxError, "cannot assign"):
-            compile("{x: y for y, x in ((1, 2), (3, 4))} += 5", "<test>",
+            compile("{x: y kila y, x kwenye ((1, 2), (3, 4))} += 5", "<test>",
                     "exec")
 
     eleza test_evaluation_order(self):
@@ -105,7 +105,7 @@ kundi DictComprehensionTest(unittest.TestCase):
 
         actual = {
             add_call('key', k): add_call('value', v)
-            for k, v in zip('Hello', 'World')
+            kila k, v kwenye zip('Hello', 'World')
         }
 
         self.assertEqual(actual, expected)

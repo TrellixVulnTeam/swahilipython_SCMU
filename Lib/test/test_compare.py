@@ -16,31 +16,31 @@ kundi Cmp:
 
 kundi Anything:
     eleza __eq__(self, other):
-        rudisha True
+        rudisha Kweli
 
     eleza __ne__(self, other):
-        rudisha False
+        rudisha Uongo
 
 kundi ComparisonTest(unittest.TestCase):
     set1 = [2, 2.0, 2, 2+0j, Cmp(2.0)]
-    set2 = [[1], (3,), None, Empty()]
+    set2 = [[1], (3,), Tupu, Empty()]
     candidates = set1 + set2
 
     eleza test_comparisons(self):
-        for a in self.candidates:
-            for b in self.candidates:
-                ikiwa ((a in self.set1) and (b in self.set1)) or a is b:
+        kila a kwenye self.candidates:
+            kila b kwenye self.candidates:
+                ikiwa ((a kwenye self.set1) na (b kwenye self.set1)) ama a ni b:
                     self.assertEqual(a, b)
-                else:
+                isipokua:
                     self.assertNotEqual(a, b)
 
     eleza test_id_comparisons(self):
         # Ensure default comparison compares id() of args
         L = []
-        for i in range(10):
+        kila i kwenye range(10):
             L.insert(len(L)//2, Empty())
-        for a in L:
-            for b in L:
+        kila a kwenye L:
+            kila b kwenye L:
                 self.assertEqual(a == b, id(a) == id(b),
                                  'a=%r, b=%r' % (a, b))
 
@@ -48,9 +48,9 @@ kundi ComparisonTest(unittest.TestCase):
         a = Cmp(1)
         b = Cmp(1)
         c = Cmp(2)
-        self.assertIs(a == b, True)
-        self.assertIs(a != b, False)
-        self.assertIs(a != c, True)
+        self.assertIs(a == b, Kweli)
+        self.assertIs(a != b, Uongo)
+        self.assertIs(a != c, Kweli)
 
     eleza test_ne_high_priority(self):
         """object.__ne__() should allow reflected __ne__() to be tried"""
@@ -71,7 +71,7 @@ kundi ComparisonTest(unittest.TestCase):
         self.assertSequenceEqual(calls, ['Left.__eq__', 'Right.__ne__'])
 
     eleza test_ne_low_priority(self):
-        """object.__ne__() should not invoke reflected __eq__()"""
+        """object.__ne__() should sio invoke reflected __eq__()"""
         calls = []
         kundi Base:
             # Inherits object.__ne__()
@@ -89,7 +89,7 @@ kundi ComparisonTest(unittest.TestCase):
         self.assertSequenceEqual(calls, ['Derived.__ne__', 'Base.__eq__'])
 
     eleza test_other_delegation(self):
-        """No default delegation between operations except __ne__()"""
+        """No default delegation between operations tatizo __ne__()"""
         ops = (
             ('__eq__', lambda a, b: a == b),
             ('__lt__', lambda a, b: a < b),
@@ -97,22 +97,22 @@ kundi ComparisonTest(unittest.TestCase):
             ('__gt__', lambda a, b: a > b),
             ('__ge__', lambda a, b: a >= b),
         )
-        for name, func in ops:
+        kila name, func kwenye ops:
             with self.subTest(name):
                 eleza unexpected(*args):
                     self.fail('Unexpected operator method called')
                 kundi C:
                     __ne__ = unexpected
-                for other, _ in ops:
+                kila other, _ kwenye ops:
                     ikiwa other != name:
                         setattr(C, other, unexpected)
                 ikiwa name == '__eq__':
-                    self.assertIs(func(C(), object()), False)
-                else:
+                    self.assertIs(func(C(), object()), Uongo)
+                isipokua:
                     self.assertRaises(TypeError, func, C(), object())
 
     eleza test_issue_1393(self):
-        x = lambda: None
+        x = lambda: Tupu
         self.assertEqual(x, Anything())
         self.assertEqual(Anything(), x)
         y = object()

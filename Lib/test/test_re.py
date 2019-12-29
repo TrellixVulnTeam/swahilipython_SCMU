@@ -11,7 +11,7 @@ kutoka weakref agiza proxy
 
 # Misc tests kutoka Tim Peters' re.doc
 
-# WARNING: Don't change details in these tests ikiwa you don't know
+# WARNING: Don't change details kwenye these tests ikiwa you don't know
 # what you're doing. Some of these tests were carefully modeled to
 # cover most of the code.
 
@@ -25,32 +25,32 @@ kundi B(bytes):
 
 kundi ReTests(unittest.TestCase):
 
-    eleza assertTypedEqual(self, actual, expect, msg=None):
+    eleza assertTypedEqual(self, actual, expect, msg=Tupu):
         self.assertEqual(actual, expect, msg)
         eleza recurse(actual, expect):
             ikiwa isinstance(expect, (tuple, list)):
-                for x, y in zip(actual, expect):
+                kila x, y kwenye zip(actual, expect):
                     recurse(x, y)
-            else:
+            isipokua:
                 self.assertIs(type(actual), type(expect), msg)
         recurse(actual, expect)
 
-    eleza checkPatternError(self, pattern, errmsg, pos=None):
-        with self.assertRaises(re.error) as cm:
+    eleza checkPatternError(self, pattern, errmsg, pos=Tupu):
+        with self.assertRaises(re.error) kama cm:
             re.compile(pattern)
         with self.subTest(pattern=pattern):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            ikiwa pos is not None:
+            ikiwa pos ni sio Tupu:
                 self.assertEqual(err.pos, pos)
 
-    eleza checkTemplateError(self, pattern, repl, string, errmsg, pos=None):
-        with self.assertRaises(re.error) as cm:
+    eleza checkTemplateError(self, pattern, repl, string, errmsg, pos=Tupu):
+        with self.assertRaises(re.error) kama cm:
             re.sub(pattern, repl, string)
         with self.subTest(pattern=pattern, repl=repl):
             err = cm.exception
             self.assertEqual(err.msg, errmsg)
-            ikiwa pos is not None:
+            ikiwa pos ni sio Tupu:
                 self.assertEqual(err.pos, pos)
 
     eleza test_keep_buffer(self):
@@ -60,7 +60,7 @@ kundi ReTests(unittest.TestCase):
         with self.assertRaises(BufferError):
             b.extend(b'x'*400)
         list(it)
-        del it
+        toa it
         gc_collect()
         b.extend(b'x'*400)
 
@@ -75,12 +75,12 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.search('x*', 'axx').span(), (0, 0))
         self.assertEqual(re.search('x+', 'axx').span(0), (1, 3))
         self.assertEqual(re.search('x+', 'axx').span(), (1, 3))
-        self.assertIsNone(re.search('x', 'aaa'))
+        self.assertIsTupu(re.search('x', 'aaa'))
         self.assertEqual(re.match('a*', 'xxx').span(0), (0, 0))
         self.assertEqual(re.match('a*', 'xxx').span(), (0, 0))
         self.assertEqual(re.match('x*', 'xxxa').span(0), (0, 3))
         self.assertEqual(re.match('x*', 'xxxa').span(), (0, 3))
-        self.assertIsNone(re.match('a+', 'xxx'))
+        self.assertIsTupu(re.match('a+', 'xxx'))
 
     eleza bump_num(self, matchobj):
         int_value = int(matchobj.group(0))
@@ -93,7 +93,7 @@ kundi ReTests(unittest.TestCase):
         self.assertTypedEqual(re.sub(b'y', B(b'a'), B(b'xyz')), b'xaz')
         self.assertTypedEqual(re.sub(b'y', bytearray(b'a'), bytearray(b'xyz')), b'xaz')
         self.assertTypedEqual(re.sub(b'y', memoryview(b'a'), memoryview(b'xyz')), b'xaz')
-        for y in ("\xe0", "\u0430", "\U0001d49c"):
+        kila y kwenye ("\xe0", "\u0430", "\U0001d49c"):
             self.assertEqual(re.sub(y, 'a', 'x%sz' % y), 'xaz')
 
         self.assertEqual(re.sub("(?i)b+", "x", "bbbb BBBB"), 'x x')
@@ -121,7 +121,7 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.sub('a', '\t\n\v\r\f\a\b', 'a'), '\t\n\v\r\f\a\b')
         self.assertEqual(re.sub('a', '\t\n\v\r\f\a\b', 'a'),
                          (chr(9)+chr(10)+chr(11)+chr(13)+chr(12)+chr(7)+chr(8)))
-        for c in 'cdehijklmopqsuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
+        kila c kwenye 'cdehijklmopqsuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ':
             with self.subTest(c):
                 with self.assertRaises(re.error):
                     self.assertEqual(re.sub('a', '\\' + c, 'a'), '\\' + c)
@@ -129,12 +129,12 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.sub(r'^\s*', 'X', 'test'), 'Xtest')
 
     eleza test_bug_449964(self):
-        # fails for group followed by other escape
+        # fails kila group followed by other escape
         self.assertEqual(re.sub(r'(?P<unk>x)', r'\g<1>\g<1>\b', 'xx'),
                          'xx\bxx\b')
 
     eleza test_bug_449000(self):
-        # Test for sub() on escaped characters
+        # Test kila sub() on escaped characters
         self.assertEqual(re.sub(r'\r\n', r'\n', 'abc\r\ndef\r\n'),
                          'abc\ndef\n')
         self.assertEqual(re.sub('\r\n', r'\n', 'abc\r\ndef\r\n'),
@@ -145,7 +145,7 @@ kundi ReTests(unittest.TestCase):
                          'abc\ndef\n')
 
     eleza test_bug_1661(self):
-        # Verify that flags do not get silently ignored with compiled patterns
+        # Verify that flags do sio get silently ignored with compiled patterns
         pattern = re.compile('.')
         self.assertRaises(ValueError, re.match, pattern, 'A', re.I)
         self.assertRaises(ValueError, re.search, pattern, 'A', re.I)
@@ -153,11 +153,11 @@ kundi ReTests(unittest.TestCase):
         self.assertRaises(ValueError, re.compile, pattern, re.I)
 
     eleza test_bug_3629(self):
-        # A regex that triggered a bug in the sre-code validator
+        # A regex that triggered a bug kwenye the sre-code validator
         re.compile("(?P<quote>)(?(quote))")
 
     eleza test_sub_template_numeric_escape(self):
-        # bug 776311 and friends
+        # bug 776311 na friends
         self.assertEqual(re.sub('x', r'\0', 'x'), '\0')
         self.assertEqual(re.sub('x', r'\000', 'x'), '\000')
         self.assertEqual(re.sub('x', r'\001', 'x'), '\001')
@@ -197,7 +197,7 @@ kundi ReTests(unittest.TestCase):
         self.checkTemplateError('x', r'\800', 'x', 'invalid group reference 80', 1)
         self.checkTemplateError('x', r'\8', '', 'invalid group reference 8', 1)
 
-        # in python2.3 (etc), these loop endlessly in sre_parser.py
+        # kwenye python2.3 (etc), these loop endlessly kwenye sre_parser.py
         self.assertEqual(re.sub('(((((((((((x)))))))))))', r'\11', 'x'), 'x')
         self.assertEqual(re.sub('((((((((((y))))))))))(.)', r'\118', 'xyz'),
                          'xz8')
@@ -218,7 +218,7 @@ kundi ReTests(unittest.TestCase):
         re.compile(r'(?P<a1>x)(?P=a1)(?(a1)y)')
         re.compile(r'(?P<a1>x)\1(?(1)y)')
         self.checkPatternError(r'(?P<a>)(?P<a>)',
-                               "redefinition of group name 'a' as group 2; "
+                               "redefinition of group name 'a' kama group 2; "
                                "was group 1")
         self.checkPatternError(r'(?P<a>(?P=a))',
                                "cannot refer to an open group", 10)
@@ -226,28 +226,28 @@ kundi ReTests(unittest.TestCase):
         self.checkPatternError(r'(?P<a>)(?P=a', 'missing ), unterminated name', 11)
         self.checkPatternError(r'(?P=', 'missing group name', 4)
         self.checkPatternError(r'(?P=)', 'missing group name', 4)
-        self.checkPatternError(r'(?P=1)', "bad character in group name '1'", 4)
+        self.checkPatternError(r'(?P=1)', "bad character kwenye group name '1'", 4)
         self.checkPatternError(r'(?P=a)', "unknown group name 'a'")
         self.checkPatternError(r'(?P=a1)', "unknown group name 'a1'")
-        self.checkPatternError(r'(?P=a.)', "bad character in group name 'a.'", 4)
+        self.checkPatternError(r'(?P=a.)', "bad character kwenye group name 'a.'", 4)
         self.checkPatternError(r'(?P<)', 'missing >, unterminated name', 4)
         self.checkPatternError(r'(?P<a', 'missing >, unterminated name', 4)
         self.checkPatternError(r'(?P<', 'missing group name', 4)
         self.checkPatternError(r'(?P<>)', 'missing group name', 4)
-        self.checkPatternError(r'(?P<1>)', "bad character in group name '1'", 4)
-        self.checkPatternError(r'(?P<a.>)', "bad character in group name 'a.'", 4)
+        self.checkPatternError(r'(?P<1>)', "bad character kwenye group name '1'", 4)
+        self.checkPatternError(r'(?P<a.>)', "bad character kwenye group name 'a.'", 4)
         self.checkPatternError(r'(?(', 'missing group name', 3)
         self.checkPatternError(r'(?())', 'missing group name', 3)
         self.checkPatternError(r'(?(a))', "unknown group name 'a'", 3)
-        self.checkPatternError(r'(?(-1))', "bad character in group name '-1'", 3)
-        self.checkPatternError(r'(?(1a))', "bad character in group name '1a'", 3)
-        self.checkPatternError(r'(?(a.))', "bad character in group name 'a.'", 3)
-        # New valid/invalid identifiers in Python 3
+        self.checkPatternError(r'(?(-1))', "bad character kwenye group name '-1'", 3)
+        self.checkPatternError(r'(?(1a))', "bad character kwenye group name '1a'", 3)
+        self.checkPatternError(r'(?(a.))', "bad character kwenye group name 'a.'", 3)
+        # New valid/invalid identifiers kwenye Python 3
         re.compile('(?P<µ>x)(?P=µ)(?(µ)y)')
         re.compile('(?P<𝔘𝔫𝔦𝔠𝔬𝔡𝔢>x)(?P=𝔘𝔫𝔦𝔠𝔬𝔡𝔢)(?(𝔘𝔫𝔦𝔠𝔬𝔡𝔢)y)')
-        self.checkPatternError('(?P<©>x)', "bad character in group name '©'", 4)
+        self.checkPatternError('(?P<©>x)', "bad character kwenye group name '©'", 4)
         # Support > 100 groups.
-        pat = '|'.join('x(?P<a%d>%x)y' % (i, i) for i in range(1, 200 + 1))
+        pat = '|'.join('x(?P<a%d>%x)y' % (i, i) kila i kwenye range(1, 200 + 1))
         pat = '(?:%s)(?(200)z|t)' % pat
         self.assertEqual(re.match(pat, 'xc8yz').span(), (0, 5))
 
@@ -258,11 +258,11 @@ kundi ReTests(unittest.TestCase):
                                 'missing group name', 3)
         self.checkTemplateError('(?P<a>x)', r'\g', 'xx', 'missing <', 2)
         self.checkTemplateError('(?P<a>x)', r'\g<a a>', 'xx',
-                                "bad character in group name 'a a'", 3)
+                                "bad character kwenye group name 'a a'", 3)
         self.checkTemplateError('(?P<a>x)', r'\g<>', 'xx',
                                 'missing group name', 3)
         self.checkTemplateError('(?P<a>x)', r'\g<1a1>', 'xx',
-                                "bad character in group name '1a1'", 3)
+                                "bad character kwenye group name '1a1'", 3)
         self.checkTemplateError('(?P<a>x)', r'\g<2>', 'xx',
                                 'invalid group reference 2', 3)
         self.checkTemplateError('(?P<a>x)', r'\2', 'xx',
@@ -272,14 +272,14 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.sub('(?P<a>x)|(?P<b>y)', r'\g<b>', 'xx'), '')
         self.assertEqual(re.sub('(?P<a>x)|(?P<b>y)', r'\2', 'xx'), '')
         self.checkTemplateError('(?P<a>x)', r'\g<-1>', 'xx',
-                                "bad character in group name '-1'", 3)
-        # New valid/invalid identifiers in Python 3
+                                "bad character kwenye group name '-1'", 3)
+        # New valid/invalid identifiers kwenye Python 3
         self.assertEqual(re.sub('(?P<µ>x)', r'\g<µ>', 'xx'), 'xx')
         self.assertEqual(re.sub('(?P<𝔘𝔫𝔦𝔠𝔬𝔡𝔢>x)', r'\g<𝔘𝔫𝔦𝔠𝔬𝔡𝔢>', 'xx'), 'xx')
         self.checkTemplateError('(?P<a>x)', r'\g<©>', 'xx',
-                                "bad character in group name '©'", 3)
+                                "bad character kwenye group name '©'", 3)
         # Support > 100 groups.
-        pat = '|'.join('x(?P<a%d>%x)y' % (i, i) for i in range(1, 200 + 1))
+        pat = '|'.join('x(?P<a%d>%x)y' % (i, i) kila i kwenye range(1, 200 + 1))
         self.assertEqual(re.sub(pat, r'\g<200>', 'xc8yzxc8y'), 'c8zc8')
 
     eleza test_re_subn(self):
@@ -291,14 +291,14 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.subn("b*", "x", "xyz", count=2), ('xxxyz', 2))
 
     eleza test_re_split(self):
-        for string in ":a:b::c", S(":a:b::c"):
+        kila string kwenye ":a:b::c", S(":a:b::c"):
             self.assertTypedEqual(re.split(":", string),
                                   ['', 'a', 'b', '', 'c'])
             self.assertTypedEqual(re.split(":+", string),
                                   ['', 'a', 'b', 'c'])
             self.assertTypedEqual(re.split("(:+)", string),
                                   ['', ':', 'a', ':', 'b', '::', 'c'])
-        for string in (b":a:b::c", B(b":a:b::c"), bytearray(b":a:b::c"),
+        kila string kwenye (b":a:b::c", B(b":a:b::c"), bytearray(b":a:b::c"),
                        memoryview(b":a:b::c")):
             self.assertTypedEqual(re.split(b":", string),
                                   [b'', b'a', b'b', b'', b'c'])
@@ -306,7 +306,7 @@ kundi ReTests(unittest.TestCase):
                                   [b'', b'a', b'b', b'c'])
             self.assertTypedEqual(re.split(b"(:+)", string),
                                   [b'', b':', b'a', b':', b'b', b'::', b'c'])
-        for a, b, c in ("\xe0\xdf\xe7", "\u0430\u0431\u0432",
+        kila a, b, c kwenye ("\xe0\xdf\xe7", "\u0430\u0431\u0432",
                         "\U0001d49c\U0001d49e\U0001d4b5"):
             string = ":%s:%s::%s" % (a, b, c)
             self.assertEqual(re.split(":", string), ['', a, b, '', c])
@@ -320,21 +320,21 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.split("([b:]+)", ":a:b::c"),
                          ['', ':', 'a', ':b::', 'c'])
         self.assertEqual(re.split("(b)|(:+)", ":a:b::c"),
-                         ['', None, ':', 'a', None, ':', '', 'b', None, '',
-                          None, '::', 'c'])
+                         ['', Tupu, ':', 'a', Tupu, ':', '', 'b', Tupu, '',
+                          Tupu, '::', 'c'])
         self.assertEqual(re.split("(?:b)|(?::+)", ":a:b::c"),
                          ['', 'a', '', '', 'c'])
 
-        for sep, expected in [
+        kila sep, expected kwenye [
             (':*', ['', '', 'a', '', 'b', '', 'c', '']),
             ('(?::*)', ['', '', 'a', '', 'b', '', 'c', '']),
             ('(:*)', ['', ':', '', '', 'a', ':', '', '', 'b', '::', '', '', 'c', '', '']),
-            ('(:)*', ['', ':', '', None, 'a', ':', '', None, 'b', ':', '', None, 'c', None, '']),
+            ('(:)*', ['', ':', '', Tupu, 'a', ':', '', Tupu, 'b', ':', '', Tupu, 'c', Tupu, '']),
         ]:
             with self.subTest(sep=sep):
                 self.assertTypedEqual(re.split(sep, ':a:b::c'), expected)
 
-        for sep, expected in [
+        kila sep, expected kwenye [
             ('', ['', ':', 'a', ':', 'b', ':', ':', 'c', '']),
             (r'\b', [':', 'a', ':', 'b', '::', 'c', '']),
             (r'(?=:)', ['', ':a', ':b', ':', ':c']),
@@ -356,14 +356,14 @@ kundi ReTests(unittest.TestCase):
 
     eleza test_re_findall(self):
         self.assertEqual(re.findall(":+", "abc"), [])
-        for string in "a:b::c:::d", S("a:b::c:::d"):
+        kila string kwenye "a:b::c:::d", S("a:b::c:::d"):
             self.assertTypedEqual(re.findall(":+", string),
                                   [":", "::", ":::"])
             self.assertTypedEqual(re.findall("(:+)", string),
                                   [":", "::", ":::"])
             self.assertTypedEqual(re.findall("(:)(:*)", string),
                                   [(":", ""), (":", ":"), (":", "::")])
-        for string in (b"a:b::c:::d", B(b"a:b::c:::d"), bytearray(b"a:b::c:::d"),
+        kila string kwenye (b"a:b::c:::d", B(b"a:b::c:::d"), bytearray(b"a:b::c:::d"),
                        memoryview(b"a:b::c:::d")):
             self.assertTypedEqual(re.findall(b":+", string),
                                   [b":", b"::", b":::"])
@@ -371,7 +371,7 @@ kundi ReTests(unittest.TestCase):
                                   [b":", b"::", b":::"])
             self.assertTypedEqual(re.findall(b"(:)(:*)", string),
                                   [(b":", b""), (b":", b":"), (b":", b"::")])
-        for x in ("\xe0", "\u0430", "\U0001d49c"):
+        kila x kwenye ("\xe0", "\u0430", "\U0001d49c"):
             xx = x * 2
             xxx = x * 3
             string = "a%sb%sc%sd" % (x, xx, xxx)
@@ -385,19 +385,19 @@ kundi ReTests(unittest.TestCase):
                          [("a", ""),("b", "b"),("a", "")])
 
     eleza test_re_match(self):
-        for string in 'a', S('a'):
+        kila string kwenye 'a', S('a'):
             self.assertEqual(re.match('a', string).groups(), ())
             self.assertEqual(re.match('(a)', string).groups(), ('a',))
             self.assertEqual(re.match('(a)', string).group(0), 'a')
             self.assertEqual(re.match('(a)', string).group(1), 'a')
             self.assertEqual(re.match('(a)', string).group(1, 1), ('a', 'a'))
-        for string in b'a', B(b'a'), bytearray(b'a'), memoryview(b'a'):
+        kila string kwenye b'a', B(b'a'), bytearray(b'a'), memoryview(b'a'):
             self.assertEqual(re.match(b'a', string).groups(), ())
             self.assertEqual(re.match(b'(a)', string).groups(), (b'a',))
             self.assertEqual(re.match(b'(a)', string).group(0), b'a')
             self.assertEqual(re.match(b'(a)', string).group(1), b'a')
             self.assertEqual(re.match(b'(a)', string).group(1, 1), (b'a', b'a'))
-        for a in ("\xe0", "\u0430", "\U0001d49c"):
+        kila a kwenye ("\xe0", "\u0430", "\U0001d49c"):
             self.assertEqual(re.match(a, a).groups(), ())
             self.assertEqual(re.match('(%s)' % a, a).groups(), (a,))
             self.assertEqual(re.match('(%s)' % a, a).group(0), a)
@@ -405,17 +405,17 @@ kundi ReTests(unittest.TestCase):
             self.assertEqual(re.match('(%s)' % a, a).group(1, 1), (a, a))
 
         pat = re.compile('((a)|(b))(c)?')
-        self.assertEqual(pat.match('a').groups(), ('a', 'a', None, None))
-        self.assertEqual(pat.match('b').groups(), ('b', None, 'b', None))
-        self.assertEqual(pat.match('ac').groups(), ('a', 'a', None, 'c'))
-        self.assertEqual(pat.match('bc').groups(), ('b', None, 'b', 'c'))
+        self.assertEqual(pat.match('a').groups(), ('a', 'a', Tupu, Tupu))
+        self.assertEqual(pat.match('b').groups(), ('b', Tupu, 'b', Tupu))
+        self.assertEqual(pat.match('ac').groups(), ('a', 'a', Tupu, 'c'))
+        self.assertEqual(pat.match('bc').groups(), ('b', Tupu, 'b', 'c'))
         self.assertEqual(pat.match('bc').groups(""), ('b', "", 'b', 'c'))
 
         pat = re.compile('(?:(?P<a1>a)|(?P<b2>b))(?P<c3>c)?')
-        self.assertEqual(pat.match('a').group(1, 2, 3), ('a', None, None))
+        self.assertEqual(pat.match('a').group(1, 2, 3), ('a', Tupu, Tupu))
         self.assertEqual(pat.match('b').group('a1', 'b2', 'c3'),
-                         (None, 'b', None))
-        self.assertEqual(pat.match('ac').group(1, 'b2', 3), ('a', None, 'c'))
+                         (Tupu, 'b', Tupu))
+        self.assertEqual(pat.match('ac').group(1, 'b2', 3), ('a', Tupu, 'c'))
 
     eleza test_group(self):
         kundi Index:
@@ -443,13 +443,13 @@ kundi ReTests(unittest.TestCase):
 
         m = pat.match('a')
         self.assertEqual(m['a1'], 'a')
-        self.assertEqual(m['b2'], None)
-        self.assertEqual(m['c3'], None)
-        self.assertEqual('a1={a1} b2={b2} c3={c3}'.format_map(m), 'a1=a b2=None c3=None')
+        self.assertEqual(m['b2'], Tupu)
+        self.assertEqual(m['c3'], Tupu)
+        self.assertEqual('a1={a1} b2={b2} c3={c3}'.format_map(m), 'a1=a b2=Tupu c3=Tupu')
         self.assertEqual(m[0], 'a')
         self.assertEqual(m[1], 'a')
-        self.assertEqual(m[2], None)
-        self.assertEqual(m[3], None)
+        self.assertEqual(m[2], Tupu)
+        self.assertEqual(m[3], Tupu)
         with self.assertRaisesRegex(IndexError, 'no such group'):
             m['X']
         with self.assertRaisesRegex(IndexError, 'no such group'):
@@ -467,12 +467,12 @@ kundi ReTests(unittest.TestCase):
 
         m = pat.match('ac')
         self.assertEqual(m['a1'], 'a')
-        self.assertEqual(m['b2'], None)
+        self.assertEqual(m['b2'], Tupu)
         self.assertEqual(m['c3'], 'c')
-        self.assertEqual('a1={a1} b2={b2} c3={c3}'.format_map(m), 'a1=a b2=None c3=c')
+        self.assertEqual('a1={a1} b2={b2} c3={c3}'.format_map(m), 'a1=a b2=Tupu c3=c')
         self.assertEqual(m[0], 'ac')
         self.assertEqual(m[1], 'a')
-        self.assertEqual(m[2], None)
+        self.assertEqual(m[2], Tupu)
         self.assertEqual(m[3], 'c')
 
         # Cannot assign.
@@ -485,11 +485,11 @@ kundi ReTests(unittest.TestCase):
     eleza test_re_fullmatch(self):
         # Issue 16203: Proposal: add re.fullmatch() method.
         self.assertEqual(re.fullmatch(r"a", "a").span(), (0, 1))
-        for string in "ab", S("ab"):
+        kila string kwenye "ab", S("ab"):
             self.assertEqual(re.fullmatch(r"a|ab", string).span(), (0, 2))
-        for string in b"ab", B(b"ab"), bytearray(b"ab"), memoryview(b"ab"):
+        kila string kwenye b"ab", B(b"ab"), bytearray(b"ab"), memoryview(b"ab"):
             self.assertEqual(re.fullmatch(br"a|ab", string).span(), (0, 2))
-        for a, b in "\xe0\xdf", "\u0430\u0431", "\U0001d49c\U0001d49e":
+        kila a, b kwenye "\xe0\xdf", "\u0430\u0431", "\U0001d49c\U0001d49e":
             r = r"%s|%s" % (a, a + b)
             self.assertEqual(re.fullmatch(r, a + b).span(), (0, 2))
         self.assertEqual(re.fullmatch(r".*?$", "abc").span(), (0, 3))
@@ -497,10 +497,10 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.fullmatch(r"a.*?b", "ab").span(), (0, 2))
         self.assertEqual(re.fullmatch(r"a.*?b", "abb").span(), (0, 3))
         self.assertEqual(re.fullmatch(r"a.*?b", "axxb").span(), (0, 4))
-        self.assertIsNone(re.fullmatch(r"a+", "ab"))
-        self.assertIsNone(re.fullmatch(r"abc$", "abc\n"))
-        self.assertIsNone(re.fullmatch(r"abc\Z", "abc\n"))
-        self.assertIsNone(re.fullmatch(r"(?m)abc$", "abc\n"))
+        self.assertIsTupu(re.fullmatch(r"a+", "ab"))
+        self.assertIsTupu(re.fullmatch(r"abc$", "abc\n"))
+        self.assertIsTupu(re.fullmatch(r"abc\Z", "abc\n"))
+        self.assertIsTupu(re.fullmatch(r"(?m)abc$", "abc\n"))
         self.assertEqual(re.fullmatch(r"ab(?=c)cd", "abcd").span(), (0, 4))
         self.assertEqual(re.fullmatch(r"ab(?<=b)cd", "abcd").span(), (0, 4))
         self.assertEqual(re.fullmatch(r"(?=a|ab)ab", "ab").span(), (0, 2))
@@ -516,29 +516,29 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r'^(\()?([^()]+)(?(1)\))$', '(a)').groups(),
                          ('(', 'a'))
         self.assertEqual(re.match(r'^(\()?([^()]+)(?(1)\))$', 'a').groups(),
-                         (None, 'a'))
-        self.assertIsNone(re.match(r'^(\()?([^()]+)(?(1)\))$', 'a)'))
-        self.assertIsNone(re.match(r'^(\()?([^()]+)(?(1)\))$', '(a'))
+                         (Tupu, 'a'))
+        self.assertIsTupu(re.match(r'^(\()?([^()]+)(?(1)\))$', 'a)'))
+        self.assertIsTupu(re.match(r'^(\()?([^()]+)(?(1)\))$', '(a'))
         self.assertEqual(re.match('^(?:(a)|c)((?(1)b|d))$', 'ab').groups(),
                          ('a', 'b'))
         self.assertEqual(re.match(r'^(?:(a)|c)((?(1)b|d))$', 'cd').groups(),
-                         (None, 'd'))
+                         (Tupu, 'd'))
         self.assertEqual(re.match(r'^(?:(a)|c)((?(1)|d))$', 'cd').groups(),
-                         (None, 'd'))
+                         (Tupu, 'd'))
         self.assertEqual(re.match(r'^(?:(a)|c)((?(1)|d))$', 'a').groups(),
                          ('a', ''))
 
-        # Tests for bug #1177831: exercise groups other than the first group
+        # Tests kila bug #1177831: exercise groups other than the first group
         p = re.compile('(?P<g1>a)(?P<g2>b)?((?(g2)c|d))')
         self.assertEqual(p.match('abc').groups(),
                          ('a', 'b', 'c'))
         self.assertEqual(p.match('ad').groups(),
-                         ('a', None, 'd'))
-        self.assertIsNone(p.match('abd'))
-        self.assertIsNone(p.match('ac'))
+                         ('a', Tupu, 'd'))
+        self.assertIsTupu(p.match('abd'))
+        self.assertIsTupu(p.match('ac'))
 
         # Support > 100 groups.
-        pat = '|'.join('x(?P<a%d>%x)y' % (i, i) for i in range(1, 200 + 1))
+        pat = '|'.join('x(?P<a%d>%x)y' % (i, i) kila i kwenye range(1, 200 + 1))
         pat = '(?:%s)(?(200)z)' % pat
         self.assertEqual(re.match(pat, 'xc8yz').span(), (0, 5))
 
@@ -560,13 +560,13 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r'^(\|)?([^()]+)\1$', '|a|').groups(),
                          ('|', 'a'))
         self.assertEqual(re.match(r'^(\|)?([^()]+)\1?$', 'a').groups(),
-                         (None, 'a'))
-        self.assertIsNone(re.match(r'^(\|)?([^()]+)\1$', 'a|'))
-        self.assertIsNone(re.match(r'^(\|)?([^()]+)\1$', '|a'))
+                         (Tupu, 'a'))
+        self.assertIsTupu(re.match(r'^(\|)?([^()]+)\1$', 'a|'))
+        self.assertIsTupu(re.match(r'^(\|)?([^()]+)\1$', '|a'))
         self.assertEqual(re.match(r'^(?:(a)|c)(\1)$', 'aa').groups(),
                          ('a', 'a'))
         self.assertEqual(re.match(r'^(?:(a)|c)(\1)?$', 'c').groups(),
-                         (None, None))
+                         (Tupu, Tupu))
 
         self.checkPatternError(r'(abc\1)', 'cannot refer to an open group', 4)
 
@@ -586,10 +586,10 @@ kundi ReTests(unittest.TestCase):
                          " ")
 
     eleza test_repeat_minmax(self):
-        self.assertIsNone(re.match(r"^(\w){1}$", "abc"))
-        self.assertIsNone(re.match(r"^(\w){1}?$", "abc"))
-        self.assertIsNone(re.match(r"^(\w){1,2}$", "abc"))
-        self.assertIsNone(re.match(r"^(\w){1,2}?$", "abc"))
+        self.assertIsTupu(re.match(r"^(\w){1}$", "abc"))
+        self.assertIsTupu(re.match(r"^(\w){1}?$", "abc"))
+        self.assertIsTupu(re.match(r"^(\w){1,2}$", "abc"))
+        self.assertIsTupu(re.match(r"^(\w){1,2}?$", "abc"))
 
         self.assertEqual(re.match(r"^(\w){3}$", "abc").group(1), "c")
         self.assertEqual(re.match(r"^(\w){1,3}$", "abc").group(1), "c")
@@ -600,23 +600,23 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r"^(\w){1,4}?$", "abc").group(1), "c")
         self.assertEqual(re.match(r"^(\w){3,4}?$", "abc").group(1), "c")
 
-        self.assertIsNone(re.match(r"^x{1}$", "xxx"))
-        self.assertIsNone(re.match(r"^x{1}?$", "xxx"))
-        self.assertIsNone(re.match(r"^x{1,2}$", "xxx"))
-        self.assertIsNone(re.match(r"^x{1,2}?$", "xxx"))
+        self.assertIsTupu(re.match(r"^x{1}$", "xxx"))
+        self.assertIsTupu(re.match(r"^x{1}?$", "xxx"))
+        self.assertIsTupu(re.match(r"^x{1,2}$", "xxx"))
+        self.assertIsTupu(re.match(r"^x{1,2}?$", "xxx"))
 
-        self.assertTrue(re.match(r"^x{3}$", "xxx"))
-        self.assertTrue(re.match(r"^x{1,3}$", "xxx"))
-        self.assertTrue(re.match(r"^x{3,3}$", "xxx"))
-        self.assertTrue(re.match(r"^x{1,4}$", "xxx"))
-        self.assertTrue(re.match(r"^x{3,4}?$", "xxx"))
-        self.assertTrue(re.match(r"^x{3}?$", "xxx"))
-        self.assertTrue(re.match(r"^x{1,3}?$", "xxx"))
-        self.assertTrue(re.match(r"^x{1,4}?$", "xxx"))
-        self.assertTrue(re.match(r"^x{3,4}?$", "xxx"))
+        self.assertKweli(re.match(r"^x{3}$", "xxx"))
+        self.assertKweli(re.match(r"^x{1,3}$", "xxx"))
+        self.assertKweli(re.match(r"^x{3,3}$", "xxx"))
+        self.assertKweli(re.match(r"^x{1,4}$", "xxx"))
+        self.assertKweli(re.match(r"^x{3,4}?$", "xxx"))
+        self.assertKweli(re.match(r"^x{3}?$", "xxx"))
+        self.assertKweli(re.match(r"^x{1,3}?$", "xxx"))
+        self.assertKweli(re.match(r"^x{1,4}?$", "xxx"))
+        self.assertKweli(re.match(r"^x{3,4}?$", "xxx"))
 
-        self.assertIsNone(re.match(r"^x{}$", "xxx"))
-        self.assertTrue(re.match(r"^x{}$", "x{}"))
+        self.assertIsTupu(re.match(r"^x{}$", "xxx"))
+        self.assertKweli(re.match(r"^x{}$", "x{}"))
 
         self.checkPatternError(r'x{2,1}',
                                'min repeat greater than max repeat', 2)
@@ -633,7 +633,7 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match("(a)", "a").endpos, 1)
         self.assertEqual(re.match("(a)", "a").string, "a")
         self.assertEqual(re.match("(a)", "a").regs, ((0, 1), (0, 1)))
-        self.assertTrue(re.match("(a)", "a").re)
+        self.assertKweli(re.match("(a)", "a").re)
 
         # Issue 14260. groupindex should be non-modifiable mapping.
         p = re.compile(r'(?i)(?P<first>a)(?P<other>b)')
@@ -654,7 +654,7 @@ kundi ReTests(unittest.TestCase):
                                    "abc bcd bc abxd", re.ASCII).group(1), "bx")
         self.assertEqual(re.search(r"^abc$", "\nabc\n", re.M).group(0), "abc")
         self.assertEqual(re.search(r"^\Aabc\Z$", "abc", re.M).group(0), "abc")
-        self.assertIsNone(re.search(r"^\Aabc\Z$", "\nabc\n", re.M))
+        self.assertIsTupu(re.search(r"^\Aabc\Z$", "\nabc\n", re.M))
         self.assertEqual(re.search(br"\b(b.)\b",
                                    b"abcd abc bcd bx").group(1), b"bx")
         self.assertEqual(re.search(br"\B(b.)\B",
@@ -665,7 +665,7 @@ kundi ReTests(unittest.TestCase):
                                    b"abc bcd bc abxd", re.LOCALE).group(1), b"bx")
         self.assertEqual(re.search(br"^abc$", b"\nabc\n", re.M).group(0), b"abc")
         self.assertEqual(re.search(br"^\Aabc\Z$", b"abc", re.M).group(0), b"abc")
-        self.assertIsNone(re.search(br"^\Aabc\Z$", b"\nabc\n", re.M))
+        self.assertIsTupu(re.search(br"^\Aabc\Z$", b"\nabc\n", re.M))
         self.assertEqual(re.search(r"\d\D\w\W\s\S",
                                    "1aa! a").group(0), "1aa! a")
         self.assertEqual(re.search(br"\d\D\w\W\s\S",
@@ -678,37 +678,37 @@ kundi ReTests(unittest.TestCase):
     eleza test_other_escapes(self):
         self.checkPatternError("\\", 'bad escape (end of pattern)', 0)
         self.assertEqual(re.match(r"\(", '(').group(), '(')
-        self.assertIsNone(re.match(r"\(", ')'))
+        self.assertIsTupu(re.match(r"\(", ')'))
         self.assertEqual(re.match(r"\\", '\\').group(), '\\')
         self.assertEqual(re.match(r"[\]]", ']').group(), ']')
-        self.assertIsNone(re.match(r"[\]]", '['))
+        self.assertIsTupu(re.match(r"[\]]", '['))
         self.assertEqual(re.match(r"[a\-c]", '-').group(), '-')
-        self.assertIsNone(re.match(r"[a\-c]", 'b'))
+        self.assertIsTupu(re.match(r"[a\-c]", 'b'))
         self.assertEqual(re.match(r"[\^a]+", 'a^').group(), 'a^')
-        self.assertIsNone(re.match(r"[\^a]+", 'b'))
-        re.purge()  # for warnings
-        for c in 'ceghijklmopqyzCEFGHIJKLMNOPQRTVXY':
+        self.assertIsTupu(re.match(r"[\^a]+", 'b'))
+        re.purge()  # kila warnings
+        kila c kwenye 'ceghijklmopqyzCEFGHIJKLMNOPQRTVXY':
             with self.subTest(c):
                 self.assertRaises(re.error, re.compile, '\\%c' % c)
-        for c in 'ceghijklmopqyzABCEFGHIJKLMNOPQRTVXYZ':
+        kila c kwenye 'ceghijklmopqyzABCEFGHIJKLMNOPQRTVXYZ':
             with self.subTest(c):
                 self.assertRaises(re.error, re.compile, '[\\%c]' % c)
 
     eleza test_named_unicode_escapes(self):
         # test individual Unicode named escapes
-        self.assertTrue(re.match(r'\N{LESS-THAN SIGN}', '<'))
-        self.assertTrue(re.match(r'\N{less-than sign}', '<'))
-        self.assertIsNone(re.match(r'\N{LESS-THAN SIGN}', '>'))
-        self.assertTrue(re.match(r'\N{SNAKE}', '\U0001f40d'))
-        self.assertTrue(re.match(r'\N{ARABIC LIGATURE UIGHUR KIRGHIZ YEH WITH '
+        self.assertKweli(re.match(r'\N{LESS-THAN SIGN}', '<'))
+        self.assertKweli(re.match(r'\N{less-than sign}', '<'))
+        self.assertIsTupu(re.match(r'\N{LESS-THAN SIGN}', '>'))
+        self.assertKweli(re.match(r'\N{SNAKE}', '\U0001f40d'))
+        self.assertKweli(re.match(r'\N{ARABIC LIGATURE UIGHUR KIRGHIZ YEH WITH '
                                  r'HAMZA ABOVE WITH ALEF MAKSURA ISOLATED FORM}',
                                  '\ufbf9'))
-        self.assertTrue(re.match(r'[\N{LESS-THAN SIGN}-\N{GREATER-THAN SIGN}]',
+        self.assertKweli(re.match(r'[\N{LESS-THAN SIGN}-\N{GREATER-THAN SIGN}]',
                                  '='))
-        self.assertIsNone(re.match(r'[\N{LESS-THAN SIGN}-\N{GREATER-THAN SIGN}]',
+        self.assertIsTupu(re.match(r'[\N{LESS-THAN SIGN}-\N{GREATER-THAN SIGN}]',
                                    ';'))
 
-        # test errors in \N{name} handling - only valid names should pass
+        # test errors kwenye \N{name} handling - only valid names should pita
         self.checkPatternError(r'\N', 'missing {', 2)
         self.checkPatternError(r'[\N]', 'missing {', 3)
         self.checkPatternError(r'\N{', 'missing character name', 3)
@@ -735,17 +735,17 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.search(r"\b(abc)\b", "abc").group(1),
                          "abc")
         # There's a word boundary at the start of a string.
-        self.assertTrue(re.match(r"\b", "abc"))
+        self.assertKweli(re.match(r"\b", "abc"))
         # A non-empty string includes a non-boundary zero-length match.
-        self.assertTrue(re.search(r"\B", "abc"))
-        # There is no non-boundary match at the start of a string.
-        self.assertFalse(re.match(r"\B", "abc"))
-        # However, an empty string contains no word boundaries, and also no
+        self.assertKweli(re.search(r"\B", "abc"))
+        # There ni no non-boundary match at the start of a string.
+        self.assertUongo(re.match(r"\B", "abc"))
+        # However, an empty string contains no word boundaries, na also no
         # non-boundaries.
-        self.assertIsNone(re.search(r"\B", ""))
-        # This one is questionable and different kutoka the perlre behaviour,
+        self.assertIsTupu(re.search(r"\B", ""))
+        # This one ni questionable na different kutoka the perlre behaviour,
         # but describes current behavior.
-        self.assertIsNone(re.search(r"\b", ""))
+        self.assertIsTupu(re.search(r"\b", ""))
         # A single word-character string has two boundaries, but no
         # non-boundary gaps.
         self.assertEqual(len(re.findall(r"\b", "a")), 2)
@@ -764,9 +764,9 @@ kundi ReTests(unittest.TestCase):
 
     eleza test_big_codesize(self):
         # Issue #1160
-        r = re.compile('|'.join(('%d'%x for x in range(10000))))
-        self.assertTrue(r.match('1000'))
-        self.assertTrue(r.match('9999'))
+        r = re.compile('|'.join(('%d'%x kila x kwenye range(10000))))
+        self.assertKweli(r.match('1000'))
+        self.assertKweli(r.match('9999'))
 
     eleza test_anyall(self):
         self.assertEqual(re.match("a.b", "a\nb", re.DOTALL).group(0),
@@ -789,40 +789,40 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r"(a)(?!\s(abc|a))", "a b").group(1), "a")
 
         # Group reference.
-        self.assertTrue(re.match(r'(a)b(?=\1)a', 'aba'))
-        self.assertIsNone(re.match(r'(a)b(?=\1)c', 'abac'))
+        self.assertKweli(re.match(r'(a)b(?=\1)a', 'aba'))
+        self.assertIsTupu(re.match(r'(a)b(?=\1)c', 'abac'))
         # Conditional group reference.
-        self.assertTrue(re.match(r'(?:(a)|(x))b(?=(?(2)x|c))c', 'abc'))
-        self.assertIsNone(re.match(r'(?:(a)|(x))b(?=(?(2)c|x))c', 'abc'))
-        self.assertTrue(re.match(r'(?:(a)|(x))b(?=(?(2)x|c))c', 'abc'))
-        self.assertIsNone(re.match(r'(?:(a)|(x))b(?=(?(1)b|x))c', 'abc'))
-        self.assertTrue(re.match(r'(?:(a)|(x))b(?=(?(1)c|x))c', 'abc'))
+        self.assertKweli(re.match(r'(?:(a)|(x))b(?=(?(2)x|c))c', 'abc'))
+        self.assertIsTupu(re.match(r'(?:(a)|(x))b(?=(?(2)c|x))c', 'abc'))
+        self.assertKweli(re.match(r'(?:(a)|(x))b(?=(?(2)x|c))c', 'abc'))
+        self.assertIsTupu(re.match(r'(?:(a)|(x))b(?=(?(1)b|x))c', 'abc'))
+        self.assertKweli(re.match(r'(?:(a)|(x))b(?=(?(1)c|x))c', 'abc'))
         # Group used before defined.
-        self.assertTrue(re.match(r'(a)b(?=(?(2)x|c))(c)', 'abc'))
-        self.assertIsNone(re.match(r'(a)b(?=(?(2)b|x))(c)', 'abc'))
-        self.assertTrue(re.match(r'(a)b(?=(?(1)c|x))(c)', 'abc'))
+        self.assertKweli(re.match(r'(a)b(?=(?(2)x|c))(c)', 'abc'))
+        self.assertIsTupu(re.match(r'(a)b(?=(?(2)b|x))(c)', 'abc'))
+        self.assertKweli(re.match(r'(a)b(?=(?(1)c|x))(c)', 'abc'))
 
     eleza test_lookbehind(self):
-        self.assertTrue(re.match(r'ab(?<=b)c', 'abc'))
-        self.assertIsNone(re.match(r'ab(?<=c)c', 'abc'))
-        self.assertIsNone(re.match(r'ab(?<!b)c', 'abc'))
-        self.assertTrue(re.match(r'ab(?<!c)c', 'abc'))
+        self.assertKweli(re.match(r'ab(?<=b)c', 'abc'))
+        self.assertIsTupu(re.match(r'ab(?<=c)c', 'abc'))
+        self.assertIsTupu(re.match(r'ab(?<!b)c', 'abc'))
+        self.assertKweli(re.match(r'ab(?<!c)c', 'abc'))
         # Group reference.
-        self.assertTrue(re.match(r'(a)a(?<=\1)c', 'aac'))
-        self.assertIsNone(re.match(r'(a)b(?<=\1)a', 'abaa'))
-        self.assertIsNone(re.match(r'(a)a(?<!\1)c', 'aac'))
-        self.assertTrue(re.match(r'(a)b(?<!\1)a', 'abaa'))
+        self.assertKweli(re.match(r'(a)a(?<=\1)c', 'aac'))
+        self.assertIsTupu(re.match(r'(a)b(?<=\1)a', 'abaa'))
+        self.assertIsTupu(re.match(r'(a)a(?<!\1)c', 'aac'))
+        self.assertKweli(re.match(r'(a)b(?<!\1)a', 'abaa'))
         # Conditional group reference.
-        self.assertIsNone(re.match(r'(?:(a)|(x))b(?<=(?(2)x|c))c', 'abc'))
-        self.assertIsNone(re.match(r'(?:(a)|(x))b(?<=(?(2)b|x))c', 'abc'))
-        self.assertTrue(re.match(r'(?:(a)|(x))b(?<=(?(2)x|b))c', 'abc'))
-        self.assertIsNone(re.match(r'(?:(a)|(x))b(?<=(?(1)c|x))c', 'abc'))
-        self.assertTrue(re.match(r'(?:(a)|(x))b(?<=(?(1)b|x))c', 'abc'))
+        self.assertIsTupu(re.match(r'(?:(a)|(x))b(?<=(?(2)x|c))c', 'abc'))
+        self.assertIsTupu(re.match(r'(?:(a)|(x))b(?<=(?(2)b|x))c', 'abc'))
+        self.assertKweli(re.match(r'(?:(a)|(x))b(?<=(?(2)x|b))c', 'abc'))
+        self.assertIsTupu(re.match(r'(?:(a)|(x))b(?<=(?(1)c|x))c', 'abc'))
+        self.assertKweli(re.match(r'(?:(a)|(x))b(?<=(?(1)b|x))c', 'abc'))
         # Group used before defined.
         self.assertRaises(re.error, re.compile, r'(a)b(?<=(?(2)b|x))(c)')
-        self.assertIsNone(re.match(r'(a)b(?<=(?(1)c|x))(c)', 'abc'))
-        self.assertTrue(re.match(r'(a)b(?<=(?(1)b|x))(c)', 'abc'))
-        # Group defined in the same lookbehind pattern
+        self.assertIsTupu(re.match(r'(a)b(?<=(?(1)c|x))(c)', 'abc'))
+        self.assertKweli(re.match(r'(a)b(?<=(?(1)b|x))(c)', 'abc'))
+        # Group defined kwenye the same lookbehind pattern
         self.assertRaises(re.error, re.compile, r'(a)b(?<=(.)\2)(c)')
         self.assertRaises(re.error, re.compile, r'(a)b(?<=(?P<a>.)(?P=a))(c)')
         self.assertRaises(re.error, re.compile, r'(a)b(?<=(a)(?(2)b|x))(c)')
@@ -841,74 +841,74 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r"((a)\s(abc|a)*)", "a aa", re.I).group(1), "a aa")
 
         assert '\u212a'.lower() == 'k' # 'K'
-        self.assertTrue(re.match(r'K', '\u212a', re.I))
-        self.assertTrue(re.match(r'k', '\u212a', re.I))
-        self.assertTrue(re.match(r'\u212a', 'K', re.I))
-        self.assertTrue(re.match(r'\u212a', 'k', re.I))
+        self.assertKweli(re.match(r'K', '\u212a', re.I))
+        self.assertKweli(re.match(r'k', '\u212a', re.I))
+        self.assertKweli(re.match(r'\u212a', 'K', re.I))
+        self.assertKweli(re.match(r'\u212a', 'k', re.I))
         assert '\u017f'.upper() == 'S' # 'ſ'
-        self.assertTrue(re.match(r'S', '\u017f', re.I))
-        self.assertTrue(re.match(r's', '\u017f', re.I))
-        self.assertTrue(re.match(r'\u017f', 'S', re.I))
-        self.assertTrue(re.match(r'\u017f', 's', re.I))
+        self.assertKweli(re.match(r'S', '\u017f', re.I))
+        self.assertKweli(re.match(r's', '\u017f', re.I))
+        self.assertKweli(re.match(r'\u017f', 'S', re.I))
+        self.assertKweli(re.match(r'\u017f', 's', re.I))
         assert '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
-        self.assertTrue(re.match(r'\ufb05', '\ufb06', re.I))
-        self.assertTrue(re.match(r'\ufb06', '\ufb05', re.I))
+        self.assertKweli(re.match(r'\ufb05', '\ufb06', re.I))
+        self.assertKweli(re.match(r'\ufb06', '\ufb05', re.I))
 
     eleza test_ignore_case_set(self):
-        self.assertTrue(re.match(r'[19A]', 'A', re.I))
-        self.assertTrue(re.match(r'[19a]', 'a', re.I))
-        self.assertTrue(re.match(r'[19a]', 'A', re.I))
-        self.assertTrue(re.match(r'[19A]', 'a', re.I))
-        self.assertTrue(re.match(br'[19A]', b'A', re.I))
-        self.assertTrue(re.match(br'[19a]', b'a', re.I))
-        self.assertTrue(re.match(br'[19a]', b'A', re.I))
-        self.assertTrue(re.match(br'[19A]', b'a', re.I))
+        self.assertKweli(re.match(r'[19A]', 'A', re.I))
+        self.assertKweli(re.match(r'[19a]', 'a', re.I))
+        self.assertKweli(re.match(r'[19a]', 'A', re.I))
+        self.assertKweli(re.match(r'[19A]', 'a', re.I))
+        self.assertKweli(re.match(br'[19A]', b'A', re.I))
+        self.assertKweli(re.match(br'[19a]', b'a', re.I))
+        self.assertKweli(re.match(br'[19a]', b'A', re.I))
+        self.assertKweli(re.match(br'[19A]', b'a', re.I))
         assert '\u212a'.lower() == 'k' # 'K'
-        self.assertTrue(re.match(r'[19K]', '\u212a', re.I))
-        self.assertTrue(re.match(r'[19k]', '\u212a', re.I))
-        self.assertTrue(re.match(r'[19\u212a]', 'K', re.I))
-        self.assertTrue(re.match(r'[19\u212a]', 'k', re.I))
+        self.assertKweli(re.match(r'[19K]', '\u212a', re.I))
+        self.assertKweli(re.match(r'[19k]', '\u212a', re.I))
+        self.assertKweli(re.match(r'[19\u212a]', 'K', re.I))
+        self.assertKweli(re.match(r'[19\u212a]', 'k', re.I))
         assert '\u017f'.upper() == 'S' # 'ſ'
-        self.assertTrue(re.match(r'[19S]', '\u017f', re.I))
-        self.assertTrue(re.match(r'[19s]', '\u017f', re.I))
-        self.assertTrue(re.match(r'[19\u017f]', 'S', re.I))
-        self.assertTrue(re.match(r'[19\u017f]', 's', re.I))
+        self.assertKweli(re.match(r'[19S]', '\u017f', re.I))
+        self.assertKweli(re.match(r'[19s]', '\u017f', re.I))
+        self.assertKweli(re.match(r'[19\u017f]', 'S', re.I))
+        self.assertKweli(re.match(r'[19\u017f]', 's', re.I))
         assert '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
-        self.assertTrue(re.match(r'[19\ufb05]', '\ufb06', re.I))
-        self.assertTrue(re.match(r'[19\ufb06]', '\ufb05', re.I))
+        self.assertKweli(re.match(r'[19\ufb05]', '\ufb06', re.I))
+        self.assertKweli(re.match(r'[19\ufb06]', '\ufb05', re.I))
 
     eleza test_ignore_case_range(self):
         # Issues #3511, #17381.
-        self.assertTrue(re.match(r'[9-a]', '_', re.I))
-        self.assertIsNone(re.match(r'[9-A]', '_', re.I))
-        self.assertTrue(re.match(br'[9-a]', b'_', re.I))
-        self.assertIsNone(re.match(br'[9-A]', b'_', re.I))
-        self.assertTrue(re.match(r'[\xc0-\xde]', '\xd7', re.I))
-        self.assertIsNone(re.match(r'[\xc0-\xde]', '\xf7', re.I))
-        self.assertTrue(re.match(r'[\xe0-\xfe]', '\xf7', re.I))
-        self.assertIsNone(re.match(r'[\xe0-\xfe]', '\xd7', re.I))
-        self.assertTrue(re.match(r'[\u0430-\u045f]', '\u0450', re.I))
-        self.assertTrue(re.match(r'[\u0430-\u045f]', '\u0400', re.I))
-        self.assertTrue(re.match(r'[\u0400-\u042f]', '\u0450', re.I))
-        self.assertTrue(re.match(r'[\u0400-\u042f]', '\u0400', re.I))
-        self.assertTrue(re.match(r'[\U00010428-\U0001044f]', '\U00010428', re.I))
-        self.assertTrue(re.match(r'[\U00010428-\U0001044f]', '\U00010400', re.I))
-        self.assertTrue(re.match(r'[\U00010400-\U00010427]', '\U00010428', re.I))
-        self.assertTrue(re.match(r'[\U00010400-\U00010427]', '\U00010400', re.I))
+        self.assertKweli(re.match(r'[9-a]', '_', re.I))
+        self.assertIsTupu(re.match(r'[9-A]', '_', re.I))
+        self.assertKweli(re.match(br'[9-a]', b'_', re.I))
+        self.assertIsTupu(re.match(br'[9-A]', b'_', re.I))
+        self.assertKweli(re.match(r'[\xc0-\xde]', '\xd7', re.I))
+        self.assertIsTupu(re.match(r'[\xc0-\xde]', '\xf7', re.I))
+        self.assertKweli(re.match(r'[\xe0-\xfe]', '\xf7', re.I))
+        self.assertIsTupu(re.match(r'[\xe0-\xfe]', '\xd7', re.I))
+        self.assertKweli(re.match(r'[\u0430-\u045f]', '\u0450', re.I))
+        self.assertKweli(re.match(r'[\u0430-\u045f]', '\u0400', re.I))
+        self.assertKweli(re.match(r'[\u0400-\u042f]', '\u0450', re.I))
+        self.assertKweli(re.match(r'[\u0400-\u042f]', '\u0400', re.I))
+        self.assertKweli(re.match(r'[\U00010428-\U0001044f]', '\U00010428', re.I))
+        self.assertKweli(re.match(r'[\U00010428-\U0001044f]', '\U00010400', re.I))
+        self.assertKweli(re.match(r'[\U00010400-\U00010427]', '\U00010428', re.I))
+        self.assertKweli(re.match(r'[\U00010400-\U00010427]', '\U00010400', re.I))
 
         assert '\u212a'.lower() == 'k' # 'K'
-        self.assertTrue(re.match(r'[J-M]', '\u212a', re.I))
-        self.assertTrue(re.match(r'[j-m]', '\u212a', re.I))
-        self.assertTrue(re.match(r'[\u2129-\u212b]', 'K', re.I))
-        self.assertTrue(re.match(r'[\u2129-\u212b]', 'k', re.I))
+        self.assertKweli(re.match(r'[J-M]', '\u212a', re.I))
+        self.assertKweli(re.match(r'[j-m]', '\u212a', re.I))
+        self.assertKweli(re.match(r'[\u2129-\u212b]', 'K', re.I))
+        self.assertKweli(re.match(r'[\u2129-\u212b]', 'k', re.I))
         assert '\u017f'.upper() == 'S' # 'ſ'
-        self.assertTrue(re.match(r'[R-T]', '\u017f', re.I))
-        self.assertTrue(re.match(r'[r-t]', '\u017f', re.I))
-        self.assertTrue(re.match(r'[\u017e-\u0180]', 'S', re.I))
-        self.assertTrue(re.match(r'[\u017e-\u0180]', 's', re.I))
+        self.assertKweli(re.match(r'[R-T]', '\u017f', re.I))
+        self.assertKweli(re.match(r'[r-t]', '\u017f', re.I))
+        self.assertKweli(re.match(r'[\u017e-\u0180]', 'S', re.I))
+        self.assertKweli(re.match(r'[\u017e-\u0180]', 's', re.I))
         assert '\ufb05'.upper() == '\ufb06'.upper() == 'ST' # 'ﬅ', 'ﬆ'
-        self.assertTrue(re.match(r'[\ufb04-\ufb05]', '\ufb06', re.I))
-        self.assertTrue(re.match(r'[\ufb06-\ufb07]', '\ufb05', re.I))
+        self.assertKweli(re.match(r'[\ufb04-\ufb05]', '\ufb06', re.I))
+        self.assertKweli(re.match(r'[\ufb06-\ufb07]', '\ufb05', re.I))
 
     eleza test_category(self):
         self.assertEqual(re.match(r"(\s)", " ").group(1), " ")
@@ -916,29 +916,29 @@ kundi ReTests(unittest.TestCase):
     @cpython_only
     eleza test_case_helpers(self):
         agiza _sre
-        for i in range(128):
+        kila i kwenye range(128):
             c = chr(i)
             lo = ord(c.lower())
             self.assertEqual(_sre.ascii_tolower(i), lo)
             self.assertEqual(_sre.unicode_tolower(i), lo)
-            iscased = c in string.ascii_letters
+            iscased = c kwenye string.ascii_letters
             self.assertEqual(_sre.ascii_iscased(i), iscased)
             self.assertEqual(_sre.unicode_iscased(i), iscased)
 
-        for i in list(range(128, 0x1000)) + [0x10400, 0x10428]:
+        kila i kwenye list(range(128, 0x1000)) + [0x10400, 0x10428]:
             c = chr(i)
             self.assertEqual(_sre.ascii_tolower(i), i)
             ikiwa i != 0x0130:
                 self.assertEqual(_sre.unicode_tolower(i), ord(c.lower()))
-            iscased = c != c.lower() or c != c.upper()
-            self.assertFalse(_sre.ascii_iscased(i))
+            iscased = c != c.lower() ama c != c.upper()
+            self.assertUongo(_sre.ascii_iscased(i))
             self.assertEqual(_sre.unicode_iscased(i),
-                             c != c.lower() or c != c.upper())
+                             c != c.lower() ama c != c.upper())
 
         self.assertEqual(_sre.ascii_tolower(0x0130), 0x0130)
         self.assertEqual(_sre.unicode_tolower(0x0130), ord('i'))
-        self.assertFalse(_sre.ascii_iscased(0x0130))
-        self.assertTrue(_sre.unicode_iscased(0x0130))
+        self.assertUongo(_sre.ascii_iscased(0x0130))
+        self.assertKweli(_sre.unicode_iscased(0x0130))
 
     eleza test_not_literal(self):
         self.assertEqual(re.search(r"\s([^a])", " b").group(1), "b")
@@ -993,43 +993,43 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.search(r"\s(b)", " b").group(1), "b")
         self.assertEqual(re.search(r"a\s", "a ").group(0), "a ")
 
-    eleza assertMatch(self, pattern, text, match=None, span=None,
+    eleza assertMatch(self, pattern, text, match=Tupu, span=Tupu,
                     matcher=re.fullmatch):
-        ikiwa match is None and span is None:
+        ikiwa match ni Tupu na span ni Tupu:
             # the pattern matches the whole text
             match = text
             span = (0, len(text))
-        elikiwa match is None or span is None:
-            raise ValueError('If match is not None, span should be specified '
+        elikiwa match ni Tupu ama span ni Tupu:
+            ashiria ValueError('If match ni sio Tupu, span should be specified '
                              '(and vice versa).')
         m = matcher(pattern, text)
-        self.assertTrue(m)
+        self.assertKweli(m)
         self.assertEqual(m.group(), match)
         self.assertEqual(m.span(), span)
 
     LITERAL_CHARS = string.ascii_letters + string.digits + '!"%\',/:;<=>@_`'
 
     eleza test_re_escape(self):
-        p = ''.join(chr(i) for i in range(256))
-        for c in p:
+        p = ''.join(chr(i) kila i kwenye range(256))
+        kila c kwenye p:
             self.assertMatch(re.escape(c), c)
             self.assertMatch('[' + re.escape(c) + ']', c)
             self.assertMatch('(?x)' + re.escape(c), c)
         self.assertMatch(re.escape(p), p)
-        for c in '-.]{}':
+        kila c kwenye '-.]{}':
             self.assertEqual(re.escape(c)[:1], '\\')
         literal_chars = self.LITERAL_CHARS
         self.assertEqual(re.escape(literal_chars), literal_chars)
 
     eleza test_re_escape_bytes(self):
         p = bytes(range(256))
-        for i in p:
+        kila i kwenye p:
             b = bytes([i])
             self.assertMatch(re.escape(b), b)
             self.assertMatch(b'[' + re.escape(b) + b']', b)
             self.assertMatch(b'(?x)' + re.escape(b), b)
         self.assertMatch(re.escape(p), p)
-        for i in b'-.]{}':
+        kila i kwenye b'-.]{}':
             b = bytes([i])
             self.assertEqual(re.escape(b)[:1], b'\\')
         literal_chars = self.LITERAL_CHARS.encode('ascii')
@@ -1054,11 +1054,11 @@ kundi ReTests(unittest.TestCase):
     eleza test_pickling(self):
         agiza pickle
         oldpat = re.compile('a(?:b|(c|e){1,2}?|d)+?(.)', re.UNICODE)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(oldpat, proto)
             newpat = pickle.loads(pickled)
             self.assertEqual(newpat, oldpat)
-        # current pickle expects the _compile() reconstructor in re module
+        # current pickle expects the _compile() reconstructor kwenye re module
         kutoka re agiza _compile
 
     eleza test_copying(self):
@@ -1078,31 +1078,31 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.X, re.VERBOSE)
 
     eleza test_flags(self):
-        for flag in [re.I, re.M, re.X, re.S, re.A, re.U]:
-            self.assertTrue(re.compile('^pattern$', flag))
-        for flag in [re.I, re.M, re.X, re.S, re.A, re.L]:
-            self.assertTrue(re.compile(b'^pattern$', flag))
+        kila flag kwenye [re.I, re.M, re.X, re.S, re.A, re.U]:
+            self.assertKweli(re.compile('^pattern$', flag))
+        kila flag kwenye [re.I, re.M, re.X, re.S, re.A, re.L]:
+            self.assertKweli(re.compile(b'^pattern$', flag))
 
     eleza test_sre_character_literals(self):
-        for i in [0, 8, 16, 32, 64, 127, 128, 255, 256, 0xFFFF, 0x10000, 0x10FFFF]:
+        kila i kwenye [0, 8, 16, 32, 64, 127, 128, 255, 256, 0xFFFF, 0x10000, 0x10FFFF]:
             ikiwa i < 256:
-                self.assertTrue(re.match(r"\%03o" % i, chr(i)))
-                self.assertTrue(re.match(r"\%03o0" % i, chr(i)+"0"))
-                self.assertTrue(re.match(r"\%03o8" % i, chr(i)+"8"))
-                self.assertTrue(re.match(r"\x%02x" % i, chr(i)))
-                self.assertTrue(re.match(r"\x%02x0" % i, chr(i)+"0"))
-                self.assertTrue(re.match(r"\x%02xz" % i, chr(i)+"z"))
+                self.assertKweli(re.match(r"\%03o" % i, chr(i)))
+                self.assertKweli(re.match(r"\%03o0" % i, chr(i)+"0"))
+                self.assertKweli(re.match(r"\%03o8" % i, chr(i)+"8"))
+                self.assertKweli(re.match(r"\x%02x" % i, chr(i)))
+                self.assertKweli(re.match(r"\x%02x0" % i, chr(i)+"0"))
+                self.assertKweli(re.match(r"\x%02xz" % i, chr(i)+"z"))
             ikiwa i < 0x10000:
-                self.assertTrue(re.match(r"\u%04x" % i, chr(i)))
-                self.assertTrue(re.match(r"\u%04x0" % i, chr(i)+"0"))
-                self.assertTrue(re.match(r"\u%04xz" % i, chr(i)+"z"))
-            self.assertTrue(re.match(r"\U%08x" % i, chr(i)))
-            self.assertTrue(re.match(r"\U%08x0" % i, chr(i)+"0"))
-            self.assertTrue(re.match(r"\U%08xz" % i, chr(i)+"z"))
-        self.assertTrue(re.match(r"\0", "\000"))
-        self.assertTrue(re.match(r"\08", "\0008"))
-        self.assertTrue(re.match(r"\01", "\001"))
-        self.assertTrue(re.match(r"\018", "\0018"))
+                self.assertKweli(re.match(r"\u%04x" % i, chr(i)))
+                self.assertKweli(re.match(r"\u%04x0" % i, chr(i)+"0"))
+                self.assertKweli(re.match(r"\u%04xz" % i, chr(i)+"z"))
+            self.assertKweli(re.match(r"\U%08x" % i, chr(i)))
+            self.assertKweli(re.match(r"\U%08x0" % i, chr(i)+"0"))
+            self.assertKweli(re.match(r"\U%08xz" % i, chr(i)+"z"))
+        self.assertKweli(re.match(r"\0", "\000"))
+        self.assertKweli(re.match(r"\08", "\0008"))
+        self.assertKweli(re.match(r"\01", "\001"))
+        self.assertKweli(re.match(r"\018", "\0018"))
         self.checkPatternError(r"\567",
                                r'octal escape value \567 outside of '
                                r'range 0-0o377', 0)
@@ -1116,23 +1116,23 @@ kundi ReTests(unittest.TestCase):
         self.checkPatternError(r"\U00110000", r'bad escape \U00110000', 0)
 
     eleza test_sre_character_class_literals(self):
-        for i in [0, 8, 16, 32, 64, 127, 128, 255, 256, 0xFFFF, 0x10000, 0x10FFFF]:
+        kila i kwenye [0, 8, 16, 32, 64, 127, 128, 255, 256, 0xFFFF, 0x10000, 0x10FFFF]:
             ikiwa i < 256:
-                self.assertTrue(re.match(r"[\%o]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\%o8]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\%03o]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\%03o0]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\%03o8]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\x%02x]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\x%02x0]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\x%02xz]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\%o]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\%o8]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\%03o]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\%03o0]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\%03o8]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\x%02x]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\x%02x0]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\x%02xz]" % i, chr(i)))
             ikiwa i < 0x10000:
-                self.assertTrue(re.match(r"[\u%04x]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\u%04x0]" % i, chr(i)))
-                self.assertTrue(re.match(r"[\u%04xz]" % i, chr(i)))
-            self.assertTrue(re.match(r"[\U%08x]" % i, chr(i)))
-            self.assertTrue(re.match(r"[\U%08x0]" % i, chr(i)+"0"))
-            self.assertTrue(re.match(r"[\U%08xz]" % i, chr(i)+"z"))
+                self.assertKweli(re.match(r"[\u%04x]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\u%04x0]" % i, chr(i)))
+                self.assertKweli(re.match(r"[\u%04xz]" % i, chr(i)))
+            self.assertKweli(re.match(r"[\U%08x]" % i, chr(i)))
+            self.assertKweli(re.match(r"[\U%08x0]" % i, chr(i)+"0"))
+            self.assertKweli(re.match(r"[\U%08xz]" % i, chr(i)+"z"))
         self.checkPatternError(r"[\567]",
                                r'octal escape value \567 outside of '
                                r'range 0-0o377', 1)
@@ -1141,22 +1141,22 @@ kundi ReTests(unittest.TestCase):
         self.checkPatternError(r"[\u123z]", r'incomplete escape \u123', 1)
         self.checkPatternError(r"[\U0001234z]", r'incomplete escape \U0001234', 1)
         self.checkPatternError(r"[\U00110000]", r'bad escape \U00110000', 1)
-        self.assertTrue(re.match(r"[\U0001d49c-\U0001d4b5]", "\U0001d49e"))
+        self.assertKweli(re.match(r"[\U0001d49c-\U0001d4b5]", "\U0001d49e"))
 
     eleza test_sre_byte_literals(self):
-        for i in [0, 8, 16, 32, 64, 127, 128, 255]:
-            self.assertTrue(re.match((r"\%03o" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"\%03o0" % i).encode(), bytes([i])+b"0"))
-            self.assertTrue(re.match((r"\%03o8" % i).encode(), bytes([i])+b"8"))
-            self.assertTrue(re.match((r"\x%02x" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"\x%02x0" % i).encode(), bytes([i])+b"0"))
-            self.assertTrue(re.match((r"\x%02xz" % i).encode(), bytes([i])+b"z"))
+        kila i kwenye [0, 8, 16, 32, 64, 127, 128, 255]:
+            self.assertKweli(re.match((r"\%03o" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"\%03o0" % i).encode(), bytes([i])+b"0"))
+            self.assertKweli(re.match((r"\%03o8" % i).encode(), bytes([i])+b"8"))
+            self.assertKweli(re.match((r"\x%02x" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"\x%02x0" % i).encode(), bytes([i])+b"0"))
+            self.assertKweli(re.match((r"\x%02xz" % i).encode(), bytes([i])+b"z"))
         self.assertRaises(re.error, re.compile, br"\u1234")
         self.assertRaises(re.error, re.compile, br"\U00012345")
-        self.assertTrue(re.match(br"\0", b"\000"))
-        self.assertTrue(re.match(br"\08", b"\0008"))
-        self.assertTrue(re.match(br"\01", b"\001"))
-        self.assertTrue(re.match(br"\018", b"\0018"))
+        self.assertKweli(re.match(br"\0", b"\000"))
+        self.assertKweli(re.match(br"\08", b"\0008"))
+        self.assertKweli(re.match(br"\01", b"\001"))
+        self.assertKweli(re.match(br"\018", b"\0018"))
         self.checkPatternError(br"\567",
                                r'octal escape value \567 outside of '
                                r'range 0-0o377', 0)
@@ -1165,15 +1165,15 @@ kundi ReTests(unittest.TestCase):
         self.checkPatternError(br"\x1z", r'incomplete escape \x1', 0)
 
     eleza test_sre_byte_class_literals(self):
-        for i in [0, 8, 16, 32, 64, 127, 128, 255]:
-            self.assertTrue(re.match((r"[\%o]" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"[\%o8]" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"[\%03o]" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"[\%03o0]" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"[\%03o8]" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"[\x%02x]" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"[\x%02x0]" % i).encode(), bytes([i])))
-            self.assertTrue(re.match((r"[\x%02xz]" % i).encode(), bytes([i])))
+        kila i kwenye [0, 8, 16, 32, 64, 127, 128, 255]:
+            self.assertKweli(re.match((r"[\%o]" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"[\%o8]" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"[\%03o]" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"[\%03o0]" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"[\%03o8]" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"[\x%02x]" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"[\x%02x0]" % i).encode(), bytes([i])))
+            self.assertKweli(re.match((r"[\x%02xz]" % i).encode(), bytes([i])))
         self.assertRaises(re.error, re.compile, br"[\u1234]")
         self.assertRaises(re.error, re.compile, br"[\U00012345]")
         self.checkPatternError(br"[\567]",
@@ -1186,7 +1186,7 @@ kundi ReTests(unittest.TestCase):
         self.checkPatternError(r'[', 'unterminated character set', 0)
         self.checkPatternError(r'[^', 'unterminated character set', 0)
         self.checkPatternError(r'[a', 'unterminated character set', 0)
-        # bug 545855 -- This pattern failed to cause a compile error as it
+        # bug 545855 -- This pattern failed to cause a compile error kama it
         # should, instead provoking a TypeError.
         self.checkPatternError(r"[a-", 'unterminated character set', 0)
         self.checkPatternError(r"[\w-b]", r'bad character range \w-b', 1)
@@ -1199,8 +1199,8 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r'(a)|(b)', 'b').span(1), (-1, -1))
 
     eleza test_bug_527371(self):
-        # bug described in patches 527371/672491
-        self.assertIsNone(re.match(r'(a)?a','a').lastindex)
+        # bug described kwenye patches 527371/672491
+        self.assertIsTupu(re.match(r'(a)?a','a').lastindex)
         self.assertEqual(re.match(r'(a)(b)?b','ab').lastindex, 1)
         self.assertEqual(re.match(r'(?P<a>a)(?P<b>b)?b','ab').lastgroup, 'a')
         self.assertEqual(re.match(r"(?P<a>a(b))", "ab").lastgroup, 'a')
@@ -1208,7 +1208,7 @@ kundi ReTests(unittest.TestCase):
 
     eleza test_bug_418626(self):
         # bugs 418626 at al. -- Testing Greg Chapman's addition of op code
-        # SRE_OP_MIN_REPEAT_ONE for eliminating recursion on simple uses of
+        # SRE_OP_MIN_REPEAT_ONE kila eliminating recursion on simple uses of
         # pattern '*?' on a long string.
         self.assertEqual(re.match('.*?c', 10000*'ab'+'cd').end(0), 20001)
         self.assertEqual(re.match('.*?cd', 5000*'ab'+'c'+5000*'ab'+'cde').end(0),
@@ -1220,7 +1220,7 @@ kundi ReTests(unittest.TestCase):
 
     eleza test_bug_612074(self):
         pat="["+re.escape("\u2039")+"]"
-        self.assertEqual(re.compile(pat) and 1, 1)
+        self.assertEqual(re.compile(pat) na 1, 1)
 
     eleza test_stack_overflow(self):
         # nasty cases that used to overflow the straightforward recursive
@@ -1230,31 +1230,31 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match('(x)*?y', 50000*'x'+'y').group(1), 'x')
 
     eleza test_nothing_to_repeat(self):
-        for reps in '*', '+', '?', '{1,2}':
-            for mod in '', '?':
+        kila reps kwenye '*', '+', '?', '{1,2}':
+            kila mod kwenye '', '?':
                 self.checkPatternError('%s%s' % (reps, mod),
                                        'nothing to repeat', 0)
                 self.checkPatternError('(?:%s%s)' % (reps, mod),
                                        'nothing to repeat', 3)
 
     eleza test_multiple_repeat(self):
-        for outer_reps in '*', '+', '{1,2}':
-            for outer_mod in '', '?':
+        kila outer_reps kwenye '*', '+', '{1,2}':
+            kila outer_mod kwenye '', '?':
                 outer_op = outer_reps + outer_mod
-                for inner_reps in '*', '+', '?', '{1,2}':
-                    for inner_mod in '', '?':
+                kila inner_reps kwenye '*', '+', '?', '{1,2}':
+                    kila inner_mod kwenye '', '?':
                         inner_op = inner_reps + inner_mod
                         self.checkPatternError(r'x%s%s' % (inner_op, outer_op),
                                 'multiple repeat', 1 + len(inner_op))
 
     eleza test_unlimited_zero_width_repeat(self):
         # Issue #9669
-        self.assertIsNone(re.match(r'(?:a?)*y', 'z'))
-        self.assertIsNone(re.match(r'(?:a?)+y', 'z'))
-        self.assertIsNone(re.match(r'(?:a?){2,}y', 'z'))
-        self.assertIsNone(re.match(r'(?:a?)*?y', 'z'))
-        self.assertIsNone(re.match(r'(?:a?)+?y', 'z'))
-        self.assertIsNone(re.match(r'(?:a?){2,}?y', 'z'))
+        self.assertIsTupu(re.match(r'(?:a?)*y', 'z'))
+        self.assertIsTupu(re.match(r'(?:a?)+y', 'z'))
+        self.assertIsTupu(re.match(r'(?:a?){2,}y', 'z'))
+        self.assertIsTupu(re.match(r'(?:a?)*?y', 'z'))
+        self.assertIsTupu(re.match(r'(?:a?)+?y', 'z'))
+        self.assertIsTupu(re.match(r'(?:a?){2,}?y', 'z'))
 
     eleza test_scanner(self):
         eleza s_ident(scanner, token): rudisha token
@@ -1267,10 +1267,10 @@ kundi ReTests(unittest.TestCase):
             (r"\d+\.\d*", s_float),
             (r"\d+", s_int),
             (r"=|\+|-|\*|/", s_operator),
-            (r"\s+", None),
+            (r"\s+", Tupu),
             ])
 
-        self.assertTrue(scanner.scanner.scanner("").pattern)
+        self.assertKweli(scanner.scanner.scanner("").pattern)
 
         self.assertEqual(scanner.scan("sum = 3*foo + 312.50 + bar"),
                          (['sum', 'op=', 3, 'op*', 'foo', 'op+', 312.5,
@@ -1279,67 +1279,67 @@ kundi ReTests(unittest.TestCase):
     eleza test_bug_448951(self):
         # bug 448951 (similar to 429357, but with single char match)
         # (Also test greedy matches.)
-        for op in '','?','*':
+        kila op kwenye '','?','*':
             self.assertEqual(re.match(r'((.%s):)?z'%op, 'z').groups(),
-                             (None, None))
+                             (Tupu, Tupu))
             self.assertEqual(re.match(r'((.%s):)?z'%op, 'a:z').groups(),
                              ('a:', 'a'))
 
     eleza test_bug_725106(self):
-        # capturing groups in alternatives in repeats
+        # capturing groups kwenye alternatives kwenye repeats
         self.assertEqual(re.match('^((a)|b)*', 'abc').groups(),
                          ('b', 'a'))
         self.assertEqual(re.match('^(([ab])|c)*', 'abc').groups(),
                          ('c', 'b'))
         self.assertEqual(re.match('^((d)|[ab])*', 'abc').groups(),
-                         ('b', None))
+                         ('b', Tupu))
         self.assertEqual(re.match('^((a)c|[ab])*', 'abc').groups(),
-                         ('b', None))
+                         ('b', Tupu))
         self.assertEqual(re.match('^((a)|b)*?c', 'abc').groups(),
                          ('b', 'a'))
         self.assertEqual(re.match('^(([ab])|c)*?d', 'abcd').groups(),
                          ('c', 'b'))
         self.assertEqual(re.match('^((d)|[ab])*?c', 'abc').groups(),
-                         ('b', None))
+                         ('b', Tupu))
         self.assertEqual(re.match('^((a)c|[ab])*?c', 'abc').groups(),
-                         ('b', None))
+                         ('b', Tupu))
 
     eleza test_bug_725149(self):
         # mark_stack_base restoring before restoring marks
         self.assertEqual(re.match('(a)(?:(?=(b)*)c)*', 'abb').groups(),
-                         ('a', None))
+                         ('a', Tupu))
         self.assertEqual(re.match('(a)((?!(b)*))*', 'abb').groups(),
-                         ('a', None, None))
+                         ('a', Tupu, Tupu))
 
     eleza test_bug_764548(self):
         # bug 764548, re.compile() barfs on str/unicode subclasses
-        kundi my_unicode(str): pass
+        kundi my_unicode(str): pita
         pat = re.compile(my_unicode("abc"))
-        self.assertIsNone(pat.match("xyz"))
+        self.assertIsTupu(pat.match("xyz"))
 
     eleza test_finditer(self):
         iter = re.finditer(r":+", "a:b::c:::d")
-        self.assertEqual([item.group(0) for item in iter],
+        self.assertEqual([item.group(0) kila item kwenye iter],
                          [":", "::", ":::"])
 
         pat = re.compile(r":+")
         iter = pat.finditer("a:b::c:::d", 1, 10)
-        self.assertEqual([item.group(0) for item in iter],
+        self.assertEqual([item.group(0) kila item kwenye iter],
                          [":", "::", ":::"])
 
         pat = re.compile(r":+")
         iter = pat.finditer("a:b::c:::d", pos=1, endpos=10)
-        self.assertEqual([item.group(0) for item in iter],
+        self.assertEqual([item.group(0) kila item kwenye iter],
                          [":", "::", ":::"])
 
         pat = re.compile(r":+")
         iter = pat.finditer("a:b::c:::d", endpos=10, pos=1)
-        self.assertEqual([item.group(0) for item in iter],
+        self.assertEqual([item.group(0) kila item kwenye iter],
                          [":", "::", ":::"])
 
         pat = re.compile(r":+")
         iter = pat.finditer("a:b::c:::d", pos=3, endpos=8)
-        self.assertEqual([item.group(0) for item in iter],
+        self.assertEqual([item.group(0) kila item kwenye iter],
                          ["::", "::"])
 
     eleza test_bug_926075(self):
@@ -1358,7 +1358,7 @@ kundi ReTests(unittest.TestCase):
 
         scanner = re.compile(r"\s").scanner("a b")
         self.assertEqual(scanner.search().span(), (1, 2))
-        self.assertIsNone(scanner.search())
+        self.assertIsTupu(scanner.search())
 
     eleza test_bug_817234(self):
         iter = re.finditer(r".*", "asdf")
@@ -1367,15 +1367,15 @@ kundi ReTests(unittest.TestCase):
         self.assertRaises(StopIteration, next, iter)
 
     eleza test_bug_6561(self):
-        # '\d' should match characters in Unicode category 'Nd'
-        # (Number, Decimal Digit), but not those in 'Nl' (Number,
-        # Letter) or 'No' (Number, Other).
+        # '\d' should match characters kwenye Unicode category 'Nd'
+        # (Number, Decimal Digit), but sio those kwenye 'Nl' (Number,
+        # Letter) ama 'No' (Number, Other).
         decimal_digits = [
             '\u0037', # '\N{DIGIT SEVEN}', category 'Nd'
             '\u0e58', # '\N{THAI DIGIT SIX}', category 'Nd'
             '\uff10', # '\N{FULLWIDTH DIGIT ZERO}', category 'Nd'
             ]
-        for x in decimal_digits:
+        kila x kwenye decimal_digits:
             self.assertEqual(re.match(r'^\d$', x).group(0), x)
 
         not_decimal_digits = [
@@ -1384,15 +1384,15 @@ kundi ReTests(unittest.TestCase):
             '\u2082', # '\N{SUBSCRIPT TWO}', category 'No'
             '\u32b4', # '\N{CIRCLED NUMBER THIRTY NINE}', category 'No'
             ]
-        for x in not_decimal_digits:
-            self.assertIsNone(re.match(r'^\d$', x))
+        kila x kwenye not_decimal_digits:
+            self.assertIsTupu(re.match(r'^\d$', x))
 
     eleza test_empty_array(self):
         # SF buf 1647541
         agiza array
-        for typecode in 'bBuhHiIlLfd':
+        kila typecode kwenye 'bBuhHiIlLfd':
             a = array.array(typecode)
-            self.assertIsNone(re.compile(b"bla").match(a))
+            self.assertIsTupu(re.compile(b"bla").match(a))
             self.assertEqual(re.compile(b"").match(a).groups(), ())
 
     eleza test_inline_flags(self):
@@ -1402,57 +1402,57 @@ kundi ReTests(unittest.TestCase):
 
         p = re.compile('.' + upper_char, re.I | re.S)
         q = p.match('\n' + lower_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
         p = re.compile('.' + lower_char, re.I | re.S)
         q = p.match('\n' + upper_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
         p = re.compile('(?i).' + upper_char, re.S)
         q = p.match('\n' + lower_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
         p = re.compile('(?i).' + lower_char, re.S)
         q = p.match('\n' + upper_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
         p = re.compile('(?is).' + upper_char)
         q = p.match('\n' + lower_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
         p = re.compile('(?is).' + lower_char)
         q = p.match('\n' + upper_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
         p = re.compile('(?s)(?i).' + upper_char)
         q = p.match('\n' + lower_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
         p = re.compile('(?s)(?i).' + lower_char)
         q = p.match('\n' + upper_char)
-        self.assertTrue(q)
+        self.assertKweli(q)
 
-        self.assertTrue(re.match('(?ix) ' + upper_char, lower_char))
-        self.assertTrue(re.match('(?ix) ' + lower_char, upper_char))
-        self.assertTrue(re.match(' (?i) ' + upper_char, lower_char, re.X))
-        self.assertTrue(re.match('(?x) (?i) ' + upper_char, lower_char))
-        self.assertTrue(re.match(' (?x) (?i) ' + upper_char, lower_char, re.X))
+        self.assertKweli(re.match('(?ix) ' + upper_char, lower_char))
+        self.assertKweli(re.match('(?ix) ' + lower_char, upper_char))
+        self.assertKweli(re.match(' (?i) ' + upper_char, lower_char, re.X))
+        self.assertKweli(re.match('(?x) (?i) ' + upper_char, lower_char))
+        self.assertKweli(re.match(' (?x) (?i) ' + upper_char, lower_char, re.X))
 
         p = upper_char + '(?i)'
-        with self.assertWarns(DeprecationWarning) as warns:
-            self.assertTrue(re.match(p, lower_char))
+        with self.assertWarns(DeprecationWarning) kama warns:
+            self.assertKweli(re.match(p, lower_char))
         self.assertEqual(
             str(warns.warnings[0].message),
-            'Flags not at the start of the expression %r' % p
+            'Flags sio at the start of the expression %r' % p
         )
         self.assertEqual(warns.warnings[0].filename, __file__)
 
         p = upper_char + '(?i)%s' % ('.?' * 100)
-        with self.assertWarns(DeprecationWarning) as warns:
-            self.assertTrue(re.match(p, lower_char))
+        with self.assertWarns(DeprecationWarning) kama warns:
+            self.assertKweli(re.match(p, lower_char))
         self.assertEqual(
             str(warns.warnings[0].message),
-            'Flags not at the start of the expression %r (truncated)' % p[:20]
+            'Flags sio at the start of the expression %r (truncated)' % p[:20]
         )
         self.assertEqual(warns.warnings[0].filename, __file__)
 
@@ -1460,45 +1460,45 @@ kundi ReTests(unittest.TestCase):
         with warnings.catch_warnings():
             warnings.simplefilter('error', BytesWarning)
             p = b'A(?i)'
-            with self.assertWarns(DeprecationWarning) as warns:
-                self.assertTrue(re.match(p, b'a'))
+            with self.assertWarns(DeprecationWarning) kama warns:
+                self.assertKweli(re.match(p, b'a'))
             self.assertEqual(
                 str(warns.warnings[0].message),
-                'Flags not at the start of the expression %r' % p
+                'Flags sio at the start of the expression %r' % p
             )
             self.assertEqual(warns.warnings[0].filename, __file__)
 
         with self.assertWarns(DeprecationWarning):
-            self.assertTrue(re.match('(?s).(?i)' + upper_char, '\n' + lower_char))
+            self.assertKweli(re.match('(?s).(?i)' + upper_char, '\n' + lower_char))
         with self.assertWarns(DeprecationWarning):
-            self.assertTrue(re.match('(?i) ' + upper_char + ' (?x)', lower_char))
+            self.assertKweli(re.match('(?i) ' + upper_char + ' (?x)', lower_char))
         with self.assertWarns(DeprecationWarning):
-            self.assertTrue(re.match(' (?x) (?i) ' + upper_char, lower_char))
+            self.assertKweli(re.match(' (?x) (?i) ' + upper_char, lower_char))
         with self.assertWarns(DeprecationWarning):
-            self.assertTrue(re.match('^(?i)' + upper_char, lower_char))
+            self.assertKweli(re.match('^(?i)' + upper_char, lower_char))
         with self.assertWarns(DeprecationWarning):
-            self.assertTrue(re.match('$|(?i)' + upper_char, lower_char))
-        with self.assertWarns(DeprecationWarning) as warns:
-            self.assertTrue(re.match('(?:(?i)' + upper_char + ')', lower_char))
+            self.assertKweli(re.match('$|(?i)' + upper_char, lower_char))
+        with self.assertWarns(DeprecationWarning) kama warns:
+            self.assertKweli(re.match('(?:(?i)' + upper_char + ')', lower_char))
         self.assertRegex(str(warns.warnings[0].message),
-                         'Flags not at the start')
+                         'Flags sio at the start')
         self.assertEqual(warns.warnings[0].filename, __file__)
-        with self.assertWarns(DeprecationWarning) as warns:
-            self.assertTrue(re.fullmatch('(^)?(?(1)(?i)' + upper_char + ')',
+        with self.assertWarns(DeprecationWarning) kama warns:
+            self.assertKweli(re.fullmatch('(^)?(?(1)(?i)' + upper_char + ')',
                                          lower_char))
         self.assertRegex(str(warns.warnings[0].message),
-                         'Flags not at the start')
+                         'Flags sio at the start')
         self.assertEqual(warns.warnings[0].filename, __file__)
-        with self.assertWarns(DeprecationWarning) as warns:
-            self.assertTrue(re.fullmatch('($)?(?(1)|(?i)' + upper_char + ')',
+        with self.assertWarns(DeprecationWarning) kama warns:
+            self.assertKweli(re.fullmatch('($)?(?(1)|(?i)' + upper_char + ')',
                                          lower_char))
         self.assertRegex(str(warns.warnings[0].message),
-                         'Flags not at the start')
+                         'Flags sio at the start')
         self.assertEqual(warns.warnings[0].filename, __file__)
 
 
     eleza test_dollar_matches_twice(self):
-        "$ matches the end of string, and just before the terminating \n"
+        "$ matches the end of string, na just before the terminating \n"
         pattern = re.compile('$')
         self.assertEqual(pattern.sub('#', 'a\nb\n'), 'a\nb#\n#')
         self.assertEqual(pattern.sub('#', 'a\nb\nc'), 'a\nb\nc#')
@@ -1510,7 +1510,7 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(pattern.sub('#', '\n'), '#\n#')
 
     eleza test_bytes_str_mixing(self):
-        # Mixing str and bytes is disallowed
+        # Mixing str na bytes ni disallowed
         pat = re.compile('.')
         bpat = re.compile(b'.')
         self.assertRaises(TypeError, pat.match, b'b')
@@ -1524,25 +1524,25 @@ kundi ReTests(unittest.TestCase):
 
     eleza test_ascii_and_unicode_flag(self):
         # String patterns
-        for flags in (0, re.UNICODE):
+        kila flags kwenye (0, re.UNICODE):
             pat = re.compile('\xc0', flags | re.IGNORECASE)
-            self.assertTrue(pat.match('\xe0'))
+            self.assertKweli(pat.match('\xe0'))
             pat = re.compile(r'\w', flags)
-            self.assertTrue(pat.match('\xe0'))
+            self.assertKweli(pat.match('\xe0'))
         pat = re.compile('\xc0', re.ASCII | re.IGNORECASE)
-        self.assertIsNone(pat.match('\xe0'))
+        self.assertIsTupu(pat.match('\xe0'))
         pat = re.compile('(?a)\xc0', re.IGNORECASE)
-        self.assertIsNone(pat.match('\xe0'))
+        self.assertIsTupu(pat.match('\xe0'))
         pat = re.compile(r'\w', re.ASCII)
-        self.assertIsNone(pat.match('\xe0'))
+        self.assertIsTupu(pat.match('\xe0'))
         pat = re.compile(r'(?a)\w')
-        self.assertIsNone(pat.match('\xe0'))
+        self.assertIsTupu(pat.match('\xe0'))
         # Bytes patterns
-        for flags in (0, re.ASCII):
+        kila flags kwenye (0, re.ASCII):
             pat = re.compile(b'\xc0', flags | re.IGNORECASE)
-            self.assertIsNone(pat.match(b'\xe0'))
+            self.assertIsTupu(pat.match(b'\xe0'))
             pat = re.compile(br'\w', flags)
-            self.assertIsNone(pat.match(b'\xe0'))
+            self.assertIsTupu(pat.match(b'\xe0'))
         # Incompatibilities
         self.assertRaises(ValueError, re.compile, br'\w', re.UNICODE)
         self.assertRaises(re.error, re.compile, br'(?u)\w')
@@ -1554,40 +1554,40 @@ kundi ReTests(unittest.TestCase):
     eleza test_locale_flag(self):
         enc = locale.getpreferredencoding()
         # Search non-ASCII letter
-        for i in range(128, 256):
-            try:
+        kila i kwenye range(128, 256):
+            jaribu:
                 c = bytes([i]).decode(enc)
                 sletter = c.lower()
-                ikiwa sletter == c: continue
+                ikiwa sletter == c: endelea
                 bletter = sletter.encode(enc)
-                ikiwa len(bletter) != 1: continue
-                ikiwa bletter.decode(enc) != sletter: continue
+                ikiwa len(bletter) != 1: endelea
+                ikiwa bletter.decode(enc) != sletter: endelea
                 bpat = re.escape(bytes([i]))
-                break
-            except (UnicodeError, TypeError):
-                pass
-        else:
-            bletter = None
+                koma
+            tatizo (UnicodeError, TypeError):
+                pita
+        isipokua:
+            bletter = Tupu
             bpat = b'A'
         # Bytes patterns
         pat = re.compile(bpat, re.LOCALE | re.IGNORECASE)
         ikiwa bletter:
-            self.assertTrue(pat.match(bletter))
+            self.assertKweli(pat.match(bletter))
         pat = re.compile(b'(?L)' + bpat, re.IGNORECASE)
         ikiwa bletter:
-            self.assertTrue(pat.match(bletter))
+            self.assertKweli(pat.match(bletter))
         pat = re.compile(bpat, re.IGNORECASE)
         ikiwa bletter:
-            self.assertIsNone(pat.match(bletter))
+            self.assertIsTupu(pat.match(bletter))
         pat = re.compile(br'\w', re.LOCALE)
         ikiwa bletter:
-            self.assertTrue(pat.match(bletter))
+            self.assertKweli(pat.match(bletter))
         pat = re.compile(br'(?L)\w')
         ikiwa bletter:
-            self.assertTrue(pat.match(bletter))
+            self.assertKweli(pat.match(bletter))
         pat = re.compile(br'\w')
         ikiwa bletter:
-            self.assertIsNone(pat.match(bletter))
+            self.assertIsTupu(pat.match(bletter))
         # Incompatibilities
         self.assertRaises(ValueError, re.compile, '', re.LOCALE)
         self.assertRaises(re.error, re.compile, '(?L)')
@@ -1597,30 +1597,30 @@ kundi ReTests(unittest.TestCase):
         self.assertRaises(re.error, re.compile, b'(?aL)')
 
     eleza test_scoped_flags(self):
-        self.assertTrue(re.match(r'(?i:a)b', 'Ab'))
-        self.assertIsNone(re.match(r'(?i:a)b', 'aB'))
-        self.assertIsNone(re.match(r'(?-i:a)b', 'Ab', re.IGNORECASE))
-        self.assertTrue(re.match(r'(?-i:a)b', 'aB', re.IGNORECASE))
-        self.assertIsNone(re.match(r'(?i:(?-i:a)b)', 'Ab'))
-        self.assertTrue(re.match(r'(?i:(?-i:a)b)', 'aB'))
+        self.assertKweli(re.match(r'(?i:a)b', 'Ab'))
+        self.assertIsTupu(re.match(r'(?i:a)b', 'aB'))
+        self.assertIsTupu(re.match(r'(?-i:a)b', 'Ab', re.IGNORECASE))
+        self.assertKweli(re.match(r'(?-i:a)b', 'aB', re.IGNORECASE))
+        self.assertIsTupu(re.match(r'(?i:(?-i:a)b)', 'Ab'))
+        self.assertKweli(re.match(r'(?i:(?-i:a)b)', 'aB'))
 
-        self.assertTrue(re.match(r'(?x: a) b', 'a b'))
-        self.assertIsNone(re.match(r'(?x: a) b', ' a b'))
-        self.assertTrue(re.match(r'(?-x: a) b', ' ab', re.VERBOSE))
-        self.assertIsNone(re.match(r'(?-x: a) b', 'ab', re.VERBOSE))
+        self.assertKweli(re.match(r'(?x: a) b', 'a b'))
+        self.assertIsTupu(re.match(r'(?x: a) b', ' a b'))
+        self.assertKweli(re.match(r'(?-x: a) b', ' ab', re.VERBOSE))
+        self.assertIsTupu(re.match(r'(?-x: a) b', 'ab', re.VERBOSE))
 
-        self.assertTrue(re.match(r'\w(?a:\W)\w', '\xe0\xe0\xe0'))
-        self.assertTrue(re.match(r'(?a:\W(?u:\w)\W)', '\xe0\xe0\xe0'))
-        self.assertTrue(re.match(r'\W(?u:\w)\W', '\xe0\xe0\xe0', re.ASCII))
+        self.assertKweli(re.match(r'\w(?a:\W)\w', '\xe0\xe0\xe0'))
+        self.assertKweli(re.match(r'(?a:\W(?u:\w)\W)', '\xe0\xe0\xe0'))
+        self.assertKweli(re.match(r'\W(?u:\w)\W', '\xe0\xe0\xe0', re.ASCII))
 
         self.checkPatternError(r'(?a)(?-a:\w)',
-                "bad inline flags: cannot turn off flags 'a', 'u' and 'L'", 8)
+                "bad inline flags: cannot turn off flags 'a', 'u' na 'L'", 8)
         self.checkPatternError(r'(?i-i:a)',
-                'bad inline flags: flag turned on and off', 5)
+                'bad inline flags: flag turned on na off', 5)
         self.checkPatternError(r'(?au:a)',
-                "bad inline flags: flags 'a', 'u' and 'L' are incompatible", 4)
+                "bad inline flags: flags 'a', 'u' na 'L' are incompatible", 4)
         self.checkPatternError(br'(?aL:a)',
-                "bad inline flags: flags 'a', 'u' and 'L' are incompatible", 4)
+                "bad inline flags: flags 'a', 'u' na 'L' are incompatible", 4)
 
         self.checkPatternError(r'(?-', 'missing flag', 3)
         self.checkPatternError(r'(?-+', 'missing flag', 3)
@@ -1630,8 +1630,8 @@ kundi ReTests(unittest.TestCase):
         self.checkPatternError(r'(?-i+', 'missing :', 4)
         self.checkPatternError(r'(?-iz', 'unknown flag', 4)
         self.checkPatternError(r'(?i:', 'missing ), unterminated subpattern', 0)
-        self.checkPatternError(r'(?i', 'missing -, : or )', 3)
-        self.checkPatternError(r'(?i+', 'missing -, : or )', 3)
+        self.checkPatternError(r'(?i', 'missing -, : ama )', 3)
+        self.checkPatternError(r'(?i+', 'missing -, : ama )', 3)
         self.checkPatternError(r'(?iz', 'unknown flag', 3)
 
     eleza test_bug_6509(self):
@@ -1653,12 +1653,12 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(pat.sub(lambda m: b'bytes', b'a5'), b'bytes')
 
     eleza test_dealloc(self):
-        # issue 3299: check for segfault in debug build
+        # issue 3299: check kila segfault kwenye debug build
         agiza _sre
-        # the overflow limit is different on wide and narrow builds and it
+        # the overflow limit ni different on wide na narrow builds na it
         # depends on the definition of SRE_CODE (see sre.h).
         # 2**128 should be big enough to overflow on both. For smaller values
-        # a RuntimeError is raised instead of OverflowError.
+        # a RuntimeError ni ashiriad instead of OverflowError.
         long_overflow = 2**128
         self.assertRaises(TypeError, re.finditer, "a", {})
         with self.assertRaises(OverflowError):
@@ -1667,20 +1667,20 @@ kundi ReTests(unittest.TestCase):
             _sre.compile({}, 0, [], 0, [], [])
 
     eleza test_search_dot_unicode(self):
-        self.assertTrue(re.search("123.*-", '123abc-'))
-        self.assertTrue(re.search("123.*-", '123\xe9-'))
-        self.assertTrue(re.search("123.*-", '123\u20ac-'))
-        self.assertTrue(re.search("123.*-", '123\U0010ffff-'))
-        self.assertTrue(re.search("123.*-", '123\xe9\u20ac\U0010ffff-'))
+        self.assertKweli(re.search("123.*-", '123abc-'))
+        self.assertKweli(re.search("123.*-", '123\xe9-'))
+        self.assertKweli(re.search("123.*-", '123\u20ac-'))
+        self.assertKweli(re.search("123.*-", '123\U0010ffff-'))
+        self.assertKweli(re.search("123.*-", '123\xe9\u20ac\U0010ffff-'))
 
     eleza test_compile(self):
-        # Test rudisha value when given string and pattern as parameter
+        # Test rudisha value when given string na pattern kama parameter
         pattern = re.compile('random pattern')
         self.assertIsInstance(pattern, re.Pattern)
         same_pattern = re.compile(pattern)
         self.assertIsInstance(same_pattern, re.Pattern)
         self.assertIs(same_pattern, pattern)
-        # Test behaviour when not given a string or pattern as parameter
+        # Test behaviour when sio given a string ama pattern kama parameter
         self.assertRaises(TypeError, re.compile, 0)
 
     @bigmemtest(size=_2G, memuse=1)
@@ -1688,11 +1688,11 @@ kundi ReTests(unittest.TestCase):
         # Issue #10182: indices were 32-bit-truncated.
         s = 'a' * size
         m = re.search('$', s)
-        self.assertIsNotNone(m)
+        self.assertIsNotTupu(m)
         self.assertEqual(m.start(), size)
         self.assertEqual(m.end(), size)
 
-    # The huge memuse is because of re.sub() using a list and a join()
+    # The huge memuse ni because of re.sub() using a list na a join()
     # to create the replacement result.
     @bigmemtest(size=_2G, memuse=16 + 2)
     eleza test_large_subn(self, size):
@@ -1717,7 +1717,7 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r".{65536}", string).span(), (0, 65536))
         self.assertEqual(re.match(r".{,65536}", string).span(), (0, 65536))
         self.assertEqual(re.match(r".{65536,}?", string).span(), (0, 65536))
-        # 2**128 should be big enough to overflow both SRE_CODE and Py_ssize_t.
+        # 2**128 should be big enough to overflow both SRE_CODE na Py_ssize_t.
         self.assertRaises(OverflowError, re.compile, r".{%d}" % 2**128)
         self.assertRaises(OverflowError, re.compile, r".{,%d}" % 2**128)
         self.assertRaises(OverflowError, re.compile, r".{%d,}?" % 2**128)
@@ -1725,15 +1725,15 @@ kundi ReTests(unittest.TestCase):
 
     @cpython_only
     eleza test_repeat_minmax_overflow_maxrepeat(self):
-        try:
+        jaribu:
             kutoka _sre agiza MAXREPEAT
-        except ImportError:
+        tatizo ImportError:
             self.skipTest('requires _sre.MAXREPEAT constant')
         string = "x" * 100000
-        self.assertIsNone(re.match(r".{%d}" % (MAXREPEAT - 1), string))
+        self.assertIsTupu(re.match(r".{%d}" % (MAXREPEAT - 1), string))
         self.assertEqual(re.match(r".{,%d}" % (MAXREPEAT - 1), string).span(),
                          (0, 100000))
-        self.assertIsNone(re.match(r".{%d,}?" % (MAXREPEAT - 1), string))
+        self.assertIsTupu(re.match(r".{%d,}?" % (MAXREPEAT - 1), string))
         self.assertRaises(OverflowError, re.compile, r".{%d}" % MAXREPEAT)
         self.assertRaises(OverflowError, re.compile, r".{,%d}" % MAXREPEAT)
         self.assertRaises(OverflowError, re.compile, r".{%d,}?" % MAXREPEAT)
@@ -1741,16 +1741,16 @@ kundi ReTests(unittest.TestCase):
     eleza test_backref_group_name_in_exception(self):
         # Issue 17341: Poor error message when compiling invalid regex
         self.checkPatternError('(?P=<foo>)',
-                               "bad character in group name '<foo>'", 4)
+                               "bad character kwenye group name '<foo>'", 4)
 
     eleza test_group_name_in_exception(self):
         # Issue 17341: Poor error message when compiling invalid regex
         self.checkPatternError('(?P<?foo>)',
-                               "bad character in group name '?foo'", 4)
+                               "bad character kwenye group name '?foo'", 4)
 
     eleza test_issue17998(self):
-        for reps in '*', '+', '?', '{1}':
-            for mod in '', '?':
+        kila reps kwenye '*', '+', '?', '{1}':
+            kila mod kwenye '', '?':
                 pattern = '.' + reps + mod + 'yz'
                 self.assertEqual(re.compile(pattern, re.S).findall('xyz'),
                                  ['xyz'], msg=pattern)
@@ -1759,13 +1759,13 @@ kundi ReTests(unittest.TestCase):
                                  [b'xyz'], msg=pattern)
 
     eleza test_match_repr(self):
-        for string in '[abracadabra]', S('[abracadabra]'):
+        kila string kwenye '[abracadabra]', S('[abracadabra]'):
             m = re.search(r'(.+)(.*?)\1', string)
             pattern = r"<(%s\.)?%s object; span=\(1, 12\), match='abracadabra'>" % (
                 type(m).__module__, type(m).__qualname__
             )
             self.assertRegex(repr(m), pattern)
-        for string in (b'[abracadabra]', B(b'[abracadabra]'),
+        kila string kwenye (b'[abracadabra]', B(b'[abracadabra]'),
                        bytearray(b'[abracadabra]'),
                        memoryview(b'[abracadabra]')):
             m = re.search(br'(.+)(.*?)\1', string)
@@ -1799,15 +1799,15 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.findall(r"\b|\w+", "a::bc"),
                          ['', 'a', '', '', 'bc', ''])
 
-        self.assertEqual([m.span() for m in re.finditer(r"\b|:+", "a::bc")],
+        self.assertEqual([m.span() kila m kwenye re.finditer(r"\b|:+", "a::bc")],
                          [(0, 0), (1, 1), (1, 3), (3, 3), (5, 5)])
-        self.assertEqual([m.span() for m in re.finditer(r"\b|\w+", "a::bc")],
+        self.assertEqual([m.span() kila m kwenye re.finditer(r"\b|\w+", "a::bc")],
                          [(0, 0), (0, 1), (1, 1), (3, 3), (3, 5), (5, 5)])
 
     eleza test_bug_2537(self):
         # issue 2537: empty submatches
-        for outer_op in ('{0,}', '*', '+', '{1,187}'):
-            for inner_op in ('{0,}', '*', '?'):
+        kila outer_op kwenye ('{0,}', '*', '+', '{1,187}'):
+            kila inner_op kwenye ('{0,}', '*', '?'):
                 r = re.compile("^((x|y)%s)%s" % (inner_op, outer_op))
                 m = r.match("xyyzy")
                 self.assertEqual(m.group(0), "xyy")
@@ -1817,9 +1817,9 @@ kundi ReTests(unittest.TestCase):
     @cpython_only
     eleza test_debug_flag(self):
         pat = r'(\.)(?:[ch]|py)(?(1)$|: )'
-        with captured_stdout() as out:
+        with captured_stdout() kama out:
             re.compile(pat, re.DEBUG)
-        self.maxDiff = None
+        self.maxDiff = Tupu
         dump = '''\
 SUBPATTERN 1 0 0
   LITERAL 46
@@ -1862,9 +1862,9 @@ ELSE
 45: SUCCESS
 '''
         self.assertEqual(out.getvalue(), dump)
-        # Debug output is output again even a second time (bypassing
+        # Debug output ni output again even a second time (bypitaing
         # the cache -- issue #20426).
-        with captured_stdout() as out:
+        with captured_stdout() kama out:
             re.compile(pat, re.DEBUG)
         self.assertEqual(out.getvalue(), dump)
 
@@ -1895,10 +1895,10 @@ ELSE
         # Issue #22410
         oldlocale = locale.setlocale(locale.LC_CTYPE)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
-        for loc in 'en_US.iso88591', 'en_US.utf8':
-            try:
+        kila loc kwenye 'en_US.iso88591', 'en_US.utf8':
+            jaribu:
                 locale.setlocale(locale.LC_CTYPE, loc)
-            except locale.Error:
+            tatizo locale.Error:
                 # Unsupported locale on this system
                 self.skipTest('test needs %s locale' % loc)
 
@@ -1911,29 +1911,29 @@ ELSE
 
     eleza check_en_US_iso88591(self):
         locale.setlocale(locale.LC_CTYPE, 'en_US.iso88591')
-        self.assertTrue(re.match(b'\xc5\xe5', b'\xc5\xe5', re.L|re.I))
-        self.assertTrue(re.match(b'\xc5', b'\xe5', re.L|re.I))
-        self.assertTrue(re.match(b'\xe5', b'\xc5', re.L|re.I))
-        self.assertTrue(re.match(b'(?Li)\xc5\xe5', b'\xc5\xe5'))
-        self.assertTrue(re.match(b'(?Li)\xc5', b'\xe5'))
-        self.assertTrue(re.match(b'(?Li)\xe5', b'\xc5'))
+        self.assertKweli(re.match(b'\xc5\xe5', b'\xc5\xe5', re.L|re.I))
+        self.assertKweli(re.match(b'\xc5', b'\xe5', re.L|re.I))
+        self.assertKweli(re.match(b'\xe5', b'\xc5', re.L|re.I))
+        self.assertKweli(re.match(b'(?Li)\xc5\xe5', b'\xc5\xe5'))
+        self.assertKweli(re.match(b'(?Li)\xc5', b'\xe5'))
+        self.assertKweli(re.match(b'(?Li)\xe5', b'\xc5'))
 
     eleza check_en_US_utf8(self):
         locale.setlocale(locale.LC_CTYPE, 'en_US.utf8')
-        self.assertTrue(re.match(b'\xc5\xe5', b'\xc5\xe5', re.L|re.I))
-        self.assertIsNone(re.match(b'\xc5', b'\xe5', re.L|re.I))
-        self.assertIsNone(re.match(b'\xe5', b'\xc5', re.L|re.I))
-        self.assertTrue(re.match(b'(?Li)\xc5\xe5', b'\xc5\xe5'))
-        self.assertIsNone(re.match(b'(?Li)\xc5', b'\xe5'))
-        self.assertIsNone(re.match(b'(?Li)\xe5', b'\xc5'))
+        self.assertKweli(re.match(b'\xc5\xe5', b'\xc5\xe5', re.L|re.I))
+        self.assertIsTupu(re.match(b'\xc5', b'\xe5', re.L|re.I))
+        self.assertIsTupu(re.match(b'\xe5', b'\xc5', re.L|re.I))
+        self.assertKweli(re.match(b'(?Li)\xc5\xe5', b'\xc5\xe5'))
+        self.assertIsTupu(re.match(b'(?Li)\xc5', b'\xe5'))
+        self.assertIsTupu(re.match(b'(?Li)\xe5', b'\xc5'))
 
     eleza test_locale_compiled(self):
         oldlocale = locale.setlocale(locale.LC_CTYPE)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
-        for loc in 'en_US.iso88591', 'en_US.utf8':
-            try:
+        kila loc kwenye 'en_US.iso88591', 'en_US.utf8':
+            jaribu:
                 locale.setlocale(locale.LC_CTYPE, loc)
-            except locale.Error:
+            tatizo locale.Error:
                 # Unsupported locale on this system
                 self.skipTest('test needs %s locale' % loc)
 
@@ -1942,25 +1942,25 @@ ELSE
         p2 = re.compile(b'[a\xc5][a\xe5]', re.L|re.I)
         p3 = re.compile(b'[az\xc5][az\xe5]', re.L|re.I)
         p4 = re.compile(b'[^\xc5][^\xe5]', re.L|re.I)
-        for p in p1, p2, p3:
-            self.assertTrue(p.match(b'\xc5\xe5'))
-            self.assertTrue(p.match(b'\xe5\xe5'))
-            self.assertTrue(p.match(b'\xc5\xc5'))
-        self.assertIsNone(p4.match(b'\xe5\xc5'))
-        self.assertIsNone(p4.match(b'\xe5\xe5'))
-        self.assertIsNone(p4.match(b'\xc5\xc5'))
+        kila p kwenye p1, p2, p3:
+            self.assertKweli(p.match(b'\xc5\xe5'))
+            self.assertKweli(p.match(b'\xe5\xe5'))
+            self.assertKweli(p.match(b'\xc5\xc5'))
+        self.assertIsTupu(p4.match(b'\xe5\xc5'))
+        self.assertIsTupu(p4.match(b'\xe5\xe5'))
+        self.assertIsTupu(p4.match(b'\xc5\xc5'))
 
         locale.setlocale(locale.LC_CTYPE, 'en_US.utf8')
-        for p in p1, p2, p3:
-            self.assertTrue(p.match(b'\xc5\xe5'))
-            self.assertIsNone(p.match(b'\xe5\xe5'))
-            self.assertIsNone(p.match(b'\xc5\xc5'))
-        self.assertTrue(p4.match(b'\xe5\xc5'))
-        self.assertIsNone(p4.match(b'\xe5\xe5'))
-        self.assertIsNone(p4.match(b'\xc5\xc5'))
+        kila p kwenye p1, p2, p3:
+            self.assertKweli(p.match(b'\xc5\xe5'))
+            self.assertIsTupu(p.match(b'\xe5\xe5'))
+            self.assertIsTupu(p.match(b'\xc5\xc5'))
+        self.assertKweli(p4.match(b'\xe5\xc5'))
+        self.assertIsTupu(p4.match(b'\xe5\xe5'))
+        self.assertIsTupu(p4.match(b'\xc5\xc5'))
 
     eleza test_error(self):
-        with self.assertRaises(re.error) as cm:
+        with self.assertRaises(re.error) kama cm:
             re.compile('(\u20ac))')
         err = cm.exception
         self.assertIsInstance(err.pattern, str)
@@ -1972,14 +1972,14 @@ ELSE
         self.assertIn(' at position 3', str(err))
         self.assertNotIn(' at position 3', err.msg)
         # Bytes pattern
-        with self.assertRaises(re.error) as cm:
+        with self.assertRaises(re.error) kama cm:
             re.compile(b'(\xa4))')
         err = cm.exception
         self.assertIsInstance(err.pattern, bytes)
         self.assertEqual(err.pattern, b'(\xa4))')
         self.assertEqual(err.pos, 3)
         # Multiline pattern
-        with self.assertRaises(re.error) as cm:
+        with self.assertRaises(re.error) kama cm:
             re.compile("""
                 (
                     abc
@@ -2002,14 +2002,14 @@ ELSE
         self.checkPatternError(r'(?P', 'unexpected end of pattern', 3)
         self.checkPatternError(r'(?z)', 'unknown extension ?z', 1)
         self.checkPatternError(r'(?iz)', 'unknown flag', 3)
-        self.checkPatternError(r'(?i', 'missing -, : or )', 3)
+        self.checkPatternError(r'(?i', 'missing -, : ama )', 3)
         self.checkPatternError(r'(?#abc', 'missing ), unterminated comment', 0)
         self.checkPatternError(r'(?<', 'unexpected end of pattern', 3)
         self.checkPatternError(r'(?<>)', 'unknown extension ?<>', 1)
         self.checkPatternError(r'(?', 'unexpected end of pattern', 2)
 
     eleza test_enum(self):
-        # Issue #28082: Check that str(flag) returns a human readable string
+        # Issue #28082: Check that str(flag) rudishas a human readable string
         # instead of an integer
         self.assertIn('ASCII', str(re.A))
         self.assertIn('DOTALL', str(re.S))
@@ -2019,7 +2019,7 @@ ELSE
 
         # equal to itself
         self.assertEqual(pattern1, pattern1)
-        self.assertFalse(pattern1 != pattern1)
+        self.assertUongo(pattern1 != pattern1)
 
         # equal
         re.purge()
@@ -2027,19 +2027,19 @@ ELSE
         self.assertEqual(hash(pattern2), hash(pattern1))
         self.assertEqual(pattern2, pattern1)
 
-        # not equal: different pattern
+        # sio equal: different pattern
         re.purge()
         pattern3 = re.compile('XYZ', re.IGNORECASE)
-        # Don't test hash(pattern3) != hash(pattern1) because there is no
+        # Don't test hash(pattern3) != hash(pattern1) because there ni no
         # warranty that hash values are different
         self.assertNotEqual(pattern3, pattern1)
 
-        # not equal: different flag (flags=0)
+        # sio equal: different flag (flags=0)
         re.purge()
         pattern4 = re.compile('abc')
         self.assertNotEqual(pattern4, pattern1)
 
-        # only == and != comparison operators are supported
+        # only == na != comparison operators are supported
         with self.assertRaises(TypeError):
             pattern1 < pattern2
 
@@ -2052,8 +2052,8 @@ ELSE
         self.assertEqual(hash(pattern2), hash(pattern1))
         self.assertEqual(pattern2, pattern1)
 
-        # not equal: pattern of a different types (str vs bytes),
-        # comparison must not raise a BytesWarning
+        # sio equal: pattern of a different types (str vs bytes),
+        # comparison must sio ashiria a BytesWarning
         re.purge()
         pattern3 = re.compile('abc')
         with warnings.catch_warnings():
@@ -2076,33 +2076,33 @@ ELSE
         # exists since Python 2
         s = "a\tx"
         p = r"\b(?=(\t)|(x))x"
-        self.assertEqual(re.search(p, s).groups(), (None, 'x'))
+        self.assertEqual(re.search(p, s).groups(), (Tupu, 'x'))
 
-        # introduced in Python 3.7.0
+        # introduced kwenye Python 3.7.0
         s = "ab"
         p = r"(?=(.)(.)?)"
         self.assertEqual(re.findall(p, s),
                          [('a', 'b'), ('b', '')])
-        self.assertEqual([m.groups() for m in re.finditer(p, s)],
-                         [('a', 'b'), ('b', None)])
+        self.assertEqual([m.groups() kila m kwenye re.finditer(p, s)],
+                         [('a', 'b'), ('b', Tupu)])
 
-        # test-cases provided by issue34294, introduced in Python 3.7.0
+        # test-cases provided by issue34294, introduced kwenye Python 3.7.0
         p = r"(?=<(?P<tag>\w+)/?>(?:(?P<text>.+?)</(?P=tag)>)?)"
         s = "<test><foo2/></test>"
         self.assertEqual(re.findall(p, s),
                          [('test', '<foo2/>'), ('foo2', '')])
-        self.assertEqual([m.groupdict() for m in re.finditer(p, s)],
+        self.assertEqual([m.groupdict() kila m kwenye re.finditer(p, s)],
                          [{'tag': 'test', 'text': '<foo2/>'},
-                          {'tag': 'foo2', 'text': None}])
+                          {'tag': 'foo2', 'text': Tupu}])
         s = "<test>Hello</test><foo/>"
-        self.assertEqual([m.groupdict() for m in re.finditer(p, s)],
+        self.assertEqual([m.groupdict() kila m kwenye re.finditer(p, s)],
                          [{'tag': 'test', 'text': 'Hello'},
-                          {'tag': 'foo', 'text': None}])
+                          {'tag': 'foo', 'text': Tupu}])
         s = "<test>Hello</test><foo/><foo/>"
-        self.assertEqual([m.groupdict() for m in re.finditer(p, s)],
+        self.assertEqual([m.groupdict() kila m kwenye re.finditer(p, s)],
                          [{'tag': 'test', 'text': 'Hello'},
-                          {'tag': 'foo', 'text': None},
-                          {'tag': 'foo', 'text': None}])
+                          {'tag': 'foo', 'text': Tupu},
+                          {'tag': 'foo', 'text': Tupu}])
 
 
 kundi PatternReprTests(unittest.TestCase):
@@ -2157,8 +2157,8 @@ kundi PatternReprTests(unittest.TestCase):
             '''re.compile('random "double quoted" pattern')''')
         self.check("random 'single quoted' pattern",
             '''re.compile("random 'single quoted' pattern")''')
-        self.check('''both 'single' and "double" quotes''',
-            '''re.compile('both \\'single\\' and "double" quotes')''')
+        self.check('''both 'single' na "double" quotes''',
+            '''re.compile('both \\'single\\' na "double" quotes')''')
 
     eleza test_long_pattern(self):
         pattern = 'Very %spattern' % ('long ' * 1000)
@@ -2203,112 +2203,112 @@ kundi ExternalTests(unittest.TestCase):
     eleza test_re_benchmarks(self):
         're_tests benchmarks'
         kutoka test.re_tests agiza benchmarks
-        for pattern, s in benchmarks:
+        kila pattern, s kwenye benchmarks:
             with self.subTest(pattern=pattern, string=s):
                 p = re.compile(pattern)
-                self.assertTrue(p.search(s))
-                self.assertTrue(p.match(s))
-                self.assertTrue(p.fullmatch(s))
+                self.assertKweli(p.search(s))
+                self.assertKweli(p.match(s))
+                self.assertKweli(p.fullmatch(s))
                 s2 = ' '*10000 + s + ' '*10000
-                self.assertTrue(p.search(s2))
-                self.assertTrue(p.match(s2, 10000))
-                self.assertTrue(p.match(s2, 10000, 10000 + len(s)))
-                self.assertTrue(p.fullmatch(s2, 10000, 10000 + len(s)))
+                self.assertKweli(p.search(s2))
+                self.assertKweli(p.match(s2, 10000))
+                self.assertKweli(p.match(s2, 10000, 10000 + len(s)))
+                self.assertKweli(p.fullmatch(s2, 10000, 10000 + len(s)))
 
     eleza test_re_tests(self):
         're_tests test suite'
         kutoka test.re_tests agiza tests, SUCCEED, FAIL, SYNTAX_ERROR
-        for t in tests:
-            pattern = s = outcome = repl = expected = None
+        kila t kwenye tests:
+            pattern = s = outcome = repl = expected = Tupu
             ikiwa len(t) == 5:
                 pattern, s, outcome, repl, expected = t
             elikiwa len(t) == 3:
                 pattern, s, outcome = t
-            else:
-                raise ValueError('Test tuples should have 3 or 5 fields', t)
+            isipokua:
+                ashiria ValueError('Test tuples should have 3 ama 5 fields', t)
 
             with self.subTest(pattern=pattern, string=s):
                 ikiwa outcome == SYNTAX_ERROR:  # Expected a syntax error
                     with self.assertRaises(re.error):
                         re.compile(pattern)
-                    continue
+                    endelea
 
                 obj = re.compile(pattern)
                 result = obj.search(s)
                 ikiwa outcome == FAIL:
-                    self.assertIsNone(result, 'Succeeded incorrectly')
-                    continue
+                    self.assertIsTupu(result, 'Succeeded incorrectly')
+                    endelea
 
                 with self.subTest():
-                    self.assertTrue(result, 'Failed incorrectly')
-                    # Matched, as expected, so now we compute the
-                    # result string and compare it to our expected result.
+                    self.assertKweli(result, 'Failed incorrectly')
+                    # Matched, kama expected, so now we compute the
+                    # result string na compare it to our expected result.
                     start, end = result.span(0)
                     vardict = {'found': result.group(0),
                                'groups': result.group(),
                                'flags': result.re.flags}
-                    for i in range(1, 100):
-                        try:
+                    kila i kwenye range(1, 100):
+                        jaribu:
                             gi = result.group(i)
                             # Special hack because else the string concat fails:
-                            ikiwa gi is None:
-                                gi = "None"
-                        except IndexError:
+                            ikiwa gi ni Tupu:
+                                gi = "Tupu"
+                        tatizo IndexError:
                             gi = "Error"
                         vardict['g%d' % i] = gi
-                    for i in result.re.groupindex.keys():
-                        try:
+                    kila i kwenye result.re.groupindex.keys():
+                        jaribu:
                             gi = result.group(i)
-                            ikiwa gi is None:
-                                gi = "None"
-                        except IndexError:
+                            ikiwa gi ni Tupu:
+                                gi = "Tupu"
+                        tatizo IndexError:
                             gi = "Error"
                         vardict[i] = gi
                     self.assertEqual(eval(repl, vardict), expected,
                                      'grouping error')
 
-                # Try the match with both pattern and string converted to
-                # bytes, and check that it still succeeds.
-                try:
+                # Try the match with both pattern na string converted to
+                # bytes, na check that it still succeeds.
+                jaribu:
                     bpat = bytes(pattern, "ascii")
                     bs = bytes(s, "ascii")
-                except UnicodeEncodeError:
+                tatizo UnicodeEncodeError:
                     # skip non-ascii tests
-                    pass
-                else:
+                    pita
+                isipokua:
                     with self.subTest('bytes pattern match'):
                         obj = re.compile(bpat)
-                        self.assertTrue(obj.search(bs))
+                        self.assertKweli(obj.search(bs))
 
-                    # Try the match with LOCALE enabled, and check that it
+                    # Try the match with LOCALE enabled, na check that it
                     # still succeeds.
                     with self.subTest('locale-sensitive match'):
                         obj = re.compile(bpat, re.LOCALE)
                         result = obj.search(bs)
-                        ikiwa result is None:
+                        ikiwa result ni Tupu:
                             andika('=== Fails on locale-sensitive match', t)
 
                 # Try the match with the search area limited to the extent
-                # of the match and see ikiwa it still succeeds.  \B will
-                # break (because it won't match at the end or start of a
+                # of the match na see ikiwa it still succeeds.  \B will
+                # koma (because it won't match at the end ama start of a
                 # string), so we'll ignore patterns that feature it.
-                ikiwa (pattern[:2] != r'\B' and pattern[-2:] != r'\B'
-                            and result is not None):
+                ikiwa (pattern[:2] != r'\B' na pattern[-2:] != r'\B'
+                            na result ni sio Tupu):
                     with self.subTest('range-limited match'):
                         obj = re.compile(pattern)
-                        self.assertTrue(obj.search(s, start, end + 1))
+                        self.assertKweli(obj.search(s, start, end + 1))
 
-                # Try the match with IGNORECASE enabled, and check that it
+                # Try the match with IGNORECASE enabled, na check that it
                 # still succeeds.
                 with self.subTest('case-insensitive match'):
                     obj = re.compile(pattern, re.IGNORECASE)
-                    self.assertTrue(obj.search(s))
+                    self.assertKweli(obj.search(s))
 
-                # Try the match with UNICODE locale enabled, and check
+                # Try the match with UNICODE locale enabled, na check
                 # that it still succeeds.
                 with self.subTest('unicode-sensitive match'):
                     obj = re.compile(pattern, re.UNICODE)
-                    self.assertTrue(obj.search(s))
+                    self.assertKweli(obj.search(s))
 
 
 ikiwa __name__ == "__main__":

@@ -3,90 +3,90 @@ A number of functions that enhance IDLE on macOS.
 """
 kutoka os.path agiza expanduser
 agiza plistlib
-kutoka sys agiza platform  # Used in _init_tk_type, changed by test.
+kutoka sys agiza platform  # Used kwenye _init_tk_type, changed by test.
 
 agiza tkinter
 
 
 ## Define functions that query the Mac graphics type.
-## _tk_type and its initializer are private to this section.
+## _tk_type na its initializer are private to this section.
 
-_tk_type = None
+_tk_type = Tupu
 
 eleza _init_tk_type():
     """
     Initializes OS X Tk variant values for
-    isAquaTk(), isCarbonTk(), isCocoaTk(), and isXQuartz().
+    isAquaTk(), isCarbonTk(), isCocoaTk(), na isXQuartz().
     """
     global _tk_type
     ikiwa platform == 'darwin':
         root = tkinter.Tk()
         ws = root.tk.call('tk', 'windowingsystem')
-        ikiwa 'x11' in ws:
+        ikiwa 'x11' kwenye ws:
             _tk_type = "xquartz"
-        elikiwa 'aqua' not in ws:
+        elikiwa 'aqua' haiko kwenye ws:
             _tk_type = "other"
-        elikiwa 'AppKit' in root.tk.call('winfo', 'server', '.'):
+        elikiwa 'AppKit' kwenye root.tk.call('winfo', 'server', '.'):
             _tk_type = "cocoa"
-        else:
+        isipokua:
             _tk_type = "carbon"
         root.destroy()
-    else:
+    isipokua:
         _tk_type = "other"
 
 eleza isAquaTk():
     """
-    Returns True ikiwa IDLE is using a native OS X Tk (Cocoa or Carbon).
+    Returns Kweli ikiwa IDLE ni using a native OS X Tk (Cocoa ama Carbon).
     """
-    ikiwa not _tk_type:
+    ikiwa sio _tk_type:
         _init_tk_type()
-    rudisha _tk_type == "cocoa" or _tk_type == "carbon"
+    rudisha _tk_type == "cocoa" ama _tk_type == "carbon"
 
 eleza isCarbonTk():
     """
-    Returns True ikiwa IDLE is using a Carbon Aqua Tk (instead of the
+    Returns Kweli ikiwa IDLE ni using a Carbon Aqua Tk (instead of the
     newer Cocoa Aqua Tk).
     """
-    ikiwa not _tk_type:
+    ikiwa sio _tk_type:
         _init_tk_type()
     rudisha _tk_type == "carbon"
 
 eleza isCocoaTk():
     """
-    Returns True ikiwa IDLE is using a Cocoa Aqua Tk.
+    Returns Kweli ikiwa IDLE ni using a Cocoa Aqua Tk.
     """
-    ikiwa not _tk_type:
+    ikiwa sio _tk_type:
         _init_tk_type()
     rudisha _tk_type == "cocoa"
 
 eleza isXQuartz():
     """
-    Returns True ikiwa IDLE is using an OS X X11 Tk.
+    Returns Kweli ikiwa IDLE ni using an OS X X11 Tk.
     """
-    ikiwa not _tk_type:
+    ikiwa sio _tk_type:
         _init_tk_type()
     rudisha _tk_type == "xquartz"
 
 
 eleza tkVersionWarning(root):
     """
-    Returns a string warning message ikiwa the Tk version in use appears to
+    Returns a string warning message ikiwa the Tk version kwenye use appears to
     be one known to cause problems with IDLE.
-    1. Apple Cocoa-based Tk 8.5.7 shipped with Mac OS X 10.6 is unusable.
-    2. Apple Cocoa-based Tk 8.5.9 in OS X 10.7 and 10.8 is better but
+    1. Apple Cocoa-based Tk 8.5.7 shipped with Mac OS X 10.6 ni unusable.
+    2. Apple Cocoa-based Tk 8.5.9 kwenye OS X 10.7 na 10.8 ni better but
         can still crash unexpectedly.
     """
 
     ikiwa isCocoaTk():
         patchlevel = root.tk.call('info', 'patchlevel')
-        ikiwa patchlevel not in ('8.5.7', '8.5.9'):
-            rudisha False
-        rudisha ("WARNING: The version of Tcl/Tk ({0}) in use may"
+        ikiwa patchlevel haiko kwenye ('8.5.7', '8.5.9'):
+            rudisha Uongo
+        rudisha ("WARNING: The version of Tcl/Tk ({0}) kwenye use may"
                 " be unstable.\n"
                 "Visit http://www.python.org/download/mac/tcltk/"
-                " for current information.".format(patchlevel))
-    else:
-        rudisha False
+                " kila current information.".format(patchlevel))
+    isipokua:
+        rudisha Uongo
 
 
 eleza readSystemPreferences():
@@ -94,70 +94,70 @@ eleza readSystemPreferences():
     Fetch the macOS system preferences.
     """
     ikiwa platform != 'darwin':
-        rudisha None
+        rudisha Tupu
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
-    try:
-        with open(plist_path, 'rb') as plist_file:
+    jaribu:
+        with open(plist_path, 'rb') kama plist_file:
             rudisha plistlib.load(plist_file)
-    except OSError:
-        rudisha None
+    tatizo OSError:
+        rudisha Tupu
 
 
 eleza preferTabsPreferenceWarning():
     """
-    Warn ikiwa "Prefer tabs when opening documents" is set to "Always".
+    Warn ikiwa "Prefer tabs when opening documents" ni set to "Always".
     """
     ikiwa platform != 'darwin':
-        rudisha None
+        rudisha Tupu
 
     prefs = readSystemPreferences()
-    ikiwa prefs and prefs.get('AppleWindowTabbingMode') == 'always':
+    ikiwa prefs na prefs.get('AppleWindowTabbingMode') == 'always':
         rudisha (
             'WARNING: The system preference "Prefer tabs when opening'
-            ' documents" is set to "Always". This will cause various problems'
+            ' documents" ni set to "Always". This will cause various problems'
             ' with IDLE. For the best experience, change this setting when'
             ' running IDLE (via System Preferences -> Dock).'
         )
-    rudisha None
+    rudisha Tupu
 
 
-## Fix the menu and related functions.
+## Fix the menu na related functions.
 
 eleza addOpenEventSupport(root, flist):
     """
     This ensures that the application will respond to open AppleEvents, which
-    makes is feasible to use IDLE as the default application for python files.
+    makes ni feasible to use IDLE kama the default application kila python files.
     """
     eleza doOpenFile(*args):
-        for fn in args:
+        kila fn kwenye args:
             flist.open(fn)
 
-    # The command below is a hook in aquatk that is called whenever the app
+    # The command below ni a hook kwenye aquatk that ni called whenever the app
     # receives a file open event. The callback can have multiple arguments,
-    # one for every file that should be opened.
+    # one kila every file that should be opened.
     root.createcommand("::tk::mac::OpenDocument", doOpenFile)
 
 eleza hideTkConsole(root):
-    try:
+    jaribu:
         root.tk.call('console', 'hide')
-    except tkinter.TclError:
+    tatizo tkinter.TclError:
         # Some versions of the Tk framework don't have a console object
-        pass
+        pita
 
 eleza overrideRootMenu(root, flist):
     """
-    Replace the Tk root menu by something that is more appropriate for
+    Replace the Tk root menu by something that ni more appropriate for
     IDLE with an Aqua Tk.
     """
-    # The menu that is attached to the Tk root (".") is also used by AquaTk for
+    # The menu that ni attached to the Tk root (".") ni also used by AquaTk for
     # all windows that don't specify a menu of their own. The default menubar
-    # contains a number of menus, none of which are appropriate for IDLE. The
-    # Most annoying of those is an 'About Tck/Tk...' menu in the application
+    # contains a number of menus, none of which are appropriate kila IDLE. The
+    # Most annoying of those ni an 'About Tck/Tk...' menu kwenye the application
     # menu.
     #
     # This function replaces the default menubar by a mostly empty one, it
-    # should only contain the correct application menu and the window menu.
+    # should only contain the correct application menu na the window menu.
     #
     # Due to a (mis-)feature of TkAqua the user will also see an empty Help
     # menu.
@@ -169,16 +169,16 @@ eleza overrideRootMenu(root, flist):
 
     # Remove the last 3 items of the file menu: a separator, close window and
     # quit. Close window will be reinserted just above the save item, where
-    # it should be according to the HIG. Quit is in the application menu.
-    del mainmenu.menudefs[0][1][-3:]
+    # it should be according to the HIG. Quit ni kwenye the application menu.
+    toa mainmenu.menudefs[0][1][-3:]
     mainmenu.menudefs[0][1].insert(6, closeItem)
 
-    # Remove the 'About' entry kutoka the help menu, it is in the application
+    # Remove the 'About' entry kutoka the help menu, it ni kwenye the application
     # menu
-    del mainmenu.menudefs[-1][1][0:2]
-    # Remove the 'Configure Idle' entry kutoka the options menu, it is in the
-    # application menu as 'Preferences'
-    del mainmenu.menudefs[-3][1][0:2]
+    toa mainmenu.menudefs[-1][1][0:2]
+    # Remove the 'Configure Idle' entry kutoka the options menu, it ni kwenye the
+    # application menu kama 'Preferences'
+    toa mainmenu.menudefs[-3][1][0:2]
     menubar = Menu(root)
     root.configure(menu=menubar)
     menudict = {}
@@ -188,7 +188,7 @@ eleza overrideRootMenu(root, flist):
 
     eleza postwindowsmenu(menu=menu):
         end = menu.index('end')
-        ikiwa end is None:
+        ikiwa end ni Tupu:
             end = -1
 
         ikiwa end > 0:
@@ -196,25 +196,25 @@ eleza overrideRootMenu(root, flist):
         window.add_windows_to_menu(menu)
     window.register_callback(postwindowsmenu)
 
-    eleza about_dialog(event=None):
+    eleza about_dialog(event=Tupu):
         "Handle Help 'About IDLE' event."
         # Synchronize with editor.EditorWindow.about_dialog.
         kutoka idlelib agiza help_about
         help_about.AboutDialog(root)
 
-    eleza config_dialog(event=None):
+    eleza config_dialog(event=Tupu):
         "Handle Options 'Configure IDLE' event."
         # Synchronize with editor.EditorWindow.config_dialog.
         kutoka idlelib agiza configdialog
 
         # Ensure that the root object has an instance_dict attribute,
-        # mirrors code in EditorWindow (although that sets the attribute
-        # on an EditorWindow instance that is then passed as the first
+        # mirrors code kwenye EditorWindow (although that sets the attribute
+        # on an EditorWindow instance that ni then pitaed kama the first
         # argument to ConfigDialog)
         root.instance_dict = flist.inversedict
         configdialog.ConfigDialog(root, 'Settings')
 
-    eleza help_dialog(event=None):
+    eleza help_dialog(event=Tupu):
         "Handle Help 'IDLE Help' event."
         # Synchronize with editor.EditorWindow.help_dialog.
         kutoka idlelib agiza help
@@ -228,31 +228,31 @@ eleza overrideRootMenu(root, flist):
 
         # The binding above doesn't reliably work on all versions of Tk
         # on macOS. Adding command definition below does seem to do the
-        # right thing for now.
+        # right thing kila now.
         root.createcommand('exit', flist.close_all_callback)
 
     ikiwa isCarbonTk():
-        # for Carbon AquaTk, replace the default Tk apple menu
+        # kila Carbon AquaTk, replace the default Tk apple menu
         menudict['application'] = menu = Menu(menubar, name='apple',
                                               tearoff=0)
         menubar.add_cascade(label='IDLE', menu=menu)
         mainmenu.menudefs.insert(0,
             ('application', [
                 ('About IDLE', '<<about-idle>>'),
-                    None,
+                    Tupu,
                 ]))
     ikiwa isCocoaTk():
         # replace default About dialog with About IDLE one
         root.createcommand('tkAboutDialog', about_dialog)
-        # replace default "Help" item in Help menu
+        # replace default "Help" item kwenye Help menu
         root.createcommand('::tk::mac::ShowHelp', help_dialog)
         # remove redundant "IDLE Help" kutoka menu
-        del mainmenu.menudefs[-1][1][0]
+        toa mainmenu.menudefs[-1][1][0]
 
 eleza fixb2context(root):
-    '''Removed bad AquaTk Button-2 (right) and Paste bindings.
+    '''Removed bad AquaTk Button-2 (right) na Paste bindings.
 
-    They prevent context menu access and seem to be gone in AquaTk8.6.
+    They prevent context menu access na seem to be gone kwenye AquaTk8.6.
     See issue #24801.
     '''
     root.unbind_class('Text', '<B2>')
@@ -264,16 +264,16 @@ eleza setupApp(root, flist):
     Perform initial OS X customizations ikiwa needed.
     Called kutoka pyshell.main() after initial calls to Tk()
 
-    There are currently three major versions of Tk in use on OS X:
+    There are currently three major versions of Tk kwenye use on OS X:
         1. Aqua Cocoa Tk (native default since OS X 10.6)
         2. Aqua Carbon Tk (original native, 32-bit only, deprecated)
         3. X11 (supported by some third-party distributors, deprecated)
     There are various differences among the three that affect IDLE
-    behavior, primarily with menus, mouse key events, and accelerators.
+    behavior, primarily with menus, mouse key events, na accelerators.
     Some one-time customizations are performed here.
     Others are dynamically tested throughout idlelib by calls to the
     isAquaTk(), isCarbonTk(), isCocoaTk(), isXQuartz() functions which
-    are initialized here as well.
+    are initialized here kama well.
     """
     ikiwa isAquaTk():
         hideTkConsole(root)

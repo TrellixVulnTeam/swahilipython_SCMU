@@ -6,11 +6,11 @@ kutoka test.support agiza requires
 kutoka tkinter agiza Tk
 
 agiza os.path
-agiza pyclbr  # for _modules
-agiza sys  # for sys.path
+agiza pyclbr  # kila _modules
+agiza sys  # kila sys.path
 
 kutoka idlelib.idle_test.mock_idle agiza Func
-agiza idlelib  # for __file__
+agiza idlelib  # kila __file__
 kutoka idlelib agiza browser
 kutoka idlelib.tree agiza TreeNode
 
@@ -22,14 +22,14 @@ kundi PathBrowserTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.pb = pathbrowser.PathBrowser(cls.root, _utest=True)
+        cls.pb = pathbrowser.PathBrowser(cls.root, _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
         cls.pb.close()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root, cls.pb
+        toa cls.root, cls.pb
 
     eleza test_init(self):
         pb = self.pb
@@ -37,7 +37,7 @@ kundi PathBrowserTest(unittest.TestCase):
         eq(pb.master, self.root)
         eq(pyclbr._modules, {})
         self.assertIsInstance(pb.node, TreeNode)
-        self.assertIsNotNone(browser.file_open)
+        self.assertIsNotTupu(browser.file_open)
 
     eleza test_settitle(self):
         pb = self.pb
@@ -54,9 +54,9 @@ kundi PathBrowserTest(unittest.TestCase):
         pb.top.destroy = Func()
         pb.node.destroy = Func()
         pb.close()
-        self.assertTrue(pb.top.destroy.called)
-        self.assertTrue(pb.node.destroy.called)
-        del pb.top.destroy, pb.node.destroy
+        self.assertKweli(pb.top.destroy.called)
+        self.assertKweli(pb.node.destroy.called)
+        toa pb.top.destroy, pb.node.destroy
 
 
 kundi DirBrowserTreeItemTest(unittest.TestCase):
@@ -68,8 +68,8 @@ kundi DirBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual('', d.GetText())
 
         dir = os.path.split(os.path.abspath(idlelib.__file__))[0]
-        self.assertEqual(d.ispackagedir(dir), True)
-        self.assertEqual(d.ispackagedir(dir + '/Icons'), False)
+        self.assertEqual(d.ispackagedir(dir), Kweli)
+        self.assertEqual(d.ispackagedir(dir + '/Icons'), Uongo)
 
 
 kundi PathBrowserTreeItemTest(unittest.TestCase):
@@ -83,4 +83,4 @@ kundi PathBrowserTreeItemTest(unittest.TestCase):
 
 
 ikiwa __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Uongo)

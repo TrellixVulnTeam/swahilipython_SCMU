@@ -5,7 +5,7 @@ Implements the Distutils 'check' command.
 from distutils.core import Command
 from distutils.errors import DistutilsSetupError
 
-try:
+jaribu:
     # docutils is installed
     from docutils.utils import Reporter
     from docutils.parsers.rst import Parser
@@ -28,9 +28,9 @@ try:
                                         *children, **kwargs)
 
     HAS_DOCUTILS = True
-except Exception:
+tatizo Exception:
     # Catch all exceptions because exceptions besides ImportError probably
-    # indicate that docutils is not ported to Py3k.
+    # indicate that docutils ni sio ported to Py3k.
     HAS_DOCUTILS = False
 
 class check(Command):
@@ -89,20 +89,20 @@ class check(Command):
 
         missing = []
         for attr in ('name', 'version', 'url'):
-            if not (hasattr(metadata, attr) and getattr(metadata, attr)):
+            if sio (hasattr(metadata, attr) and getattr(metadata, attr)):
                 missing.append(attr)
 
         if missing:
             self.warn("missing required meta-data: %s"  % ', '.join(missing))
         if metadata.author:
-            if not metadata.author_email:
+            if sio metadata.author_email:
                 self.warn("missing meta-data: if 'author' supplied, " +
                           "'author_email' must be supplied too")
         lasivyo metadata.maintainer:
-            if not metadata.maintainer_email:
+            if sio metadata.maintainer_email:
                 self.warn("missing meta-data: if 'maintainer' supplied, " +
                           "'maintainer_email' must be supplied too")
-        else:
+        isipokua:
             self.warn("missing meta-data: either (author and author_email) " +
                       "or (maintainer and maintainer_email) " +
                       "must be supplied")
@@ -114,7 +114,7 @@ class check(Command):
             line = warning[-1].get('line')
             if line is None:
                 warning = warning[1]
-            else:
+            isipokua:
                 warning = '%s (line %s)' % (warning[1], line)
             self.warn(warning)
 
@@ -137,10 +137,10 @@ class check(Command):
 
         document = nodes.document(settings, reporter, source=source_path)
         document.note_source(source_path, -1)
-        try:
+        jaribu:
             parser.parse(data, document)
-        except AttributeError as e:
+        tatizo AttributeError as e:
             reporter.messages.append(
-                (-1, 'Could not finish the parsing: %s.' % e, '', {}))
+                (-1, 'Could sio finish the parsing: %s.' % e, '', {}))
 
         return reporter.messages

@@ -1,4 +1,4 @@
-# Tests for the 'tokenize' module.
+# Tests kila the 'tokenize' module.
 # Large bits stolen kutoka test_grammar.py.
 
 # Comments
@@ -32,7 +32,7 @@ x = (len(repr(y)) + 5*x - a[
 x = 1 \
 + 1
 
-# Backslash does not means continuation in comments :\
+# Backslash does sio means continuation kwenye comments :\
 x = 0
 
 # Ordinary integers
@@ -139,25 +139,25 @@ ikiwa 1:
 ikiwa 1:
         x = 2
 ikiwa 1:
-    while 0:
+    wakati 0:
      ikiwa 0:
            x = 2
      x = 2
 ikiwa 0:
   ikiwa 2:
-   while 0:
+   wakati 0:
         ikiwa 1:
           x = 2
 
 # Operators
 
-eleza d22(a, b, c=1, d=2): pass
-eleza d01v(a=1, *restt, **restd): pass
+eleza d22(a, b, c=1, d=2): pita
+eleza d01v(a=1, *restt, **restd): pita
 
 (x, y) != ({'a':1}, {'b':2})
 
 # comparison
-ikiwa 1 < 1 > 1 == 1 >= 1 <= 1 != 1 != 1 in 1 not in 1 is 1 is not 1: pass
+ikiwa 1 < 1 > 1 == 1 >= 1 <= 1 != 1 != 1 kwenye 1 haiko kwenye 1 ni 1 ni sio 1: pita
 
 # binary
 x = 1 & 1
@@ -182,8 +182,8 @@ agiza sys, time
 x = sys.modules['time'].time()
 
 @staticmethod
-eleza foo(): pass
+eleza foo(): pita
 
 @staticmethod
-eleza foo(x:1)->1: pass
+eleza foo(x:1)->1: pita
 

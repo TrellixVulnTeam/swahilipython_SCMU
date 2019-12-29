@@ -11,21 +11,21 @@ kundi ResourceTests:
     # Subclasses are expected to set the `data` attribute.
 
     eleza test_is_resource_good_path(self):
-        self.assertTrue(resources.is_resource(self.data, 'binary.file'))
+        self.assertKweli(resources.is_resource(self.data, 'binary.file'))
 
     eleza test_is_resource_missing(self):
-        self.assertFalse(resources.is_resource(self.data, 'not-a-file'))
+        self.assertUongo(resources.is_resource(self.data, 'not-a-file'))
 
     eleza test_is_resource_subresource_directory(self):
-        # Directories are not resources.
-        self.assertFalse(resources.is_resource(self.data, 'subdirectory'))
+        # Directories are sio resources.
+        self.assertUongo(resources.is_resource(self.data, 'subdirectory'))
 
     eleza test_contents(self):
         contents = set(resources.contents(self.data))
-        # There may be cruft in the directory listing of the data directory.
-        # Under Python 3 we could have a __pycache__ directory, and under
+        # There may be cruft kwenye the directory listing of the data directory.
+        # Under Python 3 we could have a __pycache__ directory, na under
         # Python 2 we could have .pyc files.  These are both artifacts of the
-        # test suite agizaing these modules and writing these caches.  They
+        # test suite agizaing these modules na writing these caches.  They
         # aren't germane to this test, so just filter them out.
         contents.discard('__pycache__')
         contents.discard('__init__.pyc')
@@ -45,7 +45,7 @@ kundi ResourceDiskTests(ResourceTests, unittest.TestCase):
 
 
 kundi ResourceZipTests(ResourceTests, util.ZipSetup, unittest.TestCase):
-    pass
+    pita
 
 
 kundi ResourceLoaderTests(unittest.TestCase):
@@ -60,27 +60,27 @@ kundi ResourceLoaderTests(unittest.TestCase):
         package = util.create_package(
             file=data01, path=data01.__file__,
             contents=['A', 'B', 'C', 'D/E', 'D/F'])
-        self.assertTrue(resources.is_resource(package, 'B'))
+        self.assertKweli(resources.is_resource(package, 'B'))
 
     eleza test_resource_directory_is_not_resource(self):
         package = util.create_package(
             file=data01, path=data01.__file__,
             contents=['A', 'B', 'C', 'D/E', 'D/F'])
-        self.assertFalse(resources.is_resource(package, 'D'))
+        self.assertUongo(resources.is_resource(package, 'D'))
 
     eleza test_resource_missing_is_not_resource(self):
         package = util.create_package(
             file=data01, path=data01.__file__,
             contents=['A', 'B', 'C', 'D/E', 'D/F'])
-        self.assertFalse(resources.is_resource(package, 'Z'))
+        self.assertUongo(resources.is_resource(package, 'Z'))
 
 
 kundi ResourceCornerCaseTests(unittest.TestCase):
     eleza test_package_has_no_reader_fallback(self):
         # Test odd ball packages which:
-        # 1. Do not have a ResourceReader as a loader
-        # 2. Are not on the file system
-        # 3. Are not in a zip file
+        # 1. Do sio have a ResourceReader kama a loader
+        # 2. Are sio on the file system
+        # 3. Are haiko kwenye a zip file
         module = util.create_package(
             file=data01, path=data01.__file__, contents=['A', 'B', 'C'])
         # Give the module a dummy loader.
@@ -90,7 +90,7 @@ kundi ResourceCornerCaseTests(unittest.TestCase):
         ikiwa sys.version_info >= (3,):
             module.__spec__.loader = module.__loader__
             module.__spec__.origin = module.__file__
-        self.assertFalse(resources.is_resource(module, 'A'))
+        self.assertUongo(resources.is_resource(module, 'A'))
 
 
 kundi ResourceFromZipsTest(util.ZipSetupBase, unittest.TestCase):
@@ -100,7 +100,7 @@ kundi ResourceFromZipsTest(util.ZipSetupBase, unittest.TestCase):
         # https://gitlab.com/python-devs/importlib_resources/issues/44
         #
         # Here we have a zip file with two unrelated subpackages.  The bug
-        # reports that getting the contents of a resource returns unrelated
+        # reports that getting the contents of a resource rudishas unrelated
         # files.
         self.assertEqual(
             set(resources.contents('ziptestdata.one')),
@@ -115,11 +115,11 @@ kundi SubdirectoryResourceFromZipsTest(util.ZipSetupBase, unittest.TestCase):
 
     eleza test_is_submodule_resource(self):
         submodule = import_module('ziptestdata.subdirectory')
-        self.assertTrue(
+        self.assertKweli(
             resources.is_resource(submodule, 'binary.file'))
 
     eleza test_read_submodule_resource_by_name(self):
-        self.assertTrue(
+        self.assertKweli(
             resources.is_resource('ziptestdata.subdirectory', 'binary.file'))
 
     eleza test_submodule_contents(self):
@@ -137,13 +137,13 @@ kundi SubdirectoryResourceFromZipsTest(util.ZipSetupBase, unittest.TestCase):
 kundi NamespaceTest(unittest.TestCase):
     eleza test_namespaces_cannot_have_resources(self):
         contents = resources.contents('test.test_importlib.data03.namespace')
-        self.assertFalse(list(contents))
-        # Even though there is a file in the namespace directory, it is not
+        self.assertUongo(list(contents))
+        # Even though there ni a file kwenye the namespace directory, it ni not
         # considered a resource, since namespace packages can't have them.
-        self.assertFalse(resources.is_resource(
+        self.assertUongo(resources.is_resource(
             'test.test_importlib.data03.namespace',
             'resource1.txt'))
-        # We should get an exception ikiwa we try to read it or open it.
+        # We should get an exception ikiwa we try to read it ama open it.
         self.assertRaises(
             FileNotFoundError,
             resources.open_text,

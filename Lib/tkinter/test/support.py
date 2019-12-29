@@ -15,16 +15,16 @@ class AbstractTkTest:
         # De-maximize main window.
         # Some window managers can maximize new windows.
         cls.root.wm_state('normal')
-        try:
+        jaribu:
             cls.root.wm_attributes('-zoomed', False)
-        except tkinter.TclError:
+        tatizo tkinter.TclError:
             pass
 
     @classmethod
     def tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
         tkinter._default_root = None
         tkinter._support_default_root = cls._old_support_default_root
 
@@ -81,7 +81,7 @@ def get_tk_patchlevel():
         releaselevel = {'a': 'alpha', 'b': 'beta', '.': 'final'}[releaselevel]
         if releaselevel == 'final':
             _tk_patchlevel = major, minor, serial, releaselevel, 0
-        else:
+        isipokua:
             _tk_patchlevel = major, minor, 0, releaselevel, serial
     return _tk_patchlevel
 

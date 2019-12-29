@@ -24,7 +24,7 @@ class PointersTestCase(unittest.TestCase):
         func = dll._testfunc_p_p
         if sizeof(c_longlong) == sizeof(c_void_p):
             func.restype = c_longlong
-        else:
+        isipokua:
             func.restype = c_long
 
         i = c_int(12345678)
@@ -131,7 +131,7 @@ class PointersTestCase(unittest.TestCase):
         pt.contents.c = 33
 
         from ctypes agiza _pointer_type_cache
-        del _pointer_type_cache[Table]
+        toa _pointer_type_cache[Table]
 
     def test_basic(self):
         p = pointer(c_int(42))
@@ -200,18 +200,18 @@ class PointersTestCase(unittest.TestCase):
         LargeNamedType = type('T' * 2 ** 25, (Structure,), {})
         self.assertTrue(POINTER(LargeNamedType))
 
-        # to not leak references, we must clean _pointer_type_cache
+        # to sio leak references, we must clean _pointer_type_cache
         from ctypes agiza _pointer_type_cache
-        del _pointer_type_cache[LargeNamedType]
+        toa _pointer_type_cache[LargeNamedType]
 
     def test_pointer_type_str_name(self):
         large_string = 'T' * 2 ** 25
         P = POINTER(large_string)
         self.assertTrue(P)
 
-        # to not leak references, we must clean _pointer_type_cache
+        # to sio leak references, we must clean _pointer_type_cache
         from ctypes agiza _pointer_type_cache
-        del _pointer_type_cache[id(P)]
+        toa _pointer_type_cache[id(P)]
 
     def test_abstract(self):
         from ctypes agiza _Pointer

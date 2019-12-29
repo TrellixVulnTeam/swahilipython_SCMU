@@ -65,7 +65,7 @@ def setup (**attrs):
     The Distribution instance might be an instance of a class supplied via
     the 'distclass' keyword argument to 'setup'; if no such class is
     supplied, then the Distribution class (in dist.py) is instantiated.
-    All other arguments to 'setup' (except for 'cmdclass') are used to set
+    All other arguments to 'setup' (tatizo for 'cmdclass') are used to set
     attributes of the Distribution instance.
 
     The 'cmdclass' argument, if supplied, is a dictionary mapping command
@@ -93,23 +93,23 @@ def setup (**attrs):
     # our Distribution (see below).
     klass = attrs.get('distclass')
     if klass:
-        del attrs['distclass']
-    else:
+        toa attrs['distclass']
+    isipokua:
         klass = Distribution
 
-    if 'script_name' not in attrs:
+    if 'script_name' haiko kwenye attrs:
         attrs['script_name'] = os.path.basename(sys.argv[0])
-    if 'script_args'  not in attrs:
+    if 'script_args'  haiko kwenye attrs:
         attrs['script_args'] = sys.argv[1:]
 
     # Create the Distribution instance, using the remaining arguments
-    # (ie. everything except distclass) to initialize it
-    try:
+    # (ie. everything tatizo distclass) to initialize it
+    jaribu:
         _setup_distribution = dist = klass(attrs)
-    except DistutilsSetupError as msg:
-        if 'name' not in attrs:
+    tatizo DistutilsSetupError as msg:
+        if 'name' haiko kwenye attrs:
             raise SystemExit("error in setup command: %s" % msg)
-        else:
+        isipokua:
             raise SystemExit("error in %s setup command: %s" % \
                   (attrs['name'], msg))
 
@@ -130,9 +130,9 @@ def setup (**attrs):
     # Parse the command line and override config files; any
     # command-line errors are the end user's fault, so turn them into
     # SystemExit to suppress tracebacks.
-    try:
+    jaribu:
         ok = dist.parse_command_line()
-    except DistutilsArgError as msg:
+    tatizo DistutilsArgError as msg:
         raise SystemExit(gen_usage(dist.script_name) + "\nerror: %s" % msg)
 
     if DEBUG:
@@ -144,22 +144,22 @@ def setup (**attrs):
 
     # And finally, run all the commands found on the command line.
     if ok:
-        try:
+        jaribu:
             dist.run_commands()
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             raise SystemExit("interrupted")
-        except OSError as exc:
+        tatizo OSError as exc:
             if DEBUG:
                 sys.stderr.write("error: %s\n" % (exc,))
                 raise
-            else:
+            isipokua:
                 raise SystemExit("error: %s" % (exc,))
 
-        except (DistutilsError,
+        tatizo (DistutilsError,
                 CCompilerError) as msg:
             if DEBUG:
                 raise
-            else:
+            isipokua:
                 raise SystemExit("error: " + str(msg))
 
     return dist
@@ -198,7 +198,7 @@ def run_setup (script_name, script_args=None, stop_after="run"):
     Returns the Distribution instance, which provides all information
     used to drive the Distutils.
     """
-    if stop_after not in ('init', 'config', 'commandline', 'run'):
+    if stop_after haiko kwenye ('init', 'config', 'commandline', 'run'):
         raise ValueError("invalid value for 'stop_after': %r" % (stop_after,))
 
     global _setup_stop_after, _setup_distribution
@@ -206,24 +206,24 @@ def run_setup (script_name, script_args=None, stop_after="run"):
 
     save_argv = sys.argv.copy()
     g = {'__file__': script_name}
-    try:
-        try:
+    jaribu:
+        jaribu:
             sys.argv[0] = script_name
-            if script_args is not None:
+            if script_args ni sio None:
                 sys.argv[1:] = script_args
             with open(script_name, 'rb') as f:
                 exec(f.read(), g)
-        finally:
+        mwishowe:
             sys.argv = save_argv
             _setup_stop_after = None
-    except SystemExit:
+    tatizo SystemExit:
         # Hmm, should we do something if exiting with a non-zero code
         # (ie. error)?
         pass
 
     if _setup_distribution is None:
         raise RuntimeError(("'distutils.core.setup()' was never called -- "
-               "perhaps '%s' is not a Distutils setup script?") % \
+               "perhaps '%s' ni sio a Distutils setup script?") % \
               script_name)
 
     # I wonder if the setup script's namespace -- g and l -- would be of

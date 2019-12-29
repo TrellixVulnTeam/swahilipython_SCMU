@@ -22,7 +22,7 @@ kundi ScopeTests(unittest.TestCase):
     eleza testExtraNesting(self):
 
         eleza make_adder2(x):
-            eleza extra(): # check freevars passing through non-use scopes
+            eleza extra(): # check freevars pitaing through non-use scopes
                 eleza adder(y):
                     rudisha x + y
                 rudisha adder
@@ -39,7 +39,7 @@ kundi ScopeTests(unittest.TestCase):
         eleza make_adder3(x):
             eleza adder(y):
                 rudisha x + y
-            x = x + 1 # check tracking of assignment to x in defining scope
+            x = x + 1 # check tracking of assignment to x kwenye defining scope
             rudisha adder
 
         inc = make_adder3(0)
@@ -99,7 +99,7 @@ kundi ScopeTests(unittest.TestCase):
 
         eleza f(x):
             eleza g(y):
-                x = 42 # check that this masks binding in f()
+                x = 42 # check that this masks binding kwenye f()
                 eleza h(z):
                     rudisha x + z
                 rudisha h
@@ -150,7 +150,7 @@ kundi ScopeTests(unittest.TestCase):
 
         method_and_var = "var"
         kundi Test:
-            # this kundi is not nested, so the rules are different
+            # this kundi ni sio nested, so the rules are different
             eleza method_and_var(self):
                 rudisha "method"
             eleza test(self):
@@ -182,12 +182,12 @@ kundi ScopeTests(unittest.TestCase):
             eleza fact(n):
                 ikiwa n == 0:
                     rudisha 1
-                else:
+                isipokua:
                     rudisha n * fact(n - 1)
             ikiwa x >= 0:
                 rudisha fact(x)
-            else:
-                raise ValueError("x must be >= 0")
+            isipokua:
+                ashiria ValueError("x must be >= 0")
 
         self.assertEqual(f(6), 720)
 
@@ -198,7 +198,7 @@ kundi ScopeTests(unittest.TestCase):
             eleza unoptimized_clash1(strip):
                 eleza f(s):
                     kutoka sys agiza *
-                    rudisha getrefcount(s) # ambiguity: free or local
+                    rudisha getrefcount(s) # ambiguity: free ama local
                 rudisha f
             """)
 
@@ -206,7 +206,7 @@ kundi ScopeTests(unittest.TestCase):
             eleza unoptimized_clash2():
                 kutoka sys agiza *
                 eleza f(s):
-                    rudisha getrefcount(s) # ambiguity: global or local
+                    rudisha getrefcount(s) # ambiguity: global ama local
                 rudisha f
             """)
 
@@ -215,7 +215,7 @@ kundi ScopeTests(unittest.TestCase):
                 kutoka sys agiza *
                 eleza g():
                     eleza f(s):
-                        rudisha getrefcount(s) # ambiguity: global or local
+                        rudisha getrefcount(s) # ambiguity: global ama local
                     rudisha f
             """)
 
@@ -223,7 +223,7 @@ kundi ScopeTests(unittest.TestCase):
             eleza f():
                 eleza g():
                     kutoka sys agiza *
-                    rudisha getrefcount # global or local?
+                    rudisha getrefcount # global ama local?
             """)
 
     eleza testLambdas(self):
@@ -242,7 +242,7 @@ kundi ScopeTests(unittest.TestCase):
 
         f3 = lambda x: lambda y: global_x + y
         global_x = 1
-        inc = f3(None)
+        inc = f3(Tupu)
         self.assertEqual(inc(2), 3)
 
         f8 = lambda x, y, z: lambda a, b, c: lambda : z * (b + y)
@@ -268,12 +268,12 @@ kundi ScopeTests(unittest.TestCase):
         self.assertRaises(NameError, errorInInner)
 
     eleza testUnboundLocal_AfterDel(self):
-        # #4617: It is now legal to delete a cell variable.
+        # #4617: It ni now legal to delete a cell variable.
         # The following functions must obviously compile,
-        # and give the correct error when accessing the deleted name.
+        # na give the correct error when accessing the deleted name.
         eleza errorInOuter():
             y = 1
-            del y
+            toa y
             andika(y)
             eleza inner():
                 rudisha y
@@ -282,39 +282,39 @@ kundi ScopeTests(unittest.TestCase):
             eleza inner():
                 rudisha y
             y = 1
-            del y
+            toa y
             inner()
 
         self.assertRaises(UnboundLocalError, errorInOuter)
         self.assertRaises(NameError, errorInInner)
 
     eleza testUnboundLocal_AugAssign(self):
-        # test for bug #1501934: incorrect LOAD/STORE_GLOBAL generation
+        # test kila bug #1501934: incorrect LOAD/STORE_GLOBAL generation
         exec("""ikiwa 1:
             global_x = 1
             eleza f():
                 global_x += 1
-            try:
+            jaribu:
                 f()
-            except UnboundLocalError:
-                pass
-            else:
-                fail('scope of global_x not correctly determined')
+            tatizo UnboundLocalError:
+                pita
+            isipokua:
+                fail('scope of global_x sio correctly determined')
             """, {'fail': self.fail})
 
     eleza testComplexDefinitions(self):
 
         eleza makeReturner(*lst):
-            eleza returner():
+            eleza rudishaer():
                 rudisha lst
-            rudisha returner
+            rudisha rudishaer
 
         self.assertEqual(makeReturner(1,2,3)(), (1,2,3))
 
         eleza makeReturner2(**kwargs):
-            eleza returner():
+            eleza rudishaer():
                 rudisha kwargs
-            rudisha returner
+            rudisha rudishaer
 
         self.assertEqual(makeReturner2(a=11)()['a'], 11)
 
@@ -384,7 +384,7 @@ kundi ScopeTests(unittest.TestCase):
             self.assertEqual(f(), 2)
             self.assertEqual(x, 2)
 
-            # XXX what about global statements in kundi blocks?
+            # XXX what about global statements kwenye kundi blocks?
             # do they affect methods?
 
             x = 12
@@ -419,7 +419,7 @@ kundi ScopeTests(unittest.TestCase):
                 rudisha x
             f2()
 
-        for i in range(100):
+        kila i kwenye range(100):
             f1()
 
         self.assertEqual(Foo.count, 0)
@@ -439,14 +439,14 @@ kundi ScopeTests(unittest.TestCase):
             x = -1
             self.assertEqual(test(3)(2), 5)
 
-            looked_up_by_load_name = False
+            looked_up_by_load_name = Uongo
             kundi X:
                 # Implicit globals inside classes are be looked up by LOAD_NAME, not
                 # LOAD_GLOBAL.
-                locals()['looked_up_by_load_name'] = True
-                passed = looked_up_by_load_name
+                locals()['looked_up_by_load_name'] = Kweli
+                pitaed = looked_up_by_load_name
 
-            self.assertTrue(X.passed)
+            self.assertKweli(X.pitaed)
             """)
 
     eleza testLocalsFunction(self):
@@ -462,18 +462,18 @@ kundi ScopeTests(unittest.TestCase):
 
         d = f(2)(4)
         self.assertIn('h', d)
-        del d['h']
+        toa d['h']
         self.assertEqual(d, {'x': 2, 'y': 7, 'w': 6})
 
     eleza testLocalsClass(self):
-        # This test verifies that calling locals() does not pollute
+        # This test verifies that calling locals() does sio pollute
         # the local namespace of the kundi with free variables.  Old
         # versions of Python had a bug, where a free variable being
-        # passed through a kundi namespace would be inserted into
-        # locals() by locals() or exec or a trace function.
+        # pitaed through a kundi namespace would be inserted into
+        # locals() by locals() ama exec ama a trace function.
         #
-        # The real bug lies in frame code that copies variables
-        # between fast locals and the locals dict, e.g. when executing
+        # The real bug lies kwenye frame code that copies variables
+        # between fast locals na the locals dict, e.g. when executing
         # a trace function.
 
         eleza f(x):
@@ -500,23 +500,23 @@ kundi ScopeTests(unittest.TestCase):
 
     @cpython_only
     eleza testLocalsClass_WithTrace(self):
-        # Issue23728: after the trace function returns, the locals()
-        # dictionary is used to update all variables, this used to
-        # include free variables. But in kundi statements, free
-        # variables are not inserted...
+        # Issue23728: after the trace function rudishas, the locals()
+        # dictionary ni used to update all variables, this used to
+        # include free variables. But kwenye kundi statements, free
+        # variables are sio inserted...
         agiza sys
         self.addCleanup(sys.settrace, sys.gettrace())
-        sys.settrace(lambda a,b,c:None)
+        sys.settrace(lambda a,b,c:Tupu)
         x = 12
 
         kundi C:
             eleza f(self):
                 rudisha x
 
-        self.assertEqual(x, 12) # Used to raise UnboundLocalError
+        self.assertEqual(x, 12) # Used to ashiria UnboundLocalError
 
     eleza testBoundAndFree(self):
-        # var is bound and free in class
+        # var ni bound na free kwenye class
 
         eleza f(x):
             kundi C:
@@ -543,12 +543,12 @@ kundi ScopeTests(unittest.TestCase):
                 rudisha lambda obj: getattr(obj, des)
 
         kundi TestClass:
-            pass
+            pita
 
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(tracer)
         adaptgetter("foo", TestClass, (1, ""))
-        sys.settrace(None)
+        sys.settrace(Tupu)
 
         self.assertRaises(TypeError, sys.settrace)
 
@@ -560,30 +560,30 @@ kundi ScopeTests(unittest.TestCase):
         g = f(3)
         self.assertRaises(TypeError, eval, g.__code__)
 
-        try:
+        jaribu:
             exec(g.__code__, {})
-        except TypeError:
-            pass
-        else:
+        tatizo TypeError:
+            pita
+        isipokua:
             self.fail("exec should have failed, because code contained free vars")
 
     eleza testListCompLocalVars(self):
 
-        try:
+        jaribu:
             andika(bad)
-        except NameError:
-            pass
-        else:
-            andika("bad should not be defined")
+        tatizo NameError:
+            pita
+        isipokua:
+            andika("bad should sio be defined")
 
         eleza x():
-            [bad for s in 'a b' for bad in s.split()]
+            [bad kila s kwenye 'a b' kila bad kwenye s.split()]
 
         x()
-        try:
+        jaribu:
             andika(bad)
-        except NameError:
-            pass
+        tatizo NameError:
+            pita
 
     eleza testEvalFreeVars(self):
 
@@ -641,9 +641,9 @@ kundi ScopeTests(unittest.TestCase):
 
     eleza testGlobalInParallelNestedFunctions(self):
         # A symbol table bug leaked the global statement kutoka one
-        # function to other nested functions in the same block.
-        # This test verifies that a global statement in the first
-        # function does not affect the second function.
+        # function to other nested functions kwenye the same block.
+        # This test verifies that a global statement kwenye the first
+        # function does sio affect the second function.
         local_ns = {}
         global_ns = {}
         exec("""ikiwa 1:
@@ -683,9 +683,9 @@ kundi ScopeTests(unittest.TestCase):
         eleza f(x):
             eleza g(y):
                 nonlocal x
-                for i in range(y):
+                kila i kwenye range(y):
                     x += 1
-                    yield x
+                    tuma x
             rudisha g
 
         g = f(0)
@@ -711,7 +711,7 @@ kundi ScopeTests(unittest.TestCase):
     eleza testTopIsNotSignificant(self):
         # See #9997.
         eleza top(a):
-            pass
+            pita
         eleza b():
             global a
 
@@ -724,8 +724,8 @@ kundi ScopeTests(unittest.TestCase):
         self.assertEqual(X.y, 43)
         kundi X:
             locals()["x"] = 43
-            del x
-        self.assertFalse(hasattr(X, "x"))
+            toa x
+        self.assertUongo(hasattr(X, "x"))
         self.assertEqual(x, 42)
 
     @cpython_only
@@ -735,26 +735,26 @@ kundi ScopeTests(unittest.TestCase):
         # The issue was that ikiwa self was part of a cycle involving the
         # frame of a method call, *and* the method contained a nested
         # function referencing self, thereby forcing 'self' into a
-        # cell, setting self to None would not be enough to break the
+        # cell, setting self to Tupu would sio be enough to koma the
         # frame -- the frame had another reference to the instance,
-        # which could not be cleared by the code running in the frame
-        # (though it will be cleared when the frame is collected).
-        # Without the lambda, setting self to None is enough to break
+        # which could sio be cleared by the code running kwenye the frame
+        # (though it will be cleared when the frame ni collected).
+        # Without the lambda, setting self to Tupu ni enough to koma
         # the cycle.
         kundi Tester:
             eleza dig(self):
                 ikiwa 0:
                     lambda: self
-                try:
+                jaribu:
                     1/0
-                except Exception as exc:
+                tatizo Exception kama exc:
                     self.exc = exc
-                self = None  # Break the cycle
+                self = Tupu  # Break the cycle
         tester = Tester()
         tester.dig()
         ref = weakref.ref(tester)
-        del tester
-        self.assertIsNone(ref())
+        toa tester
+        self.assertIsTupu(ref())
 
 
 ikiwa __name__ == '__main__':

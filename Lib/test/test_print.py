@@ -7,31 +7,31 @@ kutoka test agiza support
 NotDefined = object()
 
 # A dispatch table all 8 combinations of providing
-# sep, end, and file.
-# I use this machinery so that I'm not just passing default
-# values to print, I'm either passing or not passing in the
+# sep, end, na file.
+# I use this machinery so that I'm sio just pitaing default
+# values to print, I'm either pitaing ama sio pitaing kwenye the
 # arguments.
 dispatch = {
-    (False, False, False):
+    (Uongo, Uongo, Uongo):
         lambda args, sep, end, file: andika(*args),
-    (False, False, True):
+    (Uongo, Uongo, Kweli):
         lambda args, sep, end, file: andika(file=file, *args),
-    (False, True,  False):
+    (Uongo, Kweli,  Uongo):
         lambda args, sep, end, file: andika(end=end, *args),
-    (False, True,  True):
+    (Uongo, Kweli,  Kweli):
         lambda args, sep, end, file: andika(end=end, file=file, *args),
-    (True,  False, False):
+    (Kweli,  Uongo, Uongo):
         lambda args, sep, end, file: andika(sep=sep, *args),
-    (True,  False, True):
+    (Kweli,  Uongo, Kweli):
         lambda args, sep, end, file: andika(sep=sep, file=file, *args),
-    (True,  True,  False):
+    (Kweli,  Kweli,  Uongo):
         lambda args, sep, end, file: andika(sep=sep, end=end, *args),
-    (True,  True,  True):
+    (Kweli,  Kweli,  Kweli):
         lambda args, sep, end, file: andika(sep=sep, end=end, file=file, *args),
 }
 
 
-# Class used to test __str__ and print
+# Class used to test __str__ na print
 kundi ClassWith__str__:
     eleza __init__(self, x):
         self.x = x
@@ -45,29 +45,29 @@ kundi TestPrint(unittest.TestCase):
 
     eleza check(self, expected, args,
               sep=NotDefined, end=NotDefined, file=NotDefined):
-        # Capture sys.stdout in a StringIO.  Call print with args,
-        # and with sep, end, and file, ikiwa they're defined.  Result
+        # Capture sys.stdout kwenye a StringIO.  Call print with args,
+        # na with sep, end, na file, ikiwa they're defined.  Result
         # must match expected.
 
         # Look up the actual function to call, based on ikiwa sep, end,
-        # and file are defined.
-        fn = dispatch[(sep is not NotDefined,
-                       end is not NotDefined,
-                       file is not NotDefined)]
+        # na file are defined.
+        fn = dispatch[(sep ni sio NotDefined,
+                       end ni sio NotDefined,
+                       file ni sio NotDefined)]
 
-        with support.captured_stdout() as t:
+        with support.captured_stdout() kama t:
             fn(args, sep, end, file)
 
         self.assertEqual(t.getvalue(), expected)
 
     eleza test_andika(self):
         eleza x(expected, args, sep=NotDefined, end=NotDefined):
-            # Run the test 2 ways: not using file, and using
+            # Run the test 2 ways: sio using file, na using
             # file directed to a StringIO.
 
             self.check(expected, args, sep=sep, end=end)
 
-            # When writing to a file, stdout is expected to be empty
+            # When writing to a file, stdout ni expected to be empty
             o = StringIO()
             self.check('', args, sep=sep, end=end, file=o)
 
@@ -76,7 +76,7 @@ kundi TestPrint(unittest.TestCase):
 
         x('\n', ())
         x('a\n', ('a',))
-        x('None\n', (None,))
+        x('Tupu\n', (Tupu,))
         x('1 2\n', (1, 2))
         x('1   2\n', (1, ' ', 2))
         x('1*2\n', (1, 2), sep='*')
@@ -88,9 +88,9 @@ kundi TestPrint(unittest.TestCase):
         x('\0+ +\0\n', ('\0', ' ', '\0'), sep='+')
 
         x('a\n b\n', ('a\n', 'b'))
-        x('a\n b\n', ('a\n', 'b'), sep=None)
-        x('a\n b\n', ('a\n', 'b'), end=None)
-        x('a\n b\n', ('a\n', 'b'), sep=None, end=None)
+        x('a\n b\n', ('a\n', 'b'), sep=Tupu)
+        x('a\n b\n', ('a\n', 'b'), end=Tupu)
+        x('a\n b\n', ('a\n', 'b'), sep=Tupu, end=Tupu)
 
         x('*\n', (ClassWith__str__('*'),))
         x('abc 1\n', (ClassWith__str__('abc'), 1))
@@ -114,44 +114,44 @@ kundi TestPrint(unittest.TestCase):
                 self.flushed += 1
 
         f = filelike()
-        andika(1, file=f, end='', flush=True)
-        andika(2, file=f, end='', flush=True)
-        andika(3, file=f, flush=False)
+        andika(1, file=f, end='', flush=Kweli)
+        andika(2, file=f, end='', flush=Kweli)
+        andika(3, file=f, flush=Uongo)
         self.assertEqual(f.written, '123\n')
         self.assertEqual(f.flushed, 2)
 
-        # ensure exceptions kutoka flush are passed through
+        # ensure exceptions kutoka flush are pitaed through
         kundi noflush:
             eleza write(self, str):
-                pass
+                pita
 
             eleza flush(self):
-                raise RuntimeError
-        self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=True)
+                ashiria RuntimeError
+        self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=Kweli)
 
 
 kundi TestPy2MigrationHint(unittest.TestCase):
-    """Test that correct hint is produced analogous to Python3 syntax,
-    ikiwa print statement is executed as in Python 2.
+    """Test that correct hint ni produced analogous to Python3 syntax,
+    ikiwa print statement ni executed kama kwenye Python 2.
     """
 
     eleza test_normal_string(self):
         python2_print_str = 'print "Hello World"'
-        with self.assertRaises(SyntaxError) as context:
+        with self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World")', str(context.exception))
 
     eleza test_string_with_soft_space(self):
         python2_print_str = 'print "Hello World",'
-        with self.assertRaises(SyntaxError) as context:
+        with self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World", end=" ")', str(context.exception))
 
     eleza test_string_with_excessive_whitespace(self):
         python2_print_str = 'print  "Hello World", '
-        with self.assertRaises(SyntaxError) as context:
+        with self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World", end=" ")', str(context.exception))
@@ -160,49 +160,49 @@ kundi TestPy2MigrationHint(unittest.TestCase):
         python2_print_str = '''ikiwa 1:
             print "Hello World"
         '''
-        with self.assertRaises(SyntaxError) as context:
+        with self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World")', str(context.exception))
 
-    # bpo-32685: Suggestions for print statement should be proper when
-    # it is in the same line as the header of a compound statement
+    # bpo-32685: Suggestions kila print statement should be proper when
+    # it ni kwenye the same line kama the header of a compound statement
     # and/or followed by a semicolon
     eleza test_string_with_semicolon(self):
         python2_print_str = 'print p;'
-        with self.assertRaises(SyntaxError) as context:
+        with self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika(p)', str(context.exception))
 
     eleza test_string_in_loop_on_same_line(self):
-        python2_print_str = 'for i in s: print i'
-        with self.assertRaises(SyntaxError) as context:
+        python2_print_str = 'kila i kwenye s: print i'
+        with self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika(i)', str(context.exception))
 
     eleza test_stream_redirection_hint_for_py2_migration(self):
-        # Test correct hint produced for Py2 redirection syntax
-        with self.assertRaises(TypeError) as context:
+        # Test correct hint produced kila Py2 redirection syntax
+        with self.assertRaises(TypeError) kama context:
             print >> sys.stderr, "message"
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
-        # Test correct hint is produced in the case where RHS implements
-        # __rrshift__ but returns NotImplemented
-        with self.assertRaises(TypeError) as context:
+        # Test correct hint ni produced kwenye the case where RHS implements
+        # __rrshift__ but rudishas NotImplemented
+        with self.assertRaises(TypeError) kama context:
             print >> 42
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
-        # Test stream redirection hint is specific to print
-        with self.assertRaises(TypeError) as context:
+        # Test stream redirection hint ni specific to print
+        with self.assertRaises(TypeError) kama context:
             max >> sys.stderr
         self.assertNotIn('Did you mean ', str(context.exception))
 
-        # Test stream redirection hint is specific to rshift
-        with self.assertRaises(TypeError) as context:
+        # Test stream redirection hint ni specific to rshift
+        with self.assertRaises(TypeError) kama context:
             print << sys.stderr
         self.assertNotIn('Did you mean', str(context.exception))
 

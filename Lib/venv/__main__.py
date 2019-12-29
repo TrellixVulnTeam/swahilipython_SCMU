@@ -2,9 +2,9 @@ agiza sys
 kutoka . agiza main
 
 rc = 1
-try:
+jaribu:
     main()
     rc = 0
-except Exception as e:
+tatizo Exception kama e:
     andika('Error: %s' % e, file=sys.stderr)
 sys.exit(rc)

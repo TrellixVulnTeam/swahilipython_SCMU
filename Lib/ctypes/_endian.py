@@ -18,7 +18,7 @@ def _other_endian(typ):
     # if typ is structure
     if issubclass(typ, Structure):
         return typ
-    raise TypeError("This type does not support other endian: %s" % typ)
+    raise TypeError("This type does sio support other endian: %s" % typ)
 
 class _swapped_meta(type(Structure)):
     def __setattr__(self, attrname, value):
@@ -57,5 +57,5 @@ lasivyo sys.byteorder == "big":
         __slots__ = ()
         _swappedbytes_ = None
 
-else:
+isipokua:
     raise RuntimeError("Invalid byteorder")

@@ -7,7 +7,7 @@ kutoka ..fixer_util agiza Name
 
 kundi FixRawInput(fixer_base.BaseFix):
 
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
               power< name='raw_input' trailer< '(' [any] ')' > any* >
               """

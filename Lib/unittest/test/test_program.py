@@ -16,14 +16,14 @@ kundi Test_TestProgram(unittest.TestCase):
         tests = [self]
         expectedPath = os.path.abspath(os.path.dirname(unittest.test.__file__))
 
-        self.wasRun = False
+        self.wasRun = Uongo
         eleza _find_tests(start_dir, pattern):
-            self.wasRun = True
+            self.wasRun = Kweli
             self.assertEqual(start_dir, expectedPath)
             rudisha tests
         loader._find_tests = _find_tests
         suite = loader.discover('unittest.test')
-        self.assertTrue(self.wasRun)
+        self.assertKweli(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
     # Horrible white box test
@@ -41,15 +41,15 @@ kundi Test_TestProgram(unittest.TestCase):
         oldParseArgs = unittest.TestProgram.parseArgs
         eleza restoreParseArgs():
             unittest.TestProgram.parseArgs = oldParseArgs
-        unittest.TestProgram.parseArgs = lambda *args: None
+        unittest.TestProgram.parseArgs = lambda *args: Tupu
         self.addCleanup(restoreParseArgs)
 
         eleza removeTest():
-            del unittest.TestProgram.test
+            toa unittest.TestProgram.test
         unittest.TestProgram.test = test
         self.addCleanup(removeTest)
 
-        program = unittest.TestProgram(testRunner=runner, exit=False, verbosity=2)
+        program = unittest.TestProgram(testRunner=runner, exit=Uongo, verbosity=2)
 
         self.assertEqual(program.result, result)
         self.assertEqual(runner.test, test)
@@ -57,12 +57,12 @@ kundi Test_TestProgram(unittest.TestCase):
 
     kundi FooBar(unittest.TestCase):
         eleza testPass(self):
-            assert True
+            assert Kweli
         eleza testFail(self):
-            assert False
+            assert Uongo
 
     kundi FooBarLoader(unittest.TestLoader):
-        """Test loader that returns a suite containing FooBar."""
+        """Test loader that rudishas a suite containing FooBar."""
         eleza loadTestsFromModule(self, module):
             rudisha self.suiteClass(
                 [self.loadTestsFromTestCase(Test_TestProgram.FooBar)])
@@ -75,12 +75,12 @@ kundi Test_TestProgram(unittest.TestCase):
         kundi FakeRunner(object):
             eleza run(self, test):
                 self.test = test
-                rudisha True
+                rudisha Kweli
 
         old_argv = sys.argv
         sys.argv = ['faketest']
         runner = FakeRunner()
-        program = unittest.TestProgram(testRunner=runner, exit=False,
+        program = unittest.TestProgram(testRunner=runner, exit=Uongo,
                                        defaultTest='unittest.test',
                                        testLoader=self.FooBarLoader())
         sys.argv = old_argv
@@ -90,13 +90,13 @@ kundi Test_TestProgram(unittest.TestCase):
         kundi FakeRunner(object):
             eleza run(self, test):
                 self.test = test
-                rudisha True
+                rudisha Kweli
 
         old_argv = sys.argv
         sys.argv = ['faketest']
         runner = FakeRunner()
         program = unittest.TestProgram(
-            testRunner=runner, exit=False,
+            testRunner=runner, exit=Uongo,
             defaultTest=['unittest.test', 'unittest.test2'],
             testLoader=self.FooBarLoader())
         sys.argv = old_argv
@@ -104,11 +104,11 @@ kundi Test_TestProgram(unittest.TestCase):
                           program.testNames)
 
     eleza test_NonExit(self):
-        program = unittest.main(exit=False,
+        program = unittest.main(exit=Uongo,
                                 argv=["foobar"],
                                 testRunner=unittest.TextTestRunner(stream=io.StringIO()),
                                 testLoader=self.FooBarLoader())
-        self.assertTrue(hasattr(program, 'result'))
+        self.assertKweli(hasattr(program, 'result'))
 
 
     eleza test_Exit(self):
@@ -117,7 +117,7 @@ kundi Test_TestProgram(unittest.TestCase):
             unittest.main,
             argv=["foobar"],
             testRunner=unittest.TextTestRunner(stream=io.StringIO()),
-            exit=True,
+            exit=Kweli,
             testLoader=self.FooBarLoader())
 
 
@@ -131,31 +131,31 @@ kundi Test_TestProgram(unittest.TestCase):
 
 
 kundi InitialisableProgram(unittest.TestProgram):
-    exit = False
-    result = None
+    exit = Uongo
+    result = Tupu
     verbosity = 1
-    defaultTest = None
-    tb_locals = False
-    testRunner = None
+    defaultTest = Tupu
+    tb_locals = Uongo
+    testRunner = Tupu
     testLoader = unittest.defaultTestLoader
     module = '__main__'
     progName = 'test'
     test = 'test'
     eleza __init__(self, *args):
-        pass
+        pita
 
 RESULT = object()
 
 kundi FakeRunner(object):
-    initArgs = None
-    test = None
-    raiseError = 0
+    initArgs = Tupu
+    test = Tupu
+    ashiriaError = 0
 
     eleza __init__(self, **kwargs):
         FakeRunner.initArgs = kwargs
-        ikiwa FakeRunner.raiseError:
-            FakeRunner.raiseError -= 1
-            raise TypeError
+        ikiwa FakeRunner.ashiriaError:
+            FakeRunner.ashiriaError -= 1
+            ashiria TypeError
 
     eleza run(self, test):
         FakeRunner.test = test
@@ -166,83 +166,83 @@ kundi TestCommandLineArgs(unittest.TestCase):
 
     eleza setUp(self):
         self.program = InitialisableProgram()
-        self.program.createTests = lambda: None
-        FakeRunner.initArgs = None
-        FakeRunner.test = None
-        FakeRunner.raiseError = 0
+        self.program.createTests = lambda: Tupu
+        FakeRunner.initArgs = Tupu
+        FakeRunner.test = Tupu
+        FakeRunner.ashiriaError = 0
 
     eleza testVerbosity(self):
         program = self.program
 
-        for opt in '-q', '--quiet':
+        kila opt kwenye '-q', '--quiet':
             program.verbosity = 1
-            program.parseArgs([None, opt])
+            program.parseArgs([Tupu, opt])
             self.assertEqual(program.verbosity, 0)
 
-        for opt in '-v', '--verbose':
+        kila opt kwenye '-v', '--verbose':
             program.verbosity = 1
-            program.parseArgs([None, opt])
+            program.parseArgs([Tupu, opt])
             self.assertEqual(program.verbosity, 2)
 
     eleza testBufferCatchFailfast(self):
         program = self.program
-        for arg, attr in (('buffer', 'buffer'), ('failfast', 'failfast'),
-                      ('catch', 'catchbreak')):
-            ikiwa attr == 'catch' and not hasInstallHandler:
-                continue
+        kila arg, attr kwenye (('buffer', 'buffer'), ('failfast', 'failfast'),
+                      ('catch', 'catchkoma')):
+            ikiwa attr == 'catch' na sio hasInstallHandler:
+                endelea
 
-            setattr(program, attr, None)
-            program.parseArgs([None])
-            self.assertIs(getattr(program, attr), False)
+            setattr(program, attr, Tupu)
+            program.parseArgs([Tupu])
+            self.assertIs(getattr(program, attr), Uongo)
 
             false = []
             setattr(program, attr, false)
-            program.parseArgs([None])
+            program.parseArgs([Tupu])
             self.assertIs(getattr(program, attr), false)
 
             true = [42]
             setattr(program, attr, true)
-            program.parseArgs([None])
+            program.parseArgs([Tupu])
             self.assertIs(getattr(program, attr), true)
 
             short_opt = '-%s' % arg[0]
             long_opt = '--%s' % arg
-            for opt in short_opt, long_opt:
-                setattr(program, attr, None)
-                program.parseArgs([None, opt])
-                self.assertIs(getattr(program, attr), True)
+            kila opt kwenye short_opt, long_opt:
+                setattr(program, attr, Tupu)
+                program.parseArgs([Tupu, opt])
+                self.assertIs(getattr(program, attr), Kweli)
 
-                setattr(program, attr, False)
-                with support.captured_stderr() as stderr, \
-                    self.assertRaises(SystemExit) as cm:
-                    program.parseArgs([None, opt])
+                setattr(program, attr, Uongo)
+                with support.captured_stderr() kama stderr, \
+                    self.assertRaises(SystemExit) kama cm:
+                    program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
-                setattr(program, attr, True)
-                with support.captured_stderr() as stderr, \
-                    self.assertRaises(SystemExit) as cm:
-                    program.parseArgs([None, opt])
+                setattr(program, attr, Kweli)
+                with support.captured_stderr() kama stderr, \
+                    self.assertRaises(SystemExit) kama cm:
+                    program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
     eleza testWarning(self):
         """Test the warnings argument"""
         # see #10535
         kundi FakeTP(unittest.TestProgram):
-            eleza parseArgs(self, *args, **kw): pass
-            eleza runTests(self, *args, **kw): pass
+            eleza parseArgs(self, *args, **kw): pita
+            eleza runTests(self, *args, **kw): pita
         warnoptions = sys.warnoptions[:]
-        try:
+        jaribu:
             sys.warnoptions[:] = []
             # no warn options, no arg -> default
             self.assertEqual(FakeTP().warnings, 'default')
             # no warn options, w/ arg -> arg value
             self.assertEqual(FakeTP(warnings='ignore').warnings, 'ignore')
             sys.warnoptions[:] = ['somevalue']
-            # warn options, no arg -> None
+            # warn options, no arg -> Tupu
             # warn options, w/ arg -> arg value
-            self.assertEqual(FakeTP().warnings, None)
+            self.assertEqual(FakeTP().warnings, Tupu)
             self.assertEqual(FakeTP(warnings='ignore').warnings, 'ignore')
-        finally:
+        mwishowe:
             sys.warnoptions[:] = warnoptions
 
     eleza testRunTestsRunnerClass(self):
@@ -259,7 +259,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(FakeRunner.initArgs, {'verbosity': 'verbosity',
                                                 'failfast': 'failfast',
                                                 'buffer': 'buffer',
-                                                'tb_locals': False,
+                                                'tb_locals': Uongo,
                                                 'warnings': 'warnings'})
         self.assertEqual(FakeRunner.test, 'test')
         self.assertIs(program.result, RESULT)
@@ -268,12 +268,12 @@ kundi TestCommandLineArgs(unittest.TestCase):
         program = self.program
 
         program.testRunner = FakeRunner()
-        FakeRunner.initArgs = None
+        FakeRunner.initArgs = Tupu
 
         program.runTests()
 
-        # A new FakeRunner should not have been instantiated
-        self.assertIsNone(FakeRunner.initArgs)
+        # A new FakeRunner should sio have been instantiated
+        self.assertIsTupu(FakeRunner.initArgs)
 
         self.assertEqual(FakeRunner.test, 'test')
         self.assertIs(program.result, RESULT)
@@ -282,21 +282,21 @@ kundi TestCommandLineArgs(unittest.TestCase):
         program = self.program
 
         program.testRunner = FakeRunner
-        program.parseArgs([None, '--locals'])
-        self.assertEqual(True, program.tb_locals)
+        program.parseArgs([Tupu, '--locals'])
+        self.assertEqual(Kweli, program.tb_locals)
         program.runTests()
-        self.assertEqual(FakeRunner.initArgs, {'buffer': False,
-                                               'failfast': False,
-                                               'tb_locals': True,
+        self.assertEqual(FakeRunner.initArgs, {'buffer': Uongo,
+                                               'failfast': Uongo,
+                                               'tb_locals': Kweli,
                                                'verbosity': 1,
-                                               'warnings': None})
+                                               'warnings': Tupu})
 
     eleza testRunTestsOldRunnerClass(self):
         program = self.program
 
         # Two TypeErrors are needed to fall all the way back to old-style
         # runners - one to fail tb_locals, one to fail buffer etc.
-        FakeRunner.raiseError = 2
+        FakeRunner.ashiriaError = 2
         program.testRunner = FakeRunner
         program.verbosity = 'verbosity'
         program.failfast = 'failfast'
@@ -305,7 +305,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
 
         program.runTests()
 
-        # If initialising raises a type error it should be retried
+        # If initialising ashirias a type error it should be retried
         # without the new keyword arguments
         self.assertEqual(FakeRunner.initArgs, {})
         self.assertEqual(FakeRunner.test, 'test')
@@ -318,22 +318,22 @@ kundi TestCommandLineArgs(unittest.TestCase):
             module.installHandler = original
         self.addCleanup(restore)
 
-        self.installed = False
+        self.installed = Uongo
         eleza fakeInstallHandler():
-            self.installed = True
+            self.installed = Kweli
         module.installHandler = fakeInstallHandler
 
         program = self.program
-        program.catchbreak = True
+        program.catchkoma = Kweli
 
         program.testRunner = FakeRunner
 
         program.runTests()
-        self.assertTrue(self.installed)
+        self.assertKweli(self.installed)
 
-    eleza _patch_isfile(self, names, exists=True):
+    eleza _patch_isfile(self, names, exists=Kweli):
         eleza isfile(path):
-            rudisha path in names
+            rudisha path kwenye names
         original = os.path.isfile
         os.path.isfile = isfile
         eleza restore():
@@ -347,10 +347,10 @@ kundi TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', 'foo.py', 'bar.Py', 'baz.PY', 'wing.txt']
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Tupu
         program.parseArgs(argv)
 
-        # note that 'wing.txt' is not a Python file so the name should
+        # note that 'wing.txt' ni sio a Python file so the name should
         # *not* be converted to a module name
         expected = ['foo', 'bar', 'baz', 'wing.txt']
         self.assertEqual(program.testNames, expected)
@@ -361,7 +361,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', 'foo/bar/baz.py', 'green\\red.py']
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Tupu
         program.parseArgs(argv)
 
         expected = ['foo.bar.baz', 'green.red']
@@ -373,7 +373,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', 'foo/bar/baz.py', 'green\\red.py']
         self._patch_isfile([])
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Tupu
         program.parseArgs(argv)
 
         self.assertEqual(program.testNames, argv[1:])
@@ -386,7 +386,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', _join('foo/bar/baz.py'), _join('green\\red.py')]
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Tupu
         program.parseArgs(argv)
 
         expected = ['foo.bar.baz', 'green.red']
@@ -394,27 +394,27 @@ kundi TestCommandLineArgs(unittest.TestCase):
 
     eleza testParseArgsAbsolutePathsThatCannotBeConverted(self):
         program = self.program
-        # even on Windows '/...' is considered absolute by os.path.abspath
+        # even on Windows '/...' ni considered absolute by os.path.abspath
         argv = ['progname', '/foo/bar/baz.py', '/green/red.py']
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Tupu
         program.parseArgs(argv)
 
         self.assertEqual(program.testNames, argv[1:])
 
         # it may be better to use platform specific functions to normalise paths
-        # rather than accepting '.PY' and '\' as file separator on Linux / Mac
-        # it would also be better to check that a filename is a valid module
-        # identifier (we have a regex for this in loader.py)
-        # for invalid filenames should we raise a useful error rather than
-        # leaving the current error message (agiza of filename fails) in place?
+        # rather than accepting '.PY' na '\' kama file separator on Linux / Mac
+        # it would also be better to check that a filename ni a valid module
+        # identifier (we have a regex kila this kwenye loader.py)
+        # kila invalid filenames should we ashiria a useful error rather than
+        # leaving the current error message (agiza of filename fails) kwenye place?
 
     eleza testParseArgsSelectedTestNames(self):
         program = self.program
         argv = ['progname', '-k', 'foo', '-k', 'bar', '-k', '*pat*']
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Tupu
         program.parseArgs(argv)
 
         self.assertEqual(program.testNamePatterns, ['*foo*', '*bar*', '*pat*'])

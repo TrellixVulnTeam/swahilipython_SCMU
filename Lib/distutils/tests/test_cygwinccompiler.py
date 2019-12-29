@@ -21,7 +21,7 @@ class FakePopen(object):
         if self.cmd in exes:
             # issue #6438 in Python 3.x, Popen returns bytes
             self.stdout = BytesIO(exes[self.cmd])
-        else:
+        isipokua:
             self.stdout = os.popen(cmd, 'r')
 
 
@@ -73,7 +73,7 @@ class CygwinCCompilerTestCase(support.TempdirManager,
         # if the file doesn't exist it returns  CONFIG_H_UNCERTAIN
         self.assertEqual(check_config_h()[0], CONFIG_H_UNCERTAIN)
 
-        # if it exists but does not contain __GNUC__, it returns CONFIG_H_NOTOK
+        # if it exists but does sio contain __GNUC__, it returns CONFIG_H_NOTOK
         self.write_file(self.python_h, 'xxx')
         self.assertEqual(check_config_h()[0], CONFIG_H_NOTOK)
 

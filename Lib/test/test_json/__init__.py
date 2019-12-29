@@ -5,10 +5,10 @@ agiza unittest
 
 kutoka test agiza support
 
-# agiza json with and without accelerations
+# agiza json with na without accelerations
 cjson = support.import_fresh_module('json', fresh=['_json'])
 pyjson = support.import_fresh_module('json', blocked=['_json'])
-# JSONDecodeError is cached inside the _json module
+# JSONDecodeError ni cached inside the _json module
 cjson.JSONDecodeError = cjson.decoder.JSONDecodeError = json.JSONDecodeError
 
 # create two base classes that will be used by the other tests
@@ -20,13 +20,13 @@ kundi PyTest(unittest.TestCase):
 
 @unittest.skipUnless(cjson, 'requires _json')
 kundi CTest(unittest.TestCase):
-    ikiwa cjson is not None:
+    ikiwa cjson ni sio Tupu:
         json = cjson
         loads = staticmethod(cjson.loads)
         dumps = staticmethod(cjson.dumps)
         JSONDecodeError = staticmethod(cjson.JSONDecodeError)
 
-# test PyTest and CTest checking ikiwa the functions come kutoka the right module
+# test PyTest na CTest checking ikiwa the functions come kutoka the right module
 kundi TestPyTest(PyTest):
     eleza test_pyjson(self):
         self.assertEqual(self.json.scanner.make_scanner.__module__,
@@ -47,7 +47,7 @@ kundi TestCTest(CTest):
 
 eleza load_tests(loader, _, pattern):
     suite = unittest.TestSuite()
-    for mod in (json, json.encoder, json.decoder):
+    kila mod kwenye (json, json.encoder, json.decoder):
         suite.addTest(doctest.DocTestSuite(mod))
     suite.addTest(TestPyTest('test_pyjson'))
     suite.addTest(TestCTest('test_cjson'))

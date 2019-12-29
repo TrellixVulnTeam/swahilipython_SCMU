@@ -1,8 +1,8 @@
-# Tests that the crashers in the Lib/test/crashers directory actually
-# do crash the interpreter as expected
+# Tests that the crashers kwenye the Lib/test/crashers directory actually
+# do crash the interpreter kama expected
 #
-# If a crasher is fixed, it should be moved elsewhere in the test suite to
-# ensure it continues to work correctly.
+# If a crasher ni fixed, it should be moved elsewhere kwenye the test suite to
+# ensure it endeleas to work correctly.
 
 agiza unittest
 agiza glob
@@ -20,9 +20,9 @@ kundi CrasherTest(unittest.TestCase):
     @unittest.skip("these tests are too fragile")
     @test.support.cpython_only
     eleza test_crashers_crash(self):
-        for fname in glob.glob(CRASHER_FILES):
-            ikiwa os.path.basename(fname) in infinite_loops:
-                continue
+        kila fname kwenye glob.glob(CRASHER_FILES):
+            ikiwa os.path.basename(fname) kwenye infinite_loops:
+                endelea
             # Some "crashers" only trigger an exception rather than a
             # segfault. Consider that an acceptable outcome.
             ikiwa test.support.verbose:

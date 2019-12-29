@@ -3,24 +3,24 @@
 
 """Convert graminit.[ch] spit out by pgen to Python code.
 
-Pgen is the Python parser generator.  It is useful to quickly create a
-parser kutoka a grammar file in Python's grammar notation.  But I don't
-want my parsers to be written in C (yet), so I'm translating the
-parsing tables to Python data structures and writing a Python parse
+Pgen ni the Python parser generator.  It ni useful to quickly create a
+parser kutoka a grammar file kwenye Python's grammar notation.  But I don't
+want my parsers to be written kwenye C (yet), so I'm translating the
+parsing tables to Python data structures na writing a Python parse
 engine.
 
 Note that the token numbers are constants determined by the standard
 Python tokenizer.  The standard token module defines these numbers and
-their names (the names are not used much).  The token numbers are
-hardcoded into the Python tokenizer and into pgen.  A Python
-implementation of the Python tokenizer is also available, in the
+their names (the names are sio used much).  The token numbers are
+hardcoded into the Python tokenizer na into pgen.  A Python
+implementation of the Python tokenizer ni also available, kwenye the
 standard tokenize module.
 
 On the other hand, symbol numbers (representing the grammar's
 non-terminals) are assigned by pgen based on the actual grammar
 input.
 
-Note: this module is pretty much obsolete; the pgen module generates
+Note: this module ni pretty much obsolete; the pgen module generates
 equivalent grammar tables directly kutoka the Grammar.txt input file
 without having to invoke the Python pgen C program.
 
@@ -36,11 +36,11 @@ kutoka pgen2 agiza grammar, token
 kundi Converter(grammar.Grammar):
     """Grammar subkundi that reads classic pgen output files.
 
-    The run() method reads the tables as produced by the pgen parser
-    generator, typically contained in two C files, graminit.h and
-    graminit.c.  The other methods are for internal use only.
+    The run() method reads the tables kama produced by the pgen parser
+    generator, typically contained kwenye two C files, graminit.h and
+    graminit.c.  The other methods are kila internal use only.
 
-    See the base kundi for more documentation.
+    See the base kundi kila more documentation.
 
     """
 
@@ -53,51 +53,51 @@ kundi Converter(grammar.Grammar):
     eleza parse_graminit_h(self, filename):
         """Parse the .h file written by pgen.  (Internal)
 
-        This file is a sequence of #define statements defining the
-        nonterminals of the grammar as numbers.  We build two tables
-        mapping the numbers to names and back.
+        This file ni a sequence of #define statements defining the
+        nonterminals of the grammar kama numbers.  We build two tables
+        mapping the numbers to names na back.
 
         """
-        try:
+        jaribu:
             f = open(filename)
-        except OSError as err:
+        tatizo OSError kama err:
             andika("Can't open %s: %s" % (filename, err))
-            rudisha False
+            rudisha Uongo
         self.symbol2number = {}
         self.number2symbol = {}
         lineno = 0
-        for line in f:
+        kila line kwenye f:
             lineno += 1
             mo = re.match(r"^#define\s+(\w+)\s+(\d+)$", line)
-            ikiwa not mo and line.strip():
+            ikiwa sio mo na line.strip():
                 andika("%s(%s): can't parse %s" % (filename, lineno,
                                                   line.strip()))
-            else:
+            isipokua:
                 symbol, number = mo.groups()
                 number = int(number)
-                assert symbol not in self.symbol2number
-                assert number not in self.number2symbol
+                assert symbol haiko kwenye self.symbol2number
+                assert number haiko kwenye self.number2symbol
                 self.symbol2number[symbol] = number
                 self.number2symbol[number] = symbol
-        rudisha True
+        rudisha Kweli
 
     eleza parse_graminit_c(self, filename):
         """Parse the .c file written by pgen.  (Internal)
 
-        The file looks as follows.  The first two lines are always this:
+        The file looks kama follows.  The first two lines are always this:
 
         #include "pgenheaders.h"
         #include "grammar.h"
 
         After that come four blocks:
 
-        1) one or more state definitions
+        1) one ama more state definitions
         2) a table defining dfas
         3) a table defining labels
         4) a struct defining the grammar
 
         A state definition has the following form:
-        - one or more arc arrays, each of the form:
+        - one ama more arc arrays, each of the form:
           static arc arcs_<n>_<m>[<k>] = {
                   {<i>, <j>},
                   ...
@@ -109,11 +109,11 @@ kundi Converter(grammar.Grammar):
           };
 
         """
-        try:
+        jaribu:
             f = open(filename)
-        except OSError as err:
+        tatizo OSError kama err:
             andika("Can't open %s: %s" % (filename, err))
-            rudisha False
+            rudisha Uongo
         # The code below essentially uses f's iterator-ness!
         lineno = 0
 
@@ -127,14 +127,14 @@ kundi Converter(grammar.Grammar):
         lineno, line = lineno+1, next(f)
         allarcs = {}
         states = []
-        while line.startswith("static arc "):
-            while line.startswith("static arc "):
+        wakati line.startswith("static arc "):
+            wakati line.startswith("static arc "):
                 mo = re.match(r"static arc arcs_(\d+)_(\d+)\[(\d+)\] = {$",
                               line)
                 assert mo, (lineno, line)
                 n, m, k = list(map(int, mo.groups()))
                 arcs = []
-                for _ in range(k):
+                kila _ kwenye range(k):
                     lineno, line = lineno+1, next(f)
                     mo = re.match(r"\s+{(\d+), (\d+)},$", line)
                     assert mo, (lineno, line)
@@ -149,7 +149,7 @@ kundi Converter(grammar.Grammar):
             s, t = list(map(int, mo.groups()))
             assert s == len(states), (lineno, line)
             state = []
-            for _ in range(t):
+            kila _ kwenye range(t):
                 lineno, line = lineno+1, next(f)
                 mo = re.match(r"\s+{(\d+), arcs_(\d+)_(\d+)},$", line)
                 assert mo, (lineno, line)
@@ -168,7 +168,7 @@ kundi Converter(grammar.Grammar):
         mo = re.match(r"static dfa dfas\[(\d+)\] = {$", line)
         assert mo, (lineno, line)
         ndfas = int(mo.group(1))
-        for i in range(ndfas):
+        kila i kwenye range(ndfas):
             lineno, line = lineno+1, next(f)
             mo = re.match(r'\s+{(\d+), "(\w+)", (\d+), (\d+), states_(\d+),$',
                           line)
@@ -185,9 +185,9 @@ kundi Converter(grammar.Grammar):
             assert mo, (lineno, line)
             first = {}
             rawbitset = eval(mo.group(1))
-            for i, c in enumerate(rawbitset):
+            kila i, c kwenye enumerate(rawbitset):
                 byte = ord(c)
-                for j in range(8):
+                kila j kwenye range(8):
                     ikiwa byte & (1<<j):
                         first[i*8 + j] = 1
             dfas[number] = (state, first)
@@ -201,15 +201,15 @@ kundi Converter(grammar.Grammar):
         mo = re.match(r"static label labels\[(\d+)\] = {$", line)
         assert mo, (lineno, line)
         nlabels = int(mo.group(1))
-        for i in range(nlabels):
+        kila i kwenye range(nlabels):
             lineno, line = lineno+1, next(f)
             mo = re.match(r'\s+{(\d+), (0|"\w+")},$', line)
             assert mo, (lineno, line)
             x, y = mo.groups()
             x = int(x)
             ikiwa y == "0":
-                y = None
-            else:
+                y = Tupu
+            isipokua:
                 y = eval(y)
             labels.append((x, y))
         lineno, line = lineno+1, next(f)
@@ -235,23 +235,23 @@ kundi Converter(grammar.Grammar):
         mo = re.match(r"\s+(\d+)$", line)
         assert mo, (lineno, line)
         start = int(mo.group(1))
-        assert start in self.number2symbol, (lineno, line)
+        assert start kwenye self.number2symbol, (lineno, line)
         self.start = start
         lineno, line = lineno+1, next(f)
         assert line == "};\n", (lineno, line)
-        try:
+        jaribu:
             lineno, line = lineno+1, next(f)
-        except StopIteration:
-            pass
-        else:
+        tatizo StopIteration:
+            pita
+        isipokua:
             assert 0, (lineno, line)
 
     eleza finish_off(self):
         """Create additional useful structures.  (Internal)."""
         self.keywords = {} # map kutoka keyword strings to arc labels
         self.tokens = {}   # map kutoka numeric token values to arc labels
-        for ilabel, (type, value) in enumerate(self.labels):
-            ikiwa type == token.NAME and value is not None:
+        kila ilabel, (type, value) kwenye enumerate(self.labels):
+            ikiwa type == token.NAME na value ni sio Tupu:
                 self.keywords[value] = ilabel
-            elikiwa value is None:
+            elikiwa value ni Tupu:
                 self.tokens[type] = ilabel

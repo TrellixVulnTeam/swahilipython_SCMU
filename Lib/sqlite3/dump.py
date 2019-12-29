@@ -1,25 +1,25 @@
 # Mimic the sqlite3 console shell's .dump command
 # Author: Paul Kippes <kippesp@gmail.com>
 
-# Every identifier in sql is quoted based on a comment in sqlite
+# Every identifier kwenye sql ni quoted based on a comment kwenye sqlite
 # documentation "SQLite adds new keywords kutoka time to time when it
 # takes on new features. So to prevent your code kutoka being broken by
 # future enhancements, you should normally quote any identifier that
-# is an English language word, even ikiwa you do not have to."
+# ni an English language word, even ikiwa you do sio have to."
 
 eleza _iterdump(connection):
     """
-    Returns an iterator to the dump of the database in an SQL text format.
+    Returns an iterator to the dump of the database kwenye an SQL text format.
 
     Used to produce an SQL dump of the database.  Useful to save an in-memory
-    database for later restoration.  This function should not be called
+    database kila later restoration.  This function should sio be called
     directly but instead called kutoka the Connection method, iterdump().
     """
 
     cu = connection.cursor()
-    yield('BEGIN TRANSACTION;')
+    tuma('BEGIN TRANSACTION;')
 
-    # sqlite_master table contains the SQL CREATE statements for the database.
+    # sqlite_master table contains the SQL CREATE statements kila the database.
     q = """
         SELECT "name", "type", "sql"
         FROM "sqlite_master"
@@ -28,35 +28,35 @@ eleza _iterdump(connection):
             ORDER BY "name"
         """
     schema_res = cu.execute(q)
-    for table_name, type, sql in schema_res.fetchall():
+    kila table_name, type, sql kwenye schema_res.fetchall():
         ikiwa table_name == 'sqlite_sequence':
-            yield('DELETE FROM "sqlite_sequence";')
+            tuma('DELETE FROM "sqlite_sequence";')
         elikiwa table_name == 'sqlite_stat1':
-            yield('ANALYZE "sqlite_master";')
+            tuma('ANALYZE "sqlite_master";')
         elikiwa table_name.startswith('sqlite_'):
-            continue
-        # NOTE: Virtual table support not implemented
+            endelea
+        # NOTE: Virtual table support sio implemented
         #elikiwa sql.startswith('CREATE VIRTUAL TABLE'):
         #    qtable = table_name.replace("'", "''")
-        #    yield("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"\
+        #    tuma("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"\
         #        "VALUES('table','{0}','{0}',0,'{1}');".format(
         #        qtable,
         #        sql.replace("''")))
-        else:
-            yield('{0};'.format(sql))
+        isipokua:
+            tuma('{0};'.format(sql))
 
-        # Build the insert statement for each row of the current table
+        # Build the insert statement kila each row of the current table
         table_name_ident = table_name.replace('"', '""')
         res = cu.execute('PRAGMA table_info("{0}")'.format(table_name_ident))
-        column_names = [str(table_info[1]) for table_info in res.fetchall()]
+        column_names = [str(table_info[1]) kila table_info kwenye res.fetchall()]
         q = """SELECT 'INSERT INTO "{0}" VALUES({1})' FROM "{0}";""".format(
             table_name_ident,
-            ",".join("""'||quote("{0}")||'""".format(col.replace('"', '""')) for col in column_names))
+            ",".join("""'||quote("{0}")||'""".format(col.replace('"', '""')) kila col kwenye column_names))
         query_res = cu.execute(q)
-        for row in query_res:
-            yield("{0};".format(row[0]))
+        kila row kwenye query_res:
+            tuma("{0};".format(row[0]))
 
-    # Now when the type is 'index', 'trigger', or 'view'
+    # Now when the type ni 'index', 'trigger', ama 'view'
     q = """
         SELECT "name", "type", "sql"
         FROM "sqlite_master"
@@ -64,7 +64,7 @@ eleza _iterdump(connection):
             "type" IN ('index', 'trigger', 'view')
         """
     schema_res = cu.execute(q)
-    for name, type, sql in schema_res.fetchall():
-        yield('{0};'.format(sql))
+    kila name, type, sql kwenye schema_res.fetchall():
+        tuma('{0};'.format(sql))
 
-    yield('COMMIT;')
+    tuma('COMMIT;')

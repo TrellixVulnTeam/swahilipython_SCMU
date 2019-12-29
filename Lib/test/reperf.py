@@ -10,11 +10,11 @@ eleza main():
 
 eleza timefunc(n, func, *args, **kw):
     t0 = time.perf_counter()
-    try:
-        for i in range(n):
+    jaribu:
+        kila i kwenye range(n):
             result = func(*args, **kw)
         rudisha result
-    finally:
+    mwishowe:
         t1 = time.perf_counter()
         ikiwa n > 1:
             andika(n, "times", end=' ')

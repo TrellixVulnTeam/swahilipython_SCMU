@@ -41,97 +41,97 @@ kundi OperatorTestCase:
         operator = self.module
         self.assertRaises(TypeError, operator.lt)
         self.assertRaises(TypeError, operator.lt, 1j, 2j)
-        self.assertFalse(operator.lt(1, 0))
-        self.assertFalse(operator.lt(1, 0.0))
-        self.assertFalse(operator.lt(1, 1))
-        self.assertFalse(operator.lt(1, 1.0))
-        self.assertTrue(operator.lt(1, 2))
-        self.assertTrue(operator.lt(1, 2.0))
+        self.assertUongo(operator.lt(1, 0))
+        self.assertUongo(operator.lt(1, 0.0))
+        self.assertUongo(operator.lt(1, 1))
+        self.assertUongo(operator.lt(1, 1.0))
+        self.assertKweli(operator.lt(1, 2))
+        self.assertKweli(operator.lt(1, 2.0))
 
     eleza test_le(self):
         operator = self.module
         self.assertRaises(TypeError, operator.le)
         self.assertRaises(TypeError, operator.le, 1j, 2j)
-        self.assertFalse(operator.le(1, 0))
-        self.assertFalse(operator.le(1, 0.0))
-        self.assertTrue(operator.le(1, 1))
-        self.assertTrue(operator.le(1, 1.0))
-        self.assertTrue(operator.le(1, 2))
-        self.assertTrue(operator.le(1, 2.0))
+        self.assertUongo(operator.le(1, 0))
+        self.assertUongo(operator.le(1, 0.0))
+        self.assertKweli(operator.le(1, 1))
+        self.assertKweli(operator.le(1, 1.0))
+        self.assertKweli(operator.le(1, 2))
+        self.assertKweli(operator.le(1, 2.0))
 
     eleza test_eq(self):
         operator = self.module
         kundi C(object):
             eleza __eq__(self, other):
-                raise SyntaxError
+                ashiria SyntaxError
         self.assertRaises(TypeError, operator.eq)
         self.assertRaises(SyntaxError, operator.eq, C(), C())
-        self.assertFalse(operator.eq(1, 0))
-        self.assertFalse(operator.eq(1, 0.0))
-        self.assertTrue(operator.eq(1, 1))
-        self.assertTrue(operator.eq(1, 1.0))
-        self.assertFalse(operator.eq(1, 2))
-        self.assertFalse(operator.eq(1, 2.0))
+        self.assertUongo(operator.eq(1, 0))
+        self.assertUongo(operator.eq(1, 0.0))
+        self.assertKweli(operator.eq(1, 1))
+        self.assertKweli(operator.eq(1, 1.0))
+        self.assertUongo(operator.eq(1, 2))
+        self.assertUongo(operator.eq(1, 2.0))
 
     eleza test_ne(self):
         operator = self.module
         kundi C(object):
             eleza __ne__(self, other):
-                raise SyntaxError
+                ashiria SyntaxError
         self.assertRaises(TypeError, operator.ne)
         self.assertRaises(SyntaxError, operator.ne, C(), C())
-        self.assertTrue(operator.ne(1, 0))
-        self.assertTrue(operator.ne(1, 0.0))
-        self.assertFalse(operator.ne(1, 1))
-        self.assertFalse(operator.ne(1, 1.0))
-        self.assertTrue(operator.ne(1, 2))
-        self.assertTrue(operator.ne(1, 2.0))
+        self.assertKweli(operator.ne(1, 0))
+        self.assertKweli(operator.ne(1, 0.0))
+        self.assertUongo(operator.ne(1, 1))
+        self.assertUongo(operator.ne(1, 1.0))
+        self.assertKweli(operator.ne(1, 2))
+        self.assertKweli(operator.ne(1, 2.0))
 
     eleza test_ge(self):
         operator = self.module
         self.assertRaises(TypeError, operator.ge)
         self.assertRaises(TypeError, operator.ge, 1j, 2j)
-        self.assertTrue(operator.ge(1, 0))
-        self.assertTrue(operator.ge(1, 0.0))
-        self.assertTrue(operator.ge(1, 1))
-        self.assertTrue(operator.ge(1, 1.0))
-        self.assertFalse(operator.ge(1, 2))
-        self.assertFalse(operator.ge(1, 2.0))
+        self.assertKweli(operator.ge(1, 0))
+        self.assertKweli(operator.ge(1, 0.0))
+        self.assertKweli(operator.ge(1, 1))
+        self.assertKweli(operator.ge(1, 1.0))
+        self.assertUongo(operator.ge(1, 2))
+        self.assertUongo(operator.ge(1, 2.0))
 
     eleza test_gt(self):
         operator = self.module
         self.assertRaises(TypeError, operator.gt)
         self.assertRaises(TypeError, operator.gt, 1j, 2j)
-        self.assertTrue(operator.gt(1, 0))
-        self.assertTrue(operator.gt(1, 0.0))
-        self.assertFalse(operator.gt(1, 1))
-        self.assertFalse(operator.gt(1, 1.0))
-        self.assertFalse(operator.gt(1, 2))
-        self.assertFalse(operator.gt(1, 2.0))
+        self.assertKweli(operator.gt(1, 0))
+        self.assertKweli(operator.gt(1, 0.0))
+        self.assertUongo(operator.gt(1, 1))
+        self.assertUongo(operator.gt(1, 1.0))
+        self.assertUongo(operator.gt(1, 2))
+        self.assertUongo(operator.gt(1, 2.0))
 
     eleza test_abs(self):
         operator = self.module
         self.assertRaises(TypeError, operator.abs)
-        self.assertRaises(TypeError, operator.abs, None)
+        self.assertRaises(TypeError, operator.abs, Tupu)
         self.assertEqual(operator.abs(-1), 1)
         self.assertEqual(operator.abs(1), 1)
 
     eleza test_add(self):
         operator = self.module
         self.assertRaises(TypeError, operator.add)
-        self.assertRaises(TypeError, operator.add, None, None)
+        self.assertRaises(TypeError, operator.add, Tupu, Tupu)
         self.assertEqual(operator.add(3, 4), 7)
 
     eleza test_bitwise_and(self):
         operator = self.module
         self.assertRaises(TypeError, operator.and_)
-        self.assertRaises(TypeError, operator.and_, None, None)
+        self.assertRaises(TypeError, operator.and_, Tupu, Tupu)
         self.assertEqual(operator.and_(0xf, 0xa), 0xa)
 
     eleza test_concat(self):
         operator = self.module
         self.assertRaises(TypeError, operator.concat)
-        self.assertRaises(TypeError, operator.concat, None, None)
+        self.assertRaises(TypeError, operator.concat, Tupu, Tupu)
         self.assertEqual(operator.concat('py', 'thon'), 'python')
         self.assertEqual(operator.concat([1, 2], [3, 4]), [1, 2, 3, 4])
         self.assertEqual(operator.concat(Seq1([5, 6]), Seq1([7])), [5, 6, 7])
@@ -141,7 +141,7 @@ kundi OperatorTestCase:
     eleza test_countOf(self):
         operator = self.module
         self.assertRaises(TypeError, operator.countOf)
-        self.assertRaises(TypeError, operator.countOf, None, None)
+        self.assertRaises(TypeError, operator.countOf, Tupu, Tupu)
         self.assertEqual(operator.countOf([1, 2, 1, 3, 1, 4], 3), 1)
         self.assertEqual(operator.countOf([1, 2, 1, 3, 1, 4], 5), 0)
 
@@ -149,46 +149,46 @@ kundi OperatorTestCase:
         operator = self.module
         a = [4, 3, 2, 1]
         self.assertRaises(TypeError, operator.delitem, a)
-        self.assertRaises(TypeError, operator.delitem, a, None)
-        self.assertIsNone(operator.delitem(a, 1))
+        self.assertRaises(TypeError, operator.delitem, a, Tupu)
+        self.assertIsTupu(operator.delitem(a, 1))
         self.assertEqual(a, [4, 2, 1])
 
     eleza test_floordiv(self):
         operator = self.module
         self.assertRaises(TypeError, operator.floordiv, 5)
-        self.assertRaises(TypeError, operator.floordiv, None, None)
+        self.assertRaises(TypeError, operator.floordiv, Tupu, Tupu)
         self.assertEqual(operator.floordiv(5, 2), 2)
 
     eleza test_truediv(self):
         operator = self.module
         self.assertRaises(TypeError, operator.truediv, 5)
-        self.assertRaises(TypeError, operator.truediv, None, None)
+        self.assertRaises(TypeError, operator.truediv, Tupu, Tupu)
         self.assertEqual(operator.truediv(5, 2), 2.5)
 
     eleza test_getitem(self):
         operator = self.module
         a = range(10)
         self.assertRaises(TypeError, operator.getitem)
-        self.assertRaises(TypeError, operator.getitem, a, None)
+        self.assertRaises(TypeError, operator.getitem, a, Tupu)
         self.assertEqual(operator.getitem(a, 2), 2)
 
     eleza test_indexOf(self):
         operator = self.module
         self.assertRaises(TypeError, operator.indexOf)
-        self.assertRaises(TypeError, operator.indexOf, None, None)
+        self.assertRaises(TypeError, operator.indexOf, Tupu, Tupu)
         self.assertEqual(operator.indexOf([4, 3, 2, 1], 3), 1)
         self.assertRaises(ValueError, operator.indexOf, [4, 3, 2, 1], 0)
 
     eleza test_invert(self):
         operator = self.module
         self.assertRaises(TypeError, operator.invert)
-        self.assertRaises(TypeError, operator.invert, None)
+        self.assertRaises(TypeError, operator.invert, Tupu)
         self.assertEqual(operator.inv(4), -5)
 
     eleza test_lshift(self):
         operator = self.module
         self.assertRaises(TypeError, operator.lshift)
-        self.assertRaises(TypeError, operator.lshift, None, 42)
+        self.assertRaises(TypeError, operator.lshift, Tupu, 42)
         self.assertEqual(operator.lshift(5, 1), 10)
         self.assertEqual(operator.lshift(5, 0), 5)
         self.assertRaises(ValueError, operator.lshift, 2, -1)
@@ -196,13 +196,13 @@ kundi OperatorTestCase:
     eleza test_mod(self):
         operator = self.module
         self.assertRaises(TypeError, operator.mod)
-        self.assertRaises(TypeError, operator.mod, None, 42)
+        self.assertRaises(TypeError, operator.mod, Tupu, 42)
         self.assertEqual(operator.mod(5, 2), 1)
 
     eleza test_mul(self):
         operator = self.module
         self.assertRaises(TypeError, operator.mul)
-        self.assertRaises(TypeError, operator.mul, None, None)
+        self.assertRaises(TypeError, operator.mul, Tupu, Tupu)
         self.assertEqual(operator.mul(5, 2), 10)
 
     eleza test_matmul(self):
@@ -217,7 +217,7 @@ kundi OperatorTestCase:
     eleza test_neg(self):
         operator = self.module
         self.assertRaises(TypeError, operator.neg)
-        self.assertRaises(TypeError, operator.neg, None)
+        self.assertRaises(TypeError, operator.neg, Tupu)
         self.assertEqual(operator.neg(5), -5)
         self.assertEqual(operator.neg(-5), 5)
         self.assertEqual(operator.neg(0), 0)
@@ -226,13 +226,13 @@ kundi OperatorTestCase:
     eleza test_bitwise_or(self):
         operator = self.module
         self.assertRaises(TypeError, operator.or_)
-        self.assertRaises(TypeError, operator.or_, None, None)
+        self.assertRaises(TypeError, operator.or_, Tupu, Tupu)
         self.assertEqual(operator.or_(0xa, 0x5), 0xf)
 
     eleza test_pos(self):
         operator = self.module
         self.assertRaises(TypeError, operator.pos)
-        self.assertRaises(TypeError, operator.pos, None)
+        self.assertRaises(TypeError, operator.pos, Tupu)
         self.assertEqual(operator.pos(5), 5)
         self.assertEqual(operator.pos(-5), -5)
         self.assertEqual(operator.pos(0), 0)
@@ -241,7 +241,7 @@ kundi OperatorTestCase:
     eleza test_pow(self):
         operator = self.module
         self.assertRaises(TypeError, operator.pow)
-        self.assertRaises(TypeError, operator.pow, None, None)
+        self.assertRaises(TypeError, operator.pow, Tupu, Tupu)
         self.assertEqual(operator.pow(3,5), 3**5)
         self.assertRaises(TypeError, operator.pow, 1)
         self.assertRaises(TypeError, operator.pow, 1, 2, 3)
@@ -249,7 +249,7 @@ kundi OperatorTestCase:
     eleza test_rshift(self):
         operator = self.module
         self.assertRaises(TypeError, operator.rshift)
-        self.assertRaises(TypeError, operator.rshift, None, 42)
+        self.assertRaises(TypeError, operator.rshift, Tupu, 42)
         self.assertEqual(operator.rshift(5, 1), 2)
         self.assertEqual(operator.rshift(5, 0), 5)
         self.assertRaises(ValueError, operator.rshift, 2, -1)
@@ -257,41 +257,41 @@ kundi OperatorTestCase:
     eleza test_contains(self):
         operator = self.module
         self.assertRaises(TypeError, operator.contains)
-        self.assertRaises(TypeError, operator.contains, None, None)
-        self.assertTrue(operator.contains(range(4), 2))
-        self.assertFalse(operator.contains(range(4), 5))
+        self.assertRaises(TypeError, operator.contains, Tupu, Tupu)
+        self.assertKweli(operator.contains(range(4), 2))
+        self.assertUongo(operator.contains(range(4), 5))
 
     eleza test_setitem(self):
         operator = self.module
         a = list(range(3))
         self.assertRaises(TypeError, operator.setitem, a)
-        self.assertRaises(TypeError, operator.setitem, a, None, None)
-        self.assertIsNone(operator.setitem(a, 0, 2))
+        self.assertRaises(TypeError, operator.setitem, a, Tupu, Tupu)
+        self.assertIsTupu(operator.setitem(a, 0, 2))
         self.assertEqual(a, [2, 1, 2])
         self.assertRaises(IndexError, operator.setitem, a, 4, 2)
 
     eleza test_sub(self):
         operator = self.module
         self.assertRaises(TypeError, operator.sub)
-        self.assertRaises(TypeError, operator.sub, None, None)
+        self.assertRaises(TypeError, operator.sub, Tupu, Tupu)
         self.assertEqual(operator.sub(5, 2), 3)
 
     eleza test_truth(self):
         operator = self.module
         kundi C(object):
             eleza __bool__(self):
-                raise SyntaxError
+                ashiria SyntaxError
         self.assertRaises(TypeError, operator.truth)
         self.assertRaises(SyntaxError, operator.truth, C())
-        self.assertTrue(operator.truth(5))
-        self.assertTrue(operator.truth([0]))
-        self.assertFalse(operator.truth(0))
-        self.assertFalse(operator.truth([]))
+        self.assertKweli(operator.truth(5))
+        self.assertKweli(operator.truth([0]))
+        self.assertUongo(operator.truth(0))
+        self.assertUongo(operator.truth([]))
 
     eleza test_bitwise_xor(self):
         operator = self.module
         self.assertRaises(TypeError, operator.xor)
-        self.assertRaises(TypeError, operator.xor, None, None)
+        self.assertRaises(TypeError, operator.xor, Tupu, Tupu)
         self.assertEqual(operator.xor(0xb, 0xc), 0x7)
 
     eleza test_is(self):
@@ -299,21 +299,21 @@ kundi OperatorTestCase:
         a = b = 'xyzpdq'
         c = a[:3] + b[3:]
         self.assertRaises(TypeError, operator.is_)
-        self.assertTrue(operator.is_(a, b))
-        self.assertFalse(operator.is_(a,c))
+        self.assertKweli(operator.is_(a, b))
+        self.assertUongo(operator.is_(a,c))
 
     eleza test_is_not(self):
         operator = self.module
         a = b = 'xyzpdq'
         c = a[:3] + b[3:]
         self.assertRaises(TypeError, operator.is_not)
-        self.assertFalse(operator.is_not(a, b))
-        self.assertTrue(operator.is_not(a,c))
+        self.assertUongo(operator.is_not(a, b))
+        self.assertKweli(operator.is_not(a,c))
 
     eleza test_attrgetter(self):
         operator = self.module
         kundi A:
-            pass
+            pita
         a = A()
         a.name = 'arthur'
         f = operator.attrgetter('name')
@@ -336,7 +336,7 @@ kundi OperatorTestCase:
 
         kundi C(object):
             eleza __getattr__(self, name):
-                raise SyntaxError
+                ashiria SyntaxError
         self.assertRaises(SyntaxError, operator.attrgetter('foo'), C())
 
         # recursive gets
@@ -376,7 +376,7 @@ kundi OperatorTestCase:
 
         kundi C(object):
             eleza __getitem__(self, name):
-                raise SyntaxError
+                ashiria SyntaxError
         self.assertRaises(SyntaxError, operator.itemgetter(42), C())
 
         f = operator.itemgetter('name')
@@ -389,7 +389,7 @@ kundi OperatorTestCase:
         f = operator.itemgetter('nonkey')
         self.assertRaises(KeyError, f, d)
 
-        # example used in the docs
+        # example used kwenye the docs
         inventory = [('apple', 3), ('banana', 2), ('pear', 5), ('orange', 1)]
         getcount = operator.itemgetter(1)
         self.assertEqual(list(map(getcount, inventory)), [3, 2, 5, 1])
@@ -409,7 +409,7 @@ kundi OperatorTestCase:
         # interesting sequences
         kundi T(tuple):
             'Tuple subclass'
-            pass
+            pita
         self.assertEqual(operator.itemgetter(0)(T('abc')), 'a')
         self.assertEqual(operator.itemgetter(0)(['a', 'b', 'c']), 'a')
         self.assertEqual(operator.itemgetter(0)(range(100, 200)), 100)
@@ -457,7 +457,7 @@ kundi OperatorTestCase:
             eleza __isub__     (self, other): rudisha "isub"
             eleza __itruediv__ (self, other): rudisha "itruediv"
             eleza __ixor__     (self, other): rudisha "ixor"
-            eleza __getitem__(self, other): rudisha 5  # so that C is a sequence
+            eleza __getitem__(self, other): rudisha 5  # so that C ni a sequence
         c = C()
         self.assertEqual(operator.iadd     (c, 5), "iadd")
         self.assertEqual(operator.iand     (c, 5), "iand")
@@ -481,9 +481,9 @@ kundi OperatorTestCase:
                 self.value = value
 
             eleza __length_hint__(self):
-                ikiwa type(self.value) is type:
-                    raise self.value
-                else:
+                ikiwa type(self.value) ni type:
+                    ashiria self.value
+                isipokua:
                     rudisha self.value
 
         self.assertEqual(operator.length_hint([], 2), 0)
@@ -502,10 +502,10 @@ kundi OperatorTestCase:
     eleza test_dunder_is_original(self):
         operator = self.module
 
-        names = [name for name in dir(operator) ikiwa not name.startswith('_')]
-        for name in names:
+        names = [name kila name kwenye dir(operator) ikiwa sio name.startswith('_')]
+        kila name kwenye names:
             orig = getattr(operator, name)
-            dunder = getattr(operator, '__' + name.strip('_') + '__', None)
+            dunder = getattr(operator, '__' + name.strip('_') + '__', Tupu)
             ikiwa dunder:
                 self.assertIs(dunder, orig)
 
@@ -527,7 +527,7 @@ kundi OperatorPickleTestCase:
     eleza test_attrgetter(self):
         attrgetter = self.module.attrgetter
         kundi A:
-            pass
+            pita
         a = A()
         a.x = 'X'
         a.y = 'Y'
@@ -535,7 +535,7 @@ kundi OperatorPickleTestCase:
         a.t = A()
         a.t.u = A()
         a.t.u.v = 'V'
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 f = attrgetter('x')
                 f2 = self.copy(f, proto)
@@ -555,7 +555,7 @@ kundi OperatorPickleTestCase:
     eleza test_itemgetter(self):
         itemgetter = self.module.itemgetter
         a = 'ABCDE'
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 f = itemgetter(2)
                 f2 = self.copy(f, proto)
@@ -577,7 +577,7 @@ kundi OperatorPickleTestCase:
             eleza baz(*args, **kwds):
                 rudisha kwds['name'], kwds['self']
         a = A()
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 f = methodcaller('bar')
                 f2 = self.copy(f, proto)

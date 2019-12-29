@@ -189,10 +189,10 @@ class install(Command):
 
         # 'force' forces installation, even if target files are not
         # out-of-date.  'skip_build' skips running the "build" command,
-        # handy if you know it's not necessary.  'warn_dir' (which is *not*
+        # handy if you know it's sio necessary.  'warn_dir' (which is *not*
         # a user option, it's just there so the bdist_* commands can turn
         # it off) determines whether we warn about installing to a
-        # directory not in sys.path.
+        # directory haiko kwenye sys.path.
         self.force = 0
         self.skip_build = 0
         self.warn_dir = 1
@@ -200,7 +200,7 @@ class install(Command):
         # These are only here as a conduit from the 'build' command to the
         # 'install_*' commands that do the real work.  ('build_base' isn't
         # actually used anywhere, but it might be useful in future.)  They
-        # are not user options, because if the user told the install
+        # are sio user options, because if the user told the install
         # command where the build directory is, that wouldn't affect the
         # build command.
         self.build_base = None
@@ -241,11 +241,11 @@ class install(Command):
             (self.install_base or self.install_platbase)):
             raise DistutilsOptionError(
                    "must supply either prefix/exec-prefix/home or " +
-                   "install-base/install-platbase -- not both")
+                   "install-base/install-platbase -- sio both")
 
         if self.home and (self.prefix or self.exec_prefix):
             raise DistutilsOptionError(
-                  "must supply either home or prefix/exec-prefix -- not both")
+                  "must supply either home or prefix/exec-prefix -- sio both")
 
         if self.user and (self.prefix or self.exec_prefix or self.home or
                 self.install_base or self.install_platbase):
@@ -270,22 +270,22 @@ class install(Command):
 
         if os.name == 'posix':
             self.finalize_unix()
-        else:
+        isipokua:
             self.finalize_other()
 
         self.dump_dirs("post-finalize_{unix,other}()")
 
         # Expand configuration variables, tilde, etc. in self.install_base
         # and self.install_platbase -- that way, we can use $base or
-        # $platbase in the other installation directories and not worry
+        # $platbase in the other installation directories and sio worry
         # about needing recursive variable expansion (shudder).
 
         py_version = sys.version.split()[0]
         (prefix, exec_prefix) = get_config_vars('prefix', 'exec_prefix')
-        try:
+        jaribu:
             abiflags = sys.abiflags
-        except AttributeError:
-            # sys.abiflags may not be defined on all platforms.
+        tatizo AttributeError:
+            # sys.abiflags may sio be defined on all platforms.
             abiflags = ''
         self.config_vars = {'dist_name': self.distribution.get_name(),
                             'dist_version': self.distribution.get_version(),
@@ -335,7 +335,7 @@ class install(Command):
         if self.install_lib is None:
             if self.distribution.ext_modules: # has extensions: non-pure
                 self.install_lib = self.install_platlib
-            else:
+            isipokua:
                 self.install_lib = self.install_purelib
 
 
@@ -346,7 +346,7 @@ class install(Command):
                            'userbase', 'usersite')
 
         # Deprecated
-        # Well, we're not actually fully completely finalized yet: we still
+        # Well, we're sio actually fully completely finalized yet: we still
         # have to deal with 'extra_path', which is the hack for allowing
         # non-packagized module distributions (hello, Numerical Python!) to
         # get their own directories.
@@ -356,7 +356,7 @@ class install(Command):
 
         # If a new root directory was supplied, make all the installation
         # dirs relative to it.
-        if self.root is not None:
+        if self.root ni sio None:
             self.change_roots('libbase', 'lib', 'purelib', 'platlib',
                               'scripts', 'data', 'headers')
 
@@ -372,7 +372,7 @@ class install(Command):
 
     def dump_dirs(self, msg):
         """Dumps the list of user options."""
-        if not DEBUG:
+        if sio DEBUG:
             return
         from distutils.fancy_getopt import longopt_xlate
         log.debug(msg + ":")
@@ -383,15 +383,15 @@ class install(Command):
             if opt_name in self.negative_opt:
                 opt_name = self.negative_opt[opt_name]
                 opt_name = opt_name.translate(longopt_xlate)
-                val = not getattr(self, opt_name)
-            else:
+                val = sio getattr(self, opt_name)
+            isipokua:
                 opt_name = opt_name.translate(longopt_xlate)
                 val = getattr(self, opt_name)
             log.debug("  %s: %s", opt_name, val)
 
     def finalize_unix(self):
         """Finalizes options for posix platforms."""
-        if self.install_base is not None or self.install_platbase is not None:
+        if self.install_base ni sio None or self.install_platbase ni sio None:
             if ((self.install_lib is None and
                  self.install_purelib is None and
                  self.install_platlib is None) or
@@ -406,22 +406,22 @@ class install(Command):
         if self.user:
             if self.install_userbase is None:
                 raise DistutilsPlatformError(
-                    "User base directory is not specified")
+                    "User base directory ni sio specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme("unix_user")
-        lasivyo self.home is not None:
+        lasivyo self.home ni sio None:
             self.install_base = self.install_platbase = self.home
             self.select_scheme("unix_home")
-        else:
+        isipokua:
             if self.prefix is None:
-                if self.exec_prefix is not None:
+                if self.exec_prefix ni sio None:
                     raise DistutilsOptionError(
-                          "must not supply exec-prefix without prefix")
+                          "must sio supply exec-prefix without prefix")
 
                 self.prefix = os.path.normpath(sys.prefix)
                 self.exec_prefix = os.path.normpath(sys.exec_prefix)
 
-            else:
+            isipokua:
                 if self.exec_prefix is None:
                     self.exec_prefix = self.prefix
 
@@ -434,20 +434,20 @@ class install(Command):
         if self.user:
             if self.install_userbase is None:
                 raise DistutilsPlatformError(
-                    "User base directory is not specified")
+                    "User base directory ni sio specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme(os.name + "_user")
-        lasivyo self.home is not None:
+        lasivyo self.home ni sio None:
             self.install_base = self.install_platbase = self.home
             self.select_scheme("unix_home")
-        else:
+        isipokua:
             if self.prefix is None:
                 self.prefix = os.path.normpath(sys.prefix)
 
             self.install_base = self.install_platbase = self.prefix
-            try:
+            jaribu:
                 self.select_scheme(os.name)
-            except KeyError:
+            tatizo KeyError:
                 raise DistutilsPlatformError(
                       "I don't know how to install stuff on '%s'" % os.name)
 
@@ -463,7 +463,7 @@ class install(Command):
     def _expand_attrs(self, attrs):
         for attr in attrs:
             val = getattr(self, attr)
-            if val is not None:
+            if val ni sio None:
                 if os.name == 'posix' or os.name == 'nt':
                     val = os.path.expanduser(val)
                 val = subst_vars(val, self.config_vars)
@@ -491,7 +491,7 @@ class install(Command):
         if self.extra_path is None:
             self.extra_path = self.distribution.extra_path
 
-        if self.extra_path is not None:
+        if self.extra_path ni sio None:
             log.warn(
                 "Distribution option extra_path is deprecated. "
                 "See issue27919 for details."
@@ -503,7 +503,7 @@ class install(Command):
                 path_file = extra_dirs = self.extra_path[0]
             lasivyo len(self.extra_path) == 2:
                 path_file, extra_dirs = self.extra_path
-            else:
+            isipokua:
                 raise DistutilsOptionError(
                       "'extra_path' option must be a list, tuple, or "
                       "comma-separated string with 1 or 2 elements")
@@ -511,11 +511,11 @@ class install(Command):
             # convert to local form in case Unix notation used (as it
             # should be in setup scripts)
             extra_dirs = convert_path(extra_dirs)
-        else:
+        isipokua:
             path_file = None
             extra_dirs = ''
 
-        # XXX should we warn if path_file and not extra_dirs? (in which
+        # XXX should we warn if path_file and sio extra_dirs? (in which
         # case the path file would be harmless but pointless)
         self.path_file = path_file
         self.extra_dirs = extra_dirs
@@ -528,11 +528,11 @@ class install(Command):
 
     def create_home_path(self):
         """Create directories under ~."""
-        if not self.user:
+        if sio self.user:
             return
         home = convert_path(os.path.expanduser("~"))
         for name, path in self.config_vars.items():
-            if path.startswith(home) and not os.path.isdir(path):
+            if path.startswith(home) and sio os.path.isdir(path):
                 self.debug_print("os.makedirs('%s', 0o700)" % path)
                 os.makedirs(path, 0o700)
 
@@ -541,12 +541,12 @@ class install(Command):
     def run(self):
         """Runs the command."""
         # Obviously have to build before we can install
-        if not self.skip_build:
+        if sio self.skip_build:
             self.run_command('build')
             # If we built for any other platform, we can't install.
             build_plat = self.distribution.get_command_obj('build').plat_name
             # check warn_dir - it is a clue that the 'install' is happening
-            # internally, and not to sys.path, so we don't check the platform
+            # internally, and sio to sys.path, so we don't check the platform
             # matches what we are running.
             if self.warn_dir and build_plat != get_platform():
                 raise DistutilsPlatformError("Can't install when "
@@ -575,9 +575,9 @@ class install(Command):
         sys_path = map(os.path.normcase, sys_path)
         install_lib = os.path.normcase(os.path.normpath(self.install_lib))
         if (self.warn_dir and
-            not (self.path_file and self.install_path_file) and
-            install_lib not in sys_path):
-            log.debug(("modules installed to '%s', which is not in "
+            sio (self.path_file and self.install_path_file) and
+            install_lib haiko kwenye sys_path):
+            log.debug(("modules installed to '%s', which is haiko kwenye "
                        "Python's module search path (sys.path) -- "
                        "you'll have to change the search path yourself"),
                        self.install_lib)
@@ -590,8 +590,8 @@ class install(Command):
             self.execute(write_file,
                          (filename, [self.extra_dirs]),
                          "creating %s" % filename)
-        else:
-            self.warn("path file '%s' not created" % filename)
+        isipokua:
+            self.warn("path file '%s' sio created" % filename)
 
 
     # -- Reporting methods ---------------------------------------------
@@ -604,7 +604,7 @@ class install(Command):
             # Add the contents of cmd.get_outputs(), ensuring
             # that outputs doesn't contain duplicate entries
             for filename in cmd.get_outputs():
-                if filename not in outputs:
+                if filename haiko kwenye outputs:
                     outputs.append(filename)
 
         if self.path_file and self.install_path_file:

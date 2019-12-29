@@ -26,7 +26,7 @@ from distutils import log
 if sys.platform == 'darwin':
     agiza _osx_support
 
-# XXX Things not currently handled:
+# XXX Things sio currently handled:
 #   * optimization/debug/warning flags; we just use whatever's in Python's
 #     Makefile and live with it.  Is this adequate?  If not, we might
 #     have to have a bunch of subclasses GNUCCompiler, SGICCompiler,
@@ -68,7 +68,7 @@ class UnixCCompiler(CCompiler):
     # Needed for the filename generation methods provided by the base
     # class, CCompiler.  NB. whoever instantiates/uses a particular
     # UnixCCompiler instance should set 'shared_lib_ext' -- we set a
-    # reasonable common default here, but it's not necessarily used on all
+    # reasonable common default here, but it's sio necessarily used on all
     # Unices!
 
     src_extensions = [".c",".C",".cc",".cxx",".cpp",".m"]
@@ -103,9 +103,9 @@ class UnixCCompiler(CCompiler):
         if self.force or output_file is None or newer(source, output_file):
             if output_file:
                 self.mkpath(os.path.dirname(output_file))
-            try:
+            jaribu:
                 self.spawn(pp_args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise CompileError(msg)
 
     def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
@@ -113,10 +113,10 @@ class UnixCCompiler(CCompiler):
         if sys.platform == 'darwin':
             compiler_so = _osx_support.compiler_fixup(compiler_so,
                                                     cc_args + extra_postargs)
-        try:
+        jaribu:
             self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                        extra_postargs)
-        except DistutilsExecError as msg:
+        tatizo DistutilsExecError as msg:
             raise CompileError(msg)
 
     def create_static_lib(self, objects, output_libname,
@@ -138,11 +138,11 @@ class UnixCCompiler(CCompiler):
             # needed -- or maybe Python's configure script took care of
             # it for us, hence the check for leading colon.
             if self.ranlib:
-                try:
+                jaribu:
                     self.spawn(self.ranlib + [output_filename])
-                except DistutilsExecError as msg:
+                tatizo DistutilsExecError as msg:
                     raise LibError(msg)
-        else:
+        isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
     def link(self, target_desc, objects,
@@ -157,9 +157,9 @@ class UnixCCompiler(CCompiler):
 
         lib_opts = gen_lib_options(self, library_dirs, runtime_library_dirs,
                                    libraries)
-        if not isinstance(output_dir, (str, type(None))):
+        if sio isinstance(output_dir, (str, type(None))):
             raise TypeError("'output_dir' must be a string or None")
-        if output_dir is not None:
+        if output_dir ni sio None:
             output_filename = os.path.join(output_dir, output_filename)
 
         if self._need_link(objects, output_filename):
@@ -172,10 +172,10 @@ class UnixCCompiler(CCompiler):
             if extra_postargs:
                 ld_args.extend(extra_postargs)
             self.mkpath(os.path.dirname(output_filename))
-            try:
+            jaribu:
                 if target_desc == CCompiler.EXECUTABLE:
                     linker = self.linker_exe[:]
-                else:
+                isipokua:
                     linker = self.linker_so[:]
                 if target_lang == "c++" and self.compiler_cxx:
                     # skip over environment variable settings if /usr/bin/env
@@ -186,14 +186,14 @@ class UnixCCompiler(CCompiler):
                     i = 0
                     if os.path.basename(linker[0]) == "env":
                         i = 1
-                        while '=' in linker[i]:
+                        wakati '=' in linker[i]:
                             i += 1
 
                     if os.path.basename(linker[i]) == 'ld_so_aix':
                         # AIX platforms prefix the compiler with the ld_so_aix
                         # script, so we need to adjust our linker index
                         offset = 1
-                    else:
+                    isipokua:
                         offset = 0
 
                     linker[i+offset] = self.compiler_cxx[i]
@@ -202,9 +202,9 @@ class UnixCCompiler(CCompiler):
                     linker = _osx_support.compiler_fixup(linker, ld_args)
 
                 self.spawn(linker + ld_args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise LinkError(msg)
-        else:
+        isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
     # -- Miscellaneous methods -----------------------------------------
@@ -241,9 +241,9 @@ class UnixCCompiler(CCompiler):
             if self._is_gcc(compiler):
                 return ["-Wl,+s", "-L" + dir]
             return ["+s", "-L" + dir]
-        else:
+        isipokua:
             if self._is_gcc(compiler):
-                # gcc on non-GNU systems does not need -Wl, but can
+                # gcc on non-GNU systems does sio need -Wl, but can
                 # use it anyway.  Since distutils has always passed in
                 # -Wl whenever gcc was used in the past it is probably
                 # safest to keep doing so.
@@ -251,9 +251,9 @@ class UnixCCompiler(CCompiler):
                     # GNU ld needs an extra option to get a RUNPATH
                     # instead of just an RPATH.
                     return "-Wl,--enable-new-dtags,-R" + dir
-                else:
+                isipokua:
                     return "-Wl,-R" + dir
-            else:
+            isipokua:
                 # No idea how --enable-new-dtags would be passed on to
                 # ld if this system was using GNU ld.  Don't know if a
                 # system like this even exists.
@@ -291,7 +291,7 @@ class UnixCCompiler(CCompiler):
             m = re.search(r'-isysroot\s+(\S+)', cflags)
             if m is None:
                 sysroot = '/'
-            else:
+            isipokua:
                 sysroot = m.group(1)
 
 
@@ -304,14 +304,14 @@ class UnixCCompiler(CCompiler):
 
             if sys.platform == 'darwin' and (
                 dir.startswith('/System/') or (
-                dir.startswith('/usr/') and not dir.startswith('/usr/local/'))):
+                dir.startswith('/usr/') and sio dir.startswith('/usr/local/'))):
 
                 shared = os.path.join(sysroot, dir[1:], shared_f)
                 dylib = os.path.join(sysroot, dir[1:], dylib_f)
                 static = os.path.join(sysroot, dir[1:], static_f)
                 xcode_stub = os.path.join(sysroot, dir[1:], xcode_stub_f)
 
-            # We're second-guessing the linker here, with not much hard
+            # We're second-guessing the linker here, with sio much hard
             # data to go on: GCC seems to prefer the shared library, so I'm
             # assuming that *all* Unix C compilers do.  And of course I'm
             # ignoring even GCC's "-static" option.  So sue me.

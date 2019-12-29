@@ -7,12 +7,12 @@ agiza traceback
 kutoka . agiza util
 kutoka functools agiza wraps
 
-__unittest = True
+__unittest = Kweli
 
 eleza failfast(method):
     @wraps(method)
     eleza inner(self, *args, **kw):
-        ikiwa getattr(self, 'failfast', False):
+        ikiwa getattr(self, 'failfast', Uongo):
             self.stop()
         rudisha method(self, *args, **kw)
     rudisha inner
@@ -22,48 +22,48 @@ STDERR_LINE = '\nStderr:\n%s'
 
 
 kundi TestResult(object):
-    """Holder for test result information.
+    """Holder kila test result information.
 
-    Test results are automatically managed by the TestCase and TestSuite
-    classes, and do not need to be explicitly manipulated by writers of tests.
+    Test results are automatically managed by the TestCase na TestSuite
+    classes, na do sio need to be explicitly manipulated by writers of tests.
 
-    Each instance holds the total number of tests run, and collections of
-    failures and errors that occurred among those test runs. The collections
-    contain tuples of (testcase, exceptioninfo), where exceptioninfo is the
+    Each instance holds the total number of tests run, na collections of
+    failures na errors that occurred among those test runs. The collections
+    contain tuples of (testcase, exceptioninfo), where exceptioninfo ni the
     formatted traceback of the error that occurred.
     """
-    _previousTestClass = None
-    _testRunEntered = False
-    _moduleSetUpFailed = False
-    eleza __init__(self, stream=None, descriptions=None, verbosity=None):
-        self.failfast = False
+    _previousTestClass = Tupu
+    _testRunEntered = Uongo
+    _moduleSetUpFailed = Uongo
+    eleza __init__(self, stream=Tupu, descriptions=Tupu, verbosity=Tupu):
+        self.failfast = Uongo
         self.failures = []
         self.errors = []
         self.testsRun = 0
         self.skipped = []
         self.expectedFailures = []
         self.unexpectedSuccesses = []
-        self.shouldStop = False
-        self.buffer = False
-        self.tb_locals = False
-        self._stdout_buffer = None
-        self._stderr_buffer = None
+        self.shouldStop = Uongo
+        self.buffer = Uongo
+        self.tb_locals = Uongo
+        self._stdout_buffer = Tupu
+        self._stderr_buffer = Tupu
         self._original_stdout = sys.stdout
         self._original_stderr = sys.stderr
-        self._mirrorOutput = False
+        self._mirrorOutput = Uongo
 
     eleza printErrors(self):
         "Called by TestRunner after test run"
 
     eleza startTest(self, test):
-        "Called when the given test is about to be run"
+        "Called when the given test ni about to be run"
         self.testsRun += 1
-        self._mirrorOutput = False
+        self._mirrorOutput = Uongo
         self._setupStdout()
 
     eleza _setupStdout(self):
         ikiwa self.buffer:
-            ikiwa self._stderr_buffer is None:
+            ikiwa self._stderr_buffer ni Tupu:
                 self._stderr_buffer = io.StringIO()
                 self._stdout_buffer = io.StringIO()
             sys.stdout = self._stdout_buffer
@@ -72,13 +72,13 @@ kundi TestResult(object):
     eleza startTestRun(self):
         """Called once before any tests are executed.
 
-        See startTest for a method called before each test.
+        See startTest kila a method called before each test.
         """
 
     eleza stopTest(self, test):
         """Called when the given test has been run"""
         self._restoreStdout()
-        self._mirrorOutput = False
+        self._mirrorOutput = Uongo
 
     eleza _restoreStdout(self):
         ikiwa self.buffer:
@@ -86,11 +86,11 @@ kundi TestResult(object):
                 output = sys.stdout.getvalue()
                 error = sys.stderr.getvalue()
                 ikiwa output:
-                    ikiwa not output.endswith('\n'):
+                    ikiwa sio output.endswith('\n'):
                         output += '\n'
                     self._original_stdout.write(STDOUT_LINE % output)
                 ikiwa error:
-                    ikiwa not error.endswith('\n'):
+                    ikiwa sio error.endswith('\n'):
                         error += '\n'
                     self._original_stderr.write(STDERR_LINE % error)
 
@@ -104,47 +104,47 @@ kundi TestResult(object):
     eleza stopTestRun(self):
         """Called once after all tests are executed.
 
-        See stopTest for a method called after each test.
+        See stopTest kila a method called after each test.
         """
 
     @failfast
     eleza addError(self, test, err):
-        """Called when an error has occurred. 'err' is a tuple of values as
-        returned by sys.exc_info().
+        """Called when an error has occurred. 'err' ni a tuple of values as
+        rudishaed by sys.exc_info().
         """
         self.errors.append((test, self._exc_info_to_string(err, test)))
-        self._mirrorOutput = True
+        self._mirrorOutput = Kweli
 
     @failfast
     eleza addFailure(self, test, err):
-        """Called when an error has occurred. 'err' is a tuple of values as
-        returned by sys.exc_info()."""
+        """Called when an error has occurred. 'err' ni a tuple of values as
+        rudishaed by sys.exc_info()."""
         self.failures.append((test, self._exc_info_to_string(err, test)))
-        self._mirrorOutput = True
+        self._mirrorOutput = Kweli
 
     eleza addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
-        'err' is None ikiwa the subtest ended successfully, otherwise it's a
-        tuple of values as returned by sys.exc_info().
+        'err' ni Tupu ikiwa the subtest ended successfully, otherwise it's a
+        tuple of values kama rudishaed by sys.exc_info().
         """
         # By default, we don't do anything with successful subtests, but
         # more sophisticated test results might want to record them.
-        ikiwa err is not None:
-            ikiwa getattr(self, 'failfast', False):
+        ikiwa err ni sio Tupu:
+            ikiwa getattr(self, 'failfast', Uongo):
                 self.stop()
             ikiwa issubclass(err[0], test.failureException):
                 errors = self.failures
-            else:
+            isipokua:
                 errors = self.errors
             errors.append((subtest, self._exc_info_to_string(err, test)))
-            self._mirrorOutput = True
+            self._mirrorOutput = Kweli
 
     eleza addSuccess(self, test):
         "Called when a test has completed successfully"
-        pass
+        pita
 
     eleza addSkip(self, test, reason):
-        """Called when a test is skipped."""
+        """Called when a test ni skipped."""
         self.skipped.append((test, reason))
 
     eleza addExpectedFailure(self, test, err):
@@ -158,8 +158,8 @@ kundi TestResult(object):
         self.unexpectedSuccesses.append(test)
 
     eleza wasSuccessful(self):
-        """Tells whether or not this result was a success."""
-        # The hasattr check is for test_result's OldResult test.  That
+        """Tells whether ama sio this result was a success."""
+        # The hasattr check ni kila test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result intances come kutoka? old stored pickles?)
         rudisha ((len(self.failures) == len(self.errors) == 0) and
@@ -168,20 +168,20 @@ kundi TestResult(object):
 
     eleza stop(self):
         """Indicates that the tests should be aborted."""
-        self.shouldStop = True
+        self.shouldStop = Kweli
 
     eleza _exc_info_to_string(self, err, test):
         """Converts a sys.exc_info()-style tuple of values into a string."""
         exctype, value, tb = err
         # Skip test runner traceback levels
-        while tb and self._is_relevant_tb_level(tb):
+        wakati tb na self._is_relevant_tb_level(tb):
             tb = tb.tb_next
 
-        ikiwa exctype is test.failureException:
+        ikiwa exctype ni test.failureException:
             # Skip assert*() traceback levels
             length = self._count_relevant_tb_levels(tb)
-        else:
-            length = None
+        isipokua:
+            length = Tupu
         tb_e = traceback.TracebackException(
             exctype, value, tb, limit=length, capture_locals=self.tb_locals)
         msgLines = list(tb_e.format())
@@ -190,22 +190,22 @@ kundi TestResult(object):
             output = sys.stdout.getvalue()
             error = sys.stderr.getvalue()
             ikiwa output:
-                ikiwa not output.endswith('\n'):
+                ikiwa sio output.endswith('\n'):
                     output += '\n'
                 msgLines.append(STDOUT_LINE % output)
             ikiwa error:
-                ikiwa not error.endswith('\n'):
+                ikiwa sio error.endswith('\n'):
                     error += '\n'
                 msgLines.append(STDERR_LINE % error)
         rudisha ''.join(msgLines)
 
 
     eleza _is_relevant_tb_level(self, tb):
-        rudisha '__unittest' in tb.tb_frame.f_globals
+        rudisha '__unittest' kwenye tb.tb_frame.f_globals
 
     eleza _count_relevant_tb_levels(self, tb):
         length = 0
-        while tb and not self._is_relevant_tb_level(tb):
+        wakati tb na sio self._is_relevant_tb_level(tb):
             length += 1
             tb = tb.tb_next
         rudisha length

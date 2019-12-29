@@ -56,11 +56,11 @@ def encode_7or8bit(msg):
         return
     # We play a trick to make this go fast.  If decoding from ASCII succeeds,
     # we know the data must be 7bit, otherwise treat it as 8bit.
-    try:
+    jaribu:
         orig.decode('ascii')
-    except UnicodeError:
+    tatizo UnicodeError:
         msg['Content-Transfer-Encoding'] = '8bit'
-    else:
+    isipokua:
         msg['Content-Transfer-Encoding'] = '7bit'
 
 

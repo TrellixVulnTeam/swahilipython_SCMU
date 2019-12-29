@@ -7,30 +7,30 @@ agiza unittest
 agiza os
 agiza types
 
-try:
+jaribu:
     agiza _testcapi
-except ImportError:
-    _testcapi = None
+tatizo ImportError:
+    _testcapi = Tupu
 
 kundi HelperMixin:
     eleza helper(self, sample, *extra):
         new = marshal.loads(marshal.dumps(sample, *extra))
         self.assertEqual(sample, new)
-        try:
-            with open(support.TESTFN, "wb") as f:
+        jaribu:
+            with open(support.TESTFN, "wb") kama f:
                 marshal.dump(sample, f, *extra)
-            with open(support.TESTFN, "rb") as f:
+            with open(support.TESTFN, "rb") kama f:
                 new = marshal.load(f)
             self.assertEqual(sample, new)
-        finally:
+        mwishowe:
             support.unlink(support.TESTFN)
 
 kundi IntTestCase(unittest.TestCase, HelperMixin):
     eleza test_ints(self):
         # Test a range of Python ints larger than the machine word size.
         n = sys.maxsize ** 2
-        while n:
-            for expected in (-n, n):
+        wakati n:
+            kila expected kwenye (-n, n):
                 self.helper(expected)
             n = n >> 1
 
@@ -38,14 +38,14 @@ kundi IntTestCase(unittest.TestCase, HelperMixin):
         # Simulate int marshaling with TYPE_INT64.
         maxint64 = (1 << 63) - 1
         minint64 = -maxint64-1
-        for base in maxint64, minint64, -maxint64, -(minint64 >> 1):
-            while base:
-                s = b'I' + int.to_bytes(base, 8, 'little', signed=True)
+        kila base kwenye maxint64, minint64, -maxint64, -(minint64 >> 1):
+            wakati base:
+                s = b'I' + int.to_bytes(base, 8, 'little', signed=Kweli)
                 got = marshal.loads(s)
                 self.assertEqual(base, got)
-                ikiwa base == -1:  # a fixed-point for shifting right 1
+                ikiwa base == -1:  # a fixed-point kila shifting right 1
                     base = 0
-                else:
+                isipokua:
                     base >>= 1
 
         got = marshal.loads(b'I\xfe\xdc\xba\x98\x76\x54\x32\x10')
@@ -58,7 +58,7 @@ kundi IntTestCase(unittest.TestCase, HelperMixin):
         self.assertEqual(got, -0x7f6e5d4c3b2a1909)
 
     eleza test_bool(self):
-        for b in (True, False):
+        kila b kwenye (Kweli, Uongo):
             self.helper(b)
 
 kundi FloatTestCase(unittest.TestCase, HelperMixin):
@@ -66,8 +66,8 @@ kundi FloatTestCase(unittest.TestCase, HelperMixin):
         # Test a few floats
         small = 1e-25
         n = sys.maxsize * 3.7e250
-        while n > small:
-            for expected in (-n, n):
+        wakati n > small:
+            kila expected kwenye (-n, n):
                 self.helper(float(expected))
             n /= 123.4567
 
@@ -75,14 +75,14 @@ kundi FloatTestCase(unittest.TestCase, HelperMixin):
         s = marshal.dumps(f, 2)
         got = marshal.loads(s)
         self.assertEqual(f, got)
-        # and with version <= 1 (floats marshalled differently then)
+        # na with version <= 1 (floats marshalled differently then)
         s = marshal.dumps(f, 1)
         got = marshal.loads(s)
         self.assertEqual(f, got)
 
         n = sys.maxsize * 3.7e-250
-        while n < small:
-            for expected in (-n, n):
+        wakati n < small:
+            kila expected kwenye (-n, n):
                 f = float(expected)
                 self.helper(f)
                 self.helper(f, 1)
@@ -90,15 +90,15 @@ kundi FloatTestCase(unittest.TestCase, HelperMixin):
 
 kundi StringTestCase(unittest.TestCase, HelperMixin):
     eleza test_unicode(self):
-        for s in ["", "Andr\xe8 Previn", "abc", " "*10000]:
+        kila s kwenye ["", "Andr\xe8 Previn", "abc", " "*10000]:
             self.helper(marshal.loads(marshal.dumps(s)))
 
     eleza test_string(self):
-        for s in ["", "Andr\xe8 Previn", "abc", " "*10000]:
+        kila s kwenye ["", "Andr\xe8 Previn", "abc", " "*10000]:
             self.helper(s)
 
     eleza test_bytes(self):
-        for s in [b"", b"Andr\xe8 Previn", b"abc", b" "*10000]:
+        kila s kwenye [b"", b"Andr\xe8 Previn", b"abc", b" "*10000]:
             self.helper(s)
 
 kundi ExceptionTestCase(unittest.TestCase):
@@ -127,10 +127,10 @@ kundi CodeTestCase(unittest.TestCase):
 
     @support.cpython_only
     eleza test_same_filename_used(self):
-        s = """eleza f(): pass\neleza g(): pass"""
+        s = """eleza f(): pita\neleza g(): pita"""
         co = compile(s, "myfile", "exec")
         co = marshal.loads(marshal.dumps(co))
-        for obj in co.co_consts:
+        kila obj kwenye co.co_consts:
             ikiwa isinstance(obj, types.CodeType):
                 self.assertIs(co.co_filename, obj.co_filename)
 
@@ -141,7 +141,7 @@ kundi ContainerTestCase(unittest.TestCase, HelperMixin):
          'ashortlong': 2,
          'alist': ['.zyx.41'],
          'atuple': ('.zyx.41',)*10,
-         'aboolean': False,
+         'aboolean': Uongo,
          'aunicode': "Andr\xe8 Previn"
          }
 
@@ -155,7 +155,7 @@ kundi ContainerTestCase(unittest.TestCase, HelperMixin):
         self.helper(tuple(self.d.keys()))
 
     eleza test_sets(self):
-        for constructor in (set, frozenset):
+        kila constructor kwenye (set, frozenset):
             self.helper(constructor(self.d.keys()))
 
     @support.cpython_only
@@ -188,7 +188,7 @@ kundi BufferTestCase(unittest.TestCase, HelperMixin):
 
 kundi BugsTestCase(unittest.TestCase):
     eleza test_bug_5888452(self):
-        # Simple-minded check for SF 588452: Debug build crashes
+        # Simple-minded check kila SF 588452: Debug build crashes
         marshal.dumps([128] * 1000)
 
     eleza test_patch_873224(self):
@@ -197,33 +197,33 @@ kundi BugsTestCase(unittest.TestCase):
         self.assertRaises(Exception, marshal.loads, marshal.dumps(2**65)[:-1])
 
     eleza test_version_argument(self):
-        # Python 2.4.0 crashes for any call to marshal.dumps(x, y)
+        # Python 2.4.0 crashes kila any call to marshal.dumps(x, y)
         self.assertEqual(marshal.loads(marshal.dumps(5, 0)), 5)
         self.assertEqual(marshal.loads(marshal.dumps(5, 1)), 5)
 
     eleza test_fuzz(self):
-        # simple test that it's at least not *totally* trivial to
+        # simple test that it's at least sio *totally* trivial to
         # crash kutoka bad marshal data
-        for i in range(256):
+        kila i kwenye range(256):
             c = bytes([i])
-            try:
+            jaribu:
                 marshal.loads(c)
-            except Exception:
-                pass
+            tatizo Exception:
+                pita
 
     eleza test_loads_recursion(self):
         eleza run_tests(N, check):
-            # (((...None...),),)
+            # (((...Tupu...),),)
             check(b')\x01' * N + b'N')
             check(b'(\x01\x00\x00\x00' * N + b'N')
-            # [[[...None...]]]
+            # [[[...Tupu...]]]
             check(b'[\x01\x00\x00\x00' * N + b'N')
-            # {None: {None: {None: ...None...}}}
+            # {Tupu: {Tupu: {Tupu: ...Tupu...}}}
             check(b'{N' * N + b'N' + b'0' * N)
-            # frozenset([frozenset([frozenset([...None...])])])
+            # frozenset([frozenset([frozenset([...Tupu...])])])
             check(b'>\x01\x00\x00\x00' * N + b'N')
-        # Check that the generated marshal data is valid and marshal.loads()
-        # works for moderately deep nesting
+        # Check that the generated marshal data ni valid na marshal.loads()
+        # works kila moderately deep nesting
         run_tests(100, marshal.loads)
         # Very deeply nested structure shouldn't blow the stack
         eleza check(s):
@@ -233,15 +233,15 @@ kundi BugsTestCase(unittest.TestCase):
     eleza test_recursion_limit(self):
         # Create a deeply nested structure.
         head = last = []
-        # The max stack depth should match the value in Python/marshal.c.
+        # The max stack depth should match the value kwenye Python/marshal.c.
         # BUG: https://bugs.python.org/issue33720
-        # Windows always limits the maximum depth on release and debug builds
-        #ikiwa os.name == 'nt' and hasattr(sys, 'gettotalrefcount'):
+        # Windows always limits the maximum depth on release na debug builds
+        #ikiwa os.name == 'nt' na hasattr(sys, 'gettotalrefcount'):
         ikiwa os.name == 'nt':
             MAX_MARSHAL_STACK_DEPTH = 1000
-        else:
+        isipokua:
             MAX_MARSHAL_STACK_DEPTH = 2000
-        for i in range(MAX_MARSHAL_STACK_DEPTH - 2):
+        kila i kwenye range(MAX_MARSHAL_STACK_DEPTH - 2):
             last.append([0])
             last = last[-1]
 
@@ -258,17 +258,17 @@ kundi BugsTestCase(unittest.TestCase):
 
     eleza test_exact_type_match(self):
         # Former bug:
-        #   >>> kundi Int(int): pass
+        #   >>> kundi Int(int): pita
         #   >>> type(loads(dumps(Int())))
         #   <type 'int'>
-        for typ in (int, float, complex, tuple, list, dict, set, frozenset):
-            # Note: str subclasses are not tested because they get handled
-            # by marshal's routines for objects supporting the buffer API.
+        kila typ kwenye (int, float, complex, tuple, list, dict, set, frozenset):
+            # Note: str subclasses are sio tested because they get handled
+            # by marshal's routines kila objects supporting the buffer API.
             subtyp = type('subtyp', (typ,), {})
             self.assertRaises(ValueError, marshal.dumps, subtyp())
 
-    # Issue #1792 introduced a change in how marshal increases the size of its
-    # internal buffer; this test ensures that the new code is exercised.
+    # Issue #1792 introduced a change kwenye how marshal increases the size of its
+    # internal buffer; this test ensures that the new code ni exercised.
     eleza test_large_marshal(self):
         size = int(1e6)
         testString = 'abc' * size
@@ -284,27 +284,27 @@ kundi BugsTestCase(unittest.TestCase):
         # with interleaved data written by non-marshal code
         # Adapted kutoka a patch by Engelbert Gruber.
         data = (1, 'abc', b'def', 1.0, (2, 'a', ['b', b'c']))
-        for interleaved in (b'', b'0123'):
+        kila interleaved kwenye (b'', b'0123'):
             ilen = len(interleaved)
             positions = []
-            try:
-                with open(support.TESTFN, 'wb') as f:
-                    for d in data:
+            jaribu:
+                with open(support.TESTFN, 'wb') kama f:
+                    kila d kwenye data:
                         marshal.dump(d, f)
                         ikiwa ilen:
                             f.write(interleaved)
                         positions.append(f.tell())
-                with open(support.TESTFN, 'rb') as f:
-                    for i, d in enumerate(data):
+                with open(support.TESTFN, 'rb') kama f:
+                    kila i, d kwenye enumerate(data):
                         self.assertEqual(d, marshal.load(f))
                         ikiwa ilen:
                             f.read(ilen)
                         self.assertEqual(positions[i], f.tell())
-            finally:
+            mwishowe:
                 support.unlink(support.TESTFN)
 
     eleza test_loads_reject_unicode_strings(self):
-        # Issue #14177: marshal.loads() should not accept unicode strings
+        # Issue #14177: marshal.loads() should sio accept unicode strings
         unicode_string = 'T'
         self.assertRaises(TypeError, marshal.loads, unicode_string)
 
@@ -312,16 +312,16 @@ kundi BugsTestCase(unittest.TestCase):
         kundi BadReader(io.BytesIO):
             eleza readinto(self, buf):
                 n = super().readinto(buf)
-                ikiwa n is not None and n > 4:
+                ikiwa n ni sio Tupu na n > 4:
                     n += 10**6
                 rudisha n
-        for value in (1.0, 1j, b'0123456789', '0123456789'):
+        kila value kwenye (1.0, 1j, b'0123456789', '0123456789'):
             self.assertRaises(ValueError, marshal.load,
                               BadReader(marshal.dumps(value)))
 
     eleza test_eof(self):
-        data = marshal.dumps(("hello", "dolly", None))
-        for i in range(len(data)):
+        data = marshal.dumps(("hello", "dolly", Tupu))
+        kila i kwenye range(len(data)):
             self.assertRaises(EOFError, marshal.loads, data[0: i])
 
 LARGE_SIZE = 2**31
@@ -329,55 +329,55 @@ pointer_size = 8 ikiwa sys.maxsize > 0xFFFFFFFF else 4
 
 kundi NullWriter:
     eleza write(self, s):
-        pass
+        pita
 
 @unittest.skipIf(LARGE_SIZE > sys.maxsize, "test cannot run on 32-bit systems")
 kundi LargeValuesTestCase(unittest.TestCase):
     eleza check_unmarshallable(self, data):
         self.assertRaises(ValueError, marshal.dump, data, NullWriter())
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=Uongo)
     eleza test_bytes(self, size):
         self.check_unmarshallable(b'x' * size)
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=Uongo)
     eleza test_str(self, size):
         self.check_unmarshallable('x' * size)
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=Uongo)
     eleza test_tuple(self, size):
-        self.check_unmarshallable((None,) * size)
+        self.check_unmarshallable((Tupu,) * size)
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=Uongo)
     eleza test_list(self, size):
-        self.check_unmarshallable([None] * size)
+        self.check_unmarshallable([Tupu] * size)
 
     @support.bigmemtest(size=LARGE_SIZE,
             memuse=pointer_size*12 + sys.getsizeof(LARGE_SIZE-1),
-            dry_run=False)
+            dry_run=Uongo)
     eleza test_set(self, size):
         self.check_unmarshallable(set(range(size)))
 
     @support.bigmemtest(size=LARGE_SIZE,
             memuse=pointer_size*12 + sys.getsizeof(LARGE_SIZE-1),
-            dry_run=False)
+            dry_run=Uongo)
     eleza test_frozenset(self, size):
         self.check_unmarshallable(frozenset(range(size)))
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=Uongo)
     eleza test_bytearray(self, size):
         self.check_unmarshallable(bytearray(size))
 
 eleza CollectObjectIDs(ids, obj):
-    """Collect object ids seen in a structure"""
-    ikiwa id(obj) in ids:
-        return
+    """Collect object ids seen kwenye a structure"""
+    ikiwa id(obj) kwenye ids:
+        rudisha
     ids.add(id(obj))
     ikiwa isinstance(obj, (list, tuple, set, frozenset)):
-        for e in obj:
+        kila e kwenye obj:
             CollectObjectIDs(ids, e)
     elikiwa isinstance(obj, dict):
-        for k, v in obj.items():
+        kila k, v kwenye obj.items():
             CollectObjectIDs(ids, k)
             CollectObjectIDs(ids, v)
     rudisha len(ids)
@@ -385,36 +385,36 @@ eleza CollectObjectIDs(ids, obj):
 kundi InstancingTestCase(unittest.TestCase, HelperMixin):
     keys = (123, 1.2345, 'abc', (123, 'abc'), frozenset({123, 'abc'}))
 
-    eleza helper3(self, rsample, recursive=False, simple=False):
+    eleza helper3(self, rsample, recursive=Uongo, simple=Uongo):
         #we have two instances
         sample = (rsample, rsample)
 
         n0 = CollectObjectIDs(set(), sample)
 
-        for v in range(3, marshal.version + 1):
+        kila v kwenye range(3, marshal.version + 1):
             s3 = marshal.dumps(sample, v)
             n3 = CollectObjectIDs(set(), marshal.loads(s3))
 
             #same number of instances generated
             self.assertEqual(n3, n0)
 
-        ikiwa not recursive:
+        ikiwa sio recursive:
             #can compare with version 2
             s2 = marshal.dumps(sample, 2)
             n2 = CollectObjectIDs(set(), marshal.loads(s2))
             #old format generated more instances
             self.assertGreater(n2, n0)
 
-            #ikiwa complex objects are in there, old format is larger
-            ikiwa not simple:
+            #ikiwa complex objects are kwenye there, old format ni larger
+            ikiwa sio simple:
                 self.assertGreater(len(s2), len(s3))
-            else:
+            isipokua:
                 self.assertGreaterEqual(len(s2), len(s3))
 
     eleza testInt(self):
         intobj = 123321
         self.helper(intobj)
-        self.helper3(intobj, simple=True)
+        self.helper3(intobj, simple=Kweli)
 
     eleza testFloat(self):
         floatobj = 1.2345
@@ -432,37 +432,37 @@ kundi InstancingTestCase(unittest.TestCase, HelperMixin):
         self.helper3(bytesobj)
 
     eleza testList(self):
-        for obj in self.keys:
+        kila obj kwenye self.keys:
             listobj = [obj, obj]
             self.helper(listobj)
             self.helper3(listobj)
 
     eleza testTuple(self):
-        for obj in self.keys:
+        kila obj kwenye self.keys:
             tupleobj = (obj, obj)
             self.helper(tupleobj)
             self.helper3(tupleobj)
 
     eleza testSet(self):
-        for obj in self.keys:
+        kila obj kwenye self.keys:
             setobj = {(obj, 1), (obj, 2)}
             self.helper(setobj)
             self.helper3(setobj)
 
     eleza testFrozenSet(self):
-        for obj in self.keys:
+        kila obj kwenye self.keys:
             frozensetobj = frozenset({(obj, 1), (obj, 2)})
             self.helper(frozensetobj)
             self.helper3(frozensetobj)
 
     eleza testDict(self):
-        for obj in self.keys:
+        kila obj kwenye self.keys:
             dictobj = {"hello": obj, "goodbye": obj, obj: "hello"}
             self.helper(dictobj)
             self.helper3(dictobj)
 
     eleza testModule(self):
-        with open(__file__, "rb") as f:
+        with open(__file__, "rb") kama f:
             code = f.read()
         ikiwa __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
@@ -473,14 +473,14 @@ kundi InstancingTestCase(unittest.TestCase, HelperMixin):
         obj = 1.2345
         d = {"hello": obj, "goodbye": obj, obj: "hello"}
         d["self"] = d
-        self.helper3(d, recursive=True)
+        self.helper3(d, recursive=Kweli)
         l = [obj, obj]
         l.append(l)
-        self.helper3(l, recursive=True)
+        self.helper3(l, recursive=Kweli)
 
 kundi CompatibilityTestCase(unittest.TestCase):
     eleza _test(self, version):
-        with open(__file__, "rb") as f:
+        with open(__file__, "rb") kama f:
             code = f.read()
         ikiwa __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
@@ -500,7 +500,7 @@ kundi CompatibilityTestCase(unittest.TestCase):
         self._test(3)
 
 kundi InterningTestCase(unittest.TestCase, HelperMixin):
-    strobj = "this is an interned string"
+    strobj = "this ni an interned string"
     strobj = sys.intern(strobj)
 
     eleza testIntern(self):
@@ -522,45 +522,45 @@ kundi InterningTestCase(unittest.TestCase, HelperMixin):
 kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     eleza test_write_long_to_file(self):
-        for v in range(marshal.version + 1):
+        kila v kwenye range(marshal.version + 1):
             _testcapi.pymarshal_write_long_to_file(0x12345678, support.TESTFN, v)
-            with open(support.TESTFN, 'rb') as f:
+            with open(support.TESTFN, 'rb') kama f:
                 data = f.read()
             support.unlink(support.TESTFN)
             self.assertEqual(data, b'\x78\x56\x34\x12')
 
     eleza test_write_object_to_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j, 'long line '*1000)
-        for v in range(marshal.version + 1):
+        kila v kwenye range(marshal.version + 1):
             _testcapi.pymarshal_write_object_to_file(obj, support.TESTFN, v)
-            with open(support.TESTFN, 'rb') as f:
+            with open(support.TESTFN, 'rb') kama f:
                 data = f.read()
             support.unlink(support.TESTFN)
             self.assertEqual(marshal.loads(data), obj)
 
     eleza test_read_short_kutoka_file(self):
-        with open(support.TESTFN, 'wb') as f:
+        with open(support.TESTFN, 'wb') kama f:
             f.write(b'\x34\x12xxxx')
         r, p = _testcapi.pymarshal_read_short_kutoka_file(support.TESTFN)
         support.unlink(support.TESTFN)
         self.assertEqual(r, 0x1234)
         self.assertEqual(p, 2)
 
-        with open(support.TESTFN, 'wb') as f:
+        with open(support.TESTFN, 'wb') kama f:
             f.write(b'\x12')
         with self.assertRaises(EOFError):
             _testcapi.pymarshal_read_short_kutoka_file(support.TESTFN)
         support.unlink(support.TESTFN)
 
     eleza test_read_long_kutoka_file(self):
-        with open(support.TESTFN, 'wb') as f:
+        with open(support.TESTFN, 'wb') kama f:
             f.write(b'\x78\x56\x34\x12xxxx')
         r, p = _testcapi.pymarshal_read_long_kutoka_file(support.TESTFN)
         support.unlink(support.TESTFN)
         self.assertEqual(r, 0x12345678)
         self.assertEqual(p, 4)
 
-        with open(support.TESTFN, 'wb') as f:
+        with open(support.TESTFN, 'wb') kama f:
             f.write(b'\x56\x34\x12')
         with self.assertRaises(EOFError):
             _testcapi.pymarshal_read_long_kutoka_file(support.TESTFN)
@@ -568,15 +568,15 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     eleza test_read_last_object_kutoka_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
-        for v in range(marshal.version + 1):
+        kila v kwenye range(marshal.version + 1):
             data = marshal.dumps(obj, v)
-            with open(support.TESTFN, 'wb') as f:
+            with open(support.TESTFN, 'wb') kama f:
                 f.write(data + b'xxxx')
             r, p = _testcapi.pymarshal_read_last_object_kutoka_file(support.TESTFN)
             support.unlink(support.TESTFN)
             self.assertEqual(r, obj)
 
-            with open(support.TESTFN, 'wb') as f:
+            with open(support.TESTFN, 'wb') kama f:
                 f.write(data[:1])
             with self.assertRaises(EOFError):
                 _testcapi.pymarshal_read_last_object_kutoka_file(support.TESTFN)
@@ -584,16 +584,16 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
 
     eleza test_read_object_kutoka_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
-        for v in range(marshal.version + 1):
+        kila v kwenye range(marshal.version + 1):
             data = marshal.dumps(obj, v)
-            with open(support.TESTFN, 'wb') as f:
+            with open(support.TESTFN, 'wb') kama f:
                 f.write(data + b'xxxx')
             r, p = _testcapi.pymarshal_read_object_kutoka_file(support.TESTFN)
             support.unlink(support.TESTFN)
             self.assertEqual(r, obj)
             self.assertEqual(p, len(data))
 
-            with open(support.TESTFN, 'wb') as f:
+            with open(support.TESTFN, 'wb') kama f:
                 f.write(data[:1])
             with self.assertRaises(EOFError):
                 _testcapi.pymarshal_read_object_kutoka_file(support.TESTFN)

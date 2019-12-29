@@ -13,7 +13,7 @@ kundi DynOptionMenu(OptionMenu):
     eleza __init__(self, master, variable, value, *values, **kwargs):
         # TODO copy value instead of whole dict
         kwargsCopy=copy.copy(kwargs)
-        ikiwa 'highlightthickness' in list(kwargs.keys()):
+        ikiwa 'highlightthickness' kwenye list(kwargs.keys()):
             del(kwargs['highlightthickness'])
         OptionMenu.__init__(self, master, variable, value, *values, **kwargs)
         self.config(highlightthickness=kwargsCopy.get('highlightthickness'))
@@ -21,14 +21,14 @@ kundi DynOptionMenu(OptionMenu):
         self.variable=variable
         self.command=kwargs.get('command')
 
-    eleza SetMenu(self,valueList,value=None):
+    eleza SetMenu(self,valueList,value=Tupu):
         """
-        clear and reload the menu with a new set of options.
+        clear na reload the menu with a new set of options.
         valueList - list of new options
         value - initial value to set the optionmenu's menubutton to
         """
         self['menu'].delete(0,'end')
-        for item in valueList:
+        kila item kwenye valueList:
             self['menu'].add_command(label=item,
                     command=_setit(self.variable,item,self.command))
         ikiwa value:

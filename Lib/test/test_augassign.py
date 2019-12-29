@@ -62,7 +62,7 @@ kundi AugAssignTest(unittest.TestCase):
         y[1:2] += [1]
 
         self.assertEqual(x, [1, 2, 1, 2, 3])
-        self.assertTrue(x is y)
+        self.assertKweli(x ni y)
 
     eleza testCustomMethods1(self):
 
@@ -84,22 +84,22 @@ kundi AugAssignTest(unittest.TestCase):
                 rudisha aug_test3(self.val + val)
 
         kundi aug_test4(aug_test3):
-            """Blocks inheritance, and fallback to __add__"""
-            __iadd__ = None
+            """Blocks inheritance, na fallback to __add__"""
+            __iadd__ = Tupu
 
         x = aug_test(1)
         y = x
         x += 10
 
         self.assertIsInstance(x, aug_test)
-        self.assertTrue(y is not x)
+        self.assertKweli(y ni sio x)
         self.assertEqual(x.val, 11)
 
         x = aug_test2(2)
         y = x
         x += 10
 
-        self.assertTrue(y is x)
+        self.assertKweli(y ni x)
         self.assertEqual(x.val, 12)
 
         x = aug_test3(3)
@@ -107,7 +107,7 @@ kundi AugAssignTest(unittest.TestCase):
         x += 10
 
         self.assertIsInstance(x, aug_test3)
-        self.assertTrue(y is not x)
+        self.assertKweli(y ni sio x)
         self.assertEqual(x.val, 13)
 
         x = aug_test4(4)

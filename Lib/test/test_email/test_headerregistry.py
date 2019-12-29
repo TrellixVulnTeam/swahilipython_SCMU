@@ -227,7 +227,7 @@ class TestContentTypeHeader(TestHeaderBase):
         l = len(args)
         parmdict = args[0] if l>0 else {}
         defects =  args[1] if l>1 else []
-        decoded =  args[2] if l>2 and args[2] is not DITTO else source
+        decoded =  args[2] if l>2 and args[2] ni sio DITTO else source
         header = 'Content-Type:' + ' ' if source else ''
         folded = args[3] if l>3 else header + decoded + '\n'
         h = self.make_header('Content-Type', source)
@@ -306,7 +306,7 @@ class TestContentTypeHeader(TestHeaderBase):
             [errors.InvalidHeaderDefect]),
 
         # But unknown names are OK.  We could make non-IANA names a defect, but
-        # by not doing so we make ourselves future proof.  The fact that they
+        # by sio doing so we make ourselves future proof.  The fact that they
         # are unknown will be detectable by the fact that they don't appear in
         # the mime_registry...and the application is free to extend that list
         # to handle them even if the core library doesn't.
@@ -451,7 +451,7 @@ class TestContentTypeHeader(TestHeaderBase):
             ('image/jpeg; name="wibble.JPG"; x-mac-type="4A504547"; '
                 'x-mac-creator="474B4F4E"; x-extrastuff="make it longer"'),
             # In this case the whole of the MimeParameters does *not* fit
-            # one one line, so we break at a lower syntactic level.
+            # one one line, so we koma at a lower syntactic level.
             ('Content-Type: image/jpeg; name="wibble.JPG";'
                 ' x-mac-type="4A504547";\n'
              ' x-mac-creator="474B4F4E"; x-extrastuff="make it longer"\n'),
@@ -490,7 +490,7 @@ class TestContentTypeHeader(TestHeaderBase):
             {'b\uFFFDr': 'two', 'baz': 'thr\uFFFDe'},
             [errors.UndecodableBytesDefect]*3,
             'foo�/bar; b�r="two"; baz="thr�e"',
-            # XXX Two bugs here: the mime type is not allowed to be an encoded
+            # XXX Two bugs here: the mime type ni sio allowed to be an encoded
             # word, and we shouldn't be emitting surrogates in the parameter
             # names.  But I don't know what the behavior should be here, so I'm
             # punting for now.  In practice this is unlikely to be encountered
@@ -528,9 +528,9 @@ class TestContentTypeHeader(TestHeaderBase):
             'text/plain',
             'text',
             'plain',
-            {'charset': 'us-ascii', 'title': 'This is not f\uFFFDn'},
+            {'charset': 'us-ascii', 'title': 'This ni sio f\uFFFDn'},
              [errors.UndecodableBytesDefect],
-             'text/plain; charset="us-ascii"; title="This is not f�n"',
+             'text/plain; charset="us-ascii"; title="This ni sio f�n"',
             'Content-Type: text/plain; charset="us-ascii";\n'
             " title*=unknown-8bit''This%20is%20not%20f%A7n\n",
             ),
@@ -727,7 +727,7 @@ class TestContentTypeHeader(TestHeaderBase):
             ),
 
         # XXX: I would say this one should default to ascii/en for the
-        # "encoded" segment, since the first segment is not encoded and is
+        # "encoded" segment, since the first segment ni sio encoded and is
         # in double quotes, making the value a valid non-encoded string.  The
         # old parser decodes this just like the previous case, which may be the
         # better Postel rule, but could equally result in borking headers that
@@ -780,7 +780,7 @@ class TestContentTransferEncoding(TestHeaderBase):
                      *args):
         l = len(args)
         defects =  args[0] if l>0 else []
-        decoded =  args[1] if l>1 and args[1] is not DITTO else source
+        decoded =  args[1] if l>1 and args[1] ni sio DITTO else source
         header = 'Content-Transfer-Encoding:' + ' ' if source else ''
         folded = args[2] if l>2 else header + source + '\n'
         h = self.make_header('Content-Transfer-Encoding', source)
@@ -821,7 +821,7 @@ class TestContentDisposition(TestHeaderBase):
         l = len(args)
         parmdict = args[0] if l>0 else {}
         defects =  args[1] if l>1 else []
-        decoded =  args[2] if l>2 and args[2] is not DITTO else source
+        decoded =  args[2] if l>2 and args[2] ni sio DITTO else source
         header = 'Content-Disposition:' + ' ' if source else ''
         folded = args[3] if l>3 else header + source + '\n'
         h = self.make_header('Content-Disposition', source)
@@ -979,7 +979,7 @@ class TestMIMEVersionHeader(TestHeaderBase):
             [errors.InvalidHeaderDefect]),
 
         # Unrecoverable invalid values.  We *could* apply more heuristics to
-        # get something out of the first two, but doing so is not worth the
+        # get something out of the first two, but doing so ni sio worth the
         # effort.
 
         'non_comment_garbage_before': (
@@ -1193,7 +1193,7 @@ class TestAddressHeader(TestHeaderBase):
 
         # XXX: Need many more examples, and in particular some with names in
         # trailing comments, which aren't currently handled.  comments in
-        # general are not handled yet.
+        # general are sio handled yet.
 
     def example_as_address(self, source, defects, decoded, display_name,
                            addr_spec, username, domain, comment):
@@ -1414,7 +1414,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(str(a), 'buzz <>')
 
     def test_quoting(self):
-        # Ideally we'd check every special individually, but I'm not up for
+        # Ideally we'd check every special individually, but I'm sio up for
         # writing that many tests.
         a = Address('Sara J.', 'bad name', 'example.com')
         self.assertEqual(a.display_name, 'Sara J.')
@@ -1641,7 +1641,7 @@ class TestFolding(TestHeaderBase):
             h.fold(policy=policy.default.clone(max_line_length=60)),
             textwrap.dedent("""\
                 Subject: This header is intended to demonstrate, in a fairly
-                 succinct way, that we now do not give a , special treatment
+                 succinct way, that we now do sio give a , special treatment
                  in unstructured headers.
                  """))
 
@@ -1695,7 +1695,7 @@ class TestFolding(TestHeaderBase):
             h.fold(policy=policy.default.clone(max_line_length=30)),
             'Message-ID: <ईमेल@wők.com>\n')
 
-        # Test message-id is folded without breaking the msg-id token into
+        # Test message-id is folded without komaing the msg-id token into
         # encoded words, *even* if they don't fit into max_line_length.
         h = self.make_header('Message-ID', '<ईमेलfromMessage@wők.com>')
         self.assertEqual(

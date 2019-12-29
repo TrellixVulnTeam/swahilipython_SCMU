@@ -17,21 +17,21 @@ c_uuid = support.import_fresh_module('uuid', fresh=['_uuid'])
 
 
 eleza agizaable(name):
-    try:
+    jaribu:
         __import__(name)
-        rudisha True
+        rudisha Kweli
     except:
-        rudisha False
+        rudisha Uongo
 
 
 kundi BaseTestUUID:
-    uuid = None
+    uuid = Tupu
 
     eleza test_UUID(self):
         equal = self.assertEqual
         ascending = []
-        for (string, curly, hex, bytes, bytes_le, fields, integer, urn,
-             time, clock_seq, variant, version) in [
+        kila (string, curly, hex, bytes, bytes_le, fields, integer, urn,
+             time, clock_seq, variant, version) kwenye [
             ('00000000-0000-0000-0000-000000000000',
              '{00000000-0000-0000-0000-000000000000}',
              '00000000000000000000000000000000',
@@ -40,7 +40,7 @@ kundi BaseTestUUID:
              (0, 0, 0, 0, 0, 0),
              0,
              'urn:uuid:00000000-0000-0000-0000-000000000000',
-             0, 0, self.uuid.RESERVED_NCS, None),
+             0, 0, self.uuid.RESERVED_NCS, Tupu),
             ('00010203-0405-0607-0809-0a0b0c0d0e0f',
              '{00010203-0405-0607-0809-0a0b0c0d0e0f}',
              '000102030405060708090a0b0c0d0e0f',
@@ -49,7 +49,7 @@ kundi BaseTestUUID:
              (0x00010203, 0x0405, 0x0607, 8, 9, 0x0a0b0c0d0e0f),
              0x000102030405060708090a0b0c0d0e0f,
              'urn:uuid:00010203-0405-0607-0809-0a0b0c0d0e0f',
-             0x607040500010203, 0x809, self.uuid.RESERVED_NCS, None),
+             0x607040500010203, 0x809, self.uuid.RESERVED_NCS, Tupu),
             ('02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
              '{02d9e6d5-9467-382e-8f9b-9300a64ac3cd}',
              '02d9e6d59467382e8f9b9300a64ac3cd',
@@ -67,7 +67,7 @@ kundi BaseTestUUID:
              (0x12345678, 0x1234, 0x5678, 0x12, 0x34, 0x567812345678),
              0x12345678123456781234567812345678,
              'urn:uuid:12345678-1234-5678-1234-567812345678',
-             0x678123412345678, 0x1234, self.uuid.RESERVED_NCS, None),
+             0x678123412345678, 0x1234, self.uuid.RESERVED_NCS, Tupu),
             ('6ba7b810-9dad-11d1-80b4-00c04fd430c8',
              '{6ba7b810-9dad-11d1-80b4-00c04fd430c8}',
              '6ba7b8109dad11d180b400c04fd430c8',
@@ -148,7 +148,7 @@ kundi BaseTestUUID:
              (0xfffefdfc, 0xfffe, 0xfffe, 0xff, 0xfe, 0xfffefdfcfbfa),
              0xfffefdfcfffefffefffefffefdfcfbfa,
              'urn:uuid:fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
-             0xffefffefffefdfc, 0x3ffe, self.uuid.RESERVED_FUTURE, None),
+             0xffefffefffefdfc, 0x3ffe, self.uuid.RESERVED_FUTURE, Tupu),
             ('ffffffff-ffff-ffff-ffff-ffffffffffff',
              '{ffffffff-ffff-ffff-ffff-ffffffffffff}',
              'ffffffffffffffffffffffffffffffff',
@@ -157,15 +157,15 @@ kundi BaseTestUUID:
              (0xffffffff, 0xffff, 0xffff, 0xff, 0xff, 0xffffffffffff),
              0xffffffffffffffffffffffffffffffff,
              'urn:uuid:ffffffff-ffff-ffff-ffff-ffffffffffff',
-             0xfffffffffffffff, 0x3fff, self.uuid.RESERVED_FUTURE, None),
+             0xfffffffffffffff, 0x3fff, self.uuid.RESERVED_FUTURE, Tupu),
             ]:
             equivalents = []
-            # Construct each UUID in several different ways.
-            for u in [self.uuid.UUID(string), self.uuid.UUID(curly), self.uuid.UUID(hex),
+            # Construct each UUID kwenye several different ways.
+            kila u kwenye [self.uuid.UUID(string), self.uuid.UUID(curly), self.uuid.UUID(hex),
                       self.uuid.UUID(bytes=bytes), self.uuid.UUID(bytes_le=bytes_le),
                       self.uuid.UUID(fields=fields), self.uuid.UUID(int=integer),
                       self.uuid.UUID(urn)]:
-                # Test all conversions and properties of the UUID object.
+                # Test all conversions na properties of the UUID object.
                 equal(str(u), string)
                 equal(int(u), integer)
                 equal(u.bytes, bytes)
@@ -187,19 +187,19 @@ kundi BaseTestUUID:
                 equivalents.append(u)
 
             # Different construction methods should give the same UUID.
-            for u in equivalents:
-                for v in equivalents:
+            kila u kwenye equivalents:
+                kila v kwenye equivalents:
                     equal(u, v)
 
-            # Bug 7380: "bytes" and "bytes_le" should give the same type.
+            # Bug 7380: "bytes" na "bytes_le" should give the same type.
             equal(type(u.bytes), builtins.bytes)
             equal(type(u.bytes_le), builtins.bytes)
 
             ascending.append(u)
 
         # Test comparison of UUIDs.
-        for i in range(len(ascending)):
-            for j in range(len(ascending)):
+        kila i kwenye range(len(ascending)):
+            kila j kwenye range(len(ascending)):
                 equal(i < j, ascending[i] < ascending[j])
                 equal(i <= j, ascending[i] <= ascending[j])
                 equal(i == j, ascending[i] == ascending[j])
@@ -207,7 +207,7 @@ kundi BaseTestUUID:
                 equal(i >= j, ascending[i] >= ascending[j])
                 equal(i != j, ascending[i] != ascending[j])
 
-        # Test sorting of UUIDs (above list is in ascending order).
+        # Test sorting of UUIDs (above list ni kwenye ascending order).
         resorted = ascending[:]
         resorted.reverse()
         resorted.sort()
@@ -278,11 +278,11 @@ kundi BaseTestUUID:
         badtype(lambda: self.uuid.UUID(h, b, b, f, i))
 
         # Duplicate arguments.
-        for hh in [[], [('hex', h)]]:
-            for bb in [[], [('bytes', b)]]:
-                for bble in [[], [('bytes_le', b)]]:
-                    for ii in [[], [('int', i)]]:
-                        for ff in [[], [('fields', f)]]:
+        kila hh kwenye [[], [('hex', h)]]:
+            kila bb kwenye [[], [('bytes', b)]]:
+                kila bble kwenye [[], [('bytes_le', b)]]:
+                    kila ii kwenye [[], [('int', i)]]:
+                        kila ff kwenye [[], [('fields', f)]]:
                             args = dict(hh + bb + bble + ii + ff)
                             ikiwa len(args) != 0:
                                 badtype(lambda: self.uuid.UUID(h, **args))
@@ -310,7 +310,7 @@ kundi BaseTestUUID:
 
     eleza test_getnode(self):
         node1 = self.uuid.getnode()
-        self.assertTrue(0 < node1 < (1 << 48), '%012x' % node1)
+        self.assertKweli(0 < node1 < (1 << 48), '%012x' % node1)
 
         # Test it again to ensure consistency.
         node2 = self.uuid.getnode()
@@ -322,12 +322,12 @@ kundi BaseTestUUID:
             self.assertEqual(actual.is_safe, expected.is_safe)
 
         with support.swap_item(sys.modules, 'uuid', self.uuid):
-            for is_safe in self.uuid.SafeUUID:
+            kila is_safe kwenye self.uuid.SafeUUID:
                 u = self.uuid.UUID('d82579ce6642a0de7ddf490a7aec7aa5',
                                    is_safe=is_safe)
                 check(copy.copy(u), u)
                 check(copy.deepcopy(u), u)
-                for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+                kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                     with self.subTest(protocol=proto):
                         check(pickle.loads(pickle.dumps(u, proto)), u)
 
@@ -440,46 +440,46 @@ kundi BaseTestUUID:
                                   is_safe=self.uuid.SafeUUID.unsafe)
 
         with support.swap_item(sys.modules, 'uuid', self.uuid):
-            for pickled in pickled_uuids:
-                # is_safe was added in 3.7.  When unpickling values kutoka older
+            kila pickled kwenye pickled_uuids:
+                # is_safe was added kwenye 3.7.  When unpickling values kutoka older
                 # versions, is_safe will be missing, so it should be set to
                 # SafeUUID.unknown.
                 check(pickle.loads(pickled), u)
-            for pickled in pickled_uuids_safe:
+            kila pickled kwenye pickled_uuids_safe:
                 check(pickle.loads(pickled), u_safe)
-            for pickled in pickled_uuids_unsafe:
+            kila pickled kwenye pickled_uuids_unsafe:
                 check(pickle.loads(pickled), u_unsafe)
 
     # bpo-32502: UUID1 requires a 48-bit identifier, but hardware identifiers
-    # need not necessarily be 48 bits (e.g., EUI-64).
+    # need sio necessarily be 48 bits (e.g., EUI-64).
     eleza test_uuid1_eui64(self):
         # Confirm that uuid.getnode ignores hardware addresses larger than 48
-        # bits. Mock out each platform's *_getnode helper functions to return
+        # bits. Mock out each platform's *_getnode helper functions to rudisha
         # something just larger than 48 bits to test. This will cause
         # uuid.getnode to fall back on uuid._random_getnode, which will
         # generate a valid value.
         too_large_getter = lambda: 1 << 48
         with unittest.mock.patch.multiple(
             self.uuid,
-            _node=None,  # Ignore any cached node value.
+            _node=Tupu,  # Ignore any cached node value.
             _GETTERS=[too_large_getter],
         ):
             node = self.uuid.getnode()
-        self.assertTrue(0 < node < (1 << 48), '%012x' % node)
+        self.assertKweli(0 < node < (1 << 48), '%012x' % node)
 
         # Confirm that uuid1 can use the generated node, i.e., the that
         # uuid.getnode fell back on uuid._random_getnode() rather than using
         # the value kutoka too_large_getter above.
-        try:
+        jaribu:
             self.uuid.uuid1(node=node)
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.fail('uuid1 was given an invalid node ID')
 
     eleza test_uuid1(self):
         equal = self.assertEqual
 
         # Make sure uuid1() generates UUIDs that are actually version 1.
-        for u in [self.uuid.uuid1() for i in range(10)]:
+        kila u kwenye [self.uuid.uuid1() kila i kwenye range(10)]:
             equal(u.variant, self.uuid.RFC_4122)
             equal(u.version, 1)
             self.assertIn(u.is_safe, {self.uuid.SafeUUID.safe,
@@ -488,11 +488,11 @@ kundi BaseTestUUID:
 
         # Make sure the generated UUIDs are actually unique.
         uuids = {}
-        for u in [self.uuid.uuid1() for i in range(1000)]:
+        kila u kwenye [self.uuid.uuid1() kila i kwenye range(1000)]:
             uuids[u] = 1
         equal(len(uuids.keys()), 1000)
 
-        # Make sure the supplied node ID appears in the UUID.
+        # Make sure the supplied node ID appears kwenye the UUID.
         u = self.uuid.uuid1(0)
         equal(u.node, 0)
         u = self.uuid.uuid1(0x123456789abc)
@@ -500,7 +500,7 @@ kundi BaseTestUUID:
         u = self.uuid.uuid1(0xffffffffffff)
         equal(u.node, 0xffffffffffff)
 
-        # Make sure the supplied clock sequence appears in the UUID.
+        # Make sure the supplied clock sequence appears kwenye the UUID.
         u = self.uuid.uuid1(0x123456789abc, 0)
         equal(u.node, 0x123456789abc)
         equal(((u.clock_seq_hi_variant & 0x3f) << 8) | u.clock_seq_low, 0)
@@ -513,18 +513,18 @@ kundi BaseTestUUID:
         equal(((u.clock_seq_hi_variant & 0x3f) << 8) |
                          u.clock_seq_low, 0x3fff)
 
-    # bpo-29925: On Mac OS X Tiger, self.uuid.uuid1().is_safe returns
+    # bpo-29925: On Mac OS X Tiger, self.uuid.uuid1().is_safe rudishas
     # self.uuid.SafeUUID.unknown
     @support.requires_mac_ver(10, 5)
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     eleza test_uuid1_safe(self):
-        ikiwa not self.uuid._has_uuid_generate_time_safe:
+        ikiwa sio self.uuid._has_uuid_generate_time_safe:
             self.skipTest('requires uuid_generate_time_safe(3)')
 
         u = self.uuid.uuid1()
-        # uuid_generate_time_safe() may rudisha 0 or -1 but what it returns is
+        # uuid_generate_time_safe() may rudisha 0 ama -1 but what it rudishas is
         # dependent on the underlying platform support.  At least it cannot be
-        # unknown (unless I suppose the platform is buggy).
+        # unknown (unless I suppose the platform ni buggy).
         self.assertNotEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     @contextlib.contextmanager
@@ -536,17 +536,17 @@ kundi BaseTestUUID:
             self.skipTest('POSIX-only test')
         self.uuid._load_system_functions()
         f = self.uuid._generate_time_safe
-        ikiwa f is None:
+        ikiwa f ni Tupu:
             self.skipTest('need uuid._generate_time_safe')
         with unittest.mock.patch.object(self.uuid, '_generate_time_safe',
                                         lambda: (f()[0], safe_value)):
-            yield
+            tuma
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     eleza test_uuid1_unknown(self):
         # Even ikiwa the platform has uuid_generate_time_safe(), let's mock it to
-        # be uuid_generate_time() and ensure the safety is unknown.
-        with self.mock_generate_time_safe(None):
+        # be uuid_generate_time() na ensure the safety ni unknown.
+        with self.mock_generate_time_safe(Tupu):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
@@ -563,25 +563,25 @@ kundi BaseTestUUID:
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unsafe)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
-    eleza test_uuid1_bogus_return_value(self):
+    eleza test_uuid1_bogus_rudisha_value(self):
         with self.mock_generate_time_safe(3):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     eleza test_uuid1_time(self):
-        with mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', False), \
-             mock.patch.object(self.uuid, '_generate_time_safe', None), \
-             mock.patch.object(self.uuid, '_last_timestamp', None), \
-             mock.patch.object(self.uuid, 'getnode', return_value=93328246233727), \
-             mock.patch('time.time_ns', return_value=1545052026752910643), \
-             mock.patch('random.getrandbits', return_value=5317): # guaranteed to be random
+        with mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
+             mock.patch.object(self.uuid, '_generate_time_safe', Tupu), \
+             mock.patch.object(self.uuid, '_last_timestamp', Tupu), \
+             mock.patch.object(self.uuid, 'getnode', rudisha_value=93328246233727), \
+             mock.patch('time.time_ns', rudisha_value=1545052026752910643), \
+             mock.patch('random.getrandbits', rudisha_value=5317): # guaranteed to be random
             u = self.uuid.uuid1()
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
 
-        with mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', False), \
-             mock.patch.object(self.uuid, '_generate_time_safe', None), \
-             mock.patch.object(self.uuid, '_last_timestamp', None), \
-             mock.patch('time.time_ns', return_value=1545052026752910643):
+        with mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
+             mock.patch.object(self.uuid, '_generate_time_safe', Tupu), \
+             mock.patch.object(self.uuid, '_last_timestamp', Tupu), \
+             mock.patch('time.time_ns', rudisha_value=1545052026752910643):
             u = self.uuid.uuid1(node=93328246233727, clock_seq=5317)
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
 
@@ -589,7 +589,7 @@ kundi BaseTestUUID:
         equal = self.assertEqual
 
         # Test some known version-3 UUIDs.
-        for u, v in [(self.uuid.uuid3(self.uuid.NAMESPACE_DNS, 'python.org'),
+        kila u, v kwenye [(self.uuid.uuid3(self.uuid.NAMESPACE_DNS, 'python.org'),
                       '6fa459ea-ee8a-3ca4-894e-db77e160355e'),
                      (self.uuid.uuid3(self.uuid.NAMESPACE_URL, 'http://python.org/'),
                       '9fe8e8c4-aaa8-32a9-a55c-4535a88b748d'),
@@ -607,13 +607,13 @@ kundi BaseTestUUID:
         equal = self.assertEqual
 
         # Make sure uuid4() generates UUIDs that are actually version 4.
-        for u in [self.uuid.uuid4() for i in range(10)]:
+        kila u kwenye [self.uuid.uuid4() kila i kwenye range(10)]:
             equal(u.variant, self.uuid.RFC_4122)
             equal(u.version, 4)
 
         # Make sure the generated UUIDs are actually unique.
         uuids = {}
-        for u in [self.uuid.uuid4() for i in range(1000)]:
+        kila u kwenye [self.uuid.uuid4() kila i kwenye range(1000)]:
             uuids[u] = 1
         equal(len(uuids.keys()), 1000)
 
@@ -621,7 +621,7 @@ kundi BaseTestUUID:
         equal = self.assertEqual
 
         # Test some known version-5 UUIDs.
-        for u, v in [(self.uuid.uuid5(self.uuid.NAMESPACE_DNS, 'python.org'),
+        kila u, v kwenye [(self.uuid.uuid5(self.uuid.NAMESPACE_DNS, 'python.org'),
                       '886313e1-3b8a-5372-9b90-0c9aee199e5d'),
                      (self.uuid.uuid5(self.uuid.NAMESPACE_URL, 'http://python.org/'),
                       '4c565f0d-3f5a-5890-b41b-20cf47701c5e'),
@@ -638,7 +638,7 @@ kundi BaseTestUUID:
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
     eleza testIssue8621(self):
         # On at least some versions of OSX self.uuid.uuid4 generates
-        # the same sequence of UUIDs in the parent and any
+        # the same sequence of UUIDs kwenye the parent na any
         # children started using fork.
         fds = os.pipe()
         pid = os.fork()
@@ -648,7 +648,7 @@ kundi BaseTestUUID:
             os.write(fds[1], value.hex.encode('latin-1'))
             os._exit(0)
 
-        else:
+        isipokua:
             os.close(fds[1])
             self.addCleanup(os.close, fds[0])
             parent_value = self.uuid.uuid4().hex
@@ -686,9 +686,9 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         popen.stdout = io.BytesIO(data.encode())
 
         with unittest.mock.patch.object(shutil, 'which',
-                                        return_value='/sbin/ifconfig'):
+                                        rudisha_value='/sbin/ifconfig'):
             with unittest.mock.patch.object(subprocess, 'Popen',
-                                            return_value=popen):
+                                            rudisha_value=popen):
                 mac = self.uuid._find_mac(
                     command='ifconfig',
                     args='',
@@ -698,41 +698,41 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
 
         self.assertEqual(mac, 0x1234567890ab)
 
-    eleza check_node(self, node, requires=None):
-        ikiwa requires and node is None:
+    eleza check_node(self, node, requires=Tupu):
+        ikiwa requires na node ni Tupu:
             self.skipTest('requires ' + requires)
         hex = '%012x' % node
         ikiwa support.verbose >= 2:
             andika(hex, end=' ')
-        self.assertTrue(0 < node < (1 << 48),
-                        "%s is not an RFC 4122 node ID" % hex)
+        self.assertKweli(0 < node < (1 << 48),
+                        "%s ni sio an RFC 4122 node ID" % hex)
 
-    @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS,
-        "ifconfig is not used for introspection on this platform")
+    @unittest.skipUnless(_uuid._ifconfig_getnode kwenye _uuid._GETTERS,
+        "ifconfig ni sio used kila introspection on this platform")
     eleza test_ifconfig_getnode(self):
         node = self.uuid._ifconfig_getnode()
         self.check_node(node, 'ifconfig')
 
-    @unittest.skipUnless(_uuid._ip_getnode in _uuid._GETTERS,
-        "ip is not used for introspection on this platform")
+    @unittest.skipUnless(_uuid._ip_getnode kwenye _uuid._GETTERS,
+        "ip ni sio used kila introspection on this platform")
     eleza test_ip_getnode(self):
         node = self.uuid._ip_getnode()
         self.check_node(node, 'ip')
 
-    @unittest.skipUnless(_uuid._arp_getnode in _uuid._GETTERS,
-        "arp is not used for introspection on this platform")
+    @unittest.skipUnless(_uuid._arp_getnode kwenye _uuid._GETTERS,
+        "arp ni sio used kila introspection on this platform")
     eleza test_arp_getnode(self):
         node = self.uuid._arp_getnode()
         self.check_node(node, 'arp')
 
-    @unittest.skipUnless(_uuid._lanscan_getnode in _uuid._GETTERS,
-        "lanscan is not used for introspection on this platform")
+    @unittest.skipUnless(_uuid._lanscan_getnode kwenye _uuid._GETTERS,
+        "lanscan ni sio used kila introspection on this platform")
     eleza test_lanscan_getnode(self):
         node = self.uuid._lanscan_getnode()
         self.check_node(node, 'lanscan')
 
-    @unittest.skipUnless(_uuid._netstat_getnode in _uuid._GETTERS,
-        "netstat is not used for introspection on this platform")
+    @unittest.skipUnless(_uuid._netstat_getnode kwenye _uuid._GETTERS,
+        "netstat ni sio used kila introspection on this platform")
     eleza test_netstat_getnode(self):
         node = self.uuid._netstat_getnode()
         self.check_node(node, 'netstat')
@@ -751,9 +751,9 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
     eleza test_random_getnode(self):
         node = self.uuid._random_getnode()
         # The multicast bit, i.e. the least significant bit of first octet,
-        # must be set for randomly generated MAC addresses.  See RFC 4122,
+        # must be set kila randomly generated MAC addresses.  See RFC 4122,
         # $4.1.6.
-        self.assertTrue(node & (1 << 40), '%012x' % node)
+        self.assertKweli(node & (1 << 40), '%012x' % node)
         self.check_node(node)
 
         node2 = self.uuid._random_getnode()
@@ -761,11 +761,11 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
     eleza test_unix_getnode(self):
-        ikiwa not agizaable('_uuid') and not agizaable('ctypes'):
+        ikiwa sio agizaable('_uuid') na sio agizaable('ctypes'):
             self.skipTest("neither _uuid extension nor ctypes available")
-        try: # Issues 1481, 3581: _uuid_generate_time() might be None.
+        jaribu: # Issues 1481, 3581: _uuid_generate_time() might be Tupu.
             node = self.uuid._unix_getnode()
-        except TypeError:
+        tatizo TypeError:
             self.skipTest('requires uuid_generate_time')
         self.check_node(node, 'unix')
 

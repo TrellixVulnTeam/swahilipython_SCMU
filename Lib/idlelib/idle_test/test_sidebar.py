@@ -5,7 +5,7 @@ kutoka itertools agiza chain
 agiza unittest
 agiza unittest.mock
 kutoka test.support agiza requires
-agiza tkinter as tk
+agiza tkinter kama tk
 
 kutoka idlelib.delegator agiza Delegator
 kutoka idlelib.percolator agiza Percolator
@@ -20,7 +20,7 @@ kundi Dummy_editwin:
         self.per.insertfilter(self.undo)
 
     eleza setvar(self, name, value):
-        pass
+        pita
 
     eleza getlineno(self, index):
         rudisha int(float(self.text.index(index)))
@@ -34,7 +34,7 @@ kundi LineNumbersTest(unittest.TestCase):
         cls.root = tk.Tk()
 
         cls.text_frame = tk.Frame(cls.root)
-        cls.text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        cls.text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=Kweli)
         cls.text_frame.rowconfigure(1, weight=1)
         cls.text_frame.columnconfigure(1, weight=1)
 
@@ -49,7 +49,7 @@ kundi LineNumbersTest(unittest.TestCase):
         cls.editwin.per.close()
         cls.root.update()
         cls.root.destroy()
-        del cls.text, cls.text_frame, cls.editwin, cls.root
+        toa cls.text, cls.text_frame, cls.editwin, cls.root
 
     eleza setUp(self):
         self.linenumber = idlelib.sidebar.LineNumbers(self.editwin)
@@ -109,17 +109,17 @@ kundi LineNumbersTest(unittest.TestCase):
         self.assert_sidebar_n_lines(4)
 
     eleza test_toggle_linenumbering(self):
-        self.assertEqual(self.linenumber.is_shown, False)
+        self.assertEqual(self.linenumber.is_shown, Uongo)
         self.linenumber.show_sidebar()
-        self.assertEqual(self.linenumber.is_shown, True)
+        self.assertEqual(self.linenumber.is_shown, Kweli)
         self.linenumber.hide_sidebar()
-        self.assertEqual(self.linenumber.is_shown, False)
+        self.assertEqual(self.linenumber.is_shown, Uongo)
         self.linenumber.hide_sidebar()
-        self.assertEqual(self.linenumber.is_shown, False)
+        self.assertEqual(self.linenumber.is_shown, Uongo)
         self.linenumber.show_sidebar()
-        self.assertEqual(self.linenumber.is_shown, True)
+        self.assertEqual(self.linenumber.is_shown, Kweli)
         self.linenumber.show_sidebar()
-        self.assertEqual(self.linenumber.is_shown, True)
+        self.assertEqual(self.linenumber.is_shown, Kweli)
 
     eleza test_insert(self):
         self.text.insert('insert', 'foobar')
@@ -174,7 +174,7 @@ kundi LineNumbersTest(unittest.TestCase):
 
     eleza test_sidebar_text_width(self):
         """
-        Test that linenumber text widget is always at the minimum
+        Test that linenumber text widget ni always at the minimum
         width
         """
         eleza get_width():
@@ -262,12 +262,12 @@ kundi LineNumbersTest(unittest.TestCase):
         self.root.update()
 
         eleza lerp(a, b, steps):
-            """linearly interpolate kutoka a to b (inclusive) in equal steps"""
+            """linearly interpolate kutoka a to b (inclusive) kwenye equal steps"""
             last_step = steps - 1
-            for i in range(steps):
-                yield ((last_step - i) / last_step) * a + (i / last_step) * b
+            kila i kwenye range(steps):
+                tuma ((last_step - i) / last_step) * a + (i / last_step) * b
 
-        for x, y in zip(
+        kila x, y kwenye zip(
                 map(int, lerp(start_x, end_x, steps=11)),
                 map(int, lerp(start_y, end_y, steps=11)),
         ):
@@ -307,8 +307,8 @@ kundi LineNumbersTest(unittest.TestCase):
         self.assertEqual(self.text.index('@0,0'), '11.0')
         self.assertEqual(self.linenumber.sidebar_text.index('@0,0'), '11.0')
 
-        # Generate a mouse-wheel event and make sure it scrolled up or down.
-        # The meaning of the "delta" is OS-dependant, so this just checks for
+        # Generate a mouse-wheel event na make sure it scrolled up ama down.
+        # The meaning of the "delta" ni OS-dependant, so this just checks for
         # any change.
         self.linenumber.sidebar_text.event_generate('<MouseWheel>',
                                                     x=0, y=0,
@@ -328,14 +328,14 @@ kundi LineNumbersTest(unittest.TestCase):
         ln.hide_sidebar()
 
         self.font_override = test_font
-        # Nothing breaks when line numbers aren't shown.
+        # Nothing komas when line numbers aren't shown.
         ln.update_font()
 
-        # Activate line numbers, previous font change is immediately effective.
+        # Activate line numbers, previous font change ni immediately effective.
         ln.show_sidebar()
         self.assertEqual(ln.sidebar_text['font'], test_font)
 
-        # Call the font update with line numbers shown, change is picked up.
+        # Call the font update with line numbers shown, change ni picked up.
         self.font_override = orig_font
         ln.update_font()
         self.assertEqual(ln.sidebar_text['font'], orig_font)
@@ -354,10 +354,10 @@ kundi LineNumbersTest(unittest.TestCase):
         ln.hide_sidebar()
 
         self.highlight_cfg = test_colors
-        # Nothing breaks with inactive code context.
+        # Nothing komas with inactive code context.
         ln.update_colors()
 
-        # Show line numbers, previous colors change is immediately effective.
+        # Show line numbers, previous colors change ni immediately effective.
         ln.show_sidebar()
         assert_colors_are_equal(test_colors)
 
@@ -365,7 +365,7 @@ kundi LineNumbersTest(unittest.TestCase):
         ln.update_colors()
         assert_colors_are_equal(test_colors)
 
-        # Call the colors update with line numbers shown, change is picked up.
+        # Call the colors update with line numbers shown, change ni picked up.
         self.highlight_cfg = orig_colors
         ln.update_colors()
         assert_colors_are_equal(orig_colors)

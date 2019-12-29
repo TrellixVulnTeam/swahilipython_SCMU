@@ -13,7 +13,7 @@ kutoka test agiza support
 kutoka io agiza BytesIO
 
 ikiwa support.PGO:
-    raise unittest.SkipTest("test is not helpful for PGO")
+    ashiria unittest.SkipTest("test ni sio helpful kila PGO")
 
 
 TIMEOUT = 3
@@ -21,10 +21,10 @@ HAS_UNIX_SOCKETS = hasattr(socket, 'AF_UNIX')
 
 kundi dummysocket:
     eleza __init__(self):
-        self.closed = False
+        self.closed = Uongo
 
     eleza close(self):
-        self.closed = True
+        self.closed = Kweli
 
     eleza fileno(self):
         rudisha 42
@@ -38,10 +38,10 @@ kundi dummychannel:
 
 kundi exitingdummy:
     eleza __init__(self):
-        pass
+        pita
 
     eleza handle_read_event(self):
-        raise asyncore.ExitNow()
+        ashiria asyncore.ExitNow()
 
     handle_write_event = handle_read_event
     handle_close = handle_read_event
@@ -49,83 +49,83 @@ kundi exitingdummy:
 
 kundi crashingdummy:
     eleza __init__(self):
-        self.error_handled = False
+        self.error_handled = Uongo
 
     eleza handle_read_event(self):
-        raise Exception()
+        ashiria Exception()
 
     handle_write_event = handle_read_event
     handle_close = handle_read_event
     handle_expt_event = handle_read_event
 
     eleza handle_error(self):
-        self.error_handled = True
+        self.error_handled = Kweli
 
-# used when testing senders; just collects what it gets until newline is sent
+# used when testing senders; just collects what it gets until newline ni sent
 eleza capture_server(evt, buf, serv):
-    try:
+    jaribu:
         serv.listen()
         conn, addr = serv.accept()
-    except socket.timeout:
-        pass
-    else:
+    tatizo socket.timeout:
+        pita
+    isipokua:
         n = 200
         start = time.monotonic()
-        while n > 0 and time.monotonic() - start < 3.0:
+        wakati n > 0 na time.monotonic() - start < 3.0:
             r, w, e = select.select([conn], [], [], 0.1)
             ikiwa r:
                 n -= 1
                 data = conn.recv(10)
-                # keep everything except for the newline terminator
+                # keep everything tatizo kila the newline terminator
                 buf.write(data.replace(b'\n', b''))
-                ikiwa b'\n' in data:
-                    break
+                ikiwa b'\n' kwenye data:
+                    koma
             time.sleep(0.01)
 
         conn.close()
-    finally:
+    mwishowe:
         serv.close()
         evt.set()
 
 eleza bind_af_aware(sock, addr):
     """Helper function to bind a socket according to its family."""
-    ikiwa HAS_UNIX_SOCKETS and sock.family == socket.AF_UNIX:
+    ikiwa HAS_UNIX_SOCKETS na sock.family == socket.AF_UNIX:
         # Make sure the path doesn't exist.
         support.unlink(addr)
         support.bind_unix_socket(sock, addr)
-    else:
+    isipokua:
         sock.bind(addr)
 
 
 kundi HelperFunctionTests(unittest.TestCase):
     eleza test_readwriteexc(self):
-        # Check exception handling behavior of read, write and _exception
+        # Check exception handling behavior of read, write na _exception
 
-        # check that ExitNow exceptions in the object handler method
+        # check that ExitNow exceptions kwenye the object handler method
         # bubbles all the way up through asyncore read/write/_exception calls
         tr1 = exitingdummy()
         self.assertRaises(asyncore.ExitNow, asyncore.read, tr1)
         self.assertRaises(asyncore.ExitNow, asyncore.write, tr1)
         self.assertRaises(asyncore.ExitNow, asyncore._exception, tr1)
 
-        # check that an exception other than ExitNow in the object handler
+        # check that an exception other than ExitNow kwenye the object handler
         # method causes the handle_error method to get called
         tr2 = crashingdummy()
         asyncore.read(tr2)
-        self.assertEqual(tr2.error_handled, True)
+        self.assertEqual(tr2.error_handled, Kweli)
 
         tr2 = crashingdummy()
         asyncore.write(tr2)
-        self.assertEqual(tr2.error_handled, True)
+        self.assertEqual(tr2.error_handled, Kweli)
 
         tr2 = crashingdummy()
         asyncore._exception(tr2)
-        self.assertEqual(tr2.error_handled, True)
+        self.assertEqual(tr2.error_handled, Kweli)
 
-    # asyncore.readwrite uses constants in the select module that
-    # are not present in Windows systems (see this thread:
+    # asyncore.readwrite uses constants kwenye the select module that
+    # are sio present kwenye Windows systems (see this thread:
     # http://mail.python.org/pipermail/python-list/2001-October/109973.html)
-    # These constants should be present as long as poll is available
+    # These constants should be present kama long kama poll ni available
 
     @unittest.skipUnless(hasattr(select, 'poll'), 'select.poll required')
     eleza test_readwrite(self):
@@ -144,88 +144,88 @@ kundi HelperFunctionTests(unittest.TestCase):
 
         kundi testobj:
             eleza __init__(self):
-                self.read = False
-                self.write = False
-                self.closed = False
-                self.expt = False
-                self.error_handled = False
+                self.read = Uongo
+                self.write = Uongo
+                self.closed = Uongo
+                self.expt = Uongo
+                self.error_handled = Uongo
 
             eleza handle_read_event(self):
-                self.read = True
+                self.read = Kweli
 
             eleza handle_write_event(self):
-                self.write = True
+                self.write = Kweli
 
             eleza handle_close(self):
-                self.closed = True
+                self.closed = Kweli
 
             eleza handle_expt_event(self):
-                self.expt = True
+                self.expt = Kweli
 
             eleza handle_error(self):
-                self.error_handled = True
+                self.error_handled = Kweli
 
-        for flag, expectedattr in expected:
+        kila flag, expectedattr kwenye expected:
             tobj = testobj()
-            self.assertEqual(getattr(tobj, expectedattr), False)
+            self.assertEqual(getattr(tobj, expectedattr), Uongo)
             asyncore.readwrite(tobj, flag)
 
             # Only the attribute modified by the routine we expect to be
-            # called should be True.
-            for attr in attributes:
+            # called should be Kweli.
+            kila attr kwenye attributes:
                 self.assertEqual(getattr(tobj, attr), attr==expectedattr)
 
-            # check that ExitNow exceptions in the object handler method
+            # check that ExitNow exceptions kwenye the object handler method
             # bubbles all the way up through asyncore readwrite call
             tr1 = exitingdummy()
             self.assertRaises(asyncore.ExitNow, asyncore.readwrite, tr1, flag)
 
-            # check that an exception other than ExitNow in the object handler
+            # check that an exception other than ExitNow kwenye the object handler
             # method causes the handle_error method to get called
             tr2 = crashingdummy()
-            self.assertEqual(tr2.error_handled, False)
+            self.assertEqual(tr2.error_handled, Uongo)
             asyncore.readwrite(tr2, flag)
-            self.assertEqual(tr2.error_handled, True)
+            self.assertEqual(tr2.error_handled, Kweli)
 
     eleza test_closeall(self):
-        self.closeall_check(False)
+        self.closeall_check(Uongo)
 
     eleza test_closeall_default(self):
-        self.closeall_check(True)
+        self.closeall_check(Kweli)
 
     eleza closeall_check(self, usedefault):
-        # Check that close_all() closes everything in a given map
+        # Check that close_all() closes everything kwenye a given map
 
         l = []
         testmap = {}
-        for i in range(10):
+        kila i kwenye range(10):
             c = dummychannel()
             l.append(c)
-            self.assertEqual(c.socket.closed, False)
+            self.assertEqual(c.socket.closed, Uongo)
             testmap[i] = c
 
         ikiwa usedefault:
             socketmap = asyncore.socket_map
-            try:
+            jaribu:
                 asyncore.socket_map = testmap
                 asyncore.close_all()
-            finally:
+            mwishowe:
                 testmap, asyncore.socket_map = asyncore.socket_map, socketmap
-        else:
+        isipokua:
             asyncore.close_all(testmap)
 
         self.assertEqual(len(testmap), 0)
 
-        for c in l:
-            self.assertEqual(c.socket.closed, True)
+        kila c kwenye l:
+            self.assertEqual(c.socket.closed, Kweli)
 
     eleza test_compact_traceback(self):
-        try:
-            raise Exception("I don't like spam!")
+        jaribu:
+            ashiria Exception("I don't like spam!")
         except:
             real_t, real_v, real_tb = sys.exc_info()
             r = asyncore.compact_traceback()
-        else:
+        isipokua:
             self.fail("Expected exception")
 
         (f, function, line), t, v, info = r
@@ -238,15 +238,15 @@ kundi HelperFunctionTests(unittest.TestCase):
 
 kundi DispatcherTests(unittest.TestCase):
     eleza setUp(self):
-        pass
+        pita
 
     eleza tearDown(self):
         asyncore.close_all()
 
     eleza test_basic(self):
         d = asyncore.dispatcher()
-        self.assertEqual(d.readable(), True)
-        self.assertEqual(d.writable(), True)
+        self.assertEqual(d.readable(), Kweli)
+        self.assertEqual(d.writable(), Kweli)
 
     eleza test_repr(self):
         d = asyncore.dispatcher()
@@ -258,7 +258,7 @@ kundi DispatcherTests(unittest.TestCase):
         # capture output of dispatcher.log() (to stderr)
         l1 = "Lovely spam! Wonderful spam!"
         l2 = "I don't like spam!"
-        with support.captured_stderr() as stderr:
+        with support.captured_stderr() kama stderr:
             d.log(l1)
             d.log(l2)
 
@@ -270,9 +270,9 @@ kundi DispatcherTests(unittest.TestCase):
 
         # capture output of dispatcher.log_info() (to stdout via print)
         l1 = "Have you got anything without spam?"
-        l2 = "Why can't she have egg bacon spam and sausage?"
-        l3 = "THAT'S got spam in it!"
-        with support.captured_stdout() as stdout:
+        l2 = "Why can't she have egg bacon spam na sausage?"
+        l3 = "THAT'S got spam kwenye it!"
+        with support.captured_stdout() kama stdout:
             d.log_info(l1, 'EGGS')
             d.log_info(l2)
             d.log_info(l3, 'SPAM')
@@ -286,7 +286,7 @@ kundi DispatcherTests(unittest.TestCase):
         d.ignore_log_types = ()
 
         # capture output of dispatcher.log_info() (to stdout via print)
-        with support.captured_stdout() as stdout:
+        with support.captured_stdout() kama stdout:
             d.handle_expt()
             d.handle_read()
             d.handle_write()
@@ -305,20 +305,20 @@ kundi DispatcherTests(unittest.TestCase):
         ikiwa hasattr(os, 'strerror'):
             self.assertEqual(err, os.strerror(errno.EPERM))
         err = asyncore._strerror(-1)
-        self.assertTrue(err != "")
+        self.assertKweli(err != "")
 
 
 kundi dispatcherwithsend_noread(asyncore.dispatcher_with_send):
     eleza readable(self):
-        rudisha False
+        rudisha Uongo
 
     eleza handle_connect(self):
-        pass
+        pita
 
 
 kundi DispatcherWithSendTests(unittest.TestCase):
     eleza setUp(self):
-        pass
+        pita
 
     eleza tearDown(self):
         asyncore.close_all()
@@ -334,8 +334,8 @@ kundi DispatcherWithSendTests(unittest.TestCase):
         args = (evt, cap, sock)
         t = threading.Thread(target=capture_server, args=args)
         t.start()
-        try:
-            # wait a little longer for the server to initialize (it sometimes
+        jaribu:
+            # wait a little longer kila the server to initialize (it sometimes
             # refuses connections on slow machines without this wait)
             time.sleep(0.2)
 
@@ -344,7 +344,7 @@ kundi DispatcherWithSendTests(unittest.TestCase):
             d.create_socket()
             d.connect((support.HOST, port))
 
-            # give time for socket to connect
+            # give time kila socket to connect
             time.sleep(0.1)
 
             d.send(data)
@@ -352,14 +352,14 @@ kundi DispatcherWithSendTests(unittest.TestCase):
             d.send(b'\n')
 
             n = 1000
-            while d.out_buffer and n > 0:
+            wakati d.out_buffer na n > 0:
                 asyncore.poll()
                 n -= 1
 
             evt.wait()
 
             self.assertEqual(cap.getvalue(), data*2)
-        finally:
+        mwishowe:
             support.join_thread(t, timeout=TIMEOUT)
 
 
@@ -367,8 +367,8 @@ kundi DispatcherWithSendTests(unittest.TestCase):
                      'asyncore.file_wrapper required')
 kundi FileWrapperTest(unittest.TestCase):
     eleza setUp(self):
-        self.d = b"It's not dead, it's sleeping!"
-        with open(support.TESTFN, 'wb') as file:
+        self.d = b"It's sio dead, it's sleeping!"
+        with open(support.TESTFN, 'wb') kama file:
             file.write(self.d)
 
     eleza tearDown(self):
@@ -381,7 +381,7 @@ kundi FileWrapperTest(unittest.TestCase):
 
         self.assertNotEqual(w.fd, fd)
         self.assertNotEqual(w.fileno(), fd)
-        self.assertEqual(w.recv(13), b"It's not dead")
+        self.assertEqual(w.recv(13), b"It's sio dead")
         self.assertEqual(w.read(6), b", it's")
         w.close()
         self.assertRaises(OSError, w.read, 1)
@@ -396,7 +396,7 @@ kundi FileWrapperTest(unittest.TestCase):
         w.write(d1)
         w.send(d2)
         w.close()
-        with open(support.TESTFN, 'rb') as file:
+        with open(support.TESTFN, 'rb') kama file:
             self.assertEqual(file.read(), self.d + d1 + d2)
 
     @unittest.skipUnless(hasattr(asyncore, 'file_dispatcher'),
@@ -409,7 +409,7 @@ kundi FileWrapperTest(unittest.TestCase):
                 data.append(self.recv(29))
         s = FileDispatcher(fd)
         os.close(fd)
-        asyncore.loop(timeout=0.01, use_poll=True, count=2)
+        asyncore.loop(timeout=0.01, use_poll=Kweli, count=2)
         self.assertEqual(b"".join(data), self.d)
 
     eleza test_resource_warning(self):
@@ -419,7 +419,7 @@ kundi FileWrapperTest(unittest.TestCase):
 
         os.close(fd)
         with support.check_warnings(('', ResourceWarning)):
-            f = None
+            f = Tupu
             support.gc_collect()
 
     eleza test_close_twice(self):
@@ -432,37 +432,37 @@ kundi FileWrapperTest(unittest.TestCase):
             f.close()
 
         self.assertEqual(f.fd, -1)
-        # calling close twice should not fail
+        # calling close twice should sio fail
         f.close()
 
 
 kundi BaseTestHandler(asyncore.dispatcher):
 
-    eleza __init__(self, sock=None):
+    eleza __init__(self, sock=Tupu):
         asyncore.dispatcher.__init__(self, sock)
-        self.flag = False
+        self.flag = Uongo
 
     eleza handle_accept(self):
-        raise Exception("handle_accept not supposed to be called")
+        ashiria Exception("handle_accept sio supposed to be called")
 
     eleza handle_accepted(self):
-        raise Exception("handle_accepted not supposed to be called")
+        ashiria Exception("handle_accepted sio supposed to be called")
 
     eleza handle_connect(self):
-        raise Exception("handle_connect not supposed to be called")
+        ashiria Exception("handle_connect sio supposed to be called")
 
     eleza handle_expt(self):
-        raise Exception("handle_expt not supposed to be called")
+        ashiria Exception("handle_expt sio supposed to be called")
 
     eleza handle_close(self):
-        raise Exception("handle_close not supposed to be called")
+        ashiria Exception("handle_close sio supposed to be called")
 
     eleza handle_error(self):
-        raise
+        ashiria
 
 
 kundi BaseServer(asyncore.dispatcher):
-    """A server which listens on an address and dispatches the
+    """A server which listens on an address na dispatches the
     connection to a handler.
     """
 
@@ -482,7 +482,7 @@ kundi BaseServer(asyncore.dispatcher):
         self.handler(sock)
 
     eleza handle_error(self):
-        raise
+        ashiria
 
 
 kundi BaseClient(BaseTestHandler):
@@ -493,38 +493,38 @@ kundi BaseClient(BaseTestHandler):
         self.connect(address)
 
     eleza handle_connect(self):
-        pass
+        pita
 
 
 kundi BaseTestAPI:
 
     eleza tearDown(self):
-        asyncore.close_all(ignore_all=True)
+        asyncore.close_all(ignore_all=Kweli)
 
     eleza loop_waiting_for_flag(self, instance, timeout=5):
         timeout = float(timeout) / 100
         count = 100
-        while asyncore.socket_map and count > 0:
+        wakati asyncore.socket_map na count > 0:
             asyncore.loop(timeout=0.01, count=1, use_poll=self.use_poll)
             ikiwa instance.flag:
-                return
+                rudisha
             count -= 1
             time.sleep(timeout)
-        self.fail("flag not set")
+        self.fail("flag sio set")
 
     eleza test_handle_connect(self):
-        # make sure handle_connect is called on connect()
+        # make sure handle_connect ni called on connect()
 
         kundi TestClient(BaseClient):
             eleza handle_connect(self):
-                self.flag = True
+                self.flag = Kweli
 
         server = BaseServer(self.family, self.addr)
         client = TestClient(self.family, server.address)
         self.loop_waiting_for_flag(client)
 
     eleza test_handle_accept(self):
-        # make sure handle_accept() is called when a client connects
+        # make sure handle_accept() ni called when a client connects
 
         kundi TestListener(BaseTestHandler):
 
@@ -536,14 +536,14 @@ kundi BaseTestAPI:
                 self.address = self.socket.getsockname()
 
             eleza handle_accept(self):
-                self.flag = True
+                self.flag = Kweli
 
         server = TestListener(self.family, self.addr)
         client = BaseClient(self.family, server.address)
         self.loop_waiting_for_flag(server)
 
     eleza test_handle_accepted(self):
-        # make sure handle_accepted() is called when a client connects
+        # make sure handle_accepted() ni called when a client connects
 
         kundi TestListener(BaseTestHandler):
 
@@ -559,7 +559,7 @@ kundi BaseTestAPI:
 
             eleza handle_accepted(self, sock, addr):
                 sock.close()
-                self.flag = True
+                self.flag = Kweli
 
         server = TestListener(self.family, self.addr)
         client = BaseClient(self.family, server.address)
@@ -567,11 +567,11 @@ kundi BaseTestAPI:
 
 
     eleza test_handle_read(self):
-        # make sure handle_read is called on data received
+        # make sure handle_read ni called on data received
 
         kundi TestClient(BaseClient):
             eleza handle_read(self):
-                self.flag = True
+                self.flag = Kweli
 
         kundi TestHandler(BaseTestHandler):
             eleza __init__(self, conn):
@@ -583,29 +583,29 @@ kundi BaseTestAPI:
         self.loop_waiting_for_flag(client)
 
     eleza test_handle_write(self):
-        # make sure handle_write is called
+        # make sure handle_write ni called
 
         kundi TestClient(BaseClient):
             eleza handle_write(self):
-                self.flag = True
+                self.flag = Kweli
 
         server = BaseServer(self.family, self.addr)
         client = TestClient(self.family, server.address)
         self.loop_waiting_for_flag(client)
 
     eleza test_handle_close(self):
-        # make sure handle_close is called when the other end closes
+        # make sure handle_close ni called when the other end closes
         # the connection
 
         kundi TestClient(BaseClient):
 
             eleza handle_read(self):
-                # in order to make handle_close be called we are supposed
+                # kwenye order to make handle_close be called we are supposed
                 # to make at least one recv() call
                 self.recv(1024)
 
             eleza handle_close(self):
-                self.flag = True
+                self.flag = Kweli
                 self.close()
 
         kundi TestHandler(BaseTestHandler):
@@ -618,7 +618,7 @@ kundi BaseTestAPI:
         self.loop_waiting_for_flag(client)
 
     eleza test_handle_close_after_conn_broken(self):
-        # Check that ECONNRESET/EPIPE is correctly handled (issues #5661 and
+        # Check that ECONNRESET/EPIPE ni correctly handled (issues #5661 and
         # #11265).
 
         data = b'\0' * 128
@@ -629,11 +629,11 @@ kundi BaseTestAPI:
                 self.send(data)
 
             eleza handle_close(self):
-                self.flag = True
+                self.flag = Kweli
                 self.close()
 
             eleza handle_expt(self):
-                self.flag = True
+                self.flag = Kweli
                 self.close()
 
         kundi TestHandler(BaseTestHandler):
@@ -643,28 +643,28 @@ kundi BaseTestAPI:
                 self.close()
 
             eleza writable(self):
-                rudisha False
+                rudisha Uongo
 
         server = BaseServer(self.family, self.addr, TestHandler)
         client = TestClient(self.family, server.address)
         self.loop_waiting_for_flag(client)
 
     @unittest.skipIf(sys.platform.startswith("sunos"),
-                     "OOB support is broken on Solaris")
+                     "OOB support ni broken on Solaris")
     eleza test_handle_expt(self):
-        # Make sure handle_expt is called on OOB data received.
-        # Note: this might fail on some platforms as OOB data is
-        # tenuously supported and rarely used.
-        ikiwa HAS_UNIX_SOCKETS and self.family == socket.AF_UNIX:
+        # Make sure handle_expt ni called on OOB data received.
+        # Note: this might fail on some platforms kama OOB data is
+        # tenuously supported na rarely used.
+        ikiwa HAS_UNIX_SOCKETS na self.family == socket.AF_UNIX:
             self.skipTest("Not applicable to AF_UNIX sockets.")
 
-        ikiwa sys.platform == "darwin" and self.use_poll:
+        ikiwa sys.platform == "darwin" na self.use_poll:
             self.skipTest("poll may fail on macOS; see issue #28087")
 
         kundi TestClient(BaseClient):
             eleza handle_expt(self):
                 self.socket.recv(1024, socket.MSG_OOB)
-                self.flag = True
+                self.flag = Kweli
 
         kundi TestHandler(BaseTestHandler):
             eleza __init__(self, conn):
@@ -681,13 +681,13 @@ kundi BaseTestAPI:
             eleza handle_write(self):
                 1.0 / 0
             eleza handle_error(self):
-                self.flag = True
-                try:
-                    raise
-                except ZeroDivisionError:
-                    pass
-                else:
-                    raise Exception("exception not raised")
+                self.flag = Kweli
+                jaribu:
+                    ashiria
+                tatizo ZeroDivisionError:
+                    pita
+                isipokua:
+                    ashiria Exception("exception sio ashiriad")
 
         server = BaseServer(self.family, self.addr)
         client = TestClient(self.family, server.address)
@@ -698,30 +698,30 @@ kundi BaseTestAPI:
         client = BaseClient(self.family, server.address)
 
         # we start disconnected
-        self.assertFalse(server.connected)
-        self.assertTrue(server.accepting)
-        # this can't be taken for granted across all platforms
-        #self.assertFalse(client.connected)
-        self.assertFalse(client.accepting)
+        self.assertUongo(server.connected)
+        self.assertKweli(server.accepting)
+        # this can't be taken kila granted across all platforms
+        #self.assertUongo(client.connected)
+        self.assertUongo(client.accepting)
 
         # execute some loops so that client connects to server
         asyncore.loop(timeout=0.01, use_poll=self.use_poll, count=100)
-        self.assertFalse(server.connected)
-        self.assertTrue(server.accepting)
-        self.assertTrue(client.connected)
-        self.assertFalse(client.accepting)
+        self.assertUongo(server.connected)
+        self.assertKweli(server.accepting)
+        self.assertKweli(client.connected)
+        self.assertUongo(client.accepting)
 
         # disconnect the client
         client.close()
-        self.assertFalse(server.connected)
-        self.assertTrue(server.accepting)
-        self.assertFalse(client.connected)
-        self.assertFalse(client.accepting)
+        self.assertUongo(server.connected)
+        self.assertKweli(server.accepting)
+        self.assertUongo(client.connected)
+        self.assertUongo(client.accepting)
 
         # stop serving
         server.close()
-        self.assertFalse(server.connected)
-        self.assertFalse(server.accepting)
+        self.assertUongo(server.connected)
+        self.assertUongo(server.accepting)
 
     eleza test_create_socket(self):
         s = asyncore.dispatcher()
@@ -729,10 +729,10 @@ kundi BaseTestAPI:
         self.assertEqual(s.socket.type, socket.SOCK_STREAM)
         self.assertEqual(s.socket.family, self.family)
         self.assertEqual(s.socket.gettimeout(), 0)
-        self.assertFalse(s.socket.get_inheritable())
+        self.assertUongo(s.socket.get_inheritable())
 
     eleza test_bind(self):
-        ikiwa HAS_UNIX_SOCKETS and self.family == socket.AF_UNIX:
+        ikiwa HAS_UNIX_SOCKETS na self.family == socket.AF_UNIX:
             self.skipTest("Not applicable to AF_UNIX sockets.")
         s1 = asyncore.dispatcher()
         s1.create_socket(self.family)
@@ -746,48 +746,48 @@ kundi BaseTestAPI:
         self.assertRaises(OSError, s2.bind, (self.addr[0], port))
 
     eleza test_set_reuse_addr(self):
-        ikiwa HAS_UNIX_SOCKETS and self.family == socket.AF_UNIX:
+        ikiwa HAS_UNIX_SOCKETS na self.family == socket.AF_UNIX:
             self.skipTest("Not applicable to AF_UNIX sockets.")
 
-        with socket.socket(self.family) as sock:
-            try:
+        with socket.socket(self.family) kama sock:
+            jaribu:
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            except OSError:
-                unittest.skip("SO_REUSEADDR not supported on this platform")
-            else:
-                # ikiwa SO_REUSEADDR succeeded for sock we expect asyncore
+            tatizo OSError:
+                unittest.skip("SO_REUSEADDR sio supported on this platform")
+            isipokua:
+                # ikiwa SO_REUSEADDR succeeded kila sock we expect asyncore
                 # to do the same
                 s = asyncore.dispatcher(socket.socket(self.family))
-                self.assertFalse(s.socket.getsockopt(socket.SOL_SOCKET,
+                self.assertUongo(s.socket.getsockopt(socket.SOL_SOCKET,
                                                      socket.SO_REUSEADDR))
                 s.socket.close()
                 s.create_socket(self.family)
                 s.set_reuse_addr()
-                self.assertTrue(s.socket.getsockopt(socket.SOL_SOCKET,
+                self.assertKweli(s.socket.getsockopt(socket.SOL_SOCKET,
                                                      socket.SO_REUSEADDR))
 
     @support.reap_threads
     eleza test_quick_connect(self):
         # see: http://bugs.python.org/issue10340
-        ikiwa self.family not in (socket.AF_INET, getattr(socket, "AF_INET6", object())):
-            self.skipTest("test specific to AF_INET and AF_INET6")
+        ikiwa self.family haiko kwenye (socket.AF_INET, getattr(socket, "AF_INET6", object())):
+            self.skipTest("test specific to AF_INET na AF_INET6")
 
         server = BaseServer(self.family, self.addr)
-        # run the thread 500 ms: the socket should be connected in 200 ms
+        # run the thread 500 ms: the socket should be connected kwenye 200 ms
         t = threading.Thread(target=lambda: asyncore.loop(timeout=0.1,
                                                           count=5))
         t.start()
-        try:
-            with socket.socket(self.family, socket.SOCK_STREAM) as s:
+        jaribu:
+            with socket.socket(self.family, socket.SOCK_STREAM) kama s:
                 s.settimeout(.2)
                 s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,
                              struct.pack('ii', 1, 0))
 
-                try:
+                jaribu:
                     s.connect(server.address)
-                except OSError:
-                    pass
-        finally:
+                tatizo OSError:
+                    pita
+        mwishowe:
             support.join_thread(t, timeout=TIMEOUT)
 
 kundi TestAPI_UseIPv4Sockets(BaseTestAPI):
@@ -810,25 +810,25 @@ kundi TestAPI_UseUnixSockets(BaseTestAPI):
         BaseTestAPI.tearDown(self)
 
 kundi TestAPI_UseIPv4Select(TestAPI_UseIPv4Sockets, unittest.TestCase):
-    use_poll = False
+    use_poll = Uongo
 
 @unittest.skipUnless(hasattr(select, 'poll'), 'select.poll required')
 kundi TestAPI_UseIPv4Poll(TestAPI_UseIPv4Sockets, unittest.TestCase):
-    use_poll = True
+    use_poll = Kweli
 
 kundi TestAPI_UseIPv6Select(TestAPI_UseIPv6Sockets, unittest.TestCase):
-    use_poll = False
+    use_poll = Uongo
 
 @unittest.skipUnless(hasattr(select, 'poll'), 'select.poll required')
 kundi TestAPI_UseIPv6Poll(TestAPI_UseIPv6Sockets, unittest.TestCase):
-    use_poll = True
+    use_poll = Kweli
 
 kundi TestAPI_UseUnixSocketsSelect(TestAPI_UseUnixSockets, unittest.TestCase):
-    use_poll = False
+    use_poll = Uongo
 
 @unittest.skipUnless(hasattr(select, 'poll'), 'select.poll required')
 kundi TestAPI_UseUnixSocketsPoll(TestAPI_UseUnixSockets, unittest.TestCase):
-    use_poll = True
+    use_poll = Kweli
 
 ikiwa __name__ == "__main__":
     unittest.main()

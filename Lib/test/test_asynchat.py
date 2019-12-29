@@ -18,7 +18,7 @@ TIMEOUT = 3.0
 
 
 kundi echo_server(threading.Thread):
-    # parameter to determine the number of bytes passed back to the
+    # parameter to determine the number of bytes pitaed back to the
     # client each send
     chunk_size = 1
 
@@ -29,18 +29,18 @@ kundi echo_server(threading.Thread):
         self.port = support.bind_port(self.sock)
         # This will be set ikiwa the client wants us to wait before echoing
         # data back.
-        self.start_resend_event = None
+        self.start_resend_event = Tupu
 
     eleza run(self):
         self.sock.listen()
         self.event.set()
         conn, client = self.sock.accept()
         self.buffer = b""
-        # collect data until quit message is seen
-        while SERVER_QUIT not in self.buffer:
+        # collect data until quit message ni seen
+        wakati SERVER_QUIT haiko kwenye self.buffer:
             data = conn.recv(1)
-            ikiwa not data:
-                break
+            ikiwa sio data:
+                koma
             self.buffer = self.buffer + data
 
         # remove the SERVER_QUIT message
@@ -50,15 +50,15 @@ kundi echo_server(threading.Thread):
             self.start_resend_event.wait()
 
         # re-send entire set of collected data
-        try:
-            # this may fail on some tests, such as test_close_when_done,
+        jaribu:
+            # this may fail on some tests, such kama test_close_when_done,
             # since the client closes the channel when it's done sending
-            while self.buffer:
+            wakati self.buffer:
                 n = conn.send(self.buffer[:self.chunk_size])
                 time.sleep(0.001)
                 self.buffer = self.buffer[n:]
         except:
-            pass
+            pita
 
         conn.close()
         self.sock.close()
@@ -74,13 +74,13 @@ kundi echo_client(asynchat.async_chat):
         self.buffer = b""
 
         eleza handle_connect(self):
-            pass
+            pita
 
         ikiwa sys.platform == 'darwin':
-            # select.poll returns a select.POLLHUP at the end of the tests
+            # select.poll rudishas a select.POLLHUP at the end of the tests
             # on darwin, so just ignore it
             eleza handle_expt(self):
-                pass
+                pita
 
     eleza collect_incoming_data(self, data):
         self.buffer += data
@@ -100,7 +100,7 @@ eleza start_echo_server():
 
 
 kundi TestAsynchat(unittest.TestCase):
-    usepoll = False
+    usepoll = Uongo
 
     eleza setUp(self):
         self._threads = support.threading_setup()
@@ -119,37 +119,37 @@ kundi TestAsynchat(unittest.TestCase):
         c = echo_client(term, s.port)
         c.push(b"hello ")
         c.push(b"world" + term)
-        c.push(b"I'm not dead yet!" + term)
+        c.push(b"I'm sio dead yet!" + term)
         c.push(SERVER_QUIT)
         asyncore.loop(use_poll=self.usepoll, count=300, timeout=.01)
         support.join_thread(s, timeout=TIMEOUT)
 
-        self.assertEqual(c.contents, [b"hello world", b"I'm not dead yet!"])
+        self.assertEqual(c.contents, [b"hello world", b"I'm sio dead yet!"])
 
     # the line terminator tests below check receiving variously-sized
-    # chunks back kutoka the server in order to exercise all branches of
+    # chunks back kutoka the server kwenye order to exercise all branches of
     # async_chat.handle_read
 
     eleza test_line_terminator1(self):
         # test one-character terminator
-        for l in (1, 2, 3):
+        kila l kwenye (1, 2, 3):
             self.line_terminator_check(b'\n', l)
 
     eleza test_line_terminator2(self):
         # test two-character terminator
-        for l in (1, 2, 3):
+        kila l kwenye (1, 2, 3):
             self.line_terminator_check(b'\r\n', l)
 
     eleza test_line_terminator3(self):
         # test three-character terminator
-        for l in (1, 2, 3):
+        kila l kwenye (1, 2, 3):
             self.line_terminator_check(b'qqq', l)
 
     eleza numeric_terminator_check(self, termlen):
         # Try reading a fixed number of bytes
         s, event = start_echo_server()
         c = echo_client(termlen, s.port)
-        data = b"hello world, I'm not dead yet!\n"
+        data = b"hello world, I'm sio dead yet!\n"
         c.push(data)
         c.push(SERVER_QUIT)
         asyncore.loop(use_poll=self.usepoll, count=300, timeout=.01)
@@ -159,7 +159,7 @@ kundi TestAsynchat(unittest.TestCase):
 
     eleza test_numeric_terminator1(self):
         # check that ints & longs both work (since type is
-        # explicitly checked in async_chat.handle_read)
+        # explicitly checked kwenye async_chat.handle_read)
         self.numeric_terminator_check(1)
 
     eleza test_numeric_terminator2(self):
@@ -168,8 +168,8 @@ kundi TestAsynchat(unittest.TestCase):
     eleza test_none_terminator(self):
         # Try reading a fixed number of bytes
         s, event = start_echo_server()
-        c = echo_client(None, s.port)
-        data = b"hello world, I'm not dead yet!\n"
+        c = echo_client(Tupu, s.port)
+        data = b"hello world, I'm sio dead yet!\n"
         c.push(data)
         c.push(SERVER_QUIT)
         asyncore.loop(use_poll=self.usepoll, count=300, timeout=.01)
@@ -181,41 +181,41 @@ kundi TestAsynchat(unittest.TestCase):
     eleza test_simple_producer(self):
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
-        data = b"hello world\nI'm not dead yet!\n"
+        data = b"hello world\nI'm sio dead yet!\n"
         p = asynchat.simple_producer(data+SERVER_QUIT, buffer_size=8)
         c.push_with_producer(p)
         asyncore.loop(use_poll=self.usepoll, count=300, timeout=.01)
         support.join_thread(s, timeout=TIMEOUT)
 
-        self.assertEqual(c.contents, [b"hello world", b"I'm not dead yet!"])
+        self.assertEqual(c.contents, [b"hello world", b"I'm sio dead yet!"])
 
     eleza test_string_producer(self):
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
-        data = b"hello world\nI'm not dead yet!\n"
+        data = b"hello world\nI'm sio dead yet!\n"
         c.push_with_producer(data+SERVER_QUIT)
         asyncore.loop(use_poll=self.usepoll, count=300, timeout=.01)
         support.join_thread(s, timeout=TIMEOUT)
 
-        self.assertEqual(c.contents, [b"hello world", b"I'm not dead yet!"])
+        self.assertEqual(c.contents, [b"hello world", b"I'm sio dead yet!"])
 
     eleza test_empty_line(self):
         # checks that empty lines are handled correctly
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
-        c.push(b"hello world\n\nI'm not dead yet!\n")
+        c.push(b"hello world\n\nI'm sio dead yet!\n")
         c.push(SERVER_QUIT)
         asyncore.loop(use_poll=self.usepoll, count=300, timeout=.01)
         support.join_thread(s, timeout=TIMEOUT)
 
         self.assertEqual(c.contents,
-                         [b"hello world", b"", b"I'm not dead yet!"])
+                         [b"hello world", b"", b"I'm sio dead yet!"])
 
     eleza test_close_when_done(self):
         s, event = start_echo_server()
         s.start_resend_event = threading.Event()
         c = echo_client(b'\n', s.port)
-        c.push(b"hello world\nI'm not dead yet!\n")
+        c.push(b"hello world\nI'm sio dead yet!\n")
         c.push(SERVER_QUIT)
         c.close_when_done()
         asyncore.loop(use_poll=self.usepoll, count=300, timeout=.01)
@@ -228,13 +228,13 @@ kundi TestAsynchat(unittest.TestCase):
         support.join_thread(s, timeout=TIMEOUT)
 
         self.assertEqual(c.contents, [])
-        # the server might have been able to send a byte or two back, but this
-        # at least checks that it received something and didn't just fail
-        # (which could still result in the client not having received anything)
+        # the server might have been able to send a byte ama two back, but this
+        # at least checks that it received something na didn't just fail
+        # (which could still result kwenye the client sio having received anything)
         self.assertGreater(len(s.buffer), 0)
 
     eleza test_push(self):
-        # Issue #12523: push() should raise a TypeError ikiwa it doesn't get
+        # Issue #12523: push() should ashiria a TypeError ikiwa it doesn't get
         # a bytes string
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
@@ -251,7 +251,7 @@ kundi TestAsynchat(unittest.TestCase):
 
 
 kundi TestAsynchat_WithPoll(TestAsynchat):
-    usepoll = True
+    usepoll = Kweli
 
 
 kundi TestAsynchatMocked(unittest.TestCase):
@@ -264,9 +264,9 @@ kundi TestAsynchatMocked(unittest.TestCase):
         dispatcher.set_socket(sock)
         self.addCleanup(dispatcher.del_channel)
 
-        with unittest.mock.patch.object(dispatcher, 'handle_error') as error:
+        with unittest.mock.patch.object(dispatcher, 'handle_error') kama error:
             dispatcher.handle_read()
-        self.assertFalse(error.called)
+        self.assertUongo(error.called)
 
 
 kundi TestHelperFunctions(unittest.TestCase):

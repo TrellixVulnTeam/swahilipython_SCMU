@@ -31,19 +31,19 @@ class Chooser(Dialog):
     command = "tk_chooseColor"
 
     def _fixoptions(self):
-        try:
+        jaribu:
             # make sure initialcolor is a tk color string
             color = self.options["initialcolor"]
             if isinstance(color, tuple):
                 # assume an RGB triplet
                 self.options["initialcolor"] = "#%02x%02x%02x" % color
-        except KeyError:
+        tatizo KeyError:
             pass
 
     def _fixresult(self, widget, result):
         # result can be somethings: an empty tuple, an empty string or
         # a Tcl_Obj, so this somewhat weird check handles that
-        if not result or not str(result):
+        if sio result or sio str(result):
             return None, None # canceled
 
         # to simplify application code, the color chooser returns

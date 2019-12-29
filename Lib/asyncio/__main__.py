@@ -26,61 +26,61 @@ kundi AsyncIOInteractiveConsole(code.InteractiveConsole):
             global repl_future
             global repl_future_interrupted
 
-            repl_future = None
-            repl_future_interrupted = False
+            repl_future = Tupu
+            repl_future_interrupted = Uongo
 
             func = types.FunctionType(code, self.locals)
-            try:
+            jaribu:
                 coro = func()
-            except SystemExit:
-                raise
-            except KeyboardInterrupt as ex:
-                repl_future_interrupted = True
+            tatizo SystemExit:
+                ashiria
+            tatizo KeyboardInterrupt kama ex:
+                repl_future_interrupted = Kweli
                 future.set_exception(ex)
-                return
-            except BaseException as ex:
+                rudisha
+            tatizo BaseException kama ex:
                 future.set_exception(ex)
-                return
+                rudisha
 
-            ikiwa not inspect.iscoroutine(coro):
+            ikiwa sio inspect.iscoroutine(coro):
                 future.set_result(coro)
-                return
+                rudisha
 
-            try:
+            jaribu:
                 repl_future = self.loop.create_task(coro)
                 futures._chain_future(repl_future, future)
-            except BaseException as exc:
+            tatizo BaseException kama exc:
                 future.set_exception(exc)
 
         loop.call_soon_threadsafe(callback)
 
-        try:
+        jaribu:
             rudisha future.result()
-        except SystemExit:
-            raise
-        except BaseException:
+        tatizo SystemExit:
+            ashiria
+        tatizo BaseException:
             ikiwa repl_future_interrupted:
                 self.write("\nKeyboardInterrupt\n")
-            else:
+            isipokua:
                 self.showtraceback()
 
 
 kundi REPLThread(threading.Thread):
 
     eleza run(self):
-        try:
+        jaribu:
             banner = (
                 f'asyncio REPL {sys.version} on {sys.platform}\n'
                 f'Use "await" directly instead of "asyncio.run()".\n'
-                f'Type "help", "copyright", "credits" or "license" '
-                f'for more information.\n'
+                f'Type "help", "copyright", "credits" ama "license" '
+                f'kila more information.\n'
                 f'{getattr(sys, "ps1", ">>> ")}agiza asyncio'
             )
 
             console.interact(
                 banner=banner,
                 exitmsg='exiting asyncio REPL...')
-        finally:
+        mwishowe:
             warnings.filterwarnings(
                 'ignore',
                 message=r'^coroutine .* was never awaited$',
@@ -94,32 +94,32 @@ ikiwa __name__ == '__main__':
     asyncio.set_event_loop(loop)
 
     repl_locals = {'asyncio': asyncio}
-    for key in {'__name__', '__package__',
+    kila key kwenye {'__name__', '__package__',
                 '__loader__', '__spec__',
                 '__builtins__', '__file__'}:
         repl_locals[key] = locals()[key]
 
     console = AsyncIOInteractiveConsole(repl_locals, loop)
 
-    repl_future = None
-    repl_future_interrupted = False
+    repl_future = Tupu
+    repl_future_interrupted = Uongo
 
-    try:
+    jaribu:
         agiza readline  # NoQA
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
 
     repl_thread = REPLThread()
-    repl_thread.daemon = True
+    repl_thread.daemon = Kweli
     repl_thread.start()
 
-    while True:
-        try:
+    wakati Kweli:
+        jaribu:
             loop.run_forever()
-        except KeyboardInterrupt:
-            ikiwa repl_future and not repl_future.done():
+        tatizo KeyboardInterrupt:
+            ikiwa repl_future na sio repl_future.done():
                 repl_future.cancel()
-                repl_future_interrupted = True
-            continue
-        else:
-            break
+                repl_future_interrupted = Kweli
+            endelea
+        isipokua:
+            koma

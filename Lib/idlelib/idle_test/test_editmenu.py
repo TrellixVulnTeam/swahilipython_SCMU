@@ -4,7 +4,7 @@ Edit modules have their own test files
 '''
 kutoka test.support agiza requires
 requires('gui')
-agiza tkinter as tk
+agiza tkinter kama tk
 kutoka tkinter agiza ttk
 agiza unittest
 kutoka idlelib agiza pyshell
@@ -28,16 +28,16 @@ kundi PasteTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text, cls.entry, cls.tentry
+        toa cls.text, cls.entry, cls.tentry
         cls.root.clipboard_clear()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_paste_text(self):
-        "Test pasting into text with and without a selection."
+        "Test pasting into text with na without a selection."
         text = self.text
-        for tag, ans in ('', 'onetwo\n'), ('sel', 'two\n'):
+        kila tag, ans kwenye ('', 'onetwo\n'), ('sel', 'two\n'):
             with self.subTest(tag=tag, ans=ans):
                 text.delete('1.0', 'end')
                 text.insert('1.0', 'one', tag)
@@ -45,11 +45,11 @@ kundi PasteTest(unittest.TestCase):
                 self.assertEqual(text.get('1.0', 'end'), ans)
 
     eleza test_paste_entry(self):
-        "Test pasting into an entry with and without a selection."
-        # Generated <<Paste>> fails for tk entry without empty select
-        # range for 'no selection'.  Live widget works fine.
-        for entry in self.entry, self.tentry:
-            for end, ans in (0, 'onetwo'), ('end', 'two'):
+        "Test pasting into an entry with na without a selection."
+        # Generated <<Paste>> fails kila tk entry without empty select
+        # range kila 'no selection'.  Live widget works fine.
+        kila entry kwenye self.entry, self.tenjaribu:
+            kila end, ans kwenye (0, 'onetwo'), ('end', 'two'):
                 with self.subTest(entry=entry, end=end, ans=ans):
                     entry.delete(0, 'end')
                     entry.insert(0, 'one')
@@ -58,10 +58,10 @@ kundi PasteTest(unittest.TestCase):
                     self.assertEqual(entry.get(), ans)
 
     eleza test_paste_spin(self):
-        "Test pasting into a spinbox with and without a selection."
-        # See note above for entry.
+        "Test pasting into a spinbox with na without a selection."
+        # See note above kila entry.
         spin = self.spin
-        for end, ans in (0, 'onetwo'), ('end', 'two'):
+        kila end, ans kwenye (0, 'onetwo'), ('end', 'two'):
             with self.subTest(end=end, ans=ans):
                 spin.delete(0, 'end')
                 spin.insert(0, 'one')

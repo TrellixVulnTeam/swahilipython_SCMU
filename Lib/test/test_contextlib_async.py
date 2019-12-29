@@ -14,11 +14,11 @@ eleza _async_test(func):
         coro = func(*args, **kwargs)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        try:
+        jaribu:
             rudisha loop.run_until_complete(coro)
-        finally:
+        mwishowe:
             loop.close()
-            asyncio.set_event_loop_policy(None)
+            asyncio.set_event_loop_policy(Tupu)
     rudisha wrapper
 
 
@@ -33,34 +33,34 @@ kundi TestAbstractAsyncContextManager(unittest.TestCase):
         manager = DefaultEnter()
         self.assertIs(await manager.__aenter__(), manager)
 
-        async with manager as context:
+        async with manager kama context:
             self.assertIs(manager, context)
 
     @_async_test
     async eleza test_async_gen_propagates_generator_exit(self):
-        # A regression test for https://bugs.python.org/issue33786.
+        # A regression test kila https://bugs.python.org/issue33786.
 
         @asynccontextmanager
         async eleza ctx():
-            yield
+            tuma
 
         async eleza gen():
             async with ctx():
-                yield 11
+                tuma 11
 
         ret = []
         exc = ValueError(22)
         with self.assertRaises(ValueError):
             async with ctx():
-                async for val in gen():
+                async kila val kwenye gen():
                     ret.append(val)
-                    raise exc
+                    ashiria exc
 
         self.assertEqual(ret, [11])
 
     eleza test_exit_is_abstract(self):
         kundi MissingAexit(AbstractAsyncContextManager):
-            pass
+            pita
 
         with self.assertRaises(TypeError):
             MissingAexit()
@@ -70,25 +70,25 @@ kundi TestAbstractAsyncContextManager(unittest.TestCase):
             async eleza __aenter__(self):
                 rudisha self
             async eleza __aexit__(self, exc_type, exc_value, traceback):
-                rudisha None
+                rudisha Tupu
 
-        self.assertTrue(issubclass(ManagerFromScratch, AbstractAsyncContextManager))
+        self.assertKweli(issubclass(ManagerFromScratch, AbstractAsyncContextManager))
 
         kundi DefaultEnter(AbstractAsyncContextManager):
             async eleza __aexit__(self, *args):
                 await super().__aexit__(*args)
 
-        self.assertTrue(issubclass(DefaultEnter, AbstractAsyncContextManager))
+        self.assertKweli(issubclass(DefaultEnter, AbstractAsyncContextManager))
 
-        kundi NoneAenter(ManagerFromScratch):
-            __aenter__ = None
+        kundi TupuAenter(ManagerFromScratch):
+            __aenter__ = Tupu
 
-        self.assertFalse(issubclass(NoneAenter, AbstractAsyncContextManager))
+        self.assertUongo(issubclass(TupuAenter, AbstractAsyncContextManager))
 
-        kundi NoneAexit(ManagerFromScratch):
-            __aexit__ = None
+        kundi TupuAexit(ManagerFromScratch):
+            __aexit__ = Tupu
 
-        self.assertFalse(issubclass(NoneAexit, AbstractAsyncContextManager))
+        self.assertUongo(issubclass(TupuAexit, AbstractAsyncContextManager))
 
 
 kundi AsyncContextManagerTestCase(unittest.TestCase):
@@ -99,9 +99,9 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async eleza woohoo():
             state.append(1)
-            yield 42
+            tuma 42
             state.append(999)
-        async with woohoo() as x:
+        async with woohoo() kama x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
@@ -113,75 +113,75 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async eleza woohoo():
             state.append(1)
-            try:
-                yield 42
-            finally:
+            jaribu:
+                tuma 42
+            mwishowe:
                 state.append(999)
         with self.assertRaises(ZeroDivisionError):
-            async with woohoo() as x:
+            async with woohoo() kama x:
                 self.assertEqual(state, [1])
                 self.assertEqual(x, 42)
                 state.append(x)
-                raise ZeroDivisionError()
+                ashiria ZeroDivisionError()
         self.assertEqual(state, [1, 42, 999])
 
     @_async_test
-    async eleza test_contextmanager_no_reraise(self):
+    async eleza test_contextmanager_no_reashiria(self):
         @asynccontextmanager
         async eleza whee():
-            yield
+            tuma
         ctx = whee()
         await ctx.__aenter__()
-        # Calling __aexit__ should not result in an exception
-        self.assertFalse(await ctx.__aexit__(TypeError, TypeError("foo"), None))
+        # Calling __aexit__ should sio result kwenye an exception
+        self.assertUongo(await ctx.__aexit__(TypeError, TypeError("foo"), Tupu))
 
     @_async_test
-    async eleza test_contextmanager_trap_yield_after_throw(self):
+    async eleza test_contextmanager_trap_tuma_after_throw(self):
         @asynccontextmanager
         async eleza whoo():
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                yield
+                tuma
         ctx = whoo()
         await ctx.__aenter__()
         with self.assertRaises(RuntimeError):
-            await ctx.__aexit__(TypeError, TypeError('foo'), None)
+            await ctx.__aexit__(TypeError, TypeError('foo'), Tupu)
 
     @_async_test
-    async eleza test_contextmanager_trap_no_yield(self):
+    async eleza test_contextmanager_trap_no_tuma(self):
         @asynccontextmanager
         async eleza whoo():
-            ikiwa False:
-                yield
+            ikiwa Uongo:
+                tuma
         ctx = whoo()
         with self.assertRaises(RuntimeError):
             await ctx.__aenter__()
 
     @_async_test
-    async eleza test_contextmanager_trap_second_yield(self):
+    async eleza test_contextmanager_trap_second_tuma(self):
         @asynccontextmanager
         async eleza whoo():
-            yield
-            yield
+            tuma
+            tuma
         ctx = whoo()
         await ctx.__aenter__()
         with self.assertRaises(RuntimeError):
-            await ctx.__aexit__(None, None, None)
+            await ctx.__aexit__(Tupu, Tupu, Tupu)
 
     @_async_test
     async eleza test_contextmanager_non_normalised(self):
         @asynccontextmanager
         async eleza whoo():
-            try:
-                yield
-            except RuntimeError:
-                raise SyntaxError
+            jaribu:
+                tuma
+            tatizo RuntimeError:
+                ashiria SyntaxError
 
         ctx = whoo()
         await ctx.__aenter__()
         with self.assertRaises(SyntaxError):
-            await ctx.__aexit__(RuntimeError, None, None)
+            await ctx.__aexit__(RuntimeError, Tupu, Tupu)
 
     @_async_test
     async eleza test_contextmanager_except(self):
@@ -189,58 +189,58 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async eleza woohoo():
             state.append(1)
-            try:
-                yield 42
-            except ZeroDivisionError as e:
+            jaribu:
+                tuma 42
+            tatizo ZeroDivisionError kama e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
-        async with woohoo() as x:
+        async with woohoo() kama x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
-            raise ZeroDivisionError(999)
+            ashiria ZeroDivisionError(999)
         self.assertEqual(state, [1, 42, 999])
 
     @_async_test
     async eleza test_contextmanager_except_stopiter(self):
         @asynccontextmanager
         async eleza woohoo():
-            yield
+            tuma
 
-        for stop_exc in (StopIteration('spam'), StopAsyncIteration('ham')):
+        kila stop_exc kwenye (StopIteration('spam'), StopAsyncIteration('ham')):
             with self.subTest(type=type(stop_exc)):
-                try:
+                jaribu:
                     async with woohoo():
-                        raise stop_exc
-                except Exception as ex:
+                        ashiria stop_exc
+                tatizo Exception kama ex:
                     self.assertIs(ex, stop_exc)
-                else:
+                isipokua:
                     self.fail(f'{stop_exc} was suppressed')
 
     @_async_test
     async eleza test_contextmanager_wrap_runtimeerror(self):
         @asynccontextmanager
         async eleza woohoo():
-            try:
-                yield
-            except Exception as exc:
-                raise RuntimeError(f'caught {exc}') kutoka exc
+            jaribu:
+                tuma
+            tatizo Exception kama exc:
+                ashiria RuntimeError(f'caught {exc}') kutoka exc
 
         with self.assertRaises(RuntimeError):
             async with woohoo():
                 1 / 0
 
-        # If the context manager wrapped StopAsyncIteration in a RuntimeError,
+        # If the context manager wrapped StopAsyncIteration kwenye a RuntimeError,
         # we also unwrap it, because we can't tell whether the wrapping was
-        # done by the generator machinery or by the generator itself.
+        # done by the generator machinery ama by the generator itself.
         with self.assertRaises(StopAsyncIteration):
             async with woohoo():
-                raise StopAsyncIteration
+                ashiria StopAsyncIteration
 
     eleza _create_contextmanager_attribs(self):
         eleza attribs(**kw):
             eleza decorate(func):
-                for k,v in kw.items():
+                kila k,v kwenye kw.items():
                     setattr(func,k,v)
                 rudisha func
             rudisha decorate
@@ -248,7 +248,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
         @attribs(foo='bar')
         async eleza baz(spam):
             """Whee!"""
-            yield
+            tuma
         rudisha baz
 
     eleza test_contextmanager_attribs(self):
@@ -264,18 +264,18 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
     @support.requires_docstrings
     @_async_test
     async eleza test_instance_docstring_given_cm_docstring(self):
-        baz = self._create_contextmanager_attribs()(None)
+        baz = self._create_contextmanager_attribs()(Tupu)
         self.assertEqual(baz.__doc__, "Whee!")
         async with baz:
-            pass  # suppress warning
+            pita  # suppress warning
 
     @_async_test
     async eleza test_keywords(self):
         # Ensure no keyword arguments are inhibited
         @asynccontextmanager
         async eleza woohoo(self, func, args, kwds):
-            yield (self, func, args, kwds)
-        async with woohoo(self=11, func=22, args=33, kwds=44) as target:
+            tuma (self, func, args, kwds)
+        async with woohoo(self=11, func=22, args=33, kwds=44) kama target:
             self.assertEqual(target, (11, 22, 33, 44))
 
 
@@ -291,16 +291,16 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
             exc = f.exception()
 
-            ikiwa not exc:
+            ikiwa sio exc:
                 rudisha f.result()
-            else:
+            isipokua:
                 context = exc.__context__
 
-                try:
-                    raise exc
+                jaribu:
+                    ashiria exc
                 except:
                     exc.__context__ = context
-                    raise exc
+                    ashiria exc
 
         eleza close(self):
             rudisha self.run_coroutine(self.aclose())
@@ -317,7 +317,7 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
         self.addCleanup(self.loop.close)
-        self.addCleanup(asyncio.set_event_loop_policy, None)
+        self.addCleanup(asyncio.set_event_loop_policy, Tupu)
 
     @_async_test
     async eleza test_async_callback(self):
@@ -334,26 +334,26 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             """Test metadata propagation"""
             result.append((args, kwds))
 
-        async with AsyncExitStack() as stack:
-            for args, kwds in reversed(expected):
-                ikiwa args and kwds:
+        async with AsyncExitStack() kama stack:
+            kila args, kwds kwenye reversed(expected):
+                ikiwa args na kwds:
                     f = stack.push_async_callback(_exit, *args, **kwds)
                 elikiwa args:
                     f = stack.push_async_callback(_exit, *args)
                 elikiwa kwds:
                     f = stack.push_async_callback(_exit, **kwds)
-                else:
+                isipokua:
                     f = stack.push_async_callback(_exit)
                 self.assertIs(f, _exit)
-            for wrapper in stack._exit_callbacks:
+            kila wrapper kwenye stack._exit_callbacks:
                 self.assertIs(wrapper[1].__wrapped__, _exit)
                 self.assertNotEqual(wrapper[1].__name__, _exit.__name__)
-                self.assertIsNone(wrapper[1].__doc__, _exit.__doc__)
+                self.assertIsTupu(wrapper[1].__doc__, _exit.__doc__)
 
         self.assertEqual(result, expected)
 
         result = []
-        async with AsyncExitStack() as stack:
+        async with AsyncExitStack() kama stack:
             with self.assertRaises(TypeError):
                 stack.push_async_callback(arg=1)
             with self.assertRaises(TypeError):
@@ -364,24 +364,24 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
     @_async_test
     async eleza test_async_push(self):
-        exc_raised = ZeroDivisionError
+        exc_ashiriad = ZeroDivisionError
         async eleza _expect_exc(exc_type, exc, exc_tb):
-            self.assertIs(exc_type, exc_raised)
+            self.assertIs(exc_type, exc_ashiriad)
         async eleza _suppress_exc(*exc_details):
-            rudisha True
+            rudisha Kweli
         async eleza _expect_ok(exc_type, exc, exc_tb):
-            self.assertIsNone(exc_type)
-            self.assertIsNone(exc)
-            self.assertIsNone(exc_tb)
+            self.assertIsTupu(exc_type)
+            self.assertIsTupu(exc)
+            self.assertIsTupu(exc_tb)
         kundi ExitCM(object):
             eleza __init__(self, check_exc):
                 self.check_exc = check_exc
             async eleza __aenter__(self):
-                self.fail("Should not be called!")
+                self.fail("Should sio be called!")
             async eleza __aexit__(self, *exc_details):
                 await self.check_exc(*exc_details)
 
-        async with self.exit_stack() as stack:
+        async with self.exit_stack() kama stack:
             stack.push_async_exit(_expect_ok)
             self.assertIs(stack._exit_callbacks[-1][1], _expect_ok)
             cm = ExitCM(_expect_ok)
@@ -409,11 +409,11 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         result = []
         cm = TestCM()
 
-        async with AsyncExitStack() as stack:
+        async with AsyncExitStack() kama stack:
             @stack.push_async_callback  # Registered first => cleaned up last
             async eleza _exit():
                 result.append(4)
-            self.assertIsNotNone(_exit)
+            self.assertIsNotTupu(_exit)
             await stack.enter_async_context(cm)
             self.assertIs(stack._exit_callbacks[-1][1].__self__, cm)
             result.append(2)
@@ -423,30 +423,30 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
     @_async_test
     async eleza test_async_exit_exception_chaining(self):
         # Ensure exception chaining matches the reference behaviour
-        async eleza raise_exc(exc):
-            raise exc
+        async eleza ashiria_exc(exc):
+            ashiria exc
 
-        saved_details = None
+        saved_details = Tupu
         async eleza suppress_exc(*exc_details):
             nonlocal saved_details
             saved_details = exc_details
-            rudisha True
+            rudisha Kweli
 
-        try:
-            async with self.exit_stack() as stack:
-                stack.push_async_callback(raise_exc, IndexError)
-                stack.push_async_callback(raise_exc, KeyError)
-                stack.push_async_callback(raise_exc, AttributeError)
+        jaribu:
+            async with self.exit_stack() kama stack:
+                stack.push_async_callback(ashiria_exc, IndexError)
+                stack.push_async_callback(ashiria_exc, KeyError)
+                stack.push_async_callback(ashiria_exc, AttributeError)
                 stack.push_async_exit(suppress_exc)
-                stack.push_async_callback(raise_exc, ValueError)
+                stack.push_async_callback(ashiria_exc, ValueError)
                 1 / 0
-        except IndexError as exc:
+        tatizo IndexError kama exc:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
-            self.assertIsNone(exc.__context__.__context__.__context__)
-        else:
-            self.fail("Expected IndexError, but no exception was raised")
+            self.assertIsTupu(exc.__context__.__context__.__context__)
+        isipokua:
+            self.fail("Expected IndexError, but no exception was ashiriad")
         # Check the inner exceptions
         inner_exc = saved_details[1]
         self.assertIsInstance(inner_exc, ValueError)

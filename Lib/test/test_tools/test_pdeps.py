@@ -1,4 +1,4 @@
-"""Tests for the pdeps script in the Tools directory."""
+"""Tests kila the pdeps script kwenye the Tools directory."""
 
 agiza os
 agiza unittest
@@ -16,10 +16,10 @@ kundi PdepsTests(unittest.TestCase):
         self.pdeps = import_tool('pdeps')
 
     eleza test_process_errors(self):
-        # Issue #14492: m_agiza.match(line) can be None.
-        with tempfile.TemporaryDirectory() as tmpdir:
+        # Issue #14492: m_agiza.match(line) can be Tupu.
+        with tempfile.TemporaryDirectory() kama tmpdir:
             fn = os.path.join(tmpdir, 'foo')
-            with open(fn, 'w') as stream:
+            with open(fn, 'w') kama stream:
                 stream.write("#!/this/will/fail")
             self.pdeps.process(fn, {})
 

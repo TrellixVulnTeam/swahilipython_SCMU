@@ -1,4 +1,4 @@
-# xml.etree test for cElementTree
+# xml.etree test kila cElementTree
 agiza io
 agiza struct
 kutoka test agiza support
@@ -10,60 +10,60 @@ cET = import_fresh_module('xml.etree.ElementTree',
                           fresh=['_elementtree'])
 cET_alias = import_fresh_module('xml.etree.cElementTree',
                                 fresh=['_elementtree', 'xml.etree'],
-                                deprecated=True)
+                                deprecated=Kweli)
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 kundi MiscTests(unittest.TestCase):
     # Issue #8651.
-    @support.bigmemtest(size=support._2G + 100, memuse=1, dry_run=False)
+    @support.bigmemtest(size=support._2G + 100, memuse=1, dry_run=Uongo)
     eleza test_length_overflow(self, size):
         data = b'x' * size
         parser = cET.XMLParser()
-        try:
+        jaribu:
             self.assertRaises(OverflowError, parser.feed, data)
-        finally:
-            data = None
+        mwishowe:
+            data = Tupu
 
     eleza test_del_attribute(self):
         element = cET.Element('tag')
 
         element.tag = 'TAG'
         with self.assertRaises(AttributeError):
-            del element.tag
+            toa element.tag
         self.assertEqual(element.tag, 'TAG')
 
         with self.assertRaises(AttributeError):
-            del element.text
-        self.assertIsNone(element.text)
+            toa element.text
+        self.assertIsTupu(element.text)
         element.text = 'TEXT'
         with self.assertRaises(AttributeError):
-            del element.text
+            toa element.text
         self.assertEqual(element.text, 'TEXT')
 
         with self.assertRaises(AttributeError):
-            del element.tail
-        self.assertIsNone(element.tail)
+            toa element.tail
+        self.assertIsTupu(element.tail)
         element.tail = 'TAIL'
         with self.assertRaises(AttributeError):
-            del element.tail
+            toa element.tail
         self.assertEqual(element.tail, 'TAIL')
 
         with self.assertRaises(AttributeError):
-            del element.attrib
+            toa element.attrib
         self.assertEqual(element.attrib, {})
         element.attrib = {'A': 'B', 'C': 'D'}
         with self.assertRaises(AttributeError):
-            del element.attrib
+            toa element.attrib
         self.assertEqual(element.attrib, {'A': 'B', 'C': 'D'})
 
     eleza test_trashcan(self):
         # If this test fails, it will most likely die via segfault.
         e = root = cET.Element('root')
-        for i in range(200000):
+        kila i kwenye range(200000):
             e = cET.SubElement(e, 'x')
-        del e
-        del root
+        toa e
+        toa root
         support.gc_collect()
 
     eleza test_parser_ref_cycle(self):
@@ -75,21 +75,21 @@ kundi MiscTests(unittest.TestCase):
             parser = cET.XMLParser()
             # Create a reference cycle using an exception to keep the frame
             # alive, so the parser will be destroyed by the garbage collector
-            try:
-                raise ValueError
-            except ValueError as exc:
+            jaribu:
+                ashiria ValueError
+            tatizo ValueError kama exc:
                 err = exc
 
         # Create a parser part of reference cycle
         parser_ref_cycle()
-        # Trigger an explicit garbage collection to break the reference cycle
-        # and so destroy the parser
+        # Trigger an explicit garbage collection to koma the reference cycle
+        # na so destroy the parser
         support.gc_collect()
 
     eleza test_bpo_31728(self):
-        # A crash or an assertion failure shouldn't happen, in case garbage
-        # collection triggers a call to clear() or a reading of text or tail,
-        # while a setter or clear() or __setstate__() is already running.
+        # A crash ama an assertion failure shouldn't happen, kwenye case garbage
+        # collection triggers a call to clear() ama a reading of text ama tail,
+        # wakati a setter ama clear() ama __setstate__() ni already running.
         elem = cET.Element('elem')
         kundi X:
             eleza __del__(self):
@@ -121,7 +121,7 @@ kundi MiscTests(unittest.TestCase):
     eleza test_setstate_leaks(self):
         # Test reference leaks
         elem = cET.Element.__new__(cET.Element)
-        for i in range(100):
+        kila i kwenye range(100):
             elem.__setstate__({'tag': 'foo', 'attrib': {'bar': 42},
                                '_children': [cET.Element('child')],
                                'text': 'text goes here',
@@ -135,29 +135,29 @@ kundi MiscTests(unittest.TestCase):
         self.assertEqual(elem[0].tag, 'child')
 
     eleza test_iterparse_leaks(self):
-        # Test reference leaks in TreeBuilder (issue #35502).
-        # The test is written to be executed in the hunting reference leaks
+        # Test reference leaks kwenye TreeBuilder (issue #35502).
+        # The test ni written to be executed kwenye the hunting reference leaks
         # mode.
         XML = '<a></a></b>'
         parser = cET.iterparse(io.StringIO(XML))
         next(parser)
-        del parser
+        toa parser
         support.gc_collect()
 
     eleza test_xmlpullparser_leaks(self):
-        # Test reference leaks in TreeBuilder (issue #35502).
-        # The test is written to be executed in the hunting reference leaks
+        # Test reference leaks kwenye TreeBuilder (issue #35502).
+        # The test ni written to be executed kwenye the hunting reference leaks
         # mode.
         XML = '<a></a></b>'
         parser = cET.XMLPullParser()
         parser.feed(XML)
-        del parser
+        toa parser
         support.gc_collect()
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 kundi TestAliasWorking(unittest.TestCase):
-    # Test that the cET alias module is alive
+    # Test that the cET alias module ni alive
     eleza test_alias_working(self):
         e = cET_alias.Element('foo')
         self.assertEqual(e.tag, 'foo')
@@ -166,17 +166,17 @@ kundi TestAliasWorking(unittest.TestCase):
 @unittest.skipUnless(cET, 'requires _elementtree')
 @support.cpython_only
 kundi TestAcceleratorImported(unittest.TestCase):
-    # Test that the C accelerator was imported, as expected
+    # Test that the C accelerator was imported, kama expected
     eleza test_correct_import_cET(self):
-        # SubElement is a function so it retains _elementtree as its module.
+        # SubElement ni a function so it retains _elementtree kama its module.
         self.assertEqual(cET.SubElement.__module__, '_elementtree')
 
     eleza test_correct_import_cET_alias(self):
         self.assertEqual(cET_alias.SubElement.__module__, '_elementtree')
 
     eleza test_parser_comes_kutoka_C(self):
-        # The type of methods defined in Python code is types.FunctionType,
-        # while the type of methods defined inside _elementtree is
+        # The type of methods defined kwenye Python code ni types.FunctionType,
+        # wakati the type of methods defined inside _elementtree is
         # <kundi 'wrapper_descriptor'>
         self.assertNotIsInstance(cET.Element.__init__, types.FunctionType)
 
@@ -201,9 +201,9 @@ kundi SizeofTest(unittest.TestCase):
 
     eleza test_element_with_children(self):
         e = cET.Element('a')
-        for i in range(5):
+        kila i kwenye range(5):
             cET.SubElement(e, 'span')
-        # should have space for 8 children now
+        # should have space kila 8 children now
         self.check_sizeof(e, self.elementsize + self.extra +
                              struct.calcsize('8P'))
 
@@ -218,7 +218,7 @@ eleza test_main():
         SizeofTest,
         )
 
-    # Run the same test suite as the Python module
+    # Run the same test suite kama the Python module
     test_xml_etree.test_main(module=cET)
 
 

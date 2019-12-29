@@ -1,4 +1,4 @@
-"""Tests for sys.audit and sys.addaudithook
+"""Tests kila sys.audit na sys.addaudithook
 """
 
 agiza subprocess
@@ -6,8 +6,8 @@ agiza sys
 agiza unittest
 kutoka test agiza support
 
-ikiwa not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):
-    raise unittest.SkipTest("test only relevant when sys.audit is available")
+ikiwa sio hasattr(sys, "addaudithook") ama sio hasattr(sys, "audit"):
+    ashiria unittest.SkipTest("test only relevant when sys.audit ni available")
 
 AUDIT_TESTS_PY = support.findfile("audit-tests.py")
 
@@ -19,7 +19,7 @@ kundi AuditTest(unittest.TestCase):
             encoding="utf-8",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-        ) as p:
+        ) kama p:
             p.wait()
             sys.stdout.writelines(p.stdout)
             sys.stderr.writelines(p.stderr)
@@ -42,9 +42,9 @@ kundi AuditTest(unittest.TestCase):
             encoding="utf-8",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-        ) as p:
+        ) kama p:
             p.wait()
-            for line in p.stdout:
+            kila line kwenye p.stdout:
                 events.append(line.strip().partition(" "))
             sys.stderr.writelines(p.stderr)
             ikiwa p.returncode:

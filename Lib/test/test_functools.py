@@ -27,13 +27,13 @@ decimal = support.import_fresh_module('decimal', fresh=['_decimal'])
 eleza replaced_module(name, replacement):
     original_module = sys.modules[name]
     sys.modules[name] = replacement
-    try:
-        yield
-    finally:
+    jaribu:
+        tuma
+    mwishowe:
         sys.modules[name] = original_module
 
 eleza capture(*args, **kw):
-    """capture all positional and keyword arguments"""
+    """capture all positional na keyword arguments"""
     rudisha args, kw
 
 
@@ -42,21 +42,21 @@ eleza signature(part):
     rudisha (part.func, part.args, part.keywords, part.__dict__)
 
 kundi MyTuple(tuple):
-    pass
+    pita
 
 kundi BadTuple(tuple):
     eleza __add__(self, other):
         rudisha list(self) + list(other)
 
 kundi MyDict(dict):
-    pass
+    pita
 
 
 kundi TestPartial:
 
     eleza test_basic_examples(self):
         p = self.partial(capture, 1, 2, a=10, b=20)
-        self.assertTrue(callable(p))
+        self.assertKweli(callable(p))
         self.assertEqual(p(3, 4, b=30, c=40),
                          ((1, 2, 3, 4), dict(a=10, b=30, c=40)))
         p = self.partial(map, lambda x: x*10)
@@ -71,15 +71,15 @@ kundi TestPartial:
 
     eleza test_argument_checking(self):
         self.assertRaises(TypeError, self.partial)     # need at least a func arg
-        try:
+        jaribu:
             self.partial(2)()
-        except TypeError:
-            pass
-        else:
-            self.fail('First arg not checked for callability')
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail('First arg sio checked kila callability')
 
     eleza test_protection_of_callers_dict_argument(self):
-        # a caller's dictionary should not be altered by partial
+        # a caller's dictionary should sio be altered by partial
         eleza func(a=10, b=20):
             rudisha a
         d = {'a':3}
@@ -90,8 +90,8 @@ kundi TestPartial:
         self.assertEqual(d, {'a':3})
 
     eleza test_kwargs_copy(self):
-        # Issue #29532: Altering a kwarg dictionary passed to a constructor
-        # should not affect a partial object after creation
+        # Issue #29532: Altering a kwarg dictionary pitaed to a constructor
+        # should sio affect a partial object after creation
         d = {'a': 3}
         p = self.partial(capture, **d)
         self.assertEqual(p(), ((), {'a': 3}))
@@ -99,8 +99,8 @@ kundi TestPartial:
         self.assertEqual(p(), ((), {'a': 3}))
 
     eleza test_arg_combinations(self):
-        # exercise special code paths for zero args in either partial
-        # object or the caller
+        # exercise special code paths kila zero args kwenye either partial
+        # object ama the caller
         p = self.partial(capture)
         self.assertEqual(p(), ((), {}))
         self.assertEqual(p(1,2), ((1,2), {}))
@@ -109,8 +109,8 @@ kundi TestPartial:
         self.assertEqual(p(3,4), ((1,2,3,4), {}))
 
     eleza test_kw_combinations(self):
-        # exercise special code paths for no keyword args in
-        # either the partial object or the caller
+        # exercise special code paths kila no keyword args in
+        # either the partial object ama the caller
         p = self.partial(capture)
         self.assertEqual(p.keywords, {})
         self.assertEqual(p(), ((), {}))
@@ -119,32 +119,32 @@ kundi TestPartial:
         self.assertEqual(p.keywords, {'a':1})
         self.assertEqual(p(), ((), {'a':1}))
         self.assertEqual(p(b=2), ((), {'a':1, 'b':2}))
-        # keyword args in the call override those in the partial object
+        # keyword args kwenye the call override those kwenye the partial object
         self.assertEqual(p(a=3, b=2), ((), {'a':3, 'b':2}))
 
     eleza test_positional(self):
         # make sure positional arguments are captured correctly
-        for args in [(), (0,), (0,1), (0,1,2), (0,1,2,3)]:
+        kila args kwenye [(), (0,), (0,1), (0,1,2), (0,1,2,3)]:
             p = self.partial(capture, *args)
             expected = args + ('x',)
             got, empty = p('x')
-            self.assertTrue(expected == got and empty == {})
+            self.assertKweli(expected == got na empty == {})
 
     eleza test_keyword(self):
         # make sure keyword arguments are captured correctly
-        for a in ['a', 0, None, 3.5]:
+        kila a kwenye ['a', 0, Tupu, 3.5]:
             p = self.partial(capture, a=a)
-            expected = {'a':a,'x':None}
-            empty, got = p(x=None)
-            self.assertTrue(expected == got and empty == ())
+            expected = {'a':a,'x':Tupu}
+            empty, got = p(x=Tupu)
+            self.assertKweli(expected == got na empty == ())
 
     eleza test_no_side_effects(self):
         # make sure there are no side effects that affect subsequent calls
         p = self.partial(capture, 0, a=1)
         args1, kw1 = p(1, b=2)
-        self.assertTrue(args1 == (0,1) and kw1 == {'a':1,'b':2})
+        self.assertKweli(args1 == (0,1) na kw1 == {'a':1,'b':2})
         args2, kw2 = p()
-        self.assertTrue(args2 == (0,) and kw2 == {'a':1})
+        self.assertKweli(args2 == (0,) na kw2 == {'a':1})
 
     eleza test_error_propagation(self):
         eleza f(x, y):
@@ -158,7 +158,7 @@ kundi TestPartial:
         f = self.partial(int, base=16)
         p = proxy(f)
         self.assertEqual(f.func, p.func)
-        f = None
+        f = Tupu
         self.assertRaises(ReferenceError, getattr, p, 'func')
 
     eleza test_with_bound_and_unbound_methods(self):
@@ -171,8 +171,8 @@ kundi TestPartial:
     eleza test_nested_optimization(self):
         partial = self.partial
         inner = partial(signature, 'asdf')
-        nested = partial(inner, bar=True)
-        flat = partial(signature, 'asdf', bar=True)
+        nested = partial(inner, bar=Kweli)
+        flat = partial(signature, 'asdf', bar=Kweli)
         self.assertEqual(signature(nested), signature(flat))
 
     eleza test_nested_partial_with_attribute(self):
@@ -189,13 +189,13 @@ kundi TestPartial:
 
     eleza test_repr(self):
         args = (object(), object())
-        args_repr = ', '.join(repr(a) for a in args)
+        args_repr = ', '.join(repr(a) kila a kwenye args)
         kwargs = {'a': object(), 'b': object()}
         kwargs_reprs = ['a={a!r}, b={b!r}'.format_map(kwargs),
                         'b={b!r}, a={a!r}'.format_map(kwargs)]
-        ikiwa self.partial in (c_functools.partial, py_functools.partial):
+        ikiwa self.partial kwenye (c_functools.partial, py_functools.partial):
             name = 'functools.partial'
-        else:
+        isipokua:
             name = self.partial.__name__
 
         f = self.partial(capture)
@@ -207,50 +207,50 @@ kundi TestPartial:
         f = self.partial(capture, **kwargs)
         self.assertIn(repr(f),
                       [f'{name}({capture!r}, {kwargs_repr})'
-                       for kwargs_repr in kwargs_reprs])
+                       kila kwargs_repr kwenye kwargs_reprs])
 
         f = self.partial(capture, *args, **kwargs)
         self.assertIn(repr(f),
                       [f'{name}({capture!r}, {args_repr}, {kwargs_repr})'
-                       for kwargs_repr in kwargs_reprs])
+                       kila kwargs_repr kwenye kwargs_reprs])
 
     eleza test_recursive_repr(self):
-        ikiwa self.partial in (c_functools.partial, py_functools.partial):
+        ikiwa self.partial kwenye (c_functools.partial, py_functools.partial):
             name = 'functools.partial'
-        else:
+        isipokua:
             name = self.partial.__name__
 
         f = self.partial(capture)
         f.__setstate__((f, (), {}, {}))
-        try:
+        jaribu:
             self.assertEqual(repr(f), '%s(...)' % (name,))
-        finally:
+        mwishowe:
             f.__setstate__((capture, (), {}, {}))
 
         f = self.partial(capture)
         f.__setstate__((capture, (f,), {}, {}))
-        try:
+        jaribu:
             self.assertEqual(repr(f), '%s(%r, ...)' % (name, capture,))
-        finally:
+        mwishowe:
             f.__setstate__((capture, (), {}, {}))
 
         f = self.partial(capture)
         f.__setstate__((capture, (), {'a': f}, {}))
-        try:
+        jaribu:
             self.assertEqual(repr(f), '%s(%r, a=...)' % (name, capture,))
-        finally:
+        mwishowe:
             f.__setstate__((capture, (), {}, {}))
 
     eleza test_pickle(self):
         with self.AllowPickle():
-            f = self.partial(signature, ['asdf'], bar=[True])
+            f = self.partial(signature, ['asdf'], bar=[Kweli])
             f.attr = []
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 f_copy = pickle.loads(pickle.dumps(f, proto))
                 self.assertEqual(signature(f_copy), signature(f))
 
     eleza test_copy(self):
-        f = self.partial(signature, ['asdf'], bar=[True])
+        f = self.partial(signature, ['asdf'], bar=[Kweli])
         f.attr = []
         f_copy = copy.copy(f)
         self.assertEqual(signature(f_copy), signature(f))
@@ -259,7 +259,7 @@ kundi TestPartial:
         self.assertIs(f_copy.keywords, f.keywords)
 
     eleza test_deepcopy(self):
-        f = self.partial(signature, ['asdf'], bar=[True])
+        f = self.partial(signature, ['asdf'], bar=[Kweli])
         f.attr = []
         f_copy = copy.deepcopy(f)
         self.assertEqual(signature(f_copy), signature(f))
@@ -277,18 +277,18 @@ kundi TestPartial:
                          (capture, (1,), dict(a=10), dict(attr=[])))
         self.assertEqual(f(2, b=20), ((1, 2), {'a': 10, 'b': 20}))
 
-        f.__setstate__((capture, (1,), dict(a=10), None))
+        f.__setstate__((capture, (1,), dict(a=10), Tupu))
 
         self.assertEqual(signature(f), (capture, (1,), dict(a=10), {}))
         self.assertEqual(f(2, b=20), ((1, 2), {'a': 10, 'b': 20}))
 
-        f.__setstate__((capture, (1,), None, None))
+        f.__setstate__((capture, (1,), Tupu, Tupu))
         #self.assertEqual(signature(f), (capture, (1,), {}, {}))
         self.assertEqual(f(2, b=20), ((1, 2), {'b': 20}))
         self.assertEqual(f(2), ((1, 2), {}))
         self.assertEqual(f(), ((1,), {}))
 
-        f.__setstate__((capture, (), {}, None))
+        f.__setstate__((capture, (), {}, Tupu))
         self.assertEqual(signature(f), (capture, (), {}, {}))
         self.assertEqual(f(2, b=20), ((2,), {'b': 20}))
         self.assertEqual(f(2), ((2,), {}))
@@ -297,16 +297,16 @@ kundi TestPartial:
     eleza test_setstate_errors(self):
         f = self.partial(signature)
         self.assertRaises(TypeError, f.__setstate__, (capture, (), {}))
-        self.assertRaises(TypeError, f.__setstate__, (capture, (), {}, {}, None))
-        self.assertRaises(TypeError, f.__setstate__, [capture, (), {}, None])
-        self.assertRaises(TypeError, f.__setstate__, (None, (), {}, None))
-        self.assertRaises(TypeError, f.__setstate__, (capture, None, {}, None))
-        self.assertRaises(TypeError, f.__setstate__, (capture, [], {}, None))
-        self.assertRaises(TypeError, f.__setstate__, (capture, (), [], None))
+        self.assertRaises(TypeError, f.__setstate__, (capture, (), {}, {}, Tupu))
+        self.assertRaises(TypeError, f.__setstate__, [capture, (), {}, Tupu])
+        self.assertRaises(TypeError, f.__setstate__, (Tupu, (), {}, Tupu))
+        self.assertRaises(TypeError, f.__setstate__, (capture, Tupu, {}, Tupu))
+        self.assertRaises(TypeError, f.__setstate__, (capture, [], {}, Tupu))
+        self.assertRaises(TypeError, f.__setstate__, (capture, (), [], Tupu))
 
     eleza test_setstate_subclasses(self):
         f = self.partial(signature)
-        f.__setstate__((capture, MyTuple((1,)), MyDict(a=10), None))
+        f.__setstate__((capture, MyTuple((1,)), MyDict(a=10), Tupu))
         s = signature(f)
         self.assertEqual(s, (capture, (1,), dict(a=10), {}))
         self.assertIs(type(s[1]), tuple)
@@ -316,7 +316,7 @@ kundi TestPartial:
         self.assertIs(type(r[0]), tuple)
         self.assertIs(type(r[1]), dict)
 
-        f.__setstate__((capture, BadTuple((1,)), {}, None))
+        f.__setstate__((capture, BadTuple((1,)), {}, Tupu))
         s = signature(f)
         self.assertEqual(s, (capture, (1,), {}, {}))
         self.assertIs(type(s[1]), tuple)
@@ -328,35 +328,35 @@ kundi TestPartial:
         with self.AllowPickle():
             f = self.partial(capture)
             f.__setstate__((f, (), {}, {}))
-            try:
-                for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            jaribu:
+                kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                     with self.assertRaises(RecursionError):
                         pickle.dumps(f, proto)
-            finally:
+            mwishowe:
                 f.__setstate__((capture, (), {}, {}))
 
             f = self.partial(capture)
             f.__setstate__((capture, (f,), {}, {}))
-            try:
-                for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            jaribu:
+                kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                     f_copy = pickle.loads(pickle.dumps(f, proto))
-                    try:
+                    jaribu:
                         self.assertIs(f_copy.args[0], f_copy)
-                    finally:
+                    mwishowe:
                         f_copy.__setstate__((capture, (), {}, {}))
-            finally:
+            mwishowe:
                 f.__setstate__((capture, (), {}, {}))
 
             f = self.partial(capture)
             f.__setstate__((capture, (), {'a': f}, {}))
-            try:
-                for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            jaribu:
+                kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                     f_copy = pickle.loads(pickle.dumps(f, proto))
-                    try:
+                    jaribu:
                         self.assertIs(f_copy.keywords['a'], f_copy)
-                    finally:
+                    mwishowe:
                         f_copy.__setstate__((capture, (), {}, {}))
-            finally:
+            mwishowe:
                 f.__setstate__((capture, (), {}, {}))
 
     # Issue 6083: Reference counting bug
@@ -369,9 +369,9 @@ kundi TestPartial:
                     rudisha max
                 elikiwa key == 1:
                     rudisha tuple(range(1000000))
-                elikiwa key in (2, 3):
+                elikiwa key kwenye (2, 3):
                     rudisha {}
-                raise IndexError
+                ashiria IndexError
 
         f = self.partial(object)
         self.assertRaises(TypeError, f.__setstate__, BadSequence())
@@ -385,21 +385,21 @@ kundi TestPartialC(TestPartial, unittest.TestCase):
         eleza __enter__(self):
             rudisha self
         eleza __exit__(self, type, value, tb):
-            rudisha False
+            rudisha Uongo
 
     eleza test_attributes_unwritable(self):
-        # attributes should not be writable
+        # attributes should sio be writable
         p = self.partial(capture, 1, 2, a=10, b=20)
         self.assertRaises(AttributeError, setattr, p, 'func', map)
         self.assertRaises(AttributeError, setattr, p, 'args', (1, 2))
         self.assertRaises(AttributeError, setattr, p, 'keywords', dict(a=1, b=2))
 
         p = self.partial(hex)
-        try:
-            del p.__dict__
-        except TypeError:
-            pass
-        else:
+        jaribu:
+            toa p.__dict__
+        tatizo TypeError:
+            pita
+        isipokua:
             self.fail('partial object allowed __dict__ to be deleted')
 
     eleza test_manually_adding_non_string_keyword(self):
@@ -441,18 +441,18 @@ kundi TestPartialPy(TestPartial, unittest.TestCase):
 
 ikiwa c_functools:
     kundi CPartialSubclass(c_functools.partial):
-        pass
+        pita
 
 kundi PyPartialSubclass(py_functools.partial):
-    pass
+    pita
 
 @unittest.skipUnless(c_functools, 'requires the C _functools module')
 kundi TestPartialCSubclass(TestPartialC):
     ikiwa c_functools:
         partial = CPartialSubclass
 
-    # partial subclasses are not optimized for nested calls
-    test_nested_optimization = None
+    # partial subclasses are sio optimized kila nested calls
+    test_nested_optimization = Tupu
 
 kundi TestPartialPySubclass(TestPartialPy):
     partial = PyPartialSubclass
@@ -526,14 +526,14 @@ kundi TestPartialMethod(unittest.TestCase):
 
     eleza test_unbound_method_retrieval(self):
         obj = self.A
-        self.assertFalse(hasattr(obj.both, "__self__"))
-        self.assertFalse(hasattr(obj.nested, "__self__"))
-        self.assertFalse(hasattr(obj.over_partial, "__self__"))
-        self.assertFalse(hasattr(obj.static, "__self__"))
-        self.assertFalse(hasattr(self.a.static, "__self__"))
+        self.assertUongo(hasattr(obj.both, "__self__"))
+        self.assertUongo(hasattr(obj.nested, "__self__"))
+        self.assertUongo(hasattr(obj.over_partial, "__self__"))
+        self.assertUongo(hasattr(obj.static, "__self__"))
+        self.assertUongo(hasattr(self.a.static, "__self__"))
 
     eleza test_descriptors(self):
-        for obj in [self.A, self.a]:
+        kila obj kwenye [self.A, self.a]:
             with self.subTest(obj=obj):
                 self.assertEqual(obj.static(), ((8,), {}))
                 self.assertEqual(obj.static(5), ((8, 5), {}))
@@ -552,7 +552,7 @@ kundi TestPartialMethod(unittest.TestCase):
     eleza test_invalid_args(self):
         with self.assertRaises(TypeError):
             kundi B(object):
-                method = functools.partialmethod(None, 1)
+                method = functools.partialmethod(Tupu, 1)
         with self.assertRaises(TypeError):
             kundi B:
                 method = functools.partialmethod()
@@ -571,15 +571,15 @@ kundi TestPartialMethod(unittest.TestCase):
 
             @abc.abstractmethod
             eleza add(self, x, y):
-                pass
+                pita
 
             add5 = functools.partialmethod(add, 5)
 
-        self.assertTrue(Abstract.add.__isabstractmethod__)
-        self.assertTrue(Abstract.add5.__isabstractmethod__)
+        self.assertKweli(Abstract.add.__isabstractmethod__)
+        self.assertKweli(Abstract.add5.__isabstractmethod__)
 
-        for func in [self.A.static, self.A.cls, self.A.over_partial, self.A.nested, self.A.both]:
-            self.assertFalse(getattr(func, '__isabstractmethod__', False))
+        kila func kwenye [self.A.static, self.A.cls, self.A.over_partial, self.A.nested, self.A.both]:
+            self.assertUongo(getattr(func, '__isabstractmethod__', Uongo))
 
     eleza test_positional_only(self):
         eleza f(a, b, /):
@@ -595,29 +595,29 @@ kundi TestUpdateWrapper(unittest.TestCase):
                       assigned=functools.WRAPPER_ASSIGNMENTS,
                       updated=functools.WRAPPER_UPDATES):
         # Check attributes were assigned
-        for name in assigned:
+        kila name kwenye assigned:
             self.assertIs(getattr(wrapper, name), getattr(wrapped, name))
         # Check attributes were updated
-        for name in updated:
+        kila name kwenye updated:
             wrapper_attr = getattr(wrapper, name)
             wrapped_attr = getattr(wrapped, name)
-            for key in wrapped_attr:
-                ikiwa name == "__dict__" and key == "__wrapped__":
-                    # __wrapped__ is overwritten by the update code
-                    continue
+            kila key kwenye wrapped_attr:
+                ikiwa name == "__dict__" na key == "__wrapped__":
+                    # __wrapped__ ni overwritten by the update code
+                    endelea
                 self.assertIs(wrapped_attr[key], wrapper_attr[key])
         # Check __wrapped__
         self.assertIs(wrapper.__wrapped__, wrapped)
 
 
     eleza _default_update(self):
-        eleza f(a:'This is a new annotation'):
-            """This is a test"""
-            pass
-        f.attr = 'This is also a test'
-        f.__wrapped__ = "This is a bald faced lie"
-        eleza wrapper(b:'This is the prior annotation'):
-            pass
+        eleza f(a:'This ni a new annotation'):
+            """This ni a test"""
+            pita
+        f.attr = 'This ni also a test'
+        f.__wrapped__ = "This ni a bald faced lie"
+        eleza wrapper(b:'This ni the prior annotation'):
+            pita
         functools.update_wrapper(wrapper, f)
         rudisha wrapper, f
 
@@ -627,38 +627,38 @@ kundi TestUpdateWrapper(unittest.TestCase):
         self.assertIs(wrapper.__wrapped__, f)
         self.assertEqual(wrapper.__name__, 'f')
         self.assertEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.attr, 'This is also a test')
-        self.assertEqual(wrapper.__annotations__['a'], 'This is a new annotation')
+        self.assertEqual(wrapper.attr, 'This ni also a test')
+        self.assertEqual(wrapper.__annotations__['a'], 'This ni a new annotation')
         self.assertNotIn('b', wrapper.__annotations__)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_default_update_doc(self):
         wrapper, f = self._default_update()
-        self.assertEqual(wrapper.__doc__, 'This is a test')
+        self.assertEqual(wrapper.__doc__, 'This ni a test')
 
     eleza test_no_update(self):
         eleza f():
-            """This is a test"""
-            pass
-        f.attr = 'This is also a test'
+            """This ni a test"""
+            pita
+        f.attr = 'This ni also a test'
         eleza wrapper():
-            pass
+            pita
         functools.update_wrapper(wrapper, f, (), ())
         self.check_wrapper(wrapper, f, (), ())
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
+        self.assertEqual(wrapper.__doc__, Tupu)
         self.assertEqual(wrapper.__annotations__, {})
-        self.assertFalse(hasattr(wrapper, 'attr'))
+        self.assertUongo(hasattr(wrapper, 'attr'))
 
     eleza test_selective_update(self):
         eleza f():
-            pass
-        f.attr = 'This is a different test'
+            pita
+        f.attr = 'This ni a different test'
         f.dict_attr = dict(a=1, b=2, c=3)
         eleza wrapper():
-            pass
+            pita
         wrapper.dict_attr = {}
         assign = ('attr',)
         update = ('dict_attr',)
@@ -666,15 +666,15 @@ kundi TestUpdateWrapper(unittest.TestCase):
         self.check_wrapper(wrapper, f, assign, update)
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
-        self.assertEqual(wrapper.attr, 'This is a different test')
+        self.assertEqual(wrapper.__doc__, Tupu)
+        self.assertEqual(wrapper.attr, 'This ni a different test')
         self.assertEqual(wrapper.dict_attr, f.dict_attr)
 
     eleza test_missing_attributes(self):
         eleza f():
-            pass
+            pita
         eleza wrapper():
-            pass
+            pita
         wrapper.dict_attr = {}
         assign = ('attr',)
         update = ('dict_attr',)
@@ -682,8 +682,8 @@ kundi TestUpdateWrapper(unittest.TestCase):
         functools.update_wrapper(wrapper, f, assign, update)
         self.assertNotIn('attr', wrapper.__dict__)
         self.assertEqual(wrapper.dict_attr, {})
-        # Wrapper must have expected attributes for updating
-        del wrapper.dict_attr
+        # Wrapper must have expected attributes kila updating
+        toa wrapper.dict_attr
         with self.assertRaises(AttributeError):
             functools.update_wrapper(wrapper, f, assign, update)
         wrapper.dict_attr = 1
@@ -692,14 +692,14 @@ kundi TestUpdateWrapper(unittest.TestCase):
 
     @support.requires_docstrings
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_builtin_update(self):
-        # Test for bug #1576241
+        # Test kila bug #1576241
         eleza wrapper():
-            pass
+            pita
         functools.update_wrapper(wrapper, max)
         self.assertEqual(wrapper.__name__, 'max')
-        self.assertTrue(wrapper.__doc__.startswith('max('))
+        self.assertKweli(wrapper.__doc__.startswith('max('))
         self.assertEqual(wrapper.__annotations__, {})
 
 
@@ -707,13 +707,13 @@ kundi TestWraps(TestUpdateWrapper):
 
     eleza _default_update(self):
         eleza f():
-            """This is a test"""
-            pass
-        f.attr = 'This is also a test'
-        f.__wrapped__ = "This is still a bald faced lie"
+            """This ni a test"""
+            pita
+        f.attr = 'This ni also a test'
+        f.__wrapped__ = "This ni still a bald faced lie"
         @functools.wraps(f)
         eleza wrapper():
-            pass
+            pita
         rudisha wrapper, f
 
     eleza test_default_update(self):
@@ -721,32 +721,32 @@ kundi TestWraps(TestUpdateWrapper):
         self.check_wrapper(wrapper, f)
         self.assertEqual(wrapper.__name__, 'f')
         self.assertEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.attr, 'This is also a test')
+        self.assertEqual(wrapper.attr, 'This ni also a test')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_default_update_doc(self):
         wrapper, _ = self._default_update()
-        self.assertEqual(wrapper.__doc__, 'This is a test')
+        self.assertEqual(wrapper.__doc__, 'This ni a test')
 
     eleza test_no_update(self):
         eleza f():
-            """This is a test"""
-            pass
-        f.attr = 'This is also a test'
+            """This ni a test"""
+            pita
+        f.attr = 'This ni also a test'
         @functools.wraps(f, (), ())
         eleza wrapper():
-            pass
+            pita
         self.check_wrapper(wrapper, f, (), ())
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
-        self.assertFalse(hasattr(wrapper, 'attr'))
+        self.assertEqual(wrapper.__doc__, Tupu)
+        self.assertUongo(hasattr(wrapper, 'attr'))
 
     eleza test_selective_update(self):
         eleza f():
-            pass
-        f.attr = 'This is a different test'
+            pita
+        f.attr = 'This ni a different test'
         f.dict_attr = dict(a=1, b=2, c=3)
         eleza add_dict_attr(f):
             f.dict_attr = {}
@@ -756,12 +756,12 @@ kundi TestWraps(TestUpdateWrapper):
         @functools.wraps(f, assign, update)
         @add_dict_attr
         eleza wrapper():
-            pass
+            pita
         self.check_wrapper(wrapper, f, assign, update)
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
-        self.assertEqual(wrapper.attr, 'This is a different test')
+        self.assertEqual(wrapper.__doc__, Tupu)
+        self.assertEqual(wrapper.attr, 'This ni a different test')
         self.assertEqual(wrapper.dict_attr, f.dict_attr)
 
 
@@ -776,9 +776,9 @@ kundi TestReduce:
                 rudisha len(self.sofar)
 
             eleza __getitem__(self, i):
-                ikiwa not 0 <= i < self.max: raise IndexError
+                ikiwa sio 0 <= i < self.max: ashiria IndexError
                 n = len(self.sofar)
-                while n <= i:
+                wakati n <= i:
                     self.sofar.append(n*n)
                     n += 1
                 rudisha self.sofar[i]
@@ -800,25 +800,25 @@ kundi TestReduce:
         self.assertRaises(TypeError, self.reduce)
         self.assertRaises(TypeError, self.reduce, 42, 42)
         self.assertRaises(TypeError, self.reduce, 42, 42, 42)
-        self.assertEqual(self.reduce(42, "1"), "1") # func is never called with one item
-        self.assertEqual(self.reduce(42, "", "1"), "1") # func is never called with one item
+        self.assertEqual(self.reduce(42, "1"), "1") # func ni never called with one item
+        self.assertEqual(self.reduce(42, "", "1"), "1") # func ni never called with one item
         self.assertRaises(TypeError, self.reduce, 42, (42, 42))
-        self.assertRaises(TypeError, self.reduce, add, []) # arg 2 must not be empty sequence with no initial value
+        self.assertRaises(TypeError, self.reduce, add, []) # arg 2 must sio be empty sequence with no initial value
         self.assertRaises(TypeError, self.reduce, add, "")
         self.assertRaises(TypeError, self.reduce, add, ())
         self.assertRaises(TypeError, self.reduce, add, object())
 
         kundi TestFailingIter:
             eleza __iter__(self):
-                raise RuntimeError
+                ashiria RuntimeError
         self.assertRaises(RuntimeError, self.reduce, add, TestFailingIter())
 
-        self.assertEqual(self.reduce(add, [], None), None)
+        self.assertEqual(self.reduce(add, [], Tupu), Tupu)
         self.assertEqual(self.reduce(add, [], 42), 42)
 
         kundi BadSeq:
             eleza __getitem__(self, index):
-                raise ValueError
+                ashiria ValueError
         self.assertRaises(ValueError, self.reduce, 42, BadSeq())
 
     # Test reduce()'s use of iterators.
@@ -829,8 +829,8 @@ kundi TestReduce:
             eleza __getitem__(self, i):
                 ikiwa 0 <= i < self.n:
                     rudisha i
-                else:
-                    raise IndexError
+                isipokua:
+                    ashiria IndexError
 
         kutoka operator agiza add
         self.assertEqual(self.reduce(add, SequenceClass(5)), 10)
@@ -879,29 +879,29 @@ kundi TestCmpToKey:
         self.assertEqual(key(obj=3), key(obj=3))
         self.assertGreater(key(obj=3), key(obj=1))
         with self.assertRaises((TypeError, AttributeError)):
-            key(3) > 1    # rhs is not a K object
+            key(3) > 1    # rhs ni sio a K object
         with self.assertRaises((TypeError, AttributeError)):
-            1 < key(3)    # lhs is not a K object
+            1 < key(3)    # lhs ni sio a K object
         with self.assertRaises(TypeError):
             key = self.cmp_to_key()             # too few args
         with self.assertRaises(TypeError):
-            key = self.cmp_to_key(cmp1, None)   # too many args
+            key = self.cmp_to_key(cmp1, Tupu)   # too many args
         key = self.cmp_to_key(cmp1)
         with self.assertRaises(TypeError):
             key()                                    # too few args
         with self.assertRaises(TypeError):
-            key(None, None)                          # too many args
+            key(Tupu, Tupu)                          # too many args
 
     eleza test_bad_cmp(self):
         eleza cmp1(x, y):
-            raise ZeroDivisionError
+            ashiria ZeroDivisionError
         key = self.cmp_to_key(cmp1)
         with self.assertRaises(ZeroDivisionError):
             key(3) > key(1)
 
         kundi BadCmp:
             eleza __lt__(self, other):
-                raise ZeroDivisionError
+                ashiria ZeroDivisionError
         eleza cmp1(x, y):
             rudisha BadCmp()
         with self.assertRaises(ZeroDivisionError):
@@ -925,7 +925,7 @@ kundi TestCmpToKey:
             rudisha (x > y) - (x < y)
         values = [5, '3', 7, 2, '0', '1', 4, '10', 1]
         values = sorted(values, key=self.cmp_to_key(mycmp))
-        self.assertEqual([int(value) for value in values],
+        self.assertEqual([int(value) kila value kwenye values],
                          [0, 1, 1, 2, 3, 4, 5, 7, 10])
 
     eleza test_hash(self):
@@ -958,13 +958,13 @@ kundi TestTotalOrdering(unittest.TestCase):
                 rudisha self.value < other.value
             eleza __eq__(self, other):
                 rudisha self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(1) > A(2))
+        self.assertKweli(A(1) < A(2))
+        self.assertKweli(A(2) > A(1))
+        self.assertKweli(A(1) <= A(2))
+        self.assertKweli(A(2) >= A(1))
+        self.assertKweli(A(2) <= A(2))
+        self.assertKweli(A(2) >= A(2))
+        self.assertUongo(A(1) > A(2))
 
     eleza test_total_ordering_le(self):
         @functools.total_ordering
@@ -975,13 +975,13 @@ kundi TestTotalOrdering(unittest.TestCase):
                 rudisha self.value <= other.value
             eleza __eq__(self, other):
                 rudisha self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(1) >= A(2))
+        self.assertKweli(A(1) < A(2))
+        self.assertKweli(A(2) > A(1))
+        self.assertKweli(A(1) <= A(2))
+        self.assertKweli(A(2) >= A(1))
+        self.assertKweli(A(2) <= A(2))
+        self.assertKweli(A(2) >= A(2))
+        self.assertUongo(A(1) >= A(2))
 
     eleza test_total_ordering_gt(self):
         @functools.total_ordering
@@ -992,13 +992,13 @@ kundi TestTotalOrdering(unittest.TestCase):
                 rudisha self.value > other.value
             eleza __eq__(self, other):
                 rudisha self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(2) < A(1))
+        self.assertKweli(A(1) < A(2))
+        self.assertKweli(A(2) > A(1))
+        self.assertKweli(A(1) <= A(2))
+        self.assertKweli(A(2) >= A(1))
+        self.assertKweli(A(2) <= A(2))
+        self.assertKweli(A(2) >= A(2))
+        self.assertUongo(A(2) < A(1))
 
     eleza test_total_ordering_ge(self):
         @functools.total_ordering
@@ -1009,34 +1009,34 @@ kundi TestTotalOrdering(unittest.TestCase):
                 rudisha self.value >= other.value
             eleza __eq__(self, other):
                 rudisha self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(2) <= A(1))
+        self.assertKweli(A(1) < A(2))
+        self.assertKweli(A(2) > A(1))
+        self.assertKweli(A(1) <= A(2))
+        self.assertKweli(A(2) >= A(1))
+        self.assertKweli(A(2) <= A(2))
+        self.assertKweli(A(2) >= A(2))
+        self.assertUongo(A(2) <= A(1))
 
     eleza test_total_ordering_no_overwrite(self):
-        # new methods should not overwrite existing
+        # new methods should sio overwrite existing
         @functools.total_ordering
         kundi A(int):
-            pass
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
+            pita
+        self.assertKweli(A(1) < A(2))
+        self.assertKweli(A(2) > A(1))
+        self.assertKweli(A(1) <= A(2))
+        self.assertKweli(A(2) >= A(1))
+        self.assertKweli(A(2) <= A(2))
+        self.assertKweli(A(2) >= A(2))
 
     eleza test_no_operations_defined(self):
         with self.assertRaises(ValueError):
             @functools.total_ordering
             kundi A:
-                pass
+                pita
 
     eleza test_type_error_when_not_implemented(self):
-        # bug 10042; ensure stack overflow does not occur
+        # bug 10042; ensure stack overflow does sio occur
         # when decorated types rudisha NotImplemented
         @functools.total_ordering
         kundi ImplementsLessThan:
@@ -1045,7 +1045,7 @@ kundi TestTotalOrdering(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa isinstance(other, ImplementsLessThan):
                     rudisha self.value == other.value
-                rudisha False
+                rudisha Uongo
             eleza __lt__(self, other):
                 ikiwa isinstance(other, ImplementsLessThan):
                     rudisha self.value < other.value
@@ -1058,7 +1058,7 @@ kundi TestTotalOrdering(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa isinstance(other, ImplementsGreaterThan):
                     rudisha self.value == other.value
-                rudisha False
+                rudisha Uongo
             eleza __gt__(self, other):
                 ikiwa isinstance(other, ImplementsGreaterThan):
                     rudisha self.value > other.value
@@ -1071,7 +1071,7 @@ kundi TestTotalOrdering(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa isinstance(other, ImplementsLessThanEqualTo):
                     rudisha self.value == other.value
-                rudisha False
+                rudisha Uongo
             eleza __le__(self, other):
                 ikiwa isinstance(other, ImplementsLessThanEqualTo):
                     rudisha self.value <= other.value
@@ -1084,7 +1084,7 @@ kundi TestTotalOrdering(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa isinstance(other, ImplementsGreaterThanEqualTo):
                     rudisha self.value == other.value
-                rudisha False
+                rudisha Uongo
             eleza __ge__(self, other):
                 ikiwa isinstance(other, ImplementsGreaterThanEqualTo):
                     rudisha self.value >= other.value
@@ -1097,7 +1097,7 @@ kundi TestTotalOrdering(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa isinstance(other, ComparatorNotImplemented):
                     rudisha self.value == other.value
-                rudisha False
+                rudisha Uongo
             eleza __lt__(self, other):
                 rudisha NotImplemented
 
@@ -1143,8 +1143,8 @@ kundi TestTotalOrdering(unittest.TestCase):
                 a <= b
 
     eleza test_pickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            for name in '__lt__', '__gt__', '__le__', '__ge__':
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
+            kila name kwenye '__lt__', '__gt__', '__le__', '__ge__':
                 with self.subTest(method=name, proto=proto):
                     method = getattr(Orderable_LT, name)
                     method_copy = pickle.loads(pickle.dumps(method, proto))
@@ -1173,13 +1173,13 @@ kundi TestLRU:
         self.assertEqual(misses, 0)
 
         domain = range(5)
-        for i in range(1000):
+        kila i kwenye range(1000):
             x, y = choice(domain), choice(domain)
             actual = f(x, y)
             expected = orig(x, y)
             self.assertEqual(actual, expected)
         hits, misses, maxsize, currsize = f.cache_info()
-        self.assertTrue(hits > misses)
+        self.assertKweli(hits > misses)
         self.assertEqual(hits + misses, 1000)
         self.assertEqual(currsize, 20)
 
@@ -1194,7 +1194,7 @@ kundi TestLRU:
         self.assertEqual(misses, 1)
         self.assertEqual(currsize, 1)
 
-        # Test bypassing the cache
+        # Test bypitaing the cache
         self.assertIs(f.__wrapped__, orig)
         f.__wrapped__(x, y)
         hits, misses, maxsize, currsize = f.cache_info()
@@ -1210,7 +1210,7 @@ kundi TestLRU:
             rudisha 20
         self.assertEqual(f.cache_info().maxsize, 0)
         f_cnt = 0
-        for i in range(5):
+        kila i kwenye range(5):
             self.assertEqual(f(), 20)
         self.assertEqual(f_cnt, 5)
         hits, misses, maxsize, currsize = f.cache_info()
@@ -1226,7 +1226,7 @@ kundi TestLRU:
             rudisha 20
         self.assertEqual(f.cache_info().maxsize, 1)
         f_cnt = 0
-        for i in range(5):
+        kila i kwenye range(5):
             self.assertEqual(f(), 20)
         self.assertEqual(f_cnt, 1)
         hits, misses, maxsize, currsize = f.cache_info()
@@ -1242,7 +1242,7 @@ kundi TestLRU:
             rudisha x*10
         self.assertEqual(f.cache_info().maxsize, 2)
         f_cnt = 0
-        for x in 7, 9, 7, 9, 7, 9, 8, 8, 8, 9, 9, 9, 8, 8, 8, 7:
+        kila x kwenye 7, 9, 7, 9, 7, 9, 8, 8, 8, 9, 9, 9, 8, 8, 8, 7:
             #    *  *              *                          *
             self.assertEqual(f(x), x*10)
         self.assertEqual(f_cnt, 4)
@@ -1264,51 +1264,51 @@ kundi TestLRU:
         self.assertEqual(square.cache_info().currsize, 2)
 
     eleza test_lru_bug_35780(self):
-        # C version of the lru_cache was not checking to see if
+        # C version of the lru_cache was sio checking to see if
         # the user function call has already modified the cache
-        # (this arises in recursive calls and in multi-threading).
-        # This cause the cache to have orphan links not referenced
+        # (this arises kwenye recursive calls na kwenye multi-threading).
+        # This cause the cache to have orphan links sio referenced
         # by the cache dictionary.
 
-        once = True                 # Modified by f(x) below
+        once = Kweli                 # Modified by f(x) below
 
         @self.module.lru_cache(maxsize=10)
         eleza f(x):
             nonlocal once
             rv = f'.{x}.'
-            ikiwa x == 20 and once:
-                once = False
+            ikiwa x == 20 na once:
+                once = Uongo
                 rv = f(x)
             rudisha rv
 
         # Fill the cache
-        for x in range(15):
+        kila x kwenye range(15):
             self.assertEqual(f(x), f'.{x}.')
         self.assertEqual(f.cache_info().currsize, 10)
 
-        # Make a recursive call and make sure the cache remains full
+        # Make a recursive call na make sure the cache remains full
         self.assertEqual(f(20), '.20.')
         self.assertEqual(f.cache_info().currsize, 10)
 
     eleza test_lru_bug_36650(self):
         # C version of lru_cache was treating a call with an empty **kwargs
-        # dictionary as being distinct kutoka a call with no keywords at all.
-        # This did not result in an incorrect answer, but it did trigger
+        # dictionary kama being distinct kutoka a call with no keywords at all.
+        # This did sio result kwenye an incorrect answer, but it did trigger
         # an unexpected cache miss.
 
         @self.module.lru_cache()
         eleza f(x):
-            pass
+            pita
 
         f(0)
         f(0, **{})
         self.assertEqual(f.cache_info().hits, 1)
 
     eleza test_lru_hash_only_once(self):
-        # To protect against weird reentrancy bugs and to improve
+        # To protect against weird reentrancy bugs na to improve
         # efficiency when faced with slow __hash__ methods, the
         # LRU cache guarantees that it will only call __hash__
-        # only once per use as an argument to the cached function.
+        # only once per use kama an argument to the cached function.
 
         @self.module.lru_cache(maxsize=1)
         eleza f(x, y):
@@ -1316,25 +1316,25 @@ kundi TestLRU:
 
         # Simulate the integer 5
         mock_int = unittest.mock.Mock()
-        mock_int.__mul__ = unittest.mock.Mock(return_value=15)
-        mock_int.__hash__ = unittest.mock.Mock(return_value=999)
+        mock_int.__mul__ = unittest.mock.Mock(rudisha_value=15)
+        mock_int.__hash__ = unittest.mock.Mock(rudisha_value=999)
 
-        # Add to cache:  One use as an argument gives one call
+        # Add to cache:  One use kama an argument gives one call
         self.assertEqual(f(mock_int, 1), 16)
         self.assertEqual(mock_int.__hash__.call_count, 1)
         self.assertEqual(f.cache_info(), (0, 1, 1, 1))
 
-        # Cache hit: One use as an argument gives one additional call
+        # Cache hit: One use kama an argument gives one additional call
         self.assertEqual(f(mock_int, 1), 16)
         self.assertEqual(mock_int.__hash__.call_count, 2)
         self.assertEqual(f.cache_info(), (1, 1, 1, 1))
 
-        # Cache eviction: No use as an argument gives no additional call
+        # Cache eviction: No use kama an argument gives no additional call
         self.assertEqual(f(6, 2), 20)
         self.assertEqual(mock_int.__hash__.call_count, 2)
         self.assertEqual(f.cache_info(), (1, 2, 1, 1))
 
-        # Cache miss: One use as an argument gives one additional call
+        # Cache miss: One use kama an argument gives one additional call
         self.assertEqual(f(mock_int, 1), 16)
         self.assertEqual(mock_int.__hash__.call_count, 3)
         self.assertEqual(f.cache_info(), (1, 3, 1, 1))
@@ -1344,15 +1344,15 @@ kundi TestLRU:
         # caching the built-in len() function.  Since len() can be
         # cached, we shouldn't use it inside the lru code itself.
         old_len = builtins.len
-        try:
+        jaribu:
             builtins.len = self.module.lru_cache(4)(len)
-            for i in [0, 0, 1, 2, 3, 3, 4, 5, 6, 1, 7, 2, 1]:
+            kila i kwenye [0, 0, 1, 2, 3, 3, 4, 5, 6, 1, 7, 2, 1]:
                 self.assertEqual(len('abcdefghijklmn'[:i]), i)
-        finally:
+        mwishowe:
             builtins.len = old_len
 
     eleza test_lru_star_arg_handling(self):
-        # Test regression that arose in ea064ff3c10f
+        # Test regression that arose kwenye ea064ff3c10f
         @functools.lru_cache()
         eleza f(*args):
             rudisha args
@@ -1361,17 +1361,17 @@ kundi TestLRU:
         self.assertEqual(f((1, 2)), ((1, 2),))
 
     eleza test_lru_type_error(self):
-        # Regression test for issue #28653.
+        # Regression test kila issue #28653.
         # lru_cache was leaking when one of the arguments
         # wasn't cacheable.
 
-        @functools.lru_cache(maxsize=None)
+        @functools.lru_cache(maxsize=Tupu)
         eleza infinite_cache(o):
-            pass
+            pita
 
         @functools.lru_cache(maxsize=10)
         eleza limited_cache(o):
-            pass
+            pita
 
         with self.assertRaises(TypeError):
             infinite_cache([])
@@ -1380,47 +1380,47 @@ kundi TestLRU:
             limited_cache([])
 
     eleza test_lru_with_maxsize_none(self):
-        @self.module.lru_cache(maxsize=None)
+        @self.module.lru_cache(maxsize=Tupu)
         eleza fib(n):
             ikiwa n < 2:
                 rudisha n
             rudisha fib(n-1) + fib(n-2)
-        self.assertEqual([fib(n) for n in range(16)],
+        self.assertEqual([fib(n) kila n kwenye range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=28, misses=16, maxsize=None, currsize=16))
+            self.module._CacheInfo(hits=28, misses=16, maxsize=Tupu, currsize=16))
         fib.cache_clear()
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=0, misses=0, maxsize=None, currsize=0))
+            self.module._CacheInfo(hits=0, misses=0, maxsize=Tupu, currsize=0))
 
     eleza test_lru_with_maxsize_negative(self):
         @self.module.lru_cache(maxsize=-10)
         eleza eq(n):
             rudisha n
-        for i in (0, 1):
-            self.assertEqual([eq(n) for n in range(150)], list(range(150)))
+        kila i kwenye (0, 1):
+            self.assertEqual([eq(n) kila n kwenye range(150)], list(range(150)))
         self.assertEqual(eq.cache_info(),
             self.module._CacheInfo(hits=0, misses=300, maxsize=0, currsize=0))
 
     eleza test_lru_with_exceptions(self):
-        # Verify that user_function exceptions get passed through without
+        # Verify that user_function exceptions get pitaed through without
         # creating a hard-to-read chained exception.
         # http://bugs.python.org/issue13177
-        for maxsize in (None, 128):
+        kila maxsize kwenye (Tupu, 128):
             @self.module.lru_cache(maxsize)
             eleza func(i):
                 rudisha 'abc'[i]
             self.assertEqual(func(0), 'a')
-            with self.assertRaises(IndexError) as cm:
+            with self.assertRaises(IndexError) kama cm:
                 func(15)
-            self.assertIsNone(cm.exception.__context__)
-            # Verify that the previous exception did not result in a cached entry
+            self.assertIsTupu(cm.exception.__context__)
+            # Verify that the previous exception did sio result kwenye a cached entry
             with self.assertRaises(IndexError):
                 func(15)
 
     eleza test_lru_with_types(self):
-        for maxsize in (None, 128):
-            @self.module.lru_cache(maxsize=maxsize, typed=True)
+        kila maxsize kwenye (Tupu, 128):
+            @self.module.lru_cache(maxsize=maxsize, typed=Kweli)
             eleza square(x):
                 rudisha x * x
             self.assertEqual(square(3), 9)
@@ -1441,7 +1441,7 @@ kundi TestLRU:
                 rudisha n
             rudisha fib(n=n-1) + fib(n=n-2)
         self.assertEqual(
-            [fib(n=number) for number in range(16)],
+            [fib(n=number) kila number kwenye range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610]
         )
         self.assertEqual(fib.cache_info(),
@@ -1451,18 +1451,18 @@ kundi TestLRU:
             self.module._CacheInfo(hits=0, misses=0, maxsize=128, currsize=0))
 
     eleza test_lru_with_keyword_args_maxsize_none(self):
-        @self.module.lru_cache(maxsize=None)
+        @self.module.lru_cache(maxsize=Tupu)
         eleza fib(n):
             ikiwa n < 2:
                 rudisha n
             rudisha fib(n=n-1) + fib(n=n-2)
-        self.assertEqual([fib(n=number) for number in range(16)],
+        self.assertEqual([fib(n=number) kila number kwenye range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=28, misses=16, maxsize=None, currsize=16))
+            self.module._CacheInfo(hits=28, misses=16, maxsize=Tupu, currsize=16))
         fib.cache_clear()
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=0, misses=0, maxsize=None, currsize=0))
+            self.module._CacheInfo(hits=0, misses=0, maxsize=Tupu, currsize=0))
 
     eleza test_kwargs_order(self):
         # PEP 468: Preserving Keyword Argument Order
@@ -1479,7 +1479,7 @@ kundi TestLRU:
             """f doc string"""
             rudisha 42
         g = self.module.lru_cache()(f)
-        for attr in self.module.WRAPPER_ASSIGNMENTS:
+        kila attr kwenye self.module.WRAPPER_ASSIGNMENTS:
             self.assertEqual(getattr(g, attr), getattr(f, attr))
 
     eleza test_lru_cache_threaded(self):
@@ -1493,41 +1493,41 @@ kundi TestLRU:
         start = threading.Event()
         eleza full(k):
             start.wait(10)
-            for _ in range(m):
+            kila _ kwenye range(m):
                 self.assertEqual(f(k, 0), orig(k, 0))
 
         eleza clear():
             start.wait(10)
-            for _ in range(2*m):
+            kila _ kwenye range(2*m):
                 f.cache_clear()
 
         orig_si = sys.getswitchinterval()
         support.setswitchinterval(1e-6)
-        try:
-            # create n threads in order to fill cache
+        jaribu:
+            # create n threads kwenye order to fill cache
             threads = [threading.Thread(target=full, args=[k])
-                       for k in range(n)]
+                       kila k kwenye range(n)]
             with support.start_threads(threads):
                 start.set()
 
             hits, misses, maxsize, currsize = f.cache_info()
-            ikiwa self.module is py_functools:
-                # XXX: Why can be not equal?
+            ikiwa self.module ni py_functools:
+                # XXX: Why can be sio equal?
                 self.assertLessEqual(misses, n)
                 self.assertLessEqual(hits, m*n - misses)
-            else:
+            isipokua:
                 self.assertEqual(misses, n)
                 self.assertEqual(hits, m*n - misses)
             self.assertEqual(currsize, n)
 
-            # create n threads in order to fill cache and 1 to clear it
+            # create n threads kwenye order to fill cache na 1 to clear it
             threads = [threading.Thread(target=clear)]
             threads += [threading.Thread(target=full, args=[k])
-                        for k in range(n)]
+                        kila k kwenye range(n)]
             start.clear()
             with support.start_threads(threads):
                 start.set()
-        finally:
+        mwishowe:
             sys.setswitchinterval(orig_si)
 
     eleza test_lru_cache_threaded2(self):
@@ -1542,13 +1542,13 @@ kundi TestLRU:
             rudisha 3 * x
         self.assertEqual(f.cache_info(), (0, 0, m*n, 0))
         eleza test():
-            for i in range(m):
+            kila i kwenye range(m):
                 start.wait(10)
                 self.assertEqual(f(i), 3 * i)
                 stop.wait(10)
-        threads = [threading.Thread(target=test) for k in range(n)]
+        threads = [threading.Thread(target=test) kila k kwenye range(n)]
         with support.start_threads(threads):
-            for i in range(m):
+            kila i kwenye range(m):
                 start.wait(10)
                 stop.reset()
                 pause.wait(10)
@@ -1566,9 +1566,9 @@ kundi TestLRU:
             with self.subTest(thread=i):
                 self.assertEqual(f(x), 3 * x, i)
         threads = [threading.Thread(target=test, args=(i, v))
-                   for i, v in enumerate([1, 2, 2, 3, 2])]
+                   kila i, v kwenye enumerate([1, 2, 2, 3, 2])]
         with support.start_threads(threads):
-            pass
+            pita
 
     eleza test_need_for_rlock(self):
         # This will deadlock on an LRU cache that uses a regular lock
@@ -1606,17 +1606,17 @@ kundi TestLRU:
         c = X(7)
         self.assertEqual(X.f.cache_info(), (0, 0, 2, 0))
 
-        for x in 1, 2, 2, 3, 1, 1, 1, 2, 3, 3:
+        kila x kwenye 1, 2, 2, 3, 1, 1, 1, 2, 3, 3:
             self.assertEqual(a.f(x), x*10 + 5)
         self.assertEqual((a.f_cnt, b.f_cnt, c.f_cnt), (6, 0, 0))
         self.assertEqual(X.f.cache_info(), (4, 6, 2, 2))
 
-        for x in 1, 2, 1, 1, 1, 1, 3, 2, 2, 2:
+        kila x kwenye 1, 2, 1, 1, 1, 1, 3, 2, 2, 2:
             self.assertEqual(b.f(x), x*10 + 5)
         self.assertEqual((a.f_cnt, b.f_cnt, c.f_cnt), (6, 4, 0))
         self.assertEqual(X.f.cache_info(), (10, 10, 2, 2))
 
-        for x in 2, 1, 1, 1, 1, 2, 1, 3, 2, 1:
+        kila x kwenye 2, 1, 1, 1, 1, 2, 1, 3, 2, 1:
             self.assertEqual(c.f(x), x*10 + 7)
         self.assertEqual((a.f_cnt, b.f_cnt, c.f_cnt), (6, 4, 5))
         self.assertEqual(X.f.cache_info(), (15, 15, 2, 2))
@@ -1627,8 +1627,8 @@ kundi TestLRU:
 
     eleza test_pickle(self):
         cls = self.__class__
-        for f in cls.cached_func[0], cls.cached_meth, cls.cached_staticmeth:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila f kwenye cls.cached_func[0], cls.cached_meth, cls.cached_staticmeth:
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(proto=proto, func=f):
                     f_copy = pickle.loads(pickle.dumps(f, proto))
                     self.assertIs(f_copy, f)
@@ -1640,7 +1640,7 @@ kundi TestLRU:
         part = self.module.partial(orig, 2)
         funcs = (cls.cached_func[0], cls.cached_meth, cls.cached_staticmeth,
                  self.module.lru_cache(2)(part))
-        for f in funcs:
+        kila f kwenye funcs:
             with self.subTest(func=f):
                 f_copy = copy.copy(f)
                 self.assertIs(f_copy, f)
@@ -1652,7 +1652,7 @@ kundi TestLRU:
         part = self.module.partial(orig, 2)
         funcs = (cls.cached_func[0], cls.cached_meth, cls.cached_staticmeth,
                  self.module.lru_cache(2)(part))
-        for f in funcs:
+        kila f kwenye funcs:
             with self.subTest(func=f):
                 f_copy = copy.deepcopy(f)
                 self.assertIs(f_copy, f)
@@ -1712,13 +1712,13 @@ kundi TestSingleDispatch(unittest.TestCase):
         eleza g(obj):
             rudisha "base"
         kundi A:
-            pass
+            pita
         kundi C(A):
-            pass
+            pita
         kundi B(A):
-            pass
+            pita
         kundi D(C, B):
-            pass
+            pita
         eleza g_A(a):
             rudisha "A"
         eleza g_B(b):
@@ -1741,8 +1741,8 @@ kundi TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(12), "int 12")
         self.assertIs(g.dispatch(int), g_int)
         self.assertIs(g.dispatch(object), g.dispatch(str))
-        # Note: in the assert above this is not g.
-        # @singledispatch returns the wrapper.
+        # Note: kwenye the assert above this ni sio g.
+        # @singledispatch rudishas the wrapper.
 
     eleza test_wrapping_attributes(self):
         @functools.singledispatch
@@ -1773,54 +1773,54 @@ kundi TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(rnd), ("Number got rounded",))
 
     eleza test_compose_mro(self):
-        # None of the examples in this test depend on haystack ordering.
+        # Tupu of the examples kwenye this test depend on haystack ordering.
         c = collections.abc
         mro = functools._compose_mro
         bases = [c.Sequence, c.MutableMapping, c.Mapping, c.Set]
-        for haystack in permutations(bases):
+        kila haystack kwenye permutations(bases):
             m = mro(dict, haystack)
             self.assertEqual(m, [dict, c.MutableMapping, c.Mapping,
                                  c.Collection, c.Sized, c.Iterable,
                                  c.Container, object])
         bases = [c.Container, c.Mapping, c.MutableMapping, collections.OrderedDict]
-        for haystack in permutations(bases):
+        kila haystack kwenye permutations(bases):
             m = mro(collections.ChainMap, haystack)
             self.assertEqual(m, [collections.ChainMap, c.MutableMapping, c.Mapping,
                                  c.Collection, c.Sized, c.Iterable,
                                  c.Container, object])
 
         # If there's a generic function with implementations registered for
-        # both Sized and Container, passing a defaultdict to it results in an
+        # both Sized na Container, pitaing a defaultdict to it results kwenye an
         # ambiguous dispatch which will cause a RuntimeError (see
         # test_mro_conflicts).
         bases = [c.Container, c.Sized, str]
-        for haystack in permutations(bases):
+        kila haystack kwenye permutations(bases):
             m = mro(collections.defaultdict, [c.Sized, c.Container, str])
             self.assertEqual(m, [collections.defaultdict, dict, c.Sized,
                                  c.Container, object])
 
-        # MutableSequence below is registered directly on D. In other words, it
+        # MutableSequence below ni registered directly on D. In other words, it
         # precedes MutableMapping which means single dispatch will always
         # choose MutableSequence here.
         kundi D(collections.defaultdict):
-            pass
+            pita
         c.MutableSequence.register(D)
         bases = [c.MutableSequence, c.MutableMapping]
-        for haystack in permutations(bases):
+        kila haystack kwenye permutations(bases):
             m = mro(D, bases)
             self.assertEqual(m, [D, c.MutableSequence, c.Sequence, c.Reversible,
                                  collections.defaultdict, dict, c.MutableMapping, c.Mapping,
                                  c.Collection, c.Sized, c.Iterable, c.Container,
                                  object])
 
-        # Container and Callable are registered on different base classes and
+        # Container na Callable are registered on different base classes and
         # a generic function supporting both should always pick the Callable
-        # implementation ikiwa a C instance is passed.
+        # implementation ikiwa a C instance ni pitaed.
         kundi C(collections.defaultdict):
             eleza __call__(self):
-                pass
+                pita
         bases = [c.Sized, c.Callable, c.Container, c.Mapping]
-        for haystack in permutations(bases):
+        kila haystack kwenye permutations(bases):
             m = mro(C, haystack)
             self.assertEqual(m, [C, c.Callable, collections.defaultdict, dict, c.Mapping,
                                  c.Collection, c.Sized, c.Iterable,
@@ -1830,7 +1830,7 @@ kundi TestSingleDispatch(unittest.TestCase):
         c = collections.abc
         d = {"a": "b"}
         l = [1, 2, 3]
-        s = {object(), None}
+        s = {object(), Tupu}
         f = frozenset(s)
         t = (1, 2, 3)
         @functools.singledispatch
@@ -1872,7 +1872,7 @@ kundi TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(f), "sized")
         self.assertEqual(g(t), "sized")
         g.register(c.Mapping, lambda obj: "mapping")
-        self.assertEqual(g(d), "mutablemapping")  # not specific enough
+        self.assertEqual(g(d), "mutablemapping")  # sio specific enough
         self.assertEqual(g(l), "mutablesequence")
         self.assertEqual(g(s), "mutableset")
         self.assertEqual(g(f), "sized")
@@ -1924,22 +1924,22 @@ kundi TestSingleDispatch(unittest.TestCase):
         c = collections.abc
         mro = functools._c3_mro
         kundi A(object):
-            pass
+            pita
         kundi B(A):
             eleza __len__(self):
                 rudisha 0   # implies Sized
         @c.Container.register
         kundi C(object):
-            pass
+            pita
         kundi D(object):
-            pass   # unrelated
+            pita   # unrelated
         kundi X(D, C, B):
             eleza __call__(self):
-                pass   # implies Callable
+                pita   # implies Callable
         expected = [X, c.Callable, D, C, c.Container, B, c.Sized, A, object]
-        for abcs in permutations([c.Sized, c.Callable, c.Container]):
+        kila abcs kwenye permutations([c.Sized, c.Callable, c.Container]):
             self.assertEqual(mro(X, abcs=abcs), expected)
-        # unrelated ABCs don't appear in the resulting MRO
+        # unrelated ABCs don't appear kwenye the resulting MRO
         many_abcs = [c.Mapping, c.Sized, c.Callable, c.Container, c.Iterable]
         self.assertEqual(mro(X, abcs=many_abcs), expected)
 
@@ -1949,9 +1949,9 @@ kundi TestSingleDispatch(unittest.TestCase):
             eleza __len__(self):
                 rudisha 0
         kundi A(metaclass=MetaA):
-            pass
+            pita
         kundi AA(A):
-            pass
+            pita
         @functools.singledispatch
         eleza fun(a):
             rudisha 'base A'
@@ -1977,20 +1977,20 @@ kundi TestSingleDispatch(unittest.TestCase):
         g.register(c.Set, lambda arg: "set")
         self.assertEqual(g(o), "sized")
         c.Iterable.register(O)
-        self.assertEqual(g(o), "sized")   # because it's explicitly in __mro__
+        self.assertEqual(g(o), "sized")   # because it's explicitly kwenye __mro__
         c.Container.register(O)
-        self.assertEqual(g(o), "sized")   # see above: Sized is in __mro__
+        self.assertEqual(g(o), "sized")   # see above: Sized ni kwenye __mro__
         c.Set.register(O)
-        self.assertEqual(g(o), "set")     # because c.Set is a subkundi of
-                                          # c.Sized and c.Container
+        self.assertEqual(g(o), "set")     # because c.Set ni a subkundi of
+                                          # c.Sized na c.Container
         kundi P:
-            pass
+            pita
         p = P()
         self.assertEqual(g(p), "base")
         c.Iterable.register(P)
         self.assertEqual(g(p), "iterable")
         c.Container.register(P)
-        with self.assertRaises(RuntimeError) as re_one:
+        with self.assertRaises(RuntimeError) kama re_one:
             g(p)
         self.assertIn(
             str(re_one.exception),
@@ -2005,10 +2005,10 @@ kundi TestSingleDispatch(unittest.TestCase):
         q = Q()
         self.assertEqual(g(q), "sized")
         c.Iterable.register(Q)
-        self.assertEqual(g(q), "sized")   # because it's explicitly in __mro__
+        self.assertEqual(g(q), "sized")   # because it's explicitly kwenye __mro__
         c.Set.register(Q)
-        self.assertEqual(g(q), "set")     # because c.Set is a subkundi of
-                                          # c.Sized and c.Iterable
+        self.assertEqual(g(q), "set")     # because c.Set ni a subkundi of
+                                          # c.Sized na c.Iterable
         @functools.singledispatch
         eleza h(arg):
             rudisha "base"
@@ -2018,11 +2018,11 @@ kundi TestSingleDispatch(unittest.TestCase):
         @h.register(c.Container)
         eleza _(arg):
             rudisha "container"
-        # Even though Sized and Container are explicit bases of MutableMapping,
-        # this ABC is implicitly registered on defaultdict which makes all of
-        # MutableMapping's bases implicit as well kutoka defaultdict's
+        # Even though Sized na Container are explicit bases of MutableMapping,
+        # this ABC ni implicitly registered on defaultdict which makes all of
+        # MutableMapping's bases implicit kama well kutoka defaultdict's
         # perspective.
-        with self.assertRaises(RuntimeError) as re_two:
+        with self.assertRaises(RuntimeError) kama re_two:
             h(collections.defaultdict(lambda: 0))
         self.assertIn(
             str(re_two.exception),
@@ -2032,7 +2032,7 @@ kundi TestSingleDispatch(unittest.TestCase):
               "or <kundi 'collections.abc.Container'>")),
         )
         kundi R(collections.defaultdict):
-            pass
+            pita
         c.MutableSequence.register(R)
         @functools.singledispatch
         eleza i(arg):
@@ -2046,14 +2046,14 @@ kundi TestSingleDispatch(unittest.TestCase):
         r = R()
         self.assertEqual(i(r), "sequence")
         kundi S:
-            pass
+            pita
         kundi T(S, c.Sized):
             eleza __len__(self):
                 rudisha 0
         t = T()
         self.assertEqual(h(t), "sized")
         c.Container.register(T)
-        self.assertEqual(h(t), "sized")   # because it's explicitly in the MRO
+        self.assertEqual(h(t), "sized")   # because it's explicitly kwenye the MRO
         kundi U:
             eleza __len__(self):
                 rudisha 0
@@ -2061,8 +2061,8 @@ kundi TestSingleDispatch(unittest.TestCase):
         self.assertEqual(h(u), "sized")   # implicit Sized subkundi inferred
                                           # kutoka the existence of __len__()
         c.Container.register(U)
-        # There is no preference for registered versus inferred ABCs.
-        with self.assertRaises(RuntimeError) as re_three:
+        # There ni no preference kila registered versus inferred ABCs.
+        with self.assertRaises(RuntimeError) kama re_three:
             h(u)
         self.assertIn(
             str(re_three.exception),
@@ -2087,7 +2087,7 @@ kundi TestSingleDispatch(unittest.TestCase):
         self.assertEqual(j(v), "s")
         c.Container.register(V)
         self.assertEqual(j(v), "container")   # because it ends up right after
-                                              # Sized in the MRO
+                                              # Sized kwenye the MRO
 
     eleza test_cache_invalidation(self):
         kutoka collections agiza UserDict
@@ -2149,9 +2149,9 @@ kundi TestSingleDispatch(unittest.TestCase):
             self.assertEqual(td.data[list],
                              functools._find_impl(list, g.registry))
             kundi X:
-                pass
-            c.MutableMapping.register(X)   # Will not invalidate the cache,
-                                           # not using ABCs yet.
+                pita
+            c.MutableMapping.register(X)   # Will sio invalidate the cache,
+                                           # sio using ABCs yet.
             self.assertEqual(g(d), "base")
             self.assertEqual(g(l), "list")
             self.assertEqual(td.get_ops, [list, dict, dict, list])
@@ -2201,14 +2201,14 @@ kundi TestSingleDispatch(unittest.TestCase):
         @i.register
         eleza _(arg: "collections.abc.Sequence"):
             rudisha "sequence"
-        self.assertEqual(i(None), "base")
+        self.assertEqual(i(Tupu), "base")
         self.assertEqual(i({"a": 1}), "mapping")
         self.assertEqual(i([1, 2, 3]), "sequence")
         self.assertEqual(i((1, 2, 3)), "sequence")
         self.assertEqual(i("str"), "sequence")
 
-        # Registering classes as callables doesn't work with annotations,
-        # you need to pass the type explicitly.
+        # Registering classes kama callables doesn't work with annotations,
+        # you need to pita the type explicitly.
         @i.register(str)
         kundi _:
             eleza __init__(self, arg):
@@ -2234,15 +2234,15 @@ kundi TestSingleDispatch(unittest.TestCase):
         a.t(0)
         self.assertEqual(a.arg, "int")
         aa = A()
-        self.assertFalse(hasattr(aa, 'arg'))
+        self.assertUongo(hasattr(aa, 'arg'))
         a.t('')
         self.assertEqual(a.arg, "str")
         aa = A()
-        self.assertFalse(hasattr(aa, 'arg'))
+        self.assertUongo(hasattr(aa, 'arg'))
         a.t(0.0)
         self.assertEqual(a.arg, "base")
         aa = A()
-        self.assertFalse(hasattr(aa, 'arg'))
+        self.assertUongo(hasattr(aa, 'arg'))
 
     eleza test_staticmethod_register(self):
         kundi A:
@@ -2260,8 +2260,8 @@ kundi TestSingleDispatch(unittest.TestCase):
                 rudisha isinstance(arg, str)
         a = A()
 
-        self.assertTrue(A.t(0))
-        self.assertTrue(A.t(''))
+        self.assertKweli(A.t(0))
+        self.assertKweli(A.t(''))
         self.assertEqual(A.t(0.0), 0.0)
 
     eleza test_classmethod_register(self):
@@ -2315,9 +2315,9 @@ kundi TestSingleDispatch(unittest.TestCase):
             @functools.singledispatchmethod
             @abc.abstractmethod
             eleza add(self, x, y):
-                pass
+                pita
 
-        self.assertTrue(Abstract.add.__isabstractmethod__)
+        self.assertKweli(Abstract.add.__isabstractmethod__)
 
     eleza test_type_ann_register(self):
         kundi A:
@@ -2339,46 +2339,46 @@ kundi TestSingleDispatch(unittest.TestCase):
     eleza test_invalid_registrations(self):
         msg_prefix = "Invalid first argument to `register()`: "
         msg_suffix = (
-            ". Use either `@register(some_class)` or plain `@register` on an "
+            ". Use either `@register(some_class)` ama plain `@register` on an "
             "annotated function."
         )
         @functools.singledispatch
         eleza i(arg):
             rudisha "base"
-        with self.assertRaises(TypeError) as exc:
+        with self.assertRaises(TypeError) kama exc:
             @i.register(42)
             eleza _(arg):
                 rudisha "I annotated with a non-type"
-        self.assertTrue(str(exc.exception).startswith(msg_prefix + "42"))
-        self.assertTrue(str(exc.exception).endswith(msg_suffix))
-        with self.assertRaises(TypeError) as exc:
+        self.assertKweli(str(exc.exception).startswith(msg_prefix + "42"))
+        self.assertKweli(str(exc.exception).endswith(msg_suffix))
+        with self.assertRaises(TypeError) kama exc:
             @i.register
             eleza _(arg):
                 rudisha "I forgot to annotate"
-        self.assertTrue(str(exc.exception).startswith(msg_prefix +
+        self.assertKweli(str(exc.exception).startswith(msg_prefix +
             "<function TestSingleDispatch.test_invalid_registrations.<locals>._"
         ))
-        self.assertTrue(str(exc.exception).endswith(msg_suffix))
+        self.assertKweli(str(exc.exception).endswith(msg_suffix))
 
-        with self.assertRaises(TypeError) as exc:
+        with self.assertRaises(TypeError) kama exc:
             @i.register
             eleza _(arg: typing.Iterable[str]):
-                # At runtime, dispatching on generics is impossible.
+                # At runtime, dispatching on generics ni impossible.
                 # When registering implementations with singledispatch, avoid
                 # types kutoka `typing`. Instead, annotate with regular types
-                # or ABCs.
+                # ama ABCs.
                 rudisha "I annotated with a generic collection"
-        self.assertTrue(str(exc.exception).startswith(
-            "Invalid annotation for 'arg'."
+        self.assertKweli(str(exc.exception).startswith(
+            "Invalid annotation kila 'arg'."
         ))
-        self.assertTrue(str(exc.exception).endswith(
-            'typing.Iterable[str] is not a class.'
+        self.assertKweli(str(exc.exception).endswith(
+            'typing.Iterable[str] ni sio a class.'
         ))
 
     eleza test_invalid_positional_argument(self):
         @functools.singledispatch
         eleza f(*args):
-            pass
+            pita
         msg = 'f requires at least 1 positional argument'
         with self.assertRaisesRegex(TypeError, msg):
             f()
@@ -2432,14 +2432,14 @@ kundi CachedCostItemWithSlots:
 
     @py_functools.cached_property
     eleza cost(self):
-        raise RuntimeError('never called, slots not supported')
+        ashiria RuntimeError('never called, slots sio supported')
 
 
 kundi TestCachedProperty(unittest.TestCase):
     eleza test_cached(self):
         item = CachedCostItem()
         self.assertEqual(item.cost, 2)
-        self.assertEqual(item.cost, 2) # not 3
+        self.assertEqual(item.cost, 2) # sio 3
 
     eleza test_cached_attribute_name_differs_kutoka_func_name(self):
         item = OptionallyCachedCostItem()
@@ -2456,14 +2456,14 @@ kundi TestCachedProperty(unittest.TestCase):
 
         orig_si = sys.getswitchinterval()
         sys.setswitchinterval(1e-6)
-        try:
+        jaribu:
             threads = [
                 threading.Thread(target=lambda: item.cost)
-                for k in range(num_threads)
+                kila k kwenye range(num_threads)
             ]
             with support.start_threads(threads):
                 go.set()
-        finally:
+        mwishowe:
             sys.setswitchinterval(orig_si)
 
         self.assertEqual(item.cost, 2)
@@ -2480,34 +2480,34 @@ kundi TestCachedProperty(unittest.TestCase):
         kundi MyMeta(type):
             @py_functools.cached_property
             eleza prop(self):
-                rudisha True
+                rudisha Kweli
 
         kundi MyClass(metaclass=MyMeta):
-            pass
+            pita
 
         with self.assertRaisesRegex(
             TypeError,
-            "The '__dict__' attribute on 'MyMeta' instance does not support item assignment for caching 'prop' property.",
+            "The '__dict__' attribute on 'MyMeta' instance does sio support item assignment kila caching 'prop' property.",
         ):
             MyClass.prop
 
     eleza test_reuse_different_names(self):
-        """Disallow this case because decorated function a would not be cached."""
-        with self.assertRaises(RuntimeError) as ctx:
+        """Disallow this case because decorated function a would sio be cached."""
+        with self.assertRaises(RuntimeError) kama ctx:
             kundi ReusedCachedProperty:
                 @py_functools.cached_property
                 eleza a(self):
-                    pass
+                    pita
 
                 b = a
 
         self.assertEqual(
             str(ctx.exception.__context__),
-            str(TypeError("Cannot assign the same cached_property to two different names ('a' and 'b')."))
+            str(TypeError("Cannot assign the same cached_property to two different names ('a' na 'b')."))
         )
 
     eleza test_reuse_same_name(self):
-        """Reusing a cached_property on different classes under the same name is OK."""
+        """Reusing a cached_property on different classes under the same name ni OK."""
         counter = 0
 
         @py_functools.cached_property
@@ -2530,9 +2530,9 @@ kundi TestCachedProperty(unittest.TestCase):
         self.assertEqual(a.cp, 1)
 
     eleza test_set_name_not_called(self):
-        cp = py_functools.cached_property(lambda s: None)
+        cp = py_functools.cached_property(lambda s: Tupu)
         kundi Foo:
-            pass
+            pita
 
         Foo.cp = cp
 

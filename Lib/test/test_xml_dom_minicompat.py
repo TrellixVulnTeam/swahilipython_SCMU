@@ -1,4 +1,4 @@
-# Tests for xml.dom.minicompat
+# Tests kila xml.dom.minicompat
 
 agiza copy
 agiza pickle
@@ -9,14 +9,14 @@ kutoka xml.dom.minicompat agiza *
 
 
 kundi EmptyNodeListTestCase(unittest.TestCase):
-    """Tests for the EmptyNodeList class."""
+    """Tests kila the EmptyNodeList class."""
 
     eleza test_emptynodelist_item(self):
         # Test item access on an EmptyNodeList.
         node_list = EmptyNodeList()
 
-        self.assertIsNone(node_list.item(0))
-        self.assertIsNone(node_list.item(-1)) # invalid item
+        self.assertIsTupu(node_list.item(0))
+        self.assertIsTupu(node_list.item(-1)) # invalid item
 
         with self.assertRaises(IndexError):
             node_list[0]
@@ -41,15 +41,15 @@ kundi EmptyNodeListTestCase(unittest.TestCase):
 
 
 kundi NodeListTestCase(unittest.TestCase):
-    """Tests for the NodeList class."""
+    """Tests kila the NodeList class."""
 
     eleza test_nodelist_item(self):
         # Test items access on a NodeList.
         # First, use an empty NodeList.
         node_list = NodeList()
 
-        self.assertIsNone(node_list.item(0))
-        self.assertIsNone(node_list.item(-1))
+        self.assertIsTupu(node_list.item(0))
+        self.assertIsTupu(node_list.item(-1))
 
         with self.assertRaises(IndexError):
             node_list[0]
@@ -61,7 +61,7 @@ kundi NodeListTestCase(unittest.TestCase):
         node_list.append(999)
 
         self.assertEqual(node_list.item(0), 111)
-        self.assertIsNone(node_list.item(-1)) # invalid item
+        self.assertIsTupu(node_list.item(-1)) # invalid item
 
         self.assertEqual(node_list[0], 111)
         self.assertEqual(node_list[-1], 999)
@@ -83,9 +83,9 @@ kundi NodeListTestCase(unittest.TestCase):
         self.assertEqual(node_list, NodeList([1, 2, 3, 4]))
 
     eleza test_nodelist_pickle_roundtrip(self):
-        # Test pickling and unpickling of a NodeList.
+        # Test pickling na unpickling of a NodeList.
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             # Empty NodeList.
             node_list = NodeList()
             pickled = pickle.dumps(node_list, proto)
@@ -114,7 +114,7 @@ kundi NodeListTestCase(unittest.TestCase):
         copied = copy.copy(node_list)
         self.assertIsNot(copied, node_list)
         self.assertEqual(copied, node_list)
-        for x, y in zip(copied, node_list):
+        kila x, y kwenye zip(copied, node_list):
             self.assertIs(x, y)
 
     eleza test_nodelist_deepcopy(self):
@@ -130,7 +130,7 @@ kundi NodeListTestCase(unittest.TestCase):
         copied = copy.deepcopy(node_list)
         self.assertIsNot(copied, node_list)
         self.assertEqual(copied, node_list)
-        for x, y in zip(copied, node_list):
+        kila x, y kwenye zip(copied, node_list):
             self.assertIsNot(x, y)
             self.assertEqual(x, y)
 

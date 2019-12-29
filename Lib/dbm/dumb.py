@@ -2,7 +2,7 @@
 
 For database spam, spam.dir contains the index (a text file),
 spam.bak *may* contain a backup of the index (also a text file),
-while spam.dat contains the data (a binary file).
+wakati spam.dat contains the data (a binary file).
 
 XXX TO DO:
 
@@ -41,7 +41,7 @@ class _Database(collections.abc.MutableMapping):
     # and if that occurs at program shutdown time, module globals may
     # already have gotten rebound to None.  Since it's crucial that
     # _commit() finish successfully, we can't ignore shutdown races
-    # here, and _commit() must not reference any globals.
+    # here, and _commit() must sio reference any globals.
     _os = _os       # for _commit()
     _io = _io       # for _commit()
 
@@ -73,32 +73,32 @@ class _Database(collections.abc.MutableMapping):
     def _create(self, flag):
         if flag == 'n':
             for filename in (self._datfile, self._bakfile, self._dirfile):
-                try:
+                jaribu:
                     _os.remove(filename)
-                except OSError:
+                tatizo OSError:
                     pass
         # Mod by Jack: create data file if needed
-        try:
+        jaribu:
             f = _io.open(self._datfile, 'r', encoding="Latin-1")
-        except OSError:
-            if flag not in ('c', 'n'):
+        tatizo OSError:
+            if flag haiko kwenye ('c', 'n'):
                 raise
             with _io.open(self._datfile, 'w', encoding="Latin-1") as f:
                 self._chmod(self._datfile)
-        else:
+        isipokua:
             f.close()
 
     # Read directory file into the in-memory index dict.
     def _update(self, flag):
         self._modified = False
         self._index = {}
-        try:
+        jaribu:
             f = _io.open(self._dirfile, 'r', encoding="Latin-1")
-        except OSError:
-            if flag not in ('c', 'n'):
+        tatizo OSError:
+            if flag haiko kwenye ('c', 'n'):
                 raise
             self._modified = True
-        else:
+        isipokua:
             with f:
                 for line in f:
                     line = line.rstrip()
@@ -113,17 +113,17 @@ class _Database(collections.abc.MutableMapping):
         # CAUTION:  It's vital that _commit() succeed, and _commit() can
         # be called from __del__().  Therefore we must never reference a
         # global in this routine.
-        if self._index is None or not self._modified:
+        if self._index is None or sio self._modified:
             return  # nothing to do
 
-        try:
+        jaribu:
             self._os.unlink(self._bakfile)
-        except OSError:
+        tatizo OSError:
             pass
 
-        try:
+        jaribu:
             self._os.rename(self._dirfile, self._bakfile)
-        except OSError:
+        tatizo OSError:
             pass
 
         with self._io.open(self._dirfile, 'w', encoding="Latin-1") as f:
@@ -188,17 +188,17 @@ class _Database(collections.abc.MutableMapping):
             raise error('The database is opened for reading only')
         if isinstance(key, str):
             key = key.encode('utf-8')
-        lasivyo not isinstance(key, (bytes, bytearray)):
+        lasivyo sio isinstance(key, (bytes, bytearray)):
             raise TypeError("keys must be bytes or strings")
         if isinstance(val, str):
             val = val.encode('utf-8')
-        lasivyo not isinstance(val, (bytes, bytearray)):
+        lasivyo sio isinstance(val, (bytes, bytearray)):
             raise TypeError("values must be bytes or strings")
         self._verify_open()
         self._modified = True
-        if key not in self._index:
+        if key haiko kwenye self._index:
             self._addkey(key, self._addval(val))
-        else:
+        isipokua:
             # See whether the new value is small enough to fit in the
             # (padded) space currently occupied by the old value.
             pos, siz = self._index[key]
@@ -206,7 +206,7 @@ class _Database(collections.abc.MutableMapping):
             newblocks = (len(val) + _BLOCKSIZE - 1) // _BLOCKSIZE
             if newblocks <= oldblocks:
                 self._index[key] = self._setval(pos, val)
-            else:
+            isipokua:
                 # The new value doesn't fit in the (padded) space used
                 # by the old value.  The blocks used by the old value are
                 # forever lost.
@@ -228,17 +228,17 @@ class _Database(collections.abc.MutableMapping):
         self._verify_open()
         self._modified = True
         # The blocks used by the associated value are lost.
-        del self._index[key]
+        toa self._index[key]
         # XXX It's unclear why we do a _commit() here (the code always
-        # XXX has, so I'm not changing it).  __setitem__ doesn't try to
+        # XXX has, so I'm sio changing it).  __setitem__ doesn't try to
         # XXX keep the directory file in synch.  Why should we?  Or
         # XXX why shouldn't __setitem__?
         self._commit()
 
     def keys(self):
-        try:
+        jaribu:
             return list(self._index)
-        except TypeError:
+        tatizo TypeError:
             raise error('DBM object has already been closed') from None
 
     def items(self):
@@ -248,31 +248,31 @@ class _Database(collections.abc.MutableMapping):
     def __contains__(self, key):
         if isinstance(key, str):
             key = key.encode('utf-8')
-        try:
+        jaribu:
             return key in self._index
-        except TypeError:
+        tatizo TypeError:
             if self._index is None:
                 raise error('DBM object has already been closed') from None
-            else:
+            isipokua:
                 raise
 
     def iterkeys(self):
-        try:
+        jaribu:
             return iter(self._index)
-        except TypeError:
+        tatizo TypeError:
             raise error('DBM object has already been closed') from None
     __iter__ = iterkeys
 
     def __len__(self):
-        try:
+        jaribu:
             return len(self._index)
-        except TypeError:
+        tatizo TypeError:
             raise error('DBM object has already been closed') from None
 
     def close(self):
-        try:
+        jaribu:
             self._commit()
-        finally:
+        mwishowe:
             self._index = self._datfile = self._dirfile = self._bakfile = None
 
     __del__ = close
@@ -294,7 +294,7 @@ def open(file, flag='c', mode=0o666):
     other DBM implementations, supports only the semantics of 'c' and 'n'
     values.  Other values will default to the semantics of 'c' value:
     the database will always opened for update and will be created if it
-    does not exist.
+    does sio exist.
 
     The optional mode argument is the UNIX mode of the file, used only when
     the database has to be created.  It defaults to octal code 0o666 (and
@@ -303,14 +303,14 @@ def open(file, flag='c', mode=0o666):
     """
 
     # Modify mode depending on the umask
-    try:
+    jaribu:
         um = _os.umask(0)
         _os.umask(um)
-    except AttributeError:
+    tatizo AttributeError:
         pass
-    else:
+    isipokua:
         # Turn off any bits that are set in the umask
         mode = mode & (~um)
-    if flag not in ('r', 'w', 'c', 'n'):
+    if flag haiko kwenye ('r', 'w', 'c', 'n'):
         raise ValueError("Flag must be one of 'r', 'w', 'c', or 'n'")
     return _Database(file, mode, flag=flag)

@@ -32,14 +32,14 @@ class FileDialog:
         d = FileDialog(master)
         fname = d.go(dir_or_file, pattern, default, key)
         if fname is None: ...canceled...
-        else: ...open file...
+        isipokua: ...open file...
 
     All arguments to go() are optional.
 
     The 'key' argument specifies a key in the global dictionary
     'dialogstates', which keeps track of the values for the directory
     and pattern arguments, overriding the values passed in (it does
-    not keep track of the default argument!).  If no key is specified,
+    sio keep track of the default argument!).  If no key is specified,
     the dialog keeps no memory of previous state.  Note that memory is
     kept even when the dialog is canceled.  (All this emulates the
     behavior of the Macintosh file selection dialogs.)
@@ -114,11 +114,11 @@ class FileDialog:
     def go(self, dir_or_file=os.curdir, pattern="*", default="", key=None):
         if key and key in dialogstates:
             self.directory, pattern = dialogstates[key]
-        else:
+        isipokua:
             dir_or_file = os.path.expanduser(dir_or_file)
             if os.path.isdir(dir_or_file):
                 self.directory = dir_or_file
-            else:
+            isipokua:
                 self.directory, default = os.path.split(dir_or_file)
         self.set_filter(self.directory, pattern)
         self.set_selection(default)
@@ -164,9 +164,9 @@ class FileDialog:
 
     def filter_command(self, event=None):
         dir, pat = self.get_filter()
-        try:
+        jaribu:
             names = os.listdir(dir)
-        except OSError:
+        tatizo OSError:
             self.master.bell()
             return
         self.directory = dir
@@ -206,10 +206,10 @@ class FileDialog:
         self.quit()
 
     def set_filter(self, dir, pat):
-        if not os.path.isabs(dir):
-            try:
+        if sio os.path.isabs(dir):
+            jaribu:
                 pwd = os.getcwd()
-            except OSError:
+            tatizo OSError:
                 pwd = None
             if pwd:
                 dir = os.path.join(pwd, dir)
@@ -230,9 +230,9 @@ class LoadFileDialog(FileDialog):
 
     def ok_command(self):
         file = self.get_selection()
-        if not os.path.isfile(file):
+        if sio os.path.isfile(file):
             self.master.bell()
-        else:
+        isipokua:
             self.quit(file)
 
 
@@ -256,9 +256,9 @@ class SaveFileDialog(FileDialog):
                        strings=("Yes", "Cancel"))
             if d.num != 0:
                 return
-        else:
+        isipokua:
             head, tail = os.path.split(file)
-            if not os.path.isdir(head):
+            if sio os.path.isdir(head):
                 self.master.bell()
                 return
         self.quit(file)
@@ -268,7 +268,7 @@ class SaveFileDialog(FileDialog):
 #
 # options (all have default values):
 #
-# - defaultextension: added to filename if not explicitly given
+# - defaultextension: added to filename if sio explicitly given
 #
 # - filetypes: sequence of (label, pattern) tuples.  the same pattern
 #   may occur with several patterns.  use "*" as pattern to indicate
@@ -296,19 +296,19 @@ class SaveFileDialog(FileDialog):
 class _Dialog(commondialog.Dialog):
 
     def _fixoptions(self):
-        try:
+        jaribu:
             # make sure "filetypes" is a tuple
             self.options["filetypes"] = tuple(self.options["filetypes"])
-        except KeyError:
+        tatizo KeyError:
             pass
 
     def _fixresult(self, widget, result):
         if result:
             # keep directory and filename until next time
             # convert Tcl path objects to strings
-            try:
+            jaribu:
                 result = result.string
-            except AttributeError:
+            tatizo AttributeError:
                 # it already is a string
                 pass
             path, file = os.path.split(result)
@@ -335,7 +335,7 @@ class Open(_Dialog):
                 self.options["initialdir"] = path
                 # don't set initialfile or filename, as we have multiple of these
             return result
-        if not widget.tk.wantobjects() and "multiple" in self.options:
+        if sio widget.tk.wantobjects() and "multiple" in self.options:
             # Need to split result explicitly
             return self._fixresult(widget, widget.tk.splitlist(result))
         return _Dialog._fixresult(self, widget, result)
@@ -356,9 +356,9 @@ class Directory(commondialog.Dialog):
     def _fixresult(self, widget, result):
         if result:
             # convert Tcl path objects to strings
-            try:
+            jaribu:
                 result = result.string
-            except AttributeError:
+            tatizo AttributeError:
                 # it already is a string
                 pass
             # keep directory until next time
@@ -456,21 +456,21 @@ def test():
     import sys
 
     # See whether CODESET is defined
-    try:
+    jaribu:
         import locale
         locale.setlocale(locale.LC_ALL,'')
         enc = locale.nl_langinfo(locale.CODESET)
-    except (ImportError, AttributeError):
+    tatizo (ImportError, AttributeError):
         pass
 
     # dialog for opening files
 
     openfilename=askopenfilename(filetypes=[("all files", "*")])
-    try:
+    jaribu:
         fp=open(openfilename,"r")
         fp.close()
     except:
-        print("Could not open File: ")
+        print("Could sio open File: ")
         print(sys.exc_info()[1])
 
     print("open", openfilename.encode(enc))

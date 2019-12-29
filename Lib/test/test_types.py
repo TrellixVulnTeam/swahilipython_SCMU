@@ -13,37 +13,37 @@ agiza weakref
 kundi TypesTests(unittest.TestCase):
 
     eleza test_truth_values(self):
-        ikiwa None: self.fail('None is true instead of false')
-        ikiwa 0: self.fail('0 is true instead of false')
-        ikiwa 0.0: self.fail('0.0 is true instead of false')
-        ikiwa '': self.fail('\'\' is true instead of false')
-        ikiwa not 1: self.fail('1 is false instead of true')
-        ikiwa not 1.0: self.fail('1.0 is false instead of true')
-        ikiwa not 'x': self.fail('\'x\' is false instead of true')
-        ikiwa not {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
-        eleza f(): pass
-        kundi C: pass
+        ikiwa Tupu: self.fail('Tupu ni true instead of false')
+        ikiwa 0: self.fail('0 ni true instead of false')
+        ikiwa 0.0: self.fail('0.0 ni true instead of false')
+        ikiwa '': self.fail('\'\' ni true instead of false')
+        ikiwa sio 1: self.fail('1 ni false instead of true')
+        ikiwa sio 1.0: self.fail('1.0 ni false instead of true')
+        ikiwa sio 'x': self.fail('\'x\' ni false instead of true')
+        ikiwa sio {'x': 1}: self.fail('{\'x\': 1} ni false instead of true')
+        eleza f(): pita
+        kundi C: pita
         x = C()
-        ikiwa not f: self.fail('f is false instead of true')
-        ikiwa not C: self.fail('C is false instead of true')
-        ikiwa not sys: self.fail('sys is false instead of true')
-        ikiwa not x: self.fail('x is false instead of true')
+        ikiwa sio f: self.fail('f ni false instead of true')
+        ikiwa sio C: self.fail('C ni false instead of true')
+        ikiwa sio sys: self.fail('sys ni false instead of true')
+        ikiwa sio x: self.fail('x ni false instead of true')
 
     eleza test_boolean_ops(self):
-        ikiwa 0 or 0: self.fail('0 or 0 is true instead of false')
-        ikiwa 1 and 1: pass
-        else: self.fail('1 and 1 is false instead of true')
-        ikiwa not 1: self.fail('not 1 is true instead of false')
+        ikiwa 0 ama 0: self.fail('0 ama 0 ni true instead of false')
+        ikiwa 1 na 1: pita
+        isipokua: self.fail('1 na 1 ni false instead of true')
+        ikiwa sio 1: self.fail('not 1 ni true instead of false')
 
     eleza test_comparisons(self):
-        ikiwa 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pass
-        else: self.fail('int comparisons failed')
-        ikiwa 0.0 < 1.0 <= 1.0 == 1.0 >= 1.0 > 0.0 != 1.0: pass
-        else: self.fail('float comparisons failed')
-        ikiwa '' < 'a' <= 'a' == 'a' < 'abc' < 'abd' < 'b': pass
-        else: self.fail('string comparisons failed')
-        ikiwa None is None: pass
-        else: self.fail('identity test failed')
+        ikiwa 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pita
+        isipokua: self.fail('int comparisons failed')
+        ikiwa 0.0 < 1.0 <= 1.0 == 1.0 >= 1.0 > 0.0 != 1.0: pita
+        isipokua: self.fail('float comparisons failed')
+        ikiwa '' < 'a' <= 'a' == 'a' < 'abc' < 'abd' < 'b': pita
+        isipokua: self.fail('string comparisons failed')
+        ikiwa Tupu ni Tupu: pita
+        isipokua: self.fail('identity test failed')
 
     eleza test_float_constructor(self):
         self.assertRaises(ValueError, float, '')
@@ -51,49 +51,49 @@ kundi TypesTests(unittest.TestCase):
         self.assertRaises(ValueError, float, '5_5\0')
 
     eleza test_zero_division(self):
-        try: 5.0 / 0.0
-        except ZeroDivisionError: pass
-        else: self.fail("5.0 / 0.0 didn't raise ZeroDivisionError")
+        jaribu: 5.0 / 0.0
+        tatizo ZeroDivisionError: pita
+        isipokua: self.fail("5.0 / 0.0 didn't ashiria ZeroDivisionError")
 
-        try: 5.0 // 0.0
-        except ZeroDivisionError: pass
-        else: self.fail("5.0 // 0.0 didn't raise ZeroDivisionError")
+        jaribu: 5.0 // 0.0
+        tatizo ZeroDivisionError: pita
+        isipokua: self.fail("5.0 // 0.0 didn't ashiria ZeroDivisionError")
 
-        try: 5.0 % 0.0
-        except ZeroDivisionError: pass
-        else: self.fail("5.0 % 0.0 didn't raise ZeroDivisionError")
+        jaribu: 5.0 % 0.0
+        tatizo ZeroDivisionError: pita
+        isipokua: self.fail("5.0 % 0.0 didn't ashiria ZeroDivisionError")
 
-        try: 5 / 0
-        except ZeroDivisionError: pass
-        else: self.fail("5 / 0 didn't raise ZeroDivisionError")
+        jaribu: 5 / 0
+        tatizo ZeroDivisionError: pita
+        isipokua: self.fail("5 / 0 didn't ashiria ZeroDivisionError")
 
-        try: 5 // 0
-        except ZeroDivisionError: pass
-        else: self.fail("5 // 0 didn't raise ZeroDivisionError")
+        jaribu: 5 // 0
+        tatizo ZeroDivisionError: pita
+        isipokua: self.fail("5 // 0 didn't ashiria ZeroDivisionError")
 
-        try: 5 % 0
-        except ZeroDivisionError: pass
-        else: self.fail("5 % 0 didn't raise ZeroDivisionError")
+        jaribu: 5 % 0
+        tatizo ZeroDivisionError: pita
+        isipokua: self.fail("5 % 0 didn't ashiria ZeroDivisionError")
 
     eleza test_numeric_types(self):
-        ikiwa 0 != 0.0 or 1 != 1.0 or -1 != -1.0:
-            self.fail('int/float value not equal')
+        ikiwa 0 != 0.0 ama 1 != 1.0 ama -1 != -1.0:
+            self.fail('int/float value sio equal')
         # calling built-in types without argument must rudisha 0
-        ikiwa int() != 0: self.fail('int() does not rudisha 0')
-        ikiwa float() != 0.0: self.fail('float() does not rudisha 0.0')
-        ikiwa int(1.9) == 1 == int(1.1) and int(-1.1) == -1 == int(-1.9): pass
-        else: self.fail('int() does not round properly')
-        ikiwa float(1) == 1.0 and float(-1) == -1.0 and float(0) == 0.0: pass
-        else: self.fail('float() does not work properly')
+        ikiwa int() != 0: self.fail('int() does sio rudisha 0')
+        ikiwa float() != 0.0: self.fail('float() does sio rudisha 0.0')
+        ikiwa int(1.9) == 1 == int(1.1) na int(-1.1) == -1 == int(-1.9): pita
+        isipokua: self.fail('int() does sio round properly')
+        ikiwa float(1) == 1.0 na float(-1) == -1.0 na float(0) == 0.0: pita
+        isipokua: self.fail('float() does sio work properly')
 
     eleza test_float_to_string(self):
         eleza test(f, result):
             self.assertEqual(f.__format__('e'), result)
             self.assertEqual('%e' % f, result)
 
-        # test all 2 digit exponents, both with __format__ and with
+        # test all 2 digit exponents, both with __format__ na with
         #  '%' formatting
-        for i in range(-99, 100):
+        kila i kwenye range(-99, 100):
             test(float('1.5e'+str(i)), '1.500000e{0:+03d}'.format(i))
 
         # test some 3 digit exponents
@@ -116,66 +116,66 @@ kundi TypesTests(unittest.TestCase):
         # Ensure the first 256 integers are shared
         a = 256
         b = 128*2
-        ikiwa a is not b: self.fail('256 is not shared')
+        ikiwa a ni sio b: self.fail('256 ni sio shared')
         ikiwa 12 + 24 != 36: self.fail('int op')
         ikiwa 12 + (-24) != -12: self.fail('int op')
         ikiwa (-12) + 24 != 12: self.fail('int op')
         ikiwa (-12) + (-24) != -36: self.fail('int op')
-        ikiwa not 12 < 24: self.fail('int op')
-        ikiwa not -24 < -12: self.fail('int op')
-        # Test for a particular bug in integer multiply
+        ikiwa sio 12 < 24: self.fail('int op')
+        ikiwa sio -24 < -12: self.fail('int op')
+        # Test kila a particular bug kwenye integer multiply
         xsize, ysize, zsize = 238, 356, 4
-        ikiwa not (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
+        ikiwa sio (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
             self.fail('int mul commutativity')
         # And another.
         m = -sys.maxsize - 1
-        for divisor in 1, 2, 4, 8, 16, 32:
+        kila divisor kwenye 1, 2, 4, 8, 16, 32:
             j = m // divisor
             prod = divisor * j
             ikiwa prod != m:
                 self.fail("%r * %r == %r != %r" % (divisor, j, prod, m))
-            ikiwa type(prod) is not int:
-                self.fail("expected type(prod) to be int, not %r" %
+            ikiwa type(prod) ni sio int:
+                self.fail("expected type(prod) to be int, sio %r" %
                                    type(prod))
-        # Check for unified integral type
-        for divisor in 1, 2, 4, 8, 16, 32:
+        # Check kila unified integral type
+        kila divisor kwenye 1, 2, 4, 8, 16, 32:
             j = m // divisor - 1
             prod = divisor * j
-            ikiwa type(prod) is not int:
-                self.fail("expected type(%r) to be int, not %r" %
+            ikiwa type(prod) ni sio int:
+                self.fail("expected type(%r) to be int, sio %r" %
                                    (prod, type(prod)))
-        # Check for unified integral type
+        # Check kila unified integral type
         m = sys.maxsize
-        for divisor in 1, 2, 4, 8, 16, 32:
+        kila divisor kwenye 1, 2, 4, 8, 16, 32:
             j = m // divisor + 1
             prod = divisor * j
-            ikiwa type(prod) is not int:
-                self.fail("expected type(%r) to be int, not %r" %
+            ikiwa type(prod) ni sio int:
+                self.fail("expected type(%r) to be int, sio %r" %
                                    (prod, type(prod)))
 
         x = sys.maxsize
         self.assertIsInstance(x + 1, int,
-                              "(sys.maxsize + 1) should have returned int")
+                              "(sys.maxsize + 1) should have rudishaed int")
         self.assertIsInstance(-x - 1, int,
-                              "(-sys.maxsize - 1) should have returned int")
+                              "(-sys.maxsize - 1) should have rudishaed int")
         self.assertIsInstance(-x - 2, int,
-                              "(-sys.maxsize - 2) should have returned int")
+                              "(-sys.maxsize - 2) should have rudishaed int")
 
-        try: 5 << -5
-        except ValueError: pass
-        else: self.fail('int negative shift <<')
+        jaribu: 5 << -5
+        tatizo ValueError: pita
+        isipokua: self.fail('int negative shift <<')
 
-        try: 5 >> -5
-        except ValueError: pass
-        else: self.fail('int negative shift >>')
+        jaribu: 5 >> -5
+        tatizo ValueError: pita
+        isipokua: self.fail('int negative shift >>')
 
     eleza test_floats(self):
         ikiwa 12.0 + 24.0 != 36.0: self.fail('float op')
         ikiwa 12.0 + (-24.0) != -12.0: self.fail('float op')
         ikiwa (-12.0) + 24.0 != 12.0: self.fail('float op')
         ikiwa (-12.0) + (-24.0) != -36.0: self.fail('float op')
-        ikiwa not 12.0 < 24.0: self.fail('float op')
-        ikiwa not -24.0 < -12.0: self.fail('float op')
+        ikiwa sio 12.0 < 24.0: self.fail('float op')
+        ikiwa sio -24.0 < -12.0: self.fail('float op')
 
     eleza test_strings(self):
         ikiwa len('') != 0: self.fail('len(\'\')')
@@ -184,13 +184,13 @@ kundi TypesTests(unittest.TestCase):
         ikiwa 'xyz' + 'abcde' != 'xyzabcde': self.fail('string concatenation')
         ikiwa 'xyz'*3 != 'xyzxyzxyz': self.fail('string repetition *3')
         ikiwa 0*'abcde' != '': self.fail('string repetition 0*')
-        ikiwa min('abc') != 'a' or max('abc') != 'c': self.fail('min/max string')
-        ikiwa 'a' in 'abc' and 'b' in 'abc' and 'c' in 'abc' and 'd' not in 'abc': pass
-        else: self.fail('in/not in string')
+        ikiwa min('abc') != 'a' ama max('abc') != 'c': self.fail('min/max string')
+        ikiwa 'a' kwenye 'abc' na 'b' kwenye 'abc' na 'c' kwenye 'abc' na 'd' haiko kwenye 'abc': pita
+        isipokua: self.fail('in/not kwenye string')
         x = 'x'*103
         ikiwa '%s!'%x != x+'!': self.fail('nasty string formatting bug')
 
-        #extended slices for strings
+        #extended slices kila strings
         a = '0123456789'
         self.assertEqual(a[::], a)
         self.assertEqual(a[::2], '02468')
@@ -208,7 +208,7 @@ kundi TypesTests(unittest.TestCase):
 
     eleza test_int__format__(self):
         eleza test(i, format_spec, result):
-            # just make sure we have the unified type for integers
+            # just make sure we have the unified type kila integers
             assert type(i) == int
             assert type(format_spec) == str
             self.assertEqual(i.__format__(format_spec), result)
@@ -218,7 +218,7 @@ kundi TypesTests(unittest.TestCase):
 
         test(1, 'c', '\01')
 
-        # sign and aligning are interdependent
+        # sign na aligning are interdependent
         test(1, "-", '1')
         test(-1, "-", '-1')
         test(1, "-3", '  1')
@@ -329,7 +329,7 @@ kundi TypesTests(unittest.TestCase):
         # issue 5782, commas with no specifier type
         test(1234, '010,', '00,001,234')
 
-        # Unified type for integers
+        # Unified type kila integers
         test(10**100, 'd', '1' + '0' * 100)
         test(10**100+100, 'd', '1' + '0' * 97 + '100')
 
@@ -337,10 +337,10 @@ kundi TypesTests(unittest.TestCase):
 
         # precision disallowed
         self.assertRaises(ValueError, 3 .__format__, "1.3")
-        # sign not allowed with 'c'
+        # sign sio allowed with 'c'
         self.assertRaises(ValueError, 3 .__format__, "+c")
         # format spec must be string
-        self.assertRaises(TypeError, 3 .__format__, None)
+        self.assertRaises(TypeError, 3 .__format__, Tupu)
         self.assertRaises(TypeError, 3 .__format__, 0)
         # can't have ',' with 'n'
         self.assertRaises(ValueError, 3 .__format__, ",n")
@@ -349,18 +349,18 @@ kundi TypesTests(unittest.TestCase):
         # can't have '#' with 'c'
         self.assertRaises(ValueError, 3 .__format__, "#c")
 
-        # ensure that only int and float type specifiers work
-        for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
-                            [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            ikiwa not format_spec in 'bcdoxXeEfFgGn%':
+        # ensure that only int na float type specifiers work
+        kila format_spec kwenye ([chr(x) kila x kwenye range(ord('a'), ord('z')+1)] +
+                            [chr(x) kila x kwenye range(ord('A'), ord('Z')+1)]):
+            ikiwa sio format_spec kwenye 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, 0 .__format__, format_spec)
                 self.assertRaises(ValueError, 1 .__format__, format_spec)
                 self.assertRaises(ValueError, (-1) .__format__, format_spec)
 
         # ensure that float type specifiers work; format converts
         #  the int to a float
-        for format_spec in 'eEfFgG%':
-            for value in [0, 1, -1, 100, -100, 1234567890, -1234567890]:
+        kila format_spec kwenye 'eEfFgG%':
+            kila value kwenye [0, 1, -1, 100, -100, 1234567890, -1234567890]:
                 self.assertEqual(value.__format__(format_spec),
                                  float(value).__format__(format_spec))
 
@@ -377,20 +377,20 @@ kundi TypesTests(unittest.TestCase):
 
     @run_with_locale('LC_NUMERIC', 'en_US.UTF8')
     eleza test_float__format__locale(self):
-        # test locale support for __format__ code 'n'
+        # test locale support kila __format__ code 'n'
 
-        for i in range(-10, 10):
+        kila i kwenye range(-10, 10):
             x = 1234567890.0 * (10.0 ** i)
-            self.assertEqual(locale.format_string('%g', x, grouping=True), format(x, 'n'))
-            self.assertEqual(locale.format_string('%.10g', x, grouping=True), format(x, '.10n'))
+            self.assertEqual(locale.format_string('%g', x, grouping=Kweli), format(x, 'n'))
+            self.assertEqual(locale.format_string('%.10g', x, grouping=Kweli), format(x, '.10n'))
 
     @run_with_locale('LC_NUMERIC', 'en_US.UTF8')
     eleza test_int__format__locale(self):
-        # test locale support for __format__ code 'n' for integers
+        # test locale support kila __format__ code 'n' kila integers
 
         x = 123456789012345678901234567890
-        for i in range(0, 30):
-            self.assertEqual(locale.format_string('%d', x, grouping=True), format(x, 'n'))
+        kila i kwenye range(0, 30):
+            self.assertEqual(locale.format_string('%d', x, grouping=Kweli), format(x, 'n'))
 
             # move to the next integer to test
             x = x // 10
@@ -398,7 +398,7 @@ kundi TypesTests(unittest.TestCase):
         rfmt = ">20n"
         lfmt = "<20n"
         cfmt = "^20n"
-        for x in (1234, 12345, 123456, 1234567, 12345678, 123456789, 1234567890, 12345678900):
+        kila x kwenye (1234, 12345, 123456, 1234567, 12345678, 123456789, 1234567890, 12345678900):
             self.assertEqual(len(format(0, rfmt)), len(format(x, rfmt)))
             self.assertEqual(len(format(0, lfmt)), len(format(x, lfmt)))
             self.assertEqual(len(format(0, cfmt)), len(format(x, cfmt)))
@@ -410,12 +410,12 @@ kundi TypesTests(unittest.TestCase):
 
         test(0.0, 'f', '0.000000')
 
-        # the default is 'g', except for empty format spec
+        # the default ni 'g', tatizo kila empty format spec
         test(0.0, '', '0.0')
         test(0.01, '', '0.01')
         test(0.01, 'g', '0.01')
 
-        # test for issue 3411
+        # test kila issue 3411
         test(1.23, '1', '1.23')
         test(-1.23, '1', '-1.23')
         test(1.23, '1g', '1.23')
@@ -441,7 +441,7 @@ kundi TypesTests(unittest.TestCase):
         # Python versions <= 3.0 switched kutoka 'f' to 'g' formatting for
         # values larger than 1e50.  No longer.
         f = 1.1234e90
-        for fmt in 'f', 'F':
+        kila fmt kwenye 'f', 'F':
             # don't do a direct equality check, since on some
             # platforms only the first few digits of dtoa
             # will be reliable
@@ -450,7 +450,7 @@ kundi TypesTests(unittest.TestCase):
             self.assertEqual(result[-7], '.')
             self.assertIn(result[:12], ('112340000000', '112339999999'))
         f = 1.1234e200
-        for fmt in 'f', 'F':
+        kila fmt kwenye 'f', 'F':
             result = f.__format__(fmt)
             self.assertEqual(len(result), 208)
             self.assertEqual(result[-7], '.')
@@ -465,7 +465,7 @@ kundi TypesTests(unittest.TestCase):
         test(1.1234e20, 'E', '1.123400E+20')
 
         # No format code means use g, but must have a decimal
-        # and a number after the decimal.  This is tricky, because
+        # na a number after the decimal.  This ni tricky, because
         # a totaly empty format specifier means something else.
         # So, just use a sign flag
         test(1e200, '+g', '+1e+200')
@@ -504,14 +504,14 @@ kundi TypesTests(unittest.TestCase):
         test(-1.0, '%', '-100.000000%')
 
         # format spec must be string
-        self.assertRaises(TypeError, 3.0.__format__, None)
+        self.assertRaises(TypeError, 3.0.__format__, Tupu)
         self.assertRaises(TypeError, 3.0.__format__, 0)
 
         # other format specifiers shouldn't work on floats,
-        #  in particular int specifiers
-        for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
-                            [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            ikiwa not format_spec in 'eEfFgGn%':
+        #  kwenye particular int specifiers
+        kila format_spec kwenye ([chr(x) kila x kwenye range(ord('a'), ord('z')+1)] +
+                            [chr(x) kila x kwenye range(ord('A'), ord('Z')+1)]):
+            ikiwa sio format_spec kwenye 'eEfFgGn%':
                 self.assertRaises(ValueError, format, 0.0, format_spec)
                 self.assertRaises(ValueError, format, 1.0, format_spec)
                 self.assertRaises(ValueError, format, -1.0, format_spec)
@@ -554,10 +554,10 @@ kundi TypesTests(unittest.TestCase):
         test(12345.6, "*=20", '*************12345.6')
 
     eleza test_format_spec_errors(self):
-        # int, float, and string all share the same format spec
+        # int, float, na string all share the same format spec
         # mini-language parser.
 
-        # Check that we can't ask for too many digits. This is
+        # Check that we can't ask kila too many digits. This is
         # probably a CPython specific test. It tries to put the width
         # into a C long.
         self.assertRaises(ValueError, format, 0, '1'*10000 + 'd')
@@ -565,11 +565,11 @@ kundi TypesTests(unittest.TestCase):
         # Similar with the precision.
         self.assertRaises(ValueError, format, 0, '.' + '1'*10000 + 'd')
 
-        # And may as well test both.
+        # And may kama well test both.
         self.assertRaises(ValueError, format, 0, '1'*1000 + '.' + '1'*10000 + 'd')
 
         # Make sure commas aren't allowed with various type codes
-        for code in 'xXobns':
+        kila code kwenye 'xXobns':
             self.assertRaises(ValueError, format, 0, ',' + code)
 
     eleza test_internal_sizes(self):
@@ -604,7 +604,7 @@ kundi MappingProxyTests(unittest.TestCase):
 
     eleza test_constructor(self):
         kundi userdict(dict):
-            pass
+            pita
 
         mapping = {'x': 1, 'y': 2}
         self.assertEqual(self.mappingproxy(mapping), mapping)
@@ -637,7 +637,7 @@ kundi MappingProxyTests(unittest.TestCase):
         self.assertEqual(view['b'], 'B')
         self.assertRaises(KeyError, view.__getitem__, 'xxx')
         self.assertEqual(view.get('a'), 'A')
-        self.assertIsNone(view.get('xxx'))
+        self.assertIsTupu(view.get('xxx'))
         self.assertEqual(view.get('xxx', 42), 42)
 
     eleza test_missing(self):
@@ -649,17 +649,17 @@ kundi MappingProxyTests(unittest.TestCase):
         self.assertEqual(view['x'], 1)
         self.assertEqual(view['y'], 'missing=y')
         self.assertEqual(view.get('x'), 1)
-        self.assertEqual(view.get('y'), None)
+        self.assertEqual(view.get('y'), Tupu)
         self.assertEqual(view.get('y', 42), 42)
-        self.assertTrue('x' in view)
-        self.assertFalse('y' in view)
+        self.assertKweli('x' kwenye view)
+        self.assertUongo('y' kwenye view)
 
     eleza test_customdict(self):
         kundi customdict(dict):
             eleza __contains__(self, key):
                 ikiwa key == 'magic':
-                    rudisha True
-                else:
+                    rudisha Kweli
+                isipokua:
                     rudisha dict.__contains__(self, key)
 
             eleza __iter__(self):
@@ -683,21 +683,21 @@ kundi MappingProxyTests(unittest.TestCase):
             eleza __getitem__(self, key):
                 rudisha "getitem=%s" % dict.__getitem__(self, key)
 
-            eleza get(self, key, default=None):
+            eleza get(self, key, default=Tupu):
                 rudisha "get=%s" % dict.get(self, key, 'default=%r' % default)
 
         custom = customdict({'key': 'value'})
         view = self.mappingproxy(custom)
-        self.assertTrue('key' in view)
-        self.assertTrue('magic' in view)
-        self.assertFalse('xxx' in view)
+        self.assertKweli('key' kwenye view)
+        self.assertKweli('magic' kwenye view)
+        self.assertUongo('xxx' kwenye view)
         self.assertEqual(view['key'], 'getitem=value')
         self.assertRaises(KeyError, view.__getitem__, 'xxx')
         self.assertEqual(tuple(view), ('iter',))
         self.assertEqual(len(view), 500)
         self.assertEqual(view.copy(), 'copy')
         self.assertEqual(view.get('key'), 'get=value')
-        self.assertEqual(view.get('xxx'), 'get=default=None')
+        self.assertEqual(view.get('xxx'), 'get=default=Tupu')
         self.assertEqual(view.items(), 'items')
         self.assertEqual(view.keys(), 'keys')
         self.assertEqual(view.values(), 'values')
@@ -707,9 +707,9 @@ kundi MappingProxyTests(unittest.TestCase):
         d2 = {'y': 2}
         mapping = collections.ChainMap(d1, d2)
         view = self.mappingproxy(mapping)
-        self.assertTrue('x' in view)
-        self.assertTrue('y' in view)
-        self.assertFalse('z' in view)
+        self.assertKweli('x' kwenye view)
+        self.assertKweli('y' kwenye view)
+        self.assertUongo('z' kwenye view)
         self.assertEqual(view['x'], 1)
         self.assertEqual(view['y'], 2)
         self.assertRaises(KeyError, view.__getitem__, 'z')
@@ -721,17 +721,17 @@ kundi MappingProxyTests(unittest.TestCase):
         self.assertEqual(copy, mapping)
         self.assertEqual(view.get('x'), 1)
         self.assertEqual(view.get('y'), 2)
-        self.assertIsNone(view.get('z'))
+        self.assertIsTupu(view.get('z'))
         self.assertEqual(tuple(sorted(view.items())), (('x', 1), ('y', 2)))
         self.assertEqual(tuple(sorted(view.keys())), ('x', 'y'))
         self.assertEqual(tuple(sorted(view.values())), (1, 2))
 
     eleza test_contains(self):
         view = self.mappingproxy(dict.kutokakeys('abc'))
-        self.assertTrue('a' in view)
-        self.assertTrue('b' in view)
-        self.assertTrue('c' in view)
-        self.assertFalse('xxx' in view)
+        self.assertKweli('a' kwenye view)
+        self.assertKweli('b' kwenye view)
+        self.assertKweli('c' kwenye view)
+        self.assertUongo('xxx' kwenye view)
 
     eleza test_views(self):
         mapping = {}
@@ -748,7 +748,7 @@ kundi MappingProxyTests(unittest.TestCase):
         self.assertEqual(list(items), [('key', 'value')])
 
     eleza test_len(self):
-        for expected in range(6):
+        kila expected kwenye range(6):
             data = dict.kutokakeys('abcde'[:expected])
             self.assertEqual(len(data), expected)
             view = self.mappingproxy(data)
@@ -797,13 +797,13 @@ kundi ClassCreationTests(unittest.TestCase):
 
     eleza test_new_class_subclass(self):
         C = types.new_class("C", (int,))
-        self.assertTrue(issubclass(C, int))
+        self.assertKweli(issubclass(C, int))
 
     eleza test_new_class_meta(self):
         Meta = self.Meta
         settings = {"metaclass": Meta, "z": 2}
-        # We do this twice to make sure the passed in dict isn't mutated
-        for i in range(2):
+        # We do this twice to make sure the pitaed kwenye dict isn't mutated
+        kila i kwenye range(2):
             C = types.new_class("C" + str(i), (), settings)
             self.assertIsInstance(C, Meta)
             self.assertEqual(C.y, 1)
@@ -820,7 +820,7 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertEqual(C.z, 2)
 
     eleza test_new_class_metaclass_keywords(self):
-        #Test that keywords are passed to the metaclass:
+        #Test that keywords are pitaed to the metaclass:
         eleza meta_func(name, bases, ns, **kw):
             rudisha name, bases, ns, kw
         res = types.new_class("X",
@@ -830,7 +830,7 @@ kundi ClassCreationTests(unittest.TestCase):
 
     eleza test_new_class_defaults(self):
         # Test defaults/keywords:
-        C = types.new_class("C", (), {}, None)
+        C = types.new_class("C", (), {}, Tupu)
         self.assertEqual(C.__name__, "C")
         self.assertEqual(C.__bases__, (object,))
 
@@ -842,14 +842,14 @@ kundi ClassCreationTests(unittest.TestCase):
                             bases=(int,),
                             kwds=dict(metaclass=Meta, z=2),
                             exec_body=func)
-        self.assertTrue(issubclass(C, int))
+        self.assertKweli(issubclass(C, int))
         self.assertIsInstance(C, Meta)
         self.assertEqual(C.x, 0)
         self.assertEqual(C.y, 1)
         self.assertEqual(C.z, 2)
 
     eleza test_new_class_with_mro_entry(self):
-        kundi A: pass
+        kundi A: pita
         kundi C:
             eleza __mro_entries__(self, bases):
                 rudisha (A,)
@@ -860,8 +860,8 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertEqual(D.__mro__, (D, A, object))
 
     eleza test_new_class_with_mro_entry_none(self):
-        kundi A: pass
-        kundi B: pass
+        kundi A: pita
+        kundi B: pita
         kundi C:
             eleza __mro_entries__(self, bases):
                 rudisha ()
@@ -872,7 +872,7 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertEqual(D.__mro__, (D, A, B, object))
 
     eleza test_new_class_with_mro_entry_error(self):
-        kundi A: pass
+        kundi A: pita
         kundi C:
             eleza __mro_entries__(self, bases):
                 rudisha A
@@ -881,10 +881,10 @@ kundi ClassCreationTests(unittest.TestCase):
             types.new_class('D', (c,), {})
 
     eleza test_new_class_with_mro_entry_multiple(self):
-        kundi A1: pass
-        kundi A2: pass
-        kundi B1: pass
-        kundi B2: pass
+        kundi A1: pita
+        kundi A2: pita
+        kundi B1: pita
+        kundi B2: pita
         kundi A:
             eleza __mro_entries__(self, bases):
                 rudisha (A1, A2)
@@ -895,18 +895,18 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertEqual(D.__bases__, (A1, A2, B1, B2))
 
     eleza test_new_class_with_mro_entry_multiple_2(self):
-        kundi A1: pass
-        kundi A2: pass
-        kundi A3: pass
-        kundi B1: pass
-        kundi B2: pass
+        kundi A1: pita
+        kundi A2: pita
+        kundi A3: pita
+        kundi B1: pita
+        kundi B2: pita
         kundi A:
             eleza __mro_entries__(self, bases):
                 rudisha (A1, A2, A3)
         kundi B:
             eleza __mro_entries__(self, bases):
                 rudisha (B1, B2)
-        kundi C: pass
+        kundi C: pita
         D = types.new_class('D', (A(), C, B()), {})
         self.assertEqual(D.__bases__, (A1, A2, A3, C, B1, B2))
 
@@ -924,7 +924,7 @@ kundi ClassCreationTests(unittest.TestCase):
         B = types.new_class("B", (object,))
         C = types.new_class("C", (object,), {"metaclass": A})
 
-        # The most derived metakundi of D is A rather than type.
+        # The most derived metakundi of D ni A rather than type.
         meta, ns, kwds = types.prepare_class("D", (B, C), {"metaclass": type})
         self.assertIs(meta, A)
         self.assertIs(ns, expected_ns)
@@ -935,29 +935,29 @@ kundi ClassCreationTests(unittest.TestCase):
         kundi BadMeta(type):
             @classmethod
             eleza __prepare__(*args):
-                rudisha None
+                rudisha Tupu
         with self.assertRaisesRegex(TypeError,
                                     r'^BadMeta\.__prepare__\(\) must '
-                                    r'rudisha a mapping, not NoneType$'):
+                                    r'rudisha a mapping, sio TupuType$'):
             kundi Foo(metaclass=BadMeta):
-                pass
-        # Also test the case in which the metakundi is not a type.
+                pita
+        # Also test the case kwenye which the metakundi ni sio a type.
         kundi BadMeta:
             @classmethod
             eleza __prepare__(*args):
-                rudisha None
+                rudisha Tupu
         with self.assertRaisesRegex(TypeError,
                                     r'^<metaclass>\.__prepare__\(\) must '
-                                    r'rudisha a mapping, not NoneType$'):
+                                    r'rudisha a mapping, sio TupuType$'):
             kundi Bar(metaclass=BadMeta()):
-                pass
+                pita
 
     eleza test_resolve_bases(self):
-        kundi A: pass
-        kundi B: pass
+        kundi A: pita
+        kundi B: pita
         kundi C:
             eleza __mro_entries__(self, bases):
-                ikiwa A in bases:
+                ikiwa A kwenye bases:
                     rudisha ()
                 rudisha (A,)
         c = C()
@@ -971,7 +971,7 @@ kundi ClassCreationTests(unittest.TestCase):
         y = (C,)
         z = (A, C)
         t = (A, C, B)
-        for bases in [x, y, z, t]:
+        kila bases kwenye [x, y, z, t]:
             self.assertIs(types.resolve_bases(bases), bases)
 
     eleza test_metaclass_derivation(self):
@@ -992,7 +992,7 @@ kundi ClassCreationTests(unittest.TestCase):
             @classmethod
             eleza __prepare__(mcls, name, bases):
                 ns = super().__prepare__(name, bases)
-                ns['BMeta_was_here'] = True
+                ns['BMeta_was_here'] = Kweli
                 rudisha ns
 
         A = types.new_class("A", (), {"metaclass": AMeta})
@@ -1005,7 +1005,7 @@ kundi ClassCreationTests(unittest.TestCase):
         new_calls.clear()
 
         C = types.new_class("C", (A, B))
-        # The most derived metakundi is BMeta:
+        # The most derived metakundi ni BMeta:
         self.assertEqual(new_calls, ['BMeta', 'AMeta'])
         new_calls.clear()
         # BMeta.__prepare__ should've been called:
@@ -1017,7 +1017,7 @@ kundi ClassCreationTests(unittest.TestCase):
         new_calls.clear()
         self.assertIn('BMeta_was_here', C2.__dict__)
 
-        # Check correct metakundi calculation when a metakundi is declared:
+        # Check correct metakundi calculation when a metakundi ni declared:
         D = types.new_class("D", (C,), {"metaclass": type})
         self.assertEqual(new_calls, ['BMeta', 'AMeta'])
         new_calls.clear()
@@ -1030,9 +1030,9 @@ kundi ClassCreationTests(unittest.TestCase):
 
     eleza test_metaclass_override_function(self):
         # Special case: the given metakundi isn't a class,
-        # so there is no metakundi calculation.
+        # so there ni no metakundi calculation.
         kundi A(metaclass=self.Meta):
-            pass
+            pita
 
         marker = object()
         eleza func(*args, **kwargs):
@@ -1046,8 +1046,8 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertIs(marker, Z)
 
     eleza test_metaclass_override_callable(self):
-        # The given metakundi is a class,
-        # but not a descendant of type.
+        # The given metakundi ni a class,
+        # but sio a descendant of type.
         new_calls = []  # to check the order of __new__ calls
         prepare_calls = []  # to track __prepare__ calls
         kundi ANotMeta:
@@ -1096,8 +1096,8 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertEqual(new_calls, ['BNotMeta', 'ANotMeta'])
         new_calls.clear()
 
-        # This is a TypeError, because of a metakundi conflict:
-        # BNotMeta is neither a subclass, nor a superkundi of type
+        # This ni a TypeError, because of a metakundi conflict:
+        # BNotMeta ni neither a subclass, nor a superkundi of type
         with self.assertRaises(TypeError):
             D = types.new_class("D", (C,), {"metaclass": type})
 
@@ -1122,7 +1122,7 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertEqual(new_calls, ['BNotMeta', 'ANotMeta'])
         new_calls.clear()
 
-        # TypeError: BNotMeta is neither a
+        # TypeError: BNotMeta ni neither a
         # subclass, nor a superkundi of int
         with self.assertRaises(TypeError):
             X = types.new_class("X", (C, int()))
@@ -1136,14 +1136,14 @@ kundi ClassCreationTests(unittest.TestCase):
         self.assertIs(type(5), int)
 
         kundi M(type):
-            pass
-        with self.assertRaises(TypeError) as cm:
+            pita
+        with self.assertRaises(TypeError) kama cm:
             M(5)
         self.assertEqual(str(cm.exception), expected_message)
 
         kundi N(type, metaclass=M):
-            pass
-        with self.assertRaises(TypeError) as cm:
+            pita
+        with self.assertRaises(TypeError) kama cm:
             N(5)
         self.assertEqual(str(cm.exception), expected_message)
 
@@ -1177,13 +1177,13 @@ kundi SimpleNamespaceTests(unittest.TestCase):
     eleza test_underlying_dict(self):
         ns1 = types.SimpleNamespace()
         ns2 = types.SimpleNamespace(x=1, y=2)
-        ns3 = types.SimpleNamespace(a=True, b=False)
+        ns3 = types.SimpleNamespace(a=Kweli, b=Uongo)
         mapping = ns3.__dict__
-        del ns3
+        toa ns3
 
         self.assertEqual(ns1.__dict__, {})
         self.assertEqual(ns2.__dict__, {'y': 2, 'x': 1})
-        self.assertEqual(mapping, dict(a=True, b=False))
+        self.assertEqual(mapping, dict(a=Kweli, b=Uongo))
 
     eleza test_attrget(self):
         ns = types.SimpleNamespace(x=1, y=2, w=3)
@@ -1200,30 +1200,30 @@ kundi SimpleNamespaceTests(unittest.TestCase):
         ns1.a = 'spam'
         ns1.b = 'ham'
         ns2.z = 4
-        ns2.theta = None
+        ns2.theta = Tupu
 
         self.assertEqual(ns1.__dict__, dict(a='spam', b='ham'))
-        self.assertEqual(ns2.__dict__, dict(x=1, y=2, w=3, z=4, theta=None))
+        self.assertEqual(ns2.__dict__, dict(x=1, y=2, w=3, z=4, theta=Tupu))
 
     eleza test_attrdel(self):
         ns1 = types.SimpleNamespace()
         ns2 = types.SimpleNamespace(x=1, y=2, w=3)
 
         with self.assertRaises(AttributeError):
-            del ns1.spam
+            toa ns1.spam
         with self.assertRaises(AttributeError):
-            del ns2.spam
+            toa ns2.spam
 
-        del ns2.y
+        toa ns2.y
         self.assertEqual(vars(ns2), dict(w=3, x=1))
         ns2.y = 'spam'
         self.assertEqual(vars(ns2), dict(w=3, x=1, y='spam'))
-        del ns2.y
+        toa ns2.y
         self.assertEqual(vars(ns2), dict(w=3, x=1))
 
         ns1.spam = 5
         self.assertEqual(vars(ns1), dict(spam=5))
-        del ns1.spam
+        toa ns1.spam
         self.assertEqual(vars(ns1), {})
 
     eleza test_repr(self):
@@ -1296,13 +1296,13 @@ kundi SimpleNamespaceTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             iter(ns)
         with self.assertRaises(TypeError):
-            'spam' in ns
+            'spam' kwenye ns
         with self.assertRaises(TypeError):
             ns['spam']
 
     eleza test_subclass(self):
         kundi Spam(types.SimpleNamespace):
-            pass
+            pita
 
         spam = Spam(ham=8, eggs=9)
 
@@ -1310,14 +1310,14 @@ kundi SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(vars(spam), {'ham': 8, 'eggs': 9})
 
     eleza test_pickle(self):
-        ns = types.SimpleNamespace(breakfast="spam", lunch="spam")
+        ns = types.SimpleNamespace(komafast="spam", lunch="spam")
 
-        for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila protocol kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pname = "protocol {}".format(protocol)
-            try:
+            jaribu:
                 ns_pickled = pickle.dumps(ns, protocol)
-            except TypeError as e:
-                raise TypeError(pname) kutoka e
+            tatizo TypeError kama e:
+                ashiria TypeError(pname) kutoka e
             ns_roundtrip = pickle.loads(ns_pickled)
 
             self.assertEqual(ns, ns_roundtrip, pname)
@@ -1327,8 +1327,8 @@ kundi SimpleNamespaceTests(unittest.TestCase):
         # SystemError.
         kundi FakeSimpleNamespace(str):
             __class__ = types.SimpleNamespace
-        self.assertFalse(types.SimpleNamespace() == FakeSimpleNamespace())
-        self.assertTrue(types.SimpleNamespace() != FakeSimpleNamespace())
+        self.assertUongo(types.SimpleNamespace() == FakeSimpleNamespace())
+        self.assertKweli(types.SimpleNamespace() != FakeSimpleNamespace())
         with self.assertRaises(TypeError):
             types.SimpleNamespace() < FakeSimpleNamespace()
         with self.assertRaises(TypeError):
@@ -1341,8 +1341,8 @@ kundi SimpleNamespaceTests(unittest.TestCase):
 
 kundi CoroutineTests(unittest.TestCase):
     eleza test_wrong_args(self):
-        samples = [None, 1, object()]
-        for sample in samples:
+        samples = [Tupu, 1, object()]
+        kila sample kwenye samples:
             with self.assertRaisesRegex(TypeError,
                                         'types.coroutine.*expects a callable'):
                 types.coroutine(sample)
@@ -1367,10 +1367,10 @@ kundi CoroutineTests(unittest.TestCase):
         self.assertIs(aw, foo())
 
     eleza test_async_def(self):
-        # Test that types.coroutine passes 'async def' coroutines
+        # Test that types.coroutine pitaes 'async def' coroutines
         # without modification
 
-        async eleza foo(): pass
+        async eleza foo(): pita
         foo_code = foo.__code__
         foo_flags = foo.__code__.co_flags
         decorated_foo = types.coroutine(foo)
@@ -1380,7 +1380,7 @@ kundi CoroutineTests(unittest.TestCase):
 
         foo_coro = foo()
         eleza bar(): rudisha foo_coro
-        for _ in range(2):
+        kila _ kwenye range(2):
             bar = types.coroutine(bar)
             coro = bar()
             self.assertIs(foo_coro, coro)
@@ -1389,9 +1389,9 @@ kundi CoroutineTests(unittest.TestCase):
 
     eleza test_duck_coro(self):
         kundi CoroLike:
-            eleza send(self): pass
-            eleza throw(self): pass
-            eleza close(self): pass
+            eleza send(self): pita
+            eleza throw(self): pita
+            eleza close(self): pita
             eleza __await__(self): rudisha self
 
         coro = CoroLike()
@@ -1403,12 +1403,12 @@ kundi CoroutineTests(unittest.TestCase):
 
     eleza test_duck_corogen(self):
         kundi CoroGenLike:
-            eleza send(self): pass
-            eleza throw(self): pass
-            eleza close(self): pass
+            eleza send(self): pita
+            eleza throw(self): pita
+            eleza close(self): pita
             eleza __await__(self): rudisha self
             eleza __iter__(self): rudisha self
-            eleza __next__(self): pass
+            eleza __next__(self): pita
 
         coro = CoroGenLike()
         @types.coroutine
@@ -1419,11 +1419,11 @@ kundi CoroutineTests(unittest.TestCase):
 
     eleza test_duck_gen(self):
         kundi GenLike:
-            eleza send(self): pass
-            eleza throw(self): pass
-            eleza close(self): pass
-            eleza __iter__(self): pass
-            eleza __next__(self): pass
+            eleza send(self): pita
+            eleza throw(self): pita
+            eleza close(self): pita
+            eleza __iter__(self): pita
+            eleza __next__(self): pita
 
         # Setup generator mock object
         gen = unittest.mock.MagicMock(GenLike)
@@ -1449,24 +1449,24 @@ kundi CoroutineTests(unittest.TestCase):
         self.assertIs(wrapper.__name__, gen.__name__)
 
         # Test AttributeErrors
-        for name in {'gi_running', 'gi_frame', 'gi_code', 'gi_yieldkutoka',
+        kila name kwenye {'gi_running', 'gi_frame', 'gi_code', 'gi_tumakutoka',
                      'cr_running', 'cr_frame', 'cr_code', 'cr_await'}:
             with self.assertRaises(AttributeError):
                 getattr(wrapper, name)
 
-        # Test attributes pass-through
+        # Test attributes pita-through
         gen.gi_running = object()
         gen.gi_frame = object()
         gen.gi_code = object()
-        gen.gi_yieldkutoka = object()
+        gen.gi_tumakutoka = object()
         self.assertIs(wrapper.gi_running, gen.gi_running)
         self.assertIs(wrapper.gi_frame, gen.gi_frame)
         self.assertIs(wrapper.gi_code, gen.gi_code)
-        self.assertIs(wrapper.gi_yieldkutoka, gen.gi_yieldkutoka)
+        self.assertIs(wrapper.gi_tumakutoka, gen.gi_tumakutoka)
         self.assertIs(wrapper.cr_running, gen.gi_running)
         self.assertIs(wrapper.cr_frame, gen.gi_frame)
         self.assertIs(wrapper.cr_code, gen.gi_code)
-        self.assertIs(wrapper.cr_await, gen.gi_yieldkutoka)
+        self.assertIs(wrapper.cr_await, gen.gi_tumakutoka)
 
         wrapper.close()
         gen.close.assert_called_once_with()
@@ -1494,26 +1494,26 @@ kundi CoroutineTests(unittest.TestCase):
         # Test exceptions propagation
         error = Exception()
         gen.throw.side_effect = error
-        try:
+        jaribu:
             wrapper.throw(1)
-        except Exception as ex:
+        tatizo Exception kama ex:
             self.assertIs(ex, error)
-        else:
-            self.fail('wrapper did not propagate an exception')
+        isipokua:
+            self.fail('wrapper did sio propagate an exception')
 
         # Test invalid args
         gen.reset_mock()
         with self.assertRaises(TypeError):
             wrapper.throw()
-        self.assertFalse(gen.throw.called)
+        self.assertUongo(gen.throw.called)
         with self.assertRaises(TypeError):
             wrapper.close(1)
-        self.assertFalse(gen.close.called)
+        self.assertUongo(gen.close.called)
         with self.assertRaises(TypeError):
             wrapper.send()
-        self.assertFalse(gen.send.called)
+        self.assertUongo(gen.send.called)
 
-        # Test that we do not double wrap
+        # Test that we do sio double wrap
         @types.coroutine
         eleza bar(): rudisha wrapper
         self.assertIs(wrapper, bar())
@@ -1527,7 +1527,7 @@ kundi CoroutineTests(unittest.TestCase):
             """Emulates the following generator (very clumsy):
 
               eleza gen(fut):
-                  result = yield fut
+                  result = tuma fut
                   rudisha result * 2
             """
             eleza __init__(self, fut):
@@ -1536,22 +1536,22 @@ kundi CoroutineTests(unittest.TestCase):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                rudisha self.send(None)
+                rudisha self.send(Tupu)
             eleza send(self, v):
-                try:
+                jaribu:
                     ikiwa self._i == 0:
-                        assert v is None
+                        assert v ni Tupu
                         rudisha self._fut
                     ikiwa self._i == 1:
-                        raise StopIteration(v * 2)
+                        ashiria StopIteration(v * 2)
                     ikiwa self._i > 1:
-                        raise StopIteration
-                finally:
+                        ashiria StopIteration
+                mwishowe:
                     self._i += 1
             eleza throw(self, tp, *exc):
                 self._i = 100
-                ikiwa tp is not GeneratorExit:
-                    raise tp
+                ikiwa tp ni sio GeneratorExit:
+                    ashiria tp
             eleza close(self):
                 self.throw(GeneratorExit)
 
@@ -1565,18 +1565,18 @@ kundi CoroutineTests(unittest.TestCase):
             rudisha await foo() + 100
         coro = corofunc()
 
-        self.assertEqual(coro.send(None), 'spam')
-        try:
+        self.assertEqual(coro.send(Tupu), 'spam')
+        jaribu:
             coro.send(20)
-        except StopIteration as ex:
+        tatizo StopIteration kama ex:
             self.assertEqual(ex.args[0], 140)
-        else:
+        isipokua:
             self.fail('StopIteration was expected')
 
     eleza test_gen(self):
         eleza gen_func():
-            yield 1
-            rudisha (yield 2)
+            tuma 1
+            rudisha (tuma 2)
         gen = gen_func()
         @types.coroutine
         eleza foo(): rudisha gen
@@ -1584,20 +1584,20 @@ kundi CoroutineTests(unittest.TestCase):
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
         self.assertIs(wrapper.__await__(), gen)
 
-        for name in ('__name__', '__qualname__', 'gi_code',
+        kila name kwenye ('__name__', '__qualname__', 'gi_code',
                      'gi_running', 'gi_frame'):
             self.assertIs(getattr(foo(), name),
                           getattr(gen, name))
         self.assertIs(foo().cr_code, gen.gi_code)
 
         self.assertEqual(next(wrapper), 1)
-        self.assertEqual(wrapper.send(None), 2)
+        self.assertEqual(wrapper.send(Tupu), 2)
         with self.assertRaisesRegex(StopIteration, 'spam'):
             wrapper.send('spam')
 
         gen = gen_func()
         wrapper = foo()
-        wrapper.send(None)
+        wrapper.send(Tupu)
         with self.assertRaisesRegex(Exception, 'ham'):
             wrapper.throw(Exception, Exception('ham'))
 
@@ -1605,10 +1605,10 @@ kundi CoroutineTests(unittest.TestCase):
         foo = types.coroutine(foo)
         self.assertIs(foo().__await__(), gen)
 
-    eleza test_returning_itercoro(self):
+    eleza test_rudishaing_itercoro(self):
         @types.coroutine
         eleza gen():
-            yield
+            tuma
 
         gencoro = gen()
 
@@ -1623,22 +1623,22 @@ kundi CoroutineTests(unittest.TestCase):
         self.assertIs(foo(), gencoro)
 
     eleza test_genfunc(self):
-        eleza gen(): yield
+        eleza gen(): tuma
         self.assertIs(types.coroutine(gen), gen)
         self.assertIs(types.coroutine(types.coroutine(gen)), gen)
 
-        self.assertTrue(gen.__code__.co_flags & inspect.CO_ITERABLE_COROUTINE)
-        self.assertFalse(gen.__code__.co_flags & inspect.CO_COROUTINE)
+        self.assertKweli(gen.__code__.co_flags & inspect.CO_ITERABLE_COROUTINE)
+        self.assertUongo(gen.__code__.co_flags & inspect.CO_COROUTINE)
 
         g = gen()
-        self.assertTrue(g.gi_code.co_flags & inspect.CO_ITERABLE_COROUTINE)
-        self.assertFalse(g.gi_code.co_flags & inspect.CO_COROUTINE)
+        self.assertKweli(g.gi_code.co_flags & inspect.CO_ITERABLE_COROUTINE)
+        self.assertUongo(g.gi_code.co_flags & inspect.CO_COROUTINE)
 
         self.assertIs(types.coroutine(gen), gen)
 
     eleza test_wrapper_object(self):
         eleza gen():
-            yield
+            tuma
         @types.coroutine
         eleza coro():
             rudisha gen()
@@ -1646,7 +1646,7 @@ kundi CoroutineTests(unittest.TestCase):
         wrapper = coro()
         self.assertIn('GeneratorWrapper', repr(wrapper))
         self.assertEqual(repr(wrapper), str(wrapper))
-        self.assertTrue(set(dir(wrapper)).issuperset({
+        self.assertKweli(set(dir(wrapper)).issuperset({
             '__await__', '__iter__', '__next__', 'cr_code', 'cr_running',
             'cr_frame', 'gi_code', 'gi_frame', 'gi_running', 'send',
             'close', 'throw'}))

@@ -12,8 +12,8 @@ kutoka tkinter agiza Tk, StringVar, IntVar, BooleanVar, DISABLED, NORMAL
 kutoka idlelib agiza config
 kutoka idlelib.configdialog agiza idleConf, changes, tracers
 
-# Tests should not depend on fortuitous user configurations.
-# They must not affect actual user .cfg files.
+# Tests should sio depend on fortuitous user configurations.
+# They must sio affect actual user .cfg files.
 # Use solution kutoka test_config: empty parsers with no filename.
 usercfg = idleConf.userCfg
 testcfg = {
@@ -23,8 +23,8 @@ testcfg = {
     'extensions': config.IdleUserConfParser(''),
 }
 
-root = None
-dialog = None
+root = Tupu
+dialog = Tupu
 mainpage = changes['main']
 highpage = changes['highlight']
 keyspage = changes['keys']
@@ -35,7 +35,7 @@ eleza setUpModule():
     idleConf.userCfg = testcfg
     root = Tk()
     # root.withdraw()    # Comment out, see issue 30870
-    dialog = configdialog.ConfigDialog(root, 'Test', _utest=True)
+    dialog = configdialog.ConfigDialog(root, 'Test', _utest=Kweli)
 
 eleza tearDownModule():
     global root, dialog
@@ -45,14 +45,14 @@ eleza tearDownModule():
     changes.clear()
     root.update_idletasks()
     root.destroy()
-    root = dialog = None
+    root = dialog = Tupu
 
 
 kundi FontPageTest(unittest.TestCase):
     """Test that font widgets enable users to make font changes.
 
     Test that widget actions set vars, that var changes add three
-    options to changes and call set_samples, and that set_samples
+    options to changes na call set_samples, na that set_samples
     changes the font of both sample boxes.
     """
     @classmethod
@@ -64,7 +64,7 @@ kundi FontPageTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.page.set_samples  # Unmask instance method.
+        toa cls.page.set_samples  # Unmask instance method.
 
     eleza setUp(self):
         changes.clear()
@@ -76,17 +76,17 @@ kundi FontPageTest(unittest.TestCase):
         d = self.page
         d.font_name.set('Fake')
         d.font_size.set('1')
-        d.font_bold.set(True)
+        d.font_bold.set(Kweli)
         d.set_samples.called = 0
         d.load_font_cfg()
         self.assertNotEqual(d.font_name.get(), 'Fake')
         self.assertNotEqual(d.font_size.get(), '1')
-        self.assertFalse(d.font_bold.get())
+        self.assertUongo(d.font_bold.get())
         self.assertEqual(d.set_samples.called, 1)
         tracers.attach()
 
     eleza test_fontlist_key(self):
-        # Up and Down keys should select a new font.
+        # Up na Down keys should select a new font.
         d = self.page
         ikiwa d.fontlist.size() < 2:
             self.skipTest('need at least 2 fonts')
@@ -122,7 +122,7 @@ kundi FontPageTest(unittest.TestCase):
         fontlist = d.fontlist
         fontlist.activate(0)
 
-        # Select next item in listbox
+        # Select next item kwenye listbox
         fontlist.focus_force()
         fontlist.see(1)
         fontlist.update()
@@ -146,16 +146,16 @@ kundi FontPageTest(unittest.TestCase):
     eleza test_bold_toggle(self):
         # Click on checkbutton should invert it.
         d = self.page
-        d.font_bold.set(False)
+        d.font_bold.set(Uongo)
         d.bold_toggle.invoke()
-        self.assertTrue(d.font_bold.get())
+        self.assertKweli(d.font_bold.get())
         d.bold_toggle.invoke()
-        self.assertFalse(d.font_bold.get())
+        self.assertUongo(d.font_bold.get())
 
     eleza test_font_set(self):
-        # Test that setting a font Variable results in 3 provisional
-        # change entries and a call to set_samples. Use values sure to
-        # not be defaults.
+        # Test that setting a font Variable results kwenye 3 provisional
+        # change entries na a call to set_samples. Use values sure to
+        # sio be defaults.
 
         default_font = idleConf.GetFont(root, 'main', 'EditorWindow')
         default_size = str(default_font[1])
@@ -190,7 +190,7 @@ kundi FontPageTest(unittest.TestCase):
 
     eleza test_set_samples(self):
         d = self.page
-        del d.set_samples  # Unmask method for test
+        toa d.set_samples  # Unmask method kila test
         orig_samples = d.font_sample, d.highlight_sample
         d.font_sample, d.highlight_sample = {}, {}
         d.font_name.set('test')
@@ -200,10 +200,10 @@ kundi FontPageTest(unittest.TestCase):
 
         # Test set_samples.
         d.set_samples()
-        self.assertTrue(d.font_sample == d.highlight_sample == expected)
+        self.assertKweli(d.font_sample == d.highlight_sample == expected)
 
         d.font_sample, d.highlight_sample = orig_samples
-        d.set_samples = Func()  # Re-mask for other tests.
+        d.set_samples = Func()  # Re-mask kila other tests.
 
 
 kundi IndentTest(unittest.TestCase):
@@ -231,7 +231,7 @@ kundi HighPageTest(unittest.TestCase):
     """Test that highlight tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
-    options to changes and that themes work correctly.
+    options to changes na that themes work correctly.
     """
 
     @classmethod
@@ -247,14 +247,14 @@ kundi HighPageTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         d = cls.page
-        del d.set_theme_type, d.paint_theme_sample
-        del d.set_highlight_target, d.set_color_sample
+        toa d.set_theme_type, d.paint_theme_sample
+        toa d.set_highlight_target, d.set_color_sample
 
     eleza setUp(self):
         d = self.page
-        # The following is needed for test_load_key_cfg, _delete_custom_keys.
-        # This may indicate a defect in some test or function.
-        for section in idleConf.GetSectionList('user', 'highlight'):
+        # The following ni needed kila test_load_key_cfg, _delete_custom_keys.
+        # This may indicate a defect kwenye some test ama function.
+        kila section kwenye idleConf.GetSectionList('user', 'highlight'):
             idleConf.userCfg['highlight'].remove_section(section)
         changes.clear()
         d.set_theme_type.called = 0
@@ -268,9 +268,9 @@ kundi HighPageTest(unittest.TestCase):
         eq = self.assertEqual
 
         # Use builtin theme with no user themes created.
-        idleConf.CurrentTheme = mock.Mock(return_value='IDLE Classic')
+        idleConf.CurrentTheme = mock.Mock(rudisha_value='IDLE Classic')
         d.load_theme_cfg()
-        self.assertTrue(d.theme_source.get())
+        self.assertKweli(d.theme_source.get())
         # builtinlist sets variable builtin_name to the CurrentTheme default.
         eq(d.builtin_name.get(), 'IDLE Classic')
         eq(d.custom_name.get(), '- no custom themes -')
@@ -290,17 +290,17 @@ kundi HighPageTest(unittest.TestCase):
         eq(d.set_highlight_target.called, 2)
 
         # Use custom theme.
-        idleConf.CurrentTheme = mock.Mock(return_value='test2')
+        idleConf.CurrentTheme = mock.Mock(rudisha_value='test2')
         idleConf.SetOption('main', 'Theme', 'default', '0')
         d.load_theme_cfg()
-        self.assertFalse(d.theme_source.get())
+        self.assertUongo(d.theme_source.get())
         eq(d.builtin_name.get(), 'IDLE Classic')
         eq(d.custom_name.get(), 'test2')
         eq(d.set_theme_type.called, 3)
         eq(d.paint_theme_sample.called, 3)
         eq(d.set_highlight_target.called, 3)
 
-        del idleConf.CurrentTheme
+        toa idleConf.CurrentTheme
         tracers.attach()
 
     eleza test_theme_source(self):
@@ -311,7 +311,7 @@ kundi HighPageTest(unittest.TestCase):
         d.var_changed_custom_name = Func()
         # Builtin selected.
         d.builtin_theme_on.invoke()
-        eq(mainpage, {'Theme': {'default': 'True'}})
+        eq(mainpage, {'Theme': {'default': 'Kweli'}})
         eq(d.var_changed_builtin_name.called, 1)
         eq(d.var_changed_custom_name.called, 0)
         changes.clear()
@@ -319,17 +319,17 @@ kundi HighPageTest(unittest.TestCase):
         # Custom selected.
         d.custom_theme_on.state(('!disabled',))
         d.custom_theme_on.invoke()
-        self.assertEqual(mainpage, {'Theme': {'default': 'False'}})
+        self.assertEqual(mainpage, {'Theme': {'default': 'Uongo'}})
         eq(d.var_changed_builtin_name.called, 1)
         eq(d.var_changed_custom_name.called, 1)
-        del d.var_changed_builtin_name, d.var_changed_custom_name
+        toa d.var_changed_builtin_name, d.var_changed_custom_name
 
     eleza test_builtin_name(self):
         eq = self.assertEqual
         d = self.page
         item_list = ['IDLE Classic', 'IDLE Dark', 'IDLE New']
 
-        # Not in old_themes, defaults name to first item.
+        # Not kwenye old_themes, defaults name to first item.
         idleConf.SetOption('main', 'Theme', 'name', 'spam')
         d.builtinlist.SetMenu(item_list, 'IDLE Dark')
         eq(mainpage, {'Theme': {'name': 'IDLE Classic',
@@ -337,7 +337,7 @@ kundi HighPageTest(unittest.TestCase):
         eq(d.theme_message['text'], 'New theme, see Help')
         eq(d.paint_theme_sample.called, 1)
 
-        # Not in old themes - uses name2.
+        # Not kwenye old themes - uses name2.
         changes.clear()
         idleConf.SetOption('main', 'Theme', 'name', 'IDLE New')
         d.builtinlist.SetMenu(item_list, 'IDLE Dark')
@@ -345,7 +345,7 @@ kundi HighPageTest(unittest.TestCase):
         eq(d.theme_message['text'], 'New theme, see Help')
         eq(d.paint_theme_sample.called, 2)
 
-        # Builtin name in old_themes.
+        # Builtin name kwenye old_themes.
         changes.clear()
         d.builtinlist.SetMenu(item_list, 'IDLE Classic')
         eq(mainpage, {'Theme': {'name': 'IDLE Classic', 'name2': ''}})
@@ -369,10 +369,10 @@ kundi HighPageTest(unittest.TestCase):
     eleza test_color(self):
         d = self.page
         d.on_new_color_set = Func()
-        # self.color is only set in get_color through ColorChooser.
+        # self.color ni only set kwenye get_color through ColorChooser.
         d.color.set('green')
         self.assertEqual(d.on_new_color_set.called, 1)
-        del d.on_new_color_set
+        toa d.on_new_color_set
 
     eleza test_highlight_target_list_mouse(self):
         # Set highlight_target through targetlist.
@@ -396,7 +396,7 @@ kundi HighPageTest(unittest.TestCase):
         hs.update_idletasks()
 
         eleza tag_to_element(elem):
-            for element, tag in d.theme_elements.items():
+            kila element, tag kwenye d.theme_elements.items():
                 elem[tag[0]] = element
 
         eleza click_it(start):
@@ -411,10 +411,10 @@ kundi HighPageTest(unittest.TestCase):
         # Flip theme_elements to make the tag the key.
         tag_to_element(elem)
 
-        # If highlight_sample has a tag that isn't in theme_elements, there
-        # will be a KeyError in the test run.
-        for tag in hs.tag_names():
-            for start_index in hs.tag_ranges(tag)[0::2]:
+        # If highlight_sample has a tag that isn't kwenye theme_elements, there
+        # will be a KeyError kwenye the test run.
+        kila tag kwenye hs.tag_names():
+            kila start_index kwenye hs.tag_ranges(tag)[0::2]:
                 count += 1
                 click_it(start_index)
                 eq(d.highlight_target.get(), elem[tag])
@@ -423,17 +423,17 @@ kundi HighPageTest(unittest.TestCase):
     eleza test_set_theme_type(self):
         eq = self.assertEqual
         d = self.page
-        del d.set_theme_type
+        toa d.set_theme_type
 
         # Builtin theme selected.
-        d.theme_source.set(True)
+        d.theme_source.set(Kweli)
         d.set_theme_type()
         eq(d.builtinlist['state'], NORMAL)
         eq(d.customlist['state'], DISABLED)
         eq(d.button_delete_custom.state(), ('disabled',))
 
         # Custom theme selected.
-        d.theme_source.set(False)
+        d.theme_source.set(Uongo)
         d.set_theme_type()
         eq(d.builtinlist['state'], DISABLED)
         eq(d.custom_theme_on.state(), ('selected',))
@@ -452,11 +452,11 @@ kundi HighPageTest(unittest.TestCase):
         d.color.set('#ffffff')
 
         # Nothing selected.
-        chooser.result = (None, None)
+        chooser.result = (Tupu, Tupu)
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
 
-        # Selection same as previous color.
+        # Selection same kama previous color.
         chooser.result = ('', d.style.lookup(d.frame_color_set['style'], 'background'))
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
@@ -466,9 +466,9 @@ kundi HighPageTest(unittest.TestCase):
 
         # Default theme.
         d.color.set('#ffffff')
-        d.theme_source.set(True)
+        d.theme_source.set(Kweli)
 
-        # No theme name selected therefore color not saved.
+        # No theme name selected therefore color sio saved.
         gntn.result = ''
         d.button_set_color.invoke()
         eq(gntn.called, 1)
@@ -481,11 +481,11 @@ kundi HighPageTest(unittest.TestCase):
 
         # Custom theme.
         d.color.set('#ffffff')
-        d.theme_source.set(False)
+        d.theme_source.set(Uongo)
         d.button_set_color.invoke()
         eq(d.color.get(), '#de0000')
 
-        del d.get_new_theme_name
+        toa d.get_new_theme_name
         configdialog.tkColorChooser.askcolor = orig_chooser
 
     eleza test_on_new_color_set(self):
@@ -493,7 +493,7 @@ kundi HighPageTest(unittest.TestCase):
         color = '#3f7cae'
         d.custom_name.set('Python')
         d.highlight_target.set('Selected Text')
-        d.fg_bg_toggle.set(True)
+        d.fg_bg_toggle.set(Kweli)
 
         d.color.set(color)
         self.assertEqual(d.style.lookup(d.frame_color_set['style'], 'background'), color)
@@ -503,7 +503,7 @@ kundi HighPageTest(unittest.TestCase):
 
     eleza test_get_new_theme_name(self):
         orig_sectionname = configdialog.SectionName
-        sn = configdialog.SectionName = Func(return_self=True)
+        sn = configdialog.SectionName = Func(rudisha_self=Kweli)
         d = self.page
 
         sn.result = 'New Theme'
@@ -514,7 +514,7 @@ kundi HighPageTest(unittest.TestCase):
     eleza test_save_as_new_theme(self):
         d = self.page
         gntn = d.get_new_theme_name = Func()
-        d.theme_source.set(True)
+        d.theme_source.set(Kweli)
 
         # No name entered.
         gntn.result = ''
@@ -528,14 +528,14 @@ kundi HighPageTest(unittest.TestCase):
         d.button_save_custom.invoke()
         self.assertIn(gntn.result, idleConf.userCfg['highlight'])
 
-        del d.get_new_theme_name
+        toa d.get_new_theme_name
 
     eleza test_create_new_and_save_new(self):
         eq = self.assertEqual
         d = self.page
 
-        # Use default as previously active theme.
-        d.theme_source.set(True)
+        # Use default kama previously active theme.
+        d.theme_source.set(Kweli)
         d.builtin_name.set('IDLE Classic')
         first_new = 'my new custom theme'
         second_new = 'my second custom theme'
@@ -547,17 +547,17 @@ kundi HighPageTest(unittest.TestCase):
         eq(idleConf.GetThemeDict('default', 'IDLE Classic'),
            idleConf.GetThemeDict('user', first_new))
         eq(d.custom_name.get(), first_new)
-        self.assertFalse(d.theme_source.get())  # Use custom set.
+        self.assertUongo(d.theme_source.get())  # Use custom set.
         eq(d.set_theme_type.called, 1)
 
-        # Test that changed targets are in new theme.
+        # Test that changed targets are kwenye new theme.
         changes.add_option('highlight', first_new, 'hit-background', 'yellow')
         self.assertNotIn(second_new, idleConf.userCfg)
         d.create_new(second_new)
         eq(idleConf.GetSectionList('user', 'highlight'), [first_new, second_new])
         self.assertNotEqual(idleConf.GetThemeDict('user', first_new),
                             idleConf.GetThemeDict('user', second_new))
-        # Check that difference in themes was in `hit-background` kutoka `changes`.
+        # Check that difference kwenye themes was kwenye `hit-background` kutoka `changes`.
         idleConf.SetOption('highlight', first_new, 'hit-background', 'yellow')
         eq(idleConf.GetThemeDict('user', first_new),
            idleConf.GetThemeDict('user', second_new))
@@ -565,20 +565,20 @@ kundi HighPageTest(unittest.TestCase):
     eleza test_set_highlight_target(self):
         eq = self.assertEqual
         d = self.page
-        del d.set_highlight_target
+        toa d.set_highlight_target
 
-        # Target is cursor.
+        # Target ni cursor.
         d.highlight_target.set('Cursor')
         eq(d.fg_on.state(), ('disabled', 'selected'))
         eq(d.bg_on.state(), ('disabled',))
-        self.assertTrue(d.fg_bg_toggle)
+        self.assertKweli(d.fg_bg_toggle)
         eq(d.set_color_sample.called, 1)
 
-        # Target is not cursor.
+        # Target ni sio cursor.
         d.highlight_target.set('Comment')
         eq(d.fg_on.state(), ('selected',))
         eq(d.bg_on.state(), ())
-        self.assertTrue(d.fg_bg_toggle)
+        self.assertKweli(d.fg_bg_toggle)
         eq(d.set_color_sample.called, 2)
 
         d.set_highlight_target = Func()
@@ -595,9 +595,9 @@ kundi HighPageTest(unittest.TestCase):
 
     eleza test_set_color_sample(self):
         d = self.page
-        del d.set_color_sample
+        toa d.set_color_sample
         d.highlight_target.set('Selected Text')
-        d.fg_bg_toggle.set(True)
+        d.fg_bg_toggle.set(Kweli)
         d.set_color_sample()
         self.assertEqual(
                 d.style.lookup(d.frame_color_set['style'], 'background'),
@@ -607,30 +607,30 @@ kundi HighPageTest(unittest.TestCase):
     eleza test_paint_theme_sample(self):
         eq = self.assertEqual
         page = self.page
-        del page.paint_theme_sample  # Delete masking mock.
+        toa page.paint_theme_sample  # Delete masking mock.
         hs_tag = page.highlight_sample.tag_cget
         gh = idleConf.GetHighlight
 
         # Create custom theme based on IDLE Dark.
-        page.theme_source.set(True)
+        page.theme_source.set(Kweli)
         page.builtin_name.set('IDLE Dark')
         theme = 'IDLE Test'
         page.create_new(theme)
         page.set_color_sample.called = 0
 
-        # Base theme with nothing in `changes`.
+        # Base theme with nothing kwenye `changes`.
         page.paint_theme_sample()
         new_console = {'foreground': 'blue',
                        'background': 'yellow',}
-        for key, value in new_console.items():
+        kila key, value kwenye new_console.items():
             self.assertNotEqual(hs_tag('console', key), value)
         eq(page.set_color_sample.called, 1)
 
         # Apply changes.
-        for key, value in new_console.items():
+        kila key, value kwenye new_console.items():
             changes.add_option('highlight', theme, 'console-'+key, value)
         page.paint_theme_sample()
-        for key, value in new_console.items():
+        kila key, value kwenye new_console.items():
             eq(hs_tag('console', key), value)
         eq(page.set_color_sample.called, 2)
 
@@ -646,24 +646,24 @@ kundi HighPageTest(unittest.TestCase):
 
         theme_name = 'spam theme'
         idleConf.userCfg['highlight'].SetOption(theme_name, 'name', 'value')
-        highpage[theme_name] = {'option': 'True'}
+        highpage[theme_name] = {'option': 'Kweli'}
 
         # Force custom theme.
-        d.theme_source.set(False)
+        d.theme_source.set(Uongo)
         d.custom_name.set(theme_name)
 
         # Cancel deletion.
-        yesno.result = False
+        yesno.result = Uongo
         d.button_delete_custom.invoke()
         eq(yesno.called, 1)
-        eq(highpage[theme_name], {'option': 'True'})
+        eq(highpage[theme_name], {'option': 'Kweli'})
         eq(idleConf.GetSectionList('user', 'highlight'), ['spam theme'])
         eq(dialog.deactivate_current_config.called, 0)
         eq(dialog.activate_config_changes.called, 0)
         eq(d.set_theme_type.called, 0)
 
         # Confirm deletion.
-        yesno.result = True
+        yesno.result = Kweli
         d.button_delete_custom.invoke()
         eq(yesno.called, 2)
         self.assertNotIn(theme_name, highpage)
@@ -674,15 +674,15 @@ kundi HighPageTest(unittest.TestCase):
         eq(dialog.activate_config_changes.called, 1)
         eq(d.set_theme_type.called, 1)
 
-        del dialog.activate_config_changes, dialog.deactivate_current_config
-        del d.askyesno
+        toa dialog.activate_config_changes, dialog.deactivate_current_config
+        toa d.askyesno
 
 
 kundi KeysPageTest(unittest.TestCase):
     """Test that keys tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
-    options to changes and that key sets works correctly.
+    options to changes na that key sets works correctly.
     """
 
     @classmethod
@@ -695,13 +695,13 @@ kundi KeysPageTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         page = cls.page
-        del page.set_keys_type, page.load_keys_list
+        toa page.set_keys_type, page.load_keys_list
 
     eleza setUp(self):
         d = self.page
-        # The following is needed for test_load_key_cfg, _delete_custom_keys.
-        # This may indicate a defect in some test or function.
-        for section in idleConf.GetSectionList('user', 'keys'):
+        # The following ni needed kila test_load_key_cfg, _delete_custom_keys.
+        # This may indicate a defect kwenye some test ama function.
+        kila section kwenye idleConf.GetSectionList('user', 'keys'):
             idleConf.userCfg['keys'].remove_section(section)
         changes.clear()
         d.set_keys_type.called = 0
@@ -713,9 +713,9 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
 
         # Use builtin keyset with no user keysets created.
-        idleConf.CurrentKeys = mock.Mock(return_value='IDLE Classic OSX')
+        idleConf.CurrentKeys = mock.Mock(rudisha_value='IDLE Classic OSX')
         d.load_key_cfg()
-        self.assertTrue(d.keyset_source.get())
+        self.assertKweli(d.keyset_source.get())
         # builtinlist sets variable builtin_name to the CurrentKeys default.
         eq(d.builtin_name.get(), 'IDLE Classic OSX')
         eq(d.custom_name.get(), '- no custom keys -')
@@ -735,18 +735,18 @@ kundi KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.args, ('IDLE Classic OSX', ))
 
         # Use custom keyset.
-        idleConf.CurrentKeys = mock.Mock(return_value='test2')
-        idleConf.default_keys = mock.Mock(return_value='IDLE Modern Unix')
+        idleConf.CurrentKeys = mock.Mock(rudisha_value='test2')
+        idleConf.default_keys = mock.Mock(rudisha_value='IDLE Modern Unix')
         idleConf.SetOption('main', 'Keys', 'default', '0')
         d.load_key_cfg()
-        self.assertFalse(d.keyset_source.get())
+        self.assertUongo(d.keyset_source.get())
         eq(d.builtin_name.get(), 'IDLE Modern Unix')
         eq(d.custom_name.get(), 'test2')
         eq(d.set_keys_type.called, 3)
         eq(d.load_keys_list.called, 3)
         eq(d.load_keys_list.args, ('test2', ))
 
-        del idleConf.CurrentKeys, idleConf.default_keys
+        toa idleConf.CurrentKeys, idleConf.default_keys
         tracers.attach()
 
     eleza test_keyset_source(self):
@@ -757,7 +757,7 @@ kundi KeysPageTest(unittest.TestCase):
         d.var_changed_custom_name = Func()
         # Builtin selected.
         d.builtin_keyset_on.invoke()
-        eq(mainpage, {'Keys': {'default': 'True'}})
+        eq(mainpage, {'Keys': {'default': 'Kweli'}})
         eq(d.var_changed_builtin_name.called, 1)
         eq(d.var_changed_custom_name.called, 0)
         changes.clear()
@@ -765,10 +765,10 @@ kundi KeysPageTest(unittest.TestCase):
         # Custom selected.
         d.custom_keyset_on.state(('!disabled',))
         d.custom_keyset_on.invoke()
-        self.assertEqual(mainpage, {'Keys': {'default': 'False'}})
+        self.assertEqual(mainpage, {'Keys': {'default': 'Uongo'}})
         eq(d.var_changed_builtin_name.called, 1)
         eq(d.var_changed_custom_name.called, 1)
-        del d.var_changed_builtin_name, d.var_changed_custom_name
+        toa d.var_changed_builtin_name, d.var_changed_custom_name
 
     eleza test_builtin_name(self):
         eq = self.assertEqual
@@ -777,7 +777,7 @@ kundi KeysPageTest(unittest.TestCase):
         item_list = ['IDLE Classic Windows', 'IDLE Classic OSX',
                      'IDLE Modern UNIX']
 
-        # Not in old_keys, defaults name to first item.
+        # Not kwenye old_keys, defaults name to first item.
         d.builtinlist.SetMenu(item_list, 'IDLE Modern UNIX')
         eq(mainpage, {'Keys': {'name': 'IDLE Classic Windows',
                                'name2': 'IDLE Modern UNIX'}})
@@ -785,7 +785,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.called, 1)
         eq(d.load_keys_list.args, ('IDLE Modern UNIX', ))
 
-        # Not in old keys - uses name2.
+        # Not kwenye old keys - uses name2.
         changes.clear()
         idleConf.SetOption('main', 'Keys', 'name', 'IDLE Classic Unix')
         d.builtinlist.SetMenu(item_list, 'IDLE Modern UNIX')
@@ -794,7 +794,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.called, 2)
         eq(d.load_keys_list.args, ('IDLE Modern UNIX', ))
 
-        # Builtin name in old_keys.
+        # Builtin name kwenye old_keys.
         changes.clear()
         d.builtinlist.SetMenu(item_list, 'IDLE Classic OSX')
         eq(mainpage, {'Keys': {'name': 'IDLE Classic OSX', 'name2': ''}})
@@ -817,7 +817,7 @@ kundi KeysPageTest(unittest.TestCase):
         self.assertEqual(d.load_keys_list.called, 1)
 
     eleza test_keybinding(self):
-        idleConf.SetOption('extensions', 'ZzDummy', 'enable', 'True')
+        idleConf.SetOption('extensions', 'ZzDummy', 'enable', 'Kweli')
         d = self.page
         d.custom_name.set('my custom keys')
         d.bindingslist.delete(0, 'end')
@@ -840,17 +840,17 @@ kundi KeysPageTest(unittest.TestCase):
     eleza test_set_keys_type(self):
         eq = self.assertEqual
         d = self.page
-        del d.set_keys_type
+        toa d.set_keys_type
 
         # Builtin keyset selected.
-        d.keyset_source.set(True)
+        d.keyset_source.set(Kweli)
         d.set_keys_type()
         eq(d.builtinlist['state'], NORMAL)
         eq(d.customlist['state'], DISABLED)
         eq(d.button_delete_custom_keys.state(), ('disabled',))
 
         # Custom keyset selected.
-        d.keyset_source.set(False)
+        d.keyset_source.set(Uongo)
         d.set_keys_type()
         eq(d.builtinlist['state'], DISABLED)
         eq(d.custom_keyset_on.state(), ('selected',))
@@ -862,7 +862,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
         orig_getkeysdialog = configdialog.GetKeysDialog
-        gkd = configdialog.GetKeysDialog = Func(return_self=True)
+        gkd = configdialog.GetKeysDialog = Func(rudisha_self=Kweli)
         gnkn = d.get_new_keys_name = Func()
 
         d.button_new_keys.state(('!disabled',))
@@ -871,7 +871,7 @@ kundi KeysPageTest(unittest.TestCase):
         d.bindingslist.selection_set(0)
         d.bindingslist.selection_anchor(0)
         d.keybinding.set('Key-a')
-        d.keyset_source.set(True)  # Default keyset.
+        d.keyset_source.set(Kweli)  # Default keyset.
 
         # Default keyset; no change to binding.
         gkd.result = ''
@@ -882,7 +882,7 @@ kundi KeysPageTest(unittest.TestCase):
 
         # Default keyset; binding changed.
         gkd.result = '<Key-F11>'
-        # No keyset name selected therefore binding not saved.
+        # No keyset name selected therefore binding sio saved.
         gnkn.result = ''
         d.button_new_keys.invoke()
         eq(gnkn.called, 1)
@@ -895,7 +895,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq(d.keybinding.get(), '<Key-F11>')
 
         # User keyset; binding changed.
-        d.keyset_source.set(False)  # Custom keyset.
+        d.keyset_source.set(Uongo)  # Custom keyset.
         gnkn.called = 0
         gkd.result = '<Key-p>'
         d.button_new_keys.invoke()
@@ -903,12 +903,12 @@ kundi KeysPageTest(unittest.TestCase):
         eq(d.bindingslist.get('anchor'), 'copy - <Key-p>')
         eq(d.keybinding.get(), '<Key-p>')
 
-        del d.get_new_keys_name
+        toa d.get_new_keys_name
         configdialog.GetKeysDialog = orig_getkeysdialog
 
     eleza test_get_new_keys_name(self):
         orig_sectionname = configdialog.SectionName
-        sn = configdialog.SectionName = Func(return_self=True)
+        sn = configdialog.SectionName = Func(rudisha_self=Kweli)
         d = self.page
 
         sn.result = 'New Keys'
@@ -919,7 +919,7 @@ kundi KeysPageTest(unittest.TestCase):
     eleza test_save_as_new_key_set(self):
         d = self.page
         gnkn = d.get_new_keys_name = Func()
-        d.keyset_source.set(True)
+        d.keyset_source.set(Kweli)
 
         # No name entered.
         gnkn.result = ''
@@ -932,7 +932,7 @@ kundi KeysPageTest(unittest.TestCase):
         d.button_save_custom_keys.invoke()
         self.assertIn(gnkn.result, idleConf.userCfg['keys'])
 
-        del d.get_new_keys_name
+        toa d.get_new_keys_name
 
     eleza test_on_bindingslist_select(self):
         d = self.page
@@ -959,8 +959,8 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
 
-        # Use default as previously active keyset.
-        d.keyset_source.set(True)
+        # Use default kama previously active keyset.
+        d.keyset_source.set(Kweli)
         d.builtin_name.set('IDLE Classic Windows')
         first_new = 'my new custom key set'
         second_new = 'my second custom keyset'
@@ -972,17 +972,17 @@ kundi KeysPageTest(unittest.TestCase):
         eq(idleConf.GetKeySet('IDLE Classic Windows'),
            idleConf.GetKeySet(first_new))
         eq(d.custom_name.get(), first_new)
-        self.assertFalse(d.keyset_source.get())  # Use custom set.
+        self.assertUongo(d.keyset_source.get())  # Use custom set.
         eq(d.set_keys_type.called, 1)
 
-        # Test that changed keybindings are in new keyset.
+        # Test that changed keybindings are kwenye new keyset.
         changes.add_option('keys', first_new, 'copy', '<Key-F11>')
         self.assertNotIn(second_new, idleConf.userCfg)
         d.create_new_key_set(second_new)
         eq(idleConf.GetSectionList('user', 'keys'), [first_new, second_new])
         self.assertNotEqual(idleConf.GetKeySet(first_new),
                             idleConf.GetKeySet(second_new))
-        # Check that difference in keysets was in option `copy` kutoka `changes`.
+        # Check that difference kwenye keysets was kwenye option `copy` kutoka `changes`.
         idleConf.SetOption('keys', first_new, 'copy', '<Key-F11>')
         eq(idleConf.GetKeySet(first_new), idleConf.GetKeySet(second_new))
 
@@ -990,7 +990,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
         gks = idleConf.GetKeySet = Func()
-        del d.load_keys_list
+        toa d.load_keys_list
         b = d.bindingslist
 
         b.delete(0, 'end')
@@ -1027,7 +1027,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq(b.curselection(), (2, ))
         d.load_keys_list = Func()
 
-        del idleConf.GetKeySet
+        toa idleConf.GetKeySet
 
     eleza test_delete_custom_keys(self):
         eq = self.assertEqual
@@ -1039,24 +1039,24 @@ kundi KeysPageTest(unittest.TestCase):
 
         keyset_name = 'spam key set'
         idleConf.userCfg['keys'].SetOption(keyset_name, 'name', 'value')
-        keyspage[keyset_name] = {'option': 'True'}
+        keyspage[keyset_name] = {'option': 'Kweli'}
 
         # Force custom keyset.
-        d.keyset_source.set(False)
+        d.keyset_source.set(Uongo)
         d.custom_name.set(keyset_name)
 
         # Cancel deletion.
-        yesno.result = False
+        yesno.result = Uongo
         d.button_delete_custom_keys.invoke()
         eq(yesno.called, 1)
-        eq(keyspage[keyset_name], {'option': 'True'})
+        eq(keyspage[keyset_name], {'option': 'Kweli'})
         eq(idleConf.GetSectionList('user', 'keys'), ['spam key set'])
         eq(dialog.deactivate_current_config.called, 0)
         eq(dialog.activate_config_changes.called, 0)
         eq(d.set_keys_type.called, 0)
 
         # Confirm deletion.
-        yesno.result = True
+        yesno.result = Kweli
         d.button_delete_custom_keys.invoke()
         eq(yesno.called, 2)
         self.assertNotIn(keyset_name, keyspage)
@@ -1067,15 +1067,15 @@ kundi KeysPageTest(unittest.TestCase):
         eq(dialog.activate_config_changes.called, 1)
         eq(d.set_keys_type.called, 1)
 
-        del dialog.activate_config_changes, dialog.deactivate_current_config
-        del d.askyesno
+        toa dialog.activate_config_changes, dialog.deactivate_current_config
+        toa d.askyesno
 
 
 kundi GenPageTest(unittest.TestCase):
     """Test that general tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
-    options to changes and that helplist works correctly.
+    options to changes na that helplist works correctly.
     """
     @classmethod
     eleza setUpClass(cls):
@@ -1088,8 +1088,8 @@ kundi GenPageTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         page = cls.page
-        del page.set, page.set_add_delete_state
-        del page.upc, page.update_help_changes
+        toa page.set, page.set_add_delete_state
+        toa page.upc, page.update_help_changes
         page.helplist.delete(0, 'end')
         page.user_helplist.clear()
 
@@ -1151,7 +1151,7 @@ kundi GenPageTest(unittest.TestCase):
         eq(extpage, {'ParenMatch': {'flash-delay': '11'}})
         changes.clear()
         d.bell_on.invoke()
-        eq(extpage, {'ParenMatch': {'bell': 'False'}})
+        eq(extpage, {'ParenMatch': {'bell': 'Uongo'}})
 
     eleza test_autosave(self):
         d = self.page
@@ -1191,14 +1191,14 @@ kundi GenPageTest(unittest.TestCase):
         helplist.event_generate('<Button-1>', x=x, y=y)
         helplist.event_generate('<ButtonRelease-1>', x=x, y=y)
         self.assertEqual(helplist.get('anchor'), 'source')
-        self.assertTrue(d.set.called)
-        self.assertFalse(d.upc.called)
+        self.assertKweli(d.set.called)
+        self.assertUongo(d.upc.called)
 
     eleza test_set_add_delete_state(self):
         # Call with 0 items, 1 unselected item, 1 selected item.
         eq = self.assertEqual
         d = self.page
-        del d.set_add_delete_state  # Unmask method.
+        toa d.set_add_delete_state  # Unmask method.
         sad = d.set_add_delete_state
         h = d.helplist
 
@@ -1219,11 +1219,11 @@ kundi GenPageTest(unittest.TestCase):
         d.set_add_delete_state = Func()  # Mask method.
 
     eleza test_helplist_item_add(self):
-        # Call without and twice with HelpSource result.
+        # Call without na twice with HelpSource result.
         # Double call enables check on order.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
-        hs = configdialog.HelpSource = Func(return_self=True)
+        hs = configdialog.HelpSource = Func(rudisha_self=Kweli)
         d = self.page
         d.helplist.delete(0, 'end')
         d.user_helplist.clear()
@@ -1231,9 +1231,9 @@ kundi GenPageTest(unittest.TestCase):
 
         hs.result = ''
         d.helplist_item_add()
-        self.assertTrue(list(d.helplist.get(0, 'end')) ==
+        self.assertKweli(list(d.helplist.get(0, 'end')) ==
                         d.user_helplist == [])
-        self.assertFalse(d.upc.called)
+        self.assertUongo(d.upc.called)
 
         hs.result = ('name1', 'file1')
         d.helplist_item_add()
@@ -1242,15 +1242,15 @@ kundi GenPageTest(unittest.TestCase):
         eq(d.helplist.get(0, 'end'), ('name1', 'name2'))
         eq(d.user_helplist, [('name1', 'file1'), ('name2', 'file2')])
         eq(d.upc.called, 2)
-        self.assertFalse(d.set.called)
+        self.assertUongo(d.set.called)
 
         configdialog.HelpSource = orig_helpsource
 
     eleza test_helplist_item_edit(self):
-        # Call without and with HelpSource change.
+        # Call without na with HelpSource change.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
-        hs = configdialog.HelpSource = Func(return_self=True)
+        hs = configdialog.HelpSource = Func(rudisha_self=Kweli)
         d = self.page
         d.helplist.delete(0, 'end')
         d.helplist.insert(0, 'name1')
@@ -1266,13 +1266,13 @@ kundi GenPageTest(unittest.TestCase):
         d.helplist_item_edit()
         eq(d.helplist.get(0, 'end'), ('name1',))
         eq(d.user_helplist, [('name1', 'file1')])
-        self.assertFalse(d.upc.called)
+        self.assertUongo(d.upc.called)
 
         hs.result = ('name2', 'file2')
         d.helplist_item_edit()
         eq(d.helplist.get(0, 'end'), ('name2',))
         eq(d.user_helplist, [('name2', 'file2')])
-        self.assertTrue(d.upc.called == d.set.called == 1)
+        self.assertKweli(d.upc.called == d.set.called == 1)
 
         configdialog.HelpSource = orig_helpsource
 
@@ -1290,11 +1290,11 @@ kundi GenPageTest(unittest.TestCase):
         d.helplist_item_remove()
         eq(d.helplist.get(0, 'end'), ())
         eq(d.user_helplist, [])
-        self.assertTrue(d.upc.called == d.set.called == 1)
+        self.assertKweli(d.upc.called == d.set.called == 1)
 
     eleza test_update_help_changes(self):
         d = self.page
-        del d.update_help_changes
+        toa d.update_help_changes
         d.user_helplist.clear()
         d.user_helplist.append(('name1', 'file1'))
         d.user_helplist.append(('name2', 'file2'))
@@ -1315,7 +1315,7 @@ kundi VarTraceTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.tracers, cls.iv, cls.bv
+        toa cls.tracers, cls.iv, cls.bv
 
     eleza setUp(self):
         self.tracers.clear()
@@ -1325,7 +1325,7 @@ kundi VarTraceTest(unittest.TestCase):
         self.called += 13
 
     eleza var_changed_boolean(self, *params):
-        pass
+        pita
 
     eleza test_init(self):
         tr = self.tracers
@@ -1344,7 +1344,7 @@ kundi VarTraceTest(unittest.TestCase):
     eleza test_add(self):
         tr = self.tracers
         func = Func()
-        cb = tr.make_callback = mock.Mock(return_value=func)
+        cb = tr.make_callback = mock.Mock(rudisha_value=func)
 
         iv = tr.add(self.iv, self.var_changed_increment)
         self.assertIs(iv, self.iv)
@@ -1363,11 +1363,11 @@ kundi VarTraceTest(unittest.TestCase):
         self.assertEqual(tr.traced, [])
         self.assertEqual(tr.untraced, expected)
 
-        del tr.make_callback
+        toa tr.make_callback
 
     eleza test_make_callback(self):
         cb = self.tracers.make_callback(self.iv, ('main', 'section', 'option'))
-        self.assertTrue(callable(cb))
+        self.assertKweli(callable(cb))
         self.iv.set(42)
         # Not attached, so set didn't invoke the callback.
         self.assertNotIn('section', changes['main'])
@@ -1384,7 +1384,7 @@ kundi VarTraceTest(unittest.TestCase):
         expected = [(iv, self.var_changed_increment),
                     (bv, self.var_changed_boolean)]
 
-        # Attach callbacks and test call increment.
+        # Attach callbacks na test call increment.
         tr.attach()
         self.assertEqual(tr.untraced, [])
         self.assertCountEqual(tr.traced, expected)
@@ -1392,9 +1392,9 @@ kundi VarTraceTest(unittest.TestCase):
         self.assertEqual(iv.get(), 1)
         self.assertEqual(self.called, 13)
 
-        # Check that only one callback is attached to a variable.
+        # Check that only one callback ni attached to a variable.
         # If more than one callback were attached, then var_changed_increment
-        # would be called twice and the counter would be 2.
+        # would be called twice na the counter would be 2.
         self.called = 0
         tr.attach()
         iv.set(1)

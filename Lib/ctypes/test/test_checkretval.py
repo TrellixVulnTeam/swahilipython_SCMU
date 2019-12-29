@@ -23,7 +23,7 @@ class Test(unittest.TestCase):
         dll._testfunc_p_p.restype = None
         self.assertEqual(None, dll._testfunc_p_p(42))
 
-        del dll._testfunc_p_p.restype
+        toa dll._testfunc_p_p.restype
         self.assertEqual(42, dll._testfunc_p_p(42))
 
     @need_symbol('oledll')

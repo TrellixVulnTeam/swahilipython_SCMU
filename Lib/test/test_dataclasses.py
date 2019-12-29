@@ -1,5 +1,5 @@
-# Deliberately use "kutoka dataclasses agiza *".  Every name in __all__
-# is tested, so they all must be present.  This is a way to catch
+# Deliberately use "kutoka dataclasses agiza *".  Every name kwenye __all__
+# ni tested, so they all must be present.  This ni a way to catch
 # missing ones.
 
 kutoka dataclasses agiza *
@@ -13,17 +13,17 @@ kutoka typing agiza ClassVar, Any, List, Union, Tuple, Dict, Generic, TypeVar, O
 kutoka collections agiza deque, OrderedDict, namedtuple
 kutoka functools agiza total_ordering
 
-agiza typing       # Needed for the string "typing.ClassVar[int]" to work as an annotation.
-agiza dataclasses  # Needed for the string "dataclasses.InitVar[int]" to work as an annotation.
+agiza typing       # Needed kila the string "typing.ClassVar[int]" to work kama an annotation.
+agiza dataclasses  # Needed kila the string "dataclasses.InitVar[int]" to work kama an annotation.
 
 # Just any custom exception we can catch.
-kundi CustomError(Exception): pass
+kundi CustomError(Exception): pita
 
 kundi TestCase(unittest.TestCase):
     eleza test_no_fields(self):
         @dataclass
         kundi C:
-            pass
+            pita
 
         o = C()
         self.assertEqual(len(fields(C)), 0)
@@ -82,7 +82,7 @@ kundi TestCase(unittest.TestCase):
             kundi C(B):
                 y: int
 
-        # Override a base kundi field and add a default to
+        # Override a base kundi field na add a default to
         #  a field which didn't use to have a default.
         with self.assertRaisesRegex(TypeError,
                                     "non-default argument 'y' follows "
@@ -99,7 +99,7 @@ kundi TestCase(unittest.TestCase):
     eleza test_overwrite_hash(self):
         # Test that declaring this kundi isn't an error.  It should
         #  use the user-provided __hash__.
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
             eleza __hash__(self):
@@ -108,50 +108,50 @@ kundi TestCase(unittest.TestCase):
 
         # Test that declaring this kundi isn't an error.  It should
         #  use the generated __hash__.
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
             eleza __eq__(self, other):
-                rudisha False
+                rudisha Uongo
         self.assertEqual(hash(C(100)), hash((100,)))
 
         # But this one should generate an exception, because with
-        #  unsafe_hash=True, it's an error to have a __hash__ defined.
+        #  unsafe_hash=Kweli, it's an error to have a __hash__ defined.
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __hash__'):
-            @dataclass(unsafe_hash=True)
+            @dataclass(unsafe_hash=Kweli)
             kundi C:
                 eleza __hash__(self):
-                    pass
+                    pita
 
-        # Creating this kundi should not generate an exception,
+        # Creating this kundi should sio generate an exception,
         #  because even though __hash__ exists before @datakundi is
-        #  called, (due to __eq__ being defined), since it's None
+        #  called, (due to __eq__ being defined), since it's Tupu
         #  that's okay.
-        @dataclass(unsafe_hash=True)
+        @dataclass(unsafe_hash=Kweli)
         kundi C:
             x: int
             eleza __eq__(self):
-                pass
-        # The generated hash function works as we'd expect.
+                pita
+        # The generated hash function works kama we'd expect.
         self.assertEqual(hash(C(10)), hash((10,)))
 
         # Creating this kundi should generate an exception, because
-        #  __hash__ exists and is not None, which it would be ikiwa it
+        #  __hash__ exists na ni sio Tupu, which it would be ikiwa it
         #  had been auto-generated due to __eq__ being defined.
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __hash__'):
-            @dataclass(unsafe_hash=True)
+            @dataclass(unsafe_hash=Kweli)
             kundi C:
                 x: int
                 eleza __eq__(self):
-                    pass
+                    pita
                 eleza __hash__(self):
-                    pass
+                    pita
 
     eleza test_overwrite_fields_in_derived_class(self):
-        # Note that x kutoka C1 replaces x in Base, but the order remains
-        #  the same as defined in Base.
+        # Note that x kutoka C1 replaces x kwenye Base, but the order remains
+        #  the same kama defined kwenye Base.
         @dataclass
         kundi Base:
             x: Any = 15.0
@@ -178,7 +178,7 @@ kundi TestCase(unittest.TestCase):
         c=C('foo')
         self.assertEqual(c.self, 'foo')
 
-        # Make sure the first parameter is not named 'self'.
+        # Make sure the first parameter ni sio named 'self'.
         sig = inspect.signature(C.__init__)
         first = next(iter(sig.parameters))
         self.assertNotEqual('self', first)
@@ -188,7 +188,7 @@ kundi TestCase(unittest.TestCase):
         kundi C:
             selfx: str
 
-        # Make sure the first parameter is named 'self'.
+        # Make sure the first parameter ni named 'self'.
         sig = inspect.signature(C.__init__)
         first = next(iter(sig.parameters))
         self.assertEqual('self', first)
@@ -201,7 +201,7 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(c.object, 'foo')
 
     eleza test_field_named_object_frozen(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             object: str
         c = C('foo')
@@ -209,91 +209,91 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_field_named_like_builtin(self):
         # Attribute names can shadow built-in names
-        # since code generation is used.
-        # Ensure that this is not happening.
-        exclusions = {'None', 'True', 'False'}
+        # since code generation ni used.
+        # Ensure that this ni sio happening.
+        exclusions = {'Tupu', 'Kweli', 'Uongo'}
         builtins_names = sorted(
-            b for b in builtins.__dict__.keys()
-            ikiwa not b.startswith('__') and b not in exclusions
+            b kila b kwenye builtins.__dict__.keys()
+            ikiwa sio b.startswith('__') na b haiko kwenye exclusions
         )
-        attributes = [(name, str) for name in builtins_names]
+        attributes = [(name, str) kila name kwenye builtins_names]
         C = make_dataclass('C', attributes)
 
-        c = C(*[name for name in builtins_names])
+        c = C(*[name kila name kwenye builtins_names])
 
-        for name in builtins_names:
+        kila name kwenye builtins_names:
             self.assertEqual(getattr(c, name), name)
 
     eleza test_field_named_like_builtin_frozen(self):
         # Attribute names can shadow built-in names
-        # since code generation is used.
-        # Ensure that this is not happening
-        # for frozen data classes.
-        exclusions = {'None', 'True', 'False'}
+        # since code generation ni used.
+        # Ensure that this ni sio happening
+        # kila frozen data classes.
+        exclusions = {'Tupu', 'Kweli', 'Uongo'}
         builtins_names = sorted(
-            b for b in builtins.__dict__.keys()
-            ikiwa not b.startswith('__') and b not in exclusions
+            b kila b kwenye builtins.__dict__.keys()
+            ikiwa sio b.startswith('__') na b haiko kwenye exclusions
         )
-        attributes = [(name, str) for name in builtins_names]
-        C = make_dataclass('C', attributes, frozen=True)
+        attributes = [(name, str) kila name kwenye builtins_names]
+        C = make_dataclass('C', attributes, frozen=Kweli)
 
-        c = C(*[name for name in builtins_names])
+        c = C(*[name kila name kwenye builtins_names])
 
-        for name in builtins_names:
+        kila name kwenye builtins_names:
             self.assertEqual(getattr(c, name), name)
 
     eleza test_0_field_compare(self):
-        # Ensure that order=False is the default.
+        # Ensure that order=Uongo ni the default.
         @dataclass
         kundi C0:
-            pass
+            pita
 
-        @dataclass(order=False)
+        @dataclass(order=Uongo)
         kundi C1:
-            pass
+            pita
 
-        for cls in [C0, C1]:
+        kila cls kwenye [C0, C1]:
             with self.subTest(cls=cls):
                 self.assertEqual(cls(), cls())
-                for idx, fn in enumerate([lambda a, b: a < b,
+                kila idx, fn kwenye enumerate([lambda a, b: a < b,
                                           lambda a, b: a <= b,
                                           lambda a, b: a > b,
                                           lambda a, b: a >= b]):
                     with self.subTest(idx=idx):
                         with self.assertRaisesRegex(TypeError,
-                                                    f"not supported between instances of '{cls.__name__}' and '{cls.__name__}'"):
+                                                    f"not supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
                             fn(cls(), cls())
 
-        @dataclass(order=True)
+        @dataclass(order=Kweli)
         kundi C:
-            pass
+            pita
         self.assertLessEqual(C(), C())
         self.assertGreaterEqual(C(), C())
 
     eleza test_1_field_compare(self):
-        # Ensure that order=False is the default.
+        # Ensure that order=Uongo ni the default.
         @dataclass
         kundi C0:
             x: int
 
-        @dataclass(order=False)
+        @dataclass(order=Uongo)
         kundi C1:
             x: int
 
-        for cls in [C0, C1]:
+        kila cls kwenye [C0, C1]:
             with self.subTest(cls=cls):
                 self.assertEqual(cls(1), cls(1))
                 self.assertNotEqual(cls(0), cls(1))
-                for idx, fn in enumerate([lambda a, b: a < b,
+                kila idx, fn kwenye enumerate([lambda a, b: a < b,
                                           lambda a, b: a <= b,
                                           lambda a, b: a > b,
                                           lambda a, b: a >= b]):
                     with self.subTest(idx=idx):
                         with self.assertRaisesRegex(TypeError,
-                                                    f"not supported between instances of '{cls.__name__}' and '{cls.__name__}'"):
+                                                    f"not supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
                             fn(cls(0), cls(0))
 
-        @dataclass(order=True)
+        @dataclass(order=Kweli)
         kundi C:
             x: int
         self.assertLess(C(0), C(1))
@@ -304,61 +304,61 @@ kundi TestCase(unittest.TestCase):
         self.assertGreaterEqual(C(1), C(1))
 
     eleza test_simple_compare(self):
-        # Ensure that order=False is the default.
+        # Ensure that order=Uongo ni the default.
         @dataclass
         kundi C0:
             x: int
             y: int
 
-        @dataclass(order=False)
+        @dataclass(order=Uongo)
         kundi C1:
             x: int
             y: int
 
-        for cls in [C0, C1]:
+        kila cls kwenye [C0, C1]:
             with self.subTest(cls=cls):
                 self.assertEqual(cls(0, 0), cls(0, 0))
                 self.assertEqual(cls(1, 2), cls(1, 2))
                 self.assertNotEqual(cls(1, 0), cls(0, 0))
                 self.assertNotEqual(cls(1, 0), cls(1, 1))
-                for idx, fn in enumerate([lambda a, b: a < b,
+                kila idx, fn kwenye enumerate([lambda a, b: a < b,
                                           lambda a, b: a <= b,
                                           lambda a, b: a > b,
                                           lambda a, b: a >= b]):
                     with self.subTest(idx=idx):
                         with self.assertRaisesRegex(TypeError,
-                                                    f"not supported between instances of '{cls.__name__}' and '{cls.__name__}'"):
+                                                    f"not supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
                             fn(cls(0, 0), cls(0, 0))
 
-        @dataclass(order=True)
+        @dataclass(order=Kweli)
         kundi C:
             x: int
             y: int
 
-        for idx, fn in enumerate([lambda a, b: a == b,
+        kila idx, fn kwenye enumerate([lambda a, b: a == b,
                                   lambda a, b: a <= b,
                                   lambda a, b: a >= b]):
             with self.subTest(idx=idx):
-                self.assertTrue(fn(C(0, 0), C(0, 0)))
+                self.assertKweli(fn(C(0, 0), C(0, 0)))
 
-        for idx, fn in enumerate([lambda a, b: a < b,
+        kila idx, fn kwenye enumerate([lambda a, b: a < b,
                                   lambda a, b: a <= b,
                                   lambda a, b: a != b]):
             with self.subTest(idx=idx):
-                self.assertTrue(fn(C(0, 0), C(0, 1)))
-                self.assertTrue(fn(C(0, 1), C(1, 0)))
-                self.assertTrue(fn(C(1, 0), C(1, 1)))
+                self.assertKweli(fn(C(0, 0), C(0, 1)))
+                self.assertKweli(fn(C(0, 1), C(1, 0)))
+                self.assertKweli(fn(C(1, 0), C(1, 1)))
 
-        for idx, fn in enumerate([lambda a, b: a > b,
+        kila idx, fn kwenye enumerate([lambda a, b: a > b,
                                   lambda a, b: a >= b,
                                   lambda a, b: a != b]):
             with self.subTest(idx=idx):
-                self.assertTrue(fn(C(0, 1), C(0, 0)))
-                self.assertTrue(fn(C(1, 0), C(0, 1)))
-                self.assertTrue(fn(C(1, 1), C(1, 0)))
+                self.assertKweli(fn(C(0, 1), C(0, 0)))
+                self.assertKweli(fn(C(1, 0), C(0, 1)))
+                self.assertKweli(fn(C(1, 1), C(1, 0)))
 
     eleza test_compare_subclasses(self):
-        # Comparisons fail for subclasses, even ikiwa no fields
+        # Comparisons fail kila subclasses, even ikiwa no fields
         #  are added.
         @dataclass
         kundi B:
@@ -366,40 +366,40 @@ kundi TestCase(unittest.TestCase):
 
         @dataclass
         kundi C(B):
-            pass
+            pita
 
-        for idx, (fn, expected) in enumerate([(lambda a, b: a == b, False),
-                                              (lambda a, b: a != b, True)]):
+        kila idx, (fn, expected) kwenye enumerate([(lambda a, b: a == b, Uongo),
+                                              (lambda a, b: a != b, Kweli)]):
             with self.subTest(idx=idx):
                 self.assertEqual(fn(B(0), C(0)), expected)
 
-        for idx, fn in enumerate([lambda a, b: a < b,
+        kila idx, fn kwenye enumerate([lambda a, b: a < b,
                                   lambda a, b: a <= b,
                                   lambda a, b: a > b,
                                   lambda a, b: a >= b]):
             with self.subTest(idx=idx):
                 with self.assertRaisesRegex(TypeError,
-                                            "not supported between instances of 'B' and 'C'"):
+                                            "not supported between instances of 'B' na 'C'"):
                     fn(B(0), C(0))
 
     eleza test_eq_order(self):
-        # Test combining eq and order.
-        for (eq,    order, result   ) in [
-            (False, False, 'neither'),
-            (False, True,  'exception'),
-            (True,  False, 'eq_only'),
-            (True,  True,  'both'),
+        # Test combining eq na order.
+        kila (eq,    order, result   ) kwenye [
+            (Uongo, Uongo, 'neither'),
+            (Uongo, Kweli,  'exception'),
+            (Kweli,  Uongo, 'eq_only'),
+            (Kweli,  Kweli,  'both'),
         ]:
             with self.subTest(eq=eq, order=order):
                 ikiwa result == 'exception':
-                    with self.assertRaisesRegex(ValueError, 'eq must be true ikiwa order is true'):
+                    with self.assertRaisesRegex(ValueError, 'eq must be true ikiwa order ni true'):
                         @dataclass(eq=eq, order=order)
                         kundi C:
-                            pass
-                else:
+                            pita
+                isipokua:
                     @dataclass(eq=eq, order=order)
                     kundi C:
-                        pass
+                        pita
 
                     ikiwa result == 'neither':
                         self.assertNotIn('__eq__', C.__dict__)
@@ -419,8 +419,8 @@ kundi TestCase(unittest.TestCase):
                         self.assertNotIn('__le__', C.__dict__)
                         self.assertNotIn('__gt__', C.__dict__)
                         self.assertNotIn('__ge__', C.__dict__)
-                    else:
-                        assert False, f'unknown result {result!r}'
+                    isipokua:
+                        assert Uongo, f'unknown result {result!r}'
 
     eleza test_field_no_default(self):
         @dataclass
@@ -446,7 +446,7 @@ kundi TestCase(unittest.TestCase):
 
         # If we delete the instance attribute, we should then see the
         #  kundi attribute.
-        del c.x
+        toa c.x
         self.assertIs(c.x, default)
 
         self.assertIs(C().x, default)
@@ -454,7 +454,7 @@ kundi TestCase(unittest.TestCase):
     eleza test_not_in_repr(self):
         @dataclass
         kundi C:
-            x: int = field(repr=False)
+            x: int = field(repr=Uongo)
         with self.assertRaises(TypeError):
             C()
         c = C(10)
@@ -462,7 +462,7 @@ kundi TestCase(unittest.TestCase):
 
         @dataclass
         kundi C:
-            x: int = field(repr=False)
+            x: int = field(repr=Uongo)
             y: int
         c = C(10, 20)
         self.assertEqual(repr(c), 'TestCase.test_not_in_repr.<locals>.C(y=20)')
@@ -471,7 +471,7 @@ kundi TestCase(unittest.TestCase):
         @dataclass
         kundi C:
             x: int = 0
-            y: int = field(compare=False, default=4)
+            y: int = field(compare=Uongo, default=4)
 
         self.assertEqual(C(), C(0, 20))
         self.assertEqual(C(1, 10), C(1, 20))
@@ -480,18 +480,18 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_hash_field_rules(self):
         # Test all 6 cases of:
-        #  hash=True/False/None
-        #  compare=True/False
-        for (hash_,    compare, result  ) in [
-            (True,     False,   'field' ),
-            (True,     True,    'field' ),
-            (False,    False,   'absent'),
-            (False,    True,    'absent'),
-            (None,     False,   'absent'),
-            (None,     True,    'field' ),
+        #  hash=Kweli/Uongo/Tupu
+        #  compare=Kweli/Uongo
+        kila (hash_,    compare, result  ) kwenye [
+            (Kweli,     Uongo,   'field' ),
+            (Kweli,     Kweli,    'field' ),
+            (Uongo,    Uongo,   'absent'),
+            (Uongo,    Kweli,    'absent'),
+            (Tupu,     Uongo,   'absent'),
+            (Tupu,     Kweli,    'field' ),
             ]:
             with self.subTest(hash=hash_, compare=compare):
-                @dataclass(unsafe_hash=True)
+                @dataclass(unsafe_hash=Kweli)
                 kundi C:
                     x: int = field(compare=compare, hash=hash_, default=5)
 
@@ -499,17 +499,17 @@ kundi TestCase(unittest.TestCase):
                     # __hash__ contains the field.
                     self.assertEqual(hash(C(5)), hash((5,)))
                 elikiwa result == 'absent':
-                    # The field is not present in the hash.
+                    # The field ni sio present kwenye the hash.
                     self.assertEqual(hash(C(5)), hash(()))
-                else:
-                    assert False, f'unknown result {result!r}'
+                isipokua:
+                    assert Uongo, f'unknown result {result!r}'
 
     eleza test_init_false_no_default(self):
-        # If init=False and no default value, then the field won't be
-        #  present in the instance.
+        # If init=Uongo na no default value, then the field won't be
+        #  present kwenye the instance.
         @dataclass
         kundi C:
-            x: int = field(init=False)
+            x: int = field(init=Uongo)
 
         self.assertNotIn('x', C().__dict__)
 
@@ -517,7 +517,7 @@ kundi TestCase(unittest.TestCase):
         kundi C:
             x: int
             y: int = 0
-            z: int = field(init=False)
+            z: int = field(init=Uongo)
             t: int = 10
 
         self.assertNotIn('z', C(0).__dict__)
@@ -527,14 +527,14 @@ kundi TestCase(unittest.TestCase):
         @dataclass
         kundi C:
             x: int
-            y: str = field(init=False, default=None)
-            z: str = field(repr=False)
+            y: str = field(init=Uongo, default=Tupu)
+            z: str = field(repr=Uongo)
 
         the_fields = fields(C)
-        # the_fields is a tuple of 3 items, each value
-        #  is in __annotations__.
+        # the_fields ni a tuple of 3 items, each value
+        #  ni kwenye __annotations__.
         self.assertIsInstance(the_fields, tuple)
-        for f in the_fields:
+        kila f kwenye the_fields:
             self.assertIs(type(f), Field)
             self.assertIn(f.name, C.__annotations__)
 
@@ -542,19 +542,19 @@ kundi TestCase(unittest.TestCase):
 
         self.assertEqual(the_fields[0].name, 'x')
         self.assertEqual(the_fields[0].type, int)
-        self.assertFalse(hasattr(C, 'x'))
-        self.assertTrue (the_fields[0].init)
-        self.assertTrue (the_fields[0].repr)
+        self.assertUongo(hasattr(C, 'x'))
+        self.assertKweli (the_fields[0].init)
+        self.assertKweli (the_fields[0].repr)
         self.assertEqual(the_fields[1].name, 'y')
         self.assertEqual(the_fields[1].type, str)
-        self.assertIsNone(getattr(C, 'y'))
-        self.assertFalse(the_fields[1].init)
-        self.assertTrue (the_fields[1].repr)
+        self.assertIsTupu(getattr(C, 'y'))
+        self.assertUongo(the_fields[1].init)
+        self.assertKweli (the_fields[1].repr)
         self.assertEqual(the_fields[2].name, 'z')
         self.assertEqual(the_fields[2].type, str)
-        self.assertFalse(hasattr(C, 'z'))
-        self.assertTrue (the_fields[2].init)
-        self.assertFalse(the_fields[2].repr)
+        self.assertUongo(hasattr(C, 'z'))
+        self.assertKweli (the_fields[2].init)
+        self.assertUongo(the_fields[2].repr)
 
     eleza test_field_order(self):
         @dataclass
@@ -567,7 +567,7 @@ kundi TestCase(unittest.TestCase):
         kundi C(B):
             b: str = 'C:b'
 
-        self.assertEqual([(f.name, f.default) for f in fields(C)],
+        self.assertEqual([(f.name, f.default) kila f kwenye fields(C)],
                          [('a', 'B:a'),
                           ('b', 'C:b'),
                           ('c', 'B:c')])
@@ -576,7 +576,7 @@ kundi TestCase(unittest.TestCase):
         kundi D(B):
             c: str = 'D:c'
 
-        self.assertEqual([(f.name, f.default) for f in fields(D)],
+        self.assertEqual([(f.name, f.default) kila f kwenye fields(D)],
                          [('a', 'B:a'),
                           ('b', 'B:b'),
                           ('c', 'D:c')])
@@ -586,7 +586,7 @@ kundi TestCase(unittest.TestCase):
             a: str = 'E:a'
             d: str = 'E:d'
 
-        self.assertEqual([(f.name, f.default) for f in fields(E)],
+        self.assertEqual([(f.name, f.default) kila f kwenye fields(E)],
                          [('a', 'E:a'),
                           ('b', 'B:b'),
                           ('c', 'D:c'),
@@ -594,31 +594,31 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_class_attrs(self):
         # We only have a kundi attribute ikiwa a default value is
-        #  specified, either directly or via a field with a default.
+        #  specified, either directly ama via a field with a default.
         default = object()
         @dataclass
         kundi C:
             x: int
-            y: int = field(repr=False)
+            y: int = field(repr=Uongo)
             z: object = default
             t: int = field(default=100)
 
-        self.assertFalse(hasattr(C, 'x'))
-        self.assertFalse(hasattr(C, 'y'))
+        self.assertUongo(hasattr(C, 'x'))
+        self.assertUongo(hasattr(C, 'y'))
         self.assertIs   (C.z, default)
         self.assertEqual(C.t, 100)
 
     eleza test_disallowed_mutable_defaults(self):
         # For the known types, don't allow mutable default values.
-        for typ, empty, non_empty in [(list, [], [1]),
+        kila typ, empty, non_empty kwenye [(list, [], [1]),
                                       (dict, {}, {0:1}),
                                       (set, set(), set([1])),
                                       ]:
             with self.subTest(typ=typ):
                 # Can't use a zero-length value.
                 with self.assertRaisesRegex(ValueError,
-                                            f'mutable default {typ} for field '
-                                            'x is not allowed'):
+                                            f'mutable default {typ} kila field '
+                                            'x ni sio allowed'):
                     @dataclass
                     kundi Point:
                         x: typ = empty
@@ -626,35 +626,35 @@ kundi TestCase(unittest.TestCase):
 
                 # Nor a non-zero-length value
                 with self.assertRaisesRegex(ValueError,
-                                            f'mutable default {typ} for field '
-                                            'y is not allowed'):
+                                            f'mutable default {typ} kila field '
+                                            'y ni sio allowed'):
                     @dataclass
                     kundi Point:
                         y: typ = non_empty
 
                 # Check subtypes also fail.
-                kundi Subclass(typ): pass
+                kundi Subclass(typ): pita
 
                 with self.assertRaisesRegex(ValueError,
                                             f"mutable default .*Subclass'>"
-                                            ' for field z is not allowed'
+                                            ' kila field z ni sio allowed'
                                             ):
                     @dataclass
                     kundi Point:
                         z: typ = Subclass()
 
-                # Because this is a ClassVar, it can be mutable.
+                # Because this ni a ClassVar, it can be mutable.
                 @dataclass
                 kundi C:
                     z: ClassVar[typ] = typ()
 
-                # Because this is a ClassVar, it can be mutable.
+                # Because this ni a ClassVar, it can be mutable.
                 @dataclass
                 kundi C:
                     x: ClassVar[typ] = Subclass()
 
     eleza test_deliberately_mutable_defaults(self):
-        # If a mutable default isn't in the known list of
+        # If a mutable default isn't kwenye the known list of
         #  (list, dict, set), then it's okay.
         kundi Mutable:
             eleza __init__(self):
@@ -729,9 +729,9 @@ kundi TestCase(unittest.TestCase):
         self.assertNotEqual(Point3D(0, 0, 0), Point3Dv1())
 
     eleza test_function_annotations(self):
-        # Some dummy kundi and instance to use as a default.
+        # Some dummy kundi na instance to use kama a default.
         kundi F:
-            pass
+            pita
         f = F()
 
         eleza validate_class(cls):
@@ -746,13 +746,13 @@ kundi TestCase(unittest.TestCase):
             # Verify __init__.
 
             signature = inspect.signature(cls.__init__)
-            # Check the rudisha type, should be None.
-            self.assertIs(signature.return_annotation, None)
+            # Check the rudisha type, should be Tupu.
+            self.assertIs(signature.rudisha_annotation, Tupu)
 
             # Check each parameter.
             params = iter(signature.parameters.values())
             param = next(params)
-            # This is testing an internal name, and probably shouldn't be tested.
+            # This ni testing an internal name, na probably shouldn't be tested.
             self.assertEqual(param.name, 'self')
             param = next(params)
             self.assertEqual(param.name, 'i')
@@ -767,12 +767,12 @@ kundi TestCase(unittest.TestCase):
             param = next(params)
             self.assertEqual(param.name, 'k')
             self.assertIs   (param.annotation, F)
-            # Don't test for the default, since it's set to MISSING.
+            # Don't test kila the default, since it's set to MISSING.
             self.assertEqual(param.kind, inspect.Parameter.POSITIONAL_OR_KEYWORD)
             param = next(params)
             self.assertEqual(param.name, 'l')
             self.assertIs   (param.annotation, float)
-            # Don't test for the default, since it's set to MISSING.
+            # Don't test kila the default, since it's set to MISSING.
             self.assertEqual(param.kind, inspect.Parameter.POSITIONAL_OR_KEYWORD)
             self.assertRaises(StopIteration, next, params)
 
@@ -782,24 +782,24 @@ kundi TestCase(unittest.TestCase):
             i: int
             j: str
             k: F = f
-            l: float=field(default=None)
-            z: complex=field(default=3+4j, init=False)
+            l: float=field(default=Tupu)
+            z: complex=field(default=3+4j, init=Uongo)
 
         validate_class(C)
 
         # Now repeat with __hash__.
-        @dataclass(frozen=True, unsafe_hash=True)
+        @dataclass(frozen=Kweli, unsafe_hash=Kweli)
         kundi C:
             i: int
             j: str
             k: F = f
-            l: float=field(default=None)
-            z: complex=field(default=3+4j, init=False)
+            l: float=field(default=Tupu)
+            z: complex=field(default=3+4j, init=Uongo)
 
         validate_class(C)
 
     eleza test_missing_default(self):
-        # Test that MISSING works the same as a default not being
+        # Test that MISSING works the same kama a default sio being
         #  specified.
         @dataclass
         kundi C:
@@ -820,8 +820,8 @@ kundi TestCase(unittest.TestCase):
         self.assertNotIn('x', D.__dict__)
 
     eleza test_missing_default_factory(self):
-        # Test that MISSING works the same as a default factory not
-        #  being specified (which is really the same as a default not
+        # Test that MISSING works the same kama a default factory not
+        #  being specified (which ni really the same kama a default not
         #  being specified, too).
         @dataclass
         kundi C:
@@ -863,7 +863,7 @@ kundi TestCase(unittest.TestCase):
         @dataclass
         kundi C:
             eleza __post_init__(self):
-                raise CustomError()
+                ashiria CustomError()
         with self.assertRaises(CustomError):
             C()
 
@@ -872,19 +872,19 @@ kundi TestCase(unittest.TestCase):
             i: int = 10
             eleza __post_init__(self):
                 ikiwa self.i == 10:
-                    raise CustomError()
+                    ashiria CustomError()
         with self.assertRaises(CustomError):
             C()
-        # post-init gets called, but doesn't raise. This is just
-        #  checking that self is used correctly.
+        # post-init gets called, but doesn't ashiria. This ni just
+        #  checking that self ni used correctly.
         C(5)
 
-        # If there's not an __init__, then post-init won't get called.
-        @dataclass(init=False)
+        # If there's sio an __init__, then post-init won't get called.
+        @dataclass(init=Uongo)
         kundi C:
             eleza __post_init__(self):
-                raise CustomError()
-        # Creating the kundi won't raise
+                ashiria CustomError()
+        # Creating the kundi won't ashiria
         C()
 
         @dataclass
@@ -897,7 +897,7 @@ kundi TestCase(unittest.TestCase):
 
         # Make sure that ikiwa we're frozen, post-init can't set
         #  attributes.
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int = 0
             eleza __post_init__(self):
@@ -909,7 +909,7 @@ kundi TestCase(unittest.TestCase):
         # Make sure super() post-init isn't called by default.
         kundi B:
             eleza __post_init__(self):
-                raise CustomError()
+                ashiria CustomError()
 
         @dataclass
         kundi C(B):
@@ -918,7 +918,7 @@ kundi TestCase(unittest.TestCase):
 
         self.assertEqual(C().x, 5)
 
-        # Now call super(), and it will raise.
+        # Now call super(), na it will ashiria.
         @dataclass
         kundi C(B):
             eleza __post_init__(self):
@@ -927,17 +927,17 @@ kundi TestCase(unittest.TestCase):
         with self.assertRaises(CustomError):
             C()
 
-        # Make sure post-init is called, even ikiwa not defined in our
+        # Make sure post-init ni called, even ikiwa sio defined kwenye our
         #  class.
         @dataclass
         kundi C(B):
-            pass
+            pita
 
         with self.assertRaises(CustomError):
             C()
 
     eleza test_post_init_staticmethod(self):
-        flag = False
+        flag = Uongo
         @dataclass
         kundi C:
             x: int
@@ -945,30 +945,30 @@ kundi TestCase(unittest.TestCase):
             @staticmethod
             eleza __post_init__():
                 nonlocal flag
-                flag = True
+                flag = Kweli
 
-        self.assertFalse(flag)
+        self.assertUongo(flag)
         c = C(3, 4)
         self.assertEqual((c.x, c.y), (3, 4))
-        self.assertTrue(flag)
+        self.assertKweli(flag)
 
     eleza test_post_init_classmethod(self):
         @dataclass
         kundi C:
-            flag = False
+            flag = Uongo
             x: int
             y: int
             @classmethod
             eleza __post_init__(cls):
-                cls.flag = True
+                cls.flag = Kweli
 
-        self.assertFalse(C.flag)
+        self.assertUongo(C.flag)
         c = C(3, 4)
         self.assertEqual((c.x, c.y), (3, 4))
-        self.assertTrue(C.flag)
+        self.assertKweli(C.flag)
 
     eleza test_class_var(self):
-        # Make sure ClassVars are ignored in __init__, __repr__, etc.
+        # Make sure ClassVars are ignored kwenye __init__, __repr__, etc.
         @dataclass
         kundi C:
             x: int
@@ -996,7 +996,7 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(c.s, 4000)
 
     eleza test_class_var_no_default(self):
-        # If a ClassVar has no default value, it should not be set on the class.
+        # If a ClassVar has no default value, it should sio be set on the class.
         @dataclass
         kundi C:
             x: ClassVar[int]
@@ -1004,7 +1004,7 @@ kundi TestCase(unittest.TestCase):
         self.assertNotIn('x', C.__dict__)
 
     eleza test_class_var_default_factory(self):
-        # It makes no sense for a ClassVar to have a default factory. When
+        # It makes no sense kila a ClassVar to have a default factory. When
         #  would it be called? Call it yourself, since it's class-wide.
         with self.assertRaisesRegex(TypeError,
                                     'cannot have a default factory'):
@@ -1028,7 +1028,7 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_class_var_frozen(self):
         # Make sure ClassVars work even ikiwa we're frozen.
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
             y: int = 10
@@ -1054,7 +1054,7 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(c.t, 3000)
 
     eleza test_init_var_no_default(self):
-        # If an InitVar has no default value, it should not be set on the class.
+        # If an InitVar has no default value, it should sio be set on the class.
         @dataclass
         kundi C:
             x: InitVar[int]
@@ -1062,7 +1062,7 @@ kundi TestCase(unittest.TestCase):
         self.assertNotIn('x', C.__dict__)
 
     eleza test_init_var_default_factory(self):
-        # It makes no sense for an InitVar to have a default factory. When
+        # It makes no sense kila an InitVar to have a default factory. When
         #  would it be called? Call it yourself, since it's class-wide.
         with self.assertRaisesRegex(TypeError,
                                     'cannot have a default factory'):
@@ -1087,11 +1087,11 @@ kundi TestCase(unittest.TestCase):
     eleza test_init_var(self):
         @dataclass
         kundi C:
-            x: int = None
-            init_param: InitVar[int] = None
+            x: int = Tupu
+            init_param: InitVar[int] = Tupu
 
             eleza __post_init__(self, init_param):
-                ikiwa self.x is None:
+                ikiwa self.x ni Tupu:
                     self.x = init_param*2
 
         c = C(init_param=10)
@@ -1100,7 +1100,7 @@ kundi TestCase(unittest.TestCase):
     eleza test_init_var_preserve_type(self):
         self.assertEqual(InitVar[int].type, int)
 
-        # Make sure the repr is correct.
+        # Make sure the repr ni correct.
         self.assertEqual(repr(InitVar[int]), 'dataclasses.InitVar[int]')
         self.assertEqual(repr(InitVar[List[int]]),
                          'dataclasses.InitVar[typing.List[int]]')
@@ -1108,14 +1108,14 @@ kundi TestCase(unittest.TestCase):
     eleza test_init_var_inheritance(self):
         # Note that this deliberately tests that a datakundi need not
         #  have a __post_init__ function ikiwa it has an InitVar field.
-        #  It could just be used in a derived class, as shown here.
+        #  It could just be used kwenye a derived class, kama shown here.
         @dataclass
         kundi Base:
             x: int
             init_base: InitVar[int]
 
-        # We can instantiate by passing the InitVar, even though
-        #  it's not used.
+        # We can instantiate by pitaing the InitVar, even though
+        #  it's sio used.
         b = Base(0, 10)
         self.assertEqual(vars(b), {'x': 0})
 
@@ -1132,7 +1132,7 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(vars(c), {'x': 21, 'y': 101})
 
     eleza test_default_factory(self):
-        # Test a factory that returns a new list.
+        # Test a factory that rudishas a new list.
         @dataclass
         kundi C:
             x: int
@@ -1146,7 +1146,7 @@ kundi TestCase(unittest.TestCase):
         self.assertIsNot(c0.y, c1.y)
         self.assertEqual(astuple(C(5, [1])), (5, [1]))
 
-        # Test a factory that returns a shared list.
+        # Test a factory that rudishas a shared list.
         l = []
         @dataclass
         kundi C:
@@ -1165,27 +1165,27 @@ kundi TestCase(unittest.TestCase):
         # repr
         @dataclass
         kundi C:
-            x: list = field(default_factory=list, repr=False)
+            x: list = field(default_factory=list, repr=Uongo)
         self.assertEqual(repr(C()), 'TestCase.test_default_factory.<locals>.C()')
         self.assertEqual(C().x, [])
 
         # hash
-        @dataclass(unsafe_hash=True)
+        @dataclass(unsafe_hash=Kweli)
         kundi C:
-            x: list = field(default_factory=list, hash=False)
+            x: list = field(default_factory=list, hash=Uongo)
         self.assertEqual(astuple(C()), ([],))
         self.assertEqual(hash(C()), hash(()))
 
         # init (see also test_default_factory_with_no_init)
         @dataclass
         kundi C:
-            x: list = field(default_factory=list, init=False)
+            x: list = field(default_factory=list, init=Uongo)
         self.assertEqual(astuple(C()), ([],))
 
         # compare
         @dataclass
         kundi C:
-            x: list = field(default_factory=list, compare=False)
+            x: list = field(default_factory=list, compare=Uongo)
         self.assertEqual(C(), C([1]))
 
     eleza test_default_factory_with_no_init(self):
@@ -1194,9 +1194,9 @@ kundi TestCase(unittest.TestCase):
 
         @dataclass
         kundi C:
-            x: list = field(default_factory=factory, init=False)
+            x: list = field(default_factory=factory, init=Uongo)
 
-        # Make sure the default factory is called for each new instance.
+        # Make sure the default factory ni called kila each new instance.
         C().x
         self.assertEqual(factory.call_count, 1)
         C().x
@@ -1211,7 +1211,7 @@ kundi TestCase(unittest.TestCase):
             x: int = field(default_factory=factory)
 
         # Make sure that ikiwa a field has a default factory function,
-        #  it's not called ikiwa a value is specified.
+        #  it's sio called ikiwa a value ni specified.
         C().x
         self.assertEqual(factory.call_count, 1)
         self.assertEqual(C(10).x, 10)
@@ -1235,12 +1235,12 @@ kundi TestCase(unittest.TestCase):
 
         @dataclass
         kundi Baz(Foo):
-            pass
+            pita
         self.assertEqual(Baz().x, {})
 
     eleza test_intermediate_non_dataclass(self):
         # Test that an intermediate kundi that defines
-        #  annotations does not define fields.
+        #  annotations does sio define fields.
 
         @dataclass
         kundi A:
@@ -1256,7 +1256,7 @@ kundi TestCase(unittest.TestCase):
         c = C(1, 3)
         self.assertEqual((c.x, c.z), (1, 3))
 
-        # .y was not initialized.
+        # .y was sio initialized.
         with self.assertRaisesRegex(AttributeError,
                                     'object has no attribute'):
             c.y
@@ -1268,7 +1268,7 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual((d.x, d.z), (4, 5))
 
     eleza test_classvar_default_factory(self):
-        # It's an error for a ClassVar to have a factory function.
+        # It's an error kila a ClassVar to have a factory function.
         with self.assertRaisesRegex(TypeError,
                                     'cannot have a default factory'):
             @dataclass
@@ -1277,12 +1277,12 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_is_dataclass(self):
         kundi NotDataClass:
-            pass
+            pita
 
-        self.assertFalse(is_dataclass(0))
-        self.assertFalse(is_dataclass(int))
-        self.assertFalse(is_dataclass(NotDataClass))
-        self.assertFalse(is_dataclass(NotDataClass()))
+        self.assertUongo(is_dataclass(0))
+        self.assertUongo(is_dataclass(int))
+        self.assertUongo(is_dataclass(NotDataClass))
+        self.assertUongo(is_dataclass(NotDataClass()))
 
         @dataclass
         kundi C:
@@ -1296,31 +1296,31 @@ kundi TestCase(unittest.TestCase):
         c = C(10)
         d = D(c, 4)
 
-        self.assertTrue(is_dataclass(C))
-        self.assertTrue(is_dataclass(c))
-        self.assertFalse(is_dataclass(c.x))
-        self.assertTrue(is_dataclass(d.d))
-        self.assertFalse(is_dataclass(d.e))
+        self.assertKweli(is_dataclass(C))
+        self.assertKweli(is_dataclass(c))
+        self.assertUongo(is_dataclass(c.x))
+        self.assertKweli(is_dataclass(d.d))
+        self.assertUongo(is_dataclass(d.e))
 
-    eleza test_is_dataclass_when_getattr_always_returns(self):
+    eleza test_is_dataclass_when_getattr_always_rudishas(self):
         # See bpo-37868.
         kundi A:
             eleza __getattr__(self, key):
                 rudisha 0
-        self.assertFalse(is_dataclass(A))
+        self.assertUongo(is_dataclass(A))
         a = A()
 
-        # Also test for an instance attribute.
+        # Also test kila an instance attribute.
         kundi B:
-            pass
+            pita
         b = B()
         b.__dataclass_fields__ = []
 
-        for obj in a, b:
+        kila obj kwenye a, b:
             with self.subTest(obj=obj):
-                self.assertFalse(is_dataclass(obj))
+                self.assertUongo(is_dataclass(obj))
 
-                # Indirect tests for _is_dataclass_instance().
+                # Indirect tests kila _is_dataclass_instance().
                 with self.assertRaisesRegex(TypeError, 'should be called on datakundi instances'):
                     asdict(obj)
                 with self.assertRaisesRegex(TypeError, 'should be called on datakundi instances'):
@@ -1329,8 +1329,8 @@ kundi TestCase(unittest.TestCase):
                     replace(obj, x=0)
 
     eleza test_helper_fields_with_class_instance(self):
-        # Check that we can call fields() on either a kundi or instance,
-        #  and get back the same thing.
+        # Check that we can call fields() on either a kundi ama instance,
+        #  na get back the same thing.
         @dataclass
         kundi C:
             x: int
@@ -1339,19 +1339,19 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(fields(C), fields(C(0, 0.0)))
 
     eleza test_helper_fields_exception(self):
-        # Check that TypeError is raised ikiwa not passed a datakundi or
+        # Check that TypeError ni ashiriad ikiwa sio pitaed a datakundi or
         #  instance.
-        with self.assertRaisesRegex(TypeError, 'datakundi type or instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi type ama instance'):
             fields(0)
 
-        kundi C: pass
-        with self.assertRaisesRegex(TypeError, 'datakundi type or instance'):
+        kundi C: pita
+        with self.assertRaisesRegex(TypeError, 'datakundi type ama instance'):
             fields(C)
-        with self.assertRaisesRegex(TypeError, 'datakundi type or instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi type ama instance'):
             fields(C())
 
     eleza test_helper_asdict(self):
-        # Basic tests for asdict(), it should rudisha a new dictionary.
+        # Basic tests kila asdict(), it should rudisha a new dictionary.
         @dataclass
         kundi C:
             x: int
@@ -1365,8 +1365,8 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(asdict(c), {'x': 42, 'y': 2})
         self.assertIs(type(asdict(c)), dict)
 
-    eleza test_helper_asdict_raises_on_classes(self):
-        # asdict() should raise on a kundi object.
+    eleza test_helper_asdict_ashirias_on_classes(self):
+        # asdict() should ashiria on a kundi object.
         @dataclass
         kundi C:
             x: int
@@ -1480,7 +1480,7 @@ kundi TestCase(unittest.TestCase):
                              }
                          )
 
-        # Now with a dict_factory.  OrderedDict is convenient, but
+        # Now with a dict_factory.  OrderedDict ni convenient, but
         # since it compares to dicts, we also need to have separate
         # assertIs tests.
         d = asdict(c, dict_factory=OrderedDict)
@@ -1492,13 +1492,13 @@ kundi TestCase(unittest.TestCase):
                              }
                          )
 
-        # Make sure that the returned dicts are actually OrderedDicts.
+        # Make sure that the rudishaed dicts are actually OrderedDicts.
         self.assertIs(type(d), OrderedDict)
         self.assertIs(type(d['y'][1]), OrderedDict)
 
     eleza test_helper_asdict_namedtuple_key(self):
         # Ensure that a field that contains a dict which has a
-        # namedtuple as a key works with asdict().
+        # namedtuple kama a key works with asdict().
 
         @dataclass
         kundi C:
@@ -1523,12 +1523,12 @@ kundi TestCase(unittest.TestCase):
 
         d = asdict(c)
         self.assertEqual(d, {'f': T(a=6)})
-        # Make sure that t has been copied, not used directly.
+        # Make sure that t has been copied, sio used directly.
         self.assertIsNot(d['f'], t)
         self.assertEqual(d['f'].my_a(), 6)
 
     eleza test_helper_astuple(self):
-        # Basic tests for astuple(), it should rudisha a new tuple.
+        # Basic tests kila astuple(), it should rudisha a new tuple.
         @dataclass
         kundi C:
             x: int
@@ -1542,8 +1542,8 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(astuple(c), (1, 42))
         self.assertIs(type(astuple(c)), tuple)
 
-    eleza test_helper_astuple_raises_on_classes(self):
-        # astuple() should raise on a kundi object.
+    eleza test_helper_astuple_ashirias_on_classes(self):
+        # astuple() should ashiria on a kundi object.
         @dataclass
         kundi C:
             x: int
@@ -1650,7 +1650,7 @@ kundi TestCase(unittest.TestCase):
         t = astuple(c)
         self.assertEqual(t, ('outer', T(1, ('inner', (11, 12, 13)), 2)))
 
-        # Now, using a tuple_factory.  list is convenient here.
+        # Now, using a tuple_factory.  list ni convenient here.
         t = astuple(c, tuple_factory=list)
         self.assertEqual(t, ['outer', T(1, ['inner', T(11, 12, 13)], 2)])
 
@@ -1686,9 +1686,9 @@ kundi TestCase(unittest.TestCase):
         kundi C:
             a: int
             b: int = field()
-            c: list = field(default_factory=list, init=False)
+            c: list = field(default_factory=list, init=Uongo)
             d: list = field(default_factory=list)
-            e: int = field(default=4, init=False)
+            e: int = field(default=4, init=Uongo)
             f: int = 4
 
         calls = []
@@ -1708,9 +1708,9 @@ kundi TestCase(unittest.TestCase):
         @dataclass
         kundi C:
             a: int
-            b: list = field(default_factory=list, init=False)
+            b: list = field(default_factory=list, init=Uongo)
             c: list = field(default_factory=list)
-            d: int = field(default=4, init=False)
+            d: int = field(default=4, init=Uongo)
             e: int = 0
 
         c = C(0)
@@ -1735,7 +1735,7 @@ kundi TestCase(unittest.TestCase):
 
     eleza test_alternate_classmethod_constructor(self):
         # Since __post_init__ can't take params, use a classmethod
-        #  alternate constructor.  This is mostly an example to show
+        #  alternate constructor.  This ni mostly an example to show
         #  how to use this technique.
         @dataclass
         kundi C:
@@ -1743,27 +1743,27 @@ kundi TestCase(unittest.TestCase):
             @classmethod
             eleza kutoka_file(cls, filename):
                 # In a real example, create a new instance
-                #  and populate 'x' kutoka contents of a file.
+                #  na populate 'x' kutoka contents of a file.
                 value_in_file = 20
                 rudisha cls(value_in_file)
 
         self.assertEqual(C.kutoka_file('filename').x, 20)
 
     eleza test_field_metadata_default(self):
-        # Make sure the default metadata is read-only and of
+        # Make sure the default metadata ni read-only na of
         #  zero length.
         @dataclass
         kundi C:
             i: int
 
-        self.assertFalse(fields(C)[0].metadata)
+        self.assertUongo(fields(C)[0].metadata)
         self.assertEqual(len(fields(C)[0].metadata), 0)
         with self.assertRaisesRegex(TypeError,
-                                    'does not support item assignment'):
+                                    'does sio support item assignment'):
             fields(C)[0].metadata['test'] = 3
 
     eleza test_field_metadata_mapping(self):
-        # Make sure only a mapping can be passed as metadata
+        # Make sure only a mapping can be pitaed kama metadata
         #  zero length.
         with self.assertRaises(TypeError):
             @dataclass
@@ -1775,14 +1775,14 @@ kundi TestCase(unittest.TestCase):
         @dataclass
         kundi C:
             i: int = field(metadata=d)
-        self.assertFalse(fields(C)[0].metadata)
+        self.assertUongo(fields(C)[0].metadata)
         self.assertEqual(len(fields(C)[0].metadata), 0)
         # Update should work (see bpo-35960).
         d['foo'] = 1
         self.assertEqual(len(fields(C)[0].metadata), 1)
         self.assertEqual(fields(C)[0].metadata['foo'], 1)
         with self.assertRaisesRegex(TypeError,
-                                    'does not support item assignment'):
+                                    'does sio support item assignment'):
             fields(C)[0].metadata['test'] = 3
 
         # Make sure a non-empty dict works.
@@ -1802,7 +1802,7 @@ kundi TestCase(unittest.TestCase):
             # Non-existent key.
             fields(C)[0].metadata['baz']
         with self.assertRaisesRegex(TypeError,
-                                    'does not support item assignment'):
+                                    'does sio support item assignment'):
             fields(C)[0].metadata['test'] = 3
 
     eleza test_field_metadata_custom_mapping(self):
@@ -1874,9 +1874,9 @@ kundi TestCase(unittest.TestCase):
         @dataclass
         kundi Parent(Generic[T]):
             x: T
-        Child = make_dataclass('Child', [('y', T), ('z', Optional[T], None)],
+        Child = make_dataclass('Child', [('y', T), ('z', Optional[T], Tupu)],
                                bases=(Parent[int], Generic[T]), namespace={'other': 42})
-        self.assertIs(Child[int](1, 2).z, None)
+        self.assertIs(Child[int](1, 2).z, Tupu)
         self.assertEqual(Child[int](1, 2, 3).z, 3)
         self.assertEqual(Child[int](1, 2, 3).other, 42)
         # Check that type aliases work correctly.
@@ -1894,7 +1894,7 @@ kundi TestCase(unittest.TestCase):
         @dataclass
         kundi Q:
             x: int
-            y: int = field(default=0, init=False)
+            y: int = field(default=0, init=Uongo)
         @dataclass
         kundi R:
             x: int
@@ -1902,8 +1902,8 @@ kundi TestCase(unittest.TestCase):
         q = Q(1)
         q.y = 2
         samples = [P(1), P(1, 2), Q(1), q, R(1), R(1, [2, 3, 4])]
-        for sample in samples:
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila sample kwenye samples:
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(sample=sample, proto=proto):
                     new_sample = pickle.loads(pickle.dumps(sample, proto))
                     self.assertEqual(sample.x, new_sample.x)
@@ -1918,7 +1918,7 @@ kundi TestCase(unittest.TestCase):
 kundi TestFieldNoAnnotation(unittest.TestCase):
     eleza test_field_without_annotation(self):
         with self.assertRaisesRegex(TypeError,
-                                    "'f' is a field but has no type annotation"):
+                                    "'f' ni a field but has no type annotation"):
             @dataclass
             kundi C:
                 f = field()
@@ -1929,22 +1929,22 @@ kundi TestFieldNoAnnotation(unittest.TestCase):
             f: int
 
         with self.assertRaisesRegex(TypeError,
-                                    "'f' is a field but has no type annotation"):
-            # This is still an error: make sure we don't pick up the
-            #  type annotation in the base class.
+                                    "'f' ni a field but has no type annotation"):
+            # This ni still an error: make sure we don't pick up the
+            #  type annotation kwenye the base class.
             @dataclass
             kundi C(B):
                 f = field()
 
     eleza test_field_without_annotation_but_annotation_in_base_not_dataclass(self):
-        # Same test, but with the base kundi not a dataclass.
+        # Same test, but with the base kundi sio a dataclass.
         kundi B:
             f: int
 
         with self.assertRaisesRegex(TypeError,
-                                    "'f' is a field but has no type annotation"):
-            # This is still an error: make sure we don't pick up the
-            #  type annotation in the base class.
+                                    "'f' ni a field but has no type annotation"):
+            # This ni still an error: make sure we don't pick up the
+            #  type annotation kwenye the base class.
             @dataclass
             kundi C(B):
                 f = field()
@@ -1952,8 +1952,8 @@ kundi TestFieldNoAnnotation(unittest.TestCase):
 
 kundi TestDocString(unittest.TestCase):
     eleza assertDocStrEqual(self, a, b):
-        # Because 3.6 and 3.7 differ in how inspect.signature work
-        #  (see bpo #32108), for the time being just compare them with
+        # Because 3.6 na 3.7 differ kwenye how inspect.signature work
+        #  (see bpo #32108), kila the time being just compare them with
         #  whitespace stripped.
         self.assertEqual(a.replace(' ', ''), b.replace(' ', ''))
 
@@ -1968,7 +1968,7 @@ kundi TestDocString(unittest.TestCase):
     eleza test_docstring_no_fields(self):
         @dataclass
         kundi C:
-            pass
+            pita
 
         self.assertDocStrEqual(C.__doc__, "C()")
 
@@ -2006,9 +2006,9 @@ kundi TestDocString(unittest.TestCase):
     eleza test_docstring_one_field_with_default_none(self):
         @dataclass
         kundi C:
-            x: Union[int, type(None)] = None
+            x: Union[int, type(Tupu)] = Tupu
 
-        self.assertDocStrEqual(C.__doc__, "C(x:Union[int, NoneType]=None)")
+        self.assertDocStrEqual(C.__doc__, "C(x:Union[int, TupuType]=Tupu)")
 
     eleza test_docstring_list_field(self):
         @dataclass
@@ -2044,10 +2044,10 @@ kundi TestInit(unittest.TestCase):
         kundi B:
             eleza __init__(self):
                 self.z = 100
-                pass
+                pita
 
-        # Make sure that declaring this kundi doesn't raise an error.
-        #  The issue is that we can't override __init__ in our class,
+        # Make sure that declaring this kundi doesn't ashiria an error.
+        #  The issue ni that we can't override __init__ kwenye our class,
         #  but it should be okay to add __init__ to us ikiwa our base has
         #  an __init__.
         @dataclass
@@ -2059,7 +2059,7 @@ kundi TestInit(unittest.TestCase):
 
         # Make sure that ikiwa we don't add an init, the base __init__
         #  gets called.
-        @dataclass(init=False)
+        @dataclass(init=Uongo)
         kundi C(B):
             x: int = 10
         c = C()
@@ -2067,12 +2067,12 @@ kundi TestInit(unittest.TestCase):
         self.assertEqual(c.z, 100)
 
     eleza test_no_init(self):
-        dataclass(init=False)
+        dataclass(init=Uongo)
         kundi C:
             i: int = 0
         self.assertEqual(C().i, 0)
 
-        dataclass(init=False)
+        dataclass(init=Uongo)
         kundi C:
             i: int = 2
             eleza __init__(self):
@@ -2090,14 +2090,14 @@ kundi TestInit(unittest.TestCase):
                 self.x = 2 * x
         self.assertEqual(C(3).x, 6)
 
-        @dataclass(init=True)
+        @dataclass(init=Kweli)
         kundi C:
             x: int
             eleza __init__(self, x):
                 self.x = 2 * x
         self.assertEqual(C(4).x, 8)
 
-        @dataclass(init=False)
+        @dataclass(init=Uongo)
         kundi C:
             x: int
             eleza __init__(self, x):
@@ -2130,20 +2130,20 @@ kundi TestRepr(unittest.TestCase):
                 i: int
             @dataclass
             kundi E:
-                pass
+                pita
         self.assertEqual(repr(C.D(0)), 'TestRepr.test_repr.<locals>.C.D(i=0)')
         self.assertEqual(repr(C.E()), 'TestRepr.test_repr.<locals>.C.E()')
 
     eleza test_no_repr(self):
-        # Test a kundi with no __repr__ and repr=False.
-        @dataclass(repr=False)
+        # Test a kundi with no __repr__ na repr=Uongo.
+        @dataclass(repr=Uongo)
         kundi C:
             x: int
         self.assertIn(f'{__name__}.TestRepr.test_no_repr.<locals>.C object at',
                       repr(C(3)))
 
-        # Test a kundi with a __repr__ and repr=False.
-        @dataclass(repr=False)
+        # Test a kundi with a __repr__ na repr=Uongo.
+        @dataclass(repr=Uongo)
         kundi C:
             x: int
             eleza __repr__(self):
@@ -2161,14 +2161,14 @@ kundi TestRepr(unittest.TestCase):
                 rudisha 'x'
         self.assertEqual(repr(C(0)), 'x')
 
-        @dataclass(repr=True)
+        @dataclass(repr=Kweli)
         kundi C:
             x: int
             eleza __repr__(self):
                 rudisha 'x'
         self.assertEqual(repr(C(0)), 'x')
 
-        @dataclass(repr=False)
+        @dataclass(repr=Uongo)
         kundi C:
             x: int
             eleza __repr__(self):
@@ -2178,16 +2178,16 @@ kundi TestRepr(unittest.TestCase):
 
 kundi TestEq(unittest.TestCase):
     eleza test_no_eq(self):
-        # Test a kundi with no __eq__ and eq=False.
-        @dataclass(eq=False)
+        # Test a kundi with no __eq__ na eq=Uongo.
+        @dataclass(eq=Uongo)
         kundi C:
             x: int
         self.assertNotEqual(C(0), C(0))
         c = C(3)
         self.assertEqual(c, c)
 
-        # Test a kundi with an __eq__ and eq=False.
-        @dataclass(eq=False)
+        # Test a kundi with an __eq__ na eq=Uongo.
+        @dataclass(eq=Uongo)
         kundi C:
             x: int
             eleza __eq__(self, other):
@@ -2206,7 +2206,7 @@ kundi TestEq(unittest.TestCase):
         self.assertEqual(C(1), 3)
         self.assertNotEqual(C(1), 1)
 
-        @dataclass(eq=True)
+        @dataclass(eq=Kweli)
         kundi C:
             x: int
             eleza __eq__(self, other):
@@ -2214,7 +2214,7 @@ kundi TestEq(unittest.TestCase):
         self.assertEqual(C(1), 4)
         self.assertNotEqual(C(1), 1)
 
-        @dataclass(eq=False)
+        @dataclass(eq=Uongo)
         kundi C:
             x: int
             eleza __eq__(self, other):
@@ -2232,7 +2232,7 @@ kundi TestOrdering(unittest.TestCase):
             x: int
             eleza __lt__(self, other):
                 # Perform the test "backward", just to make
-                #  sure this is being called.
+                #  sure this ni being called.
                 rudisha self.x >= other
 
         self.assertLess(C(0), -1)
@@ -2242,7 +2242,7 @@ kundi TestOrdering(unittest.TestCase):
 
     eleza test_no_order(self):
         # Test that no ordering functions are added by default.
-        @dataclass(order=False)
+        @dataclass(order=Uongo)
         kundi C:
             x: int
         # Make sure no order methods are added.
@@ -2251,12 +2251,12 @@ kundi TestOrdering(unittest.TestCase):
         self.assertNotIn('__ge__', C.__dict__)
         self.assertNotIn('__gt__', C.__dict__)
 
-        # Test that __lt__ is still called
-        @dataclass(order=False)
+        # Test that __lt__ ni still called
+        @dataclass(order=Uongo)
         kundi C:
             x: int
             eleza __lt__(self, other):
-                rudisha False
+                rudisha Uongo
         # Make sure other methods aren't added.
         self.assertNotIn('__le__', C.__dict__)
         self.assertNotIn('__ge__', C.__dict__)
@@ -2266,42 +2266,42 @@ kundi TestOrdering(unittest.TestCase):
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __lt__'
                                     '.*using functools.total_ordering'):
-            @dataclass(order=True)
+            @dataclass(order=Kweli)
             kundi C:
                 x: int
                 eleza __lt__(self):
-                    pass
+                    pita
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __le__'
                                     '.*using functools.total_ordering'):
-            @dataclass(order=True)
+            @dataclass(order=Kweli)
             kundi C:
                 x: int
                 eleza __le__(self):
-                    pass
+                    pita
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __gt__'
                                     '.*using functools.total_ordering'):
-            @dataclass(order=True)
+            @dataclass(order=Kweli)
             kundi C:
                 x: int
                 eleza __gt__(self):
-                    pass
+                    pita
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __ge__'
                                     '.*using functools.total_ordering'):
-            @dataclass(order=True)
+            @dataclass(order=Kweli)
             kundi C:
                 x: int
                 eleza __ge__(self):
-                    pass
+                    pita
 
 kundi TestHash(unittest.TestCase):
     eleza test_unsafe_hash(self):
-        @dataclass(unsafe_hash=True)
+        @dataclass(unsafe_hash=Kweli)
         kundi C:
             x: int
             y: str
@@ -2309,9 +2309,9 @@ kundi TestHash(unittest.TestCase):
 
     eleza test_hash_rules(self):
         eleza non_bool(value):
-            # Map to something else that's True, but not a bool.
-            ikiwa value is None:
-                rudisha None
+            # Map to something else that's Kweli, but sio a bool.
+            ikiwa value ni Tupu:
+                rudisha Tupu
             ikiwa value:
                 rudisha (3,)
             rudisha 0
@@ -2325,30 +2325,30 @@ kundi TestHash(unittest.TestCase):
                         kundi C:
                             eleza __hash__(self):
                                 rudisha 0
-                    else:
+                    isipokua:
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
                         kundi C:
-                            pass
+                            pita
 
                 # See ikiwa the result matches what's expected.
                 ikiwa result == 'fn':
                     # __hash__ contains the function we generated.
                     self.assertIn('__hash__', C.__dict__)
-                    self.assertIsNotNone(C.__dict__['__hash__'])
+                    self.assertIsNotTupu(C.__dict__['__hash__'])
 
                 elikiwa result == '':
-                    # __hash__ is not present in our class.
-                    ikiwa not with_hash:
+                    # __hash__ ni sio present kwenye our class.
+                    ikiwa sio with_hash:
                         self.assertNotIn('__hash__', C.__dict__)
 
                 elikiwa result == 'none':
-                    # __hash__ is set to None.
+                    # __hash__ ni set to Tupu.
                     self.assertIn('__hash__', C.__dict__)
-                    self.assertIsNone(C.__dict__['__hash__'])
+                    self.assertIsTupu(C.__dict__['__hash__'])
 
                 elikiwa result == 'exception':
                     # Creating the kundi should cause an exception.
-                    #  This only happens with with_hash==True.
+                    #  This only happens with with_hash==Kweli.
                     assert(with_hash)
                     with self.assertRaisesRegex(TypeError, 'Cannot overwrite attribute __hash__'):
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
@@ -2356,38 +2356,38 @@ kundi TestHash(unittest.TestCase):
                             eleza __hash__(self):
                                 rudisha 0
 
-                else:
-                    assert False, f'unknown result {result!r}'
+                isipokua:
+                    assert Uongo, f'unknown result {result!r}'
 
         # There are 8 cases of:
-        #  unsafe_hash=True/False
-        #  eq=True/False
-        #  frozen=True/False
-        # And for each of these, a different result if
-        #  __hash__ is defined or not.
-        for case, (unsafe_hash,  eq,    frozen, res_no_defined_hash, res_defined_hash) in enumerate([
-                  (False,        False, False,  '',                  ''),
-                  (False,        False, True,   '',                  ''),
-                  (False,        True,  False,  'none',              ''),
-                  (False,        True,  True,   'fn',                ''),
-                  (True,         False, False,  'fn',                'exception'),
-                  (True,         False, True,   'fn',                'exception'),
-                  (True,         True,  False,  'fn',                'exception'),
-                  (True,         True,  True,   'fn',                'exception'),
+        #  unsafe_hash=Kweli/Uongo
+        #  eq=Kweli/Uongo
+        #  frozen=Kweli/Uongo
+        # And kila each of these, a different result if
+        #  __hash__ ni defined ama not.
+        kila case, (unsafe_hash,  eq,    frozen, res_no_defined_hash, res_defined_hash) kwenye enumerate([
+                  (Uongo,        Uongo, Uongo,  '',                  ''),
+                  (Uongo,        Uongo, Kweli,   '',                  ''),
+                  (Uongo,        Kweli,  Uongo,  'none',              ''),
+                  (Uongo,        Kweli,  Kweli,   'fn',                ''),
+                  (Kweli,         Uongo, Uongo,  'fn',                'exception'),
+                  (Kweli,         Uongo, Kweli,   'fn',                'exception'),
+                  (Kweli,         Kweli,  Uongo,  'fn',                'exception'),
+                  (Kweli,         Kweli,  Kweli,   'fn',                'exception'),
                   ], 1):
-            test(case, unsafe_hash, eq, frozen, False, res_no_defined_hash)
-            test(case, unsafe_hash, eq, frozen, True,  res_defined_hash)
+            test(case, unsafe_hash, eq, frozen, Uongo, res_no_defined_hash)
+            test(case, unsafe_hash, eq, frozen, Kweli,  res_defined_hash)
 
-            # Test non-bool truth values, too.  This is just to
-            #  make sure the data-driven table in the decorator
+            # Test non-bool truth values, too.  This ni just to
+            #  make sure the data-driven table kwenye the decorator
             #  handles non-bool values.
-            test(case, non_bool(unsafe_hash), non_bool(eq), non_bool(frozen), False, res_no_defined_hash)
-            test(case, non_bool(unsafe_hash), non_bool(eq), non_bool(frozen), True,  res_defined_hash)
+            test(case, non_bool(unsafe_hash), non_bool(eq), non_bool(frozen), Uongo, res_no_defined_hash)
+            test(case, non_bool(unsafe_hash), non_bool(eq), non_bool(frozen), Kweli,  res_defined_hash)
 
 
     eleza test_eq_only(self):
-        # If a kundi defines __eq__, __hash__ is automatically added
-        #  and set to None.  This is normal Python behavior, not
+        # If a kundi defines __eq__, __hash__ ni automatically added
+        #  na set to Tupu.  This ni normal Python behavior, not
         #  related to dataclasses.  Make sure we don't interfere with
         #  that (see bpo=32546).
 
@@ -2399,9 +2399,9 @@ kundi TestHash(unittest.TestCase):
         self.assertEqual(C(1), C(1))
         self.assertNotEqual(C(1), C(4))
 
-        # And make sure things work in this case ikiwa we specify
-        #  unsafe_hash=True.
-        @dataclass(unsafe_hash=True)
+        # And make sure things work kwenye this case ikiwa we specify
+        #  unsafe_hash=Kweli.
+        @dataclass(unsafe_hash=Kweli)
         kundi C:
             i: int
             eleza __eq__(self, other):
@@ -2409,36 +2409,36 @@ kundi TestHash(unittest.TestCase):
         self.assertEqual(C(1), C(1.0))
         self.assertEqual(hash(C(1)), hash(C(1.0)))
 
-        # And check that the classes __eq__ is being used, despite
-        #  specifying eq=True.
-        @dataclass(unsafe_hash=True, eq=True)
+        # And check that the classes __eq__ ni being used, despite
+        #  specifying eq=Kweli.
+        @dataclass(unsafe_hash=Kweli, eq=Kweli)
         kundi C:
             i: int
             eleza __eq__(self, other):
-                rudisha self.i == 3 and self.i == other.i
+                rudisha self.i == 3 na self.i == other.i
         self.assertEqual(C(3), C(3))
         self.assertNotEqual(C(1), C(1))
         self.assertEqual(hash(C(1)), hash(C(1.0)))
 
     eleza test_0_field_hash(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
-            pass
+            pita
         self.assertEqual(hash(C()), hash(()))
 
-        @dataclass(unsafe_hash=True)
+        @dataclass(unsafe_hash=Kweli)
         kundi C:
-            pass
+            pita
         self.assertEqual(hash(C()), hash(()))
 
     eleza test_1_field_hash(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
         self.assertEqual(hash(C(4)), hash((4,)))
         self.assertEqual(hash(C(42)), hash((42,)))
 
-        @dataclass(unsafe_hash=True)
+        @dataclass(unsafe_hash=Kweli)
         kundi C:
             x: int
         self.assertEqual(hash(C(4)), hash((4,)))
@@ -2446,57 +2446,57 @@ kundi TestHash(unittest.TestCase):
 
     eleza test_hash_no_args(self):
         # Test dataclasses with no hash= argument.  This exists to
-        #  make sure that ikiwa the @datakundi parameter name is changed
-        #  or the non-default hashing behavior changes, the default
+        #  make sure that ikiwa the @datakundi parameter name ni changed
+        #  ama the non-default hashing behavior changes, the default
         #  hashability keeps working the same way.
 
         kundi Base:
             eleza __hash__(self):
                 rudisha 301
 
-        # If frozen or eq is None, then use the default value (do not
-        #  specify any value in the decorator).
-        for frozen, eq,    base,   expected       in [
-            (None,  None,  object, 'unhashable'),
-            (None,  None,  Base,   'unhashable'),
-            (None,  False, object, 'object'),
-            (None,  False, Base,   'base'),
-            (None,  True,  object, 'unhashable'),
-            (None,  True,  Base,   'unhashable'),
-            (False, None,  object, 'unhashable'),
-            (False, None,  Base,   'unhashable'),
-            (False, False, object, 'object'),
-            (False, False, Base,   'base'),
-            (False, True,  object, 'unhashable'),
-            (False, True,  Base,   'unhashable'),
-            (True,  None,  object, 'tuple'),
-            (True,  None,  Base,   'tuple'),
-            (True,  False, object, 'object'),
-            (True,  False, Base,   'base'),
-            (True,  True,  object, 'tuple'),
-            (True,  True,  Base,   'tuple'),
+        # If frozen ama eq ni Tupu, then use the default value (do not
+        #  specify any value kwenye the decorator).
+        kila frozen, eq,    base,   expected       kwenye [
+            (Tupu,  Tupu,  object, 'unhashable'),
+            (Tupu,  Tupu,  Base,   'unhashable'),
+            (Tupu,  Uongo, object, 'object'),
+            (Tupu,  Uongo, Base,   'base'),
+            (Tupu,  Kweli,  object, 'unhashable'),
+            (Tupu,  Kweli,  Base,   'unhashable'),
+            (Uongo, Tupu,  object, 'unhashable'),
+            (Uongo, Tupu,  Base,   'unhashable'),
+            (Uongo, Uongo, object, 'object'),
+            (Uongo, Uongo, Base,   'base'),
+            (Uongo, Kweli,  object, 'unhashable'),
+            (Uongo, Kweli,  Base,   'unhashable'),
+            (Kweli,  Tupu,  object, 'tuple'),
+            (Kweli,  Tupu,  Base,   'tuple'),
+            (Kweli,  Uongo, object, 'object'),
+            (Kweli,  Uongo, Base,   'base'),
+            (Kweli,  Kweli,  object, 'tuple'),
+            (Kweli,  Kweli,  Base,   'tuple'),
             ]:
 
             with self.subTest(frozen=frozen, eq=eq, base=base, expected=expected):
                 # First, create the class.
-                ikiwa frozen is None and eq is None:
+                ikiwa frozen ni Tupu na eq ni Tupu:
                     @dataclass
                     kundi C(base):
                         i: int
-                elikiwa frozen is None:
+                elikiwa frozen ni Tupu:
                     @dataclass(eq=eq)
                     kundi C(base):
                         i: int
-                elikiwa eq is None:
+                elikiwa eq ni Tupu:
                     @dataclass(frozen=frozen)
                     kundi C(base):
                         i: int
-                else:
+                isipokua:
                     @dataclass(frozen=frozen, eq=eq)
                     kundi C(base):
                         i: int
 
-                # Now, make sure it hashes as expected.
+                # Now, make sure it hashes kama expected.
                 ikiwa expected == 'unhashable':
                     c = C(10)
                     with self.assertRaisesRegex(TypeError, 'unhashable type'):
@@ -2506,22 +2506,22 @@ kundi TestHash(unittest.TestCase):
                     self.assertEqual(hash(C(10)), 301)
 
                 elikiwa expected == 'object':
-                    # I'm not sure what test to use here.  object's
+                    # I'm sio sure what test to use here.  object's
                     #  hash isn't based on id(), so calling hash()
                     #  won't tell us much.  So, just check the
-                    #  function used is object's.
+                    #  function used ni object's.
                     self.assertIs(C.__hash__, object.__hash__)
 
                 elikiwa expected == 'tuple':
                     self.assertEqual(hash(C(42)), hash((42,)))
 
-                else:
-                    assert False, f'unknown value for expected={expected!r}'
+                isipokua:
+                    assert Uongo, f'unknown value kila expected={expected!r}'
 
 
 kundi TestFrozen(unittest.TestCase):
     eleza test_frozen(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             i: int
 
@@ -2532,11 +2532,11 @@ kundi TestFrozen(unittest.TestCase):
         self.assertEqual(c.i, 10)
 
     eleza test_inherit(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             i: int
 
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi D(C):
             j: int
 
@@ -2549,55 +2549,55 @@ kundi TestFrozen(unittest.TestCase):
         self.assertEqual(d.j, 10)
 
     # Test both ways: with an intermediate normal (non-dataclass)
-    #  kundi and without an intermediate class.
+    #  kundi na without an intermediate class.
     eleza test_inherit_nonfrozen_kutoka_frozen(self):
-        for intermediate_kundi in [True, False]:
+        kila intermediate_kundi kwenye [Kweli, Uongo]:
             with self.subTest(intermediate_class=intermediate_class):
-                @dataclass(frozen=True)
+                @dataclass(frozen=Kweli)
                 kundi C:
                     i: int
 
                 ikiwa intermediate_class:
-                    kundi I(C): pass
-                else:
+                    kundi I(C): pita
+                isipokua:
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
                                             'cannot inherit non-frozen datakundi kutoka a frozen one'):
                     @dataclass
                     kundi D(I):
-                        pass
+                        pita
 
     eleza test_inherit_frozen_kutoka_nonfrozen(self):
-        for intermediate_kundi in [True, False]:
+        kila intermediate_kundi kwenye [Kweli, Uongo]:
             with self.subTest(intermediate_class=intermediate_class):
                 @dataclass
                 kundi C:
                     i: int
 
                 ikiwa intermediate_class:
-                    kundi I(C): pass
-                else:
+                    kundi I(C): pita
+                isipokua:
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
                                             'cannot inherit frozen datakundi kutoka a non-frozen one'):
-                    @dataclass(frozen=True)
+                    @dataclass(frozen=Kweli)
                     kundi D(I):
-                        pass
+                        pita
 
     eleza test_inherit_kutoka_normal_class(self):
-        for intermediate_kundi in [True, False]:
+        kila intermediate_kundi kwenye [Kweli, Uongo]:
             with self.subTest(intermediate_class=intermediate_class):
                 kundi C:
-                    pass
+                    pita
 
                 ikiwa intermediate_class:
-                    kundi I(C): pass
-                else:
+                    kundi I(C): pita
+                isipokua:
                     I = C
 
-                @dataclass(frozen=True)
+                @dataclass(frozen=Kweli)
                 kundi D(I):
                     i: int
 
@@ -2608,18 +2608,18 @@ kundi TestFrozen(unittest.TestCase):
     eleza test_non_frozen_normal_derived(self):
         # See bpo-32953.
 
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi D:
             x: int
             y: int = 10
 
         kundi S(D):
-            pass
+            pita
 
         s = S(3)
         self.assertEqual(s.x, 3)
         self.assertEqual(s.y, 10)
-        s.cached = True
+        s.cached = Kweli
 
         # But can't change the frozen attributes.
         with self.assertRaises(FrozenInstanceError):
@@ -2628,27 +2628,27 @@ kundi TestFrozen(unittest.TestCase):
             s.y = 5
         self.assertEqual(s.x, 3)
         self.assertEqual(s.y, 10)
-        self.assertEqual(s.cached, True)
+        self.assertEqual(s.cached, Kweli)
 
     eleza test_overwriting_frozen(self):
-        # frozen uses __setattr__ and __delattr__.
+        # frozen uses __setattr__ na __delattr__.
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __setattr__'):
-            @dataclass(frozen=True)
+            @dataclass(frozen=Kweli)
             kundi C:
                 x: int
                 eleza __setattr__(self):
-                    pass
+                    pita
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __delattr__'):
-            @dataclass(frozen=True)
+            @dataclass(frozen=Kweli)
             kundi C:
                 x: int
                 eleza __delattr__(self):
-                    pass
+                    pita
 
-        @dataclass(frozen=False)
+        @dataclass(frozen=Uongo)
         kundi C:
             x: int
             eleza __setattr__(self, name, value):
@@ -2656,15 +2656,15 @@ kundi TestFrozen(unittest.TestCase):
         self.assertEqual(C(10).x, 20)
 
     eleza test_frozen_hash(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: Any
 
-        # If x is immutable, we can compute the hash.  No exception is
-        # raised.
+        # If x ni immutable, we can compute the hash.  No exception is
+        # ashiriad.
         hash(C(3))
 
-        # If x is mutable, computing the hash is an error.
+        # If x ni mutable, computing the hash ni an error.
         with self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(C({}))
 
@@ -2676,14 +2676,14 @@ kundi TestSlots(unittest.TestCase):
             __slots__ = ('x',)
             x: Any
 
-        # There was a bug where a variable in a slot was assumed to
+        # There was a bug where a variable kwenye a slot was assumed to
         #  also have a default value (of type
         #  types.MemberDescriptorType).
         with self.assertRaisesRegex(TypeError,
                                     r"__init__\(\) missing 1 required positional argument: 'x'"):
             C()
 
-        # We can create an instance, and assign to x.
+        # We can create an instance, na assign to x.
         c = C(10)
         self.assertEqual(c.x, 10)
         c.x = 5
@@ -2720,23 +2720,23 @@ kundi TestDescriptors(unittest.TestCase):
             eleza __set_name__(self, owner, name):
                 self.name = name + 'x'
             eleza __get__(self, instance, owner):
-                ikiwa instance is not None:
+                ikiwa instance ni sio Tupu:
                     rudisha 1
                 rudisha self
 
-        # This is the case of just normal descriptor behavior, no
-        #  datakundi code is involved in initializing the descriptor.
+        # This ni the case of just normal descriptor behavior, no
+        #  datakundi code ni involved kwenye initializing the descriptor.
         @dataclass
         kundi C:
             c: int=D()
         self.assertEqual(C.c.name, 'cx')
 
-        # Now test with a default value and init=False, which is the
-        #  only time this is really meaningful.  If not using
-        #  init=False, then the descriptor will be overwritten, anyway.
+        # Now test with a default value na init=Uongo, which ni the
+        #  only time this ni really meaningful.  If sio using
+        #  init=Uongo, then the descriptor will be overwritten, anyway.
         @dataclass
         kundi C:
-            c: int=field(default=D(), init=False)
+            c: int=field(default=D(), init=Uongo)
         self.assertEqual(C.c.name, 'cx')
         self.assertEqual(C().c, 1)
 
@@ -2750,47 +2750,47 @@ kundi TestDescriptors(unittest.TestCase):
 
         @dataclass
         kundi C:
-            c: int=field(default=D(), init=False)
+            c: int=field(default=D(), init=Uongo)
         self.assertEqual(C.c.name, 'cx')
 
     eleza test_lookup_on_instance(self):
         # See bpo-33175.
         kundi D:
-            pass
+            pita
 
         d = D()
-        # Create an attribute on the instance, not type.
+        # Create an attribute on the instance, sio type.
         d.__set_name__ = Mock()
 
-        # Make sure d.__set_name__ is not called.
+        # Make sure d.__set_name__ ni sio called.
         @dataclass
         kundi C:
-            i: int=field(default=d, init=False)
+            i: int=field(default=d, init=Uongo)
 
         self.assertEqual(d.__set_name__.call_count, 0)
 
     eleza test_lookup_on_class(self):
         # See bpo-33175.
         kundi D:
-            pass
+            pita
         D.__set_name__ = Mock()
 
-        # Make sure D.__set_name__ is called.
+        # Make sure D.__set_name__ ni called.
         @dataclass
         kundi C:
-            i: int=field(default=D(), init=False)
+            i: int=field(default=D(), init=Uongo)
 
         self.assertEqual(D.__set_name__.call_count, 1)
 
 
 kundi TestStringAnnotations(unittest.TestCase):
     eleza test_classvar(self):
-        # Some expressions recognized as ClassVar really aren't.  But
-        #  ikiwa you're using string annotations, it's not an exact
+        # Some expressions recognized kama ClassVar really aren't.  But
+        #  ikiwa you're using string annotations, it's sio an exact
         #  science.
-        # These tests assume that both "agiza typing" and "kutoka
-        # typing agiza *" have been run in this file.
-        for typestr in ('ClassVar[int]',
+        # These tests assume that both "agiza typing" na "kutoka
+        # typing agiza *" have been run kwenye this file.
+        kila typestr kwenye ('ClassVar[int]',
                         'ClassVar [int]'
                         ' ClassVar [int]',
                         'ClassVar',
@@ -2804,7 +2804,7 @@ kundi TestStringAnnotations(unittest.TestCase):
                         'typing.ClassVar [ str]',
 
                         # Not syntactically valid, but these will
-                        #  be treated as ClassVars.
+                        #  be treated kama ClassVars.
                         'typing.ClassVar.[int]',
                         'typing.ClassVar+',
                         ):
@@ -2813,15 +2813,15 @@ kundi TestStringAnnotations(unittest.TestCase):
                 kundi C:
                     x: typestr
 
-                # x is a ClassVar, so C() takes no args.
+                # x ni a ClassVar, so C() takes no args.
                 C()
 
-                # And it won't appear in the class's dict because it doesn't
+                # And it won't appear kwenye the class's dict because it doesn't
                 # have a default.
                 self.assertNotIn('x', C.__dict__)
 
     eleza test_isnt_classvar(self):
-        for typestr in ('CV',
+        kila typestr kwenye ('CV',
                         't.ClassVar',
                         't.ClassVar[int]',
                         'typing..ClassVar[int]',
@@ -2837,13 +2837,13 @@ kundi TestStringAnnotations(unittest.TestCase):
                 kundi C:
                     x: typestr
 
-                # x is not a ClassVar, so C() takes one arg.
+                # x ni sio a ClassVar, so C() takes one arg.
                 self.assertEqual(C(10).x, 10)
 
     eleza test_initvar(self):
-        # These tests assume that both "agiza dataclasses" and "kutoka
-        #  dataclasses agiza *" have been run in this file.
-        for typestr in ('InitVar[int]',
+        # These tests assume that both "agiza dataclasses" na "kutoka
+        #  dataclasses agiza *" have been run kwenye this file.
+        kila typestr kwenye ('InitVar[int]',
                         'InitVar [int]'
                         ' InitVar [int]',
                         'InitVar',
@@ -2857,7 +2857,7 @@ kundi TestStringAnnotations(unittest.TestCase):
                         'dataclasses.InitVar [ str]',
 
                         # Not syntactically valid, but these will
-                        #  be treated as InitVars.
+                        #  be treated kama InitVars.
                         'dataclasses.InitVar.[int]',
                         'dataclasses.InitVar+',
                         ):
@@ -2866,13 +2866,13 @@ kundi TestStringAnnotations(unittest.TestCase):
                 kundi C:
                     x: typestr
 
-                # x is an InitVar, so doesn't create a member.
+                # x ni an InitVar, so doesn't create a member.
                 with self.assertRaisesRegex(AttributeError,
                                             "object has no attribute 'x'"):
                     C(1).x
 
     eleza test_isnt_initvar(self):
-        for typestr in ('IV',
+        kila typestr kwenye ('IV',
                         'dc.InitVar',
                         'xdataclasses.xInitVar',
                         'typing.xInitVar[int]',
@@ -2882,7 +2882,7 @@ kundi TestStringAnnotations(unittest.TestCase):
                 kundi C:
                     x: typestr
 
-                # x is not an InitVar, so there will be a member x.
+                # x ni sio an InitVar, so there will be a member x.
                 self.assertEqual(C(10).x, 10)
 
     eleza test_classvar_module_level_agiza(self):
@@ -2891,38 +2891,38 @@ kundi TestStringAnnotations(unittest.TestCase):
         kutoka test agiza dataclass_module_2
         kutoka test agiza dataclass_module_2_str
 
-        for m in (dataclass_module_1, dataclass_module_1_str,
+        kila m kwenye (dataclass_module_1, dataclass_module_1_str,
                   dataclass_module_2, dataclass_module_2_str,
                   ):
             with self.subTest(m=m):
-                # There's a difference in how the ClassVars are
+                # There's a difference kwenye how the ClassVars are
                 # interpreted when using string annotations or
-                # not. See the imported modules for details.
+                # not. See the imported modules kila details.
                 ikiwa m.USING_STRINGS:
                     c = m.CV(10)
-                else:
+                isipokua:
                     c = m.CV()
                 self.assertEqual(c.cv0, 20)
 
 
-                # There's a difference in how the InitVars are
+                # There's a difference kwenye how the InitVars are
                 # interpreted when using string annotations or
-                # not. See the imported modules for details.
+                # not. See the imported modules kila details.
                 c = m.IV(0, 1, 2, 3, 4)
 
-                for field_name in ('iv0', 'iv1', 'iv2', 'iv3'):
+                kila field_name kwenye ('iv0', 'iv1', 'iv2', 'iv3'):
                     with self.subTest(field_name=field_name):
                         with self.assertRaisesRegex(AttributeError, f"object has no attribute '{field_name}'"):
-                            # Since field_name is an InitVar, it's
-                            # not an instance field.
+                            # Since field_name ni an InitVar, it's
+                            # sio an instance field.
                             getattr(c, field_name)
 
                 ikiwa m.USING_STRINGS:
-                    # iv4 is interpreted as a normal field.
+                    # iv4 ni interpreted kama a normal field.
                     self.assertIn('not_iv4', c.__dict__)
                     self.assertEqual(c.not_iv4, 4)
-                else:
-                    # iv4 is interpreted as an InitVar, so it
+                isipokua:
+                    # iv4 ni interpreted kama an InitVar, so it
                     # won't exist on the instance.
                     self.assertNotIn('not_iv4', c.__dict__)
 
@@ -2949,9 +2949,9 @@ kundi TestMakeDataclass(unittest.TestCase):
 
     eleza test_base(self):
         kundi Base1:
-            pass
+            pita
         kundi Base2:
-            pass
+            pita
         C = make_dataclass('C',
                            [('x', int)],
                            bases=(Base1, Base2))
@@ -2965,7 +2965,7 @@ kundi TestMakeDataclass(unittest.TestCase):
         kundi Base1:
             x: int
         kundi Base2:
-            pass
+            pita
         C = make_dataclass('C',
                            [('y', int)],
                            bases=(Base1, Base2))
@@ -3010,7 +3010,7 @@ kundi TestMakeDataclass(unittest.TestCase):
                             ('y', ClassVar[int], 10),
                             ('z', ClassVar[int], field(default=20)),
                             ],
-                           init=False)
+                           init=Uongo)
         # Make sure we have a repr, but no init.
         self.assertNotIn('__init__', vars(C))
         self.assertIn('__repr__', vars(C))
@@ -3019,7 +3019,7 @@ kundi TestMakeDataclass(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'unexpected keyword argument'):
             C = make_dataclass('C',
                                [],
-                               xxinit=False)
+                               xxinit=Uongo)
 
     eleza test_no_types(self):
         C = make_dataclass('Point', ['x', 'y', 'z'])
@@ -3037,15 +3037,15 @@ kundi TestMakeDataclass(unittest.TestCase):
                                              'z': 'typing.Any'})
 
     eleza test_invalid_type_specification(self):
-        for bad_field in [(),
+        kila bad_field kwenye [(),
                           (1, 2, 3, 4),
                           ]:
             with self.subTest(bad_field=bad_field):
                 with self.assertRaisesRegex(TypeError, r'Invalid field: '):
                     make_dataclass('C', ['a', bad_field])
 
-        # And test for things with no len().
-        for bad_field in [float,
+        # And test kila things with no len().
+        kila bad_field kwenye [float,
                           lambda x:x,
                           ]:
             with self.subTest(bad_field=bad_field):
@@ -3053,23 +3053,23 @@ kundi TestMakeDataclass(unittest.TestCase):
                     make_dataclass('C', ['a', bad_field])
 
     eleza test_duplicate_field_names(self):
-        for field in ['a', 'ab']:
+        kila field kwenye ['a', 'ab']:
             with self.subTest(field=field):
                 with self.assertRaisesRegex(TypeError, 'Field name duplicated'):
                     make_dataclass('C', [field, 'a', field])
 
     eleza test_keyword_field_names(self):
-        for field in ['for', 'async', 'await', 'as']:
+        kila field kwenye ['for', 'async', 'await', 'as']:
             with self.subTest(field=field):
-                with self.assertRaisesRegex(TypeError, 'must not be keywords'):
+                with self.assertRaisesRegex(TypeError, 'must sio be keywords'):
                     make_dataclass('C', ['a', field])
-                with self.assertRaisesRegex(TypeError, 'must not be keywords'):
+                with self.assertRaisesRegex(TypeError, 'must sio be keywords'):
                     make_dataclass('C', [field])
-                with self.assertRaisesRegex(TypeError, 'must not be keywords'):
+                with self.assertRaisesRegex(TypeError, 'must sio be keywords'):
                     make_dataclass('C', [field, 'a'])
 
     eleza test_non_identifier_field_names(self):
-        for field in ['()', 'x,y', '*', '2@3', '', 'little johnny tables']:
+        kila field kwenye ['()', 'x,y', '*', '2@3', '', 'little johnny tables']:
             with self.subTest(field=field):
                 with self.assertRaisesRegex(TypeError, 'must be valid identifiers'):
                     make_dataclass('C', ['a', field])
@@ -3086,14 +3086,14 @@ kundi TestMakeDataclass(unittest.TestCase):
     eleza test_funny_class_names_names(self):
         # No reason to prevent weird kundi names, since
         # types.new_kundi allows them.
-        for classname in ['()', 'x,y', '*', '2@3', '']:
+        kila classname kwenye ['()', 'x,y', '*', '2@3', '']:
             with self.subTest(classname=classname):
                 C = make_dataclass(classname, ['a', 'b'])
                 self.assertEqual(C.__name__, classname)
 
 kundi TestReplace(unittest.TestCase):
     eleza test(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
             y: int
@@ -3111,12 +3111,12 @@ kundi TestReplace(unittest.TestCase):
         self.assertEqual(c1.y, 2)
 
     eleza test_frozen(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
             y: int
-            z: int = field(init=False, default=10)
-            t: int = field(init=False, default=100)
+            z: int = field(init=Uongo, default=10)
+            t: int = field(init=Uongo, default=100)
 
         c = C(1, 2)
         c1 = replace(c, x=3)
@@ -3124,13 +3124,13 @@ kundi TestReplace(unittest.TestCase):
         self.assertEqual((c1.x, c1.y, c1.z, c1.t), (3, 2, 10, 100))
 
 
-        with self.assertRaisesRegex(ValueError, 'init=False'):
+        with self.assertRaisesRegex(ValueError, 'init=Uongo'):
             replace(c, x=3, z=20, t=50)
-        with self.assertRaisesRegex(ValueError, 'init=False'):
+        with self.assertRaisesRegex(ValueError, 'init=Uongo'):
             replace(c, z=20)
             replace(c, x=3, z=20, t=50)
 
-        # Make sure the result is still frozen.
+        # Make sure the result ni still frozen.
         with self.assertRaisesRegex(FrozenInstanceError, "cannot assign to field 'x'"):
             c1.x = 3
 
@@ -3143,7 +3143,7 @@ kundi TestReplace(unittest.TestCase):
             c1 = replace(c, x=20, a=5)
 
     eleza test_invalid_field_name(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
             y: int
@@ -3154,7 +3154,7 @@ kundi TestReplace(unittest.TestCase):
             c1 = replace(c, z=3)
 
     eleza test_invalid_object(self):
-        @dataclass(frozen=True)
+        @dataclass(frozen=Kweli)
         kundi C:
             x: int
             y: int
@@ -3169,7 +3169,7 @@ kundi TestReplace(unittest.TestCase):
         @dataclass
         kundi C:
             x: int
-            y: int = field(init=False, default=10)
+            y: int = field(init=Uongo, default=10)
 
         c = C(1)
         c.y = 20
@@ -3178,11 +3178,11 @@ kundi TestReplace(unittest.TestCase):
         c1 = replace(c, x=5)
         self.assertEqual((c1.x, c1.y), (5, 10))
 
-        # Trying to replace y is an error.
-        with self.assertRaisesRegex(ValueError, 'init=False'):
+        # Trying to replace y ni an error.
+        with self.assertRaisesRegex(ValueError, 'init=Uongo'):
             replace(c, x=2, y=30)
 
-        with self.assertRaisesRegex(ValueError, 'init=False'):
+        with self.assertRaisesRegex(ValueError, 'init=Uongo'):
             replace(c, y=30)
 
     eleza test_classvar(self):
@@ -3197,7 +3197,7 @@ kundi TestReplace(unittest.TestCase):
         self.assertIs(c.y, d.y)
         self.assertEqual(c.y, 1000)
 
-        # Trying to replace y is an error: can't replace ClassVars.
+        # Trying to replace y ni an error: can't replace ClassVars.
         with self.assertRaisesRegex(TypeError, r"__init__\(\) got an "
                                     "unexpected keyword argument 'y'"):
             replace(c, y=30)
@@ -3226,7 +3226,7 @@ kundi TestReplace(unittest.TestCase):
         kundi C:
             f: "C"
 
-        c = C(None)
+        c = C(Tupu)
         c.f = c
         self.assertEqual(repr(c), "TestReplace.test_recursive_repr.<locals>.C(f=...)")
 
@@ -3236,7 +3236,7 @@ kundi TestReplace(unittest.TestCase):
             f: "C"
             g: "C"
 
-        c = C(None, None)
+        c = C(Tupu, Tupu)
         c.f = c
         c.g = c
         self.assertEqual(repr(c), "TestReplace.test_recursive_repr_two_attrs"
@@ -3251,8 +3251,8 @@ kundi TestReplace(unittest.TestCase):
         kundi D:
             f: "C"
 
-        c = C(None)
-        d = D(None)
+        c = C(Tupu)
+        d = D(Tupu)
         c.f = d
         d.f = c
         self.assertEqual(repr(c), "TestReplace.test_recursive_repr_indirection"
@@ -3272,9 +3272,9 @@ kundi TestReplace(unittest.TestCase):
         kundi E:
             f: "C"
 
-        c = C(None)
-        d = D(None)
-        e = E(None)
+        c = C(Tupu)
+        d = D(Tupu)
+        e = E(Tupu)
         c.f = d
         d.f = e
         e.f = c
@@ -3289,7 +3289,7 @@ kundi TestReplace(unittest.TestCase):
             f: "C"
             g: int
 
-        c = C(None, 1)
+        c = C(Tupu, 1)
         c.f = c
         self.assertEqual(repr(c), "TestReplace.test_recursive_repr_misc_attrs"
                                   ".<locals>.C(f=..., g=1)")
@@ -3303,7 +3303,7 @@ kundi TestReplace(unittest.TestCase):
     ##     c = C(1, 10)
     ##     d = C(2, 20)
 
-    ##     # In our case, replacing an InitVar is a no-op
+    ##     # In our case, replacing an InitVar ni a no-op
     ##     self.assertEqual(c, replace(c, y=5))
 
     ##     replace(c, x=5)

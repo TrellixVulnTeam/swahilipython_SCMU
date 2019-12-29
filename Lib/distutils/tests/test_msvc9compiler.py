@@ -10,7 +10,7 @@ from test.support import run_unittest
 # A manifest with the only assembly reference being the msvcrt assembly, so
 # should have the assembly completely stripped.  Note that although the
 # assembly has a <security> reference the assembly is removed - that is
-# currently a "feature", not a bug :)
+# currently a "feature", sio a bug :)
 _MANIFEST_WITH_ONLY_MSVC_REFERENCE = """\
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1"
@@ -94,9 +94,9 @@ if sys.platform=="win32":
     from distutils.msvccompiler import get_build_version
     if get_build_version()>=8.0:
         SKIP_MESSAGE = None
-    else:
+    isipokua:
         SKIP_MESSAGE = "These tests are only for MSVC8.0 or above"
-else:
+isipokua:
     SKIP_MESSAGE = "These tests are only for win32"
 
 @unittest.skipUnless(SKIP_MESSAGE is None, SKIP_MESSAGE)
@@ -106,7 +106,7 @@ class msvc9compilerTestCase(support.TempdirManager,
     def test_no_compiler(self):
         # makes sure query_vcvarsall raises
         # a DistutilsPlatformError if the compiler
-        # is not found
+        # ni sio found
         from distutils.msvc9compiler import query_vcvarsall
         def _find_vcvarsall(version):
             return None
@@ -114,10 +114,10 @@ class msvc9compilerTestCase(support.TempdirManager,
         from distutils import msvc9compiler
         old_find_vcvarsall = msvc9compiler.find_vcvarsall
         msvc9compiler.find_vcvarsall = _find_vcvarsall
-        try:
+        jaribu:
             self.assertRaises(DistutilsPlatformError, query_vcvarsall,
                              'wont find this version')
-        finally:
+        mwishowe:
             msvc9compiler.find_vcvarsall = old_find_vcvarsall
 
     def test_reg_class(self):
@@ -143,9 +143,9 @@ class msvc9compilerTestCase(support.TempdirManager,
         tempdir = self.mkdtemp()
         manifest = os.path.join(tempdir, 'manifest')
         f = open(manifest, 'w')
-        try:
+        jaribu:
             f.write(_MANIFEST_WITH_MULTIPLE_REFERENCES)
-        finally:
+        mwishowe:
             f.close()
 
         compiler = MSVCCompiler()
@@ -153,10 +153,10 @@ class msvc9compilerTestCase(support.TempdirManager,
 
         # see what we got
         f = open(manifest)
-        try:
+        jaribu:
             # removing trailing spaces
             content = '\n'.join([line.rstrip() for line in f.readlines()])
-        finally:
+        mwishowe:
             f.close()
 
         # makes sure the manifest was properly cleaned
@@ -167,9 +167,9 @@ class msvc9compilerTestCase(support.TempdirManager,
         tempdir = self.mkdtemp()
         manifest = os.path.join(tempdir, 'manifest')
         f = open(manifest, 'w')
-        try:
+        jaribu:
             f.write(_MANIFEST_WITH_ONLY_MSVC_REFERENCE)
-        finally:
+        mwishowe:
             f.close()
 
         compiler = MSVCCompiler()

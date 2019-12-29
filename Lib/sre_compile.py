@@ -5,10 +5,10 @@
 #
 # Copyright (c) 1997-2001 by Secret Labs AB.  All rights reserved.
 #
-# See the sre.py file for information on usage and redistribution.
+# See the sre.py file kila information on usage na redistribution.
 #
 
-"""Internal support module for sre"""
+"""Internal support module kila sre"""
 
 agiza _sre
 agiza sre_parse
@@ -59,8 +59,8 @@ _equivalences = (
 )
 
 # Maps the lowercase code to lowercase codes which have the same uppercase.
-_ignorecase_fixes = {i: tuple(j for j in t ikiwa i != j)
-                     for t in _equivalences for i in t}
+_ignorecase_fixes = {i: tuple(j kila j kwenye t ikiwa i != j)
+                     kila t kwenye _equivalences kila i kwenye t}
 
 eleza _combine_flags(flags, add_flags, del_flags,
                    TYPE_FLAGS=sre_parse.TYPE_FLAGS):
@@ -76,71 +76,71 @@ eleza _compile(code, pattern, flags):
     REPEATING_CODES = _REPEATING_CODES
     SUCCESS_CODES = _SUCCESS_CODES
     ASSERT_CODES = _ASSERT_CODES
-    iscased = None
-    tolower = None
-    fixes = None
-    ikiwa flags & SRE_FLAG_IGNORECASE and not flags & SRE_FLAG_LOCALE:
+    iscased = Tupu
+    tolower = Tupu
+    fixes = Tupu
+    ikiwa flags & SRE_FLAG_IGNORECASE na sio flags & SRE_FLAG_LOCALE:
         ikiwa flags & SRE_FLAG_UNICODE:
             iscased = _sre.unicode_iscased
             tolower = _sre.unicode_tolower
             fixes = _ignorecase_fixes
-        else:
+        isipokua:
             iscased = _sre.ascii_iscased
             tolower = _sre.ascii_tolower
-    for op, av in pattern:
-        ikiwa op in LITERAL_CODES:
-            ikiwa not flags & SRE_FLAG_IGNORECASE:
+    kila op, av kwenye pattern:
+        ikiwa op kwenye LITERAL_CODES:
+            ikiwa sio flags & SRE_FLAG_IGNORECASE:
                 emit(op)
                 emit(av)
             elikiwa flags & SRE_FLAG_LOCALE:
                 emit(OP_LOCALE_IGNORE[op])
                 emit(av)
-            elikiwa not iscased(av):
+            elikiwa sio iscased(av):
                 emit(op)
                 emit(av)
-            else:
+            isipokua:
                 lo = tolower(av)
-                ikiwa not fixes:  # ascii
+                ikiwa sio fixes:  # ascii
                     emit(OP_IGNORE[op])
                     emit(lo)
-                elikiwa lo not in fixes:
+                elikiwa lo haiko kwenye fixes:
                     emit(OP_UNICODE_IGNORE[op])
                     emit(lo)
-                else:
+                isipokua:
                     emit(IN_UNI_IGNORE)
                     skip = _len(code); emit(0)
-                    ikiwa op is NOT_LITERAL:
+                    ikiwa op ni NOT_LITERAL:
                         emit(NEGATE)
-                    for k in (lo,) + fixes[lo]:
+                    kila k kwenye (lo,) + fixes[lo]:
                         emit(LITERAL)
                         emit(k)
                     emit(FAILURE)
                     code[skip] = _len(code) - skip
-        elikiwa op is IN:
+        elikiwa op ni IN:
             charset, hascased = _optimize_charset(av, iscased, tolower, fixes)
-            ikiwa flags & SRE_FLAG_IGNORECASE and flags & SRE_FLAG_LOCALE:
+            ikiwa flags & SRE_FLAG_IGNORECASE na flags & SRE_FLAG_LOCALE:
                 emit(IN_LOC_IGNORE)
-            elikiwa not hascased:
+            elikiwa sio hascased:
                 emit(IN)
-            elikiwa not fixes:  # ascii
+            elikiwa sio fixes:  # ascii
                 emit(IN_IGNORE)
-            else:
+            isipokua:
                 emit(IN_UNI_IGNORE)
             skip = _len(code); emit(0)
             _compile_charset(charset, flags, code)
             code[skip] = _len(code) - skip
-        elikiwa op is ANY:
+        elikiwa op ni ANY:
             ikiwa flags & SRE_FLAG_DOTALL:
                 emit(ANY_ALL)
-            else:
+            isipokua:
                 emit(ANY)
-        elikiwa op in REPEATING_CODES:
+        elikiwa op kwenye REPEATING_CODES:
             ikiwa flags & SRE_FLAG_TEMPLATE:
-                raise error("internal: unsupported template operator %r" % (op,))
+                ashiria error("internal: unsupported template operator %r" % (op,))
             ikiwa _simple(av[2]):
-                ikiwa op is MAX_REPEAT:
+                ikiwa op ni MAX_REPEAT:
                     emit(REPEAT_ONE)
-                else:
+                isipokua:
                     emit(MIN_REPEAT_ONE)
                 skip = _len(code); emit(0)
                 emit(av[0])
@@ -148,18 +148,18 @@ eleza _compile(code, pattern, flags):
                 _compile(code, av[2], flags)
                 emit(SUCCESS)
                 code[skip] = _len(code) - skip
-            else:
+            isipokua:
                 emit(REPEAT)
                 skip = _len(code); emit(0)
                 emit(av[0])
                 emit(av[1])
                 _compile(code, av[2], flags)
                 code[skip] = _len(code) - skip
-                ikiwa op is MAX_REPEAT:
+                ikiwa op ni MAX_REPEAT:
                     emit(MAX_UNTIL)
-                else:
+                isipokua:
                     emit(MIN_UNTIL)
-        elikiwa op is SUBPATTERN:
+        elikiwa op ni SUBPATTERN:
             group, add_flags, del_flags, p = av
             ikiwa group:
                 emit(MARK)
@@ -169,28 +169,28 @@ eleza _compile(code, pattern, flags):
             ikiwa group:
                 emit(MARK)
                 emit((group-1)*2+1)
-        elikiwa op in SUCCESS_CODES:
+        elikiwa op kwenye SUCCESS_CODES:
             emit(op)
-        elikiwa op in ASSERT_CODES:
+        elikiwa op kwenye ASSERT_CODES:
             emit(op)
             skip = _len(code); emit(0)
             ikiwa av[0] >= 0:
                 emit(0) # look ahead
-            else:
+            isipokua:
                 lo, hi = av[1].getwidth()
                 ikiwa lo != hi:
-                    raise error("look-behind requires fixed-width pattern")
+                    ashiria error("look-behind requires fixed-width pattern")
                 emit(lo) # look behind
             _compile(code, av[1], flags)
             emit(SUCCESS)
             code[skip] = _len(code) - skip
-        elikiwa op is CALL:
+        elikiwa op ni CALL:
             emit(op)
             skip = _len(code); emit(0)
             _compile(code, av, flags)
             emit(SUCCESS)
             code[skip] = _len(code) - skip
-        elikiwa op is AT:
+        elikiwa op ni AT:
             emit(op)
             ikiwa flags & SRE_FLAG_MULTILINE:
                 av = AT_MULTILINE.get(av, av)
@@ -199,11 +199,11 @@ eleza _compile(code, pattern, flags):
             elikiwa flags & SRE_FLAG_UNICODE:
                 av = AT_UNICODE.get(av, av)
             emit(av)
-        elikiwa op is BRANCH:
+        elikiwa op ni BRANCH:
             emit(op)
             tail = []
             tailappend = tail.append
-            for av in av[1]:
+            kila av kwenye av[1]:
                 skip = _len(code); emit(0)
                 # _compile_info(code, av, flags)
                 _compile(code, av, flags)
@@ -211,26 +211,26 @@ eleza _compile(code, pattern, flags):
                 tailappend(_len(code)); emit(0)
                 code[skip] = _len(code) - skip
             emit(FAILURE) # end of branch
-            for tail in tail:
+            kila tail kwenye tail:
                 code[tail] = _len(code) - tail
-        elikiwa op is CATEGORY:
+        elikiwa op ni CATEGORY:
             emit(op)
             ikiwa flags & SRE_FLAG_LOCALE:
                 av = CH_LOCALE[av]
             elikiwa flags & SRE_FLAG_UNICODE:
                 av = CH_UNICODE[av]
             emit(av)
-        elikiwa op is GROUPREF:
-            ikiwa not flags & SRE_FLAG_IGNORECASE:
+        elikiwa op ni GROUPREF:
+            ikiwa sio flags & SRE_FLAG_IGNORECASE:
                 emit(op)
             elikiwa flags & SRE_FLAG_LOCALE:
                 emit(GROUPREF_LOC_IGNORE)
-            elikiwa not fixes:  # ascii
+            elikiwa sio fixes:  # ascii
                 emit(GROUPREF_IGNORE)
-            else:
+            isipokua:
                 emit(GROUPREF_UNI_IGNORE)
             emit(av-1)
-        elikiwa op is GROUPREF_EXISTS:
+        elikiwa op ni GROUPREF_EXISTS:
             emit(op)
             emit(av[0]-1)
             skipyes = _len(code); emit(0)
@@ -241,122 +241,122 @@ eleza _compile(code, pattern, flags):
                 code[skipyes] = _len(code) - skipyes + 1
                 _compile(code, av[2], flags)
                 code[skipno] = _len(code) - skipno
-            else:
+            isipokua:
                 code[skipyes] = _len(code) - skipyes + 1
-        else:
-            raise error("internal: unsupported operand type %r" % (op,))
+        isipokua:
+            ashiria error("internal: unsupported operand type %r" % (op,))
 
 eleza _compile_charset(charset, flags, code):
     # compile charset subprogram
     emit = code.append
-    for op, av in charset:
+    kila op, av kwenye charset:
         emit(op)
-        ikiwa op is NEGATE:
-            pass
-        elikiwa op is LITERAL:
+        ikiwa op ni NEGATE:
+            pita
+        elikiwa op ni LITERAL:
             emit(av)
-        elikiwa op is RANGE or op is RANGE_UNI_IGNORE:
+        elikiwa op ni RANGE ama op ni RANGE_UNI_IGNORE:
             emit(av[0])
             emit(av[1])
-        elikiwa op is CHARSET:
+        elikiwa op ni CHARSET:
             code.extend(av)
-        elikiwa op is BIGCHARSET:
+        elikiwa op ni BIGCHARSET:
             code.extend(av)
-        elikiwa op is CATEGORY:
+        elikiwa op ni CATEGORY:
             ikiwa flags & SRE_FLAG_LOCALE:
                 emit(CH_LOCALE[av])
             elikiwa flags & SRE_FLAG_UNICODE:
                 emit(CH_UNICODE[av])
-            else:
+            isipokua:
                 emit(av)
-        else:
-            raise error("internal: unsupported set operator %r" % (op,))
+        isipokua:
+            ashiria error("internal: unsupported set operator %r" % (op,))
     emit(FAILURE)
 
-eleza _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
+eleza _optimize_charset(charset, iscased=Tupu, fixup=Tupu, fixes=Tupu):
     # internal: optimize character set
     out = []
     tail = []
     charmap = bytearray(256)
-    hascased = False
-    for op, av in charset:
-        while True:
-            try:
-                ikiwa op is LITERAL:
+    hascased = Uongo
+    kila op, av kwenye charset:
+        wakati Kweli:
+            jaribu:
+                ikiwa op ni LITERAL:
                     ikiwa fixup:
                         lo = fixup(av)
                         charmap[lo] = 1
-                        ikiwa fixes and lo in fixes:
-                            for k in fixes[lo]:
+                        ikiwa fixes na lo kwenye fixes:
+                            kila k kwenye fixes[lo]:
                                 charmap[k] = 1
-                        ikiwa not hascased and iscased(av):
-                            hascased = True
-                    else:
+                        ikiwa sio hascased na iscased(av):
+                            hascased = Kweli
+                    isipokua:
                         charmap[av] = 1
-                elikiwa op is RANGE:
+                elikiwa op ni RANGE:
                     r = range(av[0], av[1]+1)
                     ikiwa fixup:
                         ikiwa fixes:
-                            for i in map(fixup, r):
+                            kila i kwenye map(fixup, r):
                                 charmap[i] = 1
-                                ikiwa i in fixes:
-                                    for k in fixes[i]:
+                                ikiwa i kwenye fixes:
+                                    kila k kwenye fixes[i]:
                                         charmap[k] = 1
-                        else:
-                            for i in map(fixup, r):
+                        isipokua:
+                            kila i kwenye map(fixup, r):
                                 charmap[i] = 1
-                        ikiwa not hascased:
+                        ikiwa sio hascased:
                             hascased = any(map(iscased, r))
-                    else:
-                        for i in r:
+                    isipokua:
+                        kila i kwenye r:
                             charmap[i] = 1
-                elikiwa op is NEGATE:
+                elikiwa op ni NEGATE:
                     out.append((op, av))
-                else:
+                isipokua:
                     tail.append((op, av))
-            except IndexError:
+            tatizo IndexError:
                 ikiwa len(charmap) == 256:
                     # character set contains non-UCS1 character codes
                     charmap += b'\0' * 0xff00
-                    continue
+                    endelea
                 # Character set contains non-BMP character codes.
                 ikiwa fixup:
-                    hascased = True
+                    hascased = Kweli
                     # There are only two ranges of cased non-BMP characters:
-                    # 10400-1044F (Deseret) and 118A0-118DF (Warang Citi),
-                    # and for both ranges RANGE_UNI_IGNORE works.
-                    ikiwa op is RANGE:
+                    # 10400-1044F (Deseret) na 118A0-118DF (Warang Citi),
+                    # na kila both ranges RANGE_UNI_IGNORE works.
+                    ikiwa op ni RANGE:
                         op = RANGE_UNI_IGNORE
                 tail.append((op, av))
-            break
+            koma
 
     # compress character map
     runs = []
     q = 0
-    while True:
+    wakati Kweli:
         p = charmap.find(1, q)
         ikiwa p < 0:
-            break
+            koma
         ikiwa len(runs) >= 2:
-            runs = None
-            break
+            runs = Tupu
+            koma
         q = charmap.find(0, p)
         ikiwa q < 0:
             runs.append((p, len(charmap)))
-            break
+            koma
         runs.append((p, q))
-    ikiwa runs is not None:
+    ikiwa runs ni sio Tupu:
         # use literal/range
-        for p, q in runs:
+        kila p, q kwenye runs:
             ikiwa q - p == 1:
                 out.append((LITERAL, p))
-            else:
+            isipokua:
                 out.append((RANGE, (p, q - 1)))
         out += tail
-        # ikiwa the case was changed or new representation is more compact
-        ikiwa hascased or len(out) < len(charset):
+        # ikiwa the case was changed ama new representation ni more compact
+        ikiwa hascased ama len(out) < len(charset):
             rudisha out, hascased
-        # else original character set is good enough
+        # else original character set ni good enough
         rudisha charset, hascased
 
     # use bitmap
@@ -366,24 +366,24 @@ eleza _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
         out += tail
         rudisha out, hascased
 
-    # To represent a big charset, first a bitmap of all characters in the
-    # set is constructed. Then, this bitmap is sliced into chunks of 256
-    # characters, duplicate chunks are eliminated, and each chunk is
+    # To represent a big charset, first a bitmap of all characters kwenye the
+    # set ni constructed. Then, this bitmap ni sliced into chunks of 256
+    # characters, duplicate chunks are eliminated, na each chunk is
     # given a number. In the compiled expression, the charset is
     # represented by a 32-bit word sequence, consisting of one word for
     # the number of different chunks, a sequence of 256 bytes (64 words)
-    # of chunk numbers indexed by their original chunk position, and a
+    # of chunk numbers indexed by their original chunk position, na a
     # sequence of 256-bit chunks (8 words each).
 
-    # Compression is normally good: in a typical charset, large ranges of
+    # Compression ni normally good: kwenye a typical charset, large ranges of
     # Unicode will be either completely excluded (e.g. ikiwa only cyrillic
-    # letters are to be matched), or completely included (e.g. ikiwa large
+    # letters are to be matched), ama completely included (e.g. ikiwa large
     # subranges of Kanji match). These ranges will be represented by
-    # chunks of all one-bits or all zero-bits.
+    # chunks of all one-bits ama all zero-bits.
 
     # Matching can be also done efficiently: the more significant byte of
-    # the Unicode character is an index into the chunk number, and the
-    # less significant byte is a bit index in the chunk (just like the
+    # the Unicode character ni an index into the chunk number, na the
+    # less significant byte ni a bit index kwenye the chunk (just like the
     # CHARSET matching).
 
     charmap = bytes(charmap) # should be hashable
@@ -391,11 +391,11 @@ eleza _optimize_charset(charset, iscased=None, fixup=None, fixes=None):
     mapping = bytearray(256)
     block = 0
     data = bytearray()
-    for i in range(0, 65536, 256):
+    kila i kwenye range(0, 65536, 256):
         chunk = charmap[i: i + 256]
-        ikiwa chunk in comps:
+        ikiwa chunk kwenye comps:
             mapping[i // 256] = comps[chunk]
-        else:
+        isipokua:
             mapping[i // 256] = comps[chunk] = block
             block += 1
             data += chunk
@@ -411,7 +411,7 @@ _BITS_TRANS = b'0' + b'1' * 255
 eleza _mk_bitmap(bits, _CODEBITS=_CODEBITS, _int=int):
     s = bits.translate(_BITS_TRANS)[::-1]
     rudisha [_int(s[i - _CODEBITS: i], 2)
-            for i in range(len(s), 0, -_CODEBITS)]
+            kila i kwenye range(len(s), 0, -_CODEBITS)]
 
 eleza _bytes_to_codes(b):
     # Convert block indices to word array
@@ -421,137 +421,137 @@ eleza _bytes_to_codes(b):
     rudisha a.tolist()
 
 eleza _simple(p):
-    # check ikiwa this subpattern is a "simple" operator
+    # check ikiwa this subpattern ni a "simple" operator
     ikiwa len(p) != 1:
-        rudisha False
+        rudisha Uongo
     op, av = p[0]
-    ikiwa op is SUBPATTERN:
-        rudisha av[0] is None and _simple(av[-1])
-    rudisha op in _UNIT_CODES
+    ikiwa op ni SUBPATTERN:
+        rudisha av[0] ni Tupu na _simple(av[-1])
+    rudisha op kwenye _UNIT_CODES
 
 eleza _generate_overlap_table(prefix):
     """
-    Generate an overlap table for the following prefix.
-    An overlap table is a table of the same size as the prefix which
-    informs about the potential self-overlap for each index in the prefix:
+    Generate an overlap table kila the following prefix.
+    An overlap table ni a table of the same size kama the prefix which
+    informs about the potential self-overlap kila each index kwenye the prefix:
     - ikiwa overlap[i] == 0, prefix[i:] can't overlap prefix[0:...]
     - ikiwa overlap[i] == k with 0 < k <= i, prefix[i-k+1:i+1] overlaps with
       prefix[0:k]
     """
     table = [0] * len(prefix)
-    for i in range(1, len(prefix)):
+    kila i kwenye range(1, len(prefix)):
         idx = table[i - 1]
-        while prefix[i] != prefix[idx]:
+        wakati prefix[i] != prefix[idx]:
             ikiwa idx == 0:
                 table[i] = 0
-                break
+                koma
             idx = table[idx - 1]
-        else:
+        isipokua:
             table[i] = idx + 1
     rudisha table
 
 eleza _get_iscased(flags):
-    ikiwa not flags & SRE_FLAG_IGNORECASE:
-        rudisha None
+    ikiwa sio flags & SRE_FLAG_IGNORECASE:
+        rudisha Tupu
     elikiwa flags & SRE_FLAG_UNICODE:
         rudisha _sre.unicode_iscased
-    else:
+    isipokua:
         rudisha _sre.ascii_iscased
 
 eleza _get_literal_prefix(pattern, flags):
-    # look for literal prefix
+    # look kila literal prefix
     prefix = []
     prefixappend = prefix.append
-    prefix_skip = None
+    prefix_skip = Tupu
     iscased = _get_iscased(flags)
-    for op, av in pattern.data:
-        ikiwa op is LITERAL:
-            ikiwa iscased and iscased(av):
-                break
+    kila op, av kwenye pattern.data:
+        ikiwa op ni LITERAL:
+            ikiwa iscased na iscased(av):
+                koma
             prefixappend(av)
-        elikiwa op is SUBPATTERN:
+        elikiwa op ni SUBPATTERN:
             group, add_flags, del_flags, p = av
             flags1 = _combine_flags(flags, add_flags, del_flags)
-            ikiwa flags1 & SRE_FLAG_IGNORECASE and flags1 & SRE_FLAG_LOCALE:
-                break
+            ikiwa flags1 & SRE_FLAG_IGNORECASE na flags1 & SRE_FLAG_LOCALE:
+                koma
             prefix1, prefix_skip1, got_all = _get_literal_prefix(p, flags1)
-            ikiwa prefix_skip is None:
-                ikiwa group is not None:
+            ikiwa prefix_skip ni Tupu:
+                ikiwa group ni sio Tupu:
                     prefix_skip = len(prefix)
-                elikiwa prefix_skip1 is not None:
+                elikiwa prefix_skip1 ni sio Tupu:
                     prefix_skip = len(prefix) + prefix_skip1
             prefix.extend(prefix1)
-            ikiwa not got_all:
-                break
-        else:
-            break
-    else:
-        rudisha prefix, prefix_skip, True
-    rudisha prefix, prefix_skip, False
+            ikiwa sio got_all:
+                koma
+        isipokua:
+            koma
+    isipokua:
+        rudisha prefix, prefix_skip, Kweli
+    rudisha prefix, prefix_skip, Uongo
 
 eleza _get_charset_prefix(pattern, flags):
-    while True:
-        ikiwa not pattern.data:
-            rudisha None
+    wakati Kweli:
+        ikiwa sio pattern.data:
+            rudisha Tupu
         op, av = pattern.data[0]
-        ikiwa op is not SUBPATTERN:
-            break
+        ikiwa op ni sio SUBPATTERN:
+            koma
         group, add_flags, del_flags, pattern = av
         flags = _combine_flags(flags, add_flags, del_flags)
-        ikiwa flags & SRE_FLAG_IGNORECASE and flags & SRE_FLAG_LOCALE:
-            rudisha None
+        ikiwa flags & SRE_FLAG_IGNORECASE na flags & SRE_FLAG_LOCALE:
+            rudisha Tupu
 
     iscased = _get_iscased(flags)
-    ikiwa op is LITERAL:
-        ikiwa iscased and iscased(av):
-            rudisha None
+    ikiwa op ni LITERAL:
+        ikiwa iscased na iscased(av):
+            rudisha Tupu
         rudisha [(op, av)]
-    elikiwa op is BRANCH:
+    elikiwa op ni BRANCH:
         charset = []
         charsetappend = charset.append
-        for p in av[1]:
-            ikiwa not p:
-                rudisha None
+        kila p kwenye av[1]:
+            ikiwa sio p:
+                rudisha Tupu
             op, av = p[0]
-            ikiwa op is LITERAL and not (iscased and iscased(av)):
+            ikiwa op ni LITERAL na sio (iscased na iscased(av)):
                 charsetappend((op, av))
-            else:
-                rudisha None
+            isipokua:
+                rudisha Tupu
         rudisha charset
-    elikiwa op is IN:
+    elikiwa op ni IN:
         charset = av
         ikiwa iscased:
-            for op, av in charset:
-                ikiwa op is LITERAL:
+            kila op, av kwenye charset:
+                ikiwa op ni LITERAL:
                     ikiwa iscased(av):
-                        rudisha None
-                elikiwa op is RANGE:
+                        rudisha Tupu
+                elikiwa op ni RANGE:
                     ikiwa av[1] > 0xffff:
-                        rudisha None
+                        rudisha Tupu
                     ikiwa any(map(iscased, range(av[0], av[1]+1))):
-                        rudisha None
+                        rudisha Tupu
         rudisha charset
-    rudisha None
+    rudisha Tupu
 
 eleza _compile_info(code, pattern, flags):
-    # internal: compile an info block.  in the current version,
-    # this contains min/max pattern width, and an optional literal
-    # prefix or a character map
+    # internal: compile an info block.  kwenye the current version,
+    # this contains min/max pattern width, na an optional literal
+    # prefix ama a character map
     lo, hi = pattern.getwidth()
     ikiwa hi > MAXCODE:
         hi = MAXCODE
     ikiwa lo == 0:
         code.extend([INFO, 4, 0, lo, hi])
-        return
-    # look for a literal prefix
+        rudisha
+    # look kila a literal prefix
     prefix = []
     prefix_skip = 0
-    charset = [] # not used
-    ikiwa not (flags & SRE_FLAG_IGNORECASE and flags & SRE_FLAG_LOCALE):
-        # look for literal prefix
+    charset = [] # sio used
+    ikiwa sio (flags & SRE_FLAG_IGNORECASE na flags & SRE_FLAG_LOCALE):
+        # look kila literal prefix
         prefix, prefix_skip, got_all = _get_literal_prefix(pattern, flags)
-        # ikiwa no prefix, look for charset prefix
-        ikiwa not prefix:
+        # ikiwa no prefix, look kila charset prefix
+        ikiwa sio prefix:
             charset = _get_charset_prefix(pattern, flags)
 ##     ikiwa prefix:
 ##         andika("*** PREFIX", prefix, prefix_skip)
@@ -565,7 +565,7 @@ eleza _compile_info(code, pattern, flags):
     mask = 0
     ikiwa prefix:
         mask = SRE_INFO_PREFIX
-        ikiwa prefix_skip is None and got_all:
+        ikiwa prefix_skip ni Tupu na got_all:
             mask = mask | SRE_INFO_LITERAL
     elikiwa charset:
         mask = mask | SRE_INFO_CHARSET
@@ -573,14 +573,14 @@ eleza _compile_info(code, pattern, flags):
     # pattern length
     ikiwa lo < MAXCODE:
         emit(lo)
-    else:
+    isipokua:
         emit(MAXCODE)
         prefix = prefix[:MAXCODE]
     emit(min(hi, MAXCODE))
     # add literal prefix
     ikiwa prefix:
         emit(len(prefix)) # length
-        ikiwa prefix_skip is None:
+        ikiwa prefix_skip ni Tupu:
             prefix_skip =  len(prefix)
         emit(prefix_skip) # skip
         code.extend(prefix)
@@ -588,7 +588,7 @@ eleza _compile_info(code, pattern, flags):
         code.extend(_generate_overlap_table(prefix))
     elikiwa charset:
         charset, hascased = _optimize_charset(charset)
-        assert not hascased
+        assert sio hascased
         _compile_charset(charset, flags, code)
     code[skip] = len(code) - skip
 
@@ -611,7 +611,7 @@ eleza _code(p, flags):
     rudisha code
 
 eleza _hex_code(code):
-    rudisha '[%s]' % ', '.join('%#0*x' % (_sre.CODESIZE*2+2, x) for x in code)
+    rudisha '[%s]' % ', '.join('%#0*x' % (_sre.CODESIZE*2+2, x) kila x kwenye code)
 
 eleza dis(code):
     agiza sys
@@ -621,11 +621,11 @@ eleza dis(code):
     offset_width = len(str(len(code) - 1))
 
     eleza dis_(start, end):
-        eleza print_(*args, to=None):
-            ikiwa to is not None:
+        eleza print_(*args, to=Tupu):
+            ikiwa to ni sio Tupu:
                 labels.add(to)
                 args += ('(to %d)' % (to,),)
-            andika('%*d%s ' % (offset_width, start, ':' ikiwa start in labels else '.'),
+            andika('%*d%s ' % (offset_width, start, ':' ikiwa start kwenye labels else '.'),
                   end='  '*(level-1))
             andika(*args)
 
@@ -636,96 +636,96 @@ eleza dis(code):
         nonlocal level
         level += 1
         i = start
-        while i < end:
+        wakati i < end:
             start = i
             op = code[i]
             i += 1
             op = OPCODES[op]
-            ikiwa op in (SUCCESS, FAILURE, ANY, ANY_ALL,
+            ikiwa op kwenye (SUCCESS, FAILURE, ANY, ANY_ALL,
                       MAX_UNTIL, MIN_UNTIL, NEGATE):
                 print_(op)
-            elikiwa op in (LITERAL, NOT_LITERAL,
+            elikiwa op kwenye (LITERAL, NOT_LITERAL,
                         LITERAL_IGNORE, NOT_LITERAL_IGNORE,
                         LITERAL_UNI_IGNORE, NOT_LITERAL_UNI_IGNORE,
                         LITERAL_LOC_IGNORE, NOT_LITERAL_LOC_IGNORE):
                 arg = code[i]
                 i += 1
                 print_(op, '%#02x (%r)' % (arg, chr(arg)))
-            elikiwa op is AT:
+            elikiwa op ni AT:
                 arg = code[i]
                 i += 1
                 arg = str(ATCODES[arg])
                 assert arg[:3] == 'AT_'
                 print_(op, arg[3:])
-            elikiwa op is CATEGORY:
+            elikiwa op ni CATEGORY:
                 arg = code[i]
                 i += 1
                 arg = str(CHCODES[arg])
                 assert arg[:9] == 'CATEGORY_'
                 print_(op, arg[9:])
-            elikiwa op in (IN, IN_IGNORE, IN_UNI_IGNORE, IN_LOC_IGNORE):
+            elikiwa op kwenye (IN, IN_IGNORE, IN_UNI_IGNORE, IN_LOC_IGNORE):
                 skip = code[i]
                 print_(op, skip, to=i+skip)
                 dis_(i+1, i+skip)
                 i += skip
-            elikiwa op in (RANGE, RANGE_UNI_IGNORE):
+            elikiwa op kwenye (RANGE, RANGE_UNI_IGNORE):
                 lo, hi = code[i: i+2]
                 i += 2
                 print_(op, '%#02x %#02x (%r-%r)' % (lo, hi, chr(lo), chr(hi)))
-            elikiwa op is CHARSET:
+            elikiwa op ni CHARSET:
                 print_(op, _hex_code(code[i: i + 256//_CODEBITS]))
                 i += 256//_CODEBITS
-            elikiwa op is BIGCHARSET:
+            elikiwa op ni BIGCHARSET:
                 arg = code[i]
                 i += 1
                 mapping = list(b''.join(x.to_bytes(_sre.CODESIZE, sys.byteorder)
-                                        for x in code[i: i + 256//_sre.CODESIZE]))
+                                        kila x kwenye code[i: i + 256//_sre.CODESIZE]))
                 print_(op, arg, mapping)
                 i += 256//_sre.CODESIZE
                 level += 1
-                for j in range(arg):
+                kila j kwenye range(arg):
                     print_2(_hex_code(code[i: i + 256//_CODEBITS]))
                     i += 256//_CODEBITS
                 level -= 1
-            elikiwa op in (MARK, GROUPREF, GROUPREF_IGNORE, GROUPREF_UNI_IGNORE,
+            elikiwa op kwenye (MARK, GROUPREF, GROUPREF_IGNORE, GROUPREF_UNI_IGNORE,
                         GROUPREF_LOC_IGNORE):
                 arg = code[i]
                 i += 1
                 print_(op, arg)
-            elikiwa op is JUMP:
+            elikiwa op ni JUMP:
                 skip = code[i]
                 print_(op, skip, to=i+skip)
                 i += 1
-            elikiwa op is BRANCH:
+            elikiwa op ni BRANCH:
                 skip = code[i]
                 print_(op, skip, to=i+skip)
-                while skip:
+                wakati skip:
                     dis_(i+1, i+skip)
                     i += skip
                     start = i
                     skip = code[i]
                     ikiwa skip:
                         print_('branch', skip, to=i+skip)
-                    else:
+                    isipokua:
                         print_(FAILURE)
                 i += 1
-            elikiwa op in (REPEAT, REPEAT_ONE, MIN_REPEAT_ONE):
+            elikiwa op kwenye (REPEAT, REPEAT_ONE, MIN_REPEAT_ONE):
                 skip, min, max = code[i: i+3]
                 ikiwa max == MAXREPEAT:
                     max = 'MAXREPEAT'
                 print_(op, skip, min, max, to=i+skip)
                 dis_(i+3, i+skip)
                 i += skip
-            elikiwa op is GROUPREF_EXISTS:
+            elikiwa op ni GROUPREF_EXISTS:
                 arg, skip = code[i: i+2]
                 print_(op, arg, skip, to=i+skip)
                 i += 2
-            elikiwa op in (ASSERT, ASSERT_NOT):
+            elikiwa op kwenye (ASSERT, ASSERT_NOT):
                 skip, arg = code[i: i+2]
                 print_(op, skip, arg, to=i+skip)
                 dis_(i+2, i+skip)
                 i += skip
-            elikiwa op is INFO:
+            elikiwa op ni INFO:
                 skip, flags, min, max = code[i: i+4]
                 ikiwa max == MAXREPEAT:
                     max = 'MAXREPEAT'
@@ -737,7 +737,7 @@ eleza dis(code):
                     start = i + 6
                     prefix = code[start: start+prefix_len]
                     print_2('  prefix',
-                            '[%s]' % ', '.join('%#02x' % x for x in prefix),
+                            '[%s]' % ', '.join('%#02x' % x kila x kwenye prefix),
                             '(%r)' % ''.join(map(chr, prefix)))
                     start += prefix_len
                     print_2('  overlap', code[start: start+prefix_len])
@@ -748,8 +748,8 @@ eleza dis(code):
                     dis_(start, i+skip)
                     level -= 1
                 i += skip
-            else:
-                raise ValueError(op)
+            isipokua:
+                ashiria ValueError(op)
 
         level -= 1
 
@@ -762,8 +762,8 @@ eleza compile(p, flags=0):
     ikiwa isstring(p):
         pattern = p
         p = sre_parse.parse(p, flags)
-    else:
-        pattern = None
+    isipokua:
+        pattern = Tupu
 
     code = _code(p, flags)
 
@@ -771,10 +771,10 @@ eleza compile(p, flags=0):
         andika()
         dis(code)
 
-    # map in either direction
+    # map kwenye either direction
     groupindex = p.state.groupdict
-    indexgroup = [None] * p.state.groups
-    for k, i in groupindex.items():
+    indexgroup = [Tupu] * p.state.groups
+    kila k, i kwenye groupindex.items():
         indexgroup[i] = k
 
     rudisha _sre.compile(

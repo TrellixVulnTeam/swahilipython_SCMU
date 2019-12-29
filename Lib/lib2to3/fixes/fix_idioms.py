@@ -2,11 +2,11 @@
 
 * Change some type comparisons to isinstance() calls:
     type(x) == T -> isinstance(x, T)
-    type(x) is T -> isinstance(x, T)
-    type(x) != T -> not isinstance(x, T)
-    type(x) is not T -> not isinstance(x, T)
+    type(x) ni T -> isinstance(x, T)
+    type(x) != T -> sio isinstance(x, T)
+    type(x) ni sio T -> sio isinstance(x, T)
 
-* Change "while 1:" into "while True:".
+* Change "wakati 1:" into "wakati Kweli:".
 
 * Change both
 
@@ -35,7 +35,7 @@ CMP = "(n='!=' | '==' | 'is' | n=comp_op< 'is' 'not' >)"
 TYPE = "power< 'type' trailer< '(' x=any ')' > >"
 
 kundi FixIdioms(fixer_base.BaseFix):
-    explicit = True # The user must ask for this fixer
+    explicit = Kweli # The user must ask kila this fixer
 
     PATTERN = r"""
         isinstance=comparison< %s %s T=any >
@@ -79,23 +79,23 @@ kundi FixIdioms(fixer_base.BaseFix):
     eleza match(self, node):
         r = super(FixIdioms, self).match(node)
         # If we've matched one of the sort/sorted subpatterns above, we
-        # want to reject matches where the initial assignment and the
+        # want to reject matches where the initial assignment na the
         # subsequent .sort() call involve different identifiers.
-        ikiwa r and "sorted" in r:
+        ikiwa r na "sorted" kwenye r:
             ikiwa r["id1"] == r["id2"]:
                 rudisha r
-            rudisha None
+            rudisha Tupu
         rudisha r
 
     eleza transform(self, node, results):
-        ikiwa "isinstance" in results:
+        ikiwa "isinstance" kwenye results:
             rudisha self.transform_isinstance(node, results)
-        elikiwa "while" in results:
+        elikiwa "while" kwenye results:
             rudisha self.transform_while(node, results)
-        elikiwa "sorted" in results:
+        elikiwa "sorted" kwenye results:
             rudisha self.transform_sort(node, results)
-        else:
-            raise RuntimeError("Invalid match")
+        isipokua:
+            ashiria RuntimeError("Invalid match")
 
     eleza transform_isinstance(self, node, results):
         x = results["x"].clone() # The thing inside of type()
@@ -103,7 +103,7 @@ kundi FixIdioms(fixer_base.BaseFix):
         x.prefix = ""
         T.prefix = " "
         test = Call(Name("isinstance"), [x, Comma(), T])
-        ikiwa "n" in results:
+        ikiwa "n" kwenye results:
             test.prefix = " "
             test = Node(syms.not_test, [Name("not"), test])
         test.prefix = node.prefix
@@ -111,7 +111,7 @@ kundi FixIdioms(fixer_base.BaseFix):
 
     eleza transform_while(self, node, results):
         one = results["while"]
-        one.replace(Name("True", prefix=one.prefix))
+        one.replace(Name("Kweli", prefix=one.prefix))
 
     eleza transform_sort(self, node, results):
         sort_stmt = results["sort"]
@@ -126,27 +126,27 @@ kundi FixIdioms(fixer_base.BaseFix):
             new.prefix = ""
             simple_expr.replace(Call(Name("sorted"), [new],
                                      prefix=simple_expr.prefix))
-        else:
-            raise RuntimeError("should not have reached here")
+        isipokua:
+            ashiria RuntimeError("should sio have reached here")
         sort_stmt.remove()
 
         btwn = sort_stmt.prefix
-        # Keep any prefix lines between the sort_stmt and the list_call and
+        # Keep any prefix lines between the sort_stmt na the list_call and
         # shove them right after the sorted() call.
-        ikiwa "\n" in btwn:
+        ikiwa "\n" kwenye btwn:
             ikiwa next_stmt:
                 # The new prefix should be everything kutoka the sort_stmt's
                 # prefix up to the last newline, then the old prefix after a new
                 # line.
                 prefix_lines = (btwn.rpartition("\n")[0], next_stmt[0].prefix)
                 next_stmt[0].prefix = "\n".join(prefix_lines)
-            else:
+            isipokua:
                 assert list_call.parent
-                assert list_call.next_sibling is None
-                # Put a blank line after list_call and set its prefix.
+                assert list_call.next_sibling ni Tupu
+                # Put a blank line after list_call na set its prefix.
                 end_line = BlankLine()
                 list_call.parent.append_child(end_line)
-                assert list_call.next_sibling is end_line
+                assert list_call.next_sibling ni end_line
                 # The new prefix should be everything up to the first new line
                 # of sort_stmt's prefix.
                 end_line.prefix = btwn.rpartition("\n")[0]

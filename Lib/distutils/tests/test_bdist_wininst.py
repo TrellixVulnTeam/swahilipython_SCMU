@@ -8,9 +8,9 @@ from distutils.command.bdist_wininst import bdist_wininst
 from distutils.tests import support
 
 @unittest.skipIf(sys.platform == 'win32' and platform.machine() == 'ARM64',
-    'bdist_wininst is not supported in this install')
+    'bdist_wininst ni sio supported in this install')
 @unittest.skipIf(getattr(bdist_wininst, '_unsupported', False),
-    'bdist_wininst is not supported in this install')
+    'bdist_wininst ni sio supported in this install')
 class BuildWinInstTestCase(support.TempdirManager,
                            support.LoggingSilencer,
                            unittest.TestCase):

@@ -1,18 +1,18 @@
-r"""plistlib.py -- a tool to generate and parse MacOSX .plist files.
+r"""plistlib.py -- a tool to generate na parse MacOSX .plist files.
 
-The property list (.plist) file format is a simple XML pickle supporting
-basic object types, like dictionaries, lists, numbers and strings.
-Usually the top level object is a dictionary.
+The property list (.plist) file format ni a simple XML pickle supporting
+basic object types, like dictionaries, lists, numbers na strings.
+Usually the top level object ni a dictionary.
 
 To write out a plist file, use the dump(value, file)
-function. 'value' is the top level object, 'file' is
+function. 'value' ni the top level object, 'file' is
 a (writable) file object.
 
 To parse a plist kutoka a file, use the load(file) function,
-with a (readable) file object as the only argument. It
-returns the top level object (again, usually a dictionary).
+with a (readable) file object kama the only argument. It
+rudishas the top level object (again, usually a dictionary).
 
-To work with plist data in bytes objects, you can use loads()
+To work with plist data kwenye bytes objects, you can use loads()
 and dumps().
 
 Values can be strings, integers, floats, booleans, tuples, lists,
@@ -29,19 +29,19 @@ Generate Plist example:
         aDict = dict(
             anotherString = "<hello & hi there!>",
             aUnicodeValue = "M\xe4ssig, Ma\xdf",
-            aTrueValue = True,
-            aFalseValue = False,
+            aKweliValue = Kweli,
+            aUongoValue = Uongo,
         ),
         someData = b"<binary gunk>",
         someMoreData = b"<lots of binary gunk>" * 10,
         aDate = datetime.datetime.kutokatimestamp(time.mktime(time.gmtime())),
     )
-    with open(fileName, 'wb') as fp:
+    with open(fileName, 'wb') kama fp:
         dump(pl, fp)
 
 Parse Plist example:
 
-    with open(fileName, 'rb') as fp:
+    with open(fileName, 'rb') kama fp:
         pl = load(fp)
     andika(pl["aKey"])
 """
@@ -79,79 +79,79 @@ globals().update(PlistFormat.__members__)
 @contextlib.contextmanager
 eleza _maybe_open(pathOrFile, mode):
     ikiwa isinstance(pathOrFile, str):
-        with open(pathOrFile, mode) as fp:
-            yield fp
+        with open(pathOrFile, mode) kama fp:
+            tuma fp
 
-    else:
-        yield pathOrFile
+    isipokua:
+        tuma pathOrFile
 
 
 eleza readPlist(pathOrFile):
     """
-    Read a .plist kutoka a path or file. pathOrFile should either
-    be a file name, or a readable binary file object.
+    Read a .plist kutoka a path ama file. pathOrFile should either
+    be a file name, ama a readable binary file object.
 
-    This function is deprecated, use load instead.
+    This function ni deprecated, use load instead.
     """
-    warn("The readPlist function is deprecated, use load() instead",
+    warn("The readPlist function ni deprecated, use load() instead",
         DeprecationWarning, 2)
 
-    with _maybe_open(pathOrFile, 'rb') as fp:
-        rudisha load(fp, fmt=None, use_builtin_types=False)
+    with _maybe_open(pathOrFile, 'rb') kama fp:
+        rudisha load(fp, fmt=Tupu, use_builtin_types=Uongo)
 
 eleza writePlist(value, pathOrFile):
     """
     Write 'value' to a .plist file. 'pathOrFile' may either be a
-    file name or a (writable) file object.
+    file name ama a (writable) file object.
 
-    This function is deprecated, use dump instead.
+    This function ni deprecated, use dump instead.
     """
-    warn("The writePlist function is deprecated, use dump() instead",
+    warn("The writePlist function ni deprecated, use dump() instead",
         DeprecationWarning, 2)
-    with _maybe_open(pathOrFile, 'wb') as fp:
-        dump(value, fp, fmt=FMT_XML, sort_keys=True, skipkeys=False)
+    with _maybe_open(pathOrFile, 'wb') kama fp:
+        dump(value, fp, fmt=FMT_XML, sort_keys=Kweli, skipkeys=Uongo)
 
 
 eleza readPlistFromBytes(data):
     """
     Read a plist data kutoka a bytes object. Return the root object.
 
-    This function is deprecated, use loads instead.
+    This function ni deprecated, use loads instead.
     """
-    warn("The readPlistFromBytes function is deprecated, use loads() instead",
+    warn("The readPlistFromBytes function ni deprecated, use loads() instead",
         DeprecationWarning, 2)
-    rudisha load(BytesIO(data), fmt=None, use_builtin_types=False)
+    rudisha load(BytesIO(data), fmt=Tupu, use_builtin_types=Uongo)
 
 
 eleza writePlistToBytes(value):
     """
-    Return 'value' as a plist-formatted bytes object.
+    Return 'value' kama a plist-formatted bytes object.
 
-    This function is deprecated, use dumps instead.
+    This function ni deprecated, use dumps instead.
     """
-    warn("The writePlistToBytes function is deprecated, use dumps() instead",
+    warn("The writePlistToBytes function ni deprecated, use dumps() instead",
         DeprecationWarning, 2)
     f = BytesIO()
-    dump(value, f, fmt=FMT_XML, sort_keys=True, skipkeys=False)
+    dump(value, f, fmt=FMT_XML, sort_keys=Kweli, skipkeys=Uongo)
     rudisha f.getvalue()
 
 
 kundi Data:
     """
-    Wrapper for binary data.
+    Wrapper kila binary data.
 
-    This kundi is deprecated, use a bytes object instead.
+    This kundi ni deprecated, use a bytes object instead.
     """
 
     eleza __init__(self, data):
-        ikiwa not isinstance(data, bytes):
-            raise TypeError("data must be as bytes")
+        ikiwa sio isinstance(data, bytes):
+            ashiria TypeError("data must be kama bytes")
         self.data = data
 
     @classmethod
     eleza kutokaBase64(cls, data):
         # base64.decodebytes just calls binascii.a2b_base64;
-        # it seems overkill to use both base64 and binascii.
+        # it seems overkill to use both base64 na binascii.
         rudisha cls(_decode_base64(data))
 
     eleza asBase64(self, maxlinelength=76):
@@ -162,7 +162,7 @@ kundi Data:
             rudisha self.data == other.data
         elikiwa isinstance(other, bytes):
             rudisha self.data == other
-        else:
+        isipokua:
             rudisha NotImplemented
 
     eleza __repr__(self):
@@ -177,12 +177,12 @@ kundi Data:
 
 kundi UID:
     eleza __init__(self, data):
-        ikiwa not isinstance(data, int):
-            raise TypeError("data must be an int")
+        ikiwa sio isinstance(data, int):
+            ashiria TypeError("data must be an int")
         ikiwa data >= 1 << 64:
-            raise ValueError("UIDs cannot be >= 2**64")
+            ashiria ValueError("UIDs cannot be >= 2**64")
         ikiwa data < 0:
-            raise ValueError("UIDs must be positive")
+            ashiria ValueError("UIDs must be positive")
         self.data = data
 
     eleza __index__(self):
@@ -195,7 +195,7 @@ kundi UID:
         rudisha self.__class__, (self.data,)
 
     eleza __eq__(self, other):
-        ikiwa not isinstance(other, UID):
+        ikiwa sio isinstance(other, UID):
             rudisha NotImplemented
         rudisha self.data == other.data
 
@@ -215,7 +215,7 @@ PLISTHEADER = b"""\
 """
 
 
-# Regex to find any control chars, except for \t \n and \r
+# Regex to find any control chars, tatizo kila \t \n na \r
 _controlCharPat = re.compile(
     r"[\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\x0e\x0f"
     r"\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f]")
@@ -224,7 +224,7 @@ eleza _encode_base64(s, maxlinelength=76):
     # copied kutoka base64.encodebytes(), with added maxlinelength argument
     maxbinsize = (maxlinelength//4)*3
     pieces = []
-    for i in range(0, len(s), maxbinsize):
+    kila i kwenye range(0, len(s), maxbinsize):
         chunk = s[i : i + maxbinsize]
         pieces.append(binascii.b2a_base64(chunk))
     rudisha b''.join(pieces)
@@ -233,7 +233,7 @@ eleza _decode_base64(s):
     ikiwa isinstance(s, str):
         rudisha binascii.a2b_base64(s.encode("utf-8"))
 
-    else:
+    isipokua:
         rudisha binascii.a2b_base64(s)
 
 # Contents should conform to a subset of ISO 8601
@@ -246,10 +246,10 @@ eleza _date_kutoka_string(s):
     order = ('year', 'month', 'day', 'hour', 'minute', 'second')
     gd = _dateParser.match(s).groupdict()
     lst = []
-    for key in order:
+    kila key kwenye order:
         val = gd[key]
-        ikiwa val is None:
-            break
+        ikiwa val ni Tupu:
+            koma
         lst.append(int(val))
     rudisha datetime.datetime(*lst)
 
@@ -262,8 +262,8 @@ eleza _date_to_string(d):
 
 eleza _escape(text):
     m = _controlCharPat.search(text)
-    ikiwa m is not None:
-        raise ValueError("strings can't contains control characters; "
+    ikiwa m ni sio Tupu:
+        ashiria ValueError("strings can't contains control characters; "
                          "use bytes instead")
     text = text.replace("\r\n", "\n")       # convert DOS line endings
     text = text.replace("\r", "\n")         # convert Mac line endings
@@ -275,8 +275,8 @@ eleza _escape(text):
 kundi _PlistParser:
     eleza __init__(self, use_builtin_types, dict_type):
         self.stack = []
-        self.current_key = None
-        self.root = None
+        self.current_key = Tupu
+        self.root = Tupu
         self._use_builtin_types = use_builtin_types
         self._dict_type = dict_type
 
@@ -290,31 +290,31 @@ kundi _PlistParser:
 
     eleza handle_begin_element(self, element, attrs):
         self.data = []
-        handler = getattr(self, "begin_" + element, None)
-        ikiwa handler is not None:
+        handler = getattr(self, "begin_" + element, Tupu)
+        ikiwa handler ni sio Tupu:
             handler(attrs)
 
     eleza handle_end_element(self, element):
-        handler = getattr(self, "end_" + element, None)
-        ikiwa handler is not None:
+        handler = getattr(self, "end_" + element, Tupu)
+        ikiwa handler ni sio Tupu:
             handler()
 
     eleza handle_data(self, data):
         self.data.append(data)
 
     eleza add_object(self, value):
-        ikiwa self.current_key is not None:
-            ikiwa not isinstance(self.stack[-1], type({})):
-                raise ValueError("unexpected element at line %d" %
+        ikiwa self.current_key ni sio Tupu:
+            ikiwa sio isinstance(self.stack[-1], type({})):
+                ashiria ValueError("unexpected element at line %d" %
                                  self.parser.CurrentLineNumber)
             self.stack[-1][self.current_key] = value
-            self.current_key = None
-        elikiwa not self.stack:
-            # this is the root object
+            self.current_key = Tupu
+        elikiwa sio self.stack:
+            # this ni the root object
             self.root = value
-        else:
-            ikiwa not isinstance(self.stack[-1], type([])):
-                raise ValueError("unexpected element at line %d" %
+        isipokua:
+            ikiwa sio isinstance(self.stack[-1], type([])):
+                ashiria ValueError("unexpected element at line %d" %
                                  self.parser.CurrentLineNumber)
             self.stack[-1].append(value)
 
@@ -332,13 +332,13 @@ kundi _PlistParser:
 
     eleza end_dict(self):
         ikiwa self.current_key:
-            raise ValueError("missing value for key '%s' at line %d" %
+            ashiria ValueError("missing value kila key '%s' at line %d" %
                              (self.current_key,self.parser.CurrentLineNumber))
         self.stack.pop()
 
     eleza end_key(self):
-        ikiwa self.current_key or not isinstance(self.stack[-1], type({})):
-            raise ValueError("unexpected key at line %d" %
+        ikiwa self.current_key ama sio isinstance(self.stack[-1], type({})):
+            ashiria ValueError("unexpected key at line %d" %
                              self.parser.CurrentLineNumber)
         self.current_key = self.get_data()
 
@@ -351,10 +351,10 @@ kundi _PlistParser:
         self.stack.pop()
 
     eleza end_true(self):
-        self.add_object(True)
+        self.add_object(Kweli)
 
     eleza end_false(self):
-        self.add_object(False)
+        self.add_object(Uongo)
 
     eleza end_integer(self):
         self.add_object(int(self.get_data()))
@@ -369,7 +369,7 @@ kundi _PlistParser:
         ikiwa self._use_builtin_types:
             self.add_object(_decode_base64(self.get_data()))
 
-        else:
+        isipokua:
             self.add_object(Data.kutokaBase64(self.get_data()))
 
     eleza end_date(self):
@@ -394,19 +394,19 @@ kundi _DumbXMLWriter:
         self._indent_level -= 1
         self.writeln("</%s>" % element)
 
-    eleza simple_element(self, element, value=None):
-        ikiwa value is not None:
+    eleza simple_element(self, element, value=Tupu):
+        ikiwa value ni sio Tupu:
             value = _escape(value)
             self.writeln("<%s>%s</%s>" % (element, value, element))
 
-        else:
+        isipokua:
             self.writeln("<%s/>" % element)
 
     eleza writeln(self, line):
         ikiwa line:
             # plist has fixed encoding of utf-8
 
-            # XXX: is this test needed?
+            # XXX: ni this test needed?
             ikiwa isinstance(line, str):
                 line = line.encode('utf-8')
             self.file.write(self._indent_level * self.indent)
@@ -417,7 +417,7 @@ kundi _DumbXMLWriter:
 kundi _PlistWriter(_DumbXMLWriter):
     eleza __init__(
             self, file, indent_level=0, indent=b"\t", writeHeader=1,
-            sort_keys=True, skipkeys=False):
+            sort_keys=Kweli, skipkeys=Uongo):
 
         ikiwa writeHeader:
             file.write(PLISTHEADER)
@@ -434,17 +434,17 @@ kundi _PlistWriter(_DumbXMLWriter):
         ikiwa isinstance(value, str):
             self.simple_element("string", value)
 
-        elikiwa value is True:
+        elikiwa value ni Kweli:
             self.simple_element("true")
 
-        elikiwa value is False:
+        elikiwa value ni Uongo:
             self.simple_element("false")
 
         elikiwa isinstance(value, int):
             ikiwa -1 << 63 <= value < 1 << 64:
                 self.simple_element("integer", "%d" % value)
-            else:
-                raise OverflowError(value)
+            isipokua:
+                ashiria OverflowError(value)
 
         elikiwa isinstance(value, float):
             self.simple_element("real", repr(value))
@@ -464,8 +464,8 @@ kundi _PlistWriter(_DumbXMLWriter):
         elikiwa isinstance(value, (tuple, list)):
             self.write_array(value)
 
-        else:
-            raise TypeError("unsupported type: %s" % type(value))
+        isipokua:
+            ashiria TypeError("unsupported type: %s" % type(value))
 
     eleza write_data(self, data):
         self.write_bytes(data.data)
@@ -477,7 +477,7 @@ kundi _PlistWriter(_DumbXMLWriter):
             16,
             76 - len(self.indent.replace(b"\t", b" " * 8) * self._indent_level))
 
-        for line in _encode_base64(data, maxlinelength).split(b"\n"):
+        kila line kwenye _encode_base64(data, maxlinelength).split(b"\n"):
             ikiwa line:
                 self.writeln(line)
         self._indent_level += 1
@@ -488,59 +488,59 @@ kundi _PlistWriter(_DumbXMLWriter):
             self.begin_element("dict")
             ikiwa self._sort_keys:
                 items = sorted(d.items())
-            else:
+            isipokua:
                 items = d.items()
 
-            for key, value in items:
-                ikiwa not isinstance(key, str):
+            kila key, value kwenye items:
+                ikiwa sio isinstance(key, str):
                     ikiwa self._skipkeys:
-                        continue
-                    raise TypeError("keys must be strings")
+                        endelea
+                    ashiria TypeError("keys must be strings")
                 self.simple_element("key", key)
                 self.write_value(value)
             self.end_element("dict")
 
-        else:
+        isipokua:
             self.simple_element("dict")
 
     eleza write_array(self, array):
         ikiwa array:
             self.begin_element("array")
-            for value in array:
+            kila value kwenye array:
                 self.write_value(value)
             self.end_element("array")
 
-        else:
+        isipokua:
             self.simple_element("array")
 
 
 eleza _is_fmt_xml(header):
     prefixes = (b'<?xml', b'<plist')
 
-    for pfx in prefixes:
+    kila pfx kwenye prefixes:
         ikiwa header.startswith(pfx):
-            rudisha True
+            rudisha Kweli
 
-    # Also check for alternative XML encodings, this is slightly
+    # Also check kila alternative XML encodings, this ni slightly
     # overkill because the Apple tools (and plistlib) will not
     # generate files with these encodings.
-    for bom, encoding in (
+    kila bom, encoding kwenye (
                 (codecs.BOM_UTF8, "utf-8"),
                 (codecs.BOM_UTF16_BE, "utf-16-be"),
                 (codecs.BOM_UTF16_LE, "utf-16-le"),
-                # expat does not support utf-32
+                # expat does sio support utf-32
                 #(codecs.BOM_UTF32_BE, "utf-32-be"),
                 #(codecs.BOM_UTF32_LE, "utf-32-le"),
             ):
-        ikiwa not header.startswith(bom):
-            continue
+        ikiwa sio header.startswith(bom):
+            endelea
 
-        for start in prefixes:
+        kila start kwenye prefixes:
             prefix = bom + start.decode('ascii').encode(encoding)
             ikiwa header[:len(prefix)] == prefix:
-                rudisha True
+                rudisha Kweli
 
-    rudisha False
+    rudisha Uongo
 
 #
 # Binary Plist
@@ -557,8 +557,8 @@ _undefined = object()
 
 kundi _BinaryPlistParser:
     """
-    Read or write a binary plist file, following the description of the binary
-    format.  Raise InvalidFileException in case of error, otherwise rudisha the
+    Read ama write a binary plist file, following the description of the binary
+    format.  Raise InvalidFileException kwenye case of error, otherwise rudisha the
     root object.
 
     see also: http://opensource.apple.com/source/CF/CF-744.18/CFBinaryPList.c
@@ -568,7 +568,7 @@ kundi _BinaryPlistParser:
         self._dict_type = dict_type
 
     eleza parse(self, fp):
-        try:
+        jaribu:
             # The basic file format:
             # HEADER
             # object...
@@ -578,7 +578,7 @@ kundi _BinaryPlistParser:
             self._fp.seek(-32, os.SEEK_END)
             trailer = self._fp.read(32)
             ikiwa len(trailer) != 32:
-                raise InvalidFileException()
+                ashiria InvalidFileException()
             (
                 offset_size, self._ref_size, num_objects, top_object,
                 offset_table_offset
@@ -588,9 +588,9 @@ kundi _BinaryPlistParser:
             self._objects = [_undefined] * num_objects
             rudisha self._read_object(top_object)
 
-        except (OSError, IndexError, struct.error, OverflowError,
+        tatizo (OSError, IndexError, struct.error, OverflowError,
                 UnicodeDecodeError):
-            raise InvalidFileException()
+            ashiria InvalidFileException()
 
     eleza _get_size(self, tokenL):
         """ rudisha the size of the next object."""
@@ -604,13 +604,13 @@ kundi _BinaryPlistParser:
 
     eleza _read_ints(self, n, size):
         data = self._fp.read(size * n)
-        ikiwa size in _BINARY_FORMAT:
+        ikiwa size kwenye _BINARY_FORMAT:
             rudisha struct.unpack('>' + _BINARY_FORMAT[size] * n, data)
-        else:
-            ikiwa not size or len(data) != size * n:
-                raise InvalidFileException()
+        isipokua:
+            ikiwa sio size ama len(data) != size * n:
+                ashiria InvalidFileException()
             rudisha tuple(int.kutoka_bytes(data[i: i + size], 'big')
-                         for i in range(0, size * n, size))
+                         kila i kwenye range(0, size * n, size))
 
     eleza _read_refs(self, n):
         rudisha self._read_ints(n, self._ref_size)
@@ -622,7 +622,7 @@ kundi _BinaryPlistParser:
         May recursively read sub-objects (content of an array/dict/set)
         """
         result = self._objects[ref]
-        ikiwa result is not _undefined:
+        ikiwa result ni sio _undefined:
             rudisha result
 
         offset = self._object_offsets[ref]
@@ -631,13 +631,13 @@ kundi _BinaryPlistParser:
         tokenH, tokenL = token & 0xF0, token & 0x0F
 
         ikiwa token == 0x00:
-            result = None
+            result = Tupu
 
         elikiwa token == 0x08:
-            result = False
+            result = Uongo
 
         elikiwa token == 0x09:
-            result = True
+            result = Kweli
 
         # The referenced source code also mentions URL (0x0c, 0x0d) and
         # UUID (0x0e), but neither can be generated using the Cocoa libraries.
@@ -666,7 +666,7 @@ kundi _BinaryPlistParser:
             s = self._get_size(tokenL)
             ikiwa self._use_builtin_types:
                 result = self._fp.read(s)
-            else:
+            isipokua:
                 result = Data(self._fp.read(s))
 
         elikiwa tokenH == 0x50:  # ascii string
@@ -686,12 +686,12 @@ kundi _BinaryPlistParser:
             obj_refs = self._read_refs(s)
             result = []
             self._objects[ref] = result
-            result.extend(self._read_object(x) for x in obj_refs)
+            result.extend(self._read_object(x) kila x kwenye obj_refs)
 
-        # tokenH == 0xB0 is documented as 'ordset', but is not actually
-        # implemented in the Apple reference code.
+        # tokenH == 0xB0 ni documented kama 'ordset', but ni sio actually
+        # implemented kwenye the Apple reference code.
 
-        # tokenH == 0xC0 is documented as 'set', but sets cannot be used in
+        # tokenH == 0xC0 ni documented kama 'set', but sets cannot be used in
         # plists.
 
         elikiwa tokenH == 0xD0:  # dict
@@ -700,11 +700,11 @@ kundi _BinaryPlistParser:
             obj_refs = self._read_refs(s)
             result = self._dict_type()
             self._objects[ref] = result
-            for k, o in zip(key_refs, obj_refs):
+            kila k, o kwenye zip(key_refs, obj_refs):
                 result[self._read_object(k)] = self._read_object(o)
 
-        else:
-            raise InvalidFileException()
+        isipokua:
+            ashiria InvalidFileException()
 
         self._objects[ref] = result
         rudisha result
@@ -719,7 +719,7 @@ eleza _count_to_size(count):
     elikiwa count << 1 << 32:
         rudisha 4
 
-    else:
+    isipokua:
         rudisha 8
 
 _scalars = (str, int, float, datetime.datetime, bytes)
@@ -736,17 +736,17 @@ kundi _BinaryPlistWriter (object):
         self._objlist = []
 
         # Mappings kutoka object->objectid
-        # First dict has (type(object), object) as the key,
-        # second dict is used when object is not hashable and
-        # has id(object) as the key.
+        # First dict has (type(object), object) kama the key,
+        # second dict ni used when object ni sio hashable and
+        # has id(object) kama the key.
         self._objtable = {}
         self._objidtable = {}
 
-        # Create list of all objects in the plist
+        # Create list of all objects kwenye the plist
         self._flatten(value)
 
-        # Size of object references in serialized containers
-        # depends on the number of objects in the plist.
+        # Size of object references kwenye serialized containers
+        # depends on the number of objects kwenye the plist.
         num_objects = len(self._objlist)
         self._object_offsets = [0]*num_objects
         self._ref_size = _count_to_size(num_objects)
@@ -757,7 +757,7 @@ kundi _BinaryPlistWriter (object):
         self._fp.write(b'bplist00')
 
         # Write object list
-        for obj in self._objlist:
+        kila obj kwenye self._objlist:
             self._write_object(obj)
 
         # Write refnum->object offset table
@@ -776,19 +776,19 @@ kundi _BinaryPlistWriter (object):
         self._fp.write(struct.pack('>5xBBBQQQ', *trailer))
 
     eleza _flatten(self, value):
-        # First check ikiwa the object is in the object table, not used for
+        # First check ikiwa the object ni kwenye the object table, sio used for
         # containers to ensure that two subcontainers with the same contents
-        # will be serialized as distinct values.
+        # will be serialized kama distinct values.
         ikiwa isinstance(value, _scalars):
-            ikiwa (type(value), value) in self._objtable:
-                return
+            ikiwa (type(value), value) kwenye self._objtable:
+                rudisha
 
         elikiwa isinstance(value, Data):
-            ikiwa (type(value.data), value.data) in self._objtable:
-                return
+            ikiwa (type(value.data), value.data) kwenye self._objtable:
+                rudisha
 
-        elikiwa id(value) in self._objidtable:
-            return
+        elikiwa id(value) kwenye self._objidtable:
+            rudisha
 
         # Add to objectreference map
         refnum = len(self._objlist)
@@ -797,7 +797,7 @@ kundi _BinaryPlistWriter (object):
             self._objtable[(type(value), value)] = refnum
         elikiwa isinstance(value, Data):
             self._objtable[(type(value.data), value.data)] = refnum
-        else:
+        isipokua:
             self._objidtable[id(value)] = refnum
 
         # And finally recurse into containers
@@ -808,19 +808,19 @@ kundi _BinaryPlistWriter (object):
             ikiwa self._sort_keys:
                 items = sorted(items)
 
-            for k, v in items:
-                ikiwa not isinstance(k, str):
+            kila k, v kwenye items:
+                ikiwa sio isinstance(k, str):
                     ikiwa self._skipkeys:
-                        continue
-                    raise TypeError("keys must be strings")
+                        endelea
+                    ashiria TypeError("keys must be strings")
                 keys.append(k)
                 values.append(v)
 
-            for o in itertools.chain(keys, values):
+            kila o kwenye itertools.chain(keys, values):
                 self._flatten(o)
 
         elikiwa isinstance(value, (list, tuple)):
-            for o in value:
+            kila o kwenye value:
                 self._flatten(o)
 
     eleza _getrefnum(self, value):
@@ -828,7 +828,7 @@ kundi _BinaryPlistWriter (object):
             rudisha self._objtable[(type(value), value)]
         elikiwa isinstance(value, Data):
             rudisha self._objtable[(type(value.data), value.data)]
-        else:
+        isipokua:
             rudisha self._objidtable[id(value)]
 
     eleza _write_size(self, token, size):
@@ -844,27 +844,27 @@ kundi _BinaryPlistWriter (object):
         elikiwa size < 1 << 32:
             self._fp.write(struct.pack('>BBL', token | 0xF, 0x12, size))
 
-        else:
+        isipokua:
             self._fp.write(struct.pack('>BBQ', token | 0xF, 0x13, size))
 
     eleza _write_object(self, value):
         ref = self._getrefnum(value)
         self._object_offsets[ref] = self._fp.tell()
-        ikiwa value is None:
+        ikiwa value ni Tupu:
             self._fp.write(b'\x00')
 
-        elikiwa value is False:
+        elikiwa value ni Uongo:
             self._fp.write(b'\x08')
 
-        elikiwa value is True:
+        elikiwa value ni Kweli:
             self._fp.write(b'\x09')
 
         elikiwa isinstance(value, int):
             ikiwa value < 0:
-                try:
+                jaribu:
                     self._fp.write(struct.pack('>Bq', 0x13, value))
-                except struct.error:
-                    raise OverflowError(value) kutoka None
+                tatizo struct.error:
+                    ashiria OverflowError(value) kutoka Tupu
             elikiwa value < 1 << 8:
                 self._fp.write(struct.pack('>BB', 0x10, value))
             elikiwa value < 1 << 16:
@@ -874,9 +874,9 @@ kundi _BinaryPlistWriter (object):
             elikiwa value < 1 << 63:
                 self._fp.write(struct.pack('>BQ', 0x13, value))
             elikiwa value < 1 << 64:
-                self._fp.write(b'\x14' + value.to_bytes(16, 'big', signed=True))
-            else:
-                raise OverflowError(value)
+                self._fp.write(b'\x14' + value.to_bytes(16, 'big', signed=Kweli))
+            isipokua:
+                ashiria OverflowError(value)
 
         elikiwa isinstance(value, float):
             self._fp.write(struct.pack('>Bd', 0x23, value))
@@ -894,10 +894,10 @@ kundi _BinaryPlistWriter (object):
             self._fp.write(value)
 
         elikiwa isinstance(value, str):
-            try:
+            jaribu:
                 t = value.encode('ascii')
                 self._write_size(0x50, len(value))
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 t = value.encode('utf-16be')
                 self._write_size(0x60, len(t) // 2)
 
@@ -905,7 +905,7 @@ kundi _BinaryPlistWriter (object):
 
         elikiwa isinstance(value, UID):
             ikiwa value.data < 0:
-                raise ValueError("UIDs must be positive")
+                ashiria ValueError("UIDs must be positive")
             elikiwa value.data < 1 << 8:
                 self._fp.write(struct.pack('>BB', 0x80, value))
             elikiwa value.data < 1 << 16:
@@ -914,11 +914,11 @@ kundi _BinaryPlistWriter (object):
                 self._fp.write(struct.pack('>BL', 0x83, value))
             elikiwa value.data < 1 << 64:
                 self._fp.write(struct.pack('>BQ', 0x87, value))
-            else:
-                raise OverflowError(value)
+            isipokua:
+                ashiria OverflowError(value)
 
         elikiwa isinstance(value, (list, tuple)):
-            refs = [self._getrefnum(o) for o in value]
+            refs = [self._getrefnum(o) kila o kwenye value]
             s = len(refs)
             self._write_size(0xA0, s)
             self._fp.write(struct.pack('>' + self._ref_format * s, *refs))
@@ -928,14 +928,14 @@ kundi _BinaryPlistWriter (object):
 
             ikiwa self._sort_keys:
                 rootItems = sorted(value.items())
-            else:
+            isipokua:
                 rootItems = value.items()
 
-            for k, v in rootItems:
-                ikiwa not isinstance(k, str):
+            kila k, v kwenye rootItems:
+                ikiwa sio isinstance(k, str):
                     ikiwa self._skipkeys:
-                        continue
-                    raise TypeError("keys must be strings")
+                        endelea
+                    ashiria TypeError("keys must be strings")
                 keyRefs.append(self._getrefnum(k))
                 valRefs.append(self._getrefnum(v))
 
@@ -944,8 +944,8 @@ kundi _BinaryPlistWriter (object):
             self._fp.write(struct.pack('>' + self._ref_format * s, *keyRefs))
             self._fp.write(struct.pack('>' + self._ref_format * s, *valRefs))
 
-        else:
-            raise TypeError(value)
+        isipokua:
+            ashiria TypeError(value)
 
 
 eleza _is_fmt_binary(header):
@@ -970,50 +970,50 @@ _FORMATS={
 }
 
 
-eleza load(fp, *, fmt=None, use_builtin_types=True, dict_type=dict):
-    """Read a .plist file. 'fp' should be a readable and binary file object.
-    Return the unpacked root object (which usually is a dictionary).
+eleza load(fp, *, fmt=Tupu, use_builtin_types=Kweli, dict_type=dict):
+    """Read a .plist file. 'fp' should be a readable na binary file object.
+    Return the unpacked root object (which usually ni a dictionary).
     """
-    ikiwa fmt is None:
+    ikiwa fmt ni Tupu:
         header = fp.read(32)
         fp.seek(0)
-        for info in _FORMATS.values():
+        kila info kwenye _FORMATS.values():
             ikiwa info['detect'](header):
                 P = info['parser']
-                break
+                koma
 
-        else:
-            raise InvalidFileException()
+        isipokua:
+            ashiria InvalidFileException()
 
-    else:
+    isipokua:
         P = _FORMATS[fmt]['parser']
 
     p = P(use_builtin_types=use_builtin_types, dict_type=dict_type)
     rudisha p.parse(fp)
 
 
-eleza loads(value, *, fmt=None, use_builtin_types=True, dict_type=dict):
+eleza loads(value, *, fmt=Tupu, use_builtin_types=Kweli, dict_type=dict):
     """Read a .plist file kutoka a bytes object.
-    Return the unpacked root object (which usually is a dictionary).
+    Return the unpacked root object (which usually ni a dictionary).
     """
     fp = BytesIO(value)
     rudisha load(
         fp, fmt=fmt, use_builtin_types=use_builtin_types, dict_type=dict_type)
 
 
-eleza dump(value, fp, *, fmt=FMT_XML, sort_keys=True, skipkeys=False):
+eleza dump(value, fp, *, fmt=FMT_XML, sort_keys=Kweli, skipkeys=Uongo):
     """Write 'value' to a .plist file. 'fp' should be a writable,
     binary file object.
     """
-    ikiwa fmt not in _FORMATS:
-        raise ValueError("Unsupported format: %r"%(fmt,))
+    ikiwa fmt haiko kwenye _FORMATS:
+        ashiria ValueError("Unsupported format: %r"%(fmt,))
 
     writer = _FORMATS[fmt]["writer"](fp, sort_keys=sort_keys, skipkeys=skipkeys)
     writer.write(value)
 
 
-eleza dumps(value, *, fmt=FMT_XML, skipkeys=False, sort_keys=True):
-    """Return a bytes object with the contents for a .plist file.
+eleza dumps(value, *, fmt=FMT_XML, skipkeys=Uongo, sort_keys=Kweli):
+    """Return a bytes object with the contents kila a .plist file.
     """
     fp = BytesIO()
     dump(value, fp, fmt=fmt, skipkeys=skipkeys, sort_keys=sort_keys)

@@ -6,8 +6,8 @@ module."""
 
 
 # XXX this module has *lots* of code ripped-off quite transparently from
-# build_ext.py -- not surprisingly really, as the work required to build
-# a static library from a collection of C source files is not really all
+# build_ext.py -- sio surprisingly really, as the work required to build
+# a static library from a collection of C source files ni sio really all
 # that different from what's required to build a shared object file from
 # a collection of C source files.  Nevertheless, I haven't done the
 # necessary refactoring to account for the overlap in code between the
@@ -92,7 +92,7 @@ class build_clib(Command):
 
 
     def run(self):
-        if not self.libraries:
+        if sio self.libraries:
             return
 
         # Yech -- this is cut 'n pasted from build_ext.py!
@@ -102,13 +102,13 @@ class build_clib(Command):
                                      force=self.force)
         customize_compiler(self.compiler)
 
-        if self.include_dirs is not None:
+        if self.include_dirs ni sio None:
             self.compiler.set_include_dirs(self.include_dirs)
-        if self.define is not None:
+        if self.define ni sio None:
             # 'define' option is a list of (name,value) tuples
             for (name,value) in self.define:
                 self.compiler.define_macro(name, value)
-        if self.undef is not None:
+        if self.undef ni sio None:
             for macro in self.undef:
                 self.compiler.undefine_macro(macro)
 
@@ -125,27 +125,27 @@ class build_clib(Command):
         Raise DistutilsSetupError if the structure is invalid anywhere;
         just returns otherwise.
         """
-        if not isinstance(libraries, list):
+        if sio isinstance(libraries, list):
             raise DistutilsSetupError(
                   "'libraries' option must be a list of tuples")
 
         for lib in libraries:
-            if not isinstance(lib, tuple) and len(lib) != 2:
+            if sio isinstance(lib, tuple) and len(lib) != 2:
                 raise DistutilsSetupError(
                       "each element of 'libraries' must a 2-tuple")
 
             name, build_info = lib
 
-            if not isinstance(name, str):
+            if sio isinstance(name, str):
                 raise DistutilsSetupError(
                       "first element of each tuple in 'libraries' "
                       "must be a string (the library name)")
 
             if '/' in name or (os.sep != '/' and os.sep in name):
                 raise DistutilsSetupError("bad library name '%s': "
-                       "may not contain directory separators" % lib[0])
+                       "may sio contain directory separators" % lib[0])
 
-            if not isinstance(build_info, dict):
+            if sio isinstance(build_info, dict):
                 raise DistutilsSetupError(
                       "second element of each tuple in 'libraries' "
                       "must be a dictionary (build info)")
@@ -154,7 +154,7 @@ class build_clib(Command):
     def get_library_names(self):
         # Assume the library list is valid -- 'check_library_list()' is
         # called from 'finalize_options()', so it should be!
-        if not self.libraries:
+        if sio self.libraries:
             return None
 
         lib_names = []
@@ -168,7 +168,7 @@ class build_clib(Command):
         filenames = []
         for (lib_name, build_info) in self.libraries:
             sources = build_info.get('sources')
-            if sources is None or not isinstance(sources, (list, tuple)):
+            if sources is None or sio isinstance(sources, (list, tuple)):
                 raise DistutilsSetupError(
                        "in 'libraries' option (library '%s'), "
                        "'sources' must be present and must be "
@@ -181,7 +181,7 @@ class build_clib(Command):
     def build_libraries(self, libraries):
         for (lib_name, build_info) in libraries:
             sources = build_info.get('sources')
-            if sources is None or not isinstance(sources, (list, tuple)):
+            if sources is None or sio isinstance(sources, (list, tuple)):
                 raise DistutilsSetupError(
                        "in 'libraries' option (library '%s'), "
                        "'sources' must be present and must be "

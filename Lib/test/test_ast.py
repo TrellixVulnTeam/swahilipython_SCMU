@@ -10,16 +10,16 @@ kutoka textwrap agiza dedent
 kutoka test agiza support
 
 eleza to_tuple(t):
-    ikiwa t is None or isinstance(t, (str, int, complex)):
+    ikiwa t ni Tupu ama isinstance(t, (str, int, complex)):
         rudisha t
     elikiwa isinstance(t, list):
-        rudisha [to_tuple(e) for e in t]
+        rudisha [to_tuple(e) kila e kwenye t]
     result = [t.__class__.__name__]
-    ikiwa hasattr(t, 'lineno') and hasattr(t, 'col_offset'):
+    ikiwa hasattr(t, 'lineno') na hasattr(t, 'col_offset'):
         result.append((t.lineno, t.col_offset))
-    ikiwa t._fields is None:
+    ikiwa t._fields ni Tupu:
         rudisha tuple(result)
-    for f in t._fields:
+    kila f kwenye t._fields:
         result.append(to_tuple(getattr(t, f)))
     rudisha tuple(result)
 
@@ -27,34 +27,34 @@ eleza to_tuple(t):
 # These tests are compiled through "exec"
 # There should be at least one test per statement
 exec_tests = [
-    # None
-    "None",
+    # Tupu
+    "Tupu",
     # Module docstring
     "'module docstring'",
     # FunctionDef
-    "eleza f(): pass",
+    "eleza f(): pita",
     # FunctionDef with docstring
     "eleza f(): 'function docstring'",
     # FunctionDef with arg
-    "eleza f(a): pass",
-    # FunctionDef with arg and default value
-    "eleza f(a=0): pass",
+    "eleza f(a): pita",
+    # FunctionDef with arg na default value
+    "eleza f(a=0): pita",
     # FunctionDef with varargs
-    "eleza f(*args): pass",
+    "eleza f(*args): pita",
     # FunctionDef with kwargs
-    "eleza f(**kwargs): pass",
-    # FunctionDef with all kind of args and docstring
-    "eleza f(a, b=1, c=None, d=[], e={}, *args, f=42, **kwargs): 'doc for f()'",
+    "eleza f(**kwargs): pita",
+    # FunctionDef with all kind of args na docstring
+    "eleza f(a, b=1, c=Tupu, d=[], e={}, *args, f=42, **kwargs): 'doc kila f()'",
     # ClassDef
-    "kundi C:pass",
+    "kundi C:pita",
     # ClassDef with docstring
-    "kundi C: 'docstring for kundi C'",
+    "kundi C: 'docstring kila kundi C'",
     # ClassDef, new style class
-    "kundi C(object): pass",
+    "kundi C(object): pita",
     # Return
     "eleza f():rudisha 1",
     # Delete
-    "del v",
+    "toa v",
     # Assign
     "v = 1",
     "a,b = c",
@@ -63,20 +63,20 @@ exec_tests = [
     # AugAssign
     "v += 1",
     # For
-    "for v in v:pass",
+    "kila v kwenye v:pita",
     # While
-    "while v:pass",
+    "wakati v:pita",
     # If
-    "ikiwa v:pass",
+    "ikiwa v:pita",
     # With
-    "with x as y: pass",
-    "with x as y, z as q: pass",
+    "with x kama y: pita",
+    "with x kama y, z kama q: pita",
     # Raise
-    "raise Exception('string')",
+    "ashiria Exception('string')",
     # TryExcept
-    "try:\n  pass\nexcept Exception:\n  pass",
+    "jaribu:\n  pita\ntatizo Exception:\n  pita",
     # TryFinally
-    "try:\n  pass\nfinally:\n  pass",
+    "jaribu:\n  pita\nmwishowe:\n  pita",
     # Assert
     "assert v",
     # Import
@@ -88,16 +88,16 @@ exec_tests = [
     # Expr
     "1",
     # Pass,
-    "pass",
+    "pita",
     # Break
-    "for v in v:break",
+    "kila v kwenye v:koma",
     # Continue
-    "for v in v:continue",
-    # for statements with naked tuples (see http://bugs.python.org/issue6704)
-    "for a,b in c: pass",
-    "for (a,b) in c: pass",
-    "for [a,b] in c: pass",
-    # Multiline generator expression (test for .lineno & .col_offset)
+    "kila v kwenye v:endelea",
+    # kila statements with naked tuples (see http://bugs.python.org/issue6704)
+    "kila a,b kwenye c: pita",
+    "kila (a,b) kwenye c: pita",
+    "kila [a,b] kwenye c: pita",
+    # Multiline generator expression (test kila .lineno & .col_offset)
     """(
     (
     Aa
@@ -107,49 +107,49 @@ exec_tests = [
     for
     Aa
     ,
-    Bb in Cc
+    Bb kwenye Cc
     )""",
     # dictcomp
-    "{a : b for w in x for m in p ikiwa g}",
+    "{a : b kila w kwenye x kila m kwenye p ikiwa g}",
     # dictcomp with naked tuple
-    "{a : b for v,w in x}",
+    "{a : b kila v,w kwenye x}",
     # setcomp
-    "{r for l in x ikiwa g}",
+    "{r kila l kwenye x ikiwa g}",
     # setcomp with naked tuple
-    "{r for l,m in x}",
+    "{r kila l,m kwenye x}",
     # AsyncFunctionDef
     "async eleza f():\n 'async function'\n await something()",
     # AsyncFor
-    "async eleza f():\n async for e in i: 1\n else: 2",
+    "async eleza f():\n async kila e kwenye i: 1\n isipokua: 2",
     # AsyncWith
-    "async eleza f():\n async with a as b: 1",
+    "async eleza f():\n async with a kama b: 1",
     # PEP 448: Additional Unpacking Generalizations
     "{**{1:2}, 2:3}",
     "{*{1, 2}, 3}",
     # Asynchronous comprehensions
-    "async eleza f():\n [i async for b in c]",
+    "async eleza f():\n [i async kila b kwenye c]",
     # Decorated FunctionDef
-    "@deco1\n@deco2()\neleza f(): pass",
+    "@deco1\n@deco2()\neleza f(): pita",
     # Decorated AsyncFunctionDef
-    "@deco1\n@deco2()\nasync eleza f(): pass",
+    "@deco1\n@deco2()\nasync eleza f(): pita",
     # Decorated ClassDef
-    "@deco1\n@deco2()\nkundi C: pass",
+    "@deco1\n@deco2()\nkundi C: pita",
     # Decorator with generator argument
-    "@deco(a for a in b)\neleza f(): pass",
+    "@deco(a kila a kwenye b)\neleza f(): pita",
     # Simple assignment expression
     "(a := 1)",
     # Positional-only arguments
-    "eleza f(a, /,): pass",
-    "eleza f(a, /, c, d, e): pass",
-    "eleza f(a, /, c, *, d, e): pass",
-    "eleza f(a, /, c, *, d, e, **kwargs): pass",
+    "eleza f(a, /,): pita",
+    "eleza f(a, /, c, d, e): pita",
+    "eleza f(a, /, c, *, d, e): pita",
+    "eleza f(a, /, c, *, d, e, **kwargs): pita",
     # Positional-only arguments with defaults
-    "eleza f(a=1, /,): pass",
-    "eleza f(a=1, /, b=2, c=4): pass",
-    "eleza f(a=1, /, b=2, *, c=4): pass",
-    "eleza f(a=1, /, b=2, *, c): pass",
-    "eleza f(a=1, /, b=2, *, c=4, **kwargs): pass",
-    "eleza f(a=1, /, b=2, *, c, **kwargs): pass",
+    "eleza f(a=1, /,): pita",
+    "eleza f(a=1, /, b=2, c=4): pita",
+    "eleza f(a=1, /, b=2, *, c=4): pita",
+    "eleza f(a=1, /, b=2, *, c): pita",
+    "eleza f(a=1, /, b=2, *, c=4, **kwargs): pita",
+    "eleza f(a=1, /, b=2, *, c, **kwargs): pita",
 
 ]
 
@@ -163,50 +163,50 @@ single_tests = [
 # These are compiled through "eval"
 # It should test all expressions
 eval_tests = [
-  # None
-  "None",
+  # Tupu
+  "Tupu",
   # BoolOp
-  "a and b",
+  "a na b",
   # BinOp
   "a + b",
   # UnaryOp
   "not v",
   # Lambda
-  "lambda:None",
+  "lambda:Tupu",
   # Dict
   "{ 1:2 }",
   # Empty dict
   "{}",
   # Set
-  "{None,}",
-  # Multiline dict (test for .lineno & .col_offset)
+  "{Tupu,}",
+  # Multiline dict (test kila .lineno & .col_offset)
   """{
       1
         :
           2
      }""",
   # ListComp
-  "[a for b in c ikiwa d]",
+  "[a kila b kwenye c ikiwa d]",
   # GeneratorExp
-  "(a for b in c ikiwa d)",
-  # Comprehensions with multiple for targets
-  "[(a,b) for a,b in c]",
-  "[(a,b) for (a,b) in c]",
-  "[(a,b) for [a,b] in c]",
-  "{(a,b) for a,b in c}",
-  "{(a,b) for (a,b) in c}",
-  "{(a,b) for [a,b] in c}",
-  "((a,b) for a,b in c)",
-  "((a,b) for (a,b) in c)",
-  "((a,b) for [a,b] in c)",
-  # Yield - yield expressions can't work outside a function
+  "(a kila b kwenye c ikiwa d)",
+  # Comprehensions with multiple kila targets
+  "[(a,b) kila a,b kwenye c]",
+  "[(a,b) kila (a,b) kwenye c]",
+  "[(a,b) kila [a,b] kwenye c]",
+  "{(a,b) kila a,b kwenye c}",
+  "{(a,b) kila (a,b) kwenye c}",
+  "{(a,b) kila [a,b] kwenye c}",
+  "((a,b) kila a,b kwenye c)",
+  "((a,b) kila (a,b) kwenye c)",
+  "((a,b) kila [a,b] kwenye c)",
+  # Yield - tuma expressions can't work outside a function
   #
   # Compare
   "1 < 2 < 3",
   # Call
   "f(1,2,c=3,*d,**e)",
   # Call with a generator argument
-  "f(a for a in b)",
+  "f(a kila a kwenye b)",
   # Num
   "10",
   # Str
@@ -237,23 +237,23 @@ eval_tests = [
 
 kundi AST_Tests(unittest.TestCase):
 
-    eleza _assertTrueorder(self, ast_node, parent_pos):
-        ikiwa not isinstance(ast_node, ast.AST) or ast_node._fields is None:
-            return
+    eleza _assertKweliorder(self, ast_node, parent_pos):
+        ikiwa sio isinstance(ast_node, ast.AST) ama ast_node._fields ni Tupu:
+            rudisha
         ikiwa isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
             node_pos = (ast_node.lineno, ast_node.col_offset)
             self.assertGreaterEqual(node_pos, parent_pos)
             parent_pos = (ast_node.lineno, ast_node.col_offset)
-        for name in ast_node._fields:
+        kila name kwenye ast_node._fields:
             value = getattr(ast_node, name)
             ikiwa isinstance(value, list):
                 first_pos = parent_pos
-                ikiwa value and name == 'decorator_list':
+                ikiwa value na name == 'decorator_list':
                     first_pos = (value[0].lineno, value[0].col_offset)
-                for child in value:
-                    self._assertTrueorder(child, first_pos)
-            elikiwa value is not None:
-                self._assertTrueorder(value, parent_pos)
+                kila child kwenye value:
+                    self._assertKweliorder(child, first_pos)
+            elikiwa value ni sio Tupu:
+                self._assertKweliorder(value, parent_pos)
 
     eleza test_AST_objects(self):
         x = ast.AST()
@@ -271,43 +271,43 @@ kundi AST_Tests(unittest.TestCase):
 
     eleza test_AST_garbage_collection(self):
         kundi X:
-            pass
+            pita
         a = ast.AST()
         a.x = X()
         a.x.a = a
         ref = weakref.ref(a.x)
-        del a
+        toa a
         support.gc_collect()
-        self.assertIsNone(ref())
+        self.assertIsTupu(ref())
 
     eleza test_snippets(self):
-        for input, output, kind in ((exec_tests, exec_results, "exec"),
+        kila input, output, kind kwenye ((exec_tests, exec_results, "exec"),
                                     (single_tests, single_results, "single"),
                                     (eval_tests, eval_results, "eval")):
-            for i, o in zip(input, output):
+            kila i, o kwenye zip(input, output):
                 with self.subTest(action="parsing", input=i):
                     ast_tree = compile(i, "?", kind, ast.PyCF_ONLY_AST)
                     self.assertEqual(to_tuple(ast_tree), o)
-                    self._assertTrueorder(ast_tree, (0, 0))
+                    self._assertKweliorder(ast_tree, (0, 0))
                 with self.subTest(action="compiling", input=i, kind=kind):
                     compile(ast_tree, "?", kind)
 
     eleza test_ast_validation(self):
-        # compile() is the only function that calls PyAST_Validate
+        # compile() ni the only function that calls PyAST_Validate
         snippets_to_validate = exec_tests + single_tests + eval_tests
-        for snippet in snippets_to_validate:
+        kila snippet kwenye snippets_to_validate:
             tree = ast.parse(snippet)
             compile(tree, '<string>', 'exec')
 
     eleza test_slice(self):
         slc = ast.parse("x[::]").body[0].value.slice
-        self.assertIsNone(slc.upper)
-        self.assertIsNone(slc.lower)
-        self.assertIsNone(slc.step)
+        self.assertIsTupu(slc.upper)
+        self.assertIsTupu(slc.lower)
+        self.assertIsTupu(slc.step)
 
     eleza test_kutoka_agiza(self):
         im = ast.parse("kutoka . agiza y").body[0]
-        self.assertIsNone(im.module)
+        self.assertIsTupu(im.module)
 
     eleza test_non_interned_future_kutoka_ast(self):
         mod = ast.parse("kutoka __future__ agiza division")
@@ -316,16 +316,16 @@ kundi AST_Tests(unittest.TestCase):
         compile(mod, "<test>", "exec")
 
     eleza test_base_classes(self):
-        self.assertTrue(issubclass(ast.For, ast.stmt))
-        self.assertTrue(issubclass(ast.Name, ast.expr))
-        self.assertTrue(issubclass(ast.stmt, ast.AST))
-        self.assertTrue(issubclass(ast.expr, ast.AST))
-        self.assertTrue(issubclass(ast.comprehension, ast.AST))
-        self.assertTrue(issubclass(ast.Gt, ast.AST))
+        self.assertKweli(issubclass(ast.For, ast.stmt))
+        self.assertKweli(issubclass(ast.Name, ast.expr))
+        self.assertKweli(issubclass(ast.stmt, ast.AST))
+        self.assertKweli(issubclass(ast.expr, ast.AST))
+        self.assertKweli(issubclass(ast.comprehension, ast.AST))
+        self.assertKweli(issubclass(ast.Gt, ast.AST))
 
     eleza test_field_attr_existence(self):
-        for name, item in ast.__dict__.items():
-            ikiwa isinstance(item, type) and name != 'AST' and name[0].isupper():
+        kila name, item kwenye ast.__dict__.items():
+            ikiwa isinstance(item, type) na name != 'AST' na name[0].isupper():
                 x = item()
                 ikiwa isinstance(x, ast.AST):
                     self.assertEqual(type(x._fields), tuple)
@@ -376,26 +376,26 @@ kundi AST_Tests(unittest.TestCase):
         self.assertEqual(x.value, 42)
         self.assertEqual(x.n, 42)
 
-        self.assertRaises(TypeError, ast.Num, 1, None, 2)
-        self.assertRaises(TypeError, ast.Num, 1, None, 2, lineno=0)
+        self.assertRaises(TypeError, ast.Num, 1, Tupu, 2)
+        self.assertRaises(TypeError, ast.Num, 1, Tupu, 2, lineno=0)
 
         self.assertEqual(ast.Num(42).n, 42)
         self.assertEqual(ast.Num(4.25).n, 4.25)
         self.assertEqual(ast.Num(4.25j).n, 4.25j)
         self.assertEqual(ast.Str('42').s, '42')
         self.assertEqual(ast.Bytes(b'42').s, b'42')
-        self.assertIs(ast.NameConstant(True).value, True)
-        self.assertIs(ast.NameConstant(False).value, False)
-        self.assertIs(ast.NameConstant(None).value, None)
+        self.assertIs(ast.NameConstant(Kweli).value, Kweli)
+        self.assertIs(ast.NameConstant(Uongo).value, Uongo)
+        self.assertIs(ast.NameConstant(Tupu).value, Tupu)
 
         self.assertEqual(ast.Constant(42).value, 42)
         self.assertEqual(ast.Constant(4.25).value, 4.25)
         self.assertEqual(ast.Constant(4.25j).value, 4.25j)
         self.assertEqual(ast.Constant('42').value, '42')
         self.assertEqual(ast.Constant(b'42').value, b'42')
-        self.assertIs(ast.Constant(True).value, True)
-        self.assertIs(ast.Constant(False).value, False)
-        self.assertIs(ast.Constant(None).value, None)
+        self.assertIs(ast.Constant(Kweli).value, Kweli)
+        self.assertIs(ast.Constant(Uongo).value, Uongo)
+        self.assertIs(ast.Constant(Tupu).value, Tupu)
         self.assertIs(ast.Constant(...).value, ...)
 
     eleza test_realtype(self):
@@ -404,57 +404,57 @@ kundi AST_Tests(unittest.TestCase):
         self.assertEqual(type(ast.Num(4.25j)), ast.Constant)
         self.assertEqual(type(ast.Str('42')), ast.Constant)
         self.assertEqual(type(ast.Bytes(b'42')), ast.Constant)
-        self.assertEqual(type(ast.NameConstant(True)), ast.Constant)
-        self.assertEqual(type(ast.NameConstant(False)), ast.Constant)
-        self.assertEqual(type(ast.NameConstant(None)), ast.Constant)
+        self.assertEqual(type(ast.NameConstant(Kweli)), ast.Constant)
+        self.assertEqual(type(ast.NameConstant(Uongo)), ast.Constant)
+        self.assertEqual(type(ast.NameConstant(Tupu)), ast.Constant)
         self.assertEqual(type(ast.Ellipsis()), ast.Constant)
 
     eleza test_isinstance(self):
-        self.assertTrue(isinstance(ast.Num(42), ast.Num))
-        self.assertTrue(isinstance(ast.Num(4.2), ast.Num))
-        self.assertTrue(isinstance(ast.Num(4.2j), ast.Num))
-        self.assertTrue(isinstance(ast.Str('42'), ast.Str))
-        self.assertTrue(isinstance(ast.Bytes(b'42'), ast.Bytes))
-        self.assertTrue(isinstance(ast.NameConstant(True), ast.NameConstant))
-        self.assertTrue(isinstance(ast.NameConstant(False), ast.NameConstant))
-        self.assertTrue(isinstance(ast.NameConstant(None), ast.NameConstant))
-        self.assertTrue(isinstance(ast.Ellipsis(), ast.Ellipsis))
+        self.assertKweli(isinstance(ast.Num(42), ast.Num))
+        self.assertKweli(isinstance(ast.Num(4.2), ast.Num))
+        self.assertKweli(isinstance(ast.Num(4.2j), ast.Num))
+        self.assertKweli(isinstance(ast.Str('42'), ast.Str))
+        self.assertKweli(isinstance(ast.Bytes(b'42'), ast.Bytes))
+        self.assertKweli(isinstance(ast.NameConstant(Kweli), ast.NameConstant))
+        self.assertKweli(isinstance(ast.NameConstant(Uongo), ast.NameConstant))
+        self.assertKweli(isinstance(ast.NameConstant(Tupu), ast.NameConstant))
+        self.assertKweli(isinstance(ast.Ellipsis(), ast.Ellipsis))
 
-        self.assertTrue(isinstance(ast.Constant(42), ast.Num))
-        self.assertTrue(isinstance(ast.Constant(4.2), ast.Num))
-        self.assertTrue(isinstance(ast.Constant(4.2j), ast.Num))
-        self.assertTrue(isinstance(ast.Constant('42'), ast.Str))
-        self.assertTrue(isinstance(ast.Constant(b'42'), ast.Bytes))
-        self.assertTrue(isinstance(ast.Constant(True), ast.NameConstant))
-        self.assertTrue(isinstance(ast.Constant(False), ast.NameConstant))
-        self.assertTrue(isinstance(ast.Constant(None), ast.NameConstant))
-        self.assertTrue(isinstance(ast.Constant(...), ast.Ellipsis))
+        self.assertKweli(isinstance(ast.Constant(42), ast.Num))
+        self.assertKweli(isinstance(ast.Constant(4.2), ast.Num))
+        self.assertKweli(isinstance(ast.Constant(4.2j), ast.Num))
+        self.assertKweli(isinstance(ast.Constant('42'), ast.Str))
+        self.assertKweli(isinstance(ast.Constant(b'42'), ast.Bytes))
+        self.assertKweli(isinstance(ast.Constant(Kweli), ast.NameConstant))
+        self.assertKweli(isinstance(ast.Constant(Uongo), ast.NameConstant))
+        self.assertKweli(isinstance(ast.Constant(Tupu), ast.NameConstant))
+        self.assertKweli(isinstance(ast.Constant(...), ast.Ellipsis))
 
-        self.assertFalse(isinstance(ast.Str('42'), ast.Num))
-        self.assertFalse(isinstance(ast.Num(42), ast.Str))
-        self.assertFalse(isinstance(ast.Str('42'), ast.Bytes))
-        self.assertFalse(isinstance(ast.Num(42), ast.NameConstant))
-        self.assertFalse(isinstance(ast.Num(42), ast.Ellipsis))
-        self.assertFalse(isinstance(ast.NameConstant(True), ast.Num))
-        self.assertFalse(isinstance(ast.NameConstant(False), ast.Num))
+        self.assertUongo(isinstance(ast.Str('42'), ast.Num))
+        self.assertUongo(isinstance(ast.Num(42), ast.Str))
+        self.assertUongo(isinstance(ast.Str('42'), ast.Bytes))
+        self.assertUongo(isinstance(ast.Num(42), ast.NameConstant))
+        self.assertUongo(isinstance(ast.Num(42), ast.Ellipsis))
+        self.assertUongo(isinstance(ast.NameConstant(Kweli), ast.Num))
+        self.assertUongo(isinstance(ast.NameConstant(Uongo), ast.Num))
 
-        self.assertFalse(isinstance(ast.Constant('42'), ast.Num))
-        self.assertFalse(isinstance(ast.Constant(42), ast.Str))
-        self.assertFalse(isinstance(ast.Constant('42'), ast.Bytes))
-        self.assertFalse(isinstance(ast.Constant(42), ast.NameConstant))
-        self.assertFalse(isinstance(ast.Constant(42), ast.Ellipsis))
-        self.assertFalse(isinstance(ast.Constant(True), ast.Num))
-        self.assertFalse(isinstance(ast.Constant(False), ast.Num))
+        self.assertUongo(isinstance(ast.Constant('42'), ast.Num))
+        self.assertUongo(isinstance(ast.Constant(42), ast.Str))
+        self.assertUongo(isinstance(ast.Constant('42'), ast.Bytes))
+        self.assertUongo(isinstance(ast.Constant(42), ast.NameConstant))
+        self.assertUongo(isinstance(ast.Constant(42), ast.Ellipsis))
+        self.assertUongo(isinstance(ast.Constant(Kweli), ast.Num))
+        self.assertUongo(isinstance(ast.Constant(Uongo), ast.Num))
 
-        self.assertFalse(isinstance(ast.Constant(), ast.Num))
-        self.assertFalse(isinstance(ast.Constant(), ast.Str))
-        self.assertFalse(isinstance(ast.Constant(), ast.Bytes))
-        self.assertFalse(isinstance(ast.Constant(), ast.NameConstant))
-        self.assertFalse(isinstance(ast.Constant(), ast.Ellipsis))
+        self.assertUongo(isinstance(ast.Constant(), ast.Num))
+        self.assertUongo(isinstance(ast.Constant(), ast.Str))
+        self.assertUongo(isinstance(ast.Constant(), ast.Bytes))
+        self.assertUongo(isinstance(ast.Constant(), ast.NameConstant))
+        self.assertUongo(isinstance(ast.Constant(), ast.Ellipsis))
 
-        kundi S(str): pass
-        self.assertTrue(isinstance(ast.Constant(S('42')), ast.Str))
-        self.assertFalse(isinstance(ast.Constant(S('42')), ast.Num))
+        kundi S(str): pita
+        self.assertKweli(isinstance(ast.Constant(S('42')), ast.Str))
+        self.assertUongo(isinstance(ast.Constant(S('42')), ast.Num))
 
     eleza test_subclasses(self):
         kundi N(ast.Num):
@@ -462,16 +462,16 @@ kundi AST_Tests(unittest.TestCase):
                 super().__init__(*args, **kwargs)
                 self.z = 'spam'
         kundi N2(ast.Num):
-            pass
+            pita
 
         n = N(42)
         self.assertEqual(n.n, 42)
         self.assertEqual(n.z, 'spam')
         self.assertEqual(type(n), N)
-        self.assertTrue(isinstance(n, N))
-        self.assertTrue(isinstance(n, ast.Num))
-        self.assertFalse(isinstance(n, N2))
-        self.assertFalse(isinstance(ast.Num(42), N))
+        self.assertKweli(isinstance(n, N))
+        self.assertKweli(isinstance(n, ast.Num))
+        self.assertUongo(isinstance(n, N2))
+        self.assertUongo(isinstance(ast.Num(42), N))
         n = N(n=42)
         self.assertEqual(n.n, 42)
         self.assertEqual(type(n), N)
@@ -509,9 +509,9 @@ kundi AST_Tests(unittest.TestCase):
         self.assertEqual(x.right, 3)
         self.assertEqual(x.lineno, 0)
 
-        # node raises exception when given too many arguments
+        # node ashirias exception when given too many arguments
         self.assertRaises(TypeError, ast.BinOp, 1, 2, 3, 4)
-        # node raises exception when given too many arguments
+        # node ashirias exception when given too many arguments
         self.assertRaises(TypeError, ast.BinOp, 1, 2, 3, 4, lineno=0)
 
         # can set attributes through kwargs too
@@ -526,54 +526,54 @@ kundi AST_Tests(unittest.TestCase):
         self.assertEqual(x.foobarbaz, 42)
 
     eleza test_no_fields(self):
-        # this used to fail because Sub._fields was None
+        # this used to fail because Sub._fields was Tupu
         x = ast.Sub()
         self.assertEqual(x._fields, ())
 
     eleza test_pickling(self):
         agiza pickle
         mods = [pickle]
-        try:
+        jaribu:
             agiza cPickle
             mods.append(cPickle)
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         protocols = [0, 1, 2]
-        for mod in mods:
-            for protocol in protocols:
-                for ast in (compile(i, "?", "exec", 0x400) for i in exec_tests):
+        kila mod kwenye mods:
+            kila protocol kwenye protocols:
+                kila ast kwenye (compile(i, "?", "exec", 0x400) kila i kwenye exec_tests):
                     ast2 = mod.loads(mod.dumps(ast, protocol))
                     self.assertEqual(to_tuple(ast2), to_tuple(ast))
 
     eleza test_invalid_sum(self):
         pos = dict(lineno=2, col_offset=3)
         m = ast.Module([ast.Expr(ast.expr(**pos), **pos)], [])
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) kama cm:
             compile(m, "<test>", "exec")
         self.assertIn("but got <_ast.expr", str(cm.exception))
 
     eleza test_invalid_identitifer(self):
         m = ast.Module([ast.Expr(ast.Name(42, ast.Load()))], [])
         ast.fix_missing_locations(m)
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) kama cm:
             compile(m, "<test>", "exec")
         self.assertIn("identifier must be of type str", str(cm.exception))
 
-    eleza test_empty_yield_kutoka(self):
-        # Issue 16546: yield kutoka value is not optional.
-        empty_yield_kutoka = ast.parse("eleza f():\n yield kutoka g()")
-        empty_yield_kutoka.body[0].body[0].value.value = None
-        with self.assertRaises(ValueError) as cm:
-            compile(empty_yield_kutoka, "<test>", "exec")
-        self.assertIn("field value is required", str(cm.exception))
+    eleza test_empty_tuma_kutoka(self):
+        # Issue 16546: tuma kutoka value ni sio optional.
+        empty_tuma_kutoka = ast.parse("eleza f():\n tuma kutoka g()")
+        empty_tuma_kutoka.body[0].body[0].value.value = Tupu
+        with self.assertRaises(ValueError) kama cm:
+            compile(empty_tuma_kutoka, "<test>", "exec")
+        self.assertIn("field value ni required", str(cm.exception))
 
     @support.cpython_only
     eleza test_issue31592(self):
-        # There shouldn't be an assertion failure in case of a bad
+        # There shouldn't be an assertion failure kwenye case of a bad
         # unicodedata.normalize().
         agiza unicodedata
         eleza bad_normalize(*args):
-            rudisha None
+            rudisha Tupu
         with support.swap_attr(unicodedata, 'normalize', bad_normalize):
             self.assertRaises(TypeError, ast.parse, '\u03D5')
 
@@ -609,7 +609,7 @@ kundi AST_Tests(unittest.TestCase):
         self.assertEqual(grandchild_binop.end_lineno, 1)
 
 kundi ASTHelpers_Test(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Tupu
 
     eleza test_parse(self):
         a = ast.parse('foo(1 + 1)')
@@ -617,29 +617,29 @@ kundi ASTHelpers_Test(unittest.TestCase):
         self.assertEqual(ast.dump(a), ast.dump(b))
 
     eleza test_parse_in_error(self):
-        try:
+        jaribu:
             1/0
-        except Exception:
-            with self.assertRaises(SyntaxError) as e:
+        tatizo Exception:
+            with self.assertRaises(SyntaxError) kama e:
                 ast.literal_eval(r"'\U'")
-            self.assertIsNotNone(e.exception.__context__)
+            self.assertIsNotTupu(e.exception.__context__)
 
     eleza test_dump(self):
         node = ast.parse('spam(eggs, "and cheese")')
         self.assertEqual(ast.dump(node),
             "Module(body=[Expr(value=Call(func=Name(id='spam', ctx=Load()), "
-            "args=[Name(id='eggs', ctx=Load()), Constant(value='and cheese', kind=None)], "
+            "args=[Name(id='eggs', ctx=Load()), Constant(value='and cheese', kind=Tupu)], "
             "keywords=[]))], type_ignores=[])"
         )
-        self.assertEqual(ast.dump(node, annotate_fields=False),
+        self.assertEqual(ast.dump(node, annotate_fields=Uongo),
             "Module([Expr(Call(Name('spam', Load()), [Name('eggs', Load()), "
-            "Constant('and cheese', None)], []))], [])"
+            "Constant('and cheese', Tupu)], []))], [])"
         )
-        self.assertEqual(ast.dump(node, include_attributes=True),
+        self.assertEqual(ast.dump(node, include_attributes=Kweli),
             "Module(body=[Expr(value=Call(func=Name(id='spam', ctx=Load(), "
             "lineno=1, col_offset=0, end_lineno=1, end_col_offset=4), "
             "args=[Name(id='eggs', ctx=Load(), lineno=1, col_offset=5, "
-            "end_lineno=1, end_col_offset=9), Constant(value='and cheese', kind=None, "
+            "end_lineno=1, end_col_offset=9), Constant(value='and cheese', kind=Tupu, "
             "lineno=1, col_offset=11, end_lineno=1, end_col_offset=23)], keywords=[], "
             "lineno=1, col_offset=0, end_lineno=1, end_col_offset=24), "
             "lineno=1, col_offset=0, end_lineno=1, end_col_offset=24)], type_ignores=[])"
@@ -650,35 +650,35 @@ kundi ASTHelpers_Test(unittest.TestCase):
         self.assertEqual(ast.dump(node),
             "Raise()"
         )
-        self.assertEqual(ast.dump(node, include_attributes=True),
+        self.assertEqual(ast.dump(node, include_attributes=Kweli),
             "Raise(lineno=3, col_offset=4)"
         )
         node = ast.Raise(exc=ast.Name(id='e', ctx=ast.Load()), lineno=3, col_offset=4)
         self.assertEqual(ast.dump(node),
             "Raise(exc=Name(id='e', ctx=Load()))"
         )
-        self.assertEqual(ast.dump(node, annotate_fields=False),
+        self.assertEqual(ast.dump(node, annotate_fields=Uongo),
             "Raise(Name('e', Load()))"
         )
-        self.assertEqual(ast.dump(node, include_attributes=True),
+        self.assertEqual(ast.dump(node, include_attributes=Kweli),
             "Raise(exc=Name(id='e', ctx=Load()), lineno=3, col_offset=4)"
         )
-        self.assertEqual(ast.dump(node, annotate_fields=False, include_attributes=True),
+        self.assertEqual(ast.dump(node, annotate_fields=Uongo, include_attributes=Kweli),
             "Raise(Name('e', Load()), lineno=3, col_offset=4)"
         )
         node = ast.Raise(cause=ast.Name(id='e', ctx=ast.Load()))
         self.assertEqual(ast.dump(node),
             "Raise(cause=Name(id='e', ctx=Load()))"
         )
-        self.assertEqual(ast.dump(node, annotate_fields=False),
+        self.assertEqual(ast.dump(node, annotate_fields=Uongo),
             "Raise(cause=Name('e', Load()))"
         )
 
     eleza test_copy_location(self):
         src = ast.parse('1 + 1', mode='eval')
         src.body.right = ast.copy_location(ast.Num(2), src.body.right)
-        self.assertEqual(ast.dump(src, include_attributes=True),
-            'Expression(body=BinOp(left=Constant(value=1, kind=None, lineno=1, col_offset=0, '
+        self.assertEqual(ast.dump(src, include_attributes=Kweli),
+            'Expression(body=BinOp(left=Constant(value=1, kind=Tupu, lineno=1, col_offset=0, '
             'end_lineno=1, end_col_offset=1), op=Add(), right=Constant(value=2, '
             'lineno=1, col_offset=4, end_lineno=1, end_col_offset=5), lineno=1, '
             'col_offset=0, end_lineno=1, end_col_offset=5))'
@@ -689,11 +689,11 @@ kundi ASTHelpers_Test(unittest.TestCase):
         src.body.append(ast.Expr(ast.Call(ast.Name('spam', ast.Load()),
                                           [ast.Str('eggs')], [])))
         self.assertEqual(src, ast.fix_missing_locations(src))
-        self.maxDiff = None
-        self.assertEqual(ast.dump(src, include_attributes=True),
+        self.maxDiff = Tupu
+        self.assertEqual(ast.dump(src, include_attributes=Kweli),
             "Module(body=[Expr(value=Call(func=Name(id='write', ctx=Load(), "
             "lineno=1, col_offset=0, end_lineno=1, end_col_offset=5), "
-            "args=[Constant(value='spam', kind=None, lineno=1, col_offset=6, end_lineno=1, "
+            "args=[Constant(value='spam', kind=Tupu, lineno=1, col_offset=6, end_lineno=1, "
             "end_col_offset=12)], keywords=[], lineno=1, col_offset=0, end_lineno=1, "
             "end_col_offset=13), lineno=1, col_offset=0, end_lineno=1, "
             "end_col_offset=13), Expr(value=Call(func=Name(id='spam', ctx=Load(), "
@@ -707,18 +707,18 @@ kundi ASTHelpers_Test(unittest.TestCase):
     eleza test_increment_lineno(self):
         src = ast.parse('1 + 1', mode='eval')
         self.assertEqual(ast.increment_lineno(src, n=3), src)
-        self.assertEqual(ast.dump(src, include_attributes=True),
-            'Expression(body=BinOp(left=Constant(value=1, kind=None, lineno=4, col_offset=0, '
-            'end_lineno=4, end_col_offset=1), op=Add(), right=Constant(value=1, kind=None, '
+        self.assertEqual(ast.dump(src, include_attributes=Kweli),
+            'Expression(body=BinOp(left=Constant(value=1, kind=Tupu, lineno=4, col_offset=0, '
+            'end_lineno=4, end_col_offset=1), op=Add(), right=Constant(value=1, kind=Tupu, '
             'lineno=4, col_offset=4, end_lineno=4, end_col_offset=5), lineno=4, '
             'col_offset=0, end_lineno=4, end_col_offset=5))'
         )
-        # issue10869: do not increment lineno of root twice
+        # issue10869: do sio increment lineno of root twice
         src = ast.parse('1 + 1', mode='eval')
         self.assertEqual(ast.increment_lineno(src.body, n=3), src.body)
-        self.assertEqual(ast.dump(src, include_attributes=True),
-            'Expression(body=BinOp(left=Constant(value=1, kind=None, lineno=4, col_offset=0, '
-            'end_lineno=4, end_col_offset=1), op=Add(), right=Constant(value=1, kind=None, '
+        self.assertEqual(ast.dump(src, include_attributes=Kweli),
+            'Expression(body=BinOp(left=Constant(value=1, kind=Tupu, lineno=4, col_offset=0, '
+            'end_lineno=4, end_col_offset=1), op=Add(), right=Constant(value=1, kind=Tupu, '
             'lineno=4, col_offset=4, end_lineno=4, end_col_offset=5), lineno=4, '
             'col_offset=0, end_lineno=4, end_col_offset=5))'
         )
@@ -737,7 +737,7 @@ kundi ASTHelpers_Test(unittest.TestCase):
         self.assertEqual(next(iterator).value, 23)
         self.assertEqual(next(iterator).value, 42)
         self.assertEqual(ast.dump(next(iterator)),
-            "keyword(arg='eggs', value=Constant(value='leek', kind=None))"
+            "keyword(arg='eggs', value=Constant(value='leek', kind=Tupu))"
         )
 
     eleza test_get_docstring(self):
@@ -757,28 +757,28 @@ kundi ASTHelpers_Test(unittest.TestCase):
         self.assertEqual(ast.get_docstring(node.body[0]), 'spam\nham')
 
     eleza test_get_docstring_none(self):
-        self.assertIsNone(ast.get_docstring(ast.parse('')))
+        self.assertIsTupu(ast.get_docstring(ast.parse('')))
         node = ast.parse('x = "not docstring"')
-        self.assertIsNone(ast.get_docstring(node))
-        node = ast.parse('eleza foo():\n  pass')
-        self.assertIsNone(ast.get_docstring(node))
+        self.assertIsTupu(ast.get_docstring(node))
+        node = ast.parse('eleza foo():\n  pita')
+        self.assertIsTupu(ast.get_docstring(node))
 
-        node = ast.parse('kundi foo:\n  pass')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
+        node = ast.parse('kundi foo:\n  pita')
+        self.assertIsTupu(ast.get_docstring(node.body[0]))
         node = ast.parse('kundi foo:\n  x = "not docstring"')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
-        node = ast.parse('kundi foo:\n  eleza bar(self): pass')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
+        self.assertIsTupu(ast.get_docstring(node.body[0]))
+        node = ast.parse('kundi foo:\n  eleza bar(self): pita')
+        self.assertIsTupu(ast.get_docstring(node.body[0]))
 
-        node = ast.parse('eleza foo():\n  pass')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
+        node = ast.parse('eleza foo():\n  pita')
+        self.assertIsTupu(ast.get_docstring(node.body[0]))
         node = ast.parse('eleza foo():\n  x = "not docstring"')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
+        self.assertIsTupu(ast.get_docstring(node.body[0]))
 
-        node = ast.parse('async eleza foo():\n  pass')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
+        node = ast.parse('async eleza foo():\n  pita')
+        self.assertIsTupu(ast.get_docstring(node.body[0]))
         node = ast.parse('async eleza foo():\n  x = "not docstring"')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
+        self.assertIsTupu(ast.get_docstring(node.body[0]))
 
     eleza test_multi_line_docstring_col_offset_and_lineno_issue16806(self):
         node = ast.parse(
@@ -802,7 +802,7 @@ kundi ASTHelpers_Test(unittest.TestCase):
     eleza test_literal_eval(self):
         self.assertEqual(ast.literal_eval('[1, 2, 3]'), [1, 2, 3])
         self.assertEqual(ast.literal_eval('{"foo": 42}'), {"foo": 42})
-        self.assertEqual(ast.literal_eval('(True, False, None)'), (True, False, None))
+        self.assertEqual(ast.literal_eval('(Kweli, Uongo, Tupu)'), (Kweli, Uongo, Tupu))
         self.assertEqual(ast.literal_eval('{1, 2, 3}'), {1, 2, 3})
         self.assertEqual(ast.literal_eval('b"hi"'), b"hi")
         self.assertRaises(ValueError, ast.literal_eval, 'foo()')
@@ -814,7 +814,7 @@ kundi ASTHelpers_Test(unittest.TestCase):
         self.assertEqual(ast.literal_eval('-3.25'), -3.25)
         self.assertEqual(repr(ast.literal_eval('-0.0')), '-0.0')
         self.assertRaises(ValueError, ast.literal_eval, '++6')
-        self.assertRaises(ValueError, ast.literal_eval, '+True')
+        self.assertRaises(ValueError, ast.literal_eval, '+Kweli')
         self.assertRaises(ValueError, ast.literal_eval, '2+3')
 
     eleza test_literal_eval_complex(self):
@@ -842,17 +842,17 @@ kundi ASTHelpers_Test(unittest.TestCase):
         # issue13436: Bad error message with invalid numeric values
         body = [ast.ImportFrom(module='time',
                                names=[ast.alias(name='sleep')],
-                               level=None,
-                               lineno=None, col_offset=None)]
+                               level=Tupu,
+                               lineno=Tupu, col_offset=Tupu)]
         mod = ast.Module(body, [])
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             compile(mod, 'test', 'exec')
-        self.assertIn("invalid integer value: None", str(cm.exception))
+        self.assertIn("invalid integer value: Tupu", str(cm.exception))
 
     eleza test_level_as_none(self):
         body = [ast.ImportFrom(module='time',
                                names=[ast.alias(name='sleep')],
-                               level=None,
+                               level=Tupu,
                                lineno=0, col_offset=0)]
         mod = ast.Module(body, [])
         code = compile(mod, 'test', 'exec')
@@ -863,21 +863,21 @@ kundi ASTHelpers_Test(unittest.TestCase):
 
 kundi ASTValidatorTests(unittest.TestCase):
 
-    eleza mod(self, mod, msg=None, mode="exec", *, exc=ValueError):
+    eleza mod(self, mod, msg=Tupu, mode="exec", *, exc=ValueError):
         mod.lineno = mod.col_offset = 0
         ast.fix_missing_locations(mod)
-        ikiwa msg is None:
+        ikiwa msg ni Tupu:
             compile(mod, "<test>", mode)
-        else:
-            with self.assertRaises(exc) as cm:
+        isipokua:
+            with self.assertRaises(exc) kama cm:
                 compile(mod, "<test>", mode)
             self.assertIn(msg, str(cm.exception))
 
-    eleza expr(self, node, msg=None, *, exc=ValueError):
+    eleza expr(self, node, msg=Tupu, *, exc=ValueError):
         mod = ast.Module([ast.Expr(node)], [])
         self.mod(mod, msg, exc=exc)
 
-    eleza stmt(self, stmt, msg=None):
+    eleza stmt(self, stmt, msg=Tupu):
         mod = ast.Module([stmt], [])
         self.mod(mod, msg)
 
@@ -888,18 +888,18 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.mod(m, "must have Load context", "eval")
 
     eleza _check_arguments(self, fac, check):
-        eleza arguments(args=None, posonlyargs=None, vararg=None,
-                      kwonlyargs=None, kwarg=None,
-                      defaults=None, kw_defaults=None):
-            ikiwa args is None:
+        eleza arguments(args=Tupu, posonlyargs=Tupu, vararg=Tupu,
+                      kwonlyargs=Tupu, kwarg=Tupu,
+                      defaults=Tupu, kw_defaults=Tupu):
+            ikiwa args ni Tupu:
                 args = []
-            ikiwa posonlyargs is None:
+            ikiwa posonlyargs ni Tupu:
                 posonlyargs = []
-            ikiwa kwonlyargs is None:
+            ikiwa kwonlyargs ni Tupu:
                 kwonlyargs = []
-            ikiwa defaults is None:
+            ikiwa defaults ni Tupu:
                 defaults = []
-            ikiwa kw_defaults is None:
+            ikiwa kw_defaults ni Tupu:
                 kw_defaults = []
             args = ast.arguments(args, posonlyargs, vararg, kwonlyargs,
                                  kw_defaults, kwarg, defaults)
@@ -911,39 +911,39 @@ kundi ASTValidatorTests(unittest.TestCase):
         check(arguments(defaults=[ast.Num(3)]),
                        "more positional defaults than args")
         check(arguments(kw_defaults=[ast.Num(4)]),
-                       "length of kwonlyargs is not the same as kw_defaults")
+                       "length of kwonlyargs ni sio the same kama kw_defaults")
         args = [ast.arg("x", ast.Name("x", ast.Load()))]
         check(arguments(args=args, defaults=[ast.Name("x", ast.Store())]),
                        "must have Load context")
         args = [ast.arg("a", ast.Name("x", ast.Load())),
                 ast.arg("b", ast.Name("y", ast.Load()))]
         check(arguments(kwonlyargs=args,
-                          kw_defaults=[None, ast.Name("x", ast.Store())]),
+                          kw_defaults=[Tupu, ast.Name("x", ast.Store())]),
                           "must have Load context")
 
     eleza test_funcdef(self):
-        a = ast.arguments([], [], None, [], [], None, [])
-        f = ast.FunctionDef("x", a, [], [], None)
+        a = ast.arguments([], [], Tupu, [], [], Tupu, [])
+        f = ast.FunctionDef("x", a, [], [], Tupu)
         self.stmt(f, "empty body on FunctionDef")
         f = ast.FunctionDef("x", a, [ast.Pass()], [ast.Name("x", ast.Store())],
-                            None)
+                            Tupu)
         self.stmt(f, "must have Load context")
         f = ast.FunctionDef("x", a, [ast.Pass()], [],
                             ast.Name("x", ast.Store()))
         self.stmt(f, "must have Load context")
         eleza fac(args):
-            rudisha ast.FunctionDef("x", args, [ast.Pass()], [], None)
+            rudisha ast.FunctionDef("x", args, [ast.Pass()], [], Tupu)
         self._check_arguments(fac, self.stmt)
 
     eleza test_classdef(self):
-        eleza cls(bases=None, keywords=None, body=None, decorator_list=None):
-            ikiwa bases is None:
+        eleza cls(bases=Tupu, keywords=Tupu, body=Tupu, decorator_list=Tupu):
+            ikiwa bases ni Tupu:
                 bases = []
-            ikiwa keywords is None:
+            ikiwa keywords ni Tupu:
                 keywords = []
-            ikiwa body is None:
+            ikiwa body ni Tupu:
                 body = [ast.Pass()]
-            ikiwa decorator_list is None:
+            ikiwa decorator_list ni Tupu:
                 decorator_list = []
             rudisha ast.ClassDef("myclass", bases, keywords,
                                 body, decorator_list)
@@ -952,19 +952,19 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.stmt(cls(keywords=[ast.keyword("x", ast.Name("x", ast.Store()))]),
                   "must have Load context")
         self.stmt(cls(body=[]), "empty body on ClassDef")
-        self.stmt(cls(body=[None]), "None disallowed")
+        self.stmt(cls(body=[Tupu]), "Tupu disallowed")
         self.stmt(cls(decorator_list=[ast.Name("x", ast.Store())]),
                   "must have Load context")
 
     eleza test_delete(self):
         self.stmt(ast.Delete([]), "empty targets on Delete")
-        self.stmt(ast.Delete([None]), "None disallowed")
+        self.stmt(ast.Delete([Tupu]), "Tupu disallowed")
         self.stmt(ast.Delete([ast.Name("x", ast.Load())]),
                   "must have Del context")
 
     eleza test_assign(self):
         self.stmt(ast.Assign([], ast.Num(3)), "empty targets on Assign")
-        self.stmt(ast.Assign([None], ast.Num(3)), "None disallowed")
+        self.stmt(ast.Assign([Tupu], ast.Num(3)), "Tupu disallowed")
         self.stmt(ast.Assign([ast.Name("x", ast.Load())], ast.Num(3)),
                   "must have Store context")
         self.stmt(ast.Assign([ast.Name("x", ast.Store())],
@@ -1013,17 +1013,17 @@ kundi ASTValidatorTests(unittest.TestCase):
     eleza test_with(self):
         p = ast.Pass()
         self.stmt(ast.With([], [p]), "empty items on With")
-        i = ast.withitem(ast.Num(3), None)
+        i = ast.withitem(ast.Num(3), Tupu)
         self.stmt(ast.With([i], []), "empty body on With")
-        i = ast.withitem(ast.Name("x", ast.Store()), None)
+        i = ast.withitem(ast.Name("x", ast.Store()), Tupu)
         self.stmt(ast.With([i], [p]), "must have Load context")
         i = ast.withitem(ast.Num(3), ast.Name("x", ast.Load()))
         self.stmt(ast.With([i], [p]), "must have Store context")
 
-    eleza test_raise(self):
-        r = ast.Raise(None, ast.Num(3))
+    eleza test_ashiria(self):
+        r = ast.Raise(Tupu, ast.Num(3))
         self.stmt(r, "Raise with cause but no exception")
-        r = ast.Raise(ast.Name("x", ast.Store()), None)
+        r = ast.Raise(ast.Name("x", ast.Store()), Tupu)
         self.stmt(r, "must have Load context")
         r = ast.Raise(ast.Num(4), ast.Name("x", ast.Store()))
         self.stmt(r, "must have Load context")
@@ -1035,21 +1035,21 @@ kundi ASTValidatorTests(unittest.TestCase):
         t = ast.Try([ast.Expr(ast.Name("x", ast.Store()))], [], [], [p])
         self.stmt(t, "must have Load context")
         t = ast.Try([p], [], [], [])
-        self.stmt(t, "Try has neither except handlers nor finalbody")
+        self.stmt(t, "Try has neither tatizo handlers nor finalbody")
         t = ast.Try([p], [], [p], [p])
-        self.stmt(t, "Try has orelse but no except handlers")
-        t = ast.Try([p], [ast.ExceptHandler(None, "x", [])], [], [])
+        self.stmt(t, "Try has orelse but no tatizo handlers")
+        t = ast.Try([p], [ast.ExceptHandler(Tupu, "x", [])], [], [])
         self.stmt(t, "empty body on ExceptHandler")
         e = [ast.ExceptHandler(ast.Name("x", ast.Store()), "y", [p])]
         self.stmt(ast.Try([p], e, [], []), "must have Load context")
-        e = [ast.ExceptHandler(None, "x", [p])]
+        e = [ast.ExceptHandler(Tupu, "x", [p])]
         t = ast.Try([p], e, [ast.Expr(ast.Name("x", ast.Store()))], [p])
         self.stmt(t, "must have Load context")
         t = ast.Try([p], e, [p], [ast.Expr(ast.Name("x", ast.Store()))])
         self.stmt(t, "must have Load context")
 
     eleza test_assert(self):
-        self.stmt(ast.Assert(ast.Name("x", ast.Store()), None),
+        self.stmt(ast.Assert(ast.Name("x", ast.Store()), Tupu),
                   "must have Load context")
         assrt = ast.Assert(ast.Name("x", ast.Load()),
                            ast.Name("y", ast.Store()))
@@ -1059,9 +1059,9 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.stmt(ast.Import([]), "empty names on Import")
 
     eleza test_agizakutoka(self):
-        imp = ast.ImportFrom(None, [ast.alias("x", None)], -42)
+        imp = ast.ImportFrom(Tupu, [ast.alias("x", Tupu)], -42)
         self.stmt(imp, "Negative ImportFrom level")
-        self.stmt(ast.ImportFrom(None, [], 0), "empty names on ImportFrom")
+        self.stmt(ast.ImportFrom(Tupu, [], 0), "empty names on ImportFrom")
 
     eleza test_global(self):
         self.stmt(ast.Global([]), "empty names on Global")
@@ -1078,8 +1078,8 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.expr(b, "less than 2 values")
         b = ast.BoolOp(ast.And(), [ast.Num(3)])
         self.expr(b, "less than 2 values")
-        b = ast.BoolOp(ast.And(), [ast.Num(4), None])
-        self.expr(b, "None disallowed")
+        b = ast.BoolOp(ast.And(), [ast.Num(4), Tupu])
+        self.expr(b, "Tupu disallowed")
         b = ast.BoolOp(ast.And(), [ast.Num(4), ast.Name("x", ast.Store())])
         self.expr(b, "must have Load context")
 
@@ -1088,7 +1088,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.expr(u, "must have Load context")
 
     eleza test_lambda(self):
-        a = ast.arguments([], [], None, [], [], None, [])
+        a = ast.arguments([], [], Tupu, [], [], Tupu, [])
         self.expr(ast.Lambda(a, ast.Name("x", ast.Store())),
                   "must have Load context")
         eleza fac(args):
@@ -1098,17 +1098,17 @@ kundi ASTValidatorTests(unittest.TestCase):
     eleza test_ifexp(self):
         l = ast.Name("x", ast.Load())
         s = ast.Name("y", ast.Store())
-        for args in (s, l, l), (l, s, l), (l, l, s):
+        kila args kwenye (s, l, l), (l, s, l), (l, l, s):
             self.expr(ast.IfExp(*args), "must have Load context")
 
     eleza test_dict(self):
         d = ast.Dict([], [ast.Name("x", ast.Load())])
-        self.expr(d, "same number of keys as values")
-        d = ast.Dict([ast.Name("x", ast.Load())], [None])
-        self.expr(d, "None disallowed")
+        self.expr(d, "same number of keys kama values")
+        d = ast.Dict([ast.Name("x", ast.Load())], [Tupu])
+        self.expr(d, "Tupu disallowed")
 
     eleza test_set(self):
-        self.expr(ast.Set([None]), "None disallowed")
+        self.expr(ast.Set([Tupu]), "Tupu disallowed")
         s = ast.Set([ast.Name("x", ast.Store())])
         self.expr(s, "must have Load context")
 
@@ -1122,8 +1122,8 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.expr(fac([g]), "must have Load context")
         x = ast.Name("x", ast.Store())
         y = ast.Name("y", ast.Load())
-        g = ast.comprehension(x, y, [None], 0)
-        self.expr(fac([g]), "None disallowed")
+        g = ast.comprehension(x, y, [Tupu], 0)
+        self.expr(fac([g]), "Tupu disallowed")
         g = ast.comprehension(x, y, [ast.Name("x", ast.Store())], 0)
         self.expr(fac([g]), "must have Load context")
 
@@ -1160,7 +1160,7 @@ kundi ASTValidatorTests(unittest.TestCase):
             rudisha ast.DictComp(k, v, comps)
         self._check_comprehension(factory)
 
-    eleza test_yield(self):
+    eleza test_tuma(self):
         self.expr(ast.Yield(ast.Name("x", ast.Store())), "must have Load")
         self.expr(ast.YieldFrom(ast.Name("x", ast.Store())), "must have Load")
 
@@ -1169,7 +1169,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         comp = ast.Compare(left, [ast.In()], [])
         self.expr(comp, "no comparators")
         comp = ast.Compare(left, [ast.In()], [ast.Num(4), ast.Num(5)])
-        self.expr(comp, "different number of comparators and operands")
+        self.expr(comp, "different number of comparators na operands")
         comp = ast.Compare(ast.Num("blah"), [ast.In()], [left])
         self.expr(comp)
         comp = ast.Compare(left, [ast.In()], [ast.Num("blah")])
@@ -1181,22 +1181,22 @@ kundi ASTValidatorTests(unittest.TestCase):
         keywords = [ast.keyword("w", ast.Name("z", ast.Load()))]
         call = ast.Call(ast.Name("x", ast.Store()), args, keywords)
         self.expr(call, "must have Load context")
-        call = ast.Call(func, [None], keywords)
-        self.expr(call, "None disallowed")
+        call = ast.Call(func, [Tupu], keywords)
+        self.expr(call, "Tupu disallowed")
         bad_keywords = [ast.keyword("w", ast.Name("z", ast.Store()))]
         call = ast.Call(func, args, bad_keywords)
         self.expr(call, "must have Load context")
 
     eleza test_num(self):
         kundi subint(int):
-            pass
+            pita
         kundi subfloat(float):
-            pass
+            pita
         kundi subcomplex(complex):
-            pass
-        for obj in "0", "hello":
+            pita
+        kila obj kwenye "0", "hello":
             self.expr(ast.Num(obj))
-        for obj in subint(), subfloat(), subcomplex():
+        kila obj kwenye subint(), subfloat(), subcomplex():
             self.expr(ast.Num(obj), "invalid type", exc=TypeError)
 
     eleza test_attribute(self):
@@ -1212,7 +1212,7 @@ kundi ASTValidatorTests(unittest.TestCase):
                             ast.Load())
         self.expr(sub, "must have Load context")
         s = ast.Name("x", ast.Store())
-        for args in (s, None, None), (None, s, None), (None, None, s):
+        kila args kwenye (s, Tupu, Tupu), (Tupu, s, Tupu), (Tupu, Tupu, s):
             sl = ast.Slice(*args)
             self.expr(ast.Subscript(x, sl, ast.Load()),
                       "must have Load context")
@@ -1228,7 +1228,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         self.stmt(assign, "must have Store context")
 
     eleza _sequence(self, fac):
-        self.expr(fac([None], ast.Load()), "None disallowed")
+        self.expr(fac([Tupu], ast.Load()), "Tupu disallowed")
         self.expr(fac([ast.Name("x", ast.Store())], ast.Load()),
                   "must have Load context")
 
@@ -1243,12 +1243,12 @@ kundi ASTValidatorTests(unittest.TestCase):
 
     eleza test_stdlib_validates(self):
         stdlib = os.path.dirname(ast.__file__)
-        tests = [fn for fn in os.listdir(stdlib) ikiwa fn.endswith(".py")]
+        tests = [fn kila fn kwenye os.listdir(stdlib) ikiwa fn.endswith(".py")]
         tests.extend(["test/test_grammar.py", "test/test_unpack_ex.py"])
-        for module in tests:
+        kila module kwenye tests:
             with self.subTest(module):
                 fn = os.path.join(stdlib, module)
-                with open(fn, "r", encoding="utf-8") as fp:
+                with open(fn, "r", encoding="utf-8") kama fp:
                     source = fp.read()
                 mod = ast.parse(source, fn)
                 compile(mod, fn, "exec")
@@ -1272,13 +1272,13 @@ kundi ConstantTests(unittest.TestCase):
         rudisha ns['x']
 
     eleza test_validation(self):
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) kama cm:
             self.compile_constant([1, 2, 3])
         self.assertEqual(str(cm.exception),
-                         "got an invalid type in Constant: list")
+                         "got an invalid type kwenye Constant: list")
 
     eleza test_singletons(self):
-        for const in (None, False, True, Ellipsis, b'', frozenset()):
+        kila const kwenye (Tupu, Uongo, Kweli, Ellipsis, b'', frozenset()):
             with self.subTest(const=const):
                 value = self.compile_constant(const)
                 self.assertIs(value, const)
@@ -1286,14 +1286,14 @@ kundi ConstantTests(unittest.TestCase):
     eleza test_values(self):
         nested_tuple = (1,)
         nested_frozenset = frozenset({1})
-        for level in range(3):
+        kila level kwenye range(3):
             nested_tuple = (nested_tuple, 2)
             nested_frozenset = frozenset({nested_frozenset, 2})
         values = (123, 123.0, 123j,
                   "unicode", b'bytes',
                   tuple("tuple"), frozenset("frozenset"),
                   nested_tuple, nested_frozenset)
-        for value in values:
+        kila value kwenye values:
             with self.subTest(value=value):
                 result = self.compile_constant(value)
                 self.assertEqual(result, value)
@@ -1306,30 +1306,30 @@ kundi ConstantTests(unittest.TestCase):
         ast.copy_location(new_target, target)
         tree.body[0].targets[0] = new_target
 
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             compile(tree, "string", "exec")
         self.assertEqual(str(cm.exception),
                          "expression which can't be assigned "
-                         "to in Store context")
+                         "to kwenye Store context")
 
     eleza test_get_docstring(self):
         tree = ast.parse("'docstring'\nx = 1")
         self.assertEqual(ast.get_docstring(tree), 'docstring')
 
     eleza get_load_const(self, tree):
-        # Compile to bytecode, disassemble and get parameter of LOAD_CONST
+        # Compile to bytecode, disassemble na get parameter of LOAD_CONST
         # instructions
         co = compile(tree, '<string>', 'exec')
         consts = []
-        for instr in dis.get_instructions(co):
+        kila instr kwenye dis.get_instructions(co):
             ikiwa instr.opname == 'LOAD_CONST':
                 consts.append(instr.argval)
         rudisha consts
 
     @support.cpython_only
     eleza test_load_const(self):
-        consts = [None,
-                  True, False,
+        consts = [Tupu,
+                  Kweli, Uongo,
                   124,
                   2.0,
                   3j,
@@ -1337,16 +1337,16 @@ kundi ConstantTests(unittest.TestCase):
                   b'bytes',
                   (1, 2, 3)]
 
-        code = '\n'.join(['x={!r}'.format(const) for const in consts])
+        code = '\n'.join(['x={!r}'.format(const) kila const kwenye consts])
         code += '\nx = ...'
-        consts.extend((Ellipsis, None))
+        consts.extend((Ellipsis, Tupu))
 
         tree = ast.parse(code)
         self.assertEqual(self.get_load_const(tree),
                          consts)
 
         # Replace expression nodes with constants
-        for assign, const in zip(tree.body, consts):
+        kila assign, const kwenye zip(tree.body, consts):
             assert isinstance(assign, ast.Assign), ast.dump(assign)
             new_node = ast.Constant(value=const)
             ast.copy_location(new_node, assign.value)
@@ -1372,7 +1372,7 @@ kundi ConstantTests(unittest.TestCase):
     eleza test_string_kind(self):
         c = ast.parse('"x"', mode='eval').body
         self.assertEqual(c.value, "x")
-        self.assertEqual(c.kind, None)
+        self.assertEqual(c.kind, Tupu)
 
         c = ast.parse('u"x"', mode='eval').body
         self.assertEqual(c.value, "x")
@@ -1380,15 +1380,15 @@ kundi ConstantTests(unittest.TestCase):
 
         c = ast.parse('r"x"', mode='eval').body
         self.assertEqual(c.value, "x")
-        self.assertEqual(c.kind, None)
+        self.assertEqual(c.kind, Tupu)
 
         c = ast.parse('b"x"', mode='eval').body
         self.assertEqual(c.value, b"x")
-        self.assertEqual(c.kind, None)
+        self.assertEqual(c.kind, Tupu)
 
 
 kundi EndPositionTests(unittest.TestCase):
-    """Tests for end position of AST nodes.
+    """Tests kila end position of AST nodes.
 
     Testing end positions of nodes requires a bit of extra care
     because of how LL parsers work.
@@ -1402,13 +1402,13 @@ kundi EndPositionTests(unittest.TestCase):
 
     eleza _parse_value(self, s):
         # Use duck-typing to support both single expression
-        # and a right hand side of an assignment statement.
+        # na a right hand side of an assignment statement.
         rudisha ast.parse(s).body[0].value
 
     eleza test_lambda(self):
-        s = 'lambda x, *y: None'
+        s = 'lambda x, *y: Tupu'
         lam = self._parse_value(s)
-        self._check_content(s, lam.body, 'None')
+        self._check_content(s, lam.body, 'Tupu')
         self._check_content(s, lam.args.args[0], 'x')
         self._check_content(s, lam.args.vararg, 'y')
 
@@ -1418,11 +1418,11 @@ kundi EndPositionTests(unittest.TestCase):
                      *args: str,
                      z: float = 0,
                      **kwargs: Any) -> bool:
-                rudisha True
+                rudisha Kweli
             ''').strip()
         feleza = ast.parse(s).body[0]
         self._check_end_pos(fdef, 5, 15)
-        self._check_content(s, fdef.body[0], 'rudisha True')
+        self._check_content(s, fdef.body[0], 'rudisha Kweli')
         self._check_content(s, fdef.args.args[0], 'x: int')
         self._check_content(s, fdef.args.args[0].annotation, 'int')
         self._check_content(s, fdef.args.kwarg, 'kwargs: Any')
@@ -1452,7 +1452,7 @@ kundi EndPositionTests(unittest.TestCase):
         self._check_content(s, cdef.body[0], 'x: int = 0')
 
     eleza test_class_kw(self):
-        s = 'kundi S(metaclass=abc.ABCMeta): pass'
+        s = 'kundi S(metaclass=abc.ABCMeta): pita'
         celeza = ast.parse(s).body[0]
         self._check_content(s, cdef.keywords[0].value, 'abc.ABCMeta')
 
@@ -1466,7 +1466,7 @@ kundi EndPositionTests(unittest.TestCase):
         self._check_end_pos(assign, 3, 40)
         self._check_end_pos(assign.value, 3, 40)
 
-    eleza test_continued_str(self):
+    eleza test_endelead_str(self):
         s = dedent('''
             x = "first part" \\
             "second part"
@@ -1477,46 +1477,46 @@ kundi EndPositionTests(unittest.TestCase):
 
     eleza test_suites(self):
         # We intentionally put these into the same string to check
-        # that empty lines are not part of the suite.
+        # that empty lines are sio part of the suite.
         s = dedent('''
-            while True:
-                pass
+            wakati Kweli:
+                pita
 
             ikiwa one():
-                x = None
+                x = Tupu
             elikiwa other():
-                y = None
-            else:
-                z = None
+                y = Tupu
+            isipokua:
+                z = Tupu
 
-            for x, y in stuff:
-                assert True
+            kila x, y kwenye stuff:
+                assert Kweli
 
-            try:
-                raise RuntimeError
-            except TypeError as e:
-                pass
+            jaribu:
+                ashiria RuntimeError
+            tatizo TypeError kama e:
+                pita
 
-            pass
+            pita
         ''').strip()
         mod = ast.parse(s)
         while_loop = mod.body[0]
         if_stmt = mod.body[1]
         for_loop = mod.body[2]
         try_stmt = mod.body[3]
-        pass_stmt = mod.body[4]
+        pita_stmt = mod.body[4]
 
         self._check_end_pos(while_loop, 2, 8)
         self._check_end_pos(if_stmt, 9, 12)
         self._check_end_pos(for_loop, 12, 15)
         self._check_end_pos(try_stmt, 17, 8)
-        self._check_end_pos(pass_stmt, 19, 4)
+        self._check_end_pos(pita_stmt, 19, 4)
 
-        self._check_content(s, while_loop.test, 'True')
-        self._check_content(s, if_stmt.body[0], 'x = None')
+        self._check_content(s, while_loop.test, 'Kweli')
+        self._check_content(s, if_stmt.body[0], 'x = Tupu')
         self._check_content(s, if_stmt.orelse[0].test, 'other()')
         self._check_content(s, for_loop.target, 'x, y')
-        self._check_content(s, try_stmt.body[0], 'raise RuntimeError')
+        self._check_content(s, try_stmt.body[0], 'ashiria RuntimeError')
         self._check_content(s, try_stmt.handlers[0].type, 'TypeError')
 
     eleza test_fstring(self):
@@ -1544,7 +1544,7 @@ kundi EndPositionTests(unittest.TestCase):
     eleza test_import_kutoka_multi_line(self):
         s = dedent('''
             kutoka x.y.z agiza (
-                a, b, c as c
+                a, b, c kama c
             )
         ''').strip()
         imp = ast.parse(s).body[0]
@@ -1582,13 +1582,13 @@ kundi EndPositionTests(unittest.TestCase):
     eleza test_boolop(self):
         s = dedent('''
             ikiwa (one_condition and
-                    (other_condition or yet_another_one)):
-                pass
+                    (other_condition ama yet_another_one)):
+                pita
         ''').strip()
         bop = ast.parse(s).body[0].test
         self._check_end_pos(bop, 2, 44)
         self._check_content(s, bop.values[1],
-                            'other_condition or yet_another_one')
+                            'other_condition ama yet_another_one')
 
     eleza test_tuples(self):
         s1 = 'x = () ;'
@@ -1624,8 +1624,8 @@ kundi EndPositionTests(unittest.TestCase):
 
     eleza test_comprehensions(self):
         s = dedent('''
-            x = [{x for x, y in stuff
-                  ikiwa cond.x} for stuff in things]
+            x = [{x kila x, y kwenye stuff
+                  ikiwa cond.x} kila stuff kwenye things]
         ''').strip()
         cmp = self._parse_value(s)
         self._check_end_pos(cmp, 2, 37)
@@ -1634,14 +1634,14 @@ kundi EndPositionTests(unittest.TestCase):
         self._check_content(s, cmp.elt.generators[0].ifs[0], 'cond.x')
         self._check_content(s, cmp.elt.generators[0].target, 'x, y')
 
-    eleza test_yield_await(self):
+    eleza test_tuma_await(self):
         s = dedent('''
             async eleza f():
-                yield x
+                tuma x
                 await y
         ''').strip()
         feleza = ast.parse(s).body[0]
-        self._check_content(s, fdef.body[0].value, 'yield x')
+        self._check_content(s, fdef.body[0].value, 'tuma x')
         self._check_content(s, fdef.body[1].value, 'await y')
 
     eleza test_source_segment_multi(self):
@@ -1661,13 +1661,13 @@ kundi EndPositionTests(unittest.TestCase):
     eleza test_source_segment_padded(self):
         s_orig = dedent('''
             kundi C:
-                eleza fun(self) -> None:
+                eleza fun(self) -> Tupu:
                     "ЖЖЖЖЖ"
         ''').strip()
-        s_method = '    eleza fun(self) -> None:\n' \
+        s_method = '    eleza fun(self) -> Tupu:\n' \
                    '        "ЖЖЖЖЖ"'
         celeza = ast.parse(s_orig).body[0]
-        self.assertEqual(ast.get_source_segment(s_orig, cdef.body[0], padded=True),
+        self.assertEqual(ast.get_source_segment(s_orig, cdef.body[0], padded=Kweli),
                          s_method)
 
     eleza test_source_segment_endings(self):
@@ -1682,14 +1682,14 @@ kundi EndPositionTests(unittest.TestCase):
     eleza test_source_segment_tabs(self):
         s = dedent('''
             kundi C:
-              \t\f  eleza fun(self) -> None:
-              \t\f      pass
+              \t\f  eleza fun(self) -> Tupu:
+              \t\f      pita
         ''').strip()
-        s_method = '  \t\f  eleza fun(self) -> None:\n' \
-                   '  \t\f      pass'
+        s_method = '  \t\f  eleza fun(self) -> Tupu:\n' \
+                   '  \t\f      pita'
 
         celeza = ast.parse(s).body[0]
-        self.assertEqual(ast.get_source_segment(s, cdef.body[0], padded=True), s_method)
+        self.assertEqual(ast.get_source_segment(s, cdef.body[0], padded=Kweli), s_method)
 
 
 kundi NodeVisitorTests(unittest.TestCase):
@@ -1711,13 +1711,13 @@ kundi NodeVisitorTests(unittest.TestCase):
             c = 4.25j
             s = 'string'
             b = b'bytes'
-            t = True
-            n = None
+            t = Kweli
+            n = Tupu
             e = ...
             '''))
         visitor = Visitor()
         log = []
-        with warnings.catch_warnings(record=True) as wlog:
+        with warnings.catch_warnings(record=Kweli) kama wlog:
             warnings.filterwarnings('always', '', PendingDeprecationWarning)
             visitor.visit(mod)
         self.assertEqual(log, [
@@ -1726,117 +1726,117 @@ kundi NodeVisitorTests(unittest.TestCase):
             (3, 'Num', 4.25j),
             (4, 'Str', 'string'),
             (5, 'Bytes', b'bytes'),
-            (6, 'NameConstant', True),
-            (7, 'NameConstant', None),
+            (6, 'NameConstant', Kweli),
+            (7, 'NameConstant', Tupu),
             (8, 'Ellipsis', ...),
         ])
-        self.assertEqual([str(w.message) for w in wlog], [
-            'visit_Num is deprecated; add visit_Constant',
-            'visit_Num is deprecated; add visit_Constant',
-            'visit_Num is deprecated; add visit_Constant',
-            'visit_Str is deprecated; add visit_Constant',
-            'visit_Bytes is deprecated; add visit_Constant',
-            'visit_NameConstant is deprecated; add visit_Constant',
-            'visit_NameConstant is deprecated; add visit_Constant',
-            'visit_Ellipsis is deprecated; add visit_Constant',
+        self.assertEqual([str(w.message) kila w kwenye wlog], [
+            'visit_Num ni deprecated; add visit_Constant',
+            'visit_Num ni deprecated; add visit_Constant',
+            'visit_Num ni deprecated; add visit_Constant',
+            'visit_Str ni deprecated; add visit_Constant',
+            'visit_Bytes ni deprecated; add visit_Constant',
+            'visit_NameConstant ni deprecated; add visit_Constant',
+            'visit_NameConstant ni deprecated; add visit_Constant',
+            'visit_Ellipsis ni deprecated; add visit_Constant',
         ])
 
 
 eleza main():
     ikiwa __name__ != '__main__':
-        return
+        rudisha
     ikiwa sys.argv[1:] == ['-g']:
-        for statements, kind in ((exec_tests, "exec"), (single_tests, "single"),
+        kila statements, kind kwenye ((exec_tests, "exec"), (single_tests, "single"),
                                  (eval_tests, "eval")):
             andika(kind+"_results = [")
-            for statement in statements:
+            kila statement kwenye statements:
                 tree = ast.parse(statement, "?", kind)
                 andika("%r," % (to_tuple(tree),))
             andika("]")
         andika("main()")
-        raise SystemExit
+        ashiria SystemExit
     unittest.main()
 
 #### EVERYTHING BELOW IS GENERATED BY python Lib/test/test_ast.py -g  #####
 exec_results = [
-('Module', [('Expr', (1, 0), ('Constant', (1, 0), None, None))], []),
-('Module', [('Expr', (1, 0), ('Constant', (1, 0), 'module docstring', None))], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Pass', (1, 9))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Expr', (1, 9), ('Constant', (1, 9), 'function docstring', None))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [('arg', (1, 6), 'a', None, None)], None, [], [], None, []), [('Pass', (1, 10))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [('arg', (1, 6), 'a', None, None)], None, [], [], None, [('Constant', (1, 8), 0, None)]), [('Pass', (1, 12))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], ('arg', (1, 7), 'args', None, None), [], [], None, []), [('Pass', (1, 14))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], ('arg', (1, 8), 'kwargs', None, None), []), [('Pass', (1, 17))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [('arg', (1, 6), 'a', None, None), ('arg', (1, 9), 'b', None, None), ('arg', (1, 14), 'c', None, None), ('arg', (1, 22), 'd', None, None), ('arg', (1, 28), 'e', None, None)], ('arg', (1, 35), 'args', None, None), [('arg', (1, 41), 'f', None, None)], [('Constant', (1, 43), 42, None)], ('arg', (1, 49), 'kwargs', None, None), [('Constant', (1, 11), 1, None), ('Constant', (1, 16), None, None), ('List', (1, 24), [], ('Load',)), ('Dict', (1, 30), [], [])]), [('Expr', (1, 58), ('Constant', (1, 58), 'doc for f()', None))], [], None, None)], []),
+('Module', [('Expr', (1, 0), ('Constant', (1, 0), Tupu, Tupu))], []),
+('Module', [('Expr', (1, 0), ('Constant', (1, 0), 'module docstring', Tupu))], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Pass', (1, 9))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Expr', (1, 9), ('Constant', (1, 9), 'function docstring', Tupu))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [('arg', (1, 6), 'a', Tupu, Tupu)], Tupu, [], [], Tupu, []), [('Pass', (1, 10))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [('arg', (1, 6), 'a', Tupu, Tupu)], Tupu, [], [], Tupu, [('Constant', (1, 8), 0, Tupu)]), [('Pass', (1, 12))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], ('arg', (1, 7), 'args', Tupu, Tupu), [], [], Tupu, []), [('Pass', (1, 14))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], ('arg', (1, 8), 'kwargs', Tupu, Tupu), []), [('Pass', (1, 17))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [('arg', (1, 6), 'a', Tupu, Tupu), ('arg', (1, 9), 'b', Tupu, Tupu), ('arg', (1, 14), 'c', Tupu, Tupu), ('arg', (1, 22), 'd', Tupu, Tupu), ('arg', (1, 28), 'e', Tupu, Tupu)], ('arg', (1, 35), 'args', Tupu, Tupu), [('arg', (1, 41), 'f', Tupu, Tupu)], [('Constant', (1, 43), 42, Tupu)], ('arg', (1, 49), 'kwargs', Tupu, Tupu), [('Constant', (1, 11), 1, Tupu), ('Constant', (1, 16), Tupu, Tupu), ('List', (1, 24), [], ('Load',)), ('Dict', (1, 30), [], [])]), [('Expr', (1, 58), ('Constant', (1, 58), 'doc kila f()', Tupu))], [], Tupu, Tupu)], []),
 ('Module', [('ClassDef', (1, 0), 'C', [], [], [('Pass', (1, 8))], [])], []),
-('Module', [('ClassDef', (1, 0), 'C', [], [], [('Expr', (1, 9), ('Constant', (1, 9), 'docstring for kundi C', None))], [])], []),
+('Module', [('ClassDef', (1, 0), 'C', [], [], [('Expr', (1, 9), ('Constant', (1, 9), 'docstring kila kundi C', Tupu))], [])], []),
 ('Module', [('ClassDef', (1, 0), 'C', [('Name', (1, 8), 'object', ('Load',))], [], [('Pass', (1, 17))], [])], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Return', (1, 8), ('Constant', (1, 15), 1, None))], [], None, None)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Return', (1, 8), ('Constant', (1, 15), 1, Tupu))], [], Tupu, Tupu)], []),
 ('Module', [('Delete', (1, 0), [('Name', (1, 4), 'v', ('Del',))])], []),
-('Module', [('Assign', (1, 0), [('Name', (1, 0), 'v', ('Store',))], ('Constant', (1, 4), 1, None), None)], []),
-('Module', [('Assign', (1, 0), [('Tuple', (1, 0), [('Name', (1, 0), 'a', ('Store',)), ('Name', (1, 2), 'b', ('Store',))], ('Store',))], ('Name', (1, 6), 'c', ('Load',)), None)], []),
-('Module', [('Assign', (1, 0), [('Tuple', (1, 0), [('Name', (1, 1), 'a', ('Store',)), ('Name', (1, 3), 'b', ('Store',))], ('Store',))], ('Name', (1, 8), 'c', ('Load',)), None)], []),
-('Module', [('Assign', (1, 0), [('List', (1, 0), [('Name', (1, 1), 'a', ('Store',)), ('Name', (1, 3), 'b', ('Store',))], ('Store',))], ('Name', (1, 8), 'c', ('Load',)), None)], []),
-('Module', [('AugAssign', (1, 0), ('Name', (1, 0), 'v', ('Store',)), ('Add',), ('Constant', (1, 5), 1, None))], []),
-('Module', [('For', (1, 0), ('Name', (1, 4), 'v', ('Store',)), ('Name', (1, 9), 'v', ('Load',)), [('Pass', (1, 11))], [], None)], []),
+('Module', [('Assign', (1, 0), [('Name', (1, 0), 'v', ('Store',))], ('Constant', (1, 4), 1, Tupu), Tupu)], []),
+('Module', [('Assign', (1, 0), [('Tuple', (1, 0), [('Name', (1, 0), 'a', ('Store',)), ('Name', (1, 2), 'b', ('Store',))], ('Store',))], ('Name', (1, 6), 'c', ('Load',)), Tupu)], []),
+('Module', [('Assign', (1, 0), [('Tuple', (1, 0), [('Name', (1, 1), 'a', ('Store',)), ('Name', (1, 3), 'b', ('Store',))], ('Store',))], ('Name', (1, 8), 'c', ('Load',)), Tupu)], []),
+('Module', [('Assign', (1, 0), [('List', (1, 0), [('Name', (1, 1), 'a', ('Store',)), ('Name', (1, 3), 'b', ('Store',))], ('Store',))], ('Name', (1, 8), 'c', ('Load',)), Tupu)], []),
+('Module', [('AugAssign', (1, 0), ('Name', (1, 0), 'v', ('Store',)), ('Add',), ('Constant', (1, 5), 1, Tupu))], []),
+('Module', [('For', (1, 0), ('Name', (1, 4), 'v', ('Store',)), ('Name', (1, 9), 'v', ('Load',)), [('Pass', (1, 11))], [], Tupu)], []),
 ('Module', [('While', (1, 0), ('Name', (1, 6), 'v', ('Load',)), [('Pass', (1, 8))], [])], []),
 ('Module', [('If', (1, 0), ('Name', (1, 3), 'v', ('Load',)), [('Pass', (1, 5))], [])], []),
-('Module', [('With', (1, 0), [('withitem', ('Name', (1, 5), 'x', ('Load',)), ('Name', (1, 10), 'y', ('Store',)))], [('Pass', (1, 13))], None)], []),
-('Module', [('With', (1, 0), [('withitem', ('Name', (1, 5), 'x', ('Load',)), ('Name', (1, 10), 'y', ('Store',))), ('withitem', ('Name', (1, 13), 'z', ('Load',)), ('Name', (1, 18), 'q', ('Store',)))], [('Pass', (1, 21))], None)], []),
-('Module', [('Raise', (1, 0), ('Call', (1, 6), ('Name', (1, 6), 'Exception', ('Load',)), [('Constant', (1, 16), 'string', None)], []), None)], []),
-('Module', [('Try', (1, 0), [('Pass', (2, 2))], [('ExceptHandler', (3, 0), ('Name', (3, 7), 'Exception', ('Load',)), None, [('Pass', (4, 2))])], [], [])], []),
+('Module', [('With', (1, 0), [('withitem', ('Name', (1, 5), 'x', ('Load',)), ('Name', (1, 10), 'y', ('Store',)))], [('Pass', (1, 13))], Tupu)], []),
+('Module', [('With', (1, 0), [('withitem', ('Name', (1, 5), 'x', ('Load',)), ('Name', (1, 10), 'y', ('Store',))), ('withitem', ('Name', (1, 13), 'z', ('Load',)), ('Name', (1, 18), 'q', ('Store',)))], [('Pass', (1, 21))], Tupu)], []),
+('Module', [('Raise', (1, 0), ('Call', (1, 6), ('Name', (1, 6), 'Exception', ('Load',)), [('Constant', (1, 16), 'string', Tupu)], []), Tupu)], []),
+('Module', [('Try', (1, 0), [('Pass', (2, 2))], [('ExceptHandler', (3, 0), ('Name', (3, 7), 'Exception', ('Load',)), Tupu, [('Pass', (4, 2))])], [], [])], []),
 ('Module', [('Try', (1, 0), [('Pass', (2, 2))], [], [], [('Pass', (4, 2))])], []),
-('Module', [('Assert', (1, 0), ('Name', (1, 7), 'v', ('Load',)), None)], []),
-('Module', [('Import', (1, 0), [('alias', 'sys', None)])], []),
-('Module', [('ImportFrom', (1, 0), 'sys', [('alias', 'v', None)], 0)], []),
+('Module', [('Assert', (1, 0), ('Name', (1, 7), 'v', ('Load',)), Tupu)], []),
+('Module', [('Import', (1, 0), [('alias', 'sys', Tupu)])], []),
+('Module', [('ImportFrom', (1, 0), 'sys', [('alias', 'v', Tupu)], 0)], []),
 ('Module', [('Global', (1, 0), ['v'])], []),
-('Module', [('Expr', (1, 0), ('Constant', (1, 0), 1, None))], []),
+('Module', [('Expr', (1, 0), ('Constant', (1, 0), 1, Tupu))], []),
 ('Module', [('Pass', (1, 0))], []),
-('Module', [('For', (1, 0), ('Name', (1, 4), 'v', ('Store',)), ('Name', (1, 9), 'v', ('Load',)), [('Break', (1, 11))], [], None)], []),
-('Module', [('For', (1, 0), ('Name', (1, 4), 'v', ('Store',)), ('Name', (1, 9), 'v', ('Load',)), [('Continue', (1, 11))], [], None)], []),
-('Module', [('For', (1, 0), ('Tuple', (1, 4), [('Name', (1, 4), 'a', ('Store',)), ('Name', (1, 6), 'b', ('Store',))], ('Store',)), ('Name', (1, 11), 'c', ('Load',)), [('Pass', (1, 14))], [], None)], []),
-('Module', [('For', (1, 0), ('Tuple', (1, 4), [('Name', (1, 5), 'a', ('Store',)), ('Name', (1, 7), 'b', ('Store',))], ('Store',)), ('Name', (1, 13), 'c', ('Load',)), [('Pass', (1, 16))], [], None)], []),
-('Module', [('For', (1, 0), ('List', (1, 4), [('Name', (1, 5), 'a', ('Store',)), ('Name', (1, 7), 'b', ('Store',))], ('Store',)), ('Name', (1, 13), 'c', ('Load',)), [('Pass', (1, 16))], [], None)], []),
+('Module', [('For', (1, 0), ('Name', (1, 4), 'v', ('Store',)), ('Name', (1, 9), 'v', ('Load',)), [('Break', (1, 11))], [], Tupu)], []),
+('Module', [('For', (1, 0), ('Name', (1, 4), 'v', ('Store',)), ('Name', (1, 9), 'v', ('Load',)), [('Continue', (1, 11))], [], Tupu)], []),
+('Module', [('For', (1, 0), ('Tuple', (1, 4), [('Name', (1, 4), 'a', ('Store',)), ('Name', (1, 6), 'b', ('Store',))], ('Store',)), ('Name', (1, 11), 'c', ('Load',)), [('Pass', (1, 14))], [], Tupu)], []),
+('Module', [('For', (1, 0), ('Tuple', (1, 4), [('Name', (1, 5), 'a', ('Store',)), ('Name', (1, 7), 'b', ('Store',))], ('Store',)), ('Name', (1, 13), 'c', ('Load',)), [('Pass', (1, 16))], [], Tupu)], []),
+('Module', [('For', (1, 0), ('List', (1, 4), [('Name', (1, 5), 'a', ('Store',)), ('Name', (1, 7), 'b', ('Store',))], ('Store',)), ('Name', (1, 13), 'c', ('Load',)), [('Pass', (1, 16))], [], Tupu)], []),
 ('Module', [('Expr', (1, 0), ('GeneratorExp', (1, 0), ('Tuple', (2, 4), [('Name', (3, 4), 'Aa', ('Load',)), ('Name', (5, 7), 'Bb', ('Load',))], ('Load',)), [('comprehension', ('Tuple', (8, 4), [('Name', (8, 4), 'Aa', ('Store',)), ('Name', (10, 4), 'Bb', ('Store',))], ('Store',)), ('Name', (10, 10), 'Cc', ('Load',)), [], 0)]))], []),
 ('Module', [('Expr', (1, 0), ('DictComp', (1, 0), ('Name', (1, 1), 'a', ('Load',)), ('Name', (1, 5), 'b', ('Load',)), [('comprehension', ('Name', (1, 11), 'w', ('Store',)), ('Name', (1, 16), 'x', ('Load',)), [], 0), ('comprehension', ('Name', (1, 22), 'm', ('Store',)), ('Name', (1, 27), 'p', ('Load',)), [('Name', (1, 32), 'g', ('Load',))], 0)]))], []),
 ('Module', [('Expr', (1, 0), ('DictComp', (1, 0), ('Name', (1, 1), 'a', ('Load',)), ('Name', (1, 5), 'b', ('Load',)), [('comprehension', ('Tuple', (1, 11), [('Name', (1, 11), 'v', ('Store',)), ('Name', (1, 13), 'w', ('Store',))], ('Store',)), ('Name', (1, 18), 'x', ('Load',)), [], 0)]))], []),
 ('Module', [('Expr', (1, 0), ('SetComp', (1, 0), ('Name', (1, 1), 'r', ('Load',)), [('comprehension', ('Name', (1, 7), 'l', ('Store',)), ('Name', (1, 12), 'x', ('Load',)), [('Name', (1, 17), 'g', ('Load',))], 0)]))], []),
 ('Module', [('Expr', (1, 0), ('SetComp', (1, 0), ('Name', (1, 1), 'r', ('Load',)), [('comprehension', ('Tuple', (1, 7), [('Name', (1, 7), 'l', ('Store',)), ('Name', (1, 9), 'm', ('Store',))], ('Store',)), ('Name', (1, 14), 'x', ('Load',)), [], 0)]))], []),
-('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Expr', (2, 1), ('Constant', (2, 1), 'async function', None)), ('Expr', (3, 1), ('Await', (3, 1), ('Call', (3, 7), ('Name', (3, 7), 'something', ('Load',)), [], [])))], [], None, None)], []),
-('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('AsyncFor', (2, 1), ('Name', (2, 11), 'e', ('Store',)), ('Name', (2, 16), 'i', ('Load',)), [('Expr', (2, 19), ('Constant', (2, 19), 1, None))], [('Expr', (3, 7), ('Constant', (3, 7), 2, None))], None)], [], None, None)], []),
-('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('AsyncWith', (2, 1), [('withitem', ('Name', (2, 12), 'a', ('Load',)), ('Name', (2, 17), 'b', ('Store',)))], [('Expr', (2, 20), ('Constant', (2, 20), 1, None))], None)], [], None, None)], []),
-('Module', [('Expr', (1, 0), ('Dict', (1, 0), [None, ('Constant', (1, 10), 2, None)], [('Dict', (1, 3), [('Constant', (1, 4), 1, None)], [('Constant', (1, 6), 2, None)]), ('Constant', (1, 12), 3, None)]))], []),
-('Module', [('Expr', (1, 0), ('Set', (1, 0), [('Starred', (1, 1), ('Set', (1, 2), [('Constant', (1, 3), 1, None), ('Constant', (1, 6), 2, None)]), ('Load',)), ('Constant', (1, 10), 3, None)]))], []),
-('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Expr', (2, 1), ('ListComp', (2, 1), ('Name', (2, 2), 'i', ('Load',)), [('comprehension', ('Name', (2, 14), 'b', ('Store',)), ('Name', (2, 19), 'c', ('Load',)), [], 1)]))], [], None, None)], []),
-('Module', [('FunctionDef', (3, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Pass', (3, 9))], [('Name', (1, 1), 'deco1', ('Load',)), ('Call', (2, 0), ('Name', (2, 1), 'deco2', ('Load',)), [], [])], None, None)], []),
-('Module', [('AsyncFunctionDef', (3, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Pass', (3, 15))], [('Name', (1, 1), 'deco1', ('Load',)), ('Call', (2, 0), ('Name', (2, 1), 'deco2', ('Load',)), [], [])], None, None)], []),
+('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Expr', (2, 1), ('Constant', (2, 1), 'async function', Tupu)), ('Expr', (3, 1), ('Await', (3, 1), ('Call', (3, 7), ('Name', (3, 7), 'something', ('Load',)), [], [])))], [], Tupu, Tupu)], []),
+('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('AsyncFor', (2, 1), ('Name', (2, 11), 'e', ('Store',)), ('Name', (2, 16), 'i', ('Load',)), [('Expr', (2, 19), ('Constant', (2, 19), 1, Tupu))], [('Expr', (3, 7), ('Constant', (3, 7), 2, Tupu))], Tupu)], [], Tupu, Tupu)], []),
+('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('AsyncWith', (2, 1), [('withitem', ('Name', (2, 12), 'a', ('Load',)), ('Name', (2, 17), 'b', ('Store',)))], [('Expr', (2, 20), ('Constant', (2, 20), 1, Tupu))], Tupu)], [], Tupu, Tupu)], []),
+('Module', [('Expr', (1, 0), ('Dict', (1, 0), [Tupu, ('Constant', (1, 10), 2, Tupu)], [('Dict', (1, 3), [('Constant', (1, 4), 1, Tupu)], [('Constant', (1, 6), 2, Tupu)]), ('Constant', (1, 12), 3, Tupu)]))], []),
+('Module', [('Expr', (1, 0), ('Set', (1, 0), [('Starred', (1, 1), ('Set', (1, 2), [('Constant', (1, 3), 1, Tupu), ('Constant', (1, 6), 2, Tupu)]), ('Load',)), ('Constant', (1, 10), 3, Tupu)]))], []),
+('Module', [('AsyncFunctionDef', (1, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Expr', (2, 1), ('ListComp', (2, 1), ('Name', (2, 2), 'i', ('Load',)), [('comprehension', ('Name', (2, 14), 'b', ('Store',)), ('Name', (2, 19), 'c', ('Load',)), [], 1)]))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (3, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Pass', (3, 9))], [('Name', (1, 1), 'deco1', ('Load',)), ('Call', (2, 0), ('Name', (2, 1), 'deco2', ('Load',)), [], [])], Tupu, Tupu)], []),
+('Module', [('AsyncFunctionDef', (3, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Pass', (3, 15))], [('Name', (1, 1), 'deco1', ('Load',)), ('Call', (2, 0), ('Name', (2, 1), 'deco2', ('Load',)), [], [])], Tupu, Tupu)], []),
 ('Module', [('ClassDef', (3, 0), 'C', [], [], [('Pass', (3, 9))], [('Name', (1, 1), 'deco1', ('Load',)), ('Call', (2, 0), ('Name', (2, 1), 'deco2', ('Load',)), [], [])])], []),
-('Module', [('FunctionDef', (2, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Pass', (2, 9))], [('Call', (1, 1), ('Name', (1, 1), 'deco', ('Load',)), [('GeneratorExp', (1, 5), ('Name', (1, 6), 'a', ('Load',)), [('comprehension', ('Name', (1, 12), 'a', ('Store',)), ('Name', (1, 17), 'b', ('Load',)), [], 0)])], [])], None, None)], []),
-('Module', [('Expr', (1, 0), ('NamedExpr', (1, 1), ('Name', (1, 1), 'a', ('Store',)), ('Constant', (1, 6), 1, None)))], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [], None, [], [], None, []), [('Pass', (1, 14))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 12), 'c', None, None), ('arg', (1, 15), 'd', None, None), ('arg', (1, 18), 'e', None, None)], None, [], [], None, []), [('Pass', (1, 22))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 12), 'c', None, None)], None, [('arg', (1, 18), 'd', None, None), ('arg', (1, 21), 'e', None, None)], [None, None], None, []), [('Pass', (1, 25))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 12), 'c', None, None)], None, [('arg', (1, 18), 'd', None, None), ('arg', (1, 21), 'e', None, None)], [None, None], ('arg', (1, 26), 'kwargs', None, None), []), [('Pass', (1, 35))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [], None, [], [], None, [('Constant', (1, 8), 1, None)]), [('Pass', (1, 16))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 14), 'b', None, None), ('arg', (1, 19), 'c', None, None)], None, [], [], None, [('Constant', (1, 8), 1, None), ('Constant', (1, 16), 2, None), ('Constant', (1, 21), 4, None)]), [('Pass', (1, 25))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 14), 'b', None, None)], None, [('arg', (1, 22), 'c', None, None)], [('Constant', (1, 24), 4, None)], None, [('Constant', (1, 8), 1, None), ('Constant', (1, 16), 2, None)]), [('Pass', (1, 28))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 14), 'b', None, None)], None, [('arg', (1, 22), 'c', None, None)], [None], None, [('Constant', (1, 8), 1, None), ('Constant', (1, 16), 2, None)]), [('Pass', (1, 26))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 14), 'b', None, None)], None, [('arg', (1, 22), 'c', None, None)], [('Constant', (1, 24), 4, None)], ('arg', (1, 29), 'kwargs', None, None), [('Constant', (1, 8), 1, None), ('Constant', (1, 16), 2, None)]), [('Pass', (1, 38))], [], None, None)], []),
-('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', None, None)], [('arg', (1, 14), 'b', None, None)], None, [('arg', (1, 22), 'c', None, None)], [None], ('arg', (1, 27), 'kwargs', None, None), [('Constant', (1, 8), 1, None), ('Constant', (1, 16), 2, None)]), [('Pass', (1, 36))], [], None, None)], []),
+('Module', [('FunctionDef', (2, 0), 'f', ('arguments', [], [], Tupu, [], [], Tupu, []), [('Pass', (2, 9))], [('Call', (1, 1), ('Name', (1, 1), 'deco', ('Load',)), [('GeneratorExp', (1, 5), ('Name', (1, 6), 'a', ('Load',)), [('comprehension', ('Name', (1, 12), 'a', ('Store',)), ('Name', (1, 17), 'b', ('Load',)), [], 0)])], [])], Tupu, Tupu)], []),
+('Module', [('Expr', (1, 0), ('NamedExpr', (1, 1), ('Name', (1, 1), 'a', ('Store',)), ('Constant', (1, 6), 1, Tupu)))], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [], Tupu, [], [], Tupu, []), [('Pass', (1, 14))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 12), 'c', Tupu, Tupu), ('arg', (1, 15), 'd', Tupu, Tupu), ('arg', (1, 18), 'e', Tupu, Tupu)], Tupu, [], [], Tupu, []), [('Pass', (1, 22))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 12), 'c', Tupu, Tupu)], Tupu, [('arg', (1, 18), 'd', Tupu, Tupu), ('arg', (1, 21), 'e', Tupu, Tupu)], [Tupu, Tupu], Tupu, []), [('Pass', (1, 25))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 12), 'c', Tupu, Tupu)], Tupu, [('arg', (1, 18), 'd', Tupu, Tupu), ('arg', (1, 21), 'e', Tupu, Tupu)], [Tupu, Tupu], ('arg', (1, 26), 'kwargs', Tupu, Tupu), []), [('Pass', (1, 35))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [], Tupu, [], [], Tupu, [('Constant', (1, 8), 1, Tupu)]), [('Pass', (1, 16))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 14), 'b', Tupu, Tupu), ('arg', (1, 19), 'c', Tupu, Tupu)], Tupu, [], [], Tupu, [('Constant', (1, 8), 1, Tupu), ('Constant', (1, 16), 2, Tupu), ('Constant', (1, 21), 4, Tupu)]), [('Pass', (1, 25))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 14), 'b', Tupu, Tupu)], Tupu, [('arg', (1, 22), 'c', Tupu, Tupu)], [('Constant', (1, 24), 4, Tupu)], Tupu, [('Constant', (1, 8), 1, Tupu), ('Constant', (1, 16), 2, Tupu)]), [('Pass', (1, 28))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 14), 'b', Tupu, Tupu)], Tupu, [('arg', (1, 22), 'c', Tupu, Tupu)], [Tupu], Tupu, [('Constant', (1, 8), 1, Tupu), ('Constant', (1, 16), 2, Tupu)]), [('Pass', (1, 26))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 14), 'b', Tupu, Tupu)], Tupu, [('arg', (1, 22), 'c', Tupu, Tupu)], [('Constant', (1, 24), 4, Tupu)], ('arg', (1, 29), 'kwargs', Tupu, Tupu), [('Constant', (1, 8), 1, Tupu), ('Constant', (1, 16), 2, Tupu)]), [('Pass', (1, 38))], [], Tupu, Tupu)], []),
+('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [('arg', (1, 6), 'a', Tupu, Tupu)], [('arg', (1, 14), 'b', Tupu, Tupu)], Tupu, [('arg', (1, 22), 'c', Tupu, Tupu)], [Tupu], ('arg', (1, 27), 'kwargs', Tupu, Tupu), [('Constant', (1, 8), 1, Tupu), ('Constant', (1, 16), 2, Tupu)]), [('Pass', (1, 36))], [], Tupu, Tupu)], []),
 ]
 single_results = [
-('Interactive', [('Expr', (1, 0), ('BinOp', (1, 0), ('Constant', (1, 0), 1, None), ('Add',), ('Constant', (1, 2), 2, None)))]),
+('Interactive', [('Expr', (1, 0), ('BinOp', (1, 0), ('Constant', (1, 0), 1, Tupu), ('Add',), ('Constant', (1, 2), 2, Tupu)))]),
 ]
 eval_results = [
-('Expression', ('Constant', (1, 0), None, None)),
+('Expression', ('Constant', (1, 0), Tupu, Tupu)),
 ('Expression', ('BoolOp', (1, 0), ('And',), [('Name', (1, 0), 'a', ('Load',)), ('Name', (1, 6), 'b', ('Load',))])),
 ('Expression', ('BinOp', (1, 0), ('Name', (1, 0), 'a', ('Load',)), ('Add',), ('Name', (1, 4), 'b', ('Load',)))),
 ('Expression', ('UnaryOp', (1, 0), ('Not',), ('Name', (1, 4), 'v', ('Load',)))),
-('Expression', ('Lambda', (1, 0), ('arguments', [], [], None, [], [], None, []), ('Constant', (1, 7), None, None))),
-('Expression', ('Dict', (1, 0), [('Constant', (1, 2), 1, None)], [('Constant', (1, 4), 2, None)])),
+('Expression', ('Lambda', (1, 0), ('arguments', [], [], Tupu, [], [], Tupu, []), ('Constant', (1, 7), Tupu, Tupu))),
+('Expression', ('Dict', (1, 0), [('Constant', (1, 2), 1, Tupu)], [('Constant', (1, 4), 2, Tupu)])),
 ('Expression', ('Dict', (1, 0), [], [])),
-('Expression', ('Set', (1, 0), [('Constant', (1, 1), None, None)])),
-('Expression', ('Dict', (1, 0), [('Constant', (2, 6), 1, None)], [('Constant', (4, 10), 2, None)])),
+('Expression', ('Set', (1, 0), [('Constant', (1, 1), Tupu, Tupu)])),
+('Expression', ('Dict', (1, 0), [('Constant', (2, 6), 1, Tupu)], [('Constant', (4, 10), 2, Tupu)])),
 ('Expression', ('ListComp', (1, 0), ('Name', (1, 1), 'a', ('Load',)), [('comprehension', ('Name', (1, 7), 'b', ('Store',)), ('Name', (1, 12), 'c', ('Load',)), [('Name', (1, 17), 'd', ('Load',))], 0)])),
 ('Expression', ('GeneratorExp', (1, 0), ('Name', (1, 1), 'a', ('Load',)), [('comprehension', ('Name', (1, 7), 'b', ('Store',)), ('Name', (1, 12), 'c', ('Load',)), [('Name', (1, 17), 'd', ('Load',))], 0)])),
 ('Expression', ('ListComp', (1, 0), ('Tuple', (1, 1), [('Name', (1, 2), 'a', ('Load',)), ('Name', (1, 4), 'b', ('Load',))], ('Load',)), [('comprehension', ('Tuple', (1, 11), [('Name', (1, 11), 'a', ('Store',)), ('Name', (1, 13), 'b', ('Store',))], ('Store',)), ('Name', (1, 18), 'c', ('Load',)), [], 0)])),
@@ -1848,19 +1848,19 @@ eval_results = [
 ('Expression', ('GeneratorExp', (1, 0), ('Tuple', (1, 1), [('Name', (1, 2), 'a', ('Load',)), ('Name', (1, 4), 'b', ('Load',))], ('Load',)), [('comprehension', ('Tuple', (1, 11), [('Name', (1, 11), 'a', ('Store',)), ('Name', (1, 13), 'b', ('Store',))], ('Store',)), ('Name', (1, 18), 'c', ('Load',)), [], 0)])),
 ('Expression', ('GeneratorExp', (1, 0), ('Tuple', (1, 1), [('Name', (1, 2), 'a', ('Load',)), ('Name', (1, 4), 'b', ('Load',))], ('Load',)), [('comprehension', ('Tuple', (1, 11), [('Name', (1, 12), 'a', ('Store',)), ('Name', (1, 14), 'b', ('Store',))], ('Store',)), ('Name', (1, 20), 'c', ('Load',)), [], 0)])),
 ('Expression', ('GeneratorExp', (1, 0), ('Tuple', (1, 1), [('Name', (1, 2), 'a', ('Load',)), ('Name', (1, 4), 'b', ('Load',))], ('Load',)), [('comprehension', ('List', (1, 11), [('Name', (1, 12), 'a', ('Store',)), ('Name', (1, 14), 'b', ('Store',))], ('Store',)), ('Name', (1, 20), 'c', ('Load',)), [], 0)])),
-('Expression', ('Compare', (1, 0), ('Constant', (1, 0), 1, None), [('Lt',), ('Lt',)], [('Constant', (1, 4), 2, None), ('Constant', (1, 8), 3, None)])),
-('Expression', ('Call', (1, 0), ('Name', (1, 0), 'f', ('Load',)), [('Constant', (1, 2), 1, None), ('Constant', (1, 4), 2, None), ('Starred', (1, 10), ('Name', (1, 11), 'd', ('Load',)), ('Load',))], [('keyword', 'c', ('Constant', (1, 8), 3, None)), ('keyword', None, ('Name', (1, 15), 'e', ('Load',)))])),
+('Expression', ('Compare', (1, 0), ('Constant', (1, 0), 1, Tupu), [('Lt',), ('Lt',)], [('Constant', (1, 4), 2, Tupu), ('Constant', (1, 8), 3, Tupu)])),
+('Expression', ('Call', (1, 0), ('Name', (1, 0), 'f', ('Load',)), [('Constant', (1, 2), 1, Tupu), ('Constant', (1, 4), 2, Tupu), ('Starred', (1, 10), ('Name', (1, 11), 'd', ('Load',)), ('Load',))], [('keyword', 'c', ('Constant', (1, 8), 3, Tupu)), ('keyword', Tupu, ('Name', (1, 15), 'e', ('Load',)))])),
 ('Expression', ('Call', (1, 0), ('Name', (1, 0), 'f', ('Load',)), [('GeneratorExp', (1, 1), ('Name', (1, 2), 'a', ('Load',)), [('comprehension', ('Name', (1, 8), 'a', ('Store',)), ('Name', (1, 13), 'b', ('Load',)), [], 0)])], [])),
-('Expression', ('Constant', (1, 0), 10, None)),
-('Expression', ('Constant', (1, 0), 'string', None)),
+('Expression', ('Constant', (1, 0), 10, Tupu)),
+('Expression', ('Constant', (1, 0), 'string', Tupu)),
 ('Expression', ('Attribute', (1, 0), ('Name', (1, 0), 'a', ('Load',)), 'b', ('Load',))),
-('Expression', ('Subscript', (1, 0), ('Name', (1, 0), 'a', ('Load',)), ('Slice', ('Name', (1, 2), 'b', ('Load',)), ('Name', (1, 4), 'c', ('Load',)), None), ('Load',))),
+('Expression', ('Subscript', (1, 0), ('Name', (1, 0), 'a', ('Load',)), ('Slice', ('Name', (1, 2), 'b', ('Load',)), ('Name', (1, 4), 'c', ('Load',)), Tupu), ('Load',))),
 ('Expression', ('Name', (1, 0), 'v', ('Load',))),
-('Expression', ('List', (1, 0), [('Constant', (1, 1), 1, None), ('Constant', (1, 3), 2, None), ('Constant', (1, 5), 3, None)], ('Load',))),
+('Expression', ('List', (1, 0), [('Constant', (1, 1), 1, Tupu), ('Constant', (1, 3), 2, Tupu), ('Constant', (1, 5), 3, Tupu)], ('Load',))),
 ('Expression', ('List', (1, 0), [], ('Load',))),
-('Expression', ('Tuple', (1, 0), [('Constant', (1, 0), 1, None), ('Constant', (1, 2), 2, None), ('Constant', (1, 4), 3, None)], ('Load',))),
-('Expression', ('Tuple', (1, 0), [('Constant', (1, 1), 1, None), ('Constant', (1, 3), 2, None), ('Constant', (1, 5), 3, None)], ('Load',))),
+('Expression', ('Tuple', (1, 0), [('Constant', (1, 0), 1, Tupu), ('Constant', (1, 2), 2, Tupu), ('Constant', (1, 4), 3, Tupu)], ('Load',))),
+('Expression', ('Tuple', (1, 0), [('Constant', (1, 1), 1, Tupu), ('Constant', (1, 3), 2, Tupu), ('Constant', (1, 5), 3, Tupu)], ('Load',))),
 ('Expression', ('Tuple', (1, 0), [], ('Load',))),
-('Expression', ('Call', (1, 0), ('Attribute', (1, 0), ('Attribute', (1, 0), ('Attribute', (1, 0), ('Name', (1, 0), 'a', ('Load',)), 'b', ('Load',)), 'c', ('Load',)), 'd', ('Load',)), [('Subscript', (1, 8), ('Attribute', (1, 8), ('Name', (1, 8), 'a', ('Load',)), 'b', ('Load',)), ('Slice', ('Constant', (1, 12), 1, None), ('Constant', (1, 14), 2, None), None), ('Load',))], [])),
+('Expression', ('Call', (1, 0), ('Attribute', (1, 0), ('Attribute', (1, 0), ('Attribute', (1, 0), ('Name', (1, 0), 'a', ('Load',)), 'b', ('Load',)), 'c', ('Load',)), 'd', ('Load',)), [('Subscript', (1, 8), ('Attribute', (1, 8), ('Name', (1, 8), 'a', ('Load',)), 'b', ('Load',)), ('Slice', ('Constant', (1, 12), 1, Tupu), ('Constant', (1, 14), 2, Tupu), Tupu), ('Load',))], [])),
 ]
 main()

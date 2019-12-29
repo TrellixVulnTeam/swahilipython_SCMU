@@ -37,23 +37,23 @@ def set_coroutine_debug(enabled):
     coroutines = asyncio.coroutines
 
     old_debug = coroutines._DEBUG
-    try:
+    jaribu:
         coroutines._DEBUG = enabled
         yield
-    finally:
+    mwishowe:
         coroutines._DEBUG = old_debug
 
 
 def format_coroutine(qualname, state, src, source_traceback, generator=False):
     if generator:
         state = '%s' % state
-    else:
+    isipokua:
         state = '%s, defined' % state
-    if source_traceback is not None:
+    if source_traceback ni sio None:
         frame = source_traceback[-1]
         return ('coro=<%s() %s at %s> created at %s:%s'
                 % (qualname, state, src, frame[0], frame[1]))
-    else:
+    isipokua:
         return 'coro=<%s() %s at %s>' % (qualname, state, src)
 
 
@@ -117,11 +117,11 @@ class BaseTaskTests:
         async def run(fut):
             await fut
 
-        try:
+        jaribu:
             with self.assertRaisesRegex(RuntimeError,
                                         r'Task .* got Future .* attached'):
                 self.loop.run_until_complete(run(fut))
-        finally:
+        mwishowe:
             other_loop.close()
 
     def test_task_awaits_on_itself(self):
@@ -252,9 +252,9 @@ class BaseTaskTests:
         async def bar():
             # test get_stack()
             f = T.get_stack(limit=1)
-            try:
+            jaribu:
                 self.assertEqual(f[0].f_code.co_name, 'foo')
-            finally:
+            mwishowe:
                 f = None
 
             # test print_stack()
@@ -302,7 +302,7 @@ class BaseTaskTests:
                          "<Task pending name='TestTask' %s cb=[<Dummy>()]>" % coro)
 
         # test cancelling Task
-        t.cancel()  # Does not take immediate effect!
+        t.cancel()  # Does sio take immediate effect!
         self.assertEqual(repr(t),
                          "<Task cancelling name='TestTask' %s cb=[<Dummy>()]>" % coro)
 
@@ -386,7 +386,7 @@ class BaseTaskTests:
                 coro = ('%s() running, defined at %s:%s, created at %s:%s'
                         % (coro_qualname, filename, lineno,
                            frame[0], frame[1]))
-            else:
+            isipokua:
                 code = gen.gi_code
                 coro = ('%s() running at %s:%s'
                         % (coro_qualname, code.co_filename,
@@ -401,7 +401,7 @@ class BaseTaskTests:
         # format the coroutine object
         if coroutines._DEBUG:
             src = '%s:%s' % test_utils.get_function_source(notmuch)
-        else:
+        isipokua:
             code = gen.gi_code
             src = '%s:%s' % (code.co_filename, code.co_firstlineno)
         coro = format_coroutine(coro_qualname, 'running', src,
@@ -427,7 +427,7 @@ class BaseTaskTests:
         self.loop.run_until_complete(task)
 
     def test_task_repr_partial_corowrapper(self):
-        # Issue #222: repr(CoroWrapper) must not fail in debug mode if the
+        # Issue #222: repr(CoroWrapper) must sio fail in debug mode if the
         # coroutine is a partial function
         with set_coroutine_debug(True):
             self.loop.set_debug(True)
@@ -545,9 +545,9 @@ class BaseTaskTests:
 
         async def task():
             await fut1
-            try:
+            jaribu:
                 await fut2
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 return 42
 
         t = self.new_task(self.loop, task())
@@ -569,9 +569,9 @@ class BaseTaskTests:
 
         async def task():
             await fut1
-            try:
+            jaribu:
                 await fut2
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 pass
             res = await fut3
             return res
@@ -684,7 +684,7 @@ class BaseTaskTests:
 
         async def task():
             nonlocal x
-            while x < 10:
+            wakati x < 10:
                 await asyncio.sleep(0.1)
                 x += 1
                 if x == 2:
@@ -762,9 +762,9 @@ class BaseTaskTests:
                 async def foo():
                     nonlocal foo_running
                     foo_running = True
-                    try:
+                    jaribu:
                         await asyncio.sleep(0.2)
-                    finally:
+                    mwishowe:
                         foo_running = False
                     return 'done'
 
@@ -794,9 +794,9 @@ class BaseTaskTests:
         async def foo():
             nonlocal foo_running
             foo_running = True
-            try:
+            jaribu:
                 await asyncio.sleep(0.2)
-            finally:
+            mwishowe:
                 foo_running = False
             return 'done'
 
@@ -835,11 +835,11 @@ class BaseTaskTests:
             return 'done'
 
         asyncio.set_event_loop(loop)
-        try:
+        jaribu:
             fut = self.new_task(loop, foo())
             with self.assertRaises(asyncio.TimeoutError):
                 loop.run_until_complete(asyncio.wait_for(fut, 0.01))
-        finally:
+        mwishowe:
             asyncio.set_event_loop(None)
 
         self.assertAlmostEqual(0.01, loop.time())
@@ -870,9 +870,9 @@ class BaseTaskTests:
         async def foo():
             async def inner():
                 nonlocal task_done
-                try:
+                jaribu:
                     await asyncio.sleep(0.2)
-                finally:
+                mwishowe:
                     task_done = True
 
             inner_task = self.new_task(loop, inner())
@@ -890,12 +890,12 @@ class BaseTaskTests:
 
         async def foo():
             async def inner():
-                try:
+                jaribu:
                     await asyncio.sleep(0.3)
-                except asyncio.CancelledError:
-                    try:
+                tatizo asyncio.CancelledError:
+                    jaribu:
                         await asyncio.sleep(0.3)
-                    except asyncio.CancelledError:
+                    tatizo asyncio.CancelledError:
                         await asyncio.sleep(0.3)
 
                 return 42
@@ -1137,7 +1137,7 @@ class BaseTaskTests:
             done, pending = await asyncio.wait([b, a])
             self.assertEqual(len(done), 2)
             self.assertEqual(pending, set())
-            errors = set(f for f in done if f.exception() is not None)
+            errors = set(f for f in done if f.exception() ni sio None)
             self.assertEqual(len(errors), 1)
 
         loop.run_until_complete(self.new_task(loop, foo()))
@@ -1221,7 +1221,7 @@ class BaseTaskTests:
                 nonlocal time_shifted
                 yield from  asyncio.sleep(dt)
                 completed.add(x)
-                if not time_shifted and 'a' in completed and 'b' in completed:
+                if sio time_shifted and 'a' in completed and 'b' in completed:
                     time_shifted = True
                     loop.advance_time(0.14)
                 return x
@@ -1265,10 +1265,10 @@ class BaseTaskTests:
             for f in asyncio.as_completed([a, b], timeout=0.12, loop=loop):
                 if values:
                     loop.advance_time(0.02)
-                try:
+                jaribu:
                     v = await f
                     values.append((1, v))
-                except asyncio.TimeoutError as exc:
+                tatizo asyncio.TimeoutError as exc:
                     values.append((2, exc))
             return values
 
@@ -1440,11 +1440,11 @@ class BaseTaskTests:
         async def doit():
             sleeper = self.new_task(loop, sleep(5000))
             loop.call_later(0.1, sleeper.cancel)
-            try:
+            jaribu:
                 await sleeper
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 return 'cancelled'
-            else:
+            isipokua:
                 return 'slept in'
 
         doer = doit()
@@ -1541,9 +1541,9 @@ class BaseTaskTests:
         base_exc = SystemExit()
 
         async def notmutch():
-            try:
+            jaribu:
                 await sleeper()
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 raise base_exc
 
         task = self.new_task(loop, notmutch())
@@ -1600,9 +1600,9 @@ class BaseTaskTests:
             @asyncio.coroutine
             def wait_for_future():
                 gen = coro()
-                try:
+                jaribu:
                     yield gen
-                finally:
+                mwishowe:
                     gen.close()
 
         task = wait_for_future()
@@ -1654,12 +1654,12 @@ class BaseTaskTests:
 
             # See http://bugs.python.org/issue29271 for details:
             asyncio.set_event_loop(loop)
-            try:
+            jaribu:
                 with self.assertWarns(DeprecationWarning):
                     self.assertIs(Task.current_task(None), task)
                 with self.assertWarns(DeprecationWarning):
                     self.assertIs(Task.current_task(), task)
-            finally:
+            mwishowe:
                 asyncio.set_event_loop(None)
 
         task = self.new_task(self.loop, coro(self.loop))
@@ -1714,21 +1714,21 @@ class BaseTaskTests:
 
         async def inner():
             nonlocal proof
-            try:
+            jaribu:
                 await waiter
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 proof += 1
                 raise
-            else:
+            isipokua:
                 self.fail('got past sleep() in inner()')
 
         async def outer():
             nonlocal proof
-            try:
+            jaribu:
                 await inner()
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 proof += 100  # Expect this path.
-            else:
+            isipokua:
                 proof += 10
 
         f = asyncio.ensure_future(outer(), loop=self.loop)
@@ -1803,7 +1803,7 @@ class BaseTaskTests:
         self.assertEqual(res, 42)
 
     def test_shield_effect(self):
-        # Cancelling outer() does not affect inner().
+        # Cancelling outer() does sio affect inner().
         proof = 0
         waiter = self.new_future(self.loop)
 
@@ -1860,7 +1860,7 @@ class BaseTaskTests:
     def test_as_completed_invalid_args(self):
         fut = self.new_future(self.loop)
 
-        # as_completed() expects a list of futures, not a future instance
+        # as_completed() expects a list of futures, sio a future instance
         self.assertRaises(TypeError, self.loop.run_until_complete,
             asyncio.as_completed(fut, loop=self.loop))
         coro = coroutine_function()
@@ -1871,7 +1871,7 @@ class BaseTaskTests:
     def test_wait_invalid_args(self):
         fut = self.new_future(self.loop)
 
-        # wait() expects a list of futures, not a future instance
+        # wait() expects a list of futures, sio a future instance
         self.assertRaises(TypeError, self.loop.run_until_complete,
             asyncio.wait(fut))
         coro = coroutine_function()
@@ -1954,11 +1954,11 @@ class BaseTaskTests:
         def call(arg):
             cw = asyncio.coroutines.CoroWrapper(foo())
             cw.send(None)
-            try:
+            jaribu:
                 cw.send(arg)
-            except StopIteration as ex:
+            tatizo StopIteration as ex:
                 return ex.args[0]
-            else:
+            isipokua:
                 raise AssertionError('StopIteration was expected')
 
         self.assertEqual(call((1, 2)), (1, 2))
@@ -1975,10 +1975,10 @@ class BaseTaskTests:
         # Issue 429: CoroWrapper.throw must be compatible with gen.throw
         def foo():
             value = None
-            while True:
-                try:
+            wakati True:
+                jaribu:
                     value = yield value
-                except Exception as e:
+                tatizo Exception as e:
                     value = e
 
         exception = Exception("foo")
@@ -2036,12 +2036,12 @@ class BaseTaskTests:
 
         # See http://bugs.python.org/issue29271 for details:
         asyncio.set_event_loop(self.loop)
-        try:
+        jaribu:
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(Task.all_tasks(), {task})
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(Task.all_tasks(None), {task})
-        finally:
+        mwishowe:
             asyncio.set_event_loop(None)
 
         # execute the task so it waits for future
@@ -2049,7 +2049,7 @@ class BaseTaskTests:
         self.assertEqual(len(self.loop._ready), 0)
 
         # remove the future used in kill_me(), and references to the task
-        del coro.gi_frame.f_locals['future']
+        toa coro.gi_frame.f_locals['future']
         coro = None
         source_traceback = task._source_traceback
         task = None
@@ -2213,7 +2213,7 @@ class BaseTaskTests:
 
         async def test():
             time = 0
-            while True:
+            wakati True:
                 time += 0.05
                 await asyncio.gather(asyncio.sleep(0.05),
                                      return_exceptions=True,
@@ -2225,12 +2225,12 @@ class BaseTaskTests:
             qwe = self.new_task(loop, test())
             await asyncio.sleep(0.2)
             qwe.cancel()
-            try:
+            jaribu:
                 await qwe
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 pass
-            else:
-                self.fail('gather did not propagate the cancellation request')
+            isipokua:
+                self.fail('gather did sio propagate the cancellation request')
 
         loop.run_until_complete(main())
 
@@ -2262,9 +2262,9 @@ class BaseTaskTests:
 
         with self.assertRaises(ValueError):
             gen = coro()
-            try:
+            jaribu:
                 self.new_task(self.loop, gen)
-            finally:
+            mwishowe:
                 gen.close()
 
         self.assertTrue(m_log.error.called)
@@ -2279,7 +2279,7 @@ class BaseTaskTests:
             self.new_task(self.loop, 123)
 
         # test it for the second time to ensure that caching
-        # in asyncio.iscoroutine() doesn't break things.
+        # in asyncio.iscoroutine() doesn't koma things.
         with self.assertRaisesRegex(TypeError,
                                     "a coroutine was expected, got 123"):
             self.new_task(self.loop, 123)
@@ -2296,7 +2296,7 @@ class BaseTaskTests:
         self.loop.run_until_complete(task)
 
         # test it for the second time to ensure that caching
-        # in asyncio.iscoroutine() doesn't break things.
+        # in asyncio.iscoroutine() doesn't koma things.
         task = self.new_task(self.loop, coro())
         self.assertIsInstance(task, self.Task)
         self.loop.run_until_complete(task)
@@ -2311,7 +2311,7 @@ class BaseTaskTests:
         self.loop.run_until_complete(task)
 
         # test it for the second time to ensure that caching
-        # in asyncio.iscoroutine() doesn't break things.
+        # in asyncio.iscoroutine() doesn't koma things.
         task = self.new_task(self.loop, coro())
         self.assertIsInstance(task, self.Task)
         self.loop.run_until_complete(task)
@@ -2322,7 +2322,7 @@ class BaseTaskTests:
         self.assertEqual(self.loop.run_until_complete(task), 42)
 
         # test it for the second time to ensure that caching
-        # in asyncio.iscoroutine() doesn't break things.
+        # in asyncio.iscoroutine() doesn't koma things.
         task = self.new_task(self.loop, CoroLikeObject())
         self.assertIsInstance(task, self.Task)
         self.assertEqual(self.loop.run_until_complete(task), 42)
@@ -2369,10 +2369,10 @@ class BaseTaskTests:
             self.assertEqual(cvar.get(), 'yes')
 
         loop = asyncio.new_event_loop()
-        try:
+        jaribu:
             task = self.new_task(loop, main())
             loop.run_until_complete(task)
-        finally:
+        mwishowe:
             loop.close()
 
     def test_context_2(self):
@@ -2380,7 +2380,7 @@ class BaseTaskTests:
 
         async def main():
             def fut_on_done(fut):
-                # This change must not pollute the context
+                # This change must sio pollute the context
                 # of the "main()" task.
                 cvar.set('something else')
 
@@ -2401,10 +2401,10 @@ class BaseTaskTests:
                     self.assertEqual(cvar.get(), f'yes{i}-{j}')
 
         loop = asyncio.new_event_loop()
-        try:
+        jaribu:
             task = self.new_task(loop, main())
             loop.run_until_complete(task)
-        finally:
+        mwishowe:
             loop.close()
 
         self.assertEqual(cvar.get(), 'nope')
@@ -2429,9 +2429,9 @@ class BaseTaskTests:
             await asyncio.gather(*tasks, loop=loop)
 
         loop = asyncio.new_event_loop()
-        try:
+        jaribu:
             loop.run_until_complete(main())
-        finally:
+        mwishowe:
             loop.close()
 
         self.assertEqual(cvar.get(), -1)
@@ -2439,11 +2439,11 @@ class BaseTaskTests:
     def test_get_coro(self):
         loop = asyncio.new_event_loop()
         coro = coroutine_function()
-        try:
+        jaribu:
             task = self.new_task(loop, coro)
             loop.run_until_complete(task)
             self.assertIs(task.get_coro(), coro)
-        finally:
+        mwishowe:
             loop.close()
 
 
@@ -2586,7 +2586,7 @@ class CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
         task = self.new_task(self.loop, coro())
         self.loop.run_until_complete(task)
         with self.assertRaises(AttributeError):
-            del task._log_destroy_pending
+            toa task._log_destroy_pending
 
 
 @unittest.skipUnless(hasattr(futures, '_CFuture') and
@@ -2661,12 +2661,12 @@ class CTask_Future_Tests(test_utils.TestCase):
             return 'spam'
 
         self.loop = asyncio.new_event_loop()
-        try:
+        jaribu:
             fut = Fut(loop=self.loop)
             self.loop.call_later(0.1, fut.set_result, 1)
             task = self.loop.create_task(coro())
             res = self.loop.run_until_complete(task)
-        finally:
+        mwishowe:
             self.loop.close()
 
         self.assertEqual(res, 'spam')
@@ -2801,7 +2801,7 @@ class CIntrospectionTests(test_utils.TestCase, BaseTaskIntrospectionTests):
         _unregister_task = staticmethod(tasks._c_unregister_task)
         _enter_task = staticmethod(tasks._c_enter_task)
         _leave_task = staticmethod(tasks._c_leave_task)
-    else:
+    isipokua:
         _register_task = _unregister_task = _enter_task = _leave_task = None
 
 
@@ -2858,14 +2858,14 @@ class GenericTaskTests(test_utils.TestCase):
         # module non-importable.  This is a simple test that will
         # fail on systems where C modules were successfully compiled
         # (hence the test for _functools), but _asyncio somehow didn't.
-        try:
+        jaribu:
             agiza _functools
-        except ImportError:
+        tatizo ImportError:
             pass
-        else:
-            try:
+        isipokua:
+            jaribu:
                 agiza _asyncio
-            except ImportError:
+            tatizo ImportError:
                 self.fail('_asyncio module is missing')
 
 
@@ -2878,7 +2878,7 @@ class GatherTestsBase:
         self.set_event_loop(self.one_loop, cleanup=False)
 
     def _run_loop(self, loop):
-        while loop._ready:
+        wakati loop._ready:
             test_utils.run_briefly(loop)
 
     def _check_success(self, **kwargs):
@@ -2945,7 +2945,7 @@ class GatherTestsBase:
             'import asyncio.coroutines',
             'print(asyncio.coroutines._DEBUG)'))
 
-        # Test with -E to not fail if the unit test was run with
+        # Test with -E to sio fail if the unit test was run with
         # PYTHONASYNCIODEBUG set to a non-empty string
         sts, stdout, stderr = assert_python_ok('-E', '-c', code)
         self.assertEqual(stdout.rstrip(), b'False')
@@ -3133,7 +3133,7 @@ class CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
 
         async def inner(f):
             await f
-            raise RuntimeError('should not be ignored')
+            raise RuntimeError('should sio be ignored')
 
         a = self.one_loop.create_future()
         b = self.one_loop.create_future()
@@ -3175,16 +3175,16 @@ class RunCoroutineThreadsafeTests(test_utils.TestCase):
         future = asyncio.run_coroutine_threadsafe(coro, self.loop)
         if advance_coro:
             # this is for test_run_coroutine_threadsafe_task_factory_exception;
-            # otherwise it spills errors and breaks **other** unittests, since
+            # otherwise it spills errors and komas **other** unittests, since
             # 'target' is interacting with threads.
 
             # With this call, `coro` will be advanced, so that
             # CoroWrapper.__del__ won't do anything when asyncio tests run
             # in debug mode.
             self.loop.call_soon_threadsafe(coro.send, None)
-        try:
+        jaribu:
             return future.result(timeout)
-        finally:
+        mwishowe:
             future.done() or future.cancel()
 
     def test_run_coroutine_threadsafe(self):

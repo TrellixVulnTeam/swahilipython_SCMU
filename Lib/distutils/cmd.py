@@ -53,7 +53,7 @@ class Command:
         # late import because of mutual dependence between these classes
         from distutils.dist import Distribution
 
-        if not isinstance(dist, Distribution):
+        if sio isinstance(dist, Distribution):
             raise TypeError("dist must be a Distribution instance")
         if self.__class__ is Command:
             raise RuntimeError("Command is an abstract class")
@@ -64,7 +64,7 @@ class Command:
         # Per-command versions of the global flags, so that the user can
         # customize Distutils' behaviour command-by-command and let some
         # commands fall back on the Distribution's behaviour.  None means
-        # "not defined, check self.distribution's copy", while 0 or 1 mean
+        # "not defined, check self.distribution's copy", wakati 0 or 1 mean
         # false and true (duh).  Note that this means figuring out the real
         # value of each flag is a touch complicated -- hence "self._dry_run"
         # will be handled by __getattr__, below.
@@ -85,8 +85,8 @@ class Command:
         # none of that complicated bureaucracy is needed.
         self.help = 0
 
-        # 'finalized' records whether or not 'finalize_options()' has been
-        # called.  'finalize_options()' itself should not pay attention to
+        # 'finalized' records whether or sio 'finalize_options()' has been
+        # called.  'finalize_options()' itself should sio pay attention to
         # this flag: it is the business of 'ensure_finalized()', which
         # always calls 'finalize_options()', to respect/update it.
         self.finalized = 0
@@ -97,13 +97,13 @@ class Command:
             myval = getattr(self, "_" + attr)
             if myval is None:
                 return getattr(self.distribution, attr)
-            else:
+            isipokua:
                 return myval
-        else:
+        isipokua:
             raise AttributeError(attr)
 
     def ensure_finalized(self):
-        if not self.finalized:
+        if sio self.finalized:
             self.finalize_options()
         self.finalized = 1
 
@@ -124,7 +124,7 @@ class Command:
         """Set default values for all the options that this command
         supports.  Note that these defaults may be overridden by other
         commands, by the setup script, by config files, or by the
-        command-line.  Thus, this is not the place to code dependencies
+        command-line.  Thus, this ni sio the place to code dependencies
         between options; generally, 'initialize_options()' implementations
         are just a bunch of "self.foo = None" assignments.
 
@@ -209,13 +209,13 @@ class Command:
         if val is None:
             setattr(self, option, default)
             return default
-        lasivyo not isinstance(val, str):
+        lasivyo sio isinstance(val, str):
             raise DistutilsOptionError("'%s' must be a %s (got `%s`)"
                                        % (option, what, val))
         return val
 
     def ensure_string(self, option, default=None):
-        """Ensure that 'option' is a string; if not defined, set it to
+        """Ensure that 'option' is a string; if sio defined, set it to
         'default'.
         """
         self._ensure_stringlike(option, "string", default)
@@ -231,12 +231,12 @@ class Command:
             return
         lasivyo isinstance(val, str):
             setattr(self, option, re.split(r',\s*|\s+', val))
-        else:
+        isipokua:
             if isinstance(val, list):
                 ok = all(isinstance(v, str) for v in val)
-            else:
+            isipokua:
                 ok = False
-            if not ok:
+            if sio ok:
                 raise DistutilsOptionError(
                       "'%s' must be a list of strings (got %r)"
                       % (option, val))
@@ -244,7 +244,7 @@ class Command:
     def _ensure_tested_string(self, option, tester, what, error_fmt,
                               default=None):
         val = self._ensure_stringlike(option, what, default)
-        if val is not None and not tester(val):
+        if val ni sio None and sio tester(val):
             raise DistutilsOptionError(("error in '%s' option: " + error_fmt)
                                        % (option, val))
 
@@ -252,12 +252,12 @@ class Command:
         """Ensure that 'option' is the name of an existing file."""
         self._ensure_tested_string(option, os.path.isfile,
                                    "filename",
-                                   "'%s' does not exist or is not a file")
+                                   "'%s' does sio exist or ni sio a file")
 
     def ensure_dirname(self, option):
         self._ensure_tested_string(option, os.path.isdir,
                                    "directory name",
-                                   "'%s' does not exist or is not a directory")
+                                   "'%s' does sio exist or ni sio a directory")
 
 
     # -- Convenience methods for commands ------------------------------
@@ -265,14 +265,14 @@ class Command:
     def get_command_name(self):
         if hasattr(self, 'command_name'):
             return self.command_name
-        else:
+        isipokua:
             return self.__class__.__name__
 
     def set_undefined_options(self, src_cmd, *option_pairs):
         """Set the values of any "undefined" options from corresponding
         option values in some other command object.  "Undefined" here means
         "is None", which is the convention used to indicate that an option
-        has not been changed between 'initialize_options()' and
+        has sio been changed between 'initialize_options()' and
         'finalize_options()'.  Usually called from 'finalize_options()' for
         options that depend on some other command rather than another
         option of the same command.  'src_cmd' is the other command from
@@ -343,7 +343,7 @@ class Command:
         former two default to whatever is in the Distribution object, and
         the latter defaults to false for commands that don't define it.)"""
         return file_util.copy_file(infile, outfile, preserve_mode,
-                                   preserve_times, not self.force, link,
+                                   preserve_times, sio self.force, link,
                                    dry_run=self.dry_run)
 
     def copy_tree(self, infile, outfile, preserve_mode=1, preserve_times=1,
@@ -353,7 +353,7 @@ class Command:
         """
         return dir_util.copy_tree(infile, outfile, preserve_mode,
                                   preserve_times, preserve_symlinks,
-                                  not self.force, dry_run=self.dry_run)
+                                  sio self.force, dry_run=self.dry_run)
 
     def move_file (self, src, dst, level=1):
         """Move a file respecting dry-run flag."""
@@ -374,7 +374,7 @@ class Command:
                   exec_msg=None, skip_msg=None, level=1):
         """Special case of 'execute()' for operations that process one or
         more input files and generate one output file.  Works just like
-        'execute()', except the operation is skipped and a different
+        'execute()', tatizo the operation is skipped and a different
         message printed if 'outfile' already exists and is newer than all
         files listed in 'infiles'.  If the command defined 'self.force',
         and it is true, then the command is unconditionally run -- does no
@@ -386,7 +386,7 @@ class Command:
         # Allow 'infiles' to be a single string
         if isinstance(infiles, str):
             infiles = (infiles,)
-        lasivyo not isinstance(infiles, (list, tuple)):
+        lasivyo sio isinstance(infiles, (list, tuple)):
             raise TypeError(
                   "'infiles' must be a string, or a list or tuple of strings")
 
@@ -399,5 +399,5 @@ class Command:
         if self.force or dep_util.newer_group(infiles, outfile):
             self.execute(func, args, exec_msg, level)
         # Otherwise, print the "skip" message
-        else:
+        isipokua:
             log.debug(skip_msg)

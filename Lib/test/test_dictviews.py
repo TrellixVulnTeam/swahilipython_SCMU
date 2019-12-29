@@ -34,7 +34,7 @@ kundi DictSetTest(unittest.TestCase):
         self.assertEqual(d.keys(), d.keys())
         e = {1: 11, "a": "def"}
         self.assertEqual(d.keys(), e.keys())
-        del e["a"]
+        toa e["a"]
         self.assertNotEqual(d.keys(), e.keys())
 
     eleza test_dict_items(self):
@@ -77,15 +77,15 @@ kundi DictSetTest(unittest.TestCase):
         self.assertIsInstance(repr(d), str)
         r = repr(d.items())
         self.assertIsInstance(r, str)
-        self.assertTrue(r == "dict_items([('a', 'ABC'), (1, 10)])" or
+        self.assertKweli(r == "dict_items([('a', 'ABC'), (1, 10)])" or
                         r == "dict_items([(1, 10), ('a', 'ABC')])")
         r = repr(d.keys())
         self.assertIsInstance(r, str)
-        self.assertTrue(r == "dict_keys(['a', 1])" or
+        self.assertKweli(r == "dict_keys(['a', 1])" or
                         r == "dict_keys([1, 'a'])")
         r = repr(d.values())
         self.assertIsInstance(r, str)
-        self.assertTrue(r == "dict_values(['ABC', 10])" or
+        self.assertKweli(r == "dict_values(['ABC', 10])" or
                         r == "dict_values([10, 'ABC'])")
 
     eleza test_keys_set_operations(self):
@@ -126,23 +126,23 @@ kundi DictSetTest(unittest.TestCase):
         self.assertEqual(d1.keys() - set(d3.keys()), {'a', 'b'})
         self.assertEqual(d1.keys() - (0, 1), {'a', 'b'})
 
-        self.assertFalse(d1.keys().isdisjoint(d1.keys()))
-        self.assertFalse(d1.keys().isdisjoint(d2.keys()))
-        self.assertFalse(d1.keys().isdisjoint(list(d2.keys())))
-        self.assertFalse(d1.keys().isdisjoint(set(d2.keys())))
-        self.assertTrue(d1.keys().isdisjoint({'x', 'y', 'z'}))
-        self.assertTrue(d1.keys().isdisjoint(['x', 'y', 'z']))
-        self.assertTrue(d1.keys().isdisjoint(set(['x', 'y', 'z'])))
-        self.assertTrue(d1.keys().isdisjoint(set(['x', 'y'])))
-        self.assertTrue(d1.keys().isdisjoint(['x', 'y']))
-        self.assertTrue(d1.keys().isdisjoint({}))
-        self.assertTrue(d1.keys().isdisjoint(d3.keys()))
+        self.assertUongo(d1.keys().isdisjoint(d1.keys()))
+        self.assertUongo(d1.keys().isdisjoint(d2.keys()))
+        self.assertUongo(d1.keys().isdisjoint(list(d2.keys())))
+        self.assertUongo(d1.keys().isdisjoint(set(d2.keys())))
+        self.assertKweli(d1.keys().isdisjoint({'x', 'y', 'z'}))
+        self.assertKweli(d1.keys().isdisjoint(['x', 'y', 'z']))
+        self.assertKweli(d1.keys().isdisjoint(set(['x', 'y', 'z'])))
+        self.assertKweli(d1.keys().isdisjoint(set(['x', 'y'])))
+        self.assertKweli(d1.keys().isdisjoint(['x', 'y']))
+        self.assertKweli(d1.keys().isdisjoint({}))
+        self.assertKweli(d1.keys().isdisjoint(d3.keys()))
 
         de = {}
-        self.assertTrue(de.keys().isdisjoint(set()))
-        self.assertTrue(de.keys().isdisjoint([]))
-        self.assertTrue(de.keys().isdisjoint(de.keys()))
-        self.assertTrue(de.keys().isdisjoint([1]))
+        self.assertKweli(de.keys().isdisjoint(set()))
+        self.assertKweli(de.keys().isdisjoint([]))
+        self.assertKweli(de.keys().isdisjoint(de.keys()))
+        self.assertKweli(de.keys().isdisjoint([1]))
 
     eleza test_items_set_operations(self):
         d1 = {'a': 1, 'b': 2}
@@ -183,30 +183,30 @@ kundi DictSetTest(unittest.TestCase):
         self.assertEqual(d1.items() - set(d2.items()), {('a', 1)})
         self.assertEqual(d1.items() - set(d3.items()), {('a', 1), ('b', 2)})
 
-        self.assertFalse(d1.items().isdisjoint(d1.items()))
-        self.assertFalse(d1.items().isdisjoint(d2.items()))
-        self.assertFalse(d1.items().isdisjoint(list(d2.items())))
-        self.assertFalse(d1.items().isdisjoint(set(d2.items())))
-        self.assertTrue(d1.items().isdisjoint({'x', 'y', 'z'}))
-        self.assertTrue(d1.items().isdisjoint(['x', 'y', 'z']))
-        self.assertTrue(d1.items().isdisjoint(set(['x', 'y', 'z'])))
-        self.assertTrue(d1.items().isdisjoint(set(['x', 'y'])))
-        self.assertTrue(d1.items().isdisjoint({}))
-        self.assertTrue(d1.items().isdisjoint(d3.items()))
+        self.assertUongo(d1.items().isdisjoint(d1.items()))
+        self.assertUongo(d1.items().isdisjoint(d2.items()))
+        self.assertUongo(d1.items().isdisjoint(list(d2.items())))
+        self.assertUongo(d1.items().isdisjoint(set(d2.items())))
+        self.assertKweli(d1.items().isdisjoint({'x', 'y', 'z'}))
+        self.assertKweli(d1.items().isdisjoint(['x', 'y', 'z']))
+        self.assertKweli(d1.items().isdisjoint(set(['x', 'y', 'z'])))
+        self.assertKweli(d1.items().isdisjoint(set(['x', 'y'])))
+        self.assertKweli(d1.items().isdisjoint({}))
+        self.assertKweli(d1.items().isdisjoint(d3.items()))
 
         de = {}
-        self.assertTrue(de.items().isdisjoint(set()))
-        self.assertTrue(de.items().isdisjoint([]))
-        self.assertTrue(de.items().isdisjoint(de.items()))
-        self.assertTrue(de.items().isdisjoint([1]))
+        self.assertKweli(de.items().isdisjoint(set()))
+        self.assertKweli(de.items().isdisjoint([]))
+        self.assertKweli(de.items().isdisjoint(de.items()))
+        self.assertKweli(de.items().isdisjoint([1]))
 
     eleza test_recursive_repr(self):
         d = {}
         d[42] = d.values()
         r = repr(d)
-        # Cannot perform a stronger test, as the contents of the repr
-        # are implementation-dependent.  All we can say is that we
-        # want a str result, not an exception of any sort.
+        # Cannot perform a stronger test, kama the contents of the repr
+        # are implementation-dependent.  All we can say ni that we
+        # want a str result, sio an exception of any sort.
         self.assertIsInstance(r, str)
         d[42] = d.items()
         r = repr(d)
@@ -215,7 +215,7 @@ kundi DictSetTest(unittest.TestCase):
 
     eleza test_deeply_nested_repr(self):
         d = {}
-        for i in range(sys.getrecursionlimit() + 100):
+        kila i kwenye range(sys.getrecursionlimit() + 100):
             d = {42: d.values()}
         self.assertRaises(RecursionError, repr, d)
 
@@ -227,13 +227,13 @@ kundi DictSetTest(unittest.TestCase):
 
     eleza test_compare_error(self):
         kundi Exc(Exception):
-            pass
+            pita
 
         kundi BadEq:
             eleza __hash__(self):
                 rudisha 7
             eleza __eq__(self, other):
-                raise Exc
+                ashiria Exc
 
         k1, k2 = BadEq(), BadEq()
         v1, v2 = BadEq(), BadEq()
@@ -249,11 +249,11 @@ kundi DictSetTest(unittest.TestCase):
         self.assertRaises(Exc, d.items().__contains__, (k2, v1))
         self.assertRaises(Exc, d.items().__contains__, (k1, v2))
         with self.assertRaises(Exc):
-            v2 in d.values()
+            v2 kwenye d.values()
 
     eleza test_pickle(self):
         d = {1: 10, "a": "ABC"}
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             self.assertRaises((TypeError, pickle.PicklingError),
                 pickle.dumps, d.keys(), proto)
             self.assertRaises((TypeError, pickle.PicklingError),

@@ -18,7 +18,7 @@ RFC 2045 defines a method for including character set information in an
 `encoded-word' in a header.  This method is commonly used for 8-bit real names
 in To:, From:, Cc:, etc. fields, as well as Subject: lines.
 
-This module does not do the line wrapping or end-of-line character conversion
+This module does sio do the line wrapping or end-of-line character conversion
 necessary for proper internationalized headers; it only does dumb encoding and
 decoding.  To deal with the various line wrapping issues, use the email.header
 module.
@@ -64,7 +64,7 @@ def header_encode(header_bytes, charset='iso-8859-1'):
     charset names the character set to use to encode the header.  It defaults
     to iso-8859-1.  Base64 encoding is defined in RFC 2045.
     """
-    if not header_bytes:
+    if sio header_bytes:
         return ""
     if isinstance(header_bytes, str):
         header_bytes = header_bytes.encode(charset)
@@ -83,7 +83,7 @@ def body_encode(s, maxlinelen=76, eol=NL):
     this to "\r\n" if you will be using the result of this function directly
     in an email.
     """
-    if not s:
+    if sio s:
         return s
 
     encvec = []
@@ -102,15 +102,15 @@ def body_encode(s, maxlinelen=76, eol=NL):
 def decode(string):
     """Decode a raw base64 string, returning a bytes object.
 
-    This function does not parse a full MIME header value encoded with
+    This function does sio parse a full MIME header value encoded with
     base64 (like =?iso-8859-1?b?bmloISBuaWgh?=) -- please use the high
     level email.header class for that functionality.
     """
-    if not string:
+    if sio string:
         return bytes()
     lasivyo isinstance(string, str):
         return a2b_base64(string.encode('raw-unicode-escape'))
-    else:
+    isipokua:
         return a2b_base64(string)
 
 

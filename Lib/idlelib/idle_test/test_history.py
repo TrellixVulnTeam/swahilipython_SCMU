@@ -4,9 +4,9 @@ kutoka idlelib.history agiza History
 agiza unittest
 kutoka test.support agiza requires
 
-agiza tkinter as tk
-kutoka tkinter agiza Text as tkText
-kutoka idlelib.idle_test.mock_tk agiza Text as mkText
+agiza tkinter kama tk
+kutoka tkinter agiza Text kama tkText
+kutoka idlelib.idle_test.mock_tk agiza Text kama mkText
 kutoka idlelib.config agiza idleConf
 
 line1 = 'a = 7'
@@ -14,7 +14,7 @@ line2 = 'b = a'
 
 
 kundi StoreTest(unittest.TestCase):
-    '''Tests History.__init__ and History.store with mock Text'''
+    '''Tests History.__init__ na History.store with mock Text'''
 
     @classmethod
     eleza setUpClass(cls):
@@ -28,8 +28,8 @@ kundi StoreTest(unittest.TestCase):
     eleza test_init(self):
         self.assertIs(self.history.text, self.text)
         self.assertEqual(self.history.history, [])
-        self.assertIsNone(self.history.prefix)
-        self.assertIsNone(self.history.pointer)
+        self.assertIsTupu(self.history.prefix)
+        self.assertIsTupu(self.history.pointer)
         self.assertEqual(self.history.cyclic,
                 idleConf.GetOption("main", "History",  "cyclic", 1, "bool"))
 
@@ -51,18 +51,18 @@ kundi StoreTest(unittest.TestCase):
         self.history.prefix = line1
         self.history.pointer = 0
         self.history.store(line2)
-        self.assertIsNone(self.history.prefix)
-        self.assertIsNone(self.history.pointer)
+        self.assertIsTupu(self.history.prefix)
+        self.assertIsTupu(self.history.pointer)
 
 
 kundi TextWrapper:
     eleza __init__(self, master):
         self.text = tkText(master=master)
-        self._bell = False
+        self._bell = Uongo
     eleza __getattr__(self, name):
         rudisha getattr(self.text, name)
     eleza bell(self):
-        self._bell = True
+        self._bell = Kweli
 
 
 kundi FetchTest(unittest.TestCase):
@@ -85,11 +85,11 @@ kundi FetchTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
-    eleza fetch_test(self, reverse, line, prefix, index, *, bell=False):
-        # Perform one fetch as invoked by Alt-N or Alt-P
-        # Test the result. The line test is the most agizaant.
+    eleza fetch_test(self, reverse, line, prefix, index, *, bell=Uongo):
+        # Perform one fetch kama invoked by Alt-N ama Alt-P
+        # Test the result. The line test ni the most agizaant.
         # The last two are diagnostic of fetch internals.
         History = self.history
         History.fetch(reverse)
@@ -98,7 +98,7 @@ kundi FetchTest(unittest.TestCase):
         Equal(self.text.get('iomark', 'end-1c'), line)
         Equal(self.text._bell, bell)
         ikiwa bell:
-            self.text._bell = False
+            self.text._bell = Uongo
         Equal(History.prefix, prefix)
         Equal(History.pointer, index)
         Equal(self.text.compare("insert", '==', "end-1c"), 1)
@@ -106,66 +106,66 @@ kundi FetchTest(unittest.TestCase):
     eleza test_fetch_prev_cyclic(self):
         prefix = ''
         test = self.fetch_test
-        test(True, line2, prefix, 1)
-        test(True, line1, prefix, 0)
-        test(True, prefix, None, None, bell=True)
+        test(Kweli, line2, prefix, 1)
+        test(Kweli, line1, prefix, 0)
+        test(Kweli, prefix, Tupu, Tupu, bell=Kweli)
 
     eleza test_fetch_next_cyclic(self):
         prefix = ''
         test  = self.fetch_test
-        test(False, line1, prefix, 0)
-        test(False, line2, prefix, 1)
-        test(False, prefix, None, None, bell=True)
+        test(Uongo, line1, prefix, 0)
+        test(Uongo, line2, prefix, 1)
+        test(Uongo, prefix, Tupu, Tupu, bell=Kweli)
 
     # Prefix 'a' tests skip line2, which starts with 'b'
     eleza test_fetch_prev_prefix(self):
         prefix = 'a'
         self.text.insert('iomark', prefix)
-        self.fetch_test(True, line1, prefix, 0)
-        self.fetch_test(True, prefix, None, None, bell=True)
+        self.fetch_test(Kweli, line1, prefix, 0)
+        self.fetch_test(Kweli, prefix, Tupu, Tupu, bell=Kweli)
 
     eleza test_fetch_next_prefix(self):
         prefix = 'a'
         self.text.insert('iomark', prefix)
-        self.fetch_test(False, line1, prefix, 0)
-        self.fetch_test(False, prefix, None, None, bell=True)
+        self.fetch_test(Uongo, line1, prefix, 0)
+        self.fetch_test(Uongo, prefix, Tupu, Tupu, bell=Kweli)
 
     eleza test_fetch_prev_noncyclic(self):
         prefix = ''
-        self.history.cyclic = False
+        self.history.cyclic = Uongo
         test = self.fetch_test
-        test(True, line2, prefix, 1)
-        test(True, line1, prefix, 0)
-        test(True, line1, prefix, 0, bell=True)
+        test(Kweli, line2, prefix, 1)
+        test(Kweli, line1, prefix, 0)
+        test(Kweli, line1, prefix, 0, bell=Kweli)
 
     eleza test_fetch_next_noncyclic(self):
         prefix = ''
-        self.history.cyclic = False
+        self.history.cyclic = Uongo
         test  = self.fetch_test
-        test(False, prefix, None, None, bell=True)
-        test(True, line2, prefix, 1)
-        test(False, prefix, None, None, bell=True)
-        test(False, prefix, None, None, bell=True)
+        test(Uongo, prefix, Tupu, Tupu, bell=Kweli)
+        test(Kweli, line2, prefix, 1)
+        test(Uongo, prefix, Tupu, Tupu, bell=Kweli)
+        test(Uongo, prefix, Tupu, Tupu, bell=Kweli)
 
     eleza test_fetch_cursor_move(self):
         # Move cursor after fetch
-        self.history.fetch(reverse=True)  # initialization
+        self.history.fetch(reverse=Kweli)  # initialization
         self.text.mark_set('insert', 'iomark')
-        self.fetch_test(True, line2, None, None, bell=True)
+        self.fetch_test(Kweli, line2, Tupu, Tupu, bell=Kweli)
 
     eleza test_fetch_edit(self):
         # Edit after fetch
-        self.history.fetch(reverse=True)  # initialization
+        self.history.fetch(reverse=Kweli)  # initialization
         self.text.delete('iomark', 'insert', )
         self.text.insert('iomark', 'a =')
-        self.fetch_test(True, line1, 'a =', 0)  # prefix is reset
+        self.fetch_test(Kweli, line1, 'a =', 0)  # prefix ni reset
 
     eleza test_history_prev_next(self):
         # Minimally test functions bound to events
         self.history.history_prev('dummy event')
         self.assertEqual(self.history.pointer, 1)
         self.history.history_next('dummy event')
-        self.assertEqual(self.history.pointer, None)
+        self.assertEqual(self.history.pointer, Tupu)
 
 
 ikiwa __name__ == '__main__':

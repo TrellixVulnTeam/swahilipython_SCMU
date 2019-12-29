@@ -40,13 +40,13 @@ CHARSETS = {
     'iso-8859-2':  (QP,        QP,      None),
     'iso-8859-3':  (QP,        QP,      None),
     'iso-8859-4':  (QP,        QP,      None),
-    # iso-8859-5 is Cyrillic, and not especially used
-    # iso-8859-6 is Arabic, also not particularly used
-    # iso-8859-7 is Greek, QP will not make it readable
-    # iso-8859-8 is Hebrew, QP will not make it readable
+    # iso-8859-5 is Cyrillic, and sio especially used
+    # iso-8859-6 is Arabic, also sio particularly used
+    # iso-8859-7 is Greek, QP will sio make it readable
+    # iso-8859-8 is Hebrew, QP will sio make it readable
     'iso-8859-9':  (QP,        QP,      None),
     'iso-8859-10': (QP,        QP,      None),
-    # iso-8859-11 is Thai, QP will not make it readable
+    # iso-8859-11 is Thai, QP will sio make it readable
     'iso-8859-13': (QP,        QP,      None),
     'iso-8859-14': (QP,        QP,      None),
     'iso-8859-15': (QP,        QP,      None),
@@ -126,11 +126,11 @@ def add_charset(charset, header_enc=None, body_enc=None, output_charset=None):
 
     Both input_charset and output_charset must have Unicode codec entries in
     the module's charset-to-codec mapping; use add_codec(charset, codecname)
-    to add codecs the module does not know about.  See the codecs module's
+    to add codecs the module does sio know about.  See the codecs module's
     documentation for more information.
     """
     if body_enc == SHORTEST:
-        raise ValueError('SHORTEST not allowed for body_enc')
+        raise ValueError('SHORTEST sio allowed for body_enc')
     CHARSETS[charset] = (header_enc, body_enc, output_charset)
 
 
@@ -159,7 +159,7 @@ def add_codec(charset, codecname):
 def _encode(string, codec):
     if codec == UNKNOWN8BIT:
         return string.encode('ascii', 'surrogateescape')
-    else:
+    isipokua:
         return string.encode(codec)
 
 
@@ -176,7 +176,7 @@ class Charset:
 
     Certain character sets must be encoded with quoted-printable or base64
     when used in email headers or bodies.  Certain character sets must be
-    converted outright, and are not allowed in email.  Instances of this
+    converted outright, and are sio allowed in email.  Instances of this
     module expose the following information about a character set:
 
     input_charset: The initial character set specified.  Common aliases
@@ -191,7 +191,7 @@ class Charset:
 
     body_encoding: Same as header_encoding, but describes the encoding for the
                    mail message's body, which indeed may be different than the
-                   header encoding.  Charset.SHORTEST is not allowed for
+                   header encoding.  Charset.SHORTEST ni sio allowed for
                    body_encoding.
 
     output_charset: Some character sets must be converted before they can be
@@ -209,16 +209,16 @@ class Charset:
                   this attribute will have the same value as the input_codec.
     """
     def __init__(self, input_charset=DEFAULT_CHARSET):
-        # RFC 2046, $4.1.2 says charsets are not case sensitive.  We coerce to
+        # RFC 2046, $4.1.2 says charsets are sio case sensitive.  We coerce to
         # unicode because its .lower() is locale insensitive.  If the argument
         # is already a unicode, we leave it at that, but ensure that the
         # charset is ASCII, as the standard (RFC XXX) requires.
-        try:
+        jaribu:
             if isinstance(input_charset, str):
                 input_charset.encode('ascii')
-            else:
+            isipokua:
                 input_charset = str(input_charset, 'ascii')
-        except UnicodeError:
+        tatizo UnicodeError:
             raise errors.CharsetError(input_charset)
         input_charset = input_charset.lower()
         # Set the input charset after filtering through the aliases
@@ -228,7 +228,7 @@ class Charset:
         # it.
         henc, benc, conv = CHARSETS.get(self.input_charset,
                                         (SHORTEST, BASE64, None))
-        if not conv:
+        if sio conv:
             conv = self.input_charset
         # Set the attributes, allowing the arguments to override the default.
         self.header_encoding = henc
@@ -265,13 +265,13 @@ class Charset:
             return 'quoted-printable'
         lasivyo self.body_encoding == BASE64:
             return 'base64'
-        else:
+        isipokua:
             return encode_7or8bit
 
     def get_output_charset(self):
         """Return the output character set.
 
-        This is self.output_charset if that is not None, otherwise it is
+        This is self.output_charset if that ni sio None, otherwise it is
         self.input_charset.
         """
         return self.output_charset or self.input_charset
@@ -298,7 +298,7 @@ class Charset:
     def header_encode_lines(self, string, maxlengths):
         """Header-encode a string by converting it first to bytes.
 
-        This is similar to `header_encode()` except that the string is fit
+        This is similar to `header_encode()` tatizo that the string is fit
         into maximum line lengths as given by the argument.
 
         :param string: A unicode string for the header.  It must be possible
@@ -308,7 +308,7 @@ class Charset:
             returned from this iterator will provide the next maximum line
             length.  This parameter is used as an argument to built-in next()
             and should never be exhausted.  The maximum line lengths should
-            not count the RFC 2047 chrome.  These line lengths are only a
+            sio count the RFC 2047 chrome.  These line lengths are only a
             hint; the splitter does the best it can.
         :return: Lines of encoded strings, each with RFC 2047 chrome.
         """
@@ -343,9 +343,9 @@ class Charset:
                 # This last character doesn't fit so pop it off.
                 current_line.pop()
                 # Does nothing fit on the first line?
-                if not lines and not current_line:
+                if sio lines and sio current_line:
                     lines.append(None)
-                else:
+                isipokua:
                     separator = (' ' if lines else '')
                     joined_line = EMPTYSTRING.join(current_line)
                     header_bytes = _encode(joined_line, codec)
@@ -367,9 +367,9 @@ class Charset:
             lenqp = email.quoprimime.header_length(header_bytes)
             if len64 < lenqp:
                 return email.base64mime
-            else:
+            isipokua:
                 return email.quoprimime
-        else:
+        isipokua:
             return None
 
     def body_encode(self, string):
@@ -381,7 +381,7 @@ class Charset:
         string using the ascii codec produces the correct string version
         of the content.
         """
-        if not string:
+        if sio string:
             return string
         if self.body_encoding is BASE64:
             if isinstance(string, str):
@@ -398,7 +398,7 @@ class Charset:
                 string = string.encode(self.output_charset)
             string = string.decode('latin1')
             return email.quoprimime.body_encode(string)
-        else:
+        isipokua:
             if isinstance(string, str):
                 string = string.encode(self.output_charset).decode('ascii')
             return string

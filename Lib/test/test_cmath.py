@@ -1,6 +1,6 @@
 kutoka test.support agiza requires_IEEE_754, cpython_only
 kutoka test.test_math agiza parse_testfile, test_file
-agiza test.test_math as test_math
+agiza test.test_math kama test_math
 agiza unittest
 agiza cmath, math
 kutoka cmath agiza phase, polar, rect, pi
@@ -11,8 +11,8 @@ agiza sys
 INF = float('inf')
 NAN = float('nan')
 
-complex_zeros = [complex(x, y) for x in [0.0, -0.0] for y in [0.0, -0.0]]
-complex_infinities = [complex(x, y) for x, y in [
+complex_zeros = [complex(x, y) kila x kwenye [0.0, -0.0] kila y kwenye [0.0, -0.0]]
+complex_infinities = [complex(x, y) kila x, y kwenye [
         (INF, 0.0),  # 1st quadrant
         (INF, 2.3),
         (INF, INF),
@@ -34,7 +34,7 @@ complex_infinities = [complex(x, y) for x, y in [
         (INF, -2.3),
         (INF, -0.0)
         ]]
-complex_nans = [complex(x, y) for x, y in [
+complex_nans = [complex(x, y) kila x, y kwenye [
         (NAN, -INF),
         (NAN, -2.3),
         (NAN, -0.0),
@@ -50,12 +50,12 @@ complex_nans = [complex(x, y) for x, y in [
         ]]
 
 kundi CMathTests(unittest.TestCase):
-    # list of all functions in cmath
-    test_functions = [getattr(cmath, fname) for fname in [
+    # list of all functions kwenye cmath
+    test_functions = [getattr(cmath, fname) kila fname kwenye [
             'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
             'cos', 'cosh', 'exp', 'log', 'log10', 'sin', 'sinh',
             'sqrt', 'tan', 'tanh']]
-    # test first and second arguments independently for 2-argument log
+    # test first na second arguments independently kila 2-argument log
     test_functions.append(lambda x : cmath.log(x, 1729. + 0j))
     test_functions.append(lambda x : cmath.log(14.-27j, x))
 
@@ -66,32 +66,32 @@ kundi CMathTests(unittest.TestCase):
         self.test_values.close()
 
     eleza assertFloatIdentical(self, x, y):
-        """Fail unless floats x and y are identical, in the sense that:
-        (1) both x and y are nans, or
-        (2) both x and y are infinities, with the same sign, or
-        (3) both x and y are zeros, with the same sign, or
-        (4) x and y are both finite and nonzero, and x == y
+        """Fail unless floats x na y are identical, kwenye the sense that:
+        (1) both x na y are nans, or
+        (2) both x na y are infinities, with the same sign, or
+        (3) both x na y are zeros, with the same sign, or
+        (4) x na y are both finite na nonzero, na x == y
 
         """
-        msg = 'floats {!r} and {!r} are not identical'
+        msg = 'floats {!r} na {!r} are sio identical'
 
-        ikiwa math.isnan(x) or math.isnan(y):
-            ikiwa math.isnan(x) and math.isnan(y):
-                return
+        ikiwa math.isnan(x) ama math.isnan(y):
+            ikiwa math.isnan(x) na math.isnan(y):
+                rudisha
         elikiwa x == y:
             ikiwa x != 0.0:
-                return
+                rudisha
             # both zero; check that signs match
             elikiwa math.copysign(1.0, x) == math.copysign(1.0, y):
-                return
-            else:
+                rudisha
+            isipokua:
                 msg += ': zeros have different signs'
         self.fail(msg.format(x, y))
 
     eleza assertComplexIdentical(self, x, y):
-        """Fail unless complex numbers x and y have equal values and signs.
+        """Fail unless complex numbers x na y have equal values na signs.
 
-        In particular, ikiwa x and y both have real (or imaginary) part
+        In particular, ikiwa x na y both have real (or imaginary) part
         zero, but the zeros have different signs, this test will fail.
 
         """
@@ -99,62 +99,62 @@ kundi CMathTests(unittest.TestCase):
         self.assertFloatIdentical(x.imag, y.imag)
 
     eleza rAssertAlmostEqual(self, a, b, rel_err = 2e-15, abs_err = 5e-323,
-                           msg=None):
-        """Fail ikiwa the two floating-point numbers are not almost equal.
+                           msg=Tupu):
+        """Fail ikiwa the two floating-point numbers are sio almost equal.
 
-        Determine whether floating-point values a and b are equal to within
-        a (small) rounding error.  The default values for rel_err and
-        abs_err are chosen to be suitable for platforms where a float is
+        Determine whether floating-point values a na b are equal to within
+        a (small) rounding error.  The default values kila rel_err and
+        abs_err are chosen to be suitable kila platforms where a float is
         represented by an IEEE 754 double.  They allow an error of between
-        9 and 19 ulps.
+        9 na 19 ulps.
         """
 
         # special values testing
         ikiwa math.isnan(a):
             ikiwa math.isnan(b):
-                return
-            self.fail(msg or '{!r} should be nan'.format(b))
+                rudisha
+            self.fail(msg ama '{!r} should be nan'.format(b))
 
         ikiwa math.isinf(a):
             ikiwa a == b:
-                return
-            self.fail(msg or 'finite result where infinity expected: '
+                rudisha
+            self.fail(msg ama 'finite result where infinity expected: '
                       'expected {!r}, got {!r}'.format(a, b))
 
-        # ikiwa both a and b are zero, check whether they have the same sign
-        # (in theory there are examples where it would be legitimate for a
-        # and b to have opposite signs; in practice these hardly ever
+        # ikiwa both a na b are zero, check whether they have the same sign
+        # (in theory there are examples where it would be legitimate kila a
+        # na b to have opposite signs; kwenye practice these hardly ever
         # occur).
-        ikiwa not a and not b:
+        ikiwa sio a na sio b:
             ikiwa math.copysign(1., a) != math.copysign(1., b):
-                self.fail(msg or 'zero has wrong sign: expected {!r}, '
+                self.fail(msg ama 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # ikiwa a-b overflows, or b is infinite, rudisha False.  Again, in
-        # theory there are examples where a is within a few ulps of the
-        # max representable float, and then b could legitimately be
+        # ikiwa a-b overflows, ama b ni infinite, rudisha Uongo.  Again, in
+        # theory there are examples where a ni within a few ulps of the
+        # max representable float, na then b could legitimately be
         # infinite.  In practice these examples are rare.
-        try:
+        jaribu:
             absolute_error = abs(b-a)
-        except OverflowError:
-            pass
-        else:
-            # test passes ikiwa either the absolute error or the relative
-            # error is sufficiently small.  The defaults amount to an
-            # error of between 9 ulps and 19 ulps on an IEEE-754 compliant
+        tatizo OverflowError:
+            pita
+        isipokua:
+            # test pitaes ikiwa either the absolute error ama the relative
+            # error ni sufficiently small.  The defaults amount to an
+            # error of between 9 ulps na 19 ulps on an IEEE-754 compliant
             # machine.
             ikiwa absolute_error <= max(abs_err, rel_err * abs(a)):
-                return
+                rudisha
         self.fail(msg or
-                  '{!r} and {!r} are not sufficiently close'.format(a, b))
+                  '{!r} na {!r} are sio sufficiently close'.format(a, b))
 
     eleza test_constants(self):
         e_expected = 2.71828182845904523536
         pi_expected = 3.14159265358979323846
         self.assertAlmostEqual(cmath.pi, pi_expected, places=9,
-            msg="cmath.pi is {}; should be {}".format(cmath.pi, pi_expected))
+            msg="cmath.pi ni {}; should be {}".format(cmath.pi, pi_expected))
         self.assertAlmostEqual(cmath.e, e_expected, places=9,
-            msg="cmath.e is {}; should be {}".format(cmath.e, e_expected))
+            msg="cmath.e ni {}; should be {}".format(cmath.e, e_expected))
 
     eleza test_infinity_and_nan_constants(self):
         self.assertEqual(cmath.inf.real, math.inf)
@@ -162,10 +162,10 @@ kundi CMathTests(unittest.TestCase):
         self.assertEqual(cmath.infj.real, 0.0)
         self.assertEqual(cmath.infj.imag, math.inf)
 
-        self.assertTrue(math.isnan(cmath.nan.real))
+        self.assertKweli(math.isnan(cmath.nan.real))
         self.assertEqual(cmath.nan.imag, 0.0)
         self.assertEqual(cmath.nanj.real, 0.0)
-        self.assertTrue(math.isnan(cmath.nanj.imag))
+        self.assertKweli(math.isnan(cmath.nanj.imag))
 
         # Check consistency with reprs.
         self.assertEqual(repr(cmath.inf), "inf")
@@ -174,22 +174,22 @@ kundi CMathTests(unittest.TestCase):
         self.assertEqual(repr(cmath.nanj), "nanj")
 
     eleza test_user_object(self):
-        # Test automatic calling of __complex__ and __float__ by cmath
+        # Test automatic calling of __complex__ na __float__ by cmath
         # functions
 
-        # some random values to use as test values; we avoid values
-        # for which any of the functions in cmath is undefined
-        # (i.e. 0., 1., -1., 1j, -1j) or would cause overflow
+        # some random values to use kama test values; we avoid values
+        # kila which any of the functions kwenye cmath ni undefined
+        # (i.e. 0., 1., -1., 1j, -1j) ama would cause overflow
         cx_arg = 4.419414439 + 1.497100113j
         flt_arg = -6.131677725
 
         # a variety of non-complex numbers, used to check that
         # non-complex rudisha values kutoka __complex__ give an error
-        non_complexes = ["not complex", 1, 5, 2., None,
+        non_complexes = ["not complex", 1, 5, 2., Tupu,
                          object(), NotImplemented]
 
         # Now we introduce a variety of classes whose instances might
-        # end up being passed to the cmath functions
+        # end up being pitaed to the cmath functions
 
         # usual case: new-style kundi implementing __complex__
         kundi MyComplex(object):
@@ -205,28 +205,28 @@ kundi CMathTests(unittest.TestCase):
             eleza __complex__(self):
                 rudisha self.value
 
-        # classes for which __complex__ raises an exception
+        # classes kila which __complex__ ashirias an exception
         kundi SomeException(Exception):
-            pass
+            pita
         kundi MyComplexException(object):
             eleza __complex__(self):
-                raise SomeException
+                ashiria SomeException
         kundi MyComplexExceptionOS:
             eleza __complex__(self):
-                raise SomeException
+                ashiria SomeException
 
-        # some classes not providing __float__ or __complex__
+        # some classes sio providing __float__ ama __complex__
         kundi NeitherComplexNorFloat(object):
-            pass
+            pita
         kundi NeitherComplexNorFloatOS:
-            pass
+            pita
         kundi Index:
             eleza __int__(self): rudisha 2
             eleza __index__(self): rudisha 2
         kundi MyInt:
             eleza __int__(self): rudisha 2
 
-        # other possible combinations of __float__ and __complex__
+        # other possible combinations of __float__ na __complex__
         # that should work
         kundi FloatAndComplex(object):
             eleza __float__(self):
@@ -245,61 +245,61 @@ kundi CMathTests(unittest.TestCase):
             eleza __float__(self):
                 rudisha flt_arg
 
-        for f in self.test_functions:
+        kila f kwenye self.test_functions:
             # usual usage
             self.assertEqual(f(MyComplex(cx_arg)), f(cx_arg))
             self.assertEqual(f(MyComplexOS(cx_arg)), f(cx_arg))
-            # other combinations of __float__ and __complex__
+            # other combinations of __float__ na __complex__
             self.assertEqual(f(FloatAndComplex()), f(cx_arg))
             self.assertEqual(f(FloatAndComplexOS()), f(cx_arg))
             self.assertEqual(f(JustFloat()), f(flt_arg))
             self.assertEqual(f(JustFloatOS()), f(flt_arg))
             self.assertEqual(f(Index()), f(int(Index())))
-            # TypeError should be raised for classes not providing
-            # either __complex__ or __float__, even ikiwa they provide
-            # __int__ or __index__.  An old-style class
-            # currently raises AttributeError instead of a TypeError;
+            # TypeError should be ashiriad kila classes sio providing
+            # either __complex__ ama __float__, even ikiwa they provide
+            # __int__ ama __index__.  An old-style class
+            # currently ashirias AttributeError instead of a TypeError;
             # this could be considered a bug.
             self.assertRaises(TypeError, f, NeitherComplexNorFloat())
             self.assertRaises(TypeError, f, MyInt())
             self.assertRaises(Exception, f, NeitherComplexNorFloatOS())
             # non-complex rudisha value kutoka __complex__ -> TypeError
-            for bad_complex in non_complexes:
+            kila bad_complex kwenye non_complexes:
                 self.assertRaises(TypeError, f, MyComplex(bad_complex))
                 self.assertRaises(TypeError, f, MyComplexOS(bad_complex))
-            # exceptions in __complex__ should be propagated correctly
+            # exceptions kwenye __complex__ should be propagated correctly
             self.assertRaises(SomeException, f, MyComplexException())
             self.assertRaises(SomeException, f, MyComplexExceptionOS())
 
     eleza test_input_type(self):
         # ints should be acceptable inputs to all cmath
         # functions, by virtue of providing a __float__ method
-        for f in self.test_functions:
-            for arg in [2, 2.]:
+        kila f kwenye self.test_functions:
+            kila arg kwenye [2, 2.]:
                 self.assertEqual(f(arg), f(arg.__float__()))
 
         # but strings should give a TypeError
-        for f in self.test_functions:
-            for arg in ["a", "long_string", "0", "1j", ""]:
+        kila f kwenye self.test_functions:
+            kila arg kwenye ["a", "long_string", "0", "1j", ""]:
                 self.assertRaises(TypeError, f, arg)
 
     eleza test_cmath_matches_math(self):
-        # check that corresponding cmath and math functions are equal
-        # for floats in the appropriate range
+        # check that corresponding cmath na math functions are equal
+        # kila floats kwenye the appropriate range
 
-        # test_values in (0, 1)
+        # test_values kwenye (0, 1)
         test_values = [0.01, 0.1, 0.2, 0.5, 0.9, 0.99]
 
-        # test_values for functions defined on [-1., 1.]
-        unit_interval = test_values + [-x for x in test_values] + \
+        # test_values kila functions defined on [-1., 1.]
+        unit_interval = test_values + [-x kila x kwenye test_values] + \
             [0., 1., -1.]
 
-        # test_values for log, log10, sqrt
-        positive = test_values + [1.] + [1./x for x in test_values]
+        # test_values kila log, log10, sqrt
+        positive = test_values + [1.] + [1./x kila x kwenye test_values]
         nonnegative = [0.] + positive
 
-        # test_values for functions defined on the whole real line
-        real_line = [0.] + positive + [-x for x in positive]
+        # test_values kila functions defined on the whole real line
+        real_line = [0.] + positive + [-x kila x kwenye positive]
 
         test_functions = {
             'acos' : unit_interval,
@@ -316,17 +316,17 @@ kundi CMathTests(unittest.TestCase):
             'tan' : real_line,
             'tanh' : real_line}
 
-        for fn, values in test_functions.items():
+        kila fn, values kwenye test_functions.items():
             float_fn = getattr(math, fn)
             complex_fn = getattr(cmath, fn)
-            for v in values:
+            kila v kwenye values:
                 z = complex_fn(v)
                 self.rAssertAlmostEqual(float_fn(v), z.real)
                 self.assertEqual(0., z.imag)
 
         # test two-argument version of log with various bases
-        for base in [0.5, 2., 10.]:
-            for v in positive:
+        kila base kwenye [0.5, 2., 10.]:
+            kila v kwenye positive:
                 z = cmath.log(v, base)
                 self.rAssertAlmostEqual(math.log(v, base), z.real)
                 self.assertEqual(0., z.imag)
@@ -337,13 +337,13 @@ kundi CMathTests(unittest.TestCase):
         # See issue #27953.
         SKIP_ON_TIGER = {'tan0064'}
 
-        osx_version = None
+        osx_version = Tupu
         ikiwa sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
-            try:
+            jaribu:
                 osx_version = tuple(map(int, version_txt.split('.')))
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
         eleza rect_complex(z):
             """Wrapped version of rect that accepts a complex number instead of
@@ -351,57 +351,57 @@ kundi CMathTests(unittest.TestCase):
             rudisha cmath.rect(z.real, z.imag)
 
         eleza polar_complex(z):
-            """Wrapped version of polar that returns a complex number instead of
+            """Wrapped version of polar that rudishas a complex number instead of
             two floats."""
             rudisha complex(*polar(z))
 
-        for id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
+        kila id, fn, ar, ai, er, ei, flags kwenye parse_testfile(test_file):
             arg = complex(ar, ai)
             expected = complex(er, ei)
 
             # Skip certain tests on OS X 10.4.
-            ikiwa osx_version is not None and osx_version < (10, 5):
-                ikiwa id in SKIP_ON_TIGER:
-                    continue
+            ikiwa osx_version ni sio Tupu na osx_version < (10, 5):
+                ikiwa id kwenye SKIP_ON_TIGER:
+                    endelea
 
             ikiwa fn == 'rect':
                 function = rect_complex
             elikiwa fn == 'polar':
                 function = polar_complex
-            else:
+            isipokua:
                 function = getattr(cmath, fn)
-            ikiwa 'divide-by-zero' in flags or 'invalid' in flags:
-                try:
+            ikiwa 'divide-by-zero' kwenye flags ama 'invalid' kwenye flags:
+                jaribu:
                     actual = function(arg)
-                except ValueError:
-                    continue
-                else:
-                    self.fail('ValueError not raised in test '
+                tatizo ValueError:
+                    endelea
+                isipokua:
+                    self.fail('ValueError sio ashiriad kwenye test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
-            ikiwa 'overflow' in flags:
-                try:
+            ikiwa 'overflow' kwenye flags:
+                jaribu:
                     actual = function(arg)
-                except OverflowError:
-                    continue
-                else:
-                    self.fail('OverflowError not raised in test '
+                tatizo OverflowError:
+                    endelea
+                isipokua:
+                    self.fail('OverflowError sio ashiriad kwenye test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
             actual = function(arg)
 
-            ikiwa 'ignore-real-sign' in flags:
+            ikiwa 'ignore-real-sign' kwenye flags:
                 actual = complex(abs(actual.real), actual.imag)
                 expected = complex(abs(expected.real), expected.imag)
-            ikiwa 'ignore-imag-sign' in flags:
+            ikiwa 'ignore-imag-sign' kwenye flags:
                 actual = complex(actual.real, abs(actual.imag))
                 expected = complex(expected.real, abs(expected.imag))
 
-            # for the real part of the log function, we allow an
+            # kila the real part of the log function, we allow an
             # absolute error of up to 2e-15.
-            ikiwa fn in ('log', 'log10'):
+            ikiwa fn kwenye ('log', 'log10'):
                 real_abs_err = 2e-15
-            else:
+            isipokua:
                 real_abs_err = 5e-323
 
             error_message = (
@@ -421,7 +421,7 @@ kundi CMathTests(unittest.TestCase):
     eleza check_polar(self, func):
         eleza check(arg, expected):
             got = func(arg)
-            for e, g in zip(expected, got):
+            kila e, g kwenye zip(expected, got):
                 self.rAssertAlmostEqual(e, g)
         check(0, (0., 0.))
         check(1, (1., 0.))
@@ -455,9 +455,9 @@ kundi CMathTests(unittest.TestCase):
         kutoka _testcapi agiza set_errno
         eleza polar_with_errno_set(z):
             set_errno(11)
-            try:
+            jaribu:
                 rudisha polar(z)
-            finally:
+            mwishowe:
                 set_errno(0)
         self.check_polar(polar_with_errno_set)
 
@@ -498,33 +498,33 @@ kundi CMathTests(unittest.TestCase):
         self.assertAlmostEqual(phase(complex(-INF, 2.3)), pi)
         self.assertAlmostEqual(phase(complex(-INF, 0.0)), pi)
 
-        # real or imaginary part NaN
-        for z in complex_nans:
-            self.assertTrue(math.isnan(phase(z)))
+        # real ama imaginary part NaN
+        kila z kwenye complex_nans:
+            self.assertKweli(math.isnan(phase(z)))
 
     eleza test_abs(self):
         # zeros
-        for z in complex_zeros:
+        kila z kwenye complex_zeros:
             self.assertEqual(abs(z), 0.0)
 
         # infinities
-        for z in complex_infinities:
+        kila z kwenye complex_infinities:
             self.assertEqual(abs(z), INF)
 
-        # real or imaginary part NaN
+        # real ama imaginary part NaN
         self.assertEqual(abs(complex(NAN, -INF)), INF)
-        self.assertTrue(math.isnan(abs(complex(NAN, -2.3))))
-        self.assertTrue(math.isnan(abs(complex(NAN, -0.0))))
-        self.assertTrue(math.isnan(abs(complex(NAN, 0.0))))
-        self.assertTrue(math.isnan(abs(complex(NAN, 2.3))))
+        self.assertKweli(math.isnan(abs(complex(NAN, -2.3))))
+        self.assertKweli(math.isnan(abs(complex(NAN, -0.0))))
+        self.assertKweli(math.isnan(abs(complex(NAN, 0.0))))
+        self.assertKweli(math.isnan(abs(complex(NAN, 2.3))))
         self.assertEqual(abs(complex(NAN, INF)), INF)
         self.assertEqual(abs(complex(-INF, NAN)), INF)
-        self.assertTrue(math.isnan(abs(complex(-2.3, NAN))))
-        self.assertTrue(math.isnan(abs(complex(-0.0, NAN))))
-        self.assertTrue(math.isnan(abs(complex(0.0, NAN))))
-        self.assertTrue(math.isnan(abs(complex(2.3, NAN))))
+        self.assertKweli(math.isnan(abs(complex(-2.3, NAN))))
+        self.assertKweli(math.isnan(abs(complex(-0.0, NAN))))
+        self.assertKweli(math.isnan(abs(complex(0.0, NAN))))
+        self.assertKweli(math.isnan(abs(complex(2.3, NAN))))
         self.assertEqual(abs(complex(INF, NAN)), INF)
-        self.assertTrue(math.isnan(abs(complex(NAN, NAN))))
+        self.assertKweli(math.isnan(abs(complex(NAN, NAN))))
 
 
     @requires_IEEE_754
@@ -534,7 +534,7 @@ kundi CMathTests(unittest.TestCase):
 
     eleza assertCEqual(self, a, b):
         eps = 1E-7
-        ikiwa abs(a.real - b[0]) > eps or abs(a.imag - b[1]) > eps:
+        ikiwa abs(a.real - b[0]) > eps ama abs(a.imag - b[1]) > eps:
             self.fail((a ,b))
 
     eleza test_rect(self):
@@ -547,51 +547,51 @@ kundi CMathTests(unittest.TestCase):
     eleza test_isfinite(self):
         real_vals = [float('-inf'), -2.3, -0.0,
                      0.0, 2.3, float('inf'), float('nan')]
-        for x in real_vals:
-            for y in real_vals:
+        kila x kwenye real_vals:
+            kila y kwenye real_vals:
                 z = complex(x, y)
                 self.assertEqual(cmath.isfinite(z),
-                                  math.isfinite(x) and math.isfinite(y))
+                                  math.isfinite(x) na math.isfinite(y))
 
     eleza test_isnan(self):
-        self.assertFalse(cmath.isnan(1))
-        self.assertFalse(cmath.isnan(1j))
-        self.assertFalse(cmath.isnan(INF))
-        self.assertTrue(cmath.isnan(NAN))
-        self.assertTrue(cmath.isnan(complex(NAN, 0)))
-        self.assertTrue(cmath.isnan(complex(0, NAN)))
-        self.assertTrue(cmath.isnan(complex(NAN, NAN)))
-        self.assertTrue(cmath.isnan(complex(NAN, INF)))
-        self.assertTrue(cmath.isnan(complex(INF, NAN)))
+        self.assertUongo(cmath.isnan(1))
+        self.assertUongo(cmath.isnan(1j))
+        self.assertUongo(cmath.isnan(INF))
+        self.assertKweli(cmath.isnan(NAN))
+        self.assertKweli(cmath.isnan(complex(NAN, 0)))
+        self.assertKweli(cmath.isnan(complex(0, NAN)))
+        self.assertKweli(cmath.isnan(complex(NAN, NAN)))
+        self.assertKweli(cmath.isnan(complex(NAN, INF)))
+        self.assertKweli(cmath.isnan(complex(INF, NAN)))
 
     eleza test_isinf(self):
-        self.assertFalse(cmath.isinf(1))
-        self.assertFalse(cmath.isinf(1j))
-        self.assertFalse(cmath.isinf(NAN))
-        self.assertTrue(cmath.isinf(INF))
-        self.assertTrue(cmath.isinf(complex(INF, 0)))
-        self.assertTrue(cmath.isinf(complex(0, INF)))
-        self.assertTrue(cmath.isinf(complex(INF, INF)))
-        self.assertTrue(cmath.isinf(complex(NAN, INF)))
-        self.assertTrue(cmath.isinf(complex(INF, NAN)))
+        self.assertUongo(cmath.isinf(1))
+        self.assertUongo(cmath.isinf(1j))
+        self.assertUongo(cmath.isinf(NAN))
+        self.assertKweli(cmath.isinf(INF))
+        self.assertKweli(cmath.isinf(complex(INF, 0)))
+        self.assertKweli(cmath.isinf(complex(0, INF)))
+        self.assertKweli(cmath.isinf(complex(INF, INF)))
+        self.assertKweli(cmath.isinf(complex(NAN, INF)))
+        self.assertKweli(cmath.isinf(complex(INF, NAN)))
 
     @requires_IEEE_754
     eleza testTanhSign(self):
-        for z in complex_zeros:
+        kila z kwenye complex_zeros:
             self.assertComplexIdentical(cmath.tanh(z), z)
 
-    # The algorithm used for atan and atanh makes use of the system
+    # The algorithm used kila atan na atanh makes use of the system
     # log1p function; If that system function doesn't respect the sign
-    # of zero, then atan and atanh will also have difficulties with
+    # of zero, then atan na atanh will also have difficulties with
     # the sign of complex zeros.
     @requires_IEEE_754
     eleza testAtanSign(self):
-        for z in complex_zeros:
+        kila z kwenye complex_zeros:
             self.assertComplexIdentical(cmath.atan(z), z)
 
     @requires_IEEE_754
     eleza testAtanhSign(self):
-        for z in complex_zeros:
+        kila z kwenye complex_zeros:
             self.assertComplexIdentical(cmath.atanh(z), z)
 
 

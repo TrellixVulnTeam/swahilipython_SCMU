@@ -23,7 +23,7 @@ class ReceiveStuffProto(asyncio.BufferedProtocol):
     def connection_lost(self, exc):
         if exc is None:
             self.con_lost_fut.set_result(None)
-        else:
+        isipokua:
             self.con_lost_fut.set_exception(exc)
 
 

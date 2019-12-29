@@ -4,9 +4,9 @@
 
 kutoka termios agiza *
 
-__all__ = ["setraw", "setcbreak"]
+__all__ = ["setraw", "setckoma"]
 
-# Indexes for termios list.
+# Indexes kila termios list.
 IFLAG = 0
 OFLAG = 1
 CFLAG = 2
@@ -27,8 +27,8 @@ eleza setraw(fd, when=TCSAFLUSH):
     mode[CC][VTIME] = 0
     tcsetattr(fd, when, mode)
 
-eleza setcbreak(fd, when=TCSAFLUSH):
-    """Put terminal into a cbreak mode."""
+eleza setckoma(fd, when=TCSAFLUSH):
+    """Put terminal into a ckoma mode."""
     mode = tcgetattr(fd)
     mode[LFLAG] = mode[LFLAG] & ~(ECHO | ICANON)
     mode[CC][VMIN] = 1

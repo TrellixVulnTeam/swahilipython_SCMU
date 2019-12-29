@@ -95,7 +95,7 @@ def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
     others = set(stdtests) | nottests
     for name in names:
         mod, ext = os.path.splitext(name)
-        if mod[:5] == "test_" and ext in (".py", "") and mod not in others:
+        if mod[:5] == "test_" and ext in (".py", "") and mod haiko kwenye others:
             tests.append(mod)
     return stdtests + sorted(tests)
 
@@ -103,7 +103,7 @@ def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
 def get_abs_module(ns, test_name):
     if test_name.startswith('test.') or ns.testdir:
         return test_name
-    else:
+    isipokua:
         # Import it from the test package
         return 'test.' + test_name
 
@@ -117,12 +117,12 @@ def _runtest(ns, test_name):
 
     output_on_failure = ns.verbose3
 
-    use_timeout = (ns.timeout is not None)
+    use_timeout = (ns.timeout ni sio None)
     if use_timeout:
         faulthandler.dump_traceback_later(ns.timeout, exit=True)
 
     start_time = time.perf_counter()
-    try:
+    jaribu:
         support.set_match_tests(ns.match_tests)
         support.junit_xml_list = xml_list = [] if ns.xmlpath else None
         if ns.failfast:
@@ -134,7 +134,7 @@ def _runtest(ns, test_name):
             stream = io.StringIO()
             orig_stdout = sys.stdout
             orig_stderr = sys.stderr
-            try:
+            jaribu:
                 sys.stdout = stream
                 sys.stderr = stream
                 result = _runtest_inner(ns, test_name,
@@ -143,10 +143,10 @@ def _runtest(ns, test_name):
                     output = stream.getvalue()
                     orig_stderr.write(output)
                     orig_stderr.flush()
-            finally:
+            mwishowe:
                 sys.stdout = orig_stdout
                 sys.stderr = orig_stderr
-        else:
+        isipokua:
             # Tell tests to be moderately quiet
             support.verbose = ns.verbose
 
@@ -156,13 +156,13 @@ def _runtest(ns, test_name):
         if xml_list:
             import xml.etree.ElementTree as ET
             xml_data = [ET.tostring(x).decode('us-ascii') for x in xml_list]
-        else:
+        isipokua:
             xml_data = None
 
         test_time = time.perf_counter() - start_time
 
         return TestResult(test_name, result, test_time, xml_data)
-    finally:
+    mwishowe:
         if use_timeout:
             faulthandler.cancel_dump_traceback_later()
         support.junit_xml_list = None
@@ -186,13 +186,13 @@ def runtest(ns, test_name):
         EMPTY_TEST_SUITE test ran no subtests.
         TIMEOUT          test timed out.
 
-    If ns.xmlpath is not None, xml_data is a list containing each
+    If ns.xmlpath ni sio None, xml_data is a list containing each
     generated testsuite element.
     """
-    try:
+    jaribu:
         return _runtest(ns, test_name)
     except:
-        if not ns.pgo:
+        if sio ns.pgo:
             msg = traceback.format_exc()
             print(f"test {test_name} crashed -- {msg}",
                   file=sys.stderr, flush=True)
@@ -205,7 +205,7 @@ def _test_module(the_module):
     for error in loader.errors:
         print(error, file=sys.stderr)
     if loader.errors:
-        raise Exception("errors while loading tests")
+        raise Exception("errors wakati loading tests")
     support.run_unittest(tests)
 
 
@@ -226,14 +226,14 @@ def _runtest_inner2(ns, test_name):
     if test_runner is None:
         test_runner = functools.partial(_test_module, the_module)
 
-    try:
+    jaribu:
         if ns.huntrleaks:
             # Return True if the test leaked references
             refleak = dash_R(ns, test_name, test_runner)
-        else:
+        isipokua:
             test_runner()
             refleak = False
-    finally:
+    mwishowe:
         cleanup_test_droppings(test_name, ns.verbose)
 
     support.gc_collect()
@@ -263,32 +263,32 @@ def _runtest_inner(ns, test_name, display_failure=True):
     if ns.pgo:
         display_failure = False
 
-    try:
+    jaribu:
         clear_caches()
 
         with saved_test_environment(test_name, ns.verbose, ns.quiet, pgo=ns.pgo) as environment:
             refleak = _runtest_inner2(ns, test_name)
-    except support.ResourceDenied as msg:
-        if not ns.quiet and not ns.pgo:
+    tatizo support.ResourceDenied as msg:
+        if sio ns.quiet and sio ns.pgo:
             print(f"{test_name} skipped -- {msg}", flush=True)
         return RESOURCE_DENIED
-    except unittest.SkipTest as msg:
-        if not ns.quiet and not ns.pgo:
+    tatizo unittest.SkipTest as msg:
+        if sio ns.quiet and sio ns.pgo:
             print(f"{test_name} skipped -- {msg}", flush=True)
         return SKIPPED
-    except support.TestFailed as exc:
+    tatizo support.TestFailed as exc:
         msg = f"test {test_name} failed"
         if display_failure:
             msg = f"{msg} -- {exc}"
         print(msg, file=sys.stderr, flush=True)
         return FAILED
-    except support.TestDidNotRun:
+    tatizo support.TestDidNotRun:
         return TEST_DID_NOT_RUN
-    except KeyboardInterrupt:
+    tatizo KeyboardInterrupt:
         print()
         return INTERRUPTED
     except:
-        if not ns.pgo:
+        if sio ns.pgo:
             msg = traceback.format_exc()
             print(f"test {test_name} crashed -- {msg}",
                   file=sys.stderr, flush=True)
@@ -314,15 +314,15 @@ def cleanup_test_droppings(test_name, verbose):
     # there's nothing we can do about that here either, we can display the
     # name of the offending test, which is a real help).
     for name in (support.TESTFN,):
-        if not os.path.exists(name):
-            continue
+        if sio os.path.exists(name):
+            endelea
 
         if os.path.isdir(name):
             import shutil
             kind, nuker = "directory", shutil.rmtree
         lasivyo os.path.isfile(name):
             kind, nuker = "file", os.unlink
-        else:
+        isipokua:
             raise RuntimeError(f"os.path says {name!r} exists but is neither "
                                f"directory nor file")
 
@@ -330,11 +330,11 @@ def cleanup_test_droppings(test_name, verbose):
             print_warning("%r left behind %s %r" % (test_name, kind, name))
             support.environment_altered = True
 
-        try:
+        jaribu:
             import stat
             # fix possible permissions problems that might prevent cleanup
             os.chmod(name, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
             nuker(name)
-        except Exception as exc:
+        tatizo Exception as exc:
             print_warning(f"{test_name} left behind {kind} {name!r} "
                           f"and it couldn't be removed: {exc}")

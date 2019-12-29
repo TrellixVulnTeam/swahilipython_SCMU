@@ -9,34 +9,34 @@ kutoka . agiza locks
 
 
 kundi QueueEmpty(Exception):
-    """Raised when Queue.get_nowait() is called on an empty Queue."""
-    pass
+    """Raised when Queue.get_nowait() ni called on an empty Queue."""
+    pita
 
 
 kundi QueueFull(Exception):
-    """Raised when the Queue.put_nowait() method is called on a full Queue."""
-    pass
+    """Raised when the Queue.put_nowait() method ni called on a full Queue."""
+    pita
 
 
 kundi Queue:
-    """A queue, useful for coordinating producer and consumer coroutines.
+    """A queue, useful kila coordinating producer na consumer coroutines.
 
-    If maxsize is less than or equal to zero, the queue size is infinite. If it
-    is an integer greater than 0, then "await put()" will block when the
-    queue reaches maxsize, until an item is removed by get().
+    If maxsize ni less than ama equal to zero, the queue size ni infinite. If it
+    ni an integer greater than 0, then "await put()" will block when the
+    queue reaches maxsize, until an item ni removed by get().
 
     Unlike the standard library Queue, you can reliably know this Queue's size
     with qsize(), since your single-threaded asyncio application won't be
-    interrupted between calling qsize() and doing an operation on the Queue.
+    interrupted between calling qsize() na doing an operation on the Queue.
     """
 
-    eleza __init__(self, maxsize=0, *, loop=None):
-        ikiwa loop is None:
+    eleza __init__(self, maxsize=0, *, loop=Tupu):
+        ikiwa loop ni Tupu:
             self._loop = events.get_event_loop()
-        else:
+        isipokua:
             self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
         self._maxsize = maxsize
 
@@ -49,7 +49,7 @@ kundi Queue:
         self._finished.set()
         self._init(maxsize)
 
-    # These three are overridable in subclasses.
+    # These three are overridable kwenye subclasses.
 
     eleza _init(self, maxsize):
         self._queue = collections.deque()
@@ -64,11 +64,11 @@ kundi Queue:
 
     eleza _wakeup_next(self, waiters):
         # Wake up the next waiter (ikiwa any) that isn't cancelled.
-        while waiters:
+        wakati waiters:
             waiter = waiters.popleft()
-            ikiwa not waiter.done():
-                waiter.set_result(None)
-                break
+            ikiwa sio waiter.done():
+                waiter.set_result(Tupu)
+                koma
 
     eleza __repr__(self):
         rudisha f'<{type(self).__name__} at {id(self):#x} {self._format()}>'
@@ -78,7 +78,7 @@ kundi Queue:
 
     eleza _format(self):
         result = f'maxsize={self._maxsize!r}'
-        ikiwa getattr(self, '_queue', None):
+        ikiwa getattr(self, '_queue', Tupu):
             result += f' _queue={list(self._queue)!r}'
         ikiwa self._getters:
             result += f' _getters[{len(self._getters)}]'
@@ -89,131 +89,131 @@ kundi Queue:
         rudisha result
 
     eleza qsize(self):
-        """Number of items in the queue."""
+        """Number of items kwenye the queue."""
         rudisha len(self._queue)
 
     @property
     eleza maxsize(self):
-        """Number of items allowed in the queue."""
+        """Number of items allowed kwenye the queue."""
         rudisha self._maxsize
 
     eleza empty(self):
-        """Return True ikiwa the queue is empty, False otherwise."""
-        rudisha not self._queue
+        """Return Kweli ikiwa the queue ni empty, Uongo otherwise."""
+        rudisha sio self._queue
 
     eleza full(self):
-        """Return True ikiwa there are maxsize items in the queue.
+        """Return Kweli ikiwa there are maxsize items kwenye the queue.
 
         Note: ikiwa the Queue was initialized with maxsize=0 (the default),
-        then full() is never True.
+        then full() ni never Kweli.
         """
         ikiwa self._maxsize <= 0:
-            rudisha False
-        else:
+            rudisha Uongo
+        isipokua:
             rudisha self.qsize() >= self._maxsize
 
     async eleza put(self, item):
         """Put an item into the queue.
 
-        Put an item into the queue. If the queue is full, wait until a free
-        slot is available before adding item.
+        Put an item into the queue. If the queue ni full, wait until a free
+        slot ni available before adding item.
         """
-        while self.full():
+        wakati self.full():
             putter = self._loop.create_future()
             self._putters.append(putter)
-            try:
+            jaribu:
                 await putter
             except:
-                putter.cancel()  # Just in case putter is not done yet.
-                try:
+                putter.cancel()  # Just kwenye case putter ni sio done yet.
+                jaribu:
                     # Clean self._putters kutoka canceled putters.
                     self._putters.remove(putter)
-                except ValueError:
+                tatizo ValueError:
                     # The putter could be removed kutoka self._putters by a
                     # previous get_nowait call.
-                    pass
-                ikiwa not self.full() and not putter.cancelled():
+                    pita
+                ikiwa sio self.full() na sio putter.cancelled():
                     # We were woken up by get_nowait(), but can't take
-                    # the call.  Wake up the next in line.
+                    # the call.  Wake up the next kwenye line.
                     self._wakeup_next(self._putters)
-                raise
+                ashiria
         rudisha self.put_nowait(item)
 
     eleza put_nowait(self, item):
         """Put an item into the queue without blocking.
 
-        If no free slot is immediately available, raise QueueFull.
+        If no free slot ni immediately available, ashiria QueueFull.
         """
         ikiwa self.full():
-            raise QueueFull
+            ashiria QueueFull
         self._put(item)
         self._unfinished_tasks += 1
         self._finished.clear()
         self._wakeup_next(self._getters)
 
     async eleza get(self):
-        """Remove and rudisha an item kutoka the queue.
+        """Remove na rudisha an item kutoka the queue.
 
-        If queue is empty, wait until an item is available.
+        If queue ni empty, wait until an item ni available.
         """
-        while self.empty():
+        wakati self.empty():
             getter = self._loop.create_future()
             self._getters.append(getter)
-            try:
+            jaribu:
                 await getter
             except:
-                getter.cancel()  # Just in case getter is not done yet.
-                try:
+                getter.cancel()  # Just kwenye case getter ni sio done yet.
+                jaribu:
                     # Clean self._getters kutoka canceled getters.
                     self._getters.remove(getter)
-                except ValueError:
+                tatizo ValueError:
                     # The getter could be removed kutoka self._getters by a
                     # previous put_nowait call.
-                    pass
-                ikiwa not self.empty() and not getter.cancelled():
+                    pita
+                ikiwa sio self.empty() na sio getter.cancelled():
                     # We were woken up by put_nowait(), but can't take
-                    # the call.  Wake up the next in line.
+                    # the call.  Wake up the next kwenye line.
                     self._wakeup_next(self._getters)
-                raise
+                ashiria
         rudisha self.get_nowait()
 
     eleza get_nowait(self):
-        """Remove and rudisha an item kutoka the queue.
+        """Remove na rudisha an item kutoka the queue.
 
-        Return an item ikiwa one is immediately available, else raise QueueEmpty.
+        Return an item ikiwa one ni immediately available, else ashiria QueueEmpty.
         """
         ikiwa self.empty():
-            raise QueueEmpty
+            ashiria QueueEmpty
         item = self._get()
         self._wakeup_next(self._putters)
         rudisha item
 
     eleza task_done(self):
-        """Indicate that a formerly enqueued task is complete.
+        """Indicate that a formerly enqueued task ni complete.
 
         Used by queue consumers. For each get() used to fetch a task,
         a subsequent call to task_done() tells the queue that the processing
-        on the task is complete.
+        on the task ni complete.
 
-        If a join() is currently blocking, it will resume when all items have
-        been processed (meaning that a task_done() call was received for every
+        If a join() ni currently blocking, it will resume when all items have
+        been processed (meaning that a task_done() call was received kila every
         item that had been put() into the queue).
 
         Raises ValueError ikiwa called more times than there were items placed in
         the queue.
         """
         ikiwa self._unfinished_tasks <= 0:
-            raise ValueError('task_done() called too many times')
+            ashiria ValueError('task_done() called too many times')
         self._unfinished_tasks -= 1
         ikiwa self._unfinished_tasks == 0:
             self._finished.set()
 
     async eleza join(self):
-        """Block until all items in the queue have been gotten and processed.
+        """Block until all items kwenye the queue have been gotten na processed.
 
-        The count of unfinished tasks goes up whenever an item is added to the
+        The count of unfinished tasks goes up whenever an item ni added to the
         queue. The count goes down whenever a consumer calls task_done() to
-        indicate that the item was retrieved and all work on it is complete.
+        indicate that the item was retrieved na all work on it ni complete.
         When the count of unfinished tasks drops to zero, join() unblocks.
         """
         ikiwa self._unfinished_tasks > 0:
@@ -221,7 +221,7 @@ kundi Queue:
 
 
 kundi PriorityQueue(Queue):
-    """A subkundi of Queue; retrieves entries in priority order (lowest first).
+    """A subkundi of Queue; retrieves entries kwenye priority order (lowest first).
 
     Entries are typically tuples of the form: (priority number, data).
     """

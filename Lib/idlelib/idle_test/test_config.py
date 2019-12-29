@@ -1,7 +1,7 @@
 """Test config, coverage 93%.
-(100% for IdleConfParser, IdleUserConfParser*, ConfigChanges).
-* Exception is OSError clause in Save method.
-Much of IdleConf is also exercised by ConfigDialog and test_configdialog.
+(100% kila IdleConfParser, IdleUserConfParser*, ConfigChanges).
+* Exception ni OSError clause kwenye Save method.
+Much of IdleConf ni also exercised by ConfigDialog na test_configdialog.
 """
 kutoka idlelib agiza config
 agiza sys
@@ -13,10 +13,10 @@ kutoka unittest agiza mock
 agiza idlelib
 kutoka idlelib.idle_test.mock_idle agiza Func
 
-# Tests should not depend on fortuitous user configurations.
-# They must not affect actual user .cfg files.
+# Tests should sio depend on fortuitous user configurations.
+# They must sio affect actual user .cfg files.
 # Replace user parsers with empty parsers that cannot be saved
-# due to getting '' as the filename when created.
+# due to getting '' kama the filename when created.
 
 idleConf = config.idleConf
 usercfg = idleConf.userCfg
@@ -28,11 +28,11 @@ userextn = testcfg['extensions'] = config.IdleUserConfParser('')
 
 eleza setUpModule():
     idleConf.userCfg = testcfg
-    idlelib.testing = True
+    idlelib.testing = Kweli
 
 eleza tearDownModule():
     idleConf.userCfg = usercfg
-    idlelib.testing = False
+    idlelib.testing = Uongo
 
 
 kundi IdleConfParserTest(unittest.TestCase):
@@ -56,19 +56,19 @@ kundi IdleConfParserTest(unittest.TestCase):
         eq = self.assertEqual
 
         # Test with type argument.
-        self.assertIs(parser.Get('one', 'one', type='bool'), False)
-        self.assertIs(parser.Get('one', 'two', type='bool'), True)
+        self.assertIs(parser.Get('one', 'one', type='bool'), Uongo)
+        self.assertIs(parser.Get('one', 'two', type='bool'), Kweli)
         eq(parser.Get('one', 'three', type='int'), 10)
         eq(parser.Get('two', 'one'), 'a string')
-        self.assertIs(parser.Get('two', 'two', type='bool'), True)
-        self.assertIs(parser.Get('two', 'three', type='bool'), False)
+        self.assertIs(parser.Get('two', 'two', type='bool'), Kweli)
+        self.assertIs(parser.Get('two', 'three', type='bool'), Uongo)
 
         # Test without type should fallback to string.
         eq(parser.Get('two', 'two'), 'true')
         eq(parser.Get('two', 'three'), 'false')
 
-        # If option not exist, should rudisha None, or default.
-        self.assertIsNone(parser.Get('not', 'exist'))
+        # If option sio exist, should rudisha Tupu, ama default.
+        self.assertIsTupu(parser.Get('not', 'exist'))
         eq(parser.Get('not', 'exist', default='DEFAULT'), 'DEFAULT')
 
     eleza test_get_option_list(self):
@@ -103,16 +103,16 @@ kundi IdleUserConfParserTest(unittest.TestCase):
     eleza test_set_option(self):
         parser = self.new_parser()
         parser.add_section('Foo')
-        # Setting new option in existing section should rudisha True.
-        self.assertTrue(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting existing option with same value should rudisha False.
-        self.assertFalse(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting exiting option with new value should rudisha True.
-        self.assertTrue(parser.SetOption('Foo', 'bar', 'false'))
+        # Setting new option kwenye existing section should rudisha Kweli.
+        self.assertKweli(parser.SetOption('Foo', 'bar', 'true'))
+        # Setting existing option with same value should rudisha Uongo.
+        self.assertUongo(parser.SetOption('Foo', 'bar', 'true'))
+        # Setting exiting option with new value should rudisha Kweli.
+        self.assertKweli(parser.SetOption('Foo', 'bar', 'false'))
         self.assertEqual(parser.Get('Foo', 'bar'), 'false')
 
-        # Setting option in new section should create section and rudisha True.
-        self.assertTrue(parser.SetOption('Bar', 'bar', 'true'))
+        # Setting option kwenye new section should create section na rudisha Kweli.
+        self.assertKweli(parser.SetOption('Bar', 'bar', 'true'))
         self.assertCountEqual(parser.sections(), ['Bar', 'Foo'])
         self.assertEqual(parser.Get('Bar', 'bar'), 'true')
 
@@ -121,16 +121,16 @@ kundi IdleUserConfParserTest(unittest.TestCase):
         parser.AddSection('Foo')
         parser.SetOption('Foo', 'bar', 'true')
 
-        self.assertTrue(parser.RemoveOption('Foo', 'bar'))
-        self.assertFalse(parser.RemoveOption('Foo', 'bar'))
-        self.assertFalse(parser.RemoveOption('Not', 'Exist'))
+        self.assertKweli(parser.RemoveOption('Foo', 'bar'))
+        self.assertUongo(parser.RemoveOption('Foo', 'bar'))
+        self.assertUongo(parser.RemoveOption('Not', 'Exist'))
 
     eleza test_add_section(self):
         parser = self.new_parser()
         self.assertEqual(parser.sections(), [])
 
-        # Should not add duplicate section.
-        # Configparser raises DuplicateError, IdleParser not.
+        # Should sio add duplicate section.
+        # Configparser ashirias DuplicateError, IdleParser not.
         parser.AddSection('Foo')
         parser.AddSection('Foo')
         parser.AddSection('Bar')
@@ -151,47 +151,47 @@ kundi IdleUserConfParserTest(unittest.TestCase):
 
         parser.AddSection('Foo')
         parser.AddSection('Bar')
-        self.assertTrue(parser.IsEmpty())
+        self.assertKweli(parser.IsEmpty())
         self.assertEqual(parser.sections(), [])
 
         parser.SetOption('Foo', 'bar', 'false')
         parser.AddSection('Bar')
-        self.assertFalse(parser.IsEmpty())
+        self.assertUongo(parser.IsEmpty())
         self.assertCountEqual(parser.sections(), ['Foo'])
 
     eleza test_save(self):
-        with tempfile.TemporaryDirectory() as tdir:
+        with tempfile.TemporaryDirectory() kama tdir:
             path = os.path.join(tdir, 'test.cfg')
             parser = self.new_parser(path)
             parser.AddSection('Foo')
             parser.SetOption('Foo', 'bar', 'true')
 
-            # Should save to path when config is not empty.
-            self.assertFalse(os.path.exists(path))
+            # Should save to path when config ni sio empty.
+            self.assertUongo(os.path.exists(path))
             parser.Save()
-            self.assertTrue(os.path.exists(path))
+            self.assertKweli(os.path.exists(path))
 
-            # Should remove the file kutoka disk when config is empty.
+            # Should remove the file kutoka disk when config ni empty.
             parser.remove_section('Foo')
             parser.Save()
-            self.assertFalse(os.path.exists(path))
+            self.assertUongo(os.path.exists(path))
 
 
 kundi IdleConfTest(unittest.TestCase):
-    """Test for idleConf"""
+    """Test kila idleConf"""
 
     @classmethod
     eleza setUpClass(cls):
         cls.config_string = {}
 
-        conf = config.IdleConf(_utest=True)
+        conf = config.IdleConf(_utest=Kweli)
         ikiwa __name__ != '__main__':
             idle_dir = os.path.dirname(__file__)
-        else:
+        isipokua:
             idle_dir = os.path.abspath(sys.path[0])
-        for ctype in conf.config_types:
+        kila ctype kwenye conf.config_types:
             config_path = os.path.join(idle_dir, '../config-%s.def' % ctype)
-            with open(config_path, 'r') as f:
+            with open(config_path, 'r') kama f:
                 cls.config_string[ctype] = f.read()
 
         cls.orig_warn = config._warn
@@ -201,16 +201,16 @@ kundi IdleConfTest(unittest.TestCase):
     eleza tearDownClass(cls):
         config._warn = cls.orig_warn
 
-    eleza new_config(self, _utest=False):
+    eleza new_config(self, _utest=Uongo):
         rudisha config.IdleConf(_utest=_utest)
 
     eleza mock_config(self):
         """Return a mocked idleConf
 
-        Both default and user config used the same config-*.def
+        Both default na user config used the same config-*.def
         """
-        conf = config.IdleConf(_utest=True)
-        for ctype in conf.config_types:
+        conf = config.IdleConf(_utest=Kweli)
+        kila ctype kwenye conf.config_types:
             conf.defaultCfg[ctype] = config.IdleConfParser('')
             conf.defaultCfg[ctype].read_string(self.config_string[ctype])
             conf.userCfg[ctype] = config.IdleUserConfParser('')
@@ -218,59 +218,59 @@ kundi IdleConfTest(unittest.TestCase):
 
         rudisha conf
 
-    @unittest.skipIf(sys.platform.startswith('win'), 'this is test for unix system')
+    @unittest.skipIf(sys.platform.startswith('win'), 'this ni test kila unix system')
     eleza test_get_user_cfg_dir_unix(self):
         # Test to get user config directory under unix.
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Kweli)
 
         # Check normal way should success
-        with mock.patch('os.path.expanduser', return_value='/home/foo'):
-            with mock.patch('os.path.exists', return_value=True):
+        with mock.patch('os.path.expanduser', rudisha_value='/home/foo'):
+            with mock.patch('os.path.exists', rudisha_value=Kweli):
                 self.assertEqual(conf.GetUserCfgDir(), '/home/foo/.idlerc')
 
         # Check os.getcwd should success
-        with mock.patch('os.path.expanduser', return_value='~'):
-            with mock.patch('os.getcwd', return_value='/home/foo/cpython'):
+        with mock.patch('os.path.expanduser', rudisha_value='~'):
+            with mock.patch('os.getcwd', rudisha_value='/home/foo/cpython'):
                 with mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      '/home/foo/cpython/.idlerc')
 
-        # Check user dir not exists and created failed should raise SystemExit
-        with mock.patch('os.path.join', return_value='/path/not/exists'):
+        # Check user dir sio exists na created failed should ashiria SystemExit
+        with mock.patch('os.path.join', rudisha_value='/path/not/exists'):
             with self.assertRaises(SystemExit):
                 with self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
-    @unittest.skipIf(not sys.platform.startswith('win'), 'this is test for Windows system')
+    @unittest.skipIf(not sys.platform.startswith('win'), 'this ni test kila Windows system')
     eleza test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Kweli)
 
         # Check normal way should success
-        with mock.patch('os.path.expanduser', return_value='C:\\foo'):
-            with mock.patch('os.path.exists', return_value=True):
+        with mock.patch('os.path.expanduser', rudisha_value='C:\\foo'):
+            with mock.patch('os.path.exists', rudisha_value=Kweli):
                 self.assertEqual(conf.GetUserCfgDir(), 'C:\\foo\\.idlerc')
 
         # Check os.getcwd should success
-        with mock.patch('os.path.expanduser', return_value='~'):
-            with mock.patch('os.getcwd', return_value='C:\\foo\\cpython'):
+        with mock.patch('os.path.expanduser', rudisha_value='~'):
+            with mock.patch('os.getcwd', rudisha_value='C:\\foo\\cpython'):
                 with mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      'C:\\foo\\cpython\\.idlerc')
 
-        # Check user dir not exists and created failed should raise SystemExit
-        with mock.patch('os.path.join', return_value='/path/not/exists'):
+        # Check user dir sio exists na created failed should ashiria SystemExit
+        with mock.patch('os.path.join', rudisha_value='/path/not/exists'):
             with self.assertRaises(SystemExit):
                 with self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
     eleza test_create_config_handlers(self):
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Kweli)
 
         # Mock out idle_dir
         idle_dir = '/home/foo'
         with mock.patch.dict({'__name__': '__foo__'}):
-            with mock.patch('os.path.dirname', return_value=idle_dir):
+            with mock.patch('os.path.dirname', rudisha_value=idle_dir):
                 conf.CreateConfigHandlers()
 
         # Check keys are equal
@@ -278,21 +278,21 @@ kundi IdleConfTest(unittest.TestCase):
         self.assertCountEqual(conf.userCfg.keys(), conf.config_types)
 
         # Check conf parser are correct type
-        for default_parser in conf.defaultCfg.values():
+        kila default_parser kwenye conf.defaultCfg.values():
             self.assertIsInstance(default_parser, config.IdleConfParser)
-        for user_parser in conf.userCfg.values():
+        kila user_parser kwenye conf.userCfg.values():
             self.assertIsInstance(user_parser, config.IdleUserConfParser)
 
         # Check config path are correct
-        for cfg_type, parser in conf.defaultCfg.items():
+        kila cfg_type, parser kwenye conf.defaultCfg.items():
             self.assertEqual(parser.file,
                              os.path.join(idle_dir, f'config-{cfg_type}.def'))
-        for cfg_type, parser in conf.userCfg.items():
+        kila cfg_type, parser kwenye conf.userCfg.items():
             self.assertEqual(parser.file,
-                             os.path.join(conf.userdir or '#', f'config-{cfg_type}.cfg'))
+                             os.path.join(conf.userdir ama '#', f'config-{cfg_type}.cfg'))
 
     eleza test_load_cfg_files(self):
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Kweli)
 
         # Borrow test/cfgparser.1 kutoka test_configparser.
         config_path = findfile('cfgparser.1')
@@ -304,18 +304,18 @@ kundi IdleConfTest(unittest.TestCase):
 
         eq = self.assertEqual
 
-        # Check defaultCfg is loaded
+        # Check defaultCfg ni loaded
         eq(conf.defaultCfg['foo'].Get('Foo Bar', 'foo'), 'newbar')
         eq(conf.defaultCfg['foo'].GetOptionList('Foo Bar'), ['foo'])
 
-        # Check userCfg is loaded
+        # Check userCfg ni loaded
         eq(conf.userCfg['foo'].Get('Foo Bar', 'foo'), 'newbar')
         eq(conf.userCfg['foo'].GetOptionList('Foo Bar'), ['foo'])
 
     eleza test_save_user_cfg_files(self):
         conf = self.mock_config()
 
-        with mock.patch('idlelib.config.IdleUserConfParser.Save') as m:
+        with mock.patch('idlelib.config.IdleUserConfParser.Save') kama m:
             conf.SaveUserCfgFiles()
             self.assertEqual(m.call_count, len(conf.userCfg))
 
@@ -325,9 +325,9 @@ kundi IdleConfTest(unittest.TestCase):
         eq = self.assertEqual
         eq(conf.GetOption('main', 'EditorWindow', 'width'), '80')
         eq(conf.GetOption('main', 'EditorWindow', 'width', type='int'), 80)
-        with mock.patch('idlelib.config._warn') as _warn:
-            eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), None)
-            eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), None)
+        with mock.patch('idlelib.config._warn') kama _warn:
+            eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), Tupu)
+            eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), Tupu)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists', default='NE'), 'NE')
             eq(_warn.call_count, 4)
 
@@ -397,7 +397,7 @@ kundi IdleConfTest(unittest.TestCase):
 
     eleza test_default_keys(self):
         current_platform = sys.platform
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Kweli)
 
         sys.platform = 'win32'
         self.assertEqual(conf.default_keys(), 'IDLE Classic Windows')
@@ -414,17 +414,17 @@ kundi IdleConfTest(unittest.TestCase):
     eleza test_get_extensions(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Kweli
             [DISABLE]
-            enable = False
+            enable = Uongo
             ''')
         eq = self.assertEqual
         iGE = idleConf.GetExtensions
-        eq(iGE(shell_only=True), [])
+        eq(iGE(shell_only=Kweli), [])
         eq(iGE(), ['ZzDummy'])
-        eq(iGE(editor_only=True), ['ZzDummy'])
-        eq(iGE(active_only=False), ['ZzDummy', 'DISABLE'])
-        eq(iGE(active_only=False, editor_only=True), ['ZzDummy', 'DISABLE'])
+        eq(iGE(editor_only=Kweli), ['ZzDummy'])
+        eq(iGE(active_only=Uongo), ['ZzDummy', 'DISABLE'])
+        eq(iGE(active_only=Uongo, editor_only=Kweli), ['ZzDummy', 'DISABLE'])
         userextn.remove_section('ZzDummy')
         userextn.remove_section('DISABLE')
 
@@ -439,17 +439,17 @@ kundi IdleConfTest(unittest.TestCase):
     eleza test_get_extn_name_for_event(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Kweli
             ''')
         eq = self.assertEqual
         eq(idleConf.GetExtnNameForEvent('z-in'), 'ZzDummy')
-        eq(idleConf.GetExtnNameForEvent('z-out'), None)
+        eq(idleConf.GetExtnNameForEvent('z-out'), Tupu)
         userextn.remove_section('ZzDummy')
 
     eleza test_get_extension_keys(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Kweli
             ''')
         self.assertEqual(idleConf.GetExtensionKeys('ZzDummy'),
            {'<<z-in>>': ['<Control-Shift-KeyRelease-Insert>']})
@@ -461,7 +461,7 @@ kundi IdleConfTest(unittest.TestCase):
     eleza test_get_extension_bindings(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Kweli
             ''')
         eq = self.assertEqual
         iGEB = idleConf.GetExtensionBindings
@@ -484,7 +484,7 @@ kundi IdleConfTest(unittest.TestCase):
         eq(conf.GetKeyBinding('IDLE Classic Mac', '<<copy>>'), ['<Command-Key-c>'])
         eq(conf.GetKeyBinding('IDLE Classic OSX', '<<copy>>'), ['<Command-Key-c>'])
 
-        # Test keybinding not exists
+        # Test keybinding sio exists
         eq(conf.GetKeyBinding('NOT EXISTS', '<<copy>>'), [])
         eq(conf.GetKeyBinding('IDLE Modern Unix', 'NOT EXISTS'), [])
 
@@ -496,9 +496,9 @@ kundi IdleConfTest(unittest.TestCase):
         sys.platform = 'some-linux'
         self.assertEqual(conf.GetCurrentKeySet(), conf.GetKeySet(conf.CurrentKeys()))
 
-        # This should not be the same, since replace <Alt- to <Option-.
+        # This should sio be the same, since replace <Alt- to <Option-.
         # Above depended on config-extensions.eleza having Alt keys,
-        # which is no longer true.
+        # which ni no longer true.
         # sys.platform = 'darwin'
         # self.assertNotEqual(conf.GetCurrentKeySet(), conf.GetKeySet(conf.CurrentKeys()))
 
@@ -511,21 +511,21 @@ kundi IdleConfTest(unittest.TestCase):
         # Conflict with key set, should be disable to ''
         conf.defaultCfg['extensions'].add_section('Foobar')
         conf.defaultCfg['extensions'].add_section('Foobar_cfgBindings')
-        conf.defaultCfg['extensions'].set('Foobar', 'enable', 'True')
+        conf.defaultCfg['extensions'].set('Foobar', 'enable', 'Kweli')
         conf.defaultCfg['extensions'].set('Foobar_cfgBindings', 'newfoo', '<Key-F3>')
         self.assertEqual(conf.GetKeySet('IDLE Modern Unix')['<<newfoo>>'], '')
 
     eleza test_is_core_binding(self):
-        # XXX: Should move out the core keys to config file or other place
+        # XXX: Should move out the core keys to config file ama other place
         conf = self.mock_config()
 
-        self.assertTrue(conf.IsCoreBinding('copy'))
-        self.assertTrue(conf.IsCoreBinding('cut'))
-        self.assertTrue(conf.IsCoreBinding('del-word-right'))
-        self.assertFalse(conf.IsCoreBinding('not-exists'))
+        self.assertKweli(conf.IsCoreBinding('copy'))
+        self.assertKweli(conf.IsCoreBinding('cut'))
+        self.assertKweli(conf.IsCoreBinding('del-word-right'))
+        self.assertUongo(conf.IsCoreBinding('not-exists'))
 
     eleza test_extra_help_source_list(self):
-        # Test GetExtraHelpSourceList and GetAllExtraHelpSourcesList in same
+        # Test GetExtraHelpSourceList na GetAllExtraHelpSourcesList kwenye same
         # place to prevent prepare input data twice.
         conf = self.mock_config()
 
@@ -539,8 +539,8 @@ kundi IdleConfTest(unittest.TestCase):
             conf.GetExtraHelpSourceList('default') + conf.GetExtraHelpSourceList('user'))
 
         # Add help source to user config
-        conf.userCfg['main'].SetOption('HelpFiles', '4', 'Python;https://python.org')  # This is bad input
-        conf.userCfg['main'].SetOption('HelpFiles', '3', 'Python:https://python.org')  # This is bad input
+        conf.userCfg['main'].SetOption('HelpFiles', '4', 'Python;https://python.org')  # This ni bad input
+        conf.userCfg['main'].SetOption('HelpFiles', '3', 'Python:https://python.org')  # This ni bad input
         conf.userCfg['main'].SetOption('HelpFiles', '2', 'Pillow;https://pillow.readthedocs.io/en/latest/')
         conf.userCfg['main'].SetOption('HelpFiles', '1', 'IDLE;C:/Programs/Python36/Lib/idlelib/help.html')
         self.assertEqual(conf.GetExtraHelpSourceList('user'),
@@ -561,14 +561,14 @@ kundi IdleConfTest(unittest.TestCase):
         root = Tk()
         root.withdraw()
 
-        f = Font.actual(Font(name='TkFixedFont', exists=True, root=root))
+        f = Font.actual(Font(name='TkFixedFont', exists=Kweli, root=root))
         self.assertEqual(
             conf.GetFont(root, 'main', 'EditorWindow'),
             (f['family'], 10 ikiwa f['size'] <= 0 else f['size'], f['weight']))
 
         # Cleanup root
         root.destroy()
-        del root
+        toa root
 
     eleza test_get_core_keys(self):
         conf = self.mock_config()
@@ -587,10 +587,10 @@ kundi IdleConfTest(unittest.TestCase):
 
 
 kundi CurrentColorKeysTest(unittest.TestCase):
-    """ Test colorkeys function with user config [Theme] and [Keys] patterns.
+    """ Test colorkeys function with user config [Theme] na [Keys] patterns.
 
         colorkeys = config.IdleConf.current_colors_and_keys
-        Test all patterns written by IDLE and some errors
+        Test all patterns written by IDLE na some errors
         Item 'default' should really be 'builtin' (versus 'custom).
     """
     colorkeys = idleConf.current_colors_and_keys
@@ -598,16 +598,16 @@ kundi CurrentColorKeysTest(unittest.TestCase):
     default_keys = idleConf.default_keys()
 
     eleza test_old_builtin_theme(self):
-        # On initial installation, user main is blank.
+        # On initial installation, user main ni blank.
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
         # For old default, name2 must be blank.
         usermain.read_string('''
             [Theme]
-            default = True
+            default = Kweli
             ''')
-        # IDLE omits 'name' for default old builtin theme.
+        # IDLE omits 'name' kila default old builtin theme.
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
-        # IDLE adds 'name' for non-default old builtin theme.
+        # IDLE adds 'name' kila non-default old builtin theme.
         usermain['Theme']['name'] = 'IDLE New'
         self.assertEqual(self.colorkeys('Theme'), 'IDLE New')
         # Erroneous non-default old builtin reverts to default.
@@ -616,14 +616,14 @@ kundi CurrentColorKeysTest(unittest.TestCase):
         usermain.remove_section('Theme')
 
     eleza test_new_builtin_theme(self):
-        # IDLE writes name2 for new builtins.
+        # IDLE writes name2 kila new builtins.
         usermain.read_string('''
             [Theme]
-            default = True
+            default = Kweli
             name2 = IDLE Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), 'IDLE Dark')
-        # Leftover 'name', not removed, is ignored.
+        # Leftover 'name', sio removed, ni ignored.
         usermain['Theme']['name'] = 'IDLE New'
         self.assertEqual(self.colorkeys('Theme'), 'IDLE Dark')
         # Erroneous non-default new builtin reverts to default.
@@ -635,26 +635,26 @@ kundi CurrentColorKeysTest(unittest.TestCase):
         # Erroneous custom name (no definition) reverts to default.
         usermain.read_string('''
             [Theme]
-            default = False
+            default = Uongo
             name = Custom Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
-        # Custom name is valid with matching Section name.
+        # Custom name ni valid with matching Section name.
         userhigh.read_string('[Custom Dark]\na=b')
         self.assertEqual(self.colorkeys('Theme'), 'Custom Dark')
-        # Name2 is ignored.
+        # Name2 ni ignored.
         usermain['Theme']['name2'] = 'non-existent'
         self.assertEqual(self.colorkeys('Theme'), 'Custom Dark')
         usermain.remove_section('Theme')
         userhigh.remove_section('Custom Dark')
 
     eleza test_old_builtin_keys(self):
-        # On initial installation, user main is blank.
+        # On initial installation, user main ni blank.
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
-        # For old default, name2 must be blank, name is always used.
+        # For old default, name2 must be blank, name ni always used.
         usermain.read_string('''
             [Keys]
-            default = True
+            default = Kweli
             name = IDLE Classic Unix
             ''')
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Classic Unix')
@@ -664,14 +664,14 @@ kundi CurrentColorKeysTest(unittest.TestCase):
         usermain.remove_section('Keys')
 
     eleza test_new_builtin_keys(self):
-        # IDLE writes name2 for new builtins.
+        # IDLE writes name2 kila new builtins.
         usermain.read_string('''
             [Keys]
-            default = True
+            default = Kweli
             name2 = IDLE Modern Unix
             ''')
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Modern Unix')
-        # Leftover 'name', not removed, is ignored.
+        # Leftover 'name', sio removed, ni ignored.
         usermain['Keys']['name'] = 'IDLE Classic Unix'
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Modern Unix')
         # Erroneous non-default new builtin reverts to default.
@@ -683,14 +683,14 @@ kundi CurrentColorKeysTest(unittest.TestCase):
         # Erroneous custom name (no definition) reverts to default.
         usermain.read_string('''
             [Keys]
-            default = False
+            default = Uongo
             name = Custom Keys
             ''')
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
-        # Custom name is valid with matching Section name.
+        # Custom name ni valid with matching Section name.
         userkeys.read_string('[Custom Keys]\na=b')
         self.assertEqual(self.colorkeys('Keys'), 'Custom Keys')
-        # Name2 is ignored.
+        # Name2 ni ignored.
         usermain['Keys']['name2'] = 'non-existent'
         self.assertEqual(self.colorkeys('Keys'), 'Custom Keys')
         usermain.remove_section('Keys')
@@ -725,26 +725,26 @@ kundi ChangesTest(unittest.TestCase):
         changes.add_option('main', 'Msec', 'mitem', 'mval')
         self.assertEqual(changes, self.loaded)
 
-    eleza test_save_option(self):  # Static function does not touch changes.
+    eleza test_save_option(self):  # Static function does sio touch changes.
         save_option = self.changes.save_option
-        self.assertTrue(save_option('main', 'Indent', 'what', '0'))
-        self.assertFalse(save_option('main', 'Indent', 'what', '0'))
+        self.assertKweli(save_option('main', 'Indent', 'what', '0'))
+        self.assertUongo(save_option('main', 'Indent', 'what', '0'))
         self.assertEqual(usermain['Indent']['what'], '0')
 
-        self.assertTrue(save_option('main', 'Indent', 'use-spaces', '0'))
+        self.assertKweli(save_option('main', 'Indent', 'use-spaces', '0'))
         self.assertEqual(usermain['Indent']['use-spaces'], '0')
-        self.assertTrue(save_option('main', 'Indent', 'use-spaces', '1'))
-        self.assertFalse(usermain.has_option('Indent', 'use-spaces'))
+        self.assertKweli(save_option('main', 'Indent', 'use-spaces', '1'))
+        self.assertUongo(usermain.has_option('Indent', 'use-spaces'))
         usermain.remove_section('Indent')
 
     eleza test_save_added(self):
         changes = self.load()
-        self.assertTrue(changes.save_all())
+        self.assertKweli(changes.save_all())
         self.assertEqual(usermain['Msec']['mitem'], 'mval')
         self.assertEqual(userhigh['Hsec']['hitem'], 'hval')
         self.assertEqual(userkeys['Ksec']['kitem'], 'kval')
         changes.add_option('main', 'Msec', 'mitem', 'mval')
-        self.assertFalse(changes.save_all())
+        self.assertUongo(changes.save_all())
         usermain.remove_section('Msec')
         userhigh.remove_section('Hsec')
         userkeys.remove_section('Ksec')
@@ -755,13 +755,13 @@ kundi ChangesTest(unittest.TestCase):
         changes.save_option('main', 'HelpFiles', 'IDLE', 'idledoc')
         changes.add_option('main', 'HelpFiles', 'ELDI', 'codeldi')
         changes.save_all()
-        self.assertFalse(usermain.has_option('HelpFiles', 'IDLE'))
-        self.assertTrue(usermain.has_option('HelpFiles', 'ELDI'))
+        self.assertUongo(usermain.has_option('HelpFiles', 'IDLE'))
+        self.assertKweli(usermain.has_option('HelpFiles', 'ELDI'))
 
-    eleza test_save_default(self):  # Cover 2nd and 3rd false branches.
+    eleza test_save_default(self):  # Cover 2nd na 3rd false branches.
         changes = self.changes
         changes.add_option('main', 'Indent', 'use-spaces', '1')
-        # save_option returns False; cfg_type_changed remains False.
+        # save_option rudishas Uongo; cfg_type_changed remains Uongo.
 
     # TODO: test that save_all calls usercfg Saves.
 
@@ -769,13 +769,13 @@ kundi ChangesTest(unittest.TestCase):
         changes = self.load()
         changes.delete_section('main', 'fake')  # Test no exception.
         self.assertEqual(changes, self.loaded)  # Test nothing deleted.
-        for cfgtype, section in (('main', 'Msec'), ('keys', 'Ksec')):
+        kila cfgtype, section kwenye (('main', 'Msec'), ('keys', 'Ksec')):
             testcfg[cfgtype].SetOption(section, 'name', 'value')
             changes.delete_section(cfgtype, section)
             with self.assertRaises(KeyError):
                 changes[cfgtype][section]  # Test section gone kutoka changes
-                testcfg[cfgtype][section]  # and kutoka mock userCfg.
-        # TODO test for save call.
+                testcfg[cfgtype][section]  # na kutoka mock userCfg.
+        # TODO test kila save call.
 
     eleza test_clear(self):
         changes = self.load()
@@ -788,14 +788,14 @@ kundi WarningTest(unittest.TestCase):
     eleza test_warn(self):
         Equal = self.assertEqual
         config._warned = set()
-        with captured_stderr() as stderr:
+        with captured_stderr() kama stderr:
             config._warn('warning', 'key')
         Equal(config._warned, {('warning','key')})
         Equal(stderr.getvalue(), 'warning'+'\n')
-        with captured_stderr() as stderr:
+        with captured_stderr() kama stderr:
             config._warn('warning', 'key')
         Equal(stderr.getvalue(), '')
-        with captured_stderr() as stderr:
+        with captured_stderr() kama stderr:
             config._warn('warn2', 'yek')
         Equal(config._warned, {('warning','key'), ('warn2','yek')})
         Equal(stderr.getvalue(), 'warn2'+'\n')

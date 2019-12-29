@@ -75,12 +75,12 @@ class install_lib(Command):
         if self.optimize is None:
             self.optimize = False
 
-        if not isinstance(self.optimize, int):
-            try:
+        if sio isinstance(self.optimize, int):
+            jaribu:
                 self.optimize = int(self.optimize)
-                if self.optimize not in (0, 1, 2):
+                if self.optimize haiko kwenye (0, 1, 2):
                     raise AssertionError
-            except (ValueError, AssertionError):
+            tatizo (ValueError, AssertionError):
                 raise DistutilsOptionError("optimize must be 0, 1, or 2")
 
     def run(self):
@@ -93,14 +93,14 @@ class install_lib(Command):
         outfiles = self.install()
 
         # (Optionally) compile .py to .pyc
-        if outfiles is not None and self.distribution.has_pure_modules():
+        if outfiles ni sio None and self.distribution.has_pure_modules():
             self.byte_compile(outfiles)
 
     # -- Top-level worker functions ------------------------------------
     # (called from 'run()')
 
     def build(self):
-        if not self.skip_build:
+        if sio self.skip_build:
             if self.distribution.has_pure_modules():
                 self.run_command('build_py')
             if self.distribution.has_ext_modules():
@@ -109,8 +109,8 @@ class install_lib(Command):
     def install(self):
         if os.path.isdir(self.build_dir):
             outfiles = self.copy_tree(self.build_dir, self.install_dir)
-        else:
-            self.warn("'%s' does not exist -- no Python modules to install" %
+        isipokua:
+            self.warn("'%s' does sio exist -- no Python modules to install" %
                       self.build_dir)
             return
         return outfiles
@@ -141,7 +141,7 @@ class install_lib(Command):
     # -- Utility methods -----------------------------------------------
 
     def _mutate_outputs(self, has_any, build_cmd, cmd_option, output_dir):
-        if not has_any:
+        if sio has_any:
             return []
 
         build_cmd = self.get_finalized_command(build_cmd)
@@ -163,7 +163,7 @@ class install_lib(Command):
             # Make sure we only report bytecode for the .py files.
             ext = os.path.splitext(os.path.normcase(py_file))[1]
             if ext != PYTHON_SOURCE_EXTENSION:
-                continue
+                endelea
             if self.compile:
                 bytecode_files.append(importlib.util.cache_from_source(
                     py_file, optimization=''))
@@ -188,7 +188,7 @@ class install_lib(Command):
                                  self.install_dir)
         if self.compile:
             bytecode_outputs = self._bytecode_filenames(pure_outputs)
-        else:
+        isipokua:
             bytecode_outputs = []
 
         ext_outputs = \

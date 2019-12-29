@@ -1,5 +1,5 @@
 """
-Tests common to list and UserList.UserList
+Tests common to list na UserList.UserList
 """
 
 agiza sys
@@ -12,7 +12,7 @@ kutoka test agiza support, seq_tests
 kundi CommonTest(seq_tests.CommonTest):
 
     eleza test_init(self):
-        # Iterable arg is optional
+        # Iterable arg ni optional
         self.assertEqual(self.type2test([]), self.type2test())
 
         # Init clears previous values
@@ -32,13 +32,13 @@ kundi CommonTest(seq_tests.CommonTest):
 
     eleza test_getitem_error(self):
         a = []
-        msg = "list indices must be integers or slices"
+        msg = "list indices must be integers ama slices"
         with self.assertRaisesRegex(TypeError, msg):
             a['a']
 
     eleza test_setitem_error(self):
         a = []
-        msg = "list indices must be integers or slices"
+        msg = "list indices must be integers ama slices"
         with self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
@@ -61,7 +61,7 @@ kundi CommonTest(seq_tests.CommonTest):
 
     eleza test_repr_deep(self):
         a = self.type2test([])
-        for i in range(sys.getrecursionlimit() + 100):
+        kila i kwenye range(sys.getrecursionlimit() + 100):
             a = self.type2test([a])
         self.assertRaises(RecursionError, repr, a)
 
@@ -71,12 +71,12 @@ kundi CommonTest(seq_tests.CommonTest):
         d.extend(range(200,400))
         d.append(d)
         d.append(400)
-        try:
-            with open(support.TESTFN, "w") as fo:
+        jaribu:
+            with open(support.TESTFN, "w") kama fo:
                 fo.write(str(d))
-            with open(support.TESTFN, "r") as fo:
+            with open(support.TESTFN, "r") kama fo:
                 self.assertEqual(fo.read(), repr(d))
-        finally:
+        mwishowe:
             os.remove(support.TESTFN)
 
     eleza test_set_subscript(self):
@@ -133,21 +133,21 @@ kundi CommonTest(seq_tests.CommonTest):
         a[-1] = 9
         self.assertEqual(a, self.type2test([5,6,7,8,9]))
 
-        msg = "list indices must be integers or slices"
+        msg = "list indices must be integers ama slices"
         with self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
     eleza test_delitem(self):
         a = self.type2test([0, 1])
-        del a[1]
+        toa a[1]
         self.assertEqual(a, [0])
-        del a[0]
+        toa a[0]
         self.assertEqual(a, [])
 
         a = self.type2test([0, 1])
-        del a[-2]
+        toa a[-2]
         self.assertEqual(a, [1])
-        del a[-1]
+        toa a[-1]
         self.assertEqual(a, [])
 
         a = self.type2test([0, 1])
@@ -163,7 +163,7 @@ kundi CommonTest(seq_tests.CommonTest):
         l = [0, 1]
         a = self.type2test(l)
 
-        for i in range(-3, 4):
+        kila i kwenye range(-3, 4):
             a[:i] = l[:i]
             self.assertEqual(a, l)
             a2 = a[:]
@@ -174,7 +174,7 @@ kundi CommonTest(seq_tests.CommonTest):
             a2 = a[:]
             a2[i:] = a[i:]
             self.assertEqual(a2, a)
-            for j in range(-3, 4):
+            kila j kwenye range(-3, 4):
                 a[i:j] = l[i:j]
                 self.assertEqual(a, l)
                 a2 = a[:]
@@ -207,43 +207,43 @@ kundi CommonTest(seq_tests.CommonTest):
 
     eleza test_delslice(self):
         a = self.type2test([0, 1])
-        del a[1:2]
-        del a[0:1]
+        toa a[1:2]
+        toa a[0:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[1:2]
-        del a[0:1]
+        toa a[1:2]
+        toa a[0:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[-2:-1]
+        toa a[-2:-1]
         self.assertEqual(a, self.type2test([1]))
 
         a = self.type2test([0, 1])
-        del a[-2:-1]
+        toa a[-2:-1]
         self.assertEqual(a, self.type2test([1]))
 
         a = self.type2test([0, 1])
-        del a[1:]
-        del a[:1]
+        toa a[1:]
+        toa a[:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[1:]
-        del a[:1]
+        toa a[1:]
+        toa a[:1]
         self.assertEqual(a, self.type2test([]))
 
         a = self.type2test([0, 1])
-        del a[-1:]
+        toa a[-1:]
         self.assertEqual(a, self.type2test([0]))
 
         a = self.type2test([0, 1])
-        del a[-1:]
+        toa a[-1:]
         self.assertEqual(a, self.type2test([0]))
 
         a = self.type2test([0, 1])
-        del a[:]
+        toa a[:]
         self.assertEqual(a, self.type2test([]))
 
     eleza test_append(self):
@@ -272,7 +272,7 @@ kundi CommonTest(seq_tests.CommonTest):
         a.extend("eggs")
         self.assertEqual(a, list("spameggs"))
 
-        self.assertRaises(TypeError, a.extend, None)
+        self.assertRaises(TypeError, a.extend, Tupu)
         self.assertRaises(TypeError, a.extend)
 
         # overflow test. issue1621
@@ -280,7 +280,7 @@ kundi CommonTest(seq_tests.CommonTest):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                raise StopIteration
+                ashiria StopIteration
             eleza __length_hint__(self):
                 rudisha sys.maxsize
         a = self.type2test([1,2,3,4])
@@ -330,20 +330,20 @@ kundi CommonTest(seq_tests.CommonTest):
         self.assertRaises(TypeError, a.remove)
 
         kundi BadExc(Exception):
-            pass
+            pita
 
         kundi BadCmp:
             eleza __eq__(self, other):
                 ikiwa other == 2:
-                    raise BadExc()
-                rudisha False
+                    ashiria BadExc()
+                rudisha Uongo
 
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.remove, BadCmp())
 
         kundi BadCmp2:
             eleza __eq__(self, other):
-                raise BadExc()
+                ashiria BadExc()
 
         d = self.type2test('abcdefghcij')
         d.remove('c')
@@ -357,8 +357,8 @@ kundi CommonTest(seq_tests.CommonTest):
         d = self.type2test(['a', 'b', BadCmp2(), 'c'])
         e = self.type2test(d)
         self.assertRaises(BadExc, d.remove, 'c')
-        for x, y in zip(d, e):
-            # verify that original order and values are retained.
+        kila x, y kwenye zip(d, e):
+            # verify that original order na values are retained.
             self.assertIs(x, y)
 
     eleza test_index(self):
@@ -373,12 +373,12 @@ kundi CommonTest(seq_tests.CommonTest):
             eleza __init__(self, victim):
                 self.victim = victim
             eleza __eq__(self, other):
-                del self.victim[:]
-                rudisha False
+                toa self.victim[:]
+                rudisha Uongo
         a = self.type2test()
-        a[:] = [EvilCmp(a) for _ in range(100)]
+        a[:] = [EvilCmp(a) kila _ kwenye range(100)]
         # This used to seg fault before patch #1005778
-        self.assertRaises(ValueError, a.index, None)
+        self.assertRaises(ValueError, a.index, Tupu)
 
     eleza test_reverse(self):
         u = self.type2test([-2, -1, 0, 1, 2])
@@ -405,7 +405,7 @@ kundi CommonTest(seq_tests.CommonTest):
         u.append(2)
         self.assertEqual(u, [2])
 
-        self.assertRaises(TypeError, u.clear, None)
+        self.assertRaises(TypeError, u.clear, Tupu)
 
     eleza test_copy(self):
         u = self.type2test([1, 2, 3])
@@ -416,20 +416,20 @@ kundi CommonTest(seq_tests.CommonTest):
         v = u.copy()
         self.assertEqual(v, [])
 
-        # test that it's indeed a copy and not a reference
+        # test that it's indeed a copy na sio a reference
         u = self.type2test(['a', 'b'])
         v = u.copy()
         v.append('i')
         self.assertEqual(u, ['a', 'b'])
         self.assertEqual(v, u + ['i'])
 
-        # test that it's a shallow, not a deep copy
+        # test that it's a shallow, sio a deep copy
         u = self.type2test([1, 2, [3, 4], 5])
         v = u.copy()
         self.assertEqual(u, v)
         self.assertIs(v[3], u[3])
 
-        self.assertRaises(TypeError, u.copy, None)
+        self.assertRaises(TypeError, u.copy, Tupu)
 
     eleza test_sort(self):
         u = self.type2test([1, 0])
@@ -447,19 +447,19 @@ kundi CommonTest(seq_tests.CommonTest):
                 rudisha 0
             elikiwa a < b:
                 rudisha 1
-            else: # a > b
+            isipokua: # a > b
                 rudisha -1
         u.sort(key=cmp_to_key(revcmp))
         self.assertEqual(u, self.type2test([2,1,0,-1,-2]))
 
-        # The following dumps core in unpatched Python 1.5:
+        # The following dumps core kwenye unpatched Python 1.5:
         eleza myComparison(x,y):
             xmod, ymod = x%3, y%7
             ikiwa xmod == ymod:
                 rudisha 0
             elikiwa xmod < ymod:
                 rudisha -1
-            else: # xmod > ymod
+            isipokua: # xmod > ymod
                 rudisha 1
         z = self.type2test(range(12))
         z.sort(key=cmp_to_key(myComparison))
@@ -472,7 +472,7 @@ kundi CommonTest(seq_tests.CommonTest):
                 rudisha 0
             elikiwa x < y:
                 rudisha -1
-            else: # x > y
+            isipokua: # x > y
                 rudisha 1
         self.assertRaises(ValueError, z.sort,
                           key=cmp_to_key(selfmodifyingComparison))
@@ -495,7 +495,7 @@ kundi CommonTest(seq_tests.CommonTest):
         u += "eggs"
         self.assertEqual(u, self.type2test("spameggs"))
 
-        self.assertRaises(TypeError, u.__iadd__, None)
+        self.assertRaises(TypeError, u.__iadd__, Tupu)
 
     eleza test_imul(self):
         super().test_imul()
@@ -509,16 +509,16 @@ kundi CommonTest(seq_tests.CommonTest):
         a = self.type2test([0,1,2,3,4])
 
         #  deletion
-        del a[::2]
+        toa a[::2]
         self.assertEqual(a, self.type2test([1,3]))
         a = self.type2test(range(5))
-        del a[1::2]
+        toa a[1::2]
         self.assertEqual(a, self.type2test([0,2,4]))
         a = self.type2test(range(5))
-        del a[1::-2]
+        toa a[1::-2]
         self.assertEqual(a, self.type2test([0,2,3,4]))
         a = self.type2test(range(10))
-        del a[::1000]
+        toa a[::1000]
         self.assertEqual(a, self.type2test([1, 2, 3, 4, 5, 6, 7, 8, 9]))
         #  assignment
         a = self.type2test(range(10))
@@ -543,21 +543,21 @@ kundi CommonTest(seq_tests.CommonTest):
         self.assertEqual(a, self.type2test([0, 1, 1, 3, 2, 5, 3, 7, 4, 9]))
         # test issue7788
         a = self.type2test(range(10))
-        del a[9::1<<333]
+        toa a[9::1<<333]
 
     eleza test_constructor_exception_handling(self):
         # Bug #1242657
         kundi F(object):
             eleza __iter__(self):
-                raise KeyboardInterrupt
+                ashiria KeyboardInterrupt
         self.assertRaises(KeyboardInterrupt, list, F())
 
     eleza test_exhausted_iterator(self):
         a = self.type2test([1, 2, 3])
         exhit = iter(a)
         empit = iter(a)
-        for x in exhit:  # exhaust the iterator
-            next(empit)  # not exhausted
+        kila x kwenye exhit:  # exhaust the iterator
+            next(empit)  # sio exhausted
         a.append(9)
         self.assertEqual(list(exhit), [])
         self.assertEqual(list(empit), [9])

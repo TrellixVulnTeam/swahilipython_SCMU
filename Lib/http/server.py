@@ -1,8 +1,8 @@
 """HTTP server classes.
 
 Note: BaseHTTPRequestHandler doesn't implement any HTTP request; see
-SimpleHTTPRequestHandler for simple implementations of GET, HEAD and POST,
-and CGIHTTPRequestHandler for CGI scripts.
+SimpleHTTPRequestHandler kila simple implementations of GET, HEAD na POST,
+and CGIHTTPRequestHandler kila CGI scripts.
 
 It does, however, optionally implement HTTP/1.1 persistent connections,
 as of version 0.3.
@@ -10,24 +10,24 @@ as of version 0.3.
 Notes on CGIHTTPRequestHandler
 ------------------------------
 
-This kundi implements GET and POST requests to cgi-bin scripts.
+This kundi implements GET na POST requests to cgi-bin scripts.
 
-If the os.fork() function is not present (e.g. on Windows),
-subprocess.Popen() is used as a fallback, with slightly altered semantics.
+If the os.fork() function ni sio present (e.g. on Windows),
+subprocess.Popen() ni used kama a fallback, with slightly altered semantics.
 
-In all cases, the implementation is intentionally naive -- all
+In all cases, the implementation ni intentionally naive -- all
 requests are executed synchronously.
 
 SECURITY WARNING: DON'T USE THIS CODE UNLESS YOU ARE INSIDE A FIREWALL
--- it may execute arbitrary Python code or external programs.
+-- it may execute arbitrary Python code ama external programs.
 
-Note that status code 200 is sent prior to execution of a CGI script, so
-scripts cannot send other status codes such as 302 (redirect).
+Note that status code 200 ni sent prior to execution of a CGI script, so
+scripts cannot send other status codes such kama 302 (redirect).
 
 XXX To do:
 
 - log requests even later (to capture byte count)
-- log user-agent header and other interesting goodies
+- log user-agent header na other interesting goodies
 - send error log to separate file
 """
 
@@ -44,7 +44,7 @@ XXX To do:
 # and
 #
 # Network Working Group                                      R. Fielding
-# Request for Comments: 2616                                       et al
+# Request kila Comments: 2616                                       et al
 # Obsoletes: 2068                                              June 1999
 # Category: Standards Track
 #
@@ -55,14 +55,14 @@ XXX To do:
 #
 # Here's a quote kutoka the NCSA httpd docs about log file format.
 #
-# | The logfile format is as follows. Each line consists of:
+# | The logfile format ni kama follows. Each line consists of:
 # |
 # | host rfc931 authuser [DD/Mon/YYYY:hh:mm:ss] "request" ddd bbbb
 # |
-# |        host: Either the DNS name or the IP number of the remote client
-# |        rfc931: Any information returned by identd for this person,
+# |        host: Either the DNS name ama the IP number of the remote client
+# |        rfc931: Any information rudishaed by identd kila this person,
 # |                - otherwise.
-# |        authuser: If user sent a userid for authentication, the user name,
+# |        authuser: If user sent a userid kila authentication, the user name,
 # |                  - otherwise.
 # |        DD: Day
 # |        Mon: Month (calendar name)
@@ -70,14 +70,14 @@ XXX To do:
 # |        hh: hour (24-hour format, the machine's timezone)
 # |        mm: minutes
 # |        ss: seconds
-# |        request: The first line of the HTTP request as sent by the client.
-# |        ddd: the status code returned by the server, - ikiwa not available.
+# |        request: The first line of the HTTP request kama sent by the client.
+# |        ddd: the status code rudishaed by the server, - ikiwa sio available.
 # |        bbbb: the total number of bytes sent,
-# |              *not including the HTTP/1.0 header*, - ikiwa not available
+# |              *not including the HTTP/1.0 header*, - ikiwa sio available
 # |
 # | You can determine the name of the file accessed through request.
 #
-# (Actually, the latter is only true ikiwa you know the server configuration
+# (Actually, the latter ni only true ikiwa you know the server configuration
 # at the time the request was made!)
 
 __version__ = "0.6"
@@ -130,7 +130,7 @@ DEFAULT_ERROR_CONTENT_TYPE = "text/html;charset=utf-8"
 
 kundi HTTPServer(socketserver.TCPServer):
 
-    allow_reuse_address = 1    # Seems to make sense in testing environment
+    allow_reuse_address = 1    # Seems to make sense kwenye testing environment
 
     eleza server_bind(self):
         """Override server_bind to store the server name."""
@@ -141,7 +141,7 @@ kundi HTTPServer(socketserver.TCPServer):
 
 
 kundi ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
-    daemon_threads = True
+    daemon_threads = Kweli
 
 
 kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
@@ -149,45 +149,45 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     """HTTP request handler base class.
 
     The following explanation of HTTP serves to guide you through the
-    code as well as to expose any misunderstandings I may have about
+    code kama well kama to expose any misunderstandings I may have about
     HTTP (so you don't need to read the code to figure out I'm wrong
     :-).
 
-    HTTP (HyperText Transfer Protocol) is an extensible protocol on
+    HTTP (HyperText Transfer Protocol) ni an extensible protocol on
     top of a reliable stream transport (e.g. TCP/IP).  The protocol
     recognizes three parts to a request:
 
-    1. One line identifying the request type and path
+    1. One line identifying the request type na path
     2. An optional set of RFC-822-style headers
     3. An optional data part
 
-    The headers and data are separated by a blank line.
+    The headers na data are separated by a blank line.
 
     The first line of the request has the form
 
     <command> <path> <version>
 
-    where <command> is a (case-sensitive) keyword such as GET or POST,
-    <path> is a string containing path information for the request,
-    and <version> should be the string "HTTP/1.0" or "HTTP/1.1".
-    <path> is encoded using the URL encoding scheme (using %xx to signify
+    where <command> ni a (case-sensitive) keyword such kama GET ama POST,
+    <path> ni a string containing path information kila the request,
+    na <version> should be the string "HTTP/1.0" ama "HTTP/1.1".
+    <path> ni encoded using the URL encoding scheme (using %xx to signify
     the ASCII character with hex code xx).
 
     The specification specifies that lines are separated by CRLF but
-    for compatibility with the widest range of clients recommends
-    servers also handle LF.  Similarly, whitespace in the request line
-    is treated sensibly (allowing multiple spaces between components
-    and allowing trailing whitespace).
+    kila compatibility with the widest range of clients recommends
+    servers also handle LF.  Similarly, whitespace kwenye the request line
+    ni treated sensibly (allowing multiple spaces between components
+    na allowing trailing whitespace).
 
-    Similarly, for output, lines ought to be separated by CRLF pairs
+    Similarly, kila output, lines ought to be separated by CRLF pairs
     but most clients grok LF characters just fine.
 
     If the first line of the request has the form
 
     <command> <path>
 
-    (i.e. <version> is left out) then this is assumed to be an HTTP
-    0.9 request; this form has no optional headers and data part and
+    (i.e. <version> ni left out) then this ni assumed to be an HTTP
+    0.9 request; this form has no optional headers na data part and
     the reply consists of just the data.
 
     The reply form of the HTTP 1.x protocol again has three parts:
@@ -196,55 +196,55 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     2. An optional set of RFC-822-style headers
     3. The data
 
-    Again, the headers and data are separated by a blank line.
+    Again, the headers na data are separated by a blank line.
 
     The response code line has the form
 
     <version> <responsecode> <responsestring>
 
-    where <version> is the protocol version ("HTTP/1.0" or "HTTP/1.1"),
-    <responsecode> is a 3-digit response code indicating success or
-    failure of the request, and <responsestring> is an optional
+    where <version> ni the protocol version ("HTTP/1.0" ama "HTTP/1.1"),
+    <responsecode> ni a 3-digit response code indicating success or
+    failure of the request, na <responsestring> ni an optional
     human-readable string explaining what the response code means.
 
-    This server parses the request and the headers, and then calls a
+    This server parses the request na the headers, na then calls a
     function specific to the request type (<command>).  Specifically,
     a request SPAM will be handled by a method do_SPAM().  If no
     such method exists the server sends an error response to the
-    client.  If it exists, it is called with no arguments:
+    client.  If it exists, it ni called with no arguments:
 
     do_SPAM()
 
-    Note that the request name is case sensitive (i.e. SPAM and spam
+    Note that the request name ni case sensitive (i.e. SPAM na spam
     are different requests).
 
-    The various request details are stored in instance variables:
+    The various request details are stored kwenye instance variables:
 
-    - client_address is the client IP address in the form (host,
+    - client_address ni the client IP address kwenye the form (host,
     port);
 
-    - command, path and version are the broken-down request line;
+    - command, path na version are the broken-down request line;
 
-    - headers is an instance of email.message.Message (or a derived
+    - headers ni an instance of email.message.Message (or a derived
     class) containing the header information;
 
-    - rfile is a file object open for reading positioned at the
+    - rfile ni a file object open kila reading positioned at the
     start of the optional input data part;
 
-    - wfile is a file object open for writing.
+    - wfile ni a file object open kila writing.
 
     IT IS IMPORTANT TO ADHERE TO THE PROTOCOL FOR WRITING!
 
     The first thing to be written must be the response line.  Then
-    follow 0 or more header lines, then a blank line, and then the
+    follow 0 ama more header lines, then a blank line, na then the
     actual data (ikiwa any).  The meaning of the header lines depends on
-    the command executed by the server; in most cases, when data is
-    returned, there should be at least one header line of the form
+    the command executed by the server; kwenye most cases, when data is
+    rudishaed, there should be at least one header line of the form
 
     Content-type: <type>/<subtype>
 
-    where <type> and <subtype> should be registered MIME types,
-    e.g. "text/html" or "text/plain".
+    where <type> na <subtype> should be registered MIME types,
+    e.g. "text/html" ama "text/plain".
 
     """
 
@@ -252,15 +252,15 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     sys_version = "Python/" + sys.version.split()[0]
 
     # The server software version.  You may want to override this.
-    # The format is multiple whitespace-separated strings,
-    # where each string is of the form name[/version].
+    # The format ni multiple whitespace-separated strings,
+    # where each string ni of the form name[/version].
     server_version = "BaseHTTP/" + __version__
 
     error_message_format = DEFAULT_ERROR_MESSAGE
     error_content_type = DEFAULT_ERROR_CONTENT_TYPE
 
     # The default request version.  This only affects responses up until
-    # the point where the request line is parsed, so it mainly decides what
+    # the point where the request line ni parsed, so it mainly decides what
     # the client gets back when sending a malformed request line.
     # Most web servers default to HTTP 0.9, i.e. don't send a status line.
     default_request_version = "HTTP/0.9"
@@ -268,167 +268,167 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     eleza parse_request(self):
         """Parse a request (internal).
 
-        The request should be stored in self.raw_requestline; the results
-        are in self.command, self.path, self.request_version and
+        The request should be stored kwenye self.raw_requestline; the results
+        are kwenye self.command, self.path, self.request_version and
         self.headers.
 
-        Return True for success, False for failure; on failure, any relevant
+        Return Kweli kila success, Uongo kila failure; on failure, any relevant
         error response has already been sent back.
 
         """
-        self.command = None  # set in case of error on the first line
+        self.command = Tupu  # set kwenye case of error on the first line
         self.request_version = version = self.default_request_version
-        self.close_connection = True
+        self.close_connection = Kweli
         requestline = str(self.raw_requestline, 'iso-8859-1')
         requestline = requestline.rstrip('\r\n')
         self.requestline = requestline
         words = requestline.split()
         ikiwa len(words) == 0:
-            rudisha False
+            rudisha Uongo
 
         ikiwa len(words) >= 3:  # Enough to determine protocol version
             version = words[-1]
-            try:
-                ikiwa not version.startswith('HTTP/'):
-                    raise ValueError
+            jaribu:
+                ikiwa sio version.startswith('HTTP/'):
+                    ashiria ValueError
                 base_version_number = version.split('/', 1)[1]
                 version_number = base_version_number.split(".")
                 # RFC 2145 section 3.1 says there can be only one "." and
-                #   - major and minor numbers MUST be treated as
+                #   - major na minor numbers MUST be treated as
                 #      separate integers;
-                #   - HTTP/2.4 is a lower version than HTTP/2.13, which in
-                #      turn is lower than HTTP/12.3;
+                #   - HTTP/2.4 ni a lower version than HTTP/2.13, which in
+                #      turn ni lower than HTTP/12.3;
                 #   - Leading zeros MUST be ignored by recipients.
                 ikiwa len(version_number) != 2:
-                    raise ValueError
+                    ashiria ValueError
                 version_number = int(version_number[0]), int(version_number[1])
-            except (ValueError, IndexError):
+            tatizo (ValueError, IndexError):
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad request version (%r)" % version)
-                rudisha False
-            ikiwa version_number >= (1, 1) and self.protocol_version >= "HTTP/1.1":
-                self.close_connection = False
+                rudisha Uongo
+            ikiwa version_number >= (1, 1) na self.protocol_version >= "HTTP/1.1":
+                self.close_connection = Uongo
             ikiwa version_number >= (2, 0):
                 self.send_error(
                     HTTPStatus.HTTP_VERSION_NOT_SUPPORTED,
                     "Invalid HTTP version (%s)" % base_version_number)
-                rudisha False
+                rudisha Uongo
             self.request_version = version
 
-        ikiwa not 2 <= len(words) <= 3:
+        ikiwa sio 2 <= len(words) <= 3:
             self.send_error(
                 HTTPStatus.BAD_REQUEST,
                 "Bad request syntax (%r)" % requestline)
-            rudisha False
+            rudisha Uongo
         command, path = words[:2]
         ikiwa len(words) == 2:
-            self.close_connection = True
+            self.close_connection = Kweli
             ikiwa command != 'GET':
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad HTTP/0.9 request type (%r)" % command)
-                rudisha False
+                rudisha Uongo
         self.command, self.path = command, path
 
-        # Examine the headers and look for a Connection directive.
-        try:
+        # Examine the headers na look kila a Connection directive.
+        jaribu:
             self.headers = http.client.parse_headers(self.rfile,
                                                      _class=self.MessageClass)
-        except http.client.LineTooLong as err:
+        tatizo http.client.LineTooLong kama err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Line too long",
                 str(err))
-            rudisha False
-        except http.client.HTTPException as err:
+            rudisha Uongo
+        tatizo http.client.HTTPException kama err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Too many headers",
                 str(err)
             )
-            rudisha False
+            rudisha Uongo
 
         conntype = self.headers.get('Connection', "")
         ikiwa conntype.lower() == 'close':
-            self.close_connection = True
+            self.close_connection = Kweli
         elikiwa (conntype.lower() == 'keep-alive' and
               self.protocol_version >= "HTTP/1.1"):
-            self.close_connection = False
-        # Examine the headers and look for an Expect directive
+            self.close_connection = Uongo
+        # Examine the headers na look kila an Expect directive
         expect = self.headers.get('Expect', "")
-        ikiwa (expect.lower() == "100-continue" and
+        ikiwa (expect.lower() == "100-endelea" and
                 self.protocol_version >= "HTTP/1.1" and
                 self.request_version >= "HTTP/1.1"):
-            ikiwa not self.handle_expect_100():
-                rudisha False
-        rudisha True
+            ikiwa sio self.handle_expect_100():
+                rudisha Uongo
+        rudisha Kweli
 
     eleza handle_expect_100(self):
-        """Decide what to do with an "Expect: 100-continue" header.
+        """Decide what to do with an "Expect: 100-endelea" header.
 
-        If the client is expecting a 100 Continue response, we must
-        respond with either a 100 Continue or a final response before
-        waiting for the request body. The default is to always respond
-        with a 100 Continue. You can behave differently (for example,
+        If the client ni expecting a 100 Continue response, we must
+        respond with either a 100 Continue ama a final response before
+        waiting kila the request body. The default ni to always respond
+        with a 100 Continue. You can behave differently (kila example,
         reject unauthorized requests) by overriding this method.
 
-        This method should either rudisha True (possibly after sending
-        a 100 Continue response) or send an error response and return
-        False.
+        This method should either rudisha Kweli (possibly after sending
+        a 100 Continue response) ama send an error response na rudisha
+        Uongo.
 
         """
         self.send_response_only(HTTPStatus.CONTINUE)
         self.end_headers()
-        rudisha True
+        rudisha Kweli
 
     eleza handle_one_request(self):
         """Handle a single HTTP request.
 
         You normally don't need to override this method; see the class
-        __doc__ string for information on how to handle specific HTTP
-        commands such as GET and POST.
+        __doc__ string kila information on how to handle specific HTTP
+        commands such kama GET na POST.
 
         """
-        try:
+        jaribu:
             self.raw_requestline = self.rfile.readline(65537)
             ikiwa len(self.raw_requestline) > 65536:
                 self.requestline = ''
                 self.request_version = ''
                 self.command = ''
                 self.send_error(HTTPStatus.REQUEST_URI_TOO_LONG)
-                return
-            ikiwa not self.raw_requestline:
-                self.close_connection = True
-                return
-            ikiwa not self.parse_request():
+                rudisha
+            ikiwa sio self.raw_requestline:
+                self.close_connection = Kweli
+                rudisha
+            ikiwa sio self.parse_request():
                 # An error code has been sent, just exit
-                return
+                rudisha
             mname = 'do_' + self.command
-            ikiwa not hasattr(self, mname):
+            ikiwa sio hasattr(self, mname):
                 self.send_error(
                     HTTPStatus.NOT_IMPLEMENTED,
                     "Unsupported method (%r)" % self.command)
-                return
+                rudisha
             method = getattr(self, mname)
             method()
-            self.wfile.flush() #actually send the response ikiwa not already done.
-        except socket.timeout as e:
-            #a read or a write timed out.  Discard this connection
+            self.wfile.flush() #actually send the response ikiwa sio already done.
+        tatizo socket.timeout kama e:
+            #a read ama a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
-            self.close_connection = True
-            return
+            self.close_connection = Kweli
+            rudisha
 
     eleza handle(self):
         """Handle multiple requests ikiwa necessary."""
-        self.close_connection = True
+        self.close_connection = Kweli
 
         self.handle_one_request()
-        while not self.close_connection:
+        wakati sio self.close_connection:
             self.handle_one_request()
 
-    eleza send_error(self, code, message=None, explain=None):
-        """Send and log an error reply.
+    eleza send_error(self, code, message=Tupu, explain=Tupu):
+        """Send na log an error reply.
 
         Arguments are
         * code:    an HTTP error code
@@ -440,52 +440,52 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                    matching the response code.
 
         This sends an error response (so it must be called before any
-        output has been generated), logs the error, and finally sends
+        output has been generated), logs the error, na finally sends
         a piece of HTML explaining the error to the user.
 
         """
 
-        try:
+        jaribu:
             shortmsg, longmsg = self.responses[code]
-        except KeyError:
+        tatizo KeyError:
             shortmsg, longmsg = '???', '???'
-        ikiwa message is None:
+        ikiwa message ni Tupu:
             message = shortmsg
-        ikiwa explain is None:
+        ikiwa explain ni Tupu:
             explain = longmsg
         self.log_error("code %d, message %s", code, message)
         self.send_response(code, message)
         self.send_header('Connection', 'close')
 
-        # Message body is omitted for cases described in:
+        # Message body ni omitted kila cases described in:
         #  - RFC7230: 3.3. 1xx, 204(No Content), 304(Not Modified)
         #  - RFC7231: 6.3.6. 205(Reset Content)
-        body = None
+        body = Tupu
         ikiwa (code >= 200 and
-            code not in (HTTPStatus.NO_CONTENT,
+            code haiko kwenye (HTTPStatus.NO_CONTENT,
                          HTTPStatus.RESET_CONTENT,
                          HTTPStatus.NOT_MODIFIED)):
             # HTML encode to prevent Cross Site Scripting attacks
             # (see bug #1100201)
             content = (self.error_message_format % {
                 'code': code,
-                'message': html.escape(message, quote=False),
-                'explain': html.escape(explain, quote=False)
+                'message': html.escape(message, quote=Uongo),
+                'explain': html.escape(explain, quote=Uongo)
             })
             body = content.encode('UTF-8', 'replace')
             self.send_header("Content-Type", self.error_content_type)
             self.send_header('Content-Length', str(len(body)))
         self.end_headers()
 
-        ikiwa self.command != 'HEAD' and body:
+        ikiwa self.command != 'HEAD' na body:
             self.wfile.write(body)
 
-    eleza send_response(self, code, message=None):
-        """Add the response header to the headers buffer and log the
+    eleza send_response(self, code, message=Tupu):
+        """Add the response header to the headers buffer na log the
         response code.
 
         Also send two standard headers with the server software
-        version and the current date.
+        version na the current date.
 
         """
         self.log_request(code)
@@ -493,15 +493,15 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         self.send_header('Server', self.version_string())
         self.send_header('Date', self.date_time_string())
 
-    eleza send_response_only(self, code, message=None):
+    eleza send_response_only(self, code, message=Tupu):
         """Send the response header only."""
         ikiwa self.request_version != 'HTTP/0.9':
-            ikiwa message is None:
-                ikiwa code in self.responses:
+            ikiwa message ni Tupu:
+                ikiwa code kwenye self.responses:
                     message = self.responses[code][0]
-                else:
+                isipokua:
                     message = ''
-            ikiwa not hasattr(self, '_headers_buffer'):
+            ikiwa sio hasattr(self, '_headers_buffer'):
                 self._headers_buffer = []
             self._headers_buffer.append(("%s %d %s\r\n" %
                     (self.protocol_version, code, message)).encode(
@@ -510,16 +510,16 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     eleza send_header(self, keyword, value):
         """Send a MIME header to the headers buffer."""
         ikiwa self.request_version != 'HTTP/0.9':
-            ikiwa not hasattr(self, '_headers_buffer'):
+            ikiwa sio hasattr(self, '_headers_buffer'):
                 self._headers_buffer = []
             self._headers_buffer.append(
                 ("%s: %s\r\n" % (keyword, value)).encode('latin-1', 'strict'))
 
         ikiwa keyword.lower() == 'connection':
             ikiwa value.lower() == 'close':
-                self.close_connection = True
+                self.close_connection = Kweli
             elikiwa value.lower() == 'keep-alive':
-                self.close_connection = False
+                self.close_connection = Uongo
 
     eleza end_headers(self):
         """Send the blank line ending the MIME headers."""
@@ -535,7 +535,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     eleza log_request(self, code='-', size='-'):
         """Log an accepted request.
 
-        This is called by send_response().
+        This ni called by send_response().
 
         """
         ikiwa isinstance(code, HTTPStatus):
@@ -546,10 +546,10 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     eleza log_error(self, format, *args):
         """Log an error.
 
-        This is called when a request cannot be fulfilled.  By
-        default it passes the message on to log_message().
+        This ni called when a request cannot be fulfilled.  By
+        default it pitaes the message on to log_message().
 
-        Arguments are the same as for log_message().
+        Arguments are the same kama kila log_message().
 
         XXX This should go to the separate error log.
 
@@ -560,16 +560,16 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     eleza log_message(self, format, *args):
         """Log an arbitrary message.
 
-        This is used by all other logging functions.  Override
+        This ni used by all other logging functions.  Override
         it ikiwa you have specific logging wishes.
 
-        The first argument, FORMAT, is a format string for the
+        The first argument, FORMAT, ni a format string kila the
         message to be logged.  If the format string contains
         any % escapes requiring parameters, they should be
-        specified as subsequent arguments (it's just like
+        specified kama subsequent arguments (it's just like
         printf!).
 
-        The client ip and current date/time are prefixed to
+        The client ip na current date/time are prefixed to
         every message.
 
         """
@@ -583,14 +583,14 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """Return the server software version string."""
         rudisha self.server_version + ' ' + self.sys_version
 
-    eleza date_time_string(self, timestamp=None):
-        """Return the current date and time formatted for a message header."""
-        ikiwa timestamp is None:
+    eleza date_time_string(self, timestamp=Tupu):
+        """Return the current date na time formatted kila a message header."""
+        ikiwa timestamp ni Tupu:
             timestamp = time.time()
-        rudisha email.utils.formatdate(timestamp, usegmt=True)
+        rudisha email.utils.formatdate(timestamp, usegmt=Kweli)
 
     eleza log_date_time_string(self):
-        """Return the current time formatted for logging."""
+        """Return the current time formatted kila logging."""
         now = time.time()
         year, month, day, hh, mm, ss, x, y, z = time.localtime(now)
         s = "%02d/%3s/%04d %02d:%02d:%02d" % (
@@ -599,7 +599,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     weekdayname = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-    monthname = [None,
+    monthname = [Tupu,
                  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -620,27 +620,27 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     # hack to maintain backwards compatibility
     responses = {
         v: (v.phrase, v.description)
-        for v in HTTPStatus.__members__.values()
+        kila v kwenye HTTPStatus.__members__.values()
     }
 
 
 kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
-    """Simple HTTP request handler with GET and HEAD commands.
+    """Simple HTTP request handler with GET na HEAD commands.
 
-    This serves files kutoka the current directory and any of its
-    subdirectories.  The MIME type for files is determined by
+    This serves files kutoka the current directory na any of its
+    subdirectories.  The MIME type kila files ni determined by
     calling the .guess_type() method.
 
-    The GET and HEAD requests are identical except that the HEAD
+    The GET na HEAD requests are identical tatizo that the HEAD
     request omits the actual contents of the file.
 
     """
 
     server_version = "SimpleHTTP/" + __version__
 
-    eleza __init__(self, *args, directory=None, **kwargs):
-        ikiwa directory is None:
+    eleza __init__(self, *args, directory=Tupu, **kwargs):
+        ikiwa directory ni Tupu:
             directory = os.getcwd()
         self.directory = directory
         super().__init__(*args, **kwargs)
@@ -649,9 +649,9 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """Serve a GET request."""
         f = self.send_head()
         ikiwa f:
-            try:
+            jaribu:
                 self.copyfile(f, self.wfile)
-            finally:
+            mwishowe:
                 f.close()
 
     eleza do_HEAD(self):
@@ -661,21 +661,21 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             f.close()
 
     eleza send_head(self):
-        """Common code for GET and HEAD commands.
+        """Common code kila GET na HEAD commands.
 
-        This sends the response code and MIME headers.
+        This sends the response code na MIME headers.
 
-        Return value is either a file object (which has to be copied
+        Return value ni either a file object (which has to be copied
         to the outputfile by the caller unless the command was HEAD,
-        and must be closed by the caller under all circumstances), or
-        None, in which case the caller has nothing further to do.
+        na must be closed by the caller under all circumstances), or
+        Tupu, kwenye which case the caller has nothing further to do.
 
         """
         path = self.translate_path(self.path)
-        f = None
+        f = Tupu
         ikiwa os.path.isdir(path):
             parts = urllib.parse.urlsplit(self.path)
-            ikiwa not parts.path.endswith('/'):
+            ikiwa sio parts.path.endswith('/'):
                 # redirect browser - doing basically what apache does
                 self.send_response(HTTPStatus.MOVED_PERMANENTLY)
                 new_parts = (parts[0], parts[1], parts[2] + '/',
@@ -683,58 +683,58 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 new_url = urllib.parse.urlunsplit(new_parts)
                 self.send_header("Location", new_url)
                 self.end_headers()
-                rudisha None
-            for index in "index.html", "index.htm":
+                rudisha Tupu
+            kila index kwenye "index.html", "index.htm":
                 index = os.path.join(path, index)
                 ikiwa os.path.exists(index):
                     path = index
-                    break
-            else:
+                    koma
+            isipokua:
                 rudisha self.list_directory(path)
         ctype = self.guess_type(path)
-        # check for trailing "/" which should rudisha 404. See Issue17324
-        # The test for this was added in test_httpserver.py
-        # However, some OS platforms accept a trailingSlash as a filename
-        # See discussion on python-dev and Issue34711 regarding
-        # parseing and rejection of filenames with a trailing slash
+        # check kila trailing "/" which should rudisha 404. See Issue17324
+        # The test kila this was added kwenye test_httpserver.py
+        # However, some OS platforms accept a trailingSlash kama a filename
+        # See discussion on python-dev na Issue34711 regarding
+        # parseing na rejection of filenames with a trailing slash
         ikiwa path.endswith("/"):
-            self.send_error(HTTPStatus.NOT_FOUND, "File not found")
-            rudisha None
-        try:
+            self.send_error(HTTPStatus.NOT_FOUND, "File sio found")
+            rudisha Tupu
+        jaribu:
             f = open(path, 'rb')
-        except OSError:
-            self.send_error(HTTPStatus.NOT_FOUND, "File not found")
-            rudisha None
+        tatizo OSError:
+            self.send_error(HTTPStatus.NOT_FOUND, "File sio found")
+            rudisha Tupu
 
-        try:
+        jaribu:
             fs = os.fstat(f.fileno())
             # Use browser cache ikiwa possible
-            ikiwa ("If-Modified-Since" in self.headers
-                    and "If-None-Match" not in self.headers):
-                # compare If-Modified-Since and time of last file modification
-                try:
+            ikiwa ("If-Modified-Since" kwenye self.headers
+                    na "If-Tupu-Match" haiko kwenye self.headers):
+                # compare If-Modified-Since na time of last file modification
+                jaribu:
                     ims = email.utils.parsedate_to_datetime(
                         self.headers["If-Modified-Since"])
-                except (TypeError, IndexError, OverflowError, ValueError):
+                tatizo (TypeError, IndexError, OverflowError, ValueError):
                     # ignore ill-formed values
-                    pass
-                else:
-                    ikiwa ims.tzinfo is None:
+                    pita
+                isipokua:
+                    ikiwa ims.tzinfo ni Tupu:
                         # obsolete format with no timezone, cf.
                         # https://tools.ietf.org/html/rfc7231#section-7.1.1.1
                         ims = ims.replace(tzinfo=datetime.timezone.utc)
-                    ikiwa ims.tzinfo is datetime.timezone.utc:
+                    ikiwa ims.tzinfo ni datetime.timezone.utc:
                         # compare to UTC datetime of last modification
                         last_modikiwa = datetime.datetime.kutokatimestamp(
                             fs.st_mtime, datetime.timezone.utc)
-                        # remove microseconds, like in If-Modified-Since
+                        # remove microseconds, like kwenye If-Modified-Since
                         last_modikiwa = last_modif.replace(microsecond=0)
 
                         ikiwa last_modikiwa <= ims:
                             self.send_response(HTTPStatus.NOT_MODIFIED)
                             self.end_headers()
                             f.close()
-                            rudisha None
+                            rudisha Tupu
 
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-type", ctype)
@@ -745,33 +745,33 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             rudisha f
         except:
             f.close()
-            raise
+            ashiria
 
     eleza list_directory(self, path):
         """Helper to produce a directory listing (absent index.html).
 
-        Return value is either a file object, or None (indicating an
+        Return value ni either a file object, ama Tupu (indicating an
         error).  In either case, the headers are sent, making the
-        interface the same as for send_head().
+        interface the same kama kila send_head().
 
         """
-        try:
+        jaribu:
             list = os.listdir(path)
-        except OSError:
+        tatizo OSError:
             self.send_error(
                 HTTPStatus.NOT_FOUND,
                 "No permission to list directory")
-            rudisha None
+            rudisha Tupu
         list.sort(key=lambda a: a.lower())
         r = []
-        try:
+        jaribu:
             displaypath = urllib.parse.unquote(self.path,
-                                               errors='surrogatepass')
-        except UnicodeDecodeError:
+                                               errors='surrogatepita')
+        tatizo UnicodeDecodeError:
             displaypath = urllib.parse.unquote(path)
-        displaypath = html.escape(displaypath, quote=False)
+        displaypath = html.escape(displaypath, quote=Uongo)
         enc = sys.getfilesystemencoding()
-        title = 'Directory listing for %s' % displaypath
+        title = 'Directory listing kila %s' % displaypath
         r.append('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" '
                  '"http://www.w3.org/TR/html4/strict.dtd">')
         r.append('<html>\n<head>')
@@ -780,20 +780,20 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         r.append('<title>%s</title>\n</head>' % title)
         r.append('<body>\n<h1>%s</h1>' % title)
         r.append('<hr>\n<ul>')
-        for name in list:
+        kila name kwenye list:
             fullname = os.path.join(path, name)
             displayname = linkname = name
-            # Append / for directories or @ for symbolic links
+            # Append / kila directories ama @ kila symbolic links
             ikiwa os.path.isdir(fullname):
                 displayname = name + "/"
                 linkname = name + "/"
             ikiwa os.path.islink(fullname):
                 displayname = name + "@"
-                # Note: a link to a directory displays with @ and links with /
+                # Note: a link to a directory displays with @ na links with /
             r.append('<li><a href="%s">%s</a></li>'
                     % (urllib.parse.quote(linkname,
-                                          errors='surrogatepass'),
-                       html.escape(displayname, quote=False)))
+                                          errors='surrogatepita'),
+                       html.escape(displayname, quote=Uongo)))
         r.append('</ul>\n<hr>\n</body>\n</html>\n')
         encoded = '\n'.join(r).encode(enc, 'surrogateescape')
         f = io.BytesIO()
@@ -809,7 +809,7 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """Translate a /-separated PATH to the local filename syntax.
 
         Components that mean special things to the local file system
-        (e.g. drive or directory names) are ignored.  (XXX They should
+        (e.g. drive ama directory names) are ignored.  (XXX They should
         probably be diagnosed.)
 
         """
@@ -818,18 +818,18 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         path = path.split('#',1)[0]
         # Don't forget explicit trailing slash when normalizing. Issue17324
         trailing_slash = path.rstrip().endswith('/')
-        try:
-            path = urllib.parse.unquote(path, errors='surrogatepass')
-        except UnicodeDecodeError:
+        jaribu:
+            path = urllib.parse.unquote(path, errors='surrogatepita')
+        tatizo UnicodeDecodeError:
             path = urllib.parse.unquote(path)
         path = posixpath.normpath(path)
         words = path.split('/')
-        words = filter(None, words)
+        words = filter(Tupu, words)
         path = self.directory
-        for word in words:
-            ikiwa os.path.dirname(word) or word in (os.curdir, os.pardir):
-                # Ignore components that are not a simple file/directory name
-                continue
+        kila word kwenye words:
+            ikiwa os.path.dirname(word) ama word kwenye (os.curdir, os.pardir):
+                # Ignore components that are sio a simple file/directory name
+                endelea
             path = os.path.join(path, word)
         ikiwa trailing_slash:
             path += '/'
@@ -838,15 +838,15 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     eleza copyfile(self, source, outputfile):
         """Copy all data between two file objects.
 
-        The SOURCE argument is a file object open for reading
-        (or anything with a read() method) and the DESTINATION
-        argument is a file object open for writing (or
+        The SOURCE argument ni a file object open kila reading
+        (or anything with a read() method) na the DESTINATION
+        argument ni a file object open kila writing (or
         anything with a write() method).
 
-        The only reason for overriding this would be to change
-        the block size or perhaps to replace newlines by CRLF
+        The only reason kila overriding this would be to change
+        the block size ama perhaps to replace newlines by CRLF
         -- note however that this the default server uses this
-        to copy binary data as well.
+        to copy binary data kama well.
 
         """
         shutil.copyfileobj(source, outputfile)
@@ -854,28 +854,28 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     eleza guess_type(self, path):
         """Guess the type of a file.
 
-        Argument is a PATH (a filename).
+        Argument ni a PATH (a filename).
 
-        Return value is a string of the form type/subtype,
-        usable for a MIME Content-type header.
+        Return value ni a string of the form type/subtype,
+        usable kila a MIME Content-type header.
 
         The default implementation looks the file's extension
-        up in the table self.extensions_map, using application/octet-stream
-        as a default; however it would be permissible (if
+        up kwenye the table self.extensions_map, using application/octet-stream
+        kama a default; however it would be permissible (if
         slow) to look inside the data to make a better guess.
 
         """
 
         base, ext = posixpath.splitext(path)
-        ikiwa ext in self.extensions_map:
+        ikiwa ext kwenye self.extensions_map:
             rudisha self.extensions_map[ext]
         ext = ext.lower()
-        ikiwa ext in self.extensions_map:
+        ikiwa ext kwenye self.extensions_map:
             rudisha self.extensions_map[ext]
-        else:
+        isipokua:
             rudisha self.extensions_map['']
 
-    ikiwa not mimetypes.inited:
+    ikiwa sio mimetypes.inited:
         mimetypes.init() # try to read system mime.types
     extensions_map = mimetypes.types_map.copy()
     extensions_map.update({
@@ -886,15 +886,15 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         })
 
 
-# Utilities for CGIHTTPRequestHandler
+# Utilities kila CGIHTTPRequestHandler
 
 eleza _url_collapse_path(path):
     """
-    Given a URL path, remove extra '/'s and '.' path elements and collapse
-    any '..' references and returns a collapsed path.
+    Given a URL path, remove extra '/'s na '.' path elements na collapse
+    any '..' references na rudishas a collapsed path.
 
     Implements something akin to RFC-2396 5.2 step 6 to parse relative paths.
-    The utility of this function is limited to is_cgi method and helps
+    The utility of this function ni limited to is_cgi method na helps
     preventing some security attacks.
 
     Returns: The reconstituted URL, which will always start with a '/'.
@@ -902,7 +902,7 @@ eleza _url_collapse_path(path):
     Raises: IndexError ikiwa too many '..' occur within the path.
 
     """
-    # Query component should not be involved.
+    # Query component should sio be involved.
     path, _, query = path.partition('?')
     path = urllib.parse.unquote(path)
 
@@ -910,10 +910,10 @@ eleza _url_collapse_path(path):
     # path semantics rather than local operating system semantics.
     path_parts = path.split('/')
     head_parts = []
-    for part in path_parts[:-1]:
+    kila part kwenye path_parts[:-1]:
         ikiwa part == '..':
             head_parts.pop() # IndexError ikiwa more '..' than prior parts
-        elikiwa part and part != '.':
+        elikiwa part na part != '.':
             head_parts.append( part )
     ikiwa path_parts:
         tail_part = path_parts.pop()
@@ -923,7 +923,7 @@ eleza _url_collapse_path(path):
                 tail_part = ''
             elikiwa tail_part == '.':
                 tail_part = ''
-    else:
+    isipokua:
         tail_part = ''
 
     ikiwa query:
@@ -936,56 +936,56 @@ eleza _url_collapse_path(path):
 
 
 
-nobody = None
+nobody = Tupu
 
 eleza nobody_uid():
     """Internal routine to get nobody's uid"""
     global nobody
     ikiwa nobody:
         rudisha nobody
-    try:
+    jaribu:
         agiza pwd
-    except ImportError:
+    tatizo ImportError:
         rudisha -1
-    try:
+    jaribu:
         nobody = pwd.getpwnam('nobody')[2]
-    except KeyError:
-        nobody = 1 + max(x[2] for x in pwd.getpwall())
+    tatizo KeyError:
+        nobody = 1 + max(x[2] kila x kwenye pwd.getpwall())
     rudisha nobody
 
 
 eleza executable(path):
-    """Test for executable file."""
+    """Test kila executable file."""
     rudisha os.access(path, os.X_OK)
 
 
 kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
 
-    """Complete HTTP server with GET, HEAD and POST commands.
+    """Complete HTTP server with GET, HEAD na POST commands.
 
-    GET and HEAD also support running CGI scripts.
+    GET na HEAD also support running CGI scripts.
 
-    The POST command is *only* implemented for CGI scripts.
+    The POST command ni *only* implemented kila CGI scripts.
 
     """
 
     # Determine platform specifics
     have_fork = hasattr(os, 'fork')
 
-    # Make rfile unbuffered -- we need to read one line and then pass
+    # Make rfile unbuffered -- we need to read one line na then pita
     # the rest to a subprocess, so we can't use buffered input.
     rbufsize = 0
 
     eleza do_POST(self):
         """Serve a POST request.
 
-        This is only implemented for CGI scripts.
+        This ni only implemented kila CGI scripts.
 
         """
 
         ikiwa self.is_cgi():
             self.run_cgi()
-        else:
+        isipokua:
             self.send_error(
                 HTTPStatus.NOT_IMPLEMENTED,
                 "Can only POST to CGI scripts")
@@ -994,50 +994,50 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         """Version of send_head that support CGI scripts"""
         ikiwa self.is_cgi():
             rudisha self.run_cgi()
-        else:
+        isipokua:
             rudisha SimpleHTTPRequestHandler.send_head(self)
 
     eleza is_cgi(self):
         """Test whether self.path corresponds to a CGI script.
 
-        Returns True and updates the cgi_info attribute to the tuple
+        Returns Kweli na updates the cgi_info attribute to the tuple
         (dir, rest) ikiwa self.path requires running a CGI script.
-        Returns False otherwise.
+        Returns Uongo otherwise.
 
-        If any exception is raised, the caller should assume that
-        self.path was rejected as invalid and act accordingly.
+        If any exception ni ashiriad, the caller should assume that
+        self.path was rejected kama invalid na act accordingly.
 
         The default implementation tests whether the normalized url
-        path begins with one of the strings in self.cgi_directories
-        (and the next character is a '/' or the end of the string).
+        path begins with one of the strings kwenye self.cgi_directories
+        (and the next character ni a '/' ama the end of the string).
 
         """
         collapsed_path = _url_collapse_path(self.path)
         dir_sep = collapsed_path.find('/', 1)
         head, tail = collapsed_path[:dir_sep], collapsed_path[dir_sep+1:]
-        ikiwa head in self.cgi_directories:
+        ikiwa head kwenye self.cgi_directories:
             self.cgi_info = head, tail
-            rudisha True
-        rudisha False
+            rudisha Kweli
+        rudisha Uongo
 
 
     cgi_directories = ['/cgi-bin', '/htbin']
 
     eleza is_executable(self, path):
-        """Test whether argument path is an executable file."""
+        """Test whether argument path ni an executable file."""
         rudisha executable(path)
 
     eleza is_python(self, path):
-        """Test whether argument path is a Python script."""
+        """Test whether argument path ni a Python script."""
         head, tail = os.path.splitext(path)
-        rudisha tail.lower() in (".py", ".pyw")
+        rudisha tail.lower() kwenye (".py", ".pyw")
 
     eleza run_cgi(self):
         """Execute a CGI script."""
         dir, rest = self.cgi_info
         path = dir + '/' + rest
         i = path.find('/', len(dir)+1)
-        while i >= 0:
+        wakati i >= 0:
             nextdir = path[:i]
             nextrest = path[i+1:]
 
@@ -1045,39 +1045,39 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
             ikiwa os.path.isdir(scriptdir):
                 dir, rest = nextdir, nextrest
                 i = path.find('/', len(dir)+1)
-            else:
-                break
+            isipokua:
+                koma
 
         # find an explicit query string, ikiwa present.
         rest, _, query = rest.partition('?')
 
         # dissect the part after the directory name into a script name &
-        # a possible additional path, to be stored in PATH_INFO.
+        # a possible additional path, to be stored kwenye PATH_INFO.
         i = rest.find('/')
         ikiwa i >= 0:
             script, rest = rest[:i], rest[i:]
-        else:
+        isipokua:
             script, rest = rest, ''
 
         scriptname = dir + '/' + script
         scriptfile = self.translate_path(scriptname)
-        ikiwa not os.path.exists(scriptfile):
+        ikiwa sio os.path.exists(scriptfile):
             self.send_error(
                 HTTPStatus.NOT_FOUND,
                 "No such CGI script (%r)" % scriptname)
-            return
-        ikiwa not os.path.isfile(scriptfile):
+            rudisha
+        ikiwa sio os.path.isfile(scriptfile):
             self.send_error(
                 HTTPStatus.FORBIDDEN,
-                "CGI script is not a plain file (%r)" % scriptname)
-            return
+                "CGI script ni sio a plain file (%r)" % scriptname)
+            rudisha
         ispy = self.is_python(scriptname)
-        ikiwa self.have_fork or not ispy:
-            ikiwa not self.is_executable(scriptfile):
+        ikiwa self.have_fork ama sio ispy:
+            ikiwa sio self.is_executable(scriptfile):
                 self.send_error(
                     HTTPStatus.FORBIDDEN,
-                    "CGI script is not executable (%r)" % scriptname)
-                return
+                    "CGI script ni sio executable (%r)" % scriptname)
+                rudisha
 
         # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
         # XXX Much of the following could be prepared ahead of time!
@@ -1102,20 +1102,20 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                 agiza base64, binascii
                 env['AUTH_TYPE'] = authorization[0]
                 ikiwa authorization[0].lower() == "basic":
-                    try:
+                    jaribu:
                         authorization = authorization[1].encode('ascii')
                         authorization = base64.decodebytes(authorization).\
                                         decode('ascii')
-                    except (binascii.Error, UnicodeError):
-                        pass
-                    else:
+                    tatizo (binascii.Error, UnicodeError):
+                        pita
+                    isipokua:
                         authorization = authorization.split(':')
                         ikiwa len(authorization) == 2:
                             env['REMOTE_USER'] = authorization[0]
         # XXX REMOTE_IDENT
-        ikiwa self.headers.get('content-type') is None:
+        ikiwa self.headers.get('content-type') ni Tupu:
             env['CONTENT_TYPE'] = self.headers.get_content_type()
-        else:
+        isipokua:
             env['CONTENT_TYPE'] = self.headers['content-type']
         length = self.headers.get('content-length')
         ikiwa length:
@@ -1124,23 +1124,23 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         ikiwa referer:
             env['HTTP_REFERER'] = referer
         accept = []
-        for line in self.headers.getallmatchingheaders('accept'):
-            ikiwa line[:1] in "\t\n\r ":
+        kila line kwenye self.headers.getallmatchingheaders('accept'):
+            ikiwa line[:1] kwenye "\t\n\r ":
                 accept.append(line.strip())
-            else:
+            isipokua:
                 accept = accept + line[7:].split(',')
         env['HTTP_ACCEPT'] = ','.join(accept)
         ua = self.headers.get('user-agent')
         ikiwa ua:
             env['HTTP_USER_AGENT'] = ua
-        co = filter(None, self.headers.get_all('cookie', []))
+        co = filter(Tupu, self.headers.get_all('cookie', []))
         cookie_str = ', '.join(co)
         ikiwa cookie_str:
             env['HTTP_COOKIE'] = cookie_str
         # XXX Other HTTP_* headers
-        # Since we're setting the env in the parent, provide empty
+        # Since we're setting the env kwenye the parent, provide empty
         # values to override previously set values
-        for k in ('QUERY_STRING', 'REMOTE_HOST', 'CONTENT_LENGTH',
+        kila k kwenye ('QUERY_STRING', 'REMOTE_HOST', 'CONTENT_LENGTH',
                   'HTTP_USER_AGENT', 'HTTP_COOKIE', 'HTTP_REFERER'):
             env.setdefault(k, "")
 
@@ -1150,9 +1150,9 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         decoded_query = query.replace('+', ' ')
 
         ikiwa self.have_fork:
-            # Unix -- fork as we should
+            # Unix -- fork kama we should
             args = [script]
-            ikiwa '=' not in decoded_query:
+            ikiwa '=' haiko kwenye decoded_query:
                 args.append(decoded_query)
             nobody = nobody_uid()
             self.wfile.flush() # Always flush before forking
@@ -1161,18 +1161,18 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                 # Parent
                 pid, sts = os.waitpid(pid, 0)
                 # throw away additional data [see bug #427345]
-                while select.select([self.rfile], [], [], 0)[0]:
-                    ikiwa not self.rfile.read(1):
-                        break
+                wakati select.select([self.rfile], [], [], 0)[0]:
+                    ikiwa sio self.rfile.read(1):
+                        koma
                 ikiwa sts:
                     self.log_error("CGI script exit status %#x", sts)
-                return
+                rudisha
             # Child
-            try:
-                try:
+            jaribu:
+                jaribu:
                     os.setuid(nobody)
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
                 os.dup2(self.rfile.fileno(), 0)
                 os.dup2(self.wfile.fileno(), 1)
                 os.execve(scriptfile, args, env)
@@ -1180,22 +1180,22 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                 self.server.handle_error(self.request, self.client_address)
                 os._exit(127)
 
-        else:
+        isipokua:
             # Non-Unix -- use subprocess
             agiza subprocess
             cmdline = [scriptfile]
             ikiwa self.is_python(scriptfile):
                 interp = sys.executable
                 ikiwa interp.lower().endswith("w.exe"):
-                    # On Windows, use python.exe, not pythonw.exe
+                    # On Windows, use python.exe, sio pythonw.exe
                     interp = interp[:-5] + interp[-4:]
                 cmdline = [interp, '-u'] + cmdline
-            ikiwa '=' not in query:
+            ikiwa '=' haiko kwenye query:
                 cmdline.append(query)
             self.log_message("command: %s", subprocess.list2cmdline(cmdline))
-            try:
+            jaribu:
                 nbytes = int(length)
-            except (TypeError, ValueError):
+            tatizo (TypeError, ValueError):
                 nbytes = 0
             p = subprocess.Popen(cmdline,
                                  stdin=subprocess.PIPE,
@@ -1203,14 +1203,14 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                                  stderr=subprocess.PIPE,
                                  env = env
                                  )
-            ikiwa self.command.lower() == "post" and nbytes > 0:
+            ikiwa self.command.lower() == "post" na nbytes > 0:
                 data = self.rfile.read(nbytes)
-            else:
-                data = None
+            isipokua:
+                data = Tupu
             # throw away additional data [see bug #427345]
-            while select.select([self.rfile._sock], [], [], 0)[0]:
-                ikiwa not self.rfile._sock.recv(1):
-                    break
+            wakati select.select([self.rfile._sock], [], [], 0)[0]:
+                ikiwa sio self.rfile._sock.recv(1):
+                    koma
             stdout, stderr = p.communicate(data)
             self.wfile.write(stdout)
             ikiwa stderr:
@@ -1220,7 +1220,7 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
             status = p.returncode
             ikiwa status:
                 self.log_error("CGI script exit status %#x", status)
-            else:
+            isipokua:
                 self.log_message("CGI script exited OK")
 
 
@@ -1236,7 +1236,7 @@ eleza _get_best_family(*address):
 
 eleza test(HandlerClass=BaseHTTPRequestHandler,
          ServerClass=ThreadingHTTPServer,
-         protocol="HTTP/1.0", port=8000, bind=None):
+         protocol="HTTP/1.0", port=8000, bind=Tupu):
     """Test the HTTP request handler class.
 
     This runs an HTTP server on port 8000 (or the port argument).
@@ -1245,16 +1245,16 @@ eleza test(HandlerClass=BaseHTTPRequestHandler,
     ServerClass.address_family, addr = _get_best_family(bind, port)
 
     HandlerClass.protocol_version = protocol
-    with ServerClass(addr, HandlerClass) as httpd:
+    with ServerClass(addr, HandlerClass) kama httpd:
         host, port = httpd.socket.getsockname()[:2]
-        url_host = f'[{host}]' ikiwa ':' in host else host
+        url_host = f'[{host}]' ikiwa ':' kwenye host else host
         andika(
             f"Serving HTTP on {host} port {port} "
             f"(http://{url_host}:{port}/) ..."
         )
-        try:
+        jaribu:
             httpd.serve_forever()
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             andika("\nKeyboard interrupt received, exiting.")
             sys.exit(0)
 
@@ -1263,7 +1263,7 @@ ikiwa __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--cgi', action='store_true',
-                       help='Run as CGI Server')
+                       help='Run kama CGI Server')
     parser.add_argument('--bind', '-b', metavar='ADDRESS',
                         help='Specify alternate bind address '
                              '[default: all interfaces]')
@@ -1277,7 +1277,7 @@ ikiwa __name__ == '__main__':
     args = parser.parse_args()
     ikiwa args.cgi:
         handler_kundi = CGIHTTPRequestHandler
-    else:
+    isipokua:
         handler_kundi = partial(SimpleHTTPRequestHandler,
                                 directory=args.directory)
     test(HandlerClass=handler_class, port=args.port, bind=args.bind)

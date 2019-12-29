@@ -8,7 +8,7 @@ agiza unittest
 kutoka unittest agiza mock
 agiza warnings
 
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 init = test_util.import_importlib('importlib')
 abc = test_util.import_importlib('importlib.abc')
@@ -19,7 +19,7 @@ util = test_util.import_importlib('importlib.util')
 ##### Inheritance ##############################################################
 kundi InheritanceTests:
 
-    """Test that the specified kundi is a subclass/superkundi of the expected
+    """Test that the specified kundi ni a subclass/superkundi of the expected
     classes."""
 
     subclasses = []
@@ -27,30 +27,30 @@ kundi InheritanceTests:
 
     eleza setUp(self):
         self.superclasses = [getattr(self.abc, class_name)
-                             for class_name in self.superclass_names]
+                             kila class_name kwenye self.superclass_names]
         ikiwa hasattr(self, 'subclass_names'):
             # Because test.support.import_fresh_module() creates a new
             # importlib._bootstrap per module, inheritance checks fail when
-            # checking across module boundaries (i.e. the _bootstrap in abc is
-            # not the same as the one in machinery). That means stealing one of
-            # the modules kutoka the other to make sure the same instance is used.
+            # checking across module boundaries (i.e. the _bootstrap kwenye abc is
+            # sio the same kama the one kwenye machinery). That means stealing one of
+            # the modules kutoka the other to make sure the same instance ni used.
             machinery = self.abc.machinery
             self.subclasses = [getattr(machinery, class_name)
-                               for class_name in self.subclass_names]
-        assert self.subclasses or self.superclasses, self.__class__
+                               kila class_name kwenye self.subclass_names]
+        assert self.subclasses ama self.superclasses, self.__class__
         self.__test = getattr(self.abc, self._NAME)
 
     eleza test_subclasses(self):
         # Test that the expected subclasses inherit.
-        for subkundi in self.subclasses:
-            self.assertTrue(issubclass(subclass, self.__test),
-                "{0} is not a subkundi of {1}".format(subclass, self.__test))
+        kila subkundi kwenye self.subclasses:
+            self.assertKweli(issubclass(subclass, self.__test),
+                "{0} ni sio a subkundi of {1}".format(subclass, self.__test))
 
     eleza test_superclasses(self):
         # Test that the kundi inherits kutoka the expected superclasses.
-        for superkundi in self.superclasses:
-            self.assertTrue(issubclass(self.__test, superclass),
-               "{0} is not a superkundi of {1}".format(superclass, self.__test))
+        kila superkundi kwenye self.superclasses:
+            self.assertKweli(issubclass(self.__test, superclass),
+               "{0} ni sio a superkundi of {1}".format(superclass, self.__test))
 
 
 kundi MetaPathFinder(InheritanceTests):
@@ -125,13 +125,13 @@ kundi SourceLoader(InheritanceTests):
 
 ##### Default rudisha values ####################################################
 
-eleza make_abc_subclasses(base_class, name=None, inst=False, **kwargs):
-    ikiwa name is None:
+eleza make_abc_subclasses(base_class, name=Tupu, inst=Uongo, **kwargs):
+    ikiwa name ni Tupu:
         name = base_class.__name__
     base = {kind: getattr(splitabc, name)
-            for kind, splitabc in abc.items()}
+            kila kind, splitabc kwenye abc.items()}
     rudisha {cls._KIND: cls() ikiwa inst else cls
-            for cls in test_util.split_frozen(base_class, base, **kwargs)}
+            kila cls kwenye test_util.split_frozen(base_class, base, **kwargs)}
 
 
 kundi ABCTestHarness:
@@ -156,13 +156,13 @@ kundi MetaPathFinderDefaultsTests(ABCTestHarness):
     SPLIT = make_abc_subclasses(MetaPathFinder)
 
     eleza test_find_module(self):
-        # Default should rudisha None.
+        # Default should rudisha Tupu.
         with self.assertWarns(DeprecationWarning):
-            found = self.ins.find_module('something', None)
-        self.assertIsNone(found)
+            found = self.ins.find_module('something', Tupu)
+        self.assertIsTupu(found)
 
     eleza test_invalidate_caches(self):
-        # Calling the method is a no-op.
+        # Calling the method ni a no-op.
         self.ins.invalidate_caches()
 
 
@@ -184,10 +184,10 @@ kundi PathEntryFinderDefaultsTests(ABCTestHarness):
     eleza test_find_loader(self):
         with self.assertWarns(DeprecationWarning):
             found = self.ins.find_loader('something')
-        self.assertEqual(found, (None, []))
+        self.assertEqual(found, (Tupu, []))
 
     eleza find_module(self):
-        self.assertEqual(None, self.ins.find_module('something'))
+        self.assertEqual(Tupu, self.ins.find_module('something'))
 
     eleza test_invalidate_caches(self):
         # Should be a no-op.
@@ -211,7 +211,7 @@ kundi LoaderDefaultsTests(ABCTestHarness):
 
     eleza test_create_module(self):
         spec = 'a spec'
-        self.assertIsNone(self.ins.create_module(spec))
+        self.assertIsTupu(self.ins.create_module(spec))
 
     eleza test_load_module(self):
         with self.assertRaises(ImportError):
@@ -224,7 +224,7 @@ kundi LoaderDefaultsTests(ABCTestHarness):
         original_repr = repr(mod)
         mod.__loader__ = self.ins
         # Should still rudisha a proper repr.
-        self.assertTrue(repr(mod))
+        self.assertKweli(repr(mod))
 
 
 (Frozen_LDefaultTests,
@@ -351,19 +351,19 @@ kundi MetaPathFinderFindModuleTests:
     eleza finder(cls, spec):
         kundi MetaPathSpecFinder(cls.abc.MetaPathFinder):
 
-            eleza find_spec(self, fullname, path, target=None):
-                self.called_for = fullname, path
+            eleza find_spec(self, fullname, path, target=Tupu):
+                self.called_kila = fullname, path
                 rudisha spec
 
         rudisha MetaPathSpecFinder()
 
     eleza test_no_spec(self):
-        finder = self.finder(None)
+        finder = self.finder(Tupu)
         path = ['a', 'b', 'c']
         name = 'blah'
         with self.assertWarns(DeprecationWarning):
             found = finder.find_module(name, path)
-        self.assertIsNone(found)
+        self.assertIsTupu(found)
         self.assertEqual(name, finder.called_for[0])
         self.assertEqual(path, finder.called_for[1])
 
@@ -372,7 +372,7 @@ kundi MetaPathFinderFindModuleTests:
         spec = self.util.spec_kutoka_loader('blah', loader)
         finder = self.finder(spec)
         with self.assertWarns(DeprecationWarning):
-            found = finder.find_module('blah', None)
+            found = finder.find_module('blah', Tupu)
         self.assertIs(found, spec.loader)
 
 
@@ -388,18 +388,18 @@ kundi PathEntryFinderFindLoaderTests:
     eleza finder(cls, spec):
         kundi PathEntrySpecFinder(cls.abc.PathEntryFinder):
 
-            eleza find_spec(self, fullname, target=None):
-                self.called_for = fullname
+            eleza find_spec(self, fullname, target=Tupu):
+                self.called_kila = fullname
                 rudisha spec
 
         rudisha PathEntrySpecFinder()
 
     eleza test_no_spec(self):
-        finder = self.finder(None)
+        finder = self.finder(Tupu)
         name = 'blah'
         with self.assertWarns(DeprecationWarning):
             found = finder.find_loader(name)
-        self.assertIsNone(found[0])
+        self.assertIsTupu(found[0])
         self.assertEqual([], found[1])
         self.assertEqual(name, finder.called_for)
 
@@ -412,13 +412,13 @@ kundi PathEntryFinderFindLoaderTests:
         self.assertIs(found[0], spec.loader)
 
     eleza test_spec_with_portions(self):
-        spec = self.machinery.ModuleSpec('blah', None)
+        spec = self.machinery.ModuleSpec('blah', Tupu)
         paths = ['a', 'b', 'c']
         spec.submodule_search_locations = paths
         finder = self.finder(spec)
         with self.assertWarns(DeprecationWarning):
             found = finder.find_loader('blah')
-        self.assertIsNone(found[0])
+        self.assertIsTupu(found[0])
         self.assertEqual(paths, found[1])
 
 
@@ -433,13 +433,13 @@ kundi LoaderLoadModuleTests:
 
     eleza loader(self):
         kundi SpecLoader(self.abc.Loader):
-            found = None
+            found = Tupu
             eleza exec_module(self, module):
                 self.found = module
 
             eleza is_package(self, fullname):
                 """Force some non-default module state to be set."""
-                rudisha True
+                rudisha Kweli
 
         rudisha SpecLoader()
 
@@ -454,8 +454,8 @@ kundi LoaderLoadModuleTests:
         self.assertEqual(loader, module.__spec__.loader)
         self.assertEqual(name, module.__name__)
         self.assertEqual(name, module.__spec__.name)
-        self.assertIsNotNone(module.__path__)
-        self.assertIsNotNone(module.__path__,
+        self.assertIsNotTupu(module.__path__)
+        self.assertIsNotTupu(module.__path__,
                              module.__spec__.submodule_search_locations)
 
     eleza test_reload(self):
@@ -480,13 +480,13 @@ kundi LoaderLoadModuleTests:
 ##### InspectLoader concrete methods ###########################################
 kundi InspectLoaderSourceToCodeTests:
 
-    eleza source_to_module(self, data, path=None):
+    eleza source_to_module(self, data, path=Tupu):
         """Help with source_to_code() tests."""
         module = types.ModuleType('blah')
         loader = self.InspectLoaderSubclass()
-        ikiwa path is None:
+        ikiwa path ni Tupu:
             code = loader.source_to_code(data)
-        else:
+        isipokua:
             code = loader.source_to_code(data, path)
         exec(code, module.__dict__)
         rudisha module
@@ -495,26 +495,26 @@ kundi InspectLoaderSourceToCodeTests:
         # Since compile() can handle strings, so should source_to_code().
         source = 'attr = 42'
         module = self.source_to_module(source)
-        self.assertTrue(hasattr(module, 'attr'))
+        self.assertKweli(hasattr(module, 'attr'))
         self.assertEqual(module.attr, 42)
 
     eleza test_source_to_code_bytes(self):
         # Since compile() can handle bytes, so should source_to_code().
         source = b'attr = 42'
         module = self.source_to_module(source)
-        self.assertTrue(hasattr(module, 'attr'))
+        self.assertKweli(hasattr(module, 'attr'))
         self.assertEqual(module.attr, 42)
 
     eleza test_source_to_code_path(self):
-        # Specifying a path should set it for the code object.
+        # Specifying a path should set it kila the code object.
         path = 'path/to/somewhere'
         loader = self.InspectLoaderSubclass()
         code = loader.source_to_code('', path)
         self.assertEqual(code.co_filename, path)
 
     eleza test_source_to_code_no_path(self):
-        # Not setting a path should still work and be set to <string> since that
-        # is a pre-existing practice as a default to compile().
+        # Not setting a path should still work na be set to <string> since that
+        # ni a pre-existing practice kama a default to compile().
         loader = self.InspectLoaderSubclass()
         code = loader.source_to_code('')
         self.assertEqual(code.co_filename, '<string>')
@@ -531,23 +531,23 @@ kundi InspectLoaderGetCodeTests:
     eleza test_get_code(self):
         # Test success.
         module = types.ModuleType('blah')
-        with mock.patch.object(self.InspectLoaderSubclass, 'get_source') as mocked:
-            mocked.return_value = 'attr = 42'
+        with mock.patch.object(self.InspectLoaderSubclass, 'get_source') kama mocked:
+            mocked.rudisha_value = 'attr = 42'
             loader = self.InspectLoaderSubclass()
             code = loader.get_code('blah')
         exec(code, module.__dict__)
         self.assertEqual(module.attr, 42)
 
-    eleza test_get_code_source_is_None(self):
-        # If get_source() is None then this should be None.
-        with mock.patch.object(self.InspectLoaderSubclass, 'get_source') as mocked:
-            mocked.return_value = None
+    eleza test_get_code_source_is_Tupu(self):
+        # If get_source() ni Tupu then this should be Tupu.
+        with mock.patch.object(self.InspectLoaderSubclass, 'get_source') kama mocked:
+            mocked.rudisha_value = Tupu
             loader = self.InspectLoaderSubclass()
             code = loader.get_code('blah')
-        self.assertIsNone(code)
+        self.assertIsTupu(code)
 
     eleza test_get_code_source_not_found(self):
-        # If there is no source then there is no code object.
+        # If there ni no source then there ni no code object.
         loader = self.InspectLoaderSubclass()
         with self.assertRaises(ImportError):
             loader.get_code('blah')
@@ -579,26 +579,26 @@ kundi InspectLoaderLoadModuleTests:
         rudisha mock.patch.object(self.InspectLoaderSubclass, 'get_code')
 
     eleza test_get_code_ImportError(self):
-        # If get_code() raises ImportError, it should propagate.
-        with self.mock_get_code() as mocked_get_code:
+        # If get_code() ashirias ImportError, it should propagate.
+        with self.mock_get_code() kama mocked_get_code:
             mocked_get_code.side_effect = ImportError
             with self.assertRaises(ImportError):
                 loader = self.InspectLoaderSubclass()
                 self.load(loader)
 
-    eleza test_get_code_None(self):
-        # If get_code() returns None, raise ImportError.
-        with self.mock_get_code() as mocked_get_code:
-            mocked_get_code.return_value = None
+    eleza test_get_code_Tupu(self):
+        # If get_code() rudishas Tupu, ashiria ImportError.
+        with self.mock_get_code() kama mocked_get_code:
+            mocked_get_code.rudisha_value = Tupu
             with self.assertRaises(ImportError):
                 loader = self.InspectLoaderSubclass()
                 self.load(loader)
 
-    eleza test_module_returned(self):
-        # The loaded module should be returned.
+    eleza test_module_rudishaed(self):
+        # The loaded module should be rudishaed.
         code = compile('attr = 42', '<string>', 'exec')
-        with self.mock_get_code() as mocked_get_code:
-            mocked_get_code.return_value = code
+        with self.mock_get_code() kama mocked_get_code:
+            mocked_get_code.rudisha_value = code
             loader = self.InspectLoaderSubclass()
             module = self.load(loader)
             self.assertEqual(module, sys.modules[self.module_name])
@@ -615,8 +615,8 @@ kundi InspectLoaderLoadModuleTests:
 ##### ExecutionLoader concrete methods #########################################
 kundi ExecutionLoaderGetCodeTests:
 
-    eleza mock_methods(self, *, get_source=False, get_filename=False):
-        source_mock_context, filename_mock_context = None, None
+    eleza mock_methods(self, *, get_source=Uongo, get_filename=Uongo):
+        source_mock_context, filename_mock_context = Tupu, Tupu
         ikiwa get_source:
             source_mock_context = mock.patch.object(self.ExecutionLoaderSubclass,
                                                     'get_source')
@@ -628,10 +628,10 @@ kundi ExecutionLoaderGetCodeTests:
     eleza test_get_code(self):
         path = 'blah.py'
         source_mock_context, filename_mock_context = self.mock_methods(
-                get_source=True, get_filename=True)
-        with source_mock_context as source_mock, filename_mock_context as name_mock:
-            source_mock.return_value = 'attr = 42'
-            name_mock.return_value = path
+                get_source=Kweli, get_filename=Kweli)
+        with source_mock_context kama source_mock, filename_mock_context kama name_mock:
+            source_mock.rudisha_value = 'attr = 42'
+            name_mock.rudisha_value = path
             loader = self.ExecutionLoaderSubclass()
             code = loader.get_code('blah')
         self.assertEqual(code.co_filename, path)
@@ -639,28 +639,28 @@ kundi ExecutionLoaderGetCodeTests:
         exec(code, module.__dict__)
         self.assertEqual(module.attr, 42)
 
-    eleza test_get_code_source_is_None(self):
-        # If get_source() is None then this should be None.
-        source_mock_context, _ = self.mock_methods(get_source=True)
-        with source_mock_context as mocked:
-            mocked.return_value = None
+    eleza test_get_code_source_is_Tupu(self):
+        # If get_source() ni Tupu then this should be Tupu.
+        source_mock_context, _ = self.mock_methods(get_source=Kweli)
+        with source_mock_context kama mocked:
+            mocked.rudisha_value = Tupu
             loader = self.ExecutionLoaderSubclass()
             code = loader.get_code('blah')
-        self.assertIsNone(code)
+        self.assertIsTupu(code)
 
     eleza test_get_code_source_not_found(self):
-        # If there is no source then there is no code object.
+        # If there ni no source then there ni no code object.
         loader = self.ExecutionLoaderSubclass()
         with self.assertRaises(ImportError):
             loader.get_code('blah')
 
     eleza test_get_code_no_path(self):
-        # If get_filename() raises ImportError then simply skip setting the path
+        # If get_filename() ashirias ImportError then simply skip setting the path
         # on the code object.
         source_mock_context, filename_mock_context = self.mock_methods(
-                get_source=True, get_filename=True)
-        with source_mock_context as source_mock, filename_mock_context as name_mock:
-            source_mock.return_value = 'attr = 42'
+                get_source=Kweli, get_filename=Kweli)
+        with source_mock_context kama source_mock, filename_mock_context kama name_mock:
+            source_mock.rudisha_value = 'attr = 42'
             name_mock.side_effect = ImportError
             loader = self.ExecutionLoaderSubclass()
             code = loader.get_code('blah')
@@ -679,7 +679,7 @@ kundi ExecutionLoaderGetCodeTests:
 ##### SourceLoader concrete methods ############################################
 kundi SourceOnlyLoader:
 
-    # Globals that should be defined for all modules.
+    # Globals that should be defined kila all modules.
     source = (b"_ = '::'.join([__name__, __file__, __cached__, __package__, "
               b"repr(__loader__)])")
 
@@ -688,7 +688,7 @@ kundi SourceOnlyLoader:
 
     eleza get_data(self, path):
         ikiwa path != self.path:
-            raise IOError
+            ashiria IOError
         rudisha self.source
 
     eleza get_filename(self, fullname):
@@ -705,18 +705,18 @@ kundi SourceLoader(SourceOnlyLoader):
 
     source_mtime = 1
 
-    eleza __init__(self, path, magic=None):
+    eleza __init__(self, path, magic=Tupu):
         super().__init__(path)
         self.bytecode_path = self.util.cache_kutoka_source(self.path)
         self.source_size = len(self.source)
-        ikiwa magic is None:
+        ikiwa magic ni Tupu:
             magic = self.util.MAGIC_NUMBER
         data = bytearray(magic)
         data.extend(self.init._pack_uint32(0))
         data.extend(self.init._pack_uint32(self.source_mtime))
         data.extend(self.init._pack_uint32(self.source_size))
         code_object = compile(self.source, self.path, 'exec',
-                                dont_inherit=True)
+                                dont_inherit=Kweli)
         data.extend(marshal.dumps(code_object))
         self.bytecode = bytes(data)
         self.written = {}
@@ -726,12 +726,12 @@ kundi SourceLoader(SourceOnlyLoader):
             rudisha super().get_data(path)
         elikiwa path == self.bytecode_path:
             rudisha self.bytecode
-        else:
-            raise OSError
+        isipokua:
+            ashiria OSError
 
     eleza path_stats(self, path):
         ikiwa path != self.path:
-            raise IOError
+            ashiria IOError
         rudisha {'mtime': self.source_mtime, 'size': self.source_size}
 
     eleza set_data(self, path, data):
@@ -744,12 +744,12 @@ SPLIT_SL = make_abc_subclasses(SourceLoader, util=util, init=init)
 
 kundi SourceLoaderTestHarness:
 
-    eleza setUp(self, *, is_package=True, **kwargs):
+    eleza setUp(self, *, is_package=Kweli, **kwargs):
         self.package = 'pkg'
         ikiwa is_package:
             self.path = os.path.join(self.package, '__init__.py')
             self.name = self.package
-        else:
+        isipokua:
             module_name = 'mod'
             self.path = os.path.join(self.package, '.'.join(['mod', 'py']))
             self.name = '.'.join([self.package, module_name])
@@ -782,35 +782,35 @@ kundi SourceLoaderTestHarness:
 
 kundi SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
-    """Test importlib.abc.SourceLoader for source-only loading.
+    """Test importlib.abc.SourceLoader kila source-only loading.
 
-    Reload testing is subsumed by the tests for
+    Reload testing ni subsumed by the tests for
     importlib.util.module_for_loader.
 
     """
 
     eleza test_get_source(self):
-        # Verify the source code is returned as a string.
-        # If an OSError is raised by get_data then raise ImportError.
+        # Verify the source code ni rudishaed kama a string.
+        # If an OSError ni ashiriad by get_data then ashiria ImportError.
         expected_source = self.loader.source.decode('utf-8')
         self.assertEqual(self.loader.get_source(self.name), expected_source)
-        eleza raise_OSError(path):
-            raise OSError
-        self.loader.get_data = raise_OSError
-        with self.assertRaises(ImportError) as cm:
+        eleza ashiria_OSError(path):
+            ashiria OSError
+        self.loader.get_data = ashiria_OSError
+        with self.assertRaises(ImportError) kama cm:
             self.loader.get_source(self.name)
         self.assertEqual(cm.exception.name, self.name)
 
     eleza test_is_package(self):
         # Properly detect when loading a package.
-        self.setUp(is_package=False)
-        self.assertFalse(self.loader.is_package(self.name))
-        self.setUp(is_package=True)
-        self.assertTrue(self.loader.is_package(self.name))
-        self.assertFalse(self.loader.is_package(self.name + '.__init__'))
+        self.setUp(is_package=Uongo)
+        self.assertUongo(self.loader.is_package(self.name))
+        self.setUp(is_package=Kweli)
+        self.assertKweli(self.loader.is_package(self.name))
+        self.assertUongo(self.loader.is_package(self.name + '.__init__'))
 
     eleza test_get_code(self):
-        # Verify the code object is created.
+        # Verify the code object ni created.
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object)
 
@@ -821,7 +821,7 @@ kundi SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
     eleza test_load_module(self):
         # Loading a module should set __name__, __loader__, __package__,
-        # __path__ (for packages), __file__, and __cached__.
+        # __path__ (kila packages), __file__, na __cached__.
         # The module should also be put into sys.modules.
         with test_util.uncache(self.name):
             with warnings.catch_warnings():
@@ -832,28 +832,28 @@ kundi SourceOnlyLoaderTests(SourceLoaderTestHarness):
             self.assertIn(self.name, sys.modules)
 
     eleza test_package_settings(self):
-        # __package__ needs to be set, while __path__ is set on ikiwa the module
-        # is a package.
-        # Testing the values for a package are covered by test_load_module.
-        self.setUp(is_package=False)
+        # __package__ needs to be set, wakati __path__ ni set on ikiwa the module
+        # ni a package.
+        # Testing the values kila a package are covered by test_load_module.
+        self.setUp(is_package=Uongo)
         with test_util.uncache(self.name):
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.loader.load_module(self.name)
             self.verify_module(module)
-            self.assertFalse(hasattr(module, '__path__'))
+            self.assertUongo(hasattr(module, '__path__'))
 
     eleza test_get_source_encoding(self):
-        # Source is considered encoded in UTF-8 by default unless otherwise
+        # Source ni considered encoded kwenye UTF-8 by default unless otherwise
         # specified by an encoding line.
         source = "_ = 'ü'"
         self.loader.source = source.encode('utf-8')
-        returned_source = self.loader.get_source(self.name)
-        self.assertEqual(returned_source, source)
+        rudishaed_source = self.loader.get_source(self.name)
+        self.assertEqual(rudishaed_source, source)
         source = "# coding: latin-1\n_ = ü"
         self.loader.source = source.encode('latin-1')
-        returned_source = self.loader.get_source(self.name)
-        self.assertEqual(returned_source, source)
+        rudishaed_source = self.loader.get_source(self.name)
+        self.assertEqual(rudishaed_source, source)
 
 
 (Frozen_SourceOnlyLoaderTests,
@@ -862,7 +862,7 @@ kundi SourceOnlyLoaderTests(SourceLoaderTestHarness):
                          loader_mock=SPLIT_SOL)
 
 
-@unittest.skipIf(sys.dont_write_bytecode, "sys.dont_write_bytecode is true")
+@unittest.skipIf(sys.dont_write_bytecode, "sys.dont_write_bytecode ni true")
 kundi SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     """Test importlib.abc.SourceLoader's use of bytecode.
@@ -871,7 +871,7 @@ kundi SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     """
 
-    eleza verify_code(self, code_object, *, bytecode_written=False):
+    eleza verify_code(self, code_object, *, bytecode_written=Uongo):
         super().verify_code(code_object)
         ikiwa bytecode_written:
             self.assertIn(self.cached, self.loader.written)
@@ -889,65 +889,65 @@ kundi SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     eleza test_no_bytecode(self):
         # If no bytecode exists then move on to the source.
-        self.loader.bytecode_path = "<does not exist>"
+        self.loader.bytecode_path = "<does sio exist>"
         # Sanity check
         with self.assertRaises(OSError):
             bytecode_path = self.util.cache_kutoka_source(self.path)
             self.loader.get_data(bytecode_path)
         code_object = self.loader.get_code(self.name)
-        self.verify_code(code_object, bytecode_written=True)
+        self.verify_code(code_object, bytecode_written=Kweli)
 
     eleza test_code_bad_timestamp(self):
-        # Bytecode is only used when the timestamp matches the source EXACTLY.
-        for source_mtime in (0, 2):
+        # Bytecode ni only used when the timestamp matches the source EXACTLY.
+        kila source_mtime kwenye (0, 2):
             assert source_mtime != self.loader.source_mtime
             original = self.loader.source_mtime
             self.loader.source_mtime = source_mtime
-            # If bytecode is used then EOFError would be raised by marshal.
+            # If bytecode ni used then EOFError would be ashiriad by marshal.
             self.loader.bytecode = self.loader.bytecode[8:]
             code_object = self.loader.get_code(self.name)
-            self.verify_code(code_object, bytecode_written=True)
+            self.verify_code(code_object, bytecode_written=Kweli)
             self.loader.source_mtime = original
 
     eleza test_code_bad_magic(self):
         # Skip over bytecode with a bad magic number.
         self.setUp(magic=b'0000')
-        # If bytecode is used then EOFError would be raised by marshal.
+        # If bytecode ni used then EOFError would be ashiriad by marshal.
         self.loader.bytecode = self.loader.bytecode[8:]
         code_object = self.loader.get_code(self.name)
-        self.verify_code(code_object, bytecode_written=True)
+        self.verify_code(code_object, bytecode_written=Kweli)
 
     eleza test_dont_write_bytecode(self):
-        # Bytecode is not written ikiwa sys.dont_write_bytecode is true.
-        # Can assume it is false already thanks to the skipIf kundi decorator.
-        try:
-            sys.dont_write_bytecode = True
-            self.loader.bytecode_path = "<does not exist>"
+        # Bytecode ni sio written ikiwa sys.dont_write_bytecode ni true.
+        # Can assume it ni false already thanks to the skipIf kundi decorator.
+        jaribu:
+            sys.dont_write_bytecode = Kweli
+            self.loader.bytecode_path = "<does sio exist>"
             code_object = self.loader.get_code(self.name)
             self.assertNotIn(self.cached, self.loader.written)
-        finally:
-            sys.dont_write_bytecode = False
+        mwishowe:
+            sys.dont_write_bytecode = Uongo
 
     eleza test_no_set_data(self):
-        # If set_data is not defined, one can still read bytecode.
+        # If set_data ni sio defined, one can still read bytecode.
         self.setUp(magic=b'0000')
         original_set_data = self.loader.__class__.mro()[1].set_data
-        try:
-            del self.loader.__class__.mro()[1].set_data
+        jaribu:
+            toa self.loader.__class__.mro()[1].set_data
             code_object = self.loader.get_code(self.name)
             self.verify_code(code_object)
-        finally:
+        mwishowe:
             self.loader.__class__.mro()[1].set_data = original_set_data
 
-    eleza test_set_data_raises_exceptions(self):
-        # Raising NotImplementedError or OSError is okay for set_data.
-        eleza raise_exception(exc):
+    eleza test_set_data_ashirias_exceptions(self):
+        # Raising NotImplementedError ama OSError ni okay kila set_data.
+        eleza ashiria_exception(exc):
             eleza closure(*args, **kwargs):
-                raise exc
+                ashiria exc
             rudisha closure
 
         self.setUp(magic=b'0000')
-        self.loader.set_data = raise_exception(NotImplementedError)
+        self.loader.set_data = ashiria_exception(NotImplementedError)
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object)
 
@@ -960,7 +960,7 @@ kundi SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
 kundi SourceLoaderGetSourceTests:
 
-    """Tests for importlib.abc.SourceLoader.get_source()."""
+    """Tests kila importlib.abc.SourceLoader.get_source()."""
 
     eleza test_default_encoding(self):
         # Should have no problems with UTF-8 text.
@@ -968,8 +968,8 @@ kundi SourceLoaderGetSourceTests:
         mock = self.SourceOnlyLoaderMock('mod.file')
         source = 'x = "ü"'
         mock.source = source.encode('utf-8')
-        returned_source = mock.get_source(name)
-        self.assertEqual(returned_source, source)
+        rudishaed_source = mock.get_source(name)
+        self.assertEqual(rudishaed_source, source)
 
     eleza test_decoded_source(self):
         # Decoding should work.
@@ -978,8 +978,8 @@ kundi SourceLoaderGetSourceTests:
         source = "# coding: Latin-1\nx='ü'"
         assert source.encode('latin-1') != source.encode('utf-8')
         mock.source = source.encode('latin-1')
-        returned_source = mock.get_source(name)
-        self.assertEqual(returned_source, source)
+        rudishaed_source = mock.get_source(name)
+        self.assertEqual(rudishaed_source, source)
 
     eleza test_universal_newlines(self):
         # PEP 302 says universal newlines should be used.
@@ -987,7 +987,7 @@ kundi SourceLoaderGetSourceTests:
         mock = self.SourceOnlyLoaderMock('mod.file')
         source = "x = 42\r\ny = -13\r\n"
         mock.source = source.encode('utf-8')
-        expect = io.IncrementalNewlineDecoder(None, True).decode(source)
+        expect = io.IncrementalNewlineDecoder(Tupu, Kweli).decode(source)
         self.assertEqual(mock.get_source(name), expect)
 
 

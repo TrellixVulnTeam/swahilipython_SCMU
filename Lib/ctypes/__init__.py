@@ -22,7 +22,7 @@ if _os.name == "nt":
 DEFAULT_MODE = RTLD_LOCAL
 if _os.name == "posix" and _sys.platform == "darwin":
     # On OS X 10.3, we use RTLD_GLOBAL as default mode
-    # because RTLD_LOCAL does not work at least on some
+    # because RTLD_LOCAL does sio work at least on some
     # libraries.  OS X 10.3 is Darwin 7, so we check for
     # that.
 
@@ -93,9 +93,9 @@ def CFUNCTYPE(restype, *argtypes, **kw):
         flags |= _FUNCFLAG_USE_LASTERROR
     if kw:
         raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
-    try:
+    jaribu:
         return _c_functype_cache[(restype, argtypes, flags)]
-    except KeyError:
+    tatizo KeyError:
         class CFunctionType(_CFuncPtr):
             _argtypes_ = argtypes
             _restype_ = restype
@@ -117,9 +117,9 @@ if _os.name == "nt":
             flags |= _FUNCFLAG_USE_LASTERROR
         if kw:
             raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
-        try:
+        jaribu:
             return _win_functype_cache[(restype, argtypes, flags)]
-        except KeyError:
+        tatizo KeyError:
             class WinFunctionType(_CFuncPtr):
                 _argtypes_ = argtypes
                 _restype_ = restype
@@ -151,9 +151,9 @@ def _check_size(typ, typecode=None):
 class py_object(_SimpleCData):
     _type_ = "O"
     def __repr__(self):
-        try:
+        jaribu:
             return super().__repr__()
-        except ValueError:
+        tatizo ValueError:
             return "%s(<NULL>)" % type(self).__name__
 _check_size(py_object, "P")
 
@@ -177,7 +177,7 @@ if _calcsize("i") == _calcsize("l"):
     # if int and long have the same size, make c_int an alias for c_long
     c_int = c_long
     c_uint = c_ulong
-else:
+isipokua:
     class c_int(_SimpleCData):
         _type_ = "i"
     _check_size(c_int)
@@ -203,7 +203,7 @@ if _calcsize("l") == _calcsize("q"):
     # if long and long long have the same size, make c_longlong an alias for c_long
     c_longlong = c_long
     c_ulonglong = c_ulong
-else:
+isipokua:
     class c_longlong(_SimpleCData):
         _type_ = "q"
     _check_size(c_longlong)
@@ -279,7 +279,7 @@ def create_unicode_buffer(init, size=None):
                 # characters (outside [U+0000; U+FFFF] range). +1 for trailing
                 # NUL character.
                 size = sum(2 if ord(c) > 0xFFFF else 1 for c in init) + 1
-            else:
+            isipokua:
                 # 32-bit wchar_t (1 wchar_t per Unicode character). +1 for
                 # trailing NUL character.
                 size = len(init) + 1
@@ -296,13 +296,13 @@ def create_unicode_buffer(init, size=None):
 
 # XXX Deprecated
 def SetPointerType(pointer, cls):
-    if _pointer_type_cache.get(cls, None) is not None:
+    if _pointer_type_cache.get(cls, None) ni sio None:
         raise RuntimeError("This type already exists in the cache")
-    if id(pointer) not in _pointer_type_cache:
+    if id(pointer) haiko kwenye _pointer_type_cache:
         raise RuntimeError("What's this???")
     pointer.set_type(cls)
     _pointer_type_cache[cls] = pointer
-    del _pointer_type_cache[id(pointer)]
+    toa _pointer_type_cache[id(pointer)]
 
 # XXX Deprecated
 def ARRAY(typ, len):
@@ -351,9 +351,9 @@ class CDLL(object):
             if name and name.endswith(")") and ".a(" in name:
                 mode |= ( _os.RTLD_MEMBER | _os.RTLD_NOW )
         if _os.name == "nt":
-            if winmode is not None:
+            if winmode ni sio None:
                 mode = winmode
-            else:
+            isipokua:
                 import nt
                 mode = nt._LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
                 if '/' in name or '\\' in name:
@@ -367,7 +367,7 @@ class CDLL(object):
 
         if handle is None:
             self._handle = _dlopen(self._name, mode)
-        else:
+        isipokua:
             self._handle = handle
 
     def __repr__(self):
@@ -385,13 +385,13 @@ class CDLL(object):
 
     def __getitem__(self, name_or_ordinal):
         func = self._FuncPtr((name_or_ordinal, self))
-        if not isinstance(name_or_ordinal, int):
+        if sio isinstance(name_or_ordinal, int):
             func.__name__ = name_or_ordinal
         return func
 
 class PyDLL(CDLL):
     """This class represents the Python library itself.  It allows
-    accessing Python API functions.  The GIL is not released, and
+    accessing Python API functions.  The GIL ni sio released, and
     Python exceptions are handled correctly.
     """
     _func_flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI
@@ -414,7 +414,7 @@ if _os.name == "nt":
         # raises an OSError if it is set.
         #
         # The _check_retval_ method is implemented in C, so that the
-        # method definition itself is not included in the traceback
+        # method definition itself ni sio included in the traceback
         # when it raises an error - that is what we want (and Python
         # doesn't have a way to raise an exception in the caller's
         # frame).
@@ -453,7 +453,7 @@ if _os.name == "nt":
     pythonapi = PyDLL("python dll", None, _sys.dllhandle)
 lasivyo _sys.platform == "cygwin":
     pythonapi = PyDLL("libpython%d.%d.dll" % _sys.version_info[:2])
-else:
+isipokua:
     pythonapi = PyDLL(None)
 
 
@@ -509,11 +509,11 @@ def string_at(ptr, size=-1):
     Return the string at addr."""
     return _string_at(ptr, size)
 
-try:
+jaribu:
     from _ctypes agiza _wstring_at_addr
-except ImportError:
+tatizo ImportError:
     pass
-else:
+isipokua:
     _wstring_at = PYFUNCTYPE(py_object, c_void_p, c_int)(_wstring_at_addr)
     def wstring_at(ptr, size=-1):
         """wstring_at(addr[, size]) -> string
@@ -524,17 +524,17 @@ else:
 
 if _os.name == "nt": # COM stuff
     def DllGetClassObject(rclsid, riid, ppv):
-        try:
+        jaribu:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
-        except ImportError:
+        tatizo ImportError:
             return -2147221231 # CLASS_E_CLASSNOTAVAILABLE
-        else:
+        isipokua:
             return ccom.DllGetClassObject(rclsid, riid, ppv)
 
     def DllCanUnloadNow():
-        try:
+        jaribu:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
-        except ImportError:
+        tatizo ImportError:
             return 0 # S_OK
         return ccom.DllCanUnloadNow()
 

@@ -9,17 +9,17 @@ kutoka unittest agiza mock
 
 kutoka test agiza support
 
-try:
+jaribu:
     agiza _testcapi
-except ImportError as exc:
-    _testcapi = None
+tatizo ImportError kama exc:
+    _testcapi = Tupu
 
-try:
+jaribu:
     agiza ctypes
-except ImportError:
-    ctypes = None
+tatizo ImportError:
+    ctypes = Tupu
     SIZEOF_WCHAR_T = -1
-else:
+isipokua:
     SIZEOF_WCHAR_T = ctypes.sizeof(ctypes.c_wchar)
 
 eleza coding_checker(self, coder):
@@ -27,13 +27,13 @@ eleza coding_checker(self, coder):
         self.assertEqual(coder(input), (expect, len(input)))
     rudisha check
 
-# On small versions of Windows like Windows IoT or Windows Nano Server not all codepages are present
+# On small versions of Windows like Windows IoT ama Windows Nano Server sio all codepages are present
 eleza is_code_page_present(cp):
     kutoka ctypes agiza POINTER, WINFUNCTYPE, WinDLL
     kutoka ctypes.wintypes agiza BOOL, UINT, BYTE, WCHAR, UINT, DWORD
 
     MAX_LEADBYTES = 12  # 5 ranges, 2 bytes ea., 0 term.
-    MAX_DEFAULTCHAR = 2 # single or double byte
+    MAX_DEFAULTCHAR = 2 # single ama double byte
     MAX_PATH = 260
     kundi CPINFOEXW(ctypes.Structure):
         _fields_ = [("MaxCharSize", UINT),
@@ -63,7 +63,7 @@ kundi Queue(object):
             s = self._buffer
             self._buffer = self._buffer[:0] # make empty
             rudisha s
-        else:
+        isipokua:
             s = self._buffer[:size]
             self._buffer = self._buffer[size:]
             rudisha s
@@ -71,80 +71,80 @@ kundi Queue(object):
 
 kundi MixInCheckStateHandling:
     eleza check_state_handling_decode(self, encoding, u, s):
-        for i in range(len(s)+1):
+        kila i kwenye range(len(s)+1):
             d = codecs.getincrementaldecoder(encoding)()
             part1 = d.decode(s[:i])
             state = d.getstate()
             self.assertIsInstance(state[1], int)
-            # Check that the condition stated in the documentation for
+            # Check that the condition stated kwenye the documentation for
             # IncrementalDecoder.getstate() holds
-            ikiwa not state[1]:
+            ikiwa sio state[1]:
                 # reset decoder to the default state without anything buffered
                 d.setstate((state[0][:0], 0))
-                # Feeding the previous input may not produce any output
-                self.assertTrue(not d.decode(state[0]))
+                # Feeding the previous input may sio produce any output
+                self.assertKweli(not d.decode(state[0]))
                 # The decoder must rudisha to the same state
                 self.assertEqual(state, d.getstate())
-            # Create a new decoder and set it to the state
+            # Create a new decoder na set it to the state
             # we extracted kutoka the old one
             d = codecs.getincrementaldecoder(encoding)()
             d.setstate(state)
-            part2 = d.decode(s[i:], True)
+            part2 = d.decode(s[i:], Kweli)
             self.assertEqual(u, part1+part2)
 
     eleza check_state_handling_encode(self, encoding, u, s):
-        for i in range(len(u)+1):
+        kila i kwenye range(len(u)+1):
             d = codecs.getincrementalencoder(encoding)()
             part1 = d.encode(u[:i])
             state = d.getstate()
             d = codecs.getincrementalencoder(encoding)()
             d.setstate(state)
-            part2 = d.encode(u[i:], True)
+            part2 = d.encode(u[i:], Kweli)
             self.assertEqual(s, part1+part2)
 
 
 kundi ReadTest(MixInCheckStateHandling):
     eleza check_partial(self, input, partialresults):
-        # get a StreamReader for the encoding and feed the bytestring version
+        # get a StreamReader kila the encoding na feed the bytestring version
         # of input to the reader byte by byte. Read everything available kutoka
-        # the StreamReader and check that the results equal the appropriate
+        # the StreamReader na check that the results equal the appropriate
         # entries kutoka partialresults.
         q = Queue(b"")
         r = codecs.getreader(self.encoding)(q)
         result = ""
-        for (c, partialresult) in zip(input.encode(self.encoding), partialresults):
+        kila (c, partialresult) kwenye zip(input.encode(self.encoding), partialresults):
             q.write(bytes([c]))
             result += r.read()
             self.assertEqual(result, partialresult)
-        # check that there's nothing left in the buffers
+        # check that there's nothing left kwenye the buffers
         self.assertEqual(r.read(), "")
         self.assertEqual(r.bytebuffer, b"")
 
         # do the check again, this time using an incremental decoder
         d = codecs.getincrementaldecoder(self.encoding)()
         result = ""
-        for (c, partialresult) in zip(input.encode(self.encoding), partialresults):
+        kila (c, partialresult) kwenye zip(input.encode(self.encoding), partialresults):
             result += d.decode(bytes([c]))
             self.assertEqual(result, partialresult)
-        # check that there's nothing left in the buffers
-        self.assertEqual(d.decode(b"", True), "")
+        # check that there's nothing left kwenye the buffers
+        self.assertEqual(d.decode(b"", Kweli), "")
         self.assertEqual(d.buffer, b"")
 
         # Check whether the reset method works properly
         d.reset()
         result = ""
-        for (c, partialresult) in zip(input.encode(self.encoding), partialresults):
+        kila (c, partialresult) kwenye zip(input.encode(self.encoding), partialresults):
             result += d.decode(bytes([c]))
             self.assertEqual(result, partialresult)
-        # check that there's nothing left in the buffers
-        self.assertEqual(d.decode(b"", True), "")
+        # check that there's nothing left kwenye the buffers
+        self.assertEqual(d.decode(b"", Kweli), "")
         self.assertEqual(d.buffer, b"")
 
         # check iterdecode()
         encoded = input.encode(self.encoding)
         self.assertEqual(
             input,
-            "".join(codecs.iterdecode([bytes([c]) for c in encoded], self.encoding))
+            "".join(codecs.iterdecode([bytes([c]) kila c kwenye encoded], self.encoding))
         )
 
     eleza test_readline(self):
@@ -152,64 +152,64 @@ kundi ReadTest(MixInCheckStateHandling):
             stream = io.BytesIO(input.encode(self.encoding))
             rudisha codecs.getreader(self.encoding)(stream)
 
-        eleza readalllines(input, keepends=True, size=None):
+        eleza readalllines(input, keepends=Kweli, size=Tupu):
             reader = getreader(input)
             lines = []
-            while True:
+            wakati Kweli:
                 line = reader.readline(size=size, keepends=keepends)
-                ikiwa not line:
-                    break
+                ikiwa sio line:
+                    koma
                 lines.append(line)
             rudisha "|".join(lines)
 
         s = "foo\nbar\r\nbaz\rspam\u2028eggs"
         sexpected = "foo\n|bar\r\n|baz\r|spam\u2028|eggs"
         sexpectednoends = "foo|bar|baz|spam|eggs"
-        self.assertEqual(readalllines(s, True), sexpected)
-        self.assertEqual(readalllines(s, False), sexpectednoends)
-        self.assertEqual(readalllines(s, True, 10), sexpected)
-        self.assertEqual(readalllines(s, False, 10), sexpectednoends)
+        self.assertEqual(readalllines(s, Kweli), sexpected)
+        self.assertEqual(readalllines(s, Uongo), sexpectednoends)
+        self.assertEqual(readalllines(s, Kweli, 10), sexpected)
+        self.assertEqual(readalllines(s, Uongo, 10), sexpectednoends)
 
         lineends = ("\n", "\r\n", "\r", "\u2028")
-        # Test long lines (multiple calls to read() in readline())
+        # Test long lines (multiple calls to read() kwenye readline())
         vw = []
         vwo = []
-        for (i, lineend) in enumerate(lineends):
+        kila (i, lineend) kwenye enumerate(lineends):
             vw.append((i*200+200)*"\u3042" + lineend)
             vwo.append((i*200+200)*"\u3042")
-        self.assertEqual(readalllines("".join(vw), True), "|".join(vw))
-        self.assertEqual(readalllines("".join(vw), False), "|".join(vwo))
+        self.assertEqual(readalllines("".join(vw), Kweli), "|".join(vw))
+        self.assertEqual(readalllines("".join(vw), Uongo), "|".join(vwo))
 
         # Test lines where the first read might end with \r, so the
-        # reader has to look ahead whether this is a lone \r or a \r\n
-        for size in range(80):
-            for lineend in lineends:
+        # reader has to look ahead whether this ni a lone \r ama a \r\n
+        kila size kwenye range(80):
+            kila lineend kwenye lineends:
                 s = 10*(size*"a" + lineend + "xxx\n")
                 reader = getreader(s)
-                for i in range(10):
+                kila i kwenye range(10):
                     self.assertEqual(
-                        reader.readline(keepends=True),
+                        reader.readline(keepends=Kweli),
                         size*"a" + lineend,
                     )
                     self.assertEqual(
-                        reader.readline(keepends=True),
+                        reader.readline(keepends=Kweli),
                         "xxx\n",
                     )
                 reader = getreader(s)
-                for i in range(10):
+                kila i kwenye range(10):
                     self.assertEqual(
-                        reader.readline(keepends=False),
+                        reader.readline(keepends=Uongo),
                         size*"a",
                     )
                     self.assertEqual(
-                        reader.readline(keepends=False),
+                        reader.readline(keepends=Uongo),
                         "xxx",
                     )
 
     eleza test_mixed_readline_and_read(self):
         lines = ["Humpty Dumpty sat on a wall,\n",
                  "Humpty Dumpty had a great fall.\r\n",
-                 "All the king's horses and all the king's men\r",
+                 "All the king's horses na all the king's men\r",
                  "Couldn't put Humpty together again."]
         data = ''.join(lines)
         eleza getreader():
@@ -258,7 +258,7 @@ kundi ReadTest(MixInCheckStateHandling):
         s = [
             '<%!--===================================================\r\n',
             '    BLOG index page: show recent articles,\r\n',
-            '    today\'s articles, or articles of a specific date.\r\n',
+            '    today\'s articles, ama articles of a specific date.\r\n',
             '========================================================--%>\r\n',
             '<%@inputencoding="ISO-8859-1"%>\r\n',
             '<%@pagetemplate=TEMPLATE.y%>\r\n',
@@ -275,18 +275,18 @@ kundi ReadTest(MixInCheckStateHandling):
             'storageEngine=self.SessionCtx.storageEngine\r\n',
             '\r\n',
             '\r\n',
-            'eleza readArticlesFromDate(date, count=None):\r\n',
+            'eleza readArticlesFromDate(date, count=Tupu):\r\n',
             '    entryids=storageEngine.listBlogEntries(date)\r\n',
             '    entryids.reverse() # descending\r\n',
             '    ikiwa count:\r\n',
             '        entryids=entryids[:count]\r\n',
-            '    try:\r\n',
-            '        rudisha [ frog.objects.BlogEntry.load(storageEngine, date, Id) for Id in entryids ]\r\n',
-            '    except StorageError,x:\r\n',
+            '    jaribu:\r\n',
+            '        rudisha [ frog.objects.BlogEntry.load(storageEngine, date, Id) kila Id kwenye entryids ]\r\n',
+            '    tatizo StorageError,x:\r\n',
             '        log.error("Error loading articles: "+str(x))\r\n',
             '        self.abort("cannot load articles")\r\n',
             '\r\n',
-            'showdate=None\r\n',
+            'showdate=Tupu\r\n',
             '\r\n',
             'arg=self.Request.getArg()\r\n',
             'ikiwa arg=="today":\r\n',
@@ -305,22 +305,22 @@ kundi ReadTest(MixInCheckStateHandling):
             '    showdate = self.Request.getParameter("date")\r\n',
             '    self.write("<h2>Articles written on %s</h2>"% frog.util.mediumdatestr(showdate))\r\n',
             '    entries = readArticlesFromDate(showdate)\r\n',
-            'else:\r\n',
+            'isipokua:\r\n',
             '    #-------------------- RECENT ARTICLES\r\n',
             '    self.write("<h2>Recent articles</h2>")\r\n',
             '    dates=storageEngine.listBlogEntryDates()\r\n',
             '    ikiwa dates:\r\n',
             '        entries=[]\r\n',
             '        SHOWAMOUNT=10\r\n',
-            '        for showdate in dates:\r\n',
+            '        kila showdate kwenye dates:\r\n',
             '            entries.extend( readArticlesFromDate(showdate, SHOWAMOUNT-len(entries)) )\r\n',
             '            ikiwa len(entries)>=SHOWAMOUNT:\r\n',
-            '                break\r\n',
+            '                koma\r\n',
             '                \r\n',
         ]
         stream = io.BytesIO("".join(s).encode(self.encoding))
         reader = codecs.getreader(self.encoding)(stream)
-        for (i, line) in enumerate(reader):
+        kila (i, line) kwenye enumerate(reader):
             self.assertEqual(line, s[i])
 
     eleza test_readlinequeue(self):
@@ -330,25 +330,25 @@ kundi ReadTest(MixInCheckStateHandling):
 
         # No lineends
         writer.write("foo\r")
-        self.assertEqual(reader.readline(keepends=False), "foo")
+        self.assertEqual(reader.readline(keepends=Uongo), "foo")
         writer.write("\nbar\r")
-        self.assertEqual(reader.readline(keepends=False), "")
-        self.assertEqual(reader.readline(keepends=False), "bar")
+        self.assertEqual(reader.readline(keepends=Uongo), "")
+        self.assertEqual(reader.readline(keepends=Uongo), "bar")
         writer.write("baz")
-        self.assertEqual(reader.readline(keepends=False), "baz")
-        self.assertEqual(reader.readline(keepends=False), "")
+        self.assertEqual(reader.readline(keepends=Uongo), "baz")
+        self.assertEqual(reader.readline(keepends=Uongo), "")
 
         # Lineends
         writer.write("foo\r")
-        self.assertEqual(reader.readline(keepends=True), "foo\r")
+        self.assertEqual(reader.readline(keepends=Kweli), "foo\r")
         writer.write("\nbar\r")
-        self.assertEqual(reader.readline(keepends=True), "\n")
-        self.assertEqual(reader.readline(keepends=True), "bar\r")
+        self.assertEqual(reader.readline(keepends=Kweli), "\n")
+        self.assertEqual(reader.readline(keepends=Kweli), "bar\r")
         writer.write("baz")
-        self.assertEqual(reader.readline(keepends=True), "baz")
-        self.assertEqual(reader.readline(keepends=True), "")
+        self.assertEqual(reader.readline(keepends=Kweli), "baz")
+        self.assertEqual(reader.readline(keepends=Kweli), "")
         writer.write("foo\r\n")
-        self.assertEqual(reader.readline(keepends=True), "foo\r\n")
+        self.assertEqual(reader.readline(keepends=Kweli), "foo\r\n")
 
     eleza test_bug1098990_a(self):
         s1 = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy\r\n"
@@ -402,7 +402,7 @@ kundi ReadTest(MixInCheckStateHandling):
                          "[??]".encode(self.encoding))
 
         bom = "".encode(self.encoding)
-        for before, after in [("\U00010fff", "A"), ("[", "]"),
+        kila before, after kwenye [("\U00010fff", "A"), ("[", "]"),
                               ("A", "\U00010fff")]:
             before_sequence = before.encode(self.encoding)[len(bom):]
             after_sequence = after.encode(self.encoding)[len(bom):]
@@ -412,33 +412,33 @@ kundi ReadTest(MixInCheckStateHandling):
             self.assertRaises(UnicodeDecodeError, test_sequence.decode,
                               self.encoding)
             self.assertEqual(test_string.encode(self.encoding,
-                                                "surrogatepass"),
+                                                "surrogatepita"),
                              test_sequence)
             self.assertEqual(test_sequence.decode(self.encoding,
-                                                  "surrogatepass"),
+                                                  "surrogatepita"),
                              test_string)
             self.assertEqual(test_sequence.decode(self.encoding, "ignore"),
                              before + after)
             self.assertEqual(test_sequence.decode(self.encoding, "replace"),
                              before + self.ill_formed_sequence_replace + after)
             backslashreplace = ''.join('\\x%02x' % b
-                                       for b in self.ill_formed_sequence)
+                                       kila b kwenye self.ill_formed_sequence)
             self.assertEqual(test_sequence.decode(self.encoding, "backslashreplace"),
                              before + backslashreplace + after)
 
-    eleza test_incremental_surrogatepass(self):
-        # Test incremental decoder for surrogatepass handler:
+    eleza test_incremental_surrogatepita(self):
+        # Test incremental decoder kila surrogatepita handler:
         # see issue #24214
         # High surrogate
-        data = '\uD901'.encode(self.encoding, 'surrogatepass')
-        for i in range(1, len(data)):
-            dec = codecs.getincrementaldecoder(self.encoding)('surrogatepass')
+        data = '\uD901'.encode(self.encoding, 'surrogatepita')
+        kila i kwenye range(1, len(data)):
+            dec = codecs.getincrementaldecoder(self.encoding)('surrogatepita')
             self.assertEqual(dec.decode(data[:i]), '')
-            self.assertEqual(dec.decode(data[i:], True), '\uD901')
+            self.assertEqual(dec.decode(data[i:], Kweli), '\uD901')
         # Low surrogate
-        data = '\uDC02'.encode(self.encoding, 'surrogatepass')
-        for i in range(1, len(data)):
-            dec = codecs.getincrementaldecoder(self.encoding)('surrogatepass')
+        data = '\uDC02'.encode(self.encoding, 'surrogatepita')
+        kila i kwenye range(1, len(data)):
+            dec = codecs.getincrementaldecoder(self.encoding)('surrogatepita')
             self.assertEqual(dec.decode(data[:i]), '')
             self.assertEqual(dec.decode(data[i:]), '\uDC02')
 
@@ -447,7 +447,7 @@ kundi UTF32Test(ReadTest, unittest.TestCase):
     encoding = "utf-32"
     ikiwa sys.byteorder == 'little':
         ill_formed_sequence = b"\x80\xdc\x00\x00"
-    else:
+    isipokua:
         ill_formed_sequence = b"\x00\x00\xdc\x80"
 
     spamle = (b'\xff\xfe\x00\x00'
@@ -465,8 +465,8 @@ kundi UTF32Test(ReadTest, unittest.TestCase):
         f.write("spam")
         f.write("spam")
         d = s.getvalue()
-        # check whether there is exactly one BOM in it
-        self.assertTrue(d == self.spamle or d == self.spambe)
+        # check whether there ni exactly one BOM kwenye it
+        self.assertKweli(d == self.spamle ama d == self.spambe)
         # try to read it back
         s = io.BytesIO(d)
         f = reader(s)
@@ -514,13 +514,13 @@ kundi UTF32Test(ReadTest, unittest.TestCase):
 
     eleza test_handlers(self):
         self.assertEqual(('\ufffd', 1),
-                         codecs.utf_32_decode(b'\x01', 'replace', True))
+                         codecs.utf_32_decode(b'\x01', 'replace', Kweli))
         self.assertEqual(('', 1),
-                         codecs.utf_32_decode(b'\x01', 'ignore', True))
+                         codecs.utf_32_decode(b'\x01', 'ignore', Kweli))
 
     eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_32_decode,
-                          b"\xff", "strict", True)
+                          b"\xff", "strict", Kweli)
 
     eleza test_decoder_state(self):
         self.check_state_handling_decode(self.encoding,
@@ -575,7 +575,7 @@ kundi UTF32LETest(ReadTest, unittest.TestCase):
 
     eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_32_le_decode,
-                          b"\xff", "strict", True)
+                          b"\xff", "strict", Kweli)
 
     eleza test_issue8941(self):
         # Issue #8941: insufficient result allocation when decoding into
@@ -621,7 +621,7 @@ kundi UTF32BETest(ReadTest, unittest.TestCase):
 
     eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_32_be_decode,
-                          b"\xff", "strict", True)
+                          b"\xff", "strict", Kweli)
 
     eleza test_issue8941(self):
         # Issue #8941: insufficient result allocation when decoding into
@@ -635,7 +635,7 @@ kundi UTF16Test(ReadTest, unittest.TestCase):
     encoding = "utf-16"
     ikiwa sys.byteorder == 'little':
         ill_formed_sequence = b"\x80\xdc"
-    else:
+    isipokua:
         ill_formed_sequence = b"\xdc\x80"
 
     spamle = b'\xff\xfes\x00p\x00a\x00m\x00s\x00p\x00a\x00m\x00'
@@ -649,8 +649,8 @@ kundi UTF16Test(ReadTest, unittest.TestCase):
         f.write("spam")
         f.write("spam")
         d = s.getvalue()
-        # check whether there is exactly one BOM in it
-        self.assertTrue(d == self.spamle or d == self.spambe)
+        # check whether there ni exactly one BOM kwenye it
+        self.assertKweli(d == self.spamle ama d == self.spambe)
         # try to read it back
         s = io.BytesIO(d)
         f = reader(s)
@@ -688,13 +688,13 @@ kundi UTF16Test(ReadTest, unittest.TestCase):
 
     eleza test_handlers(self):
         self.assertEqual(('\ufffd', 1),
-                         codecs.utf_16_decode(b'\x01', 'replace', True))
+                         codecs.utf_16_decode(b'\x01', 'replace', Kweli))
         self.assertEqual(('', 1),
-                         codecs.utf_16_decode(b'\x01', 'ignore', True))
+                         codecs.utf_16_decode(b'\x01', 'ignore', Kweli))
 
     eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_16_decode,
-                          b"\xff", "strict", True)
+                          b"\xff", "strict", Kweli)
 
     eleza test_decoder_state(self):
         self.check_state_handling_decode(self.encoding,
@@ -703,14 +703,14 @@ kundi UTF16Test(ReadTest, unittest.TestCase):
                                          "spamspam", self.spambe)
 
     eleza test_bug691291(self):
-        # Files are always opened in binary mode, even ikiwa no binary mode was
-        # specified.  This means that no automatic conversion of '\n' is done
-        # on reading and writing.
+        # Files are always opened kwenye binary mode, even ikiwa no binary mode was
+        # specified.  This means that no automatic conversion of '\n' ni done
+        # on reading na writing.
         s1 = 'Hello\r\nworld\r\n'
 
         s = s1.encode(self.encoding)
         self.addCleanup(support.unlink, support.TESTFN)
-        with open(support.TESTFN, 'wb') as fp:
+        with open(support.TESTFN, 'wb') kama fp:
             fp.write(s)
         with support.check_warnings(('', DeprecationWarning)):
             reader = codecs.open(support.TESTFN, 'U', encoding=self.encoding)
@@ -750,9 +750,9 @@ kundi UTF16LETest(ReadTest, unittest.TestCase):
             (b'\x00\xd8A\x00', '\ufffdA'),
             (b'\x00\xdcA\x00', '\ufffdA'),
         ]
-        for raw, expected in tests:
+        kila raw, expected kwenye tests:
             self.assertRaises(UnicodeDecodeError, codecs.utf_16_le_decode,
-                              raw, 'strict', True)
+                              raw, 'strict', Kweli)
             self.assertEqual(raw.decode('utf-16le', 'replace'), expected)
 
     eleza test_nonbmp(self):
@@ -794,9 +794,9 @@ kundi UTF16BETest(ReadTest, unittest.TestCase):
             (b'\xd8\x00\x00A', '\ufffdA'),
             (b'\xdc\x00\x00A', '\ufffdA'),
         ]
-        for raw, expected in tests:
+        kila raw, expected kwenye tests:
             self.assertRaises(UnicodeDecodeError, codecs.utf_16_be_decode,
-                              raw, 'strict', True)
+                              raw, 'strict', Kweli)
             self.assertEqual(raw.decode('utf-16be', 'replace'), expected)
 
     eleza test_nonbmp(self):
@@ -839,7 +839,7 @@ kundi UTF8Test(ReadTest, unittest.TestCase):
                                          u, u.encode(self.encoding))
 
     eleza test_decode_error(self):
-        for data, error_handler, expected in (
+        kila data, error_handler, expected kwenye (
             (b'[\x80\xff]', 'ignore', '[]'),
             (b'[\x80\xff]', 'replace', '[\ufffd\ufffd]'),
             (b'[\x80\xff]', 'surrogateescape', '[\udc80\udcff]'),
@@ -852,48 +852,48 @@ kundi UTF8Test(ReadTest, unittest.TestCase):
 
     eleza test_lone_surrogates(self):
         super().test_lone_surrogates()
-        # not sure ikiwa this is making sense for
-        # UTF-16 and UTF-32
+        # sio sure ikiwa this ni making sense for
+        # UTF-16 na UTF-32
         self.assertEqual("[\uDC80]".encode(self.encoding, "surrogateescape"),
                          self.BOM + b'[\x80]')
 
-        with self.assertRaises(UnicodeEncodeError) as cm:
+        with self.assertRaises(UnicodeEncodeError) kama cm:
             "[\uDC80\uD800\uDFFF]".encode(self.encoding, "surrogateescape")
         exc = cm.exception
         self.assertEqual(exc.object[exc.start:exc.end], '\uD800\uDFFF')
 
-    eleza test_surrogatepass_handler(self):
-        self.assertEqual("abc\ud800def".encode(self.encoding, "surrogatepass"),
+    eleza test_surrogatepita_handler(self):
+        self.assertEqual("abc\ud800def".encode(self.encoding, "surrogatepita"),
                          self.BOM + b"abc\xed\xa0\x80def")
-        self.assertEqual("\U00010fff\uD800".encode(self.encoding, "surrogatepass"),
+        self.assertEqual("\U00010fff\uD800".encode(self.encoding, "surrogatepita"),
                          self.BOM + b"\xf0\x90\xbf\xbf\xed\xa0\x80")
-        self.assertEqual("[\uD800\uDC80]".encode(self.encoding, "surrogatepass"),
+        self.assertEqual("[\uD800\uDC80]".encode(self.encoding, "surrogatepita"),
                          self.BOM + b'[\xed\xa0\x80\xed\xb2\x80]')
 
-        self.assertEqual(b"abc\xed\xa0\x80def".decode(self.encoding, "surrogatepass"),
+        self.assertEqual(b"abc\xed\xa0\x80def".decode(self.encoding, "surrogatepita"),
                          "abc\ud800def")
-        self.assertEqual(b"\xf0\x90\xbf\xbf\xed\xa0\x80".decode(self.encoding, "surrogatepass"),
+        self.assertEqual(b"\xf0\x90\xbf\xbf\xed\xa0\x80".decode(self.encoding, "surrogatepita"),
                          "\U00010fff\uD800")
 
-        self.assertTrue(codecs.lookup_error("surrogatepass"))
+        self.assertKweli(codecs.lookup_error("surrogatepita"))
         with self.assertRaises(UnicodeDecodeError):
-            b"abc\xed\xa0".decode(self.encoding, "surrogatepass")
+            b"abc\xed\xa0".decode(self.encoding, "surrogatepita")
         with self.assertRaises(UnicodeDecodeError):
-            b"abc\xed\xa0z".decode(self.encoding, "surrogatepass")
+            b"abc\xed\xa0z".decode(self.encoding, "surrogatepita")
 
     eleza test_incremental_errors(self):
-        # Test that the incremental decoder can fail with final=False.
+        # Test that the incremental decoder can fail with final=Uongo.
         # See issue #24214
         cases = [b'\x80', b'\xBF', b'\xC0', b'\xC1', b'\xF5', b'\xF6', b'\xFF']
-        for prefix in (b'\xC2', b'\xDF', b'\xE0', b'\xE0\xA0', b'\xEF',
+        kila prefix kwenye (b'\xC2', b'\xDF', b'\xE0', b'\xE0\xA0', b'\xEF',
                        b'\xEF\xBF', b'\xF0', b'\xF0\x90', b'\xF0\x90\x80',
                        b'\xF4', b'\xF4\x8F', b'\xF4\x8F\xBF'):
-            for suffix in b'\x7F', b'\xC0':
+            kila suffix kwenye b'\x7F', b'\xC0':
                 cases.append(prefix + suffix)
         cases.extend((b'\xE0\x80', b'\xE0\x9F', b'\xED\xA0\x80',
                       b'\xED\xBF\xBF', b'\xF0\x80', b'\xF0\x8F', b'\xF4\x90'))
 
-        for data in cases:
+        kila data kwenye cases:
             with self.subTest(data=data):
                 dec = codecs.getincrementaldecoder(self.encoding)()
                 self.assertRaises(UnicodeDecodeError, dec.decode, data)
@@ -991,10 +991,10 @@ kundi UTF7Test(ReadTest, unittest.TestCase):
             (b'a+IKw\xffb', 'a\u20ac\ufffdb'),
             (b'a+@b', 'a\ufffdb'),
         ]
-        for raw, expected in tests:
+        kila raw, expected kwenye tests:
             with self.subTest(raw=raw):
                 self.assertRaises(UnicodeDecodeError, codecs.utf_7_decode,
-                                raw, 'strict', True)
+                                raw, 'strict', Kweli)
                 self.assertEqual(raw.decode('utf-7', 'replace'), expected)
 
     eleza test_nonbmp(self):
@@ -1028,7 +1028,7 @@ kundi UTF7Test(ReadTest, unittest.TestCase):
             (b'a+IKwgrNgB', 'a\u20ac\u20ac\ufffd'),
             (b'a+IKwgrNgBA-b', 'a\u20ac\u20ac\ufffdb'),
         ]
-        for raw, expected in tests:
+        kila raw, expected kwenye tests:
             with self.subTest(raw=raw):
                 self.assertEqual(raw.decode('utf-7', 'replace'), expected)
 
@@ -1036,7 +1036,7 @@ kundi UTF7Test(ReadTest, unittest.TestCase):
 kundi UTF16ExTest(unittest.TestCase):
 
     eleza test_errors(self):
-        self.assertRaises(UnicodeDecodeError, codecs.utf_16_ex_decode, b"\xff", "strict", 0, True)
+        self.assertRaises(UnicodeDecodeError, codecs.utf_16_ex_decode, b"\xff", "strict", 0, Kweli)
 
     eleza test_bad_args(self):
         self.assertRaises(TypeError, codecs.utf_16_ex_decode)
@@ -1067,11 +1067,11 @@ kundi UTF8SigTest(UTF8Test, unittest.TestCase):
             [
                 "",
                 "",
-                "", # First BOM has been read and skipped
+                "", # First BOM has been read na skipped
                 "",
                 "",
-                "\ufeff", # Second BOM has been read and emitted
-                "\ufeff\x00", # "\x00" read and emitted
+                "\ufeff", # Second BOM has been read na emitted
+                "\ufeff\x00", # "\x00" read na emitted
                 "\ufeff\x00", # First byte of encoded "\xff" read
                 "\ufeff\x00\xff", # Second byte of encoded "\xff" read
                 "\ufeff\x00\xff", # First byte of encoded "\u07ff" read
@@ -1103,18 +1103,18 @@ kundi UTF8SigTest(UTF8Test, unittest.TestCase):
         bytestring = codecs.BOM_UTF8 + b"ABC\xC2\xA1\xE2\x88\x80XYZ"
 
         reader = codecs.getreader("utf-8-sig")
-        for sizehint in [None] + list(range(1, 11)) + \
+        kila sizehint kwenye [Tupu] + list(range(1, 11)) + \
                         [64, 128, 256, 512, 1024]:
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
-            while 1:
-                ikiwa sizehint is not None:
+            wakati 1:
+                ikiwa sizehint ni sio Tupu:
                     data = istream.read(sizehint)
-                else:
+                isipokua:
                     data = istream.read()
 
-                ikiwa not data:
-                    break
+                ikiwa sio data:
+                    koma
                 ostream.write(data)
 
             got = ostream.getvalue()
@@ -1125,18 +1125,18 @@ kundi UTF8SigTest(UTF8Test, unittest.TestCase):
         bytestring = b"ABC\xC2\xA1\xE2\x88\x80XYZ"
 
         reader = codecs.getreader("utf-8-sig")
-        for sizehint in [None] + list(range(1, 11)) + \
+        kila sizehint kwenye [Tupu] + list(range(1, 11)) + \
                         [64, 128, 256, 512, 1024]:
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
-            while 1:
-                ikiwa sizehint is not None:
+            wakati 1:
+                ikiwa sizehint ni sio Tupu:
                     data = istream.read(sizehint)
-                else:
+                isipokua:
                     data = istream.read()
 
-                ikiwa not data:
-                    break
+                ikiwa sio data:
+                    koma
                 ostream.write(data)
 
             got = ostream.getvalue()
@@ -1149,7 +1149,7 @@ kundi EscapeDecodeTest(unittest.TestCase):
 
     eleza test_raw(self):
         decode = codecs.escape_decode
-        for b in range(256):
+        kila b kwenye range(256):
             b = bytes([b])
             ikiwa b != b'\\':
                 self.assertEqual(decode(b + b'0'), (b + b'0', 2))
@@ -1177,9 +1177,9 @@ kundi EscapeDecodeTest(unittest.TestCase):
         check(br"[\501]", b"[A]")
         check(br"[\x41]", b"[A]")
         check(br"[\x410]", b"[A0]")
-        for i in range(97, 123):
+        kila i kwenye range(97, 123):
             b = bytes([i])
-            ikiwa b not in b'abfnrtvx':
+            ikiwa b haiko kwenye b'abfnrtvx':
                 with self.assertWarns(DeprecationWarning):
                     check(b"\\" + b, b"\\" + b)
             with self.assertWarns(DeprecationWarning):
@@ -1232,7 +1232,7 @@ punycode_testcases = [
      "\u0939\u0948\u0902",
      b"i1baa7eci9glrd9b2ae1bj0hfcgg6iyaf8o0a1dig0cd"),
 
-    #(G) Japanese (kanji and hiragana):
+    #(G) Japanese (kanji na hiragana):
     ("\u306A\u305C\u307F\u3093\u306A\u65E5\u672C\u8A9E\u3092"
      "\u8A71\u3057\u3066\u304F\u308C\u306A\u3044\u306E\u304B",
      b"n8jok5ay5dzabd5bym9f0cm5685rrjetr6pdxa"),
@@ -1307,18 +1307,18 @@ punycode_testcases = [
      b"-> $1.00 <--")
     ]
 
-for i in punycode_testcases:
+kila i kwenye punycode_testcases:
     ikiwa len(i)!=2:
         andika(repr(i))
 
 
 kundi PunycodeTest(unittest.TestCase):
     eleza test_encode(self):
-        for uni, puny in punycode_testcases:
+        kila uni, puny kwenye punycode_testcases:
             # Need to convert both strings to lower case, since
             # some of the extended encodings use upper case, but our
             # code produces only lower case. Converting just puny to
-            # lower is also insufficient, since some of the input characters
+            # lower ni also insufficient, since some of the input characters
             # are upper case.
             self.assertEqual(
                 str(uni.encode("punycode"), "ascii").lower(),
@@ -1326,7 +1326,7 @@ kundi PunycodeTest(unittest.TestCase):
             )
 
     eleza test_decode(self):
-        for uni, puny in punycode_testcases:
+        kila uni, puny kwenye punycode_testcases:
             self.assertEqual(uni, puny.decode("punycode"))
             puny = puny.decode("ascii").encode("ascii")
             self.assertEqual(uni, puny.decode("punycode"))
@@ -1343,7 +1343,7 @@ nameprep_tests = [
     (b'CAFE',
      b'cafe'),
     # 3.3 Case folding 8bit U+00DF (german sharp s).
-    # The original test case is bogus; it says \xc3\xdf
+    # The original test case ni bogus; it says \xc3\xdf
     (b'\xc3\x9f',
      b'ss'),
     # 3.4 Case folding U+0130 (turkish capital I with dot).
@@ -1353,30 +1353,30 @@ nameprep_tests = [
     (b'\xc5\x83\xcd\xba',
      b'\xc5\x84 \xce\xb9'),
     # 3.6 Case folding U+2121 U+33C6 U+1D7BB.
-    # XXX: skip this as it fails in UCS-2 mode
+    # XXX: skip this kama it fails kwenye UCS-2 mode
     #('\xe2\x84\xa1\xe3\x8f\x86\xf0\x9d\x9e\xbb',
     # 'telc\xe2\x88\x95kg\xcf\x83'),
-    (None, None),
+    (Tupu, Tupu),
     # 3.7 Normalization of U+006a U+030c U+00A0 U+00AA.
     (b'j\xcc\x8c\xc2\xa0\xc2\xaa',
      b'\xc7\xb0 a'),
-    # 3.8 Case folding U+1FB7 and normalization.
+    # 3.8 Case folding U+1FB7 na normalization.
     (b'\xe1\xbe\xb7',
      b'\xe1\xbe\xb6\xce\xb9'),
-    # 3.9 Self-reverting case folding U+01F0 and normalization.
-    # The original test case is bogus, it says `\xc7\xf0'
+    # 3.9 Self-reverting case folding U+01F0 na normalization.
+    # The original test case ni bogus, it says `\xc7\xf0'
     (b'\xc7\xb0',
      b'\xc7\xb0'),
-    # 3.10 Self-reverting case folding U+0390 and normalization.
+    # 3.10 Self-reverting case folding U+0390 na normalization.
     (b'\xce\x90',
      b'\xce\x90'),
-    # 3.11 Self-reverting case folding U+03B0 and normalization.
+    # 3.11 Self-reverting case folding U+03B0 na normalization.
     (b'\xce\xb0',
      b'\xce\xb0'),
-    # 3.12 Self-reverting case folding U+1E96 and normalization.
+    # 3.12 Self-reverting case folding U+1E96 na normalization.
     (b'\xe1\xba\x96',
      b'\xe1\xba\x96'),
-    # 3.13 Self-reverting case folding U+1F56 and normalization.
+    # 3.13 Self-reverting case folding U+1F56 na normalization.
     (b'\xe1\xbd\x96',
      b'\xe1\xbd\x96'),
     # 3.14 ASCII space character U+0020.
@@ -1387,7 +1387,7 @@ nameprep_tests = [
      b' '),
     # 3.16 Non-ASCII multibyte space character U+1680.
     (b'\xe1\x9a\x80',
-     None),
+     Tupu),
     # 3.17 Non-ASCII multibyte space character U+2000.
     (b'\xe2\x80\x80',
      b' '),
@@ -1402,75 +1402,75 @@ nameprep_tests = [
      b'\x10\x7f'),
     # 3.21 Non-ASCII 8bit control character U+0085.
     (b'\xc2\x85',
-     None),
+     Tupu),
     # 3.22 Non-ASCII multibyte control character U+180E.
     (b'\xe1\xa0\x8e',
-     None),
+     Tupu),
     # 3.23 Zero Width No-Break Space U+FEFF.
     (b'\xef\xbb\xbf',
      b''),
     # 3.24 Non-ASCII control character U+1D175.
     (b'\xf0\x9d\x85\xb5',
-     None),
+     Tupu),
     # 3.25 Plane 0 private use character U+F123.
     (b'\xef\x84\xa3',
-     None),
+     Tupu),
     # 3.26 Plane 15 private use character U+F1234.
     (b'\xf3\xb1\x88\xb4',
-     None),
+     Tupu),
     # 3.27 Plane 16 private use character U+10F234.
     (b'\xf4\x8f\x88\xb4',
-     None),
+     Tupu),
     # 3.28 Non-character code point U+8FFFE.
     (b'\xf2\x8f\xbf\xbe',
-     None),
+     Tupu),
     # 3.29 Non-character code point U+10FFFF.
     (b'\xf4\x8f\xbf\xbf',
-     None),
+     Tupu),
     # 3.30 Surrogate code U+DF42.
     (b'\xed\xbd\x82',
-     None),
+     Tupu),
     # 3.31 Non-plain text character U+FFFD.
     (b'\xef\xbf\xbd',
-     None),
+     Tupu),
     # 3.32 Ideographic description character U+2FF5.
     (b'\xe2\xbf\xb5',
-     None),
+     Tupu),
     # 3.33 Display property character U+0341.
     (b'\xcd\x81',
      b'\xcc\x81'),
     # 3.34 Left-to-right mark U+200E.
     (b'\xe2\x80\x8e',
-     None),
+     Tupu),
     # 3.35 Deprecated U+202A.
     (b'\xe2\x80\xaa',
-     None),
+     Tupu),
     # 3.36 Language tagging character U+E0001.
     (b'\xf3\xa0\x80\x81',
-     None),
+     Tupu),
     # 3.37 Language tagging character U+E0042.
     (b'\xf3\xa0\x81\x82',
-     None),
-    # 3.38 Bidi: RandALCat character U+05BE and LCat characters.
+     Tupu),
+    # 3.38 Bidi: RandALCat character U+05BE na LCat characters.
     (b'foo\xd6\xbebar',
-     None),
-    # 3.39 Bidi: RandALCat character U+FD50 and LCat characters.
+     Tupu),
+    # 3.39 Bidi: RandALCat character U+FD50 na LCat characters.
     (b'foo\xef\xb5\x90bar',
-     None),
-    # 3.40 Bidi: RandALCat character U+FB38 and LCat characters.
+     Tupu),
+    # 3.40 Bidi: RandALCat character U+FB38 na LCat characters.
     (b'foo\xef\xb9\xb6bar',
      b'foo \xd9\x8ebar'),
     # 3.41 Bidi: RandALCat without trailing RandALCat U+0627 U+0031.
     (b'\xd8\xa71',
-     None),
+     Tupu),
     # 3.42 Bidi: RandALCat character U+0627 U+0031 U+0628.
     (b'\xd8\xa71\xd8\xa8',
      b'\xd8\xa71\xd8\xa8'),
     # 3.43 Unassigned code point U+E0002.
-    # Skip this test as we allow unassigned
+    # Skip this test kama we allow unassigned
     #(b'\xf3\xa0\x80\x82',
-    # None),
-    (None, None),
+    # Tupu),
+    (Tupu, Tupu),
     # 3.44 Larger test (shrinking).
     # Original test case reads \xc3\xdf
     (b'X\xc2\xad\xc3\x9f\xc4\xb0\xe2\x84\xa1j\xcc\x8c\xc2\xa0\xc2'
@@ -1489,21 +1489,21 @@ nameprep_tests = [
 kundi NameprepTest(unittest.TestCase):
     eleza test_nameprep(self):
         kutoka encodings.idna agiza nameprep
-        for pos, (orig, prepped) in enumerate(nameprep_tests):
-            ikiwa orig is None:
+        kila pos, (orig, prepped) kwenye enumerate(nameprep_tests):
+            ikiwa orig ni Tupu:
                 # Skipped
-                continue
-            # The Unicode strings are given in UTF-8
-            orig = str(orig, "utf-8", "surrogatepass")
-            ikiwa prepped is None:
+                endelea
+            # The Unicode strings are given kwenye UTF-8
+            orig = str(orig, "utf-8", "surrogatepita")
+            ikiwa prepped ni Tupu:
                 # Input contains prohibited characters
                 self.assertRaises(UnicodeError, nameprep, orig)
-            else:
-                prepped = str(prepped, "utf-8", "surrogatepass")
-                try:
+            isipokua:
+                prepped = str(prepped, "utf-8", "surrogatepita")
+                jaribu:
                     self.assertEqual(nameprep(orig), prepped)
-                except Exception as e:
-                    raise support.TestFailed("Test 3.%d: %s" % (pos+1, str(e)))
+                tatizo Exception kama e:
+                    ashiria support.TestFailed("Test 3.%d: %s" % (pos+1, str(e)))
 
 
 kundi IDNACodecTest(unittest.TestCase):
@@ -1526,19 +1526,19 @@ kundi IDNACodecTest(unittest.TestCase):
 
     eleza test_incremental_decode(self):
         self.assertEqual(
-            "".join(codecs.iterdecode((bytes([c]) for c in b"python.org"), "idna")),
+            "".join(codecs.iterdecode((bytes([c]) kila c kwenye b"python.org"), "idna")),
             "python.org"
         )
         self.assertEqual(
-            "".join(codecs.iterdecode((bytes([c]) for c in b"python.org."), "idna")),
+            "".join(codecs.iterdecode((bytes([c]) kila c kwenye b"python.org."), "idna")),
             "python.org."
         )
         self.assertEqual(
-            "".join(codecs.iterdecode((bytes([c]) for c in b"xn--pythn-mua.org."), "idna")),
+            "".join(codecs.iterdecode((bytes([c]) kila c kwenye b"xn--pythn-mua.org."), "idna")),
             "pyth\xf6n.org."
         )
         self.assertEqual(
-            "".join(codecs.iterdecode((bytes([c]) for c in b"xn--pythn-mua.org."), "idna")),
+            "".join(codecs.iterdecode((bytes([c]) kila c kwenye b"xn--pythn-mua.org."), "idna")),
             "pyth\xf6n.org."
         )
 
@@ -1546,13 +1546,13 @@ kundi IDNACodecTest(unittest.TestCase):
         self.assertEqual(decoder.decode(b"xn--xam", ), "")
         self.assertEqual(decoder.decode(b"ple-9ta.o", ), "\xe4xample.")
         self.assertEqual(decoder.decode(b"rg"), "")
-        self.assertEqual(decoder.decode(b"", True), "org")
+        self.assertEqual(decoder.decode(b"", Kweli), "org")
 
         decoder.reset()
         self.assertEqual(decoder.decode(b"xn--xam", ), "")
         self.assertEqual(decoder.decode(b"ple-9ta.o", ), "\xe4xample.")
         self.assertEqual(decoder.decode(b"rg."), "org.")
-        self.assertEqual(decoder.decode(b"", True), "")
+        self.assertEqual(decoder.decode(b"", Kweli), "")
 
     eleza test_incremental_encode(self):
         self.assertEqual(
@@ -1575,18 +1575,18 @@ kundi IDNACodecTest(unittest.TestCase):
         encoder = codecs.getincrementalencoder("idna")()
         self.assertEqual(encoder.encode("\xe4x"), b"")
         self.assertEqual(encoder.encode("ample.org"), b"xn--xample-9ta.")
-        self.assertEqual(encoder.encode("", True), b"org")
+        self.assertEqual(encoder.encode("", Kweli), b"org")
 
         encoder.reset()
         self.assertEqual(encoder.encode("\xe4x"), b"")
         self.assertEqual(encoder.encode("ample.org."), b"xn--xample-9ta.org.")
-        self.assertEqual(encoder.encode("", True), b"")
+        self.assertEqual(encoder.encode("", Kweli), b"")
 
     eleza test_errors(self):
         """Only supports "strict" error handler"""
         "python.org".encode("idna", "strict")
         b"python.org".decode("idna", "strict")
-        for errors in ("ignore", "replace", "backslashreplace",
+        kila errors kwenye ("ignore", "replace", "backslashreplace",
                 "surrogateescape"):
             self.assertRaises(Exception, "python.org".encode, "idna", errors)
             self.assertRaises(Exception,
@@ -1649,12 +1649,12 @@ kundi CodecsModuleTest(unittest.TestCase):
 
     eleza test_lookup_issue1813(self):
         # Issue #1813: under Turkish locales, lookup of some codecs failed
-        # because 'I' is lowercased as "ı" (dotless i)
+        # because 'I' ni lowercased kama "ı" (dotless i)
         oldlocale = locale.setlocale(locale.LC_CTYPE)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
-        try:
+        jaribu:
             locale.setlocale(locale.LC_CTYPE, 'tr_TR')
-        except locale.Error:
+        tatizo locale.Error:
             # Unsupported locale on this system
             self.skipTest('test needs Turkish locale')
         c = codecs.lookup('ASCII')
@@ -1680,14 +1680,14 @@ kundi CodecsModuleTest(unittest.TestCase):
             "StreamReaderWriter", "StreamRecoder",
         )
         self.assertCountEqual(api, codecs.__all__)
-        for api in codecs.__all__:
+        kila api kwenye codecs.__all__:
             getattr(codecs, api)
 
     eleza test_open(self):
         self.addCleanup(support.unlink, support.TESTFN)
-        for mode in ('w', 'r', 'r+', 'w+', 'a', 'a+'):
+        kila mode kwenye ('w', 'r', 'r+', 'w+', 'a', 'a+'):
             with self.subTest(mode), \
-                    codecs.open(support.TESTFN, mode, 'ascii') as file:
+                    codecs.open(support.TESTFN, mode, 'ascii') kama file:
                 self.assertIsInstance(file, codecs.StreamReaderWriter)
 
     eleza test_undefined(self):
@@ -1695,7 +1695,7 @@ kundi CodecsModuleTest(unittest.TestCase):
         self.assertRaises(UnicodeError, codecs.decode, b'abc', 'undefined')
         self.assertRaises(UnicodeError, codecs.encode, '', 'undefined')
         self.assertRaises(UnicodeError, codecs.decode, b'', 'undefined')
-        for errors in ('strict', 'ignore', 'replace', 'backslashreplace'):
+        kila errors kwenye ('strict', 'ignore', 'replace', 'backslashreplace'):
             self.assertRaises(UnicodeError,
                 codecs.encode, 'abc', 'undefined', errors)
             self.assertRaises(UnicodeError,
@@ -1834,11 +1834,11 @@ ikiwa hasattr(codecs, "mbcs_encode"):
 ikiwa hasattr(codecs, "oem_encode"):
     all_unicode_encodings.append("oem")
 
-# The following encoding is not tested, because it's not supposed
+# The following encoding ni sio tested, because it's sio supposed
 # to work:
 #    "undefined"
 
-# The following encodings don't work in stateful mode
+# The following encodings don't work kwenye stateful mode
 broken_unicode_with_stateful = [
     "punycode",
 ]
@@ -1847,7 +1847,7 @@ broken_unicode_with_stateful = [
 kundi BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
     eleza test_basics(self):
         s = "abc123"  # all codecs should be able to encode these
-        for encoding in all_unicode_encodings:
+        kila encoding kwenye all_unicode_encodings:
             name = codecs.lookup(encoding).name
             ikiwa encoding.endswith("_codec"):
                 name += "_codec"
@@ -1860,41 +1860,41 @@ kundi BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
             (chars, size) = codecs.getdecoder(encoding)(b)
             self.assertEqual(chars, s, "encoding=%r" % encoding)
 
-            ikiwa encoding not in broken_unicode_with_stateful:
+            ikiwa encoding haiko kwenye broken_unicode_with_stateful:
                 # check stream reader/writer
                 q = Queue(b"")
                 writer = codecs.getwriter(encoding)(q)
                 encodedresult = b""
-                for c in s:
+                kila c kwenye s:
                     writer.write(c)
                     chunk = q.read()
-                    self.assertTrue(type(chunk) is bytes, type(chunk))
+                    self.assertKweli(type(chunk) ni bytes, type(chunk))
                     encodedresult += chunk
                 q = Queue(b"")
                 reader = codecs.getreader(encoding)(q)
                 decodedresult = ""
-                for c in encodedresult:
+                kila c kwenye encodedresult:
                     q.write(bytes([c]))
                     decodedresult += reader.read()
                 self.assertEqual(decodedresult, s, "encoding=%r" % encoding)
 
-            ikiwa encoding not in broken_unicode_with_stateful:
-                # check incremental decoder/encoder and iterencode()/iterdecode()
-                try:
+            ikiwa encoding haiko kwenye broken_unicode_with_stateful:
+                # check incremental decoder/encoder na iterencode()/iterdecode()
+                jaribu:
                     encoder = codecs.getincrementalencoder(encoding)()
-                except LookupError:  # no IncrementalEncoder
-                    pass
-                else:
+                tatizo LookupError:  # no IncrementalEncoder
+                    pita
+                isipokua:
                     # check incremental decoder/encoder
                     encodedresult = b""
-                    for c in s:
+                    kila c kwenye s:
                         encodedresult += encoder.encode(c)
-                    encodedresult += encoder.encode("", True)
+                    encodedresult += encoder.encode("", Kweli)
                     decoder = codecs.getincrementaldecoder(encoding)()
                     decodedresult = ""
-                    for c in encodedresult:
+                    kila c kwenye encodedresult:
                         decodedresult += decoder.decode(bytes([c]))
-                    decodedresult += decoder.decode(b"", True)
+                    decodedresult += decoder.decode(b"", Kweli)
                     self.assertEqual(decodedresult, s,
                                      "encoding=%r" % encoding)
 
@@ -1908,82 +1908,82 @@ kundi BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                             codecs.iterencode("", encoding), encoding))
                     self.assertEqual(result, "")
 
-                ikiwa encoding not in ("idna", "mbcs"):
+                ikiwa encoding haiko kwenye ("idna", "mbcs"):
                     # check incremental decoder/encoder with errors argument
-                    try:
+                    jaribu:
                         encoder = codecs.getincrementalencoder(encoding)("ignore")
-                    except LookupError:  # no IncrementalEncoder
-                        pass
-                    else:
-                        encodedresult = b"".join(encoder.encode(c) for c in s)
+                    tatizo LookupError:  # no IncrementalEncoder
+                        pita
+                    isipokua:
+                        encodedresult = b"".join(encoder.encode(c) kila c kwenye s)
                         decoder = codecs.getincrementaldecoder(encoding)("ignore")
                         decodedresult = "".join(decoder.decode(bytes([c]))
-                                                for c in encodedresult)
+                                                kila c kwenye encodedresult)
                         self.assertEqual(decodedresult, s,
                                          "encoding=%r" % encoding)
 
     @support.cpython_only
     eleza test_basics_capi(self):
         s = "abc123"  # all codecs should be able to encode these
-        for encoding in all_unicode_encodings:
-            ikiwa encoding not in broken_unicode_with_stateful:
+        kila encoding kwenye all_unicode_encodings:
+            ikiwa encoding haiko kwenye broken_unicode_with_stateful:
                 # check incremental decoder/encoder (fetched via the C API)
-                try:
+                jaribu:
                     cencoder = _testcapi.codec_incrementalencoder(encoding)
-                except LookupError:  # no IncrementalEncoder
-                    pass
-                else:
+                tatizo LookupError:  # no IncrementalEncoder
+                    pita
+                isipokua:
                     # check C API
                     encodedresult = b""
-                    for c in s:
+                    kila c kwenye s:
                         encodedresult += cencoder.encode(c)
-                    encodedresult += cencoder.encode("", True)
+                    encodedresult += cencoder.encode("", Kweli)
                     cdecoder = _testcapi.codec_incrementaldecoder(encoding)
                     decodedresult = ""
-                    for c in encodedresult:
+                    kila c kwenye encodedresult:
                         decodedresult += cdecoder.decode(bytes([c]))
-                    decodedresult += cdecoder.decode(b"", True)
+                    decodedresult += cdecoder.decode(b"", Kweli)
                     self.assertEqual(decodedresult, s,
                                      "encoding=%r" % encoding)
 
-                ikiwa encoding not in ("idna", "mbcs"):
+                ikiwa encoding haiko kwenye ("idna", "mbcs"):
                     # check incremental decoder/encoder with errors argument
-                    try:
+                    jaribu:
                         cencoder = _testcapi.codec_incrementalencoder(encoding, "ignore")
-                    except LookupError:  # no IncrementalEncoder
-                        pass
-                    else:
-                        encodedresult = b"".join(cencoder.encode(c) for c in s)
+                    tatizo LookupError:  # no IncrementalEncoder
+                        pita
+                    isipokua:
+                        encodedresult = b"".join(cencoder.encode(c) kila c kwenye s)
                         cdecoder = _testcapi.codec_incrementaldecoder(encoding, "ignore")
                         decodedresult = "".join(cdecoder.decode(bytes([c]))
-                                                for c in encodedresult)
+                                                kila c kwenye encodedresult)
                         self.assertEqual(decodedresult, s,
                                          "encoding=%r" % encoding)
 
     eleza test_seek(self):
         # all codecs should be able to encode these
         s = "%s\n%s\n" % (100*"abc123", 100*"def456")
-        for encoding in all_unicode_encodings:
+        kila encoding kwenye all_unicode_encodings:
             ikiwa encoding == "idna": # FIXME: See SF bug #1163178
-                continue
-            ikiwa encoding in broken_unicode_with_stateful:
-                continue
+                endelea
+            ikiwa encoding kwenye broken_unicode_with_stateful:
+                endelea
             reader = codecs.getreader(encoding)(io.BytesIO(s.encode(encoding)))
-            for t in range(5):
-                # Test that calling seek resets the internal codec state and buffers
+            kila t kwenye range(5):
+                # Test that calling seek resets the internal codec state na buffers
                 reader.seek(0, 0)
                 data = reader.read()
                 self.assertEqual(s, data)
 
     eleza test_bad_decode_args(self):
-        for encoding in all_unicode_encodings:
+        kila encoding kwenye all_unicode_encodings:
             decoder = codecs.getdecoder(encoding)
             self.assertRaises(TypeError, decoder)
-            ikiwa encoding not in ("idna", "punycode"):
+            ikiwa encoding haiko kwenye ("idna", "punycode"):
                 self.assertRaises(TypeError, decoder, 42)
 
     eleza test_bad_encode_args(self):
-        for encoding in all_unicode_encodings:
+        kila encoding kwenye all_unicode_encodings:
             encoder = codecs.getencoder(encoding)
             self.assertRaises(TypeError, encoder)
 
@@ -1994,10 +1994,10 @@ kundi BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
         self.assertEqual(table_type, table_type)
 
     eleza test_decoder_state(self):
-        # Check that getstate() and setstate() handle the state properly
+        # Check that getstate() na setstate() handle the state properly
         u = "abc123"
-        for encoding in all_unicode_encodings:
-            ikiwa encoding not in broken_unicode_with_stateful:
+        kila encoding kwenye all_unicode_encodings:
+            ikiwa encoding haiko kwenye broken_unicode_with_stateful:
                 self.check_state_handling_decode(encoding, u, u.encode(encoding))
                 self.check_state_handling_encode(encoding, u, u.encode(encoding))
 
@@ -2090,7 +2090,7 @@ kundi CharmapTest(unittest.TestCase):
 
         self.assertRaises(UnicodeDecodeError,
             codecs.charmap_decode, b"\x00\x01\x02", "strict",
-                                   {0: 'a', 1: 'b', 2: None}
+                                   {0: 'a', 1: 'b', 2: Tupu}
         )
 
         # Issue #14850
@@ -2107,7 +2107,7 @@ kundi CharmapTest(unittest.TestCase):
 
         self.assertEqual(
             codecs.charmap_decode(b"\x00\x01\x02", "replace",
-                                  {0: 'a', 1: 'b', 2: None}),
+                                  {0: 'a', 1: 'b', 2: Tupu}),
             ("ab\ufffd", 3)
         )
 
@@ -2126,7 +2126,7 @@ kundi CharmapTest(unittest.TestCase):
 
         self.assertEqual(
             codecs.charmap_decode(b"\x00\x01\x02", "backslashreplace",
-                                  {0: 'a', 1: 'b', 2: None}),
+                                  {0: 'a', 1: 'b', 2: Tupu}),
             ("ab\\x02", 3)
         )
 
@@ -2145,7 +2145,7 @@ kundi CharmapTest(unittest.TestCase):
 
         self.assertEqual(
             codecs.charmap_decode(b"\x00\x01\x02", "ignore",
-                                  {0: 'a', 1: 'b', 2: None}),
+                                  {0: 'a', 1: 'b', 2: Tupu}),
             ("ab", 3)
         )
 
@@ -2241,15 +2241,15 @@ kundi CharmapTest(unittest.TestCase):
 kundi WithStmtTest(unittest.TestCase):
     eleza test_encodedfile(self):
         f = io.BytesIO(b"\xc3\xbc")
-        with codecs.EncodedFile(f, "latin-1", "utf-8") as ef:
+        with codecs.EncodedFile(f, "latin-1", "utf-8") kama ef:
             self.assertEqual(ef.read(), b"\xfc")
-        self.assertTrue(f.closed)
+        self.assertKweli(f.closed)
 
     eleza test_streamreaderwriter(self):
         f = io.BytesIO(b"\xc3\xbc")
         info = codecs.lookup("utf-8")
         with codecs.StreamReaderWriter(f, info.streamreader,
-                                       info.streamwriter, 'strict') as srw:
+                                       info.streamwriter, 'strict') kama srw:
             self.assertEqual(srw.read(), "\xfc")
 
 
@@ -2272,12 +2272,12 @@ kundi TypesTest(unittest.TestCase):
         ]
         ikiwa hasattr(codecs, "mbcs_decode"):
             decoders.append(codecs.mbcs_decode)
-        for decoder in decoders:
+        kila decoder kwenye decoders:
             self.assertRaises(TypeError, decoder, "xxx")
 
     eleza test_unicode_escape(self):
-        # Escape-decoding a unicode string is supported and gives the same
-        # result as decoding the equivalent ASCII bytes string.
+        # Escape-decoding a unicode string ni supported na gives the same
+        # result kama decoding the equivalent ASCII bytes string.
         self.assertEqual(codecs.unicode_escape_decode(r"\u1234"), ("\u1234", 6))
         self.assertEqual(codecs.unicode_escape_decode(br"\u1234"), ("\u1234", 6))
         self.assertEqual(codecs.raw_unicode_escape_decode(r"\u1234"), ("\u1234", 6))
@@ -2301,13 +2301,13 @@ kundi UnicodeEscapeTest(unittest.TestCase):
 
     eleza test_raw_encode(self):
         encode = codecs.unicode_escape_encode
-        for b in range(32, 127):
+        kila b kwenye range(32, 127):
             ikiwa b != b'\\'[0]:
                 self.assertEqual(encode(chr(b)), (bytes([b]), 1))
 
     eleza test_raw_decode(self):
         decode = codecs.unicode_escape_decode
-        for b in range(256):
+        kila b kwenye range(256):
             ikiwa b != b'\\'[0]:
                 self.assertEqual(decode(bytes([b]) + b'0'), (chr(b) + '0', 2))
 
@@ -2318,10 +2318,10 @@ kundi UnicodeEscapeTest(unittest.TestCase):
         check('\n', br'\n')
         check('\r', br'\r')
         check('\\', br'\\')
-        for b in range(32):
-            ikiwa chr(b) not in '\t\n\r':
+        kila b kwenye range(32):
+            ikiwa chr(b) haiko kwenye '\t\n\r':
                 check(chr(b), ('\\x%02x' % b).encode())
-        for b in range(127, 256):
+        kila b kwenye range(127, 256):
             check(chr(b), ('\\x%02x' % b).encode())
         check('\u20ac', br'\u20ac')
         check('\U0001d120', br'\U0001d120')
@@ -2350,12 +2350,12 @@ kundi UnicodeEscapeTest(unittest.TestCase):
         check(br"[\x410]", "[A0]")
         check(br"\u20ac", "\u20ac")
         check(br"\U0001d120", "\U0001d120")
-        for i in range(97, 123):
+        kila i kwenye range(97, 123):
             b = bytes([i])
-            ikiwa b not in b'abfnrtuvx':
+            ikiwa b haiko kwenye b'abfnrtuvx':
                 with self.assertWarns(DeprecationWarning):
                     check(b"\\" + b, "\\" + chr(i))
-            ikiwa b.upper() not in b'UN':
+            ikiwa b.upper() haiko kwenye b'UN':
                 with self.assertWarns(DeprecationWarning):
                     check(b"\\" + b.upper(), "\\" + chr(i-32))
         with self.assertWarns(DeprecationWarning):
@@ -2367,8 +2367,8 @@ kundi UnicodeEscapeTest(unittest.TestCase):
 
     eleza test_decode_errors(self):
         decode = codecs.unicode_escape_decode
-        for c, d in (b'x', 2), (b'u', 4), (b'U', 4):
-            for i in range(d):
+        kila c, d kwenye (b'x', 2), (b'u', 4), (b'U', 4):
+            kila i kwenye range(d):
                 self.assertRaises(UnicodeDecodeError, decode,
                                   b"\\" + c + b"0"*i)
                 self.assertRaises(UnicodeDecodeError, decode,
@@ -2389,19 +2389,19 @@ kundi RawUnicodeEscapeTest(unittest.TestCase):
 
     eleza test_raw_encode(self):
         encode = codecs.raw_unicode_escape_encode
-        for b in range(256):
+        kila b kwenye range(256):
             self.assertEqual(encode(chr(b)), (bytes([b]), 1))
 
     eleza test_raw_decode(self):
         decode = codecs.raw_unicode_escape_decode
-        for b in range(256):
+        kila b kwenye range(256):
             self.assertEqual(decode(bytes([b]) + b'0'), (chr(b) + '0', 2))
 
     eleza test_escape_encode(self):
         encode = codecs.raw_unicode_escape_encode
         check = coding_checker(self, encode)
-        for b in range(256):
-            ikiwa b not in b'uU':
+        kila b kwenye range(256):
+            ikiwa b haiko kwenye b'uU':
                 check('\\' + chr(b), b'\\' + bytes([b]))
         check('\u20ac', br'\u20ac')
         check('\U0001d120', br'\U0001d120')
@@ -2409,16 +2409,16 @@ kundi RawUnicodeEscapeTest(unittest.TestCase):
     eleza test_escape_decode(self):
         decode = codecs.raw_unicode_escape_decode
         check = coding_checker(self, decode)
-        for b in range(256):
-            ikiwa b not in b'uU':
+        kila b kwenye range(256):
+            ikiwa b haiko kwenye b'uU':
                 check(b'\\' + bytes([b]), '\\' + chr(b))
         check(br"\u20ac", "\u20ac")
         check(br"\U0001d120", "\U0001d120")
 
     eleza test_decode_errors(self):
         decode = codecs.raw_unicode_escape_decode
-        for c, d in (b'u', 4), (b'U', 4):
-            for i in range(d):
+        kila c, d kwenye (b'u', 4), (b'U', 4):
+            kila i kwenye range(d):
                 self.assertRaises(UnicodeDecodeError, decode,
                                   b"\\" + c + b"0"*i)
                 self.assertRaises(UnicodeDecodeError, decode,
@@ -2445,7 +2445,7 @@ kundi EscapeEncodeTest(unittest.TestCase):
             (b'd\re', (b'd\\re', 3)),
             (b'f\x7fg', (b'f\\x7fg', 3)),
         ]
-        for data, output in tests:
+        kila data, output kwenye tests:
             with self.subTest(data=data):
                 self.assertEqual(codecs.escape_encode(data), output)
         self.assertRaises(TypeError, codecs.escape_encode, 'spam')
@@ -2474,7 +2474,7 @@ kundi SurrogateEscapeTest(unittest.TestCase):
                          b"foo\x80bar")
 
     eleza test_charmap(self):
-        # bad byte: \xa5 is unmapped in iso-8859-3
+        # bad byte: \xa5 ni unmapped kwenye iso-8859-3
         self.assertEqual(b"foo\xa5bar".decode("iso-8859-3", "surrogateescape"),
                          "foo\udca5bar")
         self.assertEqual("foo\udca5bar".encode("iso-8859-3", "surrogateescape"),
@@ -2496,9 +2496,9 @@ kundi BomTest(unittest.TestCase):
                  "utf-32-le",
                  "utf-32-be")
         self.addCleanup(support.unlink, support.TESTFN)
-        for encoding in tests:
-            # Check ikiwa the BOM is written only once
-            with codecs.open(support.TESTFN, 'w+', encoding=encoding) as f:
+        kila encoding kwenye tests:
+            # Check ikiwa the BOM ni written only once
+            with codecs.open(support.TESTFN, 'w+', encoding=encoding) kama f:
                 f.write(data)
                 f.write(data)
                 f.seek(0)
@@ -2506,8 +2506,8 @@ kundi BomTest(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(f.read(), data * 2)
 
-            # Check that the BOM is written after a seek(0)
-            with codecs.open(support.TESTFN, 'w+', encoding=encoding) as f:
+            # Check that the BOM ni written after a seek(0)
+            with codecs.open(support.TESTFN, 'w+', encoding=encoding) kama f:
                 f.write(data[0])
                 self.assertNotEqual(f.tell(), 0)
                 f.seek(0)
@@ -2515,8 +2515,8 @@ kundi BomTest(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(f.read(), data)
 
-            # (StreamWriter) Check that the BOM is written after a seek(0)
-            with codecs.open(support.TESTFN, 'w+', encoding=encoding) as f:
+            # (StreamWriter) Check that the BOM ni written after a seek(0)
+            with codecs.open(support.TESTFN, 'w+', encoding=encoding) kama f:
                 f.writer.write(data[0])
                 self.assertNotEqual(f.writer.tell(), 0)
                 f.writer.seek(0)
@@ -2524,18 +2524,18 @@ kundi BomTest(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(f.read(), data)
 
-            # Check that the BOM is not written after a seek() at a position
+            # Check that the BOM ni sio written after a seek() at a position
             # different than the start
-            with codecs.open(support.TESTFN, 'w+', encoding=encoding) as f:
+            with codecs.open(support.TESTFN, 'w+', encoding=encoding) kama f:
                 f.write(data)
                 f.seek(f.tell())
                 f.write(data)
                 f.seek(0)
                 self.assertEqual(f.read(), data * 2)
 
-            # (StreamWriter) Check that the BOM is not written after a seek()
+            # (StreamWriter) Check that the BOM ni sio written after a seek()
             # at a position different than the start
-            with codecs.open(support.TESTFN, 'w+', encoding=encoding) as f:
+            with codecs.open(support.TESTFN, 'w+', encoding=encoding) kama f:
                 f.writer.write(data)
                 f.writer.seek(f.writer.tell())
                 f.writer.write(data)
@@ -2558,18 +2558,18 @@ transform_aliases = {
     "rot_13": ["rot13"],
 }
 
-try:
+jaribu:
     agiza zlib
-except ImportError:
-    zlib = None
-else:
+tatizo ImportError:
+    zlib = Tupu
+isipokua:
     bytes_transform_encodings.append("zlib_codec")
     transform_aliases["zlib_codec"] = ["zip", "zlib"]
-try:
+jaribu:
     agiza bz2
-except ImportError:
-    pass
-else:
+tatizo ImportError:
+    pita
+isipokua:
     bytes_transform_encodings.append("bz2_codec")
     transform_aliases["bz2_codec"] = ["bz2"]
 
@@ -2578,7 +2578,7 @@ kundi TransformCodecTest(unittest.TestCase):
 
     eleza test_basics(self):
         binput = bytes(range(256))
-        for encoding in bytes_transform_encodings:
+        kila encoding kwenye bytes_transform_encodings:
             with self.subTest(encoding=encoding):
                 # generic codecs interface
                 (o, size) = codecs.getencoder(encoding)(binput)
@@ -2588,7 +2588,7 @@ kundi TransformCodecTest(unittest.TestCase):
                 self.assertEqual(i, binput)
 
     eleza test_read(self):
-        for encoding in bytes_transform_encodings:
+        kila encoding kwenye bytes_transform_encodings:
             with self.subTest(encoding=encoding):
                 sin = codecs.encode(b"\x80", encoding)
                 reader = codecs.getreader(encoding)(io.BytesIO(sin))
@@ -2596,7 +2596,7 @@ kundi TransformCodecTest(unittest.TestCase):
                 self.assertEqual(sout, b"\x80")
 
     eleza test_readline(self):
-        for encoding in bytes_transform_encodings:
+        kila encoding kwenye bytes_transform_encodings:
             with self.subTest(encoding=encoding):
                 sin = codecs.encode(b"\x80", encoding)
                 reader = codecs.getreader(encoding)(io.BytesIO(sin))
@@ -2605,10 +2605,10 @@ kundi TransformCodecTest(unittest.TestCase):
 
     eleza test_buffer_api_usage(self):
         # We check all the transform codecs accept memoryview input
-        # for encoding and decoding
-        # and also that they roundtrip correctly
+        # kila encoding na decoding
+        # na also that they roundtrip correctly
         original = b"12345\x80"
-        for encoding in bytes_transform_encodings:
+        kila encoding kwenye bytes_transform_encodings:
             with self.subTest(encoding=encoding):
                 data = original
                 view = memoryview(data)
@@ -2622,32 +2622,32 @@ kundi TransformCodecTest(unittest.TestCase):
                 self.assertEqual(view_decoded, data)
 
     eleza test_text_to_binary_blacklists_binary_transforms(self):
-        # Check binary -> binary codecs give a good error for str input
+        # Check binary -> binary codecs give a good error kila str input
         bad_input = "bad input type"
-        for encoding in bytes_transform_encodings:
+        kila encoding kwenye bytes_transform_encodings:
             with self.subTest(encoding=encoding):
-                fmt = (r"{!r} is not a text encoding; "
+                fmt = (r"{!r} ni sio a text encoding; "
                        r"use codecs.encode\(\) to handle arbitrary codecs")
                 msg = fmt.format(encoding)
-                with self.assertRaisesRegex(LookupError, msg) as failure:
+                with self.assertRaisesRegex(LookupError, msg) kama failure:
                     bad_input.encode(encoding)
-                self.assertIsNone(failure.exception.__cause__)
+                self.assertIsTupu(failure.exception.__cause__)
 
     eleza test_text_to_binary_blacklists_text_transforms(self):
-        # Check str.encode gives a good error message for str -> str codecs
-        msg = (r"^'rot_13' is not a text encoding; "
+        # Check str.encode gives a good error message kila str -> str codecs
+        msg = (r"^'rot_13' ni sio a text encoding; "
                r"use codecs.encode\(\) to handle arbitrary codecs")
         with self.assertRaisesRegex(LookupError, msg):
             "just an example message".encode("rot_13")
 
     eleza test_binary_to_text_blacklists_binary_transforms(self):
-        # Check bytes.decode and bytearray.decode give a good error
-        # message for binary -> binary codecs
+        # Check bytes.decode na bytearray.decode give a good error
+        # message kila binary -> binary codecs
         data = b"encode first to ensure we meet any format restrictions"
-        for encoding in bytes_transform_encodings:
+        kila encoding kwenye bytes_transform_encodings:
             with self.subTest(encoding=encoding):
                 encoded_data = codecs.encode(data, encoding)
-                fmt = (r"{!r} is not a text encoding; "
+                fmt = (r"{!r} ni sio a text encoding; "
                        r"use codecs.decode\(\) to handle arbitrary codecs")
                 msg = fmt.format(encoding)
                 with self.assertRaisesRegex(LookupError, msg):
@@ -2656,28 +2656,28 @@ kundi TransformCodecTest(unittest.TestCase):
                     bytearray(encoded_data).decode(encoding)
 
     eleza test_binary_to_text_blacklists_text_transforms(self):
-        # Check str -> str codec gives a good error for binary input
-        for bad_input in (b"immutable", bytearray(b"mutable")):
+        # Check str -> str codec gives a good error kila binary input
+        kila bad_input kwenye (b"immutable", bytearray(b"mutable")):
             with self.subTest(bad_input=bad_input):
-                msg = (r"^'rot_13' is not a text encoding; "
+                msg = (r"^'rot_13' ni sio a text encoding; "
                        r"use codecs.decode\(\) to handle arbitrary codecs")
-                with self.assertRaisesRegex(LookupError, msg) as failure:
+                with self.assertRaisesRegex(LookupError, msg) kama failure:
                     bad_input.decode("rot_13")
-                self.assertIsNone(failure.exception.__cause__)
+                self.assertIsTupu(failure.exception.__cause__)
 
     @unittest.skipUnless(zlib, "Requires zlib support")
     eleza test_custom_zlib_error_is_wrapped(self):
-        # Check zlib codec gives a good error for malformed input
+        # Check zlib codec gives a good error kila malformed input
         msg = "^decoding with 'zlib_codec' codec failed"
-        with self.assertRaisesRegex(Exception, msg) as failure:
+        with self.assertRaisesRegex(Exception, msg) kama failure:
             codecs.decode(b"hello", "zlib_codec")
         self.assertIsInstance(failure.exception.__cause__,
                                                 type(failure.exception))
 
     eleza test_custom_hex_error_is_wrapped(self):
-        # Check hex codec gives a good error for malformed input
+        # Check hex codec gives a good error kila malformed input
         msg = "^decoding with 'hex_codec' codec failed"
-        with self.assertRaisesRegex(Exception, msg) as failure:
+        with self.assertRaisesRegex(Exception, msg) kama failure:
             codecs.decode(b"hello", "hex_codec")
         self.assertIsInstance(failure.exception.__cause__,
                                                 type(failure.exception))
@@ -2687,18 +2687,18 @@ kundi TransformCodecTest(unittest.TestCase):
 
     # Ensure codec aliases kutoka http://bugs.python.org/issue7475 work
     eleza test_aliases(self):
-        for codec_name, aliases in transform_aliases.items():
+        kila codec_name, aliases kwenye transform_aliases.items():
             expected_name = codecs.lookup(codec_name).name
-            for alias in aliases:
+            kila alias kwenye aliases:
                 with self.subTest(alias=alias):
                     info = codecs.lookup(alias)
                     self.assertEqual(info.name, expected_name)
 
     eleza test_quopri_stateless(self):
-        # Should encode with quotetabs=True
+        # Should encode with quotetabs=Kweli
         encoded = codecs.encode(b"space tab\teol \n", "quopri-codec")
         self.assertEqual(encoded, b"space=20tab=09eol=20\n")
-        # But should still support unescaped tabs and spaces
+        # But should still support unescaped tabs na spaces
         unescaped = b"space tab eol\n"
         self.assertEqual(codecs.decode(unescaped, "quopri-codec"), unescaped)
 
@@ -2707,11 +2707,11 @@ kundi TransformCodecTest(unittest.TestCase):
         self.assertRaises(ValueError, codecs.decode, b"", "uu-codec")
 
 
-# The codec system tries to wrap exceptions in order to ensure the error
-# mentions the operation being performed and the codec involved. We
-# currently *only* want this to happen for relatively stateless
-# exceptions, where the only significant information they contain is their
-# type and a single str argument.
+# The codec system tries to wrap exceptions kwenye order to ensure the error
+# mentions the operation being performed na the codec involved. We
+# currently *only* want this to happen kila relatively stateless
+# exceptions, where the only significant information they contain ni their
+# type na a single str argument.
 
 # Use a local codec registry to avoid appearing to leak objects when
 # registering multiple search functions
@@ -2719,14 +2719,14 @@ _TEST_CODECS = {}
 
 eleza _get_test_codec(codec_name):
     rudisha _TEST_CODECS.get(codec_name)
-codecs.register(_get_test_codec) # Returns None, not usable as a decorator
+codecs.register(_get_test_codec) # Returns Tupu, sio usable kama a decorator
 
-try:
-    # Issue #22166: Also need to clear the internal cache in CPython
+jaribu:
+    # Issue #22166: Also need to clear the internal cache kwenye CPython
     kutoka _codecs agiza _forget_codec
-except ImportError:
+tatizo ImportError:
     eleza _forget_codec(codec_name):
-        pass
+        pita
 
 
 kundi ExceptionChainingTest(unittest.TestCase):
@@ -2734,32 +2734,32 @@ kundi ExceptionChainingTest(unittest.TestCase):
     eleza setUp(self):
         # There's no way to unregister a codec search function, so we just
         # ensure we render this one fairly harmless after the test
-        # case finishes by using the test case repr as the codec name
+        # case finishes by using the test case repr kama the codec name
         # The codecs module normalizes codec names, although this doesn't
         # appear to be formally documented...
-        # We also make sure we use a truly unique id for the custom codec
+        # We also make sure we use a truly unique id kila the custom codec
         # to avoid issues with the codec cache when running these tests
-        # multiple times (e.g. when hunting for refleaks)
+        # multiple times (e.g. when hunting kila refleaks)
         unique_id = repr(self) + str(id(self))
         self.codec_name = encodings.normalize_encoding(unique_id).lower()
 
-        # We store the object to raise on the instance because of a bad
+        # We store the object to ashiria on the instance because of a bad
         # interaction between the codec caching (which means we can't
-        # recreate the codec entry) and regrtest refleak hunting (which
+        # recreate the codec entry) na regrtest refleak hunting (which
         # runs the same test instance multiple times). This means we
-        # need to ensure the codecs call back in to the instance to find
-        # out which exception to raise rather than binding them in a
+        # need to ensure the codecs call back kwenye to the instance to find
+        # out which exception to ashiria rather than binding them kwenye a
         # closure to an object that may change on the next run
-        self.obj_to_raise = RuntimeError
+        self.obj_to_ashiria = RuntimeError
 
     eleza tearDown(self):
-        _TEST_CODECS.pop(self.codec_name, None)
+        _TEST_CODECS.pop(self.codec_name, Tupu)
         # Issue #22166: Also pop kutoka caches to avoid appearance of ref leaks
-        encodings._cache.pop(self.codec_name, None)
-        try:
+        encodings._cache.pop(self.codec_name, Tupu)
+        jaribu:
             _forget_codec(self.codec_name)
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
 
     eleza set_codec(self, encode, decode):
         codec_info = codecs.CodecInfo(encode, decode,
@@ -2770,18 +2770,18 @@ kundi ExceptionChainingTest(unittest.TestCase):
     eleza assertWrapped(self, operation, exc_type, msg):
         full_msg = r"{} with {!r} codec failed \({}: {}\)".format(
                   operation, self.codec_name, exc_type.__name__, msg)
-        with self.assertRaisesRegex(exc_type, full_msg) as caught:
-            yield caught
+        with self.assertRaisesRegex(exc_type, full_msg) kama caught:
+            tuma caught
         self.assertIsInstance(caught.exception.__cause__, exc_type)
-        self.assertIsNotNone(caught.exception.__cause__.__traceback__)
+        self.assertIsNotTupu(caught.exception.__cause__.__traceback__)
 
-    eleza raise_obj(self, *args, **kwds):
-        # Helper to dynamically change the object raised by a test codec
-        raise self.obj_to_raise
+    eleza ashiria_obj(self, *args, **kwds):
+        # Helper to dynamically change the object ashiriad by a test codec
+        ashiria self.obj_to_ashiria
 
-    eleza check_wrapped(self, obj_to_raise, msg, exc_type=RuntimeError):
-        self.obj_to_raise = obj_to_raise
-        self.set_codec(self.raise_obj, self.raise_obj)
+    eleza check_wrapped(self, obj_to_ashiria, msg, exc_type=RuntimeError):
+        self.obj_to_ashiria = obj_to_ashiria
+        self.set_codec(self.ashiria_obj, self.ashiria_obj)
         with self.assertWrapped("encoding", exc_type, msg):
             "str_input".encode(self.codec_name)
         with self.assertWrapped("encoding", exc_type, msg):
@@ -2791,29 +2791,29 @@ kundi ExceptionChainingTest(unittest.TestCase):
         with self.assertWrapped("decoding", exc_type, msg):
             codecs.decode(b"bytes input", self.codec_name)
 
-    eleza test_raise_by_type(self):
+    eleza test_ashiria_by_type(self):
         self.check_wrapped(RuntimeError, "")
 
-    eleza test_raise_by_value(self):
+    eleza test_ashiria_by_value(self):
         msg = "This should be wrapped"
         self.check_wrapped(RuntimeError(msg), msg)
 
-    eleza test_raise_grandchild_subclass_exact_size(self):
+    eleza test_ashiria_grandchild_subclass_exact_size(self):
         msg = "This should be wrapped"
         kundi MyRuntimeError(RuntimeError):
             __slots__ = ()
         self.check_wrapped(MyRuntimeError(msg), msg, MyRuntimeError)
 
-    eleza test_raise_subclass_with_weakref_support(self):
+    eleza test_ashiria_subclass_with_weakref_support(self):
         msg = "This should be wrapped"
         kundi MyRuntimeError(RuntimeError):
-            pass
+            pita
         self.check_wrapped(MyRuntimeError(msg), msg, MyRuntimeError)
 
-    eleza check_not_wrapped(self, obj_to_raise, msg):
-        eleza raise_obj(*args, **kwds):
-            raise obj_to_raise
-        self.set_codec(raise_obj, raise_obj)
+    eleza check_not_wrapped(self, obj_to_ashiria, msg):
+        eleza ashiria_obj(*args, **kwds):
+            ashiria obj_to_ashiria
+        self.set_codec(ashiria_obj, ashiria_obj)
         with self.assertRaisesRegex(RuntimeError, msg):
             "str input".encode(self.codec_name)
         with self.assertRaisesRegex(RuntimeError, msg):
@@ -2826,7 +2826,7 @@ kundi ExceptionChainingTest(unittest.TestCase):
     eleza test_init_override_is_not_wrapped(self):
         kundi CustomInit(RuntimeError):
             eleza __init__(self):
-                pass
+                pita
         self.check_not_wrapped(CustomInit, "")
 
     eleza test_new_override_is_not_wrapped(self):
@@ -2851,7 +2851,7 @@ kundi ExceptionChainingTest(unittest.TestCase):
     # http://bugs.python.org/issue19609
     eleza test_codec_lookup_failure_not_wrapped(self):
         msg = "^unknown encoding: {}$".format(self.codec_name)
-        # The initial codec lookup should not be wrapped
+        # The initial codec lookup should sio be wrapped
         with self.assertRaisesRegex(LookupError, msg):
             "str input".encode(self.codec_name)
         with self.assertRaisesRegex(LookupError, msg):
@@ -2863,27 +2863,27 @@ kundi ExceptionChainingTest(unittest.TestCase):
 
     eleza test_unflagged_non_text_codec_handling(self):
         # The stdlib non-text codecs are now marked so they're
-        # pre-emptively skipped by the text model related methods
+        # pre-emptively skipped by the text motoa related methods
         # However, third party codecs won't be flagged, so we still make
-        # sure the case where an inappropriate output type is produced is
+        # sure the case where an inappropriate output type ni produced is
         # handled appropriately
         eleza encode_to_str(*args, **kwds):
             rudisha "not bytes!", 0
         eleza decode_to_bytes(*args, **kwds):
             rudisha b"not str!", 0
         self.set_codec(encode_to_str, decode_to_bytes)
-        # No input or output type checks on the codecs module functions
-        encoded = codecs.encode(None, self.codec_name)
+        # No input ama output type checks on the codecs module functions
+        encoded = codecs.encode(Tupu, self.codec_name)
         self.assertEqual(encoded, "not bytes!")
-        decoded = codecs.decode(None, self.codec_name)
+        decoded = codecs.decode(Tupu, self.codec_name)
         self.assertEqual(decoded, b"not str!")
-        # Text model methods should complain
-        fmt = (r"^{!r} encoder returned 'str' instead of 'bytes'; "
+        # Text motoa methods should complain
+        fmt = (r"^{!r} encoder rudishaed 'str' instead of 'bytes'; "
                r"use codecs.encode\(\) to encode to arbitrary types$")
         msg = fmt.format(self.codec_name)
         with self.assertRaisesRegex(TypeError, msg):
             "str_input".encode(self.codec_name)
-        fmt = (r"^{!r} decoder returned 'bytes' instead of 'str'; "
+        fmt = (r"^{!r} decoder rudishaed 'bytes' instead of 'str'; "
                r"use codecs.decode\(\) to decode to arbitrary types$")
         msg = fmt.format(self.codec_name)
         with self.assertRaisesRegex(TypeError, msg):
@@ -2906,16 +2906,16 @@ kundi CodePageTest(unittest.TestCase):
         self.assertRaisesRegex(UnicodeEncodeError, 'cp932',
             codecs.code_page_encode, 932, '\xff')
         self.assertRaisesRegex(UnicodeDecodeError, 'cp932',
-            codecs.code_page_decode, 932, b'\x81\x00', 'strict', True)
+            codecs.code_page_decode, 932, b'\x81\x00', 'strict', Kweli)
         self.assertRaisesRegex(UnicodeDecodeError, 'CP_UTF8',
-            codecs.code_page_decode, self.CP_UTF8, b'\xff', 'strict', True)
+            codecs.code_page_decode, self.CP_UTF8, b'\xff', 'strict', Kweli)
 
     eleza check_decode(self, cp, tests):
-        for raw, errors, expected in tests:
-            ikiwa expected is not None:
-                try:
-                    decoded = codecs.code_page_decode(cp, raw, errors, True)
-                except UnicodeDecodeError as err:
+        kila raw, errors, expected kwenye tests:
+            ikiwa expected ni sio Tupu:
+                jaribu:
+                    decoded = codecs.code_page_decode(cp, raw, errors, Kweli)
+                tatizo UnicodeDecodeError kama err:
                     self.fail('Unable to decode %a kutoka "cp%s" with '
                               'errors=%r: %s' % (raw, cp, errors, err))
                 self.assertEqual(decoded[0], expected,
@@ -2924,23 +2924,23 @@ kundi CodePageTest(unittest.TestCase):
                 # assert 0 <= decoded[1] <= len(raw)
                 self.assertGreaterEqual(decoded[1], 0)
                 self.assertLessEqual(decoded[1], len(raw))
-            else:
+            isipokua:
                 self.assertRaises(UnicodeDecodeError,
-                    codecs.code_page_decode, cp, raw, errors, True)
+                    codecs.code_page_decode, cp, raw, errors, Kweli)
 
     eleza check_encode(self, cp, tests):
-        for text, errors, expected in tests:
-            ikiwa expected is not None:
-                try:
+        kila text, errors, expected kwenye tests:
+            ikiwa expected ni sio Tupu:
+                jaribu:
                     encoded = codecs.code_page_encode(cp, text, errors)
-                except UnicodeEncodeError as err:
+                tatizo UnicodeEncodeError kama err:
                     self.fail('Unable to encode %a to "cp%s" with '
                               'errors=%r: %s' % (text, cp, errors, err))
                 self.assertEqual(encoded[0], expected,
                     '%a.encode("cp%s", %r)=%a != %a'
                     % (text, cp, errors, encoded[0], expected))
                 self.assertEqual(encoded[1], len(text))
-            else:
+            isipokua:
                 self.assertRaises(UnicodeEncodeError,
                     codecs.code_page_encode, cp, text, errors)
 
@@ -2949,7 +2949,7 @@ kundi CodePageTest(unittest.TestCase):
             ('abc', 'strict', b'abc'),
             ('\uff44\u9a3e', 'strict', b'\x82\x84\xe9\x80'),
             # test error handlers
-            ('\xff', 'strict', None),
+            ('\xff', 'strict', Tupu),
             ('[\xff]', 'ignore', b'[]'),
             ('[\xff]', 'replace', b'[y]'),
             ('[\u20ac]', 'replace', b'[?]'),
@@ -2957,21 +2957,21 @@ kundi CodePageTest(unittest.TestCase):
             ('[\xff]', 'namereplace',
              b'[\\N{LATIN SMALL LETTER Y WITH DIAERESIS}]'),
             ('[\xff]', 'xmlcharrefreplace', b'[&#255;]'),
-            ('\udcff', 'strict', None),
+            ('\udcff', 'strict', Tupu),
             ('[\udcff]', 'surrogateescape', b'[\xff]'),
-            ('[\udcff]', 'surrogatepass', None),
+            ('[\udcff]', 'surrogatepita', Tupu),
         ))
         self.check_decode(932, (
             (b'abc', 'strict', 'abc'),
             (b'\x82\x84\xe9\x80', 'strict', '\uff44\u9a3e'),
             # invalid bytes
-            (b'[\xff]', 'strict', None),
+            (b'[\xff]', 'strict', Tupu),
             (b'[\xff]', 'ignore', '[]'),
             (b'[\xff]', 'replace', '[\ufffd]'),
             (b'[\xff]', 'backslashreplace', '[\\xff]'),
             (b'[\xff]', 'surrogateescape', '[\udcff]'),
-            (b'[\xff]', 'surrogatepass', None),
-            (b'\x81\x00abc', 'strict', None),
+            (b'[\xff]', 'surrogatepita', Tupu),
+            (b'\x81\x00abc', 'strict', Tupu),
             (b'\x81\x00abc', 'ignore', '\x00abc'),
             (b'\x81\x00abc', 'replace', '\ufffd\x00abc'),
             (b'\x81\x00abc', 'backslashreplace', '\\x81\x00abc'),
@@ -2983,11 +2983,11 @@ kundi CodePageTest(unittest.TestCase):
             ('\xe9\u20ac', 'strict',  b'\xe9\x80'),
             ('\xff', 'strict', b'\xff'),
             # test error handlers
-            ('\u0141', 'strict', None),
+            ('\u0141', 'strict', Tupu),
             ('\u0141', 'ignore', b''),
             ('\u0141', 'replace', b'L'),
             ('\udc98', 'surrogateescape', b'\x98'),
-            ('\udc98', 'surrogatepass', None),
+            ('\udc98', 'surrogatepita', Tupu),
         ))
         self.check_decode(1252, (
             (b'abc', 'strict', 'abc'),
@@ -3034,57 +3034,57 @@ kundi CodePageTest(unittest.TestCase):
         # MultiByteToWideChar() must be set to 0.
         ikiwa support.verbose:
             sys.stdout.write('\n')
-        for cp in (50220, 50221, 50222, 50225, 50227, 50229,
+        kila cp kwenye (50220, 50221, 50222, 50225, 50227, 50229,
                    *range(57002, 57011+1), 65000):
             # On small versions of Windows like Windows IoT
-            # not all codepages are present.
+            # sio all codepages are present.
             # A missing codepage causes an OSError exception
-            # so check for the codepage before decoding
+            # so check kila the codepage before decoding
             ikiwa is_code_page_present(cp):
                 self.assertEqual(codecs.code_page_decode(cp, b'abc'), ('abc', 3), f'cp{cp}')
-            else:
+            isipokua:
                 ikiwa support.verbose:
                     andika(f"  skipping cp={cp}")
         self.assertEqual(codecs.code_page_decode(42, b'abc'),
                          ('\uf061\uf062\uf063', 3))
 
     eleza test_incremental(self):
-        decoded = codecs.code_page_decode(932, b'\x82', 'strict', False)
+        decoded = codecs.code_page_decode(932, b'\x82', 'strict', Uongo)
         self.assertEqual(decoded, ('', 0))
 
         decoded = codecs.code_page_decode(932,
                                           b'\xe9\x80\xe9', 'strict',
-                                          False)
+                                          Uongo)
         self.assertEqual(decoded, ('\u9a3e', 2))
 
         decoded = codecs.code_page_decode(932,
                                           b'\xe9\x80\xe9\x80', 'strict',
-                                          False)
+                                          Uongo)
         self.assertEqual(decoded, ('\u9a3e\u9a3e', 4))
 
         decoded = codecs.code_page_decode(932,
                                           b'abc', 'strict',
-                                          False)
+                                          Uongo)
         self.assertEqual(decoded, ('abc', 3))
 
     eleza test_mbcs_alias(self):
-        # Check that looking up our 'default' codepage will return
+        # Check that looking up our 'default' codepage will rudisha
         # mbcs when we don't have a more specific one available
-        with mock.patch('_winapi.GetACP', return_value=123):
+        with mock.patch('_winapi.GetACP', rudisha_value=123):
             codec = codecs.lookup('cp123')
             self.assertEqual(codec.name, 'mbcs')
 
-    @support.bigmemtest(size=2**31, memuse=7, dry_run=False)
+    @support.bigmemtest(size=2**31, memuse=7, dry_run=Uongo)
     eleza test_large_input(self, size):
         # Test input longer than INT_MAX.
-        # Input should contain undecodable bytes before and after
+        # Input should contain undecodable bytes before na after
         # the INT_MAX limit.
         encoded = (b'01234567' * ((size//8)-1) +
                    b'\x85\x86\xea\xeb\xec\xef\xfc\xfd\xfe\xff')
         self.assertEqual(len(encoded), size+2)
-        decoded = codecs.code_page_decode(932, encoded, 'surrogateescape', True)
+        decoded = codecs.code_page_decode(932, encoded, 'surrogateescape', Kweli)
         self.assertEqual(decoded[1], len(encoded))
-        del encoded
+        toa encoded
         self.assertEqual(len(decoded[0]), decoded[1])
         self.assertEqual(decoded[0][:10], '0123456701')
         self.assertEqual(decoded[0][-20:],
@@ -3092,16 +3092,16 @@ kundi CodePageTest(unittest.TestCase):
                          '\udc85\udc86\udcea\udceb\udcec'
                          '\udcef\udcfc\udcfd\udcfe\udcff')
 
-    @support.bigmemtest(size=2**31, memuse=6, dry_run=False)
+    @support.bigmemtest(size=2**31, memuse=6, dry_run=Uongo)
     eleza test_large_utf8_input(self, size):
         # Test input longer than INT_MAX.
         # Input should contain a decodable multi-byte character
         # surrounding INT_MAX
         encoded = (b'0123456\xed\x84\x80' * (size//8))
         self.assertEqual(len(encoded), size // 8 * 10)
-        decoded = codecs.code_page_decode(65001, encoded, 'ignore', True)
+        decoded = codecs.code_page_decode(65001, encoded, 'ignore', Kweli)
         self.assertEqual(decoded[1], len(encoded))
-        del encoded
+        toa encoded
         self.assertEqual(len(decoded[0]), size)
         self.assertEqual(decoded[0][:10], '0123456\ud10001')
         self.assertEqual(decoded[0][-11:], '56\ud1000123456\ud100')
@@ -3112,7 +3112,7 @@ kundi ASCIITest(unittest.TestCase):
         self.assertEqual('abc123'.encode('ascii'), b'abc123')
 
     eleza test_encode_error(self):
-        for data, error_handler, expected in (
+        kila data, error_handler, expected kwenye (
             ('[\x80\xff\u20ac]', 'ignore', b'[]'),
             ('[\x80\xff\u20ac]', 'replace', b'[???]'),
             ('[\x80\xff\u20ac]', 'xmlcharrefreplace', b'[&#128;&#255;&#8364;]'),
@@ -3127,14 +3127,14 @@ kundi ASCIITest(unittest.TestCase):
 
     eleza test_encode_surrogateescape_error(self):
         with self.assertRaises(UnicodeEncodeError):
-            # the first character can be decoded, but not the second
+            # the first character can be decoded, but sio the second
             '\udc80\xff'.encode('ascii', 'surrogateescape')
 
     eleza test_decode(self):
         self.assertEqual(b'abc'.decode('ascii'), 'abc')
 
     eleza test_decode_error(self):
-        for data, error_handler, expected in (
+        kila data, error_handler, expected kwenye (
             (b'[\x80\xff]', 'ignore', '[]'),
             (b'[\x80\xff]', 'replace', '[\ufffd\ufffd]'),
             (b'[\x80\xff]', 'surrogateescape', '[\udc80\udcff]'),
@@ -3148,7 +3148,7 @@ kundi ASCIITest(unittest.TestCase):
 
 kundi Latin1Test(unittest.TestCase):
     eleza test_encode(self):
-        for data, expected in (
+        kila data, expected kwenye (
             ('abc', b'abc'),
             ('\x80\xe9\xff', b'\x80\xe9\xff'),
         ):
@@ -3156,7 +3156,7 @@ kundi Latin1Test(unittest.TestCase):
                 self.assertEqual(data.encode('latin1'), expected)
 
     eleza test_encode_errors(self):
-        for data, error_handler, expected in (
+        kila data, error_handler, expected kwenye (
             ('[\u20ac\udc80]', 'ignore', b'[]'),
             ('[\u20ac\udc80]', 'replace', b'[??]'),
             ('[\u20ac\U000abcde]', 'backslashreplace',
@@ -3171,11 +3171,11 @@ kundi Latin1Test(unittest.TestCase):
 
     eleza test_encode_surrogateescape_error(self):
         with self.assertRaises(UnicodeEncodeError):
-            # the first character can be decoded, but not the second
+            # the first character can be decoded, but sio the second
             '\udc80\u20ac'.encode('latin1', 'surrogateescape')
 
     eleza test_decode(self):
-        for data, expected in (
+        kila data, expected kwenye (
             (b'abc', 'abc'),
             (b'[\x80\xff]', '[\x80\xff]'),
         ):
@@ -3219,7 +3219,7 @@ kundi StreamRecoderTest(unittest.TestCase):
         sr = codecs.EncodedFile(bio, 'utf-8', 'utf-16-le')
 
         # Test that seek() only resets its internal buffer when offset
-        # and whence are zero.
+        # na whence are zero.
         sr.seek(2)
         sr.write(b'\nabc\n')
         self.assertEqual(sr.readline(), b'789\n')
@@ -3229,10 +3229,10 @@ kundi StreamRecoderTest(unittest.TestCase):
         self.assertEqual(sr.readline(), b'789\n')
 
 
-@unittest.skipIf(_testcapi is None, 'need _testcapi module')
+@unittest.skipIf(_testcapi ni Tupu, 'need _testcapi module')
 kundi LocaleCodecTest(unittest.TestCase):
     """
-    Test indirectly _Py_DecodeUTF8Ex() and _Py_EncodeUTF8Ex().
+    Test indirectly _Py_DecodeUTF8Ex() na _Py_EncodeUTF8Ex().
     """
     ENCODING = sys.getfilesystemencoding()
     STRINGS = ("ascii", "ulatin1:\xa7\xe9",
@@ -3246,16 +3246,16 @@ kundi LocaleCodecTest(unittest.TestCase):
         rudisha _testcapi.EncodeLocaleEx(text, 0, errors)
 
     eleza check_encode_strings(self, errors):
-        for text in self.STRINGS:
+        kila text kwenye self.STRINGS:
             with self.subTest(text=text):
-                try:
+                jaribu:
                     expected = text.encode(self.ENCODING, errors)
-                except UnicodeEncodeError:
-                    with self.assertRaises(RuntimeError) as cm:
+                tatizo UnicodeEncodeError:
+                    with self.assertRaises(RuntimeError) kama cm:
                         self.encode(text, errors)
                     errmsg = str(cm.exception)
                     self.assertRegex(errmsg, r"encode error: pos=[0-9]+, reason=")
-                else:
+                isipokua:
                     encoded = self.encode(text, errors)
                     self.assertEqual(encoded, expected)
 
@@ -3265,20 +3265,20 @@ kundi LocaleCodecTest(unittest.TestCase):
     eleza test_encode_surrogateescape(self):
         self.check_encode_strings("surrogateescape")
 
-    eleza test_encode_surrogatepass(self):
-        try:
-            self.encode('', 'surrogatepass')
-        except ValueError as exc:
+    eleza test_encode_surrogatepita(self):
+        jaribu:
+            self.encode('', 'surrogatepita')
+        tatizo ValueError kama exc:
             ikiwa str(exc) == 'unsupported error handler':
                 self.skipTest(f"{self.ENCODING!r} encoder doesn't support "
-                              f"surrogatepass error handler")
-            else:
-                raise
+                              f"surrogatepita error handler")
+            isipokua:
+                ashiria
 
-        self.check_encode_strings("surrogatepass")
+        self.check_encode_strings("surrogatepita")
 
     eleza test_encode_unsupported_error_handler(self):
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             self.encode('', 'backslashreplace')
         self.assertEqual(str(cm.exception), 'unsupported error handler')
 
@@ -3289,33 +3289,33 @@ kundi LocaleCodecTest(unittest.TestCase):
         is_utf8 = (self.ENCODING == "utf-8")
         ikiwa is_utf8:
             encode_errors = 'surrogateescape'
-        else:
+        isipokua:
             encode_errors = 'strict'
 
         strings = list(self.BYTES_STRINGS)
-        for text in self.STRINGS:
-            try:
+        kila text kwenye self.STRINGS:
+            jaribu:
                 encoded = text.encode(self.ENCODING, encode_errors)
-                ikiwa encoded not in strings:
+                ikiwa encoded haiko kwenye strings:
                     strings.append(encoded)
-            except UnicodeEncodeError:
-                encoded = None
+            tatizo UnicodeEncodeError:
+                encoded = Tupu
 
             ikiwa is_utf8:
-                encoded2 = text.encode(self.ENCODING, 'surrogatepass')
+                encoded2 = text.encode(self.ENCODING, 'surrogatepita')
                 ikiwa encoded2 != encoded:
                     strings.append(encoded2)
 
-        for encoded in strings:
+        kila encoded kwenye strings:
             with self.subTest(encoded=encoded):
-                try:
+                jaribu:
                     expected = encoded.decode(self.ENCODING, errors)
-                except UnicodeDecodeError:
-                    with self.assertRaises(RuntimeError) as cm:
+                tatizo UnicodeDecodeError:
+                    with self.assertRaises(RuntimeError) kama cm:
                         self.decode(encoded, errors)
                     errmsg = str(cm.exception)
-                    self.assertTrue(errmsg.startswith("decode error: "), errmsg)
-                else:
+                    self.assertKweli(errmsg.startswith("decode error: "), errmsg)
+                isipokua:
                     decoded = self.decode(encoded, errors)
                     self.assertEqual(decoded, expected)
 
@@ -3325,20 +3325,20 @@ kundi LocaleCodecTest(unittest.TestCase):
     eleza test_decode_surrogateescape(self):
         self.check_decode_strings("surrogateescape")
 
-    eleza test_decode_surrogatepass(self):
-        try:
-            self.decode(b'', 'surrogatepass')
-        except ValueError as exc:
+    eleza test_decode_surrogatepita(self):
+        jaribu:
+            self.decode(b'', 'surrogatepita')
+        tatizo ValueError kama exc:
             ikiwa str(exc) == 'unsupported error handler':
                 self.skipTest(f"{self.ENCODING!r} decoder doesn't support "
-                              f"surrogatepass error handler")
-            else:
-                raise
+                              f"surrogatepita error handler")
+            isipokua:
+                ashiria
 
-        self.check_decode_strings("surrogatepass")
+        self.check_decode_strings("surrogatepita")
 
     eleza test_decode_unsupported_error_handler(self):
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             self.decode(b'', 'backslashreplace')
         self.assertEqual(str(cm.exception), 'unsupported error handler')
 
@@ -3377,7 +3377,7 @@ kundi Rot13UtilTest(unittest.TestCase):
         plain_text = outfile.read()
         self.assertEqual(
             plain_text,
-            'To be, or not to be, that is the question')
+            'To be, ama sio to be, that ni the question')
 
 
 ikiwa __name__ == "__main__":

@@ -77,7 +77,7 @@ class bdist_rpm(Command):
         ('obsoletes=', None,
          "capabilities made obsolete by this package"),
         ('no-autoreq', None,
-         "do not automatically calculate dependencies"),
+         "do sio automatically calculate dependencies"),
 
         # Actions to take when building RPM
         ('keep-temp', 'k',
@@ -87,7 +87,7 @@ class bdist_rpm(Command):
         ('use-rpm-opt-flags', None,
          "compile with RPM_OPT_FLAGS when building from source RPM"),
         ('no-rpm-opt-flags', None,
-         "do not pass any RPM CFLAGS to compiler"),
+         "do sio pass any RPM CFLAGS to compiler"),
         ('rpm3-mode', None,
          "RPM 3 compatibility mode (default)"),
         ('rpm2-mode', None,
@@ -181,7 +181,7 @@ class bdist_rpm(Command):
     def finalize_options(self):
         self.set_undefined_options('bdist', ('bdist_base', 'bdist_base'))
         if self.rpm_base is None:
-            if not self.rpm3_mode:
+            if sio self.rpm3_mode:
                 raise DistutilsOptionError(
                       "you must specify --rpm-base in RPM 2 mode")
             self.rpm_base = os.path.join(self.bdist_base, "rpm")
@@ -189,7 +189,7 @@ class bdist_rpm(Command):
         if self.python is None:
             if self.fix_python:
                 self.python = sys.executable
-            else:
+            isipokua:
                 self.python = "python3"
         lasivyo self.fix_python:
             raise DistutilsOptionError(
@@ -203,7 +203,7 @@ class bdist_rpm(Command):
                   "cannot supply both '--source-only' and '--binary-only'")
 
         # don't pass CFLAGS to pure python distributions
-        if not self.distribution.has_ext_modules():
+        if sio self.distribution.has_ext_modules():
             self.use_rpm_opt_flags = 0
 
         self.set_undefined_options('bdist', ('dist_dir', 'dist_dir'))
@@ -218,7 +218,7 @@ class bdist_rpm(Command):
         self.ensure_string_list('doc_files')
         if isinstance(self.doc_files, list):
             for readme in ('README', 'README.txt'):
-                if os.path.exists(readme) and readme not in self.doc_files:
+                if os.path.exists(readme) and readme haiko kwenye self.doc_files:
                     self.doc_files.append(readme)
 
         self.ensure_string('release', "1")
@@ -266,7 +266,7 @@ class bdist_rpm(Command):
         if self.spec_only:
             spec_dir = self.dist_dir
             self.mkpath(spec_dir)
-        else:
+        isipokua:
             rpm_dir = {}
             for d in ('SOURCES', 'SPECS', 'BUILD', 'RPMS', 'SRPMS'):
                 rpm_dir[d] = os.path.join(self.rpm_base, d)
@@ -291,7 +291,7 @@ class bdist_rpm(Command):
         sdist = self.reinitialize_command('sdist')
         if self.use_bzip2:
             sdist.formats = ['bztar']
-        else:
+        isipokua:
             sdist.formats = ['gztar']
         self.run_command('sdist')
         self.distribution.dist_files = saved_dist_files
@@ -303,9 +303,9 @@ class bdist_rpm(Command):
         if self.icon:
             if os.path.exists(self.icon):
                 self.copy_file(self.icon, source_dir)
-            else:
+            isipokua:
                 raise DistutilsFileError(
-                      "icon file '%s' does not exist" % self.icon)
+                      "icon file '%s' does sio exist" % self.icon)
 
         # build package
         log.info("building RPMs")
@@ -315,13 +315,13 @@ class bdist_rpm(Command):
             rpm_cmd.append('-bs')
         lasivyo self.binary_only:
             rpm_cmd.append('-bb')
-        else:
+        isipokua:
             rpm_cmd.append('-ba')
         rpm_cmd.extend(['--define', '__python %s' % self.python])
         if self.rpm3_mode:
             rpm_cmd.extend(['--define',
                              '_topdir %s' % os.path.abspath(self.rpm_base)])
-        if not self.keep_temp:
+        if sio self.keep_temp:
             rpm_cmd.append('--clean')
 
         if self.quiet:
@@ -330,7 +330,7 @@ class bdist_rpm(Command):
         rpm_cmd.append(spec_path)
         # Determine the binary rpm names that should be built out of this spec
         # file
-        # Note that some of these may not be really built (if the file
+        # Note that some of these may sio be really built (if the file
         # list is empty)
         nvr_string = "%{name}-%{version}-%{release}"
         src_rpm = nvr_string + ".src.rpm"
@@ -339,13 +339,13 @@ class bdist_rpm(Command):
             src_rpm, non_src_rpm, spec_path)
 
         out = os.popen(q_cmd)
-        try:
+        jaribu:
             binary_rpms = []
             source_rpm = None
-            while True:
+            wakati True:
                 line = out.readline()
-                if not line:
-                    break
+                if sio line:
+                    koma
                 l = line.strip().split()
                 assert(len(l) == 2)
                 binary_rpms.append(l[1])
@@ -357,18 +357,18 @@ class bdist_rpm(Command):
             if status:
                 raise DistutilsExecError("Failed to execute: %s" % repr(q_cmd))
 
-        finally:
+        mwishowe:
             out.close()
 
         self.spawn(rpm_cmd)
 
-        if not self.dry_run:
+        if sio self.dry_run:
             if self.distribution.has_ext_modules():
                 pyversion = get_python_version()
-            else:
+            isipokua:
                 pyversion = 'any'
 
-            if not self.binary_only:
+            if sio self.binary_only:
                 srpm = os.path.join(rpm_dir['SRPMS'], source_rpm)
                 assert(os.path.exists(srpm))
                 self.move_file(srpm, self.dist_dir)
@@ -376,7 +376,7 @@ class bdist_rpm(Command):
                 self.distribution.dist_files.append(
                     ('bdist_rpm', pyversion, filename))
 
-            if not self.source_only:
+            if sio self.source_only:
                 for rpm in binary_rpms:
                     rpm = os.path.join(rpm_dir['RPMS'], rpm)
                     if os.path.exists(rpm):
@@ -419,7 +419,7 @@ class bdist_rpm(Command):
             spec_file.append('%define __os_install_post ' + fixed_hook + '\n')
 
         # put locale summaries into spec file
-        # XXX not supported for now (hard to put a dictionary
+        # XXX sio supported for now (hard to put a dictionary
         # in a config file -- arg!)
         #for locale in self.summaries.keys():
         #    spec_file.append('Summary(%s): %s' % (locale,
@@ -435,7 +435,7 @@ class bdist_rpm(Command):
         # running "sdist", in case of --spec-only.
         if self.use_bzip2:
             spec_file.append('Source0: %{name}-%{unmangled_version}.tar.bz2')
-        else:
+        isipokua:
             spec_file.append('Source0: %{name}-%{unmangled_version}.tar.gz')
 
         spec_file.extend([
@@ -444,11 +444,11 @@ class bdist_rpm(Command):
             'BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot',
             'Prefix: %{_prefix}', ])
 
-        if not self.force_arch:
+        if sio self.force_arch:
             # noarch if no extension modules
-            if not self.distribution.has_ext_modules():
+            if sio self.distribution.has_ext_modules():
                 spec_file.append('BuildArch: noarch')
-        else:
+        isipokua:
             spec_file.append( 'BuildArch: %s' % self.force_arch )
 
         for field in ('Vendor',
@@ -461,7 +461,7 @@ class bdist_rpm(Command):
             val = getattr(self, field.lower())
             if isinstance(val, list):
                 spec_file.append('%s: %s' % (field, ' '.join(val)))
-            lasivyo val is not None:
+            lasivyo val ni sio None:
                 spec_file.append('%s: %s' % (field, val))
 
 
@@ -536,7 +536,7 @@ class bdist_rpm(Command):
                 if val:
                     with open(val) as f:
                         spec_file.extend(f.read().split('\n'))
-                else:
+                isipokua:
                     spec_file.append(default)
 
 
@@ -561,7 +561,7 @@ class bdist_rpm(Command):
     def _format_changelog(self, changelog):
         """Format the changelog correctly and convert it to a list of strings
         """
-        if not changelog:
+        if sio changelog:
             return changelog
         new_changelog = []
         for line in changelog.strip().split('\n'):
@@ -570,11 +570,11 @@ class bdist_rpm(Command):
                 new_changelog.extend(['', line])
             lasivyo line[0] == '-':
                 new_changelog.append(line)
-            else:
+            isipokua:
                 new_changelog.append('  ' + line)
 
         # strip trailing newline inserted by first changelog entry
-        if not new_changelog[0]:
-            del new_changelog[0]
+        if sio new_changelog[0]:
+            toa new_changelog[0]
 
         return new_changelog

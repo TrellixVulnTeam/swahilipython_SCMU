@@ -7,7 +7,7 @@ agiza importlib.util
 agiza re
 agiza types
 # Because sys.path gets essentially blanked, need to have unicodedata already
-# imported for the parser to use.
+# imported kila the parser to use.
 agiza unicodedata
 agiza unittest
 agiza warnings
@@ -18,14 +18,14 @@ CODING_RE = re.compile(r'^[ \t\f]*#.*?coding[:=][ \t]*([-\w.]+)', re.ASCII)
 
 kundi EncodingTest:
 
-    """PEP 3120 makes UTF-8 the default encoding for source code
+    """PEP 3120 makes UTF-8 the default encoding kila source code
     [default encoding].
 
     PEP 263 specifies how that can change on a per-file basis. Either the first
-    or second line can contain the encoding line [encoding first line]
-    encoding second line]. If the file has the BOM marker it is considered UTF-8
-    implicitly [BOM]. If any encoding is specified it must be UTF-8, else it is
-    an error [BOM and utf-8][BOM conflict].
+    ama second line can contain the encoding line [encoding first line]
+    encoding second line]. If the file has the BOM marker it ni considered UTF-8
+    implicitly [BOM]. If any encoding ni specified it must be UTF-8, else it is
+    an error [BOM na utf-8][BOM conflict].
 
     """
 
@@ -35,8 +35,8 @@ kundi EncodingTest:
     module_name = '_temp'
 
     eleza run_test(self, source):
-        with util.create_modules(self.module_name) as mapping:
-            with open(mapping[self.module_name], 'wb') as file:
+        with util.create_modules(self.module_name) kama mapping:
+            with open(mapping[self.module_name], 'wb') kama file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(self.module_name,
                                                   mapping[self.module_name])
@@ -76,7 +76,7 @@ kundi EncodingTest:
     eleza test_bom(self):
         self.run_test(codecs.BOM_UTF8 + self.source_line.encode('utf-8'))
 
-    # [BOM and utf-8]
+    # [BOM na utf-8]
     eleza test_bom_and_utf_8(self):
         source = codecs.BOM_UTF8 + self.create_source('utf-8')
         self.run_test(source)
@@ -124,8 +124,8 @@ kundi LineEndingTest:
         module_name = '_temp'
         source_lines = [b"a = 42", b"b = -13", b'']
         source = line_ending.join(source_lines)
-        with util.create_modules(module_name) as mapping:
-            with open(mapping[module_name], 'wb') as file:
+        with util.create_modules(module_name) kama mapping:
+            with open(mapping[module_name], 'wb') kama file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(module_name,
                                                      mapping[module_name])

@@ -1,14 +1,14 @@
-'''Define SearchDialogBase used by Search, Replace, and Grep dialogs.'''
+'''Define SearchDialogBase used by Search, Replace, na Grep dialogs.'''
 
 kutoka tkinter agiza Toplevel
 kutoka tkinter.ttk agiza Frame, Entry, Label, Button, Checkbutton, Radiobutton
 
 
 kundi SearchDialogBase:
-    '''Create most of a 3 or 4 row, 3 column search dialog.
+    '''Create most of a 3 ama 4 row, 3 column search dialog.
 
-    The left and wide middle column contain:
-    1 or 2 labeled text entry lines (make_entry, create_entries);
+    The left na wide middle column contain:
+    1 ama 2 labeled text entry lines (make_entry, create_entries);
     a row of standard Checkbuttons (make_frame, create_option_buttons),
     each of which corresponds to a search engine Variable;
     a row of dialog-specific Check/Radiobuttons (create_other_buttons).
@@ -17,43 +17,43 @@ kundi SearchDialogBase:
     (make_button, create_command_buttons).
     These are bound to functions that execute the command.
 
-    Except for command buttons, this base kundi is not limited to items
-    common to all three subclasses.  Rather, it is the Find dialog minus
-    the "Find Next" command, its execution function, and the
-    default_command attribute needed in create_widgets. The other
-    dialogs override attributes and methods, the latter to replace and
+    Except kila command buttons, this base kundi ni sio limited to items
+    common to all three subclasses.  Rather, it ni the Find dialog minus
+    the "Find Next" command, its execution function, na the
+    default_command attribute needed kwenye create_widgets. The other
+    dialogs override attributes na methods, the latter to replace and
     add widgets.
     '''
 
-    title = "Search Dialog"  # replace in subclasses
+    title = "Search Dialog"  # replace kwenye subclasses
     icon = "Search"
-    needwrapbutton = 1  # not in Find in Files
+    needwrapbutton = 1  # haiko kwenye Find kwenye Files
 
     eleza __init__(self, root, engine):
-        '''Initialize root, engine, and top attributes.
+        '''Initialize root, engine, na top attributes.
 
-        top (level widget): set in create_widgets() called kutoka open().
-        text (Text searched): set in open(), only used in subclasses().
-        ent (ry): created in make_entry() called kutoka create_entry().
-        row (of grid): 0 in create_widgets(), +1 in make_entry/frame().
-        default_command: set in subclasses, used in create_widgets().
+        top (level widget): set kwenye create_widgets() called kutoka open().
+        text (Text searched): set kwenye open(), only used kwenye subclasses().
+        ent (ry): created kwenye make_entry() called kutoka create_entry().
+        row (of grid): 0 kwenye create_widgets(), +1 kwenye make_entry/frame().
+        default_command: set kwenye subclasses, used kwenye create_widgets().
 
-        title (of dialog): kundi attribute, override in subclasses.
+        title (of dialog): kundi attribute, override kwenye subclasses.
         icon (of dialog): ditto, use unclear ikiwa cannot minimize dialog.
         '''
         self.root = root
         self.bell = root.bell
         self.engine = engine
-        self.top = None
+        self.top = Tupu
 
-    eleza open(self, text, searchphrase=None):
-        "Make dialog visible on top of others and ready to use."
+    eleza open(self, text, searchphrase=Tupu):
+        "Make dialog visible on top of others na ready to use."
         self.text = text
-        ikiwa not self.top:
+        ikiwa sio self.top:
             self.create_widgets()
-        else:
+        isipokua:
             self.top.deiconify()
-            self.top.tkraise()
+            self.top.tkashiria()
         self.top.transient(text.winfo_toplevel())
         ikiwa searchphrase:
             self.ent.delete(0,"end")
@@ -63,8 +63,8 @@ kundi SearchDialogBase:
         self.ent.icursor(0)
         self.top.grab_set()
 
-    eleza close(self, event=None):
-        "Put dialog away for later use."
+    eleza close(self, event=Tupu):
+        "Put dialog away kila later use."
         ikiwa self.top:
             self.top.grab_release()
             self.top.transient('')
@@ -73,8 +73,8 @@ kundi SearchDialogBase:
     eleza create_widgets(self):
         '''Create basic 3 row x 3 col search (find) dialog.
 
-        Other dialogs override subsidiary create_x methods as needed.
-        Replace and Find-in-Files add another entry row.
+        Other dialogs override subsidiary create_x methods kama needed.
+        Replace na Find-in-Files add another entry row.
         '''
         top = Toplevel(self.root)
         top.bind("<Return>", self.default_command)
@@ -96,8 +96,8 @@ kundi SearchDialogBase:
     eleza make_entry(self, label_text, var):
         '''Return (entry, label), .
 
-        entry - gridded labeled Entry for text entry.
-        label - Label widget, returned for testing.
+        entry - gridded labeled Entry kila text entry.
+        label - Label widget, rudishaed kila testing.
         '''
         label = Label(self.top, text=label_text)
         label.grid(row=self.row, column=0, sticky="nw")
@@ -107,19 +107,19 @@ kundi SearchDialogBase:
         rudisha entry, label
 
     eleza create_entries(self):
-        "Create one or more entry lines with make_entry."
+        "Create one ama more entry lines with make_entry."
         self.ent = self.make_entry("Find:", self.engine.patvar)[0]
 
-    eleza make_frame(self,labeltext=None):
+    eleza make_frame(self,labeltext=Tupu):
         '''Return (frame, label).
 
-        frame - gridded labeled Frame for option or other buttons.
-        label - Label widget, returned for testing.
+        frame - gridded labeled Frame kila option ama other buttons.
+        label - Label widget, rudishaed kila testing.
         '''
         ikiwa labeltext:
             label = Label(self.top, text=labeltext)
             label.grid(row=self.row, column=0, sticky="nw")
-        else:
+        isipokua:
             label = ''
         frame = Frame(self.top)
         frame.grid(row=self.row, column=1, columnspan=1, sticky="nwe")
@@ -127,11 +127,11 @@ kundi SearchDialogBase:
         rudisha frame, label
 
     eleza create_option_buttons(self):
-        '''Return (filled frame, options) for testing.
+        '''Return (filled frame, options) kila testing.
 
-        Options is a list of searchengine booleanvar, label pairs.
-        A gridded frame kutoka make_frame is filled with a Checkbutton
-        for each pair, bound to the var, with the corresponding label.
+        Options ni a list of searchengine booleanvar, label pairs.
+        A gridded frame kutoka make_frame ni filled with a Checkbutton
+        kila each pair, bound to the var, with the corresponding label.
         '''
         frame = self.make_frame("Options")[0]
         engine = self.engine
@@ -140,37 +140,37 @@ kundi SearchDialogBase:
                    (engine.wordvar, "Whole word")]
         ikiwa self.needwrapbutton:
             options.append((engine.wrapvar, "Wrap around"))
-        for var, label in options:
+        kila var, label kwenye options:
             btn = Checkbutton(frame, variable=var, text=label)
             btn.pack(side="left", fill="both")
         rudisha frame, options
 
     eleza create_other_buttons(self):
-        '''Return (frame, others) for testing.
+        '''Return (frame, others) kila testing.
 
-        Others is a list of value, label pairs.
-        A gridded frame kutoka make_frame is filled with radio buttons.
+        Others ni a list of value, label pairs.
+        A gridded frame kutoka make_frame ni filled with radio buttons.
         '''
         frame = self.make_frame("Direction")[0]
         var = self.engine.backvar
         others = [(1, 'Up'), (0, 'Down')]
-        for val, label in others:
+        kila val, label kwenye others:
             btn = Radiobutton(frame, variable=var, value=val, text=label)
             btn.pack(side="left", fill="both")
         rudisha frame, others
 
     eleza make_button(self, label, command, isdef=0):
-        "Return command button gridded in command frame."
+        "Return command button gridded kwenye command frame."
         b = Button(self.buttonframe,
                    text=label, command=command,
-                   default=iseleza and "active" or "normal")
+                   default=iseleza na "active" ama "normal")
         cols,rows=self.buttonframe.grid_size()
         b.grid(pady=1,row=rows,column=0,sticky="ew")
         self.buttonframe.grid(rowspan=rows+1)
         rudisha b
 
     eleza create_command_buttons(self):
-        "Place buttons in vertical command frame gridded on right."
+        "Place buttons kwenye vertical command frame gridded on right."
         f = self.buttonframe = Frame(self.top)
         f.grid(row=0,column=2,padx=2,pady=2,ipadx=2,ipady=2)
 
@@ -192,12 +192,12 @@ kundi _searchbase(SearchDialogBase):  # htest #
         width,height, x,y = list(map(int, re.split('[x+]', parent.geometry())))
         self.top.geometry("+%d+%d" % (x + 40, y + 175))
 
-    eleza default_command(self, dummy): pass
+    eleza default_command(self, dummy): pita
 
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_searchbase', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_searchbase', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_searchbase)

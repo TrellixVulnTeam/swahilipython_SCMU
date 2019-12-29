@@ -34,7 +34,7 @@ class BuildTestCase(support.TempdirManager,
         cmd.ensure_finalized()
         dist.command_obj['bdist'] = cmd
 
-        names = ['bdist_dumb', 'bdist_wininst']  # bdist_rpm does not support --skip-build
+        names = ['bdist_dumb', 'bdist_wininst']  # bdist_rpm does sio support --skip-build
         if os.name == 'nt':
             names.append('bdist_msi')
 
@@ -44,8 +44,8 @@ class BuildTestCase(support.TempdirManager,
                                         DeprecationWarning)
                 subcmd = cmd.get_finalized_command(name)
             if getattr(subcmd, '_unsupported', False):
-                # command is not supported on this build
-                continue
+                # command ni sio supported on this build
+                endelea
             self.assertTrue(subcmd.skip_build,
                             '%s should take --skip-build from bdist' % name)
 

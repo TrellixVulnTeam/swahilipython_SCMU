@@ -1,6 +1,6 @@
 
 """
-opcode module - potentially shared between dis and other modules which
+opcode module - potentially shared between dis na other modules which
 operate on bytecodes (e.g. peephole optimizers).
 """
 
@@ -11,15 +11,15 @@ __all__ = ["cmp_op", "hasconst", "hasname", "hasjrel", "hasjabs",
 # It's a chicken-and-egg I'm afraid:
 # We're imported before _opcode's made.
 # With exception unheeded
-# (stack_effect is not needed)
-# Both our chickens and eggs are allayed.
+# (stack_effect ni sio needed)
+# Both our chickens na eggs are allayed.
 #     --Larry Hastings, 2013/11/23
 
-try:
+jaribu:
     kutoka _opcode agiza stack_effect
     __all__.append('stack_effect')
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 cmp_op = ('<', '<=', '==', '!=', '>', '>=', 'in', 'not in', 'is',
         'is not', 'exception match', 'BAD')
@@ -34,7 +34,7 @@ hasfree = []
 hasnargs = [] # unused
 
 opmap = {}
-opname = ['<%r>' % (op,) for op in range(256)]
+opname = ['<%r>' % (op,) kila op kwenye range(256)]
 
 eleza def_op(name, op):
     opname[op] = name
@@ -52,7 +52,7 @@ eleza jabs_op(name, op):
     def_op(name, op)
     hasjabs.append(op)
 
-# Instruction opcodes for compiled code
+# Instruction opcodes kila compiled code
 # Blank lines correspond to available opcodes
 
 def_op('POP_TOP', 1)
@@ -127,27 +127,27 @@ def_op('POP_EXCEPT', 89)
 
 HAVE_ARGUMENT = 90              # Opcodes kutoka here have an argument:
 
-name_op('STORE_NAME', 90)       # Index in name list
+name_op('STORE_NAME', 90)       # Index kwenye name list
 name_op('DELETE_NAME', 91)      # ""
 def_op('UNPACK_SEQUENCE', 92)   # Number of tuple items
 jrel_op('FOR_ITER', 93)
 def_op('UNPACK_EX', 94)
-name_op('STORE_ATTR', 95)       # Index in name list
+name_op('STORE_ATTR', 95)       # Index kwenye name list
 name_op('DELETE_ATTR', 96)      # ""
 name_op('STORE_GLOBAL', 97)     # ""
 name_op('DELETE_GLOBAL', 98)    # ""
-def_op('LOAD_CONST', 100)       # Index in const list
+def_op('LOAD_CONST', 100)       # Index kwenye const list
 hasconst.append(100)
-name_op('LOAD_NAME', 101)       # Index in name list
+name_op('LOAD_NAME', 101)       # Index kwenye name list
 def_op('BUILD_TUPLE', 102)      # Number of tuple items
 def_op('BUILD_LIST', 103)       # Number of list items
 def_op('BUILD_SET', 104)        # Number of set items
 def_op('BUILD_MAP', 105)        # Number of dict entries
-name_op('LOAD_ATTR', 106)       # Index in name list
+name_op('LOAD_ATTR', 106)       # Index kwenye name list
 def_op('COMPARE_OP', 107)       # Comparison operator
 hascompare.append(107)
-name_op('IMPORT_NAME', 108)     # Index in name list
-name_op('IMPORT_FROM', 109)     # Index in name list
+name_op('IMPORT_NAME', 108)     # Index kwenye name list
+name_op('IMPORT_FROM', 109)     # Index kwenye name list
 
 jrel_op('JUMP_FORWARD', 110)    # Number of bytes to skip
 jabs_op('JUMP_IF_FALSE_OR_POP', 111) # Target byte offset kutoka beginning of code
@@ -156,7 +156,7 @@ jabs_op('JUMP_ABSOLUTE', 113)        # ""
 jabs_op('POP_JUMP_IF_FALSE', 114)    # ""
 jabs_op('POP_JUMP_IF_TRUE', 115)     # ""
 
-name_op('LOAD_GLOBAL', 116)     # Index in name list
+name_op('LOAD_GLOBAL', 116)     # Index kwenye name list
 
 jrel_op('SETUP_FINALLY', 122)   # Distance to target address
 
@@ -167,7 +167,7 @@ haslocal.append(125)
 def_op('DELETE_FAST', 126)      # Local variable number
 haslocal.append(126)
 
-def_op('RAISE_VARARGS', 130)    # Number of raise arguments (1, 2, or 3)
+def_op('RAISE_VARARGS', 130)    # Number of ashiria arguments (1, 2, ama 3)
 def_op('CALL_FUNCTION', 131)    # #args
 def_op('MAKE_FUNCTION', 132)    # Flags
 def_op('BUILD_SLICE', 133)      # Number of items
@@ -213,4 +213,4 @@ def_op('CALL_METHOD', 161)
 jrel_op('CALL_FINALLY', 162)
 def_op('POP_FINALLY', 163)
 
-del def_op, name_op, jrel_op, jabs_op
+toa def_op, name_op, jrel_op, jabs_op

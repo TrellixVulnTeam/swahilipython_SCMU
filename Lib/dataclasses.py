@@ -83,7 +83,7 @@ __all__ = ['dataclass',
 # +-------+-------+-------+
 # | True  | add   | raise |
 # +=======+=======+=======+
-# Raise because not adding these methods would break the "frozen-ness"
+# Raise because sio adding these methods would koma the "frozen-ness"
 # of the class.
 
 # __eq__
@@ -128,7 +128,7 @@ __all__ = ['dataclass',
 # +-------+-------+-------+--------+--------+
 # | False | False | True  |        |        | No __eq__, use the base kundi __hash__
 # +-------+-------+-------+--------+--------+
-# | False | True  | False | None   |        | <-- the default, not hashable
+# | False | True  | False | None   |        | <-- the default, sio hashable
 # +-------+-------+-------+--------+--------+
 # | False | True  | True  | add    |        | Frozen, so hashable, allows override
 # +-------+-------+-------+--------+--------+
@@ -212,7 +212,7 @@ kundi InitVar(metaclass=_InitVarMeta):
     def __repr__(self):
         if isinstance(self.type, type):
             type_name = self.type.__name__
-        else:
+        isipokua:
             # typing objects, e.g. List[int]
             type_name = repr(self.type)
         return f'dataclasses.InitVar[{type_name}]'
@@ -222,8 +222,8 @@ kundi InitVar(metaclass=_InitVarMeta):
 # and only kutoka the field() function, although Field instances are
 # exposed externally as (conceptually) read-only objects.
 #
-# name and type are filled in after the fact, not in __init__.
-# They're not known at the time this kundi is instantiated, but it's
+# name and type are filled in after the fact, haiko kwenye __init__.
+# They're sio known at the time this kundi is instantiated, but it's
 # convenient if they're available later.
 #
 # When cls._FIELDS is filled in with a list of Field objects, the name
@@ -238,7 +238,7 @@ kundi Field:
                  'init',
                  'compare',
                  'metadata',
-                 '_field_type',  # Private: not to be used by user code.
+                 '_field_type',  # Private: sio to be used by user code.
                  )
 
     def __init__(self, default, default_factory, init, repr, hash, compare,
@@ -328,12 +328,12 @@ def field(*, default=MISSING, default_factory=MISSING, init=True, repr=True,
     object's repr().  If hash is True, the field will be included in
     the object's hash().  If compare is True, the field will be used
     in comparison functions.  metadata, if specified, must be a
-    mapping which is stored but not otherwise examined by dataclass.
+    mapping which is stored but sio otherwise examined by dataclass.
 
     It is an error to specify both default and default_factory.
     """
 
-    if default is not MISSING and default_factory is not MISSING:
+    if default ni sio MISSING and default_factory ni sio MISSING:
         raise ValueError('cannot specify both default and default_factory')
     return Field(default, default_factory, init, repr, hash, compare,
                  metadata)
@@ -345,7 +345,7 @@ def _tuple_str(obj_name, fields):
     # return "(self.x,self.y)".
 
     # Special case for the 0-tuple.
-    if not fields:
+    if sio fields:
         return '()'
     # Note the trailing comma, needed if this turns out to be a 1-tuple.
     return f'({",".join([f"{obj_name}.{f.name}" for f in fields])},)'
@@ -364,9 +364,9 @@ def _recursive_repr(user_function):
         if key in repr_running:
             return '...'
         repr_running.add(key)
-        try:
+        jaribu:
             result = user_function(self)
-        finally:
+        mwishowe:
             repr_running.discard(key)
         return result
     return wrapper
@@ -382,10 +382,10 @@ def _create_fn(name, args, body, *, globals=None, locals=None,
     # __builtins__ may be the "builtins" module or
     # the value of its "__dict__",
     # so make sure "__builtins__" is the module.
-    if globals is not None and '__builtins__' not in globals:
+    if globals ni sio None and '__builtins__' haiko kwenye globals:
         globals['__builtins__'] = builtins
     return_annotation = ''
-    if return_type is not MISSING:
+    if return_type ni sio MISSING:
         locals['_return_type'] = return_type
         return_annotation = '->_return_type'
     args = ','.join(args)
@@ -415,7 +415,7 @@ def _field_init(f, frozen, globals, self_name):
     # initialize this field.
 
     default_name = f'_dflt_{f.name}'
-    if f.default_factory is not MISSING:
+    if f.default_factory ni sio MISSING:
         if f.init:
             # This field has a default factory.  If a parameter is
             # given, use it.  If not, call the factory.
@@ -423,8 +423,8 @@ def _field_init(f, frozen, globals, self_name):
             value = (f'{default_name}() '
                      f'if {f.name} is _HAS_DEFAULT_FACTORY '
                      f'else {f.name}')
-        else:
-            # This is a field that's not in the __init__ params, but
+        isipokua:
+            # This is a field that's haiko kwenye the __init__ params, but
             # has a default factory function.  It needs to be
             # initialized here by calling the factory function,
             # because there's no other way to initialize it.
@@ -435,27 +435,27 @@ def _field_init(f, frozen, globals, self_name):
             # default factory, the factory must be called in __init__
             # and we must assign that to self.fieldname.  We can't
             # fall back to the kundi dict's value, both because it's
-            # not set, and because it might be different per-class
+            # sio set, and because it might be different per-class
             # (which, after all, is why we have a factory function!).
 
             globals[default_name] = f.default_factory
             value = f'{default_name}()'
-    else:
+    isipokua:
         # No default factory.
         if f.init:
             if f.default is MISSING:
                 # There's no default, just do an assignment.
                 value = f.name
-            lasivyo f.default is not MISSING:
+            lasivyo f.default ni sio MISSING:
                 globals[default_name] = f.default
                 value = f.name
-        else:
-            # This field does not need initialization.  Signify that
+        isipokua:
+            # This field does sio need initialization.  Signify that
             # to the caller by returning None.
             return None
 
     # Only test this now, so that we can create variables for the
-    # default.  However, return None to signify that we're not going
+    # default.  However, return None to signify that we're sio going
     # to actually do the assignment statement for InitVars.
     if f._field_type is _FIELD_INITVAR:
         return None
@@ -466,18 +466,18 @@ def _field_init(f, frozen, globals, self_name):
 
 def _init_param(f):
     # Return the __init__ parameter string for this field.  For
-    # example, the equivalent of 'x:int=3' (except instead of 'int',
+    # example, the equivalent of 'x:int=3' (tatizo instead of 'int',
     # reference a variable set to int, and instead of '3', reference a
     # variable set to 3).
     if f.default is MISSING and f.default_factory is MISSING:
         # There's no default, and no default_factory, just output the
         # variable name and type.
         default = ''
-    lasivyo f.default is not MISSING:
+    lasivyo f.default ni sio MISSING:
         # There's a default, this will be the name that's used to look
         # it up.
         default = f'=_dflt_{f.name}'
-    lasivyo f.default_factory is not MISSING:
+    lasivyo f.default_factory ni sio MISSING:
         # There's a factory function.  Set a marker.
         default = '=_HAS_DEFAULT_FACTORY'
     return f'{f.name}:_type_{f.name}{default}'
@@ -495,7 +495,7 @@ def _init_fn(fields, frozen, has_post_init, self_name):
     for f in fields:
         # Only consider fields in the __init__ call.
         if f.init:
-            if not (f.default is MISSING and f.default_factory is MISSING):
+            if sio (f.default is MISSING and f.default_factory is MISSING):
                 seen_default = True
             lasivyo seen_default:
                 raise TypeError(f'non-default argument {f.name!r} '
@@ -519,7 +519,7 @@ def _init_fn(fields, frozen, has_post_init, self_name):
         body_lines.append(f'{self_name}.{_POST_INIT_NAME}({params_str})')
 
     # If no body lines, use 'pass'.
-    if not body_lines:
+    if sio body_lines:
         body_lines = ['pass']
 
     locals = {f'_type_{f.name}': f.type for f in fields}
@@ -548,7 +548,7 @@ def _frozen_get_del_attr(cls, fields):
               'FrozenInstanceError': FrozenInstanceError}
     if fields:
         fields_str = '(' + ','.join(repr(f.name) for f in fields) + ',)'
-    else:
+    isipokua:
         # Special case for the zero-length tuple.
         fields_str = '()'
     return (_create_fn('__setattr__',
@@ -618,7 +618,7 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     # - is_type_predicate is a function called with (obj, a_module)
     #   that determines if obj is of the desired type.
 
-    # Since this test does not do a local namespace lookup (and
+    # Since this test does sio do a local namespace lookup (and
     # instead only a module (global) lookup), there are some things it
     # gets wrong.
 
@@ -628,29 +628,29 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     #   kundi C0:
     #     cv0: CV
 
-    # But in this example cv1 will not be detected as a ClassVar:
+    # But in this example cv1 will sio be detected as a ClassVar:
     #   @dataclass
     #   kundi C1:
     #     CV = ClassVar
     #     cv1: CV
 
     # In C1, the code in this function (_is_type) will look up "CV" in
-    # the module and not find it, so it will not consider cv1 as a
+    # the module and sio find it, so it will sio consider cv1 as a
     # ClassVar.  This is a fairly obscure corner case, and the best
     # way to fix it would be to eval() the string "CV" with the
     # correct global and local namespaces.  However that would involve
     # a eval() penalty for every single field of every dataclass
-    # that's defined.  It was judged not worth it.
+    # that's defined.  It was judged sio worth it.
 
     match = _MODULE_IDENTIFIER_RE.match(annotation)
     if match:
         ns = None
         module_name = match.group(1)
-        if not module_name:
+        if sio module_name:
             # No module name, assume the class's module did
             # "kutoka dataclasses agiza InitVar".
             ns = sys.modules.get(cls.__module__).__dict__
-        else:
+        isipokua:
             # Look up module_name in the class's module.
             module = sys.modules.get(cls.__module__)
             if module and module.__dict__.get(module_name) is a_module:
@@ -670,7 +670,7 @@ def _get_field(cls, a_name, a_type):
     default = getattr(cls, a_name, MISSING)
     if isinstance(default, Field):
         f = default
-    else:
+    isipokua:
         if isinstance(default, types.MemberDescriptorType):
             # This is a field in __slots__, so it has no default value.
             default = MISSING
@@ -695,7 +695,7 @@ def _get_field(cls, a_name, a_type):
 
     # For the complete discussion, see https://bugs.python.org/issue33453
 
-    # If typing has not been imported, then it's impossible for any
+    # If typing has sio been imported, then it's impossible for any
     # annotation to be a ClassVar.  So, only look for ClassVar if
     # typing has been imported by any module (not necessarily cls's
     # module).
@@ -725,7 +725,7 @@ def _get_field(cls, a_name, a_type):
 
     # Special restrictions for ClassVar and InitVar.
     if f._field_type in (_FIELD_CLASSVAR, _FIELD_INITVAR):
-        if f.default_factory is not MISSING:
+        if f.default_factory ni sio MISSING:
             raise TypeError(f'field {f.name} cannot have a '
                             'default factory')
         # Should I check for other field settings? default_factory
@@ -737,7 +737,7 @@ def _get_field(cls, a_name, a_type):
     # For real fields, disallow mutable defaults for known types.
     if f._field_type is _FIELD and isinstance(f.default, (list, dict, set)):
         raise ValueError(f'mutable default {type(f.default)} for field '
-                         f'{f.name} is not allowed: use default_factory')
+                         f'{f.name} ni sio allowed: use default_factory')
 
     return f
 
@@ -835,7 +835,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     # has a default.  If the default value is a Field(), then it
     # contains additional info beyond (and possibly including) the
     # actual default value.  Pseudo-fields ClassVars and InitVars are
-    # included, despite the fact that they're not real fields.  That's
+    # included, despite the fact that they're sio real fields.  That's
     # dealt with later.
     cls_annotations = cls.__dict__.get('__annotations__', {})
 
@@ -850,33 +850,33 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
         # If the kundi attribute (which is the default value for this
         # field) exists and is of type 'Field', replace it with the
         # real default.  This is so that normal kundi introspection
-        # sees a real default value, not a Field.
+        # sees a real default value, sio a Field.
         if isinstance(getattr(cls, f.name, None), Field):
             if f.default is MISSING:
                 # If there's no default, delete the kundi attribute.
                 # This happens if we specify field(repr=False), for
                 # example (that is, we specified a field object, but
                 # no default value).  Also if we're using a default
-                # factory.  The kundi attribute should not be set at
+                # factory.  The kundi attribute should sio be set at
                 # all in the post-processed class.
                 delattr(cls, f.name)
-            else:
+            isipokua:
                 setattr(cls, f.name, f.default)
 
     # Do we have any Field members that don't also have annotations?
     for name, value in cls.__dict__.items():
-        if isinstance(value, Field) and not name in cls_annotations:
+        if isinstance(value, Field) and sio name in cls_annotations:
             raise TypeError(f'{name!r} is a field but has no type annotation')
 
     # Check rules that apply if we are derived kutoka any dataclasses.
     if has_dataclass_bases:
         # Raise an exception if any of our bases are frozen, but we're not.
-        if any_frozen_base and not frozen:
+        if any_frozen_base and sio frozen:
             raise TypeError('cannot inherit non-frozen datakundi kutoka a '
                             'frozen one')
 
         # Raise an exception if we're frozen, but none of our bases are.
-        if not any_frozen_base and frozen:
+        if sio any_frozen_base and frozen:
             raise TypeError('cannot inherit frozen datakundi kutoka a '
                             'non-frozen one')
 
@@ -887,22 +887,22 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     # Was this kundi defined with an explicit __hash__?  Note that if
     # __eq__ is defined in this class, then python will automatically
     # set __hash__ to None.  This is a heuristic, as it's possible
-    # that such a __hash__ == None was not auto-generated, but it
+    # that such a __hash__ == None was sio auto-generated, but it
     # close enough.
     class_hash = cls.__dict__.get('__hash__', MISSING)
-    has_explicit_hash = not (class_hash is MISSING or
+    has_explicit_hash = sio (class_hash is MISSING or
                              (class_hash is None and '__eq__' in cls.__dict__))
 
     # If we're generating ordering methods, we must be generating the
     # eq methods.
-    if order and not eq:
+    if order and sio eq:
         raise ValueError('eq must be true if order is true')
 
     if init:
         # Does this kundi have a post-init function?
         has_post_init = hasattr(cls, _POST_INIT_NAME)
 
-        # Include InitVars and regular fields (so, not ClassVars).
+        # Include InitVars and regular fields (so, sio ClassVars).
         flds = [f for f in fields.values()
                 if f._field_type in (_FIELD, _FIELD_INITVAR)]
         _set_new_attribute(cls, '__init__',
@@ -966,7 +966,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
         # we're here the overwriting is unconditional.
         cls.__hash__ = hash_action(cls, field_list)
 
-    if not getattr(cls, '__doc__'):
+    if sio getattr(cls, '__doc__'):
         # Create a kundi doc-string.
         cls.__doc__ = (cls.__name__ +
                        str(inspect.signature(cls)).replace(' -> None', ''))
@@ -985,7 +985,7 @@ def dataclass(cls=None, /, *, init=True, repr=True, eq=True, order=False,
     repr is true, a __repr__() method is added. If order is true, rich
     comparison dunder methods are added. If unsafe_hash is true, a
     __hash__() method function is added. If frozen is true, fields may
-    not be assigned to after instance creation.
+    sio be assigned to after instance creation.
     """
 
     def wrap(cls):
@@ -1008,9 +1008,9 @@ def fields(class_or_instance):
     """
 
     # Might it be worth caching this, per class?
-    try:
+    jaribu:
         fields = getattr(class_or_instance, _FIELDS)
-    except AttributeError:
+    tatizo AttributeError:
         raise TypeError('must be called with a datakundi type or instance')
 
     # Exclude pseudo-fields.  Note that fields is sorted by insertion
@@ -1049,7 +1049,7 @@ def asdict(obj, *, dict_factory=dict):
     datakundi instances. This will also look into built-in containers:
     tuples, lists, and dicts.
     """
-    if not _is_dataclass_instance(obj):
+    if sio _is_dataclass_instance(obj):
         raise TypeError("asdict() should be called on datakundi instances")
     return _asdict_inner(obj, dict_factory)
 
@@ -1069,9 +1069,9 @@ def _asdict_inner(obj, dict_factory):
         # differently because a namedtuple's __init__ needs to be
         # called differently (see bpo-34363).
 
-        # I'm not using namedtuple's _asdict()
+        # I'm sio using namedtuple's _asdict()
         # method, because:
-        # - it does not recurse in to the namedtuple fields and
+        # - it does sio recurse in to the namedtuple fields and
         #   convert them to dicts (using dict_factory).
         # - I don't actually want to return a dict here.  The the main
         #   use case here is json.dumps, and it handles converting
@@ -1084,14 +1084,14 @@ def _asdict_inner(obj, dict_factory):
         return type(obj)(*[_asdict_inner(v, dict_factory) for v in obj])
     lasivyo isinstance(obj, (list, tuple)):
         # Assume we can create an object of this type by passing in a
-        # generator (which is not true for namedtuples, handled
+        # generator (which ni sio true for namedtuples, handled
         # above).
         return type(obj)(_asdict_inner(v, dict_factory) for v in obj)
     lasivyo isinstance(obj, dict):
         return type(obj)((_asdict_inner(k, dict_factory),
                           _asdict_inner(v, dict_factory))
                          for k, v in obj.items())
-    else:
+    isipokua:
         return copy.deepcopy(obj)
 
 
@@ -1114,7 +1114,7 @@ def astuple(obj, *, tuple_factory=tuple):
     tuples, lists, and dicts.
     """
 
-    if not _is_dataclass_instance(obj):
+    if sio _is_dataclass_instance(obj):
         raise TypeError("astuple() should be called on datakundi instances")
     return _astuple_inner(obj, tuple_factory)
 
@@ -1136,13 +1136,13 @@ def _astuple_inner(obj, tuple_factory):
         return type(obj)(*[_astuple_inner(v, tuple_factory) for v in obj])
     lasivyo isinstance(obj, (list, tuple)):
         # Assume we can create an object of this type by passing in a
-        # generator (which is not true for namedtuples, handled
+        # generator (which ni sio true for namedtuples, handled
         # above).
         return type(obj)(_astuple_inner(v, tuple_factory) for v in obj)
     lasivyo isinstance(obj, dict):
         return type(obj)((_astuple_inner(k, tuple_factory), _astuple_inner(v, tuple_factory))
                           for k, v in obj.items())
-    else:
+    isipokua:
         return copy.deepcopy(obj)
 
 
@@ -1174,12 +1174,12 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
 
     if namespace is None:
         namespace = {}
-    else:
+    isipokua:
         # Copy namespace since we're going to mutate it.
         namespace = namespace.copy()
 
     # While we're looking through the field names, validate that they
-    # are identifiers, are not keywords, and not duplicates.
+    # are identifiers, are sio keywords, and sio duplicates.
     seen = set()
     anns = {}
     for item in fields:
@@ -1191,13 +1191,13 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
         lasivyo len(item) == 3:
             name, tp, spec = item
             namespace[name] = spec
-        else:
+        isipokua:
             raise TypeError(f'Invalid field: {item!r}')
 
-        if not isinstance(name, str) or not name.isidentifier():
+        if sio isinstance(name, str) or sio name.isidentifier():
             raise TypeError(f'Field names must be valid identifiers: {name!r}')
         if keyword.iskeyword(name):
-            raise TypeError(f'Field names must not be keywords: {name!r}')
+            raise TypeError(f'Field names must sio be keywords: {name!r}')
         if name in seen:
             raise TypeError(f'Field name duplicated: {name!r}')
 
@@ -1235,32 +1235,32 @@ def replace(*args, **changes):
         agiza warnings
         warnings.warn("Passing 'obj' as keyword argument is deprecated",
                       DeprecationWarning, stacklevel=2)
-    else:
+    isipokua:
         raise TypeError("replace() missing 1 required positional argument: 'obj'")
 
     # We're going to mutate 'changes', but that's okay because it's a
     # new dict, even if called with 'replace(obj, **my_changes)'.
 
-    if not _is_dataclass_instance(obj):
+    if sio _is_dataclass_instance(obj):
         raise TypeError("replace() should be called on datakundi instances")
 
     # It's an error to have init=False fields in 'changes'.
-    # If a field is not in 'changes', read its value kutoka the provided obj.
+    # If a field is haiko kwenye 'changes', read its value kutoka the provided obj.
 
     for f in getattr(obj, _FIELDS).values():
         # Only consider normal fields or InitVars.
         if f._field_type is _FIELD_CLASSVAR:
-            continue
+            endelea
 
-        if not f.init:
+        if sio f.init:
             # Error if this field is specified in changes.
             if f.name in changes:
                 raise ValueError(f'field {f.name} is declared with '
                                  'init=False, it cannot be specified with '
                                  'replace()')
-            continue
+            endelea
 
-        if f.name not in changes:
+        if f.name haiko kwenye changes:
             if f._field_type is _FIELD_INITVAR:
                 raise ValueError(f"InitVar {f.name!r} "
                                  'must be specified with replace()')

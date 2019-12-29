@@ -5,7 +5,7 @@ importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 
 agiza os
-kutoka test agiza support as test_support
+kutoka test agiza support kama test_support
 agiza unittest
 
 
@@ -14,7 +14,7 @@ kundi CaseSensitivityTest(util.CASEOKTestBase):
 
     """PEP 235 dictates that on case-preserving, case-insensitive file systems
     that agizas are case-sensitive unless the PYTHONCASEOK environment
-    variable is set."""
+    variable ni set."""
 
     name = 'MoDuLe'
     assert name != name.lower()
@@ -27,11 +27,11 @@ kundi CaseSensitivityTest(util.CASEOKTestBase):
                                             self.machinery.BYTECODE_SUFFIXES))
 
     eleza sensitivity_test(self):
-        """Look for a module with matching and non-matching sensitivity."""
+        """Look kila a module with matching na non-matching sensitivity."""
         sensitive_pkg = 'sensitive.{0}'.format(self.name)
         insensitive_pkg = 'insensitive.{0}'.format(self.name.lower())
         context = util.create_modules(insensitive_pkg, sensitive_pkg)
-        with context as mapping:
+        with context kama mapping:
             sensitive_path = os.path.join(mapping['.root'], 'sensitive')
             insensitive_path = os.path.join(mapping['.root'], 'insensitive')
             sensitive_finder = self.finder(sensitive_path)
@@ -39,22 +39,22 @@ kundi CaseSensitivityTest(util.CASEOKTestBase):
             rudisha self.find(sensitive_finder), self.find(insensitive_finder)
 
     eleza test_sensitive(self):
-        with test_support.EnvironmentVarGuard() as env:
+        with test_support.EnvironmentVarGuard() kama env:
             env.unset('PYTHONCASEOK')
-            self.caseok_env_changed(should_exist=False)
+            self.caseok_env_changed(should_exist=Uongo)
             sensitive, insensitive = self.sensitivity_test()
-            self.assertIsNotNone(sensitive)
+            self.assertIsNotTupu(sensitive)
             self.assertIn(self.name, sensitive.get_filename(self.name))
-            self.assertIsNone(insensitive)
+            self.assertIsTupu(insensitive)
 
     eleza test_insensitive(self):
-        with test_support.EnvironmentVarGuard() as env:
+        with test_support.EnvironmentVarGuard() kama env:
             env.set('PYTHONCASEOK', '1')
-            self.caseok_env_changed(should_exist=True)
+            self.caseok_env_changed(should_exist=Kweli)
             sensitive, insensitive = self.sensitivity_test()
-            self.assertIsNotNone(sensitive)
+            self.assertIsNotTupu(sensitive)
             self.assertIn(self.name, sensitive.get_filename(self.name))
-            self.assertIsNotNone(insensitive)
+            self.assertIsNotTupu(insensitive)
             self.assertIn(self.name, insensitive.get_filename(self.name))
 
 
@@ -72,7 +72,7 @@ kundi CaseSensitivityTestPEP302(CaseSensitivityTest):
 kundi CaseSensitivityTestPEP451(CaseSensitivityTest):
     eleza find(self, finder):
         found = finder.find_spec(self.name)
-        rudisha found.loader ikiwa found is not None else found
+        rudisha found.loader ikiwa found ni sio Tupu else found
 
 
 (Frozen_CaseSensitivityTestPEP451,

@@ -9,7 +9,7 @@ c_stat = import_fresh_module('stat', fresh=['_stat'])
 py_stat = import_fresh_module('stat', blocked=['_stat'])
 
 kundi TestFilemode:
-    statmod = None
+    statmod = Tupu
 
     file_flags = {'SF_APPEND', 'SF_ARCHIVED', 'SF_IMMUTABLE', 'SF_NOUNLINK',
                   'SF_SNAPSHOT', 'UF_APPEND', 'UF_COMPRESSED', 'UF_HIDDEN',
@@ -76,43 +76,43 @@ kundi TestFilemode:
         'FILE_ATTRIBUTE_VIRTUAL': 65536}
 
     eleza setUp(self):
-        try:
+        jaribu:
             os.remove(TESTFN)
-        except OSError:
-            try:
+        tatizo OSError:
+            jaribu:
                 os.rmdir(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
     tearDown = setUp
 
-    eleza get_mode(self, fname=TESTFN, lstat=True):
+    eleza get_mode(self, fname=TESTFN, lstat=Kweli):
         ikiwa lstat:
             st_mode = os.lstat(fname).st_mode
-        else:
+        isipokua:
             st_mode = os.stat(fname).st_mode
         modestr = self.statmod.filemode(st_mode)
         rudisha st_mode, modestr
 
     eleza assertS_IS(self, name, mode):
-        # test format, lstrip is for S_IFIFO
+        # test format, lstrip ni kila S_IFIFO
         fmt = getattr(self.statmod, "S_IF" + name.lstrip("F"))
         self.assertEqual(self.statmod.S_IFMT(mode), fmt)
-        # test that just one function returns true
+        # test that just one function rudishas true
         testname = "S_IS" + name
-        for funcname in self.format_funcs:
-            func = getattr(self.statmod, funcname, None)
-            ikiwa func is None:
+        kila funcname kwenye self.format_funcs:
+            func = getattr(self.statmod, funcname, Tupu)
+            ikiwa func ni Tupu:
                 ikiwa funcname == testname:
-                    raise ValueError(funcname)
-                continue
+                    ashiria ValueError(funcname)
+                endelea
             ikiwa funcname == testname:
-                self.assertTrue(func(mode))
-            else:
-                self.assertFalse(func(mode))
+                self.assertKweli(func(mode))
+            isipokua:
+                self.assertUongo(func(mode))
 
     eleza test_mode(self):
         with open(TESTFN, 'w'):
-            pass
+            pita
         ikiwa os.name == 'posix':
             os.chmod(TESTFN, 0o700)
             st_mode, modestr = self.get_mode()
@@ -140,7 +140,7 @@ kundi TestFilemode:
             self.assertS_IS("REG", st_mode)
             self.assertEqual(modestr, '-r--r--r--')
             self.assertEqual(self.statmod.S_IMODE(st_mode), 0o444)
-        else:
+        isipokua:
             os.chmod(TESTFN, 0o700)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[:3], '-rw')
@@ -155,25 +155,25 @@ kundi TestFilemode:
         self.assertS_IS("DIR", st_mode)
         ikiwa os.name == 'posix':
             self.assertEqual(modestr, 'drwx------')
-        else:
+        isipokua:
             self.assertEqual(modestr[0], 'd')
 
-    @unittest.skipUnless(hasattr(os, 'symlink'), 'os.symlink not available')
+    @unittest.skipUnless(hasattr(os, 'symlink'), 'os.symlink sio available')
     eleza test_link(self):
-        try:
+        jaribu:
             os.symlink(os.getcwd(), TESTFN)
-        except (OSError, NotImplementedError) as err:
-            raise unittest.SkipTest(str(err))
-        else:
+        tatizo (OSError, NotImplementedError) kama err:
+            ashiria unittest.SkipTest(str(err))
+        isipokua:
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 'l')
             self.assertS_IS("LNK", st_mode)
 
-    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'os.mkfifo not available')
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'os.mkfifo sio available')
     eleza test_fifo(self):
-        try:
+        jaribu:
             os.mkfifo(TESTFN, 0o700)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.mkfifo(): %s' % e)
         st_mode, modestr = self.get_mode()
         self.assertEqual(modestr, 'prwx------')
@@ -182,48 +182,48 @@ kundi TestFilemode:
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
     eleza test_devices(self):
         ikiwa os.path.exists(os.devnull):
-            st_mode, modestr = self.get_mode(os.devnull, lstat=False)
+            st_mode, modestr = self.get_mode(os.devnull, lstat=Uongo)
             self.assertEqual(modestr[0], 'c')
             self.assertS_IS("CHR", st_mode)
         # Linux block devices, BSD has no block devices anymore
-        for blockdev in ("/dev/sda", "/dev/hda"):
+        kila blockdev kwenye ("/dev/sda", "/dev/hda"):
             ikiwa os.path.exists(blockdev):
-                st_mode, modestr = self.get_mode(blockdev, lstat=False)
+                st_mode, modestr = self.get_mode(blockdev, lstat=Uongo)
                 self.assertEqual(modestr[0], 'b')
                 self.assertS_IS("BLK", st_mode)
-                break
+                koma
 
     @skip_unless_bind_unix_socket
     eleza test_socket(self):
-        with socket.socket(socket.AF_UNIX) as s:
+        with socket.socket(socket.AF_UNIX) kama s:
             s.bind(TESTFN)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 's')
             self.assertS_IS("SOCK", st_mode)
 
     eleza test_module_attributes(self):
-        for key, value in self.stat_struct.items():
+        kila key, value kwenye self.stat_struct.items():
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)
-        for key, value in self.permission_bits.items():
+        kila key, value kwenye self.permission_bits.items():
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)
-        for key in self.file_flags:
+        kila key kwenye self.file_flags:
             modvalue = getattr(self.statmod, key)
             self.assertIsInstance(modvalue, int)
-        for key in self.formats:
+        kila key kwenye self.formats:
             modvalue = getattr(self.statmod, key)
             self.assertIsInstance(modvalue, int)
-        for key in self.format_funcs:
+        kila key kwenye self.format_funcs:
             func = getattr(self.statmod, key)
-            self.assertTrue(callable(func))
+            self.assertKweli(callable(func))
             self.assertEqual(func(0), 0)
 
     @unittest.skipUnless(sys.platform == "win32",
                          "FILE_ATTRIBUTE_* constants are Win32 specific")
     eleza test_file_attribute_constants(self):
-        for key, value in sorted(self.file_attributes.items()):
-            self.assertTrue(hasattr(self.statmod, key), key)
+        kila key, value kwenye sorted(self.file_attributes.items()):
+            self.assertKweli(hasattr(self.statmod, key), key)
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)
 

@@ -15,7 +15,7 @@ class StructFieldsTestCase(unittest.TestCase):
     def test_1_A(self):
         class X(Structure):
             pass
-        self.assertEqual(sizeof(X), 0) # not finalized
+        self.assertEqual(sizeof(X), 0) # sio finalized
         X._fields_ = [] # finalized
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
 
@@ -47,7 +47,7 @@ class StructFieldsTestCase(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
 
     # __set__ and __get__ should raise a TypeError in case their self
-    # argument is not a ctype instance.
+    # argument ni sio a ctype instance.
     def test___set__(self):
         class MyCStruct(Structure):
             _fields_ = (("field", c_int),)

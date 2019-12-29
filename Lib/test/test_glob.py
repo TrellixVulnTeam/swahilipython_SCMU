@@ -14,12 +14,12 @@ kundi GlobTests(unittest.TestCase):
         rudisha os.path.normpath(os.path.join(self.tempdir, *parts))
 
     eleza joins(self, *tuples):
-        rudisha [os.path.join(self.tempdir, *parts) for parts in tuples]
+        rudisha [os.path.join(self.tempdir, *parts) kila parts kwenye tuples]
 
     eleza mktemp(self, *parts):
         filename = self.norm(*parts)
         base, file = os.path.split(filename)
-        ikiwa not os.path.exists(base):
+        ikiwa sio os.path.exists(base):
             os.makedirs(base)
         create_empty_file(filename)
 
@@ -45,12 +45,12 @@ kundi GlobTests(unittest.TestCase):
     eleza glob(self, *parts, **kwargs):
         ikiwa len(parts) == 1:
             pattern = parts[0]
-        else:
+        isipokua:
             pattern = os.path.join(*parts)
         p = os.path.join(self.tempdir, pattern)
         res = glob.glob(p, **kwargs)
         self.assertCountEqual(glob.iglob(p, **kwargs), res)
-        bres = [os.fsencode(x) for x in res]
+        bres = [os.fsencode(x) kila x kwenye res]
         self.assertCountEqual(glob.glob(os.fsencode(p), **kwargs), bres)
         self.assertCountEqual(glob.iglob(os.fsencode(p), **kwargs), bres)
         rudisha res
@@ -69,14 +69,14 @@ kundi GlobTests(unittest.TestCase):
         eq(self.glob('zymurgy'), [])
 
         res = glob.glob('*')
-        self.assertEqual({type(r) for r in res}, {str})
+        self.assertEqual({type(r) kila r kwenye res}, {str})
         res = glob.glob(os.path.join(os.curdir, '*'))
-        self.assertEqual({type(r) for r in res}, {str})
+        self.assertEqual({type(r) kila r kwenye res}, {str})
 
         res = glob.glob(b'*')
-        self.assertEqual({type(r) for r in res}, {bytes})
+        self.assertEqual({type(r) kila r kwenye res}, {bytes})
         res = glob.glob(os.path.join(os.fsencode(os.curdir), b'*'))
-        self.assertEqual({type(r) for r in res}, {bytes})
+        self.assertEqual({type(r) kila r kwenye res}, {bytes})
 
     eleza test_glob_one_directory(self):
         eq = self.assertSequencesEqual_noorder
@@ -93,7 +93,7 @@ kundi GlobTests(unittest.TestCase):
         ikiwa os.path.normcase("abCD") == "abCD":
             # case-sensitive filesystem
             eq(self.glob('a', 'bcd', 'E*'), [self.norm('a', 'bcd', 'EF')])
-        else:
+        isipokua:
             # case insensitive filesystem
             eq(self.glob('a', 'bcd', 'E*'), [self.norm('a', 'bcd', 'EF'),
                                              self.norm('a', 'bcd', 'efg')])
@@ -114,18 +114,18 @@ kundi GlobTests(unittest.TestCase):
         self.assertEqual(res, [])
         res = glob.glob(self.norm('ZZZ') + os.sep)
         self.assertEqual(res, [])
-        # When there is a wildcard pattern which ends with os.sep, glob()
+        # When there ni a wildcard pattern which ends with os.sep, glob()
         # doesn't blow up.
         res = glob.glob(self.norm('aa*') + os.sep)
         self.assertEqual(len(res), 2)
-        # either of these results is reasonable
+        # either of these results ni reasonable
         self.assertIn(set(res), [
                       {self.norm('aaa'), self.norm('aab')},
                       {self.norm('aaa') + os.sep, self.norm('aab') + os.sep},
                       ])
 
     eleza test_glob_bytes_directory_with_trailing_slash(self):
-        # Same as test_glob_directory_with_trailing_slash, but with a
+        # Same kama test_glob_directory_with_trailing_slash, but with a
         # bytes argument.
         res = glob.glob(os.fsencode(self.norm('Z*Z') + os.sep))
         self.assertEqual(res, [])
@@ -133,7 +133,7 @@ kundi GlobTests(unittest.TestCase):
         self.assertEqual(res, [])
         res = glob.glob(os.fsencode(self.norm('aa*') + os.sep))
         self.assertEqual(len(res), 2)
-        # either of these results is reasonable
+        # either of these results ni reasonable
         self.assertIn(set(res), [
                       {os.fsencode(self.norm('aaa')),
                        os.fsencode(self.norm('aab'))},
@@ -197,7 +197,7 @@ kundi GlobTests(unittest.TestCase):
         check('//*/*/*', '//*/*/[*]')
 
     eleza rglob(self, *parts, **kwargs):
-        rudisha self.glob(*parts, recursive=True, **kwargs)
+        rudisha self.glob(*parts, recursive=Kweli, **kwargs)
 
     eleza test_recursive_glob(self):
         eq = self.assertSequencesEqual_noorder
@@ -219,7 +219,7 @@ kundi GlobTests(unittest.TestCase):
                     ]
         eq(self.rglob('**'), self.joins(('',), *full))
         eq(self.rglob(os.curdir, '**'),
-            self.joins((os.curdir, ''), *((os.curdir,) + i for i in full)))
+            self.joins((os.curdir, ''), *((os.curdir,) + i kila i kwenye full)))
         dirs = [('a', ''), ('a', 'bcd', ''), ('a', 'bcd', 'efg', ''),
                 ('aaa', ''), ('aab', '')]
         ikiwa can_symlink():
@@ -245,24 +245,24 @@ kundi GlobTests(unittest.TestCase):
 
         with change_cwd(self.tempdir):
             join = os.path.join
-            eq(glob.glob('**', recursive=True), [join(*i) for i in full])
-            eq(glob.glob(join('**', ''), recursive=True),
-                [join(*i) for i in dirs])
-            eq(glob.glob(join('**', '*'), recursive=True),
-                [join(*i) for i in full])
-            eq(glob.glob(join(os.curdir, '**'), recursive=True),
-                [join(os.curdir, '')] + [join(os.curdir, *i) for i in full])
-            eq(glob.glob(join(os.curdir, '**', ''), recursive=True),
-                [join(os.curdir, '')] + [join(os.curdir, *i) for i in dirs])
-            eq(glob.glob(join(os.curdir, '**', '*'), recursive=True),
-                [join(os.curdir, *i) for i in full])
-            eq(glob.glob(join('**','zz*F'), recursive=True),
+            eq(glob.glob('**', recursive=Kweli), [join(*i) kila i kwenye full])
+            eq(glob.glob(join('**', ''), recursive=Kweli),
+                [join(*i) kila i kwenye dirs])
+            eq(glob.glob(join('**', '*'), recursive=Kweli),
+                [join(*i) kila i kwenye full])
+            eq(glob.glob(join(os.curdir, '**'), recursive=Kweli),
+                [join(os.curdir, '')] + [join(os.curdir, *i) kila i kwenye full])
+            eq(glob.glob(join(os.curdir, '**', ''), recursive=Kweli),
+                [join(os.curdir, '')] + [join(os.curdir, *i) kila i kwenye dirs])
+            eq(glob.glob(join(os.curdir, '**', '*'), recursive=Kweli),
+                [join(os.curdir, *i) kila i kwenye full])
+            eq(glob.glob(join('**','zz*F'), recursive=Kweli),
                 [join('aaa', 'zzzF')])
-            eq(glob.glob('**zz*F', recursive=True), [])
+            eq(glob.glob('**zz*F', recursive=Kweli), [])
             expect = [join('a', 'bcd', 'EF'), 'EF']
             ikiwa can_symlink():
                 expect += [join('sym3', 'EF')]
-            eq(glob.glob(join('**', 'EF'), recursive=True), expect)
+            eq(glob.glob(join('**', 'EF'), recursive=Kweli), expect)
 
     eleza test_glob_many_open_files(self):
         depth = 30
@@ -270,15 +270,15 @@ kundi GlobTests(unittest.TestCase):
         p = os.path.join(base, *(['d']*depth))
         os.makedirs(p)
         pattern = os.path.join(base, *(['*']*depth))
-        iters = [glob.iglob(pattern, recursive=True) for j in range(100)]
-        for it in iters:
+        iters = [glob.iglob(pattern, recursive=Kweli) kila j kwenye range(100)]
+        kila it kwenye iters:
             self.assertEqual(next(it), p)
         pattern = os.path.join(base, '**', 'd')
-        iters = [glob.iglob(pattern, recursive=True) for j in range(100)]
+        iters = [glob.iglob(pattern, recursive=Kweli) kila j kwenye range(100)]
         p = base
-        for i in range(depth):
+        kila i kwenye range(depth):
             p = os.path.join(p, 'd')
-            for it in iters:
+            kila it kwenye iters:
                 self.assertEqual(next(it), p)
 
 
@@ -294,36 +294,36 @@ kundi SymlinkLoopGlobTests(unittest.TestCase):
             create_empty_file(os.path.join('dir', 'file'))
             os.symlink(os.curdir, os.path.join('dir', 'link'))
 
-            results = glob.glob('**', recursive=True)
+            results = glob.glob('**', recursive=Kweli)
             self.assertEqual(len(results), len(set(results)))
             results = set(results)
             depth = 0
-            while results:
+            wakati results:
                 path = os.path.join(*(['dir'] + ['link'] * depth))
                 self.assertIn(path, results)
                 results.remove(path)
-                ikiwa not results:
-                    break
+                ikiwa sio results:
+                    koma
                 path = os.path.join(path, 'file')
                 self.assertIn(path, results)
                 results.remove(path)
                 depth += 1
 
-            results = glob.glob(os.path.join('**', 'file'), recursive=True)
+            results = glob.glob(os.path.join('**', 'file'), recursive=Kweli)
             self.assertEqual(len(results), len(set(results)))
             results = set(results)
             depth = 0
-            while results:
+            wakati results:
                 path = os.path.join(*(['dir'] + ['link'] * depth + ['file']))
                 self.assertIn(path, results)
                 results.remove(path)
                 depth += 1
 
-            results = glob.glob(os.path.join('**', ''), recursive=True)
+            results = glob.glob(os.path.join('**', ''), recursive=Kweli)
             self.assertEqual(len(results), len(set(results)))
             results = set(results)
             depth = 0
-            while results:
+            wakati results:
                 path = os.path.join(*(['dir'] + ['link'] * depth + ['']))
                 self.assertIn(path, results)
                 results.remove(path)

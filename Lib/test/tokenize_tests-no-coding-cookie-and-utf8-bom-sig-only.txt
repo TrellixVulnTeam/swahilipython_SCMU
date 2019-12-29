@@ -1,11 +1,11 @@
 ﻿# IMPORTANT: this file has the utf-8 BOM signature '\xef\xbb\xbf'
-# at the start of it.  Make sure this is preserved ikiwa any changes
+# at the start of it.  Make sure this ni preserved ikiwa any changes
 # are made!
 
 # Arbitrary encoded utf-8 text (stolen kutoka test_doctest2.py).
 x = 'ЉЊЈЁЂ'
 eleza y():
     """
-    And again in a comment.  ЉЊЈЁЂ
+    And again kwenye a comment.  ЉЊЈЁЂ
     """
-    pass
+    pita

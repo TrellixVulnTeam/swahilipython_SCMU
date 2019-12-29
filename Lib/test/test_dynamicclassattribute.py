@@ -1,5 +1,5 @@
-# Test case for DynamicClassAttribute
-# more tests are in test_descr
+# Test case kila DynamicClassAttribute
+# more tests are kwenye test_descr
 
 agiza abc
 agiza sys
@@ -7,16 +7,16 @@ agiza unittest
 kutoka types agiza DynamicClassAttribute
 
 kundi PropertyBase(Exception):
-    pass
+    pita
 
 kundi PropertyGet(PropertyBase):
-    pass
+    pita
 
 kundi PropertySet(PropertyBase):
-    pass
+    pita
 
 kundi PropertyDel(PropertyBase):
-    pass
+    pita
 
 kundi BaseClass(object):
     eleza __init__(self):
@@ -33,7 +33,7 @@ kundi BaseClass(object):
 
     @spam.deleter
     eleza spam(self):
-        del self._spam
+        toa self._spam
 
 kundi SubClass(BaseClass):
 
@@ -42,15 +42,15 @@ kundi SubClass(BaseClass):
     @spam.getter
     eleza spam(self):
         """SubClass.getter"""
-        raise PropertyGet(self._spam)
+        ashiria PropertyGet(self._spam)
 
     @spam.setter
     eleza spam(self, value):
-        raise PropertySet(self._spam)
+        ashiria PropertySet(self._spam)
 
     @spam.deleter
     eleza spam(self):
-        raise PropertyDel(self._spam)
+        ashiria PropertyDel(self._spam)
 
 kundi PropertyDocBase(object):
     _spam = 1
@@ -62,7 +62,7 @@ kundi PropertyDocSub(PropertyDocBase):
     spam = PropertyDocBase.__dict__['spam']
     @spam.getter
     eleza spam(self):
-        """The decorator does not use this doc string"""
+        """The decorator does sio use this doc string"""
         rudisha self._spam
 
 kundi PropertySubNewGetter(BaseClass):
@@ -86,13 +86,13 @@ kundi ClassWithAbstractVirtualProperty(metaclass=abc.ABCMeta):
     @DynamicClassAttribute
     @abc.abstractmethod
     eleza color():
-        pass
+        pita
 
 kundi ClassWithPropertyAbstractVirtual(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     @DynamicClassAttribute
     eleza color():
-        pass
+        pita
 
 kundi PropertyTests(unittest.TestCase):
     eleza test_property_decorator_baseclass(self):
@@ -104,8 +104,8 @@ kundi PropertyTests(unittest.TestCase):
         self.assertEqual(base.spam, 10)
         self.assertEqual(base._spam, 10)
         delattr(base, "spam")
-        self.assertTrue(not hasattr(base, "spam"))
-        self.assertTrue(not hasattr(base, "_spam"))
+        self.assertKweli(not hasattr(base, "spam"))
+        self.assertKweli(not hasattr(base, "_spam"))
         base.spam = 20
         self.assertEqual(base.spam, 20)
         self.assertEqual(base._spam, 20)
@@ -114,17 +114,17 @@ kundi PropertyTests(unittest.TestCase):
         # see #1620
         sub = SubClass()
         self.assertRaises(PropertyGet, getattr, sub, "spam")
-        self.assertRaises(PropertySet, setattr, sub, "spam", None)
+        self.assertRaises(PropertySet, setattr, sub, "spam", Tupu)
         self.assertRaises(PropertyDel, delattr, sub, "spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_property_decorator_subclass_doc(self):
         sub = SubClass()
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "SubClass.getter")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_property_decorator_baseclass_doc(self):
         base = BaseClass()
         self.assertEqual(base.__class__.__dict__['spam'].__doc__, "BaseClass.getter")
@@ -136,7 +136,7 @@ kundi PropertyTests(unittest.TestCase):
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "spam spam spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_property_getter_doc_override(self):
         newgettersub = PropertySubNewGetter()
         self.assertEqual(newgettersub.spam, 5)
@@ -146,10 +146,10 @@ kundi PropertyTests(unittest.TestCase):
         self.assertEqual(newgetter.__class__.__dict__['spam'].__doc__, "new docstring")
 
     eleza test_property___isabstractmethod__descriptor(self):
-        for val in (True, False, [], [1], '', '1'):
+        kila val kwenye (Kweli, Uongo, [], [1], '', '1'):
             kundi C(object):
                 eleza foo(self):
-                    pass
+                    pita
                 foo.__isabstractmethod__ = val
                 foo = DynamicClassAttribute(foo)
             self.assertIs(C.__dict__['foo'].__isabstractmethod__, bool(val))
@@ -158,12 +158,12 @@ kundi PropertyTests(unittest.TestCase):
         # right thing when presented with a value that fails truth testing:
         kundi NotBool(object):
             eleza __bool__(self):
-                raise ValueError()
+                ashiria ValueError()
             __len__ = __bool__
         with self.assertRaises(ValueError):
             kundi C(object):
                 eleza foo(self):
-                    pass
+                    pita
                 foo.__isabstractmethod__ = NotBool()
                 foo = DynamicClassAttribute(foo)
 
@@ -171,10 +171,10 @@ kundi PropertyTests(unittest.TestCase):
         self.assertRaises(TypeError, ClassWithAbstractVirtualProperty)
         self.assertRaises(TypeError, ClassWithPropertyAbstractVirtual)
         kundi APV(ClassWithPropertyAbstractVirtual):
-            pass
+            pita
         self.assertRaises(TypeError, APV)
         kundi AVP(ClassWithAbstractVirtualProperty):
-            pass
+            pita
         self.assertRaises(TypeError, AVP)
         kundi Okay1(ClassWithAbstractVirtualProperty):
             @DynamicClassAttribute
@@ -196,55 +196,55 @@ kundi PropertyTests(unittest.TestCase):
         self.assertEqual(Okay2().color, 'magenta')
 
 
-# Issue 5890: subclasses of DynamicClassAttribute do not preserve method __doc__ strings
+# Issue 5890: subclasses of DynamicClassAttribute do sio preserve method __doc__ strings
 kundi PropertySub(DynamicClassAttribute):
-    """This is a subkundi of DynamicClassAttribute"""
+    """This ni a subkundi of DynamicClassAttribute"""
 
 kundi PropertySubSlots(DynamicClassAttribute):
-    """This is a subkundi of DynamicClassAttribute that defines __slots__"""
+    """This ni a subkundi of DynamicClassAttribute that defines __slots__"""
     __slots__ = ()
 
 kundi PropertySubclassTests(unittest.TestCase):
 
     @unittest.skipIf(hasattr(PropertySubSlots, '__doc__'),
-            "__doc__ is already present, __slots__ will have no effect")
+            "__doc__ ni already present, __slots__ will have no effect")
     eleza test_slots_docstring_copy_exception(self):
-        try:
+        jaribu:
             kundi Foo(object):
                 @PropertySubSlots
                 eleza spam(self):
-                    """Trying to copy this docstring will raise an exception"""
+                    """Trying to copy this docstring will ashiria an exception"""
                     rudisha 1
                 andika('\n',spam.__doc__)
-        except AttributeError:
-            pass
-        else:
-            raise Exception("AttributeError not raised")
+        tatizo AttributeError:
+            pita
+        isipokua:
+            ashiria Exception("AttributeError sio ashiriad")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_docstring_copy(self):
         kundi Foo(object):
             @PropertySub
             eleza spam(self):
-                """spam wrapped in DynamicClassAttribute subclass"""
+                """spam wrapped kwenye DynamicClassAttribute subclass"""
                 rudisha 1
         self.assertEqual(
             Foo.__dict__['spam'].__doc__,
-            "spam wrapped in DynamicClassAttribute subclass")
+            "spam wrapped kwenye DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_property_setter_copies_getter_docstring(self):
         kundi Foo(object):
             eleza __init__(self): self._spam = 1
             @PropertySub
             eleza spam(self):
-                """spam wrapped in DynamicClassAttribute subclass"""
+                """spam wrapped kwenye DynamicClassAttribute subclass"""
                 rudisha self._spam
             @spam.setter
             eleza spam(self, value):
-                """this docstring is ignored"""
+                """this docstring ni ignored"""
                 self._spam = value
         foo = Foo()
         self.assertEqual(foo.spam, 1)
@@ -252,7 +252,7 @@ kundi PropertySubclassTests(unittest.TestCase):
         self.assertEqual(foo.spam, 2)
         self.assertEqual(
             Foo.__dict__['spam'].__doc__,
-            "spam wrapped in DynamicClassAttribute subclass")
+            "spam wrapped kwenye DynamicClassAttribute subclass")
         kundi FooSub(Foo):
             spam = Foo.__dict__['spam']
             @spam.setter
@@ -265,10 +265,10 @@ kundi PropertySubclassTests(unittest.TestCase):
         self.assertEqual(foosub.spam, 'eggs')
         self.assertEqual(
             FooSub.__dict__['spam'].__doc__,
-            "spam wrapped in DynamicClassAttribute subclass")
+            "spam wrapped kwenye DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted with -O2 na above")
     eleza test_property_new_getter_new_docstring(self):
 
         kundi Foo(object):

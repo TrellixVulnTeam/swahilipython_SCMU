@@ -9,15 +9,15 @@ agiza sysconfig
 agiza time
 agiza threading
 agiza unittest
-try:
+jaribu:
     agiza _testcapi
-except ImportError:
-    _testcapi = None
+tatizo ImportError:
+    _testcapi = Tupu
 
 kutoka test.support agiza skip_if_buggy_ucrt_strfptime
 
-# Max year is only limited by the size of C int.
-SIZEOF_INT = sysconfig.get_config_var('SIZEOF_INT') or 4
+# Max year ni only limited by the size of C int.
+SIZEOF_INT = sysconfig.get_config_var('SIZEOF_INT') ama 4
 TIME_MAXYEAR = (1 << 8 * SIZEOF_INT - 1) - 1
 TIME_MINYEAR = -TIME_MAXYEAR - 1 + 1900
 
@@ -61,8 +61,8 @@ kundi TimeTestCase(unittest.TestCase):
     eleza test_time(self):
         time.time()
         info = time.get_clock_info('time')
-        self.assertFalse(info.monotonic)
-        self.assertTrue(info.adjustable)
+        self.assertUongo(info.monotonic)
+        self.assertKweli(info.adjustable)
 
     eleza test_time_ns_type(self):
         eleza check_ns(sec, ns):
@@ -110,13 +110,13 @@ kundi TimeTestCase(unittest.TestCase):
                          'need time.clock_gettime()')
     eleza test_pthread_getcpuclockid(self):
         clk_id = time.pthread_getcpuclockid(threading.get_ident())
-        self.assertTrue(type(clk_id) is int)
-        # when in 32-bit mode AIX only returns the predefined constant
-        ikiwa not platform.system() == "AIX":
+        self.assertKweli(type(clk_id) ni int)
+        # when kwenye 32-bit mode AIX only rudishas the predefined constant
+        ikiwa sio platform.system() == "AIX":
             self.assertNotEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         elikiwa (sys.maxsize.bit_length() > 32):
             self.assertNotEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
-        else:
+        isipokua:
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         t1 = time.clock_gettime(clk_id)
         t2 = time.clock_gettime(clk_id)
@@ -133,10 +133,10 @@ kundi TimeTestCase(unittest.TestCase):
                          'need time.clock_settime()')
     eleza test_clock_settime(self):
         t = time.clock_gettime(time.CLOCK_REALTIME)
-        try:
+        jaribu:
             time.clock_settime(time.CLOCK_REALTIME, t)
-        except PermissionError:
-            pass
+        tatizo PermissionError:
+            pita
 
         ikiwa hasattr(time, 'CLOCK_MONOTONIC'):
             self.assertRaises(OSError,
@@ -155,13 +155,13 @@ kundi TimeTestCase(unittest.TestCase):
 
     eleza test_strftime(self):
         tt = time.gmtime(self.t)
-        for directive in ('a', 'A', 'b', 'B', 'c', 'd', 'H', 'I',
+        kila directive kwenye ('a', 'A', 'b', 'B', 'c', 'd', 'H', 'I',
                           'j', 'm', 'M', 'p', 'S',
                           'U', 'w', 'W', 'x', 'X', 'y', 'Y', 'Z', '%'):
             format = ' %' + directive
-            try:
+            jaribu:
                 time.strftime(format, tt)
-            except ValueError:
+            tatizo ValueError:
                 self.fail('conversion specifier: %r failed.' % format)
 
         self.assertRaises(TypeError, time.strftime, b'%S', tt)
@@ -170,9 +170,9 @@ kundi TimeTestCase(unittest.TestCase):
 
     eleza _bounds_checking(self, func):
         # Make sure that strftime() checks the bounds of the various parts
-        # of the time tuple (0 is valid for *all* values).
+        # of the time tuple (0 ni valid kila *all* values).
 
-        # The year field is tested by other test cases above
+        # The year field ni tested by other test cases above
 
         # Check month [1, 12] + zero support
         func((1900, 0, 1, 0, 0, 0, 0, 1, -1))
@@ -203,13 +203,13 @@ kundi TimeTestCase(unittest.TestCase):
         # Check second [0, 61]
         self.assertRaises(ValueError, func,
                             (1900, 1, 1, 0, 0, -1, 0, 1, -1))
-        # C99 only requires allowing for one leap second, but Python's docs say
+        # C99 only requires allowing kila one leap second, but Python's docs say
         # allow two leap seconds (0..61)
         func((1900, 1, 1, 0, 0, 60, 0, 1, -1))
         func((1900, 1, 1, 0, 0, 61, 0, 1, -1))
         self.assertRaises(ValueError, func,
                             (1900, 1, 1, 0, 0, 62, 0, 1, -1))
-        # No check for upper-bound day of week;
+        # No check kila upper-bound day of week;
         #  value forced into range by a ``% 7`` calculation.
         # Start check at -2 since gettmarg() increments value before taking
         #  modulo.
@@ -229,23 +229,23 @@ kundi TimeTestCase(unittest.TestCase):
         self._bounds_checking(lambda tup: time.strftime('', tup))
 
     eleza test_strftime_format_check(self):
-        # Test that strftime does not crash on invalid format strings
-        # that may trigger a buffer overread. When not triggered,
-        # strftime may succeed or raise ValueError depending on
+        # Test that strftime does sio crash on invalid format strings
+        # that may trigger a buffer overread. When sio triggered,
+        # strftime may succeed ama ashiria ValueError depending on
         # the platform.
-        for x in [ '', 'A', '%A', '%AA' ]:
-            for y in range(0x0, 0x10):
-                for z in [ '%', 'A%', 'AA%', '%A%', 'A%A%', '%#' ]:
-                    try:
+        kila x kwenye [ '', 'A', '%A', '%AA' ]:
+            kila y kwenye range(0x0, 0x10):
+                kila z kwenye [ '%', 'A%', 'AA%', '%A%', 'A%A%', '%#' ]:
+                    jaribu:
                         time.strftime(x * y + z)
-                    except ValueError:
-                        pass
+                    tatizo ValueError:
+                        pita
 
     eleza test_default_values_for_zero(self):
         # Make sure that using all zeros uses the proper default
-        # values.  No test for daylight savings since strftime() does
-        # not change output based on its value and no test for year
-        # because systems vary in their support for year 0.
+        # values.  No test kila daylight savings since strftime() does
+        # sio change output based on its value na no test kila year
+        # because systems vary kwenye their support kila year 0.
         expected = "2000 01 01 00 00 00 1 001"
         with support.check_warnings():
             result = time.strftime("%Y %m %d %H %M %S %w %j", (2000,)+(0,)*8)
@@ -256,37 +256,37 @@ kundi TimeTestCase(unittest.TestCase):
         # Should be able to go round-trip kutoka strftime to strptime without
         # raising an exception.
         tt = time.gmtime(self.t)
-        for directive in ('a', 'A', 'b', 'B', 'c', 'd', 'H', 'I',
+        kila directive kwenye ('a', 'A', 'b', 'B', 'c', 'd', 'H', 'I',
                           'j', 'm', 'M', 'p', 'S',
                           'U', 'w', 'W', 'x', 'X', 'y', 'Y', 'Z', '%'):
             format = '%' + directive
             strf_output = time.strftime(format, tt)
-            try:
+            jaribu:
                 time.strptime(strf_output, format)
-            except ValueError:
+            tatizo ValueError:
                 self.fail("conversion specifier %r failed with '%s' input." %
                           (format, strf_output))
 
     eleza test_strptime_bytes(self):
-        # Make sure only strings are accepted as arguments to strptime.
+        # Make sure only strings are accepted kama arguments to strptime.
         self.assertRaises(TypeError, time.strptime, b'2009', "%Y")
         self.assertRaises(TypeError, time.strptime, '2009', b'%Y')
 
     eleza test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
-        with self.assertRaises(ValueError) as e:
+        with self.assertRaises(ValueError) kama e:
             time.strptime('', '%D')
-        self.assertIs(e.exception.__suppress_context__, True)
-        # additional check for IndexError branch (issue #19545)
-        with self.assertRaises(ValueError) as e:
+        self.assertIs(e.exception.__suppress_context__, Kweli)
+        # additional check kila IndexError branch (issue #19545)
+        with self.assertRaises(ValueError) kama e:
             time.strptime('19', '%Y %')
-        self.assertIs(e.exception.__suppress_context__, True)
+        self.assertIs(e.exception.__suppress_context__, Kweli)
 
     eleza test_asctime(self):
         time.asctime(time.gmtime(self.t))
 
-        # Max year is only limited by the size of C int.
-        for bigyear in TIME_MAXYEAR, TIME_MINYEAR:
+        # Max year ni only limited by the size of C int.
+        kila bigyear kwenye TIME_MAXYEAR, TIME_MINYEAR:
             asc = time.asctime((bigyear, 6, 1) + (0,) * 6)
             self.assertEqual(asc[-len(str(bigyear)):], str(bigyear))
         self.assertRaises(OverflowError, time.asctime,
@@ -305,14 +305,14 @@ kundi TimeTestCase(unittest.TestCase):
         self.assertEqual(time.ctime(t), 'Sun Sep 16 01:03:52 1973')
         t = time.mktime((2000, 1, 1, 0, 0, 0, 0, 0, -1))
         self.assertEqual(time.ctime(t), 'Sat Jan  1 00:00:00 2000')
-        for year in [-100, 100, 1000, 2000, 2050, 10000]:
-            try:
+        kila year kwenye [-100, 100, 1000, 2000, 2050, 10000]:
+            jaribu:
                 testval = time.mktime((year, 1, 10) + (0,)*6)
-            except (ValueError, OverflowError):
+            tatizo (ValueError, OverflowError):
                 # If mktime fails, ctime will fail too.  This may happen
                 # on some platforms.
-                pass
-            else:
+                pita
+            isipokua:
                 self.assertEqual(time.ctime(testval)[20:], str(year))
 
     @unittest.skipUnless(hasattr(time, "tzset"),
@@ -321,24 +321,24 @@ kundi TimeTestCase(unittest.TestCase):
 
         kutoka os agiza environ
 
-        # Epoch time of midnight Dec 25th 2002. Never DST in northern
+        # Epoch time of midnight Dec 25th 2002. Never DST kwenye northern
         # hemisphere.
         xmas2002 = 1040774400.0
 
-        # These formats are correct for 2002, and possibly future years
-        # This format is the 'standard' as documented at:
+        # These formats are correct kila 2002, na possibly future years
+        # This format ni the 'standard' kama documented at:
         # http://www.opengroup.org/onlinepubs/007904975/basedefs/xbd_chap08.html
-        # They are also documented in the tzset(3) man page on most Unix
+        # They are also documented kwenye the tzset(3) man page on most Unix
         # systems.
         eastern = 'EST+05EDT,M4.1.0,M10.5.0'
         victoria = 'AEST-10AEDT-11,M10.5.0,M3.5.0'
         utc='UTC+0'
 
-        org_TZ = environ.get('TZ',None)
-        try:
-            # Make sure we can switch to UTC time and results are correct
+        org_TZ = environ.get('TZ',Tupu)
+        jaribu:
+            # Make sure we can switch to UTC time na results are correct
             # Note that unknown timezones default to UTC.
-            # Note that altzone is undefined in UTC, as there is no DST
+            # Note that altzone ni undefined kwenye UTC, kama there ni no DST
             environ['TZ'] = eastern
             time.tzset()
             environ['TZ'] = utc
@@ -367,91 +367,91 @@ kundi TimeTestCase(unittest.TestCase):
             time.tzset()
             self.assertNotEqual(time.gmtime(xmas2002), time.localtime(xmas2002))
 
-            # Issue #11886: Australian Eastern Standard Time (UTC+10) is called
+            # Issue #11886: Australian Eastern Standard Time (UTC+10) ni called
             # "EST" (as Eastern Standard Time, UTC-5) instead of "AEST"
-            # (non-DST timezone), and "EDT" instead of "AEDT" (DST timezone),
-            # on some operating systems (e.g. FreeBSD), which is wrong. See for
+            # (non-DST timezone), na "EDT" instead of "AEDT" (DST timezone),
+            # on some operating systems (e.g. FreeBSD), which ni wrong. See for
             # example this bug:
             # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=93810
             self.assertIn(time.tzname[0], ('AEST' 'EST'), time.tzname[0])
-            self.assertTrue(time.tzname[1] in ('AEDT', 'EDT'), str(time.tzname[1]))
+            self.assertKweli(time.tzname[1] kwenye ('AEDT', 'EDT'), str(time.tzname[1]))
             self.assertEqual(len(time.tzname), 2)
             self.assertEqual(time.daylight, 1)
             self.assertEqual(time.timezone, -36000)
             self.assertEqual(time.altzone, -39600)
             self.assertEqual(time.localtime(xmas2002).tm_isdst, 1)
 
-        finally:
-            # Repair TZ environment variable in case any other tests
+        mwishowe:
+            # Repair TZ environment variable kwenye case any other tests
             # rely on it.
-            ikiwa org_TZ is not None:
+            ikiwa org_TZ ni sio Tupu:
                 environ['TZ'] = org_TZ
-            elikiwa 'TZ' in environ:
-                del environ['TZ']
+            elikiwa 'TZ' kwenye environ:
+                toa environ['TZ']
             time.tzset()
 
     eleza test_insane_timestamps(self):
         # It's possible that some platform maps time_t to double,
-        # and that this test will fail there.  This test should
+        # na that this test will fail there.  This test should
         # exempt such platforms (provided they rudisha reasonable
         # results!).
-        for func in time.ctime, time.gmtime, time.localtime:
-            for unreasonable in -1e200, 1e200:
+        kila func kwenye time.ctime, time.gmtime, time.localtime:
+            kila unreasonable kwenye -1e200, 1e200:
                 self.assertRaises(OverflowError, func, unreasonable)
 
     eleza test_ctime_without_arg(self):
         # Not sure how to check the values, since the clock could tick
         # at any time.  Make sure these are at least accepted and
-        # don't raise errors.
+        # don't ashiria errors.
         time.ctime()
-        time.ctime(None)
+        time.ctime(Tupu)
 
     eleza test_gmtime_without_arg(self):
         gt0 = time.gmtime()
-        gt1 = time.gmtime(None)
+        gt1 = time.gmtime(Tupu)
         t0 = time.mktime(gt0)
         t1 = time.mktime(gt1)
         self.assertAlmostEqual(t1, t0, delta=0.2)
 
     eleza test_localtime_without_arg(self):
         lt0 = time.localtime()
-        lt1 = time.localtime(None)
+        lt1 = time.localtime(Tupu)
         t0 = time.mktime(lt0)
         t1 = time.mktime(lt1)
         self.assertAlmostEqual(t1, t0, delta=0.2)
 
     eleza test_mktime(self):
         # Issue #1726687
-        for t in (-2, -1, 0, 1):
-            try:
+        kila t kwenye (-2, -1, 0, 1):
+            jaribu:
                 tt = time.localtime(t)
-            except (OverflowError, OSError):
-                pass
-            else:
+            tatizo (OverflowError, OSError):
+                pita
+            isipokua:
                 self.assertEqual(time.mktime(tt), t)
 
-    # Issue #13309: passing extreme values to mktime() or localtime()
+    # Issue #13309: pitaing extreme values to mktime() ama localtime()
     # borks the glibc's internal timezone data.
     @unittest.skipUnless(platform.libc_ver()[0] != 'glibc',
-                         "disabled because of a bug in glibc. Issue #13309")
+                         "disabled because of a bug kwenye glibc. Issue #13309")
     eleza test_mktime_error(self):
-        # It may not be possible to reliably make mktime rudisha error
+        # It may sio be possible to reliably make mktime rudisha error
         # on all platfom.  This will make sure that no other exception
-        # than OverflowError is raised for an extreme value.
+        # than OverflowError ni ashiriad kila an extreme value.
         tt = time.gmtime(self.t)
         tzname = time.strftime('%Z', tt)
         self.assertNotEqual(tzname, 'LMT')
-        try:
+        jaribu:
             time.mktime((-1, 1, 1, 0, 0, 0, -1, -1, -1))
-        except OverflowError:
-            pass
+        tatizo OverflowError:
+            pita
         self.assertEqual(time.strftime('%Z', tt), tzname)
 
     eleza test_monotonic(self):
-        # monotonic() should not go backward
-        times = [time.monotonic() for n in range(100)]
+        # monotonic() should sio go backward
+        times = [time.monotonic() kila n kwenye range(100)]
         t1 = times[0]
-        for t2 in times[1:]:
+        kila t2 kwenye times[1:]:
             self.assertGreaterEqual(t2, t1, "times=%s" % times)
             t1 = t2
 
@@ -463,18 +463,18 @@ kundi TimeTestCase(unittest.TestCase):
         self.assertGreater(t2, t1)
         # bpo-20101: tolerate a difference of 50 ms because of bad timer
         # resolution on Windows
-        self.assertTrue(0.450 <= dt)
+        self.assertKweli(0.450 <= dt)
 
-        # monotonic() is a monotonic but non adjustable clock
+        # monotonic() ni a monotonic but non adjustable clock
         info = time.get_clock_info('monotonic')
-        self.assertTrue(info.monotonic)
-        self.assertFalse(info.adjustable)
+        self.assertKweli(info.monotonic)
+        self.assertUongo(info.adjustable)
 
     eleza test_perf_counter(self):
         time.perf_counter()
 
     eleza test_process_time(self):
-        # process_time() should not include time spend during a sleep
+        # process_time() should sio include time spend during a sleep
         start = time.process_time()
         time.sleep(0.100)
         stop = time.process_time()
@@ -483,18 +483,18 @@ kundi TimeTestCase(unittest.TestCase):
         self.assertLess(stop - start, 0.020)
 
         info = time.get_clock_info('process_time')
-        self.assertTrue(info.monotonic)
-        self.assertFalse(info.adjustable)
+        self.assertKweli(info.monotonic)
+        self.assertUongo(info.adjustable)
 
     eleza test_thread_time(self):
-        ikiwa not hasattr(time, 'thread_time'):
+        ikiwa sio hasattr(time, 'thread_time'):
             ikiwa sys.platform.startswith(('linux', 'win')):
                 self.fail("time.thread_time() should be available on %r"
                           % (sys.platform,))
-            else:
+            isipokua:
                 self.skipTest("need time.thread_time")
 
-        # thread_time() should not include time spend during a sleep
+        # thread_time() should sio include time spend during a sleep
         start = time.thread_time()
         time.sleep(0.100)
         stop = time.thread_time()
@@ -503,8 +503,8 @@ kundi TimeTestCase(unittest.TestCase):
         self.assertLess(stop - start, 0.020)
 
         info = time.get_clock_info('thread_time')
-        self.assertTrue(info.monotonic)
-        self.assertFalse(info.adjustable)
+        self.assertKweli(info.monotonic)
+        self.assertUongo(info.adjustable)
 
     @unittest.skipUnless(hasattr(time, 'clock_settime'),
                          'need time.clock_settime')
@@ -512,40 +512,40 @@ kundi TimeTestCase(unittest.TestCase):
         t1 = time.monotonic()
         realtime = time.clock_gettime(time.CLOCK_REALTIME)
         # jump backward with an offset of 1 hour
-        try:
+        jaribu:
             time.clock_settime(time.CLOCK_REALTIME, realtime - 3600)
-        except PermissionError as err:
+        tatizo PermissionError kama err:
             self.skipTest(err)
         t2 = time.monotonic()
         time.clock_settime(time.CLOCK_REALTIME, realtime)
-        # monotonic must not be affected by system clock updates
+        # monotonic must sio be affected by system clock updates
         self.assertGreaterEqual(t2, t1)
 
     eleza test_localtime_failure(self):
-        # Issue #13847: check for localtime() failure
-        invalid_time_t = None
-        for time_t in (-1, 2**30, 2**33, 2**60):
-            try:
+        # Issue #13847: check kila localtime() failure
+        invalid_time_t = Tupu
+        kila time_t kwenye (-1, 2**30, 2**33, 2**60):
+            jaribu:
                 time.localtime(time_t)
-            except OverflowError:
+            tatizo OverflowError:
                 self.skipTest("need 64-bit time_t")
-            except OSError:
+            tatizo OSError:
                 invalid_time_t = time_t
-                break
-        ikiwa invalid_time_t is None:
+                koma
+        ikiwa invalid_time_t ni Tupu:
             self.skipTest("unable to find an invalid time_t value")
 
         self.assertRaises(OSError, time.localtime, invalid_time_t)
         self.assertRaises(OSError, time.ctime, invalid_time_t)
 
-        # Issue #26669: check for localtime() failure
+        # Issue #26669: check kila localtime() failure
         self.assertRaises(ValueError, time.localtime, float("nan"))
         self.assertRaises(ValueError, time.ctime, float("nan"))
 
     eleza test_get_clock_info(self):
         clocks = ['monotonic', 'perf_counter', 'process_time', 'time']
 
-        for name in clocks:
+        kila name kwenye clocks:
             info = time.get_clock_info(name)
 
             #self.assertIsInstance(info, dict)
@@ -569,11 +569,11 @@ kundi TestLocale(unittest.TestCase):
         locale.setlocale(locale.LC_ALL, self.oldloc)
 
     eleza test_bug_3061(self):
-        try:
+        jaribu:
             tmp = locale.setlocale(locale.LC_ALL, "fr_FR")
-        except locale.Error:
-            self.skipTest('could not set locale.LC_ALL to fr_FR')
-        # This should not cause an exception
+        tatizo locale.Error:
+            self.skipTest('could sio set locale.LC_ALL to fr_FR')
+        # This should sio cause an exception
         time.strftime("%B", (2009,2,1,0,0,0,0,0,0))
 
 
@@ -584,20 +584,20 @@ kundi _TestAsctimeYear:
         rudisha time.asctime((y,) + (0,) * 8).split()[-1]
 
     eleza test_large_year(self):
-        # Check that it doesn't crash for year > 9999
+        # Check that it doesn't crash kila year > 9999
         self.assertEqual(self.yearstr(12345), '12345')
         self.assertEqual(self.yearstr(123456789), '123456789')
 
 kundi _TestStrftimeYear:
 
-    # Issue 13305:  For years < 1000, the value is not always
+    # Issue 13305:  For years < 1000, the value ni sio always
     # padded to 4 digits across platforms.  The C standard
-    # assumes year >= 1900, so it does not specify the number
+    # assumes year >= 1900, so it does sio specify the number
     # of digits.
 
     ikiwa time.strftime('%Y', (1,) + (0,) * 8) == '0001':
         _format = '%04d'
-    else:
+    isipokua:
         _format = '%d'
 
     eleza yearstr(self, y):
@@ -607,20 +607,20 @@ kundi _TestStrftimeYear:
         # Check that we can rudisha the zero padded value.
         ikiwa self._format == '%04d':
             self.test_year('%04d')
-        else:
+        isipokua:
             eleza year4d(y):
                 rudisha time.strftime('%4Y', (y,) + (0,) * 8)
             self.test_year('%04d', func=year4d)
 
     eleza skip_if_not_supported(y):
-        msg = "strftime() is limited to [1; 9999] with Visual Studio"
-        # Check that it doesn't crash for year > 9999
-        try:
+        msg = "strftime() ni limited to [1; 9999] with Visual Studio"
+        # Check that it doesn't crash kila year > 9999
+        jaribu:
             time.strftime('%Y', (y,) + (0,) * 8)
-        except ValueError:
-            cond = False
-        else:
-            cond = True
+        tatizo ValueError:
+            cond = Uongo
+        isipokua:
+            cond = Kweli
         rudisha unittest.skipUnless(cond, msg)
 
     @skip_if_not_supported(10000)
@@ -631,15 +631,15 @@ kundi _TestStrftimeYear:
     eleza test_negative(self):
         rudisha super().test_negative()
 
-    del skip_if_not_supported
+    toa skip_if_not_supported
 
 
 kundi _Test4dYear:
     _format = '%d'
 
-    eleza test_year(self, fmt=None, func=None):
-        fmt = fmt or self._format
-        func = func or self.yearstr
+    eleza test_year(self, fmt=Tupu, func=Tupu):
+        fmt = fmt ama self._format
+        func = func ama self.yearstr
         self.assertEqual(func(1),    fmt % 1)
         self.assertEqual(func(68),   fmt % 68)
         self.assertEqual(func(69),   fmt % 69)
@@ -660,17 +660,17 @@ kundi _Test4dYear:
         self.assertEqual(self.yearstr(-123456789), str(-123456789))
         self.assertEqual(self.yearstr(-1234567890), str(-1234567890))
         self.assertEqual(self.yearstr(TIME_MINYEAR), str(TIME_MINYEAR))
-        # Modules/timemodule.c checks for underflow
+        # Modules/timemodule.c checks kila underflow
         self.assertRaises(OverflowError, self.yearstr, TIME_MINYEAR - 1)
         with self.assertRaises(OverflowError):
             self.yearstr(-TIME_MAXYEAR - 1)
 
 
 kundi TestAsctime4dyear(_TestAsctimeYear, _Test4dYear, unittest.TestCase):
-    pass
+    pita
 
 kundi TestStrftime4dyear(_TestStrftimeYear, _Test4dYear, unittest.TestCase):
-    pass
+    pita
 
 
 kundi TestPytime(unittest.TestCase):
@@ -678,29 +678,29 @@ kundi TestPytime(unittest.TestCase):
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
     eleza test_localtime_timezone(self):
 
-        # Get the localtime and examine it for the offset and zone.
+        # Get the localtime na examine it kila the offset na zone.
         lt = time.localtime()
-        self.assertTrue(hasattr(lt, "tm_gmtoff"))
-        self.assertTrue(hasattr(lt, "tm_zone"))
+        self.assertKweli(hasattr(lt, "tm_gmtoff"))
+        self.assertKweli(hasattr(lt, "tm_zone"))
 
-        # See ikiwa the offset and zone are similar to the module
+        # See ikiwa the offset na zone are similar to the module
         # attributes.
-        ikiwa lt.tm_gmtoff is None:
-            self.assertTrue(not hasattr(time, "timezone"))
-        else:
+        ikiwa lt.tm_gmtoff ni Tupu:
+            self.assertKweli(not hasattr(time, "timezone"))
+        isipokua:
             self.assertEqual(lt.tm_gmtoff, -[time.timezone, time.altzone][lt.tm_isdst])
-        ikiwa lt.tm_zone is None:
-            self.assertTrue(not hasattr(time, "tzname"))
-        else:
+        ikiwa lt.tm_zone ni Tupu:
+            self.assertKweli(not hasattr(time, "tzname"))
+        isipokua:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
 
-        # Try and make UNIX times kutoka the localtime and a 9-tuple
+        # Try na make UNIX times kutoka the localtime na a 9-tuple
         # created kutoka the localtime. Test to see that the times are
         # the same.
         t = time.mktime(lt); t9 = time.mktime(lt[:9])
         self.assertEqual(t, t9)
 
-        # Make localtimes kutoka the UNIX times and compare them to
+        # Make localtimes kutoka the UNIX times na compare them to
         # the original localtime, thus making a round trip.
         new_lt = time.localtime(t); new_lt9 = time.localtime(t9)
         self.assertEqual(new_lt, lt)
@@ -725,16 +725,16 @@ kundi TestPytime(unittest.TestCase):
         # Load a short time structure using pickle.
         st = b"ctime\nstruct_time\np0\n((I2007\nI8\nI11\nI1\nI24\nI49\nI5\nI223\nI1\ntp1\n(dp2\ntp3\nRp4\n."
         lt = pickle.loads(st)
-        self.assertIs(lt.tm_gmtoff, None)
-        self.assertIs(lt.tm_zone, None)
+        self.assertIs(lt.tm_gmtoff, Tupu)
+        self.assertIs(lt.tm_zone, Tupu)
 
 
-@unittest.skipIf(_testcapi is None, 'need the _testcapi module')
+@unittest.skipIf(_testcapi ni Tupu, 'need the _testcapi module')
 kundi CPyTimeTestCase:
     """
     Base kundi to test the C _PyTime_t API.
     """
-    OVERFLOW_SECONDS = None
+    OVERFLOW_SECONDS = Tupu
 
     eleza setUp(self):
         kutoka _testcapi agiza SIZEOF_TIME_T
@@ -772,21 +772,21 @@ kundi CPyTimeTestCase:
         )
 
         ns_timestamps = [0]
-        for unit in units:
-            for value in values:
+        kila unit kwenye units:
+            kila value kwenye values:
                 ns = value * unit
                 ns_timestamps.extend((-ns, ns))
-        for pow2 in (0, 5, 10, 15, 22, 23, 24, 30, 33):
+        kila pow2 kwenye (0, 5, 10, 15, 22, 23, 24, 30, 33):
             ns = (2 ** pow2) * SEC_TO_NS
             ns_timestamps.extend((
                 -ns-1, -ns, -ns+1,
                 ns-1, ns, ns+1
             ))
-        for seconds in (_testcapi.INT_MIN, _testcapi.INT_MAX):
+        kila seconds kwenye (_testcapi.INT_MIN, _testcapi.INT_MAX):
             ns_timestamps.append(seconds * SEC_TO_NS)
         ikiwa use_float:
-            # numbers with an exact representation in IEEE 754 (base 2)
-            for pow2 in (3, 7, 10, 15):
+            # numbers with an exact representation kwenye IEEE 754 (base 2)
+            kila pow2 kwenye (3, 7, 10, 15):
                 ns = 2.0 ** (-pow2)
                 ns_timestamps.extend((-ns, ns))
 
@@ -797,35 +797,35 @@ kundi CPyTimeTestCase:
         rudisha ns_timestamps
 
     eleza _check_rounding(self, pytime_converter, expected_func,
-                        use_float, unit_to_sec, value_filter=None):
+                        use_float, unit_to_sec, value_filter=Tupu):
 
         eleza convert_values(ns_timestamps):
             ikiwa use_float:
                 unit_to_ns = SEC_TO_NS / float(unit_to_sec)
-                values = [ns / unit_to_ns for ns in ns_timestamps]
-            else:
+                values = [ns / unit_to_ns kila ns kwenye ns_timestamps]
+            isipokua:
                 unit_to_ns = SEC_TO_NS // unit_to_sec
-                values = [ns // unit_to_ns for ns in ns_timestamps]
+                values = [ns // unit_to_ns kila ns kwenye ns_timestamps]
 
             ikiwa value_filter:
                 values = filter(value_filter, values)
 
-            # remove duplicates and sort
+            # remove duplicates na sort
             rudisha sorted(set(values))
 
         # test rounding
         ns_timestamps = self._rounding_values(use_float)
         valid_values = convert_values(ns_timestamps)
-        for time_rnd, decimal_rnd in ROUNDING_MODES :
-            with decimal.localcontext() as context:
+        kila time_rnd, decimal_rnd kwenye ROUNDING_MODES :
+            with decimal.localcontext() kama context:
                 context.rounding = decimal_rnd
 
-                for value in valid_values:
+                kila value kwenye valid_values:
                     debug_info = {'value': value, 'rounding': decimal_rnd}
-                    try:
+                    jaribu:
                         result = pytime_converter(value, time_rnd)
                         expected = expected_func(value)
-                    except Exception as exc:
+                    tatizo Exception kama exc:
                         self.fail("Error on timestamp conversion: %s" % debug_info)
                     self.assertEqual(result,
                                      expected,
@@ -835,21 +835,21 @@ kundi CPyTimeTestCase:
         ns = self.OVERFLOW_SECONDS * SEC_TO_NS
         ns_timestamps = (-ns, ns)
         overflow_values = convert_values(ns_timestamps)
-        for time_rnd, _ in ROUNDING_MODES :
-            for value in overflow_values:
+        kila time_rnd, _ kwenye ROUNDING_MODES :
+            kila value kwenye overflow_values:
                 debug_info = {'value': value, 'rounding': time_rnd}
                 with self.assertRaises(OverflowError, msg=debug_info):
                     pytime_converter(value, time_rnd)
 
     eleza check_int_rounding(self, pytime_converter, expected_func,
-                           unit_to_sec=1, value_filter=None):
+                           unit_to_sec=1, value_filter=Tupu):
         self._check_rounding(pytime_converter, expected_func,
-                             False, unit_to_sec, value_filter)
+                             Uongo, unit_to_sec, value_filter)
 
     eleza check_float_rounding(self, pytime_converter, expected_func,
-                             unit_to_sec=1, value_filter=None):
+                             unit_to_sec=1, value_filter=Tupu):
         self._check_rounding(pytime_converter, expected_func,
-                             True, unit_to_sec, value_filter)
+                             Kweli, unit_to_sec, value_filter)
 
     eleza decimal_round(self, x):
         d = decimal.Decimal(x)
@@ -861,7 +861,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     """
     Test the C _PyTime_t API.
     """
-    # _PyTime_t is a 64-bit signed integer
+    # _PyTime_t ni a 64-bit signed integer
     OVERFLOW_SECONDS = math.ceil((2**63 + 1) / SEC_TO_NS)
 
     eleza test_FromSeconds(self):
@@ -876,7 +876,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
                                 value_filter=c_int_filter)
 
         # test nan
-        for time_rnd, _ in ROUNDING_MODES:
+        kila time_rnd, _ kwenye ROUNDING_MODES:
             with self.assertRaises(TypeError):
                 PyTime_FromSeconds(float('nan'))
 
@@ -892,7 +892,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
             lambda ns: self.decimal_round(ns * SEC_TO_NS))
 
         # test nan
-        for time_rnd, _ in ROUNDING_MODES:
+        kila time_rnd, _ kwenye ROUNDING_MODES:
             with self.assertRaises(ValueError):
                 PyTime_FromSecondsObject(float('nan'), time_rnd)
 
@@ -902,7 +902,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
         eleza float_converter(ns):
             ikiwa abs(ns) % SEC_TO_NS == 0:
                 rudisha float(ns // SEC_TO_NS)
-            else:
+            isipokua:
                 rudisha float(ns) / SEC_TO_NS
 
         self.check_int_rounding(lambda ns, rnd: PyTime_AsSecondsDouble(ns),
@@ -910,7 +910,7 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
                                 NS_TO_SEC)
 
         # test nan
-        for time_rnd, _ in ROUNDING_MODES:
+        kila time_rnd, _ kwenye ROUNDING_MODES:
             with self.assertRaises(TypeError):
                 PyTime_AsSecondsDouble(float('nan'))
 
@@ -935,10 +935,10 @@ kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
         ikiwa sys.platform == 'win32':
             kutoka _testcapi agiza LONG_MIN, LONG_MAX
 
-            # On Windows, timeval.tv_sec type is a C long
+            # On Windows, timeval.tv_sec type ni a C long
             eleza seconds_filter(secs):
                 rudisha LONG_MIN <= secs <= LONG_MAX
-        else:
+        isipokua:
             seconds_filter = self.time_t_filter
 
         self.check_int_rounding(PyTime_AsTimeval,
@@ -979,7 +979,7 @@ kundi TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
     Test the old C _PyTime_t API: _PyTime_ObjectToXXX() functions.
     """
 
-    # time_t is a 32-bit or 64-bit signed integer
+    # time_t ni a 32-bit ama 64-bit signed integer
     OVERFLOW_SECONDS = 2 ** 64
 
     eleza test_object_to_time_t(self):
@@ -1020,7 +1020,7 @@ kundi TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
                                   value_filter=self.time_t_filter)
 
          # test nan
-        for time_rnd, _ in ROUNDING_MODES:
+        kila time_rnd, _ kwenye ROUNDING_MODES:
             with self.assertRaises(ValueError):
                 pytime_object_to_timeval(float('nan'), time_rnd)
 
@@ -1036,7 +1036,7 @@ kundi TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
                                   value_filter=self.time_t_filter)
 
         # test nan
-        for time_rnd, _ in ROUNDING_MODES:
+        kila time_rnd, _ kwenye ROUNDING_MODES:
             with self.assertRaises(ValueError):
                 pytime_object_to_timespec(float('nan'), time_rnd)
 

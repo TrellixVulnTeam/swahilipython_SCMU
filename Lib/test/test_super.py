@@ -1,4 +1,4 @@
-"""Unit tests for zero-argument super() & related machinery."""
+"""Unit tests kila zero-argument super() & related machinery."""
 
 agiza unittest
 
@@ -31,13 +31,13 @@ kundi D(C, B):
         rudisha (cls, super().cm(), 'D')
 
 kundi E(D):
-    pass
+    pita
 
 kundi F(E):
     f = E.f
 
 kundi G(A):
-    pass
+    pita
 
 
 kundi TestSuper(unittest.TestCase):
@@ -74,7 +74,7 @@ kundi TestSuper(unittest.TestCase):
         self.assertEqual(e.cm(), (e, (E, (E, (E, 'A'), 'B'), 'C'), 'D'))
 
     eleza test_super_with_closure(self):
-        # Issue4360: super() did not work in a function that
+        # Issue4360: super() did sio work kwenye a function that
         # contains a closure
         kundi E(A):
             eleza f(self):
@@ -98,7 +98,7 @@ kundi TestSuper(unittest.TestCase):
             eleza f():
                 __class__
         self.assertIs(X.x, type(self))
-        with self.assertRaises(NameError) as e:
+        with self.assertRaises(NameError) kama e:
             exec("""kundi X:
                 __class__
                 eleza f():
@@ -110,7 +110,7 @@ kundi TestSuper(unittest.TestCase):
             eleza f():
                 __class__
         self.assertEqual(globals()["__class__"], 42)
-        del globals()["__class__"]
+        toa globals()["__class__"]
         self.assertNotIn("__class__", X.__dict__)
         kundi X:
             nonlocal __class__
@@ -144,8 +144,8 @@ kundi TestSuper(unittest.TestCase):
 
     eleza test___class___new(self):
         # See issue #23722
-        # Ensure zero-arg super() works as soon as type.__new__() is completed
-        test_kundi = None
+        # Ensure zero-arg super() works kama soon kama type.__new__() ni completed
+        test_kundi = Tupu
 
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace):
@@ -163,27 +163,27 @@ kundi TestSuper(unittest.TestCase):
 
     eleza test___class___delayed(self):
         # See issue #23722
-        test_namespace = None
+        test_namespace = Tupu
 
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace):
                 nonlocal test_namespace
                 test_namespace = namespace
-                rudisha None
+                rudisha Tupu
 
         kundi A(metaclass=Meta):
             @staticmethod
             eleza f():
                 rudisha __class__
 
-        self.assertIs(A, None)
+        self.assertIs(A, Tupu)
 
         B = type("B", (), test_namespace)
         self.assertIs(B.f(), B)
 
     eleza test___class___mro(self):
         # See issue #23722
-        test_kundi = None
+        test_kundi = Tupu
 
         kundi Meta(type):
             eleza mro(self):
@@ -206,17 +206,17 @@ kundi TestSuper(unittest.TestCase):
                 namespace_snapshot = namespace.copy()
                 rudisha super().__new__(cls, name, bases, namespace)
 
-        # __classcell__ is injected into the kundi namespace by the compiler
-        # when at least one method needs it, and should be omitted otherwise
-        namespace_snapshot = None
+        # __classcell__ ni injected into the kundi namespace by the compiler
+        # when at least one method needs it, na should be omitted otherwise
+        namespace_snapshot = Tupu
         kundi WithoutClassRef(metaclass=Meta):
-            pass
+            pita
         self.assertNotIn("__classcell__", namespace_snapshot)
 
-        # With zero-arg super() or an explicit __class__ reference,
-        # __classcell__ is the exact cell reference to be populated by
+        # With zero-arg super() ama an explicit __class__ reference,
+        # __classcell__ ni the exact cell reference to be populated by
         # type.__new__
-        namespace_snapshot = None
+        namespace_snapshot = Tupu
         kundi WithClassRef(metaclass=Meta):
             eleza f(self):
                 rudisha __class__
@@ -231,22 +231,22 @@ kundi TestSuper(unittest.TestCase):
 
     eleza test___classcell___missing(self):
         # See issue #23722
-        # Some metaclasses may not pass the original namespace to type.__new__
+        # Some metaclasses may sio pita the original namespace to type.__new__
         # We test that case here by forcibly deleting __classcell__
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace):
-                namespace.pop('__classcell__', None)
+                namespace.pop('__classcell__', Tupu)
                 rudisha super().__new__(cls, name, bases, namespace)
 
-        # The default case should continue to work without any errors
+        # The default case should endelea to work without any errors
         kundi WithoutClassRef(metaclass=Meta):
-            pass
+            pita
 
-        # With zero-arg super() or an explicit __class__ reference, we expect
-        # __build_class__ to raise a RuntimeError complaining that
-        # __class__ was not set, and asking ikiwa __classcell__ was propagated
+        # With zero-arg super() ama an explicit __class__ reference, we expect
+        # __build_class__ to ashiria a RuntimeError complaining that
+        # __class__ was sio set, na asking ikiwa __classcell__ was propagated
         # to type.__new__.
-        expected_error = '__class__ not set.*__classcell__ propagated'
+        expected_error = '__class__ sio set.*__classcell__ propagated'
         with self.assertRaisesRegex(RuntimeError, expected_error):
             kundi WithClassRef(metaclass=Meta):
                 eleza f(self):
@@ -254,21 +254,21 @@ kundi TestSuper(unittest.TestCase):
 
     eleza test___classcell___overwrite(self):
         # See issue #23722
-        # Overwriting __classcell__ with nonsense is explicitly prohibited
+        # Overwriting __classcell__ with nonsense ni explicitly prohibited
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace, cell):
                 namespace['__classcell__'] = cell
                 rudisha super().__new__(cls, name, bases, namespace)
 
-        for bad_cell in (None, 0, "", object()):
+        kila bad_cell kwenye (Tupu, 0, "", object()):
             with self.subTest(bad_cell=bad_cell):
                 with self.assertRaises(TypeError):
                     kundi A(metaclass=Meta, cell=bad_cell):
-                        pass
+                        pita
 
     eleza test___classcell___wrong_cell(self):
         # See issue #23722
-        # Pointing the cell reference at the wrong kundi is also prohibited
+        # Pointing the cell reference at the wrong kundi ni also prohibited
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace):
                 cls = super().__new__(cls, name, bases, namespace)
@@ -285,13 +285,13 @@ kundi TestSuper(unittest.TestCase):
             super()
         self.assertRaises(RuntimeError, f)
         eleza f(x):
-            del x
+            toa x
             super()
-        self.assertRaises(RuntimeError, f, None)
+        self.assertRaises(RuntimeError, f, Tupu)
         kundi X:
             eleza f(x):
                 nonlocal __class__
-                del __class__
+                toa __class__
                 super()
         self.assertRaises(RuntimeError, X().f)
 
@@ -311,10 +311,10 @@ kundi TestSuper(unittest.TestCase):
     eleza test_super_init_leaks(self):
         # Issue #26718: super.__init__ leaked memory ikiwa called multiple times.
         # This will be caught by regrtest.py -R ikiwa this leak.
-        # NOTE: Despite the use in the test a direct call of super.__init__
-        # is not endorsed.
+        # NOTE: Despite the use kwenye the test a direct call of super.__init__
+        # ni sio endorsed.
         sp = super(float, 1.0)
-        for i in range(1000):
+        kila i kwenye range(1000):
             super.__init__(sp, int, i)
 
 

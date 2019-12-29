@@ -6,28 +6,28 @@ agiza unittest
 kundi TestPEP479(unittest.TestCase):
     eleza test_stopiteration_wrapping(self):
         eleza f():
-            raise StopIteration
+            ashiria StopIteration
         eleza g():
-            yield f()
+            tuma f()
         with self.assertRaisesRegex(RuntimeError,
-                                    "generator raised StopIteration"):
+                                    "generator ashiriad StopIteration"):
             next(g())
 
     eleza test_stopiteration_wrapping_context(self):
         eleza f():
-            raise StopIteration
+            ashiria StopIteration
         eleza g():
-            yield f()
+            tuma f()
 
-        try:
+        jaribu:
             next(g())
-        except RuntimeError as exc:
+        tatizo RuntimeError kama exc:
             self.assertIs(type(exc.__cause__), StopIteration)
             self.assertIs(type(exc.__context__), StopIteration)
-            self.assertTrue(exc.__suppress_context__)
-        else:
-            self.fail('__cause__, __context__, or __suppress_context__ '
-                      'were not properly set')
+            self.assertKweli(exc.__suppress_context__)
+        isipokua:
+            self.fail('__cause__, __context__, ama __suppress_context__ '
+                      'were sio properly set')
 
 
 ikiwa __name__ == '__main__':

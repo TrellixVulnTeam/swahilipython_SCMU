@@ -1,27 +1,27 @@
-"""Basic tests for os.popen()
+"""Basic tests kila os.popen()
 
-  Particularly useful for platforms that fake popen.
+  Particularly useful kila platforms that fake popen.
 """
 
 agiza unittest
 kutoka test agiza support
 agiza os, sys
 
-# Test that command-lines get down as we expect.
+# Test that command-lines get down kama we expect.
 # To do this we execute:
 #    python -c "agiza sys;andika(sys.argv)" {rest_of_commandline}
-# This results in Python being spawned and printing the sys.argv list.
-# We can then eval() the result of this, and see what each argv was.
+# This results kwenye Python being spawned na printing the sys.argv list.
+# We can then eval() the result of this, na see what each argv was.
 python = sys.executable
-ikiwa ' ' in python:
-    python = '"' + python + '"'     # quote embedded space for cmdline
+ikiwa ' ' kwenye python:
+    python = '"' + python + '"'     # quote embedded space kila cmdline
 
 kundi PopenTest(unittest.TestCase):
 
     eleza _do_test_commandline(self, cmdline, expected):
         cmd = '%s -c "agiza sys; andika(sys.argv)" %s'
         cmd = cmd % (python, cmdline)
-        with os.popen(cmd) as p:
+        with os.popen(cmd) kama p:
             data = p.read()
         got = eval(data)[1:] # strip off argv[0]
         self.assertEqual(got, expected)
@@ -33,8 +33,8 @@ kundi PopenTest(unittest.TestCase):
             ["foo", "bar"]
         )
         self._do_test_commandline(
-            'foo "spam and eggs" "silly walk"',
-            ["foo", "spam and eggs", "silly walk"]
+            'foo "spam na eggs" "silly walk"',
+            ["foo", "spam na eggs", "silly walk"]
         )
         self._do_test_commandline(
             'foo "a \\"quoted\\" arg" bar',
@@ -42,24 +42,24 @@ kundi PopenTest(unittest.TestCase):
         )
         support.reap_children()
 
-    eleza test_return_code(self):
-        self.assertEqual(os.popen("exit 0").close(), None)
+    eleza test_rudisha_code(self):
+        self.assertEqual(os.popen("exit 0").close(), Tupu)
         ikiwa os.name == 'nt':
             self.assertEqual(os.popen("exit 42").close(), 42)
-        else:
+        isipokua:
             self.assertEqual(os.popen("exit 42").close(), 42 << 8)
 
     eleza test_contextmanager(self):
-        with os.popen("echo hello") as f:
+        with os.popen("echo hello") kama f:
             self.assertEqual(f.read(), "hello\n")
 
     eleza test_iterating(self):
-        with os.popen("echo hello") as f:
+        with os.popen("echo hello") kama f:
             self.assertEqual(list(f), ["hello\n"])
 
     eleza test_keywords(self):
         with os.popen(cmd="exit 0", mode="w", buffering=-1):
-            pass
+            pita
 
 ikiwa __name__ == "__main__":
     unittest.main()

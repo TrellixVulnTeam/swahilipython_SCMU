@@ -20,10 +20,10 @@ kundi HelpFrameTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.frame
+        toa cls.frame
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_line1(self):
         text = self.frame.text

@@ -26,7 +26,7 @@ class Test(unittest.TestCase):
         self.assertRaises(BufferError, a.append, 100)
         self.assertRaises(BufferError, a.pop)
 
-        del x; del y; gc.collect(); gc.collect(); gc.collect()
+        toa x; toa y; gc.collect(); gc.collect(); gc.collect()
         a.append(100)
         a.pop()
         x = (c_int * 16).from_buffer(a)
@@ -35,7 +35,7 @@ class Test(unittest.TestCase):
                           for obj in x._objects.values()])
 
         expected = x[:]
-        del a; gc.collect(); gc.collect(); gc.collect()
+        toa a; gc.collect(); gc.collect(); gc.collect()
         self.assertEqual(x[:], expected)
 
         with self.assertRaisesRegex(TypeError, "not writable"):
@@ -49,9 +49,9 @@ class Test(unittest.TestCase):
             (c_char * 16).from_buffer("a" * 16)
 
     def test_fortran_contiguous(self):
-        try:
+        jaribu:
             agiza _testbuffer
-        except ImportError as err:
+        tatizo ImportError as err:
             self.skipTest(str(err))
         flags = _testbuffer.ND_WRITABLE | _testbuffer.ND_FORTRAN
         array = _testbuffer.ndarray(
@@ -79,8 +79,8 @@ class Test(unittest.TestCase):
     def test_from_buffer_memoryview(self):
         a = [c_char.from_buffer(memoryview(bytearray(b'a')))]
         a.append(a)
-        del a
-        gc.collect()  # Should not crash
+        toa a
+        gc.collect()  # Should sio crash
 
     def test_from_buffer_copy(self):
         a = array.array("i", range(16))
@@ -100,7 +100,7 @@ class Test(unittest.TestCase):
 
         self.assertEqual(x._objects, None)
 
-        del a; gc.collect(); gc.collect(); gc.collect()
+        toa a; gc.collect(); gc.collect(); gc.collect()
         self.assertEqual(x[:], list(range(16)))
 
         x = (c_char * 16).from_buffer_copy(b"a" * 16)

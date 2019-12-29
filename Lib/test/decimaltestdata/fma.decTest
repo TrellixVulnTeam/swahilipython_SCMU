@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -404,7 +404,7 @@ fmax2321 fma 9 900000000000000000000    0E+999999  -> 8.10000000E+21  Rounded
 fmax2322 fma 9 9000000000000000000000    0E+999999  -> 8.10000000E+22  Rounded
 fmax2323 fma 9 90000000000000000000000    0E+999999  -> 8.10000000E+23  Rounded
 
--- fastpath breakers
+-- fastpath komaers
 precision:   29
 fmax2330 fma 1.491824697641270317824852952837224 1.105170918075647624811707826490246514675628614562883537345747603  0E+999999  -> 1.6487212707001281468486507878 Inexact Rounded
 precision:   55
@@ -829,7 +829,7 @@ fmax3037 fma  1   '7000'  '10000e+9' -> '1.00000000E+13' Inexact Rounded
 fmax3038 fma  1   '70000'  '10000e+9' -> '1.00000001E+13' Inexact Rounded
 fmax3039 fma  1   '700000'  '10000e+9' -> '1.00000007E+13' Rounded
 
--- symmetry:
+-- symmejaribu:
 fmax3040 fma  1   '10000e+9'  '70' -> '1.00000000E+13' Inexact Rounded
 fmax3041 fma  1   '10000e+9'  '700' -> '1.00000000E+13' Inexact Rounded
 fmax3042 fma  1   '10000e+9'  '7000' -> '1.00000000E+13' Inexact Rounded
@@ -1063,7 +1063,7 @@ fmax3267 fma  1   '123456789' 1.00000001    -> '123456790' Inexact Rounded
 fmax3268 fma  1   '123456789' 1.00001       -> '123456790' Inexact Rounded
 fmax3269 fma  1   '123456789' 1.1           -> '123456790' Inexact Rounded
 
--- input preparation tests (operands should not be rounded)
+-- input preparation tests (operands should sio be rounded)
 precision: 3
 rounding: half_up
 
@@ -2361,7 +2361,7 @@ fmax36037 fma  1   '7000'    '10000e+16' -> '1.000000000000000E+20' Inexact Roun
 fmax36038 fma  1   '70000'   '10000e+16' -> '1.000000000000001E+20' Inexact Rounded
 fmax36039 fma  1   '700000'  '10000e+16' -> '1.000000000000007E+20' Rounded
 
--- symmetry:
+-- symmejaribu:
 fmax36040 fma  1   '10000e+16'  '70' -> '1.000000000000000E+20' Inexact Rounded
 fmax36041 fma  1   '10000e+16'  '700' -> '1.000000000000000E+20' Inexact Rounded
 fmax36042 fma  1   '10000e+16'  '7000' -> '1.000000000000000E+20' Inexact Rounded

@@ -4,9 +4,9 @@ import selectors
 import socket
 import unittest
 from unittest import mock
-try:
+jaribu:
     import ssl
-except ImportError:
+tatizo ImportError:
     ssl = None
 
 import asyncio
@@ -64,7 +64,7 @@ class BaseSelectorEventLoopTests(test_utils.TestCase):
         transport = self.loop._make_socket_transport(m, asyncio.Protocol())
         self.assertIsInstance(transport, _SelectorSocketTransport)
 
-        # Calling repr() must not fail when the event loop is closed
+        # Calling repr() must sio fail when the event loop is closed
         self.loop.close()
         repr(transport)
 
@@ -87,7 +87,7 @@ class BaseSelectorEventLoopTests(test_utils.TestCase):
                                         r'SSL transport.*not.*initialized'):
                 transport.is_reading()
 
-            # execute the handshake while the logger is disabled
+            # execute the handshake wakati the logger is disabled
             # to ignore SSL handshake failure
             test_utils.run_briefly(self.loop)
 
@@ -438,7 +438,7 @@ class SelectorTransportTests(test_utils.TestCase):
         self.assertFalse(self.loop.readers)
         self.assertFalse(self.loop.writers)
 
-        # second close should not remove reader
+        # second close should sio remove reader
         tr._force_close(None)
         self.assertFalse(self.loop.readers)
         self.assertEqual(1, self.loop.remove_reader_count[7])
@@ -495,7 +495,7 @@ class SelectorTransportTests(test_utils.TestCase):
         self.assertTrue(tr.is_closing())
         self.assertFalse(self.loop.readers)
 
-        # can not add readers after closing
+        # can sio add readers after closing
         tr._add_reader(7, mock.sentinel)
         self.assertFalse(self.loop.readers)
 

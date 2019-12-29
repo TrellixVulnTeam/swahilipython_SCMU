@@ -11,8 +11,8 @@ kutoka lib2to3.fixer_util agiza token, syms
 
 kundi FixSetLiteral(fixer_base.BaseFix):
 
-    BM_compatible = True
-    explicit = True
+    BM_compatible = Kweli
+    explicit = Kweli
 
     PATTERN = """power< 'set' trailer< '('
                      (atom=atom< '[' (items=listmaker< any ((',' any)* [',']) >
@@ -31,14 +31,14 @@ kundi FixSetLiteral(fixer_base.BaseFix):
             fake = pytree.Node(syms.listmaker, [single.clone()])
             single.replace(fake)
             items = fake
-        else:
+        isipokua:
             items = results["items"]
 
         # Build the contents of the literal
         literal = [pytree.Leaf(token.LBRACE, "{")]
-        literal.extend(n.clone() for n in items.children)
+        literal.extend(n.clone() kila n kwenye items.children)
         literal.append(pytree.Leaf(token.RBRACE, "}"))
-        # Set the prefix of the right brace to that of the ')' or ']'
+        # Set the prefix of the right brace to that of the ')' ama ']'
         literal[-1].prefix = items.next_sibling.prefix
         maker = pytree.Node(syms.dictsetmaker, literal)
         maker.prefix = node.prefix

@@ -1,4 +1,4 @@
-"""Unit tests for the copy module."""
+"""Unit tests kila the copy module."""
 
 agiza copy
 agiza copyreg
@@ -18,7 +18,7 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_exceptions(self):
         self.assertIs(copy.Error, copy.error)
-        self.assertTrue(issubclass(copy.Error, Exception))
+        self.assertKweli(issubclass(copy.Error, Exception))
 
     # The copy() method
 
@@ -79,7 +79,7 @@ kundi TestCopy(unittest.TestCase):
         kundi C(object):
             eleza __getattribute__(self, name):
                 ikiwa name.startswith("__reduce"):
-                    raise AttributeError(name)
+                    ashiria AttributeError(name)
                 rudisha object.__getattribute__(self, name)
         x = C()
         self.assertRaises(copy.Error, copy.copy, x)
@@ -88,19 +88,19 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_copy_atomic(self):
         kundi Classic:
-            pass
+            pita
         kundi NewStyle(object):
-            pass
+            pita
         eleza f():
-            pass
+            pita
         kundi WithMetaclass(metaclass=abc.ABCMeta):
-            pass
-        tests = [None, ..., NotImplemented,
-                 42, 2**100, 3.14, True, False, 1j,
+            pita
+        tests = [Tupu, ..., NotImplemented,
+                 42, 2**100, 3.14, Kweli, Uongo, 1j,
                  "hello", "hello\u1234", f.__code__,
                  b"world", bytes(range(256)), range(10), slice(1, 10, 2),
                  NewStyle, Classic, max, WithMetaclass]
-        for x in tests:
+        kila x kwenye tests:
             self.assertIs(copy.copy(x), x)
 
     eleza test_copy_list(self):
@@ -256,7 +256,7 @@ kundi TestCopy(unittest.TestCase):
                 rudisha self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
-        # State with boolean value is false (issue #25718)
+        # State with boolean value ni false (issue #25718)
         x = C(0.0)
         self.assertEqual(copy.copy(x), x)
 
@@ -284,16 +284,16 @@ kundi TestCopy(unittest.TestCase):
         # module defines a "type" that doesn't formally inherit kutoka
         # type.
         kundi Meta(type):
-            pass
+            pita
         kundi C(metaclass=Meta):
-            pass
+            pita
         self.assertEqual(copy.deepcopy(C), C)
 
     eleza test_deepcopy_deepcopy(self):
         kundi C(object):
             eleza __init__(self, foo):
                 self.foo = foo
-            eleza __deepcopy__(self, memo=None):
+            eleza __deepcopy__(self, memo=Tupu):
                 rudisha C(self.foo)
         x = C(42)
         y = copy.deepcopy(x)
@@ -341,7 +341,7 @@ kundi TestCopy(unittest.TestCase):
         kundi C(object):
             eleza __getattribute__(self, name):
                 ikiwa name.startswith("__reduce"):
-                    raise AttributeError(name)
+                    ashiria AttributeError(name)
                 rudisha object.__getattribute__(self, name)
         x = C()
         self.assertRaises(copy.Error, copy.deepcopy, x)
@@ -350,15 +350,15 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_deepcopy_atomic(self):
         kundi Classic:
-            pass
+            pita
         kundi NewStyle(object):
-            pass
+            pita
         eleza f():
-            pass
-        tests = [None, 42, 2**100, 3.14, True, False, 1j,
+            pita
+        tests = [Tupu, 42, 2**100, 3.14, Kweli, Uongo, 1j,
                  "hello", "hello\u1234", f.__code__,
                  NewStyle, Classic, max]
-        for x in tests:
+        kila x kwenye tests:
             self.assertIs(copy.deepcopy(x), x)
 
     eleza test_deepcopy_list(self):
@@ -372,7 +372,7 @@ kundi TestCopy(unittest.TestCase):
         x = []
         x.append(x)
         y = copy.deepcopy(x)
-        for op in comparisons:
+        kila op kwenye comparisons:
             self.assertRaises(RecursionError, op, y, x)
         self.assertIsNot(y, x)
         self.assertIs(y[0], y)
@@ -399,7 +399,7 @@ kundi TestCopy(unittest.TestCase):
         x = ([],)
         x[0].append(x)
         y = copy.deepcopy(x)
-        for op in comparisons:
+        kila op kwenye comparisons:
             self.assertRaises(RecursionError, op, y, x)
         self.assertIsNot(y, x)
         self.assertIsNot(y[0], x[0])
@@ -416,9 +416,9 @@ kundi TestCopy(unittest.TestCase):
         x = {}
         x['foo'] = x
         y = copy.deepcopy(x)
-        for op in order_comparisons:
+        kila op kwenye order_comparisons:
             self.assertRaises(TypeError, op, y, x)
-        for op in equality_comparisons:
+        kila op kwenye equality_comparisons:
             self.assertRaises(RecursionError, op, y, x)
         self.assertIsNot(y, x)
         self.assertIs(y['foo'], y)
@@ -435,14 +435,14 @@ kundi TestCopy(unittest.TestCase):
         x = [1, 2, 3, 4]
         y = copy.deepcopy(x, memo)
         self.assertEqual(y, x)
-        # There's the entry for the new list, and the keep alive.
+        # There's the entry kila the new list, na the keep alive.
         self.assertEqual(len(memo), 2)
 
         memo = {}
         x = [(1, 2)]
         y = copy.deepcopy(x, memo)
         self.assertEqual(y, x)
-        # Tuples with immutable contents are immutable for deepcopy.
+        # Tuples with immutable contents are immutable kila deepcopy.
         self.assertEqual(len(memo), 2)
 
     eleza test_deepcopy_inst_vanilla(self):
@@ -563,7 +563,7 @@ kundi TestCopy(unittest.TestCase):
         self.assertEqual(y, x)
         self.assertIsNot(y, x)
         self.assertIsNot(y.foo, x.foo)
-        # State with boolean value is false (issue #25718)
+        # State with boolean value ni false (issue #25718)
         x = C([])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -572,7 +572,7 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_deepcopy_reflexive_inst(self):
         kundi C:
-            pass
+            pita
         x = C()
         x.foo = x
         y = copy.deepcopy(x)
@@ -581,7 +581,7 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_deepcopy_range(self):
         kundi I(int):
-            pass
+            pita
         x = range(I(10))
         y = copy.deepcopy(x)
         self.assertIsNot(y, x)
@@ -645,14 +645,14 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_reconstruct_reflexive(self):
         kundi C(object):
-            pass
+            pita
         x = C()
         x.foo = x
         y = copy.deepcopy(x)
         self.assertIsNot(y, x)
         self.assertIs(y.foo, y)
 
-    # Additions for Python 2.3 and pickle protocol 2
+    # Additions kila Python 2.3 na pickle protocol 2
 
     eleza test_reduce_4tuple(self):
         kundi C(list):
@@ -674,7 +674,7 @@ kundi TestCopy(unittest.TestCase):
     eleza test_reduce_5tuple(self):
         kundi C(dict):
             eleza __reduce__(self):
-                rudisha (C, (), self.__dict__, None, self.items())
+                rudisha (C, (), self.__dict__, Tupu, self.items())
             eleza __eq__(self, other):
                 rudisha (dict(self) == dict(other) and
                         self.__dict__ == other.__dict__)
@@ -707,14 +707,14 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_deepcopy_dict_subclass(self):
         kundi C(dict):
-            eleza __init__(self, d=None):
-                ikiwa not d:
+            eleza __init__(self, d=Tupu):
+                ikiwa sio d:
                     d = {}
                 self._keys = list(d.keys())
                 super().__init__(d)
             eleza __setitem__(self, key, item):
                 super().__setitem__(key, item)
-                ikiwa key not in self._keys:
+                ikiwa key haiko kwenye self._keys:
                     self._keys.append(key)
         x = C(d={'foo':0})
         y = copy.deepcopy(x)
@@ -727,7 +727,7 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_copy_list_subclass(self):
         kundi C(list):
-            pass
+            pita
         x = C([[1, 2], 3])
         x.foo = [4, 5]
         y = copy.copy(x)
@@ -738,7 +738,7 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_deepcopy_list_subclass(self):
         kundi C(list):
-            pass
+            pita
         x = C([[1, 2], 3])
         x.foo = [4, 5]
         y = copy.deepcopy(x)
@@ -749,7 +749,7 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_copy_tuple_subclass(self):
         kundi C(tuple):
-            pass
+            pita
         x = C([1, 2, 3])
         self.assertEqual(tuple(x), (1, 2, 3))
         y = copy.copy(x)
@@ -757,7 +757,7 @@ kundi TestCopy(unittest.TestCase):
 
     eleza test_deepcopy_tuple_subclass(self):
         kundi C(tuple):
-            pass
+            pita
         x = C([[1, 2], 3])
         self.assertEqual(tuple(x), ([1, 2], 3))
         y = copy.deepcopy(x)
@@ -768,31 +768,31 @@ kundi TestCopy(unittest.TestCase):
     eleza test_getstate_exc(self):
         kundi EvilState(object):
             eleza __getstate__(self):
-                raise ValueError("ain't got no stickin' state")
+                ashiria ValueError("ain't got no stickin' state")
         self.assertRaises(ValueError, copy.copy, EvilState())
 
     eleza test_copy_function(self):
         self.assertEqual(copy.copy(global_foo), global_foo)
         eleza foo(x, y): rudisha x+y
         self.assertEqual(copy.copy(foo), foo)
-        bar = lambda: None
+        bar = lambda: Tupu
         self.assertEqual(copy.copy(bar), bar)
 
     eleza test_deepcopy_function(self):
         self.assertEqual(copy.deepcopy(global_foo), global_foo)
         eleza foo(x, y): rudisha x+y
         self.assertEqual(copy.deepcopy(foo), foo)
-        bar = lambda: None
+        bar = lambda: Tupu
         self.assertEqual(copy.deepcopy(bar), bar)
 
     eleza _check_weakref(self, _copy):
         kundi C(object):
-            pass
+            pita
         obj = C()
         x = weakref.ref(obj)
         y = _copy(x)
         self.assertIs(y, x)
-        del obj
+        toa obj
         y = _copy(x)
         self.assertIs(y, x)
 
@@ -804,8 +804,8 @@ kundi TestCopy(unittest.TestCase):
 
     eleza _check_copy_weakdict(self, _dicttype):
         kundi C(object):
-            pass
-        a, b, c, d = [C() for i in range(4)]
+            pita
+        a, b, c, d = [C() kila i kwenye range(4)]
         u = _dicttype()
         u[a] = b
         u[c] = d
@@ -815,7 +815,7 @@ kundi TestCopy(unittest.TestCase):
         self.assertEqual(v[a], b)
         self.assertEqual(v[c], d)
         self.assertEqual(len(v), 2)
-        del c, d
+        toa c, d
         self.assertEqual(len(v), 1)
         x, y = C(), C()
         # The underlying containers are decoupled
@@ -832,7 +832,7 @@ kundi TestCopy(unittest.TestCase):
         kundi C(object):
             eleza __init__(self, i):
                 self.i = i
-        a, b, c, d = [C(i) for i in range(4)]
+        a, b, c, d = [C(i) kila i kwenye range(4)]
         u = weakref.WeakKeyDictionary()
         u[a] = b
         u[c] = d
@@ -844,14 +844,14 @@ kundi TestCopy(unittest.TestCase):
         self.assertIsNot(v[c], d)
         self.assertEqual(v[a].i, b.i)
         self.assertEqual(v[c].i, d.i)
-        del c
+        toa c
         self.assertEqual(len(v), 1)
 
     eleza test_deepcopy_weakvaluedict(self):
         kundi C(object):
             eleza __init__(self, i):
                 self.i = i
-        a, b, c, d = [C(i) for i in range(4)]
+        a, b, c, d = [C(i) kila i kwenye range(4)]
         u = weakref.WeakValueDictionary()
         u[a] = b
         u[c] = d
@@ -866,14 +866,14 @@ kundi TestCopy(unittest.TestCase):
         self.assertIsNot(z, c)
         self.assertEqual(z.i, c.i)
         self.assertIs(t, d)
-        del x, y, z, t
-        del d
+        toa x, y, z, t
+        toa d
         self.assertEqual(len(v), 1)
 
     eleza test_deepcopy_bound_method(self):
         kundi Foo(object):
             eleza m(self):
-                pass
+                pita
         f = Foo()
         f.b = f.m
         g = copy.deepcopy(f)

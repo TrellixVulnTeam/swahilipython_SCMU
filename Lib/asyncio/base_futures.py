@@ -4,27 +4,27 @@ agiza reprlib
 
 kutoka . agiza format_helpers
 
-# States for Future.
+# States kila Future.
 _PENDING = 'PENDING'
 _CANCELLED = 'CANCELLED'
 _FINISHED = 'FINISHED'
 
 
 eleza isfuture(obj):
-    """Check for a Future.
+    """Check kila a Future.
 
-    This returns True when obj is a Future instance or is advertising
-    itself as duck-type compatible by setting _asyncio_future_blocking.
-    See comment in Future for more details.
+    This rudishas Kweli when obj ni a Future instance ama ni advertising
+    itself kama duck-type compatible by setting _asyncio_future_blocking.
+    See comment kwenye Future kila more details.
     """
     rudisha (hasattr(obj.__class__, '_asyncio_future_blocking') and
-            obj._asyncio_future_blocking is not None)
+            obj._asyncio_future_blocking ni sio Tupu)
 
 
 eleza _format_callbacks(cb):
-    """helper function for Future.__repr__"""
+    """helper function kila Future.__repr__"""
     size = len(cb)
-    ikiwa not size:
+    ikiwa sio size:
         cb = ''
 
     eleza format_cb(callback):
@@ -43,14 +43,14 @@ eleza _format_callbacks(cb):
 
 eleza _future_repr_info(future):
     # (Future) -> str
-    """helper function for Future.__repr__"""
+    """helper function kila Future.__repr__"""
     info = [future._state.lower()]
     ikiwa future._state == _FINISHED:
-        ikiwa future._exception is not None:
+        ikiwa future._exception ni sio Tupu:
             info.append(f'exception={future._exception!r}')
-        else:
+        isipokua:
             # use reprlib to limit the length of the output, especially
-            # for very long strings
+            # kila very long strings
             result = reprlib.repr(future._result)
             info.append(f'result={result}')
     ikiwa future._callbacks:

@@ -5,35 +5,35 @@ kutoka test.support agiza import_fresh_module, run_unittest
 
 TESTS = 'test.datetimetester'
 
-try:
+jaribu:
     pure_tests = import_fresh_module(TESTS, fresh=['datetime', '_strptime'],
                                      blocked=['_datetime'])
     fast_tests = import_fresh_module(TESTS, fresh=['datetime',
                                                    '_datetime', '_strptime'])
-finally:
-    # XXX: import_fresh_module() is supposed to leave sys.module cache untouched,
+mwishowe:
+    # XXX: import_fresh_module() ni supposed to leave sys.module cache untouched,
     # XXX: but it does not, so we have to cleanup ourselves.
-    for modname in ['datetime', '_datetime', '_strptime']:
-        sys.modules.pop(modname, None)
+    kila modname kwenye ['datetime', '_datetime', '_strptime']:
+        sys.modules.pop(modname, Tupu)
 test_modules = [pure_tests, fast_tests]
 test_suffixes = ["_Pure", "_Fast"]
 # XXX(gb) First run all the _Pure tests, then all the _Fast tests.  You might
-# not believe this, but in spite of all the sys.modules trickery running a _Pure
-# test last will leave a mix of pure and native datetime stuff lying around.
+# sio believe this, but kwenye spite of all the sys.modules trickery running a _Pure
+# test last will leave a mix of pure na native datetime stuff lying around.
 all_test_classes = []
 
-for module, suffix in zip(test_modules, test_suffixes):
+kila module, suffix kwenye zip(test_modules, test_suffixes):
     test_classes = []
-    for name, cls in module.__dict__.items():
-        ikiwa not isinstance(cls, type):
-            continue
+    kila name, cls kwenye module.__dict__.items():
+        ikiwa sio isinstance(cls, type):
+            endelea
         ikiwa issubclass(cls, unittest.TestCase):
             test_classes.append(cls)
         elikiwa issubclass(cls, unittest.TestSuite):
             suit = cls()
-            test_classes.extend(type(test) for test in suit)
+            test_classes.extend(type(test) kila test kwenye suit)
     test_classes = sorted(set(test_classes), key=lambda cls: cls.__qualname__)
-    for cls in test_classes:
+    kila cls kwenye test_classes:
         cls.__name__ += suffix
         cls.__qualname__ += suffix
         @classmethod

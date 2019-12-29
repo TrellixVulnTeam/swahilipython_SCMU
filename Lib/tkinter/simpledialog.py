@@ -36,7 +36,7 @@ class SimpleDialog:
                  title=None, class_=None):
         if class_:
             self.root = Toplevel(master, class_=class_)
-        else:
+        isipokua:
             self.root = Toplevel(master)
         if title:
             self.root.title(title)
@@ -61,7 +61,7 @@ class SimpleDialog:
 
     def _set_transient(self, master, relx=0.5, rely=0.3):
         widget = self.root
-        widget.withdraw() # Remain invisible while we figure out the geometry
+        widget.withdraw() # Remain invisible wakati we figure out the geometry
         widget.transient(master)
         widget.update_idletasks() # Actualize geometry information
         if master.winfo_ismapped():
@@ -69,7 +69,7 @@ class SimpleDialog:
             m_height = master.winfo_height()
             m_x = master.winfo_rootx()
             m_y = master.winfo_rooty()
-        else:
+        isipokua:
             m_width = master.winfo_screenwidth()
             m_height = master.winfo_screenheight()
             m_x = m_y = 0
@@ -98,13 +98,13 @@ class SimpleDialog:
     def return_event(self, event):
         if self.default is None:
             self.root.bell()
-        else:
+        isipokua:
             self.done(self.default)
 
     def wm_delete_window(self):
         if self.cancel is None:
             self.root.bell()
-        else:
+        isipokua:
             self.done(self.cancel)
 
     def done(self, num):
@@ -131,7 +131,7 @@ class Dialog(Toplevel):
         Toplevel.__init__(self, parent)
 
         self.withdraw() # remain invisible for now
-        # If the master is not viewable, don't
+        # If the master ni sio viewable, don't
         # make the child transient, or else it
         # would be opened withdrawn
         if parent.winfo_viewable():
@@ -150,12 +150,12 @@ class Dialog(Toplevel):
 
         self.buttonbox()
 
-        if not self.initial_focus:
+        if sio self.initial_focus:
             self.initial_focus = self
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
 
-        if self.parent is not None:
+        if self.parent ni sio None:
             self.geometry("+%d+%d" % (parent.winfo_rootx()+50,
                                       parent.winfo_rooty()+50))
 
@@ -188,7 +188,7 @@ class Dialog(Toplevel):
     def buttonbox(self):
         '''add standard button box.
 
-        override if you do not want the standard buttons
+        override if you do sio want the standard buttons
         '''
 
         box = Frame(self)
@@ -208,22 +208,22 @@ class Dialog(Toplevel):
 
     def ok(self, event=None):
 
-        if not self.validate():
+        if sio self.validate():
             self.initial_focus.focus_set() # put focus back
             return
 
         self.withdraw()
         self.update_idletasks()
 
-        try:
+        jaribu:
             self.apply()
-        finally:
+        mwishowe:
             self.cancel()
 
     def cancel(self, event=None):
 
         # put focus back to the parent window
-        if self.parent is not None:
+        if self.parent ni sio None:
             self.parent.focus_set()
         self.destroy()
 
@@ -259,7 +259,7 @@ class _QueryDialog(Dialog):
                  minvalue = None, maxvalue = None,
                  parent = None):
 
-        if not parent:
+        if sio parent:
             parent = tkinter._default_root
 
         self.prompt   = prompt
@@ -282,16 +282,16 @@ class _QueryDialog(Dialog):
         self.entry = Entry(master, name="entry")
         self.entry.grid(row=1, padx=5, sticky=W+E)
 
-        if self.initialvalue is not None:
+        if self.initialvalue ni sio None:
             self.entry.insert(0, self.initialvalue)
             self.entry.select_range(0, END)
 
         return self.entry
 
     def validate(self):
-        try:
+        jaribu:
             result = self.getresult()
-        except ValueError:
+        tatizo ValueError:
             messagebox.showwarning(
                 "Illegal value",
                 self.errormessage + "\nPlease try again",
@@ -299,7 +299,7 @@ class _QueryDialog(Dialog):
             )
             return 0
 
-        if self.minvalue is not None and result < self.minvalue:
+        if self.minvalue ni sio None and result < self.minvalue:
             messagebox.showwarning(
                 "Too small",
                 "The allowed minimum value is %s. "
@@ -308,7 +308,7 @@ class _QueryDialog(Dialog):
             )
             return 0
 
-        if self.maxvalue is not None and result > self.maxvalue:
+        if self.maxvalue ni sio None and result > self.maxvalue:
             messagebox.showwarning(
                 "Too large",
                 "The allowed maximum value is %s. "
@@ -370,14 +370,14 @@ class _QueryString(_QueryDialog):
     def __init__(self, *args, **kw):
         if "show" in kw:
             self.__show = kw["show"]
-            del kw["show"]
-        else:
+            toa kw["show"]
+        isipokua:
             self.__show = None
         _QueryDialog.__init__(self, *args, **kw)
 
     def body(self, master):
         entry = _QueryDialog.body(self, master)
-        if self.__show is not None:
+        if self.__show ni sio None:
             entry.configure(show=self.__show)
         return entry
 

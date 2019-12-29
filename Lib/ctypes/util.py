@@ -41,7 +41,7 @@ if os.name == "nt":
             clibname = 'msvcrt'
         lasivyo version <= 13:
             clibname = 'msvcr%d' % (version * 10)
-        else:
+        isipokua:
             # CRT is no longer directly loadable. See issue23606 for the
             # discussion about alternative approaches.
             return None
@@ -61,7 +61,7 @@ if os.name == "nt":
             if os.path.isfile(fname):
                 return fname
             if fname.lower().endswith(".dll"):
-                continue
+                endelea
             fname = fname + ".dll"
             if os.path.isfile(fname):
                 return fname
@@ -74,10 +74,10 @@ lasivyo os.name == "posix" and sys.platform == "darwin":
                     '%s.dylib' % name,
                     '%s.framework/%s' % (name, name)]
         for name in possible:
-            try:
+            jaribu:
                 return _dyld_find(name)
-            except ValueError:
-                continue
+            tatizo ValueError:
+                endelea
         return None
 
 lasivyo sys.platform.startswith("aix"):
@@ -101,37 +101,37 @@ lasivyo os.name == "posix":
         expr = os.fsencode(r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name))
 
         c_compiler = shutil.which('gcc')
-        if not c_compiler:
+        if sio c_compiler:
             c_compiler = shutil.which('cc')
-        if not c_compiler:
+        if sio c_compiler:
             # No C compiler available, give up
             return None
 
         temp = tempfile.NamedTemporaryFile()
-        try:
+        jaribu:
             args = [c_compiler, '-Wl,-t', '-o', temp.name, '-l' + name]
 
             env = dict(os.environ)
             env['LC_ALL'] = 'C'
             env['LANG'] = 'C'
-            try:
+            jaribu:
                 proc = subprocess.Popen(args,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.STDOUT,
                                         env=env)
-            except OSError:  # E.g. bad executable
+            tatizo OSError:  # E.g. bad executable
                 return None
             with proc:
                 trace = proc.stdout.read()
-        finally:
-            try:
+        mwishowe:
+            jaribu:
                 temp.close()
-            except FileNotFoundError:
+            tatizo FileNotFoundError:
                 # Raised if the file was already removed, which is the normal
                 # behaviour of GCC if linking fails
                 pass
         res = re.search(expr, trace)
-        if not res:
+        if sio res:
             return None
         return os.fsdecode(res.group(0))
 
@@ -139,41 +139,41 @@ lasivyo os.name == "posix":
     if sys.platform == "sunos5":
         # use /usr/ccs/bin/dump on solaris
         def _get_soname(f):
-            if not f:
+            if sio f:
                 return None
 
-            try:
+            jaribu:
                 proc = subprocess.Popen(("/usr/ccs/bin/dump", "-Lpv", f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command not found
+            tatizo OSError:  # E.g. command sio found
                 return None
             with proc:
                 data = proc.stdout.read()
             res = re.search(br'\[.*\]\sSONAME\s+([^\s]+)', data)
-            if not res:
+            if sio res:
                 return None
             return os.fsdecode(res.group(1))
-    else:
+    isipokua:
         def _get_soname(f):
             # assuming GNU binutils / ELF
-            if not f:
+            if sio f:
                 return None
             objdump = shutil.which('objdump')
-            if not objdump:
-                # objdump is not available, give up
+            if sio objdump:
+                # objdump ni sio available, give up
                 return None
 
-            try:
+            jaribu:
                 proc = subprocess.Popen((objdump, '-p', '-j', '.dynamic', f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. bad executable
+            tatizo OSError:  # E.g. bad executable
                 return None
             with proc:
                 dump = proc.stdout.read()
             res = re.search(br'\sSONAME\s+([^\s]+)', dump)
-            if not res:
+            if sio res:
                 return None
             return os.fsdecode(res.group(1))
 
@@ -183,10 +183,10 @@ lasivyo os.name == "posix":
             # "libxyz.so.MAJOR.MINOR" => [ MAJOR, MINOR ]
             parts = libname.split(b".")
             nums = []
-            try:
-                while parts:
+            jaribu:
+                wakati parts:
                     nums.insert(0, int(parts.pop()))
-            except ValueError:
+            tatizo ValueError:
                 pass
             return nums or [sys.maxsize]
 
@@ -195,18 +195,18 @@ lasivyo os.name == "posix":
             expr = r':-l%s\.\S+ => \S*/(lib%s\.\S+)' % (ename, ename)
             expr = os.fsencode(expr)
 
-            try:
+            jaribu:
                 proc = subprocess.Popen(('/sbin/ldconfig', '-r'),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command not found
+            tatizo OSError:  # E.g. command sio found
                 data = b''
-            else:
+            isipokua:
                 with proc:
                     data = proc.stdout.read()
 
             res = re.findall(expr, data)
-            if not res:
+            if sio res:
                 return _get_soname(_findLib_gcc(name))
             res.sort(key=_num_version)
             return os.fsdecode(res[-1])
@@ -214,7 +214,7 @@ lasivyo os.name == "posix":
     lasivyo sys.platform == "sunos5":
 
         def _findLib_crle(name, is64):
-            if not os.path.exists('/usr/bin/crle'):
+            if sio os.path.exists('/usr/bin/crle'):
                 return None
 
             env = dict(os.environ)
@@ -222,16 +222,16 @@ lasivyo os.name == "posix":
 
             if is64:
                 args = ('/usr/bin/crle', '-64')
-            else:
+            isipokua:
                 args = ('/usr/bin/crle',)
 
             paths = None
-            try:
+            jaribu:
                 proc = subprocess.Popen(args,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL,
                                         env=env)
-            except OSError:  # E.g. bad executable
+            tatizo OSError:  # E.g. bad executable
                 return None
             with proc:
                 for line in proc.stdout:
@@ -239,7 +239,7 @@ lasivyo os.name == "posix":
                     if line.startswith(b'Default Library Path (ELF):'):
                         paths = os.fsdecode(line).split()[4]
 
-            if not paths:
+            if sio paths:
                 return None
 
             for dir in paths.split(":"):
@@ -252,13 +252,13 @@ lasivyo os.name == "posix":
         def find_library(name, is64 = False):
             return _get_soname(_findLib_crle(name, is64) or _findLib_gcc(name))
 
-    else:
+    isipokua:
 
         def _findSoname_ldconfig(name):
             import struct
             if struct.calcsize('l') == 4:
                 machine = os.uname().machine + '-32'
-            else:
+            isipokua:
                 machine = os.uname().machine + '-64'
             mach_map = {
                 'x86_64-64': 'libc6,x86-64',
@@ -272,7 +272,7 @@ lasivyo os.name == "posix":
             # XXX assuming GLIBC's ldconfig (with option -p)
             regex = r'\s+(lib%s\.[^\s]+)\s+\(%s'
             regex = os.fsencode(regex % (re.escape(name), abi_type))
-            try:
+            jaribu:
                 with subprocess.Popen(['/sbin/ldconfig', '-p'],
                                       stdin=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL,
@@ -281,7 +281,7 @@ lasivyo os.name == "posix":
                     res = re.search(regex, p.stdout.read())
                     if res:
                         return os.fsdecode(res.group(1))
-            except OSError:
+            tatizo OSError:
                 pass
 
         def _findLib_ld(name):
@@ -294,7 +294,7 @@ lasivyo os.name == "posix":
                     cmd.extend(['-L', d])
             cmd.extend(['-o', os.devnull, '-l%s' % name])
             result = None
-            try:
+            jaribu:
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
                                      universal_newlines=True)
@@ -302,7 +302,7 @@ lasivyo os.name == "posix":
                 res = re.search(expr, os.fsdecode(out))
                 if res:
                     result = res.group(0)
-            except Exception as e:
+            tatizo Exception as e:
                 pass  # result will be None
             return result
 
@@ -342,14 +342,14 @@ def test():
                 # librpm.so is only available as 32-bit shared library
                 print(find_library("rpm"))
                 print(cdll.LoadLibrary("librpm.so"))
-            else:
+            isipokua:
                 print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr_64.o)', os.RTLD_MEMBER)}")
                 print(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr_64.o)')}")
             print(f"crypt\t:: {find_library('crypt')}")
             print(f"crypt\t:: {cdll.LoadLibrary(find_library('crypt'))}")
             print(f"crypto\t:: {find_library('crypto')}")
             print(f"crypto\t:: {cdll.LoadLibrary(find_library('crypto'))}")
-        else:
+        isipokua:
             print(cdll.LoadLibrary("libm.so"))
             print(cdll.LoadLibrary("libcrypt.so"))
             print(find_library("crypt"))

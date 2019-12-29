@@ -172,13 +172,13 @@ def has_key(ch):
     #if present, return true, else return false.
     if _curses.tigetstr( capability_name ):
         return True
-    else:
+    isipokua:
         return False
 
 if __name__ == '__main__':
     # Compare the output of this implementation and the ncurses has_key,
     # on platforms where has_key is already available
-    try:
+    jaribu:
         L = []
         _curses.initscr()
         for key in _capability_names.keys():
@@ -187,6 +187,6 @@ if __name__ == '__main__':
             if system != python:
                 L.append( 'Mismatch for key %s, system=%i, Python=%i'
                           % (_curses.keyname( key ), system, python) )
-    finally:
+    mwishowe:
         _curses.endwin()
         for i in L: print(i)

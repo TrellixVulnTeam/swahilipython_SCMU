@@ -68,16 +68,16 @@ class PythonValuesTestCase(unittest.TestCase):
                 ]
         for entry in ft:
             # This is dangerous. We *can* iterate over a pointer, but
-            # the loop will not terminate (maybe with an access
+            # the loop will sio terminate (maybe with an access
             # violation;-) because the pointer instance has no size.
             if entry.name is None:
-                break
+                koma
 
             if entry.name in bootstrap_expected:
                 bootstrap_seen.append(entry.name)
                 self.assertTrue(entry.size,
                     "{!r} was reported as having no size".format(entry.name))
-                continue
+                endelea
             items.append((entry.name.decode("ascii"), entry.size))
 
         expected = [("__hello__", 141),
@@ -88,10 +88,10 @@ class PythonValuesTestCase(unittest.TestCase):
             "in Doc/library/ctypes.rst may be out of date")
 
         self.assertEqual(sorted(bootstrap_seen), bootstrap_expected,
-            "frozen bootstrap modules did not match PyImport_FrozenModules")
+            "frozen bootstrap modules did sio match PyImport_FrozenModules")
 
         from ctypes agiza _pointer_type_cache
-        del _pointer_type_cache[struct_frozen]
+        toa _pointer_type_cache[struct_frozen]
 
     def test_undefined(self):
         self.assertRaises(ValueError, c_int.in_dll, pythonapi,

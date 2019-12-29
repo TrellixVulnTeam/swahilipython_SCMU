@@ -8,7 +8,7 @@ agiza os
 agiza sys
 kutoka test agiza support
 kutoka test.support agiza skip_if_buggy_ucrt_strfptime
-kutoka datetime agiza date as datetime_date
+kutoka datetime agiza date kama datetime_date
 
 agiza _strptime
 
@@ -18,9 +18,9 @@ kundi getlang_Tests(unittest.TestCase):
         self.assertEqual(_strptime._getlang(), locale.getlocale(locale.LC_TIME))
 
 kundi LocaleTime_Tests(unittest.TestCase):
-    """Tests for _strptime.LocaleTime.
+    """Tests kila _strptime.LocaleTime.
 
-    All values are lower-cased when stored in LocaleTime, so make sure to
+    All values are lower-cased when stored kwenye LocaleTime, so make sure to
     compare values after running ``lower`` on them.
 
     """
@@ -33,27 +33,27 @@ kundi LocaleTime_Tests(unittest.TestCase):
     eleza compare_against_time(self, testing, directive, tuple_position,
                              error_msg):
         """Helper method that tests testing against directive based on the
-        tuple_position of time_tuple.  Uses error_msg as error message.
+        tuple_position of time_tuple.  Uses error_msg kama error message.
 
         """
         strftime_output = time.strftime(directive, self.time_tuple).lower()
         comparison = testing[self.time_tuple[tuple_position]]
         self.assertIn(strftime_output, testing,
-                      "%s: not found in tuple" % error_msg)
+                      "%s: sio found kwenye tuple" % error_msg)
         self.assertEqual(comparison, strftime_output,
                          "%s: position within tuple incorrect; %s != %s" %
                          (error_msg, comparison, strftime_output))
 
     eleza test_weekday(self):
-        # Make sure that full and abbreviated weekday names are correct in
-        # both string and position with tuple
+        # Make sure that full na abbreviated weekday names are correct in
+        # both string na position with tuple
         self.compare_against_time(self.LT_ins.f_weekday, '%A', 6,
                                   "Testing of full weekday name failed")
         self.compare_against_time(self.LT_ins.a_weekday, '%a', 6,
                                   "Testing of abbreviated weekday name failed")
 
     eleza test_month(self):
-        # Test full and abbreviated month names; both string and position
+        # Test full na abbreviated month names; both string na position
         # within the tuple
         self.compare_against_time(self.LT_ins.f_month, '%B', 1,
                                   "Testing against full month name failed")
@@ -64,27 +64,27 @@ kundi LocaleTime_Tests(unittest.TestCase):
         # Make sure AM/PM representation done properly
         strftime_output = time.strftime("%p", self.time_tuple).lower()
         self.assertIn(strftime_output, self.LT_ins.am_pm,
-                      "AM/PM representation not in tuple")
+                      "AM/PM representation haiko kwenye tuple")
         ikiwa self.time_tuple[3] < 12: position = 0
-        else: position = 1
+        isipokua: position = 1
         self.assertEqual(self.LT_ins.am_pm[position], strftime_output,
-                         "AM/PM representation in the wrong position within the tuple")
+                         "AM/PM representation kwenye the wrong position within the tuple")
 
     eleza test_timezone(self):
-        # Make sure timezone is correct
+        # Make sure timezone ni correct
         timezone = time.strftime("%Z", self.time_tuple).lower()
         ikiwa timezone:
-            self.assertTrue(timezone in self.LT_ins.timezone[0] or
-                            timezone in self.LT_ins.timezone[1],
-                            "timezone %s not found in %s" %
+            self.assertKweli(timezone kwenye self.LT_ins.timezone[0] or
+                            timezone kwenye self.LT_ins.timezone[1],
+                            "timezone %s sio found kwenye %s" %
                             (timezone, self.LT_ins.timezone))
 
     eleza test_date_time(self):
-        # Check that LC_date_time, LC_date, and LC_time are correct
-        # the magic date is used so as to not have issues with %c when day of
-        #  the month is a single digit and has a leading space.  This is not an
+        # Check that LC_date_time, LC_date, na LC_time are correct
+        # the magic date ni used so kama to sio have issues with %c when day of
+        #  the month ni a single digit na has a leading space.  This ni sio an
         #  issue since strptime still parses it correctly.  The problem is
-        #  testing these directives for correctness by comparing strftime
+        #  testing these directives kila correctness by comparing strftime
         #  output.
         magic_date = (1999, 3, 17, 22, 44, 55, 2, 76, 0)
         strftime_output = time.strftime("%c", magic_date)
@@ -98,17 +98,17 @@ kundi LocaleTime_Tests(unittest.TestCase):
                          strftime_output, "LC_time incorrect")
         LT = _strptime.LocaleTime()
         LT.am_pm = ('', '')
-        self.assertTrue(LT.LC_time, "LocaleTime's LC directives cannot handle "
+        self.assertKweli(LT.LC_time, "LocaleTime's LC directives cannot handle "
                                     "empty strings")
 
     eleza test_lang(self):
-        # Make sure lang is set to what _getlang() returns
-        # Assuming locale has not changed between now and when self.LT_ins was created
+        # Make sure lang ni set to what _getlang() rudishas
+        # Assuming locale has sio changed between now na when self.LT_ins was created
         self.assertEqual(self.LT_ins.lang, _strptime._getlang())
 
 
 kundi TimeRETests(unittest.TestCase):
-    """Tests for TimeRE."""
+    """Tests kila TimeRE."""
 
     eleza setUp(self):
         """Construct generic TimeRE object."""
@@ -118,53 +118,53 @@ kundi TimeRETests(unittest.TestCase):
     eleza test_pattern(self):
         # Test TimeRE.pattern
         pattern_string = self.time_re.pattern(r"%a %A %d")
-        self.assertTrue(pattern_string.find(self.locale_time.a_weekday[2]) != -1,
-                        "did not find abbreviated weekday in pattern string '%s'" %
+        self.assertKweli(pattern_string.find(self.locale_time.a_weekday[2]) != -1,
+                        "did sio find abbreviated weekday kwenye pattern string '%s'" %
                          pattern_string)
-        self.assertTrue(pattern_string.find(self.locale_time.f_weekday[4]) != -1,
-                        "did not find full weekday in pattern string '%s'" %
+        self.assertKweli(pattern_string.find(self.locale_time.f_weekday[4]) != -1,
+                        "did sio find full weekday kwenye pattern string '%s'" %
                          pattern_string)
-        self.assertTrue(pattern_string.find(self.time_re['d']) != -1,
-                        "did not find 'd' directive pattern string '%s'" %
+        self.assertKweli(pattern_string.find(self.time_re['d']) != -1,
+                        "did sio find 'd' directive pattern string '%s'" %
                          pattern_string)
 
     eleza test_pattern_escaping(self):
-        # Make sure any characters in the format string that might be taken as
-        # regex syntax is escaped.
+        # Make sure any characters kwenye the format string that might be taken as
+        # regex syntax ni escaped.
         pattern_string = self.time_re.pattern(r"\d+")
         self.assertIn(r"\\d\+", pattern_string,
-                      "%s does not have re characters escaped properly" %
+                      "%s does sio have re characters escaped properly" %
                       pattern_string)
 
     @skip_if_buggy_ucrt_strfptime
     eleza test_compile(self):
-        # Check that compiled regex is correct
+        # Check that compiled regex ni correct
         found = self.time_re.compile(r"%A").match(self.locale_time.f_weekday[6])
-        self.assertTrue(found and found.group('A') == self.locale_time.f_weekday[6],
-                        "re object for '%A' failed")
+        self.assertKweli(found na found.group('A') == self.locale_time.f_weekday[6],
+                        "re object kila '%A' failed")
         compiled = self.time_re.compile(r"%a %b")
         found = compiled.match("%s %s" % (self.locale_time.a_weekday[4],
                                self.locale_time.a_month[4]))
-        self.assertTrue(found,
-            "Match failed with '%s' regex and '%s' string" %
+        self.assertKweli(found,
+            "Match failed with '%s' regex na '%s' string" %
              (compiled.pattern, "%s %s" % (self.locale_time.a_weekday[4],
                                            self.locale_time.a_month[4])))
-        self.assertTrue(found.group('a') == self.locale_time.a_weekday[4] and
+        self.assertKweli(found.group('a') == self.locale_time.a_weekday[4] and
                          found.group('b') == self.locale_time.a_month[4],
-                        "re object couldn't find the abbreviated weekday month in "
+                        "re object couldn't find the abbreviated weekday month kwenye "
                          "'%s' using '%s'; group 'a' = '%s', group 'b' = %s'" %
                          (found.string, found.re.pattern, found.group('a'),
                           found.group('b')))
-        for directive in ('a','A','b','B','c','d','G','H','I','j','m','M','p',
+        kila directive kwenye ('a','A','b','B','c','d','G','H','I','j','m','M','p',
                           'S','u','U','V','w','W','x','X','y','Y','Z','%'):
             compiled = self.time_re.compile("%" + directive)
             found = compiled.match(time.strftime("%" + directive))
-            self.assertTrue(found, "Matching failed on '%s' using '%s' regex" %
+            self.assertKweli(found, "Matching failed on '%s' using '%s' regex" %
                                     (time.strftime("%" + directive),
                                      compiled.pattern))
 
     eleza test_blankpattern(self):
-        # Make sure when tuple or something has no values no regex is generated.
+        # Make sure when tuple ama something has no values no regex ni generated.
         # Fixes bug #661354
         test_locale = _strptime.LocaleTime()
         test_locale.timezone = (frozenset(), frozenset())
@@ -175,7 +175,7 @@ kundi TimeRETests(unittest.TestCase):
         # Make sure a format that requires escaping of characters works
         compiled_re = self.time_re.compile(r"\w+ %m")
         found = compiled_re.match(r"\w+ 10")
-        self.assertTrue(found, r"Escaping failed of format '\w+ 10'")
+        self.assertKweli(found, r"Escaping failed of format '\w+ 10'")
 
     eleza test_locale_data_w_regex_metacharacters(self):
         # Check that ikiwa locale data contains regex metacharacters they are
@@ -186,104 +186,104 @@ kundi TimeRETests(unittest.TestCase):
                                             "Tokyo (standard time)")),
                                 frozenset("Tokyo (daylight time)"))
         time_re = _strptime.TimeRE(locale_time)
-        self.assertTrue(time_re.compile("%Z").match("Tokyo (standard time)"),
-                        "locale data that contains regex metacharacters is not"
+        self.assertKweli(time_re.compile("%Z").match("Tokyo (standard time)"),
+                        "locale data that contains regex metacharacters ni not"
                         " properly escaped")
 
     eleza test_whitespace_substitution(self):
-        # When pattern contains whitespace, make sure it is taken into account
-        # so as to not allow subpatterns to end up next to each other and
+        # When pattern contains whitespace, make sure it ni taken into account
+        # so kama to sio allow subpatterns to end up next to each other and
         # "steal" characters kutoka each other.
         pattern = self.time_re.pattern('%j %H')
-        self.assertFalse(re.match(pattern, "180"))
-        self.assertTrue(re.match(pattern, "18 0"))
+        self.assertUongo(re.match(pattern, "180"))
+        self.assertKweli(re.match(pattern, "18 0"))
 
 
 kundi StrptimeTests(unittest.TestCase):
-    """Tests for _strptime.strptime."""
+    """Tests kila _strptime.strptime."""
 
     eleza setUp(self):
         """Create testing time tuple."""
         self.time_tuple = time.gmtime()
 
     eleza test_ValueError(self):
-        # Make sure ValueError is raised when match fails or format is bad
+        # Make sure ValueError ni ashiriad when match fails ama format ni bad
         self.assertRaises(ValueError, _strptime._strptime_time, data_string="%d",
                           format="%A")
-        for bad_format in ("%", "% ", "%e"):
-            try:
+        kila bad_format kwenye ("%", "% ", "%e"):
+            jaribu:
                 _strptime._strptime_time("2005", bad_format)
-            except ValueError:
-                continue
-            except Exception as err:
-                self.fail("'%s' raised %s, not ValueError" %
+            tatizo ValueError:
+                endelea
+            tatizo Exception kama err:
+                self.fail("'%s' ashiriad %s, sio ValueError" %
                             (bad_format, err.__class__.__name__))
-            else:
-                self.fail("'%s' did not raise ValueError" % bad_format)
+            isipokua:
+                self.fail("'%s' did sio ashiria ValueError" % bad_format)
 
-        # Ambiguous or incomplete cases using ISO year/week/weekday directives
-        # 1. ISO week (%V) is specified, but the year is specified with %Y
+        # Ambiguous ama incomplete cases using ISO year/week/weekday directives
+        # 1. ISO week (%V) ni specified, but the year ni specified with %Y
         # instead of %G
         with self.assertRaises(ValueError):
             _strptime._strptime("1999 50", "%Y %V")
-        # 2. ISO year (%G) and ISO week (%V) are specified, but weekday is not
+        # 2. ISO year (%G) na ISO week (%V) are specified, but weekday ni not
         with self.assertRaises(ValueError):
             _strptime._strptime("1999 51", "%G %V")
-        # 3. ISO year (%G) and weekday are specified, but ISO week (%V) is not
-        for w in ('A', 'a', 'w', 'u'):
+        # 3. ISO year (%G) na weekday are specified, but ISO week (%V) ni not
+        kila w kwenye ('A', 'a', 'w', 'u'):
             with self.assertRaises(ValueError):
                 _strptime._strptime("1999 51","%G %{}".format(w))
-        # 4. ISO year is specified alone (e.g. time.strptime('2015', '%G'))
+        # 4. ISO year ni specified alone (e.g. time.strptime('2015', '%G'))
         with self.assertRaises(ValueError):
             _strptime._strptime("2015", "%G")
-        # 5. Julian/ordinal day (%j) is specified with %G, but not %Y
+        # 5. Julian/ordinal day (%j) ni specified with %G, but sio %Y
         with self.assertRaises(ValueError):
             _strptime._strptime("1999 256", "%G %j")
 
 
     eleza test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
-        with self.assertRaises(ValueError) as e:
+        with self.assertRaises(ValueError) kama e:
             _strptime._strptime_time('', '%D')
-        self.assertIs(e.exception.__suppress_context__, True)
-        # additional check for IndexError branch (issue #19545)
-        with self.assertRaises(ValueError) as e:
+        self.assertIs(e.exception.__suppress_context__, Kweli)
+        # additional check kila IndexError branch (issue #19545)
+        with self.assertRaises(ValueError) kama e:
             _strptime._strptime_time('19', '%Y %')
-        self.assertIs(e.exception.__suppress_context__, True)
+        self.assertIs(e.exception.__suppress_context__, Kweli)
 
     eleza test_unconverteddata(self):
-        # Check ValueError is raised when there is unconverted data
+        # Check ValueError ni ashiriad when there ni unconverted data
         self.assertRaises(ValueError, _strptime._strptime_time, "10 12", "%m")
 
     eleza helper(self, directive, position):
-        """Helper fxn in testing."""
+        """Helper fxn kwenye testing."""
         strf_output = time.strftime("%" + directive, self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%" + directive)
-        self.assertTrue(strp_output[position] == self.time_tuple[position],
+        self.assertKweli(strp_output[position] == self.time_tuple[position],
                         "testing of '%s' directive failed; '%s' -> %s != %s" %
                          (directive, strf_output, strp_output[position],
                           self.time_tuple[position]))
 
     eleza test_year(self):
-        # Test that the year is handled properly
-        for directive in ('y', 'Y'):
+        # Test that the year ni handled properly
+        kila directive kwenye ('y', 'Y'):
             self.helper(directive, 0)
-        # Must also make sure %y values are correct for bounds set by Open Group
-        for century, bounds in ((1900, ('69', '99')), (2000, ('00', '68'))):
-            for bound in bounds:
+        # Must also make sure %y values are correct kila bounds set by Open Group
+        kila century, bounds kwenye ((1900, ('69', '99')), (2000, ('00', '68'))):
+            kila bound kwenye bounds:
                 strp_output = _strptime._strptime_time(bound, '%y')
                 expected_result = century + int(bound)
-                self.assertTrue(strp_output[0] == expected_result,
-                                "'y' test failed; passed in '%s' "
-                                "and returned '%s'" % (bound, strp_output[0]))
+                self.assertKweli(strp_output[0] == expected_result,
+                                "'y' test failed; pitaed kwenye '%s' "
+                                "and rudishaed '%s'" % (bound, strp_output[0]))
 
     eleza test_month(self):
-        # Test for month directives
-        for directive in ('B', 'b', 'm'):
+        # Test kila month directives
+        kila directive kwenye ('B', 'b', 'm'):
             self.helper(directive, 1)
 
     eleza test_day(self):
-        # Test for day directives
+        # Test kila day directives
         self.helper('d', 2)
 
     eleza test_hour(self):
@@ -291,7 +291,7 @@ kundi StrptimeTests(unittest.TestCase):
         self.helper('H', 3)
         strf_output = time.strftime("%I %p", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%I %p")
-        self.assertTrue(strp_output[3] == self.time_tuple[3],
+        self.assertKweli(strp_output[3] == self.time_tuple[3],
                         "testing of '%%I %%p' directive failed; '%s' -> %s != %s" %
                          (strf_output, strp_output[3], self.time_tuple[3]))
 
@@ -312,7 +312,7 @@ kundi StrptimeTests(unittest.TestCase):
 
     eleza test_weekday(self):
         # Test weekday directives
-        for directive in ('A', 'a', 'w', 'u'):
+        kila directive kwenye ('A', 'a', 'w', 'u'):
             self.helper(directive,6)
 
     eleza test_julian(self):
@@ -363,100 +363,100 @@ kundi StrptimeTests(unittest.TestCase):
             _strptime._strptime("-01:30:30.1234567", "%z")
         with self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30:123456", "%z")
-        with self.assertRaises(ValueError) as err:
+        with self.assertRaises(ValueError) kama err:
             _strptime._strptime("-01:3030", "%z")
-        self.assertEqual("Inconsistent use of : in -01:3030", str(err.exception))
+        self.assertEqual("Inconsistent use of : kwenye -01:3030", str(err.exception))
 
     @skip_if_buggy_ucrt_strfptime
     eleza test_timezone(self):
         # Test timezone directives.
-        # When gmtime() is used with %Z, entire result of strftime() is empty.
-        # Check for equal timezone names deals with bad locale info when this
-        # occurs; first found in FreeBSD 4.4.
+        # When gmtime() ni used with %Z, entire result of strftime() ni empty.
+        # Check kila equal timezone names deals with bad locale info when this
+        # occurs; first found kwenye FreeBSD 4.4.
         strp_output = _strptime._strptime_time("UTC", "%Z")
         self.assertEqual(strp_output.tm_isdst, 0)
         strp_output = _strptime._strptime_time("GMT", "%Z")
         self.assertEqual(strp_output.tm_isdst, 0)
         time_tuple = time.localtime()
-        strf_output = time.strftime("%Z")  #UTC does not have a timezone
+        strf_output = time.strftime("%Z")  #UTC does sio have a timezone
         strp_output = _strptime._strptime_time(strf_output, "%Z")
         locale_time = _strptime.LocaleTime()
-        ikiwa time.tzname[0] != time.tzname[1] or not time.daylight:
-            self.assertTrue(strp_output[8] == time_tuple[8],
+        ikiwa time.tzname[0] != time.tzname[1] ama sio time.daylight:
+            self.assertKweli(strp_output[8] == time_tuple[8],
                             "timezone check failed; '%s' -> %s != %s" %
                              (strf_output, strp_output[8], time_tuple[8]))
-        else:
-            self.assertTrue(strp_output[8] == -1,
-                            "LocaleTime().timezone has duplicate values and "
-                             "time.daylight but timezone value not set to -1")
+        isipokua:
+            self.assertKweli(strp_output[8] == -1,
+                            "LocaleTime().timezone has duplicate values na "
+                             "time.daylight but timezone value sio set to -1")
 
     eleza test_bad_timezone(self):
         # Explicitly test possibility of bad timezone;
-        # when time.tzname[0] == time.tzname[1] and time.daylight
+        # when time.tzname[0] == time.tzname[1] na time.daylight
         tz_name = time.tzname[0]
-        ikiwa tz_name.upper() in ("UTC", "GMT"):
+        ikiwa tz_name.upper() kwenye ("UTC", "GMT"):
             self.skipTest('need non-UTC/GMT timezone')
 
         with support.swap_attr(time, 'tzname', (tz_name, tz_name)), \
              support.swap_attr(time, 'daylight', 1), \
-             support.swap_attr(time, 'tzset', lambda: None):
+             support.swap_attr(time, 'tzset', lambda: Tupu):
             time.tzname = (tz_name, tz_name)
             time.daylight = 1
             tz_value = _strptime._strptime_time(tz_name, "%Z")[8]
             self.assertEqual(tz_value, -1,
                     "%s lead to a timezone value of %s instead of -1 when "
-                    "time.daylight set to %s and passing in %s" %
+                    "time.daylight set to %s na pitaing kwenye %s" %
                     (time.tzname, tz_value, time.daylight, tz_name))
 
     eleza test_date_time(self):
         # Test %c directive
-        for position in range(6):
+        kila position kwenye range(6):
             self.helper('c', position)
 
     eleza test_date(self):
         # Test %x directive
-        for position in range(0,3):
+        kila position kwenye range(0,3):
             self.helper('x', position)
 
     eleza test_time(self):
         # Test %X directive
-        for position in range(3,6):
+        kila position kwenye range(3,6):
             self.helper('X', position)
 
     eleza test_percent(self):
         # Make sure % signs are handled properly
         strf_output = time.strftime("%m %% %Y", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%m %% %Y")
-        self.assertTrue(strp_output[0] == self.time_tuple[0] and
+        self.assertKweli(strp_output[0] == self.time_tuple[0] and
                          strp_output[1] == self.time_tuple[1],
                         "handling of percent sign failed")
 
     eleza test_caseinsensitive(self):
         # Should handle names case-insensitively.
         strf_output = time.strftime("%B", self.time_tuple)
-        self.assertTrue(_strptime._strptime_time(strf_output.upper(), "%B"),
-                        "strptime does not handle ALL-CAPS names properly")
-        self.assertTrue(_strptime._strptime_time(strf_output.lower(), "%B"),
-                        "strptime does not handle lowercase names properly")
-        self.assertTrue(_strptime._strptime_time(strf_output.capitalize(), "%B"),
-                        "strptime does not handle capword names properly")
+        self.assertKweli(_strptime._strptime_time(strf_output.upper(), "%B"),
+                        "strptime does sio handle ALL-CAPS names properly")
+        self.assertKweli(_strptime._strptime_time(strf_output.lower(), "%B"),
+                        "strptime does sio handle lowercase names properly")
+        self.assertKweli(_strptime._strptime_time(strf_output.capitalize(), "%B"),
+                        "strptime does sio handle capword names properly")
 
     eleza test_defaults(self):
         # Default rudisha value should be (1900, 1, 1, 0, 0, 0, 0, 1, 0)
         defaults = (1900, 1, 1, 0, 0, 0, 0, 1, -1)
         strp_output = _strptime._strptime_time('1', '%m')
-        self.assertTrue(strp_output == defaults,
-                        "Default values for strptime() are incorrect;"
+        self.assertKweli(strp_output == defaults,
+                        "Default values kila strptime() are incorrect;"
                         " %s != %s" % (strp_output, defaults))
 
     eleza test_escaping(self):
         # Make sure all characters that have regex significance are escaped.
-        # Parentheses are in a purposeful order; will cause an error of
-        # unbalanced parentheses when the regex is compiled ikiwa they are not
+        # Parentheses are kwenye a purposeful order; will cause an error of
+        # unbalanced parentheses when the regex ni compiled ikiwa they are not
         # escaped.
         # Test instigated by bug #796149 .
         need_escaping = r".^$*+?{}\[]|)("
-        self.assertTrue(_strptime._strptime_time(need_escaping, need_escaping))
+        self.assertKweli(_strptime._strptime_time(need_escaping, need_escaping))
 
     eleza test_feb29_on_leap_year_without_year(self):
         time.strptime("Feb 29", "%b %d")
@@ -467,7 +467,7 @@ kundi StrptimeTests(unittest.TestCase):
                 time.strptime("Mar 1", "%b %d"))
 
 kundi Strptime12AMPMTests(unittest.TestCase):
-    """Test a _strptime regression in '%I %p' at 12 noon (12 PM)"""
+    """Test a _strptime regression kwenye '%I %p' at 12 noon (12 PM)"""
 
     eleza test_twelve_noon_midnight(self):
         eq = self.assertEqual
@@ -482,23 +482,23 @@ kundi JulianTests(unittest.TestCase):
 
     eleza test_all_julian_days(self):
         eq = self.assertEqual
-        for i in range(1, 367):
-            # use 2004, since it is a leap year, we have 366 days
+        kila i kwenye range(1, 367):
+            # use 2004, since it ni a leap year, we have 366 days
             eq(_strptime._strptime_time('%d 2004' % i, '%j %Y')[7], i)
 
 kundi CalculationTests(unittest.TestCase):
-    """Test that strptime() fills in missing info correctly"""
+    """Test that strptime() fills kwenye missing info correctly"""
 
     eleza setUp(self):
         self.time_tuple = time.gmtime()
 
     @skip_if_buggy_ucrt_strfptime
     eleza test_julian_calculation(self):
-        # Make sure that when Julian is missing that it is calculated
+        # Make sure that when Julian ni missing that it ni calculated
         format_string = "%Y %m %d %H %M %S %w %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
-        self.assertTrue(result.tm_yday == self.time_tuple.tm_yday,
+        self.assertKweli(result.tm_yday == self.time_tuple.tm_yday,
                         "Calculation of tm_yday failed; %s != %s" %
                          (result.tm_yday, self.time_tuple.tm_yday))
 
@@ -508,7 +508,7 @@ kundi CalculationTests(unittest.TestCase):
         format_string = "%Y %H %M %S %w %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
-        self.assertTrue(result.tm_year == self.time_tuple.tm_year and
+        self.assertKweli(result.tm_year == self.time_tuple.tm_year and
                          result.tm_mon == self.time_tuple.tm_mon and
                          result.tm_mday == self.time_tuple.tm_mday,
                         "Calculation of Gregorian date failed; "
@@ -519,35 +519,35 @@ kundi CalculationTests(unittest.TestCase):
 
     @skip_if_buggy_ucrt_strfptime
     eleza test_day_of_week_calculation(self):
-        # Test that the day of the week is calculated as needed
+        # Test that the day of the week ni calculated kama needed
         format_string = "%Y %m %d %H %S %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
-        self.assertTrue(result.tm_wday == self.time_tuple.tm_wday,
+        self.assertKweli(result.tm_wday == self.time_tuple.tm_wday,
                         "Calculation of day of the week failed; "
                          "%s != %s" % (result.tm_wday, self.time_tuple.tm_wday))
 
     ikiwa support.is_android:
-        # Issue #26929: strftime() on Android incorrectly formats %V or %G for
-        # the last or the first incomplete week in a year.
+        # Issue #26929: strftime() on Android incorrectly formats %V ama %G for
+        # the last ama the first incomplete week kwenye a year.
         _ymd_excluded = ((1905, 1, 1), (1906, 12, 31), (2008, 12, 29),
                         (1917, 12, 31))
         _formats_excluded = ('%G %V',)
-    else:
+    isipokua:
         _ymd_excluded = ()
         _formats_excluded = ()
 
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
     eleza test_week_of_year_and_day_of_week_calculation(self):
-        # Should be able to infer date ikiwa given year, week of year (%U or %W)
-        # and day of the week
+        # Should be able to infer date ikiwa given year, week of year (%U ama %W)
+        # na day of the week
         eleza test_helper(ymd_tuple, test_reason):
-            for year_week_format in ('%Y %W', '%Y %U', '%G %V'):
-                ikiwa (year_week_format in self._formats_excluded and
-                        ymd_tuple in self._ymd_excluded):
-                    return
-                for weekday_format in ('%w', '%u', '%a', '%A'):
+            kila year_week_format kwenye ('%Y %W', '%Y %U', '%G %V'):
+                ikiwa (year_week_format kwenye self._formats_excluded and
+                        ymd_tuple kwenye self._ymd_excluded):
+                    rudisha
+                kila weekday_format kwenye ('%w', '%u', '%a', '%A'):
                     format_string = year_week_format + ' ' + weekday_format
                     with self.subTest(test_reason,
                                       date=ymd_tuple,
@@ -566,20 +566,20 @@ kundi CalculationTests(unittest.TestCase):
         test_helper((1901, 1, 14), "day on Monday")
         test_helper((1905, 1, 1), "Jan 1 on Sunday")
         test_helper((1906, 1, 1), "Jan 1 on Monday")
-        test_helper((1906, 1, 7), "first Sunday in a year starting on Monday")
+        test_helper((1906, 1, 7), "first Sunday kwenye a year starting on Monday")
         test_helper((1905, 12, 31), "Dec 31 on Sunday")
         test_helper((1906, 12, 31), "Dec 31 on Monday")
-        test_helper((2008, 12, 29), "Monday in the last week of the year")
-        test_helper((2008, 12, 22), "Monday in the second-to-last week of the "
+        test_helper((2008, 12, 29), "Monday kwenye the last week of the year")
+        test_helper((2008, 12, 22), "Monday kwenye the second-to-last week of the "
                                     "year")
         test_helper((1978, 10, 23), "randomly chosen date")
         test_helper((2004, 12, 18), "randomly chosen date")
-        test_helper((1978, 10, 23), "year starting and ending on Monday while "
-                                        "date not on Sunday or Monday")
-        test_helper((1917, 12, 17), "year starting and ending on Monday with "
-                                        "a Monday not at the beginning or end "
+        test_helper((1978, 10, 23), "year starting na ending on Monday wakati "
+                                        "date sio on Sunday ama Monday")
+        test_helper((1917, 12, 17), "year starting na ending on Monday with "
+                                        "a Monday sio at the beginning ama end "
                                         "of the year")
-        test_helper((1917, 12, 31), "Dec 31 on Monday with year starting and "
+        test_helper((1917, 12, 31), "Dec 31 on Monday with year starting na "
                                         "ending on Monday")
         test_helper((2007, 1, 7), "First Sunday of 2007")
         test_helper((2007, 1, 14), "Second Sunday of 2007")
@@ -638,7 +638,7 @@ kundi CacheTests(unittest.TestCase):
     """Test that caching works properly."""
 
     eleza test_time_re_recreation(self):
-        # Make sure cache is recreated when current locale does not match what
+        # Make sure cache ni recreated when current locale does sio match what
         # cached object was created with.
         _strptime._strptime_time("10", "%d")
         _strptime._strptime_time("2005", "%Y")
@@ -650,20 +650,20 @@ kundi CacheTests(unittest.TestCase):
 
     eleza test_regex_cleanup(self):
         # Make sure cached regexes are discarded when cache becomes "full".
-        try:
-            del _strptime._regex_cache['%d']
-        except KeyError:
-            pass
+        jaribu:
+            toa _strptime._regex_cache['%d']
+        tatizo KeyError:
+            pita
         bogus_key = 0
-        while len(_strptime._regex_cache) <= _strptime._CACHE_MAX_SIZE:
-            _strptime._regex_cache[bogus_key] = None
+        wakati len(_strptime._regex_cache) <= _strptime._CACHE_MAX_SIZE:
+            _strptime._regex_cache[bogus_key] = Tupu
             bogus_key += 1
         _strptime._strptime_time("10", "%d")
         self.assertEqual(len(_strptime._regex_cache), 1)
 
     eleza test_new_localetime(self):
         # A new LocaleTime instance should be created when a new TimeRE object
-        # is created.
+        # ni created.
         locale_time_id = _strptime._TimeRE_cache.locale_time
         _strptime._TimeRE_cache.locale_time.lang = "Ni"
         _strptime._strptime_time("10", "%d")
@@ -672,30 +672,30 @@ kundi CacheTests(unittest.TestCase):
     eleza test_TimeRE_recreation_locale(self):
         # The TimeRE instance should be recreated upon changing the locale.
         locale_info = locale.getlocale(locale.LC_TIME)
-        try:
+        jaribu:
             locale.setlocale(locale.LC_TIME, ('en_US', 'UTF8'))
-        except locale.Error:
+        tatizo locale.Error:
             self.skipTest('test needs en_US.UTF8 locale')
-        try:
+        jaribu:
             _strptime._strptime_time('10', '%d')
             # Get id of current cache object.
             first_time_re = _strptime._TimeRE_cache
-            try:
-                # Change the locale and force a recreation of the cache.
+            jaribu:
+                # Change the locale na force a recreation of the cache.
                 locale.setlocale(locale.LC_TIME, ('de_DE', 'UTF8'))
                 _strptime._strptime_time('10', '%d')
                 # Get the new cache object's id.
                 second_time_re = _strptime._TimeRE_cache
-                # They should not be equal.
+                # They should sio be equal.
                 self.assertIsNot(first_time_re, second_time_re)
-            # Possible test locale is not supported while initial locale is.
-            # If this is the case just suppress the exception and fall-through
+            # Possible test locale ni sio supported wakati initial locale is.
+            # If this ni the case just suppress the exception na fall-through
             # to the resetting to the original locale.
-            except locale.Error:
+            tatizo locale.Error:
                 self.skipTest('test needs de_DE.UTF8 locale')
         # Make sure we don't trample on the locale setting once we leave the
         # test.
-        finally:
+        mwishowe:
             locale.setlocale(locale.LC_TIME, locale_info)
 
     @support.run_with_tz('STD-1DST,M4.1.0,M10.1.0')
@@ -708,7 +708,7 @@ kundi CacheTests(unittest.TestCase):
         self.assertEqual(tm.tm_isdst, 1)
         # Get id of current cache object.
         first_time_re = _strptime._TimeRE_cache
-        # Change the timezone and force a recreation of the cache.
+        # Change the timezone na force a recreation of the cache.
         os.environ['TZ'] = 'EST+05EDT,M3.2.0,M11.1.0'
         time.tzset()
         tm = _strptime._strptime_time(time.tzname[0], '%Z')
@@ -717,7 +717,7 @@ kundi CacheTests(unittest.TestCase):
         self.assertEqual(tm.tm_isdst, 1)
         # Get the new cache object's id.
         second_time_re = _strptime._TimeRE_cache
-        # They should not be equal.
+        # They should sio be equal.
         self.assertIsNot(first_time_re, second_time_re)
         # Make sure old names no longer accepted.
         with self.assertRaises(ValueError):

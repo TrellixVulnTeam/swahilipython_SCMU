@@ -6,83 +6,83 @@ agiza shutil
 kutoka test.support agiza TESTFN, run_unittest, unlink, reap_children
 
 ikiwa os.name != 'posix':
-    raise unittest.SkipTest('pipes module only works on posix')
+    ashiria unittest.SkipTest('pipes module only works on posix')
 
 TESTFN2 = TESTFN + "2"
 
-# tr a-z A-Z is not portable, so make the ranges explicit
+# tr a-z A-Z ni sio portable, so make the ranges explicit
 s_command = 'tr %s %s' % (string.ascii_lowercase, string.ascii_uppercase)
 
 kundi SimplePipeTests(unittest.TestCase):
     eleza tearDown(self):
-        for f in (TESTFN, TESTFN2):
+        kila f kwenye (TESTFN, TESTFN2):
             unlink(f)
 
     eleza testSimplePipe1(self):
-        ikiwa shutil.which('tr') is None:
-            self.skipTest('tr is not available')
+        ikiwa shutil.which('tr') ni Tupu:
+            self.skipTest('tr ni sio available')
         t = pipes.Template()
         t.append(s_command, pipes.STDIN_STDOUT)
-        with t.open(TESTFN, 'w') as f:
+        with t.open(TESTFN, 'w') kama f:
             f.write('hello world #1')
-        with open(TESTFN) as f:
+        with open(TESTFN) kama f:
             self.assertEqual(f.read(), 'HELLO WORLD #1')
 
     eleza testSimplePipe2(self):
-        ikiwa shutil.which('tr') is None:
-            self.skipTest('tr is not available')
-        with open(TESTFN, 'w') as f:
+        ikiwa shutil.which('tr') ni Tupu:
+            self.skipTest('tr ni sio available')
+        with open(TESTFN, 'w') kama f:
             f.write('hello world #2')
         t = pipes.Template()
         t.append(s_command + ' < $IN > $OUT', pipes.FILEIN_FILEOUT)
         t.copy(TESTFN, TESTFN2)
-        with open(TESTFN2) as f:
+        with open(TESTFN2) kama f:
             self.assertEqual(f.read(), 'HELLO WORLD #2')
 
     eleza testSimplePipe3(self):
-        ikiwa shutil.which('tr') is None:
-            self.skipTest('tr is not available')
-        with open(TESTFN, 'w') as f:
+        ikiwa shutil.which('tr') ni Tupu:
+            self.skipTest('tr ni sio available')
+        with open(TESTFN, 'w') kama f:
             f.write('hello world #2')
         t = pipes.Template()
         t.append(s_command + ' < $IN', pipes.FILEIN_STDOUT)
         f = t.open(TESTFN, 'r')
-        try:
+        jaribu:
             self.assertEqual(f.read(), 'HELLO WORLD #2')
-        finally:
+        mwishowe:
             f.close()
 
     eleza testEmptyPipeline1(self):
         # copy through empty pipe
         d = 'empty pipeline test COPY'
-        with open(TESTFN, 'w') as f:
+        with open(TESTFN, 'w') kama f:
             f.write(d)
-        with open(TESTFN2, 'w') as f:
+        with open(TESTFN2, 'w') kama f:
             f.write('')
         t=pipes.Template()
         t.copy(TESTFN, TESTFN2)
-        with open(TESTFN2) as f:
+        with open(TESTFN2) kama f:
             self.assertEqual(f.read(), d)
 
     eleza testEmptyPipeline2(self):
         # read through empty pipe
         d = 'empty pipeline test READ'
-        with open(TESTFN, 'w') as f:
+        with open(TESTFN, 'w') kama f:
             f.write(d)
         t=pipes.Template()
         f = t.open(TESTFN, 'r')
-        try:
+        jaribu:
             self.assertEqual(f.read(), d)
-        finally:
+        mwishowe:
             f.close()
 
     eleza testEmptyPipeline3(self):
         # write through empty pipe
         d = 'empty pipeline test WRITE'
         t = pipes.Template()
-        with t.open(TESTFN, 'w') as f:
+        with t.open(TESTFN, 'w') kama f:
             f.write(d)
-        with open(TESTFN) as f:
+        with open(TESTFN) kama f:
             self.assertEqual(f.read(), d)
 
     eleza testRepr(self):
@@ -94,21 +94,21 @@ kundi SimplePipeTests(unittest.TestCase):
 
     eleza testSetDebug(self):
         t = pipes.Template()
-        t.debug(False)
-        self.assertEqual(t.debugging, False)
-        t.debug(True)
-        self.assertEqual(t.debugging, True)
+        t.debug(Uongo)
+        self.assertEqual(t.debugging, Uongo)
+        t.debug(Kweli)
+        self.assertEqual(t.debugging, Kweli)
 
     eleza testReadOpenSink(self):
         # check calling open('r') on a pipe ending with
-        # a sink raises ValueError
+        # a sink ashirias ValueError
         t = pipes.Template()
         t.append('boguscmd', pipes.SINK)
         self.assertRaises(ValueError, t.open, 'bogusfile', 'r')
 
     eleza testWriteOpenSource(self):
         # check calling open('w') on a pipe ending with
-        # a source raises ValueError
+        # a source ashirias ValueError
         t = pipes.Template()
         t.prepend('boguscmd', pipes.SOURCE)
         self.assertRaises(ValueError, t.open, 'bogusfile', 'w')

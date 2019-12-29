@@ -7,7 +7,7 @@ eleza remote_object_tree_item(item):
     rudisha oid
 
 kundi WrappedObjectTreeItem:
-    # Lives in PYTHON subprocess
+    # Lives kwenye PYTHON subprocess
 
     eleza __init__(self, item):
         self.__item = item
@@ -21,7 +21,7 @@ kundi WrappedObjectTreeItem:
         rudisha list(map(remote_object_tree_item, sub_list))
 
 kundi StubObjectTreeItem:
-    # Lives in IDLE process
+    # Lives kwenye IDLE process
 
     eleza __init__(self, sockio, oid):
         self.sockio = sockio
@@ -33,7 +33,7 @@ kundi StubObjectTreeItem:
 
     eleza _GetSubList(self):
         sub_list = self.sockio.remotecall(self.oid, "_GetSubList", (), {})
-        rudisha [StubObjectTreeItem(self.sockio, oid) for oid in sub_list]
+        rudisha [StubObjectTreeItem(self.sockio, oid) kila oid kwenye sub_list]
 
 
 ikiwa __name__ == '__main__':

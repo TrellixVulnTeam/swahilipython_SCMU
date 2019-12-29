@@ -42,7 +42,7 @@ ecre = re.compile(r'''
   \?=                   # literal ?=
   ''', re.VERBOSE | re.MULTILINE)
 
-# Field name regexp, including trailing colon, but not separating whitespace,
+# Field name regexp, including trailing colon, but sio separating whitespace,
 # according to RFC 2822.  Character range is from tilde to exclamation mark.
 # For use with .match()
 fcre = re.compile(r'[\041-\176]+:$')
@@ -66,7 +66,7 @@ def decode_header(header):
     otherwise a lower-case string containing the name of the character set
     specified in the encoded string.
 
-    header may be a string that may or may not contain RFC2047 encoded words,
+    header may be a string that may or may sio contain RFC2047 encoded words,
     or it may be a Header object.
 
     An email.errors.HeaderParseError may be raised when certain decoding error
@@ -77,7 +77,7 @@ def decode_header(header):
         return [(_charset._encode(string, str(charset)), str(charset))
                     for string, charset in header._chunks]
     # If no encoding, just return the header with no charset.
-    if not ecre.search(header):
+    if sio ecre.search(header):
         return [(header, None)]
     # First step is to parse all the encoded parts into triplets of the form
     # (encoded_string, encoding, charset).  For unencoded strings, the last
@@ -86,7 +86,7 @@ def decode_header(header):
     for line in header.splitlines():
         parts = ecre.split(line)
         first = True
-        while parts:
+        wakati parts:
             unencoded = parts.pop(0)
             if first:
                 unencoded = unencoded.lstrip()
@@ -105,7 +105,7 @@ def decode_header(header):
         if n>1 and w[1] and words[n-2][1] and words[n-1][0].isspace():
             droplist.append(n-1)
     for d in reversed(droplist):
-        del words[d]
+        toa words[d]
 
     # The next step is to decode each encoded word by applying the reverse
     # base64 or quopri transformation.  decoded_words is now a list of the
@@ -122,13 +122,13 @@ def decode_header(header):
             paderr = len(encoded_string) % 4   # Postel's law: add missing padding
             if paderr:
                 encoded_string += '==='[:4 - paderr]
-            try:
+            jaribu:
                 word = email.base64mime.decode(encoded_string)
-            except binascii.Error:
+            tatizo binascii.Error:
                 raise HeaderParseError('Base64 decoding error')
-            else:
+            isipokua:
                 decoded_words.append((word, charset))
-        else:
+        isipokua:
             raise AssertionError('Unexpected encoding: ' + encoding)
     # Now convert all words to bytes and collapse consecutive runs of
     # similarly encoded words.
@@ -146,7 +146,7 @@ def decode_header(header):
             last_charset = charset
         lasivyo last_charset is None:
             last_word += BSPACE + word
-        else:
+        isipokua:
             last_word += word
     collapsed.append((last_word, last_charset))
     return collapsed
@@ -169,7 +169,7 @@ def make_header(decoded_seq, maxlinelen=None, header_name=None,
                continuation_ws=continuation_ws)
     for s, charset in decoded_seq:
         # None means us-ascii but we can simply pass it on to h.append()
-        if charset is not None and not isinstance(charset, Charset):
+        if charset ni sio None and sio isinstance(charset, Charset):
             charset = Charset(charset)
         h.append(s, charset)
     return h
@@ -183,14 +183,14 @@ class Header:
         """Create a MIME-compliant header that can contain many character sets.
 
         Optional s is the initial header value.  If None, the initial header
-        value is not set.  You can later append to the header with .append()
+        value ni sio set.  You can later append to the header with .append()
         method calls.  s may be a byte string or a Unicode string, but see the
         .append() documentation for semantics.
 
         Optional charset serves two purposes: it has the same meaning as the
         charset argument to the .append() method.  It also sets the default
         character set for all subsequent .append() calls that omit the charset
-        argument.  If charset is not provided in the constructor, the us-ascii
+        argument.  If charset ni sio provided in the constructor, the us-ascii
         charset is used both as s's initial charset and as the default for
         subsequent .append() calls.
 
@@ -208,19 +208,19 @@ class Header:
         """
         if charset is None:
             charset = USASCII
-        lasivyo not isinstance(charset, Charset):
+        lasivyo sio isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
         self._continuation_ws = continuation_ws
         self._chunks = []
-        if s is not None:
+        if s ni sio None:
             self.append(s, charset, errors)
         if maxlinelen is None:
             maxlinelen = MAXLINELEN
         self._maxlinelen = maxlinelen
         if header_name is None:
             self._headerlen = 0
-        else:
+        isipokua:
             # Take the separating colon and space into account.
             self._headerlen = len(header_name) + 2
 
@@ -243,11 +243,11 @@ class Header:
                 string = original_bytes.decode('ascii', 'replace')
             if uchunks:
                 hasspace = string and self._nonctext(string[0])
-                if lastcs not in (None, 'us-ascii'):
-                    if nextcs in (None, 'us-ascii') and not hasspace:
+                if lastcs haiko kwenye (None, 'us-ascii'):
+                    if nextcs in (None, 'us-ascii') and sio hasspace:
                         uchunks.append(SPACE)
                         nextcs = None
-                lasivyo nextcs not in (None, 'us-ascii') and not lastspace:
+                lasivyo nextcs haiko kwenye (None, 'us-ascii') and sio lastspace:
                     uchunks.append(SPACE)
             lastspace = string and self._nonctext(string[-1])
             lastcs = nextcs
@@ -285,28 +285,28 @@ class Header:
         """
         if charset is None:
             charset = self._charset
-        lasivyo not isinstance(charset, Charset):
+        lasivyo sio isinstance(charset, Charset):
             charset = Charset(charset)
-        if not isinstance(s, str):
+        if sio isinstance(s, str):
             input_charset = charset.input_codec or 'us-ascii'
             if input_charset == _charset.UNKNOWN8BIT:
                 s = s.decode('us-ascii', 'surrogateescape')
-            else:
+            isipokua:
                 s = s.decode(input_charset, errors)
         # Ensure that the bytes we're storing can be decoded to the output
         # character set, otherwise an early error is raised.
         output_charset = charset.output_codec or 'us-ascii'
         if output_charset != _charset.UNKNOWN8BIT:
-            try:
+            jaribu:
                 s.encode(output_charset, errors)
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 if output_charset!='us-ascii':
                     raise
                 charset = UTF8
         self._chunks.append((s, charset))
 
     def _nonctext(self, s):
-        """True if string s is not a ctext character of RFC822.
+        """True if string s ni sio a ctext character of RFC822.
         """
         return s.isspace() or s in ('(', ')', '\\')
 
@@ -331,12 +331,12 @@ class Header:
         Optional splitchars is a string containing characters which should be
         given extra weight by the splitting algorithm during normal header
         wrapping.  This is in very rough support of RFC 2822's `higher level
-        syntactic breaks':  split points preceded by a splitchar are preferred
+        syntactic komas':  split points preceded by a splitchar are preferred
         during line splitting, with the characters preferred in the order in
         which they appear in the string.  Space and tab may be included in the
         string to indicate whether preference should be given to one over the
-        other as a split point when other split chars do not appear in the line
-        being split.  Splitchars does not affect RFC 2047 encoded lines.
+        other as a split point when other split chars do sio appear in the line
+        being split.  Splitchars does sio affect RFC 2047 encoded lines.
 
         Optional linesep is a string to be used to separate the lines of
         the value.  The default value is the most useful for typical
@@ -356,12 +356,12 @@ class Header:
         lastcs = None
         hasspace = lastspace = None
         for string, charset in self._chunks:
-            if hasspace is not None:
+            if hasspace ni sio None:
                 hasspace = string and self._nonctext(string[0])
-                if lastcs not in (None, 'us-ascii'):
-                    if not hasspace or charset not in (None, 'us-ascii'):
+                if lastcs haiko kwenye (None, 'us-ascii'):
+                    if sio hasspace or charset haiko kwenye (None, 'us-ascii'):
                         formatter.add_transition()
-                lasivyo charset not in (None, 'us-ascii') and not lastspace:
+                lasivyo charset haiko kwenye (None, 'us-ascii') and sio lastspace:
                     formatter.add_transition()
             lastspace = string and self._nonctext(string[-1])
             lastcs = charset
@@ -369,14 +369,14 @@ class Header:
             lines = string.splitlines()
             if lines:
                 formatter.feed('', lines[0], charset)
-            else:
+            isipokua:
                 formatter.feed('', '', charset)
             for line in lines[1:]:
                 formatter.newline()
-                if charset.header_encoding is not None:
+                if charset.header_encoding ni sio None:
                     formatter.feed(self._continuation_ws, ' ' + line.lstrip(),
                                    charset)
-                else:
+                isipokua:
                     sline = line.lstrip()
                     fws = line[:len(line)-len(sline)]
                     formatter.feed(fws, sline, charset)
@@ -399,8 +399,8 @@ class Header:
         for string, charset in self._chunks:
             if charset == last_charset:
                 last_chunk.append(string)
-            else:
-                if last_charset is not None:
+            isipokua:
+                if last_charset ni sio None:
                     chunks.append((SPACE.join(last_chunk), last_charset))
                 last_chunk = [string]
                 last_charset = charset
@@ -433,7 +433,7 @@ class _ValueFormatter:
         if len(self._current_line) > 0:
             if self._current_line.is_onlyws() and self._lines:
                 self._lines[-1] += str(self._current_line)
-            else:
+            isipokua:
                 self._lines.append(str(self._current_line))
         self._current_line.reset()
 
@@ -442,33 +442,33 @@ class _ValueFormatter:
 
     def feed(self, fws, string, charset):
         # If the charset has no header encoding (i.e. it is an ASCII encoding)
-        # then we must split the header at the "highest level syntactic break"
+        # then we must split the header at the "highest level syntactic koma"
         # possible. Note that we don't have a lot of smarts about field
-        # syntax; we just try to break on semi-colons, then commas, then
+        # syntax; we just try to koma on semi-colons, then commas, then
         # whitespace.  Eventually, this should be pluggable.
         if charset.header_encoding is None:
             self._ascii_split(fws, string, self._splitchars)
             return
         # Otherwise, we're doing either a Base64 or a quoted-printable
         # encoding which means we don't need to split the line on syntactic
-        # breaks.  We can basically just find enough characters to fit on the
+        # komas.  We can basically just find enough characters to fit on the
         # current line, minus the RFC 2047 chrome.  What makes this trickier
-        # though is that we have to split at octet boundaries, not character
+        # though is that we have to split at octet boundaries, sio character
         # boundaries but it's only safe to split at character boundaries so at
         # best we can only get close.
         encoded_lines = charset.header_encode_lines(string, self._maxlengths())
         # The first element extends the current line, but if it's None then
         # nothing more fit on the current line so start a new line.
-        try:
+        jaribu:
             first_line = encoded_lines.pop(0)
-        except IndexError:
+        tatizo IndexError:
             # There are no encoded lines, so we're done.
             return
-        if first_line is not None:
+        if first_line ni sio None:
             self._append_chunk(fws, first_line)
-        try:
+        jaribu:
             last_line = encoded_lines.pop()
-        except IndexError:
+        tatizo IndexError:
             # There was only one line.
             return
         self.newline()
@@ -480,18 +480,18 @@ class _ValueFormatter:
     def _maxlengths(self):
         # The first line's length.
         yield self._maxlen - len(self._current_line)
-        while True:
+        wakati True:
             yield self._maxlen - self._continuation_ws_len
 
     def _ascii_split(self, fws, string, splitchars):
         # The RFC 2822 header folding algorithm is simple in principle but
         # complex in practice.  Lines may be folded any place where "folding
         # white space" appears by inserting a linesep character in front of the
-        # FWS.  The complication is that not all spaces or tabs qualify as FWS,
-        # and we are also supposed to prefer to break at "higher level
-        # syntactic breaks".  We can't do either of these without intimate
+        # FWS.  The complication is that sio all spaces or tabs qualify as FWS,
+        # and we are also supposed to prefer to koma at "higher level
+        # syntactic komas".  We can't do either of these without intimate
         # knowledge of the structure of structured headers, which we don't have
-        # here.  So the best we can do here is prefer to break at the specified
+        # here.  So the best we can do here is prefer to koma at the specified
         # splitchars, and hope that we don't choose any spaces or tabs that
         # aren't legal FWS.  (This is at least better than the old algorithm,
         # where we would sometimes *introduce* FWS after a splitchar, or the
@@ -500,7 +500,7 @@ class _ValueFormatter:
         parts = re.split("(["+FWS+"]+)", fws+string)
         if parts[0]:
             parts[:0] = ['']
-        else:
+        isipokua:
             parts.pop(0)
         for fws, part in zip(*[iter(parts)]*2):
             self._append_chunk(fws, part)
@@ -515,19 +515,19 @@ class _ValueFormatter:
                     if ch.isspace():
                         fws = self._current_line[i][0]
                         if fws and fws[0]==ch:
-                            break
+                            koma
                     prevpart = self._current_line[i-1][1]
                     if prevpart and prevpart[-1]==ch:
-                        break
-                else:
-                    continue
-                break
-            else:
+                        koma
+                isipokua:
+                    endelea
+                koma
+            isipokua:
                 fws, part = self._current_line.pop()
                 if self._current_line._initial_size > 0:
                     # There will be a header, so leave it on a line by itself.
                     self.newline()
-                    if not fws:
+                    if sio fws:
                         # We don't use continuation_ws here because the whitespace
                         # after a header should always be a space.
                         fws = ' '

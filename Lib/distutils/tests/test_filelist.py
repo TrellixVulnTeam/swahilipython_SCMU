@@ -70,7 +70,7 @@ class FileListTestCase(support.LoggingSilencer,
         # simulated file list
         file_list.allfiles = ['foo.tmp', 'ok', 'xo', 'four.txt',
                               'buildout.cfg',
-                              # filelist does not filter out VCS directories,
+                              # filelist does sio filter out VCS directories,
                               # it's sdist that does
                               l('.hg/last-message.txt'),
                               l('global/one.txt'),
@@ -86,7 +86,7 @@ class FileListTestCase(support.LoggingSilencer,
 
         for line in MANIFEST_IN.split('\n'):
             if line.strip() == '':
-                continue
+                endelea
             file_list.process_template_line(line)
 
         wanted = ['ok',
@@ -109,11 +109,11 @@ class FileListTestCase(support.LoggingSilencer,
         self.assertEqual(stdout.getvalue(), '')
 
         debug.DEBUG = True
-        try:
+        jaribu:
             with captured_stdout() as stdout:
                 file_list.debug_print('xxx')
             self.assertEqual(stdout.getvalue(), 'xxx\n')
-        finally:
+        mwishowe:
             debug.DEBUG = False
 
     def test_set_allfiles(self):
@@ -131,7 +131,7 @@ class FileListTestCase(support.LoggingSilencer,
         self.assertEqual(file_list.files, ['a', 'b', 'c', 'g'])
 
     def test_translate_pattern(self):
-        # not regex
+        # sio regex
         self.assertTrue(hasattr(
             translate_pattern('a', anchor=True, is_regex=False),
             'search'))

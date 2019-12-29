@@ -48,7 +48,7 @@ controlnames = [
 def _ctoi(c):
     if type(c) == type(""):
         return ord(c)
-    else:
+    isipokua:
         return c
 
 def isalnum(c): return isalpha(c) or isdigit(c)
@@ -60,7 +60,7 @@ def isdigit(c): return 48 <= _ctoi(c) <= 57
 def isgraph(c): return 33 <= _ctoi(c) <= 126
 def islower(c): return 97 <= _ctoi(c) <= 122
 def isprint(c): return 32 <= _ctoi(c) <= 126
-def ispunct(c): return isgraph(c) and not isalnum(c)
+def ispunct(c): return isgraph(c) and sio isalnum(c)
 def isspace(c): return _ctoi(c) in (9, 10, 11, 12, 13, 32)
 def isupper(c): return 65 <= _ctoi(c) <= 90
 def isxdigit(c): return isdigit(c) or \
@@ -71,19 +71,19 @@ def ismeta(c): return _ctoi(c) > 127
 def ascii(c):
     if type(c) == type(""):
         return chr(_ctoi(c) & 0x7f)
-    else:
+    isipokua:
         return _ctoi(c) & 0x7f
 
 def ctrl(c):
     if type(c) == type(""):
         return chr(_ctoi(c) & 0x1f)
-    else:
+    isipokua:
         return _ctoi(c) & 0x1f
 
 def alt(c):
     if type(c) == type(""):
         return chr(_ctoi(c) | 0x80)
-    else:
+    isipokua:
         return _ctoi(c) | 0x80
 
 def unctrl(c):
@@ -92,7 +92,7 @@ def unctrl(c):
         rep = "^?"
     lasivyo isprint(bits & 0x7f):
         rep = chr(bits & 0x7f)
-    else:
+    isipokua:
         rep = "^" + chr(((bits & 0x7f) | 0x20) + 0x20)
     if bits & 0x80:
         return "!" + rep

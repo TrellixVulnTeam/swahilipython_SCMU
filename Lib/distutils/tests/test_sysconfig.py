@@ -18,7 +18,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         self.makefile = None
 
     def tearDown(self):
-        if self.makefile is not None:
+        if self.makefile ni sio None:
             os.unlink(self.makefile)
         self.cleanup_testfn()
         super(SysconfigTestCase, self).tearDown()
@@ -53,7 +53,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         self.assertTrue(os.path.isdir(srcdir), srcdir)
 
         if sysconfig.python_build:
-            # The python executable has not been installed so srcdir
+            # The python executable has sio been installed so srcdir
             # should be a full source checkout.
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
             self.assertTrue(os.path.exists(Python_h), Python_h)
@@ -68,10 +68,10 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         # See Issues #15322, #15364.
         srcdir = sysconfig.get_config_var('srcdir')
         cwd = os.getcwd()
-        try:
+        jaribu:
             os.chdir('..')
             srcdir2 = sysconfig.get_config_var('srcdir')
-        finally:
+        mwishowe:
             os.chdir(cwd)
         self.assertEqual(srcdir, srcdir2)
 
@@ -106,7 +106,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         return comp
 
     @unittest.skipUnless(get_default_compiler() == 'unix',
-                         'not testing if default compiler is not unix')
+                         'not testing if default compiler ni sio unix')
     def test_customize_compiler(self):
         # Make sure that sysconfig._config_vars is initialized
         sysconfig.get_config_vars()
@@ -140,15 +140,15 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
                           ' --env-cppflags'))
         self.assertEqual(comp.shared_lib_extension, 'sc_shutil_suffix')
 
-        del os.environ['AR']
-        del os.environ['CC']
-        del os.environ['CPP']
-        del os.environ['CXX']
-        del os.environ['LDSHARED']
-        del os.environ['LDFLAGS']
-        del os.environ['ARFLAGS']
-        del os.environ['CFLAGS']
-        del os.environ['CPPFLAGS']
+        toa os.environ['AR']
+        toa os.environ['CC']
+        toa os.environ['CPP']
+        toa os.environ['CXX']
+        toa os.environ['LDSHARED']
+        toa os.environ['LDFLAGS']
+        toa os.environ['ARFLAGS']
+        toa os.environ['CFLAGS']
+        toa os.environ['CPPFLAGS']
 
         comp = self.customize_compiler()
         self.assertEqual(comp.exes['archiver'],
@@ -170,10 +170,10 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
     def test_parse_makefile_base(self):
         self.makefile = TESTFN
         fd = open(self.makefile, 'w')
-        try:
+        jaribu:
             fd.write(r"CONFIG_ARGS=  '--arg1=optarg1' 'ENV=LIB'" '\n')
             fd.write('VAR=$OTHER\nOTHER=foo')
-        finally:
+        mwishowe:
             fd.close()
         d = sysconfig.parse_makefile(self.makefile)
         self.assertEqual(d, {'CONFIG_ARGS': "'--arg1=optarg1' 'ENV=LIB'",
@@ -182,10 +182,10 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
     def test_parse_makefile_literal_dollar(self):
         self.makefile = TESTFN
         fd = open(self.makefile, 'w')
-        try:
+        jaribu:
             fd.write(r"CONFIG_ARGS=  '--arg1=optarg1' 'ENV=\$$LIB'" '\n')
             fd.write('VAR=$OTHER\nOTHER=foo')
-        finally:
+        mwishowe:
             fd.close()
         d = sysconfig.parse_makefile(self.makefile)
         self.assertEqual(d, {'CONFIG_ARGS': r"'--arg1=optarg1' 'ENV=\$LIB'",
@@ -253,7 +253,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
                 from distutils.core import Distribution
                 config = Distribution().get_command_obj('config')
                 # try_compile may pass or it may fail if no compiler
-                # is found but it should not raise an exception.
+                # is found but it should sio raise an exception.
                 rc = config.try_compile('int x;')
                 '''))
         p = subprocess.Popen([str(sys.executable), TESTFN],

@@ -1,4 +1,4 @@
-"""This is a test"""
+"""This ni a test"""
 kutoka __future__ agiza nested_scopes
 agiza foo
 kutoka __future__ agiza nested_scopes

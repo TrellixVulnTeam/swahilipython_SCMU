@@ -3,174 +3,174 @@ agiza unittest
 
 kundi ExceptionTestCase(unittest.TestCase):
     eleza test_try_except_else_finally(self):
-        hit_except = False
-        hit_else = False
-        hit_finally = False
+        hit_tatizo = Uongo
+        hit_else = Uongo
+        hit_finally = Uongo
 
-        try:
-            raise Exception('nyaa!')
+        jaribu:
+            ashiria Exception('nyaa!')
         except:
-            hit_except = True
-        else:
-            hit_else = True
-        finally:
-            hit_finally = True
+            hit_tatizo = Kweli
+        isipokua:
+            hit_else = Kweli
+        mwishowe:
+            hit_finally = Kweli
 
-        self.assertTrue(hit_except)
-        self.assertTrue(hit_finally)
-        self.assertFalse(hit_else)
+        self.assertKweli(hit_except)
+        self.assertKweli(hit_finally)
+        self.assertUongo(hit_else)
 
     eleza test_try_except_else_finally_no_exception(self):
-        hit_except = False
-        hit_else = False
-        hit_finally = False
+        hit_tatizo = Uongo
+        hit_else = Uongo
+        hit_finally = Uongo
 
-        try:
-            pass
+        jaribu:
+            pita
         except:
-            hit_except = True
-        else:
-            hit_else = True
-        finally:
-            hit_finally = True
+            hit_tatizo = Kweli
+        isipokua:
+            hit_else = Kweli
+        mwishowe:
+            hit_finally = Kweli
 
-        self.assertFalse(hit_except)
-        self.assertTrue(hit_finally)
-        self.assertTrue(hit_else)
+        self.assertUongo(hit_except)
+        self.assertKweli(hit_finally)
+        self.assertKweli(hit_else)
 
     eleza test_try_except_finally(self):
-        hit_except = False
-        hit_finally = False
+        hit_tatizo = Uongo
+        hit_finally = Uongo
 
-        try:
-            raise Exception('yarr!')
+        jaribu:
+            ashiria Exception('yarr!')
         except:
-            hit_except = True
-        finally:
-            hit_finally = True
+            hit_tatizo = Kweli
+        mwishowe:
+            hit_finally = Kweli
 
-        self.assertTrue(hit_except)
-        self.assertTrue(hit_finally)
+        self.assertKweli(hit_except)
+        self.assertKweli(hit_finally)
 
     eleza test_try_except_finally_no_exception(self):
-        hit_except = False
-        hit_finally = False
+        hit_tatizo = Uongo
+        hit_finally = Uongo
 
-        try:
-            pass
+        jaribu:
+            pita
         except:
-            hit_except = True
-        finally:
-            hit_finally = True
+            hit_tatizo = Kweli
+        mwishowe:
+            hit_finally = Kweli
 
-        self.assertFalse(hit_except)
-        self.assertTrue(hit_finally)
+        self.assertUongo(hit_except)
+        self.assertKweli(hit_finally)
 
     eleza test_try_except(self):
-        hit_except = False
+        hit_tatizo = Uongo
 
-        try:
-            raise Exception('ahoy!')
+        jaribu:
+            ashiria Exception('ahoy!')
         except:
-            hit_except = True
+            hit_tatizo = Kweli
 
-        self.assertTrue(hit_except)
+        self.assertKweli(hit_except)
 
     eleza test_try_except_no_exception(self):
-        hit_except = False
+        hit_tatizo = Uongo
 
-        try:
-            pass
+        jaribu:
+            pita
         except:
-            hit_except = True
+            hit_tatizo = Kweli
 
-        self.assertFalse(hit_except)
+        self.assertUongo(hit_except)
 
     eleza test_try_except_else(self):
-        hit_except = False
-        hit_else = False
+        hit_tatizo = Uongo
+        hit_else = Uongo
 
-        try:
-            raise Exception('foo!')
+        jaribu:
+            ashiria Exception('foo!')
         except:
-            hit_except = True
-        else:
-            hit_else = True
+            hit_tatizo = Kweli
+        isipokua:
+            hit_else = Kweli
 
-        self.assertFalse(hit_else)
-        self.assertTrue(hit_except)
+        self.assertUongo(hit_else)
+        self.assertKweli(hit_except)
 
     eleza test_try_except_else_no_exception(self):
-        hit_except = False
-        hit_else = False
+        hit_tatizo = Uongo
+        hit_else = Uongo
 
-        try:
-            pass
+        jaribu:
+            pita
         except:
-            hit_except = True
-        else:
-            hit_else = True
+            hit_tatizo = Kweli
+        isipokua:
+            hit_else = Kweli
 
-        self.assertFalse(hit_except)
-        self.assertTrue(hit_else)
+        self.assertUongo(hit_except)
+        self.assertKweli(hit_else)
 
     eleza test_try_finally_no_exception(self):
-        hit_finally = False
+        hit_finally = Uongo
 
-        try:
-            pass
-        finally:
-            hit_finally = True
+        jaribu:
+            pita
+        mwishowe:
+            hit_finally = Kweli
 
-        self.assertTrue(hit_finally)
+        self.assertKweli(hit_finally)
 
     eleza test_nested(self):
-        hit_finally = False
-        hit_inner_except = False
-        hit_inner_finally = False
+        hit_finally = Uongo
+        hit_inner_tatizo = Uongo
+        hit_inner_finally = Uongo
 
-        try:
-            try:
-                raise Exception('inner exception')
+        jaribu:
+            jaribu:
+                ashiria Exception('inner exception')
             except:
-                hit_inner_except = True
-            finally:
-                hit_inner_finally = True
-        finally:
-            hit_finally = True
+                hit_inner_tatizo = Kweli
+            mwishowe:
+                hit_inner_finally = Kweli
+        mwishowe:
+            hit_finally = Kweli
 
-        self.assertTrue(hit_inner_except)
-        self.assertTrue(hit_inner_finally)
-        self.assertTrue(hit_finally)
+        self.assertKweli(hit_inner_except)
+        self.assertKweli(hit_inner_finally)
+        self.assertKweli(hit_finally)
 
     eleza test_nested_else(self):
-        hit_else = False
-        hit_finally = False
-        hit_except = False
-        hit_inner_except = False
-        hit_inner_else = False
+        hit_else = Uongo
+        hit_finally = Uongo
+        hit_tatizo = Uongo
+        hit_inner_tatizo = Uongo
+        hit_inner_else = Uongo
 
-        try:
-            try:
-                pass
+        jaribu:
+            jaribu:
+                pita
             except:
-                hit_inner_except = True
-            else:
-                hit_inner_else = True
+                hit_inner_tatizo = Kweli
+            isipokua:
+                hit_inner_else = Kweli
 
-            raise Exception('outer exception')
+            ashiria Exception('outer exception')
         except:
-            hit_except = True
-        else:
-            hit_else = True
-        finally:
-            hit_finally = True
+            hit_tatizo = Kweli
+        isipokua:
+            hit_else = Kweli
+        mwishowe:
+            hit_finally = Kweli
 
-        self.assertFalse(hit_inner_except)
-        self.assertTrue(hit_inner_else)
-        self.assertFalse(hit_else)
-        self.assertTrue(hit_finally)
-        self.assertTrue(hit_except)
+        self.assertUongo(hit_inner_except)
+        self.assertKweli(hit_inner_else)
+        self.assertUongo(hit_else)
+        self.assertKweli(hit_finally)
+        self.assertKweli(hit_except)
 
 ikiwa __name__ == '__main__':
     unittest.main()

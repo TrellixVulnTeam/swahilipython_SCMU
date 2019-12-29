@@ -6,22 +6,22 @@ agiza unittest
 
 kundi OptimizedPickleTests(AbstractPickleTests):
 
-    eleza dumps(self, arg, proto=None, **kwargs):
+    eleza dumps(self, arg, proto=Tupu, **kwargs):
         rudisha pickletools.optimize(pickle.dumps(arg, proto, **kwargs))
 
     eleza loads(self, buf, **kwds):
         rudisha pickle.loads(buf, **kwds)
 
     # Test relies on precise output of dumps()
-    test_pickle_to_2x = None
+    test_pickle_to_2x = Tupu
 
     # Test relies on writing by chunks into a file object.
-    test_framed_write_sizes_with_delayed_writer = None
+    test_framed_write_sizes_with_delayed_writer = Tupu
 
     eleza test_optimize_long_binget(self):
-        data = [str(i) for i in range(257)]
+        data = [str(i) kila i kwenye range(257)]
         data.append(data[-1])
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pickled = pickle.dumps(data, proto)
             unpickled = pickle.loads(pickled)
             self.assertEqual(unpickled, data)

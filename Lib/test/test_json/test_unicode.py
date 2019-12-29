@@ -4,8 +4,8 @@ kutoka test.test_json agiza PyTest, CTest
 
 
 kundi TestUnicode:
-    # test_encoding1 and test_encoding2 kutoka 2.x are irrelevant (only str
-    # is supported as input, not bytes).
+    # test_encoding1 na test_encoding2 kutoka 2.x are irrelevant (only str
+    # ni supported kama input, sio bytes).
 
     eleza test_encoding3(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
@@ -19,18 +19,18 @@ kundi TestUnicode:
 
     eleza test_encoding5(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
-        j = self.dumps(u, ensure_ascii=False)
+        j = self.dumps(u, ensure_ascii=Uongo)
         self.assertEqual(j, '"{0}"'.format(u))
 
     eleza test_encoding6(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
-        j = self.dumps([u], ensure_ascii=False)
+        j = self.dumps([u], ensure_ascii=Uongo)
         self.assertEqual(j, '["{0}"]'.format(u))
 
     eleza test_big_unicode_encode(self):
         u = '\U0001d120'
         self.assertEqual(self.dumps(u), '"\\ud834\\udd20"')
-        self.assertEqual(self.dumps(u, ensure_ascii=False), '"\U0001d120"')
+        self.assertEqual(self.dumps(u, ensure_ascii=Uongo), '"\U0001d120"')
 
     eleza test_big_unicode_decode(self):
         u = 'z\U0001d120x'
@@ -38,7 +38,7 @@ kundi TestUnicode:
         self.assertEqual(self.loads('"z\\ud834\\udd20x"'), u)
 
     eleza test_unicode_decode(self):
-        for i in range(0, 0xd7ff):
+        kila i kwenye range(0, 0xd7ff):
             u = chr(i)
             s = '"\\u{0:04x}"'.format(i)
             self.assertEqual(self.loads(s), u)
@@ -53,7 +53,7 @@ kundi TestUnicode:
         self.assertRaises(TypeError, self.dumps, [b"hi"])
 
     eleza test_bytes_decode(self):
-        for encoding, bom in [
+        kila encoding, bom kwenye [
                 ('utf-8', codecs.BOM_UTF8),
                 ('utf-16be', codecs.BOM_UTF16_BE),
                 ('utf-16le', codecs.BOM_UTF16_LE),
@@ -65,16 +65,16 @@ kundi TestUnicode:
             self.assertEqual(self.loads(bom + encoded), data)
             self.assertEqual(self.loads(encoded), data)
         self.assertRaises(UnicodeDecodeError, self.loads, b'["\x80"]')
-        # RFC-7159 and ECMA-404 extend JSON to allow documents that
+        # RFC-7159 na ECMA-404 extend JSON to allow documents that
         # consist of only a string, which can present a special case
-        # not covered by the encoding detection patterns specified in
-        # RFC-4627 for utf-16-le (XX 00 XX 00).
+        # sio covered by the encoding detection patterns specified in
+        # RFC-4627 kila utf-16-le (XX 00 XX 00).
         self.assertEqual(self.loads('"\u2600"'.encode('utf-16-le')),
                          '\u2600')
-        # Encoding detection for small (<4) bytes objects
-        # is implemented as a special case. RFC-7159 and ECMA-404
+        # Encoding detection kila small (<4) bytes objects
+        # ni implemented kama a special case. RFC-7159 na ECMA-404
         # allow single codepoint JSON documents which are only two
-        # bytes in utf-16 encodings w/o BOM.
+        # bytes kwenye utf-16 encodings w/o BOM.
         self.assertEqual(self.loads(b'5\x00'), 5)
         self.assertEqual(self.loads(b'\x007'), 7)
         self.assertEqual(self.loads(b'57'), 57)
@@ -90,9 +90,9 @@ kundi TestUnicode:
         self.assertEqual(type(od), OrderedDict)
         # the object_pairs_hook takes priority over the object_hook
         self.assertEqual(self.loads(s, object_pairs_hook = OrderedDict,
-                                    object_hook = lambda x: None),
+                                    object_hook = lambda x: Tupu),
                          OrderedDict(p))
 
 
-kundi TestPyUnicode(TestUnicode, PyTest): pass
-kundi TestCUnicode(TestUnicode, CTest): pass
+kundi TestPyUnicode(TestUnicode, PyTest): pita
+kundi TestCUnicode(TestUnicode, CTest): pita

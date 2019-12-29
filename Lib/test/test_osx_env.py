@@ -1,5 +1,5 @@
 """
-Test suite for OS X interpreter environment variables.
+Test suite kila OS X interpreter environment variables.
 """
 
 kutoka test.support agiza EnvironmentVarGuard
@@ -13,14 +13,14 @@ agiza unittest
                      'unnecessary on this platform')
 kundi OSXEnvironmentVariableTestCase(unittest.TestCase):
     eleza _check_sys(self, ev, cond, sv, val = sys.executable + 'dummy'):
-        with EnvironmentVarGuard() as evg:
+        with EnvironmentVarGuard() kama evg:
             subpc = [str(sys.executable), '-c',
                 'agiza sys; sys.exit(2 ikiwa "%s" %s %s else 3)' % (val, cond, sv)]
-            # ensure environment variable does not exist
+            # ensure environment variable does sio exist
             evg.unset(ev)
             # test that test on sys.xxx normally fails
             rc = subprocess.call(subpc)
-            self.assertEqual(rc, 3, "expected %s not %s %s" % (ev, cond, sv))
+            self.assertEqual(rc, 3, "expected %s sio %s %s" % (ev, cond, sv))
             # set environ variable
             evg.set(ev, val)
             # test that sys.xxx has been influenced by the environ value

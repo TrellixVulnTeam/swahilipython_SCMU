@@ -78,10 +78,10 @@ class PolicyAPITests(unittest.TestCase):
                     if (attr.startswith('_') or
                             isinstance(getattr(email.policy.EmailPolicy, attr),
                                   types.FunctionType)):
-                        continue
-                    else:
+                        endelea
+                    isipokua:
                         self.assertIn(attr, expected,
-                                      "{} is not fully tested".format(attr))
+                                      "{} ni sio fully tested".format(attr))
 
     def test_abc(self):
         with self.assertRaises(TypeError) as cm:
@@ -287,7 +287,7 @@ class TestException(Exception):
 
 class TestPolicyPropagation(unittest.TestCase):
 
-    # The abstract methods are used by the parser but not by the wrapper
+    # The abstract methods are used by the parser but sio by the wrapper
     # functions that call it, so if the exception gets raised we know that the
     # policy was actually propagated all the way to feedparser.
     class MyPolicy(email.policy.Policy):

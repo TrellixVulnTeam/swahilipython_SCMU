@@ -2,8 +2,8 @@
 # Licensed to PSF under a Contributor Agreement.
 
 """Fixer that cleans up a tuple argument to isinstance after the tokens
-in it were fixed.  This is mainly used to remove double occurrences of
-tokens as a leftover of the long -> int / unicode -> str conversion.
+in it were fixed.  This ni mainly used to remove double occurrences of
+tokens kama a leftover of the long -> int / unicode -> str conversion.
 
 eg.  isinstance(x, (int, long)) -> isinstance(x, (int, int))
        -> isinstance(x, int)
@@ -14,7 +14,7 @@ kutoka ..fixer_util agiza token
 
 
 kundi FixIsinstance(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
     power<
         'isinstance'
@@ -32,21 +32,21 @@ kundi FixIsinstance(fixer_base.BaseFix):
         args = testlist.children
         new_args = []
         iterator = enumerate(args)
-        for idx, arg in iterator:
-            ikiwa arg.type == token.NAME and arg.value in names_inserted:
-                ikiwa idx < len(args) - 1 and args[idx + 1].type == token.COMMA:
+        kila idx, arg kwenye iterator:
+            ikiwa arg.type == token.NAME na arg.value kwenye names_inserted:
+                ikiwa idx < len(args) - 1 na args[idx + 1].type == token.COMMA:
                     next(iterator)
-                    continue
-            else:
+                    endelea
+            isipokua:
                 new_args.append(arg)
                 ikiwa arg.type == token.NAME:
                     names_inserted.add(arg.value)
-        ikiwa new_args and new_args[-1].type == token.COMMA:
-            del new_args[-1]
+        ikiwa new_args na new_args[-1].type == token.COMMA:
+            toa new_args[-1]
         ikiwa len(new_args) == 1:
             atom = testlist.parent
             new_args[0].prefix = atom.prefix
             atom.replace(new_args[0])
-        else:
+        isipokua:
             args[:] = new_args
             node.changed()

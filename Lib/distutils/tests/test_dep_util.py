@@ -15,7 +15,7 @@ class DepUtilTestCase(support.TempdirManager, unittest.TestCase):
         new_file = os.path.join(tmpdir, 'new')
         old_file = os.path.abspath(__file__)
 
-        # Raise DistutilsFileError if 'new_file' does not exist.
+        # Raise DistutilsFileError if 'new_file' does sio exist.
         self.assertRaises(DistutilsFileError, newer, new_file, old_file)
 
         # Return true if 'new_file' exists and is more recently modified than

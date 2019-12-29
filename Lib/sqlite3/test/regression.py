@@ -3,27 +3,27 @@
 #
 # Copyright (C) 2006-2010 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ni part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# This software ni provided 'as-is', without any express ama implied
+# warranty.  In no event will the authors be held liable kila any damages
 # arising kutoka the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
+# Permission ni granted to anyone to use this software kila any purpose,
+# including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered kutoka any source distribution.
+#    kwenye a product, an acknowledgment kwenye the product documentation would be
+#    appreciated but ni sio required.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
+# 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza datetime
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 agiza weakref
 agiza functools
 kutoka test agiza support
@@ -36,76 +36,76 @@ kundi RegressionTests(unittest.TestCase):
         self.con.close()
 
     eleza CheckPragmaUserVersion(self):
-        # This used to crash pysqlite because this pragma command returns NULL for the column name
+        # This used to crash pysqlite because this pragma command rudishas NULL kila the column name
         cur = self.con.cursor()
         cur.execute("pragma user_version")
 
     eleza CheckPragmaSchemaVersion(self):
         # This still crashed pysqlite <= 2.2.1
         con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_COLNAMES)
-        try:
+        jaribu:
             cur = self.con.cursor()
             cur.execute("pragma schema_version")
-        finally:
+        mwishowe:
             cur.close()
             con.close()
 
     eleza CheckStatementReset(self):
-        # pysqlite 2.1.0 to 2.2.0 have the problem that not all statements are
-        # reset before a rollback, but only those that are still in the
-        # statement cache. The others are not accessible kutoka the connection object.
+        # pysqlite 2.1.0 to 2.2.0 have the problem that sio all statements are
+        # reset before a rollback, but only those that are still kwenye the
+        # statement cache. The others are sio accessible kutoka the connection object.
         con = sqlite.connect(":memory:", cached_statements=5)
-        cursors = [con.cursor() for x in range(5)]
+        cursors = [con.cursor() kila x kwenye range(5)]
         cursors[0].execute("create table test(x)")
-        for i in range(10):
-            cursors[0].executemany("insert into test(x) values (?)", [(x,) for x in range(10)])
+        kila i kwenye range(10):
+            cursors[0].executemany("insert into test(x) values (?)", [(x,) kila x kwenye range(10)])
 
-        for i in range(5):
+        kila i kwenye range(5):
             cursors[i].execute(" " * i + "select x kutoka test")
 
         con.rollback()
 
     eleza CheckColumnNameWithSpaces(self):
         cur = self.con.cursor()
-        cur.execute('select 1 as "foo bar [datetime]"')
+        cur.execute('select 1 kama "foo bar [datetime]"')
         self.assertEqual(cur.description[0][0], "foo bar")
 
-        cur.execute('select 1 as "foo baz"')
+        cur.execute('select 1 kama "foo baz"')
         self.assertEqual(cur.description[0][0], "foo baz")
 
     eleza CheckStatementFinalizationOnCloseDb(self):
-        # pysqlite versions <= 2.3.3 only finalized statements in the statement
+        # pysqlite versions <= 2.3.3 only finalized statements kwenye the statement
         # cache when closing the database. statements that were still
-        # referenced in cursors weren't closed and could provoke "
+        # referenced kwenye cursors weren't closed na could provoke "
         # "OperationalError: Unable to close due to unfinalised statements".
         con = sqlite.connect(":memory:")
         cursors = []
-        # default statement cache size is 100
-        for i in range(105):
+        # default statement cache size ni 100
+        kila i kwenye range(105):
             cur = con.cursor()
             cursors.append(cur)
             cur.execute("select 1 x union select " + str(i))
         con.close()
 
-    @unittest.skipIf(sqlite.sqlite_version_info < (3, 2, 2), 'needs sqlite 3.2.2 or newer')
+    @unittest.skipIf(sqlite.sqlite_version_info < (3, 2, 2), 'needs sqlite 3.2.2 ama newer')
     eleza CheckOnConflictRollback(self):
         con = sqlite.connect(":memory:")
         con.execute("create table foo(x, unique(x) on conflict rollback)")
         con.execute("insert into foo(x) values (1)")
-        try:
+        jaribu:
             con.execute("insert into foo(x) values (1)")
-        except sqlite.DatabaseError:
-            pass
+        tatizo sqlite.DatabaseError:
+            pita
         con.execute("insert into foo(x) values (2)")
-        try:
+        jaribu:
             con.commit()
-        except sqlite.OperationalError:
+        tatizo sqlite.OperationalError:
             self.fail("pysqlite knew nothing about the implicit ROLLBACK")
 
     eleza CheckWorkaroundForBuggySqliteTransferBindings(self):
         """
         pysqlite would crash with older SQLite versions unless
-        a workaround is implemented.
+        a workaround ni implemented.
         """
         self.con.execute("create table foo(bar)")
         self.con.execute("drop table foo")
@@ -114,13 +114,13 @@ kundi RegressionTests(unittest.TestCase):
     eleza CheckEmptyStatement(self):
         """
         pysqlite used to segfault with SQLite versions 3.5.x. These rudisha NULL
-        for "no-operation" statements
+        kila "no-operation" statements
         """
         self.con.execute("")
 
     eleza CheckTypeMapUsage(self):
         """
-        pysqlite until 2.4.1 did not rebuild the row_cast_map when recompiling
+        pysqlite until 2.4.1 did sio rebuild the row_cast_map when recompiling
         a statement. This test exhibits the problem.
         """
         SELECT = "select * kutoka foo"
@@ -136,43 +136,43 @@ kundi RegressionTests(unittest.TestCase):
     eleza CheckErrorMsgDecodeError(self):
         # When porting the module to Python 3.0, the error message about
         # decoding errors disappeared. This verifies they're back again.
-        with self.assertRaises(sqlite.OperationalError) as cm:
+        with self.assertRaises(sqlite.OperationalError) kama cm:
             self.con.execute("select 'xxx' || ? || 'yyy' colname",
                              (bytes(bytearray([250])),)).fetchone()
-        msg = "Could not decode to UTF-8 column 'colname' with text 'xxx"
+        msg = "Could sio decode to UTF-8 column 'colname' with text 'xxx"
         self.assertIn(msg, str(cm.exception))
 
     eleza CheckRegisterAdapter(self):
         """
         See issue 3312.
         """
-        self.assertRaises(TypeError, sqlite.register_adapter, {}, None)
+        self.assertRaises(TypeError, sqlite.register_adapter, {}, Tupu)
 
     eleza CheckSetIsolationLevel(self):
         # See issue 27881.
         kundi CustomStr(str):
             eleza upper(self):
-                rudisha None
+                rudisha Tupu
             eleza __del__(self):
                 con.isolation_level = ""
 
         con = sqlite.connect(":memory:")
-        con.isolation_level = None
-        for level in "", "DEFERRED", "IMMEDIATE", "EXCLUSIVE":
+        con.isolation_level = Tupu
+        kila level kwenye "", "DEFERRED", "IMMEDIATE", "EXCLUSIVE":
             with self.subTest(level=level):
                 con.isolation_level = level
                 con.isolation_level = level.lower()
                 con.isolation_level = level.capitalize()
                 con.isolation_level = CustomStr(level)
 
-        # setting isolation_level failure should not alter previous state
-        con.isolation_level = None
+        # setting isolation_level failure should sio alter previous state
+        con.isolation_level = Tupu
         con.isolation_level = "DEFERRED"
         pairs = [
             (1, TypeError), (b'', TypeError), ("abc", ValueError),
             ("IMMEDIATE\0EXCLUSIVE", ValueError), ("\xe9", ValueError),
         ]
-        for value, exc in pairs:
+        kila value, exc kwenye pairs:
             with self.subTest(level=value):
                 with self.assertRaises(exc):
                     con.isolation_level = value
@@ -185,21 +185,21 @@ kundi RegressionTests(unittest.TestCase):
         """
         kundi Cursor(sqlite.Cursor):
             eleza __init__(self, con):
-                pass
+                pita
 
         con = sqlite.connect(":memory:")
         cur = Cursor(con)
         with self.assertRaises(sqlite.ProgrammingError):
             cur.execute("select 4+5").fetchall()
         with self.assertRaisesRegex(sqlite.ProgrammingError,
-                                    r'^Base Cursor\.__init__ not called\.$'):
+                                    r'^Base Cursor\.__init__ sio called\.$'):
             cur.close()
 
     eleza CheckStrSubclass(self):
         """
         The Python 3.0 port of the module didn't cope with values of subclasses of str.
         """
-        kundi MyStr(str): pass
+        kundi MyStr(str): pita
         self.con.execute("select ?", (MyStr("abc"),))
 
     eleza CheckConnectionConstructorCallCheck(self):
@@ -209,7 +209,7 @@ kundi RegressionTests(unittest.TestCase):
         """
         kundi Connection(sqlite.Connection):
             eleza __init__(self, name):
-                pass
+                pita
 
         con = Connection(":memory:")
         with self.assertRaises(sqlite.ProgrammingError):
@@ -239,16 +239,16 @@ kundi RegressionTests(unittest.TestCase):
 
     eleza CheckAutoCommit(self):
         """
-        Verifies that creating a connection in autocommit mode works.
+        Verifies that creating a connection kwenye autocommit mode works.
         2.5.3 introduced a regression so that these could no longer
         be created.
         """
-        con = sqlite.connect(":memory:", isolation_level=None)
+        con = sqlite.connect(":memory:", isolation_level=Tupu)
 
     eleza CheckPragmaAutocommit(self):
         """
         Verifies that running a PRAGMA statement that does an autocommit does
-        work. This did not work in 2.5.3/2.5.4.
+        work. This did sio work kwenye 2.5.3/2.5.4.
         """
         cur = self.con.cursor()
         cur.execute("create table foo(bar)")
@@ -275,8 +275,8 @@ kundi RegressionTests(unittest.TestCase):
         """
         http://bugs.python.org/issue10811
 
-        Recursively using a cursor, such as when reusing it kutoka a generator led to segfaults.
-        Now we catch recursive cursor usage and raise a ProgrammingError.
+        Recursively using a cursor, such kama when reusing it kutoka a generator led to segfaults.
+        Now we catch recursive cursor usage na ashiria a ProgrammingError.
         """
         con = sqlite.connect(":memory:")
 
@@ -286,11 +286,11 @@ kundi RegressionTests(unittest.TestCase):
 
         eleza foo():
             cur.execute("insert into a (bar) values (?)", (1,))
-            yield 1
+            tuma 1
 
         with self.assertRaises(sqlite.ProgrammingError):
             cur.executemany("insert into b (baz) values (?)",
-                            ((i,) for i in foo()))
+                            ((i,) kila i kwenye foo()))
 
     eleza CheckConvertTimestampMicrosecondPadding(self):
         """
@@ -311,7 +311,7 @@ kundi RegressionTests(unittest.TestCase):
         cur.execute("INSERT INTO t (x) VALUES ('2012-04-04 15:06:00.123456789')")
 
         cur.execute("SELECT * FROM t")
-        values = [x[0] for x in cur.fetchall()]
+        values = [x[0] kila x kwenye cur.fetchall()]
 
         self.assertEqual(values, [
             datetime.datetime(2012, 4, 4, 15, 6, 0, 456000),
@@ -319,7 +319,7 @@ kundi RegressionTests(unittest.TestCase):
         ])
 
     eleza CheckInvalidIsolationLevelType(self):
-        # isolation level is a string, not an integer
+        # isolation level ni a string, sio an integer
         self.assertRaises(TypeError,
                           sqlite.connect, ":memory:", isolation_level=123)
 
@@ -337,7 +337,7 @@ kundi RegressionTests(unittest.TestCase):
         """
         Connection.commit() did reset cursors, which made sqlite3
         to rudisha rows multiple times when fetched kutoka cursors
-        after commit. See issues 10513 and 23129 for details.
+        after commit. See issues 10513 na 23129 kila details.
         """
         con = sqlite.connect(":memory:")
         con.executescript("""
@@ -351,7 +351,7 @@ kundi RegressionTests(unittest.TestCase):
         self.assertEqual(con.isolation_level, "")
 
         counter = 0
-        for i, row in enumerate(con.execute("select c kutoka t")):
+        kila i, row kwenye enumerate(con.execute("select c kutoka t")):
             with self.subTest(i=i, row=row):
                 con.execute("insert into t2(c) values (?)", (i,))
                 con.commit()
@@ -362,41 +362,41 @@ kundi RegressionTests(unittest.TestCase):
                 elikiwa counter == 2:
                     self.assertEqual(row[0], 2)
                 counter += 1
-        self.assertEqual(counter, 3, "should have returned exactly three rows")
+        self.assertEqual(counter, 3, "should have rudishaed exactly three rows")
 
     eleza CheckBpo31770(self):
         """
-        The interpreter shouldn't crash in case Cursor.__init__() is called
+        The interpreter shouldn't crash kwenye case Cursor.__init__() ni called
         more than once.
         """
         eleza callback(*args):
-            pass
+            pita
         con = sqlite.connect(":memory:")
         cur = sqlite.Cursor(con)
         ref = weakref.ref(cur, callback)
         cur.__init__(con)
-        del cur
-        # The interpreter shouldn't crash when ref is collected.
-        del ref
+        toa cur
+        # The interpreter shouldn't crash when ref ni collected.
+        toa ref
         support.gc_collect()
 
     eleza CheckDelIsolation_levelSegfault(self):
         with self.assertRaises(AttributeError):
-            del self.con.isolation_level
+            toa self.con.isolation_level
 
     eleza CheckBpo37347(self):
         kundi Printer:
             eleza log(self, *args):
                 rudisha sqlite.SQLITE_OK
 
-        for method in [self.con.set_trace_callback,
+        kila method kwenye [self.con.set_trace_callback,
                        functools.partial(self.con.set_progress_handler, n=1),
                        self.con.set_authorizer]:
             printer_instance = Printer()
             method(printer_instance.log)
             method(printer_instance.log)
             self.con.execute("select 1")  # trigger seg fault
-            method(None)
+            method(Tupu)
 
 
 

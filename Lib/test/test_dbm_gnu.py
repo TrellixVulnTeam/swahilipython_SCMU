@@ -1,5 +1,5 @@
 kutoka test agiza support
-gdbm = support.import_module("dbm.gnu") #skip ikiwa not supported
+gdbm = support.import_module("dbm.gnu") #skip ikiwa sio supported
 agiza unittest
 agiza os
 kutoka test.support agiza TESTFN, TESTFN_NONASCII, unlink
@@ -11,18 +11,18 @@ kundi TestGdbm(unittest.TestCase):
     @staticmethod
     eleza setUpClass():
         ikiwa support.verbose:
-            try:
-                kutoka _gdbm agiza _GDBM_VERSION as version
-            except ImportError:
-                pass
-            else:
+            jaribu:
+                kutoka _gdbm agiza _GDBM_VERSION kama version
+            tatizo ImportError:
+                pita
+            isipokua:
                 andika(f"gdbm version: {version}")
 
     eleza setUp(self):
-        self.g = None
+        self.g = Tupu
 
     eleza tearDown(self):
-        ikiwa self.g is not None:
+        ikiwa self.g ni sio Tupu:
             self.g.close()
         unlink(filename)
 
@@ -38,13 +38,13 @@ kundi TestGdbm(unittest.TestCase):
         self.assertIn(b'a', self.g)
         self.assertEqual(self.g[b'bytes'], b'data')
         key = self.g.firstkey()
-        while key:
+        wakati key:
             self.assertIn(key, key_set)
             key_set.remove(key)
             key = self.g.nextkey(key)
-        # get() and setdefault() work as in the dict interface
+        # get() na setdefault() work kama kwenye the dict interface
         self.assertEqual(self.g.get(b'a'), b'b')
-        self.assertIsNone(self.g.get(b'xxx'))
+        self.assertIsTupu(self.g.get(b'xxx'))
         self.assertEqual(self.g.get(b'xxx', b'foo'), b'foo')
         with self.assertRaises(KeyError):
             self.g['xxx']
@@ -59,7 +59,7 @@ kundi TestGdbm(unittest.TestCase):
         self.g = gdbm.open(filename, 'c')
         self.g.close()
         self.assertRaises(gdbm.error, lambda: self.g['a'])
-        # try pass an invalid open flag
+        # try pita an invalid open flag
         self.assertRaises(gdbm.error, lambda: gdbm.open(filename, 'rx').close())
 
     eleza test_flags(self):
@@ -67,14 +67,14 @@ kundi TestGdbm(unittest.TestCase):
         all = set(gdbm.open_flags)
         # Test standard flags (presumably "crwn").
         modes = all - set('fsu')
-        for mode in sorted(modes):  # put "c" mode first
+        kila mode kwenye sorted(modes):  # put "c" mode first
             self.g = gdbm.open(filename, mode)
             self.g.close()
 
         # Test additional flags (presumably "fsu").
         flags = all - set('crwn')
-        for mode in modes:
-            for flag in flags:
+        kila mode kwenye modes:
+            kila flag kwenye flags:
                 self.g = gdbm.open(filename, mode + flag)
                 self.g.close()
 
@@ -83,15 +83,15 @@ kundi TestGdbm(unittest.TestCase):
         size0 = os.path.getsize(filename)
 
         # bpo-33901: on macOS with gdbm 1.15, an empty database uses 16 MiB
-        # and adding an entry of 10,000 B has no effect on the file size.
+        # na adding an entry of 10,000 B has no effect on the file size.
         # Add size0 bytes to make sure that the file size changes.
         value_size = max(size0, 10000)
         self.g['x'] = 'x' * value_size
         size1 = os.path.getsize(filename)
         self.assertGreater(size1, size0)
 
-        del self.g['x']
-        # 'size' is supposed to be the same even after deleting an entry.
+        toa self.g['x']
+        # 'size' ni supposed to be the same even after deleting an entry.
         self.assertEqual(os.path.getsize(filename), size1)
 
         self.g.reorganize()
@@ -100,45 +100,45 @@ kundi TestGdbm(unittest.TestCase):
         self.assertGreaterEqual(size2, size0)
 
     eleza test_context_manager(self):
-        with gdbm.open(filename, 'c') as db:
+        with gdbm.open(filename, 'c') kama db:
             db["gdbm context manager"] = "context manager"
 
-        with gdbm.open(filename, 'r') as db:
+        with gdbm.open(filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b"gdbm context manager"])
 
-        with self.assertRaises(gdbm.error) as cm:
+        with self.assertRaises(gdbm.error) kama cm:
             db.keys()
         self.assertEqual(str(cm.exception),
                          "GDBM object has already been closed")
 
     eleza test_bytes(self):
-        with gdbm.open(filename, 'c') as db:
+        with gdbm.open(filename, 'c') kama db:
             db[b'bytes key \xbd'] = b'bytes value \xbd'
-        with gdbm.open(filename, 'r') as db:
+        with gdbm.open(filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b'bytes key \xbd'])
-            self.assertTrue(b'bytes key \xbd' in db)
+            self.assertKweli(b'bytes key \xbd' kwenye db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
     eleza test_unicode(self):
-        with gdbm.open(filename, 'c') as db:
+        with gdbm.open(filename, 'c') kama db:
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
-        with gdbm.open(filename, 'r') as db:
+        with gdbm.open(filename, 'r') kama db:
             self.assertEqual(list(db.keys()), ['Unicode key \U0001f40d'.encode()])
-            self.assertTrue('Unicode key \U0001f40d'.encode() in db)
-            self.assertTrue('Unicode key \U0001f40d' in db)
+            self.assertKweli('Unicode key \U0001f40d'.encode() kwenye db)
+            self.assertKweli('Unicode key \U0001f40d' kwenye db)
             self.assertEqual(db['Unicode key \U0001f40d'.encode()],
                              'Unicode value \U0001f40d'.encode())
             self.assertEqual(db['Unicode key \U0001f40d'],
                              'Unicode value \U0001f40d'.encode())
 
     eleza test_write_readonly_file(self):
-        with gdbm.open(filename, 'c') as db:
+        with gdbm.open(filename, 'c') kama db:
             db[b'bytes key'] = b'bytes value'
-        with gdbm.open(filename, 'r') as db:
+        with gdbm.open(filename, 'r') kama db:
             with self.assertRaises(gdbm.error):
-                del db[b'not exist key']
+                toa db[b'not exist key']
             with self.assertRaises(gdbm.error):
-                del db[b'bytes key']
+                toa db[b'bytes key']
             with self.assertRaises(gdbm.error):
                 db[b'not exist key'] = b'not exist value'
 
@@ -147,17 +147,17 @@ kundi TestGdbm(unittest.TestCase):
     eleza test_nonascii_filename(self):
         filename = TESTFN_NONASCII
         self.addCleanup(unlink, filename)
-        with gdbm.open(filename, 'c') as db:
+        with gdbm.open(filename, 'c') kama db:
             db[b'key'] = b'value'
-        self.assertTrue(os.path.exists(filename))
-        with gdbm.open(filename, 'r') as db:
+        self.assertKweli(os.path.exists(filename))
+        with gdbm.open(filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b'key'])
-            self.assertTrue(b'key' in db)
+            self.assertKweli(b'key' kwenye db)
             self.assertEqual(db[b'key'], b'value')
 
     eleza test_nonexisting_file(self):
         nonexisting_file = 'nonexisting-file'
-        with self.assertRaises(gdbm.error) as cm:
+        with self.assertRaises(gdbm.error) kama cm:
             gdbm.open(nonexisting_file)
         self.assertIn(nonexisting_file, str(cm.exception))
         self.assertEqual(cm.exception.filename, nonexisting_file)

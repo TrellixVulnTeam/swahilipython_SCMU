@@ -32,7 +32,7 @@ class install_headers(Command):
 
     def run(self):
         headers = self.distribution.headers
-        if not headers:
+        if sio headers:
             return
 
         self.mkpath(self.install_dir)

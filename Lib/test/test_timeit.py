@@ -17,7 +17,7 @@ DEFAULT_REPEAT = 5
 # long time to run because they test the default number of loops, which is
 # large.  The tests could be enabled ikiwa there was a way to override the default
 # number of loops during testing, but this would require changing the signature
-# of some functions that use the default as a default argument.
+# of some functions that use the default kama a default argument.
 
 kundi FakeTimer:
     BASE_TIME = 42.0
@@ -37,25 +37,25 @@ kundi FakeTimer:
         self.setup_calls += 1
 
     eleza wrap_timer(self, timer):
-        """Records 'timer' and returns self as callable timer."""
+        """Records 'timer' na rudishas self kama callable timer."""
         self.saved_timer = timer
         rudisha self
 
 kundi TestTimeit(unittest.TestCase):
 
     eleza tearDown(self):
-        try:
-            del timeit._fake_timer
-        except AttributeError:
-            pass
+        jaribu:
+            toa timeit._fake_timer
+        tatizo AttributeError:
+            pita
 
     eleza test_reindent_empty(self):
         self.assertEqual(timeit.reindent("", 0), "")
         self.assertEqual(timeit.reindent("", 4), "")
 
     eleza test_reindent_single(self):
-        self.assertEqual(timeit.reindent("pass", 0), "pass")
-        self.assertEqual(timeit.reindent("pass", 4), "pass")
+        self.assertEqual(timeit.reindent("pita", 0), "pita")
+        self.assertEqual(timeit.reindent("pita", 4), "pita")
 
     eleza test_reindent_multi_empty(self):
         self.assertEqual(timeit.reindent("\n\n", 0), "\n\n")
@@ -63,28 +63,28 @@ kundi TestTimeit(unittest.TestCase):
 
     eleza test_reindent_multi(self):
         self.assertEqual(timeit.reindent(
-            "andika()\npass\nbreak", 0),
-            "andika()\npass\nbreak")
+            "andika()\npita\nkoma", 0),
+            "andika()\npita\nkoma")
         self.assertEqual(timeit.reindent(
-            "andika()\npass\nbreak", 4),
-            "andika()\n    pass\n    break")
+            "andika()\npita\nkoma", 4),
+            "andika()\n    pita\n    koma")
 
     eleza test_timer_invalid_stmt(self):
-        self.assertRaises(ValueError, timeit.Timer, stmt=None)
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='return')
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='yield')
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='yield kutoka ()')
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='break')
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='continue')
+        self.assertRaises(ValueError, timeit.Timer, stmt=Tupu)
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='rudisha')
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='tuma')
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='tuma kutoka ()')
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='koma')
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='endelea')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='kutoka timeit agiza *')
 
     eleza test_timer_invalid_setup(self):
-        self.assertRaises(ValueError, timeit.Timer, setup=None)
-        self.assertRaises(SyntaxError, timeit.Timer, setup='return')
-        self.assertRaises(SyntaxError, timeit.Timer, setup='yield')
-        self.assertRaises(SyntaxError, timeit.Timer, setup='yield kutoka ()')
-        self.assertRaises(SyntaxError, timeit.Timer, setup='break')
-        self.assertRaises(SyntaxError, timeit.Timer, setup='continue')
+        self.assertRaises(ValueError, timeit.Timer, setup=Tupu)
+        self.assertRaises(SyntaxError, timeit.Timer, setup='rudisha')
+        self.assertRaises(SyntaxError, timeit.Timer, setup='tuma')
+        self.assertRaises(SyntaxError, timeit.Timer, setup='tuma kutoka ()')
+        self.assertRaises(SyntaxError, timeit.Timer, setup='koma')
+        self.assertRaises(SyntaxError, timeit.Timer, setup='endelea')
         self.assertRaises(SyntaxError, timeit.Timer, setup='kutoka timeit agiza *')
 
     fake_setup = "agiza timeit\ntimeit._fake_timer.setup()"
@@ -96,21 +96,21 @@ kundi TestTimeit(unittest.TestCase):
     eleza fake_callable_stmt(self):
         self.fake_timer.inc()
 
-    eleza timeit(self, stmt, setup, number=None, globals=None):
+    eleza timeit(self, stmt, setup, number=Tupu, globals=Tupu):
         self.fake_timer = FakeTimer()
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer,
                 globals=globals)
         kwargs = {}
-        ikiwa number is None:
+        ikiwa number ni Tupu:
             number = DEFAULT_NUMBER
-        else:
+        isipokua:
             kwargs['number'] = number
         delta_time = t.timeit(**kwargs)
         self.assertEqual(self.fake_timer.setup_calls, 1)
         self.assertEqual(self.fake_timer.count, number)
         self.assertEqual(delta_time, number)
 
-    # Takes too long to run in debug build.
+    # Takes too long to run kwenye debug build.
     #eleza test_timeit_default_iters(self):
     #    self.timeit(self.fake_stmt, self.fake_setup)
 
@@ -130,7 +130,7 @@ kundi TestTimeit(unittest.TestCase):
         self.timeit(self.fake_callable_stmt,
                 self.fake_callable_setup, number=3)
 
-    # Takes too long to run in debug build.
+    # Takes too long to run kwenye debug build.
     #eleza test_timeit_function(self):
     #    delta_time = timeit.timeit(self.fake_stmt, self.fake_setup,
     #            timer=FakeTimer())
@@ -152,24 +152,24 @@ kundi TestTimeit(unittest.TestCase):
         timeit.timeit(stmt='local_timer.inc()', timer=local_timer,
                       globals=locals(), number=3)
 
-    eleza repeat(self, stmt, setup, repeat=None, number=None):
+    eleza repeat(self, stmt, setup, repeat=Tupu, number=Tupu):
         self.fake_timer = FakeTimer()
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer)
         kwargs = {}
-        ikiwa repeat is None:
+        ikiwa repeat ni Tupu:
             repeat = DEFAULT_REPEAT
-        else:
+        isipokua:
             kwargs['repeat'] = repeat
-        ikiwa number is None:
+        ikiwa number ni Tupu:
             number = DEFAULT_NUMBER
-        else:
+        isipokua:
             kwargs['number'] = number
         delta_times = t.repeat(**kwargs)
         self.assertEqual(self.fake_timer.setup_calls, repeat)
         self.assertEqual(self.fake_timer.count, repeat * number)
         self.assertEqual(delta_times, repeat * [float(number)])
 
-    # Takes too long to run in debug build.
+    # Takes too long to run kwenye debug build.
     #eleza test_repeat_default(self):
     #    self.repeat(self.fake_stmt, self.fake_setup)
 
@@ -194,7 +194,7 @@ kundi TestTimeit(unittest.TestCase):
         self.repeat(self.fake_callable_stmt, self.fake_callable_setup,
                 repeat=3, number=5)
 
-    # Takes too long to run in debug build.
+    # Takes too long to run kwenye debug build.
     #eleza test_repeat_function(self):
     #    delta_times = timeit.repeat(self.fake_stmt, self.fake_setup,
     #            timer=FakeTimer())
@@ -213,13 +213,13 @@ kundi TestTimeit(unittest.TestCase):
     eleza assert_exc_string(self, exc_string, expected_exc_name):
         exc_lines = exc_string.splitlines()
         self.assertGreater(len(exc_lines), 2)
-        self.assertTrue(exc_lines[0].startswith('Traceback'))
-        self.assertTrue(exc_lines[-1].startswith(expected_exc_name))
+        self.assertKweli(exc_lines[0].startswith('Traceback'))
+        self.assertKweli(exc_lines[-1].startswith(expected_exc_name))
 
     eleza test_print_exc(self):
         s = io.StringIO()
         t = timeit.Timer("1/0")
-        try:
+        jaribu:
             t.timeit()
         except:
             t.print_exc(s)
@@ -227,17 +227,17 @@ kundi TestTimeit(unittest.TestCase):
 
     MAIN_DEFAULT_OUTPUT = "1 loop, best of 5: 1 sec per loop\n"
 
-    eleza run_main(self, seconds_per_increment=1.0, switches=None, timer=None):
-        ikiwa timer is None:
+    eleza run_main(self, seconds_per_increment=1.0, switches=Tupu, timer=Tupu):
+        ikiwa timer ni Tupu:
             timer = FakeTimer(seconds_per_increment=seconds_per_increment)
-        ikiwa switches is None:
+        ikiwa switches ni Tupu:
             args = []
-        else:
+        isipokua:
             args = switches[:]
         args.append(self.fake_stmt)
-        # timeit.main() modifies sys.path, so save and restore it.
+        # timeit.main() modifies sys.path, so save na restore it.
         orig_sys_path = sys.path[:]
-        with captured_stdout() as s:
+        with captured_stdout() kama s:
             timeit.main(args=args, _wrap_timer=timer.wrap_timer)
         sys.path[:] = orig_sys_path[:]
         rudisha s.getvalue()
@@ -245,8 +245,8 @@ kundi TestTimeit(unittest.TestCase):
     eleza test_main_bad_switch(self):
         s = self.run_main(switches=['--bad-switch'])
         self.assertEqual(s, dedent("""\
-            option --bad-switch not recognized
-            use -h/--help for command line help
+            option --bad-switch sio recognized
+            use -h/--help kila command line help
             """))
 
     eleza test_main_seconds(self):
@@ -288,8 +288,8 @@ kundi TestTimeit(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize >= 2, "need __doc__")
     eleza test_main_help(self):
         s = self.run_main(switches=['-h'])
-        # Note: It's not clear that the trailing space was intended as part of
-        # the help text, but since it's there, check for it.
+        # Note: It's sio clear that the trailing space was intended kama part of
+        # the help text, but since it's there, check kila it.
         self.assertEqual(s, timeit.__doc__ + ' ')
 
     eleza test_main_verbose(self):
@@ -338,23 +338,23 @@ kundi TestTimeit(unittest.TestCase):
         self.assertEqual(unit_usec,
                 "100 loops, best of 5: 3e+03 usec per loop\n")
         # Test invalid unit input
-        with captured_stderr() as error_stringio:
+        with captured_stderr() kama error_stringio:
             invalid = self.run_main(seconds_per_increment=0.003,
                     switches=['-u', 'parsec'])
         self.assertEqual(error_stringio.getvalue(),
-                    "Unrecognized unit. Please select nsec, usec, msec, or sec.\n")
+                    "Unrecognized unit. Please select nsec, usec, msec, ama sec.\n")
 
     eleza test_main_exception(self):
-        with captured_stderr() as error_stringio:
+        with captured_stderr() kama error_stringio:
             s = self.run_main(switches=['1/0'])
         self.assert_exc_string(error_stringio.getvalue(), 'ZeroDivisionError')
 
     eleza test_main_exception_fixed_reps(self):
-        with captured_stderr() as error_stringio:
+        with captured_stderr() kama error_stringio:
             s = self.run_main(switches=['-n1', '1/0'])
         self.assert_exc_string(error_stringio.getvalue(), 'ZeroDivisionError')
 
-    eleza autorange(self, seconds_per_increment=1/1024, callback=None):
+    eleza autorange(self, seconds_per_increment=1/1024, callback=Tupu):
         timer = FakeTimer(seconds_per_increment=seconds_per_increment)
         t = timeit.Timer(stmt=self.fake_stmt, setup=self.fake_setup, timer=timer)
         rudisha t.autorange(callback)
@@ -372,7 +372,7 @@ kundi TestTimeit(unittest.TestCase):
     eleza test_autorange_with_callback(self):
         eleza callback(a, b):
             andika("{} {:.3f}".format(a, b))
-        with captured_stdout() as s:
+        with captured_stdout() kama s:
             num_loops, time_taken = self.autorange(callback=callback)
         self.assertEqual(num_loops, 500)
         self.assertEqual(time_taken, 500/1024)

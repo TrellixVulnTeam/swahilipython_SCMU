@@ -3,7 +3,7 @@
             tdemo_nim.py
 
 Play nim against the computer. The player
-who takes the last stick is the winner.
+who takes the last stick ni the winner.
 
 Implements the model-view-controller
 design pattern.
@@ -34,7 +34,7 @@ eleza computerzug(state):
     xored = state[0] ^ state[1] ^ state[2]
     ikiwa xored == 0:
         rudisha randommove(state)
-    for z in range(3):
+    kila z kwenye range(3):
         s = state[z] ^ xored
         ikiwa s <= state[z]:
             move = (z, s)
@@ -42,10 +42,10 @@ eleza computerzug(state):
 
 eleza randommove(state):
     m = max(state)
-    while True:
+    wakati Kweli:
         z = random.randint(0,2)
         ikiwa state[z] > (m > 1):
-            break
+            koma
     rand = random.randint(m > 1, state[z]-1)
     rudisha z, rand
 
@@ -55,11 +55,11 @@ kundi NimModel(object):
         self.game = game
 
     eleza setup(self):
-        ikiwa self.game.state not in [Nim.CREATED, Nim.OVER]:
-            return
+        ikiwa self.game.state haiko kwenye [Nim.CREATED, Nim.OVER]:
+            rudisha
         self.sticks = [randomrow(), randomrow(), randomrow()]
         self.player = 0
-        self.winner = None
+        self.winner = Tupu
         self.game.view.setup()
         self.game.state = Nim.RUNNING
 
@@ -82,13 +82,13 @@ kundi NimModel(object):
 
     eleza notify_move(self, row, col):
         ikiwa self.sticks[row] <= col:
-            return
+            rudisha
         self.move(row, col)
 
 
 kundi Stick(turtle.Turtle):
     eleza __init__(self, row, col, game):
-        turtle.Turtle.__init__(self, visible=False)
+        turtle.Turtle.__init__(self, visible=Uongo)
         self.row = row
         self.col = col
         self.game = game
@@ -109,7 +109,7 @@ kundi Stick(turtle.Turtle):
 
     eleza makemove(self, x, y):
         ikiwa self.game.state != Nim.RUNNING:
-            return
+            rudisha
         self.game.controller.notify_move(self.row, self.col)
 
 
@@ -117,54 +117,54 @@ kundi NimView(object):
     eleza __init__(self, game):
         self.game = game
         self.screen = game.screen
-        self.model = game.model
+        self.motoa = game.model
         self.screen.colormode(255)
-        self.screen.tracer(False)
+        self.screen.tracer(Uongo)
         self.screen.bgcolor((240, 240, 255))
-        self.writer = turtle.Turtle(visible=False)
+        self.writer = turtle.Turtle(visible=Uongo)
         self.writer.pu()
         self.writer.speed(0)
         self.sticks = {}
-        for row in range(3):
-            for col in range(MAXSTICKS):
+        kila row kwenye range(3):
+            kila col kwenye range(MAXSTICKS):
                 self.sticks[(row, col)] = Stick(row, col, game)
         self.display("... a moment please ...")
-        self.screen.tracer(True)
+        self.screen.tracer(Kweli)
 
-    eleza display(self, msg1, msg2=None):
-        self.screen.tracer(False)
+    eleza display(self, msg1, msg2=Tupu):
+        self.screen.tracer(Uongo)
         self.writer.clear()
-        ikiwa msg2 is not None:
+        ikiwa msg2 ni sio Tupu:
             self.writer.goto(0, - SCREENHEIGHT // 2 + 48)
             self.writer.pencolor("red")
             self.writer.write(msg2, align="center", font=("Courier",18,"bold"))
         self.writer.goto(0, - SCREENHEIGHT // 2 + 20)
         self.writer.pencolor("black")
         self.writer.write(msg1, align="center", font=("Courier",14,"bold"))
-        self.screen.tracer(True)
+        self.screen.tracer(Kweli)
 
     eleza setup(self):
-        self.screen.tracer(False)
-        for row in range(3):
-            for col in range(self.model.sticks[row]):
+        self.screen.tracer(Uongo)
+        kila row kwenye range(3):
+            kila col kwenye range(self.model.sticks[row]):
                 self.sticks[(row, col)].color(SCOLOR)
-        for row in range(3):
-            for col in range(self.model.sticks[row], MAXSTICKS):
+        kila row kwenye range(3):
+            kila col kwenye range(self.model.sticks[row], MAXSTICKS):
                 self.sticks[(row, col)].color("white")
         self.display("Your turn! Click leftmost stick to remove.")
-        self.screen.tracer(True)
+        self.screen.tracer(Kweli)
 
     eleza notify_move(self, row, col, maxspalte, player):
         ikiwa player == 0:
             farbe = HCOLOR
-            for s in range(col, maxspalte):
+            kila s kwenye range(col, maxspalte):
                 self.sticks[(row, s)].color(farbe)
-        else:
+        isipokua:
             self.display(" ... thinking ...         ")
             time.sleep(0.5)
             self.display(" ... thinking ... aaah ...")
             farbe = COLOR
-            for s in range(maxspalte-1, col-1, -1):
+            kila s kwenye range(maxspalte-1, col-1, -1):
                 time.sleep(0.2)
                 self.sticks[(row, s)].color(farbe)
             self.display("Your turn! Click leftmost stick to remove.")
@@ -172,8 +172,8 @@ kundi NimView(object):
     eleza notify_over(self):
         ikiwa self.game.model.winner == 0:
             msg2 = "Congrats. You're the winner!!!"
-        else:
-            msg2 = "Sorry, the computer is the winner."
+        isipokua:
+            msg2 = "Sorry, the computer ni the winner."
         self.display("To play again press space bar. To leave press ESC.", msg2)
 
     eleza clear(self):
@@ -186,8 +186,8 @@ kundi NimController(object):
     eleza __init__(self, game):
         self.game = game
         self.sticks = game.view.sticks
-        self.BUSY = False
-        for stick in self.sticks.values():
+        self.BUSY = Uongo
+        kila stick kwenye self.sticks.values():
             stick.onclick(stick.makemove)
         self.game.screen.onkey(self.game.model.setup, "space")
         self.game.screen.onkey(self.game.view.clear, "Escape")
@@ -196,10 +196,10 @@ kundi NimController(object):
 
     eleza notify_move(self, row, col):
         ikiwa self.BUSY:
-            return
-        self.BUSY = True
+            rudisha
+        self.BUSY = Kweli
         self.game.model.notify_move(row, col)
-        self.BUSY = False
+        self.BUSY = Uongo
 
 
 kundi Nim(object):
@@ -209,7 +209,7 @@ kundi Nim(object):
     eleza __init__(self, screen):
         self.state = Nim.CREATED
         self.screen = screen
-        self.model = NimModel(self)
+        self.motoa = NimModel(self)
         self.view = NimView(self)
         self.controller = NimController(self)
 

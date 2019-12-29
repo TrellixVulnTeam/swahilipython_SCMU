@@ -12,81 +12,81 @@ kutoka test agiza support
 kutoka datetime agiza timedelta
 
 
-# for pickle tests
-try:
+# kila pickle tests
+jaribu:
     kundi Stooges(Enum):
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+tatizo Exception kama exc:
     Stooges = exc
 
-try:
+jaribu:
     kundi IntStooges(int, Enum):
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+tatizo Exception kama exc:
     IntStooges = exc
 
-try:
+jaribu:
     kundi FloatStooges(float, Enum):
         LARRY = 1.39
         CURLY = 2.72
         MOE = 3.142596
-except Exception as exc:
+tatizo Exception kama exc:
     FloatStooges = exc
 
-try:
+jaribu:
     kundi FlagStooges(Flag):
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+tatizo Exception kama exc:
     FlagStooges = exc
 
-# for pickle test and subkundi tests
-try:
+# kila pickle test na subkundi tests
+jaribu:
     kundi StrEnum(str, Enum):
         'accepts only string values'
     kundi Name(StrEnum):
         BDFL = 'Guido van Rossum'
         FLUFL = 'Barry Warsaw'
-except Exception as exc:
+tatizo Exception kama exc:
     Name = exc
 
-try:
+jaribu:
     Question = Enum('Question', 'who what when where why', module=__name__)
-except Exception as exc:
+tatizo Exception kama exc:
     Question = exc
 
-try:
+jaribu:
     Answer = Enum('Answer', 'him this then there because')
-except Exception as exc:
+tatizo Exception kama exc:
     Answer = exc
 
-try:
+jaribu:
     Theory = Enum('Theory', 'rule law supposition', qualname='spanish_inquisition')
-except Exception as exc:
+tatizo Exception kama exc:
     Theory = exc
 
-# for doctests
-try:
+# kila doctests
+jaribu:
     kundi Fruit(Enum):
         TOMATO = 1
         BANANA = 2
         CHERRY = 3
-except Exception:
-    pass
+tatizo Exception:
+    pita
 
-eleza test_pickle_dump_load(assertion, source, target=None):
-    ikiwa target is None:
+eleza test_pickle_dump_load(assertion, source, target=Tupu):
+    ikiwa target ni Tupu:
         target = source
-    for protocol in range(HIGHEST_PROTOCOL + 1):
+    kila protocol kwenye range(HIGHEST_PROTOCOL + 1):
         assertion(loads(dumps(source, protocol=protocol)), target)
 
 eleza test_pickle_exception(assertion, exception, obj):
-    for protocol in range(HIGHEST_PROTOCOL + 1):
+    kila protocol kwenye range(HIGHEST_PROTOCOL + 1):
         with assertion(exception):
             dumps(obj, protocol=protocol)
 
@@ -95,37 +95,37 @@ kundi TestHelpers(unittest.TestCase):
 
     eleza test_is_descriptor(self):
         kundi foo:
-            pass
-        for attr in ('__get__','__set__','__delete__'):
+            pita
+        kila attr kwenye ('__get__','__set__','__delete__'):
             obj = foo()
-            self.assertFalse(enum._is_descriptor(obj))
+            self.assertUongo(enum._is_descriptor(obj))
             setattr(obj, attr, 1)
-            self.assertTrue(enum._is_descriptor(obj))
+            self.assertKweli(enum._is_descriptor(obj))
 
     eleza test_is_sunder(self):
-        for s in ('_a_', '_aa_'):
-            self.assertTrue(enum._is_sunder(s))
+        kila s kwenye ('_a_', '_aa_'):
+            self.assertKweli(enum._is_sunder(s))
 
-        for s in ('a', 'a_', '_a', '__a', 'a__', '__a__', '_a__', '__a_', '_',
+        kila s kwenye ('a', 'a_', '_a', '__a', 'a__', '__a__', '_a__', '__a_', '_',
                 '__', '___', '____', '_____',):
-            self.assertFalse(enum._is_sunder(s))
+            self.assertUongo(enum._is_sunder(s))
 
     eleza test_is_dunder(self):
-        for s in ('__a__', '__aa__'):
-            self.assertTrue(enum._is_dunder(s))
-        for s in ('a', 'a_', '_a', '__a', 'a__', '_a_', '_a__', '__a_', '_',
+        kila s kwenye ('__a__', '__aa__'):
+            self.assertKweli(enum._is_dunder(s))
+        kila s kwenye ('a', 'a_', '_a', '__a', 'a__', '_a_', '_a__', '__a_', '_',
                 '__', '___', '____', '_____',):
-            self.assertFalse(enum._is_dunder(s))
+            self.assertUongo(enum._is_dunder(s))
 
-# for subclassing tests
+# kila subclassing tests
 
 kundi classproperty:
 
-    eleza __init__(self, fget=None, fset=None, fdel=None, doc=None):
+    eleza __init__(self, fget=Tupu, fset=Tupu, fdel=Tupu, doc=Tupu):
         self.fget = fget
         self.fset = fset
-        self.fdel = fdel
-        ikiwa doc is None and fget is not None:
+        self.ftoa = fdel
+        ikiwa doc ni Tupu na fget ni sio Tupu:
             doc = fget.__doc__
         self.__doc__ = doc
 
@@ -233,7 +233,7 @@ kundi TestEnum(unittest.TestCase):
         self.assertEqual(
             [Season.SPRING, Season.SUMMER, Season.AUTUMN, Season.WINTER], lst)
 
-        for i, season in enumerate('SPRING SUMMER AUTUMN WINTER'.split(), 1):
+        kila i, season kwenye enumerate('SPRING SUMMER AUTUMN WINTER'.split(), 1):
             e = Season(i)
             self.assertEqual(e, getattr(Season, season))
             self.assertEqual(e.value, i)
@@ -270,31 +270,31 @@ kundi TestEnum(unittest.TestCase):
             WINTER = 4
 
             eleza spam(cls):
-                pass
+                pita
 
-        self.assertTrue(hasattr(Season, 'spam'))
-        del Season.spam
-        self.assertFalse(hasattr(Season, 'spam'))
+        self.assertKweli(hasattr(Season, 'spam'))
+        toa Season.spam
+        self.assertUongo(hasattr(Season, 'spam'))
 
         with self.assertRaises(AttributeError):
-            del Season.SPRING
+            toa Season.SPRING
         with self.assertRaises(AttributeError):
-            del Season.DRY
+            toa Season.DRY
         with self.assertRaises(AttributeError):
-            del Season.SPRING.name
+            toa Season.SPRING.name
 
     eleza test_bool_of_class(self):
         kundi Empty(Enum):
-            pass
-        self.assertTrue(bool(Empty))
+            pita
+        self.assertKweli(bool(Empty))
 
     eleza test_bool_of_member(self):
         kundi Count(Enum):
             zero = 0
             one = 1
             two = 2
-        for member in Count:
-            self.assertTrue(bool(member))
+        kila member kwenye Count:
+            self.assertKweli(bool(member))
 
     eleza test_invalid_names(self):
         with self.assertRaises(ValueError):
@@ -314,34 +314,34 @@ kundi TestEnum(unittest.TestCase):
                 _any_name_ = 9
 
     eleza test_bool(self):
-        # plain Enum members are always True
+        # plain Enum members are always Kweli
         kundi Logic(Enum):
-            true = True
-            false = False
-        self.assertTrue(Logic.true)
-        self.assertTrue(Logic.false)
+            true = Kweli
+            false = Uongo
+        self.assertKweli(Logic.true)
+        self.assertKweli(Logic.false)
         # unless overridden
         kundi RealLogic(Enum):
-            true = True
-            false = False
+            true = Kweli
+            false = Uongo
             eleza __bool__(self):
                 rudisha bool(self._value_)
-        self.assertTrue(RealLogic.true)
-        self.assertFalse(RealLogic.false)
+        self.assertKweli(RealLogic.true)
+        self.assertUongo(RealLogic.false)
         # mixed Enums depend on mixed-in type
         kundi IntLogic(int, Enum):
             true = 1
             false = 0
-        self.assertTrue(IntLogic.true)
-        self.assertFalse(IntLogic.false)
+        self.assertKweli(IntLogic.true)
+        self.assertUongo(IntLogic.false)
 
     eleza test_contains(self):
         Season = self.Season
         self.assertIn(Season.AUTUMN, Season)
         with self.assertRaises(TypeError):
-            3 in Season
+            3 kwenye Season
         with self.assertRaises(TypeError):
-            'AUTUMN' in Season
+            'AUTUMN' kwenye Season
 
         val = Season(3)
         self.assertIn(val, Season)
@@ -388,7 +388,7 @@ kundi TestEnum(unittest.TestCase):
         self.assertIs(Season(1), Season.SPRING)
         self.assertEqual(Season.FALL.name, 'AUTUMN')
         self.assertEqual(
-                [k for k,v in Season.__members__.items() ikiwa v.name != k],
+                [k kila k,v kwenye Season.__members__.items() ikiwa v.name != k],
                 ['FALL', 'ANOTHER_SPRING'],
                 )
 
@@ -513,43 +513,43 @@ kundi TestEnum(unittest.TestCase):
         kundi phy(int, Enum):
             pi = 3
             tau = 2 * pi
-        self.assertTrue(phy.pi < phy.tau)
+        self.assertKweli(phy.pi < phy.tau)
 
     eleza test_intenum_inherited(self):
         kundi IntEnum(int, Enum):
-            pass
+            pita
         kundi phy(IntEnum):
             pi = 3
             tau = 2 * pi
-        self.assertTrue(phy.pi < phy.tau)
+        self.assertKweli(phy.pi < phy.tau)
 
     eleza test_floatenum_kutoka_scratch(self):
         kundi phy(float, Enum):
             pi = 3.1415926
             tau = 2 * pi
-        self.assertTrue(phy.pi < phy.tau)
+        self.assertKweli(phy.pi < phy.tau)
 
     eleza test_floatenum_inherited(self):
         kundi FloatEnum(float, Enum):
-            pass
+            pita
         kundi phy(FloatEnum):
             pi = 3.1415926
             tau = 2 * pi
-        self.assertTrue(phy.pi < phy.tau)
+        self.assertKweli(phy.pi < phy.tau)
 
     eleza test_strenum_kutoka_scratch(self):
         kundi phy(str, Enum):
             pi = 'Pi'
             tau = 'Tau'
-        self.assertTrue(phy.pi < phy.tau)
+        self.assertKweli(phy.pi < phy.tau)
 
     eleza test_strenum_inherited(self):
         kundi StrEnum(str, Enum):
-            pass
+            pita
         kundi phy(StrEnum):
             pi = 'Pi'
             tau = 'Tau'
-        self.assertTrue(phy.pi < phy.tau)
+        self.assertKweli(phy.pi < phy.tau)
 
 
     eleza test_intenum(self):
@@ -563,21 +563,21 @@ kundi TestEnum(unittest.TestCase):
             SATURDAY = 7
 
         self.assertEqual(['a', 'b', 'c'][WeekDay.MONDAY], 'c')
-        self.assertEqual([i for i in range(WeekDay.TUESDAY)], [0, 1, 2])
+        self.assertEqual([i kila i kwenye range(WeekDay.TUESDAY)], [0, 1, 2])
 
         lst = list(WeekDay)
         self.assertEqual(len(lst), len(WeekDay))
         self.assertEqual(len(WeekDay), 7)
         target = 'SUNDAY MONDAY TUESDAY WEDNESDAY THURSDAY FRIDAY SATURDAY'
         target = target.split()
-        for i, weekday in enumerate(target, 1):
+        kila i, weekday kwenye enumerate(target, 1):
             e = WeekDay(i)
             self.assertEqual(e, i)
             self.assertEqual(int(e), i)
             self.assertEqual(e.name, weekday)
             self.assertIn(e, WeekDay)
             self.assertEqual(lst.index(e)+1, i)
-            self.assertTrue(0 < e < 8)
+            self.assertKweli(0 < e < 8)
             self.assertIs(type(e), WeekDay)
             self.assertIsInstance(e, int)
             self.assertIsInstance(e, Enum)
@@ -593,7 +593,7 @@ kundi TestEnum(unittest.TestCase):
             SATURDAY = 7
         self.assertIs(WeekDay.TEUSDAY, WeekDay.TUESDAY)
         self.assertEqual(WeekDay(3).name, 'TUESDAY')
-        self.assertEqual([k for k,v in WeekDay.__members__.items()
+        self.assertEqual([k kila k,v kwenye WeekDay.__members__.items()
                 ikiwa v.name != k], ['TEUSDAY', ])
 
     eleza test_intenum_kutoka_bytes(self):
@@ -610,41 +610,41 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_pickle_enum(self):
         ikiwa isinstance(Stooges, Exception):
-            raise Stooges
+            ashiria Stooges
         test_pickle_dump_load(self.assertIs, Stooges.CURLY)
         test_pickle_dump_load(self.assertIs, Stooges)
 
     eleza test_pickle_int(self):
         ikiwa isinstance(IntStooges, Exception):
-            raise IntStooges
+            ashiria IntStooges
         test_pickle_dump_load(self.assertIs, IntStooges.CURLY)
         test_pickle_dump_load(self.assertIs, IntStooges)
 
     eleza test_pickle_float(self):
         ikiwa isinstance(FloatStooges, Exception):
-            raise FloatStooges
+            ashiria FloatStooges
         test_pickle_dump_load(self.assertIs, FloatStooges.CURLY)
         test_pickle_dump_load(self.assertIs, FloatStooges)
 
     eleza test_pickle_enum_function(self):
         ikiwa isinstance(Answer, Exception):
-            raise Answer
+            ashiria Answer
         test_pickle_dump_load(self.assertIs, Answer.him)
         test_pickle_dump_load(self.assertIs, Answer)
 
     eleza test_pickle_enum_function_with_module(self):
         ikiwa isinstance(Question, Exception):
-            raise Question
+            ashiria Question
         test_pickle_dump_load(self.assertIs, Question.who)
         test_pickle_dump_load(self.assertIs, Question)
 
     eleza test_enum_function_with_qualname(self):
         ikiwa isinstance(Theory, Exception):
-            raise Theory
+            ashiria Theory
         self.assertEqual(Theory.__qualname__, 'spanish_inquisition')
 
     eleza test_class_nested_enum_and_pickle_protocol_four(self):
-        # would normally just have this directly in the kundi namespace
+        # would normally just have this directly kwenye the kundi namespace
         kundi NestedEnum(Enum):
             twigs = 'common'
             shiny = 'rare'
@@ -658,21 +658,21 @@ kundi TestEnum(unittest.TestCase):
             ONE = 1
             TWO = 2
         ReplaceGlobalInt.__reduce_ex__ = enum._reduce_ex_by_name
-        for proto in range(HIGHEST_PROTOCOL):
+        kila proto kwenye range(HIGHEST_PROTOCOL):
             self.assertEqual(ReplaceGlobalInt.TWO.__reduce_ex__(proto), 'TWO')
 
     eleza test_exploding_pickle(self):
         BadPickle = Enum(
                 'BadPickle', 'dill sweet bread-n-butter', module=__name__)
         globals()['BadPickle'] = BadPickle
-        # now break BadPickle to test exception raising
+        # now koma BadPickle to test exception raising
         enum._make_class_unpicklable(BadPickle)
         test_pickle_exception(self.assertRaises, TypeError, BadPickle.dill)
         test_pickle_exception(self.assertRaises, PicklingError, BadPickle)
 
     eleza test_string_enum(self):
         kundi SkillLevel(str, Enum):
-            master = 'what is the sound of one hand clapping?'
+            master = 'what ni the sound of one hand clapping?'
             journeyman = 'why did the chicken cross the road?'
             apprentice = 'knock, knock!'
         self.assertEqual(SkillLevel.apprentice, 'knock, knock!')
@@ -689,7 +689,7 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_getattr_dunder(self):
         Season = self.Season
-        self.assertTrue(getattr(Season, '__eq__'))
+        self.assertKweli(getattr(Season, '__eq__'))
 
     eleza test_iteration_order(self):
         kundi Season(Enum):
@@ -718,7 +718,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 1):
+        kila i, month kwenye enumerate('june july august'.split(), 1):
             e = SummerMonth(i)
             self.assertEqual(int(e.value), i)
             self.assertNotEqual(e, i)
@@ -735,7 +735,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 10):
+        kila i, month kwenye enumerate('june july august'.split(), 10):
             e = SummerMonth(i)
             self.assertEqual(int(e.value), i)
             self.assertNotEqual(e, i)
@@ -752,7 +752,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 1):
+        kila i, month kwenye enumerate('june july august'.split(), 1):
             e = SummerMonth(i)
             self.assertEqual(int(e.value), i)
             self.assertNotEqual(e, i)
@@ -769,7 +769,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 20):
+        kila i, month kwenye enumerate('june july august'.split(), 20):
             e = SummerMonth(i)
             self.assertEqual(int(e.value), i)
             self.assertNotEqual(e, i)
@@ -789,7 +789,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 1):
+        kila i, month kwenye enumerate('june july august'.split(), 1):
             e = SummerMonth(i)
             self.assertEqual(int(e.value), i)
             self.assertNotEqual(e, i)
@@ -809,7 +809,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 1):
+        kila i, month kwenye enumerate('june july august'.split(), 1):
             e = SummerMonth(i)
             self.assertEqual(int(e.value), i)
             self.assertNotEqual(e, i)
@@ -826,7 +826,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 1):
+        kila i, month kwenye enumerate('june july august'.split(), 1):
             e = SummerMonth(i)
             self.assertEqual(e, i)
             self.assertEqual(e.name, month)
@@ -842,7 +842,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 30):
+        kila i, month kwenye enumerate('june july august'.split(), 30):
             e = SummerMonth(i)
             self.assertEqual(e, i)
             self.assertEqual(e.name, month)
@@ -858,7 +858,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 1):
+        kila i, month kwenye enumerate('june july august'.split(), 1):
             e = SummerMonth(i)
             self.assertEqual(e, i)
             self.assertEqual(e.name, month)
@@ -874,7 +874,7 @@ kundi TestEnum(unittest.TestCase):
                 [SummerMonth.june, SummerMonth.july, SummerMonth.august],
                 lst,
                 )
-        for i, month in enumerate('june july august'.split(), 40):
+        kila i, month kwenye enumerate('june july august'.split(), 40):
             e = SummerMonth(i)
             self.assertEqual(e, i)
             self.assertEqual(e.name, month)
@@ -883,9 +883,9 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_subclassing(self):
         ikiwa isinstance(Name, Exception):
-            raise Name
+            ashiria Name
         self.assertEqual(Name.BDFL, 'Guido van Rossum')
-        self.assertTrue(Name.BDFL, Name('Guido van Rossum'))
+        self.assertKweli(Name.BDFL, Name('Guido van Rossum'))
         self.assertIs(Name.BDFL, getattr(Name, 'BDFL'))
         test_pickle_dump_load(self.assertIs, Name.BDFL)
 
@@ -905,9 +905,9 @@ kundi TestEnum(unittest.TestCase):
             this = 'that'
             these = 'those'
             eleza really(self):
-                rudisha 'no, not %s' % self.value
+                rudisha 'no, sio %s' % self.value
         self.assertIsNot(type(whatever.really), whatever)
-        self.assertEqual(whatever.this.really(), 'no, not that')
+        self.assertEqual(whatever.this.really(), 'no, sio that')
 
     eleza test_wrong_inheritance_order(self):
         with self.assertRaises(TypeError):
@@ -1016,12 +1016,12 @@ kundi TestEnum(unittest.TestCase):
     eleza test_inherited_repr(self):
         kundi MyEnum(Enum):
             eleza __repr__(self):
-                rudisha "My name is %s." % self.name
+                rudisha "My name ni %s." % self.name
         kundi MyIntEnum(int, MyEnum):
             this = 1
             that = 2
             theother = 3
-        self.assertEqual(repr(MyIntEnum.that), "My name is that.")
+        self.assertEqual(repr(MyIntEnum.that), "My name ni that.")
 
     eleza test_multiple_mixin_mro(self):
         kundi auto_enum(type(Enum)):
@@ -1029,25 +1029,25 @@ kundi TestEnum(unittest.TestCase):
                 temp = type(classdict)()
                 names = set(classdict._member_names)
                 i = 0
-                for k in classdict._member_names:
+                kila k kwenye classdict._member_names:
                     v = classdict[k]
-                    ikiwa v is Ellipsis:
+                    ikiwa v ni Ellipsis:
                         v = i
-                    else:
+                    isipokua:
                         i = v
                     i += 1
                     temp[k] = v
-                for k, v in classdict.items():
-                    ikiwa k not in names:
+                kila k, v kwenye classdict.items():
+                    ikiwa k haiko kwenye names:
                         temp[k] = v
                 rudisha super(auto_enum, metacls).__new__(
                         metacls, cls, bases, temp)
 
         kundi AutoNumberedEnum(Enum, metaclass=auto_enum):
-            pass
+            pita
 
         kundi AutoIntEnum(IntEnum, metaclass=auto_enum):
-            pass
+            pita
 
         kundi TestAutoNumber(AutoNumberedEnum):
             a = ...
@@ -1061,12 +1061,12 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_subclasses_with_getnewargs(self):
         kundi NamedInt(int):
-            __qualname__ = 'NamedInt'       # needed for pickle protocol 4
+            __qualname__ = 'NamedInt'       # needed kila pickle protocol 4
             eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                    raise TypeError("name and value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1077,30 +1077,30 @@ kundi TestEnum(unittest.TestCase):
             eleza __name__(self):
                 rudisha self._intname
             eleza __repr__(self):
-                # repr() is updated to include the name and type info
+                # repr() ni updated to include the name na type info
                 rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
             eleza __str__(self):
-                # str() is unchanged, even ikiwa it relies on the repr() fallback
+                # str() ni unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                ikiwa base_str.__objclass__ is object:
+                ikiwa base_str.__objclass__ ni object:
                     rudisha base.__repr__(self)
                 rudisha base_str(self)
-            # for simplicity, we only define one operator that
+            # kila simplicity, we only define one operator that
             # propagates expressions
             eleza __add__(self, other):
                 temp = int(self) + int( other)
-                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                ikiwa isinstance(self, NamedInt) na isinstance(other, NamedInt):
                     rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
-                else:
+                isipokua:
                     rudisha temp
 
         kundi NEI(NamedInt, Enum):
-            __qualname__ = 'NEI'      # needed for pickle protocol 4
+            __qualname__ = 'NEI'      # needed kila pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
 
@@ -1118,12 +1118,12 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_subclasses_with_getnewargs_ex(self):
         kundi NamedInt(int):
-            __qualname__ = 'NamedInt'       # needed for pickle protocol 4
+            __qualname__ = 'NamedInt'       # needed kila pickle protocol 4
             eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                    raise TypeError("name and value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1134,30 +1134,30 @@ kundi TestEnum(unittest.TestCase):
             eleza __name__(self):
                 rudisha self._intname
             eleza __repr__(self):
-                # repr() is updated to include the name and type info
+                # repr() ni updated to include the name na type info
                 rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
             eleza __str__(self):
-                # str() is unchanged, even ikiwa it relies on the repr() fallback
+                # str() ni unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                ikiwa base_str.__objclass__ is object:
+                ikiwa base_str.__objclass__ ni object:
                     rudisha base.__repr__(self)
                 rudisha base_str(self)
-            # for simplicity, we only define one operator that
+            # kila simplicity, we only define one operator that
             # propagates expressions
             eleza __add__(self, other):
                 temp = int(self) + int( other)
-                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                ikiwa isinstance(self, NamedInt) na isinstance(other, NamedInt):
                     rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
-                else:
+                isipokua:
                     rudisha temp
 
         kundi NEI(NamedInt, Enum):
-            __qualname__ = 'NEI'      # needed for pickle protocol 4
+            __qualname__ = 'NEI'      # needed kila pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
 
@@ -1175,12 +1175,12 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_subclasses_with_reduce(self):
         kundi NamedInt(int):
-            __qualname__ = 'NamedInt'       # needed for pickle protocol 4
+            __qualname__ = 'NamedInt'       # needed kila pickle protocol 4
             eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                    raise TypeError("name and value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1191,30 +1191,30 @@ kundi TestEnum(unittest.TestCase):
             eleza __name__(self):
                 rudisha self._intname
             eleza __repr__(self):
-                # repr() is updated to include the name and type info
+                # repr() ni updated to include the name na type info
                 rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
             eleza __str__(self):
-                # str() is unchanged, even ikiwa it relies on the repr() fallback
+                # str() ni unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                ikiwa base_str.__objclass__ is object:
+                ikiwa base_str.__objclass__ ni object:
                     rudisha base.__repr__(self)
                 rudisha base_str(self)
-            # for simplicity, we only define one operator that
+            # kila simplicity, we only define one operator that
             # propagates expressions
             eleza __add__(self, other):
                 temp = int(self) + int( other)
-                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                ikiwa isinstance(self, NamedInt) na isinstance(other, NamedInt):
                     rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
-                else:
+                isipokua:
                     rudisha temp
 
         kundi NEI(NamedInt, Enum):
-            __qualname__ = 'NEI'      # needed for pickle protocol 4
+            __qualname__ = 'NEI'      # needed kila pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
 
@@ -1232,12 +1232,12 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_subclasses_with_reduce_ex(self):
         kundi NamedInt(int):
-            __qualname__ = 'NamedInt'       # needed for pickle protocol 4
+            __qualname__ = 'NamedInt'       # needed kila pickle protocol 4
             eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                    raise TypeError("name and value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1248,30 +1248,30 @@ kundi TestEnum(unittest.TestCase):
             eleza __name__(self):
                 rudisha self._intname
             eleza __repr__(self):
-                # repr() is updated to include the name and type info
+                # repr() ni updated to include the name na type info
                 rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
             eleza __str__(self):
-                # str() is unchanged, even ikiwa it relies on the repr() fallback
+                # str() ni unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                ikiwa base_str.__objclass__ is object:
+                ikiwa base_str.__objclass__ ni object:
                     rudisha base.__repr__(self)
                 rudisha base_str(self)
-            # for simplicity, we only define one operator that
+            # kila simplicity, we only define one operator that
             # propagates expressions
             eleza __add__(self, other):
                 temp = int(self) + int( other)
-                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                ikiwa isinstance(self, NamedInt) na isinstance(other, NamedInt):
                     rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
-                else:
+                isipokua:
                     rudisha temp
 
         kundi NEI(NamedInt, Enum):
-            __qualname__ = 'NEI'      # needed for pickle protocol 4
+            __qualname__ = 'NEI'      # needed kila pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
 
@@ -1294,7 +1294,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                    raise TypeError("name and value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1303,26 +1303,26 @@ kundi TestEnum(unittest.TestCase):
             eleza __name__(self):
                 rudisha self._intname
             eleza __repr__(self):
-                # repr() is updated to include the name and type info
+                # repr() ni updated to include the name na type info
                 rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
             eleza __str__(self):
-                # str() is unchanged, even ikiwa it relies on the repr() fallback
+                # str() ni unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                ikiwa base_str.__objclass__ is object:
+                ikiwa base_str.__objclass__ ni object:
                     rudisha base.__repr__(self)
                 rudisha base_str(self)
-            # for simplicity, we only define one operator that
+            # kila simplicity, we only define one operator that
             # propagates expressions
             eleza __add__(self, other):
                 temp = int(self) + int( other)
-                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                ikiwa isinstance(self, NamedInt) na isinstance(other, NamedInt):
                     rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
-                else:
+                isipokua:
                     rudisha temp
 
         kundi NEI(NamedInt, Enum):
@@ -1347,7 +1347,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                    raise TypeError("name and value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1356,26 +1356,26 @@ kundi TestEnum(unittest.TestCase):
             eleza __name__(self):
                 rudisha self._intname
             eleza __repr__(self):
-                # repr() is updated to include the name and type info
+                # repr() ni updated to include the name na type info
                 rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
             eleza __str__(self):
-                # str() is unchanged, even ikiwa it relies on the repr() fallback
+                # str() ni unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                ikiwa base_str.__objclass__ is object:
+                ikiwa base_str.__objclass__ ni object:
                     rudisha base.__repr__(self)
                 rudisha base_str(self)
-            # for simplicity, we only define one operator that
+            # kila simplicity, we only define one operator that
             # propagates expressions
             eleza __add__(self, other):
                 temp = int(self) + int( other)
-                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                ikiwa isinstance(self, NamedInt) na isinstance(other, NamedInt):
                     rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
-                else:
+                isipokua:
                     rudisha temp
 
         kundi NEI(NamedInt, Enum):
@@ -1397,13 +1397,13 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_tuple_subclass(self):
         kundi SomeTuple(tuple, Enum):
-            __qualname__ = 'SomeTuple'      # needed for pickle protocol 4
-            first = (1, 'for the money')
-            second = (2, 'for the show')
-            third = (3, 'for the music')
+            __qualname__ = 'SomeTuple'      # needed kila pickle protocol 4
+            first = (1, 'kila the money')
+            second = (2, 'kila the show')
+            third = (3, 'kila the music')
         self.assertIs(type(SomeTuple.first), SomeTuple)
         self.assertIsInstance(SomeTuple.second, tuple)
-        self.assertEqual(SomeTuple.third, (3, 'for the music'))
+        self.assertEqual(SomeTuple.third, (3, 'kila the music'))
         globals()['SomeTuple'] = SomeTuple
         test_pickle_dump_load(self.assertIs, SomeTuple.first)
 
@@ -1460,7 +1460,7 @@ kundi TestEnum(unittest.TestCase):
     eleza test_equality(self):
         kundi AlwaysEqual:
             eleza __eq__(self, other):
-                rudisha True
+                rudisha Kweli
         kundi OrdinaryEnum(Enum):
             a = 1
         self.assertEqual(AlwaysEqual(), OrdinaryEnum.a)
@@ -1469,19 +1469,19 @@ kundi TestEnum(unittest.TestCase):
     eleza test_ordered_mixin(self):
         kundi OrderedEnum(Enum):
             eleza __ge__(self, other):
-                ikiwa self.__class__ is other.__class__:
+                ikiwa self.__class__ ni other.__class__:
                     rudisha self._value_ >= other._value_
                 rudisha NotImplemented
             eleza __gt__(self, other):
-                ikiwa self.__class__ is other.__class__:
+                ikiwa self.__class__ ni other.__class__:
                     rudisha self._value_ > other._value_
                 rudisha NotImplemented
             eleza __le__(self, other):
-                ikiwa self.__class__ is other.__class__:
+                ikiwa self.__class__ ni other.__class__:
                     rudisha self._value_ <= other._value_
                 rudisha NotImplemented
             eleza __lt__(self, other):
-                ikiwa self.__class__ is other.__class__:
+                ikiwa self.__class__ ni other.__class__:
                     rudisha self._value_ < other._value_
                 rudisha NotImplemented
         kundi Grade(OrderedEnum):
@@ -1527,7 +1527,7 @@ kundi TestEnum(unittest.TestCase):
     eleza test_subclass_duplicate_name(self):
         kundi Base(Enum):
             eleza test(self):
-                pass
+                pita
         kundi Test(Base):
             test = 1
         self.assertIs(type(Test.test), Test)
@@ -1546,11 +1546,11 @@ kundi TestEnum(unittest.TestCase):
         kundi UniqueEnum(Enum):
             eleza __init__(self, *args):
                 cls = self.__class__
-                ikiwa any(self.value == e.value for e in cls):
+                ikiwa any(self.value == e.value kila e kwenye cls):
                     a = self.name
                     e = cls(self.value).name
-                    raise ValueError(
-                            "aliases not allowed in UniqueEnum:  %r --> %r"
+                    ashiria ValueError(
+                            "aliases sio allowed kwenye UniqueEnum:  %r --> %r"
                             % (a, e)
                             )
         kundi Color(UniqueEnum):
@@ -1575,8 +1575,8 @@ kundi TestEnum(unittest.TestCase):
             URANUS  = (8.686e+25, 2.5559e7)
             NEPTUNE = (1.024e+26, 2.4746e7)
             eleza __init__(self, mass, radius):
-                self.mass = mass       # in kilograms
-                self.radius = radius   # in meters
+                self.mass = mass       # kwenye kilograms
+                self.radius = radius   # kwenye meters
             @property
             eleza surface_gravity(self):
                 # universal gravitational constant  (m3 kg-1 s-2)
@@ -1597,21 +1597,21 @@ kundi TestEnum(unittest.TestCase):
                 rudisha obj
             _ignore_ = 'Period i'
             Period = vars()
-            for i in range(13):
+            kila i kwenye range(13):
                 Period['month_%d' % i] = i*30, 'month'
-            for i in range(53):
+            kila i kwenye range(53):
                 Period['week_%d' % i] = i*7, 'week'
-            for i in range(32):
+            kila i kwenye range(32):
                 Period['day_%d' % i] = i, 'day'
             OneDay = day_1
             OneWeek = week_1
             OneMonth = month_1
-        self.assertFalse(hasattr(Period, '_ignore_'))
-        self.assertFalse(hasattr(Period, 'Period'))
-        self.assertFalse(hasattr(Period, 'i'))
-        self.assertTrue(isinstance(Period.day_1, timedelta))
-        self.assertTrue(Period.month_1 is Period.day_30)
-        self.assertTrue(Period.week_4 is Period.day_28)
+        self.assertUongo(hasattr(Period, '_ignore_'))
+        self.assertUongo(hasattr(Period, 'Period'))
+        self.assertUongo(hasattr(Period, 'i'))
+        self.assertKweli(isinstance(Period.day_1, timedelta))
+        self.assertKweli(Period.month_1 ni Period.day_30)
+        self.assertKweli(Period.week_4 ni Period.day_28)
 
     eleza test_nonhash_value(self):
         kundi AutoNumberInAList(Enum):
@@ -1625,7 +1625,7 @@ kundi TestEnum(unittest.TestCase):
             green = ()
             blue = ()
         self.assertEqual(list(ColorInAList), [ColorInAList.red, ColorInAList.green, ColorInAList.blue])
-        for enum, value in zip(ColorInAList, range(3)):
+        kila enum, value kwenye zip(ColorInAList, range(3)):
             value += 1
             self.assertEqual(enum.value, [value])
             self.assertIs(ColorInAList([value]), enum)
@@ -1718,28 +1718,28 @@ kundi TestEnum(unittest.TestCase):
             eleza _missing_(cls, item):
                 ikiwa item == 'three':
                     rudisha cls.blue
-                elikiwa item == 'bad return':
+                elikiwa item == 'bad rudisha':
                     # trigger internal error
                     rudisha 5
                 elikiwa item == 'error out':
-                    raise ZeroDivisionError
-                else:
-                    # trigger not found
-                    rudisha None
+                    ashiria ZeroDivisionError
+                isipokua:
+                    # trigger sio found
+                    rudisha Tupu
         self.assertIs(Color('three'), Color.blue)
         self.assertRaises(ValueError, Color, 7)
-        try:
-            Color('bad return')
-        except TypeError as exc:
-            self.assertTrue(isinstance(exc.__context__, ValueError))
-        else:
-            raise Exception('Exception not raised.')
-        try:
+        jaribu:
+            Color('bad rudisha')
+        tatizo TypeError kama exc:
+            self.assertKweli(isinstance(exc.__context__, ValueError))
+        isipokua:
+            ashiria Exception('Exception sio ashiriad.')
+        jaribu:
             Color('error out')
-        except ZeroDivisionError as exc:
-            self.assertTrue(isinstance(exc.__context__, ValueError))
-        else:
-            raise Exception('Exception not raised.')
+        tatizo ZeroDivisionError kama exc:
+            self.assertKweli(isinstance(exc.__context__, ValueError))
+        isipokua:
+            ashiria Exception('Exception sio ashiriad.')
 
     eleza test_multiple_mixin(self):
         kundi MaxMixin:
@@ -1835,14 +1835,14 @@ kundi TestEnum(unittest.TestCase):
         self.assertEqual(str(ReformedColor.BLUE), 'blue')
         self.assertEqual(ReformedColor.RED.behavior(), 'booyah')
         self.assertEqual(ConfusedColor.RED.social(), "what's up?")
-        self.assertTrue(issubclass(ReformedColor, int))
+        self.assertKweli(issubclass(ReformedColor, int))
 
     eleza test_multiple_inherited_mixin(self):
         kundi StrEnum(str, Enum):
             eleza __new__(cls, *args, **kwargs):
-                for a in args:
-                    ikiwa not isinstance(a, str):
-                        raise TypeError("Enumeration '%s' (%s) is not"
+                kila a kwenye args:
+                    ikiwa sio isinstance(a, str):
+                        ashiria TypeError("Enumeration '%s' (%s) ni not"
                                         " a string" % (a, type(a).__name__))
                 rudisha str.__new__(cls, *args, **kwargs)
         @unique
@@ -1851,7 +1851,7 @@ kundi TestEnum(unittest.TestCase):
             REVERT_ALL = "REVERT_ALL"
             RETRY = "RETRY"
         kundi MyEnum(StrEnum):
-            pass
+            pita
         @unique
         kundi Decision2(MyEnum):
             REVERT = "REVERT"
@@ -1860,7 +1860,7 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_empty_globals(self):
         # bpo-35717: sys._getframe(2).f_globals['__name__'] fails with KeyError
-        # when using compile and exec because f_globals is empty
+        # when using compile na exec because f_globals ni empty
         code = "kutoka enum agiza Enum; Enum('Animal', 'ANT BEE CAT DOG')"
         code = compile(code, "<string>", "exec")
         global_ns = {}
@@ -1886,7 +1886,7 @@ kundi TestOrder(unittest.TestCase):
             verde = green
 
     eleza test_same_members_wrong_order(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -1894,7 +1894,7 @@ kundi TestOrder(unittest.TestCase):
                 green = 2
 
     eleza test_order_has_extra_members(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
@@ -1902,7 +1902,7 @@ kundi TestOrder(unittest.TestCase):
                 blue = 3
 
     eleza test_order_has_extra_members_with_aliases(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
@@ -1911,7 +1911,7 @@ kundi TestOrder(unittest.TestCase):
                 verde = green
 
     eleza test_enum_has_extra_members(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -1920,7 +1920,7 @@ kundi TestOrder(unittest.TestCase):
                 purple = 4
 
     eleza test_enum_has_extra_members_with_aliases(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        with self.assertRaisesRegex(TypeError, 'member order does sio match _order_'):
             kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -2006,12 +2006,12 @@ kundi TestFlag(unittest.TestCase):
 
     eleza test_or(self):
         Perm = self.Perm
-        for i in Perm:
-            for j in Perm:
+        kila i kwenye Perm:
+            kila j kwenye Perm:
                 self.assertEqual((i | j), Perm(i.value | j.value))
                 self.assertEqual((i | j).value, i.value | j.value)
                 self.assertIs(type(i | j), Perm)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(i | i, i)
         Open = self.Open
         self.assertIs(Open.RO | Open.CE, Open.CE)
@@ -2023,11 +2023,11 @@ kundi TestFlag(unittest.TestCase):
         WX = Perm.W | Perm.X
         RWX = Perm.R | Perm.W | Perm.X
         values = list(Perm) + [RW, RX, WX, RWX, Perm(0)]
-        for i in values:
-            for j in values:
+        kila i kwenye values:
+            kila j kwenye values:
                 self.assertEqual((i & j).value, i.value & j.value)
                 self.assertIs(type(i & j), Perm)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(i & i, i)
             self.assertIs(i & RWX, i)
             self.assertIs(RWX & i, i)
@@ -2036,11 +2036,11 @@ kundi TestFlag(unittest.TestCase):
 
     eleza test_xor(self):
         Perm = self.Perm
-        for i in Perm:
-            for j in Perm:
+        kila i kwenye Perm:
+            kila j kwenye Perm:
                 self.assertEqual((i ^ j).value, i.value ^ j.value)
                 self.assertIs(type(i ^ j), Perm)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(i ^ Perm(0), i)
             self.assertIs(Perm(0) ^ i, i)
         Open = self.Open
@@ -2054,10 +2054,10 @@ kundi TestFlag(unittest.TestCase):
         WX = Perm.W | Perm.X
         RWX = Perm.R | Perm.W | Perm.X
         values = list(Perm) + [RW, RX, WX, RWX, Perm(0)]
-        for i in values:
+        kila i kwenye values:
             self.assertIs(type(~i), Perm)
             self.assertEqual(~~i, i)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(~~i, i)
         Open = self.Open
         self.assertIs(Open.WO & ~Open.WO, Open.RO)
@@ -2065,10 +2065,10 @@ kundi TestFlag(unittest.TestCase):
 
     eleza test_bool(self):
         Perm = self.Perm
-        for f in Perm:
-            self.assertTrue(f)
+        kila f kwenye Perm:
+            self.assertKweli(f)
         Open = self.Open
-        for f in Open:
+        kila f kwenye Open:
             self.assertEqual(bool(f.value), bool(f))
 
     eleza test_programatic_function_string(self):
@@ -2077,7 +2077,7 @@ kundi TestFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<i
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2092,7 +2092,7 @@ kundi TestFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 8<<i
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2107,7 +2107,7 @@ kundi TestFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<i
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2122,7 +2122,7 @@ kundi TestFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<(2*i+1)
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2137,7 +2137,7 @@ kundi TestFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<(2*i+1)
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2148,23 +2148,23 @@ kundi TestFlag(unittest.TestCase):
 
     eleza test_pickle(self):
         ikiwa isinstance(FlagStooges, Exception):
-            raise FlagStooges
+            ashiria FlagStooges
         test_pickle_dump_load(self.assertIs, FlagStooges.CURLY|FlagStooges.MOE)
         test_pickle_dump_load(self.assertIs, FlagStooges)
 
     eleza test_contains(self):
         Open = self.Open
         Color = self.Color
-        self.assertFalse(Color.BLACK in Open)
-        self.assertFalse(Open.RO in Color)
+        self.assertUongo(Color.BLACK kwenye Open)
+        self.assertUongo(Open.RO kwenye Color)
         with self.assertRaises(TypeError):
-            'BLACK' in Color
+            'BLACK' kwenye Color
         with self.assertRaises(TypeError):
-            'RO' in Open
+            'RO' kwenye Open
         with self.assertRaises(TypeError):
-            1 in Color
+            1 kwenye Color
         with self.assertRaises(TypeError):
-            1 in Open
+            1 kwenye Open
 
     eleza test_member_contains(self):
         Perm = self.Perm
@@ -2173,18 +2173,18 @@ kundi TestFlag(unittest.TestCase):
         RX = R | X
         WX = W | X
         RWX = R | W | X
-        self.assertTrue(R in RW)
-        self.assertTrue(R in RX)
-        self.assertTrue(R in RWX)
-        self.assertTrue(W in RW)
-        self.assertTrue(W in WX)
-        self.assertTrue(W in RWX)
-        self.assertTrue(X in RX)
-        self.assertTrue(X in WX)
-        self.assertTrue(X in RWX)
-        self.assertFalse(R in WX)
-        self.assertFalse(W in RX)
-        self.assertFalse(X in RW)
+        self.assertKweli(R kwenye RW)
+        self.assertKweli(R kwenye RX)
+        self.assertKweli(R kwenye RWX)
+        self.assertKweli(W kwenye RW)
+        self.assertKweli(W kwenye WX)
+        self.assertKweli(W kwenye RWX)
+        self.assertKweli(X kwenye RX)
+        self.assertKweli(X kwenye WX)
+        self.assertKweli(X kwenye RWX)
+        self.assertUongo(R kwenye WX)
+        self.assertUongo(W kwenye RX)
+        self.assertUongo(X kwenye RW)
 
     eleza test_auto_number(self):
         kundi Color(Flag):
@@ -2209,12 +2209,12 @@ kundi TestFlag(unittest.TestCase):
             d = 4
             f = 6
         # Bizarre.c | Bizarre.d
-        self.assertRaisesRegex(ValueError, "5 is not a valid Bizarre", Bizarre, 5)
-        self.assertRaisesRegex(ValueError, "5 is not a valid Bizarre", Bizarre, 5)
-        self.assertRaisesRegex(ValueError, "2 is not a valid Bizarre", Bizarre, 2)
-        self.assertRaisesRegex(ValueError, "2 is not a valid Bizarre", Bizarre, 2)
-        self.assertRaisesRegex(ValueError, "1 is not a valid Bizarre", Bizarre, 1)
-        self.assertRaisesRegex(ValueError, "1 is not a valid Bizarre", Bizarre, 1)
+        self.assertRaisesRegex(ValueError, "5 ni sio a valid Bizarre", Bizarre, 5)
+        self.assertRaisesRegex(ValueError, "5 ni sio a valid Bizarre", Bizarre, 5)
+        self.assertRaisesRegex(ValueError, "2 ni sio a valid Bizarre", Bizarre, 2)
+        self.assertRaisesRegex(ValueError, "2 ni sio a valid Bizarre", Bizarre, 2)
+        self.assertRaisesRegex(ValueError, "1 ni sio a valid Bizarre", Bizarre, 1)
+        self.assertRaisesRegex(ValueError, "1 ni sio a valid Bizarre", Bizarre, 1)
 
     eleza test_duplicate_auto(self):
         kundi Dupes(Enum):
@@ -2235,10 +2235,10 @@ kundi TestFlag(unittest.TestCase):
             @classproperty
             eleza ALL(cls):
                 members = list(cls)
-                all_value = None
+                all_value = Tupu
                 ikiwa members:
                     all_value = members[0]
-                    for member in members[1:]:
+                    kila member kwenye members[1:]:
                         all_value |= member
                 cls.ALL = all_value
                 rudisha all_value
@@ -2286,29 +2286,29 @@ kundi TestFlag(unittest.TestCase):
             seven = auto()
             eight = auto()
             eleza __eq__(self, other):
-                rudisha self is other
+                rudisha self ni other
             eleza __hash__(self):
                 rudisha hash(self._value_)
         # have multiple threads competing to complete the composite members
         seen = set()
-        failed = False
+        failed = Uongo
         eleza cycle_enum():
             nonlocal failed
-            try:
-                for i in range(256):
+            jaribu:
+                kila i kwenye range(256):
                     seen.add(TestFlag(i))
-            except Exception:
-                failed = True
+            tatizo Exception:
+                failed = Kweli
         threads = [
                 threading.Thread(target=cycle_enum)
-                for _ in range(8)
+                kila _ kwenye range(8)
                 ]
         with support.start_threads(threads):
-            pass
+            pita
         # check that only 248 members were created
-        self.assertFalse(
+        self.assertUongo(
                 failed,
-                'at least one thread failed while creating composite members')
+                'at least one thread failed wakati creating composite members')
         self.assertEqual(256, len(seen), 'too many composite members created')
 
 
@@ -2337,15 +2337,15 @@ kundi TestIntFlag(unittest.TestCase):
     eleza test_type(self):
         Perm = self.Perm
         Open = self.Open
-        for f in Perm:
-            self.assertTrue(isinstance(f, Perm))
+        kila f kwenye Perm:
+            self.assertKweli(isinstance(f, Perm))
             self.assertEqual(f, f.value)
-        self.assertTrue(isinstance(Perm.W | Perm.X, Perm))
+        self.assertKweli(isinstance(Perm.W | Perm.X, Perm))
         self.assertEqual(Perm.W | Perm.X, 3)
-        for f in Open:
-            self.assertTrue(isinstance(f, Open))
+        kila f kwenye Open:
+            self.assertKweli(isinstance(f, Open))
             self.assertEqual(f, f.value)
-        self.assertTrue(isinstance(Open.WO | Open.RW, Open))
+        self.assertKweli(isinstance(Open.WO | Open.RW, Open))
         self.assertEqual(Open.WO | Open.RW, 3)
 
 
@@ -2417,19 +2417,19 @@ kundi TestIntFlag(unittest.TestCase):
 
     eleza test_or(self):
         Perm = self.Perm
-        for i in Perm:
-            for j in Perm:
+        kila i kwenye Perm:
+            kila j kwenye Perm:
                 self.assertEqual(i | j, i.value | j.value)
                 self.assertEqual((i | j).value, i.value | j.value)
                 self.assertIs(type(i | j), Perm)
-            for j in range(8):
+            kila j kwenye range(8):
                 self.assertEqual(i | j, i.value | j)
                 self.assertEqual((i | j).value, i.value | j)
                 self.assertIs(type(i | j), Perm)
                 self.assertEqual(j | i, j | i.value)
                 self.assertEqual((j | i).value, j | i.value)
                 self.assertIs(type(j | i), Perm)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(i | i, i)
             self.assertIs(i | 0, i)
             self.assertIs(0 | i, i)
@@ -2443,19 +2443,19 @@ kundi TestIntFlag(unittest.TestCase):
         WX = Perm.W | Perm.X
         RWX = Perm.R | Perm.W | Perm.X
         values = list(Perm) + [RW, RX, WX, RWX, Perm(0)]
-        for i in values:
-            for j in values:
-                self.assertEqual(i & j, i.value & j.value, 'i is %r, j is %r' % (i, j))
-                self.assertEqual((i & j).value, i.value & j.value, 'i is %r, j is %r' % (i, j))
-                self.assertIs(type(i & j), Perm, 'i is %r, j is %r' % (i, j))
-            for j in range(8):
+        kila i kwenye values:
+            kila j kwenye values:
+                self.assertEqual(i & j, i.value & j.value, 'i ni %r, j ni %r' % (i, j))
+                self.assertEqual((i & j).value, i.value & j.value, 'i ni %r, j ni %r' % (i, j))
+                self.assertIs(type(i & j), Perm, 'i ni %r, j ni %r' % (i, j))
+            kila j kwenye range(8):
                 self.assertEqual(i & j, i.value & j)
                 self.assertEqual((i & j).value, i.value & j)
                 self.assertIs(type(i & j), Perm)
                 self.assertEqual(j & i, j & i.value)
                 self.assertEqual((j & i).value, j & i.value)
                 self.assertIs(type(j & i), Perm)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(i & i, i)
             self.assertIs(i & 7, i)
             self.assertIs(7 & i, i)
@@ -2464,19 +2464,19 @@ kundi TestIntFlag(unittest.TestCase):
 
     eleza test_xor(self):
         Perm = self.Perm
-        for i in Perm:
-            for j in Perm:
+        kila i kwenye Perm:
+            kila j kwenye Perm:
                 self.assertEqual(i ^ j, i.value ^ j.value)
                 self.assertEqual((i ^ j).value, i.value ^ j.value)
                 self.assertIs(type(i ^ j), Perm)
-            for j in range(8):
+            kila j kwenye range(8):
                 self.assertEqual(i ^ j, i.value ^ j)
                 self.assertEqual((i ^ j).value, i.value ^ j)
                 self.assertIs(type(i ^ j), Perm)
                 self.assertEqual(j ^ i, j ^ i.value)
                 self.assertEqual((j ^ i).value, j ^ i.value)
                 self.assertIs(type(j ^ i), Perm)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(i ^ 0, i)
             self.assertIs(0 ^ i, i)
         Open = self.Open
@@ -2490,12 +2490,12 @@ kundi TestIntFlag(unittest.TestCase):
         WX = Perm.W | Perm.X
         RWX = Perm.R | Perm.W | Perm.X
         values = list(Perm) + [RW, RX, WX, RWX, Perm(0)]
-        for i in values:
+        kila i kwenye values:
             self.assertEqual(~i, ~i.value)
             self.assertEqual((~i).value, ~i.value)
             self.assertIs(type(~i), Perm)
             self.assertEqual(~~i, i)
-        for i in Perm:
+        kila i kwenye Perm:
             self.assertIs(~~i, i)
         Open = self.Open
         self.assertIs(Open.WO & ~Open.WO, Open.RO)
@@ -2507,7 +2507,7 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<i
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2523,7 +2523,7 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 8<<i
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2539,7 +2539,7 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<i
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2555,7 +2555,7 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<(2*i+1)
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2571,7 +2571,7 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Perm))
         self.assertEqual(len(Perm), 3, Perm)
         self.assertEqual(lst, [Perm.R, Perm.W, Perm.X])
-        for i, n in enumerate('R W X'.split()):
+        kila i, n kwenye enumerate('R W X'.split()):
             v = 1<<(2*i+1)
             e = Perm(v)
             self.assertEqual(e.value, v)
@@ -2605,18 +2605,18 @@ kundi TestIntFlag(unittest.TestCase):
     eleza test_contains(self):
         Open = self.Open
         Color = self.Color
-        self.assertTrue(Color.GREEN in Color)
-        self.assertTrue(Open.RW in Open)
-        self.assertFalse(Color.GREEN in Open)
-        self.assertFalse(Open.RW in Color)
+        self.assertKweli(Color.GREEN kwenye Color)
+        self.assertKweli(Open.RW kwenye Open)
+        self.assertUongo(Color.GREEN kwenye Open)
+        self.assertUongo(Open.RW kwenye Color)
         with self.assertRaises(TypeError):
-            'GREEN' in Color
+            'GREEN' kwenye Color
         with self.assertRaises(TypeError):
-            'RW' in Open
+            'RW' kwenye Open
         with self.assertRaises(TypeError):
-            2 in Color
+            2 kwenye Color
         with self.assertRaises(TypeError):
-            2 in Open
+            2 kwenye Open
 
     eleza test_member_contains(self):
         Perm = self.Perm
@@ -2625,27 +2625,27 @@ kundi TestIntFlag(unittest.TestCase):
         RX = R | X
         WX = W | X
         RWX = R | W | X
-        self.assertTrue(R in RW)
-        self.assertTrue(R in RX)
-        self.assertTrue(R in RWX)
-        self.assertTrue(W in RW)
-        self.assertTrue(W in WX)
-        self.assertTrue(W in RWX)
-        self.assertTrue(X in RX)
-        self.assertTrue(X in WX)
-        self.assertTrue(X in RWX)
-        self.assertFalse(R in WX)
-        self.assertFalse(W in RX)
-        self.assertFalse(X in RW)
+        self.assertKweli(R kwenye RW)
+        self.assertKweli(R kwenye RX)
+        self.assertKweli(R kwenye RWX)
+        self.assertKweli(W kwenye RW)
+        self.assertKweli(W kwenye WX)
+        self.assertKweli(W kwenye RWX)
+        self.assertKweli(X kwenye RX)
+        self.assertKweli(X kwenye WX)
+        self.assertKweli(X kwenye RWX)
+        self.assertUongo(R kwenye WX)
+        self.assertUongo(W kwenye RX)
+        self.assertUongo(X kwenye RW)
         with self.assertRaises(TypeError):
-            self.assertFalse('test' in RW)
+            self.assertUongo('test' kwenye RW)
 
     eleza test_bool(self):
         Perm = self.Perm
-        for f in Perm:
-            self.assertTrue(f)
+        kila f kwenye Perm:
+            self.assertKweli(f)
         Open = self.Open
-        for f in Open:
+        kila f kwenye Open:
             self.assertEqual(bool(f.value), bool(f))
 
     eleza test_multiple_mixin(self):
@@ -2653,10 +2653,10 @@ kundi TestIntFlag(unittest.TestCase):
             @classproperty
             eleza ALL(cls):
                 members = list(cls)
-                all_value = None
+                all_value = Tupu
                 ikiwa members:
                     all_value = members[0]
-                    for member in members[1:]:
+                    kila member kwenye members[1:]:
                         all_value |= member
                 cls.ALL = all_value
                 rudisha all_value
@@ -2704,29 +2704,29 @@ kundi TestIntFlag(unittest.TestCase):
             seven = auto()
             eight = auto()
             eleza __eq__(self, other):
-                rudisha self is other
+                rudisha self ni other
             eleza __hash__(self):
                 rudisha hash(self._value_)
         # have multiple threads competing to complete the composite members
         seen = set()
-        failed = False
+        failed = Uongo
         eleza cycle_enum():
             nonlocal failed
-            try:
-                for i in range(256):
+            jaribu:
+                kila i kwenye range(256):
                     seen.add(TestFlag(i))
-            except Exception:
-                failed = True
+            tatizo Exception:
+                failed = Kweli
         threads = [
                 threading.Thread(target=cycle_enum)
-                for _ in range(8)
+                kila _ kwenye range(8)
                 ]
         with support.start_threads(threads):
-            pass
+            pita
         # check that only 248 members were created
-        self.assertFalse(
+        self.assertUongo(
                 failed,
-                'at least one thread failed while creating composite members')
+                'at least one thread failed wakati creating composite members')
         self.assertEqual(256, len(seen), 'too many composite members created')
 
 
@@ -2795,10 +2795,10 @@ kundi TestUnique(unittest.TestCase):
 
 
 expected_help_output_with_docs = """\
-Help on kundi Color in module %s:
+Help on kundi Color kwenye module %s:
 
 kundi Color(enum.Enum)
- |  Color(value, names=None, *, module=None, qualname=None, type=None, start=1)
+ |  Color(value, names=Tupu, *, module=Tupu, qualname=Tupu, type=Tupu, start=1)
  |\x20\x20
  |  An enumeration.
  |\x20\x20
@@ -2807,7 +2807,7 @@ kundi Color(enum.Enum)
  |      enum.Enum
  |      builtins.object
  |\x20\x20
- |  Data and other attributes defined here:
+ |  Data na other attributes defined here:
  |\x20\x20
  |  blue = <Color.blue: 3>
  |\x20\x20
@@ -2831,20 +2831,20 @@ kundi Color(enum.Enum)
  |      Returns a mapping of member name->value.
  |\x20\x20\x20\x20\x20\x20
  |      This mapping lists all enum members, including aliases. Note that this
- |      is a read-only view of the internal mapping."""
+ |      ni a read-only view of the internal mapping."""
 
 expected_help_output_without_docs = """\
-Help on kundi Color in module %s:
+Help on kundi Color kwenye module %s:
 
 kundi Color(enum.Enum)
- |  Color(value, names=None, *, module=None, qualname=None, type=None, start=1)
+ |  Color(value, names=Tupu, *, module=Tupu, qualname=Tupu, type=Tupu, start=1)
  |\x20\x20
  |  Method resolution order:
  |      Color
  |      enum.Enum
  |      builtins.object
  |\x20\x20
- |  Data and other attributes defined here:
+ |  Data na other attributes defined here:
  |\x20\x20
  |  blue = <Color.blue: 3>
  |\x20\x20
@@ -2866,7 +2866,7 @@ kundi Color(enum.Enum)
 
 kundi TestStdLib(unittest.TestCase):
 
-    maxDiff = None
+    maxDiff = Tupu
 
     kundi Color(Enum):
         red = 1
@@ -2875,9 +2875,9 @@ kundi TestStdLib(unittest.TestCase):
 
     eleza test_pydoc(self):
         # indirectly test __objclass__
-        ikiwa StrEnum.__doc__ is None:
+        ikiwa StrEnum.__doc__ ni Tupu:
             expected_text = expected_help_output_without_docs % __name__
-        else:
+        isipokua:
             expected_text = expected_help_output_with_docs % __name__
         output = StringIO()
         helper = pydoc.Helper(output=output)
@@ -2899,15 +2899,15 @@ kundi TestStdLib(unittest.TestCase):
                 ))
         result = dict(inspect.getmembers(self.Color))
         self.assertEqual(values.keys(), result.keys())
-        failed = False
-        for k in values.keys():
+        failed = Uongo
+        kila k kwenye values.keys():
             ikiwa result[k] != values[k]:
                 andika()
                 andika('\n%s\n     key: %s\n  result: %s\nexpected: %s\n%s\n' %
                         ('=' * 75, k, result[k], values[k], '=' * 75), sep='')
-                failed = True
+                failed = Kweli
         ikiwa failed:
-            self.fail("result does not equal expected, see print above")
+            self.fail("result does sio equal expected, see print above")
 
     eleza test_inspect_classify_class_attrs(self):
         # indirectly test __objclass__
@@ -2935,13 +2935,13 @@ kundi TestStdLib(unittest.TestCase):
         values.sort(key=lambda item: item.name)
         result = list(inspect.classify_class_attrs(self.Color))
         result.sort(key=lambda item: item.name)
-        failed = False
-        for v, r in zip(values, result):
+        failed = Uongo
+        kila v, r kwenye zip(values, result):
             ikiwa r != v:
                 andika('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
-                failed = True
+                failed = Kweli
         ikiwa failed:
-            self.fail("result does not equal expected, see print above")
+            self.fail("result does sio equal expected, see print above")
 
 
 kundi MiscTestCase(unittest.TestCase):
@@ -2965,8 +2965,8 @@ kundi TestIntEnumConvert(unittest.TestCase):
                 ('test.test_enum', '__main__')[__name__=='__main__'],
                 filter=lambda x: x.startswith('CONVERT_TEST_'))
         # We don't want the reverse lookup value to vary when there are
-        # multiple possible names for a given value.  It should always
-        # report the first lexigraphical name in that case.
+        # multiple possible names kila a given value.  It should always
+        # report the first lexigraphical name kwenye that case.
         self.assertEqual(test_type(5).name, 'CONVERT_TEST_NAME_A')
 
     eleza test_convert(self):
@@ -2974,7 +2974,7 @@ kundi TestIntEnumConvert(unittest.TestCase):
                 'UnittestConvert',
                 ('test.test_enum', '__main__')[__name__=='__main__'],
                 filter=lambda x: x.startswith('CONVERT_TEST_'))
-        # Ensure that test_type has all of the desired names and values.
+        # Ensure that test_type has all of the desired names na values.
         self.assertEqual(test_type.CONVERT_TEST_NAME_F,
                          test_type.CONVERT_TEST_NAME_A)
         self.assertEqual(test_type.CONVERT_TEST_NAME_B, 5)
@@ -2982,12 +2982,12 @@ kundi TestIntEnumConvert(unittest.TestCase):
         self.assertEqual(test_type.CONVERT_TEST_NAME_D, 5)
         self.assertEqual(test_type.CONVERT_TEST_NAME_E, 5)
         # Ensure that test_type only picked up names matching the filter.
-        self.assertEqual([name for name in dir(test_type)
-                          ikiwa name[0:2] not in ('CO', '__')],
+        self.assertEqual([name kila name kwenye dir(test_type)
+                          ikiwa name[0:2] haiko kwenye ('CO', '__')],
                          [], msg='Names other than CONVERT_TEST_* found.')
 
     @unittest.skipUnless(sys.version_info[:2] == (3, 8),
-                         '_convert was deprecated in 3.8')
+                         '_convert was deprecated kwenye 3.8')
     eleza test_convert_warn(self):
         with self.assertWarns(DeprecationWarning):
             enum.IntEnum._convert(
@@ -2996,8 +2996,8 @@ kundi TestIntEnumConvert(unittest.TestCase):
                 filter=lambda x: x.startswith('CONVERT_TEST_'))
 
     @unittest.skipUnless(sys.version_info >= (3, 9),
-                         '_convert was removed in 3.9')
-    eleza test_convert_raise(self):
+                         '_convert was removed kwenye 3.9')
+    eleza test_convert_ashiria(self):
         with self.assertRaises(AttributeError):
             enum.IntEnum._convert(
                 'UnittestConvert',

@@ -17,13 +17,13 @@ kundi NameSpaceTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         debugger.NamespaceViewer(self.root, 'Test')
 
 
-# Other classes are Idb, Debugger, and StackViewer.
+# Other classes are Idb, Debugger, na StackViewer.
 
 ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

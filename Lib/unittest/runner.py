@@ -7,7 +7,7 @@ agiza warnings
 kutoka . agiza result
 kutoka .signals agiza registerResult
 
-__unittest = True
+__unittest = Kweli
 
 
 kundi _WritelnDecorator(object):
@@ -16,11 +16,11 @@ kundi _WritelnDecorator(object):
         self.stream = stream
 
     eleza __getattr__(self, attr):
-        ikiwa attr in ('stream', '__getstate__'):
-            raise AttributeError(attr)
+        ikiwa attr kwenye ('stream', '__getstate__'):
+            ashiria AttributeError(attr)
         rudisha getattr(self.stream,attr)
 
-    eleza writeln(self, arg=None):
+    eleza writeln(self, arg=Tupu):
         ikiwa arg:
             self.write(arg)
         self.write('\n') # text-mode streams translate to \r\n ikiwa needed
@@ -43,9 +43,9 @@ kundi TextTestResult(result.TestResult):
 
     eleza getDescription(self, test):
         doc_first_line = test.shortDescription()
-        ikiwa self.descriptions and doc_first_line:
+        ikiwa self.descriptions na doc_first_line:
             rudisha '\n'.join((str(test), doc_first_line))
-        else:
+        isipokua:
             rudisha str(test)
 
     eleza startTest(self, test):
@@ -104,13 +104,13 @@ kundi TextTestResult(result.TestResult):
             self.stream.flush()
 
     eleza printErrors(self):
-        ikiwa self.dots or self.showAll:
+        ikiwa self.dots ama self.showAll:
             self.stream.writeln()
         self.printErrorList('ERROR', self.errors)
         self.printErrorList('FAIL', self.failures)
 
     eleza printErrorList(self, flavour, errors):
-        for test, err in errors:
+        kila test, err kwenye errors:
             self.stream.writeln(self.separator1)
             self.stream.writeln("%s: %s" % (flavour,self.getDescription(test)))
             self.stream.writeln(self.separator2)
@@ -118,22 +118,22 @@ kundi TextTestResult(result.TestResult):
 
 
 kundi TextTestRunner(object):
-    """A test runner kundi that displays results in textual form.
+    """A test runner kundi that displays results kwenye textual form.
 
-    It prints out the names of tests as they are run, errors as they
-    occur, and a summary of the results at the end of the test run.
+    It prints out the names of tests kama they are run, errors kama they
+    occur, na a summary of the results at the end of the test run.
     """
     resultkundi = TextTestResult
 
-    eleza __init__(self, stream=None, descriptions=True, verbosity=1,
-                 failfast=False, buffer=False, resultclass=None, warnings=None,
-                 *, tb_locals=False):
+    eleza __init__(self, stream=Tupu, descriptions=Kweli, verbosity=1,
+                 failfast=Uongo, buffer=Uongo, resultclass=Tupu, warnings=Tupu,
+                 *, tb_locals=Uongo):
         """Construct a TextTestRunner.
 
-        Subclasses should accept **kwargs to ensure compatibility as the
+        Subclasses should accept **kwargs to ensure compatibility kama the
         interface changes.
         """
-        ikiwa stream is None:
+        ikiwa stream ni Tupu:
             stream = sys.stderr
         self.stream = _WritelnDecorator(stream)
         self.descriptions = descriptions
@@ -142,14 +142,14 @@ kundi TextTestRunner(object):
         self.buffer = buffer
         self.tb_locals = tb_locals
         self.warnings = warnings
-        ikiwa resultkundi is not None:
+        ikiwa resultkundi ni sio Tupu:
             self.resultkundi = resultclass
 
     eleza _makeResult(self):
         rudisha self.resultclass(self.stream, self.descriptions, self.verbosity)
 
     eleza run(self, test):
-        "Run the given test case or test suite."
+        "Run the given test case ama test suite."
         result = self._makeResult()
         registerResult(result)
         result.failfast = self.failfast
@@ -157,26 +157,26 @@ kundi TextTestRunner(object):
         result.tb_locals = self.tb_locals
         with warnings.catch_warnings():
             ikiwa self.warnings:
-                # ikiwa self.warnings is set, use it to filter all the warnings
+                # ikiwa self.warnings ni set, use it to filter all the warnings
                 warnings.simplefilter(self.warnings)
-                # ikiwa the filter is 'default' or 'always', special-case the
+                # ikiwa the filter ni 'default' ama 'always', special-case the
                 # warnings kutoka the deprecated unittest methods to show them
                 # no more than once per module, because they can be fairly
-                # noisy.  The -Wd and -Wa flags can be used to bypass this
-                # only when self.warnings is None.
-                ikiwa self.warnings in ['default', 'always']:
+                # noisy.  The -Wd na -Wa flags can be used to bypita this
+                # only when self.warnings ni Tupu.
+                ikiwa self.warnings kwenye ['default', 'always']:
                     warnings.filterwarnings('module',
                             category=DeprecationWarning,
                             message=r'Please use assert\w+ instead.')
             startTime = time.perf_counter()
-            startTestRun = getattr(result, 'startTestRun', None)
-            ikiwa startTestRun is not None:
+            startTestRun = getattr(result, 'startTestRun', Tupu)
+            ikiwa startTestRun ni sio Tupu:
                 startTestRun()
-            try:
+            jaribu:
                 test(result)
-            finally:
-                stopTestRun = getattr(result, 'stopTestRun', None)
-                ikiwa stopTestRun is not None:
+            mwishowe:
+                stopTestRun = getattr(result, 'stopTestRun', Tupu)
+                ikiwa stopTestRun ni sio Tupu:
                     stopTestRun()
             stopTime = time.perf_counter()
         timeTaken = stopTime - startTime
@@ -184,29 +184,29 @@ kundi TextTestRunner(object):
         ikiwa hasattr(result, 'separator2'):
             self.stream.writeln(result.separator2)
         run = result.testsRun
-        self.stream.writeln("Ran %d test%s in %.3fs" %
-                            (run, run != 1 and "s" or "", timeTaken))
+        self.stream.writeln("Ran %d test%s kwenye %.3fs" %
+                            (run, run != 1 na "s" ama "", timeTaken))
         self.stream.writeln()
 
         expectedFails = unexpectedSuccesses = skipped = 0
-        try:
+        jaribu:
             results = map(len, (result.expectedFailures,
                                 result.unexpectedSuccesses,
                                 result.skipped))
-        except AttributeError:
-            pass
-        else:
+        tatizo AttributeError:
+            pita
+        isipokua:
             expectedFails, unexpectedSuccesses, skipped = results
 
         infos = []
-        ikiwa not result.wasSuccessful():
+        ikiwa sio result.wasSuccessful():
             self.stream.write("FAILED")
             failed, errored = len(result.failures), len(result.errors)
             ikiwa failed:
                 infos.append("failures=%d" % failed)
             ikiwa errored:
                 infos.append("errors=%d" % errored)
-        else:
+        isipokua:
             self.stream.write("OK")
         ikiwa skipped:
             infos.append("skipped=%d" % skipped)
@@ -216,6 +216,6 @@ kundi TextTestRunner(object):
             infos.append("unexpected successes=%d" % unexpectedSuccesses)
         ikiwa infos:
             self.stream.writeln(" (%s)" % (", ".join(infos),))
-        else:
+        isipokua:
             self.stream.write("\n")
         rudisha result

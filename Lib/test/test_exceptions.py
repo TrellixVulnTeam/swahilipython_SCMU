@@ -26,161 +26,161 @@ kundi SlottedNaiveException(Exception):
 
 kundi BrokenStrException(Exception):
     eleza __str__(self):
-        raise Exception("str() is broken")
+        ashiria Exception("str() ni broken")
 
-# XXX This is not really enough, each *operation* should be tested!
+# XXX This ni sio really enough, each *operation* should be tested!
 
 kundi ExceptionTests(unittest.TestCase):
 
-    eleza raise_catch(self, exc, excname):
-        try:
-            raise exc("spam")
-        except exc as err:
+    eleza ashiria_catch(self, exc, excname):
+        jaribu:
+            ashiria exc("spam")
+        tatizo exc kama err:
             buf1 = str(err)
-        try:
-            raise exc("spam")
-        except exc as err:
+        jaribu:
+            ashiria exc("spam")
+        tatizo exc kama err:
             buf2 = str(err)
         self.assertEqual(buf1, buf2)
         self.assertEqual(exc.__name__, excname)
 
     eleza testRaising(self):
-        self.raise_catch(AttributeError, "AttributeError")
+        self.ashiria_catch(AttributeError, "AttributeError")
         self.assertRaises(AttributeError, getattr, sys, "undefined_attribute")
 
-        self.raise_catch(EOFError, "EOFError")
+        self.ashiria_catch(EOFError, "EOFError")
         fp = open(TESTFN, 'w')
         fp.close()
         fp = open(TESTFN, 'r')
         savestdin = sys.stdin
-        try:
-            try:
+        jaribu:
+            jaribu:
                 agiza marshal
                 marshal.loads(b'')
-            except EOFError:
-                pass
-        finally:
+            tatizo EOFError:
+                pita
+        mwishowe:
             sys.stdin = savestdin
             fp.close()
             unlink(TESTFN)
 
-        self.raise_catch(OSError, "OSError")
-        self.assertRaises(OSError, open, 'this file does not exist', 'r')
+        self.ashiria_catch(OSError, "OSError")
+        self.assertRaises(OSError, open, 'this file does sio exist', 'r')
 
-        self.raise_catch(ImportError, "ImportError")
+        self.ashiria_catch(ImportError, "ImportError")
         self.assertRaises(ImportError, __import__, "undefined_module")
 
-        self.raise_catch(IndexError, "IndexError")
+        self.ashiria_catch(IndexError, "IndexError")
         x = []
         self.assertRaises(IndexError, x.__getitem__, 10)
 
-        self.raise_catch(KeyError, "KeyError")
+        self.ashiria_catch(KeyError, "KeyError")
         x = {}
         self.assertRaises(KeyError, x.__getitem__, 'key')
 
-        self.raise_catch(KeyboardInterrupt, "KeyboardInterrupt")
+        self.ashiria_catch(KeyboardInterrupt, "KeyboardInterrupt")
 
-        self.raise_catch(MemoryError, "MemoryError")
+        self.ashiria_catch(MemoryError, "MemoryError")
 
-        self.raise_catch(NameError, "NameError")
-        try: x = undefined_variable
-        except NameError: pass
+        self.ashiria_catch(NameError, "NameError")
+        jaribu: x = undefined_variable
+        tatizo NameError: pita
 
-        self.raise_catch(OverflowError, "OverflowError")
+        self.ashiria_catch(OverflowError, "OverflowError")
         x = 1
-        for dummy in range(128):
+        kila dummy kwenye range(128):
             x += x  # this simply shouldn't blow up
 
-        self.raise_catch(RuntimeError, "RuntimeError")
-        self.raise_catch(RecursionError, "RecursionError")
+        self.ashiria_catch(RuntimeError, "RuntimeError")
+        self.ashiria_catch(RecursionError, "RecursionError")
 
-        self.raise_catch(SyntaxError, "SyntaxError")
-        try: exec('/\n')
-        except SyntaxError: pass
+        self.ashiria_catch(SyntaxError, "SyntaxError")
+        jaribu: exec('/\n')
+        tatizo SyntaxError: pita
 
-        self.raise_catch(IndentationError, "IndentationError")
+        self.ashiria_catch(IndentationError, "IndentationError")
 
-        self.raise_catch(TabError, "TabError")
-        try: compile("try:\n\t1/0\n    \t1/0\nfinally:\n pass\n",
+        self.ashiria_catch(TabError, "TabError")
+        jaribu: compile("jaribu:\n\t1/0\n    \t1/0\nmwishowe:\n pita\n",
                      '<string>', 'exec')
-        except TabError: pass
-        else: self.fail("TabError not raised")
+        tatizo TabError: pita
+        isipokua: self.fail("TabError sio ashiriad")
 
-        self.raise_catch(SystemError, "SystemError")
+        self.ashiria_catch(SystemError, "SystemError")
 
-        self.raise_catch(SystemExit, "SystemExit")
+        self.ashiria_catch(SystemExit, "SystemExit")
         self.assertRaises(SystemExit, sys.exit, 0)
 
-        self.raise_catch(TypeError, "TypeError")
-        try: [] + ()
-        except TypeError: pass
+        self.ashiria_catch(TypeError, "TypeError")
+        jaribu: [] + ()
+        tatizo TypeError: pita
 
-        self.raise_catch(ValueError, "ValueError")
+        self.ashiria_catch(ValueError, "ValueError")
         self.assertRaises(ValueError, chr, 17<<16)
 
-        self.raise_catch(ZeroDivisionError, "ZeroDivisionError")
-        try: x = 1/0
-        except ZeroDivisionError: pass
+        self.ashiria_catch(ZeroDivisionError, "ZeroDivisionError")
+        jaribu: x = 1/0
+        tatizo ZeroDivisionError: pita
 
-        self.raise_catch(Exception, "Exception")
-        try: x = 1/0
-        except Exception as e: pass
+        self.ashiria_catch(Exception, "Exception")
+        jaribu: x = 1/0
+        tatizo Exception kama e: pita
 
-        self.raise_catch(StopAsyncIteration, "StopAsyncIteration")
+        self.ashiria_catch(StopAsyncIteration, "StopAsyncIteration")
 
     eleza testSyntaxErrorMessage(self):
-        # make sure the right exception message is raised for each of
+        # make sure the right exception message ni ashiriad kila each of
         # these code fragments
 
         eleza ckmsg(src, msg):
-            try:
+            jaribu:
                 compile(src, '<fragment>', 'exec')
-            except SyntaxError as e:
+            tatizo SyntaxError kama e:
                 ikiwa e.msg != msg:
                     self.fail("expected %s, got %s" % (msg, e.msg))
-            else:
+            isipokua:
                 self.fail("failed to get expected SyntaxError")
 
         s = '''ikiwa 1:
-        try:
-            continue
+        jaribu:
+            endelea
         except:
-            pass'''
+            pita'''
 
-        ckmsg(s, "'continue' not properly in loop")
-        ckmsg("continue\n", "'continue' not properly in loop")
+        ckmsg(s, "'endelea' sio properly kwenye loop")
+        ckmsg("endelea\n", "'endelea' sio properly kwenye loop")
 
     eleza testSyntaxErrorMissingParens(self):
         eleza ckmsg(src, msg, exception=SyntaxError):
-            try:
+            jaribu:
                 compile(src, '<fragment>', 'exec')
-            except exception as e:
+            tatizo exception kama e:
                 ikiwa e.msg != msg:
                     self.fail("expected %s, got %s" % (msg, e.msg))
-            else:
+            isipokua:
                 self.fail("failed to get expected SyntaxError")
 
         s = '''print "old style"'''
-        ckmsg(s, "Missing parentheses in call to 'print'. "
+        ckmsg(s, "Missing parentheses kwenye call to 'print'. "
                  "Did you mean andika(\"old style\")?")
 
         s = '''print "old style",'''
-        ckmsg(s, "Missing parentheses in call to 'print'. "
+        ckmsg(s, "Missing parentheses kwenye call to 'print'. "
                  "Did you mean andika(\"old style\", end=\" \")?")
 
         s = '''exec "old style"'''
-        ckmsg(s, "Missing parentheses in call to 'exec'")
+        ckmsg(s, "Missing parentheses kwenye call to 'exec'")
 
-        # should not apply to subclasses, see issue #31161
-        s = '''ikiwa True:\nprint "No indent"'''
+        # should sio apply to subclasses, see issue #31161
+        s = '''ikiwa Kweli:\nprint "No indent"'''
         ckmsg(s, "expected an indented block", IndentationError)
 
-        s = '''ikiwa True:\n        andika()\n\texec "mixed tabs and spaces"'''
-        ckmsg(s, "inconsistent use of tabs and spaces in indentation", TabError)
+        s = '''ikiwa Kweli:\n        andika()\n\texec "mixed tabs na spaces"'''
+        ckmsg(s, "inconsistent use of tabs na spaces kwenye indentation", TabError)
 
     eleza testSyntaxErrorOffset(self):
         eleza check(src, lineno, offset):
-            with self.assertRaises(SyntaxError) as cm:
+            with self.assertRaises(SyntaxError) kama cm:
                 compile(src, '<fragment>', 'exec')
             self.assertEqual(cm.exception.lineno, lineno)
             self.assertEqual(cm.exception.offset, offset)
@@ -195,9 +195,9 @@ kundi ExceptionTests(unittest.TestCase):
 
         # Errors thrown by compile.c
         check('kundi foo:rudisha 1', 1, 11)
-        check('eleza f():\n  continue', 2, 3)
-        check('eleza f():\n  break', 2, 3)
-        check('try:\n  pass\nexcept:\n  pass\nexcept ValueError:\n  pass', 2, 3)
+        check('eleza f():\n  endelea', 2, 3)
+        check('eleza f():\n  koma', 2, 3)
+        check('jaribu:\n  pita\nexcept:\n  pita\ntatizo ValueError:\n  pita', 2, 3)
 
         # Errors thrown by tokenizer.c
         check('(0x+1)', 1, 3)
@@ -207,21 +207,21 @@ kundi ExceptionTests(unittest.TestCase):
         check('x = 0o9', 1, 6)
 
         # Errors thrown by symtable.c
-        check('x = [(yield i) for i in range(3)]', 1, 5)
+        check('x = [(tuma i) kila i kwenye range(3)]', 1, 5)
         check('eleza f():\n  kutoka _ agiza *', 1, 1)
-        check('eleza f(x, x):\n  pass', 1, 1)
+        check('eleza f(x, x):\n  pita', 1, 1)
         check('eleza f(x):\n  nonlocal x', 2, 3)
         check('eleza f(x):\n  x = 1\n  global x', 3, 3)
         check('nonlocal x', 1, 1)
         check('eleza f():\n  global x\n  nonlocal x', 2, 3)
 
         # Errors thrown by ast.c
-        check('for 1 in []: pass', 1, 5)
-        check('eleza f(*):\n  pass', 1, 7)
-        check('[*x for x in xs]', 1, 2)
+        check('kila 1 kwenye []: pita', 1, 5)
+        check('eleza f(*):\n  pita', 1, 7)
+        check('[*x kila x kwenye xs]', 1, 2)
         check('eleza f():\n  x, y: int', 2, 3)
-        check('(yield i) = 2', 1, 1)
-        check('foo(x for x in range(10), 100)', 1, 5)
+        check('(tuma i) = 2', 1, 1)
+        check('foo(x kila x kwenye range(10), 100)', 1, 5)
         check('foo(1=2)', 1, 5)
 
         # Errors thrown by future.c
@@ -237,61 +237,61 @@ kundi ExceptionTests(unittest.TestCase):
 
         kundi BadException(Exception):
             eleza __init__(self_):
-                raise RuntimeError("can't instantiate BadException")
+                ashiria RuntimeError("can't instantiate BadException")
 
         kundi InvalidException:
-            pass
+            pita
 
         eleza test_capi1():
             agiza _testcapi
-            try:
-                _testcapi.raise_exception(BadException, 1)
-            except TypeError as err:
+            jaribu:
+                _testcapi.ashiria_exception(BadException, 1)
+            tatizo TypeError kama err:
                 exc, err, tb = sys.exc_info()
                 co = tb.tb_frame.f_code
                 self.assertEqual(co.co_name, "test_capi1")
-                self.assertTrue(co.co_filename.endswith('test_exceptions.py'))
-            else:
+                self.assertKweli(co.co_filename.endswith('test_exceptions.py'))
+            isipokua:
                 self.fail("Expected exception")
 
         eleza test_capi2():
             agiza _testcapi
-            try:
-                _testcapi.raise_exception(BadException, 0)
-            except RuntimeError as err:
+            jaribu:
+                _testcapi.ashiria_exception(BadException, 0)
+            tatizo RuntimeError kama err:
                 exc, err, tb = sys.exc_info()
                 co = tb.tb_frame.f_code
                 self.assertEqual(co.co_name, "__init__")
-                self.assertTrue(co.co_filename.endswith('test_exceptions.py'))
+                self.assertKweli(co.co_filename.endswith('test_exceptions.py'))
                 co2 = tb.tb_frame.f_back.f_code
                 self.assertEqual(co2.co_name, "test_capi2")
-            else:
+            isipokua:
                 self.fail("Expected exception")
 
         eleza test_capi3():
             agiza _testcapi
-            self.assertRaises(SystemError, _testcapi.raise_exception,
+            self.assertRaises(SystemError, _testcapi.ashiria_exception,
                               InvalidException, 1)
 
-        ikiwa not sys.platform.startswith('java'):
+        ikiwa sio sys.platform.startswith('java'):
             test_capi1()
             test_capi2()
             test_capi3()
 
     eleza test_WindowsError(self):
-        try:
+        jaribu:
             WindowsError
-        except NameError:
-            pass
-        else:
+        tatizo NameError:
+            pita
+        isipokua:
             self.assertIs(WindowsError, OSError)
             self.assertEqual(str(OSError(1001)), "1001")
             self.assertEqual(str(OSError(1001, "message")),
                              "[Errno 1001] message")
-            # POSIX errno (9 aka EBADF) is untranslated
+            # POSIX errno (9 aka EBADF) ni untranslated
             w = OSError(9, 'foo', 'bar')
             self.assertEqual(w.errno, 9)
-            self.assertEqual(w.winerror, None)
+            self.assertEqual(w.winerror, Tupu)
             self.assertEqual(str(w), "[Errno 9] foo: 'bar'")
             # ERROR_PATH_NOT_FOUND (win error 3) becomes ENOENT (2)
             w = OSError(0, 'foo', 'bar', 3)
@@ -299,30 +299,30 @@ kundi ExceptionTests(unittest.TestCase):
             self.assertEqual(w.winerror, 3)
             self.assertEqual(w.strerror, 'foo')
             self.assertEqual(w.filename, 'bar')
-            self.assertEqual(w.filename2, None)
+            self.assertEqual(w.filename2, Tupu)
             self.assertEqual(str(w), "[WinError 3] foo: 'bar'")
             # Unknown win error becomes EINVAL (22)
-            w = OSError(0, 'foo', None, 1001)
+            w = OSError(0, 'foo', Tupu, 1001)
             self.assertEqual(w.errno, 22)
             self.assertEqual(w.winerror, 1001)
             self.assertEqual(w.strerror, 'foo')
-            self.assertEqual(w.filename, None)
-            self.assertEqual(w.filename2, None)
+            self.assertEqual(w.filename, Tupu)
+            self.assertEqual(w.filename2, Tupu)
             self.assertEqual(str(w), "[WinError 1001] foo")
             # Non-numeric "errno"
             w = OSError('bar', 'foo')
             self.assertEqual(w.errno, 'bar')
-            self.assertEqual(w.winerror, None)
+            self.assertEqual(w.winerror, Tupu)
             self.assertEqual(w.strerror, 'foo')
-            self.assertEqual(w.filename, None)
-            self.assertEqual(w.filename2, None)
+            self.assertEqual(w.filename, Tupu)
+            self.assertEqual(w.filename2, Tupu)
 
     @unittest.skipUnless(sys.platform == 'win32',
                          'test specific to Windows')
     eleza test_windows_message(self):
-        """Should fill in unknown error code in Windows error message"""
+        """Should fill kwenye unknown error code kwenye Windows error message"""
         ctypes = import_module('ctypes')
-        # this error code has no message, Python formats it as hexadecimal
+        # this error code has no message, Python formats it kama hexadecimal
         code = 3765269347
         with self.assertRaisesRegex(OSError, 'Windows Error 0x%x' % code):
             ctypes.pythonapi.PyErr_SetFromWindowsErr(code)
@@ -340,17 +340,17 @@ kundi ExceptionTests(unittest.TestCase):
             (SystemExit, ('foo',),
                 {'args' : ('foo',), 'code' : 'foo'}),
             (OSError, ('foo',),
-                {'args' : ('foo',), 'filename' : None, 'filename2' : None,
-                 'errno' : None, 'strerror' : None}),
+                {'args' : ('foo',), 'filename' : Tupu, 'filename2' : Tupu,
+                 'errno' : Tupu, 'strerror' : Tupu}),
             (OSError, ('foo', 'bar'),
                 {'args' : ('foo', 'bar'),
-                 'filename' : None, 'filename2' : None,
+                 'filename' : Tupu, 'filename2' : Tupu,
                  'errno' : 'foo', 'strerror' : 'bar'}),
             (OSError, ('foo', 'bar', 'baz'),
                 {'args' : ('foo', 'bar'),
-                 'filename' : 'baz', 'filename2' : None,
+                 'filename' : 'baz', 'filename2' : Tupu,
                  'errno' : 'foo', 'strerror' : 'bar'}),
-            (OSError, ('foo', 'bar', 'baz', None, 'quux'),
+            (OSError, ('foo', 'bar', 'baz', Tupu, 'quux'),
                 {'args' : ('foo', 'bar'), 'filename' : 'baz', 'filename2': 'quux'}),
             (OSError, ('errnoStr', 'strErrorStr', 'filenameStr'),
                 {'args' : ('errnoStr', 'strErrorStr'),
@@ -359,47 +359,47 @@ kundi ExceptionTests(unittest.TestCase):
             (OSError, (1, 'strErrorStr', 'filenameStr'),
                 {'args' : (1, 'strErrorStr'), 'errno' : 1,
                  'strerror' : 'strErrorStr',
-                 'filename' : 'filenameStr', 'filename2' : None}),
-            (SyntaxError, (), {'msg' : None, 'text' : None,
-                'filename' : None, 'lineno' : None, 'offset' : None,
-                'print_file_and_line' : None}),
+                 'filename' : 'filenameStr', 'filename2' : Tupu}),
+            (SyntaxError, (), {'msg' : Tupu, 'text' : Tupu,
+                'filename' : Tupu, 'lineno' : Tupu, 'offset' : Tupu,
+                'print_file_and_line' : Tupu}),
             (SyntaxError, ('msgStr',),
-                {'args' : ('msgStr',), 'text' : None,
-                 'print_file_and_line' : None, 'msg' : 'msgStr',
-                 'filename' : None, 'lineno' : None, 'offset' : None}),
+                {'args' : ('msgStr',), 'text' : Tupu,
+                 'print_file_and_line' : Tupu, 'msg' : 'msgStr',
+                 'filename' : Tupu, 'lineno' : Tupu, 'offset' : Tupu}),
             (SyntaxError, ('msgStr', ('filenameStr', 'linenoStr', 'offsetStr',
                            'textStr')),
                 {'offset' : 'offsetStr', 'text' : 'textStr',
                  'args' : ('msgStr', ('filenameStr', 'linenoStr',
                                       'offsetStr', 'textStr')),
-                 'print_file_and_line' : None, 'msg' : 'msgStr',
+                 'print_file_and_line' : Tupu, 'msg' : 'msgStr',
                  'filename' : 'filenameStr', 'lineno' : 'linenoStr'}),
             (SyntaxError, ('msgStr', 'filenameStr', 'linenoStr', 'offsetStr',
                            'textStr', 'print_file_and_lineStr'),
-                {'text' : None,
+                {'text' : Tupu,
                  'args' : ('msgStr', 'filenameStr', 'linenoStr', 'offsetStr',
                            'textStr', 'print_file_and_lineStr'),
-                 'print_file_and_line' : None, 'msg' : 'msgStr',
-                 'filename' : None, 'lineno' : None, 'offset' : None}),
+                 'print_file_and_line' : Tupu, 'msg' : 'msgStr',
+                 'filename' : Tupu, 'lineno' : Tupu, 'offset' : Tupu}),
             (UnicodeError, (), {'args' : (),}),
             (UnicodeEncodeError, ('ascii', 'a', 0, 1,
-                                  'ordinal not in range'),
+                                  'ordinal haiko kwenye range'),
                 {'args' : ('ascii', 'a', 0, 1,
-                                           'ordinal not in range'),
+                                           'ordinal haiko kwenye range'),
                  'encoding' : 'ascii', 'object' : 'a',
-                 'start' : 0, 'reason' : 'ordinal not in range'}),
+                 'start' : 0, 'reason' : 'ordinal haiko kwenye range'}),
             (UnicodeDecodeError, ('ascii', bytearray(b'\xff'), 0, 1,
-                                  'ordinal not in range'),
+                                  'ordinal haiko kwenye range'),
                 {'args' : ('ascii', bytearray(b'\xff'), 0, 1,
-                                           'ordinal not in range'),
+                                           'ordinal haiko kwenye range'),
                  'encoding' : 'ascii', 'object' : b'\xff',
-                 'start' : 0, 'reason' : 'ordinal not in range'}),
+                 'start' : 0, 'reason' : 'ordinal haiko kwenye range'}),
             (UnicodeDecodeError, ('ascii', b'\xff', 0, 1,
-                                  'ordinal not in range'),
+                                  'ordinal haiko kwenye range'),
                 {'args' : ('ascii', b'\xff', 0, 1,
-                                           'ordinal not in range'),
+                                           'ordinal haiko kwenye range'),
                  'encoding' : 'ascii', 'object' : b'\xff',
-                 'start' : 0, 'reason' : 'ordinal not in range'}),
+                 'start' : 0, 'reason' : 'ordinal haiko kwenye range'}),
             (UnicodeTranslateError, ("\u3042", 0, 1, "ouch"),
                 {'args' : ('\u3042', 0, 1, 'ouch'),
                  'object' : '\u3042', 'reason' : 'ouch',
@@ -409,31 +409,31 @@ kundi ExceptionTests(unittest.TestCase):
             (SlottedNaiveException, ('foo',),
                 {'args': ('foo',), 'x': 'foo'}),
         ]
-        try:
-            # More tests are in test_WindowsError
+        jaribu:
+            # More tests are kwenye test_WindowsError
             exceptionList.append(
                 (WindowsError, (1, 'strErrorStr', 'filenameStr'),
                     {'args' : (1, 'strErrorStr'),
-                     'strerror' : 'strErrorStr', 'winerror' : None,
+                     'strerror' : 'strErrorStr', 'winerror' : Tupu,
                      'errno' : 1,
-                     'filename' : 'filenameStr', 'filename2' : None})
+                     'filename' : 'filenameStr', 'filename2' : Tupu})
             )
-        except NameError:
-            pass
+        tatizo NameError:
+            pita
 
-        for exc, args, expected in exceptionList:
-            try:
+        kila exc, args, expected kwenye exceptionList:
+            jaribu:
                 e = exc(*args)
             except:
                 andika("\nexc=%r, args=%r" % (exc, args), file=sys.stderr)
-                raise
-            else:
+                ashiria
+            isipokua:
                 # Verify module name
-                ikiwa not type(e).__name__.endswith('NaiveException'):
+                ikiwa sio type(e).__name__.endswith('NaiveException'):
                     self.assertEqual(type(e).__module__, 'builtins')
-                # Verify no ref leaks in Exc_str()
+                # Verify no ref leaks kwenye Exc_str()
                 s = str(e)
-                for checkArgName in expected:
+                kila checkArgName kwenye expected:
                     value = getattr(e, checkArgName)
                     self.assertEqual(repr(value),
                                      repr(expected[checkArgName]),
@@ -441,12 +441,12 @@ kundi ExceptionTests(unittest.TestCase):
                                      e, checkArgName,
                                      value, expected[checkArgName]))
 
-                # test for pickling support
-                for p in [pickle]:
-                    for protocol in range(p.HIGHEST_PROTOCOL + 1):
+                # test kila pickling support
+                kila p kwenye [pickle]:
+                    kila protocol kwenye range(p.HIGHEST_PROTOCOL + 1):
                         s = p.dumps(e, protocol)
                         new = p.loads(s)
-                        for checkArgName in expected:
+                        kila checkArgName kwenye expected:
                             got = repr(getattr(new, checkArgName))
                             want = repr(expected[checkArgName])
                             self.assertEqual(got, want,
@@ -454,8 +454,8 @@ kundi ExceptionTests(unittest.TestCase):
                                              (e, checkArgName))
 
     eleza testWithTraceback(self):
-        try:
-            raise IndexError(4)
+        jaribu:
+            ashiria IndexError(4)
         except:
             tb = sys.exc_info()[2]
 
@@ -468,19 +468,19 @@ kundi ExceptionTests(unittest.TestCase):
         self.assertEqual(e.__traceback__, tb)
 
         kundi MyException(Exception):
-            pass
+            pita
 
         e = MyException().with_traceback(tb)
         self.assertIsInstance(e, MyException)
         self.assertEqual(e.__traceback__, tb)
 
     eleza testInvalidTraceback(self):
-        try:
+        jaribu:
             Exception().__traceback__ = 5
-        except TypeError as e:
+        tatizo TypeError kama e:
             self.assertIn("__traceback__ must be a traceback", str(e))
-        else:
-            self.fail("No exception raised")
+        isipokua:
+            self.fail("No exception ashiriad")
 
     eleza testInvalidAttrs(self):
         self.assertRaises(TypeError, setattr, Exception(), '__cause__', 1)
@@ -488,50 +488,50 @@ kundi ExceptionTests(unittest.TestCase):
         self.assertRaises(TypeError, setattr, Exception(), '__context__', 1)
         self.assertRaises(TypeError, delattr, Exception(), '__context__')
 
-    eleza testNoneClearsTracebackAttr(self):
-        try:
-            raise IndexError(4)
+    eleza testTupuClearsTracebackAttr(self):
+        jaribu:
+            ashiria IndexError(4)
         except:
             tb = sys.exc_info()[2]
 
         e = Exception()
         e.__traceback__ = tb
-        e.__traceback__ = None
-        self.assertEqual(e.__traceback__, None)
+        e.__traceback__ = Tupu
+        self.assertEqual(e.__traceback__, Tupu)
 
     eleza testChainingAttrs(self):
         e = Exception()
-        self.assertIsNone(e.__context__)
-        self.assertIsNone(e.__cause__)
+        self.assertIsTupu(e.__context__)
+        self.assertIsTupu(e.__cause__)
 
         e = TypeError()
-        self.assertIsNone(e.__context__)
-        self.assertIsNone(e.__cause__)
+        self.assertIsTupu(e.__context__)
+        self.assertIsTupu(e.__cause__)
 
         kundi MyException(OSError):
-            pass
+            pita
 
         e = MyException()
-        self.assertIsNone(e.__context__)
-        self.assertIsNone(e.__cause__)
+        self.assertIsTupu(e.__context__)
+        self.assertIsTupu(e.__cause__)
 
     eleza testChainingDescriptors(self):
-        try:
-            raise Exception()
-        except Exception as exc:
+        jaribu:
+            ashiria Exception()
+        tatizo Exception kama exc:
             e = exc
 
-        self.assertIsNone(e.__context__)
-        self.assertIsNone(e.__cause__)
-        self.assertFalse(e.__suppress_context__)
+        self.assertIsTupu(e.__context__)
+        self.assertIsTupu(e.__cause__)
+        self.assertUongo(e.__suppress_context__)
 
         e.__context__ = NameError()
-        e.__cause__ = None
+        e.__cause__ = Tupu
         self.assertIsInstance(e.__context__, NameError)
-        self.assertIsNone(e.__cause__)
-        self.assertTrue(e.__suppress_context__)
-        e.__suppress_context__ = False
-        self.assertFalse(e.__suppress_context__)
+        self.assertIsTupu(e.__cause__)
+        self.assertKweli(e.__suppress_context__)
+        e.__suppress_context__ = Uongo
+        self.assertUongo(e.__suppress_context__)
 
     eleza testKeywordArgs(self):
         # test that builtin exception don't take keyword args,
@@ -553,302 +553,302 @@ kundi ExceptionTests(unittest.TestCase):
         self.assertRaises(RecursionError, f)
 
         eleza g():
-            try:
+            jaribu:
                 rudisha g()
-            except ValueError:
+            tatizo ValueError:
                 rudisha -1
         self.assertRaises(RecursionError, g)
 
     eleza test_str(self):
-        # Make sure both instances and classes have a str representation.
-        self.assertTrue(str(Exception))
-        self.assertTrue(str(Exception('a')))
-        self.assertTrue(str(Exception('a', 'b')))
+        # Make sure both instances na classes have a str representation.
+        self.assertKweli(str(Exception))
+        self.assertKweli(str(Exception('a')))
+        self.assertKweli(str(Exception('a', 'b')))
 
     eleza testExceptionCleanupNames(self):
         # Make sure the local variable bound to the exception instance by
-        # an "except" statement is only visible inside the except block.
-        try:
-            raise Exception()
-        except Exception as e:
-            self.assertTrue(e)
-            del e
+        # an "except" statement ni only visible inside the tatizo block.
+        jaribu:
+            ashiria Exception()
+        tatizo Exception kama e:
+            self.assertKweli(e)
+            toa e
         self.assertNotIn('e', locals())
 
     eleza testExceptionCleanupState(self):
-        # Make sure exception state is cleaned up as soon as the except
-        # block is left. See #2507
+        # Make sure exception state ni cleaned up kama soon kama the except
+        # block ni left. See #2507
 
         kundi MyException(Exception):
             eleza __init__(self, obj):
                 self.obj = obj
         kundi MyObj:
-            pass
+            pita
 
         eleza inner_raising_func():
-            # Create some references in exception value and traceback
+            # Create some references kwenye exception value na traceback
             local_ref = obj
-            raise MyException(obj)
+            ashiria MyException(obj)
 
         # Qualified "except" with "as"
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        jaribu:
             inner_raising_func()
-        except MyException as e:
-            pass
-        obj = None
+        tatizo MyException kama e:
+            pita
+        obj = Tupu
         obj = wr()
-        self.assertIsNone(obj)
+        self.assertIsTupu(obj)
 
         # Qualified "except" without "as"
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        jaribu:
             inner_raising_func()
-        except MyException:
-            pass
-        obj = None
+        tatizo MyException:
+            pita
+        obj = Tupu
         obj = wr()
-        self.assertIsNone(obj)
+        self.assertIsTupu(obj)
 
         # Bare "except"
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        jaribu:
             inner_raising_func()
         except:
-            pass
-        obj = None
+            pita
+        obj = Tupu
         obj = wr()
-        self.assertIsNone(obj)
+        self.assertIsTupu(obj)
 
         # "except" with premature block leave
         obj = MyObj()
         wr = weakref.ref(obj)
-        for i in [0]:
-            try:
+        kila i kwenye [0]:
+            jaribu:
                 inner_raising_func()
             except:
-                break
-        obj = None
+                koma
+        obj = Tupu
         obj = wr()
-        self.assertIsNone(obj)
+        self.assertIsTupu(obj)
 
         # "except" block raising another exception
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
-            try:
+        jaribu:
+            jaribu:
                 inner_raising_func()
             except:
-                raise KeyError
-        except KeyError as e:
-            # We want to test that the except block above got rid of
-            # the exception raised in inner_raising_func(), but it
-            # also ends up in the __context__ of the KeyError, so we
-            # must clear the latter manually for our test to succeed.
-            e.__context__ = None
-            obj = None
+                ashiria KeyError
+        tatizo KeyError kama e:
+            # We want to test that the tatizo block above got rid of
+            # the exception ashiriad kwenye inner_raising_func(), but it
+            # also ends up kwenye the __context__ of the KeyError, so we
+            # must clear the latter manually kila our test to succeed.
+            e.__context__ = Tupu
+            obj = Tupu
             obj = wr()
             # guarantee no ref cycles on CPython (don't gc_collect)
-            ikiwa check_impl_detail(cpython=False):
+            ikiwa check_impl_detail(cpython=Uongo):
                 gc_collect()
-            self.assertIsNone(obj)
+            self.assertIsTupu(obj)
 
         # Some complicated construct
         obj = MyObj()
         wr = weakref.ref(obj)
-        try:
+        jaribu:
             inner_raising_func()
-        except MyException:
-            try:
-                try:
-                    raise
-                finally:
-                    raise
-            except MyException:
-                pass
-        obj = None
-        ikiwa check_impl_detail(cpython=False):
+        tatizo MyException:
+            jaribu:
+                jaribu:
+                    ashiria
+                mwishowe:
+                    ashiria
+            tatizo MyException:
+                pita
+        obj = Tupu
+        ikiwa check_impl_detail(cpython=Uongo):
             gc_collect()
         obj = wr()
-        self.assertIsNone(obj)
+        self.assertIsTupu(obj)
 
         # Inside an exception-silencing "with" block
         kundi Context:
             eleza __enter__(self):
                 rudisha self
             eleza __exit__ (self, exc_type, exc_value, exc_tb):
-                rudisha True
+                rudisha Kweli
         obj = MyObj()
         wr = weakref.ref(obj)
         with Context():
             inner_raising_func()
-        obj = None
-        ikiwa check_impl_detail(cpython=False):
+        obj = Tupu
+        ikiwa check_impl_detail(cpython=Uongo):
             gc_collect()
         obj = wr()
-        self.assertIsNone(obj)
+        self.assertIsTupu(obj)
 
     eleza test_exception_target_in_nested_scope(self):
-        # issue 4617: This used to raise a SyntaxError
-        # "can not delete variable 'e' referenced in nested scope"
+        # issue 4617: This used to ashiria a SyntaxError
+        # "can sio delete variable 'e' referenced kwenye nested scope"
         eleza print_error():
             e
-        try:
+        jaribu:
             something
-        except Exception as e:
+        tatizo Exception kama e:
             print_error()
-            # implicit "del e" here
+            # implicit "toa e" here
 
     eleza test_generator_leaking(self):
         # Test that generator exception state doesn't leak into the calling
         # frame
-        eleza yield_raise():
-            try:
-                raise KeyError("caught")
-            except KeyError:
-                yield sys.exc_info()[0]
-                yield sys.exc_info()[0]
-            yield sys.exc_info()[0]
-        g = yield_raise()
+        eleza tuma_ashiria():
+            jaribu:
+                ashiria KeyError("caught")
+            tatizo KeyError:
+                tuma sys.exc_info()[0]
+                tuma sys.exc_info()[0]
+            tuma sys.exc_info()[0]
+        g = tuma_ashiria()
         self.assertEqual(next(g), KeyError)
-        self.assertEqual(sys.exc_info()[0], None)
+        self.assertEqual(sys.exc_info()[0], Tupu)
         self.assertEqual(next(g), KeyError)
-        self.assertEqual(sys.exc_info()[0], None)
-        self.assertEqual(next(g), None)
+        self.assertEqual(sys.exc_info()[0], Tupu)
+        self.assertEqual(next(g), Tupu)
 
         # Same test, but inside an exception handler
-        try:
-            raise TypeError("foo")
-        except TypeError:
-            g = yield_raise()
+        jaribu:
+            ashiria TypeError("foo")
+        tatizo TypeError:
+            g = tuma_ashiria()
             self.assertEqual(next(g), KeyError)
             self.assertEqual(sys.exc_info()[0], TypeError)
             self.assertEqual(next(g), KeyError)
             self.assertEqual(sys.exc_info()[0], TypeError)
             self.assertEqual(next(g), TypeError)
-            del g
+            toa g
             self.assertEqual(sys.exc_info()[0], TypeError)
 
     eleza test_generator_leaking2(self):
         # See issue 12475.
         eleza g():
-            yield
-        try:
-            raise RuntimeError
-        except RuntimeError:
+            tuma
+        jaribu:
+            ashiria RuntimeError
+        tatizo RuntimeError:
             it = g()
             next(it)
-        try:
+        jaribu:
             next(it)
-        except StopIteration:
-            pass
-        self.assertEqual(sys.exc_info(), (None, None, None))
+        tatizo StopIteration:
+            pita
+        self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
 
     eleza test_generator_leaking3(self):
-        # See issue #23353.  When gen.throw() is called, the caller's
-        # exception state should be save and restored.
+        # See issue #23353.  When gen.throw() ni called, the caller's
+        # exception state should be save na restored.
         eleza g():
-            try:
-                yield
-            except ZeroDivisionError:
-                yield sys.exc_info()[1]
+            jaribu:
+                tuma
+            tatizo ZeroDivisionError:
+                tuma sys.exc_info()[1]
         it = g()
         next(it)
-        try:
+        jaribu:
             1/0
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             self.assertIs(sys.exc_info()[1], e)
             gen_exc = it.throw(e)
             self.assertIs(sys.exc_info()[1], e)
             self.assertIs(gen_exc, e)
-        self.assertEqual(sys.exc_info(), (None, None, None))
+        self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
 
     eleza test_generator_leaking4(self):
-        # See issue #23353.  When an exception is raised by a generator,
+        # See issue #23353.  When an exception ni ashiriad by a generator,
         # the caller's exception state should still be restored.
         eleza g():
-            try:
+            jaribu:
                 1/0
-            except ZeroDivisionError:
-                yield sys.exc_info()[0]
-                raise
+            tatizo ZeroDivisionError:
+                tuma sys.exc_info()[0]
+                ashiria
         it = g()
-        try:
-            raise TypeError
-        except TypeError:
-            # The caller's exception state (TypeError) is temporarily
-            # saved in the generator.
+        jaribu:
+            ashiria TypeError
+        tatizo TypeError:
+            # The caller's exception state (TypeError) ni temporarily
+            # saved kwenye the generator.
             tp = next(it)
         self.assertIs(tp, ZeroDivisionError)
-        try:
+        jaribu:
             next(it)
-            # We can't check it immediately, but while next() returns
+            # We can't check it immediately, but wakati next() rudishas
             # with an exception, it shouldn't have restored the old
             # exception state (TypeError).
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             self.assertIs(sys.exc_info()[1], e)
         # We used to find TypeError here.
-        self.assertEqual(sys.exc_info(), (None, None, None))
+        self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
 
     eleza test_generator_doesnt_retain_old_exc(self):
         eleza g():
             self.assertIsInstance(sys.exc_info()[1], RuntimeError)
-            yield
-            self.assertEqual(sys.exc_info(), (None, None, None))
+            tuma
+            self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
         it = g()
-        try:
-            raise RuntimeError
-        except RuntimeError:
+        jaribu:
+            ashiria RuntimeError
+        tatizo RuntimeError:
             next(it)
         self.assertRaises(StopIteration, next, it)
 
     eleza test_generator_finalizing_and_exc_info(self):
         # See #7173
         eleza simple_gen():
-            yield 1
+            tuma 1
         eleza run_gen():
             gen = simple_gen()
-            try:
-                raise RuntimeError
-            except RuntimeError:
+            jaribu:
+                ashiria RuntimeError
+            tatizo RuntimeError:
                 rudisha next(gen)
         run_gen()
         gc_collect()
-        self.assertEqual(sys.exc_info(), (None, None, None))
+        self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
 
     eleza _check_generator_cleanup_exc_state(self, testfunc):
-        # Issue #12791: exception state is cleaned up as soon as a generator
-        # is closed (reference cycles are broken).
+        # Issue #12791: exception state ni cleaned up kama soon kama a generator
+        # ni closed (reference cycles are broken).
         kundi MyException(Exception):
             eleza __init__(self, obj):
                 self.obj = obj
         kundi MyObj:
-            pass
+            pita
 
         eleza raising_gen():
-            try:
-                raise MyException(obj)
-            except MyException:
-                yield
+            jaribu:
+                ashiria MyException(obj)
+            tatizo MyException:
+                tuma
 
         obj = MyObj()
         wr = weakref.ref(obj)
         g = raising_gen()
         next(g)
         testfunc(g)
-        g = obj = None
+        g = obj = Tupu
         obj = wr()
-        self.assertIsNone(obj)
+        self.assertIsTupu(obj)
 
     eleza test_generator_throw_cleanup_exc_state(self):
         eleza do_throw(g):
-            try:
+            jaribu:
                 g.throw(RuntimeError())
-            except RuntimeError:
-                pass
+            tatizo RuntimeError:
+                pita
         self._check_generator_cleanup_exc_state(do_throw)
 
     eleza test_generator_close_cleanup_exc_state(self):
@@ -858,112 +858,112 @@ kundi ExceptionTests(unittest.TestCase):
 
     eleza test_generator_del_cleanup_exc_state(self):
         eleza do_del(g):
-            g = None
+            g = Tupu
         self._check_generator_cleanup_exc_state(do_del)
 
     eleza test_generator_next_cleanup_exc_state(self):
         eleza do_next(g):
-            try:
+            jaribu:
                 next(g)
-            except StopIteration:
-                pass
-            else:
-                self.fail("should have raised StopIteration")
+            tatizo StopIteration:
+                pita
+            isipokua:
+                self.fail("should have ashiriad StopIteration")
         self._check_generator_cleanup_exc_state(do_next)
 
     eleza test_generator_send_cleanup_exc_state(self):
         eleza do_send(g):
-            try:
-                g.send(None)
-            except StopIteration:
-                pass
-            else:
-                self.fail("should have raised StopIteration")
+            jaribu:
+                g.send(Tupu)
+            tatizo StopIteration:
+                pita
+            isipokua:
+                self.fail("should have ashiriad StopIteration")
         self._check_generator_cleanup_exc_state(do_send)
 
     eleza test_3114(self):
-        # Bug #3114: in its destructor, MyObject retrieves a pointer to
+        # Bug #3114: kwenye its destructor, MyObject retrieves a pointer to
         # obsolete and/or deallocated objects.
         kundi MyObject:
             eleza __del__(self):
                 nonlocal e
                 e = sys.exc_info()
         e = ()
-        try:
-            raise Exception(MyObject())
+        jaribu:
+            ashiria Exception(MyObject())
         except:
-            pass
-        self.assertEqual(e, (None, None, None))
+            pita
+        self.assertEqual(e, (Tupu, Tupu, Tupu))
 
     eleza test_unicode_change_attributes(self):
         # See issue 7309. This was a crasher.
 
         u = UnicodeEncodeError('baz', 'xxxxx', 1, 5, 'foo')
-        self.assertEqual(str(u), "'baz' codec can't encode characters in position 1-4: foo")
+        self.assertEqual(str(u), "'baz' codec can't encode characters kwenye position 1-4: foo")
         u.end = 2
-        self.assertEqual(str(u), "'baz' codec can't encode character '\\x78' in position 1: foo")
+        self.assertEqual(str(u), "'baz' codec can't encode character '\\x78' kwenye position 1: foo")
         u.end = 5
         u.reason = 0x345345345345345345
-        self.assertEqual(str(u), "'baz' codec can't encode characters in position 1-4: 965230951443685724997")
+        self.assertEqual(str(u), "'baz' codec can't encode characters kwenye position 1-4: 965230951443685724997")
         u.encoding = 4000
-        self.assertEqual(str(u), "'4000' codec can't encode characters in position 1-4: 965230951443685724997")
+        self.assertEqual(str(u), "'4000' codec can't encode characters kwenye position 1-4: 965230951443685724997")
         u.start = 1000
-        self.assertEqual(str(u), "'4000' codec can't encode characters in position 1000-4: 965230951443685724997")
+        self.assertEqual(str(u), "'4000' codec can't encode characters kwenye position 1000-4: 965230951443685724997")
 
         u = UnicodeDecodeError('baz', b'xxxxx', 1, 5, 'foo')
-        self.assertEqual(str(u), "'baz' codec can't decode bytes in position 1-4: foo")
+        self.assertEqual(str(u), "'baz' codec can't decode bytes kwenye position 1-4: foo")
         u.end = 2
-        self.assertEqual(str(u), "'baz' codec can't decode byte 0x78 in position 1: foo")
+        self.assertEqual(str(u), "'baz' codec can't decode byte 0x78 kwenye position 1: foo")
         u.end = 5
         u.reason = 0x345345345345345345
-        self.assertEqual(str(u), "'baz' codec can't decode bytes in position 1-4: 965230951443685724997")
+        self.assertEqual(str(u), "'baz' codec can't decode bytes kwenye position 1-4: 965230951443685724997")
         u.encoding = 4000
-        self.assertEqual(str(u), "'4000' codec can't decode bytes in position 1-4: 965230951443685724997")
+        self.assertEqual(str(u), "'4000' codec can't decode bytes kwenye position 1-4: 965230951443685724997")
         u.start = 1000
-        self.assertEqual(str(u), "'4000' codec can't decode bytes in position 1000-4: 965230951443685724997")
+        self.assertEqual(str(u), "'4000' codec can't decode bytes kwenye position 1000-4: 965230951443685724997")
 
         u = UnicodeTranslateError('xxxx', 1, 5, 'foo')
-        self.assertEqual(str(u), "can't translate characters in position 1-4: foo")
+        self.assertEqual(str(u), "can't translate characters kwenye position 1-4: foo")
         u.end = 2
-        self.assertEqual(str(u), "can't translate character '\\x78' in position 1: foo")
+        self.assertEqual(str(u), "can't translate character '\\x78' kwenye position 1: foo")
         u.end = 5
         u.reason = 0x345345345345345345
-        self.assertEqual(str(u), "can't translate characters in position 1-4: 965230951443685724997")
+        self.assertEqual(str(u), "can't translate characters kwenye position 1-4: 965230951443685724997")
         u.start = 1000
-        self.assertEqual(str(u), "can't translate characters in position 1000-4: 965230951443685724997")
+        self.assertEqual(str(u), "can't translate characters kwenye position 1000-4: 965230951443685724997")
 
     eleza test_unicode_errors_no_object(self):
         # See issue #21134.
         klasses = UnicodeEncodeError, UnicodeDecodeError, UnicodeTranslateError
-        for klass in klasses:
+        kila klass kwenye klasses:
             self.assertEqual(str(klass.__new__(klass)), "")
 
     @no_tracing
     eleza test_badisinstance(self):
-        # Bug #2542: ikiwa issubclass(e, MyException) raises an exception,
+        # Bug #2542: ikiwa issubclass(e, MyException) ashirias an exception,
         # it should be ignored
         kundi Meta(type):
             eleza __subclasscheck__(cls, subclass):
-                raise ValueError()
+                ashiria ValueError()
         kundi MyException(Exception, metaclass=Meta):
-            pass
+            pita
 
-        with captured_stderr() as stderr:
-            try:
-                raise KeyError()
-            except MyException as e:
-                self.fail("exception should not be a MyException")
-            except KeyError:
-                pass
+        with captured_stderr() kama stderr:
+            jaribu:
+                ashiria KeyError()
+            tatizo MyException kama e:
+                self.fail("exception should sio be a MyException")
+            tatizo KeyError:
+                pita
             except:
-                self.fail("Should have raised KeyError")
-            else:
-                self.fail("Should have raised KeyError")
+                self.fail("Should have ashiriad KeyError")
+            isipokua:
+                self.fail("Should have ashiriad KeyError")
 
         eleza g():
-            try:
+            jaribu:
                 rudisha g()
-            except RecursionError:
+            tatizo RecursionError:
                 rudisha sys.exc_info()
         e, v, tb = g()
         self.assertIsInstance(v, RecursionError, type(v))
@@ -972,57 +972,57 @@ kundi ExceptionTests(unittest.TestCase):
     @cpython_only
     eleza test_recursion_normalizing_exception(self):
         # Issue #22898.
-        # Test that a RecursionError is raised when tstate->recursion_depth is
-        # equal to recursion_limit in PyErr_NormalizeException() and check
-        # that a ResourceWarning is printed.
+        # Test that a RecursionError ni ashiriad when tstate->recursion_depth is
+        # equal to recursion_limit kwenye PyErr_NormalizeException() na check
+        # that a ResourceWarning ni printed.
         # Prior to #22898, the recursivity of PyErr_NormalizeException() was
-        # controlled by tstate->recursion_depth and a PyExc_RecursionErrorInst
-        # singleton was being used in that case, that held traceback data and
-        # locals indefinitely and would cause a segfault in _PyExc_Fini() upon
+        # controlled by tstate->recursion_depth na a PyExc_RecursionErrorInst
+        # singleton was being used kwenye that case, that held traceback data and
+        # locals indefinitely na would cause a segfault kwenye _PyExc_Fini() upon
         # finalization of these locals.
         code = """ikiwa 1:
             agiza sys
             kutoka _testcapi agiza get_recursion_depth
 
-            kundi MyException(Exception): pass
+            kundi MyException(Exception): pita
 
             eleza setrecursionlimit(depth):
-                while 1:
-                    try:
+                wakati 1:
+                    jaribu:
                         sys.setrecursionlimit(depth)
                         rudisha depth
-                    except RecursionError:
-                        # sys.setrecursionlimit() raises a RecursionError if
-                        # the new recursion limit is too low (issue #25274).
+                    tatizo RecursionError:
+                        # sys.setrecursionlimit() ashirias a RecursionError if
+                        # the new recursion limit ni too low (issue #25274).
                         depth += 1
 
             eleza recurse(cnt):
                 cnt -= 1
                 ikiwa cnt:
                     recurse(cnt)
-                else:
+                isipokua:
                     generator.throw(MyException)
 
             eleza gen():
                 f = open(%a, mode='rb', buffering=0)
-                yield
+                tuma
 
             generator = gen()
             next(generator)
             recursionlimit = sys.getrecursionlimit()
             depth = get_recursion_depth()
-            try:
+            jaribu:
                 # Upon the last recursive invocation of recurse(),
-                # tstate->recursion_depth is equal to (recursion_limit - 1)
-                # and is equal to recursion_limit when _gen_throw() calls
+                # tstate->recursion_depth ni equal to (recursion_limit - 1)
+                # na ni equal to recursion_limit when _gen_throw() calls
                 # PyErr_NormalizeException().
                 recurse(setrecursionlimit(depth + 2) - depth - 1)
-            finally:
+            mwishowe:
                 sys.setrecursionlimit(recursionlimit)
                 andika('Done.')
         """ % __file__
         rc, out, err = script_helper.assert_python_failure("-Wd", "-c", code)
-        # Check that the program does not fail with SIGABRT.
+        # Check that the program does sio fail with SIGABRT.
         self.assertEqual(rc, 1)
         self.assertIn(b'RecursionError', err)
         self.assertIn(b'ResourceWarning', err)
@@ -1030,36 +1030,36 @@ kundi ExceptionTests(unittest.TestCase):
 
     @cpython_only
     eleza test_recursion_normalizing_infinite_exception(self):
-        # Issue #30697. Test that a RecursionError is raised when
+        # Issue #30697. Test that a RecursionError ni ashiriad when
         # PyErr_NormalizeException() maximum recursion depth has been
         # exceeded.
         code = """ikiwa 1:
             agiza _testcapi
-            try:
-                raise _testcapi.RecursingInfinitelyError
-            finally:
+            jaribu:
+                ashiria _testcapi.RecursingInfinitelyError
+            mwishowe:
                 andika('Done.')
         """
         rc, out, err = script_helper.assert_python_failure("-c", code)
         self.assertEqual(rc, 1)
         self.assertIn(b'RecursionError: maximum recursion depth exceeded '
-                      b'while normalizing an exception', err)
+                      b'wakati normalizing an exception', err)
         self.assertIn(b'Done.', out)
 
     @cpython_only
     eleza test_recursion_normalizing_with_no_memory(self):
-        # Issue #30697. Test that in the abort that occurs when there is no
-        # memory left and the size of the Python frames stack is greater than
+        # Issue #30697. Test that kwenye the abort that occurs when there ni no
+        # memory left na the size of the Python frames stack ni greater than
         # the size of the list of preallocated MemoryError instances, the
         # Fatal Python error message mentions MemoryError.
         code = """ikiwa 1:
             agiza _testcapi
-            kundi C(): pass
+            kundi C(): pita
             eleza recurse(cnt):
                 cnt -= 1
                 ikiwa cnt:
                     recurse(cnt)
-                else:
+                isipokua:
                     _testcapi.set_nomemory(0)
                     C()
             recurse(16)
@@ -1067,32 +1067,32 @@ kundi ExceptionTests(unittest.TestCase):
         with SuppressCrashReport():
             rc, out, err = script_helper.assert_python_failure("-c", code)
             self.assertIn(b'Fatal Python error: Cannot recover kutoka '
-                          b'MemoryErrors while normalizing exceptions.', err)
+                          b'MemoryErrors wakati normalizing exceptions.', err)
 
     @cpython_only
     eleza test_MemoryError(self):
-        # PyErr_NoMemory always raises the same exception instance.
-        # Check that the traceback is not doubled.
+        # PyErr_NoMemory always ashirias the same exception instance.
+        # Check that the traceback ni sio doubled.
         agiza traceback
-        kutoka _testcapi agiza raise_memoryerror
-        eleza raiseMemError():
-            try:
-                raise_memoryerror()
-            except MemoryError as e:
+        kutoka _testcapi agiza ashiria_memoryerror
+        eleza ashiriaMemError():
+            jaribu:
+                ashiria_memoryerror()
+            tatizo MemoryError kama e:
                 tb = e.__traceback__
-            else:
-                self.fail("Should have raises a MemoryError")
+            isipokua:
+                self.fail("Should have ashirias a MemoryError")
             rudisha traceback.format_tb(tb)
 
-        tb1 = raiseMemError()
-        tb2 = raiseMemError()
+        tb1 = ashiriaMemError()
+        tb2 = ashiriaMemError()
         self.assertEqual(tb1, tb2)
 
     @cpython_only
     eleza test_exception_with_doc(self):
         agiza _testcapi
-        doc2 = "This is a test docstring."
-        doc4 = "This is another test docstring."
+        doc2 = "This ni a test docstring."
+        doc4 = "This ni another test docstring."
 
         self.assertRaises(SystemError, _testcapi.make_exception_with_doc,
                           "error1")
@@ -1100,8 +1100,8 @@ kundi ExceptionTests(unittest.TestCase):
         # test basic usage of PyErr_NewException
         error1 = _testcapi.make_exception_with_doc("_testcapi.error1")
         self.assertIs(type(error1), type)
-        self.assertTrue(issubclass(error1, Exception))
-        self.assertIsNone(error1.__doc__)
+        self.assertKweli(issubclass(error1, Exception))
+        self.assertIsTupu(error1.__doc__)
 
         # test with given docstring
         error2 = _testcapi.make_exception_with_doc("_testcapi.error2", doc2)
@@ -1110,69 +1110,69 @@ kundi ExceptionTests(unittest.TestCase):
         # test with explicit base (without docstring)
         error3 = _testcapi.make_exception_with_doc("_testcapi.error3",
                                                    base=error2)
-        self.assertTrue(issubclass(error3, error2))
+        self.assertKweli(issubclass(error3, error2))
 
         # test with explicit base tuple
         kundi C(object):
-            pass
+            pita
         error4 = _testcapi.make_exception_with_doc("_testcapi.error4", doc4,
                                                    (error3, C))
-        self.assertTrue(issubclass(error4, error3))
-        self.assertTrue(issubclass(error4, C))
+        self.assertKweli(issubclass(error4, error3))
+        self.assertKweli(issubclass(error4, C))
         self.assertEqual(error4.__doc__, doc4)
 
         # test with explicit dictionary
         error5 = _testcapi.make_exception_with_doc("_testcapi.error5", "",
                                                    error4, {'a': 1})
-        self.assertTrue(issubclass(error5, error4))
+        self.assertKweli(issubclass(error5, error4))
         self.assertEqual(error5.a, 1)
         self.assertEqual(error5.__doc__, "")
 
     @cpython_only
     eleza test_memory_error_cleanup(self):
-        # Issue #5437: preallocated MemoryError instances should not keep
+        # Issue #5437: preallocated MemoryError instances should sio keep
         # traceback objects alive.
-        kutoka _testcapi agiza raise_memoryerror
+        kutoka _testcapi agiza ashiria_memoryerror
         kundi C:
-            pass
-        wr = None
+            pita
+        wr = Tupu
         eleza inner():
             nonlocal wr
             c = C()
             wr = weakref.ref(c)
-            raise_memoryerror()
+            ashiria_memoryerror()
         # We cannot use assertRaises since it manually deletes the traceback
-        try:
+        jaribu:
             inner()
-        except MemoryError as e:
-            self.assertNotEqual(wr(), None)
-        else:
-            self.fail("MemoryError not raised")
-        self.assertEqual(wr(), None)
+        tatizo MemoryError kama e:
+            self.assertNotEqual(wr(), Tupu)
+        isipokua:
+            self.fail("MemoryError sio ashiriad")
+        self.assertEqual(wr(), Tupu)
 
     @no_tracing
     eleza test_recursion_error_cleanup(self):
-        # Same test as above, but with "recursion exceeded" errors
+        # Same test kama above, but with "recursion exceeded" errors
         kundi C:
-            pass
-        wr = None
+            pita
+        wr = Tupu
         eleza inner():
             nonlocal wr
             c = C()
             wr = weakref.ref(c)
             inner()
         # We cannot use assertRaises since it manually deletes the traceback
-        try:
+        jaribu:
             inner()
-        except RecursionError as e:
-            self.assertNotEqual(wr(), None)
-        else:
-            self.fail("RecursionError not raised")
-        self.assertEqual(wr(), None)
+        tatizo RecursionError kama e:
+            self.assertNotEqual(wr(), Tupu)
+        isipokua:
+            self.fail("RecursionError sio ashiriad")
+        self.assertEqual(wr(), Tupu)
 
     eleza test_errno_ENOTDIR(self):
         # Issue #12802: "not a directory" errors are ENOTDIR even on Windows
-        with self.assertRaises(OSError) as cm:
+        with self.assertRaises(OSError) kama cm:
             os.listdir(__file__)
         self.assertEqual(cm.exception.errno, errno.ENOTDIR, cm.exception)
 
@@ -1180,106 +1180,106 @@ kundi ExceptionTests(unittest.TestCase):
         # Issue #22836: PyErr_WriteUnraisable() should give sensible reports
         kundi BrokenDel:
             eleza __del__(self):
-                exc = ValueError("del is broken")
-                # The following line is included in the traceback report:
-                raise exc
+                exc = ValueError("toa ni broken")
+                # The following line ni included kwenye the traceback report:
+                ashiria exc
 
         obj = BrokenDel()
-        with support.catch_unraisable_exception() as cm:
-            del obj
+        with support.catch_unraisable_exception() kama cm:
+            toa obj
 
             self.assertEqual(cm.unraisable.object, BrokenDel.__del__)
-            self.assertIsNotNone(cm.unraisable.exc_traceback)
+            self.assertIsNotTupu(cm.unraisable.exc_traceback)
 
     eleza test_unhandled(self):
-        # Check for sensible reporting of unhandled exceptions
-        for exc_type in (ValueError, BrokenStrException):
+        # Check kila sensible reporting of unhandled exceptions
+        kila exc_type kwenye (ValueError, BrokenStrException):
             with self.subTest(exc_type):
-                try:
+                jaribu:
                     exc = exc_type("test message")
-                    # The following line is included in the traceback report:
-                    raise exc
-                except exc_type:
-                    with captured_stderr() as stderr:
+                    # The following line ni included kwenye the traceback report:
+                    ashiria exc
+                tatizo exc_type:
+                    with captured_stderr() kama stderr:
                         sys.__excepthook__(*sys.exc_info())
                 report = stderr.getvalue()
                 self.assertIn("test_exceptions.py", report)
-                self.assertIn("raise exc", report)
+                self.assertIn("ashiria exc", report)
                 self.assertIn(exc_type.__name__, report)
-                ikiwa exc_type is BrokenStrException:
+                ikiwa exc_type ni BrokenStrException:
                     self.assertIn("<exception str() failed>", report)
-                else:
+                isipokua:
                     self.assertIn("test message", report)
-                self.assertTrue(report.endswith("\n"))
+                self.assertKweli(report.endswith("\n"))
 
     @cpython_only
     eleza test_memory_error_in_PyErr_PrintEx(self):
         code = """ikiwa 1:
             agiza _testcapi
-            kundi C(): pass
+            kundi C(): pita
             _testcapi.set_nomemory(0, %d)
             C()
         """
 
-        # Issue #30817: Abort in PyErr_PrintEx() when no memory.
-        # Span a large range of tests as the CPython code always evolves with
-        # changes that add or remove memory allocations.
-        for i in range(1, 20):
+        # Issue #30817: Abort kwenye PyErr_PrintEx() when no memory.
+        # Span a large range of tests kama the CPython code always evolves with
+        # changes that add ama remove memory allocations.
+        kila i kwenye range(1, 20):
             rc, out, err = script_helper.assert_python_failure("-c", code % i)
             self.assertIn(rc, (1, 120))
             self.assertIn(b'MemoryError', err)
 
-    eleza test_yield_in_nested_try_excepts(self):
+    eleza test_tuma_in_nested_try_excepts(self):
         #Issue #25612
         kundi MainError(Exception):
-            pass
+            pita
 
         kundi SubError(Exception):
-            pass
+            pita
 
         eleza main():
-            try:
-                raise MainError()
-            except MainError:
-                try:
-                    yield
-                except SubError:
-                    pass
-                raise
+            jaribu:
+                ashiria MainError()
+            tatizo MainError:
+                jaribu:
+                    tuma
+                tatizo SubError:
+                    pita
+                ashiria
 
         coro = main()
-        coro.send(None)
+        coro.send(Tupu)
         with self.assertRaises(MainError):
             coro.throw(SubError())
 
     eleza test_generator_doesnt_retain_old_exc2(self):
         #Issue 28884#msg282532
         eleza g():
-            try:
-                raise ValueError
-            except ValueError:
-                yield 1
-            self.assertEqual(sys.exc_info(), (None, None, None))
-            yield 2
+            jaribu:
+                ashiria ValueError
+            tatizo ValueError:
+                tuma 1
+            self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
+            tuma 2
 
         gen = g()
 
-        try:
-            raise IndexError
-        except IndexError:
+        jaribu:
+            ashiria IndexError
+        tatizo IndexError:
             self.assertEqual(next(gen), 1)
         self.assertEqual(next(gen), 2)
 
-    eleza test_raise_in_generator(self):
+    eleza test_ashiria_in_generator(self):
         #Issue 25612#msg304117
         eleza g():
-            yield 1
-            raise
-            yield 2
+            tuma 1
+            ashiria
+            tuma 2
 
         with self.assertRaises(ZeroDivisionError):
             i = g()
-            try:
+            jaribu:
                 1/0
             except:
                 next(i)
@@ -1289,24 +1289,24 @@ kundi ExceptionTests(unittest.TestCase):
 kundi ImportErrorTests(unittest.TestCase):
 
     eleza test_attributes(self):
-        # Setting 'name' and 'path' should not be a problem.
+        # Setting 'name' na 'path' should sio be a problem.
         exc = ImportError('test')
-        self.assertIsNone(exc.name)
-        self.assertIsNone(exc.path)
+        self.assertIsTupu(exc.name)
+        self.assertIsTupu(exc.path)
 
         exc = ImportError('test', name='somemodule')
         self.assertEqual(exc.name, 'somemodule')
-        self.assertIsNone(exc.path)
+        self.assertIsTupu(exc.path)
 
         exc = ImportError('test', path='somepath')
         self.assertEqual(exc.path, 'somepath')
-        self.assertIsNone(exc.name)
+        self.assertIsTupu(exc.name)
 
         exc = ImportError('test', path='somepath', name='somename')
         self.assertEqual(exc.name, 'somename')
         self.assertEqual(exc.path, 'somepath')
 
-        msg = "'invalid' is an invalid keyword argument for ImportError"
+        msg = "'invalid' ni an invalid keyword argument kila ImportError"
         with self.assertRaisesRegex(TypeError, msg):
             ImportError('test', invalid='keyword')
 
@@ -1320,7 +1320,7 @@ kundi ImportErrorTests(unittest.TestCase):
             ImportError(invalid='keyword')
 
         with self.assertRaisesRegex(TypeError, msg):
-            ImportError('test', invalid='keyword', another=True)
+            ImportError('test', invalid='keyword', another=Kweli)
 
     eleza test_reset_attributes(self):
         exc = ImportError('test', name='name', path='path')
@@ -1329,33 +1329,33 @@ kundi ImportErrorTests(unittest.TestCase):
         self.assertEqual(exc.name, 'name')
         self.assertEqual(exc.path, 'path')
 
-        # Reset not specified attributes
+        # Reset sio specified attributes
         exc.__init__()
         self.assertEqual(exc.args, ())
-        self.assertEqual(exc.msg, None)
-        self.assertEqual(exc.name, None)
-        self.assertEqual(exc.path, None)
+        self.assertEqual(exc.msg, Tupu)
+        self.assertEqual(exc.name, Tupu)
+        self.assertEqual(exc.path, Tupu)
 
     eleza test_non_str_argument(self):
         # Issue #15778
-        with check_warnings(('', BytesWarning), quiet=True):
+        with check_warnings(('', BytesWarning), quiet=Kweli):
             arg = b'abc'
             exc = ImportError(arg)
             self.assertEqual(str(arg), str(exc))
 
     eleza test_copy_pickle(self):
-        for kwargs in (dict(),
+        kila kwargs kwenye (dict(),
                        dict(name='somename'),
                        dict(path='somepath'),
                        dict(name='somename', path='somepath')):
             orig = ImportError('test', **kwargs)
-            for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+            kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
                 exc = pickle.loads(pickle.dumps(orig, proto))
                 self.assertEqual(exc.args, ('test',))
                 self.assertEqual(exc.msg, 'test')
                 self.assertEqual(exc.name, orig.name)
                 self.assertEqual(exc.path, orig.path)
-            for c in copy.copy, copy.deepcopy:
+            kila c kwenye copy.copy, copy.deepcopy:
                 exc = c(orig)
                 self.assertEqual(exc.args, ('test',))
                 self.assertEqual(exc.msg, 'test')

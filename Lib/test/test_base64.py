@@ -9,7 +9,7 @@ kutoka test.support agiza script_helper
 
 kundi LegacyBase64TestCase(unittest.TestCase):
 
-    # Legacy API is not as permissive as the modern API
+    # Legacy API ni sio kama permissive kama the modern API
     eleza check_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -95,8 +95,8 @@ kundi LegacyBase64TestCase(unittest.TestCase):
 
 kundi BaseXYTestCase(unittest.TestCase):
 
-    # Modern API completely ignores exported dimension and format data and
-    # treats any buffer as a stream of bytes
+    # Modern API completely ignores exported dimension na format data and
+    # treats any buffer kama a stream of bytes
     eleza check_encode_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -112,7 +112,7 @@ kundi BaseXYTestCase(unittest.TestCase):
         eq(b, bytes_data)
         eq(f(memoryview(bytes_data)), expected)
         eq(f(array('B', bytes_data)), expected)
-        # XXX why is b64encode hardcoded here?
+        # XXX why ni b64encode hardcoded here?
         self.check_nonbyte_element_format(base64.b64encode, bytes_data)
         self.check_multidimensional(base64.b64encode, bytes_data)
 
@@ -197,7 +197,7 @@ kundi BaseXYTestCase(unittest.TestCase):
                  b"0123456789!@#0^&*();:<>,. []{}",
                  b'': b'',
                  }
-        for data, res in tests.items():
+        kila data, res kwenye tests.items():
             eq(base64.b64decode(data), res)
             eq(base64.b64decode(data.decode('ascii')), res)
         # Non-bytes
@@ -207,7 +207,7 @@ kundi BaseXYTestCase(unittest.TestCase):
         # Test with arbitrary alternative characters
         tests_altchars = {(b'01a*b$cd', b'*$'): b'\xd3V\xbeo\xf7\x1d',
                           }
-        for (data, altchars), res in tests_altchars.items():
+        kila (data, altchars), res kwenye tests_altchars.items():
             data_str = data.decode('ascii')
             altchars_str = altchars.decode('ascii')
 
@@ -217,7 +217,7 @@ kundi BaseXYTestCase(unittest.TestCase):
             eq(base64.b64decode(data_str, altchars=altchars_str), res)
 
         # Test standard alphabet
-        for data, res in tests.items():
+        kila data, res kwenye tests.items():
             eq(base64.standard_b64decode(data), res)
             eq(base64.standard_b64decode(data.decode('ascii')), res)
         # Non-bytes
@@ -228,7 +228,7 @@ kundi BaseXYTestCase(unittest.TestCase):
         tests_urlsafe = {b'01a-b_cd': b'\xd3V\xbeo\xf7\x1d',
                          b'': b'',
                          }
-        for data, res in tests_urlsafe.items():
+        kila data, res kwenye tests_urlsafe.items():
             eq(base64.urlsafe_b64decode(data), res)
             eq(base64.urlsafe_b64decode(data.decode('ascii')), res)
         # Non-bytes
@@ -256,17 +256,17 @@ kundi BaseXYTestCase(unittest.TestCase):
             base64.standard_b64decode,
             base64.urlsafe_b64decode,
         )
-        for bstr, res in tests:
-            for func in funcs:
+        kila bstr, res kwenye tests:
+            kila func kwenye funcs:
                 with self.subTest(bstr=bstr, func=func):
                     self.assertEqual(func(bstr), res)
                     self.assertEqual(func(bstr.decode('ascii')), res)
             with self.assertRaises(binascii.Error):
-                base64.b64decode(bstr, validate=True)
+                base64.b64decode(bstr, validate=Kweli)
             with self.assertRaises(binascii.Error):
-                base64.b64decode(bstr.decode('ascii'), validate=True)
+                base64.b64decode(bstr.decode('ascii'), validate=Kweli)
 
-        # Normal alphabet characters not discarded when alternative given
+        # Normal alphabet characters sio discarded when alternative given
         res = b'\xFB\xEF\xBE\xFF\xFF\xFF'
         self.assertEqual(base64.b64decode(b'++[[//]]', b'[]'), res)
         self.assertEqual(base64.urlsafe_b64decode(b'++--//__'), res)
@@ -294,7 +294,7 @@ kundi BaseXYTestCase(unittest.TestCase):
                  b'MFRGGZA=': b'abcd',
                  b'MFRGGZDF': b'abcde',
                  }
-        for data, res in tests.items():
+        kila data, res kwenye tests.items():
             eq(base64.b32decode(data), res)
             eq(base64.b32decode(data.decode('ascii')), res)
         # Non-bytes
@@ -317,21 +317,21 @@ kundi BaseXYTestCase(unittest.TestCase):
                  b'mfrggzdf': b'abcde',
                  }
 
-        for data, res in tests.items():
-            eq(base64.b32decode(data, True), res)
-            eq(base64.b32decode(data.decode('ascii'), True), res)
+        kila data, res kwenye tests.items():
+            eq(base64.b32decode(data, Kweli), res)
+            eq(base64.b32decode(data.decode('ascii'), Kweli), res)
 
         self.assertRaises(binascii.Error, base64.b32decode, b'me======')
         self.assertRaises(binascii.Error, base64.b32decode, 'me======')
 
-        # Mapping zero and one
+        # Mapping zero na one
         eq(base64.b32decode(b'MLO23456'), b'b\xdd\xad\xf3\xbe')
         eq(base64.b32decode('MLO23456'), b'b\xdd\xad\xf3\xbe')
 
         map_tests = {(b'M1023456', b'L'): b'b\xdd\xad\xf3\xbe',
                      (b'M1023456', b'I'): b'b\x1d\xad\xf3\xbe',
                      }
-        for (data, map01), res in map_tests.items():
+        kila (data, map01), res kwenye map_tests.items():
             data_str = data.decode('ascii')
             map01_str = map01.decode('ascii')
 
@@ -345,13 +345,13 @@ kundi BaseXYTestCase(unittest.TestCase):
     eleza test_b32decode_error(self):
         tests = [b'abc', b'ABCDEF==', b'==ABCDEF']
         prefixes = [b'M', b'ME', b'MFRA', b'MFRGG', b'MFRGGZA', b'MFRGGZDF']
-        for i in range(0, 17):
+        kila i kwenye range(0, 17):
             ikiwa i:
                 tests.append(b'='*i)
-            for prefix in prefixes:
+            kila prefix kwenye prefixes:
                 ikiwa len(prefix) + i != 8:
                     tests.append(prefix + b'='*i)
-        for data in tests:
+        kila data kwenye tests:
             with self.subTest(data=data):
                 with self.assertRaises(binascii.Error):
                     base64.b32decode(data)
@@ -373,21 +373,21 @@ kundi BaseXYTestCase(unittest.TestCase):
         eq(base64.b16decode('0102ABCDEF'), b'\x01\x02\xab\xcd\xef')
         eq(base64.b16decode(b'00'), b'\x00')
         eq(base64.b16decode('00'), b'\x00')
-        # Lower case is not allowed without a flag
+        # Lower case ni sio allowed without a flag
         self.assertRaises(binascii.Error, base64.b16decode, b'0102abcdef')
         self.assertRaises(binascii.Error, base64.b16decode, '0102abcdef')
         # Case fold
-        eq(base64.b16decode(b'0102abcdef', True), b'\x01\x02\xab\xcd\xef')
-        eq(base64.b16decode('0102abcdef', True), b'\x01\x02\xab\xcd\xef')
+        eq(base64.b16decode(b'0102abcdef', Kweli), b'\x01\x02\xab\xcd\xef')
+        eq(base64.b16decode('0102abcdef', Kweli), b'\x01\x02\xab\xcd\xef')
         # Non-bytes
         self.check_other_types(base64.b16decode, b"0102ABCDEF",
                                b'\x01\x02\xab\xcd\xef')
         self.check_decode_type_errors(base64.b16decode)
-        eq(base64.b16decode(bytearray(b"0102abcdef"), True),
+        eq(base64.b16decode(bytearray(b"0102abcdef"), Kweli),
            b'\x01\x02\xab\xcd\xef')
-        eq(base64.b16decode(memoryview(b"0102abcdef"), True),
+        eq(base64.b16decode(memoryview(b"0102abcdef"), Kweli),
            b'\x01\x02\xab\xcd\xef')
-        eq(base64.b16decode(array('B', b"0102abcdef"), True),
+        eq(base64.b16decode(array('B', b"0102abcdef"), Kweli),
            b'\x01\x02\xab\xcd\xef')
         # Non-alphabet characters
         self.assertRaises(binascii.Error, base64.b16decode, '0102AG')
@@ -422,27 +422,27 @@ kundi BaseXYTestCase(unittest.TestCase):
             b'\xff'*4: b's8W-!',
             }
 
-        for data, res in tests.items():
+        kila data, res kwenye tests.items():
             eq(base64.a85encode(data), res, data)
-            eq(base64.a85encode(data, adobe=False), res, data)
-            eq(base64.a85encode(data, adobe=True), b'<~' + res + b'~>', data)
+            eq(base64.a85encode(data, adobe=Uongo), res, data)
+            eq(base64.a85encode(data, adobe=Kweli), b'<~' + res + b'~>', data)
 
         self.check_other_types(base64.a85encode, b"www.python.org",
                                b'GB\\6`E-ZP=Df.1GEb>')
 
         self.assertRaises(TypeError, base64.a85encode, "")
 
-        eq(base64.a85encode(b"www.python.org", wrapcol=7, adobe=False),
+        eq(base64.a85encode(b"www.python.org", wrapcol=7, adobe=Uongo),
            b'GB\\6`E-\nZP=Df.1\nGEb>')
-        eq(base64.a85encode(b"\0\0\0\0www.python.org", wrapcol=7, adobe=False),
+        eq(base64.a85encode(b"\0\0\0\0www.python.org", wrapcol=7, adobe=Uongo),
            b'zGB\\6`E\n-ZP=Df.\n1GEb>')
-        eq(base64.a85encode(b"www.python.org", wrapcol=7, adobe=True),
+        eq(base64.a85encode(b"www.python.org", wrapcol=7, adobe=Kweli),
            b'<~GB\\6`\nE-ZP=Df\n.1GEb>\n~>')
 
-        eq(base64.a85encode(b' '*8, foldspaces=True, adobe=False), b'yy')
-        eq(base64.a85encode(b' '*7, foldspaces=True, adobe=False), b'y+<Vd')
-        eq(base64.a85encode(b' '*6, foldspaces=True, adobe=False), b'y+<U')
-        eq(base64.a85encode(b' '*5, foldspaces=True, adobe=False), b'y+9')
+        eq(base64.a85encode(b' '*8, foldspaces=Kweli, adobe=Uongo), b'yy')
+        eq(base64.a85encode(b' '*7, foldspaces=Kweli, adobe=Uongo), b'y+<Vd')
+        eq(base64.a85encode(b' '*6, foldspaces=Kweli, adobe=Uongo), b'y+<U')
+        eq(base64.a85encode(b' '*5, foldspaces=Kweli, adobe=Uongo), b'y+9')
 
     eleza test_b85encode(self):
         eq = self.assertEqual
@@ -472,7 +472,7 @@ kundi BaseXYTestCase(unittest.TestCase):
             b'\xff'*4: b'|NsC0',
         }
 
-        for data, res in tests.items():
+        kila data, res kwenye tests.items():
             eq(base64.b85encode(data), res)
 
         self.check_other_types(base64.b85encode, b"www.python.org",
@@ -506,19 +506,19 @@ kundi BaseXYTestCase(unittest.TestCase):
             b's8W-!': b'\xff'*4,
             }
 
-        for data, res in tests.items():
+        kila data, res kwenye tests.items():
             eq(base64.a85decode(data), res, data)
-            eq(base64.a85decode(data, adobe=False), res, data)
-            eq(base64.a85decode(data.decode("ascii"), adobe=False), res, data)
-            eq(base64.a85decode(b'<~' + data + b'~>', adobe=True), res, data)
-            eq(base64.a85decode(data + b'~>', adobe=True), res, data)
-            eq(base64.a85decode('<~%s~>' % data.decode("ascii"), adobe=True),
+            eq(base64.a85decode(data, adobe=Uongo), res, data)
+            eq(base64.a85decode(data.decode("ascii"), adobe=Uongo), res, data)
+            eq(base64.a85decode(b'<~' + data + b'~>', adobe=Kweli), res, data)
+            eq(base64.a85decode(data + b'~>', adobe=Kweli), res, data)
+            eq(base64.a85decode('<~%s~>' % data.decode("ascii"), adobe=Kweli),
                res, data)
 
-        eq(base64.a85decode(b'yy', foldspaces=True, adobe=False), b' '*8)
-        eq(base64.a85decode(b'y+<Vd', foldspaces=True, adobe=False), b' '*7)
-        eq(base64.a85decode(b'y+<U', foldspaces=True, adobe=False), b' '*6)
-        eq(base64.a85decode(b'y+9', foldspaces=True, adobe=False), b' '*5)
+        eq(base64.a85decode(b'yy', foldspaces=Kweli, adobe=Uongo), b' '*8)
+        eq(base64.a85decode(b'y+<Vd', foldspaces=Kweli, adobe=Uongo), b' '*7)
+        eq(base64.a85decode(b'y+<U', foldspaces=Kweli, adobe=Uongo), b' '*6)
+        eq(base64.a85decode(b'y+9', foldspaces=Kweli, adobe=Uongo), b' '*5)
 
         self.check_other_types(base64.a85decode, b'GB\\6`E-ZP=Df.1GEb>',
                                b"www.python.org")
@@ -551,7 +551,7 @@ kundi BaseXYTestCase(unittest.TestCase):
             b'|NsC0': b'\xff'*4,
         }
 
-        for data, res in tests.items():
+        kila data, res kwenye tests.items():
             eq(base64.b85decode(data), res)
             eq(base64.b85decode(data.decode("ascii")), res)
 
@@ -561,11 +561,11 @@ kundi BaseXYTestCase(unittest.TestCase):
     eleza test_a85_padding(self):
         eq = self.assertEqual
 
-        eq(base64.a85encode(b"x", pad=True), b'GQ7^D')
-        eq(base64.a85encode(b"xx", pad=True), b"G^'2g")
-        eq(base64.a85encode(b"xxx", pad=True), b'G^+H5')
-        eq(base64.a85encode(b"xxxx", pad=True), b'G^+IX')
-        eq(base64.a85encode(b"xxxxx", pad=True), b'G^+IXGQ7^D')
+        eq(base64.a85encode(b"x", pad=Kweli), b'GQ7^D')
+        eq(base64.a85encode(b"xx", pad=Kweli), b"G^'2g")
+        eq(base64.a85encode(b"xxx", pad=Kweli), b'G^+H5')
+        eq(base64.a85encode(b"xxxx", pad=Kweli), b'G^+IX')
+        eq(base64.a85encode(b"xxxxx", pad=Kweli), b'G^+IXGQ7^D')
 
         eq(base64.a85decode(b'GQ7^D'), b"x\x00\x00\x00")
         eq(base64.a85decode(b"G^'2g"), b"xx\x00\x00")
@@ -576,11 +576,11 @@ kundi BaseXYTestCase(unittest.TestCase):
     eleza test_b85_padding(self):
         eq = self.assertEqual
 
-        eq(base64.b85encode(b"x", pad=True), b'cmMzZ')
-        eq(base64.b85encode(b"xx", pad=True), b'cz6H+')
-        eq(base64.b85encode(b"xxx", pad=True), b'czAdK')
-        eq(base64.b85encode(b"xxxx", pad=True), b'czAet')
-        eq(base64.b85encode(b"xxxxx", pad=True), b'czAetcmMzZ')
+        eq(base64.b85encode(b"x", pad=Kweli), b'cmMzZ')
+        eq(base64.b85encode(b"xx", pad=Kweli), b'cz6H+')
+        eq(base64.b85encode(b"xxx", pad=Kweli), b'czAdK')
+        eq(base64.b85encode(b"xxxx", pad=Kweli), b'czAet')
+        eq(base64.b85encode(b"xxxxx", pad=Kweli), b'czAetcmMzZ')
 
         eq(base64.b85decode(b'cmMzZ'), b"x\x00\x00\x00")
         eq(base64.b85decode(b'cz6H+'), b"xx\x00\x00")
@@ -590,44 +590,44 @@ kundi BaseXYTestCase(unittest.TestCase):
 
     eleza test_a85decode_errors(self):
         illegal = (set(range(32)) | set(range(118, 256))) - set(b' \t\n\r\v')
-        for c in illegal:
+        kila c kwenye illegal:
             with self.assertRaises(ValueError, msg=bytes([c])):
                 base64.a85decode(b'!!!!' + bytes([c]))
             with self.assertRaises(ValueError, msg=bytes([c])):
-                base64.a85decode(b'!!!!' + bytes([c]), adobe=False)
+                base64.a85decode(b'!!!!' + bytes([c]), adobe=Uongo)
             with self.assertRaises(ValueError, msg=bytes([c])):
-                base64.a85decode(b'<~!!!!' + bytes([c]) + b'~>', adobe=True)
+                base64.a85decode(b'<~!!!!' + bytes([c]) + b'~>', adobe=Kweli)
 
         self.assertRaises(ValueError, base64.a85decode,
-                                      b"malformed", adobe=True)
+                                      b"malformed", adobe=Kweli)
         self.assertRaises(ValueError, base64.a85decode,
-                                      b"<~still malformed", adobe=True)
+                                      b"<~still malformed", adobe=Kweli)
 
-        # With adobe=False (the default), Adobe framing markers are disallowed
+        # With adobe=Uongo (the default), Adobe framing markers are disallowed
         self.assertRaises(ValueError, base64.a85decode,
                                       b"<~~>")
         self.assertRaises(ValueError, base64.a85decode,
-                                      b"<~~>", adobe=False)
-        base64.a85decode(b"<~~>", adobe=True)  # sanity check
+                                      b"<~~>", adobe=Uongo)
+        base64.a85decode(b"<~~>", adobe=Kweli)  # sanity check
 
         self.assertRaises(ValueError, base64.a85decode,
-                                      b"abcx", adobe=False)
+                                      b"abcx", adobe=Uongo)
         self.assertRaises(ValueError, base64.a85decode,
-                                      b"abcdey", adobe=False)
+                                      b"abcdey", adobe=Uongo)
         self.assertRaises(ValueError, base64.a85decode,
-                                      b"a b\nc", adobe=False, ignorechars=b"")
+                                      b"a b\nc", adobe=Uongo, ignorechars=b"")
 
-        self.assertRaises(ValueError, base64.a85decode, b's', adobe=False)
-        self.assertRaises(ValueError, base64.a85decode, b's8', adobe=False)
-        self.assertRaises(ValueError, base64.a85decode, b's8W', adobe=False)
-        self.assertRaises(ValueError, base64.a85decode, b's8W-', adobe=False)
-        self.assertRaises(ValueError, base64.a85decode, b's8W-"', adobe=False)
+        self.assertRaises(ValueError, base64.a85decode, b's', adobe=Uongo)
+        self.assertRaises(ValueError, base64.a85decode, b's8', adobe=Uongo)
+        self.assertRaises(ValueError, base64.a85decode, b's8W', adobe=Uongo)
+        self.assertRaises(ValueError, base64.a85decode, b's8W-', adobe=Uongo)
+        self.assertRaises(ValueError, base64.a85decode, b's8W-"', adobe=Uongo)
 
     eleza test_b85decode_errors(self):
         illegal = list(range(33)) + \
                   list(b'"\',./:[\\]') + \
                   list(range(128, 256))
-        for c in illegal:
+        kila c kwenye illegal:
             with self.assertRaises(ValueError, msg=bytes([c])):
                 base64.b85decode(b'0000' + bytes([c]))
 
@@ -645,11 +645,11 @@ kundi BaseXYTestCase(unittest.TestCase):
                         base64.b16decode,
                         base64.b85decode,
                         base64.a85decode)
-        for f in decode_funcs:
+        kila f kwenye decode_funcs:
             self.assertRaises(ValueError, f, 'with non-ascii \xcb')
 
     eleza test_ErrorHeritage(self):
-        self.assertTrue(issubclass(binascii.Error, ValueError))
+        self.assertKweli(issubclass(binascii.Error, ValueError))
 
 
 kundi TestMain(unittest.TestCase):
@@ -669,19 +669,19 @@ kundi TestMain(unittest.TestCase):
         ))
 
     eleza test_encode_file(self):
-        with open(support.TESTFN, 'wb') as fp:
+        with open(support.TESTFN, 'wb') kama fp:
             fp.write(b'a\xffb\n')
         output = self.get_output('-e', support.TESTFN)
         self.assertEqual(output.rstrip(), b'Yf9iCg==')
 
     eleza test_encode_kutoka_stdin(self):
-        with script_helper.spawn_python('-m', 'base64', '-e') as proc:
+        with script_helper.spawn_python('-m', 'base64', '-e') kama proc:
             out, err = proc.communicate(b'a\xffb\n')
         self.assertEqual(out.rstrip(), b'Yf9iCg==')
-        self.assertIsNone(err)
+        self.assertIsTupu(err)
 
     eleza test_decode(self):
-        with open(support.TESTFN, 'wb') as fp:
+        with open(support.TESTFN, 'wb') kama fp:
             fp.write(b'Yf9iCg==')
         output = self.get_output('-d', support.TESTFN)
         self.assertEqual(output.rstrip(), b'a\xffb')

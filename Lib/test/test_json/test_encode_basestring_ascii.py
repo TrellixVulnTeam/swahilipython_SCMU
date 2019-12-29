@@ -20,10 +20,10 @@ CASES = [
 kundi TestEncodeBasestringAscii:
     eleza test_encode_basestring_ascii(self):
         fname = self.json.encoder.encode_basestring_ascii.__name__
-        for input_string, expect in CASES:
+        kila input_string, expect kwenye CASES:
             result = self.json.encoder.encode_basestring_ascii(input_string)
             self.assertEqual(result, expect,
-                '{0!r} != {1!r} for {2}({3!r})'.format(
+                '{0!r} != {1!r} kila {2}({3!r})'.format(
                     result, expect, fname, input_string))
 
     eleza test_ordered_dict(self):
@@ -34,11 +34,11 @@ kundi TestEncodeBasestringAscii:
 
     eleza test_sorted_dict(self):
         items = [('one', 1), ('two', 2), ('three', 3), ('four', 4), ('five', 5)]
-        s = self.dumps(dict(items), sort_keys=True)
+        s = self.dumps(dict(items), sort_keys=Kweli)
         self.assertEqual(s, '{"five": 5, "four": 4, "one": 1, "three": 3, "two": 2}')
 
 
-kundi TestPyEncodeBasestringAscii(TestEncodeBasestringAscii, PyTest): pass
+kundi TestPyEncodeBasestringAscii(TestEncodeBasestringAscii, PyTest): pita
 kundi TestCEncodeBasestringAscii(TestEncodeBasestringAscii, CTest):
     @bigaddrspacetest
     eleza test_overflow(self):

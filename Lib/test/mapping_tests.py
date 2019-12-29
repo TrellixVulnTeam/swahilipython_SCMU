@@ -1,4 +1,4 @@
-# tests common to dict and UserDict
+# tests common to dict na UserDict
 agiza unittest
 agiza collections
 agiza sys
@@ -10,20 +10,20 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
 
     # Functions that can be useful to override to adapt to dictionary
     # semantics
-    type2test = None # which kundi is being tested (overwrite in subclasses)
+    type2test = Tupu # which kundi ni being tested (overwrite kwenye subclasses)
 
     eleza _reference(self):
         """Return a dictionary of values which are invariant by storage
-        in the object under test."""
+        kwenye the object under test."""
         rudisha {"1": "2", "key1":"value1", "key2":(1,2,3)}
     eleza _empty_mapping(self):
         """Return an empty mapping object"""
         rudisha self.type2test()
     eleza _full_mapping(self, data):
-        """Return a mapping object with the value contained in data
+        """Return a mapping object with the value contained kwenye data
         dictionary"""
         x = self._empty_mapping()
-        for key, value in data.items():
+        kila key, value kwenye data.items():
             x[key] = value
         rudisha x
 
@@ -31,24 +31,24 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         unittest.TestCase.__init__(self, *args, **kw)
         self.reference = self._reference().copy()
 
-        # A (key, value) pair not in the mapping
+        # A (key, value) pair haiko kwenye the mapping
         key, value = self.reference.popitem()
         self.other = {key:value}
 
-        # A (key, value) pair in the mapping
+        # A (key, value) pair kwenye the mapping
         key, value = self.reference.popitem()
         self.inmapping = {key:value}
         self.reference[key] = value
 
     eleza test_read(self):
-        # Test for read only operations on mapping
+        # Test kila read only operations on mapping
         p = self._empty_mapping()
-        p1 = dict(p) #workaround for singleton objects
+        p1 = dict(p) #workaround kila singleton objects
         d = self._full_mapping(self.reference)
-        ikiwa d is p:
+        ikiwa d ni p:
             p = p1
         #Indexing
-        for key, value in self.reference.items():
+        kila key, value kwenye self.reference.items():
             self.assertEqual(d[key], value)
         knownkey = list(self.other.keys())[0]
         self.assertRaises(KeyError, lambda:d[knownkey])
@@ -56,9 +56,9 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         self.assertEqual(len(p), 0)
         self.assertEqual(len(d), len(self.reference))
         #__contains__
-        for k in self.reference:
+        kila k kwenye self.reference:
             self.assertIn(k, d)
-        for k in self.other:
+        kila k kwenye self.other:
             self.assertNotIn(k, d)
         #cmp
         self.assertEqual(p, p)
@@ -66,14 +66,14 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         self.assertNotEqual(p, d)
         self.assertNotEqual(d, p)
         #bool
-        ikiwa p: self.fail("Empty mapping must compare to False")
-        ikiwa not d: self.fail("Full mapping must compare to True")
+        ikiwa p: self.fail("Empty mapping must compare to Uongo")
+        ikiwa sio d: self.fail("Full mapping must compare to Kweli")
         # keys(), items(), iterkeys() ...
         eleza check_iterandlist(iter, lst, ref):
-            self.assertTrue(hasattr(iter, '__next__'))
-            self.assertTrue(hasattr(iter, '__iter__'))
+            self.assertKweli(hasattr(iter, '__next__'))
+            self.assertKweli(hasattr(iter, '__iter__'))
             x = list(iter)
-            self.assertTrue(set(x)==set(lst)==set(ref))
+            self.assertKweli(set(x)==set(lst)==set(ref))
         check_iterandlist(iter(d.keys()), list(d.keys()),
                           self.reference.keys())
         check_iterandlist(iter(d), list(d.keys()), self.reference.keys())
@@ -89,14 +89,14 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         self.assertNotIn(knownkey, d)
 
     eleza test_write(self):
-        # Test for write operations on mapping
+        # Test kila write operations on mapping
         p = self._empty_mapping()
         #Indexing
-        for key, value in self.reference.items():
+        kila key, value kwenye self.reference.items():
             p[key] = value
             self.assertEqual(p[key], value)
-        for key in self.reference.keys():
-            del p[key]
+        kila key kwenye self.reference.keys():
+            toa p[key]
             self.assertRaises(KeyError, lambda:p[key])
         p = self._empty_mapping()
         #update
@@ -134,10 +134,10 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         self.assertEqual(self._empty_mapping(), self._empty_mapping())
 
     eleza test_bool(self):
-        self.assertTrue(not self._empty_mapping())
-        self.assertTrue(self.reference)
-        self.assertTrue(bool(self._empty_mapping()) is False)
-        self.assertTrue(bool(self.reference) is True)
+        self.assertKweli(not self._empty_mapping())
+        self.assertKweli(self.reference)
+        self.assertKweli(bool(self._empty_mapping()) ni Uongo)
+        self.assertKweli(bool(self.reference) ni Kweli)
 
     eleza test_keys(self):
         d = self._empty_mapping()
@@ -145,19 +145,19 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         d = self.reference
         self.assertIn(list(self.inmapping.keys())[0], d.keys())
         self.assertNotIn(list(self.other.keys())[0], d.keys())
-        self.assertRaises(TypeError, d.keys, None)
+        self.assertRaises(TypeError, d.keys, Tupu)
 
     eleza test_values(self):
         d = self._empty_mapping()
         self.assertEqual(list(d.values()), [])
 
-        self.assertRaises(TypeError, d.values, None)
+        self.assertRaises(TypeError, d.values, Tupu)
 
     eleza test_items(self):
         d = self._empty_mapping()
         self.assertEqual(list(d.items()), [])
 
-        self.assertRaises(TypeError, d.items, None)
+        self.assertRaises(TypeError, d.items, Tupu)
 
     eleza test_len(self):
         d = self._empty_mapping()
@@ -192,7 +192,7 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         self.assertEqual(list(d.items()), list(self.other.items()))
 
         # FIXME: Doesn't work with UserDict
-        # self.assertRaises((TypeError, AttributeError), d.update, None)
+        # self.assertRaises((TypeError, AttributeError), d.update, Tupu)
         self.assertRaises((TypeError, AttributeError), d.update, 42)
 
         outerself = self
@@ -209,12 +209,12 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         i2 = sorted(self.reference.items())
         self.assertEqual(i1, i2)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         d = self._empty_mapping()
         kundi FailingUserDict:
             eleza keys(self):
-                raise Exc
+                ashiria Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d.clear()
@@ -230,7 +230,7 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
                         ikiwa self.i:
                             self.i = 0
                             rudisha 'a'
-                        raise Exc
+                        ashiria Exc
                 rudisha BogonIter()
             eleza __getitem__(self, key):
                 rudisha key
@@ -248,10 +248,10 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
                             rtn = chr(self.i)
                             self.i += 1
                             rudisha rtn
-                        raise StopIteration
+                        ashiria StopIteration
                 rudisha BogonIter()
             eleza __getitem__(self, key):
-                raise Exc
+                ashiria Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d = self._empty_mapping()
@@ -259,27 +259,27 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, d.update, badseq())
 
         self.assertRaises(ValueError, d.update, [(1, 2, 3)])
 
-    # no test_kutokakeys or test_copy as both os.environ and selves don't support it
+    # no test_kutokakeys ama test_copy kama both os.environ na selves don't support it
 
     eleza test_get(self):
         d = self._empty_mapping()
-        self.assertTrue(d.get(list(self.other.keys())[0]) is None)
+        self.assertKweli(d.get(list(self.other.keys())[0]) ni Tupu)
         self.assertEqual(d.get(list(self.other.keys())[0], 3), 3)
         d = self.reference
-        self.assertTrue(d.get(list(self.other.keys())[0]) is None)
+        self.assertKweli(d.get(list(self.other.keys())[0]) ni Tupu)
         self.assertEqual(d.get(list(self.other.keys())[0], 3), 3)
         self.assertEqual(d.get(list(self.inmapping.keys())[0]),
                          list(self.inmapping.values())[0])
         self.assertEqual(d.get(list(self.inmapping.keys())[0], 3),
                          list(self.inmapping.values())[0])
         self.assertRaises(TypeError, d.get)
-        self.assertRaises(TypeError, d.get, None, None, None)
+        self.assertRaises(TypeError, d.get, Tupu, Tupu, Tupu)
 
     eleza test_setdefault(self):
         d = self._empty_mapping()
@@ -305,15 +305,15 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
 kundi TestMappingProtocol(BasicTestMappingProtocol):
     eleza test_constructor(self):
         BasicTestMappingProtocol.test_constructor(self)
-        self.assertTrue(self._empty_mapping() is not self._empty_mapping())
+        self.assertKweli(self._empty_mapping() ni sio self._empty_mapping())
         self.assertEqual(self.type2test(x=1, y=2), {"x": 1, "y": 2})
 
     eleza test_bool(self):
         BasicTestMappingProtocol.test_bool(self)
-        self.assertTrue(not self._empty_mapping())
-        self.assertTrue(self._full_mapping({"x": "y"}))
-        self.assertTrue(bool(self._empty_mapping()) is False)
-        self.assertTrue(bool(self._full_mapping({"x": "y"})) is True)
+        self.assertKweli(not self._empty_mapping())
+        self.assertKweli(self._full_mapping({"x": "y"}))
+        self.assertKweli(bool(self._empty_mapping()) ni Uongo)
+        self.assertKweli(bool(self._full_mapping({"x": "y"})) ni Kweli)
 
     eleza test_keys(self):
         BasicTestMappingProtocol.test_keys(self)
@@ -339,8 +339,8 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
     eleza test_contains(self):
         d = self._empty_mapping()
         self.assertNotIn('a', d)
-        self.assertTrue(not ('a' in d))
-        self.assertTrue('a' not in d)
+        self.assertKweli(not ('a' kwenye d))
+        self.assertKweli('a' haiko kwenye d)
         d = self._full_mapping({'a': 1, 'b': 2})
         self.assertIn('a', d)
         self.assertIn('b', d)
@@ -362,7 +362,7 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
         d['a'] = 4
         self.assertEqual(d['c'], 3)
         self.assertEqual(d['a'], 4)
-        del d['b']
+        toa d['b']
         self.assertEqual(d, {'a': 4, 'c': 3})
 
         self.assertRaises(TypeError, d.__getitem__)
@@ -372,7 +372,7 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
         d.clear()
         self.assertEqual(d, {})
 
-        self.assertRaises(TypeError, d.clear, None)
+        self.assertRaises(TypeError, d.clear, Tupu)
 
     eleza test_update(self):
         BasicTestMappingProtocol.test_update(self)
@@ -399,7 +399,7 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
         d.update([("x", 100), ("y", 20)])
         self.assertEqual(d, {"x":100, "y":20})
 
-        # Both item sequence and keyword arguments
+        # Both item sequence na keyword arguments
         d = self._empty_mapping()
         d.update([("x", 100), ("y", 20)], x=1, y=2)
         self.assertEqual(d, {"x":1, "y":2})
@@ -421,35 +421,35 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
         self.assertEqual(d, {1:1, 2:2, 3:3})
 
     eleza test_kutokakeys(self):
-        self.assertEqual(self.type2test.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertEqual(self.type2test.kutokakeys('abc'), {'a':Tupu, 'b':Tupu, 'c':Tupu})
         d = self._empty_mapping()
-        self.assertTrue(not(d.kutokakeys('abc') is d))
-        self.assertEqual(d.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertKweli(not(d.kutokakeys('abc') ni d))
+        self.assertEqual(d.kutokakeys('abc'), {'a':Tupu, 'b':Tupu, 'c':Tupu})
         self.assertEqual(d.kutokakeys((4,5),0), {4:0, 5:0})
         self.assertEqual(d.kutokakeys([]), {})
         eleza g():
-            yield 1
-        self.assertEqual(d.kutokakeys(g()), {1:None})
+            tuma 1
+        self.assertEqual(d.kutokakeys(g()), {1:Tupu})
         self.assertRaises(TypeError, {}.kutokakeys, 3)
-        kundi dictlike(self.type2test): pass
-        self.assertEqual(dictlike.kutokakeys('a'), {'a':None})
-        self.assertEqual(dictlike().kutokakeys('a'), {'a':None})
-        self.assertTrue(dictlike.kutokakeys('a').__class__ is dictlike)
-        self.assertTrue(dictlike().kutokakeys('a').__class__ is dictlike)
-        self.assertTrue(type(dictlike.kutokakeys('a')) is dictlike)
+        kundi dictlike(self.type2test): pita
+        self.assertEqual(dictlike.kutokakeys('a'), {'a':Tupu})
+        self.assertEqual(dictlike().kutokakeys('a'), {'a':Tupu})
+        self.assertKweli(dictlike.kutokakeys('a').__class__ ni dictlike)
+        self.assertKweli(dictlike().kutokakeys('a').__class__ ni dictlike)
+        self.assertKweli(type(dictlike.kutokakeys('a')) ni dictlike)
         kundi mydict(self.type2test):
             eleza __new__(cls):
                 rudisha collections.UserDict()
         ud = mydict.kutokakeys('ab')
-        self.assertEqual(ud, {'a':None, 'b':None})
+        self.assertEqual(ud, {'a':Tupu, 'b':Tupu})
         self.assertIsInstance(ud, collections.UserDict)
         self.assertRaises(TypeError, dict.kutokakeys)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi baddict1(self.type2test):
             eleza __init__(self):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, baddict1.kutokakeys, [1])
 
@@ -457,13 +457,13 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, self.type2test.kutokakeys, BadSeq())
 
         kundi baddict2(self.type2test):
             eleza __setitem__(self, key, value):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, baddict2.kutokakeys, [1])
 
@@ -473,15 +473,15 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
         d = self._empty_mapping()
         self.assertEqual(d.copy(), d)
         self.assertIsInstance(d.copy(), d.__class__)
-        self.assertRaises(TypeError, d.copy, None)
+        self.assertRaises(TypeError, d.copy, Tupu)
 
     eleza test_get(self):
         BasicTestMappingProtocol.test_get(self)
         d = self._empty_mapping()
-        self.assertTrue(d.get('c') is None)
+        self.assertKweli(d.get('c') ni Tupu)
         self.assertEqual(d.get('c', 3), 3)
         d = self._full_mapping({'a' : 1, 'b' : 2})
-        self.assertTrue(d.get('c') is None)
+        self.assertKweli(d.get('c') ni Tupu)
         self.assertEqual(d.get('c', 3), 3)
         self.assertEqual(d.get('a'), 1)
         self.assertEqual(d.get('a', 3), 1)
@@ -489,9 +489,9 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
     eleza test_setdefault(self):
         BasicTestMappingProtocol.test_setdefault(self)
         d = self._empty_mapping()
-        self.assertTrue(d.setdefault('key0') is None)
+        self.assertKweli(d.setdefault('key0') ni Tupu)
         d.setdefault('key0', [])
-        self.assertTrue(d.setdefault('key0') is None)
+        self.assertKweli(d.setdefault('key0') ni Tupu)
         d.setdefault('key', []).append(3)
         self.assertEqual(d['key'][0], 3)
         d.setdefault('key', []).append(4)
@@ -499,32 +499,32 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
 
     eleza test_popitem(self):
         BasicTestMappingProtocol.test_popitem(self)
-        for copymode in -1, +1:
-            # -1: b has same structure as a
-            # +1: b is a.copy()
-            for log2size in range(12):
+        kila copymode kwenye -1, +1:
+            # -1: b has same structure kama a
+            # +1: b ni a.copy()
+            kila log2size kwenye range(12):
                 size = 2**log2size
                 a = self._empty_mapping()
                 b = self._empty_mapping()
-                for i in range(size):
+                kila i kwenye range(size):
                     a[repr(i)] = i
                     ikiwa copymode < 0:
                         b[repr(i)] = i
                 ikiwa copymode > 0:
                     b = a.copy()
-                for i in range(size):
+                kila i kwenye range(size):
                     ka, va = ta = a.popitem()
                     self.assertEqual(va, int(ka))
                     kb, vb = tb = b.popitem()
                     self.assertEqual(vb, int(kb))
-                    self.assertTrue(not(copymode < 0 and ta != tb))
-                self.assertTrue(not a)
-                self.assertTrue(not b)
+                    self.assertKweli(not(copymode < 0 na ta != tb))
+                self.assertKweli(not a)
+                self.assertKweli(not b)
 
     eleza test_pop(self):
         BasicTestMappingProtocol.test_pop(self)
 
-        # Tests for pop with specified key
+        # Tests kila pop with specified key
         d = self._empty_mapping()
         k, v = 'abc', 'def'
 
@@ -537,11 +537,11 @@ kundi TestHashMappingProtocol(TestMappingProtocol):
 
     eleza test_getitem(self):
         TestMappingProtocol.test_getitem(self)
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadEq(object):
             eleza __eq__(self, other):
-                raise Exc()
+                ashiria Exc()
             eleza __hash__(self):
                 rudisha 24
 
@@ -550,17 +550,17 @@ kundi TestHashMappingProtocol(TestMappingProtocol):
         self.assertRaises(KeyError, d.__getitem__, 23)
 
         kundi BadHash(object):
-            fail = False
+            fail = Uongo
             eleza __hash__(self):
                 ikiwa self.fail:
-                    raise Exc()
-                else:
+                    ashiria Exc()
+                isipokua:
                     rudisha 42
 
         d = self._empty_mapping()
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Kweli
         self.assertRaises(Exc, d.__getitem__, x)
 
     eleza test_kutokakeys(self):
@@ -569,38 +569,38 @@ kundi TestHashMappingProtocol(TestMappingProtocol):
             eleza __new__(cls):
                 rudisha collections.UserDict()
         ud = mydict.kutokakeys('ab')
-        self.assertEqual(ud, {'a':None, 'b':None})
+        self.assertEqual(ud, {'a':Tupu, 'b':Tupu})
         self.assertIsInstance(ud, collections.UserDict)
 
     eleza test_pop(self):
         TestMappingProtocol.test_pop(self)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadHash(object):
-            fail = False
+            fail = Uongo
             eleza __hash__(self):
                 ikiwa self.fail:
-                    raise Exc()
-                else:
+                    ashiria Exc()
+                isipokua:
                     rudisha 42
 
         d = self._empty_mapping()
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Kweli
         self.assertRaises(Exc, d.pop, x)
 
     eleza test_mutatingiteration(self):
         d = self._empty_mapping()
         d[1] = 1
-        try:
-            for i in d:
+        jaribu:
+            kila i kwenye d:
                 d[i+1] = 1
-        except RuntimeError:
-            pass
-        else:
-            self.fail("changing dict size during iteration doesn't raise Error")
+        tatizo RuntimeError:
+            pita
+        isipokua:
+            self.fail("changing dict size during iteration doesn't ashiria Error")
 
     eleza test_repr(self):
         d = self._empty_mapping()
@@ -611,18 +611,18 @@ kundi TestHashMappingProtocol(TestMappingProtocol):
         d[1] = d
         self.assertEqual(repr(d), '{1: {...}}')
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadRepr(object):
             eleza __repr__(self):
-                raise Exc()
+                ashiria Exc()
 
         d = self._full_mapping({1: BadRepr()})
         self.assertRaises(Exc, repr, d)
 
     eleza test_repr_deep(self):
         d = self._empty_mapping()
-        for i in range(sys.getrecursionlimit() + 100):
+        kila i kwenye range(sys.getrecursionlimit() + 100):
             d0 = d
             d = self._empty_mapping()
             d[1] = d0
@@ -633,11 +633,11 @@ kundi TestHashMappingProtocol(TestMappingProtocol):
         self.assertEqual(self._full_mapping({1: 2}),
                          self._full_mapping({1: 2}))
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadCmp(object):
             eleza __eq__(self, other):
-                raise Exc()
+                ashiria Exc()
             eleza __hash__(self):
                 rudisha 1
 
@@ -649,18 +649,18 @@ kundi TestHashMappingProtocol(TestMappingProtocol):
     eleza test_setdefault(self):
         TestMappingProtocol.test_setdefault(self)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadHash(object):
-            fail = False
+            fail = Uongo
             eleza __hash__(self):
                 ikiwa self.fail:
-                    raise Exc()
-                else:
+                    ashiria Exc()
+                isipokua:
                     rudisha 42
 
         d = self._empty_mapping()
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Kweli
         self.assertRaises(Exc, d.setdefault, x, [])

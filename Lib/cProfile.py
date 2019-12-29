@@ -70,10 +70,10 @@ kundi Profile(_lsprof.Profiler):
             if entry.calls:
                 func = label(entry.code)
                 for subentry in entry.calls:
-                    try:
+                    jaribu:
                         callers = callersdicts[id(subentry.code)]
-                    except KeyError:
-                        continue
+                    tatizo KeyError:
+                        endelea
                     nc = subentry.callcount
                     cc = nc - subentry.reccallcount
                     tt = subentry.inlinetime
@@ -96,9 +96,9 @@ kundi Profile(_lsprof.Profiler):
 
     def runctx(self, cmd, globals, locals):
         self.enable()
-        try:
+        jaribu:
             exec(cmd, globals, locals)
-        finally:
+        mwishowe:
             self.disable()
         return self
 
@@ -106,7 +106,7 @@ kundi Profile(_lsprof.Profiler):
     def runcall(*args, **kw):
         if len(args) >= 2:
             self, func, *args = args
-        lasivyo not args:
+        lasivyo sio args:
             raise TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
         lasivyo 'func' in kw:
@@ -115,14 +115,14 @@ kundi Profile(_lsprof.Profiler):
             agiza warnings
             warnings.warn("Passing 'func' as keyword argument is deprecated",
                           DeprecationWarning, stacklevel=2)
-        else:
+        isipokua:
             raise TypeError('runcall expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         self.enable()
-        try:
+        jaribu:
             return func(*args, **kw)
-        finally:
+        mwishowe:
             self.disable()
     runcall.__text_signature__ = '($self, func, /, *args, **kw)'
 
@@ -138,7 +138,7 @@ kundi Profile(_lsprof.Profiler):
 def label(code):
     if isinstance(code, str):
         return ('~', 0, code)    # built-in functions ('~' sorts at the end)
-    else:
+    isipokua:
         return (code.co_filename, code.co_firstlineno, code.co_name)
 
 # ____________________________________________________________
@@ -161,7 +161,7 @@ def main():
     parser.add_option('-m', dest="module", action="store_true",
         help="Profile a library module", default=False)
 
-    if not sys.argv[1:]:
+    if sio sys.argv[1:]:
         parser.print_usage()
         sys.exit(2)
 
@@ -175,7 +175,7 @@ def main():
                 'run_module': runpy.run_module,
                 'modname': args[0]
             }
-        else:
+        isipokua:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
             with open(progname, 'rb') as fp:
@@ -187,7 +187,7 @@ def main():
                 '__cached__': None,
             }
         runctx(code, globs, None, options.outfile, options.sort)
-    else:
+    isipokua:
         parser.print_usage()
     return parser
 

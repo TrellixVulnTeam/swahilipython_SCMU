@@ -1,7 +1,7 @@
 """Sort performance test.
 
-See main() for command line syntax.
-See tabulate() for output format.
+See main() kila command line syntax.
+See tabulate() kila output format.
 
 """
 
@@ -15,41 +15,41 @@ agiza os
 td = tempfile.gettempdir()
 
 eleza randfloats(n):
-    """Return a list of n random floats in [0, 1)."""
-    # Generating floats is expensive, so this writes them out to a file in
+    """Return a list of n random floats kwenye [0, 1)."""
+    # Generating floats ni expensive, so this writes them out to a file in
     # a temp directory.  If the file already exists, it just reads them
-    # back in and shuffles them a bit.
+    # back kwenye na shuffles them a bit.
     fn = os.path.join(td, "rr%06d" % n)
-    try:
+    jaribu:
         fp = open(fn, "rb")
-    except OSError:
+    tatizo OSError:
         r = random.random
-        result = [r() for i in range(n)]
-        try:
-            try:
+        result = [r() kila i kwenye range(n)]
+        jaribu:
+            jaribu:
                 fp = open(fn, "wb")
                 marshal.dump(result, fp)
                 fp.close()
-                fp = None
-            finally:
+                fp = Tupu
+            mwishowe:
                 ikiwa fp:
-                    try:
+                    jaribu:
                         os.unlink(fn)
-                    except OSError:
-                        pass
-        except OSError as msg:
+                    tatizo OSError:
+                        pita
+        tatizo OSError kama msg:
             andika("can't write", fn, ":", msg)
-    else:
+    isipokua:
         result = marshal.load(fp)
         fp.close()
         # Shuffle it a bit...
-        for i in range(10):
+        kila i kwenye range(10):
             i = random.randrange(n)
             temp = result[:i]
-            del result[:i]
+            toa result[:i]
             temp.reverse()
             result.extend(temp)
-            del temp
+            toa temp
     assert len(result) == n
     rudisha result
 
@@ -64,11 +64,11 @@ eleza doit(L):
     flush()
 
 eleza tabulate(r):
-    r"""Tabulate sort speed for lists of various sizes.
+    r"""Tabulate sort speed kila lists of various sizes.
 
-    The sizes are 2**i for i in r (the argument, a list).
+    The sizes are 2**i kila i kwenye r (the argument, a list).
 
-    The output displays i, 2**i, and the time to sort arrays of 2**i
+    The output displays i, 2**i, na the time to sort arrays of 2**i
     floating point numbers with the following properties:
 
     *sort: random data
@@ -82,10 +82,10 @@ eleza tabulate(r):
     !sort: worst case scenario
 
     """
-    cases = tuple([ch + "sort" for ch in r"*\/3+%~=!"])
+    cases = tuple([ch + "sort" kila ch kwenye r"*\/3+%~=!"])
     fmt = ("%2s %7s" + " %6s"*len(cases))
     andika(fmt % (("i", "2**i") + cases))
-    for i in r:
+    kila i kwenye r:
         n = 1 << i
         L = randfloats(n)
         andika("%2d %7d" % (i, n), end=' ')
@@ -96,7 +96,7 @@ eleza tabulate(r):
         doit(L) # /sort
 
         # Do 3 random exchanges.
-        for dummy in range(3):
+        kila dummy kwenye range(3):
             i1 = random.randrange(n)
             i2 = random.randrange(n)
             L[i1], L[i2] = L[i2], L[i1]
@@ -104,43 +104,43 @@ eleza tabulate(r):
 
         # Replace the last 10 with random floats.
         ikiwa n >= 10:
-            L[-10:] = [random.random() for dummy in range(10)]
+            L[-10:] = [random.random() kila dummy kwenye range(10)]
         doit(L) # +sort
 
         # Replace 1% of the elements at random.
-        for dummy in range(n // 100):
+        kila dummy kwenye range(n // 100):
             L[random.randrange(n)] = random.random()
         doit(L) # %sort
 
-        # Arrange for lots of duplicates.
+        # Arrange kila lots of duplicates.
         ikiwa n > 4:
-            del L[4:]
+            toa L[4:]
             L = L * (n // 4)
             # Force the elements to be distinct objects, else timings can be
             # artificially low.
             L = list(map(lambda x: --x, L))
         doit(L) # ~sort
-        del L
+        toa L
 
         # All equal.  Again, force the elements to be distinct objects.
         L = list(map(abs, [-0.5] * n))
         doit(L) # =sort
-        del L
+        toa L
 
         # This one looks like [3, 2, 1, 0, 0, 1, 2, 3].  It was a bad case
-        # for an older implementation of quicksort, which used the median
-        # of the first, last and middle elements as the pivot.
+        # kila an older implementation of quicksort, which used the median
+        # of the first, last na middle elements kama the pivot.
         half = n // 2
         L = list(range(half - 1, -1, -1))
         L.extend(range(half))
         # Force to float, so that the timings are comparable.  This is
-        # significantly faster ikiwa we leave tham as ints.
+        # significantly faster ikiwa we leave tham kama ints.
         L = list(map(float, L))
         doit(L) # !sort
         andika()
 
 eleza main():
-    """Main program when invoked as a script.
+    """Main program when invoked kama a script.
 
     One argument: tabulate a single row.
     Two arguments: tabulate a range (inclusive).
@@ -159,7 +159,7 @@ eleza main():
             ikiwa sys.argv[3:]:
                 # derive random seed kutoka remaining arguments
                 x = 1
-                for a in sys.argv[3:]:
+                kila a kwenye sys.argv[3:]:
                     x = 69069 * x + hash(a)
                 random.seed(x)
     r = range(k1, k2+1)                 # include the end point

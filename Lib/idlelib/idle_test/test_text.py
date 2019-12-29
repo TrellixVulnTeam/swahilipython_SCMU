@@ -12,8 +12,8 @@ kundi TextTest(object):
     hw = 'hello\nworld'  # Several tests insert this after initialization.
     hwn = hw+'\n'  # \n present at initialization, before insert
 
-    # setUpClass defines cls.Text and maybe cls.root.
-    # setUp defines self.text kutoka Text and maybe root.
+    # setUpClass defines cls.Text na maybe cls.root.
+    # setUp defines self.text kutoka Text na maybe root.
 
     eleza test_init(self):
         self.assertEqual(self.text.get('1.0'), '\n')
@@ -22,24 +22,24 @@ kundi TextTest(object):
     eleza test_index_empty(self):
         index = self.text.index
 
-        for dex in (-1.0, 0.3, '1.-1', '1.0', '1.0 lineend', '1.end', '1.33',
+        kila dex kwenye (-1.0, 0.3, '1.-1', '1.0', '1.0 lineend', '1.end', '1.33',
                 'insert'):
             self.assertEqual(index(dex), '1.0')
 
-        for dex in 'end', 2.0, '2.1', '33.44':
+        kila dex kwenye 'end', 2.0, '2.1', '33.44':
             self.assertEqual(index(dex), '2.0')
 
     eleza test_index_data(self):
         index = self.text.index
         self.text.insert('1.0', self.hw)
 
-        for dex in -1.0, 0.3, '1.-1', '1.0':
+        kila dex kwenye -1.0, 0.3, '1.-1', '1.0':
             self.assertEqual(index(dex), '1.0')
 
-        for dex in '1.0 lineend', '1.end', '1.33':
+        kila dex kwenye '1.0 lineend', '1.end', '1.33':
             self.assertEqual(index(dex), '1.5')
 
-        for dex in 'end',  '33.44':
+        kila dex kwenye 'end',  '33.44':
             self.assertEqual(index(dex), '3.0')
 
     eleza test_get(self):
@@ -88,7 +88,7 @@ kundi TextTest(object):
         Equal(get('1.0', 'end'), '*helx\nlo*\nwor*ldx\n')
 
     eleza test_no_delete(self):
-        # ikiwa index1 == 'insert' or 'end' or >= end, there is no deletion
+        # ikiwa index1 == 'insert' ama 'end' ama >= end, there ni no deletion
         delete = self.text.delete
         get = self.text.get
         Equal = self.assertEqual
@@ -124,7 +124,7 @@ kundi TextTest(object):
         delete('1.0', '1.1')
         Equal(get('1.0', '1.end'), 'llo')
 
-        # delete \n and combine 2 lines into 1
+        # delete \n na combine 2 lines into 1
         delete('1.end')
         Equal(get('1.0', '1.end'), 'lloworld')
 
@@ -159,7 +159,7 @@ kundi TextTest(object):
         delete('1.2', '2.3')
         Equal(get('1.0', 'end'), 'held\n')
 
-    eleza test_multiple_lines(self):  # insert and delete
+    eleza test_multiple_lines(self):  # insert na delete
         self.text.insert('1.0', 'hello')
 
         self.text.insert('1.3', '1\n2\n3\n4\n5')
@@ -171,18 +171,18 @@ kundi TextTest(object):
     eleza test_compare(self):
         compare = self.text.compare
         Equal = self.assertEqual
-        # need data so indexes not squished to 1,0
+        # need data so indexes sio squished to 1,0
         self.text.insert('1.0', 'First\nSecond\nThird\n')
 
         self.assertRaises(TclError, compare, '2.2', 'op', '2.2')
 
-        for op, less1, less0, equal, greater0, greater1 in (
-                ('<', True, True, False, False, False),
-                ('<=', True, True, True, False, False),
-                ('>', False, False, False, True, True),
-                ('>=', False, False, True, True, True),
-                ('==', False, False, True, False, False),
-                ('!=', True, True, False, True, True),
+        kila op, less1, less0, equal, greater0, greater1 kwenye (
+                ('<', Kweli, Kweli, Uongo, Uongo, Uongo),
+                ('<=', Kweli, Kweli, Kweli, Uongo, Uongo),
+                ('>', Uongo, Uongo, Uongo, Kweli, Kweli),
+                ('>=', Uongo, Uongo, Kweli, Kweli, Kweli),
+                ('==', Uongo, Uongo, Kweli, Uongo, Uongo),
+                ('!=', Kweli, Kweli, Uongo, Kweli, Kweli),
                 ):
             Equal(compare('1.1', op, '2.2'), less1, op)
             Equal(compare('2.1', op, '2.2'), less0, op)
@@ -203,7 +203,7 @@ kundi MockTextTest(TextTest, unittest.TestCase):
 
 
     eleza test_decode(self):
-        # test endflags (-1, 0) not tested by test_index (which uses +1)
+        # test endflags (-1, 0) sio tested by test_index (which uses +1)
         decode = self.text._decode
         Equal = self.assertEqual
         self.text.insert('1.0', self.hw)
@@ -226,11 +226,11 @@ kundi TkTextTest(TextTest, unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.text = self.Text(self.root)
 
 
 ikiwa __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Uongo)

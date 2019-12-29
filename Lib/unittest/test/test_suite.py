@@ -6,18 +6,18 @@ agiza weakref
 kutoka unittest.test.support agiza LoggingResult, TestEquality
 
 
-### Support code for Test_TestSuite
+### Support code kila Test_TestSuite
 ################################################################
 
 kundi Test(object):
     kundi Foo(unittest.TestCase):
-        eleza test_1(self): pass
-        eleza test_2(self): pass
-        eleza test_3(self): pass
-        eleza runTest(self): pass
+        eleza test_1(self): pita
+        eleza test_2(self): pita
+        eleza test_3(self): pita
+        eleza runTest(self): pita
 
 eleza _mk_TestSuite(*names):
-    rudisha unittest.TestSuite(Test.Foo(n) for n in names)
+    rudisha unittest.TestSuite(Test.Foo(n) kila n kwenye names)
 
 ################################################################
 
@@ -41,7 +41,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     ################################################################
     ### /Set up attributes needed by inherited tests
 
-    ### Tests for TestSuite.__init__
+    ### Tests kila TestSuite.__init__
     ################################################################
 
     # "kundi TestSuite([tests])"
@@ -57,8 +57,8 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "kundi TestSuite([tests])"
     # ...
-    # "If tests is given, it must be an iterable of individual test cases
-    # or other test suites that will be used to build the suite initially"
+    # "If tests ni given, it must be an iterable of individual test cases
+    # ama other test suites that will be used to build the suite initially"
     #
     # TestSuite should deal with empty tests iterables by allowing the
     # creation of an empty suite
@@ -72,14 +72,14 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "kundi TestSuite([tests])"
     # ...
-    # "If tests is given, it must be an iterable of individual test cases
-    # or other test suites that will be used to build the suite initially"
+    # "If tests ni given, it must be an iterable of individual test cases
+    # ama other test suites that will be used to build the suite initially"
     #
     # TestSuite should allow any iterable to provide tests
     eleza test_init__tests_kutoka_any_iterable(self):
         eleza tests():
-            yield unittest.FunctionTestCase(lambda: None)
-            yield unittest.FunctionTestCase(lambda: None)
+            tuma unittest.FunctionTestCase(lambda: Tupu)
+            tuma unittest.FunctionTestCase(lambda: Tupu)
 
         suite_1 = unittest.TestSuite(tests())
         self.assertEqual(suite_1.countTestCases(), 2)
@@ -100,16 +100,16 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     # "kundi TestSuite([tests])"
     # ...
-    # "If tests is given, it must be an iterable of individual test cases
-    # or other test suites that will be used to build the suite initially"
+    # "If tests ni given, it must be an iterable of individual test cases
+    # ama other test suites that will be used to build the suite initially"
     #
     # Does TestSuite() also allow other TestSuite() instances to be present
-    # in the tests iterable?
+    # kwenye the tests iterable?
     eleza test_init__TestSuite_instances_in_tests(self):
         eleza tests():
-            ftc = unittest.FunctionTestCase(lambda: None)
-            yield unittest.TestSuite([ftc])
-            yield unittest.FunctionTestCase(lambda: None)
+            ftc = unittest.FunctionTestCase(lambda: Tupu)
+            tuma unittest.TestSuite([ftc])
+            tuma unittest.FunctionTestCase(lambda: Tupu)
 
         suite = unittest.TestSuite(tests())
         self.assertEqual(suite.countTestCases(), 2)
@@ -118,47 +118,47 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(suite.countTestCases(), 2)
 
     ################################################################
-    ### /Tests for TestSuite.__init__
+    ### /Tests kila TestSuite.__init__
 
     # Container types should support the iter protocol
     eleza test_iter(self):
-        test1 = unittest.FunctionTestCase(lambda: None)
-        test2 = unittest.FunctionTestCase(lambda: None)
+        test1 = unittest.FunctionTestCase(lambda: Tupu)
+        test2 = unittest.FunctionTestCase(lambda: Tupu)
         suite = unittest.TestSuite((test1, test2))
 
         self.assertEqual(list(suite), [test1, test2])
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ni also implemented by the TestSuite class, which can
     # rudisha larger [greater than 1] values"
     #
-    # Presumably an empty TestSuite returns 0?
+    # Presumably an empty TestSuite rudishas 0?
     eleza test_countTestCases_zero_simple(self):
         suite = unittest.TestSuite()
 
         self.assertEqual(suite.countTestCases(), 0)
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ni also implemented by the TestSuite class, which can
     # rudisha larger [greater than 1] values"
     #
     # Presumably an empty TestSuite (even ikiwa it contains other empty
-    # TestSuite instances) returns 0?
+    # TestSuite instances) rudishas 0?
     eleza test_countTestCases_zero_nested(self):
         kundi Test1(unittest.TestCase):
             eleza test(self):
-                pass
+                pita
 
         suite = unittest.TestSuite([unittest.TestSuite()])
 
         self.assertEqual(suite.countTestCases(), 0)
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ni also implemented by the TestSuite class, which can
     # rudisha larger [greater than 1] values"
     eleza test_countTestCases_simple(self):
-        test1 = unittest.FunctionTestCase(lambda: None)
-        test2 = unittest.FunctionTestCase(lambda: None)
+        test1 = unittest.FunctionTestCase(lambda: Tupu)
+        test2 = unittest.FunctionTestCase(lambda: Tupu)
         suite = unittest.TestSuite((test1, test2))
 
         self.assertEqual(suite.countTestCases(), 2)
@@ -167,17 +167,17 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(suite.countTestCases(), 2)
 
     # "Return the number of tests represented by the this test object.
-    # ...this method is also implemented by the TestSuite class, which can
+    # ...this method ni also implemented by the TestSuite class, which can
     # rudisha larger [greater than 1] values"
     #
-    # Make sure this holds for nested TestSuite instances, too
+    # Make sure this holds kila nested TestSuite instances, too
     eleza test_countTestCases_nested(self):
         kundi Test1(unittest.TestCase):
-            eleza test1(self): pass
-            eleza test2(self): pass
+            eleza test1(self): pita
+            eleza test2(self): pita
 
-        test2 = unittest.FunctionTestCase(lambda: None)
-        test3 = unittest.FunctionTestCase(lambda: None)
+        test2 = unittest.FunctionTestCase(lambda: Tupu)
+        test3 = unittest.FunctionTestCase(lambda: Tupu)
         child = unittest.TestSuite((Test1('test2'), test2))
         parent = unittest.TestSuite((test3, child, Test1('test1')))
 
@@ -188,7 +188,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(child.countTestCases(), 2)
 
     # "Run the tests associated with this suite, collecting the result into
-    # the test result object passed as result."
+    # the test result object pitaed kama result."
     #
     # And ikiwa there are no tests? What then?
     eleza test_run__empty_suite(self):
@@ -202,19 +202,19 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(events, [])
 
     # "Note that unlike TestCase.run(), TestSuite.run() requires the
-    # "result object to be passed in."
+    # "result object to be pitaed in."
     eleza test_run__requires_result(self):
         suite = unittest.TestSuite()
 
-        try:
+        jaribu:
             suite.run()
-        except TypeError:
-            pass
-        else:
-            self.fail("Failed to raise TypeError")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("Failed to ashiria TypeError")
 
     # "Run the tests associated with this suite, collecting the result into
-    # the test result object passed as result."
+    # the test result object pitaed kama result."
     eleza test_run(self):
         events = []
         result = LoggingResult(events)
@@ -223,8 +223,8 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
             eleza run(self, result):
                 events.append('run %s' % self._testMethodName)
 
-            eleza test1(self): pass
-            eleza test2(self): pass
+            eleza test1(self): pita
+            eleza test2(self): pita
 
         tests = [LoggingCase('test1'), LoggingCase('test2')]
 
@@ -235,7 +235,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # "Add a TestCase ... to the suite"
     eleza test_addTest__TestCase(self):
         kundi Foo(unittest.TestCase):
-            eleza test(self): pass
+            eleza test(self): pita
 
         test = Foo('test')
         suite = unittest.TestSuite()
@@ -251,7 +251,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # "Add a ... TestSuite to the suite"
     eleza test_addTest__TestSuite(self):
         kundi Foo(unittest.TestCase):
-            eleza test(self): pass
+            eleza test(self): pita
 
         suite_2 = unittest.TestSuite([Foo('test')])
 
@@ -264,51 +264,51 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         suite.run(unittest.TestResult())
         self.assertEqual(suite.countTestCases(), 1)
 
-    # "Add all the tests kutoka an iterable of TestCase and TestSuite
+    # "Add all the tests kutoka an iterable of TestCase na TestSuite
     # instances to this test suite."
     #
-    # "This is equivalent to iterating over tests, calling addTest() for
+    # "This ni equivalent to iterating over tests, calling addTest() for
     # each element"
     eleza test_addTests(self):
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pass
-            eleza test_2(self): pass
+            eleza test_1(self): pita
+            eleza test_2(self): pita
 
         test_1 = Foo('test_1')
         test_2 = Foo('test_2')
         inner_suite = unittest.TestSuite([test_2])
 
         eleza gen():
-            yield test_1
-            yield test_2
-            yield inner_suite
+            tuma test_1
+            tuma test_2
+            tuma inner_suite
 
         suite_1 = unittest.TestSuite()
         suite_1.addTests(gen())
 
         self.assertEqual(list(suite_1), list(gen()))
 
-        # "This is equivalent to iterating over tests, calling addTest() for
+        # "This ni equivalent to iterating over tests, calling addTest() for
         # each element"
         suite_2 = unittest.TestSuite()
-        for t in gen():
+        kila t kwenye gen():
             suite_2.addTest(t)
 
         self.assertEqual(suite_1, suite_2)
 
-    # "Add all the tests kutoka an iterable of TestCase and TestSuite
+    # "Add all the tests kutoka an iterable of TestCase na TestSuite
     # instances to this test suite."
     #
     # What happens ikiwa it doesn't get an iterable?
     eleza test_addTest__noniterable(self):
         suite = unittest.TestSuite()
 
-        try:
+        jaribu:
             suite.addTests(5)
-        except TypeError:
-            pass
-        else:
-            self.fail("Failed to raise TypeError")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("Failed to ashiria TypeError")
 
     eleza test_addTest__noncallable(self):
         suite = unittest.TestSuite()
@@ -325,41 +325,41 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     eleza test_function_in_suite(self):
         eleza f(_):
-            pass
+            pita
         suite = unittest.TestSuite()
         suite.addTest(f)
 
-        # when the bug is fixed this line will not crash
+        # when the bug ni fixed this line will sio crash
         suite.run(unittest.TestResult())
 
     eleza test_remove_test_at_index(self):
-        ikiwa not unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+        ikiwa sio unittest.BaseTestSuite._cleanup:
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         suite = unittest.TestSuite()
 
         suite._tests = [1, 2, 3]
         suite._removeTestAtIndex(1)
 
-        self.assertEqual([1, None, 3], suite._tests)
+        self.assertEqual([1, Tupu, 3], suite._tests)
 
     eleza test_remove_test_at_index_not_indexable(self):
-        ikiwa not unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+        ikiwa sio unittest.BaseTestSuite._cleanup:
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         suite = unittest.TestSuite()
-        suite._tests = None
+        suite._tests = Tupu
 
-        # ikiwa _removeAtIndex raises for noniterables this next line will break
+        # ikiwa _removeAtIndex ashirias kila noniterables this next line will koma
         suite._removeTestAtIndex(2)
 
     eleza assert_garbage_collect_test_after_run(self, TestSuiteClass):
-        ikiwa not unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+        ikiwa sio unittest.BaseTestSuite._cleanup:
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         kundi Foo(unittest.TestCase):
             eleza test_nothing(self):
-                pass
+                pita
 
         test = Foo('test_nothing')
         wref = weakref.ref(test)
@@ -367,13 +367,13 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         suite = TestSuiteClass([wref()])
         suite.run(unittest.TestResult())
 
-        del test
+        toa test
 
-        # for the benefit of non-reference counting implementations
+        # kila the benefit of non-reference counting implementations
         gc.collect()
 
-        self.assertEqual(suite._tests, [None])
-        self.assertIsNone(wref())
+        self.assertEqual(suite._tests, [Tupu])
+        self.assertIsTupu(wref())
 
     eleza test_garbage_collect_test_after_run_BaseTestSuite(self):
         self.assert_garbage_collect_test_after_run(unittest.BaseTestSuite)
@@ -383,27 +383,27 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     eleza test_basetestsuite(self):
         kundi Test(unittest.TestCase):
-            wasSetUp = False
-            wasTornDown = False
+            wasSetUp = Uongo
+            wasTornDown = Uongo
             @classmethod
             eleza setUpClass(cls):
-                cls.wasSetUp = True
+                cls.wasSetUp = Kweli
             @classmethod
             eleza tearDownClass(cls):
-                cls.wasTornDown = True
+                cls.wasTornDown = Kweli
             eleza testPass(self):
-                pass
+                pita
             eleza testFail(self):
                 fail
         kundi Module(object):
-            wasSetUp = False
-            wasTornDown = False
+            wasSetUp = Uongo
+            wasTornDown = Uongo
             @staticmethod
             eleza setUpModule():
-                Module.wasSetUp = True
+                Module.wasSetUp = Kweli
             @staticmethod
             eleza tearDownModule():
-                Module.wasTornDown = True
+                Module.wasTornDown = Kweli
 
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module
@@ -415,10 +415,10 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
         result = unittest.TestResult()
         suite.run(result)
-        self.assertFalse(Module.wasSetUp)
-        self.assertFalse(Module.wasTornDown)
-        self.assertFalse(Test.wasSetUp)
-        self.assertFalse(Test.wasTornDown)
+        self.assertUongo(Module.wasSetUp)
+        self.assertUongo(Module.wasTornDown)
+        self.assertUongo(Test.wasSetUp)
+        self.assertUongo(Test.wasTornDown)
         self.assertEqual(len(result.errors), 1)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 2)
@@ -427,9 +427,9 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     eleza test_overriding_call(self):
         kundi MySuite(unittest.TestSuite):
-            called = False
+            called = Uongo
             eleza __call__(self, *args, **kw):
-                self.called = True
+                self.called = Kweli
                 unittest.TestSuite.__call__(self, *args, **kw)
 
         suite = MySuite()
@@ -437,10 +437,10 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         wrapper = unittest.TestSuite()
         wrapper.addTest(suite)
         wrapper(result)
-        self.assertTrue(suite.called)
+        self.assertKweli(suite.called)
 
         # reusing results should be permitted even ikiwa abominable
-        self.assertFalse(result._testRunEntered)
+        self.assertUongo(result._testRunEntered)
 
 
 ikiwa __name__ == '__main__':

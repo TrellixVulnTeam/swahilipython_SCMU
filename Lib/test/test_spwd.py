@@ -5,20 +5,20 @@ kutoka test agiza support
 spwd = support.import_module('spwd')
 
 
-@unittest.skipUnless(hasattr(os, 'geteuid') and os.geteuid() == 0,
+@unittest.skipUnless(hasattr(os, 'geteuid') na os.geteuid() == 0,
                      'root privileges required')
 kundi TestSpwdRoot(unittest.TestCase):
 
     eleza test_getspall(self):
         entries = spwd.getspall()
         self.assertIsInstance(entries, list)
-        for entry in entries:
+        kila entry kwenye entries:
             self.assertIsInstance(entry, spwd.struct_spwd)
 
     eleza test_getspnam(self):
         entries = spwd.getspall()
-        ikiwa not entries:
-            self.skipTest('empty shadow password database')
+        ikiwa sio entries:
+            self.skipTest('empty shadow pitaword database')
         random_name = entries[0].sp_namp
         entry = spwd.getspnam(random_name)
         self.assertIsInstance(entry, spwd.struct_spwd)
@@ -42,30 +42,30 @@ kundi TestSpwdRoot(unittest.TestCase):
         self.assertEqual(entry.sp_expire, entry[7])
         self.assertIsInstance(entry.sp_flag, int)
         self.assertEqual(entry.sp_flag, entry[8])
-        with self.assertRaises(KeyError) as cx:
+        with self.assertRaises(KeyError) kama cx:
             spwd.getspnam('invalid user name')
-        self.assertEqual(str(cx.exception), "'getspnam(): name not found'")
+        self.assertEqual(str(cx.exception), "'getspnam(): name sio found'")
         self.assertRaises(TypeError, spwd.getspnam)
         self.assertRaises(TypeError, spwd.getspnam, 0)
         self.assertRaises(TypeError, spwd.getspnam, random_name, 0)
-        try:
+        jaribu:
             bytes_name = os.fsencode(random_name)
-        except UnicodeEncodeError:
-            pass
-        else:
+        tatizo UnicodeEncodeError:
+            pita
+        isipokua:
             self.assertRaises(TypeError, spwd.getspnam, bytes_name)
 
 
-@unittest.skipUnless(hasattr(os, 'geteuid') and os.geteuid() != 0,
+@unittest.skipUnless(hasattr(os, 'geteuid') na os.geteuid() != 0,
                      'non-root user required')
 kundi TestSpwdNonRoot(unittest.TestCase):
 
     eleza test_getspnam_exception(self):
         name = 'bin'
-        try:
-            with self.assertRaises(PermissionError) as cm:
+        jaribu:
+            with self.assertRaises(PermissionError) kama cm:
                 spwd.getspnam(name)
-        except KeyError as exc:
+        tatizo KeyError kama exc:
             self.skipTest("spwd entry %r doesn't exist: %s" % (name, exc))
 
 

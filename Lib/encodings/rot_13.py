@@ -10,31 +10,31 @@ agiza codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
-    def encode(self, input, errors='strict'):
-        return (str.translate(input, rot13_map), len(input))
+kundi Codec(codecs.Codec):
+    eleza encode(self, input, errors='strict'):
+        rudisha (str.translate(input, rot13_map), len(input))
 
-    def decode(self, input, errors='strict'):
-        return (str.translate(input, rot13_map), len(input))
+    eleza decode(self, input, errors='strict'):
+        rudisha (str.translate(input, rot13_map), len(input))
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
-        return str.translate(input, rot13_map)
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza encode(self, input, final=False):
+        rudisha str.translate(input, rot13_map)
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
-        return str.translate(input, rot13_map)
+kundi IncrementalDecoder(codecs.IncrementalDecoder):
+    eleza decode(self, input, final=False):
+        rudisha str.translate(input, rot13_map)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+kundi StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+kundi StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='rot-13',
         encode=Codec().encode,
         decode=Codec().decode,
@@ -105,7 +105,7 @@ rot13_map.update({
 
 ### Filter API
 
-def rot13(infile, outfile):
+eleza rot13(infile, outfile):
     outfile.write(codecs.encode(infile.read(), 'rot-13'))
 
 if __name__ == '__main__':

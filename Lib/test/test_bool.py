@@ -8,106 +8,106 @@ agiza os
 kundi BoolTest(unittest.TestCase):
 
     eleza test_subclass(self):
-        try:
+        jaribu:
             kundi C(bool):
-                pass
-        except TypeError:
-            pass
-        else:
-            self.fail("bool should not be subclassable")
+                pita
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("bool should sio be subclassable")
 
         self.assertRaises(TypeError, int.__new__, bool, 0)
 
     eleza test_andika(self):
-        try:
-            with open(support.TESTFN, "w") as fo:
-                andika(False, True, file=fo)
-            with open(support.TESTFN, "r") as fi:
-                self.assertEqual(fi.read(), 'False True\n')
-        finally:
+        jaribu:
+            with open(support.TESTFN, "w") kama fo:
+                andika(Uongo, Kweli, file=fo)
+            with open(support.TESTFN, "r") kama fi:
+                self.assertEqual(fi.read(), 'Uongo Kweli\n')
+        mwishowe:
             os.remove(support.TESTFN)
 
     eleza test_repr(self):
-        self.assertEqual(repr(False), 'False')
-        self.assertEqual(repr(True), 'True')
-        self.assertEqual(eval(repr(False)), False)
-        self.assertEqual(eval(repr(True)), True)
+        self.assertEqual(repr(Uongo), 'Uongo')
+        self.assertEqual(repr(Kweli), 'Kweli')
+        self.assertEqual(eval(repr(Uongo)), Uongo)
+        self.assertEqual(eval(repr(Kweli)), Kweli)
 
     eleza test_str(self):
-        self.assertEqual(str(False), 'False')
-        self.assertEqual(str(True), 'True')
+        self.assertEqual(str(Uongo), 'Uongo')
+        self.assertEqual(str(Kweli), 'Kweli')
 
     eleza test_int(self):
-        self.assertEqual(int(False), 0)
-        self.assertIsNot(int(False), False)
-        self.assertEqual(int(True), 1)
-        self.assertIsNot(int(True), True)
+        self.assertEqual(int(Uongo), 0)
+        self.assertIsNot(int(Uongo), Uongo)
+        self.assertEqual(int(Kweli), 1)
+        self.assertIsNot(int(Kweli), Kweli)
 
     eleza test_float(self):
-        self.assertEqual(float(False), 0.0)
-        self.assertIsNot(float(False), False)
-        self.assertEqual(float(True), 1.0)
-        self.assertIsNot(float(True), True)
+        self.assertEqual(float(Uongo), 0.0)
+        self.assertIsNot(float(Uongo), Uongo)
+        self.assertEqual(float(Kweli), 1.0)
+        self.assertIsNot(float(Kweli), Kweli)
 
     eleza test_math(self):
-        self.assertEqual(+False, 0)
-        self.assertIsNot(+False, False)
-        self.assertEqual(-False, 0)
-        self.assertIsNot(-False, False)
-        self.assertEqual(abs(False), 0)
-        self.assertIsNot(abs(False), False)
-        self.assertEqual(+True, 1)
-        self.assertIsNot(+True, True)
-        self.assertEqual(-True, -1)
-        self.assertEqual(abs(True), 1)
-        self.assertIsNot(abs(True), True)
-        self.assertEqual(~False, -1)
-        self.assertEqual(~True, -2)
+        self.assertEqual(+Uongo, 0)
+        self.assertIsNot(+Uongo, Uongo)
+        self.assertEqual(-Uongo, 0)
+        self.assertIsNot(-Uongo, Uongo)
+        self.assertEqual(abs(Uongo), 0)
+        self.assertIsNot(abs(Uongo), Uongo)
+        self.assertEqual(+Kweli, 1)
+        self.assertIsNot(+Kweli, Kweli)
+        self.assertEqual(-Kweli, -1)
+        self.assertEqual(abs(Kweli), 1)
+        self.assertIsNot(abs(Kweli), Kweli)
+        self.assertEqual(~Uongo, -1)
+        self.assertEqual(~Kweli, -2)
 
-        self.assertEqual(False+2, 2)
-        self.assertEqual(True+2, 3)
-        self.assertEqual(2+False, 2)
-        self.assertEqual(2+True, 3)
+        self.assertEqual(Uongo+2, 2)
+        self.assertEqual(Kweli+2, 3)
+        self.assertEqual(2+Uongo, 2)
+        self.assertEqual(2+Kweli, 3)
 
-        self.assertEqual(False+False, 0)
-        self.assertIsNot(False+False, False)
-        self.assertEqual(False+True, 1)
-        self.assertIsNot(False+True, True)
-        self.assertEqual(True+False, 1)
-        self.assertIsNot(True+False, True)
-        self.assertEqual(True+True, 2)
+        self.assertEqual(Uongo+Uongo, 0)
+        self.assertIsNot(Uongo+Uongo, Uongo)
+        self.assertEqual(Uongo+Kweli, 1)
+        self.assertIsNot(Uongo+Kweli, Kweli)
+        self.assertEqual(Kweli+Uongo, 1)
+        self.assertIsNot(Kweli+Uongo, Kweli)
+        self.assertEqual(Kweli+Kweli, 2)
 
-        self.assertEqual(True-True, 0)
-        self.assertIsNot(True-True, False)
-        self.assertEqual(False-False, 0)
-        self.assertIsNot(False-False, False)
-        self.assertEqual(True-False, 1)
-        self.assertIsNot(True-False, True)
-        self.assertEqual(False-True, -1)
+        self.assertEqual(Kweli-Kweli, 0)
+        self.assertIsNot(Kweli-Kweli, Uongo)
+        self.assertEqual(Uongo-Uongo, 0)
+        self.assertIsNot(Uongo-Uongo, Uongo)
+        self.assertEqual(Kweli-Uongo, 1)
+        self.assertIsNot(Kweli-Uongo, Kweli)
+        self.assertEqual(Uongo-Kweli, -1)
 
-        self.assertEqual(True*1, 1)
-        self.assertEqual(False*1, 0)
-        self.assertIsNot(False*1, False)
+        self.assertEqual(Kweli*1, 1)
+        self.assertEqual(Uongo*1, 0)
+        self.assertIsNot(Uongo*1, Uongo)
 
-        self.assertEqual(True/1, 1)
-        self.assertIsNot(True/1, True)
-        self.assertEqual(False/1, 0)
-        self.assertIsNot(False/1, False)
+        self.assertEqual(Kweli/1, 1)
+        self.assertIsNot(Kweli/1, Kweli)
+        self.assertEqual(Uongo/1, 0)
+        self.assertIsNot(Uongo/1, Uongo)
 
-        self.assertEqual(True%1, 0)
-        self.assertIsNot(True%1, False)
-        self.assertEqual(True%2, 1)
-        self.assertIsNot(True%2, True)
-        self.assertEqual(False%1, 0)
-        self.assertIsNot(False%1, False)
+        self.assertEqual(Kweli%1, 0)
+        self.assertIsNot(Kweli%1, Uongo)
+        self.assertEqual(Kweli%2, 1)
+        self.assertIsNot(Kweli%2, Kweli)
+        self.assertEqual(Uongo%1, 0)
+        self.assertIsNot(Uongo%1, Uongo)
 
-        for b in False, True:
-            for i in 0, 1, 2:
+        kila b kwenye Uongo, Kweli:
+            kila i kwenye 0, 1, 2:
                 self.assertEqual(b**i, int(b)**i)
                 self.assertIsNot(b**i, bool(int(b)**i))
 
-        for a in False, True:
-            for b in False, True:
+        kila a kwenye Uongo, Kweli:
+            kila b kwenye Uongo, Kweli:
                 self.assertIs(a&b, bool(int(a)&int(b)))
                 self.assertIs(a|b, bool(int(a)|int(b)))
                 self.assertIs(a^b, bool(int(a)^int(b)))
@@ -124,175 +124,175 @@ kundi BoolTest(unittest.TestCase):
                 self.assertEqual(int(a)^b, int(a)^int(b))
                 self.assertIsNot(int(a)^b, bool(int(a)^int(b)))
 
-        self.assertIs(1==1, True)
-        self.assertIs(1==0, False)
-        self.assertIs(0<1, True)
-        self.assertIs(1<0, False)
-        self.assertIs(0<=0, True)
-        self.assertIs(1<=0, False)
-        self.assertIs(1>0, True)
-        self.assertIs(1>1, False)
-        self.assertIs(1>=1, True)
-        self.assertIs(0>=1, False)
-        self.assertIs(0!=1, True)
-        self.assertIs(0!=0, False)
+        self.assertIs(1==1, Kweli)
+        self.assertIs(1==0, Uongo)
+        self.assertIs(0<1, Kweli)
+        self.assertIs(1<0, Uongo)
+        self.assertIs(0<=0, Kweli)
+        self.assertIs(1<=0, Uongo)
+        self.assertIs(1>0, Kweli)
+        self.assertIs(1>1, Uongo)
+        self.assertIs(1>=1, Kweli)
+        self.assertIs(0>=1, Uongo)
+        self.assertIs(0!=1, Kweli)
+        self.assertIs(0!=0, Uongo)
 
         x = [1]
-        self.assertIs(x is x, True)
-        self.assertIs(x is not x, False)
+        self.assertIs(x ni x, Kweli)
+        self.assertIs(x ni sio x, Uongo)
 
-        self.assertIs(1 in x, True)
-        self.assertIs(0 in x, False)
-        self.assertIs(1 not in x, False)
-        self.assertIs(0 not in x, True)
+        self.assertIs(1 kwenye x, Kweli)
+        self.assertIs(0 kwenye x, Uongo)
+        self.assertIs(1 haiko kwenye x, Uongo)
+        self.assertIs(0 haiko kwenye x, Kweli)
 
         x = {1: 2}
-        self.assertIs(x is x, True)
-        self.assertIs(x is not x, False)
+        self.assertIs(x ni x, Kweli)
+        self.assertIs(x ni sio x, Uongo)
 
-        self.assertIs(1 in x, True)
-        self.assertIs(0 in x, False)
-        self.assertIs(1 not in x, False)
-        self.assertIs(0 not in x, True)
+        self.assertIs(1 kwenye x, Kweli)
+        self.assertIs(0 kwenye x, Uongo)
+        self.assertIs(1 haiko kwenye x, Uongo)
+        self.assertIs(0 haiko kwenye x, Kweli)
 
-        self.assertIs(not True, False)
-        self.assertIs(not False, True)
+        self.assertIs(not Kweli, Uongo)
+        self.assertIs(not Uongo, Kweli)
 
     eleza test_convert(self):
         self.assertRaises(TypeError, bool, 42, 42)
-        self.assertIs(bool(10), True)
-        self.assertIs(bool(1), True)
-        self.assertIs(bool(-1), True)
-        self.assertIs(bool(0), False)
-        self.assertIs(bool("hello"), True)
-        self.assertIs(bool(""), False)
-        self.assertIs(bool(), False)
+        self.assertIs(bool(10), Kweli)
+        self.assertIs(bool(1), Kweli)
+        self.assertIs(bool(-1), Kweli)
+        self.assertIs(bool(0), Uongo)
+        self.assertIs(bool("hello"), Kweli)
+        self.assertIs(bool(""), Uongo)
+        self.assertIs(bool(), Uongo)
 
     eleza test_keyword_args(self):
         with self.assertRaisesRegex(TypeError, 'keyword argument'):
             bool(x=10)
 
     eleza test_format(self):
-        self.assertEqual("%d" % False, "0")
-        self.assertEqual("%d" % True, "1")
-        self.assertEqual("%x" % False, "0")
-        self.assertEqual("%x" % True, "1")
+        self.assertEqual("%d" % Uongo, "0")
+        self.assertEqual("%d" % Kweli, "1")
+        self.assertEqual("%x" % Uongo, "0")
+        self.assertEqual("%x" % Kweli, "1")
 
     eleza test_hasattr(self):
-        self.assertIs(hasattr([], "append"), True)
-        self.assertIs(hasattr([], "wobble"), False)
+        self.assertIs(hasattr([], "append"), Kweli)
+        self.assertIs(hasattr([], "wobble"), Uongo)
 
     eleza test_callable(self):
-        self.assertIs(callable(len), True)
-        self.assertIs(callable(1), False)
+        self.assertIs(callable(len), Kweli)
+        self.assertIs(callable(1), Uongo)
 
     eleza test_isinstance(self):
-        self.assertIs(isinstance(True, bool), True)
-        self.assertIs(isinstance(False, bool), True)
-        self.assertIs(isinstance(True, int), True)
-        self.assertIs(isinstance(False, int), True)
-        self.assertIs(isinstance(1, bool), False)
-        self.assertIs(isinstance(0, bool), False)
+        self.assertIs(isinstance(Kweli, bool), Kweli)
+        self.assertIs(isinstance(Uongo, bool), Kweli)
+        self.assertIs(isinstance(Kweli, int), Kweli)
+        self.assertIs(isinstance(Uongo, int), Kweli)
+        self.assertIs(isinstance(1, bool), Uongo)
+        self.assertIs(isinstance(0, bool), Uongo)
 
     eleza test_issubclass(self):
-        self.assertIs(issubclass(bool, int), True)
-        self.assertIs(issubclass(int, bool), False)
+        self.assertIs(issubclass(bool, int), Kweli)
+        self.assertIs(issubclass(int, bool), Uongo)
 
     eleza test_contains(self):
-        self.assertIs(1 in {}, False)
-        self.assertIs(1 in {1:1}, True)
+        self.assertIs(1 kwenye {}, Uongo)
+        self.assertIs(1 kwenye {1:1}, Kweli)
 
     eleza test_string(self):
-        self.assertIs("xyz".endswith("z"), True)
-        self.assertIs("xyz".endswith("x"), False)
-        self.assertIs("xyz0123".isalnum(), True)
-        self.assertIs("@#$%".isalnum(), False)
-        self.assertIs("xyz".isalpha(), True)
-        self.assertIs("@#$%".isalpha(), False)
-        self.assertIs("0123".isdigit(), True)
-        self.assertIs("xyz".isdigit(), False)
-        self.assertIs("xyz".islower(), True)
-        self.assertIs("XYZ".islower(), False)
-        self.assertIs("0123".isdecimal(), True)
-        self.assertIs("xyz".isdecimal(), False)
-        self.assertIs("0123".isnumeric(), True)
-        self.assertIs("xyz".isnumeric(), False)
-        self.assertIs(" ".isspace(), True)
-        self.assertIs("\xa0".isspace(), True)
-        self.assertIs("\u3000".isspace(), True)
-        self.assertIs("XYZ".isspace(), False)
-        self.assertIs("X".istitle(), True)
-        self.assertIs("x".istitle(), False)
-        self.assertIs("XYZ".isupper(), True)
-        self.assertIs("xyz".isupper(), False)
-        self.assertIs("xyz".startswith("x"), True)
-        self.assertIs("xyz".startswith("z"), False)
+        self.assertIs("xyz".endswith("z"), Kweli)
+        self.assertIs("xyz".endswith("x"), Uongo)
+        self.assertIs("xyz0123".isalnum(), Kweli)
+        self.assertIs("@#$%".isalnum(), Uongo)
+        self.assertIs("xyz".isalpha(), Kweli)
+        self.assertIs("@#$%".isalpha(), Uongo)
+        self.assertIs("0123".isdigit(), Kweli)
+        self.assertIs("xyz".isdigit(), Uongo)
+        self.assertIs("xyz".islower(), Kweli)
+        self.assertIs("XYZ".islower(), Uongo)
+        self.assertIs("0123".isdecimal(), Kweli)
+        self.assertIs("xyz".isdecimal(), Uongo)
+        self.assertIs("0123".isnumeric(), Kweli)
+        self.assertIs("xyz".isnumeric(), Uongo)
+        self.assertIs(" ".isspace(), Kweli)
+        self.assertIs("\xa0".isspace(), Kweli)
+        self.assertIs("\u3000".isspace(), Kweli)
+        self.assertIs("XYZ".isspace(), Uongo)
+        self.assertIs("X".istitle(), Kweli)
+        self.assertIs("x".istitle(), Uongo)
+        self.assertIs("XYZ".isupper(), Kweli)
+        self.assertIs("xyz".isupper(), Uongo)
+        self.assertIs("xyz".startswith("x"), Kweli)
+        self.assertIs("xyz".startswith("z"), Uongo)
 
     eleza test_boolean(self):
-        self.assertEqual(True & 1, 1)
-        self.assertNotIsInstance(True & 1, bool)
-        self.assertIs(True & True, True)
+        self.assertEqual(Kweli & 1, 1)
+        self.assertNotIsInstance(Kweli & 1, bool)
+        self.assertIs(Kweli & Kweli, Kweli)
 
-        self.assertEqual(True | 1, 1)
-        self.assertNotIsInstance(True | 1, bool)
-        self.assertIs(True | True, True)
+        self.assertEqual(Kweli | 1, 1)
+        self.assertNotIsInstance(Kweli | 1, bool)
+        self.assertIs(Kweli | Kweli, Kweli)
 
-        self.assertEqual(True ^ 1, 0)
-        self.assertNotIsInstance(True ^ 1, bool)
-        self.assertIs(True ^ True, False)
+        self.assertEqual(Kweli ^ 1, 0)
+        self.assertNotIsInstance(Kweli ^ 1, bool)
+        self.assertIs(Kweli ^ Kweli, Uongo)
 
     eleza test_fileclosed(self):
-        try:
-            with open(support.TESTFN, "w") as f:
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
-        finally:
+        jaribu:
+            with open(support.TESTFN, "w") kama f:
+                self.assertIs(f.closed, Uongo)
+            self.assertIs(f.closed, Kweli)
+        mwishowe:
             os.remove(support.TESTFN)
 
     eleza test_types(self):
         # types are always true.
-        for t in [bool, complex, dict, float, int, list, object,
+        kila t kwenye [bool, complex, dict, float, int, list, object,
                   set, str, tuple, type]:
-            self.assertIs(bool(t), True)
+            self.assertIs(bool(t), Kweli)
 
     eleza test_operator(self):
         agiza operator
-        self.assertIs(operator.truth(0), False)
-        self.assertIs(operator.truth(1), True)
-        self.assertIs(operator.not_(1), False)
-        self.assertIs(operator.not_(0), True)
-        self.assertIs(operator.contains([], 1), False)
-        self.assertIs(operator.contains([1], 1), True)
-        self.assertIs(operator.lt(0, 0), False)
-        self.assertIs(operator.lt(0, 1), True)
-        self.assertIs(operator.is_(True, True), True)
-        self.assertIs(operator.is_(True, False), False)
-        self.assertIs(operator.is_not(True, True), False)
-        self.assertIs(operator.is_not(True, False), True)
+        self.assertIs(operator.truth(0), Uongo)
+        self.assertIs(operator.truth(1), Kweli)
+        self.assertIs(operator.not_(1), Uongo)
+        self.assertIs(operator.not_(0), Kweli)
+        self.assertIs(operator.contains([], 1), Uongo)
+        self.assertIs(operator.contains([1], 1), Kweli)
+        self.assertIs(operator.lt(0, 0), Uongo)
+        self.assertIs(operator.lt(0, 1), Kweli)
+        self.assertIs(operator.is_(Kweli, Kweli), Kweli)
+        self.assertIs(operator.is_(Kweli, Uongo), Uongo)
+        self.assertIs(operator.is_not(Kweli, Kweli), Uongo)
+        self.assertIs(operator.is_not(Kweli, Uongo), Kweli)
 
     eleza test_marshal(self):
         agiza marshal
-        self.assertIs(marshal.loads(marshal.dumps(True)), True)
-        self.assertIs(marshal.loads(marshal.dumps(False)), False)
+        self.assertIs(marshal.loads(marshal.dumps(Kweli)), Kweli)
+        self.assertIs(marshal.loads(marshal.dumps(Uongo)), Uongo)
 
     eleza test_pickle(self):
         agiza pickle
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            self.assertIs(pickle.loads(pickle.dumps(True, proto)), True)
-            self.assertIs(pickle.loads(pickle.dumps(False, proto)), False)
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
+            self.assertIs(pickle.loads(pickle.dumps(Kweli, proto)), Kweli)
+            self.assertIs(pickle.loads(pickle.dumps(Uongo, proto)), Uongo)
 
     eleza test_picklevalues(self):
-        # Test for specific backwards-compatible pickle values
+        # Test kila specific backwards-compatible pickle values
         agiza pickle
-        self.assertEqual(pickle.dumps(True, protocol=0), b"I01\n.")
-        self.assertEqual(pickle.dumps(False, protocol=0), b"I00\n.")
-        self.assertEqual(pickle.dumps(True, protocol=1), b"I01\n.")
-        self.assertEqual(pickle.dumps(False, protocol=1), b"I00\n.")
-        self.assertEqual(pickle.dumps(True, protocol=2), b'\x80\x02\x88.')
-        self.assertEqual(pickle.dumps(False, protocol=2), b'\x80\x02\x89.')
+        self.assertEqual(pickle.dumps(Kweli, protocol=0), b"I01\n.")
+        self.assertEqual(pickle.dumps(Uongo, protocol=0), b"I00\n.")
+        self.assertEqual(pickle.dumps(Kweli, protocol=1), b"I01\n.")
+        self.assertEqual(pickle.dumps(Uongo, protocol=1), b"I00\n.")
+        self.assertEqual(pickle.dumps(Kweli, protocol=2), b'\x80\x02\x88.')
+        self.assertEqual(pickle.dumps(Uongo, protocol=2), b'\x80\x02\x89.')
 
     eleza test_convert_to_bool(self):
-        # Verify that TypeError occurs when bad things are returned
+        # Verify that TypeError occurs when bad things are rudishaed
         # kutoka __bool__().  This isn't really a bool test, but
         # it's related.
         check = lambda o: self.assertRaises(TypeError, bool, o)
@@ -311,7 +311,7 @@ kundi BoolTest(unittest.TestCase):
                 rudisha self
         check(Baz())
 
-        # __bool__() must rudisha a bool not an int
+        # __bool__() must rudisha a bool sio an int
         kundi Spam(int):
             eleza __bool__(self):
                 rudisha 1
@@ -323,44 +323,44 @@ kundi BoolTest(unittest.TestCase):
         self.assertRaises(ValueError, bool, Eggs())
 
     eleza test_kutoka_bytes(self):
-        self.assertIs(bool.kutoka_bytes(b'\x00'*8, 'big'), False)
-        self.assertIs(bool.kutoka_bytes(b'abcd', 'little'), True)
+        self.assertIs(bool.kutoka_bytes(b'\x00'*8, 'big'), Uongo)
+        self.assertIs(bool.kutoka_bytes(b'abcd', 'little'), Kweli)
 
     eleza test_sane_len(self):
         # this test just tests our assumptions about __len__
         # this will start failing ikiwa __len__ changes assertions
-        for badval in ['illegal', -1, 1 << 32]:
+        kila badval kwenye ['illegal', -1, 1 << 32]:
             kundi A:
                 eleza __len__(self):
                     rudisha badval
-            try:
+            jaribu:
                 bool(A())
-            except (Exception) as e_bool:
-                try:
+            tatizo (Exception) kama e_bool:
+                jaribu:
                     len(A())
-                except (Exception) as e_len:
+                tatizo (Exception) kama e_len:
                     self.assertEqual(str(e_bool), str(e_len))
 
     eleza test_blocked(self):
         kundi A:
-            __bool__ = None
+            __bool__ = Tupu
         self.assertRaises(TypeError, bool, A())
 
         kundi B:
             eleza __len__(self):
                 rudisha 10
-            __bool__ = None
+            __bool__ = Tupu
         self.assertRaises(TypeError, bool, B())
 
     eleza test_real_and_imag(self):
-        self.assertEqual(True.real, 1)
-        self.assertEqual(True.imag, 0)
-        self.assertIs(type(True.real), int)
-        self.assertIs(type(True.imag), int)
-        self.assertEqual(False.real, 0)
-        self.assertEqual(False.imag, 0)
-        self.assertIs(type(False.real), int)
-        self.assertIs(type(False.imag), int)
+        self.assertEqual(Kweli.real, 1)
+        self.assertEqual(Kweli.imag, 0)
+        self.assertIs(type(Kweli.real), int)
+        self.assertIs(type(Kweli.imag), int)
+        self.assertEqual(Uongo.real, 0)
+        self.assertEqual(Uongo.imag, 0)
+        self.assertIs(type(Uongo.real), int)
+        self.assertIs(type(Uongo.imag), int)
 
 eleza test_main():
     support.run_unittest(BoolTest)

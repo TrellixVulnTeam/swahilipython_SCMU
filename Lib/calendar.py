@@ -1,13 +1,13 @@
 """Calendar printing functions
 
 Note when comparing these calendars to the ones printed by cal(1): By
-default, these calendars have Monday as the first day of the week, and
-Sunday as the last (the European convention). Use setfirstweekday() to
+default, these calendars have Monday kama the first day of the week, and
+Sunday kama the last (the European convention). Use setfirstweekday() to
 set the first day of the week (0=Monday, 6=Sunday)."""
 
 agiza sys
 agiza datetime
-agiza locale as _locale
+agiza locale kama _locale
 kutoka itertools agiza repeat
 
 __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
@@ -17,10 +17,10 @@ __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
            "Calendar", "TextCalendar", "HTMLCalendar", "LocaleTextCalendar",
            "LocaleHTMLCalendar", "weekheader"]
 
-# Exception raised for bad input (with string parameter for details)
+# Exception ashiriad kila bad input (with string parameter kila details)
 error = ValueError
 
-# Exceptions raised for bad input
+# Exceptions ashiriad kila bad input
 kundi IllegalMonthError(ValueError):
     eleza __init__(self, month):
         self.month = month
@@ -35,21 +35,21 @@ kundi IllegalWeekdayError(ValueError):
         rudisha "bad weekday number %r; must be 0 (Monday) to 6 (Sunday)" % self.weekday
 
 
-# Constants for months referenced later
+# Constants kila months referenced later
 January = 1
 February = 2
 
-# Number of days per month (except for February in leap years)
+# Number of days per month (tatizo kila February kwenye leap years)
 mdays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-# This module used to have hard-coded lists of day and month names, as
+# This module used to have hard-coded lists of day na month names, as
 # English strings.  The classes following emulate a read-only version of
 # that, but supply localized names.  Note that the values are computed
-# fresh on each call, in case the user changes locale between calls.
+# fresh on each call, kwenye case the user changes locale between calls.
 
 kundi _localized_month:
 
-    _months = [datetime.date(2001, i+1, 1).strftime for i in range(12)]
+    _months = [datetime.date(2001, i+1, 1).strftime kila i kwenye range(12)]
     _months.insert(0, lambda x: "")
 
     eleza __init__(self, format):
@@ -58,8 +58,8 @@ kundi _localized_month:
     eleza __getitem__(self, i):
         funcs = self._months[i]
         ikiwa isinstance(i, slice):
-            rudisha [f(self.format) for f in funcs]
-        else:
+            rudisha [f(self.format) kila f kwenye funcs]
+        isipokua:
             rudisha funcs(self.format)
 
     eleza __len__(self):
@@ -69,7 +69,7 @@ kundi _localized_month:
 kundi _localized_day:
 
     # January 1, 2001, was a Monday.
-    _days = [datetime.date(2001, 1, i+1).strftime for i in range(7)]
+    _days = [datetime.date(2001, 1, i+1).strftime kila i kwenye range(7)]
 
     eleza __init__(self, format):
         self.format = format
@@ -77,33 +77,33 @@ kundi _localized_day:
     eleza __getitem__(self, i):
         funcs = self._days[i]
         ikiwa isinstance(i, slice):
-            rudisha [f(self.format) for f in funcs]
-        else:
+            rudisha [f(self.format) kila f kwenye funcs]
+        isipokua:
             rudisha funcs(self.format)
 
     eleza __len__(self):
         rudisha 7
 
 
-# Full and abbreviated names of weekdays
+# Full na abbreviated names of weekdays
 day_name = _localized_day('%A')
 day_abbr = _localized_day('%a')
 
-# Full and abbreviated names of months (1-based arrays!!!)
+# Full na abbreviated names of months (1-based arrays!!!)
 month_name = _localized_month('%B')
 month_abbr = _localized_month('%b')
 
-# Constants for weekdays
+# Constants kila weekdays
 (MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY) = range(7)
 
 
 eleza isleap(year):
-    """Return True for leap years, False for non-leap years."""
-    rudisha year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    """Return Kweli kila leap years, Uongo kila non-leap years."""
+    rudisha year % 4 == 0 na (year % 100 != 0 ama year % 400 == 0)
 
 
 eleza leapdays(y1, y2):
-    """Return number of leap years in range [y1, y2).
+    """Return number of leap years kwenye range [y1, y2).
        Assume y1 <= y2."""
     y1 -= 1
     y2 -= 1
@@ -111,37 +111,37 @@ eleza leapdays(y1, y2):
 
 
 eleza weekday(year, month, day):
-    """Return weekday (0-6 ~ Mon-Sun) for year, month (1-12), day (1-31)."""
-    ikiwa not datetime.MINYEAR <= year <= datetime.MAXYEAR:
+    """Return weekday (0-6 ~ Mon-Sun) kila year, month (1-12), day (1-31)."""
+    ikiwa sio datetime.MINYEAR <= year <= datetime.MAXYEAR:
         year = 2000 + year % 400
     rudisha datetime.date(year, month, day).weekday()
 
 
 eleza monthrange(year, month):
-    """Return weekday (0-6 ~ Mon-Sun) and number of days (28-31) for
+    """Return weekday (0-6 ~ Mon-Sun) na number of days (28-31) for
        year, month."""
-    ikiwa not 1 <= month <= 12:
-        raise IllegalMonthError(month)
+    ikiwa sio 1 <= month <= 12:
+        ashiria IllegalMonthError(month)
     day1 = weekday(year, month, 1)
-    ndays = mdays[month] + (month == February and isleap(year))
+    ndays = mdays[month] + (month == February na isleap(year))
     rudisha day1, ndays
 
 
 eleza _monthlen(year, month):
-    rudisha mdays[month] + (month == February and isleap(year))
+    rudisha mdays[month] + (month == February na isleap(year))
 
 
 eleza _prevmonth(year, month):
     ikiwa month == 1:
         rudisha year-1, 12
-    else:
+    isipokua:
         rudisha year, month-1
 
 
 eleza _nextmonth(year, month):
     ikiwa month == 12:
         rudisha year+1, 1
-    else:
+    isipokua:
         rudisha year, month+1
 
 
@@ -164,66 +164,66 @@ kundi Calendar(object):
 
     eleza iterweekdays(self):
         """
-        Return an iterator for one week of weekday numbers starting with the
+        Return an iterator kila one week of weekday numbers starting with the
         configured first one.
         """
-        for i in range(self.firstweekday, self.firstweekday + 7):
-            yield i%7
+        kila i kwenye range(self.firstweekday, self.firstweekday + 7):
+            tuma i%7
 
     eleza itermonthdates(self, year, month):
         """
-        Return an iterator for one month. The iterator will yield datetime.date
-        values and will always iterate through complete weeks, so it will yield
+        Return an iterator kila one month. The iterator will tuma datetime.date
+        values na will always iterate through complete weeks, so it will tuma
         dates outside the specified month.
         """
-        for y, m, d in self.itermonthdays3(year, month):
-            yield datetime.date(y, m, d)
+        kila y, m, d kwenye self.itermonthdays3(year, month):
+            tuma datetime.date(y, m, d)
 
     eleza itermonthdays(self, year, month):
         """
-        Like itermonthdates(), but will yield day numbers. For days outside
-        the specified month the day number is 0.
+        Like itermonthdates(), but will tuma day numbers. For days outside
+        the specified month the day number ni 0.
         """
         day1, ndays = monthrange(year, month)
         days_before = (day1 - self.firstweekday) % 7
-        yield kutoka repeat(0, days_before)
-        yield kutoka range(1, ndays + 1)
+        tuma kutoka repeat(0, days_before)
+        tuma kutoka range(1, ndays + 1)
         days_after = (self.firstweekday - day1 - ndays) % 7
-        yield kutoka repeat(0, days_after)
+        tuma kutoka repeat(0, days_after)
 
     eleza itermonthdays2(self, year, month):
         """
-        Like itermonthdates(), but will yield (day number, weekday number)
-        tuples. For days outside the specified month the day number is 0.
+        Like itermonthdates(), but will tuma (day number, weekday number)
+        tuples. For days outside the specified month the day number ni 0.
         """
-        for i, d in enumerate(self.itermonthdays(year, month), self.firstweekday):
-            yield d, i % 7
+        kila i, d kwenye enumerate(self.itermonthdays(year, month), self.firstweekday):
+            tuma d, i % 7
 
     eleza itermonthdays3(self, year, month):
         """
-        Like itermonthdates(), but will yield (year, month, day) tuples.  Can be
-        used for dates outside of datetime.date range.
+        Like itermonthdates(), but will tuma (year, month, day) tuples.  Can be
+        used kila dates outside of datetime.date range.
         """
         day1, ndays = monthrange(year, month)
         days_before = (day1 - self.firstweekday) % 7
         days_after = (self.firstweekday - day1 - ndays) % 7
         y, m = _prevmonth(year, month)
         end = _monthlen(y, m) + 1
-        for d in range(end-days_before, end):
-            yield y, m, d
-        for d in range(1, ndays + 1):
-            yield year, month, d
+        kila d kwenye range(end-days_before, end):
+            tuma y, m, d
+        kila d kwenye range(1, ndays + 1):
+            tuma year, month, d
         y, m = _nextmonth(year, month)
-        for d in range(1, days_after + 1):
-            yield y, m, d
+        kila d kwenye range(1, days_after + 1):
+            tuma y, m, d
 
     eleza itermonthdays4(self, year, month):
         """
-        Like itermonthdates(), but will yield (year, month, day, day_of_week) tuples.
-        Can be used for dates outside of datetime.date range.
+        Like itermonthdates(), but will tuma (year, month, day, day_of_week) tuples.
+        Can be used kila dates outside of datetime.date range.
         """
-        for i, (y, m, d) in enumerate(self.itermonthdays3(year, month)):
-            yield y, m, d, (self.firstweekday + i) % 7
+        kila i, (y, m, d) kwenye enumerate(self.itermonthdays3(year, month)):
+            tuma y, m, d, (self.firstweekday + i) % 7
 
     eleza monthdatescalendar(self, year, month):
         """
@@ -231,7 +231,7 @@ kundi Calendar(object):
         Each row represents a week; week entries are datetime.date values.
         """
         dates = list(self.itermonthdates(year, month))
-        rudisha [ dates[i:i+7] for i in range(0, len(dates), 7) ]
+        rudisha [ dates[i:i+7] kila i kwenye range(0, len(dates), 7) ]
 
     eleza monthdays2calendar(self, year, month):
         """
@@ -241,7 +241,7 @@ kundi Calendar(object):
         are zero.
         """
         days = list(self.itermonthdays2(year, month))
-        rudisha [ days[i:i+7] for i in range(0, len(days), 7) ]
+        rudisha [ days[i:i+7] kila i kwenye range(0, len(days), 7) ]
 
     eleza monthdayscalendar(self, year, month):
         """
@@ -249,50 +249,50 @@ kundi Calendar(object):
         Each row represents a week; days outside this month are zero.
         """
         days = list(self.itermonthdays(year, month))
-        rudisha [ days[i:i+7] for i in range(0, len(days), 7) ]
+        rudisha [ days[i:i+7] kila i kwenye range(0, len(days), 7) ]
 
     eleza yeardatescalendar(self, year, width=3):
         """
-        Return the data for the specified year ready for formatting. The return
-        value is a list of month rows. Each month row contains up to width months.
-        Each month contains between 4 and 6 weeks and each week contains 1-7
+        Return the data kila the specified year ready kila formatting. The rudisha
+        value ni a list of month rows. Each month row contains up to width months.
+        Each month contains between 4 na 6 weeks na each week contains 1-7
         days. Days are datetime.date objects.
         """
         months = [
             self.monthdatescalendar(year, i)
-            for i in range(January, January+12)
+            kila i kwenye range(January, January+12)
         ]
-        rudisha [months[i:i+width] for i in range(0, len(months), width) ]
+        rudisha [months[i:i+width] kila i kwenye range(0, len(months), width) ]
 
     eleza yeardays2calendar(self, year, width=3):
         """
-        Return the data for the specified year ready for formatting (similar to
-        yeardatescalendar()). Entries in the week lists are
+        Return the data kila the specified year ready kila formatting (similar to
+        yeardatescalendar()). Entries kwenye the week lists are
         (day number, weekday number) tuples. Day numbers outside this month are
         zero.
         """
         months = [
             self.monthdays2calendar(year, i)
-            for i in range(January, January+12)
+            kila i kwenye range(January, January+12)
         ]
-        rudisha [months[i:i+width] for i in range(0, len(months), width) ]
+        rudisha [months[i:i+width] kila i kwenye range(0, len(months), width) ]
 
     eleza yeardayscalendar(self, year, width=3):
         """
-        Return the data for the specified year ready for formatting (similar to
-        yeardatescalendar()). Entries in the week lists are day numbers.
+        Return the data kila the specified year ready kila formatting (similar to
+        yeardatescalendar()). Entries kwenye the week lists are day numbers.
         Day numbers outside this month are zero.
         """
         months = [
             self.monthdayscalendar(year, i)
-            for i in range(January, January+12)
+            kila i kwenye range(January, January+12)
         ]
-        rudisha [months[i:i+width] for i in range(0, len(months), width) ]
+        rudisha [months[i:i+width] kila i kwenye range(0, len(months), width) ]
 
 
 kundi TextCalendar(Calendar):
     """
-    Subkundi of Calendar that outputs a calendar as a simple plain text
+    Subkundi of Calendar that outputs a calendar kama a simple plain text
     similar to the UNIX program cal.
     """
 
@@ -308,15 +308,15 @@ kundi TextCalendar(Calendar):
         """
         ikiwa day == 0:
             s = ''
-        else:
+        isipokua:
             s = '%2i' % day             # right-align single-digit days
         rudisha s.center(width)
 
     eleza formatweek(self, theweek, width):
         """
-        Returns a single week in a string (no newline).
+        Returns a single week kwenye a string (no newline).
         """
-        rudisha ' '.join(self.formatday(d, wd, width) for (d, wd) in theweek)
+        rudisha ' '.join(self.formatday(d, wd, width) kila (d, wd) kwenye theweek)
 
     eleza formatweekday(self, day, width):
         """
@@ -324,17 +324,17 @@ kundi TextCalendar(Calendar):
         """
         ikiwa width >= 9:
             names = day_name
-        else:
+        isipokua:
             names = day_abbr
         rudisha names[day][:width].center(width)
 
     eleza formatweekheader(self, width):
         """
-        Return a header for a week.
+        Return a header kila a week.
         """
-        rudisha ' '.join(self.formatweekday(i, width) for i in self.iterweekdays())
+        rudisha ' '.join(self.formatweekday(i, width) kila i kwenye self.iterweekdays())
 
-    eleza formatmonthname(self, theyear, themonth, width, withyear=True):
+    eleza formatmonthname(self, theyear, themonth, width, withyear=Kweli):
         """
         Return a formatted month name.
         """
@@ -360,14 +360,14 @@ kundi TextCalendar(Calendar):
         s += '\n' * l
         s += self.formatweekheader(w).rstrip()
         s += '\n' * l
-        for week in self.monthdays2calendar(theyear, themonth):
+        kila week kwenye self.monthdays2calendar(theyear, themonth):
             s += self.formatweek(week, w).rstrip()
             s += '\n' * l
         rudisha s
 
     eleza formatyear(self, theyear, w=2, l=1, c=6, m=3):
         """
-        Returns a year's calendar as a multi-line string.
+        Returns a year's calendar kama a multi-line string.
         """
         w = max(2, w)
         l = max(1, l)
@@ -378,25 +378,25 @@ kundi TextCalendar(Calendar):
         a(repr(theyear).center(colwidth*m+c*(m-1)).rstrip())
         a('\n'*l)
         header = self.formatweekheader(w)
-        for (i, row) in enumerate(self.yeardays2calendar(theyear, m)):
-            # months in this row
+        kila (i, row) kwenye enumerate(self.yeardays2calendar(theyear, m)):
+            # months kwenye this row
             months = range(m*i+1, min(m*(i+1)+1, 13))
             a('\n'*l)
-            names = (self.formatmonthname(theyear, k, colwidth, False)
-                     for k in months)
+            names = (self.formatmonthname(theyear, k, colwidth, Uongo)
+                     kila k kwenye months)
             a(formatstring(names, colwidth, c).rstrip())
             a('\n'*l)
-            headers = (header for k in months)
+            headers = (header kila k kwenye months)
             a(formatstring(headers, colwidth, c).rstrip())
             a('\n'*l)
-            # max number of weeks for this row
-            height = max(len(cal) for cal in row)
-            for j in range(height):
+            # max number of weeks kila this row
+            height = max(len(cal) kila cal kwenye row)
+            kila j kwenye range(height):
                 weeks = []
-                for cal in row:
+                kila cal kwenye row:
                     ikiwa j >= len(cal):
                         weeks.append('')
-                    else:
+                    isipokua:
                         weeks.append(self.formatweek(cal[j], w))
                 a(formatstring(weeks, colwidth, c).rstrip())
                 a('\n' * l)
@@ -409,75 +409,75 @@ kundi TextCalendar(Calendar):
 
 kundi HTMLCalendar(Calendar):
     """
-    This calendar returns complete HTML pages.
+    This calendar rudishas complete HTML pages.
     """
 
-    # CSS classes for the day <td>s
+    # CSS classes kila the day <td>s
     cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
-    # CSS classes for the day <th>s
+    # CSS classes kila the day <th>s
     cssclasses_weekday_head = cssclasses
 
-    # CSS kundi for the days before and after current month
+    # CSS kundi kila the days before na after current month
     cssclass_noday = "noday"
 
-    # CSS kundi for the month's head
+    # CSS kundi kila the month's head
     cssclass_month_head = "month"
 
-    # CSS kundi for the month
+    # CSS kundi kila the month
     cssclass_month = "month"
 
-    # CSS kundi for the year's table head
+    # CSS kundi kila the year's table head
     cssclass_year_head = "year"
 
-    # CSS kundi for the whole year table
+    # CSS kundi kila the whole year table
     cssclass_year = "year"
 
     eleza formatday(self, day, weekday):
         """
-        Return a day as a table cell.
+        Return a day kama a table cell.
         """
         ikiwa day == 0:
             # day outside month
             rudisha '<td class="%s">&nbsp;</td>' % self.cssclass_noday
-        else:
+        isipokua:
             rudisha '<td class="%s">%d</td>' % (self.cssclasses[weekday], day)
 
     eleza formatweek(self, theweek):
         """
-        Return a complete week as a table row.
+        Return a complete week kama a table row.
         """
-        s = ''.join(self.formatday(d, wd) for (d, wd) in theweek)
+        s = ''.join(self.formatday(d, wd) kila (d, wd) kwenye theweek)
         rudisha '<tr>%s</tr>' % s
 
     eleza formatweekday(self, day):
         """
-        Return a weekday name as a table header.
+        Return a weekday name kama a table header.
         """
         rudisha '<th class="%s">%s</th>' % (
             self.cssclasses_weekday_head[day], day_abbr[day])
 
     eleza formatweekheader(self):
         """
-        Return a header for a week as a table row.
+        Return a header kila a week kama a table row.
         """
-        s = ''.join(self.formatweekday(i) for i in self.iterweekdays())
+        s = ''.join(self.formatweekday(i) kila i kwenye self.iterweekdays())
         rudisha '<tr>%s</tr>' % s
 
-    eleza formatmonthname(self, theyear, themonth, withyear=True):
+    eleza formatmonthname(self, theyear, themonth, withyear=Kweli):
         """
-        Return a month name as a table row.
+        Return a month name kama a table row.
         """
         ikiwa withyear:
             s = '%s %s' % (month_name[themonth], theyear)
-        else:
+        isipokua:
             s = '%s' % month_name[themonth]
         rudisha '<tr><th colspan="7" class="%s">%s</th></tr>' % (
             self.cssclass_month_head, s)
 
-    eleza formatmonth(self, theyear, themonth, withyear=True):
+    eleza formatmonth(self, theyear, themonth, withyear=Kweli):
         """
-        Return a formatted month as a table.
+        Return a formatted month kama a table.
         """
         v = []
         a = v.append
@@ -488,7 +488,7 @@ kundi HTMLCalendar(Calendar):
         a('\n')
         a(self.formatweekheader())
         a('\n')
-        for week in self.monthdays2calendar(theyear, themonth):
+        kila week kwenye self.monthdays2calendar(theyear, themonth):
             a(self.formatweek(week))
             a('\n')
         a('</table>')
@@ -497,7 +497,7 @@ kundi HTMLCalendar(Calendar):
 
     eleza formatyear(self, theyear, width=3):
         """
-        Return a formatted year as a table of tables.
+        Return a formatted year kama a table of tables.
         """
         v = []
         a = v.append
@@ -507,23 +507,23 @@ kundi HTMLCalendar(Calendar):
         a('\n')
         a('<tr><th colspan="%d" class="%s">%s</th></tr>' % (
             width, self.cssclass_year_head, theyear))
-        for i in range(January, January+12, width):
-            # months in this row
+        kila i kwenye range(January, January+12, width):
+            # months kwenye this row
             months = range(i, min(i+width, 13))
             a('<tr>')
-            for m in months:
+            kila m kwenye months:
                 a('<td>')
-                a(self.formatmonth(theyear, m, withyear=False))
+                a(self.formatmonth(theyear, m, withyear=Uongo))
                 a('</td>')
             a('</tr>')
         a('</table>')
         rudisha ''.join(v)
 
-    eleza formatyearpage(self, theyear, width=3, css='calendar.css', encoding=None):
+    eleza formatyearpage(self, theyear, width=3, css='calendar.css', encoding=Tupu):
         """
-        Return a formatted year as a complete HTML page.
+        Return a formatted year kama a complete HTML page.
         """
-        ikiwa encoding is None:
+        ikiwa encoding ni Tupu:
             encoding = sys.getdefaultencoding()
         v = []
         a = v.append
@@ -532,9 +532,9 @@ kundi HTMLCalendar(Calendar):
         a('<html>\n')
         a('<head>\n')
         a('<meta http-equiv="Content-Type" content="text/html; charset=%s" />\n' % encoding)
-        ikiwa css is not None:
+        ikiwa css ni sio Tupu:
             a('<link rel="stylesheet" type="text/css" href="%s" />\n' % css)
-        a('<title>Calendar for %d</title>\n' % theyear)
+        a('<title>Calendar kila %d</title>\n' % theyear)
         a('</head>\n')
         a('<body>\n')
         a(self.formatyear(theyear, width))
@@ -557,15 +557,15 @@ kundi different_locale:
 
 kundi LocaleTextCalendar(TextCalendar):
     """
-    This kundi can be passed a locale name in the constructor and will return
-    month and weekday names in the specified locale. If this locale includes
-    an encoding all strings containing month and weekday names will be returned
-    as unicode.
+    This kundi can be pitaed a locale name kwenye the constructor na will rudisha
+    month na weekday names kwenye the specified locale. If this locale includes
+    an encoding all strings containing month na weekday names will be rudishaed
+    kama unicode.
     """
 
-    eleza __init__(self, firstweekday=0, locale=None):
+    eleza __init__(self, firstweekday=0, locale=Tupu):
         TextCalendar.__init__(self, firstweekday)
-        ikiwa locale is None:
+        ikiwa locale ni Tupu:
             locale = _locale.getdefaultlocale()
         self.locale = locale
 
@@ -573,12 +573,12 @@ kundi LocaleTextCalendar(TextCalendar):
         with different_locale(self.locale):
             ikiwa width >= 9:
                 names = day_name
-            else:
+            isipokua:
                 names = day_abbr
             name = names[day]
             rudisha name[:width].center(width)
 
-    eleza formatmonthname(self, theyear, themonth, width, withyear=True):
+    eleza formatmonthname(self, theyear, themonth, width, withyear=Kweli):
         with different_locale(self.locale):
             s = month_name[themonth]
             ikiwa withyear:
@@ -588,14 +588,14 @@ kundi LocaleTextCalendar(TextCalendar):
 
 kundi LocaleHTMLCalendar(HTMLCalendar):
     """
-    This kundi can be passed a locale name in the constructor and will return
-    month and weekday names in the specified locale. If this locale includes
-    an encoding all strings containing month and weekday names will be returned
-    as unicode.
+    This kundi can be pitaed a locale name kwenye the constructor na will rudisha
+    month na weekday names kwenye the specified locale. If this locale includes
+    an encoding all strings containing month na weekday names will be rudishaed
+    kama unicode.
     """
-    eleza __init__(self, firstweekday=0, locale=None):
+    eleza __init__(self, firstweekday=0, locale=Tupu):
         HTMLCalendar.__init__(self, firstweekday)
-        ikiwa locale is None:
+        ikiwa locale ni Tupu:
             locale = _locale.getdefaultlocale()
         self.locale = locale
 
@@ -604,7 +604,7 @@ kundi LocaleHTMLCalendar(HTMLCalendar):
             s = day_abbr[day]
             rudisha '<th class="%s">%s</th>' % (self.cssclasses[day], s)
 
-    eleza formatmonthname(self, theyear, themonth, withyear=True):
+    eleza formatmonthname(self, theyear, themonth, withyear=Kweli):
         with different_locale(self.locale):
             s = month_name[themonth]
             ikiwa withyear:
@@ -612,14 +612,14 @@ kundi LocaleHTMLCalendar(HTMLCalendar):
             rudisha '<tr><th colspan="7" class="month">%s</th></tr>' % s
 
 
-# Support for old module level interface
+# Support kila old module level interface
 c = TextCalendar()
 
 firstweekday = c.getfirstweekday
 
 eleza setfirstweekday(firstweekday):
-    ikiwa not MONDAY <= firstweekday <= SUNDAY:
-        raise IllegalWeekdayError(firstweekday)
+    ikiwa sio MONDAY <= firstweekday <= SUNDAY:
+        ashiria IllegalWeekdayError(firstweekday)
     c.firstweekday = firstweekday
 
 monthcalendar = c.monthdayscalendar
@@ -632,20 +632,20 @@ calendar = c.formatyear
 prcal = c.pryear
 
 
-# Spacing of month columns for multi-column year calendar
+# Spacing of month columns kila multi-column year calendar
 _colwidth = 7*3 - 1         # Amount printed by prweek()
 _spacing = 6                # Number of spaces between columns
 
 
 eleza format(cols, colwidth=_colwidth, spacing=_spacing):
-    """Prints multi-column formatting for year calendars"""
+    """Prints multi-column formatting kila year calendars"""
     andika(formatstring(cols, colwidth, spacing))
 
 
 eleza formatstring(cols, colwidth=_colwidth, spacing=_spacing):
     """Returns a string formatted kutoka n strings, centered within n columns."""
     spacing *= ' '
-    rudisha spacing.join(c.center(colwidth) for c in cols)
+    rudisha spacing.join(c.center(colwidth) kila c kwenye cols)
 
 
 EPOCH = 1970
@@ -675,7 +675,7 @@ eleza main(args):
     textgroup.add_argument(
         "-l", "--lines",
         type=int, default=1,
-        help="number of lines for each week (default 1)"
+        help="number of lines kila each week (default 1)"
     )
     textgroup.add_argument(
         "-s", "--spacing",
@@ -690,23 +690,23 @@ eleza main(args):
     htmlgroup.add_argument(
         "-c", "--css",
         default="calendar.css",
-        help="CSS to use for page"
+        help="CSS to use kila page"
     )
     parser.add_argument(
         "-L", "--locale",
-        default=None,
-        help="locale to be used kutoka month and weekday names"
+        default=Tupu,
+        help="locale to be used kutoka month na weekday names"
     )
     parser.add_argument(
         "-e", "--encoding",
-        default=None,
-        help="encoding to use for output"
+        default=Tupu,
+        help="encoding to use kila output"
     )
     parser.add_argument(
         "-t", "--type",
         default="text",
         choices=("text", "html"),
-        help="output type (text or html)"
+        help="output type (text ama html)"
     )
     parser.add_argument(
         "year",
@@ -721,8 +721,8 @@ eleza main(args):
 
     options = parser.parse_args(args[1:])
 
-    ikiwa options.locale and not options.encoding:
-        parser.error("ikiwa --locale is specified --encoding is required")
+    ikiwa options.locale na sio options.encoding:
+        parser.error("ikiwa --locale ni specified --encoding ni required")
         sys.exit(1)
 
     locale = options.locale, options.encoding
@@ -730,34 +730,34 @@ eleza main(args):
     ikiwa options.type == "html":
         ikiwa options.locale:
             cal = LocaleHTMLCalendar(locale=locale)
-        else:
+        isipokua:
             cal = HTMLCalendar()
         encoding = options.encoding
-        ikiwa encoding is None:
+        ikiwa encoding ni Tupu:
             encoding = sys.getdefaultencoding()
         optdict = dict(encoding=encoding, css=options.css)
         write = sys.stdout.buffer.write
-        ikiwa options.year is None:
+        ikiwa options.year ni Tupu:
             write(cal.formatyearpage(datetime.date.today().year, **optdict))
-        elikiwa options.month is None:
+        elikiwa options.month ni Tupu:
             write(cal.formatyearpage(options.year, **optdict))
-        else:
+        isipokua:
             parser.error("incorrect number of arguments")
             sys.exit(1)
-    else:
+    isipokua:
         ikiwa options.locale:
             cal = LocaleTextCalendar(locale=locale)
-        else:
+        isipokua:
             cal = TextCalendar()
         optdict = dict(w=options.width, l=options.lines)
-        ikiwa options.month is None:
+        ikiwa options.month ni Tupu:
             optdict["c"] = options.spacing
             optdict["m"] = options.months
-        ikiwa options.year is None:
+        ikiwa options.year ni Tupu:
             result = cal.formatyear(datetime.date.today().year, **optdict)
-        elikiwa options.month is None:
+        elikiwa options.month ni Tupu:
             result = cal.formatyear(options.year, **optdict)
-        else:
+        isipokua:
             result = cal.formatmonth(options.year, options.month, **optdict)
         write = sys.stdout.write
         ikiwa options.encoding:

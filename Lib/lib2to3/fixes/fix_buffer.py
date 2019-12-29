@@ -9,9 +9,9 @@ kutoka ..fixer_util agiza Name
 
 
 kundi FixBuffer(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
-    explicit = True # The user must ask for this fixer
+    explicit = Kweli # The user must ask kila this fixer
 
     PATTERN = """
               power< name='buffer' trailer< '(' [any] ')' > any* >

@@ -2,43 +2,43 @@
 
 Interpreters constructed with this kundi obey the following conventions:
 
-1. End of file on input is processed as the command 'EOF'.
-2. A command is parsed out of each line by collecting the prefix composed
-   of characters in the identchars member.
-3. A command `foo' is dispatched to a method 'do_foo()'; the do_ method
-   is passed a single argument consisting of the remainder of the line.
+1. End of file on input ni processed kama the command 'EOF'.
+2. A command ni parsed out of each line by collecting the prefix composed
+   of characters kwenye the identchars member.
+3. A command `foo' ni dispatched to a method 'do_foo()'; the do_ method
+   ni pitaed a single argument consisting of the remainder of the line.
 4. Typing an empty line repeats the last command.  (Actually, it calls the
-   method `emptyline', which may be overridden in a subclass.)
-5. There is a predefined `help' method.  Given an argument `topic', it
+   method `emptyline', which may be overridden kwenye a subclass.)
+5. There ni a predefined `help' method.  Given an argument `topic', it
    calls the command `help_topic'.  With no arguments, it lists all topics
    with defined help_ functions, broken into up to three topics; documented
-   commands, miscellaneous help topics, and undocumented commands.
-6. The command '?' is a synonym for `help'.  The command '!' is a synonym
-   for `shell', ikiwa a do_shell method exists.
-7. If completion is enabled, completing commands will be done automatically,
-   and completing of commands args is done by calling complete_foo() with
-   arguments text, line, begidx, endidx.  text is string we are matching
-   against, all returned matches must begin with it.  line is the current
-   input line (lstripped), begidx and endidx are the beginning and end
+   commands, miscellaneous help topics, na undocumented commands.
+6. The command '?' ni a synonym kila `help'.  The command '!' ni a synonym
+   kila `shell', ikiwa a do_shell method exists.
+7. If completion ni enabled, completing commands will be done automatically,
+   na completing of commands args ni done by calling complete_foo() with
+   arguments text, line, begidx, endidx.  text ni string we are matching
+   against, all rudishaed matches must begin with it.  line ni the current
+   input line (lstripped), begidx na endidx are the beginning na end
    indexes of the text being matched, which could be used to provide
-   different completion depending upon which position the argument is in.
+   different completion depending upon which position the argument ni in.
 
-The `default' method may be overridden to intercept commands for which there
+The `default' method may be overridden to intercept commands kila which there
 is no do_ method.
 
 The `completedefault' method may be overridden to intercept completions for
 commands that have no complete_ method.
 
 The data member `self.ruler' sets the character used to draw separator lines
-in the help messages.  If empty, no ruler line is drawn.  It defaults to "=".
+in the help messages.  If empty, no ruler line ni drawn.  It defaults to "=".
 
-If the value of `self.intro' is nonempty when the cmdloop method is called,
-it is printed out on interpreter startup.  This value may be overridden
+If the value of `self.intro' ni nonempty when the cmdloop method ni called,
+it ni printed out on interpreter startup.  This value may be overridden
 via an optional argument to the cmdloop() method.
 
 The data members `self.doc_header', `self.misc_header', and
-`self.undoc_header' set the headers used for the help function's
-listings of documented functions, miscellaneous topics, and undocumented
+`self.undoc_header' set the headers used kila the help function's
+listings of documented functions, miscellaneous topics, na undocumented
 functions respectively.
 """
 
@@ -50,22 +50,22 @@ PROMPT = '(Cmd) '
 IDENTCHARS = string.ascii_letters + string.digits + '_'
 
 kundi Cmd:
-    """A simple framework for writing line-oriented command interpreters.
+    """A simple framework kila writing line-oriented command interpreters.
 
-    These are often useful for test harnesses, administrative tools, and
-    prototypes that will later be wrapped in a more sophisticated interface.
+    These are often useful kila test harnesses, administrative tools, and
+    prototypes that will later be wrapped kwenye a more sophisticated interface.
 
-    A Cmd instance or subkundi instance is a line-oriented interpreter
-    framework.  There is no good reason to instantiate Cmd itself; rather,
-    it's useful as a superkundi of an interpreter kundi you define yourself
-    in order to inherit Cmd's methods and encapsulate action methods.
+    A Cmd instance ama subkundi instance ni a line-oriented interpreter
+    framework.  There ni no good reason to instantiate Cmd itself; rather,
+    it's useful kama a superkundi of an interpreter kundi you define yourself
+    kwenye order to inherit Cmd's methods na encapsulate action methods.
 
     """
     prompt = PROMPT
     identchars = IDENTCHARS
     ruler = '='
     lastcmd = ''
-    intro = None
+    intro = Tupu
     doc_leader = ""
     doc_header = "Documented commands (type help <topic>):"
     misc_header = "Miscellaneous help topics:"
@@ -73,153 +73,153 @@ kundi Cmd:
     nohelp = "*** No help on %s"
     use_rawinput = 1
 
-    eleza __init__(self, completekey='tab', stdin=None, stdout=None):
+    eleza __init__(self, completekey='tab', stdin=Tupu, stdout=Tupu):
         """Instantiate a line-oriented interpreter framework.
 
-        The optional argument 'completekey' is the readline name of a
+        The optional argument 'completekey' ni the readline name of a
         completion key; it defaults to the Tab key. If completekey is
-        not None and the readline module is available, command completion
-        is done automatically. The optional arguments stdin and stdout
-        specify alternate input and output file objects; ikiwa not specified,
-        sys.stdin and sys.stdout are used.
+        sio Tupu na the readline module ni available, command completion
+        ni done automatically. The optional arguments stdin na stdout
+        specify alternate input na output file objects; ikiwa sio specified,
+        sys.stdin na sys.stdout are used.
 
         """
-        ikiwa stdin is not None:
+        ikiwa stdin ni sio Tupu:
             self.stdin = stdin
-        else:
+        isipokua:
             self.stdin = sys.stdin
-        ikiwa stdout is not None:
+        ikiwa stdout ni sio Tupu:
             self.stdout = stdout
-        else:
+        isipokua:
             self.stdout = sys.stdout
         self.cmdqueue = []
         self.completekey = completekey
 
-    eleza cmdloop(self, intro=None):
+    eleza cmdloop(self, intro=Tupu):
         """Repeatedly issue a prompt, accept input, parse an initial prefix
-        off the received input, and dispatch to action methods, passing them
-        the remainder of the line as argument.
+        off the received input, na dispatch to action methods, pitaing them
+        the remainder of the line kama argument.
 
         """
 
         self.preloop()
-        ikiwa self.use_rawinput and self.completekey:
-            try:
+        ikiwa self.use_rawinput na self.completekey:
+            jaribu:
                 agiza readline
                 self.old_completer = readline.get_completer()
                 readline.set_completer(self.complete)
                 readline.parse_and_bind(self.completekey+": complete")
-            except ImportError:
-                pass
-        try:
-            ikiwa intro is not None:
+            tatizo ImportError:
+                pita
+        jaribu:
+            ikiwa intro ni sio Tupu:
                 self.intro = intro
             ikiwa self.intro:
                 self.stdout.write(str(self.intro)+"\n")
-            stop = None
-            while not stop:
+            stop = Tupu
+            wakati sio stop:
                 ikiwa self.cmdqueue:
                     line = self.cmdqueue.pop(0)
-                else:
+                isipokua:
                     ikiwa self.use_rawinput:
-                        try:
+                        jaribu:
                             line = input(self.prompt)
-                        except EOFError:
+                        tatizo EOFError:
                             line = 'EOF'
-                    else:
+                    isipokua:
                         self.stdout.write(self.prompt)
                         self.stdout.flush()
                         line = self.stdin.readline()
-                        ikiwa not len(line):
+                        ikiwa sio len(line):
                             line = 'EOF'
-                        else:
+                        isipokua:
                             line = line.rstrip('\r\n')
                 line = self.precmd(line)
                 stop = self.onecmd(line)
                 stop = self.postcmd(stop, line)
             self.postloop()
-        finally:
-            ikiwa self.use_rawinput and self.completekey:
-                try:
+        mwishowe:
+            ikiwa self.use_rawinput na self.completekey:
+                jaribu:
                     agiza readline
                     readline.set_completer(self.old_completer)
-                except ImportError:
-                    pass
+                tatizo ImportError:
+                    pita
 
 
     eleza precmd(self, line):
         """Hook method executed just before the command line is
-        interpreted, but after the input prompt is generated and issued.
+        interpreted, but after the input prompt ni generated na issued.
 
         """
         rudisha line
 
     eleza postcmd(self, stop, line):
-        """Hook method executed just after a command dispatch is finished."""
+        """Hook method executed just after a command dispatch ni finished."""
         rudisha stop
 
     eleza preloop(self):
-        """Hook method executed once when the cmdloop() method is called."""
-        pass
+        """Hook method executed once when the cmdloop() method ni called."""
+        pita
 
     eleza postloop(self):
-        """Hook method executed once when the cmdloop() method is about to
-        return.
+        """Hook method executed once when the cmdloop() method ni about to
+        rudisha.
 
         """
-        pass
+        pita
 
     eleza parseline(self, line):
-        """Parse the line into a command name and a string containing
+        """Parse the line into a command name na a string containing
         the arguments.  Returns a tuple containing (command, args, line).
-        'command' and 'args' may be None ikiwa the line couldn't be parsed.
+        'command' na 'args' may be Tupu ikiwa the line couldn't be parsed.
         """
         line = line.strip()
-        ikiwa not line:
-            rudisha None, None, line
+        ikiwa sio line:
+            rudisha Tupu, Tupu, line
         elikiwa line[0] == '?':
             line = 'help ' + line[1:]
         elikiwa line[0] == '!':
             ikiwa hasattr(self, 'do_shell'):
                 line = 'shell ' + line[1:]
-            else:
-                rudisha None, None, line
+            isipokua:
+                rudisha Tupu, Tupu, line
         i, n = 0, len(line)
-        while i < n and line[i] in self.identchars: i = i+1
+        wakati i < n na line[i] kwenye self.identchars: i = i+1
         cmd, arg = line[:i], line[i:].strip()
         rudisha cmd, arg, line
 
     eleza onecmd(self, line):
-        """Interpret the argument as though it had been typed in response
+        """Interpret the argument kama though it had been typed kwenye response
         to the prompt.
 
-        This may be overridden, but should not normally need to be;
-        see the precmd() and postcmd() methods for useful execution hooks.
-        The rudisha value is a flag indicating whether interpretation of
+        This may be overridden, but should sio normally need to be;
+        see the precmd() na postcmd() methods kila useful execution hooks.
+        The rudisha value ni a flag indicating whether interpretation of
         commands by the interpreter should stop.
 
         """
         cmd, arg, line = self.parseline(line)
-        ikiwa not line:
+        ikiwa sio line:
             rudisha self.emptyline()
-        ikiwa cmd is None:
+        ikiwa cmd ni Tupu:
             rudisha self.default(line)
         self.lastcmd = line
         ikiwa line == 'EOF' :
             self.lastcmd = ''
         ikiwa cmd == '':
             rudisha self.default(line)
-        else:
-            try:
+        isipokua:
+            jaribu:
                 func = getattr(self, 'do_' + cmd)
-            except AttributeError:
+            tatizo AttributeError:
                 rudisha self.default(line)
             rudisha func(arg)
 
     eleza emptyline(self):
-        """Called when an empty line is entered in response to the prompt.
+        """Called when an empty line ni entered kwenye response to the prompt.
 
-        If this method is not overridden, it repeats the last nonempty
+        If this method ni sio overridden, it repeats the last nonempty
         command entered.
 
         """
@@ -227,31 +227,31 @@ kundi Cmd:
             rudisha self.onecmd(self.lastcmd)
 
     eleza default(self, line):
-        """Called on an input line when the command prefix is not recognized.
+        """Called on an input line when the command prefix ni sio recognized.
 
-        If this method is not overridden, it prints an error message and
-        returns.
+        If this method ni sio overridden, it prints an error message and
+        rudishas.
 
         """
         self.stdout.write('*** Unknown syntax: %s\n'%line)
 
     eleza completedefault(self, *ignored):
         """Method called to complete an input line when no command-specific
-        complete_*() method is available.
+        complete_*() method ni available.
 
-        By default, it returns an empty list.
+        By default, it rudishas an empty list.
 
         """
         rudisha []
 
     eleza completenames(self, text, *ignored):
         dotext = 'do_'+text
-        rudisha [a[3:] for a in self.get_names() ikiwa a.startswith(dotext)]
+        rudisha [a[3:] kila a kwenye self.get_names() ikiwa a.startswith(dotext)]
 
     eleza complete(self, text, state):
-        """Return the next possible completion for 'text'.
+        """Return the next possible completion kila 'text'.
 
-        If a command has not been entered, then complete against command list.
+        If a command has sio been entered, then complete against command list.
         Otherwise try to call complete_<command> to get list of completions.
         """
         ikiwa state == 0:
@@ -265,70 +265,70 @@ kundi Cmd:
                 cmd, args, foo = self.parseline(line)
                 ikiwa cmd == '':
                     compfunc = self.completedefault
-                else:
-                    try:
+                isipokua:
+                    jaribu:
                         compfunc = getattr(self, 'complete_' + cmd)
-                    except AttributeError:
+                    tatizo AttributeError:
                         compfunc = self.completedefault
-            else:
+            isipokua:
                 compfunc = self.completenames
             self.completion_matches = compfunc(text, line, begidx, endidx)
-        try:
+        jaribu:
             rudisha self.completion_matches[state]
-        except IndexError:
-            rudisha None
+        tatizo IndexError:
+            rudisha Tupu
 
     eleza get_names(self):
-        # This method used to pull in base kundi attributes
+        # This method used to pull kwenye base kundi attributes
         # at a time dir() didn't do it yet.
         rudisha dir(self.__class__)
 
     eleza complete_help(self, *args):
         commands = set(self.completenames(*args))
-        topics = set(a[5:] for a in self.get_names()
+        topics = set(a[5:] kila a kwenye self.get_names()
                      ikiwa a.startswith('help_' + args[0]))
         rudisha list(commands | topics)
 
     eleza do_help(self, arg):
-        'List available commands with "help" or detailed help with "help cmd".'
+        'List available commands with "help" ama detailed help with "help cmd".'
         ikiwa arg:
             # XXX check arg syntax
-            try:
+            jaribu:
                 func = getattr(self, 'help_' + arg)
-            except AttributeError:
-                try:
+            tatizo AttributeError:
+                jaribu:
                     doc=getattr(self, 'do_' + arg).__doc__
                     ikiwa doc:
                         self.stdout.write("%s\n"%str(doc))
-                        return
-                except AttributeError:
-                    pass
+                        rudisha
+                tatizo AttributeError:
+                    pita
                 self.stdout.write("%s\n"%str(self.nohelp % (arg,)))
-                return
+                rudisha
             func()
-        else:
+        isipokua:
             names = self.get_names()
             cmds_doc = []
             cmds_undoc = []
             help = {}
-            for name in names:
+            kila name kwenye names:
                 ikiwa name[:5] == 'help_':
                     help[name[5:]]=1
             names.sort()
             # There can be duplicates ikiwa routines overridden
             prevname = ''
-            for name in names:
+            kila name kwenye names:
                 ikiwa name[:3] == 'do_':
                     ikiwa name == prevname:
-                        continue
+                        endelea
                     prevname = name
                     cmd=name[3:]
-                    ikiwa cmd in help:
+                    ikiwa cmd kwenye help:
                         cmds_doc.append(cmd)
-                        del help[cmd]
+                        toa help[cmd]
                     elikiwa getattr(self, name).__doc__:
                         cmds_doc.append(cmd)
-                    else:
+                    isipokua:
                         cmds_undoc.append(cmd)
             self.stdout.write("%s\n"%str(self.doc_leader))
             self.print_topics(self.doc_header,   cmds_doc,   15,80)
@@ -344,58 +344,58 @@ kundi Cmd:
             self.stdout.write("\n")
 
     eleza columnize(self, list, displaywidth=80):
-        """Display a list of strings as a compact set of columns.
+        """Display a list of strings kama a compact set of columns.
 
-        Each column is only as wide as necessary.
-        Columns are separated by two spaces (one was not legible enough).
+        Each column ni only kama wide kama necessary.
+        Columns are separated by two spaces (one was sio legible enough).
         """
-        ikiwa not list:
+        ikiwa sio list:
             self.stdout.write("<empty>\n")
-            return
+            rudisha
 
-        nonstrings = [i for i in range(len(list))
-                        ikiwa not isinstance(list[i], str)]
+        nonstrings = [i kila i kwenye range(len(list))
+                        ikiwa sio isinstance(list[i], str)]
         ikiwa nonstrings:
-            raise TypeError("list[i] not a string for i in %s"
+            ashiria TypeError("list[i] sio a string kila i kwenye %s"
                             % ", ".join(map(str, nonstrings)))
         size = len(list)
         ikiwa size == 1:
             self.stdout.write('%s\n'%str(list[0]))
-            return
+            rudisha
         # Try every row count kutoka 1 upwards
-        for nrows in range(1, len(list)):
+        kila nrows kwenye range(1, len(list)):
             ncols = (size+nrows-1) // nrows
             colwidths = []
             totwidth = -2
-            for col in range(ncols):
+            kila col kwenye range(ncols):
                 colwidth = 0
-                for row in range(nrows):
+                kila row kwenye range(nrows):
                     i = row + nrows*col
                     ikiwa i >= size:
-                        break
+                        koma
                     x = list[i]
                     colwidth = max(colwidth, len(x))
                 colwidths.append(colwidth)
                 totwidth += colwidth + 2
                 ikiwa totwidth > displaywidth:
-                    break
+                    koma
             ikiwa totwidth <= displaywidth:
-                break
-        else:
+                koma
+        isipokua:
             nrows = len(list)
             ncols = 1
             colwidths = [0]
-        for row in range(nrows):
+        kila row kwenye range(nrows):
             texts = []
-            for col in range(ncols):
+            kila col kwenye range(ncols):
                 i = row + nrows*col
                 ikiwa i >= size:
                     x = ""
-                else:
+                isipokua:
                     x = list[i]
                 texts.append(x)
-            while texts and not texts[-1]:
-                del texts[-1]
-            for col in range(len(texts)):
+            wakati texts na sio texts[-1]:
+                toa texts[-1]
+            kila col kwenye range(len(texts)):
                 texts[col] = texts[col].ljust(colwidths[col])
             self.stdout.write("%s\n"%str("  ".join(texts)))

@@ -7,8 +7,8 @@ agiza unittest
 # Location of mailcap file
 MAILCAPFILE = test.support.findfile("mailcap.txt")
 
-# Dict to act as mock mailcap entry for this test
-# The keys and values should match the contents of MAILCAPFILE
+# Dict to act kama mock mailcap entry kila this test
+# The keys na values should match the contents of MAILCAPFILE
 MAILCAPDICT = {
     'application/x-movie':
         [{'compose': 'moviemaker %s',
@@ -18,7 +18,7 @@ MAILCAPDICT = {
           'lineno': 4}],
     'application/*':
         [{'copiousoutput': '',
-          'view': 'echo "This is \\"%t\\" but        is 50 \\% Greek to me" \\; cat %s',
+          'view': 'echo "This ni \\"%t\\" but        ni 50 \\% Greek to me" \\; cat %s',
           'lineno': 5}],
     'audio/basic':
         [{'edit': 'audiocompose %s',
@@ -35,7 +35,7 @@ MAILCAPDICT = {
         [{'view': 'xdvi %s', 'lineno': 3}],
     'message/external-body':
         [{'composetyped': 'extcompose %s',
-          'description': '"A reference to data stored in an external location"',
+          'description': '"A reference to data stored kwenye an external location"',
           'needsterminal': '',
           'view': 'showexternal %s %{access-type} %{name} %{site}     %{directory} %{mode} %{server}',
           'lineno': 10}],
@@ -56,30 +56,30 @@ MAILCAPDICT = {
         [{'view': 'display %s', 'lineno': 8}]
 }
 
-# For backwards compatibility, readmailcapfile() and lookup() still support
+# For backwards compatibility, readmailcapfile() na lookup() still support
 # the old version of mailcapdict without line numbers.
 MAILCAPDICT_DEPRECATED = copy.deepcopy(MAILCAPDICT)
-for entry_list in MAILCAPDICT_DEPRECATED.values():
-    for entry in entry_list:
+kila entry_list kwenye MAILCAPDICT_DEPRECATED.values():
+    kila entry kwenye entry_list:
         entry.pop('lineno')
 
 
 kundi HelperFunctionTest(unittest.TestCase):
 
     eleza test_listmailcapfiles(self):
-        # The rudisha value for listmailcapfiles() will vary by system.
-        # So verify that listmailcapfiles() returns a list of strings that is of
+        # The rudisha value kila listmailcapfiles() will vary by system.
+        # So verify that listmailcapfiles() rudishas a list of strings that ni of
         # non-zero length.
         mcfiles = mailcap.listmailcapfiles()
         self.assertIsInstance(mcfiles, list)
-        for m in mcfiles:
+        kila m kwenye mcfiles:
             self.assertIsInstance(m, str)
-        with test.support.EnvironmentVarGuard() as env:
+        with test.support.EnvironmentVarGuard() kama env:
             # According to RFC 1524, ikiwa MAILCAPS env variable exists, use that
-            # and only that.
-            ikiwa "MAILCAPS" in env:
+            # na only that.
+            ikiwa "MAILCAPS" kwenye env:
                 env_mailcaps = env["MAILCAPS"].split(os.pathsep)
-            else:
+            isipokua:
                 env_mailcaps = ["/testdir1/.mailcap", "/testdir2/mailcap"]
                 env["MAILCAPS"] = os.pathsep.join(env_mailcaps)
                 mcfiles = mailcap.listmailcapfiles()
@@ -87,7 +87,7 @@ kundi HelperFunctionTest(unittest.TestCase):
 
     eleza test_readmailcapfile(self):
         # Test readmailcapfile() using test file. It should match MAILCAPDICT.
-        with open(MAILCAPFILE, 'r') as mcf:
+        with open(MAILCAPFILE, 'r') kama mcf:
             with self.assertWarns(DeprecationWarning):
                 d = mailcap.readmailcapfile(mcf)
         self.assertDictEqual(d, MAILCAPDICT_DEPRECATED)
@@ -126,17 +126,17 @@ kundi HelperFunctionTest(unittest.TestCase):
             (["echo foo", "audio/*", "foo.txt", plist], "echo foo"),
             (["echo %{total}", "audio/*", "foo.txt", plist], "echo 3")
         ]
-        for tc in test_cases:
+        kila tc kwenye test_cases:
             self.assertEqual(mailcap.subst(*tc[0]), tc[1])
 
 
 kundi GetcapsTest(unittest.TestCase):
 
     eleza test_mock_getcaps(self):
-        # Test mailcap.getcaps() using mock mailcap file in this dir.
+        # Test mailcap.getcaps() using mock mailcap file kwenye this dir.
         # Temporarily override any existing system mailcap file by pointing the
         # MAILCAPS environment variable to our mock file.
-        with test.support.EnvironmentVarGuard() as env:
+        with test.support.EnvironmentVarGuard() kama env:
             env["MAILCAPS"] = MAILCAPFILE
             caps = mailcap.getcaps()
             self.assertDictEqual(caps, MAILCAPDICT)
@@ -146,15 +146,15 @@ kundi GetcapsTest(unittest.TestCase):
         caps = mailcap.getcaps()
         self.assertIsInstance(caps, dict)
         mailcapfiles = mailcap.listmailcapfiles()
-        existingmcfiles = [mcf for mcf in mailcapfiles ikiwa os.path.exists(mcf)]
+        existingmcfiles = [mcf kila mcf kwenye mailcapfiles ikiwa os.path.exists(mcf)]
         ikiwa existingmcfiles:
             # At least 1 mailcap file exists, so test that.
-            for (k, v) in caps.items():
+            kila (k, v) kwenye caps.items():
                 self.assertIsInstance(k, str)
                 self.assertIsInstance(v, list)
-                for e in v:
+                kila e kwenye v:
                     self.assertIsInstance(e, dict)
-        else:
+        isipokua:
             # No mailcap files on system. getcaps() should rudisha empty dict.
             self.assertEqual({}, caps)
 
@@ -179,7 +179,7 @@ kundi FindmatchTest(unittest.TestCase):
         video_entry = {'view': 'animate %s', 'lineno': 12}
         message_entry = {
             'composetyped': 'extcompose %s',
-            'description': '"A reference to data stored in an external location"', 'needsterminal': '',
+            'description': '"A reference to data stored kwenye an external location"', 'needsterminal': '',
             'view': 'showexternal %s %{access-type} %{name} %{site}     %{directory} %{mode} %{server}',
             'lineno': 10,
         }
@@ -189,13 +189,13 @@ kundi FindmatchTest(unittest.TestCase):
         #   keyword args: key="view", filename="/dev/null", plist=[]
         #   output: (command line, mailcap entry)
         cases = [
-            ([{}, "video/mpeg"], {}, (None, None)),
-            ([c, "foo/bar"], {}, (None, None)),
+            ([{}, "video/mpeg"], {}, (Tupu, Tupu)),
+            ([c, "foo/bar"], {}, (Tupu, Tupu)),
             ([c, "video/mpeg"], {}, ('animate /dev/null', video_entry)),
             ([c, "audio/basic", "edit"], {}, ("audiocompose /dev/null", audio_basic_entry)),
             ([c, "audio/basic", "compose"], {}, ("audiocompose /dev/null", audio_basic_entry)),
             ([c, "audio/basic", "description"], {}, ('"An audio fragment"', audio_basic_entry)),
-            ([c, "audio/basic", "foobar"], {}, (None, None)),
+            ([c, "audio/basic", "foobar"], {}, (Tupu, Tupu)),
             ([c, "video/*"], {"filename": fname}, ("animate %s" % fname, video_entry)),
             ([c, "audio/basic", "compose"],
              {"filename": fname},
@@ -214,24 +214,24 @@ kundi FindmatchTest(unittest.TestCase):
 
     @unittest.skipUnless(os.name == "posix", "Requires 'test' command on system")
     eleza test_test(self):
-        # findmatch() will automatically check any "test" conditions and skip
+        # findmatch() will automatically check any "test" conditions na skip
         # the entry ikiwa the check fails.
-        caps = {"test/pass": [{"test": "test 1 -eq 1"}],
+        caps = {"test/pita": [{"test": "test 1 -eq 1"}],
                 "test/fail": [{"test": "test 1 -eq 0"}]}
         # test case: (findmatch args, findmatch keyword args, expected output)
         #   positional args: caps, MIMEtype, key ("test")
         #   keyword args: N/A
         #   output: (command line, mailcap entry)
         cases = [
-            # findmatch will rudisha the mailcap entry for test/pass because it evaluates to true
-            ([caps, "test/pass", "test"], {}, ("test 1 -eq 1", {"test": "test 1 -eq 1"})),
-            # findmatch will rudisha None because test/fail evaluates to false
-            ([caps, "test/fail", "test"], {}, (None, None))
+            # findmatch will rudisha the mailcap entry kila test/pita because it evaluates to true
+            ([caps, "test/pita", "test"], {}, ("test 1 -eq 1", {"test": "test 1 -eq 1"})),
+            # findmatch will rudisha Tupu because test/fail evaluates to false
+            ([caps, "test/fail", "test"], {}, (Tupu, Tupu))
         ]
         self._run_cases(cases)
 
     eleza _run_cases(self, cases):
-        for c in cases:
+        kila c kwenye cases:
             self.assertEqual(mailcap.findmatch(*c[0], **c[1]), c[2])
 
 

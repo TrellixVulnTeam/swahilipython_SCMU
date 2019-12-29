@@ -19,33 +19,33 @@ kutoka idlelib.tree agiza TreeNode, TreeItem, ScrolledCanvas
 kutoka idlelib.window agiza ListedToplevel
 
 
-file_open = None  # Method...Item and Class...Item use this.
-# Normally pyshell.flist.open, but there is no pyshell.flist for htest.
+file_open = Tupu  # Method...Item na Class...Item use this.
+# Normally pyshell.flist.open, but there ni no pyshell.flist kila htest.
 
 
-eleza transform_children(child_dict, modname=None):
+eleza transform_children(child_dict, modname=Tupu):
     """Transform a child dictionary to an ordered sequence of objects.
 
     The dictionary maps names to pyclbr information objects.
     Filter out imported objects.
     Augment kundi names with bases.
-    The insertion order of the dictionary is assumed to have been in line
-    number order, so sorting is not necessary.
+    The insertion order of the dictionary ni assumed to have been kwenye line
+    number order, so sorting ni sio necessary.
 
-    The current tree only calls this once per child_dict as it saves
-    TreeItems once created.  A future tree and tests might violate this,
+    The current tree only calls this once per child_dict kama it saves
+    TreeItems once created.  A future tree na tests might violate this,
     so a check prevents multiple in-place augmentations.
     """
     obs = []  # Use list since values should already be sorted.
-    for key, obj in child_dict.items():
-        ikiwa modname is None or obj.module == modname:
-            ikiwa hasattr(obj, 'super') and obj.super and obj.name == key:
+    kila key, obj kwenye child_dict.items():
+        ikiwa modname ni Tupu ama obj.module == modname:
+            ikiwa hasattr(obj, 'super') na obj.super na obj.name == key:
                 # If obj.name != key, it has already been suffixed.
                 supers = []
-                for sup in obj.super:
-                    ikiwa type(sup) is type(''):
+                kila sup kwenye obj.super:
+                    ikiwa type(sup) ni type(''):
                         sname = sup
-                    else:
+                    isipokua:
                         sname = sup.name
                         ikiwa sup.module != obj.module:
                             sname = f'{sup.module}.{sname}'
@@ -56,29 +56,29 @@ eleza transform_children(child_dict, modname=None):
 
 
 kundi ModuleBrowser:
-    """Browse module classes and functions in IDLE.
+    """Browse module classes na functions kwenye IDLE.
     """
-    # This kundi is also the base kundi for pathbrowser.PathBrowser.
-    # Init and close are inherited, other methods are overridden.
-    # PathBrowser.__init__ does not call __init__ below.
+    # This kundi ni also the base kundi kila pathbrowser.PathBrowser.
+    # Init na close are inherited, other methods are overridden.
+    # PathBrowser.__init__ does sio call __init__ below.
 
-    eleza __init__(self, master, path, *, _htest=False, _utest=False):
-        """Create a window for browsing a module's structure.
+    eleza __init__(self, master, path, *, _htest=Uongo, _utest=Uongo):
+        """Create a window kila browsing a module's structure.
 
         Args:
-            master: parent for widgets.
+            master: parent kila widgets.
             path: full path of file to browse.
             _htest - bool; change box location when running htest.
             -utest - bool; suppress contents when running unittest.
 
         Global variables:
-            file_open: Function used for opening a file.
+            file_open: Function used kila opening a file.
 
         Instance variables:
             name: Module name.
-            file: Full path and module with .py extension.  Used in
-                creating ModuleBrowserTreeItem as the rootnode for
-                the tree and subsequently in the children.
+            file: Full path na module with .py extension.  Used in
+                creating ModuleBrowserTreeItem kama the rootnode for
+                the tree na subsequently kwenye the children.
         """
         self.master = master
         self.path = path
@@ -86,8 +86,8 @@ kundi ModuleBrowser:
         self._utest = _utest
         self.init()
 
-    eleza close(self, event=None):
-        "Dismiss the window and the tree nodes."
+    eleza close(self, event=Tupu):
+        "Dismiss the window na the tree nodes."
         self.top.destroy()
         self.node.destroy()
 
@@ -95,7 +95,7 @@ kundi ModuleBrowser:
         "Create browser tkinter widgets, including the tree."
         global file_open
         root = self.master
-        flist = (pyshell.flist ikiwa not (self._htest or self._utest)
+        flist = (pyshell.flist ikiwa sio (self._htest ama self._utest)
                  else pyshell.PyShellFileList(root))
         file_open = flist.open
         pyclbr._modules.clear()
@@ -117,8 +117,8 @@ kundi ModuleBrowser:
                             takefocus=1)
         sc.frame.pack(expand=1, fill="both")
         item = self.rootnode()
-        self.node = node = TreeNode(sc.canvas, None, item)
-        ikiwa not self._utest:
+        self.node = node = TreeNode(sc.canvas, Tupu, item)
+        ikiwa sio self._utest:
             node.update()
             node.expand()
 
@@ -128,27 +128,27 @@ kundi ModuleBrowser:
         self.top.wm_iconname("Module Browser")
 
     eleza rootnode(self):
-        "Return a ModuleBrowserTreeItem as the root of the tree."
+        "Return a ModuleBrowserTreeItem kama the root of the tree."
         rudisha ModuleBrowserTreeItem(self.path)
 
 
 kundi ModuleBrowserTreeItem(TreeItem):
-    """Browser tree for Python module.
+    """Browser tree kila Python module.
 
-    Uses TreeItem as the basis for the structure of the tree.
+    Uses TreeItem kama the basis kila the structure of the tree.
     Used by both browsers.
     """
 
     eleza __init__(self, file):
-        """Create a TreeItem for the file.
+        """Create a TreeItem kila the file.
 
         Args:
-            file: Full path and module name.
+            file: Full path na module name.
         """
         self.file = file
 
     eleza GetText(self):
-        "Return the module name as the text string to display."
+        "Return the module name kama the text string to display."
         rudisha os.path.basename(self.file)
 
     eleza GetIconName(self):
@@ -156,42 +156,42 @@ kundi ModuleBrowserTreeItem(TreeItem):
         rudisha "python"
 
     eleza GetSubList(self):
-        "Return ChildBrowserTreeItems for children."
-        rudisha [ChildBrowserTreeItem(obj) for obj in self.listchildren()]
+        "Return ChildBrowserTreeItems kila children."
+        rudisha [ChildBrowserTreeItem(obj) kila obj kwenye self.listchildren()]
 
     eleza OnDoubleClick(self):
-        "Open a module in an editor window when double clicked."
+        "Open a module kwenye an editor window when double clicked."
         ikiwa os.path.normcase(self.file[-3:]) != ".py":
-            return
-        ikiwa not os.path.exists(self.file):
-            return
+            rudisha
+        ikiwa sio os.path.exists(self.file):
+            rudisha
         file_open(self.file)
 
     eleza IsExpandable(self):
-        "Return True ikiwa Python (.py) file."
+        "Return Kweli ikiwa Python (.py) file."
         rudisha os.path.normcase(self.file[-3:]) == ".py"
 
     eleza listchildren(self):
-        "Return sequenced classes and functions in the module."
+        "Return sequenced classes na functions kwenye the module."
         dir, base = os.path.split(self.file)
         name, ext = os.path.splitext(base)
         ikiwa os.path.normcase(ext) != ".py":
             rudisha []
-        try:
+        jaribu:
             tree = pyclbr.readmodule_ex(name, [dir] + sys.path)
-        except ImportError:
+        tatizo ImportError:
             rudisha []
         rudisha transform_children(tree, name)
 
 
 kundi ChildBrowserTreeItem(TreeItem):
-    """Browser tree for child nodes within the module.
+    """Browser tree kila child nodes within the module.
 
-    Uses TreeItem as the basis for the structure of the tree.
+    Uses TreeItem kama the basis kila the structure of the tree.
     """
 
     eleza __init__(self, obj):
-        "Create a TreeItem for a pyclbr class/function object."
+        "Create a TreeItem kila a pyclbr class/function object."
         self.obj = obj
         self.name = obj.name
         self.isfunction = isinstance(obj, pyclbr.Function)
@@ -201,49 +201,49 @@ kundi ChildBrowserTreeItem(TreeItem):
         name = self.name
         ikiwa self.isfunction:
             rudisha "eleza " + name + "(...)"
-        else:
+        isipokua:
             rudisha "kundi " + name
 
     eleza GetIconName(self):
         "Return the name of the icon to display."
         ikiwa self.isfunction:
             rudisha "python"
-        else:
+        isipokua:
             rudisha "folder"
 
     eleza IsExpandable(self):
-        "Return True ikiwa self.obj has nested objects."
+        "Return Kweli ikiwa self.obj has nested objects."
         rudisha self.obj.children != {}
 
     eleza GetSubList(self):
-        "Return ChildBrowserTreeItems for children."
+        "Return ChildBrowserTreeItems kila children."
         rudisha [ChildBrowserTreeItem(obj)
-                for obj in transform_children(self.obj.children)]
+                kila obj kwenye transform_children(self.obj.children)]
 
     eleza OnDoubleClick(self):
-        "Open module with file_open and position to lineno."
-        try:
+        "Open module with file_open na position to lineno."
+        jaribu:
             edit = file_open(self.obj.file)
             edit.gotoline(self.obj.lineno)
-        except (OSError, AttributeError):
-            pass
+        tatizo (OSError, AttributeError):
+            pita
 
 
 eleza _module_browser(parent): # htest #
-    ikiwa len(sys.argv) > 1:  # If pass file on command line.
+    ikiwa len(sys.argv) > 1:  # If pita file on command line.
         file = sys.argv[1]
-    else:
+    isipokua:
         file = __file__
-        # Add nested objects for htest.
+        # Add nested objects kila htest.
         kundi Nested_in_func(TreeNode):
-            eleza nested_in_class(): pass
+            eleza nested_in_class(): pita
         eleza closure():
-            kundi Nested_in_closure: pass
-    ModuleBrowser(parent, file, _htest=True)
+            kundi Nested_in_closure: pita
+    ModuleBrowser(parent, file, _htest=Kweli)
 
 ikiwa __name__ == "__main__":
-    ikiwa len(sys.argv) == 1:  # If pass file on command line, unittest fails.
+    ikiwa len(sys.argv) == 1:  # If pita file on command line, unittest fails.
         kutoka unittest agiza main
-        main('idlelib.idle_test.test_browser', verbosity=2, exit=False)
+        main('idlelib.idle_test.test_browser', verbosity=2, exit=Uongo)
     kutoka idlelib.idle_test.htest agiza run
     run(_module_browser)

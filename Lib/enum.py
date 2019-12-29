@@ -35,9 +35,9 @@ def _is_sunder(name):
 
 def _make_class_unpicklable(cls):
     """Make the given kundi un-picklable."""
-    def _break_on_call_reduce(self, proto):
+    def _koma_on_call_reduce(self, proto):
         raise TypeError('%r cannot be pickled' % self)
-    cls.__reduce_ex__ = _break_on_call_reduce
+    cls.__reduce_ex__ = _koma_on_call_reduce
     cls.__module__ = '<unknown>'
 
 _auto_null = object()
@@ -49,7 +49,7 @@ kundi auto:
 
 
 kundi _EnumDict(dict):
-    """Track enum member order and ensure member names are not reused.
+    """Track enum member order and ensure member names are sio reused.
 
     EnumMeta will use the names found in self._member_names as the
     enumeration member names.
@@ -62,16 +62,16 @@ kundi _EnumDict(dict):
         self._ignore = []
 
     def __setitem__(self, key, value):
-        """Changes anything not dundered or not a descriptor.
+        """Changes anything sio dundered or sio a descriptor.
 
         If an enum member name is used twice, an error is raised; duplicate
-        values are not checked for.
+        values are sio checked for.
 
         Single underscore (sunder) names are reserved.
 
         """
         if _is_sunder(key):
-            if key not in (
+            if key haiko kwenye (
                     '_order_', '_create_pseudo_member_',
                     '_generate_next_value_', '_missing_', '_ignore_',
                     ):
@@ -81,7 +81,7 @@ kundi _EnumDict(dict):
             lasivyo key == '_ignore_':
                 if isinstance(value, str):
                     value = value.replace(',',' ').split()
-                else:
+                isipokua:
                     value = list(value)
                 self._ignore = value
                 already = set(value) & set(self._member_names)
@@ -95,7 +95,7 @@ kundi _EnumDict(dict):
             raise TypeError('Attempted to reuse key: %r' % key)
         lasivyo key in self._ignore:
             pass
-        lasivyo not _is_descriptor(value):
+        lasivyo sio _is_descriptor(value):
             if key in self:
                 # enum overwriting a descriptor?
                 raise TypeError('%r already defined as: %r' % (key, self[key]))
@@ -110,7 +110,7 @@ kundi _EnumDict(dict):
 
 # Dummy value for Enum as EnumMeta explicitly checks for it, but of course
 # until EnumMeta finishes running the first time the Enum kundi doesn't exist.
-# This is also why there are checks in EnumMeta like `if Enum is not None`
+# This is also why there are checks in EnumMeta like `if Enum ni sio None`
 Enum = None
 
 
@@ -122,7 +122,7 @@ kundi EnumMeta(type):
         enum_dict = _EnumDict()
         # inherit previous flags and _generate_next_value_ function
         member_type, first_enum = metacls._get_mixins_(bases)
-        if first_enum is not None:
+        if first_enum ni sio None:
             enum_dict['_generate_next_value_'] = getattr(first_enum, '_generate_next_value_', None)
         return enum_dict
 
@@ -145,7 +145,7 @@ kundi EnumMeta(type):
         # the new class
         enum_members = {k: classdict[k] for k in classdict._member_names}
         for name in classdict._member_names:
-            del classdict[name]
+            toa classdict[name]
 
         # adjust the sunders
         _order_ = classdict.pop('_order_', None)
@@ -156,8 +156,8 @@ kundi EnumMeta(type):
             raise ValueError('Invalid enum member name: {0}'.format(
                 ','.join(invalid_names)))
 
-        # create a default docstring if one has not been provided
-        if '__doc__' not in classdict:
+        # create a default docstring if one has sio been provided
+        if '__doc__' haiko kwenye classdict:
             classdict['__doc__'] = 'An enumeration.'
 
         # create our new Enum type
@@ -175,7 +175,7 @@ kundi EnumMeta(type):
         # Reverse value->name map for hashable values.
         enum_class._value2member_map_ = {}
 
-        # If a custom type is mixed into the Enum, and it does not know how
+        # If a custom type is mixed into the Enum, and it does sio know how
         # to pickle itself, pickle.dumps will succeed but pickle.loads will
         # fail.  Rather than have the error show up later and possibly far
         # kutoka the source, sabotage the pickle protocol for this kundi so
@@ -185,11 +185,11 @@ kundi EnumMeta(type):
         # sabotage -- it's on them to make sure it works correctly.  We use
         # __reduce_ex__ instead of any of the others as it is preferred by
         # pickle over __reduce__, and it handles all pickle protocols.
-        if '__reduce_ex__' not in classdict:
-            if member_type is not object:
+        if '__reduce_ex__' haiko kwenye classdict:
+            if member_type ni sio object:
                 methods = ('__getnewargs_ex__', '__getnewargs__',
                         '__reduce_ex__', '__reduce__')
-                if not any(m in member_type.__dict__ for m in methods):
+                if sio any(m in member_type.__dict__ for m in methods):
                     _make_class_unpicklable(enum_class)
 
         # instantiate them, checking for duplicates as we go
@@ -198,22 +198,22 @@ kundi EnumMeta(type):
         # auto-numbering ;)
         for member_name in classdict._member_names:
             value = enum_members[member_name]
-            if not isinstance(value, tuple):
+            if sio isinstance(value, tuple):
                 args = (value, )
-            else:
+            isipokua:
                 args = value
             if member_type is tuple:   # special case for tuple enums
                 args = (args, )     # wrap it one more time
-            if not use_args:
+            if sio use_args:
                 enum_member = __new__(enum_class)
-                if not hasattr(enum_member, '_value_'):
+                if sio hasattr(enum_member, '_value_'):
                     enum_member._value_ = value
-            else:
+            isipokua:
                 enum_member = __new__(enum_class, *args)
-                if not hasattr(enum_member, '_value_'):
+                if sio hasattr(enum_member, '_value_'):
                     if member_type is object:
                         enum_member._value_ = value
-                    else:
+                    isipokua:
                         enum_member._value_ = member_type(*args)
             value = enum_member._value_
             enum_member._name_ = member_name
@@ -224,36 +224,36 @@ kundi EnumMeta(type):
             for name, canonical_member in enum_class._member_map_.items():
                 if canonical_member._value_ == enum_member._value_:
                     enum_member = canonical_member
-                    break
-            else:
+                    koma
+            isipokua:
                 # Aliases don't appear in member names (only in __members__).
                 enum_class._member_names_.append(member_name)
-            # performance boost for any member that would not shadow
+            # performance boost for any member that would sio shadow
             # a DynamicClassAttribute
-            if member_name not in dynamic_attributes:
+            if member_name haiko kwenye dynamic_attributes:
                 setattr(enum_class, member_name, enum_member)
             # now add to _member_map_
             enum_class._member_map_[member_name] = enum_member
-            try:
-                # This may fail if value is not hashable. We can't add the value
+            jaribu:
+                # This may fail if value ni sio hashable. We can't add the value
                 # to the map, and by-value lookups for this value will be
                 # linear.
                 enum_class._value2member_map_[value] = enum_member
-            except TypeError:
+            tatizo TypeError:
                 pass
 
-        # double check that repr and friends are not the mixin's or various
-        # things break (such as pickle)
+        # double check that repr and friends are sio the mixin's or various
+        # things koma (such as pickle)
         for name in ('__repr__', '__str__', '__format__', '__reduce_ex__'):
             class_method = getattr(enum_class, name)
             obj_method = getattr(member_type, name, None)
             enum_method = getattr(first_enum, name, None)
-            if obj_method is not None and obj_method is class_method:
+            if obj_method ni sio None and obj_method is class_method:
                 setattr(enum_class, name, enum_method)
 
-        # replace any other __new__ with our own (as long as Enum is not None,
+        # replace any other __new__ with our own (as long as Enum ni sio None,
         # anyway) -- again, this is to support pickle
-        if Enum is not None:
+        if Enum ni sio None:
             # if the user defined their own __new__, save it before it gets
             # clobbered in case they subkundi later
             if save_new:
@@ -261,11 +261,11 @@ kundi EnumMeta(type):
             enum_class.__new__ = Enum.__new__
 
         # py3 support for definition order (helps keep py2/py3 code in sync)
-        if _order_ is not None:
+        if _order_ ni sio None:
             if isinstance(_order_, str):
                 _order_ = _order_.replace(',', ' ').split()
             if _order_ != enum_class._member_names_:
-                raise TypeError('member order does not match _order_')
+                raise TypeError('member order does sio match _order_')
 
         return enum_class
 
@@ -290,12 +290,12 @@ kundi EnumMeta(type):
         (values will start at `start`), or an iterator/mapping of name, value pairs.
 
         `module` should be set to the module this kundi is being created in;
-        if it is not set, an attempt to find that module will be made, but if
-        it fails the kundi will not be picklable.
+        if it ni sio set, an attempt to find that module will be made, but if
+        it fails the kundi will sio be picklable.
 
         `qualname` should be set to the actual location this kundi can be found
         at in its module; by default it is set to the global scope.  If this is
-        not correct, unpickling will fail in some circumstances.
+        sio correct, unpickling will fail in some circumstances.
 
         `type`, if set, will be mixed in as the first base class.
 
@@ -306,7 +306,7 @@ kundi EnumMeta(type):
         return cls._create_(value, names, module=module, qualname=qualname, type=type, start=start)
 
     def __contains__(cls, member):
-        if not isinstance(member, Enum):
+        if sio isinstance(member, Enum):
             raise TypeError(
                 "unsupported operand type(s) for 'in': '%s' and '%s'" % (
                     type(member).__qualname__, cls.__class__.__qualname__))
@@ -335,9 +335,9 @@ kundi EnumMeta(type):
         """
         if _is_dunder(name):
             raise AttributeError(name)
-        try:
+        jaribu:
             return cls._member_map_[name]
-        except KeyError:
+        tatizo KeyError:
             raise AttributeError(name) kutoka None
 
     def __getitem__(cls, name):
@@ -410,7 +410,7 @@ kundi EnumMeta(type):
         for item in names:
             if isinstance(item, str):
                 member_name, member_value = item, names[item]
-            else:
+            isipokua:
                 member_name, member_value = item
             classdict[member_name] = member_value
         enum_kundi = metacls.__new__(metacls, class_name, bases, classdict)
@@ -418,15 +418,15 @@ kundi EnumMeta(type):
         # TODO: replace the frame hack if a blessed way to know the calling
         # module is ever developed
         if module is None:
-            try:
+            jaribu:
                 module = sys._getframe(2).f_globals['__name__']
-            except (AttributeError, ValueError, KeyError) as exc:
+            tatizo (AttributeError, ValueError, KeyError) as exc:
                 pass
         if module is None:
             _make_class_unpicklable(enum_class)
-        else:
+        isipokua:
             enum_class.__module__ = module
-        if qualname is not None:
+        if qualname ni sio None:
             enum_class.__qualname__ = qualname
 
         return enum_class
@@ -443,7 +443,7 @@ kundi EnumMeta(type):
         module_globals = vars(sys.modules[module])
         if source:
             source = vars(source)
-        else:
+        isipokua:
             source = module_globals
         # _value2member_map_ is populated in the same order every time
         # for a consistent reverse mapping of number to name when there
@@ -452,10 +452,10 @@ kundi EnumMeta(type):
                 (name, value)
                 for name, value in source.items()
                 if filter(name)]
-        try:
+        jaribu:
             # sort by value
             members.sort(key=lambda t: (t[1], t[0]))
-        except TypeError:
+        tatizo TypeError:
             # unless some values aren't comparable, in which case sort by name
             members.sort(key=lambda t: t[0])
         cls = cls(name, members, module=module)
@@ -478,23 +478,23 @@ kundi EnumMeta(type):
         bases: the tuple of bases that was given to __new__
 
         """
-        if not bases:
+        if sio bases:
             return object, Enum
 
         def _find_data_type(bases):
             for chain in bases:
                 for base in chain.__mro__:
                     if base is object:
-                        continue
+                        endelea
                     lasivyo '__new__' in base.__dict__:
                         if issubclass(base, Enum):
-                            continue
+                            endelea
                         return base
 
         # ensure final parent kundi is an Enum derivative, find any concrete
         # data type, and check that Enum has no members
         first_enum = bases[-1]
-        if not issubclass(first_enum, Enum):
+        if sio issubclass(first_enum, Enum):
             raise TypeError("new enumerations should be created as "
                     "`EnumName([mixin_type, ...] [data_type,] enum_type)`")
         member_type = _find_data_type(bases) or object
@@ -517,7 +517,7 @@ kundi EnumMeta(type):
         __new__ = classdict.get('__new__', None)
 
         # should __new__ be saved as __new_member__ later?
-        save_new = __new__ is not None
+        save_new = __new__ ni sio None
 
         if __new__ is None:
             # check all possibles for __new_member__ before falling back to
@@ -525,17 +525,17 @@ kundi EnumMeta(type):
             for method in ('__new_member__', '__new__'):
                 for possible in (member_type, first_enum):
                     target = getattr(possible, method, None)
-                    if target not in {
+                    if target haiko kwenye {
                             None,
                             None.__new__,
                             object.__new__,
                             Enum.__new__,
                             }:
                         __new__ = target
-                        break
-                if __new__ is not None:
-                    break
-            else:
+                        koma
+                if __new__ ni sio None:
+                    koma
+            isipokua:
                 __new__ = object.__new__
 
         # if a non-object.__new__ is used then whatever value/tuple was
@@ -543,7 +543,7 @@ kundi EnumMeta(type):
         # new enum member's __init__
         if __new__ is object.__new__:
             use_args = False
-        else:
+        isipokua:
             use_args = True
         return __new__, save_new, use_args
 
@@ -563,27 +563,27 @@ kundi Enum(metaclass=EnumMeta):
             return value
         # by-value search for a matching enum member
         # see if it's in the reverse mapping (for hashable values)
-        try:
+        jaribu:
             return cls._value2member_map_[value]
-        except KeyError:
+        tatizo KeyError:
             # Not found, no need to do long O(n) search
             pass
-        except TypeError:
-            # not there, now do long search -- O(n) behavior
+        tatizo TypeError:
+            # sio there, now do long search -- O(n) behavior
             for member in cls._member_map_.values():
                 if member._value_ == value:
                     return member
-        # still not found -- try _missing_ hook
-        try:
+        # still sio found -- try _missing_ hook
+        jaribu:
             exc = None
             result = cls._missing_(value)
-        except Exception as e:
+        tatizo Exception as e:
             exc = e
             result = None
         if isinstance(result, cls):
             return result
-        else:
-            ve_exc = ValueError("%r is not a valid %s" % (value, cls.__name__))
+        isipokua:
+            ve_exc = ValueError("%r ni sio a valid %s" % (value, cls.__name__))
             if result is None and exc is None:
                 raise ve_exc
             lasivyo exc is None:
@@ -596,16 +596,16 @@ kundi Enum(metaclass=EnumMeta):
 
     def _generate_next_value_(name, start, count, last_values):
         for last_value in reversed(last_values):
-            try:
+            jaribu:
                 return last_value + 1
-            except TypeError:
+            tatizo TypeError:
                 pass
-        else:
+        isipokua:
             return start
 
     @classmethod
     def _missing_(cls, value):
-        raise ValueError("%r is not a valid %s" % (value, cls.__name__))
+        raise ValueError("%r ni sio a valid %s" % (value, cls.__name__))
 
     def __repr__(self):
         return "<%s.%s: %r>" % (
@@ -619,7 +619,7 @@ kundi Enum(metaclass=EnumMeta):
                 m
                 for cls in self.__class__.mro()
                 for m in cls.__dict__
-                if m[0] != '_' and m not in self._member_map_
+                if m[0] != '_' and m haiko kwenye self._member_map_
                 ]
         return (['__class__', '__doc__', '__module__'] + added_behavior)
 
@@ -633,7 +633,7 @@ kundi Enum(metaclass=EnumMeta):
             cls = str
             val = str(self)
         # mix-in branch
-        else:
+        isipokua:
             cls = self._member_type_
             val = self._value_
         return cls.__format__(val, format_spec)
@@ -645,10 +645,10 @@ kundi Enum(metaclass=EnumMeta):
         return self.__class__, (self._value_, )
 
     # DynamicClassAttribute is used to provide access to the `name` and
-    # `value` properties of enum members while keeping some measure of
-    # protection kutoka modification, while still allowing for an enumeration
+    # `value` properties of enum members wakati keeping some measure of
+    # protection kutoka modification, wakati still allowing for an enumeration
     # to have members named `name` and `value`.  This works because enumeration
-    # members are not set directly on the enum kundi -- __getattr__ is
+    # members are sio set directly on the enum kundi -- __getattr__ is
     # used to look them up.
 
     @DynamicClassAttribute
@@ -674,20 +674,20 @@ kundi Flag(Enum):
 
     def _generate_next_value_(name, start, count, last_values):
         """
-        Generate the next value when not given.
+        Generate the next value when sio given.
 
         name: the name of the member
         start: the initial start value or None
         count: the number of existing members
         last_value: the last value assigned or None
         """
-        if not count:
-            return start if start is not None else 1
+        if sio count:
+            return start if start ni sio None else 1
         for last_value in reversed(last_values):
-            try:
+            jaribu:
                 high_bit = _high_bit(last_value)
-                break
-            except Exception:
+                koma
+            tatizo Exception:
                 raise TypeError('Invalid Flag value: %r' % last_value) kutoka None
         return 2 ** (high_bit+1)
 
@@ -711,7 +711,7 @@ kundi Flag(Enum):
             # verify all bits are accounted for
             _, extra_flags = _decompose(cls, value)
             if extra_flags:
-                raise ValueError("%r is not a valid %s" % (value, cls.__name__))
+                raise ValueError("%r ni sio a valid %s" % (value, cls.__name__))
             # construct a singleton enum pseudo-member
             pseudo_member = object.__new__(cls)
             pseudo_member._name_ = None
@@ -722,7 +722,7 @@ kundi Flag(Enum):
         return pseudo_member
 
     def __contains__(self, other):
-        if not isinstance(other, self.__class__):
+        if sio isinstance(other, self.__class__):
             raise TypeError(
                 "unsupported operand type(s) for 'in': '%s' and '%s'" % (
                     type(other).__qualname__, self.__class__.__qualname__))
@@ -730,7 +730,7 @@ kundi Flag(Enum):
 
     def __repr__(self):
         cls = self.__class__
-        if self._name_ is not None:
+        if self._name_ ni sio None:
             return '<%s.%s: %r>' % (cls.__name__, self._name_, self._value_)
         members, uncovered = _decompose(cls, self._value_)
         return '<%s.%s: %r>' % (
@@ -741,12 +741,12 @@ kundi Flag(Enum):
 
     def __str__(self):
         cls = self.__class__
-        if self._name_ is not None:
+        if self._name_ ni sio None:
             return '%s.%s' % (cls.__name__, self._name_)
         members, uncovered = _decompose(cls, self._value_)
         if len(members) == 1 and members[0]._name_ is None:
             return '%s.%r' % (cls.__name__, members[0]._value_)
-        else:
+        isipokua:
             return '%s.%s' % (
                     cls.__name__,
                     '|'.join([str(m._name_ or m._value_) for m in members]),
@@ -756,17 +756,17 @@ kundi Flag(Enum):
         return bool(self._value_)
 
     def __or__(self, other):
-        if not isinstance(other, self.__class__):
+        if sio isinstance(other, self.__class__):
             return NotImplemented
         return self.__class__(self._value_ | other._value_)
 
     def __and__(self, other):
-        if not isinstance(other, self.__class__):
+        if sio isinstance(other, self.__class__):
             return NotImplemented
         return self.__class__(self._value_ & other._value_)
 
     def __xor__(self, other):
-        if not isinstance(other, self.__class__):
+        if sio isinstance(other, self.__class__):
             return NotImplemented
         return self.__class__(self._value_ ^ other._value_)
 
@@ -774,7 +774,7 @@ kundi Flag(Enum):
         members, uncovered = _decompose(self.__class__, self._value_)
         inverted = self.__class__(0)
         for m in self.__class__:
-            if m not in members and not (m._value_ & self._value_):
+            if m haiko kwenye members and sio (m._value_ & self._value_):
                 inverted = inverted | m
         return self.__class__(inverted)
 
@@ -784,8 +784,8 @@ kundi IntFlag(int, Flag):
 
     @classmethod
     def _missing_(cls, value):
-        if not isinstance(value, int):
-            raise ValueError("%r is not a valid %s" % (value, cls.__name__))
+        if sio isinstance(value, int):
+            raise ValueError("%r ni sio a valid %s" % (value, cls.__name__))
         new_member = cls._create_pseudo_member_(value)
         return new_member
 
@@ -797,17 +797,17 @@ kundi IntFlag(int, Flag):
             # get unaccounted for bits
             _, extra_flags = _decompose(cls, value)
             # timer = 10
-            while extra_flags:
+            wakati extra_flags:
                 # timer -= 1
                 bit = _high_bit(extra_flags)
                 flag_value = 2 ** bit
-                if (flag_value not in cls._value2member_map_ and
-                        flag_value not in need_to_create
+                if (flag_value haiko kwenye cls._value2member_map_ and
+                        flag_value haiko kwenye need_to_create
                         ):
                     need_to_create.append(flag_value)
                 if extra_flags == -flag_value:
                     extra_flags = 0
-                else:
+                isipokua:
                     extra_flags ^= flag_value
             for value in reversed(need_to_create):
                 # construct singleton pseudo-members
@@ -820,18 +820,18 @@ kundi IntFlag(int, Flag):
         return pseudo_member
 
     def __or__(self, other):
-        if not isinstance(other, (self.__class__, int)):
+        if sio isinstance(other, (self.__class__, int)):
             return NotImplemented
         result = self.__class__(self._value_ | self.__class__(other)._value_)
         return result
 
     def __and__(self, other):
-        if not isinstance(other, (self.__class__, int)):
+        if sio isinstance(other, (self.__class__, int)):
             return NotImplemented
         return self.__class__(self._value_ & self.__class__(other)._value_)
 
     def __xor__(self, other):
-        if not isinstance(other, (self.__class__, int)):
+        if sio isinstance(other, (self.__class__, int)):
             return NotImplemented
         return self.__class__(self._value_ ^ self.__class__(other)._value_)
 
@@ -863,7 +863,7 @@ def unique(enumeration):
 
 def _decompose(flag, value):
     """Extract all members kutoka the value."""
-    # _decompose is only called if the value is not named
+    # _decompose is only called if the value ni sio named
     not_covered = value
     negative = value < 0
     # issue29167: wrap accesses to _value2member_map_ in a list to avoid race
@@ -874,25 +874,25 @@ def _decompose(flag, value):
         flags_to_check = [
                 (m, v)
                 for v, m in list(flag._value2member_map_.items())
-                if m.name is not None
+                if m.name ni sio None
                 ]
-    else:
+    isipokua:
         # check for named flags and powers-of-two flags
         flags_to_check = [
                 (m, v)
                 for v, m in list(flag._value2member_map_.items())
-                if m.name is not None or _power_of_two(v)
+                if m.name ni sio None or _power_of_two(v)
                 ]
     members = []
     for member, member_value in flags_to_check:
         if member_value and member_value & value == member_value:
             members.append(member)
             not_covered &= ~member_value
-    if not members and value in flag._value2member_map_:
+    if sio members and value in flag._value2member_map_:
         members.append(flag._value2member_map_[value])
     members.sort(key=lambda m: m._value_, reverse=True)
     if len(members) > 1 and members[0].value == value:
-        # we have the breakdown, don't need the value member itself
+        # we have the komadown, don't need the value member itself
         members.pop(0)
     return members, not_covered
 

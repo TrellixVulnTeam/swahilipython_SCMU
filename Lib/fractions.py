@@ -15,45 +15,45 @@ __all__ = ['Fraction', 'gcd']
 
 
 eleza gcd(a, b):
-    """Calculate the Greatest Common Divisor of a and b.
+    """Calculate the Greatest Common Divisor of a na b.
 
-    Unless b==0, the result will have the same sign as b (so that when
-    b is divided by it, the result comes out positive).
+    Unless b==0, the result will have the same sign kama b (so that when
+    b ni divided by it, the result comes out positive).
     """
     agiza warnings
-    warnings.warn('fractions.gcd() is deprecated. Use math.gcd() instead.',
+    warnings.warn('fractions.gcd() ni deprecated. Use math.gcd() instead.',
                   DeprecationWarning, 2)
-    ikiwa type(a) is int is type(b):
-        ikiwa (b or a) < 0:
+    ikiwa type(a) ni int ni type(b):
+        ikiwa (b ama a) < 0:
             rudisha -math.gcd(a, b)
         rudisha math.gcd(a, b)
     rudisha _gcd(a, b)
 
 eleza _gcd(a, b):
-    # Supports non-integers for backward compatibility.
-    while b:
+    # Supports non-integers kila backward compatibility.
+    wakati b:
         a, b = b, a%b
     rudisha a
 
-# Constants related to the hash implementation;  hash(x) is based
+# Constants related to the hash implementation;  hash(x) ni based
 # on the reduction of x modulo the prime _PyHASH_MODULUS.
 _PyHASH_MODULUS = sys.hash_info.modulus
-# Value to be used for rationals that reduce to infinity modulo
+# Value to be used kila rationals that reduce to infinity modulo
 # _PyHASH_MODULUS.
 _PyHASH_INF = sys.hash_info.inf
 
 _RATIONAL_FORMAT = re.compile(r"""
     \A\s*                      # optional whitespace at the start, then
     (?P<sign>[-+]?)            # an optional sign, then
-    (?=\d|\.\d)                # lookahead for digit or .digit
+    (?=\d|\.\d)                # lookahead kila digit ama .digit
     (?P<num>\d*)               # numerator (possibly empty)
     (?:                        # followed by
        (?:/(?P<denom>\d+))?    # an optional denominator
     |                          # or
        (?:\.(?P<decimal>\d*))? # an optional fractional part
-       (?:E(?P<exp>[-+]?\d+))? # and optional exponent
+       (?:E(?P<exp>[-+]?\d+))? # na optional exponent
     )
-    \s*\Z                      # and optional whitespace to finish
+    \s*\Z                      # na optional whitespace to finish
 """, re.VERBOSE | re.IGNORECASE)
 
 
@@ -62,17 +62,17 @@ kundi Fraction(numbers.Rational):
 
     In the two-argument form of the constructor, Fraction(8, 6) will
     produce a rational number equivalent to 4/3. Both arguments must
-    be Rational. The numerator defaults to 0 and the denominator
-    defaults to 1 so that Fraction(3) == 3 and Fraction() == 0.
+    be Rational. The numerator defaults to 0 na the denominator
+    defaults to 1 so that Fraction(3) == 3 na Fraction() == 0.
 
     Fractions can also be constructed kutoka:
 
       - numeric strings similar to those accepted by the
-        float constructor (for example, '-2.3' or '1e10')
+        float constructor (kila example, '-2.3' ama '1e10')
 
       - strings of the form '123/456'
 
-      - float and Decimal instances
+      - float na Decimal instances
 
       - other Rational instances (including integers)
 
@@ -80,12 +80,12 @@ kundi Fraction(numbers.Rational):
 
     __slots__ = ('_numerator', '_denominator')
 
-    # We're immutable, so use __new__ not __init__
-    eleza __new__(cls, numerator=0, denominator=None, *, _normalize=True):
+    # We're immutable, so use __new__ sio __init__
+    eleza __new__(cls, numerator=0, denominator=Tupu, *, _normalize=Kweli):
         """Constructs a Rational.
 
-        Takes a string like '3/2' or '1.5', another Rational instance, a
-        numerator/denominator pair, or a float.
+        Takes a string like '3/2' ama '1.5', another Rational instance, a
+        numerator/denominator pair, ama a float.
 
         Examples
         --------
@@ -114,8 +114,8 @@ kundi Fraction(numbers.Rational):
         """
         self = super(Fraction, cls).__new__(cls)
 
-        ikiwa denominator is None:
-            ikiwa type(numerator) is int:
+        ikiwa denominator ni Tupu:
+            ikiwa type(numerator) ni int:
                 self._numerator = numerator
                 self._denominator = 1
                 rudisha self
@@ -133,14 +133,14 @@ kundi Fraction(numbers.Rational):
             elikiwa isinstance(numerator, str):
                 # Handle construction kutoka strings.
                 m = _RATIONAL_FORMAT.match(numerator)
-                ikiwa m is None:
-                    raise ValueError('Invalid literal for Fraction: %r' %
+                ikiwa m ni Tupu:
+                    ashiria ValueError('Invalid literal kila Fraction: %r' %
                                      numerator)
-                numerator = int(m.group('num') or '0')
+                numerator = int(m.group('num') ama '0')
                 denom = m.group('denom')
                 ikiwa denom:
                     denominator = int(denom)
-                else:
+                isipokua:
                     denominator = 1
                     decimal = m.group('decimal')
                     ikiwa decimal:
@@ -152,17 +152,17 @@ kundi Fraction(numbers.Rational):
                         exp = int(exp)
                         ikiwa exp >= 0:
                             numerator *= 10**exp
-                        else:
+                        isipokua:
                             denominator *= 10**-exp
                 ikiwa m.group('sign') == '-':
                     numerator = -numerator
 
-            else:
-                raise TypeError("argument should be a string "
+            isipokua:
+                ashiria TypeError("argument should be a string "
                                 "or a Rational instance")
 
-        elikiwa type(numerator) is int is type(denominator):
-            pass # *very* normal case
+        elikiwa type(numerator) ni int ni type(denominator):
+            pita # *very* normal case
 
         elikiwa (isinstance(numerator, numbers.Rational) and
             isinstance(denominator, numbers.Rational)):
@@ -170,19 +170,19 @@ kundi Fraction(numbers.Rational):
                 numerator.numerator * denominator.denominator,
                 denominator.numerator * numerator.denominator
                 )
-        else:
-            raise TypeError("both arguments should be "
+        isipokua:
+            ashiria TypeError("both arguments should be "
                             "Rational instances")
 
         ikiwa denominator == 0:
-            raise ZeroDivisionError('Fraction(%s, 0)' % numerator)
+            ashiria ZeroDivisionError('Fraction(%s, 0)' % numerator)
         ikiwa _normalize:
-            ikiwa type(numerator) is int is type(denominator):
+            ikiwa type(numerator) ni int ni type(denominator):
                 # *very* normal case
                 g = math.gcd(numerator, denominator)
                 ikiwa denominator < 0:
                     g = -g
-            else:
+            isipokua:
                 g = _gcd(numerator, denominator)
             numerator //= g
             denominator //= g
@@ -199,8 +199,8 @@ kundi Fraction(numbers.Rational):
         """
         ikiwa isinstance(f, numbers.Integral):
             rudisha cls(f)
-        elikiwa not isinstance(f, float):
-            raise TypeError("%s.kutoka_float() only takes floats, not %r (%s)" %
+        elikiwa sio isinstance(f, float):
+            ashiria TypeError("%s.kutoka_float() only takes floats, sio %r (%s)" %
                             (cls.__name__, f, type(f).__name__))
         rudisha cls(*f.as_integer_ratio())
 
@@ -210,17 +210,17 @@ kundi Fraction(numbers.Rational):
         kutoka decimal agiza Decimal
         ikiwa isinstance(dec, numbers.Integral):
             dec = Decimal(int(dec))
-        elikiwa not isinstance(dec, Decimal):
-            raise TypeError(
-                "%s.kutoka_decimal() only takes Decimals, not %r (%s)" %
+        elikiwa sio isinstance(dec, Decimal):
+            ashiria TypeError(
+                "%s.kutoka_decimal() only takes Decimals, sio %r (%s)" %
                 (cls.__name__, dec, type(dec).__name__))
         rudisha cls(*dec.as_integer_ratio())
 
     eleza as_integer_ratio(self):
-        """Return the integer ratio as a tuple.
+        """Return the integer ratio kama a tuple.
 
-        Return a tuple of two integers, whose ratio is equal to the
-        Fraction and with a positive denominator.
+        Return a tuple of two integers, whose ratio ni equal to the
+        Fraction na with a positive denominator.
         """
         rudisha (self._numerator, self._denominator)
 
@@ -239,35 +239,35 @@ kundi Fraction(numbers.Rational):
         # approximation* to x to be a rational number p/q such that:
         #
         #   (1) p/q >= x, and
-        #   (2) ikiwa p/q > r/s >= x then s > q, for any rational r/s.
+        #   (2) ikiwa p/q > r/s >= x then s > q, kila any rational r/s.
         #
         # Define *best lower approximation* similarly.  Then it can be
-        # proved that a rational number is a best upper or lower
-        # approximation to x if, and only if, it is a convergent or
-        # semiconvergent of the (unique shortest) continued fraction
+        # proved that a rational number ni a best upper ama lower
+        # approximation to x if, na only if, it ni a convergent or
+        # semiconvergent of the (unique shortest) endelead fraction
         # associated to x.
         #
         # To find a best rational approximation with denominator <= M,
-        # we find the best upper and lower approximations with
-        # denominator <= M and take whichever of these is closer to x.
+        # we find the best upper na lower approximations with
+        # denominator <= M na take whichever of these ni closer to x.
         # In the event of a tie, the bound with smaller denominator is
         # chosen.  If both denominators are equal (which can happen
-        # only when max_denominator == 1 and self is midway between
+        # only when max_denominator == 1 na self ni midway between
         # two integers) the lower bound---i.e., the floor of self, is
         # taken.
 
         ikiwa max_denominator < 1:
-            raise ValueError("max_denominator should be at least 1")
+            ashiria ValueError("max_denominator should be at least 1")
         ikiwa self._denominator <= max_denominator:
             rudisha Fraction(self)
 
         p0, q0, p1, q1 = 0, 1, 1, 0
         n, d = self._numerator, self._denominator
-        while True:
+        wakati Kweli:
             a = n//d
             q2 = q0+a*q1
             ikiwa q2 > max_denominator:
-                break
+                koma
             p0, q0, p1, q1 = p1, q1, p0+a*p1, q2
             n, d = d, n-a*d
 
@@ -276,7 +276,7 @@ kundi Fraction(numbers.Rational):
         bound2 = Fraction(p1, q1)
         ikiwa abs(bound2 - self) <= abs(bound1-self):
             rudisha bound2
-        else:
+        isipokua:
             rudisha bound1
 
     @property
@@ -296,21 +296,21 @@ kundi Fraction(numbers.Rational):
         """str(self)"""
         ikiwa self._denominator == 1:
             rudisha str(self._numerator)
-        else:
+        isipokua:
             rudisha '%s/%s' % (self._numerator, self._denominator)
 
     eleza _operator_fallbacks(monomorphic_operator, fallback_operator):
-        """Generates forward and reverse operators given a purely-rational
-        operator and a function kutoka the operator module.
+        """Generates forward na reverse operators given a purely-rational
+        operator na a function kutoka the operator module.
 
         Use this like:
         __op__, __rop__ = _operator_fallbacks(just_rational_op, operator.op)
 
         In general, we want to implement the arithmetic operations so
         that mixed-mode operations either call an implementation whose
-        author knew about the types of both arguments, or convert both
-        to the nearest built in type and do the operation there. In
-        Fraction, that means that we define __add__ and __radd__ as:
+        author knew about the types of both arguments, ama convert both
+        to the nearest built kwenye type na do the operation there. In
+        Fraction, that means that we define __add__ na __radd__ as:
 
             eleza __add__(self, other):
                 # Both types have numerators/denominator attributes,
@@ -319,7 +319,7 @@ kundi Fraction(numbers.Rational):
                     rudisha Fraction(self.numerator * other.denominator +
                                     other.numerator * self.denominator,
                                     self.denominator * other.denominator)
-                # float and complex don't have those operations, but we
+                # float na complex don't have those operations, but we
                 # know about those types, so special case them.
                 elikiwa isinstance(other, float):
                     rudisha float(self) + other
@@ -342,40 +342,40 @@ kundi Fraction(numbers.Rational):
                 rudisha NotImplemented
 
 
-        There are 5 different cases for a mixed-type addition on
+        There are 5 different cases kila a mixed-type addition on
         Fraction. I'll refer to all of the above code that doesn't
-        refer to Fraction, float, or complex as "boilerplate". 'r'
-        will be an instance of Fraction, which is a subtype of
-        Rational (r : Fraction <: Rational), and b : B <:
+        refer to Fraction, float, ama complex kama "boilerplate". 'r'
+        will be an instance of Fraction, which ni a subtype of
+        Rational (r : Fraction <: Rational), na b : B <:
         Complex. The first three involve 'r + b':
 
-            1. If B <: Fraction, int, float, or complex, we handle
-               that specially, and all is well.
-            2. If Fraction falls back to the boilerplate code, and it
+            1. If B <: Fraction, int, float, ama complex, we handle
+               that specially, na all ni well.
+            2. If Fraction falls back to the boilerplate code, na it
                were to rudisha a value kutoka __add__, we'd miss the
                possibility that B defines a more intelligent __radd__,
                so the boilerplate should rudisha NotImplemented kutoka
                __add__. In particular, we don't handle Rational
-               here, even though we could get an exact answer, in case
+               here, even though we could get an exact answer, kwenye case
                the other type wants to do something special.
             3. If B <: Fraction, Python tries B.__radd__ before
-               Fraction.__add__. This is ok, because it was
+               Fraction.__add__. This ni ok, because it was
                implemented with knowledge of Fraction, so it can
                handle those instances before delegating to Real or
                Complex.
 
         The next two situations describe 'b + r'. We assume that b
-        didn't know about Fraction in its implementation, and that it
+        didn't know about Fraction kwenye its implementation, na that it
         uses similar boilerplate code:
 
             4. If B <: Rational, then __radd_ converts both to the
                builtin rational type (hey look, that's us) and
                proceeds.
             5. Otherwise, __radd__ tries to find the nearest common
-               base ABC, and fall back to its builtin type. Since this
+               base ABC, na fall back to its builtin type. Since this
                kundi doesn't subkundi a concrete type, there's no
                implementation to fall back to, so we need to try as
-               hard as possible to rudisha an actual value, or the user
+               hard kama possible to rudisha an actual value, ama the user
                will get a TypeError.
 
         """
@@ -386,7 +386,7 @@ kundi Fraction(numbers.Rational):
                 rudisha fallback_operator(float(a), b)
             elikiwa isinstance(b, complex):
                 rudisha fallback_operator(complex(a), b)
-            else:
+            isipokua:
                 rudisha NotImplemented
         forward.__name__ = '__' + fallback_operator.__name__ + '__'
         forward.__doc__ = monomorphic_operator.__doc__
@@ -399,7 +399,7 @@ kundi Fraction(numbers.Rational):
                 rudisha fallback_operator(float(a), float(b))
             elikiwa isinstance(a, numbers.Complex):
                 rudisha fallback_operator(complex(a), complex(b))
-            else:
+            isipokua:
                 rudisha NotImplemented
         reverse.__name__ = '__r' + fallback_operator.__name__ + '__'
         reverse.__doc__ = monomorphic_operator.__doc__
@@ -459,8 +459,8 @@ kundi Fraction(numbers.Rational):
     eleza __pow__(a, b):
         """a ** b
 
-        If b is not an integer, the result will be a float or complex
-        since roots are generally irrational. If b is an integer, the
+        If b ni sio an integer, the result will be a float ama complex
+        since roots are generally irrational. If b ni an integer, the
         result will be rational.
 
         """
@@ -470,26 +470,26 @@ kundi Fraction(numbers.Rational):
                 ikiwa power >= 0:
                     rudisha Fraction(a._numerator ** power,
                                     a._denominator ** power,
-                                    _normalize=False)
+                                    _normalize=Uongo)
                 elikiwa a._numerator >= 0:
                     rudisha Fraction(a._denominator ** -power,
                                     a._numerator ** -power,
-                                    _normalize=False)
-                else:
+                                    _normalize=Uongo)
+                isipokua:
                     rudisha Fraction((-a._denominator) ** -power,
                                     (-a._numerator) ** -power,
-                                    _normalize=False)
-            else:
+                                    _normalize=Uongo)
+            isipokua:
                 # A fractional power will generally produce an
                 # irrational number.
                 rudisha float(a) ** float(b)
-        else:
+        isipokua:
             rudisha float(a) ** b
 
     eleza __rpow__(b, a):
         """a ** b"""
-        ikiwa b._denominator == 1 and b._numerator >= 0:
-            # If a is an int, keep it that way ikiwa possible.
+        ikiwa b._denominator == 1 na b._numerator >= 0:
+            # If a ni an int, keep it that way ikiwa possible.
             rudisha a ** b._numerator
 
         ikiwa isinstance(a, numbers.Rational):
@@ -502,21 +502,21 @@ kundi Fraction(numbers.Rational):
 
     eleza __pos__(a):
         """+a: Coerces a subkundi instance to Fraction"""
-        rudisha Fraction(a._numerator, a._denominator, _normalize=False)
+        rudisha Fraction(a._numerator, a._denominator, _normalize=Uongo)
 
     eleza __neg__(a):
         """-a"""
-        rudisha Fraction(-a._numerator, a._denominator, _normalize=False)
+        rudisha Fraction(-a._numerator, a._denominator, _normalize=Uongo)
 
     eleza __abs__(a):
         """abs(a)"""
-        rudisha Fraction(abs(a._numerator), a._denominator, _normalize=False)
+        rudisha Fraction(abs(a._numerator), a._denominator, _normalize=Uongo)
 
     eleza __trunc__(a):
         """trunc(a)"""
         ikiwa a._numerator < 0:
             rudisha -(-a._numerator // a._denominator)
-        else:
+        isipokua:
             rudisha a._numerator // a._denominator
 
     eleza __floor__(a):
@@ -528,12 +528,12 @@ kundi Fraction(numbers.Rational):
         # The negations cleverly convince floordiv to rudisha the ceiling.
         rudisha -(-a.numerator // a.denominator)
 
-    eleza __round__(self, ndigits=None):
+    eleza __round__(self, ndigits=Tupu):
         """round(self, ndigits)
 
         Rounds half toward even.
         """
-        ikiwa ndigits is None:
+        ikiwa ndigits ni Tupu:
             floor, remainder = divmod(self.numerator, self.denominator)
             ikiwa remainder * 2 < self.denominator:
                 rudisha floor
@@ -542,66 +542,66 @@ kundi Fraction(numbers.Rational):
             # Deal with the half case:
             elikiwa floor % 2 == 0:
                 rudisha floor
-            else:
+            isipokua:
                 rudisha floor + 1
         shift = 10**abs(ndigits)
         # See _operator_fallbacks.forward to check that the results of
-        # these operations will always be Fraction and therefore have
+        # these operations will always be Fraction na therefore have
         # round().
         ikiwa ndigits > 0:
             rudisha Fraction(round(self * shift), shift)
-        else:
+        isipokua:
             rudisha Fraction(round(self / shift) * shift)
 
     eleza __hash__(self):
         """hash(self)"""
 
-        # XXX since this method is expensive, consider caching the result
+        # XXX since this method ni expensive, consider caching the result
 
         # In order to make sure that the hash of a Fraction agrees
         # with the hash of a numerically equal integer, float or
-        # Decimal instance, we follow the rules for numeric hashes
-        # outlined in the documentation.  (See library docs, 'Built-in
+        # Decimal instance, we follow the rules kila numeric hashes
+        # outlined kwenye the documentation.  (See library docs, 'Built-in
         # Types').
 
-        # dinv is the inverse of self._denominator modulo the prime
-        # _PyHASH_MODULUS, or 0 ikiwa self._denominator is divisible by
+        # dinv ni the inverse of self._denominator modulo the prime
+        # _PyHASH_MODULUS, ama 0 ikiwa self._denominator ni divisible by
         # _PyHASH_MODULUS.
         dinv = pow(self._denominator, _PyHASH_MODULUS - 2, _PyHASH_MODULUS)
-        ikiwa not dinv:
+        ikiwa sio dinv:
             hash_ = _PyHASH_INF
-        else:
+        isipokua:
             hash_ = abs(self._numerator) * dinv % _PyHASH_MODULUS
         result = hash_ ikiwa self >= 0 else -hash_
         rudisha -2 ikiwa result == -1 else result
 
     eleza __eq__(a, b):
         """a == b"""
-        ikiwa type(b) is int:
-            rudisha a._numerator == b and a._denominator == 1
+        ikiwa type(b) ni int:
+            rudisha a._numerator == b na a._denominator == 1
         ikiwa isinstance(b, numbers.Rational):
             rudisha (a._numerator == b.numerator and
                     a._denominator == b.denominator)
-        ikiwa isinstance(b, numbers.Complex) and b.imag == 0:
+        ikiwa isinstance(b, numbers.Complex) na b.imag == 0:
             b = b.real
         ikiwa isinstance(b, float):
-            ikiwa math.isnan(b) or math.isinf(b):
-                # comparisons with an infinity or nan should behave in
-                # the same way for any finite a, so treat a as zero.
+            ikiwa math.isnan(b) ama math.isinf(b):
+                # comparisons with an infinity ama nan should behave in
+                # the same way kila any finite a, so treat a kama zero.
                 rudisha 0.0 == b
-            else:
+            isipokua:
                 rudisha a == a.kutoka_float(b)
-        else:
+        isipokua:
             # Since a doesn't know how to compare with b, let's give b
             # a chance to compare itself with a.
             rudisha NotImplemented
 
     eleza _richcmp(self, other, op):
-        """Helper for comparison operators, for internal use only.
+        """Helper kila comparison operators, kila internal use only.
 
         Implement comparison between a Rational instance `self`, and
-        either another Rational instance or a float `other`.  If
-        `other` is not a Rational instance or a float, return
+        either another Rational instance ama a float `other`.  If
+        `other` ni sio a Rational instance ama a float, rudisha
         NotImplemented. `op` should be one of the six standard
         comparison operators.
 
@@ -611,11 +611,11 @@ kundi Fraction(numbers.Rational):
             rudisha op(self._numerator * other.denominator,
                       self._denominator * other.numerator)
         ikiwa isinstance(other, float):
-            ikiwa math.isnan(other) or math.isinf(other):
+            ikiwa math.isnan(other) ama math.isinf(other):
                 rudisha op(0.0, other)
-            else:
+            isipokua:
                 rudisha op(self, self.kutoka_float(other))
-        else:
+        isipokua:
             rudisha NotImplemented
 
     eleza __lt__(a, b):
@@ -638,7 +638,7 @@ kundi Fraction(numbers.Rational):
         """a != 0"""
         rudisha a._numerator != 0
 
-    # support for pickling, copy, and deepcopy
+    # support kila pickling, copy, na deepcopy
 
     eleza __reduce__(self):
         rudisha (self.__class__, (str(self),))

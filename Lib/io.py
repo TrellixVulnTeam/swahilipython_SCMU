@@ -1,28 +1,28 @@
 """The io module provides the Python interfaces to stream handling. The
-builtin open function is defined in this module.
+builtin open function ni defined kwenye this module.
 
-At the top of the I/O hierarchy is the abstract base kundi IOBase. It
-defines the basic interface to a stream. Note, however, that there is no
-separation between reading and writing to streams; implementations are
-allowed to raise an OSError ikiwa they do not support a given operation.
+At the top of the I/O hierarchy ni the abstract base kundi IOBase. It
+defines the basic interface to a stream. Note, however, that there ni no
+separation between reading na writing to streams; implementations are
+allowed to ashiria an OSError ikiwa they do sio support a given operation.
 
-Extending IOBase is RawIOBase which deals simply with the reading and
+Extending IOBase ni RawIOBase which deals simply with the reading and
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
 an interface to OS files.
 
 BufferedIOBase deals with buffering on a raw byte stream (RawIOBase). Its
-subclasses, BufferedWriter, BufferedReader, and BufferedRWPair buffer
-streams that are readable, writable, and both respectively.
+subclasses, BufferedWriter, BufferedReader, na BufferedRWPair buffer
+streams that are readable, writable, na both respectively.
 BufferedRandom provides a buffered interface to random access
-streams. BytesIO is a simple stream of in-memory bytes.
+streams. BytesIO ni a simple stream of in-memory bytes.
 
-Another IOBase subclass, TextIOBase, deals with the encoding and decoding
-of streams into text. TextIOWrapper, which extends it, is a buffered text
+Another IOBase subclass, TextIOBase, deals with the encoding na decoding
+of streams into text. TextIOWrapper, which extends it, ni a buffered text
 interface to a buffered raw stream (`BufferedIOBase`). Finally, StringIO
-is an in-memory stream for text.
+is an in-memory stream kila text.
 
-Argument names are not part of the specification, and only the arguments
-of open() are intended to be used as keyword arguments.
+Argument names are sio part of the specification, na only the arguments
+of open() are intended to be used kama keyword arguments.
 
 data:
 
@@ -56,18 +56,18 @@ kutoka _io agiza (DEFAULT_BUFFER_SIZE, BlockingIOError, UnsupportedOperation,
                  BufferedWriter, BufferedRWPair, BufferedRandom,
                  IncrementalNewlineDecoder, TextIOWrapper)
 
-OpenWrapper = _io.open # for compatibility with _pyio
+OpenWrapper = _io.open # kila compatibility with _pyio
 
 # Pretend this exception was created here.
 UnsupportedOperation.__module__ = "io"
 
-# for seek()
+# kila seek()
 SEEK_SET = 0
 SEEK_CUR = 1
 SEEK_END = 2
 
-# Declaring ABCs in C is tricky so we do it here.
-# Method descriptions and default implementations are inherited kutoka the C
+# Declaring ABCs kwenye C ni tricky so we do it here.
+# Method descriptions na default implementations are inherited kutoka the C
 # version however.
 kundi IOBase(_io._IOBase, metaclass=abc.ABCMeta):
     __doc__ = _io._IOBase.__doc__
@@ -83,17 +83,17 @@ kundi TextIOBase(_io._TextIOBase, IOBase):
 
 RawIOBase.register(FileIO)
 
-for klass in (BytesIO, BufferedReader, BufferedWriter, BufferedRandom,
+kila klass kwenye (BytesIO, BufferedReader, BufferedWriter, BufferedRandom,
               BufferedRWPair):
     BufferedIOBase.register(klass)
 
-for klass in (StringIO, TextIOWrapper):
+kila klass kwenye (StringIO, TextIOWrapper):
     TextIOBase.register(klass)
-del klass
+toa klass
 
-try:
+jaribu:
     kutoka _io agiza _WindowsConsoleIO
-except ImportError:
-    pass
-else:
+tatizo ImportError:
+    pita
+isipokua:
     RawIOBase.register(_WindowsConsoleIO)

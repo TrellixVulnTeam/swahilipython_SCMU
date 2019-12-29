@@ -2,7 +2,7 @@ import os
 import unittest
 from test import support
 
-# skip tests if _ctypes was not built
+# skip tests if _ctypes was sio built
 ctypes = support.import_module('ctypes')
 ctypes_symbols = dir(ctypes)
 

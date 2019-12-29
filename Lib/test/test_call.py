@@ -1,10 +1,10 @@
 agiza datetime
 agiza unittest
 kutoka test.support agiza cpython_only
-try:
+jaribu:
     agiza _testcapi
-except ImportError:
-    _testcapi = None
+tatizo ImportError:
+    _testcapi = Tupu
 agiza struct
 agiza collections
 agiza itertools
@@ -14,7 +14,7 @@ agiza gc
 kundi FunctionCalls(unittest.TestCase):
 
     eleza test_kwargs_order(self):
-        # bpo-34320:  **kwargs should preserve order of passed OrderedDict
+        # bpo-34320:  **kwargs should preserve order of pitaed OrderedDict
         od = collections.OrderedDict([('a', 1), ('b', 2)])
         od.move_to_end('a')
         expected = list(od.items())
@@ -28,9 +28,9 @@ kundi FunctionCalls(unittest.TestCase):
 
 
 # The test cases here cover several paths through the function calling
-# code.  They depend on the METH_XXX flag that is used to define a C
+# code.  They depend on the METH_XXX flag that ni used to define a C
 # function, which can't be verified kutoka Python.  If the METH_XXX decl
-# for a C function changes, these tests may not cover the right paths.
+# kila a C function changes, these tests may sio cover the right paths.
 
 kundi CFunctionCalls(unittest.TestCase):
 
@@ -44,21 +44,21 @@ kundi CFunctionCalls(unittest.TestCase):
         self.assertRaises(TypeError, {}.__contains__, 0, 1)
 
     eleza test_varargs0_ext(self):
-        try:
+        jaribu:
             {}.__contains__(*())
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
     eleza test_varargs1_ext(self):
         {}.__contains__(*(0,))
 
     eleza test_varargs2_ext(self):
-        try:
+        jaribu:
             {}.__contains__(*(1, 2))
-        except TypeError:
-            pass
-        else:
-            raise RuntimeError
+        tatizo TypeError:
+            pita
+        isipokua:
+            ashiria RuntimeError
 
     eleza test_varargs1_kw(self):
         self.assertRaises(TypeError, {}.__contains__, x=2)
@@ -79,28 +79,28 @@ kundi CFunctionCalls(unittest.TestCase):
         {}.keys(*())
 
     eleza test_oldargs0_1_ext(self):
-        try:
+        jaribu:
             {}.keys(*(0,))
-        except TypeError:
-            pass
-        else:
-            raise RuntimeError
+        tatizo TypeError:
+            pita
+        isipokua:
+            ashiria RuntimeError
 
     eleza test_oldargs0_2_ext(self):
-        try:
+        jaribu:
             {}.keys(*(1, 2))
-        except TypeError:
-            pass
-        else:
-            raise RuntimeError
+        tatizo TypeError:
+            pita
+        isipokua:
+            ashiria RuntimeError
 
     eleza test_oldargs0_0_kw(self):
-        try:
+        jaribu:
             {}.keys(x=2)
-        except TypeError:
-            pass
-        else:
-            raise RuntimeError
+        tatizo TypeError:
+            pita
+        isipokua:
+            ashiria RuntimeError
 
     eleza test_oldargs0_1_kw(self):
         self.assertRaises(TypeError, {}.keys, x=2)
@@ -118,23 +118,23 @@ kundi CFunctionCalls(unittest.TestCase):
         self.assertRaises(TypeError, [].count, 1, 2)
 
     eleza test_oldargs1_0_ext(self):
-        try:
+        jaribu:
             [].count(*())
-        except TypeError:
-            pass
-        else:
-            raise RuntimeError
+        tatizo TypeError:
+            pita
+        isipokua:
+            ashiria RuntimeError
 
     eleza test_oldargs1_1_ext(self):
         [].count(*(1,))
 
     eleza test_oldargs1_2_ext(self):
-        try:
+        jaribu:
             [].count(*(1, 2))
-        except TypeError:
-            pass
-        else:
-            raise RuntimeError
+        tatizo TypeError:
+            pita
+        isipokua:
+            ashiria RuntimeError
 
     eleza test_oldargs1_0_kw(self):
         self.assertRaises(TypeError, [].count, x=2)
@@ -159,7 +159,7 @@ kundi CFunctionCallsErrorMessages(unittest.TestCase):
 
     eleza test_varargs3(self):
         msg = r"^kutoka_bytes\(\) takes exactly 2 positional arguments \(3 given\)"
-        self.assertRaisesRegex(TypeError, msg, int.kutoka_bytes, b'a', 'little', False)
+        self.assertRaisesRegex(TypeError, msg, int.kutoka_bytes, b'a', 'little', Uongo)
 
     eleza test_varargs1min(self):
         msg = r"get expected at least 1 argument, got 0"
@@ -364,7 +364,7 @@ kundi FastCallTests(unittest.TestCase):
         (datetime.datetime.now, (), IGNORE_RESULT),
     )
 
-    # Test calls with positional and keyword arguments
+    # Test calls with positional na keyword arguments
     CALLS_KWARGS = (
         # (func, args: tuple, kwargs: dict, result)
 
@@ -385,46 +385,46 @@ kundi FastCallTests(unittest.TestCase):
     )
 
     eleza check_result(self, result, expected):
-        ikiwa expected is IGNORE_RESULT:
-            return
+        ikiwa expected ni IGNORE_RESULT:
+            rudisha
         self.assertEqual(result, expected)
 
     eleza test_fastcall(self):
         # Test _PyObject_FastCall()
 
-        for func, args, expected in self.CALLS_POSARGS:
+        kila func, args, expected kwenye self.CALLS_POSARGS:
             with self.subTest(func=func, args=args):
                 result = _testcapi.pyobject_fastcall(func, args)
                 self.check_result(result, expected)
 
-                ikiwa not args:
+                ikiwa sio args:
                     # args=NULL, nargs=0
-                    result = _testcapi.pyobject_fastcall(func, None)
+                    result = _testcapi.pyobject_fastcall(func, Tupu)
                     self.check_result(result, expected)
 
     eleza test_vectorcall_dict(self):
         # Test _PyObject_FastCallDict()
 
-        for func, args, expected in self.CALLS_POSARGS:
+        kila func, args, expected kwenye self.CALLS_POSARGS:
             with self.subTest(func=func, args=args):
                 # kwargs=NULL
-                result = _testcapi.pyobject_fastcalldict(func, args, None)
+                result = _testcapi.pyobject_fastcalldict(func, args, Tupu)
                 self.check_result(result, expected)
 
                 # kwargs={}
                 result = _testcapi.pyobject_fastcalldict(func, args, {})
                 self.check_result(result, expected)
 
-                ikiwa not args:
+                ikiwa sio args:
                     # args=NULL, nargs=0, kwargs=NULL
-                    result = _testcapi.pyobject_fastcalldict(func, None, None)
+                    result = _testcapi.pyobject_fastcalldict(func, Tupu, Tupu)
                     self.check_result(result, expected)
 
                     # args=NULL, nargs=0, kwargs={}
-                    result = _testcapi.pyobject_fastcalldict(func, None, {})
+                    result = _testcapi.pyobject_fastcalldict(func, Tupu, {})
                     self.check_result(result, expected)
 
-        for func, args, kwargs, expected in self.CALLS_KWARGS:
+        kila func, args, kwargs, expected kwenye self.CALLS_KWARGS:
             with self.subTest(func=func, args=args, kwargs=kwargs):
                 result = _testcapi.pyobject_fastcalldict(func, args, kwargs)
                 self.check_result(result, expected)
@@ -432,26 +432,26 @@ kundi FastCallTests(unittest.TestCase):
     eleza test_vectorcall(self):
         # Test _PyObject_Vectorcall()
 
-        for func, args, expected in self.CALLS_POSARGS:
+        kila func, args, expected kwenye self.CALLS_POSARGS:
             with self.subTest(func=func, args=args):
                 # kwnames=NULL
-                result = _testcapi.pyobject_vectorcall(func, args, None)
+                result = _testcapi.pyobject_vectorcall(func, args, Tupu)
                 self.check_result(result, expected)
 
                 # kwnames=()
                 result = _testcapi.pyobject_vectorcall(func, args, ())
                 self.check_result(result, expected)
 
-                ikiwa not args:
+                ikiwa sio args:
                     # kwnames=NULL
-                    result = _testcapi.pyobject_vectorcall(func, None, None)
+                    result = _testcapi.pyobject_vectorcall(func, Tupu, Tupu)
                     self.check_result(result, expected)
 
                     # kwnames=()
-                    result = _testcapi.pyobject_vectorcall(func, None, ())
+                    result = _testcapi.pyobject_vectorcall(func, Tupu, ())
                     self.check_result(result, expected)
 
-        for func, args, kwargs, expected in self.CALLS_KWARGS:
+        kila func, args, kwargs, expected kwenye self.CALLS_KWARGS:
             with self.subTest(func=func, args=args, kwargs=kwargs):
                 kwnames = tuple(kwargs.keys())
                 args = args + tuple(kwargs.values())
@@ -459,8 +459,8 @@ kundi FastCallTests(unittest.TestCase):
                 self.check_result(result, expected)
 
     eleza test_fastcall_clearing_dict(self):
-        # Test bpo-36907: the point of the test is just checking that this
-        # does not crash.
+        # Test bpo-36907: the point of the test ni just checking that this
+        # does sio crash.
         kundi IntWithDict:
             __slots__ = ["kwargs"]
             eleza __init__(self, **kwargs):
@@ -471,9 +471,9 @@ kundi FastCallTests(unittest.TestCase):
                 rudisha 0
         x = IntWithDict(dont_inherit=IntWithDict())
         # We test the argument handling of "compile" here, the compilation
-        # itself is not relevant. When we pass flags=x below, x.__index__() is
+        # itself ni sio relevant. When we pita flags=x below, x.__index__() is
         # called, which changes the keywords dict.
-        compile("pass", "", "exec", x, **x.kwargs)
+        compile("pita", "", "exec", x, **x.kwargs)
 
 
 Py_TPFLAGS_HAVE_VECTORCALL = 1 << 11
@@ -496,38 +496,38 @@ kundi TestPEP590(unittest.TestCase):
         agiza functools
         cached = functools.lru_cache(1)(testfunction)
 
-        self.assertFalse(type(repr).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(list.append).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(list.__add__).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(testfunction).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(cached).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertUongo(type(repr).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertKweli(type(list.append).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertKweli(type(list.__add__).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertKweli(type(testfunction).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertKweli(type(cached).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
-        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertKweli(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertKweli(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertUongo(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
-        # Heap type should not inherit Py_TPFLAGS_METHOD_DESCRIPTOR
+        # Heap type should sio inherit Py_TPFLAGS_METHOD_DESCRIPTOR
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pass
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+            pita
+        self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
     eleza test_vectorcall_flag(self):
-        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertTrue(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertKweli(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertKweli(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertUongo(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertKweli(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
-        # Heap type should not inherit Py_TPFLAGS_HAVE_VECTORCALL
+        # Heap type should sio inherit Py_TPFLAGS_HAVE_VECTORCALL
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pass
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+            pita
+        self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
     eleza test_vectorcall_override(self):
         # Check that tp_call can correctly override vectorcall.
         # MethodDescriptorNopGet implements tp_call but it inherits kutoka
         # MethodDescriptorBase, which implements vectorcall. Since
-        # MethodDescriptorNopGet returns the args tuple when called, we check
-        # additionally that no new tuple is created for this call.
+        # MethodDescriptorNopGet rudishas the args tuple when called, we check
+        # additionally that no new tuple ni created kila this call.
         args = tuple(range(5))
         f = _testcapi.MethodDescriptorNopGet()
         self.assertIs(f(*args), args)
@@ -535,22 +535,22 @@ kundi TestPEP590(unittest.TestCase):
     eleza test_vectorcall(self):
         # Test a bunch of different ways to call objects:
         # 1. vectorcall using PyVectorcall_Call()
-        #   (only for objects that support vectorcall directly)
+        #   (only kila objects that support vectorcall directly)
         # 2. normal call
         # 3. vectorcall using _PyObject_Vectorcall()
-        # 4. call as bound method
+        # 4. call kama bound method
         # 5. call using functools.partial
 
         # A list of (function, args, kwargs, result) calls to test
         calls = [(len, (range(42),), {}, 42),
-                 (list.append, ([], 0), {}, None),
-                 ([].append, (0,), {}, None),
+                 (list.append, ([], 0), {}, Tupu),
+                 ([].append, (0,), {}, Tupu),
                  (sum, ([36],), {"start":6}, 42),
                  (testfunction, (42,), {}, 42),
-                 (testfunction_kw, (42,), {"kw":None}, 42),
-                 (_testcapi.MethodDescriptorBase(), (0,), {}, True),
-                 (_testcapi.MethodDescriptorDerived(), (0,), {}, True),
-                 (_testcapi.MethodDescriptor2(), (0,), {}, False)]
+                 (testfunction_kw, (42,), {"kw":Tupu}, 42),
+                 (_testcapi.MethodDescriptorBase(), (0,), {}, Kweli),
+                 (_testcapi.MethodDescriptorDerived(), (0,), {}, Kweli),
+                 (_testcapi.MethodDescriptor2(), (0,), {}, Uongo)]
 
         kutoka _testcapi agiza pyobject_vectorcall, pyvectorcall_call
         kutoka types agiza MethodType
@@ -561,17 +561,17 @@ kundi TestPEP590(unittest.TestCase):
             kwnames = tuple(kwargs)
             rudisha pyobject_vectorcall(func, args, kwnames)
 
-        for (func, args, kwargs, expected) in calls:
+        kila (func, args, kwargs, expected) kwenye calls:
             with self.subTest(str(func)):
-                ikiwa not kwargs:
+                ikiwa sio kwargs:
                     self.assertEqual(expected, pyvectorcall_call(func, args))
                 self.assertEqual(expected, pyvectorcall_call(func, args, kwargs))
 
-        # Add derived classes (which do not support vectorcall directly,
+        # Add derived classes (which do sio support vectorcall directly,
         # but do support all other ways of calling).
 
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pass
+            pita
 
         kundi MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
             eleza __call__(self, n):
@@ -586,21 +586,21 @@ kundi TestPEP590(unittest.TestCase):
                 rudisha super().__call__(*args)
 
         calls += [
-            (dict.update, ({},), {"key":True}, None),
-            ({}.update, ({},), {"key":True}, None),
-            (MethodDescriptorHeap(), (0,), {}, True),
+            (dict.update, ({},), {"key":Kweli}, Tupu),
+            ({}.update, ({},), {"key":Kweli}, Tupu),
+            (MethodDescriptorHeap(), (0,), {}, Kweli),
             (MethodDescriptorOverridden(), (0,), {}, 'new'),
-            (MethodDescriptorSuper(), (0,), {}, True),
+            (MethodDescriptorSuper(), (0,), {}, Kweli),
         ]
 
-        for (func, args, kwargs, expected) in calls:
+        kila (func, args, kwargs, expected) kwenye calls:
             with self.subTest(str(func)):
                 args1 = args[1:]
                 meth = MethodType(func, args[0])
                 wrapped = partial(func)
-                ikiwa not kwargs:
+                ikiwa sio kwargs:
                     self.assertEqual(expected, func(*args))
-                    self.assertEqual(expected, pyobject_vectorcall(func, args, None))
+                    self.assertEqual(expected, pyobject_vectorcall(func, args, Tupu))
                     self.assertEqual(expected, meth(*args1))
                     self.assertEqual(expected, wrapped(*args))
                 self.assertEqual(expected, func(*args, **kwargs))

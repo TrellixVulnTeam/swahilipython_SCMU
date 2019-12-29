@@ -1,6 +1,6 @@
 agiza string
 agiza unittest
-kutoka email agiza _header_value_parser as parser
+kutoka email agiza _header_value_parser kama parser
 kutoka email agiza errors
 kutoka email agiza policy
 kutoka test.test_email agiza TestEmailBase, parameterize
@@ -20,23 +20,23 @@ kundi TestTokens(TestEmailBase):
 kundi TestParserMixin:
 
     eleza _assert_results(self, tl, rest, string, value, defects, remainder,
-                        comments=None):
+                        comments=Tupu):
         self.assertEqual(str(tl), string)
         self.assertEqual(tl.value, value)
         self.assertDefectsEqual(tl.all_defects, defects)
         self.assertEqual(rest, remainder)
-        ikiwa comments is not None:
+        ikiwa comments ni sio Tupu:
             self.assertEqual(tl.comments, comments)
 
     eleza _test_get_x(self, method, source, string, value, defects,
-                          remainder, comments=None):
+                          remainder, comments=Tupu):
         tl, rest = method(source)
         self._assert_results(tl, rest, string, value, defects, remainder,
-                             comments=None)
+                             comments=Tupu)
         rudisha tl
 
     eleza _test_parse_x(self, method, input, string, value, defects,
-                             comments=None):
+                             comments=Tupu):
         tl = method(input)
         self._assert_results(tl, '', string, value, defects, '', comments)
         rudisha tl
@@ -77,15 +77,15 @@ kundi TestParser(TestParserMixin, TestEmailBase):
 
     # get_encoded_word
 
-    eleza test_get_encoded_word_missing_start_raises(self):
+    eleza test_get_encoded_word_missing_start_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('abc')
 
-    eleza test_get_encoded_word_missing_end_raises(self):
+    eleza test_get_encoded_word_missing_end_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?abc')
 
-    eleza test_get_encoded_word_missing_middle_raises(self):
+    eleza test_get_encoded_word_missing_middle_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?abc?=')
 
@@ -96,16 +96,16 @@ kundi TestParser(TestParserMixin, TestEmailBase):
     eleza test_get_encoded_word_valid_ew(self):
         self._test_get_x(parser.get_encoded_word,
                          '=?us-ascii?q?this_is_a_test?=  bird',
-                         'this is a test',
-                         'this is a test',
+                         'this ni a test',
+                         'this ni a test',
                          [],
                          '  bird')
 
     eleza test_get_encoded_word_internal_spaces(self):
         self._test_get_x(parser.get_encoded_word,
-                         '=?us-ascii?q?this is a test?=  bird',
-                         'this is a test',
-                         'this is a test',
+                         '=?us-ascii?q?this ni a test?=  bird',
+                         'this ni a test',
+                         'this ni a test',
                          [errors.InvalidHeaderDefect],
                          '  bird')
 
@@ -665,7 +665,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
     eleza test_get_comment_multiple_nesting(self):
         comment = self._test_get_x(parser.get_comment,
             '(((((foo)))))', '(((((foo)))))', ' ', [], '', ['((((foo))))'])
-        for i in range(4, 0, -1):
+        kila i kwenye range(4, 0, -1):
             self.assertEqual(comment[0].content, '('*(i-1)+'foo'+')'*(i-1))
             comment = comment[0]
         self.assertEqual(comment.content, 'foo')
@@ -888,15 +888,15 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         dot_atom_text = self._test_get_x(parser.get_dot_atom_text,
             'foo', 'foo', 'foo', [], '')
 
-    eleza test_get_dot_atom_text_raises_on_leading_dot(self):
+    eleza test_get_dot_atom_text_ashirias_on_leading_dot(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('.foo.bar')
 
-    eleza test_get_dot_atom_text_raises_on_trailing_dot(self):
+    eleza test_get_dot_atom_text_ashirias_on_trailing_dot(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('foo.bar.')
 
-    eleza test_get_dot_atom_text_raises_on_leading_non_atext(self):
+    eleza test_get_dot_atom_text_ashirias_on_leading_non_atext(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text(' foo.bar')
         with self.assertRaises(errors.HeaderParseError):
@@ -934,19 +934,19 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             ' (sing)  foo.bar .bing (here) ', ' (sing)  foo.bar ',
                 ' foo.bar ', [], '.bing (here) ')
 
-    eleza test_get_dot_atom_no_atom_raises(self):
+    eleza test_get_dot_atom_no_atom_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) ')
 
-    eleza test_get_dot_atom_leading_dot_raises(self):
+    eleza test_get_dot_atom_leading_dot_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) .bar')
 
-    eleza test_get_dot_atom_two_dots_raises(self):
+    eleza test_get_dot_atom_two_dots_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom('bar..bang')
 
-    eleza test_get_dot_atom_trailing_dot_raises(self):
+    eleza test_get_dot_atom_trailing_dot_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) bar.bang. foo')
 
@@ -956,19 +956,19 @@ kundi TestParser(TestParserMixin, TestEmailBase):
 
     # get_word (ikiwa this were black box we'd repeat all the qs/atom tests)
 
-    eleza test_get_word_atom_yields_atom(self):
+    eleza test_get_word_atom_tumas_atom(self):
         word = self._test_get_x(parser.get_word,
             ' (foo) bar (bang) :ah', ' (foo) bar (bang) ', ' bar ', [], ':ah')
         self.assertEqual(word.token_type, 'atom')
         self.assertEqual(word[0].token_type, 'cfws')
 
     eleza test_get_word_all_CFWS(self):
-        # bpo-29412: Test that we don't raise IndexError when parsing CFWS only
+        # bpo-29412: Test that we don't ashiria IndexError when parsing CFWS only
         # token.
         with self.assertRaises(errors.HeaderParseError):
             parser.get_word('(Recipients list suppressed')
 
-    eleza test_get_word_qs_yields_qs(self):
+    eleza test_get_word_qs_tumas_qs(self):
         word = self._test_get_x(parser.get_word,
             '"bar " (bang) ah', '"bar " (bang) ', 'bar  ', [], 'ah')
         self.assertEqual(word.token_type, 'quoted-string')
@@ -984,18 +984,18 @@ kundi TestParser(TestParserMixin, TestEmailBase):
 
     eleza test_get_phrase_simple(self):
         phrase = self._test_get_x(parser.get_phrase,
-            '"Fred A. Johnson" is his name, oh.',
-            '"Fred A. Johnson" is his name',
-            'Fred A. Johnson is his name',
+            '"Fred A. Johnson" ni his name, oh.',
+            '"Fred A. Johnson" ni his name',
+            'Fred A. Johnson ni his name',
             [],
             ', oh.')
         self.assertEqual(phrase.token_type, 'phrase')
 
     eleza test_get_phrase_complex(self):
         phrase = self._test_get_x(parser.get_phrase,
-            ' (A) bird (in (my|your)) "hand  " is messy\t<>\t',
-            ' (A) bird (in (my|your)) "hand  " is messy\t',
-            ' bird hand   is messy ',
+            ' (A) bird (in (my|your)) "hand  " ni messy\t<>\t',
+            ' (A) bird (in (my|your)) "hand  " ni messy\t',
+            ' bird hand   ni messy ',
             [],
             '<>\t')
         self.assertEqual(phrase[0][0].comments, ['A'])
@@ -1031,7 +1031,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(len(phrase), 4)
         self.assertEqual(phrase[3].comments, ['with trailing comment'])
 
-    eleza get_phrase_cfws_only_raises(self):
+    eleza get_phrase_cfws_only_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_phrase(' (foo) ')
 
@@ -1130,16 +1130,16 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         local_part = self._test_get_x(parser.get_local_part,
             ' (foo )Fred (bar).(bird) A.(sheep)Johnson "and  dogs"@python.org',
             ' (foo )Fred (bar).(bird) A.(sheep)Johnson "and  dogs"',
-            ' Fred . A. Johnson and  dogs',
+            ' Fred . A. Johnson na  dogs',
             [errors.InvalidHeaderDefect]*2,
             '@python.org')
-        self.assertEqual(local_part.local_part, 'Fred.A.Johnson and  dogs')
+        self.assertEqual(local_part.local_part, 'Fred.A.Johnson na  dogs')
 
-    eleza test_get_local_part_no_part_raises(self):
+    eleza test_get_local_part_no_part_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_local_part(' (foo) ')
 
-    eleza test_get_local_part_special_instead_raises(self):
+    eleza test_get_local_part_special_instead_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_local_part(' (foo) @python.org')
 
@@ -1179,7 +1179,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             '@python.org')
         self.assertEqual(local_part.local_part, '.borris')
 
-    eleza test_get_local_part_double_dot_raises(self):
+    eleza test_get_local_part_double_dot_ashirias(self):
         local_part = self._test_get_x(parser.get_local_part,
             ' borris.(foo).natasha@python.org',
             ' borris.(foo).natasha',
@@ -1207,7 +1207,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(local_part.local_part, r'\example\\ example')
 
     eleza test_get_local_part_unicode_defect(self):
-        # Currently this only happens when parsing unicode, not when parsing
+        # Currently this only happens when parsing unicode, sio when parsing
         # stuff that was originally binary.
         local_part = self._test_get_x(parser.get_local_part,
             'exámple@example.com',
@@ -1308,15 +1308,15 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(domain_literal.domain, '[127.0.0.1]')
         self.assertEqual(domain_literal.ip, '127.0.0.1')
 
-    eleza test_get_domain_literal_no_start_char_raises(self):
+    eleza test_get_domain_literal_no_start_char_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) ')
 
-    eleza test_get_domain_literal_no_start_char_before_special_raises(self):
+    eleza test_get_domain_literal_no_start_char_before_special_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) @')
 
-    eleza test_get_domain_literal_bad_dtext_char_before_special_raises(self):
+    eleza test_get_domain_literal_bad_dtext_char_before_special_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) [abc[@')
 
@@ -1387,11 +1387,11 @@ kundi TestParser(TestParserMixin, TestEmailBase):
                                   '')
         self.assertEqual(domain.domain, 'example.com')
 
-    eleza test_get_domain_no_non_cfws_raises(self):
+    eleza test_get_domain_no_non_cfws_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_domain("  (foo)\t")
 
-    eleza test_get_domain_no_atom_raises(self):
+    eleza test_get_domain_no_atom_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_domain("  (foo)\t, broken")
 
@@ -1503,20 +1503,20 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             '(foo),, (blue)@example.com (bar),@two.(foo) example.com (bird):',
             '(foo),, (blue)@example.com (bar),@two.(foo) example.com (bird):',
             ' ,, @example.com ,@two. example.com :',
-            [errors.ObsoleteHeaderDefect],  # This is the obs-domain
+            [errors.ObsoleteHeaderDefect],  # This ni the obs-domain
             '')
         self.assertEqual(obs_route.token_type, 'obs-route')
         self.assertEqual(obs_route.domains, ['example.com', 'two.example.com'])
 
-    eleza test_get_obs_route_no_route_before_end_raises(self):
+    eleza test_get_obs_route_no_route_before_end_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) @example.com,')
 
-    eleza test_get_obs_route_no_route_before_special_raises(self):
+    eleza test_get_obs_route_no_route_before_special_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) [abc],')
 
-    eleza test_get_obs_route_no_route_before_special_raises2(self):
+    eleza test_get_obs_route_no_route_before_special_ashirias2(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) @example.com [abc],')
 
@@ -1532,7 +1532,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.token_type, 'angle-addr')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_angle_addr_empty(self):
@@ -1543,9 +1543,9 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             [errors.InvalidHeaderDefect],
             '')
         self.assertEqual(angle_addr.token_type, 'angle-addr')
-        self.assertIsNone(angle_addr.local_part)
-        self.assertIsNone(angle_addr.domain)
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.local_part)
+        self.assertIsTupu(angle_addr.domain)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, '<>')
 
     eleza test_get_angle_addr_qs_only_quotes(self):
@@ -1558,7 +1558,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.token_type, 'angle-addr')
         self.assertEqual(angle_addr.local_part, '')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, '""@example.com')
 
     eleza test_get_angle_addr_with_cfws(self):
@@ -1571,7 +1571,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.token_type, 'angle-addr')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_angle_addr_qs_and_domain_literal(self):
@@ -1583,7 +1583,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'Fred Perfect')
         self.assertEqual(angle_addr.domain, '[127.0.0.1]')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, '"Fred Perfect"@[127.0.0.1]')
 
     eleza test_get_angle_addr_internal_cfws(self):
@@ -1595,7 +1595,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_angle_addr_obs_route(self):
@@ -1619,7 +1619,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_angle_addr_missing_closing_angle_with_cfws(self):
@@ -1631,7 +1631,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_angle_addr_ends_at_special(self):
@@ -1643,26 +1643,26 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             ', next')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsTupu(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
-    eleza test_get_angle_addr_no_angle_raise(self):
+    eleza test_get_angle_addr_no_angle_ashiria(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) ')
 
-    eleza test_get_angle_addr_no_angle_before_special_raises(self):
+    eleza test_get_angle_addr_no_angle_before_special_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) , next')
 
-    eleza test_get_angle_addr_no_angle_raises(self):
+    eleza test_get_angle_addr_no_angle_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('bar')
 
-    eleza test_get_angle_addr_special_after_angle_raises(self):
+    eleza test_get_angle_addr_special_after_angle_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) <, bar')
 
-    # get_display_name  This is phrase but with a different value.
+    # get_display_name  This ni phrase but with a different value.
 
     eleza test_get_display_name_simple(self):
         display_name = self._test_get_x(parser.get_display_name,
@@ -1676,24 +1676,24 @@ kundi TestParser(TestParserMixin, TestEmailBase):
 
     eleza test_get_display_name_complex1(self):
         display_name = self._test_get_x(parser.get_display_name,
-            '"Fred A. Johnson" is his name, oh.',
-            '"Fred A. Johnson" is his name',
-            '"Fred A. Johnson is his name"',
+            '"Fred A. Johnson" ni his name, oh.',
+            '"Fred A. Johnson" ni his name',
+            '"Fred A. Johnson ni his name"',
             [],
             ', oh.')
         self.assertEqual(display_name.token_type, 'display-name')
-        self.assertEqual(display_name.display_name, 'Fred A. Johnson is his name')
+        self.assertEqual(display_name.display_name, 'Fred A. Johnson ni his name')
 
     eleza test_get_display_name_complex2(self):
         display_name = self._test_get_x(parser.get_display_name,
-            ' (A) bird (in (my|your)) "hand  " is messy\t<>\t',
-            ' (A) bird (in (my|your)) "hand  " is messy\t',
-            ' "bird hand   is messy" ',
+            ' (A) bird (in (my|your)) "hand  " ni messy\t<>\t',
+            ' (A) bird (in (my|your)) "hand  " ni messy\t',
+            ' "bird hand   ni messy" ',
             [],
             '<>\t')
         self.assertEqual(display_name[0][0].comments, ['A'])
         self.assertEqual(display_name[0][2].comments, ['in (my|your)'])
-        self.assertEqual(display_name.display_name, 'bird hand   is messy')
+        self.assertEqual(display_name.display_name, 'bird hand   ni messy')
 
     eleza test_get_display_name_obsolete(self):
         display_name = self._test_get_x(parser.get_display_name,
@@ -1746,10 +1746,10 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             [],
             '')
         self.assertEqual(name_addr.token_type, 'name-addr')
-        self.assertIsNone(name_addr.display_name)
+        self.assertIsTupu(name_addr.display_name)
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsTupu(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_name_addr_atom_name(self):
@@ -1763,7 +1763,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Dinsdale')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsTupu(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_name_addr_atom_name_with_cfws(self):
@@ -1776,7 +1776,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Dinsdale')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsTupu(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_name_addr_name_with_cfws_and_dots(self):
@@ -1789,7 +1789,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Roy.A.Bear')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsTupu(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_name_addr_qs_name(self):
@@ -1802,7 +1802,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Roy.A.Bear')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsTupu(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_name_addr_with_route(self):
@@ -1828,18 +1828,18 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Roy.A.Bear')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsTupu(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
-    eleza test_get_name_addr_no_content_raises(self):
+    eleza test_get_name_addr_no_content_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr(' (foo) ')
 
-    eleza test_get_name_addr_no_content_before_special_raises(self):
+    eleza test_get_name_addr_no_content_before_special_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr(' (foo) ,')
 
-    eleza test_get_name_addr_no_angle_after_display_name_raises(self):
+    eleza test_get_name_addr_no_angle_after_display_name_ashirias(self):
         with self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr('foo bar')
 
@@ -1853,10 +1853,10 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             [],
             '')
         self.assertEqual(mailbox.token_type, 'mailbox')
-        self.assertIsNone(mailbox.display_name)
+        self.assertIsTupu(mailbox.display_name)
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsTupu(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_mailbox_angle_addr_only(self):
@@ -1867,10 +1867,10 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             [],
             '')
         self.assertEqual(mailbox.token_type, 'mailbox')
-        self.assertIsNone(mailbox.display_name)
+        self.assertIsTupu(mailbox.display_name)
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsTupu(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_mailbox_name_addr(self):
@@ -1884,7 +1884,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(mailbox.display_name, 'Roy A. Bear')
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsTupu(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_mailbox_ends_at_special(self):
@@ -1898,7 +1898,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(mailbox.display_name, 'Roy A. Bear')
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsTupu(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     eleza test_get_mailbox_quoted_strings_in_atom_list(self):
@@ -1924,10 +1924,10 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(mailbox_list.token_type, 'mailbox-list')
         self.assertEqual(len(mailbox_list.mailboxes), 1)
         mailbox = mailbox_list.mailboxes[0]
-        self.assertIsNone(mailbox.display_name)
+        self.assertIsTupu(mailbox.display_name)
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsTupu(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
         self.assertEqual(mailbox_list.mailboxes,
                          mailbox_list.all_mailboxes)
@@ -2002,17 +2002,17 @@ kundi TestParser(TestParserMixin, TestEmailBase):
                 ' "Fred Flintstone" <dinsdale@test. example.com>'),
             [errors.InvalidHeaderDefect,   # the 'extra' text after the local part
              errors.InvalidHeaderDefect,   # the local part with no angle-addr
-             errors.ObsoleteHeaderDefect,  # period in extra text (example.com)
-             errors.ObsoleteHeaderDefect], # (bird) in valid address.
+             errors.ObsoleteHeaderDefect,  # period kwenye extra text (example.com)
+             errors.ObsoleteHeaderDefect], # (bird) kwenye valid address.
             '')
         self.assertEqual(len(mailbox_list.mailboxes), 1)
         self.assertEqual(len(mailbox_list.all_mailboxes), 2)
         self.assertEqual(mailbox_list.all_mailboxes[0].token_type,
                         'invalid-mailbox')
-        self.assertIsNone(mailbox_list.all_mailboxes[0].display_name)
+        self.assertIsTupu(mailbox_list.all_mailboxes[0].display_name)
         self.assertEqual(mailbox_list.all_mailboxes[0].local_part,
                         'Roy A. Bear')
-        self.assertIsNone(mailbox_list.all_mailboxes[0].domain)
+        self.assertIsTupu(mailbox_list.all_mailboxes[0].domain)
         self.assertEqual(mailbox_list.all_mailboxes[0].addr_spec,
                         '"Roy A. Bear"')
         self.assertIs(mailbox_list.all_mailboxes[1],
@@ -2217,7 +2217,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             ('Monty Python: "Fred A. Bear" <dinsdale@example.com>,'
                 ' Roger ping@exampele.com, x@test.example.com;'),
             [errors.InvalidHeaderDefect,   # non-angle addr makes local part invalid
-             errors.InvalidHeaderDefect],   # and its not obs-local either: no dots.
+             errors.InvalidHeaderDefect],   # na its sio obs-local either: no dots.
             '')
         self.assertEqual(group.token_type, 'group')
         self.assertEqual(group.display_name, 'Monty Python')
@@ -2226,7 +2226,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(group.mailboxes[0].display_name,
                          'Fred A. Bear')
         self.assertEqual(group.mailboxes[1].local_part, 'x')
-        self.assertIsNone(group.all_mailboxes[1].display_name)
+        self.assertIsTupu(group.all_mailboxes[1].display_name)
 
     eleza test_get_group_missing_final_semicol(self):
         group = self._test_get_x(parser.get_group,
@@ -2375,13 +2375,13 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             'ping example.com',
             [errors.InvalidHeaderDefect,    # addr-spec with no domain
              errors.InvalidHeaderDefect,    # invalid local-part
-             errors.InvalidHeaderDefect,    # missing .s in local-part
+             errors.InvalidHeaderDefect,    # missing .s kwenye local-part
             ],
             ', next')
         self.assertEqual(address.token_type, 'address')
         self.assertEqual(len(address.mailboxes), 0)
         self.assertEqual(len(address.all_mailboxes), 1)
-        self.assertIsNone(address.all_mailboxes[0].domain)
+        self.assertIsTupu(address.all_mailboxes[0].domain)
         self.assertEqual(address.all_mailboxes[0].local_part, 'ping example.com')
         self.assertEqual(address[0].token_type, 'invalid-mailbox')
 
@@ -2404,7 +2404,7 @@ kundi TestParser(TestParserMixin, TestEmailBase):
                                         '(Recipient list suppressed)',
                                         '(Recipient list suppressed)',
                                         ' ',
-                                        [errors.ObsoleteHeaderDefect],  # no content in address list
+                                        [errors.ObsoleteHeaderDefect],  # no content kwenye address list
                                         '')
         self.assertEqual(address_list.token_type, 'address-list')
         self.assertEqual(len(address_list.mailboxes), 0)
@@ -2421,11 +2421,11 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(len(address_list.mailboxes), 1)
         self.assertEqual(address_list.mailboxes,
                          address_list.all_mailboxes)
-        self.assertEqual([str(x) for x in address_list.mailboxes],
-                         [str(x) for x in address_list.addresses])
+        self.assertEqual([str(x) kila x kwenye address_list.mailboxes],
+                         [str(x) kila x kwenye address_list.addresses])
         self.assertEqual(address_list.mailboxes[0].domain, 'example.com')
         self.assertEqual(address_list[0].token_type, 'address')
-        self.assertIsNone(address_list[0].display_name)
+        self.assertIsTupu(address_list[0].display_name)
 
     eleza test_get_address_list_mailboxes_two_simple(self):
         address_list = self._test_get_x(parser.get_address_list,
@@ -2438,8 +2438,8 @@ kundi TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(len(address_list.mailboxes), 2)
         self.assertEqual(address_list.mailboxes,
                          address_list.all_mailboxes)
-        self.assertEqual([str(x) for x in address_list.mailboxes],
-                         [str(x) for x in address_list.addresses])
+        self.assertEqual([str(x) kila x kwenye address_list.mailboxes],
+                         [str(x) kila x kwenye address_list.addresses])
         self.assertEqual(address_list.mailboxes[0].local_part, 'foo')
         self.assertEqual(address_list.mailboxes[1].display_name, "Fred A. Bar")
 
@@ -2454,15 +2454,15 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             ('"Roy A. Bear" <dinsdale@example.com>, '
                 'Foo <x@example.com>,'
                 '"Nobody Is. Special" <y@example. com>'),
-            [errors.ObsoleteHeaderDefect, # period in Is.
-            errors.ObsoleteHeaderDefect], # cfws in domain
+            [errors.ObsoleteHeaderDefect, # period kwenye Is.
+            errors.ObsoleteHeaderDefect], # cfws kwenye domain
             '')
         self.assertEqual(address_list.token_type, 'address-list')
         self.assertEqual(len(address_list.mailboxes), 3)
         self.assertEqual(address_list.mailboxes,
                          address_list.all_mailboxes)
-        self.assertEqual([str(x) for x in address_list.mailboxes],
-                         [str(x) for x in address_list.addresses])
+        self.assertEqual([str(x) kila x kwenye address_list.mailboxes],
+                         [str(x) kila x kwenye address_list.addresses])
         self.assertEqual(address_list.mailboxes[0].domain, 'example.com')
         self.assertEqual(address_list.mailboxes[0].token_type, 'mailbox')
         self.assertEqual(address_list.addresses[0].token_type, 'address')
@@ -2481,18 +2481,18 @@ kundi TestParser(TestParserMixin, TestEmailBase):
             ('"Roy A. Bear" <dinsdale@example.com>, '
                 'Foo x@example.com[],'
                 '"Nobody Is. Special" < example. com>'),
-             [errors.InvalidHeaderDefect,   # invalid address in list
+             [errors.InvalidHeaderDefect,   # invalid address kwenye list
               errors.InvalidHeaderDefect,   # 'Foo x' local part invalid.
-              errors.InvalidHeaderDefect,   # Missing . in 'Foo x' local part
-              errors.ObsoleteHeaderDefect,  # period in 'Is.' disp-name phrase
-              errors.InvalidHeaderDefect,   # no domain part in addr-spec
-              errors.ObsoleteHeaderDefect], # addr-spec has comment in it
+              errors.InvalidHeaderDefect,   # Missing . kwenye 'Foo x' local part
+              errors.ObsoleteHeaderDefect,  # period kwenye 'Is.' disp-name phrase
+              errors.InvalidHeaderDefect,   # no domain part kwenye addr-spec
+              errors.ObsoleteHeaderDefect], # addr-spec has comment kwenye it
             '')
         self.assertEqual(address_list.token_type, 'address-list')
         self.assertEqual(len(address_list.mailboxes), 1)
         self.assertEqual(len(address_list.all_mailboxes), 3)
-        self.assertEqual([str(x) for x in address_list.all_mailboxes],
-                         [str(x) for x in address_list.addresses])
+        self.assertEqual([str(x) kila x kwenye address_list.all_mailboxes],
+                         [str(x) kila x kwenye address_list.addresses])
         self.assertEqual(address_list.mailboxes[0].domain, 'example.com')
         self.assertEqual(address_list.mailboxes[0].token_type, 'mailbox')
         self.assertEqual(address_list.addresses[0].token_type, 'address')
@@ -2692,11 +2692,11 @@ kundi Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             [('filename', '201.tif')],
             []),
 
-        # Note that it is undefined what we should do for error recovery when
-        # there are duplicate parameter names or duplicate parts in a split
+        # Note that it ni undefined what we should do kila error recovery when
+        # there are duplicate parameter names ama duplicate parts kwenye a split
         # part.  We choose to ignore all duplicate parameters after the first
-        # and to take duplicate or missing rfc 2231 parts in appearance order.
-        # This is backward compatible with get_param's behavior, but the
+        # na to take duplicate ama missing rfc 2231 parts kwenye appearance order.
+        # This ni backward compatible with get_param's behavior, but the
         # decisions are arbitrary.
 
         'duplicate_key': (
@@ -2749,7 +2749,7 @@ kundi Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             [('filename', '201.tifabc.gif')],
             [errors.InvalidHeaderDefect]*2),
 
-        # Here we depart kutoka get_param and assume the *0* was missing.
+        # Here we depart kutoka get_param na assume the *0* was missing.
         'duplicate_with_broken_split_value': (
             "filename=abc.gif; "
                 " filename*2*=iso-8859-1''%32%30%31%2E; filename*3*=%74%69%66",
@@ -2757,7 +2757,7 @@ kundi Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
             "filename=abc.gif;"
                 " filename*2*=iso-8859-1''%32%30%31%2E; filename*3*=%74%69%66",
             [('filename', 'abc.gif201.tif')],
-            # Defects are apparent missing *0*, and two 'out of sequence'.
+            # Defects are apparent missing *0*, na two 'out of sequence'.
             [errors.InvalidHeaderDefect]*3),
 
         # bpo-37461: Check that we don't go into an infinite loop.
@@ -2822,8 +2822,8 @@ kundi Test_parse_mime_version(TestParserMixin, TestEmailBase):
             '',
             '',
             '',
-            None,
-            None,
+            Tupu,
+            Tupu,
             [errors.HeaderMissingRequiredValue]),
 
         }
@@ -2838,16 +2838,16 @@ kundi TestFolding(TestEmailBase):
         self.assertEqual(tl.fold(policy=policy), folded, tl.ppstr())
 
     eleza test_simple_unstructured_no_folds(self):
-        self._test(parser.get_unstructured("This is a test"),
-                   "This is a test\n")
+        self._test(parser.get_unstructured("This ni a test"),
+                   "This ni a test\n")
 
     eleza test_simple_unstructured_folded(self):
-        self._test(parser.get_unstructured("This is also a test, but this "
+        self._test(parser.get_unstructured("This ni also a test, but this "
                         "time there are enough words (and even some "
-                        "symbols) to make it wrap; at least in theory."),
-                   "This is also a test, but this time there are enough "
+                        "symbols) to make it wrap; at least kwenye theory."),
+                   "This ni also a test, but this time there are enough "
                         "words (and even some\n"
-                   " symbols) to make it wrap; at least in theory.\n")
+                   " symbols) to make it wrap; at least kwenye theory.\n")
 
     eleza test_unstructured_with_unicode_no_folds(self):
         self._test(parser.get_unstructured("hübsch kleiner beißt"),
@@ -2901,7 +2901,7 @@ kundi TestFolding(TestEmailBase):
                 ' =?utf-8?q?bei=C3=9Ft_bei=C3=9Ft?= <biter@example.com>\n')
 
     # XXX Need tests with comments on various sides of a unicode token,
-    # and with unicode tokens in the comments.  Spaces inside the quotes
+    # na with unicode tokens kwenye the comments.  Spaces inside the quotes
     # currently don't do the right thing.
 
     eleza test_split_at_whitespace_after_header_before_long_token(self):

@@ -1,6 +1,6 @@
 kutoka test agiza support
 agiza unittest
-agiza dummy_threading as _threading
+agiza dummy_threading kama _threading
 agiza time
 
 kundi DummyThreadingTestCase(unittest.TestCase):
@@ -11,7 +11,7 @@ kundi DummyThreadingTestCase(unittest.TestCase):
             global running
             global sema
             global mutex
-            # Uncomment ikiwa testing another module, such as the real 'threading'
+            # Uncomment ikiwa testing another module, such kama the real 'threading'
             # module.
             #delay = random.random() * 2
             delay = 0
@@ -44,14 +44,14 @@ kundi DummyThreadingTestCase(unittest.TestCase):
         self.threads = []
 
     eleza test_tasks(self):
-        for i in range(self.numtasks):
+        kila i kwenye range(self.numtasks):
             t = self.TestThread(name="<thread %d>"%i)
             self.threads.append(t)
             t.start()
 
         ikiwa support.verbose:
-            andika('waiting for all tasks to complete')
-        for t in self.threads:
+            andika('waiting kila all tasks to complete')
+        kila t kwenye self.threads:
             t.join()
         ikiwa support.verbose:
             andika('all tasks done')

@@ -1,7 +1,7 @@
 """Helper to provide extensibility for pickle.
 
 This is only useful to add pickle support for extension types defined in
-C, not for instances of user-defined classes.
+C, sio for instances of user-defined classes.
 """
 
 __all__ = ["pickle", "constructor",
@@ -10,26 +10,26 @@ __all__ = ["pickle", "constructor",
 dispatch_table = {}
 
 def pickle(ob_type, pickle_function, constructor_ob=None):
-    if not callable(pickle_function):
+    if sio callable(pickle_function):
         raise TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
     # The constructor_ob function is a vestige of safe for unpickling.
     # There is no reason for the caller to pass it anymore.
-    if constructor_ob is not None:
+    if constructor_ob ni sio None:
         constructor(constructor_ob)
 
 def constructor(object):
-    if not callable(object):
+    if sio callable(object):
         raise TypeError("constructors must be callable")
 
 # Example: provide pickling support for complex numbers.
 
-try:
+jaribu:
     complex
-except NameError:
+tatizo NameError:
     pass
-else:
+isipokua:
 
     def pickle_complex(c):
         return complex, (c.real, c.imag)
@@ -41,7 +41,7 @@ else:
 def _reconstructor(cls, base, state):
     if base is object:
         obj = object.__new__(cls)
-    else:
+    isipokua:
         obj = base.__new__(cls, state)
         if base.__init__ != object.__init__:
             base.__init__(obj, state)
@@ -55,34 +55,34 @@ def _reduce_ex(self, proto):
     assert proto < 2
     cls = self.__class__
     for base in cls.__mro__:
-        if hasattr(base, '__flags__') and not base.__flags__ & _HEAPTYPE:
-            break
-    else:
-        base = object # not really reachable
+        if hasattr(base, '__flags__') and sio base.__flags__ & _HEAPTYPE:
+            koma
+    isipokua:
+        base = object # sio really reachable
     if base is object:
         state = None
-    else:
+    isipokua:
         if base is cls:
             raise TypeError(f"cannot pickle {cls.__name__!r} object")
         state = base(self)
     args = (cls, base, state)
-    try:
+    jaribu:
         getstate = self.__getstate__
-    except AttributeError:
+    tatizo AttributeError:
         if getattr(self, "__slots__", None):
             raise TypeError(f"cannot pickle {cls.__name__!r} object: "
                             f"a kundi that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
                             f"with protocol {proto}") kutoka None
-        try:
+        jaribu:
             dict = self.__dict__
-        except AttributeError:
+        tatizo AttributeError:
             dict = None
-    else:
+    isipokua:
         dict = getstate()
     if dict:
         return _reconstructor, args, dict
-    else:
+    isipokua:
         return _reconstructor, args
 
 # Helper for __reduce_ex__ protocol 2
@@ -109,15 +109,15 @@ def _slotnames(cls):
 
     # Get the value kutoka a cache in the kundi if possible
     names = cls.__dict__.get("__slotnames__")
-    if names is not None:
+    if names ni sio None:
         return names
 
     # Not cached -- calculate the value
     names = []
-    if not hasattr(cls, "__slots__"):
+    if sio hasattr(cls, "__slots__"):
         # This kundi has no slots
         pass
-    else:
+    isipokua:
         # Slots found -- gather slot names kutoka all base classes
         for c in cls.__mro__:
             if "__slots__" in c.__dict__:
@@ -128,19 +128,19 @@ def _slotnames(cls):
                 for name in slots:
                     # special descriptors
                     if name in ("__dict__", "__weakref__"):
-                        continue
+                        endelea
                     # mangled names
-                    lasivyo name.startswith('__') and not name.endswith('__'):
+                    lasivyo name.startswith('__') and sio name.endswith('__'):
                         stripped = c.__name__.lstrip('_')
                         if stripped:
                             names.append('_%s%s' % (stripped, name))
-                        else:
+                        isipokua:
                             names.append(name)
-                    else:
+                    isipokua:
                         names.append(name)
 
     # Cache the outcome in the kundi if at all possible
-    try:
+    jaribu:
         cls.__slotnames__ = names
     except:
         pass # But don't die if we can't
@@ -151,7 +151,7 @@ def _slotnames(cls):
 # mechanism.  Whenever a global reference to <module>, <name> is about
 # to be pickled, the (<module>, <name>) tuple is looked up here to see
 # if it is a registered extension code for it.  Extension codes are
-# universal, so that the meaning of a pickle does not depend on
+# universal, so that the meaning of a pickle does sio depend on
 # context.  (There are also some codes reserved for local use that
 # don't have this restriction.)  Codes are positive ints; 0 is
 # reserved.
@@ -165,16 +165,16 @@ _extension_cache = {}                   # code -> object
 def add_extension(module, name, code):
     """Register an extension code."""
     code = int(code)
-    if not 1 <= code <= 0x7fffffff:
+    if sio 1 <= code <= 0x7fffffff:
         raise ValueError("code out of range")
     key = (module, name)
     if (_extension_registry.get(key) == code and
         _inverted_registry.get(code) == key):
         return # Redundant registrations are benign
-    if key in _extension_registry:
+    if key in _extension_regisjaribu:
         raise ValueError("key %s is already registered with code %s" %
                          (key, _extension_registry[key]))
-    if code in _inverted_registry:
+    if code in _inverted_regisjaribu:
         raise ValueError("code %s is already in use for key %s" %
                          (code, _inverted_registry[code]))
     _extension_registry[key] = code
@@ -185,12 +185,12 @@ def remove_extension(module, name, code):
     key = (module, name)
     if (_extension_registry.get(key) != code or
         _inverted_registry.get(code) != key):
-        raise ValueError("key %s is not registered with code %s" %
+        raise ValueError("key %s ni sio registered with code %s" %
                          (key, code))
-    del _extension_registry[key]
-    del _inverted_registry[code]
+    toa _extension_registry[key]
+    toa _inverted_registry[code]
     if code in _extension_cache:
-        del _extension_cache[code]
+        toa _extension_cache[code]
 
 def clear_extension_cache():
     _extension_cache.clear()

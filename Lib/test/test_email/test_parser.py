@@ -36,7 +36,7 @@ class TestCustomMessage(TestEmailBase):
 class TestParserBase:
 
     def test_only_split_on_cr_lf(self):
-        # The unicode line splitter splits on unicode linebreaks, which are
+        # The unicode line splitter splits on unicode linekomas, which are
         # more numerous than allowed by the email RFCs; make sure we are only
         # splitting on those two.
         for parser in self.parsers:

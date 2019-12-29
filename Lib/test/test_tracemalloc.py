@@ -8,10 +8,10 @@ kutoka test.support.script_helper agiza (assert_python_ok, assert_python_failure
                                         interpreter_requires_environment)
 kutoka test agiza support
 
-try:
+jaribu:
     agiza _testcapi
-except ImportError:
-    _testcapi = None
+tatizo ImportError:
+    _testcapi = Tupu
 
 
 EMPTY_STRING_SIZE = sys.getsizeof(b'')
@@ -21,14 +21,14 @@ INVALID_NFRAME = (-1, 2**30)
 eleza get_frames(nframe, lineno_delta):
     frames = []
     frame = sys._getframe(1)
-    for index in range(nframe):
+    kila index kwenye range(nframe):
         code = frame.f_code
         lineno = frame.f_lineno + lineno_delta
         frames.append((code.co_filename, lineno))
         lineno_delta = 0
         frame = frame.f_back
-        ikiwa frame is None:
-            break
+        ikiwa frame ni Tupu:
+            koma
     rudisha tuple(frames)
 
 eleza allocate_bytes(size):
@@ -41,8 +41,8 @@ eleza allocate_bytes(size):
 eleza create_snapshots():
     traceback_limit = 2
 
-    # _tracemalloc._get_traces() returns a list of (domain, size,
-    # traceback_frames) tuples. traceback_frames is a tuple of (filename,
+    # _tracemalloc._get_traces() rudishas a list of (domain, size,
+    # traceback_frames) tuples. traceback_frames ni a tuple of (filename,
     # line_number) tuples.
     raw_traces = [
         (0, 10, (('a.py', 2), ('b.py', 4))),
@@ -95,7 +95,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         tracemalloc.stop()
 
     eleza test_get_tracemalloc_memory(self):
-        data = [allocate_bytes(123) for count in range(1000)]
+        data = [allocate_bytes(123) kila count kwenye range(1000)]
         size = tracemalloc.get_tracemalloc_memory()
         self.assertGreaterEqual(size, 0)
 
@@ -116,9 +116,9 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         # gc.collect() indirectly calls PyList_ClearFreeList()
         support.gc_collect()
 
-        # Create a list and "destroy it": put it in the PyListObject free list
+        # Create a list na "destroy it": put it kwenye the PyListObject free list
         obj = []
-        obj = None
+        obj = Tupu
 
         # Create a list which should reuse the previously created empty list
         obj = []
@@ -128,7 +128,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         obj_traceback = tracemalloc.Traceback(frames)
 
         traceback = tracemalloc.get_object_traceback(obj)
-        self.assertIsNotNone(traceback)
+        self.assertIsNotTupu(traceback)
         self.assertEqual(traceback, obj_traceback)
 
     eleza test_set_traceback_limit(self):
@@ -152,11 +152,11 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         self.assertEqual(traceback, obj_traceback)
 
     eleza find_trace(self, traces, traceback):
-        for trace in traces:
+        kila trace kwenye traces:
             ikiwa trace[2] == traceback._frames:
                 rudisha trace
 
-        self.fail("trace not found")
+        self.fail("trace sio found")
 
     eleza test_get_traces(self):
         tracemalloc.clear_traces()
@@ -175,7 +175,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         self.assertEqual(tracemalloc._get_traces(), [])
 
     eleza test_get_traces_intern_traceback(self):
-        # dummy wrappers to get more useful and identical frames in the traceback
+        # dummy wrappers to get more useful na identical frames kwenye the traceback
         eleza allocate_bytes2(size):
             rudisha allocate_bytes(size)
         eleza allocate_bytes3(size):
@@ -183,7 +183,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         eleza allocate_bytes4(size):
             rudisha allocate_bytes3(size)
 
-        # Ensure that two identical tracebacks are not duplicated
+        # Ensure that two identical tracebacks are sio duplicated
         tracemalloc.stop()
         tracemalloc.start(4)
         obj_size = 123
@@ -203,7 +203,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
 
     eleza test_get_traced_memory(self):
         # Python allocates some internals objects, so the test must tolerate
-        # a small difference between the expected size and the real usage
+        # a small difference between the expected size na the real usage
         max_error = 2048
 
         # allocate one object
@@ -218,7 +218,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         self.assertLessEqual(peak_size - size, max_error)
 
         # destroy the object
-        obj = None
+        obj = Tupu
         size2, peak_size2 = tracemalloc.get_traced_memory()
         self.assertLess(size2, size)
         self.assertGreaterEqual(size - size2, obj_size - max_error)
@@ -240,18 +240,18 @@ kundi TestTracemallocEnabled(unittest.TestCase):
     eleza test_clear_traces(self):
         obj, obj_traceback = allocate_bytes(123)
         traceback = tracemalloc.get_object_traceback(obj)
-        self.assertIsNotNone(traceback)
+        self.assertIsNotTupu(traceback)
 
         tracemalloc.clear_traces()
         traceback2 = tracemalloc.get_object_traceback(obj)
-        self.assertIsNone(traceback2)
+        self.assertIsTupu(traceback2)
 
     eleza test_is_tracing(self):
         tracemalloc.stop()
-        self.assertFalse(tracemalloc.is_tracing())
+        self.assertUongo(tracemalloc.is_tracing())
 
         tracemalloc.start()
-        self.assertTrue(tracemalloc.is_tracing())
+        self.assertKweli(tracemalloc.is_tracing())
 
     eleza test_snapshot(self):
         obj, source = allocate_bytes(123)
@@ -269,7 +269,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
 
         # tracemalloc must be tracing memory allocations to take a snapshot
         tracemalloc.stop()
-        with self.assertRaises(RuntimeError) as cm:
+        with self.assertRaises(RuntimeError) kama cm:
             tracemalloc.take_snapshot()
         self.assertEqual(str(cm.exception),
                          "the tracemalloc module must be tracing memory "
@@ -287,32 +287,32 @@ kundi TestTracemallocEnabled(unittest.TestCase):
         self.assertEqual(snapshot2.test_attr, "new")
 
     eleza fork_child(self):
-        ikiwa not tracemalloc.is_tracing():
+        ikiwa sio tracemalloc.is_tracing():
             rudisha 2
 
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
         traceback = tracemalloc.get_object_traceback(obj)
-        ikiwa traceback is None:
+        ikiwa traceback ni Tupu:
             rudisha 3
 
-        # everything is fine
+        # everything ni fine
         rudisha 0
 
     @unittest.skipUnless(hasattr(os, 'fork'), 'need os.fork()')
     eleza test_fork(self):
-        # check that tracemalloc is still working after fork
+        # check that tracemalloc ni still working after fork
         pid = os.fork()
-        ikiwa not pid:
+        ikiwa sio pid:
             # child
             exitcode = 1
-            try:
+            jaribu:
                 exitcode = self.fork_child()
-            finally:
+            mwishowe:
                 os._exit(exitcode)
-        else:
+        isipokua:
             pid2, status = os.waitpid(pid, 0)
-            self.assertTrue(os.WIFEXITED(status))
+            self.assertKweli(os.WIFEXITED(status))
             exitcode = os.WEXITSTATUS(status)
             self.assertEqual(exitcode, 0)
 
@@ -323,13 +323,13 @@ kundi TestSnapshot(unittest.TestCase):
     eleza test_create_snapshot(self):
         raw_traces = [(0, 5, (('a.py', 2),))]
 
-        with contextlib.ExitStack() as stack:
+        with contextlib.ExitStack() kama stack:
             stack.enter_context(patch.object(tracemalloc, 'is_tracing',
-                                             return_value=True))
+                                             rudisha_value=Kweli))
             stack.enter_context(patch.object(tracemalloc, 'get_traceback_limit',
-                                             return_value=5))
+                                             rudisha_value=5))
             stack.enter_context(patch.object(tracemalloc, '_get_traces',
-                                             return_value=raw_traces))
+                                             rudisha_value=raw_traces))
 
             snapshot = tracemalloc.take_snapshot()
             self.assertEqual(snapshot.traceback_limit, 5)
@@ -342,9 +342,9 @@ kundi TestSnapshot(unittest.TestCase):
 
     eleza test_filter_traces(self):
         snapshot, snapshot2 = create_snapshots()
-        filter1 = tracemalloc.Filter(False, "b.py")
-        filter2 = tracemalloc.Filter(True, "a.py", 2)
-        filter3 = tracemalloc.Filter(True, "a.py", 5)
+        filter1 = tracemalloc.Filter(Uongo, "b.py")
+        filter2 = tracemalloc.Filter(Kweli, "a.py", 2)
+        filter3 = tracemalloc.Filter(Kweli, "a.py", 5)
 
         original_traces = list(snapshot.traces._traces)
 
@@ -358,7 +358,7 @@ kundi TestSnapshot(unittest.TestCase):
             (3, 7, (('<unknown>', 0),)),
         ])
 
-        # filter_traces() must not touch the original snapshot
+        # filter_traces() must sio touch the original snapshot
         self.assertEqual(snapshot.traces._traces, original_traces)
 
         # only include two lines of a.py
@@ -380,8 +380,8 @@ kundi TestSnapshot(unittest.TestCase):
 
     eleza test_filter_traces_domain(self):
         snapshot, snapshot2 = create_snapshots()
-        filter1 = tracemalloc.Filter(False, "a.py", domain=1)
-        filter2 = tracemalloc.Filter(True, "a.py", domain=1)
+        filter1 = tracemalloc.Filter(Uongo, "a.py", domain=1)
+        filter2 = tracemalloc.Filter(Kweli, "a.py", domain=1)
 
         original_traces = list(snapshot.traces._traces)
 
@@ -407,8 +407,8 @@ kundi TestSnapshot(unittest.TestCase):
 
     eleza test_filter_traces_domain_filter(self):
         snapshot, snapshot2 = create_snapshots()
-        filter1 = tracemalloc.DomainFilter(False, domain=3)
-        filter2 = tracemalloc.DomainFilter(True, domain=3)
+        filter1 = tracemalloc.DomainFilter(Uongo, domain=3)
+        filter2 = tracemalloc.DomainFilter(Kweli, domain=3)
 
         # exclude domain 2
         snapshot3 = snapshot.filter_traces((filter1,))
@@ -434,7 +434,7 @@ kundi TestSnapshot(unittest.TestCase):
         tb_b_1 = traceback_lineno('b.py', 1)
         tb_c_578 = traceback_lineno('c.py', 578)
 
-        # stats per file and line
+        # stats per file na line
         stats1 = snapshot.statistics('lineno')
         self.assertEqual(stats1, [
             tracemalloc.Statistic(tb_b_1, 66, 1),
@@ -443,7 +443,7 @@ kundi TestSnapshot(unittest.TestCase):
             tracemalloc.Statistic(tb_a_5, 2, 1),
         ])
 
-        # stats per file and line (2)
+        # stats per file na line (2)
         stats2 = snapshot2.statistics('lineno')
         self.assertEqual(stats2, [
             tracemalloc.Statistic(tb_a_5, 5002, 2),
@@ -451,7 +451,7 @@ kundi TestSnapshot(unittest.TestCase):
             tracemalloc.Statistic(tb_a_2, 30, 3),
         ])
 
-        # stats diff per file and line
+        # stats diff per file na line
         statistics = snapshot2.compare_to(snapshot, 'lineno')
         self.assertEqual(statistics, [
             tracemalloc.StatisticDiff(tb_a_5, 5002, 5000, 2, 1),
@@ -528,7 +528,7 @@ kundi TestSnapshot(unittest.TestCase):
         ])
 
         self.assertRaises(ValueError,
-                          snapshot.statistics, 'traceback', cumulative=True)
+                          snapshot.statistics, 'traceback', cumulative=Kweli)
 
     eleza test_snapshot_group_by_cumulative(self):
         snapshot, snapshot2 = create_snapshots()
@@ -541,7 +541,7 @@ kundi TestSnapshot(unittest.TestCase):
         tb_b_4 = traceback_lineno('b.py', 4)
 
         # per file
-        stats = snapshot.statistics('filename', True)
+        stats = snapshot.statistics('filename', Kweli)
         self.assertEqual(stats, [
             tracemalloc.Statistic(tb_b, 98, 5),
             tracemalloc.Statistic(tb_a, 32, 4),
@@ -549,7 +549,7 @@ kundi TestSnapshot(unittest.TestCase):
         ])
 
         # per line
-        stats = snapshot.statistics('lineno', True)
+        stats = snapshot.statistics('lineno', Kweli)
         self.assertEqual(stats, [
             tracemalloc.Statistic(tb_b_1, 66, 1),
             tracemalloc.Statistic(tb_b_4, 32, 4),
@@ -611,17 +611,17 @@ kundi TestSnapshot(unittest.TestCase):
                              ['  File "b.py", line 4',
                               '    <b.py, 4>'])
 
-            self.assertEqual(tb.format(most_recent_first=True),
+            self.assertEqual(tb.format(most_recent_first=Kweli),
                              ['  File "a.py", line 2',
                               '    <a.py, 2>',
                               '  File "b.py", line 4',
                               '    <b.py, 4>'])
 
-            self.assertEqual(tb.format(limit=1, most_recent_first=True),
+            self.assertEqual(tb.format(limit=1, most_recent_first=Kweli),
                              ['  File "a.py", line 2',
                               '    <a.py, 2>'])
 
-            self.assertEqual(tb.format(limit=-1, most_recent_first=True),
+            self.assertEqual(tb.format(limit=-1, most_recent_first=Kweli),
                              ['  File "b.py", line 4',
                               '    <b.py, 4>'])
 
@@ -631,162 +631,162 @@ kundi TestFilters(unittest.TestCase):
 
     eleza test_filter_attributes(self):
         # test default values
-        f = tracemalloc.Filter(True, "abc")
-        self.assertEqual(f.inclusive, True)
+        f = tracemalloc.Filter(Kweli, "abc")
+        self.assertEqual(f.inclusive, Kweli)
         self.assertEqual(f.filename_pattern, "abc")
-        self.assertIsNone(f.lineno)
-        self.assertEqual(f.all_frames, False)
+        self.assertIsTupu(f.lineno)
+        self.assertEqual(f.all_frames, Uongo)
 
         # test custom values
-        f = tracemalloc.Filter(False, "test.py", 123, True)
-        self.assertEqual(f.inclusive, False)
+        f = tracemalloc.Filter(Uongo, "test.py", 123, Kweli)
+        self.assertEqual(f.inclusive, Uongo)
         self.assertEqual(f.filename_pattern, "test.py")
         self.assertEqual(f.lineno, 123)
-        self.assertEqual(f.all_frames, True)
+        self.assertEqual(f.all_frames, Kweli)
 
-        # parameters passed by keyword
-        f = tracemalloc.Filter(inclusive=False, filename_pattern="test.py", lineno=123, all_frames=True)
-        self.assertEqual(f.inclusive, False)
+        # parameters pitaed by keyword
+        f = tracemalloc.Filter(inclusive=Uongo, filename_pattern="test.py", lineno=123, all_frames=Kweli)
+        self.assertEqual(f.inclusive, Uongo)
         self.assertEqual(f.filename_pattern, "test.py")
         self.assertEqual(f.lineno, 123)
-        self.assertEqual(f.all_frames, True)
+        self.assertEqual(f.all_frames, Kweli)
 
         # read-only attribute
         self.assertRaises(AttributeError, setattr, f, "filename_pattern", "abc")
 
     eleza test_filter_match(self):
         # filter without line number
-        f = tracemalloc.Filter(True, "abc")
-        self.assertTrue(f._match_frame("abc", 0))
-        self.assertTrue(f._match_frame("abc", 5))
-        self.assertTrue(f._match_frame("abc", 10))
-        self.assertFalse(f._match_frame("12356", 0))
-        self.assertFalse(f._match_frame("12356", 5))
-        self.assertFalse(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Kweli, "abc")
+        self.assertKweli(f._match_frame("abc", 0))
+        self.assertKweli(f._match_frame("abc", 5))
+        self.assertKweli(f._match_frame("abc", 10))
+        self.assertUongo(f._match_frame("12356", 0))
+        self.assertUongo(f._match_frame("12356", 5))
+        self.assertUongo(f._match_frame("12356", 10))
 
-        f = tracemalloc.Filter(False, "abc")
-        self.assertFalse(f._match_frame("abc", 0))
-        self.assertFalse(f._match_frame("abc", 5))
-        self.assertFalse(f._match_frame("abc", 10))
-        self.assertTrue(f._match_frame("12356", 0))
-        self.assertTrue(f._match_frame("12356", 5))
-        self.assertTrue(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Uongo, "abc")
+        self.assertUongo(f._match_frame("abc", 0))
+        self.assertUongo(f._match_frame("abc", 5))
+        self.assertUongo(f._match_frame("abc", 10))
+        self.assertKweli(f._match_frame("12356", 0))
+        self.assertKweli(f._match_frame("12356", 5))
+        self.assertKweli(f._match_frame("12356", 10))
 
         # filter with line number > 0
-        f = tracemalloc.Filter(True, "abc", 5)
-        self.assertFalse(f._match_frame("abc", 0))
-        self.assertTrue(f._match_frame("abc", 5))
-        self.assertFalse(f._match_frame("abc", 10))
-        self.assertFalse(f._match_frame("12356", 0))
-        self.assertFalse(f._match_frame("12356", 5))
-        self.assertFalse(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Kweli, "abc", 5)
+        self.assertUongo(f._match_frame("abc", 0))
+        self.assertKweli(f._match_frame("abc", 5))
+        self.assertUongo(f._match_frame("abc", 10))
+        self.assertUongo(f._match_frame("12356", 0))
+        self.assertUongo(f._match_frame("12356", 5))
+        self.assertUongo(f._match_frame("12356", 10))
 
-        f = tracemalloc.Filter(False, "abc", 5)
-        self.assertTrue(f._match_frame("abc", 0))
-        self.assertFalse(f._match_frame("abc", 5))
-        self.assertTrue(f._match_frame("abc", 10))
-        self.assertTrue(f._match_frame("12356", 0))
-        self.assertTrue(f._match_frame("12356", 5))
-        self.assertTrue(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Uongo, "abc", 5)
+        self.assertKweli(f._match_frame("abc", 0))
+        self.assertUongo(f._match_frame("abc", 5))
+        self.assertKweli(f._match_frame("abc", 10))
+        self.assertKweli(f._match_frame("12356", 0))
+        self.assertKweli(f._match_frame("12356", 5))
+        self.assertKweli(f._match_frame("12356", 10))
 
         # filter with line number 0
-        f = tracemalloc.Filter(True, "abc", 0)
-        self.assertTrue(f._match_frame("abc", 0))
-        self.assertFalse(f._match_frame("abc", 5))
-        self.assertFalse(f._match_frame("abc", 10))
-        self.assertFalse(f._match_frame("12356", 0))
-        self.assertFalse(f._match_frame("12356", 5))
-        self.assertFalse(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Kweli, "abc", 0)
+        self.assertKweli(f._match_frame("abc", 0))
+        self.assertUongo(f._match_frame("abc", 5))
+        self.assertUongo(f._match_frame("abc", 10))
+        self.assertUongo(f._match_frame("12356", 0))
+        self.assertUongo(f._match_frame("12356", 5))
+        self.assertUongo(f._match_frame("12356", 10))
 
-        f = tracemalloc.Filter(False, "abc", 0)
-        self.assertFalse(f._match_frame("abc", 0))
-        self.assertTrue(f._match_frame("abc", 5))
-        self.assertTrue(f._match_frame("abc", 10))
-        self.assertTrue(f._match_frame("12356", 0))
-        self.assertTrue(f._match_frame("12356", 5))
-        self.assertTrue(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Uongo, "abc", 0)
+        self.assertUongo(f._match_frame("abc", 0))
+        self.assertKweli(f._match_frame("abc", 5))
+        self.assertKweli(f._match_frame("abc", 10))
+        self.assertKweli(f._match_frame("12356", 0))
+        self.assertKweli(f._match_frame("12356", 5))
+        self.assertKweli(f._match_frame("12356", 10))
 
     eleza test_filter_match_filename(self):
         eleza fnmatch(inclusive, filename, pattern):
             f = tracemalloc.Filter(inclusive, pattern)
             rudisha f._match_frame(filename, 0)
 
-        self.assertTrue(fnmatch(True, "abc", "abc"))
-        self.assertFalse(fnmatch(True, "12356", "abc"))
-        self.assertFalse(fnmatch(True, "<unknown>", "abc"))
+        self.assertKweli(fnmatch(Kweli, "abc", "abc"))
+        self.assertUongo(fnmatch(Kweli, "12356", "abc"))
+        self.assertUongo(fnmatch(Kweli, "<unknown>", "abc"))
 
-        self.assertFalse(fnmatch(False, "abc", "abc"))
-        self.assertTrue(fnmatch(False, "12356", "abc"))
-        self.assertTrue(fnmatch(False, "<unknown>", "abc"))
+        self.assertUongo(fnmatch(Uongo, "abc", "abc"))
+        self.assertKweli(fnmatch(Uongo, "12356", "abc"))
+        self.assertKweli(fnmatch(Uongo, "<unknown>", "abc"))
 
     eleza test_filter_match_filename_joker(self):
         eleza fnmatch(filename, pattern):
-            filter = tracemalloc.Filter(True, pattern)
+            filter = tracemalloc.Filter(Kweli, pattern)
             rudisha filter._match_frame(filename, 0)
 
         # empty string
-        self.assertFalse(fnmatch('abc', ''))
-        self.assertFalse(fnmatch('', 'abc'))
-        self.assertTrue(fnmatch('', ''))
-        self.assertTrue(fnmatch('', '*'))
+        self.assertUongo(fnmatch('abc', ''))
+        self.assertUongo(fnmatch('', 'abc'))
+        self.assertKweli(fnmatch('', ''))
+        self.assertKweli(fnmatch('', '*'))
 
         # no *
-        self.assertTrue(fnmatch('abc', 'abc'))
-        self.assertFalse(fnmatch('abc', 'abcd'))
-        self.assertFalse(fnmatch('abc', 'def'))
+        self.assertKweli(fnmatch('abc', 'abc'))
+        self.assertUongo(fnmatch('abc', 'abcd'))
+        self.assertUongo(fnmatch('abc', 'def'))
 
         # a*
-        self.assertTrue(fnmatch('abc', 'a*'))
-        self.assertTrue(fnmatch('abc', 'abc*'))
-        self.assertFalse(fnmatch('abc', 'b*'))
-        self.assertFalse(fnmatch('abc', 'abcd*'))
+        self.assertKweli(fnmatch('abc', 'a*'))
+        self.assertKweli(fnmatch('abc', 'abc*'))
+        self.assertUongo(fnmatch('abc', 'b*'))
+        self.assertUongo(fnmatch('abc', 'abcd*'))
 
         # a*b
-        self.assertTrue(fnmatch('abc', 'a*c'))
-        self.assertTrue(fnmatch('abcdcx', 'a*cx'))
-        self.assertFalse(fnmatch('abb', 'a*c'))
-        self.assertFalse(fnmatch('abcdce', 'a*cx'))
+        self.assertKweli(fnmatch('abc', 'a*c'))
+        self.assertKweli(fnmatch('abcdcx', 'a*cx'))
+        self.assertUongo(fnmatch('abb', 'a*c'))
+        self.assertUongo(fnmatch('abcdce', 'a*cx'))
 
         # a*b*c
-        self.assertTrue(fnmatch('abcde', 'a*c*e'))
-        self.assertTrue(fnmatch('abcbdefeg', 'a*bd*eg'))
-        self.assertFalse(fnmatch('abcdd', 'a*c*e'))
-        self.assertFalse(fnmatch('abcbdefef', 'a*bd*eg'))
+        self.assertKweli(fnmatch('abcde', 'a*c*e'))
+        self.assertKweli(fnmatch('abcbdefeg', 'a*bd*eg'))
+        self.assertUongo(fnmatch('abcdd', 'a*c*e'))
+        self.assertUongo(fnmatch('abcbdefef', 'a*bd*eg'))
 
         # replace .pyc suffix with .py
-        self.assertTrue(fnmatch('a.pyc', 'a.py'))
-        self.assertTrue(fnmatch('a.py', 'a.pyc'))
+        self.assertKweli(fnmatch('a.pyc', 'a.py'))
+        self.assertKweli(fnmatch('a.py', 'a.pyc'))
 
         ikiwa os.name == 'nt':
             # case insensitive
-            self.assertTrue(fnmatch('aBC', 'ABc'))
-            self.assertTrue(fnmatch('aBcDe', 'Ab*dE'))
+            self.assertKweli(fnmatch('aBC', 'ABc'))
+            self.assertKweli(fnmatch('aBcDe', 'Ab*dE'))
 
-            self.assertTrue(fnmatch('a.pyc', 'a.PY'))
-            self.assertTrue(fnmatch('a.py', 'a.PYC'))
-        else:
+            self.assertKweli(fnmatch('a.pyc', 'a.PY'))
+            self.assertKweli(fnmatch('a.py', 'a.PYC'))
+        isipokua:
             # case sensitive
-            self.assertFalse(fnmatch('aBC', 'ABc'))
-            self.assertFalse(fnmatch('aBcDe', 'Ab*dE'))
+            self.assertUongo(fnmatch('aBC', 'ABc'))
+            self.assertUongo(fnmatch('aBcDe', 'Ab*dE'))
 
-            self.assertFalse(fnmatch('a.pyc', 'a.PY'))
-            self.assertFalse(fnmatch('a.py', 'a.PYC'))
+            self.assertUongo(fnmatch('a.pyc', 'a.PY'))
+            self.assertUongo(fnmatch('a.py', 'a.PYC'))
 
         ikiwa os.name == 'nt':
             # normalize alternate separator "/" to the standard separator "\"
-            self.assertTrue(fnmatch(r'a/b', r'a\b'))
-            self.assertTrue(fnmatch(r'a\b', r'a/b'))
-            self.assertTrue(fnmatch(r'a/b\c', r'a\b/c'))
-            self.assertTrue(fnmatch(r'a/b/c', r'a\b\c'))
-        else:
-            # there is no alternate separator
-            self.assertFalse(fnmatch(r'a/b', r'a\b'))
-            self.assertFalse(fnmatch(r'a\b', r'a/b'))
-            self.assertFalse(fnmatch(r'a/b\c', r'a\b/c'))
-            self.assertFalse(fnmatch(r'a/b/c', r'a\b\c'))
+            self.assertKweli(fnmatch(r'a/b', r'a\b'))
+            self.assertKweli(fnmatch(r'a\b', r'a/b'))
+            self.assertKweli(fnmatch(r'a/b\c', r'a\b/c'))
+            self.assertKweli(fnmatch(r'a/b/c', r'a\b\c'))
+        isipokua:
+            # there ni no alternate separator
+            self.assertUongo(fnmatch(r'a/b', r'a\b'))
+            self.assertUongo(fnmatch(r'a\b', r'a/b'))
+            self.assertUongo(fnmatch(r'a/b\c', r'a\b/c'))
+            self.assertUongo(fnmatch(r'a/b/c', r'a\b\c'))
 
-        # as of 3.5, .pyo is no longer munged to .py
-        self.assertFalse(fnmatch('a.pyo', 'a.py'))
+        # kama of 3.5, .pyo ni no longer munged to .py
+        self.assertUongo(fnmatch('a.pyo', 'a.py'))
 
     eleza test_filter_match_trace(self):
         t1 = (("a.py", 2), ("b.py", 3))
@@ -794,82 +794,82 @@ kundi TestFilters(unittest.TestCase):
         t3 = (("c.py", 5), ('<unknown>', 0))
         unknown = (('<unknown>', 0),)
 
-        f = tracemalloc.Filter(True, "b.py", all_frames=True)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertFalse(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Kweli, "b.py", all_frames=Kweli)
+        self.assertKweli(f._match_traceback(t1))
+        self.assertKweli(f._match_traceback(t2))
+        self.assertUongo(f._match_traceback(t3))
+        self.assertUongo(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(True, "b.py", all_frames=False)
-        self.assertFalse(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertFalse(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Kweli, "b.py", all_frames=Uongo)
+        self.assertUongo(f._match_traceback(t1))
+        self.assertKweli(f._match_traceback(t2))
+        self.assertUongo(f._match_traceback(t3))
+        self.assertUongo(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "b.py", all_frames=True)
-        self.assertFalse(f._match_traceback(t1))
-        self.assertFalse(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertTrue(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Uongo, "b.py", all_frames=Kweli)
+        self.assertUongo(f._match_traceback(t1))
+        self.assertUongo(f._match_traceback(t2))
+        self.assertKweli(f._match_traceback(t3))
+        self.assertKweli(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "b.py", all_frames=False)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertFalse(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertTrue(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Uongo, "b.py", all_frames=Uongo)
+        self.assertKweli(f._match_traceback(t1))
+        self.assertUongo(f._match_traceback(t2))
+        self.assertKweli(f._match_traceback(t3))
+        self.assertKweli(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "<unknown>", all_frames=False)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Uongo, "<unknown>", all_frames=Uongo)
+        self.assertKweli(f._match_traceback(t1))
+        self.assertKweli(f._match_traceback(t2))
+        self.assertKweli(f._match_traceback(t3))
+        self.assertUongo(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(True, "<unknown>", all_frames=True)
-        self.assertFalse(f._match_traceback(t1))
-        self.assertFalse(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertTrue(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Kweli, "<unknown>", all_frames=Kweli)
+        self.assertUongo(f._match_traceback(t1))
+        self.assertUongo(f._match_traceback(t2))
+        self.assertKweli(f._match_traceback(t3))
+        self.assertKweli(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "<unknown>", all_frames=True)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertFalse(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Uongo, "<unknown>", all_frames=Kweli)
+        self.assertKweli(f._match_traceback(t1))
+        self.assertKweli(f._match_traceback(t2))
+        self.assertUongo(f._match_traceback(t3))
+        self.assertUongo(f._match_traceback(unknown))
 
 
 kundi TestCommandLine(unittest.TestCase):
     eleza test_env_var_disabled_by_default(self):
-        # not tracing by default
+        # sio tracing by default
         code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code)
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'False')
+        self.assertEqual(stdout, b'Uongo')
 
     @unittest.skipIf(interpreter_requires_environment(),
                      'Cannot run -E tests when PYTHON env vars are required.')
     eleza test_env_var_ignored_with_E(self):
-        """PYTHON* environment variables must be ignored when -E is present."""
+        """PYTHON* environment variables must be ignored when -E ni present."""
         code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-E', '-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'False')
+        self.assertEqual(stdout, b'Uongo')
 
     eleza test_env_var_disabled(self):
         # tracing at startup
         code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='0')
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'False')
+        self.assertEqual(stdout, b'Uongo')
 
     eleza test_env_var_enabled_at_startup(self):
         # tracing at startup
         code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'True')
+        self.assertEqual(stdout, b'Kweli')
 
     eleza test_env_limit(self):
-        # start and set the number of frames
+        # start na set the number of frames
         code = 'agiza tracemalloc; andika(tracemalloc.get_traceback_limit())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='10')
         stdout = stdout.rstrip()
@@ -878,23 +878,23 @@ kundi TestCommandLine(unittest.TestCase):
     eleza check_env_var_invalid(self, nframe):
         with support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(
-                '-c', 'pass',
+                '-c', 'pita',
                 PYTHONTRACEMALLOC=str(nframe))
 
-        ikiwa b'ValueError: the number of frames must be in range' in stderr:
-            return
-        ikiwa b'PYTHONTRACEMALLOC: invalid number of frames' in stderr:
-            return
+        ikiwa b'ValueError: the number of frames must be kwenye range' kwenye stderr:
+            rudisha
+        ikiwa b'PYTHONTRACEMALLOC: invalid number of frames' kwenye stderr:
+            rudisha
         self.fail(f"unexpected output: {stderr!a}")
 
 
     eleza test_env_var_invalid(self):
-        for nframe in INVALID_NFRAME:
+        kila nframe kwenye INVALID_NFRAME:
             with self.subTest(nframe=nframe):
                 self.check_env_var_invalid(nframe)
 
     eleza test_sys_xoptions(self):
-        for xoptions, nframe in (
+        kila xoptions, nframe kwenye (
             ('tracemalloc', 1),
             ('tracemalloc=1', 1),
             ('tracemalloc=15', 15),
@@ -906,30 +906,30 @@ kundi TestCommandLine(unittest.TestCase):
                 self.assertEqual(stdout, str(nframe).encode('ascii'))
 
     eleza check_sys_xoptions_invalid(self, nframe):
-        args = ('-X', 'tracemalloc=%s' % nframe, '-c', 'pass')
+        args = ('-X', 'tracemalloc=%s' % nframe, '-c', 'pita')
         with support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(*args)
 
-        ikiwa b'ValueError: the number of frames must be in range' in stderr:
-            return
-        ikiwa b'-X tracemalloc=NFRAME: invalid number of frames' in stderr:
-            return
+        ikiwa b'ValueError: the number of frames must be kwenye range' kwenye stderr:
+            rudisha
+        ikiwa b'-X tracemalloc=NFRAME: invalid number of frames' kwenye stderr:
+            rudisha
         self.fail(f"unexpected output: {stderr!a}")
 
     eleza test_sys_xoptions_invalid(self):
-        for nframe in INVALID_NFRAME:
+        kila nframe kwenye INVALID_NFRAME:
             with self.subTest(nframe=nframe):
                 self.check_sys_xoptions_invalid(nframe)
 
-    @unittest.skipIf(_testcapi is None, 'need _testcapi')
+    @unittest.skipIf(_testcapi ni Tupu, 'need _testcapi')
     eleza test_pymem_alloc0(self):
         # Issue #21639: Check that PyMem_Malloc(0) with tracemalloc enabled
-        # does not crash.
+        # does sio crash.
         code = 'agiza _testcapi; _testcapi.test_pymem_alloc0(); 1'
         assert_python_ok('-X', 'tracemalloc', '-c', code)
 
 
-@unittest.skipIf(_testcapi is None, 'need _testcapi')
+@unittest.skipIf(_testcapi ni Tupu, 'need _testcapi')
 kundi TestCAPI(unittest.TestCase):
     maxDiff = 80 * 20
 
@@ -941,8 +941,8 @@ kundi TestCAPI(unittest.TestCase):
         self.size = 123
         self.obj = allocate_bytes(self.size)[0]
 
-        # for the type "object", id(obj) is the address of its memory block.
-        # This type is not tracked by the garbage collector
+        # kila the type "object", id(obj) ni the address of its memory block.
+        # This type ni sio tracked by the garbage collector
         self.ptr = id(self.obj)
 
     eleza tearDown(self):
@@ -950,12 +950,12 @@ kundi TestCAPI(unittest.TestCase):
 
     eleza get_traceback(self):
         frames = _testcapi.tracemalloc_get_traceback(self.domain, self.ptr)
-        ikiwa frames is not None:
+        ikiwa frames ni sio Tupu:
             rudisha tracemalloc.Traceback(frames)
-        else:
-            rudisha None
+        isipokua:
+            rudisha Tupu
 
-    eleza track(self, release_gil=False, nframe=1):
+    eleza track(self, release_gil=Uongo, nframe=1):
         frames = get_frames(nframe, 1)
         _testcapi.tracemalloc_track(self.domain, self.ptr, self.size,
                                     release_gil)
@@ -965,11 +965,11 @@ kundi TestCAPI(unittest.TestCase):
         _testcapi.tracemalloc_untrack(self.domain, self.ptr)
 
     eleza get_traced_memory(self):
-        # Get the traced size in the domain
+        # Get the traced size kwenye the domain
         snapshot = tracemalloc.take_snapshot()
-        domain_filter = tracemalloc.DomainFilter(True, self.domain)
+        domain_filter = tracemalloc.DomainFilter(Kweli, self.domain)
         snapshot = snapshot.filter_traces([domain_filter])
-        rudisha sum(trace.size for trace in snapshot.traces)
+        rudisha sum(trace.size kila trace kwenye snapshot.traces)
 
     eleza check_track(self, release_gil):
         nframe = 5
@@ -984,12 +984,12 @@ kundi TestCAPI(unittest.TestCase):
         self.assertEqual(self.get_traced_memory(), self.size)
 
     eleza test_track(self):
-        self.check_track(False)
+        self.check_track(Uongo)
 
     eleza test_track_without_gil(self):
         # check that calling _PyTraceMalloc_Track() without holding the GIL
         # works too
-        self.check_track(True)
+        self.check_track(Kweli)
 
     eleza test_track_already_tracked(self):
         nframe = 5
@@ -998,7 +998,7 @@ kundi TestCAPI(unittest.TestCase):
         # track a first time
         self.track()
 
-        # calling _PyTraceMalloc_Track() must remove the old trace and add
+        # calling _PyTraceMalloc_Track() must remove the old trace na add
         # a new trace with the new traceback
         frames = self.track(nframe=nframe)
         self.assertEqual(self.get_traceback(),
@@ -1008,15 +1008,15 @@ kundi TestCAPI(unittest.TestCase):
         tracemalloc.start()
 
         self.track()
-        self.assertIsNotNone(self.get_traceback())
+        self.assertIsNotTupu(self.get_traceback())
         self.assertEqual(self.get_traced_memory(), self.size)
 
         # untrack must remove the trace
         self.untrack()
-        self.assertIsNone(self.get_traceback())
+        self.assertIsTupu(self.get_traceback())
         self.assertEqual(self.get_traced_memory(), 0)
 
-        # calling _PyTraceMalloc_Untrack() multiple times must not crash
+        # calling _PyTraceMalloc_Untrack() multiple times must sio crash
         self.untrack()
         self.untrack()
 
@@ -1026,7 +1026,7 @@ kundi TestCAPI(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             self.track()
-        self.assertIsNone(self.get_traceback())
+        self.assertIsTupu(self.get_traceback())
 
     eleza test_stop_untrack(self):
         tracemalloc.start()

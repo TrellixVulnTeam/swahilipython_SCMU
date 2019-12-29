@@ -7,7 +7,7 @@ agiza re
 agiza string
 agiza sys
 
-AMD64 = "AMD64" in sys.version
+AMD64 = "AMD64" kwenye sys.version
 # Keep msilib.Win64 around to preserve backwards compatibility.
 Win64 = AMD64
 
@@ -40,8 +40,8 @@ kundi Table:
         fields = []
         keys = []
         self.fields.sort()
-        fields = [None]*len(self.fields)
-        for index, name, type in self.fields:
+        fields = [Tupu]*len(self.fields)
+        kila index, name, type kwenye self.fields:
             index -= 1
             unk = type & ~knownbits
             ikiwa unk:
@@ -51,7 +51,7 @@ kundi Table:
             ikiwa dtype == type_string:
                 ikiwa size:
                     tname="CHAR(%d)" % size
-                else:
+                isipokua:
                     tname="CHAR"
             elikiwa dtype == type_short:
                 assert size==2
@@ -62,12 +62,12 @@ kundi Table:
             elikiwa dtype == type_binary:
                 assert size==0
                 tname="OBJECT"
-            else:
+            isipokua:
                 tname="unknown"
                 andika("%s.%sunknown integer type %d" % (self.name, name, size))
             ikiwa type & type_nullable:
                 flags = ""
-            else:
+            isipokua:
                 flags = " NOT NULL"
             ikiwa type & type_localizable:
                 flags += " LOCALIZABLE"
@@ -80,44 +80,44 @@ kundi Table:
 
     eleza create(self, db):
         v = db.OpenView(self.sql())
-        v.Execute(None)
+        v.Execute(Tupu)
         v.Close()
 
-kundi _Unspecified:pass
+kundi _Unspecified:pita
 eleza change_sequence(seq, action, seqno=_Unspecified, cond = _Unspecified):
-    "Change the sequence number of an action in a sequence list"
-    for i in range(len(seq)):
+    "Change the sequence number of an action kwenye a sequence list"
+    kila i kwenye range(len(seq)):
         ikiwa seq[i][0] == action:
-            ikiwa cond is _Unspecified:
+            ikiwa cond ni _Unspecified:
                 cond = seq[i][1]
-            ikiwa seqno is _Unspecified:
+            ikiwa seqno ni _Unspecified:
                 seqno = seq[i][2]
             seq[i] = (action, cond, seqno)
-            return
-    raise ValueError("Action not found in sequence")
+            rudisha
+    ashiria ValueError("Action sio found kwenye sequence")
 
 eleza add_data(db, table, values):
     v = db.OpenView("SELECT * FROM `%s`" % table)
     count = v.GetColumnInfo(MSICOLINFO_NAMES).GetFieldCount()
     r = CreateRecord(count)
-    for value in values:
+    kila value kwenye values:
         assert len(value) == count, value
-        for i in range(count):
+        kila i kwenye range(count):
             field = value[i]
             ikiwa isinstance(field, int):
                 r.SetInteger(i+1,field)
             elikiwa isinstance(field, str):
                 r.SetString(i+1,field)
-            elikiwa field is None:
-                pass
+            elikiwa field ni Tupu:
+                pita
             elikiwa isinstance(field, Binary):
                 r.SetStream(i+1, field.name)
-            else:
-                raise TypeError("Unsupported type %s" % field.__class__.__name__)
-        try:
+            isipokua:
+                ashiria TypeError("Unsupported type %s" % field.__class__.__name__)
+        jaribu:
             v.Modify(MSIMODIFY_INSERT, r)
-        except Exception as e:
-            raise MSIError("Could not insert "+repr(values)+" into "+table)
+        tatizo Exception kama e:
+            ashiria MSIError("Could sio insert "+repr(values)+" into "+table)
 
         r.ClearData()
     v.Close()
@@ -133,15 +133,15 @@ eleza add_stream(db, name, path):
 eleza init_database(name, schema,
                   ProductName, ProductCode, ProductVersion,
                   Manufacturer):
-    try:
+    jaribu:
         os.unlink(name)
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
     ProductCode = ProductCode.upper()
     # Create the database
     db = OpenDatabase(name, MSIDBOPEN_CREATE)
     # Create the tables
-    for t in schema.tables:
+    kila t kwenye schema.tables:
         t.create(db)
     # Fill the validation table
     add_data(db, "_Validation", schema._Validation_records)
@@ -152,7 +152,7 @@ eleza init_database(name, schema,
     si.SetProperty(PID_AUTHOR, Manufacturer)
     ikiwa AMD64:
         si.SetProperty(PID_TEMPLATE, "x64;1033")
-    else:
+    isipokua:
         si.SetProperty(PID_TEMPLATE, "Intel;1033")
     si.SetProperty(PID_REVNUMBER, gen_uuid())
     si.SetProperty(PID_WORDCOUNT, 2) # long file names, compressed, original media
@@ -170,13 +170,13 @@ eleza init_database(name, schema,
     rudisha db
 
 eleza add_tables(db, module):
-    for table in module.tables:
+    kila table kwenye module.tables:
         add_data(db, table, getattr(module, table))
 
 eleza make_id(str):
     identifier_chars = string.ascii_letters + string.digits + "._"
-    str = "".join([c ikiwa c in identifier_chars else "_" for c in str])
-    ikiwa str[0] in (string.digits + "."):
+    str = "".join([c ikiwa c kwenye identifier_chars else "_" kila c kwenye str])
+    ikiwa str[0] kwenye (string.digits + "."):
         str = "_" + str
     assert re.match("^[A-Za-z_][A-Za-z0-9_.]*$", str), "FILE"+str
     rudisha str
@@ -194,7 +194,7 @@ kundi CAB:
     eleza gen_id(self, file):
         logical = _logical = make_id(file)
         pos = 1
-        while logical in self.filenames:
+        wakati logical kwenye self.filenames:
             logical = "%s.%d" % (_logical, pos)
             pos += 1
         self.filenames.add(logical)
@@ -202,8 +202,8 @@ kundi CAB:
 
     eleza append(self, full, file, logical):
         ikiwa os.path.isdir(full):
-            return
-        ikiwa not logical:
+            rudisha
+        ikiwa sio logical:
             logical = self.gen_id(file)
         self.index += 1
         self.files.append((full, logical))
@@ -214,26 +214,26 @@ kundi CAB:
         filename = mktemp()
         FCICreate(filename, self.files)
         add_data(db, "Media",
-                [(1, self.index, None, "#"+self.name, None, None)])
+                [(1, self.index, Tupu, "#"+self.name, Tupu, Tupu)])
         add_stream(db, self.name, filename)
         os.unlink(filename)
         db.Commit()
 
 _directories = set()
 kundi Directory:
-    eleza __init__(self, db, cab, basedir, physical, _logical, default, componentflags=None):
-        """Create a new directory in the Directory table. There is a current component
-        at each point in time for the directory, which is either explicitly created
-        through start_component, or implicitly when files are added for the first
-        time. Files are added into the current component, and into the cab file.
+    eleza __init__(self, db, cab, basedir, physical, _logical, default, componentflags=Tupu):
+        """Create a new directory kwenye the Directory table. There ni a current component
+        at each point kwenye time kila the directory, which ni either explicitly created
+        through start_component, ama implicitly when files are added kila the first
+        time. Files are added into the current component, na into the cab file.
         To create a directory, a base directory object needs to be specified (can be
-        None), the path to the physical directory, and a logical directory name.
-        Default specifies the DefaultDir slot in the directory table. componentflags
+        Tupu), the path to the physical directory, na a logical directory name.
+        Default specifies the DefaultDir slot kwenye the directory table. componentflags
         specifies the default flags that new components get."""
         index = 1
         _logical = make_id(_logical)
         logical = _logical
-        while logical in _directories:
+        wakati logical kwenye _directories:
             logical = "%s%d" % (_logical, index)
             index += 1
         _directories.add(logical)
@@ -242,7 +242,7 @@ kundi Directory:
         self.basedir = basedir
         self.physical = physical
         self.logical = logical
-        self.component = None
+        self.component = Tupu
         self.short_names = set()
         self.ids = set()
         self.keyfiles = {}
@@ -250,24 +250,24 @@ kundi Directory:
         ikiwa basedir:
             self.absolute = os.path.join(basedir.absolute, physical)
             blogical = basedir.logical
-        else:
+        isipokua:
             self.absolute = physical
-            blogical = None
+            blogical = Tupu
         add_data(db, "Directory", [(logical, blogical, default)])
 
-    eleza start_component(self, component = None, feature = None, flags = None, keyfile = None, uuid=None):
-        """Add an entry to the Component table, and make this component the current for this
-        directory. If no component name is given, the directory name is used. If no feature
-        is given, the current feature is used. If no flags are given, the directory's default
-        flags are used. If no keyfile is given, the KeyPath is left null in the Component
+    eleza start_component(self, component = Tupu, feature = Tupu, flags = Tupu, keyfile = Tupu, uuid=Tupu):
+        """Add an entry to the Component table, na make this component the current kila this
+        directory. If no component name ni given, the directory name ni used. If no feature
+        ni given, the current feature ni used. If no flags are given, the directory's default
+        flags are used. If no keyfile ni given, the KeyPath ni left null kwenye the Component
         table."""
-        ikiwa flags is None:
+        ikiwa flags ni Tupu:
             flags = self.componentflags
-        ikiwa uuid is None:
+        ikiwa uuid ni Tupu:
             uuid = gen_uuid()
-        else:
+        isipokua:
             uuid = uuid.upper()
-        ikiwa component is None:
+        ikiwa component ni Tupu:
             component = self.logical
         self.component = component
         ikiwa AMD64:
@@ -275,11 +275,11 @@ kundi Directory:
         ikiwa keyfile:
             keyid = self.cab.gen_id(keyfile)
             self.keyfiles[keyfile] = keyid
-        else:
-            keyid = None
+        isipokua:
+            keyid = Tupu
         add_data(self.db, "Component",
-                        [(component, uuid, self.logical, flags, None, keyid)])
-        ikiwa feature is None:
+                        [(component, uuid, self.logical, flags, Tupu, keyid)])
+        ikiwa feature ni Tupu:
             feature = current_feature
         add_data(self.db, "FeatureComponents",
                         [(feature.id, component)])
@@ -287,77 +287,77 @@ kundi Directory:
     eleza make_short(self, file):
         oldfile = file
         file = file.replace('+', '_')
-        file = ''.join(c for c in file ikiwa not c in r' "/\[]:;=,')
+        file = ''.join(c kila c kwenye file ikiwa sio c kwenye r' "/\[]:;=,')
         parts = file.split(".")
         ikiwa len(parts) > 1:
             prefix = "".join(parts[:-1]).upper()
             suffix = parts[-1].upper()
-            ikiwa not prefix:
+            ikiwa sio prefix:
                 prefix = suffix
-                suffix = None
-        else:
+                suffix = Tupu
+        isipokua:
             prefix = file.upper()
-            suffix = None
-        ikiwa len(parts) < 3 and len(prefix) <= 8 and file == oldfile and (
-                                                not suffix or len(suffix) <= 3):
+            suffix = Tupu
+        ikiwa len(parts) < 3 na len(prefix) <= 8 na file == oldfile na (
+                                                sio suffix ama len(suffix) <= 3):
             ikiwa suffix:
                 file = prefix+"."+suffix
-            else:
+            isipokua:
                 file = prefix
-        else:
-            file = None
-        ikiwa file is None or file in self.short_names:
+        isipokua:
+            file = Tupu
+        ikiwa file ni Tupu ama file kwenye self.short_names:
             prefix = prefix[:6]
             ikiwa suffix:
                 suffix = suffix[:3]
             pos = 1
-            while 1:
+            wakati 1:
                 ikiwa suffix:
                     file = "%s~%d.%s" % (prefix, pos, suffix)
-                else:
+                isipokua:
                     file = "%s~%d" % (prefix, pos)
-                ikiwa file not in self.short_names: break
+                ikiwa file haiko kwenye self.short_names: koma
                 pos += 1
                 assert pos < 10000
-                ikiwa pos in (10, 100, 1000):
+                ikiwa pos kwenye (10, 100, 1000):
                     prefix = prefix[:-1]
         self.short_names.add(file)
-        assert not re.search(r'[\?|><:/*"+,;=\[\]]', file) # restrictions on short names
+        assert sio re.search(r'[\?|><:/*"+,;=\[\]]', file) # restrictions on short names
         rudisha file
 
-    eleza add_file(self, file, src=None, version=None, language=None):
+    eleza add_file(self, file, src=Tupu, version=Tupu, language=Tupu):
         """Add a file to the current component of the directory, starting a new one
-        ikiwa there is no current component. By default, the file name in the source
-        and the file table will be identical. If the src file is specified, it is
-        interpreted relative to the current directory. Optionally, a version and a
-        language can be specified for the entry in the File table."""
-        ikiwa not self.component:
+        ikiwa there ni no current component. By default, the file name kwenye the source
+        na the file table will be identical. If the src file ni specified, it is
+        interpreted relative to the current directory. Optionally, a version na a
+        language can be specified kila the entry kwenye the File table."""
+        ikiwa sio self.component:
             self.start_component(self.logical, current_feature, 0)
-        ikiwa not src:
-            # Allow relative paths for file ikiwa src is not specified
+        ikiwa sio src:
+            # Allow relative paths kila file ikiwa src ni sio specified
             src = file
             file = os.path.basename(file)
         absolute = os.path.join(self.absolute, src)
-        assert not re.search(r'[\?|><:/*]"', file) # restrictions on long names
-        ikiwa file in self.keyfiles:
+        assert sio re.search(r'[\?|><:/*]"', file) # restrictions on long names
+        ikiwa file kwenye self.keyfiles:
             logical = self.keyfiles[file]
-        else:
-            logical = None
+        isipokua:
+            logical = Tupu
         sequence, logical = self.cab.append(absolute, file, logical)
-        assert logical not in self.ids
+        assert logical haiko kwenye self.ids
         self.ids.add(logical)
         short = self.make_short(file)
         full = "%s|%s" % (short, file)
         filesize = os.stat(absolute).st_size
         # constants.msidbFileAttributesVital
-        # Compressed omitted, since it is the database default
+        # Compressed omitted, since it ni the database default
         # could add r/o, system, hidden
         attributes = 512
         add_data(self.db, "File",
                         [(logical, self.component, full, filesize, version,
                          language, attributes, sequence)])
-        #ikiwa not version:
-        #    # Add hash ikiwa the file is not versioned
+        #ikiwa sio version:
+        #    # Add hash ikiwa the file ni sio versioned
         #    filehash = FileHash(absolute, 0)
         #    add_data(self.db, "MsiFileHash",
         #             [(logical, 0, filehash.IntegerData(1),
@@ -374,18 +374,18 @@ kundi Directory:
                         self.logical, 2)])
         rudisha logical
 
-    eleza glob(self, pattern, exclude = None):
-        """Add a list of files to the current component as specified in the
-        glob pattern. Individual files can be excluded in the exclude list."""
-        try:
+    eleza glob(self, pattern, exclude = Tupu):
+        """Add a list of files to the current component kama specified kwenye the
+        glob pattern. Individual files can be excluded kwenye the exclude list."""
+        jaribu:
             files = os.listdir(self.absolute)
-        except OSError:
+        tatizo OSError:
             rudisha []
         ikiwa pattern[:1] != '.':
-            files = (f for f in files ikiwa f[0] != '.')
+            files = (f kila f kwenye files ikiwa f[0] != '.')
         files = fnmatch.filter(files, pattern)
-        for f in files:
-            ikiwa exclude and f in exclude: continue
+        kila f kwenye files:
+            ikiwa exclude na f kwenye exclude: endelea
             self.add_file(f)
         rudisha files
 
@@ -402,7 +402,7 @@ kundi Binary:
 
 kundi Feature:
     eleza __init__(self, db, id, title, desc, display, level = 1,
-                 parent=None, directory = None, attributes=0):
+                 parent=Tupu, directory = Tupu, attributes=0):
         self.id = id
         ikiwa parent:
             parent = parent.id
@@ -418,7 +418,7 @@ kundi Control:
         self.dlg = dlg
         self.name = name
 
-    eleza event(self, event, argument, condition = "1", ordering = None):
+    eleza event(self, event, argument, condition = "1", ordering = Tupu):
         add_data(self.dlg.db, "ControlEvent",
                  [(self.dlg.name, self.name, event, argument,
                    condition, ordering)])
@@ -438,12 +438,12 @@ kundi RadioButtonGroup(Control):
         self.property = property
         self.index = 1
 
-    eleza add(self, name, x, y, w, h, text, value = None):
-        ikiwa value is None:
+    eleza add(self, name, x, y, w, h, text, value = Tupu):
+        ikiwa value ni Tupu:
             value = name
         add_data(self.dlg.db, "RadioButton",
                  [(self.property, self.index, value,
-                   x, y, w, h, text, None)])
+                   x, y, w, h, text, Tupu)])
         self.index += 1
 
 kundi Dialog:
@@ -459,23 +459,23 @@ kundi Dialog:
         rudisha Control(self, name)
 
     eleza text(self, name, x, y, w, h, attr, text):
-        rudisha self.control(name, "Text", x, y, w, h, attr, None,
-                     text, None, None)
+        rudisha self.control(name, "Text", x, y, w, h, attr, Tupu,
+                     text, Tupu, Tupu)
 
     eleza bitmap(self, name, x, y, w, h, text):
-        rudisha self.control(name, "Bitmap", x, y, w, h, 1, None, text, None, None)
+        rudisha self.control(name, "Bitmap", x, y, w, h, 1, Tupu, text, Tupu, Tupu)
 
     eleza line(self, name, x, y, w, h):
-        rudisha self.control(name, "Line", x, y, w, h, 1, None, None, None, None)
+        rudisha self.control(name, "Line", x, y, w, h, 1, Tupu, Tupu, Tupu, Tupu)
 
     eleza pushbutton(self, name, x, y, w, h, attr, text, next):
-        rudisha self.control(name, "PushButton", x, y, w, h, attr, None, text, next, None)
+        rudisha self.control(name, "PushButton", x, y, w, h, attr, Tupu, text, next, Tupu)
 
     eleza radiogroup(self, name, x, y, w, h, attr, prop, text, next):
         add_data(self.db, "Control",
                  [(self.name, name, "RadioButtonGroup",
-                   x, y, w, h, attr, prop, text, next, None)])
+                   x, y, w, h, attr, prop, text, next, Tupu)])
         rudisha RadioButtonGroup(self, name, prop)
 
     eleza checkbox(self, name, x, y, w, h, attr, prop, text, next):
-        rudisha self.control(name, "CheckBox", x, y, w, h, attr, prop, text, next, None)
+        rudisha self.control(name, "CheckBox", x, y, w, h, attr, prop, text, next, Tupu)

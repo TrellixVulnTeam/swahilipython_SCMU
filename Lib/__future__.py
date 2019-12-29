@@ -21,7 +21,7 @@ OptionalRelease records the first release in which
 
 was accepted.
 
-In the case of MandatoryReleases that have not yet occurred,
+In the case of MandatoryReleases that have sio yet occurred,
 MandatoryRelease predicts the release in which the feature will become part
 of the language.
 
@@ -30,7 +30,7 @@ in releases at or after that, modules no longer need
 
     kutoka __future__ agiza FeatureName
 
-to use the feature in question, but may continue to use such agizas.
+to use the feature in question, but may endelea to use such agizas.
 
 MandatoryRelease may also be None, meaning that a planned feature got
 dropped.
@@ -64,7 +64,7 @@ __all__ = ["all_feature_names"] + all_feature_names
 
 # The CO_xxx symbols are defined here under the same names defined in
 # code.h and used by compile.h, so that an editor search will find them here.
-# However, they're not exported in __all__, because they don't really belong to
+# However, they're sio exported in __all__, because they don't really belong to
 # this module.
 CO_NESTED            = 0x0010   # nested_scopes
 CO_GENERATOR_ALLOWED = 0        # generators (obsolete, was 0x1000)

@@ -25,10 +25,10 @@ kutoka _weakrefset agiza WeakSet
 #
 #
 
-try:
+jaribu:
     ORIGINAL_DIR = os.path.abspath(os.getcwd())
-except OSError:
-    ORIGINAL_DIR = None
+tatizo OSError:
+    ORIGINAL_DIR = Tupu
 
 #
 # Public functions
@@ -59,9 +59,9 @@ eleza parent_process():
 #
 
 eleza _cleanup():
-    # check for processes which have finished
-    for p in list(_children):
-        ikiwa p._popen.poll() is not None:
+    # check kila processes which have finished
+    kila p kwenye list(_children):
+        ikiwa p._popen.poll() ni sio Tupu:
             _children.discard(p)
 
 #
@@ -70,39 +70,39 @@ eleza _cleanup():
 
 kundi BaseProcess(object):
     '''
-    Process objects represent activity that is run in a separate process
+    Process objects represent activity that ni run kwenye a separate process
 
-    The kundi is analogous to `threading.Thread`
+    The kundi ni analogous to `threading.Thread`
     '''
     eleza _Popen(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
-    eleza __init__(self, group=None, target=None, name=None, args=(), kwargs={},
-                 *, daemon=None):
-        assert group is None, 'group argument must be None for now'
+    eleza __init__(self, group=Tupu, target=Tupu, name=Tupu, args=(), kwargs={},
+                 *, daemon=Tupu):
+        assert group ni Tupu, 'group argument must be Tupu kila now'
         count = next(_process_counter)
         self._identity = _current_process._identity + (count,)
         self._config = _current_process._config.copy()
         self._parent_pid = os.getpid()
         self._parent_name = _current_process.name
-        self._popen = None
-        self._closed = False
+        self._popen = Tupu
+        self._closed = Uongo
         self._target = target
         self._args = tuple(args)
         self._kwargs = dict(kwargs)
-        self._name = name or type(self).__name__ + '-' + \
-                     ':'.join(str(i) for i in self._identity)
-        ikiwa daemon is not None:
+        self._name = name ama type(self).__name__ + '-' + \
+                     ':'.join(str(i) kila i kwenye self._identity)
+        ikiwa daemon ni sio Tupu:
             self.daemon = daemon
         _dangling.add(self)
 
     eleza _check_closed(self):
         ikiwa self._closed:
-            raise ValueError("process object is closed")
+            ashiria ValueError("process object ni closed")
 
     eleza run(self):
         '''
-        Method to be run in sub-process; can be overridden in sub-class
+        Method to be run kwenye sub-process; can be overridden kwenye sub-class
         '''
         ikiwa self._target:
             self._target(*self._args, **self._kwargs)
@@ -112,79 +112,79 @@ kundi BaseProcess(object):
         Start child process
         '''
         self._check_closed()
-        assert self._popen is None, 'cannot start a process twice'
+        assert self._popen ni Tupu, 'cannot start a process twice'
         assert self._parent_pid == os.getpid(), \
                'can only start a process object created by current process'
-        assert not _current_process._config.get('daemon'), \
-               'daemonic processes are not allowed to have children'
+        assert sio _current_process._config.get('daemon'), \
+               'daemonic processes are sio allowed to have children'
         _cleanup()
         self._popen = self._Popen(self)
         self._sentinel = self._popen.sentinel
         # Avoid a refcycle ikiwa the target function holds an indirect
         # reference to the process object (see bpo-30775)
-        del self._target, self._args, self._kwargs
+        toa self._target, self._args, self._kwargs
         _children.add(self)
 
     eleza terminate(self):
         '''
-        Terminate process; sends SIGTERM signal or uses TerminateProcess()
+        Terminate process; sends SIGTERM signal ama uses TerminateProcess()
         '''
         self._check_closed()
         self._popen.terminate()
 
     eleza kill(self):
         '''
-        Terminate process; sends SIGKILL signal or uses TerminateProcess()
+        Terminate process; sends SIGKILL signal ama uses TerminateProcess()
         '''
         self._check_closed()
         self._popen.kill()
 
-    eleza join(self, timeout=None):
+    eleza join(self, timeout=Tupu):
         '''
         Wait until child process terminates
         '''
         self._check_closed()
         assert self._parent_pid == os.getpid(), 'can only join a child process'
-        assert self._popen is not None, 'can only join a started process'
+        assert self._popen ni sio Tupu, 'can only join a started process'
         res = self._popen.wait(timeout)
-        ikiwa res is not None:
+        ikiwa res ni sio Tupu:
             _children.discard(self)
 
     eleza is_alive(self):
         '''
-        Return whether process is alive
+        Return whether process ni alive
         '''
         self._check_closed()
-        ikiwa self is _current_process:
-            rudisha True
+        ikiwa self ni _current_process:
+            rudisha Kweli
         assert self._parent_pid == os.getpid(), 'can only test a child process'
 
-        ikiwa self._popen is None:
-            rudisha False
+        ikiwa self._popen ni Tupu:
+            rudisha Uongo
 
         returncode = self._popen.poll()
-        ikiwa returncode is None:
-            rudisha True
-        else:
+        ikiwa returncode ni Tupu:
+            rudisha Kweli
+        isipokua:
             _children.discard(self)
-            rudisha False
+            rudisha Uongo
 
     eleza close(self):
         '''
         Close the Process object.
 
         This method releases resources held by the Process object.  It is
-        an error to call this method ikiwa the child process is still running.
+        an error to call this method ikiwa the child process ni still running.
         '''
-        ikiwa self._popen is not None:
-            ikiwa self._popen.poll() is None:
-                raise ValueError("Cannot close a process while it is still running. "
-                                 "You should first call join() or terminate().")
+        ikiwa self._popen ni sio Tupu:
+            ikiwa self._popen.poll() ni Tupu:
+                ashiria ValueError("Cannot close a process wakati it ni still running. "
+                                 "You should first call join() ama terminate().")
             self._popen.close()
-            self._popen = None
-            del self._sentinel
+            self._popen = Tupu
+            toa self._sentinel
             _children.discard(self)
-        self._closed = True
+        self._closed = Kweli
 
     @property
     eleza name(self):
@@ -198,16 +198,16 @@ kundi BaseProcess(object):
     @property
     eleza daemon(self):
         '''
-        Return whether process is a daemon
+        Return whether process ni a daemon
         '''
-        rudisha self._config.get('daemon', False)
+        rudisha self._config.get('daemon', Uongo)
 
     @daemon.setter
     eleza daemon(self, daemonic):
         '''
-        Set whether process is a daemon
+        Set whether process ni a daemon
         '''
-        assert self._popen is None, 'process has already started'
+        assert self._popen ni Tupu, 'process has already started'
         self._config['daemon'] = daemonic
 
     @property
@@ -224,61 +224,61 @@ kundi BaseProcess(object):
     @property
     eleza exitcode(self):
         '''
-        Return exit code of process or `None` ikiwa it has yet to stop
+        Return exit code of process ama `Tupu` ikiwa it has yet to stop
         '''
         self._check_closed()
-        ikiwa self._popen is None:
+        ikiwa self._popen ni Tupu:
             rudisha self._popen
         rudisha self._popen.poll()
 
     @property
     eleza ident(self):
         '''
-        Return identifier (PID) of process or `None` ikiwa it has yet to start
+        Return identifier (PID) of process ama `Tupu` ikiwa it has yet to start
         '''
         self._check_closed()
-        ikiwa self is _current_process:
+        ikiwa self ni _current_process:
             rudisha os.getpid()
-        else:
-            rudisha self._popen and self._popen.pid
+        isipokua:
+            rudisha self._popen na self._popen.pid
 
     pid = ident
 
     @property
     eleza sentinel(self):
         '''
-        Return a file descriptor (Unix) or handle (Windows) suitable for
-        waiting for process termination.
+        Return a file descriptor (Unix) ama handle (Windows) suitable for
+        waiting kila process termination.
         '''
         self._check_closed()
-        try:
+        jaribu:
             rudisha self._sentinel
-        except AttributeError:
-            raise ValueError("process not started") kutoka None
+        tatizo AttributeError:
+            ashiria ValueError("process sio started") kutoka Tupu
 
     eleza __repr__(self):
-        exitcode = None
-        ikiwa self is _current_process:
+        exitcode = Tupu
+        ikiwa self ni _current_process:
             status = 'started'
         elikiwa self._closed:
             status = 'closed'
         elikiwa self._parent_pid != os.getpid():
             status = 'unknown'
-        elikiwa self._popen is None:
+        elikiwa self._popen ni Tupu:
             status = 'initial'
-        else:
+        isipokua:
             exitcode = self._popen.poll()
-            ikiwa exitcode is not None:
+            ikiwa exitcode ni sio Tupu:
                 status = 'stopped'
-            else:
+            isipokua:
                 status = 'started'
 
         info = [type(self).__name__, 'name=%r' % self._name]
-        ikiwa self._popen is not None:
+        ikiwa self._popen ni sio Tupu:
             info.append('pid=%s' % self._popen.pid)
         info.append('parent=%s' % self._parent_pid)
         info.append(status)
-        ikiwa exitcode is not None:
+        ikiwa exitcode ni sio Tupu:
             exitcode = _exitcode_to_name.get(exitcode, exitcode)
             info.append('exitcode=%s' % exitcode)
         ikiwa self.daemon:
@@ -287,12 +287,12 @@ kundi BaseProcess(object):
 
     ##
 
-    eleza _bootstrap(self, parent_sentinel=None):
+    eleza _bootstrap(self, parent_sentinel=Tupu):
         kutoka . agiza util, context
         global _current_process, _parent_process, _process_counter, _children
 
-        try:
-            ikiwa self._start_method is not None:
+        jaribu:
+            ikiwa self._start_method ni sio Tupu:
                 context._force_start_method(self._start_method)
             _process_counter = itertools.count(1)
             _children = set()
@@ -301,25 +301,25 @@ kundi BaseProcess(object):
             _current_process = self
             _parent_process = _ParentProcess(
                 self._parent_name, self._parent_pid, parent_sentinel)
-            try:
+            jaribu:
                 util._finalizer_registry.clear()
                 util._run_after_forkers()
-            finally:
+            mwishowe:
                 # delay finalization of the old process object until after
-                # _run_after_forkers() is executed
-                del old_process
+                # _run_after_forkers() ni executed
+                toa old_process
             util.info('child process calling self.run()')
-            try:
+            jaribu:
                 self.run()
                 exitcode = 0
-            finally:
+            mwishowe:
                 util._exit_function()
-        except SystemExit as e:
-            ikiwa not e.args:
+        tatizo SystemExit kama e:
+            ikiwa sio e.args:
                 exitcode = 1
             elikiwa isinstance(e.args[0], int):
                 exitcode = e.args[0]
-            else:
+            isipokua:
                 sys.stderr.write(str(e.args[0]) + '\n')
                 exitcode = 1
         except:
@@ -327,7 +327,7 @@ kundi BaseProcess(object):
             agiza traceback
             sys.stderr.write('Process %s:\n' % self.name)
             traceback.print_exc()
-        finally:
+        mwishowe:
             threading._shutdown()
             util.info('process exiting with exitcode %d' % exitcode)
             util._flush_std_streams()
@@ -341,10 +341,10 @@ kundi BaseProcess(object):
 kundi AuthenticationString(bytes):
     eleza __reduce__(self):
         kutoka .context agiza get_spawning_popen
-        ikiwa get_spawning_popen() is None:
-            raise TypeError(
-                'Pickling an AuthenticationString object is '
-                'disallowed for security reasons'
+        ikiwa get_spawning_popen() ni Tupu:
+            ashiria TypeError(
+                'Pickling an AuthenticationString object ni '
+                'disallowed kila security reasons'
                 )
         rudisha AuthenticationString, (bytes(self),)
 
@@ -359,21 +359,21 @@ kundi _ParentProcess(BaseProcess):
         self._identity = ()
         self._name = name
         self._pid = pid
-        self._parent_pid = None
-        self._popen = None
-        self._closed = False
+        self._parent_pid = Tupu
+        self._popen = Tupu
+        self._closed = Uongo
         self._sentinel = sentinel
         self._config = {}
 
     eleza is_alive(self):
         kutoka multiprocessing.connection agiza wait
-        rudisha not wait([self._sentinel], timeout=0)
+        rudisha sio wait([self._sentinel], timeout=0)
 
     @property
     eleza ident(self):
         rudisha self._pid
 
-    eleza join(self, timeout=None):
+    eleza join(self, timeout=Tupu):
         '''
         Wait until parent process terminates
         '''
@@ -391,30 +391,30 @@ kundi _MainProcess(BaseProcess):
     eleza __init__(self):
         self._identity = ()
         self._name = 'MainProcess'
-        self._parent_pid = None
-        self._popen = None
-        self._closed = False
+        self._parent_pid = Tupu
+        self._popen = Tupu
+        self._closed = Uongo
         self._config = {'authkey': AuthenticationString(os.urandom(32)),
                         'semprefix': '/mp'}
         # Note that some versions of FreeBSD only allow named
         # semaphores to have names of up to 14 characters.  Therefore
         # we choose a short prefix.
         #
-        # On MacOSX in a sandbox it may be necessary to use a
+        # On MacOSX kwenye a sandbox it may be necessary to use a
         # different prefix -- see #19478.
         #
-        # Everything in self._config will be inherited by descendant
+        # Everything kwenye self._config will be inherited by descendant
         # processes.
 
     eleza close(self):
-        pass
+        pita
 
 
-_parent_process = None
+_parent_process = Tupu
 _current_process = _MainProcess()
 _process_counter = itertools.count(1)
 _children = set()
-del _MainProcess
+toa _MainProcess
 
 #
 # Give names to some rudisha codes
@@ -422,9 +422,9 @@ del _MainProcess
 
 _exitcode_to_name = {}
 
-for name, signum in list(signal.__dict__.items()):
-    ikiwa name[:3]=='SIG' and '_' not in name:
+kila name, signum kwenye list(signal.__dict__.items()):
+    ikiwa name[:3]=='SIG' na '_' haiko kwenye name:
         _exitcode_to_name[-signum] = f'-{name}'
 
-# For debug and leak testing
+# For debug na leak testing
 _dangling = WeakSet()

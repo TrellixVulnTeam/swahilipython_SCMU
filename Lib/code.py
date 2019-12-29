@@ -2,7 +2,7 @@
 
 """
 
-# Inspired by similar code by Jeff Epler and Fredrik Lundh.
+# Inspired by similar code by Jeff Epler na Fredrik Lundh.
 
 
 agiza sys
@@ -13,117 +13,117 @@ __all__ = ["InteractiveInterpreter", "InteractiveConsole", "interact",
            "compile_command"]
 
 kundi InteractiveInterpreter:
-    """Base kundi for InteractiveConsole.
+    """Base kundi kila InteractiveConsole.
 
-    This kundi deals with parsing and interpreter state (the user's
-    namespace); it doesn't deal with input buffering or prompting or
-    input file naming (the filename is always passed in explicitly).
+    This kundi deals with parsing na interpreter state (the user's
+    namespace); it doesn't deal with input buffering ama prompting or
+    input file naming (the filename ni always pitaed kwenye explicitly).
 
     """
 
-    eleza __init__(self, locals=None):
+    eleza __init__(self, locals=Tupu):
         """Constructor.
 
         The optional 'locals' argument specifies the dictionary in
         which code will be executed; it defaults to a newly created
-        dictionary with key "__name__" set to "__console__" and key
-        "__doc__" set to None.
+        dictionary with key "__name__" set to "__console__" na key
+        "__doc__" set to Tupu.
 
         """
-        ikiwa locals is None:
-            locals = {"__name__": "__console__", "__doc__": None}
+        ikiwa locals ni Tupu:
+            locals = {"__name__": "__console__", "__doc__": Tupu}
         self.locals = locals
         self.compile = CommandCompiler()
 
     eleza runsource(self, source, filename="<input>", symbol="single"):
-        """Compile and run some source in the interpreter.
+        """Compile na run some source kwenye the interpreter.
 
-        Arguments are as for compile_command().
+        Arguments are kama kila compile_command().
 
         One several things can happen:
 
-        1) The input is incorrect; compile_command() raised an
-        exception (SyntaxError or OverflowError).  A syntax traceback
+        1) The input ni incorrect; compile_command() ashiriad an
+        exception (SyntaxError ama OverflowError).  A syntax traceback
         will be printed by calling the showsyntaxerror() method.
 
-        2) The input is incomplete, and more input is required;
-        compile_command() returned None.  Nothing happens.
+        2) The input ni incomplete, na more input ni required;
+        compile_command() rudishaed Tupu.  Nothing happens.
 
-        3) The input is complete; compile_command() returned a code
-        object.  The code is executed by calling self.runcode() (which
-        also handles run-time exceptions, except for SystemExit).
+        3) The input ni complete; compile_command() rudishaed a code
+        object.  The code ni executed by calling self.runcode() (which
+        also handles run-time exceptions, tatizo kila SystemExit).
 
-        The rudisha value is True in case 2, False in the other cases (unless
-        an exception is raised).  The rudisha value can be used to
-        decide whether to use sys.ps1 or sys.ps2 to prompt the next
+        The rudisha value ni Kweli kwenye case 2, Uongo kwenye the other cases (unless
+        an exception ni ashiriad).  The rudisha value can be used to
+        decide whether to use sys.ps1 ama sys.ps2 to prompt the next
         line.
 
         """
-        try:
+        jaribu:
             code = self.compile(source, filename, symbol)
-        except (OverflowError, SyntaxError, ValueError):
+        tatizo (OverflowError, SyntaxError, ValueError):
             # Case 1
             self.showsyntaxerror(filename)
-            rudisha False
+            rudisha Uongo
 
-        ikiwa code is None:
+        ikiwa code ni Tupu:
             # Case 2
-            rudisha True
+            rudisha Kweli
 
         # Case 3
         self.runcode(code)
-        rudisha False
+        rudisha Uongo
 
     eleza runcode(self, code):
         """Execute a code object.
 
-        When an exception occurs, self.showtraceback() is called to
+        When an exception occurs, self.showtraceback() ni called to
         display a traceback.  All exceptions are caught except
-        SystemExit, which is reraised.
+        SystemExit, which ni reashiriad.
 
         A note about KeyboardInterrupt: this exception may occur
-        elsewhere in this code, and may not always be caught.  The
+        elsewhere kwenye this code, na may sio always be caught.  The
         caller should be prepared to deal with it.
 
         """
-        try:
+        jaribu:
             exec(code, self.locals)
-        except SystemExit:
-            raise
+        tatizo SystemExit:
+            ashiria
         except:
             self.showtraceback()
 
-    eleza showsyntaxerror(self, filename=None):
+    eleza showsyntaxerror(self, filename=Tupu):
         """Display the syntax error that just occurred.
 
         This doesn't display a stack trace because there isn't one.
 
-        If a filename is given, it is stuffed in the exception instead
+        If a filename ni given, it ni stuffed kwenye the exception instead
         of what was there before (because Python's parser always uses
         "<string>" when reading kutoka a string).
 
-        The output is written by self.write(), below.
+        The output ni written by self.write(), below.
 
         """
         type, value, tb = sys.exc_info()
         sys.last_type = type
         sys.last_value = value
         sys.last_traceback = tb
-        ikiwa filename and type is SyntaxError:
-            # Work hard to stuff the correct filename in the exception
-            try:
+        ikiwa filename na type ni SyntaxError:
+            # Work hard to stuff the correct filename kwenye the exception
+            jaribu:
                 msg, (dummy_filename, lineno, offset, line) = value.args
-            except ValueError:
+            tatizo ValueError:
                 # Not the format we expect; leave it alone
-                pass
-            else:
-                # Stuff in the right filename
+                pita
+            isipokua:
+                # Stuff kwenye the right filename
                 value = SyntaxError(msg, (filename, lineno, offset, line))
                 sys.last_value = value
-        ikiwa sys.excepthook is sys.__excepthook__:
+        ikiwa sys.excepthook ni sys.__excepthook__:
             lines = traceback.format_exception_only(type, value)
             self.write(''.join(lines))
-        else:
+        isipokua:
             # If someone has set sys.excepthook, we let that take precedence
             # over self.write
             sys.excepthook(type, value, tb)
@@ -131,23 +131,23 @@ kundi InteractiveInterpreter:
     eleza showtraceback(self):
         """Display the exception that just occurred.
 
-        We remove the first stack item because it is our own code.
+        We remove the first stack item because it ni our own code.
 
-        The output is written by self.write(), below.
+        The output ni written by self.write(), below.
 
         """
         sys.last_type, sys.last_value, last_tb = ei = sys.exc_info()
         sys.last_traceback = last_tb
-        try:
+        jaribu:
             lines = traceback.format_exception(ei[0], ei[1], last_tb.tb_next)
-            ikiwa sys.excepthook is sys.__excepthook__:
+            ikiwa sys.excepthook ni sys.__excepthook__:
                 self.write(''.join(lines))
-            else:
+            isipokua:
                 # If someone has set sys.excepthook, we let that take precedence
                 # over self.write
                 sys.excepthook(ei[0], ei[1], last_tb)
-        finally:
-            last_tb = ei = None
+        mwishowe:
+            last_tb = ei = Tupu
 
     eleza write(self, data):
         """Write a string.
@@ -162,19 +162,19 @@ kundi InteractiveInterpreter:
 kundi InteractiveConsole(InteractiveInterpreter):
     """Closely emulate the behavior of the interactive Python interpreter.
 
-    This kundi builds on InteractiveInterpreter and adds prompting
-    using the familiar sys.ps1 and sys.ps2, and input buffering.
+    This kundi builds on InteractiveInterpreter na adds prompting
+    using the familiar sys.ps1 na sys.ps2, na input buffering.
 
     """
 
-    eleza __init__(self, locals=None, filename="<console>"):
+    eleza __init__(self, locals=Tupu, filename="<console>"):
         """Constructor.
 
-        The optional locals argument will be passed to the
+        The optional locals argument will be pitaed to the
         InteractiveInterpreter base class.
 
         The optional filename argument should specify the (file)name
-        of the input stream; it will show up in tracebacks.
+        of the input stream; it will show up kwenye tracebacks.
 
         """
         InteractiveInterpreter.__init__(self, locals)
@@ -185,56 +185,56 @@ kundi InteractiveConsole(InteractiveInterpreter):
         """Reset the input buffer."""
         self.buffer = []
 
-    eleza interact(self, banner=None, exitmsg=None):
+    eleza interact(self, banner=Tupu, exitmsg=Tupu):
         """Closely emulate the interactive Python console.
 
         The optional banner argument specifies the banner to print
         before the first interaction; by default it prints a banner
         similar to the one printed by the real Python interpreter,
-        followed by the current kundi name in parentheses (so as not
+        followed by the current kundi name kwenye parentheses (so kama not
         to confuse this with the real interpreter -- since it's so
         close!).
 
         The optional exitmsg argument specifies the exit message
         printed when exiting. Pass the empty string to suppress
-        printing an exit message. If exitmsg is not given or None,
-        a default message is printed.
+        printing an exit message. If exitmsg ni sio given ama Tupu,
+        a default message ni printed.
 
         """
-        try:
+        jaribu:
             sys.ps1
-        except AttributeError:
+        tatizo AttributeError:
             sys.ps1 = ">>> "
-        try:
+        jaribu:
             sys.ps2
-        except AttributeError:
+        tatizo AttributeError:
             sys.ps2 = "... "
-        cprt = 'Type "help", "copyright", "credits" or "license" for more information.'
-        ikiwa banner is None:
+        cprt = 'Type "help", "copyright", "credits" ama "license" kila more information.'
+        ikiwa banner ni Tupu:
             self.write("Python %s on %s\n%s\n(%s)\n" %
                        (sys.version, sys.platform, cprt,
                         self.__class__.__name__))
         elikiwa banner:
             self.write("%s\n" % str(banner))
         more = 0
-        while 1:
-            try:
+        wakati 1:
+            jaribu:
                 ikiwa more:
                     prompt = sys.ps2
-                else:
+                isipokua:
                     prompt = sys.ps1
-                try:
+                jaribu:
                     line = self.raw_input(prompt)
-                except EOFError:
+                tatizo EOFError:
                     self.write("\n")
-                    break
-                else:
+                    koma
+                isipokua:
                     more = self.push(line)
-            except KeyboardInterrupt:
+            tatizo KeyboardInterrupt:
                 self.write("\nKeyboardInterrupt\n")
                 self.resetbuffer()
                 more = 0
-        ikiwa exitmsg is None:
+        ikiwa exitmsg ni Tupu:
             self.write('now exiting %s...\n' % self.__class__.__name__)
         elikiwa exitmsg != '':
             self.write('%s\n' % exitmsg)
@@ -242,29 +242,29 @@ kundi InteractiveConsole(InteractiveInterpreter):
     eleza push(self, line):
         """Push a line to the interpreter.
 
-        The line should not have a trailing newline; it may have
-        internal newlines.  The line is appended to a buffer and the
-        interpreter's runsource() method is called with the
-        concatenated contents of the buffer as source.  If this
-        indicates that the command was executed or invalid, the buffer
-        is reset; otherwise, the command is incomplete, and the buffer
-        is left as it was after the line was appended.  The return
-        value is 1 ikiwa more input is required, 0 ikiwa the line was dealt
-        with in some way (this is the same as runsource()).
+        The line should sio have a trailing newline; it may have
+        internal newlines.  The line ni appended to a buffer na the
+        interpreter's runsource() method ni called with the
+        concatenated contents of the buffer kama source.  If this
+        indicates that the command was executed ama invalid, the buffer
+        ni reset; otherwise, the command ni incomplete, na the buffer
+        ni left kama it was after the line was appended.  The rudisha
+        value ni 1 ikiwa more input ni required, 0 ikiwa the line was dealt
+        with kwenye some way (this ni the same kama runsource()).
 
         """
         self.buffer.append(line)
         source = "\n".join(self.buffer)
         more = self.runsource(source, self.filename)
-        ikiwa not more:
+        ikiwa sio more:
             self.resetbuffer()
         rudisha more
 
     eleza raw_input(self, prompt=""):
-        """Write a prompt and read a line.
+        """Write a prompt na read a line.
 
-        The returned line does not include the trailing newline.
-        When the user enters the EOF key sequence, EOFError is raised.
+        The rudishaed line does sio include the trailing newline.
+        When the user enters the EOF key sequence, EOFError ni ashiriad.
 
         The base implementation uses the built-in function
         input(); a subkundi may replace this with a different
@@ -275,29 +275,29 @@ kundi InteractiveConsole(InteractiveInterpreter):
 
 
 
-eleza interact(banner=None, readfunc=None, local=None, exitmsg=None):
+eleza interact(banner=Tupu, readfunc=Tupu, local=Tupu, exitmsg=Tupu):
     """Closely emulate the interactive Python interpreter.
 
-    This is a backwards compatible interface to the InteractiveConsole
-    class.  When readfunc is not specified, it attempts to agiza the
-    readline module to enable GNU readline ikiwa it is available.
+    This ni a backwards compatible interface to the InteractiveConsole
+    class.  When readfunc ni sio specified, it attempts to agiza the
+    readline module to enable GNU readline ikiwa it ni available.
 
-    Arguments (all optional, all default to None):
+    Arguments (all optional, all default to Tupu):
 
-    banner -- passed to InteractiveConsole.interact()
-    readfunc -- ikiwa not None, replaces InteractiveConsole.raw_input()
-    local -- passed to InteractiveInterpreter.__init__()
-    exitmsg -- passed to InteractiveConsole.interact()
+    banner -- pitaed to InteractiveConsole.interact()
+    readfunc -- ikiwa sio Tupu, replaces InteractiveConsole.raw_input()
+    local -- pitaed to InteractiveInterpreter.__init__()
+    exitmsg -- pitaed to InteractiveConsole.interact()
 
     """
     console = InteractiveConsole(local)
-    ikiwa readfunc is not None:
+    ikiwa readfunc ni sio Tupu:
         console.raw_input = readfunc
-    else:
-        try:
+    isipokua:
+        jaribu:
             agiza readline
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
     console.interact(banner, exitmsg)
 
 
@@ -306,10 +306,10 @@ ikiwa __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-q', action='store_true',
-                       help="don't print version and copyright messages")
+                       help="don't print version na copyright messages")
     args = parser.parse_args()
-    ikiwa args.q or sys.flags.quiet:
+    ikiwa args.q ama sys.flags.quiet:
         banner = ''
-    else:
-        banner = None
+    isipokua:
+        banner = Tupu
     interact(banner)

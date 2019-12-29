@@ -1,5 +1,5 @@
-# XXX TypeErrors on calling handlers, or on bad rudisha values kutoka a
-# handler, are obscure and unhelpful.
+# XXX TypeErrors on calling handlers, ama on bad rudisha values kutoka a
+# handler, are obscure na unhelpful.
 
 kutoka io agiza BytesIO
 agiza os
@@ -19,34 +19,34 @@ kundi SetAttributeTest(unittest.TestCase):
         self.parser = expat.ParserCreate(namespace_separator='!')
 
     eleza test_buffer_text(self):
-        self.assertIs(self.parser.buffer_text, False)
-        for x in 0, 1, 2, 0:
+        self.assertIs(self.parser.buffer_text, Uongo)
+        kila x kwenye 0, 1, 2, 0:
             self.parser.buffer_text = x
             self.assertIs(self.parser.buffer_text, bool(x))
 
     eleza test_namespace_prefixes(self):
-        self.assertIs(self.parser.namespace_prefixes, False)
-        for x in 0, 1, 2, 0:
+        self.assertIs(self.parser.namespace_prefixes, Uongo)
+        kila x kwenye 0, 1, 2, 0:
             self.parser.namespace_prefixes = x
             self.assertIs(self.parser.namespace_prefixes, bool(x))
 
     eleza test_ordered_attributes(self):
-        self.assertIs(self.parser.ordered_attributes, False)
-        for x in 0, 1, 2, 0:
+        self.assertIs(self.parser.ordered_attributes, Uongo)
+        kila x kwenye 0, 1, 2, 0:
             self.parser.ordered_attributes = x
             self.assertIs(self.parser.ordered_attributes, bool(x))
 
     eleza test_specified_attributes(self):
-        self.assertIs(self.parser.specified_attributes, False)
-        for x in 0, 1, 2, 0:
+        self.assertIs(self.parser.specified_attributes, Uongo)
+        kila x kwenye 0, 1, 2, 0:
             self.parser.specified_attributes = x
             self.assertIs(self.parser.specified_attributes, bool(x))
 
     eleza test_invalid_attributes(self):
         with self.assertRaises(AttributeError):
-            self.parser.returns_unicode = 1
+            self.parser.rudishas_unicode = 1
         with self.assertRaises(AttributeError):
-            self.parser.returns_unicode
+            self.parser.rudishas_unicode
 
         # Issue #25019
         self.assertRaises(TypeError, setattr, self.parser, range(0xF), 0)
@@ -162,10 +162,10 @@ kundi ParseTest(unittest.TestCase):
             rudisha 1
 
         eleza DefaultHandler(self, userData):
-            pass
+            pita
 
         eleza DefaultHandlerExpand(self, userData):
-            pass
+            pita
 
     handler_names = [
         'StartElementHandler', 'EndElementHandler', 'CharacterDataHandler',
@@ -181,10 +181,10 @@ kundi ParseTest(unittest.TestCase):
 
     eleza _hookup_callbacks(self, parser, handler):
         """
-        Set each of the callbacks defined on handler and named in
+        Set each of the callbacks defined on handler na named in
         self.handler_names on the given parser.
         """
-        for name in self.handler_names:
+        kila name kwenye self.handler_names:
             setattr(parser, name, getattr(handler, name))
 
     eleza _verify_parse_output(self, operations):
@@ -193,17 +193,17 @@ kundi ParseTest(unittest.TestCase):
             'PI: \'xml-stylesheet\' \'href="stylesheet.css"\'',
             "Comment: ' comment data '",
             "Not standalone",
-            ("Start doctype", ('quotations', 'quotations.dtd', None, 1)),
-            ('Element declaration', ('root', (2, 0, None, ()))),
-            ('Attribute list declaration', ('root', 'attr1', 'CDATA', None,
+            ("Start doctype", ('quotations', 'quotations.dtd', Tupu, 1)),
+            ('Element declaration', ('root', (2, 0, Tupu, ()))),
+            ('Attribute list declaration', ('root', 'attr1', 'CDATA', Tupu,
                 1)),
-            ('Attribute list declaration', ('root', 'attr2', 'CDATA', None,
+            ('Attribute list declaration', ('root', 'attr2', 'CDATA', Tupu,
                 0)),
-            "Notation declared: ('notation', None, 'notation.jpeg', None)",
-            ('Entity declaration', ('acirc', 0, '\xe2', None, None, None, None)),
-            ('Entity declaration', ('external_entity', 0, None, None,
-                'entity.file', None, None)),
-            "Unparsed entity decl: ('unparsed_entity', None, 'entity.file', None, 'notation')",
+            "Notation declared: ('notation', Tupu, 'notation.jpeg', Tupu)",
+            ('Entity declaration', ('acirc', 0, '\xe2', Tupu, Tupu, Tupu, Tupu)),
+            ('Entity declaration', ('external_entity', 0, Tupu, Tupu,
+                'entity.file', Tupu, Tupu)),
+            "Unparsed entity decl: ('unparsed_entity', Tupu, 'entity.file', Tupu, 'notation')",
             "Not standalone",
             "End doctype",
             "Start element: 'root' {'attr1': 'value1', 'attr2': 'value2\u1f40'}",
@@ -217,12 +217,12 @@ kundi ParseTest(unittest.TestCase):
             "Character data: 'contents of CDATA section'",
             'End of CDATA section',
             "End element: 'sub2'",
-            "External entity ref: (None, 'entity.file', None)",
+            "External entity ref: (Tupu, 'entity.file', Tupu)",
             ('Skipped entity', ('skipped_entity', 0)),
             "Character data: '\xb5'",
             "End element: 'root'",
         ]
-        for operation, expected_operation in zip(operations, expected_operations):
+        kila operation, expected_operation kwenye zip(operations, expected_operations):
             self.assertEqual(operation, expected_operation)
 
     eleza test_parse_bytes(self):
@@ -263,10 +263,10 @@ kundi ParseTest(unittest.TestCase):
         parser = expat.ParserCreate()
         file = BytesIO(data)
         parser.ParseFile(file)
-        # Issue 6676: ensure a meaningful exception is raised when attempting
+        # Issue 6676: ensure a meaningful exception ni ashiriad when attempting
         # to parse more than one XML document per xmlparser instance,
         # a limitation of the Expat library.
-        with self.assertRaises(expat.error) as cm:
+        with self.assertRaises(expat.error) kama cm:
             parser.ParseFile(file)
         self.assertEqual(expat.ErrorString(cm.exception.code),
                           expat.errors.XML_ERROR_FINISHED)
@@ -274,30 +274,30 @@ kundi ParseTest(unittest.TestCase):
 kundi NamespaceSeparatorTest(unittest.TestCase):
     eleza test_legal(self):
         # Tests that make sure we get errors when the namespace_separator value
-        # is illegal, and that we don't for good values:
+        # ni illegal, na that we don't kila good values:
         expat.ParserCreate()
-        expat.ParserCreate(namespace_separator=None)
+        expat.ParserCreate(namespace_separator=Tupu)
         expat.ParserCreate(namespace_separator=' ')
 
     eleza test_illegal(self):
-        try:
+        jaribu:
             expat.ParserCreate(namespace_separator=42)
             self.fail()
-        except TypeError as e:
+        tatizo TypeError kama e:
             self.assertEqual(str(e),
-                "ParserCreate() argument 'namespace_separator' must be str or None, not int")
+                "ParserCreate() argument 'namespace_separator' must be str ama Tupu, sio int")
 
-        try:
+        jaribu:
             expat.ParserCreate(namespace_separator='too long')
             self.fail()
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.assertEqual(str(e),
-                'namespace_separator must be at most one character, omitted, or None')
+                'namespace_separator must be at most one character, omitted, ama Tupu')
 
     eleza test_zero_length(self):
         # ParserCreate() needs to accept a namespace_separator of zero length
         # to satisfy the requirements of RDF applications that are required
-        # to simply glue together the namespace URI and the localname.  Though
+        # to simply glue together the namespace URI na the localname.  Though
         # considered a wart of the RDF specifications, it needs to be supported.
         #
         # See XML-SIG mailing list thread starting with
@@ -318,16 +318,16 @@ kundi InterningTest(unittest.TestCase):
         p.Parse(b"<e> <e/> <e></e> </e>", 1)
         tag = L[0]
         self.assertEqual(len(L), 6)
-        for entry in L:
-            # L should have the same string repeated over and over.
-            self.assertTrue(tag is entry)
+        kila entry kwenye L:
+            # L should have the same string repeated over na over.
+            self.assertKweli(tag ni entry)
 
     eleza test_issue9402(self):
         # create an ExternalEntityParserCreate with buffer text
         kundi ExternalOutputter:
             eleza __init__(self, parser):
                 self.parser = parser
-                self.parser_result = None
+                self.parser_result = Tupu
 
             eleza ExternalEntityRefHandler(self, context, base, sysId, pubId):
                 external_parser = self.parser.ExternalEntityParserCreate("")
@@ -372,19 +372,19 @@ kundi BufferTextTest(unittest.TestCase):
         self.stuff.append("<!--%s-->" % data)
 
     eleza setHandlers(self, handlers=[]):
-        for name in handlers:
+        kila name kwenye handlers:
             setattr(self.parser, name, getattr(self, name))
 
     eleza test_default_to_disabled(self):
         parser = expat.ParserCreate()
-        self.assertFalse(parser.buffer_text)
+        self.assertUongo(parser.buffer_text)
 
     eleza test_buffering_enabled(self):
-        # Make sure buffering is turned on
-        self.assertTrue(self.parser.buffer_text)
+        # Make sure buffering ni turned on
+        self.assertKweli(self.parser.buffer_text)
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", 1)
         self.assertEqual(self.stuff, ['123'],
-                         "buffered text not properly collapsed")
+                         "buffered text sio properly collapsed")
 
     eleza test1(self):
         # XXX This test exposes more detail of Expat's text chunking than we
@@ -393,22 +393,22 @@ kundi BufferTextTest(unittest.TestCase):
         self.parser.Parse(b"<a>1<b buffer-text='no'/>2\n3<c buffer-text='yes'/>4\n5</a>", 1)
         self.assertEqual(self.stuff,
                          ["<a>", "1", "<b>", "2", "\n", "3", "<c>", "4\n5"],
-                         "buffering control not reacting as expected")
+                         "buffering control sio reacting kama expected")
 
     eleza test2(self):
         self.parser.Parse(b"<a>1<b/>&lt;2&gt;<c/>&#32;\n&#x20;3</a>", 1)
         self.assertEqual(self.stuff, ["1<2> \n 3"],
-                         "buffered text not properly collapsed")
+                         "buffered text sio properly collapsed")
 
     eleza test3(self):
         self.setHandlers(["StartElementHandler"])
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", 1)
         self.assertEqual(self.stuff, ["<a>", "1", "<b>", "2", "<c>", "3"],
-                         "buffered text not properly split")
+                         "buffered text sio properly split")
 
     eleza test4(self):
         self.setHandlers(["StartElementHandler", "EndElementHandler"])
-        self.parser.CharacterDataHandler = None
+        self.parser.CharacterDataHandler = Tupu
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", 1)
         self.assertEqual(self.stuff,
                          ["<a>", "<b>", "</b>", "<c>", "</c>", "</a>"])
@@ -425,7 +425,7 @@ kundi BufferTextTest(unittest.TestCase):
         self.parser.Parse(b"<a>1<b/>2<c></c>345</a> ", 1)
         self.assertEqual(self.stuff,
             ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "345", "</a>"],
-            "buffered text not properly split")
+            "buffered text sio properly split")
 
     eleza test7(self):
         self.setHandlers(["CommentHandler", "EndElementHandler",
@@ -434,13 +434,13 @@ kundi BufferTextTest(unittest.TestCase):
         self.assertEqual(self.stuff,
                          ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "3",
                           "<!--abc-->", "4", "<!--def-->", "5", "</a>"],
-                         "buffered text not properly split")
+                         "buffered text sio properly split")
 
 
 # Test handling of exception kutoka callback:
 kundi HandlerExceptionTest(unittest.TestCase):
     eleza StartElementHandler(self, name, attrs):
-        raise RuntimeError(name)
+        ashiria RuntimeError(name)
 
     eleza check_traceback_entry(self, entry, filename, funcname):
         self.assertEqual(os.path.basename(entry[0]), filename)
@@ -449,14 +449,14 @@ kundi HandlerExceptionTest(unittest.TestCase):
     eleza test_exception(self):
         parser = expat.ParserCreate()
         parser.StartElementHandler = self.StartElementHandler
-        try:
+        jaribu:
             parser.Parse(b"<a><b><c/></b></a>", 1)
             self.fail()
-        except RuntimeError as e:
+        tatizo RuntimeError kama e:
             self.assertEqual(e.args[0], 'a',
-                             "Expected RuntimeError for element 'a', but" + \
+                             "Expected RuntimeError kila element 'a', but" + \
                              " found %r" % e.args[0])
-            # Check that the traceback contains the relevant line in pyexpat.c
+            # Check that the traceback contains the relevant line kwenye pyexpat.c
             entries = traceback.extract_tb(e.__traceback__)
             self.assertEqual(len(entries), 3)
             self.check_traceback_entry(entries[0],
@@ -482,7 +482,7 @@ kundi PositionTest(unittest.TestCase):
                self.parser.CurrentByteIndex,
                self.parser.CurrentLineNumber,
                self.parser.CurrentColumnNumber)
-        self.assertTrue(self.upto < len(self.expected_list),
+        self.assertKweli(self.upto < len(self.expected_list),
                         'too many parser events')
         expected = self.expected_list[self.upto]
         self.assertEqual(pos, expected,
@@ -510,10 +510,10 @@ kundi sf1296433Test(unittest.TestCase):
         #xml = "<?xml version='1.0'?><s>%s</s>" % ('a' * 10000)
 
         kundi SpecificException(Exception):
-            pass
+            pita
 
         eleza handler(text):
-            raise SpecificException
+            ashiria SpecificException
 
         parser = expat.ParserCreate()
         parser.CharacterDataHandler = handler
@@ -582,16 +582,16 @@ kundi ChardataBufferTest(unittest.TestCase):
         self.assertEqual(parser.buffer_size, 1024)
         self.assertEqual(self.n, 1)
 
-        # Turn off buffering and parse the next chunk.
+        # Turn off buffering na parse the next chunk.
         parser.buffer_text = 0
-        self.assertFalse(parser.buffer_text)
+        self.assertUongo(parser.buffer_text)
         self.assertEqual(parser.buffer_size, 1024)
-        for i in range(10):
+        kila i kwenye range(10):
             parser.Parse(xml2, 0)
         self.assertEqual(self.n, 11)
 
         parser.buffer_text = 1
-        self.assertTrue(parser.buffer_text)
+        self.assertKweli(parser.buffer_text)
         self.assertEqual(parser.buffer_size, 1024)
         parser.Parse(xml3, 1)
         self.assertEqual(self.n, 12)
@@ -646,46 +646,46 @@ kundi MalformedInputTest(unittest.TestCase):
     eleza test1(self):
         xml = b"\0\r\n"
         parser = expat.ParserCreate()
-        try:
-            parser.Parse(xml, True)
+        jaribu:
+            parser.Parse(xml, Kweli)
             self.fail()
-        except expat.ExpatError as e:
+        tatizo expat.ExpatError kama e:
             self.assertEqual(str(e), 'unclosed token: line 2, column 0')
 
     eleza test2(self):
-        # \xc2\x85 is UTF-8 encoded U+0085 (NEXT LINE)
+        # \xc2\x85 ni UTF-8 encoded U+0085 (NEXT LINE)
         xml = b"<?xml version\xc2\x85='1.0'?>\r\n"
         parser = expat.ParserCreate()
-        err_pattern = r'XML declaration not well-formed: line 1, column \d+'
+        err_pattern = r'XML declaration sio well-formed: line 1, column \d+'
         with self.assertRaisesRegex(expat.ExpatError, err_pattern):
-            parser.Parse(xml, True)
+            parser.Parse(xml, Kweli)
 
 kundi ErrorMessageTest(unittest.TestCase):
     eleza test_codes(self):
-        # verify mapping of errors.codes and errors.messages
+        # verify mapping of errors.codes na errors.messages
         self.assertEqual(errors.XML_ERROR_SYNTAX,
                          errors.messages[errors.codes[errors.XML_ERROR_SYNTAX]])
 
     eleza test_expaterror(self):
         xml = b'<'
         parser = expat.ParserCreate()
-        try:
-            parser.Parse(xml, True)
+        jaribu:
+            parser.Parse(xml, Kweli)
             self.fail()
-        except expat.ExpatError as e:
+        tatizo expat.ExpatError kama e:
             self.assertEqual(e.code,
                              errors.codes[errors.XML_ERROR_UNCLOSED_TOKEN])
 
 
 kundi ForeignDTDTests(unittest.TestCase):
     """
-    Tests for the UseForeignDTD method of expat parser objects.
+    Tests kila the UseForeignDTD method of expat parser objects.
     """
     eleza test_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed True and a document without an external
-        entity reference is parsed, ExternalEntityRefHandler is first called
-        with None for the public and system ids.
+        If UseForeignDTD ni pitaed Kweli na a document without an external
+        entity reference ni parsed, ExternalEntityRefHandler ni first called
+        with Tupu kila the public na system ids.
         """
         handler_call_args = []
         eleza resolve_entity(context, base, system_id, public_id):
@@ -693,13 +693,13 @@ kundi ForeignDTDTests(unittest.TestCase):
             rudisha 1
 
         parser = expat.ParserCreate()
-        parser.UseForeignDTD(True)
+        parser.UseForeignDTD(Kweli)
         parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         parser.ExternalEntityRefHandler = resolve_entity
         parser.Parse(b"<?xml version='1.0'?><element/>")
-        self.assertEqual(handler_call_args, [(None, None)])
+        self.assertEqual(handler_call_args, [(Tupu, Tupu)])
 
-        # test UseForeignDTD() is equal to UseForeignDTD(True)
+        # test UseForeignDTD() ni equal to UseForeignDTD(Kweli)
         handler_call_args[:] = []
 
         parser = expat.ParserCreate()
@@ -707,13 +707,13 @@ kundi ForeignDTDTests(unittest.TestCase):
         parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         parser.ExternalEntityRefHandler = resolve_entity
         parser.Parse(b"<?xml version='1.0'?><element/>")
-        self.assertEqual(handler_call_args, [(None, None)])
+        self.assertEqual(handler_call_args, [(Tupu, Tupu)])
 
     eleza test_ignore_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed True and a document with an external
-        entity reference is parsed, ExternalEntityRefHandler is called with
-        the public and system ids kutoka the document.
+        If UseForeignDTD ni pitaed Kweli na a document with an external
+        entity reference ni parsed, ExternalEntityRefHandler ni called with
+        the public na system ids kutoka the document.
         """
         handler_call_args = []
         eleza resolve_entity(context, base, system_id, public_id):
@@ -721,7 +721,7 @@ kundi ForeignDTDTests(unittest.TestCase):
             rudisha 1
 
         parser = expat.ParserCreate()
-        parser.UseForeignDTD(True)
+        parser.UseForeignDTD(Kweli)
         parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         parser.ExternalEntityRefHandler = resolve_entity
         parser.Parse(

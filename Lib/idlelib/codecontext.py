@@ -3,14 +3,14 @@
 Once code has scrolled off the top of a window, it can be difficult to
 determine which block you are in.  This extension implements a pane at the top
 of each IDLE edit window which provides block structure hints.  These hints are
-the lines which contain the block opening keywords, e.g. 'if', for the
-enclosing block.  The number of hint lines is determined by the maxlines
-variable in the codecontext section of config-extensions.def. Lines which do
-not open blocks are not shown in the context hints pane.
+the lines which contain the block opening keywords, e.g. 'if', kila the
+enclosing block.  The number of hint lines ni determined by the maxlines
+variable kwenye the codecontext section of config-extensions.def. Lines which do
+not open blocks are sio shown kwenye the context hints pane.
 
 """
 agiza re
-kutoka sys agiza maxsize as INFINITY
+kutoka sys agiza maxsize kama INFINITY
 
 agiza tkinter
 kutoka tkinter.constants agiza NSEW, SUNKEN
@@ -22,21 +22,21 @@ BLOCKOPENERS = {"class", "def", "elif", "else", "except", "finally", "for",
 
 
 eleza get_spaces_firstword(codeline, c=re.compile(r"^(\s*)(\w*)")):
-    "Extract the beginning whitespace and first word kutoka codeline."
+    "Extract the beginning whitespace na first word kutoka codeline."
     rudisha c.match(codeline).groups()
 
 
 eleza get_line_info(codeline):
     """Return tuple of (line indent value, codeline, block start keyword).
 
-    The indentation of empty lines (or comment lines) is INFINITY.
-    If the line does not start a block, the keyword value is False.
+    The indentation of empty lines (or comment lines) ni INFINITY.
+    If the line does sio start a block, the keyword value ni Uongo.
     """
     spaces, firstword = get_spaces_firstword(codeline)
     indent = len(spaces)
-    ikiwa len(codeline) == indent or codeline[indent] == '#':
+    ikiwa len(codeline) == indent ama codeline[indent] == '#':
         indent = INFINITY
-    opener = firstword in BLOCKOPENERS and firstword
+    opener = firstword kwenye BLOCKOPENERS na firstword
     rudisha indent, codeline, opener
 
 
@@ -45,32 +45,32 @@ kundi CodeContext:
     UPDATEINTERVAL = 100  # millisec
 
     eleza __init__(self, editwin):
-        """Initialize settings for context block.
+        """Initialize settings kila context block.
 
-        editwin is the Editor window for the context block.
-        self.text is the editor window text widget.
+        editwin ni the Editor window kila the context block.
+        self.text ni the editor window text widget.
 
         self.context displays the code context text above the editor text.
-          Initially None, it is toggled via <<toggle-code-context>>.
-        self.topvisible is the number of the top text line displayed.
-        self.info is a list of (line number, indent level, line text,
-          block keyword) tuples for the block structure above topvisible.
-          self.info[0] is initialized with a 'dummy' line which
+          Initially Tupu, it ni toggled via <<toggle-code-context>>.
+        self.topvisible ni the number of the top text line displayed.
+        self.info ni a list of (line number, indent level, line text,
+          block keyword) tuples kila the block structure above topvisible.
+          self.info[0] ni initialized with a 'dummy' line which
           starts the toplevel 'block' of the module.
 
-        self.t1 and self.t2 are two timer events on the editor text widget to
-          monitor for changes to the context text or editor font.
+        self.t1 na self.t2 are two timer events on the editor text widget to
+          monitor kila changes to the context text ama editor font.
         """
         self.editwin = editwin
         self.text = editwin.text
         self._reset()
 
     eleza _reset(self):
-        self.context = None
-        self.cell00 = None
-        self.t1 = None
+        self.context = Tupu
+        self.cell00 = Tupu
+        self.t1 = Tupu
         self.topvisible = 1
-        self.info = [(0, -1, "", False)]
+        self.info = [(0, -1, "", Uongo)]
 
     @classmethod
     eleza reload(cls):
@@ -81,33 +81,33 @@ kundi CodeContext:
 
     eleza __del__(self):
         "Cancel scheduled events."
-        ikiwa self.t1 is not None:
-            try:
+        ikiwa self.t1 ni sio Tupu:
+            jaribu:
                 self.text.after_cancel(self.t1)
-            except tkinter.TclError:
-                pass
-            self.t1 = None
+            tatizo tkinter.TclError:
+                pita
+            self.t1 = Tupu
 
-    eleza toggle_code_context_event(self, event=None):
+    eleza toggle_code_context_event(self, event=Tupu):
         """Toggle code context display.
 
         If self.context doesn't exist, create it to match the size of the editor
         window text (toggle on).  If it does exist, destroy it (toggle off).
-        Return 'break' to complete the processing of the binding.
+        Return 'koma' to complete the processing of the binding.
         """
-        ikiwa self.context is None:
-            # Calculate the border width and horizontal padding required to
-            # align the context with the text in the main Text widget.
+        ikiwa self.context ni Tupu:
+            # Calculate the border width na horizontal padding required to
+            # align the context with the text kwenye the main Text widget.
             #
-            # All values are passed through getint(), since some
+            # All values are pitaed through getint(), since some
             # values may be pixel objects, which can't simply be added to ints.
             widgets = self.editwin.text, self.editwin.text_frame
-            # Calculate the required horizontal padding and border width.
+            # Calculate the required horizontal padding na border width.
             padx = 0
             border = 0
-            for widget in widgets:
+            kila widget kwenye widgets:
                 info = (widget.grid_info()
-                        ikiwa widget is self.editwin.text
+                        ikiwa widget ni self.editwin.text
                         else widget.pack_info())
                 padx += widget.tk.getint(info['padx'])
                 padx += widget.tk.getint(widget.cget('padx'))
@@ -121,7 +121,7 @@ kundi CodeContext:
             self.update_font()
             self.update_highlight_colors()
             self.context.bind('<ButtonRelease-1>', self.jumptoline)
-            # Get the current context and initiate the recurring update event.
+            # Get the current context na initiate the recurring update event.
             self.timer_event()
             # Grid the context widget above the text widget.
             self.context.grid(row=0, column=1, sticky=NSEW)
@@ -132,80 +132,80 @@ kundi CodeContext:
                                         bg=line_number_colors['background'])
             self.cell00.grid(row=0, column=0, sticky=NSEW)
             menu_status = 'Hide'
-        else:
+        isipokua:
             self.context.destroy()
-            self.context = None
+            self.context = Tupu
             self.cell00.destroy()
-            self.cell00 = None
+            self.cell00 = Tupu
             self.text.after_cancel(self.t1)
             self._reset()
             menu_status = 'Show'
         self.editwin.update_menu_label(menu='options', index='* Code Context',
                                        label=f'{menu_status} Code Context')
-        rudisha "break"
+        rudisha "koma"
 
     eleza get_context(self, new_topvisible, stopline=1, stopindent=0):
-        """Return a list of block line tuples and the 'last' indent.
+        """Return a list of block line tuples na the 'last' indent.
 
         The tuple fields are (linenum, indent, text, opener).
         The list represents header lines kutoka new_topvisible back to
         stopline with successively shorter indents > stopindent.
-        The list is returned ordered by line number.
-        Last indent returned is the smallest indent observed.
+        The list ni rudishaed ordered by line number.
+        Last indent rudishaed ni the smallest indent observed.
         """
         assert stopline > 0
         lines = []
         # The indentation level we are currently in.
         lastindent = INFINITY
         # For a line to be interesting, it must begin with a block opening
-        # keyword, and have less indentation than lastindent.
-        for linenum in range(new_topvisible, stopline-1, -1):
+        # keyword, na have less indentation than lastindent.
+        kila linenum kwenye range(new_topvisible, stopline-1, -1):
             codeline = self.text.get(f'{linenum}.0', f'{linenum}.end')
             indent, text, opener = get_line_info(codeline)
             ikiwa indent < lastindent:
                 lastindent = indent
-                ikiwa opener in ("else", "elif"):
+                ikiwa opener kwenye ("else", "elif"):
                     # Also show the ikiwa statement.
                     lastindent += 1
-                ikiwa opener and linenum < new_topvisible and indent >= stopindent:
+                ikiwa opener na linenum < new_topvisible na indent >= stopindent:
                     lines.append((linenum, indent, text, opener))
                 ikiwa lastindent <= stopindent:
-                    break
+                    koma
         lines.reverse()
         rudisha lines, lastindent
 
     eleza update_code_context(self):
-        """Update context information and lines visible in the context pane.
+        """Update context information na lines visible kwenye the context pane.
 
-        No update is done ikiwa the text hasn't been scrolled.  If the text
-        was scrolled, the lines that should be shown in the context will
-        be retrieved and the context area will be updated with the code,
+        No update ni done ikiwa the text hasn't been scrolled.  If the text
+        was scrolled, the lines that should be shown kwenye the context will
+        be retrieved na the context area will be updated with the code,
         up to the number of maxlines.
         """
         new_topvisible = self.editwin.getlineno("@0,0")
         ikiwa self.topvisible == new_topvisible:      # Haven't scrolled.
-            return
+            rudisha
         ikiwa self.topvisible < new_topvisible:       # Scroll down.
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.topvisible)
             # Retain only context info applicable to the region
-            # between topvisible and new_topvisible.
-            while self.info[-1][1] >= lastindent:
-                del self.info[-1]
-        else:  # self.topvisible > new_topvisible: # Scroll up.
+            # between topvisible na new_topvisible.
+            wakati self.info[-1][1] >= lastindent:
+                toa self.info[-1]
+        isipokua:  # self.topvisible > new_topvisible: # Scroll up.
             stopindent = self.info[-1][1] + 1
             # Retain only context info associated
             # with lines above new_topvisible.
-            while self.info[-1][0] >= new_topvisible:
+            wakati self.info[-1][0] >= new_topvisible:
                 stopindent = self.info[-1][1]
-                del self.info[-1]
+                toa self.info[-1]
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.info[-1][0]+1,
                                                  stopindent)
         self.info.extend(lines)
         self.topvisible = new_topvisible
         # Last context_depth context lines.
-        context_strings = [x[2] for x in self.info[-self.context_depth:]]
+        context_strings = [x[2] kila x kwenye self.info[-self.context_depth:]]
         showfirst = 0 ikiwa context_strings[0] else 1
         # Update widget.
         self.context['height'] = len(context_strings) - showfirst
@@ -214,15 +214,15 @@ kundi CodeContext:
         self.context.insert('end', '\n'.join(context_strings[showfirst:]))
         self.context['state'] = 'disabled'
 
-    eleza jumptoline(self, event=None):
+    eleza jumptoline(self, event=Tupu):
         "Show clicked context line at top of editor."
         lines = len(self.info)
         ikiwa lines == 1:  # No context lines are showing.
             newtop = 1
-        else:
+        isipokua:
             # Line number clicked.
             contextline = int(float(self.context.index('insert')))
-            # Lines not displayed due to maxlines.
+            # Lines sio displayed due to maxlines.
             offset = max(1, lines - self.context_depth) - 1
             newtop = self.info[offset + contextline][0]
         self.text.yview(f'{newtop}.0')
@@ -230,22 +230,22 @@ kundi CodeContext:
 
     eleza timer_event(self):
         "Event on editor text widget triggered every UPDATEINTERVAL ms."
-        ikiwa self.context is not None:
+        ikiwa self.context ni sio Tupu:
             self.update_code_context()
             self.t1 = self.text.after(self.UPDATEINTERVAL, self.timer_event)
 
     eleza update_font(self):
-        ikiwa self.context is not None:
+        ikiwa self.context ni sio Tupu:
             font = idleConf.GetFont(self.text, 'main', 'EditorWindow')
             self.context['font'] = font
 
     eleza update_highlight_colors(self):
-        ikiwa self.context is not None:
+        ikiwa self.context ni sio Tupu:
             colors = idleConf.GetHighlight(idleConf.CurrentTheme(), 'context')
             self.context['background'] = colors['background']
             self.context['foreground'] = colors['foreground']
 
-        ikiwa self.cell00 is not None:
+        ikiwa self.cell00 ni sio Tupu:
             line_number_colors = idleConf.GetHighlight(idleConf.CurrentTheme(),
                                                        'linenumber')
             self.cell00.config(bg=line_number_colors['background'])
@@ -256,6 +256,6 @@ CodeContext.reload()
 
 ikiwa __name__ == "__main__":
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_codecontext', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_codecontext', verbosity=2, exit=Uongo)
 
     # Add htest.

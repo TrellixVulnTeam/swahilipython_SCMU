@@ -1,7 +1,7 @@
 # Used by test_doctest.py.
 
 kundi TwoNames:
-    '''f() and g() are two names for the same method'''
+    '''f() na g() are two names kila the same method'''
 
     eleza f(self):
         '''
@@ -10,4 +10,4 @@ kundi TwoNames:
         '''
         rudisha 'f'
 
-    g = f # define an alias for f
+    g = f # define an alias kila f

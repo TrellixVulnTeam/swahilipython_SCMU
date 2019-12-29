@@ -24,8 +24,8 @@ class BaseStartServer(func_tests.FunctionalTestCaseMixin):
             for i in range(10):
                 time.sleep(0.2)
                 if srv.is_serving():
-                    break
-            else:
+                    koma
+            isipokua:
                 raise RuntimeError
 
             sock.settimeout(2)

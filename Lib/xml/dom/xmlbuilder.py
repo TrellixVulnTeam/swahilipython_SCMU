@@ -11,41 +11,41 @@ __all__ = ["DOMBuilder", "DOMEntityResolver", "DOMInputSource"]
 
 
 kundi Options:
-    """Features object that has variables set for each DOMBuilder feature.
+    """Features object that has variables set kila each DOMBuilder feature.
 
-    The DOMBuilder kundi uses an instance of this kundi to pass settings to
+    The DOMBuilder kundi uses an instance of this kundi to pita settings to
     the ExpatBuilder class.
     """
 
-    # Note that the DOMBuilder kundi in LoadSave constrains which of these
+    # Note that the DOMBuilder kundi kwenye LoadSave constrains which of these
     # values can be set using the DOM Level 3 LoadSave feature.
 
     namespaces = 1
-    namespace_declarations = True
-    validation = False
-    external_parameter_entities = True
-    external_general_entities = True
-    external_dtd_subset = True
-    validate_if_schema = False
-    validate = False
-    datatype_normalization = False
-    create_entity_ref_nodes = True
-    entities = True
-    whitespace_in_element_content = True
-    cdata_sections = True
-    comments = True
-    charset_overrides_xml_encoding = True
-    infoset = False
-    supported_mediatypes_only = False
+    namespace_declarations = Kweli
+    validation = Uongo
+    external_parameter_entities = Kweli
+    external_general_entities = Kweli
+    external_dtd_subset = Kweli
+    validate_if_schema = Uongo
+    validate = Uongo
+    datatype_normalization = Uongo
+    create_entity_ref_nodes = Kweli
+    entities = Kweli
+    whitespace_in_element_content = Kweli
+    cdata_sections = Kweli
+    comments = Kweli
+    charset_overrides_xml_encoding = Kweli
+    infoset = Uongo
+    supported_mediatypes_only = Uongo
 
-    errorHandler = None
-    filter = None
+    errorHandler = Tupu
+    filter = Tupu
 
 
 kundi DOMBuilder:
-    entityResolver = None
-    errorHandler = None
-    filter = None
+    entityResolver = Tupu
+    errorHandler = Tupu
+    filter = Tupu
 
     ACTION_REPLACE = 1
     ACTION_APPEND_AS_CHILDREN = 2
@@ -75,29 +75,29 @@ kundi DOMBuilder:
 
     eleza setFeature(self, name, state):
         ikiwa self.supportsFeature(name):
-            state = state and 1 or 0
-            try:
+            state = state na 1 ama 0
+            jaribu:
                 settings = self._settings[(_name_xform(name), state)]
-            except KeyError:
-                raise xml.dom.NotSupportedErr(
-                    "unsupported feature: %r" % (name,)) kutoka None
-            else:
-                for name, value in settings:
+            tatizo KeyError:
+                ashiria xml.dom.NotSupportedErr(
+                    "unsupported feature: %r" % (name,)) kutoka Tupu
+            isipokua:
+                kila name, value kwenye settings:
                     setattr(self._options, name, value)
-        else:
-            raise xml.dom.NotFoundErr("unknown feature: " + repr(name))
+        isipokua:
+            ashiria xml.dom.NotFoundErr("unknown feature: " + repr(name))
 
     eleza supportsFeature(self, name):
         rudisha hasattr(self._options, _name_xform(name))
 
     eleza canSetFeature(self, name, state):
-        key = (_name_xform(name), state and 1 or 0)
-        rudisha key in self._settings
+        key = (_name_xform(name), state na 1 ama 0)
+        rudisha key kwenye self._settings
 
     # This dictionary maps kutoka (feature,value) to a list of
     # (option,value) pairs that should be set on the Options object.
-    # If a (feature,value) setting is not in this dictionary, it is
-    # not supported by the DOMBuilder.
+    # If a (feature,value) setting ni haiko kwenye this dictionary, it is
+    # sio supported by the DOMBuilder.
     #
     _settings = {
         ("namespace_declarations", 0): [
@@ -162,27 +162,27 @@ kundi DOMBuilder:
 
     eleza getFeature(self, name):
         xname = _name_xform(name)
-        try:
+        jaribu:
             rudisha getattr(self._options, xname)
-        except AttributeError:
+        tatizo AttributeError:
             ikiwa name == "infoset":
                 options = self._options
                 rudisha (options.datatype_normalization
-                        and options.whitespace_in_element_content
-                        and options.comments
-                        and options.charset_overrides_xml_encoding
-                        and not (options.namespace_declarations
-                                 or options.validate_if_schema
-                                 or options.create_entity_ref_nodes
-                                 or options.entities
-                                 or options.cdata_sections))
-            raise xml.dom.NotFoundErr("feature %s not known" % repr(name))
+                        na options.whitespace_in_element_content
+                        na options.comments
+                        na options.charset_overrides_xml_encoding
+                        na sio (options.namespace_declarations
+                                 ama options.validate_if_schema
+                                 ama options.create_entity_ref_nodes
+                                 ama options.entities
+                                 ama options.cdata_sections))
+            ashiria xml.dom.NotFoundErr("feature %s sio known" % repr(name))
 
     eleza parseURI(self, uri):
         ikiwa self.entityResolver:
-            input = self.entityResolver.resolveEntity(None, uri)
-        else:
-            input = DOMEntityResolver().resolveEntity(None, uri)
+            input = self.entityResolver.resolveEntity(Tupu, uri)
+        isipokua:
+            input = DOMEntityResolver().resolveEntity(Tupu, uri)
         rudisha self.parse(input)
 
     eleza parse(self, input):
@@ -190,15 +190,15 @@ kundi DOMBuilder:
         options.filter = self.filter
         options.errorHandler = self.errorHandler
         fp = input.byteStream
-        ikiwa fp is None and options.systemId:
+        ikiwa fp ni Tupu na options.systemId:
             agiza urllib.request
             fp = urllib.request.urlopen(input.systemId)
         rudisha self._parse_bytestream(fp, options)
 
     eleza parseWithContext(self, input, cnode, action):
-        ikiwa action not in self._legal_actions:
-            raise ValueError("not a legal action")
-        raise NotImplementedError("Haven't written this yet...")
+        ikiwa action haiko kwenye self._legal_actions:
+            ashiria ValueError("not a legal action")
+        ashiria NotImplementedError("Haven't written this yet...")
 
     eleza _parse_bytestream(self, stream, options):
         agiza xml.dom.expatbuilder
@@ -214,7 +214,7 @@ kundi DOMEntityResolver(object):
     __slots__ = '_opener',
 
     eleza resolveEntity(self, publicId, systemId):
-        assert systemId is not None
+        assert systemId ni sio Tupu
         source = DOMInputSource()
         source.publicId = publicId
         source.systemId = systemId
@@ -223,12 +223,12 @@ kundi DOMEntityResolver(object):
         # determine the encoding ikiwa the transport provided it
         source.encoding = self._guess_media_encoding(source)
 
-        # determine the base URI is we can
+        # determine the base URI ni we can
         agiza posixpath, urllib.parse
         parts = urllib.parse.urlparse(systemId)
         scheme, netloc, path, params, query, fragment = parts
-        # XXX should we check the scheme here as well?
-        ikiwa path and not path.endswith("/"):
+        # XXX should we check the scheme here kama well?
+        ikiwa path na sio path.endswith("/"):
             path = posixpath.dirname(path) + "/"
             parts = scheme, netloc, path, params, query, fragment
             source.baseURI = urllib.parse.urlunparse(parts)
@@ -236,9 +236,9 @@ kundi DOMEntityResolver(object):
         rudisha source
 
     eleza _get_opener(self):
-        try:
+        jaribu:
             rudisha self._opener
-        except AttributeError:
+        tatizo AttributeError:
             self._opener = self._create_opener()
             rudisha self._opener
 
@@ -248,8 +248,8 @@ kundi DOMEntityResolver(object):
 
     eleza _guess_media_encoding(self, source):
         info = source.byteStream.info()
-        ikiwa "Content-Type" in info:
-            for param in info.getplist():
+        ikiwa "Content-Type" kwenye info:
+            kila param kwenye info.getplist():
                 ikiwa param.startswith("charset="):
                     rudisha param.split("=", 1)[1].lower()
 
@@ -259,13 +259,13 @@ kundi DOMInputSource(object):
                  'encoding', 'publicId', 'systemId', 'baseURI')
 
     eleza __init__(self):
-        self.byteStream = None
-        self.characterStream = None
-        self.stringData = None
-        self.encoding = None
-        self.publicId = None
-        self.systemId = None
-        self.baseURI = None
+        self.byteStream = Tupu
+        self.characterStream = Tupu
+        self.stringData = Tupu
+        self.encoding = Tupu
+        self.publicId = Tupu
+        self.systemId = Tupu
+        self.baseURI = Tupu
 
     eleza _get_byteStream(self):
         rudisha self.byteStream
@@ -308,9 +308,9 @@ kundi DOMBuilderFilter:
     a DOM instance.
     """
 
-    # There's really no need for this class; concrete implementations
-    # should just implement the endElement() and startElement()
-    # methods as appropriate.  Using this makes it easy to only
+    # There's really no need kila this class; concrete implementations
+    # should just implement the endElement() na startElement()
+    # methods kama appropriate.  Using this makes it easy to only
     # implement one of them.
 
     FILTER_ACCEPT = 1
@@ -329,39 +329,39 @@ kundi DOMBuilderFilter:
     eleza startContainer(self, element):
         rudisha self.FILTER_ACCEPT
 
-del NodeFilter
+toa NodeFilter
 
 
 kundi DocumentLS:
     """Mixin to create documents that conform to the load/save spec."""
 
-    async_ = False
+    async_ = Uongo
 
     eleza _get_async(self):
-        rudisha False
+        rudisha Uongo
 
     eleza _set_async(self, flag):
         ikiwa flag:
-            raise xml.dom.NotSupportedErr(
-                "asynchronous document loading is not supported")
+            ashiria xml.dom.NotSupportedErr(
+                "asynchronous document loading ni sio supported")
 
     eleza abort(self):
         # What does it mean to "clear" a document?  Does the
         # documentElement disappear?
-        raise NotImplementedError(
+        ashiria NotImplementedError(
             "haven't figured out what this means yet")
 
     eleza load(self, uri):
-        raise NotImplementedError("haven't written this yet")
+        ashiria NotImplementedError("haven't written this yet")
 
     eleza loadXML(self, source):
-        raise NotImplementedError("haven't written this yet")
+        ashiria NotImplementedError("haven't written this yet")
 
     eleza saveXML(self, snode):
-        ikiwa snode is None:
+        ikiwa snode ni Tupu:
             snode = self
-        elikiwa snode.ownerDocument is not self:
-            raise xml.dom.WrongDocumentErr()
+        elikiwa snode.ownerDocument ni sio self:
+            ashiria xml.dom.WrongDocumentErr()
         rudisha snode.toxml()
 
 
@@ -370,18 +370,18 @@ kundi DOMImplementationLS:
     MODE_ASYNCHRONOUS = 2
 
     eleza createDOMBuilder(self, mode, schemaType):
-        ikiwa schemaType is not None:
-            raise xml.dom.NotSupportedErr(
-                "schemaType not yet supported")
+        ikiwa schemaType ni sio Tupu:
+            ashiria xml.dom.NotSupportedErr(
+                "schemaType sio yet supported")
         ikiwa mode == self.MODE_SYNCHRONOUS:
             rudisha DOMBuilder()
         ikiwa mode == self.MODE_ASYNCHRONOUS:
-            raise xml.dom.NotSupportedErr(
-                "asynchronous builders are not supported")
-        raise ValueError("unknown value for mode")
+            ashiria xml.dom.NotSupportedErr(
+                "asynchronous builders are sio supported")
+        ashiria ValueError("unknown value kila mode")
 
     eleza createDOMWriter(self):
-        raise NotImplementedError(
+        ashiria NotImplementedError(
             "the writer interface hasn't been written yet!")
 
     eleza createDOMInputSource(self):

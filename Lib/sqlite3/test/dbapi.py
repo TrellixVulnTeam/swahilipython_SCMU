@@ -1,29 +1,29 @@
 #-*- coding: iso-8859-1 -*-
-# pysqlite2/test/dbapi.py: tests for DB-API compliance
+# pysqlite2/test/dbapi.py: tests kila DB-API compliance
 #
 # Copyright (C) 2004-2010 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ni part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# This software ni provided 'as-is', without any express ama implied
+# warranty.  In no event will the authors be held liable kila any damages
 # arising kutoka the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
+# Permission ni granted to anyone to use this software kila any purpose,
+# including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered kutoka any source distribution.
+#    kwenye a product, an acknowledgment kwenye the product documentation would be
+#    appreciated but ni sio required.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
+# 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza threading
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 kutoka test.support agiza TESTFN, unlink
 
@@ -31,57 +31,57 @@ kutoka test.support agiza TESTFN, unlink
 kundi ModuleTests(unittest.TestCase):
     eleza CheckAPILevel(self):
         self.assertEqual(sqlite.apilevel, "2.0",
-                         "apilevel is %s, should be 2.0" % sqlite.apilevel)
+                         "apilevel ni %s, should be 2.0" % sqlite.apilevel)
 
     eleza CheckThreadSafety(self):
         self.assertEqual(sqlite.threadsafety, 1,
-                         "threadsafety is %d, should be 1" % sqlite.threadsafety)
+                         "threadsafety ni %d, should be 1" % sqlite.threadsafety)
 
     eleza CheckParamStyle(self):
         self.assertEqual(sqlite.paramstyle, "qmark",
-                         "paramstyle is '%s', should be 'qmark'" %
+                         "paramstyle ni '%s', should be 'qmark'" %
                          sqlite.paramstyle)
 
     eleza CheckWarning(self):
-        self.assertTrue(issubclass(sqlite.Warning, Exception),
-                     "Warning is not a subkundi of Exception")
+        self.assertKweli(issubclass(sqlite.Warning, Exception),
+                     "Warning ni sio a subkundi of Exception")
 
     eleza CheckError(self):
-        self.assertTrue(issubclass(sqlite.Error, Exception),
-                        "Error is not a subkundi of Exception")
+        self.assertKweli(issubclass(sqlite.Error, Exception),
+                        "Error ni sio a subkundi of Exception")
 
     eleza CheckInterfaceError(self):
-        self.assertTrue(issubclass(sqlite.InterfaceError, sqlite.Error),
-                        "InterfaceError is not a subkundi of Error")
+        self.assertKweli(issubclass(sqlite.InterfaceError, sqlite.Error),
+                        "InterfaceError ni sio a subkundi of Error")
 
     eleza CheckDatabaseError(self):
-        self.assertTrue(issubclass(sqlite.DatabaseError, sqlite.Error),
-                        "DatabaseError is not a subkundi of Error")
+        self.assertKweli(issubclass(sqlite.DatabaseError, sqlite.Error),
+                        "DatabaseError ni sio a subkundi of Error")
 
     eleza CheckDataError(self):
-        self.assertTrue(issubclass(sqlite.DataError, sqlite.DatabaseError),
-                        "DataError is not a subkundi of DatabaseError")
+        self.assertKweli(issubclass(sqlite.DataError, sqlite.DatabaseError),
+                        "DataError ni sio a subkundi of DatabaseError")
 
     eleza CheckOperationalError(self):
-        self.assertTrue(issubclass(sqlite.OperationalError, sqlite.DatabaseError),
-                        "OperationalError is not a subkundi of DatabaseError")
+        self.assertKweli(issubclass(sqlite.OperationalError, sqlite.DatabaseError),
+                        "OperationalError ni sio a subkundi of DatabaseError")
 
     eleza CheckIntegrityError(self):
-        self.assertTrue(issubclass(sqlite.IntegrityError, sqlite.DatabaseError),
-                        "IntegrityError is not a subkundi of DatabaseError")
+        self.assertKweli(issubclass(sqlite.IntegrityError, sqlite.DatabaseError),
+                        "IntegrityError ni sio a subkundi of DatabaseError")
 
     eleza CheckInternalError(self):
-        self.assertTrue(issubclass(sqlite.InternalError, sqlite.DatabaseError),
-                        "InternalError is not a subkundi of DatabaseError")
+        self.assertKweli(issubclass(sqlite.InternalError, sqlite.DatabaseError),
+                        "InternalError ni sio a subkundi of DatabaseError")
 
     eleza CheckProgrammingError(self):
-        self.assertTrue(issubclass(sqlite.ProgrammingError, sqlite.DatabaseError),
-                        "ProgrammingError is not a subkundi of DatabaseError")
+        self.assertKweli(issubclass(sqlite.ProgrammingError, sqlite.DatabaseError),
+                        "ProgrammingError ni sio a subkundi of DatabaseError")
 
     eleza CheckNotSupportedError(self):
-        self.assertTrue(issubclass(sqlite.NotSupportedError,
+        self.assertKweli(issubclass(sqlite.NotSupportedError,
                                    sqlite.DatabaseError),
-                        "NotSupportedError is not a subkundi of DatabaseError")
+                        "NotSupportedError ni sio a subkundi of DatabaseError")
 
 kundi ConnectionTests(unittest.TestCase):
 
@@ -142,55 +142,55 @@ kundi ConnectionTests(unittest.TestCase):
         # Can't use db kutoka setUp because we want to test initial state.
         cx = sqlite.connect(":memory:")
         cu = cx.cursor()
-        self.assertEqual(cx.in_transaction, False)
+        self.assertEqual(cx.in_transaction, Uongo)
         cu.execute("create table transactiontest(id integer primary key, name text)")
-        self.assertEqual(cx.in_transaction, False)
+        self.assertEqual(cx.in_transaction, Uongo)
         cu.execute("insert into transactiontest(name) values (?)", ("foo",))
-        self.assertEqual(cx.in_transaction, True)
+        self.assertEqual(cx.in_transaction, Kweli)
         cu.execute("select name kutoka transactiontest where name=?", ["foo"])
         row = cu.fetchone()
-        self.assertEqual(cx.in_transaction, True)
+        self.assertEqual(cx.in_transaction, Kweli)
         cx.commit()
-        self.assertEqual(cx.in_transaction, False)
+        self.assertEqual(cx.in_transaction, Uongo)
         cu.execute("select name kutoka transactiontest where name=?", ["foo"])
         row = cu.fetchone()
-        self.assertEqual(cx.in_transaction, False)
+        self.assertEqual(cx.in_transaction, Uongo)
 
     eleza CheckInTransactionRO(self):
         with self.assertRaises(AttributeError):
-            self.cx.in_transaction = True
+            self.cx.in_transaction = Kweli
 
     eleza CheckOpenWithPathLikeObject(self):
         """ Checks that we can successfully connect to a database using an object that
-            is PathLike, i.e. has __fspath__(). """
+            ni PathLike, i.e. has __fspath__(). """
         self.addCleanup(unlink, TESTFN)
         kundi Path:
             eleza __fspath__(self):
                 rudisha TESTFN
         path = Path()
-        with sqlite.connect(path) as cx:
+        with sqlite.connect(path) kama cx:
             cx.execute('create table test(id integer)')
 
     eleza CheckOpenUri(self):
         ikiwa sqlite.sqlite_version_info < (3, 7, 7):
             with self.assertRaises(sqlite.NotSupportedError):
-                sqlite.connect(':memory:', uri=True)
-            return
+                sqlite.connect(':memory:', uri=Kweli)
+            rudisha
         self.addCleanup(unlink, TESTFN)
-        with sqlite.connect(TESTFN) as cx:
+        with sqlite.connect(TESTFN) kama cx:
             cx.execute('create table test(id integer)')
-        with sqlite.connect('file:' + TESTFN, uri=True) as cx:
+        with sqlite.connect('file:' + TESTFN, uri=Kweli) kama cx:
             cx.execute('insert into test(id) values(0)')
-        with sqlite.connect('file:' + TESTFN + '?mode=ro', uri=True) as cx:
+        with sqlite.connect('file:' + TESTFN + '?mode=ro', uri=Kweli) kama cx:
             with self.assertRaises(sqlite.OperationalError):
                 cx.execute('insert into test(id) values(1)')
 
     @unittest.skipIf(sqlite.sqlite_version_info >= (3, 3, 1),
                      'needs sqlite versions older than 3.3.1')
     eleza CheckSameThreadErrorOnOldVersion(self):
-        with self.assertRaises(sqlite.NotSupportedError) as cm:
-            sqlite.connect(':memory:', check_same_thread=False)
-        self.assertEqual(str(cm.exception), 'shared connections not available')
+        with self.assertRaises(sqlite.NotSupportedError) kama cm:
+            sqlite.connect(':memory:', check_same_thread=Uongo)
+        self.assertEqual(str(cm.exception), 'shared connections sio available')
 
 kundi CursorTests(unittest.TestCase):
     eleza setUp(self):
@@ -250,7 +250,7 @@ kundi CursorTests(unittest.TestCase):
         self.assertEqual(row[0], "Hu\x00go")
 
     eleza CheckExecuteNonIterable(self):
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             self.cu.execute("insert into test(id) values (?)", 42)
         self.assertEqual(str(cm.exception), 'parameters are of unsupported type')
 
@@ -307,7 +307,7 @@ kundi CursorTests(unittest.TestCase):
     eleza CheckExecuteDictMappingTooLittleArgs(self):
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(sqlite.ProgrammingError):
-            self.cu.execute("select name kutoka test where name=:name and id=:id", {"name": "foo"})
+            self.cu.execute("select name kutoka test where name=:name na id=:id", {"name": "foo"})
 
     eleza CheckExecuteDictMappingNoArgs(self):
         self.cu.execute("insert into test(name) values ('foo')")
@@ -331,7 +331,7 @@ kundi CursorTests(unittest.TestCase):
 
     eleza CheckRowcountSelect(self):
         """
-        pysqlite does not know the rowcount of SELECT statements, because we
+        pysqlite does sio know the rowcount of SELECT statements, because we
         don't fetch all rows after executing the select statement. The rowcount
         has thus to be -1.
         """
@@ -348,12 +348,12 @@ kundi CursorTests(unittest.TestCase):
         self.cu.execute("insert into test(name) values ('foo')")
         self.assertLess(2, self.cx.total_changes, msg='total changes reported wrong value')
 
-    # Checks for executemany:
+    # Checks kila executemany:
     # Sequences are required by the DB-API, iterators
-    # enhancements in pysqlite.
+    # enhancements kwenye pysqlite.
 
     eleza CheckExecuteManySequence(self):
-        self.cu.executemany("insert into test(income) values (?)", [(x,) for x in range(100, 110)])
+        self.cu.executemany("insert into test(income) values (?)", [(x,) kila x kwenye range(100, 110)])
 
     eleza CheckExecuteManyIterator(self):
         kundi MyIter:
@@ -362,8 +362,8 @@ kundi CursorTests(unittest.TestCase):
 
             eleza __next__(self):
                 ikiwa self.value == 10:
-                    raise StopIteration
-                else:
+                    ashiria StopIteration
+                isipokua:
                     self.value += 1
                     rudisha (self.value,)
 
@@ -371,8 +371,8 @@ kundi CursorTests(unittest.TestCase):
 
     eleza CheckExecuteManyGenerator(self):
         eleza mygen():
-            for i in range(5):
-                yield (i,)
+            kila i kwenye range(5):
+                tuma (i,)
 
         self.cu.executemany("insert into test(income) values (?)", mygen())
 
@@ -395,7 +395,7 @@ kundi CursorTests(unittest.TestCase):
         self.cu.execute("insert into test(id) values (?)", (6,))
         self.cu.execute("select id kutoka test order by id")
         lst = []
-        for row in self.cu:
+        kila row kwenye self.cu:
             lst.append(row[0])
         self.assertEqual(lst[0], 5)
         self.assertEqual(lst[1], 6)
@@ -405,12 +405,12 @@ kundi CursorTests(unittest.TestCase):
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
         row = self.cu.fetchone()
-        self.assertEqual(row, None)
+        self.assertEqual(row, Tupu)
 
     eleza CheckFetchoneNoStatement(self):
         cur = self.cx.cursor()
         row = cur.fetchone()
-        self.assertEqual(row, None)
+        self.assertEqual(row, Tupu)
 
     eleza CheckArraySize(self):
         # must default ot 1
@@ -464,38 +464,38 @@ kundi CursorTests(unittest.TestCase):
 
     eleza CheckWrongCursorCallable(self):
         with self.assertRaises(TypeError):
-            eleza f(): pass
+            eleza f(): pita
             cur = self.cx.cursor(f)
 
     eleza CheckCursorWrongClass(self):
-        kundi Foo: pass
+        kundi Foo: pita
         foo = Foo()
         with self.assertRaises(TypeError):
             cur = sqlite.Cursor(foo)
 
     eleza CheckLastRowIDOnReplace(self):
         """
-        INSERT OR REPLACE and REPLACE INTO should produce the same behavior.
+        INSERT OR REPLACE na REPLACE INTO should produce the same behavior.
         """
         sql = '{} INTO test(id, unique_test) VALUES (?, ?)'
-        for statement in ('INSERT OR REPLACE', 'REPLACE'):
+        kila statement kwenye ('INSERT OR REPLACE', 'REPLACE'):
             with self.subTest(statement=statement):
                 self.cu.execute(sql.format(statement), (1, 'foo'))
                 self.assertEqual(self.cu.lastrowid, 1)
 
     eleza CheckLastRowIDOnIgnore(self):
         self.cu.execute(
-            "insert or ignore into test(unique_test) values (?)",
+            "insert ama ignore into test(unique_test) values (?)",
             ('test',))
         self.assertEqual(self.cu.lastrowid, 2)
         self.cu.execute(
-            "insert or ignore into test(unique_test) values (?)",
+            "insert ama ignore into test(unique_test) values (?)",
             ('test',))
         self.assertEqual(self.cu.lastrowid, 2)
 
     eleza CheckLastRowIDInsertOR(self):
         results = []
-        for statement in ('FAIL', 'ABORT', 'ROLLBACK'):
+        kila statement kwenye ('FAIL', 'ABORT', 'ROLLBACK'):
             sql = 'INSERT OR {} INTO test(unique_test) VALUES (?)'
             with self.subTest(statement='INSERT OR {}'.format(statement)):
                 self.cu.execute(sql.format(statement), (statement,))
@@ -523,14 +523,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckConCursor(self):
         eleza run(con, errors):
-            try:
+            jaribu:
                 cur = con.cursor()
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
@@ -541,14 +541,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckConCommit(self):
         eleza run(con, errors):
-            try:
+            jaribu:
                 con.commit()
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
@@ -559,14 +559,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckConRollback(self):
         eleza run(con, errors):
-            try:
+            jaribu:
                 con.rollback()
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
@@ -577,14 +577,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckConClose(self):
         eleza run(con, errors):
-            try:
+            jaribu:
                 con.close()
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
@@ -595,14 +595,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckCurImplicitBegin(self):
         eleza run(cur, errors):
-            try:
+            jaribu:
                 cur.execute("insert into test(name) values ('a')")
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         t = threading.Thread(target=run, kwargs={"cur": self.cur, "errors": errors})
@@ -613,14 +613,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckCurClose(self):
         eleza run(cur, errors):
-            try:
+            jaribu:
                 cur.close()
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         t = threading.Thread(target=run, kwargs={"cur": self.cur, "errors": errors})
@@ -631,14 +631,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckCurExecute(self):
         eleza run(cur, errors):
-            try:
+            jaribu:
                 cur.execute("select name kutoka test")
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         self.cur.execute("insert into test(name) values ('a')")
@@ -650,14 +650,14 @@ kundi ThreadTests(unittest.TestCase):
 
     eleza CheckCurIterNext(self):
         eleza run(cur, errors):
-            try:
+            jaribu:
                 row = cur.fetchone()
-                errors.append("did not raise ProgrammingError")
-                return
-            except sqlite.ProgrammingError:
-                return
+                errors.append("did sio ashiria ProgrammingError")
+                rudisha
+            tatizo sqlite.ProgrammingError:
+                rudisha
             except:
-                errors.append("raised wrong exception")
+                errors.append("ashiriad wrong exception")
 
         errors = []
         self.cur.execute("insert into test(name) values ('a')")
@@ -719,7 +719,7 @@ kundi ExtensionTests(unittest.TestCase):
     eleza CheckCursorExecutescriptAsBytes(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             cur.executescript(b"create table test(foo); insert into test(foo) values (5);")
         self.assertEqual(str(cm.exception), 'script argument must be unicode.')
 
@@ -780,9 +780,9 @@ kundi ClosedConTests(unittest.TestCase):
         con.close()
         kundi Agg:
             eleza __init__(self):
-                pass
+                pita
             eleza step(self, x):
-                pass
+                pita
             eleza finalize(self):
                 rudisha 17
         with self.assertRaises(sqlite.ProgrammingError):
@@ -799,7 +799,7 @@ kundi ClosedConTests(unittest.TestCase):
     eleza CheckClosedSetProgressCallback(self):
         con = sqlite.connect(":memory:")
         con.close()
-        eleza progress(): pass
+        eleza progress(): pita
         with self.assertRaises(sqlite.ProgrammingError):
             con.set_progress_handler(progress, 100)
 
@@ -815,12 +815,12 @@ kundi ClosedCurTests(unittest.TestCase):
         cur = con.cursor()
         cur.close()
 
-        for method_name in ("execute", "executemany", "executescript", "fetchall", "fetchmany", "fetchone"):
-            ikiwa method_name in ("execute", "executescript"):
+        kila method_name kwenye ("execute", "executemany", "executescript", "fetchall", "fetchmany", "fetchone"):
+            ikiwa method_name kwenye ("execute", "executescript"):
                 params = ("select 4 union select 5",)
             elikiwa method_name == "executemany":
                 params = ("insert into foo(bar) values (?)", [(3,), (4,)])
-            else:
+            isipokua:
                 params = []
 
             with self.assertRaises(sqlite.ProgrammingError):
@@ -830,9 +830,9 @@ kundi ClosedCurTests(unittest.TestCase):
 
 kundi SqliteOnConflictTests(unittest.TestCase):
     """
-    Tests for SQLite's "insert on conflict" feature.
+    Tests kila SQLite's "insert on conflict" feature.
 
-    See https://www.sqlite.org/lang_conflict.html for details.
+    See https://www.sqlite.org/lang_conflict.html kila details.
     """
 
     eleza setUp(self):
@@ -849,7 +849,7 @@ kundi SqliteOnConflictTests(unittest.TestCase):
         self.cx.close()
 
     eleza CheckOnConflictRollbackWithExplicitTransaction(self):
-        self.cx.isolation_level = None  # autocommit mode
+        self.cx.isolation_level = Tupu  # autocommit mode
         self.cu = self.cx.cursor()
         # Start an explicit transaction.
         self.cu.execute("BEGIN")
@@ -860,13 +860,13 @@ kundi SqliteOnConflictTests(unittest.TestCase):
         # Use connection to commit.
         self.cx.commit()
         self.cu.execute("SELECT name, unique_name kutoka test")
-        # Transaction should have rolled back and nothing should be in table.
+        # Transaction should have rolled back na nothing should be kwenye table.
         self.assertEqual(self.cu.fetchall(), [])
 
     eleza CheckOnConflictAbortRaisesWithExplicitTransactions(self):
         # Abort cancels the current sql statement but doesn't change anything
         # about the current transaction.
-        self.cx.isolation_level = None  # autocommit mode
+        self.cx.isolation_level = Tupu  # autocommit mode
         self.cu = self.cx.cursor()
         # Start an explicit transaction.
         self.cu.execute("BEGIN")
@@ -877,7 +877,7 @@ kundi SqliteOnConflictTests(unittest.TestCase):
         self.cx.commit()
         self.cu.execute("SELECT name, unique_name FROM test")
         # Expect the first two inserts to work, third to do nothing.
-        self.assertEqual(self.cu.fetchall(), [('abort_test', None), (None, 'foo',)])
+        self.assertEqual(self.cu.fetchall(), [('abort_test', Tupu), (Tupu, 'foo',)])
 
     eleza CheckOnConflictRollbackWithoutTransaction(self):
         # Start of implicit transaction
@@ -886,7 +886,7 @@ kundi SqliteOnConflictTests(unittest.TestCase):
         with self.assertRaises(sqlite.IntegrityError):
             self.cu.execute("INSERT OR ROLLBACK INTO test(unique_name) VALUES ('foo')")
         self.cu.execute("SELECT name, unique_name FROM test")
-        # Implicit transaction is rolled back on error.
+        # Implicit transaction ni rolled back on error.
         self.assertEqual(self.cu.fetchall(), [])
 
     eleza CheckOnConflictAbortRaisesWithoutTransactions(self):
@@ -898,7 +898,7 @@ kundi SqliteOnConflictTests(unittest.TestCase):
             self.cu.execute("INSERT OR ABORT INTO test(unique_name) VALUES ('foo')")
         # Make sure all other values were inserted.
         self.cu.execute("SELECT name, unique_name FROM test")
-        self.assertEqual(self.cu.fetchall(), [('abort_test', None), (None, 'foo',)])
+        self.assertEqual(self.cu.fetchall(), [('abort_test', Tupu), (Tupu, 'foo',)])
 
     eleza CheckOnConflictFail(self):
         self.cu.execute("INSERT OR FAIL INTO test(unique_name) VALUES ('foo')")

@@ -10,40 +10,40 @@ import binascii
 
 ### Codec APIs
 
-def hex_encode(input, errors='strict'):
+eleza hex_encode(input, errors='strict'):
     assert errors == 'strict'
-    return (binascii.b2a_hex(input), len(input))
+    rudisha (binascii.b2a_hex(input), len(input))
 
-def hex_decode(input, errors='strict'):
+eleza hex_decode(input, errors='strict'):
     assert errors == 'strict'
-    return (binascii.a2b_hex(input), len(input))
+    rudisha (binascii.a2b_hex(input), len(input))
 
-class Codec(codecs.Codec):
-    def encode(self, input, errors='strict'):
-        return hex_encode(input, errors)
-    def decode(self, input, errors='strict'):
-        return hex_decode(input, errors)
+kundi Codec(codecs.Codec):
+    eleza encode(self, input, errors='strict'):
+        rudisha hex_encode(input, errors)
+    eleza decode(self, input, errors='strict'):
+        rudisha hex_decode(input, errors)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza encode(self, input, final=False):
         assert self.errors == 'strict'
-        return binascii.b2a_hex(input)
+        rudisha binascii.b2a_hex(input)
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+kundi IncrementalDecoder(codecs.IncrementalDecoder):
+    eleza decode(self, input, final=False):
         assert self.errors == 'strict'
-        return binascii.a2b_hex(input)
+        rudisha binascii.a2b_hex(input)
 
-class StreamWriter(Codec, codecs.StreamWriter):
+kundi StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
 
-class StreamReader(Codec, codecs.StreamReader):
+kundi StreamReader(Codec, codecs.StreamReader):
     charbuffertype = bytes
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='hex',
         encode=hex_encode,
         decode=hex_decode,

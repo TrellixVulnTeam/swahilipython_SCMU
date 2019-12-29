@@ -38,7 +38,7 @@ Python's deep copy operation avoids these problems by:
  b) letting user-defined classes override the copying operation or the
     set of components copied
 
-This version does not copy types like module, class, function, method,
+This version does sio copy types like module, class, function, method,
 nor stack trace, stack frame, nor file, socket, window, nor array, nor
 any similar types.
 
@@ -56,9 +56,9 @@ kundi Error(Exception):
     pass
 error = Error   # backward compatibility
 
-try:
+jaribu:
     kutoka org.python.core agiza PyStringMap
-except ImportError:
+tatizo ImportError:
     PyStringMap = None
 
 __all__ = ["Error", "copy", "deepcopy"]
@@ -80,21 +80,21 @@ def copy(x):
         return _copy_immutable(x)
 
     copier = getattr(cls, "__copy__", None)
-    if copier is not None:
+    if copier ni sio None:
         return copier(x)
 
     reductor = dispatch_table.get(cls)
-    if reductor is not None:
+    if reductor ni sio None:
         rv = reductor(x)
-    else:
+    isipokua:
         reductor = getattr(x, "__reduce_ex__", None)
-        if reductor is not None:
+        if reductor ni sio None:
             rv = reductor(4)
-        else:
+        isipokua:
             reductor = getattr(x, "__reduce__", None)
             if reductor:
                 rv = reductor()
-            else:
+            isipokua:
                 raise Error("un(shallow)copyable object of type %s" % cls)
 
     if isinstance(rv, str):
@@ -112,7 +112,7 @@ for t in (type(None), int, float, bool, complex, str, tuple,
           types.FunctionType, weakref.ref):
     d[t] = _copy_immutable
 t = getattr(types, "CodeType", None)
-if t is not None:
+if t ni sio None:
     d[t] = _copy_immutable
 
 d[list] = list.copy
@@ -120,10 +120,10 @@ d[dict] = dict.copy
 d[set] = set.copy
 d[bytearray] = bytearray.copy
 
-if PyStringMap is not None:
+if PyStringMap ni sio None:
     d[PyStringMap] = PyStringMap.copy
 
-del d, t
+toa d, t
 
 def deepcopy(x, memo=None, _nil=[]):
     """Deep copy operation on arbitrary Python objects.
@@ -136,43 +136,43 @@ def deepcopy(x, memo=None, _nil=[]):
 
     d = id(x)
     y = memo.get(d, _nil)
-    if y is not _nil:
+    if y ni sio _nil:
         return y
 
     cls = type(x)
 
     copier = _deepcopy_dispatch.get(cls)
-    if copier is not None:
+    if copier ni sio None:
         y = copier(x, memo)
-    else:
+    isipokua:
         if issubclass(cls, type):
             y = _deepcopy_atomic(x, memo)
-        else:
+        isipokua:
             copier = getattr(x, "__deepcopy__", None)
-            if copier is not None:
+            if copier ni sio None:
                 y = copier(memo)
-            else:
+            isipokua:
                 reductor = dispatch_table.get(cls)
                 if reductor:
                     rv = reductor(x)
-                else:
+                isipokua:
                     reductor = getattr(x, "__reduce_ex__", None)
-                    if reductor is not None:
+                    if reductor ni sio None:
                         rv = reductor(4)
-                    else:
+                    isipokua:
                         reductor = getattr(x, "__reduce__", None)
                         if reductor:
                             rv = reductor()
-                        else:
+                        isipokua:
                             raise Error(
                                 "un(deep)copyable object of type %s" % cls)
                 if isinstance(rv, str):
                     y = x
-                else:
+                isipokua:
                     y = _reconstruct(x, memo, *rv)
 
     # If is its own copy, don't memoize.
-    if y is not x:
+    if y ni sio x:
         memo[d] = y
         _keep_alive(x, memo) # Make sure x lives at least as long as d
     return y
@@ -207,17 +207,17 @@ d[list] = _deepcopy_list
 
 def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
     y = [deepcopy(a, memo) for a in x]
-    # We're not going to put the tuple in the memo, but it's still agizaant we
+    # We're sio going to put the tuple in the memo, but it's still agizaant we
     # check for it, in case the tuple contains recursive mutable structures.
-    try:
+    jaribu:
         return memo[id(x)]
-    except KeyError:
+    tatizo KeyError:
         pass
     for k, j in zip(x, y):
-        if k is not j:
+        if k ni sio j:
             y = tuple(y)
-            break
-    else:
+            koma
+    isipokua:
         y = x
     return y
 d[tuple] = _deepcopy_tuple
@@ -229,14 +229,14 @@ def _deepcopy_dict(x, memo, deepcopy=deepcopy):
         y[deepcopy(key, memo)] = deepcopy(value, memo)
     return y
 d[dict] = _deepcopy_dict
-if PyStringMap is not None:
+if PyStringMap ni sio None:
     d[PyStringMap] = _deepcopy_dict
 
 def _deepcopy_method(x, memo): # Copy instance methods
     return type(x)(x.__func__, deepcopy(x.__self__, memo))
 d[types.MethodType] = _deepcopy_method
 
-del d
+toa d
 
 def _keep_alive(x, memo):
     """Keeps a reference to the object x in the memo.
@@ -245,58 +245,58 @@ def _keep_alive(x, memo):
     to assure that possibly temporary objects are kept
     alive by referencing them.
     We store a reference at the id of the memo, which should
-    normally not be used unless someone tries to deepcopy
+    normally sio be used unless someone tries to deepcopy
     the memo itself...
     """
-    try:
+    jaribu:
         memo[id(memo)].append(x)
-    except KeyError:
+    tatizo KeyError:
         # aha, this is the first one :-)
         memo[id(memo)]=[x]
 
 def _reconstruct(x, memo, func, args,
                  state=None, listiter=None, dictiter=None,
                  deepcopy=deepcopy):
-    deep = memo is not None
+    deep = memo ni sio None
     if deep and args:
         args = (deepcopy(arg, memo) for arg in args)
     y = func(*args)
     if deep:
         memo[id(x)] = y
 
-    if state is not None:
+    if state ni sio None:
         if deep:
             state = deepcopy(state, memo)
         if hasattr(y, '__setstate__'):
             y.__setstate__(state)
-        else:
+        isipokua:
             if isinstance(state, tuple) and len(state) == 2:
                 state, slotstate = state
-            else:
+            isipokua:
                 slotstate = None
-            if state is not None:
+            if state ni sio None:
                 y.__dict__.update(state)
-            if slotstate is not None:
+            if slotstate ni sio None:
                 for key, value in slotstate.items():
                     setattr(y, key, value)
 
-    if listiter is not None:
+    if listiter ni sio None:
         if deep:
             for item in listiter:
                 item = deepcopy(item, memo)
                 y.append(item)
-        else:
+        isipokua:
             for item in listiter:
                 y.append(item)
-    if dictiter is not None:
+    if dictiter ni sio None:
         if deep:
             for key, value in dictiter:
                 key = deepcopy(key, memo)
                 value = deepcopy(value, memo)
                 y[key] = value
-        else:
+        isipokua:
             for key, value in dictiter:
                 y[key] = value
     return y
 
-del types, weakref, PyStringMap
+toa types, weakref, PyStringMap

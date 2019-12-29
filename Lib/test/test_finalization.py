@@ -1,5 +1,5 @@
 """
-Tests for object finalization semantics, as outlined in PEP 442.
+Tests kila object finalization semantics, kama outlined kwenye PEP 442.
 """
 
 agiza contextlib
@@ -7,13 +7,13 @@ agiza gc
 agiza unittest
 agiza weakref
 
-try:
+jaribu:
     kutoka _testcapi agiza with_tp_del
-except ImportError:
+tatizo ImportError:
     eleza with_tp_del(cls):
         kundi C(object):
             eleza __new__(cls, *args, **kwargs):
-                raise TypeError('requires _testcapi.with_tp_del')
+                ashiria TypeError('requires _testcapi.with_tp_del')
         rudisha C
 
 kutoka test agiza support
@@ -21,7 +21,7 @@ kutoka test agiza support
 
 kundi NonGCSimpleBase:
     """
-    The base kundi for all the objects under test, equipped with various
+    The base kundi kila all the objects under test, equipped with various
     testing features.
     """
 
@@ -30,7 +30,7 @@ kundi NonGCSimpleBase:
     tp_del_calls = []
     errors = []
 
-    _cleaning = False
+    _cleaning = Uongo
 
     __slots__ = ()
 
@@ -52,31 +52,31 @@ kundi NonGCSimpleBase:
         with support.disable_gc():
             cls.del_calls.clear()
             cls.tp_del_calls.clear()
-            NonGCSimpleBase._cleaning = False
-            try:
-                yield
+            NonGCSimpleBase._cleaning = Uongo
+            jaribu:
+                tuma
                 ikiwa cls.errors:
-                    raise cls.errors[0]
-            finally:
-                NonGCSimpleBase._cleaning = True
+                    ashiria cls.errors[0]
+            mwishowe:
+                NonGCSimpleBase._cleaning = Kweli
                 cls._cleanup()
 
     eleza check_sanity(self):
         """
-        Check the object is sane (non-broken).
+        Check the object ni sane (non-broken).
         """
 
     eleza __del__(self):
         """
         PEP 442 finalizer.  Record that this was called, check the
-        object is in a sane state, and invoke a side effect.
+        object ni kwenye a sane state, na invoke a side effect.
         """
-        try:
-            ikiwa not self._cleaning:
+        jaribu:
+            ikiwa sio self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception as e:
+        tatizo Exception kama e:
             self.errors.append(e)
 
     eleza side_effect(self):
@@ -102,15 +102,15 @@ kundi NonGCResurrector(NonGCSimpleBase):
 
     eleza side_effect(self):
         """
-        Resurrect self by storing self in a class-wide list.
+        Resurrect self by storing self kwenye a class-wide list.
         """
         self.survivors.append(self)
 
 kundi Simple(SimpleBase):
-    pass
+    pita
 
 kundi SimpleResurrector(NonGCResurrector, SimpleBase):
-    pass
+    pita
 
 
 kundi TestBase:
@@ -120,11 +120,11 @@ kundi TestBase:
         gc.garbage[:] = []
 
     eleza tearDown(self):
-        # None of the tests here should put anything in gc.garbage
-        try:
+        # Tupu of the tests here should put anything kwenye gc.garbage
+        jaribu:
             self.assertEqual(gc.garbage, [])
-        finally:
-            del self.old_garbage
+        mwishowe:
+            toa self.old_garbage
             gc.collect()
 
     eleza assert_del_calls(self, ids):
@@ -134,10 +134,10 @@ kundi TestBase:
         self.assertEqual(sorted(SimpleBase.tp_del_calls), sorted(ids))
 
     eleza assert_survivors(self, ids):
-        self.assertEqual(sorted(id(x) for x in SimpleBase.survivors), sorted(ids))
+        self.assertEqual(sorted(id(x) kila x kwenye SimpleBase.survivors), sorted(ids))
 
     eleza assert_garbage(self, ids):
-        self.assertEqual(sorted(id(x) for x in gc.garbage), sorted(ids))
+        self.assertEqual(sorted(id(x) kila x kwenye gc.garbage), sorted(ids))
 
     eleza clear_survivors(self):
         SimpleBase.survivors.clear()
@@ -153,11 +153,11 @@ kundi SimpleFinalizationTest(TestBase, unittest.TestCase):
             s = Simple()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIs(wr(), None)
+            self.assertIs(wr(), Tupu)
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -167,23 +167,23 @@ kundi SimpleFinalizationTest(TestBase, unittest.TestCase):
             s = SimpleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
-            self.assertIsNot(wr(), None)
+            self.assertIsNot(wr(), Tupu)
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-        self.assertIs(wr(), None)
+        self.assertIs(wr(), Tupu)
 
     eleza test_non_gc(self):
         with SimpleBase.test():
             s = NonGC()
-            self.assertFalse(gc.is_tracked(s))
+            self.assertUongo(gc.is_tracked(s))
             ids = [id(s)]
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -194,9 +194,9 @@ kundi SimpleFinalizationTest(TestBase, unittest.TestCase):
     eleza test_non_gc_resurrect(self):
         with SimpleBase.test():
             s = NonGCResurrector()
-            self.assertFalse(gc.is_tracked(s))
+            self.assertUongo(gc.is_tracked(s))
             ids = [id(s)]
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
@@ -214,21 +214,21 @@ kundi SelfCycleBase:
 
     eleza check_sanity(self):
         super().check_sanity()
-        assert self.ref is self
+        assert self.ref ni self
 
 kundi SimpleSelfCycle(SelfCycleBase, Simple):
-    pass
+    pita
 
 kundi SelfCycleResurrector(SelfCycleBase, SimpleResurrector):
-    pass
+    pita
 
 kundi SuicidalSelfCycle(SelfCycleBase, Simple):
 
     eleza side_effect(self):
         """
-        Explicitly break the reference cycle.
+        Explicitly koma the reference cycle.
         """
-        self.ref = None
+        self.ref = Tupu
 
 
 kundi SelfCycleFinalizationTest(TestBase, unittest.TestCase):
@@ -242,11 +242,11 @@ kundi SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             s = SimpleSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIs(wr(), None)
+            self.assertIs(wr(), Tupu)
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -257,77 +257,77 @@ kundi SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             s = SelfCycleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
-            # XXX is this desirable?
-            self.assertIs(wr(), None)
+            # XXX ni this desirable?
+            self.assertIs(wr(), Tupu)
             # When trying to destroy the object a second time, __del__
             # isn't called anymore (and the object isn't resurrected).
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIs(wr(), None)
+            self.assertIs(wr(), Tupu)
 
     eleza test_simple_suicide(self):
-        # Test the GC is able to deal with an object that kills its last
+        # Test the GC ni able to deal with an object that kills its last
         # reference during __del__.
         with SimpleBase.test():
             s = SuicidalSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIs(wr(), None)
+            self.assertIs(wr(), Tupu)
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIs(wr(), None)
+            self.assertIs(wr(), Tupu)
 
 
 kundi ChainedBase:
 
     eleza chain(self, left):
-        self.suicided = False
+        self.suicided = Uongo
         self.left = left
         left.right = self
 
     eleza check_sanity(self):
         super().check_sanity()
         ikiwa self.suicided:
-            assert self.left is None
-            assert self.right is None
-        else:
+            assert self.left ni Tupu
+            assert self.right ni Tupu
+        isipokua:
             left = self.left
             ikiwa left.suicided:
-                assert left.right is None
-            else:
-                assert left.right is self
+                assert left.right ni Tupu
+            isipokua:
+                assert left.right ni self
             right = self.right
             ikiwa right.suicided:
-                assert right.left is None
-            else:
-                assert right.left is self
+                assert right.left ni Tupu
+            isipokua:
+                assert right.left ni self
 
 kundi SimpleChained(ChainedBase, Simple):
-    pass
+    pita
 
 kundi ChainedResurrector(ChainedBase, SimpleResurrector):
-    pass
+    pita
 
 kundi SuicidalChained(ChainedBase, Simple):
 
     eleza side_effect(self):
         """
-        Explicitly break the reference cycle.
+        Explicitly koma the reference cycle.
         """
-        self.suicided = True
-        self.left = None
-        self.right = None
+        self.suicided = Kweli
+        self.left = Tupu
+        self.right = Tupu
 
 
 kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
@@ -338,8 +338,8 @@ kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
     """
 
     eleza build_chain(self, classes):
-        nodes = [cls() for cls in classes]
-        for i in range(len(nodes)):
+        nodes = [cls() kila cls kwenye classes]
+        kila i kwenye range(len(nodes)):
             nodes[i].chain(nodes[i-1])
         rudisha nodes
 
@@ -347,13 +347,13 @@ kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
         N = len(classes)
         with SimpleBase.test():
             nodes = self.build_chain(classes)
-            ids = [id(s) for s in nodes]
-            wrs = [weakref.ref(s) for s in nodes]
-            del nodes
+            ids = [id(s) kila s kwenye nodes]
+            wrs = [weakref.ref(s) kila s kwenye nodes]
+            toa nodes
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertEqual([wr() for wr in wrs], [None] * N)
+            self.assertEqual([wr() kila wr kwenye wrs], [Tupu] * N)
             gc.collect()
             self.assert_del_calls(ids)
 
@@ -362,15 +362,15 @@ kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
         with SimpleBase.test():
             nodes = self.build_chain(classes)
             N = len(nodes)
-            ids = [id(s) for s in nodes]
-            survivor_ids = [id(s) for s in nodes ikiwa isinstance(s, SimpleResurrector)]
-            wrs = [weakref.ref(s) for s in nodes]
-            del nodes
+            ids = [id(s) kila s kwenye nodes]
+            survivor_ids = [id(s) kila s kwenye nodes ikiwa isinstance(s, SimpleResurrector)]
+            wrs = [weakref.ref(s) kila s kwenye nodes]
+            toa nodes
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(survivor_ids)
             # XXX desirable?
-            self.assertEqual([wr() for wr in wrs], [None] * N)
+            self.assertEqual([wr() kila wr kwenye wrs], [Tupu] * N)
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
@@ -404,49 +404,49 @@ kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
             [ChainedResurrector] * 2 + [SimpleChained] * 2 + [SuicidalChained] * 2)
 
 
-# NOTE: the tp_del slot isn't automatically inherited, so we have to call
-# with_tp_del() for each instantiated class.
+# NOTE: the tp_toa slot isn't automatically inherited, so we have to call
+# with_tp_del() kila each instantiated class.
 
 kundi LegacyBase(SimpleBase):
 
     eleza __del__(self):
-        try:
-            # Do not invoke side_effect here, since we are now exercising
-            # the tp_del slot.
-            ikiwa not self._cleaning:
+        jaribu:
+            # Do sio invoke side_effect here, since we are now exercising
+            # the tp_toa slot.
+            ikiwa sio self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
-        except Exception as e:
+        tatizo Exception kama e:
             self.errors.append(e)
 
     eleza __tp_del__(self):
         """
-        Legacy (pre-PEP 442) finalizer, mapped to a tp_del slot.
+        Legacy (pre-PEP 442) finalizer, mapped to a tp_toa slot.
         """
-        try:
-            ikiwa not self._cleaning:
+        jaribu:
+            ikiwa sio self._cleaning:
                 self.tp_del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception as e:
+        tatizo Exception kama e:
             self.errors.append(e)
 
 @with_tp_del
 kundi Legacy(LegacyBase):
-    pass
+    pita
 
 @with_tp_del
 kundi LegacyResurrector(LegacyBase):
 
     eleza side_effect(self):
         """
-        Resurrect self by storing self in a class-wide list.
+        Resurrect self by storing self kwenye a class-wide list.
         """
         self.survivors.append(self)
 
 @with_tp_del
 kundi LegacySelfCycle(SelfCycleBase, LegacyBase):
-    pass
+    pita
 
 
 @support.cpython_only
@@ -467,12 +467,12 @@ kundi LegacyFinalizationTest(TestBase, unittest.TestCase):
             s = Legacy()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids)
             self.assert_survivors([])
-            self.assertIs(wr(), None)
+            self.assertIs(wr(), Tupu)
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids)
@@ -482,37 +482,37 @@ kundi LegacyFinalizationTest(TestBase, unittest.TestCase):
             s = LegacyResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids)
             self.assert_survivors(ids)
-            # weakrefs are cleared before tp_del is called.
-            self.assertIs(wr(), None)
+            # weakrefs are cleared before tp_toa ni called.
+            self.assertIs(wr(), Tupu)
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids * 2)
             self.assert_survivors(ids)
-        self.assertIs(wr(), None)
+        self.assertIs(wr(), Tupu)
 
     eleza test_legacy_self_cycle(self):
-        # Self-cycles with legacy finalizers end up in gc.garbage.
+        # Self-cycles with legacy finalizers end up kwenye gc.garbage.
         with SimpleBase.test():
             s = LegacySelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
-            del s
+            toa s
             gc.collect()
             self.assert_del_calls([])
             self.assert_tp_del_calls([])
             self.assert_survivors([])
             self.assert_garbage(ids)
-            self.assertIsNot(wr(), None)
+            self.assertIsNot(wr(), Tupu)
             # Break the cycle to allow collection
-            gc.garbage[0].ref = None
+            gc.garbage[0].ref = Tupu
         self.assert_garbage([])
-        self.assertIs(wr(), None)
+        self.assertIs(wr(), Tupu)
 
 
 ikiwa __name__ == "__main__":

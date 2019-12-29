@@ -1,7 +1,7 @@
-This is a sample doctest in a text file that contains non-ASCII characters.
-This file is encoded using UTF-8.
+This ni a sample doctest kwenye a text file that contains non-ASCII characters.
+This file ni encoded using UTF-8.
 
-In order to get this test to pass, we have to manually specify the
+In order to get this test to pita, we have to manually specify the
 encoding.
 
   >>> 'föö'

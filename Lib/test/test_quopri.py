@@ -48,22 +48,22 @@ eleza withpythonimplementation(testfunc):
         # Test default implementation
         testfunc(self)
         # Test Python implementation
-        ikiwa quopri.b2a_qp is not None or quopri.a2b_qp is not None:
+        ikiwa quopri.b2a_qp ni sio Tupu ama quopri.a2b_qp ni sio Tupu:
             oldencode = quopri.b2a_qp
             olddecode = quopri.a2b_qp
-            try:
-                quopri.b2a_qp = None
-                quopri.a2b_qp = None
+            jaribu:
+                quopri.b2a_qp = Tupu
+                quopri.a2b_qp = Tupu
                 testfunc(self)
-            finally:
+            mwishowe:
                 quopri.b2a_qp = oldencode
                 quopri.a2b_qp = olddecode
     newtest.__name__ = testfunc.__name__
     rudisha newtest
 
 kundi QuopriTestCase(unittest.TestCase):
-    # Each entry is a tuple of (plaintext, encoded string).  These strings are
-    # used in the "quotetabs=0" tests.
+    # Each entry ni a tuple of (plaintext, encoded string).  These strings are
+    # used kwenye the "quotetabs=0" tests.
     STRINGS = (
         # Some normal strings
         (b'hello', b'hello'),
@@ -87,24 +87,24 @@ kundi QuopriTestCase(unittest.TestCase):
         (b'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\xd8\xd9\xda\xdb\xdc\xdd\xde\xdfxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
          b'''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=D8=D9=DA=DB=DC=DD=DE=DFx=
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'''),
-        # A line of exactly 76 characters, no soft line break should be needed
+        # A line of exactly 76 characters, no soft line koma should be needed
         (b'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',
         b'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'),
-        # A line of 77 characters, forcing a soft line break at position 75,
-        # and a second line of exactly 2 characters (because the soft line
-        # break `=' sign counts against the line length limit).
+        # A line of 77 characters, forcing a soft line koma at position 75,
+        # na a second line of exactly 2 characters (because the soft line
+        # koma `=' sign counts against the line length limit).
         (b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zz'''),
-        # A line of 151 characters, forcing a soft line break at position 75,
-        # with a second line of exactly 76 characters and no trailing =
+        # A line of 151 characters, forcing a soft line koma at position 75,
+        # with a second line of exactly 76 characters na no trailing =
         (b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'''),
-        # A string containing a hard line break, but which the first line is
-        # 151 characters and the second line is exactly 76 characters.  This
+        # A string containing a hard line koma, but which the first line is
+        # 151 characters na the second line ni exactly 76 characters.  This
         # should leave us with three lines, the first which has a soft line
-        # break, and which the second and third do not.
+        # koma, na which the second na third do not.
         (b'''yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''',
          b'''yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy=
@@ -114,13 +114,13 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         (DECSAMPLE, ENCSAMPLE),
         )
 
-    # These are used in the "quotetabs=1" tests.
+    # These are used kwenye the "quotetabs=1" tests.
     ESTRINGS = (
         (b'hello world', b'hello=20world'),
         (b'hello\tworld', b'hello=09world'),
         )
 
-    # These are used in the "header=1" tests.
+    # These are used kwenye the "header=1" tests.
     HSTRINGS = (
         (b'hello world', b'hello_world'),
         (b'hello_world', b'hello=5Fworld'),
@@ -128,37 +128,37 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
 
     @withpythonimplementation
     eleza test_encodestring(self):
-        for p, e in self.STRINGS:
+        kila p, e kwenye self.STRINGS:
             self.assertEqual(quopri.encodestring(p), e)
 
     @withpythonimplementation
     eleza test_decodestring(self):
-        for p, e in self.STRINGS:
+        kila p, e kwenye self.STRINGS:
             self.assertEqual(quopri.decodestring(e), p)
 
     @withpythonimplementation
     eleza test_decodestring_double_equals(self):
-        # Issue 21511 - Ensure that byte string is compared to byte string
+        # Issue 21511 - Ensure that byte string ni compared to byte string
         # instead of int byte value
         decoded_value, encoded_value = (b"123=four", b"123==four")
         self.assertEqual(quopri.decodestring(encoded_value), decoded_value)
 
     @withpythonimplementation
     eleza test_idempotent_string(self):
-        for p, e in self.STRINGS:
+        kila p, e kwenye self.STRINGS:
             self.assertEqual(quopri.decodestring(quopri.encodestring(e)), e)
 
     @withpythonimplementation
     eleza test_encode(self):
-        for p, e in self.STRINGS:
+        kila p, e kwenye self.STRINGS:
             infp = io.BytesIO(p)
             outfp = io.BytesIO()
-            quopri.encode(infp, outfp, quotetabs=False)
+            quopri.encode(infp, outfp, quotetabs=Uongo)
             self.assertEqual(outfp.getvalue(), e)
 
     @withpythonimplementation
     eleza test_decode(self):
-        for p, e in self.STRINGS:
+        kila p, e kwenye self.STRINGS:
             infp = io.BytesIO(e)
             outfp = io.BytesIO()
             quopri.decode(infp, outfp)
@@ -166,19 +166,19 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
 
     @withpythonimplementation
     eleza test_embedded_ws(self):
-        for p, e in self.ESTRINGS:
-            self.assertEqual(quopri.encodestring(p, quotetabs=True), e)
+        kila p, e kwenye self.ESTRINGS:
+            self.assertEqual(quopri.encodestring(p, quotetabs=Kweli), e)
             self.assertEqual(quopri.decodestring(e), p)
 
     @withpythonimplementation
     eleza test_encode_header(self):
-        for p, e in self.HSTRINGS:
-            self.assertEqual(quopri.encodestring(p, header=True), e)
+        kila p, e kwenye self.HSTRINGS:
+            self.assertEqual(quopri.encodestring(p, header=Kweli), e)
 
     @withpythonimplementation
     eleza test_decode_header(self):
-        for p, e in self.HSTRINGS:
-            self.assertEqual(quopri.decodestring(e, header=True), p)
+        kila p, e kwenye self.HSTRINGS:
+            self.assertEqual(quopri.decodestring(e, header=Kweli), p)
 
     eleza test_scriptencode(self):
         (p, e) = self.STRINGS[-1]
@@ -187,12 +187,12 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         self.addCleanup(process.stdout.close)
         cout, cerr = process.communicate(p)
         # On Windows, Python will output the result to stdout using
-        # CRLF, as the mode of stdout is text mode. To compare this
+        # CRLF, kama the mode of stdout ni text mode. To compare this
         # with the expected result, we need to do a line-by-line comparison.
         cout = cout.decode('latin-1').splitlines()
         e = e.decode('latin-1').splitlines()
         assert len(cout)==len(e)
-        for i in range(len(cout)):
+        kila i kwenye range(len(cout)):
             self.assertEqual(cout[i], e[i])
         self.assertEqual(cout, e)
 

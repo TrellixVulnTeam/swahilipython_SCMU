@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here is not    --
+-- particular, achieving the same results as the tests here ni sio    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are not exhaustive.                   --
+-- or specification.  The tests are sio exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -71,7 +71,7 @@ addx037 add '7000'  '10000e+9' -> '1.00000000E+13' Inexact Rounded
 addx038 add '70000'  '10000e+9' -> '1.00000001E+13' Inexact Rounded
 addx039 add '700000'  '10000e+9' -> '1.00000007E+13' Rounded
 
--- symmetry:
+-- symmejaribu:
 addx040 add '10000e+9'  '70' -> '1.00000000E+13' Inexact Rounded
 addx041 add '10000e+9'  '700' -> '1.00000000E+13' Inexact Rounded
 addx042 add '10000e+9'  '7000' -> '1.00000000E+13' Inexact Rounded
@@ -305,7 +305,7 @@ addx267 add '123456789' 1.00000001    -> '123456790' Inexact Rounded
 addx268 add '123456789' 1.00001       -> '123456790' Inexact Rounded
 addx269 add '123456789' 1.1           -> '123456790' Inexact Rounded
 
--- input preparation tests (operands should not be rounded)
+-- input preparation tests (operands should sio be rounded)
 precision: 3
 rounding: half_up
 
@@ -1645,7 +1645,7 @@ addx6037 add '7000'    '10000e+16' -> '1.000000000000000E+20' Inexact Rounded
 addx6038 add '70000'   '10000e+16' -> '1.000000000000001E+20' Inexact Rounded
 addx6039 add '700000'  '10000e+16' -> '1.000000000000007E+20' Rounded
 
--- symmetry:
+-- symmejaribu:
 addx6040 add '10000e+16'  '70' -> '1.000000000000000E+20' Inexact Rounded
 addx6041 add '10000e+16'  '700' -> '1.000000000000000E+20' Inexact Rounded
 addx6042 add '10000e+16'  '7000' -> '1.000000000000000E+20' Inexact Rounded

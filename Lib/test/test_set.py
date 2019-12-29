@@ -12,17 +12,17 @@ agiza collections.abc
 agiza itertools
 
 kundi PassThru(Exception):
-    pass
+    pita
 
-eleza check_pass_thru():
-    raise PassThru
-    yield 1
+eleza check_pita_thru():
+    ashiria PassThru
+    tuma 1
 
 kundi BadCmp:
     eleza __hash__(self):
         rudisha 1
     eleza __eq__(self, other):
-        raise RuntimeError
+        ashiria RuntimeError
 
 kundi ReprWrapper:
     'Used to test self-referential repr() calls'
@@ -30,7 +30,7 @@ kundi ReprWrapper:
         rudisha repr(self.value)
 
 kundi HashCountingInt(int):
-    'int-like object that counts the number of times __hash__ is called'
+    'int-like object that counts the number of times __hash__ ni called'
     eleza __init__(self, *args):
         self.hash_count = 0
     eleza __hash__(self):
@@ -38,7 +38,7 @@ kundi HashCountingInt(int):
         rudisha int.__hash__(self)
 
 kundi TestJointOps:
-    # Tests common to both set and frozenset
+    # Tests common to both set na frozenset
 
     eleza setUp(self):
         self.word = word = 'simsalabim'
@@ -55,28 +55,28 @@ kundi TestJointOps:
         actual = sorted(self.s)
         expected = sorted(self.d)
         self.assertEqual(actual, expected)
-        self.assertRaises(PassThru, self.thetype, check_pass_thru())
+        self.assertRaises(PassThru, self.thetype, check_pita_thru())
         self.assertRaises(TypeError, self.thetype, [[]])
 
     eleza test_len(self):
         self.assertEqual(len(self.s), len(self.d))
 
     eleza test_contains(self):
-        for c in self.letters:
-            self.assertEqual(c in self.s, c in self.d)
+        kila c kwenye self.letters:
+            self.assertEqual(c kwenye self.s, c kwenye self.d)
         self.assertRaises(TypeError, self.s.__contains__, [[]])
         s = self.thetype([frozenset(self.letters)])
         self.assertIn(self.thetype(self.letters), s)
 
     eleza test_union(self):
         u = self.s.union(self.otherword)
-        for c in self.letters:
-            self.assertEqual(c in u, c in self.d or c in self.otherword)
+        kila c kwenye self.letters:
+            self.assertEqual(c kwenye u, c kwenye self.d ama c kwenye self.otherword)
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(u), self.basetype)
-        self.assertRaises(PassThru, self.s.union, check_pass_thru())
+        self.assertRaises(PassThru, self.s.union, check_pita_thru())
         self.assertRaises(TypeError, self.s.union, [[]])
-        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').union(C('cdc')), set('abcd'))
             self.assertEqual(self.thetype('abcba').union(C('efgfe')), set('abcefg'))
             self.assertEqual(self.thetype('abcba').union(C('ccb')), set('abc'))
@@ -91,21 +91,21 @@ kundi TestJointOps:
         i = self.s.union(self.otherword)
         self.assertEqual(self.s | set(self.otherword), i)
         self.assertEqual(self.s | frozenset(self.otherword), i)
-        try:
+        jaribu:
             self.s | self.otherword
-        except TypeError:
-            pass
-        else:
-            self.fail("s|t did not screen-out general iterables")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("s|t did sio screen-out general iterables")
 
     eleza test_intersection(self):
         i = self.s.intersection(self.otherword)
-        for c in self.letters:
-            self.assertEqual(c in i, c in self.d and c in self.otherword)
+        kila c kwenye self.letters:
+            self.assertEqual(c kwenye i, c kwenye self.d na c kwenye self.otherword)
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(i), self.basetype)
-        self.assertRaises(PassThru, self.s.intersection, check_pass_thru())
-        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        self.assertRaises(PassThru, self.s.intersection, check_pita_thru())
+        kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').intersection(C('cdc')), set('cc'))
             self.assertEqual(self.thetype('abcba').intersection(C('efgfe')), set(''))
             self.assertEqual(self.thetype('abcba').intersection(C('ccb')), set('bc'))
@@ -115,43 +115,43 @@ kundi TestJointOps:
         z = s.intersection()
         ikiwa self.thetype == frozenset():
             self.assertEqual(id(s), id(z))
-        else:
+        isipokua:
             self.assertNotEqual(id(s), id(z))
 
     eleza test_isdisjoint(self):
         eleza f(s1, s2):
             'Pure python equivalent of isdisjoint()'
-            rudisha not set(s1).intersection(s2)
-        for larg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
+            rudisha sio set(s1).intersection(s2)
+        kila larg kwenye '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
             s1 = self.thetype(larg)
-            for rarg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
-                for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+            kila rarg kwenye '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
+                kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
                     s2 = C(rarg)
                     actual = s1.isdisjoint(s2)
                     expected = f(s1, s2)
                     self.assertEqual(actual, expected)
-                    self.assertTrue(actual is True or actual is False)
+                    self.assertKweli(actual ni Kweli ama actual ni Uongo)
 
     eleza test_and(self):
         i = self.s.intersection(self.otherword)
         self.assertEqual(self.s & set(self.otherword), i)
         self.assertEqual(self.s & frozenset(self.otherword), i)
-        try:
+        jaribu:
             self.s & self.otherword
-        except TypeError:
-            pass
-        else:
-            self.fail("s&t did not screen-out general iterables")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("s&t did sio screen-out general iterables")
 
     eleza test_difference(self):
         i = self.s.difference(self.otherword)
-        for c in self.letters:
-            self.assertEqual(c in i, c in self.d and c not in self.otherword)
+        kila c kwenye self.letters:
+            self.assertEqual(c kwenye i, c kwenye self.d na c haiko kwenye self.otherword)
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(i), self.basetype)
-        self.assertRaises(PassThru, self.s.difference, check_pass_thru())
+        self.assertRaises(PassThru, self.s.difference, check_pita_thru())
         self.assertRaises(TypeError, self.s.difference, [[]])
-        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').difference(C('cdc')), set('ab'))
             self.assertEqual(self.thetype('abcba').difference(C('efgfe')), set('abc'))
             self.assertEqual(self.thetype('abcba').difference(C('ccb')), set('a'))
@@ -163,22 +163,22 @@ kundi TestJointOps:
         i = self.s.difference(self.otherword)
         self.assertEqual(self.s - set(self.otherword), i)
         self.assertEqual(self.s - frozenset(self.otherword), i)
-        try:
+        jaribu:
             self.s - self.otherword
-        except TypeError:
-            pass
-        else:
-            self.fail("s-t did not screen-out general iterables")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("s-t did sio screen-out general iterables")
 
     eleza test_symmetric_difference(self):
         i = self.s.symmetric_difference(self.otherword)
-        for c in self.letters:
-            self.assertEqual(c in i, (c in self.d) ^ (c in self.otherword))
+        kila c kwenye self.letters:
+            self.assertEqual(c kwenye i, (c kwenye self.d) ^ (c kwenye self.otherword))
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(i), self.basetype)
-        self.assertRaises(PassThru, self.s.symmetric_difference, check_pass_thru())
+        self.assertRaises(PassThru, self.s.symmetric_difference, check_pita_thru())
         self.assertRaises(TypeError, self.s.symmetric_difference, [[]])
-        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').symmetric_difference(C('cdc')), set('abd'))
             self.assertEqual(self.thetype('abcba').symmetric_difference(C('efgfe')), set('abcefg'))
             self.assertEqual(self.thetype('abcba').symmetric_difference(C('ccb')), set('a'))
@@ -188,20 +188,20 @@ kundi TestJointOps:
         i = self.s.symmetric_difference(self.otherword)
         self.assertEqual(self.s ^ set(self.otherword), i)
         self.assertEqual(self.s ^ frozenset(self.otherword), i)
-        try:
+        jaribu:
             self.s ^ self.otherword
-        except TypeError:
-            pass
-        else:
-            self.fail("s^t did not screen-out general iterables")
+        tatizo TypeError:
+            pita
+        isipokua:
+            self.fail("s^t did sio screen-out general iterables")
 
     eleza test_equality(self):
         self.assertEqual(self.s, set(self.word))
         self.assertEqual(self.s, frozenset(self.word))
-        self.assertEqual(self.s == self.word, False)
+        self.assertEqual(self.s == self.word, Uongo)
         self.assertNotEqual(self.s, set(self.otherword))
         self.assertNotEqual(self.s, frozenset(self.otherword))
-        self.assertEqual(self.s != self.word, True)
+        self.assertEqual(self.s != self.word, Kweli)
 
     eleza test_setOfFrozensets(self):
         t = map(frozenset, ['abcdef', 'bcd', 'bdcb', 'fed', 'fedccba'])
@@ -210,48 +210,48 @@ kundi TestJointOps:
 
     eleza test_sub_and_super(self):
         p, q, r = map(self.thetype, ['ab', 'abcde', 'def'])
-        self.assertTrue(p < q)
-        self.assertTrue(p <= q)
-        self.assertTrue(q <= q)
-        self.assertTrue(q > p)
-        self.assertTrue(q >= p)
-        self.assertFalse(q < r)
-        self.assertFalse(q <= r)
-        self.assertFalse(q > r)
-        self.assertFalse(q >= r)
-        self.assertTrue(set('a').issubset('abc'))
-        self.assertTrue(set('abc').issuperset('a'))
-        self.assertFalse(set('a').issubset('cbs'))
-        self.assertFalse(set('cbs').issuperset('a'))
+        self.assertKweli(p < q)
+        self.assertKweli(p <= q)
+        self.assertKweli(q <= q)
+        self.assertKweli(q > p)
+        self.assertKweli(q >= p)
+        self.assertUongo(q < r)
+        self.assertUongo(q <= r)
+        self.assertUongo(q > r)
+        self.assertUongo(q >= r)
+        self.assertKweli(set('a').issubset('abc'))
+        self.assertKweli(set('abc').issuperset('a'))
+        self.assertUongo(set('a').issubset('cbs'))
+        self.assertUongo(set('cbs').issuperset('a'))
 
     eleza test_pickling(self):
-        for i in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila i kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(self.s, i)
             dup = pickle.loads(p)
             self.assertEqual(self.s, dup, "%s != %s" % (self.s, dup))
-            ikiwa type(self.s) not in (set, frozenset):
+            ikiwa type(self.s) haiko kwenye (set, frozenset):
                 self.s.x = 10
                 p = pickle.dumps(self.s, i)
                 dup = pickle.loads(p)
                 self.assertEqual(self.s.x, dup.x)
 
     eleza test_iterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             itorg = iter(self.s)
             data = self.thetype(self.s)
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
-            # Set iterators unpickle as list iterators due to the
+            # Set iterators unpickle kama list iterators due to the
             # undefined order of set items.
             # self.assertEqual(type(itorg), type(it))
             self.assertIsInstance(it, collections.abc.Iterator)
             self.assertEqual(self.thetype(it), data)
 
             it = pickle.loads(d)
-            try:
+            jaribu:
                 drop = next(it)
-            except StopIteration:
-                continue
+            tatizo StopIteration:
+                endelea
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
             self.assertEqual(self.thetype(it), data - self.thetype((drop,)))
@@ -262,13 +262,13 @@ kundi TestJointOps:
                 self.value = value
             eleza __hash__(self):
                 rudisha self.value
-            eleza __deepcopy__(self, memo=None):
+            eleza __deepcopy__(self, memo=Tupu):
                 rudisha Tracer(self.value + 1)
         t = Tracer(10)
         s = self.thetype([t])
         dup = copy.deepcopy(s)
         self.assertNotEqual(id(s), id(dup))
-        for elem in dup:
+        kila elem kwenye dup:
             newt = elem
         self.assertNotEqual(id(t), id(newt))
         self.assertEqual(t.value + 1, newt.value)
@@ -276,9 +276,9 @@ kundi TestJointOps:
     eleza test_gc(self):
         # Create a nest of cycles to exercise overall ref count check
         kundi A:
-            pass
-        s = set(A() for i in range(1000))
-        for elem in s:
+            pita
+        s = set(A() kila i kwenye range(1000))
+        kila elem kwenye s:
             elem.cycle = s
             elem.sub = elem
             elem.set = set([elem])
@@ -298,7 +298,7 @@ kundi TestJointOps:
 
     eleza test_badcmp(self):
         s = self.thetype([BadCmp()])
-        # Detect comparison errors during insertion and lookup
+        # Detect comparison errors during insertion na lookup
         self.assertRaises(RuntimeError, self.thetype, [BadCmp(), BadCmp()])
         self.assertRaises(RuntimeError, s.__contains__, BadCmp())
         # Detect errors during mutating operations
@@ -313,7 +313,7 @@ kundi TestJointOps:
         w.value = s
         ikiwa self.thetype == set:
             self.assertEqual(repr(s), '{set(...)}')
-        else:
+        isipokua:
             name = repr(s).partition('(')[0]    # strip kundi name
             self.assertEqual(repr(s), '%s({%s(...)})' % (name, name))
 
@@ -322,45 +322,45 @@ kundi TestJointOps:
         s = self.thetype([w])
         w.value = s
         fo = open(support.TESTFN, "w")
-        try:
+        jaribu:
             fo.write(str(s))
             fo.close()
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), repr(s))
-        finally:
+        mwishowe:
             fo.close()
             support.unlink(support.TESTFN)
 
     eleza test_do_not_rehash_dict_keys(self):
         n = 10
         d = dict.kutokakeys(map(HashCountingInt, range(n)))
-        self.assertEqual(sum(elem.hash_count for elem in d), n)
+        self.assertEqual(sum(elem.hash_count kila elem kwenye d), n)
         s = self.thetype(d)
-        self.assertEqual(sum(elem.hash_count for elem in d), n)
+        self.assertEqual(sum(elem.hash_count kila elem kwenye d), n)
         s.difference(d)
-        self.assertEqual(sum(elem.hash_count for elem in d), n)
+        self.assertEqual(sum(elem.hash_count kila elem kwenye d), n)
         ikiwa hasattr(s, 'symmetric_difference_update'):
             s.symmetric_difference_update(d)
-        self.assertEqual(sum(elem.hash_count for elem in d), n)
+        self.assertEqual(sum(elem.hash_count kila elem kwenye d), n)
         d2 = dict.kutokakeys(set(d))
-        self.assertEqual(sum(elem.hash_count for elem in d), n)
+        self.assertEqual(sum(elem.hash_count kila elem kwenye d), n)
         d3 = dict.kutokakeys(frozenset(d))
-        self.assertEqual(sum(elem.hash_count for elem in d), n)
+        self.assertEqual(sum(elem.hash_count kila elem kwenye d), n)
         d3 = dict.kutokakeys(frozenset(d), 123)
-        self.assertEqual(sum(elem.hash_count for elem in d), n)
+        self.assertEqual(sum(elem.hash_count kila elem kwenye d), n)
         self.assertEqual(d3, dict.kutokakeys(d, 123))
 
     eleza test_container_iterator(self):
-        # Bug #3680: tp_traverse was not implemented for set iterator object
+        # Bug #3680: tp_traverse was sio implemented kila set iterator object
         kundi C(object):
-            pass
+            pita
         obj = C()
         ref = weakref.ref(obj)
         container = set([obj, 1])
         obj.x = iter(container)
-        del obj, container
+        toa obj, container
         gc.collect()
-        self.assertTrue(ref() is None, "Cycle was not collected")
+        self.assertKweli(ref() ni Tupu, "Cycle was sio collected")
 
     eleza test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.thetype)
@@ -390,7 +390,7 @@ kundi TestSet(TestJointOps, unittest.TestCase):
 
     eleza test_set_literal_insertion_order(self):
         # SF Issue #26020 -- Expect left to right insertion
-        s = {1, 1.0, True}
+        s = {1, 1.0, Kweli}
         self.assertEqual(len(s), 1)
         stored_value = s.pop()
         self.assertEqual(type(stored_value), int)
@@ -438,24 +438,24 @@ kundi TestSet(TestJointOps, unittest.TestCase):
 
     eleza test_remove_keyerror_unpacking(self):
         # bug:  www.python.org/sf/1576657
-        for v1 in ['Q', (1,)]:
-            try:
+        kila v1 kwenye ['Q', (1,)]:
+            jaribu:
                 self.s.remove(v1)
-            except KeyError as e:
+            tatizo KeyError kama e:
                 v2 = e.args[0]
                 self.assertEqual(v1, v2)
-            else:
+            isipokua:
                 self.fail()
 
     eleza test_remove_keyerror_set(self):
         key = self.thetype([3, 4])
-        try:
+        jaribu:
             self.s.remove(key)
-        except KeyError as e:
-            self.assertTrue(e.args[0] is key,
-                         "KeyError should be {0}, not {1}".format(key,
+        tatizo KeyError kama e:
+            self.assertKweli(e.args[0] ni key,
+                         "KeyError should be {0}, sio {1}".format(key,
                                                                   e.args[0]))
-        else:
+        isipokua:
             self.fail()
 
     eleza test_discard(self):
@@ -470,79 +470,79 @@ kundi TestSet(TestJointOps, unittest.TestCase):
         s.discard(self.thetype(self.word))
 
     eleza test_pop(self):
-        for i in range(len(self.s)):
+        kila i kwenye range(len(self.s)):
             elem = self.s.pop()
             self.assertNotIn(elem, self.s)
         self.assertRaises(KeyError, self.s.pop)
 
     eleza test_update(self):
         retval = self.s.update(self.otherword)
-        self.assertEqual(retval, None)
-        for c in (self.word + self.otherword):
+        self.assertEqual(retval, Tupu)
+        kila c kwenye (self.word + self.otherword):
             self.assertIn(c, self.s)
-        self.assertRaises(PassThru, self.s.update, check_pass_thru())
+        self.assertRaises(PassThru, self.s.update, check_pita_thru())
         self.assertRaises(TypeError, self.s.update, [[]])
-        for p, q in (('cdc', 'abcd'), ('efgfe', 'abcefg'), ('ccb', 'abc'), ('ef', 'abcef')):
-            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        kila p, q kwenye (('cdc', 'abcd'), ('efgfe', 'abcefg'), ('ccb', 'abc'), ('ef', 'abcef')):
+            kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
-                self.assertEqual(s.update(C(p)), None)
+                self.assertEqual(s.update(C(p)), Tupu)
                 self.assertEqual(s, set(q))
-        for p in ('cdc', 'efgfe', 'ccb', 'ef', 'abcda'):
+        kila p kwenye ('cdc', 'efgfe', 'ccb', 'ef', 'abcda'):
             q = 'ahi'
-            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+            kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
-                self.assertEqual(s.update(C(p), C(q)), None)
+                self.assertEqual(s.update(C(p), C(q)), Tupu)
                 self.assertEqual(s, set(s) | set(p) | set(q))
 
     eleza test_ior(self):
         self.s |= set(self.otherword)
-        for c in (self.word + self.otherword):
+        kila c kwenye (self.word + self.otherword):
             self.assertIn(c, self.s)
 
     eleza test_intersection_update(self):
         retval = self.s.intersection_update(self.otherword)
-        self.assertEqual(retval, None)
-        for c in (self.word + self.otherword):
-            ikiwa c in self.otherword and c in self.word:
+        self.assertEqual(retval, Tupu)
+        kila c kwenye (self.word + self.otherword):
+            ikiwa c kwenye self.otherword na c kwenye self.word:
                 self.assertIn(c, self.s)
-            else:
+            isipokua:
                 self.assertNotIn(c, self.s)
-        self.assertRaises(PassThru, self.s.intersection_update, check_pass_thru())
+        self.assertRaises(PassThru, self.s.intersection_update, check_pita_thru())
         self.assertRaises(TypeError, self.s.intersection_update, [[]])
-        for p, q in (('cdc', 'c'), ('efgfe', ''), ('ccb', 'bc'), ('ef', '')):
-            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        kila p, q kwenye (('cdc', 'c'), ('efgfe', ''), ('ccb', 'bc'), ('ef', '')):
+            kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
-                self.assertEqual(s.intersection_update(C(p)), None)
+                self.assertEqual(s.intersection_update(C(p)), Tupu)
                 self.assertEqual(s, set(q))
                 ss = 'abcba'
                 s = self.thetype(ss)
                 t = 'cbc'
-                self.assertEqual(s.intersection_update(C(p), C(t)), None)
+                self.assertEqual(s.intersection_update(C(p), C(t)), Tupu)
                 self.assertEqual(s, set('abcba')&set(p)&set(t))
 
     eleza test_iand(self):
         self.s &= set(self.otherword)
-        for c in (self.word + self.otherword):
-            ikiwa c in self.otherword and c in self.word:
+        kila c kwenye (self.word + self.otherword):
+            ikiwa c kwenye self.otherword na c kwenye self.word:
                 self.assertIn(c, self.s)
-            else:
+            isipokua:
                 self.assertNotIn(c, self.s)
 
     eleza test_difference_update(self):
         retval = self.s.difference_update(self.otherword)
-        self.assertEqual(retval, None)
-        for c in (self.word + self.otherword):
-            ikiwa c in self.word and c not in self.otherword:
+        self.assertEqual(retval, Tupu)
+        kila c kwenye (self.word + self.otherword):
+            ikiwa c kwenye self.word na c haiko kwenye self.otherword:
                 self.assertIn(c, self.s)
-            else:
+            isipokua:
                 self.assertNotIn(c, self.s)
-        self.assertRaises(PassThru, self.s.difference_update, check_pass_thru())
+        self.assertRaises(PassThru, self.s.difference_update, check_pita_thru())
         self.assertRaises(TypeError, self.s.difference_update, [[]])
         self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
-        for p, q in (('cdc', 'ab'), ('efgfe', 'abc'), ('ccb', 'a'), ('ef', 'abc')):
-            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        kila p, q kwenye (('cdc', 'ab'), ('efgfe', 'abc'), ('ccb', 'a'), ('ef', 'abc')):
+            kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
-                self.assertEqual(s.difference_update(C(p)), None)
+                self.assertEqual(s.difference_update(C(p)), Tupu)
                 self.assertEqual(s, set(q))
 
                 s = self.thetype('abcdefghih')
@@ -559,34 +559,34 @@ kundi TestSet(TestJointOps, unittest.TestCase):
 
     eleza test_isub(self):
         self.s -= set(self.otherword)
-        for c in (self.word + self.otherword):
-            ikiwa c in self.word and c not in self.otherword:
+        kila c kwenye (self.word + self.otherword):
+            ikiwa c kwenye self.word na c haiko kwenye self.otherword:
                 self.assertIn(c, self.s)
-            else:
+            isipokua:
                 self.assertNotIn(c, self.s)
 
     eleza test_symmetric_difference_update(self):
         retval = self.s.symmetric_difference_update(self.otherword)
-        self.assertEqual(retval, None)
-        for c in (self.word + self.otherword):
-            ikiwa (c in self.word) ^ (c in self.otherword):
+        self.assertEqual(retval, Tupu)
+        kila c kwenye (self.word + self.otherword):
+            ikiwa (c kwenye self.word) ^ (c kwenye self.otherword):
                 self.assertIn(c, self.s)
-            else:
+            isipokua:
                 self.assertNotIn(c, self.s)
-        self.assertRaises(PassThru, self.s.symmetric_difference_update, check_pass_thru())
+        self.assertRaises(PassThru, self.s.symmetric_difference_update, check_pita_thru())
         self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
-        for p, q in (('cdc', 'abd'), ('efgfe', 'abcefg'), ('ccb', 'a'), ('ef', 'abcef')):
-            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
+        kila p, q kwenye (('cdc', 'abd'), ('efgfe', 'abcefg'), ('ccb', 'a'), ('ef', 'abcef')):
+            kila C kwenye set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
-                self.assertEqual(s.symmetric_difference_update(C(p)), None)
+                self.assertEqual(s.symmetric_difference_update(C(p)), Tupu)
                 self.assertEqual(s, set(q))
 
     eleza test_ixor(self):
         self.s ^= set(self.otherword)
-        for c in (self.word + self.otherword):
-            ikiwa (c in self.word) ^ (c in self.otherword):
+        kila c kwenye (self.word + self.otherword):
+            ikiwa (c kwenye self.word) ^ (c kwenye self.otherword):
                 self.assertIn(c, self.s)
-            else:
+            isipokua:
                 self.assertNotIn(c, self.s)
 
     eleza test_inplace_on_self(self):
@@ -605,65 +605,65 @@ kundi TestSet(TestJointOps, unittest.TestCase):
         s = self.thetype('gallahad')
         p = weakref.proxy(s)
         self.assertEqual(str(p), str(s))
-        s = None
+        s = Tupu
         self.assertRaises(ReferenceError, str, p)
 
     eleza test_rich_compare(self):
         kundi TestRichSetCompare:
             eleza __gt__(self, some_set):
-                self.gt_called = True
-                rudisha False
+                self.gt_called = Kweli
+                rudisha Uongo
             eleza __lt__(self, some_set):
-                self.lt_called = True
-                rudisha False
+                self.lt_called = Kweli
+                rudisha Uongo
             eleza __ge__(self, some_set):
-                self.ge_called = True
-                rudisha False
+                self.ge_called = Kweli
+                rudisha Uongo
             eleza __le__(self, some_set):
-                self.le_called = True
-                rudisha False
+                self.le_called = Kweli
+                rudisha Uongo
 
         # This first tries the builtin rich set comparison, which doesn't know
-        # how to handle the custom object. Upon returning NotImplemented, the
-        # corresponding comparison on the right object is invoked.
+        # how to handle the custom object. Upon rudishaing NotImplemented, the
+        # corresponding comparison on the right object ni invoked.
         myset = {1, 2, 3}
 
         myobj = TestRichSetCompare()
         myset < myobj
-        self.assertTrue(myobj.gt_called)
+        self.assertKweli(myobj.gt_called)
 
         myobj = TestRichSetCompare()
         myset > myobj
-        self.assertTrue(myobj.lt_called)
+        self.assertKweli(myobj.lt_called)
 
         myobj = TestRichSetCompare()
         myset <= myobj
-        self.assertTrue(myobj.ge_called)
+        self.assertKweli(myobj.ge_called)
 
         myobj = TestRichSetCompare()
         myset >= myobj
-        self.assertTrue(myobj.le_called)
+        self.assertKweli(myobj.le_called)
 
     @unittest.skipUnless(hasattr(set, "test_c_api"),
-                         'C API test only available in a debug build')
+                         'C API test only available kwenye a debug build')
     eleza test_c_api(self):
-        self.assertEqual(set().test_c_api(), True)
+        self.assertEqual(set().test_c_api(), Kweli)
 
 kundi SetSubclass(set):
-    pass
+    pita
 
 kundi TestSetSubclass(TestSet):
     thetype = SetSubclass
     basetype = set
 
 kundi SetSubclassWithKeywordArgs(set):
-    eleza __init__(self, iterable=[], newarg=None):
+    eleza __init__(self, iterable=[], newarg=Tupu):
         set.__init__(self, iterable)
 
 kundi TestSetSubclassWithKeywordArgs(TestSet):
 
     eleza test_keywords_in_subclass(self):
-        'SF bug #1486663 -- this used to erroneously raise a TypeError'
+        'SF bug #1486663 -- this used to erroneously ashiria a TypeError'
         SetSubclassWithKeywordArgs(newarg=1)
 
 kundi TestFrozenSet(TestJointOps, unittest.TestCase):
@@ -695,9 +695,9 @@ kundi TestFrozenSet(TestJointOps, unittest.TestCase):
 
         # make sure that all permutations give the same hash value
         n = 100
-        seq = [randrange(n) for i in range(n)]
+        seq = [randrange(n) kila i kwenye range(n)]
         results = set()
-        for i in range(200):
+        kila i kwenye range(200):
             shuffle(seq)
             results.add(hash(self.thetype(seq)))
         self.assertEqual(len(results), 1)
@@ -724,32 +724,32 @@ kundi TestFrozenSet(TestJointOps, unittest.TestCase):
         n = 13
         hashvalues = set()
         addhashvalue = hashvalues.add
-        elemmasks = [(i+1, 1<<i) for i in range(n)]
-        for i in range(2**n):
-            addhashvalue(hash(frozenset([e for e, m in elemmasks ikiwa m&i])))
+        elemmasks = [(i+1, 1<<i) kila i kwenye range(n)]
+        kila i kwenye range(2**n):
+            addhashvalue(hash(frozenset([e kila e, m kwenye elemmasks ikiwa m&i])))
         self.assertEqual(len(hashvalues), 2**n)
 
         eleza zf_range(n):
             # https://en.wikipedia.org/wiki/Set-theoretic_definition_of_natural_numbers
             nums = [frozenset()]
-            for i in range(n-1):
+            kila i kwenye range(n-1):
                 num = frozenset(nums)
                 nums.append(num)
             rudisha nums[:n]
 
         eleza powerset(s):
-            for i in range(len(s)+1):
-                yield kutoka map(frozenset, itertools.combinations(s, i))
+            kila i kwenye range(len(s)+1):
+                tuma kutoka map(frozenset, itertools.combinations(s, i))
 
-        for n in range(18):
+        kila n kwenye range(18):
             t = 2 ** n
             mask = t - 1
-            for nums in (range, zf_range):
-                u = len({h & mask for h in map(hash, powerset(nums(n)))})
+            kila nums kwenye (range, zf_range):
+                u = len({h & mask kila h kwenye map(hash, powerset(nums(n)))})
                 self.assertGreater(4*u, t)
 
 kundi FrozenSetSubclass(frozenset):
-    pass
+    pita
 
 kundi TestFrozenSetSubclass(TestFrozenSet):
     thetype = FrozenSetSubclass
@@ -789,28 +789,28 @@ empty_set = set()
 kundi TestBasicOps:
 
     eleza test_repr(self):
-        ikiwa self.repr is not None:
+        ikiwa self.repr ni sio Tupu:
             self.assertEqual(repr(self.set), self.repr)
 
     eleza check_repr_against_values(self):
         text = repr(self.set)
-        self.assertTrue(text.startswith('{'))
-        self.assertTrue(text.endswith('}'))
+        self.assertKweli(text.startswith('{'))
+        self.assertKweli(text.endswith('}'))
 
         result = text[1:-1].split(', ')
         result.sort()
-        sorted_repr_values = [repr(value) for value in self.values]
+        sorted_repr_values = [repr(value) kila value kwenye self.values]
         sorted_repr_values.sort()
         self.assertEqual(result, sorted_repr_values)
 
     eleza test_andika(self):
-        try:
+        jaribu:
             fo = open(support.TESTFN, "w")
             fo.write(str(self.set))
             fo.close()
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), repr(self.set))
-        finally:
+        mwishowe:
             fo.close()
             support.unlink(support.TESTFN)
 
@@ -852,15 +852,15 @@ kundi TestBasicOps:
 
     eleza test_self_isdisjoint(self):
         result = self.set.isdisjoint(self.set)
-        self.assertEqual(result, not self.set)
+        self.assertEqual(result, sio self.set)
 
     eleza test_empty_isdisjoint(self):
         result = self.set.isdisjoint(empty_set)
-        self.assertEqual(result, True)
+        self.assertEqual(result, Kweli)
 
     eleza test_isdisjoint_empty(self):
         result = empty_set.isdisjoint(self.set)
-        self.assertEqual(result, True)
+        self.assertEqual(result, Kweli)
 
     eleza test_self_symmetric_difference(self):
         result = self.set ^ self.set
@@ -883,13 +883,13 @@ kundi TestBasicOps:
         self.assertEqual(result, empty_set)
 
     eleza test_iteration(self):
-        for v in self.set:
+        kila v kwenye self.set:
             self.assertIn(v, self.values)
         setiter = iter(self.set)
         self.assertEqual(setiter.__length_hint__(), len(self.set))
 
     eleza test_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(self.set, proto)
             copy = pickle.loads(p)
             self.assertEqual(self.set, copy,
@@ -955,7 +955,7 @@ kundi TestBasicOpsTriple(TestBasicOps, unittest.TestCase):
         self.set    = set(self.values)
         self.dup    = set(self.values)
         self.length = 3
-        self.repr   = None
+        self.repr   = Tupu
 
 #------------------------------------------------------------------------------
 
@@ -990,14 +990,14 @@ kundi TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
         self._warning_filters = support.check_warnings()
         self._warning_filters.__enter__()
         warnings.simplefilter('ignore', BytesWarning)
-        self.case   = "string and bytes set"
+        self.case   = "string na bytes set"
         self.values = ["a", "b", b"a", b"b"]
         self.set    = set(self.values)
         self.dup    = set(self.values)
         self.length = 4
 
     eleza tearDown(self):
-        self._warning_filters.__exit__(None, None, None)
+        self._warning_filters.__exit__(Tupu, Tupu, Tupu)
 
     eleza test_repr(self):
         self.check_repr_against_values()
@@ -1005,14 +1005,14 @@ kundi TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
 #==============================================================================
 
 eleza baditer():
-    raise TypeError
-    yield True
+    ashiria TypeError
+    tuma Kweli
 
 eleza gooditer():
-    yield True
+    tuma Kweli
 
 kundi TestExceptionPropagation(unittest.TestCase):
-    """SF 628246:  Set constructor should not trap iterator TypeErrors"""
+    """SF 628246:  Set constructor should sio trap iterator TypeErrors"""
 
     eleza test_instanceWithException(self):
         self.assertRaises(TypeError, set, baditer())
@@ -1028,12 +1028,12 @@ kundi TestExceptionPropagation(unittest.TestCase):
 
     eleza test_changingSizeWhileIterating(self):
         s = set([1,2,3])
-        try:
-            for i in s:
+        jaribu:
+            kila i kwenye s:
                 s.update([4])
-        except RuntimeError:
-            pass
-        else:
+        tatizo RuntimeError:
+            pita
+        isipokua:
             self.fail("no exception when changing size during iteration")
 
 #==============================================================================
@@ -1092,19 +1092,19 @@ kundi TestBinaryOps(unittest.TestCase):
 
     eleza test_isdisjoint_subset(self):
         result = self.set.isdisjoint(set((2, 4)))
-        self.assertEqual(result, False)
+        self.assertEqual(result, Uongo)
 
     eleza test_isdisjoint_superset(self):
         result = self.set.isdisjoint(set([2, 4, 6, 8]))
-        self.assertEqual(result, False)
+        self.assertEqual(result, Uongo)
 
     eleza test_isdisjoint_overlap(self):
         result = self.set.isdisjoint(set([3, 4, 5]))
-        self.assertEqual(result, False)
+        self.assertEqual(result, Uongo)
 
     eleza test_isdisjoint_non_overlap(self):
         result = self.set.isdisjoint(set([8]))
-        self.assertEqual(result, True)
+        self.assertEqual(result, Kweli)
 
     eleza test_sym_difference_subset(self):
         result = self.set ^ set((2, 4))
@@ -1226,7 +1226,7 @@ kundi TestMutate(unittest.TestCase):
     eleza test_add_until_full(self):
         tmp = set()
         expected_len = 0
-        for v in self.values:
+        kila v kwenye self.values:
             tmp.add(v)
             expected_len += 1
             self.assertEqual(len(tmp), expected_len)
@@ -1237,15 +1237,15 @@ kundi TestMutate(unittest.TestCase):
         self.assertEqual(self.set, set("ac"))
 
     eleza test_remove_absent(self):
-        try:
+        jaribu:
             self.set.remove("d")
-            self.fail("Removing missing element should have raised LookupError")
-        except LookupError:
-            pass
+            self.fail("Removing missing element should have ashiriad LookupError")
+        tatizo LookupError:
+            pita
 
     eleza test_remove_until_empty(self):
         expected_len = len(self.set)
-        for v in self.values:
+        kila v kwenye self.values:
             self.set.remove(v)
             expected_len -= 1
             self.assertEqual(len(self.set), expected_len)
@@ -1264,10 +1264,10 @@ kundi TestMutate(unittest.TestCase):
 
     eleza test_pop(self):
         popped = {}
-        while self.set:
-            popped[self.set.pop()] = None
+        wakati self.set:
+            popped[self.set.pop()] = Tupu
         self.assertEqual(len(popped), len(self.values))
-        for v in self.values:
+        kila v kwenye self.values:
             self.assertIn(v, popped)
 
     eleza test_update_empty_tuple(self):
@@ -1301,22 +1301,22 @@ kundi TestSubsets:
     eleza test_issubset(self):
         x = self.left
         y = self.right
-        for case in "!=", "==", "<", "<=", ">", ">=":
-            expected = case in self.cases
+        kila case kwenye "!=", "==", "<", "<=", ">", ">=":
+            expected = case kwenye self.cases
             # Test the binary infix spelling.
             result = eval("x" + case + "y", locals())
             self.assertEqual(result, expected)
             # Test the "friendly" method-name spelling, ikiwa one exists.
-            ikiwa case in TestSubsets.case2method:
+            ikiwa case kwenye TestSubsets.case2method:
                 method = getattr(x, TestSubsets.case2method[case])
                 result = method(y)
                 self.assertEqual(result, expected)
 
-            # Now do the same for the operands reversed.
+            # Now do the same kila the operands reversed.
             rcase = TestSubsets.reverse[case]
             result = eval("y" + rcase + "x", locals())
             self.assertEqual(result, expected)
-            ikiwa rcase in TestSubsets.case2method:
+            ikiwa rcase kwenye TestSubsets.case2method:
                 method = getattr(y, TestSubsets.case2method[rcase])
                 result = method(x)
                 self.assertEqual(result, expected)
@@ -1365,11 +1365,11 @@ kundi TestSubsetNonOverlap(TestSubsets, unittest.TestCase):
 kundi TestOnlySetsInBinaryOps:
 
     eleza test_eq_ne(self):
-        # Unlike the others, this is testing that == and != *are* allowed.
-        self.assertEqual(self.other == self.set, False)
-        self.assertEqual(self.set == self.other, False)
-        self.assertEqual(self.other != self.set, True)
-        self.assertEqual(self.set != self.other, True)
+        # Unlike the others, this ni testing that == na != *are* allowed.
+        self.assertEqual(self.other == self.set, Uongo)
+        self.assertEqual(self.set == self.other, Uongo)
+        self.assertEqual(self.other != self.set, Kweli)
+        self.assertEqual(self.set != self.other, Kweli)
 
     eleza test_ge_gt_le_lt(self):
         self.assertRaises(TypeError, lambda: self.set < self.other)
@@ -1383,17 +1383,17 @@ kundi TestOnlySetsInBinaryOps:
         self.assertRaises(TypeError, lambda: self.other >= self.set)
 
     eleza test_update_operator(self):
-        try:
+        jaribu:
             self.set |= self.other
-        except TypeError:
-            pass
-        else:
+        tatizo TypeError:
+            pita
+        isipokua:
             self.fail("expected TypeError")
 
     eleza test_update(self):
         ikiwa self.otherIsIterable:
             self.set.update(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError, self.set.update, self.other)
 
     eleza test_union(self):
@@ -1401,21 +1401,21 @@ kundi TestOnlySetsInBinaryOps:
         self.assertRaises(TypeError, lambda: self.other | self.set)
         ikiwa self.otherIsIterable:
             self.set.union(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError, self.set.union, self.other)
 
     eleza test_intersection_update_operator(self):
-        try:
+        jaribu:
             self.set &= self.other
-        except TypeError:
-            pass
-        else:
+        tatizo TypeError:
+            pita
+        isipokua:
             self.fail("expected TypeError")
 
     eleza test_intersection_update(self):
         ikiwa self.otherIsIterable:
             self.set.intersection_update(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError,
                               self.set.intersection_update,
                               self.other)
@@ -1425,21 +1425,21 @@ kundi TestOnlySetsInBinaryOps:
         self.assertRaises(TypeError, lambda: self.other & self.set)
         ikiwa self.otherIsIterable:
             self.set.intersection(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError, self.set.intersection, self.other)
 
     eleza test_sym_difference_update_operator(self):
-        try:
+        jaribu:
             self.set ^= self.other
-        except TypeError:
-            pass
-        else:
+        tatizo TypeError:
+            pita
+        isipokua:
             self.fail("expected TypeError")
 
     eleza test_sym_difference_update(self):
         ikiwa self.otherIsIterable:
             self.set.symmetric_difference_update(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError,
                               self.set.symmetric_difference_update,
                               self.other)
@@ -1449,21 +1449,21 @@ kundi TestOnlySetsInBinaryOps:
         self.assertRaises(TypeError, lambda: self.other ^ self.set)
         ikiwa self.otherIsIterable:
             self.set.symmetric_difference(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError, self.set.symmetric_difference, self.other)
 
     eleza test_difference_update_operator(self):
-        try:
+        jaribu:
             self.set -= self.other
-        except TypeError:
-            pass
-        else:
+        tatizo TypeError:
+            pita
+        isipokua:
             self.fail("expected TypeError")
 
     eleza test_difference_update(self):
         ikiwa self.otherIsIterable:
             self.set.difference_update(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError,
                               self.set.difference_update,
                               self.other)
@@ -1473,7 +1473,7 @@ kundi TestOnlySetsInBinaryOps:
         self.assertRaises(TypeError, lambda: self.other - self.set)
         ikiwa self.otherIsIterable:
             self.set.difference(self.other)
-        else:
+        isipokua:
             self.assertRaises(TypeError, self.set.difference, self.other)
 
 #------------------------------------------------------------------------------
@@ -1482,7 +1482,7 @@ kundi TestOnlySetsNumeric(TestOnlySetsInBinaryOps, unittest.TestCase):
     eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = 19
-        self.otherIsIterable = False
+        self.otherIsIterable = Uongo
 
 #------------------------------------------------------------------------------
 
@@ -1490,7 +1490,7 @@ kundi TestOnlySetsDict(TestOnlySetsInBinaryOps, unittest.TestCase):
     eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = {1:2, 3:4}
-        self.otherIsIterable = True
+        self.otherIsIterable = Kweli
 
 #------------------------------------------------------------------------------
 
@@ -1498,7 +1498,7 @@ kundi TestOnlySetsOperator(TestOnlySetsInBinaryOps, unittest.TestCase):
     eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = operator.add
-        self.otherIsIterable = False
+        self.otherIsIterable = Uongo
 
 #------------------------------------------------------------------------------
 
@@ -1506,7 +1506,7 @@ kundi TestOnlySetsTuple(TestOnlySetsInBinaryOps, unittest.TestCase):
     eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = (2, 4, 6)
-        self.otherIsIterable = True
+        self.otherIsIterable = Kweli
 
 #------------------------------------------------------------------------------
 
@@ -1514,18 +1514,18 @@ kundi TestOnlySetsString(TestOnlySetsInBinaryOps, unittest.TestCase):
     eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = 'abc'
-        self.otherIsIterable = True
+        self.otherIsIterable = Kweli
 
 #------------------------------------------------------------------------------
 
 kundi TestOnlySetsGenerator(TestOnlySetsInBinaryOps, unittest.TestCase):
     eleza setUp(self):
         eleza gen():
-            for i in range(0, 10, 2):
-                yield i
+            kila i kwenye range(0, 10, 2):
+                tuma i
         self.set   = set((1, 2, 3))
         self.other = gen()
-        self.otherIsIterable = True
+        self.otherIsIterable = Kweli
 
 #==============================================================================
 
@@ -1536,8 +1536,8 @@ kundi TestCopying:
         dup_list = sorted(dup, key=repr)
         set_list = sorted(self.set, key=repr)
         self.assertEqual(len(dup_list), len(set_list))
-        for i in range(len(dup_list)):
-            self.assertTrue(dup_list[i] is set_list[i])
+        kila i kwenye range(len(dup_list)):
+            self.assertKweli(dup_list[i] ni set_list[i])
 
     eleza test_deep_copy(self):
         dup = copy.deepcopy(self.set)
@@ -1545,7 +1545,7 @@ kundi TestCopying:
         dup_list = sorted(dup, key=repr)
         set_list = sorted(self.set, key=repr)
         self.assertEqual(len(dup_list), len(set_list))
-        for i in range(len(dup_list)):
+        kila i kwenye range(len(dup_list)):
             self.assertEqual(dup_list[i], set_list[i])
 
 #------------------------------------------------------------------------------
@@ -1564,7 +1564,7 @@ kundi TestCopyingSingleton(TestCopying, unittest.TestCase):
 
 kundi TestCopyingTriple(TestCopying, unittest.TestCase):
     eleza setUp(self):
-        self.set = set(["zero", 0, None])
+        self.set = set(["zero", 0, Tupu])
 
 #------------------------------------------------------------------------------
 
@@ -1587,13 +1587,13 @@ kundi TestIdentities(unittest.TestCase):
 
     eleza test_binopsVsSubsets(self):
         a, b = self.a, self.b
-        self.assertTrue(a - b < a)
-        self.assertTrue(b - a < b)
-        self.assertTrue(a & b < a)
-        self.assertTrue(a & b < b)
-        self.assertTrue(a | b > a)
-        self.assertTrue(a | b > b)
-        self.assertTrue(a ^ b < a | b)
+        self.assertKweli(a - b < a)
+        self.assertKweli(b - a < b)
+        self.assertKweli(a & b < a)
+        self.assertKweli(a & b < b)
+        self.assertKweli(a | b > a)
+        self.assertKweli(a | b > b)
+        self.assertKweli(a ^ b < a | b)
 
     eleza test_commutativity(self):
         a, b = self.a, self.b
@@ -1625,8 +1625,8 @@ kundi TestIdentities(unittest.TestCase):
 
 eleza R(seqn):
     'Regular generator'
-    for i in seqn:
-        yield i
+    kila i kwenye seqn:
+        tuma i
 
 kundi G:
     'Sequence using __getitem__'
@@ -1643,7 +1643,7 @@ kundi I:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): raise StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -1654,16 +1654,16 @@ kundi Ig:
         self.seqn = seqn
         self.i = 0
     eleza __iter__(self):
-        for val in self.seqn:
-            yield val
+        kila val kwenye self.seqn:
+            tuma val
 
 kundi X:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ na __iter__'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): raise StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -1689,11 +1689,11 @@ kundi E:
 kundi S:
     'Test immediate stop'
     eleza __init__(self, seqn):
-        pass
+        pita
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        raise StopIteration
+        ashiria StopIteration
 
 kutoka itertools agiza chain
 eleza L(seqn):
@@ -1703,9 +1703,9 @@ eleza L(seqn):
 kundi TestVariousIteratorArgs(unittest.TestCase):
 
     eleza test_constructor(self):
-        for cons in (set, frozenset):
-            for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
-                for g in (G, I, Ig, S, L, R):
+        kila cons kwenye (set, frozenset):
+            kila s kwenye ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
+                kila g kwenye (G, I, Ig, S, L, R):
                     self.assertEqual(sorted(cons(g(s)), key=repr), sorted(g(s), key=repr))
                 self.assertRaises(TypeError, cons , X(s))
                 self.assertRaises(TypeError, cons , N(s))
@@ -1713,24 +1713,24 @@ kundi TestVariousIteratorArgs(unittest.TestCase):
 
     eleza test_inline_methods(self):
         s = set('november')
-        for data in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5), 'december'):
-            for meth in (s.union, s.intersection, s.difference, s.symmetric_difference, s.isdisjoint):
-                for g in (G, I, Ig, L, R):
+        kila data kwenye ("123", "", range(1000), ('do', 1.2), range(2000,2200,5), 'december'):
+            kila meth kwenye (s.union, s.intersection, s.difference, s.symmetric_difference, s.isdisjoint):
+                kila g kwenye (G, I, Ig, L, R):
                     expected = meth(data)
                     actual = meth(g(data))
                     ikiwa isinstance(expected, bool):
                         self.assertEqual(actual, expected)
-                    else:
+                    isipokua:
                         self.assertEqual(sorted(actual, key=repr), sorted(expected, key=repr))
                 self.assertRaises(TypeError, meth, X(s))
                 self.assertRaises(TypeError, meth, N(s))
                 self.assertRaises(ZeroDivisionError, meth, E(s))
 
     eleza test_inplace_methods(self):
-        for data in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5), 'december'):
-            for methname in ('update', 'intersection_update',
+        kila data kwenye ("123", "", range(1000), ('do', 1.2), range(2000,2200,5), 'december'):
+            kila methname kwenye ('update', 'intersection_update',
                              'difference_update', 'symmetric_difference_update'):
-                for g in (G, I, Ig, S, L, R):
+                kila g kwenye (G, I, Ig, S, L, R):
                     s = set('january')
                     t = s.copy()
                     getattr(s, methname)(list(g(data)))
@@ -1745,8 +1745,8 @@ kundi bad_eq:
     eleza __eq__(self, other):
         ikiwa be_bad:
             set2.clear()
-            raise ZeroDivisionError
-        rudisha self is other
+            ashiria ZeroDivisionError
+        rudisha self ni other
     eleza __hash__(self):
         rudisha 0
 
@@ -1754,7 +1754,7 @@ kundi bad_dict_clear:
     eleza __eq__(self, other):
         ikiwa be_bad:
             dict2.clear()
-        rudisha self is other
+        rudisha self ni other
     eleza __hash__(self):
         rudisha 0
 
@@ -1762,16 +1762,16 @@ kundi TestWeirdBugs(unittest.TestCase):
     eleza test_8420_set_merge(self):
         # This used to segfault
         global be_bad, set2, dict2
-        be_bad = False
+        be_bad = Uongo
         set1 = {bad_eq()}
-        set2 = {bad_eq() for i in range(75)}
-        be_bad = True
+        set2 = {bad_eq() kila i kwenye range(75)}
+        be_bad = Kweli
         self.assertRaises(ZeroDivisionError, set1.update, set2)
 
-        be_bad = False
+        be_bad = Uongo
         set1 = {bad_dict_clear()}
-        dict2 = {bad_dict_clear(): None}
-        be_bad = True
+        dict2 = {bad_dict_clear(): Tupu}
+        be_bad = Kweli
         set1.symmetric_difference_update(dict2)
 
     eleza test_iter_and_mutate(self):
@@ -1791,66 +1791,66 @@ kundi TestWeirdBugs(unittest.TestCase):
                 rudisha hash(0)
             eleza __eq__(self, o):
                 other.clear()
-                rudisha False
+                rudisha Uongo
 
         other = set()
-        other = {X() for i in range(10)}
+        other = {X() kila i kwenye range(10)}
         s = {0}
         s.update(other)
 
 # Application tests (based on David Eppstein's graph recipes ====================================
 
 eleza powerset(U):
-    """Generates all subsets of a set or sequence U."""
+    """Generates all subsets of a set ama sequence U."""
     U = iter(U)
-    try:
+    jaribu:
         x = frozenset([next(U)])
-        for S in powerset(U):
-            yield S
-            yield S | x
-    except StopIteration:
-        yield frozenset()
+        kila S kwenye powerset(U):
+            tuma S
+            tuma S | x
+    tatizo StopIteration:
+        tuma frozenset()
 
 eleza cube(n):
     """Graph of n-dimensional hypercube."""
-    singletons = [frozenset([x]) for x in range(n)]
-    rudisha dict([(x, frozenset([x^s for s in singletons]))
-                 for x in powerset(range(n))])
+    singletons = [frozenset([x]) kila x kwenye range(n)]
+    rudisha dict([(x, frozenset([x^s kila s kwenye singletons]))
+                 kila x kwenye powerset(range(n))])
 
 eleza linegraph(G):
     """Graph, the vertices of which are edges of G,
     with two vertices being adjacent iff the corresponding
     edges share a vertex."""
     L = {}
-    for x in G:
-        for y in G[x]:
-            nx = [frozenset([x,z]) for z in G[x] ikiwa z != y]
-            ny = [frozenset([y,z]) for z in G[y] ikiwa z != x]
+    kila x kwenye G:
+        kila y kwenye G[x]:
+            nx = [frozenset([x,z]) kila z kwenye G[x] ikiwa z != y]
+            ny = [frozenset([y,z]) kila z kwenye G[y] ikiwa z != x]
             L[frozenset([x,y])] = frozenset(nx+ny)
     rudisha L
 
 eleza faces(G):
-    'Return a set of faces in G.  Where a face is a set of vertices on that face'
-    # currently limited to triangles,squares, and pentagons
+    'Return a set of faces kwenye G.  Where a face ni a set of vertices on that face'
+    # currently limited to triangles,squares, na pentagons
     f = set()
-    for v1, edges in G.items():
-        for v2 in edges:
-            for v3 in G[v2]:
+    kila v1, edges kwenye G.items():
+        kila v2 kwenye edges:
+            kila v3 kwenye G[v2]:
                 ikiwa v1 == v3:
-                    continue
-                ikiwa v1 in G[v3]:
+                    endelea
+                ikiwa v1 kwenye G[v3]:
                     f.add(frozenset([v1, v2, v3]))
-                else:
-                    for v4 in G[v3]:
+                isipokua:
+                    kila v4 kwenye G[v3]:
                         ikiwa v4 == v2:
-                            continue
-                        ikiwa v1 in G[v4]:
+                            endelea
+                        ikiwa v1 kwenye G[v4]:
                             f.add(frozenset([v1, v2, v3, v4]))
-                        else:
-                            for v5 in G[v4]:
-                                ikiwa v5 == v3 or v5 == v2:
-                                    continue
-                                ikiwa v1 in G[v5]:
+                        isipokua:
+                            kila v5 kwenye G[v4]:
+                                ikiwa v5 == v3 ama v5 == v2:
+                                    endelea
+                                ikiwa v1 kwenye G[v5]:
                                     f.add(frozenset([v1, v2, v3, v4, v5]))
     rudisha f
 
@@ -1862,43 +1862,43 @@ kundi TestGraphs(unittest.TestCase):
         g = cube(3)                             # vert --> {v1, v2, v3}
         vertices1 = set(g)
         self.assertEqual(len(vertices1), 8)     # eight vertices
-        for edge in g.values():
+        kila edge kwenye g.values():
             self.assertEqual(len(edge), 3)      # each vertex connects to three edges
-        vertices2 = set(v for edges in g.values() for v in edges)
-        self.assertEqual(vertices1, vertices2)  # edge vertices in original set
+        vertices2 = set(v kila edges kwenye g.values() kila v kwenye edges)
+        self.assertEqual(vertices1, vertices2)  # edge vertices kwenye original set
 
         cubefaces = faces(g)
         self.assertEqual(len(cubefaces), 6)     # six faces
-        for face in cubefaces:
-            self.assertEqual(len(face), 4)      # each face is a square
+        kila face kwenye cubefaces:
+            self.assertEqual(len(face), 4)      # each face ni a square
 
     eleza test_cuboctahedron(self):
 
         # http://en.wikipedia.org/wiki/Cuboctahedron
-        # 8 triangular faces and 6 square faces
-        # 12 identical vertices each connecting a triangle and square
+        # 8 triangular faces na 6 square faces
+        # 12 identical vertices each connecting a triangle na square
 
         g = cube(3)
         cuboctahedron = linegraph(g)            # V( --> {V1, V2, V3, V4}
         self.assertEqual(len(cuboctahedron), 12)# twelve vertices
 
         vertices = set(cuboctahedron)
-        for edges in cuboctahedron.values():
+        kila edges kwenye cuboctahedron.values():
             self.assertEqual(len(edges), 4)     # each vertex connects to four other vertices
-        othervertices = set(edge for edges in cuboctahedron.values() for edge in edges)
-        self.assertEqual(vertices, othervertices)   # edge vertices in original set
+        othervertices = set(edge kila edges kwenye cuboctahedron.values() kila edge kwenye edges)
+        self.assertEqual(vertices, othervertices)   # edge vertices kwenye original set
 
         cubofaces = faces(cuboctahedron)
         facesizes = collections.defaultdict(int)
-        for face in cubofaces:
+        kila face kwenye cubofaces:
             facesizes[len(face)] += 1
         self.assertEqual(facesizes[3], 8)       # eight triangular faces
         self.assertEqual(facesizes[4], 6)       # six square faces
 
-        for vertex in cuboctahedron:
-            edge = vertex                       # Cuboctahedron vertices are edges in Cube
+        kila vertex kwenye cuboctahedron:
+            edge = vertex                       # Cuboctahedron vertices are edges kwenye Cube
             self.assertEqual(len(edge), 2)      # Two cube vertices define an edge
-            for cubevert in edge:
+            kila cubevert kwenye edge:
                 self.assertIn(cubevert, g)
 
 

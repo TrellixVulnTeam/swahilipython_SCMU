@@ -1,4 +1,4 @@
-# Simple test suite for http/cookies.py
+# Simple test suite kila http/cookies.py
 
 agiza copy
 kutoka test.support agiza run_unittest, run_doctest
@@ -21,13 +21,13 @@ kundi CookieTests(unittest.TestCase):
              'repr': '''<SimpleCookie: keebler='E=mc2; L="Loves"; fudge=\\n;'>''',
              'output': 'Set-Cookie: keebler="E=mc2; L=\\"Loves\\"; fudge=\\012;"'},
 
-            # Check illegal cookies that have an '=' char in an unquoted value
+            # Check illegal cookies that have an '=' char kwenye an unquoted value
             {'data': 'keebler=E=mc2',
              'dict': {'keebler' : 'E=mc2'},
              'repr': "<SimpleCookie: keebler='E=mc2'>",
              'output': 'Set-Cookie: keebler=E=mc2'},
 
-            # Cookies with ':' character in their name. Though not mentioned in
+            # Cookies with ':' character kwenye their name. Though sio mentioned in
             # RFC, servers / browsers allow it.
 
              {'data': 'key:term=value:term',
@@ -35,8 +35,8 @@ kundi CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: key:term='value:term'>",
              'output': 'Set-Cookie: key:term=value:term'},
 
-            # issue22931 - Adding '[' and ']' as valid characters in cookie
-            # values as defined in RFC 6265
+            # issue22931 - Adding '[' na ']' kama valid characters kwenye cookie
+            # values kama defined kwenye RFC 6265
             {
                 'data': 'a=b; c=[; d=r; f=h',
                 'dict': {'a':'b', 'c':'[', 'd':'r', 'f':'h'},
@@ -50,12 +50,12 @@ kundi CookieTests(unittest.TestCase):
             }
         ]
 
-        for case in cases:
+        kila case kwenye cases:
             C = cookies.SimpleCookie()
             C.load(case['data'])
             self.assertEqual(repr(C), case['repr'])
             self.assertEqual(C.output(sep='\n'), case['output'])
-            for k, v in sorted(case['dict'].items()):
+            kila k, v kwenye sorted(case['dict'].items()):
                 self.assertEqual(C[k].value, v)
 
     eleza test_load(self):
@@ -85,7 +85,7 @@ kundi CookieTests(unittest.TestCase):
 
     eleza test_extended_encode(self):
         # Issue 9824: some browsers don't follow the standard; we now
-        # encode , and ; to keep them kutoka tripping up.
+        # encode , na ; to keep them kutoka tripping up.
         C = cookies.SimpleCookie()
         C['val'] = "some,funky;stuff"
         self.assertEqual(C.output(['val']),
@@ -96,7 +96,7 @@ kundi CookieTests(unittest.TestCase):
         C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
         C['Customer']['expires'] = 0
         # can't test exact output, it always depends on current date/time
-        self.assertTrue(C.output().endswith('GMT'))
+        self.assertKweli(C.output().endswith('GMT'))
 
         # loading 'expires'
         C = cookies.SimpleCookie()
@@ -116,14 +116,14 @@ kundi CookieTests(unittest.TestCase):
 
     eleza test_set_secure_httponly_attrs(self):
         C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
-        C['Customer']['secure'] = True
-        C['Customer']['httponly'] = True
+        C['Customer']['secure'] = Kweli
+        C['Customer']['httponly'] = Kweli
         self.assertEqual(C.output(),
             'Set-Cookie: Customer="WILE_E_COYOTE"; HttpOnly; Secure')
 
     eleza test_samesite_attrs(self):
         samesite_values = ['Strict', 'Lax', 'strict', 'lax']
-        for val in samesite_values:
+        kila val kwenye samesite_values:
             with self.subTest(val=val):
                 C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
                 C['Customer']['samesite'] = val
@@ -137,25 +137,25 @@ kundi CookieTests(unittest.TestCase):
     eleza test_secure_httponly_false_if_not_present(self):
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; Path=/bacon')
-        self.assertFalse(C['eggs']['httponly'])
-        self.assertFalse(C['eggs']['secure'])
+        self.assertUongo(C['eggs']['httponly'])
+        self.assertUongo(C['eggs']['secure'])
 
     eleza test_secure_httponly_true_if_present(self):
         # Issue 16611
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; httponly; secure; Path=/bacon')
-        self.assertTrue(C['eggs']['httponly'])
-        self.assertTrue(C['eggs']['secure'])
+        self.assertKweli(C['eggs']['httponly'])
+        self.assertKweli(C['eggs']['secure'])
 
     eleza test_secure_httponly_true_if_have_value(self):
         # This isn't really valid, but demonstrates what the current code
-        # is expected to do in this case.
+        # ni expected to do kwenye this case.
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; httponly=foo; secure=bar; Path=/bacon')
-        self.assertTrue(C['eggs']['httponly'])
-        self.assertTrue(C['eggs']['secure'])
-        # Here is what it actually does; don't depend on this behavior.  These
-        # checks are testing backward compatibility for issue 16611.
+        self.assertKweli(C['eggs']['httponly'])
+        self.assertKweli(C['eggs']['secure'])
+        # Here ni what it actually does; don't depend on this behavior.  These
+        # checks are testing backward compatibility kila issue 16611.
         self.assertEqual(C['eggs']['httponly'], 'foo')
         self.assertEqual(C['eggs']['secure'], 'bar')
 
@@ -193,7 +193,7 @@ kundi CookieTests(unittest.TestCase):
     eleza test_invalid_cookies(self):
         # Accepting these could be a security issue
         C = cookies.SimpleCookie()
-        for s in (']foo=x', '[foo=x', 'blah]foo=x', 'blah[foo=x',
+        kila s kwenye (']foo=x', '[foo=x', 'blah]foo=x', 'blah[foo=x',
                   'Set-Cookie: foo=bar', 'Set-Cookie: foo',
                   'foo=bar; baz', 'baz; foo=bar',
                   'secure;foo=bar', 'Version=1;foo=bar'):
@@ -209,7 +209,7 @@ kundi CookieTests(unittest.TestCase):
         C.load(rawdata)
         self.assertEqual(C.output(), expected_output)
 
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 C1 = pickle.loads(pickle.dumps(C, protocol=proto))
                 self.assertEqual(C1.output(), expected_output)
@@ -232,43 +232,43 @@ kundi CookieTests(unittest.TestCase):
 
 
 kundi MorselTests(unittest.TestCase):
-    """Tests for the Morsel object."""
+    """Tests kila the Morsel object."""
 
     eleza test_defaults(self):
         morsel = cookies.Morsel()
-        self.assertIsNone(morsel.key)
-        self.assertIsNone(morsel.value)
-        self.assertIsNone(morsel.coded_value)
+        self.assertIsTupu(morsel.key)
+        self.assertIsTupu(morsel.value)
+        self.assertIsTupu(morsel.coded_value)
         self.assertEqual(morsel.keys(), cookies.Morsel._reserved.keys())
-        for key, val in morsel.items():
+        kila key, val kwenye morsel.items():
             self.assertEqual(val, '', key)
 
     eleza test_reserved_keys(self):
         M = cookies.Morsel()
-        # tests valid and invalid reserved keys for Morsels
-        for i in M._reserved:
-            # Test that all valid keys are reported as reserved and set them
-            self.assertTrue(M.isReservedKey(i))
+        # tests valid na invalid reserved keys kila Morsels
+        kila i kwenye M._reserved:
+            # Test that all valid keys are reported kama reserved na set them
+            self.assertKweli(M.isReservedKey(i))
             M[i] = '%s_value' % i
-        for i in M._reserved:
+        kila i kwenye M._reserved:
             # Test that valid key values come out fine
             self.assertEqual(M[i], '%s_value' % i)
-        for i in "the holy hand grenade".split():
-            # Test that invalid keys raise CookieError
+        kila i kwenye "the holy hand grenade".split():
+            # Test that invalid keys ashiria CookieError
             self.assertRaises(cookies.CookieError,
                               M.__setitem__, i, '%s_value' % i)
 
     eleza test_setter(self):
         M = cookies.Morsel()
-        # tests the .set method to set keys and their values
-        for i in M._reserved:
+        # tests the .set method to set keys na their values
+        kila i kwenye M._reserved:
             # Makes sure that all reserved keys can't be set this way
             self.assertRaises(cookies.CookieError,
                               M.set, i, '%s_value' % i, '%s_value' % i)
-        for i in "thou cast _the- !holy! ^hand| +*grenade~".split():
+        kila i kwenye "thou cast _the- !holy! ^hand| +*grenade~".split():
             # Try typical use case. Setting decent values.
-            # Check output and js_output.
-            M['path'] = '/foo' # Try a reserved key as well
+            # Check output na js_output.
+            M['path'] = '/foo' # Try a reserved key kama well
             M.set(i, "%s_val" % i, "%s_coded_val" % i)
             self.assertEqual(M.key, i)
             self.assertEqual(M.value, "%s_val" % i)
@@ -284,7 +284,7 @@ kundi MorselTests(unittest.TestCase):
         </script>
         """ % (i, "%s_coded_val" % i)
             self.assertEqual(M.js_output(), expected_js_output)
-        for i in ["foo bar", "foo@bar"]:
+        kila i kwenye ["foo bar", "foo@bar"]:
             # Try some illegal characters
             self.assertRaises(cookies.CookieError,
                               M.set, i, '%s_value' % i, '%s_value' % i)
@@ -312,43 +312,43 @@ kundi MorselTests(unittest.TestCase):
         morsel_b = cookies.Morsel()
         morsel_b.update(attribs)
         morsel_b.set(*base_case)
-        self.assertTrue(morsel_a == morsel_b)
-        self.assertFalse(morsel_a != morsel_b)
+        self.assertKweli(morsel_a == morsel_b)
+        self.assertUongo(morsel_a != morsel_b)
         cases = (
             ('key', 'value', 'mismatch'),
             ('key', 'mismatch', '"value"'),
             ('mismatch', 'value', '"value"'),
         )
-        for case_b in cases:
+        kila case_b kwenye cases:
             with self.subTest(case_b):
                 morsel_b = cookies.Morsel()
                 morsel_b.update(attribs)
                 morsel_b.set(*case_b)
-                self.assertFalse(morsel_a == morsel_b)
-                self.assertTrue(morsel_a != morsel_b)
+                self.assertUongo(morsel_a == morsel_b)
+                self.assertKweli(morsel_a != morsel_b)
 
         morsel_b = cookies.Morsel()
         morsel_b.update(attribs)
         morsel_b.set(*base_case)
         morsel_b['comment'] = 'bar'
-        self.assertFalse(morsel_a == morsel_b)
-        self.assertTrue(morsel_a != morsel_b)
+        self.assertUongo(morsel_a == morsel_b)
+        self.assertKweli(morsel_a != morsel_b)
 
         # test mismatched types
-        self.assertFalse(cookies.Morsel() == 1)
-        self.assertTrue(cookies.Morsel() != 1)
-        self.assertFalse(cookies.Morsel() == '')
-        self.assertTrue(cookies.Morsel() != '')
+        self.assertUongo(cookies.Morsel() == 1)
+        self.assertKweli(cookies.Morsel() != 1)
+        self.assertUongo(cookies.Morsel() == '')
+        self.assertKweli(cookies.Morsel() != '')
         items = list(cookies.Morsel().items())
-        self.assertFalse(cookies.Morsel() == items)
-        self.assertTrue(cookies.Morsel() != items)
+        self.assertUongo(cookies.Morsel() == items)
+        self.assertKweli(cookies.Morsel() != items)
 
         # morsel/dict
         morsel = cookies.Morsel()
         morsel.set(*base_case)
         morsel.update(attribs)
-        self.assertTrue(morsel == dict(morsel))
-        self.assertFalse(morsel != dict(morsel))
+        self.assertKweli(morsel == dict(morsel))
+        self.assertUongo(morsel != dict(morsel))
 
     eleza test_copy(self):
         morsel_a = cookies.Morsel()
@@ -414,7 +414,7 @@ kundi MorselTests(unittest.TestCase):
         self.assertEqual(morsel['domain'], 'example.com')
         # test iterator update
         morsel = cookies.Morsel()
-        morsel.update((k, v) for k, v in attribs.items())
+        morsel.update((k, v) kila k, v kwenye attribs.items())
         self.assertEqual(morsel['expires'], 1)
         self.assertEqual(morsel['version'], 2)
         self.assertEqual(morsel['domain'], 'example.com')
@@ -432,7 +432,7 @@ kundi MorselTests(unittest.TestCase):
             'version': 2,
             'comment': 'foo',
         })
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 morsel_b = pickle.loads(pickle.dumps(morsel_a, proto))
                 self.assertIsInstance(morsel_b, cookies.Morsel)
@@ -441,8 +441,8 @@ kundi MorselTests(unittest.TestCase):
 
     eleza test_repr(self):
         morsel = cookies.Morsel()
-        self.assertEqual(repr(morsel), '<Morsel: None=None>')
-        self.assertEqual(str(morsel), 'Set-Cookie: None=None')
+        self.assertEqual(repr(morsel), '<Morsel: Tupu=Tupu>')
+        self.assertEqual(str(morsel), 'Set-Cookie: Tupu=Tupu')
         morsel.set('key', 'val', 'coded_val')
         self.assertEqual(repr(morsel), '<Morsel: key=coded_val>')
         self.assertEqual(str(morsel), 'Set-Cookie: key=coded_val')
@@ -460,7 +460,7 @@ kundi MorselTests(unittest.TestCase):
         self.assertEqual(str(morsel),
                 'Set-Cookie: key=coded_val; Comment=foo; Domain=example.com; '
                 'Max-Age=0; Path=/; Version=1')
-        morsel['secure'] = True
+        morsel['secure'] = Kweli
         morsel['httponly'] = 1
         self.assertEqual(repr(morsel),
                 '<Morsel: key=coded_val; Comment=foo; Domain=example.com; '

@@ -1,5 +1,5 @@
 """
-Tests for uu module.
+Tests kila uu module.
 Nick Mathewson
 """
 
@@ -22,10 +22,10 @@ M5&AE('-Y;6)O;',@;VX@=&]P(&]F('EO=7(@:V5Y8F]A<F0@87)E("% (R0E
 kundi FakeIO(io.TextIOWrapper):
     """Text I/O implementation using an in-memory buffer.
 
-    Can be a used as a drop-in replacement for sys.stdin and sys.stdout.
+    Can be a used kama a drop-in replacement kila sys.stdin na sys.stdout.
     """
 
-    # XXX This is really slow, but fully functional
+    # XXX This ni really slow, but fully functional
 
     eleza __init__(self, initial_value="", encoding="utf-8",
                  errors="strict", newline="\n"):
@@ -36,7 +36,7 @@ kundi FakeIO(io.TextIOWrapper):
         self._encoding = encoding
         self._errors = errors
         ikiwa initial_value:
-            ikiwa not isinstance(initial_value, str):
+            ikiwa sio isinstance(initial_value, str):
                 initial_value = str(initial_value)
             self.write(initial_value)
             self.seek(0)
@@ -46,11 +46,11 @@ kundi FakeIO(io.TextIOWrapper):
         rudisha self.buffer.getvalue().decode(self._encoding, self._errors)
 
 
-eleza encodedtextwrapped(mode, filename, backtick=False):
+eleza encodedtextwrapped(mode, filename, backtick=Uongo):
     ikiwa backtick:
         res = (bytes("begin %03o %s\n" % (mode, filename), "ascii") +
                encodedtext.replace(b' ', b'`') + b"\n`\nend\n")
-    else:
+    isipokua:
         res = (bytes("begin %03o %s\n" % (mode, filename), "ascii") +
                encodedtext + b"\n \nend\n")
     rudisha res
@@ -68,20 +68,20 @@ kundi UUTest(unittest.TestCase):
         self.assertEqual(out.getvalue(), encodedtextwrapped(0o644, "t1"))
         inp = io.BytesIO(plaintext)
         out = io.BytesIO()
-        uu.encode(inp, out, "t1", backtick=True)
-        self.assertEqual(out.getvalue(), encodedtextwrapped(0o666, "t1", True))
+        uu.encode(inp, out, "t1", backtick=Kweli)
+        self.assertEqual(out.getvalue(), encodedtextwrapped(0o666, "t1", Kweli))
         with self.assertRaises(TypeError):
-            uu.encode(inp, out, "t1", 0o644, True)
+            uu.encode(inp, out, "t1", 0o644, Kweli)
 
     eleza test_decode(self):
-        for backtick in True, False:
+        kila backtick kwenye Kweli, Uongo:
             inp = io.BytesIO(encodedtextwrapped(0o666, "t1", backtick=backtick))
             out = io.BytesIO()
             uu.decode(inp, out)
             self.assertEqual(out.getvalue(), plaintext)
             inp = io.BytesIO(
                 b"UUencoded files may contain many lines,\n" +
-                b"even some that have 'begin' in them.\n" +
+                b"even some that have 'begin' kwenye them.\n" +
                 encodedtextwrapped(0o666, "t1", backtick=backtick)
             )
             out = io.BytesIO()
@@ -91,20 +91,20 @@ kundi UUTest(unittest.TestCase):
     eleza test_truncatedinput(self):
         inp = io.BytesIO(b"begin 644 t1\n" + encodedtext)
         out = io.BytesIO()
-        try:
+        jaribu:
             uu.decode(inp, out)
-            self.fail("No exception raised")
-        except uu.Error as e:
+            self.fail("No exception ashiriad")
+        tatizo uu.Error kama e:
             self.assertEqual(str(e), "Truncated input file")
 
     eleza test_missingbegin(self):
         inp = io.BytesIO(b"")
         out = io.BytesIO()
-        try:
+        jaribu:
             uu.decode(inp, out)
-            self.fail("No exception raised")
-        except uu.Error as e:
-            self.assertEqual(str(e), "No valid begin line found in input file")
+            self.fail("No exception ashiriad")
+        tatizo uu.Error kama e:
+            self.assertEqual(str(e), "No valid begin line found kwenye input file")
 
     eleza test_garbage_padding(self):
         # Issue #22406
@@ -124,11 +124,11 @@ kundi UUTest(unittest.TestCase):
         )
         plaintext = b"\x33"  # 00110011
 
-        for encodedtext in encodedtext1, encodedtext2:
+        kila encodedtext kwenye encodedtext1, encodedtext2:
             with self.subTest("uu.decode()"):
                 inp = io.BytesIO(encodedtext)
                 out = io.BytesIO()
-                uu.decode(inp, out, quiet=True)
+                uu.decode(inp, out, quiet=Kweli)
                 self.assertEqual(out.getvalue(), plaintext)
 
             with self.subTest("uu_codec"):
@@ -171,65 +171,65 @@ kundi UUFileTest(unittest.TestCase):
         self.addCleanup(support.unlink, self.tmpout)
 
     eleza test_encode(self):
-        with open(self.tmpin, 'wb') as fin:
+        with open(self.tmpin, 'wb') kama fin:
             fin.write(plaintext)
 
-        with open(self.tmpin, 'rb') as fin:
-            with open(self.tmpout, 'wb') as fout:
+        with open(self.tmpin, 'rb') kama fin:
+            with open(self.tmpout, 'wb') kama fout:
                 uu.encode(fin, fout, self.tmpin, mode=0o644)
 
-        with open(self.tmpout, 'rb') as fout:
+        with open(self.tmpout, 'rb') kama fout:
             s = fout.read()
         self.assertEqual(s, encodedtextwrapped(0o644, self.tmpin))
 
-        # in_file and out_file as filenames
+        # in_file na out_file kama filenames
         uu.encode(self.tmpin, self.tmpout, self.tmpin, mode=0o644)
-        with open(self.tmpout, 'rb') as fout:
+        with open(self.tmpout, 'rb') kama fout:
             s = fout.read()
         self.assertEqual(s, encodedtextwrapped(0o644, self.tmpin))
 
     eleza test_decode(self):
-        with open(self.tmpin, 'wb') as f:
+        with open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
 
-        with open(self.tmpin, 'rb') as f:
+        with open(self.tmpin, 'rb') kama f:
             uu.decode(f)
 
-        with open(self.tmpout, 'rb') as f:
+        with open(self.tmpout, 'rb') kama f:
             s = f.read()
         self.assertEqual(s, plaintext)
-        # XXX is there an xp way to verify the mode?
+        # XXX ni there an xp way to verify the mode?
 
     eleza test_decode_filename(self):
-        with open(self.tmpin, 'wb') as f:
+        with open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
 
         uu.decode(self.tmpin)
 
-        with open(self.tmpout, 'rb') as f:
+        with open(self.tmpout, 'rb') kama f:
             s = f.read()
         self.assertEqual(s, plaintext)
 
     eleza test_decodetwice(self):
         # Verify that decode() will refuse to overwrite an existing file
-        with open(self.tmpin, 'wb') as f:
+        with open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
-        with open(self.tmpin, 'rb') as f:
+        with open(self.tmpin, 'rb') kama f:
             uu.decode(f)
 
-        with open(self.tmpin, 'rb') as f:
+        with open(self.tmpin, 'rb') kama f:
             self.assertRaises(uu.Error, uu.decode, f)
 
     eleza test_decode_mode(self):
-        # Verify that decode() will set the given mode for the out_file
+        # Verify that decode() will set the given mode kila the out_file
         expected_mode = 0o444
-        with open(self.tmpin, 'wb') as f:
+        with open(self.tmpin, 'wb') kama f:
             f.write(encodedtextwrapped(expected_mode, self.tmpout))
 
         # make file writable again, so it can be removed (Windows only)
         self.addCleanup(os.chmod, self.tmpout, expected_mode | stat.S_IWRITE)
 
-        with open(self.tmpin, 'rb') as f:
+        with open(self.tmpin, 'rb') kama f:
             uu.decode(f)
 
         self.assertEqual(

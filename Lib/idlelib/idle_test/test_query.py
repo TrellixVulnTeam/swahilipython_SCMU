@@ -1,12 +1,12 @@
 """Test query, coverage 93%).
 
-Non-gui tests for Query, SectionName, ModuleName, and HelpSource use
-dummy versions that extract the non-gui methods and add other needed
-attributes.  GUI tests create an instance of each kundi and simulate
-entries and button clicks.  Subkundi tests only target the new code in
+Non-gui tests kila Query, SectionName, ModuleName, na HelpSource use
+dummy versions that extract the non-gui methods na add other needed
+attributes.  GUI tests create an instance of each kundi na simulate
+entries na button clicks.  Subkundi tests only target the new code in
 the subkundi definition.
 
-The appearance of the widgets is checked by the Query and
+The appearance of the widgets ni checked by the Query and
 HelpSource htests.  These are run by running query.py.
 """
 kutoka idlelib agiza query
@@ -29,47 +29,47 @@ kundi QueryTest(unittest.TestCase):
         entry_ok = query.Query.entry_ok
         ok = query.Query.ok
         cancel = query.Query.cancel
-        # Add attributes and initialization needed for tests.
+        # Add attributes na initialization needed kila tests.
         eleza __init__(self, dummy_entry):
             self.entry = Var(value=dummy_entry)
             self.entry_error = {'text': ''}
-            self.result = None
-            self.destroyed = False
+            self.result = Tupu
+            self.destroyed = Uongo
         eleza showerror(self, message):
             self.entry_error['text'] = message
         eleza destroy(self):
-            self.destroyed = True
+            self.destroyed = Kweli
 
     eleza test_entry_ok_blank(self):
         dialog = self.Dummy_Query(' ')
-        self.assertEqual(dialog.entry_ok(), None)
-        self.assertEqual((dialog.result, dialog.destroyed), (None, False))
+        self.assertEqual(dialog.entry_ok(), Tupu)
+        self.assertEqual((dialog.result, dialog.destroyed), (Tupu, Uongo))
         self.assertIn('blank line', dialog.entry_error['text'])
 
     eleza test_entry_ok_good(self):
         dialog = self.Dummy_Query('  good ')
         Equal = self.assertEqual
         Equal(dialog.entry_ok(), 'good')
-        Equal((dialog.result, dialog.destroyed), (None, False))
+        Equal((dialog.result, dialog.destroyed), (Tupu, Uongo))
         Equal(dialog.entry_error['text'], '')
 
     eleza test_ok_blank(self):
         dialog = self.Dummy_Query('')
         dialog.entry.focus_set = mock.Mock()
-        self.assertEqual(dialog.ok(), None)
-        self.assertTrue(dialog.entry.focus_set.called)
-        del dialog.entry.focus_set
-        self.assertEqual((dialog.result, dialog.destroyed), (None, False))
+        self.assertEqual(dialog.ok(), Tupu)
+        self.assertKweli(dialog.entry.focus_set.called)
+        toa dialog.entry.focus_set
+        self.assertEqual((dialog.result, dialog.destroyed), (Tupu, Uongo))
 
     eleza test_ok_good(self):
         dialog = self.Dummy_Query('good')
-        self.assertEqual(dialog.ok(), None)
-        self.assertEqual((dialog.result, dialog.destroyed), ('good', True))
+        self.assertEqual(dialog.ok(), Tupu)
+        self.assertEqual((dialog.result, dialog.destroyed), ('good', Kweli))
 
     eleza test_cancel(self):
-        dialog = self.Dummy_Query('does not matter')
-        self.assertEqual(dialog.cancel(), None)
-        self.assertEqual((dialog.result, dialog.destroyed), (None, True))
+        dialog = self.Dummy_Query('does sio matter')
+        self.assertEqual(dialog.cancel(), Tupu)
+        self.assertEqual((dialog.result, dialog.destroyed), (Tupu, Kweli))
 
 
 kundi SectionNameTest(unittest.TestCase):
@@ -86,17 +86,17 @@ kundi SectionNameTest(unittest.TestCase):
 
     eleza test_blank_section_name(self):
         dialog = self.Dummy_SectionName(' ')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Tupu)
         self.assertIn('no name', dialog.entry_error['text'])
 
     eleza test_used_section_name(self):
         dialog = self.Dummy_SectionName('used')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Tupu)
         self.assertIn('use', dialog.entry_error['text'])
 
     eleza test_long_section_name(self):
         dialog = self.Dummy_SectionName('good'*8)
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Tupu)
         self.assertIn('longer than 30', dialog.entry_error['text'])
 
     eleza test_good_section_name(self):
@@ -119,22 +119,22 @@ kundi ModuleNameTest(unittest.TestCase):
 
     eleza test_blank_module_name(self):
         dialog = self.Dummy_ModuleName(' ')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Tupu)
         self.assertIn('no name', dialog.entry_error['text'])
 
     eleza test_bogus_module_name(self):
         dialog = self.Dummy_ModuleName('__name_xyz123_should_not_exist__')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Tupu)
         self.assertIn('not found', dialog.entry_error['text'])
 
     eleza test_c_source_name(self):
         dialog = self.Dummy_ModuleName('itertools')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Tupu)
         self.assertIn('source-based', dialog.entry_error['text'])
 
     eleza test_good_module_name(self):
         dialog = self.Dummy_ModuleName('idlelib')
-        self.assertTrue(dialog.entry_ok().endswith('__init__.py'))
+        self.assertKweli(dialog.entry_ok().endswith('__init__.py'))
         self.assertEqual(dialog.entry_error['text'], '')
 
 
@@ -149,11 +149,11 @@ kundi HelpsourceBrowsefileTest(unittest.TestCase):
 
     eleza test_file_replaces_path(self):
         dialog = self.Dummy_HelpSource()
-        # Path is widget entry, either '' or something.
-        # Func rudisha is file dialog return, either '' or something.
+        # Path ni widget entry, either '' ama something.
+        # Func rudisha ni file dialog rudisha, either '' ama something.
         # Func rudisha should override widget entry.
         # We need all 4 combinations to test all (most) code paths.
-        for path, func, result in (
+        kila path, func, result kwenye (
                 ('', lambda a,b,c:'', ''),
                 ('', lambda a,b,c: __file__, __file__),
                 ('htest', lambda a,b,c:'', 'htest'),
@@ -173,28 +173,28 @@ kundi HelpsourcePathokTest(unittest.TestCase):
         eleza __init__(self, dummy_path):
             self.path = Var(value=dummy_path)
             self.path_error = {'text': ''}
-        eleza showerror(self, message, widget=None):
+        eleza showerror(self, message, widget=Tupu):
             self.path_error['text'] = message
 
-    orig_platform = query.platform  # Set in test_path_ok_file.
+    orig_platform = query.platform  # Set kwenye test_path_ok_file.
     @classmethod
     eleza tearDownClass(cls):
         query.platform = cls.orig_platform
 
     eleza test_path_ok_blank(self):
         dialog = self.Dummy_HelpSource(' ')
-        self.assertEqual(dialog.path_ok(), None)
+        self.assertEqual(dialog.path_ok(), Tupu)
         self.assertIn('no help file', dialog.path_error['text'])
 
     eleza test_path_ok_bad(self):
         dialog = self.Dummy_HelpSource(__file__ + 'bad-bad-bad')
-        self.assertEqual(dialog.path_ok(), None)
+        self.assertEqual(dialog.path_ok(), Tupu)
         self.assertIn('not exist', dialog.path_error['text'])
 
     eleza test_path_ok_web(self):
         dialog = self.Dummy_HelpSource('')
         Equal = self.assertEqual
-        for url in 'www.py.org', 'http://py.org':
+        kila url kwenye 'www.py.org', 'http://py.org':
             with self.subTest():
                 dialog.path.set(url)
                 self.assertEqual(dialog.path_ok(), url)
@@ -202,7 +202,7 @@ kundi HelpsourcePathokTest(unittest.TestCase):
 
     eleza test_path_ok_file(self):
         dialog = self.Dummy_HelpSource('')
-        for platform, prefix in ('darwin', 'file://'), ('other', ''):
+        kila platform, prefix kwenye ('darwin', 'file://'), ('other', ''):
             with self.subTest():
                 query.platform = platform
                 dialog.path.set(__file__)
@@ -224,9 +224,9 @@ kundi HelpsourceEntryokTest(unittest.TestCase):
 
     eleza test_entry_ok_helpsource(self):
         dialog = self.Dummy_HelpSource()
-        for name, path, result in ((None, None, None),
-                                   (None, 'doc.txt', None),
-                                   ('doc', None, None),
+        kila name, path, result kwenye ((Tupu, Tupu, Tupu),
+                                   (Tupu, 'doc.txt', Tupu),
+                                   ('doc', Tupu, Tupu),
                                    ('doc', 'doc.txt', ('doc', 'doc.txt'))):
             with self.subTest():
                 dialog.name, dialog.path = name, path
@@ -252,7 +252,7 @@ kundi CustomRunCLIargsokTest(unittest.TestCase):
 
     eleza test_invalid_args(self):
         dialog = self.Dummy_CustomRun("'no-closing-quote")
-        self.assertEqual(dialog.cli_args_ok(), None)
+        self.assertEqual(dialog.cli_args_ok(), Tupu)
         self.assertIn('No closing', dialog.entry_error['text'])
 
     eleza test_good_args(self):
@@ -274,9 +274,9 @@ kundi CustomRunEntryokTest(unittest.TestCase):
 
     eleza test_entry_ok_customrun(self):
         dialog = self.Dummy_CustomRun()
-        for restart in {True, False}:
+        kila restart kwenye {Kweli, Uongo}:
             dialog.restartvar.set(restart)
-            for cli_args, result in ((None, None),
+            kila cli_args, result kwenye ((Tupu, Tupu),
                                      (['my arg'], (['my arg'], restart))):
                 with self.subTest(restart=restart, cli_args=cli_args):
                     dialog.cli_args = cli_args
@@ -292,19 +292,19 @@ kundi QueryGuiTest(unittest.TestCase):
         requires('gui')
         cls.root = root = Tk()
         cls.root.withdraw()
-        cls.dialog = query.Query(root, 'TEST', 'test', _utest=True)
+        cls.dialog = query.Query(root, 'TEST', 'test', _utest=Kweli)
         cls.dialog.destroy = mock.Mock()
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.dialog.destroy
-        del cls.dialog
+        toa cls.dialog.destroy
+        toa cls.dialog
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.dialog.entry.delete(0, 'end')
-        self.dialog.result = None
+        self.dialog.result = Tupu
         self.dialog.destroy.reset_mock()
 
     eleza test_click_ok(self):
@@ -312,20 +312,20 @@ kundi QueryGuiTest(unittest.TestCase):
         dialog.entry.insert(0, 'abc')
         dialog.button_ok.invoke()
         self.assertEqual(dialog.result, 'abc')
-        self.assertTrue(dialog.destroy.called)
+        self.assertKweli(dialog.destroy.called)
 
     eleza test_click_blank(self):
         dialog = self.dialog
         dialog.button_ok.invoke()
-        self.assertEqual(dialog.result, None)
-        self.assertFalse(dialog.destroy.called)
+        self.assertEqual(dialog.result, Tupu)
+        self.assertUongo(dialog.destroy.called)
 
     eleza test_click_cancel(self):
         dialog = self.dialog
         dialog.entry.insert(0, 'abc')
         dialog.button_cancel.invoke()
-        self.assertEqual(dialog.result, None)
-        self.assertTrue(dialog.destroy.called)
+        self.assertEqual(dialog.result, Tupu)
+        self.assertKweli(dialog.destroy.called)
 
 
 kundi SectionnameGuiTest(unittest.TestCase):
@@ -337,7 +337,7 @@ kundi SectionnameGuiTest(unittest.TestCase):
     eleza test_click_section_name(self):
         root = Tk()
         root.withdraw()
-        dialog =  query.SectionName(root, 'T', 't', {'abc'}, _utest=True)
+        dialog =  query.SectionName(root, 'T', 't', {'abc'}, _utest=Kweli)
         Equal = self.assertEqual
         self.assertEqual(dialog.used_names, {'abc'})
         dialog.entry.insert(0, 'okay')
@@ -355,11 +355,11 @@ kundi ModulenameGuiTest(unittest.TestCase):
     eleza test_click_module_name(self):
         root = Tk()
         root.withdraw()
-        dialog =  query.ModuleName(root, 'T', 't', 'idlelib', _utest=True)
+        dialog =  query.ModuleName(root, 'T', 't', 'idlelib', _utest=Kweli)
         self.assertEqual(dialog.text0, 'idlelib')
         self.assertEqual(dialog.entry.get(), 'idlelib')
         dialog.button_ok.invoke()
-        self.assertTrue(dialog.result.endswith('__init__.py'))
+        self.assertKweli(dialog.result.endswith('__init__.py'))
         root.destroy()
 
 
@@ -373,7 +373,7 @@ kundi HelpsourceGuiTest(unittest.TestCase):
         root = Tk()
         root.withdraw()
         dialog =  query.HelpSource(root, 'T', menuitem='__test__',
-                                   filepath=__file__, _utest=True)
+                                   filepath=__file__, _utest=Kweli)
         Equal = self.assertEqual
         Equal(dialog.entry.get(), '__test__')
         Equal(dialog.path.get(), __file__)
@@ -393,13 +393,13 @@ kundi CustomRunGuiTest(unittest.TestCase):
         root = Tk()
         root.withdraw()
         dialog =  query.CustomRun(root, 'Title',
-                                  cli_args=['a', 'b=1'], _utest=True)
+                                  cli_args=['a', 'b=1'], _utest=Kweli)
         self.assertEqual(dialog.entry.get(), 'a b=1')
         dialog.entry.insert(END, ' c')
         dialog.button_ok.invoke()
-        self.assertEqual(dialog.result, (['a', 'b=1', 'c'], True))
+        self.assertEqual(dialog.result, (['a', 'b=1', 'c'], Kweli))
         root.destroy()
 
 
 ikiwa __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Uongo)

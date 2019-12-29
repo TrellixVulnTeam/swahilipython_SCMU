@@ -35,7 +35,7 @@ def mock_socket_module():
     ):
         if hasattr(socket, name):
             setattr(m_socket, name, getattr(socket, name))
-        else:
+        isipokua:
             delattr(m_socket, name)
 
     m_socket.socket = mock.MagicMock()
@@ -140,7 +140,7 @@ class BaseEventTests(test_utils.TestCase):
 
     @patch_socket
     def test_ipaddr_info_no_inet_pton(self, m_socket):
-        del m_socket.inet_pton
+        toa m_socket.inet_pton
         self.assertIsNone(base_events._ipaddr_info('1.2.3.4', 1,
                                                    socket.AF_INET,
                                                    socket.SOCK_STREAM,
@@ -294,7 +294,7 @@ class BaseEventLoopTests(test_utils.TestCase):
                 loop.call_later(60, cb)
             with self.assertRaisesRegex(RuntimeError, msg):
                 loop.call_at(loop.time() + 60, cb)
-        else:
+        isipokua:
             loop.call_soon(cb)
             loop.call_later(60, cb)
             loop.call_at(loop.time() + 60, cb)
@@ -304,20 +304,20 @@ class BaseEventLoopTests(test_utils.TestCase):
             # wait until the event loop is running
             event.wait()
 
-            try:
+            jaribu:
                 if create_loop:
                     loop2 = base_events.BaseEventLoop()
-                    try:
+                    jaribu:
                         asyncio.set_event_loop(loop2)
                         self.check_thread(loop, debug)
-                    finally:
+                    mwishowe:
                         asyncio.set_event_loop(None)
                         loop2.close()
-                else:
+                isipokua:
                     self.check_thread(loop, debug)
-            except Exception as exc:
+            tatizo Exception as exc:
                 loop.call_soon_threadsafe(fut.set_exception, exc)
-            else:
+            isipokua:
                 loop.call_soon_threadsafe(fut.set_result, None)
 
         def test_thread(loop, debug, create_loop=False):
@@ -339,7 +339,7 @@ class BaseEventLoopTests(test_utils.TestCase):
         # check disabled if debug mode is disabled
         test_thread(self.loop, False)
 
-        # raise RuntimeError if the event loop of the thread is not the called
+        # raise RuntimeError if the event loop of the thread ni sio the called
         # event loop
         test_thread(self.loop, True, create_loop=True)
 
@@ -398,8 +398,8 @@ class BaseEventLoopTests(test_utils.TestCase):
         def cb():
             pass
 
-        # Set up one "blocking" event that will not be cancelled to
-        # ensure later cancelled events do not make it to the head
+        # Set up one "blocking" event that will sio be cancelled to
+        # ensure later cancelled events do sio make it to the head
         # of the queue and get cleaned.
         not_cancelled_count = 1
         self.loop.call_later(3000, cb)
@@ -442,7 +442,7 @@ class BaseEventLoopTests(test_utils.TestCase):
         add_not_cancel_count = max(base_events._MIN_SCHEDULED_TIMER_HANDLES -
             add_cancel_count, 0)
 
-        # Add some events that will not be cancelled
+        # Add some events that will sio be cancelled
         not_cancelled_count += add_not_cancel_count
         for x in range(add_not_cancel_count):
             self.loop.call_later(3600, cb)
@@ -491,7 +491,7 @@ class BaseEventLoopTests(test_utils.TestCase):
         with self.assertRaises(ShowStopper):
             self.loop.run_until_complete(foo(0.1))
 
-        # This call fails if run_until_complete does not clean up
+        # This call fails if run_until_complete does sio clean up
         # done-callback for the previous future.
         self.loop.run_until_complete(foo(0.2))
 
@@ -503,17 +503,17 @@ class BaseEventLoopTests(test_utils.TestCase):
             self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol)
 
-        # expected multiple arguments, not a list
+        # expected multiple arguments, sio a list
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol, args)
 
-        # program arguments must be strings, not int
+        # program arguments must be strings, sio int
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol, sys.executable, 123)
 
-        # universal_newlines, shell, bufsize must not be set
+        # universal_newlines, shell, bufsize must sio be set
         self.assertRaises(TypeError,
         self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol, *args, universal_newlines=True)
@@ -525,7 +525,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             asyncio.SubprocessProtocol, *args, bufsize=4096)
 
     def test_subprocess_shell_invalid_args(self):
-        # expected a string, not an int or a list
+        # expected a string, sio an int or a list
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
             asyncio.SubprocessProtocol, 123)
@@ -533,7 +533,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             self.loop.run_until_complete, self.loop.subprocess_shell,
             asyncio.SubprocessProtocol, [sys.executable, '-c', 'pass'])
 
-        # universal_newlines, shell, bufsize must not be set
+        # universal_newlines, shell, bufsize must sio be set
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
             asyncio.SubprocessProtocol, 'exit 0', universal_newlines=True)
@@ -591,7 +591,7 @@ class BaseEventLoopTests(test_utils.TestCase):
                 log.error.assert_called_with(
                     test_utils.MockPattern('.*exception was never retrieved'),
                     exc_info=(ZeroDivisionError, MOCK_ANY, MOCK_ANY))
-            else:
+            isipokua:
                 # futures._TracebackLogger logs only textual traceback
                 log.error.assert_called_with(
                     test_utils.MockPattern(
@@ -636,7 +636,7 @@ class BaseEventLoopTests(test_utils.TestCase):
                                 'Exception in callback.*zero'),
                         exc_info=(ZeroDivisionError, MOCK_ANY, MOCK_ANY))
 
-        assert not mock_handler.called
+        assert sio mock_handler.called
 
     def test_set_exc_handler_broken(self):
         def run_loop():
@@ -698,7 +698,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             run_loop()
             log.error.assert_called_with(
                 test_utils.MockPattern('Exception in default exception.*'
-                                       'while handling.*in custom'),
+                                       'wakati handling.*in custom'),
                 exc_info=True)
 
             # Check that original context was passed to default
@@ -748,7 +748,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             'loop = asyncio.get_event_loop()',
             'print(loop.get_debug())'))
 
-        # Test with -E to not fail if the unit test was run with
+        # Test with -E to sio fail if the unit test was run with
         # PYTHONASYNCIODEBUG set to a non-empty string
         sts, stdout, stderr = assert_python_ok('-E', '-c', code)
         self.assertEqual(stdout.rstrip(), b'False')
@@ -800,9 +800,9 @@ class BaseEventLoopTests(test_utils.TestCase):
 
         loop = asyncio.new_event_loop()
         task = loop.create_task(test(), name='test_task')
-        try:
+        jaribu:
             self.assertEqual(task.get_name(), 'test_task')
-        finally:
+        mwishowe:
             loop.run_until_complete(task)
             loop.close()
 
@@ -816,9 +816,9 @@ class BaseEventLoopTests(test_utils.TestCase):
         loop = asyncio.new_event_loop()
         loop.set_task_factory(task_factory)
         task = loop.create_task(test(), name='test_task')
-        try:
+        jaribu:
             self.assertEqual(task.get_name(), 'test_task')
-        finally:
+        mwishowe:
             loop.run_until_complete(task)
             loop.close()
 
@@ -832,9 +832,9 @@ class BaseEventLoopTests(test_utils.TestCase):
         self.loop._process_events = mock.Mock()
         self.loop.call_exception_handler = mock.Mock()
 
-        try:
+        jaribu:
             self.loop.run_until_complete(raise_keyboard_interrupt())
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             pass
         self.loop.close()
         support.gc_collect()
@@ -842,26 +842,26 @@ class BaseEventLoopTests(test_utils.TestCase):
         self.assertFalse(self.loop.call_exception_handler.called)
 
     def test_run_until_complete_baseexception(self):
-        # Python issue #22429: run_until_complete() must not schedule a pending
+        # Python issue #22429: run_until_complete() must sio schedule a pending
         # call to stop() if the future raised a BaseException
         async def raise_keyboard_interrupt():
             raise KeyboardInterrupt
 
         self.loop._process_events = mock.Mock()
 
-        try:
+        jaribu:
             self.loop.run_until_complete(raise_keyboard_interrupt())
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             pass
 
         def func():
             self.loop.stop()
             func.called = True
         func.called = False
-        try:
+        jaribu:
             self.loop.call_soon(func)
             self.loop.run_forever()
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             pass
         self.assertTrue(func.called)
 
@@ -923,26 +923,26 @@ class BaseEventLoopTests(test_utils.TestCase):
         # to be garbage collected.
         # Used in async generator finalization tests.
         # Depends on implementation details of garbage collector. Changes
-        # in gc may break this function.
+        # in gc may koma this function.
         status = {'started': False,
                   'stopped': False,
                   'finalized': False}
 
         async def agen():
             status['started'] = True
-            try:
+            jaribu:
                 for item in ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR']:
                     yield item
-            finally:
+            mwishowe:
                 status['finalized'] = True
 
         ag = agen()
         ai = ag.__aiter__()
 
         async def iter_one():
-            try:
+            jaribu:
                 item = await ai.__anext__()
-            except StopAsyncIteration:
+            tatizo StopAsyncIteration:
                 return
             if item == 'THREE':
                 status['stopped'] = True
@@ -958,7 +958,7 @@ class BaseEventLoopTests(test_utils.TestCase):
         self.loop._write_to_self = mock.Mock()
         with support.disable_gc():
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
-            while not status['stopped']:
+            wakati sio status['stopped']:
                 test_utils.run_briefly(self.loop)
             self.assertTrue(status['started'])
             self.assertTrue(status['stopped'])
@@ -969,14 +969,14 @@ class BaseEventLoopTests(test_utils.TestCase):
 
     def test_asyncgen_finalization_by_gc_in_other_thread(self):
         # Python issue 34769: If garbage collector runs in another
-        # thread, async generators will not finalize in debug
+        # thread, async generators will sio finalize in debug
         # mode.
         self.loop._process_events = mock.Mock()
         self.loop._write_to_self = mock.Mock()
         self.loop.set_debug(True)
         with support.disable_gc():
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
-            while not status['stopped']:
+            wakati sio status['stopped']:
                 test_utils.run_briefly(self.loop)
             self.assertTrue(status['started'])
             self.assertTrue(status['stopped'])
@@ -1156,19 +1156,19 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
             with self.assertWarns(DeprecationWarning):
                 srv = await asyncio.start_server(
                     lambda: None, '::1', 0, loop=self.loop)
-            try:
+            jaribu:
                 self.assertGreater(len(srv.sockets), 0)
-            finally:
+            mwishowe:
                 srv.close()
                 await srv.wait_closed()
 
-        try:
+        jaribu:
             self.loop.run_until_complete(main())
-        except OSError as ex:
+        tatizo OSError as ex:
             if (hasattr(errno, 'EADDRNOTAVAIL') and
                     ex.errno == errno.EADDRNOTAVAIL):
                 self.skipTest('failed to bind to ::1')
-            else:
+            isipokua:
                 raise
 
     def test_create_datagram_endpoint_wrong_sock(self):
@@ -1260,8 +1260,8 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     def _test_create_connection_ip_addr(self, m_socket, allow_inet_pton):
         # Test the fallback code, even if this system has inet_pton.
-        if not allow_inet_pton:
-            del m_socket.inet_pton
+        if sio allow_inet_pton:
+            toa m_socket.inet_pton
 
         m_socket.getaddrinfo = socket.getaddrinfo
         sock = m_socket.socket.return_value
@@ -1273,12 +1273,12 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         coro = self.loop.create_connection(asyncio.Protocol, '1.2.3.4', 80)
         t, p = self.loop.run_until_complete(coro)
-        try:
+        jaribu:
             sock.connect.assert_called_with(('1.2.3.4', 80))
             _, kwargs = m_socket.socket.call_args
             self.assertEqual(kwargs['family'], m_socket.AF_INET)
             self.assertEqual(kwargs['type'], m_socket.SOCK_STREAM)
-        finally:
+        mwishowe:
             t.close()
             test_utils.run_briefly(self.loop)  # allow transport to close
 
@@ -1286,7 +1286,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
             sock.family = socket.AF_INET6
             coro = self.loop.create_connection(asyncio.Protocol, '::1', 80)
             t, p = self.loop.run_until_complete(coro)
-            try:
+            jaribu:
                 # Without inet_pton we use getaddrinfo, which transforms
                 # ('::1', 80) to ('::1', 80, 0, 0). The last 0s are flow info,
                 # scope id.
@@ -1297,7 +1297,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
                 _, kwargs = m_socket.socket.call_args
                 self.assertEqual(kwargs['family'], m_socket.AF_INET6)
                 self.assertEqual(kwargs['type'], m_socket.SOCK_STREAM)
-            finally:
+            mwishowe:
                 t.close()
                 test_utils.run_briefly(self.loop)  # allow transport to close
 
@@ -1317,12 +1317,12 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         coro = self.loop.create_connection(asyncio.Protocol, 'fe80::1%1', 80)
         t, p = self.loop.run_until_complete(coro)
-        try:
+        jaribu:
             sock.connect.assert_called_with(('fe80::1', 80, 0, 1))
             _, kwargs = m_socket.socket.call_args
             self.assertEqual(kwargs['family'], m_socket.AF_INET6)
             self.assertEqual(kwargs['type'], m_socket.SOCK_STREAM)
-        finally:
+        mwishowe:
             t.close()
             test_utils.run_briefly(self.loop)  # allow transport to close
 
@@ -1349,12 +1349,12 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
                                                '127.0.0.1', service)
 
             t, p = self.loop.run_until_complete(coro)
-            try:
+            jaribu:
                 sock.connect.assert_called_with(('127.0.0.1', port))
                 _, kwargs = m_socket.socket.call_args
                 self.assertEqual(kwargs['family'], m_socket.AF_INET)
                 self.assertEqual(kwargs['type'], m_socket.SOCK_STREAM)
-            finally:
+            mwishowe:
                 t.close()
                 test_utils.run_briefly(self.loop)  # allow transport to close
 
@@ -1370,7 +1370,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
             if host == 'example.com':
                 return [(2, 1, 6, '', ('107.6.106.82', 80)),
                         (2, 1, 6, '', ('107.6.106.82', 80))]
-            else:
+            isipokua:
                 return []
 
         def getaddrinfo_task(*args, **kwds):
@@ -1472,7 +1472,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
                 ssl_handshake_timeout=handshake_timeout)
 
     def test_create_connection_no_ssl_server_hostname_errors(self):
-        # When not using ssl, server_hostname must be None.
+        # When sio using ssl, server_hostname must be None.
         coro = self.loop.create_connection(MyProto, 'python.org', 80,
                                            server_hostname='')
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
@@ -1537,7 +1537,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_server_nosoreuseport(self, m_socket):
         m_socket.getaddrinfo = socket.getaddrinfo
-        del m_socket.SO_REUSEPORT
+        toa m_socket.SO_REUSEPORT
         m_socket.socket.return_value = mock.Mock()
 
         f = self.loop.create_server(
@@ -1633,7 +1633,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(
             OSError, self.loop.run_until_complete, coro)
 
-    @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 not supported or enabled')
+    @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 sio supported or enabled')
     def test_create_datagram_endpoint_no_matching_family(self):
         coro = self.loop.create_datagram_endpoint(
             asyncio.DatagramProtocol,
@@ -1745,9 +1745,9 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(ValueError, self.loop.run_until_complete, fut)
 
     def test_create_datagram_endpoint_sockopts(self):
-        # Socket options should not be applied unless asked for.
+        # Socket options should sio be applied unless asked for.
         # SO_REUSEADDR defaults to on for UNIX.
-        # SO_REUSEPORT is not available on all platforms.
+        # SO_REUSEPORT ni sio available on all platforms.
 
         coro = self.loop.create_datagram_endpoint(
             lambda: MyDatagramProto(create_future=True, loop=self.loop),
@@ -1763,7 +1763,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
             self.assertTrue(
                 sock.getsockopt(
                     socket.SOL_SOCKET, socket.SO_REUSEADDR))
-        else:
+        isipokua:
             self.assertFalse(
                 sock.getsockopt(
                     socket.SOL_SOCKET, socket.SO_REUSEADDR))
@@ -1805,7 +1805,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @patch_socket
     def test_create_datagram_endpoint_nosoreuseport(self, m_socket):
-        del m_socket.SO_REUSEPORT
+        toa m_socket.SO_REUSEPORT
         m_socket.socket.return_value = mock.Mock()
 
         coro = self.loop.create_datagram_endpoint(
@@ -1819,7 +1819,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     def test_create_datagram_endpoint_ip_addr(self, m_socket):
         def getaddrinfo(*args, **kw):
-            self.fail('should not have called getaddrinfo')
+            self.fail('should sio have called getaddrinfo')
 
         m_socket.getaddrinfo = getaddrinfo
         m_socket.socket.return_value.bind = bind = mock.Mock()
@@ -1834,12 +1834,12 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
             reuse_port=reuseport_supported)
 
         t, p = self.loop.run_until_complete(coro)
-        try:
+        jaribu:
             bind.assert_called_with(('1.2.3.4', 0))
             m_socket.socket.assert_called_with(family=m_socket.AF_INET,
                                                proto=m_socket.IPPROTO_UDP,
                                                type=m_socket.SOCK_DGRAM)
-        finally:
+        mwishowe:
             t.close()
             test_utils.run_briefly(self.loop)  # allow transport to close
 
@@ -1928,11 +1928,11 @@ class RunningLoopTests(unittest.TestCase):
 
         loop = asyncio.new_event_loop()
         outer_loop = asyncio.new_event_loop()
-        try:
+        jaribu:
             with self.assertRaisesRegex(RuntimeError,
-                                        'while another loop is running'):
+                                        'wakati another loop is running'):
                 outer_loop.run_until_complete(runner(loop))
-        finally:
+        mwishowe:
             loop.close()
             outer_loop.close()
 
@@ -2005,14 +2005,14 @@ class BaseLoopSockSendfileTests(test_utils.TestCase):
         addr = server.sockets[0].getsockname()
 
         for _ in range(10):
-            try:
+            jaribu:
                 self.run_loop(self.loop.sock_connect(sock, addr))
-            except OSError:
+            tatizo OSError:
                 self.run_loop(asyncio.sleep(0.5))
-                continue
-            else:
-                break
-        else:
+                endelea
+            isipokua:
+                koma
+        isipokua:
             # One last try, so we get the exception
             self.run_loop(self.loop.sock_connect(sock, addr))
 
@@ -2020,7 +2020,7 @@ class BaseLoopSockSendfileTests(test_utils.TestCase):
             server.close()
             self.run_loop(server.wait_closed())
             sock.close()
-            if proto.transport is not None:
+            if proto.transport ni sio None:
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
 
@@ -2032,7 +2032,7 @@ class BaseLoopSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
 
         with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "sendfile is not available"):
+                                    "sendfile ni sio available"):
             self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
                                                           0, None))
 
@@ -2043,7 +2043,7 @@ class BaseLoopSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
 
         with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "sendfile is not available"):
+                                    "sendfile ni sio available"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file,
                                                   fallback=False))
 

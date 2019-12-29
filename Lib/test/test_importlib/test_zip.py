@@ -36,15 +36,15 @@ kundi TestZip(unittest.TestCase):
         self.assertEqual(entry_point.value, 'example:main')
 
     eleza test_missing_metadata(self):
-        self.assertIsNone(distribution('example').read_text('does not exist'))
+        self.assertIsTupu(distribution('example').read_text('does sio exist'))
 
     eleza test_case_insensitive(self):
         self.assertEqual(version('Example'), '21.12')
 
     eleza test_files(self):
-        for file in files('example'):
+        kila file kwenye files('example'):
             path = str(file.dist.locate_file(file))
-            assert '.whl/' in path, path
+            assert '.whl/' kwenye path, path
 
 
 kundi TestEgg(TestZip):
@@ -59,6 +59,6 @@ kundi TestEgg(TestZip):
         self.resources.callback(sys.path.pop, 0)
 
     eleza test_files(self):
-        for file in files('example'):
+        kila file kwenye files('example'):
             path = str(file.dist.locate_file(file))
-            assert '.egg/' in path, path
+            assert '.egg/' kwenye path, path

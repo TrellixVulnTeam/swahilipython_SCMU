@@ -39,7 +39,7 @@ class install_scripts(Command):
                                   )
 
     def run(self):
-        if not self.skip_build:
+        if sio self.skip_build:
             self.run_command('build_scripts')
         self.outfiles = self.copy_tree(self.build_dir, self.install_dir)
         if os.name == 'posix':
@@ -48,7 +48,7 @@ class install_scripts(Command):
             for file in self.get_outputs():
                 if self.dry_run:
                     log.info("changing mode of %s", file)
-                else:
+                isipokua:
                     mode = ((os.stat(file)[ST_MODE]) | 0o555) & 0o7777
                     log.info("changing mode of %s to %o", file, mode)
                     os.chmod(file, mode)

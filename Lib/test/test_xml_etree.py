@@ -1,8 +1,8 @@
-# IMPORTANT: the same tests are run kutoka "test_xml_etree_c" in order
-# to ensure consistency between the C implementation and the Python
+# IMPORTANT: the same tests are run kutoka "test_xml_etree_c" kwenye order
+# to ensure consistency between the C implementation na the Python
 # implementation.
 #
-# For this purpose, the module-level "ET" symbol is temporarily
+# For this purpose, the module-level "ET" symbol ni temporarily
 # monkey-patched when running the "test_xml_etree_c" test suite.
 
 agiza copy
@@ -26,18 +26,18 @@ kutoka itertools agiza product, islice
 kutoka test agiza support
 kutoka test.support agiza TESTFN, findfile, import_fresh_module, gc_collect, swap_attr
 
-# pyET is the pure-Python implementation.
+# pyET ni the pure-Python implementation.
 #
-# ET is pyET in test_xml_etree and is the C accelerated version in
+# ET ni pyET kwenye test_xml_etree na ni the C accelerated version in
 # test_xml_etree_c.
-pyET = None
-ET = None
+pyET = Tupu
+ET = Tupu
 
 SIMPLE_XMLFILE = findfile("simple.xml", subdir="xmltestdata")
-try:
+jaribu:
     SIMPLE_XMLFILE.encode("utf-8")
-except UnicodeEncodeError:
-    raise unittest.SkipTest("filename is not encodable to utf8")
+tatizo UnicodeEncodeError:
+    ashiria unittest.SkipTest("filename ni sio encodable to utf8")
 SIMPLE_NS_XMLFILE = findfile("simple-ns.xml", subdir="xmltestdata")
 UTF8_BUG_XMLFILE = findfile("expat224_utf8_bug.xml", subdir="xmltestdata")
 
@@ -103,7 +103,7 @@ EXTERNAL_ENTITY_XML = """\
 <document>&entity;</document>
 """
 
-eleza checkwarnings(*filters, quiet=False):
+eleza checkwarnings(*filters, quiet=Uongo):
     eleza decorator(test):
         eleza newtest(*args, **kwargs):
             with support.check_warnings(*filters, quiet=quiet):
@@ -126,21 +126,21 @@ kundi ModuleTest(unittest.TestCase):
         support.check__all__(self, ET, names, blacklist=("HTML_EMPTY",))
 
 
-eleza serialize(elem, to_string=True, encoding='unicode', **options):
+eleza serialize(elem, to_string=Kweli, encoding='unicode', **options):
     ikiwa encoding != 'unicode':
         file = io.BytesIO()
-    else:
+    isipokua:
         file = io.StringIO()
     tree = ET.ElementTree(elem)
     tree.write(file, encoding=encoding, **options)
     ikiwa to_string:
         rudisha file.getvalue()
-    else:
+    isipokua:
         file.seek(0)
         rudisha file
 
 eleza summarize_list(seq):
-    rudisha [elem.tag for elem in seq]
+    rudisha [elem.tag kila elem kwenye seq]
 
 
 kundi ElementTestCase:
@@ -150,19 +150,19 @@ kundi ElementTestCase:
 
     eleza pickleRoundTrip(self, obj, name, dumper, loader, proto):
         save_m = sys.modules[name]
-        try:
+        jaribu:
             sys.modules[name] = dumper
             temp = pickle.dumps(obj, proto)
             sys.modules[name] = loader
             result = pickle.loads(temp)
-        except pickle.PicklingError as pe:
+        tatizo pickle.PicklingError kama pe:
             # pyET must be second, because pyET may be (equal to) ET.
             human = dict([(ET, "cET"), (pyET, "pyET")])
-            raise support.TestFailed("Failed to round-trip %r kutoka %r to %r"
+            ashiria support.TestFailed("Failed to round-trip %r kutoka %r to %r"
                                      % (obj,
                                         human.get(dumper, dumper),
                                         human.get(loader, loader))) kutoka pe
-        finally:
+        mwishowe:
             sys.modules[name] = save_m
         rudisha result
 
@@ -170,7 +170,7 @@ kundi ElementTestCase:
         self.assertIsInstance(alice, (ET.Element, pyET.Element))
         self.assertIsInstance(bob, (ET.Element, pyET.Element))
         self.assertEqual(len(list(alice)), len(list(bob)))
-        for x, y in zip(alice, bob):
+        kila x, y kwenye zip(alice, bob):
             self.assertEqualElements(x, y)
         properties = operator.attrgetter('tag', 'tail', 'text', 'attrib')
         self.assertEqual(properties(alice), properties(bob))
@@ -188,7 +188,7 @@ kundi ElementTreeTest(unittest.TestCase):
 
         eleza check_string(string):
             len(string)
-            for char in string:
+            kila char kwenye string:
                 self.assertEqual(len(char), 1,
                         msg="expected one-character string, got %r" % char)
             new_string = string + ""
@@ -199,28 +199,28 @@ kundi ElementTreeTest(unittest.TestCase):
             len(mapping)
             keys = mapping.keys()
             items = mapping.items()
-            for key in keys:
+            kila key kwenye keys:
                 item = mapping[key]
             mapping["key"] = "value"
             self.assertEqual(mapping["key"], "value",
                     msg="expected value string, got %r" % mapping["key"])
 
         eleza check_element(element):
-            self.assertTrue(ET.iselement(element), msg="not an element")
+            self.assertKweli(ET.iselement(element), msg="not an element")
             direlem = dir(element)
-            for attr in 'tag', 'attrib', 'text', 'tail':
-                self.assertTrue(hasattr(element, attr),
+            kila attr kwenye 'tag', 'attrib', 'text', 'tail':
+                self.assertKweli(hasattr(element, attr),
                         msg='no %s member' % attr)
                 self.assertIn(attr, direlem,
                         msg='no %s visible by dir' % attr)
 
             check_string(element.tag)
             check_mapping(element.attrib)
-            ikiwa element.text is not None:
+            ikiwa element.text ni sio Tupu:
                 check_string(element.text)
-            ikiwa element.tail is not None:
+            ikiwa element.tail ni sio Tupu:
                 check_string(element.tail)
-            for elem in element:
+            kila elem kwenye element:
                 check_element(elem)
 
         element = ET.Element("tag")
@@ -235,8 +235,8 @@ kundi ElementTreeTest(unittest.TestCase):
         # Make sure all standard element methods exist.
 
         eleza check_method(method):
-            self.assertTrue(hasattr(method, '__call__'),
-                    msg="%s not callable" % method)
+            self.assertKweli(hasattr(method, '__call__'),
+                    msg="%s sio callable" % method)
 
         check_method(element.append)
         check_method(element.extend)
@@ -280,13 +280,13 @@ kundi ElementTreeTest(unittest.TestCase):
         element.tag = 'TAG'
         self.assertEqual(element.tag, 'TAG')
 
-        self.assertIsNone(element.text)
+        self.assertIsTupu(element.text)
         element.text = 'Text'
         self.assertEqual(element.text, 'Text')
         element.text = 'TEXT'
         self.assertEqual(element.text, 'TEXT')
 
-        self.assertIsNone(element.tail)
+        self.assertIsTupu(element.tail)
         element.tail = 'Tail'
         self.assertEqual(element.tail, 'Tail')
         element.tail = 'TAIL'
@@ -327,15 +327,15 @@ kundi ElementTreeTest(unittest.TestCase):
         self.serialize_check(element, '<tag key="value"><subtag /></tag>') # 4
         element.remove(subelement)
         self.serialize_check(element, '<tag key="value" />') # 5
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             element.remove(subelement)
-        self.assertEqual(str(cm.exception), 'list.remove(x): x not in list')
+        self.assertEqual(str(cm.exception), 'list.remove(x): x haiko kwenye list')
         self.serialize_check(element, '<tag key="value" />') # 6
         element[0:0] = [subelement, subelement, subelement]
         self.serialize_check(element[1], '<subtag />')
         self.assertEqual(element[1:9], [element[1], element[2]])
         self.assertEqual(element[:9:2], [element[0], element[2]])
-        del element[1:2]
+        toa element[1:2]
         self.serialize_check(element,
                 '<tag key="value"><subtag /><subtag /></tag>')
 
@@ -366,13 +366,13 @@ kundi ElementTreeTest(unittest.TestCase):
         kutoka xml.etree agiza ElementPath
 
         elem = ET.XML(SAMPLE_XML)
-        for i in range(10): ET.ElementTree(elem).find('./'+str(i))
+        kila i kwenye range(10): ET.ElementTree(elem).find('./'+str(i))
         cache_len_10 = len(ElementPath._cache)
-        for i in range(10): ET.ElementTree(elem).find('./'+str(i))
+        kila i kwenye range(10): ET.ElementTree(elem).find('./'+str(i))
         self.assertEqual(len(ElementPath._cache), cache_len_10)
-        for i in range(20): ET.ElementTree(elem).find('./'+str(i))
+        kila i kwenye range(20): ET.ElementTree(elem).find('./'+str(i))
         self.assertGreater(len(ElementPath._cache), cache_len_10)
-        for i in range(600): ET.ElementTree(elem).find('./'+str(i))
+        kila i kwenye range(600): ET.ElementTree(elem).find('./'+str(i))
         self.assertLess(len(ElementPath._cache), 500)
 
     eleza test_copy(self):
@@ -403,13 +403,13 @@ kundi ElementTreeTest(unittest.TestCase):
 
         attrib = {"key": "value"}
         elem = ET.Element("tag", attrib)
-        attrib.clear() # check for aliasing issues
+        attrib.clear() # check kila aliasing issues
         self.assertEqual(elem.get("key"), 'value') # 3.1
         self.assertEqual(elem.attrib, {'key': 'value'}) # 3.2
 
         attrib = {"key": "value"}
         elem = ET.Element("tag", **attrib)
-        attrib.clear() # check for aliasing issues
+        attrib.clear() # check kila aliasing issues
         self.assertEqual(elem.get("key"), 'value') # 4.1
         self.assertEqual(elem.attrib, {'key': 'value'}) # 4.2
 
@@ -484,7 +484,7 @@ kundi ElementTreeTest(unittest.TestCase):
                 '   <ns0:empty-element />\n'
                 '</ns0:root>')
 
-        with open(SIMPLE_XMLFILE) as f:
+        with open(SIMPLE_XMLFILE) kama f:
             data = f.read()
 
         parser = ET.XMLParser()
@@ -537,7 +537,7 @@ kundi ElementTreeTest(unittest.TestCase):
         context = iterparse(SIMPLE_XMLFILE)
         action, elem = next(context)
         self.assertEqual((action, elem.tag), ('end', 'element'))
-        self.assertEqual([(action, elem.tag) for action, elem in context], [
+        self.assertEqual([(action, elem.tag) kila action, elem kwenye context], [
                 ('end', 'element'),
                 ('end', 'empty-element'),
                 ('end', 'root'),
@@ -545,7 +545,7 @@ kundi ElementTreeTest(unittest.TestCase):
         self.assertEqual(context.root.tag, 'root')
 
         context = iterparse(SIMPLE_NS_XMLFILE)
-        self.assertEqual([(action, elem.tag) for action, elem in context], [
+        self.assertEqual([(action, elem.tag) kila action, elem kwenye context], [
                 ('end', '{namespace}element'),
                 ('end', '{namespace}element'),
                 ('end', '{namespace}empty-element'),
@@ -554,15 +554,15 @@ kundi ElementTreeTest(unittest.TestCase):
 
         events = ()
         context = iterparse(SIMPLE_XMLFILE, events)
-        self.assertEqual([(action, elem.tag) for action, elem in context], [])
+        self.assertEqual([(action, elem.tag) kila action, elem kwenye context], [])
 
         events = ()
         context = iterparse(SIMPLE_XMLFILE, events=events)
-        self.assertEqual([(action, elem.tag) for action, elem in context], [])
+        self.assertEqual([(action, elem.tag) kila action, elem kwenye context], [])
 
         events = ("start", "end")
         context = iterparse(SIMPLE_XMLFILE, events)
-        self.assertEqual([(action, elem.tag) for action, elem in context], [
+        self.assertEqual([(action, elem.tag) kila action, elem kwenye context], [
                 ('start', 'root'),
                 ('start', 'element'),
                 ('end', 'element'),
@@ -575,9 +575,9 @@ kundi ElementTreeTest(unittest.TestCase):
 
         events = ("start", "end", "start-ns", "end-ns")
         context = iterparse(SIMPLE_NS_XMLFILE, events)
-        self.assertEqual([(action, elem.tag) ikiwa action in ("start", "end")
+        self.assertEqual([(action, elem.tag) ikiwa action kwenye ("start", "end")
                                              else (action, elem)
-                          for action, elem in context], [
+                          kila action, elem kwenye context], [
                 ('start-ns', ('', 'namespace')),
                 ('start', '{namespace}root'),
                 ('start', '{namespace}element'),
@@ -587,26 +587,26 @@ kundi ElementTreeTest(unittest.TestCase):
                 ('start', '{namespace}empty-element'),
                 ('end', '{namespace}empty-element'),
                 ('end', '{namespace}root'),
-                ('end-ns', None),
+                ('end-ns', Tupu),
             ])
 
         events = ('start-ns', 'end-ns')
         context = iterparse(io.StringIO(r"<root xmlns=''/>"), events)
-        res = [action for action, elem in context]
+        res = [action kila action, elem kwenye context]
         self.assertEqual(res, ['start-ns', 'end-ns'])
 
         events = ("start", "end", "bogus")
-        with open(SIMPLE_XMLFILE, "rb") as f:
-            with self.assertRaises(ValueError) as cm:
+        with open(SIMPLE_XMLFILE, "rb") kama f:
+            with self.assertRaises(ValueError) kama cm:
                 iterparse(f, events)
-            self.assertFalse(f.closed)
+            self.assertUongo(f.closed)
         self.assertEqual(str(cm.exception), "unknown event 'bogus'")
 
         with support.check_no_resource_warning(self):
-            with self.assertRaises(ValueError) as cm:
+            with self.assertRaises(ValueError) kama cm:
                 iterparse(SIMPLE_XMLFILE, events)
             self.assertEqual(str(cm.exception), "unknown event 'bogus'")
-            del cm
+            toa cm
 
         source = io.BytesIO(
             b"<?xml version='1.0' encoding='iso-8859-1'?>\n"
@@ -614,7 +614,7 @@ kundi ElementTreeTest(unittest.TestCase):
             b"      xmlns:cl\xe9='http://effbot.org/ns'>text</body>\n")
         events = ("start-ns",)
         context = iterparse(source, events)
-        self.assertEqual([(action, elem) for action, elem in context], [
+        self.assertEqual([(action, elem) kila action, elem kwenye context], [
                 ('start-ns', ('', 'http://\xe9ffbot.org/ns')),
                 ('start-ns', ('cl\xe9', 'http://effbot.org/ns')),
             ])
@@ -623,23 +623,23 @@ kundi ElementTreeTest(unittest.TestCase):
         it = iterparse(source)
         action, elem = next(it)
         self.assertEqual((action, elem.tag), ('end', 'document'))
-        with self.assertRaises(ET.ParseError) as cm:
+        with self.assertRaises(ET.ParseError) kama cm:
             next(it)
         self.assertEqual(str(cm.exception),
                 'junk after document element: line 1, column 12')
 
         self.addCleanup(support.unlink, TESTFN)
-        with open(TESTFN, "wb") as f:
+        with open(TESTFN, "wb") kama f:
             f.write(b"<document />junk")
         it = iterparse(TESTFN)
         action, elem = next(it)
         self.assertEqual((action, elem.tag), ('end', 'document'))
         with support.check_no_resource_warning(self):
-            with self.assertRaises(ET.ParseError) as cm:
+            with self.assertRaises(ET.ParseError) kama cm:
                 next(it)
             self.assertEqual(str(cm.exception),
                     'junk after document element: line 1, column 12')
-            del cm, it
+            toa cm, it
 
     eleza test_writefile(self):
         elem = ET.Element("tag")
@@ -649,7 +649,7 @@ kundi ElementTreeTest(unittest.TestCase):
         self.serialize_check(elem, '<tag>text<subtag>subtext</subtag></tag>')
 
         # Test tag suppression
-        elem.tag = None
+        elem.tag = Tupu
         self.serialize_check(elem, 'text<subtag>subtext</subtag>')
         elem.insert(0, ET.Comment("comment"))
         self.serialize_check(elem,
@@ -661,7 +661,7 @@ kundi ElementTreeTest(unittest.TestCase):
     eleza test_custom_builder(self):
         # Test parser w. custom builder.
 
-        with open(SIMPLE_XMLFILE) as f:
+        with open(SIMPLE_XMLFILE) kama f:
             data = f.read()
         kundi Builder(list):
             eleza start(self, tag, attrib):
@@ -669,7 +669,7 @@ kundi ElementTreeTest(unittest.TestCase):
             eleza end(self, tag):
                 self.append(("end", tag))
             eleza data(self, text):
-                pass
+                pita
         builder = Builder()
         parser = ET.XMLParser(target=builder)
         parser.feed(data)
@@ -684,7 +684,7 @@ kundi ElementTreeTest(unittest.TestCase):
                 ('end', 'root'),
             ])
 
-        with open(SIMPLE_NS_XMLFILE) as f:
+        with open(SIMPLE_NS_XMLFILE) kama f:
             data = f.read()
         kundi Builder(list):
             eleza start(self, tag, attrib):
@@ -692,7 +692,7 @@ kundi ElementTreeTest(unittest.TestCase):
             eleza end(self, tag):
                 self.append(("end", tag))
             eleza data(self, text):
-                pass
+                pita
             eleza pi(self, target, data):
                 self.append(("pi", target, data))
             eleza comment(self, data):
@@ -741,24 +741,24 @@ kundi ElementTreeTest(unittest.TestCase):
                 ('end-ns', ''),
             ])
 
-    # Element.getchildren() and ElementTree.getiterator() are deprecated.
-    @checkwarnings(("This method will be removed in future versions.  "
+    # Element.getchildren() na ElementTree.getiterator() are deprecated.
+    @checkwarnings(("This method will be removed kwenye future versions.  "
                     "Use .+ instead.",
                     DeprecationWarning))
     eleza test_getchildren(self):
         # Test Element.getchildren()
 
-        with open(SIMPLE_XMLFILE, "rb") as f:
+        with open(SIMPLE_XMLFILE, "rb") kama f:
             tree = ET.parse(f)
         self.assertEqual([summarize_list(elem.getchildren())
-                          for elem in tree.getroot().iter()], [
+                          kila elem kwenye tree.getroot().iter()], [
                 ['element', 'element', 'empty-element'],
                 [],
                 [],
                 [],
             ])
         self.assertEqual([summarize_list(elem.getchildren())
-                          for elem in tree.getiterator()], [
+                          kila elem kwenye tree.getiterator()], [
                 ['element', 'element', 'empty-element'],
                 [],
                 [],
@@ -771,7 +771,7 @@ kundi ElementTreeTest(unittest.TestCase):
         self.assertEqual(elem[:], elem.getchildren())
         child1 = elem[0]
         child2 = elem[2]
-        del elem[1:2]
+        toa elem[1:2]
         self.assertEqual(len(elem.getchildren()), 2)
         self.assertEqual(child1, elem[0])
         self.assertEqual(child2, elem[1])
@@ -822,7 +822,7 @@ kundi ElementTreeTest(unittest.TestCase):
     eleza test_tostring_xml_declaration(self):
         elem = ET.XML('<body><tag/></body>')
         self.assertEqual(
-            ET.tostring(elem, encoding='utf8', xml_declaration=True),
+            ET.tostring(elem, encoding='utf8', xml_declaration=Kweli),
             b"<?xml version='1.0' encoding='utf8'?>\n<body><tag /></body>"
         )
 
@@ -831,7 +831,7 @@ kundi ElementTreeTest(unittest.TestCase):
         preferredencoding = locale.getpreferredencoding()
         self.assertEqual(
             f"<?xml version='1.0' encoding='{preferredencoding}'?>\n<body><tag /></body>",
-            ET.tostring(elem, encoding='unicode', xml_declaration=True)
+            ET.tostring(elem, encoding='unicode', xml_declaration=Kweli)
         )
 
     eleza test_tostring_xml_declaration_cases(self):
@@ -839,35 +839,35 @@ kundi ElementTreeTest(unittest.TestCase):
         preferredencoding = locale.getpreferredencoding()
         TESTCASES = [
         #   (expected_retval,                  encoding, xml_declaration)
-            # ... xml_declaration = None
-            (b'<body><tag>&#248;</tag></body>', None, None),
-            (b'<body><tag>\xc3\xb8</tag></body>', 'UTF-8', None),
-            (b'<body><tag>&#248;</tag></body>', 'US-ASCII', None),
+            # ... xml_declaration = Tupu
+            (b'<body><tag>&#248;</tag></body>', Tupu, Tupu),
+            (b'<body><tag>\xc3\xb8</tag></body>', 'UTF-8', Tupu),
+            (b'<body><tag>&#248;</tag></body>', 'US-ASCII', Tupu),
             (b"<?xml version='1.0' encoding='ISO-8859-1'?>\n"
-             b"<body><tag>\xf8</tag></body>", 'ISO-8859-1', None),
-            ('<body><tag>ø</tag></body>', 'unicode', None),
+             b"<body><tag>\xf8</tag></body>", 'ISO-8859-1', Tupu),
+            ('<body><tag>ø</tag></body>', 'unicode', Tupu),
 
-            # ... xml_declaration = False
-            (b"<body><tag>&#248;</tag></body>", None, False),
-            (b"<body><tag>\xc3\xb8</tag></body>", 'UTF-8', False),
-            (b"<body><tag>&#248;</tag></body>", 'US-ASCII', False),
-            (b"<body><tag>\xf8</tag></body>", 'ISO-8859-1', False),
-            ("<body><tag>ø</tag></body>", 'unicode', False),
+            # ... xml_declaration = Uongo
+            (b"<body><tag>&#248;</tag></body>", Tupu, Uongo),
+            (b"<body><tag>\xc3\xb8</tag></body>", 'UTF-8', Uongo),
+            (b"<body><tag>&#248;</tag></body>", 'US-ASCII', Uongo),
+            (b"<body><tag>\xf8</tag></body>", 'ISO-8859-1', Uongo),
+            ("<body><tag>ø</tag></body>", 'unicode', Uongo),
 
-            # ... xml_declaration = True
+            # ... xml_declaration = Kweli
             (b"<?xml version='1.0' encoding='us-ascii'?>\n"
-             b"<body><tag>&#248;</tag></body>", None, True),
+             b"<body><tag>&#248;</tag></body>", Tupu, Kweli),
             (b"<?xml version='1.0' encoding='UTF-8'?>\n"
-             b"<body><tag>\xc3\xb8</tag></body>", 'UTF-8', True),
+             b"<body><tag>\xc3\xb8</tag></body>", 'UTF-8', Kweli),
             (b"<?xml version='1.0' encoding='US-ASCII'?>\n"
-             b"<body><tag>&#248;</tag></body>", 'US-ASCII', True),
+             b"<body><tag>&#248;</tag></body>", 'US-ASCII', Kweli),
             (b"<?xml version='1.0' encoding='ISO-8859-1'?>\n"
-             b"<body><tag>\xf8</tag></body>", 'ISO-8859-1', True),
+             b"<body><tag>\xf8</tag></body>", 'ISO-8859-1', Kweli),
             (f"<?xml version='1.0' encoding='{preferredencoding}'?>\n"
-             "<body><tag>ø</tag></body>", 'unicode', True),
+             "<body><tag>ø</tag></body>", 'unicode', Kweli),
 
         ]
-        for expected_retval, encoding, xml_declaration in TESTCASES:
+        kila expected_retval, encoding, xml_declaration kwenye TESTCASES:
             with self.subTest(f'encoding={encoding} '
                               f'xml_declaration={xml_declaration}'):
                 self.assertEqual(
@@ -897,12 +897,12 @@ kundi ElementTreeTest(unittest.TestCase):
             '<body><tag /></body>'
         )
         self.assertEqual(
-            b''.join(ET.tostringlist(elem, xml_declaration=True)),
+            b''.join(ET.tostringlist(elem, xml_declaration=Kweli)),
             b"<?xml version='1.0' encoding='us-ascii'?>\n<body><tag /></body>"
         )
 
         preferredencoding = locale.getpreferredencoding()
-        stringlist = ET.tostringlist(elem, encoding='unicode', xml_declaration=True)
+        stringlist = ET.tostringlist(elem, encoding='unicode', xml_declaration=Kweli)
         self.assertEqual(
             ''.join(stringlist),
             f"<?xml version='1.0' encoding='{preferredencoding}'?>\n<body><tag /></body>"
@@ -944,7 +944,7 @@ kundi ElementTreeTest(unittest.TestCase):
             'koi8-r', 'koi8-t', 'koi8-u', 'kz1048',
             'hz', 'ptcp154',
         ]
-        for encoding in supported_encodings:
+        kila encoding kwenye supported_encodings:
             self.assertEqual(ET.tostring(ET.XML(bxml(encoding))), b'<xml />')
 
         unsupported_ascii_compatible_encodings = [
@@ -956,14 +956,14 @@ kundi ElementTreeTest(unittest.TestCase):
             'shift-jis', 'shift-jis-2004', 'shift-jisx0213',
             'utf-7',
         ]
-        for encoding in unsupported_ascii_compatible_encodings:
+        kila encoding kwenye unsupported_ascii_compatible_encodings:
             self.assertRaises(ValueError, ET.XML, bxml(encoding))
 
         unsupported_ascii_incompatible_encodings = [
             'cp037', 'cp424', 'cp500', 'cp864', 'cp875', 'cp1026', 'cp1140',
             'utf_32', 'utf_32_be', 'utf_32_le',
         ]
-        for encoding in unsupported_ascii_incompatible_encodings:
+        kila encoding kwenye unsupported_ascii_incompatible_encodings:
             self.assertRaises(ET.ParseError, ET.XML, bxml(encoding))
 
         self.assertRaises(ValueError, ET.XML, xml('undefined').encode('ascii'))
@@ -976,7 +976,7 @@ kundi ElementTreeTest(unittest.TestCase):
         e.tail = "\n"
         self.assertEqual(serialize(e),
                 '<html><link /><script>1 &lt; 2</script></html>\n')
-        self.assertEqual(serialize(e, method=None),
+        self.assertEqual(serialize(e, method=Tupu),
                 '<html><link /><script>1 &lt; 2</script></html>\n')
         self.assertEqual(serialize(e, method="xml"),
                 '<html><link /><script>1 &lt; 2</script></html>\n')
@@ -1003,12 +1003,12 @@ kundi ElementTreeTest(unittest.TestCase):
 
         # 2) bad entities
 
-        with self.assertRaises(ET.ParseError) as cm:
+        with self.assertRaises(ET.ParseError) kama cm:
             ET.XML("<document>&entity;</document>")
         self.assertEqual(str(cm.exception),
                 'undefined entity: line 1, column 10')
 
-        with self.assertRaises(ET.ParseError) as cm:
+        with self.assertRaises(ET.ParseError) kama cm:
             ET.XML(ENTITY_XML)
         self.assertEqual(str(cm.exception),
                 'undefined entity &entity;: line 5, column 10')
@@ -1023,7 +1023,7 @@ kundi ElementTreeTest(unittest.TestCase):
 
         # 4) external (SYSTEM) entity
 
-        with self.assertRaises(ET.ParseError) as cm:
+        with self.assertRaises(ET.ParseError) kama cm:
             ET.XML(EXTERNAL_ENTITY_XML)
         self.assertEqual(str(cm.exception),
                 'undefined entity &entity;: line 4, column 10')
@@ -1090,8 +1090,8 @@ kundi ElementTreeTest(unittest.TestCase):
         self.serialize_check(elem,
             '<ns0:tag xmlns:ns0="uri" ns0:key="value" />') # 2.2
 
-        # 3) decorated values are not converted by default, but the
-        # QName wrapper can be used for values
+        # 3) decorated values are sio converted by default, but the
+        # QName wrapper can be used kila values
 
         elem.clear()
         elem.attrib["{uri}key"] = "{uri}value"
@@ -1137,9 +1137,9 @@ kundi ElementTreeTest(unittest.TestCase):
     eleza test_xpath_tokenizer(self):
         # Test the XPath tokenizer.
         kutoka xml.etree agiza ElementPath
-        eleza check(p, expected, namespaces=None):
-            self.assertEqual([op or tag
-                              for op, tag in ElementPath.xpath_tokenizer(p, namespaces)],
+        eleza check(p, expected, namespaces=Tupu):
+            self.assertEqual([op ama tag
+                              kila op, tag kwenye ElementPath.xpath_tokenizer(p, namespaces)],
                              expected)
 
         # tests kutoka the xml specification
@@ -1161,7 +1161,7 @@ kundi ElementTreeTest(unittest.TestCase):
         check("..", ['..'])
         check("../@lang", ['..', '/', '@', 'lang'])
         check("chapter[title]", ['chapter', '[', 'title', ']'])
-        check("employee[@secretary and @assistant]", ['employee',
+        check("employee[@secretary na @assistant]", ['employee',
               '[', '@', 'secretary', '', 'and', '', '@', 'assistant', ']'])
 
         # additional tests
@@ -1211,9 +1211,9 @@ kundi ElementTreeTest(unittest.TestCase):
     eleza test_html_empty_elems_serialization(self):
         # issue 15970
         # kutoka http://www.w3.org/TR/html401/index/elements.html
-        for element in ['AREA', 'BASE', 'BASEFONT', 'BR', 'COL', 'FRAME', 'HR',
+        kila element kwenye ['AREA', 'BASE', 'BASEFONT', 'BR', 'COL', 'FRAME', 'HR',
                         'IMG', 'INPUT', 'ISINDEX', 'LINK', 'META', 'PARAM']:
-            for elem in [element, element.lower()]:
+            kila elem kwenye [element, element.lower()]:
                 expected = '<%s>' % elem
                 serialized = serialize(ET.XML('<%s />' % elem), method='html')
                 self.assertEqual(serialized, expected)
@@ -1224,7 +1224,7 @@ kundi ElementTreeTest(unittest.TestCase):
     eleza test_dump_attribute_order(self):
         # See BPO 34160
         e = ET.Element('cirriculum', status='public', company='example')
-        with support.captured_stdout() as stdout:
+        with support.captured_stdout() kama stdout:
             ET.dump(e)
         self.assertEqual(stdout.getvalue(),
                          '<cirriculum status="public" company="example" />\n')
@@ -1240,31 +1240,31 @@ kundi ElementTreeTest(unittest.TestCase):
 
 kundi XMLPullParserTest(unittest.TestCase):
 
-    eleza _feed(self, parser, data, chunk_size=None):
-        ikiwa chunk_size is None:
+    eleza _feed(self, parser, data, chunk_size=Tupu):
+        ikiwa chunk_size ni Tupu:
             parser.feed(data)
-        else:
-            for i in range(0, len(data), chunk_size):
+        isipokua:
+            kila i kwenye range(0, len(data), chunk_size):
                 parser.feed(data[i:i+chunk_size])
 
-    eleza assert_events(self, parser, expected, max_events=None):
+    eleza assert_events(self, parser, expected, max_events=Tupu):
         self.assertEqual(
             [(event, (elem.tag, elem.text))
-             for event, elem in islice(parser.read_events(), max_events)],
+             kila event, elem kwenye islice(parser.read_events(), max_events)],
             expected)
 
-    eleza assert_event_tuples(self, parser, expected, max_events=None):
+    eleza assert_event_tuples(self, parser, expected, max_events=Tupu):
         self.assertEqual(
             list(islice(parser.read_events(), max_events)),
             expected)
 
-    eleza assert_event_tags(self, parser, expected, max_events=None):
+    eleza assert_event_tags(self, parser, expected, max_events=Tupu):
         events = islice(parser.read_events(), max_events)
-        self.assertEqual([(action, elem.tag) for action, elem in events],
+        self.assertEqual([(action, elem.tag) kila action, elem kwenye events],
                          expected)
 
     eleza test_simple_xml(self):
-        for chunk_size in (None, 1, 5):
+        kila chunk_size kwenye (Tupu, 1, 5):
             with self.subTest(chunk_size=chunk_size):
                 parser = ET.XMLPullParser()
                 self.assert_event_tags(parser, [])
@@ -1284,7 +1284,7 @@ kundi XMLPullParserTest(unittest.TestCase):
                     ])
                 self._feed(parser, "</root>\n", chunk_size)
                 self.assert_event_tags(parser, [('end', 'root')])
-                self.assertIsNone(parser.close())
+                self.assertIsTupu(parser.close())
 
     eleza test_feed_while_iterating(self):
         parser = ET.XMLPullParser()
@@ -1317,7 +1317,7 @@ kundi XMLPullParserTest(unittest.TestCase):
             ])
         self._feed(parser, "</root>\n")
         self.assert_event_tags(parser, [('end', '{namespace}root')])
-        self.assertIsNone(parser.close())
+        self.assertIsTupu(parser.close())
 
     eleza test_ns_events(self):
         parser = ET.XMLPullParser(events=('start-ns', 'end-ns'))
@@ -1331,8 +1331,8 @@ kundi XMLPullParserTest(unittest.TestCase):
         self._feed(parser, "<element>text</element>tail\n")
         self._feed(parser, "<empty-element/>\n")
         self._feed(parser, "</root>\n")
-        self.assertEqual(list(parser.read_events()), [('end-ns', None)])
-        self.assertIsNone(parser.close())
+        self.assertEqual(list(parser.read_events()), [('end-ns', Tupu)])
+        self.assertIsTupu(parser.close())
 
     eleza test_ns_events_start(self):
         parser = ET.XMLPullParser(events=('start-ns', 'start', 'end'))
@@ -1380,8 +1380,8 @@ kundi XMLPullParserTest(unittest.TestCase):
             ('end', '{abc}tag'),
         ], max_events=1)
         self.assert_event_tuples(parser, [
-            ('end-ns', None),
-            ('end-ns', None),
+            ('end-ns', Tupu),
+            ('end-ns', Tupu),
         ])
 
     eleza test_events(self):
@@ -1409,7 +1409,7 @@ kundi XMLPullParserTest(unittest.TestCase):
             ('end', '{foo}element'),
             ])
         self._feed(parser, "</root>")
-        self.assertIsNone(parser.close())
+        self.assertIsTupu(parser.close())
         self.assert_event_tags(parser, [('end', 'root')])
 
         parser = ET.XMLPullParser(events=('start',))
@@ -1428,7 +1428,7 @@ kundi XMLPullParserTest(unittest.TestCase):
             ('start', '{foo}empty-element'),
             ])
         self._feed(parser, "</root>")
-        self.assertIsNone(parser.close())
+        self.assertIsTupu(parser.close())
 
     eleza test_events_comment(self):
         parser = ET.XMLPullParser(events=('start', 'comment', 'end'))
@@ -1458,7 +1458,7 @@ kundi XMLPullParserTest(unittest.TestCase):
         self.assert_events(parser, [('pi', (ET.PI, 'pitarget some text '))])
 
     eleza test_events_sequence(self):
-        # Test that events can be some sequence that's not just a tuple or list
+        # Test that events can be some sequence that's sio just a tuple ama list
         eventset = {'end', 'start'}
         parser = ET.XMLPullParser(events=eventset)
         self._feed(parser, "<foo>bar</foo>")
@@ -1489,7 +1489,7 @@ XINCLUDE = {}
 XINCLUDE["C1.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>120 Mz is adequate for an average home user.</p>
+  <p>120 Mz ni adequate kila an average home user.</p>
   <xi:include href="disclaimer.xml"/>
 </document>
 """
@@ -1498,7 +1498,7 @@ XINCLUDE["disclaimer.xml"] = """\
 <?xml version='1.0'?>
 <disclaimer>
   <p>The opinions represented herein represent those of the individual
-  and should not be interpreted as official policy endorsed by this
+  na should sio be interpreted kama official policy endorsed by this
   organization.</p>
 </disclaimer>
 """
@@ -1524,7 +1524,7 @@ XINCLUDE["C2b.xml"] = """\
 XINCLUDE["C3.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>The following is the source of the "data.xml" resource:</p>
+  <p>The following ni the source of the "data.xml" resource:</p>
   <example><xi:include href="data.xml" parse="text"/></example>
 </document>
 """
@@ -1555,7 +1555,7 @@ XINCLUDE["default.xml"] = """\
   <p>Example.</p>
   <xi:include href="{}"/>
 </document>
-""".format(html.escape(SIMPLE_XMLFILE, True))
+""".format(html.escape(SIMPLE_XMLFILE, Kweli))
 
 #
 # badly formatted xi:include tags
@@ -1565,7 +1565,7 @@ XINCLUDE_BAD = {}
 XINCLUDE_BAD["B1.xml"] = """\
 <?xml version='1.0'?>
 <document xmlns:xi="http://www.w3.org/2001/XInclude">
-  <p>120 Mz is adequate for an average home user.</p>
+  <p>120 Mz ni adequate kila an average home user.</p>
   <xi:include href="disclaimer.xml" parse="BAD_TYPE"/>
 </document>
 """
@@ -1579,26 +1579,26 @@ XINCLUDE_BAD["B2.xml"] = """\
 
 kundi XIncludeTest(unittest.TestCase):
 
-    eleza xinclude_loader(self, href, parse="xml", encoding=None):
-        try:
+    eleza xinclude_loader(self, href, parse="xml", encoding=Tupu):
+        jaribu:
             data = XINCLUDE[href]
-        except KeyError:
-            raise OSError("resource not found")
+        tatizo KeyError:
+            ashiria OSError("resource sio found")
         ikiwa parse == "xml":
             data = ET.XML(data)
         rudisha data
 
-    eleza none_loader(self, href, parser, encoding=None):
-        rudisha None
+    eleza none_loader(self, href, parser, encoding=Tupu):
+        rudisha Tupu
 
     eleza _my_loader(self, href, parse):
         # Used to avoid a test-dependency problem where the default loader
-        # of ElementInclude uses the pyET parser for cET tests.
+        # of ElementInclude uses the pyET parser kila cET tests.
         ikiwa parse == 'xml':
-            with open(href, 'rb') as f:
+            with open(href, 'rb') kama f:
                 rudisha ET.parse(f).getroot()
-        else:
-            rudisha None
+        isipokua:
+            rudisha Tupu
 
     eleza test_xinclude_default(self):
         kutoka xml.etree agiza ElementInclude
@@ -1622,10 +1622,10 @@ kundi XIncludeTest(unittest.TestCase):
         ElementInclude.include(document, self.xinclude_loader)
         self.assertEqual(serialize(document),
             '<document>\n'
-            '  <p>120 Mz is adequate for an average home user.</p>\n'
+            '  <p>120 Mz ni adequate kila an average home user.</p>\n'
             '  <disclaimer>\n'
             '  <p>The opinions represented herein represent those of the individual\n'
-            '  and should not be interpreted as official policy endorsed by this\n'
+            '  na should sio be interpreted kama official policy endorsed by this\n'
             '  organization.</p>\n'
             '</disclaimer>\n'
             '</document>') # C1
@@ -1653,7 +1653,7 @@ kundi XIncludeTest(unittest.TestCase):
         ElementInclude.include(document, self.xinclude_loader)
         self.assertEqual(serialize(document),
             '<document>\n'
-            '  <p>The following is the source of the "data.xml" resource:</p>\n'
+            '  <p>The following ni the source of the "data.xml" resource:</p>\n'
             "  <example>&lt;?xml version='1.0'?&gt;\n"
             '&lt;data&gt;\n'
             '  &lt;item&gt;&lt;![CDATA[Brooks &amp; Shields]]&gt;&lt;/item&gt;\n'
@@ -1662,11 +1662,11 @@ kundi XIncludeTest(unittest.TestCase):
             '</document>') # C3
 
         # Fallback example (XInclude C.5)
-        # Note! Fallback support is not yet implemented
+        # Note! Fallback support ni sio yet implemented
         document = self.xinclude_loader("C5.xml")
-        with self.assertRaises(OSError) as cm:
+        with self.assertRaises(OSError) kama cm:
             ElementInclude.include(document, self.xinclude_loader)
-        self.assertEqual(str(cm.exception), 'resource not found')
+        self.assertEqual(str(cm.exception), 'resource sio found')
         self.assertEqual(serialize(document),
             '<div xmlns:ns0="http://www.w3.org/2001/XInclude">\n'
             '  <ns0:include href="example.txt" parse="text">\n'
@@ -1683,28 +1683,28 @@ kundi XIncludeTest(unittest.TestCase):
 
         # Test failure to locate included XML file.
         document = ET.XML(XINCLUDE["C1.xml"])
-        with self.assertRaises(ElementInclude.FatalIncludeError) as cm:
+        with self.assertRaises(ElementInclude.FatalIncludeError) kama cm:
             ElementInclude.include(document, loader=self.none_loader)
         self.assertEqual(str(cm.exception),
-                "cannot load 'disclaimer.xml' as 'xml'")
+                "cannot load 'disclaimer.xml' kama 'xml'")
 
         # Test failure to locate included text file.
         document = ET.XML(XINCLUDE["C2.xml"])
-        with self.assertRaises(ElementInclude.FatalIncludeError) as cm:
+        with self.assertRaises(ElementInclude.FatalIncludeError) kama cm:
             ElementInclude.include(document, loader=self.none_loader)
         self.assertEqual(str(cm.exception),
-                "cannot load 'count.txt' as 'text'")
+                "cannot load 'count.txt' kama 'text'")
 
         # Test bad parse type.
         document = ET.XML(XINCLUDE_BAD["B1.xml"])
-        with self.assertRaises(ElementInclude.FatalIncludeError) as cm:
+        with self.assertRaises(ElementInclude.FatalIncludeError) kama cm:
             ElementInclude.include(document, loader=self.none_loader)
         self.assertEqual(str(cm.exception),
-                "unknown parse type in xi:include tag ('BAD_TYPE')")
+                "unknown parse type kwenye xi:include tag ('BAD_TYPE')")
 
         # Test xi:fallback outside xi:include.
         document = ET.XML(XINCLUDE_BAD["B2.xml"])
-        with self.assertRaises(ElementInclude.FatalIncludeError) as cm:
+        with self.assertRaises(ElementInclude.FatalIncludeError) kama cm:
             ElementInclude.include(document, loader=self.none_loader)
         self.assertEqual(str(cm.exception),
                 "xi:fallback tag must be child of xi:include "
@@ -1716,10 +1716,10 @@ kundi XIncludeTest(unittest.TestCase):
 kundi BugsTest(unittest.TestCase):
 
     eleza test_bug_xmltoolkit21(self):
-        # marshaller gives obscure errors for non-string values
+        # marshaller gives obscure errors kila non-string values
 
         eleza check(elem):
-            with self.assertRaises(TypeError) as cm:
+            with self.assertRaises(TypeError) kama cm:
                 serialize(elem)
             self.assertEqual(str(cm.exception),
                     'cannot serialize 123 (type int)')
@@ -1744,7 +1744,7 @@ kundi BugsTest(unittest.TestCase):
         check(elem) # attribute value
 
     eleza test_bug_xmltoolkit25(self):
-        # typo in ElementTree.findtext
+        # typo kwenye ElementTree.findtext
 
         elem = ET.XML(SAMPLE_XML)
         tree = ET.ElementTree(elem)
@@ -1762,12 +1762,12 @@ kundi BugsTest(unittest.TestCase):
         # dump() doesn't flush the output buffer
 
         tree = ET.XML("<doc><table><tbody/></table></doc>")
-        with support.captured_stdout() as stdout:
+        with support.captured_stdout() kama stdout:
             ET.dump(tree)
             self.assertEqual(stdout.getvalue(), '<doc><table><tbody /></table></doc>\n')
 
     eleza test_bug_xmltoolkit39(self):
-        # non-ascii element and attribute names doesn't work
+        # non-ascii element na attribute names doesn't work
 
         tree = ET.XML(b"<?xml version='1.0' encoding='iso-8859-1'?><t\xe4g />")
         self.assertEqual(ET.tostring(tree, "utf-8"), b'<t\xc3\xa4g />')
@@ -1801,20 +1801,20 @@ kundi BugsTest(unittest.TestCase):
         self.assertEqual(serialize(e), '<doc>\u8230</doc>')
 
     eleza test_bug_xmltoolkit55(self):
-        # make sure we're reporting the first error, not the last
+        # make sure we're reporting the first error, sio the last
 
-        with self.assertRaises(ET.ParseError) as cm:
+        with self.assertRaises(ET.ParseError) kama cm:
             ET.XML(b"<!DOCTYPE doc SYSTEM 'doc.dtd'>"
                    b'<doc>&ldots;&ndots;&rdots;</doc>')
         self.assertEqual(str(cm.exception),
                 'undefined entity &ldots;: line 1, column 36')
 
     eleza test_bug_xmltoolkit60(self):
-        # Handle crash in stream source.
+        # Handle crash kwenye stream source.
 
         kundi ExceptionFile:
             eleza read(self, x):
-                raise OSError
+                ashiria OSError
 
         self.assertRaises(OSError, ET.parse, ExceptionFile())
 
@@ -1845,13 +1845,13 @@ kundi BugsTest(unittest.TestCase):
             tree.end("tag")
 
         xmltoolkit63()
-        count = sys.getrefcount(None)
-        for i in range(1000):
+        count = sys.getrefcount(Tupu)
+        kila i kwenye range(1000):
             xmltoolkit63()
-        self.assertEqual(sys.getrefcount(None), count)
+        self.assertEqual(sys.getrefcount(Tupu), count)
 
     eleza test_bug_200708_newline(self):
-        # Preserve newlines in attributes.
+        # Preserve newlines kwenye attributes.
 
         e = ET.Element('SomeTag', text="eleza _f():\n  rudisha 3\n")
         self.assertEqual(ET.tostring(e),
@@ -1893,7 +1893,7 @@ kundi BugsTest(unittest.TestCase):
         e = ET.Element("{default}elem")
         s = ET.SubElement(e, "{default}elem")
         s = ET.SubElement(e, "elem") # unprefixed name
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             serialize(e, default_namespace="default") # 3
         self.assertEqual(str(cm.exception),
                 'cannot use non-qualified names with default_namespace option')
@@ -1907,7 +1907,7 @@ kundi BugsTest(unittest.TestCase):
         self.assertEqual(ET.tostring(e),
             b'<foo:title xmlns:foo="http://namespace.invalid/does/not/exist/" />')
 
-        # And the Dublin Core namespace is in the default list:
+        # And the Dublin Core namespace ni kwenye the default list:
 
         e = ET.Element("{http://purl.org/dc/elements/1.1/}title")
         self.assertEqual(ET.tostring(e),
@@ -1915,7 +1915,7 @@ kundi BugsTest(unittest.TestCase):
 
     eleza test_bug_200709_element_comment(self):
         # Not sure ikiwa this can be fixed, really (since the serializer needs
-        # ET.Comment, not cET.comment).
+        # ET.Comment, sio cET.comment).
 
         a = ET.Element('a')
         a.append(ET.Comment('foo'))
@@ -1990,7 +1990,7 @@ kundi BugsTest(unittest.TestCase):
         kundi Text:
             eleza __bool__(self):
                 e.text = 'changed'
-                rudisha True
+                rudisha Kweli
 
         e = ET.Element('tag')
         e.text = Text()
@@ -2005,7 +2005,7 @@ kundi BugsTest(unittest.TestCase):
         kundi Text:
             eleza __bool__(self):
                 e[0].tail = 'changed'
-                rudisha True
+                rudisha Kweli
 
         e = ET.Element('root')
         e.append(ET.Element('tag'))
@@ -2022,16 +2022,16 @@ kundi BugsTest(unittest.TestCase):
             eleza __eq__(self, other):
                 e[0] = ET.Element('changed')
                 next(i)
-                rudisha True
+                rudisha Kweli
 
         e = ET.Element('root')
         e.append(ET.Element(Tag()))
         e.append(ET.Element('tag'))
         i = e.iter('tag')
-        try:
+        jaribu:
             t = next(i)
-        except ValueError:
-            self.skipTest('generators are not reentrant')
+        tatizo ValueError:
+            self.skipTest('generators are sio reentrant')
         self.assertIsInstance(t.tag, Tag)
         self.assertIsInstance(e[0].tag, str)
         self.assertEqual(e[0].tag, 'changed')
@@ -2042,10 +2042,10 @@ kundi BugsTest(unittest.TestCase):
         self.assertEqual(root.get('b'), text.decode('utf-8'))
 
     eleza test_expat224_utf8_bug(self):
-        # bpo-31170: Expat 2.2.3 had a bug in its UTF-8 decoder.
+        # bpo-31170: Expat 2.2.3 had a bug kwenye its UTF-8 decoder.
         # Check that Expat 2.2.4 fixed the bug.
         #
-        # Test buffer bounds at odd and even positions.
+        # Test buffer bounds at odd na even positions.
 
         text = b'\xc3\xa0' * 1024
         self.check_expat224_utf8_bug(text)
@@ -2054,7 +2054,7 @@ kundi BugsTest(unittest.TestCase):
         self.check_expat224_utf8_bug(text)
 
     eleza test_expat224_utf8_bug_file(self):
-        with open(UTF8_BUG_XMLFILE, 'rb') as fp:
+        with open(UTF8_BUG_XMLFILE, 'rb') kama fp:
             raw = fp.read()
         root = ET.kutokastring(raw)
         xmlattr = root.get('b')
@@ -2088,10 +2088,10 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
 
         # string attributes have expected values
         self.assertEqual(element_foo.tag, tag)
-        self.assertIsNone(element_foo.text)
-        self.assertIsNone(element_foo.tail)
+        self.assertIsTupu(element_foo.text)
+        self.assertIsTupu(element_foo.tail)
 
-        # attrib is a copy
+        # attrib ni a copy
         self.assertIsNot(element_foo.attrib, attrib)
         self.assertEqual(element_foo.attrib, attrib)
 
@@ -2106,7 +2106,7 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
 
         element_foo2 = copy.copy(element_foo)
 
-        # elements are not the same
+        # elements are sio the same
         self.assertIsNot(element_foo2, element_foo)
 
         # string attributes are equal
@@ -2114,14 +2114,14 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
         self.assertEqual(element_foo2.text, element_foo.text)
         self.assertEqual(element_foo2.tail, element_foo.tail)
 
-        # number of children is the same
+        # number of children ni the same
         self.assertEqual(len(element_foo2), len(element_foo))
 
         # children are the same
-        for (child1, child2) in itertools.zip_longest(element_foo, element_foo2):
+        kila (child1, child2) kwenye itertools.zip_longest(element_foo, element_foo2):
             self.assertIs(child1, child2)
 
-        # attrib is a copy
+        # attrib ni a copy
         self.assertEqual(element_foo2.attrib, element_foo.attrib)
 
     eleza test___deepcopy__(self):
@@ -2130,7 +2130,7 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
 
         element_foo2 = copy.deepcopy(element_foo)
 
-        # elements are not the same
+        # elements are sio the same
         self.assertIsNot(element_foo2, element_foo)
 
         # string attributes are equal
@@ -2138,14 +2138,14 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
         self.assertEqual(element_foo2.text, element_foo.text)
         self.assertEqual(element_foo2.tail, element_foo.tail)
 
-        # number of children is the same
+        # number of children ni the same
         self.assertEqual(len(element_foo2), len(element_foo))
 
-        # children are not the same
-        for (child1, child2) in itertools.zip_longest(element_foo, element_foo2):
+        # children are sio the same
+        kila (child1, child2) kwenye itertools.zip_longest(element_foo, element_foo2):
             self.assertIsNot(child1, child2)
 
-        # attrib is a copy
+        # attrib ni a copy
         self.assertIsNot(element_foo2.attrib, element_foo.attrib)
         self.assertEqual(element_foo2.attrib, element_foo.attrib)
 
@@ -2168,7 +2168,7 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
         ikiwa hasattr(e, '__setstate__'):
             state = {
                 'tag': 'tag',
-                '_children': [None],  # non-Element
+                '_children': [Tupu],  # non-Element
                 'attrib': 'attr',
                 'tail': 'tail',
                 'text': 'text',
@@ -2178,21 +2178,21 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
         ikiwa hasattr(e, '__deepcopy__'):
             kundi E(ET.Element):
                 eleza __deepcopy__(self, memo):
-                    rudisha None  # non-Element
+                    rudisha Tupu  # non-Element
             e[:] = [E('bar')]
             self.assertRaises(TypeError, copy.deepcopy, e)
 
     eleza test_cyclic_gc(self):
         kundi Dummy:
-            pass
+            pita
 
         # Test the shortest cycle: d->element->d
         d = Dummy()
         d.dummyref = ET.Element('joe', attr=d)
         wref = weakref.ref(d)
-        del d
+        toa d
         gc_collect()
-        self.assertIsNone(wref())
+        self.assertIsTupu(wref())
 
         # A longer cycle: d->e->e2->d
         e = ET.Element('joe')
@@ -2200,11 +2200,11 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
         d.dummyref = e
         wref = weakref.ref(d)
         e2 = ET.SubElement(e, 'foo', attr=d)
-        del d, e, e2
+        toa d, e, e2
         gc_collect()
-        self.assertIsNone(wref())
+        self.assertIsTupu(wref())
 
-        # A cycle between Element objects as children of one another
+        # A cycle between Element objects kama children of one another
         # e1->e2->e3->e1
         e1 = ET.Element('e1')
         e2 = ET.Element('e2')
@@ -2213,21 +2213,21 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
         e2.append(e3)
         e1.append(e2)
         wref = weakref.ref(e1)
-        del e1, e2, e3
+        toa e1, e2, e3
         gc_collect()
-        self.assertIsNone(wref())
+        self.assertIsTupu(wref())
 
     eleza test_weakref(self):
-        flag = False
+        flag = Uongo
         eleza wref_cb(w):
             nonlocal flag
-            flag = True
+            flag = Kweli
         e = ET.Element('e')
         wref = weakref.ref(e, wref_cb)
         self.assertEqual(wref().tag, 'e')
-        del e
-        self.assertEqual(flag, True)
-        self.assertEqual(wref(), None)
+        toa e
+        self.assertEqual(flag, Kweli)
+        self.assertEqual(wref(), Tupu)
 
     eleza test_get_keyword_args(self):
         e1 = ET.Element('foo' , x=1, y=2, z=3)
@@ -2236,8 +2236,8 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
 
     eleza test_pickle(self):
         # issue #16076: the C implementation wasn't pickleable.
-        for proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
-            for dumper, loader in product(self.modules, repeat=2):
+        kila proto kwenye range(2, pickle.HIGHEST_PROTOCOL + 1):
+            kila dumper, loader kwenye product(self.modules, repeat=2):
                 e = dumper.Element('foo', bar=42)
                 e.text = "text goes here"
                 e.tail = "opposite of head"
@@ -2254,8 +2254,8 @@ kundi BasicElementTest(ElementTestCase, unittest.TestCase):
                 self.assertEqualElements(e, e2)
 
     eleza test_pickle_issue18997(self):
-        for proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
-            for dumper, loader in product(self.modules, repeat=2):
+        kila proto kwenye range(2, pickle.HIGHEST_PROTOCOL + 1):
+            kila dumper, loader kwenye product(self.modules, repeat=2):
                 XMLTEXT = """<?xml version="1.0"?>
                     <group><dogs>4</dogs>
                     </group>"""
@@ -2277,13 +2277,13 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
                 rudisha ET.Element
         L = [X()]
         e = ET.Element('foo')
-        try:
+        jaribu:
             e.extend(L)
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
         kundi Y(X, ET.Element):
-            pass
+            pita
         L = [Y('x')]
         e = ET.Element('foo')
         e.extend(L)
@@ -2292,17 +2292,17 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
         kundi X:
             @property
             eleza __class__(self):
-                del L[:]
+                toa L[:]
                 rudisha ET.Element
         L = [X(), ET.Element('baz')]
         e = ET.Element('foo')
-        try:
+        jaribu:
             e.extend(L)
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
         kundi Y(X, ET.Element):
-            pass
+            pita
         L = [Y('bar'), ET.Element('baz')]
         e = ET.Element('foo')
         e.extend(L)
@@ -2310,8 +2310,8 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
     eleza test_remove_with_mutating(self):
         kundi X(ET.Element):
             eleza __eq__(self, o):
-                del e[:]
-                rudisha False
+                toa e[:]
+                rudisha Uongo
         e = ET.Element('foo')
         e.extend([X('bar')])
         self.assertRaises(ValueError, e.remove, ET.Element('baz'))
@@ -2325,16 +2325,16 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
         e = ET.Element('foo')
         with swap_attr(e, 'tag', e):
             with self.assertRaises(RuntimeError):
-                repr(e)  # Should not crash
+                repr(e)  # Should sio crash
 
     eleza test_element_get_text(self):
         # Issue #27863
         kundi X(str):
             eleza __del__(self):
-                try:
+                jaribu:
                     elem.text
-                except NameError:
-                    pass
+                tatizo NameError:
+                    pita
 
         b = ET.TreeBuilder()
         b.start('tag', {})
@@ -2350,10 +2350,10 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
         # Issue #27863
         kundi X(str):
             eleza __del__(self):
-                try:
+                jaribu:
                     elem[0].tail
-                except NameError:
-                    pass
+                tatizo NameError:
+                    pita
 
         b = ET.TreeBuilder()
         b.start('root', {})
@@ -2371,7 +2371,7 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
         # Issue #27863
         kundi X:
             eleza __index__(self):
-                del e[:]
+                toa e[:]
                 rudisha 1
 
         e = ET.Element('elem')
@@ -2389,7 +2389,7 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
                 rudisha 1
 
         e = ET.Element('elem')
-        for _ in range(10):
+        kila _ kwenye range(10):
             e.insert(0, ET.Element('child'))
 
         e[0:10:X()] = []  # shouldn't crash
@@ -2403,7 +2403,7 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
         b.start('tag', {})
         b.data('ABCD')
         self.assertRaises(AttributeError, b.start, 'tag2', {})
-        del b
+        toa b
         gc_collect()
 
     eleza test_treebuilder_end(self):
@@ -2415,7 +2415,7 @@ kundi BadElementTest(ElementTestCase, unittest.TestCase):
         b.start('tag', {})
         b.data('ABCD')
         self.assertRaises(AttributeError, b.end, 'tag')
-        del b
+        toa b
         gc_collect()
 
 
@@ -2425,13 +2425,13 @@ kundi MutatingElementPath(str):
         self.elem = elem
         rudisha self
     eleza __eq__(self, o):
-        del self.elem[:]
-        rudisha True
+        toa self.elem[:]
+        rudisha Kweli
 MutatingElementPath.__hash__ = str.__hash__
 
 kundi BadElementPath(str):
     eleza __eq__(self, o):
-        raise 1/0
+        ashiria 1/0
 BadElementPath.__hash__ = str.__hash__
 
 kundi BadElementPathTest(ElementTestCase, unittest.TestCase):
@@ -2454,10 +2454,10 @@ kundi BadElementPathTest(ElementTestCase, unittest.TestCase):
     eleza test_find_with_error(self):
         e = ET.Element('foo')
         e.extend([ET.Element('bar')])
-        try:
+        jaribu:
             e.find(BadElementPath('x'))
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
 
     eleza test_findtext_with_mutating(self):
         e = ET.Element('foo')
@@ -2467,10 +2467,10 @@ kundi BadElementPathTest(ElementTestCase, unittest.TestCase):
     eleza test_findtext_with_error(self):
         e = ET.Element('foo')
         e.extend([ET.Element('bar')])
-        try:
+        jaribu:
             e.findtext(BadElementPath('x'))
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
 
     eleza test_findall_with_mutating(self):
         e = ET.Element('foo')
@@ -2480,10 +2480,10 @@ kundi BadElementPathTest(ElementTestCase, unittest.TestCase):
     eleza test_findall_with_error(self):
         e = ET.Element('foo')
         e.extend([ET.Element('bar')])
-        try:
+        jaribu:
             e.findall(BadElementPath('x'))
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
 
 
 kundi ElementTreeTypeTest(unittest.TestCase):
@@ -2497,7 +2497,7 @@ kundi ElementTreeTypeTest(unittest.TestCase):
 
     eleza test_Element_subclass_trivial(self):
         kundi MyElement(ET.Element):
-            pass
+            pita
 
         mye = MyElement('foo')
         self.assertIsInstance(mye, ET.Element)
@@ -2528,7 +2528,7 @@ kundi ElementTreeTypeTest(unittest.TestCase):
 
     eleza test_Element_subclass_find(self):
         kundi MyElement(ET.Element):
-            pass
+            pita
 
         e = ET.Element('foo')
         e.text = 'text'
@@ -2555,12 +2555,12 @@ kundi ElementFindTest(unittest.TestCase):
         self.assertEqual(e.findtext('./tag'), 'text')
         self.assertEqual(e.findtext('section/tag'), 'subtext')
 
-        # section/nexttag is found but has no text
+        # section/nexttag ni found but has no text
         self.assertEqual(e.findtext('section/nexttag'), '')
         self.assertEqual(e.findtext('section/nexttag', 'default'), '')
 
-        # tog doesn't exist and 'default' kicks in
-        self.assertIsNone(e.findtext('tog'))
+        # tog doesn't exist na 'default' kicks in
+        self.assertIsTupu(e.findtext('tog'))
         self.assertEqual(e.findtext('tog', 'default'), 'default')
 
         # Issue #16922
@@ -2576,7 +2576,7 @@ kundi ElementFindTest(unittest.TestCase):
         </body>'''
         e = ET.XML(LINEAR_XML)
 
-        # Test for numeric indexing and last()
+        # Test kila numeric indexing na last()
         self.assertEqual(e.find('./tag[1]').attrib['class'], 'a')
         self.assertEqual(e.find('./tag[2]').attrib['class'], 'b')
         self.assertEqual(e.find('./tag[last()]').attrib['class'], 'd')
@@ -2711,13 +2711,13 @@ kundi ElementFindTest(unittest.TestCase):
                          ['{Y}b'])
         self.assertEqual(summarize_list(root.findall("{}*")),
                          ['b', 'c'])
-        self.assertEqual(summarize_list(root.findall("{}b")),  # only for consistency
+        self.assertEqual(summarize_list(root.findall("{}b")),  # only kila consistency
                          ['b'])
         self.assertEqual(summarize_list(root.findall("{}b")),
                          summarize_list(root.findall("b")))
         self.assertEqual(summarize_list(root.findall("{*}*")),
                          ['{X}b', 'b', 'c', '{Y}b'])
-        # This is an unfortunate difference, but that's how find('*') works.
+        # This ni an unfortunate difference, but that's how find('*') works.
         self.assertEqual(summarize_list(root.findall("{*}*") + [root[-1]]),
                          summarize_list(root.findall("*")))
 
@@ -2731,7 +2731,7 @@ kundi ElementFindTest(unittest.TestCase):
                          ['{Y}b'])
         self.assertEqual(summarize_list(root.findall(".//{}*")),
                          ['c', 'b', 'c', 'b'])
-        self.assertEqual(summarize_list(root.findall(".//{}b")),  # only for consistency
+        self.assertEqual(summarize_list(root.findall(".//{}b")),  # only kila consistency
                          ['b', 'b'])
         self.assertEqual(summarize_list(root.findall(".//{}b")),
                          summarize_list(root.findall(".//b")))
@@ -2748,7 +2748,7 @@ kundi ElementFindTest(unittest.TestCase):
         self.assertEqual(summarize_list(ET.ElementTree(e).findall('tag')),
             ['tag'] * 2)
         # this produces a warning
-        msg = ("This search is broken in 1.3 and earlier, and will be fixed "
+        msg = ("This search ni broken kwenye 1.3 na earlier, na will be fixed "
                "in a future version.  If you rely on the current behaviour, "
                "change it to '.+'")
         with self.assertWarnsRegex(FutureWarning, msg):
@@ -2757,30 +2757,30 @@ kundi ElementFindTest(unittest.TestCase):
 
 
 kundi ElementIterTest(unittest.TestCase):
-    eleza _ilist(self, elem, tag=None):
+    eleza _ilist(self, elem, tag=Tupu):
         rudisha summarize_list(elem.iter(tag))
 
     eleza test_basic(self):
-        doc = ET.XML("<html><body>this is a <i>paragraph</i>.</body>..</html>")
+        doc = ET.XML("<html><body>this ni a <i>paragraph</i>.</body>..</html>")
         self.assertEqual(self._ilist(doc), ['html', 'body', 'i'])
         self.assertEqual(self._ilist(doc.find('body')), ['body', 'i'])
         self.assertEqual(next(doc.iter()).tag, 'html')
-        self.assertEqual(''.join(doc.itertext()), 'this is a paragraph...')
+        self.assertEqual(''.join(doc.itertext()), 'this ni a paragraph...')
         self.assertEqual(''.join(doc.find('body').itertext()),
-            'this is a paragraph.')
-        self.assertEqual(next(doc.itertext()), 'this is a ')
+            'this ni a paragraph.')
+        self.assertEqual(next(doc.itertext()), 'this ni a ')
 
         # iterparse should rudisha an iterator
-        sourcefile = serialize(doc, to_string=False)
+        sourcefile = serialize(doc, to_string=Uongo)
         self.assertEqual(next(ET.iterparse(sourcefile))[0], 'end')
 
         # With an explicit parser too (issue #9708)
-        sourcefile = serialize(doc, to_string=False)
+        sourcefile = serialize(doc, to_string=Uongo)
         parser = ET.XMLParser(target=ET.TreeBuilder())
         self.assertEqual(next(ET.iterparse(sourcefile, parser=parser))[0],
                          'end')
 
-        tree = ET.ElementTree(None)
+        tree = ET.ElementTree(Tupu)
         self.assertRaises(AttributeError, tree.iter)
 
         # Issue #16913
@@ -2796,7 +2796,7 @@ kundi ElementIterTest(unittest.TestCase):
         b = ET.SubElement(a, 'b')
         self.assertEqual(self._ilist(a), ['a', 'b'])
 
-        # one child and one grandchild
+        # one child na one grandchild
         c = ET.SubElement(b, 'c')
         self.assertEqual(self._ilist(a), ['a', 'b', 'c'])
 
@@ -2806,7 +2806,7 @@ kundi ElementIterTest(unittest.TestCase):
 
         # replace first child by second
         a[0] = a[1]
-        del a[1]
+        toa a[1]
         self.assertEqual(self._ilist(a), ['a', 'd'])
 
     eleza test_iter_by_tag(self):
@@ -2826,20 +2826,20 @@ kundi ElementIterTest(unittest.TestCase):
         self.assertEqual(self._ilist(doc, 'room'), ['room'] * 3)
         self.assertEqual(self._ilist(doc, 'house'), ['house'] * 2)
 
-        # test that iter also accepts 'tag' as a keyword arg
+        # test that iter also accepts 'tag' kama a keyword arg
         self.assertEqual(
             summarize_list(doc.iter(tag='room')),
             ['room'] * 3)
 
-        # make sure both tag=None and tag='*' rudisha all tags
+        # make sure both tag=Tupu na tag='*' rudisha all tags
         all_tags = ['document', 'house', 'room', 'room',
                     'shed', 'house', 'room']
         self.assertEqual(summarize_list(doc.iter()), all_tags)
         self.assertEqual(self._ilist(doc), all_tags)
         self.assertEqual(self._ilist(doc, '*'), all_tags)
 
-    # Element.getiterator() is deprecated.
-    @checkwarnings(("This method will be removed in future versions.  "
+    # Element.getiterator() ni deprecated.
+    @checkwarnings(("This method will be removed kwenye future versions.  "
                     "Use .+ instead.", DeprecationWarning))
     eleza test_getiterator(self):
         doc = ET.XML('''
@@ -2860,16 +2860,16 @@ kundi ElementIterTest(unittest.TestCase):
         self.assertEqual(summarize_list(doc.getiterator('house')),
                          ['house'] * 2)
 
-        # test that getiterator also accepts 'tag' as a keyword arg
+        # test that getiterator also accepts 'tag' kama a keyword arg
         self.assertEqual(
             summarize_list(doc.getiterator(tag='room')),
             ['room'] * 3)
 
-        # make sure both tag=None and tag='*' rudisha all tags
+        # make sure both tag=Tupu na tag='*' rudisha all tags
         all_tags = ['document', 'house', 'room', 'room',
                     'shed', 'house', 'room']
         self.assertEqual(summarize_list(doc.getiterator()), all_tags)
-        self.assertEqual(summarize_list(doc.getiterator(None)), all_tags)
+        self.assertEqual(summarize_list(doc.getiterator(Tupu)), all_tags)
         self.assertEqual(summarize_list(doc.getiterator('*')), all_tags)
 
     eleza test_copy(self):
@@ -2881,7 +2881,7 @@ kundi ElementIterTest(unittest.TestCase):
     eleza test_pickle(self):
         a = ET.Element('a')
         it = a.iter()
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(it, proto)
 
@@ -2897,7 +2897,7 @@ kundi TreeBuilderTest(unittest.TestCase):
     eleza _check_sample1_element(self, e):
         self.assertEqual(e.tag, 'html')
         self.assertEqual(e.text, 'text')
-        self.assertEqual(e.tail, None)
+        self.assertEqual(e.tail, Tupu)
         self.assertEqual(e.attrib, {})
         children = list(e)
         self.assertEqual(len(children), 1)
@@ -2913,7 +2913,7 @@ kundi TreeBuilderTest(unittest.TestCase):
                 rudisha 42
 
         kundi DummyBuilder(BaseDummyBuilder):
-            data = start = end = lambda *a: None
+            data = start = end = lambda *a: Tupu
 
         parser = ET.XMLParser(target=DummyBuilder())
         parser.feed(self.sample1)
@@ -2925,7 +2925,7 @@ kundi TreeBuilderTest(unittest.TestCase):
 
         parser = ET.XMLParser(target=object())
         parser.feed(self.sample1)
-        self.assertIsNone(parser.close())
+        self.assertIsTupu(parser.close())
 
     eleza test_treebuilder_comment(self):
         b = ET.TreeBuilder()
@@ -2941,8 +2941,8 @@ kundi TreeBuilderTest(unittest.TestCase):
 
     eleza test_treebuilder_pi(self):
         b = ET.TreeBuilder()
-        self.assertEqual(b.pi('target', None).tag, ET.PI)
-        self.assertEqual(b.pi('target', None).text, 'target')
+        self.assertEqual(b.pi('target', Tupu).tag, ET.PI)
+        self.assertEqual(b.pi('target', Tupu).text, 'target')
 
         b = ET.TreeBuilder(pi_factory=ET.PI)
         self.assertEqual(b.pi('target').tag, ET.PI)
@@ -2951,13 +2951,13 @@ kundi TreeBuilderTest(unittest.TestCase):
         self.assertEqual(b.pi('pitarget', ' text ').text, "pitarget  text ")
 
         b = ET.TreeBuilder(pi_factory=lambda target, text: (len(target), text))
-        self.assertEqual(b.pi('target'), (len('target'), None))
+        self.assertEqual(b.pi('target'), (len('target'), Tupu))
         self.assertEqual(b.pi('pitarget', ' text '), (len('pitarget'), ' text '))
 
     eleza test_late_tail(self):
         # Issue #37399: The tail of an ignored comment could overwrite the text before it.
         kundi TreeBuilderSubclass(ET.TreeBuilder):
-            pass
+            pita
 
         xml = "<a>text<!-- comment -->tail</a>"
         a = ET.kutokastring(xml)
@@ -2982,17 +2982,17 @@ kundi TreeBuilderTest(unittest.TestCase):
         # Issue #37399: The tail of an ignored comment could overwrite the text before it.
         # Test appending tails to comments/pis.
         kundi TreeBuilderSubclass(ET.TreeBuilder):
-            pass
+            pita
 
         xml = "<a>text<?pi1?> <!-- comment -->\n<?pi2?>tail</a>"
-        parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
+        parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=Kweli))
         parser.feed(xml)
         a = parser.close()
         self.assertEqual(a[0].text, ' comment ')
         self.assertEqual(a[0].tail, '\ntail')
         self.assertEqual(a.text, "text ")
 
-        parser = ET.XMLParser(target=TreeBuilderSubclass(insert_comments=True))
+        parser = ET.XMLParser(target=TreeBuilderSubclass(insert_comments=Kweli))
         parser.feed(xml)
         a = parser.close()
         self.assertEqual(a[0].text, ' comment ')
@@ -3000,14 +3000,14 @@ kundi TreeBuilderTest(unittest.TestCase):
         self.assertEqual(a.text, "text ")
 
         xml = "<a>text<!-- comment -->\n<?pi data?>tail</a>"
-        parser = ET.XMLParser(target=ET.TreeBuilder(insert_pis=True))
+        parser = ET.XMLParser(target=ET.TreeBuilder(insert_pis=Kweli))
         parser.feed(xml)
         a = parser.close()
         self.assertEqual(a[0].text, 'pi data')
         self.assertEqual(a[0].tail, 'tail')
         self.assertEqual(a.text, "text\n")
 
-        parser = ET.XMLParser(target=TreeBuilderSubclass(insert_pis=True))
+        parser = ET.XMLParser(target=TreeBuilderSubclass(insert_pis=Kweli))
         parser.feed(xml)
         a = parser.close()
         self.assertEqual(a[0].text, 'pi data')
@@ -3015,7 +3015,7 @@ kundi TreeBuilderTest(unittest.TestCase):
         self.assertEqual(a.text, "text\n")
 
     eleza test_treebuilder_elementfactory_none(self):
-        parser = ET.XMLParser(target=ET.TreeBuilder(element_factory=None))
+        parser = ET.XMLParser(target=ET.TreeBuilder(element_factory=Tupu))
         parser.feed(self.sample1)
         e = parser.close()
         self._check_sample1_element(e)
@@ -3074,7 +3074,7 @@ kundi TreeBuilderTest(unittest.TestCase):
 
     eleza test_element_factory_subclass(self):
         kundi MyElement(ET.Element):
-            pass
+            pita
         self._check_element_factory_class(MyElement)
 
     eleza test_element_factory_pure_python_subclass(self):
@@ -3087,12 +3087,12 @@ kundi TreeBuilderTest(unittest.TestCase):
         # Force some multiple inheritance with a C kundi to make things
         # more interesting.
         kundi MyElement(base, ValueError):
-            pass
+            pita
         self._check_element_factory_class(MyElement)
 
     eleza test_doctype(self):
         kundi DoctypeParser:
-            _doctype = None
+            _doctype = Tupu
 
             eleza doctype(self, name, pubid, system):
                 self._doctype = (name, pubid, system)
@@ -3109,28 +3109,28 @@ kundi TreeBuilderTest(unittest.TestCase):
 
     eleza test_builder_lookup_errors(self):
         kundi RaisingBuilder:
-            eleza __init__(self, raise_in=None, what=ValueError):
-                self.raise_in = raise_in
+            eleza __init__(self, ashiria_in=Tupu, what=ValueError):
+                self.ashiria_in = ashiria_in
                 self.what = what
 
             eleza __getattr__(self, name):
-                ikiwa name == self.raise_in:
-                    raise self.what(self.raise_in)
+                ikiwa name == self.ashiria_in:
+                    ashiria self.what(self.ashiria_in)
                 eleza handle(*args):
-                    pass
+                    pita
                 rudisha handle
 
         ET.XMLParser(target=RaisingBuilder())
-        # cET also checks for 'close' and 'doctype', PyET does it only at need
-        for event in ('start', 'data', 'end', 'comment', 'pi'):
+        # cET also checks kila 'close' na 'doctype', PyET does it only at need
+        kila event kwenye ('start', 'data', 'end', 'comment', 'pi'):
             with self.assertRaisesRegex(ValueError, event):
                 ET.XMLParser(target=RaisingBuilder(event))
 
         ET.XMLParser(target=RaisingBuilder(what=AttributeError))
-        for event in ('start', 'data', 'end', 'comment', 'pi'):
+        kila event kwenye ('start', 'data', 'end', 'comment', 'pi'):
             parser = ET.XMLParser(target=RaisingBuilder(event, what=AttributeError))
             parser.feed(self.sample1)
-            self.assertIsNone(parser.close())
+            self.assertIsTupu(parser.close())
 
 
 kundi XMLParserTest(unittest.TestCase):
@@ -3155,7 +3155,7 @@ kundi XMLParserTest(unittest.TestCase):
 
     eleza test_subclass(self):
         kundi MyParser(ET.XMLParser):
-            pass
+            pita
         parser = MyParser()
         parser.feed(self.sample1)
         self._check_sample_element(parser.close())
@@ -3168,7 +3168,7 @@ kundi XMLParserTest(unittest.TestCase):
             parser.close()
 
     eleza test_subclass_doctype(self):
-        _doctype = None
+        _doctype = Tupu
         kundi MyParserWithDoctype(ET.XMLParser):
             eleza doctype(self, *args, **kwargs):
                 nonlocal _doctype
@@ -3178,9 +3178,9 @@ kundi XMLParserTest(unittest.TestCase):
         with self.assertWarnsRegex(RuntimeWarning, 'doctype'):
             parser.feed(self.sample2)
         parser.close()
-        self.assertIsNone(_doctype)
+        self.assertIsTupu(_doctype)
 
-        _doctype = _doctype2 = None
+        _doctype = _doctype2 = Tupu
         with warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             warnings.simplefilter('error', RuntimeWarning)
@@ -3192,18 +3192,18 @@ kundi XMLParserTest(unittest.TestCase):
             parser = MyParserWithDoctype(target=DoctypeParser())
             parser.feed(self.sample2)
             parser.close()
-            self.assertIsNone(_doctype)
+            self.assertIsTupu(_doctype)
             self.assertEqual(_doctype2,
                 ('html', '-//W3C//DTD XHTML 1.0 Transitional//EN',
                  'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'))
 
     eleza test_inherited_doctype(self):
-        '''Ensure that ordinary usage is not deprecated (Issue 19176)'''
+        '''Ensure that ordinary usage ni sio deprecated (Issue 19176)'''
         with warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             warnings.simplefilter('error', RuntimeWarning)
             kundi MyParserWithoutDoctype(ET.XMLParser):
-                pass
+                pita
             parser = MyParserWithoutDoctype()
             parser.feed(self.sample2)
             parser.close()
@@ -3229,18 +3229,18 @@ kundi NamespaceParseTest(unittest.TestCase):
 
 kundi ElementSlicingTest(unittest.TestCase):
     eleza _elem_tags(self, elemlist):
-        rudisha [e.tag for e in elemlist]
+        rudisha [e.tag kila e kwenye elemlist]
 
     eleza _subelem_tags(self, elem):
         rudisha self._elem_tags(list(elem))
 
     eleza _make_elem_with_children(self, numchildren):
         """Create an Element with a tag 'a', with the given amount of children
-           named 'a0', 'a1' ... and so on.
+           named 'a0', 'a1' ... na so on.
 
         """
         e = ET.Element('a')
-        for i in range(numchildren):
+        kila i kwenye range(numchildren):
             ET.SubElement(e, 'a%s' % i)
         rudisha e
 
@@ -3284,27 +3284,27 @@ kundi ElementSlicingTest(unittest.TestCase):
 
     eleza test_delslice(self):
         e = self._make_elem_with_children(4)
-        del e[0:2]
+        toa e[0:2]
         self.assertEqual(self._subelem_tags(e), ['a2', 'a3'])
 
         e = self._make_elem_with_children(4)
-        del e[0:]
+        toa e[0:]
         self.assertEqual(self._subelem_tags(e), [])
 
         e = self._make_elem_with_children(4)
-        del e[::-1]
+        toa e[::-1]
         self.assertEqual(self._subelem_tags(e), [])
 
         e = self._make_elem_with_children(4)
-        del e[::-2]
+        toa e[::-2]
         self.assertEqual(self._subelem_tags(e), ['a0', 'a2'])
 
         e = self._make_elem_with_children(4)
-        del e[1::2]
+        toa e[1::2]
         self.assertEqual(self._subelem_tags(e), ['a0', 'a2'])
 
         e = self._make_elem_with_children(2)
-        del e[::2]
+        toa e[::2]
         self.assertEqual(self._subelem_tags(e), ['a1'])
 
     eleza test_setslice_single_index(self):
@@ -3323,7 +3323,7 @@ kundi ElementSlicingTest(unittest.TestCase):
 
     eleza test_setslice_range(self):
         e = self._make_elem_with_children(4)
-        e[1:3] = [ET.Element('b%s' % i) for i in range(2)]
+        e[1:3] = [ET.Element('b%s' % i) kila i kwenye range(2)]
         self.assertEqual(self._subelem_tags(e), ['a0', 'b0', 'b1', 'a3'])
 
         e = self._make_elem_with_children(4)
@@ -3331,19 +3331,19 @@ kundi ElementSlicingTest(unittest.TestCase):
         self.assertEqual(self._subelem_tags(e), ['a0', 'b', 'a3'])
 
         e = self._make_elem_with_children(4)
-        e[1:3] = [ET.Element('b%s' % i) for i in range(3)]
+        e[1:3] = [ET.Element('b%s' % i) kila i kwenye range(3)]
         self.assertEqual(self._subelem_tags(e), ['a0', 'b0', 'b1', 'b2', 'a3'])
 
     eleza test_setslice_steps(self):
         e = self._make_elem_with_children(6)
-        e[1:5:2] = [ET.Element('b%s' % i) for i in range(2)]
+        e[1:5:2] = [ET.Element('b%s' % i) kila i kwenye range(2)]
         self.assertEqual(self._subelem_tags(e), ['a0', 'b0', 'a2', 'b1', 'a4', 'a5'])
 
         e = self._make_elem_with_children(6)
         with self.assertRaises(ValueError):
             e[1:5:2] = [ET.Element('b')]
         with self.assertRaises(ValueError):
-            e[1:5:2] = [ET.Element('b%s' % i) for i in range(3)]
+            e[1:5:2] = [ET.Element('b%s' % i) kila i kwenye range(3)]
         with self.assertRaises(ValueError):
             e[1:5:2] = []
         self.assertEqual(self._subelem_tags(e), ['a0', 'a1', 'a2', 'a3', 'a4', 'a5'])
@@ -3356,14 +3356,14 @@ kundi ElementSlicingTest(unittest.TestCase):
 
     eleza test_setslice_negative_steps(self):
         e = self._make_elem_with_children(4)
-        e[2:0:-1] = [ET.Element('b%s' % i) for i in range(2)]
+        e[2:0:-1] = [ET.Element('b%s' % i) kila i kwenye range(2)]
         self.assertEqual(self._subelem_tags(e), ['a0', 'b1', 'b0', 'a3'])
 
         e = self._make_elem_with_children(4)
         with self.assertRaises(ValueError):
             e[2:0:-1] = [ET.Element('b')]
         with self.assertRaises(ValueError):
-            e[2:0:-1] = [ET.Element('b%s' % i) for i in range(3)]
+            e[2:0:-1] = [ET.Element('b%s' % i) kila i kwenye range(3)]
         with self.assertRaises(ValueError):
             e[2:0:-1] = []
         self.assertEqual(self._subelem_tags(e), ['a0', 'a1', 'a2', 'a3'])
@@ -3383,13 +3383,13 @@ kundi IOTest(unittest.TestCase):
         elem = ET.Element("tag")
         elem.text = "abc"
         self.assertEqual(serialize(elem), '<tag>abc</tag>')
-        for enc in ("utf-8", "us-ascii"):
+        kila enc kwenye ("utf-8", "us-ascii"):
             with self.subTest(enc):
                 self.assertEqual(serialize(elem, encoding=enc),
                         b'<tag>abc</tag>')
                 self.assertEqual(serialize(elem, encoding=enc.upper()),
                         b'<tag>abc</tag>')
-        for enc in ("iso-8859-1", "utf-16", "utf-32"):
+        kila enc kwenye ("iso-8859-1", "utf-16", "utf-32"):
             with self.subTest(enc):
                 self.assertEqual(serialize(elem, encoding=enc),
                         ("<?xml version='1.0' encoding='%s'?>\n"
@@ -3406,7 +3406,7 @@ kundi IOTest(unittest.TestCase):
                 b'<tag>&lt;&amp;"\'&gt;</tag>')
         self.assertEqual(serialize(elem, encoding="us-ascii"),
                 b'<tag>&lt;&amp;"\'&gt;</tag>')
-        for enc in ("iso-8859-1", "utf-16", "utf-32"):
+        kila enc kwenye ("iso-8859-1", "utf-16", "utf-32"):
             self.assertEqual(serialize(elem, encoding=enc),
                     ("<?xml version='1.0' encoding='%s'?>\n"
                      "<tag>&lt;&amp;\"'&gt;</tag>" % enc).encode(enc))
@@ -3418,7 +3418,7 @@ kundi IOTest(unittest.TestCase):
                 b'<tag key="&lt;&amp;&quot;\'&gt;" />')
         self.assertEqual(serialize(elem, encoding="us-ascii"),
                 b'<tag key="&lt;&amp;&quot;\'&gt;" />')
-        for enc in ("iso-8859-1", "utf-16", "utf-32"):
+        kila enc kwenye ("iso-8859-1", "utf-16", "utf-32"):
             self.assertEqual(serialize(elem, encoding=enc),
                     ("<?xml version='1.0' encoding='%s'?>\n"
                      "<tag key=\"&lt;&amp;&quot;'&gt;\" />" % enc).encode(enc))
@@ -3430,7 +3430,7 @@ kundi IOTest(unittest.TestCase):
                 b'<tag>\xc3\xa5\xc3\xb6\xc3\xb6&lt;&gt;</tag>')
         self.assertEqual(serialize(elem, encoding="us-ascii"),
                 b'<tag>&#229;&#246;&#246;&lt;&gt;</tag>')
-        for enc in ("iso-8859-1", "utf-16", "utf-32"):
+        kila enc kwenye ("iso-8859-1", "utf-16", "utf-32"):
             self.assertEqual(serialize(elem, encoding=enc),
                     ("<?xml version='1.0' encoding='%s'?>\n"
                      "<tag>åöö&lt;&gt;</tag>" % enc).encode(enc))
@@ -3442,7 +3442,7 @@ kundi IOTest(unittest.TestCase):
                 b'<tag key="\xc3\xa5\xc3\xb6\xc3\xb6&lt;&gt;" />')
         self.assertEqual(serialize(elem, encoding="us-ascii"),
                 b'<tag key="&#229;&#246;&#246;&lt;&gt;" />')
-        for enc in ("iso-8859-1", "utf-16", "utf-16le", "utf-16be", "utf-32"):
+        kila enc kwenye ("iso-8859-1", "utf-16", "utf-16le", "utf-16be", "utf-32"):
             self.assertEqual(serialize(elem, encoding=enc),
                     ("<?xml version='1.0' encoding='%s'?>\n"
                      "<tag key=\"åöö&lt;&gt;\" />" % enc).encode(enc))
@@ -3451,43 +3451,43 @@ kundi IOTest(unittest.TestCase):
         self.addCleanup(support.unlink, TESTFN)
         tree = ET.ElementTree(ET.XML('''<site />'''))
         tree.write(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        with open(TESTFN, 'rb') kama f:
             self.assertEqual(f.read(), b'''<site />''')
 
     eleza test_write_to_text_file(self):
         self.addCleanup(support.unlink, TESTFN)
         tree = ET.ElementTree(ET.XML('''<site />'''))
-        with open(TESTFN, 'w', encoding='utf-8') as f:
+        with open(TESTFN, 'w', encoding='utf-8') kama f:
             tree.write(f, encoding='unicode')
-            self.assertFalse(f.closed)
-        with open(TESTFN, 'rb') as f:
+            self.assertUongo(f.closed)
+        with open(TESTFN, 'rb') kama f:
             self.assertEqual(f.read(), b'''<site />''')
 
     eleza test_write_to_binary_file(self):
         self.addCleanup(support.unlink, TESTFN)
         tree = ET.ElementTree(ET.XML('''<site />'''))
-        with open(TESTFN, 'wb') as f:
+        with open(TESTFN, 'wb') kama f:
             tree.write(f)
-            self.assertFalse(f.closed)
-        with open(TESTFN, 'rb') as f:
+            self.assertUongo(f.closed)
+        with open(TESTFN, 'rb') kama f:
             self.assertEqual(f.read(), b'''<site />''')
 
     eleza test_write_to_binary_file_with_bom(self):
         self.addCleanup(support.unlink, TESTFN)
         tree = ET.ElementTree(ET.XML('''<site />'''))
         # test BOM writing to buffered file
-        with open(TESTFN, 'wb') as f:
+        with open(TESTFN, 'wb') kama f:
             tree.write(f, encoding='utf-16')
-            self.assertFalse(f.closed)
-        with open(TESTFN, 'rb') as f:
+            self.assertUongo(f.closed)
+        with open(TESTFN, 'rb') kama f:
             self.assertEqual(f.read(),
                     '''<?xml version='1.0' encoding='utf-16'?>\n'''
                     '''<site />'''.encode("utf-16"))
         # test BOM writing to non-buffered file
-        with open(TESTFN, 'wb', buffering=0) as f:
+        with open(TESTFN, 'wb', buffering=0) kama f:
             tree.write(f, encoding='utf-16')
-            self.assertFalse(f.closed)
-        with open(TESTFN, 'rb') as f:
+            self.assertUongo(f.closed)
+        with open(TESTFN, 'rb') kama f:
             self.assertEqual(f.read(),
                     '''<?xml version='1.0' encoding='utf-16'?>\n'''
                     '''<site />'''.encode("utf-16"))
@@ -3517,7 +3517,7 @@ kundi IOTest(unittest.TestCase):
         self.assertEqual(raw.getvalue(), b'''<site />''')
 
     kundi dummy:
-        pass
+        pita
 
     eleza test_read_kutoka_user_text_reader(self):
         stream = io.StringIO('''<?xml version="1.0"?><site></site>''')
@@ -3557,7 +3557,7 @@ kundi IOTest(unittest.TestCase):
         raw = io.BytesIO()
         writer = self.dummy()
         writer.write = raw.write
-        writer.seekable = lambda: True
+        writer.seekable = lambda: Kweli
         writer.tell = raw.tell
         tree.write(writer, encoding="utf-16")
         self.assertEqual(raw.getvalue(),
@@ -3579,10 +3579,10 @@ kundi IOTest(unittest.TestCase):
             ET.tostring(root, 'unicode'),
             '<tag>a<x />b<y />c</tag>')
         self.assertEqual(
-            ET.tostring(root, 'unicode', short_empty_elements=True),
+            ET.tostring(root, 'unicode', short_empty_elements=Kweli),
             '<tag>a<x />b<y />c</tag>')
         self.assertEqual(
-            ET.tostring(root, 'unicode', short_empty_elements=False),
+            ET.tostring(root, 'unicode', short_empty_elements=Uongo),
             '<tag>a<x></x>b<y></y>c</tag>')
 
 
@@ -3591,9 +3591,9 @@ kundi ParseErrorTest(unittest.TestCase):
         self.assertIsInstance(ET.ParseError(), SyntaxError)
 
     eleza _get_error(self, s):
-        try:
+        jaribu:
             ET.kutokastring(s)
-        except ET.ParseError as e:
+        tatizo ET.ParseError kama e:
             rudisha e
 
     eleza test_error_position(self):
@@ -3602,24 +3602,24 @@ kundi ParseErrorTest(unittest.TestCase):
         self.assertEqual(self._get_error('foobar<').position, (1, 6))
 
     eleza test_error_code(self):
-        agiza xml.parsers.expat.errors as ERRORS
+        agiza xml.parsers.expat.errors kama ERRORS
         self.assertEqual(self._get_error('foo').code,
                 ERRORS.codes[ERRORS.XML_ERROR_SYNTAX])
 
 
 kundi KeywordArgsTest(unittest.TestCase):
-    # Test various issues with keyword arguments passed to ET.Element
-    # constructor and methods
+    # Test various issues with keyword arguments pitaed to ET.Element
+    # constructor na methods
     eleza test_issue14818(self):
         x = ET.XML("<a>foo</a>")
-        self.assertEqual(x.find('a', None),
-                         x.find(path='a', namespaces=None))
-        self.assertEqual(x.findtext('a', None, None),
-                         x.findtext(path='a', default=None, namespaces=None))
-        self.assertEqual(x.findall('a', None),
-                         x.findall(path='a', namespaces=None))
-        self.assertEqual(list(x.iterfind('a', None)),
-                         list(x.iterfind(path='a', namespaces=None)))
+        self.assertEqual(x.find('a', Tupu),
+                         x.find(path='a', namespaces=Tupu))
+        self.assertEqual(x.findtext('a', Tupu, Tupu),
+                         x.findtext(path='a', default=Tupu, namespaces=Tupu))
+        self.assertEqual(x.findall('a', Tupu),
+                         x.findall(path='a', namespaces=Tupu))
+        self.assertEqual(list(x.iterfind('a', Tupu)),
+                         list(x.iterfind(path='a', namespaces=Tupu)))
 
         self.assertEqual(ET.Element('a').attrib, {})
         elements = [
@@ -3629,29 +3629,29 @@ kundi KeywordArgsTest(unittest.TestCase):
             ET.Element('a', href="#", id="foo"),
             ET.Element('a', dict(href="#", id="foo"), href="#", id="foo"),
         ]
-        for e in elements:
+        kila e kwenye elements:
             self.assertEqual(e.tag, 'a')
             self.assertEqual(e.attrib, dict(href="#", id="foo"))
 
         e2 = ET.SubElement(elements[0], 'foobar', attrib={'key1': 'value1'})
         self.assertEqual(e2.attrib['key1'], 'value1')
 
-        with self.assertRaisesRegex(TypeError, 'must be dict, not str'):
-            ET.Element('a', "I'm not a dict")
-        with self.assertRaisesRegex(TypeError, 'must be dict, not str'):
-            ET.Element('a', attrib="I'm not a dict")
+        with self.assertRaisesRegex(TypeError, 'must be dict, sio str'):
+            ET.Element('a', "I'm sio a dict")
+        with self.assertRaisesRegex(TypeError, 'must be dict, sio str'):
+            ET.Element('a', attrib="I'm sio a dict")
 
 # --------------------------------------------------------------------
 
 kundi NoAcceleratorTest(unittest.TestCase):
     eleza setUp(self):
-        ikiwa not pyET:
-            raise unittest.SkipTest('only for the Python version')
+        ikiwa sio pyET:
+            ashiria unittest.SkipTest('only kila the Python version')
 
-    # Test that the C accelerator was not imported for pyET
+    # Test that the C accelerator was sio imported kila pyET
     eleza test_correct_import_pyET(self):
-        # The type of methods defined in Python code is types.FunctionType,
-        # while the type of methods defined inside _elementtree is
+        # The type of methods defined kwenye Python code ni types.FunctionType,
+        # wakati the type of methods defined inside _elementtree is
         # <kundi 'wrapper_descriptor'>
         self.assertIsInstance(pyET.Element.__init__, types.FunctionType)
         self.assertIsInstance(pyET.XMLParser.__init__, types.FunctionType)
@@ -3664,7 +3664,7 @@ eleza c14n_roundtrip(xml, **options):
 
 
 kundi C14NTest(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Tupu
 
     #
     # simple roundtrip tests (kutoka c14n.py)
@@ -3714,28 +3714,28 @@ kundi C14NTest(unittest.TestCase):
         </root>
         """)
         self.assertEqual(
-            c14n_roundtrip(xml, strip_text=True),
+            c14n_roundtrip(xml, strip_text=Kweli),
             '<root>'
             '<a xmlns:x="http://example.com/x" x:attr="attrx"><b>abtext</b></a>'
             '<b>btext</b>'
             '<c><x:d xmlns:x="http://example.com/x">dtext</x:d></c>'
             '</root>')
         self.assertEqual(
-            c14n_roundtrip(xml, strip_text=True, exclude_attrs=['{http://example.com/x}attr']),
+            c14n_roundtrip(xml, strip_text=Kweli, exclude_attrs=['{http://example.com/x}attr']),
             '<root>'
             '<a><b>abtext</b></a>'
             '<b>btext</b>'
             '<c><x:d xmlns:x="http://example.com/x">dtext</x:d></c>'
             '</root>')
         self.assertEqual(
-            c14n_roundtrip(xml, strip_text=True, exclude_tags=['{http://example.com/x}d']),
+            c14n_roundtrip(xml, strip_text=Kweli, exclude_tags=['{http://example.com/x}d']),
             '<root>'
             '<a xmlns:x="http://example.com/x" x:attr="attrx"><b>abtext</b></a>'
             '<b>btext</b>'
             '<c></c>'
             '</root>')
         self.assertEqual(
-            c14n_roundtrip(xml, strip_text=True, exclude_attrs=['{http://example.com/x}attr'],
+            c14n_roundtrip(xml, strip_text=Kweli, exclude_attrs=['{http://example.com/x}attr'],
                            exclude_tags=['{http://example.com/x}d']),
             '<root>'
             '<a><b>abtext</b></a>'
@@ -3743,7 +3743,7 @@ kundi C14NTest(unittest.TestCase):
             '<c></c>'
             '</root>')
         self.assertEqual(
-            c14n_roundtrip(xml, strip_text=True, exclude_tags=['a', 'b']),
+            c14n_roundtrip(xml, strip_text=Kweli, exclude_tags=['a', 'b']),
             '<root>'
             '<c><x:d xmlns:x="http://example.com/x">dtext</x:d></c>'
             '</root>')
@@ -3757,7 +3757,7 @@ kundi C14NTest(unittest.TestCase):
             '    </c>\n'
             '</root>')
         self.assertEqual(
-            c14n_roundtrip(xml, strip_text=True, exclude_tags=['{http://example.com/x}d', 'b']),
+            c14n_roundtrip(xml, strip_text=Kweli, exclude_tags=['{http://example.com/x}d', 'b']),
             '<root>'
             '<a xmlns:x="http://example.com/x" x:attr="attrx"></a>'
             '<c></c>'
@@ -3779,91 +3779,91 @@ kundi C14NTest(unittest.TestCase):
     # test files under xmltestdata/c14n-20.
 
     # note that this uses generated C14N versions of the standard ET.write
-    # output, not roundtripped C14N (see above).
+    # output, sio roundtripped C14N (see above).
 
     eleza test_xml_c14n2(self):
         datadir = findfile("c14n-20", subdir="xmltestdata")
         full_path = partial(os.path.join, datadir)
 
-        files = [filename[:-4] for filename in sorted(os.listdir(datadir))
+        files = [filename[:-4] kila filename kwenye sorted(os.listdir(datadir))
                  ikiwa filename.endswith('.xml')]
         input_files = [
-            filename for filename in files
+            filename kila filename kwenye files
             ikiwa filename.startswith('in')
         ]
         configs = {
             filename: {
                 # <c14n2:PrefixRewrite>sequential</c14n2:PrefixRewrite>
-                option.tag.split('}')[-1]: ((option.text or '').strip(), option)
-                for option in ET.parse(full_path(filename) + ".xml").getroot()
+                option.tag.split('}')[-1]: ((option.text ama '').strip(), option)
+                kila option kwenye ET.parse(full_path(filename) + ".xml").getroot()
             }
-            for filename in files
+            kila filename kwenye files
             ikiwa filename.startswith('c14n')
         }
 
         tests = {
             input_file: [
                 (filename, configs[filename.rsplit('_', 1)[-1]])
-                for filename in files
+                kila filename kwenye files
                 ikiwa filename.startswith(f'out_{input_file}_')
-                and filename.rsplit('_', 1)[-1] in configs
+                na filename.rsplit('_', 1)[-1] kwenye configs
             ]
-            for input_file in input_files
+            kila input_file kwenye input_files
         }
 
         # Make sure we found all test cases.
         self.assertEqual(30, len([
-            output_file for output_files in tests.values()
-            for output_file in output_files]))
+            output_file kila output_files kwenye tests.values()
+            kila output_file kwenye output_files]))
 
-        eleza get_option(config, option_name, default=None):
+        eleza get_option(config, option_name, default=Tupu):
             rudisha config.get(option_name, (default, ()))[0]
 
-        for input_file, output_files in tests.items():
-            for output_file, config in output_files:
+        kila input_file, output_files kwenye tests.items():
+            kila output_file, config kwenye output_files:
                 keep_comments = get_option(
                     config, 'IgnoreComments') == 'true'  # no, it's right :)
                 strip_text = get_option(
                     config, 'TrimTextNodes') == 'true'
                 rewrite_prefixes = get_option(
                     config, 'PrefixRewrite') == 'sequential'
-                ikiwa 'QNameAware' in config:
+                ikiwa 'QNameAware' kwenye config:
                     qattrs = [
                         f"{{{el.get('NS')}}}{el.get('Name')}"
-                        for el in config['QNameAware'][1].findall(
+                        kila el kwenye config['QNameAware'][1].findall(
                             '{http://www.w3.org/2010/xml-c14n2}QualifiedAttr')
                     ]
                     qtags = [
                         f"{{{el.get('NS')}}}{el.get('Name')}"
-                        for el in config['QNameAware'][1].findall(
+                        kila el kwenye config['QNameAware'][1].findall(
                             '{http://www.w3.org/2010/xml-c14n2}Element')
                     ]
-                else:
-                    qtags = qattrs = None
+                isipokua:
+                    qtags = qattrs = Tupu
 
                 # Build subtest description kutoka config.
                 config_descr = ','.join(
-                    f"{name}={value or ','.join(c.tag.split('}')[-1] for c in children)}"
-                    for name, (value, children) in sorted(config.items())
+                    f"{name}={value ama ','.join(c.tag.split('}')[-1] kila c kwenye children)}"
+                    kila name, (value, children) kwenye sorted(config.items())
                 )
 
                 with self.subTest(f"{output_file}({config_descr})"):
-                    ikiwa input_file == 'inNsRedecl' and not rewrite_prefixes:
+                    ikiwa input_file == 'inNsRedecl' na sio rewrite_prefixes:
                         self.skipTest(
-                            f"Redeclared namespace handling is not supported in {output_file}")
-                    ikiwa input_file == 'inNsSuperfluous' and not rewrite_prefixes:
+                            f"Redeclared namespace handling ni sio supported kwenye {output_file}")
+                    ikiwa input_file == 'inNsSuperfluous' na sio rewrite_prefixes:
                         self.skipTest(
-                            f"Redeclared namespace handling is not supported in {output_file}")
-                    ikiwa 'QNameAware' in config and config['QNameAware'][1].find(
-                            '{http://www.w3.org/2010/xml-c14n2}XPathElement') is not None:
+                            f"Redeclared namespace handling ni sio supported kwenye {output_file}")
+                    ikiwa 'QNameAware' kwenye config na config['QNameAware'][1].find(
+                            '{http://www.w3.org/2010/xml-c14n2}XPathElement') ni sio Tupu:
                         self.skipTest(
-                            f"QName rewriting in XPath text is not supported in {output_file}")
+                            f"QName rewriting kwenye XPath text ni sio supported kwenye {output_file}")
 
                     f = full_path(input_file + ".xml")
                     ikiwa input_file == 'inC14N5':
-                        # Hack: avoid setting up external entity resolution in the parser.
-                        with open(full_path('world.txt'), 'rb') as entity_file:
-                            with open(f, 'rb') as f:
+                        # Hack: avoid setting up external entity resolution kwenye the parser.
+                        with open(full_path('world.txt'), 'rb') kama entity_file:
+                            with open(f, 'rb') kama f:
                                 f = io.BytesIO(f.read().replace(b'&ent2;', entity_file.read()))
 
                     text = ET.canonicalize(
@@ -3873,7 +3873,7 @@ kundi C14NTest(unittest.TestCase):
                         rewrite_prefixes=rewrite_prefixes,
                         qname_aware_tags=qtags, qname_aware_attrs=qattrs)
 
-                    with open(full_path(output_file + ".xml"), 'r', encoding='utf8') as f:
+                    with open(full_path(output_file + ".xml"), 'r', encoding='utf8') kama f:
                         expected = f.read()
                         ikiwa input_file == 'inC14N3':
                             # FIXME: cET resolves default attributes but ET does not!
@@ -3884,13 +3884,13 @@ kundi C14NTest(unittest.TestCase):
 # --------------------------------------------------------------------
 
 
-eleza test_main(module=None):
+eleza test_main(module=Tupu):
     # When invoked without a module, runs the Python ET tests by loading pyET.
-    # Otherwise, uses the given module as the ET.
+    # Otherwise, uses the given module kama the ET.
     global pyET
     pyET = import_fresh_module('xml.etree.ElementTree',
                                blocked=['_elementtree'])
-    ikiwa module is None:
+    ikiwa module ni Tupu:
         module = pyET
 
     global ET
@@ -3917,15 +3917,15 @@ eleza test_main(module=None):
         C14NTest,
         ]
 
-    # These tests will only run for the pure-Python version that doesn't agiza
-    # _elementtree. We can't use skipUnless here, because pyET is filled in only
-    # after the module is loaded.
-    ikiwa pyET is not ET:
+    # These tests will only run kila the pure-Python version that doesn't agiza
+    # _elementtree. We can't use skipUnless here, because pyET ni filled kwenye only
+    # after the module ni loaded.
+    ikiwa pyET ni sio ET:
         test_classes.extend([
             NoAcceleratorTest,
             ])
 
-    # Provide default namespace mapping and path cache.
+    # Provide default namespace mapping na path cache.
     kutoka xml.etree agiza ElementPath
     nsmap = ET.register_namespace._namespace_map
     # Copy the default namespace mapping
@@ -3936,21 +3936,21 @@ eleza test_main(module=None):
     # Align the Comment/PI factories.
     ikiwa hasattr(ET, '_set_factories'):
         old_factories = ET._set_factories(ET.Comment, ET.PI)
-    else:
-        old_factories = None
+    isipokua:
+        old_factories = Tupu
 
-    try:
+    jaribu:
         support.run_unittest(*test_classes)
-    finally:
+    mwishowe:
         kutoka xml.etree agiza ElementPath
-        # Restore mapping and path cache
+        # Restore mapping na path cache
         nsmap.clear()
         nsmap.update(nsmap_copy)
         ElementPath._cache = path_cache
-        ikiwa old_factories is not None:
+        ikiwa old_factories ni sio Tupu:
             ET._set_factories(*old_factories)
         # don't interfere with subsequent tests
-        ET = pyET = None
+        ET = pyET = Tupu
 
 
 ikiwa __name__ == '__main__':

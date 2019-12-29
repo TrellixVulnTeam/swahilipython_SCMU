@@ -35,7 +35,7 @@ class Address:
         # application program creates an Address object using an addr_spec
         # keyword.  The email library code itself must always supply username
         # and domain.
-        if addr_spec is not None:
+        if addr_spec ni sio None:
             if username or domain:
                 raise TypeError("addrspec specified when username and/or "
                                 "domain also specified")
@@ -72,11 +72,11 @@ class Address:
         nameset = set(self.username)
         if len(nameset) > len(nameset-parser.DOT_ATOM_ENDS):
             lp = parser.quote_string(self.username)
-        else:
+        isipokua:
             lp = self.username
         if self.domain:
             return lp + '@' + self.domain
-        if not lp:
+        if sio lp:
             return '<>'
         return lp
 
@@ -89,7 +89,7 @@ class Address:
         nameset = set(self.display_name)
         if len(nameset) > len(nameset-parser.SPECIALS):
             disp = parser.quote_string(self.display_name)
-        else:
+        isipokua:
             disp = self.display_name
         if disp:
             addr_spec = '' if self.addr_spec=='<>' else self.addr_spec
@@ -113,7 +113,7 @@ class Group:
         list of addresses (see Address) terminated by a semi-colon.  The Group
         is created by specifying a display_name and a possibly empty list of
         Address objects.  A Group can also be used to represent a single
-        address that is not in a group, which is convenient when manipulating
+        address that is haiko kwenye a group, which is convenient when manipulating
         lists that are a combination of Groups and individual Addresses.  In
         this case the display_name should be set to None.  In particular, the
         string representation of a Group whose display_name is None is the same
@@ -141,7 +141,7 @@ class Group:
         if self.display_name is None and len(self.addresses)==1:
             return str(self.addresses[0])
         disp = self.display_name
-        if disp is not None:
+        if disp ni sio None:
             nameset = set(disp)
             if len(nameset) > len(nameset-parser.SPECIALS):
                 disp = parser.quote_string(disp)
@@ -198,7 +198,7 @@ class BaseHeader(str):
         if utils._has_surrogates(kwds['decoded']):
             kwds['decoded'] = utils._sanitize(kwds['decoded'])
         self = str.__new__(cls, kwds['decoded'])
-        del kwds['decoded']
+        toa kwds['decoded']
         self.init(name, **kwds)
         return self
 
@@ -291,12 +291,12 @@ class DateHeader:
 
     max_count = None
 
-    # This is used only for folding, not for creating 'decoded'.
+    # This is used only for folding, sio for creating 'decoded'.
     value_parser = staticmethod(parser.get_unstructured)
 
     @classmethod
     def parse(cls, value, kwds):
-        if not value:
+        if sio value:
             kwds['defects'].append(errors.HeaderMissingRequiredValue())
             kwds['datetime'] = None
             kwds['decoded'] = ''
@@ -329,7 +329,7 @@ class AddressHeader:
     @staticmethod
     def value_parser(value):
         address_list, value = parser.get_address_list(value)
-        assert not value, 'this should not happen'
+        assert sio value, 'this should sio happen'
         return address_list
 
     @classmethod
@@ -346,18 +346,18 @@ class AddressHeader:
                                              mb.domain or '')
                                      for mb in addr.all_mailboxes]))
             defects = list(address_list.all_defects)
-        else:
+        isipokua:
             # Assume it is Address/Group stuff
-            if not hasattr(value, '__iter__'):
+            if sio hasattr(value, '__iter__'):
                 value = [value]
-            groups = [Group(None, [item]) if not hasattr(item, 'addresses')
+            groups = [Group(None, [item]) if sio hasattr(item, 'addresses')
                                           else item
                                     for item in value]
             defects = []
         kwds['groups'] = groups
         kwds['defects'] = defects
         kwds['decoded'] = ', '.join([str(item) for item in groups])
-        if 'parse_tree' not in kwds:
+        if 'parse_tree' haiko kwenye kwds:
             kwds['parse_tree'] = cls.value_parser(kwds['decoded'])
 
     def init(self, *args, **kw):
@@ -387,7 +387,7 @@ class SingleAddressHeader(AddressHeader):
     @property
     def address(self):
         if len(self.addresses)!=1:
-            raise ValueError(("value of single address header {} is not "
+            raise ValueError(("value of single address header {} ni sio "
                 "a single address").format(self.name))
         return self.addresses[0]
 
@@ -410,9 +410,9 @@ class MIMEVersionHeader:
         kwds['defects'].extend(parse_tree.all_defects)
         kwds['major'] = None if parse_tree.minor is None else parse_tree.major
         kwds['minor'] = parse_tree.minor
-        if parse_tree.minor is not None:
+        if parse_tree.minor ni sio None:
             kwds['version'] = '{}.{}'.format(kwds['major'], kwds['minor'])
-        else:
+        isipokua:
             kwds['version'] = None
 
     def init(self, *args, **kw):
@@ -448,7 +448,7 @@ class ParameterizedMIMEHeader:
         kwds['defects'].extend(parse_tree.all_defects)
         if parse_tree.params is None:
             kwds['params'] = {}
-        else:
+        isipokua:
             # The MIME RFCs specify that parameter ordering is arbitrary.
             kwds['params'] = {utils._sanitize(name).lower():
                                     utils._sanitize(value)
@@ -557,7 +557,7 @@ _default_header_map = {
     'message-id':                   MessageIDHeader,
     }
 
-class HeaderRegistry:
+class HeaderRegisjaribu:
 
     """A header_factory and header registry."""
 
@@ -567,8 +567,8 @@ class HeaderRegistry:
 
         base_class is the class that will be the last class in the created
         header class's __bases__ list.  default_class is the class that will be
-        used if "name" (see __call__) does not appear in the registry.
-        use_default_map controls whether or not the default mapping of names to
+        used if "name" (see __call__) does sio appear in the registry.
+        use_default_map controls whether or sio the default mapping of names to
         specialized classes is copied in to the registry when the factory is
         created.  The default is True.
 

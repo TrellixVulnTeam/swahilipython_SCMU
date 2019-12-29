@@ -1,4 +1,4 @@
-# Helper module for testing the skipmodules argument of warnings.warn()
+# Helper module kila testing the skipmodules argument of warnings.warn()
 
 agiza warnings
 

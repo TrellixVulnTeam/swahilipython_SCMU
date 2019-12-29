@@ -47,15 +47,15 @@ kundi ModuleFromSpecTests:
     eleza test_no_create_module(self):
         kundi Loader:
             eleza exec_module(self, module):
-                pass
+                pita
         spec = self.machinery.ModuleSpec('test', Loader())
         with self.assertRaises(ImportError):
             module = self.util.module_kutoka_spec(spec)
 
-    eleza test_create_module_returns_None(self):
+    eleza test_create_module_rudishas_Tupu(self):
         kundi Loader(self.abc.Loader):
             eleza create_module(self, spec):
-                rudisha None
+                rudisha Tupu
         spec = self.machinery.ModuleSpec('test', Loader())
         module = self.util.module_kutoka_spec(spec)
         self.assertIsInstance(module, types.ModuleType)
@@ -64,7 +64,7 @@ kundi ModuleFromSpecTests:
     eleza test_create_module(self):
         name = 'already set'
         kundi CustomModule(types.ModuleType):
-            pass
+            pita
         kundi Loader(self.abc.Loader):
             eleza create_module(self, spec):
                 module = CustomModule(spec.name)
@@ -97,20 +97,20 @@ kundi ModuleFromSpecTests:
         self.assertEqual(module.__package__, spec.parent)
 
     eleza test___path__(self):
-        spec = self.machinery.ModuleSpec('test', object(), is_package=True)
+        spec = self.machinery.ModuleSpec('test', object(), is_package=Kweli)
         module = self.util.module_kutoka_spec(spec)
         self.assertEqual(module.__path__, spec.submodule_search_locations)
 
     eleza test___file__(self):
         spec = self.machinery.ModuleSpec('test', object(), origin='some/path')
-        spec.has_location = True
+        spec.has_location = Kweli
         module = self.util.module_kutoka_spec(spec)
         self.assertEqual(module.__file__, spec.origin)
 
     eleza test___cached__(self):
         spec = self.machinery.ModuleSpec('test', object())
         spec.cached = 'some/path'
-        spec.has_location = True
+        spec.has_location = Kweli
         module = self.util.module_kutoka_spec(spec)
         self.assertEqual(module.__cached__, spec.cached)
 
@@ -122,7 +122,7 @@ kundi ModuleFromSpecTests:
 
 kundi ModuleForLoaderTests:
 
-    """Tests for importlib.util.module_for_loader."""
+    """Tests kila importlib.util.module_for_loader."""
 
     @classmethod
     eleza module_for_loader(cls, func):
@@ -131,40 +131,40 @@ kundi ModuleForLoaderTests:
             rudisha cls.util.module_for_loader(func)
 
     eleza test_warning(self):
-        # Should raise a PendingDeprecationWarning when used.
+        # Should ashiria a PendingDeprecationWarning when used.
         with warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             with self.assertRaises(DeprecationWarning):
                 func = self.util.module_for_loader(lambda x: x)
 
-    eleza return_module(self, name):
+    eleza rudisha_module(self, name):
         fxn = self.module_for_loader(lambda self, module: module)
         rudisha fxn(self, name)
 
-    eleza raise_exception(self, name):
+    eleza ashiria_exception(self, name):
         eleza to_wrap(self, module):
-            raise ImportError
+            ashiria ImportError
         fxn = self.module_for_loader(to_wrap)
-        try:
+        jaribu:
             fxn(self, name)
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
 
     eleza test_new_module(self):
-        # Test that when no module exists in sys.modules a new module is
+        # Test that when no module exists kwenye sys.modules a new module is
         # created.
         module_name = 'a.b.c'
         with util.uncache(module_name):
-            module = self.return_module(module_name)
+            module = self.rudisha_module(module_name)
             self.assertIn(module_name, sys.modules)
         self.assertIsInstance(module, types.ModuleType)
         self.assertEqual(module.__name__, module_name)
 
     eleza test_reload(self):
-        # Test that a module is reused ikiwa already in sys.modules.
+        # Test that a module ni reused ikiwa already kwenye sys.modules.
         kundi FakeLoader:
             eleza is_package(self, name):
-                rudisha True
+                rudisha Kweli
             @self.module_for_loader
             eleza load_module(self, module):
                 rudisha module
@@ -175,17 +175,17 @@ kundi ModuleForLoaderTests:
         with util.uncache(name):
             sys.modules[name] = module
             loader = FakeLoader()
-            returned_module = loader.load_module(name)
-            self.assertIs(returned_module, sys.modules[name])
+            rudishaed_module = loader.load_module(name)
+            self.assertIs(rudishaed_module, sys.modules[name])
             self.assertEqual(module.__loader__, loader)
             self.assertEqual(module.__package__, name)
 
     eleza test_new_module_failure(self):
-        # Test that a module is removed kutoka sys.modules ikiwa added but an
-        # exception is raised.
+        # Test that a module ni removed kutoka sys.modules ikiwa added but an
+        # exception ni ashiriad.
         name = 'a.b.c'
         with util.uncache(name):
-            self.raise_exception(name)
+            self.ashiria_exception(name)
             self.assertNotIn(name, sys.modules)
 
     eleza test_reload_failure(self):
@@ -194,32 +194,32 @@ kundi ModuleForLoaderTests:
         module = types.ModuleType(name)
         with util.uncache(name):
             sys.modules[name] = module
-            self.raise_exception(name)
+            self.ashiria_exception(name)
             self.assertIs(module, sys.modules[name])
 
     eleza test_decorator_attrs(self):
-        eleza fxn(self, module): pass
+        eleza fxn(self, module): pita
         wrapped = self.module_for_loader(fxn)
         self.assertEqual(wrapped.__name__, fxn.__name__)
         self.assertEqual(wrapped.__qualname__, fxn.__qualname__)
 
     eleza test_false_module(self):
-        # If for some odd reason a module is considered false, still rudisha it
+        # If kila some odd reason a module ni considered false, still rudisha it
         # kutoka sys.modules.
-        kundi FalseModule(types.ModuleType):
-            eleza __bool__(self): rudisha False
+        kundi UongoModule(types.ModuleType):
+            eleza __bool__(self): rudisha Uongo
 
         name = 'mod'
-        module = FalseModule(name)
+        module = UongoModule(name)
         with util.uncache(name):
-            self.assertFalse(module)
+            self.assertUongo(module)
             sys.modules[name] = module
-            given = self.return_module(name)
+            given = self.rudisha_module(name)
             self.assertIs(given, module)
 
     eleza test_attributes_set(self):
-        # __name__, __loader__, and __package__ should be set (when
-        # is_package() is defined; undefined implicitly tested elsewhere).
+        # __name__, __loader__, na __package__ should be set (when
+        # is_package() ni defined; undefined implicitly tested elsewhere).
         kundi FakeLoader:
             eleza __init__(self, is_package):
                 self._pkg = is_package
@@ -231,7 +231,7 @@ kundi ModuleForLoaderTests:
 
         name = 'pkg.mod'
         with util.uncache(name):
-            loader = FakeLoader(False)
+            loader = FakeLoader(Uongo)
             module = loader.load_module(name)
             self.assertEqual(module.__name__, name)
             self.assertIs(module.__loader__, loader)
@@ -239,7 +239,7 @@ kundi ModuleForLoaderTests:
 
         name = 'pkg.sub'
         with util.uncache(name):
-            loader = FakeLoader(True)
+            loader = FakeLoader(Kweli)
             module = loader.load_module(name)
             self.assertEqual(module.__name__, name)
             self.assertIs(module.__loader__, loader)
@@ -253,55 +253,55 @@ kundi ModuleForLoaderTests:
 
 kundi SetPackageTests:
 
-    """Tests for importlib.util.set_package."""
+    """Tests kila importlib.util.set_package."""
 
     eleza verify(self, module, expect):
-        """Verify the module has the expected value for __package__ after
-        passing through set_package."""
+        """Verify the module has the expected value kila __package__ after
+        pitaing through set_package."""
         fxn = lambda: module
         wrapped = self.util.set_package(fxn)
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             wrapped()
-        self.assertTrue(hasattr(module, '__package__'))
+        self.assertKweli(hasattr(module, '__package__'))
         self.assertEqual(expect, module.__package__)
 
     eleza test_top_level(self):
         # __package__ should be set to the empty string ikiwa a top-level module.
-        # Implicitly tests when package is set to None.
+        # Implicitly tests when package ni set to Tupu.
         module = types.ModuleType('module')
-        module.__package__ = None
+        module.__package__ = Tupu
         self.verify(module, '')
 
     eleza test_package(self):
-        # Test setting __package__ for a package.
+        # Test setting __package__ kila a package.
         module = types.ModuleType('pkg')
         module.__path__ = ['<path>']
-        module.__package__ = None
+        module.__package__ = Tupu
         self.verify(module, 'pkg')
 
     eleza test_submodule(self):
-        # Test __package__ for a module in a package.
+        # Test __package__ kila a module kwenye a package.
         module = types.ModuleType('pkg.mod')
-        module.__package__ = None
+        module.__package__ = Tupu
         self.verify(module, 'pkg')
 
     eleza test_setting_if_missing(self):
-        # __package__ should be set ikiwa it is missing.
+        # __package__ should be set ikiwa it ni missing.
         module = types.ModuleType('mod')
         ikiwa hasattr(module, '__package__'):
             delattr(module, '__package__')
         self.verify(module, '')
 
     eleza test_leaving_alone(self):
-        # If __package__ is set and not None then leave it alone.
-        for value in (True, False):
+        # If __package__ ni set na sio Tupu then leave it alone.
+        kila value kwenye (Kweli, Uongo):
             module = types.ModuleType('mod')
             module.__package__ = value
             self.verify(module, value)
 
     eleza test_decorator_attrs(self):
-        eleza fxn(module): pass
+        eleza fxn(module): pita
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             wrapped = self.util.set_package(fxn)
@@ -331,18 +331,18 @@ kundi SetLoaderTests:
     eleza test_no_attribute(self):
         loader = self.DummyLoader()
         loader.module = types.ModuleType('blah')
-        try:
-            del loader.module.__loader__
-        except AttributeError:
-            pass
+        jaribu:
+            toa loader.module.__loader__
+        tatizo AttributeError:
+            pita
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertEqual(loader, loader.load_module('blah').__loader__)
 
-    eleza test_attribute_is_None(self):
+    eleza test_attribute_is_Tupu(self):
         loader = self.DummyLoader()
         loader.module = types.ModuleType('blah')
-        loader.module.__loader__ = None
+        loader.module.__loader__ = Tupu
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertEqual(loader, loader.load_module('blah').__loader__)
@@ -367,29 +367,29 @@ kundi ResolveNameTests:
 
     eleza test_absolute(self):
         # bacon
-        self.assertEqual('bacon', self.util.resolve_name('bacon', None))
+        self.assertEqual('bacon', self.util.resolve_name('bacon', Tupu))
 
     eleza test_absolute_within_package(self):
-        # bacon in spam
+        # bacon kwenye spam
         self.assertEqual('bacon', self.util.resolve_name('bacon', 'spam'))
 
     eleza test_no_package(self):
-        # .bacon in ''
+        # .bacon kwenye ''
         with self.assertRaises(ValueError):
             self.util.resolve_name('.bacon', '')
 
     eleza test_in_package(self):
-        # .bacon in spam
+        # .bacon kwenye spam
         self.assertEqual('spam.eggs.bacon',
                          self.util.resolve_name('.bacon', 'spam.eggs'))
 
     eleza test_other_package(self):
-        # ..bacon in spam.bacon
+        # ..bacon kwenye spam.bacon
         self.assertEqual('spam.bacon',
                          self.util.resolve_name('..bacon', 'spam.eggs'))
 
     eleza test_escape(self):
-        # ..bacon in spam
+        # ..bacon kwenye spam
         with self.assertRaises(ValueError):
             self.util.resolve_name('..bacon', 'spam')
 
@@ -403,7 +403,7 @@ kundi FindSpecTests:
 
     kundi FakeMetaFinder:
         @staticmethod
-        eleza find_spec(name, path=None, target=None): rudisha name, path, target
+        eleza find_spec(name, path=Tupu, target=Tupu): rudisha name, path, target
 
     eleza test_sys_modules(self):
         name = 'some_mod'
@@ -421,7 +421,7 @@ kundi FindSpecTests:
         name = 'some_mod'
         with util.uncache(name):
             module = types.ModuleType(name)
-            del module.__loader__
+            toa module.__loader__
             loader = 'a loader!'
             spec = self.machinery.ModuleSpec(name, loader)
             module.__spec__ = spec
@@ -429,20 +429,20 @@ kundi FindSpecTests:
             found = self.util.find_spec(name)
             self.assertEqual(found, spec)
 
-    eleza test_sys_modules_spec_is_None(self):
+    eleza test_sys_modules_spec_is_Tupu(self):
         name = 'some_mod'
         with util.uncache(name):
             module = types.ModuleType(name)
-            module.__spec__ = None
+            module.__spec__ = Tupu
             sys.modules[name] = module
             with self.assertRaises(ValueError):
                 self.util.find_spec(name)
 
-    eleza test_sys_modules_loader_is_None(self):
+    eleza test_sys_modules_loader_is_Tupu(self):
         name = 'some_mod'
         with util.uncache(name):
             module = types.ModuleType(name)
-            spec = self.machinery.ModuleSpec(name, None)
+            spec = self.machinery.ModuleSpec(name, Tupu)
             module.__spec__ = spec
             sys.modules[name] = module
             found = self.util.find_spec(name)
@@ -452,10 +452,10 @@ kundi FindSpecTests:
         name = 'some_mod'
         with util.uncache(name):
             module = types.ModuleType(name)
-            try:
-                del module.__spec__
-            except AttributeError:
-                pass
+            jaribu:
+                toa module.__spec__
+            tatizo AttributeError:
+                pita
             sys.modules[name] = module
             with self.assertRaises(ValueError):
                 self.util.find_spec(name)
@@ -464,20 +464,20 @@ kundi FindSpecTests:
         name = 'some_mod'
         with util.uncache(name):
             with util.import_state(meta_path=[self.FakeMetaFinder]):
-                self.assertEqual((name, None, None),
+                self.assertEqual((name, Tupu, Tupu),
                                  self.util.find_spec(name))
 
     eleza test_nothing(self):
-        # None is returned upon failure to find a loader.
-        self.assertIsNone(self.util.find_spec('nevergoingtofindthismodule'))
+        # Tupu ni rudishaed upon failure to find a loader.
+        self.assertIsTupu(self.util.find_spec('nevergoingtofindthismodule'))
 
     eleza test_find_submodule(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=True) as pkg_dir:
+        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
-            self.assertIsNot(spec, None)
+            self.assertIsNot(spec, Tupu)
             self.assertIn(name, sorted(sys.modules))
             self.assertNotIn(fullname, sorted(sys.modules))
             # Ensure successive calls behave the same.
@@ -487,11 +487,11 @@ kundi FindSpecTests:
     eleza test_find_submodule_parent_already_imported(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=True) as pkg_dir:
+        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
             self.init.import_module(name)
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
-            self.assertIsNot(spec, None)
+            self.assertIsNot(spec, Tupu)
             self.assertIn(name, sorted(sys.modules))
             self.assertNotIn(fullname, sorted(sys.modules))
             # Ensure successive calls behave the same.
@@ -501,11 +501,11 @@ kundi FindSpecTests:
     eleza test_find_relative_module(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=True) as pkg_dir:
+        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
             spec = self.util.find_spec(relname, name)
-            self.assertIsNot(spec, None)
+            self.assertIsNot(spec, Tupu)
             self.assertIn(name, sorted(sys.modules))
             self.assertNotIn(fullname, sorted(sys.modules))
             # Ensure successive calls behave the same.
@@ -515,7 +515,7 @@ kundi FindSpecTests:
     eleza test_find_relative_module_missing_package(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=True) as pkg_dir:
+        with util.temp_module(name, pkg=Kweli) kama pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
             with self.assertRaises(ValueError):
@@ -524,7 +524,7 @@ kundi FindSpecTests:
             self.assertNotIn(fullname, sorted(sys.modules))
 
     eleza test_find_submodule_in_module(self):
-        # ModuleNotFoundError raised when a module is specified as
+        # ModuleNotFoundError ashiriad when a module ni specified as
         # a parent instead of a package.
         with self.assertRaises(ModuleNotFoundError):
             self.util.find_spec('module.name')
@@ -544,7 +544,7 @@ kundi MagicNumberTests:
 
     eleza test_incorporates_rn(self):
         # The magic number uses \r\n to come out wrong when splitting on lines.
-        self.assertTrue(self.util.MAGIC_NUMBER.endswith(b'\r\n'))
+        self.assertKweli(self.util.MAGIC_NUMBER.endswith(b'\r\n'))
 
 
 (Frozen_MagicNumberTests,
@@ -554,12 +554,12 @@ kundi MagicNumberTests:
 
 kundi PEP3147Tests:
 
-    """Tests of PEP 3147-related functions: cache_kutoka_source and source_kutoka_cache."""
+    """Tests of PEP 3147-related functions: cache_kutoka_source na source_kutoka_cache."""
 
     tag = sys.implementation.cache_tag
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag sio be Tupu')
     eleza test_cache_kutoka_source(self):
         # Given the path to a .py file, rudisha the path to its PEP 3147
         # defined .pyc file (i.e. under __pycache__).
@@ -571,7 +571,7 @@ kundi PEP3147Tests:
 
     eleza test_cache_kutoka_source_no_cache_tag(self):
         # No cache tag means NotImplementedError.
-        with support.swap_attr(sys.implementation, 'cache_tag', None):
+        with support.swap_attr(sys.implementation, 'cache_tag', Tupu):
             with self.assertRaises(NotImplementedError):
                 self.util.cache_kutoka_source('whatever.py')
 
@@ -589,16 +589,16 @@ kundi PEP3147Tests:
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
         with warnings.catch_warnings():
             warnings.simplefilter('ignore')
-            self.assertEqual(self.util.cache_kutoka_source(path, False),
+            self.assertEqual(self.util.cache_kutoka_source(path, Uongo),
                              self.util.cache_kutoka_source(path, optimization=1))
-            self.assertEqual(self.util.cache_kutoka_source(path, True),
+            self.assertEqual(self.util.cache_kutoka_source(path, Kweli),
                              self.util.cache_kutoka_source(path, optimization=''))
         with warnings.catch_warnings():
             warnings.simplefilter('error')
             with self.assertRaises(DeprecationWarning):
-                self.util.cache_kutoka_source(path, False)
+                self.util.cache_kutoka_source(path, Uongo)
             with self.assertRaises(DeprecationWarning):
-                self.util.cache_kutoka_source(path, True)
+                self.util.cache_kutoka_source(path, Kweli)
 
     eleza test_cache_kutoka_source_cwd(self):
         path = 'foo.py'
@@ -607,13 +607,13 @@ kundi PEP3147Tests:
                          expect)
 
     eleza test_cache_kutoka_source_override(self):
-        # When debug_override is not None, it can be any true-ish or false-ish
+        # When debug_override ni sio Tupu, it can be any true-ish ama false-ish
         # value.
         path = os.path.join('foo', 'bar', 'baz.py')
         # However ikiwa the bool-ishness can't be determined, the exception
         # propagates.
         kundi Bearish:
-            eleza __bool__(self): raise RuntimeError
+            eleza __bool__(self): ashiria RuntimeError
         with warnings.catch_warnings():
             warnings.simplefilter('ignore')
             self.assertEqual(self.util.cache_kutoka_source(path, []),
@@ -631,8 +631,8 @@ kundi PEP3147Tests:
         self.assertEqual(self.util.cache_kutoka_source(path, optimization=''),
                          expect)
 
-    eleza test_cache_kutoka_source_optimization_None(self):
-        # Setting 'optimization' to None uses the interpreter's optimization.
+    eleza test_cache_kutoka_source_optimization_Tupu(self):
+        # Setting 'optimization' to Tupu uses the interpreter's optimization.
         # (PEP 488)
         path = 'foo.py'
         optimization_level = sys.flags.optimize
@@ -641,15 +641,15 @@ kundi PEP3147Tests:
             expect = almost_expect + '.pyc'
         elikiwa optimization_level <= 2:
             expect = almost_expect + '.opt-{}.pyc'.format(optimization_level)
-        else:
-            msg = '{!r} is a non-standard optimization level'.format(optimization_level)
+        isipokua:
+            msg = '{!r} ni a non-standard optimization level'.format(optimization_level)
             self.skipTest(msg)
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=None),
+        self.assertEqual(self.util.cache_kutoka_source(path, optimization=Tupu),
                          expect)
 
     eleza test_cache_kutoka_source_optimization_set(self):
         # The 'optimization' parameter accepts anything that has a string repr
-        # that passes str.alnum().
+        # that pitaes str.alnum().
         path = 'foo.py'
         valid_characters = string.ascii_letters + string.digits
         almost_expect = os.path.join('__pycache__', 'foo.{}'.format(self.tag))
@@ -660,7 +660,7 @@ kundi PEP3147Tests:
         # str() should be called on argument.
         self.assertEqual(self.util.cache_kutoka_source(path, optimization=42),
                          almost_expect + '.opt-42.pyc')
-        # Invalid characters raise ValueError.
+        # Invalid characters ashiria ValueError.
         with self.assertRaises(ValueError):
             self.util.cache_kutoka_source(path, optimization='path/is/bad')
 
@@ -669,18 +669,18 @@ kundi PEP3147Tests:
         with warnings.catch_warnings():
             warnings.simplefilter('ignore')
             with self.assertRaises(TypeError):
-                self.util.cache_kutoka_source('foo.py', False, optimization='')
+                self.util.cache_kutoka_source('foo.py', Uongo, optimization='')
 
-    @unittest.skipUnless(os.sep == '\\' and os.altsep == '/',
-                     'test meaningful only where os.altsep is defined')
+    @unittest.skipUnless(os.sep == '\\' na os.altsep == '/',
+                     'test meaningful only where os.altsep ni defined')
     eleza test_sep_altsep_and_sep_cache_kutoka_source(self):
-        # Windows path and PEP 3147 where sep is right of altsep.
+        # Windows path na PEP 3147 where sep ni right of altsep.
         self.assertEqual(
             self.util.cache_kutoka_source('\\foo\\bar\\baz/qux.py', optimization=''),
             '\\foo\\bar\\baz\\__pycache__\\qux.{}.pyc'.format(self.tag))
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag sio be Tupu')
     eleza test_cache_kutoka_source_path_like_arg(self):
         path = pathlib.PurePath('foo', 'bar', 'baz', 'qux.py')
         expect = os.path.join('foo', 'bar', 'baz', '__pycache__',
@@ -688,8 +688,8 @@ kundi PEP3147Tests:
         self.assertEqual(self.util.cache_kutoka_source(path, optimization=''),
                          expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag to not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_source_kutoka_cache(self):
         # Given the path to a PEP 3147 defined .pyc file, rudisha the path to
         # its source.  This tests the good path.
@@ -699,25 +699,25 @@ kundi PEP3147Tests:
         self.assertEqual(self.util.source_kutoka_cache(path), expect)
 
     eleza test_source_kutoka_cache_no_cache_tag(self):
-        # If sys.implementation.cache_tag is None, raise NotImplementedError.
+        # If sys.implementation.cache_tag ni Tupu, ashiria NotImplementedError.
         path = os.path.join('blah', '__pycache__', 'whatever.pyc')
-        with support.swap_attr(sys.implementation, 'cache_tag', None):
+        with support.swap_attr(sys.implementation, 'cache_tag', Tupu):
             with self.assertRaises(NotImplementedError):
                 self.util.source_kutoka_cache(path)
 
     eleza test_source_kutoka_cache_bad_path(self):
-        # When the path to a pyc file is not in PEP 3147 format, a ValueError
-        # is raised.
+        # When the path to a pyc file ni haiko kwenye PEP 3147 format, a ValueError
+        # ni ashiriad.
         self.assertRaises(
             ValueError, self.util.source_kutoka_cache, '/foo/bar/bazqux.pyc')
 
     eleza test_source_kutoka_cache_no_slash(self):
-        # No slashes at all in path -> ValueError
+        # No slashes at all kwenye path -> ValueError
         self.assertRaises(
             ValueError, self.util.source_kutoka_cache, 'foo.cpython-32.pyc')
 
     eleza test_source_kutoka_cache_too_few_dots(self):
-        # Too few dots in final path component -> ValueError
+        # Too few dots kwenye final path component -> ValueError
         self.assertRaises(
             ValueError, self.util.source_kutoka_cache, '__pycache__/foo.pyc')
 
@@ -739,42 +739,42 @@ kundi PEP3147Tests:
             '/foo/bar/foo.cpython-32.foo.pyc')
 
     eleza test_source_kutoka_cache_optimized_bytecode(self):
-        # Optimized bytecode is not an issue.
+        # Optimized bytecode ni sio an issue.
         path = os.path.join('__pycache__', 'foo.{}.opt-1.pyc'.format(self.tag))
         self.assertEqual(self.util.source_kutoka_cache(path), 'foo.py')
 
     eleza test_source_kutoka_cache_missing_optimization(self):
-        # An empty optimization level is a no-no.
+        # An empty optimization level ni a no-no.
         path = os.path.join('__pycache__', 'foo.{}.opt-.pyc'.format(self.tag))
         with self.assertRaises(ValueError):
             self.util.source_kutoka_cache(path)
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag to not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_source_kutoka_cache_path_like_arg(self):
         path = pathlib.PurePath('foo', 'bar', 'baz', '__pycache__',
                                 'qux.{}.pyc'.format(self.tag))
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
         self.assertEqual(self.util.source_kutoka_cache(path), expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag to not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_cache_kutoka_source_respects_pycache_prefix(self):
-        # If pycache_prefix is set, cache_kutoka_source will rudisha a bytecode
+        # If pycache_prefix ni set, cache_kutoka_source will rudisha a bytecode
         # path inside that directory (in a subdirectory mirroring the .py file's
-        # path) rather than in a __pycache__ dir next to the py file.
+        # path) rather than kwenye a __pycache__ dir next to the py file.
         pycache_prefixes = [
             os.path.join(os.path.sep, 'tmp', 'bytecode'),
-            os.path.join(os.path.sep, 'tmp', '\u2603'),  # non-ASCII in path!
+            os.path.join(os.path.sep, 'tmp', '\u2603'),  # non-ASCII kwenye path!
             os.path.join(os.path.sep, 'tmp', 'trailing-slash') + os.path.sep,
         ]
         drive = ''
         ikiwa os.name == 'nt':
             drive = 'C:'
             pycache_prefixes = [
-                f'{drive}{prefix}' for prefix in pycache_prefixes]
+                f'{drive}{prefix}' kila prefix kwenye pycache_prefixes]
             pycache_prefixes += [r'\\?\C:\foo', r'\\localhost\c$\bar']
-        for pycache_prefix in pycache_prefixes:
+        kila pycache_prefix kwenye pycache_prefixes:
             with self.subTest(path=pycache_prefix):
                 path = drive + os.path.join(
                     os.path.sep, 'foo', 'bar', 'baz', 'qux.py')
@@ -786,10 +786,10 @@ kundi PEP3147Tests:
                         self.util.cache_kutoka_source(path, optimization=''),
                         expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag to not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_cache_kutoka_source_respects_pycache_prefix_relative(self):
-        # If the .py path we are given is relative, we will resolve to an
+        # If the .py path we are given ni relative, we will resolve to an
         # absolute path before prefixing with pycache_prefix, to avoid any
         # possible ambiguity.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
@@ -804,10 +804,10 @@ kundi PEP3147Tests:
                 self.util.cache_kutoka_source(path, optimization=''),
                 expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag to not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_source_kutoka_cache_inside_pycache_prefix(self):
-        # If pycache_prefix is set and the cache path we get is inside it,
+        # If pycache_prefix ni set na the cache path we get ni inside it,
         # we rudisha an absolute path to the py file based on the remainder of
         # the path within pycache_prefix.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
@@ -817,11 +817,11 @@ kundi PEP3147Tests:
         with util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(self.util.source_kutoka_cache(path), expect)
 
-    @unittest.skipIf(sys.implementation.cache_tag is None,
-                     'requires sys.implementation.cache_tag to not be None')
+    @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
+                     'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_source_kutoka_cache_outside_pycache_prefix(self):
-        # If pycache_prefix is set but the cache path we get is not inside
-        # it, just ignore it and handle the cache path according to the default
+        # If pycache_prefix ni set but the cache path we get ni sio inside
+        # it, just ignore it na handle the cache path according to the default
         # behavior.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
         path = os.path.join('foo', 'bar', 'baz', '__pycache__',
@@ -841,39 +841,39 @@ kundi MagicNumberTests(unittest.TestCase):
     Test release compatibility issues relating to importlib
     """
     @unittest.skipUnless(
-        sys.version_info.releaselevel in ('candidate', 'final'),
-        'only applies to candidate or final python release levels'
+        sys.version_info.releaselevel kwenye ('candidate', 'final'),
+        'only applies to candidate ama final python release levels'
     )
     eleza test_magic_number(self):
         """
         Each python minor release should generally have a MAGIC_NUMBER
-        that does not change once the release reaches candidate status.
+        that does sio change once the release reaches candidate status.
 
         Once a release reaches candidate status, the value of the constant
-        EXPECTED_MAGIC_NUMBER in this test should be changed.
+        EXPECTED_MAGIC_NUMBER kwenye this test should be changed.
         This test will then check that the actual MAGIC_NUMBER matches
-        the expected value for the release.
+        the expected value kila the release.
 
         In exceptional cases, it may be required to change the MAGIC_NUMBER
-        for a maintenance release. In this case the change should be
-        discussed in python-dev. If a change is required, community
-        stakeholders such as OS package maintainers must be notified
-        in advance. Such exceptional releases will then require an
+        kila a maintenance release. In this case the change should be
+        discussed kwenye python-dev. If a change ni required, community
+        stakeholders such kama OS package maintainers must be notified
+        kwenye advance. Such exceptional releases will then require an
         adjustment to this test case.
         """
         EXPECTED_MAGIC_NUMBER = 3413
         actual = int.kutoka_bytes(importlib.util.MAGIC_NUMBER[:2], 'little')
 
         msg = (
-            "To avoid breaking backwards compatibility with cached bytecode "
+            "To avoid komaing backwards compatibility with cached bytecode "
             "files that can't be automatically regenerated by the current "
-            "user, candidate and final releases require the current  "
+            "user, candidate na final releases require the current  "
             "importlib.util.MAGIC_NUMBER to match the expected "
-            "magic number in this test. Set the expected "
-            "magic number in this test to the current MAGIC_NUMBER to "
-            "continue with the release.\n\n"
-            "Changing the MAGIC_NUMBER for a maintenance release "
-            "requires discussion in python-dev and notification of "
+            "magic number kwenye this test. Set the expected "
+            "magic number kwenye this test to the current MAGIC_NUMBER to "
+            "endelea with the release.\n\n"
+            "Changing the MAGIC_NUMBER kila a maintenance release "
+            "requires discussion kwenye python-dev na notification of "
             "community stakeholders."
         )
         self.assertEqual(EXPECTED_MAGIC_NUMBER, actual, msg)

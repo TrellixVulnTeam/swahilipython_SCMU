@@ -1,4 +1,4 @@
-"""Fixer for function definitions with tuple parameters.
+"""Fixer kila function definitions with tuple parameters.
 
 eleza func(((a, b), c), d):
     ...
@@ -13,7 +13,7 @@ It will also support lambdas:
 
     lambda (x, y): x + y -> lambda t: t[0] + t[1]
 
-    # The parens are a syntax error in Python 3
+    # The parens are a syntax error kwenye Python 3
     lambda (x): x + y -> lambda x: x + y
 """
 # Author: Collin Winter
@@ -25,13 +25,13 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Assign, Name, Newline, Number, Subscript, syms
 
 eleza is_docstring(stmt):
-    rudisha isinstance(stmt, pytree.Node) and \
+    rudisha isinstance(stmt, pytree.Node) na \
            stmt.children[0].type == token.STRING
 
 kundi FixTupleParams(fixer_base.BaseFix):
-    run_order = 4 #use a lower order since lambda is part of other
+    run_order = 4 #use a lower order since lambda ni part of other
                   #patterns
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
               funcdef< 'def' any parameters< '(' args=any ')' >
@@ -44,27 +44,27 @@ kundi FixTupleParams(fixer_base.BaseFix):
               """
 
     eleza transform(self, node, results):
-        ikiwa "lambda" in results:
+        ikiwa "lambda" kwenye results:
             rudisha self.transform_lambda(node, results)
 
         new_lines = []
         suite = results["suite"]
         args = results["args"]
-        # This crap is so "eleza foo(...): x = 5; y = 7" is handled correctly.
+        # This crap ni so "eleza foo(...): x = 5; y = 7" ni handled correctly.
         # TODO(cwinter): suite-cleanup
         ikiwa suite[0].children[1].type == token.INDENT:
             start = 2
             indent = suite[0].children[1].value
             end = Newline()
-        else:
+        isipokua:
             start = 0
             indent = "; "
             end = pytree.Leaf(token.INDENT, "")
 
-        # We need access to self for new_name(), and making this a method
-        #  doesn't feel right. Closing over self and new_lines makes the
+        # We need access to self kila new_name(), na making this a method
+        #  doesn't feel right. Closing over self na new_lines makes the
         #  code below cleaner.
-        eleza handle_tuple(tuple_arg, add_prefix=False):
+        eleza handle_tuple(tuple_arg, add_prefix=Uongo):
             n = Name(self.new_name())
             arg = tuple_arg.clone()
             arg.prefix = ""
@@ -78,18 +78,18 @@ kundi FixTupleParams(fixer_base.BaseFix):
         ikiwa args.type == syms.tfpdef:
             handle_tuple(args)
         elikiwa args.type == syms.typedargslist:
-            for i, arg in enumerate(args.children):
+            kila i, arg kwenye enumerate(args.children):
                 ikiwa arg.type == syms.tfpdef:
-                    # Without add_prefix, the emitted code is correct,
+                    # Without add_prefix, the emitted code ni correct,
                     #  just ugly.
                     handle_tuple(arg, add_prefix=(i > 0))
 
-        ikiwa not new_lines:
-            return
+        ikiwa sio new_lines:
+            rudisha
 
         # This isn't strictly necessary, but it plays nicely with other fixers.
         # TODO(cwinter) get rid of this when children becomes a smart list
-        for line in new_lines:
+        kila line kwenye new_lines:
             line.parent = suite[0]
 
         # TODO(cwinter) suite-cleanup
@@ -100,10 +100,10 @@ kundi FixTupleParams(fixer_base.BaseFix):
             new_lines[0].prefix = indent
             after = start + 1
 
-        for line in new_lines:
+        kila line kwenye new_lines:
             line.parent = suite[0]
         suite[0].children[after:after] = new_lines
-        for i in range(after+1, after+len(new_lines)+1):
+        kila i kwenye range(after+1, after+len(new_lines)+1):
             suite[0].children[i].prefix = indent
         suite[0].changed()
 
@@ -117,7 +117,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
             inner = inner.clone()
             inner.prefix = " "
             args.replace(inner)
-            return
+            rudisha
 
         params = find_params(args)
         to_index = map_to_index(params)
@@ -125,51 +125,51 @@ kundi FixTupleParams(fixer_base.BaseFix):
 
         new_param = Name(tup_name, prefix=" ")
         args.replace(new_param.clone())
-        for n in body.post_order():
-            ikiwa n.type == token.NAME and n.value in to_index:
-                subscripts = [c.clone() for c in to_index[n.value]]
+        kila n kwenye body.post_order():
+            ikiwa n.type == token.NAME na n.value kwenye to_index:
+                subscripts = [c.clone() kila c kwenye to_index[n.value]]
                 new = pytree.Node(syms.power,
                                   [new_param.clone()] + subscripts)
                 new.prefix = n.prefix
                 n.replace(new)
 
 
-### Helper functions for transform_lambda()
+### Helper functions kila transform_lambda()
 
 eleza simplify_args(node):
-    ikiwa node.type in (syms.vfplist, token.NAME):
+    ikiwa node.type kwenye (syms.vfplist, token.NAME):
         rudisha node
     elikiwa node.type == syms.vfpdef:
-        # These look like vfpdef< '(' x ')' > where x is NAME
-        # or another vfpeleza instance (leading to recursion).
-        while node.type == syms.vfpdef:
+        # These look like vfpdef< '(' x ')' > where x ni NAME
+        # ama another vfpeleza instance (leading to recursion).
+        wakati node.type == syms.vfpdef:
             node = node.children[1]
         rudisha node
-    raise RuntimeError("Received unexpected node %s" % node)
+    ashiria RuntimeError("Received unexpected node %s" % node)
 
 eleza find_params(node):
     ikiwa node.type == syms.vfpdef:
         rudisha find_params(node.children[1])
     elikiwa node.type == token.NAME:
         rudisha node.value
-    rudisha [find_params(c) for c in node.children ikiwa c.type != token.COMMA]
+    rudisha [find_params(c) kila c kwenye node.children ikiwa c.type != token.COMMA]
 
-eleza map_to_index(param_list, prefix=[], d=None):
-    ikiwa d is None:
+eleza map_to_index(param_list, prefix=[], d=Tupu):
+    ikiwa d ni Tupu:
         d = {}
-    for i, obj in enumerate(param_list):
+    kila i, obj kwenye enumerate(param_list):
         trailer = [Subscript(Number(str(i)))]
         ikiwa isinstance(obj, list):
             map_to_index(obj, trailer, d=d)
-        else:
+        isipokua:
             d[obj] = prefix + trailer
     rudisha d
 
 eleza tuple_name(param_list):
     l = []
-    for obj in param_list:
+    kila obj kwenye param_list:
         ikiwa isinstance(obj, list):
             l.append(tuple_name(obj))
-        else:
+        isipokua:
             l.append(obj)
     rudisha "_".join(l)

@@ -10,25 +10,25 @@ kundi FutureTest(unittest.TestCase):
     eleza test_names(self):
         # Verify that all_feature_names appears correct.
         given_feature_names = features[:]
-        for name in dir(__future__):
-            obj = getattr(__future__, name, None)
-            ikiwa obj is not None and isinstance(obj, __future__._Feature):
-                self.assertTrue(
-                    name in given_feature_names,
-                    "%r should have been in all_feature_names" % name
+        kila name kwenye dir(__future__):
+            obj = getattr(__future__, name, Tupu)
+            ikiwa obj ni sio Tupu na isinstance(obj, __future__._Feature):
+                self.assertKweli(
+                    name kwenye given_feature_names,
+                    "%r should have been kwenye all_feature_names" % name
                 )
                 given_feature_names.remove(name)
         self.assertEqual(len(given_feature_names), 0,
                "all_feature_names has too much: %r" % given_feature_names)
 
     eleza test_attributes(self):
-        for feature in features:
+        kila feature kwenye features:
             value = getattr(__future__, feature)
 
             optional = value.getOptionalRelease()
             mandatory = value.getMandatoryRelease()
 
-            a = self.assertTrue
+            a = self.assertKweli
             e = self.assertEqual
             eleza check(t, name):
                 a(isinstance(t, tuple), "%s isn't tuple" % name)
@@ -39,18 +39,18 @@ kundi FutureTest(unittest.TestCase):
                 a(isinstance(micro, int), "%s micro isn't int" % name)
                 a(isinstance(level, str),
                     "%s level isn't string" % name)
-                a(level in GOOD_SERIALS,
+                a(level kwenye GOOD_SERIALS,
                        "%s level string has unknown value" % name)
                 a(isinstance(serial, int), "%s serial isn't int" % name)
 
             check(optional, "optional")
-            ikiwa mandatory is not None:
+            ikiwa mandatory ni sio Tupu:
                 check(mandatory, "mandatory")
                 a(optional < mandatory,
-                       "optional not less than mandatory, and mandatory not None")
+                       "optional sio less than mandatory, na mandatory sio Tupu")
 
             a(hasattr(value, "compiler_flag"),
-                   "feature is missing a .compiler_flag attr")
+                   "feature ni missing a .compiler_flag attr")
             # Make sure the compile accepts the flag.
             compile("", "<test>", "exec", value.compiler_flag)
             a(isinstance(getattr(value, "compiler_flag"), int),

@@ -6,32 +6,32 @@ agiza codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+kundi Codec(codecs.Codec):
 
-    def encode(self,input,errors='strict'):
-        return codecs.charmap_encode(input,errors,encoding_table)
+    eleza encode(self,input,errors='strict'):
+        rudisha codecs.charmap_encode(input,errors,encoding_table)
 
-    def decode(self,input,errors='strict'):
-        return codecs.charmap_decode(input,errors,decoding_table)
+    eleza decode(self,input,errors='strict'):
+        rudisha codecs.charmap_decode(input,errors,decoding_table)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
-        return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza encode(self, input, final=False):
+        rudisha codecs.charmap_encode(input,self.errors,encoding_table)[0]
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
-        return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+kundi IncrementalDecoder(codecs.IncrementalDecoder):
+    eleza decode(self, input, final=False):
+        rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
-class StreamWriter(Codec,codecs.StreamWriter):
+kundi StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+kundi StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='iso8859-10',
         encode=Codec().encode,
         decode=Codec().decode,

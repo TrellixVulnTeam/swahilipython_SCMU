@@ -4,7 +4,7 @@ Test implementation of the PEP 509: dictionary versionning.
 agiza unittest
 kutoka test agiza support
 
-# PEP 509 is implemented in CPython but other Python implementations
+# PEP 509 ni implemented kwenye CPython but other Python implementations
 # don't require to implement it
 _testcapi = support.import_module('_testcapi')
 
@@ -14,7 +14,7 @@ kundi DictVersionTests(unittest.TestCase):
 
     eleza setUp(self):
         self.seen_versions = set()
-        self.dict = None
+        self.dict = Tupu
 
     eleza check_version_unique(self, mydict):
         version = _testcapi.dict_get_version(mydict)
@@ -92,12 +92,12 @@ kundi DictVersionTests(unittest.TestCase):
     eleza test_setitem_equal(self):
         kundi AlwaysEqual:
             eleza __eq__(self, other):
-                rudisha True
+                rudisha Kweli
 
         value1 = AlwaysEqual()
         value2 = AlwaysEqual()
-        self.assertTrue(value1 == value2)
-        self.assertFalse(value1 != value2)
+        self.assertKweli(value1 == value2)
+        self.assertUongo(value1 != value2)
 
         d = self.new_dict()
         self.check_version_changed(d, d.__setitem__, 'key', value1)
@@ -138,24 +138,24 @@ kundi DictVersionTests(unittest.TestCase):
         # pop() must change the version ikiwa the key exists
         self.check_version_changed(d, d.pop, 'key')
 
-        # pop() must not change the version ikiwa the key does not exist
+        # pop() must sio change the version ikiwa the key does sio exist
         self.check_version_dont_change(d, self.assertRaises, KeyError,
                                        d.pop, 'key')
 
     eleza test_popitem(self):
         d = self.new_dict(key='value')
 
-        # popitem() must change the version ikiwa the dict is not empty
+        # popitem() must change the version ikiwa the dict ni sio empty
         self.check_version_changed(d, d.popitem)
 
-        # popitem() must not change the version ikiwa the dict is empty
+        # popitem() must sio change the version ikiwa the dict ni empty
         self.check_version_dont_change(d, self.assertRaises, KeyError,
                                        d.popitem)
 
     eleza test_update(self):
         d = self.new_dict(key='value')
 
-        # update() calling with no argument must not change the version
+        # update() calling with no argument must sio change the version
         self.check_version_dont_change(d, d.update)
 
         # update() must change the version
@@ -167,15 +167,15 @@ kundi DictVersionTests(unittest.TestCase):
     eleza test_clear(self):
         d = self.new_dict(key='value')
 
-        # clear() must change the version ikiwa the dict is not empty
+        # clear() must change the version ikiwa the dict ni sio empty
         self.check_version_changed(d, d.clear)
 
-        # clear() must not change the version ikiwa the dict is empty
+        # clear() must sio change the version ikiwa the dict ni empty
         self.check_version_dont_change(d, d.clear)
 
 
 kundi Dict(dict):
-    pass
+    pita
 
 
 kundi DictSubtypeVersionTests(DictVersionTests):

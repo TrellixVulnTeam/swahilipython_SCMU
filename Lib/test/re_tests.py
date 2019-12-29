@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # -*- mode: python -*-
 
-# Re test suite and benchmark suite v1.5
+# Re test suite na benchmark suite v1.5
 
-# The 3 possible outcomes for each pattern
+# The 3 possible outcomes kila each pattern
 [SUCCEED, FAIL, SYNTAX_ERROR] = range(3)
 
 # Benchmark suite (needs expansion)
 #
-# The benchmark suite does not test correctness, just speed.  The
-# first element of each tuple is the regex pattern; the second is a
+# The benchmark suite does sio test correctness, just speed.  The
+# first element of each tuple ni the regex pattern; the second ni a
 # string to match it against.  The benchmarking code will embed the
 # second string inside several sizes of padding, to test how regex
 # matching performs on large strings.
@@ -34,33 +34,33 @@ benchmarks = [
 
 ]
 
-# Test suite (for verifying correctness)
+# Test suite (kila verifying correctness)
 #
-# The test suite is a list of 5- or 3-tuples.  The 5 parts of a
+# The test suite ni a list of 5- ama 3-tuples.  The 5 parts of a
 # complete tuple are:
 # element 0: a string containing the pattern
 #         1: the string to match against the pattern
 #         2: the expected result (SUCCEED, FAIL, SYNTAX_ERROR)
 #         3: a string that will be eval()'ed to produce a test string.
-#            This is an arbitrary Python expression; the available
-#            variables are "found" (the whole match), and "g1", "g2", ...
-#            up to "g99" contain the contents of each group, or the
-#            string 'None' ikiwa the group wasn't given a value, or the
+#            This ni an arbitrary Python expression; the available
+#            variables are "found" (the whole match), na "g1", "g2", ...
+#            up to "g99" contain the contents of each group, ama the
+#            string 'Tupu' ikiwa the group wasn't given a value, ama the
 #            string 'Error' ikiwa the group index was out of range;
 #            also "groups", the rudisha value of m.group() (a tuple).
 #         4: The expected result of evaluating the expression.
-#            If the two don't match, an error is reported.
+#            If the two don't match, an error ni reported.
 #
 # If the regex isn't expected to work, the latter two elements can be omitted.
 
 tests = [
-    # Test ?P< and ?P= extensions
+    # Test ?P< na ?P= extensions
     ('(?P<foo_123', '', SYNTAX_ERROR),      # Unterminated group identifier
     ('(?P<1>a)', '', SYNTAX_ERROR),         # Begins with a digit
     ('(?P<!>a)', '', SYNTAX_ERROR),         # Begins with an illegal char
     ('(?P<foo!>a)', '', SYNTAX_ERROR),      # Begins with an illegal char
 
-    # Same tests, for the ?P= form
+    # Same tests, kila the ?P= form
     ('(?P<foo_123>a)(?P=foo_123', 'aa', SYNTAX_ERROR),
     ('(?P<foo_123>a)(?P=1)', 'aa', SYNTAX_ERROR),
     ('(?P<foo_123>a)(?P=!)', 'aa', SYNTAX_ERROR),
@@ -76,7 +76,7 @@ tests = [
     ('\\141', 'a', SUCCEED, 'found', 'a'),
     ('(a)(b)(c)(d)(e)(f)(g)(h)(i)(j)(k)(l)\\119', 'abcdefghijklk9', SUCCEED, 'found+"-"+g11', 'abcdefghijklk9-k'),
 
-    # Test \0 is handled everywhere
+    # Test \0 ni handled everywhere
     (r'\0', '\0', SUCCEED, 'found', '\0'),
     (r'[\0a]', '\0', SUCCEED, 'found', '\0'),
     (r'[a\0]', '\0', SUCCEED, 'found', '\0'),
@@ -85,7 +85,7 @@ tests = [
     # Test various letter escapes
     (r'\a[\b]\f\n\r\t\v', '\a\b\f\n\r\t\v', SUCCEED, 'found', '\a\b\f\n\r\t\v'),
     (r'[\a][\b][\f][\n][\r][\t][\v]', '\a\b\f\n\r\t\v', SUCCEED, 'found', '\a\b\f\n\r\t\v'),
-    # NOTE: not an error under PCRE/PRE:
+    # NOTE: sio an error under PCRE/PRE:
     (r'\u', '', SYNTAX_ERROR),    # A Perl escape
     # (r'\c\e\g\h\i\j\k\m\o\p\q\y\z', 'ceghijkmopqyz', SUCCEED, 'found', 'ceghijkmopqyz'),
     # new \x semantics
@@ -99,7 +99,7 @@ tests = [
     (r"^\w+=(\\[\000-\277]|[^\n\\])*", "SRC=eval.c g.c blah blah blah \\\\\n\tapes.c",
      SUCCEED, 'found', "SRC=eval.c g.c blah blah blah \\\\"),
 
-    # Test that . only matches \n in DOTALL mode
+    # Test that . only matches \n kwenye DOTALL mode
     ('a.b', 'acb', SUCCEED, 'found', 'acb'),
     ('a.b', 'a\nb', FAIL),
     ('a.*b', 'acc\nccb', FAIL),
@@ -148,7 +148,7 @@ tests = [
     ('a[b-d]', 'aac', SUCCEED, 'found', 'ac'),
     ('a[-b]', 'a-', SUCCEED, 'found', 'a-'),
     ('a[\\-b]', 'a-', SUCCEED, 'found', 'a-'),
-    # NOTE: not an error under PCRE/PRE:
+    # NOTE: sio an error under PCRE/PRE:
     # ('a[b-]', 'a-', SYNTAX_ERROR),
     ('a[]b', '-', SYNTAX_ERROR),
     ('a[', '-', SYNTAX_ERROR),
@@ -221,12 +221,12 @@ tests = [
     ('(ab|a)b*c', 'abc', SUCCEED, 'found+"-"+g1', 'abc-ab'),
     ('((a)(b)c)(d)', 'abcd', SUCCEED, 'g1+"-"+g2+"-"+g3+"-"+g4', 'abc-a-b-d'),
     ('[a-zA-Z_][a-zA-Z0-9_]*', 'alpha', SUCCEED, 'found', 'alpha'),
-    ('^a(bc+|b[eh])g|.h$', 'abh', SUCCEED, 'found+"-"+g1', 'bh-None'),
-    ('(bc+d$|ef*g.|h?i(j|k))', 'effgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-None'),
+    ('^a(bc+|b[eh])g|.h$', 'abh', SUCCEED, 'found+"-"+g1', 'bh-Tupu'),
+    ('(bc+d$|ef*g.|h?i(j|k))', 'effgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-Tupu'),
     ('(bc+d$|ef*g.|h?i(j|k))', 'ij', SUCCEED, 'found+"-"+g1+"-"+g2', 'ij-ij-j'),
     ('(bc+d$|ef*g.|h?i(j|k))', 'effg', FAIL),
     ('(bc+d$|ef*g.|h?i(j|k))', 'bcdd', FAIL),
-    ('(bc+d$|ef*g.|h?i(j|k))', 'reffgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-None'),
+    ('(bc+d$|ef*g.|h?i(j|k))', 'reffgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-Tupu'),
     ('(((((((((a)))))))))', 'a', SUCCEED, 'found', 'a'),
     ('multiple words of text', 'uh-uh', FAIL),
     ('multiple words', 'multiple words, yeah', SUCCEED, 'found', 'multiple words'),
@@ -250,7 +250,7 @@ tests = [
     ('(a|aa)a\\1$', 'aaa', SUCCEED, 'found+"-"+g1', 'aaa-a'),
     ('(a+)a\\1$', 'aaa', SUCCEED, 'found+"-"+g1', 'aaa-a'),
     ('([abc]*)\\1', 'abcabc', SUCCEED, 'found+"-"+g1', 'abcabc-abc'),
-    ('(a)(b)c|ab', 'ab', SUCCEED, 'found+"-"+g1+"-"+g2', 'ab-None-None'),
+    ('(a)(b)c|ab', 'ab', SUCCEED, 'found+"-"+g1+"-"+g2', 'ab-Tupu-Tupu'),
     ('(a)+x', 'aaax', SUCCEED, 'found+"-"+g1', 'aaax-a'),
     ('([ac])+x', 'aacx', SUCCEED, 'found+"-"+g1', 'aacx-c'),
     ('([^/]*/)*sub1/', 'd:msgs/tdir/sub1/trial/away.cpp', SUCCEED, 'found+"-"+g1', 'd:msgs/tdir/sub1/-tdir/'),
@@ -260,7 +260,7 @@ tests = [
     ('([abc]*)x', 'abcx', SUCCEED, 'found+"-"+g1', 'abcx-abc'),
     ('([abc]*)x', 'abc', FAIL),
     ('([xyz]*)x', 'abcx', SUCCEED, 'found+"-"+g1', 'x-'),
-    ('(a)+b|aac', 'aac', SUCCEED, 'found+"-"+g1', 'aac-None'),
+    ('(a)+b|aac', 'aac', SUCCEED, 'found+"-"+g1', 'aac-Tupu'),
 
     # Test symbolic groups
 
@@ -300,7 +300,7 @@ tests = [
     ('^(ab|cd)e', 'abcde', FAIL),
     ('((((((((((a))))))))))', 'a', SUCCEED, 'g10', 'a'),
     ('((((((((((a))))))))))\\10', 'aa', SUCCEED, 'found', 'aa'),
-# Python does not have the same rules for \\41 so this is a syntax error
+# Python does sio have the same rules kila \\41 so this ni a syntax error
 #    ('((((((((((a))))))))))\\41', 'aa', FAIL),
 #    ('((((((((((a))))))))))\\41', 'a!', SUCCEED, 'found', 'a!'),
     ('((((((((((a))))))))))\\41', '', SYNTAX_ERROR),
@@ -387,7 +387,7 @@ tests = [
     ('(?i)(a+|b){1,}', 'AB', SUCCEED, 'found+"-"+g1', 'AB-B'),
     ('(?i)(a+|b)?', 'AB', SUCCEED, 'found+"-"+g1', 'A-A'),
     ('(?i)(a+|b){0,1}', 'AB', SUCCEED, 'found+"-"+g1', 'A-A'),
-    ('(?i)(a+|b){0,1}?', 'AB', SUCCEED, 'found+"-"+g1', '-None'),
+    ('(?i)(a+|b){0,1}?', 'AB', SUCCEED, 'found+"-"+g1', '-Tupu'),
     ('(?i))(', '-', SYNTAX_ERROR),
     ('(?i)[^ab]*', 'CDE', SUCCEED, 'found', 'CDE'),
     ('(?i)abc', '', FAIL),
@@ -414,12 +414,12 @@ tests = [
     ('(?i)(ab|a)b*c', 'ABC', SUCCEED, 'found+"-"+g1', 'ABC-AB'),
     ('(?i)((a)(b)c)(d)', 'ABCD', SUCCEED, 'g1+"-"+g2+"-"+g3+"-"+g4', 'ABC-A-B-D'),
     ('(?i)[a-zA-Z_][a-zA-Z0-9_]*', 'ALPHA', SUCCEED, 'found', 'ALPHA'),
-    ('(?i)^a(bc+|b[eh])g|.h$', 'ABH', SUCCEED, 'found+"-"+g1', 'BH-None'),
-    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'EFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-None'),
+    ('(?i)^a(bc+|b[eh])g|.h$', 'ABH', SUCCEED, 'found+"-"+g1', 'BH-Tupu'),
+    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'EFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-Tupu'),
     ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'IJ', SUCCEED, 'found+"-"+g1+"-"+g2', 'IJ-IJ-J'),
     ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'EFFG', FAIL),
     ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'BCDD', FAIL),
-    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'REFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-None'),
+    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'REFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-Tupu'),
     ('(?i)((((((((((a))))))))))', 'A', SUCCEED, 'g10', 'A'),
     ('(?i)((((((((((a))))))))))\\10', 'AA', SUCCEED, 'found', 'AA'),
     #('(?i)((((((((((a))))))))))\\41', 'AA', FAIL),
@@ -445,11 +445,11 @@ tests = [
     ('a(?:b|c|d)+?(.)', 'ace', SUCCEED, 'g1', 'e'),
     ('a(?:b|(c|e){1,2}?|d)+?(.)', 'ace', SUCCEED, 'g1 + g2', 'ce'),
 
-    # lookbehind: split by : but not ikiwa it is escaped by -.
+    # lookbehind: split by : but sio ikiwa it ni escaped by -.
     ('(?<!-):(.*?)(?<!-):', 'a:bc-:de:f', SUCCEED, 'g1', 'bc-:de' ),
-    # escaping with \ as we know it
+    # escaping with \ kama we know it
     ('(?<!\\\\):(.*?)(?<!\\\\):', 'a:bc\\:de:f', SUCCEED, 'g1', 'bc\\:de' ),
-    # terminating with ' and escaping with ? as in edifact
+    # terminating with ' na escaping with ? kama kwenye edifact
     ("(?<!\\?)'(.*?)(?<!\\?)'", "a'bc?'de'f", SUCCEED, 'g1', "bc?'de" ),
 
     # Comments using the (?#...) syntax
@@ -459,7 +459,7 @@ tests = [
 
     # Check odd placement of embedded pattern modifiers
 
-    # not an error under PCRE/PRE:
+    # sio an error under PCRE/PRE:
     ('(?i)w', 'W', SUCCEED, 'found', 'W'),
     # ('w(?i)', 'W', SYNTAX_ERROR),
 
@@ -485,14 +485,14 @@ xyzabc
 
 
 
-    # test \w, etc. both inside and outside character classes
+    # test \w, etc. both inside na outside character classes
 
     ('\\w+', '--ab_cd0123--', SUCCEED, 'found', 'ab_cd0123'),
     ('[\\w]+', '--ab_cd0123--', SUCCEED, 'found', 'ab_cd0123'),
     ('\\D+', '1234abc5678', SUCCEED, 'found', 'abc'),
     ('[\\D]+', '1234abc5678', SUCCEED, 'found', 'abc'),
     ('[\\da-fA-F]+', '123abc', SUCCEED, 'found', '123abc'),
-    # not an error under PCRE/PRE:
+    # sio an error under PCRE/PRE:
     # ('[\\d-x]', '-', SYNTAX_ERROR),
     (r'([\s]*)([\S]*)([\s]*)', ' testing!1972', SUCCEED, 'g3+g2+g1', 'testing!1972 '),
     (r'(\s*)(\S*)(\s*)', ' testing!1972', SUCCEED, 'g3+g2+g1', 'testing!1972 '),
@@ -510,7 +510,7 @@ xyzabc
     # post-1.5.2 additions
 
     # xmllib problem
-    (r'(([a-z]+):)?([a-z]+)$', 'smil', SUCCEED, 'g1+"-"+g2+"-"+g3', 'None-None-smil'),
+    (r'(([a-z]+):)?([a-z]+)$', 'smil', SUCCEED, 'g1+"-"+g2+"-"+g3', 'Tupu-Tupu-smil'),
     # bug 110866: reference to undefined group
     (r'((.)\1+)', '', SYNTAX_ERROR),
     # bug 111869: search (PRE/PCRE fails on this one, SRE doesn't)
@@ -548,11 +548,11 @@ xyzabc
     # bug 490573: minimizing repeat problem
     (r'^a*?$', 'foo', FAIL),
     # bug 470582: nested groups problem
-    (r'^((a)c)?(ab)$', 'ab', SUCCEED, 'g1+"-"+g2+"-"+g3', 'None-None-ab'),
-    # another minimizing repeat problem (capturing groups in assertions)
-    ('^([ab]*?)(?=(b)?)c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-None'),
-    ('^([ab]*?)(?!(b))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-None'),
-    ('^([ab]*?)(?<!(a))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-None'),
+    (r'^((a)c)?(ab)$', 'ab', SUCCEED, 'g1+"-"+g2+"-"+g3', 'Tupu-Tupu-ab'),
+    # another minimizing repeat problem (capturing groups kwenye assertions)
+    ('^([ab]*?)(?=(b)?)c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-Tupu'),
+    ('^([ab]*?)(?!(b))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-Tupu'),
+    ('^([ab]*?)(?<!(a))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-Tupu'),
 ]
 
 u = '\N{LATIN CAPITAL LETTER A WITH DIAERESIS}'

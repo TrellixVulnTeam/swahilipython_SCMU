@@ -4,14 +4,14 @@ kutoka unittest agiza mock
 
 kundi SampleObject:
 
-    eleza method_sample1(self): pass
+    eleza method_sample1(self): pita
 
-    eleza method_sample2(self): pass
+    eleza method_sample2(self): pita
 
 
 kundi TestSealable(unittest.TestCase):
 
-    eleza test_attributes_return_more_mocks_by_default(self):
+    eleza test_attributes_rudisha_more_mocks_by_default(self):
         m = mock.Mock()
 
         self.assertIsInstance(m.test, mock.Mock)
@@ -53,7 +53,7 @@ kundi TestSealable(unittest.TestCase):
     eleza test_existing_attributes_allowed_after_seal(self):
         m = mock.Mock()
 
-        m.test.return_value = 3
+        m.test.rudisha_value = 3
 
         mock.seal(m)
         self.assertEqual(m.test(), 3)
@@ -72,7 +72,7 @@ kundi TestSealable(unittest.TestCase):
             m()
 
     eleza test_call_on_defined_sealed_mock_succeeds(self):
-        m = mock.Mock(return_value=5)
+        m = mock.Mock(rudisha_value=5)
 
         mock.seal(m)
         self.assertEqual(m(), 5)
@@ -111,11 +111,11 @@ kundi TestSealable(unittest.TestCase):
 
         mock.seal(m)
         self.assertEqual(m.test1.test2.test3, 4)
-        m.test1.test2.test4  # Does not raise
-        m.test1.test2.test4 = 1  # Does not raise
+        m.test1.test2.test4  # Does sio ashiria
+        m.test1.test2.test4 = 1  # Does sio ashiria
 
     eleza test_integration_with_spec_att_definition(self):
-        """You are not restricted when using mock with spec"""
+        """You are sio restricted when using mock with spec"""
         m = mock.Mock(SampleObject)
 
         m.attr_sample1 = 1
@@ -128,10 +128,10 @@ kundi TestSealable(unittest.TestCase):
             m.attr_sample2
 
     eleza test_integration_with_spec_method_definition(self):
-        """You need to defin the methods, even ikiwa they are in the spec"""
+        """You need to defin the methods, even ikiwa they are kwenye the spec"""
         m = mock.Mock(SampleObject)
 
-        m.method_sample1.return_value = 1
+        m.method_sample1.rudisha_value = 1
 
         mock.seal(m)
         self.assertEqual(m.method_sample1(), 1)
@@ -143,13 +143,13 @@ kundi TestSealable(unittest.TestCase):
         m = mock.Mock(SampleObject)
 
         with self.assertRaises(AttributeError):
-            m.method_sample3.return_value = 3
+            m.method_sample3.rudisha_value = 3
 
     eleza test_sealed_exception_has_attribute_name(self):
         m = mock.Mock()
 
         mock.seal(m)
-        with self.assertRaises(AttributeError) as cm:
+        with self.assertRaises(AttributeError) kama cm:
             m.SECRETE_name
         self.assertIn("SECRETE_name", str(cm.exception))
 
@@ -158,7 +158,7 @@ kundi TestSealable(unittest.TestCase):
         m.test1.test2.test3.test4
 
         mock.seal(m)
-        with self.assertRaises(AttributeError) as cm:
+        with self.assertRaises(AttributeError) kama cm:
             m.test1.test2.test3.test4.boom
         self.assertIn("mock_name.test1.test2.test3.test4.boom", str(cm.exception))
 
@@ -167,7 +167,7 @@ kundi TestSealable(unittest.TestCase):
         m.test1().test2.test3().test4
 
         mock.seal(m)
-        with self.assertRaises(AttributeError) as cm:
+        with self.assertRaises(AttributeError) kama cm:
             m.test1().test2.test3().test4()
         self.assertIn("mock.test1().test2.test3().test4", str(cm.exception))
 

@@ -1,7 +1,7 @@
 """Cache lines kutoka Python source files.
 
-This is intended to read lines kutoka modules imported -- hence ikiwa a filename
-is not found, it will look down the module search path for a file by
+This ni intended to read lines kutoka modules imported -- hence ikiwa a filename
+is sio found, it will look down the module search path kila a file by
 that name.
 """
 
@@ -12,18 +12,18 @@ agiza tokenize
 
 __all__ = ["getline", "clearcache", "checkcache"]
 
-eleza getline(filename, lineno, module_globals=None):
+eleza getline(filename, lineno, module_globals=Tupu):
     lines = getlines(filename, module_globals)
     ikiwa 1 <= lineno <= len(lines):
         rudisha lines[lineno-1]
-    else:
+    isipokua:
         rudisha ''
 
 
 # The cache
 
 # The cache. Maps filenames to either a thunk which will provide source code,
-# or a tuple (size, mtime, lines, fullname) once loaded.
+# ama a tuple (size, mtime, lines, fullname) once loaded.
 cache = {}
 
 
@@ -34,110 +34,110 @@ eleza clearcache():
     cache = {}
 
 
-eleza getlines(filename, module_globals=None):
-    """Get the lines for a Python source file kutoka the cache.
-    Update the cache ikiwa it doesn't contain an entry for this file already."""
+eleza getlines(filename, module_globals=Tupu):
+    """Get the lines kila a Python source file kutoka the cache.
+    Update the cache ikiwa it doesn't contain an entry kila this file already."""
 
-    ikiwa filename in cache:
+    ikiwa filename kwenye cache:
         entry = cache[filename]
         ikiwa len(entry) != 1:
             rudisha cache[filename][2]
 
-    try:
+    jaribu:
         rudisha updatecache(filename, module_globals)
-    except MemoryError:
+    tatizo MemoryError:
         clearcache()
         rudisha []
 
 
-eleza checkcache(filename=None):
+eleza checkcache(filename=Tupu):
     """Discard cache entries that are out of date.
-    (This is not checked upon each call!)"""
+    (This ni sio checked upon each call!)"""
 
-    ikiwa filename is None:
+    ikiwa filename ni Tupu:
         filenames = list(cache.keys())
-    else:
-        ikiwa filename in cache:
+    isipokua:
+        ikiwa filename kwenye cache:
             filenames = [filename]
-        else:
-            return
+        isipokua:
+            rudisha
 
-    for filename in filenames:
+    kila filename kwenye filenames:
         entry = cache[filename]
         ikiwa len(entry) == 1:
             # lazy cache entry, leave it lazy.
-            continue
+            endelea
         size, mtime, lines, fullname = entry
-        ikiwa mtime is None:
-            continue   # no-op for files loaded via a __loader__
-        try:
+        ikiwa mtime ni Tupu:
+            endelea   # no-op kila files loaded via a __loader__
+        jaribu:
             stat = os.stat(fullname)
-        except OSError:
-            del cache[filename]
-            continue
-        ikiwa size != stat.st_size or mtime != stat.st_mtime:
-            del cache[filename]
+        tatizo OSError:
+            toa cache[filename]
+            endelea
+        ikiwa size != stat.st_size ama mtime != stat.st_mtime:
+            toa cache[filename]
 
 
-eleza updatecache(filename, module_globals=None):
-    """Update a cache entry and rudisha its list of lines.
+eleza updatecache(filename, module_globals=Tupu):
+    """Update a cache entry na rudisha its list of lines.
     If something's wrong, print a message, discard the cache entry,
-    and rudisha an empty list."""
+    na rudisha an empty list."""
 
-    ikiwa filename in cache:
+    ikiwa filename kwenye cache:
         ikiwa len(cache[filename]) != 1:
-            del cache[filename]
-    ikiwa not filename or (filename.startswith('<') and filename.endswith('>')):
+            toa cache[filename]
+    ikiwa sio filename ama (filename.startswith('<') na filename.endswith('>')):
         rudisha []
 
     fullname = filename
-    try:
+    jaribu:
         stat = os.stat(fullname)
-    except OSError:
+    tatizo OSError:
         basename = filename
 
-        # Realise a lazy loader based lookup ikiwa there is one
+        # Realise a lazy loader based lookup ikiwa there ni one
         # otherwise try to lookup right now.
         ikiwa lazycache(filename, module_globals):
-            try:
+            jaribu:
                 data = cache[filename][0]()
-            except (ImportError, OSError):
-                pass
-            else:
-                ikiwa data is None:
+            tatizo (ImportError, OSError):
+                pita
+            isipokua:
+                ikiwa data ni Tupu:
                     # No luck, the PEP302 loader cannot find the source
-                    # for this module.
+                    # kila this module.
                     rudisha []
                 cache[filename] = (
-                    len(data), None,
-                    [line+'\n' for line in data.splitlines()], fullname
+                    len(data), Tupu,
+                    [line+'\n' kila line kwenye data.splitlines()], fullname
                 )
                 rudisha cache[filename][2]
 
-        # Try looking through the module search path, which is only useful
+        # Try looking through the module search path, which ni only useful
         # when handling a relative filename.
         ikiwa os.path.isabs(filename):
             rudisha []
 
-        for dirname in sys.path:
-            try:
+        kila dirname kwenye sys.path:
+            jaribu:
                 fullname = os.path.join(dirname, basename)
-            except (TypeError, AttributeError):
+            tatizo (TypeError, AttributeError):
                 # Not sufficiently string-like to do anything useful with.
-                continue
-            try:
+                endelea
+            jaribu:
                 stat = os.stat(fullname)
-                break
-            except OSError:
-                pass
-        else:
+                koma
+            tatizo OSError:
+                pita
+        isipokua:
             rudisha []
-    try:
-        with tokenize.open(fullname) as fp:
+    jaribu:
+        with tokenize.open(fullname) kama fp:
             lines = fp.readlines()
-    except OSError:
+    tatizo OSError:
         rudisha []
-    ikiwa lines and not lines[-1].endswith('\n'):
+    ikiwa lines na sio lines[-1].endswith('\n'):
         lines[-1] += '\n'
     size, mtime = stat.st_size, stat.st_mtime
     cache[filename] = size, mtime, lines, fullname
@@ -145,33 +145,33 @@ eleza updatecache(filename, module_globals=None):
 
 
 eleza lazycache(filename, module_globals):
-    """Seed the cache for filename with module_globals.
+    """Seed the cache kila filename with module_globals.
 
-    The module loader will be asked for the source only when getlines is
-    called, not immediately.
+    The module loader will be asked kila the source only when getlines is
+    called, sio immediately.
 
-    If there is an entry in the cache already, it is not altered.
+    If there ni an entry kwenye the cache already, it ni sio altered.
 
-    :return: True ikiwa a lazy load is registered in the cache,
-        otherwise False. To register such a load a module loader with a
+    :rudisha: Kweli ikiwa a lazy load ni registered kwenye the cache,
+        otherwise Uongo. To register such a load a module loader with a
         get_source method must be found, the filename must be a cachable
-        filename, and the filename must not be already cached.
+        filename, na the filename must sio be already cached.
     """
-    ikiwa filename in cache:
+    ikiwa filename kwenye cache:
         ikiwa len(cache[filename]) == 1:
-            rudisha True
-        else:
-            rudisha False
-    ikiwa not filename or (filename.startswith('<') and filename.endswith('>')):
-        rudisha False
-    # Try for a __loader__, ikiwa available
-    ikiwa module_globals and '__loader__' in module_globals:
+            rudisha Kweli
+        isipokua:
+            rudisha Uongo
+    ikiwa sio filename ama (filename.startswith('<') na filename.endswith('>')):
+        rudisha Uongo
+    # Try kila a __loader__, ikiwa available
+    ikiwa module_globals na '__loader__' kwenye module_globals:
         name = module_globals.get('__name__')
         loader = module_globals['__loader__']
-        get_source = getattr(loader, 'get_source', None)
+        get_source = getattr(loader, 'get_source', Tupu)
 
-        ikiwa name and get_source:
+        ikiwa name na get_source:
             get_lines = functools.partial(get_source, name)
             cache[filename] = (get_lines,)
-            rudisha True
-    rudisha False
+            rudisha Kweli
+    rudisha Uongo

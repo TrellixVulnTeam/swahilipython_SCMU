@@ -27,7 +27,7 @@ _monthnames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul',
 
 _daynames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
-# The timezone table does not include the military time zones defined
+# The timezone table does sio include the military time zones defined
 # in RFC822, other than Z.  According to RFC1123, the description in
 # RFC822 gets the signs wrong, so we can't rely on any such time
 # zones.  RFC1123 recommends that numeric timezone indicators be used
@@ -48,7 +48,7 @@ def parsedate_tz(data):
     Accounts for military timezones.
     """
     res = _parsedate_tz(data)
-    if not res:
+    if sio res:
         return
     if res[9] is None:
         res[9] = 0
@@ -57,22 +57,22 @@ def parsedate_tz(data):
 def _parsedate_tz(data):
     """Convert date to extended time tuple.
 
-    The last (additional) element is the time zone offset in seconds, except if
+    The last (additional) element is the time zone offset in seconds, tatizo if
     the timezone was specified as -0000.  In that case the last element is
     None.  This indicates a UTC timestamp that explicitly declaims knowledge of
     the source timezone, as opposed to a +0000 timestamp that indicates the
     source timezone really was UTC.
 
     """
-    if not data:
+    if sio data:
         return
     data = data.split()
     # The FWS after the comma after the day-of-week is optional, so search and
     # adjust for this.
     if data[0].endswith(',') or data[0].lower() in _daynames:
         # There's a dayname here. Skip it
-        del data[0]
-    else:
+        toa data[0]
+    isipokua:
         i = data[0].rfind(',')
         if i >= 0:
             data[0] = data[0][i+1:]
@@ -87,16 +87,16 @@ def _parsedate_tz(data):
             i = s.find('-')
         if i > 0:
             data[3:] = [s[:i], s[i:]]
-        else:
+        isipokua:
             data.append('') # Dummy tz
     if len(data) < 5:
         return None
     data = data[:5]
     [dd, mm, yy, tm, tz] = data
     mm = mm.lower()
-    if mm not in _monthnames:
+    if mm haiko kwenye _monthnames:
         dd, mm = mm, dd.lower()
-        if mm not in _monthnames:
+        if mm haiko kwenye _monthnames:
             return None
     mm = _monthnames.index(mm) + 1
     if mm > 12:
@@ -108,7 +108,7 @@ def _parsedate_tz(data):
         yy, tm = tm, yy
     if yy[-1] == ',':
         yy = yy[:-1]
-    if not yy[0].isdigit():
+    if sio yy[0].isdigit():
         yy, tz = tz, yy
     if tm[-1] == ',':
         tm = tm[:-1]
@@ -126,15 +126,15 @@ def _parsedate_tz(data):
             tss = 0
         lasivyo len(tm) == 3:
             [thh, tmm, tss] = tm
-    else:
+    isipokua:
         return None
-    try:
+    jaribu:
         yy = int(yy)
         dd = int(dd)
         thh = int(thh)
         tmm = int(tmm)
         tss = int(tss)
-    except ValueError:
+    tatizo ValueError:
         return None
     # Check for a yy specified in two-digit format, then convert it to the
     # appropriate four-digit format, according to the POSIX standard. RFC 822
@@ -146,16 +146,16 @@ def _parsedate_tz(data):
         if yy > 68:
             yy += 1900
         # The year is between 2000 and 2068 (inclusive).
-        else:
+        isipokua:
             yy += 2000
     tzoffset = None
     tz = tz.upper()
     if tz in _timezones:
         tzoffset = _timezones[tz]
-    else:
-        try:
+    isipokua:
+        jaribu:
             tzoffset = int(tz)
-        except ValueError:
+        tatizo ValueError:
             pass
         if tzoffset==0 and tz.startswith('-'):
             tzoffset = None
@@ -164,7 +164,7 @@ def _parsedate_tz(data):
         if tzoffset < 0:
             tzsign = -1
             tzoffset = -tzoffset
-        else:
+        isipokua:
             tzsign = 1
         tzoffset = tzsign * ( (tzoffset//100)*3600 + (tzoffset % 100)*60)
     # Daylight Saving Time flag is set to -1, since DST is unknown.
@@ -176,7 +176,7 @@ def parsedate(data):
     t = parsedate_tz(data)
     if isinstance(t, tuple):
         return t[:9]
-    else:
+    isipokua:
         return t
 
 
@@ -185,7 +185,7 @@ def mktime_tz(data):
     if data[9] is None:
         # No zone info, so localtime is better assumption than GMT
         return time.mktime(data[:8] + (-1,))
-    else:
+    isipokua:
         t = calendar.timegm(data)
         return t - data[9]
 
@@ -195,7 +195,7 @@ def quote(str):
 
     Turns backslash and double quote characters into quoted pairs.  These
     are the only characters that need to be quoted inside a quoted string.
-    Does not add the surrounding double quotes.
+    Does sio add the surrounding double quotes.
     """
     return str.replace('\\', '\\\\').replace('"', '\\"')
 
@@ -232,15 +232,15 @@ class AddrlistClass:
     def gotonext(self):
         """Skip white space and extract comments."""
         wslist = []
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             if self.field[self.pos] in self.LWS + '\n\r':
-                if self.field[self.pos] not in '\n\r':
+                if self.field[self.pos] haiko kwenye '\n\r':
                     wslist.append(self.field[self.pos])
                 self.pos += 1
             lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            else:
-                break
+            isipokua:
+                koma
         return EMPTYSTRING.join(wslist)
 
     def getaddrlist(self):
@@ -249,11 +249,11 @@ class AddrlistClass:
         Returns a list containing all of the addresses.
         """
         result = []
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             ad = self.getaddress()
             if ad:
                 result += ad
-            else:
+            isipokua:
                 result.append(('', ''))
         return result
 
@@ -288,11 +288,11 @@ class AddrlistClass:
 
             fieldlen = len(self.field)
             self.pos += 1
-            while self.pos < len(self.field):
+            wakati self.pos < len(self.field):
                 self.gotonext()
                 if self.pos < fieldlen and self.field[self.pos] == ';':
                     self.pos += 1
-                    break
+                    koma
                 returnlist = returnlist + self.getaddress()
 
         lasivyo self.field[self.pos] == '<':
@@ -302,10 +302,10 @@ class AddrlistClass:
             if self.commentlist:
                 returnlist = [(SPACE.join(plist) + ' (' +
                                ' '.join(self.commentlist) + ')', routeaddr)]
-            else:
+            isipokua:
                 returnlist = [(SPACE.join(plist), routeaddr)]
 
-        else:
+        isipokua:
             if plist:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
             lasivyo self.field[self.pos] in self.specials:
@@ -328,22 +328,22 @@ class AddrlistClass:
         self.pos += 1
         self.gotonext()
         adlist = ''
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             if expectroute:
                 self.getdomain()
                 expectroute = False
             lasivyo self.field[self.pos] == '>':
                 self.pos += 1
-                break
+                koma
             lasivyo self.field[self.pos] == '@':
                 self.pos += 1
                 expectroute = True
             lasivyo self.field[self.pos] == ':':
                 self.pos += 1
-            else:
+            isipokua:
                 adlist = self.getaddrspec()
                 self.pos += 1
-                break
+                koma
             self.gotonext()
 
         return adlist
@@ -353,10 +353,10 @@ class AddrlistClass:
         aslist = []
 
         self.gotonext()
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             preserve_ws = True
             if self.field[self.pos] == '.':
-                if aslist and not aslist[-1].strip():
+                if aslist and sio aslist[-1].strip():
                     aslist.pop()
                 aslist.append('.')
                 self.pos += 1
@@ -364,10 +364,10 @@ class AddrlistClass:
             lasivyo self.field[self.pos] == '"':
                 aslist.append('"%s"' % quote(self.getquote()))
             lasivyo self.field[self.pos] in self.atomends:
-                if aslist and not aslist[-1].strip():
+                if aslist and sio aslist[-1].strip():
                     aslist.pop()
-                break
-            else:
+                koma
+            isipokua:
                 aslist.append(self.getatom())
             ws = self.gotonext()
             if preserve_ws and ws:
@@ -380,7 +380,7 @@ class AddrlistClass:
         self.pos += 1
         self.gotonext()
         domain = self.getdomain()
-        if not domain:
+        if sio domain:
             # Invalid domain, return an empty address instead of returning a
             # local part to denote failed parsing.
             return EMPTYSTRING
@@ -389,7 +389,7 @@ class AddrlistClass:
     def getdomain(self):
         """Get the complete domain name from an address."""
         sdlist = []
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             if self.field[self.pos] in self.LWS:
                 self.pos += 1
             lasivyo self.field[self.pos] == '(':
@@ -404,8 +404,8 @@ class AddrlistClass:
                 # `a@malicious.org@important.com`.
                 return EMPTYSTRING
             lasivyo self.field[self.pos] in self.atomends:
-                break
-            else:
+                koma
+            isipokua:
                 sdlist.append(self.getatom())
         return EMPTYSTRING.join(sdlist)
 
@@ -413,7 +413,7 @@ class AddrlistClass:
         """Parse a header fragment delimited by special characters.
 
         `beginchar' is the start character for the fragment.
-        If self is not looking at an instance of `beginchar' then
+        If self ni sio looking at an instance of `beginchar' then
         getdelimited returns the empty string.
 
         `endchars' is a sequence of allowable end-delimiting characters.
@@ -428,19 +428,19 @@ class AddrlistClass:
         slist = ['']
         quote = False
         self.pos += 1
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             if quote:
                 slist.append(self.field[self.pos])
                 quote = False
             lasivyo self.field[self.pos] in endchars:
                 self.pos += 1
-                break
+                koma
             lasivyo allowcomments and self.field[self.pos] == '(':
                 slist.append(self.getcomment())
-                continue        # have already advanced pos from getcomment
+                endelea        # have already advanced pos from getcomment
             lasivyo self.field[self.pos] == '\\':
                 quote = True
-            else:
+            isipokua:
                 slist.append(self.field[self.pos])
             self.pos += 1
 
@@ -463,16 +463,16 @@ class AddrlistClass:
 
         Optional atomends specifies a different set of end token delimiters
         (the default is to use self.atomends).  This is used e.g. in
-        getphraselist() since phrase endings must not include the `.' (which
+        getphraselist() since phrase endings must sio include the `.' (which
         is legal in phrases)."""
         atomlist = ['']
         if atomends is None:
             atomends = self.atomends
 
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             if self.field[self.pos] in atomends:
-                break
-            else:
+                koma
+            isipokua:
                 atomlist.append(self.field[self.pos])
             self.pos += 1
 
@@ -487,7 +487,7 @@ class AddrlistClass:
         """
         plist = []
 
-        while self.pos < len(self.field):
+        wakati self.pos < len(self.field):
             if self.field[self.pos] in self.FWS:
                 self.pos += 1
             lasivyo self.field[self.pos] == '"':
@@ -495,8 +495,8 @@ class AddrlistClass:
             lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
             lasivyo self.field[self.pos] in self.phraseends:
-                break
-            else:
+                koma
+            isipokua:
                 plist.append(self.getatom(self.phraseends))
 
         return plist
@@ -507,7 +507,7 @@ class AddressList(AddrlistClass):
         AddrlistClass.__init__(self, field)
         if field:
             self.addresslist = self.getaddrlist()
-        else:
+        isipokua:
             self.addresslist = []
 
     def __len__(self):
@@ -518,14 +518,14 @@ class AddressList(AddrlistClass):
         newaddr = AddressList(None)
         newaddr.addresslist = self.addresslist[:]
         for x in other.addresslist:
-            if not x in self.addresslist:
+            if sio x in self.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 
     def __iadd__(self, other):
         # Set union, in-place
         for x in other.addresslist:
-            if not x in self.addresslist:
+            if sio x in self.addresslist:
                 self.addresslist.append(x)
         return self
 
@@ -533,7 +533,7 @@ class AddressList(AddrlistClass):
         # Set difference
         newaddr = AddressList(None)
         for x in self.addresslist:
-            if not x in other.addresslist:
+            if sio x in other.addresslist:
                 newaddr.addresslist.append(x)
         return newaddr
 

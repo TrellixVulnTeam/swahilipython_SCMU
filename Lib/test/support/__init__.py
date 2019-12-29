@@ -39,39 +39,39 @@ import warnings
 
 from .testresult import get_test_runner
 
-try:
+jaribu:
     import multiprocessing.process
-except ImportError:
+tatizo ImportError:
     multiprocessing = None
 
-try:
+jaribu:
     import zlib
-except ImportError:
+tatizo ImportError:
     zlib = None
 
-try:
+jaribu:
     import gzip
-except ImportError:
+tatizo ImportError:
     gzip = None
 
-try:
+jaribu:
     import bz2
-except ImportError:
+tatizo ImportError:
     bz2 = None
 
-try:
+jaribu:
     import lzma
-except ImportError:
+tatizo ImportError:
     lzma = None
 
-try:
+jaribu:
     import resource
-except ImportError:
+tatizo ImportError:
     resource = None
 
-try:
+jaribu:
     agiza _hashlib
-except ImportError:
+tatizo ImportError:
     _hashlib = None
 
 __all__ = [
@@ -129,13 +129,13 @@ class TestFailed(Error):
     """Test failed."""
 
 class TestDidNotRun(Error):
-    """Test did not run any subtests."""
+    """Test did sio run any subtests."""
 
 class ResourceDenied(unittest.SkipTest):
     """Test skipped because it requested a disallowed resource.
 
     This is raised when a test calls requires() for a resource that
-    has not be enabled.  It is used to distinguish between expected
+    has sio be enabled.  It is used to distinguish between expected
     and unexpected skips.
     """
 
@@ -151,7 +151,7 @@ def _ignore_deprecated_imports(ignore=True):
             warnings.filterwarnings("ignore", ".+ (module|package)",
                                     DeprecationWarning)
             yield
-    else:
+    isipokua:
         yield
 
 
@@ -173,7 +173,7 @@ def ignore_warnings(*, category):
 
 def import_module(name, deprecated=False, *, required_on=()):
     """Import and return the module to be tested, raising SkipTest if
-    it is not available.
+    it ni sio available.
 
     If deprecated is True, any module or package deprecation messages
     will be suppressed. If a module is required on a platform but optional for
@@ -181,9 +181,9 @@ def import_module(name, deprecated=False, *, required_on=()):
     compared against sys.platform.
     """
     with _ignore_deprecated_imports(deprecated):
-        try:
+        jaribu:
             return importlib.import_module(name)
-        except ImportError as msg:
+        tatizo ImportError as msg:
             if sys.platform.startswith(tuple(required_on)):
                 raise
             raise unittest.SkipTest(str(msg))
@@ -195,13 +195,13 @@ def _save_and_remove_module(name, orig_modules):
     Raise ImportError if the module can't be imported.
     """
     # try to import the module and raise an error if it can't be imported
-    if name not in sys.modules:
+    if name haiko kwenye sys.modules:
         __import__(name)
-        del sys.modules[name]
+        toa sys.modules[name]
     for modname in list(sys.modules):
         if modname == name or modname.startswith(name + '.'):
             orig_modules[modname] = sys.modules[modname]
-            del sys.modules[modname]
+            toa sys.modules[modname]
 
 def _save_and_block_module(name, orig_modules):
     """Helper function to save and block a module in sys.modules
@@ -209,9 +209,9 @@ def _save_and_block_module(name, orig_modules):
     Return True if the module was in sys.modules, False otherwise.
     """
     saved = True
-    try:
+    jaribu:
         orig_modules[name] = sys.modules[name]
-    except KeyError:
+    tatizo KeyError:
         saved = False
     sys.modules[name] = None
     return saved
@@ -252,7 +252,7 @@ def import_fresh_module(name, fresh=(), blocked=(), deprecated=False):
 
     This function imports and returns a fresh copy of the named Python module
     by removing the named module from sys.modules before doing the import.
-    Note that unlike reload, the original module is not affected by
+    Note that unlike reload, the original module ni sio affected by
     this operation.
 
     *fresh* is an iterable of additional module names that are also removed
@@ -280,30 +280,30 @@ def import_fresh_module(name, fresh=(), blocked=(), deprecated=False):
         orig_modules = {}
         names_to_remove = []
         _save_and_remove_module(name, orig_modules)
-        try:
+        jaribu:
             for fresh_name in fresh:
                 _save_and_remove_module(fresh_name, orig_modules)
             for blocked_name in blocked:
-                if not _save_and_block_module(blocked_name, orig_modules):
+                if sio _save_and_block_module(blocked_name, orig_modules):
                     names_to_remove.append(blocked_name)
             fresh_module = importlib.import_module(name)
-        except ImportError:
+        tatizo ImportError:
             fresh_module = None
-        finally:
+        mwishowe:
             for orig_name, module in orig_modules.items():
                 sys.modules[orig_name] = module
             for name_to_remove in names_to_remove:
-                del sys.modules[name_to_remove]
+                toa sys.modules[name_to_remove]
         return fresh_module
 
 
 def get_attribute(obj, name):
     """Get an attribute, raising SkipTest if AttributeError is raised."""
-    try:
+    jaribu:
         attribute = getattr(obj, name)
-    except AttributeError:
+    tatizo AttributeError:
         raise unittest.SkipTest("object %r has no attribute %r" % (obj, name))
-    else:
+    isipokua:
         return attribute
 
 verbose = 1              # Flag set to 0 by regrtest.py
@@ -326,15 +326,15 @@ def get_original_stdout():
     return _original_stdout or sys.stdout
 
 def unload(name):
-    try:
-        del sys.modules[name]
-    except KeyError:
+    jaribu:
+        toa sys.modules[name]
+    tatizo KeyError:
         pass
 
 def _force_run(path, func, *args):
-    try:
+    jaribu:
         return func(*args)
-    except OSError as err:
+    tatizo OSError as err:
         if verbose >= 2:
             print('%s: %s' % (err.__class__.__name__, err))
             print('re-run %s%r' % (func.__name__, args))
@@ -348,7 +348,7 @@ if sys.platform.startswith("win"):
         # Now setup the wait loop
         if waitall:
             dirname = pathname
-        else:
+        isipokua:
             dirname, name = os.path.split(pathname)
             dirname = dirname or '.'
         # Check for `pathname` to be removed from the filesystem.
@@ -358,7 +358,7 @@ if sys.platform.startswith("win"):
         # Testing on an i7@4.3GHz shows that usually only 1 iteration is
         # required when contention occurs.
         timeout = 0.001
-        while timeout < 1.0:
+        wakati timeout < 1.0:
             # Note we are only testing for the existence of the file(s) in
             # the contents of the directory regardless of any security or
             # access rights.  If we have made it this far, we have sufficient
@@ -367,7 +367,7 @@ if sys.platform.startswith("win"):
             # Other Windows APIs can fail or give incorrect results when
             # dealing with files that are pending deletion.
             L = os.listdir(dirname)
-            if not (L if waitall else name in L):
+            if sio (L if waitall else name in L):
                 return
             # Increase the timeout and try again
             time.sleep(timeout)
@@ -385,55 +385,55 @@ if sys.platform.startswith("win"):
         def _rmtree_inner(path):
             for name in _force_run(path, os.listdir, path):
                 fullname = os.path.join(path, name)
-                try:
+                jaribu:
                     mode = os.lstat(fullname).st_mode
-                except OSError as exc:
+                tatizo OSError as exc:
                     print("support.rmtree(): os.lstat(%r) failed with %s" % (fullname, exc),
                           file=sys.__stderr__)
                     mode = 0
                 if stat.S_ISDIR(mode):
                     _waitfor(_rmtree_inner, fullname, waitall=True)
                     _force_run(fullname, os.rmdir, fullname)
-                else:
+                isipokua:
                     _force_run(fullname, os.unlink, fullname)
         _waitfor(_rmtree_inner, path, waitall=True)
         _waitfor(lambda p: _force_run(p, os.rmdir, p), path)
 
     def _longpath(path):
-        try:
+        jaribu:
             import ctypes
-        except ImportError:
+        tatizo ImportError:
             # No ctypes means we can't expands paths.
             pass
-        else:
+        isipokua:
             buffer = ctypes.create_unicode_buffer(len(path) * 2)
             length = ctypes.windll.kernel32.GetLongPathNameW(path, buffer,
                                                              len(buffer))
             if length:
                 return buffer[:length]
         return path
-else:
+isipokua:
     _unlink = os.unlink
     _rmdir = os.rmdir
 
     def _rmtree(path):
-        try:
+        jaribu:
             shutil.rmtree(path)
             return
-        except OSError:
+        tatizo OSError:
             pass
 
         def _rmtree_inner(path):
             for name in _force_run(path, os.listdir, path):
                 fullname = os.path.join(path, name)
-                try:
+                jaribu:
                     mode = os.lstat(fullname).st_mode
-                except OSError:
+                tatizo OSError:
                     mode = 0
                 if stat.S_ISDIR(mode):
                     _rmtree_inner(fullname)
                     _force_run(path, os.rmdir, fullname)
-                else:
+                isipokua:
                     _force_run(path, os.unlink, fullname)
         _rmtree_inner(path)
         os.rmdir(path)
@@ -442,28 +442,28 @@ else:
         return path
 
 def unlink(filename):
-    try:
+    jaribu:
         _unlink(filename)
-    except (FileNotFoundError, NotADirectoryError):
+    tatizo (FileNotFoundError, NotADirectoryError):
         pass
 
 def rmdir(dirname):
-    try:
+    jaribu:
         _rmdir(dirname)
-    except FileNotFoundError:
+    tatizo FileNotFoundError:
         pass
 
 def rmtree(path):
-    try:
+    jaribu:
         _rmtree(path)
-    except FileNotFoundError:
+    tatizo FileNotFoundError:
         pass
 
 def make_legacy_pyc(source):
     """Move a PEP 3147/488 pyc file to its legacy pyc location.
 
     :param source: The file system path to the source file.  The source file
-        does not need to exist, however the PEP 3147/488 pyc file must exist.
+        does sio need to exist, however the PEP 3147/488 pyc file must exist.
     :return: The file system path to the legacy pyc file.
     """
     pyc_file = importlib.util.cache_from_source(source)
@@ -505,7 +505,7 @@ def _is_gui_available():
                         ("dwFlags", ctypes.wintypes.DWORD)]
         dll = ctypes.windll.user32
         h = dll.GetProcessWindowStation()
-        if not h:
+        if sio h:
             raise ctypes.WinError()
         uof = USEROBJECTFLAGS()
         needed = ctypes.wintypes.DWORD()
@@ -514,17 +514,17 @@ def _is_gui_available():
             ctypes.byref(uof),
             ctypes.sizeof(uof),
             ctypes.byref(needed))
-        if not res:
+        if sio res:
             raise ctypes.WinError()
-        if not bool(uof.dwFlags & WSF_VISIBLE):
-            reason = "gui not available (WSF_VISIBLE flag not set)"
+        if sio bool(uof.dwFlags & WSF_VISIBLE):
+            reason = "gui sio available (WSF_VISIBLE flag sio set)"
     lasivyo sys.platform == 'darwin':
         # The Aqua Tk implementations on OS X can abort the process if
         # being called in an environment where a window server connection
         # cannot be made, for instance when invoked by a buildbot or ssh
-        # process not running under the same user id as the current console
+        # process sio running under the same user id as the current console
         # user.  To avoid that, raise an exception if the window manager
-        # connection is not available.
+        # connection ni sio available.
         from ctypes import cdll, c_int, pointer, Structure
         from ctypes.util import find_library
 
@@ -532,7 +532,7 @@ def _is_gui_available():
 
         if app_services.CGMainDisplayID() == 0:
             reason = "gui tests cannot run without OS X window manager"
-        else:
+        isipokua:
             class ProcessSerialNumber(Structure):
                 _fields_ = [("highLongOfPSN", c_int),
                             ("lowLongOfPSN", c_int)]
@@ -543,14 +543,14 @@ def _is_gui_available():
                 reason = "cannot run without OS X gui process"
 
     # check on every platform whether tkinter can actually do anything
-    if not reason:
-        try:
+    if sio reason:
+        jaribu:
             from tkinter import Tk
             root = Tk()
             root.withdraw()
             root.update()
             root.destroy()
-        except Exception as e:
+        tatizo Exception as e:
             err_string = str(e)
             if len(err_string) > 50:
                 err_string = err_string[:50] + ' [...]'
@@ -558,25 +558,25 @@ def _is_gui_available():
                                                            err_string)
 
     _is_gui_available.reason = reason
-    _is_gui_available.result = not reason
+    _is_gui_available.result = sio reason
 
     return _is_gui_available.result
 
 def is_resource_enabled(resource):
     """Test whether a resource is enabled.
 
-    Known resources are set by regrtest.py.  If not running under regrtest.py,
+    Known resources are set by regrtest.py.  If sio running under regrtest.py,
     all resources are assumed enabled unless use_resources has been set.
     """
     return use_resources is None or resource in use_resources
 
 def requires(resource, msg=None):
-    """Raise ResourceDenied if the specified resource is not available."""
-    if not is_resource_enabled(resource):
+    """Raise ResourceDenied if the specified resource ni sio available."""
+    if sio is_resource_enabled(resource):
         if msg is None:
-            msg = "Use of the %r resource not enabled" % resource
+            msg = "Use of the %r resource sio enabled" % resource
         raise ResourceDenied(msg)
-    if resource == 'gui' and not _is_gui_available():
+    if resource == 'gui' and sio _is_gui_available():
         raise ResourceDenied(_is_gui_available.reason)
 
 def _requires_unix_version(sysname, min_version):
@@ -591,15 +591,15 @@ def _requires_unix_version(sysname, min_version):
         def wrapper(*args, **kw):
             if platform.system() == sysname:
                 version_txt = platform.release().split('-', 1)[0]
-                try:
+                jaribu:
                     version = tuple(map(int, version_txt.split('.')))
-                except ValueError:
+                tatizo ValueError:
                     pass
-                else:
+                isipokua:
                     if version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
                         raise unittest.SkipTest(
-                            "%s version %s or higher required, not %s"
+                            "%s version %s or higher required, sio %s"
                             % (sysname, min_version_txt, version_txt))
             return func(*args, **kw)
         wrapper.min_version = min_version
@@ -636,15 +636,15 @@ def requires_mac_ver(*min_version):
         def wrapper(*args, **kw):
             if sys.platform == 'darwin':
                 version_txt = platform.mac_ver()[0]
-                try:
+                jaribu:
                     version = tuple(map(int, version_txt.split('.')))
-                except ValueError:
+                tatizo ValueError:
                     pass
-                else:
+                isipokua:
                     if version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
                         raise unittest.SkipTest(
-                            "Mac OS X %s or higher required, not %s"
+                            "Mac OS X %s or higher required, sio %s"
                             % (min_version_txt, version_txt))
             return func(*args, **kw)
         wrapper.min_version = min_version
@@ -653,7 +653,7 @@ def requires_mac_ver(*min_version):
 
 
 def requires_hashdigest(digestname, openssl=None):
-    """Decorator raising SkipTest if a hashing algorithm is not available
+    """Decorator raising SkipTest if a hashing algorithm ni sio available
 
     The hashing algorithm could be missing or blocked by a strict crypto
     policy.
@@ -668,14 +668,14 @@ def requires_hashdigest(digestname, openssl=None):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            try:
-                if openssl and _hashlib is not None:
+            jaribu:
+                if openssl and _hashlib ni sio None:
                     _hashlib.new(digestname)
-                else:
+                isipokua:
                     hashlib.new(digestname)
-            except ValueError:
+            tatizo ValueError:
                 raise unittest.SkipTest(
-                    f"hash digest '{digestname}' is not available."
+                    f"hash digest '{digestname}' ni sio available."
                 )
             return func(*args, **kwargs)
         return wrapper
@@ -745,7 +745,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
 
     with socket.socket(family, socktype) as tempsock:
         port = bind_port(tempsock)
-    del tempsock
+    toa tempsock
     return port
 
 def bind_port(sock, host=HOST):
@@ -769,14 +769,14 @@ def bind_port(sock, host=HOST):
                 raise TestFailed("tests should never set the SO_REUSEADDR "   \
                                  "socket option on TCP/IP sockets!")
         if hasattr(socket, 'SO_REUSEPORT'):
-            try:
+            jaribu:
                 if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 1:
                     raise TestFailed("tests should never set the SO_REUSEPORT "   \
                                      "socket option on TCP/IP sockets!")
-            except OSError:
+            tatizo OSError:
                 # Python's socket module was compiled using modern headers
                 # thus defining SO_REUSEPORT but this process is running
-                # under an older kernel that does not support SO_REUSEPORT.
+                # under an older kernel that does sio support SO_REUSEPORT.
                 pass
         if hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
@@ -788,9 +788,9 @@ def bind_port(sock, host=HOST):
 def bind_unix_socket(sock, addr):
     """Bind a unix socket, raising SkipTest if PermissionError is raised."""
     assert sock.family == socket.AF_UNIX
-    try:
+    jaribu:
         sock.bind(addr)
-    except PermissionError:
+    tatizo PermissionError:
         sock.close()
         raise unittest.SkipTest('cannot bind AF_UNIX sockets')
 
@@ -798,13 +798,13 @@ def _is_ipv6_enabled():
     """Check whether IPv6 is enabled on this host."""
     if socket.has_ipv6:
         sock = None
-        try:
+        jaribu:
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.bind((HOSTv6, 0))
             return True
-        except OSError:
+        tatizo OSError:
             pass
-        finally:
+        mwishowe:
             if sock:
                 sock.close()
     return False
@@ -815,11 +815,11 @@ def system_must_validate_cert(f):
     """Skip the test on TLS certificate validation failures."""
     @functools.wraps(f)
     def dec(*args, **kwargs):
-        try:
+        jaribu:
             f(*args, **kwargs)
-        except OSError as e:
+        tatizo OSError as e:
             if "CERTIFICATE_VERIFY_FAILED" in str(e):
-                raise unittest.SkipTest("system does not contain "
+                raise unittest.SkipTest("system does sio contain "
                                         "necessary certificates")
             raise
     return dec
@@ -857,17 +857,17 @@ is_android = hasattr(sys, 'getandroidapilevel')
 
 if sys.platform != 'win32':
     unix_shell = '/system/bin/sh' if is_android else '/bin/sh'
-else:
+isipokua:
     unix_shell = None
 
 # Filename used for testing
 if os.name == 'java':
     # Jython disallows @ in module names
     TESTFN = '$test'
-else:
+isipokua:
     TESTFN = '@test'
 
-# Disambiguate TESTFN for parallel testing, while letting it remain a valid
+# Disambiguate TESTFN for parallel testing, wakati letting it remain a valid
 # module name.
 TESTFN = "{}_{}_tmp".format(TESTFN, os.getpid())
 
@@ -881,7 +881,7 @@ FS_NONASCII = None
 for character in (
     # First try printable and common characters to have a readable filename.
     # For each character, the encoding list are just example of encodings able
-    # to encode the character (the list is not exhaustive).
+    # to encode the character (the list ni sio exhaustive).
 
     # U+00E6 (Latin Small Letter Ae): cp1252, iso-8859-1
     '\u00E6',
@@ -911,17 +911,17 @@ for character in (
     # U+20AC (Euro Sign)
     '\u20AC',
 ):
-    try:
+    jaribu:
         # If Python is set up to use the legacy 'mbcs' in Windows,
         # 'replace' error mode is used, and encode() returns b'?'
         # for characters missing in the ANSI codepage
         if os.fsdecode(os.fsencode(character)) != character:
             raise UnicodeError
-    except UnicodeError:
+    tatizo UnicodeError:
         pass
-    else:
+    isipokua:
         FS_NONASCII = character
-        break
+        koma
 
 # TESTFN_UNICODE is a non-ascii filename
 TESTFN_UNICODE = TESTFN + "-\xe0\xf2\u0258\u0141\u011f"
@@ -943,25 +943,25 @@ if os.name == 'nt':
         # Different kinds of characters from various languages to minimize the
         # probability that the whole name is encodable to MBCS (issue #9819)
         TESTFN_UNENCODABLE = TESTFN + "-\u5171\u0141\u2661\u0363\uDC80"
-        try:
+        jaribu:
             TESTFN_UNENCODABLE.encode(TESTFN_ENCODING)
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             pass
-        else:
+        isipokua:
             print('WARNING: The filename %r CAN be encoded by the filesystem encoding (%s). '
-                  'Unicode filename tests may not be effective'
+                  'Unicode filename tests may sio be effective'
                   % (TESTFN_UNENCODABLE, TESTFN_ENCODING))
             TESTFN_UNENCODABLE = None
 # Mac OS X denies unencodable filenames (invalid utf-8)
 lasivyo sys.platform != 'darwin':
-    try:
+    jaribu:
         # ascii and utf-8 cannot encode the byte 0xff
         b'\xff'.decode(TESTFN_ENCODING)
-    except UnicodeDecodeError:
+    tatizo UnicodeDecodeError:
         # 0xff will be encoded using the surrogate character u+DCFF
         TESTFN_UNENCODABLE = TESTFN \
             + b'-\xff'.decode(TESTFN_ENCODING, 'surrogateescape')
-    else:
+    isipokua:
         # File system encoding (eg. ISO-8859-* encodings) can encode
         # the byte 0xff. Skip some unicode filename tests.
         pass
@@ -970,14 +970,14 @@ lasivyo sys.platform != 'darwin':
 # decoded from the filesystem encoding (in strict mode). It can be None if we
 # cannot generate such filename (ex: the latin1 encoding can decode any byte
 # sequence). On UNIX, TESTFN_UNDECODABLE can be decoded by os.fsdecode() thanks
-# to the surrogateescape error handler (PEP 383), but not from the filesystem
+# to the surrogateescape error handler (PEP 383), but sio from the filesystem
 # encoding in strict mode.
 TESTFN_UNDECODABLE = None
 for name in (
-    # b'\xff' is not decodable by os.fsdecode() with code page 932. Windows
+    # b'\xff' ni sio decodable by os.fsdecode() with code page 932. Windows
     # accepts it to create a file or a directory, or don't accept to enter to
     # such directory (when the bytes name is used). So test b'\xe7' first: it is
-    # not decodable from cp932.
+    # sio decodable from cp932.
     b'\xe7w\xf0',
     # undecodable from ASCII, UTF-8
     b'\xff',
@@ -990,15 +990,15 @@ for name in (
     # cp1253, cp1254, cp1255, cp1257, cp1258
     b'\x81\x98',
 ):
-    try:
+    jaribu:
         name.decode(TESTFN_ENCODING)
-    except UnicodeDecodeError:
+    tatizo UnicodeDecodeError:
         TESTFN_UNDECODABLE = os.fsencode(TESTFN) + name
-        break
+        koma
 
 if FS_NONASCII:
     TESTFN_NONASCII = TESTFN + '-' + FS_NONASCII
-else:
+isipokua:
     TESTFN_NONASCII = None
 
 # Save the initial cwd
@@ -1031,21 +1031,21 @@ def temp_dir(path=None, quiet=False):
         path = tempfile.mkdtemp()
         dir_created = True
         path = os.path.realpath(path)
-    else:
-        try:
+    isipokua:
+        jaribu:
             os.mkdir(path)
             dir_created = True
-        except OSError as exc:
-            if not quiet:
+        tatizo OSError as exc:
+            if sio quiet:
                 raise
             warnings.warn(f'tests may fail, unable to create '
                           f'temporary directory {path!r}: {exc}',
                           RuntimeWarning, stacklevel=3)
     if dir_created:
         pid = os.getpid()
-    try:
+    jaribu:
         yield path
-    finally:
+    mwishowe:
         # In case the process forks, let only the parent remove the
         # directory. The child has a different process id. (bpo-30028)
         if dir_created and pid == os.getpid():
@@ -1065,17 +1065,17 @@ def change_cwd(path, quiet=False):
 
     """
     saved_dir = os.getcwd()
-    try:
+    jaribu:
         os.chdir(path)
-    except OSError as exc:
-        if not quiet:
+    tatizo OSError as exc:
+        if sio quiet:
             raise
         warnings.warn(f'tests may fail, unable to change the current working '
                       f'directory to {path!r}: {exc}',
                       RuntimeWarning, stacklevel=3)
-    try:
+    jaribu:
         yield os.getcwd()
-    finally:
+    mwishowe:
         os.chdir(saved_dir)
 
 
@@ -1089,7 +1089,7 @@ def temp_cwd(name='tempcwd', quiet=False):
     name *name*.  If *name* is None, the temporary directory is
     created using tempfile.mkdtemp.
 
-    If *quiet* is False (default) and it is not possible to
+    If *quiet* is False (default) and it ni sio possible to
     create or change the CWD, an error is raised.  If *quiet* is True,
     only a warning is raised and the original CWD is used.
 
@@ -1103,9 +1103,9 @@ if hasattr(os, "umask"):
     def temp_umask(umask):
         """Context manager that temporarily sets the process umask."""
         oldmask = os.umask(umask)
-        try:
+        jaribu:
             yield
-        finally:
+        mwishowe:
             os.umask(oldmask)
 
 # TEST_HOME_DIR refers to the top level directory of the "test" package
@@ -1126,7 +1126,7 @@ def findfile(filename, subdir=None):
     """
     if os.path.isabs(filename):
         return filename
-    if subdir is not None:
+    if subdir ni sio None:
         filename = os.path.join(subdir, filename)
     path = [TEST_HOME_DIR] + sys.path
     for dn in path:
@@ -1152,9 +1152,9 @@ def make_bad_fd():
     its fd.
     """
     file = open(TESTFN, "wb")
-    try:
+    jaribu:
         return file.fileno()
-    finally:
+    mwishowe:
         file.close()
         unlink(TESTFN)
 
@@ -1164,10 +1164,10 @@ def check_syntax_error(testcase, statement, errtext='', *, lineno=None, offset=N
         compile(statement, '<test string>', 'exec')
     err = cm.exception
     testcase.assertIsNotNone(err.lineno)
-    if lineno is not None:
+    if lineno ni sio None:
         testcase.assertEqual(err.lineno, lineno)
     testcase.assertIsNotNone(err.offset)
-    if offset is not None:
+    if offset ni sio None:
         testcase.assertEqual(err.offset, offset)
 
 def check_syntax_warning(testcase, statement, errtext='', *, lineno=1, offset=None):
@@ -1183,7 +1183,7 @@ def check_syntax_warning(testcase, statement, errtext='', *, lineno=1, offset=No
         testcase.assertRegex(str(warn.message), errtext)
     testcase.assertEqual(warn.filename, '<testcase>')
     testcase.assertIsNotNone(warn.lineno)
-    if lineno is not None:
+    if lineno ni sio None:
         testcase.assertEqual(warn.lineno, lineno)
 
     # SyntaxWarning should be converted to SyntaxError when raised,
@@ -1217,7 +1217,7 @@ def open_urlresource(url, *args, **kw):
 
     if os.path.exists(fn):
         f = check_valid_file(fn)
-        if f is not None:
+        if f ni sio None:
             return f
         unlink(fn)
 
@@ -1232,17 +1232,17 @@ def open_urlresource(url, *args, **kw):
     f = opener.open(url, timeout=15)
     if gzip and f.headers.get('Content-Encoding') == 'gzip':
         f = gzip.GzipFile(fileobj=f)
-    try:
+    jaribu:
         with open(fn, "wb") as out:
             s = f.read()
-            while s:
+            wakati s:
                 out.write(s)
                 s = f.read()
-    finally:
+    mwishowe:
         f.close()
 
     f = check_valid_file(fn)
-    if f is not None:
+    if f ni sio None:
         return f
     raise TestFailed('invalid resource %r' % fn)
 
@@ -1279,7 +1279,7 @@ def _filterwarnings(filters, quiet=False):
     # in order to re-raise the warnings.
     frame = sys._getframe(2)
     registry = frame.f_globals.get('__warningregistry__')
-    if registry:
+    if regisjaribu:
         registry.clear()
     with warnings.catch_warnings(record=True) as w:
         # Set filter "always" to record all warnings.  Because
@@ -1299,13 +1299,13 @@ def _filterwarnings(filters, quiet=False):
                 issubclass(warning.__class__, cat)):
                 seen = True
                 reraise.remove(w)
-        if not seen and not quiet:
+        if sio seen and sio quiet:
             # This filter caught nothing
             missing.append((msg, cat.__name__))
     if reraise:
         raise AssertionError("unhandled warning %s" % reraise[0])
     if missing:
-        raise AssertionError("filter (%r, %s) did not catch any warning" %
+        raise AssertionError("filter (%r, %s) did sio catch any warning" %
                              missing[0])
 
 
@@ -1317,7 +1317,7 @@ def check_warnings(*filters, **kwargs):
         ("message regexp", WarningCategory)
 
     Optional argument:
-     - if 'quiet' is True, it does not fail if a filter catches nothing
+     - if 'quiet' is True, it does sio fail if a filter catches nothing
         (default True without argument,
          default False if some filters are defined)
 
@@ -1325,7 +1325,7 @@ def check_warnings(*filters, **kwargs):
         check_warnings(("", Warning), quiet=True)
     """
     quiet = kwargs.get('quiet')
-    if not filters:
+    if sio filters:
         filters = (("", Warning),)
         # Preserve backward compatibility
         if quiet is None:
@@ -1366,7 +1366,7 @@ def check_no_resource_warning(testcase):
         with check_no_resource_warning(self):
             f = open(...)
             ...
-            del f
+            toa f
 
     You must remove the object which may emit ResourceWarning before
     the end of the context manager.
@@ -1397,8 +1397,8 @@ class CleanImport(object):
                 # In that case, we also need delete the real module to clear
                 # the import cache.
                 if module.__name__ != module_name:
-                    del sys.modules[module.__name__]
-                del sys.modules[module_name]
+                    toa sys.modules[module.__name__]
+                toa sys.modules[module_name]
 
     def __enter__(self):
         return self
@@ -1421,16 +1421,16 @@ class EnvironmentVarGuard(collections.abc.MutableMapping):
 
     def __setitem__(self, envvar, value):
         # Remember the initial value on the first access
-        if envvar not in self._changed:
+        if envvar haiko kwenye self._changed:
             self._changed[envvar] = self._environ.get(envvar)
         self._environ[envvar] = value
 
     def __delitem__(self, envvar):
         # Remember the initial value on the first access
-        if envvar not in self._changed:
+        if envvar haiko kwenye self._changed:
             self._changed[envvar] = self._environ.get(envvar)
         if envvar in self._environ:
-            del self._environ[envvar]
+            toa self._environ[envvar]
 
     def keys(self):
         return self._environ.keys()
@@ -1445,7 +1445,7 @@ class EnvironmentVarGuard(collections.abc.MutableMapping):
         self[envvar] = value
 
     def unset(self, envvar):
-        del self[envvar]
+        toa self[envvar]
 
     def __enter__(self):
         return self
@@ -1454,8 +1454,8 @@ class EnvironmentVarGuard(collections.abc.MutableMapping):
         for (k, v) in self._changed.items():
             if v is None:
                 if k in self._environ:
-                    del self._environ[k]
-            else:
+                    toa self._environ[k]
+            isipokua:
                 self._environ[k] = v
         os.environ = self._environ
 
@@ -1487,7 +1487,7 @@ class DirsOnSysPath(object):
 
 class TransientResource(object):
 
-    """Raise ResourceDenied if an exception is raised while the context manager
+    """Raise ResourceDenied if an exception is raised wakati the context manager
     is in effect that matches the specified exception and attributes."""
 
     def __init__(self, exc, **kwargs):
@@ -1501,14 +1501,14 @@ class TransientResource(object):
         """If type_ is a subclass of self.exc and value has attributes matching
         self.attrs, raise ResourceDenied.  Otherwise let the exception
         propagate (if any)."""
-        if type_ is not None and issubclass(self.exc, type_):
+        if type_ ni sio None and issubclass(self.exc, type_):
             for attr, attr_value in self.attrs.items():
-                if not hasattr(value, attr):
-                    break
+                if sio hasattr(value, attr):
+                    koma
                 if getattr(value, attr) != attr_value:
-                    break
-            else:
-                raise ResourceDenied("an optional resource is not available")
+                    koma
+            isipokua:
+                raise ResourceDenied("an optional resource ni sio available")
 
 # Context managers that raise ResourceDenied when various issues
 # with the Internet connection manifest themselves as exceptions.
@@ -1534,7 +1534,7 @@ def get_socket_conn_refused_errs():
     if hasattr(errno, 'EHOSTUNREACH'):
         # bpo-37583: The destination host cannot be reached
         errors.append(errno.EHOSTUNREACH)
-    if not IPV6_ENABLED:
+    if sio IPV6_ENABLED:
         errors.append(errno.EAFNOSUPPORT)
     return errors
 
@@ -1562,10 +1562,10 @@ def transient_internet(resource_name, *, timeout=30.0, errnos=()):
         ('WSANO_DATA', 11004),
     ]
 
-    denied = ResourceDenied("Resource %r is not available" % resource_name)
+    denied = ResourceDenied("Resource %r ni sio available" % resource_name)
     captured_errnos = errnos
     gai_errnos = []
-    if not captured_errnos:
+    if sio captured_errnos:
         captured_errnos = [getattr(errno, name, num)
                            for (name, num) in default_errnos]
         gai_errnos = [getattr(socket, name, num)
@@ -1582,38 +1582,38 @@ def transient_internet(resource_name, *, timeout=30.0, errnos=()):
                   ("TimeoutError" in err.reason) or
                   ("EOFError" in err.reason))) or
             n in captured_errnos):
-            if not verbose:
+            if sio verbose:
                 sys.stderr.write(denied.args[0] + "\n")
             raise denied from err
 
     old_timeout = socket.getdefaulttimeout()
-    try:
-        if timeout is not None:
+    jaribu:
+        if timeout ni sio None:
             socket.setdefaulttimeout(timeout)
         yield
-    except nntplib.NNTPTemporaryError as err:
+    tatizo nntplib.NNTPTemporaryError as err:
         if verbose:
             sys.stderr.write(denied.args[0] + "\n")
         raise denied from err
-    except OSError as err:
+    tatizo OSError as err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
-        while True:
+        wakati True:
             a = err.args
             if len(a) >= 1 and isinstance(a[0], OSError):
                 err = a[0]
             # The error can also be wrapped as args[1]:
-            #    except socket.error as msg:
+            #    tatizo socket.error as msg:
             #        raise OSError('socket error', msg).with_traceback(sys.exc_info()[2])
             lasivyo len(a) >= 2 and isinstance(a[1], OSError):
                 err = a[1]
-            else:
-                break
+            isipokua:
+                koma
         filter_error(err)
         raise
     # XXX should we catch generic exceptions and look for their
     # __cause__ or __context__?
-    finally:
+    mwishowe:
         socket.setdefaulttimeout(old_timeout)
 
 
@@ -1624,9 +1624,9 @@ def captured_output(stream_name):
     import io
     orig_stdout = getattr(sys, stream_name)
     setattr(sys, stream_name, io.StringIO())
-    try:
+    jaribu:
         yield getattr(sys, stream_name)
-    finally:
+    mwishowe:
         setattr(sys, stream_name, orig_stdout)
 
 def captured_stdout():
@@ -1664,7 +1664,7 @@ def gc_collect():
     """Force as many objects as possible to be collected.
 
     In non-CPython implementations of Python, this is needed because timely
-    deallocation is not guaranteed by the garbage collector.  (Even in CPython
+    deallocation ni sio guaranteed by the garbage collector.  (Even in CPython
     this can be the case in case of reference cycles.)  This means that __del__
     methods may be called later than expected and weakrefs may remain alive for
     longer than expected.  This function tries its best to force all garbage
@@ -1680,9 +1680,9 @@ def gc_collect():
 def disable_gc():
     have_gc = gc.isenabled()
     gc.disable()
-    try:
+    jaribu:
         yield
-    finally:
+    mwishowe:
         if have_gc:
             gc.enable()
 
@@ -1694,7 +1694,7 @@ def python_is_optimized():
     for opt in cflags.split():
         if opt.startswith('-O'):
             final_opt = opt
-    return final_opt not in ('', '-O0', '-Og')
+    return final_opt haiko kwenye ('', '-O0', '-Og')
 
 
 _header = 'nP'
@@ -1732,28 +1732,28 @@ def check_sizeof(test, o, size):
 def run_with_locale(catstr, *locales):
     def decorator(func):
         def inner(*args, **kwds):
-            try:
+            jaribu:
                 import locale
                 category = getattr(locale, catstr)
                 orig_locale = locale.setlocale(category)
-            except AttributeError:
+            tatizo AttributeError:
                 # if the test author gives us an invalid category string
                 raise
             except:
                 # cannot retrieve original locale, so do nothing
                 locale = orig_locale = None
-            else:
+            isipokua:
                 for loc in locales:
-                    try:
+                    jaribu:
                         locale.setlocale(category, loc)
-                        break
+                        koma
                     except:
                         pass
 
             # now run the function, resetting the locale on exceptions
-            try:
+            jaribu:
                 return func(*args, **kwds)
-            finally:
+            mwishowe:
                 if locale and orig_locale:
                     locale.setlocale(category, orig_locale)
         inner.__name__ = func.__name__
@@ -1768,24 +1768,24 @@ def run_with_locale(catstr, *locales):
 def run_with_tz(tz):
     def decorator(func):
         def inner(*args, **kwds):
-            try:
+            jaribu:
                 tzset = time.tzset
-            except AttributeError:
+            tatizo AttributeError:
                 raise unittest.SkipTest("tzset required")
             if 'TZ' in os.environ:
                 orig_tz = os.environ['TZ']
-            else:
+            isipokua:
                 orig_tz = None
             os.environ['TZ'] = tz
             tzset()
 
             # now run the function, resetting the tz on exceptions
-            try:
+            jaribu:
                 return func(*args, **kwds)
-            finally:
+            mwishowe:
                 if orig_tz is None:
-                    del os.environ['TZ']
-                else:
+                    toa os.environ['TZ']
+                isipokua:
                     os.environ['TZ'] = orig_tz
                 time.tzset()
 
@@ -1838,10 +1838,10 @@ class _MemoryWatchdog:
         self.started = False
 
     def start(self):
-        try:
+        jaribu:
             f = open(self.procfile, 'r')
-        except OSError as e:
-            warnings.warn('/proc not available for stats: {}'.format(e),
+        tatizo OSError as e:
+            warnings.warn('/proc sio available for stats: {}'.format(e),
                           RuntimeWarning)
             sys.stderr.flush()
             return
@@ -1870,18 +1870,18 @@ def bigmemtest(size, memuse, dry_run=True):
     The 'size' argument is normally passed to the decorated test method as an
     extra argument. If 'dry_run' is true, the value passed to the test method
     may be less than the requested value. If 'dry_run' is false, it means the
-    test doesn't support dummy runs when -M is not specified.
+    test doesn't support dummy runs when -M ni sio specified.
     """
     def decorator(f):
         def wrapper(self):
             size = wrapper.size
             memuse = wrapper.memuse
-            if not real_max_memuse:
+            if sio real_max_memuse:
                 maxsize = 5147
-            else:
+            isipokua:
                 maxsize = size
 
-            if ((real_max_memuse or not dry_run)
+            if ((real_max_memuse or sio dry_run)
                 and real_max_memuse < maxsize * memuse):
                 raise unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
@@ -1893,12 +1893,12 @@ def bigmemtest(size, memuse, dry_run=True):
                       .format(peak=size * memuse / (1024 ** 3)))
                 watchdog = _MemoryWatchdog()
                 watchdog.start()
-            else:
+            isipokua:
                 watchdog = None
 
-            try:
+            jaribu:
                 return f(self, maxsize)
-            finally:
+            mwishowe:
                 if watchdog:
                     watchdog.stop()
 
@@ -1914,11 +1914,11 @@ def bigaddrspacetest(f):
             if MAX_Py_ssize_t >= 2**63 - 1 and max_memuse >= 2**31:
                 raise unittest.SkipTest(
                     "not enough memory: try a 32-bit build instead")
-            else:
+            isipokua:
                 raise unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (MAX_Py_ssize_t / (1024 ** 3)))
-        else:
+        isipokua:
             return f(self)
     return wrapper
 
@@ -1935,12 +1935,12 @@ def _id(obj):
     return obj
 
 def requires_resource(resource):
-    if resource == 'gui' and not _is_gui_available():
+    if resource == 'gui' and sio _is_gui_available():
         return unittest.skip(_is_gui_available.reason)
     if is_resource_enabled(resource):
         return _id
-    else:
-        return unittest.skip("resource {0!r} is not enabled".format(resource))
+    isipokua:
+        return unittest.skip("resource {0!r} ni sio enabled".format(resource))
 
 def cpython_only(test):
     """
@@ -1954,8 +1954,8 @@ def impl_detail(msg=None, **guards):
     if msg is None:
         guardnames, default = _parse_guards(guards)
         if default:
-            msg = "implementation detail not available on {0}"
-        else:
+            msg = "implementation detail sio available on {0}"
+        isipokua:
             msg = "implementation detail specific to {0}"
         guardnames = sorted(guardnames.keys())
         msg = msg.format(' or '.join(guardnames))
@@ -1963,11 +1963,11 @@ def impl_detail(msg=None, **guards):
 
 def _parse_guards(guards):
     # Returns a tuple ({platform_name: run_me}, default_value)
-    if not guards:
+    if sio guards:
         return ({'cpython': True}, False)
     is_true = list(guards.values())[0]
     assert list(guards.values()) == [is_true] * len(guards)   # all True or all False
-    return (guards, not is_true)
+    return (guards, sio is_true)
 
 # Use the following check to guard CPython's implementation-specific tests --
 # or to run them only on the implementation(s) guarded by the arguments.
@@ -1976,7 +1976,7 @@ def check_impl_detail(**guards):
        Examples:
           if check_impl_detail():               # only on CPython (default)
           if check_impl_detail(jython=True):    # only on Jython
-          if check_impl_detail(cpython=False):  # everywhere except on CPython
+          if check_impl_detail(cpython=False):  # everywhere tatizo on CPython
     """
     guards, default = _parse_guards(guards)
     return guards.get(platform.python_implementation().lower(), default)
@@ -1984,16 +1984,16 @@ def check_impl_detail(**guards):
 
 def no_tracing(func):
     """Decorator to temporarily turn off tracing for the duration of a test."""
-    if not hasattr(sys, 'gettrace'):
+    if sio hasattr(sys, 'gettrace'):
         return func
-    else:
+    isipokua:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             original_trace = sys.gettrace()
-            try:
+            jaribu:
                 sys.settrace(None)
                 return func(*args, **kwargs)
-            finally:
+            mwishowe:
                 sys.settrace(original_trace)
         return wrapper
 
@@ -2001,7 +2001,7 @@ def no_tracing(func):
 def refcount_test(test):
     """Decorator for tests which involve reference counting.
 
-    To start, the decorator does not run the test if is not run by CPython.
+    To start, the decorator does sio run the test if ni sio run by CPython.
     After that, any trace function is unset during the test to prevent
     unexpected refcounts caused by the trace function.
 
@@ -2016,7 +2016,7 @@ def _filter_suite(suite, pred):
         if isinstance(test, unittest.TestSuite):
             _filter_suite(test, pred)
             newtests.append(test)
-        else:
+        isipokua:
             if pred(test):
                 newtests.append(test)
     suite._tests = newtests
@@ -2025,23 +2025,23 @@ def _run_suite(suite):
     """Run tests from a unittest.TestSuite-derived class."""
     runner = get_test_runner(sys.stdout,
                              verbosity=verbose,
-                             capture_output=(junit_xml_list is not None))
+                             capture_output=(junit_xml_list ni sio None))
 
     result = runner.run(suite)
 
-    if junit_xml_list is not None:
+    if junit_xml_list ni sio None:
         junit_xml_list.append(result.get_xml_element())
 
-    if not result.testsRun and not result.skipped:
+    if sio result.testsRun and sio result.skipped:
         raise TestDidNotRun
-    if not result.wasSuccessful():
-        if len(result.errors) == 1 and not result.failures:
+    if sio result.wasSuccessful():
+        if len(result.errors) == 1 and sio result.failures:
             err = result.errors[0][1]
-        lasivyo len(result.failures) == 1 and not result.errors:
+        lasivyo len(result.failures) == 1 and sio result.errors:
             err = result.failures[0][1]
-        else:
+        isipokua:
             err = "multiple errors occurred"
-            if not verbose: err += "; run in verbose mode for details"
+            if sio verbose: err += "; run in verbose mode for details"
         raise TestFailed(err)
 
 
@@ -2054,7 +2054,7 @@ def match_test(test):
     # Function used by support.run_unittest() and regrtest --list-cases
     if _match_test_func is None:
         return True
-    else:
+    isipokua:
         return _match_test_func(test.id())
 
 
@@ -2075,7 +2075,7 @@ def set_match_tests(patterns):
         # No change: no need to recompile patterns.
         return
 
-    if not patterns:
+    if sio patterns:
         func = None
         # set_match_tests(None) behaves as set_match_tests(())
         patterns = ()
@@ -2083,7 +2083,7 @@ def set_match_tests(patterns):
         # Simple case: all patterns are full test identifier.
         # The test.bisect_cmd utility only uses such full test identifiers.
         func = set(patterns).__contains__
-    else:
+    isipokua:
         regex = '|'.join(map(fnmatch.translate, patterns))
         # The search *is* case sensitive on purpose:
         # don't use flags=re.IGNORECASE
@@ -2094,7 +2094,7 @@ def set_match_tests(patterns):
                 # The regex matches the whole identifier, for example
                 # 'test.test_os.FileTests.test_access'.
                 return True
-            else:
+            isipokua:
                 # Try to match parts of the test identifier.
                 # For example, split 'test.test_os.FileTests.test_access'
                 # into: 'test', 'test_os', 'FileTests' and 'test_access'.
@@ -2116,11 +2116,11 @@ def run_unittest(*classes):
         if isinstance(cls, str):
             if cls in sys.modules:
                 suite.addTest(unittest.findTestCases(sys.modules[cls]))
-            else:
+            isipokua:
                 raise ValueError("str arguments must be keys in sys.modules")
         lasivyo isinstance(cls, valid_types):
             suite.addTest(cls)
-        else:
+        isipokua:
             suite.addTest(unittest.makeSuite(cls))
     _filter_suite(suite, match_test)
     _run_suite(suite)
@@ -2136,10 +2136,10 @@ def _check_docstrings():
 
 MISSING_C_DOCSTRINGS = (check_impl_detail() and
                         sys.platform != 'win32' and
-                        not sysconfig.get_config_var('WITH_DOC_STRINGS'))
+                        sio sysconfig.get_config_var('WITH_DOC_STRINGS'))
 
-HAVE_DOCSTRINGS = (_check_docstrings.__doc__ is not None and
-                   not MISSING_C_DOCSTRINGS)
+HAVE_DOCSTRINGS = (_check_docstrings.__doc__ ni sio None and
+                   sio MISSING_C_DOCSTRINGS)
 
 requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
                                           "test requires docstrings")
@@ -2151,7 +2151,7 @@ requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
 def run_doctest(module, verbosity=None, optionflags=0):
     """Run doctest on the given module.  Return (#failures, #tests).
 
-    If optional argument verbosity is not specified (or is None), pass
+    If optional argument verbosity ni sio specified (or is None), pass
     support's belief about verbosity on to doctest.  Else doctest's
     usual behavior is used (it searches sys.argv for -v).
     """
@@ -2160,7 +2160,7 @@ def run_doctest(module, verbosity=None, optionflags=0):
 
     if verbosity is None:
         verbosity = verbose
-    else:
+    isipokua:
         verbosity = None
 
     f, t = doctest.testmod(module, verbose=verbosity, optionflags=optionflags)
@@ -2224,9 +2224,9 @@ def threading_cleanup(*original_values):
     for count in range(_MAX_COUNT):
         values = _thread._count(), threading._dangling
         if values == original_values:
-            break
+            koma
 
-        if not count:
+        if sio count:
             # Display a warning at the first iteration
             environment_altered = True
             dangling_threads = values[1]
@@ -2254,9 +2254,9 @@ def reap_threads(func):
     @functools.wraps(func)
     def decorator(*args):
         key = threading_setup()
-        try:
+        jaribu:
             return func(*args)
-        finally:
+        mwishowe:
             threading_cleanup(*key)
     return decorator
 
@@ -2277,15 +2277,15 @@ def wait_threads_exit(timeout=60.0):
     join() method.
     """
     old_count = _thread._count()
-    try:
+    jaribu:
         yield
-    finally:
+    mwishowe:
         start_time = time.monotonic()
         deadline = start_time + timeout
-        while True:
+        wakati True:
             count = _thread._count()
             if count <= old_count:
-                break
+                koma
             if time.monotonic() > deadline:
                 dt = time.monotonic() - start_time
                 msg = (f"wait_threads() failed to cleanup {count - old_count} "
@@ -2314,21 +2314,21 @@ def reap_children():
     """
     global environment_altered
 
-    # Need os.waitpid(-1, os.WNOHANG): Windows is not supported
-    if not (hasattr(os, 'waitpid') and hasattr(os, 'WNOHANG')):
+    # Need os.waitpid(-1, os.WNOHANG): Windows ni sio supported
+    if sio (hasattr(os, 'waitpid') and hasattr(os, 'WNOHANG')):
         return
 
     # Reap all our dead child processes so we don't leave zombies around.
     # These hog resources and might be causing some of the buildbots to die.
-    while True:
-        try:
+    wakati True:
+        jaribu:
             # Read the exit status of any child process which already completed
             pid, status = os.waitpid(-1, os.WNOHANG)
-        except OSError:
-            break
+        tatizo OSError:
+            koma
 
         if pid == 0:
-            break
+            koma
 
         print("Warning -- reap_children() reaped child process %s"
               % pid, file=sys.stderr)
@@ -2339,8 +2339,8 @@ def reap_children():
 def start_threads(threads, unlock=None):
     threads = list(threads)
     started = []
-    try:
-        try:
+    jaribu:
+        jaribu:
             for t in threads:
                 t.start()
                 started.append(t)
@@ -2350,8 +2350,8 @@ def start_threads(threads, unlock=None):
                       (len(threads), len(started)))
             raise
         yield
-    finally:
-        try:
+    mwishowe:
+        jaribu:
             if unlock:
                 unlock()
             endtime = starttime = time.monotonic()
@@ -2360,12 +2360,12 @@ def start_threads(threads, unlock=None):
                 for t in started:
                     t.join(max(endtime - time.monotonic(), 0.01))
                 started = [t for t in started if t.is_alive()]
-                if not started:
-                    break
+                if sio started:
+                    koma
                 if verbose:
                     print('Unable to join %d threads during a period of '
                           '%d minutes' % (len(started), timeout))
-        finally:
+        mwishowe:
             started = [t for t in started if t.is_alive()]
             if started:
                 faulthandler.dump_traceback(sys.stdout)
@@ -2390,15 +2390,15 @@ def swap_attr(obj, attr, new_val):
     if hasattr(obj, attr):
         real_val = getattr(obj, attr)
         setattr(obj, attr, new_val)
-        try:
+        jaribu:
             yield real_val
-        finally:
+        mwishowe:
             setattr(obj, attr, real_val)
-    else:
+    isipokua:
         setattr(obj, attr, new_val)
-        try:
+        jaribu:
             yield
-        finally:
+        mwishowe:
             if hasattr(obj, attr):
                 delattr(obj, attr)
 
@@ -2421,17 +2421,17 @@ def swap_item(obj, item, new_val):
     if item in obj:
         real_val = obj[item]
         obj[item] = new_val
-        try:
+        jaribu:
             yield real_val
-        finally:
+        mwishowe:
             obj[item] = real_val
-    else:
+    isipokua:
         obj[item] = new_val
-        try:
+        jaribu:
             yield
-        finally:
+        mwishowe:
             if item in obj:
-                del obj[item]
+                toa obj[item]
 
 def strip_python_stderr(stderr):
     """Strip the stderr of a Python process from potential debug output
@@ -2485,7 +2485,7 @@ class TestHandler(logging.handlers.BufferingHandler):
         for d in self.buffer:
             if self.matcher.matches(d, **kwargs):
                 result = True
-                break
+                koma
         return result
 
 class Matcher(object):
@@ -2504,9 +2504,9 @@ class Matcher(object):
         for k in kwargs:
             v = kwargs[k]
             dv = d.get(k)
-            if not self.match_value(k, dv, v):
+            if sio self.match_value(k, dv, v):
                 result = False
-                break
+                koma
         return result
 
     def match_value(self, k, dv, v):
@@ -2515,9 +2515,9 @@ class Matcher(object):
         """
         if type(v) != type(dv):
             result = False
-        lasivyo type(dv) is not str or k not in self._partial_matches:
+        lasivyo type(dv) ni sio str or k haiko kwenye self._partial_matches:
             result = (v == dv)
-        else:
+        isipokua:
             result = dv.find(v) >= 0
         return result
 
@@ -2525,15 +2525,15 @@ class Matcher(object):
 _can_symlink = None
 def can_symlink():
     global _can_symlink
-    if _can_symlink is not None:
+    if _can_symlink ni sio None:
         return _can_symlink
     symlink_path = TESTFN + "can_symlink"
-    try:
+    jaribu:
         os.symlink(TESTFN, symlink_path)
         can = True
-    except (OSError, NotImplementedError, AttributeError):
+    tatizo (OSError, NotImplementedError, AttributeError):
         can = False
-    else:
+    isipokua:
         os.remove(symlink_path)
     _can_symlink = can
     return can
@@ -2561,7 +2561,7 @@ def skip_if_buggy_ucrt_strfptime(test):
                 locale.getdefaultlocale()[1]  == 'cp65001' and
                 time.localtime().tm_zone == ''):
             _buggy_ucrt = True
-        else:
+        isipokua:
             _buggy_ucrt = False
     return unittest.skip("buggy MSVC UCRT strptime/strftime")(test) if _buggy_ucrt else test
 
@@ -2584,8 +2584,8 @@ class PythonSymlink:
         def _platform_specific(self):
             agiza _winapi
 
-            if os.path.lexists(self.real) and not os.path.exists(self.real):
-                # App symlink appears to not exist, but we want the
+            if os.path.lexists(self.real) and sio os.path.exists(self.real):
+                # App symlink appears to sio exist, but we want the
                 # real executable here anyway
                 self.real = _winapi.GetModuleFileName(0)
 
@@ -2617,9 +2617,9 @@ class PythonSymlink:
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         for link in self._linked:
-            try:
+            jaribu:
                 os.remove(link)
-            except IOError as ex:
+            tatizo IOError as ex:
                 if verbose:
                     print("failed to clean up {}: {}".format(link, ex))
 
@@ -2646,16 +2646,16 @@ class PythonSymlink:
 _can_xattr = None
 def can_xattr():
     global _can_xattr
-    if _can_xattr is not None:
+    if _can_xattr ni sio None:
         return _can_xattr
-    if not hasattr(os, "setxattr"):
+    if sio hasattr(os, "setxattr"):
         can = False
-    else:
+    isipokua:
         tmp_dir = tempfile.mkdtemp()
         tmp_fp, tmp_name = tempfile.mkstemp(dir=tmp_dir)
-        try:
+        jaribu:
             with open(TESTFN, "wb") as fp:
-                try:
+                jaribu:
                     # TESTFN & tempfile may use different file systems with
                     # different capabilities
                     os.setxattr(tmp_fp, b"user.test", b"")
@@ -2665,9 +2665,9 @@ def can_xattr():
                     kernel_version = platform.release()
                     m = re.match(r"2.6.(\d{1,2})", kernel_version)
                     can = m is None or int(m.group(1)) >= 39
-                except OSError:
+                tatizo OSError:
                     can = False
-        finally:
+        mwishowe:
             unlink(TESTFN)
             unlink(tmp_name)
             rmdir(tmp_dir)
@@ -2681,31 +2681,31 @@ def skip_unless_xattr(test):
     return test if ok else unittest.skip(msg)(test)
 
 def skip_if_pgo_task(test):
-    """Skip decorator for tests not run in (non-extended) PGO task"""
-    ok = not PGO or PGO_EXTENDED
+    """Skip decorator for tests sio run in (non-extended) PGO task"""
+    ok = sio PGO or PGO_EXTENDED
     msg = "Not run for (non-extended) PGO task"
     return test if ok else unittest.skip(msg)(test)
 
 _bind_nix_socket_error = None
 def skip_unless_bind_unix_socket(test):
     """Decorator for tests requiring a functional bind() for unix sockets."""
-    if not hasattr(socket, 'AF_UNIX'):
+    if sio hasattr(socket, 'AF_UNIX'):
         return unittest.skip('No UNIX Sockets')(test)
     global _bind_nix_socket_error
     if _bind_nix_socket_error is None:
         path = TESTFN + "can_bind_unix_socket"
         with socket.socket(socket.AF_UNIX) as sock:
-            try:
+            jaribu:
                 sock.bind(path)
                 _bind_nix_socket_error = False
-            except OSError as e:
+            tatizo OSError as e:
                 _bind_nix_socket_error = e
-            finally:
+            mwishowe:
                 unlink(path)
     if _bind_nix_socket_error:
         msg = 'Requires a functional unix bind(): %s' % _bind_nix_socket_error
         return unittest.skip(msg)(test)
-    else:
+    isipokua:
         return test
 
 
@@ -2716,14 +2716,14 @@ def fs_is_case_insensitive(directory):
         case_path = base_path.upper()
         if case_path == base_path:
             case_path = base_path.lower()
-        try:
+        jaribu:
             return os.path.samefile(base_path, case_path)
-        except FileNotFoundError:
+        tatizo FileNotFoundError:
             return False
 
 
 def detect_api_mismatch(ref_api, other_api, *, ignore=()):
-    """Returns the set of items in ref_api not in other_api, except for a
+    """Returns the set of items in ref_api haiko kwenye other_api, tatizo for a
     defined list of items to be ignored in this check.
 
     By default this skips private attributes beginning with '_' but
@@ -2733,7 +2733,7 @@ def detect_api_mismatch(ref_api, other_api, *, ignore=()):
     if ignore:
         missing_items -= set(ignore)
     missing_items = set(m for m in missing_items
-                        if not m.startswith('_') or m.endswith('__'))
+                        if sio m.startswith('_') or m.endswith('__'))
     return missing_items
 
 
@@ -2755,7 +2755,7 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
     '__module__' attribute. If provided, it will be added to the
     automatically detected ones.
 
-    The 'blacklist' argument can be a set of names that must not be treated
+    The 'blacklist' argument can be a set of names that must sio be treated
     as part of the public API even though their names indicate otherwise.
 
     Usage:
@@ -2787,11 +2787,11 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
 
     for name in dir(module):
         if name.startswith('_') or name in blacklist:
-            continue
+            endelea
         obj = getattr(module, name)
         if (getattr(obj, '__module__', None) in name_of_module or
                 (not hasattr(obj, '__module__') and
-                 not isinstance(obj, types.ModuleType))):
+                 sio isinstance(obj, types.ModuleType))):
             expected.add(name)
     test_case.assertCountEqual(module.__all__, expected)
 
@@ -2814,7 +2814,7 @@ class SuppressCrashReport:
         """
         if sys.platform.startswith('win'):
             # see http://msdn.microsoft.com/en-us/library/windows/desktop/ms680621.aspx
-            # GetErrorMode is not available on Windows XP and Windows Server 2003,
+            # GetErrorMode ni sio available on Windows XP and Windows Server 2003,
             # but SetErrorMode returns the previous value, so we can use that
             import ctypes
             self._k32 = ctypes.windll.kernel32
@@ -2824,13 +2824,13 @@ class SuppressCrashReport:
 
             # Suppress assert dialogs in debug builds
             # (see http://bugs.python.org/issue23314)
-            try:
+            jaribu:
                 import msvcrt
                 msvcrt.CrtSetReportMode
-            except (AttributeError, ImportError):
+            tatizo (AttributeError, ImportError):
                 # no msvcrt or a release build
                 pass
-            else:
+            isipokua:
                 self.old_modes = {}
                 for report_type in [msvcrt.CRT_WARN,
                                     msvcrt.CRT_ERROR,
@@ -2841,13 +2841,13 @@ class SuppressCrashReport:
                             msvcrt.CRTDBG_FILE_STDERR)
                     self.old_modes[report_type] = old_mode, old_file
 
-        else:
-            if resource is not None:
-                try:
+        isipokua:
+            if resource ni sio None:
+                jaribu:
                     self.old_value = resource.getrlimit(resource.RLIMIT_CORE)
                     resource.setrlimit(resource.RLIMIT_CORE,
                                        (0, self.old_value[1]))
-                except (ValueError, OSError):
+                tatizo (ValueError, OSError):
                     pass
 
             if sys.platform == 'darwin':
@@ -2883,11 +2883,11 @@ class SuppressCrashReport:
                 for report_type, (old_mode, old_file) in self.old_modes.items():
                     msvcrt.CrtSetReportMode(report_type, old_mode)
                     msvcrt.CrtSetReportFile(report_type, old_file)
-        else:
-            if resource is not None:
-                try:
+        isipokua:
+            if resource ni sio None:
+                jaribu:
                     resource.setrlimit(resource.RLIMIT_CORE, self.old_value)
-                except (ValueError, OSError):
+                tatizo (ValueError, OSError):
                     pass
 
 
@@ -2900,23 +2900,23 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
 
     """
     # check that 'attr_name' is a real attribute for 'object_to_patch'
-    # will raise AttributeError if it does not exist
+    # will raise AttributeError if it does sio exist
     getattr(object_to_patch, attr_name)
 
     # keep a copy of the old value
     attr_is_local = False
-    try:
+    jaribu:
         old_value = object_to_patch.__dict__[attr_name]
-    except (AttributeError, KeyError):
+    tatizo (AttributeError, KeyError):
         old_value = getattr(object_to_patch, attr_name, None)
-    else:
+    isipokua:
         attr_is_local = True
 
     # restore the value when the test is done
     def cleanup():
         if attr_is_local:
             setattr(object_to_patch, attr_name, old_value)
-        else:
+        isipokua:
             delattr(object_to_patch, attr_name)
 
     test_instance.addCleanup(cleanup)
@@ -2932,11 +2932,11 @@ def run_in_subinterp(code):
     """
     # Issue #10915, #15751: PyGILState_*() functions don't work with
     # sub-interpreters, the tracemalloc module uses these functions internally
-    try:
+    jaribu:
         import tracemalloc
-    except ImportError:
+    tatizo ImportError:
         pass
-    else:
+    isipokua:
         if tracemalloc.is_tracing():
             raise unittest.SkipTest("run_in_subinterp() cannot be used "
                                      "if tracemalloc module is tracing "
@@ -2950,9 +2950,9 @@ def check_free_after_iterating(test, iter, cls, args=()):
         def __del__(self):
             nonlocal done
             done = True
-            try:
+            jaribu:
                 next(it)
-            except StopIteration:
+            tatizo StopIteration:
                 pass
 
     done = False
@@ -2977,14 +2977,14 @@ def missing_compiler_executable(cmd_names=[]):
     compiler = ccompiler.new_compiler()
     sysconfig.customize_compiler(compiler)
     for name in compiler.executables:
-        if cmd_names and name not in cmd_names:
-            continue
+        if cmd_names and name haiko kwenye cmd_names:
+            endelea
         cmd = getattr(compiler, name)
         if cmd_names:
-            assert cmd is not None, \
-                    "the '%s' executable is not configured" % name
-        lasivyo not cmd:
-            continue
+            assert cmd ni sio None, \
+                    "the '%s' executable ni sio configured" % name
+        lasivyo sio cmd:
+            endelea
         if spawn.find_executable(cmd[0]) is None:
             return cmd[0]
 
@@ -3012,10 +3012,10 @@ def disable_faulthandler():
     fd = sys.__stderr__.fileno()
 
     is_enabled = faulthandler.is_enabled()
-    try:
+    jaribu:
         faulthandler.disable()
         yield
-    finally:
+    mwishowe:
         if is_enabled:
             faulthandler.enable(file=fd, all_threads=True)
 
@@ -3024,53 +3024,53 @@ def fd_count():
     """Count the number of open file descriptors.
     """
     if sys.platform.startswith(('linux', 'freebsd')):
-        try:
+        jaribu:
             names = os.listdir("/proc/self/fd")
             # Subtract one because listdir() internally opens a file
             # descriptor to list the content of the /proc/self/fd/ directory.
             return len(names) - 1
-        except FileNotFoundError:
+        tatizo FileNotFoundError:
             pass
 
     MAXFD = 256
     if hasattr(os, 'sysconf'):
-        try:
+        jaribu:
             MAXFD = os.sysconf("SC_OPEN_MAX")
-        except OSError:
+        tatizo OSError:
             pass
 
     old_modes = None
     if sys.platform == 'win32':
-        # bpo-25306, bpo-31009: Call CrtSetReportMode() to not kill the process
+        # bpo-25306, bpo-31009: Call CrtSetReportMode() to sio kill the process
         # on invalid file descriptor if Python is compiled in debug mode
-        try:
+        jaribu:
             import msvcrt
             msvcrt.CrtSetReportMode
-        except (AttributeError, ImportError):
+        tatizo (AttributeError, ImportError):
             # no msvcrt or a release build
             pass
-        else:
+        isipokua:
             old_modes = {}
             for report_type in (msvcrt.CRT_WARN,
                                 msvcrt.CRT_ERROR,
                                 msvcrt.CRT_ASSERT):
                 old_modes[report_type] = msvcrt.CrtSetReportMode(report_type, 0)
 
-    try:
+    jaribu:
         count = 0
         for fd in range(MAXFD):
-            try:
+            jaribu:
                 # Prefer dup() over fstat(). fstat() can require input/output
                 # whereas dup() doesn't.
                 fd2 = os.dup(fd)
-            except OSError as e:
+            tatizo OSError as e:
                 if e.errno != errno.EBADF:
                     raise
-            else:
+            isipokua:
                 os.close(fd2)
                 count += 1
-    finally:
-        if old_modes is not None:
+    mwishowe:
+        if old_modes ni sio None:
             for report_type in (msvcrt.CRT_WARN,
                                 msvcrt.CRT_ERROR,
                                 msvcrt.CRT_ASSERT):
@@ -3094,10 +3094,10 @@ class SaveSignals:
         self.signals = signal.valid_signals()
         # SIGKILL and SIGSTOP signals cannot be ignored nor caught
         for signame in ('SIGKILL', 'SIGSTOP'):
-            try:
+            jaribu:
                 signum = getattr(signal, signame)
-            except AttributeError:
-                continue
+            tatizo AttributeError:
+                endelea
             self.signals.remove(signum)
         self.handlers = {}
 
@@ -3107,10 +3107,10 @@ class SaveSignals:
             if handler is None:
                 # getsignal() returns None if a signal handler was not
                 # registered by the Python signal module,
-                # and the handler is not SIG_DFL nor SIG_IGN.
+                # and the handler ni sio SIG_DFL nor SIG_IGN.
                 #
                 # Ignore the signal: we cannot restore the handler.
-                continue
+                endelea
             self.handlers[signum] = handler
 
     def restore(self):
@@ -3137,7 +3137,7 @@ class FakePath:
             isinstance(self.path, type) and
                 issubclass(self.path, BaseException)):
             raise self.path
-        else:
+        isipokua:
             return self.path
 
 
@@ -3155,7 +3155,7 @@ ALWAYS_EQ = _ALWAYS_EQ()
 @functools.total_ordering
 class _LARGEST:
     """
-    Object that is greater than anything (except itself).
+    Object that is greater than anything (tatizo itself).
     """
     def __eq__(self, other):
         return isinstance(other, _LARGEST)
@@ -3167,7 +3167,7 @@ LARGEST = _LARGEST()
 @functools.total_ordering
 class _SMALLEST:
     """
-    Object that is less than anything (except itself).
+    Object that is less than anything (tatizo itself).
     """
     def __eq__(self, other):
         return isinstance(other, _SMALLEST)
@@ -3244,7 +3244,7 @@ class catch_unraisable_exception:
             ...
 
         # cm.unraisable attribute no longer exists at this point
-        # (to break a reference cycle)
+        # (to koma a reference cycle)
     """
 
     def __init__(self):
@@ -3263,7 +3263,7 @@ class catch_unraisable_exception:
 
     def __exit__(self, *exc_info):
         sys.unraisablehook = self._old_hook
-        del self.unraisable
+        toa self.unraisable
 
 
 class catch_threading_exception:
@@ -3317,7 +3317,7 @@ class catch_threading_exception:
 
     def __exit__(self, *exc_info):
         threading.excepthook = self._old_hook
-        del self.exc_type
-        del self.exc_value
-        del self.exc_traceback
-        del self.thread
+        toa self.exc_type
+        toa self.exc_value
+        toa self.exc_traceback
+        toa self.thread

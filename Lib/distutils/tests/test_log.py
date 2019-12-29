@@ -20,12 +20,12 @@ class TestLog(unittest.TestCase):
                 stderr = io.TextIOWrapper(io.BytesIO(),
                                           encoding='cp437', errors=errors)
                 old_threshold = log.set_threshold(log.DEBUG)
-                try:
+                jaribu:
                     with swap_attr(sys, 'stdout', stdout), \
                          swap_attr(sys, 'stderr', stderr):
                         log.debug('Dεbug\tMėssãge')
                         log.fatal('Fαtal\tÈrrōr')
-                finally:
+                mwishowe:
                     log.set_threshold(old_threshold)
 
                 stdout.seek(0)

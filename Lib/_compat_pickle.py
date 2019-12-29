@@ -141,11 +141,11 @@ PYTHON2_EXCEPTIONS = (
     "ZeroDivisionError",
 )
 
-try:
+jaribu:
     WindowsError
-except NameError:
+tatizo NameError:
     pass
-else:
+isipokua:
     PYTHON2_EXCEPTIONS += ("WindowsError",)
 
 for excname in PYTHON2_EXCEPTIONS:

@@ -20,7 +20,7 @@ class Callbacks(unittest.TestCase):
         result = PROTO(self.callback)(arg)
         if typ == c_float:
             self.assertAlmostEqual(result, arg, places=5)
-        else:
+        isipokua:
             self.assertEqual(self.got_args, (arg,))
             self.assertEqual(result, arg)
 
@@ -28,7 +28,7 @@ class Callbacks(unittest.TestCase):
         result = PROTO(self.callback)(-3, arg)
         if typ == c_float:
             self.assertAlmostEqual(result, arg, places=5)
-        else:
+        isipokua:
             self.assertEqual(self.got_args, (-3, arg))
             self.assertEqual(result, arg)
 
@@ -111,7 +111,7 @@ class Callbacks(unittest.TestCase):
     def test_unsupported_restype_1(self):
         # Only "fundamental" result types are supported for callback
         # functions, the type must have a non-NULL stgdict->setfunc.
-        # POINTER(c_double), for example, is not supported.
+        # POINTER(c_double), for example, ni sio supported.
 
         prototype = self.functype.__func__(POINTER(c_double))
         # The type is checked when the prototype is called
@@ -147,9 +147,9 @@ class Callbacks(unittest.TestCase):
 
 @need_symbol('WINFUNCTYPE')
 class StdcallCallbacks(Callbacks):
-    try:
+    jaribu:
         functype = WINFUNCTYPE
-    except NameError:
+    tatizo NameError:
         pass
 
 ################################################################
@@ -174,13 +174,13 @@ class SampleCallbacksTestCase(unittest.TestCase):
         result = integrate(0.0, 1.0, CALLBACK(func), 10)
         diff = abs(result - 1./3.)
 
-        self.assertLess(diff, 0.01, "%s not less than 0.01" % diff)
+        self.assertLess(diff, 0.01, "%s sio less than 0.01" % diff)
 
     def test_issue_8959_a(self):
         from ctypes.util import find_library
         libc_path = find_library("c")
-        if not libc_path:
-            self.skipTest('could not find libc')
+        if sio libc_path:
+            self.skipTest('could sio find libc')
         libc = CDLL(libc_path)
 
         @CFUNCTYPE(c_int, POINTER(c_int), POINTER(c_int))
@@ -258,7 +258,7 @@ class SampleCallbacksTestCase(unittest.TestCase):
             check.third = s.third
             # See issue #29565.
             # The structure should be passed by value, so
-            # any changes to it should not be reflected in
+            # any changes to it should sio be reflected in
             # the value passed
             s.first = s.second = s.third = 0x0badf00d
 

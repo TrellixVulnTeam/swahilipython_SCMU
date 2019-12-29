@@ -1,6 +1,6 @@
 #
 # test_codecmaps_tw.py
-#   Codec mapping tests for ROC encodings
+#   Codec mapping tests kila ROC encodings
 #
 
 kutoka test agiza multibytecodec_support
@@ -15,7 +15,7 @@ kundi TestCP950Map(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'cp950'
     mapfileurl = 'http://www.pythontest.net/unicode/CP950.TXT'
-    pass_enctest = [
+    pita_enctest = [
         (b'\xa2\xcc', '\u5341'),
         (b'\xa2\xce', '\u5345'),
     ]

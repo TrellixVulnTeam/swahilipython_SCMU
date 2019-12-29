@@ -9,8 +9,8 @@ kutoka lib2to3.fixer_util agiza Name, Attr, Call, Comma, Newline, syms
 
 
 kundi FixExitfunc(fixer_base.BaseFix):
-    keep_line_order = True
-    BM_compatible = True
+    keep_line_order = Kweli
+    BM_compatible = Kweli
 
     PATTERN = """
               (
@@ -32,14 +32,14 @@ kundi FixExitfunc(fixer_base.BaseFix):
 
     eleza start_tree(self, tree, filename):
         super(FixExitfunc, self).start_tree(tree, filename)
-        self.sys_agiza = None
+        self.sys_agiza = Tupu
 
     eleza transform(self, node, results):
         # First, find the sys agiza. We'll just hope it's global scope.
-        ikiwa "sys_agiza" in results:
-            ikiwa self.sys_agiza is None:
+        ikiwa "sys_agiza" kwenye results:
+            ikiwa self.sys_agiza ni Tupu:
                 self.sys_agiza = results["sys_agiza"]
-            return
+            rudisha
 
         func = results["func"].clone()
         func.prefix = ""
@@ -49,18 +49,18 @@ kundi FixExitfunc(fixer_base.BaseFix):
         call = Call(register, [func], node.prefix)
         node.replace(call)
 
-        ikiwa self.sys_agiza is None:
+        ikiwa self.sys_agiza ni Tupu:
             # That's interesting.
             self.warning(node, "Can't find sys agiza; Please add an atexit "
                              "agiza at the top of your file.")
-            return
+            rudisha
 
         # Now add an atexit agiza after the sys agiza.
         names = self.sys_agiza.children[1]
         ikiwa names.type == syms.dotted_as_names:
             names.append_child(Comma())
             names.append_child(Name("atexit", " "))
-        else:
+        isipokua:
             containing_stmt = self.sys_agiza.parent
             position = containing_stmt.children.index(self.sys_agiza)
             stmt_container = containing_stmt.parent

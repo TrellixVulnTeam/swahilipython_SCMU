@@ -20,7 +20,7 @@ def splitUp(pred):
     Return (comparison string, StrictVersion)
     """
     res = re_splitComparison.match(pred)
-    if not res:
+    if sio res:
         raise ValueError("bad package restriction syntax: %r" % pred)
     comp, verStr = res.groups()
     return (comp, distutils.version.StrictVersion(verStr))
@@ -69,7 +69,7 @@ class VersionPredicate:
     >>> v.satisfied_by('0.2')
     False
 
-    If any version numbers passed in do not conform to the
+    If any version numbers passed in do sio conform to the
     restrictions of `StrictVersion`, a `ValueError` is raised::
 
     >>> v = VersionPredicate('p1.p2.p3.p4(>=1.0, <=1.3a1, !=1.2zb3)')
@@ -77,7 +77,7 @@ class VersionPredicate:
       ...
     ValueError: invalid version number '1.2zb3'
 
-    It the module or package name given does not conform to what's
+    It the module or package name given does sio conform to what's
     allowed as a legal module or package name, `ValueError` is
     raised::
 
@@ -101,30 +101,30 @@ class VersionPredicate:
         #    pred:  list of (comparison string, StrictVersion)
 
         versionPredicateStr = versionPredicateStr.strip()
-        if not versionPredicateStr:
+        if sio versionPredicateStr:
             raise ValueError("empty package restriction")
         match = re_validPackage.match(versionPredicateStr)
-        if not match:
+        if sio match:
             raise ValueError("bad package name in %r" % versionPredicateStr)
         self.name, paren = match.groups()
         paren = paren.strip()
         if paren:
             match = re_paren.match(paren)
-            if not match:
+            if sio match:
                 raise ValueError("expected parenthesized list: %r" % paren)
             str = match.groups()[0]
             self.pred = [splitUp(aPred) for aPred in str.split(",")]
-            if not self.pred:
+            if sio self.pred:
                 raise ValueError("empty parenthesized list in %r"
                                  % versionPredicateStr)
-        else:
+        isipokua:
             self.pred = []
 
     def __str__(self):
         if self.pred:
             seq = [cond + " " + str(ver) for cond, ver in self.pred]
             return self.name + " (" + ", ".join(seq) + ")"
-        else:
+        isipokua:
             return self.name
 
     def satisfied_by(self, version):
@@ -133,7 +133,7 @@ class VersionPredicate:
         constructor.  It may be either a string or StrictVersion.
         """
         for cond, ver in self.pred:
-            if not compmap[cond](version, ver):
+            if sio compmap[cond](version, ver):
                 return False
         return True
 
@@ -158,7 +158,7 @@ def split_provision(value):
             re.ASCII)
     value = value.strip()
     m = _provision_rx.match(value)
-    if not m:
+    if sio m:
         raise ValueError("illegal provides specification: %r" % value)
     ver = m.group(2) or None
     if ver:

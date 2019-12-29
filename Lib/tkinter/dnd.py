@@ -3,7 +3,7 @@
 This is very preliminary.  I currently only support dnd *within* one
 application, between different windows (or within the same window).
 
-I am trying to make this as generic as possible -- not dependent on
+I am trying to make this as generic as possible -- sio dependent on
 the use of a particular widget or icon type, etc.  I also hope that
 this will work with Pmw.
 
@@ -13,7 +13,7 @@ bind <ButtonPress> to a callback function that you write. The function
 should call Tkdnd.dnd_start(source, event), where 'source' is the
 object to be dragged, and 'event' is the event that invoked the call
 (the argument to your callback function).  Even though this is a class
-instantiation, the returned instance should not be stored -- it will
+instantiation, the returned instance should sio be stored -- it will
 be kept alive automatically for the duration of the drag-and-drop.
 
 When a drag-and-drop is already in process for the Tk interpreter, the
@@ -76,7 +76,7 @@ is selected, or no final target object is selected.  When a final
 target object is selected, it will always have been notified of the
 potential drop by a call to its dnd_enter() method, as described
 above, and possibly one or more calls to its dnd_motion() method; its
-dnd_leave() method has not been called since the last call to
+dnd_leave() method has sio been called since the last call to
 dnd_enter().  The target is notified of the drop by a call to its
 method dnd_commit(source, event).
 
@@ -109,7 +109,7 @@ def dnd_start(source, event):
     h = DndHandler(source, event)
     if h.root:
         return h
-    else:
+    isipokua:
         return None
 
 
@@ -123,10 +123,10 @@ class DndHandler:
         if event.num > 5:
             return
         root = event.widget._root()
-        try:
+        jaribu:
             root.__dnd
             return # Don't start recursive dnd
-        except AttributeError:
+        tatizo AttributeError:
             root.__dnd = self
             self.root = root
         self.source = source
@@ -143,9 +143,9 @@ class DndHandler:
         root = self.root
         self.root = None
         if root:
-            try:
-                del root.__dnd
-            except AttributeError:
+            jaribu:
+                toa root.__dnd
+            tatizo AttributeError:
                 pass
 
     def on_motion(self, event):
@@ -153,21 +153,21 @@ class DndHandler:
         target_widget = self.initial_widget.winfo_containing(x, y)
         source = self.source
         new_target = None
-        while target_widget:
-            try:
+        wakati target_widget:
+            jaribu:
                 attr = target_widget.dnd_accept
-            except AttributeError:
+            tatizo AttributeError:
                 pass
-            else:
+            isipokua:
                 new_target = attr(source, event)
                 if new_target:
-                    break
+                    koma
             target_widget = target_widget.master
         old_target = self.target
         if old_target is new_target:
             if old_target:
                 old_target.dnd_motion(source, event)
-        else:
+        isipokua:
             if old_target:
                 self.target = None
                 old_target.dnd_leave(source, event)
@@ -186,8 +186,8 @@ class DndHandler:
         source = self.source
         widget = self.initial_widget
         root = self.root
-        try:
-            del root.__dnd
+        jaribu:
+            toa root.__dnd
             self.initial_widget.unbind(self.release_pattern)
             self.initial_widget.unbind("<Motion>")
             widget['cursor'] = self.save_cursor
@@ -195,9 +195,9 @@ class DndHandler:
             if target:
                 if commit:
                     target.dnd_commit(source, event)
-                else:
+                isipokua:
                     target.dnd_leave(source, event)
-        finally:
+        mwishowe:
             source.dnd_end(target, event)
 
 
@@ -216,7 +216,7 @@ class Icon:
             return
         if self.canvas:
             self.detach()
-        if not canvas:
+        if sio canvas:
             return
         label = tkinter.Label(canvas, text=self.name,
                               borderwidth=2, relief="raised")
@@ -228,7 +228,7 @@ class Icon:
 
     def detach(self):
         canvas = self.canvas
-        if not canvas:
+        if sio canvas:
             return
         id = self.id
         label = self.label

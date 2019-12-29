@@ -169,7 +169,7 @@ class build_ext(Command):
         self.ensure_string_list('libraries')
         self.ensure_string_list('link_objects')
 
-        # Life is easier if we're not forever checking for None, so
+        # Life is easier if we're sio forever checking for None, so
         # simplify these options to empty lists if unset
         if self.libraries is None:
             self.libraries = []
@@ -195,7 +195,7 @@ class build_ext(Command):
                 self.library_dirs.append(os.path.join(sys.base_exec_prefix, 'libs'))
             if self.debug:
                 self.build_temp = os.path.join(self.build_temp, "Debug")
-            else:
+            isipokua:
                 self.build_temp = os.path.join(self.build_temp, "Release")
 
             # Append the source distribution include and library directories,
@@ -208,7 +208,7 @@ class build_ext(Command):
             # Use the .lib files for the correct architecture
             if self.plat_name == 'win32':
                 suffix = 'win32'
-            else:
+            isipokua:
                 # win-amd64
                 suffix = self.plat_name[4:]
             new_lib = os.path.join(sys.exec_prefix, 'PCbuild')
@@ -224,7 +224,7 @@ class build_ext(Command):
                 self.library_dirs.append(os.path.join(sys.prefix, "lib",
                                                       "python" + get_python_version(),
                                                       "config"))
-            else:
+            isipokua:
                 # building python standard extensions
                 self.library_dirs.append('.')
 
@@ -232,10 +232,10 @@ class build_ext(Command):
         # Python's library directory must be appended to library_dirs
         # See Issues: #1600860, #4366
         if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
-            if not sysconfig.python_build:
+            if sio sysconfig.python_build:
                 # building third party extensions
                 self.library_dirs.append(sysconfig.get_config_var('LIBDIR'))
-            else:
+            isipokua:
                 # building python standard extensions
                 self.library_dirs.append('.')
 
@@ -256,7 +256,7 @@ class build_ext(Command):
 
         if self.swig_opts is None:
             self.swig_opts = []
-        else:
+        isipokua:
             self.swig_opts = self.swig_opts.split(' ')
 
         # Finally add the user include and library directories if requested
@@ -270,9 +270,9 @@ class build_ext(Command):
                 self.rpath.append(user_lib)
 
         if isinstance(self.parallel, str):
-            try:
+            jaribu:
                 self.parallel = int(self.parallel)
-            except ValueError:
+            tatizo ValueError:
                 raise DistutilsOptionError("parallel should be an integer")
 
     def run(self):
@@ -286,11 +286,11 @@ class build_ext(Command):
         # also allow the 'extensions' list to be a list of tuples:
         #    (ext_name, build_info)
         # where build_info is a dictionary containing everything that
-        # Extension instances do except the name, with a few things being
+        # Extension instances do tatizo the name, with a few things being
         # differently named.  We convert these 2-tuples to Extension
         # instances as needed.
 
-        if not self.extensions:
+        if sio self.extensions:
             return
 
         # If we were asked to build any C/C++ libraries, make sure that the
@@ -309,7 +309,7 @@ class build_ext(Command):
                                      force=self.force)
         customize_compiler(self.compiler)
         # If we are cross-compiling, init the compiler now (if we are not
-        # cross-compiling, init would not hurt, but people may rely on
+        # cross-compiling, init would sio hurt, but people may rely on
         # late initialization of compiler even if they shouldn't...)
         if os.name == 'nt' and self.plat_name != get_platform():
             self.compiler.initialize(self.plat_name)
@@ -318,22 +318,22 @@ class build_ext(Command):
         # come from the command-line or from the setup script) are set in
         # that CCompiler object -- that way, they automatically apply to
         # all compiling and linking done here.
-        if self.include_dirs is not None:
+        if self.include_dirs ni sio None:
             self.compiler.set_include_dirs(self.include_dirs)
-        if self.define is not None:
+        if self.define ni sio None:
             # 'define' option is a list of (name,value) tuples
             for (name, value) in self.define:
                 self.compiler.define_macro(name, value)
-        if self.undef is not None:
+        if self.undef ni sio None:
             for macro in self.undef:
                 self.compiler.undefine_macro(macro)
-        if self.libraries is not None:
+        if self.libraries ni sio None:
             self.compiler.set_libraries(self.libraries)
-        if self.library_dirs is not None:
+        if self.library_dirs ni sio None:
             self.compiler.set_library_dirs(self.library_dirs)
-        if self.rpath is not None:
+        if self.rpath ni sio None:
             self.compiler.set_runtime_library_dirs(self.rpath)
-        if self.link_objects is not None:
+        if self.link_objects ni sio None:
             self.compiler.set_link_objects(self.link_objects)
 
         # Now actually compile and link everything.
@@ -349,16 +349,16 @@ class build_ext(Command):
         Raise DistutilsSetupError if the structure is invalid anywhere;
         just returns otherwise.
         """
-        if not isinstance(extensions, list):
+        if sio isinstance(extensions, list):
             raise DistutilsSetupError(
                   "'ext_modules' option must be a list of Extension instances")
 
         for i, ext in enumerate(extensions):
             if isinstance(ext, Extension):
-                continue                # OK! (assume type-checking done
+                endelea                # OK! (assume type-checking done
                                         # by Extension constructor)
 
-            if not isinstance(ext, tuple) or len(ext) != 2:
+            if sio isinstance(ext, tuple) or len(ext) != 2:
                 raise DistutilsSetupError(
                        "each element of 'ext_modules' option must be an "
                        "Extension instance or 2-tuple")
@@ -369,13 +369,13 @@ class build_ext(Command):
                      "ext_modules for extension '%s' "
                      "-- please convert to Extension instance", ext_name)
 
-            if not (isinstance(ext_name, str) and
+            if sio (isinstance(ext_name, str) and
                     extension_name_re.match(ext_name)):
                 raise DistutilsSetupError(
                        "first element of each tuple in 'ext_modules' "
                        "must be the extension name (a string)")
 
-            if not isinstance(build_info, dict):
+            if sio isinstance(build_info, dict):
                 raise DistutilsSetupError(
                        "second element of each tuple in 'ext_modules' "
                        "must be a dictionary (build info)")
@@ -390,7 +390,7 @@ class build_ext(Command):
                         'extra_objects', 'extra_compile_args',
                         'extra_link_args'):
                 val = build_info.get(key)
-                if val is not None:
+                if val ni sio None:
                     setattr(ext, key, val)
 
             # Medium-easy stuff: same syntax/semantics, different names.
@@ -406,7 +406,7 @@ class build_ext(Command):
                 ext.define_macros = []
                 ext.undef_macros = []
                 for macro in macros:
-                    if not (isinstance(macro, tuple) and len(macro) in (1, 2)):
+                    if sio (isinstance(macro, tuple) and len(macro) in (1, 2)):
                         raise DistutilsSetupError(
                               "'macros' element of build info dict "
                               "must be 1- or 2-tuple")
@@ -445,16 +445,16 @@ class build_ext(Command):
         self.check_extensions_list(self.extensions)
         if self.parallel:
             self._build_extensions_parallel()
-        else:
+        isipokua:
             self._build_extensions_serial()
 
     def _build_extensions_parallel(self):
         workers = self.parallel
         if self.parallel is True:
             workers = os.cpu_count()  # may return None
-        try:
+        jaribu:
             from concurrent.futures import ThreadPoolExecutor
-        except ImportError:
+        tatizo ImportError:
             workers = None
 
         if workers is None:
@@ -475,17 +475,17 @@ class build_ext(Command):
 
     @contextlib.contextmanager
     def _filter_build_errors(self, ext):
-        try:
+        jaribu:
             yield
-        except (CCompilerError, DistutilsError, CompileError) as e:
-            if not ext.optional:
+        tatizo (CCompilerError, DistutilsError, CompileError) as e:
+            if sio ext.optional:
                 raise
             self.warn('building extension "%s" failed: %s' %
                       (ext.name, e))
 
     def build_extension(self, ext):
         sources = ext.sources
-        if sources is None or not isinstance(sources, (list, tuple)):
+        if sources is None or sio isinstance(sources, (list, tuple)):
             raise DistutilsSetupError(
                   "in 'ext_modules' option (extension '%s'), "
                   "'sources' must be present and must be "
@@ -494,10 +494,10 @@ class build_ext(Command):
 
         ext_path = self.get_ext_fullpath(ext.name)
         depends = sources + ext.depends
-        if not (self.force or newer_group(depends, ext_path, 'newer')):
+        if sio (self.force or newer_group(depends, ext_path, 'newer')):
             log.debug("skipping '%s' extension (up-to-date)", ext.name)
             return
-        else:
+        isipokua:
             log.info("building '%s' extension", ext.name)
 
         # First, scan the sources for SWIG definition files (.i), run
@@ -507,7 +507,7 @@ class build_ext(Command):
 
         # Next, compile the source code to object files.
 
-        # XXX not honouring 'define_macros' or 'undef_macros' -- the
+        # XXX sio honouring 'define_macros' or 'undef_macros' -- the
         # CCompiler API needs to change to accommodate this, and I
         # want to do one thing at a time!
 
@@ -544,7 +544,7 @@ class build_ext(Command):
             objects.extend(ext.extra_objects)
         extra_args = ext.extra_link_args or []
 
-        # Detect target language, if not provided
+        # Detect target language, if sio provided
         language = ext.language or self.compiler.detect_language(sources)
 
         self.compiler.link_shared_object(
@@ -579,7 +579,7 @@ class build_ext(Command):
         if self.swig_cpp or ('-c++' in self.swig_opts) or \
            ('-c++' in extension.swig_opts):
             target_ext = '.cpp'
-        else:
+        isipokua:
             target_ext = '.c'
 
         for source in sources:
@@ -588,10 +588,10 @@ class build_ext(Command):
                 new_sources.append(base + '_wrap' + target_ext)
                 swig_sources.append(source)
                 swig_targets[source] = new_sources[-1]
-            else:
+            isipokua:
                 new_sources.append(source)
 
-        if not swig_sources:
+        if sio swig_sources:
             return new_sources
 
         swig = self.swig or self.find_swig()
@@ -600,8 +600,8 @@ class build_ext(Command):
         if self.swig_cpp:
             swig_cmd.append("-c++")
 
-        # Do not override commandline arguments
-        if not self.swig_opts:
+        # Do sio override commandline arguments
+        if sio self.swig_opts:
             for o in extension.swig_opts:
                 swig_cmd.append(o)
 
@@ -627,9 +627,9 @@ class build_ext(Command):
                 fn = os.path.join("c:\\swig%s" % vers, "swig.exe")
                 if os.path.isfile(fn):
                     return fn
-            else:
+            isipokua:
                 return "swig.exe"
-        else:
+        isipokua:
             raise DistutilsPlatformError(
                   "I don't know how to find (much less run) SWIG "
                   "on platform '%s'" % os.name)
@@ -646,7 +646,7 @@ class build_ext(Command):
         modpath = fullname.split('.')
         filename = self.get_ext_filename(modpath[-1])
 
-        if not self.inplace:
+        if sio self.inplace:
             # no further work needed
             # returning :
             #   build_dir/package/path/filename
@@ -669,7 +669,7 @@ class build_ext(Command):
         Adds the `package.` prefix"""
         if self.package is None:
             return ext_name
-        else:
+        isipokua:
             return self.package + '.' + ext_name
 
     def get_ext_filename(self, ext_name):
@@ -689,7 +689,7 @@ class build_ext(Command):
         the .pyd file (DLL) must export the module "PyInit_" function.
         """
         initfunc_name = "PyInit_" + ext.name.split('.')[-1]
-        if initfunc_name not in ext.export_symbols:
+        if initfunc_name haiko kwenye ext.export_symbols:
             ext.export_symbols.append(initfunc_name)
         return ext.export_symbols
 
@@ -705,7 +705,7 @@ class build_ext(Command):
         # Append '_d' to the python import library on debug builds.
         if sys.platform == "win32":
             from distutils._msvccompiler import MSVCCompiler
-            if not isinstance(self.compiler, MSVCCompiler):
+            if sio isinstance(self.compiler, MSVCCompiler):
                 template = "python%d%d"
                 if self.debug:
                     template = template + '_d'
@@ -714,7 +714,7 @@ class build_ext(Command):
                 # don't extend ext.libraries, it may be shared with other
                 # extensions, it is a reference to the original list
                 return ext.libraries + [pythonlib]
-        else:
+        isipokua:
             # On Android only the main executable and LD_PRELOADs are considered
             # to be RTLD_GLOBAL, all the dependencies of the main executable
             # remain RTLD_LOCAL and so the shared libraries must be linked with

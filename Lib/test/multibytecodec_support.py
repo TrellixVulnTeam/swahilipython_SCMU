@@ -1,6 +1,6 @@
 #
 # multibytecodec_support.py
-#   Common Unittest Routines for CJK codecs
+#   Common Unittest Routines kila CJK codecs
 #
 
 agiza codecs
@@ -14,17 +14,17 @@ kutoka io agiza BytesIO
 
 kundi TestBase:
     encoding        = ''   # codec name
-    codec           = None # codec tuple (with 4 elements)
-    tstring         = None # must set. 2 strings to test StreamReader
+    codec           = Tupu # codec tuple (with 4 elements)
+    tstring         = Tupu # must set. 2 strings to test StreamReader
 
-    codectests      = None # must set. codec test tuple
-    roundtriptest   = 1    # set ikiwa roundtrip is possible with unicode
+    codectests      = Tupu # must set. codec test tuple
+    roundtriptest   = 1    # set ikiwa roundtrip ni possible with unicode
     has_iso10646    = 0    # set ikiwa this encoding contains whole iso10646 map
-    xmlcharnametest = None # string to test xmlcharrefreplace
-    unmappedunicode = '\udeee' # a unicode code point that is not mapped.
+    xmlcharnametest = Tupu # string to test xmlcharrefreplace
+    unmappedunicode = '\udeee' # a unicode code point that ni sio mapped.
 
     eleza setUp(self):
-        ikiwa self.codec is None:
+        ikiwa self.codec ni Tupu:
             self.codec = codecs.lookup(self.encoding)
         self.encode = self.codec.encode
         self.decode = self.codec.decode
@@ -35,39 +35,39 @@ kundi TestBase:
 
     eleza test_chunkcoding(self):
         tstring_lines = []
-        for b in self.tstring:
+        kila b kwenye self.tstring:
             lines = b.split(b"\n")
             last = lines.pop()
             assert last == b""
-            lines = [line + b"\n" for line in lines]
+            lines = [line + b"\n" kila line kwenye lines]
             tstring_lines.append(lines)
-        for native, utf8 in zip(*tstring_lines):
+        kila native, utf8 kwenye zip(*tstring_lines):
             u = self.decode(native)[0]
             self.assertEqual(u, utf8.decode('utf-8'))
             ikiwa self.roundtriptest:
                 self.assertEqual(native, self.encode(u)[0])
 
     eleza test_errorhandle(self):
-        for source, scheme, expected in self.codectests:
+        kila source, scheme, expected kwenye self.codectests:
             ikiwa isinstance(source, bytes):
                 func = self.decode
-            else:
+            isipokua:
                 func = self.encode
             ikiwa expected:
                 result = func(source, scheme)[0]
-                ikiwa func is self.decode:
-                    self.assertTrue(type(result) is str, type(result))
+                ikiwa func ni self.decode:
+                    self.assertKweli(type(result) ni str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-                else:
-                    self.assertTrue(type(result) is bytes, type(result))
+                isipokua:
+                    self.assertKweli(type(result) ni bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-            else:
+            isipokua:
                 self.assertRaises(UnicodeError, func, source, scheme)
 
     eleza test_xmlcharrefreplace(self):
@@ -87,13 +87,13 @@ kundi TestBase:
         kutoka html.entities agiza codepoint2name
 
         eleza xmlcharnamereplace(exc):
-            ikiwa not isinstance(exc, UnicodeEncodeError):
-                raise TypeError("don't know how to handle %r" % exc)
+            ikiwa sio isinstance(exc, UnicodeEncodeError):
+                ashiria TypeError("don't know how to handle %r" % exc)
             l = []
-            for c in exc.object[exc.start:exc.end]:
-                ikiwa ord(c) in codepoint2name:
+            kila c kwenye exc.object[exc.start:exc.end]:
+                ikiwa ord(c) kwenye codepoint2name:
                     l.append("&%s;" % codepoint2name[ord(c)])
-                else:
+                isipokua:
                     l.append("&#%d;" % ord(c))
             rudisha ("".join(l), exc.end)
 
@@ -101,13 +101,13 @@ kundi TestBase:
 
         ikiwa self.xmlcharnametest:
             sin, sout = self.xmlcharnametest
-        else:
+        isipokua:
             sin = "\xab\u211c\xbb = \u2329\u1234\u232a"
             sout = b"&laquo;&real;&raquo; = &lang;&#4660;&rang;"
         self.assertEqual(self.encode(sin,
                                     "test.xmlcharnamereplace")[0], sout)
 
-    eleza test_callback_returns_bytes(self):
+    eleza test_callback_rudishas_bytes(self):
         eleza myreplace(exc):
             rudisha (b"1234", exc.end)
         codecs.register_error("test.cjktest", myreplace)
@@ -119,7 +119,7 @@ kundi TestBase:
             rudisha (ret, exc.end)
         codecs.register_error("test.cjktest", myreplace)
 
-        for ret in ([1, 2, 3], [], None, object()):
+        kila ret kwenye ([1, 2, 3], [], Tupu, object()):
             self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                               'test.cjktest')
 
@@ -136,9 +136,9 @@ kundi TestBase:
         self.assertRaises(IndexError, self.encode, self.unmappedunicode,
                           'test.cjktest')
 
-    eleza test_callback_None_index(self):
+    eleza test_callback_Tupu_index(self):
         eleza myreplace(exc):
-            rudisha ('x', None)
+            rudisha ('x', Tupu)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                           'test.cjktest')
@@ -148,7 +148,7 @@ kundi TestBase:
             ikiwa myreplace.limit > 0:
                 myreplace.limit -= 1
                 rudisha ('REPLACED', 0)
-            else:
+            isipokua:
                 rudisha ('TERMINAL', exc.end)
         myreplace.limit = 3
         codecs.register_error("test.cjktest", myreplace)
@@ -172,19 +172,19 @@ kundi TestBase:
 
     eleza test_incrementalencoder(self):
         UTF8Reader = codecs.getreader('utf-8')
-        for sizehint in [None] + list(range(1, 33)) + \
+        kila sizehint kwenye [Tupu] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
             istream = UTF8Reader(BytesIO(self.tstring[1]))
             ostream = BytesIO()
             encoder = self.incrementalencoder()
-            while 1:
-                ikiwa sizehint is not None:
+            wakati 1:
+                ikiwa sizehint ni sio Tupu:
                     data = istream.read(sizehint)
-                else:
+                isipokua:
                     data = istream.read()
 
-                ikiwa not data:
-                    break
+                ikiwa sio data:
+                    koma
                 e = encoder.encode(data)
                 ostream.write(e)
 
@@ -192,16 +192,16 @@ kundi TestBase:
 
     eleza test_incrementaldecoder(self):
         UTF8Writer = codecs.getwriter('utf-8')
-        for sizehint in [None, -1] + list(range(1, 33)) + \
+        kila sizehint kwenye [Tupu, -1] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
             istream = BytesIO(self.tstring[0])
             ostream = UTF8Writer(BytesIO())
             decoder = self.incrementaldecoder()
-            while 1:
+            wakati 1:
                 data = istream.read(sizehint)
-                ikiwa not data:
-                    break
-                else:
+                ikiwa sio data:
+                    koma
+                isipokua:
                     u = decoder.decode(data)
                     ostream.write(u)
 
@@ -211,37 +211,37 @@ kundi TestBase:
         inv = self.unmappedunicode
 
         e = self.incrementalencoder()
-        self.assertRaises(UnicodeEncodeError, e.encode, inv, True)
+        self.assertRaises(UnicodeEncodeError, e.encode, inv, Kweli)
 
         e.errors = 'ignore'
-        self.assertEqual(e.encode(inv, True), b'')
+        self.assertEqual(e.encode(inv, Kweli), b'')
 
         e.reset()
         eleza tempreplace(exc):
             rudisha ('called', exc.end)
         codecs.register_error('test.incremental_error_callback', tempreplace)
         e.errors = 'test.incremental_error_callback'
-        self.assertEqual(e.encode(inv, True), b'called')
+        self.assertEqual(e.encode(inv, Kweli), b'called')
 
         # again
         e.errors = 'ignore'
-        self.assertEqual(e.encode(inv, True), b'')
+        self.assertEqual(e.encode(inv, Kweli), b'')
 
     eleza test_streamreader(self):
         UTF8Writer = codecs.getwriter('utf-8')
-        for name in ["read", "readline", "readlines"]:
-            for sizehint in [None, -1] + list(range(1, 33)) + \
+        kila name kwenye ["read", "readline", "readlines"]:
+            kila sizehint kwenye [Tupu, -1] + list(range(1, 33)) + \
                             [64, 128, 256, 512, 1024]:
                 istream = self.reader(BytesIO(self.tstring[0]))
                 ostream = UTF8Writer(BytesIO())
                 func = getattr(istream, name)
-                while 1:
+                wakati 1:
                     data = func(sizehint)
-                    ikiwa not data:
-                        break
+                    ikiwa sio data:
+                        koma
                     ikiwa name == "readlines":
                         ostream.writelines(data)
-                    else:
+                    isipokua:
                         ostream.write(data)
 
                 self.assertEqual(ostream.getvalue(), self.tstring[1])
@@ -249,30 +249,30 @@ kundi TestBase:
     eleza test_streamwriter(self):
         readfuncs = ('read', 'readline', 'readlines')
         UTF8Reader = codecs.getreader('utf-8')
-        for name in readfuncs:
-            for sizehint in [None] + list(range(1, 33)) + \
+        kila name kwenye readfuncs:
+            kila sizehint kwenye [Tupu] + list(range(1, 33)) + \
                             [64, 128, 256, 512, 1024]:
                 istream = UTF8Reader(BytesIO(self.tstring[1]))
                 ostream = self.writer(BytesIO())
                 func = getattr(istream, name)
-                while 1:
-                    ikiwa sizehint is not None:
+                wakati 1:
+                    ikiwa sizehint ni sio Tupu:
                         data = func(sizehint)
-                    else:
+                    isipokua:
                         data = func()
 
-                    ikiwa not data:
-                        break
+                    ikiwa sio data:
+                        koma
                     ikiwa name == "readlines":
                         ostream.writelines(data)
-                    else:
+                    isipokua:
                         ostream.write(data)
 
                 self.assertEqual(ostream.getvalue(), self.tstring[0])
 
     eleza test_streamwriter_reset_no_pending(self):
         # Issue #23247: Calling reset() on a fresh StreamWriter instance
-        # (without pending data) must not crash
+        # (without pending data) must sio crash
         stream = BytesIO()
         writer = self.writer(stream)
         writer.reset()
@@ -280,20 +280,20 @@ kundi TestBase:
     eleza test_incrementalencoder_del_segfault(self):
         e = self.incrementalencoder()
         with self.assertRaises(AttributeError):
-            del e.errors
+            toa e.errors
 
 
 kundi TestBase_Mapping(unittest.TestCase):
-    pass_enctest = []
-    pass_dectest = []
+    pita_enctest = []
+    pita_dectest = []
     supmaps = []
     codectests = []
 
     eleza setUp(self):
-        try:
+        jaribu:
             self.open_mapping_file().close() # test it to report the error early
-        except (OSError, HTTPException):
-            self.skipTest("Could not retrieve "+self.mapfileurl)
+        tatizo (OSError, HTTPException):
+            self.skipTest("Could sio retrieve "+self.mapfileurl)
 
     eleza open_mapping_file(self):
         rudisha support.open_urlresource(self.mapfileurl)
@@ -301,20 +301,20 @@ kundi TestBase_Mapping(unittest.TestCase):
     eleza test_mapping_file(self):
         ikiwa self.mapfileurl.endswith('.xml'):
             self._test_mapping_file_ucm()
-        else:
+        isipokua:
             self._test_mapping_file_plain()
 
     eleza _test_mapping_file_plain(self):
         unichrs = lambda s: ''.join(map(chr, map(eval, s.split('+'))))
         urt_wa = {}
 
-        with self.open_mapping_file() as f:
-            for line in f:
-                ikiwa not line:
-                    break
+        with self.open_mapping_file() kama f:
+            kila line kwenye f:
+                ikiwa sio line:
+                    koma
                 data = line.split('#')[0].strip().split()
                 ikiwa len(data) != 2:
-                    continue
+                    endelea
 
                 csetval = eval(data[0])
                 ikiwa csetval <= 0x7F:
@@ -327,63 +327,63 @@ kundi TestBase_Mapping(unittest.TestCase):
                                     (csetval & 0xff)])
                 elikiwa csetval >= 0x100:
                     csetch = bytes([(csetval >> 8), (csetval & 0xff)])
-                else:
-                    continue
+                isipokua:
+                    endelea
 
                 unich = unichrs(data[1])
-                ikiwa ord(unich) == 0xfffd or unich in urt_wa:
-                    continue
+                ikiwa ord(unich) == 0xfffd ama unich kwenye urt_wa:
+                    endelea
                 urt_wa[unich] = csetch
 
                 self._testpoint(csetch, unich)
 
     eleza _test_mapping_file_ucm(self):
-        with self.open_mapping_file() as f:
+        with self.open_mapping_file() kama f:
             ucmdata = f.read()
         uc = re.findall('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>', ucmdata)
-        for uni, coded in uc:
+        kila uni, coded kwenye uc:
             unich = chr(int(uni, 16))
             codech = bytes.kutokahex(coded)
             self._testpoint(codech, unich)
 
     eleza test_mapping_supplemental(self):
-        for mapping in self.supmaps:
+        kila mapping kwenye self.supmaps:
             self._testpoint(*mapping)
 
     eleza _testpoint(self, csetch, unich):
-        ikiwa (csetch, unich) not in self.pass_enctest:
+        ikiwa (csetch, unich) haiko kwenye self.pita_enctest:
             self.assertEqual(unich.encode(self.encoding), csetch)
-        ikiwa (csetch, unich) not in self.pass_dectest:
+        ikiwa (csetch, unich) haiko kwenye self.pita_dectest:
             self.assertEqual(str(csetch, self.encoding), unich)
 
     eleza test_errorhandle(self):
-        for source, scheme, expected in self.codectests:
+        kila source, scheme, expected kwenye self.codectests:
             ikiwa isinstance(source, bytes):
                 func = source.decode
-            else:
+            isipokua:
                 func = source.encode
             ikiwa expected:
                 ikiwa isinstance(source, bytes):
                     result = func(self.encoding, scheme)
-                    self.assertTrue(type(result) is str, type(result))
+                    self.assertKweli(type(result) ni str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-                else:
+                isipokua:
                     result = func(self.encoding, scheme)
-                    self.assertTrue(type(result) is bytes, type(result))
+                    self.assertKweli(type(result) ni bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
-            else:
+            isipokua:
                 self.assertRaises(UnicodeError, func, self.encoding, scheme)
 
 eleza load_teststring(name):
     dir = os.path.join(os.path.dirname(__file__), 'cjkencodings')
-    with open(os.path.join(dir, name + '.txt'), 'rb') as f:
+    with open(os.path.join(dir, name + '.txt'), 'rb') kama f:
         encoded = f.read()
-    with open(os.path.join(dir, name + '-utf8.txt'), 'rb') as f:
+    with open(os.path.join(dir, name + '-utf8.txt'), 'rb') kama f:
         utf8 = f.read()
     rudisha encoded, utf8

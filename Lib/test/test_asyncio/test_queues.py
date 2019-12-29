@@ -315,9 +315,9 @@ class QueueGetTests(_QueueTestBase):
         self.loop = self.new_test_loop(a_generator)
 
         async def consumer(queue):
-            try:
+            jaribu:
                 item = await asyncio.wait_for(queue.get(), 0.1)
-            except asyncio.TimeoutError:
+            tatizo asyncio.TimeoutError:
                 pass
 
         with self.assertWarns(DeprecationWarning):
@@ -394,9 +394,9 @@ class QueuePutTests(_QueueTestBase):
         q.put_nowait(2)
         reader.cancel()
 
-        try:
+        jaribu:
             loop.run_until_complete(reader)
-        except asyncio.CancelledError:
+        tatizo asyncio.CancelledError:
             # try again
             reader = loop.create_task(q.get())
             loop.run_until_complete(reader)
@@ -426,9 +426,9 @@ class QueuePutTests(_QueueTestBase):
         q.put_nowait(2)
         reader1.cancel()
 
-        try:
+        jaribu:
             loop.run_until_complete(reader1)
-        except asyncio.CancelledError:
+        tatizo asyncio.CancelledError:
             pass
 
         loop.run_until_complete(reader3)
@@ -457,9 +457,9 @@ class QueuePutTests(_QueueTestBase):
         self.assertEqual(value1, 1)
 
         writer.cancel()
-        try:
+        jaribu:
             loop.run_until_complete(writer)
-        except asyncio.CancelledError:
+        tatizo asyncio.CancelledError:
             # try again
             writer = loop.create_task(q.put(2))
             loop.run_until_complete(writer)
@@ -659,7 +659,7 @@ class _QueueJoinTestMixin:
         async def worker():
             nonlocal accumulator
 
-            while running:
+            wakati running:
                 item = await q.get()
                 accumulator += item
                 q.task_done()

@@ -49,10 +49,10 @@ class Parser:
         feedparser = FeedParser(self._class, policy=self.policy)
         if headersonly:
             feedparser._set_headersonly()
-        while True:
+        wakati True:
             data = fp.read(8192)
-            if not data:
-                break
+            if sio data:
+                koma
             feedparser.feed(data)
         return feedparser.close()
 
@@ -105,9 +105,9 @@ class BytesParser:
         meaning it parses the entire contents of the file.
         """
         fp = TextIOWrapper(fp, encoding='ascii', errors='surrogateescape')
-        try:
+        jaribu:
             return self.parser.parse(fp, headersonly)
-        finally:
+        mwishowe:
             fp.detach()
 
 

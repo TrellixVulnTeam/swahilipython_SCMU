@@ -29,7 +29,7 @@ class TextFile:
        'filename' should be a string, and 'file' a file object (or
        something that provides 'readline()' and 'close()' methods).  It is
        recommended that you supply at least 'filename', so that TextFile
-       can include it in warning messages.  If 'file' is not supplied,
+       can include it in warning messages.  If 'file' ni sio supplied,
        TextFile creates its own using 'io.open()'.
 
        The options are all boolean, and affect the value returned by
@@ -55,7 +55,7 @@ class TextFile:
            form one logical line.
          collapse_join [default: false]
            strip leading whitespace from lines that are joined to their
-           predecessor; only matters if (join_lines and not lstrip_ws)
+           predecessor; only matters if (join_lines and sio lstrip_ws)
          errors [default: 'strict']
            error handler used to decode the file content
 
@@ -88,17 +88,17 @@ class TextFile:
         for opt in self.default_options.keys():
             if opt in options:
                 setattr(self, opt, options[opt])
-            else:
+            isipokua:
                 setattr(self, opt, self.default_options[opt])
 
         # sanity check client option hash
         for opt in options.keys():
-            if opt not in self.default_options:
+            if opt haiko kwenye self.default_options:
                 raise KeyError("invalid TextFile option '%s'" % opt)
 
         if file is None:
             self.open(filename)
-        else:
+        isipokua:
             self.filename = filename
             self.file = file
             self.current_line = 0       # assuming that file is at BOF!
@@ -131,7 +131,7 @@ class TextFile:
         outmsg.append(self.filename + ", ")
         if isinstance(line, (list, tuple)):
             outmsg.append("lines %d-%d: " % tuple(line))
-        else:
+        isipokua:
             outmsg.append("line %d: " % line)
         outmsg.append(str(msg))
         return "".join(outmsg)
@@ -165,12 +165,12 @@ class TextFile:
         # 'unreadline()'.
         if self.linebuf:
             line = self.linebuf[-1]
-            del self.linebuf[-1]
+            toa self.linebuf[-1]
             return line
 
         buildup_line = ''
 
-        while True:
+        wakati True:
             # read the line, make it None if EOF
             line = self.file.readline()
             if line == '':
@@ -180,7 +180,7 @@ class TextFile:
 
                 # Look for the first "#" in the line.  If none, never
                 # mind.  If we find one and it's the first character, or
-                # is not preceded by "\", then it starts a comment --
+                # ni sio preceded by "\", then it starts a comment --
                 # strip the comment, strip whitespace before it, and
                 # carry on.  Otherwise, it's just an escaped "#", so
                 # unescape it (and any other escaped "#"'s that might be
@@ -210,8 +210,8 @@ class TextFile:
                     #   there
                     # result in "hello there".
                     if line.strip() == "":
-                        continue
-                else: # it's an escaped "#"
+                        endelea
+                isipokua: # it's an escaped "#"
                     line = line.replace("\\#", "#")
 
             # did previous line end with a backslash? then accumulate
@@ -229,18 +229,18 @@ class TextFile:
                 # careful: pay attention to line number when incrementing it
                 if isinstance(self.current_line, list):
                     self.current_line[1] = self.current_line[1] + 1
-                else:
+                isipokua:
                     self.current_line = [self.current_line,
                                          self.current_line + 1]
             # just an ordinary line, read it as usual
-            else:
+            isipokua:
                 if line is None: # eof
                     return None
 
                 # still have to be careful about incrementing the line number!
                 if isinstance(self.current_line, list):
                     self.current_line = self.current_line[1] + 1
-                else:
+                isipokua:
                     self.current_line = self.current_line + 1
 
             # strip whitespace however the client wants (leading and
@@ -255,16 +255,16 @@ class TextFile:
             # blank line (whether we rstrip'ed or not)? skip to next line
             # if appropriate
             if (line == '' or line == '\n') and self.skip_blanks:
-                continue
+                endelea
 
             if self.join_lines:
                 if line[-1] == '\\':
                     buildup_line = line[:-1]
-                    continue
+                    endelea
 
                 if line[-2:] == '\\\n':
                     buildup_line = line[0:-2] + '\n'
-                    continue
+                    endelea
 
             # well, I guess there's some actual content there: return it
             return line
@@ -273,7 +273,7 @@ class TextFile:
         """Read and return the list of all logical lines remaining in the
            current file."""
         lines = []
-        while True:
+        wakati True:
             line = self.readline()
             if line is None:
                 return lines

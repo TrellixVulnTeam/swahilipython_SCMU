@@ -17,7 +17,7 @@ class Log:
         self.threshold = threshold
 
     def _log(self, level, msg, args):
-        if level not in (DEBUG, INFO, WARN, ERROR, FATAL):
+        if level haiko kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
             raise ValueError('%s wrong log level' % str(level))
 
         if level >= self.threshold:
@@ -25,11 +25,11 @@ class Log:
                 msg = msg % args
             if level in (WARN, ERROR, FATAL):
                 stream = sys.stderr
-            else:
+            isipokua:
                 stream = sys.stdout
-            try:
+            jaribu:
                 stream.write('%s\n' % msg)
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 # emulate backslashreplace error handler
                 encoding = stream.encoding
                 msg = msg.encode(encoding, "backslashreplace").decode(encoding)

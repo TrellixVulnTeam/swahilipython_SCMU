@@ -29,9 +29,9 @@ class ConfigTestCase(support.LoggingSilencer,
     def test_dump_file(self):
         this_file = os.path.splitext(__file__)[0] + '.py'
         f = open(this_file)
-        try:
+        jaribu:
             numlines = len(f.readlines())
-        finally:
+        mwishowe:
             f.close()
 
         dump_file(this_file, 'I am the header')
@@ -41,8 +41,8 @@ class ConfigTestCase(support.LoggingSilencer,
     def test_search_cpp(self):
         import shutil
         cmd = missing_compiler_executable(['preprocessor'])
-        if cmd is not None:
-            self.skipTest('The %r command is not found' % cmd)
+        if cmd ni sio None:
+            self.skipTest('The %r command ni sio found' % cmd)
         pkg_dir, dist = self.create_dist()
         cmd = config(dist)
         cmd._check_compiler()

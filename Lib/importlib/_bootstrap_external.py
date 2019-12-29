@@ -1,22 +1,22 @@
 """Core implementation of path-based agiza.
 
-This module is NOT meant to be directly imported! It has been designed such
-that it can be bootstrapped into Python as the implementation of agiza. As
-such it requires the injection of specific modules and attributes in order to
-work. One should use importlib as the public-facing version of this module.
+This module ni NOT meant to be directly imported! It has been designed such
+that it can be bootstrapped into Python kama the implementation of agiza. As
+such it requires the injection of specific modules na attributes kwenye order to
+work. One should use importlib kama the public-facing version of this module.
 
 """
 # IMPORTANT: Whenever making changes to this module, be sure to run a top-level
-# `make regen-importlib` followed by `make` in order to get the frozen version
-# of the module updated. Not doing so will result in the Makefile to fail for
-# all others who don't have a ./python around to freeze the module in the early
+# `make regen-importlib` followed by `make` kwenye order to get the frozen version
+# of the module updated. Not doing so will result kwenye the Makefile to fail for
+# all others who don't have a ./python around to freeze the module kwenye the early
 # stages of compilation.
 #
 
-# See importlib._setup() for what is injected into the global namespace.
+# See importlib._setup() kila what ni injected into the global namespace.
 
 # When editing this code be aware that code executed at agiza time CANNOT
-# reference any injected objects! This includes not only global code but also
+# reference any injected objects! This includes sio only global code but also
 # anything specified at the kundi level.
 
 # Bootstrap-related code ######################################################
@@ -30,16 +30,16 @@ eleza _make_relax_case():
     ikiwa sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS):
         ikiwa sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS_STR_KEY):
             key = 'PYTHONCASEOK'
-        else:
+        isipokua:
             key = b'PYTHONCASEOK'
 
         eleza _relax_case():
-            """True ikiwa filenames must be checked case-insensitively."""
-            rudisha key in _os.environ
-    else:
+            """Kweli ikiwa filenames must be checked case-insensitively."""
+            rudisha key kwenye _os.environ
+    isipokua:
         eleza _relax_case():
-            """True ikiwa filenames must be checked case-insensitively."""
-            rudisha False
+            """Kweli ikiwa filenames must be checked case-insensitively."""
+            rudisha Uongo
     rudisha _relax_case
 
 
@@ -49,29 +49,29 @@ eleza _pack_uint32(x):
 
 
 eleza _unpack_uint32(data):
-    """Convert 4 bytes in little-endian to an integer."""
+    """Convert 4 bytes kwenye little-endian to an integer."""
     assert len(data) == 4
     rudisha int.kutoka_bytes(data, 'little')
 
 eleza _unpack_uint16(data):
-    """Convert 2 bytes in little-endian to an integer."""
+    """Convert 2 bytes kwenye little-endian to an integer."""
     assert len(data) == 2
     rudisha int.kutoka_bytes(data, 'little')
 
 
 eleza _path_join(*path_parts):
-    """Replacement for os.path.join()."""
+    """Replacement kila os.path.join()."""
     rudisha path_sep.join([part.rstrip(path_separators)
-                          for part in path_parts ikiwa part])
+                          kila part kwenye path_parts ikiwa part])
 
 
 eleza _path_split(path):
-    """Replacement for os.path.split()."""
+    """Replacement kila os.path.split()."""
     ikiwa len(path_separators) == 1:
         front, _, tail = path.rpartition(path_sep)
         rudisha front, tail
-    for x in reversed(path):
-        ikiwa x in path_separators:
+    kila x kwenye reversed(path):
+        ikiwa x kwenye path_separators:
             front, tail = path.rsplit(x, maxsplit=1)
             rudisha front, tail
     rudisha '', path
@@ -80,7 +80,7 @@ eleza _path_split(path):
 eleza _path_stat(path):
     """Stat the path.
 
-    Made a separate function to make it easier to override in experiments
+    Made a separate function to make it easier to override kwenye experiments
     (e.g. cache stat results).
 
     """
@@ -88,55 +88,55 @@ eleza _path_stat(path):
 
 
 eleza _path_is_mode_type(path, mode):
-    """Test whether the path is the specified mode type."""
-    try:
+    """Test whether the path ni the specified mode type."""
+    jaribu:
         stat_info = _path_stat(path)
-    except OSError:
-        rudisha False
+    tatizo OSError:
+        rudisha Uongo
     rudisha (stat_info.st_mode & 0o170000) == mode
 
 
 eleza _path_isfile(path):
-    """Replacement for os.path.isfile."""
+    """Replacement kila os.path.isfile."""
     rudisha _path_is_mode_type(path, 0o100000)
 
 
 eleza _path_isdir(path):
-    """Replacement for os.path.isdir."""
-    ikiwa not path:
+    """Replacement kila os.path.isdir."""
+    ikiwa sio path:
         path = _os.getcwd()
     rudisha _path_is_mode_type(path, 0o040000)
 
 
 eleza _path_isabs(path):
-    """Replacement for os.path.isabs.
+    """Replacement kila os.path.isabs.
 
     Considers a Windows drive-relative path (no drive, but starts with slash) to
     still be "absolute".
     """
-    rudisha path.startswith(path_separators) or path[1:3] in _pathseps_with_colon
+    rudisha path.startswith(path_separators) ama path[1:3] kwenye _pathseps_with_colon
 
 
 eleza _write_atomic(path, data, mode=0o666):
     """Best-effort function to write data to a path atomically.
     Be prepared to handle a FileExistsError ikiwa concurrent writing of the
-    temporary file is attempted."""
-    # id() is used to generate a pseudo-random filename.
+    temporary file ni attempted."""
+    # id() ni used to generate a pseudo-random filename.
     path_tmp = '{}.{}'.format(path, id(path))
     fd = _os.open(path_tmp,
                   _os.O_EXCL | _os.O_CREAT | _os.O_WRONLY, mode & 0o666)
-    try:
-        # We first write data to a temporary file, and then use os.replace() to
+    jaribu:
+        # We first write data to a temporary file, na then use os.replace() to
         # perform an atomic rename.
-        with _io.FileIO(fd, 'wb') as file:
+        with _io.FileIO(fd, 'wb') kama file:
             file.write(data)
         _os.replace(path_tmp, path)
-    except OSError:
-        try:
+    tatizo OSError:
+        jaribu:
             _os.unlink(path_tmp)
-        except OSError:
-            pass
-        raise
+        tatizo OSError:
+            pita
+        ashiria
 
 
 _code_type = type(_write_atomic.__code__)
@@ -145,23 +145,23 @@ _code_type = type(_write_atomic.__code__)
 # Finder/loader utility code ###############################################
 
 # Magic word to reject .pyc files generated by other Python versions.
-# It should change for each incompatible change to the bytecode.
+# It should change kila each incompatible change to the bytecode.
 #
-# The value of CR and LF is incorporated so ikiwa you ever read or write
-# a .pyc file in text mode the magic number will be wrong; also, the
+# The value of CR na LF ni incorporated so ikiwa you ever read ama write
+# a .pyc file kwenye text mode the magic number will be wrong; also, the
 # Apple MPW compiler swaps their values, botching string constants.
 #
-# There were a variety of old schemes for setting the magic number.
-# The current working scheme is to increment the previous value by
+# There were a variety of old schemes kila setting the magic number.
+# The current working scheme ni to increment the previous value by
 # 10.
 #
-# Starting with the adoption of PEP 3147 in Python 3.2, every bump in magic
+# Starting with the adoption of PEP 3147 kwenye Python 3.2, every bump kwenye magic
 # number also includes a new "magic tag", i.e. a human readable string used
-# to represent the magic number in __pycache__ directories.  When you change
+# to represent the magic number kwenye __pycache__ directories.  When you change
 # the magic number, you must also set a new unique magic tag.  Generally this
 # can be named after the Python major version of the magic number bump, but
-# it can really be anything, as long as it's different than anything else
-# that's come before.  The tags are included in the following table, starting
+# it can really be anything, kama long kama it's different than anything else
+# that's come before.  The tags are included kwenye the following table, starting
 # with Python 3.2a0.
 #
 # Known values:
@@ -185,19 +185,19 @@ _code_type = type(_write_atomic.__code__)
 #     Python 2.5a0: 62081 (ast-branch)
 #     Python 2.5a0: 62091 (with)
 #     Python 2.5a0: 62092 (changed WITH_CLEANUP opcode)
-#     Python 2.5b3: 62101 (fix wrong code: for x, in ...)
-#     Python 2.5b3: 62111 (fix wrong code: x += yield)
-#     Python 2.5c1: 62121 (fix wrong lnotab with for loops and
+#     Python 2.5b3: 62101 (fix wrong code: kila x, kwenye ...)
+#     Python 2.5b3: 62111 (fix wrong code: x += tuma)
+#     Python 2.5c1: 62121 (fix wrong lnotab with kila loops and
 #                          storing constants that should have been removed)
-#     Python 2.5c2: 62131 (fix wrong code: for x, in ... in listcomp/genexp)
-#     Python 2.6a0: 62151 (peephole optimizations and STORE_MAP opcode)
+#     Python 2.5c2: 62131 (fix wrong code: kila x, kwenye ... kwenye listcomp/genexp)
+#     Python 2.6a0: 62151 (peephole optimizations na STORE_MAP opcode)
 #     Python 2.6a1: 62161 (WITH_CLEANUP optimization)
 #     Python 2.7a0: 62171 (optimize list comprehensions/change LIST_APPEND)
 #     Python 2.7a0: 62181 (optimize conditional branches:
-#                          introduce POP_JUMP_IF_FALSE and POP_JUMP_IF_TRUE)
+#                          introduce POP_JUMP_IF_FALSE na POP_JUMP_IF_TRUE)
 #     Python 2.7a0  62191 (introduce SETUP_WITH)
 #     Python 2.7a0  62201 (introduce BUILD_SET)
-#     Python 2.7a0  62211 (introduce MAP_ADD and SET_ADD)
+#     Python 2.7a0  62211 (introduce MAP_ADD na SET_ADD)
 #     Python 3000:   3000
 #                    3010 (removed UNARY_CONVERT)
 #                    3020 (added BUILD_SET)
@@ -206,22 +206,22 @@ _code_type = type(_write_atomic.__code__)
 #                    3050 (print becomes a function)
 #                    3060 (PEP 3115 metakundi syntax)
 #                    3061 (string literals become unicode)
-#                    3071 (PEP 3109 raise changes)
-#                    3081 (PEP 3137 make __file__ and __name__ unicode)
+#                    3071 (PEP 3109 ashiria changes)
+#                    3081 (PEP 3137 make __file__ na __name__ unicode)
 #                    3091 (kill str8 interning)
 #                    3101 (merge kutoka 2.6a0, see 62151)
 #                    3103 (__file__ points to source file)
 #     Python 3.0a4: 3111 (WITH_CLEANUP optimization).
 #     Python 3.0b1: 3131 (lexical exception stacking, including POP_EXCEPT
                           #3021)
-#     Python 3.1a1: 3141 (optimize list, set and dict comprehensions:
-#                         change LIST_APPEND and SET_ADD, add MAP_ADD #2183)
+#     Python 3.1a1: 3141 (optimize list, set na dict comprehensions:
+#                         change LIST_APPEND na SET_ADD, add MAP_ADD #2183)
 #     Python 3.1a1: 3151 (optimize conditional branches:
-#                         introduce POP_JUMP_IF_FALSE and POP_JUMP_IF_TRUE
+#                         introduce POP_JUMP_IF_FALSE na POP_JUMP_IF_TRUE
                           #4715)
 #     Python 3.2a1: 3160 (add SETUP_WITH #6101)
 #                   tag: cpython-32
-#     Python 3.2a2: 3170 (add DUP_TOP_TWO, remove DUP_TOPX and ROT_FOUR #9225)
+#     Python 3.2a2: 3170 (add DUP_TOP_TWO, remove DUP_TOPX na ROT_FOUR #9225)
 #                   tag: cpython-32
 #     Python 3.2a3  3180 (add DELETE_DEREF #4617)
 #     Python 3.3a1  3190 (__class__ super closure changed)
@@ -250,34 +250,34 @@ _code_type = type(_write_atomic.__code__)
 #     Python 3.6a2  3372 (MAKE_FUNCTION simplification, remove MAKE_CLOSURE
 #                         #27095)
 #     Python 3.6b1  3373 (add BUILD_STRING opcode #27078)
-#     Python 3.6b1  3375 (add SETUP_ANNOTATIONS and STORE_ANNOTATION opcodes
+#     Python 3.6b1  3375 (add SETUP_ANNOTATIONS na STORE_ANNOTATION opcodes
 #                         #27985)
 #     Python 3.6b1  3376 (simplify CALL_FUNCTIONs & BUILD_MAP_UNPACK_WITH_CALL
                           #27213)
 #     Python 3.6b1  3377 (set __class__ cell kutoka type.__new__ #23722)
 #     Python 3.6b2  3378 (add BUILD_TUPLE_UNPACK_WITH_CALL #28257)
 #     Python 3.6rc1 3379 (more thorough __class__ validation #23722)
-#     Python 3.7a1  3390 (add LOAD_METHOD and CALL_METHOD opcodes #26110)
+#     Python 3.7a1  3390 (add LOAD_METHOD na CALL_METHOD opcodes #26110)
 #     Python 3.7a2  3391 (update GET_AITER #31709)
 #     Python 3.7a4  3392 (PEP 552: Deterministic pycs #31650)
 #     Python 3.7b1  3393 (remove STORE_ANNOTATION opcode #32550)
-#     Python 3.7b5  3394 (restored docstring as the first stmt in the body;
+#     Python 3.7b5  3394 (restored docstring kama the first stmt kwenye the body;
 #                         this might affected the first line number #32911)
 #     Python 3.8a1  3400 (move frame block handling to compiler #17611)
 #     Python 3.8a1  3401 (add END_ASYNC_FOR #33041)
 #     Python 3.8a1  3410 (PEP570 Python Positional-Only Parameters #36540)
-#     Python 3.8b2  3411 (Reverse evaluation order of key: value in dict
+#     Python 3.8b2  3411 (Reverse evaluation order of key: value kwenye dict
 #                         comprehensions #35224)
-#     Python 3.8b2  3412 (Swap the position of positional args and positional
-#                         only args in ast.arguments #37593)
-#     Python 3.8b4  3413 (Fix "break" and "continue" in "finally" #37830)
+#     Python 3.8b2  3412 (Swap the position of positional args na positional
+#                         only args kwenye ast.arguments #37593)
+#     Python 3.8b4  3413 (Fix "koma" na "endelea" kwenye "finally" #37830)
 #
 # MAGIC must change whenever the bytecode emitted by the compiler may no
 # longer be understood by older implementations of the eval loop (usually
 # due to the addition of new opcodes).
 #
-# Whenever MAGIC_NUMBER is changed, the ranges in the magic_values array
-# in PC/launcher.c must also be updated.
+# Whenever MAGIC_NUMBER ni changed, the ranges kwenye the magic_values array
+# kwenye PC/launcher.c must also be updated.
 
 MAGIC_NUMBER = (3413).to_bytes(2, 'little') + b'\r\n'
 _RAW_MAGIC_NUMBER = int.kutoka_bytes(MAGIC_NUMBER, 'little')  # For agiza.c
@@ -285,71 +285,71 @@ _RAW_MAGIC_NUMBER = int.kutoka_bytes(MAGIC_NUMBER, 'little')  # For agiza.c
 _PYCACHE = '__pycache__'
 _OPT = 'opt-'
 
-SOURCE_SUFFIXES = ['.py']  # _setup() adds .pyw as needed.
+SOURCE_SUFFIXES = ['.py']  # _setup() adds .pyw kama needed.
 
 BYTECODE_SUFFIXES = ['.pyc']
 # Deprecated.
 DEBUG_BYTECODE_SUFFIXES = OPTIMIZED_BYTECODE_SUFFIXES = BYTECODE_SUFFIXES
 
-eleza cache_kutoka_source(path, debug_override=None, *, optimization=None):
+eleza cache_kutoka_source(path, debug_override=Tupu, *, optimization=Tupu):
     """Given the path to a .py file, rudisha the path to its .pyc file.
 
-    The .py file does not need to exist; this simply returns the path to the
-    .pyc file calculated as ikiwa the .py file were imported.
+    The .py file does sio need to exist; this simply rudishas the path to the
+    .pyc file calculated kama ikiwa the .py file were imported.
 
     The 'optimization' parameter controls the presumed optimization level of
-    the bytecode file. If 'optimization' is not None, the string representation
-    of the argument is taken and verified to be alphanumeric (else ValueError
-    is raised).
+    the bytecode file. If 'optimization' ni sio Tupu, the string representation
+    of the argument ni taken na verified to be alphanumeric (else ValueError
+    ni ashiriad).
 
-    The debug_override parameter is deprecated. If debug_override is not None,
-    a True value is the same as setting 'optimization' to the empty string
-    while a False value is equivalent to setting 'optimization' to '1'.
+    The debug_override parameter ni deprecated. If debug_override ni sio Tupu,
+    a Kweli value ni the same kama setting 'optimization' to the empty string
+    wakati a Uongo value ni equivalent to setting 'optimization' to '1'.
 
-    If sys.implementation.cache_tag is None then NotImplementedError is raised.
+    If sys.implementation.cache_tag ni Tupu then NotImplementedError ni ashiriad.
 
     """
-    ikiwa debug_override is not None:
-        _warnings.warn('the debug_override parameter is deprecated; use '
+    ikiwa debug_override ni sio Tupu:
+        _warnings.warn('the debug_override parameter ni deprecated; use '
                        "'optimization' instead", DeprecationWarning)
-        ikiwa optimization is not None:
-            message = 'debug_override or optimization must be set to None'
-            raise TypeError(message)
+        ikiwa optimization ni sio Tupu:
+            message = 'debug_override ama optimization must be set to Tupu'
+            ashiria TypeError(message)
         optimization = '' ikiwa debug_override else 1
     path = _os.fspath(path)
     head, tail = _path_split(path)
     base, sep, rest = tail.rpartition('.')
     tag = sys.implementation.cache_tag
-    ikiwa tag is None:
-        raise NotImplementedError('sys.implementation.cache_tag is None')
+    ikiwa tag ni Tupu:
+        ashiria NotImplementedError('sys.implementation.cache_tag ni Tupu')
     almost_filename = ''.join([(base ikiwa base else rest), sep, tag])
-    ikiwa optimization is None:
+    ikiwa optimization ni Tupu:
         ikiwa sys.flags.optimize == 0:
             optimization = ''
-        else:
+        isipokua:
             optimization = sys.flags.optimize
     optimization = str(optimization)
     ikiwa optimization != '':
-        ikiwa not optimization.isalnum():
-            raise ValueError('{!r} is not alphanumeric'.format(optimization))
+        ikiwa sio optimization.isalnum():
+            ashiria ValueError('{!r} ni sio alphanumeric'.format(optimization))
         almost_filename = '{}.{}{}'.format(almost_filename, _OPT, optimization)
     filename = almost_filename + BYTECODE_SUFFIXES[0]
-    ikiwa sys.pycache_prefix is not None:
+    ikiwa sys.pycache_prefix ni sio Tupu:
         # We need an absolute path to the py file to avoid the possibility of
         # collisions within sys.pycache_prefix, ikiwa someone has two different
-        # `foo/bar.py` on their system and they agiza both of them using the
+        # `foo/bar.py` on their system na they agiza both of them using the
         # same sys.pycache_prefix. Let's say sys.pycache_prefix is
-        # `C:\Bytecode`; the idea here is that ikiwa we get `Foo\Bar`, we first
+        # `C:\Bytecode`; the idea here ni that ikiwa we get `Foo\Bar`, we first
         # make it absolute (`C:\Somewhere\Foo\Bar`), then make it root-relative
-        # (`Somewhere\Foo\Bar`), so we end up placing the bytecode file in an
+        # (`Somewhere\Foo\Bar`), so we end up placing the bytecode file kwenye an
         # unambiguous `C:\Bytecode\Somewhere\Foo\Bar\`.
-        ikiwa not _path_isabs(head):
+        ikiwa sio _path_isabs(head):
             head = _path_join(_os.getcwd(), head)
 
         # Strip initial drive kutoka a Windows path. We know we have an absolute
         # path here, so the second part of the check rules out a POSIX path that
         # happens to contain a colon at the second character.
-        ikiwa head[1] == ':' and head[0] not in path_separators:
+        ikiwa head[1] == ':' na head[0] haiko kwenye path_separators:
             head = head[2:]
 
         # Strip initial path separator kutoka `head` to complete the conversion
@@ -365,38 +365,38 @@ eleza cache_kutoka_source(path, debug_override=None, *, optimization=None):
 eleza source_kutoka_cache(path):
     """Given the path to a .pyc. file, rudisha the path to its .py file.
 
-    The .pyc file does not need to exist; this simply returns the path to
+    The .pyc file does sio need to exist; this simply rudishas the path to
     the .py file calculated to correspond to the .pyc file.  If path does
-    not conform to PEP 3147/488 format, ValueError will be raised. If
-    sys.implementation.cache_tag is None then NotImplementedError is raised.
+    sio conform to PEP 3147/488 format, ValueError will be ashiriad. If
+    sys.implementation.cache_tag ni Tupu then NotImplementedError ni ashiriad.
 
     """
-    ikiwa sys.implementation.cache_tag is None:
-        raise NotImplementedError('sys.implementation.cache_tag is None')
+    ikiwa sys.implementation.cache_tag ni Tupu:
+        ashiria NotImplementedError('sys.implementation.cache_tag ni Tupu')
     path = _os.fspath(path)
     head, pycache_filename = _path_split(path)
-    found_in_pycache_prefix = False
-    ikiwa sys.pycache_prefix is not None:
+    found_in_pycache_prefix = Uongo
+    ikiwa sys.pycache_prefix ni sio Tupu:
         stripped_path = sys.pycache_prefix.rstrip(path_separators)
         ikiwa head.startswith(stripped_path + path_sep):
             head = head[len(stripped_path):]
-            found_in_pycache_prefix = True
-    ikiwa not found_in_pycache_prefix:
+            found_in_pycache_prefix = Kweli
+    ikiwa sio found_in_pycache_prefix:
         head, pycache = _path_split(head)
         ikiwa pycache != _PYCACHE:
-            raise ValueError(f'{_PYCACHE} not bottom-level directory in '
+            ashiria ValueError(f'{_PYCACHE} sio bottom-level directory kwenye '
                              f'{path!r}')
     dot_count = pycache_filename.count('.')
-    ikiwa dot_count not in {2, 3}:
-        raise ValueError(f'expected only 2 or 3 dots in {pycache_filename!r}')
+    ikiwa dot_count haiko kwenye {2, 3}:
+        ashiria ValueError(f'expected only 2 ama 3 dots kwenye {pycache_filename!r}')
     elikiwa dot_count == 3:
         optimization = pycache_filename.rsplit('.', 2)[-2]
-        ikiwa not optimization.startswith(_OPT):
-            raise ValueError("optimization portion of filename does not start "
+        ikiwa sio optimization.startswith(_OPT):
+            ashiria ValueError("optimization portion of filename does sio start "
                              f"with {_OPT!r}")
         opt_level = optimization[len(_OPT):]
-        ikiwa not opt_level.isalnum():
-            raise ValueError(f"optimization level {optimization!r} is not an "
+        ikiwa sio opt_level.isalnum():
+            ashiria ValueError(f"optimization level {optimization!r} ni sio an "
                              "alphanumeric value")
     base_filename = pycache_filename.partition('.')[0]
     rudisha _path_join(head, base_filename + SOURCE_SUFFIXES[0])
@@ -405,39 +405,39 @@ eleza source_kutoka_cache(path):
 eleza _get_sourcefile(bytecode_path):
     """Convert a bytecode file path to a source path (ikiwa possible).
 
-    This function exists purely for backwards-compatibility for
-    PyImport_ExecCodeModuleWithFilenames() in the C API.
+    This function exists purely kila backwards-compatibility for
+    PyImport_ExecCodeModuleWithFilenames() kwenye the C API.
 
     """
     ikiwa len(bytecode_path) == 0:
-        rudisha None
+        rudisha Tupu
     rest, _, extension = bytecode_path.rpartition('.')
-    ikiwa not rest or extension.lower()[-3:-1] != 'py':
+    ikiwa sio rest ama extension.lower()[-3:-1] != 'py':
         rudisha bytecode_path
-    try:
+    jaribu:
         source_path = source_kutoka_cache(bytecode_path)
-    except (NotImplementedError, ValueError):
+    tatizo (NotImplementedError, ValueError):
         source_path = bytecode_path[:-1]
     rudisha source_path ikiwa _path_isfile(source_path) else bytecode_path
 
 
 eleza _get_cached(filename):
     ikiwa filename.endswith(tuple(SOURCE_SUFFIXES)):
-        try:
+        jaribu:
             rudisha cache_kutoka_source(filename)
-        except NotImplementedError:
-            pass
+        tatizo NotImplementedError:
+            pita
     elikiwa filename.endswith(tuple(BYTECODE_SUFFIXES)):
         rudisha filename
-    else:
-        rudisha None
+    isipokua:
+        rudisha Tupu
 
 
 eleza _calc_mode(path):
-    """Calculate the mode permissions for a bytecode file."""
-    try:
+    """Calculate the mode permissions kila a bytecode file."""
+    jaribu:
         mode = _path_stat(path).st_mode
-    except OSError:
+    tatizo OSError:
         mode = 0o666
     # We always ensure write access so we can update cached files
     # later even when the source files are read-only on Windows (#6074)
@@ -450,22 +450,22 @@ eleza _check_name(method):
     loader can handle.
 
     The first argument (self) must define _name which the second argument is
-    compared against. If the comparison fails then ImportError is raised.
+    compared against. If the comparison fails then ImportError ni ashiriad.
 
     """
-    eleza _check_name_wrapper(self, name=None, *args, **kwargs):
-        ikiwa name is None:
+    eleza _check_name_wrapper(self, name=Tupu, *args, **kwargs):
+        ikiwa name ni Tupu:
             name = self.name
         elikiwa self.name != name:
-            raise ImportError('loader for %s cannot handle %s' %
+            ashiria ImportError('loader kila %s cannot handle %s' %
                                 (self.name, name), name=name)
         rudisha method(self, name, *args, **kwargs)
-    try:
+    jaribu:
         _wrap = _bootstrap._wrap
-    except NameError:
+    tatizo NameError:
         # XXX yuck
         eleza _wrap(new, old):
-            for replace in ['__module__', '__name__', '__qualname__', '__doc__']:
+            kila replace kwenye ['__module__', '__name__', '__qualname__', '__doc__']:
                 ikiwa hasattr(old, replace):
                     setattr(new, replace, getattr(old, replace))
             new.__dict__.update(old.__dict__)
@@ -474,52 +474,52 @@ eleza _check_name(method):
 
 
 eleza _find_module_shim(self, fullname):
-    """Try to find a loader for the specified module by delegating to
+    """Try to find a loader kila the specified module by delegating to
     self.find_loader().
 
-    This method is deprecated in favor of finder.find_spec().
+    This method ni deprecated kwenye favor of finder.find_spec().
 
     """
-    # Call find_loader(). If it returns a string (indicating this
-    # is a namespace package portion), generate a warning and
-    # rudisha None.
+    # Call find_loader(). If it rudishas a string (indicating this
+    # ni a namespace package portion), generate a warning and
+    # rudisha Tupu.
     loader, portions = self.find_loader(fullname)
-    ikiwa loader is None and len(portions):
+    ikiwa loader ni Tupu na len(portions):
         msg = 'Not agizaing directory {}: missing __init__'
         _warnings.warn(msg.format(portions[0]), ImportWarning)
     rudisha loader
 
 
 eleza _classify_pyc(data, name, exc_details):
-    """Perform basic validity checking of a pyc header and rudisha the flags field,
+    """Perform basic validity checking of a pyc header na rudisha the flags field,
     which determines how the pyc should be further validated against the source.
 
-    *data* is the contents of the pyc file. (Only the first 16 bytes are
+    *data* ni the contents of the pyc file. (Only the first 16 bytes are
     required, though.)
 
-    *name* is the name of the module being imported. It is used for logging.
+    *name* ni the name of the module being imported. It ni used kila logging.
 
-    *exc_details* is a dictionary passed to ImportError ikiwa it raised for
+    *exc_details* ni a dictionary pitaed to ImportError ikiwa it ashiriad for
     improved debugging.
 
-    ImportError is raised when the magic number is incorrect or when the flags
-    field is invalid. EOFError is raised when the data is found to be truncated.
+    ImportError ni ashiriad when the magic number ni incorrect ama when the flags
+    field ni invalid. EOFError ni ashiriad when the data ni found to be truncated.
 
     """
     magic = data[:4]
     ikiwa magic != MAGIC_NUMBER:
-        message = f'bad magic number in {name!r}: {magic!r}'
+        message = f'bad magic number kwenye {name!r}: {magic!r}'
         _bootstrap._verbose_message('{}', message)
-        raise ImportError(message, **exc_details)
+        ashiria ImportError(message, **exc_details)
     ikiwa len(data) < 16:
-        message = f'reached EOF while reading pyc header of {name!r}'
+        message = f'reached EOF wakati reading pyc header of {name!r}'
         _bootstrap._verbose_message('{}', message)
-        raise EOFError(message)
+        ashiria EOFError(message)
     flags = _unpack_uint32(data[4:8])
     # Only the first two flags are defined.
     ikiwa flags & ~0b11:
-        message = f'invalid flags {flags!r} in {name!r}'
-        raise ImportError(message, **exc_details)
+        message = f'invalid flags {flags!r} kwenye {name!r}'
+        ashiria ImportError(message, **exc_details)
     rudisha flags
 
 
@@ -527,69 +527,69 @@ eleza _validate_timestamp_pyc(data, source_mtime, source_size, name,
                             exc_details):
     """Validate a pyc against the source last-modified time.
 
-    *data* is the contents of the pyc file. (Only the first 16 bytes are
+    *data* ni the contents of the pyc file. (Only the first 16 bytes are
     required.)
 
-    *source_mtime* is the last modified timestamp of the source file.
+    *source_mtime* ni the last modified timestamp of the source file.
 
-    *source_size* is None or the size of the source file in bytes.
+    *source_size* ni Tupu ama the size of the source file kwenye bytes.
 
-    *name* is the name of the module being imported. It is used for logging.
+    *name* ni the name of the module being imported. It ni used kila logging.
 
-    *exc_details* is a dictionary passed to ImportError ikiwa it raised for
+    *exc_details* ni a dictionary pitaed to ImportError ikiwa it ashiriad for
     improved debugging.
 
-    An ImportError is raised ikiwa the bytecode is stale.
+    An ImportError ni ashiriad ikiwa the bytecode ni stale.
 
     """
     ikiwa _unpack_uint32(data[8:12]) != (source_mtime & 0xFFFFFFFF):
-        message = f'bytecode is stale for {name!r}'
+        message = f'bytecode ni stale kila {name!r}'
         _bootstrap._verbose_message('{}', message)
-        raise ImportError(message, **exc_details)
-    ikiwa (source_size is not None and
+        ashiria ImportError(message, **exc_details)
+    ikiwa (source_size ni sio Tupu and
         _unpack_uint32(data[12:16]) != (source_size & 0xFFFFFFFF)):
-        raise ImportError(f'bytecode is stale for {name!r}', **exc_details)
+        ashiria ImportError(f'bytecode ni stale kila {name!r}', **exc_details)
 
 
 eleza _validate_hash_pyc(data, source_hash, name, exc_details):
     """Validate a hash-based pyc by checking the real source hash against the one in
     the pyc header.
 
-    *data* is the contents of the pyc file. (Only the first 16 bytes are
+    *data* ni the contents of the pyc file. (Only the first 16 bytes are
     required.)
 
-    *source_hash* is the importlib.util.source_hash() of the source file.
+    *source_hash* ni the importlib.util.source_hash() of the source file.
 
-    *name* is the name of the module being imported. It is used for logging.
+    *name* ni the name of the module being imported. It ni used kila logging.
 
-    *exc_details* is a dictionary passed to ImportError ikiwa it raised for
+    *exc_details* ni a dictionary pitaed to ImportError ikiwa it ashiriad for
     improved debugging.
 
-    An ImportError is raised ikiwa the bytecode is stale.
+    An ImportError ni ashiriad ikiwa the bytecode ni stale.
 
     """
     ikiwa data[8:16] != source_hash:
-        raise ImportError(
-            f'hash in bytecode doesn\'t match hash of source {name!r}',
+        ashiria ImportError(
+            f'hash kwenye bytecode doesn\'t match hash of source {name!r}',
             **exc_details,
         )
 
 
-eleza _compile_bytecode(data, name=None, bytecode_path=None, source_path=None):
-    """Compile bytecode as found in a pyc."""
+eleza _compile_bytecode(data, name=Tupu, bytecode_path=Tupu, source_path=Tupu):
+    """Compile bytecode kama found kwenye a pyc."""
     code = marshal.loads(data)
     ikiwa isinstance(code, _code_type):
         _bootstrap._verbose_message('code object kutoka {!r}', bytecode_path)
-        ikiwa source_path is not None:
+        ikiwa source_path ni sio Tupu:
             _imp._fix_co_filename(code, source_path)
         rudisha code
-    else:
-        raise ImportError('Non-code object in {!r}'.format(bytecode_path),
+    isipokua:
+        ashiria ImportError('Non-code object kwenye {!r}'.format(bytecode_path),
                           name=name, path=bytecode_path)
 
 
 eleza _code_to_timestamp_pyc(code, mtime=0, source_size=0):
-    "Produce the data for a timestamp-based pyc."
+    "Produce the data kila a timestamp-based pyc."
     data = bytearray(MAGIC_NUMBER)
     data.extend(_pack_uint32(0))
     data.extend(_pack_uint32(mtime))
@@ -598,8 +598,8 @@ eleza _code_to_timestamp_pyc(code, mtime=0, source_size=0):
     rudisha data
 
 
-eleza _code_to_hash_pyc(code, source_hash, checked=True):
-    "Produce the data for a hash-based pyc."
+eleza _code_to_hash_pyc(code, source_hash, checked=Kweli):
+    "Produce the data kila a hash-based pyc."
     data = bytearray(MAGIC_NUMBER)
     flags = 0b1 | checked << 1
     data.extend(_pack_uint32(flags))
@@ -610,14 +610,14 @@ eleza _code_to_hash_pyc(code, source_hash, checked=True):
 
 
 eleza decode_source(source_bytes):
-    """Decode bytes representing source code and rudisha the string.
+    """Decode bytes representing source code na rudisha the string.
 
-    Universal newline support is used in the decoding.
+    Universal newline support ni used kwenye the decoding.
     """
     agiza tokenize  # To avoid bootstrap issues.
     source_bytes_readline = _io.BytesIO(source_bytes).readline
     encoding = tokenize.detect_encoding(source_bytes_readline)
-    newline_decoder = _io.IncrementalNewlineDecoder(None, True)
+    newline_decoder = _io.IncrementalNewlineDecoder(Tupu, Kweli)
     rudisha newline_decoder.decode(source_bytes.decode(encoding[0]))
 
 
@@ -626,63 +626,63 @@ eleza decode_source(source_bytes):
 _POPULATE = object()
 
 
-eleza spec_kutoka_file_location(name, location=None, *, loader=None,
+eleza spec_kutoka_file_location(name, location=Tupu, *, loader=Tupu,
                             submodule_search_locations=_POPULATE):
     """Return a module spec based on a file location.
 
-    To indicate that the module is a package, set
+    To indicate that the module ni a package, set
     submodule_search_locations to a list of directory paths.  An
-    empty list is sufficient, though its not otherwise useful to the
+    empty list ni sufficient, though its sio otherwise useful to the
     agiza system.
 
-    The loader must take a spec as its only __init__() arg.
+    The loader must take a spec kama its only __init__() arg.
 
     """
-    ikiwa location is None:
+    ikiwa location ni Tupu:
         # The caller may simply want a partially populated location-
         # oriented spec.  So we set the location to a bogus value and
-        # fill in as much as we can.
+        # fill kwenye kama much kama we can.
         location = '<unknown>'
         ikiwa hasattr(loader, 'get_filename'):
             # ExecutionLoader
-            try:
+            jaribu:
                 location = loader.get_filename(name)
-            except ImportError:
-                pass
-    else:
+            tatizo ImportError:
+                pita
+    isipokua:
         location = _os.fspath(location)
 
-    # If the location is on the filesystem, but doesn't actually exist,
-    # we could rudisha None here, indicating that the location is not
+    # If the location ni on the filesystem, but doesn't actually exist,
+    # we could rudisha Tupu here, indicating that the location ni not
     # valid.  However, we don't have a good way of testing since an
-    # indirect location (e.g. a zip file or URL) will look like a
+    # indirect location (e.g. a zip file ama URL) will look like a
     # non-existent file relative to the filesystem.
 
     spec = _bootstrap.ModuleSpec(name, loader, origin=location)
-    spec._set_fileattr = True
+    spec._set_fileattr = Kweli
 
     # Pick a loader ikiwa one wasn't provided.
-    ikiwa loader is None:
-        for loader_class, suffixes in _get_supported_file_loaders():
+    ikiwa loader ni Tupu:
+        kila loader_class, suffixes kwenye _get_supported_file_loaders():
             ikiwa location.endswith(tuple(suffixes)):
                 loader = loader_class(name, location)
                 spec.loader = loader
-                break
-        else:
-            rudisha None
+                koma
+        isipokua:
+            rudisha Tupu
 
     # Set submodule_search_paths appropriately.
-    ikiwa submodule_search_locations is _POPULATE:
+    ikiwa submodule_search_locations ni _POPULATE:
         # Check the loader.
         ikiwa hasattr(loader, 'is_package'):
-            try:
+            jaribu:
                 is_package = loader.is_package(name)
-            except ImportError:
-                pass
-            else:
+            tatizo ImportError:
+                pita
+            isipokua:
                 ikiwa is_package:
                     spec.submodule_search_locations = []
-    else:
+    isipokua:
         spec.submodule_search_locations = submodule_search_locations
     ikiwa spec.submodule_search_locations == []:
         ikiwa location:
@@ -696,7 +696,7 @@ eleza spec_kutoka_file_location(name, location=None, *, loader=None,
 
 kundi WindowsRegistryFinder:
 
-    """Meta path finder for modules declared in the Windows registry."""
+    """Meta path finder kila modules declared kwenye the Windows registry."""
 
     REGISTRY_KEY = (
         'Software\\Python\\PythonCore\\{sys_version}'
@@ -704,40 +704,40 @@ kundi WindowsRegistryFinder:
     REGISTRY_KEY_DEBUG = (
         'Software\\Python\\PythonCore\\{sys_version}'
         '\\Modules\\{fullname}\\Debug')
-    DEBUG_BUILD = False  # Changed in _setup()
+    DEBUG_BUILD = Uongo  # Changed kwenye _setup()
 
     @classmethod
     eleza _open_registry(cls, key):
-        try:
+        jaribu:
             rudisha _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, key)
-        except OSError:
+        tatizo OSError:
             rudisha _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, key)
 
     @classmethod
     eleza _search_registry(cls, fullname):
         ikiwa cls.DEBUG_BUILD:
             registry_key = cls.REGISTRY_KEY_DEBUG
-        else:
+        isipokua:
             registry_key = cls.REGISTRY_KEY
         key = registry_key.format(fullname=fullname,
                                   sys_version='%d.%d' % sys.version_info[:2])
-        try:
-            with cls._open_registry(key) as hkey:
+        jaribu:
+            with cls._open_registry(key) kama hkey:
                 filepath = _winreg.QueryValue(hkey, '')
-        except OSError:
-            rudisha None
+        tatizo OSError:
+            rudisha Tupu
         rudisha filepath
 
     @classmethod
-    eleza find_spec(cls, fullname, path=None, target=None):
+    eleza find_spec(cls, fullname, path=Tupu, target=Tupu):
         filepath = cls._search_registry(fullname)
-        ikiwa filepath is None:
-            rudisha None
-        try:
+        ikiwa filepath ni Tupu:
+            rudisha Tupu
+        jaribu:
             _path_stat(filepath)
-        except OSError:
-            rudisha None
-        for loader, suffixes in _get_supported_file_loaders():
+        tatizo OSError:
+            rudisha Tupu
+        kila loader, suffixes kwenye _get_supported_file_loaders():
             ikiwa filepath.endswith(tuple(suffixes)):
                 spec = _bootstrap.spec_kutoka_loader(fullname,
                                                    loader(fullname, filepath),
@@ -745,17 +745,17 @@ kundi WindowsRegistryFinder:
                 rudisha spec
 
     @classmethod
-    eleza find_module(cls, fullname, path=None):
-        """Find module named in the registry.
+    eleza find_module(cls, fullname, path=Tupu):
+        """Find module named kwenye the registry.
 
-        This method is deprecated.  Use exec_module() instead.
+        This method ni deprecated.  Use exec_module() instead.
 
         """
         spec = cls.find_spec(fullname, path)
-        ikiwa spec is not None:
+        ikiwa spec ni sio Tupu:
             rudisha spec.loader
-        else:
-            rudisha None
+        isipokua:
+            rudisha Tupu
 
 
 kundi _LoaderBasics:
@@ -765,46 +765,46 @@ kundi _LoaderBasics:
 
     eleza is_package(self, fullname):
         """Concrete implementation of InspectLoader.is_package by checking if
-        the path returned by get_filename has a filename of '__init__.py'."""
+        the path rudishaed by get_filename has a filename of '__init__.py'."""
         filename = _path_split(self.get_filename(fullname))[1]
         filename_base = filename.rsplit('.', 1)[0]
         tail_name = fullname.rpartition('.')[2]
-        rudisha filename_base == '__init__' and tail_name != '__init__'
+        rudisha filename_base == '__init__' na tail_name != '__init__'
 
     eleza create_module(self, spec):
-        """Use default semantics for module creation."""
+        """Use default semantics kila module creation."""
 
     eleza exec_module(self, module):
         """Execute the module."""
         code = self.get_code(module.__name__)
-        ikiwa code is None:
-            raise ImportError('cannot load module {!r} when get_code() '
-                              'returns None'.format(module.__name__))
+        ikiwa code ni Tupu:
+            ashiria ImportError('cannot load module {!r} when get_code() '
+                              'rudishas Tupu'.format(module.__name__))
         _bootstrap._call_with_frames_removed(exec, code, module.__dict__)
 
     eleza load_module(self, fullname):
-        """This module is deprecated."""
+        """This module ni deprecated."""
         rudisha _bootstrap._load_module_shim(self, fullname)
 
 
 kundi SourceLoader(_LoaderBasics):
 
     eleza path_mtime(self, path):
-        """Optional method that returns the modification time (an int) for the
+        """Optional method that rudishas the modification time (an int) kila the
         specified path (a str).
 
         Raises OSError when the path cannot be handled.
         """
-        raise OSError
+        ashiria OSError
 
     eleza path_stats(self, path):
-        """Optional method returning a metadata dict for the specified
+        """Optional method rudishaing a metadata dict kila the specified
         path (a str).
 
         Possible keys:
-        - 'mtime' (mandatory) is the numeric timestamp of last source
+        - 'mtime' (mandatory) ni the numeric timestamp of last source
           code modification;
-        - 'size' (optional) is the size in bytes of the source code.
+        - 'size' (optional) ni the size kwenye bytes of the source code.
 
         Implementing this method allows the loader to read bytecode files.
         Raises OSError when the path cannot be handled.
@@ -814,9 +814,9 @@ kundi SourceLoader(_LoaderBasics):
     eleza _cache_bytecode(self, source_path, cache_path, data):
         """Optional method which writes data (bytes) to a file path (a str).
 
-        Implementing this method allows for the writing of bytecode files.
+        Implementing this method allows kila the writing of bytecode files.
 
-        The source path is needed in order to correctly transfer permissions
+        The source path ni needed kwenye order to correctly transfer permissions
         """
         # For backwards compatibility, we delegate to set_data()
         rudisha self.set_data(cache_path, data)
@@ -824,17 +824,17 @@ kundi SourceLoader(_LoaderBasics):
     eleza set_data(self, path, data):
         """Optional method which writes data (bytes) to a file path (a str).
 
-        Implementing this method allows for the writing of bytecode files.
+        Implementing this method allows kila the writing of bytecode files.
         """
 
 
     eleza get_source(self, fullname):
         """Concrete implementation of InspectLoader.get_source."""
         path = self.get_filename(fullname)
-        try:
+        jaribu:
             source_bytes = self.get_data(path)
-        except OSError as exc:
-            raise ImportError('source not available through get_data()',
+        tatizo OSError kama exc:
+            ashiria ImportError('source sio available through get_data()',
                               name=fullname) kutoka exc
         rudisha decode_source(source_bytes)
 
@@ -844,7 +844,7 @@ kundi SourceLoader(_LoaderBasics):
         The 'data' argument can be any object type that compile() supports.
         """
         rudisha _bootstrap._call_with_frames_removed(compile, data, path, 'exec',
-                                        dont_inherit=True, optimize=_optimize)
+                                        dont_inherit=Kweli, optimize=_optimize)
 
     eleza get_code(self, fullname):
         """Concrete implementation of InspectLoader.get_code.
@@ -854,32 +854,32 @@ kundi SourceLoader(_LoaderBasics):
 
         """
         source_path = self.get_filename(fullname)
-        source_mtime = None
-        source_bytes = None
-        source_hash = None
-        hash_based = False
-        check_source = True
-        try:
+        source_mtime = Tupu
+        source_bytes = Tupu
+        source_hash = Tupu
+        hash_based = Uongo
+        check_source = Kweli
+        jaribu:
             bytecode_path = cache_kutoka_source(source_path)
-        except NotImplementedError:
-            bytecode_path = None
-        else:
-            try:
+        tatizo NotImplementedError:
+            bytecode_path = Tupu
+        isipokua:
+            jaribu:
                 st = self.path_stats(source_path)
-            except OSError:
-                pass
-            else:
+            tatizo OSError:
+                pita
+            isipokua:
                 source_mtime = int(st['mtime'])
-                try:
+                jaribu:
                     data = self.get_data(bytecode_path)
-                except OSError:
-                    pass
-                else:
+                tatizo OSError:
+                    pita
+                isipokua:
                     exc_details = {
                         'name': fullname,
                         'path': bytecode_path,
                     }
-                    try:
+                    jaribu:
                         flags = _classify_pyc(data, fullname, exc_details)
                         bytes_data = memoryview(data)[16:]
                         hash_based = flags & 0b1 != 0
@@ -895,7 +895,7 @@ kundi SourceLoader(_LoaderBasics):
                                 )
                                 _validate_hash_pyc(data, source_hash, fullname,
                                                    exc_details)
-                        else:
+                        isipokua:
                             _validate_timestamp_pyc(
                                 data,
                                 source_mtime,
@@ -903,31 +903,31 @@ kundi SourceLoader(_LoaderBasics):
                                 fullname,
                                 exc_details,
                             )
-                    except (ImportError, EOFError):
-                        pass
-                    else:
+                    tatizo (ImportError, EOFError):
+                        pita
+                    isipokua:
                         _bootstrap._verbose_message('{} matches {}', bytecode_path,
                                                     source_path)
                         rudisha _compile_bytecode(bytes_data, name=fullname,
                                                  bytecode_path=bytecode_path,
                                                  source_path=source_path)
-        ikiwa source_bytes is None:
+        ikiwa source_bytes ni Tupu:
             source_bytes = self.get_data(source_path)
         code_object = self.source_to_code(source_bytes, source_path)
         _bootstrap._verbose_message('code object kutoka {}', source_path)
-        ikiwa (not sys.dont_write_bytecode and bytecode_path is not None and
-                source_mtime is not None):
+        ikiwa (not sys.dont_write_bytecode na bytecode_path ni sio Tupu and
+                source_mtime ni sio Tupu):
             ikiwa hash_based:
-                ikiwa source_hash is None:
+                ikiwa source_hash ni Tupu:
                     source_hash = _imp.source_hash(source_bytes)
                 data = _code_to_hash_pyc(code_object, source_hash, check_source)
-            else:
+            isipokua:
                 data = _code_to_timestamp_pyc(code_object, source_mtime,
                                               len(source_bytes))
-            try:
+            jaribu:
                 self._cache_bytecode(source_path, bytecode_path, data)
-            except NotImplementedError:
-                pass
+            tatizo NotImplementedError:
+                pita
         rudisha code_object
 
 
@@ -937,7 +937,7 @@ kundi FileLoader:
     require file system usage."""
 
     eleza __init__(self, fullname, path):
-        """Cache the module name and the path to the file found by the
+        """Cache the module name na the path to the file found by the
         finder."""
         self.name = fullname
         self.path = path
@@ -953,26 +953,26 @@ kundi FileLoader:
     eleza load_module(self, fullname):
         """Load a module kutoka a file.
 
-        This method is deprecated.  Use exec_module() instead.
+        This method ni deprecated.  Use exec_module() instead.
 
         """
-        # The only reason for this method is for the name check.
+        # The only reason kila this method ni kila the name check.
         # Issue #14857: Avoid the zero-argument form of super so the implementation
-        # of that form can be updated without breaking the frozen module
+        # of that form can be updated without komaing the frozen module
         rudisha super(FileLoader, self).load_module(fullname)
 
     @_check_name
     eleza get_filename(self, fullname):
-        """Return the path to the source file as found by the finder."""
+        """Return the path to the source file kama found by the finder."""
         rudisha self.path
 
     eleza get_data(self, path):
-        """Return the data kutoka path as raw bytes."""
+        """Return the data kutoka path kama raw bytes."""
         ikiwa isinstance(self, (SourceLoader, ExtensionFileLoader)):
-            with _io.open_code(str(path)) as file:
+            with _io.open_code(str(path)) kama file:
                 rudisha file.read()
-        else:
-            with _io.FileIO(path, 'r') as file:
+        isipokua:
+            with _io.FileIO(path, 'r') kama file:
                 rudisha file.read()
 
     # ResourceReader ABC API.
@@ -981,21 +981,21 @@ kundi FileLoader:
     eleza get_resource_reader(self, module):
         ikiwa self.is_package(module):
             rudisha self
-        rudisha None
+        rudisha Tupu
 
     eleza open_resource(self, resource):
         path = _path_join(_path_split(self.path)[0], resource)
         rudisha _io.FileIO(path, 'r')
 
     eleza resource_path(self, resource):
-        ikiwa not self.is_resource(resource):
-            raise FileNotFoundError
+        ikiwa sio self.is_resource(resource):
+            ashiria FileNotFoundError
         path = _path_join(_path_split(self.path)[0], resource)
         rudisha path
 
     eleza is_resource(self, name):
-        ikiwa path_sep in name:
-            rudisha False
+        ikiwa path_sep kwenye name:
+            rudisha Uongo
         path = _path_join(_path_split(self.path)[0], name)
         rudisha _path_isfile(path)
 
@@ -1008,7 +1008,7 @@ kundi SourceFileLoader(FileLoader, SourceLoader):
     """Concrete implementation of SourceLoader using the file system."""
 
     eleza path_stats(self, path):
-        """Return the metadata for the path."""
+        """Return the metadata kila the path."""
         st = _path_stat(path)
         rudisha {'mtime': st.st_mtime, 'size': st.st_size}
 
@@ -1022,29 +1022,29 @@ kundi SourceFileLoader(FileLoader, SourceLoader):
         parent, filename = _path_split(path)
         path_parts = []
         # Figure out what directories are missing.
-        while parent and not _path_isdir(parent):
+        wakati parent na sio _path_isdir(parent):
             parent, part = _path_split(parent)
             path_parts.append(part)
         # Create needed directories.
-        for part in reversed(path_parts):
+        kila part kwenye reversed(path_parts):
             parent = _path_join(parent, part)
-            try:
+            jaribu:
                 _os.mkdir(parent)
-            except FileExistsError:
+            tatizo FileExistsError:
                 # Probably another Python process already created the dir.
-                continue
-            except OSError as exc:
+                endelea
+            tatizo OSError kama exc:
                 # Could be a permission error, read-only filesystem: just forget
                 # about writing the data.
-                _bootstrap._verbose_message('could not create {!r}: {!r}',
+                _bootstrap._verbose_message('could sio create {!r}: {!r}',
                                             parent, exc)
-                return
-        try:
+                rudisha
+        jaribu:
             _write_atomic(path, data, _mode)
             _bootstrap._verbose_message('created {!r}', path)
-        except OSError as exc:
-            # Same as above: just don't write the bytecode.
-            _bootstrap._verbose_message('could not create {!r}: {!r}', path,
+        tatizo OSError kama exc:
+            # Same kama above: just don't write the bytecode.
+            _bootstrap._verbose_message('could sio create {!r}: {!r}', path,
                                         exc)
 
 
@@ -1069,19 +1069,19 @@ kundi SourcelessFileLoader(FileLoader, _LoaderBasics):
         )
 
     eleza get_source(self, fullname):
-        """Return None as there is no source code."""
-        rudisha None
+        """Return Tupu kama there ni no source code."""
+        rudisha Tupu
 
 
-# Filled in by _setup().
+# Filled kwenye by _setup().
 EXTENSION_SUFFIXES = []
 
 
 kundi ExtensionFileLoader(FileLoader, _LoaderBasics):
 
-    """Loader for extension modules.
+    """Loader kila extension modules.
 
-    The constructor is designed to work with FileFinder.
+    The constructor ni designed to work with FileFinder.
 
     """
 
@@ -1111,31 +1111,31 @@ kundi ExtensionFileLoader(FileLoader, _LoaderBasics):
                          self.name, self.path)
 
     eleza is_package(self, fullname):
-        """Return True ikiwa the extension module is a package."""
+        """Return Kweli ikiwa the extension module ni a package."""
         file_name = _path_split(self.path)[1]
         rudisha any(file_name == '__init__' + suffix
-                   for suffix in EXTENSION_SUFFIXES)
+                   kila suffix kwenye EXTENSION_SUFFIXES)
 
     eleza get_code(self, fullname):
-        """Return None as an extension module cannot create a code object."""
-        rudisha None
+        """Return Tupu kama an extension module cannot create a code object."""
+        rudisha Tupu
 
     eleza get_source(self, fullname):
-        """Return None as extension modules have no source code."""
-        rudisha None
+        """Return Tupu kama extension modules have no source code."""
+        rudisha Tupu
 
     @_check_name
     eleza get_filename(self, fullname):
-        """Return the path to the source file as found by the finder."""
+        """Return the path to the source file kama found by the finder."""
         rudisha self.path
 
 
 kundi _NamespacePath:
     """Represents a namespace package's path.  It uses the module name
-    to find its parent module, and kutoka there it looks up the parent's
-    __path__.  When this changes, the module's own path is recomputed,
+    to find its parent module, na kutoka there it looks up the parent's
+    __path__.  When this changes, the module's own path ni recomputed,
     using path_finder.  For top-level modules, the parent module's path
-    is sys.path."""
+    ni sys.path."""
 
     eleza __init__(self, name, path, path_finder):
         self._name = name
@@ -1147,7 +1147,7 @@ kundi _NamespacePath:
         """Returns a tuple of (parent-module-name, parent-path-attr-name)"""
         parent, dot, me = self._name.rpartition('.')
         ikiwa dot == '':
-            # This is a top-level module. sys.path contains the parent path.
+            # This ni a top-level module. sys.path contains the parent path.
             rudisha 'sys', 'path'
         # Not a top-level module. parent-module.__path__ contains the
         #  parent path.
@@ -1162,9 +1162,9 @@ kundi _NamespacePath:
         parent_path = tuple(self._get_parent_path()) # Make a copy
         ikiwa parent_path != self._last_parent_path:
             spec = self._path_finder(self._name, parent_path)
-            # Note that no changes are made ikiwa a loader is returned, but we
+            # Note that no changes are made ikiwa a loader ni rudishaed, but we
             #  do remember the new parent path
-            ikiwa spec is not None and spec.loader is None:
+            ikiwa spec ni sio Tupu na spec.loader ni Tupu:
                 ikiwa spec.submodule_search_locations:
                     self._path = spec.submodule_search_locations
             self._last_parent_path = parent_path     # Save the copy
@@ -1186,45 +1186,45 @@ kundi _NamespacePath:
         rudisha '_NamespacePath({!r})'.format(self._path)
 
     eleza __contains__(self, item):
-        rudisha item in self._recalculate()
+        rudisha item kwenye self._recalculate()
 
     eleza append(self, item):
         self._path.append(item)
 
 
-# We use this exclusively in module_kutoka_spec() for backward-compatibility.
+# We use this exclusively kwenye module_kutoka_spec() kila backward-compatibility.
 kundi _NamespaceLoader:
     eleza __init__(self, name, path, path_finder):
         self._path = _NamespacePath(name, path, path_finder)
 
     @classmethod
     eleza module_repr(cls, module):
-        """Return repr for the module.
+        """Return repr kila the module.
 
-        The method is deprecated.  The agiza machinery does the job itself.
+        The method ni deprecated.  The agiza machinery does the job itself.
 
         """
         rudisha '<module {!r} (namespace)>'.format(module.__name__)
 
     eleza is_package(self, fullname):
-        rudisha True
+        rudisha Kweli
 
     eleza get_source(self, fullname):
         rudisha ''
 
     eleza get_code(self, fullname):
-        rudisha compile('', '<string>', 'exec', dont_inherit=True)
+        rudisha compile('', '<string>', 'exec', dont_inherit=Kweli)
 
     eleza create_module(self, spec):
-        """Use default semantics for module creation."""
+        """Use default semantics kila module creation."""
 
     eleza exec_module(self, module):
-        pass
+        pita
 
     eleza load_module(self, fullname):
         """Load a namespace module.
 
-        This method is deprecated.  Use exec_module() instead.
+        This method ni deprecated.  Use exec_module() instead.
 
         """
         # The agiza system never calls this method.
@@ -1237,135 +1237,135 @@ kundi _NamespaceLoader:
 
 kundi PathFinder:
 
-    """Meta path finder for sys.path and package __path__ attributes."""
+    """Meta path finder kila sys.path na package __path__ attributes."""
 
     @classmethod
     eleza invalidate_caches(cls):
         """Call the invalidate_caches() method on all path entry finders
-        stored in sys.path_importer_caches (where implemented)."""
-        for name, finder in list(sys.path_importer_cache.items()):
-            ikiwa finder is None:
-                del sys.path_importer_cache[name]
+        stored kwenye sys.path_importer_caches (where implemented)."""
+        kila name, finder kwenye list(sys.path_importer_cache.items()):
+            ikiwa finder ni Tupu:
+                toa sys.path_importer_cache[name]
             elikiwa hasattr(finder, 'invalidate_caches'):
                 finder.invalidate_caches()
 
     @classmethod
     eleza _path_hooks(cls, path):
-        """Search sys.path_hooks for a finder for 'path'."""
-        ikiwa sys.path_hooks is not None and not sys.path_hooks:
-            _warnings.warn('sys.path_hooks is empty', ImportWarning)
-        for hook in sys.path_hooks:
-            try:
+        """Search sys.path_hooks kila a finder kila 'path'."""
+        ikiwa sys.path_hooks ni sio Tupu na sio sys.path_hooks:
+            _warnings.warn('sys.path_hooks ni empty', ImportWarning)
+        kila hook kwenye sys.path_hooks:
+            jaribu:
                 rudisha hook(path)
-            except ImportError:
-                continue
-        else:
-            rudisha None
+            tatizo ImportError:
+                endelea
+        isipokua:
+            rudisha Tupu
 
     @classmethod
     eleza _path_importer_cache(cls, path):
-        """Get the finder for the path entry kutoka sys.path_importer_cache.
+        """Get the finder kila the path entry kutoka sys.path_importer_cache.
 
-        If the path entry is not in the cache, find the appropriate finder
-        and cache it. If no finder is available, store None.
+        If the path entry ni haiko kwenye the cache, find the appropriate finder
+        na cache it. If no finder ni available, store Tupu.
 
         """
         ikiwa path == '':
-            try:
+            jaribu:
                 path = _os.getcwd()
-            except FileNotFoundError:
-                # Don't cache the failure as the cwd can easily change to
+            tatizo FileNotFoundError:
+                # Don't cache the failure kama the cwd can easily change to
                 # a valid directory later on.
-                rudisha None
-        try:
+                rudisha Tupu
+        jaribu:
             finder = sys.path_importer_cache[path]
-        except KeyError:
+        tatizo KeyError:
             finder = cls._path_hooks(path)
             sys.path_importer_cache[path] = finder
         rudisha finder
 
     @classmethod
     eleza _legacy_get_spec(cls, fullname, finder):
-        # This would be a good place for a DeprecationWarning if
+        # This would be a good place kila a DeprecationWarning if
         # we ended up going that route.
         ikiwa hasattr(finder, 'find_loader'):
             loader, portions = finder.find_loader(fullname)
-        else:
+        isipokua:
             loader = finder.find_module(fullname)
             portions = []
-        ikiwa loader is not None:
+        ikiwa loader ni sio Tupu:
             rudisha _bootstrap.spec_kutoka_loader(fullname, loader)
-        spec = _bootstrap.ModuleSpec(fullname, None)
+        spec = _bootstrap.ModuleSpec(fullname, Tupu)
         spec.submodule_search_locations = portions
         rudisha spec
 
     @classmethod
-    eleza _get_spec(cls, fullname, path, target=None):
-        """Find the loader or namespace_path for this module/package name."""
+    eleza _get_spec(cls, fullname, path, target=Tupu):
+        """Find the loader ama namespace_path kila this module/package name."""
         # If this ends up being a namespace package, namespace_path is
         #  the list of paths that will become its __path__
         namespace_path = []
-        for entry in path:
-            ikiwa not isinstance(entry, (str, bytes)):
-                continue
+        kila entry kwenye path:
+            ikiwa sio isinstance(entry, (str, bytes)):
+                endelea
             finder = cls._path_importer_cache(entry)
-            ikiwa finder is not None:
+            ikiwa finder ni sio Tupu:
                 ikiwa hasattr(finder, 'find_spec'):
                     spec = finder.find_spec(fullname, target)
-                else:
+                isipokua:
                     spec = cls._legacy_get_spec(fullname, finder)
-                ikiwa spec is None:
-                    continue
-                ikiwa spec.loader is not None:
+                ikiwa spec ni Tupu:
+                    endelea
+                ikiwa spec.loader ni sio Tupu:
                     rudisha spec
                 portions = spec.submodule_search_locations
-                ikiwa portions is None:
-                    raise ImportError('spec missing loader')
-                # This is possibly part of a namespace package.
-                #  Remember these path entries (ikiwa any) for when we
-                #  create a namespace package, and continue iterating
+                ikiwa portions ni Tupu:
+                    ashiria ImportError('spec missing loader')
+                # This ni possibly part of a namespace package.
+                #  Remember these path entries (ikiwa any) kila when we
+                #  create a namespace package, na endelea iterating
                 #  on path.
                 namespace_path.extend(portions)
-        else:
-            spec = _bootstrap.ModuleSpec(fullname, None)
+        isipokua:
+            spec = _bootstrap.ModuleSpec(fullname, Tupu)
             spec.submodule_search_locations = namespace_path
             rudisha spec
 
     @classmethod
-    eleza find_spec(cls, fullname, path=None, target=None):
-        """Try to find a spec for 'fullname' on sys.path or 'path'.
+    eleza find_spec(cls, fullname, path=Tupu, target=Tupu):
+        """Try to find a spec kila 'fullname' on sys.path ama 'path'.
 
-        The search is based on sys.path_hooks and sys.path_importer_cache.
+        The search ni based on sys.path_hooks na sys.path_importer_cache.
         """
-        ikiwa path is None:
+        ikiwa path ni Tupu:
             path = sys.path
         spec = cls._get_spec(fullname, path, target)
-        ikiwa spec is None:
-            rudisha None
-        elikiwa spec.loader is None:
+        ikiwa spec ni Tupu:
+            rudisha Tupu
+        elikiwa spec.loader ni Tupu:
             namespace_path = spec.submodule_search_locations
             ikiwa namespace_path:
                 # We found at least one namespace path.  Return a spec which
                 # can create the namespace package.
-                spec.origin = None
+                spec.origin = Tupu
                 spec.submodule_search_locations = _NamespacePath(fullname, namespace_path, cls._get_spec)
                 rudisha spec
-            else:
-                rudisha None
-        else:
+            isipokua:
+                rudisha Tupu
+        isipokua:
             rudisha spec
 
     @classmethod
-    eleza find_module(cls, fullname, path=None):
-        """find the module on sys.path or 'path' based on sys.path_hooks and
+    eleza find_module(cls, fullname, path=Tupu):
+        """find the module on sys.path ama 'path' based on sys.path_hooks and
         sys.path_importer_cache.
 
-        This method is deprecated.  Use find_spec() instead.
+        This method ni deprecated.  Use find_spec() instead.
 
         """
         spec = cls.find_spec(fullname, path)
-        ikiwa spec is None:
-            rudisha None
+        ikiwa spec ni Tupu:
+            rudisha Tupu
         rudisha spec.loader
 
     @classmethod
@@ -1374,8 +1374,8 @@ kundi PathFinder:
         Find distributions.
 
         Return an iterable of all Distribution instances capable of
-        loading the metadata for packages matching ``context.name``
-        (or all names ikiwa ``None`` indicated) along the paths in the list
+        loading the metadata kila packages matching ``context.name``
+        (or all names ikiwa ``Tupu`` indicated) along the paths kwenye the list
         of directories ``context.path``.
         """
         kutoka importlib.metadata agiza MetadataPathFinder
@@ -1386,21 +1386,21 @@ kundi FileFinder:
 
     """File-based finder.
 
-    Interactions with the file system are cached for performance, being
-    refreshed when the directory the finder is handling has been modified.
+    Interactions with the file system are cached kila performance, being
+    refreshed when the directory the finder ni handling has been modified.
 
     """
 
     eleza __init__(self, path, *loader_details):
-        """Initialize with the path to search on and a variable number of
-        2-tuples containing the loader and the file suffixes the loader
+        """Initialize with the path to search on na a variable number of
+        2-tuples containing the loader na the file suffixes the loader
         recognizes."""
         loaders = []
-        for loader, suffixes in loader_details:
-            loaders.extend((suffix, loader) for suffix in suffixes)
+        kila loader, suffixes kwenye loader_details:
+            loaders.extend((suffix, loader) kila suffix kwenye suffixes)
         self._loaders = loaders
         # Base (directory) path
-        self.path = path or '.'
+        self.path = path ama '.'
         self._path_mtime = -1
         self._path_cache = set()
         self._relaxed_path_cache = set()
@@ -1412,115 +1412,115 @@ kundi FileFinder:
     find_module = _find_module_shim
 
     eleza find_loader(self, fullname):
-        """Try to find a loader for the specified module, or the namespace
+        """Try to find a loader kila the specified module, ama the namespace
         package portions. Returns (loader, list-of-portions).
 
-        This method is deprecated.  Use find_spec() instead.
+        This method ni deprecated.  Use find_spec() instead.
 
         """
         spec = self.find_spec(fullname)
-        ikiwa spec is None:
-            rudisha None, []
-        rudisha spec.loader, spec.submodule_search_locations or []
+        ikiwa spec ni Tupu:
+            rudisha Tupu, []
+        rudisha spec.loader, spec.submodule_search_locations ama []
 
     eleza _get_spec(self, loader_class, fullname, path, smsl, target):
         loader = loader_class(fullname, path)
         rudisha spec_kutoka_file_location(fullname, path, loader=loader,
                                        submodule_search_locations=smsl)
 
-    eleza find_spec(self, fullname, target=None):
-        """Try to find a spec for the specified module.
+    eleza find_spec(self, fullname, target=Tupu):
+        """Try to find a spec kila the specified module.
 
-        Returns the matching spec, or None ikiwa not found.
+        Returns the matching spec, ama Tupu ikiwa sio found.
         """
-        is_namespace = False
+        is_namespace = Uongo
         tail_module = fullname.rpartition('.')[2]
-        try:
-            mtime = _path_stat(self.path or _os.getcwd()).st_mtime
-        except OSError:
+        jaribu:
+            mtime = _path_stat(self.path ama _os.getcwd()).st_mtime
+        tatizo OSError:
             mtime = -1
         ikiwa mtime != self._path_mtime:
             self._fill_cache()
             self._path_mtime = mtime
-        # tail_module keeps the original casing, for __file__ and friends
+        # tail_module keeps the original casing, kila __file__ na friends
         ikiwa _relax_case():
             cache = self._relaxed_path_cache
             cache_module = tail_module.lower()
-        else:
+        isipokua:
             cache = self._path_cache
             cache_module = tail_module
-        # Check ikiwa the module is the name of a directory (and thus a package).
-        ikiwa cache_module in cache:
+        # Check ikiwa the module ni the name of a directory (and thus a package).
+        ikiwa cache_module kwenye cache:
             base_path = _path_join(self.path, tail_module)
-            for suffix, loader_kundi in self._loaders:
+            kila suffix, loader_kundi kwenye self._loaders:
                 init_filename = '__init__' + suffix
                 full_path = _path_join(base_path, init_filename)
                 ikiwa _path_isfile(full_path):
                     rudisha self._get_spec(loader_class, fullname, full_path, [base_path], target)
-            else:
+            isipokua:
                 # If a namespace package, rudisha the path ikiwa we don't
-                #  find a module in the next section.
+                #  find a module kwenye the next section.
                 is_namespace = _path_isdir(base_path)
-        # Check for a file w/ a proper suffix exists.
-        for suffix, loader_kundi in self._loaders:
+        # Check kila a file w/ a proper suffix exists.
+        kila suffix, loader_kundi kwenye self._loaders:
             full_path = _path_join(self.path, tail_module + suffix)
             _bootstrap._verbose_message('trying {}', full_path, verbosity=2)
-            ikiwa cache_module + suffix in cache:
+            ikiwa cache_module + suffix kwenye cache:
                 ikiwa _path_isfile(full_path):
                     rudisha self._get_spec(loader_class, fullname, full_path,
-                                          None, target)
+                                          Tupu, target)
         ikiwa is_namespace:
-            _bootstrap._verbose_message('possible namespace for {}', base_path)
-            spec = _bootstrap.ModuleSpec(fullname, None)
+            _bootstrap._verbose_message('possible namespace kila {}', base_path)
+            spec = _bootstrap.ModuleSpec(fullname, Tupu)
             spec.submodule_search_locations = [base_path]
             rudisha spec
-        rudisha None
+        rudisha Tupu
 
     eleza _fill_cache(self):
-        """Fill the cache of potential modules and packages for this directory."""
+        """Fill the cache of potential modules na packages kila this directory."""
         path = self.path
-        try:
-            contents = _os.listdir(path or _os.getcwd())
-        except (FileNotFoundError, PermissionError, NotADirectoryError):
-            # Directory has either been removed, turned into a file, or made
+        jaribu:
+            contents = _os.listdir(path ama _os.getcwd())
+        tatizo (FileNotFoundError, PermissionError, NotADirectoryError):
+            # Directory has either been removed, turned into a file, ama made
             # unreadable.
             contents = []
         # We store two cached versions, to handle runtime changes of the
         # PYTHONCASEOK environment variable.
-        ikiwa not sys.platform.startswith('win'):
+        ikiwa sio sys.platform.startswith('win'):
             self._path_cache = set(contents)
-        else:
+        isipokua:
             # Windows users can agiza modules with case-insensitive file
-            # suffixes (for legacy reasons). Make the suffix lowercase here
-            # so it's done once instead of for every agiza. This is safe as
-            # the specified suffixes to check against are always specified in a
+            # suffixes (kila legacy reasons). Make the suffix lowercase here
+            # so it's done once instead of kila every agiza. This ni safe as
+            # the specified suffixes to check against are always specified kwenye a
             # case-sensitive manner.
             lower_suffix_contents = set()
-            for item in contents:
+            kila item kwenye contents:
                 name, dot, suffix = item.partition('.')
                 ikiwa dot:
                     new_name = '{}.{}'.format(name, suffix.lower())
-                else:
+                isipokua:
                     new_name = name
                 lower_suffix_contents.add(new_name)
             self._path_cache = lower_suffix_contents
         ikiwa sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS):
-            self._relaxed_path_cache = {fn.lower() for fn in contents}
+            self._relaxed_path_cache = {fn.lower() kila fn kwenye contents}
 
     @classmethod
     eleza path_hook(cls, *loader_details):
-        """A kundi method which returns a closure to use on sys.path_hook
-        which will rudisha an instance using the specified loaders and the path
+        """A kundi method which rudishas a closure to use on sys.path_hook
+        which will rudisha an instance using the specified loaders na the path
         called on the closure.
 
-        If the path called on the closure is not a directory, ImportError is
-        raised.
+        If the path called on the closure ni sio a directory, ImportError is
+        ashiriad.
 
         """
         eleza path_hook_for_FileFinder(path):
-            """Path hook for importlib.machinery.FileFinder."""
-            ikiwa not _path_isdir(path):
-                raise ImportError('only directories are supported', path=path)
+            """Path hook kila importlib.machinery.FileFinder."""
+            ikiwa sio _path_isdir(path):
+                ashiria ImportError('only directories are supported', path=path)
             rudisha cls(path, *loader_details)
 
         rudisha path_hook_for_FileFinder
@@ -1531,33 +1531,33 @@ kundi FileFinder:
 
 # Import setup ###############################################################
 
-eleza _fix_up_module(ns, name, pathname, cpathname=None):
-    # This function is used by PyImport_ExecCodeModuleObject().
+eleza _fix_up_module(ns, name, pathname, cpathname=Tupu):
+    # This function ni used by PyImport_ExecCodeModuleObject().
     loader = ns.get('__loader__')
     spec = ns.get('__spec__')
-    ikiwa not loader:
+    ikiwa sio loader:
         ikiwa spec:
             loader = spec.loader
         elikiwa pathname == cpathname:
             loader = SourcelessFileLoader(name, pathname)
-        else:
+        isipokua:
             loader = SourceFileLoader(name, pathname)
-    ikiwa not spec:
+    ikiwa sio spec:
         spec = spec_kutoka_file_location(name, pathname, loader=loader)
-    try:
+    jaribu:
         ns['__spec__'] = spec
         ns['__loader__'] = loader
         ns['__file__'] = pathname
         ns['__cached__'] = cpathname
-    except Exception:
+    tatizo Exception:
         # Not agizaant enough to report.
-        pass
+        pita
 
 
 eleza _get_supported_file_loaders():
     """Returns a list of file-based module loaders.
 
-    Each item is a tuple (loader, suffixes).
+    Each item ni a tuple (loader, suffixes).
     """
     extensions = ExtensionFileLoader, _imp.extension_suffixes()
     source = SourceFileLoader, SOURCE_SUFFIXES
@@ -1566,8 +1566,8 @@ eleza _get_supported_file_loaders():
 
 
 eleza _setup(_bootstrap_module):
-    """Setup the path-based importers for importlib by agizaing needed
-    built-in modules and injecting them into the global namespace.
+    """Setup the path-based importers kila importlib by agizaing needed
+    built-in modules na injecting them into the global namespace.
 
     Other components are extracted kutoka the core bootstrap module.
 
@@ -1579,34 +1579,34 @@ eleza _setup(_bootstrap_module):
 
     # Directly load built-in modules needed during bootstrap.
     self_module = sys.modules[__name__]
-    for builtin_name in ('_io', '_warnings', 'builtins', 'marshal'):
-        ikiwa builtin_name not in sys.modules:
+    kila builtin_name kwenye ('_io', '_warnings', 'builtins', 'marshal'):
+        ikiwa builtin_name haiko kwenye sys.modules:
             builtin_module = _bootstrap._builtin_kutoka_name(builtin_name)
-        else:
+        isipokua:
             builtin_module = sys.modules[builtin_name]
         setattr(self_module, builtin_name, builtin_module)
 
     # Directly load the os module (needed during bootstrap).
     os_details = ('posix', ['/']), ('nt', ['\\', '/'])
-    for builtin_os, path_separators in os_details:
-        # Assumption made in _path_join()
-        assert all(len(sep) == 1 for sep in path_separators)
+    kila builtin_os, path_separators kwenye os_details:
+        # Assumption made kwenye _path_join()
+        assert all(len(sep) == 1 kila sep kwenye path_separators)
         path_sep = path_separators[0]
-        ikiwa builtin_os in sys.modules:
+        ikiwa builtin_os kwenye sys.modules:
             os_module = sys.modules[builtin_os]
-            break
-        else:
-            try:
+            koma
+        isipokua:
+            jaribu:
                 os_module = _bootstrap._builtin_kutoka_name(builtin_os)
-                break
-            except ImportError:
-                continue
-    else:
-        raise ImportError('importlib requires posix or nt')
+                koma
+            tatizo ImportError:
+                endelea
+    isipokua:
+        ashiria ImportError('importlib requires posix ama nt')
     setattr(self_module, '_os', os_module)
     setattr(self_module, 'path_sep', path_sep)
     setattr(self_module, 'path_separators', ''.join(path_separators))
-    setattr(self_module, '_pathseps_with_colon', {f':{s}' for s in path_separators})
+    setattr(self_module, '_pathseps_with_colon', {f':{s}' kila s kwenye path_separators})
 
     # Directly load the _thread module (needed during bootstrap).
     thread_module = _bootstrap._builtin_kutoka_name('_thread')
@@ -1626,8 +1626,8 @@ eleza _setup(_bootstrap_module):
     EXTENSION_SUFFIXES.extend(_imp.extension_suffixes())
     ikiwa builtin_os == 'nt':
         SOURCE_SUFFIXES.append('.pyw')
-        ikiwa '_d.pyd' in EXTENSION_SUFFIXES:
-            WindowsRegistryFinder.DEBUG_BUILD = True
+        ikiwa '_d.pyd' kwenye EXTENSION_SUFFIXES:
+            WindowsRegistryFinder.DEBUG_BUILD = Kweli
 
 
 eleza _install(_bootstrap_module):

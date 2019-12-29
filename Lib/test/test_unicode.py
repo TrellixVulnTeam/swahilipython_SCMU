@@ -1,4 +1,4 @@
-""" Test script for the Unicode implementation.
+""" Test script kila the Unicode implementation.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 
@@ -16,22 +16,22 @@ agiza unittest
 agiza warnings
 kutoka test agiza support, string_tests
 
-# Error handling (bad decoder return)
+# Error handling (bad decoder rudisha)
 eleza search_function(encoding):
     eleza decode1(input, errors="strict"):
-        rudisha 42 # not a tuple
+        rudisha 42 # sio a tuple
     eleza encode1(input, errors="strict"):
-        rudisha 42 # not a tuple
+        rudisha 42 # sio a tuple
     eleza encode2(input, errors="strict"):
         rudisha (42, 42) # no unicode
     eleza decode2(input, errors="strict"):
         rudisha (42, 42) # no unicode
     ikiwa encoding=="test.unicode1":
-        rudisha (encode1, decode1, None, None)
+        rudisha (encode1, decode1, Tupu, Tupu)
     elikiwa encoding=="test.unicode2":
-        rudisha (encode2, decode2, None, None)
-    else:
-        rudisha None
+        rudisha (encode2, decode2, Tupu, Tupu)
+    isipokua:
+        rudisha Tupu
 codecs.register(search_function)
 
 eleza duplicate_string(text):
@@ -39,13 +39,13 @@ eleza duplicate_string(text):
     Try to get a fresh clone of the specified text:
     new object with a reference count of 1.
 
-    This is a best-effort: latin1 single letters and the empty
-    string ('') are singletons and cannot be cloned.
+    This ni a best-effort: latin1 single letters na the empty
+    string ('') are singletons na cannot be cloned.
     """
     rudisha text.encode().decode()
 
 kundi StrSubclass(str):
-    pass
+    pita
 
 kundi UnicodeTest(string_tests.CommonTest,
         string_tests.MixinStrUnicodeUserStringTest,
@@ -58,11 +58,11 @@ kundi UnicodeTest(string_tests.CommonTest,
         method = getattr(object, methodname)
         realresult = method(*args)
         self.assertEqual(realresult, result)
-        self.assertTrue(type(realresult) is type(result))
+        self.assertKweli(type(realresult) ni type(result))
 
-        # ikiwa the original is returned make sure that
+        # ikiwa the original ni rudishaed make sure that
         # this doesn't happen with subclasses
-        ikiwa realresult is object:
+        ikiwa realresult ni object:
             kundi usub(str):
                 eleza __repr__(self):
                     rudisha 'usub(%r)' % str.__repr__(self)
@@ -70,7 +70,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             method = getattr(object, methodname)
             realresult = method(*args)
             self.assertEqual(realresult, result)
-            self.assertTrue(object is not realresult)
+            self.assertKweli(object ni sio realresult)
 
     eleza test_literals(self):
         self.assertEqual('\xff', '\u00ff')
@@ -78,11 +78,11 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertRaises(SyntaxError, eval, '\'\\Ufffffffe\'')
         self.assertRaises(SyntaxError, eval, '\'\\Uffffffff\'')
         self.assertRaises(SyntaxError, eval, '\'\\U%08x\'' % 0x110000)
-        # raw strings should not have unicode escapes
+        # raw strings should sio have unicode escapes
         self.assertNotEqual(r"\u0020", " ")
 
     eleza test_ascii(self):
-        ikiwa not sys.platform.startswith('java'):
+        ikiwa sio sys.platform.startswith('java'):
             # Test basic sanity of repr()
             self.assertEqual(ascii('abc'), "'abc'")
             self.assertEqual(ascii('ab\\c'), "'ab\\\\c'")
@@ -124,7 +124,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             self.assertRaises(TypeError, ascii, WrongRepr())
 
     eleza test_repr(self):
-        ikiwa not sys.platform.startswith('java'):
+        ikiwa sio sys.platform.startswith('java'):
             # Test basic sanity of repr()
             self.assertEqual(repr('abc'), "'abc'")
             self.assertEqual(repr('ab\\c'), "'ab\\\\c'")
@@ -311,40 +311,40 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_maketrans_translate(self):
         # these work with plain translate()
         self.checkequalnofix('bbbc', 'abababc', 'translate',
-                             {ord('a'): None})
+                             {ord('a'): Tupu})
         self.checkequalnofix('iiic', 'abababc', 'translate',
-                             {ord('a'): None, ord('b'): ord('i')})
+                             {ord('a'): Tupu, ord('b'): ord('i')})
         self.checkequalnofix('iiix', 'abababc', 'translate',
-                             {ord('a'): None, ord('b'): ord('i'), ord('c'): 'x'})
+                             {ord('a'): Tupu, ord('b'): ord('i'), ord('c'): 'x'})
         self.checkequalnofix('c', 'abababc', 'translate',
-                             {ord('a'): None, ord('b'): ''})
+                             {ord('a'): Tupu, ord('b'): ''})
         self.checkequalnofix('xyyx', 'xzx', 'translate',
                              {ord('z'): 'yy'})
 
         # this needs maketrans()
         self.checkequalnofix('abababc', 'abababc', 'translate',
                              {'b': '<i>'})
-        tbl = self.type2test.maketrans({'a': None, 'b': '<i>'})
+        tbl = self.type2test.maketrans({'a': Tupu, 'b': '<i>'})
         self.checkequalnofix('<i><i><i>c', 'abababc', 'translate', tbl)
         # test alternative way of calling maketrans()
         tbl = self.type2test.maketrans('abc', 'xyz', 'd')
         self.checkequalnofix('xyzzy', 'abdcdcbdddd', 'translate', tbl)
 
-        # various tests switching kutoka ASCII to latin1 or the opposite;
-        # same length, remove a letter, or replace with a longer string.
+        # various tests switching kutoka ASCII to latin1 ama the opposite;
+        # same length, remove a letter, ama replace with a longer string.
         self.assertEqual("[a]".translate(str.maketrans('a', 'X')),
                          "[X]")
         self.assertEqual("[a]".translate(str.maketrans({'a': 'X'})),
                          "[X]")
-        self.assertEqual("[a]".translate(str.maketrans({'a': None})),
+        self.assertEqual("[a]".translate(str.maketrans({'a': Tupu})),
                          "[]")
         self.assertEqual("[a]".translate(str.maketrans({'a': 'XXX'})),
                          "[XXX]")
         self.assertEqual("[a]".translate(str.maketrans({'a': '\xe9'})),
                          "[\xe9]")
-        self.assertEqual('axb'.translate(str.maketrans({'a': None, 'b': '123'})),
+        self.assertEqual('axb'.translate(str.maketrans({'a': Tupu, 'b': '123'})),
                          "x123")
-        self.assertEqual('axb'.translate(str.maketrans({'a': None, 'b': '\xe9'})),
+        self.assertEqual('axb'.translate(str.maketrans({'a': Tupu, 'b': '\xe9'})),
                          "x\xe9")
 
         # test non-ASCII (don't take the fast-path)
@@ -352,7 +352,7 @@ kundi UnicodeTest(string_tests.CommonTest,
                          "[<\xe9>]")
         self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': 'a'})),
                          "[a]")
-        self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': None})),
+        self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': Tupu})),
                          "[]")
         self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': '123'})),
                          "[123]")
@@ -361,7 +361,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 
         # invalid Unicode characters
         invalid_char = 0x10ffff+1
-        for before in "a\xe9\u20ac\U0010ffff":
+        kila before kwenye "a\xe9\u20ac\U0010ffff":
             mapping = str.maketrans({before: invalid_char})
             text = "[%s]" % before
             self.assertRaises(ValueError, text.translate, mapping)
@@ -382,10 +382,10 @@ kundi UnicodeTest(string_tests.CommonTest,
         string_tests.CommonTest.test_split(self)
 
         # test mixed kinds
-        for left, right in ('ba', '\u0101\u0100', '\U00010301\U00010300'):
+        kila left, right kwenye ('ba', '\u0101\u0100', '\U00010301\U00010300'):
             left *= 9
             right *= 9
-            for delim in ('c', '\u0102', '\U00010302'):
+            kila delim kwenye ('c', '\u0102', '\U00010302'):
                 self.checkequal([left + right],
                                 left + right, 'split', delim)
                 self.checkequal([left, right],
@@ -398,10 +398,10 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_rsplit(self):
         string_tests.CommonTest.test_rsplit(self)
         # test mixed kinds
-        for left, right in ('ba', '\u0101\u0100', '\U00010301\U00010300'):
+        kila left, right kwenye ('ba', '\u0101\u0100', '\U00010301\U00010300'):
             left *= 9
             right *= 9
-            for delim in ('c', '\u0102', '\U00010302'):
+            kila delim kwenye ('c', '\u0102', '\U00010302'):
                 self.checkequal([left + right],
                                 left + right, 'rsplit', delim)
                 self.checkequal([left, right],
@@ -415,10 +415,10 @@ kundi UnicodeTest(string_tests.CommonTest,
         string_tests.MixinStrUnicodeUserStringTest.test_partition(self)
         # test mixed kinds
         self.checkequal(('ABCDEFGH', '', ''), 'ABCDEFGH', 'partition', '\u4200')
-        for left, right in ('ba', '\u0101\u0100', '\U00010301\U00010300'):
+        kila left, right kwenye ('ba', '\u0101\u0100', '\U00010301\U00010300'):
             left *= 9
             right *= 9
-            for delim in ('c', '\u0102', '\U00010302'):
+            kila delim kwenye ('c', '\u0102', '\U00010302'):
                 self.checkequal((left + right, '', ''),
                                 left + right, 'partition', delim)
                 self.checkequal((left, delim, right),
@@ -432,10 +432,10 @@ kundi UnicodeTest(string_tests.CommonTest,
         string_tests.MixinStrUnicodeUserStringTest.test_rpartition(self)
         # test mixed kinds
         self.checkequal(('', '', 'ABCDEFGH'), 'ABCDEFGH', 'rpartition', '\u4200')
-        for left, right in ('ba', '\u0101\u0100', '\U00010301\U00010300'):
+        kila left, right kwenye ('ba', '\u0101\u0100', '\U00010301\U00010300'):
             left *= 9
             right *= 9
-            for delim in ('c', '\u0102', '\U00010302'):
+            kila delim kwenye ('c', '\u0102', '\U00010302'):
                 self.checkequal(('', '', left + right),
                                 left + right, 'rpartition', delim)
                 self.checkequal((left, delim, right),
@@ -460,10 +460,10 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.checkequalnofix('a b c d', ' ', 'join', ['a', 'b', 'c', 'd'])
         self.checkequalnofix('abcd', '', 'join', ('a', 'b', 'c', 'd'))
         self.checkequalnofix('w x y z', ' ', 'join', string_tests.Sequence('wxyz'))
-        self.checkraises(TypeError, ' ', 'join', ['1', '2', MyWrapper('foo')])
-        self.checkraises(TypeError, ' ', 'join', ['1', '2', '3', bytes()])
-        self.checkraises(TypeError, ' ', 'join', [1, 2, 3])
-        self.checkraises(TypeError, ' ', 'join', ['1', '2', 3])
+        self.checkashirias(TypeError, ' ', 'join', ['1', '2', MyWrapper('foo')])
+        self.checkashirias(TypeError, ' ', 'join', ['1', '2', '3', bytes()])
+        self.checkashirias(TypeError, ' ', 'join', [1, 2, 3])
+        self.checkashirias(TypeError, ' ', 'join', ['1', '2', 3])
 
     @unittest.skipIf(sys.maxsize > 2**32,
         'needs too much memory on a 64-bit platform')
@@ -479,11 +479,11 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.checkequalnofix('one@two!three!', 'one!two!three!', 'replace', '!', '@', 1)
         self.assertRaises(TypeError, 'replace'.replace, "r", 42)
         # test mixed kinds
-        for left, right in ('ba', '\u0101\u0100', '\U00010301\U00010300'):
+        kila left, right kwenye ('ba', '\u0101\u0100', '\U00010301\U00010300'):
             left *= 9
             right *= 9
-            for delim in ('c', '\u0102', '\U00010302'):
-                for repl in ('d', '\u0103', '\U00010303'):
+            kila delim kwenye ('c', '\u0102', '\U00010302'):
+                kila repl kwenye ('d', '\u0103', '\U00010303'):
                     self.checkequal(left + right,
                                     left + right, 'replace', delim, repl)
                     self.checkequal(left + repl + right,
@@ -504,29 +504,29 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_bytes_comparison(self):
         with support.check_warnings():
             warnings.simplefilter('ignore', BytesWarning)
-            self.assertEqual('abc' == b'abc', False)
-            self.assertEqual('abc' != b'abc', True)
-            self.assertEqual('abc' == bytearray(b'abc'), False)
-            self.assertEqual('abc' != bytearray(b'abc'), True)
+            self.assertEqual('abc' == b'abc', Uongo)
+            self.assertEqual('abc' != b'abc', Kweli)
+            self.assertEqual('abc' == bytearray(b'abc'), Uongo)
+            self.assertEqual('abc' != bytearray(b'abc'), Kweli)
 
     eleza test_comparison(self):
         # Comparisons:
         self.assertEqual('abc', 'abc')
-        self.assertTrue('abcd' > 'abc')
-        self.assertTrue('abc' < 'abcd')
+        self.assertKweli('abcd' > 'abc')
+        self.assertKweli('abc' < 'abcd')
 
         ikiwa 0:
             # Move these tests to a Unicode collation module test...
             # Testing UTF-16 code point order comparisons...
 
             # No surrogates, no fixup required.
-            self.assertTrue('\u0061' < '\u20ac')
+            self.assertKweli('\u0061' < '\u20ac')
             # Non surrogate below surrogate value, no fixup required
-            self.assertTrue('\u0061' < '\ud800\udc02')
+            self.assertKweli('\u0061' < '\ud800\udc02')
 
             # Non surrogate above surrogate value, fixup required
             eleza test_lecmp(s, s2):
-                self.assertTrue(s < s2)
+                self.assertKweli(s < s2)
 
             eleza test_fixup(s):
                 s2 = '\ud800\udc01'
@@ -566,198 +566,198 @@ kundi UnicodeTest(string_tests.CommonTest,
                 test_fixup('\uff61')
 
         # Surrogates on both sides, no fixup required
-        self.assertTrue('\ud800\udc02' < '\ud84d\udc56')
+        self.assertKweli('\ud800\udc02' < '\ud84d\udc56')
 
     eleza test_islower(self):
         super().test_islower()
-        self.checkequalnofix(False, '\u1FFc', 'islower')
-        self.assertFalse('\u2167'.islower())
-        self.assertTrue('\u2177'.islower())
+        self.checkequalnofix(Uongo, '\u1FFc', 'islower')
+        self.assertUongo('\u2167'.islower())
+        self.assertKweli('\u2177'.islower())
         # non-BMP, uppercase
-        self.assertFalse('\U00010401'.islower())
-        self.assertFalse('\U00010427'.islower())
+        self.assertUongo('\U00010401'.islower())
+        self.assertUongo('\U00010427'.islower())
         # non-BMP, lowercase
-        self.assertTrue('\U00010429'.islower())
-        self.assertTrue('\U0001044E'.islower())
+        self.assertKweli('\U00010429'.islower())
+        self.assertKweli('\U0001044E'.islower())
         # non-BMP, non-cased
-        self.assertFalse('\U0001F40D'.islower())
-        self.assertFalse('\U0001F46F'.islower())
+        self.assertUongo('\U0001F40D'.islower())
+        self.assertUongo('\U0001F46F'.islower())
 
     eleza test_isupper(self):
         super().test_isupper()
-        ikiwa not sys.platform.startswith('java'):
-            self.checkequalnofix(False, '\u1FFc', 'isupper')
-        self.assertTrue('\u2167'.isupper())
-        self.assertFalse('\u2177'.isupper())
+        ikiwa sio sys.platform.startswith('java'):
+            self.checkequalnofix(Uongo, '\u1FFc', 'isupper')
+        self.assertKweli('\u2167'.isupper())
+        self.assertUongo('\u2177'.isupper())
         # non-BMP, uppercase
-        self.assertTrue('\U00010401'.isupper())
-        self.assertTrue('\U00010427'.isupper())
+        self.assertKweli('\U00010401'.isupper())
+        self.assertKweli('\U00010427'.isupper())
         # non-BMP, lowercase
-        self.assertFalse('\U00010429'.isupper())
-        self.assertFalse('\U0001044E'.isupper())
+        self.assertUongo('\U00010429'.isupper())
+        self.assertUongo('\U0001044E'.isupper())
         # non-BMP, non-cased
-        self.assertFalse('\U0001F40D'.isupper())
-        self.assertFalse('\U0001F46F'.isupper())
+        self.assertUongo('\U0001F40D'.isupper())
+        self.assertUongo('\U0001F46F'.isupper())
 
     eleza test_istitle(self):
         super().test_istitle()
-        self.checkequalnofix(True, '\u1FFc', 'istitle')
-        self.checkequalnofix(True, 'Greek \u1FFcitlecases ...', 'istitle')
+        self.checkequalnofix(Kweli, '\u1FFc', 'istitle')
+        self.checkequalnofix(Kweli, 'Greek \u1FFcitlecases ...', 'istitle')
 
         # non-BMP, uppercase + lowercase
-        self.assertTrue('\U00010401\U00010429'.istitle())
-        self.assertTrue('\U00010427\U0001044E'.istitle())
-        # apparently there are no titlecased (Lt) non-BMP chars in Unicode 6
-        for ch in ['\U00010429', '\U0001044E', '\U0001F40D', '\U0001F46F']:
-            self.assertFalse(ch.istitle(), '{!a} is not title'.format(ch))
+        self.assertKweli('\U00010401\U00010429'.istitle())
+        self.assertKweli('\U00010427\U0001044E'.istitle())
+        # apparently there are no titlecased (Lt) non-BMP chars kwenye Unicode 6
+        kila ch kwenye ['\U00010429', '\U0001044E', '\U0001F40D', '\U0001F46F']:
+            self.assertUongo(ch.istitle(), '{!a} ni sio title'.format(ch))
 
     eleza test_isspace(self):
         super().test_isspace()
-        self.checkequalnofix(True, '\u2000', 'isspace')
-        self.checkequalnofix(True, '\u200a', 'isspace')
-        self.checkequalnofix(False, '\u2014', 'isspace')
-        # There are no non-BMP whitespace chars as of Unicode 12.
-        for ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
+        self.checkequalnofix(Kweli, '\u2000', 'isspace')
+        self.checkequalnofix(Kweli, '\u200a', 'isspace')
+        self.checkequalnofix(Uongo, '\u2014', 'isspace')
+        # There are no non-BMP whitespace chars kama of Unicode 12.
+        kila ch kwenye ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F']:
-            self.assertFalse(ch.isspace(), '{!a} is not space.'.format(ch))
+            self.assertUongo(ch.isspace(), '{!a} ni sio space.'.format(ch))
 
     @support.requires_resource('cpu')
     eleza test_isspace_invariant(self):
-        for codepoint in range(sys.maxunicode + 1):
+        kila codepoint kwenye range(sys.maxunicode + 1):
             char = chr(codepoint)
             bidirectional = unicodedata.bidirectional(char)
             category = unicodedata.category(char)
             self.assertEqual(char.isspace(),
-                             (bidirectional in ('WS', 'B', 'S')
-                              or category == 'Zs'))
+                             (bidirectional kwenye ('WS', 'B', 'S')
+                              ama category == 'Zs'))
 
     eleza test_isalnum(self):
         super().test_isalnum()
-        for ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
+        kila ch kwenye ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001D7F6', '\U00011066', '\U000104A0', '\U0001F107']:
-            self.assertTrue(ch.isalnum(), '{!a} is alnum.'.format(ch))
+            self.assertKweli(ch.isalnum(), '{!a} ni alnum.'.format(ch))
 
     eleza test_isalpha(self):
         super().test_isalpha()
-        self.checkequalnofix(True, '\u1FFc', 'isalpha')
+        self.checkequalnofix(Kweli, '\u1FFc', 'isalpha')
         # non-BMP, cased
-        self.assertTrue('\U00010401'.isalpha())
-        self.assertTrue('\U00010427'.isalpha())
-        self.assertTrue('\U00010429'.isalpha())
-        self.assertTrue('\U0001044E'.isalpha())
+        self.assertKweli('\U00010401'.isalpha())
+        self.assertKweli('\U00010427'.isalpha())
+        self.assertKweli('\U00010429'.isalpha())
+        self.assertKweli('\U0001044E'.isalpha())
         # non-BMP, non-cased
-        self.assertFalse('\U0001F40D'.isalpha())
-        self.assertFalse('\U0001F46F'.isalpha())
+        self.assertUongo('\U0001F40D'.isalpha())
+        self.assertUongo('\U0001F46F'.isalpha())
 
     eleza test_isascii(self):
         super().test_isascii()
-        self.assertFalse("\u20ac".isascii())
-        self.assertFalse("\U0010ffff".isascii())
+        self.assertUongo("\u20ac".isascii())
+        self.assertUongo("\U0010ffff".isascii())
 
     eleza test_isdecimal(self):
-        self.checkequalnofix(False, '', 'isdecimal')
-        self.checkequalnofix(False, 'a', 'isdecimal')
-        self.checkequalnofix(True, '0', 'isdecimal')
-        self.checkequalnofix(False, '\u2460', 'isdecimal') # CIRCLED DIGIT ONE
-        self.checkequalnofix(False, '\xbc', 'isdecimal') # VULGAR FRACTION ONE QUARTER
-        self.checkequalnofix(True, '\u0660', 'isdecimal') # ARABIC-INDIC DIGIT ZERO
-        self.checkequalnofix(True, '0123456789', 'isdecimal')
-        self.checkequalnofix(False, '0123456789a', 'isdecimal')
+        self.checkequalnofix(Uongo, '', 'isdecimal')
+        self.checkequalnofix(Uongo, 'a', 'isdecimal')
+        self.checkequalnofix(Kweli, '0', 'isdecimal')
+        self.checkequalnofix(Uongo, '\u2460', 'isdecimal') # CIRCLED DIGIT ONE
+        self.checkequalnofix(Uongo, '\xbc', 'isdecimal') # VULGAR FRACTION ONE QUARTER
+        self.checkequalnofix(Kweli, '\u0660', 'isdecimal') # ARABIC-INDIC DIGIT ZERO
+        self.checkequalnofix(Kweli, '0123456789', 'isdecimal')
+        self.checkequalnofix(Uongo, '0123456789a', 'isdecimal')
 
-        self.checkraises(TypeError, 'abc', 'isdecimal', 42)
+        self.checkashirias(TypeError, 'abc', 'isdecimal', 42)
 
-        for ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
+        kila ch kwenye ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F', '\U00011065', '\U0001F107']:
-            self.assertFalse(ch.isdecimal(), '{!a} is not decimal.'.format(ch))
-        for ch in ['\U0001D7F6', '\U00011066', '\U000104A0']:
-            self.assertTrue(ch.isdecimal(), '{!a} is decimal.'.format(ch))
+            self.assertUongo(ch.isdecimal(), '{!a} ni sio decimal.'.format(ch))
+        kila ch kwenye ['\U0001D7F6', '\U00011066', '\U000104A0']:
+            self.assertKweli(ch.isdecimal(), '{!a} ni decimal.'.format(ch))
 
     eleza test_isdigit(self):
         super().test_isdigit()
-        self.checkequalnofix(True, '\u2460', 'isdigit')
-        self.checkequalnofix(False, '\xbc', 'isdigit')
-        self.checkequalnofix(True, '\u0660', 'isdigit')
+        self.checkequalnofix(Kweli, '\u2460', 'isdigit')
+        self.checkequalnofix(Uongo, '\xbc', 'isdigit')
+        self.checkequalnofix(Kweli, '\u0660', 'isdigit')
 
-        for ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
+        kila ch kwenye ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F', '\U00011065']:
-            self.assertFalse(ch.isdigit(), '{!a} is not a digit.'.format(ch))
-        for ch in ['\U0001D7F6', '\U00011066', '\U000104A0', '\U0001F107']:
-            self.assertTrue(ch.isdigit(), '{!a} is a digit.'.format(ch))
+            self.assertUongo(ch.isdigit(), '{!a} ni sio a digit.'.format(ch))
+        kila ch kwenye ['\U0001D7F6', '\U00011066', '\U000104A0', '\U0001F107']:
+            self.assertKweli(ch.isdigit(), '{!a} ni a digit.'.format(ch))
 
     eleza test_isnumeric(self):
-        self.checkequalnofix(False, '', 'isnumeric')
-        self.checkequalnofix(False, 'a', 'isnumeric')
-        self.checkequalnofix(True, '0', 'isnumeric')
-        self.checkequalnofix(True, '\u2460', 'isnumeric')
-        self.checkequalnofix(True, '\xbc', 'isnumeric')
-        self.checkequalnofix(True, '\u0660', 'isnumeric')
-        self.checkequalnofix(True, '0123456789', 'isnumeric')
-        self.checkequalnofix(False, '0123456789a', 'isnumeric')
+        self.checkequalnofix(Uongo, '', 'isnumeric')
+        self.checkequalnofix(Uongo, 'a', 'isnumeric')
+        self.checkequalnofix(Kweli, '0', 'isnumeric')
+        self.checkequalnofix(Kweli, '\u2460', 'isnumeric')
+        self.checkequalnofix(Kweli, '\xbc', 'isnumeric')
+        self.checkequalnofix(Kweli, '\u0660', 'isnumeric')
+        self.checkequalnofix(Kweli, '0123456789', 'isnumeric')
+        self.checkequalnofix(Uongo, '0123456789a', 'isnumeric')
 
         self.assertRaises(TypeError, "abc".isnumeric, 42)
 
-        for ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
+        kila ch kwenye ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F']:
-            self.assertFalse(ch.isnumeric(), '{!a} is not numeric.'.format(ch))
-        for ch in ['\U00011065', '\U0001D7F6', '\U00011066',
+            self.assertUongo(ch.isnumeric(), '{!a} ni sio numeric.'.format(ch))
+        kila ch kwenye ['\U00011065', '\U0001D7F6', '\U00011066',
                    '\U000104A0', '\U0001F107']:
-            self.assertTrue(ch.isnumeric(), '{!a} is numeric.'.format(ch))
+            self.assertKweli(ch.isnumeric(), '{!a} ni numeric.'.format(ch))
 
     eleza test_isidentifier(self):
-        self.assertTrue("a".isidentifier())
-        self.assertTrue("Z".isidentifier())
-        self.assertTrue("_".isidentifier())
-        self.assertTrue("b0".isidentifier())
-        self.assertTrue("bc".isidentifier())
-        self.assertTrue("b_".isidentifier())
-        self.assertTrue("µ".isidentifier())
-        self.assertTrue("𝔘𝔫𝔦𝔠𝔬𝔡𝔢".isidentifier())
+        self.assertKweli("a".isidentifier())
+        self.assertKweli("Z".isidentifier())
+        self.assertKweli("_".isidentifier())
+        self.assertKweli("b0".isidentifier())
+        self.assertKweli("bc".isidentifier())
+        self.assertKweli("b_".isidentifier())
+        self.assertKweli("µ".isidentifier())
+        self.assertKweli("𝔘𝔫𝔦𝔠𝔬𝔡𝔢".isidentifier())
 
-        self.assertFalse(" ".isidentifier())
-        self.assertFalse("[".isidentifier())
-        self.assertFalse("©".isidentifier())
-        self.assertFalse("0".isidentifier())
+        self.assertUongo(" ".isidentifier())
+        self.assertUongo("[".isidentifier())
+        self.assertUongo("©".isidentifier())
+        self.assertUongo("0".isidentifier())
 
     eleza test_isprintable(self):
-        self.assertTrue("".isprintable())
-        self.assertTrue(" ".isprintable())
-        self.assertTrue("abcdefg".isprintable())
-        self.assertFalse("abcdefg\n".isprintable())
+        self.assertKweli("".isprintable())
+        self.assertKweli(" ".isprintable())
+        self.assertKweli("abcdefg".isprintable())
+        self.assertUongo("abcdefg\n".isprintable())
         # some defined Unicode character
-        self.assertTrue("\u0374".isprintable())
+        self.assertKweli("\u0374".isprintable())
         # undefined character
-        self.assertFalse("\u0378".isprintable())
+        self.assertUongo("\u0378".isprintable())
         # single surrogate character
-        self.assertFalse("\ud800".isprintable())
+        self.assertUongo("\ud800".isprintable())
 
-        self.assertTrue('\U0001F46F'.isprintable())
-        self.assertFalse('\U000E0020'.isprintable())
+        self.assertKweli('\U0001F46F'.isprintable())
+        self.assertUongo('\U000E0020'.isprintable())
 
     eleza test_surrogates(self):
-        for s in ('a\uD800b\uDFFF', 'a\uDFFFb\uD800',
+        kila s kwenye ('a\uD800b\uDFFF', 'a\uDFFFb\uD800',
                   'a\uD800b\uDFFFa', 'a\uDFFFb\uD800a'):
-            self.assertTrue(s.islower())
-            self.assertFalse(s.isupper())
-            self.assertFalse(s.istitle())
-        for s in ('A\uD800B\uDFFF', 'A\uDFFFB\uD800',
+            self.assertKweli(s.islower())
+            self.assertUongo(s.isupper())
+            self.assertUongo(s.istitle())
+        kila s kwenye ('A\uD800B\uDFFF', 'A\uDFFFB\uD800',
                   'A\uD800B\uDFFFA', 'A\uDFFFB\uD800A'):
-            self.assertFalse(s.islower())
-            self.assertTrue(s.isupper())
-            self.assertTrue(s.istitle())
+            self.assertUongo(s.islower())
+            self.assertKweli(s.isupper())
+            self.assertKweli(s.istitle())
 
-        for meth_name in ('islower', 'isupper', 'istitle'):
+        kila meth_name kwenye ('islower', 'isupper', 'istitle'):
             meth = getattr(str, meth_name)
-            for s in ('\uD800', '\uDFFF', '\uD800\uD800', '\uDFFF\uDFFF'):
-                self.assertFalse(meth(s), '%a.%s() is False' % (s, meth_name))
+            kila s kwenye ('\uD800', '\uDFFF', '\uD800\uD800', '\uDFFF\uDFFF'):
+                self.assertUongo(meth(s), '%a.%s() ni Uongo' % (s, meth_name))
 
-        for meth_name in ('isalpha', 'isalnum', 'isdigit', 'isspace',
+        kila meth_name kwenye ('isalpha', 'isalnum', 'isdigit', 'isspace',
                           'isdecimal', 'isnumeric',
                           'isidentifier', 'isprintable'):
             meth = getattr(str, meth_name)
-            for s in ('\uD800', '\uDFFF', '\uD800\uD800', '\uDFFF\uDFFF',
+            kila s kwenye ('\uD800', '\uDFFF', '\uD800\uD800', '\uDFFF\uDFFF',
                       'a\uD800b\uDFFF', 'a\uDFFFb\uD800',
                       'a\uD800b\uDFFFa', 'a\uDFFFb\uD800a'):
-                self.assertFalse(meth(s), '%a.%s() is False' % (s, meth_name))
+                self.assertUongo(meth(s), '%a.%s() ni Uongo' % (s, meth_name))
 
 
     eleza test_lower(self):
@@ -771,7 +771,7 @@ kundi UnicodeTest(string_tests.CommonTest,
                          'x\U0001044Fx\U0001044F')
         self.assertEqual('ﬁ'.lower(), 'ﬁ')
         self.assertEqual('\u0130'.lower(), '\u0069\u0307')
-        # Special case for GREEK CAPITAL LETTER SIGMA U+03A3
+        # Special case kila GREEK CAPITAL LETTER SIGMA U+03A3
         self.assertEqual('\u03a3'.lower(), '\u03c3')
         self.assertEqual('\u0345\u03a3'.lower(), '\u0345\u03c3')
         self.assertEqual('A\u0345\u03a3'.lower(), 'a\u0345\u03c2')
@@ -856,7 +856,7 @@ kundi UnicodeTest(string_tests.CommonTest,
                          'x\U0001044FX\U00010427')
         self.assertEqual('ﬁ'.swapcase(), 'FI')
         self.assertEqual('\u0130'.swapcase(), '\u0069\u0307')
-        # Special case for GREEK CAPITAL LETTER SIGMA U+03A3
+        # Special case kila GREEK CAPITAL LETTER SIGMA U+03A3
         self.assertEqual('\u03a3'.swapcase(), '\u03c3')
         self.assertEqual('\u0345\u03a3'.swapcase(), '\u0399\u03c3')
         self.assertEqual('A\u0345\u03a3'.swapcase(), 'a\u0399\u03c2')
@@ -882,14 +882,14 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_case_operation_overflow(self):
         # Issue #22643
         size = 2**32//12 + 1
-        try:
+        jaribu:
             s = "ü" * size
-        except MemoryError:
+        tatizo MemoryError:
             self.skipTest('no enough memory (%.0f MiB required)' % (size / 2**20))
-        try:
+        jaribu:
             self.assertRaises(OverflowError, s.upper)
-        finally:
-            del s
+        mwishowe:
+            toa s
 
     eleza test_contains(self):
         # Testing Unicode contains method
@@ -899,16 +899,16 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertIn('a', 'bdba')
         self.assertNotIn('a', 'bdb')
         self.assertIn('a', 'bdba')
-        self.assertIn('a', ('a',1,None))
-        self.assertIn('a', (1,None,'a'))
-        self.assertIn('a', ('a',1,None))
-        self.assertIn('a', (1,None,'a'))
+        self.assertIn('a', ('a',1,Tupu))
+        self.assertIn('a', (1,Tupu,'a'))
+        self.assertIn('a', ('a',1,Tupu))
+        self.assertIn('a', (1,Tupu,'a'))
         self.assertNotIn('a', ('x',1,'y'))
-        self.assertNotIn('a', ('x',1,None))
+        self.assertNotIn('a', ('x',1,Tupu))
         self.assertNotIn('abcd', 'abcxxxx')
         self.assertIn('ab', 'abcd')
         self.assertIn('ab', 'abc')
-        self.assertIn('ab', (1,None,'ab'))
+        self.assertIn('ab', (1,Tupu,'ab'))
         self.assertIn('', 'abc')
         self.assertIn('', '')
         self.assertIn('', 'abc')
@@ -922,9 +922,9 @@ kundi UnicodeTest(string_tests.CommonTest,
 
         self.assertRaises(TypeError, "abc".__contains__)
         # test mixed kinds
-        for fill in ('a', '\u0100', '\U00010300'):
+        kila fill kwenye ('a', '\u0100', '\U00010300'):
             fill *= 9
-            for delim in ('c', '\u0102', '\U00010302'):
+            kila delim kwenye ('c', '\u0102', '\U00010302'):
                 self.assertNotIn(delim, fill)
                 self.assertIn(delim, fill + delim)
                 self.assertNotIn(delim * 2, fill)
@@ -953,17 +953,17 @@ kundi UnicodeTest(string_tests.CommonTest,
 
         # examples kutoka the PEP:
         agiza datetime
-        self.assertEqual("My name is {0}".format('Fred'), "My name is Fred")
-        self.assertEqual("My name is {0[name]}".format(dict(name='Fred')),
-                         "My name is Fred")
-        self.assertEqual("My name is {0} :-{{}}".format('Fred'),
-                         "My name is Fred :-{}")
+        self.assertEqual("My name ni {0}".format('Fred'), "My name ni Fred")
+        self.assertEqual("My name ni {0[name]}".format(dict(name='Fred')),
+                         "My name ni Fred")
+        self.assertEqual("My name ni {0} :-{{}}".format('Fred'),
+                         "My name ni Fred :-{}")
 
         d = datetime.date(2007, 8, 18)
-        self.assertEqual("The year is {0.year}".format(d),
-                         "The year is 2007")
+        self.assertEqual("The year ni {0.year}".format(d),
+                         "The year ni 2007")
 
-        # classes we'll use for testing
+        # classes we'll use kila testing
         kundi C:
             eleza __init__(self, x=100):
                 self._x = x
@@ -983,19 +983,19 @@ kundi UnicodeTest(string_tests.CommonTest,
             eleza __str__(self):
                 rudisha 'E(' + self.x + ')'
 
-        # kundi with __repr__, but no __format__ or __str__
+        # kundi with __repr__, but no __format__ ama __str__
         kundi F:
             eleza __init__(self, x):
                 self.x = x
             eleza __repr__(self):
                 rudisha 'F(' + self.x + ')'
 
-        # kundi with __format__ that forwards to string, for some format_spec's
+        # kundi with __format__ that forwards to string, kila some format_spec's
         kundi G:
             eleza __init__(self, x):
                 self.x = x
             eleza __str__(self):
-                rudisha "string is " + self.x
+                rudisha "string ni " + self.x
             eleza __format__(self, format_spec):
                 ikiwa format_spec == 'd':
                     rudisha 'G(' + self.x + ')'
@@ -1014,14 +1014,14 @@ kundi UnicodeTest(string_tests.CommonTest,
                 self.x = x
             eleza __repr__(self):
                 rudisha 'M(' + self.x + ')'
-            __str__ = None
+            __str__ = Tupu
 
         kundi N:
             eleza __init__(self, x):
                 self.x = x
             eleza __repr__(self):
                 rudisha 'N(' + self.x + ')'
-            __format__ = None
+            __format__ = Tupu
 
         self.assertEqual(''.format(), '')
         self.assertEqual('abc'.format(), 'abc')
@@ -1085,7 +1085,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('{0:10000}'.format(''), ' ' * 10000)
         self.assertEqual('{0:10000000}'.format(''), ' ' * 10000000)
 
-        # issue 12546: use \x00 as a fill character
+        # issue 12546: use \x00 kama a fill character
         self.assertEqual('{0:\x00<6s}'.format('foo'), 'foo\x00\x00\x00')
         self.assertEqual('{0:\x01<6s}'.format('foo'), 'foo\x01\x01\x01')
         self.assertEqual('{0:\x00^6s}'.format('foo'), '\x00foo\x00\x00')
@@ -1106,10 +1106,10 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('{0:\x00^12}'.format(3+2.0j), '\x00\x00\x00(3+2j)\x00\x00\x00')
         self.assertEqual('{0:^12}'.format(3+2.0j), '   (3+2j)   ')
 
-        # format specifiers for user defined type
+        # format specifiers kila user defined type
         self.assertEqual('{0:abc}'.format(C()), 'abc')
 
-        # !r, !s and !a coercions
+        # !r, !s na !a coercions
         self.assertEqual('{0!s}'.format('Hello'), 'Hello')
         self.assertEqual('{0!s:}'.format('Hello'), 'Hello')
         self.assertEqual('{0!s:15}'.format('Hello'), 'Hello          ')
@@ -1133,7 +1133,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('{0}'.format([1]), '[1]')
 
         self.assertEqual('{0:d}'.format(G('data')), 'G(data)')
-        self.assertEqual('{0!s}'.format(G('data')), 'string is data')
+        self.assertEqual('{0!s}'.format(G('data')), 'string ni data')
 
         self.assertRaises(TypeError, '{0:^10}'.format, E('data'))
         self.assertRaises(TypeError, '{0:^10s}'.format, E('data'))
@@ -1144,7 +1144,7 @@ kundi UnicodeTest(string_tests.CommonTest,
                                                        day=27)),
                          "date: 2007-08-27")
 
-        # test deriving kutoka a builtin type and overriding __format__
+        # test deriving kutoka a builtin type na overriding __format__
         self.assertEqual("{0}".format(J(10)), "20")
 
 
@@ -1196,8 +1196,8 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertRaises(ValueError, ("{[" + big + "]}").format, [0])
 
         # issue 6089
-        self.assertRaises(ValueError, "{0[0]x}".format, [None])
-        self.assertRaises(ValueError, "{0[0](10)}".format, [None])
+        self.assertRaises(ValueError, "{0[0]x}".format, [Tupu])
+        self.assertRaises(ValueError, "{0[0](10)}".format, [Tupu])
 
         # can't have a replacement on the field name portion
         self.assertRaises(TypeError, '{0[{1}]}'.format, 'abcdefg', 4)
@@ -1212,7 +1212,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertRaises(ValueError, format, "", "-")
         self.assertRaises(ValueError, "{0:=s}".format, '')
 
-        # Alternate formatting is not supported
+        # Alternate formatting ni sio supported
         self.assertRaises(ValueError, format, '', '#')
         self.assertRaises(ValueError, format, '', '#20')
 
@@ -1334,13 +1334,13 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('a{:{}}b'.format('x', '^10'), 'a    x     b')
         self.assertEqual('a{:{}x}b'.format(20, '#'), 'a0x14b')
 
-        # can't mix and match numbering and auto-numbering
+        # can't mix na match numbering na auto-numbering
         self.assertRaises(ValueError, '{}{1}'.format, 1, 2)
         self.assertRaises(ValueError, '{1}{}'.format, 1, 2)
         self.assertRaises(ValueError, '{:{1}}'.format, 1, 2)
         self.assertRaises(ValueError, '{0:{}}'.format, 1, 2)
 
-        # can mix and match auto-numbering and named
+        # can mix na match auto-numbering na named
         self.assertEqual('{f}{}'.format(4, f='test'), 'test4')
         self.assertEqual('{}{f}'.format(4, f='test'), '4test')
         self.assertEqual('{:{f}}{g}{}'.format(1, 3, g='g', f=2), ' 1g3')
@@ -1355,7 +1355,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual("%s, %s, %i, %f, %5.2f" % ("abc", "abc", -1, -2, 3.5), 'abc, abc, -1, -2.000000,  3.50')
         self.assertEqual("%s, %s, %i, %f, %5.2f" % ("abc", "abc", -1, -2, 3.57), 'abc, abc, -1, -2.000000,  3.57')
         self.assertEqual("%s, %s, %i, %f, %5.2f" % ("abc", "abc", -1, -2, 1003.57), 'abc, abc, -1, -2.000000, 1003.57')
-        ikiwa not sys.platform.startswith('java'):
+        ikiwa sio sys.platform.startswith('java'):
             self.assertEqual("%r, %r" % (b"abc", "abc"), "b'abc', 'abc'")
             self.assertEqual("%r" % ("\u1234",), "'\u1234'")
             self.assertEqual("%a" % ("\u1234",), "'\\u1234'")
@@ -1427,10 +1427,10 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('%X' % letter_m, '6D')
         self.assertEqual('%o' % letter_m, '155')
         self.assertEqual('%c' % letter_m, 'm')
-        self.assertRaisesRegex(TypeError, '%x format: an integer is required, not float', operator.mod, '%x', 3.14),
-        self.assertRaisesRegex(TypeError, '%X format: an integer is required, not float', operator.mod, '%X', 2.11),
-        self.assertRaisesRegex(TypeError, '%o format: an integer is required, not float', operator.mod, '%o', 1.79),
-        self.assertRaisesRegex(TypeError, '%x format: an integer is required, not PseudoFloat', operator.mod, '%x', pi),
+        self.assertRaisesRegex(TypeError, '%x format: an integer ni required, sio float', operator.mod, '%x', 3.14),
+        self.assertRaisesRegex(TypeError, '%X format: an integer ni required, sio float', operator.mod, '%X', 2.11),
+        self.assertRaisesRegex(TypeError, '%o format: an integer ni required, sio float', operator.mod, '%o', 1.79),
+        self.assertRaisesRegex(TypeError, '%x format: an integer ni required, sio PseudoFloat', operator.mod, '%x', pi),
         self.assertRaises(TypeError, operator.mod, '%c', pi),
 
     eleza test_formatting_with_enum(self):
@@ -1492,8 +1492,8 @@ kundi UnicodeTest(string_tests.CommonTest,
             result = format_string % 2.34
 
     eleza test_startswith_endswith_errors(self):
-        for meth in ('foo'.startswith, 'foo'.endswith):
-            with self.assertRaises(TypeError) as cm:
+        kila meth kwenye ('foo'.startswith, 'foo'.endswith):
+            with self.assertRaises(TypeError) kama cm:
                 meth(['f'])
             exc = str(cm.exception)
             self.assertIn('str', exc)
@@ -1501,7 +1501,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     @support.run_with_locale('LC_ALL', 'de_DE', 'fr_FR')
     eleza test_format_float(self):
-        # should not format with a comma, but always with C locale
+        # should sio format with a comma, but always with C locale
         self.assertEqual('1.0', '%.1f' % 1.0)
 
     eleza test_constructor(self):
@@ -1512,7 +1512,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             'unicode remains unicode'
         )
 
-        for text in ('ascii', '\xe9', '\u20ac', '\U0010FFFF'):
+        kila text kwenye ('ascii', '\xe9', '\u20ac', '\U0010FFFF'):
             subkundi = StrSubclass(text)
             self.assertEqual(str(subclass), text)
             self.assertEqual(len(subclass), len(text))
@@ -1536,23 +1536,23 @@ kundi UnicodeTest(string_tests.CommonTest,
             '__str__ compatible objects are recognized'
         )
 
-        # unicode(obj) is compatible to str():
+        # unicode(obj) ni compatible to str():
 
-        o = StringCompat('unicode(obj) is compatible to str()')
-        self.assertEqual(str(o), 'unicode(obj) is compatible to str()')
-        self.assertEqual(str(o), 'unicode(obj) is compatible to str()')
+        o = StringCompat('unicode(obj) ni compatible to str()')
+        self.assertEqual(str(o), 'unicode(obj) ni compatible to str()')
+        self.assertEqual(str(o), 'unicode(obj) ni compatible to str()')
 
-        for obj in (123, 123.45, 123):
+        kila obj kwenye (123, 123.45, 123):
             self.assertEqual(str(obj), str(str(obj)))
 
         # unicode(obj, encoding, error) tests (this maps to
         # PyUnicode_FromEncodedObject() at C level)
 
-        ikiwa not sys.platform.startswith('java'):
+        ikiwa sio sys.platform.startswith('java'):
             self.assertRaises(
                 TypeError,
                 str,
-                'decoding unicode is not supported',
+                'decoding unicode ni sio supported',
                 'utf-8',
                 'strict'
             )
@@ -1562,7 +1562,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             'strings are decoded to unicode'
         )
 
-        ikiwa not sys.platform.startswith('java'):
+        ikiwa sio sys.platform.startswith('java'):
             self.assertEqual(
                 str(
                     memoryview(b'character buffers are decoded to unicode'),
@@ -1576,16 +1576,16 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza test_constructor_keyword_args(self):
         """Pass various keyword argument combinations to the constructor."""
-        # The object argument can be passed as a keyword.
+        # The object argument can be pitaed kama a keyword.
         self.assertEqual(str(object='foo'), 'foo')
         self.assertEqual(str(object=b'foo', encoding='utf-8'), 'foo')
         # The errors argument without encoding triggers "decode" mode.
-        self.assertEqual(str(b'foo', errors='strict'), 'foo')  # not "b'foo'"
+        self.assertEqual(str(b'foo', errors='strict'), 'foo')  # sio "b'foo'"
         self.assertEqual(str(object=b'foo', errors='strict'), 'foo')
 
     eleza test_constructor_defaults(self):
         """Check the constructor argument defaults."""
-        # The object argument defaults to '' or b''.
+        # The object argument defaults to '' ama b''.
         self.assertEqual(str(), '')
         self.assertEqual(str(errors='strict'), '')
         utf8_cent = '¢'.encode('utf-8')
@@ -1599,7 +1599,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             ('A\u2262\u0391.', b'A+ImIDkQ.'),             # RFC2152 example
             ('Hi Mom -\u263a-!', b'Hi Mom -+Jjo--!'),     # RFC2152 example
             ('\u65E5\u672C\u8A9E', b'+ZeVnLIqe-'),        # RFC2152 example
-            ('Item 3 is \u00a31.', b'Item 3 is +AKM-1.'), # RFC2152 example
+            ('Item 3 ni \u00a31.', b'Item 3 ni +AKM-1.'), # RFC2152 example
             ('+', b'+-'),
             ('+-', b'+--'),
             ('+?', b'+-?'),
@@ -1612,10 +1612,10 @@ kundi UnicodeTest(string_tests.CommonTest,
             ('/', b'/'),
         ]
 
-        for (x, y) in utfTests:
+        kila (x, y) kwenye utfTests:
             self.assertEqual(x.encode('utf-7'), y)
 
-        # Unpaired surrogates are passed through
+        # Unpaired surrogates are pitaed through
         self.assertEqual('\uD801'.encode('utf-7'), b'+2AE-')
         self.assertEqual('\uD801x'.encode('utf-7'), b'+2AE-x')
         self.assertEqual('\uDC01'.encode('utf-7'), b'+3AE-')
@@ -1635,10 +1635,10 @@ kundi UnicodeTest(string_tests.CommonTest,
         set_d = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'(),-./:?"
         # Optional direct characters
         set_o = '!"#$%&*;<=>@[]^_`{|}'
-        for c in set_d:
+        kila c kwenye set_d:
             self.assertEqual(c.encode('utf7'), c.encode('ascii'))
             self.assertEqual(c.encode('ascii').decode('utf7'), c)
-        for c in set_o:
+        kila c kwenye set_o:
             self.assertEqual(c.encode('ascii').decode('utf7'), c)
 
         with self.assertRaisesRegex(UnicodeDecodeError,
@@ -1650,8 +1650,8 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('\u20ac'.encode('utf-8'), b'\xe2\x82\xac')
         self.assertEqual('\U00010002'.encode('utf-8'), b'\xf0\x90\x80\x82')
         self.assertEqual('\U00023456'.encode('utf-8'), b'\xf0\xa3\x91\x96')
-        self.assertEqual('\ud800'.encode('utf-8', 'surrogatepass'), b'\xed\xa0\x80')
-        self.assertEqual('\udc00'.encode('utf-8', 'surrogatepass'), b'\xed\xb0\x80')
+        self.assertEqual('\ud800'.encode('utf-8', 'surrogatepita'), b'\xed\xa0\x80')
+        self.assertEqual('\udc00'.encode('utf-8', 'surrogatepita'), b'\xed\xb0\x80')
         self.assertEqual(('\U00010002'*10).encode('utf-8'),
                          b'\xf0\x90\x80\x82'*10)
         self.assertEqual(
@@ -1679,8 +1679,8 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual(str(b'\xe2\x82\xac', 'utf-8'), '\u20ac' )
 
         # Other possible utf-8 test cases:
-        # * strict decoding testing for all of the
-        #   UTF8_ERROR cases in PyUnicode_DecodeUTF8
+        # * strict decoding testing kila all of the
+        #   UTF8_ERROR cases kwenye PyUnicode_DecodeUTF8
 
     eleza test_utf8_decode_valid_sequences(self):
         sequences = [
@@ -1695,52 +1695,52 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xF0\x90\x80\x80', '\U00010000'),
             (b'\xf4\x8f\xbf\xbf', '\U0010FFFF')
         ]
-        for seq, res in sequences:
+        kila seq, res kwenye sequences:
             self.assertEqual(seq.decode('utf-8'), res)
 
 
     eleza test_utf8_decode_invalid_sequences(self):
-        # continuation bytes in a sequence of 2, 3, or 4 bytes
-        continuation_bytes = [bytes([x]) for x in range(0x80, 0xC0)]
+        # continuation bytes kwenye a sequence of 2, 3, ama 4 bytes
+        continuation_bytes = [bytes([x]) kila x kwenye range(0x80, 0xC0)]
         # start bytes of a 2-byte sequence equivalent to code points < 0x7F
-        invalid_2B_seq_start_bytes = [bytes([x]) for x in range(0xC0, 0xC2)]
+        invalid_2B_seq_start_bytes = [bytes([x]) kila x kwenye range(0xC0, 0xC2)]
         # start bytes of a 4-byte sequence equivalent to code points > 0x10FFFF
-        invalid_4B_seq_start_bytes = [bytes([x]) for x in range(0xF5, 0xF8)]
+        invalid_4B_seq_start_bytes = [bytes([x]) kila x kwenye range(0xF5, 0xF8)]
         invalid_start_bytes = (
             continuation_bytes + invalid_2B_seq_start_bytes +
-            invalid_4B_seq_start_bytes + [bytes([x]) for x in range(0xF7, 0x100)]
+            invalid_4B_seq_start_bytes + [bytes([x]) kila x kwenye range(0xF7, 0x100)]
         )
 
-        for byte in invalid_start_bytes:
+        kila byte kwenye invalid_start_bytes:
             self.assertRaises(UnicodeDecodeError, byte.decode, 'utf-8')
 
-        for sb in invalid_2B_seq_start_bytes:
-            for cb in continuation_bytes:
+        kila sb kwenye invalid_2B_seq_start_bytes:
+            kila cb kwenye continuation_bytes:
                 self.assertRaises(UnicodeDecodeError, (sb+cb).decode, 'utf-8')
 
-        for sb in invalid_4B_seq_start_bytes:
-            for cb1 in continuation_bytes[:3]:
-                for cb3 in continuation_bytes[:3]:
+        kila sb kwenye invalid_4B_seq_start_bytes:
+            kila cb1 kwenye continuation_bytes[:3]:
+                kila cb3 kwenye continuation_bytes[:3]:
                     self.assertRaises(UnicodeDecodeError,
                                       (sb+cb1+b'\x80'+cb3).decode, 'utf-8')
 
-        for cb in [bytes([x]) for x in range(0x80, 0xA0)]:
+        kila cb kwenye [bytes([x]) kila x kwenye range(0x80, 0xA0)]:
             self.assertRaises(UnicodeDecodeError,
                               (b'\xE0'+cb+b'\x80').decode, 'utf-8')
             self.assertRaises(UnicodeDecodeError,
                               (b'\xE0'+cb+b'\xBF').decode, 'utf-8')
         # surrogates
-        for cb in [bytes([x]) for x in range(0xA0, 0xC0)]:
+        kila cb kwenye [bytes([x]) kila x kwenye range(0xA0, 0xC0)]:
             self.assertRaises(UnicodeDecodeError,
                               (b'\xED'+cb+b'\x80').decode, 'utf-8')
             self.assertRaises(UnicodeDecodeError,
                               (b'\xED'+cb+b'\xBF').decode, 'utf-8')
-        for cb in [bytes([x]) for x in range(0x80, 0x90)]:
+        kila cb kwenye [bytes([x]) kila x kwenye range(0x80, 0x90)]:
             self.assertRaises(UnicodeDecodeError,
                               (b'\xF0'+cb+b'\x80\x80').decode, 'utf-8')
             self.assertRaises(UnicodeDecodeError,
                               (b'\xF0'+cb+b'\xBF\xBF').decode, 'utf-8')
-        for cb in [bytes([x]) for x in range(0x90, 0xC0)]:
+        kila cb kwenye [bytes([x]) kila x kwenye range(0x90, 0xC0)]:
             self.assertRaises(UnicodeDecodeError,
                               (b'\xF4'+cb+b'\x80\x80').decode, 'utf-8')
             self.assertRaises(UnicodeDecodeError,
@@ -1748,10 +1748,10 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza test_issue8271(self):
         # Issue #8271: during the decoding of an invalid UTF-8 byte sequence,
-        # only the start byte and the continuation byte(s) are now considered
+        # only the start byte na the continuation byte(s) are now considered
         # invalid, instead of the number of bytes specified by the start byte.
         # See http://www.unicode.org/versions/Unicode5.2.0/ch03.pdf (page 95,
-        # table 3-8, Row 2) for more information about the algorithm used.
+        # table 3-8, Row 2) kila more information about the algorithm used.
         FFFD = '\ufffd'
         sequences = [
             # invalid start bytes
@@ -1777,8 +1777,8 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xe1\x41\x80', FFFD+'A'+FFFD), # invalid cb followed by valid cb
             (b'\xe1\x41\x41', FFFD+'AA'), # 2 invalid continuation bytes
             (b'\xe1\x80\x41', FFFD+'A'), # only 1 valid continuation byte
-            (b'\xe1\x80\xe1\x41', FFFD*2+'A'), # 1 valid and the other invalid
-            (b'\xe1\x41\xe1\x80', FFFD+'A'+FFFD), # 1 invalid and the other valid
+            (b'\xe1\x80\xe1\x41', FFFD*2+'A'), # 1 valid na the other invalid
+            (b'\xe1\x41\xe1\x80', FFFD+'A'+FFFD), # 1 invalid na the other valid
             # with start byte of a 4-byte sequence
             (b'\xf1', FFFD), # only the start byte
             (b'\xf1\xf1', FFFD*2), # 2 start bytes
@@ -1787,13 +1787,13 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xf1\xf1\xf1\xf1\xf1', FFFD*5), # 5 start bytes
             (b'\xf1\x80', FFFD), # only 1 continuation bytes
             (b'\xf1\x80\x80', FFFD), # only 2 continuation bytes
-            (b'\xf1\x80\x41', FFFD+'A'), # 1 valid cb and 1 invalid
-            (b'\xf1\x80\x41\x41', FFFD+'AA'), # 1 valid cb and 1 invalid
-            (b'\xf1\x80\x80\x41', FFFD+'A'), # 2 valid cb and 1 invalid
-            (b'\xf1\x41\x80', FFFD+'A'+FFFD), # 1 invalid cv and 1 valid
-            (b'\xf1\x41\x80\x80', FFFD+'A'+FFFD*2), # 1 invalid cb and 2 invalid
-            (b'\xf1\x41\x80\x41', FFFD+'A'+FFFD+'A'), # 2 invalid cb and 1 invalid
-            (b'\xf1\x41\x41\x80', FFFD+'AA'+FFFD), # 1 valid cb and 1 invalid
+            (b'\xf1\x80\x41', FFFD+'A'), # 1 valid cb na 1 invalid
+            (b'\xf1\x80\x41\x41', FFFD+'AA'), # 1 valid cb na 1 invalid
+            (b'\xf1\x80\x80\x41', FFFD+'A'), # 2 valid cb na 1 invalid
+            (b'\xf1\x41\x80', FFFD+'A'+FFFD), # 1 invalid cv na 1 valid
+            (b'\xf1\x41\x80\x80', FFFD+'A'+FFFD*2), # 1 invalid cb na 2 invalid
+            (b'\xf1\x41\x80\x41', FFFD+'A'+FFFD+'A'), # 2 invalid cb na 1 invalid
+            (b'\xf1\x41\x41\x80', FFFD+'AA'+FFFD), # 1 valid cb na 1 invalid
             (b'\xf1\x41\xf1\x80', FFFD+'A'+FFFD),
             (b'\xf1\x41\x80\xf1', FFFD+'A'+FFFD*2),
             (b'\xf1\xf1\x80\x41', FFFD*2+'A'),
@@ -1804,14 +1804,14 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\xf5\x80', FFFD*2), # only 1 continuation byte
             (b'\xf5\x80\x80', FFFD*3), # only 2 continuation byte
             (b'\xf5\x80\x80\x80', FFFD*4), # 3 continuation bytes
-            (b'\xf5\x80\x41', FFFD*2+'A'), #  1 valid cb and 1 invalid
+            (b'\xf5\x80\x41', FFFD*2+'A'), #  1 valid cb na 1 invalid
             (b'\xf5\x80\x41\xf5', FFFD*2+'A'+FFFD),
             (b'\xf5\x41\x80\x80\x41', FFFD+'A'+FFFD*2+'A'),
             # with invalid start byte of a 5-byte sequence (rfc2279)
             (b'\xf8', FFFD), # only the start byte
             (b'\xf8\xf8', FFFD*2), # 2 start bytes
             (b'\xf8\x80', FFFD*2), # only one continuation byte
-            (b'\xf8\x80\x41', FFFD*2 + 'A'), # 1 valid cb and 1 invalid
+            (b'\xf8\x80\x41', FFFD*2 + 'A'), # 1 valid cb na 1 invalid
             (b'\xf8\x80\x80\x80\x80', FFFD*5), # invalid 5 bytes seq with 5 bytes
             # with invalid start byte of a 6-byte sequence (rfc2279)
             (b'\xfc', FFFD), # only the start byte
@@ -1828,7 +1828,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             (b'\x61\xF1\x80\x80\xE1\x80\xC2\x62\x80\x63\x80\xBF\x64',
              '\x61\uFFFD\uFFFD\uFFFD\x62\uFFFD\x63\uFFFD\uFFFD\x64'),
         ]
-        for n, (seq, res) in enumerate(sequences):
+        kila n, (seq, res) kwenye enumerate(sequences):
             self.assertRaises(UnicodeDecodeError, seq.decode, 'utf-8', 'strict')
             self.assertEqual(seq.decode('utf-8', 'replace'), res)
             self.assertEqual((seq+b'b').decode('utf-8', 'replace'), res+'b')
@@ -1837,11 +1837,11 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza assertCorrectUTF8Decoding(self, seq, res, err):
         """
-        Check that an invalid UTF-8 sequence raises a UnicodeDecodeError when
-        'strict' is used, returns res when 'replace' is used, and that doesn't
-        rudisha anything when 'ignore' is used.
+        Check that an invalid UTF-8 sequence ashirias a UnicodeDecodeError when
+        'strict' ni used, rudishas res when 'replace' ni used, na that doesn't
+        rudisha anything when 'ignore' ni used.
         """
-        with self.assertRaises(UnicodeDecodeError) as cm:
+        with self.assertRaises(UnicodeDecodeError) kama cm:
             seq.decode('utf-8')
         exc = cm.exception
 
@@ -1856,28 +1856,28 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza test_invalid_start_byte(self):
         """
-        Test that an 'invalid start byte' error is raised when the first byte
-        is not in the ASCII range or is not a valid start byte of a 2-, 3-, or
-        4-bytes sequence. The invalid start byte is replaced with a single
+        Test that an 'invalid start byte' error ni ashiriad when the first byte
+        ni haiko kwenye the ASCII range ama ni sio a valid start byte of a 2-, 3-, or
+        4-bytes sequence. The invalid start byte ni replaced with a single
         U+FFFD when errors='replace'.
-        E.g. <80> is a continuation byte and can appear only after a start byte.
+        E.g. <80> ni a continuation byte na can appear only after a start byte.
         """
         FFFD = '\ufffd'
-        for byte in b'\x80\xA0\x9F\xBF\xC0\xC1\xF5\xFF':
+        kila byte kwenye b'\x80\xA0\x9F\xBF\xC0\xC1\xF5\xFF':
             self.assertCorrectUTF8Decoding(bytes([byte]), '\ufffd',
                                            'invalid start byte')
 
     eleza test_unexpected_end_of_data(self):
         """
-        Test that an 'unexpected end of data' error is raised when the string
-        ends after a start byte of a 2-, 3-, or 4-bytes sequence without having
-        enough continuation bytes.  The incomplete sequence is replaced with a
+        Test that an 'unexpected end of data' error ni ashiriad when the string
+        ends after a start byte of a 2-, 3-, ama 4-bytes sequence without having
+        enough continuation bytes.  The incomplete sequence ni replaced with a
         single U+FFFD when errors='replace'.
-        E.g. in the sequence <F3 80 80>, F3 is the start byte of a 4-bytes
-        sequence, but it's followed by only 2 valid continuation bytes and the
-        last continuation bytes is missing.
+        E.g. kwenye the sequence <F3 80 80>, F3 ni the start byte of a 4-bytes
+        sequence, but it's followed by only 2 valid continuation bytes na the
+        last continuation bytes ni missing.
         Note: the continuation bytes must be all valid, ikiwa one of them is
-        invalid another error will be raised.
+        invalid another error will be ashiriad.
         """
         sequences = [
             'C2', 'DF',
@@ -1889,18 +1889,18 @@ kundi UnicodeTest(string_tests.CommonTest,
             'F4 80', 'F4 8F', 'F4 80 80', 'F4 80 BF', 'F4 8F 80', 'F4 8F BF'
         ]
         FFFD = '\ufffd'
-        for seq in sequences:
+        kila seq kwenye sequences:
             self.assertCorrectUTF8Decoding(bytes.kutokahex(seq), '\ufffd',
                                            'unexpected end of data')
 
     eleza test_invalid_cb_for_2bytes_seq(self):
         """
-        Test that an 'invalid continuation byte' error is raised when the
-        continuation byte of a 2-bytes sequence is invalid.  The start byte
-        is replaced by a single U+FFFD and the second byte is handled
+        Test that an 'invalid continuation byte' error ni ashiriad when the
+        continuation byte of a 2-bytes sequence ni invalid.  The start byte
+        ni replaced by a single U+FFFD na the second byte ni handled
         separately when errors='replace'.
-        E.g. in the sequence <C2 41>, C2 is the start byte of a 2-bytes
-        sequence, but 41 is not a valid continuation byte because it's the
+        E.g. kwenye the sequence <C2 41>, C2 ni the start byte of a 2-bytes
+        sequence, but 41 ni sio a valid continuation byte because it's the
         ASCII letter 'A'.
         """
         FFFD = '\ufffd'
@@ -1911,26 +1911,26 @@ kundi UnicodeTest(string_tests.CommonTest,
             ('DF 00', FFFD+'\x00'), ('DF 7F', FFFD+'\x7f'),
             ('DF C0', FFFDx2), ('DF FF', FFFDx2),
         ]
-        for seq, res in sequences:
+        kila seq, res kwenye sequences:
             self.assertCorrectUTF8Decoding(bytes.kutokahex(seq), res,
                                            'invalid continuation byte')
 
     eleza test_invalid_cb_for_3bytes_seq(self):
         """
-        Test that an 'invalid continuation byte' error is raised when the
+        Test that an 'invalid continuation byte' error ni ashiriad when the
         continuation byte(s) of a 3-bytes sequence are invalid.  When
-        errors='replace', ikiwa the first continuation byte is valid, the first
-        two bytes (start byte + 1st cb) are replaced by a single U+FFFD and the
-        third byte is handled separately, otherwise only the start byte is
-        replaced with a U+FFFD and the other continuation bytes are handled
+        errors='replace', ikiwa the first continuation byte ni valid, the first
+        two bytes (start byte + 1st cb) are replaced by a single U+FFFD na the
+        third byte ni handled separately, otherwise only the start byte is
+        replaced with a U+FFFD na the other continuation bytes are handled
         separately.
-        E.g. in the sequence <E1 80 41>, E1 is the start byte of a 3-bytes
-        sequence, 80 is a valid continuation byte, but 41 is not a valid cb
+        E.g. kwenye the sequence <E1 80 41>, E1 ni the start byte of a 3-bytes
+        sequence, 80 ni a valid continuation byte, but 41 ni sio a valid cb
         because it's the ASCII letter 'A'.
-        Note: when the start byte is E0 or ED, the valid ranges for the first
-        continuation byte are limited to A0..BF and 80..9F respectively.
-        Python 2 used to consider all the bytes in range 80..BF valid when the
-        start byte was ED.  This is fixed in Python 3.
+        Note: when the start byte ni E0 ama ED, the valid ranges kila the first
+        continuation byte are limited to A0..BF na 80..9F respectively.
+        Python 2 used to consider all the bytes kwenye range 80..BF valid when the
+        start byte was ED.  This ni fixed kwenye Python 3.
         """
         FFFD = '\ufffd'
         FFFDx2 = FFFD * 2
@@ -1969,25 +1969,25 @@ kundi UnicodeTest(string_tests.CommonTest,
             ('EF BF 00', FFFD+'\x00'), ('EF BF 7F', FFFD+'\x7f'),
             ('EF BF C0', FFFDx2), ('EF BF FF', FFFDx2),
         ]
-        for seq, res in sequences:
+        kila seq, res kwenye sequences:
             self.assertCorrectUTF8Decoding(bytes.kutokahex(seq), res,
                                            'invalid continuation byte')
 
     eleza test_invalid_cb_for_4bytes_seq(self):
         """
-        Test that an 'invalid continuation byte' error is raised when the
+        Test that an 'invalid continuation byte' error ni ashiriad when the
         continuation byte(s) of a 4-bytes sequence are invalid.  When
-        errors='replace',the start byte and all the following valid
-        continuation bytes are replaced with a single U+FFFD, and all the bytes
+        errors='replace',the start byte na all the following valid
+        continuation bytes are replaced with a single U+FFFD, na all the bytes
         starting kutoka the first invalid continuation bytes (included) are
         handled separately.
-        E.g. in the sequence <E1 80 41>, E1 is the start byte of a 3-bytes
-        sequence, 80 is a valid continuation byte, but 41 is not a valid cb
+        E.g. kwenye the sequence <E1 80 41>, E1 ni the start byte of a 3-bytes
+        sequence, 80 ni a valid continuation byte, but 41 ni sio a valid cb
         because it's the ASCII letter 'A'.
-        Note: when the start byte is E0 or ED, the valid ranges for the first
-        continuation byte are limited to A0..BF and 80..9F respectively.
-        However, when the start byte is ED, Python 2 considers all the bytes
-        in range 80..BF valid.  This is fixed in Python 3.
+        Note: when the start byte ni E0 ama ED, the valid ranges kila the first
+        continuation byte are limited to A0..BF na 80..9F respectively.
+        However, when the start byte ni ED, Python 2 considers all the bytes
+        kwenye range 80..BF valid.  This ni fixed kwenye Python 3.
         """
         FFFD = '\ufffd'
         FFFDx2 = FFFD * 2
@@ -2048,12 +2048,12 @@ kundi UnicodeTest(string_tests.CommonTest,
             ('F4 8F BF 00', FFFD+'\x00'), ('F4 8F BF 7F', FFFD+'\x7f'),
             ('F4 8F BF C0', FFFDx2), ('F4 8F BF FF', FFFDx2)
         ]
-        for seq, res in sequences:
+        kila seq, res kwenye sequences:
             self.assertCorrectUTF8Decoding(bytes.kutokahex(seq), res,
                                            'invalid continuation byte')
 
     eleza test_codecs_idna(self):
-        # Test whether trailing dot is preserved
+        # Test whether trailing dot ni preserved
         self.assertEqual("www.python.org.".encode("idna"), b"www.python.org.")
 
     eleza test_codecs_errors(self):
@@ -2107,47 +2107,47 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('hello'.encode('utf-16-be'), b'\000h\000e\000l\000l\000o')
         self.assertEqual('hello'.encode('latin-1'), b'hello')
 
-        # Default encoding is utf-8
+        # Default encoding ni utf-8
         self.assertEqual('\u2603'.encode(), b'\xe2\x98\x83')
 
-        # Roundtrip safety for BMP (just the first 1024 chars)
-        for c in range(1024):
+        # Roundtrip safety kila BMP (just the first 1024 chars)
+        kila c kwenye range(1024):
             u = chr(c)
-            for encoding in ('utf-7', 'utf-8', 'utf-16', 'utf-16-le',
+            kila encoding kwenye ('utf-7', 'utf-8', 'utf-16', 'utf-16-le',
                              'utf-16-be', 'raw_unicode_escape',
                              'unicode_escape'):
                 self.assertEqual(str(u.encode(encoding),encoding), u)
 
-        # Roundtrip safety for BMP (just the first 256 chars)
-        for c in range(256):
+        # Roundtrip safety kila BMP (just the first 256 chars)
+        kila c kwenye range(256):
             u = chr(c)
-            for encoding in ('latin-1',):
+            kila encoding kwenye ('latin-1',):
                 self.assertEqual(str(u.encode(encoding),encoding), u)
 
-        # Roundtrip safety for BMP (just the first 128 chars)
-        for c in range(128):
+        # Roundtrip safety kila BMP (just the first 128 chars)
+        kila c kwenye range(128):
             u = chr(c)
-            for encoding in ('ascii',):
+            kila encoding kwenye ('ascii',):
                 self.assertEqual(str(u.encode(encoding),encoding), u)
 
-        # Roundtrip safety for non-BMP (just a few chars)
+        # Roundtrip safety kila non-BMP (just a few chars)
         with warnings.catch_warnings():
             u = '\U00010001\U00020002\U00030003\U00040004\U00050005'
-            for encoding in ('utf-8', 'utf-16', 'utf-16-le', 'utf-16-be',
+            kila encoding kwenye ('utf-8', 'utf-16', 'utf-16-le', 'utf-16-be',
                              'raw_unicode_escape', 'unicode_escape'):
                 self.assertEqual(str(u.encode(encoding),encoding), u)
 
-        # UTF-8 must be roundtrip safe for all code points
-        # (except surrogates, which are forbidden).
+        # UTF-8 must be roundtrip safe kila all code points
+        # (tatizo surrogates, which are forbidden).
         u = ''.join(map(chr, list(range(0, 0xd800)) +
                              list(range(0xe000, 0x110000))))
-        for encoding in ('utf-8',):
+        kila encoding kwenye ('utf-8',):
             self.assertEqual(str(u.encode(encoding),encoding), u)
 
     eleza test_codecs_charmap(self):
         # 0-127
         s = bytes(range(128))
-        for encoding in (
+        kila encoding kwenye (
             'cp037', 'cp1026', 'cp273',
             'cp437', 'cp500', 'cp720', 'cp737', 'cp775', 'cp850',
             'cp852', 'cp855', 'cp858', 'cp860', 'cp861', 'cp862',
@@ -2176,7 +2176,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 
         # 128-255
         s = bytes(range(128, 256))
-        for encoding in (
+        kila encoding kwenye (
             'cp037', 'cp1026', 'cp273',
             'cp437', 'cp500', 'cp720', 'cp737', 'cp775', 'cp850',
             'cp852', 'cp855', 'cp858', 'cp860', 'cp861', 'cp862',
@@ -2209,7 +2209,7 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_printing(self):
         kundi BitBucket:
             eleza write(self, text):
-                pass
+                pita
 
         out = BitBucket()
         andika('abc', file=out)
@@ -2234,13 +2234,13 @@ kundi UnicodeTest(string_tests.CommonTest,
         x = y.decode("raw-unicode-escape").encode("raw-unicode-escape")
         self.assertEqual(x, y)
 
-        try:
+        jaribu:
             br'\U11111111'.decode("raw-unicode-escape")
-        except UnicodeDecodeError as e:
+        tatizo UnicodeDecodeError kama e:
             self.assertEqual(e.start, 0)
             self.assertEqual(e.end, 10)
-        else:
-            self.fail("Should have raised UnicodeDecodeError")
+        isipokua:
+            self.fail("Should have ashiriad UnicodeDecodeError")
 
     eleza test_conversion(self):
         # Make sure __str__() works properly
@@ -2284,9 +2284,9 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual(repr('\U00014000'), "'\\U00014000'")     # nonprintable
 
     # This test only affects 32-bit platforms because expandtabs can only take
-    # an int as the max value, not a 64-bit C long.  If expandtabs is changed
+    # an int kama the max value, sio a 64-bit C long.  If expandtabs ni changed
     # to take a 64-bit long, this test should apply to all platforms.
-    @unittest.skipIf(sys.maxsize > (1 << 32) or struct.calcsize('P') != 4,
+    @unittest.skipIf(sys.maxsize > (1 << 32) ama struct.calcsize('P') != 4,
                      'only applies to 32-bit platforms')
     eleza test_expandtabs_overflows_gracefully(self):
         self.assertRaises(OverflowError, 't\tt\t'.expandtabs, sys.maxsize)
@@ -2296,17 +2296,17 @@ kundi UnicodeTest(string_tests.CommonTest,
         s = 'abc'
         self.assertIs(s.expandtabs(), s)
 
-    eleza test_raiseMemError(self):
+    eleza test_ashiriaMemError(self):
         ikiwa struct.calcsize('P') == 8:
             # 64 bits pointers
             ascii_struct_size = 48
             compact_struct_size = 72
-        else:
+        isipokua:
             # 32 bits pointers
             ascii_struct_size = 24
             compact_struct_size = 36
 
-        for char in ('a', '\xe9', '\u20ac', '\U0010ffff'):
+        kila char kwenye ('a', '\xe9', '\u20ac', '\U0010ffff'):
             code = ord(char)
             ikiwa code < 0x100:
                 char_size = 1  # sizeof(Py_UCS1)
@@ -2314,11 +2314,11 @@ kundi UnicodeTest(string_tests.CommonTest,
             elikiwa code < 0x10000:
                 char_size = 2  # sizeof(Py_UCS2)
                 struct_size = compact_struct_size
-            else:
+            isipokua:
                 char_size = 4  # sizeof(Py_UCS4)
                 struct_size = compact_struct_size
-            # Note: sys.maxsize is half of the actual max allocation because of
-            # the signedness of Py_ssize_t. Strings of maxlen-1 should in principle
+            # Note: sys.maxsize ni half of the actual max allocation because of
+            # the signedness of Py_ssize_t. Strings of maxlen-1 should kwenye principle
             # be allocatable, given enough memory.
             maxlen = ((sys.maxsize - struct_size) // char_size)
             alloc = lambda: char * maxlen
@@ -2355,7 +2355,7 @@ kundi UnicodeTest(string_tests.CommonTest,
     @support.cpython_only
     eleza test_resize(self):
         kutoka _testcapi agiza getargs_u
-        for length in range(1, 100, 7):
+        kila length kwenye range(1, 100, 7):
             # generate a fresh string (refcount=1)
             text = 'a' * length + 'b'
 
@@ -2363,7 +2363,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             abc = getargs_u(text)
             self.assertEqual(abc, text)
 
-            # resize text: wstr field must be cleared and then recomputed
+            # resize text: wstr field must be cleared na then recomputed
             text += 'c'
             abceleza = getargs_u(text)
             self.assertNotEqual(abc, abcdef)
@@ -2385,63 +2385,63 @@ kundi UnicodeTest(string_tests.CommonTest,
             latin, latin2,
             bmp, bmp2,
             astral, astral2)
-        for text1, text2 in itertools.combinations(strings, 2):
-            equal = (text1 is text2)
+        kila text1, text2 kwenye itertools.combinations(strings, 2):
+            equal = (text1 ni text2)
             self.assertEqual(text1 == text2, equal)
-            self.assertEqual(text1 != text2, not equal)
+            self.assertEqual(text1 != text2, sio equal)
 
             ikiwa equal:
-                self.assertTrue(text1 <= text2)
-                self.assertTrue(text1 >= text2)
+                self.assertKweli(text1 <= text2)
+                self.assertKweli(text1 >= text2)
 
-                # text1 is text2: duplicate strings to skip the "str1 == str2"
-                # optimization in unicode_compare_eq() and really compare
+                # text1 ni text2: duplicate strings to skip the "str1 == str2"
+                # optimization kwenye unicode_compare_eq() na really compare
                 # character per character
                 copy1 = duplicate_string(text1)
                 copy2 = duplicate_string(text2)
                 self.assertIsNot(copy1, copy2)
 
-                self.assertTrue(copy1 == copy2)
-                self.assertFalse(copy1 != copy2)
+                self.assertKweli(copy1 == copy2)
+                self.assertUongo(copy1 != copy2)
 
-                self.assertTrue(copy1 <= copy2)
-                self.assertTrue(copy2 >= copy2)
+                self.assertKweli(copy1 <= copy2)
+                self.assertKweli(copy2 >= copy2)
 
-        self.assertTrue(ascii < ascii2)
-        self.assertTrue(ascii < latin)
-        self.assertTrue(ascii < bmp)
-        self.assertTrue(ascii < astral)
-        self.assertFalse(ascii >= ascii2)
-        self.assertFalse(ascii >= latin)
-        self.assertFalse(ascii >= bmp)
-        self.assertFalse(ascii >= astral)
+        self.assertKweli(ascii < ascii2)
+        self.assertKweli(ascii < latin)
+        self.assertKweli(ascii < bmp)
+        self.assertKweli(ascii < astral)
+        self.assertUongo(ascii >= ascii2)
+        self.assertUongo(ascii >= latin)
+        self.assertUongo(ascii >= bmp)
+        self.assertUongo(ascii >= astral)
 
-        self.assertFalse(latin < ascii)
-        self.assertTrue(latin < latin2)
-        self.assertTrue(latin < bmp)
-        self.assertTrue(latin < astral)
-        self.assertTrue(latin >= ascii)
-        self.assertFalse(latin >= latin2)
-        self.assertFalse(latin >= bmp)
-        self.assertFalse(latin >= astral)
+        self.assertUongo(latin < ascii)
+        self.assertKweli(latin < latin2)
+        self.assertKweli(latin < bmp)
+        self.assertKweli(latin < astral)
+        self.assertKweli(latin >= ascii)
+        self.assertUongo(latin >= latin2)
+        self.assertUongo(latin >= bmp)
+        self.assertUongo(latin >= astral)
 
-        self.assertFalse(bmp < ascii)
-        self.assertFalse(bmp < latin)
-        self.assertTrue(bmp < bmp2)
-        self.assertTrue(bmp < astral)
-        self.assertTrue(bmp >= ascii)
-        self.assertTrue(bmp >= latin)
-        self.assertFalse(bmp >= bmp2)
-        self.assertFalse(bmp >= astral)
+        self.assertUongo(bmp < ascii)
+        self.assertUongo(bmp < latin)
+        self.assertKweli(bmp < bmp2)
+        self.assertKweli(bmp < astral)
+        self.assertKweli(bmp >= ascii)
+        self.assertKweli(bmp >= latin)
+        self.assertUongo(bmp >= bmp2)
+        self.assertUongo(bmp >= astral)
 
-        self.assertFalse(astral < ascii)
-        self.assertFalse(astral < latin)
-        self.assertFalse(astral < bmp2)
-        self.assertTrue(astral < astral2)
-        self.assertTrue(astral >= ascii)
-        self.assertTrue(astral >= latin)
-        self.assertTrue(astral >= bmp2)
-        self.assertFalse(astral >= astral2)
+        self.assertUongo(astral < ascii)
+        self.assertUongo(astral < latin)
+        self.assertUongo(astral < bmp2)
+        self.assertKweli(astral < astral2)
+        self.assertKweli(astral >= ascii)
+        self.assertKweli(astral >= latin)
+        self.assertKweli(astral >= bmp2)
+        self.assertUongo(astral >= astral2)
 
     eleza test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, str)
@@ -2464,7 +2464,7 @@ kundi CAPITest(unittest.TestCase):
         eleza PyUnicode_FromFormat(format, *args):
             cargs = tuple(
                 py_object(arg) ikiwa isinstance(arg, str) else arg
-                for arg in args)
+                kila arg kwenye args)
             rudisha _PyUnicode_FromFormat(format, *cargs)
 
         eleza check_format(expected, format, *args):
@@ -2476,7 +2476,7 @@ kundi CAPITest(unittest.TestCase):
                      b'ascii\x7f=%U', 'unicode\xe9')
 
         # non-ascii format, ascii argument: ensure that PyUnicode_FromFormatV()
-        # raises an error
+        # ashirias an error
         self.assertRaisesRegex(ValueError,
             r'^PyUnicode_FromFormatV\(\) expects an ASCII-encoded format '
             'string, got a non-ASCII byte: 0xe9$',
@@ -2523,12 +2523,12 @@ kundi CAPITest(unittest.TestCase):
         check_format('\u20acAB',
                      b'%.3U', '\u20acABCDEF')
         check_format('\u20acAB',
-                     b'%.3V', '\u20acABCDEF', None)
+                     b'%.3V', '\u20acABCDEF', Tupu)
         check_format('abc[\ufffd',
-                     b'%.5V', None, 'abc[\u20ac]'.encode('utf8'))
+                     b'%.5V', Tupu, 'abc[\u20ac]'.encode('utf8'))
 
         # following tests comes kutoka #7330
-        # test width modifier and precision modifier with %S
+        # test width modifier na precision modifier with %S
         check_format("repr=  abc",
                      b'repr=%5S', 'abc')
         check_format("repr=ab",
@@ -2536,7 +2536,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2S', 'abc')
 
-        # test width modifier and precision modifier with %R
+        # test width modifier na precision modifier with %R
         check_format("repr=   'abc'",
                      b'repr=%8R', 'abc')
         check_format("repr='ab",
@@ -2544,7 +2544,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=  'ab",
                      b'repr=%5.3R', 'abc')
 
-        # test width modifier and precision modifier with %A
+        # test width modifier na precision modifier with %A
         check_format("repr=   'abc'",
                      b'repr=%8A', 'abc')
         check_format("repr='ab",
@@ -2552,7 +2552,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=  'ab",
                      b'repr=%5.3A', 'abc')
 
-        # test width modifier and precision modifier with %s
+        # test width modifier na precision modifier with %s
         check_format("repr=  abc",
                      b'repr=%5s', b'abc')
         check_format("repr=ab",
@@ -2560,7 +2560,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2s', b'abc')
 
-        # test width modifier and precision modifier with %U
+        # test width modifier na precision modifier with %U
         check_format("repr=  abc",
                      b'repr=%5U', 'abc')
         check_format("repr=ab",
@@ -2568,7 +2568,7 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2U', 'abc')
 
-        # test width modifier and precision modifier with %V
+        # test width modifier na precision modifier with %V
         check_format("repr=  abc",
                      b'repr=%5V', 'abc', b'123')
         check_format("repr=ab",
@@ -2576,11 +2576,11 @@ kundi CAPITest(unittest.TestCase):
         check_format("repr=   ab",
                      b'repr=%5.2V', 'abc', b'123')
         check_format("repr=  123",
-                     b'repr=%5V', None, b'123')
+                     b'repr=%5V', Tupu, b'123')
         check_format("repr=12",
-                     b'repr=%.2V', None, b'123')
+                     b'repr=%.2V', Tupu, b'123')
         check_format("repr=   12",
-                     b'repr=%5.2V', None, b'123')
+                     b'repr=%5.2V', Tupu, b'123')
 
         # test integer formats (%i, %d, %u)
         check_format('010',
@@ -2663,17 +2663,17 @@ kundi CAPITest(unittest.TestCase):
                      b'repr=%V', 'abc', b'xyz')
 
         # Test string decode kutoka parameter of %s using utf-8.
-        # b'\xe4\xba\xba\xe6\xb0\x91' is utf-8 encoded byte sequence of
+        # b'\xe4\xba\xba\xe6\xb0\x91' ni utf-8 encoded byte sequence of
         # '\u4eba\u6c11'
         check_format('repr=\u4eba\u6c11',
-                     b'repr=%V', None, b'\xe4\xba\xba\xe6\xb0\x91')
+                     b'repr=%V', Tupu, b'\xe4\xba\xba\xe6\xb0\x91')
 
         #Test replace error handler.
         check_format('repr=abc\ufffd',
-                     b'repr=%V', None, b'abc\xff')
+                     b'repr=%V', Tupu, b'abc\xff')
 
-        # not supported: copy the raw format string. these tests are just here
-        # to check for crashes and should not be considered as specifications
+        # sio supported: copy the raw format string. these tests are just here
+        # to check kila crashes na should sio be considered kama specifications
         check_format('%s',
                      b'%1%s', b'abc')
         check_format('%1abc',
@@ -2720,7 +2720,7 @@ kundi CAPITest(unittest.TestCase):
         ikiwa sizeof(c_wchar) == 2:
             buflen = 3
             nchar = 2
-        else: # sizeof(c_wchar) == 4
+        isipokua: # sizeof(c_wchar) == 4
             buflen = 2
             nchar = 1
         wchar, size = unicode_aswidechar(nonbmp, buflen)
@@ -2745,7 +2745,7 @@ kundi CAPITest(unittest.TestCase):
         nonbmp = chr(0x10ffff)
         ikiwa sizeof(c_wchar) == 2:
             nchar = 2
-        else: # sizeof(c_wchar) == 4
+        isipokua: # sizeof(c_wchar) == 4
             nchar = 1
         wchar, size = unicode_aswidecharstring(nonbmp)
         self.assertEqual(size, nchar)
@@ -2755,7 +2755,7 @@ kundi CAPITest(unittest.TestCase):
     @support.cpython_only
     eleza test_asucs4(self):
         kutoka _testcapi agiza unicode_asucs4
-        for s in ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
+        kila s kwenye ['abc', '\xa1\xa2', '\u4f60\u597d', 'a\U0001f600',
                   'a\ud800b\udfffc', '\ud834\udd1e']:
             l = len(s)
             self.assertEqual(unicode_asucs4(s, l, 1), s+'\0')
@@ -2773,8 +2773,8 @@ kundi CAPITest(unittest.TestCase):
     eleza test_findchar(self):
         kutoka _testcapi agiza unicode_findchar
 
-        for str in "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
-            for i, ch in enumerate(str):
+        kila str kwenye "\xa1", "\u8000\u8080", "\ud800\udc02", "\U0001f100\U0001f1f1":
+            kila i, ch kwenye enumerate(str):
                 self.assertEqual(unicode_findchar(str, ord(ch), 0, len(str), 1), i)
                 self.assertEqual(unicode_findchar(str, ord(ch), 0, len(str), -1), i)
 
@@ -2802,21 +2802,21 @@ kundi CAPITest(unittest.TestCase):
             '\U0001f600\U0001f601\U0001f602\U0001f603\U0001f604'
         ]
 
-        for idx, kutoka_ in enumerate(strings):
+        kila idx, kutoka_ kwenye enumerate(strings):
             # wide -> narrow: exceed maxchar limitation
-            for to in strings[:idx]:
+            kila to kwenye strings[:idx]:
                 self.assertRaises(
                     SystemError,
                     unicode_copycharacters, to, 0, kutoka_, 0, 5
                 )
             # same kind
-            for kutoka_start in range(5):
+            kila kutoka_start kwenye range(5):
                 self.assertEqual(
                     unicode_copycharacters(kutoka_, 0, kutoka_, kutoka_start, 5),
                     (kutoka_[kutoka_start:kutoka_start+5].ljust(5, '\0'),
                      5-kutoka_start)
                 )
-            for to_start in range(5):
+            kila to_start kwenye range(5):
                 self.assertEqual(
                     unicode_copycharacters(kutoka_, to_start, kutoka_, to_start, 5),
                     (kutoka_[to_start:to_start+5].rjust(5, '\0'),
@@ -2852,7 +2852,7 @@ kundi CAPITest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_transform_decimal(self):
-        kutoka _testcapi agiza unicode_transformdecimaltoascii as transform_decimal
+        kutoka _testcapi agiza unicode_transformdecimaltoascii kama transform_decimal
         self.assertEqual(transform_decimal('123'),
                          '123')
         self.assertEqual(transform_decimal('\u0663.\u0661\u0664'),
@@ -2864,19 +2864,19 @@ kundi CAPITest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_pep393_utf8_caching_bug(self):
-        # Issue #25709: Problem with string concatenation and utf-8 cache
+        # Issue #25709: Problem with string concatenation na utf-8 cache
         kutoka _testcapi agiza getargs_s_hash
-        for k in 0x24, 0xa4, 0x20ac, 0x1f40d:
+        kila k kwenye 0x24, 0xa4, 0x20ac, 0x1f40d:
             s = ''
-            for i in range(5):
+            kila i kwenye range(5):
                 # Due to CPython specific optimization the 's' string can be
                 # resized in-place.
                 s += chr(k)
                 # Parsing with the "s#" format code calls indirectly
                 # PyUnicode_AsUTF8AndSize() which creates the UTF-8
-                # encoded string cached in the Unicode object.
+                # encoded string cached kwenye the Unicode object.
                 self.assertEqual(getargs_s_hash(s), chr(k).encode() * (i + 1))
-                # Check that the second call returns the same result
+                # Check that the second call rudishas the same result
                 self.assertEqual(getargs_s_hash(s), chr(k).encode() * (i + 1))
 
 kundi StringModuleTest(unittest.TestCase):
@@ -2887,20 +2887,20 @@ kundi StringModuleTest(unittest.TestCase):
         formatter = parse("prefix {2!s}xxx{0:^+10.3f}{obj.attr!s} {z[0]!s:10}")
         self.assertEqual(formatter, [
             ('prefix ', '2', '', 's'),
-            ('xxx', '0', '^+10.3f', None),
+            ('xxx', '0', '^+10.3f', Tupu),
             ('', 'obj.attr', '', 's'),
             (' ', 'z[0]', '10', 's'),
         ])
 
         formatter = parse("prefix {} suffix")
         self.assertEqual(formatter, [
-            ('prefix ', '', '', None),
-            (' suffix', None, None, None),
+            ('prefix ', '', '', Tupu),
+            (' suffix', Tupu, Tupu, Tupu),
         ])
 
         formatter = parse("str")
         self.assertEqual(formatter, [
-            ('str', None, None, None),
+            ('str', Tupu, Tupu, Tupu),
         ])
 
         formatter = parse("")
@@ -2908,7 +2908,7 @@ kundi StringModuleTest(unittest.TestCase):
 
         formatter = parse("{0}")
         self.assertEqual(formatter, [
-            ('', '0', '', None),
+            ('', '0', '', Tupu),
         ])
 
         self.assertRaises(TypeError, _string.formatter_parser, 1)
@@ -2919,13 +2919,13 @@ kundi StringModuleTest(unittest.TestCase):
             items[1] = list(items[1])
             rudisha items
         self.assertEqual(split("obj"), ["obj", []])
-        self.assertEqual(split("obj.arg"), ["obj", [(True, 'arg')]])
-        self.assertEqual(split("obj[key]"), ["obj", [(False, 'key')]])
+        self.assertEqual(split("obj.arg"), ["obj", [(Kweli, 'arg')]])
+        self.assertEqual(split("obj[key]"), ["obj", [(Uongo, 'key')]])
         self.assertEqual(split("obj.arg[key1][key2]"), [
             "obj",
-            [(True, 'arg'),
-             (False, 'key1'),
-             (False, 'key2'),
+            [(Kweli, 'arg'),
+             (Uongo, 'key1'),
+             (Uongo, 'key2'),
             ]])
         self.assertRaises(TypeError, _string.formatter_field_name_split, 1)
 

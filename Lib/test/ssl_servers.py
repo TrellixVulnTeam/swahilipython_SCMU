@@ -4,8 +4,8 @@ agiza ssl
 agiza pprint
 agiza threading
 agiza urllib.parse
-# Rename HTTPServer to _HTTPServer so as to avoid confusion with HTTPSServer.
-kutoka http.server agiza (HTTPServer as _HTTPServer,
+# Rename HTTPServer to _HTTPServer so kama to avoid confusion with HTTPSServer.
+kutoka http.server agiza (HTTPServer kama _HTTPServer,
     SimpleHTTPRequestHandler, BaseHTTPRequestHandler)
 
 kutoka test agiza support
@@ -15,7 +15,7 @@ here = os.path.dirname(__file__)
 HOST = support.HOST
 CERTFILE = os.path.join(here, 'keycert.pem')
 
-# This one's based on HTTPServer, which is based on socketserver
+# This one's based on HTTPServer, which ni based on socketserver
 
 kundi HTTPSServer(_HTTPServer):
 
@@ -31,14 +31,14 @@ kundi HTTPSServer(_HTTPServer):
 
     eleza get_request(self):
         # override this to wrap socket with SSL
-        try:
+        jaribu:
             sock, addr = self.socket.accept()
-            sslconn = self.context.wrap_socket(sock, server_side=True)
-        except OSError as e:
+            sslconn = self.context.wrap_socket(sock, server_side=Kweli)
+        tatizo OSError kama e:
             # socket errors are silenced by the caller, print them here
             ikiwa support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)
-            raise
+            ashiria
         rudisha sslconn, addr
 
 kundi RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
@@ -55,7 +55,7 @@ kundi RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
         """Translate a /-separated PATH to the local filename syntax.
 
         Components that mean special things to the local file system
-        (e.g. drive or directory names) are ignored.  (XXX They should
+        (e.g. drive ama directory names) are ignored.  (XXX They should
         probably be diagnosed.)
 
         """
@@ -63,9 +63,9 @@ kundi RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
         path = urllib.parse.urlparse(path)[2]
         path = os.path.normpath(urllib.parse.unquote(path))
         words = path.split('/')
-        words = filter(None, words)
+        words = filter(Tupu, words)
         path = self.root
-        for word in words:
+        kila word kwenye words:
             drive, word = os.path.splitdrive(word)
             head, word = os.path.split(word)
             path = os.path.join(path, word)
@@ -83,13 +83,13 @@ kundi RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
 
 
 kundi StatsRequestHandler(BaseHTTPRequestHandler):
-    """Example HTTP request handler which returns SSL statistics on GET
+    """Example HTTP request handler which rudishas SSL statistics on GET
     requests.
     """
 
     server_version = "StatsHTTPS/1.0"
 
-    eleza do_GET(self, send_body=True):
+    eleza do_GET(self, send_body=Kweli):
         """Serve a GET request."""
         sock = self.rfile.raw._sock
         context = sock.context
@@ -109,7 +109,7 @@ kundi StatsRequestHandler(BaseHTTPRequestHandler):
 
     eleza do_HEAD(self):
         """Serve a HEAD request."""
-        self.do_GET(send_body=False)
+        self.do_GET(send_body=Uongo)
 
     eleza log_request(self, format, *args):
         ikiwa support.verbose:
@@ -118,39 +118,39 @@ kundi StatsRequestHandler(BaseHTTPRequestHandler):
 
 kundi HTTPSServerThread(threading.Thread):
 
-    eleza __init__(self, context, host=HOST, handler_class=None):
-        self.flag = None
+    eleza __init__(self, context, host=HOST, handler_class=Tupu):
+        self.flag = Tupu
         self.server = HTTPSServer((host, 0),
-                                  handler_kundi or RootedHTTPRequestHandler,
+                                  handler_kundi ama RootedHTTPRequestHandler,
                                   context)
         self.port = self.server.server_port
         threading.Thread.__init__(self)
-        self.daemon = True
+        self.daemon = Kweli
 
     eleza __str__(self):
         rudisha "<%s %s>" % (self.__class__.__name__, self.server)
 
-    eleza start(self, flag=None):
+    eleza start(self, flag=Tupu):
         self.flag = flag
         threading.Thread.start(self)
 
     eleza run(self):
         ikiwa self.flag:
             self.flag.set()
-        try:
+        jaribu:
             self.server.serve_forever(0.05)
-        finally:
+        mwishowe:
             self.server.server_close()
 
     eleza stop(self):
         self.server.shutdown()
 
 
-eleza make_https_server(case, *, context=None, certfile=CERTFILE,
-                      host=HOST, handler_class=None):
-    ikiwa context is None:
+eleza make_https_server(case, *, context=Tupu, certfile=CERTFILE,
+                      host=HOST, handler_class=Tupu):
+    ikiwa context ni Tupu:
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    # We assume the certfile contains both private key and certificate
+    # We assume the certfile contains both private key na certificate
     context.load_cert_chain(certfile)
     server = HTTPSServerThread(context, host, handler_class)
     flag = threading.Event()
@@ -171,16 +171,16 @@ ikiwa __name__ == "__main__":
     agiza argparse
     parser = argparse.ArgumentParser(
         description='Run a test HTTPS server. '
-                    'By default, the current directory is served.')
+                    'By default, the current directory ni served.')
     parser.add_argument('-p', '--port', type=int, default=4433,
                         help='port to listen on (default: %(default)s)')
-    parser.add_argument('-q', '--quiet', dest='verbose', default=True,
+    parser.add_argument('-q', '--quiet', dest='verbose', default=Kweli,
                         action='store_false', help='be less verbose')
-    parser.add_argument('-s', '--stats', dest='use_stats_handler', default=False,
+    parser.add_argument('-s', '--stats', dest='use_stats_handler', default=Uongo,
                         action='store_true', help='always rudisha stats page')
     parser.add_argument('--curve-name', dest='curve_name', type=str,
                         action='store',
-                        help='curve name for EC-based Diffie-Hellman')
+                        help='curve name kila EC-based Diffie-Hellman')
     parser.add_argument('--ciphers', dest='ciphers', type=str,
                         help='allowed cipher list')
     parser.add_argument('--dh', dest='dh_file', type=str, action='store',
@@ -190,7 +190,7 @@ ikiwa __name__ == "__main__":
     support.verbose = args.verbose
     ikiwa args.use_stats_handler:
         handler_kundi = StatsRequestHandler
-    else:
+    isipokua:
         handler_kundi = RootedHTTPRequestHandler
         handler_class.root = os.getcwd()
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)

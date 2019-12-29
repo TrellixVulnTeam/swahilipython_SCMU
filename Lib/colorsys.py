@@ -1,13 +1,13 @@
-"""Conversion functions between RGB and other color systems.
+"""Conversion functions between RGB na other color systems.
 
-This modules provides two functions for each color system ABC:
+This modules provides two functions kila each color system ABC:
 
   rgb_to_abc(r, g, b) --> a, b, c
   abc_to_rgb(a, b, c) --> r, g, b
 
-All inputs and outputs are triples of floats in the range [0.0...1.0]
-(with the exception of I and Q, which covers a slightly larger range).
-Inputs outside the valid range may cause exceptions or invalid outputs.
+All inputs na outputs are triples of floats kwenye the range [0.0...1.0]
+(with the exception of I na Q, which covers a slightly larger range).
+Inputs outside the valid range may cause exceptions ama invalid outputs.
 
 Supported color systems:
 RGB: Red, Green, Blue components
@@ -34,8 +34,8 @@ TWO_THIRD = 2.0/3.0
 # Y: perceived grey level (0.0 == black, 1.0 == white)
 # I, Q: color components
 #
-# There are a great many versions of the constants used in these formulae.
-# The ones in this library uses constants kutoka the FCC version of NTSC.
+# There are a great many versions of the constants used kwenye these formulae.
+# The ones kwenye this library uses constants kutoka the FCC version of NTSC.
 
 eleza rgb_to_yiq(r, g, b):
     y = 0.30*r + 0.59*g + 0.11*b
@@ -68,20 +68,20 @@ eleza yiq_to_rgb(y, i, q):
 
 
 # HLS: Hue, Luminance, Saturation
-# H: position in the spectrum
+# H: position kwenye the spectrum
 # L: color lightness
 # S: color saturation
 
 eleza rgb_to_hls(r, g, b):
     maxc = max(r, g, b)
     minc = min(r, g, b)
-    # XXX Can optimize (maxc+minc) and (maxc-minc)
+    # XXX Can optimize (maxc+minc) na (maxc-minc)
     l = (minc+maxc)/2.0
     ikiwa minc == maxc:
         rudisha 0.0, l, 0.0
     ikiwa l <= 0.5:
         s = (maxc-minc) / (maxc+minc)
-    else:
+    isipokua:
         s = (maxc-minc) / (2.0-maxc-minc)
     rc = (maxc-r) / (maxc-minc)
     gc = (maxc-g) / (maxc-minc)
@@ -90,7 +90,7 @@ eleza rgb_to_hls(r, g, b):
         h = bc-gc
     elikiwa g == maxc:
         h = 2.0+rc-bc
-    else:
+    isipokua:
         h = 4.0+gc-rc
     h = (h/6.0) % 1.0
     rudisha h, l, s
@@ -100,7 +100,7 @@ eleza hls_to_rgb(h, l, s):
         rudisha l, l, l
     ikiwa l <= 0.5:
         m2 = l * (1.0+s)
-    else:
+    isipokua:
         m2 = l+s-(l*s)
     m1 = 2.0*l - m2
     rudisha (_v(m1, m2, h+ONE_THIRD), _v(m1, m2, h), _v(m1, m2, h-ONE_THIRD))
@@ -117,7 +117,7 @@ eleza _v(m1, m2, hue):
 
 
 # HSV: Hue, Saturation, Value
-# H: position in the spectrum
+# H: position kwenye the spectrum
 # S: color saturation ("purity")
 # V: color brightness
 
@@ -135,7 +135,7 @@ eleza rgb_to_hsv(r, g, b):
         h = bc-gc
     elikiwa g == maxc:
         h = 2.0+rc-bc
-    else:
+    isipokua:
         h = 4.0+gc-rc
     h = (h/6.0) % 1.0
     rudisha h, s, v

@@ -12,19 +12,19 @@ __all__ = [ 'Client', 'Listener', 'Pipe' ]
 kutoka queue agiza Queue
 
 
-families = [None]
+families = [Tupu]
 
 
 kundi Listener(object):
 
-    eleza __init__(self, address=None, family=None, backlog=1):
+    eleza __init__(self, address=Tupu, family=Tupu, backlog=1):
         self._backlog_queue = Queue(backlog)
 
     eleza accept(self):
         rudisha Connection(*self._backlog_queue.get())
 
     eleza close(self):
-        self._backlog_queue = None
+        self._backlog_queue = Tupu
 
     @property
     eleza address(self):
@@ -43,7 +43,7 @@ eleza Client(address):
     rudisha Connection(_in, _out)
 
 
-eleza Pipe(duplex=True):
+eleza Pipe(duplex=Kweli):
     a, b = Queue(), Queue()
     rudisha Connection(a, b), Connection(b, a)
 
@@ -58,15 +58,15 @@ kundi Connection(object):
 
     eleza poll(self, timeout=0.0):
         ikiwa self._in.qsize() > 0:
-            rudisha True
+            rudisha Kweli
         ikiwa timeout <= 0.0:
-            rudisha False
+            rudisha Uongo
         with self._in.not_empty:
             self._in.not_empty.wait(timeout)
         rudisha self._in.qsize() > 0
 
     eleza close(self):
-        pass
+        pita
 
     eleza __enter__(self):
         rudisha self

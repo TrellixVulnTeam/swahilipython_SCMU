@@ -13,15 +13,15 @@ agiza unittest.test
 
 
 kundi TestableTestProgram(unittest.TestProgram):
-    module = None
-    exit = True
-    defaultTest = failfast = catchbreak = buffer = None
+    module = Tupu
+    exit = Kweli
+    defaultTest = failfast = catchkoma = buffer = Tupu
     verbosity = 1
     progName = ''
-    testRunner = testLoader = None
+    testRunner = testLoader = Tupu
 
     eleza __init__(self):
-        pass
+        pita
 
 
 kundi TestDiscovery(unittest.TestCase):
@@ -33,9 +33,9 @@ kundi TestDiscovery(unittest.TestCase):
         name = loader._get_name_kutoka_path('/foo/bar/baz.py')
         self.assertEqual(name, 'bar.baz')
 
-        ikiwa not __debug__:
+        ikiwa sio __debug__:
             # asserts are off
-            return
+            rudisha
 
         with self.assertRaises(AssertionError):
             loader._get_name_kutoka_path('/bar/baz.py')
@@ -65,15 +65,15 @@ kundi TestDiscovery(unittest.TestCase):
         self.addCleanup(restore_isdir)
 
         eleza isfile(path):
-            # another_dir is not a package and so shouldn't be recursed into
-            rudisha not path.endswith('dir') and not 'another_dir' in path
+            # another_dir ni sio a package na so shouldn't be recursed into
+            rudisha sio path.endswith('dir') na sio 'another_dir' kwenye path
         os.path.isfile = isfile
         self.addCleanup(restore_isfile)
 
         loader._get_module_kutoka_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
-        eleza loadTestsFromModule(module, pattern=None):
-            # This is where load_tests is called.
+        eleza loadTestsFromModule(module, pattern=Tupu):
+            # This ni where load_tests ni called.
             base = orig_load_tests(module, pattern=pattern)
             rudisha base + [module + ' tests']
         loader.loadTestsFromModule = loadTestsFromModule
@@ -83,16 +83,16 @@ kundi TestDiscovery(unittest.TestCase):
         loader._top_level_dir = top_level
         suite = list(loader._find_tests(top_level, 'test*.py'))
 
-        # The test suites found should be sorted alphabetically for reliable
+        # The test suites found should be sorted alphabetically kila reliable
         # execution order.
-        expected = [[name + ' module tests'] for name in
+        expected = [[name + ' module tests'] kila name in
                     ('test1', 'test2', 'test_dir')]
-        expected.extend([[('test_dir.%s' % name) + ' module tests'] for name in
+        expected.extend([[('test_dir.%s' % name) + ' module tests'] kila name in
                     ('test3', 'test4')])
         self.assertEqual(suite, expected)
 
     eleza test_find_tests_socket(self):
-        # A socket is neither a directory nor a regular file.
+        # A socket ni neither a directory nor a regular file.
         # https://bugs.python.org/issue25320
         loader = unittest.TestLoader()
 
@@ -110,16 +110,16 @@ kundi TestDiscovery(unittest.TestCase):
         os.listdir = lambda path: path_lists.pop(0)
         self.addCleanup(restore_listdir)
 
-        os.path.isdir = lambda path: False
+        os.path.isdir = lambda path: Uongo
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: False
+        os.path.isfile = lambda path: Uongo
         self.addCleanup(restore_isfile)
 
         loader._get_module_kutoka_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
-        eleza loadTestsFromModule(module, pattern=None):
-            # This is where load_tests is called.
+        eleza loadTestsFromModule(module, pattern=Tupu):
+            # This ni where load_tests ni called.
             base = orig_load_tests(module, pattern=pattern)
             rudisha base + [module + ' tests']
         loader.loadTestsFromModule = loadTestsFromModule
@@ -149,10 +149,10 @@ kundi TestDiscovery(unittest.TestCase):
         os.listdir = lambda path: path_lists.pop(0)
         self.addCleanup(restore_listdir)
 
-        os.path.isdir = lambda path: True
+        os.path.isdir = lambda path: Kweli
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) not in directories
+        os.path.isfile = lambda path: os.path.basename(path) haiko kwenye directories
         self.addCleanup(restore_isfile)
 
         kundi Module(object):
@@ -173,8 +173,8 @@ kundi TestDiscovery(unittest.TestCase):
 
         loader._get_module_kutoka_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
-        eleza loadTestsFromModule(module, pattern=None):
-            # This is where load_tests is called.
+        eleza loadTestsFromModule(module, pattern=Tupu):
+            # This ni where load_tests ni called.
             base = orig_load_tests(module, pattern=pattern)
             rudisha base + [module.path + ' module tests']
         loader.loadTestsFromModule = loadTestsFromModule
@@ -185,8 +185,8 @@ kundi TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests('/foo', 'test*'))
 
-        # We should have loaded tests kutoka the a_directory and test_directory2
-        # directly and via load_tests for the test_directory package, which
+        # We should have loaded tests kutoka the a_directory na test_directory2
+        # directly na via load_tests kila the test_directory package, which
         # still calls the baseline module loader.
         self.assertEqual(suite,
                          [['a_directory module tests'],
@@ -195,12 +195,12 @@ kundi TestDiscovery(unittest.TestCase):
                           ['test_directory2 module tests']])
 
 
-        # The test module paths should be sorted for reliable execution order
+        # The test module paths should be sorted kila reliable execution order
         self.assertEqual(Module.paths,
                          ['a_directory', 'test_directory', 'test_directory2'])
 
-        # load_tests should have been called once with loader, tests and pattern
-        # (but there are no tests in our stub module itself, so that is [] at
+        # load_tests should have been called once with loader, tests na pattern
+        # (but there are no tests kwenye our stub module itself, so that ni [] at
         # the time of call).
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*')])
@@ -223,10 +223,10 @@ kundi TestDiscovery(unittest.TestCase):
         os.listdir = lambda path: path_lists.pop(0)
         self.addCleanup(restore_listdir)
 
-        os.path.isdir = lambda path: True
+        os.path.isdir = lambda path: Kweli
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) not in directories
+        os.path.isfile = lambda path: os.path.basename(path) haiko kwenye directories
         self.addCleanup(restore_isfile)
 
         kundi Module(object):
@@ -247,8 +247,8 @@ kundi TestDiscovery(unittest.TestCase):
 
         loader._get_module_kutoka_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
-        eleza loadTestsFromModule(module, pattern=None):
-            # This is where load_tests is called.
+        eleza loadTestsFromModule(module, pattern=Tupu):
+            # This ni where load_tests ni called.
             base = orig_load_tests(module, pattern=pattern)
             rudisha base + [module.path + ' module tests']
         loader.loadTestsFromModule = loadTestsFromModule
@@ -259,20 +259,20 @@ kundi TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests('/foo', 'test*.py'))
 
-        # We should have loaded tests kutoka the a_directory and test_directory2
-        # directly and via load_tests for the test_directory package, which
+        # We should have loaded tests kutoka the a_directory na test_directory2
+        # directly na via load_tests kila the test_directory package, which
         # still calls the baseline module loader.
         self.assertEqual(suite,
                          [['a_directory module tests'],
                           ['test_directory load_tests',
                            'test_directory module tests'],
                           ['test_directory2 module tests']])
-        # The test module paths should be sorted for reliable execution order
+        # The test module paths should be sorted kila reliable execution order
         self.assertEqual(Module.paths,
                          ['a_directory', 'test_directory', 'test_directory2'])
 
 
-        # load_tests should have been called once with loader, tests and pattern
+        # load_tests should have been called once with loader, tests na pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py')])
 
@@ -296,22 +296,22 @@ kundi TestDiscovery(unittest.TestCase):
         self.addCleanup(sys.path.remove, abspath('/foo'))
 
         # Test data: we expect the following:
-        # a listdir to find our package, and isfile and isdir checks on it.
+        # a listdir to find our package, na isfile na isdir checks on it.
         # a module-kutoka-name call to turn that into a module
         # followed by load_tests.
-        # then our load_tests will call discover() which is messy
-        # but that finally chains into find_tests again for the child dir -
-        # which is why we don't have an infinite loop.
+        # then our load_tests will call discover() which ni messy
+        # but that finally chains into find_tests again kila the child dir -
+        # which ni why we don't have an infinite loop.
         # We expect to see:
-        # the module load tests for both package and plain module called,
-        # and the plain module result nested by the package module load_tests
-        # indicating that it was processed and could have been mutated.
+        # the module load tests kila both package na plain module called,
+        # na the plain module result nested by the package module load_tests
+        # indicating that it was processed na could have been mutated.
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         eleza list_dir(path):
             rudisha list(vfs[path])
         os.listdir = list_dir
-        os.path.isdir = lambda path: not path.endswith('.py')
+        os.path.isdir = lambda path: sio path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
         kundi Module(object):
@@ -325,7 +325,7 @@ kundi TestDiscovery(unittest.TestCase):
                     eleza load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
                         rudisha [self.path + ' load_tests']
-                else:
+                isipokua:
                     eleza load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
                         # top level directory cached on loader instance
@@ -350,7 +350,7 @@ kundi TestDiscovery(unittest.TestCase):
         suite = list(loader._find_tests(abspath('/foo'), 'test*.py'))
 
         # We should have loaded tests kutoka both my_package and
-        # my_package.test_module, and also run the load_tests hook in both.
+        # my_package.test_module, na also run the load_tests hook kwenye both.
         # (normally this would be nested TestSuites.)
         self.assertEqual(suite,
                          [['my_package load_tests', [],
@@ -359,7 +359,7 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.paths,
                          ['my_package', 'my_package.test_module'])
 
-        # load_tests should have been called twice with loader, tests and pattern
+        # load_tests should have been called twice with loader, tests na pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py'),
                           (loader, [], 'test*.py')])
@@ -372,7 +372,7 @@ kundi TestDiscovery(unittest.TestCase):
         eleza restore_isfile():
             os.path.isfile = original_isfile
 
-        os.path.isfile = lambda path: False
+        os.path.isfile = lambda path: Uongo
         self.addCleanup(restore_isfile)
 
         orig_sys_path = sys.path[:]
@@ -387,15 +387,15 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertEqual(loader._top_level_dir, full_path)
         self.assertIn(full_path, sys.path)
 
-        os.path.isfile = lambda path: True
-        os.path.isdir = lambda path: True
+        os.path.isfile = lambda path: Kweli
+        os.path.isdir = lambda path: Kweli
 
         eleza restore_isdir():
             os.path.isdir = original_isdir
         self.addCleanup(restore_isdir)
 
         _find_tests_args = []
-        eleza _find_tests(start_dir, pattern, namespace=None):
+        eleza _find_tests(start_dir, pattern, namespace=Tupu):
             _find_tests_args.append((start_dir, pattern))
             rudisha ['tests']
         loader._find_tests = _find_tests
@@ -411,13 +411,13 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertIn(top_level_dir, sys.path)
 
     eleza test_discover_start_dir_is_package_calls_package_load_tests(self):
-        # This test verifies that the package load_tests in a package is indeed
-        # invoked when the start_dir is a package (and not the top level).
+        # This test verifies that the package load_tests kwenye a package ni indeed
+        # invoked when the start_dir ni a package (and sio the top level).
         # http://bugs.python.org/issue22457
 
         # Test data: we expect the following:
-        # an isfile to verify the package, then agizaing and scanning
-        # as per _find_tests' normal behaviour.
+        # an isfile to verify the package, then agizaing na scanning
+        # kama per _find_tests' normal behaviour.
         # We expect to see our load_tests hook called once.
         vfs = {abspath('/toplevel'): ['startdir'],
                abspath('/toplevel/startdir'): ['__init__.py']}
@@ -428,7 +428,7 @@ kundi TestDiscovery(unittest.TestCase):
         self.addCleanup(setattr, os.path, 'isfile', os.path.isfile)
         os.path.isfile = lambda path: path.endswith('.py')
         self.addCleanup(setattr, os.path, 'isdir', os.path.isdir)
-        os.path.isdir = lambda path: not path.endswith('.py')
+        os.path.isdir = lambda path: sio path.endswith('.py')
         self.addCleanup(sys.path.remove, abspath('/toplevel'))
 
         kundi Module(object):
@@ -459,7 +459,7 @@ kundi TestDiscovery(unittest.TestCase):
         listdir = os.listdir
         os.listdir = lambda _: [fakefile]
         isfile = os.path.isfile
-        os.path.isfile = lambda _: True
+        os.path.isfile = lambda _: Kweli
         orig_sys_path = sys.path[:]
         eleza restore():
             os.path.isfile = isfile
@@ -471,11 +471,11 @@ kundi TestDiscovery(unittest.TestCase):
         self.addCleanup(setattr, os, 'listdir', os.listdir)
         self.addCleanup(setattr, os.path, 'isfile', os.path.isfile)
         self.addCleanup(setattr, os.path, 'isdir', os.path.isdir)
-        self.addCleanup(sys.path.__setitem__, slice(None), list(sys.path))
+        self.addCleanup(sys.path.__setitem__, slice(Tupu), list(sys.path))
         eleza list_dir(path):
             rudisha list(vfs[path])
         os.listdir = list_dir
-        os.path.isdir = lambda path: not path.endswith('.py')
+        os.path.isdir = lambda path: sio path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
     eleza test_discover_with_modules_that_fail_to_agiza(self):
@@ -486,13 +486,13 @@ kundi TestDiscovery(unittest.TestCase):
         suite = loader.discover('.')
         self.assertIn(os.getcwd(), sys.path)
         self.assertEqual(suite.countTestCases(), 1)
-        # Errors loading the suite are also captured for introspection.
+        # Errors loading the suite are also captured kila introspection.
         self.assertNotEqual([], loader.errors)
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
-        self.assertTrue(
-            'Failed to agiza test module: test_this_does_not_exist' in error,
-            'missing error string in %r' % error)
+        self.assertKweli(
+            'Failed to agiza test module: test_this_does_not_exist' kwenye error,
+            'missing error string kwenye %r' % error)
         test = list(list(suite)[0])[0] # extract test kutoka suite
 
         with self.assertRaises(ImportError):
@@ -505,37 +505,37 @@ kundi TestDiscovery(unittest.TestCase):
         import_calls = []
         eleza _get_module_kutoka_name(name):
             import_calls.append(name)
-            raise ImportError("Cannot agiza Name")
+            ashiria ImportError("Cannot agiza Name")
         loader = unittest.TestLoader()
         loader._get_module_kutoka_name = _get_module_kutoka_name
         suite = loader.discover(abspath('/foo'))
 
         self.assertIn(abspath('/foo'), sys.path)
         self.assertEqual(suite.countTestCases(), 1)
-        # Errors loading the suite are also captured for introspection.
+        # Errors loading the suite are also captured kila introspection.
         self.assertNotEqual([], loader.errors)
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
-        self.assertTrue(
-            'Failed to agiza test module: my_package' in error,
-            'missing error string in %r' % error)
+        self.assertKweli(
+            'Failed to agiza test module: my_package' kwenye error,
+            'missing error string kwenye %r' % error)
         test = list(list(suite)[0])[0] # extract test kutoka suite
         with self.assertRaises(ImportError):
             test.my_package()
         self.assertEqual(import_calls, ['my_package'])
 
         # Check picklability
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(test, proto))
 
-    eleza test_discover_with_module_that_raises_SkipTest_on_agiza(self):
-        ikiwa not unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+    eleza test_discover_with_module_that_ashirias_SkipTest_on_agiza(self):
+        ikiwa sio unittest.BaseTestSuite._cleanup:
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         loader = unittest.TestLoader()
 
         eleza _get_module_kutoka_name(name):
-            raise unittest.SkipTest('skipperoo')
+            ashiria unittest.SkipTest('skipperoo')
         loader._get_module_kutoka_name = _get_module_kutoka_name
 
         self.setup_import_issue_tests('test_skip_dummy.py')
@@ -548,12 +548,12 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertEqual(len(result.skipped), 1)
 
         # Check picklability
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(suite, proto))
 
-    eleza test_discover_with_init_module_that_raises_SkipTest_on_agiza(self):
-        ikiwa not unittest.BaseTestSuite._cleanup:
-            raise unittest.SkipTest("Suite cleanup is disabled")
+    eleza test_discover_with_init_module_that_ashirias_SkipTest_on_agiza(self):
+        ikiwa sio unittest.BaseTestSuite._cleanup:
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
@@ -561,7 +561,7 @@ kundi TestDiscovery(unittest.TestCase):
         import_calls = []
         eleza _get_module_kutoka_name(name):
             import_calls.append(name)
-            raise unittest.SkipTest('skipperoo')
+            ashiria unittest.SkipTest('skipperoo')
         loader = unittest.TestLoader()
         loader._get_module_kutoka_name = _get_module_kutoka_name
         suite = loader.discover(abspath('/foo'))
@@ -575,7 +575,7 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertEqual(import_calls, ['my_package'])
 
         # Check picklability
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(suite, proto))
 
     eleza test_command_line_handling_parseArgs(self):
@@ -598,9 +598,9 @@ kundi TestDiscovery(unittest.TestCase):
         program.parseArgs(['something'])
         self.assertEqual(args, [[]])
         self.assertEqual(program.verbosity, 1)
-        self.assertIs(program.buffer, False)
-        self.assertIs(program.catchbreak, False)
-        self.assertIs(program.failfast, False)
+        self.assertIs(program.buffer, Uongo)
+        self.assertIs(program.catchkoma, Uongo)
+        self.assertIs(program.failfast, Uongo)
 
     eleza test_command_line_handling_discover_by_default_with_options(self):
         program = TestableTestProgram()
@@ -610,17 +610,17 @@ kundi TestDiscovery(unittest.TestCase):
         program.parseArgs(['something', '-v', '-b', '-v', '-c', '-f'])
         self.assertEqual(args, [[]])
         self.assertEqual(program.verbosity, 2)
-        self.assertIs(program.buffer, True)
-        self.assertIs(program.catchbreak, True)
-        self.assertIs(program.failfast, True)
+        self.assertIs(program.buffer, Kweli)
+        self.assertIs(program.catchkoma, Kweli)
+        self.assertIs(program.failfast, Kweli)
 
 
     eleza test_command_line_handling_do_discovery_too_many_arguments(self):
         program = TestableTestProgram()
-        program.testLoader = None
+        program.testLoader = Tupu
 
-        with support.captured_stderr() as stderr, \
-             self.assertRaises(SystemExit) as cm:
+        with support.captured_stderr() kama stderr, \
+             self.assertRaises(SystemExit) kama cm:
             # too many args
             program._do_discovery(['one', 'two', 'three', 'four'])
         self.assertEqual(cm.exception.args, (2,))
@@ -639,7 +639,7 @@ kundi TestDiscovery(unittest.TestCase):
 
         program.testLoader = Loader()
         program._do_discovery(['-v'])
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Tupu)])
 
     eleza test_command_line_handling_do_discovery_calls_loader(self):
         program = TestableTestProgram()
@@ -653,31 +653,31 @@ kundi TestDiscovery(unittest.TestCase):
         program._do_discovery(['-v'], Loader=Loader)
         self.assertEqual(program.verbosity, 2)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Tupu)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['--verbose'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Tupu)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery([], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Tupu)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['fish'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('fish', 'test*.py', Tupu)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['fish', 'eggs'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'eggs', None)])
+        self.assertEqual(Loader.args, [('fish', 'eggs', Tupu)])
 
         Loader.args = []
         program = TestableTestProgram()
@@ -689,7 +689,7 @@ kundi TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program._do_discovery(['-s', 'fish'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('fish', 'test*.py', Tupu)])
 
         Loader.args = []
         program = TestableTestProgram()
@@ -701,19 +701,19 @@ kundi TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program._do_discovery(['-p', 'fish'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'fish', None)])
-        self.assertFalse(program.failfast)
-        self.assertFalse(program.catchbreak)
+        self.assertEqual(Loader.args, [('.', 'fish', Tupu)])
+        self.assertUongo(program.failfast)
+        self.assertUongo(program.catchkoma)
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['-p', 'eggs', '-s', 'fish', '-v', '-f', '-c'],
                               Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'eggs', None)])
+        self.assertEqual(Loader.args, [('fish', 'eggs', Tupu)])
         self.assertEqual(program.verbosity, 2)
-        self.assertTrue(program.failfast)
-        self.assertTrue(program.catchbreak)
+        self.assertKweli(program.failfast)
+        self.assertKweli(program.catchkoma)
 
     eleza setup_module_clash(self):
         kundi Module(object):
@@ -730,17 +730,17 @@ kundi TestDiscovery(unittest.TestCase):
             os.path.isfile = original_isfile
             os.path.isdir = original_isdir
             os.path.realpath = original_realpath
-            del sys.modules['foo']
-            ikiwa full_path in sys.path:
+            toa sys.modules['foo']
+            ikiwa full_path kwenye sys.path:
                 sys.path.remove(full_path)
         self.addCleanup(cleanup)
 
         eleza listdir(_):
             rudisha ['foo.py']
         eleza isfile(_):
-            rudisha True
+            rudisha Kweli
         eleza isdir(_):
-            rudisha True
+            rudisha Kweli
         os.listdir = listdir
         os.path.isfile = isfile
         os.path.isdir = isdir
@@ -790,14 +790,14 @@ kundi TestDiscovery(unittest.TestCase):
         tests = [self]
         expectedPath = os.path.abspath(os.path.dirname(unittest.test.__file__))
 
-        self.wasRun = False
-        eleza _find_tests(start_dir, pattern, namespace=None):
-            self.wasRun = True
+        self.wasRun = Uongo
+        eleza _find_tests(start_dir, pattern, namespace=Tupu):
+            self.wasRun = Kweli
             self.assertEqual(start_dir, expectedPath)
             rudisha tests
         loader._find_tests = _find_tests
         suite = loader.discover('unittest.test')
-        self.assertTrue(self.wasRun)
+        self.assertKweli(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
 
@@ -809,7 +809,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.listdir = lambda _: ['test_this_does_not_exist.py']
         isfile = os.path.isfile
         isdir = os.path.isdir
-        os.path.isdir = lambda _: False
+        os.path.isdir = lambda _: Uongo
         orig_sys_path = sys.path[:]
         eleza restore():
             os.path.isfile = isfile
@@ -818,10 +818,10 @@ kundi TestDiscovery(unittest.TestCase):
             sys.path[:] = orig_sys_path
         self.addCleanup(restore)
 
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) kama cm:
             loader.discover('sys')
         self.assertEqual(str(cm.exception),
-                         'Can not use builtin modules '
+                         'Can sio use builtin modules '
                          'as dotted module names')
 
     eleza test_discovery_kutoka_dotted_namespace_packages(self):
@@ -830,7 +830,7 @@ kundi TestDiscovery(unittest.TestCase):
         package = types.ModuleType('package')
         package.__path__ = ['/a', '/b']
         package.__spec__ = types.SimpleNamespace(
-           loader=None,
+           loader=Tupu,
            submodule_search_locations=['/a', '/b']
         )
 
@@ -839,7 +839,7 @@ kundi TestDiscovery(unittest.TestCase):
             rudisha package
 
         _find_tests_args = []
-        eleza _find_tests(start_dir, pattern, namespace=None):
+        eleza _find_tests(start_dir, pattern, namespace=Tupu):
             _find_tests_args.append((start_dir, pattern))
             rudisha ['%s/tests' % start_dir]
 
@@ -868,7 +868,7 @@ kundi TestDiscovery(unittest.TestCase):
             with support.DirsOnSysPath():
                 # Make sure to remove 'package' kutoka sys.modules when done.
                 with test.test_importlib.util.uncache('package'):
-                    with self.assertRaises(TypeError) as cm:
+                    with self.assertRaises(TypeError) kama cm:
                         loader.discover('package')
                     self.assertEqual(str(cm.exception),
                                      'don\'t know how to discover kutoka {!r}'

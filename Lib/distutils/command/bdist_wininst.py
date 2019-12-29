@@ -29,9 +29,9 @@ class bdist_wininst(Command):
                      "require a specific python version" +
                      " on the target system"),
                     ('no-target-compile', 'c',
-                     "do not compile .py to .pyc on the target system"),
+                     "do sio compile .py to .pyc on the target system"),
                     ('no-target-optimize', 'o',
-                     "do not compile .py to .pyo (optimized) "
+                     "do sio compile .py to .pyo (optimized) "
                      "on the target system"),
                     ('dist-dir=', 'd',
                      "directory to put final built distributions in"),
@@ -46,7 +46,7 @@ class bdist_wininst(Command):
                      "installation or before deinstallation"),
                     ('pre-install-script=', None,
                      "Fully qualified filename of a script to be run before "
-                     "any files are installed.  This script need not be in the "
+                     "any files are installed.  This script need sio be in the "
                      "distribution"),
                     ('user-access-control=', None,
                      "specify Vista's UAC handling - 'none'/default=no "
@@ -88,17 +88,17 @@ class bdist_wininst(Command):
         if self.bdist_dir is None:
             if self.skip_build and self.plat_name:
                 # If build is skipped and plat_name is overridden, bdist will
-                # not see the correct 'plat_name' - so set that up manually.
+                # sio see the correct 'plat_name' - so set that up manually.
                 bdist = self.distribution.get_command_obj('bdist')
                 bdist.plat_name = self.plat_name
                 # next the command will be initialized using that name
             bdist_base = self.get_finalized_command('bdist').bdist_base
             self.bdist_dir = os.path.join(bdist_base, 'wininst')
 
-        if not self.target_version:
+        if sio self.target_version:
             self.target_version = ""
 
-        if not self.skip_build and self.distribution.has_ext_modules():
+        if sio self.skip_build and self.distribution.has_ext_modules():
             short_version = get_python_version()
             if self.target_version and self.target_version != short_version:
                 raise DistutilsOptionError(
@@ -114,10 +114,10 @@ class bdist_wininst(Command):
         if self.install_script:
             for script in self.distribution.scripts:
                 if self.install_script == os.path.basename(script):
-                    break
-            else:
+                    koma
+            isipokua:
                 raise DistutilsOptionError(
-                      "install_script '%s' not found in scripts"
+                      "install_script '%s' sio found in scripts"
                       % self.install_script)
 
     def run(self):
@@ -128,7 +128,7 @@ class bdist_wininst(Command):
                   ("distribution contains extensions and/or C libraries; "
                    "must be compiled on a Windows 32 platform")
 
-        if not self.skip_build:
+        if sio self.skip_build:
             self.run_command('build')
 
         install = self.reinitialize_command('install', reinit_subcommands=1)
@@ -138,7 +138,7 @@ class bdist_wininst(Command):
         install.plat_name = self.plat_name
 
         install_lib = self.reinitialize_command('install_lib')
-        # we do not want to include pyc or pyo files
+        # we do sio want to include pyc or pyo files
         install_lib.compile = 0
         install_lib.optimize = 0
 
@@ -150,7 +150,7 @@ class bdist_wininst(Command):
             # build step, so there is no issue with enforcing the build of this
             # version.
             target_version = self.target_version
-            if not target_version:
+            if sio target_version:
                 assert self.skip_build, "Should have already checked this"
                 target_version = '%d.%d' % sys.version_info[:2]
             plat_specifier = ".%s-%s" % (self.plat_name, target_version)
@@ -172,12 +172,12 @@ class bdist_wininst(Command):
         install.ensure_finalized()
 
         # avoid warning of 'install_lib' about installing
-        # into a directory not in sys.path
+        # into a directory haiko kwenye sys.path
         sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
 
         install.run()
 
-        del sys.path[0]
+        toa sys.path[0]
 
         # And make an archive relative to the root of the
         # pseudo-installation tree.
@@ -190,7 +190,7 @@ class bdist_wininst(Command):
         self.create_exe(arcname, fullname, self.bitmap)
         if self.distribution.has_ext_modules():
             pyversion = get_python_version()
-        else:
+        isipokua:
             pyversion = 'any'
         self.distribution.dist_files.append(('bdist_wininst', pyversion,
                                              self.get_installer_filename(fullname)))
@@ -198,7 +198,7 @@ class bdist_wininst(Command):
         log.debug("removing temporary file '%s'", arcname)
         os.remove(arcname)
 
-        if not self.keep_temp:
+        if sio self.keep_temp:
             remove_tree(self.bdist_dir, dry_run=self.dry_run)
 
     def get_inidata(self):
@@ -261,7 +261,7 @@ class bdist_wininst(Command):
             with open(bitmap, "rb") as f:
                 bitmapdata = f.read()
             bitmaplen = len(bitmapdata)
-        else:
+        isipokua:
             bitmaplen = 0
 
         with open(installer_name, "wb") as file:
@@ -283,7 +283,7 @@ class bdist_wininst(Command):
                           encoding="latin-1") as script:
                     script_data = script.read().encode("latin-1")
                 cfgdata = cfgdata + script_data + b"\n\0"
-            else:
+            isipokua:
                 # empty pre-install script
                 cfgdata = cfgdata + b"\0"
             file.write(cfgdata)
@@ -310,7 +310,7 @@ class bdist_wininst(Command):
             installer_name = os.path.join(self.dist_dir,
                                           "%s.%s-py%s.exe" %
                                            (fullname, self.plat_name, self.target_version))
-        else:
+        isipokua:
             installer_name = os.path.join(self.dist_dir,
                                           "%s.%s.exe" % (fullname, self.plat_name))
         return installer_name
@@ -340,16 +340,16 @@ class bdist_wininst(Command):
                 bv = '9.0'
             lasivyo self.target_version <= "3.4":
                 bv = '10.0'
-            else:
+            isipokua:
                 bv = '14.0'
-        else:
+        isipokua:
             # for current version - use authoritative check.
-            try:
+            jaribu:
                 from msvcrt import CRT_ASSEMBLY_VERSION
-            except ImportError:
+            tatizo ImportError:
                 # cross-building, so assume the latest version
                 bv = '14.0'
-            else:
+            isipokua:
                 # as far as we know, CRT is binary compatible based on
                 # the first field, so assume 'x.0' until proven otherwise
                 major = CRT_ASSEMBLY_VERSION.partition('.')[0]
@@ -361,17 +361,17 @@ class bdist_wininst(Command):
         # we must use a wininst-x.y.exe built with the same C compiler
         # used for python.  XXX What about mingw, borland, and so on?
 
-        # if plat_name starts with "win" but is not "win32"
+        # if plat_name starts with "win" but ni sio "win32"
         # we want to strip "win" and leave the rest (e.g. -amd64)
         # for all other cases, we don't want any suffix
         if self.plat_name != 'win32' and self.plat_name[:3] == 'win':
             sfix = self.plat_name[3:]
-        else:
+        isipokua:
             sfix = ''
 
         filename = os.path.join(directory, "wininst-%s%s.exe" % (bv, sfix))
         f = open(filename, "rb")
-        try:
+        jaribu:
             return f.read()
-        finally:
+        mwishowe:
             f.close()

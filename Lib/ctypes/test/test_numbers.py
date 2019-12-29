@@ -28,20 +28,20 @@ bool_types = []
 
 float_types = [c_double, c_float]
 
-try:
+jaribu:
     c_ulonglong
     c_longlong
-except NameError:
+tatizo NameError:
     pass
-else:
+isipokua:
     unsigned_types.append(c_ulonglong)
     signed_types.append(c_longlong)
 
-try:
+jaribu:
     c_bool
-except NameError:
+tatizo NameError:
     pass
-else:
+isipokua:
     bool_types.append(c_bool)
 
 unsigned_ranges = valid_ranges(*unsigned_types)
@@ -140,10 +140,10 @@ class NumberTestCase(unittest.TestCase):
 
     def test_sizes(self):
         for t in signed_types + unsigned_types + float_types + bool_types:
-            try:
+            jaribu:
                 size = struct.calcsize(t._type_)
-            except struct.error:
-                continue
+            tatizo struct.error:
+                endelea
             # sizeof of the type...
             self.assertEqual(sizeof(t), size)
             # and sizeof of an instance
@@ -166,10 +166,10 @@ class NumberTestCase(unittest.TestCase):
         for t in signed_types + unsigned_types:
             # the array module doesn't support all format codes
             # (no 'q' or 'Q')
-            try:
+            jaribu:
                 array(t._type_)
-            except ValueError:
-                continue
+            tatizo ValueError:
+                endelea
             a = array(t._type_, [100])
 
             # v now is an integer at an 'external' memory location
@@ -206,7 +206,7 @@ class NumberTestCase(unittest.TestCase):
         a[0] = ord('?')
         self.assertEqual(v.value, b'?')
 
-    # array does not support c_bool / 't'
+    # array does sio support c_bool / 't'
     @unittest.skip('test disabled')
     def test_bool_from_address(self):
         from ctypes import c_bool
@@ -248,12 +248,12 @@ def run_test(rep, msg, func, arg=None):
 ##    items = [None] * rep
     items = range(rep)
     from time import perf_counter as clock
-    if arg is not None:
+    if arg ni sio None:
         start = clock()
         for i in items:
             func(arg); func(arg); func(arg); func(arg); func(arg)
         stop = clock()
-    else:
+    isipokua:
         start = clock()
         for i in items:
             func(); func(); func(); func(); func()

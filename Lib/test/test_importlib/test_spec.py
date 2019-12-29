@@ -1,4 +1,4 @@
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 init = test_util.import_importlib('importlib')
 machinery = test_util.import_importlib('importlib.machinery')
@@ -15,7 +15,7 @@ agiza warnings
 
 kundi TestLoader:
 
-    eleza __init__(self, path=None, is_package=None):
+    eleza __init__(self, path=Tupu, is_package=Tupu):
         self.path = path
         self.package = is_package
 
@@ -23,11 +23,11 @@ kundi TestLoader:
         rudisha '<TestLoader object>'
 
     eleza __getattr__(self, name):
-        ikiwa name == 'get_filename' and self.path is not None:
+        ikiwa name == 'get_filename' na self.path ni sio Tupu:
             rudisha self._get_filename
         ikiwa name == 'is_package':
             rudisha self._is_package
-        raise AttributeError(name)
+        ashiria AttributeError(name)
 
     eleza _get_filename(self, name):
         rudisha self.path
@@ -36,7 +36,7 @@ kundi TestLoader:
         rudisha self.package
 
     eleza create_module(self, spec):
-        rudisha None
+        rudisha Tupu
 
 
 kundi NewLoader(TestLoader):
@@ -72,78 +72,78 @@ kundi ModuleSpecTests:
         self.spec = self.machinery.ModuleSpec(self.name, self.loader)
         self.loc_spec = self.machinery.ModuleSpec(self.name, self.loader,
                                                   origin=self.path)
-        self.loc_spec._set_fileattr = True
+        self.loc_spec._set_fileattr = Kweli
 
     eleza test_default(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_default_no_loader(self):
-        spec = self.machinery.ModuleSpec(self.name, None)
+        spec = self.machinery.ModuleSpec(self.name, Tupu)
 
         self.assertEqual(spec.name, self.name)
-        self.assertIs(spec.loader, None)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.loader, Tupu)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_default_is_package_false(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
-                                         is_package=False)
+                                         is_package=Uongo)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_default_is_package_true(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
-                                         is_package=True)
+                                         is_package=Kweli)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_has_location_setter(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
                                          origin='somewhere')
-        self.assertFalse(spec.has_location)
-        spec.has_location = True
-        self.assertTrue(spec.has_location)
+        self.assertUongo(spec.has_location)
+        spec.has_location = Kweli
+        self.assertKweli(spec.has_location)
 
     eleza test_equality(self):
         other = type(sys.implementation)(name=self.name,
                                          loader=self.loader,
-                                         origin=None,
-                                         submodule_search_locations=None,
-                                         has_location=False,
-                                         cached=None,
+                                         origin=Tupu,
+                                         submodule_search_locations=Tupu,
+                                         has_location=Uongo,
+                                         cached=Tupu,
                                          )
 
-        self.assertTrue(self.spec == other)
+        self.assertKweli(self.spec == other)
 
     eleza test_equality_location(self):
         other = type(sys.implementation)(name=self.name,
                                          loader=self.loader,
                                          origin=self.path,
-                                         submodule_search_locations=None,
-                                         has_location=True,
+                                         submodule_search_locations=Tupu,
+                                         has_location=Kweli,
                                          cached=self.cached,
                                          )
 
@@ -152,10 +152,10 @@ kundi ModuleSpecTests:
     eleza test_inequality(self):
         other = type(sys.implementation)(name='ham',
                                          loader=self.loader,
-                                         origin=None,
-                                         submodule_search_locations=None,
-                                         has_location=False,
-                                         cached=None,
+                                         origin=Tupu,
+                                         submodule_search_locations=Tupu,
+                                         has_location=Uongo,
+                                         cached=Tupu,
                                          )
 
         self.assertNotEqual(self.spec, other)
@@ -174,7 +174,7 @@ kundi ModuleSpecTests:
 
     eleza test_package_is_package(self):
         spec = self.machinery.ModuleSpec('spam.eggs', self.loader,
-                                         is_package=True)
+                                         is_package=Kweli)
 
         self.assertEqual(spec.parent, 'spam.eggs')
 
@@ -185,19 +185,19 @@ kundi ModuleSpecTests:
         self.spec.cached = 'there'
         after = self.spec.cached
 
-        self.assertIs(before, None)
+        self.assertIs(before, Tupu)
         self.assertEqual(after, 'there')
 
     eleza test_cached_no_origin(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader)
 
-        self.assertIs(spec.cached, None)
+        self.assertIs(spec.cached, Tupu)
 
     eleza test_cached_with_origin_not_location(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
                                          origin=self.path)
 
-        self.assertIs(spec.cached, None)
+        self.assertIs(spec.cached, Tupu)
 
     eleza test_cached_source(self):
         expected = self.util.cache_kutoka_source(self.path)
@@ -207,17 +207,17 @@ kundi ModuleSpecTests:
     eleza test_cached_source_unknown_suffix(self):
         self.loc_spec.origin = 'spam.spamspamspam'
 
-        self.assertIs(self.loc_spec.cached, None)
+        self.assertIs(self.loc_spec.cached, Tupu)
 
     eleza test_cached_source_missing_cache_tag(self):
         original = sys.implementation.cache_tag
-        sys.implementation.cache_tag = None
-        try:
+        sys.implementation.cache_tag = Tupu
+        jaribu:
             cached = self.loc_spec.cached
-        finally:
+        mwishowe:
             sys.implementation.cache_tag = original
 
-        self.assertIs(cached, None)
+        self.assertIs(cached, Tupu)
 
     eleza test_cached_sourceless(self):
         self.loc_spec.origin = 'spam.pyc'
@@ -244,7 +244,7 @@ kundi ModuleSpecMethodsTests:
         self.spec = self.machinery.ModuleSpec(self.name, self.loader)
         self.loc_spec = self.machinery.ModuleSpec(self.name, self.loader,
                                                   origin=self.path)
-        self.loc_spec._set_fileattr = True
+        self.loc_spec._set_fileattr = Kweli
 
     # exec()
 
@@ -252,7 +252,7 @@ kundi ModuleSpecMethodsTests:
         self.spec.loader = NewLoader()
         module = self.util.module_kutoka_spec(self.spec)
         sys.modules[self.name] = module
-        self.assertFalse(hasattr(module, 'eggs'))
+        self.assertUongo(hasattr(module, 'eggs'))
         self.bootstrap._exec(self.spec, module)
 
         self.assertEqual(module.eggs, 1)
@@ -284,7 +284,7 @@ kundi ModuleSpecMethodsTests:
     eleza test_load_failed(self):
         kundi FailedLoader(TestLoader):
             eleza exec_module(self, module):
-                raise RuntimeError
+                ashiria RuntimeError
         self.spec.loader = FailedLoader()
         with CleanImport(self.spec.name):
             with self.assertRaises(RuntimeError):
@@ -294,8 +294,8 @@ kundi ModuleSpecMethodsTests:
     eleza test_load_failed_removed(self):
         kundi FailedLoader(TestLoader):
             eleza exec_module(self, module):
-                del sys.modules[module.__name__]
-                raise RuntimeError
+                toa sys.modules[module.__name__]
+                ashiria RuntimeError
         self.spec.loader = FailedLoader()
         with CleanImport(self.spec.name):
             with self.assertRaises(RuntimeError):
@@ -357,10 +357,10 @@ kundi ModuleSpecMethodsTests:
         self.spec.loader = NewLoader()
         with CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
-            loaded.available = False
+            loaded.available = Uongo
             reloaded = self.bootstrap._exec(self.spec, loaded)
 
-        self.assertFalse(loaded.available)
+        self.assertUongo(loaded.available)
         self.assertIs(reloaded, loaded)
 
     eleza test_reload_init_module_attrs(self):
@@ -368,18 +368,18 @@ kundi ModuleSpecMethodsTests:
         with CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.__name__ = 'ham'
-            del loaded.__loader__
-            del loaded.__package__
-            del loaded.__spec__
+            toa loaded.__loader__
+            toa loaded.__package__
+            toa loaded.__spec__
             self.bootstrap._exec(self.spec, loaded)
 
         self.assertEqual(loaded.__name__, self.spec.name)
         self.assertIs(loaded.__loader__, self.spec.loader)
         self.assertEqual(loaded.__package__, self.spec.parent)
         self.assertIs(loaded.__spec__, self.spec)
-        self.assertFalse(hasattr(loaded, '__path__'))
-        self.assertFalse(hasattr(loaded, '__file__'))
-        self.assertFalse(hasattr(loaded, '__cached__'))
+        self.assertUongo(hasattr(loaded, '__path__'))
+        self.assertUongo(hasattr(loaded, '__file__'))
+        self.assertUongo(hasattr(loaded, '__cached__'))
 
     eleza test_reload_legacy(self):
         self.spec.loader = LegacyLoader()
@@ -421,7 +421,7 @@ kundi ModuleReprTests:
     eleza test_module___loader___module_repr_bad(self):
         kundi Loader(TestLoader):
             eleza module_repr(self, module):
-                raise Exception
+                ashiria Exception
         self.module.__loader__ = Loader()
         modrepr = self.bootstrap._module_repr(self.module)
 
@@ -429,7 +429,7 @@ kundi ModuleReprTests:
                          '<module {!r} (<TestLoader object>)>'.format('spam'))
 
     eleza test_module___spec__(self):
-        origin = 'in a hole, in the ground'
+        origin = 'in a hole, kwenye the ground'
         self.spec.origin = origin
         self.module.__spec__ = self.spec
         modrepr = self.bootstrap._module_repr(self.module)
@@ -439,7 +439,7 @@ kundi ModuleReprTests:
     eleza test_module___spec___location(self):
         location = 'in_a_galaxy_far_far_away.py'
         self.spec.origin = location
-        self.spec._set_fileattr = True
+        self.spec._set_fileattr = Kweli
         self.module.__spec__ = self.spec
         modrepr = self.bootstrap._module_repr(self.module)
 
@@ -455,14 +455,14 @@ kundi ModuleReprTests:
                          '<module {!r} (<TestLoader object>)>'.format('spam'))
 
     eleza test_module___spec___no_origin_no_loader(self):
-        self.spec.loader = None
+        self.spec.loader = Tupu
         self.module.__spec__ = self.spec
         modrepr = self.bootstrap._module_repr(self.module)
 
         self.assertEqual(modrepr, '<module {!r}>'.format('spam'))
 
     eleza test_module_no_name(self):
-        del self.module.__name__
+        toa self.module.__name__
         modrepr = self.bootstrap._module_repr(self.module)
 
         self.assertEqual(modrepr, '<module {!r}>'.format('?'))
@@ -502,7 +502,7 @@ kundi FactoryTests:
         self.cached = self.util.cache_kutoka_source(self.path)
         self.loader = TestLoader()
         self.fileloader = TestLoader(self.path)
-        self.pkgloader = TestLoader(self.path, True)
+        self.pkgloader = TestLoader(self.path, Kweli)
 
     # spec_kutoka_loader()
 
@@ -511,26 +511,26 @@ kundi FactoryTests:
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_default_with_bad_is_package(self):
         kundi Loader:
             eleza is_package(self, name):
-                raise ImportError
+                ashiria ImportError
         loader = Loader()
         spec = self.util.spec_kutoka_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_origin(self):
         origin = 'somewhere over the rainbow'
@@ -540,71 +540,71 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
         self.assertIs(spec.origin, origin)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_is_package_false(self):
         spec = self.util.spec_kutoka_loader(self.name, self.loader,
-                                          is_package=False)
+                                          is_package=Uongo)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_is_package_true(self):
         spec = self.util.spec_kutoka_loader(self.name, self.loader,
-                                          is_package=True)
+                                          is_package=Kweli)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_origin_and_is_package(self):
         origin = 'where the streets have no name'
         spec = self.util.spec_kutoka_loader(self.name, self.loader,
-                                          origin=origin, is_package=True)
+                                          origin=origin, is_package=Kweli)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
         self.assertIs(spec.origin, origin)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_is_package_with_loader_false(self):
-        loader = TestLoader(is_package=False)
+        loader = TestLoader(is_package=Uongo)
         spec = self.util.spec_kutoka_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_is_package_with_loader_true(self):
-        loader = TestLoader(is_package=True)
+        loader = TestLoader(is_package=Kweli)
         spec = self.util.spec_kutoka_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.origin, Tupu)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Tupu)
+        self.assertUongo(spec.has_location)
 
     eleza test_spec_kutoka_loader_default_with_file_loader(self):
         spec = self.util.spec_kutoka_loader(self.name, self.fileloader)
@@ -612,34 +612,34 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_loader_is_package_false_with_fileloader(self):
         spec = self.util.spec_kutoka_loader(self.name, self.fileloader,
-                                          is_package=False)
+                                          is_package=Uongo)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_loader_is_package_true_with_fileloader(self):
         spec = self.util.spec_kutoka_loader(self.name, self.fileloader,
-                                          is_package=True)
+                                          is_package=Kweli)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, [''])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     # spec_kutoka_file_location()
 
@@ -648,17 +648,17 @@ kundi FactoryTests:
 
         self.assertEqual(spec.name, self.name)
         # Need to use a circuitous route to get at importlib.machinery to make
-        # sure the same kundi object is used in the isinstance() check as
+        # sure the same kundi object ni used kwenye the isinstance() check as
         # would have been used to create the loader.
         self.assertIsInstance(spec.loader,
                               self.util.abc.machinery.SourceFileLoader)
         self.assertEqual(spec.loader.name, self.name)
         self.assertEqual(spec.loader.path, self.path)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_path_like_arg(self):
         spec = self.util.spec_kutoka_file_location(self.name,
@@ -668,12 +668,12 @@ kundi FactoryTests:
     eleza test_spec_kutoka_file_location_default_without_location(self):
         spec = self.util.spec_kutoka_file_location(self.name)
 
-        self.assertIs(spec, None)
+        self.assertIs(spec, Tupu)
 
     eleza test_spec_kutoka_file_location_default_bad_suffix(self):
         spec = self.util.spec_kutoka_file_location(self.name, 'spam.eggs')
 
-        self.assertIs(spec, None)
+        self.assertIs(spec, Tupu)
 
     eleza test_spec_kutoka_file_location_loader_no_location(self):
         spec = self.util.spec_kutoka_file_location(self.name,
@@ -682,10 +682,10 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_loader_no_location_no_get_filename(self):
         spec = self.util.spec_kutoka_file_location(self.name,
@@ -694,38 +694,38 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
         self.assertEqual(spec.origin, '<unknown>')
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertTrue(spec.has_location)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_loader_no_location_bad_get_filename(self):
         kundi Loader:
             eleza get_filename(self, name):
-                raise ImportError
+                ashiria ImportError
         loader = Loader()
         spec = self.util.spec_kutoka_file_location(self.name, loader=loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
         self.assertEqual(spec.origin, '<unknown>')
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertTrue(spec.has_location)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
+        self.assertIs(spec.cached, Tupu)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_smsl_none(self):
         spec = self.util.spec_kutoka_file_location(self.name, self.path,
                                        loader=self.fileloader,
-                                       submodule_search_locations=None)
+                                       submodule_search_locations=Tupu)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_smsl_empty(self):
         spec = self.util.spec_kutoka_file_location(self.name, self.path,
@@ -735,10 +735,10 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, [''])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_smsl_not_empty(self):
         spec = self.util.spec_kutoka_file_location(self.name, self.path,
@@ -748,10 +748,10 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, ['eggs'])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_smsl_default(self):
         spec = self.util.spec_kutoka_file_location(self.name, self.path,
@@ -760,15 +760,15 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.pkgloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Tupu)
         self.assertEqual(spec.submodule_search_locations, [''])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_smsl_default_not_package(self):
         kundi Loader:
             eleza is_package(self, name):
-                rudisha False
+                rudisha Uongo
         loader = Loader()
         spec = self.util.spec_kutoka_file_location(self.name, self.path,
                                                  loader=loader)
@@ -776,10 +776,10 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_smsl_default_no_is_package(self):
         spec = self.util.spec_kutoka_file_location(self.name, self.path,
@@ -788,15 +788,15 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
     eleza test_spec_kutoka_file_location_smsl_default_bad_is_package(self):
         kundi Loader:
             eleza is_package(self, name):
-                raise ImportError
+                ashiria ImportError
         loader = Loader()
         spec = self.util.spec_kutoka_file_location(self.name, self.path,
                                                  loader=loader)
@@ -804,10 +804,10 @@ kundi FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Tupu)
+        self.assertIs(spec.submodule_search_locations, Tupu)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertKweli(spec.has_location)
 
 
 (Frozen_FactoryTests,

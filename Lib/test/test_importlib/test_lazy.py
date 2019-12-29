@@ -5,7 +5,7 @@ agiza sys
 agiza types
 agiza unittest
 
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 
 kundi CollectInit:
@@ -39,12 +39,12 @@ kundi TestingImporter(abc.MetaPathFinder, abc.Loader):
 
     module_name = 'lazy_loader_test'
     mutated_name = 'changed'
-    loaded = None
+    loaded = Tupu
     source_code = 'attr = 42; __name__ = {!r}'.format(mutated_name)
 
-    eleza find_spec(self, name, path, target=None):
+    eleza find_spec(self, name, path, target=Tupu):
         ikiwa name != self.module_name:
-            rudisha None
+            rudisha Tupu
         rudisha util.spec_kutoka_loader(name, util.LazyLoader(self))
 
     eleza exec_module(self, module):
@@ -59,37 +59,37 @@ kundi LazyLoaderTests(unittest.TestCase):
             # Classes that don't define exec_module() trigger TypeError.
             util.LazyLoader(object)
 
-    eleza new_module(self, source_code=None):
+    eleza new_module(self, source_code=Tupu):
         loader = TestingImporter()
-        ikiwa source_code is not None:
+        ikiwa source_code ni sio Tupu:
             loader.source_code = source_code
         spec = util.spec_kutoka_loader(TestingImporter.module_name,
                                      util.LazyLoader(loader))
         module = spec.loader.create_module(spec)
-        ikiwa module is None:
+        ikiwa module ni Tupu:
             module = types.ModuleType(TestingImporter.module_name)
         module.__spec__ = spec
         module.__loader__ = spec.loader
         spec.loader.exec_module(module)
-        # Module is now lazy.
-        self.assertIsNone(loader.loaded)
+        # Module ni now lazy.
+        self.assertIsTupu(loader.loaded)
         rudisha module
 
     eleza test_e2e(self):
-        # End-to-end test to verify the load is in fact lazy.
+        # End-to-end test to verify the load ni kwenye fact lazy.
         importer = TestingImporter()
-        assert importer.loaded is None
+        assert importer.loaded ni Tupu
         with test_util.uncache(importer.module_name):
             with test_util.import_state(meta_path=[importer]):
                 module = importlib.import_module(importer.module_name)
-        self.assertIsNone(importer.loaded)
+        self.assertIsTupu(importer.loaded)
         # Trigger load.
         self.assertEqual(module.__loader__, importer)
-        self.assertIsNotNone(importer.loaded)
+        self.assertIsNotTupu(importer.loaded)
         self.assertEqual(module, importer.loaded)
 
     eleza test_attr_unchanged(self):
-        # An attribute only mutated as a side-effect of agiza should not be
+        # An attribute only mutated kama a side-effect of agiza should sio be
         # changed needlessly.
         module = self.new_module()
         self.assertEqual(TestingImporter.mutated_name, module.__name__)
@@ -117,13 +117,13 @@ kundi LazyLoaderTests(unittest.TestCase):
     eleza test_delete_eventual_attr(self):
         # Deleting an attribute should stay deleted.
         module = self.new_module()
-        del module.attr
-        self.assertFalse(hasattr(module, 'attr'))
+        toa module.attr
+        self.assertUongo(hasattr(module, 'attr'))
 
     eleza test_delete_preexisting_attr(self):
         module = self.new_module()
-        del module.__name__
-        self.assertFalse(hasattr(module, '__name__'))
+        toa module.__name__
+        self.assertUongo(hasattr(module, '__name__'))
 
     eleza test_module_substitution_error(self):
         with test_util.uncache(TestingImporter.module_name):
@@ -137,7 +137,7 @@ kundi LazyLoaderTests(unittest.TestCase):
         with test_util.uncache(TestingImporter.module_name):
             module = self.new_module()
             sys.modules[TestingImporter.module_name] = module
-            # Force the load; just care that no exception is raised.
+            # Force the load; just care that no exception ni ashiriad.
             module.__name__
 
 

@@ -57,11 +57,11 @@ class build_py (Command):
 
         # Ick, copied straight from install_lib.py (fancy_getopt needs a
         # type system!  Hell, *everything* needs a type system!!!)
-        if not isinstance(self.optimize, int):
-            try:
+        if sio isinstance(self.optimize, int):
+            jaribu:
                 self.optimize = int(self.optimize)
                 assert 0 <= self.optimize <= 2
-            except (ValueError, AssertionError):
+            tatizo (ValueError, AssertionError):
                 raise DistutilsOptionError("optimize must be 0, 1, or 2")
 
     def run(self):
@@ -97,7 +97,7 @@ class build_py (Command):
     def get_data_files(self):
         """Generate list of '(package,src_dir,build_dir,filenames)' tuples"""
         data = []
-        if not self.packages:
+        if sio self.packages:
             return data
         for package in self.packages:
             # Locate package source directory
@@ -127,7 +127,7 @@ class build_py (Command):
             # Each pattern has to be converted to a platform-specific path
             filelist = glob(os.path.join(src_dir, convert_path(pattern)))
             # Files that match more than one pattern are only added once
-            files.extend([fn for fn in filelist if fn not in files
+            files.extend([fn for fn in filelist if fn haiko kwenye files
                 and os.path.isfile(fn)])
         return files
 
@@ -147,37 +147,37 @@ class build_py (Command):
            (at least according to the 'package_dir' option, if any)."""
         path = package.split('.')
 
-        if not self.package_dir:
+        if sio self.package_dir:
             if path:
                 return os.path.join(*path)
-            else:
+            isipokua:
                 return ''
-        else:
+        isipokua:
             tail = []
-            while path:
-                try:
+            wakati path:
+                jaribu:
                     pdir = self.package_dir['.'.join(path)]
-                except KeyError:
+                tatizo KeyError:
                     tail.insert(0, path[-1])
-                    del path[-1]
-                else:
+                    toa path[-1]
+                isipokua:
                     tail.insert(0, pdir)
                     return os.path.join(*tail)
-            else:
+            isipokua:
                 # Oops, got all the way through 'path' without finding a
                 # match in package_dir.  If package_dir defines a directory
                 # for the root (nameless) package, then fallback on it;
-                # otherwise, we might as well have not consulted
+                # otherwise, we might as well have sio consulted
                 # package_dir at all, as we just use the directory implied
                 # by 'tail' (which should be the same as the original value
                 # of 'path' at this point).
                 pdir = self.package_dir.get('')
-                if pdir is not None:
+                if pdir ni sio None:
                     tail.insert(0, pdir)
 
                 if tail:
                     return os.path.join(*tail)
-                else:
+                isipokua:
                     return ''
 
     def check_package(self, package, package_dir):
@@ -186,32 +186,32 @@ class build_py (Command):
         # my "empty string means current dir" convention, so we have to
         # circumvent them.
         if package_dir != "":
-            if not os.path.exists(package_dir):
+            if sio os.path.exists(package_dir):
                 raise DistutilsFileError(
-                      "package directory '%s' does not exist" % package_dir)
-            if not os.path.isdir(package_dir):
+                      "package directory '%s' does sio exist" % package_dir)
+            if sio os.path.isdir(package_dir):
                 raise DistutilsFileError(
                        "supposed package directory '%s' exists, "
-                       "but is not a directory" % package_dir)
+                       "but ni sio a directory" % package_dir)
 
         # Require __init__.py for all but the "root package"
         if package:
             init_py = os.path.join(package_dir, "__init__.py")
             if os.path.isfile(init_py):
                 return init_py
-            else:
-                log.warn(("package init file '%s' not found " +
-                          "(or not a regular file)"), init_py)
+            isipokua:
+                log.warn(("package init file '%s' sio found " +
+                          "(or sio a regular file)"), init_py)
 
-        # Either not in a package at all (__init__.py not expected), or
+        # Either haiko kwenye a package at all (__init__.py sio expected), or
         # __init__.py doesn't exist -- so don't return the filename.
         return None
 
     def check_module(self, module, module_file):
-        if not os.path.isfile(module_file):
-            log.warn("file %s (for module %s) not found", module_file, module)
+        if sio os.path.isfile(module_file):
+            log.warn("file %s (for module %s) sio found", module_file, module)
             return False
-        else:
+        isipokua:
             return True
 
     def find_package_modules(self, package, package_dir):
@@ -225,7 +225,7 @@ class build_py (Command):
             if abs_f != setup_script:
                 module = os.path.splitext(os.path.basename(f))[0]
                 modules.append((package, module, f))
-            else:
+            isipokua:
                 self.debug_print("excluding %s" % setup_script)
         return modules
 
@@ -258,13 +258,13 @@ class build_py (Command):
             package = '.'.join(path[0:-1])
             module_base = path[-1]
 
-            try:
+            jaribu:
                 (package_dir, checked) = packages[package]
-            except KeyError:
+            tatizo KeyError:
                 package_dir = self.get_package_dir(package)
                 checked = 0
 
-            if not checked:
+            if sio checked:
                 init_py = self.check_package(package, package_dir)
                 packages[package] = (package_dir, 1)
                 if init_py:
@@ -274,8 +274,8 @@ class build_py (Command):
             # (so greedy closed-source bastards can distribute Python
             # modules too)
             module_file = os.path.join(package_dir, module_base + ".py")
-            if not self.check_module(module, module_file):
-                continue
+            if sio self.check_module(module, module_file):
+                endelea
 
             modules.append((package, module_base, module_file))
 
@@ -330,7 +330,7 @@ class build_py (Command):
     def build_module(self, module, module_file, package):
         if isinstance(package, str):
             package = package.split('.')
-        lasivyo not isinstance(package, (list, tuple)):
+        lasivyo sio isinstance(package, (list, tuple)):
             raise TypeError(
                   "'package' must be a string (dot-separated), list, or tuple")
 
@@ -382,7 +382,7 @@ class build_py (Command):
             prefix = prefix + os.sep
 
         # XXX this code is essentially the same as the 'byte_compile()
-        # method of the "install_lib" command, except for the determination
+        # method of the "install_lib" command, tatizo for the determination
         # of the 'prefix' string.  Hmmm.
         if self.compile:
             byte_compile(files, optimize=0,

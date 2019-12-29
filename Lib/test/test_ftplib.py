@@ -1,6 +1,6 @@
-"""Test script for ftplib module."""
+"""Test script kila ftplib module."""
 
-# Modified by Giampaolo Rodola' to test FTP class, IPv6 and TLS
+# Modified by Giampaolo Rodola' to test FTP class, IPv6 na TLS
 # environment
 
 agiza ftplib
@@ -12,17 +12,17 @@ agiza errno
 agiza os
 agiza threading
 agiza time
-try:
+jaribu:
     agiza ssl
-except ImportError:
-    ssl = None
+tatizo ImportError:
+    ssl = Tupu
 
 kutoka unittest agiza TestCase, skipUnless
 kutoka test agiza support
 kutoka test.support agiza HOST, HOSTv6
 
 TIMEOUT = 3
-# the dummy data returned by server over the data channel when
+# the dummy data rudishaed by server over the data channel when
 # RETR, LIST, NLST, MLSD commands are issued
 RETR_DATA = 'abcde12345\r\n' * 1000
 LIST_DATA = 'foo\r\nbar\r\n'
@@ -45,7 +45,7 @@ MLSD_DATA = ("type=cdir;perm=el;unique==keVO1+ZF4; test\r\n"
 
 
 kundi DummyDTPHandler(asynchat.async_chat):
-    dtp_conn_closed = False
+    dtp_conn_closed = Uongo
 
     eleza __init__(self, conn, baseclass):
         asynchat.async_chat.__init__(self, conn)
@@ -56,24 +56,24 @@ kundi DummyDTPHandler(asynchat.async_chat):
         self.baseclass.last_received_data += self.recv(1024).decode('ascii')
 
     eleza handle_close(self):
-        # XXX: this method can be called many times in a row for a single
-        # connection, including in clear-text (non-TLS) mode.
+        # XXX: this method can be called many times kwenye a row kila a single
+        # connection, including kwenye clear-text (non-TLS) mode.
         # (behaviour witnessed with test_data_connection)
-        ikiwa not self.dtp_conn_closed:
+        ikiwa sio self.dtp_conn_closed:
             self.baseclass.push('226 transfer complete')
             self.close()
-            self.dtp_conn_closed = True
+            self.dtp_conn_closed = Kweli
 
     eleza push(self, what):
-        ikiwa self.baseclass.next_data is not None:
+        ikiwa self.baseclass.next_data ni sio Tupu:
             what = self.baseclass.next_data
-            self.baseclass.next_data = None
-        ikiwa not what:
+            self.baseclass.next_data = Tupu
+        ikiwa sio what:
             rudisha self.close_when_done()
         super(DummyDTPHandler, self).push(what.encode('ascii'))
 
     eleza handle_error(self):
-        raise Exception
+        ashiria Exception
 
 
 kundi DummyFTPHandler(asynchat.async_chat):
@@ -86,12 +86,12 @@ kundi DummyFTPHandler(asynchat.async_chat):
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_OOBINLINE, 1)
         self.set_terminator(b"\r\n")
         self.in_buffer = []
-        self.dtp = None
-        self.last_received_cmd = None
+        self.dtp = Tupu
+        self.last_received_cmd = Tupu
         self.last_received_data = ''
         self.next_response = ''
-        self.next_data = None
-        self.rest = None
+        self.next_data = Tupu
+        self.rest = Tupu
         self.next_retr_data = RETR_DATA
         self.push('220 welcome')
 
@@ -109,16 +109,16 @@ kundi DummyFTPHandler(asynchat.async_chat):
         space = line.find(' ')
         ikiwa space != -1:
             arg = line[space + 1:]
-        else:
+        isipokua:
             arg = ""
         ikiwa hasattr(self, 'cmd_' + cmd):
             method = getattr(self, 'cmd_' + cmd)
             method(arg)
-        else:
-            self.push('550 command "%s" not understood.' %cmd)
+        isipokua:
+            self.push('550 command "%s" sio understood.' %cmd)
 
     eleza handle_error(self):
-        raise Exception
+        ashiria Exception
 
     eleza push(self, data):
         asynchat.async_chat.push(self, data.encode('ascii') + b'\r\n')
@@ -132,11 +132,11 @@ kundi DummyFTPHandler(asynchat.async_chat):
         self.push('200 active data connection established')
 
     eleza cmd_pasv(self, arg):
-        with socket.create_server((self.socket.getsockname()[0], 0)) as sock:
+        with socket.create_server((self.socket.getsockname()[0], 0)) kama sock:
             sock.settimeout(TIMEOUT)
             ip, port = sock.getsockname()[:2]
             ip = ip.replace('.', ','); p1 = port / 256; p2 = port % 256
-            self.push('227 entering passive mode (%s,%d,%d)' %(ip, p1, p2))
+            self.push('227 entering pitaive mode (%s,%d,%d)' %(ip, p1, p2))
             conn, addr = sock.accept()
             self.dtp = self.dtp_handler(conn, baseclass=self)
 
@@ -149,10 +149,10 @@ kundi DummyFTPHandler(asynchat.async_chat):
 
     eleza cmd_epsv(self, arg):
         with socket.create_server((self.socket.getsockname()[0], 0),
-                                  family=socket.AF_INET6) as sock:
+                                  family=socket.AF_INET6) kama sock:
             sock.settimeout(TIMEOUT)
             port = sock.getsockname()[1]
-            self.push('229 entering extended passive mode (|||%d|)' %port)
+            self.push('229 entering extended pitaive mode (|||%d|)' %port)
             conn, addr = sock.accept()
             self.dtp = self.dtp_handler(conn, baseclass=self)
 
@@ -166,8 +166,8 @@ kundi DummyFTPHandler(asynchat.async_chat):
     eleza cmd_user(self, arg):
         self.push('331 username ok')
 
-    eleza cmd_pass(self, arg):
-        self.push('230 password ok')
+    eleza cmd_pita(self, arg):
+        self.push('230 pitaword ok')
 
     eleza cmd_acct(self, arg):
         self.push('230 acct ok')
@@ -215,13 +215,13 @@ kundi DummyFTPHandler(asynchat.async_chat):
 
     eleza cmd_retr(self, arg):
         self.push('125 retr ok')
-        ikiwa self.rest is not None:
+        ikiwa self.rest ni sio Tupu:
             offset = int(self.rest)
-        else:
+        isipokua:
             offset = 0
         self.dtp.push(self.next_retr_data[offset:])
         self.dtp.close_when_done()
-        self.rest = None
+        self.rest = Tupu
 
     eleza cmd_list(self, arg):
         self.push('125 list ok')
@@ -254,33 +254,33 @@ kundi DummyFTPServer(asyncore.dispatcher, threading.Thread):
     eleza __init__(self, address, af=socket.AF_INET):
         threading.Thread.__init__(self)
         asyncore.dispatcher.__init__(self)
-        self.daemon = True
+        self.daemon = Kweli
         self.create_socket(af, socket.SOCK_STREAM)
         self.bind(address)
         self.listen(5)
-        self.active = False
+        self.active = Uongo
         self.active_lock = threading.Lock()
         self.host, self.port = self.socket.getsockname()[:2]
-        self.handler_instance = None
+        self.handler_instance = Tupu
 
     eleza start(self):
-        assert not self.active
+        assert sio self.active
         self.__flag = threading.Event()
         threading.Thread.start(self)
         self.__flag.wait()
 
     eleza run(self):
-        self.active = True
+        self.active = Kweli
         self.__flag.set()
-        while self.active and asyncore.socket_map:
+        wakati self.active na asyncore.socket_map:
             self.active_lock.acquire()
             asyncore.loop(timeout=0.1, count=1)
             self.active_lock.release()
-        asyncore.close_all(ignore_all=True)
+        asyncore.close_all(ignore_all=Kweli)
 
     eleza stop(self):
         assert self.active
-        self.active = False
+        self.active = Uongo
         self.join()
 
     eleza handle_accepted(self, conn, addr):
@@ -294,10 +294,10 @@ kundi DummyFTPServer(asyncore.dispatcher, threading.Thread):
         rudisha 0
 
     eleza handle_error(self):
-        raise Exception
+        ashiria Exception
 
 
-ikiwa ssl is not None:
+ikiwa ssl ni sio Tupu:
 
     CERTFILE = os.path.join(os.path.dirname(__file__), "keycert3.pem")
     CAFILE = os.path.join(os.path.dirname(__file__), "pycacert.pem")
@@ -305,65 +305,65 @@ ikiwa ssl is not None:
     kundi SSLConnection(asyncore.dispatcher):
         """An asyncore.dispatcher subkundi supporting TLS/SSL."""
 
-        _ssl_accepting = False
-        _ssl_closing = False
+        _ssl_accepting = Uongo
+        _ssl_closing = Uongo
 
         eleza secure_connection(self):
             context = ssl.SSLContext()
             context.load_cert_chain(CERTFILE)
             socket = context.wrap_socket(self.socket,
-                                         suppress_ragged_eofs=False,
-                                         server_side=True,
-                                         do_handshake_on_connect=False)
+                                         suppress_ragged_eofs=Uongo,
+                                         server_side=Kweli,
+                                         do_handshake_on_connect=Uongo)
             self.del_channel()
             self.set_socket(socket)
-            self._ssl_accepting = True
+            self._ssl_accepting = Kweli
 
         eleza _do_ssl_handshake(self):
-            try:
+            jaribu:
                 self.socket.do_handshake()
-            except ssl.SSLError as err:
-                ikiwa err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+            tatizo ssl.SSLError kama err:
+                ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    rudisha
                 elikiwa err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
-                # TODO: SSLError does not expose alert information
-                elikiwa "SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1]:
+                # TODO: SSLError does sio expose alert information
+                elikiwa "SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1]:
                     rudisha self.handle_close()
-                raise
-            except OSError as err:
+                ashiria
+            tatizo OSError kama err:
                 ikiwa err.args[0] == errno.ECONNABORTED:
                     rudisha self.handle_close()
-            else:
-                self._ssl_accepting = False
+            isipokua:
+                self._ssl_accepting = Uongo
 
         eleza _do_ssl_shutdown(self):
-            self._ssl_closing = True
-            try:
+            self._ssl_closing = Kweli
+            jaribu:
                 self.socket = self.socket.unwrap()
-            except ssl.SSLError as err:
-                ikiwa err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+            tatizo ssl.SSLError kama err:
+                ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
-            except OSError as err:
-                # Any "socket error" corresponds to a SSL_ERROR_SYSCALL return
+                    rudisha
+            tatizo OSError kama err:
+                # Any "socket error" corresponds to a SSL_ERROR_SYSCALL rudisha
                 # kutoka OpenSSL's SSL_shutdown(), corresponding to a
                 # closed socket condition. See also:
                 # http://www.mail-archive.com/openssl-users@openssl.org/msg60710.html
-                pass
-            self._ssl_closing = False
-            ikiwa getattr(self, '_ccc', False) is False:
+                pita
+            self._ssl_closing = Uongo
+            ikiwa getattr(self, '_ccc', Uongo) ni Uongo:
                 super(SSLConnection, self).close()
-            else:
-                pass
+            isipokua:
+                pita
 
         eleza handle_read_event(self):
             ikiwa self._ssl_accepting:
                 self._do_ssl_handshake()
             elikiwa self._ssl_closing:
                 self._do_ssl_shutdown()
-            else:
+            isipokua:
                 super(SSLConnection, self).handle_read_event()
 
         eleza handle_write_event(self):
@@ -371,39 +371,39 @@ ikiwa ssl is not None:
                 self._do_ssl_handshake()
             elikiwa self._ssl_closing:
                 self._do_ssl_shutdown()
-            else:
+            isipokua:
                 super(SSLConnection, self).handle_write_event()
 
         eleza send(self, data):
-            try:
+            jaribu:
                 rudisha super(SSLConnection, self).send(data)
-            except ssl.SSLError as err:
-                ikiwa err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN,
+            tatizo ssl.SSLError kama err:
+                ikiwa err.args[0] kwenye (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN,
                                    ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     rudisha 0
-                raise
+                ashiria
 
         eleza recv(self, buffer_size):
-            try:
+            jaribu:
                 rudisha super(SSLConnection, self).recv(buffer_size)
-            except ssl.SSLError as err:
-                ikiwa err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+            tatizo ssl.SSLError kama err:
+                ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     rudisha b''
-                ikiwa err.args[0] in (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN):
+                ikiwa err.args[0] kwenye (ssl.SSL_ERROR_EOF, ssl.SSL_ERROR_ZERO_RETURN):
                     self.handle_close()
                     rudisha b''
-                raise
+                ashiria
 
         eleza handle_error(self):
-            raise Exception
+            ashiria Exception
 
         eleza close(self):
             ikiwa (isinstance(self.socket, ssl.SSLSocket) and
-                    self.socket._sslobj is not None):
+                    self.socket._sslobj ni sio Tupu):
                 self._do_ssl_shutdown()
-            else:
+            isipokua:
                 super(SSLConnection, self).close()
 
 
@@ -423,8 +423,8 @@ ikiwa ssl is not None:
 
         eleza __init__(self, conn):
             DummyFTPHandler.__init__(self, conn)
-            self.secure_data_channel = False
-            self._ccc = False
+            self.secure_data_channel = Uongo
+            self._ccc = Uongo
 
         eleza cmd_auth(self, line):
             """Set up secure control channel."""
@@ -433,13 +433,13 @@ ikiwa ssl is not None:
 
         eleza cmd_ccc(self, line):
             self.push('220 Reverting back to clear-text')
-            self._ccc = True
+            self._ccc = Kweli
             self._do_ssl_shutdown()
 
         eleza cmd_pbsz(self, line):
-            """Negotiate size of buffer for secure data transfer.
-            For TLS/SSL the only valid value for the parameter is '0'.
-            Any other value is accepted but ignored.
+            """Negotiate size of buffer kila secure data transfer.
+            For TLS/SSL the only valid value kila the parameter ni '0'.
+            Any other value ni accepted but ignored.
             """
             self.push('200 PBSZ=0 successful.')
 
@@ -448,12 +448,12 @@ ikiwa ssl is not None:
             arg = line.upper()
             ikiwa arg == 'C':
                 self.push('200 Protection set to Clear')
-                self.secure_data_channel = False
+                self.secure_data_channel = Uongo
             elikiwa arg == 'P':
                 self.push('200 Protection set to Private')
-                self.secure_data_channel = True
-            else:
-                self.push("502 Unrecognized PROT type (use C or P).")
+                self.secure_data_channel = Kweli
+            isipokua:
+                self.push("502 Unrecognized PROT type (use C ama P).")
 
 
     kundi DummyTLS_FTPServer(DummyFTPServer):
@@ -472,8 +472,8 @@ kundi TestFTPClass(TestCase):
         self.client.close()
         self.server.stop()
         # Explicitly clear the attribute to prevent dangling thread
-        self.server = None
-        asyncore.close_all(ignore_all=True)
+        self.server = Tupu
+        asyncore.close_all(ignore_all=Kweli)
 
     eleza check_data(self, received, expected):
         self.assertEqual(len(received), len(expected))
@@ -484,7 +484,7 @@ kundi TestFTPClass(TestCase):
 
     eleza test_sanitize(self):
         self.assertEqual(self.client.sanitize('foo'), repr('foo'))
-        self.assertEqual(self.client.sanitize('pass 12345'), repr('pass *****'))
+        self.assertEqual(self.client.sanitize('pita 12345'), repr('pita *****'))
         self.assertEqual(self.client.sanitize('PASS 12345'), repr('PASS *****'))
 
     eleza test_exceptions(self):
@@ -501,19 +501,19 @@ kundi TestFTPClass(TestCase):
         exceptions = (ftplib.error_reply, ftplib.error_temp, ftplib.error_perm,
                       ftplib.error_proto, ftplib.Error, OSError,
                       EOFError)
-        for x in exceptions:
-            try:
-                raise x('exception not included in all_errors set')
-            except ftplib.all_errors:
-                pass
+        kila x kwenye exceptions:
+            jaribu:
+                ashiria x('exception sio included kwenye all_errors set')
+            tatizo ftplib.all_errors:
+                pita
 
     eleza test_set_pasv(self):
-        # passive mode is supposed to be enabled by default
-        self.assertTrue(self.client.passiveserver)
-        self.client.set_pasv(True)
-        self.assertTrue(self.client.passiveserver)
-        self.client.set_pasv(False)
-        self.assertFalse(self.client.passiveserver)
+        # pitaive mode ni supposed to be enabled by default
+        self.assertKweli(self.client.pitaiveserver)
+        self.client.set_pasv(Kweli)
+        self.assertKweli(self.client.pitaiveserver)
+        self.client.set_pasv(Uongo)
+        self.assertUongo(self.client.pitaiveserver)
 
     eleza test_voidcmd(self):
         self.client.voidcmd('echo 200')
@@ -525,7 +525,7 @@ kundi TestFTPClass(TestCase):
         self.client.login()
 
     eleza test_acct(self):
-        self.client.acct('passwd')
+        self.client.acct('pitawd')
 
     eleza test_rename(self):
         self.client.rename('a', 'b')
@@ -557,8 +557,8 @@ kundi TestFTPClass(TestCase):
 
     eleza test_quit(self):
         self.assertEqual(self.client.quit(), '221 quit ok')
-        # Ensure the connection gets closed; sock attribute should be None
-        self.assertEqual(self.client.sock, None)
+        # Ensure the connection gets closed; sock attribute should be Tupu
+        self.assertEqual(self.client.sock, Tupu)
 
     eleza test_abort(self):
         self.client.abort()
@@ -573,7 +573,7 @@ kundi TestFTPClass(TestCase):
     eleza test_retrbinary_rest(self):
         eleza callback(data):
             received.append(data.decode('ascii'))
-        for rest in (0, 10, 20):
+        kila rest kwenye (0, 10, 20):
             received = []
             self.client.retrbinary('retr', callback, rest=rest)
             self.check_data(''.join(received), RETR_DATA[rest:])
@@ -590,12 +590,12 @@ kundi TestFTPClass(TestCase):
         # test new callback arg
         flag = []
         f.seek(0)
-        self.client.storbinary('stor', f, callback=lambda x: flag.append(None))
-        self.assertTrue(flag)
+        self.client.storbinary('stor', f, callback=lambda x: flag.append(Tupu))
+        self.assertKweli(flag)
 
     eleza test_storbinary_rest(self):
         f = io.BytesIO(RETR_DATA.replace('\r\n', '\n').encode('ascii'))
-        for r in (30, '30'):
+        kila r kwenye (30, '30'):
             f.seek(0)
             self.client.storbinary('stor', f, rest=r)
             self.assertEqual(self.server.handler_instance.rest, str(r))
@@ -607,12 +607,12 @@ kundi TestFTPClass(TestCase):
         # test new callback arg
         flag = []
         f.seek(0)
-        self.client.storlines('stor foo', f, callback=lambda x: flag.append(None))
-        self.assertTrue(flag)
+        self.client.storlines('stor foo', f, callback=lambda x: flag.append(Tupu))
+        self.assertKweli(flag)
 
         f = io.StringIO(RETR_DATA.replace('\r\n', '\n'))
-        # storlines() expects a binary file, not a text file
-        with support.check_warnings(('', BytesWarning), quiet=True):
+        # storlines() expects a binary file, sio a text file
+        with support.check_warnings(('', BytesWarning), quiet=Kweli):
             self.assertRaises(TypeError, self.client.storlines, 'stor foo', f)
 
     eleza test_nlst(self):
@@ -630,10 +630,10 @@ kundi TestFTPClass(TestCase):
         list(self.client.mlsd(path='/', facts=['size', 'type']))
 
         ls = list(self.client.mlsd())
-        for name, facts in ls:
+        kila name, facts kwenye ls:
             self.assertIsInstance(name, str)
             self.assertIsInstance(facts, dict)
-            self.assertTrue(name)
+            self.assertKweli(name)
             self.assertIn('type', facts)
             self.assertIn('perm', facts)
             self.assertIn('unique', facts)
@@ -641,11 +641,11 @@ kundi TestFTPClass(TestCase):
         eleza set_data(data):
             self.server.handler_instance.next_data = data
 
-        eleza test_entry(line, type=None, perm=None, unique=None, name=None):
-            type = 'type' ikiwa type is None else type
-            perm = 'perm' ikiwa perm is None else perm
-            unique = 'unique' ikiwa unique is None else unique
-            name = 'name' ikiwa name is None else name
+        eleza test_entry(line, type=Tupu, perm=Tupu, unique=Tupu, name=Tupu):
+            type = 'type' ikiwa type ni Tupu else type
+            perm = 'perm' ikiwa perm ni Tupu else perm
+            unique = 'unique' ikiwa unique ni Tupu else unique
+            name = 'name' ikiwa name ni Tupu else name
             set_data(line)
             _name, facts = next(self.client.mlsd())
             self.assertEqual(_name, name)
@@ -655,17 +655,17 @@ kundi TestFTPClass(TestCase):
 
         # plain
         test_entry('type=type;perm=perm;unique=unique; name\r\n')
-        # "=" in fact value
+        # "=" kwenye fact value
         test_entry('type=ty=pe;perm=perm;unique=unique; name\r\n', type="ty=pe")
         test_entry('type==type;perm=perm;unique=unique; name\r\n', type="=type")
         test_entry('type=t=y=pe;perm=perm;unique=unique; name\r\n', type="t=y=pe")
         test_entry('type=====;perm=perm;unique=unique; name\r\n', type="====")
-        # spaces in name
+        # spaces kwenye name
         test_entry('type=type;perm=perm;unique=unique; na me\r\n', name="na me")
         test_entry('type=type;perm=perm;unique=unique; name \r\n', name="name ")
         test_entry('type=type;perm=perm;unique=unique;  name\r\n', name=" name")
         test_entry('type=type;perm=perm;unique=unique; n am  e\r\n', name="n am  e")
-        # ";" in name
+        # ";" kwenye name
         test_entry('type=type;perm=perm;unique=unique; na;me\r\n', name="na;me")
         test_entry('type=type;perm=perm;unique=unique; ;name\r\n', name=";name")
         test_entry('type=type;perm=perm;unique=unique; ;name;\r\n', name=";name;")
@@ -673,18 +673,18 @@ kundi TestFTPClass(TestCase):
         # case sensitiveness
         set_data('Type=type;TyPe=perm;UNIQUE=unique; name\r\n')
         _name, facts = next(self.client.mlsd())
-        for x in facts:
-            self.assertTrue(x.islower())
+        kila x kwenye facts:
+            self.assertKweli(x.islower())
         # no data (directory empty)
         set_data('')
         self.assertRaises(StopIteration, next, self.client.mlsd())
         set_data('')
-        for x in self.client.mlsd():
+        kila x kwenye self.client.mlsd():
             self.fail("unexpected data %s" % x)
 
     eleza test_makeport(self):
         with self.client.makeport():
-            # IPv4 is in use, just make sure send_eprt has not been used
+            # IPv4 ni kwenye use, just make sure send_eprt has sio been used
             self.assertEqual(self.server.handler_instance.last_received_cmd,
                                 'port')
 
@@ -692,77 +692,77 @@ kundi TestFTPClass(TestCase):
         host, port = self.client.makepasv()
         conn = socket.create_connection((host, port), timeout=TIMEOUT)
         conn.close()
-        # IPv4 is in use, just make sure send_epsv has not been used
+        # IPv4 ni kwenye use, just make sure send_epsv has sio been used
         self.assertEqual(self.server.handler_instance.last_received_cmd, 'pasv')
 
     eleza test_with_statement(self):
         self.client.quit()
 
         eleza is_client_connected():
-            ikiwa self.client.sock is None:
-                rudisha False
-            try:
+            ikiwa self.client.sock ni Tupu:
+                rudisha Uongo
+            jaribu:
                 self.client.sendcmd('noop')
-            except (OSError, EOFError):
-                rudisha False
-            rudisha True
+            tatizo (OSError, EOFError):
+                rudisha Uongo
+            rudisha Kweli
 
         # base test
-        with ftplib.FTP(timeout=TIMEOUT) as self.client:
+        with ftplib.FTP(timeout=TIMEOUT) kama self.client:
             self.client.connect(self.server.host, self.server.port)
             self.client.sendcmd('noop')
-            self.assertTrue(is_client_connected())
+            self.assertKweli(is_client_connected())
         self.assertEqual(self.server.handler_instance.last_received_cmd, 'quit')
-        self.assertFalse(is_client_connected())
+        self.assertUongo(is_client_connected())
 
         # QUIT sent inside the with block
-        with ftplib.FTP(timeout=TIMEOUT) as self.client:
+        with ftplib.FTP(timeout=TIMEOUT) kama self.client:
             self.client.connect(self.server.host, self.server.port)
             self.client.sendcmd('noop')
             self.client.quit()
         self.assertEqual(self.server.handler_instance.last_received_cmd, 'quit')
-        self.assertFalse(is_client_connected())
+        self.assertUongo(is_client_connected())
 
         # force a wrong response code to be sent on QUIT: error_perm
-        # is expected and the connection is supposed to be closed
-        try:
-            with ftplib.FTP(timeout=TIMEOUT) as self.client:
+        # ni expected na the connection ni supposed to be closed
+        jaribu:
+            with ftplib.FTP(timeout=TIMEOUT) kama self.client:
                 self.client.connect(self.server.host, self.server.port)
                 self.client.sendcmd('noop')
                 self.server.handler_instance.next_response = '550 error on quit'
-        except ftplib.error_perm as err:
+        tatizo ftplib.error_perm kama err:
             self.assertEqual(str(err), '550 error on quit')
-        else:
-            self.fail('Exception not raised')
+        isipokua:
+            self.fail('Exception sio ashiriad')
         # needed to give the threaded server some time to set the attribute
         # which otherwise would still be == 'noop'
         time.sleep(0.1)
         self.assertEqual(self.server.handler_instance.last_received_cmd, 'quit')
-        self.assertFalse(is_client_connected())
+        self.assertUongo(is_client_connected())
 
     eleza test_source_address(self):
         self.client.quit()
         port = support.find_unused_port()
-        try:
+        jaribu:
             self.client.connect(self.server.host, self.server.port,
                                 source_address=(HOST, port))
             self.assertEqual(self.client.sock.getsockname()[1], port)
             self.client.quit()
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to port %d" % port)
-            raise
+            ashiria
 
-    eleza test_source_address_passive_connection(self):
+    eleza test_source_address_pitaive_connection(self):
         port = support.find_unused_port()
         self.client.source_address = (HOST, port)
-        try:
-            with self.client.transfercmd('list') as sock:
+        jaribu:
+            with self.client.transfercmd('list') kama sock:
                 self.assertEqual(sock.getsockname()[1], port)
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to port %d" % port)
-            raise
+            ashiria
 
     eleza test_parse257(self):
         self.assertEqual(ftplib.parse257('257 "/foo/bar"'), '/foo/bar')
@@ -770,8 +770,8 @@ kundi TestFTPClass(TestCase):
         self.assertEqual(ftplib.parse257('257 ""'), '')
         self.assertEqual(ftplib.parse257('257 "" created'), '')
         self.assertRaises(ftplib.error_reply, ftplib.parse257, '250 "/foo/bar"')
-        # The 257 response is supposed to include the directory
-        # name and in case it contains embedded double-quotes
+        # The 257 response ni supposed to include the directory
+        # name na kwenye case it contains embedded double-quotes
         # they must be doubled (see RFC-959, chapter 7, appendix 2).
         self.assertEqual(ftplib.parse257('257 "/foo/b""ar"'), '/foo/b"ar')
         self.assertEqual(ftplib.parse257('257 "/foo/b""ar" created'), '/foo/b"ar')
@@ -791,7 +791,7 @@ kundi TestFTPClass(TestCase):
         self.assertRaises(ftplib.Error, self.client.storlines, 'stor', f)
 
 
-@skipUnless(support.IPV6_ENABLED, "IPv6 not enabled")
+@skipUnless(support.IPV6_ENABLED, "IPv6 sio enabled")
 kundi TestIPv6Environment(TestCase):
 
     eleza setUp(self):
@@ -804,8 +804,8 @@ kundi TestIPv6Environment(TestCase):
         self.client.close()
         self.server.stop()
         # Explicitly clear the attribute to prevent dangling thread
-        self.server = None
-        asyncore.close_all(ignore_all=True)
+        self.server = Tupu
+        asyncore.close_all(ignore_all=Kweli)
 
     eleza test_af(self):
         self.assertEqual(self.client.af, socket.AF_INET6)
@@ -829,16 +829,16 @@ kundi TestIPv6Environment(TestCase):
             self.client.retrbinary('retr', callback)
             self.assertEqual(len(''.join(received)), len(RETR_DATA))
             self.assertEqual(''.join(received), RETR_DATA)
-        self.client.set_pasv(True)
+        self.client.set_pasv(Kweli)
         retr()
-        self.client.set_pasv(False)
+        self.client.set_pasv(Uongo)
         retr()
 
 
-@skipUnless(ssl, "SSL not available")
+@skipUnless(ssl, "SSL sio available")
 kundi TestTLS_FTPClassMixin(TestFTPClass):
-    """Repeat TestFTPClass tests starting the TLS layer for both control
-    and data connections first.
+    """Repeat TestFTPClass tests starting the TLS layer kila both control
+    na data connections first.
     """
 
     eleza setUp(self):
@@ -851,7 +851,7 @@ kundi TestTLS_FTPClassMixin(TestFTPClass):
         self.client.prot_p()
 
 
-@skipUnless(ssl, "SSL not available")
+@skipUnless(ssl, "SSL sio available")
 kundi TestTLS_FTPClass(TestCase):
     """Specific TLS_FTP kundi tests."""
 
@@ -865,8 +865,8 @@ kundi TestTLS_FTPClass(TestCase):
         self.client.close()
         self.server.stop()
         # Explicitly clear the attribute to prevent dangling thread
-        self.server = None
-        asyncore.close_all(ignore_all=True)
+        self.server = Tupu
+        asyncore.close_all(ignore_all=Kweli)
 
     eleza test_control_connection(self):
         self.assertNotIsInstance(self.client.sock, ssl.SSLSocket)
@@ -875,29 +875,29 @@ kundi TestTLS_FTPClass(TestCase):
 
     eleza test_data_connection(self):
         # clear text
-        with self.client.transfercmd('list') as sock:
+        with self.client.transfercmd('list') kama sock:
             self.assertNotIsInstance(sock, ssl.SSLSocket)
             self.assertEqual(sock.recv(1024), LIST_DATA.encode('ascii'))
         self.assertEqual(self.client.voidresp(), "226 transfer complete")
 
         # secured, after PROT P
         self.client.prot_p()
-        with self.client.transfercmd('list') as sock:
+        with self.client.transfercmd('list') kama sock:
             self.assertIsInstance(sock, ssl.SSLSocket)
-            # consume kutoka SSL socket to finalize handshake and avoid
-            # "SSLError [SSL] shutdown while in init"
+            # consume kutoka SSL socket to finalize handshake na avoid
+            # "SSLError [SSL] shutdown wakati kwenye init"
             self.assertEqual(sock.recv(1024), LIST_DATA.encode('ascii'))
         self.assertEqual(self.client.voidresp(), "226 transfer complete")
 
-        # PROT C is issued, the connection must be in cleartext again
+        # PROT C ni issued, the connection must be kwenye cleartext again
         self.client.prot_c()
-        with self.client.transfercmd('list') as sock:
+        with self.client.transfercmd('list') kama sock:
             self.assertNotIsInstance(sock, ssl.SSLSocket)
             self.assertEqual(sock.recv(1024), LIST_DATA.encode('ascii'))
         self.assertEqual(self.client.voidresp(), "226 transfer complete")
 
     eleza test_login(self):
-        # login() is supposed to implicitly secure the control connection
+        # login() ni supposed to implicitly secure the control connection
         self.assertNotIsInstance(self.client.sock, ssl.SSLSocket)
         self.client.login()
         self.assertIsInstance(self.client.sock, ssl.SSLSocket)
@@ -911,7 +911,7 @@ kundi TestTLS_FTPClass(TestCase):
     eleza test_context(self):
         self.client.quit()
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        ctx.check_hostname = False
+        ctx.check_hostname = Uongo
         ctx.verify_mode = ssl.CERT_NONE
         self.assertRaises(ValueError, ftplib.FTP_TLS, keyfile=CERTFILE,
                           context=ctx)
@@ -928,23 +928,23 @@ kundi TestTLS_FTPClass(TestCase):
         self.assertIsInstance(self.client.sock, ssl.SSLSocket)
 
         self.client.prot_p()
-        with self.client.transfercmd('list') as sock:
+        with self.client.transfercmd('list') kama sock:
             self.assertIs(sock.context, ctx)
             self.assertIsInstance(sock, ssl.SSLSocket)
 
     eleza test_ccc(self):
         self.assertRaises(ValueError, self.client.ccc)
-        self.client.login(secure=True)
+        self.client.login(secure=Kweli)
         self.assertIsInstance(self.client.sock, ssl.SSLSocket)
         self.client.ccc()
         self.assertRaises(ValueError, self.client.sock.unwrap)
 
-    @skipUnless(False, "FIXME: bpo-32706")
+    @skipUnless(Uongo, "FIXME: bpo-32706")
     eleza test_check_hostname(self):
         self.client.quit()
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         self.assertEqual(ctx.verify_mode, ssl.CERT_REQUIRED)
-        self.assertEqual(ctx.check_hostname, True)
+        self.assertEqual(ctx.check_hostname, Kweli)
         ctx.load_verify_locations(CAFILE)
         self.client = ftplib.FTP_TLS(context=ctx, timeout=TIMEOUT)
 
@@ -957,8 +957,8 @@ kundi TestTLS_FTPClass(TestCase):
         self.client.connect(self.server.host, self.server.port)
         self.client.prot_p()
         with self.assertRaises(ssl.CertificateError):
-            with self.client.transfercmd("list") as sock:
-                pass
+            with self.client.transfercmd("list") kama sock:
+                pita
         self.client.quit()
 
         self.client.connect("localhost", self.server.port)
@@ -967,8 +967,8 @@ kundi TestTLS_FTPClass(TestCase):
 
         self.client.connect("localhost", self.server.port)
         self.client.prot_p()
-        with self.client.transfercmd("list") as sock:
-            pass
+        with self.client.transfercmd("list") kama sock:
+            pita
 
 
 kundi TestTimeouts(TestCase):
@@ -979,9 +979,9 @@ kundi TestTimeouts(TestCase):
         self.sock.settimeout(20)
         self.port = support.bind_port(self.sock)
         self.server_thread = threading.Thread(target=self.server)
-        self.server_thread.daemon = True
+        self.server_thread.daemon = Kweli
         self.server_thread.start()
-        # Wait for the server to be ready.
+        # Wait kila the server to be ready.
         self.evt.wait()
         self.evt.clear()
         self.old_port = ftplib.FTP.port
@@ -991,50 +991,50 @@ kundi TestTimeouts(TestCase):
         ftplib.FTP.port = self.old_port
         self.server_thread.join()
         # Explicitly clear the attribute to prevent dangling thread
-        self.server_thread = None
+        self.server_thread = Tupu
 
     eleza server(self):
         # This method sets the evt 3 times:
-        #  1) when the connection is ready to be accepted.
-        #  2) when it is safe for the caller to close the connection
+        #  1) when the connection ni ready to be accepted.
+        #  2) when it ni safe kila the caller to close the connection
         #  3) when we have closed the socket
         self.sock.listen()
         # (1) Signal the caller that we are ready to accept the connection.
         self.evt.set()
-        try:
+        jaribu:
             conn, addr = self.sock.accept()
-        except socket.timeout:
-            pass
-        else:
+        tatizo socket.timeout:
+            pita
+        isipokua:
             conn.sendall(b"1 Hola mundo\n")
             conn.shutdown(socket.SHUT_WR)
-            # (2) Signal the caller that it is safe to close the socket.
+            # (2) Signal the caller that it ni safe to close the socket.
             self.evt.set()
             conn.close()
-        finally:
+        mwishowe:
             self.sock.close()
 
     eleza testTimeoutDefault(self):
         # default -- use global socket timeout
-        self.assertIsNone(socket.getdefaulttimeout())
+        self.assertIsTupu(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        jaribu:
             ftp = ftplib.FTP(HOST)
-        finally:
-            socket.setdefaulttimeout(None)
+        mwishowe:
+            socket.setdefaulttimeout(Tupu)
         self.assertEqual(ftp.sock.gettimeout(), 30)
         self.evt.wait()
         ftp.close()
 
-    eleza testTimeoutNone(self):
-        # no timeout -- do not use global socket timeout
-        self.assertIsNone(socket.getdefaulttimeout())
+    eleza testTimeoutTupu(self):
+        # no timeout -- do sio use global socket timeout
+        self.assertIsTupu(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
-            ftp = ftplib.FTP(HOST, timeout=None)
-        finally:
-            socket.setdefaulttimeout(None)
-        self.assertIsNone(ftp.sock.gettimeout())
+        jaribu:
+            ftp = ftplib.FTP(HOST, timeout=Tupu)
+        mwishowe:
+            socket.setdefaulttimeout(Tupu)
+        self.assertIsTupu(ftp.sock.gettimeout())
         self.evt.wait()
         ftp.close()
 
@@ -1083,9 +1083,9 @@ eleza test_main():
              MiscTestCase]
 
     thread_info = support.threading_setup()
-    try:
+    jaribu:
         support.run_unittest(*tests)
-    finally:
+    mwishowe:
         support.threading_cleanup(*thread_info)
 
 

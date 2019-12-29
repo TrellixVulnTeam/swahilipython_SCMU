@@ -1,7 +1,7 @@
 """Test parenmatch, coverage 91%.
 
 This must currently be a gui test because ParenMatch methods use
-several text methods not defined on idlelib.idle_test.mock_tk.Text.
+several text methods sio defined on idlelib.idle_test.mock_tk.Text.
 """
 kutoka idlelib.parenmatch agiza ParenMatch
 kutoka test.support agiza requires
@@ -17,7 +17,7 @@ kundi DummyEditwin:
         self.text = text
         self.indentwidth = 8
         self.tabwidth = 8
-        self.prompt_last_line = '>>>' # Currently not used by parenmatch.
+        self.prompt_last_line = '>>>' # Currently sio used by parenmatch.
 
 
 kundi ParenMatchTest(unittest.TestCase):
@@ -32,17 +32,17 @@ kundi ParenMatchTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text, cls.editwin
+        toa cls.text, cls.editwin
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza tearDown(self):
         self.text.delete('1.0', 'end')
 
     eleza get_parenmatch(self):
         pm = ParenMatch(self.editwin)
-        pm.bell = lambda: None
+        pm.bell = lambda: Tupu
         rudisha pm
 
     eleza test_paren_styles(self):
@@ -51,7 +51,7 @@ kundi ParenMatchTest(unittest.TestCase):
         """
         text = self.text
         pm = self.get_parenmatch()
-        for style, range1, range2 in (
+        kila style, range1, range2 kwenye (
                 ('opener', ('1.10', '1.11'), ('1.10', '1.11')),
                 ('default',('1.10', '1.11'),('1.10', '1.11')),
                 ('parens', ('1.14', '1.15'), ('1.15', '1.16')),
@@ -81,14 +81,14 @@ kundi ParenMatchTest(unittest.TestCase):
 
     eleza test_paren_corner(self):
         """
-        Test corner cases in flash_paren_event and paren_closed_event.
+        Test corner cases kwenye flash_paren_event na paren_closed_event.
 
-        These cases force conditional expression and alternate paths.
+        These cases force conditional expression na alternate paths.
         """
         text = self.text
         pm = self.get_parenmatch()
 
-        text.insert('insert', '# this is a commen)')
+        text.insert('insert', '# this ni a commen)')
         pm.paren_closed_event('event')
 
         text.insert('insert', '\ndef')
@@ -102,10 +102,10 @@ kundi ParenMatchTest(unittest.TestCase):
         pm = self.get_parenmatch()
         pm.restore_event = Mock()
         pm.handle_restore_timer(0)
-        self.assertTrue(pm.restore_event.called)
+        self.assertKweli(pm.restore_event.called)
         pm.restore_event.reset_mock()
         pm.handle_restore_timer(1)
-        self.assertFalse(pm.restore_event.called)
+        self.assertUongo(pm.restore_event.called)
 
 
 ikiwa __name__ == '__main__':

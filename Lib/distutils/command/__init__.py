@@ -26,6 +26,6 @@ __all__ = ['build',
            #'bdist_sdux',
            #'bdist_pkgtool',
            # Note:
-           # bdist_packager is not included because it only provides
+           # bdist_packager ni sio included because it only provides
            # an abstract base class
           ]

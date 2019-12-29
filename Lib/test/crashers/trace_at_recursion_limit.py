@@ -12,7 +12,7 @@ def x():
 
 def g(*args):
     if True: # change to True to crash interpreter
-        try:
+        jaribu:
             x()
         except:
             pass

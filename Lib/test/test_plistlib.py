@@ -16,8 +16,8 @@ kutoka plistlib agiza UID
 
 ALL_FORMATS=(plistlib.FMT_XML, plistlib.FMT_BINARY)
 
-# The testdata is generated using Mac/Tools/plistlib_generate_testdata.py
-# (which using PyObjC to control the Cocoa classes for generating plists)
+# The testdata ni generated using Mac/Tools/plistlib_generate_testdata.py
+# (which using PyObjC to control the Cocoa classes kila generating plists)
 TESTDATA={
     plistlib.FMT_XML: binascii.a2b_base64(b'''
         PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NU
@@ -109,12 +109,12 @@ TESTDATA={
 kundi TestPlistlib(unittest.TestCase):
 
     eleza tearDown(self):
-        try:
+        jaribu:
             os.unlink(support.TESTFN)
         except:
-            pass
+            pita
 
-    eleza _create(self, fmt=None):
+    eleza _create(self, fmt=Tupu):
         pl = dict(
             aString="Doodah",
             aList=["A", "B", 12, 32.5, [1, 2, 3]],
@@ -127,8 +127,8 @@ kundi TestPlistlib(unittest.TestCase):
             aDict=dict(
                 anotherString="<hello & 'hi' there!>",
                 aUnicodeValue='M\xe4ssig, Ma\xdf',
-                aTrueValue=True,
-                aFalseValue=False,
+                aKweliValue=Kweli,
+                aUongoValue=Uongo,
                 deeperDict=dict(a=17, b=32.5, c=[1, 2, "text"]),
             ),
             someData = b"<binary gunk>",
@@ -144,14 +144,14 @@ kundi TestPlistlib(unittest.TestCase):
     eleza test_create(self):
         pl = self._create()
         self.assertEqual(pl["aString"], "Doodah")
-        self.assertEqual(pl["aDict"]["aFalseValue"], False)
+        self.assertEqual(pl["aDict"]["aUongoValue"], Uongo)
 
     eleza test_io(self):
         pl = self._create()
-        with open(support.TESTFN, 'wb') as fp:
+        with open(support.TESTFN, 'wb') kama fp:
             plistlib.dump(pl, fp)
 
-        with open(support.TESTFN, 'rb') as fp:
+        with open(support.TESTFN, 'rb') kama fp:
             pl2 = plistlib.load(fp)
 
         self.assertEqual(dict(pl), dict(pl2))
@@ -162,7 +162,7 @@ kundi TestPlistlib(unittest.TestCase):
     eleza test_invalid_type(self):
         pl = [ object() ]
 
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 self.assertRaises(TypeError, plistlib.dumps, pl, fmt=fmt)
 
@@ -175,9 +175,9 @@ kundi TestPlistlib(unittest.TestCase):
             UID(-19)
 
     eleza test_int(self):
-        for pl in [0, 2**8-1, 2**8, 2**16-1, 2**16, 2**32-1, 2**32,
+        kila pl kwenye [0, 2**8-1, 2**8, 2**16-1, 2**16, 2**32-1, 2**32,
                    2**63-1, 2**64-1, 1, -2**63]:
-            for fmt in ALL_FORMATS:
+            kila fmt kwenye ALL_FORMATS:
                 with self.subTest(pl=pl, fmt=fmt):
                     data = plistlib.dumps(pl, fmt=fmt)
                     pl2 = plistlib.loads(data)
@@ -186,15 +186,15 @@ kundi TestPlistlib(unittest.TestCase):
                     data2 = plistlib.dumps(pl2, fmt=fmt)
                     self.assertEqual(data, data2)
 
-        for fmt in ALL_FORMATS:
-            for pl in (2 ** 64 + 1, 2 ** 127-1, -2**64, -2 ** 127):
+        kila fmt kwenye ALL_FORMATS:
+            kila pl kwenye (2 ** 64 + 1, 2 ** 127-1, -2**64, -2 ** 127):
                 with self.subTest(pl=pl, fmt=fmt):
                     self.assertRaises(OverflowError, plistlib.dumps,
                                       pl, fmt=fmt)
 
     eleza test_bytearray(self):
-        for pl in (b'<binary gunk>', b"<lots of binary gunk>\0\1\2\3" * 10):
-            for fmt in ALL_FORMATS:
+        kila pl kwenye (b'<binary gunk>', b"<lots of binary gunk>\0\1\2\3" * 10):
+            kila fmt kwenye ALL_FORMATS:
                 with self.subTest(pl=pl, fmt=fmt):
                     data = plistlib.dumps(bytearray(pl), fmt=fmt)
                     pl2 = plistlib.loads(data)
@@ -255,7 +255,7 @@ kundi TestPlistlib(unittest.TestCase):
         self.assertEqual(operator.index(UID(1)), 1)
 
     eleza test_uid_pickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             self.assertEqual(pickle.loads(pickle.dumps(UID(19), protocol=proto)), UID(19))
 
     eleza test_uid_copy(self):
@@ -263,30 +263,30 @@ kundi TestPlistlib(unittest.TestCase):
         self.assertEqual(copy.deepcopy(UID(1)), UID(1))
 
     eleza test_appleformatting(self):
-        for use_builtin_types in (True, False):
-            for fmt in ALL_FORMATS:
+        kila use_builtin_types kwenye (Kweli, Uongo):
+            kila fmt kwenye ALL_FORMATS:
                 with self.subTest(fmt=fmt, use_builtin_types=use_builtin_types):
                     pl = plistlib.loads(TESTDATA[fmt],
                         use_builtin_types=use_builtin_types)
                     data = plistlib.dumps(pl, fmt=fmt)
                     self.assertEqual(data, TESTDATA[fmt],
-                        "generated data was not identical to Apple's output")
+                        "generated data was sio identical to Apple's output")
 
 
     eleza test_appleformattingkutokaliteral(self):
-        self.maxDiff = None
-        for fmt in ALL_FORMATS:
+        self.maxDiff = Tupu
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 pl = self._create(fmt=fmt)
                 pl2 = plistlib.loads(TESTDATA[fmt], fmt=fmt)
                 self.assertEqual(dict(pl), dict(pl2),
-                    "generated data was not identical to Apple's output")
+                    "generated data was sio identical to Apple's output")
                 pl2 = plistlib.loads(TESTDATA[fmt])
                 self.assertEqual(dict(pl), dict(pl2),
-                    "generated data was not identical to Apple's output")
+                    "generated data was sio identical to Apple's output")
 
     eleza test_bytesio(self):
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 b = BytesIO()
                 pl = self._create(fmt=fmt)
@@ -302,8 +302,8 @@ kundi TestPlistlib(unittest.TestCase):
         pl['a'] = 2
         pl['c'] = 3
 
-        for fmt in ALL_FORMATS:
-            for sort_keys in (False, True):
+        kila fmt kwenye ALL_FORMATS:
+            kila sort_keys kwenye (Uongo, Kweli):
                 with self.subTest(fmt=fmt, sort_keys=sort_keys):
                     b = BytesIO()
 
@@ -314,7 +314,7 @@ kundi TestPlistlib(unittest.TestCase):
                     self.assertEqual(dict(pl), dict(pl2))
                     ikiwa sort_keys:
                         self.assertEqual(list(pl2.keys()), ['a', 'b', 'c'])
-                    else:
+                    isipokua:
                         self.assertEqual(list(pl2.keys()), ['b', 'a', 'c'])
 
     eleza test_keysort(self):
@@ -323,8 +323,8 @@ kundi TestPlistlib(unittest.TestCase):
         pl['a'] = 2
         pl['c'] = 3
 
-        for fmt in ALL_FORMATS:
-            for sort_keys in (False, True):
+        kila fmt kwenye ALL_FORMATS:
+            kila sort_keys kwenye (Uongo, Kweli):
                 with self.subTest(fmt=fmt, sort_keys=sort_keys):
                     data = plistlib.dumps(pl, fmt=fmt, sort_keys=sort_keys)
                     pl2 = plistlib.loads(data, dict_type=collections.OrderedDict)
@@ -332,13 +332,13 @@ kundi TestPlistlib(unittest.TestCase):
                     self.assertEqual(dict(pl), dict(pl2))
                     ikiwa sort_keys:
                         self.assertEqual(list(pl2.keys()), ['a', 'b', 'c'])
-                    else:
+                    isipokua:
                         self.assertEqual(list(pl2.keys()), ['b', 'a', 'c'])
 
     eleza test_keys_no_string(self):
         pl = { 42: 'aNumber' }
 
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 self.assertRaises(TypeError, plistlib.dumps, pl, fmt=fmt)
 
@@ -351,17 +351,17 @@ kundi TestPlistlib(unittest.TestCase):
             'snake': 'aWord',
         }
 
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(
-                    pl, fmt=fmt, skipkeys=True, sort_keys=False)
+                    pl, fmt=fmt, skipkeys=Kweli, sort_keys=Uongo)
 
                 pl2 = plistlib.loads(data)
                 self.assertEqual(pl2, {'snake': 'aWord'})
 
                 fp = BytesIO()
                 plistlib.dump(
-                    pl, fp, fmt=fmt, skipkeys=True, sort_keys=False)
+                    pl, fp, fmt=fmt, skipkeys=Kweli, sort_keys=Uongo)
                 data = fp.getvalue()
                 pl2 = plistlib.loads(fp.getvalue())
                 self.assertEqual(pl2, {'snake': 'aWord'})
@@ -373,7 +373,7 @@ kundi TestPlistlib(unittest.TestCase):
             'third': (3, 4),
         }
 
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
@@ -392,7 +392,7 @@ kundi TestPlistlib(unittest.TestCase):
             'third': [3, 4],
         }
 
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
@@ -410,7 +410,7 @@ kundi TestPlistlib(unittest.TestCase):
             'third': {'b': 2 },
         }
 
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 pl2 = plistlib.loads(data)
@@ -422,28 +422,28 @@ kundi TestPlistlib(unittest.TestCase):
                 self.assertIsNot(pl2['first'], pl2['second'])
 
     eleza test_controlcharacters(self):
-        for i in range(128):
+        kila i kwenye range(128):
             c = chr(i)
             testString = "string containing %s" % c
-            ikiwa i >= 32 or c in "\r\n\t":
-                # \r, \n and \t are the only legal control chars in XML
+            ikiwa i >= 32 ama c kwenye "\r\n\t":
+                # \r, \n na \t are the only legal control chars kwenye XML
                 data = plistlib.dumps(testString, fmt=plistlib.FMT_XML)
                 ikiwa c != "\r":
                     self.assertEqual(plistlib.loads(data), testString)
-            else:
+            isipokua:
                 with self.assertRaises(ValueError):
                     plistlib.dumps(testString, fmt=plistlib.FMT_XML)
             plistlib.dumps(testString, fmt=plistlib.FMT_BINARY)
 
     eleza test_non_bmp_characters(self):
         pl = {'python': '\U0001f40d'}
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 self.assertEqual(plistlib.loads(data), pl)
 
     eleza test_lone_surrogates(self):
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 with self.assertRaises(UnicodeEncodeError):
                     plistlib.dumps('\ud8ff', fmt=fmt)
@@ -451,7 +451,7 @@ kundi TestPlistlib(unittest.TestCase):
                     plistlib.dumps('\udcff', fmt=fmt)
 
     eleza test_nondictroot(self):
-        for fmt in ALL_FORMATS:
+        kila fmt kwenye ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 test1 = "abc"
                 test2 = [1, 2, 3, "abc"]
@@ -461,14 +461,14 @@ kundi TestPlistlib(unittest.TestCase):
                 self.assertEqual(test2, result2)
 
     eleza test_invalidarray(self):
-        for i in ["<key>key inside an array</key>",
+        kila i kwenye ["<key>key inside an array</key>",
                   "<key>key inside an array2</key><real>3</real>",
                   "<true/><key>key inside an array3</key>"]:
             self.assertRaises(ValueError, plistlib.loads,
                               ("<plist><array>%s</array></plist>"%i).encode())
 
     eleza test_invaliddict(self):
-        for i in ["<key><true/>k</key><string>compound key</string>",
+        kila i kwenye ["<key><true/>k</key><string>compound key</string>",
                   "<key>single key</key>",
                   "<string>missing key</string>",
                   "<key>k1</key><string>v1</string><real>5.3</real>"
@@ -489,11 +489,11 @@ kundi TestPlistlib(unittest.TestCase):
     eleza test_xml_encodings(self):
         base = TESTDATA[plistlib.FMT_XML]
 
-        for xml_encoding, encoding, bom in [
+        kila xml_encoding, encoding, bom kwenye [
                     (b'utf-8', 'utf-8', codecs.BOM_UTF8),
                     (b'utf-16', 'utf-16-le', codecs.BOM_UTF16_LE),
                     (b'utf-16', 'utf-16-be', codecs.BOM_UTF16_BE),
-                    # Expat does not support UTF-32
+                    # Expat does sio support UTF-32
                     #(b'utf-32', 'utf-32-le', codecs.BOM_UTF32_LE),
                     #(b'utf-32', 'utf-32-be', codecs.BOM_UTF32_BE),
                 ]:
@@ -509,7 +509,7 @@ kundi TestPlistlib(unittest.TestCase):
 kundi TestBinaryPlistlib(unittest.TestCase):
 
     eleza test_nonstandard_refs_size(self):
-        # Issue #21538: Refs and offsets are 24-bit integers
+        # Issue #21538: Refs na offsets are 24-bit integers
         data = (b'bplist00'
                 b'\xd1\x00\x00\x01\x00\x00\x02QaQb'
                 b'\x00\x00\x08\x00\x00\x0f\x00\x00\x11'
@@ -522,7 +522,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
 
     eleza test_dump_duplicates(self):
         # Test effectiveness of saving duplicated objects
-        for x in (None, False, True, 12345, 123.45, 'abcde', b'abcde',
+        kila x kwenye (Tupu, Uongo, Kweli, 12345, 123.45, 'abcde', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   plistlib.Data(b'abcde'), bytearray(b'abcde'),
                   [12, 345], (12, 345), {'12': 345}):
@@ -531,7 +531,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
                 self.assertLess(len(data), 1100, repr(data))
 
     eleza test_identity(self):
-        for x in (None, False, True, 12345, 123.45, 'abcde', b'abcde',
+        kila x kwenye (Tupu, Uongo, Kweli, 12345, 123.45, 'abcde', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   plistlib.Data(b'abcde'), bytearray(b'abcde'),
                   [12, 345], (12, 345), {'12': 345}):
@@ -563,7 +563,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
 
     eleza test_large_timestamp(self):
         # Issue #26709: 32-bit timestamp out of range
-        for ts in -2**31-1, 2**31:
+        kila ts kwenye -2**31-1, 2**31:
             with self.subTest(ts=ts):
                 d = (datetime.datetime.utckutokatimestamp(0) +
                      datetime.timedelta(seconds=ts))
@@ -571,16 +571,16 @@ kundi TestBinaryPlistlib(unittest.TestCase):
                 self.assertEqual(plistlib.loads(data), d)
 
     eleza test_invalid_binary(self):
-        for data in [
+        kila data kwenye [
                 # too short data
                 b'',
-                # too large offset_table_offset and nonstandard offset_size
+                # too large offset_table_offset na nonstandard offset_size
                 b'\x00\x08'
                 b'\x00\x00\x00\x00\x00\x00\x03\x01'
                 b'\x00\x00\x00\x00\x00\x00\x00\x01'
                 b'\x00\x00\x00\x00\x00\x00\x00\x00'
                 b'\x00\x00\x00\x00\x00\x00\x00\x2a',
-                # integer overflow in offset_table_offset
+                # integer overflow kwenye offset_table_offset
                 b'\x00\x08'
                 b'\x00\x00\x00\x00\x00\x00\x01\x01'
                 b'\x00\x00\x00\x00\x00\x00\x00\x01'
@@ -598,7 +598,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
                 b'\x00\x00\x00\x00\x00\x00\x00\x02'
                 b'\x00\x00\x00\x00\x00\x00\x00\x00'
                 b'\x00\x00\x00\x00\x00\x00\x00\x0b',
-                # integer overflow in offset
+                # integer overflow kwenye offset
                 b'\x00\xff\xff\xff\xff\xff\xff\xff\xff'
                 b'\x00\x00\x00\x00\x00\x00\x08\x01'
                 b'\x00\x00\x00\x00\x00\x00\x00\x01'
@@ -651,11 +651,11 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
 
         os.unlink(support.TESTFN)
 
-        with open(support.TESTFN, 'wb') as fp:
+        with open(support.TESTFN, 'wb') kama fp:
             with self.assertWarns(DeprecationWarning):
                 plistlib.writePlist(pl_in, fp)
 
-        with open(support.TESTFN, 'rb') as fp:
+        with open(support.TESTFN, 'rb') kama fp:
             with self.assertWarns(DeprecationWarning):
                 pl2 = plistlib.readPlist(fp)
 
@@ -700,7 +700,7 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
         self.assertEqual(cur, out_data)
         self.assertEqual(cur, in_data)
 
-        cur = plistlib.loads(buf, use_builtin_types=False)
+        cur = plistlib.loads(buf, use_builtin_types=Uongo)
         self.assertEqual(cur, out_data)
         self.assertEqual(cur, in_data)
 
@@ -712,7 +712,7 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
 
 kundi TestKeyedArchive(unittest.TestCase):
     eleza test_keyed_archive_data(self):
-        # This is the structure of a NSKeyedArchive packed plist
+        # This ni the structure of a NSKeyedArchive packed plist
         data = {
             '$version': 100000,
             '$objects': [

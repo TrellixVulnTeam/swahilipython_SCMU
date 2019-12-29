@@ -1,12 +1,12 @@
-"""An FTP client kundi and some helper functions.
+"""An FTP client kundi na some helper functions.
 
-Based on RFC 959: File Transfer Protocol (FTP), by J. Postel and J. Reynolds
+Based on RFC 959: File Transfer Protocol (FTP), by J. Postel na J. Reynolds
 
 Example:
 
 >>> kutoka ftplib agiza FTP
 >>> ftp = FTP('ftp.python.org') # connect to host, default port
->>> ftp.login() # default, i.e.: user anonymous, passwd anonymous@
+>>> ftp.login() # default, i.e.: user anonymous, pitawd anonymous@
 '230 Guest login ok, access restrictions apply.'
 >>> ftp.retrlines('LIST') # list directory contents
 total 9
@@ -29,10 +29,10 @@ python ftplib.py -d localhost -l -p -l
 """
 
 #
-# Changes and improvements suggested by Steve Majewski.
+# Changes na improvements suggested by Steve Majewski.
 # Modified by Jack to work on the mac.
-# Modified by Siebren to support docstrings and PASV.
-# Modified by Phil Schwartz to add storbinary and storlines callbacks.
+# Modified by Siebren to support docstrings na PASV.
+# Modified by Phil Schwartz to add storbinary na storlines callbacks.
 # Modified by Giampaolo Rodola' to add TLS support.
 #
 
@@ -49,19 +49,19 @@ MSG_OOB = 0x1                           # Process data out of band
 
 # The standard FTP server control port
 FTP_PORT = 21
-# The sizehint parameter passed to readline() calls
+# The sizehint parameter pitaed to readline() calls
 MAXLINE = 8192
 
 
-# Exception raised when an error or invalid response is received
-kundi Error(Exception): pass
-kundi error_reply(Error): pass          # unexpected [123]xx reply
-kundi error_temp(Error): pass           # 4xx errors
-kundi error_perm(Error): pass           # 5xx errors
-kundi error_proto(Error): pass          # response does not begin with [1-5]
+# Exception ashiriad when an error ama invalid response ni received
+kundi Error(Exception): pita
+kundi error_reply(Error): pita          # unexpected [123]xx reply
+kundi error_temp(Error): pita           # 4xx errors
+kundi error_perm(Error): pita           # 5xx errors
+kundi error_proto(Error): pita          # response does sio begin with [1-5]
 
 
-# All exceptions (hopefully) that may be raised here and that aren't
+# All exceptions (hopefully) that may be ashiriad here na that aren't
 # (always) programming errors on our side
 all_errors = (Error, OSError, EOFError)
 
@@ -76,69 +76,69 @@ kundi FTP:
     '''An FTP client class.
 
     To create a connection, call the kundi using these arguments:
-            host, user, passwd, acct, timeout
+            host, user, pitawd, acct, timeout
 
-    The first four arguments are all strings, and have default value ''.
-    timeout must be numeric and defaults to None ikiwa not passed,
+    The first four arguments are all strings, na have default value ''.
+    timeout must be numeric na defaults to Tupu ikiwa sio pitaed,
     meaning that no timeout will be set on any ftp socket(s)
-    If a timeout is passed, then this is now the default timeout for all ftp
-    socket operations for this instance.
+    If a timeout ni pitaed, then this ni now the default timeout kila all ftp
+    socket operations kila this instance.
 
-    Then use self.connect() with optional host and port argument.
+    Then use self.connect() with optional host na port argument.
 
     To download a file, use ftp.retrlines('RETR ' + filename),
-    or ftp.retrbinary() with slightly different arguments.
-    To upload a file, use ftp.storlines() or ftp.storbinary(),
-    which have an open file as argument (see their definitions
-    below for details).
+    ama ftp.retrbinary() with slightly different arguments.
+    To upload a file, use ftp.storlines() ama ftp.storbinary(),
+    which have an open file kama argument (see their definitions
+    below kila details).
     The download/upload functions first issue appropriate TYPE
-    and PORT or PASV commands.
+    na PORT ama PASV commands.
     '''
 
     debugging = 0
     host = ''
     port = FTP_PORT
     maxline = MAXLINE
-    sock = None
-    file = None
-    welcome = None
-    passiveserver = 1
+    sock = Tupu
+    file = Tupu
+    welcome = Tupu
+    pitaiveserver = 1
     encoding = "latin-1"
 
     # Initialization method (called by kundi instantiation).
     # Initialize host to localhost, port to standard ftp port
-    # Optional arguments are host (for connect()),
-    # and user, passwd, acct (for login())
-    eleza __init__(self, host='', user='', passwd='', acct='',
-                 timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=None):
+    # Optional arguments are host (kila connect()),
+    # na user, pitawd, acct (kila login())
+    eleza __init__(self, host='', user='', pitawd='', acct='',
+                 timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=Tupu):
         self.source_address = source_address
         self.timeout = timeout
         ikiwa host:
             self.connect(host)
             ikiwa user:
-                self.login(user, passwd, acct)
+                self.login(user, pitawd, acct)
 
     eleza __enter__(self):
         rudisha self
 
     # Context management protocol: try to quit() ikiwa active
     eleza __exit__(self, *args):
-        ikiwa self.sock is not None:
-            try:
+        ikiwa self.sock ni sio Tupu:
+            jaribu:
                 self.quit()
-            except (OSError, EOFError):
-                pass
-            finally:
-                ikiwa self.sock is not None:
+            tatizo (OSError, EOFError):
+                pita
+            mwishowe:
+                ikiwa self.sock ni sio Tupu:
                     self.close()
 
-    eleza connect(self, host='', port=0, timeout=-999, source_address=None):
+    eleza connect(self, host='', port=0, timeout=-999, source_address=Tupu):
         '''Connect to host.  Arguments are:
          - host: hostname to connect to (string, default previous host)
          - port: port to connect to (integer, default previous port)
          - timeout: the timeout to set against the ftp socket(s)
-         - source_address: a 2-tuple (host, port) for the socket to bind
-           to as its source address before connecting.
+         - source_address: a 2-tuple (host, port) kila the socket to bind
+           to kama its source address before connecting.
         '''
         ikiwa host != '':
             self.host = host
@@ -146,7 +146,7 @@ kundi FTP:
             self.port = port
         ikiwa timeout != -999:
             self.timeout = timeout
-        ikiwa source_address is not None:
+        ikiwa source_address ni sio Tupu:
             self.source_address = source_address
         sys.audit("ftplib.connect", self, self.host, self.port)
         self.sock = socket.create_connection((self.host, self.port), self.timeout,
@@ -158,7 +158,7 @@ kundi FTP:
 
     eleza getwelcome(self):
         '''Get the welcome message kutoka the server.
-        (this is read and squirreled away by connect())'''
+        (this ni read na squirreled away by connect())'''
         ikiwa self.debugging:
             andika('*welcome*', self.sanitize(self.welcome))
         rudisha self.welcome
@@ -167,28 +167,28 @@ kundi FTP:
         '''Set the debugging level.
         The required argument level means:
         0: no debugging output (default)
-        1: print commands and responses but not body text etc.
-        2: also print raw lines read and sent before stripping CR/LF'''
+        1: print commands na responses but sio body text etc.
+        2: also print raw lines read na sent before stripping CR/LF'''
         self.debugging = level
     debug = set_debuglevel
 
     eleza set_pasv(self, val):
-        '''Use passive or active mode for data transfers.
+        '''Use pitaive ama active mode kila data transfers.
         With a false argument, use the normal PORT mode,
         With a true argument, use the PASV command.'''
-        self.passiveserver = val
+        self.pitaiveserver = val
 
-    # Internal: "sanitize" a string for printing
+    # Internal: "sanitize" a string kila printing
     eleza sanitize(self, s):
-        ikiwa s[:5] in {'pass ', 'PASS '}:
+        ikiwa s[:5] kwenye {'pita ', 'PASS '}:
             i = len(s.rstrip('\r\n'))
             s = s[:5] + '*'*(i-5) + s[i:]
         rudisha repr(s)
 
     # Internal: send one line to the server, appending CRLF
     eleza putline(self, line):
-        ikiwa '\r' in line or '\n' in line:
-            raise ValueError('an illegal newline character should not be contained')
+        ikiwa '\r' kwenye line ama '\n' kwenye line:
+            ashiria ValueError('an illegal newline character should sio be contained')
         sys.audit("ftplib.sendcmd", self, line)
         line = line + CRLF
         ikiwa self.debugging > 1:
@@ -201,35 +201,35 @@ kundi FTP:
         self.putline(line)
 
     # Internal: rudisha one line kutoka the server, stripping CRLF.
-    # Raise EOFError ikiwa the connection is closed
+    # Raise EOFError ikiwa the connection ni closed
     eleza getline(self):
         line = self.file.readline(self.maxline + 1)
         ikiwa len(line) > self.maxline:
-            raise Error("got more than %d bytes" % self.maxline)
+            ashiria Error("got more than %d bytes" % self.maxline)
         ikiwa self.debugging > 1:
             andika('*get*', self.sanitize(line))
-        ikiwa not line:
-            raise EOFError
+        ikiwa sio line:
+            ashiria EOFError
         ikiwa line[-2:] == CRLF:
             line = line[:-2]
-        elikiwa line[-1:] in CRLF:
+        elikiwa line[-1:] kwenye CRLF:
             line = line[:-1]
         rudisha line
 
     # Internal: get a response kutoka the server, which may possibly
     # consist of multiple lines.  Return a single string with no
     # trailing CRLF.  If the response consists of multiple lines,
-    # these are separated by '\n' characters in the string
+    # these are separated by '\n' characters kwenye the string
     eleza getmultiline(self):
         line = self.getline()
         ikiwa line[3:4] == '-':
             code = line[:3]
-            while 1:
+            wakati 1:
                 nextline = self.getline()
                 line = line + ('\n' + nextline)
-                ikiwa nextline[:3] == code and \
+                ikiwa nextline[:3] == code na \
                         nextline[3:4] != '-':
-                    break
+                    koma
         rudisha line
 
     # Internal: get a response kutoka the server.
@@ -240,47 +240,47 @@ kundi FTP:
             andika('*resp*', self.sanitize(resp))
         self.lastresp = resp[:3]
         c = resp[:1]
-        ikiwa c in {'1', '2', '3'}:
+        ikiwa c kwenye {'1', '2', '3'}:
             rudisha resp
         ikiwa c == '4':
-            raise error_temp(resp)
+            ashiria error_temp(resp)
         ikiwa c == '5':
-            raise error_perm(resp)
-        raise error_proto(resp)
+            ashiria error_perm(resp)
+        ashiria error_proto(resp)
 
     eleza voidresp(self):
         """Expect a response beginning with '2'."""
         resp = self.getresp()
         ikiwa resp[:1] != '2':
-            raise error_reply(resp)
+            ashiria error_reply(resp)
         rudisha resp
 
     eleza abort(self):
         '''Abort a file transfer.  Uses out-of-band data.
-        This does not follow the procedure kutoka the RFC to send Telnet
-        IP and Synch; that doesn't seem to work with the servers I've
-        tried.  Instead, just send the ABOR command as OOB data.'''
+        This does sio follow the procedure kutoka the RFC to send Telnet
+        IP na Synch; that doesn't seem to work with the servers I've
+        tried.  Instead, just send the ABOR command kama OOB data.'''
         line = b'ABOR' + B_CRLF
         ikiwa self.debugging > 1:
             andika('*put urgent*', self.sanitize(line))
         self.sock.sendall(line, MSG_OOB)
         resp = self.getmultiline()
-        ikiwa resp[:3] not in {'426', '225', '226'}:
-            raise error_proto(resp)
+        ikiwa resp[:3] haiko kwenye {'426', '225', '226'}:
+            ashiria error_proto(resp)
         rudisha resp
 
     eleza sendcmd(self, cmd):
-        '''Send a command and rudisha the response.'''
+        '''Send a command na rudisha the response.'''
         self.putcmd(cmd)
         rudisha self.getresp()
 
     eleza voidcmd(self, cmd):
-        """Send a command and expect a response beginning with '2'."""
+        """Send a command na expect a response beginning with '2'."""
         self.putcmd(cmd)
         rudisha self.voidresp()
 
     eleza sendport(self, host, port):
-        '''Send a PORT command with the current host and the given
+        '''Send a PORT command with the current host na the given
         port number.
         '''
         hbytes = host.split('.')
@@ -290,125 +290,125 @@ kundi FTP:
         rudisha self.voidcmd(cmd)
 
     eleza sendeprt(self, host, port):
-        '''Send an EPRT command with the current host and the given port number.'''
+        '''Send an EPRT command with the current host na the given port number.'''
         af = 0
         ikiwa self.af == socket.AF_INET:
             af = 1
         ikiwa self.af == socket.AF_INET6:
             af = 2
         ikiwa af == 0:
-            raise error_proto('unsupported address family')
+            ashiria error_proto('unsupported address family')
         fields = ['', repr(af), host, repr(port), '']
         cmd = 'EPRT ' + '|'.join(fields)
         rudisha self.voidcmd(cmd)
 
     eleza makeport(self):
-        '''Create a new socket and send a PORT command for it.'''
+        '''Create a new socket na send a PORT command kila it.'''
         sock = socket.create_server(("", 0), family=self.af, backlog=1)
         port = sock.getsockname()[1] # Get proper port
         host = self.sock.getsockname()[0] # Get proper host
         ikiwa self.af == socket.AF_INET:
             resp = self.sendport(host, port)
-        else:
+        isipokua:
             resp = self.sendeprt(host, port)
-        ikiwa self.timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+        ikiwa self.timeout ni sio _GLOBAL_DEFAULT_TIMEOUT:
             sock.settimeout(self.timeout)
         rudisha sock
 
     eleza makepasv(self):
         ikiwa self.af == socket.AF_INET:
             host, port = parse227(self.sendcmd('PASV'))
-        else:
+        isipokua:
             host, port = parse229(self.sendcmd('EPSV'), self.sock.getpeername())
         rudisha host, port
 
-    eleza ntransfercmd(self, cmd, rest=None):
+    eleza ntransfercmd(self, cmd, rest=Tupu):
         """Initiate a transfer over the data connection.
 
-        If the transfer is active, send a port command and the
-        transfer command, and accept the connection.  If the server is
-        passive, send a pasv command, connect to it, and start the
-        transfer command.  Either way, rudisha the socket for the
-        connection and the expected size of the transfer.  The
-        expected size may be None ikiwa it could not be determined.
+        If the transfer ni active, send a port command na the
+        transfer command, na accept the connection.  If the server is
+        pitaive, send a pasv command, connect to it, na start the
+        transfer command.  Either way, rudisha the socket kila the
+        connection na the expected size of the transfer.  The
+        expected size may be Tupu ikiwa it could sio be determined.
 
-        Optional `rest' argument can be a string that is sent as the
-        argument to a REST command.  This is essentially a server
+        Optional `rest' argument can be a string that ni sent kama the
+        argument to a REST command.  This ni essentially a server
         marker used to tell the server to skip over any data up to the
         given marker.
         """
-        size = None
-        ikiwa self.passiveserver:
+        size = Tupu
+        ikiwa self.pitaiveserver:
             host, port = self.makepasv()
             conn = socket.create_connection((host, port), self.timeout,
                                             source_address=self.source_address)
-            try:
-                ikiwa rest is not None:
+            jaribu:
+                ikiwa rest ni sio Tupu:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
                 # Some servers apparently send a 200 reply to
-                # a LIST or STOR command, before the 150 reply
+                # a LIST ama STOR command, before the 150 reply
                 # (and way before the 226 reply). This seems to
-                # be in violation of the protocol (which only allows
-                # 1xx or error messages for LIST), so we just discard
+                # be kwenye violation of the protocol (which only allows
+                # 1xx ama error messages kila LIST), so we just discard
                 # this response.
                 ikiwa resp[0] == '2':
                     resp = self.getresp()
                 ikiwa resp[0] != '1':
-                    raise error_reply(resp)
+                    ashiria error_reply(resp)
             except:
                 conn.close()
-                raise
-        else:
-            with self.makeport() as sock:
-                ikiwa rest is not None:
+                ashiria
+        isipokua:
+            with self.makeport() kama sock:
+                ikiwa rest ni sio Tupu:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
                 # See above.
                 ikiwa resp[0] == '2':
                     resp = self.getresp()
                 ikiwa resp[0] != '1':
-                    raise error_reply(resp)
+                    ashiria error_reply(resp)
                 conn, sockaddr = sock.accept()
-                ikiwa self.timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+                ikiwa self.timeout ni sio _GLOBAL_DEFAULT_TIMEOUT:
                     conn.settimeout(self.timeout)
         ikiwa resp[:3] == '150':
-            # this is conditional in case we received a 125
+            # this ni conditional kwenye case we received a 125
             size = parse150(resp)
         rudisha conn, size
 
-    eleza transfercmd(self, cmd, rest=None):
-        """Like ntransfercmd() but returns only the socket."""
+    eleza transfercmd(self, cmd, rest=Tupu):
+        """Like ntransfercmd() but rudishas only the socket."""
         rudisha self.ntransfercmd(cmd, rest)[0]
 
-    eleza login(self, user = '', passwd = '', acct = ''):
+    eleza login(self, user = '', pitawd = '', acct = ''):
         '''Login, default anonymous.'''
-        ikiwa not user:
+        ikiwa sio user:
             user = 'anonymous'
-        ikiwa not passwd:
-            passwd = ''
-        ikiwa not acct:
+        ikiwa sio pitawd:
+            pitawd = ''
+        ikiwa sio acct:
             acct = ''
-        ikiwa user == 'anonymous' and passwd in {'', '-'}:
-            # If there is no anonymous ftp password specified
+        ikiwa user == 'anonymous' na pitawd kwenye {'', '-'}:
+            # If there ni no anonymous ftp pitaword specified
             # then we'll just use anonymous@
             # We don't send any other thing because:
             # - We want to remain anonymous
             # - We want to stop SPAM
             # - We don't want to let ftp sites to discriminate by the user,
-            #   host or country.
-            passwd = passwd + 'anonymous@'
+            #   host ama country.
+            pitawd = pitawd + 'anonymous@'
         resp = self.sendcmd('USER ' + user)
         ikiwa resp[0] == '3':
-            resp = self.sendcmd('PASS ' + passwd)
+            resp = self.sendcmd('PASS ' + pitawd)
         ikiwa resp[0] == '3':
             resp = self.sendcmd('ACCT ' + acct)
         ikiwa resp[0] != '2':
-            raise error_reply(resp)
+            ashiria error_reply(resp)
         rudisha resp
 
-    eleza retrbinary(self, cmd, callback, blocksize=8192, rest=None):
-        """Retrieve data in binary mode.  A new port is created for you.
+    eleza retrbinary(self, cmd, callback, blocksize=8192, rest=Tupu):
+        """Retrieve data kwenye binary mode.  A new port ni created kila you.
 
         Args:
           cmd: A RETR command.
@@ -416,198 +416,198 @@ kundi FTP:
                     block of data read.
           blocksize: The maximum number of bytes to read kutoka the
                      socket at one time.  [default: 8192]
-          rest: Passed to transfercmd().  [default: None]
+          rest: Passed to transfercmd().  [default: Tupu]
 
         Returns:
           The response code.
         """
         self.voidcmd('TYPE I')
-        with self.transfercmd(cmd, rest) as conn:
-            while 1:
+        with self.transfercmd(cmd, rest) kama conn:
+            wakati 1:
                 data = conn.recv(blocksize)
-                ikiwa not data:
-                    break
+                ikiwa sio data:
+                    koma
                 callback(data)
             # shutdown ssl layer
-            ikiwa _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            ikiwa _SSLSocket ni sio Tupu na isinstance(conn, _SSLSocket):
                 conn.unwrap()
         rudisha self.voidresp()
 
-    eleza retrlines(self, cmd, callback = None):
-        """Retrieve data in line mode.  A new port is created for you.
+    eleza retrlines(self, cmd, callback = Tupu):
+        """Retrieve data kwenye line mode.  A new port ni created kila you.
 
         Args:
-          cmd: A RETR, LIST, or NLST command.
-          callback: An optional single parameter callable that is called
-                    for each line with the trailing CRLF stripped.
+          cmd: A RETR, LIST, ama NLST command.
+          callback: An optional single parameter callable that ni called
+                    kila each line with the trailing CRLF stripped.
                     [default: print_line()]
 
         Returns:
           The response code.
         """
-        ikiwa callback is None:
+        ikiwa callback ni Tupu:
             callback = print_line
         resp = self.sendcmd('TYPE A')
-        with self.transfercmd(cmd) as conn, \
-                 conn.makefile('r', encoding=self.encoding) as fp:
-            while 1:
+        with self.transfercmd(cmd) kama conn, \
+                 conn.makefile('r', encoding=self.encoding) kama fp:
+            wakati 1:
                 line = fp.readline(self.maxline + 1)
                 ikiwa len(line) > self.maxline:
-                    raise Error("got more than %d bytes" % self.maxline)
+                    ashiria Error("got more than %d bytes" % self.maxline)
                 ikiwa self.debugging > 2:
                     andika('*retr*', repr(line))
-                ikiwa not line:
-                    break
+                ikiwa sio line:
+                    koma
                 ikiwa line[-2:] == CRLF:
                     line = line[:-2]
                 elikiwa line[-1:] == '\n':
                     line = line[:-1]
                 callback(line)
             # shutdown ssl layer
-            ikiwa _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            ikiwa _SSLSocket ni sio Tupu na isinstance(conn, _SSLSocket):
                 conn.unwrap()
         rudisha self.voidresp()
 
-    eleza storbinary(self, cmd, fp, blocksize=8192, callback=None, rest=None):
-        """Store a file in binary mode.  A new port is created for you.
+    eleza storbinary(self, cmd, fp, blocksize=8192, callback=Tupu, rest=Tupu):
+        """Store a file kwenye binary mode.  A new port ni created kila you.
 
         Args:
           cmd: A STOR command.
           fp: A file-like object with a read(num_bytes) method.
-          blocksize: The maximum data size to read kutoka fp and send over
+          blocksize: The maximum data size to read kutoka fp na send over
                      the connection at once.  [default: 8192]
-          callback: An optional single parameter callable that is called on
-                    each block of data after it is sent.  [default: None]
-          rest: Passed to transfercmd().  [default: None]
+          callback: An optional single parameter callable that ni called on
+                    each block of data after it ni sent.  [default: Tupu]
+          rest: Passed to transfercmd().  [default: Tupu]
 
         Returns:
           The response code.
         """
         self.voidcmd('TYPE I')
-        with self.transfercmd(cmd, rest) as conn:
-            while 1:
+        with self.transfercmd(cmd, rest) kama conn:
+            wakati 1:
                 buf = fp.read(blocksize)
-                ikiwa not buf:
-                    break
+                ikiwa sio buf:
+                    koma
                 conn.sendall(buf)
                 ikiwa callback:
                     callback(buf)
             # shutdown ssl layer
-            ikiwa _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            ikiwa _SSLSocket ni sio Tupu na isinstance(conn, _SSLSocket):
                 conn.unwrap()
         rudisha self.voidresp()
 
-    eleza storlines(self, cmd, fp, callback=None):
-        """Store a file in line mode.  A new port is created for you.
+    eleza storlines(self, cmd, fp, callback=Tupu):
+        """Store a file kwenye line mode.  A new port ni created kila you.
 
         Args:
           cmd: A STOR command.
           fp: A file-like object with a readline() method.
-          callback: An optional single parameter callable that is called on
-                    each line after it is sent.  [default: None]
+          callback: An optional single parameter callable that ni called on
+                    each line after it ni sent.  [default: Tupu]
 
         Returns:
           The response code.
         """
         self.voidcmd('TYPE A')
-        with self.transfercmd(cmd) as conn:
-            while 1:
+        with self.transfercmd(cmd) kama conn:
+            wakati 1:
                 buf = fp.readline(self.maxline + 1)
                 ikiwa len(buf) > self.maxline:
-                    raise Error("got more than %d bytes" % self.maxline)
-                ikiwa not buf:
-                    break
+                    ashiria Error("got more than %d bytes" % self.maxline)
+                ikiwa sio buf:
+                    koma
                 ikiwa buf[-2:] != B_CRLF:
-                    ikiwa buf[-1] in B_CRLF: buf = buf[:-1]
+                    ikiwa buf[-1] kwenye B_CRLF: buf = buf[:-1]
                     buf = buf + B_CRLF
                 conn.sendall(buf)
                 ikiwa callback:
                     callback(buf)
             # shutdown ssl layer
-            ikiwa _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            ikiwa _SSLSocket ni sio Tupu na isinstance(conn, _SSLSocket):
                 conn.unwrap()
         rudisha self.voidresp()
 
-    eleza acct(self, password):
+    eleza acct(self, pitaword):
         '''Send new account name.'''
-        cmd = 'ACCT ' + password
+        cmd = 'ACCT ' + pitaword
         rudisha self.voidcmd(cmd)
 
     eleza nlst(self, *args):
-        '''Return a list of files in a given directory (default the current).'''
+        '''Return a list of files kwenye a given directory (default the current).'''
         cmd = 'NLST'
-        for arg in args:
+        kila arg kwenye args:
             cmd = cmd + (' ' + arg)
         files = []
         self.retrlines(cmd, files.append)
         rudisha files
 
     eleza dir(self, *args):
-        '''List a directory in long form.
+        '''List a directory kwenye long form.
         By default list current directory to stdout.
-        Optional last argument is callback function; all
+        Optional last argument ni callback function; all
         non-empty arguments before it are concatenated to the
-        LIST command.  (This *should* only be used for a pathname.)'''
+        LIST command.  (This *should* only be used kila a pathname.)'''
         cmd = 'LIST'
-        func = None
-        ikiwa args[-1:] and type(args[-1]) != type(''):
+        func = Tupu
+        ikiwa args[-1:] na type(args[-1]) != type(''):
             args, func = args[:-1], args[-1]
-        for arg in args:
+        kila arg kwenye args:
             ikiwa arg:
                 cmd = cmd + (' ' + arg)
         self.retrlines(cmd, func)
 
     eleza mlsd(self, path="", facts=[]):
-        '''List a directory in a standardized format by using MLSD
-        command (RFC-3659). If path is omitted the current directory
-        is assumed. "facts" is a list of strings representing the type
+        '''List a directory kwenye a standardized format by using MLSD
+        command (RFC-3659). If path ni omitted the current directory
+        ni assumed. "facts" ni a list of strings representing the type
         of information desired (e.g. ["type", "size", "perm"]).
 
-        Return a generator object yielding a tuple of two elements
-        for every file found in path.
-        First element is the file name, the second one is a dictionary
+        Return a generator object tumaing a tuple of two elements
+        kila every file found kwenye path.
+        First element ni the file name, the second one ni a dictionary
         including a variable number of "facts" depending on the server
-        and whether "facts" argument has been provided.
+        na whether "facts" argument has been provided.
         '''
         ikiwa facts:
             self.sendcmd("OPTS MLST " + ";".join(facts) + ";")
         ikiwa path:
             cmd = "MLSD %s" % path
-        else:
+        isipokua:
             cmd = "MLSD"
         lines = []
         self.retrlines(cmd, lines.append)
-        for line in lines:
+        kila line kwenye lines:
             facts_found, _, name = line.rstrip(CRLF).partition(' ')
             entry = {}
-            for fact in facts_found[:-1].split(";"):
+            kila fact kwenye facts_found[:-1].split(";"):
                 key, _, value = fact.partition("=")
                 entry[key.lower()] = value
-            yield (name, entry)
+            tuma (name, entry)
 
     eleza rename(self, kutokaname, toname):
         '''Rename a file.'''
         resp = self.sendcmd('RNFR ' + kutokaname)
         ikiwa resp[0] != '3':
-            raise error_reply(resp)
+            ashiria error_reply(resp)
         rudisha self.voidcmd('RNTO ' + toname)
 
     eleza delete(self, filename):
         '''Delete a file.'''
         resp = self.sendcmd('DELE ' + filename)
-        ikiwa resp[:3] in {'250', '200'}:
+        ikiwa resp[:3] kwenye {'250', '200'}:
             rudisha resp
-        else:
-            raise error_reply(resp)
+        isipokua:
+            ashiria error_reply(resp)
 
     eleza cwd(self, dirname):
         '''Change to a directory.'''
         ikiwa dirname == '..':
-            try:
+            jaribu:
                 rudisha self.voidcmd('CDUP')
-            except error_perm as msg:
+            tatizo error_perm kama msg:
                 ikiwa msg.args[0][:3] != '500':
-                    raise
+                    ashiria
         elikiwa dirname == '':
             dirname = '.'  # does nothing, but could rudisha error
         cmd = 'CWD ' + dirname
@@ -615,7 +615,7 @@ kundi FTP:
 
     eleza size(self, filename):
         '''Retrieve the size of a file.'''
-        # The SIZE command is defined in RFC-3659
+        # The SIZE command ni defined kwenye RFC-3659
         resp = self.sendcmd('SIZE ' + filename)
         ikiwa resp[:3] == '213':
             s = resp[3:].strip()
@@ -624,9 +624,9 @@ kundi FTP:
     eleza mkd(self, dirname):
         '''Make a directory, rudisha its full pathname.'''
         resp = self.voidcmd('MKD ' + dirname)
-        # fix around non-compliant implementations such as IIS shipped
+        # fix around non-compliant implementations such kama IIS shipped
         # with Windows server 2003
-        ikiwa not resp.startswith('257'):
+        ikiwa sio resp.startswith('257'):
             rudisha ''
         rudisha parse257(resp)
 
@@ -637,47 +637,47 @@ kundi FTP:
     eleza pwd(self):
         '''Return current working directory.'''
         resp = self.voidcmd('PWD')
-        # fix around non-compliant implementations such as IIS shipped
+        # fix around non-compliant implementations such kama IIS shipped
         # with Windows server 2003
-        ikiwa not resp.startswith('257'):
+        ikiwa sio resp.startswith('257'):
             rudisha ''
         rudisha parse257(resp)
 
     eleza quit(self):
-        '''Quit, and close the connection.'''
+        '''Quit, na close the connection.'''
         resp = self.voidcmd('QUIT')
         self.close()
         rudisha resp
 
     eleza close(self):
         '''Close the connection without assuming anything about it.'''
-        try:
+        jaribu:
             file = self.file
-            self.file = None
-            ikiwa file is not None:
+            self.file = Tupu
+            ikiwa file ni sio Tupu:
                 file.close()
-        finally:
+        mwishowe:
             sock = self.sock
-            self.sock = None
-            ikiwa sock is not None:
+            self.sock = Tupu
+            ikiwa sock ni sio Tupu:
                 sock.close()
 
-try:
+jaribu:
     agiza ssl
-except ImportError:
-    _SSLSocket = None
-else:
+tatizo ImportError:
+    _SSLSocket = Tupu
+isipokua:
     _SSLSocket = ssl.SSLSocket
 
     kundi FTP_TLS(FTP):
-        '''A FTP subkundi which adds TLS support to FTP as described
-        in RFC-4217.
+        '''A FTP subkundi which adds TLS support to FTP kama described
+        kwenye RFC-4217.
 
-        Connect as usual to port 21 implicitly securing the FTP control
+        Connect kama usual to port 21 implicitly securing the FTP control
         connection before authenticating.
 
         Securing the data connection requires user to explicitly ask
-        for it by calling prot_p() method.
+        kila it by calling prot_p() method.
 
         Usage example:
         >>> kutoka ftplib agiza FTP_TLS
@@ -704,41 +704,41 @@ else:
         '''
         ssl_version = ssl.PROTOCOL_TLS_CLIENT
 
-        eleza __init__(self, host='', user='', passwd='', acct='', keyfile=None,
-                     certfile=None, context=None,
-                     timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=None):
-            ikiwa context is not None and keyfile is not None:
-                raise ValueError("context and keyfile arguments are mutually "
+        eleza __init__(self, host='', user='', pitawd='', acct='', keyfile=Tupu,
+                     certfile=Tupu, context=Tupu,
+                     timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=Tupu):
+            ikiwa context ni sio Tupu na keyfile ni sio Tupu:
+                ashiria ValueError("context na keyfile arguments are mutually "
                                  "exclusive")
-            ikiwa context is not None and certfile is not None:
-                raise ValueError("context and certfile arguments are mutually "
+            ikiwa context ni sio Tupu na certfile ni sio Tupu:
+                ashiria ValueError("context na certfile arguments are mutually "
                                  "exclusive")
-            ikiwa keyfile is not None or certfile is not None:
+            ikiwa keyfile ni sio Tupu ama certfile ni sio Tupu:
                 agiza warnings
-                warnings.warn("keyfile and certfile are deprecated, use a "
+                warnings.warn("keyfile na certfile are deprecated, use a "
                               "custom context instead", DeprecationWarning, 2)
             self.keyfile = keyfile
             self.certfile = certfile
-            ikiwa context is None:
+            ikiwa context ni Tupu:
                 context = ssl._create_stdlib_context(self.ssl_version,
                                                      certfile=certfile,
                                                      keyfile=keyfile)
             self.context = context
-            self._prot_p = False
-            FTP.__init__(self, host, user, passwd, acct, timeout, source_address)
+            self._prot_p = Uongo
+            FTP.__init__(self, host, user, pitawd, acct, timeout, source_address)
 
-        eleza login(self, user='', passwd='', acct='', secure=True):
-            ikiwa secure and not isinstance(self.sock, ssl.SSLSocket):
+        eleza login(self, user='', pitawd='', acct='', secure=Kweli):
+            ikiwa secure na sio isinstance(self.sock, ssl.SSLSocket):
                 self.auth()
-            rudisha FTP.login(self, user, passwd, acct)
+            rudisha FTP.login(self, user, pitawd, acct)
 
         eleza auth(self):
             '''Set up secure control connection by using TLS/SSL.'''
             ikiwa isinstance(self.sock, ssl.SSLSocket):
-                raise ValueError("Already using TLS")
+                ashiria ValueError("Already using TLS")
             ikiwa self.ssl_version >= ssl.PROTOCOL_TLS:
                 resp = self.voidcmd('AUTH TLS')
-            else:
+            isipokua:
                 resp = self.voidcmd('AUTH SSL')
             self.sock = self.context.wrap_socket(self.sock,
                                                  server_hostname=self.host)
@@ -747,37 +747,37 @@ else:
 
         eleza ccc(self):
             '''Switch back to a clear-text control connection.'''
-            ikiwa not isinstance(self.sock, ssl.SSLSocket):
-                raise ValueError("not using TLS")
+            ikiwa sio isinstance(self.sock, ssl.SSLSocket):
+                ashiria ValueError("not using TLS")
             resp = self.voidcmd('CCC')
             self.sock = self.sock.unwrap()
             rudisha resp
 
         eleza prot_p(self):
             '''Set up secure data connection.'''
-            # PROT defines whether or not the data channel is to be protected.
+            # PROT defines whether ama sio the data channel ni to be protected.
             # Though RFC-2228 defines four possible protection levels,
-            # RFC-4217 only recommends two, Clear and Private.
-            # Clear (PROT C) means that no security is to be used on the
+            # RFC-4217 only recommends two, Clear na Private.
+            # Clear (PROT C) means that no security ni to be used on the
             # data-channel, Private (PROT P) means that the data-channel
             # should be protected by TLS.
             # PBSZ command MUST still be issued, but must have a parameter of
-            # '0' to indicate that no buffering is taking place and the data
-            # connection should not be encapsulated.
+            # '0' to indicate that no buffering ni taking place na the data
+            # connection should sio be encapsulated.
             self.voidcmd('PBSZ 0')
             resp = self.voidcmd('PROT P')
-            self._prot_p = True
+            self._prot_p = Kweli
             rudisha resp
 
         eleza prot_c(self):
             '''Set up clear text data connection.'''
             resp = self.voidcmd('PROT C')
-            self._prot_p = False
+            self._prot_p = Uongo
             rudisha resp
 
         # --- Overridden FTP methods
 
-        eleza ntransfercmd(self, cmd, rest=None):
+        eleza ntransfercmd(self, cmd, rest=Tupu):
             conn, size = FTP.ntransfercmd(self, cmd, rest)
             ikiwa self._prot_p:
                 conn = self.context.wrap_socket(conn,
@@ -785,54 +785,54 @@ else:
             rudisha conn, size
 
         eleza abort(self):
-            # overridden as we can't pass MSG_OOB flag to sendall()
+            # overridden kama we can't pita MSG_OOB flag to sendall()
             line = b'ABOR' + B_CRLF
             self.sock.sendall(line)
             resp = self.getmultiline()
-            ikiwa resp[:3] not in {'426', '225', '226'}:
-                raise error_proto(resp)
+            ikiwa resp[:3] haiko kwenye {'426', '225', '226'}:
+                ashiria error_proto(resp)
             rudisha resp
 
     __all__.append('FTP_TLS')
     all_errors = (Error, OSError, EOFError, ssl.SSLError)
 
 
-_150_re = None
+_150_re = Tupu
 
 eleza parse150(resp):
-    '''Parse the '150' response for a RETR request.
-    Returns the expected transfer size or None; size is not guaranteed to
-    be present in the 150 message.
+    '''Parse the '150' response kila a RETR request.
+    Returns the expected transfer size ama Tupu; size ni sio guaranteed to
+    be present kwenye the 150 message.
     '''
     ikiwa resp[:3] != '150':
-        raise error_reply(resp)
+        ashiria error_reply(resp)
     global _150_re
-    ikiwa _150_re is None:
+    ikiwa _150_re ni Tupu:
         agiza re
         _150_re = re.compile(
             r"150 .* \((\d+) bytes\)", re.IGNORECASE | re.ASCII)
     m = _150_re.match(resp)
-    ikiwa not m:
-        rudisha None
+    ikiwa sio m:
+        rudisha Tupu
     rudisha int(m.group(1))
 
 
-_227_re = None
+_227_re = Tupu
 
 eleza parse227(resp):
-    '''Parse the '227' response for a PASV request.
-    Raises error_proto ikiwa it does not contain '(h1,h2,h3,h4,p1,p2)'
+    '''Parse the '227' response kila a PASV request.
+    Raises error_proto ikiwa it does sio contain '(h1,h2,h3,h4,p1,p2)'
     Return ('host.addr.as.numbers', port#) tuple.'''
 
     ikiwa resp[:3] != '227':
-        raise error_reply(resp)
+        ashiria error_reply(resp)
     global _227_re
-    ikiwa _227_re is None:
+    ikiwa _227_re ni Tupu:
         agiza re
         _227_re = re.compile(r'(\d+),(\d+),(\d+),(\d+),(\d+),(\d+)', re.ASCII)
     m = _227_re.search(resp)
-    ikiwa not m:
-        raise error_proto(resp)
+    ikiwa sio m:
+        ashiria error_proto(resp)
     numbers = m.groups()
     host = '.'.join(numbers[:4])
     port = (int(numbers[4]) << 8) + int(numbers[5])
@@ -840,45 +840,45 @@ eleza parse227(resp):
 
 
 eleza parse229(resp, peer):
-    '''Parse the '229' response for an EPSV request.
-    Raises error_proto ikiwa it does not contain '(|||port|)'
+    '''Parse the '229' response kila an EPSV request.
+    Raises error_proto ikiwa it does sio contain '(|||port|)'
     Return ('host.addr.as.numbers', port#) tuple.'''
 
     ikiwa resp[:3] != '229':
-        raise error_reply(resp)
+        ashiria error_reply(resp)
     left = resp.find('(')
-    ikiwa left < 0: raise error_proto(resp)
+    ikiwa left < 0: ashiria error_proto(resp)
     right = resp.find(')', left + 1)
     ikiwa right < 0:
-        raise error_proto(resp) # should contain '(|||port|)'
+        ashiria error_proto(resp) # should contain '(|||port|)'
     ikiwa resp[left + 1] != resp[right - 1]:
-        raise error_proto(resp)
+        ashiria error_proto(resp)
     parts = resp[left + 1:right].split(resp[left+1])
     ikiwa len(parts) != 5:
-        raise error_proto(resp)
+        ashiria error_proto(resp)
     host = peer[0]
     port = int(parts[3])
     rudisha host, port
 
 
 eleza parse257(resp):
-    '''Parse the '257' response for a MKD or PWD request.
-    This is a response to a MKD or PWD request: a directory name.
-    Returns the directoryname in the 257 reply.'''
+    '''Parse the '257' response kila a MKD ama PWD request.
+    This ni a response to a MKD ama PWD request: a directory name.
+    Returns the directoryname kwenye the 257 reply.'''
 
     ikiwa resp[:3] != '257':
-        raise error_reply(resp)
+        ashiria error_reply(resp)
     ikiwa resp[3:5] != ' "':
         rudisha '' # Not compliant to RFC 959, but UNIX ftpd does this
     dirname = ''
     i = 5
     n = len(resp)
-    while i < n:
+    wakati i < n:
         c = resp[i]
         i = i+1
         ikiwa c == '"':
-            ikiwa i >= n or resp[i] != '"':
-                break
+            ikiwa i >= n ama resp[i] != '"':
+                koma
             i = i+1
         dirname = dirname + c
     rudisha dirname
@@ -891,7 +891,7 @@ eleza print_line(line):
 
 eleza ftpcp(source, sourcename, target, targetname = '', type = 'I'):
     '''Copy file kutoka one FTP-instance to another.'''
-    ikiwa not targetname:
+    ikiwa sio targetname:
         targetname = sourcename
     type = 'TYPE ' + type
     source.voidcmd(type)
@@ -900,13 +900,13 @@ eleza ftpcp(source, sourcename, target, targetname = '', type = 'I'):
     target.sendport(sourcehost, sourceport)
     # RFC 959: the user must "listen" [...] BEFORE sending the
     # transfer request.
-    # So: STOR before RETR, because here the target is a "user".
+    # So: STOR before RETR, because here the target ni a "user".
     treply = target.sendcmd('STOR ' + targetname)
-    ikiwa treply[:3] not in {'125', '150'}:
-        raise error_proto  # RFC 959
+    ikiwa treply[:3] haiko kwenye {'125', '150'}:
+        ashiria error_proto  # RFC 959
     sreply = source.sendcmd('RETR ' + sourcename)
-    ikiwa sreply[:3] not in {'125', '150'}:
-        raise error_proto  # RFC 959
+    ikiwa sreply[:3] haiko kwenye {'125', '150'}:
+        ashiria error_proto  # RFC 959
     source.voidresp()
     target.voidresp()
 
@@ -917,7 +917,7 @@ eleza test():
 
     -d dir
     -l list
-    -p password
+    -p pitaword
     '''
 
     ikiwa len(sys.argv) < 2:
@@ -927,33 +927,33 @@ eleza test():
     agiza netrc
 
     debugging = 0
-    rcfile = None
-    while sys.argv[1] == '-d':
+    rcfile = Tupu
+    wakati sys.argv[1] == '-d':
         debugging = debugging+1
-        del sys.argv[1]
+        toa sys.argv[1]
     ikiwa sys.argv[1][:2] == '-r':
         # get name of alternate ~/.netrc file:
         rcfile = sys.argv[1][2:]
-        del sys.argv[1]
+        toa sys.argv[1]
     host = sys.argv[1]
     ftp = FTP(host)
     ftp.set_debuglevel(debugging)
-    userid = passwd = acct = ''
-    try:
+    userid = pitawd = acct = ''
+    jaribu:
         netrcobj = netrc.netrc(rcfile)
-    except OSError:
-        ikiwa rcfile is not None:
-            sys.stderr.write("Could not open account file"
+    tatizo OSError:
+        ikiwa rcfile ni sio Tupu:
+            sys.stderr.write("Could sio open account file"
                              " -- using anonymous login.")
-    else:
-        try:
-            userid, acct, passwd = netrcobj.authenticators(host)
-        except KeyError:
-            # no account for host
+    isipokua:
+        jaribu:
+            userid, acct, pitawd = netrcobj.authenticators(host)
+        tatizo KeyError:
+            # no account kila host
             sys.stderr.write(
                     "No account -- using anonymous login.")
-    ftp.login(userid, passwd, acct)
-    for file in sys.argv[2:]:
+    ftp.login(userid, pitawd, acct)
+    kila file kwenye sys.argv[2:]:
         ikiwa file[:2] == '-l':
             ftp.dir(file[2:])
         elikiwa file[:2] == '-d':
@@ -961,8 +961,8 @@ eleza test():
             ikiwa file[2:]: cmd = cmd + ' ' + file[2:]
             resp = ftp.sendcmd(cmd)
         elikiwa file == '-p':
-            ftp.set_pasv(not ftp.passiveserver)
-        else:
+            ftp.set_pasv(not ftp.pitaiveserver)
+        isipokua:
             ftp.retrbinary('RETR ' + file, \
                            sys.stdout.write, 1024)
     ftp.quit()

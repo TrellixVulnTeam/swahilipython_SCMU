@@ -1,9 +1,9 @@
 # Copyright 2007 Google Inc.
 #  Licensed to PSF under a Contributor Agreement.
 
-"""A fast, lightweight IPv4/IPv6 manipulation library in Python.
+"""A fast, lightweight IPv4/IPv6 manipulation library kwenye Python.
 
-This library is used to create/poke/manipulate IPv4 and IPv6 addresses
+This library ni used to create/poke/manipulate IPv4 na IPv6 addresses
 and networks.
 
 """
@@ -25,141 +25,141 @@ kundi NetmaskValueError(ValueError):
 
 
 eleza ip_address(address):
-    """Take an IP string/int and rudisha an object of the correct type.
+    """Take an IP string/int na rudisha an object of the correct type.
 
     Args:
-        address: A string or integer, the IP address.  Either IPv4 or
+        address: A string ama integer, the IP address.  Either IPv4 or
           IPv6 addresses may be supplied; integers less than 2**32 will
           be considered to be IPv4 by default.
 
     Returns:
-        An IPv4Address or IPv6Address object.
+        An IPv4Address ama IPv6Address object.
 
     Raises:
-        ValueError: ikiwa the *address* passed isn't either a v4 or a v6
+        ValueError: ikiwa the *address* pitaed isn't either a v4 ama a v6
           address
 
     """
-    try:
+    jaribu:
         rudisha IPv4Address(address)
-    except (AddressValueError, NetmaskValueError):
-        pass
+    tatizo (AddressValueError, NetmaskValueError):
+        pita
 
-    try:
+    jaribu:
         rudisha IPv6Address(address)
-    except (AddressValueError, NetmaskValueError):
-        pass
+    tatizo (AddressValueError, NetmaskValueError):
+        pita
 
-    raise ValueError('%r does not appear to be an IPv4 or IPv6 address' %
+    ashiria ValueError('%r does sio appear to be an IPv4 ama IPv6 address' %
                      address)
 
 
-eleza ip_network(address, strict=True):
-    """Take an IP string/int and rudisha an object of the correct type.
+eleza ip_network(address, strict=Kweli):
+    """Take an IP string/int na rudisha an object of the correct type.
 
     Args:
-        address: A string or integer, the IP network.  Either IPv4 or
+        address: A string ama integer, the IP network.  Either IPv4 or
           IPv6 networks may be supplied; integers less than 2**32 will
           be considered to be IPv4 by default.
 
     Returns:
-        An IPv4Network or IPv6Network object.
+        An IPv4Network ama IPv6Network object.
 
     Raises:
-        ValueError: ikiwa the string passed isn't either a v4 or a v6
+        ValueError: ikiwa the string pitaed isn't either a v4 ama a v6
           address. Or ikiwa the network has host bits set.
 
     """
-    try:
+    jaribu:
         rudisha IPv4Network(address, strict)
-    except (AddressValueError, NetmaskValueError):
-        pass
+    tatizo (AddressValueError, NetmaskValueError):
+        pita
 
-    try:
+    jaribu:
         rudisha IPv6Network(address, strict)
-    except (AddressValueError, NetmaskValueError):
-        pass
+    tatizo (AddressValueError, NetmaskValueError):
+        pita
 
-    raise ValueError('%r does not appear to be an IPv4 or IPv6 network' %
+    ashiria ValueError('%r does sio appear to be an IPv4 ama IPv6 network' %
                      address)
 
 
 eleza ip_interface(address):
-    """Take an IP string/int and rudisha an object of the correct type.
+    """Take an IP string/int na rudisha an object of the correct type.
 
     Args:
-        address: A string or integer, the IP address.  Either IPv4 or
+        address: A string ama integer, the IP address.  Either IPv4 or
           IPv6 addresses may be supplied; integers less than 2**32 will
           be considered to be IPv4 by default.
 
     Returns:
-        An IPv4Interface or IPv6Interface object.
+        An IPv4Interface ama IPv6Interface object.
 
     Raises:
-        ValueError: ikiwa the string passed isn't either a v4 or a v6
+        ValueError: ikiwa the string pitaed isn't either a v4 ama a v6
           address.
 
     Notes:
         The IPv?Interface classes describe an Address on a particular
         Network, so they're basically a combination of both the Address
-        and Network classes.
+        na Network classes.
 
     """
-    try:
+    jaribu:
         rudisha IPv4Interface(address)
-    except (AddressValueError, NetmaskValueError):
-        pass
+    tatizo (AddressValueError, NetmaskValueError):
+        pita
 
-    try:
+    jaribu:
         rudisha IPv6Interface(address)
-    except (AddressValueError, NetmaskValueError):
-        pass
+    tatizo (AddressValueError, NetmaskValueError):
+        pita
 
-    raise ValueError('%r does not appear to be an IPv4 or IPv6 interface' %
+    ashiria ValueError('%r does sio appear to be an IPv4 ama IPv6 interface' %
                      address)
 
 
 eleza v4_int_to_packed(address):
-    """Represent an address as 4 packed bytes in network (big-endian) order.
+    """Represent an address kama 4 packed bytes kwenye network (big-endian) order.
 
     Args:
         address: An integer representation of an IPv4 IP address.
 
     Returns:
-        The integer address packed as 4 bytes in network (big-endian) order.
+        The integer address packed kama 4 bytes kwenye network (big-endian) order.
 
     Raises:
-        ValueError: If the integer is negative or too large to be an
+        ValueError: If the integer ni negative ama too large to be an
           IPv4 IP address.
 
     """
-    try:
+    jaribu:
         rudisha address.to_bytes(4, 'big')
-    except OverflowError:
-        raise ValueError("Address negative or too large for IPv4")
+    tatizo OverflowError:
+        ashiria ValueError("Address negative ama too large kila IPv4")
 
 
 eleza v6_int_to_packed(address):
-    """Represent an address as 16 packed bytes in network (big-endian) order.
+    """Represent an address kama 16 packed bytes kwenye network (big-endian) order.
 
     Args:
         address: An integer representation of an IPv6 IP address.
 
     Returns:
-        The integer address packed as 16 bytes in network (big-endian) order.
+        The integer address packed kama 16 bytes kwenye network (big-endian) order.
 
     """
-    try:
+    jaribu:
         rudisha address.to_bytes(16, 'big')
-    except OverflowError:
-        raise ValueError("Address negative or too large for IPv6")
+    tatizo OverflowError:
+        ashiria ValueError("Address negative ama too large kila IPv6")
 
 
 eleza _split_optional_netmask(address):
-    """Helper to split the netmask and raise AddressValueError ikiwa needed"""
+    """Helper to split the netmask na ashiria AddressValueError ikiwa needed"""
     addr = str(address).split('/')
     ikiwa len(addr) > 2:
-        raise AddressValueError("Only one '/' permitted in %r" % address)
+        ashiria AddressValueError("Only one '/' permitted kwenye %r" % address)
     rudisha addr
 
 
@@ -170,17 +170,17 @@ eleza _find_address_range(addresses):
         addresses: a list of IPv#Address objects.
 
     Yields:
-        A tuple containing the first and last IP addresses in the sequence.
+        A tuple containing the first na last IP addresses kwenye the sequence.
 
     """
     it = iter(addresses)
     first = last = next(it)
-    for ip in it:
+    kila ip kwenye it:
         ikiwa ip._ip != last._ip + 1:
-            yield first, last
+            tuma first, last
             first = ip
         last = ip
-    yield first, last
+    tuma first, last
 
 
 eleza _count_righthand_zero_bits(number, bits):
@@ -200,7 +200,7 @@ eleza _count_righthand_zero_bits(number, bits):
 
 
 eleza summarize_address_range(first, last):
-    """Summarize a network range given the first and last IP addresses.
+    """Summarize a network range given the first na last IP addresses.
 
     Example:
         >>> list(summarize_address_range(IPv4Address('192.0.2.0'),
@@ -210,48 +210,48 @@ eleza summarize_address_range(first, last):
          IPv4Network('192.0.2.130/32')]
 
     Args:
-        first: the first IPv4Address or IPv6Address in the range.
-        last: the last IPv4Address or IPv6Address in the range.
+        first: the first IPv4Address ama IPv6Address kwenye the range.
+        last: the last IPv4Address ama IPv6Address kwenye the range.
 
     Returns:
         An iterator of the summarized IPv(4|6) network objects.
 
     Raise:
         TypeError:
-            If the first and last objects are not IP addresses.
-            If the first and last objects are not the same version.
+            If the first na last objects are sio IP addresses.
+            If the first na last objects are sio the same version.
         ValueError:
-            If the last object is not greater than the first.
-            If the version of the first address is not 4 or 6.
+            If the last object ni sio greater than the first.
+            If the version of the first address ni sio 4 ama 6.
 
     """
     ikiwa (not (isinstance(first, _BaseAddress) and
              isinstance(last, _BaseAddress))):
-        raise TypeError('first and last must be IP addresses, not networks')
+        ashiria TypeError('first na last must be IP addresses, sio networks')
     ikiwa first.version != last.version:
-        raise TypeError("%s and %s are not of the same version" % (
+        ashiria TypeError("%s na %s are sio of the same version" % (
                          first, last))
     ikiwa first > last:
-        raise ValueError('last IP address must be greater than first')
+        ashiria ValueError('last IP address must be greater than first')
 
     ikiwa first.version == 4:
         ip = IPv4Network
     elikiwa first.version == 6:
         ip = IPv6Network
-    else:
-        raise ValueError('unknown IP version')
+    isipokua:
+        ashiria ValueError('unknown IP version')
 
     ip_bits = first._max_prefixlen
     first_int = first._ip
     last_int = last._ip
-    while first_int <= last_int:
+    wakati first_int <= last_int:
         nbits = min(_count_righthand_zero_bits(first_int, ip_bits),
                     (last_int - first_int + 1).bit_length() - 1)
         net = ip((first_int, ip_bits - nbits))
-        yield net
+        tuma net
         first_int += 1 << nbits
         ikiwa first_int - 1 == ip._ALL_ONES:
-            break
+            koma
 
 
 eleza _collapse_addresses_internal(addresses):
@@ -267,39 +267,39 @@ eleza _collapse_addresses_internal(addresses):
         _collapse_addresses_internal([ip1, ip2, ip3, ip4]) ->
           [IPv4Network('192.0.2.0/24')]
 
-        This shouldn't be called directly; it is called via
+        This shouldn't be called directly; it ni called via
           collapse_addresses([]).
 
     Args:
-        addresses: A list of IPv4Network's or IPv6Network's
+        addresses: A list of IPv4Network's ama IPv6Network's
 
     Returns:
-        A list of IPv4Network's or IPv6Network's depending on what we were
-        passed.
+        A list of IPv4Network's ama IPv6Network's depending on what we were
+        pitaed.
 
     """
     # First merge
     to_merge = list(addresses)
     subnets = {}
-    while to_merge:
+    wakati to_merge:
         net = to_merge.pop()
         supernet = net.supernet()
         existing = subnets.get(supernet)
-        ikiwa existing is None:
+        ikiwa existing ni Tupu:
             subnets[supernet] = net
         elikiwa existing != net:
             # Merge consecutive subnets
-            del subnets[supernet]
+            toa subnets[supernet]
             to_merge.append(supernet)
     # Then iterate over resulting networks, skipping subsumed subnets
-    last = None
-    for net in sorted(subnets.values()):
-        ikiwa last is not None:
+    last = Tupu
+    kila net kwenye sorted(subnets.values()):
+        ikiwa last ni sio Tupu:
             # Since they are sorted, last.network_address <= net.network_address
-            # is a given.
+            # ni a given.
             ikiwa last.broadcast_address >= net.broadcast_address:
-                continue
-        yield net
+                endelea
+        tuma net
         last = net
 
 
@@ -312,65 +312,65 @@ eleza collapse_addresses(addresses):
                            [IPv4Network('192.0.2.0/24')]
 
     Args:
-        addresses: An iterator of IPv4Network or IPv6Network objects.
+        addresses: An iterator of IPv4Network ama IPv6Network objects.
 
     Returns:
         An iterator of the collapsed IPv(4|6)Network objects.
 
     Raises:
-        TypeError: If passed a list of mixed version objects.
+        TypeError: If pitaed a list of mixed version objects.
 
     """
     addrs = []
     ips = []
     nets = []
 
-    # split IP addresses and networks
-    for ip in addresses:
+    # split IP addresses na networks
+    kila ip kwenye addresses:
         ikiwa isinstance(ip, _BaseAddress):
-            ikiwa ips and ips[-1]._version != ip._version:
-                raise TypeError("%s and %s are not of the same version" % (
+            ikiwa ips na ips[-1]._version != ip._version:
+                ashiria TypeError("%s na %s are sio of the same version" % (
                                  ip, ips[-1]))
             ips.append(ip)
         elikiwa ip._prefixlen == ip._max_prefixlen:
-            ikiwa ips and ips[-1]._version != ip._version:
-                raise TypeError("%s and %s are not of the same version" % (
+            ikiwa ips na ips[-1]._version != ip._version:
+                ashiria TypeError("%s na %s are sio of the same version" % (
                                  ip, ips[-1]))
-            try:
+            jaribu:
                 ips.append(ip.ip)
-            except AttributeError:
+            tatizo AttributeError:
                 ips.append(ip.network_address)
-        else:
-            ikiwa nets and nets[-1]._version != ip._version:
-                raise TypeError("%s and %s are not of the same version" % (
+        isipokua:
+            ikiwa nets na nets[-1]._version != ip._version:
+                ashiria TypeError("%s na %s are sio of the same version" % (
                                  ip, nets[-1]))
             nets.append(ip)
 
-    # sort and dedup
+    # sort na dedup
     ips = sorted(set(ips))
 
-    # find consecutive address ranges in the sorted sequence and summarize them
+    # find consecutive address ranges kwenye the sorted sequence na summarize them
     ikiwa ips:
-        for first, last in _find_address_range(ips):
+        kila first, last kwenye _find_address_range(ips):
             addrs.extend(summarize_address_range(first, last))
 
     rudisha _collapse_addresses_internal(addrs + nets)
 
 
 eleza get_mixed_type_key(obj):
-    """Return a key suitable for sorting between networks and addresses.
+    """Return a key suitable kila sorting between networks na addresses.
 
-    Address and Network objects are not sortable by default; they're
+    Address na Network objects are sio sortable by default; they're
     fundamentally different so the expression
 
         IPv4Address('192.0.2.0') <= IPv4Network('192.0.2.0/24')
 
     doesn't make any sense.  There are some times however, where you may wish
-    to have ipaddress sort these for you anyway. If you need to do this, you
-    can use this function as the key= argument to sorted().
+    to have ipaddress sort these kila you anyway. If you need to do this, you
+    can use this function kama the key= argument to sorted().
 
     Args:
-      obj: either a Network or Address object.
+      obj: either a Network ama Address object.
     Returns:
       appropriate key.
 
@@ -390,17 +390,17 @@ kundi _IPAddressBase:
 
     @property
     eleza exploded(self):
-        """Return the longhand version of the IP address as a string."""
+        """Return the longhand version of the IP address kama a string."""
         rudisha self._explode_shorthand_ip_string()
 
     @property
     eleza compressed(self):
-        """Return the shorthand version of the IP address as a string."""
+        """Return the shorthand version of the IP address kama a string."""
         rudisha str(self)
 
     @property
     eleza reverse_pointer(self):
-        """The name of the reverse DNS pointer for the IP address, e.g.:
+        """The name of the reverse DNS pointer kila the IP address, e.g.:
             >>> ipaddress.ip_address("127.0.0.1").reverse_pointer
             '1.0.0.127.in-addr.arpa'
             >>> ipaddress.ip_address("2001:db8::1").reverse_pointer
@@ -412,22 +412,22 @@ kundi _IPAddressBase:
     @property
     eleza version(self):
         msg = '%200s has no version specified' % (type(self),)
-        raise NotImplementedError(msg)
+        ashiria NotImplementedError(msg)
 
     eleza _check_int_address(self, address):
         ikiwa address < 0:
-            msg = "%d (< 0) is not permitted as an IPv%d address"
-            raise AddressValueError(msg % (address, self._version))
+            msg = "%d (< 0) ni sio permitted kama an IPv%d address"
+            ashiria AddressValueError(msg % (address, self._version))
         ikiwa address > self._ALL_ONES:
-            msg = "%d (>= 2**%d) is not permitted as an IPv%d address"
-            raise AddressValueError(msg % (address, self._max_prefixlen,
+            msg = "%d (>= 2**%d) ni sio permitted kama an IPv%d address"
+            ashiria AddressValueError(msg % (address, self._max_prefixlen,
                                            self._version))
 
     eleza _check_packed_address(self, address, expected_len):
         address_len = len(address)
         ikiwa address_len != expected_len:
-            msg = "%r (len %d != %d) is not permitted as an IPv%d address"
-            raise AddressValueError(msg % (address, address_len,
+            msg = "%r (len %d != %d) ni sio permitted kama an IPv%d address"
+            ashiria AddressValueError(msg % (address, address_len,
                                            expected_len, self._version))
 
     @classmethod
@@ -448,7 +448,7 @@ kundi _IPAddressBase:
         """Return prefix length kutoka the bitwise netmask.
 
         Args:
-            ip_int: An integer, the netmask in expanded bitwise format
+            ip_int: An integer, the netmask kwenye expanded bitwise format
 
         Returns:
             An integer, the prefix length.
@@ -465,13 +465,13 @@ kundi _IPAddressBase:
             byteslen = cls._max_prefixlen // 8
             details = ip_int.to_bytes(byteslen, 'big')
             msg = 'Netmask pattern %r mixes zeroes & ones'
-            raise ValueError(msg % details)
+            ashiria ValueError(msg % details)
         rudisha prefixlen
 
     @classmethod
     eleza _report_invalid_netmask(cls, netmask_str):
-        msg = '%r is not a valid netmask' % netmask_str
-        raise NetmaskValueError(msg) kutoka None
+        msg = '%r ni sio a valid netmask' % netmask_str
+        ashiria NetmaskValueError(msg) kutoka Tupu
 
     @classmethod
     eleza _prefix_kutoka_prefix_string(cls, prefixlen_str):
@@ -484,17 +484,17 @@ kundi _IPAddressBase:
             An integer, the prefix length.
 
         Raises:
-            NetmaskValueError: If the input is not a valid netmask
+            NetmaskValueError: If the input ni sio a valid netmask
         """
-        # int allows a leading +/- as well as surrounding whitespace,
+        # int allows a leading +/- kama well kama surrounding whitespace,
         # so we ensure that isn't the case
-        ikiwa not (prefixlen_str.isascii() and prefixlen_str.isdigit()):
+        ikiwa sio (prefixlen_str.isascii() na prefixlen_str.isdigit()):
             cls._report_invalid_netmask(prefixlen_str)
-        try:
+        jaribu:
             prefixlen = int(prefixlen_str)
-        except ValueError:
+        tatizo ValueError:
             cls._report_invalid_netmask(prefixlen_str)
-        ikiwa not (0 <= prefixlen <= cls._max_prefixlen):
+        ikiwa sio (0 <= prefixlen <= cls._max_prefixlen):
             cls._report_invalid_netmask(prefixlen_str)
         rudisha prefixlen
 
@@ -509,27 +509,27 @@ kundi _IPAddressBase:
             An integer, the prefix length.
 
         Raises:
-            NetmaskValueError: If the input is not a valid netmask/hostmask
+            NetmaskValueError: If the input ni sio a valid netmask/hostmask
         """
         # Parse the netmask/hostmask like an IP address.
-        try:
+        jaribu:
             ip_int = cls._ip_int_kutoka_string(ip_str)
-        except AddressValueError:
+        tatizo AddressValueError:
             cls._report_invalid_netmask(ip_str)
 
-        # Try matching a netmask (this would be /1*0*/ as a bitwise regexp).
-        # Note that the two ambiguous cases (all-ones and all-zeroes) are
-        # treated as netmasks.
-        try:
+        # Try matching a netmask (this would be /1*0*/ kama a bitwise regexp).
+        # Note that the two ambiguous cases (all-ones na all-zeroes) are
+        # treated kama netmasks.
+        jaribu:
             rudisha cls._prefix_kutoka_ip_int(ip_int)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
-        # Invert the bits, and try matching a /0+1+/ hostmask instead.
+        # Invert the bits, na try matching a /0+1+/ hostmask instead.
         ip_int ^= cls._ALL_ONES
-        try:
+        jaribu:
             rudisha cls._prefix_kutoka_ip_int(ip_int)
-        except ValueError:
+        tatizo ValueError:
             cls._report_invalid_netmask(ip_str)
 
     @classmethod
@@ -542,12 +542,12 @@ kundi _IPAddressBase:
         Returns:
             (addr, prefix) tuple.
         """
-        # a packed address or integer
+        # a packed address ama integer
         ikiwa isinstance(address, (bytes, int)):
             rudisha address, cls._max_prefixlen
 
-        ikiwa not isinstance(address, tuple):
-            # Assume input argument to be string or any object representation
+        ikiwa sio isinstance(address, tuple):
+            # Assume input argument to be string ama any object representation
             # which converts into a formatted IP prefix string.
             address = _split_optional_netmask(address)
 
@@ -575,31 +575,31 @@ kundi _BaseAddress(_IPAddressBase):
         rudisha self._ip
 
     eleza __eq__(self, other):
-        try:
+        jaribu:
             rudisha (self._ip == other._ip
-                    and self._version == other._version)
-        except AttributeError:
+                    na self._version == other._version)
+        tatizo AttributeError:
             rudisha NotImplemented
 
     eleza __lt__(self, other):
-        ikiwa not isinstance(other, _BaseAddress):
+        ikiwa sio isinstance(other, _BaseAddress):
             rudisha NotImplemented
         ikiwa self._version != other._version:
-            raise TypeError('%s and %s are not of the same version' % (
+            ashiria TypeError('%s na %s are sio of the same version' % (
                              self, other))
         ikiwa self._ip != other._ip:
             rudisha self._ip < other._ip
-        rudisha False
+        rudisha Uongo
 
-    # Shorthand for Integer addition and subtraction. This is not
+    # Shorthand kila Integer addition na subtraction. This ni not
     # meant to ever support addition/subtraction of addresses.
     eleza __add__(self, other):
-        ikiwa not isinstance(other, int):
+        ikiwa sio isinstance(other, int):
             rudisha NotImplemented
         rudisha self.__class__(int(self) + other)
 
     eleza __sub__(self, other):
-        ikiwa not isinstance(other, int):
+        ikiwa sio isinstance(other, int):
             rudisha NotImplemented
         rudisha self.__class__(int(self) - other)
 
@@ -634,77 +634,77 @@ kundi _BaseNetwork(_IPAddressBase):
         rudisha '%s/%d' % (self.network_address, self.prefixlen)
 
     eleza hosts(self):
-        """Generate Iterator over usable hosts in a network.
+        """Generate Iterator over usable hosts kwenye a network.
 
-        This is like __iter__ except it doesn't rudisha the network
-        or broadcast addresses.
+        This ni like __iter__ tatizo it doesn't rudisha the network
+        ama broadcast addresses.
 
         """
         network = int(self.network_address)
         broadcast = int(self.broadcast_address)
-        for x in range(network + 1, broadcast):
-            yield self._address_class(x)
+        kila x kwenye range(network + 1, broadcast):
+            tuma self._address_class(x)
 
     eleza __iter__(self):
         network = int(self.network_address)
         broadcast = int(self.broadcast_address)
-        for x in range(network, broadcast + 1):
-            yield self._address_class(x)
+        kila x kwenye range(network, broadcast + 1):
+            tuma self._address_class(x)
 
     eleza __getitem__(self, n):
         network = int(self.network_address)
         broadcast = int(self.broadcast_address)
         ikiwa n >= 0:
             ikiwa network + n > broadcast:
-                raise IndexError('address out of range')
+                ashiria IndexError('address out of range')
             rudisha self._address_class(network + n)
-        else:
+        isipokua:
             n += 1
             ikiwa broadcast + n < network:
-                raise IndexError('address out of range')
+                ashiria IndexError('address out of range')
             rudisha self._address_class(broadcast + n)
 
     eleza __lt__(self, other):
-        ikiwa not isinstance(other, _BaseNetwork):
+        ikiwa sio isinstance(other, _BaseNetwork):
             rudisha NotImplemented
         ikiwa self._version != other._version:
-            raise TypeError('%s and %s are not of the same version' % (
+            ashiria TypeError('%s na %s are sio of the same version' % (
                              self, other))
         ikiwa self.network_address != other.network_address:
             rudisha self.network_address < other.network_address
         ikiwa self.netmask != other.netmask:
             rudisha self.netmask < other.netmask
-        rudisha False
+        rudisha Uongo
 
     eleza __eq__(self, other):
-        try:
+        jaribu:
             rudisha (self._version == other._version and
                     self.network_address == other.network_address and
                     int(self.netmask) == int(other.netmask))
-        except AttributeError:
+        tatizo AttributeError:
             rudisha NotImplemented
 
     eleza __hash__(self):
         rudisha hash(int(self.network_address) ^ int(self.netmask))
 
     eleza __contains__(self, other):
-        # always false ikiwa one is v4 and the other is v6.
+        # always false ikiwa one ni v4 na the other ni v6.
         ikiwa self._version != other._version:
-            rudisha False
+            rudisha Uongo
         # dealing with another network.
         ikiwa isinstance(other, _BaseNetwork):
-            rudisha False
+            rudisha Uongo
         # dealing with another address
-        else:
+        isipokua:
             # address
             rudisha other._ip & self.netmask._ip == self.network_address._ip
 
     eleza overlaps(self, other):
-        """Tell ikiwa self is partly contained in other."""
-        rudisha self.network_address in other or (
-            self.broadcast_address in other or (
-                other.network_address in self or (
-                    other.broadcast_address in self)))
+        """Tell ikiwa self ni partly contained kwenye other."""
+        rudisha self.network_address kwenye other ama (
+            self.broadcast_address kwenye other ama (
+                other.network_address kwenye self ama (
+                    other.broadcast_address kwenye self)))
 
     @functools.cached_property
     eleza broadcast_address(self):
@@ -729,16 +729,16 @@ kundi _BaseNetwork(_IPAddressBase):
 
     @property
     eleza num_addresses(self):
-        """Number of hosts in the current subnet."""
+        """Number of hosts kwenye the current subnet."""
         rudisha int(self.broadcast_address) - int(self.network_address) + 1
 
     @property
     eleza _address_class(self):
         # Returning bare address objects (rather than interfaces) allows for
         # more consistent behaviour across the network address, broadcast
-        # address and individual host addresses.
+        # address na individual host addresses.
         msg = '%200s has no associated address class' % (type(self),)
-        raise NotImplementedError(msg)
+        ashiria NotImplementedError(msg)
 
     @property
     eleza prefixlen(self):
@@ -755,7 +755,7 @@ kundi _BaseNetwork(_IPAddressBase):
                 [IPv4Network('192.0.2.0/32'), IPv4Network('192.0.2.2/31'),
                  IPv4Network('192.0.2.4/30'), IPv4Network('192.0.2.8/29')]
 
-        or IPv6:
+        ama IPv6:
 
             addr1 = ip_network('2001:db8::1/32')
             addr2 = ip_network('2001:db8::1/128')
@@ -768,63 +768,63 @@ kundi _BaseNetwork(_IPAddressBase):
                  ip_network('2001:db8:8000::/33')]
 
         Args:
-            other: An IPv4Network or IPv6Network object of the same type.
+            other: An IPv4Network ama IPv6Network object of the same type.
 
         Returns:
-            An iterator of the IPv(4|6)Network objects which is self
+            An iterator of the IPv(4|6)Network objects which ni self
             minus other.
 
         Raises:
-            TypeError: If self and other are of differing address
-              versions, or ikiwa other is not a network object.
-            ValueError: If other is not completely contained by self.
+            TypeError: If self na other are of differing address
+              versions, ama ikiwa other ni sio a network object.
+            ValueError: If other ni sio completely contained by self.
 
         """
-        ikiwa not self._version == other._version:
-            raise TypeError("%s and %s are not of the same version" % (
+        ikiwa sio self._version == other._version:
+            ashiria TypeError("%s na %s are sio of the same version" % (
                              self, other))
 
-        ikiwa not isinstance(other, _BaseNetwork):
-            raise TypeError("%s is not a network object" % other)
+        ikiwa sio isinstance(other, _BaseNetwork):
+            ashiria TypeError("%s ni sio a network object" % other)
 
-        ikiwa not other.subnet_of(self):
-            raise ValueError('%s not contained in %s' % (other, self))
+        ikiwa sio other.subnet_of(self):
+            ashiria ValueError('%s sio contained kwenye %s' % (other, self))
         ikiwa other == self:
-            return
+            rudisha
 
         # Make sure we're comparing the network of other.
         other = other.__class__('%s/%s' % (other.network_address,
                                            other.prefixlen))
 
         s1, s2 = self.subnets()
-        while s1 != other and s2 != other:
+        wakati s1 != other na s2 != other:
             ikiwa other.subnet_of(s1):
-                yield s2
+                tuma s2
                 s1, s2 = s1.subnets()
             elikiwa other.subnet_of(s2):
-                yield s1
+                tuma s1
                 s1, s2 = s2.subnets()
-            else:
+            isipokua:
                 # If we got here, there's a bug somewhere.
-                raise AssertionError('Error performing exclusion: '
+                ashiria AssertionError('Error performing exclusion: '
                                      's1: %s s2: %s other: %s' %
                                      (s1, s2, other))
         ikiwa s1 == other:
-            yield s2
+            tuma s2
         elikiwa s2 == other:
-            yield s1
-        else:
+            tuma s1
+        isipokua:
             # If we got here, there's a bug somewhere.
-            raise AssertionError('Error performing exclusion: '
+            ashiria AssertionError('Error performing exclusion: '
                                  's1: %s s2: %s other: %s' %
                                  (s1, s2, other))
 
     eleza compare_networks(self, other):
         """Compare two IP objects.
 
-        This is only concerned about the comparison of the integer
+        This ni only concerned about the comparison of the integer
         representation of the network addresses.  This means that the
-        host bits aren't considered at all in this method.  If you want
+        host bits aren't considered at all kwenye this method.  If you want
         to compare host bits, you can easily enough do a
         'HostA._ip < HostB._ip'
 
@@ -832,7 +832,7 @@ kundi _BaseNetwork(_IPAddressBase):
             other: An IP object.
 
         Returns:
-            If the IP versions of self and other are the same, returns:
+            If the IP versions of self na other are the same, rudishas:
 
             -1 ikiwa self < other:
               eg: IPv4Network('192.0.2.0/25') < IPv4Network('192.0.2.128/25')
@@ -851,9 +851,9 @@ kundi _BaseNetwork(_IPAddressBase):
               TypeError ikiwa the IP versions are different.
 
         """
-        # does this need to raise a ValueError?
+        # does this need to ashiria a ValueError?
         ikiwa self._version != other._version:
-            raise TypeError('%s and %s are not of the same type' % (
+            ashiria TypeError('%s na %s are sio of the same type' % (
                              self, other))
         # self._version == other._version below here:
         ikiwa self.network_address < other.network_address:
@@ -871,73 +871,73 @@ kundi _BaseNetwork(_IPAddressBase):
         """Network-only key function.
 
         Returns an object that identifies this address' network and
-        netmask. This function is a suitable "key" argument for sorted()
-        and list.sort().
+        netmask. This function ni a suitable "key" argument kila sorted()
+        na list.sort().
 
         """
         rudisha (self._version, self.network_address, self.netmask)
 
-    eleza subnets(self, prefixlen_diff=1, new_prefix=None):
+    eleza subnets(self, prefixlen_diff=1, new_prefix=Tupu):
         """The subnets which join to make the current subnet.
 
         In the case that self contains only one IP
-        (self._prefixlen == 32 for IPv4 or self._prefixlen == 128
-        for IPv6), yield an iterator with just ourself.
+        (self._prefixlen == 32 kila IPv4 ama self._prefixlen == 128
+        kila IPv6), tuma an iterator with just ourself.
 
         Args:
             prefixlen_diff: An integer, the amount the prefix length
-              should be increased by. This should not be set if
-              new_prefix is also set.
+              should be increased by. This should sio be set if
+              new_prefix ni also set.
             new_prefix: The desired new prefix length. This must be a
               larger number (smaller prefix) than the existing prefix.
-              This should not be set ikiwa prefixlen_diff is also set.
+              This should sio be set ikiwa prefixlen_diff ni also set.
 
         Returns:
             An iterator of IPv(4|6) objects.
 
         Raises:
-            ValueError: The prefixlen_diff is too small or too large.
+            ValueError: The prefixlen_diff ni too small ama too large.
                 OR
-            prefixlen_diff and new_prefix are both set or new_prefix
-              is a smaller number than the current prefix (smaller
+            prefixlen_diff na new_prefix are both set ama new_prefix
+              ni a smaller number than the current prefix (smaller
               number means a larger network)
 
         """
         ikiwa self._prefixlen == self._max_prefixlen:
-            yield self
-            return
+            tuma self
+            rudisha
 
-        ikiwa new_prefix is not None:
+        ikiwa new_prefix ni sio Tupu:
             ikiwa new_prefix < self._prefixlen:
-                raise ValueError('new prefix must be longer')
+                ashiria ValueError('new prefix must be longer')
             ikiwa prefixlen_diff != 1:
-                raise ValueError('cannot set prefixlen_diff and new_prefix')
+                ashiria ValueError('cannot set prefixlen_diff na new_prefix')
             prefixlen_diff = new_prefix - self._prefixlen
 
         ikiwa prefixlen_diff < 0:
-            raise ValueError('prefix length diff must be > 0')
+            ashiria ValueError('prefix length diff must be > 0')
         new_prefixlen = self._prefixlen + prefixlen_diff
 
         ikiwa new_prefixlen > self._max_prefixlen:
-            raise ValueError(
-                'prefix length diff %d is invalid for netblock %s' % (
+            ashiria ValueError(
+                'prefix length diff %d ni invalid kila netblock %s' % (
                     new_prefixlen, self))
 
         start = int(self.network_address)
         end = int(self.broadcast_address) + 1
         step = (int(self.hostmask) + 1) >> prefixlen_diff
-        for new_addr in range(start, end, step):
+        kila new_addr kwenye range(start, end, step):
             current = self.__class__((new_addr, new_prefixlen))
-            yield current
+            tuma current
 
-    eleza supernet(self, prefixlen_diff=1, new_prefix=None):
+    eleza supernet(self, prefixlen_diff=1, new_prefix=Tupu):
         """The supernet containing the current network.
 
         Args:
             prefixlen_diff: An integer, the amount the prefix length of
               the network should be decreased by.  For example, given a
-              /24 network and a prefixlen_diff of 3, a supernet with a
-              /21 netmask is returned.
+              /24 network na a prefixlen_diff of 3, a supernet with a
+              /21 netmask ni rudishaed.
 
         Returns:
             An IPv4 network object.
@@ -946,7 +946,7 @@ kundi _BaseNetwork(_IPAddressBase):
             ValueError: If self.prefixlen - prefixlen_diff < 0. I.e., you have
               a negative prefix length.
                 OR
-            If prefixlen_diff and new_prefix are both set or new_prefix is a
+            If prefixlen_diff na new_prefix are both set ama new_prefix ni a
               larger number than the current prefix (larger number means a
               smaller network)
 
@@ -954,17 +954,17 @@ kundi _BaseNetwork(_IPAddressBase):
         ikiwa self._prefixlen == 0:
             rudisha self
 
-        ikiwa new_prefix is not None:
+        ikiwa new_prefix ni sio Tupu:
             ikiwa new_prefix > self._prefixlen:
-                raise ValueError('new prefix must be shorter')
+                ashiria ValueError('new prefix must be shorter')
             ikiwa prefixlen_diff != 1:
-                raise ValueError('cannot set prefixlen_diff and new_prefix')
+                ashiria ValueError('cannot set prefixlen_diff na new_prefix')
             prefixlen_diff = self._prefixlen - new_prefix
 
         new_prefixlen = self.prefixlen - prefixlen_diff
         ikiwa new_prefixlen < 0:
-            raise ValueError(
-                'current prefixlen is %d, cannot have a prefixlen_diff of %d' %
+            ashiria ValueError(
+                'current prefixlen ni %d, cannot have a prefixlen_diff of %d' %
                 (self.prefixlen, prefixlen_diff))
         rudisha self.__class__((
             int(self.network_address) & (int(self.netmask) << prefixlen_diff),
@@ -973,11 +973,11 @@ kundi _BaseNetwork(_IPAddressBase):
 
     @property
     eleza is_multicast(self):
-        """Test ikiwa the address is reserved for multicast use.
+        """Test ikiwa the address ni reserved kila multicast use.
 
         Returns:
-            A boolean, True ikiwa the address is a multicast address.
-            See RFC 2373 2.7 for details.
+            A boolean, Kweli ikiwa the address ni a multicast address.
+            See RFC 2373 2.7 kila details.
 
         """
         rudisha (self.network_address.is_multicast and
@@ -985,30 +985,30 @@ kundi _BaseNetwork(_IPAddressBase):
 
     @staticmethod
     eleza _is_subnet_of(a, b):
-        try:
-            # Always false ikiwa one is v4 and the other is v6.
+        jaribu:
+            # Always false ikiwa one ni v4 na the other ni v6.
             ikiwa a._version != b._version:
-                raise TypeError(f"{a} and {b} are not of the same version")
+                ashiria TypeError(f"{a} na {b} are sio of the same version")
             rudisha (b.network_address <= a.network_address and
                     b.broadcast_address >= a.broadcast_address)
-        except AttributeError:
-            raise TypeError(f"Unable to test subnet containment "
-                            f"between {a} and {b}")
+        tatizo AttributeError:
+            ashiria TypeError(f"Unable to test subnet containment "
+                            f"between {a} na {b}")
 
     eleza subnet_of(self, other):
-        """Return True ikiwa this network is a subnet of other."""
+        """Return Kweli ikiwa this network ni a subnet of other."""
         rudisha self._is_subnet_of(self, other)
 
     eleza supernet_of(self, other):
-        """Return True ikiwa this network is a supernet of other."""
+        """Return Kweli ikiwa this network ni a supernet of other."""
         rudisha self._is_subnet_of(other, self)
 
     @property
     eleza is_reserved(self):
-        """Test ikiwa the address is otherwise IETF reserved.
+        """Test ikiwa the address ni otherwise IETF reserved.
 
         Returns:
-            A boolean, True ikiwa the address is within one of the
+            A boolean, Kweli ikiwa the address ni within one of the
             reserved IPv6 Network ranges.
 
         """
@@ -1017,10 +1017,10 @@ kundi _BaseNetwork(_IPAddressBase):
 
     @property
     eleza is_link_local(self):
-        """Test ikiwa the address is reserved for link-local.
+        """Test ikiwa the address ni reserved kila link-local.
 
         Returns:
-            A boolean, True ikiwa the address is reserved per RFC 4291.
+            A boolean, Kweli ikiwa the address ni reserved per RFC 4291.
 
         """
         rudisha (self.network_address.is_link_local and
@@ -1028,11 +1028,11 @@ kundi _BaseNetwork(_IPAddressBase):
 
     @property
     eleza is_private(self):
-        """Test ikiwa this address is allocated for private networks.
+        """Test ikiwa this address ni allocated kila private networks.
 
         Returns:
-            A boolean, True ikiwa the address is reserved per
-            iana-ipv4-special-registry or iana-ipv6-special-registry.
+            A boolean, Kweli ikiwa the address ni reserved per
+            iana-ipv4-special-registry ama iana-ipv6-special-registry.
 
         """
         rudisha (self.network_address.is_private and
@@ -1040,21 +1040,21 @@ kundi _BaseNetwork(_IPAddressBase):
 
     @property
     eleza is_global(self):
-        """Test ikiwa this address is allocated for public networks.
+        """Test ikiwa this address ni allocated kila public networks.
 
         Returns:
-            A boolean, True ikiwa the address is not reserved per
-            iana-ipv4-special-registry or iana-ipv6-special-registry.
+            A boolean, Kweli ikiwa the address ni sio reserved per
+            iana-ipv4-special-registry ama iana-ipv6-special-registry.
 
         """
-        rudisha not self.is_private
+        rudisha sio self.is_private
 
     @property
     eleza is_unspecified(self):
-        """Test ikiwa the address is unspecified.
+        """Test ikiwa the address ni unspecified.
 
         Returns:
-            A boolean, True ikiwa this is the unspecified address as defined in
+            A boolean, Kweli ikiwa this ni the unspecified address kama defined in
             RFC 2373 2.5.2.
 
         """
@@ -1063,10 +1063,10 @@ kundi _BaseNetwork(_IPAddressBase):
 
     @property
     eleza is_loopback(self):
-        """Test ikiwa the address is a loopback address.
+        """Test ikiwa the address ni a loopback address.
 
         Returns:
-            A boolean, True ikiwa the address is a loopback address as defined in
+            A boolean, Kweli ikiwa the address ni a loopback address kama defined in
             RFC 2373 2.5.3.
 
         """
@@ -1078,14 +1078,14 @@ kundi _BaseV4:
 
     """Base IPv4 object.
 
-    The following methods are used by IPv4 objects in both single IP
-    addresses and networks.
+    The following methods are used by IPv4 objects kwenye both single IP
+    addresses na networks.
 
     """
 
     __slots__ = ()
     _version = 4
-    # Equivalent to 255.255.255.255 or 32 bits of 1's.
+    # Equivalent to 255.255.255.255 ama 32 bits of 1's.
     _ALL_ONES = (2**IPV4LENGTH) - 1
 
     _max_prefixlen = IPV4LENGTH
@@ -1105,18 +1105,18 @@ kundi _BaseV4:
         - a string representing the prefix length (e.g. "24")
         - a string representing the prefix netmask (e.g. "255.255.255.0")
         """
-        ikiwa arg not in cls._netmask_cache:
+        ikiwa arg haiko kwenye cls._netmask_cache:
             ikiwa isinstance(arg, int):
                 prefixlen = arg
-                ikiwa not (0 <= prefixlen <= cls._max_prefixlen):
+                ikiwa sio (0 <= prefixlen <= cls._max_prefixlen):
                     cls._report_invalid_netmask(prefixlen)
-            else:
-                try:
-                    # Check for a netmask in prefix length form
+            isipokua:
+                jaribu:
+                    # Check kila a netmask kwenye prefix length form
                     prefixlen = cls._prefix_kutoka_prefix_string(arg)
-                except NetmaskValueError:
-                    # Check for a netmask or hostmask in dotted-quad form.
-                    # This may raise NetmaskValueError.
+                tatizo NetmaskValueError:
+                    # Check kila a netmask ama hostmask kwenye dotted-quad form.
+                    # This may ashiria NetmaskValueError.
                     prefixlen = cls._prefix_kutoka_ip_string(arg)
             netmask = IPv4Address(cls._ip_int_kutoka_prefix(prefixlen))
             cls._netmask_cache[arg] = netmask, prefixlen
@@ -1124,29 +1124,29 @@ kundi _BaseV4:
 
     @classmethod
     eleza _ip_int_kutoka_string(cls, ip_str):
-        """Turn the given IP string into an integer for comparison.
+        """Turn the given IP string into an integer kila comparison.
 
         Args:
             ip_str: A string, the IP ip_str.
 
         Returns:
-            The IP ip_str as an integer.
+            The IP ip_str kama an integer.
 
         Raises:
             AddressValueError: ikiwa ip_str isn't a valid IPv4 Address.
 
         """
-        ikiwa not ip_str:
-            raise AddressValueError('Address cannot be empty')
+        ikiwa sio ip_str:
+            ashiria AddressValueError('Address cannot be empty')
 
         octets = ip_str.split('.')
         ikiwa len(octets) != 4:
-            raise AddressValueError("Expected 4 octets in %r" % ip_str)
+            ashiria AddressValueError("Expected 4 octets kwenye %r" % ip_str)
 
-        try:
+        jaribu:
             rudisha int.kutoka_bytes(map(cls._parse_octet, octets), 'big')
-        except ValueError as exc:
-            raise AddressValueError("%s in %r" % (exc, ip_str)) kutoka None
+        tatizo ValueError kama exc:
+            ashiria AddressValueError("%s kwenye %r" % (exc, ip_str)) kutoka Tupu
 
     @classmethod
     eleza _parse_octet(cls, octet_str):
@@ -1156,27 +1156,27 @@ kundi _BaseV4:
             octet_str: A string, the number to parse.
 
         Returns:
-            The octet as an integer.
+            The octet kama an integer.
 
         Raises:
             ValueError: ikiwa the octet isn't strictly a decimal kutoka [0..255].
 
         """
-        ikiwa not octet_str:
-            raise ValueError("Empty octet not permitted")
+        ikiwa sio octet_str:
+            ashiria ValueError("Empty octet sio permitted")
         # Whitelist the characters, since int() allows a lot of bizarre stuff.
-        ikiwa not (octet_str.isascii() and octet_str.isdigit()):
-            msg = "Only decimal digits permitted in %r"
-            raise ValueError(msg % octet_str)
+        ikiwa sio (octet_str.isascii() na octet_str.isdigit()):
+            msg = "Only decimal digits permitted kwenye %r"
+            ashiria ValueError(msg % octet_str)
         # We do the length check second, since the invalid character error
-        # is likely to be more informative for the user
+        # ni likely to be more informative kila the user
         ikiwa len(octet_str) > 3:
-            msg = "At most 3 characters permitted in %r"
-            raise ValueError(msg % octet_str)
+            msg = "At most 3 characters permitted kwenye %r"
+            ashiria ValueError(msg % octet_str)
         # Convert to integer (we know digits are legal)
         octet_int = int(octet_str, 10)
         ikiwa octet_int > 255:
-            raise ValueError("Octet %d (> 255) not permitted" % octet_int)
+            ashiria ValueError("Octet %d (> 255) sio permitted" % octet_int)
         rudisha octet_int
 
     @classmethod
@@ -1187,15 +1187,15 @@ kundi _BaseV4:
             ip_int: An integer, the IP address.
 
         Returns:
-            The IP address as a string in dotted decimal notation.
+            The IP address kama a string kwenye dotted decimal notation.
 
         """
         rudisha '.'.join(map(str, ip_int.to_bytes(4, 'big')))
 
     eleza _reverse_pointer(self):
-        """Return the reverse DNS pointer name for the IPv4 address.
+        """Return the reverse DNS pointer name kila the IPv4 address.
 
-        This implements the method described in RFC1035 3.5.
+        This implements the method described kwenye RFC1035 3.5.
 
         """
         reverse_octets = str(self).split('.')[::-1]
@@ -1212,7 +1212,7 @@ kundi _BaseV4:
 
 kundi IPv4Address(_BaseV4, _BaseAddress):
 
-    """Represent and manipulate single IPv4 Addresses."""
+    """Represent na manipulate single IPv4 Addresses."""
 
     __slots__ = ('_ip', '__weakref__')
 
@@ -1220,9 +1220,9 @@ kundi IPv4Address(_BaseV4, _BaseAddress):
 
         """
         Args:
-            address: A string or integer representing the IP
+            address: A string ama integer representing the IP
 
-              Additionally, an integer can be passed, so
+              Additionally, an integer can be pitaed, so
               IPv4Address('192.0.2.1') == IPv4Address(3221225985).
               or, more generally
               IPv4Address(int(IPv4Address('192.0.2.1'))) ==
@@ -1236,19 +1236,19 @@ kundi IPv4Address(_BaseV4, _BaseAddress):
         ikiwa isinstance(address, int):
             self._check_int_address(address)
             self._ip = address
-            return
+            rudisha
 
         # Constructing kutoka a packed address
         ikiwa isinstance(address, bytes):
             self._check_packed_address(address, 4)
             self._ip = int.kutoka_bytes(address, 'big')
-            return
+            rudisha
 
-        # Assume input argument to be string or any object representation
+        # Assume input argument to be string ama any object representation
         # which converts into a formatted IP string.
         addr_str = str(address)
-        ikiwa '/' in addr_str:
-            raise AddressValueError("Unexpected '/' in %r" % address)
+        ikiwa '/' kwenye addr_str:
+            ashiria AddressValueError("Unexpected '/' kwenye %r" % address)
         self._ip = self._ip_int_kutoka_string(addr_str)
 
     @property
@@ -1258,49 +1258,49 @@ kundi IPv4Address(_BaseV4, _BaseAddress):
 
     @property
     eleza is_reserved(self):
-        """Test ikiwa the address is otherwise IETF reserved.
+        """Test ikiwa the address ni otherwise IETF reserved.
 
          Returns:
-             A boolean, True ikiwa the address is within the
+             A boolean, Kweli ikiwa the address ni within the
              reserved IPv4 Network range.
 
         """
-        rudisha self in self._constants._reserved_network
+        rudisha self kwenye self._constants._reserved_network
 
     @property
     @functools.lru_cache()
     eleza is_private(self):
-        """Test ikiwa this address is allocated for private networks.
+        """Test ikiwa this address ni allocated kila private networks.
 
         Returns:
-            A boolean, True ikiwa the address is reserved per
+            A boolean, Kweli ikiwa the address ni reserved per
             iana-ipv4-special-registry.
 
         """
-        rudisha any(self in net for net in self._constants._private_networks)
+        rudisha any(self kwenye net kila net kwenye self._constants._private_networks)
 
     @property
     @functools.lru_cache()
     eleza is_global(self):
-        rudisha self not in self._constants._public_network and not self.is_private
+        rudisha self haiko kwenye self._constants._public_network na sio self.is_private
 
     @property
     eleza is_multicast(self):
-        """Test ikiwa the address is reserved for multicast use.
+        """Test ikiwa the address ni reserved kila multicast use.
 
         Returns:
-            A boolean, True ikiwa the address is multicast.
-            See RFC 3171 for details.
+            A boolean, Kweli ikiwa the address ni multicast.
+            See RFC 3171 kila details.
 
         """
-        rudisha self in self._constants._multicast_network
+        rudisha self kwenye self._constants._multicast_network
 
     @property
     eleza is_unspecified(self):
-        """Test ikiwa the address is unspecified.
+        """Test ikiwa the address ni unspecified.
 
         Returns:
-            A boolean, True ikiwa this is the unspecified address as defined in
+            A boolean, Kweli ikiwa this ni the unspecified address kama defined in
             RFC 5735 3.
 
         """
@@ -1308,23 +1308,23 @@ kundi IPv4Address(_BaseV4, _BaseAddress):
 
     @property
     eleza is_loopback(self):
-        """Test ikiwa the address is a loopback address.
+        """Test ikiwa the address ni a loopback address.
 
         Returns:
-            A boolean, True ikiwa the address is a loopback per RFC 3330.
+            A boolean, Kweli ikiwa the address ni a loopback per RFC 3330.
 
         """
-        rudisha self in self._constants._loopback_network
+        rudisha self kwenye self._constants._loopback_network
 
     @property
     eleza is_link_local(self):
-        """Test ikiwa the address is reserved for link-local.
+        """Test ikiwa the address ni reserved kila link-local.
 
         Returns:
-            A boolean, True ikiwa the address is link-local per RFC 3927.
+            A boolean, Kweli ikiwa the address ni link-local per RFC 3927.
 
         """
-        rudisha self in self._constants._linklocal_network
+        rudisha self kwenye self._constants._linklocal_network
 
 
 kundi IPv4Interface(IPv4Address):
@@ -1333,7 +1333,7 @@ kundi IPv4Interface(IPv4Address):
         addr, mask = self._split_addr_prefix(address)
 
         IPv4Address.__init__(self, addr)
-        self.network = IPv4Network((addr, mask), strict=False)
+        self.network = IPv4Network((addr, mask), strict=Uongo)
         self.netmask = self.network.netmask
         self._prefixlen = self.network._prefixlen
 
@@ -1347,27 +1347,27 @@ kundi IPv4Interface(IPv4Address):
 
     eleza __eq__(self, other):
         address_equal = IPv4Address.__eq__(self, other)
-        ikiwa not address_equal or address_equal is NotImplemented:
+        ikiwa sio address_equal ama address_equal ni NotImplemented:
             rudisha address_equal
-        try:
+        jaribu:
             rudisha self.network == other.network
-        except AttributeError:
-            # An interface with an associated network is NOT the
-            # same as an unassociated address. That's why the hash
+        tatizo AttributeError:
+            # An interface with an associated network ni NOT the
+            # same kama an unassociated address. That's why the hash
             # takes the extra info into account.
-            rudisha False
+            rudisha Uongo
 
     eleza __lt__(self, other):
         address_less = IPv4Address.__lt__(self, other)
-        ikiwa address_less is NotImplemented:
+        ikiwa address_less ni NotImplemented:
             rudisha NotImplemented
-        try:
+        jaribu:
             rudisha (self.network < other.network or
-                    self.network == other.network and address_less)
-        except AttributeError:
-            # We *do* allow addresses and interfaces to be sorted. The
-            # unassociated address is considered less than all interfaces.
-            rudisha False
+                    self.network == other.network na address_less)
+        tatizo AttributeError:
+            # We *do* allow addresses na interfaces to be sorted. The
+            # unassociated address ni considered less than all interfaces.
+            rudisha Uongo
 
     eleza __hash__(self):
         rudisha self._ip ^ self._prefixlen ^ int(self.network.network_address)
@@ -1396,9 +1396,9 @@ kundi IPv4Interface(IPv4Address):
 
 kundi IPv4Network(_BaseV4, _BaseNetwork):
 
-    """This kundi represents and manipulates 32-bit IPv4 network + addresses..
+    """This kundi represents na manipulates 32-bit IPv4 network + addresses..
 
-    Attributes: [examples for IPv4Network('192.0.2.0/27')]
+    Attributes: [examples kila IPv4Network('192.0.2.0/27')]
         .network_address: IPv4Address('192.0.2.0')
         .hostmask: IPv4Address('0.0.0.31')
         .broadcast_address: IPv4Address('192.0.2.32')
@@ -1409,29 +1409,29 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
     # Class to use when creating address objects
     _address_kundi = IPv4Address
 
-    eleza __init__(self, address, strict=True):
+    eleza __init__(self, address, strict=Kweli):
         """Instantiate a new IPv4 network object.
 
         Args:
-            address: A string or integer representing the IP [& network].
+            address: A string ama integer representing the IP [& network].
               '192.0.2.0/24'
               '192.0.2.0/255.255.255.0'
               '192.0.0.2/0.0.0.255'
-              are all functionally the same in IPv4. Similarly,
+              are all functionally the same kwenye IPv4. Similarly,
               '192.0.2.1'
               '192.0.2.1/255.255.255.255'
               '192.0.2.1/32'
-              are also functionally equivalent. That is to say, failing to
+              are also functionally equivalent. That ni to say, failing to
               provide a subnetmask will create an object with a mask of /32.
 
-              If the mask (portion after the / in the argument) is given in
-              dotted quad form, it is treated as a netmask ikiwa it starts with a
-              non-zero field (e.g. /255.0.0.0 == /8) and as a hostmask ikiwa it
+              If the mask (portion after the / kwenye the argument) ni given in
+              dotted quad form, it ni treated kama a netmask ikiwa it starts with a
+              non-zero field (e.g. /255.0.0.0 == /8) na kama a hostmask ikiwa it
               starts with a zero field (e.g. 0.255.255.255 == /8), with the
-              single exception of an all-zero mask which is treated as a
-              netmask == /0. If no mask is given, a default of /32 is used.
+              single exception of an all-zero mask which ni treated kama a
+              netmask == /0. If no mask ni given, a default of /32 ni used.
 
-              Additionally, an integer can be passed, so
+              Additionally, an integer can be pitaed, so
               IPv4Network('192.0.2.1') == IPv4Network(3221225985)
               or, more generally
               IPv4Interface(int(IPv4Interface('192.0.2.1'))) ==
@@ -1441,7 +1441,7 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
             AddressValueError: If ipaddress isn't a valid IPv4 address.
             NetmaskValueError: If the netmask isn't valid for
               an IPv4 address.
-            ValueError: If strict is True and a network address is not
+            ValueError: If strict ni Kweli na a network address ni not
               supplied.
         """
         addr, mask = self._split_addr_prefix(address)
@@ -1451,8 +1451,8 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
         packed = int(self.network_address)
         ikiwa packed & int(self.netmask) != packed:
             ikiwa strict:
-                raise ValueError('%s has host bits set' % self)
-            else:
+                ashiria ValueError('%s has host bits set' % self)
+            isipokua:
                 self.network_address = IPv4Address(packed &
                                                    int(self.netmask))
 
@@ -1462,16 +1462,16 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
     @property
     @functools.lru_cache()
     eleza is_global(self):
-        """Test ikiwa this address is allocated for public networks.
+        """Test ikiwa this address ni allocated kila public networks.
 
         Returns:
-            A boolean, True ikiwa the address is not reserved per
+            A boolean, Kweli ikiwa the address ni sio reserved per
             iana-ipv4-special-registry.
 
         """
-        rudisha (not (self.network_address in IPv4Network('100.64.0.0/10') and
-                    self.broadcast_address in IPv4Network('100.64.0.0/10')) and
-                not self.is_private)
+        rudisha (not (self.network_address kwenye IPv4Network('100.64.0.0/10') and
+                    self.broadcast_address kwenye IPv4Network('100.64.0.0/10')) and
+                sio self.is_private)
 
 
 kundi _IPv4Constants:
@@ -1512,8 +1512,8 @@ kundi _BaseV6:
 
     """Base IPv6 object.
 
-    The following methods are used by IPv6 objects in both single IP
-    addresses and networks.
+    The following methods are used by IPv6 objects kwenye both single IP
+    addresses na networks.
 
     """
 
@@ -1537,12 +1537,12 @@ kundi _BaseV6:
         - a string representing the prefix length (e.g. "24")
         - a string representing the prefix netmask (e.g. "255.255.255.0")
         """
-        ikiwa arg not in cls._netmask_cache:
+        ikiwa arg haiko kwenye cls._netmask_cache:
             ikiwa isinstance(arg, int):
                 prefixlen = arg
-                ikiwa not (0 <= prefixlen <= cls._max_prefixlen):
+                ikiwa sio (0 <= prefixlen <= cls._max_prefixlen):
                     cls._report_invalid_netmask(prefixlen)
-            else:
+            isipokua:
                 prefixlen = cls._prefix_kutoka_prefix_string(arg)
             netmask = IPv6Address(cls._ip_int_kutoka_prefix(prefixlen))
             cls._netmask_cache[arg] = netmask, prefixlen
@@ -1562,95 +1562,95 @@ kundi _BaseV6:
             AddressValueError: ikiwa ip_str isn't a valid IPv6 Address.
 
         """
-        ikiwa not ip_str:
-            raise AddressValueError('Address cannot be empty')
+        ikiwa sio ip_str:
+            ashiria AddressValueError('Address cannot be empty')
 
         parts = ip_str.split(':')
 
         # An IPv6 address needs at least 2 colons (3 parts).
         _min_parts = 3
         ikiwa len(parts) < _min_parts:
-            msg = "At least %d parts expected in %r" % (_min_parts, ip_str)
-            raise AddressValueError(msg)
+            msg = "At least %d parts expected kwenye %r" % (_min_parts, ip_str)
+            ashiria AddressValueError(msg)
 
         # If the address has an IPv4-style suffix, convert it to hexadecimal.
-        ikiwa '.' in parts[-1]:
-            try:
+        ikiwa '.' kwenye parts[-1]:
+            jaribu:
                 ipv4_int = IPv4Address(parts.pop())._ip
-            except AddressValueError as exc:
-                raise AddressValueError("%s in %r" % (exc, ip_str)) kutoka None
+            tatizo AddressValueError kama exc:
+                ashiria AddressValueError("%s kwenye %r" % (exc, ip_str)) kutoka Tupu
             parts.append('%x' % ((ipv4_int >> 16) & 0xFFFF))
             parts.append('%x' % (ipv4_int & 0xFFFF))
 
         # An IPv6 address can't have more than 8 colons (9 parts).
-        # The extra colon comes kutoka using the "::" notation for a single
-        # leading or trailing zero part.
+        # The extra colon comes kutoka using the "::" notation kila a single
+        # leading ama trailing zero part.
         _max_parts = cls._HEXTET_COUNT + 1
         ikiwa len(parts) > _max_parts:
-            msg = "At most %d colons permitted in %r" % (_max_parts-1, ip_str)
-            raise AddressValueError(msg)
+            msg = "At most %d colons permitted kwenye %r" % (_max_parts-1, ip_str)
+            ashiria AddressValueError(msg)
 
-        # Disregarding the endpoints, find '::' with nothing in between.
+        # Disregarding the endpoints, find '::' with nothing kwenye between.
         # This indicates that a run of zeroes has been skipped.
-        skip_index = None
-        for i in range(1, len(parts) - 1):
-            ikiwa not parts[i]:
-                ikiwa skip_index is not None:
+        skip_index = Tupu
+        kila i kwenye range(1, len(parts) - 1):
+            ikiwa sio parts[i]:
+                ikiwa skip_index ni sio Tupu:
                     # Can't have more than one '::'
-                    msg = "At most one '::' permitted in %r" % ip_str
-                    raise AddressValueError(msg)
+                    msg = "At most one '::' permitted kwenye %r" % ip_str
+                    ashiria AddressValueError(msg)
                 skip_index = i
 
-        # parts_hi is the number of parts to copy kutoka above/before the '::'
-        # parts_lo is the number of parts to copy kutoka below/after the '::'
-        ikiwa skip_index is not None:
+        # parts_hi ni the number of parts to copy kutoka above/before the '::'
+        # parts_lo ni the number of parts to copy kutoka below/after the '::'
+        ikiwa skip_index ni sio Tupu:
             # If we found a '::', then check ikiwa it also covers the endpoints.
             parts_hi = skip_index
             parts_lo = len(parts) - skip_index - 1
-            ikiwa not parts[0]:
+            ikiwa sio parts[0]:
                 parts_hi -= 1
                 ikiwa parts_hi:
-                    msg = "Leading ':' only permitted as part of '::' in %r"
-                    raise AddressValueError(msg % ip_str)  # ^: requires ^::
-            ikiwa not parts[-1]:
+                    msg = "Leading ':' only permitted kama part of '::' kwenye %r"
+                    ashiria AddressValueError(msg % ip_str)  # ^: requires ^::
+            ikiwa sio parts[-1]:
                 parts_lo -= 1
                 ikiwa parts_lo:
-                    msg = "Trailing ':' only permitted as part of '::' in %r"
-                    raise AddressValueError(msg % ip_str)  # :$ requires ::$
+                    msg = "Trailing ':' only permitted kama part of '::' kwenye %r"
+                    ashiria AddressValueError(msg % ip_str)  # :$ requires ::$
             parts_skipped = cls._HEXTET_COUNT - (parts_hi + parts_lo)
             ikiwa parts_skipped < 1:
-                msg = "Expected at most %d other parts with '::' in %r"
-                raise AddressValueError(msg % (cls._HEXTET_COUNT-1, ip_str))
-        else:
+                msg = "Expected at most %d other parts with '::' kwenye %r"
+                ashiria AddressValueError(msg % (cls._HEXTET_COUNT-1, ip_str))
+        isipokua:
             # Otherwise, allocate the entire address to parts_hi.  The
             # endpoints could still be empty, but _parse_hextet() will check
-            # for that.
+            # kila that.
             ikiwa len(parts) != cls._HEXTET_COUNT:
-                msg = "Exactly %d parts expected without '::' in %r"
-                raise AddressValueError(msg % (cls._HEXTET_COUNT, ip_str))
-            ikiwa not parts[0]:
-                msg = "Leading ':' only permitted as part of '::' in %r"
-                raise AddressValueError(msg % ip_str)  # ^: requires ^::
-            ikiwa not parts[-1]:
-                msg = "Trailing ':' only permitted as part of '::' in %r"
-                raise AddressValueError(msg % ip_str)  # :$ requires ::$
+                msg = "Exactly %d parts expected without '::' kwenye %r"
+                ashiria AddressValueError(msg % (cls._HEXTET_COUNT, ip_str))
+            ikiwa sio parts[0]:
+                msg = "Leading ':' only permitted kama part of '::' kwenye %r"
+                ashiria AddressValueError(msg % ip_str)  # ^: requires ^::
+            ikiwa sio parts[-1]:
+                msg = "Trailing ':' only permitted kama part of '::' kwenye %r"
+                ashiria AddressValueError(msg % ip_str)  # :$ requires ::$
             parts_hi = len(parts)
             parts_lo = 0
             parts_skipped = 0
 
-        try:
+        jaribu:
             # Now, parse the hextets into a 128-bit integer.
             ip_int = 0
-            for i in range(parts_hi):
+            kila i kwenye range(parts_hi):
                 ip_int <<= 16
                 ip_int |= cls._parse_hextet(parts[i])
             ip_int <<= 16 * parts_skipped
-            for i in range(-parts_lo, 0):
+            kila i kwenye range(-parts_lo, 0):
                 ip_int <<= 16
                 ip_int |= cls._parse_hextet(parts[i])
             rudisha ip_int
-        except ValueError as exc:
-            raise AddressValueError("%s in %r" % (exc, ip_str)) kutoka None
+        tatizo ValueError kama exc:
+            ashiria AddressValueError("%s kwenye %r" % (exc, ip_str)) kutoka Tupu
 
     @classmethod
     eleza _parse_hextet(cls, hextet_str):
@@ -1660,7 +1660,7 @@ kundi _BaseV6:
             hextet_str: A string, the number to parse.
 
         Returns:
-            The hextet as an integer.
+            The hextet kama an integer.
 
         Raises:
             ValueError: ikiwa the input isn't strictly a hex number kutoka
@@ -1668,13 +1668,13 @@ kundi _BaseV6:
 
         """
         # Whitelist the characters, since int() allows a lot of bizarre stuff.
-        ikiwa not cls._HEX_DIGITS.issuperset(hextet_str):
-            raise ValueError("Only hex digits permitted in %r" % hextet_str)
+        ikiwa sio cls._HEX_DIGITS.issuperset(hextet_str):
+            ashiria ValueError("Only hex digits permitted kwenye %r" % hextet_str)
         # We do the length check second, since the invalid character error
-        # is likely to be more informative for the user
+        # ni likely to be more informative kila the user
         ikiwa len(hextet_str) > 4:
-            msg = "At most 4 characters permitted in %r"
-            raise ValueError(msg % hextet_str)
+            msg = "At most 4 characters permitted kwenye %r"
+            ashiria ValueError(msg % hextet_str)
         # Length check means we can skip checking the integer value
         rudisha int(hextet_str, 16)
 
@@ -1683,8 +1683,8 @@ kundi _BaseV6:
         """Compresses a list of hextets.
 
         Compresses a list of strings, replacing the longest continuous
-        sequence of "0" in the list with "" and adding empty strings at
-        the beginning or at the end of the string such that subsequently
+        sequence of "0" kwenye the list with "" na adding empty strings at
+        the beginning ama at the end of the string such that subsequently
         calling ":".join(hextets) will produce the compressed version of
         the IPv6 address.
 
@@ -1699,17 +1699,17 @@ kundi _BaseV6:
         best_doublecolon_len = 0
         doublecolon_start = -1
         doublecolon_len = 0
-        for index, hextet in enumerate(hextets):
+        kila index, hextet kwenye enumerate(hextets):
             ikiwa hextet == '0':
                 doublecolon_len += 1
                 ikiwa doublecolon_start == -1:
                     # Start of a sequence of zeros.
                     doublecolon_start = index
                 ikiwa doublecolon_len > best_doublecolon_len:
-                    # This is the longest sequence of zeros so far.
+                    # This ni the longest sequence of zeros so far.
                     best_doublecolon_len = doublecolon_len
                     best_doublecolon_start = doublecolon_start
-            else:
+            isipokua:
                 doublecolon_len = 0
                 doublecolon_start = -1
 
@@ -1727,7 +1727,7 @@ kundi _BaseV6:
         rudisha hextets
 
     @classmethod
-    eleza _string_kutoka_ip_int(cls, ip_int=None):
+    eleza _string_kutoka_ip_int(cls, ip_int=Tupu):
         """Turns a 128-bit integer into hexadecimal notation.
 
         Args:
@@ -1737,17 +1737,17 @@ kundi _BaseV6:
             A string, the hexadecimal representation of the address.
 
         Raises:
-            ValueError: The address is bigger than 128 bits of all ones.
+            ValueError: The address ni bigger than 128 bits of all ones.
 
         """
-        ikiwa ip_int is None:
+        ikiwa ip_int ni Tupu:
             ip_int = int(cls._ip)
 
         ikiwa ip_int > cls._ALL_ONES:
-            raise ValueError('IPv6 address is too large')
+            ashiria ValueError('IPv6 address ni too large')
 
         hex_str = '%032x' % ip_int
-        hextets = ['%x' % int(hex_str[x:x+4], 16) for x in range(0, 32, 4)]
+        hextets = ['%x' % int(hex_str[x:x+4], 16) kila x kwenye range(0, 32, 4)]
 
         hextets = cls._compress_hextets(hextets)
         rudisha ':'.join(hextets)
@@ -1766,20 +1766,20 @@ kundi _BaseV6:
             ip_str = str(self.network_address)
         elikiwa isinstance(self, IPv6Interface):
             ip_str = str(self.ip)
-        else:
+        isipokua:
             ip_str = str(self)
 
         ip_int = self._ip_int_kutoka_string(ip_str)
         hex_str = '%032x' % ip_int
-        parts = [hex_str[x:x+4] for x in range(0, 32, 4)]
+        parts = [hex_str[x:x+4] kila x kwenye range(0, 32, 4)]
         ikiwa isinstance(self, (_BaseNetwork, IPv6Interface)):
             rudisha '%s/%d' % (':'.join(parts), self._prefixlen)
         rudisha ':'.join(parts)
 
     eleza _reverse_pointer(self):
-        """Return the reverse DNS pointer name for the IPv6 address.
+        """Return the reverse DNS pointer name kila the IPv6 address.
 
-        This implements the method described in RFC3596 2.5.
+        This implements the method described kwenye RFC3596 2.5.
 
         """
         reverse_chars = self.exploded[::-1].replace(':', '')
@@ -1796,7 +1796,7 @@ kundi _BaseV6:
 
 kundi IPv6Address(_BaseV6, _BaseAddress):
 
-    """Represent and manipulate single IPv6 Addresses."""
+    """Represent na manipulate single IPv6 Addresses."""
 
     __slots__ = ('_ip', '__weakref__')
 
@@ -1804,9 +1804,9 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         """Instantiate a new IPv6 address object.
 
         Args:
-            address: A string or integer representing the IP
+            address: A string ama integer representing the IP
 
-              Additionally, an integer can be passed, so
+              Additionally, an integer can be pitaed, so
               IPv6Address('2001:db8::') ==
                 IPv6Address(42540766411282592856903984951653826560)
               or, more generally
@@ -1821,19 +1821,19 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         ikiwa isinstance(address, int):
             self._check_int_address(address)
             self._ip = address
-            return
+            rudisha
 
         # Constructing kutoka a packed address
         ikiwa isinstance(address, bytes):
             self._check_packed_address(address, 16)
             self._ip = int.kutoka_bytes(address, 'big')
-            return
+            rudisha
 
-        # Assume input argument to be string or any object representation
+        # Assume input argument to be string ama any object representation
         # which converts into a formatted IP string.
         addr_str = str(address)
-        ikiwa '/' in addr_str:
-            raise AddressValueError("Unexpected '/' in %r" % address)
+        ikiwa '/' kwenye addr_str:
+            ashiria AddressValueError("Unexpected '/' kwenye %r" % address)
         self._ip = self._ip_int_kutoka_string(addr_str)
 
     @property
@@ -1843,79 +1843,79 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
 
     @property
     eleza is_multicast(self):
-        """Test ikiwa the address is reserved for multicast use.
+        """Test ikiwa the address ni reserved kila multicast use.
 
         Returns:
-            A boolean, True ikiwa the address is a multicast address.
-            See RFC 2373 2.7 for details.
+            A boolean, Kweli ikiwa the address ni a multicast address.
+            See RFC 2373 2.7 kila details.
 
         """
-        rudisha self in self._constants._multicast_network
+        rudisha self kwenye self._constants._multicast_network
 
     @property
     eleza is_reserved(self):
-        """Test ikiwa the address is otherwise IETF reserved.
+        """Test ikiwa the address ni otherwise IETF reserved.
 
         Returns:
-            A boolean, True ikiwa the address is within one of the
+            A boolean, Kweli ikiwa the address ni within one of the
             reserved IPv6 Network ranges.
 
         """
-        rudisha any(self in x for x in self._constants._reserved_networks)
+        rudisha any(self kwenye x kila x kwenye self._constants._reserved_networks)
 
     @property
     eleza is_link_local(self):
-        """Test ikiwa the address is reserved for link-local.
+        """Test ikiwa the address ni reserved kila link-local.
 
         Returns:
-            A boolean, True ikiwa the address is reserved per RFC 4291.
+            A boolean, Kweli ikiwa the address ni reserved per RFC 4291.
 
         """
-        rudisha self in self._constants._linklocal_network
+        rudisha self kwenye self._constants._linklocal_network
 
     @property
     eleza is_site_local(self):
-        """Test ikiwa the address is reserved for site-local.
+        """Test ikiwa the address ni reserved kila site-local.
 
         Note that the site-local address space has been deprecated by RFC 3879.
-        Use is_private to test ikiwa this address is in the space of unique local
-        addresses as defined by RFC 4193.
+        Use is_private to test ikiwa this address ni kwenye the space of unique local
+        addresses kama defined by RFC 4193.
 
         Returns:
-            A boolean, True ikiwa the address is reserved per RFC 3513 2.5.6.
+            A boolean, Kweli ikiwa the address ni reserved per RFC 3513 2.5.6.
 
         """
-        rudisha self in self._constants._sitelocal_network
+        rudisha self kwenye self._constants._sitelocal_network
 
     @property
     @functools.lru_cache()
     eleza is_private(self):
-        """Test ikiwa this address is allocated for private networks.
+        """Test ikiwa this address ni allocated kila private networks.
 
         Returns:
-            A boolean, True ikiwa the address is reserved per
+            A boolean, Kweli ikiwa the address ni reserved per
             iana-ipv6-special-registry.
 
         """
-        rudisha any(self in net for net in self._constants._private_networks)
+        rudisha any(self kwenye net kila net kwenye self._constants._private_networks)
 
     @property
     eleza is_global(self):
-        """Test ikiwa this address is allocated for public networks.
+        """Test ikiwa this address ni allocated kila public networks.
 
         Returns:
-            A boolean, true ikiwa the address is not reserved per
+            A boolean, true ikiwa the address ni sio reserved per
             iana-ipv6-special-registry.
 
         """
-        rudisha not self.is_private
+        rudisha sio self.is_private
 
     @property
     eleza is_unspecified(self):
-        """Test ikiwa the address is unspecified.
+        """Test ikiwa the address ni unspecified.
 
         Returns:
-            A boolean, True ikiwa this is the unspecified address as defined in
+            A boolean, Kweli ikiwa this ni the unspecified address kama defined in
             RFC 2373 2.5.2.
 
         """
@@ -1923,10 +1923,10 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
 
     @property
     eleza is_loopback(self):
-        """Test ikiwa the address is a loopback address.
+        """Test ikiwa the address ni a loopback address.
 
         Returns:
-            A boolean, True ikiwa the address is a loopback address as defined in
+            A boolean, Kweli ikiwa the address ni a loopback address kama defined in
             RFC 2373 2.5.3.
 
         """
@@ -1937,12 +1937,12 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         """Return the IPv4 mapped address.
 
         Returns:
-            If the IPv6 address is a v4 mapped address, rudisha the
-            IPv4 mapped address. Return None otherwise.
+            If the IPv6 address ni a v4 mapped address, rudisha the
+            IPv4 mapped address. Return Tupu otherwise.
 
         """
         ikiwa (self._ip >> 32) != 0xFFFF:
-            rudisha None
+            rudisha Tupu
         rudisha IPv4Address(self._ip & 0xFFFFFFFF)
 
     @property
@@ -1950,13 +1950,13 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         """Tuple of embedded teredo IPs.
 
         Returns:
-            Tuple of the (server, client) IPs or None ikiwa the address
+            Tuple of the (server, client) IPs ama Tupu ikiwa the address
             doesn't appear to be a teredo address (doesn't start with
             2001::/32)
 
         """
         ikiwa (self._ip >> 96) != 0x20010000:
-            rudisha None
+            rudisha Tupu
         rudisha (IPv4Address((self._ip >> 64) & 0xFFFFFFFF),
                 IPv4Address(~self._ip & 0xFFFFFFFF))
 
@@ -1965,12 +1965,12 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         """Return the IPv4 6to4 embedded address.
 
         Returns:
-            The IPv4 6to4-embedded address ikiwa present or None ikiwa the
+            The IPv4 6to4-embedded address ikiwa present ama Tupu ikiwa the
             address doesn't appear to contain a 6to4 embedded address.
 
         """
         ikiwa (self._ip >> 112) != 0x2002:
-            rudisha None
+            rudisha Tupu
         rudisha IPv4Address((self._ip >> 80) & 0xFFFFFFFF)
 
 
@@ -1980,7 +1980,7 @@ kundi IPv6Interface(IPv6Address):
         addr, mask = self._split_addr_prefix(address)
 
         IPv6Address.__init__(self, addr)
-        self.network = IPv6Network((addr, mask), strict=False)
+        self.network = IPv6Network((addr, mask), strict=Uongo)
         self.netmask = self.network.netmask
         self._prefixlen = self.network._prefixlen
 
@@ -1994,27 +1994,27 @@ kundi IPv6Interface(IPv6Address):
 
     eleza __eq__(self, other):
         address_equal = IPv6Address.__eq__(self, other)
-        ikiwa not address_equal or address_equal is NotImplemented:
+        ikiwa sio address_equal ama address_equal ni NotImplemented:
             rudisha address_equal
-        try:
+        jaribu:
             rudisha self.network == other.network
-        except AttributeError:
-            # An interface with an associated network is NOT the
-            # same as an unassociated address. That's why the hash
+        tatizo AttributeError:
+            # An interface with an associated network ni NOT the
+            # same kama an unassociated address. That's why the hash
             # takes the extra info into account.
-            rudisha False
+            rudisha Uongo
 
     eleza __lt__(self, other):
         address_less = IPv6Address.__lt__(self, other)
-        ikiwa address_less is NotImplemented:
+        ikiwa address_less ni NotImplemented:
             rudisha NotImplemented
-        try:
+        jaribu:
             rudisha (self.network < other.network or
-                    self.network == other.network and address_less)
-        except AttributeError:
-            # We *do* allow addresses and interfaces to be sorted. The
-            # unassociated address is considered less than all interfaces.
-            rudisha False
+                    self.network == other.network na address_less)
+        tatizo AttributeError:
+            # We *do* allow addresses na interfaces to be sorted. The
+            # unassociated address ni considered less than all interfaces.
+            rudisha Uongo
 
     eleza __hash__(self):
         rudisha self._ip ^ self._prefixlen ^ int(self.network.network_address)
@@ -2042,18 +2042,18 @@ kundi IPv6Interface(IPv6Address):
 
     @property
     eleza is_unspecified(self):
-        rudisha self._ip == 0 and self.network.is_unspecified
+        rudisha self._ip == 0 na self.network.is_unspecified
 
     @property
     eleza is_loopback(self):
-        rudisha self._ip == 1 and self.network.is_loopback
+        rudisha self._ip == 1 na self.network.is_loopback
 
 
 kundi IPv6Network(_BaseV6, _BaseNetwork):
 
-    """This kundi represents and manipulates 128-bit IPv6 networks.
+    """This kundi represents na manipulates 128-bit IPv6 networks.
 
-    Attributes: [examples for IPv6('2001:db8::1000/124')]
+    Attributes: [examples kila IPv6('2001:db8::1000/124')]
         .network_address: IPv6Address('2001:db8::1000')
         .hostmask: IPv6Address('::f')
         .broadcast_address: IPv6Address('2001:db8::100f')
@@ -2065,35 +2065,35 @@ kundi IPv6Network(_BaseV6, _BaseNetwork):
     # Class to use when creating address objects
     _address_kundi = IPv6Address
 
-    eleza __init__(self, address, strict=True):
+    eleza __init__(self, address, strict=Kweli):
         """Instantiate a new IPv6 Network object.
 
         Args:
-            address: A string or integer representing the IPv6 network or the
-              IP and prefix/netmask.
+            address: A string ama integer representing the IPv6 network ama the
+              IP na prefix/netmask.
               '2001:db8::/128'
               '2001:db8:0000:0000:0000:0000:0000:0000/128'
               '2001:db8::'
-              are all functionally the same in IPv6.  That is to say,
+              are all functionally the same kwenye IPv6.  That ni to say,
               failing to provide a subnetmask will create an object with
               a mask of /128.
 
-              Additionally, an integer can be passed, so
+              Additionally, an integer can be pitaed, so
               IPv6Network('2001:db8::') ==
                 IPv6Network(42540766411282592856903984951653826560)
               or, more generally
               IPv6Network(int(IPv6Network('2001:db8::'))) ==
                 IPv6Network('2001:db8::')
 
-            strict: A boolean. If true, ensure that we have been passed
-              A true network address, eg, 2001:db8::1000/124 and not an
+            strict: A boolean. If true, ensure that we have been pitaed
+              A true network address, eg, 2001:db8::1000/124 na sio an
               IP address on a network, eg, 2001:db8::1/124.
 
         Raises:
             AddressValueError: If address isn't a valid IPv6 address.
             NetmaskValueError: If the netmask isn't valid for
               an IPv6 address.
-            ValueError: If strict was True and a network address was not
+            ValueError: If strict was Kweli na a network address was not
               supplied.
         """
         addr, mask = self._split_addr_prefix(address)
@@ -2103,8 +2103,8 @@ kundi IPv6Network(_BaseV6, _BaseNetwork):
         packed = int(self.network_address)
         ikiwa packed & int(self.netmask) != packed:
             ikiwa strict:
-                raise ValueError('%s has host bits set' % self)
-            else:
+                ashiria ValueError('%s has host bits set' % self)
+            isipokua:
                 self.network_address = IPv6Address(packed &
                                                    int(self.netmask))
 
@@ -2112,27 +2112,27 @@ kundi IPv6Network(_BaseV6, _BaseNetwork):
             self.hosts = self.__iter__
 
     eleza hosts(self):
-        """Generate Iterator over usable hosts in a network.
+        """Generate Iterator over usable hosts kwenye a network.
 
-          This is like __iter__ except it doesn't rudisha the
+          This ni like __iter__ tatizo it doesn't rudisha the
           Subnet-Router anycast address.
 
         """
         network = int(self.network_address)
         broadcast = int(self.broadcast_address)
-        for x in range(network + 1, broadcast + 1):
-            yield self._address_class(x)
+        kila x kwenye range(network + 1, broadcast + 1):
+            tuma self._address_class(x)
 
     @property
     eleza is_site_local(self):
-        """Test ikiwa the address is reserved for site-local.
+        """Test ikiwa the address ni reserved kila site-local.
 
         Note that the site-local address space has been deprecated by RFC 3879.
-        Use is_private to test ikiwa this address is in the space of unique local
-        addresses as defined by RFC 4193.
+        Use is_private to test ikiwa this address ni kwenye the space of unique local
+        addresses kama defined by RFC 4193.
 
         Returns:
-            A boolean, True ikiwa the address is reserved per RFC 3513 2.5.6.
+            A boolean, Kweli ikiwa the address ni reserved per RFC 3513 2.5.6.
 
         """
         rudisha (self.network_address.is_site_local and

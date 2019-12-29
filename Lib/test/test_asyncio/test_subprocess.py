@@ -97,7 +97,7 @@ class SubprocessTransportTests(test_utils.TestCase):
         transport._returncode = None
         self.assertEqual(
             repr(transport),
-            "<TestSubprocessTransport not started>"
+            "<TestSubprocessTransport sio started>"
         )
         transport.close()
 
@@ -176,7 +176,7 @@ class SubprocessMixin:
         if sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
-        else:
+        isipokua:
             self.assertEqual(-signal.SIGKILL, returncode)
 
     def test_terminate(self):
@@ -189,7 +189,7 @@ class SubprocessMixin:
         if sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
-        else:
+        isipokua:
             self.assertEqual(-signal.SIGTERM, returncode)
 
     @unittest.skipIf(sys.platform == 'win32', "Don't have SIGHUP")
@@ -198,7 +198,7 @@ class SubprocessMixin:
         # the process). The parent process may have decided to ignore SIGHUP,
         # and signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
-        try:
+        jaribu:
             code = 'import time; print("sleeping", flush=True); time.sleep(3600)'
             args = [sys.executable, '-c', code]
             proc = self.loop.run_until_complete(
@@ -219,7 +219,7 @@ class SubprocessMixin:
 
             returncode = self.loop.run_until_complete(send_signal(proc))
             self.assertEqual(-signal.SIGHUP, returncode)
-        finally:
+        mwishowe:
             signal.signal(signal.SIGHUP, old_handler)
 
     def prepare_broken_pipe_test(self):
@@ -304,7 +304,7 @@ class SubprocessMixin:
         self.assertTrue(transport.resume_reading.called)
 
     def test_stdin_not_inheritable(self):
-        # asyncio issue #209: stdin must not be inheritable, otherwise
+        # asyncio issue #209: stdin must sio be inheritable, otherwise
         # the Process.communicate() hangs
         async def len_message(message):
             code = 'import sys; data = sys.stdin.read(); print(len(data))'
@@ -408,9 +408,9 @@ class SubprocessMixin:
             # Create an internal future waiting on the process exit
             task = self.loop.create_task(proc.wait())
             self.loop.call_soon(task.cancel)
-            try:
+            jaribu:
                 await task
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 pass
 
             # Cancel the future
@@ -429,9 +429,9 @@ class SubprocessMixin:
             task = self.loop.create_task(coro)
 
             self.loop.call_soon(task.cancel)
-            try:
+            jaribu:
                 await task
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 pass
 
         # ignore the log:
@@ -447,9 +447,9 @@ class SubprocessMixin:
             task = self.loop.create_task(coro)
 
             self.loop.call_soon(task.cancel)
-            try:
+            jaribu:
                 await task
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 pass
 
         # ignore the log:
@@ -496,7 +496,7 @@ class SubprocessMixin:
             transport, protocol = await create
             proc = transport.get_extra_info('subprocess')
 
-            # kill the process (but asyncio is not notified immediately)
+            # kill the process (but asyncio ni sio notified immediately)
             proc.kill()
             proc.wait()
 
@@ -518,11 +518,11 @@ class SubprocessMixin:
         self.assertIsNotNone(proc_returncode)
         self.assertIsNone(transport_return_code)
 
-        # transport.close() must not kill the process if it finished, even if
-        # the transport was not notified yet
+        # transport.close() must sio kill the process if it finished, even if
+        # the transport was sio notified yet
         self.assertFalse(killed)
 
-        # Unlike SafeChildWatcher, FastChildWatcher does not pop the
+        # Unlike SafeChildWatcher, FastChildWatcher does sio pop the
         # callbacks if waitpid() is called elsewhere. Let's clear them
         # manually to avoid a warning when the watcher is detached.
         if (sys.platform != 'win32' and
@@ -532,7 +532,7 @@ class SubprocessMixin:
     async def _test_popen_error(self, stdin):
         if sys.platform == 'win32':
             target = 'asyncio.windows_utils.Popen'
-        else:
+        isipokua:
             target = 'subprocess.Popen'
         with mock.patch(target) as popen:
             exc = ZeroDivisionError
@@ -573,12 +573,12 @@ class SubprocessMixin:
                 stdout=asyncio.subprocess.PIPE,
             )
 
-            while True:
+            wakati True:
                 data = await process.stdout.read(65536)
                 if data:
                     await asyncio.sleep(0.3)
-                else:
-                    break
+                isipokua:
+                    koma
 
         self.loop.run_until_complete(execute())
 
@@ -691,7 +691,7 @@ if sys.platform != 'win32':
 
         Watcher = unix_events.FastChildWatcher
 
-else:
+isipokua:
     # Windows
     class SubprocessProactorTests(SubprocessMixin, test_utils.TestCase):
 

@@ -1,9 +1,9 @@
 """Response classes used by urllib.
 
 The base class, addbase, defines a minimal file-like interface,
-including read() and readline().  The typical response object is an
-addinfourl instance, which defines an info() method that returns
-headers and a geturl() method that returns the url.
+including read() na readline().  The typical response object ni an
+addinfourl instance, which defines an info() method that rudishas
+headers na a geturl() method that rudishas the url.
 """
 
 agiza tempfile
@@ -12,13 +12,13 @@ __all__ = ['addbase', 'addclosehook', 'addinfo', 'addinfourl']
 
 
 kundi addbase(tempfile._TemporaryFileWrapper):
-    """Base kundi for addinfo and addclosehook. Is a good idea for garbage collection."""
+    """Base kundi kila addinfo na addclosehook. Is a good idea kila garbage collection."""
 
     # XXX Add a method to expose the timeout on the underlying socket?
 
     eleza __init__(self, fp):
-        super(addbase,  self).__init__(fp, '<urllib response>', delete=False)
-        # Keep reference around as this was part of the original API.
+        super(addbase,  self).__init__(fp, '<urllib response>', delete=Uongo)
+        # Keep reference around kama this was part of the original API.
         self.fp = fp
 
     eleza __repr__(self):
@@ -27,7 +27,7 @@ kundi addbase(tempfile._TemporaryFileWrapper):
 
     eleza __enter__(self):
         ikiwa self.fp.closed:
-            raise ValueError("I/O operation on closed file")
+            ashiria ValueError("I/O operation on closed file")
         rudisha self
 
     eleza __exit__(self, type, value, traceback):
@@ -43,14 +43,14 @@ kundi addclosehook(addbase):
         self.hookargs = hookargs
 
     eleza close(self):
-        try:
+        jaribu:
             closehook = self.closehook
             hookargs = self.hookargs
             ikiwa closehook:
-                self.closehook = None
-                self.hookargs = None
+                self.closehook = Tupu
+                self.hookargs = Tupu
                 closehook(*hookargs)
-        finally:
+        mwishowe:
             super(addclosehook, self).close()
 
 
@@ -66,9 +66,9 @@ kundi addinfo(addbase):
 
 
 kundi addinfourl(addinfo):
-    """kundi to add info() and geturl() methods to an open file."""
+    """kundi to add info() na geturl() methods to an open file."""
 
-    eleza __init__(self, fp, headers, url, code=None):
+    eleza __init__(self, fp, headers, url, code=Tupu):
         super(addinfourl, self).__init__(fp, headers)
         self.url = url
         self.code = code

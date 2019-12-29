@@ -20,7 +20,7 @@ shape = circle
 pencolor  = red
 fillcolor  = blue
 resizemode  = auto
-visible  = None
+visible  = Tupu
 language = english
 exampleturtle = turtle
 examplescreen = screen
@@ -33,17 +33,17 @@ test_config_two = """\
 # Testing comments!
 pencolor  = red
 fillcolor  = blue
-visible  = False
+visible  = Uongo
 language = english
 # Some more
 # comments
-using_IDLE = False
+using_IDLE = Uongo
 """
 
 invalid_test_config = """
 pencolor = red
 fillcolor: blue
-visible = False
+visible = Uongo
 """
 
 
@@ -51,7 +51,7 @@ kundi TurtleConfigTest(unittest.TestCase):
 
     eleza get_cfg_file(self, cfg_str):
         self.addCleanup(support.unlink, support.TESTFN)
-        with open(support.TESTFN, 'w') as f:
+        with open(support.TESTFN, 'w') kama f:
             f.write(cfg_str)
         rudisha support.TESTFN
 
@@ -75,7 +75,7 @@ kundi TurtleConfigTest(unittest.TestCase):
             'pencolor' : 'red',
             'fillcolor' : 'blue',
             'resizemode' : 'auto',
-            'visible' : None,
+            'visible' : Tupu,
             'language': 'english',
             'exampleturtle': 'turtle',
             'examplescreen': 'screen',
@@ -93,9 +93,9 @@ kundi TurtleConfigTest(unittest.TestCase):
         expected = {
             'pencolor': 'red',
             'fillcolor': 'blue',
-            'visible': False,
+            'visible': Uongo,
             'language': 'english',
-            'using_IDLE': False,
+            'using_IDLE': Uongo,
         }
 
         self.assertEqual(parsed_cfg, expected)
@@ -104,17 +104,17 @@ kundi TurtleConfigTest(unittest.TestCase):
 
         cfg_name = self.get_cfg_file(invalid_test_config)
 
-        with support.captured_stdout() as stdout:
+        with support.captured_stdout() kama stdout:
             parsed_cfg = turtle.config_dict(cfg_name)
 
         err_msg = stdout.getvalue()
 
-        self.assertIn('Bad line in config-file ', err_msg)
+        self.assertIn('Bad line kwenye config-file ', err_msg)
         self.assertIn('fillcolor: blue', err_msg)
 
         self.assertEqual(parsed_cfg, {
             'pencolor': 'red',
-            'visible': False,
+            'visible': Uongo,
         })
 
 
@@ -122,10 +122,10 @@ kundi VectorComparisonMixin:
 
     eleza assertVectorsAlmostEqual(self, vec1, vec2):
         ikiwa len(vec1) != len(vec2):
-            self.fail("Tuples are not of equal size")
-        for idx, (i, j) in enumerate(zip(vec1, vec2)):
+            self.fail("Tuples are sio of equal size")
+        kila idx, (i, j) kwenye enumerate(zip(vec1, vec2)):
             self.assertAlmostEqual(
-                i, j, msg='values at index {} do not match'.format(idx))
+                i, j, msg='values at index {} do sio match'.format(idx))
 
 
 kundi TestVec2D(VectorComparisonMixin, unittest.TestCase):
@@ -158,7 +158,7 @@ kundi TestVec2D(VectorComparisonMixin, unittest.TestCase):
 
     eleza test_pickling(self):
         vec = Vec2D(0.5, 2)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 pickled = pickle.dumps(vec, protocol=proto)
                 unpickled = pickle.loads(pickled)
@@ -166,7 +166,7 @@ kundi TestVec2D(VectorComparisonMixin, unittest.TestCase):
                 self.assertIsInstance(unpickled, Vec2D)
 
     eleza _assert_arithmetic_cases(self, test_cases, lambda_operator):
-        for test_case in test_cases:
+        kila test_case kwenye test_cases:
             with self.subTest(case=test_case):
 
                 ((first, second), expected) = test_case
@@ -240,7 +240,7 @@ kundi TestVec2D(VectorComparisonMixin, unittest.TestCase):
             (((1, 0), 360), (1, 0)),
         ]
 
-        for case in cases:
+        kila case kwenye cases:
             with self.subTest(case=case):
                 (vec, rot), expected = case
                 vec = Vec2D(*vec)
@@ -332,7 +332,7 @@ kundi TestTNavigator(VectorComparisonMixin, unittest.TestCase):
             ((100, -100), 315.0),
         ]
 
-        for (x, y), expected in coordinates:
+        kila (x, y), expected kwenye coordinates:
             self.assertEqual(self.nav.towards(x, y), expected)
             self.assertEqual(self.nav.towards((x, y)), expected)
             self.assertEqual(self.nav.towards(Vec2D(x, y)), expected)
@@ -350,23 +350,23 @@ kundi TestTNavigator(VectorComparisonMixin, unittest.TestCase):
 
         rotations = [10, 20, 170, 300]
         result = sum(rotations) % 360
-        for num in rotations:
+        kila num kwenye rotations:
             self.nav.left(num)
         self.assertEqual(self.nav.heading(), result)
         self.nav.reset()
 
         result = (360-sum(rotations)) % 360
-        for num in rotations:
+        kila num kwenye rotations:
             self.nav.right(num)
         self.assertEqual(self.nav.heading(), result)
         self.nav.reset()
 
         rotations = [10, 20, -170, 300, -210, 34.3, -50.2, -10, -29.98, 500]
         sum_so_far = 0
-        for num in rotations:
+        kila num kwenye rotations:
             ikiwa num < 0:
                 self.nav.right(abs(num))
-            else:
+            isipokua:
                 self.nav.left(num)
             sum_so_far += num
             self.assertAlmostEqual(self.nav.heading(), sum_so_far % 360)
@@ -415,21 +415,21 @@ kundi TestTPen(unittest.TestCase):
 
         tpen = turtle.TPen()
 
-        self.assertTrue(tpen.isdown())
+        self.assertKweli(tpen.isdown())
         tpen.penup()
-        self.assertFalse(tpen.isdown())
+        self.assertUongo(tpen.isdown())
         tpen.pendown()
-        self.assertTrue(tpen.isdown())
+        self.assertKweli(tpen.isdown())
 
     eleza test_showturtle_hideturtle_and_isvisible(self):
 
         tpen = turtle.TPen()
 
-        self.assertTrue(tpen.isvisible())
+        self.assertKweli(tpen.isvisible())
         tpen.hideturtle()
-        self.assertFalse(tpen.isvisible())
+        self.assertUongo(tpen.isvisible())
         tpen.showturtle()
-        self.assertTrue(tpen.isvisible())
+        self.assertKweli(tpen.isvisible())
 
 
 ikiwa __name__ == '__main__':

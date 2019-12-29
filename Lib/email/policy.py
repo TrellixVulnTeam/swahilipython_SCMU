@@ -44,12 +44,12 @@ class EmailPolicy(Policy):
                            serialized as ASCII, using encoded words to encode
                            any non-ASCII characters in the source strings.  If
                            True, the message headers will be serialized using
-                           utf8 and will not contain encoded words (see RFC
+                           utf8 and will sio contain encoded words (see RFC
                            6532 for more on this serialization format).
 
     refold_source       -- if the value for a header in the Message object
                            came from the parsing of some source, this attribute
-                           indicates whether or not a generator should refold
+                           indicates whether or sio a generator should refold
                            that value when transforming the message back into
                            stream form.  The possible values are:
 
@@ -68,7 +68,7 @@ class EmailPolicy(Policy):
                            header.  A default header_factory is provided that
                            understands some of the RFC5322 header field types.
                            (Currently address fields and date fields have
-                           special treatment, while all other fields are
+                           special treatment, wakati all other fields are
                            treated as unstructured.  This list will be
                            completed before the extension is marked stable.)
 
@@ -93,7 +93,7 @@ class EmailPolicy(Policy):
     def __init__(self, **kw):
         # Ensure that each new instance gets a unique header factory
         # (as opposed to clones, which share the factory).
-        if 'header_factory' not in kw:
+        if 'header_factory' haiko kwenye kw:
             object.__setattr__(self, 'header_factory', HeaderRegistry())
         super().__init__(**kw)
 
@@ -142,8 +142,8 @@ class EmailPolicy(Policy):
             return (name, value)
         if isinstance(value, str) and len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
-            # (see issue 22233), but I'm not sure what should happen here.
-            raise ValueError("Header values may not contain linefeed "
+            # (see issue 22233), but I'm sio sure what should happen here.
+            raise ValueError("Header values may sio contain linefeed "
                              "or carriage return characters")
         return (name, self.header_factory(name, value))
 
@@ -174,7 +174,7 @@ class EmailPolicy(Policy):
         calling its fold method with the current policy.
 
         Source values are split into lines using splitlines.  If the value is
-        not to be refolded, the lines are rejoined using the linesep from the
+        sio to be refolded, the lines are rejoined using the linesep from the
         policy and returned.  The exception is lines containing non-ascii
         binary data.  In that case the value is refolded regardless of the
         refold_source setting, which causes the binary data to be CTE encoded
@@ -185,11 +185,11 @@ class EmailPolicy(Policy):
 
     def fold_binary(self, name, value):
         """+
-        The same as fold if cte_type is 7bit, except that the returned value is
+        The same as fold if cte_type is 7bit, tatizo that the returned value is
         bytes.
 
         If cte_type is 8bit, non-ASCII binary data is converted back into
-        bytes.  Headers with binary data are not refolded, regardless of the
+        bytes.  Headers with binary data are sio refolded, regardless of the
         refold_header setting, since there is no way to know whether the binary
         data consists of single byte characters or multibyte characters.
 
@@ -217,7 +217,7 @@ class EmailPolicy(Policy):
 
 default = EmailPolicy()
 # Make the default policy use the class default header_factory
-del default.header_factory
+toa default.header_factory
 strict = default.clone(raise_on_defect=True)
 SMTP = default.clone(linesep='\r\n')
 HTTP = default.clone(linesep='\r\n', max_line_length=None)

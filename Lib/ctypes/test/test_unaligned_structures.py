@@ -7,7 +7,7 @@ byteswapped_structures = []
 
 if sys.byteorder == "little":
     SwappedStructure = BigEndianStructure
-else:
+isipokua:
     SwappedStructure = LittleEndianStructure
 
 for typ in [c_short, c_int, c_long, c_longlong,

@@ -8,9 +8,9 @@ from distutils.command.check import check, HAS_DOCUTILS
 from distutils.tests import support
 from distutils.errors import DistutilsSetupError
 
-try:
+jaribu:
     import pygments
-except ImportError:
+tatizo ImportError:
     pygments = None
 
 
@@ -24,7 +24,7 @@ class CheckTestCase(support.LoggingSilencer,
     def _run(self, metadata=None, cwd=None, **options):
         if metadata is None:
             metadata = {}
-        if cwd is not None:
+        if cwd ni sio None:
             old_dir = os.getcwd()
             os.chdir(cwd)
         pkg_info, dist = self.create_dist(**metadata)
@@ -34,7 +34,7 @@ class CheckTestCase(support.LoggingSilencer,
             setattr(cmd, name, value)
         cmd.ensure_finalized()
         cmd.run()
-        if cwd is not None:
+        if cwd ni sio None:
             os.chdir(old_dir)
         return cmd
 
@@ -140,13 +140,13 @@ class CheckTestCase(support.LoggingSilencer,
             cmd = check(dist)
             cmd.check_restructuredtext()
             msgs = cmd._check_rst_data(rest_with_code)
-            if pygments is not None:
+            if pygments ni sio None:
                 self.assertEqual(len(msgs), 0)
-            else:
+            isipokua:
                 self.assertEqual(len(msgs), 1)
                 self.assertEqual(
                     str(msgs[0][1]),
-                    'Cannot analyze code. Pygments package not found.'
+                    'Cannot analyze code. Pygments package sio found.'
                 )
 
     def test_check_all(self):

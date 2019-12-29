@@ -1,12 +1,12 @@
 "idlelib.filelist"
 
 agiza os
-kutoka tkinter agiza messagebox as tkMessageBox
+kutoka tkinter agiza messagebox kama tkMessageBox
 
 
 kundi FileList:
 
-    # N.B. this agiza overridden in PyShellFileList.
+    # N.B. this agiza overridden kwenye PyShellFileList.
     kutoka idlelib.editor agiza EditorWindow
 
     eleza __init__(self, root):
@@ -15,109 +15,109 @@ kundi FileList:
         self.inversedict = {}
         self.vars = {} # For EditorWindow.getrawvar (shared Tcl variables)
 
-    eleza open(self, filename, action=None):
+    eleza open(self, filename, action=Tupu):
         assert filename
         filename = self.canonize(filename)
         ikiwa os.path.isdir(filename):
-            # This can happen when bad filename is passed on command line:
+            # This can happen when bad filename ni pitaed on command line:
             tkMessageBox.showerror(
                 "File Error",
-                "%r is a directory." % (filename,),
+                "%r ni a directory." % (filename,),
                 master=self.root)
-            rudisha None
+            rudisha Tupu
         key = os.path.normcase(filename)
-        ikiwa key in self.dict:
+        ikiwa key kwenye self.dict:
             edit = self.dict[key]
             edit.top.wakeup()
             rudisha edit
         ikiwa action:
-            # Don't create window, perform 'action', e.g. open in same window
+            # Don't create window, perform 'action', e.g. open kwenye same window
             rudisha action(filename)
-        else:
+        isipokua:
             edit = self.EditorWindow(self, filename, key)
             ikiwa edit.good_load:
                 rudisha edit
-            else:
+            isipokua:
                 edit._close()
-                rudisha None
+                rudisha Tupu
 
-    eleza gotofileline(self, filename, lineno=None):
+    eleza gotofileline(self, filename, lineno=Tupu):
         edit = self.open(filename)
-        ikiwa edit is not None and lineno is not None:
+        ikiwa edit ni sio Tupu na lineno ni sio Tupu:
             edit.gotoline(lineno)
 
-    eleza new(self, filename=None):
+    eleza new(self, filename=Tupu):
         rudisha self.EditorWindow(self, filename)
 
     eleza close_all_callback(self, *args, **kwds):
-        for edit in list(self.inversedict):
+        kila edit kwenye list(self.inversedict):
             reply = edit.close()
             ikiwa reply == "cancel":
-                break
-        rudisha "break"
+                koma
+        rudisha "koma"
 
     eleza unregister_maybe_terminate(self, edit):
-        try:
+        jaribu:
             key = self.inversedict[edit]
-        except KeyError:
+        tatizo KeyError:
             andika("Don't know this EditorWindow object.  (close)")
-            return
+            rudisha
         ikiwa key:
-            del self.dict[key]
-        del self.inversedict[edit]
-        ikiwa not self.inversedict:
+            toa self.dict[key]
+        toa self.inversedict[edit]
+        ikiwa sio self.inversedict:
             self.root.quit()
 
     eleza filename_changed_edit(self, edit):
         edit.saved_change_hook()
-        try:
+        jaribu:
             key = self.inversedict[edit]
-        except KeyError:
+        tatizo KeyError:
             andika("Don't know this EditorWindow object.  (rename)")
-            return
+            rudisha
         filename = edit.io.filename
-        ikiwa not filename:
+        ikiwa sio filename:
             ikiwa key:
-                del self.dict[key]
-            self.inversedict[edit] = None
-            return
+                toa self.dict[key]
+            self.inversedict[edit] = Tupu
+            rudisha
         filename = self.canonize(filename)
         newkey = os.path.normcase(filename)
         ikiwa newkey == key:
-            return
-        ikiwa newkey in self.dict:
+            rudisha
+        ikiwa newkey kwenye self.dict:
             conflict = self.dict[newkey]
-            self.inversedict[conflict] = None
+            self.inversedict[conflict] = Tupu
             tkMessageBox.showerror(
                 "Name Conflict",
-                "You now have multiple edit windows open for %r" % (filename,),
+                "You now have multiple edit windows open kila %r" % (filename,),
                 master=self.root)
         self.dict[newkey] = edit
         self.inversedict[edit] = newkey
         ikiwa key:
-            try:
-                del self.dict[key]
-            except KeyError:
-                pass
+            jaribu:
+                toa self.dict[key]
+            tatizo KeyError:
+                pita
 
     eleza canonize(self, filename):
-        ikiwa not os.path.isabs(filename):
-            try:
+        ikiwa sio os.path.isabs(filename):
+            jaribu:
                 pwd = os.getcwd()
-            except OSError:
-                pass
-            else:
+            tatizo OSError:
+                pita
+            isipokua:
                 filename = os.path.join(pwd, filename)
         rudisha os.path.normpath(filename)
 
 
-eleza _test():  # TODO check and convert to htest
+eleza _test():  # TODO check na convert to htest
     kutoka tkinter agiza Tk
-    kutoka idlelib.editor agiza fixwordbreaks
+    kutoka idlelib.editor agiza fixwordkomas
     kutoka idlelib.run agiza fix_scaling
     root = Tk()
     fix_scaling(root)
-    fixwordbreaks(root)
+    fixwordkomas(root)
     root.withdraw()
     flist = FileList(root)
     flist.new()

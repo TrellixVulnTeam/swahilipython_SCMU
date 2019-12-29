@@ -1,4 +1,4 @@
-"""Make the custom certificate and private key files used by test_ssl
+"""Make the custom certificate na private key files used by test_ssl
 and friends."""
 
 agiza os
@@ -107,29 +107,29 @@ req_template = """
 here = os.path.abspath(os.path.dirname(__file__))
 
 
-eleza make_cert_key(hostname, sign=False, extra_san='',
+eleza make_cert_key(hostname, sign=Uongo, extra_san='',
                   ext='req_x509_extensions_full', key='rsa:3072'):
-    andika("creating cert for " + hostname)
+    andika("creating cert kila " + hostname)
     tempnames = []
-    for i in range(3):
-        with tempfile.NamedTemporaryFile(delete=False) as f:
+    kila i kwenye range(3):
+        with tempfile.NamedTemporaryFile(delete=Uongo) kama f:
             tempnames.append(f.name)
     req_file, cert_file, key_file = tempnames
-    try:
+    jaribu:
         req = req_template.format(hostname=hostname, extra_san=extra_san)
-        with open(req_file, 'w') as f:
+        with open(req_file, 'w') kama f:
             f.write(req)
         args = ['req', '-new', '-days', '3650', '-nodes',
                 '-newkey', key, '-keyout', key_file,
                 '-extensions', ext,
                 '-config', req_file]
         ikiwa sign:
-            with tempfile.NamedTemporaryFile(delete=False) as f:
+            with tempfile.NamedTemporaryFile(delete=Uongo) kama f:
                 tempnames.append(f.name)
                 reqfile = f.name
             args += ['-out', reqfile ]
 
-        else:
+        isipokua:
             args += ['-x509', '-out', cert_file ]
         check_call(['openssl'] + args)
 
@@ -146,13 +146,13 @@ eleza make_cert_key(hostname, sign=False, extra_san='',
             check_call(['openssl'] + args)
 
 
-        with open(cert_file, 'r') as f:
+        with open(cert_file, 'r') kama f:
             cert = f.read()
-        with open(key_file, 'r') as f:
+        with open(key_file, 'r') kama f:
             key = f.read()
         rudisha cert, key
-    finally:
-        for name in tempnames:
+    mwishowe:
+        kila name kwenye tempnames:
             os.remove(name)
 
 TMP_CADIR = 'cadir'
@@ -162,17 +162,17 @@ eleza unmake_ca():
 
 eleza make_ca():
     os.mkdir(TMP_CADIR)
-    with open(os.path.join('cadir','index.txt'),'a+') as f:
-        pass # empty file
-    with open(os.path.join('cadir','crl.txt'),'a+') as f:
+    with open(os.path.join('cadir','index.txt'),'a+') kama f:
+        pita # empty file
+    with open(os.path.join('cadir','crl.txt'),'a+') kama f:
         f.write("00")
-    with open(os.path.join('cadir','index.txt.attr'),'w+') as f:
+    with open(os.path.join('cadir','index.txt.attr'),'w+') kama f:
         f.write('unique_subject = no')
 
-    with tempfile.NamedTemporaryFile("w") as t:
+    with tempfile.NamedTemporaryFile("w") kama t:
         t.write(req_template.format(hostname='our-ca-server', extra_san=''))
         t.flush()
-        with tempfile.NamedTemporaryFile() as f:
+        with tempfile.NamedTemporaryFile() kama f:
             args = ['req', '-new', '-days', '3650', '-extensions', 'v3_ca', '-nodes',
                     '-newkey', 'rsa:3072', '-keyout', 'pycakey.pem',
                     '-out', f.name,
@@ -201,42 +201,42 @@ eleza print_cert(path):
 ikiwa __name__ == '__main__':
     os.chdir(here)
     cert, key = make_cert_key('localhost', ext='req_x509_extensions_simple')
-    with open('ssl_cert.pem', 'w') as f:
+    with open('ssl_cert.pem', 'w') kama f:
         f.write(cert)
-    with open('ssl_key.pem', 'w') as f:
+    with open('ssl_key.pem', 'w') kama f:
         f.write(key)
-    andika("password protecting ssl_key.pem in ssl_key.passwd.pem")
-    check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.passwd.pem','-aes256','-passout','pass:somepass'])
-    check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.passwd.pem','-aes256','-passout','pass:somepass'])
+    andika("pitaword protecting ssl_key.pem kwenye ssl_key.pitawd.pem")
+    check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.pitawd.pem','-aes256','-pitaout','pita:somepita'])
+    check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.pitawd.pem','-aes256','-pitaout','pita:somepita'])
 
-    with open('keycert.pem', 'w') as f:
+    with open('keycert.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
-    with open('keycert.passwd.pem', 'a+') as f:
+    with open('keycert.pitawd.pem', 'a+') kama f:
         f.write(cert)
 
     # For certificate matching tests
     make_ca()
     cert, key = make_cert_key('fakehostname', ext='req_x509_extensions_simple')
-    with open('keycert2.pem', 'w') as f:
+    with open('keycert2.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
-    cert, key = make_cert_key('localhost', True)
-    with open('keycert3.pem', 'w') as f:
+    cert, key = make_cert_key('localhost', Kweli)
+    with open('keycert3.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
-    cert, key = make_cert_key('fakehostname', True)
-    with open('keycert4.pem', 'w') as f:
+    cert, key = make_cert_key('fakehostname', Kweli)
+    with open('keycert4.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key(
-        'localhost-ecc', True, key='param:secp384r1.pem'
+        'localhost-ecc', Kweli, key='param:secp384r1.pem'
     )
-    with open('keycertecc.pem', 'w') as f:
+    with open('keycertecc.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
@@ -255,7 +255,7 @@ ikiwa __name__ == '__main__':
     ]
 
     cert, key = make_cert_key('allsans', extra_san='\n'.join(extra_san))
-    with open('allsans.pem', 'w') as f:
+    with open('allsans.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
@@ -271,12 +271,12 @@ ikiwa __name__ == '__main__':
     ]
 
     # IDN SANS, signed
-    cert, key = make_cert_key('idnsans', True, extra_san='\n'.join(extra_san))
-    with open('idnsans.pem', 'w') as f:
+    cert, key = make_cert_key('idnsans', Kweli, extra_san='\n'.join(extra_san))
+    with open('idnsans.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
     unmake_ca()
-    andika("update Lib/test/test_ssl.py and Lib/test/test_asyncio/util.py")
+    andika("update Lib/test/test_ssl.py na Lib/test/test_asyncio/util.py")
     print_cert('keycert.pem')
     print_cert('keycert3.pem')

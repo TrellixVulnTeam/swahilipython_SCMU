@@ -1,4 +1,4 @@
-# Ridiculously simple test of the winsound module for Windows.
+# Ridiculously simple test of the winsound module kila Windows.
 
 agiza functools
 agiza time
@@ -10,21 +10,21 @@ support.requires('audio')
 winsound = support.import_module('winsound')
 
 
-# Unless we actually have an ear in the room, we have no idea whether a sound
-# actually plays, and it's incredibly flaky trying to figure out ikiwa a sound
-# even *should* play.  Instead of guessing, just call the function and assume
-# it either passed or raised the RuntimeError we expect in case of failure.
+# Unless we actually have an ear kwenye the room, we have no idea whether a sound
+# actually plays, na it's incredibly flaky trying to figure out ikiwa a sound
+# even *should* play.  Instead of guessing, just call the function na assume
+# it either pitaed ama ashiriad the RuntimeError we expect kwenye case of failure.
 eleza sound_func(func):
     @functools.wraps(func)
     eleza wrapper(*args, **kwargs):
-        try:
+        jaribu:
             ret = func(*args, **kwargs)
-        except RuntimeError as e:
+        tatizo RuntimeError kama e:
             ikiwa support.verbose:
                 andika(func.__name__, 'failed:', e)
-        else:
+        isipokua:
             ikiwa support.verbose:
-                andika(func.__name__, 'returned')
+                andika(func.__name__, 'rudishaed')
             rudisha ret
     rudisha wrapper
 
@@ -46,7 +46,7 @@ kundi BeepTest(unittest.TestCase):
         safe_Beep(32767, 75)
 
     eleza test_increasingfrequency(self):
-        for i in range(100, 2000, 100):
+        kila i kwenye range(100, 2000, 100):
             safe_Beep(i, 75)
 
     eleza test_keyword_args(self):
@@ -104,7 +104,7 @@ kundi PlaySoundTest(unittest.TestCase):
 
     eleza test_snd_memory(self):
         with open(support.findfile('pluck-pcm8.wav',
-                                   subdir='audiodata'), 'rb') as f:
+                                   subdir='audiodata'), 'rb') kama f:
             audio_data = f.read()
         safe_PlaySound(audio_data, winsound.SND_MEMORY)
         audio_data = bytearray(audio_data)
@@ -122,7 +122,7 @@ kundi PlaySoundTest(unittest.TestCase):
             "SystemHand",
             "SystemQuestion",
         ]
-        for alias in aliases:
+        kila alias kwenye aliases:
             with self.subTest(alias=alias):
                 safe_PlaySound(alias, winsound.SND_ALIAS)
 
@@ -139,9 +139,9 @@ kundi PlaySoundTest(unittest.TestCase):
         )
         time.sleep(0.5)
         safe_PlaySound('SystemQuestion', winsound.SND_ALIAS | winsound.SND_NOSTOP)
-        # Issue 8367: PlaySound(None, winsound.SND_PURGE)
-        # does not raise on systems without a sound card.
-        winsound.PlaySound(None, winsound.SND_PURGE)
+        # Issue 8367: PlaySound(Tupu, winsound.SND_PURGE)
+        # does sio ashiria on systems without a sound card.
+        winsound.PlaySound(Tupu, winsound.SND_PURGE)
 
 
 ikiwa __name__ == "__main__":

@@ -1,13 +1,13 @@
 """BaseHTTPServer that implements the Python WSGI protocol (PEP 3333)
 
-This is both an example of how WSGI can be implemented, and a basis for running
-simple web applications on a local machine, such as might be done when testing
-or debugging an application.  It has not been reviewed for security issues,
-however, and we strongly recommend that you use a "real" web server for
+This ni both an example of how WSGI can be implemented, na a basis kila running
+simple web applications on a local machine, such kama might be done when testing
+or debugging an application.  It has sio been reviewed kila security issues,
+however, na we strongly recommend that you use a "real" web server for
 production use.
 
 For example usage, see the 'ikiwa __name__=="__main__"' block at the end of the
-module.  See also the BaseHTTPServer module docs for other API information.
+module.  See also the BaseHTTPServer module docs kila other API information.
 """
 
 kutoka http.server agiza BaseHTTPRequestHandler, HTTPServer
@@ -30,11 +30,11 @@ kundi ServerHandler(SimpleHandler):
     server_software = software_version
 
     eleza close(self):
-        try:
+        jaribu:
             self.request_handler.log_request(
                 self.status.split(' ',1)[0], self.bytes_sent
             )
-        finally:
+        mwishowe:
             SimpleHandler.close(self)
 
 
@@ -43,7 +43,7 @@ kundi WSGIServer(HTTPServer):
 
     """BaseHTTPServer that implements the Python WSGI protocol"""
 
-    application = None
+    application = Tupu
 
     eleza server_bind(self):
         """Override server_bind to store the server name."""
@@ -77,9 +77,9 @@ kundi WSGIRequestHandler(BaseHTTPRequestHandler):
         env['SERVER_PROTOCOL'] = self.request_version
         env['SERVER_SOFTWARE'] = self.server_version
         env['REQUEST_METHOD'] = self.command
-        ikiwa '?' in self.path:
+        ikiwa '?' kwenye self.path:
             path,query = self.path.split('?',1)
-        else:
+        isipokua:
             path,query = self.path,''
 
         env['PATH_INFO'] = urllib.parse.unquote(path, 'iso-8859-1')
@@ -90,22 +90,22 @@ kundi WSGIRequestHandler(BaseHTTPRequestHandler):
             env['REMOTE_HOST'] = host
         env['REMOTE_ADDR'] = self.client_address[0]
 
-        ikiwa self.headers.get('content-type') is None:
+        ikiwa self.headers.get('content-type') ni Tupu:
             env['CONTENT_TYPE'] = self.headers.get_content_type()
-        else:
+        isipokua:
             env['CONTENT_TYPE'] = self.headers['content-type']
 
         length = self.headers.get('content-length')
         ikiwa length:
             env['CONTENT_LENGTH'] = length
 
-        for k, v in self.headers.items():
+        kila k, v kwenye self.headers.items():
             k=k.replace('-','_').upper(); v=v.strip()
-            ikiwa k in env:
-                continue                    # skip content length, type,etc.
-            ikiwa 'HTTP_'+k in env:
+            ikiwa k kwenye env:
+                endelea                    # skip content length, type,etc.
+            ikiwa 'HTTP_'+k kwenye env:
                 env['HTTP_'+k] += ','+v     # comma-separate multiple headers
-            else:
+            isipokua:
                 env['HTTP_'+k] = v
         rudisha env
 
@@ -121,16 +121,16 @@ kundi WSGIRequestHandler(BaseHTTPRequestHandler):
             self.request_version = ''
             self.command = ''
             self.send_error(414)
-            return
+            rudisha
 
-        ikiwa not self.parse_request(): # An error code has been sent, just exit
-            return
+        ikiwa sio self.parse_request(): # An error code has been sent, just exit
+            rudisha
 
         handler = ServerHandler(
             self.rfile, self.wfile, self.get_stderr(), self.get_environ(),
-            multithread=False,
+            multithread=Uongo,
         )
-        handler.request_handler = self      # backpointer for logging
+        handler.request_handler = self      # backpointer kila logging
         handler.run(self.server.get_app())
 
 
@@ -141,7 +141,7 @@ eleza demo_app(environ,start_response):
     andika("Hello world!", file=stdout)
     andika(file=stdout)
     h = sorted(environ.items())
-    for k,v in h:
+    kila k,v kwenye h:
         andika(k,'=',repr(v), file=stdout)
     start_response("200 OK", [('Content-Type','text/plain; charset=utf-8')])
     rudisha [stdout.getvalue().encode("utf-8")]
@@ -150,14 +150,14 @@ eleza demo_app(environ,start_response):
 eleza make_server(
     host, port, app, server_class=WSGIServer, handler_class=WSGIRequestHandler
 ):
-    """Create a new WSGI server listening on `host` and `port` for `app`"""
+    """Create a new WSGI server listening on `host` na `port` kila `app`"""
     server = server_class((host, port), handler_class)
     server.set_app(app)
     rudisha server
 
 
 ikiwa __name__ == '__main__':
-    with make_server('', 8000, demo_app) as httpd:
+    with make_server('', 8000, demo_app) kama httpd:
         sa = httpd.socket.getsockname()
         andika("Serving HTTP on", sa[0], "port", sa[1], "...")
         agiza webbrowser

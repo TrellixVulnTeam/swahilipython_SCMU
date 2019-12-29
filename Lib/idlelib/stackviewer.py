@@ -2,36 +2,36 @@ agiza linecache
 agiza os
 agiza sys
 
-agiza tkinter as tk
+agiza tkinter kama tk
 
 kutoka idlelib.debugobj agiza ObjectTreeItem, make_objecttreeitem
 kutoka idlelib.tree agiza TreeNode, TreeItem, ScrolledCanvas
 
-eleza StackBrowser(root, flist=None, tb=None, top=None):
+eleza StackBrowser(root, flist=Tupu, tb=Tupu, top=Tupu):
     global sc, item, node  # For testing.
-    ikiwa top is None:
+    ikiwa top ni Tupu:
         top = tk.Toplevel(root)
     sc = ScrolledCanvas(top, bg="white", highlightthickness=0)
     sc.frame.pack(expand=1, fill="both")
     item = StackTreeItem(flist, tb)
-    node = TreeNode(sc.canvas, None, item)
+    node = TreeNode(sc.canvas, Tupu, item)
     node.expand()
 
 
 kundi StackTreeItem(TreeItem):
 
-    eleza __init__(self, flist=None, tb=None):
+    eleza __init__(self, flist=Tupu, tb=Tupu):
         self.flist = flist
         self.stack = self.get_stack(tb)
         self.text = self.get_exception()
 
     eleza get_stack(self, tb):
-        ikiwa tb is None:
+        ikiwa tb ni Tupu:
             tb = sys.last_traceback
         stack = []
-        ikiwa tb and tb.tb_frame is None:
+        ikiwa tb na tb.tb_frame ni Tupu:
             tb = tb.tb_next
-        while tb is not None:
+        wakati tb ni sio Tupu:
             stack.append((tb.tb_frame, tb.tb_lineno))
             tb = tb.tb_next
         rudisha stack
@@ -42,7 +42,7 @@ kundi StackTreeItem(TreeItem):
         ikiwa hasattr(type, "__name__"):
             type = type.__name__
         s = str(type)
-        ikiwa value is not None:
+        ikiwa value ni sio Tupu:
             s = s + ": " + str(value)
         rudisha s
 
@@ -51,7 +51,7 @@ kundi StackTreeItem(TreeItem):
 
     eleza GetSubList(self):
         sublist = []
-        for info in self.stack:
+        kila info kwenye self.stack:
             item = FrameTreeItem(info, self.flist)
             sublist.append(item)
         rudisha sublist
@@ -65,7 +65,7 @@ kundi FrameTreeItem(TreeItem):
 
     eleza GetText(self):
         frame, lineno = self.info
-        try:
+        jaribu:
             modname = frame.f_globals["__name__"]
         except:
             modname = "?"
@@ -74,9 +74,9 @@ kundi FrameTreeItem(TreeItem):
         funcname = code.co_name
         sourceline = linecache.getline(filename, lineno)
         sourceline = sourceline.strip()
-        ikiwa funcname in ("?", "", None):
+        ikiwa funcname kwenye ("?", "", Tupu):
             item = "%s, line %d: %s" % (modname, lineno, sourceline)
-        else:
+        isipokua:
             item = "%s.%s(...), line %d: %s" % (modname, funcname,
                                              lineno, sourceline)
         rudisha item
@@ -84,7 +84,7 @@ kundi FrameTreeItem(TreeItem):
     eleza GetSubList(self):
         frame, lineno = self.info
         sublist = []
-        ikiwa frame.f_globals is not frame.f_locals:
+        ikiwa frame.f_globals ni sio frame.f_locals:
             item = VariablesTreeItem("<locals>", frame.f_locals, self.flist)
             sublist.append(item)
         item = VariablesTreeItem("<globals>", frame.f_globals, self.flist)
@@ -105,18 +105,18 @@ kundi VariablesTreeItem(ObjectTreeItem):
         rudisha self.labeltext
 
     eleza GetLabelText(self):
-        rudisha None
+        rudisha Tupu
 
     eleza IsExpandable(self):
         rudisha len(self.object) > 0
 
     eleza GetSubList(self):
         sublist = []
-        for key in self.object.keys():
-            try:
+        kila key kwenye self.object.keys():
+            jaribu:
                 value = self.object[key]
-            except KeyError:
-                continue
+            tatizo KeyError:
+                endelea
             eleza setfunction(value, key=key, object=self.object):
                 object[key] = value
             item = make_objecttreeitem(key + " =", value, setfunction)
@@ -131,9 +131,9 @@ eleza _stack_viewer(parent):  # htest #
     x, y = map(int, parent.geometry().split('+')[1:])
     top.geometry("+%d+%d" % (x + 50, y + 175))
     flist = PyShellFileList(top)
-    try: # to obtain a traceback object
+    jaribu: # to obtain a traceback object
         intentional_name_error
-    except NameError:
+    tatizo NameError:
         exc_type, exc_value, exc_tb = sys.exc_info()
     # inject stack trace to sys
     sys.last_type = exc_type
@@ -143,13 +143,13 @@ eleza _stack_viewer(parent):  # htest #
     StackBrowser(top, flist=flist, top=top, tb=exc_tb)
 
     # restore sys to original state
-    del sys.last_type
-    del sys.last_value
-    del sys.last_traceback
+    toa sys.last_type
+    toa sys.last_value
+    toa sys.last_traceback
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_stackviewer', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_stackviewer', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_stack_viewer)

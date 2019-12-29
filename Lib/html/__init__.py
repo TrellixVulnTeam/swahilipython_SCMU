@@ -1,19 +1,19 @@
 """
-General functions for HTML manipulation.
+General functions kila HTML manipulation.
 """
 
-agiza re as _re
-kutoka html.entities agiza html5 as _html5
+agiza re kama _re
+kutoka html.entities agiza html5 kama _html5
 
 
 __all__ = ['escape', 'unescape']
 
 
-eleza escape(s, quote=True):
+eleza escape(s, quote=Kweli):
     """
-    Replace special characters "&", "<" and ">" to HTML-safe sequences.
-    If the optional flag quote is true (the default), the quotation mark
-    characters, both double quote (") and single quote (') characters are also
+    Replace special characters "&", "<" na ">" to HTML-safe sequences.
+    If the optional flag quote ni true (the default), the quotation mark
+    characters, both double quote (") na single quote (') characters are also
     translated.
     """
     s = s.replace("&", "&amp;") # Must be done first!
@@ -92,26 +92,26 @@ eleza _replace_charref(s):
     s = s.group(1)
     ikiwa s[0] == '#':
         # numeric charref
-        ikiwa s[1] in 'xX':
+        ikiwa s[1] kwenye 'xX':
             num = int(s[2:].rstrip(';'), 16)
-        else:
+        isipokua:
             num = int(s[1:].rstrip(';'))
-        ikiwa num in _invalid_charrefs:
+        ikiwa num kwenye _invalid_charrefs:
             rudisha _invalid_charrefs[num]
-        ikiwa 0xD800 <= num <= 0xDFFF or num > 0x10FFFF:
+        ikiwa 0xD800 <= num <= 0xDFFF ama num > 0x10FFFF:
             rudisha '\uFFFD'
-        ikiwa num in _invalid_codepoints:
+        ikiwa num kwenye _invalid_codepoints:
             rudisha ''
         rudisha chr(num)
-    else:
+    isipokua:
         # named charref
-        ikiwa s in _html5:
+        ikiwa s kwenye _html5:
             rudisha _html5[s]
         # find the longest matching name (as defined by the standard)
-        for x in range(len(s)-1, 1, -1):
-            ikiwa s[:x] in _html5:
+        kila x kwenye range(len(s)-1, 1, -1):
+            ikiwa s[:x] kwenye _html5:
                 rudisha _html5[s[:x]] + s[x:]
-        else:
+        isipokua:
             rudisha '&' + s
 
 
@@ -121,12 +121,12 @@ _charref = _re.compile(r'&(#[0-9]+;?'
 
 eleza unescape(s):
     """
-    Convert all named and numeric character references (e.g. &gt;, &#62;,
-    &x3e;) in the string s to the corresponding unicode characters.
+    Convert all named na numeric character references (e.g. &gt;, &#62;,
+    &x3e;) kwenye the string s to the corresponding unicode characters.
     This function uses the rules defined by the HTML 5 standard
-    for both valid and invalid character references, and the list of
-    HTML 5 named character references defined in html.entities.html5.
+    kila both valid na invalid character references, na the list of
+    HTML 5 named character references defined kwenye html.entities.html5.
     """
-    ikiwa '&' not in s:
+    ikiwa '&' haiko kwenye s:
         rudisha s
     rudisha _charref.sub(_replace_charref, s)

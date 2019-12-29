@@ -22,9 +22,9 @@ from unittest import mock
 from http.server import HTTPServer
 from wsgiref.simple_server import WSGIRequestHandler, WSGIServer
 
-try:
+jaribu:
     import ssl
-except ImportError:  # pragma: no cover
+tatizo ImportError:  # pragma: no cover
     ssl = None
 
 from asyncio import base_events
@@ -89,7 +89,7 @@ def simple_client_sslcontext(*, disable_verify=True):
 def dummy_ssl_context():
     if ssl is None:
         return None
-    else:
+    isipokua:
         return ssl.SSLContext(ssl.PROTOCOL_TLS)
 
 
@@ -98,19 +98,19 @@ def run_briefly(loop):
         pass
     gen = once()
     t = loop.create_task(gen)
-    # Don't log a warning if the task is not done after run_until_complete().
+    # Don't log a warning if the task ni sio done after run_until_complete().
     # It occurs if the loop is stopped or if a task raises a BaseException.
     t._log_destroy_pending = False
-    try:
+    jaribu:
         loop.run_until_complete(t)
-    finally:
+    mwishowe:
         gen.close()
 
 
 def run_until(loop, pred, timeout=30):
     deadline = time.monotonic() + timeout
-    while not pred():
-        if timeout is not None:
+    wakati sio pred():
+        if timeout ni sio None:
             timeout = deadline - time.monotonic()
             if timeout <= 0:
                 raise futures.TimeoutError()
@@ -161,10 +161,10 @@ class SSLWSGIServerMixin:
         context.load_cert_chain(ONLYCERT, ONLYKEY)
 
         ssock = context.wrap_socket(request, server_side=True)
-        try:
+        jaribu:
             self.RequestHandlerClass(ssock, client_address, self)
             ssock.close()
-        except OSError:
+        tatizo OSError:
             # maybe socket has been closed by peer
             pass
 
@@ -177,7 +177,7 @@ def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
 
     def loop(environ):
         size = int(environ['CONTENT_LENGTH'])
-        while size:
+        wakati size:
             data = environ['wsgi.input'].read(min(size, 0x10000))
             yield data
             size -= len(data)
@@ -188,10 +188,10 @@ def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
         start_response(status, headers)
         if environ['PATH_INFO'] == '/loop':
             return loop(environ)
-        else:
+        isipokua:
             return [b'Test message']
 
-    # Run the test WSGI server in a separate thread in order not to
+    # Run the test WSGI server in a separate thread in order sio to
     # interfere with event handling in the main thread
     server_class = server_ssl_cls if use_ssl else server_cls
     httpd = server_class(address, SilentWSGIRequestHandler)
@@ -200,9 +200,9 @@ def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
     server_thread = threading.Thread(
         target=lambda: httpd.serve_forever(poll_interval=0.05))
     server_thread.start()
-    try:
+    jaribu:
         yield httpd
-    finally:
+    mwishowe:
         httpd.shutdown()
         httpd.server_close()
         server_thread.join()
@@ -256,12 +256,12 @@ if hasattr(socket, 'AF_UNIX'):
     @contextlib.contextmanager
     def unix_socket_path():
         path = gen_unix_socket_path()
-        try:
+        jaribu:
             yield path
-        finally:
-            try:
+        mwishowe:
+            jaribu:
                 os.unlink(path)
-            except OSError:
+            tatizo OSError:
                 pass
 
 
@@ -285,7 +285,7 @@ def make_test_protocol(base):
     for name in dir(base):
         if name.startswith('__') and name.endswith('__'):
             # skip magic names
-            continue
+            endelea
         dct[name] = MockCallback(return_value=None)
     return type('TestProtocol', (base,) + base.__bases__, dct)()
 
@@ -336,7 +336,7 @@ class TestLoop(base_events.BaseEventLoop):
             def gen():
                 yield
             self._check_on_close = False
-        else:
+        isipokua:
             self._check_on_close = True
 
         self._gen = gen()
@@ -363,12 +363,12 @@ class TestLoop(base_events.BaseEventLoop):
     def close(self):
         super().close()
         if self._check_on_close:
-            try:
+            jaribu:
                 self._gen.send(0)
-            except StopIteration:
+            tatizo StopIteration:
                 pass
-            else:  # pragma: no cover
-                raise AssertionError("Time generator is not finished")
+            isipokua:  # pragma: no cover
+                raise AssertionError("Time generator ni sio finished")
 
     def _add_reader(self, fd, callback, *args):
         self.readers[fd] = events.Handle(callback, args, self, None)
@@ -376,14 +376,14 @@ class TestLoop(base_events.BaseEventLoop):
     def _remove_reader(self, fd):
         self.remove_reader_count[fd] += 1
         if fd in self.readers:
-            del self.readers[fd]
+            toa self.readers[fd]
             return True
-        else:
+        isipokua:
             return False
 
     def assert_reader(self, fd, callback, *args):
-        if fd not in self.readers:
-            raise AssertionError(f'fd {fd} is not registered')
+        if fd haiko kwenye self.readers:
+            raise AssertionError(f'fd {fd} ni sio registered')
         handle = self.readers[fd]
         if handle._callback != callback:
             raise AssertionError(
@@ -402,13 +402,13 @@ class TestLoop(base_events.BaseEventLoop):
     def _remove_writer(self, fd):
         self.remove_writer_count[fd] += 1
         if fd in self.writers:
-            del self.writers[fd]
+            toa self.writers[fd]
             return True
-        else:
+        isipokua:
             return False
 
     def assert_writer(self, fd, callback, *args):
-        assert fd in self.writers, 'fd {} is not registered'.format(fd)
+        assert fd in self.writers, 'fd {} ni sio registered'.format(fd)
         handle = self.writers[fd]
         assert handle._callback == callback, '{!r} != {!r}'.format(
             handle._callback, callback)
@@ -416,18 +416,18 @@ class TestLoop(base_events.BaseEventLoop):
             handle._args, args)
 
     def _ensure_fd_no_transport(self, fd):
-        if not isinstance(fd, int):
-            try:
+        if sio isinstance(fd, int):
+            jaribu:
                 fd = int(fd.fileno())
-            except (AttributeError, TypeError, ValueError):
+            tatizo (AttributeError, TypeError, ValueError):
                 # This code matches selectors._fileobj_to_fd function.
                 raise ValueError("Invalid file object: "
                                  "{!r}".format(fd)) from None
-        try:
+        jaribu:
             transport = self._transports[fd]
-        except KeyError:
+        tatizo KeyError:
             pass
-        else:
+        isipokua:
             raise RuntimeError(
                 'File descriptor {!r} is used by transport {!r}'.format(
                     fd, transport))
@@ -510,24 +510,24 @@ class TestCase(unittest.TestCase):
     @staticmethod
     def close_loop(loop):
         executor = loop._default_executor
-        if executor is not None:
+        if executor ni sio None:
             executor.shutdown(wait=True)
         loop.close()
         policy = support.maybe_get_event_loop_policy()
-        if policy is not None:
-            try:
+        if policy ni sio None:
+            jaribu:
                 watcher = policy.get_child_watcher()
-            except NotImplementedError:
-                # watcher is not implemented by EventLoopPolicy, e.g. Windows
+            tatizo NotImplementedError:
+                # watcher ni sio implemented by EventLoopPolicy, e.g. Windows
                 pass
-            else:
+            isipokua:
                 if isinstance(watcher, asyncio.ThreadedChildWatcher):
                     threads = list(watcher._threads.values())
                     for thread in threads:
                         thread.join()
 
     def set_event_loop(self, loop, *, cleanup=True):
-        assert loop is not None
+        assert loop ni sio None
         # ensure that the event loop is passed explicitly in asyncio
         events.set_event_loop(None)
         if cleanup:
@@ -551,8 +551,8 @@ class TestCase(unittest.TestCase):
 
         events.set_event_loop(None)
 
-        # Detect CPython bug #23353: ensure that yield/yield-from is not used
-        # in an except block of a generator
+        # Detect CPython bug #23353: ensure that yield/yield-from ni sio used
+        # in an tatizo block of a generator
         self.assertEqual(sys.exc_info(), (None, None, None))
 
         self.doCleanups()
@@ -567,10 +567,10 @@ def disable_logger():
     For example, it can be used to ignore warnings in debug mode.
     """
     old_level = logger.level
-    try:
+    jaribu:
         logger.setLevel(logging.CRITICAL+1)
         yield
-    finally:
+    mwishowe:
         logger.setLevel(old_level)
 
 

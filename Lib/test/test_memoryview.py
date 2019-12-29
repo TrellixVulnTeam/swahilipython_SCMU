@@ -1,7 +1,7 @@
-"""Unit tests for the memoryview
+"""Unit tests kila the memoryview
 
-   Some tests are in test_bytes. Many tests that require _testbuffer.ndarray
-   are in test_buffer.
+   Some tests are kwenye test_bytes. Many tests that require _testbuffer.ndarray
+   are kwenye test_buffer.
 """
 
 agiza unittest
@@ -24,7 +24,7 @@ kundi AbstractMemoryTests:
 
     @property
     eleza _types(self):
-        rudisha filter(None, [self.ro_type, self.rw_type])
+        rudisha filter(Tupu, [self.ro_type, self.rw_type])
 
     eleza check_getitem_with_type(self, tp):
         b = tp(self._source)
@@ -41,24 +41,24 @@ kundi AbstractMemoryTests:
         self.assertRaises(IndexError, lambda: m[sys.maxsize])
         self.assertRaises(IndexError, lambda: m[-sys.maxsize])
         # Type checking
-        self.assertRaises(TypeError, lambda: m[None])
+        self.assertRaises(TypeError, lambda: m[Tupu])
         self.assertRaises(TypeError, lambda: m[0.0])
         self.assertRaises(TypeError, lambda: m["a"])
-        m = None
+        m = Tupu
         self.assertEqual(sys.getrefcount(b), oldrefcount)
 
     eleza test_getitem(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             self.check_getitem_with_type(tp)
 
     eleza test_iter(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
-            self.assertEqual(list(m), [m[i] for i in range(len(m))])
+            self.assertEqual(list(m), [m[i] kila i kwenye range(len(m))])
 
     eleza test_setitem_readonly(self):
-        ikiwa not self.ro_type:
+        ikiwa sio self.ro_type:
             self.skipTest("no read-only type to test")
         b = self.ro_type(self._source)
         oldrefcount = sys.getrefcount(b)
@@ -68,11 +68,11 @@ kundi AbstractMemoryTests:
         self.assertRaises(TypeError, setitem, b"a")
         self.assertRaises(TypeError, setitem, 65)
         self.assertRaises(TypeError, setitem, memoryview(b"a"))
-        m = None
+        m = Tupu
         self.assertEqual(sys.getrefcount(b), oldrefcount)
 
     eleza test_setitem_writable(self):
-        ikiwa not self.rw_type:
+        ikiwa sio self.rw_type:
             self.skipTest("no writable type to test")
         tp = self.rw_type
         b = self.rw_type(self._source)
@@ -120,59 +120,59 @@ kundi AbstractMemoryTests:
         self.assertRaises(ValueError, setitem, slice(1,1), b"a")
         self.assertRaises(ValueError, setitem, slice(0,2), b"a")
 
-        m = None
+        m = Tupu
         self.assertEqual(sys.getrefcount(b), oldrefcount)
 
     eleza test_delitem(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
             with self.assertRaises(TypeError):
-                del m[1]
+                toa m[1]
             with self.assertRaises(TypeError):
-                del m[1:4]
+                toa m[1:4]
 
     eleza test_tobytes(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             m = self._view(tp(self._source))
             b = m.tobytes()
             # This calls self.getitem_type() on each separate byte of b"abcdef"
             expected = b"".join(
-                self.getitem_type(bytes([c])) for c in b"abcdef")
+                self.getitem_type(bytes([c])) kila c kwenye b"abcdef")
             self.assertEqual(b, expected)
             self.assertIsInstance(b, bytes)
 
     eleza test_tolist(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             m = self._view(tp(self._source))
             l = m.tolist()
             self.assertEqual(l, list(b"abcdef"))
 
     eleza test_compare(self):
-        # memoryviews can compare for equality with other objects
+        # memoryviews can compare kila equality with other objects
         # having the buffer interface.
-        for tp in self._types:
+        kila tp kwenye self._types:
             m = self._view(tp(self._source))
-            for tp_comp in self._types:
-                self.assertTrue(m == tp_comp(b"abcdef"))
-                self.assertFalse(m != tp_comp(b"abcdef"))
-                self.assertFalse(m == tp_comp(b"abcde"))
-                self.assertTrue(m != tp_comp(b"abcde"))
-                self.assertFalse(m == tp_comp(b"abcde1"))
-                self.assertTrue(m != tp_comp(b"abcde1"))
-            self.assertTrue(m == m)
-            self.assertTrue(m == m[:])
-            self.assertTrue(m[0:6] == m[:])
-            self.assertFalse(m[0:5] == m)
+            kila tp_comp kwenye self._types:
+                self.assertKweli(m == tp_comp(b"abcdef"))
+                self.assertUongo(m != tp_comp(b"abcdef"))
+                self.assertUongo(m == tp_comp(b"abcde"))
+                self.assertKweli(m != tp_comp(b"abcde"))
+                self.assertUongo(m == tp_comp(b"abcde1"))
+                self.assertKweli(m != tp_comp(b"abcde1"))
+            self.assertKweli(m == m)
+            self.assertKweli(m == m[:])
+            self.assertKweli(m[0:6] == m[:])
+            self.assertUongo(m[0:5] == m)
 
             # Comparison with objects which don't support the buffer API
-            self.assertFalse(m == "abcdef")
-            self.assertTrue(m != "abcdef")
-            self.assertFalse("abcdef" == m)
-            self.assertTrue("abcdef" != m)
+            self.assertUongo(m == "abcdef")
+            self.assertKweli(m != "abcdef")
+            self.assertUongo("abcdef" == m)
+            self.assertKweli("abcdef" != m)
 
             # Unordered comparisons
-            for c in (m, b"abcdef"):
+            kila c kwenye (m, b"abcdef"):
                 self.assertRaises(TypeError, lambda: m < c)
                 self.assertRaises(TypeError, lambda: c <= m)
                 self.assertRaises(TypeError, lambda: m >= c)
@@ -190,20 +190,20 @@ kundi AbstractMemoryTests:
         rudisha m
 
     eleza test_attributes_readonly(self):
-        ikiwa not self.ro_type:
+        ikiwa sio self.ro_type:
             self.skipTest("no read-only type to test")
         m = self.check_attributes_with_type(self.ro_type)
-        self.assertEqual(m.readonly, True)
+        self.assertEqual(m.readonly, Kweli)
 
     eleza test_attributes_writable(self):
-        ikiwa not self.rw_type:
+        ikiwa sio self.rw_type:
             self.skipTest("no writable type to test")
         m = self.check_attributes_with_type(self.rw_type)
-        self.assertEqual(m.readonly, False)
+        self.assertEqual(m.readonly, Uongo)
 
     eleza test_getbuffer(self):
         # Test PyObject_GetBuffer() on a memoryview object.
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             oldrefcount = sys.getrefcount(b)
             m = self._view(b)
@@ -211,22 +211,22 @@ kundi AbstractMemoryTests:
             s = str(m, "utf-8")
             self._check_contents(tp, b, s.encode("utf-8"))
             self.assertEqual(sys.getrefcount(m), oldviewrefcount)
-            m = None
+            m = Tupu
             self.assertEqual(sys.getrefcount(b), oldrefcount)
 
     eleza test_gc(self):
-        for tp in self._types:
-            ikiwa not isinstance(tp, type):
-                # If tp is a factory rather than a plain type, skip
-                continue
+        kila tp kwenye self._types:
+            ikiwa sio isinstance(tp, type):
+                # If tp ni a factory rather than a plain type, skip
+                endelea
 
             kundi MyView():
                 eleza __init__(self, base):
                     self.m = memoryview(base)
             kundi MySource(tp):
-                pass
+                pita
             kundi MyObject:
-                pass
+                pita
 
             # Create a reference cycle through a memoryview object.
             # This exercises mbuf_clear().
@@ -236,10 +236,10 @@ kundi AbstractMemoryTests:
             b.m = m
             b.o = o
             wr = weakref.ref(o)
-            b = m = o = None
+            b = m = o = Tupu
             # The cycle must be broken
             gc.collect()
-            self.assertTrue(wr() is None, wr())
+            self.assertKweli(wr() ni Tupu, wr())
 
             # This exercises memory_clear().
             m = MyView(tp(b'abc'))
@@ -247,10 +247,10 @@ kundi AbstractMemoryTests:
             m.x = m
             m.o = o
             wr = weakref.ref(o)
-            m = o = None
+            m = o = Tupu
             # The cycle must be broken
             gc.collect()
-            self.assertTrue(wr() is None, wr())
+            self.assertKweli(wr() ni Tupu, wr())
 
     eleza _check_released(self, m, tp):
         check = self.assertRaisesRegex(ValueError, "released")
@@ -268,8 +268,8 @@ kundi AbstractMemoryTests:
         with check: m.strides
         with check:
             with m:
-                pass
-        # str() and repr() still function
+                pita
+        # str() na repr() still function
         self.assertIn("released memory", str(m))
         self.assertIn("released memory", repr(m))
         self.assertEqual(m, m)
@@ -277,10 +277,10 @@ kundi AbstractMemoryTests:
         self.assertNotEqual(m, tp(self._source))
 
     eleza test_contextmanager(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
-            with m as cm:
+            with m kama cm:
                 self.assertIs(cm, m)
             self._check_released(m, tp)
             m = self._view(b)
@@ -289,7 +289,7 @@ kundi AbstractMemoryTests:
                 m.release()
 
     eleza test_release(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
             m.release()
@@ -300,9 +300,9 @@ kundi AbstractMemoryTests:
 
     eleza test_writable_readonly(self):
         # Issue #10451: memoryview incorrectly exposes a readonly
-        # buffer as writable causing a segfault ikiwa using mmap
+        # buffer kama writable causing a segfault ikiwa using mmap
         tp = self.ro_type
-        ikiwa tp is None:
+        ikiwa tp ni Tupu:
             self.skipTest("no read-only type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -313,10 +313,10 @@ kundi AbstractMemoryTests:
         self.assertRaises(TypeError, self._view, {})
 
     eleza test_hash(self):
-        # Memoryviews of readonly (hashable) types are hashable, and they
-        # hash as hash(obj.tobytes()).
+        # Memoryviews of readonly (hashable) types are hashable, na they
+        # hash kama hash(obj.tobytes()).
         tp = self.ro_type
-        ikiwa tp is None:
+        ikiwa tp ni Tupu:
             self.skipTest("no read-only type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -324,8 +324,8 @@ kundi AbstractMemoryTests:
         # Releasing the memoryview keeps the stored hash value (as with weakrefs)
         m.release()
         self.assertEqual(hash(m), hash(b"abcdef"))
-        # Hashing a memoryview for the first time after it is released
-        # results in an error (as with weakrefs).
+        # Hashing a memoryview kila the first time after it ni released
+        # results kwenye an error (as with weakrefs).
         m = self._view(b)
         m.release()
         self.assertRaises(ValueError, hash, m)
@@ -333,7 +333,7 @@ kundi AbstractMemoryTests:
     eleza test_hash_writable(self):
         # Memoryviews of writable types are unhashable
         tp = self.rw_type
-        ikiwa tp is None:
+        ikiwa tp ni Tupu:
             self.skipTest("no writable type to test")
         b = tp(self._source)
         m = self._view(b)
@@ -341,7 +341,7 @@ kundi AbstractMemoryTests:
 
     eleza test_weakref(self):
         # Check memoryviews are weakrefable
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
             L = []
@@ -349,13 +349,13 @@ kundi AbstractMemoryTests:
                 L.append(b)
             wr = weakref.ref(m, callback)
             self.assertIs(wr(), m)
-            del m
+            toa m
             test.support.gc_collect()
-            self.assertIs(wr(), None)
+            self.assertIs(wr(), Tupu)
             self.assertIs(L[0], b)
 
     eleza test_reversed(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
             aslist = list(reversed(m.tolist()))
@@ -363,12 +363,12 @@ kundi AbstractMemoryTests:
             self.assertEqual(list(reversed(m)), list(m[::-1]))
 
     eleza test_toreadonly(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
             mm = m.toreadonly()
-            self.assertTrue(mm.readonly)
-            self.assertTrue(memoryview(mm).readonly)
+            self.assertKweli(mm.readonly)
+            self.assertKweli(memoryview(mm).readonly)
             self.assertEqual(mm.tolist(), m.tolist())
             mm.release()
             m.tolist()
@@ -381,7 +381,7 @@ kundi AbstractMemoryTests:
         c = b[0:2]
         d = memoryview(b)
 
-        del b
+        toa b
 
         self.assertEqual(c[0], 256)
         self.assertEqual(d[0], 256)
@@ -395,9 +395,9 @@ kundi AbstractMemoryTests:
         self.assertEqual(d.format, "H")
 
 
-# Variations on source objects for the buffer: bytes-like objects, then arrays
+# Variations on source objects kila the buffer: bytes-like objects, then arrays
 # with itemsize > 1.
-# NOTE: support for multi-dimensional objects is unimplemented.
+# NOTE: support kila multi-dimensional objects ni unimplemented.
 
 kundi BaseBytesMemoryTests(AbstractMemoryTests):
     ro_type = bytes
@@ -407,24 +407,24 @@ kundi BaseBytesMemoryTests(AbstractMemoryTests):
     format = 'B'
 
 kundi BaseArrayMemoryTests(AbstractMemoryTests):
-    ro_type = None
+    ro_type = Tupu
     rw_type = lambda self, b: array.array('i', list(b))
     getitem_type = lambda self, b: array.array('i', list(b)).tobytes()
     itemsize = array.array('i').itemsize
     format = 'i'
 
-    @unittest.skip('XXX test should be adapted for non-byte buffers')
+    @unittest.skip('XXX test should be adapted kila non-byte buffers')
     eleza test_getbuffer(self):
-        pass
+        pita
 
     @unittest.skip('XXX NotImplementedError: tolist() only supports byte views')
     eleza test_tolist(self):
-        pass
+        pita
 
 
 # Variations on indirection levels: memoryview, slice of memoryview,
 # slice of slice of memoryview.
-# This is agizaant to test allocation subtleties.
+# This ni agizaant to test allocation subtleties.
 
 kundi BaseMemoryviewTests:
     eleza _view(self, obj):
@@ -444,7 +444,7 @@ kundi BaseMemorySliceTests:
         self.assertEqual(obj[1:7], tp(contents))
 
     eleza test_refs(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             m = memoryview(tp(self._source))
             oldrefcount = sys.getrefcount(m)
             m[1:2]
@@ -467,14 +467,14 @@ kundi BytesMemoryviewTest(unittest.TestCase,
     BaseMemoryviewTests, BaseBytesMemoryTests):
 
     eleza test_constructor(self):
-        for tp in self._types:
+        kila tp kwenye self._types:
             ob = tp(self._source)
-            self.assertTrue(memoryview(ob))
-            self.assertTrue(memoryview(object=ob))
+            self.assertKweli(memoryview(ob))
+            self.assertKweli(memoryview(object=ob))
             self.assertRaises(TypeError, memoryview)
             self.assertRaises(TypeError, memoryview, ob, ob)
             self.assertRaises(TypeError, memoryview, argument=ob)
-            self.assertRaises(TypeError, memoryview, ob, argument=True)
+            self.assertRaises(TypeError, memoryview, ob, argument=Kweli)
 
 kundi ArrayMemoryviewTest(unittest.TestCase,
     BaseMemoryviewTests, BaseArrayMemoryTests):
@@ -490,19 +490,19 @@ kundi ArrayMemoryviewTest(unittest.TestCase,
 
 kundi BytesMemorySliceTest(unittest.TestCase,
     BaseMemorySliceTests, BaseBytesMemoryTests):
-    pass
+    pita
 
 kundi ArrayMemorySliceTest(unittest.TestCase,
     BaseMemorySliceTests, BaseArrayMemoryTests):
-    pass
+    pita
 
 kundi BytesMemorySliceSliceTest(unittest.TestCase,
     BaseMemorySliceSliceTests, BaseBytesMemoryTests):
-    pass
+    pita
 
 kundi ArrayMemorySliceSliceTest(unittest.TestCase,
     BaseMemorySliceSliceTests, BaseArrayMemoryTests):
-    pass
+    pita
 
 
 kundi OtherTest(unittest.TestCase):
@@ -517,7 +517,7 @@ kundi OtherTest(unittest.TestCase):
         m[2:] = p6[2:]
         self.assertEqual(d.value, 0.6)
 
-        for format in "Bbc":
+        kila format kwenye "Bbc":
             with self.subTest(format):
                 d = ctypes.c_double()
                 m = memoryview(d).cast(format)
@@ -539,7 +539,7 @@ kundi OtherTest(unittest.TestCase):
 
     eleza test_pickle(self):
         m = memoryview(b'abc')
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(m, proto)
 

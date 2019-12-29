@@ -1,4 +1,4 @@
-"""test script for a few new invalid token catches"""
+"""test script kila a few new invalid token catches"""
 
 agiza sys
 kutoka test agiza support
@@ -7,46 +7,46 @@ agiza unittest
 
 kundi EOFTestCase(unittest.TestCase):
     eleza test_EOFC(self):
-        expect = "EOL while scanning string literal (<string>, line 1)"
-        try:
-            eval("""'this is a test\
+        expect = "EOL wakati scanning string literal (<string>, line 1)"
+        jaribu:
+            eval("""'this ni a test\
             """)
-        except SyntaxError as msg:
+        tatizo SyntaxError kama msg:
             self.assertEqual(str(msg), expect)
-        else:
-            raise support.TestFailed
+        isipokua:
+            ashiria support.TestFailed
 
     eleza test_EOFS(self):
-        expect = ("EOF while scanning triple-quoted string literal "
+        expect = ("EOF wakati scanning triple-quoted string literal "
                   "(<string>, line 1)")
-        try:
-            eval("""'''this is a test""")
-        except SyntaxError as msg:
+        jaribu:
+            eval("""'''this ni a test""")
+        tatizo SyntaxError kama msg:
             self.assertEqual(str(msg), expect)
-        else:
-            raise support.TestFailed
+        isipokua:
+            ashiria support.TestFailed
 
     eleza test_line_continuation_EOF(self):
         """A contination at the end of input must be an error; bpo2180."""
-        expect = 'unexpected EOF while parsing (<string>, line 1)'
-        with self.assertRaises(SyntaxError) as excinfo:
+        expect = 'unexpected EOF wakati parsing (<string>, line 1)'
+        with self.assertRaises(SyntaxError) kama excinfo:
             exec('x = 5\\')
         self.assertEqual(str(excinfo.exception), expect)
-        with self.assertRaises(SyntaxError) as excinfo:
+        with self.assertRaises(SyntaxError) kama excinfo:
             exec('\\')
         self.assertEqual(str(excinfo.exception), expect)
 
     @unittest.skipIf(not sys.executable, "sys.executable required")
     eleza test_line_continuation_EOF_kutoka_file_bpo2180(self):
-        """Ensure tok_nextc() does not add too many ending newlines."""
-        with support.temp_dir() as temp_dir:
+        """Ensure tok_nextc() does sio add too many ending newlines."""
+        with support.temp_dir() kama temp_dir:
             file_name = script_helper.make_script(temp_dir, 'foo', '\\')
             rc, out, err = script_helper.assert_python_failure(file_name)
-            self.assertIn(b'unexpected EOF while parsing', err)
+            self.assertIn(b'unexpected EOF wakati parsing', err)
 
             file_name = script_helper.make_script(temp_dir, 'foo', 'y = 6\\')
             rc, out, err = script_helper.assert_python_failure(file_name)
-            self.assertIn(b'unexpected EOF while parsing', err)
+            self.assertIn(b'unexpected EOF wakati parsing', err)
 
 ikiwa __name__ == "__main__":
     unittest.main()

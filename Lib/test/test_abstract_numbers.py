@@ -1,4 +1,4 @@
-"""Unit tests for numbers.py."""
+"""Unit tests kila numbers.py."""
 
 agiza math
 agiza operator
@@ -7,8 +7,8 @@ kutoka numbers agiza Complex, Real, Rational, Integral
 
 kundi TestNumbers(unittest.TestCase):
     eleza test_int(self):
-        self.assertTrue(issubclass(int, Integral))
-        self.assertTrue(issubclass(int, Complex))
+        self.assertKweli(issubclass(int, Integral))
+        self.assertKweli(issubclass(int, Complex))
 
         self.assertEqual(7, int(7).real)
         self.assertEqual(0, int(7).imag)
@@ -18,8 +18,8 @@ kundi TestNumbers(unittest.TestCase):
         self.assertEqual(1, int(7).denominator)
 
     eleza test_float(self):
-        self.assertFalse(issubclass(float, Rational))
-        self.assertTrue(issubclass(float, Real))
+        self.assertUongo(issubclass(float, Rational))
+        self.assertKweli(issubclass(float, Real))
 
         self.assertEqual(7.3, float(7.3).real)
         self.assertEqual(0, float(7.3).imag)
@@ -27,11 +27,11 @@ kundi TestNumbers(unittest.TestCase):
         self.assertEqual(-7.3, float(-7.3).conjugate())
 
     eleza test_complex(self):
-        self.assertFalse(issubclass(complex, Real))
-        self.assertTrue(issubclass(complex, Complex))
+        self.assertUongo(issubclass(complex, Real))
+        self.assertKweli(issubclass(complex, Complex))
 
         c1, c2 = complex(3, 2), complex(4,1)
-        # XXX: This is not ideal, but see the comment in math_trunc().
+        # XXX: This ni sio ideal, but see the comment kwenye math_trunc().
         self.assertRaises(TypeError, math.trunc, c1)
         self.assertRaises(TypeError, operator.mod, c1, c2)
         self.assertRaises(TypeError, divmod, c1, c2)

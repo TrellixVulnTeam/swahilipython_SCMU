@@ -1,6 +1,6 @@
-"""Unit tests for the PickleBuffer object.
+"""Unit tests kila the PickleBuffer object.
 
-Pickling tests themselves are in pickletester.py.
+Pickling tests themselves are kwenye pickletester.py.
 """
 
 agiza gc
@@ -12,14 +12,14 @@ kutoka test agiza support
 
 
 kundi B(bytes):
-    pass
+    pita
 
 
 kundi PickleBufferTest(unittest.TestCase):
 
     eleza check_memoryview(self, pb, equiv):
-        with memoryview(pb) as m:
-            with memoryview(equiv) as expected:
+        with memoryview(pb) kama m:
+            with memoryview(equiv) kama expected:
                 self.assertEqual(m.nbytes, expected.nbytes)
                 self.assertEqual(m.readonly, expected.readonly)
                 self.assertEqual(m.itemsize, expected.itemsize)
@@ -44,23 +44,23 @@ kundi PickleBufferTest(unittest.TestCase):
     eleza test_basics(self):
         pb = PickleBuffer(b"foo")
         self.assertEqual(b"foo", bytes(pb))
-        with memoryview(pb) as m:
-            self.assertTrue(m.readonly)
+        with memoryview(pb) kama m:
+            self.assertKweli(m.readonly)
 
         pb = PickleBuffer(bytearray(b"foo"))
         self.assertEqual(b"foo", bytes(pb))
-        with memoryview(pb) as m:
-            self.assertFalse(m.readonly)
+        with memoryview(pb) kama m:
+            self.assertUongo(m.readonly)
             m[0] = 48
         self.assertEqual(b"0oo", bytes(pb))
 
     eleza test_release(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        with self.assertRaises(ValueError) as raises:
+        with self.assertRaises(ValueError) kama ashirias:
             memoryview(pb)
         self.assertIn("operation forbidden on released PickleBuffer object",
-                      str(raises.exception))
+                      str(ashirias.exception))
         # Idempotency
         pb.release()
 
@@ -69,41 +69,41 @@ kundi PickleBufferTest(unittest.TestCase):
         pb = PickleBuffer(b)
         b.cycle = pb
         wpb = weakref.ref(pb)
-        del b, pb
+        toa b, pb
         gc.collect()
-        self.assertIsNone(wpb())
+        self.assertIsTupu(wpb())
 
     eleza test_ndarray_2d(self):
         # C-contiguous
         ndarray = support.import_module("_testbuffer").ndarray
         arr = ndarray(list(range(12)), shape=(4, 3), format='<i')
-        self.assertTrue(arr.c_contiguous)
-        self.assertFalse(arr.f_contiguous)
+        self.assertKweli(arr.c_contiguous)
+        self.assertUongo(arr.f_contiguous)
         pb = PickleBuffer(arr)
         self.check_memoryview(pb, arr)
         # Non-contiguous
         arr = arr[::2]
-        self.assertFalse(arr.c_contiguous)
-        self.assertFalse(arr.f_contiguous)
+        self.assertUongo(arr.c_contiguous)
+        self.assertUongo(arr.f_contiguous)
         pb = PickleBuffer(arr)
         self.check_memoryview(pb, arr)
         # F-contiguous
         arr = ndarray(list(range(12)), shape=(3, 4), strides=(4, 12), format='<i')
-        self.assertTrue(arr.f_contiguous)
-        self.assertFalse(arr.c_contiguous)
+        self.assertKweli(arr.f_contiguous)
+        self.assertUongo(arr.c_contiguous)
         pb = PickleBuffer(arr)
         self.check_memoryview(pb, arr)
 
-    # Tests for PickleBuffer.raw()
+    # Tests kila PickleBuffer.raw()
 
     eleza check_raw(self, obj, equiv):
         pb = PickleBuffer(obj)
-        with pb.raw() as m:
+        with pb.raw() kama m:
             self.assertIsInstance(m, memoryview)
             self.check_memoryview(m, equiv)
 
     eleza test_raw(self):
-        for obj in (b"foo", bytearray(b"foo")):
+        kila obj kwenye (b"foo", bytearray(b"foo")):
             with self.subTest(obj=obj):
                 self.check_raw(obj, obj)
 
@@ -120,7 +120,7 @@ kundi PickleBufferTest(unittest.TestCase):
         # 2-D, F-contiguous
         arr = ndarray(list(range(6)), shape=(2, 3), strides=(2, 4),
                       format='<h')
-        # Note this is different kutoka arr.tobytes()
+        # Note this ni different kutoka arr.tobytes()
         equiv = b"\x00\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00"
         self.check_raw(arr, equiv)
         # 0-D
@@ -145,7 +145,7 @@ kundi PickleBufferTest(unittest.TestCase):
     eleza test_raw_released(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        with self.assertRaises(ValueError) as raises:
+        with self.assertRaises(ValueError) kama ashirias:
             pb.raw()
 
 

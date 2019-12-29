@@ -25,8 +25,8 @@ kundi TestSysConfig(unittest.TestCase):
         ikiwa hasattr(os, 'uname'):
             self.uname = os.uname
             self._uname = os.uname()
-        else:
-            self.uname = None
+        isipokua:
+            self.uname = Tupu
             self._set_uname(('',)*5)
         os.uname = self._get_uname
         # saving the environment
@@ -40,19 +40,19 @@ kundi TestSysConfig(unittest.TestCase):
         self._config_vars = sysconfig._CONFIG_VARS, copy(sysconfig._CONFIG_VARS)
         self._added_envvars = []
         self._changed_envvars = []
-        for var in ('MACOSX_DEPLOYMENT_TARGET', 'PATH'):
-            ikiwa var in os.environ:
+        kila var kwenye ('MACOSX_DEPLOYMENT_TARGET', 'PATH'):
+            ikiwa var kwenye os.environ:
                 self._changed_envvars.append((var, os.environ[var]))
-            else:
+            isipokua:
                 self._added_envvars.append(var)
 
     eleza tearDown(self):
         sys.path[:] = self.sys_path
         self._cleanup_testfn()
-        ikiwa self.uname is not None:
+        ikiwa self.uname ni sio Tupu:
             os.uname = self.uname
-        else:
-            del os.uname
+        isipokua:
+            toa os.uname
         os.name = self.name
         sys.platform = self.platform
         sys.version = self.version
@@ -63,10 +63,10 @@ kundi TestSysConfig(unittest.TestCase):
         sysconfig._CONFIG_VARS = self._config_vars[0]
         sysconfig._CONFIG_VARS.clear()
         sysconfig._CONFIG_VARS.update(self._config_vars[1])
-        for var, value in self._changed_envvars:
+        kila var, value kwenye self._changed_envvars:
             os.environ[var] = value
-        for var in self._added_envvars:
-            os.environ.pop(var, None)
+        kila var kwenye self._added_envvars:
+            os.environ.pop(var, Tupu)
 
         super(TestSysConfig, self).tearDown()
 
@@ -89,21 +89,21 @@ kundi TestSysConfig(unittest.TestCase):
     eleza test_get_paths(self):
         scheme = get_paths()
         default_scheme = _get_default_scheme()
-        wanted = _expand_vars(default_scheme, None)
+        wanted = _expand_vars(default_scheme, Tupu)
         wanted = sorted(wanted.items())
         scheme = sorted(scheme.items())
         self.assertEqual(scheme, wanted)
 
     eleza test_get_path(self):
         # XXX make real tests here
-        for scheme in _INSTALL_SCHEMES:
-            for name in _INSTALL_SCHEMES[scheme]:
+        kila scheme kwenye _INSTALL_SCHEMES:
+            kila name kwenye _INSTALL_SCHEMES[scheme]:
                 res = get_path(name, scheme)
 
     eleza test_get_config_vars(self):
         cvars = get_config_vars()
         self.assertIsInstance(cvars, dict)
-        self.assertTrue(cvars)
+        self.assertKweli(cvars)
 
     eleza test_get_platform(self):
         # windows XP, 32bits
@@ -136,12 +136,12 @@ kundi TestSysConfig(unittest.TestCase):
                                        '-fwrapv -O3 -Wall -Wstrict-prototypes')
 
         maxint = sys.maxsize
-        try:
+        jaribu:
             sys.maxsize = 2147483647
             self.assertEqual(get_platform(), 'macosx-10.3-ppc')
             sys.maxsize = 9223372036854775807
             self.assertEqual(get_platform(), 'macosx-10.3-ppc64')
-        finally:
+        mwishowe:
             sys.maxsize = maxint
 
         self._set_uname(('Darwin', 'macziade', '8.11.1',
@@ -154,15 +154,15 @@ kundi TestSysConfig(unittest.TestCase):
         get_config_vars()['CFLAGS'] = ('-fno-strict-aliasing -DNDEBUG -g '
                                        '-fwrapv -O3 -Wall -Wstrict-prototypes')
         maxint = sys.maxsize
-        try:
+        jaribu:
             sys.maxsize = 2147483647
             self.assertEqual(get_platform(), 'macosx-10.3-i386')
             sys.maxsize = 9223372036854775807
             self.assertEqual(get_platform(), 'macosx-10.3-x86_64')
-        finally:
+        mwishowe:
             sys.maxsize = maxint
 
-        # macbook with fat binaries (fat, universal or fat64)
+        # macbook with fat binaries (fat, universal ama fat64)
         _osx_support._remove_original_values(get_config_vars())
         get_config_vars()['MACOSX_DEPLOYMENT_TARGET'] = '10.4'
         get_config_vars()['CFLAGS'] = ('-arch ppc -arch i386 -isysroot '
@@ -202,7 +202,7 @@ kundi TestSysConfig(unittest.TestCase):
 
         self.assertEqual(get_platform(), 'macosx-10.4-fat64')
 
-        for arch in ('ppc', 'i386', 'x86_64', 'ppc64'):
+        kila arch kwenye ('ppc', 'i386', 'x86_64', 'ppc64'):
             _osx_support._remove_original_values(get_config_vars())
             get_config_vars()['CFLAGS'] = ('-arch %s -isysroot '
                                            '/Developer/SDKs/MacOSX10.4u.sdk  '
@@ -225,7 +225,7 @@ kundi TestSysConfig(unittest.TestCase):
 
     eleza test_get_config_h_filename(self):
         config_h = sysconfig.get_config_h_filename()
-        self.assertTrue(os.path.isfile(config_h), config_h)
+        self.assertKweli(os.path.isfile(config_h), config_h)
 
     eleza test_get_scheme_names(self):
         wanted = ('nt', 'nt_user', 'osx_framework_user',
@@ -234,20 +234,20 @@ kundi TestSysConfig(unittest.TestCase):
 
     @skip_unless_symlink
     eleza test_symlink(self): # Issue 7880
-        with PythonSymlink() as py:
+        with PythonSymlink() kama py:
             cmd = "-c", "agiza sysconfig; andika(sysconfig.get_platform())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
     eleza test_user_similar(self):
-        # Issue #8759: make sure the posix scheme for the users
-        # is similar to the global posix_prefix one
+        # Issue #8759: make sure the posix scheme kila the users
+        # ni similar to the global posix_prefix one
         base = get_config_var('base')
         user = get_config_var('userbase')
         # the global scheme mirrors the distinction between prefix and
-        # exec-prefix but not the user scheme, so we have to adapt the paths
+        # exec-prefix but sio the user scheme, so we have to adapt the paths
         # before comparing (issue #9100)
         adapt = sys.base_prefix != sys.base_exec_prefix
-        for name in ('stdlib', 'platstdlib', 'purelib', 'platlib'):
+        kila name kwenye ('stdlib', 'platstdlib', 'purelib', 'platlib'):
             global_path = get_path(name, 'posix_prefix')
             ikiwa adapt:
                 global_path = global_path.replace(sys.exec_prefix, sys.base_prefix)
@@ -261,12 +261,12 @@ kundi TestSysConfig(unittest.TestCase):
             self.assertEqual(user_path, global_path.replace(base, user, 1))
 
     eleza test_main(self):
-        # just making sure _main() runs and returns things in the stdout
-        with captured_stdout() as output:
+        # just making sure _main() runs na rudishas things kwenye the stdout
+        with captured_stdout() kama output:
             _main()
-        self.assertTrue(len(output.getvalue().split('\n')) > 0)
+        self.assertKweli(len(output.getvalue().split('\n')) > 0)
 
-    @unittest.skipIf(sys.platform == "win32", "Does not apply to Windows")
+    @unittest.skipIf(sys.platform == "win32", "Does sio apply to Windows")
     eleza test_ldshared_value(self):
         ldflags = sysconfig.get_config_var('LDFLAGS')
         ldshared = sysconfig.get_config_var('LDSHARED')
@@ -277,11 +277,11 @@ kundi TestSysConfig(unittest.TestCase):
     eleza test_platform_in_subprocess(self):
         my_platform = sysconfig.get_platform()
 
-        # Test without MACOSX_DEPLOYMENT_TARGET in the environment
+        # Test without MACOSX_DEPLOYMENT_TARGET kwenye the environment
 
         env = os.environ.copy()
-        ikiwa 'MACOSX_DEPLOYMENT_TARGET' in env:
-            del env['MACOSX_DEPLOYMENT_TARGET']
+        ikiwa 'MACOSX_DEPLOYMENT_TARGET' kwenye env:
+            toa env['MACOSX_DEPLOYMENT_TARGET']
 
         p = subprocess.Popen([
                 sys.executable, '-c',
@@ -297,8 +297,8 @@ kundi TestSysConfig(unittest.TestCase):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-        # Test with MACOSX_DEPLOYMENT_TARGET in the environment, and
-        # using a value that is unlikely to be the default one.
+        # Test with MACOSX_DEPLOYMENT_TARGET kwenye the environment, and
+        # using a value that ni unlikely to be the default one.
         env = os.environ.copy()
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.1'
 
@@ -320,15 +320,15 @@ kundi TestSysConfig(unittest.TestCase):
         # See Issues #15322, #15364.
         srcdir = sysconfig.get_config_var('srcdir')
 
-        self.assertTrue(os.path.isabs(srcdir), srcdir)
-        self.assertTrue(os.path.isdir(srcdir), srcdir)
+        self.assertKweli(os.path.isabs(srcdir), srcdir)
+        self.assertKweli(os.path.isdir(srcdir), srcdir)
 
         ikiwa sysconfig._PYTHON_BUILD:
-            # The python executable has not been installed so srcdir
+            # The python executable has sio been installed so srcdir
             # should be a full source checkout.
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
-            self.assertTrue(os.path.exists(Python_h), Python_h)
-            self.assertTrue(sysconfig._is_python_source_dir(srcdir))
+            self.assertKweli(os.path.exists(Python_h), Python_h)
+            self.assertKweli(sysconfig._is_python_source_dir(srcdir))
         elikiwa os.name == 'posix':
             makefile_dir = os.path.dirname(sysconfig.get_makefile_filename())
             # Issue #19340: srcdir has been realpath'ed already
@@ -343,24 +343,24 @@ kundi TestSysConfig(unittest.TestCase):
             srcdir2 = sysconfig.get_config_var('srcdir')
         self.assertEqual(srcdir, srcdir2)
 
-    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is None,
-                     'EXT_SUFFIX required for this test')
+    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') ni Tupu,
+                     'EXT_SUFFIX required kila this test')
     eleza test_SO_deprecation(self):
         self.assertWarns(DeprecationWarning,
                          sysconfig.get_config_var, 'SO')
 
-    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is None,
-                     'EXT_SUFFIX required for this test')
+    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') ni Tupu,
+                     'EXT_SUFFIX required kila this test')
     eleza test_SO_value(self):
         with check_warnings(('', DeprecationWarning)):
             self.assertEqual(sysconfig.get_config_var('SO'),
                              sysconfig.get_config_var('EXT_SUFFIX'))
 
-    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is None,
-                     'EXT_SUFFIX required for this test')
+    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') ni Tupu,
+                     'EXT_SUFFIX required kila this test')
     eleza test_SO_in_vars(self):
         vars = sysconfig.get_config_vars()
-        self.assertIsNotNone(vars['SO'])
+        self.assertIsNotTupu(vars['SO'])
         self.assertEqual(vars['SO'], vars['EXT_SUFFIX'])
 
     @unittest.skipUnless(sys.platform == 'linux' and
@@ -372,31 +372,31 @@ kundi TestSysConfig(unittest.TestCase):
         machine = platform.machine()
         suffix = sysconfig.get_config_var('EXT_SUFFIX')
         ikiwa re.match('(aarch64|arm|mips|ppc|powerpc|s390|sparc)', machine):
-            self.assertTrue('linux' in suffix, suffix)
+            self.assertKweli('linux' kwenye suffix, suffix)
         ikiwa re.match('(i[3-6]86|x86_64)$', machine):
             ikiwa ctypes.sizeof(ctypes.c_char_p()) == 4:
-                self.assertTrue(suffix.endswith('i386-linux-gnu.so') or
+                self.assertKweli(suffix.endswith('i386-linux-gnu.so') or
                                 suffix.endswith('x86_64-linux-gnux32.so'),
                                 suffix)
-            else: # 8 byte pointer size
-                self.assertTrue(suffix.endswith('x86_64-linux-gnu.so'), suffix)
+            isipokua: # 8 byte pointer size
+                self.assertKweli(suffix.endswith('x86_64-linux-gnu.so'), suffix)
 
     @unittest.skipUnless(sys.platform == 'darwin', 'OS X-specific test')
     eleza test_osx_ext_suffix(self):
         suffix = sysconfig.get_config_var('EXT_SUFFIX')
-        self.assertTrue(suffix.endswith('-darwin.so'), suffix)
+        self.assertKweli(suffix.endswith('-darwin.so'), suffix)
 
 kundi MakefileTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('win'),
-                     'Test is not Windows compatible')
+                     'Test ni sio Windows compatible')
     eleza test_get_makefile_filename(self):
         makefile = sysconfig.get_makefile_filename()
-        self.assertTrue(os.path.isfile(makefile), makefile)
+        self.assertKweli(os.path.isfile(makefile), makefile)
 
     eleza test_parse_makefile(self):
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, "w") as makefile:
+        with open(TESTFN, "w") kama makefile:
             andika("var1=a$(VAR2)", file=makefile)
             andika("VAR2=b$(var3)", file=makefile)
             andika("var3=42", file=makefile)

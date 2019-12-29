@@ -1,5 +1,5 @@
 """
-Tests common to genericpath, ntpath and posixpath
+Tests common to genericpath, ntpath na posixpath
 """
 
 agiza genericpath
@@ -13,7 +13,7 @@ kutoka test.support agiza FakePath
 
 
 eleza create_file(filename, data=b'foo'):
-    with open(filename, 'xb', 0) as fp:
+    with open(filename, 'xb', 0) kama fp:
         fp.write(data)
 
 
@@ -23,10 +23,10 @@ kundi GenericTest:
     attributes = []
 
     eleza test_no_argument(self):
-        for attr in self.common_attributes + self.attributes:
+        kila attr kwenye self.common_attributes + self.attributes:
             with self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
-                raise self.fail("{}.{}() did not raise a TypeError"
+                ashiria self.fail("{}.{}() did sio ashiria a TypeError"
                                 .format(self.pathmodule.__name__, attr))
 
     eleza test_commonprefix(self):
@@ -87,11 +87,11 @@ kundi GenericTest:
 
         testlist = ['', 'abc', 'Xbcd', 'Xb', 'XY', 'abcd',
                     'aXc', 'abd', 'ab', 'aX', 'abcX']
-        for s1 in testlist:
-            for s2 in testlist:
+        kila s1 kwenye testlist:
+            kila s2 kwenye testlist:
                 p = commonprefix([s1, s2])
-                self.assertTrue(s1.startswith(p))
-                self.assertTrue(s2.startswith(p))
+                self.assertKweli(s1.startswith(p))
+                self.assertKweli(s2.startswith(p))
                 ikiwa s1 != s2:
                     n = len(p)
                     self.assertNotEqual(s1[n:n+1], s2[n:n+1])
@@ -113,10 +113,10 @@ kundi GenericTest:
 
         create_file(filename, b'foo')
 
-        with open(filename, "ab", 0) as f:
+        with open(filename, "ab", 0) kama f:
             f.write(b"bar")
 
-        with open(filename, "rb", 0) as f:
+        with open(filename, "rb", 0) kama f:
             data = f.read()
         self.assertEqual(data, b"foobar")
 
@@ -130,86 +130,86 @@ kundi GenericTest:
         bfilename = os.fsencode(filename)
         self.addCleanup(support.unlink, filename)
 
-        self.assertIs(self.pathmodule.exists(filename), False)
-        self.assertIs(self.pathmodule.exists(bfilename), False)
+        self.assertIs(self.pathmodule.exists(filename), Uongo)
+        self.assertIs(self.pathmodule.exists(bfilename), Uongo)
 
         create_file(filename)
 
-        self.assertIs(self.pathmodule.exists(filename), True)
-        self.assertIs(self.pathmodule.exists(bfilename), True)
+        self.assertIs(self.pathmodule.exists(filename), Kweli)
+        self.assertIs(self.pathmodule.exists(bfilename), Kweli)
 
-        self.assertIs(self.pathmodule.exists(filename + '\udfff'), False)
-        self.assertIs(self.pathmodule.exists(bfilename + b'\xff'), False)
-        self.assertIs(self.pathmodule.exists(filename + '\x00'), False)
-        self.assertIs(self.pathmodule.exists(bfilename + b'\x00'), False)
+        self.assertIs(self.pathmodule.exists(filename + '\udfff'), Uongo)
+        self.assertIs(self.pathmodule.exists(bfilename + b'\xff'), Uongo)
+        self.assertIs(self.pathmodule.exists(filename + '\x00'), Uongo)
+        self.assertIs(self.pathmodule.exists(bfilename + b'\x00'), Uongo)
 
-        ikiwa self.pathmodule is not genericpath:
-            self.assertIs(self.pathmodule.lexists(filename), True)
-            self.assertIs(self.pathmodule.lexists(bfilename), True)
+        ikiwa self.pathmodule ni sio genericpath:
+            self.assertIs(self.pathmodule.lexists(filename), Kweli)
+            self.assertIs(self.pathmodule.lexists(bfilename), Kweli)
 
-            self.assertIs(self.pathmodule.lexists(filename + '\udfff'), False)
-            self.assertIs(self.pathmodule.lexists(bfilename + b'\xff'), False)
-            self.assertIs(self.pathmodule.lexists(filename + '\x00'), False)
-            self.assertIs(self.pathmodule.lexists(bfilename + b'\x00'), False)
+            self.assertIs(self.pathmodule.lexists(filename + '\udfff'), Uongo)
+            self.assertIs(self.pathmodule.lexists(bfilename + b'\xff'), Uongo)
+            self.assertIs(self.pathmodule.lexists(filename + '\x00'), Uongo)
+            self.assertIs(self.pathmodule.lexists(bfilename + b'\x00'), Uongo)
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     eleza test_exists_fd(self):
         r, w = os.pipe()
-        try:
-            self.assertTrue(self.pathmodule.exists(r))
-        finally:
+        jaribu:
+            self.assertKweli(self.pathmodule.exists(r))
+        mwishowe:
             os.close(r)
             os.close(w)
-        self.assertFalse(self.pathmodule.exists(r))
+        self.assertUongo(self.pathmodule.exists(r))
 
     eleza test_isdir(self):
         filename = support.TESTFN
         bfilename = os.fsencode(filename)
-        self.assertIs(self.pathmodule.isdir(filename), False)
-        self.assertIs(self.pathmodule.isdir(bfilename), False)
+        self.assertIs(self.pathmodule.isdir(filename), Uongo)
+        self.assertIs(self.pathmodule.isdir(bfilename), Uongo)
 
-        self.assertIs(self.pathmodule.isdir(filename + '\udfff'), False)
-        self.assertIs(self.pathmodule.isdir(bfilename + b'\xff'), False)
-        self.assertIs(self.pathmodule.isdir(filename + '\x00'), False)
-        self.assertIs(self.pathmodule.isdir(bfilename + b'\x00'), False)
+        self.assertIs(self.pathmodule.isdir(filename + '\udfff'), Uongo)
+        self.assertIs(self.pathmodule.isdir(bfilename + b'\xff'), Uongo)
+        self.assertIs(self.pathmodule.isdir(filename + '\x00'), Uongo)
+        self.assertIs(self.pathmodule.isdir(bfilename + b'\x00'), Uongo)
 
-        try:
+        jaribu:
             create_file(filename)
-            self.assertIs(self.pathmodule.isdir(filename), False)
-            self.assertIs(self.pathmodule.isdir(bfilename), False)
-        finally:
+            self.assertIs(self.pathmodule.isdir(filename), Uongo)
+            self.assertIs(self.pathmodule.isdir(bfilename), Uongo)
+        mwishowe:
             support.unlink(filename)
 
-        try:
+        jaribu:
             os.mkdir(filename)
-            self.assertIs(self.pathmodule.isdir(filename), True)
-            self.assertIs(self.pathmodule.isdir(bfilename), True)
-        finally:
+            self.assertIs(self.pathmodule.isdir(filename), Kweli)
+            self.assertIs(self.pathmodule.isdir(bfilename), Kweli)
+        mwishowe:
             support.rmdir(filename)
 
     eleza test_isfile(self):
         filename = support.TESTFN
         bfilename = os.fsencode(filename)
-        self.assertIs(self.pathmodule.isfile(filename), False)
-        self.assertIs(self.pathmodule.isfile(bfilename), False)
+        self.assertIs(self.pathmodule.isfile(filename), Uongo)
+        self.assertIs(self.pathmodule.isfile(bfilename), Uongo)
 
-        self.assertIs(self.pathmodule.isfile(filename + '\udfff'), False)
-        self.assertIs(self.pathmodule.isfile(bfilename + b'\xff'), False)
-        self.assertIs(self.pathmodule.isfile(filename + '\x00'), False)
-        self.assertIs(self.pathmodule.isfile(bfilename + b'\x00'), False)
+        self.assertIs(self.pathmodule.isfile(filename + '\udfff'), Uongo)
+        self.assertIs(self.pathmodule.isfile(bfilename + b'\xff'), Uongo)
+        self.assertIs(self.pathmodule.isfile(filename + '\x00'), Uongo)
+        self.assertIs(self.pathmodule.isfile(bfilename + b'\x00'), Uongo)
 
-        try:
+        jaribu:
             create_file(filename)
-            self.assertIs(self.pathmodule.isfile(filename), True)
-            self.assertIs(self.pathmodule.isfile(bfilename), True)
-        finally:
+            self.assertIs(self.pathmodule.isfile(filename), Kweli)
+            self.assertIs(self.pathmodule.isfile(bfilename), Kweli)
+        mwishowe:
             support.unlink(filename)
 
-        try:
+        jaribu:
             os.mkdir(filename)
-            self.assertIs(self.pathmodule.isfile(filename), False)
-            self.assertIs(self.pathmodule.isfile(bfilename), False)
-        finally:
+            self.assertIs(self.pathmodule.isfile(filename), Uongo)
+            self.assertIs(self.pathmodule.isfile(bfilename), Uongo)
+        mwishowe:
             support.rmdir(filename)
 
     eleza test_samefile(self):
@@ -219,10 +219,10 @@ kundi GenericTest:
         self.addCleanup(support.unlink, file2)
 
         create_file(file1)
-        self.assertTrue(self.pathmodule.samefile(file1, file1))
+        self.assertKweli(self.pathmodule.samefile(file1, file1))
 
         create_file(file2)
-        self.assertFalse(self.pathmodule.samefile(file1, file2))
+        self.assertUongo(self.pathmodule.samefile(file1, file2))
 
         self.assertRaises(TypeError, self.pathmodule.samefile)
 
@@ -235,20 +235,20 @@ kundi GenericTest:
         create_file(test_fn1)
 
         func(test_fn1, test_fn2)
-        self.assertTrue(self.pathmodule.samefile(test_fn1, test_fn2))
+        self.assertKweli(self.pathmodule.samefile(test_fn1, test_fn2))
         os.remove(test_fn2)
 
         create_file(test_fn2)
-        self.assertFalse(self.pathmodule.samefile(test_fn1, test_fn2))
+        self.assertUongo(self.pathmodule.samefile(test_fn1, test_fn2))
 
     @support.skip_unless_symlink
     eleza test_samefile_on_symlink(self):
         self._test_samefile_on_link_func(os.symlink)
 
     eleza test_samefile_on_link(self):
-        try:
+        jaribu:
             self._test_samefile_on_link_func(os.link)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.link(): %s' % e)
 
     eleza test_samestat(self):
@@ -259,11 +259,11 @@ kundi GenericTest:
 
         create_file(test_fn1)
         stat1 = os.stat(test_fn1)
-        self.assertTrue(self.pathmodule.samestat(stat1, os.stat(test_fn1)))
+        self.assertKweli(self.pathmodule.samestat(stat1, os.stat(test_fn1)))
 
         create_file(test_fn2)
         stat2 = os.stat(test_fn2)
-        self.assertFalse(self.pathmodule.samestat(stat1, stat2))
+        self.assertUongo(self.pathmodule.samestat(stat1, stat2))
 
         self.assertRaises(TypeError, self.pathmodule.samestat)
 
@@ -275,12 +275,12 @@ kundi GenericTest:
 
         create_file(test_fn1)
         func(test_fn1, test_fn2)
-        self.assertTrue(self.pathmodule.samestat(os.stat(test_fn1),
+        self.assertKweli(self.pathmodule.samestat(os.stat(test_fn1),
                                                  os.stat(test_fn2)))
         os.remove(test_fn2)
 
         create_file(test_fn2)
-        self.assertFalse(self.pathmodule.samestat(os.stat(test_fn1),
+        self.assertUongo(self.pathmodule.samestat(os.stat(test_fn1),
                                                   os.stat(test_fn2)))
 
     @support.skip_unless_symlink
@@ -288,9 +288,9 @@ kundi GenericTest:
         self._test_samestat_on_link_func(os.symlink)
 
     eleza test_samestat_on_link(self):
-        try:
+        jaribu:
             self._test_samestat_on_link_func(os.link)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.link(): %s' % e)
 
     eleza test_sameopenfile(self):
@@ -298,32 +298,32 @@ kundi GenericTest:
         self.addCleanup(support.unlink, filename)
         create_file(filename)
 
-        with open(filename, "rb", 0) as fp1:
+        with open(filename, "rb", 0) kama fp1:
             fd1 = fp1.fileno()
-            with open(filename, "rb", 0) as fp2:
+            with open(filename, "rb", 0) kama fp2:
                 fd2 = fp2.fileno()
-                self.assertTrue(self.pathmodule.sameopenfile(fd1, fd2))
+                self.assertKweli(self.pathmodule.sameopenfile(fd1, fd2))
 
 
 kundi TestGenericTest(GenericTest, unittest.TestCase):
     # Issue 16852: GenericTest can't inherit kutoka unittest.TestCase
-    # for test discovery purposes; CommonTest inherits kutoka GenericTest
-    # and is only meant to be inherited by others.
+    # kila test discovery purposes; CommonTest inherits kutoka GenericTest
+    # na ni only meant to be inherited by others.
     pathmodule = genericpath
 
     eleza test_invalid_paths(self):
-        for attr in GenericTest.common_attributes:
-            # os.path.commonprefix doesn't raise ValueError
+        kila attr kwenye GenericTest.common_attributes:
+            # os.path.commonprefix doesn't ashiria ValueError
             ikiwa attr == 'commonprefix':
-                continue
+                endelea
             func = getattr(self.pathmodule, attr)
             with self.subTest(attr=attr):
-                ikiwa attr in ('exists', 'isdir', 'isfile'):
+                ikiwa attr kwenye ('exists', 'isdir', 'isfile'):
                     func('/tmp\udfffabcds')
                     func(b'/tmp\xffabcds')
                     func('/tmp\x00abcds')
                     func(b'/tmp\x00abcds')
-                else:
+                isipokua:
                     with self.assertRaises((OSError, UnicodeEncodeError)):
                         func('/tmp\udfffabcds')
                     with self.assertRaises((OSError, UnicodeDecodeError)):
@@ -333,8 +333,8 @@ kundi TestGenericTest(GenericTest, unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, 'embedded null'):
                         func(b'/tmp\x00abcds')
 
-# Following TestCase is not supposed to be run kutoka test_genericpath.
-# It is inherited by other test modules (ntpath, posixpath).
+# Following TestCase ni sio supposed to be run kutoka test_genericpath.
+# It ni inherited by other test modules (ntpath, posixpath).
 
 kundi CommonTest(GenericTest):
     common_attributes = GenericTest.common_attributes + [
@@ -349,20 +349,20 @@ kundi CommonTest(GenericTest):
 
     eleza test_normcase(self):
         normcase = self.pathmodule.normcase
-        # check that normcase() is idempotent
-        for p in ["FoO/./BaR", b"FoO/./BaR"]:
+        # check that normcase() ni idempotent
+        kila p kwenye ["FoO/./BaR", b"FoO/./BaR"]:
             p = normcase(p)
             self.assertEqual(p, normcase(p))
 
         self.assertEqual(normcase(''), '')
         self.assertEqual(normcase(b''), b'')
 
-        # check that normcase raises a TypeError for invalid types
-        for path in (None, True, 0, 2.5, [], bytearray(b''), {'o','o'}):
+        # check that normcase ashirias a TypeError kila invalid types
+        kila path kwenye (Tupu, Kweli, 0, 2.5, [], bytearray(b''), {'o','o'}):
             self.assertRaises(TypeError, normcase, path)
 
     eleza test_splitdrive(self):
-        # splitdrive for non-NT paths
+        # splitdrive kila non-NT paths
         splitdrive = self.pathmodule.splitdrive
         self.assertEqual(splitdrive("/foo/bar"), ("", "/foo/bar"))
         self.assertEqual(splitdrive("foo:bar"), ("", "foo:bar"))
@@ -374,7 +374,7 @@ kundi CommonTest(GenericTest):
 
     eleza test_expandvars(self):
         expandvars = self.pathmodule.expandvars
-        with support.EnvironmentVarGuard() as env:
+        with support.EnvironmentVarGuard() kama env:
             env.clear()
             env["foo"] = "bar"
             env["{foo"] = "baz1"
@@ -408,7 +408,7 @@ kundi CommonTest(GenericTest):
         expandvars = self.pathmodule.expandvars
         eleza check(value, expected):
             self.assertEqual(expandvars(value), expected)
-        with support.EnvironmentVarGuard() as env:
+        with support.EnvironmentVarGuard() kama env:
             env.clear()
             nonascii = support.FS_NONASCII
             env['spam'] = nonascii
@@ -438,10 +438,10 @@ kundi CommonTest(GenericTest):
         # avoid UnicodeDecodeError on Windows
         undecodable_path = b'' ikiwa sys.platform == 'win32' else b'f\xf2\xf2'
 
-        # Abspath returns bytes when the arg is bytes
+        # Abspath rudishas bytes when the arg ni bytes
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            for path in (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
+            kila path kwenye (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
                 self.assertIsInstance(self.pathmodule.abspath(path), bytes)
 
     eleza test_realpath(self):
@@ -452,25 +452,25 @@ kundi CommonTest(GenericTest):
 
     eleza test_normpath_issue5827(self):
         # Make sure normpath preserves unicode
-        for path in ('', '.', '/', '\\', '///foo/.//bar//'):
+        kila path kwenye ('', '.', '/', '\\', '///foo/.//bar//'):
             self.assertIsInstance(self.pathmodule.normpath(path), str)
 
     eleza test_abspath_issue3426(self):
-        # Check that abspath returns unicode when the arg is unicode
-        # with both ASCII and non-ASCII cwds.
+        # Check that abspath rudishas unicode when the arg ni unicode
+        # with both ASCII na non-ASCII cwds.
         abspath = self.pathmodule.abspath
-        for path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
+        kila path kwenye ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
             self.assertIsInstance(abspath(path), str)
 
         unicwd = '\xe7w\xf0'
-        try:
+        jaribu:
             os.fsencode(unicwd)
-        except (AttributeError, UnicodeEncodeError):
-            # FS encoding is probably ASCII
-            pass
-        else:
+        tatizo (AttributeError, UnicodeEncodeError):
+            # FS encoding ni probably ASCII
+            pita
+        isipokua:
             with support.temp_cwd(unicwd):
-                for path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
+                kila path kwenye ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
                     self.assertIsInstance(abspath(path), str)
 
     eleza test_nonascii_abspath(self):
@@ -478,12 +478,12 @@ kundi CommonTest(GenericTest):
         # Mac OS X denies the creation of a directory with an invalid
         # UTF-8 name. Windows allows creating a directory with an
         # arbitrary bytes name, but fails to enter this directory
-        # (when the bytes name is used).
-        and sys.platform not in ('win32', 'darwin')):
+        # (when the bytes name ni used).
+        na sys.platform haiko kwenye ('win32', 'darwin')):
             name = support.TESTFN_UNDECODABLE
         elikiwa support.TESTFN_NONASCII:
             name = support.TESTFN_NONASCII
-        else:
+        isipokua:
             self.skipTest("need support.TESTFN_NONASCII")
 
         with warnings.catch_warnings():
@@ -492,9 +492,9 @@ kundi CommonTest(GenericTest):
                 self.test_abspath()
 
     eleza test_join_errors(self):
-        # Check join() raises friendly TypeErrors.
-        with support.check_warnings(('', BytesWarning), quiet=True):
-            errmsg = "Can't mix strings and bytes in path components"
+        # Check join() ashirias friendly TypeErrors.
+        with support.check_warnings(('', BytesWarning), quiet=Kweli):
+            errmsg = "Can't mix strings na bytes kwenye path components"
             with self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.join(b'bytes', 'str')
             with self.assertRaisesRegex(TypeError, errmsg):
@@ -512,10 +512,10 @@ kundi CommonTest(GenericTest):
                 self.pathmodule.join(bytearray(b'foo'), bytearray(b'bar'))
 
     eleza test_relpath_errors(self):
-        # Check relpath() raises friendly TypeErrors.
+        # Check relpath() ashirias friendly TypeErrors.
         with support.check_warnings(('', (BytesWarning, DeprecationWarning)),
-                                    quiet=True):
-            errmsg = "Can't mix strings and bytes in path components"
+                                    quiet=Kweli):
+            errmsg = "Can't mix strings na bytes kwenye path components"
             with self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.relpath(b'bytes', 'str')
             with self.assertRaisesRegex(TypeError, errmsg):
@@ -565,7 +565,7 @@ kundi PathLikeTests(unittest.TestCase):
         self.assertPathEqual(os.path.getctime)
 
     eleza test_path_samefile(self):
-        self.assertTrue(os.path.samefile(self.file_path, self.file_name))
+        self.assertKweli(os.path.samefile(self.file_path, self.file_name))
 
 
 ikiwa __name__ == "__main__":

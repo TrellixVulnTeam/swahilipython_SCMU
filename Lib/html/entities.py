@@ -72,7 +72,7 @@ name2codepoint = {
     'alefsym':  0x2135, # alef symbol = first transfinite cardinal, U+2135 NEW
     'alpha':    0x03b1, # greek small letter alpha, U+03B1 ISOgrk3
     'amp':      0x0026, # ampersand, U+0026 ISOnum
-    'and':      0x2227, # logical and = wedge, U+2227 ISOtech
+    'and':      0x2227, # logical na = wedge, U+2227 ISOtech
     'ang':      0x2220, # angle, U+2220 ISOamso
     'aring':    0x00e5, # latin small letter a with ring above = latin small letter a ring, U+00E5 ISOlat1
     'asymp':    0x2248, # almost equal to = asymptotic to, U+2248 ISOamsr
@@ -91,7 +91,7 @@ name2codepoint = {
     'clubs':    0x2663, # black club suit = shamrock, U+2663 ISOpub
     'cong':     0x2245, # approximately equal to, U+2245 ISOtech
     'copy':     0x00a9, # copyright sign, U+00A9 ISOnum
-    'crarr':    0x21b5, # downwards arrow with corner leftwards = carriage return, U+21B5 NEW
+    'crarr':    0x21b5, # downwards arrow with corner leftwards = carriage rudisha, U+21B5 NEW
     'cup':      0x222a, # union = cup, U+222A ISOtech
     'curren':   0x00a4, # currency sign, U+00A4 ISOnum
     'dArr':     0x21d3, # downwards double arrow, U+21D3 ISOamsa
@@ -115,13 +115,13 @@ name2codepoint = {
     'euro':     0x20ac, # euro sign, U+20AC NEW
     'exist':    0x2203, # there exists, U+2203 ISOtech
     'fnof':     0x0192, # latin small f with hook = function = florin, U+0192 ISOtech
-    'forall':   0x2200, # for all, U+2200 ISOtech
+    'forall':   0x2200, # kila all, U+2200 ISOtech
     'frac12':   0x00bd, # vulgar fraction one half = fraction one half, U+00BD ISOnum
     'frac14':   0x00bc, # vulgar fraction one quarter = fraction one quarter, U+00BC ISOnum
     'frac34':   0x00be, # vulgar fraction three quarters = fraction three quarters, U+00BE ISOnum
     'frasl':    0x2044, # fraction slash, U+2044 NEW
     'gamma':    0x03b3, # greek small letter gamma, U+03B3 ISOgrk3
-    'ge':       0x2265, # greater-than or equal to, U+2265 ISOtech
+    'ge':       0x2265, # greater-than ama equal to, U+2265 ISOtech
     'gt':       0x003e, # greater-than sign, U+003E ISOnum
     'hArr':     0x21d4, # left right double arrow, U+21D4 ISOamsa
     'harr':     0x2194, # left right arrow, U+2194 ISOamsa
@@ -146,7 +146,7 @@ name2codepoint = {
     'larr':     0x2190, # leftwards arrow, U+2190 ISOnum
     'lceil':    0x2308, # left ceiling = apl upstile, U+2308 ISOamsc
     'ldquo':    0x201c, # left double quotation mark, U+201C ISOnum
-    'le':       0x2264, # less-than or equal to, U+2264 ISOtech
+    'le':       0x2264, # less-than ama equal to, U+2264 ISOtech
     'lfloor':   0x230a, # left floor = apl downstile, U+230A ISOamsc
     'lowast':   0x2217, # asterisk operator, U+2217 ISOtech
     'loz':      0x25ca, # lozenge, U+25CA ISOpub
@@ -161,13 +161,13 @@ name2codepoint = {
     'minus':    0x2212, # minus sign, U+2212 ISOtech
     'mu':       0x03bc, # greek small letter mu, U+03BC ISOgrk3
     'nabla':    0x2207, # nabla = backward difference, U+2207 ISOtech
-    'nbsp':     0x00a0, # no-break space = non-breaking space, U+00A0 ISOnum
+    'nbsp':     0x00a0, # no-koma space = non-komaing space, U+00A0 ISOnum
     'ndash':    0x2013, # en dash, U+2013 ISOpub
-    'ne':       0x2260, # not equal to, U+2260 ISOtech
-    'ni':       0x220b, # contains as member, U+220B ISOtech
-    'not':      0x00ac, # not sign, U+00AC ISOnum
-    'notin':    0x2209, # not an element of, U+2209 ISOtech
-    'nsub':     0x2284, # not a subset of, U+2284 ISOamsn
+    'ne':       0x2260, # sio equal to, U+2260 ISOtech
+    'ni':       0x220b, # contains kama member, U+220B ISOtech
+    'not':      0x00ac, # sio sign, U+00AC ISOnum
+    'notin':    0x2209, # sio an element of, U+2209 ISOtech
+    'nsub':     0x2284, # sio a subset of, U+2284 ISOamsn
     'ntilde':   0x00f1, # latin small letter n with tilde, U+00F1 ISOlat1
     'nu':       0x03bd, # greek small letter nu, U+03BD ISOgrk3
     'oacute':   0x00f3, # latin small letter o with acute, U+00F3 ISOlat1
@@ -178,7 +178,7 @@ name2codepoint = {
     'omega':    0x03c9, # greek small letter omega, U+03C9 ISOgrk3
     'omicron':  0x03bf, # greek small letter omicron, U+03BF NEW
     'oplus':    0x2295, # circled plus = direct sum, U+2295 ISOamsb
-    'or':       0x2228, # logical or = vee, U+2228 ISOtech
+    'or':       0x2228, # logical ama = vee, U+2228 ISOtech
     'ordf':     0x00aa, # feminine ordinal indicator, U+00AA ISOnum
     'ordm':     0x00ba, # masculine ordinal indicator, U+00BA ISOnum
     'oslash':   0x00f8, # latin small letter o with stroke, = latin small letter o slash, U+00F8 ISOlat1
@@ -223,13 +223,13 @@ name2codepoint = {
     'sim':      0x223c, # tilde operator = varies with = similar to, U+223C ISOtech
     'spades':   0x2660, # black spade suit, U+2660 ISOpub
     'sub':      0x2282, # subset of, U+2282 ISOtech
-    'sube':     0x2286, # subset of or equal to, U+2286 ISOtech
+    'sube':     0x2286, # subset of ama equal to, U+2286 ISOtech
     'sum':      0x2211, # n-ary summation, U+2211 ISOamsb
     'sup':      0x2283, # superset of, U+2283 ISOtech
     'sup1':     0x00b9, # superscript one = superscript digit one, U+00B9 ISOnum
     'sup2':     0x00b2, # superscript two = superscript digit two = squared, U+00B2 ISOnum
     'sup3':     0x00b3, # superscript three = superscript digit three = cubed, U+00B3 ISOnum
-    'supe':     0x2287, # superset of or equal to, U+2287 ISOtech
+    'supe':     0x2287, # superset of ama equal to, U+2287 ISOtech
     'szlig':    0x00df, # latin small letter sharp s = ess-zed, U+00DF ISOlat1
     'tau':      0x03c4, # greek small letter tau, U+03C4 ISOgrk3
     'there4':   0x2234, # therefore, U+2234 ISOtech
@@ -2499,11 +2499,11 @@ html5 = {
 codepoint2name = {}
 
 # maps the HTML entity name to the character
-# (or a character reference ikiwa the character is outside the Latin-1 range)
+# (or a character reference ikiwa the character ni outside the Latin-1 range)
 entitydefs = {}
 
-for (name, codepoint) in name2codepoint.items():
+kila (name, codepoint) kwenye name2codepoint.items():
     codepoint2name[codepoint] = name
     entitydefs[name] = chr(codepoint)
 
-del name, codepoint
+toa name, codepoint

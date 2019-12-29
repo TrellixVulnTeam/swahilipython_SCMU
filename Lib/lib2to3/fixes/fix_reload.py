@@ -1,4 +1,4 @@
-"""Fixer for reload().
+"""Fixer kila reload().
 
 reload(s) -> importlib.reload(s)"""
 
@@ -8,7 +8,7 @@ kutoka ..fixer_util agiza ImportAndCall, touch_agiza
 
 
 kundi FixReload(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     order = "pre"
 
     PATTERN = """
@@ -23,7 +23,7 @@ kundi FixReload(fixer_base.BaseFix):
 
     eleza transform(self, node, results):
         ikiwa results:
-            # I feel like we should be able to express this logic in the
+            # I feel like we should be able to express this logic kwenye the
             # PATTERN above but I don't know how to do it so...
             obj = results['obj']
             ikiwa obj:
@@ -34,5 +34,5 @@ kundi FixReload(fixer_base.BaseFix):
                     rudisha  # Make no change.
         names = ('importlib', 'reload')
         new = ImportAndCall(node, results, names)
-        touch_agiza(None, 'importlib', node)
+        touch_agiza(Tupu, 'importlib', node)
         rudisha new

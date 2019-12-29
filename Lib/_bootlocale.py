@@ -12,16 +12,16 @@ if sys.platform.startswith("win"):
         if sys.flags.utf8_mode:
             rudisha 'UTF-8'
         rudisha _locale._getdefaultlocale()[1]
-else:
-    try:
+isipokua:
+    jaribu:
         _locale.CODESET
-    except AttributeError:
+    tatizo AttributeError:
         if hasattr(sys, 'getandroidapilevel'):
             # On Android langinfo.h and CODESET are missing, and UTF-8 is
             # always used in mbstowcs() and wcstombs().
             eleza getpreferredencoding(do_setlocale=True):
                 rudisha 'UTF-8'
-        else:
+        isipokua:
             eleza getpreferredencoding(do_setlocale=True):
                 if sys.flags.utf8_mode:
                     rudisha 'UTF-8'
@@ -29,13 +29,13 @@ else:
                 # getdefaultlocale() function, agiza the full locale module.
                 agiza locale
                 rudisha locale.getpreferredencoding(do_setlocale)
-    else:
+    isipokua:
         eleza getpreferredencoding(do_setlocale=True):
-            assert not do_setlocale
+            assert sio do_setlocale
             if sys.flags.utf8_mode:
                 rudisha 'UTF-8'
             result = _locale.nl_langinfo(_locale.CODESET)
-            if not result and sys.platform == 'darwin':
+            if sio result and sys.platform == 'darwin':
                 # nl_langinfo can rudisha an empty string
                 # when the setting has an invalid value.
                 # Default to UTF-8 in that case because

@@ -7,25 +7,25 @@ This program draws two fractal-curve-designs:
 (1) A hilbert curve (in a box)
 (2) A combination of Koch-curves.
 
-The CurvesTurtle kundi and the fractal-curve-
+The CurvesTurtle kundi na the fractal-curve-
 methods are taken kutoka the PythonCard example
-scripts for turtle-graphics.
+scripts kila turtle-graphics.
 """
 kutoka turtle agiza *
-kutoka time agiza sleep, perf_counter as clock
+kutoka time agiza sleep, perf_counter kama clock
 
 kundi CurvesTurtle(Pen):
     # example derived kutoka
-    # Turtle Geometry: The Computer as a Medium for Exploring Mathematics
-    # by Harold Abelson and Andrea diSessa
+    # Turtle Geomejaribu: The Computer kama a Medium kila Exploring Mathematics
+    # by Harold Abelson na Andrea diSessa
     # p. 96-98
     eleza hilbert(self, size, level, parity):
         ikiwa level == 0:
-            return
-        # rotate and draw first subcurve with opposite parity to big curve
+            rudisha
+        # rotate na draw first subcurve with opposite parity to big curve
         self.left(parity * 90)
         self.hilbert(size, level - 1, -parity)
-        # interface to and draw second subcurve with same parity as big curve
+        # interface to na draw second subcurve with same parity kama big curve
         self.forward(size)
         self.right(parity * 90)
         self.hilbert(size, level - 1, parity)
@@ -36,13 +36,13 @@ kundi CurvesTurtle(Pen):
         self.right(parity * 90)
         self.forward(size)
         self.hilbert(size, level - 1, -parity)
-        # a final turn is needed to make the turtle
+        # a final turn ni needed to make the turtle
         # end up facing outward kutoka the large square
         self.left(parity * 90)
 
     # Visual Modeling with Logo: A Structural Approach to Seeing
     # by James Clayson
-    # Koch curve, after Helge von Koch who introduced this geometric figure in 1904
+    # Koch curve, after Helge von Koch who introduced this geometric figure kwenye 1904
     # p. 146
     eleza fractalgon(self, n, rad, lev, dir):
         agiza math
@@ -54,7 +54,7 @@ kundi CurvesTurtle(Pen):
         self.fd(rad)
         self.pd()
         self.rt(180 - (90 * (n - 2) / n))
-        for i in range(n):
+        kila i kwenye range(n):
             self.fractal(edge, lev, dir)
             self.rt(360 / n)
         self.lt(180 - (90 * (n - 2) / n))
@@ -66,7 +66,7 @@ kundi CurvesTurtle(Pen):
     eleza fractal(self, dist, depth, dir):
         ikiwa depth < 1:
             self.fd(dist)
-            return
+            rudisha
         self.fractal(dist / 3, depth - 1, dir)
         self.lt(60 * dir)
         self.fractal(dist / 3, depth - 1, dir)
@@ -97,15 +97,15 @@ eleza main():
 
     # frame
     ft.fd(size)
-    for i in range(3):
+    kila i kwenye range(3):
         ft.lt(90)
         ft.fd(size*(64+i%2))
     ft.pu()
-    for i in range(2):
+    kila i kwenye range(2):
         ft.fd(size)
         ft.rt(90)
     ft.pd()
-    for i in range(4):
+    kila i kwenye range(4):
         ft.fd(size*(66+i%2))
         ft.rt(90)
     ft.end_fill()

@@ -5,7 +5,7 @@
 
 A minimal sorting algorithm animation:
 Sorts a shelf of 10 blocks using insertion
-sort, selection sort and quicksort.
+sort, selection sort na quicksort.
 
 Shelfs are implemented using builtin lists.
 
@@ -23,7 +23,7 @@ kundi Block(Turtle):
 
     eleza __init__(self, size):
         self.size = size
-        Turtle.__init__(self, shape="square", visible=False)
+        Turtle.__init__(self, shape="square", visible=Uongo)
         self.pu()
         self.shapesize(size * 1.5, 1.5, 2) # square-->rectangle
         self.fillcolor("black")
@@ -42,7 +42,7 @@ kundi Block(Turtle):
 kundi Shelf(list):
 
     eleza __init__(self, y):
-        "create a shelf. y is y-position of first block"
+        "create a shelf. y ni y-position of first block"
         self.y = y
         self.x = -150
 
@@ -55,12 +55,12 @@ kundi Shelf(list):
         self.append(d)
 
     eleza _close_gap_kutoka_i(self, i):
-        for b in self[i:]:
+        kila b kwenye self[i:]:
             xpos, _ = b.pos()
             b.setx(xpos - 34)
 
     eleza _open_gap_kutoka_i(self, i):
-        for b in self[i:]:
+        kila b kwenye self[i:]:
             xpos, _ = b.pos()
             b.setx(xpos + 34)
 
@@ -83,18 +83,18 @@ kundi Shelf(list):
 
 eleza isort(shelf):
     length = len(shelf)
-    for i in range(1, length):
+    kila i kwenye range(1, length):
         hole = i
-        while hole > 0 and shelf[i].size < shelf[hole - 1].size:
+        wakati hole > 0 na shelf[i].size < shelf[hole - 1].size:
             hole = hole - 1
         shelf.insert(hole, shelf.pop(i))
-    return
+    rudisha
 
 eleza ssort(shelf):
     length = len(shelf)
-    for j in range(0, length - 1):
+    kila j kwenye range(0, length - 1):
         imin = j
-        for i in range(j + 1, length):
+        kila i kwenye range(j + 1, length):
             ikiwa shelf[i].size < shelf[imin].size:
                 imin = i
         ikiwa imin != j:
@@ -104,7 +104,7 @@ eleza partition(shelf, left, right, pivot_index):
     pivot = shelf[pivot_index]
     shelf.insert(right, shelf.pop(pivot_index))
     store_index = left
-    for i in range(left, right): # range is non-inclusive of ending value
+    kila i kwenye range(left, right): # range ni non-inclusive of ending value
         ikiwa shelf[i].size < pivot.size:
             shelf.insert(store_index, shelf.pop(i))
             store_index = store_index + 1
@@ -123,8 +123,8 @@ eleza randomize():
     clear()
     target = list(range(10))
     random.shuffle(target)
-    for i, t in enumerate(target):
-        for j in range(i, len(s)):
+    kila i, t kwenye enumerate(target):
+        kila j kwenye range(i, len(s)):
             ikiwa s[j].size == t + 1:
                 s.insert(i, s.pop(j))
     show_text(instructions1)
@@ -170,14 +170,14 @@ eleza init_shelf():
     global s
     s = Shelf(-200)
     vals = (4, 2, 8, 9, 1, 5, 10, 3, 7, 6)
-    for i in vals:
+    kila i kwenye vals:
         s.push(Block(i))
 
 eleza disable_keys():
-    onkey(None, "s")
-    onkey(None, "i")
-    onkey(None, "q")
-    onkey(None, "r")
+    onkey(Tupu, "s")
+    onkey(Tupu, "i")
+    onkey(Tupu, "q")
+    onkey(Tupu, "r")
 
 eleza enable_keys():
     onkey(start_isort, "i")
@@ -196,7 +196,7 @@ eleza main():
     listen()
     rudisha "EVENTLOOP"
 
-instructions1 = "press i for insertion sort, s for selection sort, q for quicksort"
+instructions1 = "press i kila insertion sort, s kila selection sort, q kila quicksort"
 instructions2 = "spacebar to quit, r to randomize"
 
 ikiwa __name__=="__main__":

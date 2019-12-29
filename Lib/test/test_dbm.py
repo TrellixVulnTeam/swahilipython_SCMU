@@ -1,4 +1,4 @@
-"""Test script for the dbm.open function based on testdumbdbm.py"""
+"""Test script kila the dbm.open function based on testdumbdbm.py"""
 
 agiza unittest
 agiza glob
@@ -7,25 +7,25 @@ agiza test.support
 # Skip tests ikiwa dbm module doesn't exist.
 dbm = test.support.import_module('dbm')
 
-try:
+jaribu:
     kutoka dbm agiza ndbm
-except ImportError:
-    ndbm = None
+tatizo ImportError:
+    ndbm = Tupu
 
 _fname = test.support.TESTFN
 
 #
 # Iterates over every database module supported by dbm currently available,
-# setting dbm to use each in turn, and yielding that module
+# setting dbm to use each kwenye turn, na tumaing that module
 #
 eleza dbm_iterator():
-    for name in dbm._names:
-        try:
+    kila name kwenye dbm._names:
+        jaribu:
             mod = __import__(name, kutokalist=['open'])
-        except ImportError:
-            continue
+        tatizo ImportError:
+            endelea
         dbm._modules[name] = mod
-        yield mod
+        tuma mod
 
 #
 # Clean up all scratch databases we might have created during testing
@@ -33,7 +33,7 @@ eleza dbm_iterator():
 eleza delete_files():
     # we don't know the precise name the underlying database uses
     # so we use glob to locate all names
-    for f in glob.glob(_fname + "*"):
+    kila f kwenye glob.glob(_fname + "*"):
         test.support.unlink(f)
 
 
@@ -48,18 +48,18 @@ kundi AnyDBMTestCase:
 
     eleza init_db(self):
         f = dbm.open(_fname, 'n')
-        for k in self._dict:
+        kila k kwenye self._dict:
             f[k.encode("ascii")] = self._dict[k]
         f.close()
 
     eleza keys_helper(self, f):
-        keys = sorted(k.decode("ascii") for k in f.keys())
+        keys = sorted(k.decode("ascii") kila k kwenye f.keys())
         dkeys = sorted(self._dict.keys())
         self.assertEqual(keys, dkeys)
         rudisha keys
 
     eleza test_error(self):
-        self.assertTrue(issubclass(self.module.error, OSError))
+        self.assertKweli(issubclass(self.module.error, OSError))
 
     eleza test_anydbm_not_existing(self):
         self.assertRaises(dbm.error, dbm.open, _fname)
@@ -67,7 +67,7 @@ kundi AnyDBMTestCase:
     eleza test_anydbm_creation(self):
         f = dbm.open(_fname, 'c')
         self.assertEqual(list(f.keys()), [])
-        for key in self._dict:
+        kila key kwenye self._dict:
             f[key.encode("ascii")] = self._dict[key]
         self.read_helper(f)
         f.close()
@@ -75,7 +75,7 @@ kundi AnyDBMTestCase:
     eleza test_anydbm_creation_n_file_exists_with_invalid_contents(self):
         # create an empty file
         test.support.create_empty_file(_fname)
-        with dbm.open(_fname, 'n') as f:
+        with dbm.open(_fname, 'n') kama f:
             self.assertEqual(len(f), 0)
 
     eleza test_anydbm_modification(self):
@@ -83,7 +83,7 @@ kundi AnyDBMTestCase:
         f = dbm.open(_fname, 'c')
         self._dict['g'] = f[b'g'] = b"indented"
         self.read_helper(f)
-        # setdefault() works as in the dict interface
+        # setdefault() works kama kwenye the dict interface
         self.assertEqual(f.setdefault(b'xxx', b'foo'), b'foo')
         self.assertEqual(f[b'xxx'], b'foo')
         f.close()
@@ -92,10 +92,10 @@ kundi AnyDBMTestCase:
         self.init_db()
         f = dbm.open(_fname, 'r')
         self.read_helper(f)
-        # get() works as in the dict interface
+        # get() works kama kwenye the dict interface
         self.assertEqual(f.get(b'a'), self._dict['a'])
         self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
-        self.assertIsNone(f.get(b'xxx'))
+        self.assertIsTupu(f.get(b'xxx'))
         with self.assertRaises(KeyError):
             f[b'xxx']
         f.close()
@@ -107,7 +107,7 @@ kundi AnyDBMTestCase:
         f.close()
 
     eleza test_empty_value(self):
-        ikiwa getattr(dbm._defaultmod, 'library', None) == 'Berkeley DB':
+        ikiwa getattr(dbm._defaultmod, 'library', Tupu) == 'Berkeley DB':
             self.skipTest("Berkeley DB doesn't distinguish the empty value "
                           "kutoka the absent one")
         f = dbm.open(_fname, 'c')
@@ -130,7 +130,7 @@ kundi AnyDBMTestCase:
 
     eleza read_helper(self, f):
         keys = self.keys_helper(f)
-        for key in self._dict:
+        kila key kwenye self._dict:
             self.assertEqual(self._dict[key], f[key.encode("ascii")])
 
     eleza tearDown(self):
@@ -143,13 +143,13 @@ kundi AnyDBMTestCase:
 
 kundi WhichDBTestCase(unittest.TestCase):
     eleza test_whichdb(self):
-        for module in dbm_iterator():
+        kila module kwenye dbm_iterator():
             # Check whether whichdb correctly guesses module name
-            # for databases opened with "module" module.
+            # kila databases opened with "module" module.
             # Try with empty files first
             name = module.__name__
             ikiwa name == 'dbm.dumb':
-                continue   # whichdb can't support dbm.dumb
+                endelea   # whichdb can't support dbm.dumb
             delete_files()
             f = module.open(_fname, 'c')
             f.close()
@@ -157,20 +157,20 @@ kundi WhichDBTestCase(unittest.TestCase):
             # Now add a key
             f = module.open(_fname, 'w')
             f[b"1"] = b"1"
-            # and test that we can find it
+            # na test that we can find it
             self.assertIn(b"1", f)
-            # and read it
+            # na read it
             self.assertEqual(f[b"1"], b"1")
             f.close()
             self.assertEqual(name, self.dbm.whichdb(_fname))
 
     @unittest.skipUnless(ndbm, reason='Test requires ndbm')
     eleza test_whichdb_ndbm(self):
-        # Issue 17198: check that ndbm which is referenced in whichdb is defined
+        # Issue 17198: check that ndbm which ni referenced kwenye whichdb ni defined
         db_file = '{}_ndbm.db'.format(_fname)
         with open(db_file, 'w'):
             self.addCleanup(test.support.unlink, db_file)
-        self.assertIsNone(self.dbm.whichdb(db_file[:-3]))
+        self.assertIsTupu(self.dbm.whichdb(db_file[:-3]))
 
     eleza tearDown(self):
         delete_files()
@@ -186,10 +186,10 @@ kundi WhichDBTestCase(unittest.TestCase):
         self.d = dbm.open(self.filename, 'c')
         self.assertEqual(self.d.keys(), [])
         a = [(b'a', b'b'), (b'12345678910', b'019237410982340912840198242')]
-        for k, v in a:
+        kila k, v kwenye a:
             self.d[k] = v
-        self.assertEqual(sorted(self.d.keys()), sorted(k for (k, v) in a))
-        for k, v in a:
+        self.assertEqual(sorted(self.d.keys()), sorted(k kila (k, v) kwenye a))
+        kila k, v kwenye a:
             self.assertIn(k, self.d)
             self.assertEqual(self.d[k], v)
         self.assertNotIn(b'xxx', self.d)
@@ -199,11 +199,11 @@ kundi WhichDBTestCase(unittest.TestCase):
 
 eleza load_tests(loader, tests, pattern):
     classes = []
-    for mod in dbm_iterator():
+    kila mod kwenye dbm_iterator():
         classes.append(type("TestCase-" + mod.__name__,
                             (AnyDBMTestCase, unittest.TestCase),
                             {'module': mod}))
-    suites = [unittest.makeSuite(c) for c in classes]
+    suites = [unittest.makeSuite(c) kila c kwenye classes]
 
     tests.addTests(suites)
     rudisha tests

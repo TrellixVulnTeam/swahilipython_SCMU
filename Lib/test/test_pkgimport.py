@@ -13,15 +13,15 @@ kundi TestImport(unittest.TestCase):
 
     eleza __init__(self, *args, **kw):
         self.package_name = 'PACKAGE_'
-        while self.package_name in sys.modules:
+        wakati self.package_name kwenye sys.modules:
             self.package_name += random.choose(string.ascii_letters)
         self.module_name = self.package_name + '.foo'
         unittest.TestCase.__init__(self, *args, **kw)
 
     eleza remove_modules(self):
-        for module_name in (self.package_name, self.module_name):
-            ikiwa module_name in sys.modules:
-                del sys.modules[module_name]
+        kila module_name kwenye (self.package_name, self.module_name):
+            ikiwa module_name kwenye sys.modules:
+                toa sys.modules[module_name]
 
     eleza setUp(self):
         self.test_dir = tempfile.mkdtemp()
@@ -42,7 +42,7 @@ kundi TestImport(unittest.TestCase):
         compiled_path = cache_kutoka_source(self.module_path)
         ikiwa os.path.exists(compiled_path):
             os.remove(compiled_path)
-        with open(self.module_path, 'w') as f:
+        with open(self.module_path, 'w') kama f:
             f.write(contents)
 
     eleza test_package_import__semantics(self):
@@ -51,23 +51,23 @@ kundi TestImport(unittest.TestCase):
 
         # ...try loading the module when there's a SyntaxError
         self.rewrite_file('for')
-        try: __import__(self.module_name)
-        except SyntaxError: pass
-        else: raise RuntimeError('Failed to induce SyntaxError') # self.fail()?
+        jaribu: __import__(self.module_name)
+        tatizo SyntaxError: pita
+        isipokua: ashiria RuntimeError('Failed to induce SyntaxError') # self.fail()?
         self.assertNotIn(self.module_name, sys.modules)
-        self.assertFalse(hasattr(sys.modules[self.package_name], 'foo'))
+        self.assertUongo(hasattr(sys.modules[self.package_name], 'foo'))
 
-        # ...make up a variable name that isn't bound in __builtins__
+        # ...make up a variable name that isn't bound kwenye __builtins__
         var = 'a'
-        while var in dir(__builtins__):
+        wakati var kwenye dir(__builtins__):
             var += random.choose(string.ascii_letters)
 
         # ...make a module that just contains that
         self.rewrite_file(var)
 
-        try: __import__(self.module_name)
-        except NameError: pass
-        else: raise RuntimeError('Failed to induce NameError.')
+        jaribu: __import__(self.module_name)
+        tatizo NameError: pita
+        isipokua: ashiria RuntimeError('Failed to induce NameError.')
 
         # ...now  change  the module  so  that  the NameError  doesn't
         # happen

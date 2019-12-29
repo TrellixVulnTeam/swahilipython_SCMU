@@ -1,6 +1,6 @@
-"""Test script for poplib module."""
+"""Test script kila poplib module."""
 
-# Modified by Giampaolo Rodola' to give poplib.POP3 and poplib.POP3_SSL
+# Modified by Giampaolo Rodola' to give poplib.POP3 na poplib.POP3_SSL
 # a real test suite
 
 agiza poplib
@@ -12,22 +12,22 @@ agiza errno
 agiza threading
 
 kutoka unittest agiza TestCase, skipUnless
-kutoka test agiza support as test_support
+kutoka test agiza support kama test_support
 
 HOST = test_support.HOST
 PORT = 0
 
-SUPPORTS_SSL = False
+SUPPORTS_SSL = Uongo
 ikiwa hasattr(poplib, 'POP3_SSL'):
     agiza ssl
 
-    SUPPORTS_SSL = True
-    CERTFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "keycert3.pem")
-    CAFILE = os.path.join(os.path.dirname(__file__) or os.curdir, "pycacert.pem")
+    SUPPORTS_SSL = Kweli
+    CERTFILE = os.path.join(os.path.dirname(__file__) ama os.curdir, "keycert3.pem")
+    CAFILE = os.path.join(os.path.dirname(__file__) ama os.curdir, "pycacert.pem")
 
-requires_ssl = skipUnless(SUPPORTS_SSL, 'SSL not supported')
+requires_ssl = skipUnless(SUPPORTS_SSL, 'SSL sio supported')
 
-# the dummy data returned by server when LIST and RETR commands are issued
+# the dummy data rudishaed by server when LIST na RETR commands are issued
 LIST_RESP = b'1 1\r\n2 2\r\n3 3\r\n4 4\r\n5 5\r\n.\r\n'
 RETR_RESP = b"""From: postmaster@python.org\
 \r\nContent-Type: text/plain\r\n\
@@ -43,15 +43,15 @@ line3\r\n\
 kundi DummyPOP3Handler(asynchat.async_chat):
 
     CAPAS = {'UIDL': [], 'IMPLEMENTATION': ['python-testlib-pop-server']}
-    enable_UTF8 = False
+    enable_UTF8 = Uongo
 
     eleza __init__(self, conn):
         asynchat.async_chat.__init__(self, conn)
         self.set_terminator(b"\r\n")
         self.in_buffer = []
         self.push('+OK dummy pop3 server ready. <timestamp>')
-        self.tls_active = False
-        self.tls_starting = False
+        self.tls_active = Uongo
+        self.tls_starting = Uongo
 
     eleza collect_incoming_data(self, data):
         self.in_buffer.append(data)
@@ -64,16 +64,16 @@ kundi DummyPOP3Handler(asynchat.async_chat):
         space = line.find(' ')
         ikiwa space != -1:
             arg = line[space + 1:]
-        else:
+        isipokua:
             arg = ""
         ikiwa hasattr(self, 'cmd_' + cmd):
             method = getattr(self, 'cmd_' + cmd)
             method(arg)
-        else:
+        isipokua:
             self.push('-ERR unrecognized POP3 command "%s".' %cmd)
 
     eleza handle_error(self):
-        raise
+        ashiria
 
     eleza push(self, data):
         asynchat.async_chat.push(self, data.encode("ISO-8859-1") + b'\r\n')
@@ -85,11 +85,11 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     eleza cmd_user(self, arg):
         ikiwa arg != "guido":
             self.push("-ERR no such user")
-        self.push('+OK password required')
+        self.push('+OK pitaword required')
 
-    eleza cmd_pass(self, arg):
+    eleza cmd_pita(self, arg):
         ikiwa arg != "python":
-            self.push("-ERR wrong password")
+            self.push("-ERR wrong pitaword")
         self.push('+OK 10 messages')
 
     eleza cmd_stat(self, arg):
@@ -98,7 +98,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     eleza cmd_list(self, arg):
         ikiwa arg:
             self.push('+OK %s %s' % (arg, arg))
-        else:
+        isipokua:
             self.push('+OK')
             asynchat.async_chat.push(self, LIST_RESP)
 
@@ -111,7 +111,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     cmd_top = cmd_retr
 
     eleza cmd_dele(self, arg):
-        self.push('+OK message marked for deletion.')
+        self.push('+OK message marked kila deletion.')
 
     eleza cmd_noop(self, arg):
         self.push('+OK done nothing.')
@@ -128,14 +128,14 @@ kundi DummyPOP3Handler(asynchat.async_chat):
 
     eleza _get_capas(self):
         _capas = dict(self.CAPAS)
-        ikiwa not self.tls_active and SUPPORTS_SSL:
+        ikiwa sio self.tls_active na SUPPORTS_SSL:
             _capas['STLS'] = []
         rudisha _capas
 
     eleza cmd_capa(self, arg):
         self.push('+OK Capability list follows')
         ikiwa self._get_capas():
-            for cap, params in self._get_capas().items():
+            kila cap, params kwenye self._get_capas().items():
                 _ln = [cap]
                 ikiwa params:
                     _ln.extend(params)
@@ -145,56 +145,56 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     eleza cmd_utf8(self, arg):
         self.push('+OK I know RFC6856'
                   ikiwa self.enable_UTF8
-                  else '-ERR What is UTF8?!')
+                  else '-ERR What ni UTF8?!')
 
     ikiwa SUPPORTS_SSL:
 
         eleza cmd_stls(self, arg):
-            ikiwa self.tls_active is False:
+            ikiwa self.tls_active ni Uongo:
                 self.push('+OK Begin TLS negotiation')
                 context = ssl.SSLContext()
                 context.load_cert_chain(CERTFILE)
                 tls_sock = context.wrap_socket(self.socket,
-                                               server_side=True,
-                                               do_handshake_on_connect=False,
-                                               suppress_ragged_eofs=False)
+                                               server_side=Kweli,
+                                               do_handshake_on_connect=Uongo,
+                                               suppress_ragged_eofs=Uongo)
                 self.del_channel()
                 self.set_socket(tls_sock)
-                self.tls_active = True
-                self.tls_starting = True
+                self.tls_active = Kweli
+                self.tls_starting = Kweli
                 self.in_buffer = []
                 self._do_tls_handshake()
-            else:
-                self.push('-ERR Command not permitted when TLS active')
+            isipokua:
+                self.push('-ERR Command sio permitted when TLS active')
 
         eleza _do_tls_handshake(self):
-            try:
+            jaribu:
                 self.socket.do_handshake()
-            except ssl.SSLError as err:
-                ikiwa err.args[0] in (ssl.SSL_ERROR_WANT_READ,
+            tatizo ssl.SSLError kama err:
+                ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    rudisha
                 elikiwa err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
-                # TODO: SSLError does not expose alert information
-                elikiwa ("SSLV3_ALERT_BAD_CERTIFICATE" in err.args[1] or
-                      "SSLV3_ALERT_CERTIFICATE_UNKNOWN" in err.args[1]):
+                # TODO: SSLError does sio expose alert information
+                elikiwa ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] or
+                      "SSLV3_ALERT_CERTIFICATE_UNKNOWN" kwenye err.args[1]):
                     rudisha self.handle_close()
-                raise
-            except OSError as err:
+                ashiria
+            tatizo OSError kama err:
                 ikiwa err.args[0] == errno.ECONNABORTED:
                     rudisha self.handle_close()
-            else:
-                self.tls_active = True
-                self.tls_starting = False
+            isipokua:
+                self.tls_active = Kweli
+                self.tls_starting = Uongo
 
         eleza handle_read(self):
             ikiwa self.tls_starting:
                 self._do_tls_handshake()
-            else:
-                try:
+            isipokua:
+                jaribu:
                     asynchat.async_chat.handle_read(self)
-                except ssl.SSLEOFError:
+                tatizo ssl.SSLEOFError:
                     self.handle_close()
 
 kundi DummyPOP3Server(asyncore.dispatcher, threading.Thread):
@@ -204,34 +204,34 @@ kundi DummyPOP3Server(asyncore.dispatcher, threading.Thread):
     eleza __init__(self, address, af=socket.AF_INET):
         threading.Thread.__init__(self)
         asyncore.dispatcher.__init__(self)
-        self.daemon = True
+        self.daemon = Kweli
         self.create_socket(af, socket.SOCK_STREAM)
         self.bind(address)
         self.listen(5)
-        self.active = False
+        self.active = Uongo
         self.active_lock = threading.Lock()
         self.host, self.port = self.socket.getsockname()[:2]
-        self.handler_instance = None
+        self.handler_instance = Tupu
 
     eleza start(self):
-        assert not self.active
+        assert sio self.active
         self.__flag = threading.Event()
         threading.Thread.start(self)
         self.__flag.wait()
 
     eleza run(self):
-        self.active = True
+        self.active = Kweli
         self.__flag.set()
-        try:
-            while self.active and asyncore.socket_map:
+        jaribu:
+            wakati self.active na asyncore.socket_map:
                 with self.active_lock:
                     asyncore.loop(timeout=0.1, count=1)
-        finally:
-            asyncore.close_all(ignore_all=True)
+        mwishowe:
+            asyncore.close_all(ignore_all=Kweli)
 
     eleza stop(self):
         assert self.active
-        self.active = False
+        self.active = Uongo
         self.join()
 
     eleza handle_accepted(self, conn, addr):
@@ -245,12 +245,12 @@ kundi DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         rudisha 0
 
     eleza handle_error(self):
-        raise
+        ashiria
 
 
 kundi TestPOP3Class(TestCase):
     eleza assertOK(self, resp):
-        self.assertTrue(resp.startswith(b"+OK"))
+        self.assertKweli(resp.startswith(b"+OK"))
 
     eleza setUp(self):
         self.server = DummyPOP3Server((HOST, PORT))
@@ -261,7 +261,7 @@ kundi TestPOP3Class(TestCase):
         self.client.close()
         self.server.stop()
         # Explicitly clear the attribute to prevent dangling thread
-        self.server = None
+        self.server = Tupu
 
     eleza test_getwelcome(self):
         self.assertEqual(self.client.getwelcome(),
@@ -274,8 +274,8 @@ kundi TestPOP3Class(TestCase):
         self.assertOK(self.client.user('guido'))
         self.assertRaises(poplib.error_proto, self.client.user, 'invalid')
 
-    eleza test_pass_(self):
-        self.assertOK(self.client.pass_('python'))
+    eleza test_pita_(self):
+        self.assertOK(self.client.pita_('python'))
         self.assertRaises(poplib.error_proto, self.client.user, 'invalid')
 
     eleza test_stat(self):
@@ -285,7 +285,7 @@ kundi TestPOP3Class(TestCase):
         self.assertEqual(self.client.list()[1:],
                          ([b'1 1', b'2 2', b'3 3', b'4 4', b'5 5'],
                           25))
-        self.assertTrue(self.client.list('1').endswith(b"OK 1 1"))
+        self.assertKweli(self.client.list('1').endswith(b"OK 1 1"))
 
     eleza test_retr(self):
         expected = (b'+OK 116 bytes',
@@ -311,17 +311,17 @@ kundi TestPOP3Class(TestCase):
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_normal(self):
-        self.assertOK(self.client.apop('foo', 'dummypassword'))
+        self.assertOK(self.client.apop('foo', 'dummypitaword'))
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_REDOS(self):
         # Replace welcome with very long evil welcome.
-        # NB The upper bound on welcome length is currently 2048.
+        # NB The upper bound on welcome length ni currently 2048.
         # At this length, evil input makes each apop call take
         # on the order of milliseconds instead of microseconds.
         evil_welcome = b'+OK' + (b'<' * 1000000)
         with test_support.swap_attr(self.client, 'welcome', evil_welcome):
-            # The evil welcome is invalid, so apop should throw.
+            # The evil welcome ni invalid, so apop should throw.
             self.assertRaises(poplib.error_proto, self.client.apop, 'a', 'kb')
 
     eleza test_top(self):
@@ -336,30 +336,30 @@ kundi TestPOP3Class(TestCase):
         self.client.uidl()
         self.client.uidl('foo')
 
-    eleza test_utf8_raises_if_unsupported(self):
-        self.server.handler.enable_UTF8 = False
+    eleza test_utf8_ashirias_if_unsupported(self):
+        self.server.handler.enable_UTF8 = Uongo
         self.assertRaises(poplib.error_proto, self.client.utf8)
 
     eleza test_utf8(self):
-        self.server.handler.enable_UTF8 = True
+        self.server.handler.enable_UTF8 = Kweli
         expected = b'+OK I know RFC6856'
         result = self.client.utf8()
         self.assertEqual(result, expected)
 
     eleza test_capa(self):
         capa = self.client.capa()
-        self.assertTrue('IMPLEMENTATION' in capa.keys())
+        self.assertKweli('IMPLEMENTATION' kwenye capa.keys())
 
     eleza test_quit(self):
         resp = self.client.quit()
-        self.assertTrue(resp)
-        self.assertIsNone(self.client.sock)
-        self.assertIsNone(self.client.file)
+        self.assertKweli(resp)
+        self.assertIsTupu(self.client.sock)
+        self.assertIsTupu(self.client.file)
 
     @requires_ssl
     eleza test_stls_capa(self):
         capa = self.client.capa()
-        self.assertTrue('STLS' in capa.keys())
+        self.assertKweli('STLS' kwenye capa.keys())
 
     @requires_ssl
     eleza test_stls(self):
@@ -373,7 +373,7 @@ kundi TestPOP3Class(TestCase):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ctx.load_verify_locations(CAFILE)
         self.assertEqual(ctx.verify_mode, ssl.CERT_REQUIRED)
-        self.assertEqual(ctx.check_hostname, True)
+        self.assertEqual(ctx.check_hostname, Kweli)
         with self.assertRaises(ssl.CertificateError):
             resp = self.client.stls(context=ctx)
         self.client = poplib.POP3("localhost", self.server.port, timeout=3)
@@ -392,8 +392,8 @@ ikiwa SUPPORTS_SSL:
             self.set_terminator(b"\r\n")
             self.in_buffer = []
             self.push('+OK dummy pop3 server ready. <timestamp>')
-            self.tls_active = True
-            self.tls_starting = False
+            self.tls_active = Kweli
+            self.tls_starting = Uongo
 
 
 @requires_ssl
@@ -411,7 +411,7 @@ kundi TestPOP3_SSLClass(TestPOP3Class):
 
     eleza test_context(self):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        ctx.check_hostname = False
+        ctx.check_hostname = Uongo
         ctx.verify_mode = ssl.CERT_NONE
         self.assertRaises(ValueError, poplib.POP3_SSL, self.server.host,
                             self.server.port, keyfile=CERTFILE, context=ctx)
@@ -426,7 +426,7 @@ kundi TestPOP3_SSLClass(TestPOP3Class):
                                         context=ctx)
         self.assertIsInstance(self.client.sock, ssl.SSLSocket)
         self.assertIs(self.client.sock.context, ctx)
-        self.assertTrue(self.client.noop().startswith(b'+OK'))
+        self.assertKweli(self.client.noop().startswith(b'+OK'))
 
     eleza test_stls(self):
         self.assertRaises(poplib.error_proto, self.client.stls)
@@ -435,7 +435,7 @@ kundi TestPOP3_SSLClass(TestPOP3Class):
 
     eleza test_stls_capa(self):
         capa = self.client.capa()
-        self.assertFalse('STLS' in capa.keys())
+        self.assertUongo('STLS' kwenye capa.keys())
 
 
 @requires_ssl
@@ -449,17 +449,17 @@ kundi TestPOP3_TLSClass(TestPOP3Class):
         self.client.stls()
 
     eleza tearDown(self):
-        ikiwa self.client.file is not None and self.client.sock is not None:
-            try:
+        ikiwa self.client.file ni sio Tupu na self.client.sock ni sio Tupu:
+            jaribu:
                 self.client.quit()
-            except poplib.error_proto:
-                # happens in the test_too_long_lines case; the overlong
-                # response will be treated as response to QUIT and raise
+            tatizo poplib.error_proto:
+                # happens kwenye the test_too_long_lines case; the overlong
+                # response will be treated kama response to QUIT na ashiria
                 # this exception
                 self.client.close()
         self.server.stop()
         # Explicitly clear the attribute to prevent dangling thread
-        self.server = None
+        self.server = Tupu
 
     eleza test_stls(self):
         self.assertRaises(poplib.error_proto, self.client.stls)
@@ -468,7 +468,7 @@ kundi TestPOP3_TLSClass(TestPOP3Class):
 
     eleza test_stls_capa(self):
         capa = self.client.capa()
-        self.assertFalse(b'STLS' in capa.keys())
+        self.assertUongo(b'STLS' kwenye capa.keys())
 
 
 kundi TestTimeouts(TestCase):
@@ -479,45 +479,45 @@ kundi TestTimeouts(TestCase):
         self.sock.settimeout(60)  # Safety net. Look issue 11812
         self.port = test_support.bind_port(self.sock)
         self.thread = threading.Thread(target=self.server, args=(self.evt,self.sock))
-        self.thread.daemon = True
+        self.thread.daemon = Kweli
         self.thread.start()
         self.evt.wait()
 
     eleza tearDown(self):
         self.thread.join()
         # Explicitly clear the attribute to prevent dangling thread
-        self.thread = None
+        self.thread = Tupu
 
     eleza server(self, evt, serv):
         serv.listen()
         evt.set()
-        try:
+        jaribu:
             conn, addr = serv.accept()
             conn.send(b"+ Hola mundo\n")
             conn.close()
-        except socket.timeout:
-            pass
-        finally:
+        tatizo socket.timeout:
+            pita
+        mwishowe:
             serv.close()
 
     eleza testTimeoutDefault(self):
-        self.assertIsNone(socket.getdefaulttimeout())
+        self.assertIsTupu(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
+        jaribu:
             pop = poplib.POP3(HOST, self.port)
-        finally:
-            socket.setdefaulttimeout(None)
+        mwishowe:
+            socket.setdefaulttimeout(Tupu)
         self.assertEqual(pop.sock.gettimeout(), 30)
         pop.close()
 
-    eleza testTimeoutNone(self):
-        self.assertIsNone(socket.getdefaulttimeout())
+    eleza testTimeoutTupu(self):
+        self.assertIsTupu(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
-        try:
-            pop = poplib.POP3(HOST, self.port, timeout=None)
-        finally:
-            socket.setdefaulttimeout(None)
-        self.assertIsNone(pop.sock.gettimeout())
+        jaribu:
+            pop = poplib.POP3(HOST, self.port, timeout=Tupu)
+        mwishowe:
+            socket.setdefaulttimeout(Tupu)
+        self.assertIsTupu(pop.sock.gettimeout())
         pop.close()
 
     eleza testTimeoutValue(self):
@@ -530,9 +530,9 @@ eleza test_main():
     tests = [TestPOP3Class, TestTimeouts,
              TestPOP3_SSLClass, TestPOP3_TLSClass]
     thread_info = test_support.threading_setup()
-    try:
+    jaribu:
         test_support.run_unittest(*tests)
-    finally:
+    mwishowe:
         test_support.threading_cleanup(*thread_info)
 
 

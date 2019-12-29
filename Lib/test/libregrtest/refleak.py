@@ -4,9 +4,9 @@ import sys
 import warnings
 from inspect import isabstract
 from test import support
-try:
+jaribu:
     from _abc agiza _get_dump
-except ImportError:
+tatizo ImportError:
     import weakref
 
     def _get_dump(cls):
@@ -27,7 +27,7 @@ def dash_R(ns, test_name, test_func):
     import copyreg
     import collections.abc
 
-    if not hasattr(sys, 'gettotalrefcount'):
+    if sio hasattr(sys, 'gettotalrefcount'):
         raise Exception("Tracking reference leaks requires a debug build "
                         "of Python")
 
@@ -39,16 +39,16 @@ def dash_R(ns, test_name, test_func):
     fs = warnings.filters[:]
     ps = copyreg.dispatch_table.copy()
     pic = sys.path_importer_cache.copy()
-    try:
+    jaribu:
         import zipimport
-    except ImportError:
+    tatizo ImportError:
         zdc = None # Run unmodified on platforms without zipimport support
-    else:
+    isipokua:
         zdc = zipimport._zip_directory_cache.copy()
     abcs = {}
     for abc in [getattr(collections.abc, a) for a in collections.abc.__all__]:
-        if not isabstract(abc):
-            continue
+        if sio isabstract(abc):
+            endelea
         for obj in abc.__subclasses__() + [abc]:
             abcs[obj] = _get_dump(obj)[0]
 
@@ -76,7 +76,7 @@ def dash_R(ns, test_name, test_func):
     # initialize variables to make pyflakes quiet
     rc_before = alloc_before = fd_before = 0
 
-    if not ns.quiet:
+    if sio ns.quiet:
         print("beginning", repcount, "repetitions", file=sys.stderr)
         print(("1234567890"*(repcount//10 + 1))[:repcount], file=sys.stderr,
               flush=True)
@@ -93,7 +93,7 @@ def dash_R(ns, test_name, test_func):
         rc_after = gettotalrefcount()
         fd_after = fd_count()
 
-        if not ns.quiet:
+        if sio ns.quiet:
             print('.', end='', file=sys.stderr, flush=True)
 
         rc_deltas[i] = get_pooled_int(rc_after - rc_before)
@@ -104,7 +104,7 @@ def dash_R(ns, test_name, test_func):
         rc_before = rc_after
         fd_before = fd_after
 
-    if not ns.quiet:
+    if sio ns.quiet:
         print(file=sys.stderr)
 
     # These checkers return False on success, True on failure
@@ -155,11 +155,11 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs):
     copyreg.dispatch_table.update(ps)
     sys.path_importer_cache.clear()
     sys.path_importer_cache.update(pic)
-    try:
+    jaribu:
         import zipimport
-    except ImportError:
+    tatizo ImportError:
         pass # Run unmodified on platforms without zipimport support
-    else:
+    isipokua:
         zipimport._zip_directory_cache.clear()
         zipimport._zip_directory_cache.update(zdc)
 
@@ -172,7 +172,7 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs):
     for abc in abs_classes:
         for obj in abc.__subclasses__() + [abc]:
             for ref in abcs.get(obj, set()):
-                if ref() is not None:
+                if ref() ni sio None:
                     obj.register(ref())
             obj._abc_caches_clear()
 
@@ -183,92 +183,92 @@ def clear_caches():
     # Clear the warnings registry, so they can be displayed again
     for mod in sys.modules.values():
         if hasattr(mod, '__warningregistry__'):
-            del mod.__warningregistry__
+            toa mod.__warningregistry__
 
     # Flush standard output, so that buffered data is sent to the OS and
     # associated Python objects are reclaimed.
     for stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
-        if stream is not None:
+        if stream ni sio None:
             stream.flush()
 
     # Clear assorted module caches.
-    # Don't worry about resetting the cache if the module is not loaded
-    try:
+    # Don't worry about resetting the cache if the module ni sio loaded
+    jaribu:
         distutils_dir_util = sys.modules['distutils.dir_util']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         distutils_dir_util._path_created.clear()
     re.purge()
 
-    try:
+    jaribu:
         _strptime = sys.modules['_strptime']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         _strptime._regex_cache.clear()
 
-    try:
+    jaribu:
         urllib_parse = sys.modules['urllib.parse']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         urllib_parse.clear_cache()
 
-    try:
+    jaribu:
         urllib_request = sys.modules['urllib.request']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         urllib_request.urlcleanup()
 
-    try:
+    jaribu:
         linecache = sys.modules['linecache']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         linecache.clearcache()
 
-    try:
+    jaribu:
         mimetypes = sys.modules['mimetypes']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         mimetypes._default_mime_types()
 
-    try:
+    jaribu:
         filecmp = sys.modules['filecmp']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         filecmp._cache.clear()
 
-    try:
+    jaribu:
         struct = sys.modules['struct']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         struct._clearcache()
 
-    try:
+    jaribu:
         doctest = sys.modules['doctest']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         doctest.master = None
 
-    try:
+    jaribu:
         ctypes = sys.modules['ctypes']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         ctypes._reset_cache()
 
-    try:
+    jaribu:
         typing = sys.modules['typing']
-    except KeyError:
+    tatizo KeyError:
         pass
-    else:
+    isipokua:
         for f in typing._cleanups:
             f()
 

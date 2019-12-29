@@ -20,10 +20,10 @@ kundi Codec(codecs.Codec):
         rudisha codecs.charmap_decode(input,errors,decoding_map)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 
@@ -37,12 +37,12 @@ decoding_map = codecs.make_identity_dict(range(256))
 decoding_map.update({
         0x78: "abc", # 1-n decoding mapping
         b"abc": 0x0078,# 1-n encoding mapping
-        0x01: None,   # decoding mapping to <undefined>
+        0x01: Tupu,   # decoding mapping to <undefined>
         0x79: "",    # decoding mapping to <remove character>
 })
 
 ### Encoding Map
 
 encoding_map = {}
-for k,v in decoding_map.items():
+kila k,v kwenye decoding_map.items():
     encoding_map[v] = k

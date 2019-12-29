@@ -1,34 +1,34 @@
-Guido van Rossum, as well as being the creator of the Python language, is the
+Guido van Rossum, kama well kama being the creator of the Python language, ni the
 original creator of IDLE.  Other contributors prior to Version 0.8 include
-Mark Hammond, Jeremy Hylton, Tim Peters, and Moshe Zadka.
+Mark Hammond, Jeremy Hylton, Tim Peters, na Moshe Zadka.
 
-IDLE's recent development was carried out in the SF IDLEfork project. The
+IDLE's recent development was carried out kwenye the SF IDLEfork project. The
 objective was to develop a version of IDLE which had an execution environment
 which could be initialized prior to each run of user code.
 
 The IDLEfork project was initiated by David Scherer, with some help kutoka Peter
-Schneider-Kamp and Nicholas Riley.  David wrote the first version of the RPC
-code and designed a fast turn-around environment for VPython.  Guido developed
-the RPC code and Remote Debugger currently integrated in IDLE.  Bruce Sherwood
-contributed considerable time testing and suggesting improvements.
+Schneider-Kamp na Nicholas Riley.  David wrote the first version of the RPC
+code na designed a fast turn-around environment kila VPython.  Guido developed
+the RPC code na Remote Debugger currently integrated kwenye IDLE.  Bruce Sherwood
+contributed considerable time testing na suggesting improvements.
 
-Besides David and Guido, the main developers who were active on IDLEfork
+Besides David na Guido, the main developers who were active on IDLEfork
 are Stephen M. Gava, who implemented the configuration GUI, the new
-configuration system, and the About dialog, and Kurt B. Kaiser, who completed
-the integration of the RPC and remote debugger, implemented the threaded
-subprocess, and made a number of usability enhancements.
+configuration system, na the About dialog, na Kurt B. Kaiser, who completed
+the integration of the RPC na remote debugger, implemented the threaded
+subprocess, na made a number of usability enhancements.
 
 Other contributors include Raymond Hettinger, Tony Lownds (Mac integration),
-Neal Norwitz (code check and clean-up), Ronald Oussoren (Mac integration),
-Noam Raphael (Code Context, Call Tips, many other patches), and Chui Tey (RPC
-integration, debugger integration and persistent breakpoints).
+Neal Norwitz (code check na clean-up), Ronald Oussoren (Mac integration),
+Noam Raphael (Code Context, Call Tips, many other patches), na Chui Tey (RPC
+integration, debugger integration na persistent komapoints).
 
 Scott David Daniels, Tal Einat, Hernan Foffani, Christos Georgiou,
 Jim Jewett, Martin v. Löwis, Jason Orendorff, Guilherme Polo, Josh Robb,
-Nigel Rowe, Bruce Sherwood, Jeff Shute, and Weeble have submitted useful
+Nigel Rowe, Bruce Sherwood, Jeff Shute, na Weeble have submitted useful
 patches.  Thanks, guys!
 
-For additional details refer to NEWS.txt and Changelog.
+For additional details refer to NEWS.txt na Changelog.
 
 Please contact the IDLE maintainer (kbk@shore.net) to have yourself included
 here ikiwa you are one of those we missed!

@@ -7,37 +7,37 @@ asyncio = import_module("asyncio")
 
 
 kundi AwaitException(Exception):
-    pass
+    pita
 
 
 @types.coroutine
-eleza awaitable(*, throw=False):
+eleza awaitable(*, throw=Uongo):
     ikiwa throw:
-        yield ('throw',)
-    else:
-        yield ('result',)
+        tuma ('throw',)
+    isipokua:
+        tuma ('result',)
 
 
 eleza run_until_complete(coro):
-    exc = False
-    while True:
-        try:
+    exc = Uongo
+    wakati Kweli:
+        jaribu:
             ikiwa exc:
-                exc = False
+                exc = Uongo
                 fut = coro.throw(AwaitException)
-            else:
-                fut = coro.send(None)
-        except StopIteration as ex:
+            isipokua:
+                fut = coro.send(Tupu)
+        tatizo StopIteration kama ex:
             rudisha ex.args[0]
 
         ikiwa fut == ('throw',):
-            exc = True
+            exc = Kweli
 
 
 eleza to_list(gen):
     async eleza iterate():
         res = []
-        async for i in gen:
+        async kila i kwenye gen:
             res.append(i)
         rudisha res
 
@@ -49,47 +49,47 @@ kundi AsyncGenSyntaxTest(unittest.TestCase):
     eleza test_async_gen_syntax_01(self):
         code = '''async eleza foo():
             await abc
-            yield kutoka 123
+            tuma kutoka 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'yield kutoka.*inside async'):
+        with self.assertRaisesRegex(SyntaxError, 'tuma kutoka.*inside async'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_02(self):
         code = '''async eleza foo():
-            yield kutoka 123
+            tuma kutoka 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'yield kutoka.*inside async'):
+        with self.assertRaisesRegex(SyntaxError, 'tuma kutoka.*inside async'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_03(self):
         code = '''async eleza foo():
             await abc
-            yield
+            tuma
             rudisha 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'return.*value.*async gen'):
+        with self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_04(self):
         code = '''async eleza foo():
-            yield
+            tuma
             rudisha 123
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'return.*value.*async gen'):
+        with self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
             exec(code, {}, {})
 
     eleza test_async_gen_syntax_05(self):
         code = '''async eleza foo():
             ikiwa 0:
-                yield
+                tuma
             rudisha 12
         '''
 
-        with self.assertRaisesRegex(SyntaxError, 'return.*value.*async gen'):
+        with self.assertRaisesRegex(SyntaxError, 'rudisha.*value.*async gen'):
             exec(code, {}, {})
 
 
@@ -98,39 +98,39 @@ kundi AsyncGenTest(unittest.TestCase):
     eleza compare_generators(self, sync_gen, async_gen):
         eleza sync_iterate(g):
             res = []
-            while True:
-                try:
+            wakati Kweli:
+                jaribu:
                     res.append(g.__next__())
-                except StopIteration:
+                tatizo StopIteration:
                     res.append('STOP')
-                    break
-                except Exception as ex:
+                    koma
+                tatizo Exception kama ex:
                     res.append(str(type(ex)))
             rudisha res
 
         eleza async_iterate(g):
             res = []
-            while True:
+            wakati Kweli:
                 an = g.__anext__()
-                try:
-                    while True:
-                        try:
+                jaribu:
+                    wakati Kweli:
+                        jaribu:
                             an.__next__()
-                        except StopIteration as ex:
+                        tatizo StopIteration kama ex:
                             ikiwa ex.args:
                                 res.append(ex.args[0])
-                                break
-                            else:
+                                koma
+                            isipokua:
                                 res.append('EMPTY StopIteration')
-                                break
-                        except StopAsyncIteration:
-                            raise
-                        except Exception as ex:
+                                koma
+                        tatizo StopAsyncIteration:
+                            ashiria
+                        tatizo Exception kama ex:
                             res.append(str(type(ex)))
-                            break
-                except StopAsyncIteration:
+                            koma
+                tatizo StopAsyncIteration:
                     res.append('STOP')
-                    break
+                    koma
             rudisha res
 
         sync_gen_result = sync_iterate(sync_gen)
@@ -141,19 +141,19 @@ kundi AsyncGenTest(unittest.TestCase):
     eleza test_async_gen_iteration_01(self):
         async eleza gen():
             await awaitable()
-            a = yield 123
-            self.assertIs(a, None)
+            a = tuma 123
+            self.assertIs(a, Tupu)
             await awaitable()
-            yield 456
+            tuma 456
             await awaitable()
-            yield 789
+            tuma 789
 
         self.assertEqual(to_list(gen()), [123, 456, 789])
 
     eleza test_async_gen_iteration_02(self):
         async eleza gen():
             await awaitable()
-            yield 123
+            tuma 123
             await awaitable()
 
         g = gen()
@@ -162,29 +162,29 @@ kundi AsyncGenTest(unittest.TestCase):
         an = ai.__anext__()
         self.assertEqual(an.__next__(), ('result',))
 
-        try:
+        jaribu:
             an.__next__()
-        except StopIteration as ex:
+        tatizo StopIteration kama ex:
             self.assertEqual(ex.args[0], 123)
-        else:
-            self.fail('StopIteration was not raised')
+        isipokua:
+            self.fail('StopIteration was sio ashiriad')
 
         an = ai.__anext__()
         self.assertEqual(an.__next__(), ('result',))
 
-        try:
+        jaribu:
             an.__next__()
-        except StopAsyncIteration as ex:
-            self.assertFalse(ex.args)
-        else:
-            self.fail('StopAsyncIteration was not raised')
+        tatizo StopAsyncIteration kama ex:
+            self.assertUongo(ex.args)
+        isipokua:
+            self.fail('StopAsyncIteration was sio ashiriad')
 
     eleza test_async_gen_exception_03(self):
         async eleza gen():
             await awaitable()
-            yield 123
-            await awaitable(throw=True)
-            yield 456
+            tuma 123
+            await awaitable(throw=Kweli)
+            tuma 456
 
         with self.assertRaises(AwaitException):
             to_list(gen())
@@ -192,7 +192,7 @@ kundi AsyncGenTest(unittest.TestCase):
     eleza test_async_gen_exception_04(self):
         async eleza gen():
             await awaitable()
-            yield 123
+            tuma 123
             1 / 0
 
         g = gen()
@@ -200,20 +200,20 @@ kundi AsyncGenTest(unittest.TestCase):
         an = ai.__anext__()
         self.assertEqual(an.__next__(), ('result',))
 
-        try:
+        jaribu:
             an.__next__()
-        except StopIteration as ex:
+        tatizo StopIteration kama ex:
             self.assertEqual(ex.args[0], 123)
-        else:
-            self.fail('StopIteration was not raised')
+        isipokua:
+            self.fail('StopIteration was sio ashiriad')
 
         with self.assertRaises(ZeroDivisionError):
             ai.__anext__().__next__()
 
     eleza test_async_gen_exception_05(self):
         async eleza gen():
-            yield 123
-            raise StopAsyncIteration
+            tuma 123
+            ashiria StopAsyncIteration
 
         with self.assertRaisesRegex(RuntimeError,
                                     'async generator.*StopAsyncIteration'):
@@ -221,8 +221,8 @@ kundi AsyncGenTest(unittest.TestCase):
 
     eleza test_async_gen_exception_06(self):
         async eleza gen():
-            yield 123
-            raise StopIteration
+            tuma 123
+            ashiria StopIteration
 
         with self.assertRaisesRegex(RuntimeError,
                                     'async generator.*StopIteration'):
@@ -230,118 +230,118 @@ kundi AsyncGenTest(unittest.TestCase):
 
     eleza test_async_gen_exception_07(self):
         eleza sync_gen():
-            try:
-                yield 1
+            jaribu:
+                tuma 1
                 1 / 0
-            finally:
-                yield 2
-                yield 3
+            mwishowe:
+                tuma 2
+                tuma 3
 
-            yield 100
+            tuma 100
 
         async eleza async_gen():
-            try:
-                yield 1
+            jaribu:
+                tuma 1
                 1 / 0
-            finally:
-                yield 2
-                yield 3
+            mwishowe:
+                tuma 2
+                tuma 3
 
-            yield 100
+            tuma 100
 
         self.compare_generators(sync_gen(), async_gen())
 
     eleza test_async_gen_exception_08(self):
         eleza sync_gen():
-            try:
-                yield 1
-            finally:
-                yield 2
+            jaribu:
+                tuma 1
+            mwishowe:
+                tuma 2
                 1 / 0
-                yield 3
+                tuma 3
 
-            yield 100
+            tuma 100
 
         async eleza async_gen():
-            try:
-                yield 1
+            jaribu:
+                tuma 1
                 await awaitable()
-            finally:
+            mwishowe:
                 await awaitable()
-                yield 2
+                tuma 2
                 1 / 0
-                yield 3
+                tuma 3
 
-            yield 100
+            tuma 100
 
         self.compare_generators(sync_gen(), async_gen())
 
     eleza test_async_gen_exception_09(self):
         eleza sync_gen():
-            try:
-                yield 1
+            jaribu:
+                tuma 1
                 1 / 0
-            finally:
-                yield 2
-                yield 3
+            mwishowe:
+                tuma 2
+                tuma 3
 
-            yield 100
+            tuma 100
 
         async eleza async_gen():
-            try:
+            jaribu:
                 await awaitable()
-                yield 1
+                tuma 1
                 1 / 0
-            finally:
-                yield 2
+            mwishowe:
+                tuma 2
                 await awaitable()
-                yield 3
+                tuma 3
 
-            yield 100
+            tuma 100
 
         self.compare_generators(sync_gen(), async_gen())
 
     eleza test_async_gen_exception_10(self):
         async eleza gen():
-            yield 123
+            tuma 123
         with self.assertRaisesRegex(TypeError,
-                                    "non-None value .* async generator"):
+                                    "non-Tupu value .* async generator"):
             gen().__anext__().send(100)
 
     eleza test_async_gen_exception_11(self):
         eleza sync_gen():
-            yield 10
-            yield 20
+            tuma 10
+            tuma 20
 
         eleza sync_gen_wrapper():
-            yield 1
+            tuma 1
             sg = sync_gen()
-            sg.send(None)
-            try:
+            sg.send(Tupu)
+            jaribu:
                 sg.throw(GeneratorExit())
-            except GeneratorExit:
-                yield 2
-            yield 3
+            tatizo GeneratorExit:
+                tuma 2
+            tuma 3
 
         async eleza async_gen():
-            yield 10
-            yield 20
+            tuma 10
+            tuma 20
 
         async eleza async_gen_wrapper():
-            yield 1
+            tuma 1
             asg = async_gen()
-            await asg.asend(None)
-            try:
+            await asg.asend(Tupu)
+            jaribu:
                 await asg.athrow(GeneratorExit())
-            except GeneratorExit:
-                yield 2
-            yield 3
+            tatizo GeneratorExit:
+                tuma 2
+            tuma 3
 
         self.compare_generators(sync_gen_wrapper(), async_gen_wrapper())
 
     eleza test_async_gen_api_01(self):
         async eleza gen():
-            yield 123
+            tuma 123
 
         g = gen()
 
@@ -353,50 +353,50 @@ kundi AsyncGenTest(unittest.TestCase):
         g.__qualname__ = '123'
         self.assertEqual(g.__qualname__, '123')
 
-        self.assertIsNone(g.ag_await)
+        self.assertIsTupu(g.ag_await)
         self.assertIsInstance(g.ag_frame, types.FrameType)
-        self.assertFalse(g.ag_running)
+        self.assertUongo(g.ag_running)
         self.assertIsInstance(g.ag_code, types.CodeType)
 
-        self.assertTrue(inspect.isawaitable(g.aclose()))
+        self.assertKweli(inspect.isawaitable(g.aclose()))
 
 
 kundi AsyncGenAsyncioTest(unittest.TestCase):
 
     eleza setUp(self):
         self.loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(None)
+        asyncio.set_event_loop(Tupu)
 
     eleza tearDown(self):
         self.loop.close()
-        self.loop = None
-        asyncio.set_event_loop_policy(None)
+        self.loop = Tupu
+        asyncio.set_event_loop_policy(Tupu)
 
     async eleza to_list(self, gen):
         res = []
-        async for i in gen:
+        async kila i kwenye gen:
             res.append(i)
         rudisha res
 
     eleza test_async_gen_asyncio_01(self):
         async eleza gen():
-            yield 1
+            tuma 1
             await asyncio.sleep(0.01)
-            yield 2
+            tuma 2
             await asyncio.sleep(0.01)
-            return
-            yield 3
+            rudisha
+            tuma 3
 
         res = self.loop.run_until_complete(self.to_list(gen()))
         self.assertEqual(res, [1, 2])
 
     eleza test_async_gen_asyncio_02(self):
         async eleza gen():
-            yield 1
+            tuma 1
             await asyncio.sleep(0.01)
-            yield 2
+            tuma 2
             1 / 0
-            yield 3
+            tuma 3
 
         with self.assertRaises(ZeroDivisionError):
             self.loop.run_until_complete(self.to_list(gen()))
@@ -406,24 +406,24 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         kundi Gen:
             async eleza __aiter__(self):
-                yield 1
+                tuma 1
                 await asyncio.sleep(0.01)
-                yield 2
+                tuma 2
 
         res = loop.run_until_complete(self.to_list(Gen()))
         self.assertEqual(res, [1, 2])
 
     eleza test_async_gen_asyncio_anext_04(self):
         async eleza foo():
-            yield 1
+            tuma 1
             await asyncio.sleep(0.01)
-            try:
-                yield 2
-                yield 3
-            except ZeroDivisionError:
-                yield 1000
+            jaribu:
+                tuma 2
+                tuma 3
+            tatizo ZeroDivisionError:
+                tuma 1000
             await asyncio.sleep(0.01)
-            yield 4
+            tuma 4
 
         async eleza run1():
             it = foo().__aiter__()
@@ -442,12 +442,12 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
             self.assertEqual(await it.__anext__(), 1)
             self.assertEqual(await it.__anext__(), 2)
-            try:
+            jaribu:
                 it.__anext__().throw(ZeroDivisionError)
-            except StopIteration as ex:
+            tatizo StopIteration kama ex:
                 self.assertEqual(ex.args[0], 1000)
-            else:
-                self.fail('StopIteration was not raised')
+            isipokua:
+                self.fail('StopIteration was sio ashiriad')
             self.assertEqual(await it.__anext__(), 4)
             with self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
@@ -457,33 +457,33 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
     eleza test_async_gen_asyncio_anext_05(self):
         async eleza foo():
-            v = yield 1
-            v = yield v
-            yield v * 100
+            v = tuma 1
+            v = tuma v
+            tuma v * 100
 
         async eleza run():
             it = foo().__aiter__()
 
-            try:
-                it.__anext__().send(None)
-            except StopIteration as ex:
+            jaribu:
+                it.__anext__().send(Tupu)
+            tatizo StopIteration kama ex:
                 self.assertEqual(ex.args[0], 1)
-            else:
-                self.fail('StopIteration was not raised')
+            isipokua:
+                self.fail('StopIteration was sio ashiriad')
 
-            try:
+            jaribu:
                 it.__anext__().send(10)
-            except StopIteration as ex:
+            tatizo StopIteration kama ex:
                 self.assertEqual(ex.args[0], 10)
-            else:
-                self.fail('StopIteration was not raised')
+            isipokua:
+                self.fail('StopIteration was sio ashiriad')
 
-            try:
+            jaribu:
                 it.__anext__().send(12)
-            except StopIteration as ex:
+            tatizo StopIteration kama ex:
                 self.assertEqual(ex.args[0], 1200)
-            else:
-                self.fail('StopIteration was not raised')
+            isipokua:
+                self.fail('StopIteration was sio ashiriad')
 
             with self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
@@ -495,31 +495,31 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         # test synchronous generators
         eleza foo():
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
+                pita
         g = foo()
-        g.send(None)
+        g.send(Tupu)
         with self.assertRaises(StopIteration):
-            g.send(None)
+            g.send(Tupu)
 
         # now with asynchronous generators
 
         async eleza gen():
             nonlocal DONE
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
+                pita
             DONE = 1
 
         async eleza run():
             nonlocal DONE
             g = gen()
-            await g.asend(None)
+            await g.asend(Tupu)
             with self.assertRaises(StopAsyncIteration):
-                await g.asend(None)
+                await g.asend(Tupu)
             DONE += 10
 
         self.loop.run_until_complete(run())
@@ -527,16 +527,16 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
     eleza test_async_gen_asyncio_anext_tuple(self):
         async eleza foo():
-            try:
-                yield (1,)
-            except ZeroDivisionError:
-                yield (2,)
+            jaribu:
+                tuma (1,)
+            tatizo ZeroDivisionError:
+                tuma (2,)
 
         async eleza run():
             it = foo().__aiter__()
 
             self.assertEqual(await it.__anext__(), (1,))
-            with self.assertRaises(StopIteration) as cm:
+            with self.assertRaises(StopIteration) kama cm:
                 it.__anext__().throw(ZeroDivisionError)
             self.assertEqual(cm.exception.args[0], (2,))
             with self.assertRaises(StopAsyncIteration):
@@ -546,10 +546,10 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
     eleza test_async_gen_asyncio_anext_stopiteration(self):
         async eleza foo():
-            try:
-                yield StopIteration(1)
-            except ZeroDivisionError:
-                yield StopIteration(3)
+            jaribu:
+                tuma StopIteration(1)
+            tatizo ZeroDivisionError:
+                tuma StopIteration(3)
 
         async eleza run():
             it = foo().__aiter__()
@@ -557,7 +557,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             v = await it.__anext__()
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 1)
-            with self.assertRaises(StopIteration) as cm:
+            with self.assertRaises(StopIteration) kama cm:
                 it.__anext__().throw(ZeroDivisionError)
             v = cm.exception.args[0]
             self.assertIsInstance(v, StopIteration)
@@ -569,12 +569,12 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
     eleza test_async_gen_asyncio_aclose_06(self):
         async eleza foo():
-            try:
-                yield 1
+            jaribu:
+                tuma 1
                 1 / 0
-            finally:
+            mwishowe:
                 await asyncio.sleep(0.01)
-                yield 12
+                tuma 12
 
         async eleza run():
             gen = foo()
@@ -592,10 +592,10 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza foo():
             nonlocal DONE
-            try:
-                yield 1
+            jaribu:
+                tuma 1
                 1 / 0
-            finally:
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE += 1
@@ -617,12 +617,12 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza foo():
             nonlocal DONE
-            try:
-                yield 1
+            jaribu:
+                tuma 1
                 await fut
                 DONE += 1000
-                yield 2
-            finally:
+                tuma 2
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE += 1
@@ -646,10 +646,10 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza gen():
             nonlocal DONE
-            try:
-                while True:
-                    yield 1
-            finally:
+            jaribu:
+                wakati Kweli:
+                    tuma 1
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE = 1
@@ -658,7 +658,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             g = gen()
             await g.__anext__()
             await g.__anext__()
-            del g
+            toa g
 
             await asyncio.sleep(0.1)
 
@@ -670,28 +670,28 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         # test synchronous generators
         eleza foo():
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
+                pita
         g = foo()
-        g.send(None)
+        g.send(Tupu)
         g.close()
 
         # now with asynchronous generators
 
         async eleza gen():
             nonlocal DONE
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
+                pita
             DONE = 1
 
         async eleza run():
             nonlocal DONE
             g = gen()
-            await g.asend(None)
+            await g.asend(Tupu)
             await g.aclose()
             DONE += 10
 
@@ -703,13 +703,13 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         # test synchronous generators
         eleza foo():
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
-            yield
+                pita
+            tuma
         g = foo()
-        g.send(None)
+        g.send(Tupu)
         with self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
             g.close()
 
@@ -717,17 +717,17 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza gen():
             nonlocal DONE
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
-            yield
+                pita
+            tuma
             DONE += 1
 
         async eleza run():
             nonlocal DONE
             g = gen()
-            await g.asend(None)
+            await g.asend(Tupu)
             with self.assertRaisesRegex(RuntimeError, 'ignored GeneratorExit'):
                 await g.aclose()
             DONE += 10
@@ -740,24 +740,24 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         # Sanity check:
         eleza sgen():
-            v = yield 1
-            yield v * 2
+            v = tuma 1
+            tuma v * 2
         sg = sgen()
-        v = sg.send(None)
+        v = sg.send(Tupu)
         self.assertEqual(v, 1)
         v = sg.send(100)
         self.assertEqual(v, 200)
 
         async eleza gen():
             nonlocal DONE
-            try:
+            jaribu:
                 await asyncio.sleep(0.01)
-                v = yield 1
+                v = tuma 1
                 await asyncio.sleep(0.01)
-                yield v * 2
+                tuma v * 2
                 await asyncio.sleep(0.01)
-                return
-            finally:
+                rudisha
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE = 1
@@ -765,14 +765,14 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         async eleza run():
             g = gen()
 
-            v = await g.asend(None)
+            v = await g.asend(Tupu)
             self.assertEqual(v, 1)
 
             v = await g.asend(100)
             self.assertEqual(v, 200)
 
             with self.assertRaises(StopAsyncIteration):
-                await g.asend(None)
+                await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -786,13 +786,13 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza gen():
             nonlocal DONE
-            try:
+            jaribu:
                 await asyncio.sleep(0.01)
-                v = yield 1
+                v = tuma 1
                 await sleep_n_crash(0.01)
                 DONE += 1000
-                yield v * 2
-            finally:
+                tuma v * 2
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE = 1
@@ -800,7 +800,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         async eleza run():
             g = gen()
 
-            v = await g.asend(None)
+            v = await g.asend(Tupu)
             self.assertEqual(v, 1)
 
             await g.asend(100)
@@ -820,13 +820,13 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza gen():
             nonlocal DONE
-            try:
+            jaribu:
                 await asyncio.sleep(0.01)
-                v = yield 1
+                v = tuma 1
                 await sleep_n_crash(0.01)
                 DONE += 1000
-                yield v * 2
-            finally:
+                tuma v * 2
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE = 1
@@ -834,7 +834,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         async eleza run():
             g = gen()
 
-            v = await g.asend(None)
+            v = await g.asend(Tupu)
             self.assertEqual(v, 1)
 
             await g.asend(100)
@@ -847,36 +847,36 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         DONE = 0
 
         kundi FooEr(Exception):
-            pass
+            pita
 
         # Sanity check:
         eleza sgen():
-            try:
-                v = yield 1
-            except FooEr:
+            jaribu:
+                v = tuma 1
+            tatizo FooEr:
                 v = 1000
-            yield v * 2
+            tuma v * 2
         sg = sgen()
-        v = sg.send(None)
+        v = sg.send(Tupu)
         self.assertEqual(v, 1)
         v = sg.throw(FooEr)
         self.assertEqual(v, 2000)
         with self.assertRaises(StopIteration):
-            sg.send(None)
+            sg.send(Tupu)
 
         async eleza gen():
             nonlocal DONE
-            try:
+            jaribu:
                 await asyncio.sleep(0.01)
-                try:
-                    v = yield 1
-                except FooEr:
+                jaribu:
+                    v = tuma 1
+                tatizo FooEr:
                     v = 1000
                     await asyncio.sleep(0.01)
-                yield v * 2
+                tuma v * 2
                 await asyncio.sleep(0.01)
-                # return
-            finally:
+                # rudisha
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE = 1
@@ -884,14 +884,14 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         async eleza run():
             g = gen()
 
-            v = await g.asend(None)
+            v = await g.asend(Tupu)
             self.assertEqual(v, 1)
 
             v = await g.athrow(FooEr)
             self.assertEqual(v, 2000)
 
             with self.assertRaises(StopAsyncIteration):
-                await g.asend(None)
+                await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
@@ -900,7 +900,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         DONE = 0
 
         kundi FooEr(Exception):
-            pass
+            pita
 
         async eleza sleep_n_crash(delay):
             fut = asyncio.ensure_future(asyncio.sleep(delay),
@@ -910,16 +910,16 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza gen():
             nonlocal DONE
-            try:
+            jaribu:
                 await asyncio.sleep(0.01)
-                try:
-                    v = yield 1
-                except FooEr:
+                jaribu:
+                    v = tuma 1
+                tatizo FooEr:
                     await sleep_n_crash(0.01)
-                yield v * 2
+                tuma v * 2
                 await asyncio.sleep(0.01)
-                # return
-            finally:
+                # rudisha
+            mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
                 DONE = 1
@@ -927,16 +927,16 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         async eleza run():
             g = gen()
 
-            v = await g.asend(None)
+            v = await g.asend(Tupu)
             self.assertEqual(v, 1)
 
-            try:
+            jaribu:
                 await g.athrow(FooEr)
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 self.assertEqual(DONE, 1)
-                raise
-            else:
-                self.fail('CancelledError was not raised')
+                ashiria
+            isipokua:
+                self.fail('CancelledError was sio ashiriad')
 
         with self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(run())
@@ -947,12 +947,12 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         # test synchronous generators
         eleza foo():
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
+                pita
         g = foo()
-        g.send(None)
+        g.send(Tupu)
         with self.assertRaises(StopIteration):
             g.throw(ValueError)
 
@@ -960,16 +960,16 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza gen():
             nonlocal DONE
-            try:
-                yield
+            jaribu:
+                tuma
             except:
-                pass
+                pita
             DONE = 1
 
         async eleza run():
             nonlocal DONE
             g = gen()
-            await g.asend(None)
+            await g.asend(Tupu)
             with self.assertRaises(StopAsyncIteration):
                 await g.athrow(ValueError)
             DONE += 10
@@ -979,38 +979,38 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
     eleza test_async_gen_asyncio_athrow_tuple(self):
         async eleza gen():
-            try:
-                yield 1
-            except ZeroDivisionError:
-                yield (2,)
+            jaribu:
+                tuma 1
+            tatizo ZeroDivisionError:
+                tuma (2,)
 
         async eleza run():
             g = gen()
-            v = await g.asend(None)
+            v = await g.asend(Tupu)
             self.assertEqual(v, 1)
             v = await g.athrow(ZeroDivisionError)
             self.assertEqual(v, (2,))
             with self.assertRaises(StopAsyncIteration):
-                await g.asend(None)
+                await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
 
     eleza test_async_gen_asyncio_athrow_stopiteration(self):
         async eleza gen():
-            try:
-                yield 1
-            except ZeroDivisionError:
-                yield StopIteration(2)
+            jaribu:
+                tuma 1
+            tatizo ZeroDivisionError:
+                tuma StopIteration(2)
 
         async eleza run():
             g = gen()
-            v = await g.asend(None)
+            v = await g.asend(Tupu)
             self.assertEqual(v, 1)
             v = await g.athrow(ZeroDivisionError)
             self.assertIsInstance(v, StopIteration)
             self.assertEqual(v.value, 2)
             with self.assertRaises(StopAsyncIteration):
-                await g.asend(None)
+                await g.asend(Tupu)
 
         self.loop.run_until_complete(run())
 
@@ -1019,16 +1019,16 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
         async eleza waiter(timeout):
             nonlocal finalized
-            try:
+            jaribu:
                 await asyncio.sleep(timeout)
-                yield 1
-            finally:
+                tuma 1
+            mwishowe:
                 await asyncio.sleep(0)
                 finalized += 1
 
         async eleza wait():
-            async for _ in waiter(1):
-                pass
+            async kila _ kwenye waiter(1):
+                pita
 
         t1 = self.loop.create_task(wait())
         t2 = self.loop.create_task(wait())
@@ -1050,19 +1050,19 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
 
     eleza test_async_gen_expression_01(self):
         async eleza arange(n):
-            for i in range(n):
+            kila i kwenye range(n):
                 await asyncio.sleep(0.01)
-                yield i
+                tuma i
 
         eleza make_arange(n):
-            # This syntax is legal starting with Python 3.7
-            rudisha (i * 2 async for i in arange(n))
+            # This syntax ni legal starting with Python 3.7
+            rudisha (i * 2 async kila i kwenye arange(n))
 
         async eleza run():
-            rudisha [i async for i in make_arange(10)]
+            rudisha [i async kila i kwenye make_arange(10)]
 
         res = self.loop.run_until_complete(run())
-        self.assertEqual(res, [i * 2 for i in range(10)])
+        self.assertEqual(res, [i * 2 kila i kwenye range(10)])
 
     eleza test_async_gen_expression_02(self):
         async eleza wrap(n):
@@ -1070,14 +1070,14 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             rudisha n
 
         eleza make_arange(n):
-            # This syntax is legal starting with Python 3.7
-            rudisha (i * 2 for i in range(n) ikiwa await wrap(i))
+            # This syntax ni legal starting with Python 3.7
+            rudisha (i * 2 kila i kwenye range(n) ikiwa await wrap(i))
 
         async eleza run():
-            rudisha [i async for i in make_arange(10)]
+            rudisha [i async kila i kwenye make_arange(10)]
 
         res = self.loop.run_until_complete(run())
-        self.assertEqual(res, [i * 2 for i in range(1, 10)])
+        self.assertEqual(res, [i * 2 kila i kwenye range(1, 10)])
 
     eleza test_asyncgen_nonstarted_hooks_are_cancellable(self):
         # See https://bugs.python.org/issue38013
@@ -1087,15 +1087,15 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             messages.append(context)
 
         async eleza async_iterate():
-            yield 1
-            yield 2
+            tuma 1
+            tuma 2
 
         async eleza main():
             loop = asyncio.get_running_loop()
             loop.set_exception_handler(exception_handler)
 
-            async for i in async_iterate():
-                break
+            async kila i kwenye async_iterate():
+                koma
 
         asyncio.run(main())
 

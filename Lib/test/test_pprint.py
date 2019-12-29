@@ -10,37 +10,37 @@ agiza test.test_set
 agiza types
 agiza unittest
 
-# list, tuple and dict subclasses that do or don't overwrite __repr__
+# list, tuple na dict subclasses that do ama don't overwrite __repr__
 kundi list2(list):
-    pass
+    pita
 
 kundi list3(list):
     eleza __repr__(self):
         rudisha list.__repr__(self)
 
 kundi tuple2(tuple):
-    pass
+    pita
 
 kundi tuple3(tuple):
     eleza __repr__(self):
         rudisha tuple.__repr__(self)
 
 kundi set2(set):
-    pass
+    pita
 
 kundi set3(set):
     eleza __repr__(self):
         rudisha set.__repr__(self)
 
 kundi frozenset2(frozenset):
-    pass
+    pita
 
 kundi frozenset3(frozenset):
     eleza __repr__(self):
         rudisha frozenset.__repr__(self)
 
 kundi dict2(dict):
-    pass
+    pita
 
 kundi dict3(dict):
     eleza __repr__(self):
@@ -50,22 +50,22 @@ kundi Unorderable:
     eleza __repr__(self):
         rudisha str(id(self))
 
-# Class Orderable is orderable with any type
+# Class Orderable ni orderable with any type
 kundi Orderable:
     eleza __init__(self, hash):
         self._hash = hash
     eleza __lt__(self, other):
-        rudisha False
+        rudisha Uongo
     eleza __gt__(self, other):
         rudisha self != other
     eleza __le__(self, other):
         rudisha self == other
     eleza __ge__(self, other):
-        rudisha True
+        rudisha Kweli
     eleza __eq__(self, other):
-        rudisha self is other
+        rudisha self ni other
     eleza __ne__(self, other):
-        rudisha self is not other
+        rudisha self ni sio other
     eleza __hash__(self):
         rudisha self._hash
 
@@ -79,35 +79,35 @@ kundi QueryTestCase(unittest.TestCase):
     eleza test_init(self):
         pp = pprint.PrettyPrinter()
         pp = pprint.PrettyPrinter(indent=4, width=40, depth=5,
-                                  stream=io.StringIO(), compact=True)
+                                  stream=io.StringIO(), compact=Kweli)
         pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO())
-        pp = pprint.PrettyPrinter(sort_dicts=False)
+        pp = pprint.PrettyPrinter(sort_dicts=Uongo)
         with self.assertRaises(TypeError):
-            pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO(), True)
+            pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO(), Kweli)
         self.assertRaises(ValueError, pprint.PrettyPrinter, indent=-1)
         self.assertRaises(ValueError, pprint.PrettyPrinter, depth=0)
         self.assertRaises(ValueError, pprint.PrettyPrinter, depth=-1)
         self.assertRaises(ValueError, pprint.PrettyPrinter, width=0)
 
     eleza test_basic(self):
-        # Verify .isrecursive() and .isreadable() w/o recursion
+        # Verify .isrecursive() na .isreadable() w/o recursion
         pp = pprint.PrettyPrinter()
-        for safe in (2, 2.0, 2j, "abc", [3], (2,2), {3: 3}, b"def",
-                     bytearray(b"ghi"), True, False, None, ...,
+        kila safe kwenye (2, 2.0, 2j, "abc", [3], (2,2), {3: 3}, b"def",
+                     bytearray(b"ghi"), Kweli, Uongo, Tupu, ...,
                      self.a, self.b):
             # module-level convenience functions
-            self.assertFalse(pprint.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
-            self.assertTrue(pprint.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+            self.assertUongo(pprint.isrecursive(safe),
+                             "expected sio isrecursive kila %r" % (safe,))
+            self.assertKweli(pprint.isreadable(safe),
+                            "expected isreadable kila %r" % (safe,))
             # PrettyPrinter methods
-            self.assertFalse(pp.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
-            self.assertTrue(pp.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+            self.assertUongo(pp.isrecursive(safe),
+                             "expected sio isrecursive kila %r" % (safe,))
+            self.assertKweli(pp.isreadable(safe),
+                            "expected isreadable kila %r" % (safe,))
 
     eleza test_knotted(self):
-        # Verify .isrecursive() and .isreadable() w/ recursion
+        # Verify .isrecursive() na .isreadable() w/ recursion
         # Tie a knot.
         self.b[67] = self.a
         # Messy dict.
@@ -116,60 +116,60 @@ kundi QueryTestCase(unittest.TestCase):
 
         pp = pprint.PrettyPrinter()
 
-        for icky in self.a, self.b, self.d, (self.d, self.d):
-            self.assertTrue(pprint.isrecursive(icky), "expected isrecursive")
-            self.assertFalse(pprint.isreadable(icky), "expected not isreadable")
-            self.assertTrue(pp.isrecursive(icky), "expected isrecursive")
-            self.assertFalse(pp.isreadable(icky), "expected not isreadable")
+        kila icky kwenye self.a, self.b, self.d, (self.d, self.d):
+            self.assertKweli(pprint.isrecursive(icky), "expected isrecursive")
+            self.assertUongo(pprint.isreadable(icky), "expected sio isreadable")
+            self.assertKweli(pp.isrecursive(icky), "expected isrecursive")
+            self.assertUongo(pp.isreadable(icky), "expected sio isreadable")
 
         # Break the cycles.
         self.d.clear()
-        del self.a[:]
-        del self.b[:]
+        toa self.a[:]
+        toa self.b[:]
 
-        for safe in self.a, self.b, self.d, (self.d, self.d):
+        kila safe kwenye self.a, self.b, self.d, (self.d, self.d):
             # module-level convenience functions
-            self.assertFalse(pprint.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
-            self.assertTrue(pprint.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+            self.assertUongo(pprint.isrecursive(safe),
+                             "expected sio isrecursive kila %r" % (safe,))
+            self.assertKweli(pprint.isreadable(safe),
+                            "expected isreadable kila %r" % (safe,))
             # PrettyPrinter methods
-            self.assertFalse(pp.isrecursive(safe),
-                             "expected not isrecursive for %r" % (safe,))
-            self.assertTrue(pp.isreadable(safe),
-                            "expected isreadable for %r" % (safe,))
+            self.assertUongo(pp.isrecursive(safe),
+                             "expected sio isrecursive kila %r" % (safe,))
+            self.assertKweli(pp.isreadable(safe),
+                            "expected isreadable kila %r" % (safe,))
 
     eleza test_unreadable(self):
-        # Not recursive but not readable anyway
+        # Not recursive but sio readable anyway
         pp = pprint.PrettyPrinter()
-        for unreadable in type(3), pprint, pprint.isrecursive:
+        kila unreadable kwenye type(3), pprint, pprint.isrecursive:
             # module-level convenience functions
-            self.assertFalse(pprint.isrecursive(unreadable),
-                             "expected not isrecursive for %r" % (unreadable,))
-            self.assertFalse(pprint.isreadable(unreadable),
-                             "expected not isreadable for %r" % (unreadable,))
+            self.assertUongo(pprint.isrecursive(unreadable),
+                             "expected sio isrecursive kila %r" % (unreadable,))
+            self.assertUongo(pprint.isreadable(unreadable),
+                             "expected sio isreadable kila %r" % (unreadable,))
             # PrettyPrinter methods
-            self.assertFalse(pp.isrecursive(unreadable),
-                             "expected not isrecursive for %r" % (unreadable,))
-            self.assertFalse(pp.isreadable(unreadable),
-                             "expected not isreadable for %r" % (unreadable,))
+            self.assertUongo(pp.isrecursive(unreadable),
+                             "expected sio isrecursive kila %r" % (unreadable,))
+            self.assertUongo(pp.isreadable(unreadable),
+                             "expected sio isreadable kila %r" % (unreadable,))
 
     eleza test_same_as_repr(self):
-        # Simple objects, small containers and classes that overwrite __repr__
-        # For those the result should be the same as repr().
+        # Simple objects, small containers na classes that overwrite __repr__
+        # For those the result should be the same kama repr().
         # Ahem.  The docs don't say anything about that -- this appears to
-        # be testing an implementation quirk.  Starting in Python 2.5, it's
-        # not true for dicts:  pprint always sorts dicts by key now; before,
-        # it sorted a dict display ikiwa and only ikiwa the display required
+        # be testing an implementation quirk.  Starting kwenye Python 2.5, it's
+        # sio true kila dicts:  pprint always sorts dicts by key now; before,
+        # it sorted a dict display ikiwa na only ikiwa the display required
         # multiple lines.  For that reason, dicts with more than one element
         # aren't tested here.
-        for simple in (0, 0, 0+0j, 0.0, "", b"", bytearray(),
+        kila simple kwenye (0, 0, 0+0j, 0.0, "", b"", bytearray(),
                        (), tuple2(), tuple3(),
                        [], list2(), list3(),
                        set(), set2(), set3(),
                        frozenset(), frozenset2(), frozenset3(),
                        {}, dict2(), dict3(),
-                       self.assertTrue, pprint,
+                       self.assertKweli, pprint,
                        -6, -6, -6-6j, -1.5, "x", b"x", bytearray(b"x"),
                        (3,), [3], {3: 6},
                        (1,2), [3,4], {5: 6},
@@ -179,7 +179,7 @@ kundi QueryTestCase(unittest.TestCase):
                        frozenset({8}), frozenset2({8}), frozenset3({8}),
                        dict2({5: 6}), dict3({5: 6}),
                        range(10, -11, -1),
-                       True, False, None, ...,
+                       Kweli, Uongo, Tupu, ...,
                       ):
             native = repr(simple)
             self.assertEqual(pprint.pformat(simple), native)
@@ -204,23 +204,23 @@ kundi QueryTestCase(unittest.TestCase):
  'main_code_runtime_us': 0,
  'read_io_runtime_us': 0,
  'write_io_runtime_us': 43690}"""
-        for type in [dict, dict2]:
+        kila type kwenye [dict, dict2]:
             self.assertEqual(pprint.pformat(type(o)), exp)
 
         o = range(100)
         exp = '[%s]' % ',\n '.join(map(str, o))
-        for type in [list, list2]:
+        kila type kwenye [list, list2]:
             self.assertEqual(pprint.pformat(type(o)), exp)
 
         o = tuple(range(100))
         exp = '(%s)' % ',\n '.join(map(str, o))
-        for type in [tuple, tuple2]:
+        kila type kwenye [tuple, tuple2]:
             self.assertEqual(pprint.pformat(type(o)), exp)
 
         # indent parameter
         o = range(100)
         exp = '[   %s]' % ',\n    '.join(map(str, o))
-        for type in [list, list2]:
+        kila type kwenye [list, list2]:
             self.assertEqual(pprint.pformat(type(o), indent=4), exp)
 
     eleza test_nested_indentations(self):
@@ -277,7 +277,7 @@ kundi QueryTestCase(unittest.TestCase):
      '2']]]]]""")
 
     eleza test_sorted_dict(self):
-        # Starting in Python 2.5, pprint sorts dict displays by key regardless
+        # Starting kwenye Python 2.5, pprint sorts dict displays by key regardless
         # of how small the dictionary may be.
         # Before the change, on 32-bit Windows pformat() gave order
         # 'a', 'c', 'b' here, so this test failed.
@@ -286,19 +286,19 @@ kundi QueryTestCase(unittest.TestCase):
         self.assertEqual(pprint.pformat([d, d]),
             "[{'a': 1, 'b': 1, 'c': 1}, {'a': 1, 'b': 1, 'c': 1}]")
 
-        # The next one is kind of goofy.  The sorted order depends on the
+        # The next one ni kind of goofy.  The sorted order depends on the
         # alphabetic order of type names:  "int" < "str" < "tuple".  Before
-        # Python 2.5, this was in the test_same_as_repr() test.  It's worth
-        # keeping around for now because it's one of few tests of pprint
+        # Python 2.5, this was kwenye the test_same_as_repr() test.  It's worth
+        # keeping around kila now because it's one of few tests of pprint
         # against a crazy mix of types.
         self.assertEqual(pprint.pformat({"xy\tab\n": (3,), 5: [[]], (): {}}),
             r"{5: [[]], 'xy\tab\n': (3,), (): {}}")
 
     eleza test_sort_dict(self):
         d = dict.kutokakeys('cba')
-        self.assertEqual(pprint.pformat(d, sort_dicts=False), "{'c': None, 'b': None, 'a': None}")
-        self.assertEqual(pprint.pformat([d, d], sort_dicts=False),
-            "[{'c': None, 'b': None, 'a': None}, {'c': None, 'b': None, 'a': None}]")
+        self.assertEqual(pprint.pformat(d, sort_dicts=Uongo), "{'c': Tupu, 'b': Tupu, 'a': Tupu}")
+        self.assertEqual(pprint.pformat([d, d], sort_dicts=Uongo),
+            "[{'c': Tupu, 'b': Tupu, 'a': Tupu}, {'c': Tupu, 'b': Tupu, 'a': Tupu}]")
 
     eleza test_ordered_dict(self):
         d = collections.OrderedDict()
@@ -407,21 +407,21 @@ frozenset2({0,
         # the test.  The hard-coded repr depends on the sort order of
         # frozensets.
         #
-        # However, as the docs point out: "Since sets only define
+        # However, kama the docs point out: "Since sets only define
         # partial ordering (subset relationships), the output of the
-        # list.sort() method is undefined for lists of sets."
+        # list.sort() method ni undefined kila lists of sets."
         #
         # In a nutshell, the test assumes frozenset({0}) will always
         # sort before frozenset({1}), but:
         #
         # >>> frozenset({0}) < frozenset({1})
-        # False
+        # Uongo
         # >>> frozenset({1}) < frozenset({0})
-        # False
+        # Uongo
         #
-        # Consequently, this test is fragile and
+        # Consequently, this test ni fragile and
         # implementation-dependent.  Small changes to Python's sort
-        # algorithm cause the test to fail when it should pass.
+        # algorithm cause the test to fail when it should pita.
         # XXX Or changes to the dictionary implmentation...
 
         cube_repr_tgt = """\
@@ -626,9 +626,9 @@ frozenset2({0,
         self.assertEqual(pprint.pformat(nested_list, depth=1), lv1_list)
 
     eleza test_sort_unorderable_values(self):
-        # Issue 3976:  sorted pprints fail for unorderable values.
+        # Issue 3976:  sorted pprints fail kila unorderable values.
         n = 20
-        keys = [Unorderable() for i in range(n)]
+        keys = [Unorderable() kila i kwenye range(n)]
         random.shuffle(keys)
         skeys = sorted(keys, key=id)
         clean = lambda s: s.replace(' ', '').replace('\n','')
@@ -638,19 +638,19 @@ frozenset2({0,
         self.assertEqual(clean(pprint.pformat(frozenset(keys))),
             'frozenset({' + ','.join(map(repr, skeys)) + '})')
         self.assertEqual(clean(pprint.pformat(dict.kutokakeys(keys))),
-            '{' + ','.join('%r:None' % k for k in skeys) + '}')
+            '{' + ','.join('%r:Tupu' % k kila k kwenye skeys) + '}')
 
-        # Issue 10017: TypeError on user-defined types as dict keys.
+        # Issue 10017: TypeError on user-defined types kama dict keys.
         self.assertEqual(pprint.pformat({Unorderable: 0, 1: 0}),
                          '{1: 0, ' + repr(Unorderable) +': 0}')
 
-        # Issue 14998: TypeError on tuples with NoneTypes as dict keys.
-        keys = [(1,), (None,)]
+        # Issue 14998: TypeError on tuples with TupuTypes kama dict keys.
+        keys = [(1,), (Tupu,)]
         self.assertEqual(pprint.pformat(dict.kutokakeys(keys, 0)),
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))
 
     eleza test_sort_orderable_and_unorderable_values(self):
-        # Issue 22721:  sorted pprints is not stable
+        # Issue 22721:  sorted pprints ni sio stable
         a = Unorderable()
         b = Orderable(hash(a))  # should have the same hash value
         # self-test
@@ -665,9 +665,9 @@ frozenset2({0,
                          '{%r,\n %r}' % (a, b))
         # dict
         self.assertEqual(pprint.pformat(dict.kutokakeys([b, a]), width=1),
-                         '{%r: None,\n %r: None}' % (a, b))
+                         '{%r: Tupu,\n %r: Tupu}' % (a, b))
         self.assertEqual(pprint.pformat(dict.kutokakeys([a, b]), width=1),
-                         '{%r: None,\n %r: None}' % (a, b))
+                         '{%r: Tupu,\n %r: Tupu}' % (a, b))
 
     eleza test_str_wrap(self):
         # pprint tries to wrap strings intelligently
@@ -684,9 +684,9 @@ frozenset2({0,
       'a lazy dog',
  'c': 2}""")
         # With some special characters
-        # - \n always triggers a new line in the pprint
-        # - \t and \n are escaped
-        # - non-ASCII is allowed
+        # - \n always triggers a new line kwenye the pprint
+        # - \t na \n are escaped
+        # - non-ASCII ni allowed
         # - an apostrophe doesn't disrupt the pprint
         special = "Portons dix bons \"whiskys\"\nà l'avocat goujat\t qui fumait au zoo"
         self.assertEqual(pprint.pformat(special, width=68), repr(special))
@@ -717,21 +717,21 @@ frozenset2({0,
      'goujat\\t qui '
      'fumait au '
      'zoo']]]]]""")
-        # An unwrappable string is formatted as its repr
+        # An unwrappable string ni formatted kama its repr
         unwrappable = "x" * 100
         self.assertEqual(pprint.pformat(unwrappable, width=80), repr(unwrappable))
         self.assertEqual(pprint.pformat(''), "''")
-        # Check that the pprint is a usable repr
+        # Check that the pprint ni a usable repr
         special *= 10
-        for width in range(3, 40):
+        kila width kwenye range(3, 40):
             formatted = pprint.pformat(special, width=width)
             self.assertEqual(eval(formatted), special)
             formatted = pprint.pformat([special] * 2, width=width)
             self.assertEqual(eval(formatted), [special] * 2)
 
     eleza test_compact(self):
-        o = ([list(range(i * i)) for i in range(5)] +
-             [list(range(i)) for i in range(6)])
+        o = ([list(range(i * i)) kila i kwenye range(5)] +
+             [list(range(i)) kila i kwenye range(6)])
         expected = """\
 [[], [0], [0, 1, 2, 3],
  [0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -739,16 +739,16 @@ frozenset2({0,
   14, 15],
  [], [0], [0, 1], [0, 1, 2], [0, 1, 2, 3],
  [0, 1, 2, 3, 4]]"""
-        self.assertEqual(pprint.pformat(o, width=47, compact=True), expected)
+        self.assertEqual(pprint.pformat(o, width=47, compact=Kweli), expected)
 
     eleza test_compact_width(self):
         levels = 20
         number = 10
         o = [0] * number
-        for i in range(levels - 1):
+        kila i kwenye range(levels - 1):
             o = [o]
-        for w in range(levels * 2 + 1, levels + 3 * number - 1):
-            lines = pprint.pformat(o, width=w, compact=True).splitlines()
+        kila w kwenye range(levels * 2 + 1, levels + 3 * number - 1):
+            lines = pprint.pformat(o, width=w, compact=Kweli).splitlines()
             maxwidth = max(map(len, lines))
             self.assertLessEqual(maxwidth, w)
             self.assertGreater(maxwidth, w - 3)
@@ -803,8 +803,8 @@ frozenset2({0,
         self.assertEqual(pprint.pformat([[[[[[special]]]]]], width=41), """\
 [[[[[[b'\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07'
       b'\\x08\\t\\n\\x0b\\x0c\\r\\x0e\\x0f']]]]]]""")
-        # Check that the pprint is a usable repr
-        for width in range(1, 64):
+        # Check that the pprint ni a usable repr
+        kila width kwenye range(1, 64):
             formatted = pprint.pformat(special, width=width)
             self.assertEqual(eval(formatted), special)
             formatted = pprint.pformat([special] * 2, width=width)
@@ -1006,11 +1006,11 @@ kundi DottedPrettyPrinter(pprint.PrettyPrinter):
 
     eleza format(self, object, context, maxlevels, level):
         ikiwa isinstance(object, str):
-            ikiwa ' ' in object:
+            ikiwa ' ' kwenye object:
                 rudisha repr(object), 1, 0
-            else:
+            isipokua:
                 rudisha object, 0, 0
-        else:
+        isipokua:
             rudisha pprint.PrettyPrinter.format(
                 self, object, context, maxlevels, level)
 

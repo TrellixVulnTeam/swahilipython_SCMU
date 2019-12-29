@@ -38,7 +38,7 @@ ConfigParser -- responsible for parsing a list of
         substrings that prefix comments in non-empty lines.
 
         When `strict` is True, the parser won't allow for any section or option
-        duplicates while reading kutoka a single source (file, string or
+        duplicates wakati reading kutoka a single source (file, string or
         dictionary). Default is True.
 
         When `empty_lines_in_values' is False (default: True), each empty line
@@ -197,14 +197,14 @@ kundi DuplicateSectionError(Error):
 
     def __init__(self, section, source=None, lineno=None):
         msg = [repr(section), " already exists"]
-        if source is not None:
+        if source ni sio None:
             message = ["While reading kutoka ", repr(source)]
-            if lineno is not None:
+            if lineno ni sio None:
                 message.append(" [line {0:2d}]".format(lineno))
             message.append(": section ")
             message.extend(msg)
             msg = message
-        else:
+        isipokua:
             msg.insert(0, "Section ")
         Error.__init__(self, "".join(msg))
         self.section = section
@@ -223,14 +223,14 @@ kundi DuplicateOptionError(Error):
     def __init__(self, section, option, source=None, lineno=None):
         msg = [repr(option), " in section ", repr(section),
                " already exists"]
-        if source is not None:
+        if source ni sio None:
             message = ["While reading kutoka ", repr(source)]
-            if lineno is not None:
+            if lineno ni sio None:
                 message.append(" [line {0:2d}]".format(lineno))
             message.append(": option ")
             message.extend(msg)
             msg = message
-        else:
+        isipokua:
             msg.insert(0, "Option ")
         Error.__init__(self, "".join(msg))
         self.section = section
@@ -241,7 +241,7 @@ kundi DuplicateOptionError(Error):
 
 
 kundi NoOptionError(Error):
-    """A requested option was not found."""
+    """A requested option was sio found."""
 
     def __init__(self, option, section):
         Error.__init__(self, "No option %r in section: %r" %
@@ -262,11 +262,11 @@ kundi InterpolationError(Error):
 
 
 kundi InterpolationMissingOptionError(InterpolationError):
-    """A string substitution required a setting which was not available."""
+    """A string substitution required a setting which was sio available."""
 
     def __init__(self, option, section, rawval, reference):
         msg = ("Bad value substitution: option {!r} in section {!r} contains "
-               "an interpolation key {!r} which is not a valid option name. "
+               "an interpolation key {!r} which ni sio a valid option name. "
                "Raw value: {!r}".format(option, section, reference, rawval))
         InterpolationError.__init__(self, option, section, msg)
         self.reference = reference
@@ -277,7 +277,7 @@ kundi InterpolationSyntaxError(InterpolationError):
     """Raised when the source text contains invalid syntax.
 
     Current implementation raises this exception when the source text into
-    which substitutions are made does not conform to the required syntax.
+    which substitutions are made does sio conform to the required syntax.
     """
 
 
@@ -295,7 +295,7 @@ kundi InterpolationDepthError(InterpolationError):
 
 
 kundi ParsingError(Error):
-    """Raised when a configuration file does not follow legal syntax."""
+    """Raised when a configuration file does sio follow legal syntax."""
 
     def __init__(self, source=None, filename=None):
         # Exactly one of `source'/`filename' arguments has to be given.
@@ -303,8 +303,8 @@ kundi ParsingError(Error):
         if filename and source:
             raise ValueError("Cannot specify both `filename' and `source'. "
                              "Use `source'.")
-        lasivyo not filename and not source:
-            raise ValueError("Required argument `source' not given.")
+        lasivyo sio filename and sio source:
+            raise ValueError("Required argument `source' sio given.")
         lasivyo filename:
             source = filename
         Error.__init__(self, 'Source contains parsing errors: %r' % source)
@@ -352,7 +352,7 @@ kundi MissingSectionHeaderError(ParsingError):
 
 
 # Used in parser getters to indicate the default behaviour when a specific
-# option is not found it to raise an exception. Created to enable `None' as
+# option ni sio found it to raise an exception. Created to enable `None' as
 # a valid fallback value.
 _UNSET = object()
 
@@ -408,7 +408,7 @@ kundi BasicInterpolation(Interpolation):
         rawval = parser.get(section, option, raw=True, fallback=rest)
         if depth > MAX_INTERPOLATION_DEPTH:
             raise InterpolationDepthError(option, section, rawval)
-        while rest:
+        wakati rest:
             p = rest.find("%")
             if p < 0:
                 accum.append(rest)
@@ -428,17 +428,17 @@ kundi BasicInterpolation(Interpolation):
                         "bad interpolation variable reference %r" % rest)
                 var = parser.optionxform(m.group(1))
                 rest = rest[m.end():]
-                try:
+                jaribu:
                     v = map[var]
-                except KeyError:
+                tatizo KeyError:
                     raise InterpolationMissingOptionError(
                         option, section, rawval, var) kutoka None
                 if "%" in v:
                     self._interpolate_some(parser, option, accum, v,
                                            section, map, depth + 1)
-                else:
+                isipokua:
                     accum.append(v)
-            else:
+            isipokua:
                 raise InterpolationSyntaxError(
                     option, section,
                     "'%%' must be followed by '%%' or '(', "
@@ -469,7 +469,7 @@ kundi ExtendedInterpolation(Interpolation):
         rawval = parser.get(section, option, raw=True, fallback=rest)
         if depth > MAX_INTERPOLATION_DEPTH:
             raise InterpolationDepthError(option, section, rawval)
-        while rest:
+        wakati rest:
             p = rest.find("$")
             if p < 0:
                 accum.append(rest)
@@ -491,7 +491,7 @@ kundi ExtendedInterpolation(Interpolation):
                 rest = rest[m.end():]
                 sect = section
                 opt = option
-                try:
+                jaribu:
                     if len(path) == 1:
                         opt = parser.optionxform(path[0])
                         v = map[opt]
@@ -499,20 +499,20 @@ kundi ExtendedInterpolation(Interpolation):
                         sect = path[0]
                         opt = parser.optionxform(path[1])
                         v = parser.get(sect, opt, raw=True)
-                    else:
+                    isipokua:
                         raise InterpolationSyntaxError(
                             option, section,
                             "More than one ':' found: %r" % (rest,))
-                except (KeyError, NoSectionError, NoOptionError):
+                tatizo (KeyError, NoSectionError, NoOptionError):
                     raise InterpolationMissingOptionError(
                         option, section, rawval, ":".join(path)) kutoka None
                 if "$" in v:
                     self._interpolate_some(parser, opt, accum, v, sect,
                                            dict(parser.items(sect, raw=True)),
                                            depth + 1)
-                else:
+                isipokua:
                     accum.append(v)
-            else:
+            isipokua:
                 raise InterpolationSyntaxError(
                     option, section,
                     "'$' must be followed by '$' or '{', "
@@ -528,19 +528,19 @@ kundi LegacyInterpolation(Interpolation):
     def before_get(self, parser, section, option, value, vars):
         rawval = value
         depth = MAX_INTERPOLATION_DEPTH
-        while depth:                    # Loop through this until it's done
+        wakati depth:                    # Loop through this until it's done
             depth -= 1
             if value and "%(" in value:
                 replace = functools.partial(self._interpolation_replace,
                                             parser=parser)
                 value = self._KEYCRE.sub(replace, value)
-                try:
+                jaribu:
                     value = value % vars
-                except KeyError as e:
+                tatizo KeyError as e:
                     raise InterpolationMissingOptionError(
                         option, section, rawval, e.args[0]) kutoka None
-            else:
-                break
+            isipokua:
+                koma
         if value and "%(" in value:
             raise InterpolationDepthError(option, section, rawval)
         return value
@@ -553,12 +553,12 @@ kundi LegacyInterpolation(Interpolation):
         s = match.group(1)
         if s is None:
             return match.group()
-        else:
+        isipokua:
             return "%%(%s)s" % parser.optionxform(s)
 
 
 kundi RawConfigParser(MutableMapping):
-    """ConfigParser that does not do interpolation."""
+    """ConfigParser that does sio do interpolation."""
 
     # Regular expressions for parsing section headers and options
     _SECT_TMPL = r"""
@@ -583,7 +583,7 @@ kundi RawConfigParser(MutableMapping):
                                            # space/tab
         (?P<value>.*))?$                   # everything up to eol
         """
-    # Interpolation algorithm to be used if the user does not specify another
+    # Interpolation algorithm to be used if the user does sio specify another
     _DEFAULT_INTERPOLATION = Interpolation()
     # Compiled regular expression for matching sections
     SECTCRE = re.compile(_SECT_TMPL, re.VERBOSE)
@@ -614,12 +614,12 @@ kundi RawConfigParser(MutableMapping):
         self._delimiters = tuple(delimiters)
         if delimiters == ('=', ':'):
             self._optcre = self.OPTCRE_NV if allow_no_value else self.OPTCRE
-        else:
+        isipokua:
             d = "|".join(re.escape(d) for d in delimiters)
             if allow_no_value:
                 self._optcre = re.compile(self._OPT_NV_TMPL.format(delim=d),
                                           re.VERBOSE)
-            else:
+            isipokua:
                 self._optcre = re.compile(self._OPT_TMPL.format(delim=d),
                                           re.VERBOSE)
         self._comment_prefixes = tuple(comment_prefixes or ())
@@ -633,7 +633,7 @@ kundi RawConfigParser(MutableMapping):
             self._interpolation = self._DEFAULT_INTERPOLATION
         if self._interpolation is None:
             self._interpolation = Interpolation()
-        if converters is not _UNSET:
+        if converters ni sio _UNSET:
             self._converters.update(converters)
         if defaults:
             self._read_defaults(defaults)
@@ -663,15 +663,15 @@ kundi RawConfigParser(MutableMapping):
     def has_section(self, section):
         """Indicate whether the named section is present in the configuration.
 
-        The DEFAULT section is not acknowledged.
+        The DEFAULT section ni sio acknowledged.
         """
         return section in self._sections
 
     def options(self, section):
         """Return a list of option names for the given section name."""
-        try:
+        jaribu:
             opts = self._sections[section].copy()
-        except KeyError:
+        tatizo KeyError:
             raise NoSectionError(section) kutoka None
         opts.update(self._defaults)
         return list(opts.keys())
@@ -692,11 +692,11 @@ kundi RawConfigParser(MutableMapping):
             filenames = [filenames]
         read_ok = []
         for filename in filenames:
-            try:
+            jaribu:
                 with open(filename, encoding=encoding) as fp:
                     self._read(fp, filename)
-            except OSError:
-                continue
+            tatizo OSError:
+                endelea
             if isinstance(filename, os.PathLike):
                 filename = os.fspath(filename)
             read_ok.append(filename)
@@ -707,13 +707,13 @@ kundi RawConfigParser(MutableMapping):
 
         The `f' argument must be iterable, returning one line at a time.
         Optional second argument is the `source' specifying the name of the
-        file being read. If not given, it is taken kutoka f.name. If `f' has no
+        file being read. If sio given, it is taken kutoka f.name. If `f' has no
         `name' attribute, `<???>' is used.
         """
         if source is None:
-            try:
+            jaribu:
                 source = f.name
-            except AttributeError:
+            tatizo AttributeError:
                 source = '<???>'
         self._read(f, source)
 
@@ -738,15 +738,15 @@ kundi RawConfigParser(MutableMapping):
         elements_added = set()
         for section, keys in dictionary.items():
             section = str(section)
-            try:
+            jaribu:
                 self.add_section(section)
-            except (DuplicateSectionError, ValueError):
+            tatizo (DuplicateSectionError, ValueError):
                 if self._strict and section in elements_added:
                     raise
             elements_added.add(section)
             for key, value in keys.items():
                 key = self.optionxform(str(key))
-                if value is not None:
+                if value ni sio None:
                     value = str(value)
                 if self._strict and (section, key) in elements_added:
                     raise DuplicateOptionError(section, key, source)
@@ -767,7 +767,7 @@ kundi RawConfigParser(MutableMapping):
 
         If `vars' is provided, it must be a dictionary. The option is looked up
         in `vars' (if provided), `section', and in `DEFAULTSECT' in that order.
-        If the key is not found and `fallback' is provided, it is used as
+        If the key ni sio found and `fallback' is provided, it is used as
         a fallback value. `None' can be provided as a `fallback' value.
 
         If interpolation is enabled and the optional argument `raw' is False,
@@ -777,25 +777,25 @@ kundi RawConfigParser(MutableMapping):
 
         The section DEFAULT is special.
         """
-        try:
+        jaribu:
             d = self._unify_values(section, vars)
-        except NoSectionError:
+        tatizo NoSectionError:
             if fallback is _UNSET:
                 raise
-            else:
+            isipokua:
                 return fallback
         option = self.optionxform(option)
-        try:
+        jaribu:
             value = d[option]
-        except KeyError:
+        tatizo KeyError:
             if fallback is _UNSET:
                 raise NoOptionError(option, section)
-            else:
+            isipokua:
                 return fallback
 
         if raw or value is None:
             return value
-        else:
+        isipokua:
             return self._interpolation.before_get(self, section, option, value,
                                                   d)
 
@@ -804,10 +804,10 @@ kundi RawConfigParser(MutableMapping):
 
     def _get_conv(self, section, option, conv, *, raw=False, vars=None,
                   fallback=_UNSET, **kwargs):
-        try:
+        jaribu:
             return self._get(section, conv, option, raw=raw, vars=vars,
                              **kwargs)
-        except (NoSectionError, NoOptionError):
+        tatizo (NoSectionError, NoOptionError):
             if fallback is _UNSET:
                 raise
             return fallback
@@ -842,9 +842,9 @@ kundi RawConfigParser(MutableMapping):
         if section is _UNSET:
             return super().items()
         d = self._defaults.copy()
-        try:
+        jaribu:
             d.update(self._sections[section])
-        except KeyError:
+        tatizo KeyError:
             if section != self.default_section:
                 raise NoSectionError(section)
         orig_keys = list(d.keys())
@@ -867,7 +867,7 @@ kundi RawConfigParser(MutableMapping):
         """
         for key in self.sections():
             value = self[key]
-            del self[key]
+            toa self[key]
             return key, value
         raise KeyError
 
@@ -877,13 +877,13 @@ kundi RawConfigParser(MutableMapping):
     def has_option(self, section, option):
         """Check for the existence of a given option in a given section.
         If the specified `section' is None or an empty string, DEFAULT is
-        assumed. If the specified `section' does not exist, returns False."""
-        if not section or section == self.default_section:
+        assumed. If the specified `section' does sio exist, returns False."""
+        if sio section or section == self.default_section:
             option = self.optionxform(option)
             return option in self._defaults
-        lasivyo section not in self._sections:
+        lasivyo section haiko kwenye self._sections:
             return False
-        else:
+        isipokua:
             option = self.optionxform(option)
             return (option in self._sections[section]
                     or option in self._defaults)
@@ -893,12 +893,12 @@ kundi RawConfigParser(MutableMapping):
         if value:
             value = self._interpolation.before_set(self, section, option,
                                                    value)
-        if not section or section == self.default_section:
+        if sio section or section == self.default_section:
             sectdict = self._defaults
-        else:
-            try:
+        isipokua:
+            jaribu:
                 sectdict = self._sections[section]
-            except KeyError:
+            tatizo KeyError:
                 raise NoSectionError(section) kutoka None
         sectdict[self.optionxform(option)] = value
 
@@ -910,7 +910,7 @@ kundi RawConfigParser(MutableMapping):
         """
         if space_around_delimiters:
             d = " {} ".format(self._delimiters[0])
-        else:
+        isipokua:
             d = self._delimiters[0]
         if self._defaults:
             self._write_section(fp, self.default_section,
@@ -925,38 +925,38 @@ kundi RawConfigParser(MutableMapping):
         for key, value in section_items:
             value = self._interpolation.before_write(self, section_name, key,
                                                      value)
-            if value is not None or not self._allow_no_value:
+            if value ni sio None or sio self._allow_no_value:
                 value = delimiter + str(value).replace('\n', '\n\t')
-            else:
+            isipokua:
                 value = ""
             fp.write("{}{}\n".format(key, value))
         fp.write("\n")
 
     def remove_option(self, section, option):
         """Remove an option."""
-        if not section or section == self.default_section:
+        if sio section or section == self.default_section:
             sectdict = self._defaults
-        else:
-            try:
+        isipokua:
+            jaribu:
                 sectdict = self._sections[section]
-            except KeyError:
+            tatizo KeyError:
                 raise NoSectionError(section) kutoka None
         option = self.optionxform(option)
         existed = option in sectdict
         if existed:
-            del sectdict[option]
+            toa sectdict[option]
         return existed
 
     def remove_section(self, section):
         """Remove a file section."""
         existed = section in self._sections
         if existed:
-            del self._sections[section]
-            del self._proxies[section]
+            toa self._sections[section]
+            toa self._proxies[section]
         return existed
 
     def __getitem__(self, key):
-        if key != self.default_section and not self.has_section(key):
+        if key != self.default_section and sio self.has_section(key):
             raise KeyError(key)
         return self._proxies[key]
 
@@ -965,7 +965,7 @@ kundi RawConfigParser(MutableMapping):
         # the section.
         if key in self and self[key] is value:
             return
-        # XXX this is not atomic if read_dict fails at any point. Then again,
+        # XXX this ni sio atomic if read_dict fails at any point. Then again,
         # no update method in configparser is atomic in this implementation.
         if key == self.default_section:
             self._defaults.clear()
@@ -976,7 +976,7 @@ kundi RawConfigParser(MutableMapping):
     def __delitem__(self, key):
         if key == self.default_section:
             raise ValueError("Cannot remove the default section.")
-        if not self.has_section(key):
+        if sio self.has_section(key):
             raise KeyError(key)
         self.remove_section(key)
 
@@ -987,7 +987,7 @@ kundi RawConfigParser(MutableMapping):
         return len(self._sections) + 1 # the default section
 
     def __iter__(self):
-        # XXX does it break when underlying container state changed?
+        # XXX does it koma when underlying container state changed?
         return itertools.chain((self.default_section,), self._sections.keys())
 
     def _read(self, fp, fpname):
@@ -1018,12 +1018,12 @@ kundi RawConfigParser(MutableMapping):
             comment_start = sys.maxsize
             # strip inline comments
             inline_prefixes = {p: -1 for p in self._inline_comment_prefixes}
-            while comment_start == sys.maxsize and inline_prefixes:
+            wakati comment_start == sys.maxsize and inline_prefixes:
                 next_prefixes = {}
                 for prefix, index in inline_prefixes.items():
                     index = line.find(prefix, index+1)
                     if index == -1:
-                        continue
+                        endelea
                     next_prefixes[prefix] = index
                     if index == 0 or (index > 0 and line[index-1].isspace()):
                         comment_start = min(comment_start, index)
@@ -1032,31 +1032,31 @@ kundi RawConfigParser(MutableMapping):
             for prefix in self._comment_prefixes:
                 if line.strip().startswith(prefix):
                     comment_start = 0
-                    break
+                    koma
             if comment_start == sys.maxsize:
                 comment_start = None
             value = line[:comment_start].strip()
-            if not value:
+            if sio value:
                 if self._empty_lines_in_values:
                     # add empty line to the value, but only if there was no
                     # comment on the line
                     if (comment_start is None and
-                        cursect is not None and
+                        cursect ni sio None and
                         optname and
-                        cursect[optname] is not None):
+                        cursect[optname] ni sio None):
                         cursect[optname].append('') # newlines added at join
-                else:
+                isipokua:
                     # empty line marks end of value
                     indent_level = sys.maxsize
-                continue
+                endelea
             # continuation line?
             first_nonspace = self.NONSPACECRE.search(line)
             cur_indent_level = first_nonspace.start() if first_nonspace else 0
-            if (cursect is not None and optname and
+            if (cursect ni sio None and optname and
                 cur_indent_level > indent_level):
                 cursect[optname].append(value)
             # a section header or option header?
-            else:
+            isipokua:
                 indent_level = cur_indent_level
                 # is it a section header?
                 mo = self.SECTCRE.match(value)
@@ -1070,7 +1070,7 @@ kundi RawConfigParser(MutableMapping):
                         elements_added.add(sectname)
                     lasivyo sectname == self.default_section:
                         cursect = self._defaults
-                    else:
+                    isipokua:
                         cursect = self._dict()
                         self._sections[sectname] = cursect
                         self._proxies[sectname] = SectionProxy(self, sectname)
@@ -1081,11 +1081,11 @@ kundi RawConfigParser(MutableMapping):
                 lasivyo cursect is None:
                     raise MissingSectionHeaderError(fpname, lineno, line)
                 # an option line?
-                else:
+                isipokua:
                     mo = self._optcre.match(value)
                     if mo:
                         optname, vi, optval = mo.group('option', 'vi', 'value')
-                        if not optname:
+                        if sio optname:
                             e = self._handle_error(e, fpname, lineno, line)
                         optname = self.optionxform(optname.rstrip())
                         if (self._strict and
@@ -1095,13 +1095,13 @@ kundi RawConfigParser(MutableMapping):
                         elements_added.add((sectname, optname))
                         # This check is fine because the OPTCRE cannot
                         # match if it would set optval to None
-                        if optval is not None:
+                        if optval ni sio None:
                             optval = optval.strip()
                             cursect[optname] = [optval]
-                        else:
+                        isipokua:
                             # valueless option handling
                             cursect[optname] = None
-                    else:
+                    isipokua:
                         # a non-fatal parsing error occurred. set up the
                         # exception but keep going. the exception will be
                         # raised at the end of the file and will contain a
@@ -1131,7 +1131,7 @@ kundi RawConfigParser(MutableMapping):
             self._defaults[self.optionxform(key)] = value
 
     def _handle_error(self, exc, fpname, lineno, line):
-        if not exc:
+        if sio exc:
             exc = ParsingError(fpname)
         exc.append(lineno, repr(line))
         return exc
@@ -1142,16 +1142,16 @@ kundi RawConfigParser(MutableMapping):
 
         """
         sectiondict = {}
-        try:
+        jaribu:
             sectiondict = self._sections[section]
-        except KeyError:
+        tatizo KeyError:
             if section != self.default_section:
                 raise NoSectionError(section) kutoka None
         # Update with the entry specific variables
         vardict = {}
         if vars:
             for key, value in vars.items():
-                if value is not None:
+                if value ni sio None:
                     value = str(value)
                 vardict[self.optionxform(key)] = value
         return _ChainMap(vardict, sectiondict, self._defaults)
@@ -1159,7 +1159,7 @@ kundi RawConfigParser(MutableMapping):
     def _convert_to_boolean(self, value):
         """Return a boolean value translating kutoka other types if necessary.
         """
-        if value.lower() not in self.BOOLEAN_STATES:
+        if value.lower() haiko kwenye self.BOOLEAN_STATES:
             raise ValueError('Not a boolean: %s' % value)
         return self.BOOLEAN_STATES[value.lower()]
 
@@ -1169,19 +1169,19 @@ kundi RawConfigParser(MutableMapping):
         The only legal non-string value if we allow valueless
         options is None, so we need to check if the value is a
         string if:
-        - we do not allow valueless options, or
-        - we allow valueless options but the value is not None
+        - we do sio allow valueless options, or
+        - we allow valueless options but the value ni sio None
 
-        For compatibility reasons this method is not used in classic set()
+        For compatibility reasons this method ni sio used in classic set()
         for RawConfigParsers. It is invoked in every case for mapping protocol
         access and in ConfigParser.set().
         """
-        if not isinstance(section, str):
+        if sio isinstance(section, str):
             raise TypeError("section names must be strings")
-        if not isinstance(option, str):
+        if sio isinstance(option, str):
             raise TypeError("option keys must be strings")
-        if not self._allow_no_value or value:
-            if not isinstance(value, str):
+        if sio self._allow_no_value or value:
+            if sio isinstance(value, str):
                 raise TypeError("option values must be strings")
 
     @property
@@ -1211,13 +1211,13 @@ kundi ConfigParser(RawConfigParser):
         """Reads the defaults passed in the initializer, implicitly converting
         values to strings like the rest of the API.
 
-        Does not perform interpolation for backwards compatibility.
+        Does sio perform interpolation for backwards compatibility.
         """
-        try:
+        jaribu:
             hold_interpolation = self._interpolation
             self._interpolation = Interpolation()
             self.read_dict({self.default_section: defaults})
-        finally:
+        mwishowe:
             self._interpolation = hold_interpolation
 
 
@@ -1250,7 +1250,7 @@ kundi SectionProxy(MutableMapping):
         return '<Section: {}>'.format(self._name)
 
     def __getitem__(self, key):
-        if not self._parser.has_option(self._name, key):
+        if sio self._parser.has_option(self._name, key):
             raise KeyError(key)
         return self._parser.get(self._name, key)
 
@@ -1259,7 +1259,7 @@ kundi SectionProxy(MutableMapping):
         return self._parser.set(self._name, key, value)
 
     def __delitem__(self, key):
-        if not (self._parser.has_option(self._name, key) and
+        if sio (self._parser.has_option(self._name, key) and
                 self._parser.remove_option(self._name, key)):
             raise KeyError(key)
 
@@ -1275,7 +1275,7 @@ kundi SectionProxy(MutableMapping):
     def _options(self):
         if self._name != self._parser.default_section:
             return self._parser.options(self._name)
-        else:
+        isipokua:
             return self._parser.defaults()
 
     @property
@@ -1293,12 +1293,12 @@ kundi SectionProxy(MutableMapping):
         """Get an option value.
 
         Unless `fallback` is provided, `None` will be returned if the option
-        is not found.
+        ni sio found.
 
         """
         # If `_impl` is provided, it should be a getter method on the parser
         # object that provides the desired type conversion.
-        if not _impl:
+        if sio _impl:
             _impl = self._parser.get
         return _impl(self._name, option, raw=raw, vars=vars,
                      fallback=fallback, **kwargs)
@@ -1319,17 +1319,17 @@ kundi ConverterMapping(MutableMapping):
         self._data = {}
         for getter in dir(self._parser):
             m = self.GETTERCRE.match(getter)
-            if not m or not callable(getattr(self._parser, getter)):
-                continue
+            if sio m or sio callable(getattr(self._parser, getter)):
+                endelea
             self._data[m.group('name')] = None   # See kundi docstring.
 
     def __getitem__(self, key):
         return self._data[key]
 
     def __setitem__(self, key, value):
-        try:
+        jaribu:
             k = 'get' + key
-        except TypeError:
+        tatizo TypeError:
             raise ValueError('Incompatible key: {} (type: {})'
                              ''.format(key, type(key)))
         if k == 'get':
@@ -1343,18 +1343,18 @@ kundi ConverterMapping(MutableMapping):
             setattr(proxy, k, getter)
 
     def __delitem__(self, key):
-        try:
+        jaribu:
             k = 'get' + (key or None)
-        except TypeError:
+        tatizo TypeError:
             raise KeyError(key)
-        del self._data[key]
+        toa self._data[key]
         for inst in itertools.chain((self._parser,), self._parser.values()):
-            try:
+            jaribu:
                 delattr(inst, k)
-            except AttributeError:
+            tatizo AttributeError:
                 # don't raise since the entry was present in _data, silently
                 # clean up
-                continue
+                endelea
 
     def __iter__(self):
         return iter(self._data)

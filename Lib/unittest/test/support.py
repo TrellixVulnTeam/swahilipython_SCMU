@@ -2,39 +2,39 @@ agiza unittest
 
 
 kundi TestEquality(object):
-    """Used as a mixin for TestCase"""
+    """Used kama a mixin kila TestCase"""
 
-    # Check for a valid __eq__ implementation
+    # Check kila a valid __eq__ implementation
     eleza test_eq(self):
-        for obj_1, obj_2 in self.eq_pairs:
+        kila obj_1, obj_2 kwenye self.eq_pairs:
             self.assertEqual(obj_1, obj_2)
             self.assertEqual(obj_2, obj_1)
 
-    # Check for a valid __ne__ implementation
+    # Check kila a valid __ne__ implementation
     eleza test_ne(self):
-        for obj_1, obj_2 in self.ne_pairs:
+        kila obj_1, obj_2 kwenye self.ne_pairs:
             self.assertNotEqual(obj_1, obj_2)
             self.assertNotEqual(obj_2, obj_1)
 
 kundi TestHashing(object):
-    """Used as a mixin for TestCase"""
+    """Used kama a mixin kila TestCase"""
 
-    # Check for a valid __hash__ implementation
+    # Check kila a valid __hash__ implementation
     eleza test_hash(self):
-        for obj_1, obj_2 in self.eq_pairs:
-            try:
-                ikiwa not hash(obj_1) == hash(obj_2):
-                    self.fail("%r and %r do not hash equal" % (obj_1, obj_2))
-            except Exception as e:
-                self.fail("Problem hashing %r and %r: %s" % (obj_1, obj_2, e))
+        kila obj_1, obj_2 kwenye self.eq_pairs:
+            jaribu:
+                ikiwa sio hash(obj_1) == hash(obj_2):
+                    self.fail("%r na %r do sio hash equal" % (obj_1, obj_2))
+            tatizo Exception kama e:
+                self.fail("Problem hashing %r na %r: %s" % (obj_1, obj_2, e))
 
-        for obj_1, obj_2 in self.ne_pairs:
-            try:
+        kila obj_1, obj_2 kwenye self.ne_pairs:
+            jaribu:
                 ikiwa hash(obj_1) == hash(obj_2):
-                    self.fail("%s and %s hash equal, but shouldn't" %
+                    self.fail("%s na %s hash equal, but shouldn't" %
                               (obj_1, obj_2))
-            except Exception as e:
-                self.fail("Problem hashing %s and %s: %s" % (obj_1, obj_2, e))
+            tatizo Exception kama e:
+                self.fail("Problem hashing %s na %s: %s" % (obj_1, obj_2, e))
 
 
 kundi _BaseLoggingResult(unittest.TestResult):
@@ -91,7 +91,7 @@ kundi LegacyLoggingResult(_BaseLoggingResult):
 
     @property
     eleza addSubTest(self):
-        raise AttributeError
+        ashiria AttributeError
 
 
 kundi LoggingResult(_BaseLoggingResult):
@@ -100,9 +100,9 @@ kundi LoggingResult(_BaseLoggingResult):
     """
 
     eleza addSubTest(self, test, subtest, err):
-        ikiwa err is None:
+        ikiwa err ni Tupu:
             self._events.append('addSubTestSuccess')
-        else:
+        isipokua:
             self._events.append('addSubTestFailure')
         super().addSubTest(test, subtest, err)
 
@@ -117,22 +117,22 @@ kundi ResultWithNoStartTestRunStopTestRun(object):
         self.skipped = []
         self.expectedFailures = []
         self.unexpectedSuccesses = []
-        self.shouldStop = False
+        self.shouldStop = Uongo
 
     eleza startTest(self, test):
-        pass
+        pita
 
     eleza stopTest(self, test):
-        pass
+        pita
 
     eleza addError(self, test):
-        pass
+        pita
 
     eleza addFailure(self, test):
-        pass
+        pita
 
     eleza addSuccess(self, test):
-        pass
+        pita
 
     eleza wasSuccessful(self):
-        rudisha True
+        rudisha Kweli

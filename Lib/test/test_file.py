@@ -5,14 +5,14 @@ kutoka array agiza array
 kutoka weakref agiza proxy
 
 agiza io
-agiza _pyio as pyio
+agiza _pyio kama pyio
 
 kutoka test.support agiza TESTFN
 kutoka test agiza support
 kutoka collections agiza UserList
 
 kundi AutoFileTests:
-    # file tests for which a test file is automatically set up
+    # file tests kila which a test file ni automatically set up
 
     eleza setUp(self):
         self.f = self.open(TESTFN, 'wb')
@@ -28,7 +28,7 @@ kundi AutoFileTests:
         p.write(b'teststring')
         self.assertEqual(self.f.tell(), p.tell())
         self.f.close()
-        self.f = None
+        self.f = Tupu
         self.assertRaises(ReferenceError, getattr, p, 'tell')
 
     eleza testAttributes(self):
@@ -69,14 +69,14 @@ kundi AutoFileTests:
         self.assertRaises(TypeError, self.f.writelines, [1, 2, 3])
 
     eleza testWritelinesIntegersUserList(self):
-        # verify writelines with integers in UserList
+        # verify writelines with integers kwenye UserList
         l = UserList([1,2,3])
         self.assertRaises(TypeError, self.f.writelines, l)
 
     eleza testWritelinesNonString(self):
         # verify writelines with non-string object
         kundi NonString:
-            pass
+            pita
 
         self.assertRaises(TypeError, self.f.writelines,
                           [NonString(), NonString()])
@@ -84,13 +84,13 @@ kundi AutoFileTests:
     eleza testErrors(self):
         f = self.f
         self.assertEqual(f.name, TESTFN)
-        self.assertFalse(f.isatty())
-        self.assertFalse(f.closed)
+        self.assertUongo(f.isatty())
+        self.assertUongo(f.closed)
 
         ikiwa hasattr(f, "readinto"):
             self.assertRaises((OSError, TypeError), f.readinto, "")
         f.close()
-        self.assertTrue(f.closed)
+        self.assertKweli(f.closed)
 
     eleza testMethods(self):
         methods = [('fileno', ()),
@@ -110,21 +110,21 @@ kundi AutoFileTests:
         methods.append(('truncate', ()))
 
         # __exit__ should close the file
-        self.f.__exit__(None, None, None)
-        self.assertTrue(self.f.closed)
+        self.f.__exit__(Tupu, Tupu, Tupu)
+        self.assertKweli(self.f.closed)
 
-        for methodname, args in methods:
+        kila methodname, args kwenye methods:
             method = getattr(self.f, methodname)
-            # should raise on closed file
+            # should ashiria on closed file
             self.assertRaises(ValueError, method, *args)
 
-        # file is closed, __exit__ shouldn't do anything
-        self.assertEqual(self.f.__exit__(None, None, None), None)
-        # it must also rudisha None ikiwa an exception was given
-        try:
+        # file ni closed, __exit__ shouldn't do anything
+        self.assertEqual(self.f.__exit__(Tupu, Tupu, Tupu), Tupu)
+        # it must also rudisha Tupu ikiwa an exception was given
+        jaribu:
             1/0
         except:
-            self.assertEqual(self.f.__exit__(*sys.exc_info()), None)
+            self.assertEqual(self.f.__exit__(*sys.exc_info()), Tupu)
 
     eleza testReadWhenWriting(self):
         self.assertRaises(OSError, self.f.read)
@@ -144,33 +144,33 @@ kundi OtherFileTests:
     eleza testModeStrings(self):
         # check invalid mode strings
         self.open(TESTFN, 'wb').close()
-        for mode in ("", "aU", "wU+", "U+", "+U", "rU+"):
-            try:
+        kila mode kwenye ("", "aU", "wU+", "U+", "+U", "rU+"):
+            jaribu:
                 f = self.open(TESTFN, mode)
-            except ValueError:
-                pass
-            else:
+            tatizo ValueError:
+                pita
+            isipokua:
                 f.close()
-                self.fail('%r is an invalid file mode' % mode)
+                self.fail('%r ni an invalid file mode' % mode)
 
     eleza testBadModeArgument(self):
-        # verify that we get a sensible error message for bad mode argument
+        # verify that we get a sensible error message kila bad mode argument
         bad_mode = "qwerty"
-        try:
+        jaribu:
             f = self.open(TESTFN, bad_mode)
-        except ValueError as msg:
+        tatizo ValueError kama msg:
             ikiwa msg.args[0] != 0:
                 s = str(msg)
-                ikiwa TESTFN in s or bad_mode not in s:
-                    self.fail("bad error message for invalid mode: %s" % s)
+                ikiwa TESTFN kwenye s ama bad_mode haiko kwenye s:
+                    self.fail("bad error message kila invalid mode: %s" % s)
             # ikiwa msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
-        else:
+        isipokua:
             f.close()
-            self.fail("no error for invalid mode: %s" % bad_mode)
+            self.fail("no error kila invalid mode: %s" % bad_mode)
 
     eleza _checkBufferSize(self, s):
-        try:
+        jaribu:
             f = self.open(TESTFN, 'wb', s)
             f.write(str(s).encode("ascii"))
             f.close()
@@ -179,20 +179,20 @@ kundi OtherFileTests:
             d = int(f.read().decode("ascii"))
             f.close()
             f.close()
-        except OSError as msg:
+        tatizo OSError kama msg:
             self.fail('error setting buffer size %d: %s' % (s, str(msg)))
         self.assertEqual(d, s)
 
     eleza testSetBufferSize(self):
         # make sure that explicitly setting the buffer size doesn't cause
         # misbehaviour especially with repeated close() calls
-        for s in (-1, 0, 512):
+        kila s kwenye (-1, 0, 512):
             with support.check_no_warnings(self,
                                            message='line buffering',
                                            category=RuntimeWarning):
                 self._checkBufferSize(s)
 
-        # test that attempts to use line buffering in binary mode cause
+        # test that attempts to use line buffering kwenye binary mode cause
         # a warning
         with self.assertWarnsRegex(RuntimeWarning, 'line buffering'):
             self._checkBufferSize(1)
@@ -203,14 +203,14 @@ kundi OtherFileTests:
 
         f = self.open(TESTFN, 'wb')
 
-        try:
+        jaribu:
             f.write(b'12345678901')   # 11 bytes
             f.close()
 
             f = self.open(TESTFN,'rb+')
             data = f.read(5)
             ikiwa data != b'12345':
-                self.fail("Read on file opened for update failed %r" % data)
+                self.fail("Read on file opened kila update failed %r" % data)
             ikiwa f.tell() != 5:
                 self.fail("File pos after read wrong %d" % f.tell())
 
@@ -222,22 +222,22 @@ kundi OtherFileTests:
             size = os.path.getsize(TESTFN)
             ikiwa size != 5:
                 self.fail("File size after ftruncate wrong %d" % size)
-        finally:
+        mwishowe:
             f.close()
 
     eleza testIteration(self):
-        # Test the complex interaction when mixing file-iteration and the
+        # Test the complex interaction when mixing file-iteration na the
         # various read* methods.
         dataoffset = 16384
         filler = b"ham\n"
-        assert not dataoffset % len(filler), \
+        assert sio dataoffset % len(filler), \
             "dataoffset must be multiple of len(filler)"
         nchunks = dataoffset // len(filler)
         testlines = [
-            b"spam, spam and eggs\n",
-            b"eggs, spam, ham and spam\n",
-            b"saussages, spam, spam and eggs\n",
-            b"spam, ham, spam and eggs\n",
+            b"spam, spam na eggs\n",
+            b"eggs, spam, ham na spam\n",
+            b"saussages, spam, spam na eggs\n",
+            b"spam, ham, spam na eggs\n",
             b"spam, spam, spam, spam, spam, ham, spam\n",
             b"wonderful spaaaaaam.\n"
         ]
@@ -249,8 +249,8 @@ kundi OtherFileTests:
         bag.write(filler * nchunks)
         bag.writelines(testlines)
         bag.close()
-        # Test for appropriate errors mixing read* and iteration
-        for methodname, args in methods:
+        # Test kila appropriate errors mixing read* na iteration
+        kila methodname, args kwenye methods:
             f = self.open(TESTFN, 'rb')
             self.assertEqual(next(f), filler)
             meth = getattr(f, methodname)
@@ -259,18 +259,18 @@ kundi OtherFileTests:
 
         # Test to see ikiwa harmless (by accident) mixing of read* and
         # iteration still works. This depends on the size of the internal
-        # iteration buffer (currently 8192,) but we can test it in a
-        # flexible manner.  Each line in the bag o' ham is 4 bytes
+        # iteration buffer (currently 8192,) but we can test it kwenye a
+        # flexible manner.  Each line kwenye the bag o' ham ni 4 bytes
         # ("h", "a", "m", "\n"), so 4096 lines of that should get us
-        # exactly on the buffer boundary for any power-of-2 buffersize
-        # between 4 and 16384 (inclusive).
+        # exactly on the buffer boundary kila any power-of-2 buffersize
+        # between 4 na 16384 (inclusive).
         f = self.open(TESTFN, 'rb')
-        for i in range(nchunks):
+        kila i kwenye range(nchunks):
             next(f)
         testline = testlines.pop(0)
-        try:
+        jaribu:
             line = f.readline()
-        except ValueError:
+        tatizo ValueError:
             self.fail("readline() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa line != testline:
@@ -278,9 +278,9 @@ kundi OtherFileTests:
                         "failed. Got %r, expected %r" % (line, testline))
         testline = testlines.pop(0)
         buf = array("b", b"\x00" * len(testline))
-        try:
+        jaribu:
             f.readinto(buf)
-        except ValueError:
+        tatizo ValueError:
             self.fail("readinto() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
         line = buf.tobytes()
@@ -289,17 +289,17 @@ kundi OtherFileTests:
                         "failed. Got %r, expected %r" % (line, testline))
 
         testline = testlines.pop(0)
-        try:
+        jaribu:
             line = f.read(len(testline))
-        except ValueError:
+        tatizo ValueError:
             self.fail("read() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa line != testline:
             self.fail("read() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
-        try:
+        jaribu:
             lines = f.readlines()
-        except ValueError:
+        tatizo ValueError:
             self.fail("readlines() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa lines != testlines:
@@ -309,17 +309,17 @@ kundi OtherFileTests:
 
         # Reading after iteration hit EOF shouldn't hurt either
         f = self.open(TESTFN, 'rb')
-        try:
-            for line in f:
-                pass
-            try:
+        jaribu:
+            kila line kwenye f:
+                pita
+            jaribu:
                 f.readline()
                 f.readinto(buf)
                 f.read()
                 f.readlines()
-            except ValueError:
+            tatizo ValueError:
                 self.fail("read* failed after next() consumed file")
-        finally:
+        mwishowe:
             f.close()
 
 kundi COtherFileTests(OtherFileTests, unittest.TestCase):

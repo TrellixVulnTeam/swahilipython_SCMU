@@ -1,9 +1,9 @@
-"""This is a sample module that doesn't really test anything all that
+"""This ni a sample module that doesn't really test anything all that
    interesting.
 
-It simply has a few tests, some of which succeed and some of which fail.
+It simply has a few tests, some of which succeed na some of which fail.
 
-It's agizaant that the numbers remain constant as another test is
+It's agizaant that the numbers remain constant kama another test is
 testing the running of these tests.
 
 
@@ -34,7 +34,7 @@ eleza test_silly_setup():
 
     >>> agiza test.test_doctest
     >>> test.test_doctest.sillySetup
-    True
+    Kweli
     """
 
 eleza w_blank():

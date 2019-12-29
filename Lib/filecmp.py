@@ -35,7 +35,7 @@ def cmp(f1, f2, shallow=True):
 
     f2 -- Second file name
 
-    shallow -- Just check stat signature (do not read the files).
+    shallow -- Just check stat signature (do sio read the files).
                defaults to True.
 
     Return value:
@@ -73,12 +73,12 @@ def _sig(st):
 def _do_cmp(f1, f2):
     bufsize = BUFSIZE
     with open(f1, 'rb') as fp1, open(f2, 'rb') as fp2:
-        while True:
+        wakati True:
             b1 = fp1.read(bufsize)
             b2 = fp2.read(bufsize)
             if b1 != b2:
                 return False
-            if not b1:
+            if sio b1:
                 return True
 
 # Directory comparison class.
@@ -110,10 +110,10 @@ kundi dircmp:
      common_dirs: subdirectories in both dir1 and dir2.
      common_files: files in both dir1 and dir2.
      common_funny: names in both dir1 and dir2 where the type differs between
-        dir1 and dir2, or the name is not stat-able.
+        dir1 and dir2, or the name ni sio stat-able.
      same_files: list of identical files.
      diff_files: list of filenames which differ.
-     funny_files: list of files which could not be compared.
+     funny_files: list of files which could sio be compared.
      subdirs: a dictionary of dircmp objects, keyed by names in common_dirs.
      """
 
@@ -122,14 +122,14 @@ kundi dircmp:
         self.right = b
         if hide is None:
             self.hide = [os.curdir, os.pardir] # Names never to be shown
-        else:
+        isipokua:
             self.hide = hide
         if ignore is None:
             self.ignore = DEFAULT_IGNORES
-        else:
+        isipokua:
             self.ignore = ignore
 
-    def phase0(self): # Compare everything except common subdirectories
+    def phase0(self): # Compare everything tatizo common subdirectories
         self.left_list = _filter(os.listdir(self.left),
                                  self.hide+self.ignore)
         self.right_list = _filter(os.listdir(self.right),
@@ -154,14 +154,14 @@ kundi dircmp:
             b_path = os.path.join(self.right, x)
 
             ok = 1
-            try:
+            jaribu:
                 a_stat = os.stat(a_path)
-            except OSError as why:
+            tatizo OSError as why:
                 # print('Can\'t stat', a_path, ':', why.args[1])
                 ok = 0
-            try:
+            jaribu:
                 b_stat = os.stat(b_path)
-            except OSError as why:
+            tatizo OSError as why:
                 # print('Can\'t stat', b_path, ':', why.args[1])
                 ok = 0
 
@@ -174,9 +174,9 @@ kundi dircmp:
                     self.common_dirs.append(x)
                 lasivyo stat.S_ISREG(a_type):
                     self.common_files.append(x)
-                else:
+                isipokua:
                     self.common_funny.append(x)
-            else:
+            isipokua:
                 self.common_funny.append(x)
 
     def phase3(self): # Find out differences between common files
@@ -242,7 +242,7 @@ kundi dircmp:
                      left_list=phase0, right_list=phase0)
 
     def __getattr__(self, attr):
-        if attr not in self.methodmap:
+        if attr haiko kwenye self.methodmap:
             raise AttributeError(attr)
         self.methodmap[attr](self)
         return getattr(self, attr)
@@ -275,9 +275,9 @@ def cmpfiles(a, b, common, shallow=True):
 #       2 for funny cases (can't stat, etc.)
 #
 def _cmp(a, b, sh, abs=abs, cmp=cmp):
-    try:
-        return not abs(cmp(a, b, sh))
-    except OSError:
+    jaribu:
+        return sio abs(cmp(a, b, sh))
+    tatizo OSError:
         return 2
 
 
@@ -298,7 +298,7 @@ def demo():
     dd = dircmp(args[0], args[1])
     if ('-r', '') in options:
         dd.report_full_closure()
-    else:
+    isipokua:
         dd.report()
 
 if __name__ == '__main__':

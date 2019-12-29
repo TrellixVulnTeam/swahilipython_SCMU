@@ -20,28 +20,28 @@ kundi TestPathfixFunctional(unittest.TestCase):
                 directory=''):
         ikiwa directory:
             # bpo-38347: Test filename should contain lowercase, uppercase,
-            # "-", "_" and digits.
+            # "-", "_" na digits.
             filename = os.path.join(directory, 'script-A_1.py')
             pathfix_arg = directory
-        else:
+        isipokua:
             filename = support.TESTFN
             pathfix_arg = filename
 
-        with open(filename, 'w', encoding='utf8') as f:
+        with open(filename, 'w', encoding='utf8') kama f:
             f.write(f'{shebang}\n' + 'andika("Hello world")\n')
 
         proc = subprocess.run(
             [sys.executable, self.script,
              *pathfix_flags, '-n', pathfix_arg],
-            capture_output=True, text=1)
+            capture_output=Kweli, text=1)
 
-        ikiwa stdout == '' and proc.returncode == 0:
+        ikiwa stdout == '' na proc.returncode == 0:
             stdout = f'{filename}: updating\n'
         self.assertEqual(proc.returncode, exitcode, proc)
         self.assertEqual(proc.stdout, stdout, proc)
         self.assertEqual(proc.stderr, stderr, proc)
 
-        with open(filename, 'r', encoding='utf8') as f:
+        with open(filename, 'r', encoding='utf8') kama f:
             output = f.read()
 
         lines = output.split('\n')

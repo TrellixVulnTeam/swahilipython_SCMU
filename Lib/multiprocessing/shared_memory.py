@@ -1,7 +1,7 @@
-"""Provides shared memory for direct access across processes.
+"""Provides shared memory kila direct access across processes.
 
-The API of this package is currently provisional. Refer to the
-documentation for details.
+The API of this package ni currently provisional. Refer to the
+documentation kila details.
 """
 
 
@@ -17,10 +17,10 @@ agiza secrets
 
 ikiwa os.name == "nt":
     agiza _winapi
-    _USE_POSIX = False
-else:
+    _USE_POSIX = Uongo
+isipokua:
     agiza _posixshmem
-    _USE_POSIX = True
+    _USE_POSIX = Kweli
 
 
 _O_CREX = os.O_CREAT | os.O_EXCL
@@ -31,13 +31,13 @@ _SHM_SAFE_NAME_LENGTH = 14
 # Shared memory block name prefix
 ikiwa _USE_POSIX:
     _SHM_NAME_PREFIX = '/psm_'
-else:
+isipokua:
     _SHM_NAME_PREFIX = 'wnsm_'
 
 
 eleza _make_filename():
-    "Create a random filename for the shared memory object."
-    # number of random bytes to use for name
+    "Create a random filename kila the shared memory object."
+    # number of random bytes to use kila name
     nbytes = (_SHM_SAFE_NAME_LENGTH - len(_SHM_NAME_PREFIX)) // 2
     assert nbytes >= 2, '_SHM_NAME_PREFIX too long'
     name = _SHM_NAME_PREFIX + secrets.token_hex(nbytes)
@@ -46,56 +46,56 @@ eleza _make_filename():
 
 
 kundi SharedMemory:
-    """Creates a new shared memory block or attaches to an existing
+    """Creates a new shared memory block ama attaches to an existing
     shared memory block.
 
-    Every shared memory block is assigned a unique name.  This enables
+    Every shared memory block ni assigned a unique name.  This enables
     one process to create a shared memory block with a particular name
     so that a different process can attach to that same shared memory
     block using that same name.
 
-    As a resource for sharing data across processes, shared memory blocks
+    As a resource kila sharing data across processes, shared memory blocks
     may outlive the original process that created them.  When one process
     no longer needs access to a shared memory block that might still be
     needed by other processes, the close() method should be called.
-    When a shared memory block is no longer needed by any process, the
+    When a shared memory block ni no longer needed by any process, the
     unlink() method should be called to ensure proper cleanup."""
 
-    # Defaults; enables close() and unlink() to run without errors.
-    _name = None
+    # Defaults; enables close() na unlink() to run without errors.
+    _name = Tupu
     _fd = -1
-    _mmap = None
-    _buf = None
+    _mmap = Tupu
+    _buf = Tupu
     _flags = os.O_RDWR
     _mode = 0o600
-    _prepend_leading_slash = True ikiwa _USE_POSIX else False
+    _prepend_leading_slash = Kweli ikiwa _USE_POSIX else Uongo
 
-    eleza __init__(self, name=None, create=False, size=0):
-        ikiwa not size >= 0:
-            raise ValueError("'size' must be a positive integer")
+    eleza __init__(self, name=Tupu, create=Uongo, size=0):
+        ikiwa sio size >= 0:
+            ashiria ValueError("'size' must be a positive integer")
         ikiwa create:
             self._flags = _O_CREX | os.O_RDWR
-        ikiwa name is None and not self._flags & os.O_EXCL:
-            raise ValueError("'name' can only be None ikiwa create=True")
+        ikiwa name ni Tupu na sio self._flags & os.O_EXCL:
+            ashiria ValueError("'name' can only be Tupu ikiwa create=Kweli")
 
         ikiwa _USE_POSIX:
 
             # POSIX Shared Memory
 
-            ikiwa name is None:
-                while True:
+            ikiwa name ni Tupu:
+                wakati Kweli:
                     name = _make_filename()
-                    try:
+                    jaribu:
                         self._fd = _posixshmem.shm_open(
                             name,
                             self._flags,
                             mode=self._mode
                         )
-                    except FileExistsError:
-                        continue
+                    tatizo FileExistsError:
+                        endelea
                     self._name = name
-                    break
-            else:
+                    koma
+            isipokua:
                 name = "/" + name ikiwa self._prepend_leading_slash else name
                 self._fd = _posixshmem.shm_open(
                     name,
@@ -103,27 +103,27 @@ kundi SharedMemory:
                     mode=self._mode
                 )
                 self._name = name
-            try:
-                ikiwa create and size:
+            jaribu:
+                ikiwa create na size:
                     os.ftruncate(self._fd, size)
                 stats = os.fstat(self._fd)
                 size = stats.st_size
                 self._mmap = mmap.mmap(self._fd, size)
-            except OSError:
+            tatizo OSError:
                 self.unlink()
-                raise
+                ashiria
 
             kutoka .resource_tracker agiza register
             register(self._name, "shared_memory")
 
-        else:
+        isipokua:
 
             # Windows Named Shared Memory
 
             ikiwa create:
-                while True:
-                    temp_name = _make_filename() ikiwa name is None else name
-                    # Create and reserve shared memory block with this name
+                wakati Kweli:
+                    temp_name = _make_filename() ikiwa name ni Tupu else name
+                    # Create na reserve shared memory block with this name
                     # until it can be attached to by mmap.
                     h_map = _winapi.CreateFileMapping(
                         _winapi.INVALID_HANDLE_VALUE,
@@ -133,34 +133,34 @@ kundi SharedMemory:
                         size & 0xFFFFFFFF,
                         temp_name
                     )
-                    try:
+                    jaribu:
                         last_error_code = _winapi.GetLastError()
                         ikiwa last_error_code == _winapi.ERROR_ALREADY_EXISTS:
-                            ikiwa name is not None:
-                                raise FileExistsError(
+                            ikiwa name ni sio Tupu:
+                                ashiria FileExistsError(
                                     errno.EEXIST,
                                     os.strerror(errno.EEXIST),
                                     name,
                                     _winapi.ERROR_ALREADY_EXISTS
                                 )
-                            else:
-                                continue
+                            isipokua:
+                                endelea
                         self._mmap = mmap.mmap(-1, size, tagname=temp_name)
-                    finally:
+                    mwishowe:
                         _winapi.CloseHandle(h_map)
                     self._name = temp_name
-                    break
+                    koma
 
-            else:
+            isipokua:
                 self._name = name
                 # Dynamically determine the existing named shared memory
-                # block's size which is likely a multiple of mmap.PAGESIZE.
+                # block's size which ni likely a multiple of mmap.PAGESIZE.
                 h_map = _winapi.OpenFileMapping(
                     _winapi.FILE_MAP_READ,
-                    False,
+                    Uongo,
                     name
                 )
-                try:
+                jaribu:
                     p_buf = _winapi.MapViewOfFile(
                         h_map,
                         _winapi.FILE_MAP_READ,
@@ -168,7 +168,7 @@ kundi SharedMemory:
                         0,
                         0
                     )
-                finally:
+                mwishowe:
                     _winapi.CloseHandle(h_map)
                 size = _winapi.VirtualQuerySize(p_buf)
                 self._mmap = mmap.mmap(-1, size, tagname=name)
@@ -177,17 +177,17 @@ kundi SharedMemory:
         self._buf = memoryview(self._mmap)
 
     eleza __del__(self):
-        try:
+        jaribu:
             self.close()
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     eleza __reduce__(self):
         rudisha (
             self.__class__,
             (
                 self.name,
-                False,
+                Uongo,
                 self.size,
             ),
         )
@@ -204,26 +204,26 @@ kundi SharedMemory:
     eleza name(self):
         "Unique name that identifies the shared memory block."
         reported_name = self._name
-        ikiwa _USE_POSIX and self._prepend_leading_slash:
+        ikiwa _USE_POSIX na self._prepend_leading_slash:
             ikiwa self._name.startswith("/"):
                 reported_name = self._name[1:]
         rudisha reported_name
 
     @property
     eleza size(self):
-        "Size in bytes."
+        "Size kwenye bytes."
         rudisha self._size
 
     eleza close(self):
         """Closes access to the shared memory kutoka this instance but does
-        not destroy the shared memory block."""
-        ikiwa self._buf is not None:
+        sio destroy the shared memory block."""
+        ikiwa self._buf ni sio Tupu:
             self._buf.release()
-            self._buf = None
-        ikiwa self._mmap is not None:
+            self._buf = Tupu
+        ikiwa self._mmap ni sio Tupu:
             self._mmap.close()
-            self._mmap = None
-        ikiwa _USE_POSIX and self._fd >= 0:
+            self._mmap = Tupu
+        ikiwa _USE_POSIX na self._fd >= 0:
             os.close(self._fd)
             self._fd = -1
 
@@ -233,7 +233,7 @@ kundi SharedMemory:
         In order to ensure proper cleanup of resources, unlink should be
         called once (and only once) across all processes which have access
         to the shared memory block."""
-        ikiwa _USE_POSIX and self._name:
+        ikiwa _USE_POSIX na self._name:
             kutoka .resource_tracker agiza unregister
             _posixshmem.shm_unlink(self._name)
             unregister(self._name, "shared_memory")
@@ -242,13 +242,13 @@ kundi SharedMemory:
 _encoding = "utf8"
 
 kundi ShareableList:
-    """Pattern for a mutable list-like object shareable via a shared
-    memory block.  It differs kutoka the built-in list type in that these
-    lists can not change their overall length (i.e. no append, insert,
+    """Pattern kila a mutable list-like object shareable via a shared
+    memory block.  It differs kutoka the built-in list type kwenye that these
+    lists can sio change their overall length (i.e. no append, insert,
     etc.)
 
-    Because values are packed into a memoryview as bytes, the struct
-    packing format for any storable value must require no more than 8
+    Because values are packed into a memoryview kama bytes, the struct
+    packing format kila any storable value must require no more than 8
     characters to describe its format."""
 
     _types_mapping = {
@@ -257,48 +257,48 @@ kundi ShareableList:
         bool: "xxxxxxx?",
         str: "%ds",
         bytes: "%ds",
-        None.__class__: "xxxxxx?x",
+        Tupu.__class__: "xxxxxx?x",
     }
     _alignment = 8
     _back_transforms_mapping = {
         0: lambda value: value,                   # int, float, bool
         1: lambda value: value.rstrip(b'\x00').decode(_encoding),  # str
         2: lambda value: value.rstrip(b'\x00'),   # bytes
-        3: lambda _value: None,                   # None
+        3: lambda _value: Tupu,                   # Tupu
     }
 
     @staticmethod
     eleza _extract_recreation_code(value):
-        """Used in concert with _back_transforms_mapping to convert values
+        """Used kwenye concert with _back_transforms_mapping to convert values
         into the appropriate Python objects when retrieving them kutoka
-        the list as well as when storing them."""
-        ikiwa not isinstance(value, (str, bytes, None.__class__)):
+        the list kama well kama when storing them."""
+        ikiwa sio isinstance(value, (str, bytes, Tupu.__class__)):
             rudisha 0
         elikiwa isinstance(value, str):
             rudisha 1
         elikiwa isinstance(value, bytes):
             rudisha 2
-        else:
-            rudisha 3  # NoneType
+        isipokua:
+            rudisha 3  # TupuType
 
-    eleza __init__(self, sequence=None, *, name=None):
-        ikiwa sequence is not None:
+    eleza __init__(self, sequence=Tupu, *, name=Tupu):
+        ikiwa sequence ni sio Tupu:
             _formats = [
                 self._types_mapping[type(item)]
-                    ikiwa not isinstance(item, (str, bytes))
+                    ikiwa sio isinstance(item, (str, bytes))
                     else self._types_mapping[type(item)] % (
                         self._alignment * (len(item) // self._alignment + 1),
                     )
-                for item in sequence
+                kila item kwenye sequence
             ]
             self._list_len = len(_formats)
-            assert sum(len(fmt) <= 8 for fmt in _formats) == self._list_len
+            assert sum(len(fmt) <= 8 kila fmt kwenye _formats) == self._list_len
             self._allocated_bytes = tuple(
                     self._alignment ikiwa fmt[-1] != "s" else int(fmt[:-1])
-                    for fmt in _formats
+                    kila fmt kwenye _formats
             )
             _recreation_codes = [
-                self._extract_recreation_code(item) for item in sequence
+                self._extract_recreation_code(item) kila item kwenye sequence
             ]
             requested_size = struct.calcsize(
                 "q" + self._format_size_metainfo +
@@ -307,15 +307,15 @@ kundi ShareableList:
                 self._format_back_transform_codes
             )
 
-        else:
+        isipokua:
             requested_size = 8  # Some platforms require > 0.
 
-        ikiwa name is not None and sequence is None:
+        ikiwa name ni sio Tupu na sequence ni Tupu:
             self.shm = SharedMemory(name)
-        else:
-            self.shm = SharedMemory(name, create=True, size=requested_size)
+        isipokua:
+            self.shm = SharedMemory(name, create=Kweli, size=requested_size)
 
-        ikiwa sequence is not None:
+        ikiwa sequence ni sio Tupu:
             _enc = _encoding
             struct.pack_into(
                 "q" + self._format_size_metainfo,
@@ -328,13 +328,13 @@ kundi ShareableList:
                 "".join(_formats),
                 self.shm.buf,
                 self._offset_data_start,
-                *(v.encode(_enc) ikiwa isinstance(v, str) else v for v in sequence)
+                *(v.encode(_enc) ikiwa isinstance(v, str) else v kila v kwenye sequence)
             )
             struct.pack_into(
                 self._format_packing_metainfo,
                 self.shm.buf,
                 self._offset_packing_formats,
-                *(v.encode(_enc) for v in _formats)
+                *(v.encode(_enc) kila v kwenye _formats)
             )
             struct.pack_into(
                 self._format_back_transform_codes,
@@ -343,8 +343,8 @@ kundi ShareableList:
                 *(_recreation_codes)
             )
 
-        else:
-            self._list_len = len(self)  # Obtains size kutoka offset 0 in buffer.
+        isipokua:
+            self._list_len = len(self)  # Obtains size kutoka offset 0 kwenye buffer.
             self._allocated_bytes = struct.unpack_kutoka(
                 self._format_size_metainfo,
                 self.shm.buf,
@@ -352,10 +352,10 @@ kundi ShareableList:
             )
 
     eleza _get_packing_format(self, position):
-        "Gets the packing format for a single value stored in the list."
+        "Gets the packing format kila a single value stored kwenye the list."
         position = position ikiwa position >= 0 else position + self._list_len
-        ikiwa (position >= self._list_len) or (self._list_len < 0):
-            raise IndexError("Requested position out of range.")
+        ikiwa (position >= self._list_len) ama (self._list_len < 0):
+            ashiria IndexError("Requested position out of range.")
 
         v = struct.unpack_kutoka(
             "8s",
@@ -368,11 +368,11 @@ kundi ShareableList:
         rudisha fmt_as_str
 
     eleza _get_back_transform(self, position):
-        "Gets the back transformation function for a single value."
+        "Gets the back transformation function kila a single value."
 
         position = position ikiwa position >= 0 else position + self._list_len
-        ikiwa (position >= self._list_len) or (self._list_len < 0):
-            raise IndexError("Requested position out of range.")
+        ikiwa (position >= self._list_len) ama (self._list_len < 0):
+            ashiria IndexError("Requested position out of range.")
 
         transform_code = struct.unpack_kutoka(
             "b",
@@ -384,12 +384,12 @@ kundi ShareableList:
         rudisha transform_function
 
     eleza _set_packing_format_and_transform(self, position, fmt_as_str, value):
-        """Sets the packing format and back transformation code for a
-        single value in the list at the specified position."""
+        """Sets the packing format na back transformation code kila a
+        single value kwenye the list at the specified position."""
 
         position = position ikiwa position >= 0 else position + self._list_len
-        ikiwa (position >= self._list_len) or (self._list_len < 0):
-            raise IndexError("Requested position out of range.")
+        ikiwa (position >= self._list_len) ama (self._list_len < 0):
+            ashiria IndexError("Requested position out of range.")
 
         struct.pack_into(
             "8s",
@@ -407,7 +407,7 @@ kundi ShareableList:
         )
 
     eleza __getitem__(self, position):
-        try:
+        jaribu:
             offset = self._offset_data_start \
                      + sum(self._allocated_bytes[:position])
             (v,) = struct.unpack_kutoka(
@@ -415,8 +415,8 @@ kundi ShareableList:
                 self.shm.buf,
                 offset
             )
-        except IndexError:
-            raise IndexError("index out of range")
+        tatizo IndexError:
+            ashiria IndexError("index out of range")
 
         back_transform = self._get_back_transform(position)
         v = back_transform(v)
@@ -424,21 +424,21 @@ kundi ShareableList:
         rudisha v
 
     eleza __setitem__(self, position, value):
-        try:
+        jaribu:
             offset = self._offset_data_start \
                      + sum(self._allocated_bytes[:position])
             current_format = self._get_packing_format(position)
-        except IndexError:
-            raise IndexError("assignment index out of range")
+        tatizo IndexError:
+            ashiria IndexError("assignment index out of range")
 
-        ikiwa not isinstance(value, (str, bytes)):
+        ikiwa sio isinstance(value, (str, bytes)):
             new_format = self._types_mapping[type(value)]
-        else:
+        isipokua:
             ikiwa len(value) > self._allocated_bytes[position]:
-                raise ValueError("exceeds available storage for existing str")
+                ashiria ValueError("exceeds available storage kila existing str")
             ikiwa current_format[-1] == "s":
                 new_format = current_format
-            else:
+            isipokua:
                 new_format = self._types_mapping[str] % (
                     self._allocated_bytes[position],
                 )
@@ -464,22 +464,22 @@ kundi ShareableList:
     eleza format(self):
         "The struct packing format used by all currently stored values."
         rudisha "".join(
-            self._get_packing_format(i) for i in range(self._list_len)
+            self._get_packing_format(i) kila i kwenye range(self._list_len)
         )
 
     @property
     eleza _format_size_metainfo(self):
-        "The struct packing format used for metainfo on storage sizes."
+        "The struct packing format used kila metainfo on storage sizes."
         rudisha f"{self._list_len}q"
 
     @property
     eleza _format_packing_metainfo(self):
-        "The struct packing format used for the values' packing formats."
+        "The struct packing format used kila the values' packing formats."
         rudisha "8s" * self._list_len
 
     @property
     eleza _format_back_transform_codes(self):
-        "The struct packing format used for the values' back transforms."
+        "The struct packing format used kila the values' back transforms."
         rudisha "b" * self._list_len
 
     @property
@@ -497,14 +497,14 @@ kundi ShareableList:
     eleza count(self, value):
         "L.count(value) -> integer -- rudisha number of occurrences of value."
 
-        rudisha sum(value == entry for entry in self)
+        rudisha sum(value == entry kila entry kwenye self)
 
     eleza index(self, value):
         """L.index(value) -> integer -- rudisha first index of value.
-        Raises ValueError ikiwa the value is not present."""
+        Raises ValueError ikiwa the value ni sio present."""
 
-        for position, entry in enumerate(self):
-            ikiwa value == entry:
+        kila position, entry kwenye enumerate(self):
+            ikiwa value == enjaribu:
                 rudisha position
-        else:
-            raise ValueError(f"{value!r} not in this container")
+        isipokua:
+            ashiria ValueError(f"{value!r} haiko kwenye this container")

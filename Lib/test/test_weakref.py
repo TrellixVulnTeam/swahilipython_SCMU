@@ -13,27 +13,27 @@ agiza random
 kutoka test agiza support
 kutoka test.support agiza script_helper
 
-# Used in ReferencesTestCase.test_ref_created_during_del() .
-ref_kutoka_del = None
+# Used kwenye ReferencesTestCase.test_ref_created_during_del() .
+ref_kutoka_toa = Tupu
 
-# Used by FinalizeTestCase as a global that may be replaced by None
+# Used by FinalizeTestCase kama a global that may be replaced by Tupu
 # when the interpreter shuts down.
 _global_var = 'foobar'
 
 kundi C:
     eleza method(self):
-        pass
+        pita
 
 
 kundi Callable:
-    bar = None
+    bar = Tupu
 
     eleza __call__(self, x):
         self.bar = x
 
 
 eleza create_function():
-    eleza f(): pass
+    eleza f(): pita
     rudisha f
 
 eleza create_bound_method():
@@ -78,22 +78,22 @@ kundi TestBase(unittest.TestCase):
 @contextlib.contextmanager
 eleza collect_in_thread(period=0.0001):
     """
-    Ensure GC collections happen in a different thread, at a high frequency.
+    Ensure GC collections happen kwenye a different thread, at a high frequency.
     """
-    please_stop = False
+    please_stop = Uongo
 
     eleza collect():
-        while not please_stop:
+        wakati sio please_stop:
             time.sleep(period)
             gc.collect()
 
     with support.disable_gc():
         t = threading.Thread(target=collect)
         t.start()
-        try:
-            yield
-        finally:
-            please_stop = True
+        jaribu:
+            tuma
+        mwishowe:
+            please_stop = Kweli
             t.join()
 
 
@@ -104,13 +104,13 @@ kundi ReferencesTestCase(TestBase):
         self.check_basic_ref(create_function)
         self.check_basic_ref(create_bound_method)
 
-        # Just make sure the tp_repr handler doesn't raise an exception.
+        # Just make sure the tp_repr handler doesn't ashiria an exception.
         # Live reference:
         o = C()
         wr = weakref.ref(o)
         repr(wr)
         # Dead reference:
-        del o
+        toa o
         repr(wr)
 
     eleza test_basic_callback(self):
@@ -125,8 +125,8 @@ kundi ReferencesTestCase(TestBase):
         f = create_cfunction()
         wr = weakref.ref(f)
         self.assertIs(wr(), f)
-        del f
-        self.assertIsNone(wr())
+        toa f
+        self.assertIsTupu(wr())
         self.check_basic_ref(create_cfunction)
         self.check_basic_callback(create_cfunction)
 
@@ -134,40 +134,40 @@ kundi ReferencesTestCase(TestBase):
         o = C()
         ref1 = weakref.ref(o, self.callback)
         ref2 = weakref.ref(o, self.callback)
-        del o
-        self.assertIsNone(ref1(), "expected reference to be invalidated")
-        self.assertIsNone(ref2(), "expected reference to be invalidated")
+        toa o
+        self.assertIsTupu(ref1(), "expected reference to be invalidated")
+        self.assertIsTupu(ref2(), "expected reference to be invalidated")
         self.assertEqual(self.cbcalled, 2,
-                     "callback not called the right number of times")
+                     "callback sio called the right number of times")
 
     eleza test_multiple_selfref_callbacks(self):
         # Make sure all references are invalidated before callbacks are called
         #
-        # What's agizaant here is that we're using the first
-        # reference in the callback invoked on the second reference
-        # (the most recently created ref is cleaned up first).  This
+        # What's agizaant here ni that we're using the first
+        # reference kwenye the callback invoked on the second reference
+        # (the most recently created ref ni cleaned up first).  This
         # tests that all references to the object are invalidated
         # before any of the callbacks are invoked, so that we only
         # have one invocation of _weakref.c:cleanup_helper() active
-        # for a particular object at a time.
+        # kila a particular object at a time.
         #
         eleza callback(object, self=self):
             self.ref()
         c = C()
         self.ref = weakref.ref(c, callback)
         ref1 = weakref.ref(c, callback)
-        del c
+        toa c
 
     eleza test_constructor_kwargs(self):
         c = C()
-        self.assertRaises(TypeError, weakref.ref, c, callback=None)
+        self.assertRaises(TypeError, weakref.ref, c, callback=Tupu)
 
     eleza test_proxy_ref(self):
         o = C()
         o.bar = 1
         ref1 = weakref.proxy(o, self.callback)
         ref2 = weakref.proxy(o, self.callback)
-        del o
+        toa o
 
         eleza check(proxy):
             proxy.bar
@@ -180,7 +180,7 @@ kundi ReferencesTestCase(TestBase):
     eleza check_basic_ref(self, factory):
         o = factory()
         ref = weakref.ref(o)
-        self.assertIsNotNone(ref(),
+        self.assertIsNotTupu(ref(),
                      "weak reference to live object should be live")
         o2 = ref()
         self.assertIs(o, o2,
@@ -190,10 +190,10 @@ kundi ReferencesTestCase(TestBase):
         self.cbcalled = 0
         o = factory()
         ref = weakref.ref(o, self.callback)
-        del o
+        toa o
         self.assertEqual(self.cbcalled, 1,
-                     "callback did not properly set 'cbcalled'")
-        self.assertIsNone(ref(),
+                     "callback did sio properly set 'cbcalled'")
+        self.assertIsTupu(ref(),
                      "ref2 should be dead after deleting object reference")
 
     eleza test_ref_reuse(self):
@@ -213,10 +213,10 @@ kundi ReferencesTestCase(TestBase):
         self.assertIs(ref1, ref2,
                      "reference object w/out callback should be re-used")
         self.assertEqual(weakref.getweakrefcount(o), 2,
-                     "wrong weak ref count for object")
-        del proxy
+                     "wrong weak ref count kila object")
+        toa proxy
         self.assertEqual(weakref.getweakrefcount(o), 1,
-                     "wrong weak ref count for object after deleting proxy")
+                     "wrong weak ref count kila object after deleting proxy")
 
     eleza test_proxy_reuse(self):
         o = C()
@@ -232,10 +232,10 @@ kundi ReferencesTestCase(TestBase):
 
         L = collections.UserList()
         p = weakref.proxy(L)
-        self.assertFalse(p, "proxy for empty UserList should be false")
+        self.assertUongo(p, "proxy kila empty UserList should be false")
         p.append(12)
         self.assertEqual(len(L), 1)
-        self.assertTrue(p, "proxy for non-empty UserList should be true")
+        self.assertKweli(p, "proxy kila non-empty UserList should be true")
         p[:] = [2, 3]
         self.assertEqual(len(L), 2)
         self.assertEqual(len(p), 2)
@@ -300,13 +300,13 @@ kundi ReferencesTestCase(TestBase):
         p @= 5
         self.assertEqual(p, 561)
 
-    # The PyWeakref_* C API is documented as allowing either NULL or
-    # None as the value for the callback, where either means "no
-    # callback".  The "no callback" ref and proxy objects are supposed
-    # to be shared so long as they exist by all callers so long as
-    # they are active.  In Python 2.3.3 and earlier, this guarantee
-    # was not honored, and was broken in different ways for
-    # PyWeakref_NewRef() and PyWeakref_NewProxy().  (Two tests.)
+    # The PyWeakref_* C API ni documented kama allowing either NULL or
+    # Tupu kama the value kila the callback, where either means "no
+    # callback".  The "no callback" ref na proxy objects are supposed
+    # to be shared so long kama they exist by all callers so long as
+    # they are active.  In Python 2.3.3 na earlier, this guarantee
+    # was sio honored, na was broken kwenye different ways for
+    # PyWeakref_NewRef() na PyWeakref_NewProxy().  (Two tests.)
 
     eleza test_shared_ref_without_callback(self):
         self.check_shared_without_callback(weakref.ref)
@@ -316,21 +316,21 @@ kundi ReferencesTestCase(TestBase):
 
     eleza check_shared_without_callback(self, makeref):
         o = Object(1)
-        p1 = makeref(o, None)
-        p2 = makeref(o, None)
-        self.assertIs(p1, p2, "both callbacks were None in the C API")
-        del p1, p2
+        p1 = makeref(o, Tupu)
+        p2 = makeref(o, Tupu)
+        self.assertIs(p1, p2, "both callbacks were Tupu kwenye the C API")
+        toa p1, p2
         p1 = makeref(o)
-        p2 = makeref(o, None)
-        self.assertIs(p1, p2, "callbacks were NULL, None in the C API")
-        del p1, p2
+        p2 = makeref(o, Tupu)
+        self.assertIs(p1, p2, "callbacks were NULL, Tupu kwenye the C API")
+        toa p1, p2
         p1 = makeref(o)
         p2 = makeref(o)
-        self.assertIs(p1, p2, "both callbacks were NULL in the C API")
-        del p1, p2
-        p1 = makeref(o, None)
+        self.assertIs(p1, p2, "both callbacks were NULL kwenye the C API")
+        toa p1, p2
+        p1 = makeref(o, Tupu)
         p2 = makeref(o)
-        self.assertIs(p1, p2, "callbacks were None, NULL in the C API")
+        self.assertIs(p1, p2, "callbacks were Tupu, NULL kwenye the C API")
 
     eleza test_callable_proxy(self):
         o = Callable()
@@ -339,13 +339,13 @@ kundi ReferencesTestCase(TestBase):
         self.check_proxy(o, ref1)
 
         self.assertIs(type(ref1), weakref.CallableProxyType,
-                     "proxy is not of callable type")
+                     "proxy ni sio of callable type")
         ref1('twinkies!')
         self.assertEqual(o.bar, 'twinkies!',
-                     "call through proxy not passed through to original")
+                     "call through proxy sio pitaed through to original")
         ref1(x='Splat.')
         self.assertEqual(o.bar, 'Splat.',
-                     "call through proxy not passed through to original")
+                     "call through proxy sio pitaed through to original")
 
         # expect due to too few args
         self.assertRaises(TypeError, ref1)
@@ -356,38 +356,38 @@ kundi ReferencesTestCase(TestBase):
     eleza check_proxy(self, o, proxy):
         o.foo = 1
         self.assertEqual(proxy.foo, 1,
-                     "proxy does not reflect attribute addition")
+                     "proxy does sio reflect attribute addition")
         o.foo = 2
         self.assertEqual(proxy.foo, 2,
-                     "proxy does not reflect attribute modification")
-        del o.foo
-        self.assertFalse(hasattr(proxy, 'foo'),
-                     "proxy does not reflect attribute removal")
+                     "proxy does sio reflect attribute modification")
+        toa o.foo
+        self.assertUongo(hasattr(proxy, 'foo'),
+                     "proxy does sio reflect attribute removal")
 
         proxy.foo = 1
         self.assertEqual(o.foo, 1,
-                     "object does not reflect attribute addition via proxy")
+                     "object does sio reflect attribute addition via proxy")
         proxy.foo = 2
         self.assertEqual(o.foo, 2,
-            "object does not reflect attribute modification via proxy")
-        del proxy.foo
-        self.assertFalse(hasattr(o, 'foo'),
-                     "object does not reflect attribute removal via proxy")
+            "object does sio reflect attribute modification via proxy")
+        toa proxy.foo
+        self.assertUongo(hasattr(o, 'foo'),
+                     "object does sio reflect attribute removal via proxy")
 
     eleza test_proxy_deletion(self):
         # Test clearing of SF bug #762891
         kundi Foo:
-            result = None
+            result = Tupu
             eleza __delitem__(self, accessor):
                 self.result = accessor
         g = Foo()
         f = weakref.proxy(g)
-        del f[0]
+        toa f[0]
         self.assertEqual(f.result, 0)
 
     eleza test_proxy_bool(self):
         # Test clearing of SF bug #1170766
-        kundi List(list): pass
+        kundi List(list): pita
         lyst = List()
         self.assertEqual(bool(weakref.proxy(lyst)), bool(lyst))
 
@@ -395,21 +395,21 @@ kundi ReferencesTestCase(TestBase):
         # Test fails with a debug build of the interpreter
         # (see bpo-38395).
 
-        obj = None
+        obj = Tupu
 
         kundi MyObj:
             eleza __iter__(self):
                 nonlocal obj
-                del obj
+                toa obj
                 rudisha NotImplemented
 
         obj = MyObj()
         p = weakref.proxy(obj)
         with self.assertRaises(TypeError):
-            # "blech" in p calls MyObj.__iter__ through the proxy,
+            # "blech" kwenye p calls MyObj.__iter__ through the proxy,
             # without keeping a reference to the real object, so it
-            # can be killed in the middle of the call
-            "blech" in p
+            # can be killed kwenye the middle of the call
+            "blech" kwenye p
 
     eleza test_getweakrefcount(self):
         o = C()
@@ -423,41 +423,41 @@ kundi ReferencesTestCase(TestBase):
         self.assertEqual(weakref.getweakrefcount(o), 4,
                      "got wrong number of weak reference objects")
 
-        del ref1, ref2, proxy1, proxy2
+        toa ref1, ref2, proxy1, proxy2
         self.assertEqual(weakref.getweakrefcount(o), 0,
-                     "weak reference objects not unlinked kutoka"
+                     "weak reference objects sio unlinked kutoka"
                      " referent when discarded.")
 
-        # assumes ints do not support weakrefs
+        # assumes ints do sio support weakrefs
         self.assertEqual(weakref.getweakrefcount(1), 0,
-                     "got wrong number of weak reference objects for int")
+                     "got wrong number of weak reference objects kila int")
 
     eleza test_getweakrefs(self):
         o = C()
         ref1 = weakref.ref(o, self.callback)
         ref2 = weakref.ref(o, self.callback)
-        del ref1
+        toa ref1
         self.assertEqual(weakref.getweakrefs(o), [ref2],
-                     "list of refs does not match")
+                     "list of refs does sio match")
 
         o = C()
         ref1 = weakref.ref(o, self.callback)
         ref2 = weakref.ref(o, self.callback)
-        del ref2
+        toa ref2
         self.assertEqual(weakref.getweakrefs(o), [ref1],
-                     "list of refs does not match")
+                     "list of refs does sio match")
 
-        del ref1
+        toa ref1
         self.assertEqual(weakref.getweakrefs(o), [],
-                     "list of refs not cleared")
+                     "list of refs sio cleared")
 
-        # assumes ints do not support weakrefs
+        # assumes ints do sio support weakrefs
         self.assertEqual(weakref.getweakrefs(1), [],
-                     "list of refs does not match for int")
+                     "list of refs does sio match kila int")
 
     eleza test_newstyle_number_ops(self):
         kundi F(float):
-            pass
+            pita
         f = F(2.0)
         p = weakref.proxy(f)
         self.assertEqual(p + 1.0, 3.0)
@@ -465,51 +465,51 @@ kundi ReferencesTestCase(TestBase):
 
     eleza test_callbacks_protected(self):
         # Callbacks protected kutoka already-set exceptions?
-        # Regression test for SF bug #478534.
+        # Regression test kila SF bug #478534.
         kundi BogusError(Exception):
-            pass
+            pita
         data = {}
         eleza remove(k):
-            del data[k]
+            toa data[k]
         eleza encapsulate():
             f = lambda : ()
-            data[weakref.ref(f, remove)] = None
-            raise BogusError
-        try:
+            data[weakref.ref(f, remove)] = Tupu
+            ashiria BogusError
+        jaribu:
             encapsulate()
-        except BogusError:
-            pass
-        else:
-            self.fail("exception not properly restored")
-        try:
+        tatizo BogusError:
+            pita
+        isipokua:
+            self.fail("exception sio properly restored")
+        jaribu:
             encapsulate()
-        except BogusError:
-            pass
-        else:
-            self.fail("exception not properly restored")
+        tatizo BogusError:
+            pita
+        isipokua:
+            self.fail("exception sio properly restored")
 
     eleza test_sf_bug_840829(self):
-        # "weakref callbacks and gc corrupt memory"
+        # "weakref callbacks na gc corrupt memory"
         # subtype_dealloc erroneously exposed a new-style instance
-        # already in the process of getting deallocated to gc,
+        # already kwenye the process of getting deallocated to gc,
         # causing double-deallocation ikiwa the instance had a weakref
         # callback that triggered gc.
         # If the bug exists, there probably won't be an obvious symptom
-        # in a release build.  In a debug build, a segfault will occur
+        # kwenye a release build.  In a debug build, a segfault will occur
         # when the second attempt to remove the instance kutoka the "list
         # of all objects" occurs.
 
         agiza gc
 
         kundi C(object):
-            pass
+            pita
 
         c = C()
         wr = weakref.ref(c, lambda ignore: gc.collect())
-        del c
+        toa c
 
         # There endeth the first part.  It gets worse.
-        del wr
+        toa wr
 
         c1 = C()
         c1.i = C()
@@ -517,22 +517,22 @@ kundi ReferencesTestCase(TestBase):
 
         c2 = C()
         c2.c1 = c1
-        del c1  # still alive because c2 points to it
+        toa c1  # still alive because c2 points to it
 
-        # Now when subtype_dealloc gets called on c2, it's not enough just
-        # that c2 is immune kutoka gc while the weakref callbacks associated
-        # with c2 execute (there are none in this 2nd half of the test, btw).
+        # Now when subtype_dealloc gets called on c2, it's sio enough just
+        # that c2 ni immune kutoka gc wakati the weakref callbacks associated
+        # with c2 execute (there are none kwenye this 2nd half of the test, btw).
         # subtype_dealloc goes on to call the base classes' deallocs too,
         # so any gc triggered by weakref callbacks associated with anything
         # torn down by a base kundi dealloc can also trigger double
         # deallocation of c2.
-        del c2
+        toa c2
 
     eleza test_callback_in_cycle_1(self):
         agiza gc
 
         kundi J(object):
-            pass
+            pita
 
         kundi II(object):
             eleza acallback(self, ignore):
@@ -542,49 +542,49 @@ kundi ReferencesTestCase(TestBase):
         I.J = J
         I.wr = weakref.ref(J, I.acallback)
 
-        # Now J and II are each in a self-cycle (as all new-style class
+        # Now J na II are each kwenye a self-cycle (as all new-style class
         # objects are, since their __mro__ points back to them).  I holds
-        # both a weak reference (I.wr) and a strong reference (I.J) to class
-        # J.  I is also in a cycle (I.wr points to a weakref that references
-        # I.acallback).  When we del these three, they all become trash, but
+        # both a weak reference (I.wr) na a strong reference (I.J) to class
+        # J.  I ni also kwenye a cycle (I.wr points to a weakref that references
+        # I.acallback).  When we toa these three, they all become trash, but
         # the cycles prevent any of them kutoka getting cleaned up immediately.
-        # Instead they have to wait for cyclic gc to deduce that they're
+        # Instead they have to wait kila cyclic gc to deduce that they're
         # trash.
         #
-        # gc used to call tp_clear on all of them, and the order in which
-        # it does that is pretty accidental.  The exact order in which we
+        # gc used to call tp_clear on all of them, na the order kwenye which
+        # it does that ni pretty accidental.  The exact order kwenye which we
         # built up these things manages to provoke gc into running tp_clear
-        # in just the right order (I last).  Calling tp_clear on II leaves
+        # kwenye just the right order (I last).  Calling tp_clear on II leaves
         # behind an insane kundi object (its __mro__ becomes NULL).  Calling
-        # tp_clear on J breaks its self-cycle, but J doesn't get deleted
+        # tp_clear on J komas its self-cycle, but J doesn't get deleted
         # just then because of the strong reference kutoka I.J.  Calling
-        # tp_clear on I starts to clear I's __dict__, and just happens to
-        # clear I.J first -- I.wr is still intact.  That removes the last
+        # tp_clear on I starts to clear I's __dict__, na just happens to
+        # clear I.J first -- I.wr ni still intact.  That removes the last
         # reference to J, which triggers the weakref callback.  The callback
-        # tries to do "self.J", and instances of new-style classes look up
-        # attributes ("J") in the kundi dict first.  The kundi (II) wants to
+        # tries to do "self.J", na instances of new-style classes look up
+        # attributes ("J") kwenye the kundi dict first.  The kundi (II) wants to
         # search II.__mro__, but that's NULL.   The result was a segfault in
-        # a release build, and an assert failure in a debug build.
-        del I, J, II
+        # a release build, na an assert failure kwenye a debug build.
+        toa I, J, II
         gc.collect()
 
     eleza test_callback_in_cycle_2(self):
         agiza gc
 
-        # This is just like test_callback_in_cycle_1, except that II is an
-        # old-style class.  The symptom is different then:  an instance of an
-        # old-style kundi looks in its own __dict__ first.  'J' happens to
-        # get cleared kutoka I.__dict__ before 'wr', and 'J' was never in II's
-        # __dict__, so the attribute isn't found.  The difference is that
+        # This ni just like test_callback_in_cycle_1, tatizo that II ni an
+        # old-style class.  The symptom ni different then:  an instance of an
+        # old-style kundi looks kwenye its own __dict__ first.  'J' happens to
+        # get cleared kutoka I.__dict__ before 'wr', na 'J' was never kwenye II's
+        # __dict__, so the attribute isn't found.  The difference ni that
         # the old-style II doesn't have a NULL __mro__ (it doesn't have any
         # __mro__), so no segfault occurs.  Instead it got:
         #    test_callback_in_cycle_2 (__main__.ReferencesTestCase) ...
         #    Exception exceptions.AttributeError:
-        #   "II instance has no attribute 'J'" in <bound method II.acallback
+        #   "II instance has no attribute 'J'" kwenye <bound method II.acallback
         #       of <?.II instance at 0x00B9B4B8>> ignored
 
         kundi J(object):
-            pass
+            pita
 
         kundi II:
             eleza acallback(self, ignore):
@@ -594,7 +594,7 @@ kundi ReferencesTestCase(TestBase):
         I.J = J
         I.wr = weakref.ref(J, I.acallback)
 
-        del I, J, II
+        toa I, J, II
         gc.collect()
 
     eleza test_callback_in_cycle_3(self):
@@ -603,7 +603,7 @@ kundi ReferencesTestCase(TestBase):
         # This one broke the first patch that fixed the last two.  In this
         # case, the objects reachable kutoka the callback aren't also reachable
         # kutoka the object (c1) *triggering* the callback:  you can get to
-        # c1 kutoka c2, but not vice-versa.  The result was that c2's __dict__
+        # c1 kutoka c2, but sio vice-versa.  The result was that c2's __dict__
         # got tp_clear'ed by the time the c2.cb callback got invoked.
 
         kundi C:
@@ -618,16 +618,16 @@ kundi ReferencesTestCase(TestBase):
         c2.c1 = c1
         c2.wr = weakref.ref(c1, c2.cb)
 
-        del c1, c2
+        toa c1, c2
         gc.collect()
 
     eleza test_callback_in_cycle_4(self):
         agiza gc
 
-        # Like test_callback_in_cycle_3, except c2 and c1 have different
+        # Like test_callback_in_cycle_3, tatizo c2 na c1 have different
         # classes.  c2's kundi (C) isn't reachable kutoka c1 then, so protecting
         # objects reachable kutoka the dying object (c1) isn't enough to stop
-        # c2's kundi (C) kutoka getting tp_clear'ed before c2.cb is invoked.
+        # c2's kundi (C) kutoka getting tp_clear'ed before c2.cb ni invoked.
         # The result was a segfault (C.__mro__ was NULL when the callback
         # tried to look up self.me).
 
@@ -638,7 +638,7 @@ kundi ReferencesTestCase(TestBase):
                 self.wr
 
         kundi D:
-            pass
+            pita
 
         c1, c2 = D(), C()
 
@@ -646,17 +646,17 @@ kundi ReferencesTestCase(TestBase):
         c2.c1 = c1
         c2.wr = weakref.ref(c1, c2.cb)
 
-        del c1, c2, C, D
+        toa c1, c2, C, D
         gc.collect()
 
     @support.requires_type_collecting
     eleza test_callback_in_cycle_resurrection(self):
         agiza gc
 
-        # Do something nasty in a weakref callback:  resurrect objects
+        # Do something nasty kwenye a weakref callback:  resurrect objects
         # kutoka dead cycles.  For this to be attempted, the weakref and
         # its callback must also be part of the cyclic trash (else the
-        # objects reachable via the callback couldn't be in cyclic trash
+        # objects reachable via the callback couldn't be kwenye cyclic trash
         # to begin with -- the callback would act like an external root).
         # But gc clears trash weakrefs with callbacks early now, which
         # disables the callbacks, so the callbacks shouldn't get called
@@ -680,19 +680,19 @@ kundi ReferencesTestCase(TestBase):
             alist.append("C went away")
         wr = weakref.ref(C, C_went_away)
 
-        del c1, c2, C   # make them all trash
-        self.assertEqual(alist, [])  # del isn't enough to reclaim anything
+        toa c1, c2, C   # make them all trash
+        self.assertEqual(alist, [])  # toa isn't enough to reclaim anything
 
         gc.collect()
-        # c1.wr and c2.wr were part of the cyclic trash, so should have
+        # c1.wr na c2.wr were part of the cyclic trash, so should have
         # been cleared without their callbacks executing.  OTOH, the weakref
-        # to C is bound to a function local (wr), and wasn't trash, so that
+        # to C ni bound to a function local (wr), na wasn't trash, so that
         # callback should have been invoked when C went away.
         self.assertEqual(alist, ["C went away"])
         # The remaining weakref should be dead now (its callback ran).
-        self.assertEqual(wr(), None)
+        self.assertEqual(wr(), Tupu)
 
-        del alist[:]
+        toa alist[:]
         gc.collect()
         self.assertEqual(alist, [])
 
@@ -717,20 +717,20 @@ kundi ReferencesTestCase(TestBase):
         external_wr = weakref.ref(callback, safe_callback)  # but this will
         self.assertIs(external_wr(), callback)
 
-        # The weakrefs attached to c and d should get cleared, so that
-        # C.cb is never called.  But external_wr isn't part of the cyclic
-        # trash, and no cyclic trash is reachable kutoka it, so safe_callback
+        # The weakrefs attached to c na d should get cleared, so that
+        # C.cb ni never called.  But external_wr isn't part of the cyclic
+        # trash, na no cyclic trash ni reachable kutoka it, so safe_callback
         # should get invoked when the bound method object callback (c.cb)
-        # -- which is itself a callback, and also part of the cyclic trash --
+        # -- which ni itself a callback, na also part of the cyclic trash --
         # gets reclaimed at the end of gc.
 
-        del callback, c, d, C
-        self.assertEqual(alist, [])  # del isn't enough to clean up cycles
+        toa callback, c, d, C
+        self.assertEqual(alist, [])  # toa isn't enough to clean up cycles
         gc.collect()
         self.assertEqual(alist, ["safe_callback called"])
-        self.assertEqual(external_wr(), None)
+        self.assertEqual(external_wr(), Tupu)
 
-        del alist[:]
+        toa alist[:]
         gc.collect()
         self.assertEqual(alist, [])
 
@@ -745,10 +745,10 @@ kundi ReferencesTestCase(TestBase):
         gc.set_threshold(1, 1, 1)
         gc.collect()
         kundi A:
-            pass
+            pita
 
         eleza callback(*args):
-            pass
+            pita
 
         referenced = A()
 
@@ -756,24 +756,24 @@ kundi ReferencesTestCase(TestBase):
         a.a = a
         a.wr = makeref(referenced)
 
-        try:
-            # now make sure the object and the ref get labeled as
+        jaribu:
+            # now make sure the object na the ref get labeled as
             # cyclic trash:
             a = A()
             weakref.ref(referenced, callback)
 
-        finally:
+        mwishowe:
             gc.set_threshold(*thresholds)
 
     eleza test_ref_created_during_del(self):
         # Bug #1377858
-        # A weakref created in an object's __del__() would crash the
+        # A weakref created kwenye an object's __del__() would crash the
         # interpreter when the weakref was cleaned up since it would refer to
-        # non-existent memory.  This test should not segfault the interpreter.
+        # non-existent memory.  This test should sio segfault the interpreter.
         kundi Target(object):
             eleza __del__(self):
                 global ref_kutoka_del
-                ref_kutoka_del = weakref.ref(self)
+                ref_kutoka_toa = weakref.ref(self)
 
         w = Target()
 
@@ -782,19 +782,19 @@ kundi ReferencesTestCase(TestBase):
         # <weakref to class>.__init__() doesn't check errors correctly
         r = weakref.ref(Exception)
         self.assertRaises(TypeError, r.__init__, 0, 0, 0, 0, 0)
-        # No exception should be raised here
+        # No exception should be ashiriad here
         gc.collect()
 
     eleza test_classes(self):
         # Check that classes are weakrefable.
         kundi A(object):
-            pass
+            pita
         l = []
         weakref.ref(int)
         a = weakref.ref(A, l.append)
-        A = None
+        A = Tupu
         gc.collect()
-        self.assertEqual(a(), None)
+        self.assertEqual(a(), Tupu)
         self.assertEqual(l, [a])
 
     eleza test_equality(self):
@@ -807,28 +807,28 @@ kundi ReferencesTestCase(TestBase):
         c = weakref.ref(z)
         d = weakref.ref(x)
         # Note how we directly test the operators here, to stress both
-        # __eq__ and __ne__.
-        self.assertTrue(a == b)
-        self.assertFalse(a != b)
-        self.assertFalse(a == c)
-        self.assertTrue(a != c)
-        self.assertTrue(a == d)
-        self.assertFalse(a != d)
-        del x, y, z
+        # __eq__ na __ne__.
+        self.assertKweli(a == b)
+        self.assertUongo(a != b)
+        self.assertUongo(a == c)
+        self.assertKweli(a != c)
+        self.assertKweli(a == d)
+        self.assertUongo(a != d)
+        toa x, y, z
         gc.collect()
-        for r in a, b, c:
+        kila r kwenye a, b, c:
             # Sanity check
-            self.assertIs(r(), None)
-        # Dead weakrefs compare by identity: whether `a` and `d` are the
-        # same weakref object is an implementation detail, since they pointed
-        # to the same original object and didn't have a callback.
+            self.assertIs(r(), Tupu)
+        # Dead weakrefs compare by identity: whether `a` na `d` are the
+        # same weakref object ni an implementation detail, since they pointed
+        # to the same original object na didn't have a callback.
         # (see issue #16453).
-        self.assertFalse(a == b)
-        self.assertTrue(a != b)
-        self.assertFalse(a == c)
-        self.assertTrue(a != c)
-        self.assertEqual(a == d, a is d)
-        self.assertEqual(a != d, a is not d)
+        self.assertUongo(a == b)
+        self.assertKweli(a != b)
+        self.assertUongo(a == c)
+        self.assertKweli(a != c)
+        self.assertEqual(a == d, a ni d)
+        self.assertEqual(a != d, a ni sio d)
 
     eleza test_ordering(self):
         # weakrefs cannot be ordered, even ikiwa the underlying objects can.
@@ -837,25 +837,25 @@ kundi ReferencesTestCase(TestBase):
         y = Object(1)
         a = weakref.ref(x)
         b = weakref.ref(y)
-        for op in ops:
+        kila op kwenye ops:
             self.assertRaises(TypeError, op, a, b)
         # Same when dead.
-        del x, y
+        toa x, y
         gc.collect()
-        for op in ops:
+        kila op kwenye ops:
             self.assertRaises(TypeError, op, a, b)
 
     eleza test_hashing(self):
-        # Alive weakrefs hash the same as the underlying object
+        # Alive weakrefs hash the same kama the underlying object
         x = Object(42)
         y = Object(42)
         a = weakref.ref(x)
         b = weakref.ref(y)
         self.assertEqual(hash(a), hash(42))
-        del x, y
+        toa x, y
         gc.collect()
         # Dead weakrefs:
-        # - retain their hash is they were hashed when alive;
+        # - retain their hash ni they were hashed when alive;
         # - otherwise, cannot be hashed.
         self.assertEqual(hash(a), hash(42))
         self.assertRaises(TypeError, hash, b)
@@ -863,54 +863,54 @@ kundi ReferencesTestCase(TestBase):
     eleza test_trashcan_16602(self):
         # Issue #16602: when a weakref's target was part of a long
         # deallocation chain, the trashcan mechanism could delay clearing
-        # of the weakref and make the target object visible kutoka outside
+        # of the weakref na make the target object visible kutoka outside
         # code even though its refcount had dropped to 0.  A crash ensued.
         kundi C:
             eleza __init__(self, parent):
-                ikiwa not parent:
-                    return
+                ikiwa sio parent:
+                    rudisha
                 wself = weakref.ref(self)
                 eleza cb(wparent):
                     o = wself()
                 self.wparent = weakref.ref(parent, cb)
 
         d = weakref.WeakKeyDictionary()
-        root = c = C(None)
-        for n in range(100):
+        root = c = C(Tupu)
+        kila n kwenye range(100):
             d[c] = c = C(c)
-        del root
+        toa root
         gc.collect()
 
     eleza test_callback_attribute(self):
         x = Object(1)
-        callback = lambda ref: None
+        callback = lambda ref: Tupu
         ref1 = weakref.ref(x, callback)
         self.assertIs(ref1.__callback__, callback)
 
         ref2 = weakref.ref(x)
-        self.assertIsNone(ref2.__callback__)
+        self.assertIsTupu(ref2.__callback__)
 
     eleza test_callback_attribute_after_deletion(self):
         x = Object(1)
         ref = weakref.ref(x, self.callback)
-        self.assertIsNotNone(ref.__callback__)
-        del x
+        self.assertIsNotTupu(ref.__callback__)
+        toa x
         support.gc_collect()
-        self.assertIsNone(ref.__callback__)
+        self.assertIsTupu(ref.__callback__)
 
     eleza test_set_callback_attribute(self):
         x = Object(1)
-        callback = lambda ref: None
+        callback = lambda ref: Tupu
         ref1 = weakref.ref(x, callback)
         with self.assertRaises(AttributeError):
-            ref1.__callback__ = lambda ref: None
+            ref1.__callback__ = lambda ref: Tupu
 
     eleza test_callback_gcs(self):
         kundi ObjectWithDel(Object):
-            eleza __del__(self): pass
+            eleza __del__(self): pita
         x = ObjectWithDel(1)
         ref1 = weakref.ref(x, lambda ref: support.gc_collect())
-        del x
+        toa x
         support.gc_collect()
 
 
@@ -918,24 +918,24 @@ kundi SubclassableWeakrefTestCase(TestBase):
 
     eleza test_subclass_refs(self):
         kundi MyRef(weakref.ref):
-            eleza __init__(self, ob, callback=None, value=42):
+            eleza __init__(self, ob, callback=Tupu, value=42):
                 self.value = value
                 super().__init__(ob, callback)
             eleza __call__(self):
-                self.called = True
+                self.called = Kweli
                 rudisha super().__call__()
         o = Object("foo")
         mr = MyRef(o, value=24)
         self.assertIs(mr(), o)
-        self.assertTrue(mr.called)
+        self.assertKweli(mr.called)
         self.assertEqual(mr.value, 24)
-        del o
-        self.assertIsNone(mr())
-        self.assertTrue(mr.called)
+        toa o
+        self.assertIsTupu(mr())
+        self.assertKweli(mr.called)
 
     eleza test_subclass_refs_dont_replace_standard_refs(self):
         kundi MyRef(weakref.ref):
-            pass
+            pita
         o = Object(42)
         r1 = MyRef(o)
         r2 = weakref.ref(o)
@@ -952,7 +952,7 @@ kundi SubclassableWeakrefTestCase(TestBase):
 
     eleza test_subclass_refs_dont_conflate_callbacks(self):
         kundi MyRef(weakref.ref):
-            pass
+            pita
         o = Object(42)
         r1 = MyRef(o, id)
         r2 = MyRef(o, str)
@@ -972,23 +972,23 @@ kundi SubclassableWeakrefTestCase(TestBase):
             eleza meth(self):
                 rudisha self.slot1 + self.slot2
         o = Object(42)
-        r = MyRef(o, None, "abc", "def")
+        r = MyRef(o, Tupu, "abc", "def")
         self.assertEqual(r.slot1, "abc")
         self.assertEqual(r.slot2, "def")
         self.assertEqual(r.meth(), "abcdef")
-        self.assertFalse(hasattr(r, "__dict__"))
+        self.assertUongo(hasattr(r, "__dict__"))
 
     eleza test_subclass_refs_with_cycle(self):
-        """Confirm https://bugs.python.org/issue3100 is fixed."""
+        """Confirm https://bugs.python.org/issue3100 ni fixed."""
         # An instance of a weakref subkundi can have attributes.
         # If such a weakref holds the only strong reference to the object,
         # deleting the weakref will delete the object. In this case,
-        # the callback must not be called, because the ref object is
+        # the callback must sio be called, because the ref object is
         # being deleted.
         kundi MyRef(weakref.ref):
-            pass
+            pita
 
-        # Use a local callback, for "regrtest -R::"
+        # Use a local callback, kila "regrtest -R::"
         # to detect refcounting problems
         eleza callback(w):
             self.cbcalled += 1
@@ -996,9 +996,9 @@ kundi SubclassableWeakrefTestCase(TestBase):
         o = C()
         r1 = MyRef(o, callback)
         r1.o = o
-        del o
+        toa o
 
-        del r1 # Used to crash here
+        toa r1 # Used to crash here
 
         self.assertEqual(self.cbcalled, 0)
 
@@ -1009,10 +1009,10 @@ kundi SubclassableWeakrefTestCase(TestBase):
         r2 = MyRef(o, callback)
         r1.r = r2
         r2.o = o
-        del o
-        del r2
+        toa o
+        toa r2
 
-        del r1 # Used to crash here
+        toa r1 # Used to crash here
 
         self.assertEqual(self.cbcalled, 0)
 
@@ -1038,17 +1038,17 @@ kundi WeakMethodTestCase(unittest.TestCase):
     eleza test_object_dead(self):
         o = Object(1)
         r = weakref.WeakMethod(o.some_method)
-        del o
+        toa o
         gc.collect()
-        self.assertIs(r(), None)
+        self.assertIs(r(), Tupu)
 
     eleza test_method_dead(self):
         C = self._subclass()
         o = C(1)
         r = weakref.WeakMethod(o.some_method)
-        del C.some_method
+        toa C.some_method
         gc.collect()
-        self.assertIs(r(), None)
+        self.assertIs(r(), Tupu)
 
     eleza test_callback_when_object_dead(self):
         # Test callback behaviour when object dies first.
@@ -1058,10 +1058,10 @@ kundi WeakMethodTestCase(unittest.TestCase):
             calls.append(arg)
         o = C(1)
         r = weakref.WeakMethod(o.some_method, cb)
-        del o
+        toa o
         gc.collect()
         self.assertEqual(calls, [r])
-        # Callback is only called once.
+        # Callback ni only called once.
         C.some_method = Object.some_method
         gc.collect()
         self.assertEqual(calls, [r])
@@ -1074,11 +1074,11 @@ kundi WeakMethodTestCase(unittest.TestCase):
             calls.append(arg)
         o = C(1)
         r = weakref.WeakMethod(o.some_method, cb)
-        del C.some_method
+        toa C.some_method
         gc.collect()
         self.assertEqual(calls, [r])
-        # Callback is only called once.
-        del o
+        # Callback ni only called once.
+        toa o
         gc.collect()
         self.assertEqual(calls, [r])
 
@@ -1087,19 +1087,19 @@ kundi WeakMethodTestCase(unittest.TestCase):
         # A WeakMethod doesn't create any reference cycle to itself.
         o = Object(1)
         eleza cb(_):
-            pass
+            pita
         r = weakref.WeakMethod(o.some_method, cb)
         wr = weakref.ref(r)
-        del r
-        self.assertIs(wr(), None)
+        toa r
+        self.assertIs(wr(), Tupu)
 
     eleza test_equality(self):
         eleza _eq(a, b):
-            self.assertTrue(a == b)
-            self.assertFalse(a != b)
+            self.assertKweli(a == b)
+            self.assertUongo(a != b)
         eleza _ne(a, b):
-            self.assertTrue(a != b)
-            self.assertFalse(a == b)
+            self.assertKweli(a != b)
+            self.assertUongo(a == b)
         x = Object(1)
         y = Object(1)
         a = weakref.WeakMethod(x.some_method)
@@ -1114,7 +1114,7 @@ kundi WeakMethodTestCase(unittest.TestCase):
         _ne(a, d)
         _ne(b, c)
         _ne(b, d)
-        # Objects unequal, same or different method
+        # Objects unequal, same ama different method
         z = Object(2)
         e = weakref.WeakMethod(z.some_method)
         f = weakref.WeakMethod(z.other_method)
@@ -1122,14 +1122,14 @@ kundi WeakMethodTestCase(unittest.TestCase):
         _ne(a, f)
         _ne(b, e)
         _ne(b, f)
-        del x, y, z
+        toa x, y, z
         gc.collect()
         # Dead WeakMethods compare by identity
         refs = a, b, c, d, e, f
-        for q in refs:
-            for r in refs:
-                self.assertEqual(q == r, q is r)
-                self.assertEqual(q != r, q is not r)
+        kila q kwenye refs:
+            kila r kwenye refs:
+                self.assertEqual(q == r, q ni r)
+                self.assertEqual(q != r, q ni sio r)
 
     eleza test_hashing(self):
         # Alive WeakMethods are hashable ikiwa the underlying object is
@@ -1143,7 +1143,7 @@ kundi WeakMethodTestCase(unittest.TestCase):
         self.assertEqual(hash(a), hash(b))
         ha = hash(a)
         # Dead WeakMethods retain their old hash value
-        del x, y
+        toa x, y
         gc.collect()
         self.assertEqual(hash(a), ha)
         self.assertEqual(hash(b), ha)
@@ -1157,18 +1157,18 @@ kundi MappingTestCase(TestBase):
 
     eleza check_len_cycles(self, dict_type, cons):
         N = 20
-        items = [RefCycle() for i in range(N)]
-        dct = dict_type(cons(o) for o in items)
+        items = [RefCycle() kila i kwenye range(N)]
+        dct = dict_type(cons(o) kila o kwenye items)
         # Keep an iterator alive
         it = dct.items()
-        try:
+        jaribu:
             next(it)
-        except StopIteration:
-            pass
-        del items
+        tatizo StopIteration:
+            pita
+        toa items
         gc.collect()
         n1 = len(dct)
-        del it
+        toa it
         gc.collect()
         n2 = len(dct)
         # one item may be kept alive inside the iterator
@@ -1182,23 +1182,23 @@ kundi MappingTestCase(TestBase):
         self.check_len_cycles(weakref.WeakValueDictionary, lambda k: (1, k))
 
     eleza check_len_race(self, dict_type, cons):
-        # Extended sanity checks for len() in the face of cyclic collection
+        # Extended sanity checks kila len() kwenye the face of cyclic collection
         self.addCleanup(gc.set_threshold, *gc.get_threshold())
-        for th in range(1, 100):
+        kila th kwenye range(1, 100):
             N = 20
             gc.collect(0)
             gc.set_threshold(th, th, th)
-            items = [RefCycle() for i in range(N)]
-            dct = dict_type(cons(o) for o in items)
-            del items
-            # All items will be collected at next garbage collection pass
+            items = [RefCycle() kila i kwenye range(N)]
+            dct = dict_type(cons(o) kila o kwenye items)
+            toa items
+            # All items will be collected at next garbage collection pita
             it = dct.items()
-            try:
+            jaribu:
                 next(it)
-            except StopIteration:
-                pass
+            tatizo StopIteration:
+                pita
             n1 = len(dct)
-            del it
+            toa it
             n2 = len(dct)
             self.assertGreaterEqual(n1, 0)
             self.assertLessEqual(n1, N)
@@ -1213,27 +1213,27 @@ kundi MappingTestCase(TestBase):
 
     eleza test_weak_values(self):
         #
-        #  This exercises d.copy(), d.items(), d[], del d[], len(d).
+        #  This exercises d.copy(), d.items(), d[], toa d[], len(d).
         #
         dict, objects = self.make_weak_valued_dict()
-        for o in objects:
+        kila o kwenye objects:
             self.assertEqual(weakref.getweakrefcount(o), 1)
             self.assertIs(o, dict[o.arg],
-                         "wrong object returned by weak dict!")
+                         "wrong object rudishaed by weak dict!")
         items1 = list(dict.items())
         items2 = list(dict.copy().items())
         items1.sort()
         items2.sort()
         self.assertEqual(items1, items2,
-                     "cloning of weak-valued dictionary did not work!")
-        del items1, items2
+                     "cloning of weak-valued dictionary did sio work!")
+        toa items1, items2
         self.assertEqual(len(dict), self.COUNT)
-        del objects[0]
+        toa objects[0]
         self.assertEqual(len(dict), self.COUNT - 1,
-                     "deleting object did not cause dictionary update")
-        del objects, o
+                     "deleting object did sio cause dictionary update")
+        toa objects, o
         self.assertEqual(len(dict), 0,
-                     "deleting the values did not clear the dictionary")
+                     "deleting the values did sio clear the dictionary")
         # regression on SF bug #447152:
         dict = weakref.WeakValueDictionary()
         self.assertRaises(KeyError, dict.__getitem__, 1)
@@ -1242,29 +1242,29 @@ kundi MappingTestCase(TestBase):
 
     eleza test_weak_keys(self):
         #
-        #  This exercises d.copy(), d.items(), d[] = v, d[], del d[],
-        #  len(d), k in d.
+        #  This exercises d.copy(), d.items(), d[] = v, d[], toa d[],
+        #  len(d), k kwenye d.
         #
         dict, objects = self.make_weak_keyed_dict()
-        for o in objects:
+        kila o kwenye objects:
             self.assertEqual(weakref.getweakrefcount(o), 1,
                          "wrong number of weak references to %r!" % o)
             self.assertIs(o.arg, dict[o],
-                         "wrong object returned by weak dict!")
+                         "wrong object rudishaed by weak dict!")
         items1 = dict.items()
         items2 = dict.copy().items()
         self.assertEqual(set(items1), set(items2),
-                     "cloning of weak-keyed dictionary did not work!")
-        del items1, items2
+                     "cloning of weak-keyed dictionary did sio work!")
+        toa items1, items2
         self.assertEqual(len(dict), self.COUNT)
-        del objects[0]
+        toa objects[0]
         self.assertEqual(len(dict), (self.COUNT - 1),
-                     "deleting object did not cause dictionary update")
-        del objects, o
+                     "deleting object did sio cause dictionary update")
+        toa objects, o
         self.assertEqual(len(dict), 0,
-                     "deleting the keys did not clear the dictionary")
+                     "deleting the keys did sio clear the dictionary")
         o = Object(42)
-        dict[o] = "What is the meaning of the universe?"
+        dict[o] = "What ni the meaning of the universe?"
         self.assertIn(o, dict)
         self.assertNotIn(34, dict)
 
@@ -1276,7 +1276,7 @@ kundi MappingTestCase(TestBase):
         refs = dict.keyrefs()
         self.assertEqual(len(refs), len(objects))
         objects2 = list(objects)
-        for wr in refs:
+        kila wr kwenye refs:
             ob = wr()
             self.assertIn(ob, dict)
             self.assertIn(ob, dict)
@@ -1287,7 +1287,7 @@ kundi MappingTestCase(TestBase):
         # Test iterkeyrefs()
         objects2 = list(objects)
         self.assertEqual(len(list(dict.keyrefs())), len(objects))
-        for wr in dict.keyrefs():
+        kila wr kwenye dict.keyrefs():
             ob = wr()
             self.assertIn(ob, dict)
             self.assertIn(ob, dict)
@@ -1303,7 +1303,7 @@ kundi MappingTestCase(TestBase):
         refs = dict.valuerefs()
         self.assertEqual(len(refs), len(objects))
         objects2 = list(objects)
-        for wr in refs:
+        kila wr kwenye refs:
             ob = wr()
             self.assertEqual(ob, dict[ob.arg])
             self.assertEqual(ob.arg, dict[ob.arg].arg)
@@ -1313,7 +1313,7 @@ kundi MappingTestCase(TestBase):
         # Test itervaluerefs()
         objects2 = list(objects)
         self.assertEqual(len(list(dict.itervaluerefs())), len(objects))
-        for wr in dict.itervaluerefs():
+        kila wr kwenye dict.itervaluerefs():
             ob = wr()
             self.assertEqual(ob, dict[ob.arg])
             self.assertEqual(ob.arg, dict[ob.arg].arg)
@@ -1323,39 +1323,39 @@ kundi MappingTestCase(TestBase):
     eleza check_iters(self, dict):
         # item iterator:
         items = list(dict.items())
-        for item in dict.items():
+        kila item kwenye dict.items():
             items.remove(item)
-        self.assertFalse(items, "items() did not touch all items")
+        self.assertUongo(items, "items() did sio touch all items")
 
         # key iterator, via __iter__():
         keys = list(dict.keys())
-        for k in dict:
+        kila k kwenye dict:
             keys.remove(k)
-        self.assertFalse(keys, "__iter__() did not touch all keys")
+        self.assertUongo(keys, "__iter__() did sio touch all keys")
 
         # key iterator, via iterkeys():
         keys = list(dict.keys())
-        for k in dict.keys():
+        kila k kwenye dict.keys():
             keys.remove(k)
-        self.assertFalse(keys, "iterkeys() did not touch all keys")
+        self.assertUongo(keys, "iterkeys() did sio touch all keys")
 
         # value iterator:
         values = list(dict.values())
-        for v in dict.values():
+        kila v kwenye dict.values():
             values.remove(v)
-        self.assertFalse(values,
-                     "itervalues() did not touch all values")
+        self.assertUongo(values,
+                     "itervalues() did sio touch all values")
 
     eleza check_weak_destroy_while_iterating(self, dict, objects, iter_name):
         n = len(dict)
         it = iter(getattr(dict, iter_name)())
         next(it)             # Trigger internal iteration
         # Destroy an object
-        del objects[-1]
-        gc.collect()    # just in case
-        # We have removed either the first consumed object, or another one
+        toa objects[-1]
+        gc.collect()    # just kwenye case
+        # We have removed either the first consumed object, ama another one
         self.assertIn(len(list(it)), [len(objects), len(objects) - 1])
-        del it
+        toa it
         # The removal has been committed
         self.assertEqual(len(dict), n - 1)
 
@@ -1363,50 +1363,50 @@ kundi MappingTestCase(TestBase):
         # Check that we can explicitly mutate the weak dict without
         # interfering with delayed removal.
         # `testcontext` should create an iterator, destroy one of the
-        # weakref'ed objects and then rudisha a new key/value pair corresponding
+        # weakref'ed objects na then rudisha a new key/value pair corresponding
         # to the destroyed object.
-        with testcontext() as (k, v):
+        with testcontext() kama (k, v):
             self.assertNotIn(k, dict)
-        with testcontext() as (k, v):
+        with testcontext() kama (k, v):
             self.assertRaises(KeyError, dict.__delitem__, k)
         self.assertNotIn(k, dict)
-        with testcontext() as (k, v):
+        with testcontext() kama (k, v):
             self.assertRaises(KeyError, dict.pop, k)
         self.assertNotIn(k, dict)
-        with testcontext() as (k, v):
+        with testcontext() kama (k, v):
             dict[k] = v
         self.assertEqual(dict[k], v)
         ddict = copy.copy(dict)
-        with testcontext() as (k, v):
+        with testcontext() kama (k, v):
             dict.update(ddict)
         self.assertEqual(dict, ddict)
-        with testcontext() as (k, v):
+        with testcontext() kama (k, v):
             dict.clear()
         self.assertEqual(len(dict), 0)
 
     eleza check_weak_del_and_len_while_iterating(self, dict, testcontext):
-        # Check that len() works when both iterating and removing keys
+        # Check that len() works when both iterating na removing keys
         # explicitly through various means (.pop(), .clear()...), while
-        # implicit mutation is deferred because an iterator is alive.
-        # (each call to testcontext() should schedule one item for removal
-        #  for this test to work properly)
+        # implicit mutation ni deferred because an iterator ni alive.
+        # (each call to testcontext() should schedule one item kila removal
+        #  kila this test to work properly)
         o = Object(123456)
         with testcontext():
             n = len(dict)
-            # Since underlaying dict is ordered, first item is popped
+            # Since underlaying dict ni ordered, first item ni popped
             dict.pop(next(dict.keys()))
             self.assertEqual(len(dict), n - 1)
             dict[o] = o
             self.assertEqual(len(dict), n)
-        # last item in objects is removed kutoka dict in context shutdown
+        # last item kwenye objects ni removed kutoka dict kwenye context shutdown
         with testcontext():
             self.assertEqual(len(dict), n - 1)
-            # Then, (o, o) is popped
+            # Then, (o, o) ni popped
             dict.popitem()
             self.assertEqual(len(dict), n - 2)
         with testcontext():
             self.assertEqual(len(dict), n - 3)
-            del dict[next(dict.keys())]
+            toa dict[next(dict.keys())]
             self.assertEqual(len(dict), n - 4)
         with testcontext():
             self.assertEqual(len(dict), n - 5)
@@ -1418,7 +1418,7 @@ kundi MappingTestCase(TestBase):
         self.assertEqual(len(dict), 0)
 
     eleza test_weak_keys_destroy_while_iterating(self):
-        # Issue #7105: iterators shouldn't crash when a key is implicitly removed
+        # Issue #7105: iterators shouldn't crash when a key ni implicitly removed
         dict, objects = self.make_weak_keyed_dict()
         self.check_weak_destroy_while_iterating(dict, objects, 'keys')
         self.check_weak_destroy_while_iterating(dict, objects, 'items')
@@ -1427,15 +1427,15 @@ kundi MappingTestCase(TestBase):
         dict, objects = self.make_weak_keyed_dict()
         @contextlib.contextmanager
         eleza testcontext():
-            try:
+            jaribu:
                 it = iter(dict.items())
                 next(it)
-                # Schedule a key/value for removal and recreate it
+                # Schedule a key/value kila removal na recreate it
                 v = objects.pop().arg
-                gc.collect()      # just in case
-                yield Object(v), v
-            finally:
-                it = None           # should commit all removals
+                gc.collect()      # just kwenye case
+                tuma Object(v), v
+            mwishowe:
+                it = Tupu           # should commit all removals
                 gc.collect()
         self.check_weak_destroy_and_mutate_while_iterating(dict, testcontext)
         # Issue #21173: len() fragile when keys are both implicitly and
@@ -1444,7 +1444,7 @@ kundi MappingTestCase(TestBase):
         self.check_weak_del_and_len_while_iterating(dict, testcontext)
 
     eleza test_weak_values_destroy_while_iterating(self):
-        # Issue #7105: iterators shouldn't crash when a key is implicitly removed
+        # Issue #7105: iterators shouldn't crash when a key ni implicitly removed
         dict, objects = self.make_weak_valued_dict()
         self.check_weak_destroy_while_iterating(dict, objects, 'keys')
         self.check_weak_destroy_while_iterating(dict, objects, 'items')
@@ -1454,15 +1454,15 @@ kundi MappingTestCase(TestBase):
         dict, objects = self.make_weak_valued_dict()
         @contextlib.contextmanager
         eleza testcontext():
-            try:
+            jaribu:
                 it = iter(dict.items())
                 next(it)
-                # Schedule a key/value for removal and recreate it
+                # Schedule a key/value kila removal na recreate it
                 k = objects.pop().arg
-                gc.collect()      # just in case
-                yield k, Object(k)
-            finally:
-                it = None           # should commit all removals
+                gc.collect()      # just kwenye case
+                tuma k, Object(k)
+            mwishowe:
+                it = Tupu           # should commit all removals
                 gc.collect()
         self.check_weak_destroy_and_mutate_while_iterating(dict, testcontext)
         dict, objects = self.make_weak_valued_dict()
@@ -1482,7 +1482,7 @@ kundi MappingTestCase(TestBase):
     eleza make_weak_keyed_dict(self):
         dict = weakref.WeakKeyDictionary()
         objects = list(map(Object, range(self.COUNT)))
-        for o in objects:
+        kila o kwenye objects:
             dict[o] = o.arg
         rudisha dict, objects
 
@@ -1504,7 +1504,7 @@ kundi MappingTestCase(TestBase):
         self.assertRaises(TypeError, weakref.WeakValueDictionary, (), ())
         # special keyword arguments
         o = Object(3)
-        for kw in 'self', 'dict', 'other', 'iterable':
+        kila kw kwenye 'self', 'dict', 'other', 'iterable':
             d = weakref.WeakValueDictionary(**{kw: o})
             self.assertEqual(list(d.keys()), [kw])
             self.assertEqual(d[kw], o)
@@ -1512,7 +1512,7 @@ kundi MappingTestCase(TestBase):
     eleza make_weak_valued_dict(self):
         dict = weakref.WeakValueDictionary()
         objects = list(map(Object, range(self.COUNT)))
-        for o in objects:
+        kila o kwenye objects:
             dict[o.arg] = o
         rudisha dict, objects
 
@@ -1523,15 +1523,15 @@ kundi MappingTestCase(TestBase):
         self.assertEqual(len(weakdict), 2)
         k, v = weakdict.popitem()
         self.assertEqual(len(weakdict), 1)
-        ikiwa k is key1:
+        ikiwa k ni key1:
             self.assertIs(v, value1)
-        else:
+        isipokua:
             self.assertIs(v, value2)
         k, v = weakdict.popitem()
         self.assertEqual(len(weakdict), 0)
-        ikiwa k is key1:
+        ikiwa k ni key1:
             self.assertIs(v, value1)
-        else:
+        isipokua:
             self.assertIs(v, value2)
 
     eleza test_weak_valued_dict_popitem(self):
@@ -1569,19 +1569,19 @@ kundi MappingTestCase(TestBase):
 
     eleza check_update(self, klass, dict):
         #
-        #  This exercises d.update(), len(d), d.keys(), k in d,
+        #  This exercises d.update(), len(d), d.keys(), k kwenye d,
         #  d.get(), d[].
         #
         weakdict = klass()
         weakdict.update(dict)
         self.assertEqual(len(weakdict), len(dict))
-        for k in weakdict.keys():
-            self.assertIn(k, dict, "mysterious new key appeared in weak dict")
+        kila k kwenye weakdict.keys():
+            self.assertIn(k, dict, "mysterious new key appeared kwenye weak dict")
             v = dict.get(k)
             self.assertIs(v, weakdict[k])
             self.assertIs(v, weakdict.get(k))
-        for k in dict.keys():
-            self.assertIn(k, weakdict, "original key disappeared in weak dict")
+        kila k kwenye dict.keys():
+            self.assertIn(k, weakdict, "original key disappeared kwenye weak dict")
             v = dict[k]
             self.assertIs(v, weakdict[k])
             self.assertIs(v, weakdict.get(k))
@@ -1597,7 +1597,7 @@ kundi MappingTestCase(TestBase):
         self.assertEqual(list(d.keys()), [])
         # special keyword arguments
         o = Object(3)
-        for kw in 'self', 'dict', 'other', 'iterable':
+        kila kw kwenye 'self', 'dict', 'other', 'iterable':
             d = weakref.WeakValueDictionary()
             d.update(**{kw: o})
             self.assertEqual(list(d.keys()), [kw])
@@ -1614,7 +1614,7 @@ kundi MappingTestCase(TestBase):
         d[o1] = 'something'
         d[o2] = 'something'
         self.assertEqual(len(d), 2)
-        del d[o1]
+        toa d[o1]
         self.assertEqual(len(d), 1)
         self.assertEqual(list(d.keys()), [o2])
 
@@ -1625,20 +1625,20 @@ kundi MappingTestCase(TestBase):
         d['something'] = o1
         d['something else'] = o2
         self.assertEqual(len(d), 2)
-        del d['something']
+        toa d['something']
         self.assertEqual(len(d), 1)
         self.assertEqual(list(d.items()), [('something else', o2)])
 
     eleza test_weak_keyed_bad_delitem(self):
         d = weakref.WeakKeyDictionary()
         o = Object('1')
-        # An attempt to delete an object that isn't there should raise
+        # An attempt to delete an object that isn't there should ashiria
         # KeyError.  It didn't before 2.3.
         self.assertRaises(KeyError, d.__delitem__, o)
         self.assertRaises(KeyError, d.__getitem__, o)
 
         # If a key isn't of a weakly referencable type, __getitem__ and
-        # __setitem__ raise TypeError.  __delitem__ should too.
+        # __setitem__ ashiria TypeError.  __delitem__ should too.
         self.assertRaises(TypeError, d.__delitem__,  13)
         self.assertRaises(TypeError, d.__getitem__,  13)
         self.assertRaises(TypeError, d.__setitem__,  13, 13)
@@ -1649,7 +1649,7 @@ kundi MappingTestCase(TestBase):
         # the dict during this (or got added), that caused a RuntimeError.
 
         d = weakref.WeakKeyDictionary()
-        mutate = False
+        mutate = Uongo
 
         kundi C(object):
             eleza __init__(self, i):
@@ -1660,31 +1660,31 @@ kundi MappingTestCase(TestBase):
                 ikiwa mutate:
                     # Side effect that mutates the dict, by removing the
                     # last strong reference to a key.
-                    del objs[-1]
+                    toa objs[-1]
                 rudisha self.value == other.value
 
-        objs = [C(i) for i in range(4)]
-        for o in objs:
+        objs = [C(i) kila i kwenye range(4)]
+        kila o kwenye objs:
             d[o] = o.value
-        del o   # now the only strong references to keys are in objs
-        # Find the order in which iterkeys sees the keys.
+        toa o   # now the only strong references to keys are kwenye objs
+        # Find the order kwenye which iterkeys sees the keys.
         objs = list(d.keys())
         # Reverse it, so that the iteration implementation of __delitem__
         # has to keep looping to find the first object we delete.
         objs.reverse()
 
-        # Turn on mutation in C.__eq__.  The first time through the loop,
+        # Turn on mutation kwenye C.__eq__.  The first time through the loop,
         # under the iterkeys() business the first comparison will delete
-        # the last item iterkeys() would see, and that causes a
+        # the last item iterkeys() would see, na that causes a
         #     RuntimeError: dictionary changed size during iteration
         # when the iterkeys() loop goes around to try comparing the next
         # key.  After this was fixed, it just deletes the last object *our*
-        # "for o in obj" loop would have gotten to.
-        mutate = True
+        # "kila o kwenye obj" loop would have gotten to.
+        mutate = Kweli
         count = 0
-        for o in objs:
+        kila o kwenye objs:
             count += 1
-            del d[o]
+            toa d[o]
         self.assertEqual(len(d), 0)
         self.assertEqual(count, 2)
 
@@ -1699,34 +1699,34 @@ kundi MappingTestCase(TestBase):
     eleza test_threaded_weak_valued_setdefault(self):
         d = weakref.WeakValueDictionary()
         with collect_in_thread():
-            for i in range(100000):
+            kila i kwenye range(100000):
                 x = d.setdefault(10, RefCycle())
-                self.assertIsNot(x, None)  # we never put None in there!
-                del x
+                self.assertIsNot(x, Tupu)  # we never put Tupu kwenye there!
+                toa x
 
     eleza test_threaded_weak_valued_pop(self):
         d = weakref.WeakValueDictionary()
         with collect_in_thread():
-            for i in range(100000):
+            kila i kwenye range(100000):
                 d[10] = RefCycle()
                 x = d.pop(10, 10)
-                self.assertIsNot(x, None)  # we never put None in there!
+                self.assertIsNot(x, Tupu)  # we never put Tupu kwenye there!
 
     eleza test_threaded_weak_valued_consistency(self):
-        # Issue #28427: old keys should not remove new values kutoka
+        # Issue #28427: old keys should sio remove new values kutoka
         # WeakValueDictionary when collecting kutoka another thread.
         d = weakref.WeakValueDictionary()
         with collect_in_thread():
-            for i in range(200000):
+            kila i kwenye range(200000):
                 o = RefCycle()
                 d[10] = o
-                # o is still alive, so the dict can't be empty
+                # o ni still alive, so the dict can't be empty
                 self.assertEqual(len(d), 1)
-                o = None  # lose ref
+                o = Tupu  # lose ref
 
     eleza check_threaded_weak_dict_copy(self, type_, deepcopy):
-        # `type_` should be either WeakKeyDictionary or WeakValueDictionary.
-        # `deepcopy` should be either True or False.
+        # `type_` should be either WeakKeyDictionary ama WeakValueDictionary.
+        # `deepcopy` should be either Kweli ama Uongo.
         exc = []
 
         kundi DummyKey:
@@ -1738,22 +1738,22 @@ kundi MappingTestCase(TestBase):
                 self.ctr = ctr
 
         eleza dict_copy(d, exc):
-            try:
-                ikiwa deepcopy is True:
+            jaribu:
+                ikiwa deepcopy ni Kweli:
                     _ = copy.deepcopy(d)
-                else:
+                isipokua:
                     _ = d.copy()
-            except Exception as ex:
+            tatizo Exception kama ex:
                 exc.append(ex)
 
         eleza pop_and_collect(lst):
             gc_ctr = 0
-            while lst:
+            wakati lst:
                 i = random.randint(0, len(lst) - 1)
                 gc_ctr += 1
                 lst.pop(i)
                 ikiwa gc_ctr % 10000 == 0:
-                    gc.collect()  # just in case
+                    gc.collect()  # just kwenye case
 
         self.assertIn(type_, (weakref.WeakKeyDictionary, weakref.WeakValueDictionary))
 
@@ -1761,18 +1761,18 @@ kundi MappingTestCase(TestBase):
         keys = []
         values = []
         # Initialize d with many entries
-        for i in range(70000):
+        kila i kwenye range(70000):
             k, v = DummyKey(i), DummyValue(i)
             keys.append(k)
             values.append(v)
             d[k] = v
-            del k
-            del v
+            toa k
+            toa v
 
         t_copy = threading.Thread(target=dict_copy, args=(d, exc,))
-        ikiwa type_ is weakref.WeakKeyDictionary:
+        ikiwa type_ ni weakref.WeakKeyDictionary:
             t_collect = threading.Thread(target=pop_and_collect, args=(keys,))
-        else:  # weakref.WeakValueDictionary
+        isipokua:  # weakref.WeakValueDictionary
             t_collect = threading.Thread(target=pop_and_collect, args=(values,))
 
         t_copy.start()
@@ -1783,32 +1783,32 @@ kundi MappingTestCase(TestBase):
 
         # Test exceptions
         ikiwa exc:
-            raise exc[0]
+            ashiria exc[0]
 
     eleza test_threaded_weak_key_dict_copy(self):
-        # Issue #35615: Weakref keys or values getting GC'ed during dict
-        # copying should not result in a crash.
-        self.check_threaded_weak_dict_copy(weakref.WeakKeyDictionary, False)
+        # Issue #35615: Weakref keys ama values getting GC'ed during dict
+        # copying should sio result kwenye a crash.
+        self.check_threaded_weak_dict_copy(weakref.WeakKeyDictionary, Uongo)
 
     eleza test_threaded_weak_key_dict_deepcopy(self):
-        # Issue #35615: Weakref keys or values getting GC'ed during dict
-        # copying should not result in a crash.
-        self.check_threaded_weak_dict_copy(weakref.WeakKeyDictionary, True)
+        # Issue #35615: Weakref keys ama values getting GC'ed during dict
+        # copying should sio result kwenye a crash.
+        self.check_threaded_weak_dict_copy(weakref.WeakKeyDictionary, Kweli)
 
     eleza test_threaded_weak_value_dict_copy(self):
-        # Issue #35615: Weakref keys or values getting GC'ed during dict
-        # copying should not result in a crash.
-        self.check_threaded_weak_dict_copy(weakref.WeakValueDictionary, False)
+        # Issue #35615: Weakref keys ama values getting GC'ed during dict
+        # copying should sio result kwenye a crash.
+        self.check_threaded_weak_dict_copy(weakref.WeakValueDictionary, Uongo)
 
     eleza test_threaded_weak_value_dict_deepcopy(self):
-        # Issue #35615: Weakref keys or values getting GC'ed during dict
-        # copying should not result in a crash.
-        self.check_threaded_weak_dict_copy(weakref.WeakValueDictionary, True)
+        # Issue #35615: Weakref keys ama values getting GC'ed during dict
+        # copying should sio result kwenye a crash.
+        self.check_threaded_weak_dict_copy(weakref.WeakValueDictionary, Kweli)
 
     @support.cpython_only
     eleza test_remove_closure(self):
         d = weakref.WeakValueDictionary()
-        self.assertIsNone(d._remove.__closure__)
+        self.assertIsTupu(d._remove.__closure__)
 
 
 kutoka test agiza mapping_tests
@@ -1831,10 +1831,10 @@ kundi WeakKeyDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
 kundi FinalizeTestCase(unittest.TestCase):
 
     kundi A:
-        pass
+        pita
 
     eleza _collect_if_necessary(self):
-        # we create no ref-cycles so in CPython no gc should be needed
+        # we create no ref-cycles so kwenye CPython no gc should be needed
         ikiwa sys.implementation.name != 'cpython':
             support.gc_collect()
 
@@ -1847,36 +1847,36 @@ kundi FinalizeTestCase(unittest.TestCase):
 
         res = []
         f = weakref.finalize(a, add, 67, 43, z=89)
-        self.assertEqual(f.alive, True)
+        self.assertEqual(f.alive, Kweli)
         self.assertEqual(f.peek(), (a, add, (67,43), {'z':89}))
         self.assertEqual(f(), 199)
-        self.assertEqual(f(), None)
-        self.assertEqual(f(), None)
-        self.assertEqual(f.peek(), None)
-        self.assertEqual(f.detach(), None)
-        self.assertEqual(f.alive, False)
+        self.assertEqual(f(), Tupu)
+        self.assertEqual(f(), Tupu)
+        self.assertEqual(f.peek(), Tupu)
+        self.assertEqual(f.detach(), Tupu)
+        self.assertEqual(f.alive, Uongo)
         self.assertEqual(res, [199])
 
         res = []
         f = weakref.finalize(a, add, 67, 43, 89)
         self.assertEqual(f.peek(), (a, add, (67,43,89), {}))
         self.assertEqual(f.detach(), (a, add, (67,43,89), {}))
-        self.assertEqual(f(), None)
-        self.assertEqual(f(), None)
-        self.assertEqual(f.peek(), None)
-        self.assertEqual(f.detach(), None)
-        self.assertEqual(f.alive, False)
+        self.assertEqual(f(), Tupu)
+        self.assertEqual(f(), Tupu)
+        self.assertEqual(f.peek(), Tupu)
+        self.assertEqual(f.detach(), Tupu)
+        self.assertEqual(f.alive, Uongo)
         self.assertEqual(res, [])
 
         res = []
         f = weakref.finalize(a, add, x=67, y=43, z=89)
-        del a
+        toa a
         self._collect_if_necessary()
-        self.assertEqual(f(), None)
-        self.assertEqual(f(), None)
-        self.assertEqual(f.peek(), None)
-        self.assertEqual(f.detach(), None)
-        self.assertEqual(f.alive, False)
+        self.assertEqual(f(), Tupu)
+        self.assertEqual(f(), Tupu)
+        self.assertEqual(f.peek(), Tupu)
+        self.assertEqual(f.detach(), Tupu)
+        self.assertEqual(f.alive, Uongo)
         self.assertEqual(res, [199])
 
     eleza test_arg_errors(self):
@@ -1919,28 +1919,28 @@ kundi FinalizeTestCase(unittest.TestCase):
         f5 = weakref.finalize(a, res.append, 'f5')
 
         # make sure finalizers can keep themselves alive
-        del f1, f4
+        toa f1, f4
 
-        self.assertTrue(f2.alive)
-        self.assertTrue(f3.alive)
-        self.assertTrue(f5.alive)
+        self.assertKweli(f2.alive)
+        self.assertKweli(f3.alive)
+        self.assertKweli(f5.alive)
 
-        self.assertTrue(f5.detach())
-        self.assertFalse(f5.alive)
+        self.assertKweli(f5.detach())
+        self.assertUongo(f5.alive)
 
         f5()                       # nothing because previously unregistered
         res.append('A')
         f3()                       # => res.append('f3')
-        self.assertFalse(f3.alive)
+        self.assertUongo(f3.alive)
         res.append('B')
         f3()                       # nothing because previously called
         res.append('C')
-        del a
+        toa a
         self._collect_if_necessary()
                                    # => res.append('f4')
                                    # => res.append('f2')
                                    # => res.append('f1')
-        self.assertFalse(f2.alive)
+        self.assertUongo(f2.alive)
         res.append('D')
         f2()                       # nothing because previously called by gc
 
@@ -1950,7 +1950,7 @@ kundi FinalizeTestCase(unittest.TestCase):
     eleza test_all_freed(self):
         # we want a weakrefable subkundi of weakref.finalize
         kundi MyFinalizer(weakref.finalize):
-            pass
+            pita
 
         a = self.A()
         res = []
@@ -1960,16 +1960,16 @@ kundi FinalizeTestCase(unittest.TestCase):
 
         wr_callback = weakref.ref(callback)
         wr_f = weakref.ref(f)
-        del callback, f
+        toa callback, f
 
-        self.assertIsNotNone(wr_callback())
-        self.assertIsNotNone(wr_f())
+        self.assertIsNotTupu(wr_callback())
+        self.assertIsNotTupu(wr_f())
 
-        del a
+        toa a
         self._collect_if_necessary()
 
-        self.assertIsNone(wr_callback())
-        self.assertIsNone(wr_f())
+        self.assertIsTupu(wr_callback())
+        self.assertIsTupu(wr_f())
         self.assertEqual(res, [123])
 
     @classmethod
@@ -1987,10 +1987,10 @@ kundi FinalizeTestCase(unittest.TestCase):
         f3 = weakref.finalize(cls, error)
         f4 = weakref.finalize(cls, print, 'f4', _global_var)
 
-        assert f1.atexit == True
-        f2.atexit = False
-        assert f3.atexit == True
-        assert f4.atexit == True
+        assert f1.atexit == Kweli
+        f2.atexit = Uongo
+        assert f3.atexit == Kweli
+        assert f4.atexit == Kweli
 
     eleza test_atexit(self):
         prog = ('kutoka test.test_weakref agiza FinalizeTestCase;'+
@@ -1998,52 +1998,52 @@ kundi FinalizeTestCase(unittest.TestCase):
         rc, out, err = script_helper.assert_python_ok('-c', prog)
         out = out.decode('ascii').splitlines()
         self.assertEqual(out, ['f4 foobar', 'f3 error', 'g1', 'f1 foobar'])
-        self.assertTrue(b'ZeroDivisionError' in err)
+        self.assertKweli(b'ZeroDivisionError' kwenye err)
 
 
-libreftest = """ Doctest for examples in the library reference: weakref.rst
+libreftest = """ Doctest kila examples kwenye the library reference: weakref.rst
 
 >>> agiza weakref
 >>> kundi Dict(dict):
-...     pass
+...     pita
 ...
->>> obj = Dict(red=1, green=2, blue=3)   # this object is weak referencable
+>>> obj = Dict(red=1, green=2, blue=3)   # this object ni weak referencable
 >>> r = weakref.ref(obj)
->>> andika(r() is obj)
-True
+>>> andika(r() ni obj)
+Kweli
 
 >>> agiza weakref
 >>> kundi Object:
-...     pass
+...     pita
 ...
 >>> o = Object()
 >>> r = weakref.ref(o)
 >>> o2 = r()
->>> o is o2
-True
->>> del o, o2
+>>> o ni o2
+Kweli
+>>> toa o, o2
 >>> andika(r())
-None
+Tupu
 
 >>> agiza weakref
 >>> kundi ExtendedRef(weakref.ref):
-...     eleza __init__(self, ob, callback=None, **annotations):
+...     eleza __init__(self, ob, callback=Tupu, **annotations):
 ...         super().__init__(ob, callback)
 ...         self.__counter = 0
-...         for k, v in annotations.items():
+...         kila k, v kwenye annotations.items():
 ...             setattr(self, k, v)
 ...     eleza __call__(self):
-...         '''Return a pair containing the referent and the number of
+...         '''Return a pair containing the referent na the number of
 ...         times the reference has been called.
 ...         '''
 ...         ob = super().__call__()
-...         ikiwa ob is not None:
+...         ikiwa ob ni sio Tupu:
 ...             self.__counter += 1
 ...             ob = (ob, self.__counter)
 ...         rudisha ob
 ...
->>> kundi A:   # not in docs kutoka here, just testing the ExtendedRef
-...     pass
+>>> kundi A:   # haiko kwenye docs kutoka here, just testing the ExtendedRef
+...     pita
 ...
 >>> a = A()
 >>> r = ExtendedRef(a, foo=1, bar="baz")
@@ -2055,8 +2055,8 @@ None
 1
 >>> r()[1]
 2
->>> r()[0] is a
-True
+>>> r()[0] ni a
+Kweli
 
 
 >>> agiza weakref
@@ -2071,14 +2071,14 @@ True
 ...
 >>> a = A()             # kutoka here, just testing
 >>> a_id = remember(a)
->>> id2obj(a_id) is a
-True
->>> del a
->>> try:
+>>> id2obj(a_id) ni a
+Kweli
+>>> toa a
+>>> jaribu:
 ...     id2obj(a_id)
-... except KeyError:
+... tatizo KeyError:
 ...     andika('OK')
-... else:
+... isipokua:
 ...     andika('WeakValueDictionary error')
 OK
 

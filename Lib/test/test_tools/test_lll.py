@@ -1,4 +1,4 @@
-"""Tests for the lll script in the Tools/script directory."""
+"""Tests kila the lll script kwenye the Tools/script directory."""
 
 agiza os
 agiza sys
@@ -17,15 +17,15 @@ kundi lllTests(unittest.TestCase):
 
     @support.skip_unless_symlink
     eleza test_lll_multiple_dirs(self):
-        with tempfile.TemporaryDirectory() as dir1, \
-             tempfile.TemporaryDirectory() as dir2:
+        with tempfile.TemporaryDirectory() kama dir1, \
+             tempfile.TemporaryDirectory() kama dir2:
             fn1 = os.path.join(dir1, 'foo1')
             fn2 = os.path.join(dir2, 'foo2')
-            for fn, dir in (fn1, dir1), (fn2, dir2):
+            kila fn, dir kwenye (fn1, dir1), (fn2, dir2):
                 open(fn, 'w').close()
                 os.symlink(fn, os.path.join(dir, 'symlink'))
 
-            with support.captured_stdout() as output:
+            with support.captured_stdout() kama output:
                 self.lll.main([dir1, dir2])
             prefix = '\\\\?\\' ikiwa os.name == 'nt' else ''
             self.assertEqual(output.getvalue(),

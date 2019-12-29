@@ -28,14 +28,14 @@ def mkpath(name, mode=0o777, verbose=1, dry_run=0):
     global _path_created
 
     # Detect a common bug -- name is None
-    if not isinstance(name, str):
+    if sio isinstance(name, str):
         raise DistutilsInternalError(
               "mkpath: 'name' must be a string (got %r)" % (name,))
 
     # XXX what's the better way to handle verbosity? print as we create
     # each directory in the path (the current behaviour), or only announce
     # the creation of the whole path? (quite easy to do the latter since
-    # we're not using a recursive algorithm)
+    # we're sio using a recursive algorithm)
 
     name = os.path.normpath(name)
     created_dirs = []
@@ -47,7 +47,7 @@ def mkpath(name, mode=0o777, verbose=1, dry_run=0):
     (head, tail) = os.path.split(name)
     tails = [tail]                      # stack of lone dirs to create
 
-    while head and tail and not os.path.isdir(head):
+    wakati head and tail and sio os.path.isdir(head):
         (head, tail) = os.path.split(head)
         tails.insert(0, tail)          # push next higher dir onto stack
 
@@ -60,18 +60,18 @@ def mkpath(name, mode=0o777, verbose=1, dry_run=0):
         abs_head = os.path.abspath(head)
 
         if _path_created.get(abs_head):
-            continue
+            endelea
 
         if verbose >= 1:
             log.info("creating %s", head)
 
-        if not dry_run:
-            try:
+        if sio dry_run:
+            jaribu:
                 os.mkdir(head, mode)
-            except OSError as exc:
-                if not (exc.errno == errno.EEXIST and os.path.isdir(head)):
+            tatizo OSError as exc:
+                if sio (exc.errno == errno.EEXIST and os.path.isdir(head)):
                     raise DistutilsFileError(
-                          "could not create '%s': %s" % (head, exc.args[-1]))
+                          "could sio create '%s': %s" % (head, exc.args[-1]))
             created_dirs.append(head)
 
         _path_created[abs_head] = 1
@@ -100,8 +100,8 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
               preserve_symlinks=0, update=0, verbose=1, dry_run=0):
     """Copy an entire directory tree 'src' to a new location 'dst'.
 
-    Both 'src' and 'dst' must be directory names.  If 'src' is not a
-    directory, raise DistutilsFileError.  If 'dst' does not exist, it is
+    Both 'src' and 'dst' must be directory names.  If 'src' ni sio a
+    directory, raise DistutilsFileError.  If 'dst' does sio exist, it is
     created with 'mkpath()'.  The end result of the copy is that every
     file in 'src' is copied to 'dst', and directories under 'src' are
     recursively copied to 'dst'.  Return the list of files that were
@@ -111,7 +111,7 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
     under 'dst'.
 
     'preserve_mode' and 'preserve_times' are the same as for
-    'copy_file'; note that they only apply to regular files, not to
+    'copy_file'; note that they only apply to regular files, sio to
     directories.  If 'preserve_symlinks' is true, symlinks will be
     copied as symlinks (on platforms that support them!); otherwise
     (the default), the destination of the symlink will be copied.
@@ -119,19 +119,19 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
     """
     from distutils.file_util import copy_file
 
-    if not dry_run and not os.path.isdir(src):
+    if sio dry_run and sio os.path.isdir(src):
         raise DistutilsFileError(
-              "cannot copy tree '%s': not a directory" % src)
-    try:
+              "cannot copy tree '%s': sio a directory" % src)
+    jaribu:
         names = os.listdir(src)
-    except OSError as e:
+    tatizo OSError as e:
         if dry_run:
             names = []
-        else:
+        isipokua:
             raise DistutilsFileError(
                   "error listing files in '%s': %s" % (src, e.strerror))
 
-    if not dry_run:
+    if sio dry_run:
         mkpath(dst, verbose=verbose)
 
     outputs = []
@@ -142,13 +142,13 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
 
         if n.startswith('.nfs'):
             # skip NFS rename files
-            continue
+            endelea
 
         if preserve_symlinks and os.path.islink(src_name):
             link_dest = os.readlink(src_name)
             if verbose >= 1:
                 log.info("linking %s -> %s", dst_name, link_dest)
-            if not dry_run:
+            if sio dry_run:
                 os.symlink(link_dest, dst_name)
             outputs.append(dst_name)
 
@@ -157,7 +157,7 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
                 copy_tree(src_name, dst_name, preserve_mode,
                           preserve_times, preserve_symlinks, update,
                           verbose=verbose, dry_run=dry_run))
-        else:
+        isipokua:
             copy_file(src_name, dst_name, preserve_mode,
                       preserve_times, update, verbose=verbose,
                       dry_run=dry_run)
@@ -169,9 +169,9 @@ def _build_cmdtuple(path, cmdtuples):
     """Helper for remove_tree()."""
     for f in os.listdir(path):
         real_f = os.path.join(path,f)
-        if os.path.isdir(real_f) and not os.path.islink(real_f):
+        if os.path.isdir(real_f) and sio os.path.islink(real_f):
             _build_cmdtuple(real_f, cmdtuples)
-        else:
+        isipokua:
             cmdtuples.append((os.remove, real_f))
     cmdtuples.append((os.rmdir, path))
 
@@ -190,13 +190,13 @@ def remove_tree(directory, verbose=1, dry_run=0):
     cmdtuples = []
     _build_cmdtuple(directory, cmdtuples)
     for cmd in cmdtuples:
-        try:
+        jaribu:
             cmd[0](cmd[1])
             # remove dir from cache if it's already there
             abspath = os.path.abspath(cmd[1])
             if abspath in _path_created:
-                del _path_created[abspath]
-        except OSError as exc:
+                toa _path_created[abspath]
+        tatizo OSError as exc:
             log.warn("error removing %s: %s", directory, exc)
 
 def ensure_relative(path):

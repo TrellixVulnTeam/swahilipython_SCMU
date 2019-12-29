@@ -1,7 +1,7 @@
 # test the invariant that
 #   iff a==b then hash(a)==hash(b)
 #
-# Also test that hash implementations are inherited as expected
+# Also test that hash implementations are inherited kama expected
 
 agiza datetime
 agiza os
@@ -17,7 +17,7 @@ eleza lcg(x, length=16):
     ikiwa x == 0:
         rudisha bytes(length)
     out = bytearray(length)
-    for i in range(length):
+    kila i kwenye range(length):
         x = (214013 * x + 2531011) & 0x7fffffff
         out[i] = (x >> 16) & 0xff
     rudisha bytes(out)
@@ -29,31 +29,31 @@ eleza pysiphash(uint64):
     # simple unsigned to signed int64
     ikiwa uint64 > (1 << 63) - 1:
         int64 = uint64 - (1 << 64)
-    else:
+    isipokua:
         int64 = uint64
     # mangle uint64 to uint32
     uint32 = (uint64 ^ uint64 >> 32) & 0xffffffff
     # simple unsigned to signed int32
     ikiwa uint32 > (1 << 31) - 1:
         int32 = uint32 - (1 << 32)
-    else:
+    isipokua:
         int32 = uint32
     rudisha int32, int64
 
 eleza skip_unless_internalhash(test):
-    """Skip decorator for tests that depend on SipHash24 or FNV"""
-    ok = sys.hash_info.algorithm in {"fnv", "siphash24"}
-    msg = "Requires SipHash24 or FNV"
+    """Skip decorator kila tests that depend on SipHash24 ama FNV"""
+    ok = sys.hash_info.algorithm kwenye {"fnv", "siphash24"}
+    msg = "Requires SipHash24 ama FNV"
     rudisha test ikiwa ok else unittest.skip(msg)(test)
 
 
 kundi HashEqualityTestCase(unittest.TestCase):
 
     eleza same_hash(self, *objlist):
-        # Hash each object given and fail if
-        # the hash values are not all the same.
+        # Hash each object given na fail if
+        # the hash values are sio all the same.
         hashed = list(map(hash, objlist))
-        for h in hashed[1:]:
+        kila h kwenye hashed[1:]:
             ikiwa h != hashed[0]:
                 self.fail("hashed values differ: %r" % (objlist,))
 
@@ -69,7 +69,7 @@ kundi HashEqualityTestCase(unittest.TestCase):
         self.same_hash(int(-2**31), float(-2**31))
         self.same_hash(int(1-2**31), float(1-2**31))
         self.same_hash(int(2**31-1), float(2**31-1))
-        # for 64-bit platforms
+        # kila 64-bit platforms
         self.same_hash(int(2**31), float(2**31))
         self.same_hash(int(-2**63), float(-2**63))
         self.same_hash(int(2**63), float(2**63))
@@ -79,18 +79,18 @@ kundi HashEqualityTestCase(unittest.TestCase):
         self.same_hash(float(0.5), complex(0.5, 0.0))
 
     eleza test_unaligned_buffers(self):
-        # The hash function for bytes-like objects shouldn't have
-        # alignment-dependent results (example in issue #16427).
+        # The hash function kila bytes-like objects shouldn't have
+        # alignment-dependent results (example kwenye issue #16427).
         b = b"123456789abcdefghijklmnopqrstuvwxyz" * 128
-        for i in range(16):
-            for j in range(16):
+        kila i kwenye range(16):
+            kila j kwenye range(16):
                 aligned = b[i:128+j]
                 unaligned = memoryview(b)[i:128+j]
                 self.assertEqual(hash(aligned), hash(unaligned))
 
 
 _default_hash = object.__hash__
-kundi DefaultHash(object): pass
+kundi DefaultHash(object): pita
 
 _FIXED_HASH_VALUE = 42
 kundi FixedHash(object):
@@ -99,17 +99,17 @@ kundi FixedHash(object):
 
 kundi OnlyEquality(object):
     eleza __eq__(self, other):
-        rudisha self is other
+        rudisha self ni other
 
 kundi OnlyInequality(object):
     eleza __ne__(self, other):
-        rudisha self is not other
+        rudisha self ni sio other
 
-kundi InheritedHashWithEquality(FixedHash, OnlyEquality): pass
-kundi InheritedHashWithInequality(FixedHash, OnlyInequality): pass
+kundi InheritedHashWithEquality(FixedHash, OnlyEquality): pita
+kundi InheritedHashWithInequality(FixedHash, OnlyInequality): pita
 
 kundi NoHash(object):
-    __hash__ = None
+    __hash__ = Tupu
 
 kundi HashInheritanceTestCase(unittest.TestCase):
     default_expected = [object(),
@@ -125,25 +125,25 @@ kundi HashInheritanceTestCase(unittest.TestCase):
                       ]
 
     eleza test_default_hash(self):
-        for obj in self.default_expected:
+        kila obj kwenye self.default_expected:
             self.assertEqual(hash(obj), _default_hash(obj))
 
     eleza test_fixed_hash(self):
-        for obj in self.fixed_expected:
+        kila obj kwenye self.fixed_expected:
             self.assertEqual(hash(obj), _FIXED_HASH_VALUE)
 
     eleza test_error_hash(self):
-        for obj in self.error_expected:
+        kila obj kwenye self.error_expected:
             self.assertRaises(TypeError, hash, obj)
 
     eleza test_hashable(self):
         objects = (self.default_expected +
                    self.fixed_expected)
-        for obj in objects:
+        kila obj kwenye objects:
             self.assertIsInstance(obj, Hashable)
 
     eleza test_not_hashable(self):
-        for obj in self.error_expected:
+        kila obj kwenye self.error_expected:
             self.assertNotIsInstance(obj, Hashable)
 
 
@@ -163,7 +163,7 @@ kundi HashBuiltinsTestCase(unittest.TestCase):
 
     eleza test_hashes(self):
         _default_hash = object.__hash__
-        for obj in self.hashes_to_check:
+        kila obj kwenye self.hashes_to_check:
             self.assertEqual(hash(obj), _default_hash(obj))
 
 kundi HashRandomizationTests:
@@ -174,14 +174,14 @@ kundi HashRandomizationTests:
     eleza get_hash_command(self, repr_):
         rudisha 'andika(hash(eval(%a)))' % repr_
 
-    eleza get_hash(self, repr_, seed=None):
+    eleza get_hash(self, repr_, seed=Tupu):
         env = os.environ.copy()
-        env['__cleanenv'] = True  # signal to assert_python not to do a copy
+        env['__cleanenv'] = Kweli  # signal to assert_python sio to do a copy
                                   # of os.environ on its own
-        ikiwa seed is not None:
+        ikiwa seed ni sio Tupu:
             env['PYTHONHASHSEED'] = str(seed)
-        else:
-            env.pop('PYTHONHASHSEED', None)
+        isipokua:
+            env.pop('PYTHONHASHSEED', Tupu)
         out = assert_python_ok(
             '-c', self.get_hash_command(repr_),
             **env)
@@ -195,12 +195,12 @@ kundi HashRandomizationTests:
         self.assertNotEqual(run1, run2)
 
 kundi StringlikeHashRandomizationTests(HashRandomizationTests):
-    repr_ = None
-    repr_long = None
+    repr_ = Tupu
+    repr_long = Tupu
 
     # 32bit little, 64bit little, 32bit big, 64bit big
     known_hashes = {
-        'djba33x': [ # only used for small strings
+        'djba33x': [ # only used kila small strings
             # seed 0, 'abc'
             [193485960, 193485960,  193485960, 193485960],
             # seed 42, 'abc'
@@ -241,11 +241,11 @@ kundi StringlikeHashRandomizationTests(HashRandomizationTests):
     eleza get_expected_hash(self, position, length):
         ikiwa length < sys.hash_info.cutoff:
             algorithm = "djba33x"
-        else:
+        isipokua:
             algorithm = sys.hash_info.algorithm
         ikiwa sys.byteorder == 'little':
             platform = 1 ikiwa IS_64BIT else 0
-        else:
+        isipokua:
             assert(sys.byteorder == 'big')
             platform = 3 ikiwa IS_64BIT else 2
         rudisha self.known_hashes[algorithm][position][platform]
@@ -254,7 +254,7 @@ kundi StringlikeHashRandomizationTests(HashRandomizationTests):
         # PYTHONHASHSEED=0 disables the randomized hash
         known_hash_of_obj = self.get_expected_hash(0, 3)
 
-        # Randomization is enabled by default:
+        # Randomization ni enabled by default:
         self.assertNotEqual(self.get_hash(self.repr_), known_hash_of_obj)
 
         # It can also be disabled by setting the seed to 0:
@@ -262,15 +262,15 @@ kundi StringlikeHashRandomizationTests(HashRandomizationTests):
 
     @skip_unless_internalhash
     eleza test_fixed_hash(self):
-        # test a fixed seed for the randomized hash
+        # test a fixed seed kila the randomized hash
         # Note that all types share the same values:
         h = self.get_expected_hash(1, 3)
         self.assertEqual(self.get_hash(self.repr_, seed=42), h)
 
     @skip_unless_internalhash
     eleza test_long_fixed_hash(self):
-        ikiwa self.repr_long is None:
-            return
+        ikiwa self.repr_long ni Tupu:
+            rudisha
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)
 
@@ -327,14 +327,14 @@ kundi DatetimeTimeTests(DatetimeTests, unittest.TestCase):
 kundi HashDistributionTestCase(unittest.TestCase):
 
     eleza test_hash_distribution(self):
-        # check for hash collision
+        # check kila hash collision
         base = "abcdefghabcdefg"
-        for i in range(1, len(base)):
+        kila i kwenye range(1, len(base)):
             prefix = base[:i]
             with self.subTest(prefix=prefix):
                 s15 = set()
                 s255 = set()
-                for c in range(256):
+                kila c kwenye range(256):
                     h = hash(prefix + chr(c))
                     s15.add(h & 0xf)
                     s255.add(h & 0xff)

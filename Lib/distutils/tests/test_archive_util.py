@@ -15,33 +15,33 @@ from distutils.spawn import find_executable, spawn
 from distutils.tests import support
 from test.support import check_warnings, run_unittest, patch, change_cwd
 
-try:
+jaribu:
     import grp
     import pwd
     UID_GID_SUPPORT = True
-except ImportError:
+tatizo ImportError:
     UID_GID_SUPPORT = False
 
-try:
+jaribu:
     import zipfile
     ZIP_SUPPORT = True
-except ImportError:
+tatizo ImportError:
     ZIP_SUPPORT = find_executable('zip')
 
-try:
+jaribu:
     import zlib
     ZLIB_SUPPORT = True
-except ImportError:
+tatizo ImportError:
     ZLIB_SUPPORT = False
 
-try:
+jaribu:
     import bz2
-except ImportError:
+tatizo ImportError:
     bz2 = None
 
-try:
+jaribu:
     import lzma
-except ImportError:
+tatizo ImportError:
     lzma = None
 
 def can_fs_encode(filename):
@@ -50,9 +50,9 @@ def can_fs_encode(filename):
     """
     if os.path.supports_unicode_filenames:
         return True
-    try:
+    jaribu:
         filename.encode(sys.getfilesystemencoding())
-    except UnicodeEncodeError:
+    tatizo UnicodeEncodeError:
         return False
     return True
 
@@ -88,7 +88,7 @@ class ArchiveUtilTestCase(support.TempdirManager,
         'File system cannot handle this filename')
     def test_make_tarball_latin1(self):
         """
-        Mirror test_make_tarball, except filename contains latin characters.
+        Mirror test_make_tarball, tatizo filename contains latin characters.
         """
         self.test_make_tarball('årchiv') # note this isn't a real word
 
@@ -96,7 +96,7 @@ class ArchiveUtilTestCase(support.TempdirManager,
         'File system cannot handle this filename')
     def test_make_tarball_extended(self):
         """
-        Mirror test_make_tarball, except filename contains extended
+        Mirror test_make_tarball, tatizo filename contains extended
         characters outside the latin charset.
         """
         self.test_make_tarball('のアーカイブ') # japanese for archive
@@ -119,11 +119,11 @@ class ArchiveUtilTestCase(support.TempdirManager,
 
     def _tarinfo(self, path):
         tar = tarfile.open(path)
-        try:
+        jaribu:
             names = tar.getnames()
             names.sort()
             return names
-        finally:
+        mwishowe:
             tar.close()
 
     _zip_created_files = ['dist/', 'dist/file1', 'dist/file2',
@@ -151,9 +151,9 @@ class ArchiveUtilTestCase(support.TempdirManager,
         base_name = os.path.join(tmpdir2, 'archive')
         old_dir = os.getcwd()
         os.chdir(tmpdir)
-        try:
+        jaribu:
             make_tarball(base_name, 'dist')
-        finally:
+        mwishowe:
             os.chdir(old_dir)
 
         # check if the compressed tarball was created
@@ -166,10 +166,10 @@ class ArchiveUtilTestCase(support.TempdirManager,
         gzip_cmd = ['gzip', '-f', '-9', 'archive2.tar']
         old_dir = os.getcwd()
         os.chdir(tmpdir)
-        try:
+        jaribu:
             spawn(tar_cmd)
             spawn(gzip_cmd)
-        finally:
+        mwishowe:
             os.chdir(old_dir)
 
         self.assertTrue(os.path.exists(tarball2))
@@ -181,9 +181,9 @@ class ArchiveUtilTestCase(support.TempdirManager,
         base_name = os.path.join(tmpdir2, 'archive')
         old_dir = os.getcwd()
         os.chdir(tmpdir)
-        try:
+        jaribu:
             make_tarball(base_name, 'dist', compress=None)
-        finally:
+        mwishowe:
             os.chdir(old_dir)
         tarball = base_name + '.tar'
         self.assertTrue(os.path.exists(tarball))
@@ -192,9 +192,9 @@ class ArchiveUtilTestCase(support.TempdirManager,
         base_name = os.path.join(tmpdir2, 'archive')
         old_dir = os.getcwd()
         os.chdir(tmpdir)
-        try:
+        jaribu:
             make_tarball(base_name, 'dist', compress=None, dry_run=True)
-        finally:
+        mwishowe:
             os.chdir(old_dir)
         tarball = base_name + '.tar'
         self.assertTrue(os.path.exists(tarball))
@@ -208,11 +208,11 @@ class ArchiveUtilTestCase(support.TempdirManager,
         # using compress and testing the PendingDeprecationWarning
         old_dir = os.getcwd()
         os.chdir(tmpdir)
-        try:
+        jaribu:
             with check_warnings() as w:
                 warnings.simplefilter("always")
                 make_tarball(base_name, 'dist', compress='compress')
-        finally:
+        mwishowe:
             os.chdir(old_dir)
         tarball = base_name + '.tar.Z'
         self.assertTrue(os.path.exists(tarball))
@@ -222,12 +222,12 @@ class ArchiveUtilTestCase(support.TempdirManager,
         os.remove(tarball)
         old_dir = os.getcwd()
         os.chdir(tmpdir)
-        try:
+        jaribu:
             with check_warnings() as w:
                 warnings.simplefilter("always")
                 make_tarball(base_name, 'dist', compress='compress',
                              dry_run=True)
-        finally:
+        mwishowe:
             os.chdir(old_dir)
         self.assertFalse(os.path.exists(tarball))
         self.assertEqual(len(w.warnings), 1)
@@ -286,17 +286,17 @@ class ArchiveUtilTestCase(support.TempdirManager,
 
     def test_make_archive_cwd(self):
         current_dir = os.getcwd()
-        def _breaks(*args, **kw):
+        def _komas(*args, **kw):
             raise RuntimeError()
-        ARCHIVE_FORMATS['xxx'] = (_breaks, [], 'xxx file')
-        try:
-            try:
+        ARCHIVE_FORMATS['xxx'] = (_komas, [], 'xxx file')
+        jaribu:
+            jaribu:
                 make_archive('xxx', 'xxx', root_dir=self.mkdtemp())
             except:
                 pass
             self.assertEqual(os.getcwd(), current_dir)
-        finally:
-            del ARCHIVE_FORMATS['xxx']
+        mwishowe:
+            toa ARCHIVE_FORMATS['xxx']
 
     def test_make_archive_tar(self):
         base_dir =  self._create_files()
@@ -335,11 +335,11 @@ class ArchiveUtilTestCase(support.TempdirManager,
 
     def test_make_archive_owner_group(self):
         # testing make_archive with owner and group, with various combinations
-        # this works even if there's not gid/uid support
+        # this works even if there's sio gid/uid support
         if UID_GID_SUPPORT:
             group = grp.getgrgid(0)[0]
             owner = pwd.getpwuid(0)[0]
-        else:
+        isipokua:
             group = owner = 'root'
 
         base_dir =  self._create_files()
@@ -369,10 +369,10 @@ class ArchiveUtilTestCase(support.TempdirManager,
         os.chdir(tmpdir)
         group = grp.getgrgid(0)[0]
         owner = pwd.getpwuid(0)[0]
-        try:
+        jaribu:
             archive_name = make_tarball(base_name, 'dist', compress=None,
                                         owner=owner, group=group)
-        finally:
+        mwishowe:
             os.chdir(old_dir)
 
         # check if the compressed tarball was created
@@ -380,11 +380,11 @@ class ArchiveUtilTestCase(support.TempdirManager,
 
         # now checks the rights
         archive = tarfile.open(archive_name)
-        try:
+        jaribu:
             for member in archive.getmembers():
                 self.assertEqual(member.uid, 0)
                 self.assertEqual(member.gid, 0)
-        finally:
+        mwishowe:
             archive.close()
 
 def test_suite():

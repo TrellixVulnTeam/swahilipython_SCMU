@@ -10,30 +10,30 @@ kundi ObjectTreeItemTest(unittest.TestCase):
         ti = debugobj.ObjectTreeItem('label', 22)
         self.assertEqual(ti.labeltext, 'label')
         self.assertEqual(ti.object, 22)
-        self.assertEqual(ti.setfunction, None)
+        self.assertEqual(ti.setfunction, Tupu)
 
 
 kundi ClassTreeItemTest(unittest.TestCase):
 
     eleza test_isexpandable(self):
         ti = debugobj.ClassTreeItem('label', 0)
-        self.assertTrue(ti.IsExpandable())
+        self.assertKweli(ti.IsExpandable())
 
 
 kundi AtomicObjectTreeItemTest(unittest.TestCase):
 
     eleza test_isexpandable(self):
         ti = debugobj.AtomicObjectTreeItem('label', 0)
-        self.assertFalse(ti.IsExpandable())
+        self.assertUongo(ti.IsExpandable())
 
 
 kundi SequenceTreeItemTest(unittest.TestCase):
 
     eleza test_isexpandable(self):
         ti = debugobj.SequenceTreeItem('label', ())
-        self.assertFalse(ti.IsExpandable())
+        self.assertUongo(ti.IsExpandable())
         ti = debugobj.SequenceTreeItem('label', (1,))
-        self.assertTrue(ti.IsExpandable())
+        self.assertKweli(ti.IsExpandable())
 
     eleza test_keys(self):
         ti = debugobj.SequenceTreeItem('label', 'abc')
@@ -44,9 +44,9 @@ kundi DictTreeItemTest(unittest.TestCase):
 
     eleza test_isexpandable(self):
         ti = debugobj.DictTreeItem('label', {})
-        self.assertFalse(ti.IsExpandable())
+        self.assertUongo(ti.IsExpandable())
         ti = debugobj.DictTreeItem('label', {1:1})
-        self.assertTrue(ti.IsExpandable())
+        self.assertKweli(ti.IsExpandable())
 
     eleza test_keys(self):
         ti = debugobj.DictTreeItem('label', {1:1, 0:0, 2:2})

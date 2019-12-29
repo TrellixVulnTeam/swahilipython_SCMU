@@ -176,7 +176,7 @@ class LockTests(test_utils.TestCase):
         # - B is cancelled
         # - A releases the lock
         #
-        # If B's waiter is marked cancelled but not yet removed from
+        # If B's waiter is marked cancelled but sio yet removed from
         # _waiters, A's release() call will crash when trying to set
         # B's waiter; instead, it should move on to C's waiter.
 
@@ -186,10 +186,10 @@ class LockTests(test_utils.TestCase):
 
         async def lockit(name, blocker):
             await lock.acquire()
-            try:
-                if blocker is not None:
+            jaribu:
+                if blocker ni sio None:
                     await blocker
-            finally:
+            mwishowe:
                 lock.release()
 
         fa = self.loop.create_future()
@@ -276,7 +276,7 @@ class LockTests(test_utils.TestCase):
         self.assertEqual(len(lock._waiters), 1)
 
         # Create a second waiter, wake up the first, and cancel it.
-        # Without the fix, the second was not woken up.
+        # Without the fix, the second was sio woken up.
         tc = self.loop.create_task(lock.acquire())
         lock.release()
         tb.cancel()
@@ -339,10 +339,10 @@ class LockTests(test_utils.TestCase):
         with self.assertWarns(DeprecationWarning):
             lock = asyncio.Lock(loop=self.loop)
 
-        try:
+        jaribu:
             with lock:
-                self.fail('RuntimeError is not raised in with expression')
-        except RuntimeError as err:
+                self.fail('RuntimeError ni sio raised in with expression')
+        tatizo RuntimeError as err:
             self.assertEqual(
                 str(err),
                 '"yield from" should be used as context manager expression')
@@ -599,10 +599,10 @@ class ConditionTests(test_utils.TestCase):
         self.loop.call_soon(wait_task.cancel)
         self.loop.call_soon(cond.release)
 
-        try:
+        jaribu:
             self.loop.run_until_complete(wait_task)
-        except asyncio.CancelledError:
-            # Should not happen, since no cancellation points
+        tatizo asyncio.CancelledError:
+            # Should sio happen, since no cancellation points
             pass
 
         self.assertTrue(cond.locked())
@@ -827,10 +827,10 @@ class ConditionTests(test_utils.TestCase):
         with self.assertWarns(DeprecationWarning):
             cond = asyncio.Condition(loop=self.loop)
 
-        try:
+        jaribu:
             with cond:
-                self.fail('RuntimeError is not raised in with expression')
-        except RuntimeError as err:
+                self.fail('RuntimeError ni sio raised in with expression')
+        tatizo RuntimeError as err:
             self.assertEqual(
                 str(err),
                 '"yield from" should be used as context manager expression')
@@ -901,7 +901,7 @@ class SemaphoreTests(test_utils.TestCase):
 
         self.loop.run_until_complete(sem.acquire())
         self.assertTrue(repr(sem).endswith('[locked]>'))
-        self.assertTrue('waiters' not in repr(sem))
+        self.assertTrue('waiters' haiko kwenye repr(sem))
         self.assertTrue(RGX_REPR.match(repr(sem)))
 
         sem._waiters.append(mock.Mock())
@@ -1086,10 +1086,10 @@ class SemaphoreTests(test_utils.TestCase):
         with self.assertWarns(DeprecationWarning):
             sem = asyncio.Semaphore(2, loop=self.loop)
 
-        try:
+        jaribu:
             with sem:
-                self.fail('RuntimeError is not raised in with expression')
-        except RuntimeError as err:
+                self.fail('RuntimeError ni sio raised in with expression')
+        tatizo RuntimeError as err:
             self.assertEqual(
                 str(err),
                 '"yield from" should be used as context manager expression')

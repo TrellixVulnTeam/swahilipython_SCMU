@@ -6,7 +6,7 @@ to RFC 2822 and primarily a clarification of the former.  It also implements
 RFC 2047 encoded word decoding.
 
 RFC 5322 goes to considerable trouble to maintain backward compatibility with
-RFC 822 in the parse phase, while cleaning up the structure on the generation
+RFC 822 in the parse phase, wakati cleaning up the structure on the generation
 phase.  This parser supports correct RFC 5322 generation by tagging white space
 as folding white space only when folding is allowed in the non-obsolete rule
 sets.  Actually, the parser is even more generous when accepting input than RFC
@@ -23,12 +23,12 @@ a copy of RFC 5322 handy when studying this code.
 Input to the parser is a string that has already been unfolded according to
 RFC 5322 rules.  According to the RFC this unfolding is the very first step, and
 this parser leaves the unfolding step to a higher level message parser, which
-will have already detected the line breaks that need unfolding while
+will have already detected the line komas that need unfolding while
 determining the beginning and end of each header.
 
 The output of the parser is a TokenList object, which is a list subclass.  A
 TokenList is a recursive data structure.  The terminal nodes of the structure
-are Terminal objects, which are subclasses of str.  These do not correspond
+are Terminal objects, which are subclasses of str.  These do sio correspond
 directly to terminal objects in the formal grammar, but are instead more
 practical higher level combinations of true terminals.
 
@@ -46,13 +46,13 @@ pairs are turned into their unquoted values.
 All TokenList and Terminal objects also have a string value, which attempts to
 be a "canonical" representation of the RFC-compliant form of the substring that
 produced the parsed subtree, including minimal use of quoted pair quoting.
-Whitespace runs are not collapsed.
+Whitespace runs are sio collapsed.
 
 Comment tokens also have a 'content' attribute providing the string found
 between the parens (including any nested comments) with whitespace preserved.
 
 All TokenList and Terminal objects have a 'defects' attribute which is a
-possibly empty list all of the defects found while creating the token.  Defects
+possibly empty list all of the defects found wakati creating the token.  Defects
 may appear on any token in the tree, and a composite list of all defects in the
 subtree is available through the 'all_defects' attribute of any node.  (For
 Terminal notes x.defects == x.all_defects.)
@@ -85,7 +85,7 @@ CFWS_LEADER = WSP | set('(')
 SPECIALS = set(r'()<>@,:;.\"[]')
 ATOM_ENDS = SPECIALS | WSP
 DOT_ATOM_ENDS = ATOM_ENDS - set('.')
-# '.', '"', and '(' do not end phrases in order to support obs-phrase
+# '.', '"', and '(' do sio end phrases in order to support obs-phrase
 PHRASE_ENDS = SPECIALS - set('."(')
 TSPECIALS = (SPECIALS | set('/?=')) - set('.')
 TOKEN_ENDS = TSPECIALS | WSP
@@ -115,7 +115,7 @@ rfc2047_matcher = re.compile(r'''
 class TokenList(list):
 
     token_type = None
-    syntactic_break = True
+    syntactic_koma = True
     ew_combine_allowed = True
 
     def __init__(self, *args, **kw):
@@ -167,14 +167,14 @@ class TokenList(list):
             self.__class__.__name__,
             self.token_type)
         for token in self:
-            if not hasattr(token, '_pp'):
+            if sio hasattr(token, '_pp'):
                 yield (indent + '    !! invalid element in token '
                                         'list: {!r}'.format(token))
-            else:
+            isipokua:
                 yield from token._pp(indent+'    ')
         if self.defects:
             extra = ' Defects: {}'.format(self.defects)
-        else:
+        isipokua:
             extra = ''
         yield '{}){}'.format(indent, extra)
 
@@ -237,7 +237,7 @@ class QuotedString(TokenList):
         for x in self:
             if x.token_type == 'bare-quoted-string':
                 res.append(str(x))
-            else:
+            isipokua:
                 res.append(x.value)
         return ''.join(res)
 
@@ -350,13 +350,13 @@ class GroupList(TokenList):
 
     @property
     def mailboxes(self):
-        if not self or self[0].token_type != 'mailbox-list':
+        if sio self or self[0].token_type != 'mailbox-list':
             return []
         return self[0].mailboxes
 
     @property
     def all_mailboxes(self):
-        if not self or self[0].token_type != 'mailbox-list':
+        if sio self or self[0].token_type != 'mailbox-list':
             return []
         return self[0].all_mailboxes
 
@@ -437,9 +437,9 @@ class AngleAddr(TokenList):
             if x.token_type == 'addr-spec':
                 if x.local_part:
                     return x.addr_spec
-                else:
+                isipokua:
                     return quote_string(x.local_part) + x.addr_spec
-        else:
+        isipokua:
             return '<>'
 
 
@@ -540,9 +540,9 @@ class AddrSpec(TokenList):
         nameset = set(self.local_part)
         if len(nameset) > len(nameset-DOT_ATOM_ENDS):
             lp = quote_string(self.local_part)
-        else:
+        isipokua:
             lp = self.local_part
-        if self.domain is not None:
+        if self.domain ni sio None:
             return lp + '@' + self.domain
         return lp
 
@@ -565,12 +565,12 @@ class DisplayName(Phrase):
             return res.value
         if res[0].token_type == 'cfws':
             res.pop(0)
-        else:
+        isipokua:
             if res[0][0].token_type == 'cfws':
                 res[0] = TokenList(res[0][1:])
         if res[-1].token_type == 'cfws':
             res.pop()
-        else:
+        isipokua:
             if res[-1][-1].token_type == 'cfws':
                 res[-1] = TokenList(res[-1][:-1])
         return res.value
@@ -580,7 +580,7 @@ class DisplayName(Phrase):
         quote = False
         if self.defects:
             quote = True
-        else:
+        isipokua:
             for x in self:
                 if x.token_type == 'quoted-string':
                     quote = True
@@ -591,7 +591,7 @@ class DisplayName(Phrase):
             if self[-1].token_type=='cfws' or self[-1][-1].token_type=='cfws':
                 post = ' '
             return pre+quote_string(self.display_name)+post
-        else:
+        isipokua:
             return super().value
 
 
@@ -604,7 +604,7 @@ class LocalPart(TokenList):
     def value(self):
         if self[0].token_type == "quoted-string":
             return self[0].quoted_value
-        else:
+        isipokua:
             return self[0].value
 
     @property
@@ -615,7 +615,7 @@ class LocalPart(TokenList):
         last_is_tl = False
         for tok in self[0] + [DOT]:
             if tok.token_type == 'cfws':
-                continue
+                endelea
             if (last_is_tl and tok.token_type == 'dot' and
                     last[-1].token_type == 'cfws'):
                 res[-1] = TokenList(last[:-1])
@@ -623,7 +623,7 @@ class LocalPart(TokenList):
             if (is_tl and last.token_type == 'dot' and
                     tok[0].token_type == 'cfws'):
                 res.append(TokenList(tok[1:]))
-            else:
+            isipokua:
                 res.append(tok)
             last = res[-1]
             last_is_tl = is_tl
@@ -721,7 +721,7 @@ class Value(TokenList):
 class MimeParameters(TokenList):
 
     token_type = 'mime-parameters'
-    syntactic_break = False
+    syntactic_koma = False
 
     @property
     def params(self):
@@ -732,12 +732,12 @@ class MimeParameters(TokenList):
         # us a stable __str__.
         params = {}  # Using order preserving dict from Python 3.7+
         for token in self:
-            if not token.token_type.endswith('parameter'):
-                continue
+            if sio token.token_type.endswith('parameter'):
+                endelea
             if token[0].token_type != 'attribute':
-                continue
+                endelea
             name = token[0].value.strip()
-            if name not in params:
+            if name haiko kwenye params:
                 params[name] = []
             params[name].append((token.section_number, token))
         for name, parts in params.items():
@@ -747,7 +747,7 @@ class MimeParameters(TokenList):
             # Our arbitrary error recovery is to ignore duplicate parameters,
             # to use appearance order if there are duplicate rfc 2231 parts,
             # and to ignore gaps.  This mimics the error recovery of get_param.
-            if not first_param.extended and len(parts) > 1:
+            if sio first_param.extended and len(parts) > 1:
                 if parts[1][0] == 0:
                     parts[1][1].defects.append(errors.InvalidHeaderDefect(
                         'duplicate parameter name; duplicate(s) ignored'))
@@ -760,28 +760,28 @@ class MimeParameters(TokenList):
                 if section_number != i:
                     # We could get fancier here and look for a complete
                     # duplicate extended parameter and ignore the second one
-                    # seen.  But we're not doing that.  The old code didn't.
-                    if not param.extended:
+                    # seen.  But we're sio doing that.  The old code didn't.
+                    if sio param.extended:
                         param.defects.append(errors.InvalidHeaderDefect(
                             'duplicate parameter name; duplicate ignored'))
-                        continue
-                    else:
+                        endelea
+                    isipokua:
                         param.defects.append(errors.InvalidHeaderDefect(
                             "inconsistent RFC2231 parameter numbering"))
                 i += 1
                 value = param.param_value
                 if param.extended:
-                    try:
+                    jaribu:
                         value = urllib.parse.unquote_to_bytes(value)
-                    except UnicodeEncodeError:
+                    tatizo UnicodeEncodeError:
                         # source had surrogate escaped bytes.  What we do now
-                        # is a bit of an open question.  I'm not sure this is
+                        # is a bit of an open question.  I'm sio sure this is
                         # the best choice, but it is what the old algorithm did
                         value = urllib.parse.unquote(value, encoding='latin-1')
-                    else:
-                        try:
+                    isipokua:
+                        jaribu:
                             value = value.decode(charset, 'surrogateescape')
-                        except LookupError:
+                        tatizo LookupError:
                             # XXX: there should really be a custom defect for
                             # unknown character set to make it easy to find,
                             # because otherwise unknown charset is a silent
@@ -798,7 +798,7 @@ class MimeParameters(TokenList):
         for name, value in self.params:
             if value:
                 params.append('{}={}'.format(name, quote_string(value)))
-            else:
+            isipokua:
                 params.append(name)
         params = '; '.join(params)
         return ' ' + params if params else ''
@@ -807,8 +807,8 @@ class MimeParameters(TokenList):
 class ParameterizedHeaderValue(TokenList):
 
     # Set this false so that the value doesn't wind up on a new line even
-    # if it and the parameters would fit there but not on the first line.
-    syntactic_break = False
+    # if it and the parameters would fit there but sio on the first line.
+    syntactic_koma = False
 
     @property
     def params(self):
@@ -847,7 +847,7 @@ class MsgID(TokenList):
     as_ew_allowed = False
 
     def fold(self, policy):
-        # message-id tokens may not be folded.
+        # message-id tokens may sio be folded.
         return str(self) + policy.linesep
 
 class MessageID(MsgID):
@@ -866,7 +866,7 @@ class Terminal(str):
 
     as_ew_allowed = True
     ew_combine_allowed = True
-    syntactic_break = True
+    syntactic_koma = True
 
     def __new__(cls, value, token_type):
         self = super().__new__(cls, value)
@@ -890,7 +890,7 @@ class Terminal(str):
             self.__class__.__name__,
             self.token_type,
             super().__repr__(),
-            '' if not self.defects else ' {}'.format(self.defects),
+            '' if sio self.defects else ' {}'.format(self.defects),
             )]
 
     def pop_trailing_ws(self):
@@ -936,7 +936,7 @@ class EWWhiteSpaceTerminal(WhiteSpaceTerminal):
 
 
 class _InvalidEwError(errors.HeaderParseError):
-    """Invalid encoded word found while parsing headers."""
+    """Invalid encoded word found wakati parsing headers."""
 
 
 # XXX these need to become classes and used as instances so
@@ -1006,15 +1006,15 @@ def _get_ptext_to_endchars(value, endchars):
             if escape:
                 escape = False
                 had_qp = True
-            else:
+            isipokua:
                 escape = True
-                continue
+                endelea
         if escape:
             escape = False
         lasivyo fragment[pos] in endchars:
-            break
+            koma
         vchars.append(fragment[pos])
-    else:
+    isipokua:
         pos = pos + 1
     return ''.join(vchars), ''.join([fragment[pos:]] + remainder), had_qp
 
@@ -1035,7 +1035,7 @@ def get_encoded_word(value):
 
     """
     ew = EncodedWord()
-    if not value.startswith('=?'):
+    if sio value.startswith('=?'):
         raise errors.HeaderParseError(
             "expected encoded word but found {}".format(value))
     tok, *remainder = value[2:].split('?=', 1)
@@ -1055,26 +1055,26 @@ def get_encoded_word(value):
             "whitespace inside encoded word"))
     ew.cte = value
     value = ''.join(remainder)
-    try:
+    jaribu:
         text, charset, lang, defects = _ew.decode('=?' + tok + '?=')
-    except (ValueError, KeyError):
+    tatizo (ValueError, KeyError):
         raise _InvalidEwError(
             "encoded word format invalid: '{}'".format(ew.cte))
     ew.charset = charset
     ew.lang = lang
     ew.defects.extend(defects)
-    while text:
+    wakati text:
         if text[0] in WSP:
             token, text = get_fws(text)
             ew.append(token)
-            continue
+            endelea
         chars, *remainder = _wsp_splitter(text, 1)
         vtext = ValueTerminal(chars, 'vtext')
         _validate_xtext(vtext)
         ew.append(vtext)
         text = ''.join(remainder)
     # Encoded words should be followed by a WS
-    if value and value[0] not in WSP:
+    if value and value[0] haiko kwenye WSP:
         ew.defects.append(errors.InvalidHeaderDefect(
             "missing trailing whitespace after encoded-word"))
     return ew, value
@@ -1084,7 +1084,7 @@ def get_unstructured(value):
        obs-unstruct = *((*LF *CR *(obs-utext) *LF *CR)) / FWS)
        obs-utext = %d0 / obs-NO-WS-CTL / LF / CR
 
-       obs-NO-WS-CTL is control characters except WSP/CR/LF.
+       obs-NO-WS-CTL is control characters tatizo WSP/CR/LF.
 
     So, basically, we have printable runs, plus control characters or nulls in
     the obsolete syntax, separated by whitespace.  Since RFC 2047 uses the
@@ -1094,7 +1094,7 @@ def get_unstructured(value):
     parse this into xtext tokens separated by WSP tokens.
 
     Because an 'unstructured' value must by definition constitute the entire
-    value, this 'get' routine does not return a remaining value, only the
+    value, this 'get' routine does sio return a remaining value, only the
     parsed TokenList.
 
     """
@@ -1103,22 +1103,22 @@ def get_unstructured(value):
     # will never send us strings with bare CR or LF.
 
     unstructured = UnstructuredTokenList()
-    while value:
+    wakati value:
         if value[0] in WSP:
             token, value = get_fws(value)
             unstructured.append(token)
-            continue
+            endelea
         valid_ew = True
         if value.startswith('=?'):
-            try:
+            jaribu:
                 token, value = get_encoded_word(value)
-            except _InvalidEwError:
+            tatizo _InvalidEwError:
                 valid_ew = False
-            except errors.HeaderParseError:
+            tatizo errors.HeaderParseError:
                 # XXX: Need to figure out how to register defects when
                 # appropriate here.
                 pass
-            else:
+            isipokua:
                 have_ws = True
                 if len(unstructured) > 0:
                     if unstructured[-1].token_type != 'fws':
@@ -1130,10 +1130,10 @@ def get_unstructured(value):
                         unstructured[-1] = EWWhiteSpaceTerminal(
                             unstructured[-1], 'fws')
                 unstructured.append(token)
-                continue
+                endelea
         tok, *remainder = _wsp_splitter(value, 1)
         # Split in the middle of an atom if there is a rfc2047 encoded word
-        # which does not have WSP on both sides. The defect will be registered
+        # which does sio have WSP on both sides. The defect will be registered
         # the next time through the loop.
         # This needs to only be performed when the encoded word is valid;
         # otherwise, performing it on an invalid encoded word can cause
@@ -1147,10 +1147,10 @@ def get_unstructured(value):
     return unstructured
 
 def get_qp_ctext(value):
-    r"""ctext = <printable ascii except \ ( )>
+    r"""ctext = <printable ascii tatizo \ ( )>
 
-    This is not the RFC ctext, since we are handling nested comments in comment
-    and unquoting quoted-pairs here.  We allow anything except the '()'
+    This ni sio the RFC ctext, since we are handling nested comments in comment
+    and unquoting quoted-pairs here.  We allow anything tatizo the '()'
     characters, but if we find any ASCII other than the RFC defined printable
     ASCII, a NonPrintableDefect is added to the token's defects list.  Since
     quoted pairs are converted to their unquoted values, what is returned is
@@ -1166,7 +1166,7 @@ def get_qp_ctext(value):
 def get_qcontent(value):
     """qcontent = qtext / quoted-pair
 
-    We allow anything except the DQUOTE character, but if we find any ASCII
+    We allow anything tatizo the DQUOTE character, but if we find any ASCII
     other than the RFC defined printable ASCII, a NonPrintableDefect is
     added to the token's defects list.  Any quoted pairs are converted to their
     unquoted values, so what is returned is a 'ptext' token.  In this case it
@@ -1185,7 +1185,7 @@ def get_atext(value):
     the token's defects list if we find non-atext characters.
     """
     m = _non_atom_end_matcher(value)
-    if not m:
+    if sio m:
         raise errors.HeaderParseError(
             "expected atext but found '{}'".format(value))
     atext = m.group()
@@ -1209,20 +1209,20 @@ def get_bare_quoted_string(value):
     if value and value[0] == '"':
         token, value = get_qcontent(value)
         bare_quoted_string.append(token)
-    while value and value[0] != '"':
+    wakati value and value[0] != '"':
         if value[0] in WSP:
             token, value = get_fws(value)
         lasivyo value[:2] == '=?':
-            try:
+            jaribu:
                 token, value = get_encoded_word(value)
                 bare_quoted_string.defects.append(errors.InvalidHeaderDefect(
                     "encoded word inside quoted string"))
-            except errors.HeaderParseError:
+            tatizo errors.HeaderParseError:
                 token, value = get_qcontent(value)
-        else:
+        isipokua:
             token, value = get_qcontent(value)
         bare_quoted_string.append(token)
-    if not value:
+    if sio value:
         bare_quoted_string.defects.append(errors.InvalidHeaderDefect(
             "end of header inside quoted string"))
         return bare_quoted_string, value
@@ -1239,15 +1239,15 @@ def get_comment(value):
             "expected '(' but found '{}'".format(value))
     comment = Comment()
     value = value[1:]
-    while value and value[0] != ")":
+    wakati value and value[0] != ")":
         if value[0] in WSP:
             token, value = get_fws(value)
         lasivyo value[0] == '(':
             token, value = get_comment(value)
-        else:
+        isipokua:
             token, value = get_qp_ctext(value)
         comment.append(token)
-    if not value:
+    if sio value:
         comment.defects.append(errors.InvalidHeaderDefect(
             "end of header inside comment"))
         return comment, value
@@ -1258,10 +1258,10 @@ def get_cfws(value):
 
     """
     cfws = CFWSList()
-    while value and value[0] in CFWS_LEADER:
+    wakati value and value[0] in CFWS_LEADER:
         if value[0] in WSP:
             token, value = get_fws(value)
-        else:
+        isipokua:
             token, value = get_comment(value)
         cfws.append(token)
     return cfws, value
@@ -1270,7 +1270,7 @@ def get_quoted_string(value):
     """quoted-string = [CFWS] <bare-quoted-string> [CFWS]
 
     'bare-quoted-string' is an intermediate class defined by this
-    parser and not by the RFC grammar.  It is the quoted string
+    parser and sio by the RFC grammar.  It is the quoted string
     without any attached CFWS.
     """
     quoted_string = QuotedString()
@@ -1297,13 +1297,13 @@ def get_atom(value):
         raise errors.HeaderParseError(
             "expected atom but found '{}'".format(value))
     if value.startswith('=?'):
-        try:
+        jaribu:
             token, value = get_encoded_word(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             # XXX: need to figure out how to register defects when
             # appropriate here.
             token, value = get_atext(value)
-    else:
+    isipokua:
         token, value = get_atext(value)
     atom.append(token)
     if value and value[0] in CFWS_LEADER:
@@ -1316,10 +1316,10 @@ def get_dot_atom_text(value):
 
     """
     dot_atom_text = DotAtomText()
-    if not value or value[0] in ATOM_ENDS:
+    if sio value or value[0] in ATOM_ENDS:
         raise errors.HeaderParseError("expected atom at a start of "
             "dot-atom-text but found '{}'".format(value))
-    while value and value[0] not in ATOM_ENDS:
+    wakati value and value[0] haiko kwenye ATOM_ENDS:
         token, value = get_atext(value)
         dot_atom_text.append(token)
         if value and value[0] == '.':
@@ -1341,13 +1341,13 @@ def get_dot_atom(value):
         token, value = get_cfws(value)
         dot_atom.append(token)
     if value.startswith('=?'):
-        try:
+        jaribu:
             token, value = get_encoded_word(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             # XXX: need to figure out how to register defects when
             # appropriate here.
             token, value = get_dot_atom_text(value)
-    else:
+    isipokua:
         token, value = get_dot_atom_text(value)
     dot_atom.append(token)
     if value and value[0] in CFWS_LEADER:
@@ -1366,16 +1366,16 @@ def get_word(value):
     HeaderParseError is raised.
 
     The token returned is either an Atom or a QuotedString, as appropriate.
-    This means the 'word' level of the formal grammar is not represented in the
+    This means the 'word' level of the formal grammar ni sio represented in the
     parse tree; this is because having that extra layer when manipulating the
     parse tree is more confusing than it is helpful.
 
     """
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
-    else:
+    isipokua:
         leader = None
-    if not value:
+    if sio value:
         raise errors.HeaderParseError(
             "Expected 'atom' or 'quoted-string' but found nothing.")
     if value[0]=='"':
@@ -1383,9 +1383,9 @@ def get_word(value):
     lasivyo value[0] in SPECIALS:
         raise errors.HeaderParseError("Expected 'atom' or 'quoted-string' "
                                       "but found '{}'".format(value))
-    else:
+    isipokua:
         token, value = get_atom(value)
-    if leader is not None:
+    if leader ni sio None:
         token[:0] = [leader]
     return token, value
 
@@ -1397,32 +1397,32 @@ def get_phrase(value):
     order as long as it starts with at least one word.  If anything other than
     words is detected, an ObsoleteHeaderDefect is added to the token's defect
     list.  We also accept a phrase that starts with CFWS followed by a dot;
-    this is registered as an InvalidHeaderDefect, since it is not supported by
+    this is registered as an InvalidHeaderDefect, since it ni sio supported by
     even the obsolete grammar.
 
     """
     phrase = Phrase()
-    try:
+    jaribu:
         token, value = get_word(value)
         phrase.append(token)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         phrase.defects.append(errors.InvalidHeaderDefect(
-            "phrase does not start with word"))
-    while value and value[0] not in PHRASE_ENDS:
+            "phrase does sio start with word"))
+    wakati value and value[0] haiko kwenye PHRASE_ENDS:
         if value[0]=='.':
             phrase.append(DOT)
             phrase.defects.append(errors.ObsoleteHeaderDefect(
                 "period in 'phrase'"))
             value = value[1:]
-        else:
-            try:
+        isipokua:
+            jaribu:
                 token, value = get_word(value)
-            except errors.HeaderParseError:
+            tatizo errors.HeaderParseError:
                 if value[0] in CFWS_LEADER:
                     token, value = get_cfws(value)
                     phrase.defects.append(errors.ObsoleteHeaderDefect(
                         "comment found without atom"))
-                else:
+                isipokua:
                     raise
             phrase.append(token)
     return phrase, value
@@ -1435,33 +1435,33 @@ def get_local_part(value):
     leader = None
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
-    if not value:
+    if sio value:
         raise errors.HeaderParseError(
             "expected local-part but found '{}'".format(value))
-    try:
+    jaribu:
         token, value = get_dot_atom(value)
-    except errors.HeaderParseError:
-        try:
+    tatizo errors.HeaderParseError:
+        jaribu:
             token, value = get_word(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             if value[0] != '\\' and value[0] in PHRASE_ENDS:
                 raise
             token = TokenList()
-    if leader is not None:
+    if leader ni sio None:
         token[:0] = [leader]
     local_part.append(token)
-    if value and (value[0]=='\\' or value[0] not in PHRASE_ENDS):
+    if value and (value[0]=='\\' or value[0] haiko kwenye PHRASE_ENDS):
         obs_local_part, value = get_obs_local_part(str(local_part) + value)
         if obs_local_part.token_type == 'invalid-obs-local-part':
             local_part.defects.append(errors.InvalidHeaderDefect(
-                "local-part is not dot-atom, quoted-string, or obs-local-part"))
-        else:
+                "local-part ni sio dot-atom, quoted-string, or obs-local-part"))
+        isipokua:
             local_part.defects.append(errors.ObsoleteHeaderDefect(
-                "local-part is not a dot-atom (contains CFWS)"))
+                "local-part ni sio a dot-atom (contains CFWS)"))
         local_part[0] = obs_local_part
-    try:
+    jaribu:
         local_part.value.encode('ascii')
-    except UnicodeEncodeError:
+    tatizo UnicodeEncodeError:
         local_part.defects.append(errors.NonASCIILocalPartDefect(
                 "local-part contains non-ASCII characters)"))
     return local_part, value
@@ -1471,7 +1471,7 @@ def get_obs_local_part(value):
     """
     obs_local_part = ObsLocalPart()
     last_non_ws_was_dot = False
-    while value and (value[0]=='\\' or value[0] not in PHRASE_ENDS):
+    wakati value and (value[0]=='\\' or value[0] haiko kwenye PHRASE_ENDS):
         if value[0] == '.':
             if last_non_ws_was_dot:
                 obs_local_part.defects.append(errors.InvalidHeaderDefect(
@@ -1479,7 +1479,7 @@ def get_obs_local_part(value):
             obs_local_part.append(DOT)
             last_non_ws_was_dot = True
             value = value[1:]
-            continue
+            endelea
         lasivyo value[0]=='\\':
             obs_local_part.append(ValueTerminal(value[0],
                                                 'misplaced-special'))
@@ -1487,15 +1487,15 @@ def get_obs_local_part(value):
             obs_local_part.defects.append(errors.InvalidHeaderDefect(
                 "'\\' character outside of quoted-string/ccontent"))
             last_non_ws_was_dot = False
-            continue
+            endelea
         if obs_local_part and obs_local_part[-1].token_type != 'dot':
             obs_local_part.defects.append(errors.InvalidHeaderDefect(
                 "missing '.' between words"))
-        try:
+        jaribu:
             token, value = get_word(value)
             last_non_ws_was_dot = False
-        except errors.HeaderParseError:
-            if value[0] not in CFWS_LEADER:
+        tatizo errors.HeaderParseError:
+            if value[0] haiko kwenye CFWS_LEADER:
                 raise
             token, value = get_cfws(value)
         obs_local_part.append(token)
@@ -1514,10 +1514,10 @@ def get_obs_local_part(value):
     return obs_local_part, value
 
 def get_dtext(value):
-    r""" dtext = <printable ascii except \ [ ]> / obs-dtext
+    r""" dtext = <printable ascii tatizo \ [ ]> / obs-dtext
         obs-dtext = obs-NO-WS-CTL / quoted-pair
 
-    We allow anything except the excluded characters, but if we find any
+    We allow anything tatizo the excluded characters, but if we find any
     ASCII other than the RFC defined printable ASCII, a NonPrintableDefect is
     added to the token's defects list.  Quoted pairs are converted to their
     unquoted values, so what is returned is a ptext token, in this case a
@@ -1549,7 +1549,7 @@ def get_domain_literal(value):
     if value[0] in CFWS_LEADER:
         token, value = get_cfws(value)
         domain_literal.append(token)
-    if not value:
+    if sio value:
         raise errors.HeaderParseError("expected domain-literal")
     if value[0] != '[':
         raise errors.HeaderParseError("expected '[' at start of domain-literal "
@@ -1589,30 +1589,30 @@ def get_domain(value):
     leader = None
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
-    if not value:
+    if sio value:
         raise errors.HeaderParseError(
             "expected domain but found '{}'".format(value))
     if value[0] == '[':
         token, value = get_domain_literal(value)
-        if leader is not None:
+        if leader ni sio None:
             token[:0] = [leader]
         domain.append(token)
         return domain, value
-    try:
+    jaribu:
         token, value = get_dot_atom(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         token, value = get_atom(value)
     if value and value[0] == '@':
         raise errors.HeaderParseError('Invalid Domain')
-    if leader is not None:
+    if leader ni sio None:
         token[:0] = [leader]
     domain.append(token)
     if value and value[0] == '.':
         domain.defects.append(errors.ObsoleteHeaderDefect(
-            "domain is not a dot-atom (contains CFWS)"))
+            "domain ni sio a dot-atom (contains CFWS)"))
         if domain[0].token_type == 'dot-atom':
             domain[:] = domain[0]
-        while value and value[0] == '.':
+        wakati value and value[0] == '.':
             domain.append(DOT)
             token, value = get_atom(value[1:])
             domain.append(token)
@@ -1625,7 +1625,7 @@ def get_addr_spec(value):
     addr_spec = AddrSpec()
     token, value = get_local_part(value)
     addr_spec.append(token)
-    if not value or value[0] != '@':
+    if sio value or value[0] != '@':
         addr_spec.defects.append(errors.InvalidHeaderDefect(
             "addr-spec local part with no domain"))
         return addr_spec, value
@@ -1642,24 +1642,24 @@ def get_obs_route(value):
         there is no obs-domain-list in the parse tree).
     """
     obs_route = ObsRoute()
-    while value and (value[0]==',' or value[0] in CFWS_LEADER):
+    wakati value and (value[0]==',' or value[0] in CFWS_LEADER):
         if value[0] in CFWS_LEADER:
             token, value = get_cfws(value)
             obs_route.append(token)
         lasivyo value[0] == ',':
             obs_route.append(ListSeparator)
             value = value[1:]
-    if not value or value[0] != '@':
+    if sio value or value[0] != '@':
         raise errors.HeaderParseError(
             "expected obs-route domain but found '{}'".format(value))
     obs_route.append(RouteComponentMarker)
     token, value = get_domain(value[1:])
     obs_route.append(token)
-    while value and value[0]==',':
+    wakati value and value[0]==',':
         obs_route.append(ListSeparator)
         value = value[1:]
-        if not value:
-            break
+        if sio value:
+            koma
         if value[0] in CFWS_LEADER:
             token, value = get_cfws(value)
             obs_route.append(token)
@@ -1667,8 +1667,8 @@ def get_obs_route(value):
             obs_route.append(RouteComponentMarker)
             token, value = get_domain(value[1:])
             obs_route.append(token)
-    if not value:
-        raise errors.HeaderParseError("end of header while parsing obs-route")
+    if sio value:
+        raise errors.HeaderParseError("end of header wakati parsing obs-route")
     if value[0] != ':':
         raise errors.HeaderParseError( "expected ':' marking end of "
             "obs-route but found '{}'".format(value))
@@ -1684,12 +1684,12 @@ def get_angle_addr(value):
     if value[0] in CFWS_LEADER:
         token, value = get_cfws(value)
         angle_addr.append(token)
-    if not value or value[0] != '<':
+    if sio value or value[0] != '<':
         raise errors.HeaderParseError(
             "expected angle-addr but found '{}'".format(value))
     angle_addr.append(ValueTerminal('<', 'angle-addr-start'))
     value = value[1:]
-    # Although it is not legal per RFC5322, SMTP uses '<>' in certain
+    # Although it ni sio legal per RFC5322, SMTP uses '<>' in certain
     # circumstances.
     if value[0] == '>':
         angle_addr.append(ValueTerminal('>', 'angle-addr-end'))
@@ -1697,14 +1697,14 @@ def get_angle_addr(value):
             "null addr-spec in angle-addr"))
         value = value[1:]
         return angle_addr, value
-    try:
+    jaribu:
         token, value = get_addr_spec(value)
-    except errors.HeaderParseError:
-        try:
+    tatizo errors.HeaderParseError:
+        jaribu:
             token, value = get_obs_route(value)
             angle_addr.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete route specification in angle-addr"))
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             raise errors.HeaderParseError(
                 "expected addr-spec or obs-route but found '{}'".format(value))
         angle_addr.append(token)
@@ -1712,7 +1712,7 @@ def get_angle_addr(value):
     angle_addr.append(token)
     if value and value[0] == '>':
         value = value[1:]
-    else:
+    isipokua:
         angle_addr.defects.append(errors.InvalidHeaderDefect(
             "missing trailing '>' on angle-addr"))
     angle_addr.append(ValueTerminal('>', 'angle-addr-end'))
@@ -1745,7 +1745,7 @@ def get_name_addr(value):
     leader = None
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
-        if not value:
+        if sio value:
             raise errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(leader))
     if value[0] != '<':
@@ -1753,15 +1753,15 @@ def get_name_addr(value):
             raise errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(value))
         token, value = get_display_name(value)
-        if not value:
+        if sio value:
             raise errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(token))
-        if leader is not None:
+        if leader ni sio None:
             token[0][:0] = [leader]
             leader = None
         name_addr.append(token)
     token, value = get_angle_addr(value)
-    if leader is not None:
+    if leader ni sio None:
         token[:0] = [leader]
     name_addr.append(token)
     return name_addr, value
@@ -1773,12 +1773,12 @@ def get_mailbox(value):
     # The only way to figure out if we are dealing with a name-addr or an
     # addr-spec is to try parsing each one.
     mailbox = Mailbox()
-    try:
+    jaribu:
         token, value = get_name_addr(value)
-    except errors.HeaderParseError:
-        try:
+    tatizo errors.HeaderParseError:
+        jaribu:
             token, value = get_addr_spec(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             raise errors.HeaderParseError(
                 "expected mailbox but found '{}'".format(value))
     if any(isinstance(x, errors.InvalidHeaderDefect)
@@ -1795,12 +1795,12 @@ def get_invalid_mailbox(value, endchars):
 
     """
     invalid_mailbox = InvalidMailbox()
-    while value and value[0] not in endchars:
+    wakati value and value[0] haiko kwenye endchars:
         if value[0] in PHRASE_ENDS:
             invalid_mailbox.append(ValueTerminal(value[0],
                                                  'misplaced-special'))
             value = value[1:]
-        else:
+        isipokua:
             token, value = get_phrase(value)
             invalid_mailbox.append(token)
     return invalid_mailbox, value
@@ -1812,27 +1812,27 @@ def get_mailbox_list(value):
     For this routine we go outside the formal grammar in order to improve error
     handling.  We recognize the end of the mailbox list only at the end of the
     value or at a ';' (the group terminator).  This is so that we can turn
-    invalid mailboxes into InvalidMailbox tokens and continue parsing any
+    invalid mailboxes into InvalidMailbox tokens and endelea parsing any
     remaining valid mailboxes.  We also allow all mailbox entries to be null,
     and this condition is handled appropriately at a higher level.
 
     """
     mailbox_list = MailboxList()
-    while value and value[0] != ';':
-        try:
+    wakati value and value[0] != ';':
+        jaribu:
             token, value = get_mailbox(value)
             mailbox_list.append(token)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             leader = None
             if value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
-                if not value or value[0] in ',;':
+                if sio value or value[0] in ',;':
                     mailbox_list.append(leader)
                     mailbox_list.defects.append(errors.ObsoleteHeaderDefect(
                         "empty element in mailbox-list"))
-                else:
+                isipokua:
                     token, value = get_invalid_mailbox(value, ',;')
-                    if leader is not None:
+                    if leader ni sio None:
                         token[:0] = [leader]
                     mailbox_list.append(token)
                     mailbox_list.defects.append(errors.InvalidHeaderDefect(
@@ -1840,14 +1840,14 @@ def get_mailbox_list(value):
             lasivyo value[0] == ',':
                 mailbox_list.defects.append(errors.ObsoleteHeaderDefect(
                     "empty element in mailbox-list"))
-            else:
+            isipokua:
                 token, value = get_invalid_mailbox(value, ',;')
-                if leader is not None:
+                if leader ni sio None:
                     token[:0] = [leader]
                 mailbox_list.append(token)
                 mailbox_list.defects.append(errors.InvalidHeaderDefect(
                     "invalid mailbox in mailbox-list"))
-        if value and value[0] not in ',;':
+        if value and value[0] haiko kwenye ',;':
             # Crap after mailbox; treat it as an invalid mailbox.
             # The mailbox info will still be available.
             mailbox = mailbox_list[-1]
@@ -1868,14 +1868,14 @@ def get_group_list(value):
 
     """
     group_list = GroupList()
-    if not value:
+    if sio value:
         group_list.defects.append(errors.InvalidHeaderDefect(
             "end of header before group-list"))
         return group_list, value
     leader = None
     if value and value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
-        if not value:
+        if sio value:
             # This should never happen in email parsing, since CFWS-only is a
             # legal alternative to group-list in a group, which is the only
             # place group-list appears.
@@ -1888,13 +1888,13 @@ def get_group_list(value):
             return group_list, value
     token, value = get_mailbox_list(value)
     if len(token.all_mailboxes)==0:
-        if leader is not None:
+        if leader ni sio None:
             group_list.append(leader)
         group_list.extend(token)
         group_list.defects.append(errors.ObsoleteHeaderDefect(
             "group-list with empty entries"))
         return group_list, value
-    if leader is not None:
+    if leader ni sio None:
         token[:0] = [leader]
     group_list.append(token)
     return group_list, value
@@ -1905,7 +1905,7 @@ def get_group(value):
     """
     group = Group()
     token, value = get_display_name(value)
-    if not value or value[0] != ':':
+    if sio value or value[0] != ':':
         raise errors.HeaderParseError("expected ':' at end of group "
             "display name but found '{}'".format(value))
     group.append(token)
@@ -1916,7 +1916,7 @@ def get_group(value):
         return group, value[1:]
     token, value = get_group_list(value)
     group.append(token)
-    if not value:
+    if sio value:
         group.defects.append(errors.InvalidHeaderDefect(
             "end of header in group"))
     lasivyo value[0] != ';':
@@ -1947,12 +1947,12 @@ def get_address(value):
     # for a phrase and then branching based on the next character, but that
     # would be a premature optimization.
     address = Address()
-    try:
+    jaribu:
         token, value = get_group(value)
-    except errors.HeaderParseError:
-        try:
+    tatizo errors.HeaderParseError:
+        jaribu:
             token, value = get_mailbox(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             raise errors.HeaderParseError(
                 "expected address but found '{}'".format(value))
     address.append(token)
@@ -1969,21 +1969,21 @@ def get_address_list(value):
 
     """
     address_list = AddressList()
-    while value:
-        try:
+    wakati value:
+        jaribu:
             token, value = get_address(value)
             address_list.append(token)
-        except errors.HeaderParseError as err:
+        tatizo errors.HeaderParseError as err:
             leader = None
             if value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
-                if not value or value[0] == ',':
+                if sio value or value[0] == ',':
                     address_list.append(leader)
                     address_list.defects.append(errors.ObsoleteHeaderDefect(
                         "address-list entry with no content"))
-                else:
+                isipokua:
                     token, value = get_invalid_mailbox(value, ',')
-                    if leader is not None:
+                    if leader ni sio None:
                         token[:0] = [leader]
                     address_list.append(Address([token]))
                     address_list.defects.append(errors.InvalidHeaderDefect(
@@ -1991,9 +1991,9 @@ def get_address_list(value):
             lasivyo value[0] == ',':
                 address_list.defects.append(errors.ObsoleteHeaderDefect(
                     "empty element in address-list"))
-            else:
+            isipokua:
                 token, value = get_invalid_mailbox(value, ',')
-                if leader is not None:
+                if leader ni sio None:
                     token[:0] = [leader]
                 address_list.append(Address([token]))
                 address_list.defects.append(errors.InvalidHeaderDefect(
@@ -2017,7 +2017,7 @@ def get_no_fold_literal(value):
     """ no-fold-literal = "[" *dtext "]"
     """
     no_fold_literal = NoFoldLiteral()
-    if not value:
+    if sio value:
         raise errors.HeaderParseError(
             "expected no-fold-literal but found '{}'".format(value))
     if value[0] != '[':
@@ -2028,7 +2028,7 @@ def get_no_fold_literal(value):
     value = value[1:]
     token, value = get_dtext(value)
     no_fold_literal.append(token)
-    if not value or value[0] != ']':
+    if sio value or value[0] != ']':
         raise errors.HeaderParseError(
             "expected ']' at the end of no-fold-literal "
             "but found '{}'".format(value))
@@ -2045,26 +2045,26 @@ def get_msg_id(value):
     if value[0] in CFWS_LEADER:
         token, value = get_cfws(value)
         msg_id.append(token)
-    if not value or value[0] != '<':
+    if sio value or value[0] != '<':
         raise errors.HeaderParseError(
             "expected msg-id but found '{}'".format(value))
     msg_id.append(ValueTerminal('<', 'msg-id-start'))
     value = value[1:]
     # Parse id-left.
-    try:
+    jaribu:
         token, value = get_dot_atom_text(value)
-    except errors.HeaderParseError:
-        try:
+    tatizo errors.HeaderParseError:
+        jaribu:
             # obs-id-left is same as local-part of add-spec.
             token, value = get_obs_local_part(value)
             msg_id.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete id-left in msg-id"))
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             raise errors.HeaderParseError(
                 "expected dot-atom-text or obs-id-left"
                 " but found '{}'".format(value))
     msg_id.append(token)
-    if not value or value[0] != '@':
+    if sio value or value[0] != '@':
         msg_id.defects.append(errors.InvalidHeaderDefect(
             "msg-id with no id-right"))
         # Even though there is no id-right, if the local part
@@ -2077,24 +2077,24 @@ def get_msg_id(value):
     msg_id.append(ValueTerminal('@', 'address-at-symbol'))
     value = value[1:]
     # Parse id-right.
-    try:
+    jaribu:
         token, value = get_dot_atom_text(value)
-    except errors.HeaderParseError:
-        try:
+    tatizo errors.HeaderParseError:
+        jaribu:
             token, value = get_no_fold_literal(value)
-        except errors.HeaderParseError as e:
-            try:
+        tatizo errors.HeaderParseError as e:
+            jaribu:
                 token, value = get_domain(value)
                 msg_id.defects.append(errors.ObsoleteHeaderDefect(
                     "obsolete id-right in msg-id"))
-            except errors.HeaderParseError:
+            tatizo errors.HeaderParseError:
                 raise errors.HeaderParseError(
                     "expected dot-atom-text, no-fold-literal or obs-id-right"
                     " but found '{}'".format(value))
     msg_id.append(token)
     if value and value[0] == '>':
         value = value[1:]
-    else:
+    isipokua:
         msg_id.defects.append(errors.InvalidHeaderDefect(
             "missing trailing '>' on msg-id"))
     msg_id.append(ValueTerminal('>', 'msg-id-end'))
@@ -2108,9 +2108,9 @@ def parse_message_id(value):
     """message-id      =   "Message-ID:" msg-id CRLF
     """
     message_id = MessageID()
-    try:
+    jaribu:
         token, value = get_msg_id(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         message_id.defects.append(errors.InvalidHeaderDefect(
             "Expected msg-id but found {!r}".format(value)))
     message_id.append(token)
@@ -2131,32 +2131,32 @@ def parse_mime_version(value):
     # The [CFWS] is implicit in the RFC 2045 BNF.
     # XXX: This routine is a bit verbose, should factor out a get_int method.
     mime_version = MIMEVersion()
-    if not value:
+    if sio value:
         mime_version.defects.append(errors.HeaderMissingRequiredValue(
             "Missing MIME version number (eg: 1.0)"))
         return mime_version
     if value[0] in CFWS_LEADER:
         token, value = get_cfws(value)
         mime_version.append(token)
-        if not value:
+        if sio value:
             mime_version.defects.append(errors.HeaderMissingRequiredValue(
                 "Expected MIME version number but found only CFWS"))
     digits = ''
-    while value and value[0] != '.' and value[0] not in CFWS_LEADER:
+    wakati value and value[0] != '.' and value[0] haiko kwenye CFWS_LEADER:
         digits += value[0]
         value = value[1:]
-    if not digits.isdigit():
+    if sio digits.isdigit():
         mime_version.defects.append(errors.InvalidHeaderDefect(
             "Expected MIME major version number but found {!r}".format(digits)))
         mime_version.append(ValueTerminal(digits, 'xtext'))
-    else:
+    isipokua:
         mime_version.major = int(digits)
         mime_version.append(ValueTerminal(digits, 'digits'))
     if value and value[0] in CFWS_LEADER:
         token, value = get_cfws(value)
         mime_version.append(token)
-    if not value or value[0] != '.':
-        if mime_version.major is not None:
+    if sio value or value[0] != '.':
+        if mime_version.major ni sio None:
             mime_version.defects.append(errors.InvalidHeaderDefect(
                 "Incomplete MIME version; found only major number"))
         if value:
@@ -2167,20 +2167,20 @@ def parse_mime_version(value):
     if value and value[0] in CFWS_LEADER:
         token, value = get_cfws(value)
         mime_version.append(token)
-    if not value:
-        if mime_version.major is not None:
+    if sio value:
+        if mime_version.major ni sio None:
             mime_version.defects.append(errors.InvalidHeaderDefect(
                 "Incomplete MIME version; found only major number"))
         return mime_version
     digits = ''
-    while value and value[0] not in CFWS_LEADER:
+    wakati value and value[0] haiko kwenye CFWS_LEADER:
         digits += value[0]
         value = value[1:]
-    if not digits.isdigit():
+    if sio digits.isdigit():
         mime_version.defects.append(errors.InvalidHeaderDefect(
             "Expected MIME minor version number but found {!r}".format(digits)))
         mime_version.append(ValueTerminal(digits, 'xtext'))
-    else:
+    isipokua:
         mime_version.minor = int(digits)
         mime_version.append(ValueTerminal(digits, 'digits'))
     if value and value[0] in CFWS_LEADER:
@@ -2200,12 +2200,12 @@ def get_invalid_parameter(value):
 
     """
     invalid_parameter = InvalidParameter()
-    while value and value[0] != ';':
+    wakati value and value[0] != ';':
         if value[0] in PHRASE_ENDS:
             invalid_parameter.append(ValueTerminal(value[0],
                                                    'misplaced-special'))
             value = value[1:]
-        else:
+        isipokua:
             token, value = get_phrase(value)
             invalid_parameter.append(token)
     return invalid_parameter, value
@@ -2220,7 +2220,7 @@ def get_ttext(value):
 
     """
     m = _non_token_end_matcher(value)
-    if not m:
+    if sio m:
         raise errors.HeaderParseError(
             "expected ttext but found '{}'".format(value))
     ttext = m.group()
@@ -2232,10 +2232,10 @@ def get_ttext(value):
 def get_token(value):
     """token = [CFWS] 1*ttext [CFWS]
 
-    The RFC equivalent of ttext is any US-ASCII chars except space, ctls, or
+    The RFC equivalent of ttext is any US-ASCII chars tatizo space, ctls, or
     tspecials.  We also exclude tabs even though the RFC doesn't.
 
-    The RFC implies the CFWS but is not explicit about it in the BNF.
+    The RFC implies the CFWS but ni sio explicit about it in the BNF.
 
     """
     mtoken = Token()
@@ -2262,7 +2262,7 @@ def get_attrtext(value):
 
     """
     m = _non_attribute_end_matcher(value)
-    if not m:
+    if sio m:
         raise errors.HeaderParseError(
             "expected attrtext but found {!r}".format(value))
     attrtext = m.group()
@@ -2303,7 +2303,7 @@ def get_extended_attrtext(value):
 
     """
     m = _non_extended_attribute_end_matcher(value)
-    if not m:
+    if sio m:
         raise errors.HeaderParseError(
             "expected extended attrtext but found {!r}".format(value))
     attrtext = m.group()
@@ -2315,7 +2315,7 @@ def get_extended_attrtext(value):
 def get_extended_attribute(value):
     """ [CFWS] 1*extended_attrtext [CFWS]
 
-    This is like the non-extended version except we allow % characters, so that
+    This is like the non-extended version tatizo we allow % characters, so that
     we can pick up an encoded value as a single string.
 
     """
@@ -2337,23 +2337,23 @@ def get_extended_attribute(value):
 def get_section(value):
     """ '*' digits
 
-    The formal BNF is more complicated because leading 0s are not allowed.  We
+    The formal BNF is more complicated because leading 0s are sio allowed.  We
     check for that and add a defect.  We also assume no CFWS is allowed between
-    the '*' and the digits, though the RFC is not crystal clear on that.
+    the '*' and the digits, though the RFC ni sio crystal clear on that.
     The caller should already have dealt with leading CFWS.
 
     """
     section = Section()
-    if not value or value[0] != '*':
+    if sio value or value[0] != '*':
         raise errors.HeaderParseError("Expected section but found {}".format(
                                         value))
     section.append(ValueTerminal('*', 'section-marker'))
     value = value[1:]
-    if not value or not value[0].isdigit():
+    if sio value or sio value[0].isdigit():
         raise errors.HeaderParseError("Expected section number but "
                                       "found {}".format(value))
     digits = ''
-    while value and value[0].isdigit():
+    wakati value and value[0].isdigit():
         digits += value[0]
         value = value[1:]
     if digits[0] == '0' and digits != '0':
@@ -2369,19 +2369,19 @@ def get_value(value):
 
     """
     v = Value()
-    if not value:
+    if sio value:
         raise errors.HeaderParseError("Expected value but found end of string")
     leader = None
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
-    if not value:
+    if sio value:
         raise errors.HeaderParseError("Expected value but found "
                                       "only {}".format(leader))
     if value[0] == '"':
         token, value = get_quoted_string(value)
-    else:
+    isipokua:
         token, value = get_extended_attribute(value)
-    if leader is not None:
+    if leader ni sio None:
         token[:0] = [leader]
     v.append(token)
     return v, value
@@ -2389,7 +2389,7 @@ def get_value(value):
 def get_parameter(value):
     """ attribute [section] ["*"] [CFWS] "=" value
 
-    The CFWS is implied by the RFC but not made explicit in the BNF.  This
+    The CFWS is implied by the RFC but sio made explicit in the BNF.  This
     simplified form of the BNF from the RFC is made to conform with the RFC BNF
     through some extra checks.  We do it this way because it makes both error
     recovery and working with the resulting parse tree easier.
@@ -2400,25 +2400,25 @@ def get_parameter(value):
     param = Parameter()
     token, value = get_attribute(value)
     param.append(token)
-    if not value or value[0] == ';':
+    if sio value or value[0] == ';':
         param.defects.append(errors.InvalidHeaderDefect("Parameter contains "
             "name ({}) but no value".format(token)))
         return param, value
     if value[0] == '*':
-        try:
+        jaribu:
             token, value = get_section(value)
             param.sectioned = True
             param.append(token)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             pass
-        if not value:
+        if sio value:
             raise errors.HeaderParseError("Incomplete parameter")
         if value[0] == '*':
             param.append(ValueTerminal('*', 'extended-parameter-marker'))
             value = value[1:]
             param.extended = True
     if value[0] != '=':
-        raise errors.HeaderParseError("Parameter not followed by '='")
+        raise errors.HeaderParseError("Parameter sio followed by '='")
     param.append(ValueTerminal('=', 'parameter-separator'))
     value = value[1:]
     leader = None
@@ -2437,17 +2437,17 @@ def get_parameter(value):
         if param.section_number == 0:
             if inner_value and inner_value[0] == "'":
                 semi_valid = True
-            else:
+            isipokua:
                 token, rest = get_attrtext(inner_value)
                 if rest and rest[0] == "'":
                     semi_valid = True
-        else:
-            try:
+        isipokua:
+            jaribu:
                 token, rest = get_extended_attrtext(inner_value)
             except:
                 pass
-            else:
-                if not rest:
+            isipokua:
+                if sio rest:
                     semi_valid = True
         if semi_valid:
             param.defects.append(errors.InvalidHeaderDefect(
@@ -2457,39 +2457,39 @@ def get_parameter(value):
                 if t.token_type == 'bare-quoted-string':
                     t[:] = []
                     appendto = t
-                    break
+                    koma
             value = inner_value
-        else:
+        isipokua:
             remainder = None
             param.defects.append(errors.InvalidHeaderDefect(
                 "Parameter marked as extended but appears to have a "
                 "quoted string value that is non-encoded"))
     if value and value[0] == "'":
         token = None
-    else:
+    isipokua:
         token, value = get_value(value)
-    if not param.extended or param.section_number > 0:
-        if not value or value[0] != "'":
+    if sio param.extended or param.section_number > 0:
+        if sio value or value[0] != "'":
             appendto.append(token)
-            if remainder is not None:
-                assert not value, value
+            if remainder ni sio None:
+                assert sio value, value
                 value = remainder
             return param, value
         param.defects.append(errors.InvalidHeaderDefect(
             "Apparent initial-extended-value but attribute "
-            "was not marked as extended or was not initial section"))
-    if not value:
+            "was sio marked as extended or was sio initial section"))
+    if sio value:
         # Assume the charset/lang is missing and the token is the value.
         param.defects.append(errors.InvalidHeaderDefect(
             "Missing required charset/lang delimiters"))
         appendto.append(token)
         if remainder is None:
             return param, value
-    else:
-        if token is not None:
+    isipokua:
+        if token ni sio None:
             for t in token:
                 if t.token_type == 'extended-attrtext':
-                    break
+                    koma
             t.token_type == 'attrtext'
             appendto.append(t)
             param.charset = t.value
@@ -2502,29 +2502,29 @@ def get_parameter(value):
             token, value = get_attrtext(value)
             appendto.append(token)
             param.lang = token.value
-            if not value or value[0] != "'":
+            if sio value or value[0] != "'":
                 raise errors.HeaderParseError("Expected RFC2231 char/lang encoding "
                                   "delimiter, but found {}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
-    if remainder is not None:
+    if remainder ni sio None:
         # Treat the rest of value as bare quoted string content.
         v = Value()
-        while value:
+        wakati value:
             if value[0] in WSP:
                 token, value = get_fws(value)
             lasivyo value[0] == '"':
                 token = ValueTerminal('"', 'DQUOTE')
                 value = value[1:]
-            else:
+            isipokua:
                 token, value = get_qcontent(value)
             v.append(token)
         token = v
-    else:
+    isipokua:
         token, value = get_value(value)
     appendto.append(token)
-    if remainder is not None:
-        assert not value, value
+    if remainder ni sio None:
+        assert sio value, value
         value = remainder
     return param, value
 
@@ -2542,23 +2542,23 @@ def parse_mime_parameters(value):
 
     """
     mime_parameters = MimeParameters()
-    while value:
-        try:
+    wakati value:
+        jaribu:
             token, value = get_parameter(value)
             mime_parameters.append(token)
-        except errors.HeaderParseError as err:
+        tatizo errors.HeaderParseError as err:
             leader = None
             if value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
-            if not value:
+            if sio value:
                 mime_parameters.append(leader)
                 return mime_parameters
             if value[0] == ';':
-                if leader is not None:
+                if leader ni sio None:
                     mime_parameters.append(leader)
                 mime_parameters.defects.append(errors.InvalidHeaderDefect(
                     "parameter entry with no content"))
-            else:
+            isipokua:
                 token, value = get_invalid_parameter(value)
                 if leader:
                     token[:0] = [leader]
@@ -2584,14 +2584,14 @@ def _find_mime_parameters(tokenlist, value):
     """Do our best to find the parameters in an invalid MIME header
 
     """
-    while value and value[0] != ';':
+    wakati value and value[0] != ';':
         if value[0] in PHRASE_ENDS:
             tokenlist.append(ValueTerminal(value[0], 'misplaced-special'))
             value = value[1:]
-        else:
+        isipokua:
             token, value = get_phrase(value)
             tokenlist.append(token)
-    if not value:
+    if sio value:
         return
     tokenlist.append(ValueTerminal(';', 'parameter-separator'))
     tokenlist.append(parse_mime_parameters(value[1:]))
@@ -2605,21 +2605,21 @@ def parse_content_type_header(value):
     """
     ctype = ContentType()
     recover = False
-    if not value:
+    if sio value:
         ctype.defects.append(errors.HeaderMissingRequiredValue(
             "Missing content type specification"))
         return ctype
-    try:
+    jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         ctype.defects.append(errors.InvalidHeaderDefect(
             "Expected content maintype but found {!r}".format(value)))
         _find_mime_parameters(ctype, value)
         return ctype
     ctype.append(token)
     # XXX: If we really want to follow the formal grammar we should make
-    # mantype and subtype specialized TokenLists here.  Probably not worth it.
-    if not value or value[0] != '/':
+    # mantype and subtype specialized TokenLists here.  Probably sio worth it.
+    if sio value or value[0] != '/':
         ctype.defects.append(errors.InvalidHeaderDefect(
             "Invalid content type"))
         if value:
@@ -2628,16 +2628,16 @@ def parse_content_type_header(value):
     ctype.maintype = token.value.strip().lower()
     ctype.append(ValueTerminal('/', 'content-type-separator'))
     value = value[1:]
-    try:
+    jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         ctype.defects.append(errors.InvalidHeaderDefect(
             "Expected content subtype but found {!r}".format(value)))
         _find_mime_parameters(ctype, value)
         return ctype
     ctype.append(token)
     ctype.subtype = token.value.strip().lower()
-    if not value:
+    if sio value:
         return ctype
     if value[0] != ';':
         ctype.defects.append(errors.InvalidHeaderDefect(
@@ -2646,7 +2646,7 @@ def parse_content_type_header(value):
         # The RFC requires that a syntactically invalid content-type be treated
         # as text/plain.  Perhaps we should postel this, but we should probably
         # only do that if we were checking the subtype value against IANA.
-        del ctype.maintype, ctype.subtype
+        toa ctype.maintype, ctype.subtype
         _find_mime_parameters(ctype, value)
         return ctype
     ctype.append(ValueTerminal(';', 'parameter-separator'))
@@ -2658,20 +2658,20 @@ def parse_content_disposition_header(value):
 
     """
     disp_header = ContentDisposition()
-    if not value:
+    if sio value:
         disp_header.defects.append(errors.HeaderMissingRequiredValue(
             "Missing content disposition"))
         return disp_header
-    try:
+    jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         disp_header.defects.append(errors.InvalidHeaderDefect(
             "Expected content disposition but found {!r}".format(value)))
         _find_mime_parameters(disp_header, value)
         return disp_header
     disp_header.append(token)
     disp_header.content_disposition = token.value.strip().lower()
-    if not value:
+    if sio value:
         return disp_header
     if value[0] != ';':
         disp_header.defects.append(errors.InvalidHeaderDefect(
@@ -2689,27 +2689,27 @@ def parse_content_transfer_encoding_header(value):
     """
     # We should probably validate the values, since the list is fixed.
     cte_header = ContentTransferEncoding()
-    if not value:
+    if sio value:
         cte_header.defects.append(errors.HeaderMissingRequiredValue(
             "Missing content transfer encoding"))
         return cte_header
-    try:
+    jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         cte_header.defects.append(errors.InvalidHeaderDefect(
             "Expected content transfer encoding but found {!r}".format(value)))
-    else:
+    isipokua:
         cte_header.append(token)
         cte_header.cte = token.value.strip().lower()
-    if not value:
+    if sio value:
         return cte_header
-    while value:
+    wakati value:
         cte_header.defects.append(errors.InvalidHeaderDefect(
             "Extra text after content transfer encoding"))
         if value[0] in PHRASE_ENDS:
             cte_header.append(ValueTerminal(value[0], 'misplaced-special'))
             value = value[1:]
-        else:
+        isipokua:
             token, value = get_phrase(value)
             cte_header.append(token)
     return cte_header
@@ -2750,23 +2750,23 @@ def _refold_parse_tree(parse_tree, *, policy):
     want_encoding = False
     end_ew_not_allowed = Terminal('', 'wrap_as_ew_blocked')
     parts = list(parse_tree)
-    while parts:
+    wakati parts:
         part = parts.pop(0)
         if part is end_ew_not_allowed:
             wrap_as_ew_blocked -= 1
-            continue
+            endelea
         tstr = str(part)
         if part.token_type == 'ptext' and set(tstr) & SPECIALS:
             # Encode if tstr contains special characters.
             want_encoding = True
-        try:
+        jaribu:
             tstr.encode(encoding)
             charset = encoding
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             if any(isinstance(x, errors.UndecodableBytesDefect)
                    for x in part.all_defects):
                 charset = 'unknown-8bit'
-            else:
+            isipokua:
                 # If policy.utf8 is false this should really be taken from a
                 # 'charset' property on the policy.
                 charset = 'utf-8'
@@ -2774,68 +2774,68 @@ def _refold_parse_tree(parse_tree, *, policy):
         if part.token_type == 'mime-parameters':
             # Mime parameter folding (using RFC2231) is extra special.
             _fold_mime_parameters(part, lines, maxlen, encoding)
-            continue
-        if want_encoding and not wrap_as_ew_blocked:
-            if not part.as_ew_allowed:
+            endelea
+        if want_encoding and sio wrap_as_ew_blocked:
+            if sio part.as_ew_allowed:
                 want_encoding = False
                 last_ew = None
-                if part.syntactic_break:
+                if part.syntactic_koma:
                     encoded_part = part.fold(policy=policy)[:-len(policy.linesep)]
-                    if policy.linesep not in encoded_part:
+                    if policy.linesep haiko kwenye encoded_part:
                         # It fits on a single line
                         if len(encoded_part) > maxlen - len(lines[-1]):
-                            # But not on this one, so start a new one.
+                            # But sio on this one, so start a new one.
                             newline = _steal_trailing_WSP_if_exists(lines)
                             # XXX what if encoded_part has no leading FWS?
                             lines.append(newline)
                         lines[-1] += encoded_part
-                        continue
-                # Either this is not a major syntactic break, so we don't
+                        endelea
+                # Either this ni sio a major syntactic koma, so we don't
                 # want it on a line by itself even if it fits, or it
                 # doesn't fit on a line by itself.  Either way, fall through
                 # to unpacking the subparts and wrapping them.
-            if not hasattr(part, 'encode'):
-                # It's not a Terminal, do each piece individually.
+            if sio hasattr(part, 'encode'):
+                # It's sio a Terminal, do each piece individually.
                 parts = list(part) + parts
-            else:
+            isipokua:
                 # It's a terminal, wrap it as an encoded word, possibly
                 # combining it with previously encoded words if allowed.
                 last_ew = _fold_as_ew(tstr, lines, maxlen, last_ew,
                                       part.ew_combine_allowed, charset)
             want_encoding = False
-            continue
+            endelea
         if len(tstr) <= maxlen - len(lines[-1]):
             lines[-1] += tstr
-            continue
-        # This part is too long to fit.  The RFC wants us to break at
-        # "major syntactic breaks", so unless we don't consider this
+            endelea
+        # This part is too long to fit.  The RFC wants us to koma at
+        # "major syntactic komas", so unless we don't consider this
         # to be one, check if it will fit on the next line by itself.
-        if (part.syntactic_break and
+        if (part.syntactic_koma and
                 len(tstr) + 1 <= maxlen):
             newline = _steal_trailing_WSP_if_exists(lines)
             if newline or part.startswith_fws():
                 lines.append(newline + tstr)
                 last_ew = None
-                continue
-        if not hasattr(part, 'encode'):
-            # It's not a terminal, try folding the subparts.
+                endelea
+        if sio hasattr(part, 'encode'):
+            # It's sio a terminal, try folding the subparts.
             newparts = list(part)
-            if not part.as_ew_allowed:
+            if sio part.as_ew_allowed:
                 wrap_as_ew_blocked += 1
                 newparts.append(end_ew_not_allowed)
             parts = newparts + parts
-            continue
-        if part.as_ew_allowed and not wrap_as_ew_blocked:
+            endelea
+        if part.as_ew_allowed and sio wrap_as_ew_blocked:
             # It doesn't need CTE encoding, but encode it anyway so we can
             # wrap it.
             parts.insert(0, part)
             want_encoding = True
-            continue
+            endelea
         # We can't figure out how to wrap, it, so give up.
         newline = _steal_trailing_WSP_if_exists(lines)
         if newline or part.startswith_fws():
             lines.append(newline + tstr)
-        else:
+        isipokua:
             # We can't fold it onto the next line either...
             lines[-1] += tstr
     return policy.linesep.join(lines) + policy.linesep
@@ -2851,7 +2851,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset):
     encoded segments fit within maxlen.
 
     """
-    if last_ew is not None and ew_combine_allowed:
+    if last_ew ni sio None and ew_combine_allowed:
         to_encode = str(
             get_unstructured(lines[-1][last_ew:] + to_encode))
         lines[-1] = lines[-1][:last_ew]
@@ -2880,17 +2880,17 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset):
         raise errors.HeaderParseError(
             "max_line_length is too small to fit an encoded word")
 
-    while to_encode:
+    wakati to_encode:
         remaining_space = maxlen - len(lines[-1])
         text_space = remaining_space - chrome_len
         if text_space <= 0:
             lines.append(' ')
-            continue
+            endelea
 
         to_encode_word = to_encode[:text_space]
         encoded_word = _ew.encode(to_encode_word, charset=encode_as)
         excess = len(encoded_word) - remaining_space
-        while excess > 0:
+        wakati excess > 0:
             # Since the chunk to encode is guaranteed to fit into less than 100 characters,
             # shrinking it by one at a time shouldn't take long.
             to_encode_word = to_encode_word[:-1]
@@ -2926,37 +2926,37 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
         # but to do that we need to recognize the need earlier or reparse the
         # header, so I'm going to ignore that bug for now.  It'll only put us
         # one character over.
-        if not lines[-1].rstrip().endswith(';'):
+        if sio lines[-1].rstrip().endswith(';'):
             lines[-1] += ';'
         charset = encoding
         error_handler = 'strict'
-        try:
+        jaribu:
             value.encode(encoding)
             encoding_required = False
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             encoding_required = True
             if utils._has_surrogates(value):
                 charset = 'unknown-8bit'
                 error_handler = 'surrogateescape'
-            else:
+            isipokua:
                 charset = 'utf-8'
         if encoding_required:
             encoded_value = urllib.parse.quote(
                 value, safe='', errors=error_handler)
             tstr = "{}*={}''{}".format(name, charset, encoded_value)
-        else:
+        isipokua:
             tstr = '{}={}'.format(name, quote_string(value))
         if len(lines[-1]) + len(tstr) + 1 < maxlen:
             lines[-1] = lines[-1] + ' ' + tstr
-            continue
+            endelea
         lasivyo len(tstr) + 2 <= maxlen:
             lines.append(' ' + tstr)
-            continue
+            endelea
         # We need multiple sections.  We are allowed to mix encoded and
         # non-encoded sections, but we aren't going to.  We'll encode them all.
         section = 0
         extra_chrome = charset + "''"
-        while value:
+        wakati value:
             chrome_len = len(name) + len(str(section)) + 3 + len(extra_chrome)
             if maxlen <= chrome_len + 3:
                 # We need room for the leading blank, the trailing semicolon,
@@ -2965,12 +2965,12 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
                 # the RFC standard width.
                 maxlen = 78
             splitpoint = maxchars = maxlen - chrome_len - 2
-            while True:
+            wakati True:
                 partial = value[:splitpoint]
                 encoded_value = urllib.parse.quote(
                     partial, safe='', errors=error_handler)
                 if len(encoded_value) <= maxchars:
-                    break
+                    koma
                 splitpoint -= 1
             lines.append(" {}*{}*={}{}".format(
                 name, section, extra_chrome, encoded_value))

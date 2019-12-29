@@ -2,12 +2,12 @@
 # ElementTree
 # $Id: ElementPath.py 3375 2008-02-13 08:05:08Z fredrik $
 #
-# limited xpath support for element trees
+# limited xpath support kila element trees
 #
 # history:
 # 2003-05-23 fl   created
-# 2003-05-28 fl   added support for // etc
-# 2003-08-27 fl   fixed parsing of periods in element names
+# 2003-05-28 fl   added support kila // etc
+# 2003-08-27 fl   fixed parsing of periods kwenye element names
 # 2007-09-10 fl   new selection engine
 # 2007-09-12 fl   fixed parent selector
 # 2007-09-13 fl   added iterfind; changed findall to rudisha a list
@@ -26,14 +26,14 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# na will comply with the following terms na conditions:
 #
-# Permission to use, copy, modify, and distribute this software and
-# its associated documentation for any purpose and without fee is
+# Permission to use, copy, modify, na distribute this software and
+# its associated documentation kila any purpose na without fee is
 # hereby granted, provided that the above copyright notice appears in
-# all copies, and that both that copyright notice and this permission
-# notice appear in supporting documentation, and that the name of
-# Secret Labs AB or the author not be used in advertising or publicity
+# all copies, na that both that copyright notice na this permission
+# notice appear kwenye supporting documentation, na that the name of
+# Secret Labs AB ama the author sio be used kwenye advertising ama publicity
 # pertaining to distribution of the software without specific, written
 # prior permission.
 #
@@ -48,10 +48,10 @@
 # --------------------------------------------------------------------
 
 # Licensed to PSF under a Contributor Agreement.
-# See http://www.python.org/psf/license for licensing details.
+# See http://www.python.org/psf/license kila licensing details.
 
 ##
-# Implementation module for XPath support.  There's usually no reason
+# Implementation module kila XPath support.  There's usually no reason
 # to agiza this module directly; the <b>ElementTree</b> does this for
 # you, ikiwa needed.
 ##
@@ -70,82 +70,82 @@ xpath_tokenizer_re = re.compile(
     r"\s+"
     )
 
-eleza xpath_tokenizer(pattern, namespaces=None):
-    default_namespace = namespaces.get('') ikiwa namespaces else None
-    parsing_attribute = False
-    for token in xpath_tokenizer_re.findall(pattern):
+eleza xpath_tokenizer(pattern, namespaces=Tupu):
+    default_namespace = namespaces.get('') ikiwa namespaces else Tupu
+    parsing_attribute = Uongo
+    kila token kwenye xpath_tokenizer_re.findall(pattern):
         ttype, tag = token
-        ikiwa tag and tag[0] != "{":
-            ikiwa ":" in tag:
+        ikiwa tag na tag[0] != "{":
+            ikiwa ":" kwenye tag:
                 prefix, uri = tag.split(":", 1)
-                try:
-                    ikiwa not namespaces:
-                        raise KeyError
-                    yield ttype, "{%s}%s" % (namespaces[prefix], uri)
-                except KeyError:
-                    raise SyntaxError("prefix %r not found in prefix map" % prefix) kutoka None
-            elikiwa default_namespace and not parsing_attribute:
-                yield ttype, "{%s}%s" % (default_namespace, tag)
-            else:
-                yield token
-            parsing_attribute = False
-        else:
-            yield token
+                jaribu:
+                    ikiwa sio namespaces:
+                        ashiria KeyError
+                    tuma ttype, "{%s}%s" % (namespaces[prefix], uri)
+                tatizo KeyError:
+                    ashiria SyntaxError("prefix %r sio found kwenye prefix map" % prefix) kutoka Tupu
+            elikiwa default_namespace na sio parsing_attribute:
+                tuma ttype, "{%s}%s" % (default_namespace, tag)
+            isipokua:
+                tuma token
+            parsing_attribute = Uongo
+        isipokua:
+            tuma token
             parsing_attribute = ttype == '@'
 
 
 eleza get_parent_map(context):
     parent_map = context.parent_map
-    ikiwa parent_map is None:
+    ikiwa parent_map ni Tupu:
         context.parent_map = parent_map = {}
-        for p in context.root.iter():
-            for e in p:
+        kila p kwenye context.root.iter():
+            kila e kwenye p:
                 parent_map[e] = p
     rudisha parent_map
 
 
 eleza _is_wildcard_tag(tag):
-    rudisha tag[:3] == '{*}' or tag[-2:] == '}*'
+    rudisha tag[:3] == '{*}' ama tag[-2:] == '}*'
 
 
 eleza _prepare_tag(tag):
     _isinstance, _str = isinstance, str
     ikiwa tag == '{*}*':
-        # Same as '*', but no comments or processing instructions.
-        # It can be a surprise that '*' includes those, but there is no
-        # justification for '{*}*' doing the same.
+        # Same kama '*', but no comments ama processing instructions.
+        # It can be a surprise that '*' includes those, but there ni no
+        # justification kila '{*}*' doing the same.
         eleza select(context, result):
-            for elem in result:
+            kila elem kwenye result:
                 ikiwa _isinstance(elem.tag, _str):
-                    yield elem
+                    tuma elem
     elikiwa tag == '{}*':
-        # Any tag that is not in a namespace.
+        # Any tag that ni haiko kwenye a namespace.
         eleza select(context, result):
-            for elem in result:
+            kila elem kwenye result:
                 el_tag = elem.tag
-                ikiwa _isinstance(el_tag, _str) and el_tag[0] != '{':
-                    yield elem
+                ikiwa _isinstance(el_tag, _str) na el_tag[0] != '{':
+                    tuma elem
     elikiwa tag[:3] == '{*}':
-        # The tag in any (or no) namespace.
+        # The tag kwenye any (or no) namespace.
         suffix = tag[2:]  # '}name'
-        no_ns = slice(-len(suffix), None)
+        no_ns = slice(-len(suffix), Tupu)
         tag = tag[3:]
         eleza select(context, result):
-            for elem in result:
+            kila elem kwenye result:
                 el_tag = elem.tag
-                ikiwa el_tag == tag or _isinstance(el_tag, _str) and el_tag[no_ns] == suffix:
-                    yield elem
+                ikiwa el_tag == tag ama _isinstance(el_tag, _str) na el_tag[no_ns] == suffix:
+                    tuma elem
     elikiwa tag[-2:] == '}*':
-        # Any tag in the given namespace.
+        # Any tag kwenye the given namespace.
         ns = tag[:-1]
-        ns_only = slice(None, len(ns))
+        ns_only = slice(Tupu, len(ns))
         eleza select(context, result):
-            for elem in result:
+            kila elem kwenye result:
                 el_tag = elem.tag
-                ikiwa _isinstance(el_tag, _str) and el_tag[ns_only] == ns:
-                    yield elem
-    else:
-        raise RuntimeError(f"internal parser error, got {tag}")
+                ikiwa _isinstance(el_tag, _str) na el_tag[ns_only] == ns:
+                    tuma elem
+    isipokua:
+        ashiria RuntimeError(f"internal parser error, got {tag}")
     rudisha select
 
 
@@ -155,72 +155,72 @@ eleza prepare_child(next, token):
         select_tag = _prepare_tag(tag)
         eleza select(context, result):
             eleza select_child(result):
-                for elem in result:
-                    yield kutoka elem
+                kila elem kwenye result:
+                    tuma kutoka elem
             rudisha select_tag(context, select_child(result))
-    else:
+    isipokua:
         ikiwa tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
         eleza select(context, result):
-            for elem in result:
-                for e in elem:
+            kila elem kwenye result:
+                kila e kwenye elem:
                     ikiwa e.tag == tag:
-                        yield e
+                        tuma e
     rudisha select
 
 eleza prepare_star(next, token):
     eleza select(context, result):
-        for elem in result:
-            yield kutoka elem
+        kila elem kwenye result:
+            tuma kutoka elem
     rudisha select
 
 eleza prepare_self(next, token):
     eleza select(context, result):
-        yield kutoka result
+        tuma kutoka result
     rudisha select
 
 eleza prepare_descendant(next, token):
-    try:
+    jaribu:
         token = next()
-    except StopIteration:
-        return
+    tatizo StopIteration:
+        rudisha
     ikiwa token[0] == "*":
         tag = "*"
-    elikiwa not token[0]:
+    elikiwa sio token[0]:
         tag = token[1]
-    else:
-        raise SyntaxError("invalid descendant")
+    isipokua:
+        ashiria SyntaxError("invalid descendant")
 
     ikiwa _is_wildcard_tag(tag):
         select_tag = _prepare_tag(tag)
         eleza select(context, result):
             eleza select_child(result):
-                for elem in result:
-                    for e in elem.iter():
-                        ikiwa e is not elem:
-                            yield e
+                kila elem kwenye result:
+                    kila e kwenye elem.iter():
+                        ikiwa e ni sio elem:
+                            tuma e
             rudisha select_tag(context, select_child(result))
-    else:
+    isipokua:
         ikiwa tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
         eleza select(context, result):
-            for elem in result:
-                for e in elem.iter(tag):
-                    ikiwa e is not elem:
-                        yield e
+            kila elem kwenye result:
+                kila e kwenye elem.iter(tag):
+                    ikiwa e ni sio elem:
+                        tuma e
     rudisha select
 
 eleza prepare_parent(next, token):
     eleza select(context, result):
-        # FIXME: raise error ikiwa .. is applied at toplevel?
+        # FIXME: ashiria error ikiwa .. ni applied at toplevel?
         parent_map = get_parent_map(context)
         result_map = {}
-        for elem in result:
-            ikiwa elem in parent_map:
+        kila elem kwenye result:
+            ikiwa elem kwenye parent_map:
                 parent = parent_map[elem]
-                ikiwa parent not in result_map:
-                    result_map[parent] = None
-                    yield parent
+                ikiwa parent haiko kwenye result_map:
+                    result_map[parent] = Tupu
+                    tuma parent
     rudisha select
 
 eleza prepare_predicate(next, token):
@@ -229,19 +229,19 @@ eleza prepare_predicate(next, token):
     # http://javascript.crockford.com/tdop/tdop.html
     signature = []
     predicate = []
-    while 1:
-        try:
+    wakati 1:
+        jaribu:
             token = next()
-        except StopIteration:
-            return
+        tatizo StopIteration:
+            rudisha
         ikiwa token[0] == "]":
-            break
+            koma
         ikiwa token == ('', ''):
             # ignore whitespace
-            continue
-        ikiwa token[0] and token[0][:1] in "'\"":
+            endelea
+        ikiwa token[0] na token[0][:1] kwenye "'\"":
             token = "'", token[0][1:-1]
-        signature.append(token[0] or "-")
+        signature.append(token[0] ama "-")
         predicate.append(token[1])
     signature = "".join(signature)
     # use signature to determine predicate type
@@ -249,76 +249,76 @@ eleza prepare_predicate(next, token):
         # [@attribute] predicate
         key = predicate[1]
         eleza select(context, result):
-            for elem in result:
-                ikiwa elem.get(key) is not None:
-                    yield elem
+            kila elem kwenye result:
+                ikiwa elem.get(key) ni sio Tupu:
+                    tuma elem
         rudisha select
     ikiwa signature == "@-='":
         # [@attribute='value']
         key = predicate[1]
         value = predicate[-1]
         eleza select(context, result):
-            for elem in result:
+            kila elem kwenye result:
                 ikiwa elem.get(key) == value:
-                    yield elem
+                    tuma elem
         rudisha select
-    ikiwa signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
+    ikiwa signature == "-" na sio re.match(r"\-?\d+$", predicate[0]):
         # [tag]
         tag = predicate[0]
         eleza select(context, result):
-            for elem in result:
-                ikiwa elem.find(tag) is not None:
-                    yield elem
+            kila elem kwenye result:
+                ikiwa elem.find(tag) ni sio Tupu:
+                    tuma elem
         rudisha select
-    ikiwa signature == ".='" or (signature == "-='" and not re.match(r"\-?\d+$", predicate[0])):
-        # [.='value'] or [tag='value']
+    ikiwa signature == ".='" ama (signature == "-='" na sio re.match(r"\-?\d+$", predicate[0])):
+        # [.='value'] ama [tag='value']
         tag = predicate[0]
         value = predicate[-1]
         ikiwa tag:
             eleza select(context, result):
-                for elem in result:
-                    for e in elem.findall(tag):
+                kila elem kwenye result:
+                    kila e kwenye elem.findall(tag):
                         ikiwa "".join(e.itertext()) == value:
-                            yield elem
-                            break
-        else:
+                            tuma elem
+                            koma
+        isipokua:
             eleza select(context, result):
-                for elem in result:
+                kila elem kwenye result:
                     ikiwa "".join(elem.itertext()) == value:
-                        yield elem
+                        tuma elem
         rudisha select
-    ikiwa signature == "-" or signature == "-()" or signature == "-()-":
-        # [index] or [last()] or [last()-index]
+    ikiwa signature == "-" ama signature == "-()" ama signature == "-()-":
+        # [index] ama [last()] ama [last()-index]
         ikiwa signature == "-":
             # [index]
             index = int(predicate[0]) - 1
             ikiwa index < 0:
-                raise SyntaxError("XPath position >= 1 expected")
-        else:
+                ashiria SyntaxError("XPath position >= 1 expected")
+        isipokua:
             ikiwa predicate[0] != "last":
-                raise SyntaxError("unsupported function")
+                ashiria SyntaxError("unsupported function")
             ikiwa signature == "-()-":
-                try:
+                jaribu:
                     index = int(predicate[2]) - 1
-                except ValueError:
-                    raise SyntaxError("unsupported expression")
+                tatizo ValueError:
+                    ashiria SyntaxError("unsupported expression")
                 ikiwa index > -2:
-                    raise SyntaxError("XPath offset kutoka last() must be negative")
-            else:
+                    ashiria SyntaxError("XPath offset kutoka last() must be negative")
+            isipokua:
                 index = -1
         eleza select(context, result):
             parent_map = get_parent_map(context)
-            for elem in result:
-                try:
+            kila elem kwenye result:
+                jaribu:
                     parent = parent_map[elem]
-                    # FIXME: what ikiwa the selector is "*" ?
+                    # FIXME: what ikiwa the selector ni "*" ?
                     elems = list(parent.findall(elem.tag))
-                    ikiwa elems[index] is elem:
-                        yield elem
-                except (IndexError, KeyError):
-                    pass
+                    ikiwa elems[index] ni elem:
+                        tuma elem
+                tatizo (IndexError, KeyError):
+                    pita
         rudisha select
-    raise SyntaxError("invalid predicate")
+    ashiria SyntaxError("invalid predicate")
 
 ops = {
     "": prepare_child,
@@ -332,7 +332,7 @@ ops = {
 _cache = {}
 
 kundi _SelectorContext:
-    parent_map = None
+    parent_map = Tupu
     eleza __init__(self, root):
         self.root = root
 
@@ -341,7 +341,7 @@ kundi _SelectorContext:
 ##
 # Generate all matching objects.
 
-eleza iterfind(elem, path, namespaces=None):
+eleza iterfind(elem, path, namespaces=Tupu):
     # compile selector pattern
     ikiwa path[-1:] == "/":
         path = path + "*" # implicit all (FIXME: keep this?)
@@ -350,56 +350,56 @@ eleza iterfind(elem, path, namespaces=None):
     ikiwa namespaces:
         cache_key += tuple(sorted(namespaces.items()))
 
-    try:
+    jaribu:
         selector = _cache[cache_key]
-    except KeyError:
+    tatizo KeyError:
         ikiwa len(_cache) > 100:
             _cache.clear()
         ikiwa path[:1] == "/":
-            raise SyntaxError("cannot use absolute path on element")
+            ashiria SyntaxError("cannot use absolute path on element")
         next = iter(xpath_tokenizer(path, namespaces)).__next__
-        try:
+        jaribu:
             token = next()
-        except StopIteration:
-            return
+        tatizo StopIteration:
+            rudisha
         selector = []
-        while 1:
-            try:
+        wakati 1:
+            jaribu:
                 selector.append(ops[token[0]](next, token))
-            except StopIteration:
-                raise SyntaxError("invalid path") kutoka None
-            try:
+            tatizo StopIteration:
+                ashiria SyntaxError("invalid path") kutoka Tupu
+            jaribu:
                 token = next()
                 ikiwa token[0] == "/":
                     token = next()
-            except StopIteration:
-                break
+            tatizo StopIteration:
+                koma
         _cache[cache_key] = selector
     # execute selector pattern
     result = [elem]
     context = _SelectorContext(elem)
-    for select in selector:
+    kila select kwenye selector:
         result = select(context, result)
     rudisha result
 
 ##
 # Find first matching object.
 
-eleza find(elem, path, namespaces=None):
-    rudisha next(iterfind(elem, path, namespaces), None)
+eleza find(elem, path, namespaces=Tupu):
+    rudisha next(iterfind(elem, path, namespaces), Tupu)
 
 ##
 # Find all matching objects.
 
-eleza findall(elem, path, namespaces=None):
+eleza findall(elem, path, namespaces=Tupu):
     rudisha list(iterfind(elem, path, namespaces))
 
 ##
-# Find text for first matching object.
+# Find text kila first matching object.
 
-eleza findtext(elem, path, default=None, namespaces=None):
-    try:
+eleza findtext(elem, path, default=Tupu, namespaces=Tupu):
+    jaribu:
         elem = next(iterfind(elem, path, namespaces))
-        rudisha elem.text or ""
-    except StopIteration:
+        rudisha elem.text ama ""
+    tatizo StopIteration:
         rudisha default

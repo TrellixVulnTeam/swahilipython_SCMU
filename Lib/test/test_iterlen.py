@@ -1,41 +1,41 @@
 """ Test Iterator Length Transparency
 
-Some functions or methods which accept general iterable arguments have
+Some functions ama methods which accept general iterable arguments have
 optional, more efficient code paths ikiwa they know how many items to expect.
 For instance, map(func, iterable), will pre-allocate the exact amount of
 space required whenever the iterable can report its length.
 
 The desired invariant is:  len(it)==len(list(it)).
 
-A complication is that an iterable and iterator can be the same object. To
+A complication ni that an iterable na iterator can be the same object. To
 maintain the invariant, an iterator needs to dynamically update its length.
-For instance, an iterable such as range(10) always reports its length as ten,
-but it=iter(range(10)) starts at ten, and then goes to nine after next(it).
+For instance, an iterable such kama range(10) always reports its length kama ten,
+but it=iter(range(10)) starts at ten, na then goes to nine after next(it).
 Having this capability means that map() can ignore the distinction between
-map(func, iterable) and map(func, iter(iterable)).
+map(func, iterable) na map(func, iter(iterable)).
 
-When the iterable is immutable, the implementation can straight-forwardly
+When the iterable ni immutable, the implementation can straight-forwardly
 report the original length minus the cumulative number of calls to next().
-This is the case for tuples, range objects, and itertools.repeat().
+This ni the case kila tuples, range objects, na itertools.repeat().
 
 Some containers become temporarily immutable during iteration.  This includes
-dicts, sets, and collections.deque.  Their implementation is equally simple
+dicts, sets, na collections.deque.  Their implementation ni equally simple
 though they need to permanently set their length to zero whenever there is
 an attempt to iterate after a length mutation.
 
 The situation slightly more involved whenever an object allows length mutation
-during iteration.  Lists and sequence iterators are dynamically updatable.
-So, ikiwa a list is extended during iteration, the iterator will continue through
+during iteration.  Lists na sequence iterators are dynamically updatable.
+So, ikiwa a list ni extended during iteration, the iterator will endelea through
 the new items.  If it shrinks to a point before the most recent iteration,
-then no further items are available and the length is reported at zero.
+then no further items are available na the length ni reported at zero.
 
 Reversed objects can also be wrapped around mutable objects; however, any
 appends after the current position are ignored.  Any other approach leads
-to confusion and possibly returning the same item more than once.
+to confusion na possibly rudishaing the same item more than once.
 
-The iterators not listed above, such as enumerate and the other itertools,
-are not length transparent because they have no way to distinguish between
-iterables that report static length and iterators whose length changes with
+The iterators sio listed above, such kama enumerate na the other itertools,
+are sio length transparent because they have no way to distinguish between
+iterables that report static length na iterators whose length changes with
 each call (i.e. the difference between enumerate('abc') and
 enumerate(iter('abc')).
 
@@ -53,7 +53,7 @@ kundi TestInvariantWithoutMutations:
 
     eleza test_invariant(self):
         it = self.it
-        for i in reversed(range(1, n+1)):
+        kila i kwenye reversed(range(1, n+1)):
             self.assertEqual(length_hint(it), i)
             next(it)
         self.assertEqual(length_hint(it), 0)
@@ -63,7 +63,7 @@ kundi TestInvariantWithoutMutations:
 kundi TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
     eleza test_immutable_during_iteration(self):
-        # objects such as deques, sets, and dictionaries enforce
+        # objects such kama deques, sets, na dictionaries enforce
         # length immutability  during iteration
 
         it = self.it
@@ -79,7 +79,7 @@ kundi TestTemporarilyImmutable(TestInvariantWithoutMutations):
 kundi TestRepeat(TestInvariantWithoutMutations, unittest.TestCase):
 
     eleza setUp(self):
-        self.it = repeat(None, n)
+        self.it = repeat(Tupu, n)
 
 kundi TestXrange(TestInvariantWithoutMutations, unittest.TestCase):
 
@@ -96,7 +96,7 @@ kundi TestTuple(TestInvariantWithoutMutations, unittest.TestCase):
     eleza setUp(self):
         self.it = iter(tuple(range(n)))
 
-## ------- Types that should not be mutated during iteration -------
+## ------- Types that should sio be mutated during iteration -------
 
 kundi TestDeque(TestTemporarilyImmutable, unittest.TestCase):
 
@@ -181,7 +181,7 @@ kundi TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
         d.extend(range(20))
         self.assertEqual(length_hint(it), 0)
 
-## -- Check to make sure exceptions are not suppressed by __length_hint__()
+## -- Check to make sure exceptions are sio suppressed by __length_hint__()
 
 
 kundi BadLen(object):
@@ -189,7 +189,7 @@ kundi BadLen(object):
         rudisha iter(range(10))
 
     eleza __len__(self):
-        raise RuntimeError('hello')
+        ashiria RuntimeError('hello')
 
 
 kundi BadLengthHint(object):
@@ -197,10 +197,10 @@ kundi BadLengthHint(object):
         rudisha iter(range(10))
 
     eleza __length_hint__(self):
-        raise RuntimeError('hello')
+        ashiria RuntimeError('hello')
 
 
-kundi NoneLengthHint(object):
+kundi TupuLengthHint(object):
     eleza __iter__(self):
         rudisha iter(range(10))
 
@@ -221,7 +221,7 @@ kundi TestLengthHintExceptions(unittest.TestCase):
 
     eleza test_invalid_hint(self):
         # Make sure an invalid result doesn't muck-up the works
-        self.assertEqual(list(NoneLengthHint()), list(range(10)))
+        self.assertEqual(list(TupuLengthHint()), list(range(10)))
 
 
 ikiwa __name__ == "__main__":

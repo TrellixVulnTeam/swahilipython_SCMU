@@ -21,7 +21,7 @@ eleza ignore_warning(func):
 
 kundi TestVectorsTestCase(unittest.TestCase):
 
-    @requires_hashdigest('md5', openssl=True)
+    @requires_hashdigest('md5', openssl=Kweli)
     eleza test_md5_vectors(self):
         # Test the HMAC module against test vectors kutoka the RFC.
 
@@ -55,7 +55,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
                 "9294727A3638BB1C13F48EF8158BFC9D")
 
         md5test(b"Jefe",
-                b"what do ya want for nothing?",
+                b"what do ya want kila nothing?",
                 "750c783e6ab0b503eaa86e310a5db738")
 
         md5test(b"\xaa" * 16,
@@ -79,7 +79,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
                  b"and Larger Than One Block-Size Data"),
                 "6f630fad67cda0ee1fb1f562db3aa53e")
 
-    @requires_hashdigest('sha1', openssl=True)
+    @requires_hashdigest('sha1', openssl=Kweli)
     eleza test_sha_vectors(self):
         eleza shatest(key, data, digest):
             h = hmac.HMAC(key, data, digestmod=hashlib.sha1)
@@ -107,7 +107,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
                 "b617318655057264e28bc0b6fb378c8ef146be00")
 
         shatest(b"Jefe",
-                b"what do ya want for nothing?",
+                b"what do ya want kila nothing?",
                 "effcdf6ae5eb2fa2d27416d5f184df9c259a7c79")
 
         shatest(b"\xAA" * 20,
@@ -184,7 +184,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
 
         # 4.3.  Test Case 2
         hmactest(key = b'Jefe',
-                 data = b'what do ya want for nothing?',
+                 data = b'what do ya want kila nothing?',
                  hexdigests = {
                    hashlib.sha224: 'a30e01098bc6dbbf45690f3a7e9e6d0f'
                                    '8bbea2a39e6148008fd05e44',
@@ -217,7 +217,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
                  })
 
         # 4.5.  Test Case 4
-        hmactest(key = bytes(x for x in range(0x01, 0x19+1)),
+        hmactest(key = bytes(x kila x kwenye range(0x01, 0x19+1)),
                  data = b'\xcd'*50,
                  hexdigests = {
                    hashlib.sha224: '6c11506874013cac6a2abc1bb382627c'
@@ -253,8 +253,8 @@ kundi TestVectorsTestCase(unittest.TestCase):
 
         # 4.8.  Test Case 7
         hmactest(key = b'\xaa'*131,
-                 data = b'This is a test using a larger th'
-                        b'an block-size key and a larger t'
+                 data = b'This ni a test using a larger th'
+                        b'an block-size key na a larger t'
                         b'han block-size data. The key nee'
                         b'ds to be hashed before being use'
                         b'd by the HMAC algorithm.',
@@ -272,19 +272,19 @@ kundi TestVectorsTestCase(unittest.TestCase):
                                    '134676fb6de0446065c97440fa8c6a58',
                  })
 
-    @requires_hashdigest('sha224', openssl=True)
+    @requires_hashdigest('sha224', openssl=Kweli)
     eleza test_sha224_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha224, 'sha224', 28, 64)
 
-    @requires_hashdigest('sha256', openssl=True)
+    @requires_hashdigest('sha256', openssl=Kweli)
     eleza test_sha256_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha256, 'sha256', 32, 64)
 
-    @requires_hashdigest('sha384', openssl=True)
+    @requires_hashdigest('sha384', openssl=Kweli)
     eleza test_sha384_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha384, 'sha384', 48, 128)
 
-    @requires_hashdigest('sha512', openssl=True)
+    @requires_hashdigest('sha512', openssl=Kweli)
     eleza test_sha512_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha512, 'sha512', 64, 128)
 
@@ -315,7 +315,7 @@ kundi TestVectorsTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             key = b"\x0b" * 16
             data = b"Hi There"
-            hmac.HMAC(key, data, digestmod=None)
+            hmac.HMAC(key, data, digestmod=Tupu)
 
 
 kundi ConstructorTestCase(unittest.TestCase):
@@ -327,21 +327,21 @@ kundi ConstructorTestCase(unittest.TestCase):
     @requires_hashdigest('sha256')
     eleza test_normal(self):
         # Standard constructor call.
-        try:
+        jaribu:
             hmac.HMAC(b"key", digestmod='sha256')
-        except Exception:
-            self.fail("Standard constructor call raised exception.")
+        tatizo Exception:
+            self.fail("Standard constructor call ashiriad exception.")
 
     @requires_hashdigest('sha256')
     eleza test_with_str_key(self):
-        # Pass a key of type str, which is an error, because it expects a key
+        # Pass a key of type str, which ni an error, because it expects a key
         # of type bytes
         with self.assertRaises(TypeError):
             h = hmac.HMAC("key", digestmod='sha256')
 
     @requires_hashdigest('sha256')
     eleza test_dot_new_with_str_key(self):
-        # Pass a key of type str, which is an error, because it expects a key
+        # Pass a key of type str, which ni an error, because it expects a key
         # of type bytes
         with self.assertRaises(TypeError):
             h = hmac.new("key", digestmod='sha256')
@@ -349,36 +349,36 @@ kundi ConstructorTestCase(unittest.TestCase):
     @requires_hashdigest('sha256')
     eleza test_withtext(self):
         # Constructor call with text.
-        try:
+        jaribu:
             h = hmac.HMAC(b"key", b"hash this!", digestmod='sha256')
-        except Exception:
-            self.fail("Constructor call with text argument raised exception.")
+        tatizo Exception:
+            self.fail("Constructor call with text argument ashiriad exception.")
         self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
     eleza test_with_bytearray(self):
-        try:
+        jaribu:
             h = hmac.HMAC(bytearray(b"key"), bytearray(b"hash this!"),
                           digestmod="sha256")
-        except Exception:
-            self.fail("Constructor call with bytearray arguments raised exception.")
+        tatizo Exception:
+            self.fail("Constructor call with bytearray arguments ashiriad exception.")
             self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
     eleza test_with_memoryview_msg(self):
-        try:
+        jaribu:
             h = hmac.HMAC(b"key", memoryview(b"hash this!"), digestmod="sha256")
-        except Exception:
-            self.fail("Constructor call with memoryview msg raised exception.")
+        tatizo Exception:
+            self.fail("Constructor call with memoryview msg ashiriad exception.")
             self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
     eleza test_withmodule(self):
-        # Constructor call with text and digest module.
-        try:
+        # Constructor call with text na digest module.
+        jaribu:
             h = hmac.HMAC(b"key", b"", hashlib.sha256)
-        except Exception:
-            self.fail("Constructor call with hashlib.sha256 raised exception.")
+        tatizo Exception:
+            self.fail("Constructor call with hashlib.sha256 ashiriad exception.")
 
 
 kundi SanityTestCase(unittest.TestCase):
@@ -386,15 +386,15 @@ kundi SanityTestCase(unittest.TestCase):
     @requires_hashdigest('sha256')
     eleza test_exercise_all_methods(self):
         # Exercising all methods once.
-        # This must not raise any exceptions
-        try:
+        # This must sio ashiria any exceptions
+        jaribu:
             h = hmac.HMAC(b"my secret key", digestmod="sha256")
             h.update(b"compute the hash of this text!")
             dig = h.digest()
             dig = h.hexdigest()
             h2 = h.copy()
-        except Exception:
-            self.fail("Exception raised during normal usage of HMAC class.")
+        tatizo Exception:
+            self.fail("Exception ashiriad during normal usage of HMAC class.")
 
 
 kundi CopyTestCase(unittest.TestCase):
@@ -404,7 +404,7 @@ kundi CopyTestCase(unittest.TestCase):
         # Testing ikiwa attributes are of same type.
         h1 = hmac.HMAC(b"key", digestmod="sha256")
         h2 = h1.copy()
-        self.assertTrue(h1.digest_cons == h2.digest_cons,
+        self.assertKweli(h1.digest_cons == h2.digest_cons,
             "digest constructors don't match.")
         self.assertEqual(type(h1.inner), type(h2.inner),
             "Types of inner don't match.")
@@ -416,11 +416,11 @@ kundi CopyTestCase(unittest.TestCase):
         # Testing ikiwa the copy method created a real copy.
         h1 = hmac.HMAC(b"key", digestmod="sha256")
         h2 = h1.copy()
-        # Using id() in case somebody has overridden __eq__/__ne__.
-        self.assertTrue(id(h1) != id(h2), "No real copy of the HMAC instance.")
-        self.assertTrue(id(h1.inner) != id(h2.inner),
+        # Using id() kwenye case somebody has overridden __eq__/__ne__.
+        self.assertKweli(id(h1) != id(h2), "No real copy of the HMAC instance.")
+        self.assertKweli(id(h1.inner) != id(h2.inner),
             "No real copy of the attribute 'inner'.")
-        self.assertTrue(id(h1.outer) != id(h2.outer),
+        self.assertKweli(id(h1.outer) != id(h2.outer),
             "No real copy of the attribute 'outer'.")
 
     @requires_hashdigest('sha256')
@@ -451,60 +451,60 @@ kundi CompareDigestTestCase(unittest.TestCase):
 
         # Testing bytes of different lengths
         a, b = b"foobar", b"foo"
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
         a, b = b"\xde\xad\xbe\xef", b"\xde\xad"
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
         # Testing bytes of same lengths, different values
         a, b = b"foobar", b"foobaz"
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
         a, b = b"\xde\xad\xbe\xef", b"\xab\xad\x1d\xea"
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
         # Testing bytes of same lengths, same values
         a, b = b"foobar", b"foobar"
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
         a, b = b"\xde\xad\xbe\xef", b"\xde\xad\xbe\xef"
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
 
         # Testing bytearrays of same lengths, same values
         a, b = bytearray(b"foobar"), bytearray(b"foobar")
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
 
         # Testing bytearrays of different lengths
         a, b = bytearray(b"foobar"), bytearray(b"foo")
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
         # Testing bytearrays of same lengths, different values
         a, b = bytearray(b"foobar"), bytearray(b"foobaz")
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
-        # Testing byte and bytearray of same lengths, same values
+        # Testing byte na bytearray of same lengths, same values
         a, b = bytearray(b"foobar"), b"foobar"
-        self.assertTrue(hmac.compare_digest(a, b))
-        self.assertTrue(hmac.compare_digest(b, a))
+        self.assertKweli(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(b, a))
 
         # Testing byte bytearray of different lengths
         a, b = bytearray(b"foobar"), b"foo"
-        self.assertFalse(hmac.compare_digest(a, b))
-        self.assertFalse(hmac.compare_digest(b, a))
+        self.assertUongo(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(b, a))
 
-        # Testing byte and bytearray of same lengths, different values
+        # Testing byte na bytearray of same lengths, different values
         a, b = bytearray(b"foobar"), b"foobaz"
-        self.assertFalse(hmac.compare_digest(a, b))
-        self.assertFalse(hmac.compare_digest(b, a))
+        self.assertUongo(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(b, a))
 
         # Testing str of same lengths
         a, b = "foobar", "foobar"
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
 
         # Testing str of different lengths
         a, b = "foo", "foobar"
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
         # Testing bytes of same lengths, different values
         a, b = "foobar", "foobaz"
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
         # Testing error cases
         a, b = "foobar", b"foobar"
@@ -521,25 +521,25 @@ kundi CompareDigestTestCase(unittest.TestCase):
         # subclasses are supported by ignore __eq__
         kundi mystr(str):
             eleza __eq__(self, other):
-                rudisha False
+                rudisha Uongo
 
         a, b = mystr("foobar"), mystr("foobar")
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
         a, b = mystr("foobar"), "foobar"
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
         a, b = mystr("foobar"), mystr("foobaz")
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
         kundi mybytes(bytes):
             eleza __eq__(self, other):
-                rudisha False
+                rudisha Uongo
 
         a, b = mybytes(b"foobar"), mybytes(b"foobar")
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
         a, b = mybytes(b"foobar"), b"foobar"
-        self.assertTrue(hmac.compare_digest(a, b))
+        self.assertKweli(hmac.compare_digest(a, b))
         a, b = mybytes(b"foobar"), mybytes(b"foobaz")
-        self.assertFalse(hmac.compare_digest(a, b))
+        self.assertUongo(hmac.compare_digest(a, b))
 
 
 ikiwa __name__ == "__main__":

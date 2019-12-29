@@ -191,11 +191,11 @@ class CFunctions(unittest.TestCase):
 
 # The following repeats the above tests with stdcall functions (where
 # they are available)
-try:
+jaribu:
     WinDLL
-except NameError:
+tatizo NameError:
     def stdcall_dll(*_): pass
-else:
+isipokua:
     class stdcall_dll(WinDLL):
         def __getattr__(self, name):
             if name[:2] == '__' and name[-2:] == '__':

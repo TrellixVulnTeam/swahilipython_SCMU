@@ -10,7 +10,7 @@ kutoka .. agiza fixer_base
 
 
 kundi FixNe(fixer_base.BaseFix):
-    # This is so simple that we don't need the pattern compiler.
+    # This ni so simple that we don't need the pattern compiler.
 
     _accept_type = token.NOTEQUAL
 

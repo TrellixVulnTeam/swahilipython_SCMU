@@ -19,7 +19,7 @@ class DistutilsModuleError (DistutilsError):
 
 class DistutilsClassError (DistutilsError):
     """Some command class (or possibly distribution class, if anyone
-    feels a need to subclass Distribution) is found not to be holding
+    feels a need to subclass Distribution) is found sio to be holding
     up its end of the bargain, ie. implementing some part of the
     "command "interface."""
     pass
@@ -34,7 +34,7 @@ class DistutilsArgError (DistutilsError):
     pass
 
 class DistutilsFileError (DistutilsError):
-    """Any problems in the filesystem: expected file not found, etc.
+    """Any problems in the filesystem: expected file sio found, etc.
     Typically this is for problems that we detect before OSError
     could be raised."""
     pass
@@ -56,7 +56,7 @@ class DistutilsSetupError (DistutilsError):
 class DistutilsPlatformError (DistutilsError):
     """We don't know how to do something on the current platform (but
     we do know how to do it on some platform) -- eg. trying to compile
-    C files on a platform not supported by a CCompiler subclass."""
+    C files on a platform sio supported by a CCompiler subclass."""
     pass
 
 class DistutilsExecError (DistutilsError):

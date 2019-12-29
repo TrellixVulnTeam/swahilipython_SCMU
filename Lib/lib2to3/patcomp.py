@@ -3,7 +3,7 @@
 
 """Pattern compiler.
 
-The grammar is taken kutoka PatternGrammar.txt.
+The grammar ni taken kutoka PatternGrammar.txt.
 
 The compiler compiles a pattern to a pytree.*Pattern instance.
 """
@@ -22,52 +22,52 @@ kutoka . agiza pygram
 
 
 kundi PatternSyntaxError(Exception):
-    pass
+    pita
 
 
 eleza tokenize_wrapper(input):
     """Tokenizes a string suppressing significant whitespace."""
     skip = {token.NEWLINE, token.INDENT, token.DEDENT}
     tokens = tokenize.generate_tokens(io.StringIO(input).readline)
-    for quintuple in tokens:
+    kila quintuple kwenye tokens:
         type, value, start, end, line_text = quintuple
-        ikiwa type not in skip:
-            yield quintuple
+        ikiwa type haiko kwenye skip:
+            tuma quintuple
 
 
 kundi PatternCompiler(object):
 
-    eleza __init__(self, grammar_file=None):
+    eleza __init__(self, grammar_file=Tupu):
         """Initializer.
 
-        Takes an optional alternative filename for the pattern grammar.
+        Takes an optional alternative filename kila the pattern grammar.
         """
-        ikiwa grammar_file is None:
+        ikiwa grammar_file ni Tupu:
             self.grammar = pygram.pattern_grammar
             self.syms = pygram.pattern_symbols
-        else:
+        isipokua:
             self.grammar = driver.load_grammar(grammar_file)
             self.syms = pygram.Symbols(self.grammar)
         self.pygrammar = pygram.python_grammar
         self.pysyms = pygram.python_symbols
         self.driver = driver.Driver(self.grammar, convert=pattern_convert)
 
-    eleza compile_pattern(self, input, debug=False, with_tree=False):
+    eleza compile_pattern(self, input, debug=Uongo, with_tree=Uongo):
         """Compiles a pattern string to a nested pytree.*Pattern object."""
         tokens = tokenize_wrapper(input)
-        try:
+        jaribu:
             root = self.driver.parse_tokens(tokens, debug=debug)
-        except parse.ParseError as e:
-            raise PatternSyntaxError(str(e)) kutoka None
+        tatizo parse.ParseError kama e:
+            ashiria PatternSyntaxError(str(e)) kutoka Tupu
         ikiwa with_tree:
             rudisha self.compile_node(root), root
-        else:
+        isipokua:
             rudisha self.compile_node(root)
 
     eleza compile_node(self, node):
         """Compiles a node, recursively.
 
-        This is one big switch on the node type.
+        This ni one big switch on the node type.
         """
         # XXX Optimize certain Wildcard-containing-Wildcard patterns
         # that can be merged
@@ -76,14 +76,14 @@ kundi PatternCompiler(object):
 
         ikiwa node.type == self.syms.Alternatives:
             # Skip the odd children since they are just '|' tokens
-            alts = [self.compile_node(ch) for ch in node.children[::2]]
+            alts = [self.compile_node(ch) kila ch kwenye node.children[::2]]
             ikiwa len(alts) == 1:
                 rudisha alts[0]
-            p = pytree.WildcardPattern([[a] for a in alts], min=1, max=1)
+            p = pytree.WildcardPattern([[a] kila a kwenye alts], min=1, max=1)
             rudisha p.optimize()
 
         ikiwa node.type == self.syms.Alternative:
-            units = [self.compile_node(ch) for ch in node.children]
+            units = [self.compile_node(ch) kila ch kwenye node.children]
             ikiwa len(units) == 1:
                 rudisha units[0]
             p = pytree.WildcardPattern([units], min=1, max=1)
@@ -96,20 +96,20 @@ kundi PatternCompiler(object):
 
         assert node.type == self.syms.Unit
 
-        name = None
+        name = Tupu
         nodes = node.children
-        ikiwa len(nodes) >= 3 and nodes[1].type == token.EQUAL:
+        ikiwa len(nodes) >= 3 na nodes[1].type == token.EQUAL:
             name = nodes[0].value
             nodes = nodes[2:]
-        repeat = None
-        ikiwa len(nodes) >= 2 and nodes[-1].type == self.syms.Repeater:
+        repeat = Tupu
+        ikiwa len(nodes) >= 2 na nodes[-1].type == self.syms.Repeater:
             repeat = nodes[-1]
             nodes = nodes[:-1]
 
         # Now we've reduced it to: STRING | NAME [Details] | (...) | [...]
         pattern = self.compile_basic(nodes, repeat)
 
-        ikiwa repeat is not None:
+        ikiwa repeat ni sio Tupu:
             assert repeat.type == self.syms.Repeater
             children = repeat.children
             child = children[0]
@@ -121,21 +121,21 @@ kundi PatternCompiler(object):
                 max = pytree.HUGE
             elikiwa child.type == token.LBRACE:
                 assert children[-1].type == token.RBRACE
-                assert  len(children) in (3, 5)
+                assert  len(children) kwenye (3, 5)
                 min = max = self.get_int(children[1])
                 ikiwa len(children) == 5:
                     max = self.get_int(children[3])
-            else:
-                assert False
-            ikiwa min != 1 or max != 1:
+            isipokua:
+                assert Uongo
+            ikiwa min != 1 ama max != 1:
                 pattern = pattern.optimize()
                 pattern = pytree.WildcardPattern([[pattern]], min=min, max=max)
 
-        ikiwa name is not None:
+        ikiwa name ni sio Tupu:
             pattern.name = name
         rudisha pattern.optimize()
 
-    eleza compile_basic(self, nodes, repeat=None):
+    eleza compile_basic(self, nodes, repeat=Tupu):
         # Compile STRING | NAME [Details] | (...) | [...]
         assert len(nodes) >= 1
         node = nodes[0]
@@ -145,58 +145,58 @@ kundi PatternCompiler(object):
         elikiwa node.type == token.NAME:
             value = node.value
             ikiwa value.isupper():
-                ikiwa value not in TOKEN_MAP:
-                    raise PatternSyntaxError("Invalid token: %r" % value)
+                ikiwa value haiko kwenye TOKEN_MAP:
+                    ashiria PatternSyntaxError("Invalid token: %r" % value)
                 ikiwa nodes[1:]:
-                    raise PatternSyntaxError("Can't have details for token")
+                    ashiria PatternSyntaxError("Can't have details kila token")
                 rudisha pytree.LeafPattern(TOKEN_MAP[value])
-            else:
+            isipokua:
                 ikiwa value == "any":
-                    type = None
-                elikiwa not value.startswith("_"):
-                    type = getattr(self.pysyms, value, None)
-                    ikiwa type is None:
-                        raise PatternSyntaxError("Invalid symbol: %r" % value)
+                    type = Tupu
+                elikiwa sio value.startswith("_"):
+                    type = getattr(self.pysyms, value, Tupu)
+                    ikiwa type ni Tupu:
+                        ashiria PatternSyntaxError("Invalid symbol: %r" % value)
                 ikiwa nodes[1:]: # Details present
                     content = [self.compile_node(nodes[1].children[1])]
-                else:
-                    content = None
+                isipokua:
+                    content = Tupu
                 rudisha pytree.NodePattern(type, content)
         elikiwa node.value == "(":
             rudisha self.compile_node(nodes[1])
         elikiwa node.value == "[":
-            assert repeat is None
+            assert repeat ni Tupu
             subpattern = self.compile_node(nodes[1])
             rudisha pytree.WildcardPattern([[subpattern]], min=0, max=1)
-        assert False, node
+        assert Uongo, node
 
     eleza get_int(self, node):
         assert node.type == token.NUMBER
         rudisha int(node.value)
 
 
-# Map named tokens to the type value for a LeafPattern
+# Map named tokens to the type value kila a LeafPattern
 TOKEN_MAP = {"NAME": token.NAME,
              "STRING": token.STRING,
              "NUMBER": token.NUMBER,
-             "TOKEN": None}
+             "TOKEN": Tupu}
 
 
 eleza _type_of_literal(value):
     ikiwa value[0].isalpha():
         rudisha token.NAME
-    elikiwa value in grammar.opmap:
+    elikiwa value kwenye grammar.opmap:
         rudisha grammar.opmap[value]
-    else:
-        rudisha None
+    isipokua:
+        rudisha Tupu
 
 
 eleza pattern_convert(grammar, raw_node_info):
-    """Converts raw node information to a Node or Leaf instance."""
+    """Converts raw node information to a Node ama Leaf instance."""
     type, value, context, children = raw_node_info
-    ikiwa children or type in grammar.number2symbol:
+    ikiwa children ama type kwenye grammar.number2symbol:
         rudisha pytree.Node(type, children, context=context)
-    else:
+    isipokua:
         rudisha pytree.Leaf(type, value, context=context)
 
 

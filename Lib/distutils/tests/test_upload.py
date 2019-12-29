@@ -47,9 +47,9 @@ class FakeOpen(object):
 
     def __init__(self, url, msg=None, code=None):
         self.url = url
-        if not isinstance(url, str):
+        if sio isinstance(url, str):
             self.req = url
-        else:
+        isipokua:
             self.req = None
         self.msg = msg or 'OK'
         self.code = code or 200
@@ -146,7 +146,7 @@ class uploadTestCase(BasePyPIRCCommandTestCase):
     # bpo-32304: archives whose last byte was b'\r' were corrupted due to
     # normalization intended for Mac OS 9.
     def test_upload_correct_cr(self):
-        # content that ends with \r should not be modified.
+        # content that ends with \r should sio be modified.
         tmp = self.mkdtemp()
         path = os.path.join(tmp, 'xxx')
         self.write_file(path, content='yy\r')

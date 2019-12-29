@@ -8,7 +8,7 @@ kundi SentinelTest(unittest.TestCase):
 
     eleza testSentinels(self):
         self.assertEqual(sentinel.whatever, sentinel.whatever,
-                         'sentinel not stored')
+                         'sentinel sio stored')
         self.assertNotEqual(sentinel.whatever, sentinel.whateverelse,
                             'sentinel should be unique')
 
@@ -22,11 +22,11 @@ kundi SentinelTest(unittest.TestCase):
         self.assertIs(DEFAULT, sentinel.DEFAULT)
 
     eleza testBases(self):
-        # If this doesn't raise an AttributeError then help(mock) is broken
+        # If this doesn't ashiria an AttributeError then help(mock) ni broken
         self.assertRaises(AttributeError, lambda: sentinel.__bases__)
 
     eleza testPickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL+1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL+1):
             with self.subTest(protocol=proto):
                 pickled = pickle.dumps(sentinel.whatever, proto)
                 unpickled = pickle.loads(pickled)

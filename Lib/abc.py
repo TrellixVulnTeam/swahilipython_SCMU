@@ -7,12 +7,12 @@
 eleza abstractmethod(funcobj):
     """A decorator indicating abstract methods.
 
-    Requires that the metakundi is ABCMeta or derived kutoka it.  A
+    Requires that the metakundi ni ABCMeta ama derived kutoka it.  A
     kundi that has a metakundi derived kutoka ABCMeta cannot be
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
     'super' call mechanisms.  abstractmethod() may be used to declare
-    abstract methods for properties and descriptors.
+    abstract methods kila properties na descriptors.
 
     Usage:
 
@@ -21,7 +21,7 @@ eleza abstractmethod(funcobj):
             eleza my_abstract_method(self, ...):
                 ...
     """
-    funcobj.__isabstractmethod__ = True
+    funcobj.__isabstractmethod__ = Kweli
     rudisha funcobj
 
 
@@ -31,10 +31,10 @@ kundi abstractclassmethod(classmethod):
     Deprecated, use 'classmethod' with 'abstractmethod' instead.
     """
 
-    __isabstractmethod__ = True
+    __isabstractmethod__ = Kweli
 
     eleza __init__(self, callable):
-        callable.__isabstractmethod__ = True
+        callable.__isabstractmethod__ = Kweli
         super().__init__(callable)
 
 
@@ -44,10 +44,10 @@ kundi abstractstaticmethod(staticmethod):
     Deprecated, use 'staticmethod' with 'abstractmethod' instead.
     """
 
-    __isabstractmethod__ = True
+    __isabstractmethod__ = Kweli
 
     eleza __init__(self, callable):
-        callable.__isabstractmethod__ = True
+        callable.__isabstractmethod__ = Kweli
         super().__init__(callable)
 
 
@@ -57,24 +57,24 @@ kundi abstractproperty(property):
     Deprecated, use 'property' with 'abstractmethod' instead.
     """
 
-    __isabstractmethod__ = True
+    __isabstractmethod__ = Kweli
 
 
-try:
+jaribu:
     kutoka _abc agiza (get_cache_token, _abc_init, _abc_register,
                       _abc_instancecheck, _abc_subclasscheck, _get_dump,
                       _reset_registry, _reset_caches)
-except ImportError:
+tatizo ImportError:
     kutoka _py_abc agiza ABCMeta, get_cache_token
     ABCMeta.__module__ = 'abc'
-else:
+isipokua:
     kundi ABCMeta(type):
-        """Metakundi for defining Abstract Base Classes (ABCs).
+        """Metakundi kila defining Abstract Base Classes (ABCs).
 
         Use this metakundi to create an ABC.  An ABC can be subclassed
-        directly, and then acts as a mix-in class.  You can also register
-        unrelated concrete classes (even built-in classes) and unrelated
-        ABCs as 'virtual subclasses' -- these and their descendants will
+        directly, na then acts kama a mix-in class.  You can also register
+        unrelated concrete classes (even built-in classes) na unrelated
+        ABCs kama 'virtual subclasses' -- these na their descendants will
         be considered subclasses of the registering ABC by the built-in
         issubclass() function, but the registering ABC won't show up in
         their MRO (Method Resolution Order) nor will method
@@ -89,36 +89,36 @@ else:
         eleza register(cls, subclass):
             """Register a virtual subkundi of an ABC.
 
-            Returns the subclass, to allow usage as a kundi decorator.
+            Returns the subclass, to allow usage kama a kundi decorator.
             """
             rudisha _abc_register(cls, subclass)
 
         eleza __instancecheck__(cls, instance):
-            """Override for isinstance(instance, cls)."""
+            """Override kila isinstance(instance, cls)."""
             rudisha _abc_instancecheck(cls, instance)
 
         eleza __subclasscheck__(cls, subclass):
-            """Override for issubclass(subclass, cls)."""
+            """Override kila issubclass(subclass, cls)."""
             rudisha _abc_subclasscheck(cls, subclass)
 
-        eleza _dump_registry(cls, file=None):
+        eleza _dump_registry(cls, file=Tupu):
             """Debug helper to print the ABC registry."""
             andika(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
             andika(f"Inv. counter: {get_cache_token()}", file=file)
             (_abc_registry, _abc_cache, _abc_negative_cache,
              _abc_negative_cache_version) = _get_dump(cls)
-            andika(f"_abc_registry: {_abc_registry!r}", file=file)
+            andika(f"_abc_regisjaribu: {_abc_registry!r}", file=file)
             andika(f"_abc_cache: {_abc_cache!r}", file=file)
             andika(f"_abc_negative_cache: {_abc_negative_cache!r}", file=file)
             andika(f"_abc_negative_cache_version: {_abc_negative_cache_version!r}",
                   file=file)
 
         eleza _abc_registry_clear(cls):
-            """Clear the registry (for debugging or testing)."""
+            """Clear the registry (kila debugging ama testing)."""
             _reset_registry(cls)
 
         eleza _abc_caches_clear(cls):
-            """Clear the caches (for debugging or testing)."""
+            """Clear the caches (kila debugging ama testing)."""
             _reset_caches(cls)
 
 

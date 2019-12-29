@@ -39,8 +39,8 @@ kundi BaseTestCase(unittest.TestCase):
         self.assertEqual(-7 .__index__(), -7)
         self.assertEqual(self.o.__index__(), 4)
         self.assertEqual(self.n.__index__(), 5)
-        self.assertEqual(True.__index__(), 1)
-        self.assertEqual(False.__index__(), 0)
+        self.assertEqual(Kweli.__index__(), 1)
+        self.assertEqual(Uongo.__index__(), 0)
 
     eleza test_subclasses(self):
         r = list(range(10))
@@ -56,7 +56,7 @@ kundi BaseTestCase(unittest.TestCase):
         self.assertRaises(TypeError, slice(self.n).indices, 0)
 
     eleza test_int_subclass_with_index(self):
-        # __index__ should be used when computing indices, even for int
+        # __index__ should be used when computing indices, even kila int
         # subclasses.  See issue #17576.
         kundi MyInt(int):
             eleza __index__(self):
@@ -71,14 +71,14 @@ kundi BaseTestCase(unittest.TestCase):
         self.assertIs(type(direct_index), int)
         #self.assertIs(type(operator_index), int)
 
-    eleza test_index_returns_int_subclass(self):
+    eleza test_index_rudishas_int_subclass(self):
         kundi BadInt:
             eleza __index__(self):
-                rudisha True
+                rudisha Kweli
 
         kundi BadInt2(int):
             eleza __index__(self):
-                rudisha True
+                rudisha Kweli
 
         bad_int = BadInt()
         with self.assertWarns(DeprecationWarning):
@@ -167,8 +167,8 @@ kundi ListTestCase(SeqTestCase, unittest.TestCase):
         self.o.ind = -2
         self.n.ind = 2
         lst = list('ab!cdefghi!j')
-        del lst[self.o]
-        del lst[self.n]
+        toa lst[self.o]
+        toa lst[self.n]
         lst[self.o] = 'X'
         lst[self.n] = 'Y'
         self.assertEqual(lst, list('abYdefghXj'))
@@ -220,13 +220,13 @@ kundi TupleTestCase(SeqTestCase, unittest.TestCase):
     seq = (0,10,20,30,40,50)
 
 kundi ByteArrayTestCase(SeqTestCase, unittest.TestCase):
-    seq = bytearray(b"this is a test")
+    seq = bytearray(b"this ni a test")
 
 kundi BytesTestCase(SeqTestCase, unittest.TestCase):
-    seq = b"this is a test"
+    seq = b"this ni a test"
 
 kundi StringTestCase(SeqTestCase, unittest.TestCase):
-    seq = "this is a test"
+    seq = "this ni a test"
 
 kundi NewSeqTestCase(SeqTestCase, unittest.TestCase):
     seq = NewSeq((0,10,20,30,40,50))
@@ -255,7 +255,7 @@ kundi OverflowTestCase(unittest.TestCase):
     eleza test_getitem(self):
         kundi GetItem:
             eleza __len__(self):
-                assert False, "__len__ should not be invoked"
+                assert Uongo, "__len__ should sio be invoked"
             eleza __getitem__(self, key):
                 rudisha key
         x = GetItem()

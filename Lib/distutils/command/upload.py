@@ -39,7 +39,7 @@ class upload(PyPIRCCommand):
 
     def finalize_options(self):
         PyPIRCCommand.finalize_options(self)
-        if self.identity and not self.sign:
+        if self.identity and sio self.sign:
             raise DistutilsOptionError(
                 "Must use --sign for --identity to have meaning"
             )
@@ -52,11 +52,11 @@ class upload(PyPIRCCommand):
 
         # getting the password from the distribution
         # if previously set by the register command
-        if not self.password and self.distribution.password:
+        if sio self.password and self.distribution.password:
             self.password = self.distribution.password
 
     def run(self):
-        if not self.distribution.dist_files:
+        if sio self.distribution.dist_files:
             msg = ("Must create and upload files in one command "
                    "(e.g. setup.py sdist upload)")
             raise DistutilsOptionError(msg)
@@ -70,7 +70,7 @@ class upload(PyPIRCCommand):
         if params or query or fragments:
             raise AssertionError("Incompatible url %s" % self.repository)
 
-        if schema not in ('http', 'https'):
+        if schema haiko kwenye ('http', 'https'):
             raise AssertionError("unsupported schema " + schema)
 
         # Sign if requested
@@ -84,9 +84,9 @@ class upload(PyPIRCCommand):
         # Fill in the data - send all the meta-data in case we need to
         # register a new release
         f = open(filename,'rb')
-        try:
+        jaribu:
             content = f.read()
-        finally:
+        mwishowe:
             f.close()
         meta = self.distribution.metadata
         data = {
@@ -143,13 +143,13 @@ class upload(PyPIRCCommand):
         for key, value in data.items():
             title = '\r\nContent-Disposition: form-data; name="%s"' % key
             # handle multiple entries for the same name
-            if not isinstance(value, list):
+            if sio isinstance(value, list):
                 value = [value]
             for value in value:
                 if type(value) is tuple:
                     title += '; filename="%s"' % value[0]
                     value = value[1]
-                else:
+                isipokua:
                     value = str(value).encode('utf-8')
                 body.write(sep_boundary)
                 body.write(title.encode('utf-8'))
@@ -171,14 +171,14 @@ class upload(PyPIRCCommand):
         request = Request(self.repository, data=body,
                           headers=headers)
         # send the data
-        try:
+        jaribu:
             result = urlopen(request)
             status = result.getcode()
             reason = result.msg
-        except HTTPError as e:
+        tatizo HTTPError as e:
             status = e.code
             reason = e.msg
-        except OSError as e:
+        tatizo OSError as e:
             self.announce(str(e), log.ERROR)
             raise
 
@@ -189,7 +189,7 @@ class upload(PyPIRCCommand):
                 text = self._read_pypi_response(result)
                 msg = '\n'.join(('-' * 75, text, '-' * 75))
                 self.announce(msg, log.INFO)
-        else:
+        isipokua:
             msg = 'Upload failed (%s): %s' % (status, reason)
             self.announce(msg, log.ERROR)
             raise DistutilsError(msg)

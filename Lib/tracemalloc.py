@@ -5,24 +5,24 @@ agiza linecache
 agiza os.path
 agiza pickle
 
-# Import types and functions implemented in C
+# Import types na functions implemented kwenye C
 kutoka _tracemalloc agiza *
 kutoka _tracemalloc agiza _get_object_traceback, _get_traces
 
 
 eleza _format_size(size, sign):
-    for unit in ('B', 'KiB', 'MiB', 'GiB', 'TiB'):
-        ikiwa abs(size) < 100 and unit != 'B':
+    kila unit kwenye ('B', 'KiB', 'MiB', 'GiB', 'TiB'):
+        ikiwa abs(size) < 100 na unit != 'B':
             # 3 digits (xx.x UNIT)
             ikiwa sign:
                 rudisha "%+.1f %s" % (size, unit)
-            else:
+            isipokua:
                 rudisha "%.1f %s" % (size, unit)
-        ikiwa abs(size) < 10 * 1024 or unit == 'TiB':
-            # 4 or 5 digits (xxxx UNIT)
+        ikiwa abs(size) < 10 * 1024 ama unit == 'TiB':
+            # 4 ama 5 digits (xxxx UNIT)
             ikiwa sign:
                 rudisha "%+.0f %s" % (size, unit)
-            else:
+            isipokua:
                 rudisha "%.0f %s" % (size, unit)
         size /= 1024
 
@@ -44,17 +44,17 @@ kundi Statistic:
 
     eleza __eq__(self, other):
         rudisha (self.traceback == other.traceback
-                and self.size == other.size
-                and self.count == other.count)
+                na self.size == other.size
+                na self.count == other.count)
 
     eleza __str__(self):
         text = ("%s: size=%s, count=%i"
                  % (self.traceback,
-                    _format_size(self.size, False),
+                    _format_size(self.size, Uongo),
                     self.count))
         ikiwa self.count:
             average = self.size / self.count
-            text += ", average=%s" % _format_size(average, False)
+            text += ", average=%s" % _format_size(average, Uongo)
         rudisha text
 
     eleza __repr__(self):
@@ -67,7 +67,7 @@ kundi Statistic:
 
 kundi StatisticDiff:
     """
-    Statistic difference on memory allocations between an old and a new
+    Statistic difference on memory allocations between an old na a new
     Snapshot instance.
     """
     __slots__ = ('traceback', 'size', 'size_diff', 'count', 'count_diff')
@@ -85,21 +85,21 @@ kundi StatisticDiff:
 
     eleza __eq__(self, other):
         rudisha (self.traceback == other.traceback
-                and self.size == other.size
-                and self.size_diff == other.size_diff
-                and self.count == other.count
-                and self.count_diff == other.count_diff)
+                na self.size == other.size
+                na self.size_diff == other.size_diff
+                na self.count == other.count
+                na self.count_diff == other.count_diff)
 
     eleza __str__(self):
         text = ("%s: size=%s (%s), count=%i (%+i)"
                 % (self.traceback,
-                   _format_size(self.size, False),
-                   _format_size(self.size_diff, True),
+                   _format_size(self.size, Uongo),
+                   _format_size(self.size_diff, Kweli),
                    self.count,
                    self.count_diff))
         ikiwa self.count:
             average = self.size / self.count
-            text += ", average=%s" % _format_size(average, False)
+            text += ", average=%s" % _format_size(average, Uongo)
         rudisha text
 
     eleza __repr__(self):
@@ -115,19 +115,19 @@ kundi StatisticDiff:
 
 eleza _compare_grouped_stats(old_group, new_group):
     statistics = []
-    for traceback, stat in new_group.items():
-        previous = old_group.pop(traceback, None)
-        ikiwa previous is not None:
+    kila traceback, stat kwenye new_group.items():
+        previous = old_group.pop(traceback, Tupu)
+        ikiwa previous ni sio Tupu:
             stat = StatisticDiff(traceback,
                                  stat.size, stat.size - previous.size,
                                  stat.count, stat.count - previous.count)
-        else:
+        isipokua:
             stat = StatisticDiff(traceback,
                                  stat.size, stat.size,
                                  stat.count, stat.count)
         statistics.append(stat)
 
-    for traceback, stat in old_group.items():
+    kila traceback, stat kwenye old_group.items():
         stat = StatisticDiff(traceback, 0, -stat.size, 0, -stat.count)
         statistics.append(stat)
     rudisha statistics
@@ -141,7 +141,7 @@ kundi Frame:
     __slots__ = ("_frame",)
 
     eleza __init__(self, frame):
-        # frame is a tuple: (filename: str, lineno: int)
+        # frame ni a tuple: (filename: str, lineno: int)
         self._frame = frame
 
     @property
@@ -178,9 +178,9 @@ kundi Traceback(Sequence):
 
     eleza __init__(self, frames):
         Sequence.__init__(self)
-        # frames is a tuple of frame tuples: see Frame constructor for the
-        # format of a frame tuple; it is reversed, because _tracemalloc
-        # returns frames sorted kutoka most recent to oldest, but the
+        # frames ni a tuple of frame tuples: see Frame constructor kila the
+        # format of a frame tuple; it ni reversed, because _tracemalloc
+        # rudishas frames sorted kutoka most recent to oldest, but the
         # Python API expects oldest to most recent
         self._frames = tuple(reversed(frames))
 
@@ -189,12 +189,12 @@ kundi Traceback(Sequence):
 
     eleza __getitem__(self, index):
         ikiwa isinstance(index, slice):
-            rudisha tuple(Frame(trace) for trace in self._frames[index])
-        else:
+            rudisha tuple(Frame(trace) kila trace kwenye self._frames[index])
+        isipokua:
             rudisha Frame(self._frames[index])
 
     eleza __contains__(self, frame):
-        rudisha frame._frame in self._frames
+        rudisha frame._frame kwenye self._frames
 
     eleza __hash__(self):
         rudisha hash(self._frames)
@@ -211,19 +211,19 @@ kundi Traceback(Sequence):
     eleza __repr__(self):
         rudisha "<Traceback %r>" % (tuple(self),)
 
-    eleza format(self, limit=None, most_recent_first=False):
+    eleza format(self, limit=Tupu, most_recent_first=Uongo):
         lines = []
-        ikiwa limit is not None:
+        ikiwa limit ni sio Tupu:
             ikiwa limit > 0:
                 frame_slice = self[-limit:]
-            else:
+            isipokua:
                 frame_slice = self[:limit]
-        else:
+        isipokua:
             frame_slice = self
 
         ikiwa most_recent_first:
             frame_slice = reversed(frame_slice)
-        for frame in frame_slice:
+        kila frame kwenye frame_slice:
             lines.append('  File "%s", line %s'
                          % (frame.filename, frame.lineno))
             line = linecache.getline(frame.filename, frame.lineno).strip()
@@ -237,14 +237,14 @@ eleza get_object_traceback(obj):
     Get the traceback where the Python object *obj* was allocated.
     Return a Traceback instance.
 
-    Return None ikiwa the tracemalloc module is not tracing memory allocations or
-    did not trace the allocation of the object.
+    Return Tupu ikiwa the tracemalloc module ni sio tracing memory allocations or
+    did sio trace the allocation of the object.
     """
     frames = _get_object_traceback(obj)
-    ikiwa frames is not None:
+    ikiwa frames ni sio Tupu:
         rudisha Traceback(frames)
-    else:
-        rudisha None
+    isipokua:
+        rudisha Tupu
 
 
 kundi Trace:
@@ -254,8 +254,8 @@ kundi Trace:
     __slots__ = ("_trace",)
 
     eleza __init__(self, trace):
-        # trace is a tuple: (domain: int, size: int, traceback: tuple).
-        # See Traceback constructor for the format of the traceback tuple.
+        # trace ni a tuple: (domain: int, size: int, traceback: tuple).
+        # See Traceback constructor kila the format of the traceback tuple.
         self._trace = trace
 
     @property
@@ -277,17 +277,17 @@ kundi Trace:
         rudisha hash(self._trace)
 
     eleza __str__(self):
-        rudisha "%s: %s" % (self.traceback, _format_size(self.size, False))
+        rudisha "%s: %s" % (self.traceback, _format_size(self.size, Uongo))
 
     eleza __repr__(self):
         rudisha ("<Trace domain=%s size=%s, traceback=%r>"
-                % (self.domain, _format_size(self.size, False), self.traceback))
+                % (self.domain, _format_size(self.size, Uongo), self.traceback))
 
 
 kundi _Traces(Sequence):
     eleza __init__(self, traces):
         Sequence.__init__(self)
-        # traces is a tuple of trace tuples: see Trace constructor
+        # traces ni a tuple of trace tuples: see Trace constructor
         self._traces = traces
 
     eleza __len__(self):
@@ -295,12 +295,12 @@ kundi _Traces(Sequence):
 
     eleza __getitem__(self, index):
         ikiwa isinstance(index, slice):
-            rudisha tuple(Trace(trace) for trace in self._traces[index])
-        else:
+            rudisha tuple(Trace(trace) kila trace kwenye self._traces[index])
+        isipokua:
             rudisha Trace(self._traces[index])
 
     eleza __contains__(self, trace):
-        rudisha trace._trace in self._traces
+        rudisha trace._trace kwenye self._traces
 
     eleza __eq__(self, other):
         rudisha (self._traces == other._traces)
@@ -321,12 +321,12 @@ kundi BaseFilter:
         self.inclusive = inclusive
 
     eleza _match(self, trace):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi Filter(BaseFilter):
     eleza __init__(self, inclusive, filename_pattern,
-                 lineno=None, all_frames=False, domain=None):
+                 lineno=Tupu, all_frames=Uongo, domain=Tupu):
         super().__init__(inclusive)
         self.inclusive = inclusive
         self._filename_pattern = _normalize_filename(filename_pattern)
@@ -340,11 +340,11 @@ kundi Filter(BaseFilter):
 
     eleza _match_frame_impl(self, filename, lineno):
         filename = _normalize_filename(filename)
-        ikiwa not fnmatch.fnmatch(filename, self._filename_pattern):
-            rudisha False
-        ikiwa self.lineno is None:
-            rudisha True
-        else:
+        ikiwa sio fnmatch.fnmatch(filename, self._filename_pattern):
+            rudisha Uongo
+        ikiwa self.lineno ni Tupu:
+            rudisha Kweli
+        isipokua:
             rudisha (lineno == self.lineno)
 
     eleza _match_frame(self, filename, lineno):
@@ -353,22 +353,22 @@ kundi Filter(BaseFilter):
     eleza _match_traceback(self, traceback):
         ikiwa self.all_frames:
             ikiwa any(self._match_frame_impl(filename, lineno)
-                   for filename, lineno in traceback):
+                   kila filename, lineno kwenye traceback):
                 rudisha self.inclusive
-            else:
+            isipokua:
                 rudisha (not self.inclusive)
-        else:
+        isipokua:
             filename, lineno = traceback[0]
             rudisha self._match_frame(filename, lineno)
 
     eleza _match(self, trace):
         domain, size, traceback = trace
         res = self._match_traceback(traceback)
-        ikiwa self.domain is not None:
+        ikiwa self.domain ni sio Tupu:
             ikiwa self.inclusive:
-                rudisha res and (domain == self.domain)
-            else:
-                rudisha res or (domain != self.domain)
+                rudisha res na (domain == self.domain)
+            isipokua:
+                rudisha res ama (domain != self.domain)
         rudisha res
 
 
@@ -392,7 +392,7 @@ kundi Snapshot:
     """
 
     eleza __init__(self, traces, traceback_limit):
-        # traces is a tuple of trace tuples: see _Traces constructor for
+        # traces ni a tuple of trace tuples: see _Traces constructor for
         # the exact format
         self.traces = _Traces(traces)
         self.traceback_limit = traceback_limit
@@ -401,7 +401,7 @@ kundi Snapshot:
         """
         Write the snapshot into a file.
         """
-        with open(filename, "wb") as fp:
+        with open(filename, "wb") kama fp:
             pickle.dump(self, fp, pickle.HIGHEST_PROTOCOL)
 
     @staticmethod
@@ -409,116 +409,116 @@ kundi Snapshot:
         """
         Load a snapshot kutoka a file.
         """
-        with open(filename, "rb") as fp:
+        with open(filename, "rb") kama fp:
             rudisha pickle.load(fp)
 
     eleza _filter_trace(self, include_filters, exclude_filters, trace):
         ikiwa include_filters:
-            ikiwa not any(trace_filter._match(trace)
-                       for trace_filter in include_filters):
-                rudisha False
+            ikiwa sio any(trace_filter._match(trace)
+                       kila trace_filter kwenye include_filters):
+                rudisha Uongo
         ikiwa exclude_filters:
             ikiwa any(not trace_filter._match(trace)
-                   for trace_filter in exclude_filters):
-                rudisha False
-        rudisha True
+                   kila trace_filter kwenye exclude_filters):
+                rudisha Uongo
+        rudisha Kweli
 
     eleza filter_traces(self, filters):
         """
         Create a new Snapshot instance with a filtered traces sequence, filters
-        is a list of Filter or DomainFilter instances.  If filters is an empty
+        ni a list of Filter ama DomainFilter instances.  If filters ni an empty
         list, rudisha a new Snapshot instance with a copy of the traces.
         """
-        ikiwa not isinstance(filters, Iterable):
-            raise TypeError("filters must be a list of filters, not %s"
+        ikiwa sio isinstance(filters, Iterable):
+            ashiria TypeError("filters must be a list of filters, sio %s"
                             % type(filters).__name__)
         ikiwa filters:
             include_filters = []
             exclude_filters = []
-            for trace_filter in filters:
+            kila trace_filter kwenye filters:
                 ikiwa trace_filter.inclusive:
                     include_filters.append(trace_filter)
-                else:
+                isipokua:
                     exclude_filters.append(trace_filter)
-            new_traces = [trace for trace in self.traces._traces
+            new_traces = [trace kila trace kwenye self.traces._traces
                           ikiwa self._filter_trace(include_filters,
                                                 exclude_filters,
                                                 trace)]
-        else:
+        isipokua:
             new_traces = self.traces._traces.copy()
         rudisha Snapshot(new_traces, self.traceback_limit)
 
     eleza _group_by(self, key_type, cumulative):
-        ikiwa key_type not in ('traceback', 'filename', 'lineno'):
-            raise ValueError("unknown key_type: %r" % (key_type,))
-        ikiwa cumulative and key_type not in ('lineno', 'filename'):
-            raise ValueError("cumulative mode cannot by used "
+        ikiwa key_type haiko kwenye ('traceback', 'filename', 'lineno'):
+            ashiria ValueError("unknown key_type: %r" % (key_type,))
+        ikiwa cumulative na key_type haiko kwenye ('lineno', 'filename'):
+            ashiria ValueError("cumulative mode cannot by used "
                              "with key type %r" % key_type)
 
         stats = {}
         tracebacks = {}
-        ikiwa not cumulative:
-            for trace in self.traces._traces:
+        ikiwa sio cumulative:
+            kila trace kwenye self.traces._traces:
                 domain, size, trace_traceback = trace
-                try:
+                jaribu:
                     traceback = tracebacks[trace_traceback]
-                except KeyError:
+                tatizo KeyError:
                     ikiwa key_type == 'traceback':
                         frames = trace_traceback
                     elikiwa key_type == 'lineno':
                         frames = trace_traceback[:1]
-                    else: # key_type == 'filename':
+                    isipokua: # key_type == 'filename':
                         frames = ((trace_traceback[0][0], 0),)
                     traceback = Traceback(frames)
                     tracebacks[trace_traceback] = traceback
-                try:
+                jaribu:
                     stat = stats[traceback]
                     stat.size += size
                     stat.count += 1
-                except KeyError:
+                tatizo KeyError:
                     stats[traceback] = Statistic(traceback, size, 1)
-        else:
+        isipokua:
             # cumulative statistics
-            for trace in self.traces._traces:
+            kila trace kwenye self.traces._traces:
                 domain, size, trace_traceback = trace
-                for frame in trace_traceback:
-                    try:
+                kila frame kwenye trace_traceback:
+                    jaribu:
                         traceback = tracebacks[frame]
-                    except KeyError:
+                    tatizo KeyError:
                         ikiwa key_type == 'lineno':
                             frames = (frame,)
-                        else: # key_type == 'filename':
+                        isipokua: # key_type == 'filename':
                             frames = ((frame[0], 0),)
                         traceback = Traceback(frames)
                         tracebacks[frame] = traceback
-                    try:
+                    jaribu:
                         stat = stats[traceback]
                         stat.size += size
                         stat.count += 1
-                    except KeyError:
+                    tatizo KeyError:
                         stats[traceback] = Statistic(traceback, size, 1)
         rudisha stats
 
-    eleza statistics(self, key_type, cumulative=False):
+    eleza statistics(self, key_type, cumulative=Uongo):
         """
         Group statistics by key_type. Return a sorted list of Statistic
         instances.
         """
         grouped = self._group_by(key_type, cumulative)
         statistics = list(grouped.values())
-        statistics.sort(reverse=True, key=Statistic._sort_key)
+        statistics.sort(reverse=Kweli, key=Statistic._sort_key)
         rudisha statistics
 
-    eleza compare_to(self, old_snapshot, key_type, cumulative=False):
+    eleza compare_to(self, old_snapshot, key_type, cumulative=Uongo):
         """
         Compute the differences with an old snapshot old_snapshot. Get
-        statistics as a sorted list of StatisticDiff instances, grouped by
+        statistics kama a sorted list of StatisticDiff instances, grouped by
         group_by.
         """
         new_group = self._group_by(key_type, cumulative)
         old_group = old_snapshot._group_by(key_type, cumulative)
         statistics = _compare_grouped_stats(old_group, new_group)
-        statistics.sort(reverse=True, key=StatisticDiff._sort_key)
+        statistics.sort(reverse=Kweli, key=StatisticDiff._sort_key)
         rudisha statistics
 
 
@@ -526,8 +526,8 @@ eleza take_snapshot():
     """
     Take a snapshot of traces of memory blocks allocated by Python.
     """
-    ikiwa not is_tracing():
-        raise RuntimeError("the tracemalloc module must be tracing memory "
+    ikiwa sio is_tracing():
+        ashiria RuntimeError("the tracemalloc module must be tracing memory "
                            "allocations to take a snapshot")
     traces = _get_traces()
     traceback_limit = get_traceback_limit()

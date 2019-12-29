@@ -52,7 +52,7 @@ class bdist(Command):
          "lists available distribution formats", show_formats),
         ]
 
-    # The following commands do not take a format option from bdist
+    # The following commands do sio take a format option from bdist
     no_format_option = ('bdist_rpm',)
 
     # This won't do in reality: will need to distinguish RPM-ish Linux,
@@ -92,7 +92,7 @@ class bdist(Command):
         if self.plat_name is None:
             if self.skip_build:
                 self.plat_name = get_platform()
-            else:
+            isipokua:
                 self.plat_name = self.get_finalized_command('build').plat_name
 
         # 'bdist_base' -- parent of per-built-distribution-format
@@ -105,9 +105,9 @@ class bdist(Command):
 
         self.ensure_string_list('formats')
         if self.formats is None:
-            try:
+            jaribu:
                 self.formats = [self.default_format[os.name]]
-            except KeyError:
+            tatizo KeyError:
                 raise DistutilsPlatformError(
                       "don't know how to create built distributions "
                       "on platform %s" % os.name)
@@ -119,16 +119,16 @@ class bdist(Command):
         # Figure out which sub-commands we need to run.
         commands = []
         for format in self.formats:
-            try:
+            jaribu:
                 commands.append(self.format_command[format][0])
-            except KeyError:
+            tatizo KeyError:
                 raise DistutilsOptionError("invalid format '%s'" % format)
 
         # Reinitialize and run each command.
         for i in range(len(self.formats)):
             cmd_name = commands[i]
             sub_cmd = self.reinitialize_command(cmd_name)
-            if cmd_name not in self.no_format_option:
+            if cmd_name haiko kwenye self.no_format_option:
                 sub_cmd.format = self.formats[i]
 
             # passing the owner and group names for tar archiving

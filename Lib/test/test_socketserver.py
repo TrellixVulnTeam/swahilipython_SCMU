@@ -1,5 +1,5 @@
 """
-Test suite for socketserver.
+Test suite kila socketserver.
 """
 
 agiza contextlib
@@ -29,7 +29,7 @@ HAVE_FORKING = hasattr(os, "fork")
 requires_forking = unittest.skipUnless(HAVE_FORKING, 'requires forking')
 
 eleza signal_alarm(n):
-    """Call signal.alarm when it exists (i.e. not on Windows)."""
+    """Call signal.alarm when it exists (i.e. sio on Windows)."""
     ikiwa hasattr(signal, 'alarm'):
         signal.alarm(n)
 
@@ -38,33 +38,33 @@ _real_select = select.select
 
 eleza receive(sock, n, timeout=20):
     r, w, x = _real_select([sock], [], [], timeout)
-    ikiwa sock in r:
+    ikiwa sock kwenye r:
         rudisha sock.recv(n)
-    else:
-        raise RuntimeError("timed out on %r" % (sock,))
+    isipokua:
+        ashiria RuntimeError("timed out on %r" % (sock,))
 
-ikiwa HAVE_UNIX_SOCKETS and HAVE_FORKING:
+ikiwa HAVE_UNIX_SOCKETS na HAVE_FORKING:
     kundi ForkingUnixStreamServer(socketserver.ForkingMixIn,
                                   socketserver.UnixStreamServer):
-        pass
+        pita
 
     kundi ForkingUnixDatagramServer(socketserver.ForkingMixIn,
                                     socketserver.UnixDatagramServer):
-        pass
+        pita
 
 
 @contextlib.contextmanager
 eleza simple_subprocess(testcase):
-    """Tests that a custom child process is not waited on (Issue 1540386)"""
+    """Tests that a custom child process ni sio waited on (Issue 1540386)"""
     pid = os.fork()
     ikiwa pid == 0:
-        # Don't raise an exception; it would be caught by the test harness.
+        # Don't ashiria an exception; it would be caught by the test harness.
         os._exit(72)
-    try:
-        yield None
+    jaribu:
+        tuma Tupu
     except:
-        raise
-    finally:
+        ashiria
+    mwishowe:
         pid2, status = os.waitpid(pid, 0)
         testcase.assertEqual(pid2, pid)
         testcase.assertEqual(72 << 8, status)
@@ -82,20 +82,20 @@ kundi SocketServerTest(unittest.TestCase):
         signal_alarm(0)  # Didn't deadlock.
         reap_children()
 
-        for fn in self.test_files:
-            try:
+        kila fn kwenye self.test_files:
+            jaribu:
                 os.remove(fn)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
         self.test_files[:] = []
 
     eleza pickaddr(self, proto):
         ikiwa proto == socket.AF_INET:
             rudisha (HOST, 0)
-        else:
+        isipokua:
             # XXX: We need a way to tell AF_UNIX to pick its own name
             # like AF_INET provides port==0.
-            dir = None
+            dir = Tupu
             fn = tempfile.mktemp(prefix='unix_socket.', dir=dir)
             self.test_files.append(fn)
             rudisha fn
@@ -104,7 +104,7 @@ kundi SocketServerTest(unittest.TestCase):
         kundi MyServer(svrcls):
             eleza handle_error(self, request, client_address):
                 self.close_request(request)
-                raise
+                ashiria
 
         kundi MyHandler(hdlrbase):
             eleza handle(self):
@@ -112,9 +112,9 @@ kundi SocketServerTest(unittest.TestCase):
                 self.wfile.write(line)
 
         ikiwa verbose: andika("creating server")
-        try:
+        jaribu:
             server = MyServer(addr, MyHandler)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             # Issue 29184: cannot bind() a Unix socket on Android.
             self.skipTest('Cannot create server (%s, %s): %s' %
                           (svrcls, addr, e))
@@ -136,43 +136,43 @@ kundi SocketServerTest(unittest.TestCase):
             name='%s serving' % svrcls,
             target=server.serve_forever,
             # Short poll interval to make the test finish quickly.
-            # Time between requests is short enough that we won't wake
+            # Time between requests ni short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval':0.01})
-        t.daemon = True  # In case this function raises.
+        t.daemon = Kweli  # In case this function ashirias.
         t.start()
         ikiwa verbose: andika("server running")
-        for i in range(3):
+        kila i kwenye range(3):
             ikiwa verbose: andika("test client", i)
             testfunc(svrcls.address_family, addr)
-        ikiwa verbose: andika("waiting for server")
+        ikiwa verbose: andika("waiting kila server")
         server.shutdown()
         t.join()
         server.server_close()
         self.assertEqual(-1, server.socket.fileno())
-        ikiwa HAVE_FORKING and isinstance(server, socketserver.ForkingMixIn):
+        ikiwa HAVE_FORKING na isinstance(server, socketserver.ForkingMixIn):
             # bpo-31151: Check that ForkingMixIn.server_close() waits until
             # all children completed
-            self.assertFalse(server.active_children)
+            self.assertUongo(server.active_children)
         ikiwa verbose: andika("done")
 
     eleza stream_examine(self, proto, addr):
-        with socket.socket(proto, socket.SOCK_STREAM) as s:
+        with socket.socket(proto, socket.SOCK_STREAM) kama s:
             s.connect(addr)
             s.sendall(TEST_STR)
             buf = data = receive(s, 100)
-            while data and b'\n' not in buf:
+            wakati data na b'\n' haiko kwenye buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
 
     eleza dgram_examine(self, proto, addr):
-        with socket.socket(proto, socket.SOCK_DGRAM) as s:
-            ikiwa HAVE_UNIX_SOCKETS and proto == socket.AF_UNIX:
+        with socket.socket(proto, socket.SOCK_DGRAM) kama s:
+            ikiwa HAVE_UNIX_SOCKETS na proto == socket.AF_UNIX:
                 s.bind(self.pickaddr(proto))
             s.sendto(TEST_STR, addr)
             buf = data = receive(s, 100)
-            while data and b'\n' not in buf:
+            wakati data na b'\n' haiko kwenye buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
@@ -252,84 +252,84 @@ kundi SocketServerTest(unittest.TestCase):
 
     @reap_threads
     eleza test_shutdown(self):
-        # Issue #2302: shutdown() should always succeed in making an
+        # Issue #2302: shutdown() should always succeed kwenye making an
         # other thread leave serve_forever().
         kundi MyServer(socketserver.TCPServer):
-            pass
+            pita
 
         kundi MyHandler(socketserver.StreamRequestHandler):
-            pass
+            pita
 
         threads = []
-        for i in range(20):
+        kila i kwenye range(20):
             s = MyServer((HOST, 0), MyHandler)
             t = threading.Thread(
                 name='MyServer serving',
                 target=s.serve_forever,
                 kwargs={'poll_interval':0.01})
-            t.daemon = True  # In case this function raises.
+            t.daemon = Kweli  # In case this function ashirias.
             threads.append((t, s))
-        for t, s in threads:
+        kila t, s kwenye threads:
             t.start()
             s.shutdown()
-        for t, s in threads:
+        kila t, s kwenye threads:
             t.join()
             s.server_close()
 
     eleza test_tcpserver_bind_leak(self):
         # Issue #22435: the server socket wouldn't be closed ikiwa bind()/listen()
         # failed.
-        # Create many servers for which bind() will fail, to see ikiwa this result
-        # in FD exhaustion.
-        for i in range(1024):
+        # Create many servers kila which bind() will fail, to see ikiwa this result
+        # kwenye FD exhaustion.
+        kila i kwenye range(1024):
             with self.assertRaises(OverflowError):
                 socketserver.TCPServer((HOST, -1),
                                        socketserver.StreamRequestHandler)
 
     eleza test_context_manager(self):
         with socketserver.TCPServer((HOST, 0),
-                                    socketserver.StreamRequestHandler) as server:
-            pass
+                                    socketserver.StreamRequestHandler) kama server:
+            pita
         self.assertEqual(-1, server.socket.fileno())
 
 
 kundi ErrorHandlerTest(unittest.TestCase):
-    """Test that the servers pass normal exceptions kutoka the handler to
-    handle_error(), and that exiting exceptions like SystemExit and
-    KeyboardInterrupt are not passed."""
+    """Test that the servers pita normal exceptions kutoka the handler to
+    handle_error(), na that exiting exceptions like SystemExit and
+    KeyboardInterrupt are sio pitaed."""
 
     eleza tearDown(self):
         test.support.unlink(test.support.TESTFN)
 
     eleza test_sync_handled(self):
         BaseErrorTestServer(ValueError)
-        self.check_result(handled=True)
+        self.check_result(handled=Kweli)
 
     eleza test_sync_not_handled(self):
         with self.assertRaises(SystemExit):
             BaseErrorTestServer(SystemExit)
-        self.check_result(handled=False)
+        self.check_result(handled=Uongo)
 
     eleza test_threading_handled(self):
         ThreadingErrorTestServer(ValueError)
-        self.check_result(handled=True)
+        self.check_result(handled=Kweli)
 
     eleza test_threading_not_handled(self):
         ThreadingErrorTestServer(SystemExit)
-        self.check_result(handled=False)
+        self.check_result(handled=Uongo)
 
     @requires_forking
     eleza test_forking_handled(self):
         ForkingErrorTestServer(ValueError)
-        self.check_result(handled=True)
+        self.check_result(handled=Kweli)
 
     @requires_forking
     eleza test_forking_not_handled(self):
         ForkingErrorTestServer(SystemExit)
-        self.check_result(handled=False)
+        self.check_result(handled=Uongo)
 
     eleza check_result(self, handled):
-        with open(test.support.TESTFN) as log:
+        with open(test.support.TESTFN) kama log:
             expected = 'Handler called\n' + 'Error handled\n' * handled
             self.assertEqual(log.read(), expected)
 
@@ -339,26 +339,26 @@ kundi BaseErrorTestServer(socketserver.TCPServer):
         self.exception = exception
         super().__init__((HOST, 0), BadHandler)
         with socket.create_connection(self.server_address):
-            pass
-        try:
+            pita
+        jaribu:
             self.handle_request()
-        finally:
+        mwishowe:
             self.server_close()
         self.wait_done()
 
     eleza handle_error(self, request, client_address):
-        with open(test.support.TESTFN, 'a') as log:
+        with open(test.support.TESTFN, 'a') kama log:
             log.write('Error handled\n')
 
     eleza wait_done(self):
-        pass
+        pita
 
 
 kundi BadHandler(socketserver.BaseRequestHandler):
     eleza handle(self):
-        with open(test.support.TESTFN, 'a') as log:
+        with open(test.support.TESTFN, 'a') kama log:
             log.write('Handler called\n')
-        raise self.server.exception('Test error')
+        ashiria self.server.exception('Test error')
 
 
 kundi ThreadingErrorTestServer(socketserver.ThreadingMixIn,
@@ -377,7 +377,7 @@ kundi ThreadingErrorTestServer(socketserver.ThreadingMixIn,
 
 ikiwa HAVE_FORKING:
     kundi ForkingErrorTestServer(socketserver.ForkingMixIn, BaseErrorTestServer):
-        pass
+        pita
 
 
 kundi SocketWriterTest(unittest.TestCase):
@@ -399,8 +399,8 @@ kundi SocketWriterTest(unittest.TestCase):
         self.assertEqual(server.wfile_fileno, server.request_fileno)
 
     eleza test_write(self):
-        # Test that wfile.write() sends data immediately, and that it does
-        # not truncate sends when interrupted by a Unix signal
+        # Test that wfile.write() sends data immediately, na that it does
+        # sio truncate sends when interrupted by a Unix signal
         pthread_kill = test.support.get_attribute(signal, 'pthread_kill')
 
         kundi Handler(socketserver.StreamRequestHandler):
@@ -420,29 +420,29 @@ kundi SocketWriterTest(unittest.TestCase):
 
         original = signal.signal(signal.SIGUSR1, signal_handler)
         self.addCleanup(signal.signal, signal.SIGUSR1, original)
-        response1 = None
-        received2 = None
+        response1 = Tupu
+        received2 = Tupu
         main_thread = threading.get_ident()
 
         eleza run_client():
             s = socket.socket(server.address_family, socket.SOCK_STREAM,
                 socket.IPPROTO_TCP)
-            with s, s.makefile('rb') as reader:
+            with s, s.makefile('rb') kama reader:
                 s.connect(server.server_address)
                 nonlocal response1
                 response1 = reader.readline()
                 s.sendall(b'client response\n')
 
                 reader.read(100)
-                # The main thread should now be blocking in a send() syscall.
-                # But in theory, it could get interrupted by other signals,
-                # and then retried. So keep sending the signal in a loop, in
+                # The main thread should now be blocking kwenye a send() syscall.
+                # But kwenye theory, it could get interrupted by other signals,
+                # na then retried. So keep sending the signal kwenye a loop, in
                 # case an earlier signal happens to be delivered at an
                 # inconvenient moment.
-                while True:
+                wakati Kweli:
                     pthread_kill(main_thread, signal.SIGUSR1)
                     ikiwa interrupted.wait(timeout=float(1)):
-                        break
+                        koma
                 nonlocal received2
                 received2 = len(reader.read())
 
@@ -460,22 +460,22 @@ kundi SocketWriterTest(unittest.TestCase):
 kundi MiscTestCase(unittest.TestCase):
 
     eleza test_all(self):
-        # objects defined in the module should be in __all__
+        # objects defined kwenye the module should be kwenye __all__
         expected = []
-        for name in dir(socketserver):
-            ikiwa not name.startswith('_'):
+        kila name kwenye dir(socketserver):
+            ikiwa sio name.startswith('_'):
                 mod_object = getattr(socketserver, name)
-                ikiwa getattr(mod_object, '__module__', None) == 'socketserver':
+                ikiwa getattr(mod_object, '__module__', Tupu) == 'socketserver':
                     expected.append(name)
         self.assertCountEqual(socketserver.__all__, expected)
 
     eleza test_shutdown_request_called_if_verify_request_false(self):
         # Issue #26309: BaseServer should call shutdown_request even if
-        # verify_request is False
+        # verify_request ni Uongo
 
         kundi MyServer(socketserver.TCPServer):
             eleza verify_request(self, request, client_address):
-                rudisha False
+                rudisha Uongo
 
             shutdown_called = 0
             eleza shutdown_request(self, request):

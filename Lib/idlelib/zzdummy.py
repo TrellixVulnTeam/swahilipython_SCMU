@@ -1,4 +1,4 @@
-"Example extension, also used for testing."
+"Example extension, also used kila testing."
 
 kutoka idlelib.config agiza idleConf
 
@@ -16,7 +16,7 @@ kundi ZzDummy:
 
     eleza __init__(self, editwin):
         self.text = editwin.text
-        z_in = False
+        z_in = Uongo
 
     @classmethod
     eleza reload(cls):
@@ -27,16 +27,16 @@ kundi ZzDummy:
         """
         text = self.text
         text.undo_block_start()
-        for line in range(1, text.index('end')):
+        kila line kwenye range(1, text.index('end')):
             text.insert('%d.0', ztest)
         text.undo_block_stop()
-        rudisha "break"
+        rudisha "koma"
 
-    eleza z_out_event(self, event): pass
+    eleza z_out_event(self, event): pita
 
 ZzDummy.reload()
 
 ##ikiwa __name__ == "__main__":
 ##    agiza unittest
 ##    unittest.main('idlelib.idle_test.test_zzdummy',
-##            verbosity=2, exit=False)
+##            verbosity=2, exit=Uongo)

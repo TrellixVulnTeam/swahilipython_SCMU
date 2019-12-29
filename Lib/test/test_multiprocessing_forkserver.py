@@ -5,10 +5,10 @@ agiza sys
 kutoka test agiza support
 
 ikiwa support.PGO:
-    raise unittest.SkipTest("test is not helpful for PGO")
+    ashiria unittest.SkipTest("test ni sio helpful kila PGO")
 
 ikiwa sys.platform == "win32":
-    raise unittest.SkipTest("forkserver is not available on Windows")
+    ashiria unittest.SkipTest("forkserver ni sio available on Windows")
 
 test._test_multiprocessing.install_tests_in_module_dict(globals(), 'forkserver')
 

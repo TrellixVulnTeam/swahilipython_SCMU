@@ -41,14 +41,14 @@ class Generator:
         must have a write() method.
 
         Optional mangle_from_ is a flag that, when True (the default if policy
-        is not set), escapes From_ lines in the body of the message by putting
+        ni sio set), escapes From_ lines in the body of the message by putting
         a `>' in front of them.
 
-        Optional maxheaderlen specifies the longest length for a non-continued
+        Optional maxheaderlen specifies the longest length for a non-endelead
         header.  When a header line is longer (in characters, with tabs
         expanded to 8 spaces) than maxheaderlen, the header will split as
         defined in the Header class.  Set maxheaderlen to zero to disable
-        header wrapping.  The default is 78, as recommended (but not required)
+        header wrapping.  The default is 78, as recommended (but sio required)
         by RFC 2822.
 
         The policy keyword specifies a policy object that controls a number of
@@ -91,9 +91,9 @@ class Generator:
         # has already been converted (to bytes in the BytesGenerator) and
         # inserted into a temporary buffer.
         policy = msg.policy if self.policy is None else self.policy
-        if linesep is not None:
+        if linesep ni sio None:
             policy = policy.clone(linesep=linesep)
-        if self.maxheaderlen is not None:
+        if self.maxheaderlen ni sio None:
             policy = policy.clone(max_line_length=self.maxheaderlen)
         self._NL = policy.linesep
         self._encoded_NL = self._encode(self._NL)
@@ -105,16 +105,16 @@ class Generator:
         # they are processed by this code.
         old_gen_policy = self.policy
         old_msg_policy = msg.policy
-        try:
+        jaribu:
             self.policy = policy
             msg.policy = policy
             if unixfrom:
                 ufrom = msg.get_unixfrom()
-                if not ufrom:
+                if sio ufrom:
                     ufrom = 'From nobody ' + time.ctime(time.time())
                 self.write(ufrom + self._NL)
             self._write(msg)
-        finally:
+        mwishowe:
             self.policy = old_gen_policy
             msg.policy = old_msg_policy
 
@@ -148,7 +148,7 @@ class Generator:
 
     def _write_lines(self, lines):
         # We have to transform the line endings.
-        if not lines:
+        if sio lines:
             return
         lines = NLCRE.split(lines)
         for line in lines[:-1]:
@@ -159,7 +159,7 @@ class Generator:
         # XXX logic tells me this else should be needed, but the tests fail
         # with it and pass without it.  (NLCRE.split ends with a blank element
         # if and only if there was a trailing newline.)
-        #else:
+        #isipokua:
         #    self.write(self._NL)
 
     def _write(self, msg):
@@ -175,14 +175,14 @@ class Generator:
         # Do The Right Thing, and can still modify the Content-Type: header if
         # necessary.
         oldfp = self._fp
-        try:
+        jaribu:
             self._munge_cte = None
             self._fp = sfp = self._new_buffer()
             self._dispatch(msg)
-        finally:
+        mwishowe:
             self._fp = oldfp
             munge_cte = self._munge_cte
-            del self._munge_cte
+            toa self._munge_cte
         # If we munged the cte, copy the message again and re-fix the CTE.
         if munge_cte:
             msg = deepcopy(msg)
@@ -193,7 +193,7 @@ class Generator:
         meth = getattr(msg, '_write_headers', None)
         if meth is None:
             self._write_headers(msg)
-        else:
+        isipokua:
             meth(self)
         self._fp.write(sfp.getvalue())
 
@@ -231,15 +231,15 @@ class Generator:
         payload = msg.get_payload()
         if payload is None:
             return
-        if not isinstance(payload, str):
+        if sio isinstance(payload, str):
             raise TypeError('string payload expected: %s' % type(payload))
         if _has_surrogates(msg._payload):
             charset = msg.get_param('charset')
-            if charset is not None:
+            if charset ni sio None:
                 # XXX: This copy stuff is an ugly hack to avoid modifying the
                 # existing message.
                 msg = deepcopy(msg)
-                del msg['content-transfer-encoding']
+                toa msg['content-transfer-encoding']
                 msg.set_payload(payload, charset)
                 payload = msg.get_payload()
                 self._munge_cte = (msg['content-transfer-encoding'],
@@ -263,7 +263,7 @@ class Generator:
             # e.g. a non-strict parse of a message with no starting boundary.
             self.write(subparts)
             return
-        lasivyo not isinstance(subparts, list):
+        lasivyo sio isinstance(subparts, list):
             # Scalar payload
             subparts = [subparts]
         for part in subparts:
@@ -273,17 +273,17 @@ class Generator:
             msgtexts.append(s.getvalue())
         # BAW: What about boundaries that are wrapped in double-quotes?
         boundary = msg.get_boundary()
-        if not boundary:
+        if sio boundary:
             # Create a boundary that doesn't appear in any of the
             # message texts.
             alltext = self._encoded_NL.join(msgtexts)
             boundary = self._make_boundary(alltext)
             msg.set_boundary(boundary)
         # If there's a preamble, write it out, with a trailing CRLF
-        if msg.preamble is not None:
+        if msg.preamble ni sio None:
             if self._mangle_from_:
                 preamble = fcre.sub('>From ', msg.preamble)
-            else:
+            isipokua:
                 preamble = msg.preamble
             self._write_lines(preamble)
             self.write(self._NL)
@@ -302,10 +302,10 @@ class Generator:
             self._fp.write(body_part)
         # close-delimiter transport-padding
         self.write(self._NL + '--' + boundary + '--' + self._NL)
-        if msg.epilogue is not None:
+        if msg.epilogue ni sio None:
             if self._mangle_from_:
                 epilogue = fcre.sub('>From ', msg.epilogue)
-            else:
+            isipokua:
                 epilogue = msg.epilogue
             self._write_lines(epilogue)
 
@@ -315,9 +315,9 @@ class Generator:
         # RDM: This isn't enough to completely preserve the part, but it helps.
         p = self.policy
         self.policy = p.clone(max_line_length=0)
-        try:
+        jaribu:
             self._handle_multipart(msg)
-        finally:
+        mwishowe:
             self.policy = p
 
     def _handle_message_delivery_status(self, msg):
@@ -334,10 +334,10 @@ class Generator:
             # Strip off the unnecessary trailing empty line
             if lines and lines[-1] == self._encoded_EMPTY:
                 blocks.append(self._encoded_NL.join(lines[:-1]))
-            else:
+            isipokua:
                 blocks.append(text)
         # Now join all the blocks with an empty line.  This has the lovely
-        # effect of separating each block with an empty line, but not adding
+        # effect of separating each block with an empty line, but sio adding
         # an extra one after the last one.
         self._fp.write(self._encoded_NL.join(blocks))
 
@@ -357,12 +357,12 @@ class Generator:
         if isinstance(payload, list):
             g.flatten(msg.get_payload(0), unixfrom=False, linesep=self._NL)
             payload = s.getvalue()
-        else:
+        isipokua:
             payload = self._encode(payload)
         self._fp.write(payload)
 
     # This used to be a module level function; we use a classmethod for this
-    # and _compile_re so we can continue to provide the module level function
+    # and _compile_re so we can endelea to provide the module level function
     # for backward compatibility by doing
     #   _make_boundary = Generator._make_boundary
     # at the end of the module.  It *is* internal, so we could drop that...
@@ -376,10 +376,10 @@ class Generator:
             return boundary
         b = boundary
         counter = 0
-        while True:
+        wakati True:
             cre = cls._compile_re('^--' + re.escape(b) + '(--)?$', re.MULTILINE)
-            if not cre.search(text):
-                break
+            if sio cre.search(text):
+                koma
             b = boundary + '.' + str(counter)
             counter += 1
         return b
@@ -392,8 +392,8 @@ class Generator:
 class BytesGenerator(Generator):
     """Generates a bytes version of a Message object tree.
 
-    Functionally identical to the base Generator except that the output is
-    bytes and not string.  When surrogates were used in the input to encode
+    Functionally identical to the base Generator tatizo that the output is
+    bytes and sio string.  When surrogates were used in the input to encode
     bytes, these are decoded back to bytes for output.  If the policy has
     cte_type set to 7bit, then the message is transformed such that the
     non-ASCII bytes are properly content transfer encoded, using the charset
@@ -412,7 +412,7 @@ class BytesGenerator(Generator):
         return s.encode('ascii')
 
     def _write_headers(self, msg):
-        # This is almost the same as the string version, except for handling
+        # This is almost the same as the string version, tatizo for handling
         # strings with 8bit bytes.
         for h, v in msg.raw_items():
             self._fp.write(self.policy.fold_binary(h, v))
@@ -424,11 +424,11 @@ class BytesGenerator(Generator):
         # just write it back out.
         if msg._payload is None:
             return
-        if _has_surrogates(msg._payload) and not self.policy.cte_type=='7bit':
+        if _has_surrogates(msg._payload) and sio self.policy.cte_type=='7bit':
             if self._mangle_from_:
                 msg._payload = fcre.sub(">From ", msg._payload)
             self._write_lines(msg._payload)
-        else:
+        isipokua:
             super(BytesGenerator,self)._handle_text(msg)
 
     # Default body handler
@@ -445,12 +445,12 @@ _FMT = '[Non-text (%(type)s) part of message omitted, filename %(filename)s]'
 class DecodedGenerator(Generator):
     """Generates a text representation of a message.
 
-    Like the Generator base class, except that non-text parts are substituted
+    Like the Generator base class, tatizo that non-text parts are substituted
     with a format string representing the part.
     """
     def __init__(self, outfp, mangle_from_=None, maxheaderlen=None, fmt=None, *,
                  policy=None):
-        """Like Generator.__init__() except that an additional optional
+        """Like Generator.__init__() tatizo that an additional optional
         argument is allowed.
 
         Walks through all subparts of a message.  If the subpart is of main
@@ -475,7 +475,7 @@ class DecodedGenerator(Generator):
                            policy=policy)
         if fmt is None:
             self._fmt = _FMT
-        else:
+        isipokua:
             self._fmt = fmt
 
     def _dispatch(self, msg):
@@ -486,7 +486,7 @@ class DecodedGenerator(Generator):
             lasivyo maintype == 'multipart':
                 # Just skip this
                 pass
-            else:
+            isipokua:
                 print(self._fmt % {
                     'type'       : part.get_content_type(),
                     'maintype'   : part.get_content_maintype(),

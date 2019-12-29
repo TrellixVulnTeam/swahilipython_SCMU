@@ -1,4 +1,4 @@
-"""Test cases for the fnmatch module."""
+"""Test cases kila the fnmatch module."""
 
 agiza unittest
 agiza os
@@ -8,14 +8,14 @@ kutoka fnmatch agiza fnmatch, fnmatchcase, translate, filter
 
 kundi FnmatchTestCase(unittest.TestCase):
 
-    eleza check_match(self, filename, pattern, should_match=True, fn=fnmatch):
+    eleza check_match(self, filename, pattern, should_match=Kweli, fn=fnmatch):
         ikiwa should_match:
-            self.assertTrue(fn(filename, pattern),
+            self.assertKweli(fn(filename, pattern),
                          "expected %r to match pattern %r"
                          % (filename, pattern))
-        else:
-            self.assertFalse(fn(filename, pattern),
-                         "expected %r not to match pattern %r"
+        isipokua:
+            self.assertUongo(fn(filename, pattern),
+                         "expected %r sio to match pattern %r"
                          % (filename, pattern))
 
     eleza test_fnmatch(self):
@@ -28,21 +28,21 @@ kundi FnmatchTestCase(unittest.TestCase):
         check('abc', '*')
         check('abc', 'ab[cd]')
         check('abc', 'ab[!de]')
-        check('abc', 'ab[de]', False)
-        check('a', '??', False)
-        check('a', 'b', False)
+        check('abc', 'ab[de]', Uongo)
+        check('a', '??', Uongo)
+        check('a', 'b', Uongo)
 
-        # these test that '\' is handled correctly in character sets;
+        # these test that '\' ni handled correctly kwenye character sets;
         # see SF bug #409651
         check('\\', r'[\]')
         check('a', r'[!\]')
-        check('\\', r'[!\]', False)
+        check('\\', r'[!\]', Uongo)
 
-        # test that filenames with newlines in them are handled correctly.
+        # test that filenames with newlines kwenye them are handled correctly.
         # http://bugs.python.org/issue6665
         check('foo\nbar', 'foo*')
         check('foo\nbar\n', 'foo*')
-        check('\nfoo', 'foo*', False)
+        check('\nfoo', 'foo*', Uongo)
         check('\n', '*')
 
     eleza test_mix_bytes_str(self):
@@ -53,15 +53,15 @@ kundi FnmatchTestCase(unittest.TestCase):
 
     eleza test_fnmatchcase(self):
         check = self.check_match
-        check('abc', 'abc', True, fnmatchcase)
-        check('AbC', 'abc', False, fnmatchcase)
-        check('abc', 'AbC', False, fnmatchcase)
-        check('AbC', 'AbC', True, fnmatchcase)
+        check('abc', 'abc', Kweli, fnmatchcase)
+        check('AbC', 'abc', Uongo, fnmatchcase)
+        check('abc', 'AbC', Uongo, fnmatchcase)
+        check('AbC', 'AbC', Kweli, fnmatchcase)
 
-        check('usr/bin', 'usr/bin', True, fnmatchcase)
-        check('usr\\bin', 'usr/bin', False, fnmatchcase)
-        check('usr/bin', 'usr\\bin', False, fnmatchcase)
-        check('usr\\bin', 'usr\\bin', True, fnmatchcase)
+        check('usr/bin', 'usr/bin', Kweli, fnmatchcase)
+        check('usr\\bin', 'usr/bin', Uongo, fnmatchcase)
+        check('usr/bin', 'usr\\bin', Uongo, fnmatchcase)
+        check('usr\\bin', 'usr\\bin', Kweli, fnmatchcase)
 
     eleza test_bytes(self):
         self.check_match(b'test', b'te*')

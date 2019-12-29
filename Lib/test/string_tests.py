@@ -1,5 +1,5 @@
 """
-Common tests shared by test_unicode, test_userstring and test_bytes.
+Common tests shared by test_unicode, test_userstring na test_bytes.
 """
 
 agiza unittest, string, sys, struct
@@ -20,69 +20,69 @@ kundi BadSeq2(Sequence):
     eleza __len__(self): rudisha 8
 
 kundi BaseTest:
-    # These tests are for buffers of values (bytes) and not
-    # specific to character interpretation, used for bytes objects
-    # and various string implementations
+    # These tests are kila buffers of values (bytes) na not
+    # specific to character interpretation, used kila bytes objects
+    # na various string implementations
 
     # The type to be tested
-    # Change in subclasses to change the behaviour of fixtesttype()
-    type2test = None
+    # Change kwenye subclasses to change the behaviour of fixtesttype()
+    type2test = Tupu
 
     # Whether the "contained items" of the container are integers in
-    # range(0, 256) (i.e. bytes, bytearray) or strings of length 1
+    # range(0, 256) (i.e. bytes, bytearray) ama strings of length 1
     # (str)
-    contains_bytes = False
+    contains_bytes = Uongo
 
-    # All tests pass their arguments to the testing methods
-    # as str objects. fixtesttype() can be used to propagate
+    # All tests pita their arguments to the testing methods
+    # kama str objects. fixtesttype() can be used to propagate
     # these arguments to the appropriate type
     eleza fixtype(self, obj):
         ikiwa isinstance(obj, str):
             rudisha self.__class__.type2test(obj)
         elikiwa isinstance(obj, list):
-            rudisha [self.fixtype(x) for x in obj]
+            rudisha [self.fixtype(x) kila x kwenye obj]
         elikiwa isinstance(obj, tuple):
-            rudisha tuple([self.fixtype(x) for x in obj])
+            rudisha tuple([self.fixtype(x) kila x kwenye obj])
         elikiwa isinstance(obj, dict):
             rudisha dict([
                (self.fixtype(key), self.fixtype(value))
-               for (key, value) in obj.items()
+               kila (key, value) kwenye obj.items()
             ])
-        else:
+        isipokua:
             rudisha obj
 
     eleza test_fixtype(self):
         self.assertIs(type(self.fixtype("123")), self.type2test)
 
-    # check that obj.method(*args) returns result
+    # check that obj.method(*args) rudishas result
     eleza checkequal(self, result, obj, methodname, *args, **kwargs):
         result = self.fixtype(result)
         obj = self.fixtype(obj)
         args = self.fixtype(args)
-        kwargs = {k: self.fixtype(v) for k,v in kwargs.items()}
+        kwargs = {k: self.fixtype(v) kila k,v kwenye kwargs.items()}
         realresult = getattr(obj, methodname)(*args, **kwargs)
         self.assertEqual(
             result,
             realresult
         )
-        # ikiwa the original is returned make sure that
+        # ikiwa the original ni rudishaed make sure that
         # this doesn't happen with subclasses
-        ikiwa obj is realresult:
-            try:
+        ikiwa obj ni realresult:
+            jaribu:
                 kundi subtype(self.__class__.type2test):
-                    pass
-            except TypeError:
-                pass  # Skip this ikiwa we can't subclass
-            else:
+                    pita
+            tatizo TypeError:
+                pita  # Skip this ikiwa we can't subclass
+            isipokua:
                 obj = subtype(obj)
                 realresult = getattr(obj, methodname)(*args)
                 self.assertIsNot(obj, realresult)
 
-    # check that obj.method(*args) raises exc
-    eleza checkraises(self, exc, obj, methodname, *args):
+    # check that obj.method(*args) ashirias exc
+    eleza checkashirias(self, exc, obj, methodname, *args):
         obj = self.fixtype(obj)
         args = self.fixtype(args)
-        with self.assertRaises(exc) as cm:
+        with self.assertRaises(exc) kama cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
 
@@ -122,39 +122,39 @@ kundi BaseTest:
         self.checkequal(0, '', 'count', 'xx', 1, 1)
         self.checkequal(0, '', 'count', 'xx', sys.maxsize, 0)
 
-        self.checkraises(TypeError, 'hello', 'count')
+        self.checkashirias(TypeError, 'hello', 'count')
 
         ikiwa self.contains_bytes:
             self.checkequal(0, 'hello', 'count', 42)
-        else:
-            self.checkraises(TypeError, 'hello', 'count', 42)
+        isipokua:
+            self.checkashirias(TypeError, 'hello', 'count', 42)
 
         # For a variety of combinations,
         #    verify that str.count() matches an equivalent function
-        #    replacing all occurrences and then differencing the string lengths
+        #    replacing all occurrences na then differencing the string lengths
         charset = ['', 'a', 'b']
         digits = 7
         base = len(charset)
         teststrings = set()
-        for i in range(base ** digits):
+        kila i kwenye range(base ** digits):
             entry = []
-            for j in range(digits):
+            kila j kwenye range(digits):
                 i, m = divmod(i, base)
                 entry.append(charset[m])
             teststrings.add(''.join(entry))
-        teststrings = [self.fixtype(ts) for ts in teststrings]
-        for i in teststrings:
+        teststrings = [self.fixtype(ts) kila ts kwenye teststrings]
+        kila i kwenye teststrings:
             n = len(i)
-            for j in teststrings:
+            kila j kwenye teststrings:
                 r1 = i.count(j)
                 ikiwa j:
                     r2, rem = divmod(n - len(i.replace(j, self.fixtype(''))),
                                      len(j))
-                else:
+                isipokua:
                     r2, rem = len(i)+1, 0
-                ikiwa rem or r1 != r2:
-                    self.assertEqual(rem, 0, '%s != 0 for %s' % (rem, i))
-                    self.assertEqual(r1, r2, '%s != %s for %s' % (r1, r2, i))
+                ikiwa rem ama r1 != r2:
+                    self.assertEqual(rem, 0, '%s != 0 kila %s' % (rem, i))
+                    self.assertEqual(r1, r2, '%s != %s kila %s' % (r1, r2, i))
 
     eleza test_find(self):
         self.checkequal(0, 'abcdefghiabc', 'find', 'abc')
@@ -165,19 +165,19 @@ kundi BaseTest:
         self.checkequal(3, 'abc', 'find', '', 3)
         self.checkequal(-1, 'abc', 'find', '', 4)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'find', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a', None, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4, Tupu)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a', Tupu, 6)
 
-        self.checkraises(TypeError, 'hello', 'find')
+        self.checkashirias(TypeError, 'hello', 'find')
 
         ikiwa self.contains_bytes:
             self.checkequal(-1, 'hello', 'find', 42)
-        else:
-            self.checkraises(TypeError, 'hello', 'find', 42)
+        isipokua:
+            self.checkashirias(TypeError, 'hello', 'find', 42)
 
         self.checkequal(0, '', 'find', '')
         self.checkequal(-1, '', 'find', '', 1, 1)
@@ -192,23 +192,23 @@ kundi BaseTest:
 
         # For a variety of combinations,
         #    verify that str.find() matches __contains__
-        #    and that the found substring is really at that location
+        #    na that the found substring ni really at that location
         charset = ['', 'a', 'b', 'c']
         digits = 5
         base = len(charset)
         teststrings = set()
-        for i in range(base ** digits):
+        kila i kwenye range(base ** digits):
             entry = []
-            for j in range(digits):
+            kila j kwenye range(digits):
                 i, m = divmod(i, base)
                 entry.append(charset[m])
             teststrings.add(''.join(entry))
-        teststrings = [self.fixtype(ts) for ts in teststrings]
-        for i in teststrings:
-            for j in teststrings:
+        teststrings = [self.fixtype(ts) kila ts kwenye teststrings]
+        kila i kwenye teststrings:
+            kila j kwenye teststrings:
                 loc = i.find(j)
                 r1 = (loc != -1)
-                r2 = j in i
+                r2 = j kwenye i
                 self.assertEqual(r1, r2)
                 ikiwa loc != -1:
                     self.assertEqual(i[loc:loc+len(j)], j)
@@ -223,39 +223,39 @@ kundi BaseTest:
         self.checkequal(3, 'abc', 'rfind', '', 3)
         self.checkequal(-1, 'abc', 'rfind', '', 4)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'rfind', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'rfind', 'a', None, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4, Tupu)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'rfind', 'a', Tupu, 6)
 
-        self.checkraises(TypeError, 'hello', 'rfind')
+        self.checkashirias(TypeError, 'hello', 'rfind')
 
         ikiwa self.contains_bytes:
             self.checkequal(-1, 'hello', 'rfind', 42)
-        else:
-            self.checkraises(TypeError, 'hello', 'rfind', 42)
+        isipokua:
+            self.checkashirias(TypeError, 'hello', 'rfind', 42)
 
         # For a variety of combinations,
         #    verify that str.rfind() matches __contains__
-        #    and that the found substring is really at that location
+        #    na that the found substring ni really at that location
         charset = ['', 'a', 'b', 'c']
         digits = 5
         base = len(charset)
         teststrings = set()
-        for i in range(base ** digits):
+        kila i kwenye range(base ** digits):
             entry = []
-            for j in range(digits):
+            kila j kwenye range(digits):
                 i, m = divmod(i, base)
                 entry.append(charset[m])
             teststrings.add(''.join(entry))
-        teststrings = [self.fixtype(ts) for ts in teststrings]
-        for i in teststrings:
-            for j in teststrings:
+        teststrings = [self.fixtype(ts) kila ts kwenye teststrings]
+        kila i kwenye teststrings:
+            kila j kwenye teststrings:
                 loc = i.rfind(j)
                 r1 = (loc != -1)
-                r2 = j in i
+                r2 = j kwenye i
                 self.assertEqual(r1, r2)
                 ikiwa loc != -1:
                     self.assertEqual(i[loc:loc+len(j)], j)
@@ -272,24 +272,24 @@ kundi BaseTest:
         self.checkequal(0, 'abcdefghiabc', 'index', 'abc')
         self.checkequal(9, 'abcdefghiabc', 'index', 'abc', 1)
 
-        self.checkraises(ValueError, 'abcdefghiabc', 'index', 'hib')
-        self.checkraises(ValueError, 'abcdefghiab', 'index', 'abc', 1)
-        self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', 8)
-        self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', -1)
+        self.checkashirias(ValueError, 'abcdefghiabc', 'index', 'hib')
+        self.checkashirias(ValueError, 'abcdefghiab', 'index', 'abc', 1)
+        self.checkashirias(ValueError, 'abcdefghi', 'index', 'ghi', 8)
+        self.checkashirias(ValueError, 'abcdefghi', 'index', 'ghi', -1)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4)
-        self.checkraises(ValueError, 'rrarrrrrrrrra', 'index', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a', None, 6)
+        self.checkashirias(ValueError, 'rrarrrrrrrrra', 'index', 'a', 4, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4, Tupu)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a', Tupu, 6)
 
-        self.checkraises(TypeError, 'hello', 'index')
+        self.checkashirias(TypeError, 'hello', 'index')
 
         ikiwa self.contains_bytes:
-            self.checkraises(ValueError, 'hello', 'index', 42)
-        else:
-            self.checkraises(TypeError, 'hello', 'index', 42)
+            self.checkashirias(ValueError, 'hello', 'index', 42)
+        isipokua:
+            self.checkashirias(TypeError, 'hello', 'index', 42)
 
     eleza test_rindex(self):
         self.checkequal(12, 'abcdefghiabc', 'rindex', '')
@@ -297,35 +297,35 @@ kundi BaseTest:
         self.checkequal(9,  'abcdefghiabc', 'rindex', 'abc')
         self.checkequal(0,  'abcdefghiabc', 'rindex', 'abc', 0, -1)
 
-        self.checkraises(ValueError, 'abcdefghiabc', 'rindex', 'hib')
-        self.checkraises(ValueError, 'defghiabc', 'rindex', 'def', 1)
-        self.checkraises(ValueError, 'defghiabc', 'rindex', 'abc', 0, -1)
-        self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, 8)
-        self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, -1)
+        self.checkashirias(ValueError, 'abcdefghiabc', 'rindex', 'hib')
+        self.checkashirias(ValueError, 'defghiabc', 'rindex', 'def', 1)
+        self.checkashirias(ValueError, 'defghiabc', 'rindex', 'abc', 0, -1)
+        self.checkashirias(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, 8)
+        self.checkashirias(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, -1)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4)
-        self.checkraises(ValueError, 'rrarrrrrrrrra', 'rindex', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'rindex', 'a', None, 6)
+        self.checkashirias(ValueError, 'rrarrrrrrrrra', 'rindex', 'a', 4, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4, Tupu)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'rindex', 'a', Tupu, 6)
 
-        self.checkraises(TypeError, 'hello', 'rindex')
+        self.checkashirias(TypeError, 'hello', 'rindex')
 
         ikiwa self.contains_bytes:
-            self.checkraises(ValueError, 'hello', 'rindex', 42)
-        else:
-            self.checkraises(TypeError, 'hello', 'rindex', 42)
+            self.checkashirias(ValueError, 'hello', 'rindex', 42)
+        isipokua:
+            self.checkashirias(TypeError, 'hello', 'rindex', 42)
 
     eleza test_lower(self):
         self.checkequal('hello', 'HeLLo', 'lower')
         self.checkequal('hello', 'hello', 'lower')
-        self.checkraises(TypeError, 'hello', 'lower', 42)
+        self.checkashirias(TypeError, 'hello', 'lower', 42)
 
     eleza test_upper(self):
         self.checkequal('HELLO', 'HeLLo', 'upper')
         self.checkequal('HELLO', 'HELLO', 'upper')
-        self.checkraises(TypeError, 'hello', 'upper', 42)
+        self.checkashirias(TypeError, 'hello', 'upper', 42)
 
     eleza test_expandtabs(self):
         self.checkequal('abc\rab      def\ng       hi', 'abc\rab\tdef\ng\thi',
@@ -350,10 +350,10 @@ kundi BaseTest:
 
         self.checkequal('  a\n b', ' \ta\n\tb', 'expandtabs', 1)
 
-        self.checkraises(TypeError, 'hello', 'expandtabs', 42, 42)
-        # This test is only valid when sizeof(int) == sizeof(void*) == 4.
-        ikiwa sys.maxsize < (1 << 32) and struct.calcsize('P') == 4:
-            self.checkraises(OverflowError,
+        self.checkashirias(TypeError, 'hello', 'expandtabs', 42, 42)
+        # This test ni only valid when sizeof(int) == sizeof(void*) == 4.
+        ikiwa sys.maxsize < (1 << 32) na struct.calcsize('P') == 4:
+            self.checkashirias(OverflowError,
                              '\ta\n\tb', 'expandtabs', sys.maxsize)
 
     eleza test_split(self):
@@ -420,11 +420,11 @@ kundi BaseTest:
                         'a b c d', 'split', maxsplit=1)
 
         # argument type
-        self.checkraises(TypeError, 'hello', 'split', 42, 42, 42)
+        self.checkashirias(TypeError, 'hello', 'split', 42, 42, 42)
 
         # null case
-        self.checkraises(ValueError, 'hello', 'split', '')
-        self.checkraises(ValueError, 'hello', 'split', '', 0)
+        self.checkashirias(ValueError, 'hello', 'split', '')
+        self.checkashirias(ValueError, 'hello', 'split', '', 0)
 
     eleza test_rsplit(self):
         # by a char
@@ -490,11 +490,11 @@ kundi BaseTest:
                         'a b c d', 'rsplit', maxsplit=1)
 
         # argument type
-        self.checkraises(TypeError, 'hello', 'rsplit', 42, 42, 42)
+        self.checkashirias(TypeError, 'hello', 'rsplit', 42, 42, 42)
 
         # null case
-        self.checkraises(ValueError, 'hello', 'rsplit', '')
-        self.checkraises(ValueError, 'hello', 'rsplit', '', 0)
+        self.checkashirias(ValueError, 'hello', 'rsplit', '')
+        self.checkashirias(ValueError, 'hello', 'rsplit', '', 0)
 
     eleza test_replace(self):
         EQ = self.checkequal
@@ -555,20 +555,20 @@ kundi BaseTest:
         EQ("aaaa", "theatheatheathea", "replace", "the", "")
         EQ("that", "that", "replace", "the", "")
         EQ("thaet", "thaet", "replace", "the", "")
-        EQ("here and re", "here and there", "replace", "the", "")
-        EQ("here and re and re", "here and there and there",
+        EQ("here na re", "here na there", "replace", "the", "")
+        EQ("here na re na re", "here na there na there",
            "replace", "the", "", sys.maxsize)
-        EQ("here and re and re", "here and there and there",
+        EQ("here na re na re", "here na there na there",
            "replace", "the", "", -1)
-        EQ("here and re and re", "here and there and there",
+        EQ("here na re na re", "here na there na there",
            "replace", "the", "", 3)
-        EQ("here and re and re", "here and there and there",
+        EQ("here na re na re", "here na there na there",
            "replace", "the", "", 2)
-        EQ("here and re and there", "here and there and there",
+        EQ("here na re na there", "here na there na there",
            "replace", "the", "", 1)
-        EQ("here and there and there", "here and there and there",
+        EQ("here na there na there", "here na there na there",
            "replace", "the", "", 0)
-        EQ("here and re and re", "here and there and there", "replace", "the", "")
+        EQ("here na re na re", "here na there na there", "replace", "the", "")
 
         EQ("abc", "abc", "replace", "the", "")
         EQ("abcdefg", "abcdefg", "replace", "the", "")
@@ -579,7 +579,7 @@ kundi BaseTest:
         EQ("aaaaaaa", "aaaaaaabob", "replace", "bob", "")
         EQ("aaaaaaa", "aaaaaaa", "replace", "bob", "")
 
-        # single character replace in place (len(kutoka)==len(to)==1)
+        # single character replace kwenye place (len(kutoka)==len(to)==1)
         EQ("Who goes there?", "Who goes there?", "replace", "o", "o")
         EQ("WhO gOes there?", "Who goes there?", "replace", "o", "O")
         EQ("WhO gOes there?", "Who goes there?", "replace", "o", "O", sys.maxsize)
@@ -597,15 +597,15 @@ kundi BaseTest:
 
         EQ("Who goes there?", "Who goes there?", "replace", ".", "!")
 
-        # substring replace in place (len(kutoka)==len(to) > 1)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**")
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", sys.maxsize)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", -1)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", 4)
-        EQ("Th** ** a t**sue", "This is a tissue", "replace", "is", "**", 3)
-        EQ("Th** ** a tissue", "This is a tissue", "replace", "is", "**", 2)
-        EQ("Th** is a tissue", "This is a tissue", "replace", "is", "**", 1)
-        EQ("This is a tissue", "This is a tissue", "replace", "is", "**", 0)
+        # substring replace kwenye place (len(kutoka)==len(to) > 1)
+        EQ("Th** ** a t**sue", "This ni a tissue", "replace", "is", "**")
+        EQ("Th** ** a t**sue", "This ni a tissue", "replace", "is", "**", sys.maxsize)
+        EQ("Th** ** a t**sue", "This ni a tissue", "replace", "is", "**", -1)
+        EQ("Th** ** a t**sue", "This ni a tissue", "replace", "is", "**", 4)
+        EQ("Th** ** a t**sue", "This ni a tissue", "replace", "is", "**", 3)
+        EQ("Th** ** a tissue", "This ni a tissue", "replace", "is", "**", 2)
+        EQ("Th** ni a tissue", "This ni a tissue", "replace", "is", "**", 1)
+        EQ("This ni a tissue", "This ni a tissue", "replace", "is", "**", 0)
         EQ("cobob", "bobob", "replace", "bob", "cob")
         EQ("cobobXcobocob", "bobobXbobobob", "replace", "bob", "cob")
         EQ("bobob", "bobob", "replace", "bot", "bot")
@@ -624,21 +624,21 @@ kundi BaseTest:
         EQ("Reykjavik", "Reykjavik", "replace", "q", "KK")
 
         # replace substring (len(kutoka)>1, len(to)!=len(kutoka))
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs na ham", "spam, spam, eggs na spam",
            "replace", "spam", "ham")
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs na ham", "spam, spam, eggs na spam",
            "replace", "spam", "ham", sys.maxsize)
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs na ham", "spam, spam, eggs na spam",
            "replace", "spam", "ham", -1)
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs na ham", "spam, spam, eggs na spam",
            "replace", "spam", "ham", 4)
-        EQ("ham, ham, eggs and ham", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs na ham", "spam, spam, eggs na spam",
            "replace", "spam", "ham", 3)
-        EQ("ham, ham, eggs and spam", "spam, spam, eggs and spam",
+        EQ("ham, ham, eggs na spam", "spam, spam, eggs na spam",
            "replace", "spam", "ham", 2)
-        EQ("ham, spam, eggs and spam", "spam, spam, eggs and spam",
+        EQ("ham, spam, eggs na spam", "spam, spam, eggs na spam",
            "replace", "spam", "ham", 1)
-        EQ("spam, spam, eggs and spam", "spam, spam, eggs and spam",
+        EQ("spam, spam, eggs na spam", "spam, spam, eggs na spam",
            "replace", "spam", "ham", 0)
 
         EQ("bobob", "bobobob", "replace", "bobob", "bob")
@@ -660,26 +660,26 @@ kundi BaseTest:
         self.checkequal('', '', 'replace', '', '')
         self.checkequal('abc', 'abc', 'replace', 'ab', '--', 0)
         self.checkequal('abc', 'abc', 'replace', 'xy', '--')
-        # Next three for SF bug 422088: [OSF1 alpha] string.replace(); died with
+        # Next three kila SF bug 422088: [OSF1 alpha] string.replace(); died with
         # MemoryError due to empty result (platform malloc issue when requesting
         # 0 bytes).
         self.checkequal('', '123', 'replace', '123', '')
         self.checkequal('', '123123', 'replace', '123', '')
         self.checkequal('x', '123x123', 'replace', '123', '')
 
-        self.checkraises(TypeError, 'hello', 'replace')
-        self.checkraises(TypeError, 'hello', 'replace', 42)
-        self.checkraises(TypeError, 'hello', 'replace', 42, 'h')
-        self.checkraises(TypeError, 'hello', 'replace', 'h', 42)
+        self.checkashirias(TypeError, 'hello', 'replace')
+        self.checkashirias(TypeError, 'hello', 'replace', 42)
+        self.checkashirias(TypeError, 'hello', 'replace', 42, 'h')
+        self.checkashirias(TypeError, 'hello', 'replace', 'h', 42)
 
-    @unittest.skipIf(sys.maxsize > (1 << 32) or struct.calcsize('P') != 4,
+    @unittest.skipIf(sys.maxsize > (1 << 32) ama struct.calcsize('P') != 4,
                      'only applies to 32-bit platforms')
     eleza test_replace_overflow(self):
-        # Check for overflow checking on 32 bit machines
+        # Check kila overflow checking on 32 bit machines
         A2_16 = "A" * (2**16)
-        self.checkraises(OverflowError, A2_16, "replace", "", A2_16)
-        self.checkraises(OverflowError, A2_16, "replace", "A", A2_16)
-        self.checkraises(OverflowError, A2_16, "replace", "AA", A2_16+A2_16)
+        self.checkashirias(OverflowError, A2_16, "replace", "", A2_16)
+        self.checkashirias(OverflowError, A2_16, "replace", "A", A2_16)
+        self.checkashirias(OverflowError, A2_16, "replace", "AA", A2_16+A2_16)
 
     eleza test_capitalize(self):
         self.checkequal(' hello ', ' hello ', 'capitalize')
@@ -688,83 +688,83 @@ kundi BaseTest:
         self.checkequal('Aaaa', 'aaaa', 'capitalize')
         self.checkequal('Aaaa', 'AaAa', 'capitalize')
 
-        self.checkraises(TypeError, 'hello', 'capitalize', 42)
+        self.checkashirias(TypeError, 'hello', 'capitalize', 42)
 
     eleza test_additional_split(self):
         self.checkequal(['this', 'is', 'the', 'split', 'function'],
-            'this is the split function', 'split')
+            'this ni the split function', 'split')
 
         # by whitespace
         self.checkequal(['a', 'b', 'c', 'd'], 'a b c d ', 'split')
-        self.checkequal(['a', 'b c d'], 'a b c d', 'split', None, 1)
-        self.checkequal(['a', 'b', 'c d'], 'a b c d', 'split', None, 2)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', None, 3)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', None, 4)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', None,
+        self.checkequal(['a', 'b c d'], 'a b c d', 'split', Tupu, 1)
+        self.checkequal(['a', 'b', 'c d'], 'a b c d', 'split', Tupu, 2)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', Tupu, 3)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', Tupu, 4)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', Tupu,
                         sys.maxsize-1)
-        self.checkequal(['a b c d'], 'a b c d', 'split', None, 0)
-        self.checkequal(['a b c d'], '  a b c d', 'split', None, 0)
-        self.checkequal(['a', 'b', 'c  d'], 'a  b  c  d', 'split', None, 2)
+        self.checkequal(['a b c d'], 'a b c d', 'split', Tupu, 0)
+        self.checkequal(['a b c d'], '  a b c d', 'split', Tupu, 0)
+        self.checkequal(['a', 'b', 'c  d'], 'a  b  c  d', 'split', Tupu, 2)
 
         self.checkequal([], '         ', 'split')
         self.checkequal(['a'], '  a    ', 'split')
         self.checkequal(['a', 'b'], '  a    b   ', 'split')
-        self.checkequal(['a', 'b   '], '  a    b   ', 'split', None, 1)
-        self.checkequal(['a    b   c   '], '  a    b   c   ', 'split', None, 0)
-        self.checkequal(['a', 'b   c   '], '  a    b   c   ', 'split', None, 1)
-        self.checkequal(['a', 'b', 'c   '], '  a    b   c   ', 'split', None, 2)
-        self.checkequal(['a', 'b', 'c'], '  a    b   c   ', 'split', None, 3)
+        self.checkequal(['a', 'b   '], '  a    b   ', 'split', Tupu, 1)
+        self.checkequal(['a    b   c   '], '  a    b   c   ', 'split', Tupu, 0)
+        self.checkequal(['a', 'b   c   '], '  a    b   c   ', 'split', Tupu, 1)
+        self.checkequal(['a', 'b', 'c   '], '  a    b   c   ', 'split', Tupu, 2)
+        self.checkequal(['a', 'b', 'c'], '  a    b   c   ', 'split', Tupu, 3)
         self.checkequal(['a', 'b'], '\n\ta \t\r b \v ', 'split')
         aaa = ' a '*20
         self.checkequal(['a']*20, aaa, 'split')
-        self.checkequal(['a'] + [aaa[4:]], aaa, 'split', None, 1)
-        self.checkequal(['a']*19 + ['a '], aaa, 'split', None, 19)
+        self.checkequal(['a'] + [aaa[4:]], aaa, 'split', Tupu, 1)
+        self.checkequal(['a']*19 + ['a '], aaa, 'split', Tupu, 19)
 
-        for b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
+        kila b kwenye ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
                   'arf\fbarf', 'arf\vbarf'):
             self.checkequal(['arf', 'barf'], b, 'split')
-            self.checkequal(['arf', 'barf'], b, 'split', None)
-            self.checkequal(['arf', 'barf'], b, 'split', None, 2)
+            self.checkequal(['arf', 'barf'], b, 'split', Tupu)
+            self.checkequal(['arf', 'barf'], b, 'split', Tupu, 2)
 
     eleza test_additional_rsplit(self):
         self.checkequal(['this', 'is', 'the', 'rsplit', 'function'],
-                         'this is the rsplit function', 'rsplit')
+                         'this ni the rsplit function', 'rsplit')
 
         # by whitespace
         self.checkequal(['a', 'b', 'c', 'd'], 'a b c d ', 'rsplit')
-        self.checkequal(['a b c', 'd'], 'a b c d', 'rsplit', None, 1)
-        self.checkequal(['a b', 'c', 'd'], 'a b c d', 'rsplit', None, 2)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', None, 3)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', None, 4)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', None,
+        self.checkequal(['a b c', 'd'], 'a b c d', 'rsplit', Tupu, 1)
+        self.checkequal(['a b', 'c', 'd'], 'a b c d', 'rsplit', Tupu, 2)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', Tupu, 3)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', Tupu, 4)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', Tupu,
                         sys.maxsize-20)
-        self.checkequal(['a b c d'], 'a b c d', 'rsplit', None, 0)
-        self.checkequal(['a b c d'], 'a b c d  ', 'rsplit', None, 0)
-        self.checkequal(['a  b', 'c', 'd'], 'a  b  c  d', 'rsplit', None, 2)
+        self.checkequal(['a b c d'], 'a b c d', 'rsplit', Tupu, 0)
+        self.checkequal(['a b c d'], 'a b c d  ', 'rsplit', Tupu, 0)
+        self.checkequal(['a  b', 'c', 'd'], 'a  b  c  d', 'rsplit', Tupu, 2)
 
         self.checkequal([], '         ', 'rsplit')
         self.checkequal(['a'], '  a    ', 'rsplit')
         self.checkequal(['a', 'b'], '  a    b   ', 'rsplit')
-        self.checkequal(['  a', 'b'], '  a    b   ', 'rsplit', None, 1)
+        self.checkequal(['  a', 'b'], '  a    b   ', 'rsplit', Tupu, 1)
         self.checkequal(['  a    b   c'], '  a    b   c   ', 'rsplit',
-                        None, 0)
+                        Tupu, 0)
         self.checkequal(['  a    b','c'], '  a    b   c   ', 'rsplit',
-                        None, 1)
+                        Tupu, 1)
         self.checkequal(['  a', 'b', 'c'], '  a    b   c   ', 'rsplit',
-                        None, 2)
+                        Tupu, 2)
         self.checkequal(['a', 'b', 'c'], '  a    b   c   ', 'rsplit',
-                        None, 3)
-        self.checkequal(['a', 'b'], '\n\ta \t\r b \v ', 'rsplit', None, 88)
+                        Tupu, 3)
+        self.checkequal(['a', 'b'], '\n\ta \t\r b \v ', 'rsplit', Tupu, 88)
         aaa = ' a '*20
         self.checkequal(['a']*20, aaa, 'rsplit')
-        self.checkequal([aaa[:-4]] + ['a'], aaa, 'rsplit', None, 1)
-        self.checkequal([' a  a'] + ['a']*18, aaa, 'rsplit', None, 18)
+        self.checkequal([aaa[:-4]] + ['a'], aaa, 'rsplit', Tupu, 1)
+        self.checkequal([' a  a'] + ['a']*18, aaa, 'rsplit', Tupu, 18)
 
-        for b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
+        kila b kwenye ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
                   'arf\fbarf', 'arf\vbarf'):
             self.checkequal(['arf', 'barf'], b, 'rsplit')
-            self.checkequal(['arf', 'barf'], b, 'rsplit', None)
-            self.checkequal(['arf', 'barf'], b, 'rsplit', None, 2)
+            self.checkequal(['arf', 'barf'], b, 'rsplit', Tupu)
+            self.checkequal(['arf', 'barf'], b, 'rsplit', Tupu, 2)
 
     eleza test_strip_whitespace(self):
         self.checkequal('hello', '   hello   ', 'strip')
@@ -777,11 +777,11 @@ kundi BaseTest:
         self.checkequal('abc \t\n\r\f\v', b, 'lstrip')
         self.checkequal(' \t\n\r\f\vabc', b, 'rstrip')
 
-        # strip/lstrip/rstrip with None arg
-        self.checkequal('hello', '   hello   ', 'strip', None)
-        self.checkequal('hello   ', '   hello   ', 'lstrip', None)
-        self.checkequal('   hello', '   hello   ', 'rstrip', None)
-        self.checkequal('hello', 'hello', 'strip', None)
+        # strip/lstrip/rstrip with Tupu arg
+        self.checkequal('hello', '   hello   ', 'strip', Tupu)
+        self.checkequal('hello   ', '   hello   ', 'lstrip', Tupu)
+        self.checkequal('   hello', '   hello   ', 'rstrip', Tupu)
+        self.checkequal('hello', 'hello', 'strip', Tupu)
 
     eleza test_strip(self):
         # strip/lstrip/rstrip with str arg
@@ -791,12 +791,12 @@ kundi BaseTest:
         self.checkequal('hello', 'hello', 'strip', 'xyz')
         self.checkequal('', 'mississippi', 'strip', 'mississippi')
 
-        # only trim the start and end; does not strip internal characters
+        # only trim the start na end; does sio strip internal characters
         self.checkequal('mississipp', 'mississippi', 'strip', 'i')
 
-        self.checkraises(TypeError, 'hello', 'strip', 42, 42)
-        self.checkraises(TypeError, 'hello', 'lstrip', 42, 42)
-        self.checkraises(TypeError, 'hello', 'rstrip', 42, 42)
+        self.checkashirias(TypeError, 'hello', 'strip', 42, 42)
+        self.checkashirias(TypeError, 'hello', 'lstrip', 42, 42)
+        self.checkashirias(TypeError, 'hello', 'rstrip', 42, 42)
 
     eleza test_ljust(self):
         self.checkequal('abc       ', 'abc', 'ljust', 10)
@@ -804,7 +804,7 @@ kundi BaseTest:
         self.checkequal('abc', 'abc', 'ljust', 3)
         self.checkequal('abc', 'abc', 'ljust', 2)
         self.checkequal('abc*******', 'abc', 'ljust', 10, '*')
-        self.checkraises(TypeError, 'abc', 'ljust')
+        self.checkashirias(TypeError, 'abc', 'ljust')
 
     eleza test_rjust(self):
         self.checkequal('       abc', 'abc', 'rjust', 10)
@@ -812,7 +812,7 @@ kundi BaseTest:
         self.checkequal('abc', 'abc', 'rjust', 3)
         self.checkequal('abc', 'abc', 'rjust', 2)
         self.checkequal('*******abc', 'abc', 'rjust', 10, '*')
-        self.checkraises(TypeError, 'abc', 'rjust')
+        self.checkashirias(TypeError, 'abc', 'rjust')
 
     eleza test_center(self):
         self.checkequal('   abc    ', 'abc', 'center', 10)
@@ -820,12 +820,12 @@ kundi BaseTest:
         self.checkequal('abc', 'abc', 'center', 3)
         self.checkequal('abc', 'abc', 'center', 2)
         self.checkequal('***abc****', 'abc', 'center', 10, '*')
-        self.checkraises(TypeError, 'abc', 'center')
+        self.checkashirias(TypeError, 'abc', 'center')
 
     eleza test_swapcase(self):
         self.checkequal('hEllO CoMPuTErS', 'HeLLo cOmpUteRs', 'swapcase')
 
-        self.checkraises(TypeError, 'hello', 'swapcase', 42)
+        self.checkashirias(TypeError, 'hello', 'swapcase', 42)
 
     eleza test_zfill(self):
         self.checkequal('123', '123', 'zfill', 2)
@@ -841,97 +841,97 @@ kundi BaseTest:
         self.checkequal('34', '34', 'zfill', 1)
         self.checkequal('0034', '34', 'zfill', 4)
 
-        self.checkraises(TypeError, '123', 'zfill')
+        self.checkashirias(TypeError, '123', 'zfill')
 
     eleza test_islower(self):
-        self.checkequal(False, '', 'islower')
-        self.checkequal(True, 'a', 'islower')
-        self.checkequal(False, 'A', 'islower')
-        self.checkequal(False, '\n', 'islower')
-        self.checkequal(True, 'abc', 'islower')
-        self.checkequal(False, 'aBc', 'islower')
-        self.checkequal(True, 'abc\n', 'islower')
-        self.checkraises(TypeError, 'abc', 'islower', 42)
+        self.checkequal(Uongo, '', 'islower')
+        self.checkequal(Kweli, 'a', 'islower')
+        self.checkequal(Uongo, 'A', 'islower')
+        self.checkequal(Uongo, '\n', 'islower')
+        self.checkequal(Kweli, 'abc', 'islower')
+        self.checkequal(Uongo, 'aBc', 'islower')
+        self.checkequal(Kweli, 'abc\n', 'islower')
+        self.checkashirias(TypeError, 'abc', 'islower', 42)
 
     eleza test_isupper(self):
-        self.checkequal(False, '', 'isupper')
-        self.checkequal(False, 'a', 'isupper')
-        self.checkequal(True, 'A', 'isupper')
-        self.checkequal(False, '\n', 'isupper')
-        self.checkequal(True, 'ABC', 'isupper')
-        self.checkequal(False, 'AbC', 'isupper')
-        self.checkequal(True, 'ABC\n', 'isupper')
-        self.checkraises(TypeError, 'abc', 'isupper', 42)
+        self.checkequal(Uongo, '', 'isupper')
+        self.checkequal(Uongo, 'a', 'isupper')
+        self.checkequal(Kweli, 'A', 'isupper')
+        self.checkequal(Uongo, '\n', 'isupper')
+        self.checkequal(Kweli, 'ABC', 'isupper')
+        self.checkequal(Uongo, 'AbC', 'isupper')
+        self.checkequal(Kweli, 'ABC\n', 'isupper')
+        self.checkashirias(TypeError, 'abc', 'isupper', 42)
 
     eleza test_istitle(self):
-        self.checkequal(False, '', 'istitle')
-        self.checkequal(False, 'a', 'istitle')
-        self.checkequal(True, 'A', 'istitle')
-        self.checkequal(False, '\n', 'istitle')
-        self.checkequal(True, 'A Titlecased Line', 'istitle')
-        self.checkequal(True, 'A\nTitlecased Line', 'istitle')
-        self.checkequal(True, 'A Titlecased, Line', 'istitle')
-        self.checkequal(False, 'Not a capitalized String', 'istitle')
-        self.checkequal(False, 'Not\ta Titlecase String', 'istitle')
-        self.checkequal(False, 'Not--a Titlecase String', 'istitle')
-        self.checkequal(False, 'NOT', 'istitle')
-        self.checkraises(TypeError, 'abc', 'istitle', 42)
+        self.checkequal(Uongo, '', 'istitle')
+        self.checkequal(Uongo, 'a', 'istitle')
+        self.checkequal(Kweli, 'A', 'istitle')
+        self.checkequal(Uongo, '\n', 'istitle')
+        self.checkequal(Kweli, 'A Titlecased Line', 'istitle')
+        self.checkequal(Kweli, 'A\nTitlecased Line', 'istitle')
+        self.checkequal(Kweli, 'A Titlecased, Line', 'istitle')
+        self.checkequal(Uongo, 'Not a capitalized String', 'istitle')
+        self.checkequal(Uongo, 'Not\ta Titlecase String', 'istitle')
+        self.checkequal(Uongo, 'Not--a Titlecase String', 'istitle')
+        self.checkequal(Uongo, 'NOT', 'istitle')
+        self.checkashirias(TypeError, 'abc', 'istitle', 42)
 
     eleza test_isspace(self):
-        self.checkequal(False, '', 'isspace')
-        self.checkequal(False, 'a', 'isspace')
-        self.checkequal(True, ' ', 'isspace')
-        self.checkequal(True, '\t', 'isspace')
-        self.checkequal(True, '\r', 'isspace')
-        self.checkequal(True, '\n', 'isspace')
-        self.checkequal(True, ' \t\r\n', 'isspace')
-        self.checkequal(False, ' \t\r\na', 'isspace')
-        self.checkraises(TypeError, 'abc', 'isspace', 42)
+        self.checkequal(Uongo, '', 'isspace')
+        self.checkequal(Uongo, 'a', 'isspace')
+        self.checkequal(Kweli, ' ', 'isspace')
+        self.checkequal(Kweli, '\t', 'isspace')
+        self.checkequal(Kweli, '\r', 'isspace')
+        self.checkequal(Kweli, '\n', 'isspace')
+        self.checkequal(Kweli, ' \t\r\n', 'isspace')
+        self.checkequal(Uongo, ' \t\r\na', 'isspace')
+        self.checkashirias(TypeError, 'abc', 'isspace', 42)
 
     eleza test_isalpha(self):
-        self.checkequal(False, '', 'isalpha')
-        self.checkequal(True, 'a', 'isalpha')
-        self.checkequal(True, 'A', 'isalpha')
-        self.checkequal(False, '\n', 'isalpha')
-        self.checkequal(True, 'abc', 'isalpha')
-        self.checkequal(False, 'aBc123', 'isalpha')
-        self.checkequal(False, 'abc\n', 'isalpha')
-        self.checkraises(TypeError, 'abc', 'isalpha', 42)
+        self.checkequal(Uongo, '', 'isalpha')
+        self.checkequal(Kweli, 'a', 'isalpha')
+        self.checkequal(Kweli, 'A', 'isalpha')
+        self.checkequal(Uongo, '\n', 'isalpha')
+        self.checkequal(Kweli, 'abc', 'isalpha')
+        self.checkequal(Uongo, 'aBc123', 'isalpha')
+        self.checkequal(Uongo, 'abc\n', 'isalpha')
+        self.checkashirias(TypeError, 'abc', 'isalpha', 42)
 
     eleza test_isalnum(self):
-        self.checkequal(False, '', 'isalnum')
-        self.checkequal(True, 'a', 'isalnum')
-        self.checkequal(True, 'A', 'isalnum')
-        self.checkequal(False, '\n', 'isalnum')
-        self.checkequal(True, '123abc456', 'isalnum')
-        self.checkequal(True, 'a1b3c', 'isalnum')
-        self.checkequal(False, 'aBc000 ', 'isalnum')
-        self.checkequal(False, 'abc\n', 'isalnum')
-        self.checkraises(TypeError, 'abc', 'isalnum', 42)
+        self.checkequal(Uongo, '', 'isalnum')
+        self.checkequal(Kweli, 'a', 'isalnum')
+        self.checkequal(Kweli, 'A', 'isalnum')
+        self.checkequal(Uongo, '\n', 'isalnum')
+        self.checkequal(Kweli, '123abc456', 'isalnum')
+        self.checkequal(Kweli, 'a1b3c', 'isalnum')
+        self.checkequal(Uongo, 'aBc000 ', 'isalnum')
+        self.checkequal(Uongo, 'abc\n', 'isalnum')
+        self.checkashirias(TypeError, 'abc', 'isalnum', 42)
 
     eleza test_isascii(self):
-        self.checkequal(True, '', 'isascii')
-        self.checkequal(True, '\x00', 'isascii')
-        self.checkequal(True, '\x7f', 'isascii')
-        self.checkequal(True, '\x00\x7f', 'isascii')
-        self.checkequal(False, '\x80', 'isascii')
-        self.checkequal(False, '\xe9', 'isascii')
-        # bytes.isascii() and bytearray.isascii() has optimization which
-        # check 4 or 8 bytes at once.  So check some alignments.
-        for p in range(8):
-            self.checkequal(True, ' '*p + '\x7f', 'isascii')
-            self.checkequal(False, ' '*p + '\x80', 'isascii')
-            self.checkequal(True, ' '*p + '\x7f' + ' '*8, 'isascii')
-            self.checkequal(False, ' '*p + '\x80' + ' '*8, 'isascii')
+        self.checkequal(Kweli, '', 'isascii')
+        self.checkequal(Kweli, '\x00', 'isascii')
+        self.checkequal(Kweli, '\x7f', 'isascii')
+        self.checkequal(Kweli, '\x00\x7f', 'isascii')
+        self.checkequal(Uongo, '\x80', 'isascii')
+        self.checkequal(Uongo, '\xe9', 'isascii')
+        # bytes.isascii() na bytearray.isascii() has optimization which
+        # check 4 ama 8 bytes at once.  So check some alignments.
+        kila p kwenye range(8):
+            self.checkequal(Kweli, ' '*p + '\x7f', 'isascii')
+            self.checkequal(Uongo, ' '*p + '\x80', 'isascii')
+            self.checkequal(Kweli, ' '*p + '\x7f' + ' '*8, 'isascii')
+            self.checkequal(Uongo, ' '*p + '\x80' + ' '*8, 'isascii')
 
     eleza test_isdigit(self):
-        self.checkequal(False, '', 'isdigit')
-        self.checkequal(False, 'a', 'isdigit')
-        self.checkequal(True, '0', 'isdigit')
-        self.checkequal(True, '0123456789', 'isdigit')
-        self.checkequal(False, '0123456789a', 'isdigit')
+        self.checkequal(Uongo, '', 'isdigit')
+        self.checkequal(Uongo, 'a', 'isdigit')
+        self.checkequal(Kweli, '0', 'isdigit')
+        self.checkequal(Kweli, '0123456789', 'isdigit')
+        self.checkequal(Uongo, '0123456789a', 'isdigit')
 
-        self.checkraises(TypeError, 'abc', 'isdigit', 42)
+        self.checkashirias(TypeError, 'abc', 'isdigit', 42)
 
     eleza test_title(self):
         self.checkequal(' Hello ', ' hello ', 'title')
@@ -940,7 +940,7 @@ kundi BaseTest:
         self.checkequal('Format This As Title String', "fOrMaT thIs aS titLe String", 'title')
         self.checkequal('Format,This-As*Title;String', "fOrMaT,thIs-aS*titLe;String", 'title', )
         self.checkequal('Getint', "getInt", 'title')
-        self.checkraises(TypeError, 'hello', 'title', 42)
+        self.checkashirias(TypeError, 'hello', 'title', 42)
 
     eleza test_splitlines(self):
         self.checkequal(['abc', 'def', '', 'ghi'], "abc\ndef\n\rghi", 'splitlines')
@@ -950,33 +950,33 @@ kundi BaseTest:
         self.checkequal(['abc', 'def', 'ghi', ''], "abc\ndef\r\nghi\n\r", 'splitlines')
         self.checkequal(['', 'abc', 'def', 'ghi', ''], "\nabc\ndef\r\nghi\n\r", 'splitlines')
         self.checkequal(['', 'abc', 'def', 'ghi', ''],
-                        "\nabc\ndef\r\nghi\n\r", 'splitlines', False)
+                        "\nabc\ndef\r\nghi\n\r", 'splitlines', Uongo)
         self.checkequal(['\n', 'abc\n', 'def\r\n', 'ghi\n', '\r'],
-                        "\nabc\ndef\r\nghi\n\r", 'splitlines', True)
+                        "\nabc\ndef\r\nghi\n\r", 'splitlines', Kweli)
         self.checkequal(['', 'abc', 'def', 'ghi', ''], "\nabc\ndef\r\nghi\n\r",
-                        'splitlines', keepends=False)
+                        'splitlines', keepends=Uongo)
         self.checkequal(['\n', 'abc\n', 'def\r\n', 'ghi\n', '\r'],
-                        "\nabc\ndef\r\nghi\n\r", 'splitlines', keepends=True)
+                        "\nabc\ndef\r\nghi\n\r", 'splitlines', keepends=Kweli)
 
-        self.checkraises(TypeError, 'abc', 'splitlines', 42, 42)
+        self.checkashirias(TypeError, 'abc', 'splitlines', 42, 42)
 
 
 kundi CommonTest(BaseTest):
-    # This testcase contains tests that can be used in all
-    # stringlike classes. Currently this is str and UserString.
+    # This testcase contains tests that can be used kwenye all
+    # stringlike classes. Currently this ni str na UserString.
 
     eleza test_hash(self):
-        # SF bug 1054139:  += optimization was not invalidating cached hash value
+        # SF bug 1054139:  += optimization was sio invalidating cached hash value
         a = self.type2test('DNSSEC')
         b = self.type2test('')
-        for c in a:
+        kila c kwenye a:
             b += c
             hash(b)
         self.assertEqual(hash(a), hash(b))
 
     eleza test_capitalize_nonascii(self):
         # check that titlecased chars are lowered correctly
-        # \u1ffc is the titlecased char
+        # \u1ffc ni the titlecased char
         self.checkequal('\u1ffc\u1ff3\u1ff3\u1ff3',
                         '\u1ff3\u1ff3\u1ffc\u1ffc', 'capitalize')
         # check with cased non-letter chars
@@ -998,115 +998,115 @@ kundi MixinStrUnicodeUserStringTest:
     # stringlike objects, i.e. str, UserString
 
     eleza test_startswith(self):
-        self.checkequal(True, 'hello', 'startswith', 'he')
-        self.checkequal(True, 'hello', 'startswith', 'hello')
-        self.checkequal(False, 'hello', 'startswith', 'hello world')
-        self.checkequal(True, 'hello', 'startswith', '')
-        self.checkequal(False, 'hello', 'startswith', 'ello')
-        self.checkequal(True, 'hello', 'startswith', 'ello', 1)
-        self.checkequal(True, 'hello', 'startswith', 'o', 4)
-        self.checkequal(False, 'hello', 'startswith', 'o', 5)
-        self.checkequal(True, 'hello', 'startswith', '', 5)
-        self.checkequal(False, 'hello', 'startswith', 'lo', 6)
-        self.checkequal(True, 'helloworld', 'startswith', 'lowo', 3)
-        self.checkequal(True, 'helloworld', 'startswith', 'lowo', 3, 7)
-        self.checkequal(False, 'helloworld', 'startswith', 'lowo', 3, 6)
-        self.checkequal(True, '', 'startswith', '', 0, 1)
-        self.checkequal(True, '', 'startswith', '', 0, 0)
-        self.checkequal(False, '', 'startswith', '', 1, 0)
+        self.checkequal(Kweli, 'hello', 'startswith', 'he')
+        self.checkequal(Kweli, 'hello', 'startswith', 'hello')
+        self.checkequal(Uongo, 'hello', 'startswith', 'hello world')
+        self.checkequal(Kweli, 'hello', 'startswith', '')
+        self.checkequal(Uongo, 'hello', 'startswith', 'ello')
+        self.checkequal(Kweli, 'hello', 'startswith', 'ello', 1)
+        self.checkequal(Kweli, 'hello', 'startswith', 'o', 4)
+        self.checkequal(Uongo, 'hello', 'startswith', 'o', 5)
+        self.checkequal(Kweli, 'hello', 'startswith', '', 5)
+        self.checkequal(Uongo, 'hello', 'startswith', 'lo', 6)
+        self.checkequal(Kweli, 'helloworld', 'startswith', 'lowo', 3)
+        self.checkequal(Kweli, 'helloworld', 'startswith', 'lowo', 3, 7)
+        self.checkequal(Uongo, 'helloworld', 'startswith', 'lowo', 3, 6)
+        self.checkequal(Kweli, '', 'startswith', '', 0, 1)
+        self.checkequal(Kweli, '', 'startswith', '', 0, 0)
+        self.checkequal(Uongo, '', 'startswith', '', 1, 0)
 
         # test negative indices
-        self.checkequal(True, 'hello', 'startswith', 'he', 0, -1)
-        self.checkequal(True, 'hello', 'startswith', 'he', -53, -1)
-        self.checkequal(False, 'hello', 'startswith', 'hello', 0, -1)
-        self.checkequal(False, 'hello', 'startswith', 'hello world', -1, -10)
-        self.checkequal(False, 'hello', 'startswith', 'ello', -5)
-        self.checkequal(True, 'hello', 'startswith', 'ello', -4)
-        self.checkequal(False, 'hello', 'startswith', 'o', -2)
-        self.checkequal(True, 'hello', 'startswith', 'o', -1)
-        self.checkequal(True, 'hello', 'startswith', '', -3, -3)
-        self.checkequal(False, 'hello', 'startswith', 'lo', -9)
+        self.checkequal(Kweli, 'hello', 'startswith', 'he', 0, -1)
+        self.checkequal(Kweli, 'hello', 'startswith', 'he', -53, -1)
+        self.checkequal(Uongo, 'hello', 'startswith', 'hello', 0, -1)
+        self.checkequal(Uongo, 'hello', 'startswith', 'hello world', -1, -10)
+        self.checkequal(Uongo, 'hello', 'startswith', 'ello', -5)
+        self.checkequal(Kweli, 'hello', 'startswith', 'ello', -4)
+        self.checkequal(Uongo, 'hello', 'startswith', 'o', -2)
+        self.checkequal(Kweli, 'hello', 'startswith', 'o', -1)
+        self.checkequal(Kweli, 'hello', 'startswith', '', -3, -3)
+        self.checkequal(Uongo, 'hello', 'startswith', 'lo', -9)
 
-        self.checkraises(TypeError, 'hello', 'startswith')
-        self.checkraises(TypeError, 'hello', 'startswith', 42)
+        self.checkashirias(TypeError, 'hello', 'startswith')
+        self.checkashirias(TypeError, 'hello', 'startswith', 42)
 
         # test tuple arguments
-        self.checkequal(True, 'hello', 'startswith', ('he', 'ha'))
-        self.checkequal(False, 'hello', 'startswith', ('lo', 'llo'))
-        self.checkequal(True, 'hello', 'startswith', ('hellox', 'hello'))
-        self.checkequal(False, 'hello', 'startswith', ())
-        self.checkequal(True, 'helloworld', 'startswith', ('hellowo',
+        self.checkequal(Kweli, 'hello', 'startswith', ('he', 'ha'))
+        self.checkequal(Uongo, 'hello', 'startswith', ('lo', 'llo'))
+        self.checkequal(Kweli, 'hello', 'startswith', ('hellox', 'hello'))
+        self.checkequal(Uongo, 'hello', 'startswith', ())
+        self.checkequal(Kweli, 'helloworld', 'startswith', ('hellowo',
                                                            'rld', 'lowo'), 3)
-        self.checkequal(False, 'helloworld', 'startswith', ('hellowo', 'ello',
+        self.checkequal(Uongo, 'helloworld', 'startswith', ('hellowo', 'ello',
                                                             'rld'), 3)
-        self.checkequal(True, 'hello', 'startswith', ('lo', 'he'), 0, -1)
-        self.checkequal(False, 'hello', 'startswith', ('he', 'hel'), 0, 1)
-        self.checkequal(True, 'hello', 'startswith', ('he', 'hel'), 0, 2)
+        self.checkequal(Kweli, 'hello', 'startswith', ('lo', 'he'), 0, -1)
+        self.checkequal(Uongo, 'hello', 'startswith', ('he', 'hel'), 0, 1)
+        self.checkequal(Kweli, 'hello', 'startswith', ('he', 'hel'), 0, 2)
 
-        self.checkraises(TypeError, 'hello', 'startswith', (42,))
+        self.checkashirias(TypeError, 'hello', 'startswith', (42,))
 
     eleza test_endswith(self):
-        self.checkequal(True, 'hello', 'endswith', 'lo')
-        self.checkequal(False, 'hello', 'endswith', 'he')
-        self.checkequal(True, 'hello', 'endswith', '')
-        self.checkequal(False, 'hello', 'endswith', 'hello world')
-        self.checkequal(False, 'helloworld', 'endswith', 'worl')
-        self.checkequal(True, 'helloworld', 'endswith', 'worl', 3, 9)
-        self.checkequal(True, 'helloworld', 'endswith', 'world', 3, 12)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', 1, 7)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', 2, 7)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', 3, 7)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', 4, 7)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', 3, 8)
-        self.checkequal(False, 'ab', 'endswith', 'ab', 0, 1)
-        self.checkequal(False, 'ab', 'endswith', 'ab', 0, 0)
-        self.checkequal(True, '', 'endswith', '', 0, 1)
-        self.checkequal(True, '', 'endswith', '', 0, 0)
-        self.checkequal(False, '', 'endswith', '', 1, 0)
+        self.checkequal(Kweli, 'hello', 'endswith', 'lo')
+        self.checkequal(Uongo, 'hello', 'endswith', 'he')
+        self.checkequal(Kweli, 'hello', 'endswith', '')
+        self.checkequal(Uongo, 'hello', 'endswith', 'hello world')
+        self.checkequal(Uongo, 'helloworld', 'endswith', 'worl')
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'worl', 3, 9)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'world', 3, 12)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'lowo', 1, 7)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'lowo', 2, 7)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'lowo', 3, 7)
+        self.checkequal(Uongo, 'helloworld', 'endswith', 'lowo', 4, 7)
+        self.checkequal(Uongo, 'helloworld', 'endswith', 'lowo', 3, 8)
+        self.checkequal(Uongo, 'ab', 'endswith', 'ab', 0, 1)
+        self.checkequal(Uongo, 'ab', 'endswith', 'ab', 0, 0)
+        self.checkequal(Kweli, '', 'endswith', '', 0, 1)
+        self.checkequal(Kweli, '', 'endswith', '', 0, 0)
+        self.checkequal(Uongo, '', 'endswith', '', 1, 0)
 
         # test negative indices
-        self.checkequal(True, 'hello', 'endswith', 'lo', -2)
-        self.checkequal(False, 'hello', 'endswith', 'he', -2)
-        self.checkequal(True, 'hello', 'endswith', '', -3, -3)
-        self.checkequal(False, 'hello', 'endswith', 'hello world', -10, -2)
-        self.checkequal(False, 'helloworld', 'endswith', 'worl', -6)
-        self.checkequal(True, 'helloworld', 'endswith', 'worl', -5, -1)
-        self.checkequal(True, 'helloworld', 'endswith', 'worl', -5, 9)
-        self.checkequal(True, 'helloworld', 'endswith', 'world', -7, 12)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', -99, -3)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', -8, -3)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', -7, -3)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', 3, -4)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', -8, -2)
+        self.checkequal(Kweli, 'hello', 'endswith', 'lo', -2)
+        self.checkequal(Uongo, 'hello', 'endswith', 'he', -2)
+        self.checkequal(Kweli, 'hello', 'endswith', '', -3, -3)
+        self.checkequal(Uongo, 'hello', 'endswith', 'hello world', -10, -2)
+        self.checkequal(Uongo, 'helloworld', 'endswith', 'worl', -6)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'worl', -5, -1)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'worl', -5, 9)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'world', -7, 12)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'lowo', -99, -3)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'lowo', -8, -3)
+        self.checkequal(Kweli, 'helloworld', 'endswith', 'lowo', -7, -3)
+        self.checkequal(Uongo, 'helloworld', 'endswith', 'lowo', 3, -4)
+        self.checkequal(Uongo, 'helloworld', 'endswith', 'lowo', -8, -2)
 
-        self.checkraises(TypeError, 'hello', 'endswith')
-        self.checkraises(TypeError, 'hello', 'endswith', 42)
+        self.checkashirias(TypeError, 'hello', 'endswith')
+        self.checkashirias(TypeError, 'hello', 'endswith', 42)
 
         # test tuple arguments
-        self.checkequal(False, 'hello', 'endswith', ('he', 'ha'))
-        self.checkequal(True, 'hello', 'endswith', ('lo', 'llo'))
-        self.checkequal(True, 'hello', 'endswith', ('hellox', 'hello'))
-        self.checkequal(False, 'hello', 'endswith', ())
-        self.checkequal(True, 'helloworld', 'endswith', ('hellowo',
+        self.checkequal(Uongo, 'hello', 'endswith', ('he', 'ha'))
+        self.checkequal(Kweli, 'hello', 'endswith', ('lo', 'llo'))
+        self.checkequal(Kweli, 'hello', 'endswith', ('hellox', 'hello'))
+        self.checkequal(Uongo, 'hello', 'endswith', ())
+        self.checkequal(Kweli, 'helloworld', 'endswith', ('hellowo',
                                                            'rld', 'lowo'), 3)
-        self.checkequal(False, 'helloworld', 'endswith', ('hellowo', 'ello',
+        self.checkequal(Uongo, 'helloworld', 'endswith', ('hellowo', 'ello',
                                                             'rld'), 3, -1)
-        self.checkequal(True, 'hello', 'endswith', ('hell', 'ell'), 0, -1)
-        self.checkequal(False, 'hello', 'endswith', ('he', 'hel'), 0, 1)
-        self.checkequal(True, 'hello', 'endswith', ('he', 'hell'), 0, 4)
+        self.checkequal(Kweli, 'hello', 'endswith', ('hell', 'ell'), 0, -1)
+        self.checkequal(Uongo, 'hello', 'endswith', ('he', 'hel'), 0, 1)
+        self.checkequal(Kweli, 'hello', 'endswith', ('he', 'hell'), 0, 4)
 
-        self.checkraises(TypeError, 'hello', 'endswith', (42,))
+        self.checkashirias(TypeError, 'hello', 'endswith', (42,))
 
     eleza test___contains__(self):
-        self.checkequal(True, '', '__contains__', '')
-        self.checkequal(True, 'abc', '__contains__', '')
-        self.checkequal(False, 'abc', '__contains__', '\0')
-        self.checkequal(True, '\0abc', '__contains__', '\0')
-        self.checkequal(True, 'abc\0', '__contains__', '\0')
-        self.checkequal(True, '\0abc', '__contains__', 'a')
-        self.checkequal(True, 'asdf', '__contains__', 'asdf')
-        self.checkequal(False, 'asd', '__contains__', 'asdf')
-        self.checkequal(False, '', '__contains__', 'asdf')
+        self.checkequal(Kweli, '', '__contains__', '')
+        self.checkequal(Kweli, 'abc', '__contains__', '')
+        self.checkequal(Uongo, 'abc', '__contains__', '\0')
+        self.checkequal(Kweli, '\0abc', '__contains__', '\0')
+        self.checkequal(Kweli, 'abc\0', '__contains__', '\0')
+        self.checkequal(Kweli, '\0abc', '__contains__', 'a')
+        self.checkequal(Kweli, 'asdf', '__contains__', 'asdf')
+        self.checkequal(Uongo, 'asd', '__contains__', 'asdf')
+        self.checkequal(Uongo, '', '__contains__', 'asdf')
 
     eleza test_subscript(self):
         self.checkequal('a', 'abc', '__getitem__', 0)
@@ -1117,7 +1117,7 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal('a', 'abc', '__getitem__', slice(0, 1))
         self.checkequal('', 'abc', '__getitem__', slice(0, 0))
 
-        self.checkraises(TypeError, 'abc', '__getitem__', 'def')
+        self.checkashirias(TypeError, 'abc', '__getitem__', 'def')
 
     eleza test_slice(self):
         self.checkequal('abc', 'abc', '__getitem__', slice(0, 1000))
@@ -1130,16 +1130,16 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal('', 'abc', '__getitem__', slice(2000, 1000))
         self.checkequal('', 'abc', '__getitem__', slice(2, 1))
 
-        self.checkraises(TypeError, 'abc', '__getitem__', 'def')
+        self.checkashirias(TypeError, 'abc', '__getitem__', 'def')
 
     eleza test_extended_getslice(self):
         # Test extended slicing by comparing with list slicing.
         s = string.ascii_letters + string.digits
-        indices = (0, None, 1, 3, 41, sys.maxsize, -1, -2, -37)
-        for start in indices:
-            for stop in indices:
+        indices = (0, Tupu, 1, 3, 41, sys.maxsize, -1, -2, -37)
+        kila start kwenye indices:
+            kila stop kwenye indices:
                 # Skip step 0 (invalid)
-                for step in indices[1:]:
+                kila step kwenye indices[1:]:
                     L = list(s)[start:stop:step]
                     self.checkequal("".join(L), s, '__getitem__',
                                     slice(start, stop, step))
@@ -1149,16 +1149,16 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal('', 'abc', '__mul__', 0)
         self.checkequal('abc', 'abc', '__mul__', 1)
         self.checkequal('abcabcabc', 'abc', '__mul__', 3)
-        self.checkraises(TypeError, 'abc', '__mul__')
-        self.checkraises(TypeError, 'abc', '__mul__', '')
-        # XXX: on a 64-bit system, this doesn't raise an overflow error,
-        # but either raises a MemoryError, or succeeds (ikiwa you have 54TiB)
-        #self.checkraises(OverflowError, 10000*'abc', '__mul__', 2000000000)
+        self.checkashirias(TypeError, 'abc', '__mul__')
+        self.checkashirias(TypeError, 'abc', '__mul__', '')
+        # XXX: on a 64-bit system, this doesn't ashiria an overflow error,
+        # but either ashirias a MemoryError, ama succeeds (ikiwa you have 54TiB)
+        #self.checkashirias(OverflowError, 10000*'abc', '__mul__', 2000000000)
 
     eleza test_join(self):
         # join now works with any sequence type
         # moved here, because the argument order is
-        # different in string.join
+        # different kwenye string.join
         self.checkequal('a b c d', ' ', 'join', ['a', 'b', 'c', 'd'])
         self.checkequal('abcd', '', 'join', ('a', 'b', 'c', 'd'))
         self.checkequal('bd', '', 'join', ('', 'b', '', 'd'))
@@ -1168,7 +1168,7 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal('z', 'a', 'join', UserList(['z']))
         self.checkequal('a.b.c', '.', 'join', ['a', 'b', 'c'])
         self.assertRaises(TypeError, '.'.join, ['a', 'b', 3])
-        for i in [5, 25, 125]:
+        kila i kwenye [5, 25, 125]:
             self.checkequal(((('a' * i) + '-') * i)[:-1], '-', 'join',
                  ['a' * i] * i)
             self.checkequal(((('a' * i) + '-') * i)[:-1], '-', 'join',
@@ -1177,19 +1177,19 @@ kundi MixinStrUnicodeUserStringTest:
         #self.checkequal(str(BadSeq1()), ' ', 'join', BadSeq1())
         self.checkequal('a b c', ' ', 'join', BadSeq2())
 
-        self.checkraises(TypeError, ' ', 'join')
-        self.checkraises(TypeError, ' ', 'join', None)
-        self.checkraises(TypeError, ' ', 'join', 7)
-        self.checkraises(TypeError, ' ', 'join', [1, 2, bytes()])
-        try:
+        self.checkashirias(TypeError, ' ', 'join')
+        self.checkashirias(TypeError, ' ', 'join', Tupu)
+        self.checkashirias(TypeError, ' ', 'join', 7)
+        self.checkashirias(TypeError, ' ', 'join', [1, 2, bytes()])
+        jaribu:
             eleza f():
-                yield 4 + ""
+                tuma 4 + ""
             self.fixtype(' ').join(f())
-        except TypeError as e:
-            ikiwa '+' not in str(e):
+        tatizo TypeError kama e:
+            ikiwa '+' haiko kwenye str(e):
                 self.fail('join() ate exception message')
-        else:
-            self.fail('exception not raised')
+        isipokua:
+            self.fail('exception sio ashiriad')
 
     eleza test_formatting(self):
         self.checkequal('+hello+', '+%s+', '__mod__', 'hello')
@@ -1201,9 +1201,9 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal('10', "%d", '__mod__', 10)
         self.checkequal('\x7f', "%c", '__mod__', 0x7f)
 
-        for ordinal in (-100, 0x200000):
-            # unicode raises ValueError, str raises OverflowError
-            self.checkraises((ValueError, OverflowError), '%c', '__mod__', ordinal)
+        kila ordinal kwenye (-100, 0x200000):
+            # unicode ashirias ValueError, str ashirias OverflowError
+            self.checkashirias((ValueError, OverflowError), '%c', '__mod__', ordinal)
 
         longvalue = sys.maxsize + 10
         slongvalue = str(longvalue)
@@ -1214,82 +1214,82 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal('0042.00', '%07.2f', '__mod__', 42)
         self.checkequal('0042.00', '%07.2F', '__mod__', 42)
 
-        self.checkraises(TypeError, 'abc', '__mod__')
-        self.checkraises(TypeError, '%(foo)s', '__mod__', 42)
-        self.checkraises(TypeError, '%s%s', '__mod__', (42,))
-        self.checkraises(TypeError, '%c', '__mod__', (None,))
-        self.checkraises(ValueError, '%(foo', '__mod__', {})
-        self.checkraises(TypeError, '%(foo)s %(bar)s', '__mod__', ('foo', 42))
-        self.checkraises(TypeError, '%d', '__mod__', "42") # not numeric
-        self.checkraises(TypeError, '%d', '__mod__', (42+0j)) # no int conversion provided
+        self.checkashirias(TypeError, 'abc', '__mod__')
+        self.checkashirias(TypeError, '%(foo)s', '__mod__', 42)
+        self.checkashirias(TypeError, '%s%s', '__mod__', (42,))
+        self.checkashirias(TypeError, '%c', '__mod__', (Tupu,))
+        self.checkashirias(ValueError, '%(foo', '__mod__', {})
+        self.checkashirias(TypeError, '%(foo)s %(bar)s', '__mod__', ('foo', 42))
+        self.checkashirias(TypeError, '%d', '__mod__', "42") # sio numeric
+        self.checkashirias(TypeError, '%d', '__mod__', (42+0j)) # no int conversion provided
 
         # argument names with properly nested brackets are supported
         self.checkequal('bar', '%((foo))s', '__mod__', {'(foo)': 'bar'})
 
-        # 100 is a magic number in PyUnicode_Format, this forces a resize
+        # 100 ni a magic number kwenye PyUnicode_Format, this forces a resize
         self.checkequal(103*'a'+'x', '%sx', '__mod__', 103*'a')
 
-        self.checkraises(TypeError, '%*s', '__mod__', ('foo', 'bar'))
-        self.checkraises(TypeError, '%10.*f', '__mod__', ('foo', 42.))
-        self.checkraises(ValueError, '%10', '__mod__', (42,))
+        self.checkashirias(TypeError, '%*s', '__mod__', ('foo', 'bar'))
+        self.checkashirias(TypeError, '%10.*f', '__mod__', ('foo', 42.))
+        self.checkashirias(ValueError, '%10', '__mod__', (42,))
 
-        # Outrageously large width or precision should raise ValueError.
-        self.checkraises(ValueError, '%%%df' % (2**64), '__mod__', (3.2))
-        self.checkraises(ValueError, '%%.%df' % (2**64), '__mod__', (3.2))
-        self.checkraises(OverflowError, '%*s', '__mod__',
+        # Outrageously large width ama precision should ashiria ValueError.
+        self.checkashirias(ValueError, '%%%df' % (2**64), '__mod__', (3.2))
+        self.checkashirias(ValueError, '%%.%df' % (2**64), '__mod__', (3.2))
+        self.checkashirias(OverflowError, '%*s', '__mod__',
                          (sys.maxsize + 1, ''))
-        self.checkraises(OverflowError, '%.*f', '__mod__',
+        self.checkashirias(OverflowError, '%.*f', '__mod__',
                          (sys.maxsize + 1, 1. / 7))
 
-        kundi X(object): pass
-        self.checkraises(TypeError, 'abc', '__mod__', X())
+        kundi X(object): pita
+        self.checkashirias(TypeError, 'abc', '__mod__', X())
 
     @support.cpython_only
     eleza test_formatting_c_limits(self):
         kutoka _testcapi agiza PY_SSIZE_T_MAX, INT_MAX, UINT_MAX
         SIZE_MAX = (1 << (PY_SSIZE_T_MAX.bit_length() + 1)) - 1
-        self.checkraises(OverflowError, '%*s', '__mod__',
+        self.checkashirias(OverflowError, '%*s', '__mod__',
                          (PY_SSIZE_T_MAX + 1, ''))
-        self.checkraises(OverflowError, '%.*f', '__mod__',
+        self.checkashirias(OverflowError, '%.*f', '__mod__',
                          (INT_MAX + 1, 1. / 7))
         # Issue 15989
-        self.checkraises(OverflowError, '%*s', '__mod__',
+        self.checkashirias(OverflowError, '%*s', '__mod__',
                          (SIZE_MAX + 1, ''))
-        self.checkraises(OverflowError, '%.*f', '__mod__',
+        self.checkashirias(OverflowError, '%.*f', '__mod__',
                          (UINT_MAX + 1, 1. / 7))
 
     eleza test_floatformatting(self):
         # float formatting
-        for prec in range(100):
+        kila prec kwenye range(100):
             format = '%%.%if' % prec
             value = 0.01
-            for x in range(60):
+            kila x kwenye range(60):
                 value = value * 3.14159265359 / 3.0 * 10.0
                 self.checkcall(format, "__mod__", value)
 
     eleza test_inplace_rewrites(self):
-        # Check that strings don't copy and modify cached single-character strings
+        # Check that strings don't copy na modify cached single-character strings
         self.checkequal('a', 'A', 'lower')
-        self.checkequal(True, 'A', 'isupper')
+        self.checkequal(Kweli, 'A', 'isupper')
         self.checkequal('A', 'a', 'upper')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Kweli, 'a', 'islower')
 
         self.checkequal('a', 'A', 'replace', 'A', 'a')
-        self.checkequal(True, 'A', 'isupper')
+        self.checkequal(Kweli, 'A', 'isupper')
 
         self.checkequal('A', 'a', 'capitalize')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Kweli, 'a', 'islower')
 
         self.checkequal('A', 'a', 'swapcase')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Kweli, 'a', 'islower')
 
         self.checkequal('A', 'a', 'title')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Kweli, 'a', 'islower')
 
     eleza test_partition(self):
 
-        self.checkequal(('this is the par', 'ti', 'tion method'),
-            'this is the partition method', 'partition', 'ti')
+        self.checkequal(('this ni the par', 'ti', 'tion method'),
+            'this ni the partition method', 'partition', 'ti')
 
         # kutoka raymond's original specification
         S = 'http://www.python.org'
@@ -1298,13 +1298,13 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal(('', 'http://', 'www.python.org'), S, 'partition', 'http://')
         self.checkequal(('http://www.python.', 'org', ''), S, 'partition', 'org')
 
-        self.checkraises(ValueError, S, 'partition', '')
-        self.checkraises(TypeError, S, 'partition', None)
+        self.checkashirias(ValueError, S, 'partition', '')
+        self.checkashirias(TypeError, S, 'partition', Tupu)
 
     eleza test_rpartition(self):
 
-        self.checkequal(('this is the rparti', 'ti', 'on method'),
-            'this is the rpartition method', 'rpartition', 'ti')
+        self.checkequal(('this ni the rparti', 'ti', 'on method'),
+            'this ni the rpartition method', 'rpartition', 'ti')
 
         # kutoka raymond's original specification
         S = 'http://www.python.org'
@@ -1313,65 +1313,65 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal(('', 'http://', 'www.python.org'), S, 'rpartition', 'http://')
         self.checkequal(('http://www.python.', 'org', ''), S, 'rpartition', 'org')
 
-        self.checkraises(ValueError, S, 'rpartition', '')
-        self.checkraises(TypeError, S, 'rpartition', None)
+        self.checkashirias(ValueError, S, 'rpartition', '')
+        self.checkashirias(TypeError, S, 'rpartition', Tupu)
 
     eleza test_none_arguments(self):
         # issue 11828
         s = 'hello'
-        self.checkequal(2, s, 'find', 'l', None)
-        self.checkequal(3, s, 'find', 'l', -2, None)
-        self.checkequal(2, s, 'find', 'l', None, -2)
-        self.checkequal(0, s, 'find', 'h', None, None)
+        self.checkequal(2, s, 'find', 'l', Tupu)
+        self.checkequal(3, s, 'find', 'l', -2, Tupu)
+        self.checkequal(2, s, 'find', 'l', Tupu, -2)
+        self.checkequal(0, s, 'find', 'h', Tupu, Tupu)
 
-        self.checkequal(3, s, 'rfind', 'l', None)
-        self.checkequal(3, s, 'rfind', 'l', -2, None)
-        self.checkequal(2, s, 'rfind', 'l', None, -2)
-        self.checkequal(0, s, 'rfind', 'h', None, None)
+        self.checkequal(3, s, 'rfind', 'l', Tupu)
+        self.checkequal(3, s, 'rfind', 'l', -2, Tupu)
+        self.checkequal(2, s, 'rfind', 'l', Tupu, -2)
+        self.checkequal(0, s, 'rfind', 'h', Tupu, Tupu)
 
-        self.checkequal(2, s, 'index', 'l', None)
-        self.checkequal(3, s, 'index', 'l', -2, None)
-        self.checkequal(2, s, 'index', 'l', None, -2)
-        self.checkequal(0, s, 'index', 'h', None, None)
+        self.checkequal(2, s, 'index', 'l', Tupu)
+        self.checkequal(3, s, 'index', 'l', -2, Tupu)
+        self.checkequal(2, s, 'index', 'l', Tupu, -2)
+        self.checkequal(0, s, 'index', 'h', Tupu, Tupu)
 
-        self.checkequal(3, s, 'rindex', 'l', None)
-        self.checkequal(3, s, 'rindex', 'l', -2, None)
-        self.checkequal(2, s, 'rindex', 'l', None, -2)
-        self.checkequal(0, s, 'rindex', 'h', None, None)
+        self.checkequal(3, s, 'rindex', 'l', Tupu)
+        self.checkequal(3, s, 'rindex', 'l', -2, Tupu)
+        self.checkequal(2, s, 'rindex', 'l', Tupu, -2)
+        self.checkequal(0, s, 'rindex', 'h', Tupu, Tupu)
 
-        self.checkequal(2, s, 'count', 'l', None)
-        self.checkequal(1, s, 'count', 'l', -2, None)
-        self.checkequal(1, s, 'count', 'l', None, -2)
-        self.checkequal(0, s, 'count', 'x', None, None)
+        self.checkequal(2, s, 'count', 'l', Tupu)
+        self.checkequal(1, s, 'count', 'l', -2, Tupu)
+        self.checkequal(1, s, 'count', 'l', Tupu, -2)
+        self.checkequal(0, s, 'count', 'x', Tupu, Tupu)
 
-        self.checkequal(True, s, 'endswith', 'o', None)
-        self.checkequal(True, s, 'endswith', 'lo', -2, None)
-        self.checkequal(True, s, 'endswith', 'l', None, -2)
-        self.checkequal(False, s, 'endswith', 'x', None, None)
+        self.checkequal(Kweli, s, 'endswith', 'o', Tupu)
+        self.checkequal(Kweli, s, 'endswith', 'lo', -2, Tupu)
+        self.checkequal(Kweli, s, 'endswith', 'l', Tupu, -2)
+        self.checkequal(Uongo, s, 'endswith', 'x', Tupu, Tupu)
 
-        self.checkequal(True, s, 'startswith', 'h', None)
-        self.checkequal(True, s, 'startswith', 'l', -2, None)
-        self.checkequal(True, s, 'startswith', 'h', None, -2)
-        self.checkequal(False, s, 'startswith', 'x', None, None)
+        self.checkequal(Kweli, s, 'startswith', 'h', Tupu)
+        self.checkequal(Kweli, s, 'startswith', 'l', -2, Tupu)
+        self.checkequal(Kweli, s, 'startswith', 'h', Tupu, -2)
+        self.checkequal(Uongo, s, 'startswith', 'x', Tupu, Tupu)
 
-    eleza test_find_etc_raise_correct_error_messages(self):
+    eleza test_find_etc_ashiria_correct_error_messages(self):
         # issue 11828
         s = 'hello'
         x = 'x'
         self.assertRaisesRegex(TypeError, r'^find\(', s.find,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'^rfind\(', s.rfind,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'^index\(', s.index,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'^rindex\(', s.rindex,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'^count\(', s.count,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'^startswith\(', s.startswith,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
         self.assertRaisesRegex(TypeError, r'^endswith\(', s.endswith,
-                                x, None, None, None)
+                                x, Tupu, Tupu, Tupu)
 
         # issue #15534
         self.checkequal(10, "...\u043c......<", "find", "<")
@@ -1381,13 +1381,13 @@ kundi MixinStrUnicodeTest:
     # Additional tests that only work with str.
 
     eleza test_bug1001011(self):
-        # Make sure join returns a NEW object for single item sequences
+        # Make sure join rudishas a NEW object kila single item sequences
         # involving a subclass.
-        # Make sure that it is of the appropriate type.
-        # Check the optimisation still occurs for standard objects.
+        # Make sure that it ni of the appropriate type.
+        # Check the optimisation still occurs kila standard objects.
         t = self.type2test
         kundi subclass(t):
-            pass
+            pita
         s1 = subclass("abcd")
         s2 = t().join([s1])
         self.assertIsNot(s1, s2)

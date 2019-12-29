@@ -1,4 +1,4 @@
-"""Fixer for it.next() -> next(it), per PEP 3114."""
+"""Fixer kila it.next() -> next(it), per PEP 3114."""
 # Author: Collin Winter
 
 # Things that currently aren't covered:
@@ -7,7 +7,7 @@
 
 # Local agizas
 kutoka ..pgen2 agiza token
-kutoka ..pygram agiza python_symbols as syms
+kutoka ..pygram agiza python_symbols kama syms
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, Call, find_binding
 
@@ -15,11 +15,11 @@ bind_warning = "Calls to builtin next() possibly shadowed by global binding"
 
 
 kundi FixNext(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
     power< base=any+ trailer< '.' attr='next' > trailer< '(' ')' > >
     |
-    power< head=any+ trailer< '.' attr='next' > not trailer< '(' ')' > >
+    power< head=any+ trailer< '.' attr='next' > sio trailer< '(' ')' > >
     |
     classdef< 'class' any+ ':'
               suite< any*
@@ -39,9 +39,9 @@ kundi FixNext(fixer_base.BaseFix):
         n = find_binding('next', tree)
         ikiwa n:
             self.warning(n, bind_warning)
-            self.shadowed_next = True
-        else:
-            self.shadowed_next = False
+            self.shadowed_next = Kweli
+        isipokua:
+            self.shadowed_next = Uongo
 
     eleza transform(self, node, results):
         assert results
@@ -53,8 +53,8 @@ kundi FixNext(fixer_base.BaseFix):
         ikiwa base:
             ikiwa self.shadowed_next:
                 attr.replace(Name("__next__", prefix=attr.prefix))
-            else:
-                base = [n.clone() for n in base]
+            isipokua:
+                base = [n.clone() kila n kwenye base]
                 base[0].prefix = ""
                 node.replace(Call(Name("next", prefix=node.prefix), base))
         elikiwa name:
@@ -62,42 +62,42 @@ kundi FixNext(fixer_base.BaseFix):
             name.replace(n)
         elikiwa attr:
             # We don't do this transformation ikiwa we're assigning to "x.next".
-            # Unfortunately, it doesn't seem possible to do this in PATTERN,
+            # Unfortunately, it doesn't seem possible to do this kwenye PATTERN,
             #  so it's being done here.
             ikiwa is_assign_target(node):
                 head = results["head"]
-                ikiwa "".join([str(n) for n in head]).strip() == '__builtin__':
+                ikiwa "".join([str(n) kila n kwenye head]).strip() == '__builtin__':
                     self.warning(node, bind_warning)
-                return
+                rudisha
             attr.replace(Name("__next__"))
-        elikiwa "global" in results:
+        elikiwa "global" kwenye results:
             self.warning(node, bind_warning)
-            self.shadowed_next = True
+            self.shadowed_next = Kweli
 
 
-### The following functions help test ikiwa node is part of an assignment
+### The following functions help test ikiwa node ni part of an assignment
 ###  target.
 
 eleza is_assign_target(node):
     assign = find_assign(node)
-    ikiwa assign is None:
-        rudisha False
+    ikiwa assign ni Tupu:
+        rudisha Uongo
 
-    for child in assign.children:
+    kila child kwenye assign.children:
         ikiwa child.type == token.EQUAL:
-            rudisha False
+            rudisha Uongo
         elikiwa is_subtree(child, node):
-            rudisha True
-    rudisha False
+            rudisha Kweli
+    rudisha Uongo
 
 eleza find_assign(node):
     ikiwa node.type == syms.expr_stmt:
         rudisha node
-    ikiwa node.type == syms.simple_stmt or node.parent is None:
-        rudisha None
+    ikiwa node.type == syms.simple_stmt ama node.parent ni Tupu:
+        rudisha Tupu
     rudisha find_assign(node.parent)
 
 eleza is_subtree(root, node):
     ikiwa root == node:
-        rudisha True
-    rudisha any(is_subtree(c, node) for c in root.children)
+        rudisha Kweli
+    rudisha any(is_subtree(c, node) kila c kwenye root.children)

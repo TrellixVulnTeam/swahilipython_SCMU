@@ -52,17 +52,17 @@ kundi LocaleTime(object):
         Order of methods called matters for dependency reasons.
 
         The locale language is set at the offset and then checked again before
-        exiting.  This is to make sure that the attributes were not set with a
+        exiting.  This is to make sure that the attributes were sio set with a
         mix of information kutoka more than one locale.  This would most likely
         happen when using threads where one thread calls a locale-dependent
-        function while another thread changes the locale while the function in
+        function wakati another thread changes the locale wakati the function in
         the other thread is still running.  Proper coding would call for
-        locks to prevent changing the locale while locale-dependent code is
-        running.  The check here is done in case someone does not think about
+        locks to prevent changing the locale wakati locale-dependent code is
+        running.  The check here is done in case someone does sio think about
         doing this.
 
         Only other possible issue is if someone changed the timezone and did
-        not call tz.tzset .  That is an issue for the programmer, though,
+        sio call tz.tzset .  That is an issue for the programmer, though,
         since changing the timezone is worthless without that call.
 
         """
@@ -95,7 +95,7 @@ kundi LocaleTime(object):
     def __calc_am_pm(self):
         # Set self.am_pm by using time.strftime().
 
-        # The magic date (1999,3,17,hour,44,55,2,76,0) is not really that
+        # The magic date (1999,3,17,hour,44,55,2,76,0) ni sio really that
         # magical; just happened to have used it everywhere else where a
         # static date was needed.
         am_pm = []
@@ -142,7 +142,7 @@ kundi LocaleTime(object):
             time_tuple = time.struct_time((1999,1,3,1,1,1,6,3,0))
             if '00' in time.strftime(directive, time_tuple):
                 U_W = '%W'
-            else:
+            isipokua:
                 U_W = '%U'
             date_time[offset] = current_format.replace('11', U_W)
         self.LC_date_time = date_time[0]
@@ -151,18 +151,18 @@ kundi LocaleTime(object):
 
     def __calc_timezone(self):
         # Set self.timezone by using time.tzname.
-        # Do not worry about possibility of time.tzname[0] == time.tzname[1]
+        # Do sio worry about possibility of time.tzname[0] == time.tzname[1]
         # and time.daylight; handle that in strptime.
-        try:
+        jaribu:
             time.tzset()
-        except AttributeError:
+        tatizo AttributeError:
             pass
         self.tzname = time.tzname
         self.daylight = time.daylight
         no_saving = frozenset({"utc", "gmt", self.tzname[0].lower()})
         if self.daylight:
             has_saving = frozenset({self.tzname[1].lower()})
-        else:
+        isipokua:
             has_saving = frozenset()
         self.timezone = (no_saving, has_saving)
 
@@ -178,7 +178,7 @@ kundi TimeRE(dict):
         """
         if locale_time:
             self.locale_time = locale_time
-        else:
+        isipokua:
             self.locale_time = LocaleTime()
         base = super()
         base.__init__({
@@ -228,8 +228,8 @@ kundi TimeRE(dict):
         to_convert = sorted(to_convert, key=len, reverse=True)
         for value in to_convert:
             if value != '':
-                break
-        else:
+                koma
+        isipokua:
             return ''
         regex = '|'.join(re_escape(stuff) for stuff in to_convert)
         regex = '(?P<%s>%s' % (directive, regex)
@@ -250,7 +250,7 @@ kundi TimeRE(dict):
         format = regex_chars.sub(r"\\\1", format)
         whitespace_replacement = re_compile(r'\s+')
         format = whitespace_replacement.sub(r'\\s+', format)
-        while '%' in format:
+        wakati '%' in format:
             directive_index = format.index('%')+1
             processed_format = "%s%s%s" % (processed_format,
                                            format[:directive_index-1],
@@ -277,7 +277,7 @@ def _calc_julian_kutoka_U_or_W(year, week_of_year, day_of_week, week_starts_Mon)
     # If we are dealing with the %U directive (week starts on Sunday), it's
     # easier to just shift the view to Sunday being the first day of the
     # week.
-    if not week_starts_Mon:
+    if sio week_starts_Mon:
         first_weekday = (first_weekday + 1) % 7
         day_of_week = (day_of_week + 1) % 7
     # Need to watch out for a week 0 (when the first day of the year is not
@@ -285,7 +285,7 @@ def _calc_julian_kutoka_U_or_W(year, week_of_year, day_of_week, week_starts_Mon)
     week_0_length = (7 - first_weekday) % 7
     if week_of_year == 0:
         return 1 + day_of_week - first_weekday
-    else:
+    isipokua:
         days_to_week = week_0_length + (7 * (week_of_year - 1))
         return 1 + days_to_week + day_of_week
 
@@ -312,8 +312,8 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     format string."""
 
     for index, arg in enumerate([data_string, format]):
-        if not isinstance(arg, str):
-            msg = "strptime() argument {} must be str, not {}"
+        if sio isinstance(arg, str):
+            msg = "strptime() argument {} must be str, sio {}"
             raise TypeError(msg.format(index, type(arg)))
 
     global _TimeRE_cache, _regex_cache
@@ -328,25 +328,25 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
         if len(_regex_cache) > _CACHE_MAX_SIZE:
             _regex_cache.clear()
         format_regex = _regex_cache.get(format)
-        if not format_regex:
-            try:
+        if sio format_regex:
+            jaribu:
                 format_regex = _TimeRE_cache.compile(format)
             # KeyError raised when a bad format is found; can be specified as
             # \\, in which case it was a stray % but with a space after it
-            except KeyError as err:
+            tatizo KeyError as err:
                 bad_directive = err.args[0]
                 if bad_directive == "\\":
                     bad_directive = "%"
-                del err
+                toa err
                 raise ValueError("'%s' is a bad directive in format '%s'" %
                                     (bad_directive, format)) kutoka None
             # IndexError only occurs when the format string is "%"
-            except IndexError:
+            tatizo IndexError:
                 raise ValueError("stray %% in format '%s'" % format) kutoka None
             _regex_cache[format] = format_regex
     found = format_regex.match(data_string)
-    if not found:
-        raise ValueError("time data %r does not match format %r" %
+    if sio found:
+        raise ValueError("time data %r does sio match format %r" %
                          (data_string, format))
     if len(data_string) != found.end():
         raise ValueError("unconverted data remains: %s" %
@@ -358,7 +358,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     tz = -1
     gmtoff = None
     gmtoff_fraction = 0
-    # Default to -1 to signify that values not known; not critical to have,
+    # Default to -1 to signify that values sio known; sio critical to have,
     # though
     iso_week = week_of_year = None
     week_of_year_start = None
@@ -367,7 +367,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     weekday = julian = None
     found_dict = found.groupdict()
     for group_key in found_dict.keys():
-        # Directives not explicitly handled below:
+        # Directives sio explicitly handled below:
         #   c, x, X
         #      handled by making out of other directives
         #   U, W
@@ -379,7 +379,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             #[69,99] is in the century 1900
             if year <= 68:
                 year += 2000
-            else:
+            isipokua:
                 year += 1900
         lasivyo group_key == 'Y':
             year = int(found_dict['Y'])
@@ -428,7 +428,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             weekday = int(found_dict['w'])
             if weekday == 0:
                 weekday = 6
-            else:
+            isipokua:
                 weekday -= 1
         lasivyo group_key == 'u':
             weekday = int(found_dict['u'])
@@ -440,7 +440,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             if group_key == 'U':
                 # U starts week on Sunday.
                 week_of_year_start = 6
-            else:
+            isipokua:
                 # W starts week on Monday.
                 week_of_year_start = 0
         lasivyo group_key == 'V':
@@ -449,7 +449,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             z = found_dict['z']
             if z == 'Z':
                 gmtoff = 0
-            else:
+            isipokua:
                 if z[3] == ':':
                     z = z[:3] + z[4:]
                     if len(z) > 5:
@@ -478,28 +478,28 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                     # same and yet time.daylight is true; too ambiguous to
                     # be able to tell what timezone has daylight savings
                     if (time.tzname[0] == time.tzname[1] and
-                       time.daylight and found_zone not in ("utc", "gmt")):
-                        break
-                    else:
+                       time.daylight and found_zone haiko kwenye ("utc", "gmt")):
+                        koma
+                    isipokua:
                         tz = value
-                        break
+                        koma
     # Deal with the cases where ambiguities arize
     # don't assume default values for ISO week/year
-    if year is None and iso_year is not None:
+    if year is None and iso_year ni sio None:
         if iso_week is None or weekday is None:
             raise ValueError("ISO year directive '%G' must be used with "
                              "the ISO week directive '%V' and a weekday "
                              "directive ('%A', '%a', '%w', or '%u').")
-        if julian is not None:
-            raise ValueError("Day of the year directive '%j' is not "
+        if julian ni sio None:
+            raise ValueError("Day of the year directive '%j' ni sio "
                              "compatible with ISO year directive '%G'. "
                              "Use '%Y' instead.")
-    lasivyo week_of_year is None and iso_week is not None:
+    lasivyo week_of_year is None and iso_week ni sio None:
         if weekday is None:
             raise ValueError("ISO week directive '%V' must be used with "
                              "the ISO year directive '%G' and a weekday "
                              "directive ('%A', '%a', '%w', or '%u').")
-        else:
+        isipokua:
             raise ValueError("ISO week directive '%V' is incompatible with "
                              "the year directive '%Y'. Use the ISO year '%G' "
                              "instead.")
@@ -514,14 +514,14 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
 
     # If we know the week of the year and what day of that week, we can figure
     # out the Julian day of the year.
-    if julian is None and weekday is not None:
-        if week_of_year is not None:
+    if julian is None and weekday ni sio None:
+        if week_of_year ni sio None:
             week_starts_Mon = True if week_of_year_start == 0 else False
             julian = _calc_julian_kutoka_U_or_W(year, week_of_year, weekday,
                                                 week_starts_Mon)
-        lasivyo iso_year is not None and iso_week is not None:
+        lasivyo iso_year ni sio None and iso_week ni sio None:
             year, julian = _calc_julian_kutoka_V(iso_year, iso_week, weekday + 1)
-        if julian is not None and julian <= 0:
+        if julian ni sio None and julian <= 0:
             year -= 1
             yday = 366 if calendar.isleap(year) else 365
             julian += yday
@@ -530,10 +530,10 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
         # Cannot pre-calculate datetime_date() since can change in Julian
         # calculation and thus could have different value for the day of
         # the week calculation.
-        # Need to add 1 to result since first day of the year is 1, not 0.
+        # Need to add 1 to result since first day of the year is 1, sio 0.
         julian = datetime_date(year, month, day).toordinal() - \
                   datetime_date(year, 1, 1).toordinal() + 1
-    else:  # Assume that if they bothered to include Julian day (or if it was
+    isipokua:  # Assume that if they bothered to include Julian day (or if it was
            # calculated above with year/week/weekday) it will be accurate.
         datetime_result = datetime_date.kutokaordinal(
                             (julian - 1) +
@@ -568,11 +568,11 @@ def _strptime_datetime(cls, data_string, format="%a %b %d %H:%M:%S %Y"):
     tt, fraction, gmtoff_fraction = _strptime(data_string, format)
     tzname, gmtoff = tt[-2:]
     args = tt[:6] + (fraction,)
-    if gmtoff is not None:
+    if gmtoff ni sio None:
         tzdelta = datetime_timedelta(seconds=gmtoff, microseconds=gmtoff_fraction)
         if tzname:
             tz = datetime_timezone(tzdelta, tzname)
-        else:
+        isipokua:
             tz = datetime_timezone(tzdelta)
         args += (tz,)
 

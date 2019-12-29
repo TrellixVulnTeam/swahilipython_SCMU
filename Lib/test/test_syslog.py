@@ -1,11 +1,11 @@
 
 kutoka test agiza support
-syslog = support.import_module("syslog") #skip ikiwa not supported
+syslog = support.import_module("syslog") #skip ikiwa sio supported
 agiza unittest
 
 # XXX(nnorwitz): This test sucks.  I don't know of a platform independent way
 # to verify that the messages were really logged.
-# The only purpose of this test is to verify the code doesn't crash or leak.
+# The only purpose of this test ni to verify the code doesn't crash ama leak.
 
 kundi Test(unittest.TestCase):
 

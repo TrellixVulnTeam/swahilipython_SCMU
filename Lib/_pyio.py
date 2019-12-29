@@ -12,7 +12,7 @@ agiza sys
 kutoka _thread agiza allocate_lock as Lock
 if sys.platform in {'win32', 'cygwin'}:
     kutoka msvcrt agiza setmode as _setmode
-else:
+isipokua:
     _setmode = None
 
 agiza io
@@ -55,7 +55,7 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
     exists), 'x' for exclusive creation of a new file, and 'a' for appending
     (which on some Unix systems, means that all writes append to the end of the
     file regardless of the current seek position). In text mode, if encoding is
-    not specified the encoding used is platform dependent. (For reading and
+    sio specified the encoding used is platform dependent. (For reading and
     writing raw bytes use binary mode and leave encoding unspecified.) The
     available modes are:
 
@@ -110,7 +110,7 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
     passed.  See the codecs module for the list of supported encodings.
 
     errors is an optional string that specifies how encoding errors are to
-    be handled---this argument should not be used in binary mode. Pass
+    be handled---this argument should sio be used in binary mode. Pass
     'strict' to raise a ValueError exception if there is an encoding error
     (the default of None has the same effect), or pass 'ignore' to ignore
     errors. (Note that ignoring encoding errors can lead to data loss.)
@@ -136,7 +136,7 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
       the given string.
 
     closedfd is a bool. If closefd is False, the underlying file descriptor will
-    be kept open when the file is closed. This does not work when a file name is
+    be kept open when the file is closed. This does sio work when a file name is
     given and must be True in that case.
 
     The newly created file is non-inheritable.
@@ -161,17 +161,17 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
     opened in a text mode, and for bytes a BytesIO can be used like a file
     opened in a binary mode.
     """
-    if not isinstance(file, int):
+    if sio isinstance(file, int):
         file = os.fspath(file)
-    if not isinstance(file, (str, bytes, int)):
+    if sio isinstance(file, (str, bytes, int)):
         raise TypeError("invalid file: %r" % file)
-    if not isinstance(mode, str):
+    if sio isinstance(mode, str):
         raise TypeError("invalid mode: %r" % mode)
-    if not isinstance(buffering, int):
+    if sio isinstance(buffering, int):
         raise TypeError("invalid buffering: %r" % buffering)
-    if encoding is not None and not isinstance(encoding, str):
+    if encoding ni sio None and sio isinstance(encoding, str):
         raise TypeError("invalid encoding: %r" % encoding)
-    if errors is not None and not isinstance(errors, str):
+    if errors ni sio None and sio isinstance(errors, str):
         raise TypeError("invalid errors: %r" % errors)
     modes = set(mode)
     if modes - set("axrwb+tU") or len(mode) > len(modes):
@@ -194,13 +194,13 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
         raise ValueError("can't have text and binary mode at once")
     if creating + reading + writing + appending > 1:
         raise ValueError("can't have read/write/append mode at once")
-    if not (creating or reading or writing or appending):
+    if sio (creating or reading or writing or appending):
         raise ValueError("must have exactly one of read/write/append mode")
-    if binary and encoding is not None:
+    if binary and encoding ni sio None:
         raise ValueError("binary mode doesn't take an encoding argument")
-    if binary and errors is not None:
+    if binary and errors ni sio None:
         raise ValueError("binary mode doesn't take an errors argument")
-    if binary and newline is not None:
+    if binary and newline ni sio None:
         raise ValueError("binary mode doesn't take a newline argument")
     if binary and buffering == 1:
         agiza warnings
@@ -215,18 +215,18 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
                  (updating and "+" or ""),
                  closefd, opener=opener)
     result = raw
-    try:
+    jaribu:
         line_buffering = False
         if buffering == 1 or buffering < 0 and raw.isatty():
             buffering = -1
             line_buffering = True
         if buffering < 0:
             buffering = DEFAULT_BUFFER_SIZE
-            try:
+            jaribu:
                 bs = os.fstat(raw.fileno()).st_blksize
-            except (OSError, AttributeError):
+            tatizo (OSError, AttributeError):
                 pass
-            else:
+            isipokua:
                 if bs > 1:
                     buffering = bs
         if buffering < 0:
@@ -241,7 +241,7 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
             buffer = BufferedWriter(raw, buffering)
         lasivyo reading:
             buffer = BufferedReader(raw, buffering)
-        else:
+        isipokua:
             raise ValueError("unknown mode: %r" % mode)
         result = buffer
         if binary:
@@ -255,7 +255,7 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
         raise
 
 # Define a default pure-Python implementation for open_code()
-# that does not allow hooks. Warn on first use. Defined for tests.
+# that does sio allow hooks. Warn on first use. Defined for tests.
 def _open_code_with_warning(path):
     """Opens the provided file with mode ``'rb'``. This function
     should be used when the intent is to treat the contents as
@@ -265,16 +265,16 @@ def _open_code_with_warning(path):
 
     When supported by the runtime, this function can be hooked
     in order to allow embedders more control over code files.
-    This functionality is not supported on the current runtime.
+    This functionality ni sio supported on the current runtime.
     """
     agiza warnings
-    warnings.warn("_pyio.open_code() may not be using hooks",
+    warnings.warn("_pyio.open_code() may sio be using hooks",
                   RuntimeWarning, 2)
     return open(path, "rb")
 
-try:
+jaribu:
     open_code = io.open_code
-except AttributeError:
+tatizo AttributeError:
     open_code = _open_code_with_warning
 
 
@@ -303,9 +303,9 @@ kundi OpenWrapper:
 
 # In normal operation, both `UnsupportedOperation`s should be bound to the
 # same object.
-try:
+jaribu:
     UnsupportedOperation = io.UnsupportedOperation
-except AttributeError:
+tatizo AttributeError:
     kundi UnsupportedOperation(OSError, ValueError):
         pass
 
@@ -319,10 +319,10 @@ kundi IOBase(metaclass=abc.ABCMeta):
     derived classes can override selectively; the default implementations
     represent a file that cannot be read, written or seeked.
 
-    Even though IOBase does not declare read or write because
+    Even though IOBase does sio declare read or write because
     their signatures will vary, implementations and clients should
     consider those methods part of the interface. Also, implementations
-    may raise UnsupportedOperation when operations they do not support are
+    may raise UnsupportedOperation when operations they do sio support are
     called.
 
     The basic type used for binary data read kutoka or written to a file is
@@ -347,7 +347,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
 
     def _unsupported(self, name):
         """Internal: raise an OSError exception for unsupported operations."""
-        raise UnsupportedOperation("%s.%s() not supported" %
+        raise UnsupportedOperation("%s.%s() sio supported" %
                                    (self.__class__.__name__, name))
 
     ### Positioning ###
@@ -385,7 +385,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
     def flush(self):
         """Flush write buffers, if applicable.
 
-        This is not implemented for read-only and non-blocking streams.
+        This ni sio implemented for read-only and non-blocking streams.
         """
         self._checkClosed()
         # XXX Should this return the number of bytes written???
@@ -397,17 +397,17 @@ kundi IOBase(metaclass=abc.ABCMeta):
 
         This method has no effect if the file is already closed.
         """
-        if not self.__closed:
-            try:
+        if sio self.__closed:
+            jaribu:
                 self.flush()
-            finally:
+            mwishowe:
                 self.__closed = True
 
     def __del__(self):
         """Destructor.  Calls close()."""
-        try:
+        jaribu:
             closed = self.closed
-        except AttributeError:
+        tatizo AttributeError:
             # If getting closed fails, then the object is probably
             # in an unusable state, so ignore.
             return
@@ -417,13 +417,13 @@ kundi IOBase(metaclass=abc.ABCMeta):
 
         if _IOBASE_EMITS_UNRAISABLE:
             self.close()
-        else:
-            # The try/except block is in case this is called at program
+        isipokua:
+            # The try/tatizo block is in case this is called at program
             # exit time, when it's possible that globals have already been
             # deleted, and then the close() call might fail.  Since
             # there's nothing we can do about such failures and they annoy
             # the end users, we suppress the traceback.
-            try:
+            jaribu:
                 self.close()
             except:
                 pass
@@ -439,10 +439,10 @@ kundi IOBase(metaclass=abc.ABCMeta):
         return False
 
     def _checkSeekable(self, msg=None):
-        """Internal: raise UnsupportedOperation if file is not seekable
+        """Internal: raise UnsupportedOperation if file ni sio seekable
         """
-        if not self.seekable():
-            raise UnsupportedOperation("File or stream is not seekable."
+        if sio self.seekable():
+            raise UnsupportedOperation("File or stream ni sio seekable."
                                        if msg is None else msg)
 
     def readable(self):
@@ -453,10 +453,10 @@ kundi IOBase(metaclass=abc.ABCMeta):
         return False
 
     def _checkReadable(self, msg=None):
-        """Internal: raise UnsupportedOperation if file is not readable
+        """Internal: raise UnsupportedOperation if file ni sio readable
         """
-        if not self.readable():
-            raise UnsupportedOperation("File or stream is not readable."
+        if sio self.readable():
+            raise UnsupportedOperation("File or stream ni sio readable."
                                        if msg is None else msg)
 
     def writable(self):
@@ -467,17 +467,17 @@ kundi IOBase(metaclass=abc.ABCMeta):
         return False
 
     def _checkWritable(self, msg=None):
-        """Internal: raise UnsupportedOperation if file is not writable
+        """Internal: raise UnsupportedOperation if file ni sio writable
         """
-        if not self.writable():
-            raise UnsupportedOperation("File or stream is not writable."
+        if sio self.writable():
+            raise UnsupportedOperation("File or stream ni sio writable."
                                        if msg is None else msg)
 
     @property
     def closed(self):
         """closed: bool.  True iff the file has been closed.
 
-        For backwards compatibility, this is a property, not a predicate.
+        For backwards compatibility, this is a property, sio a predicate.
         """
         return self.__closed
 
@@ -506,7 +506,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
     def fileno(self):
         """Returns underlying file descriptor (an int) if one exists.
 
-        An OSError is raised if the IO object does not use a file descriptor.
+        An OSError is raised if the IO object does sio use a file descriptor.
         """
         self._unsupported("fileno")
 
@@ -534,32 +534,32 @@ kundi IOBase(metaclass=abc.ABCMeta):
         if hasattr(self, "peek"):
             def nreadahead():
                 readahead = self.peek(1)
-                if not readahead:
+                if sio readahead:
                     return 1
                 n = (readahead.find(b"\n") + 1) or len(readahead)
                 if size >= 0:
                     n = min(n, size)
                 return n
-        else:
+        isipokua:
             def nreadahead():
                 return 1
         if size is None:
             size = -1
-        else:
-            try:
+        isipokua:
+            jaribu:
                 size_index = size.__index__
-            except AttributeError:
-                raise TypeError(f"{size!r} is not an integer")
-            else:
+            tatizo AttributeError:
+                raise TypeError(f"{size!r} ni sio an integer")
+            isipokua:
                 size = size_index()
         res = bytearray()
-        while size < 0 or len(res) < size:
+        wakati size < 0 or len(res) < size:
             b = self.read(nreadahead())
-            if not b:
-                break
+            if sio b:
+                koma
             res += b
             if res.endswith(b"\n"):
-                break
+                koma
         return bytes(res)
 
     def __iter__(self):
@@ -568,7 +568,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
 
     def __next__(self):
         line = self.readline()
-        if not line:
+        if sio line:
             raise StopIteration
         return line
 
@@ -587,13 +587,13 @@ kundi IOBase(metaclass=abc.ABCMeta):
             lines.append(line)
             n += len(line)
             if n >= hint:
-                break
+                koma
         return lines
 
     def writelines(self, lines):
         """Write a list of lines to the stream.
 
-        Line separators are not added, so it is usual for each of the lines
+        Line separators are sio added, so it is usual for each of the lines
         provided to have a line separator at the end.
         """
         self._checkClosed()
@@ -621,7 +621,7 @@ kundi RawIOBase(IOBase):
         """Read and return up to size bytes, where size is an int.
 
         Returns an empty bytes object on EOF, or None if the object is
-        set not to block and has no data to read.
+        set sio to block and has no data to read.
         """
         if size is None:
             size = -1
@@ -631,20 +631,20 @@ kundi RawIOBase(IOBase):
         n = self.readinto(b)
         if n is None:
             return None
-        del b[n:]
+        toa b[n:]
         return bytes(b)
 
     def readall(self):
         """Read until EOF, using multiple read() call."""
         res = bytearray()
-        while True:
+        wakati True:
             data = self.read(DEFAULT_BUFFER_SIZE)
-            if not data:
-                break
+            if sio data:
+                koma
             res += data
         if res:
             return bytes(res)
-        else:
+        isipokua:
             # b'' or None
             return data
 
@@ -652,7 +652,7 @@ kundi RawIOBase(IOBase):
         """Read bytes into a pre-allocated bytes-like object b.
 
         Returns an int representing the number of bytes read (0 for EOF), or
-        None if the object is set not to block and has no data to read.
+        None if the object is set sio to block and has no data to read.
         """
         self._unsupported("readinto")
 
@@ -674,15 +674,15 @@ kundi BufferedIOBase(IOBase):
     """Base kundi for buffered IO objects.
 
     The main difference with RawIOBase is that the read() method
-    supports omitting the size argument, and does not have a default
+    supports omitting the size argument, and does sio have a default
     implementation that defers to readinto().
 
     In addition, read(), readinto() and write() may raise
     BlockingIOError if the underlying raw stream is in non-blocking
-    mode and not ready; unlike their raw counterparts, they will never
+    mode and sio ready; unlike their raw counterparts, they will never
     return None.
 
-    A typical implementation should not inherit kutoka a RawIOBase
+    A typical implementation should sio inherit kutoka a RawIOBase
     implementation, but wrap one.
     """
 
@@ -693,10 +693,10 @@ kundi BufferedIOBase(IOBase):
         returns all data until EOF.
 
         If the argument is positive, and the underlying raw stream is
-        not 'interactive', multiple raw reads may be issued to satisfy
+        sio 'interactive', multiple raw reads may be issued to satisfy
         the byte count (unless EOF is reached first).  But for
         interactive raw streams (XXX and for pipes?), at most one raw
-        read will be issued, and a short result does not imply that
+        read will be issued, and a short result does sio imply that
         EOF is imminent.
 
         Returns an empty bytes array on EOF.
@@ -738,13 +738,13 @@ kundi BufferedIOBase(IOBase):
         return self._readinto(b, read1=True)
 
     def _readinto(self, b, read1):
-        if not isinstance(b, memoryview):
+        if sio isinstance(b, memoryview):
             b = memoryview(b)
         b = b.cast('B')
 
         if read1:
             data = self.read1(len(b))
-        else:
+        isipokua:
             data = self.read(len(b))
         n = len(data)
 
@@ -821,11 +821,11 @@ kundi _BufferedIOMixin(BufferedIOBase):
         self.raw.flush()
 
     def close(self):
-        if self.raw is not None and not self.closed:
-            try:
+        if self.raw ni sio None and sio self.closed:
+            jaribu:
                 # may raise BlockingIOError or BrokenPipeError etc
                 self.flush()
-            finally:
+            mwishowe:
                 self.raw.close()
 
     def detach(self):
@@ -863,11 +863,11 @@ kundi _BufferedIOMixin(BufferedIOBase):
     def __repr__(self):
         modname = self.__class__.__module__
         clsname = self.__class__.__qualname__
-        try:
+        jaribu:
             name = self.name
-        except AttributeError:
+        tatizo AttributeError:
             return "<{}.{}>".format(modname, clsname)
-        else:
+        isipokua:
             return "<{}.{} name={!r}>".format(modname, clsname, name)
 
     ### Lower-level APIs ###
@@ -889,7 +889,7 @@ kundi BytesIO(BufferedIOBase):
 
     def __init__(self, initial_bytes=None):
         buf = bytearray()
-        if initial_bytes is not None:
+        if initial_bytes ni sio None:
             buf += initial_bytes
         self._buffer = buf
         self._pos = 0
@@ -914,7 +914,7 @@ kundi BytesIO(BufferedIOBase):
         return memoryview(self._buffer)
 
     def close(self):
-        if self._buffer is not None:
+        if self._buffer ni sio None:
             self._buffer.clear()
         super().close()
 
@@ -923,12 +923,12 @@ kundi BytesIO(BufferedIOBase):
             raise ValueError("read kutoka closed file")
         if size is None:
             size = -1
-        else:
-            try:
+        isipokua:
+            jaribu:
                 size_index = size.__index__
-            except AttributeError:
-                raise TypeError(f"{size!r} is not an integer")
-            else:
+            tatizo AttributeError:
+                raise TypeError(f"{size!r} ni sio an integer")
+            isipokua:
                 size = size_index()
         if size < 0:
             size = len(self._buffer)
@@ -966,11 +966,11 @@ kundi BytesIO(BufferedIOBase):
     def seek(self, pos, whence=0):
         if self.closed:
             raise ValueError("seek on closed file")
-        try:
+        jaribu:
             pos_index = pos.__index__
-        except AttributeError:
-            raise TypeError(f"{pos!r} is not an integer")
-        else:
+        tatizo AttributeError:
+            raise TypeError(f"{pos!r} ni sio an integer")
+        isipokua:
             pos = pos_index()
         if whence == 0:
             if pos < 0:
@@ -980,7 +980,7 @@ kundi BytesIO(BufferedIOBase):
             self._pos = max(0, self._pos + pos)
         lasivyo whence == 2:
             self._pos = max(0, len(self._buffer) + pos)
-        else:
+        isipokua:
             raise ValueError("unsupported whence value")
         return self._pos
 
@@ -994,16 +994,16 @@ kundi BytesIO(BufferedIOBase):
             raise ValueError("truncate on closed file")
         if pos is None:
             pos = self._pos
-        else:
-            try:
+        isipokua:
+            jaribu:
                 pos_index = pos.__index__
-            except AttributeError:
-                raise TypeError(f"{pos!r} is not an integer")
-            else:
+            tatizo AttributeError:
+                raise TypeError(f"{pos!r} ni sio an integer")
+            isipokua:
                 pos = pos_index()
             if pos < 0:
                 raise ValueError("negative truncate position %r" % (pos,))
-        del self._buffer[pos:]
+        toa self._buffer[pos:]
         return pos
 
     def readable(self):
@@ -1036,7 +1036,7 @@ kundi BufferedReader(_BufferedIOMixin):
     def __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
         """Create a new buffered reader using the given readable raw IO object.
         """
-        if not raw.readable():
+        if sio raw.readable():
             raise OSError('"raw" argument must be readable.')
 
         _BufferedIOMixin.__init__(self, raw)
@@ -1061,7 +1061,7 @@ kundi BufferedReader(_BufferedIOMixin):
         mode. If size is negative, read until EOF or until read() would
         block.
         """
-        if size is not None and size < -1:
+        if size ni sio None and size < -1:
             raise ValueError("invalid number of bytes to read")
         with self._read_lock:
             return self._read_unlocked(size)
@@ -1079,16 +1079,16 @@ kundi BufferedReader(_BufferedIOMixin):
                 chunk = self.raw.readall()
                 if chunk is None:
                     return buf[pos:] or None
-                else:
+                isipokua:
                     return buf[pos:] + chunk
             chunks = [buf[pos:]]  # Strip the consumed bytes.
             current_size = 0
-            while True:
+            wakati True:
                 # Read until EOF or until read() would block.
                 chunk = self.raw.read()
                 if chunk in empty_values:
                     nodata_val = chunk
-                    break
+                    koma
                 current_size += len(chunk)
                 chunks.append(chunk)
             return b"".join(chunks) or nodata_val
@@ -1103,11 +1103,11 @@ kundi BufferedReader(_BufferedIOMixin):
         # or until an EOF occurs or until read() would block.
         chunks = [buf[pos:]]
         wanted = max(self.buffer_size, n)
-        while avail < n:
+        wakati avail < n:
             chunk = self.raw.read(wanted)
             if chunk in empty_values:
                 nodata_val = chunk
-                break
+                koma
             avail += len(chunk)
             chunks.append(chunk)
         # n is more than avail only when an EOF occurred or when
@@ -1152,7 +1152,7 @@ kundi BufferedReader(_BufferedIOMixin):
             return self._read_unlocked(
                 min(size, len(self._read_buf) - self._read_pos))
 
-    # Implementing readinto() and readinto1() is not strictly necessary (we
+    # Implementing readinto() and readinto1() ni sio strictly necessary (we
     # could rely on the base kundi that provides an implementation in terms of
     # read() and read1()). We do it anyway to keep the _pyio implementation
     # similar to the io implementation (which implements the methods for
@@ -1161,9 +1161,9 @@ kundi BufferedReader(_BufferedIOMixin):
         """Read data into *buf* with at most one system call."""
 
         # Need to create a memoryview object of type 'b', otherwise
-        # we may not be able to assign bytes to it, and slicing it
+        # we may sio be able to assign bytes to it, and slicing it
         # would create a new object.
-        if not isinstance(buf, memoryview):
+        if sio isinstance(buf, memoryview):
             buf = memoryview(buf)
         if buf.nbytes == 0:
             return 0
@@ -1171,7 +1171,7 @@ kundi BufferedReader(_BufferedIOMixin):
 
         written = 0
         with self._read_lock:
-            while written < len(buf):
+            wakati written < len(buf):
 
                 # First try to read kutoka internal buffer
                 avail = min(len(self._read_buf) - self._read_pos, len(buf))
@@ -1181,25 +1181,25 @@ kundi BufferedReader(_BufferedIOMixin):
                     self._read_pos += avail
                     written += avail
                     if written == len(buf):
-                        break
+                        koma
 
                 # If remaining space in callers buffer is larger than
                 # internal buffer, read directly into callers buffer
                 if len(buf) - written > self.buffer_size:
                     n = self.raw.readinto(buf[written:])
-                    if not n:
-                        break # eof
+                    if sio n:
+                        koma # eof
                     written += n
 
                 # Otherwise refill internal buffer - unless we're
                 # in read1 mode and already got some data
-                lasivyo not (read1 and written):
-                    if not self._peek_unlocked(1):
-                        break # eof
+                lasivyo sio (read1 and written):
+                    if sio self._peek_unlocked(1):
+                        koma # eof
 
                 # In readinto1 mode, return as soon as we have some data
                 if read1 and written:
-                    break
+                    koma
 
         return written
 
@@ -1207,7 +1207,7 @@ kundi BufferedReader(_BufferedIOMixin):
         return _BufferedIOMixin.tell(self) - len(self._read_buf) + self._read_pos
 
     def seek(self, pos, whence=0):
-        if whence not in valid_seek_flags:
+        if whence haiko kwenye valid_seek_flags:
             raise ValueError("invalid whence value")
         with self._read_lock:
             if whence == 1:
@@ -1221,12 +1221,12 @@ kundi BufferedWriter(_BufferedIOMixin):
     """A buffer for a writeable sequential RawIO object.
 
     The constructor creates a BufferedWriter for the given writeable raw
-    stream. If the buffer_size is not given, it defaults to
+    stream. If the buffer_size ni sio given, it defaults to
     DEFAULT_BUFFER_SIZE.
     """
 
     def __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
-        if not raw.writable():
+        if sio raw.writable():
             raise OSError('"raw" argument must be writable.')
 
         _BufferedIOMixin.__init__(self, raw)
@@ -1255,9 +1255,9 @@ kundi BufferedWriter(_BufferedIOMixin):
             self._write_buf.extend(b)
             written = len(self._write_buf) - before
             if len(self._write_buf) > self.buffer_size:
-                try:
+                jaribu:
                     self._flush_unlocked()
-                except BlockingIOError as e:
+                tatizo BlockingIOError as e:
                     if len(self._write_buf) > self.buffer_size:
                         # We've hit the buffer_size. We have to accept a partial
                         # write and cut back our buffer.
@@ -1281,25 +1281,25 @@ kundi BufferedWriter(_BufferedIOMixin):
     def _flush_unlocked(self):
         if self.closed:
             raise ValueError("flush on closed file")
-        while self._write_buf:
-            try:
+        wakati self._write_buf:
+            jaribu:
                 n = self.raw.write(self._write_buf)
-            except BlockingIOError:
+            tatizo BlockingIOError:
                 raise RuntimeError("self.raw should implement RawIOBase: it "
-                                   "should not raise BlockingIOError")
+                                   "should sio raise BlockingIOError")
             if n is None:
                 raise BlockingIOError(
                     errno.EAGAIN,
-                    "write could not complete without blocking", 0)
+                    "write could sio complete without blocking", 0)
             if n > len(self._write_buf) or n < 0:
                 raise OSError("write() returned incorrect number of bytes")
-            del self._write_buf[:n]
+            toa self._write_buf[:n]
 
     def tell(self):
         return _BufferedIOMixin.tell(self) + len(self._write_buf)
 
     def seek(self, pos, whence=0):
-        if whence not in valid_seek_flags:
+        if whence haiko kwenye valid_seek_flags:
             raise ValueError("invalid whence value")
         with self._write_lock:
             self._flush_unlocked()
@@ -1313,10 +1313,10 @@ kundi BufferedWriter(_BufferedIOMixin):
         # probably just re-take the lock) in case flush has been overridden in
         # a subkundi or the user set self.flush to something. This is the same
         # behavior as the C implementation.
-        try:
+        jaribu:
             # may raise BlockingIOError or BrokenPipeError etc
             self.flush()
-        finally:
+        mwishowe:
             with self._write_lock:
                 self.raw.close()
 
@@ -1342,10 +1342,10 @@ kundi BufferedRWPair(BufferedIOBase):
 
         The arguments are two RawIO instances.
         """
-        if not reader.readable():
+        if sio reader.readable():
             raise OSError('"reader" argument must be readable.')
 
-        if not writer.writable():
+        if sio writer.writable():
             raise OSError('"writer" argument must be writable.')
 
         self.reader = BufferedReader(reader, buffer_size)
@@ -1381,9 +1381,9 @@ kundi BufferedRWPair(BufferedIOBase):
         return self.writer.flush()
 
     def close(self):
-        try:
+        jaribu:
             self.writer.close()
-        finally:
+        mwishowe:
             self.reader.close()
 
     def isatty(self):
@@ -1409,7 +1409,7 @@ kundi BufferedRandom(BufferedWriter, BufferedReader):
         BufferedWriter.__init__(self, raw, buffer_size)
 
     def seek(self, pos, whence=0):
-        if whence not in valid_seek_flags:
+        if whence haiko kwenye valid_seek_flags:
             raise ValueError("invalid whence value")
         self.flush()
         if self._read_buf:
@@ -1428,7 +1428,7 @@ kundi BufferedRandom(BufferedWriter, BufferedReader):
     def tell(self):
         if self._write_buf:
             return BufferedWriter.tell(self)
-        else:
+        isipokua:
             return BufferedReader.tell(self)
 
     def truncate(self, pos=None):
@@ -1492,10 +1492,10 @@ kundi FileIO(RawIOBase):
         """
         if self._fd >= 0:
             # Have to close the existing file first.
-            try:
+            jaribu:
                 if self._closefd:
                     os.close(self._fd)
-            finally:
+            mwishowe:
                 self._fd = -1
 
         if isinstance(file, float):
@@ -1504,12 +1504,12 @@ kundi FileIO(RawIOBase):
             fd = file
             if fd < 0:
                 raise ValueError('negative file descriptor')
-        else:
+        isipokua:
             fd = -1
 
-        if not isinstance(mode, str):
+        if sio isinstance(mode, str):
             raise TypeError('invalid mode: %s' % (mode,))
-        if not set(mode) <= set('xrwab+'):
+        if sio set(mode) <= set('xrwab+'):
             raise ValueError('invalid mode: %s' % (mode,))
         if sum(c in 'rwax' for c in mode) != 1 or mode.count('+') > 1:
             raise ValueError('Must have exactly one of create/read/write/append '
@@ -1538,7 +1538,7 @@ kundi FileIO(RawIOBase):
             flags |= os.O_RDWR
         lasivyo self._readable:
             flags |= os.O_RDONLY
-        else:
+        isipokua:
             flags |= os.O_WRONLY
 
         flags |= getattr(os, 'O_BINARY', 0)
@@ -1548,29 +1548,29 @@ kundi FileIO(RawIOBase):
         flags |= noinherit_flag
 
         owned_fd = None
-        try:
+        jaribu:
             if fd < 0:
-                if not closefd:
+                if sio closefd:
                     raise ValueError('Cannot use closefd=False with file name')
                 if opener is None:
                     fd = os.open(file, flags, 0o666)
-                else:
+                isipokua:
                     fd = opener(file, flags)
-                    if not isinstance(fd, int):
+                    if sio isinstance(fd, int):
                         raise TypeError('expected integer kutoka opener')
                     if fd < 0:
                         raise OSError('Negative file descriptor')
                 owned_fd = fd
-                if not noinherit_flag:
+                if sio noinherit_flag:
                     os.set_inheritable(fd, False)
 
             self._closefd = closefd
             fdfstat = os.fstat(fd)
-            try:
+            jaribu:
                 if stat.S_ISDIR(fdfstat.st_mode):
                     raise IsADirectoryError(errno.EISDIR,
                                             os.strerror(errno.EISDIR), file)
-            except AttributeError:
+            tatizo AttributeError:
                 # Ignore the AttribueError if stat.S_ISDIR or errno.EISDIR
                 # don't exist.
                 pass
@@ -1589,13 +1589,13 @@ kundi FileIO(RawIOBase):
                 # first write()).
                 os.lseek(fd, 0, SEEK_END)
         except:
-            if owned_fd is not None:
+            if owned_fd ni sio None:
                 os.close(owned_fd)
             raise
         self._fd = fd
 
     def __del__(self):
-        if self._fd >= 0 and self._closefd and not self.closed:
+        if self._fd >= 0 and self._closefd and sio self.closed:
             agiza warnings
             warnings.warn('unclosed file %r' % (self,), ResourceWarning,
                           stacklevel=2, source=self)
@@ -1609,22 +1609,22 @@ kundi FileIO(RawIOBase):
                                 self.__class__.__qualname__)
         if self.closed:
             return '<%s [closed]>' % class_name
-        try:
+        jaribu:
             name = self.name
-        except AttributeError:
+        tatizo AttributeError:
             return ('<%s fd=%d mode=%r closefd=%r>' %
                     (class_name, self._fd, self.mode, self._closefd))
-        else:
+        isipokua:
             return ('<%s name=%r mode=%r closefd=%r>' %
                     (class_name, name, self.mode, self._closefd))
 
     def _checkReadable(self):
-        if not self._readable:
-            raise UnsupportedOperation('File not open for reading')
+        if sio self._readable:
+            raise UnsupportedOperation('File sio open for reading')
 
     def _checkWritable(self, msg=None):
-        if not self._writable:
-            raise UnsupportedOperation('File not open for writing')
+        if sio self._writable:
+            raise UnsupportedOperation('File sio open for writing')
 
     def read(self, size=None):
         """Read at most size bytes, returned as bytes.
@@ -1637,9 +1637,9 @@ kundi FileIO(RawIOBase):
         self._checkReadable()
         if size is None or size < 0:
             return self.readall()
-        try:
+        jaribu:
             return os.read(self._fd, size)
-        except BlockingIOError:
+        tatizo BlockingIOError:
             return None
 
     def readall(self):
@@ -1651,28 +1651,28 @@ kundi FileIO(RawIOBase):
         self._checkClosed()
         self._checkReadable()
         bufsize = DEFAULT_BUFFER_SIZE
-        try:
+        jaribu:
             pos = os.lseek(self._fd, 0, SEEK_CUR)
             end = os.fstat(self._fd).st_size
             if end >= pos:
                 bufsize = end - pos + 1
-        except OSError:
+        tatizo OSError:
             pass
 
         result = bytearray()
-        while True:
+        wakati True:
             if len(result) >= bufsize:
                 bufsize = len(result)
                 bufsize += max(bufsize, DEFAULT_BUFFER_SIZE)
             n = bufsize - len(result)
-            try:
+            jaribu:
                 chunk = os.read(self._fd, n)
-            except BlockingIOError:
+            tatizo BlockingIOError:
                 if result:
-                    break
+                    koma
                 return None
-            if not chunk: # reached the end of the file
-                break
+            if sio chunk: # reached the end of the file
+                koma
             result += chunk
 
         return bytes(result)
@@ -1688,15 +1688,15 @@ kundi FileIO(RawIOBase):
     def write(self, b):
         """Write bytes b to file, return number written.
 
-        Only makes one system call, so not all of the data may be written.
+        Only makes one system call, so sio all of the data may be written.
         The number of bytes actually written is returned.  In non-blocking mode,
         returns None if the write would block.
         """
         self._checkClosed()
         self._checkWritable()
-        try:
+        jaribu:
             return os.write(self._fd, b)
-        except BlockingIOError:
+        tatizo BlockingIOError:
             return None
 
     def seek(self, pos, whence=SEEK_SET):
@@ -1708,7 +1708,7 @@ kundi FileIO(RawIOBase):
         and SEEK_END or 2 (move relative to end of file, usually negative, although
         many platforms allow seeking beyond the end of a file).
 
-        Note that not all file objects are seekable.
+        Note that sio all file objects are seekable.
         """
         if isinstance(pos, float):
             raise TypeError('an integer is required')
@@ -1741,22 +1741,22 @@ kundi FileIO(RawIOBase):
         A closed file cannot be used for further I/O operations.  close() may be
         called more than once without error.
         """
-        if not self.closed:
-            try:
+        if sio self.closed:
+            jaribu:
                 if self._closefd:
                     os.close(self._fd)
-            finally:
+            mwishowe:
                 super().close()
 
     def seekable(self):
         """True if file supports random-access."""
         self._checkClosed()
         if self._seekable is None:
-            try:
+            jaribu:
                 self.tell()
-            except OSError:
+            tatizo OSError:
                 self._seekable = False
-            else:
+            isipokua:
                 self._seekable = True
         return self._seekable
 
@@ -1791,19 +1791,19 @@ kundi FileIO(RawIOBase):
         if self._created:
             if self._readable:
                 return 'xb+'
-            else:
+            isipokua:
                 return 'xb'
         lasivyo self._appending:
             if self._readable:
                 return 'ab+'
-            else:
+            isipokua:
                 return 'ab'
         lasivyo self._readable:
             if self._writable:
                 return 'rb+'
-            else:
+            isipokua:
                 return 'rb'
-        else:
+        isipokua:
             return 'wb'
 
 
@@ -1892,15 +1892,15 @@ kundi IncrementalNewlineDecoder(codecs.IncrementalDecoder):
         # decode input (with the eventual \r kutoka a previous pass)
         if self.decoder is None:
             output = input
-        else:
+        isipokua:
             output = self.decoder.decode(input, final=final)
         if self.pendingcr and (output or final):
             output = "\r" + output
             self.pendingcr = False
 
-        # retain last \r even when not translating data:
+        # retain last \r even when sio translating data:
         # then readline() is sure to get \r\n in one pass
-        if output.endswith("\r") and not final:
+        if output.endswith("\r") and sio final:
             output = output[:-1]
             self.pendingcr = True
 
@@ -1923,7 +1923,7 @@ kundi IncrementalNewlineDecoder(codecs.IncrementalDecoder):
         if self.decoder is None:
             buf = b""
             flag = 0
-        else:
+        isipokua:
             buf, flag = self.decoder.getstate()
         flag <<= 1
         if self.pendingcr:
@@ -1933,13 +1933,13 @@ kundi IncrementalNewlineDecoder(codecs.IncrementalDecoder):
     def setstate(self, state):
         buf, flag = state
         self.pendingcr = bool(flag & 1)
-        if self.decoder is not None:
+        if self.decoder ni sio None:
             self.decoder.setstate((buf, flag >> 1))
 
     def reset(self):
         self.seennl = 0
         self.pendingcr = False
-        if self.decoder is not None:
+        if self.decoder ni sio None:
             self.decoder.reset()
 
     _LF = 1
@@ -1996,31 +1996,31 @@ kundi TextIOWrapper(TextIOBase):
                  line_buffering=False, write_through=False):
         self._check_newline(newline)
         if encoding is None:
-            try:
+            jaribu:
                 encoding = os.device_encoding(buffer.fileno())
-            except (AttributeError, UnsupportedOperation):
+            tatizo (AttributeError, UnsupportedOperation):
                 pass
             if encoding is None:
-                try:
+                jaribu:
                     agiza locale
-                except ImportError:
+                tatizo ImportError:
                     # Importing locale may fail if Python is being built
                     encoding = "ascii"
-                else:
+                isipokua:
                     encoding = locale.getpreferredencoding(False)
 
-        if not isinstance(encoding, str):
+        if sio isinstance(encoding, str):
             raise ValueError("invalid encoding: %r" % encoding)
 
-        if not codecs.lookup(encoding)._is_text_encoding:
-            msg = ("%r is not a text encoding; "
+        if sio codecs.lookup(encoding)._is_text_encoding:
+            msg = ("%r ni sio a text encoding; "
                    "use codecs.open() to handle arbitrary codecs")
             raise LookupError(msg % encoding)
 
         if errors is None:
             errors = "strict"
-        else:
-            if not isinstance(errors, str):
+        isipokua:
+            if sio isinstance(errors, str):
                 raise ValueError("invalid errors: %r" % errors)
 
         self._buffer = buffer
@@ -2033,9 +2033,9 @@ kundi TextIOWrapper(TextIOBase):
                         line_buffering, write_through)
 
     def _check_newline(self, newline):
-        if newline is not None and not isinstance(newline, str):
+        if newline ni sio None and sio isinstance(newline, str):
             raise TypeError("illegal newline type: %r" % (type(newline),))
-        if newline not in (None, "", "\n", "\r", "\r\n"):
+        if newline haiko kwenye (None, "", "\n", "\r", "\r\n"):
             raise ValueError("illegal newline value: %r" % (newline,))
 
     def _configure(self, encoding=None, errors=None, newline=None,
@@ -2046,7 +2046,7 @@ kundi TextIOWrapper(TextIOBase):
         self._decoder = None
         self._b2cratio = 0.0
 
-        self._readuniversal = not newline
+        self._readuniversal = sio newline
         self._readtranslate = newline is None
         self._readnl = newline
         self._writetranslate = newline != ''
@@ -2059,9 +2059,9 @@ kundi TextIOWrapper(TextIOBase):
         if self._seekable and self.writable():
             position = self.buffer.tell()
             if position != 0:
-                try:
+                jaribu:
                     self._get_encoder().setstate(0)
-                except LookupError:
+                tatizo LookupError:
                     # Sometimes the encoder doesn't exist
                     pass
 
@@ -2077,17 +2077,17 @@ kundi TextIOWrapper(TextIOBase):
     def __repr__(self):
         result = "<{}.{}".format(self.__class__.__module__,
                                  self.__class__.__qualname__)
-        try:
+        jaribu:
             name = self.name
-        except AttributeError:
+        tatizo AttributeError:
             pass
-        else:
+        isipokua:
             result += " name={0!r}".format(name)
-        try:
+        jaribu:
             mode = self.mode
-        except AttributeError:
+        tatizo AttributeError:
             pass
-        else:
+        isipokua:
             result += " mode={0!r}".format(mode)
         return result + " encoding={0!r}>".format(self.encoding)
 
@@ -2118,25 +2118,25 @@ kundi TextIOWrapper(TextIOBase):
 
         This also flushes the stream.
         """
-        if (self._decoder is not None
-                and (encoding is not None or errors is not None
-                     or newline is not Ellipsis)):
+        if (self._decoder ni sio None
+                and (encoding ni sio None or errors ni sio None
+                     or newline ni sio Ellipsis)):
             raise UnsupportedOperation(
-                "It is not possible to set the encoding or newline of stream "
+                "It ni sio possible to set the encoding or newline of stream "
                 "after the first read")
 
         if errors is None:
             if encoding is None:
                 errors = self._errors
-            else:
+            isipokua:
                 errors = 'strict'
-        lasivyo not isinstance(errors, str):
+        lasivyo sio isinstance(errors, str):
             raise TypeError("invalid errors: %r" % errors)
 
         if encoding is None:
             encoding = self._encoding
-        else:
-            if not isinstance(encoding, str):
+        isipokua:
+            if sio isinstance(encoding, str):
                 raise TypeError("invalid encoding: %r" % encoding)
 
         if newline is Ellipsis:
@@ -2168,10 +2168,10 @@ kundi TextIOWrapper(TextIOBase):
         self._telling = self._seekable
 
     def close(self):
-        if self.buffer is not None and not self.closed:
-            try:
+        if self.buffer ni sio None and sio self.closed:
+            jaribu:
                 self.flush()
-            finally:
+            mwishowe:
                 self.buffer.close()
 
     @property
@@ -2192,7 +2192,7 @@ kundi TextIOWrapper(TextIOBase):
         'Write data, where s is a str'
         if self.closed:
             raise ValueError("write to closed file")
-        if not isinstance(s, str):
+        if sio isinstance(s, str):
             raise TypeError("can't write %s to text stream" %
                             s.__class__.__name__)
         length = len(s)
@@ -2237,7 +2237,7 @@ kundi TextIOWrapper(TextIOBase):
         offset = self._decoded_chars_used
         if n is None:
             chars = self._decoded_chars[offset:]
-        else:
+        isipokua:
             chars = self._decoded_chars[offset:offset + n]
         self._decoded_chars_used += len(chars)
         return chars
@@ -2273,14 +2273,14 @@ kundi TextIOWrapper(TextIOBase):
         # Read a chunk, decode it, and put the result in self._decoded_chars.
         if self._has_read1:
             input_chunk = self.buffer.read1(self._CHUNK_SIZE)
-        else:
+        isipokua:
             input_chunk = self.buffer.read(self._CHUNK_SIZE)
-        eof = not input_chunk
+        eof = sio input_chunk
         decoded_chars = self._decoder.decode(input_chunk, eof)
         self._set_decoded_chars(decoded_chars)
         if decoded_chars:
             self._b2cratio = len(input_chunk) / len(self._decoded_chars)
-        else:
+        isipokua:
             self._b2cratio = 0.0
 
         if self._telling:
@@ -2288,7 +2288,7 @@ kundi TextIOWrapper(TextIOBase):
             # the next input to be decoded is dec_buffer + input_chunk.
             self._snapshot = (dec_flags, dec_buffer + input_chunk)
 
-        return not eof
+        return sio eof
 
     def _pack_cookie(self, position, dec_flags=0,
                            bytes_to_feed=0, need_eof=0, chars_to_skip=0):
@@ -2308,9 +2308,9 @@ kundi TextIOWrapper(TextIOBase):
         return position, dec_flags, bytes_to_feed, need_eof, chars_to_skip
 
     def tell(self):
-        if not self._seekable:
-            raise UnsupportedOperation("underlying stream is not seekable")
-        if not self._telling:
+        if sio self._seekable:
+            raise UnsupportedOperation("underlying stream ni sio seekable")
+        if sio self._telling:
             raise OSError("telling position disabled by next() call")
         self.flush()
         position = self.buffer.tell()
@@ -2334,7 +2334,7 @@ kundi TextIOWrapper(TextIOBase):
         # Starting kutoka the snapshot position, we will walk the decoder
         # forward until it gives us enough decoded characters.
         saved_state = decoder.getstate()
-        try:
+        jaribu:
             # Fast search for an acceptable start point, close to our
             # current pos.
             # Rationale: calling decoder.decode() has a large overhead
@@ -2345,25 +2345,25 @@ kundi TextIOWrapper(TextIOBase):
             skip_bytes = int(self._b2cratio * chars_to_skip)
             skip_back = 1
             assert skip_bytes <= len(next_input)
-            while skip_bytes > 0:
+            wakati skip_bytes > 0:
                 decoder.setstate((b'', dec_flags))
                 # Decode up to temptative start point
                 n = len(decoder.decode(next_input[:skip_bytes]))
                 if n <= chars_to_skip:
                     b, d = decoder.getstate()
-                    if not b:
+                    if sio b:
                         # Before pos and no bytes buffered in decoder => OK
                         dec_flags = d
                         chars_to_skip -= n
-                        break
+                        koma
                     # Skip back by buffered amount and reset heuristic
                     skip_bytes -= len(b)
                     skip_back = 1
-                else:
+                isipokua:
                     # We're too far ahead, skip back a bit
                     skip_bytes -= skip_back
                     skip_back = skip_back * 2
-            else:
+            isipokua:
                 skip_bytes = 0
                 decoder.setstate((b'', dec_flags))
 
@@ -2386,14 +2386,14 @@ kundi TextIOWrapper(TextIOBase):
                 bytes_fed += 1
                 chars_decoded += len(decoder.decode(next_input[i:i+1]))
                 dec_buffer, dec_flags = decoder.getstate()
-                if not dec_buffer and chars_decoded <= chars_to_skip:
+                if sio dec_buffer and chars_decoded <= chars_to_skip:
                     # Decoder buffer is empty, so this is a safe start point.
                     start_pos += bytes_fed
                     chars_to_skip -= chars_decoded
                     start_flags, bytes_fed, chars_decoded = dec_flags, 0, 0
                 if chars_decoded >= chars_to_skip:
-                    break
-            else:
+                    koma
+            isipokua:
                 # We didn't get enough decoded data; signal EOF to get more.
                 chars_decoded += len(decoder.decode(b'', final=True))
                 need_eof = 1
@@ -2403,7 +2403,7 @@ kundi TextIOWrapper(TextIOBase):
             # The returned cookie corresponds to the last safe start point.
             return self._pack_cookie(
                 start_pos, start_flags, bytes_fed, need_eof, chars_to_skip)
-        finally:
+        mwishowe:
             decoder.setstate(saved_state)
 
     def truncate(self, pos=None):
@@ -2423,21 +2423,21 @@ kundi TextIOWrapper(TextIOBase):
     def seek(self, cookie, whence=0):
         def _reset_encoder(position):
             """Reset the encoder (merely useful for proper BOM handling)"""
-            try:
+            jaribu:
                 encoder = self._encoder or self._get_encoder()
-            except LookupError:
+            tatizo LookupError:
                 # Sometimes the encoder doesn't exist
                 pass
-            else:
+            isipokua:
                 if position != 0:
                     encoder.setstate(0)
-                else:
+                isipokua:
                     encoder.reset()
 
         if self.closed:
             raise ValueError("tell on closed file")
-        if not self._seekable:
-            raise UnsupportedOperation("underlying stream is not seekable")
+        if sio self._seekable:
+            raise UnsupportedOperation("underlying stream ni sio seekable")
         if whence == SEEK_CUR:
             if cookie != 0:
                 raise UnsupportedOperation("can't do nonzero cur-relative seeks")
@@ -2499,12 +2499,12 @@ kundi TextIOWrapper(TextIOBase):
         self._checkReadable()
         if size is None:
             size = -1
-        else:
-            try:
+        isipokua:
+            jaribu:
                 size_index = size.__index__
-            except AttributeError:
-                raise TypeError(f"{size!r} is not an integer")
-            else:
+            tatizo AttributeError:
+                raise TypeError(f"{size!r} ni sio an integer")
+            isipokua:
                 size = size_index()
         decoder = self._decoder or self._get_decoder()
         if size < 0:
@@ -2514,19 +2514,19 @@ kundi TextIOWrapper(TextIOBase):
             self._set_decoded_chars('')
             self._snapshot = None
             return result
-        else:
+        isipokua:
             # Keep reading chunks until we have size characters to return.
             eof = False
             result = self._get_decoded_chars(size)
-            while len(result) < size and not eof:
-                eof = not self._read_chunk()
+            wakati len(result) < size and sio eof:
+                eof = sio self._read_chunk()
                 result += self._get_decoded_chars(size - len(result))
             return result
 
     def __next__(self):
         self._telling = False
         line = self.readline()
-        if not line:
+        if sio line:
             self._snapshot = None
             self._telling = self._seekable
             raise StopIteration
@@ -2537,12 +2537,12 @@ kundi TextIOWrapper(TextIOBase):
             raise ValueError("read kutoka closed file")
         if size is None:
             size = -1
-        else:
-            try:
+        isipokua:
+            jaribu:
                 size_index = size.__index__
-            except AttributeError:
-                raise TypeError(f"{size!r} is not an integer")
-            else:
+            tatizo AttributeError:
+                raise TypeError(f"{size!r} ni sio an integer")
+            isipokua:
                 size = size_index()
 
         # Grab all the decoded text (we will rewind any extra bits later).
@@ -2550,23 +2550,23 @@ kundi TextIOWrapper(TextIOBase):
 
         start = 0
         # Make the decoder if it doesn't already exist.
-        if not self._decoder:
+        if sio self._decoder:
             self._get_decoder()
 
         pos = endpos = None
-        while True:
+        wakati True:
             if self._readtranslate:
                 # Newlines are already translated, only search for \n
                 pos = line.find('\n', start)
                 if pos >= 0:
                     endpos = pos + 1
-                    break
-                else:
+                    koma
+                isipokua:
                     start = len(line)
 
             lasivyo self._readuniversal:
                 # Universal newline search. Find any of \r, \r\n, \n
-                # The decoder ensures that \r\n are not split in two pieces
+                # The decoder ensures that \r\n are sio split in two pieces
 
                 # In C we'd look for these in parallel of course.
                 nlpos = line.find("\n", start)
@@ -2575,44 +2575,44 @@ kundi TextIOWrapper(TextIOBase):
                     if nlpos == -1:
                         # Nothing found
                         start = len(line)
-                    else:
+                    isipokua:
                         # Found \n
                         endpos = nlpos + 1
-                        break
+                        koma
                 lasivyo nlpos == -1:
                     # Found lone \r
                     endpos = crpos + 1
-                    break
+                    koma
                 lasivyo nlpos < crpos:
                     # Found \n
                     endpos = nlpos + 1
-                    break
+                    koma
                 lasivyo nlpos == crpos + 1:
                     # Found \r\n
                     endpos = crpos + 2
-                    break
-                else:
+                    koma
+                isipokua:
                     # Found \r
                     endpos = crpos + 1
-                    break
-            else:
+                    koma
+            isipokua:
                 # non-universal
                 pos = line.find(self._readnl)
                 if pos >= 0:
                     endpos = pos + len(self._readnl)
-                    break
+                    koma
 
             if size >= 0 and len(line) >= size:
                 endpos = size  # reached length size
-                break
+                koma
 
             # No line ending seen yet - get more data'
-            while self._read_chunk():
+            wakati self._read_chunk():
                 if self._decoded_chars:
-                    break
+                    koma
             if self._decoded_chars:
                 line += self._get_decoded_chars()
-            else:
+            isipokua:
                 # end of file
                 self._set_decoded_chars('')
                 self._snapshot = None
@@ -2646,9 +2646,9 @@ kundi StringIO(TextIOWrapper):
         # C version, even under Windows.
         if newline is None:
             self._writetranslate = False
-        if initial_value is not None:
-            if not isinstance(initial_value, str):
-                raise TypeError("initial_value must be str or None, not {0}"
+        if initial_value ni sio None:
+            if sio isinstance(initial_value, str):
+                raise TypeError("initial_value must be str or None, sio {0}"
                                 .format(type(initial_value).__name__))
             self.write(initial_value)
             self.seek(0)
@@ -2658,9 +2658,9 @@ kundi StringIO(TextIOWrapper):
         decoder = self._decoder or self._get_decoder()
         old_state = decoder.getstate()
         decoder.reset()
-        try:
+        jaribu:
             return decoder.decode(self.buffer.getvalue(), final=True)
-        finally:
+        mwishowe:
             decoder.setstate(old_state)
 
     def __repr__(self):

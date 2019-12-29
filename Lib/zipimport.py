@@ -7,7 +7,7 @@ This module exports three objects:
 - _zip_directory_cache: a dict, mapping archive paths to zip directory
   info dicts, as used in zipimporter._files.
 
-It is usually not needed to use the zipagiza module explicitly; it is
+It is usually sio needed to use the zipagiza module explicitly; it is
 used by the builtin agiza mechanism for sys.path items that are paths
 to Zip archives.
 """
@@ -61,19 +61,19 @@ kundi zipimporter:
     # entry in sys.path_importer_cache, fetch the file directory kutoka there
     # if found, or else read it kutoka the archive.
     def __init__(self, path):
-        if not isinstance(path, str):
+        if sio isinstance(path, str):
             agiza os
             path = os.fsdecode(path)
-        if not path:
+        if sio path:
             raise ZipImportError('archive path is empty', path=path)
         if alt_path_sep:
             path = path.replace(alt_path_sep, path_sep)
 
         prefix = []
-        while True:
-            try:
+        wakati True:
+            jaribu:
                 st = _bootstrap_external._path_stat(path)
-            except (OSError, ValueError):
+            tatizo (OSError, ValueError):
                 # On Windows a ValueError is raised for too long paths.
                 # Back up one path element.
                 dirname, basename = _bootstrap_external._path_split(path)
@@ -81,16 +81,16 @@ kundi zipimporter:
                     raise ZipImportError('not a Zip file', path=path)
                 path = dirname
                 prefix.append(basename)
-            else:
+            isipokua:
                 # it exists
                 if (st.st_mode & 0o170000) != 0o100000:  # stat.S_ISREG
-                    # it's a not file
+                    # it's a sio file
                     raise ZipImportError('not a Zip file', path=path)
-                break
+                koma
 
-        try:
+        jaribu:
             files = _zip_directory_cache[path]
-        except KeyError:
+        tatizo KeyError:
             files = _read_directory(path)
             _zip_directory_cache[path] = files
         self._files = files
@@ -117,7 +117,7 @@ kundi zipimporter:
         there for compatibility with the importer protocol.
         """
         mi = _get_module_info(self, fullname)
-        if mi is not None:
+        if mi ni sio None:
             # This is a module or package.
             return self, []
 
@@ -173,9 +173,9 @@ kundi zipimporter:
         if pathname.startswith(self.archive + path_sep):
             key = pathname[len(self.archive + path_sep):]
 
-        try:
+        jaribu:
             toc_entry = self._files[key]
-        except KeyError:
+        tatizo KeyError:
             raise OSError(0, '', key)
         return _get_data(self.archive, toc_entry)
 
@@ -206,12 +206,12 @@ kundi zipimporter:
         path = _get_module_path(self, fullname)
         if mi:
             fullpath = _bootstrap_external._path_join(path, '__init__.py')
-        else:
+        isipokua:
             fullpath = f'{path}.py'
 
-        try:
+        jaribu:
             toc_entry = self._files[fullpath]
-        except KeyError:
+        tatizo KeyError:
             # we have the module, but no source
             return None
         return _get_data(self.archive, toc_entry).decode()
@@ -240,12 +240,12 @@ kundi zipimporter:
         """
         code, ispackage, modpath = _get_module_code(self, fullname)
         mod = sys.modules.get(fullname)
-        if mod is None or not isinstance(mod, _module_type):
+        if mod is None or sio isinstance(mod, _module_type):
             mod = _module_type(fullname)
             sys.modules[fullname] = mod
         mod.__loader__ = self
 
-        try:
+        jaribu:
             if ispackage:
                 # add __path__ to the module *before* the code gets
                 # executed
@@ -253,18 +253,18 @@ kundi zipimporter:
                 fullpath = _bootstrap_external._path_join(self.archive, path)
                 mod.__path__ = [fullpath]
 
-            if not hasattr(mod, '__builtins__'):
+            if sio hasattr(mod, '__builtins__'):
                 mod.__builtins__ = __builtins__
             _bootstrap_external._fix_up_module(mod.__dict__, fullname, modpath)
             exec(code, mod.__dict__)
         except:
-            del sys.modules[fullname]
+            toa sys.modules[fullname]
             raise
 
-        try:
+        jaribu:
             mod = sys.modules[fullname]
-        except KeyError:
-            raise ImportError(f'Loaded module {fullname!r} not found in sys.modules')
+        tatizo KeyError:
+            raise ImportError(f'Loaded module {fullname!r} sio found in sys.modules')
         _bootstrap._verbose_message('agiza {} # loaded kutoka Zip {}', fullname, modpath)
         return mod
 
@@ -275,12 +275,12 @@ kundi zipimporter:
         If 'fullname' is a package within the zip file, return the
         'ResourceReader' object for the package.  Otherwise return None.
         """
-        try:
-            if not self.is_package(fullname):
+        jaribu:
+            if sio self.is_package(fullname):
                 return None
-        except ZipImportError:
+        tatizo ZipImportError:
             return None
-        if not _ZipImportResourceReader._registered:
+        if sio _ZipImportResourceReader._registered:
             kutoka importlib.abc agiza ResourceReader
             ResourceReader.register(_ZipImportResourceReader)
             _ZipImportResourceReader._registered = True
@@ -350,35 +350,35 @@ def _get_module_info(self, fullname):
 # Directories can be recognized by the trailing path_sep in the name,
 # data_size and file_offset are 0.
 def _read_directory(archive):
-    try:
+    jaribu:
         fp = _io.open_code(archive)
-    except OSError:
+    tatizo OSError:
         raise ZipImportError(f"can't open Zip file: {archive!r}", path=archive)
 
     with fp:
-        try:
+        jaribu:
             fp.seek(-END_CENTRAL_DIR_SIZE, 2)
             header_position = fp.tell()
             buffer = fp.read(END_CENTRAL_DIR_SIZE)
-        except OSError:
+        tatizo OSError:
             raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         if len(buffer) != END_CENTRAL_DIR_SIZE:
             raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         if buffer[:4] != STRING_END_ARCHIVE:
             # Bad: End of Central Dir signature
             # Check if there's a comment.
-            try:
+            jaribu:
                 fp.seek(0, 2)
                 file_size = fp.tell()
-            except OSError:
+            tatizo OSError:
                 raise ZipImportError(f"can't read Zip file: {archive!r}",
                                      path=archive)
             max_comment_start = max(file_size - MAX_COMMENT_LEN -
                                     END_CENTRAL_DIR_SIZE, 0)
-            try:
+            jaribu:
                 fp.seek(max_comment_start)
                 data = fp.read()
-            except OSError:
+            tatizo OSError:
                 raise ZipImportError(f"can't read Zip file: {archive!r}",
                                      path=archive)
             pos = data.rfind(STRING_END_ARCHIVE)
@@ -405,19 +405,19 @@ def _read_directory(archive):
         files = {}
         # Start of Central Directory
         count = 0
-        try:
+        jaribu:
             fp.seek(header_position)
-        except OSError:
+        tatizo OSError:
             raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
-        while True:
+        wakati True:
             buffer = fp.read(46)
             if len(buffer) < 4:
-                raise EOFError('EOF read where not expected')
+                raise EOFError('EOF read where sio expected')
             # Start of file header
             if buffer[:4] != b'PK\x01\x02':
-                break                                # Bad: Central Dir File Header
+                koma                                # Bad: Central Dir File Header
             if len(buffer) != 46:
-                raise EOFError('EOF read where not expected')
+                raise EOFError('EOF read where sio expected')
             flags = _unpack_uint16(buffer[8:10])
             compress = _unpack_uint16(buffer[10:12])
             time = _unpack_uint16(buffer[12:14])
@@ -434,29 +434,29 @@ def _read_directory(archive):
                 raise ZipImportError(f'bad local header offset: {archive!r}', path=archive)
             file_offset += arc_offset
 
-            try:
+            jaribu:
                 name = fp.read(name_size)
-            except OSError:
+            tatizo OSError:
                 raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
             if len(name) != name_size:
                 raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
             # On Windows, calling fseek to skip over the fields we don't use is
             # slower than reading the data because fseek flushes stdio's
             # internal buffers.    See issue #8745.
-            try:
+            jaribu:
                 if len(fp.read(header_size - name_size)) != header_size - name_size:
                     raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
-            except OSError:
+            tatizo OSError:
                 raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
 
             if flags & 0x800:
                 # UTF-8 file names extension
                 name = name.decode()
-            else:
+            isipokua:
                 # Historical ZIP filename encoding
-                try:
+                jaribu:
                     name = name.decode('ascii')
-                except UnicodeDecodeError:
+                tatizo UnicodeDecodeError:
                     name = name.decode('latin1').translate(cp437_table)
 
             name = name.replace('/', path_sep)
@@ -513,15 +513,15 @@ def _get_decompress_func():
         # Someone has a zlib.py[co] in their Zip file
         # let's avoid a stack overflow.
         _bootstrap._verbose_message('zipagiza: zlib UNAVAILABLE')
-        raise ZipImportError("can't decompress data; zlib not available")
+        raise ZipImportError("can't decompress data; zlib sio available")
 
     _agizaing_zlib = True
-    try:
+    jaribu:
         kutoka zlib agiza decompress
-    except Exception:
+    tatizo Exception:
         _bootstrap._verbose_message('zipagiza: zlib UNAVAILABLE')
-        raise ZipImportError("can't decompress data; zlib not available")
-    finally:
+        raise ZipImportError("can't decompress data; zlib sio available")
+    mwishowe:
         _agizaing_zlib = False
 
     _bootstrap._verbose_message('zipagiza: zlib available')
@@ -535,13 +535,13 @@ def _get_data(archive, toc_entry):
 
     with _io.open_code(archive) as fp:
         # Check to make sure the local file header is correct
-        try:
+        jaribu:
             fp.seek(file_offset)
-        except OSError:
+        tatizo OSError:
             raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         buffer = fp.read(30)
         if len(buffer) != 30:
-            raise EOFError('EOF read where not expected')
+            raise EOFError('EOF read where sio expected')
 
         if buffer[:4] != b'PK\x03\x04':
             # Bad: Local File Header
@@ -551,23 +551,23 @@ def _get_data(archive, toc_entry):
         extra_size = _unpack_uint16(buffer[28:30])
         header_size = 30 + name_size + extra_size
         file_offset += header_size  # Start of file data
-        try:
+        jaribu:
             fp.seek(file_offset)
-        except OSError:
+        tatizo OSError:
             raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         raw_data = fp.read(data_size)
         if len(raw_data) != data_size:
             raise OSError("zipagiza: can't read data")
 
     if compress == 0:
-        # data is not compressed
+        # data ni sio compressed
         return raw_data
 
     # Decompress with zlib
-    try:
+    jaribu:
         decompress = _get_decompress_func()
-    except Exception:
-        raise ZipImportError("can't decompress data; zlib not available")
+    tatizo Exception:
+        raise ZipImportError("can't decompress data; zlib sio available")
     return decompress(raw_data, -15)
 
 
@@ -581,7 +581,7 @@ def _eq_mtime(t1, t2):
 
 # Given the contents of a .py[co] file, unmarshal the data
 # and return the code object. Return None if it the magic word doesn't
-# match, or if the recorded .py[co] metadata does not match the source,
+# match, or if the recorded .py[co] metadata does sio match the source,
 # (we do this instead of raising an exception as we fall back
 # to .py if available and we don't want to mask other errors).
 def _unmarshal_code(self, pathname, fullpath, fullname, data):
@@ -590,9 +590,9 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
         'path': fullpath,
     }
 
-    try:
+    jaribu:
         flags = _bootstrap_external._classify_pyc(data, fullname, exc_details)
-    except ImportError:
+    tatizo ImportError:
         return None
 
     hash_based = flags & 0b1 != 0
@@ -601,18 +601,18 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
         if (_imp.check_hash_based_pycs != 'never' and
                 (check_source or _imp.check_hash_based_pycs == 'always')):
             source_bytes = _get_pyc_source(self, fullpath)
-            if source_bytes is not None:
+            if source_bytes ni sio None:
                 source_hash = _imp.source_hash(
                     _bootstrap_external._RAW_MAGIC_NUMBER,
                     source_bytes,
                 )
 
-                try:
+                jaribu:
                     _boostrap_external._validate_hash_pyc(
                         data, source_hash, fullname, exc_details)
-                except ImportError:
+                tatizo ImportError:
                     return None
-    else:
+    isipokua:
         source_mtime, source_size = \
             _get_mtime_and_size_of_source(self, fullpath)
 
@@ -626,8 +626,8 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
                 return None
 
     code = marshal.loads(data[16:])
-    if not isinstance(code, _code_type):
-        raise TypeError(f'compiled module {pathname!r} is not a code object')
+    if sio isinstance(code, _code_type):
+        raise TypeError(f'compiled module {pathname!r} ni sio a code object')
     return code
 
 _code_type = type(_unmarshal_code.__code__)
@@ -662,7 +662,7 @@ def _parse_dostime(d, t):
 # modification time of the matching .py file and its size,
 # or (0, 0) if no source is available.
 def _get_mtime_and_size_of_source(self, path):
-    try:
+    jaribu:
         # strip 'c' or 'o' kutoka *.py[co]
         assert path[-1:] in ('c', 'o')
         path = path[:-1]
@@ -673,7 +673,7 @@ def _get_mtime_and_size_of_source(self, path):
         date = toc_entry[6]
         uncompressed_size = toc_entry[3]
         return _parse_dostime(date, time), uncompressed_size
-    except (KeyError, IndexError, TypeError):
+    tatizo (KeyError, IndexError, TypeError):
         return 0, 0
 
 
@@ -685,11 +685,11 @@ def _get_pyc_source(self, path):
     assert path[-1:] in ('c', 'o')
     path = path[:-1]
 
-    try:
+    jaribu:
         toc_entry = self._files[path]
-    except KeyError:
+    tatizo KeyError:
         return None
-    else:
+    isipokua:
         return _get_data(self.archive, toc_entry)
 
 
@@ -700,24 +700,24 @@ def _get_module_code(self, fullname):
     for suffix, isbytecode, ispackage in _zip_searchorder:
         fullpath = path + suffix
         _bootstrap._verbose_message('trying {}{}{}', self.archive, path_sep, fullpath, verbosity=2)
-        try:
+        jaribu:
             toc_entry = self._files[fullpath]
-        except KeyError:
+        tatizo KeyError:
             pass
-        else:
+        isipokua:
             modpath = toc_entry[0]
             data = _get_data(self.archive, toc_entry)
             if isbytecode:
                 code = _unmarshal_code(self, modpath, fullpath, fullname, data)
-            else:
+            isipokua:
                 code = _compile_source(modpath, data)
             if code is None:
                 # bad magic number or non-matching mtime
                 # in byte code, try next
-                continue
+                endelea
             modpath = toc_entry[0]
             return code, ispackage, modpath
-    else:
+    isipokua:
         raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
 
 
@@ -737,9 +737,9 @@ kundi _ZipImportResourceReader:
         fullname_as_path = self.fullname.replace('.', '/')
         path = f'{fullname_as_path}/{resource}'
         kutoka io agiza BytesIO
-        try:
+        jaribu:
             return BytesIO(self.zipimporter.get_data(path))
-        except OSError:
+        tatizo OSError:
             raise FileNotFoundError(path)
 
     def resource_path(self, resource):
@@ -753,9 +753,9 @@ kundi _ZipImportResourceReader:
         # resource.  Otherwise it isn't.
         fullname_as_path = self.fullname.replace('.', '/')
         path = f'{fullname_as_path}/{name}'
-        try:
+        jaribu:
             self.zipimporter.get_data(path)
-        except OSError:
+        tatizo OSError:
             return False
         return True
 
@@ -776,10 +776,10 @@ kundi _ZipImportResourceReader:
         package_path = relative_path.parent
         subdirs_seen = set()
         for filename in self.zipimporter._files:
-            try:
+            jaribu:
                 relative = Path(filename).relative_to(package_path)
-            except ValueError:
-                continue
+            tatizo ValueError:
+                endelea
             # If the path of the file (which is relative to the top of the zip
             # namespace), relative to the package given when the resource
             # reader was created, has a parent, then it's a name in a
@@ -787,6 +787,6 @@ kundi _ZipImportResourceReader:
             parent_name = relative.parent.name
             if len(parent_name) == 0:
                 yield relative.name
-            lasivyo parent_name not in subdirs_seen:
+            lasivyo parent_name haiko kwenye subdirs_seen:
                 subdirs_seen.add(parent_name)
                 yield parent_name

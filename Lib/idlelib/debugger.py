@@ -12,36 +12,36 @@ kutoka idlelib.window agiza ListedToplevel
 kundi Idb(bdb.Bdb):
 
     eleza __init__(self, gui):
-        self.gui = gui  # An instance of Debugger or proxy of remote.
+        self.gui = gui  # An instance of Debugger ama proxy of remote.
         bdb.Bdb.__init__(self)
 
     eleza user_line(self, frame):
         ikiwa self.in_rpc_code(frame):
             self.set_step()
-            return
+            rudisha
         message = self.__frame2message(frame)
-        try:
+        jaribu:
             self.gui.interaction(message, frame)
-        except TclError:  # When closing debugger window with [x] in 3.x
-            pass
+        tatizo TclError:  # When closing debugger window with [x] kwenye 3.x
+            pita
 
     eleza user_exception(self, frame, info):
         ikiwa self.in_rpc_code(frame):
             self.set_step()
-            return
+            rudisha
         message = self.__frame2message(frame)
         self.gui.interaction(message, frame, info)
 
     eleza in_rpc_code(self, frame):
         ikiwa frame.f_code.co_filename.count('rpc.py'):
-            rudisha True
-        else:
+            rudisha Kweli
+        isipokua:
             prev_frame = frame.f_back
             prev_name = prev_frame.f_code.co_filename
-            ikiwa 'idlelib' in prev_name and 'debugger' in prev_name:
-                # catch both idlelib/debugger.py and idlelib/debugger_r.py
-                # on both Posix and Windows
-                rudisha False
+            ikiwa 'idlelib' kwenye prev_name na 'debugger' kwenye prev_name:
+                # catch both idlelib/debugger.py na idlelib/debugger_r.py
+                # on both Posix na Windows
+                rudisha Uongo
             rudisha self.in_rpc_code(prev_frame)
 
     eleza __frame2message(self, frame):
@@ -57,33 +57,33 @@ kundi Idb(bdb.Bdb):
 
 kundi Debugger:
 
-    vstack = vsource = vlocals = vglobals = None
+    vstack = vsource = vlocals = vglobals = Tupu
 
-    eleza __init__(self, pyshell, idb=None):
-        ikiwa idb is None:
+    eleza __init__(self, pyshell, idb=Tupu):
+        ikiwa idb ni Tupu:
             idb = Idb(self)
         self.pyshell = pyshell
-        self.idb = idb  # If passed, a proxy of remote instance.
-        self.frame = None
+        self.idb = idb  # If pitaed, a proxy of remote instance.
+        self.frame = Tupu
         self.make_gui()
         self.interacting = 0
         self.nesting_level = 0
 
     eleza run(self, *args):
         # Deal with the scenario where we've already got a program running
-        # in the debugger and we want to start another. If that is the case,
-        # our second 'run' was invoked kutoka an event dispatched not kutoka
-        # the main event loop, but kutoka the nested event loop in 'interaction'
+        # kwenye the debugger na we want to start another. If that ni the case,
+        # our second 'run' was invoked kutoka an event dispatched sio kutoka
+        # the main event loop, but kutoka the nested event loop kwenye 'interaction'
         # below. So our stack looks something like this:
         #       outer main event loop
         #         run()
         #           <running program with traces>
         #             callback to debugger's interaction()
         #               nested event loop
-        #                 run() for second command
+        #                 run() kila second command
         #
         # This kind of nesting of event loops causes all kinds of problems
-        # (see e.g. issue #24455) especially when dealing with running as a
+        # (see e.g. issue #24455) especially when dealing with running kama a
         # subprocess, where there's all kinds of extra stuff happening in
         # there - insert a traceback.print_stack() to check it out.
         #
@@ -97,28 +97,28 @@ kundi Debugger:
         #     the running program, which will also let the outer run complete
         #
         # That leaves us back at the outer main event loop, at which point our
-        # after event can fire, and we'll come back to this routine with a
+        # after event can fire, na we'll come back to this routine with a
         # clean stack.
         ikiwa self.nesting_level > 0:
             self.abort_loop()
             self.root.after(100, lambda: self.run(*args))
-            return
-        try:
+            rudisha
+        jaribu:
             self.interacting = 1
             rudisha self.idb.run(*args)
-        finally:
+        mwishowe:
             self.interacting = 0
 
-    eleza close(self, event=None):
-        try:
+    eleza close(self, event=Tupu):
+        jaribu:
             self.quit()
-        except Exception:
-            pass
+        tatizo Exception:
+            pita
         ikiwa self.interacting:
             self.top.bell()
-            return
+            rudisha
         ikiwa self.stackviewer:
-            self.stackviewer.close(); self.stackviewer = None
+            self.stackviewer.close(); self.stackviewer = Tupu
         # Clean up pyshell ikiwa user clicked debugger control close widget.
         # (Causes a harmless extra cycle through close_debugger() ikiwa user
         # toggled debugger kutoka pyshell Debug menu)
@@ -151,31 +151,31 @@ kundi Debugger:
         self.bret = b = Button(bframe, text="Quit", command=self.quit)
         bl.append(b)
         #
-        for b in bl:
+        kila b kwenye bl:
             b.configure(state="disabled")
             b.pack(side="left")
         #
         self.cframe = cframe = Frame(bframe)
         self.cframe.pack(side="left")
         #
-        ikiwa not self.vstack:
+        ikiwa sio self.vstack:
             self.__class__.vstack = BooleanVar(top)
             self.vstack.set(1)
         self.bstack = Checkbutton(cframe,
             text="Stack", command=self.show_stack, variable=self.vstack)
         self.bstack.grid(row=0, column=0)
-        ikiwa not self.vsource:
+        ikiwa sio self.vsource:
             self.__class__.vsource = BooleanVar(top)
         self.bsource = Checkbutton(cframe,
             text="Source", command=self.show_source, variable=self.vsource)
         self.bsource.grid(row=0, column=1)
-        ikiwa not self.vlocals:
+        ikiwa sio self.vlocals:
             self.__class__.vlocals = BooleanVar(top)
             self.vlocals.set(1)
         self.blocals = Checkbutton(cframe,
             text="Locals", command=self.show_locals, variable=self.vlocals)
         self.blocals.grid(row=1, column=0)
-        ikiwa not self.vglobals:
+        ikiwa sio self.vglobals:
             self.__class__.vglobals = BooleanVar(top)
         self.bglobals = Checkbutton(cframe,
             text="Globals", command=self.show_globals, variable=self.vglobals)
@@ -201,25 +201,25 @@ kundi Debugger:
         ikiwa self.vglobals.get():
             self.show_globals()
 
-    eleza interaction(self, message, frame, info=None):
+    eleza interaction(self, message, frame, info=Tupu):
         self.frame = frame
         self.status.configure(text=message)
         #
         ikiwa info:
             type, value, tb = info
-            try:
+            jaribu:
                 m1 = type.__name__
-            except AttributeError:
+            tatizo AttributeError:
                 m1 = "%s" % str(type)
-            ikiwa value is not None:
-                try:
+            ikiwa value ni sio Tupu:
+                jaribu:
                     m1 = "%s: %s" % (m1, str(value))
                 except:
-                    pass
+                    pita
             bg = "yellow"
-        else:
+        isipokua:
             m1 = ""
-            tb = None
+            tb = Tupu
             bg = self.errorbg
         self.error.configure(text=m1, background=bg)
         #
@@ -233,29 +233,29 @@ kundi Debugger:
         ikiwa self.vsource.get():
             self.sync_source_line()
         #
-        for b in self.buttons:
+        kila b kwenye self.buttons:
             b.configure(state="normal")
         #
         self.top.wakeup()
-        # Nested main loop: Tkinter's main loop is not reentrant, so use
+        # Nested main loop: Tkinter's main loop ni sio reentrant, so use
         # Tcl's vwait facility, which reenters the event loop until an
         # event handler sets the variable we're waiting on
         self.nesting_level += 1
         self.root.tk.call('vwait', '::idledebugwait')
         self.nesting_level -= 1
         #
-        for b in self.buttons:
+        kila b kwenye self.buttons:
             b.configure(state="disabled")
         self.status.configure(text="")
         self.error.configure(text="", background=self.errorbg)
-        self.frame = None
+        self.frame = Tupu
 
     eleza sync_source_line(self):
         frame = self.frame
-        ikiwa not frame:
-            return
+        ikiwa sio frame:
+            rudisha
         filename, lineno = self.__frame2fileline(frame)
-        ikiwa filename[:1] + filename[-1:] != "<>" and os.path.exists(filename):
+        ikiwa filename[:1] + filename[-1:] != "<>" na os.path.exists(filename):
             self.flist.gotofileline(filename, lineno)
 
     eleza __frame2fileline(self, frame):
@@ -265,7 +265,7 @@ kundi Debugger:
         rudisha filename, lineno
 
     eleza cont(self):
-        self.idb.set_continue()
+        self.idb.set_endelea()
         self.abort_loop()
 
     eleza step(self):
@@ -277,7 +277,7 @@ kundi Debugger:
         self.abort_loop()
 
     eleza ret(self):
-        self.idb.set_return(self.frame)
+        self.idb.set_rudisha(self.frame)
         self.abort_loop()
 
     eleza quit(self):
@@ -287,18 +287,18 @@ kundi Debugger:
     eleza abort_loop(self):
         self.root.tk.call('set', '::idledebugwait', '1')
 
-    stackviewer = None
+    stackviewer = Tupu
 
     eleza show_stack(self):
-        ikiwa not self.stackviewer and self.vstack.get():
+        ikiwa sio self.stackviewer na self.vstack.get():
             self.stackviewer = sv = StackViewer(self.fstack, self.flist, self)
             ikiwa self.frame:
-                stack, i = self.idb.get_stack(self.frame, None)
+                stack, i = self.idb.get_stack(self.frame, Tupu)
                 sv.load_stack(stack, i)
-        else:
+        isipokua:
             sv = self.stackviewer
-            ikiwa sv and not self.vstack.get():
-                self.stackviewer = None
+            ikiwa sv na sio self.vstack.get():
+                self.stackviewer = Tupu
                 sv.close()
             self.fstack['height'] = 1
 
@@ -307,20 +307,20 @@ kundi Debugger:
             self.sync_source_line()
 
     eleza show_frame(self, stackitem):
-        self.frame = stackitem[0]  # lineno is stackitem[1]
+        self.frame = stackitem[0]  # lineno ni stackitem[1]
         self.show_variables()
 
-    localsviewer = None
-    globalsviewer = None
+    localsviewer = Tupu
+    globalsviewer = Tupu
 
     eleza show_locals(self):
         lv = self.localsviewer
         ikiwa self.vlocals.get():
-            ikiwa not lv:
+            ikiwa sio lv:
                 self.localsviewer = NamespaceViewer(self.flocals, "Locals")
-        else:
+        isipokua:
             ikiwa lv:
-                self.localsviewer = None
+                self.localsviewer = Tupu
                 lv.close()
                 self.flocals['height'] = 1
         self.show_variables()
@@ -328,11 +328,11 @@ kundi Debugger:
     eleza show_globals(self):
         gv = self.globalsviewer
         ikiwa self.vglobals.get():
-            ikiwa not gv:
+            ikiwa sio gv:
                 self.globalsviewer = NamespaceViewer(self.fglobals, "Globals")
-        else:
+        isipokua:
             ikiwa gv:
-                self.globalsviewer = None
+                self.globalsviewer = Tupu
                 gv.close()
                 self.fglobals['height'] = 1
         self.show_variables()
@@ -341,36 +341,36 @@ kundi Debugger:
         lv = self.localsviewer
         gv = self.globalsviewer
         frame = self.frame
-        ikiwa not frame:
-            ldict = gdict = None
-        else:
+        ikiwa sio frame:
+            ldict = gdict = Tupu
+        isipokua:
             ldict = frame.f_locals
             gdict = frame.f_globals
-            ikiwa lv and gv and ldict is gdict:
-                ldict = None
+            ikiwa lv na gv na ldict ni gdict:
+                ldict = Tupu
         ikiwa lv:
             lv.load_dict(ldict, force, self.pyshell.interp.rpcclt)
         ikiwa gv:
             gv.load_dict(gdict, force, self.pyshell.interp.rpcclt)
 
-    eleza set_breakpoint_here(self, filename, lineno):
-        self.idb.set_break(filename, lineno)
+    eleza set_komapoint_here(self, filename, lineno):
+        self.idb.set_koma(filename, lineno)
 
-    eleza clear_breakpoint_here(self, filename, lineno):
-        self.idb.clear_break(filename, lineno)
+    eleza clear_komapoint_here(self, filename, lineno):
+        self.idb.clear_koma(filename, lineno)
 
-    eleza clear_file_breaks(self, filename):
-        self.idb.clear_all_file_breaks(filename)
+    eleza clear_file_komas(self, filename):
+        self.idb.clear_all_file_komas(filename)
 
-    eleza load_breakpoints(self):
-        "Load PyShellEditorWindow breakpoints into subprocess debugger"
-        for editwin in self.pyshell.flist.inversedict:
+    eleza load_komapoints(self):
+        "Load PyShellEditorWindow komapoints into subprocess debugger"
+        kila editwin kwenye self.pyshell.flist.inversedict:
             filename = editwin.io.filename
-            try:
-                for lineno in editwin.breakpoints:
-                    self.set_breakpoint_here(filename, lineno)
-            except AttributeError:
-                continue
+            jaribu:
+                kila lineno kwenye editwin.komapoints:
+                    self.set_komapoint_here(filename, lineno)
+            tatizo AttributeError:
+                endelea
 
 kundi StackViewer(ScrolledList):
 
@@ -378,20 +378,20 @@ kundi StackViewer(ScrolledList):
         ikiwa macosx.isAquaTk():
             # At least on with the stock AquaTk version on OSX 10.4 you'll
             # get a shaking GUI that eventually kills IDLE ikiwa the width
-            # argument is specified.
+            # argument ni specified.
             ScrolledList.__init__(self, master)
-        else:
+        isipokua:
             ScrolledList.__init__(self, master, width=80)
         self.flist = flist
         self.gui = gui
         self.stack = []
 
-    eleza load_stack(self, stack, index=None):
+    eleza load_stack(self, stack, index=Tupu):
         self.stack = stack
         self.clear()
-        for i in range(len(stack)):
+        kila i kwenye range(len(stack)):
             frame, lineno = stack[i]
-            try:
+            jaribu:
                 modname = frame.f_globals["__name__"]
             except:
                 modname = "?"
@@ -401,15 +401,15 @@ kundi StackViewer(ScrolledList):
             agiza linecache
             sourceline = linecache.getline(filename, lineno)
             sourceline = sourceline.strip()
-            ikiwa funcname in ("?", "", None):
+            ikiwa funcname kwenye ("?", "", Tupu):
                 item = "%s, line %d: %s" % (modname, lineno, sourceline)
-            else:
+            isipokua:
                 item = "%s.%s(), line %d: %s" % (modname, funcname,
                                                  lineno, sourceline)
             ikiwa i == index:
                 item = "> " + item
             self.append(item)
-        ikiwa index is not None:
+        ikiwa index ni sio Tupu:
             self.select(index)
 
     eleza popup_event(self, event):
@@ -444,8 +444,8 @@ kundi StackViewer(ScrolledList):
             self.gui.show_frame(self.stack[index])
 
     eleza show_source(self, index):
-        ikiwa not (0 <= index < len(self.stack)):
-            return
+        ikiwa sio (0 <= index < len(self.stack)):
+            rudisha
         frame, lineno = self.stack[index]
         code = frame.f_code
         filename = code.co_filename
@@ -457,7 +457,7 @@ kundi StackViewer(ScrolledList):
 
 kundi NamespaceViewer:
 
-    eleza __init__(self, master, title, dict=None):
+    eleza __init__(self, master, title, dict=Tupu):
         width = 0
         height = 40
         ikiwa dict:
@@ -486,26 +486,26 @@ kundi NamespaceViewer:
 
     dict = -1
 
-    eleza load_dict(self, dict, force=0, rpc_client=None):
-        ikiwa dict is self.dict and not force:
-            return
+    eleza load_dict(self, dict, force=0, rpc_client=Tupu):
+        ikiwa dict ni self.dict na sio force:
+            rudisha
         subframe = self.subframe
         frame = self.frame
-        for c in list(subframe.children.values()):
+        kila c kwenye list(subframe.children.values()):
             c.destroy()
-        self.dict = None
-        ikiwa not dict:
-            l = Label(subframe, text="None")
+        self.dict = Tupu
+        ikiwa sio dict:
+            l = Label(subframe, text="Tupu")
             l.grid(row=0, column=0)
-        else:
+        isipokua:
             #names = sorted(dict)
             ###
             # Because of (temporary) limitations on the dict_keys type (not yet
-            # public or pickleable), have the subprocess to send a list of
-            # keys, not a dict_keys object.  sorted() will take a dict_keys
-            # (no subprocess) or a list.
+            # public ama pickleable), have the subprocess to send a list of
+            # keys, sio a dict_keys object.  sorted() will take a dict_keys
+            # (no subprocess) ama a list.
             #
-            # There is also an obscure bug in sorted(dict) where the
+            # There ni also an obscure bug kwenye sorted(dict) where the
             # interpreter gets into a loop requesting non-existing dict[0],
             # dict[1], dict[2], etc kutoka the debugger_r.DictProxy.
             ###
@@ -513,7 +513,7 @@ kundi NamespaceViewer:
             names = sorted(keys_list)
             ###
             row = 0
-            for name in names:
+            kila name kwenye names:
                 value = dict[name]
                 svalue = self.repr.repr(value) # repr(value)
                 # Strip extra quotes caused by calling repr on the (already)
@@ -527,7 +527,7 @@ kundi NamespaceViewer:
                 l.grid(row=row, column=1, sticky="nw")
                 row = row+1
         self.dict = dict
-        # XXX Could we use a <Configure> callback for the following?
+        # XXX Could we use a <Configure> callback kila the following?
         subframe.update_idletasks() # Alas!
         width = subframe.winfo_reqwidth()
         height = subframe.winfo_reqheight()
@@ -536,7 +536,7 @@ kundi NamespaceViewer:
         ikiwa height > 300:
             canvas["height"] = 300
             frame.pack(expand=1)
-        else:
+        isipokua:
             canvas["height"] = height
             frame.pack(expand=0)
 
@@ -545,6 +545,6 @@ kundi NamespaceViewer:
 
 ikiwa __name__ == "__main__":
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_debugger', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_debugger', verbosity=2, exit=Uongo)
 
 # TODO: htest?

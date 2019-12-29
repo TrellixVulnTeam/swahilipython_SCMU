@@ -15,7 +15,7 @@ kundi TestSetups(unittest.TestCase):
                                           stream=io.StringIO())
     eleza runTests(self, *cases):
         suite = unittest.TestSuite()
-        for case in cases:
+        kila case kwenye cases:
             tests = unittest.defaultTestLoader.loadTestsFromTestCase(case)
             suite.addTests(tests)
 
@@ -37,9 +37,9 @@ kundi TestSetups(unittest.TestCase):
                 Test.setUpCalled += 1
                 unittest.TestCase.setUpClass()
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         result = self.runTests(Test)
 
@@ -55,9 +55,9 @@ kundi TestSetups(unittest.TestCase):
                 Test.tearDownCalled += 1
                 unittest.TestCase.tearDownClass()
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         result = self.runTests(Test)
 
@@ -73,9 +73,9 @@ kundi TestSetups(unittest.TestCase):
                 Test.tearDownCalled += 1
                 unittest.TestCase.tearDownClass()
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         kundi Test2(unittest.TestCase):
             tearDownCalled = 0
@@ -84,9 +84,9 @@ kundi TestSetups(unittest.TestCase):
                 Test2.tearDownCalled += 1
                 unittest.TestCase.tearDownClass()
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         result = self.runTests(Test, Test2)
 
@@ -99,11 +99,11 @@ kundi TestSetups(unittest.TestCase):
         kundi BrokenTest(unittest.TestCase):
             @classmethod
             eleza setUpClass(cls):
-                raise TypeError('foo')
+                ashiria TypeError('foo')
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         result = self.runTests(BrokenTest)
 
@@ -119,22 +119,22 @@ kundi TestSetups(unittest.TestCase):
             @classmethod
             eleza tearDownClass(cls):
                 Test.tornDown += 1
-                raise TypeError('foo')
+                ashiria TypeError('foo')
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         kundi Test2(unittest.TestCase):
             tornDown = 0
             @classmethod
             eleza tearDownClass(cls):
                 Test2.tornDown += 1
-                raise TypeError('foo')
+                ashiria TypeError('foo')
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         result = self.runTests(Test, Test2)
         self.assertEqual(result.testsRun, 4)
@@ -148,37 +148,37 @@ kundi TestSetups(unittest.TestCase):
 
     eleza test_class_not_torndown_when_setup_fails(self):
         kundi Test(unittest.TestCase):
-            tornDown = False
+            tornDown = Uongo
             @classmethod
             eleza setUpClass(cls):
-                raise TypeError
+                ashiria TypeError
             @classmethod
             eleza tearDownClass(cls):
-                Test.tornDown = True
-                raise TypeError('foo')
+                Test.tornDown = Kweli
+                ashiria TypeError('foo')
             eleza test_one(self):
-                pass
+                pita
 
         self.runTests(Test)
-        self.assertFalse(Test.tornDown)
+        self.assertUongo(Test.tornDown)
 
     eleza test_class_not_setup_or_torndown_when_skipped(self):
         kundi Test(unittest.TestCase):
-            classSetUp = False
-            tornDown = False
+            classSetUp = Uongo
+            tornDown = Uongo
             @classmethod
             eleza setUpClass(cls):
-                Test.classSetUp = True
+                Test.classSetUp = Kweli
             @classmethod
             eleza tearDownClass(cls):
-                Test.tornDown = True
+                Test.tornDown = Kweli
             eleza test_one(self):
-                pass
+                pita
 
         Test = unittest.skip("hop")(Test)
         self.runTests(Test)
-        self.assertFalse(Test.classSetUp)
-        self.assertFalse(Test.tornDown)
+        self.assertUongo(Test.classSetUp)
+        self.assertUongo(Test.tornDown)
 
     eleza test_setup_teardown_order_with_pathological_suite(self):
         results = []
@@ -271,9 +271,9 @@ kundi TestSetups(unittest.TestCase):
 
         kundi Test(unittest.TestCase):
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module
 
@@ -289,30 +289,30 @@ kundi TestSetups(unittest.TestCase):
             @staticmethod
             eleza setUpModule():
                 Module.moduleSetup += 1
-                raise TypeError('foo')
+                ashiria TypeError('foo')
             @staticmethod
             eleza tearDownModule():
                 Module.moduleTornDown += 1
 
         kundi Test(unittest.TestCase):
-            classSetUp = False
-            classTornDown = False
+            classSetUp = Uongo
+            classTornDown = Uongo
             @classmethod
             eleza setUpClass(cls):
-                Test.classSetUp = True
+                Test.classSetUp = Kweli
             @classmethod
             eleza tearDownClass(cls):
-                Test.classTornDown = True
+                Test.classTornDown = Kweli
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         kundi Test2(unittest.TestCase):
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
         Test.__module__ = 'Module'
         Test2.__module__ = 'Module'
         sys.modules['Module'] = Module
@@ -321,8 +321,8 @@ kundi TestSetups(unittest.TestCase):
         self.assertEqual(Module.moduleSetup, 1)
         self.assertEqual(Module.moduleTornDown, 0)
         self.assertEqual(result.testsRun, 0)
-        self.assertFalse(Test.classSetUp)
-        self.assertFalse(Test.classTornDown)
+        self.assertUongo(Test.classSetUp)
+        self.assertUongo(Test.classTornDown)
         self.assertEqual(len(result.errors), 1)
         error, _ = result.errors[0]
         self.assertEqual(str(error), 'setUpModule (Module)')
@@ -330,11 +330,11 @@ kundi TestSetups(unittest.TestCase):
     eleza test_testcase_with_missing_module(self):
         kundi Test(unittest.TestCase):
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
         Test.__module__ = 'Module'
-        sys.modules.pop('Module', None)
+        sys.modules.pop('Module', Tupu)
 
         result = self.runTests(Test)
         self.assertEqual(result.testsRun, 2)
@@ -348,9 +348,9 @@ kundi TestSetups(unittest.TestCase):
 
         kundi Test(unittest.TestCase):
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module
 
@@ -365,27 +365,27 @@ kundi TestSetups(unittest.TestCase):
             @staticmethod
             eleza tearDownModule():
                 Module.moduleTornDown += 1
-                raise TypeError('foo')
+                ashiria TypeError('foo')
 
         kundi Test(unittest.TestCase):
-            classSetUp = False
-            classTornDown = False
+            classSetUp = Uongo
+            classTornDown = Uongo
             @classmethod
             eleza setUpClass(cls):
-                Test.classSetUp = True
+                Test.classSetUp = Kweli
             @classmethod
             eleza tearDownClass(cls):
-                Test.classTornDown = True
+                Test.classTornDown = Kweli
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         kundi Test2(unittest.TestCase):
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
         Test.__module__ = 'Module'
         Test2.__module__ = 'Module'
         sys.modules['Module'] = Module
@@ -393,8 +393,8 @@ kundi TestSetups(unittest.TestCase):
         result = self.runTests(Test, Test2)
         self.assertEqual(Module.moduleTornDown, 1)
         self.assertEqual(result.testsRun, 4)
-        self.assertTrue(Test.classSetUp)
-        self.assertTrue(Test.classTornDown)
+        self.assertKweli(Test.classSetUp)
+        self.assertKweli(Test.classTornDown)
         self.assertEqual(len(result.errors), 1)
         error, _ = result.errors[0]
         self.assertEqual(str(error), 'tearDownModule (Module)')
@@ -403,11 +403,11 @@ kundi TestSetups(unittest.TestCase):
         kundi Test(unittest.TestCase):
             @classmethod
             eleza setUpClass(cls):
-                raise unittest.SkipTest('foo')
+                ashiria unittest.SkipTest('foo')
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         result = self.runTests(Test)
         self.assertEqual(result.testsRun, 0)
@@ -420,14 +420,14 @@ kundi TestSetups(unittest.TestCase):
     eleza test_skiptest_in_setupmodule(self):
         kundi Test(unittest.TestCase):
             eleza test_one(self):
-                pass
+                pita
             eleza test_two(self):
-                pass
+                pita
 
         kundi Module(object):
             @staticmethod
             eleza setUpModule():
-                raise unittest.SkipTest('foo')
+                ashiria unittest.SkipTest('foo')
 
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module
@@ -473,30 +473,30 @@ kundi TestSetups(unittest.TestCase):
             @staticmethod
             eleza setUpModule():
                 ikiwa phase == 0:
-                    raise Exception('setUpModule')
+                    ashiria Exception('setUpModule')
             @staticmethod
             eleza tearDownModule():
                 ikiwa phase == 1:
-                    raise Exception('tearDownModule')
+                    ashiria Exception('tearDownModule')
 
         kundi Test(unittest.TestCase):
             @classmethod
             eleza setUpClass(cls):
                 ikiwa phase == 2:
-                    raise Exception('setUpClass')
+                    ashiria Exception('setUpClass')
             @classmethod
             eleza tearDownClass(cls):
                 ikiwa phase == 3:
-                    raise Exception('tearDownClass')
+                    ashiria Exception('tearDownClass')
             eleza test_something(self):
                 ikiwa phase == 4:
-                    raise Exception('test_something')
+                    ashiria Exception('test_something')
 
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module
 
         messages = ('setUpModule', 'tearDownModule', 'setUpClass', 'tearDownClass', 'test_something')
-        for phase, msg in enumerate(messages):
+        kila phase, msg kwenye enumerate(messages):
             _suite = unittest.defaultTestLoader.loadTestsFromTestCase(Test)
             suite = unittest.TestSuite([_suite])
             with self.assertRaisesRegex(Exception, msg):

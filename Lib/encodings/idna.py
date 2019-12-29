@@ -11,13 +11,13 @@ ace_prefix = b"xn--"
 sace_prefix = "xn--"
 
 # This assumes query strings, so AllowUnassigned is true
-def nameprep(label):
+eleza nameprep(label):
     # Map
     newlabel = []
     for c in label:
         if stringprep.in_table_b1(c):
             # Map to nothing
-            continue
+            endelea
         newlabel.append(stringprep.map_table_b2(c))
     label = "".join(newlabel)
 
@@ -54,22 +54,22 @@ def nameprep(label):
             # RandALCat character MUST be the first character of the
             # string, and a RandALCat character MUST be the last
             # character of the string.
-            if not RandAL[0] or not RandAL[-1]:
+            if sio RandAL[0] or sio RandAL[-1]:
                 raise UnicodeError("Violation of BIDI requirement 3")
 
-    return label
+    rudisha label
 
-def ToASCII(label):
-    try:
+eleza ToASCII(label):
+    jaribu:
         # Step 1: try ASCII
         label = label.encode("ascii")
-    except UnicodeError:
+    tatizo UnicodeError:
         pass
-    else:
+    isipokua:
         # Skip to step 3: UseSTD3ASCIIRules is false, so
         # Skip to step 8.
         if 0 < len(label) < 64:
-            return label
+            rudisha label
         raise UnicodeError("label empty or too long")
 
     # Step 2: nameprep
@@ -77,14 +77,14 @@ def ToASCII(label):
 
     # Step 3: UseSTD3ASCIIRules is false
     # Step 4: try ASCII
-    try:
+    jaribu:
         label = label.encode("ascii")
-    except UnicodeError:
+    tatizo UnicodeError:
         pass
-    else:
+    isipokua:
         # Skip to step 8.
         if 0 < len(label) < 64:
-            return label
+            rudisha label
         raise UnicodeError("label empty or too long")
 
     # Step 5: Check ACE prefix
@@ -99,30 +99,30 @@ def ToASCII(label):
 
     # Step 8: Check size
     if 0 < len(label) < 64:
-        return label
+        rudisha label
     raise UnicodeError("label empty or too long")
 
-def ToUnicode(label):
+eleza ToUnicode(label):
     # Step 1: Check for ASCII
     if isinstance(label, bytes):
         pure_ascii = True
-    else:
-        try:
+    isipokua:
+        jaribu:
             label = label.encode("ascii")
             pure_ascii = True
-        except UnicodeError:
+        tatizo UnicodeError:
             pure_ascii = False
-    if not pure_ascii:
+    if sio pure_ascii:
         # Step 2: Perform nameprep
         label = nameprep(label)
         # It doesn't say this, but apparently, it should be ASCII now
-        try:
+        jaribu:
             label = label.encode("ascii")
-        except UnicodeError:
+        tatizo UnicodeError:
             raise UnicodeError("Invalid character in IDN label")
     # Step 3: Check for ACE prefix
-    if not label.startswith(ace_prefix):
-        return str(label, "ascii")
+    if sio label.startswith(ace_prefix):
+        rudisha str(label, "ascii")
 
     # Step 4: Remove ACE prefix
     label1 = label[len(ace_prefix):]
@@ -136,103 +136,103 @@ def ToUnicode(label):
     # Step 7: Compare the result of step 6 with the one of step 3
     # label2 will already be in lower case.
     if str(label, "ascii").lower() != str(label2, "ascii"):
-        raise UnicodeError("IDNA does not round-trip", label, label2)
+        raise UnicodeError("IDNA does sio round-trip", label, label2)
 
-    # Step 8: return the result of step 5
-    return result
+    # Step 8: rudisha the result of step 5
+    rudisha result
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
-    def encode(self, input, errors='strict'):
+kundi Codec(codecs.Codec):
+    eleza encode(self, input, errors='strict'):
 
         if errors != 'strict':
             # IDNA is quite clear that implementations must be strict
             raise UnicodeError("unsupported error handling "+errors)
 
-        if not input:
-            return b'', 0
+        if sio input:
+            rudisha b'', 0
 
-        try:
+        jaribu:
             result = input.encode('ascii')
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             pass
-        else:
+        isipokua:
             # ASCII name: fast path
             labels = result.split(b'.')
             for label in labels[:-1]:
-                if not (0 < len(label) < 64):
+                if sio (0 < len(label) < 64):
                     raise UnicodeError("label empty or too long")
             if len(labels[-1]) >= 64:
                 raise UnicodeError("label too long")
-            return result, len(input)
+            rudisha result, len(input)
 
         result = bytearray()
         labels = dots.split(input)
-        if labels and not labels[-1]:
+        if labels and sio labels[-1]:
             trailing_dot = b'.'
-            del labels[-1]
-        else:
+            toa labels[-1]
+        isipokua:
             trailing_dot = b''
         for label in labels:
             if result:
                 # Join with U+002E
                 result.extend(b'.')
             result.extend(ToASCII(label))
-        return bytes(result+trailing_dot), len(input)
+        rudisha bytes(result+trailing_dot), len(input)
 
-    def decode(self, input, errors='strict'):
+    eleza decode(self, input, errors='strict'):
 
         if errors != 'strict':
             raise UnicodeError("Unsupported error handling "+errors)
 
-        if not input:
-            return "", 0
+        if sio input:
+            rudisha "", 0
 
         # IDNA allows decoding to operate on Unicode strings, too.
-        if not isinstance(input, bytes):
+        if sio isinstance(input, bytes):
             # XXX obviously wrong, see #3232
             input = bytes(input)
 
-        if ace_prefix not in input:
+        if ace_prefix haiko kwenye input:
             # Fast path
-            try:
-                return input.decode('ascii'), len(input)
-            except UnicodeDecodeError:
+            jaribu:
+                rudisha input.decode('ascii'), len(input)
+            tatizo UnicodeDecodeError:
                 pass
 
         labels = input.split(b".")
 
         if labels and len(labels[-1]) == 0:
             trailing_dot = '.'
-            del labels[-1]
-        else:
+            toa labels[-1]
+        isipokua:
             trailing_dot = ''
 
         result = []
         for label in labels:
             result.append(ToUnicode(label))
 
-        return ".".join(result)+trailing_dot, len(input)
+        rudisha ".".join(result)+trailing_dot, len(input)
 
-class IncrementalEncoder(codecs.BufferedIncrementalEncoder):
-    def _buffer_encode(self, input, errors, final):
+kundi IncrementalEncoder(codecs.BufferedIncrementalEncoder):
+    eleza _buffer_encode(self, input, errors, final):
         if errors != 'strict':
             # IDNA is quite clear that implementations must be strict
             raise UnicodeError("unsupported error handling "+errors)
 
-        if not input:
-            return (b'', 0)
+        if sio input:
+            rudisha (b'', 0)
 
         labels = dots.split(input)
         trailing_dot = b''
         if labels:
-            if not labels[-1]:
+            if sio labels[-1]:
                 trailing_dot = b'.'
-                del labels[-1]
-            lasivyo not final:
+                toa labels[-1]
+            lasivyo sio final:
                 # Keep potentially unfinished label until the next call
-                del labels[-1]
+                toa labels[-1]
                 if labels:
                     trailing_dot = b'.'
 
@@ -248,32 +248,32 @@ class IncrementalEncoder(codecs.BufferedIncrementalEncoder):
 
         result += trailing_dot
         size += len(trailing_dot)
-        return (bytes(result), size)
+        rudisha (bytes(result), size)
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
-    def _buffer_decode(self, input, errors, final):
+kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
+    eleza _buffer_decode(self, input, errors, final):
         if errors != 'strict':
             raise UnicodeError("Unsupported error handling "+errors)
 
-        if not input:
-            return ("", 0)
+        if sio input:
+            rudisha ("", 0)
 
         # IDNA allows decoding to operate on Unicode strings, too.
         if isinstance(input, str):
             labels = dots.split(input)
-        else:
+        isipokua:
             # Must be ASCII string
             input = str(input, "ascii")
             labels = input.split(".")
 
         trailing_dot = ''
         if labels:
-            if not labels[-1]:
+            if sio labels[-1]:
                 trailing_dot = '.'
-                del labels[-1]
-            lasivyo not final:
+                toa labels[-1]
+            lasivyo sio final:
                 # Keep potentially unfinished label until the next call
-                del labels[-1]
+                toa labels[-1]
                 if labels:
                     trailing_dot = '.'
 
@@ -287,18 +287,18 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
         result = ".".join(result) + trailing_dot
         size += len(trailing_dot)
-        return (result, size)
+        rudisha (result, size)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+kundi StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+kundi StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='idna',
         encode=Codec().encode,
         decode=Codec().decode,

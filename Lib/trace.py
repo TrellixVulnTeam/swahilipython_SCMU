@@ -66,8 +66,8 @@ PRAGMA_NOCOVER = "#pragma NO COVER"
 
 kundi _Ignore:
     def __init__(self, modules=None, dirs=None):
-        self._mods = set() if not modules else set(modules)
-        self._dirs = [] if not dirs else [os.path.normpath(d)
+        self._mods = set() if sio modules else set(modules)
+        self._dirs = [] if sio dirs else [os.path.normpath(d)
                                           for d in dirs]
         self._ignore = { '<string>': 1 }
 
@@ -139,7 +139,7 @@ def _fullmodname(path):
 
     if longest:
         base = path[len(longest) + 1:]
-    else:
+    isipokua:
         base = path
     # the drive letter is never part of the module name
     drive, base = os.path.splitdrive(base)
@@ -168,16 +168,16 @@ kundi CoverageResults:
         self.outfile = outfile
         if self.infile:
             # Try to merge existing counts file.
-            try:
+            jaribu:
                 with open(self.infile, 'rb') as f:
                     counts, calledfuncs, callers = pickle.load(f)
                 self.update(self.__class__(counts, calledfuncs, callers))
-            except (OSError, EOFError, ValueError) as err:
+            tatizo (OSError, EOFError, ValueError) as err:
                 print(("Skipping counts file %r: %s"
                                       % (self.infile, err)), file=sys.stderr)
 
     def is_ignored_filename(self, filename):
-        """Return True if the filename does not refer to a file
+        """Return True if the filename does sio refer to a file
         we want to have reported.
         """
         return filename.startswith('<') and filename.endswith('>')
@@ -246,7 +246,7 @@ kundi CoverageResults:
 
         for filename, count in per_file.items():
             if self.is_ignored_filename(filename):
-                continue
+                endelea
 
             if filename.endswith(".pyc"):
                 filename = filename[:-1]
@@ -254,9 +254,9 @@ kundi CoverageResults:
             if coverdir is None:
                 dir = os.path.dirname(os.path.abspath(filename))
                 modulename = _modname(filename)
-            else:
+            isipokua:
                 dir = coverdir
-                if not os.path.exists(dir):
+                if sio os.path.exists(dir):
                     os.makedirs(dir)
                 modulename = _fullmodname(filename)
 
@@ -264,7 +264,7 @@ kundi CoverageResults:
             # executable content (returned as a dict for better lookup speed)
             if show_missing:
                 lnotab = _find_executable_linenos(filename)
-            else:
+            isipokua:
                 lnotab = {}
             source = linecache.getlines(filename)
             coverpath = os.path.join(dir, modulename + ".cover")
@@ -285,20 +285,20 @@ kundi CoverageResults:
 
         if self.outfile:
             # try and store counts and module info into self.outfile
-            try:
+            jaribu:
                 pickle.dump((self.counts, self.calledfuncs, self.callers),
                             open(self.outfile, 'wb'), 1)
-            except OSError as err:
+            tatizo OSError as err:
                 print("Can't save counts files because %s" % err, file=sys.stderr)
 
     def write_results_file(self, path, lines, lnotab, lines_hit, encoding=None):
         """Return a coverage results file in path."""
         # ``lnotab`` is a dict of executable lines, or a line number "table"
 
-        try:
+        jaribu:
             outfile = open(path, "w", encoding=encoding)
-        except OSError as err:
-            print(("trace: Could not open %r for writing: %s "
+        tatizo OSError as err:
+            print(("trace: Could sio open %r for writing: %s "
                                   "- skipping" % (path, err)), file=sys.stderr)
             return 0, 0
 
@@ -312,12 +312,12 @@ kundi CoverageResults:
                     outfile.write("%5d: " % lines_hit[lineno])
                     n_hits += 1
                     n_lines += 1
-                lasivyo lineno in lnotab and not PRAGMA_NOCOVER in line:
+                lasivyo lineno in lnotab and sio PRAGMA_NOCOVER in line:
                     # Highlight never-executed lines, unless the line contains
                     # #pragma: NO COVER
                     outfile.write(">>>>>> ")
                     n_lines += 1
-                else:
+                isipokua:
                     outfile.write("       ")
                 outfile.write(line.expandtabs(8))
 
@@ -328,7 +328,7 @@ def _find_lines_kutoka_code(code, strs):
     linenos = {}
 
     for _, lineno in dis.findlinestarts(code):
-        if lineno not in strs:
+        if lineno haiko kwenye strs:
             linenos[lineno] = 1
 
     return linenos
@@ -370,11 +370,11 @@ def _find_strings(filename, encoding=None):
 
 def _find_executable_linenos(filename):
     """Return dict where keys are line numbers in the line number table."""
-    try:
+    jaribu:
         with tokenize.open(filename) as f:
             prog = f.read()
             encoding = f.encoding
-    except OSError as err:
+    tatizo OSError as err:
         print(("Not printing coverage data for %r: %s"
                               % (filename, err)), file=sys.stderr)
         return {}
@@ -429,7 +429,7 @@ kundi Trace:
         lasivyo count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_count
-        else:
+        isipokua:
             # Ahem -- do nothing?  Okay.
             self.donothing = 1
 
@@ -441,20 +441,20 @@ kundi Trace:
     def runctx(self, cmd, globals=None, locals=None):
         if globals is None: globals = {}
         if locals is None: locals = {}
-        if not self.donothing:
+        if sio self.donothing:
             threading.settrace(self.globaltrace)
             sys.settrace(self.globaltrace)
-        try:
+        jaribu:
             exec(cmd, globals, locals)
-        finally:
-            if not self.donothing:
+        mwishowe:
+            if sio self.donothing:
                 sys.settrace(None)
                 threading.settrace(None)
 
     def runfunc(*args, **kw):
         if len(args) >= 2:
             self, func, *args = args
-        lasivyo not args:
+        lasivyo sio args:
             raise TypeError("descriptor 'runfunc' of 'Trace' object "
                             "needs an argument")
         lasivyo 'func' in kw:
@@ -463,17 +463,17 @@ kundi Trace:
             agiza warnings
             warnings.warn("Passing 'func' as keyword argument is deprecated",
                           DeprecationWarning, stacklevel=2)
-        else:
+        isipokua:
             raise TypeError('runfunc expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         result = None
-        if not self.donothing:
+        if sio self.donothing:
             sys.settrace(self.globaltrace)
-        try:
+        jaribu:
             result = func(*args, **kw)
-        finally:
-            if not self.donothing:
+        mwishowe:
+            if sio self.donothing:
                 sys.settrace(None)
         return result
     runfunc.__text_signature__ = '($self, func, /, *args, **kw)'
@@ -483,15 +483,15 @@ kundi Trace:
         filename = code.co_filename
         if filename:
             modulename = _modname(filename)
-        else:
+        isipokua:
             modulename = None
 
         funcname = code.co_name
         clsname = None
         if code in self._caller_cache:
-            if self._caller_cache[code] is not None:
+            if self._caller_cache[code] ni sio None:
                 clsname = self._caller_cache[code]
-        else:
+        isipokua:
             self._caller_cache[code] = None
             ## use of gc.get_referrers() was suggested by Michael Hudson
             # all functions which refer to this code object
@@ -510,11 +510,11 @@ kundi Trace:
                         # ditto for new.classobj()
                         clsname = classes[0].__name__
                         # cache the result - assumption is that new.* is
-                        # not called later to disturb this relationship
+                        # sio called later to disturb this relationship
                         # _caller_cache could be flushed if functions in
                         # the new module get called.
                         self._caller_cache[code] = clsname
-        if clsname is not None:
+        if clsname ni sio None:
             funcname = "%s.%s" % (clsname, funcname)
 
         return filename, modulename, funcname
@@ -552,14 +552,14 @@ kundi Trace:
                 # XXX _modname() doesn't work right for packages, so
                 # the ignore support won't work right for packages
                 modulename = _modname(filename)
-                if modulename is not None:
+                if modulename ni sio None:
                     ignore_it = self.ignore.names(filename, modulename)
-                    if not ignore_it:
+                    if sio ignore_it:
                         if self.trace:
                             print((" --- modulename: %s, funcname: %s"
                                    % (modulename, code.co_name)))
                         return self.localtrace
-            else:
+            isipokua:
                 return None
 
     def localtrace_trace_and_count(self, frame, why, arg):
@@ -632,12 +632,12 @@ def main():
 
     _grp = grp.add_mutually_exclusive_group()
     _grp.add_argument('-r', '--report', action='store_true',
-            help='Generate a report kutoka a counts file; does not execute any '
+            help='Generate a report kutoka a counts file; does sio execute any '
                  'code. --file must specify the results file to read, which '
                  'must have been created in a previous run with --count '
                  '--file=FILE')
     _grp.add_argument('-R', '--no-report', action='store_true',
-            help='Do not generate the coverage report files. '
+            help='Do sio generate the coverage report files. '
                  'Useful if you want to accumulate over several runs.')
 
     grp.add_argument('-f', '--file',
@@ -647,14 +647,14 @@ def main():
                  'for <package>.<module> will be written to file '
                  '<dir>/<package>/<module>.cover')
     grp.add_argument('-m', '--missing', action='store_true',
-            help='Annotate executable lines that were not executed with '
+            help='Annotate executable lines that were sio executed with '
                  '">>>>>> "')
     grp.add_argument('-s', '--summary', action='store_true',
             help='Write a brief summary for each file to sys.stdout. '
                  'Can only be used with --count or --report')
     grp.add_argument('-g', '--timing', action='store_true',
             help='Prefix each line with the time since the program started. '
-                 'Only used while tracing')
+                 'Only used wakati tracing')
 
     grp = parser.add_argument_group('Filters',
             'Can be specified multiple times')
@@ -691,19 +691,19 @@ def main():
                        for i in opts.ignore_dir for s in i.split(os.pathsep)]
 
     if opts.report:
-        if not opts.file:
+        if sio opts.file:
             parser.error('-r/--report requires -f/--file')
         results = CoverageResults(infile=opts.file, outfile=opts.file)
         return results.write_results(opts.missing, opts.summary, opts.coverdir)
 
-    if not any([opts.trace, opts.count, opts.listfuncs, opts.trackcalls]):
+    if sio any([opts.trace, opts.count, opts.listfuncs, opts.trackcalls]):
         parser.error('must specify one of --trace, --count, --report, '
                      '--listfuncs, or --trackcalls')
 
     if opts.listfuncs and (opts.count or opts.trace):
         parser.error('cannot specify both --listfuncs and (--trace or --count)')
 
-    if opts.summary and not opts.count:
+    if opts.summary and sio opts.count:
         parser.error('--summary can only be used with --count or --report')
 
     if opts.progname is None:
@@ -713,7 +713,7 @@ def main():
               countcallers=opts.trackcalls, ignoremods=opts.ignore_module,
               ignoredirs=opts.ignore_dir, infile=opts.file,
               outfile=opts.file, timing=opts.timing)
-    try:
+    jaribu:
         if opts.module:
             agiza runpy
             module_name = opts.progname
@@ -727,7 +727,7 @@ def main():
                 '__spec__': mod_spec,
                 '__cached__': None,
             }
-        else:
+        isipokua:
             sys.argv = [opts.progname, *opts.arguments]
             sys.path[0] = os.path.dirname(opts.progname)
 
@@ -741,14 +741,14 @@ def main():
                 '__cached__': None,
             }
         t.runctx(code, globs, globs)
-    except OSError as err:
+    tatizo OSError as err:
         sys.exit("Cannot run file %r because: %s" % (sys.argv[0], err))
-    except SystemExit:
+    tatizo SystemExit:
         pass
 
     results = t.results()
 
-    if not opts.no_report:
+    if sio opts.no_report:
         results.write_results(opts.missing, opts.summary, opts.coverdir)
 
 if __name__=='__main__':

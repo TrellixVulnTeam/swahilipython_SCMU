@@ -9,9 +9,9 @@ from ctypes import *
 from ctypes.test import need_symbol
 import sys, unittest
 
-try:
+jaribu:
     WINFUNCTYPE
-except NameError:
+tatizo NameError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 
@@ -35,32 +35,32 @@ class FunctionTestCase(unittest.TestCase):
         # wasn't checked, and it even crashed Python.
         # Found by Greg Chapman.
 
-        try:
+        jaribu:
             class X(object, Array):
                 _length_ = 5
                 _type_ = "i"
-        except TypeError:
+        tatizo TypeError:
             pass
 
 
         from _ctypes agiza _Pointer
-        try:
+        jaribu:
             class X(object, _Pointer):
                 pass
-        except TypeError:
+        tatizo TypeError:
             pass
 
         from _ctypes agiza _SimpleCData
-        try:
+        jaribu:
             class X(object, _SimpleCData):
                 _type_ = "i"
-        except TypeError:
+        tatizo TypeError:
             pass
 
-        try:
+        jaribu:
             class X(object, Structure):
                 _fields_ = []
-        except TypeError:
+        tatizo TypeError:
             pass
 
 
@@ -180,7 +180,7 @@ class FunctionTestCase(unittest.TestCase):
         f.argtypes = [POINTER(c_int)]
 
         # This only works if the value c_int(42) passed to the
-        # function is still alive while the pointer (the result) is
+        # function is still alive wakati the pointer (the result) is
         # used.
 
         v = c_int(42)

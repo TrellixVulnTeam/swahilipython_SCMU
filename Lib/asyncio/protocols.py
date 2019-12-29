@@ -7,10 +7,10 @@ __all__ = (
 
 
 kundi BaseProtocol:
-    """Common base kundi for protocol interfaces.
+    """Common base kundi kila protocol interfaces.
 
     Usually user implements protocols that derived kutoka BaseProtocol
-    like Protocol or ProcessProtocol.
+    like Protocol ama ProcessProtocol.
 
     The only case when BaseProtocol should be implemented directly is
     write-only transport like write pipe
@@ -19,65 +19,65 @@ kundi BaseProtocol:
     __slots__ = ()
 
     eleza connection_made(self, transport):
-        """Called when a connection is made.
+        """Called when a connection ni made.
 
-        The argument is the transport representing the pipe connection.
-        To receive data, wait for data_received() calls.
-        When the connection is closed, connection_lost() is called.
+        The argument ni the transport representing the pipe connection.
+        To receive data, wait kila data_received() calls.
+        When the connection ni closed, connection_lost() ni called.
         """
 
     eleza connection_lost(self, exc):
-        """Called when the connection is lost or closed.
+        """Called when the connection ni lost ama closed.
 
-        The argument is an exception object or None (the latter
-        meaning a regular EOF is received or the connection was
-        aborted or closed).
+        The argument ni an exception object ama Tupu (the latter
+        meaning a regular EOF ni received ama the connection was
+        aborted ama closed).
         """
 
     eleza pause_writing(self):
         """Called when the transport's buffer goes over the high-water mark.
 
-        Pause and resume calls are paired -- pause_writing() is called
+        Pause na resume calls are paired -- pause_writing() ni called
         once when the buffer goes strictly over the high-water mark
         (even ikiwa subsequent writes increases the buffer size even
-        more), and eventually resume_writing() is called once when the
+        more), na eventually resume_writing() ni called once when the
         buffer size reaches the low-water mark.
 
         Note that ikiwa the buffer size equals the high-water mark,
-        pause_writing() is not called -- it must go strictly over.
-        Conversely, resume_writing() is called when the buffer size is
-        equal or lower than the low-water mark.  These end conditions
-        are agizaant to ensure that things go as expected when either
-        mark is zero.
+        pause_writing() ni sio called -- it must go strictly over.
+        Conversely, resume_writing() ni called when the buffer size is
+        equal ama lower than the low-water mark.  These end conditions
+        are agizaant to ensure that things go kama expected when either
+        mark ni zero.
 
-        NOTE: This is the only Protocol callback that is not called
+        NOTE: This ni the only Protocol callback that ni sio called
         through EventLoop.call_soon() -- ikiwa it were, it would have no
         effect when it's most needed (when the app keeps writing
-        without yielding until pause_writing() is called).
+        without tumaing until pause_writing() ni called).
         """
 
     eleza resume_writing(self):
         """Called when the transport's buffer drains below the low-water mark.
 
-        See pause_writing() for details.
+        See pause_writing() kila details.
         """
 
 
 kundi Protocol(BaseProtocol):
-    """Interface for stream protocol.
+    """Interface kila stream protocol.
 
     The user should implement this interface.  They can inherit kutoka
     this kundi but don't need to.  The implementations here do
-    nothing (they don't raise exceptions).
+    nothing (they don't ashiria exceptions).
 
-    When the user wants to requests a transport, they pass a protocol
+    When the user wants to requests a transport, they pita a protocol
     factory to a utility function (e.g., EventLoop.create_connection()).
 
-    When the connection is made successfully, connection_made() is
+    When the connection ni made successfully, connection_made() is
     called with a suitable transport object.  Then data_received()
-    will be called 0 or more times with data (bytes) received kutoka the
+    will be called 0 ama more times with data (bytes) received kutoka the
     transport; finally, connection_lost() will be called exactly once
-    with either an exception object or None as an argument.
+    with either an exception object ama Tupu kama an argument.
 
     State machine of calls:
 
@@ -92,34 +92,34 @@ kundi Protocol(BaseProtocol):
     __slots__ = ()
 
     eleza data_received(self, data):
-        """Called when some data is received.
+        """Called when some data ni received.
 
-        The argument is a bytes object.
+        The argument ni a bytes object.
         """
 
     eleza eof_received(self):
-        """Called when the other end calls write_eof() or equivalent.
+        """Called when the other end calls write_eof() ama equivalent.
 
-        If this returns a false value (including None), the transport
-        will close itself.  If it returns a true value, closing the
-        transport is up to the protocol.
+        If this rudishas a false value (including Tupu), the transport
+        will close itself.  If it rudishas a true value, closing the
+        transport ni up to the protocol.
         """
 
 
 kundi BufferedProtocol(BaseProtocol):
-    """Interface for stream protocol with manual buffer control.
+    """Interface kila stream protocol with manual buffer control.
 
-    Important: this has been added to asyncio in Python 3.7
-    *on a provisional basis*!  Consider it as an experimental API that
-    might be changed or removed in Python 3.8.
+    Important: this has been added to asyncio kwenye Python 3.7
+    *on a provisional basis*!  Consider it kama an experimental API that
+    might be changed ama removed kwenye Python 3.8.
 
-    Event methods, such as `create_server` and `create_connection`,
+    Event methods, such kama `create_server` na `create_connection`,
     accept factories that rudisha protocols that implement this interface.
 
-    The idea of BufferedProtocol is that it allows to manually allocate
-    and control the receive buffer.  Event loops can then use the buffer
+    The idea of BufferedProtocol ni that it allows to manually allocate
+    na control the receive buffer.  Event loops can then use the buffer
     provided by the protocol to avoid unnecessary data copies.  This
-    can result in noticeable performance improvement for protocols that
+    can result kwenye noticeable performance improvement kila protocols that
     receive big amounts of data.  Sophisticated protocols can allocate
     the buffer only once at creation time.
 
@@ -139,62 +139,62 @@ kundi BufferedProtocol(BaseProtocol):
     eleza get_buffer(self, sizehint):
         """Called to allocate a new receive buffer.
 
-        *sizehint* is a recommended minimal size for the returned
+        *sizehint* ni a recommended minimal size kila the rudishaed
         buffer.  When set to -1, the buffer size can be arbitrary.
 
         Must rudisha an object that implements the
         :ref:`buffer protocol <bufferobjects>`.
-        It is an error to rudisha a zero-sized buffer.
+        It ni an error to rudisha a zero-sized buffer.
         """
 
     eleza buffer_updated(self, nbytes):
         """Called when the buffer was updated with the received data.
 
-        *nbytes* is the total number of bytes that were written to
+        *nbytes* ni the total number of bytes that were written to
         the buffer.
         """
 
     eleza eof_received(self):
-        """Called when the other end calls write_eof() or equivalent.
+        """Called when the other end calls write_eof() ama equivalent.
 
-        If this returns a false value (including None), the transport
-        will close itself.  If it returns a true value, closing the
-        transport is up to the protocol.
+        If this rudishas a false value (including Tupu), the transport
+        will close itself.  If it rudishas a true value, closing the
+        transport ni up to the protocol.
         """
 
 
 kundi DatagramProtocol(BaseProtocol):
-    """Interface for datagram protocol."""
+    """Interface kila datagram protocol."""
 
     __slots__ = ()
 
     eleza datagram_received(self, data, addr):
-        """Called when some datagram is received."""
+        """Called when some datagram ni received."""
 
     eleza error_received(self, exc):
-        """Called when a send or receive operation raises an OSError.
+        """Called when a send ama receive operation ashirias an OSError.
 
-        (Other than BlockingIOError or InterruptedError.)
+        (Other than BlockingIOError ama InterruptedError.)
         """
 
 
 kundi SubprocessProtocol(BaseProtocol):
-    """Interface for protocol for subprocess calls."""
+    """Interface kila protocol kila subprocess calls."""
 
     __slots__ = ()
 
     eleza pipe_data_received(self, fd, data):
         """Called when the subprocess writes data into stdout/stderr pipe.
 
-        fd is int file descriptor.
-        data is bytes object.
+        fd ni int file descriptor.
+        data ni bytes object.
         """
 
     eleza pipe_connection_lost(self, fd, exc):
         """Called when a file descriptor associated with the child process is
         closed.
 
-        fd is the int file descriptor that was closed.
+        fd ni the int file descriptor that was closed.
         """
 
     eleza process_exited(self):
@@ -203,17 +203,17 @@ kundi SubprocessProtocol(BaseProtocol):
 
 eleza _feed_data_to_buffered_proto(proto, data):
     data_len = len(data)
-    while data_len:
+    wakati data_len:
         buf = proto.get_buffer(data_len)
         buf_len = len(buf)
-        ikiwa not buf_len:
-            raise RuntimeError('get_buffer() returned an empty buffer')
+        ikiwa sio buf_len:
+            ashiria RuntimeError('get_buffer() rudishaed an empty buffer')
 
         ikiwa buf_len >= data_len:
             buf[:data_len] = data
             proto.buffer_updated(data_len)
-            return
-        else:
+            rudisha
+        isipokua:
             buf[:buf_len] = data[:buf_len]
             proto.buffer_updated(buf_len)
             data = data[buf_len:]

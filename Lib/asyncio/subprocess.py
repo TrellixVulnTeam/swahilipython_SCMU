@@ -17,24 +17,24 @@ DEVNULL = subprocess.DEVNULL
 
 kundi SubprocessStreamProtocol(streams.FlowControlMixin,
                                protocols.SubprocessProtocol):
-    """Like StreamReaderProtocol, but for a subprocess."""
+    """Like StreamReaderProtocol, but kila a subprocess."""
 
     eleza __init__(self, limit, loop):
         super().__init__(loop=loop)
         self._limit = limit
-        self.stdin = self.stdout = self.stderr = None
-        self._transport = None
-        self._process_exited = False
+        self.stdin = self.stdout = self.stderr = Tupu
+        self._transport = Tupu
+        self._process_exited = Uongo
         self._pipe_fds = []
         self._stdin_closed = self._loop.create_future()
 
     eleza __repr__(self):
         info = [self.__class__.__name__]
-        ikiwa self.stdin is not None:
+        ikiwa self.stdin ni sio Tupu:
             info.append(f'stdin={self.stdin!r}')
-        ikiwa self.stdout is not None:
+        ikiwa self.stdout ni sio Tupu:
             info.append(f'stdout={self.stdout!r}')
-        ikiwa self.stderr is not None:
+        ikiwa self.stderr ni sio Tupu:
             info.append(f'stderr={self.stderr!r}')
         rudisha '<{}>'.format(' '.join(info))
 
@@ -42,24 +42,24 @@ kundi SubprocessStreamProtocol(streams.FlowControlMixin,
         self._transport = transport
 
         stdout_transport = transport.get_pipe_transport(1)
-        ikiwa stdout_transport is not None:
+        ikiwa stdout_transport ni sio Tupu:
             self.stdout = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stdout.set_transport(stdout_transport)
             self._pipe_fds.append(1)
 
         stderr_transport = transport.get_pipe_transport(2)
-        ikiwa stderr_transport is not None:
+        ikiwa stderr_transport ni sio Tupu:
             self.stderr = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stderr.set_transport(stderr_transport)
             self._pipe_fds.append(2)
 
         stdin_transport = transport.get_pipe_transport(0)
-        ikiwa stdin_transport is not None:
+        ikiwa stdin_transport ni sio Tupu:
             self.stdin = streams.StreamWriter(stdin_transport,
                                               protocol=self,
-                                              reader=None,
+                                              reader=Tupu,
                                               loop=self._loop)
 
     eleza pipe_data_received(self, fd, data):
@@ -67,49 +67,49 @@ kundi SubprocessStreamProtocol(streams.FlowControlMixin,
             reader = self.stdout
         elikiwa fd == 2:
             reader = self.stderr
-        else:
-            reader = None
-        ikiwa reader is not None:
+        isipokua:
+            reader = Tupu
+        ikiwa reader ni sio Tupu:
             reader.feed_data(data)
 
     eleza pipe_connection_lost(self, fd, exc):
         ikiwa fd == 0:
             pipe = self.stdin
-            ikiwa pipe is not None:
+            ikiwa pipe ni sio Tupu:
                 pipe.close()
             self.connection_lost(exc)
-            ikiwa exc is None:
-                self._stdin_closed.set_result(None)
-            else:
+            ikiwa exc ni Tupu:
+                self._stdin_closed.set_result(Tupu)
+            isipokua:
                 self._stdin_closed.set_exception(exc)
-            return
+            rudisha
         ikiwa fd == 1:
             reader = self.stdout
         elikiwa fd == 2:
             reader = self.stderr
-        else:
-            reader = None
-        ikiwa reader is not None:
-            ikiwa exc is None:
+        isipokua:
+            reader = Tupu
+        ikiwa reader ni sio Tupu:
+            ikiwa exc ni Tupu:
                 reader.feed_eof()
-            else:
+            isipokua:
                 reader.set_exception(exc)
 
-        ikiwa fd in self._pipe_fds:
+        ikiwa fd kwenye self._pipe_fds:
             self._pipe_fds.remove(fd)
         self._maybe_close_transport()
 
     eleza process_exited(self):
-        self._process_exited = True
+        self._process_exited = Kweli
         self._maybe_close_transport()
 
     eleza _maybe_close_transport(self):
-        ikiwa len(self._pipe_fds) == 0 and self._process_exited:
+        ikiwa len(self._pipe_fds) == 0 na self._process_exited:
             self._transport.close()
-            self._transport = None
+            self._transport = Tupu
 
     eleza _get_close_waiter(self, stream):
-        ikiwa stream is self.stdin:
+        ikiwa stream ni self.stdin:
             rudisha self._stdin_closed
 
 
@@ -131,7 +131,7 @@ kundi Process:
         rudisha self._transport.get_returncode()
 
     async eleza wait(self):
-        """Wait until the process exit and rudisha the process rudisha code."""
+        """Wait until the process exit na rudisha the process rudisha code."""
         rudisha await self._transport._wait()
 
     eleza send_signal(self, signal):
@@ -149,10 +149,10 @@ kundi Process:
         ikiwa debug:
             logger.debug(
                 '%r communicate: feed stdin (%s bytes)', self, len(input))
-        try:
+        jaribu:
             await self.stdin.drain()
-        except (BrokenPipeError, ConnectionResetError) as exc:
-            # communicate() ignores BrokenPipeError and ConnectionResetError
+        tatizo (BrokenPipeError, ConnectionResetError) kama exc:
+            # communicate() ignores BrokenPipeError na ConnectionResetError
             ikiwa debug:
                 logger.debug('%r communicate: stdin got %r', self, exc)
 
@@ -161,13 +161,13 @@ kundi Process:
         self.stdin.close()
 
     async eleza _noop(self):
-        rudisha None
+        rudisha Tupu
 
     async eleza _read_stream(self, fd):
         transport = self._transport.get_pipe_transport(fd)
         ikiwa fd == 2:
             stream = self.stderr
-        else:
+        isipokua:
             assert fd == 1
             stream = self.stdout
         ikiwa self._loop.get_debug():
@@ -180,18 +180,18 @@ kundi Process:
         transport.close()
         rudisha output
 
-    async eleza communicate(self, input=None):
-        ikiwa input is not None:
+    async eleza communicate(self, input=Tupu):
+        ikiwa input ni sio Tupu:
             stdin = self._feed_stdin(input)
-        else:
+        isipokua:
             stdin = self._noop()
-        ikiwa self.stdout is not None:
+        ikiwa self.stdout ni sio Tupu:
             stdout = self._read_stream(1)
-        else:
+        isipokua:
             stdout = self._noop()
-        ikiwa self.stderr is not None:
+        ikiwa self.stderr ni sio Tupu:
             stderr = self._read_stream(2)
-        else:
+        isipokua:
             stderr = self._noop()
         stdin, stdout, stderr = await tasks.gather(stdin, stdout, stderr,
                                                    loop=self._loop)
@@ -199,14 +199,14 @@ kundi Process:
         rudisha (stdout, stderr)
 
 
-async eleza create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,
-                                  loop=None, limit=streams._DEFAULT_LIMIT,
+async eleza create_subprocess_shell(cmd, stdin=Tupu, stdout=Tupu, stderr=Tupu,
+                                  loop=Tupu, limit=streams._DEFAULT_LIMIT,
                                   **kwds):
-    ikiwa loop is None:
+    ikiwa loop ni Tupu:
         loop = events.get_event_loop()
-    else:
-        warnings.warn("The loop argument is deprecated since Python 3.8 "
-                      "and scheduled for removal in Python 3.10.",
+    isipokua:
+        warnings.warn("The loop argument ni deprecated since Python 3.8 "
+                      "and scheduled kila removal kwenye Python 3.10.",
                       DeprecationWarning,
                       stacklevel=2
         )
@@ -220,14 +220,14 @@ async eleza create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,
     rudisha Process(transport, protocol, loop)
 
 
-async eleza create_subprocess_exec(program, *args, stdin=None, stdout=None,
-                                 stderr=None, loop=None,
+async eleza create_subprocess_exec(program, *args, stdin=Tupu, stdout=Tupu,
+                                 stderr=Tupu, loop=Tupu,
                                  limit=streams._DEFAULT_LIMIT, **kwds):
-    ikiwa loop is None:
+    ikiwa loop ni Tupu:
         loop = events.get_event_loop()
-    else:
-        warnings.warn("The loop argument is deprecated since Python 3.8 "
-                      "and scheduled for removal in Python 3.10.",
+    isipokua:
+        warnings.warn("The loop argument ni deprecated since Python 3.8 "
+                      "and scheduled kila removal kwenye Python 3.10.",
                       DeprecationWarning,
                       stacklevel=2
         )

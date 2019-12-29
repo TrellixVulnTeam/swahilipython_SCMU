@@ -2703,7 +2703,7 @@ pwmx322 power 20 0E-300 143 -> 1
 pwmx323 power -20 -0E+1005 1179 -> 1
 pwmx324 power 0E-1001 17 5.6E+4 -> 0
 
--- Modulus must not exceed precision
+-- Modulus must sio exceed precision
 pwmx325 power 0 1 1234567890 -> NaN Invalid_operation
 pwmx326 power 1 0 1000000000 -> NaN Invalid_operation
 pwmx327 power -23 5 -1000000000 -> NaN Invalid_operation
@@ -2728,7 +2728,7 @@ pwmx406 power  sNaN1 sNaN2 sNaN3  ->  NaN1 Invalid_operation
 pwmx407 power  NaN7  sNaN2 sNaN3  ->  NaN2 Invalid_operation
 pwmx408 power  NaN7  NaN5  sNaN3  ->  NaN3 Invalid_operation
 
--- Infinities not allowed
+-- Infinities sio allowed
 pwmx410 power Inf 1 1 -> NaN Invalid_operation
 pwmx411 power 1 Inf 1 -> NaN Invalid_operation
 pwmx412 power 1 1 Inf -> NaN Invalid_operation

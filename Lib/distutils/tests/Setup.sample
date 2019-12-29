@@ -38,7 +38,7 @@ gfxdraw src/gfxdraw.c $(SDL) $(GFX) $(DEBUG)
 
 
 #these modules are required for pygame to run. they only require
-#SDL as a dependency. these should not be altered
+#SDL as a dependency. these should sio be altered
 
 base src/base.c $(SDL) $(DEBUG)
 cdrom src/cdrom.c $(SDL) $(DEBUG)

@@ -1,4 +1,4 @@
-"""Unit tests for the with statement specified in PEP 343."""
+"""Unit tests kila the with statement specified kwenye PEP 343."""
 
 
 __author__ = "Mike Bland"
@@ -13,16 +13,16 @@ kutoka contextlib agiza _GeneratorContextManager, contextmanager
 kundi MockContextManager(_GeneratorContextManager):
     eleza __init__(self, *args):
         super().__init__(*args)
-        self.enter_called = False
-        self.exit_called = False
-        self.exit_args = None
+        self.enter_called = Uongo
+        self.exit_called = Uongo
+        self.exit_args = Tupu
 
     eleza __enter__(self):
-        self.enter_called = True
+        self.enter_called = Kweli
         rudisha _GeneratorContextManager.__enter__(self)
 
     eleza __exit__(self, type, value, traceback):
-        self.exit_called = True
+        self.exit_called = Kweli
         self.exit_args = (type, value, traceback)
         rudisha _GeneratorContextManager.__exit__(self, type,
                                                  value, traceback)
@@ -36,38 +36,38 @@ eleza mock_contextmanager(func):
 
 kundi MockResource(object):
     eleza __init__(self):
-        self.yielded = False
-        self.stopped = False
+        self.tumaed = Uongo
+        self.stopped = Uongo
 
 
 @mock_contextmanager
 eleza mock_contextmanager_generator():
     mock = MockResource()
-    try:
-        mock.yielded = True
-        yield mock
-    finally:
-        mock.stopped = True
+    jaribu:
+        mock.tumaed = Kweli
+        tuma mock
+    mwishowe:
+        mock.stopped = Kweli
 
 
 kundi Nested(object):
 
     eleza __init__(self, *managers):
         self.managers = managers
-        self.entered = None
+        self.entered = Tupu
 
     eleza __enter__(self):
-        ikiwa self.entered is not None:
-            raise RuntimeError("Context is not reentrant")
+        ikiwa self.entered ni sio Tupu:
+            ashiria RuntimeError("Context ni sio reentrant")
         self.entered = deque()
         vars = []
-        try:
-            for mgr in self.managers:
+        jaribu:
+            kila mgr kwenye self.managers:
                 vars.append(mgr.__enter__())
                 self.entered.appendleft(mgr)
         except:
-            ikiwa not self.__exit__(*sys.exc_info()):
-                raise
+            ikiwa sio self.__exit__(*sys.exc_info()):
+                ashiria
         rudisha vars
 
     eleza __exit__(self, *exc_info):
@@ -75,30 +75,30 @@ kundi Nested(object):
         # first in, last out
         # New exceptions override old ones
         ex = exc_info
-        for mgr in self.entered:
-            try:
+        kila mgr kwenye self.entered:
+            jaribu:
                 ikiwa mgr.__exit__(*ex):
-                    ex = (None, None, None)
+                    ex = (Tupu, Tupu, Tupu)
             except:
                 ex = sys.exc_info()
-        self.entered = None
-        ikiwa ex is not exc_info:
-            raise ex[0](ex[1]).with_traceback(ex[2])
+        self.entered = Tupu
+        ikiwa ex ni sio exc_info:
+            ashiria ex[0](ex[1]).with_traceback(ex[2])
 
 
 kundi MockNested(Nested):
     eleza __init__(self, *managers):
         Nested.__init__(self, *managers)
-        self.enter_called = False
-        self.exit_called = False
-        self.exit_args = None
+        self.enter_called = Uongo
+        self.exit_called = Uongo
+        self.exit_args = Tupu
 
     eleza __enter__(self):
-        self.enter_called = True
+        self.enter_called = Kweli
         rudisha Nested.__enter__(self)
 
     eleza __exit__(self, *exc_info):
-        self.exit_called = True
+        self.exit_called = Kweli
         self.exit_args = exc_info
         rudisha Nested.__exit__(self, *exc_info)
 
@@ -106,36 +106,36 @@ kundi MockNested(Nested):
 kundi FailureTestCase(unittest.TestCase):
     eleza testNameError(self):
         eleza fooNotDeclared():
-            with foo: pass
+            with foo: pita
         self.assertRaises(NameError, fooNotDeclared)
 
     eleza testEnterAttributeError1(self):
         kundi LacksEnter(object):
             eleza __exit__(self, type, value, traceback):
-                pass
+                pita
 
         eleza fooLacksEnter():
             foo = LacksEnter()
-            with foo: pass
+            with foo: pita
         self.assertRaisesRegex(AttributeError, '__enter__', fooLacksEnter)
 
     eleza testEnterAttributeError2(self):
         kundi LacksEnterAndExit(object):
-            pass
+            pita
 
         eleza fooLacksEnterAndExit():
             foo = LacksEnterAndExit()
-            with foo: pass
+            with foo: pita
         self.assertRaisesRegex(AttributeError, '__enter__', fooLacksEnterAndExit)
 
     eleza testExitAttributeError(self):
         kundi LacksExit(object):
             eleza __enter__(self):
-                pass
+                pita
 
         eleza fooLacksExit():
             foo = LacksExit()
-            with foo: pass
+            with foo: pita
         self.assertRaisesRegex(AttributeError, '__exit__', fooLacksExit)
 
     eleza assertRaisesSyntaxError(self, codestr):
@@ -143,47 +143,47 @@ kundi FailureTestCase(unittest.TestCase):
             compile(s, '', 'single')
         self.assertRaises(SyntaxError, shouldRaiseSyntaxError, codestr)
 
-    eleza testAssignmentToNoneError(self):
-        self.assertRaisesSyntaxError('with mock as None:\n  pass')
+    eleza testAssignmentToTupuError(self):
+        self.assertRaisesSyntaxError('with mock kama Tupu:\n  pita')
         self.assertRaisesSyntaxError(
-            'with mock as (None):\n'
-            '  pass')
+            'with mock kama (Tupu):\n'
+            '  pita')
 
-    eleza testAssignmentToTupleOnlyContainingNoneError(self):
-        self.assertRaisesSyntaxError('with mock as None,:\n  pass')
+    eleza testAssignmentToTupleOnlyContainingTupuError(self):
+        self.assertRaisesSyntaxError('with mock kama Tupu,:\n  pita')
         self.assertRaisesSyntaxError(
-            'with mock as (None,):\n'
-            '  pass')
+            'with mock kama (Tupu,):\n'
+            '  pita')
 
-    eleza testAssignmentToTupleContainingNoneError(self):
+    eleza testAssignmentToTupleContainingTupuError(self):
         self.assertRaisesSyntaxError(
-            'with mock as (foo, None, bar):\n'
-            '  pass')
+            'with mock kama (foo, Tupu, bar):\n'
+            '  pita')
 
     eleza testEnterThrows(self):
         kundi EnterThrows(object):
             eleza __enter__(self):
-                raise RuntimeError("Enter threw")
+                ashiria RuntimeError("Enter threw")
             eleza __exit__(self, *args):
-                pass
+                pita
 
         eleza shouldThrow():
             ct = EnterThrows()
-            self.foo = None
-            with ct as self.foo:
-                pass
+            self.foo = Tupu
+            with ct kama self.foo:
+                pita
         self.assertRaises(RuntimeError, shouldThrow)
-        self.assertEqual(self.foo, None)
+        self.assertEqual(self.foo, Tupu)
 
     eleza testExitThrows(self):
         kundi ExitThrows(object):
             eleza __enter__(self):
-                return
+                rudisha
             eleza __exit__(self, *args):
-                raise RuntimeError(42)
+                ashiria RuntimeError(42)
         eleza shouldThrow():
             with ExitThrows():
-                pass
+                pita
         self.assertRaises(RuntimeError, shouldThrow)
 
 kundi ContextmanagerAssertionMixin(object):
@@ -192,78 +192,78 @@ kundi ContextmanagerAssertionMixin(object):
         self.TEST_EXCEPTION = RuntimeError("test exception")
 
     eleza assertInWithManagerInvariants(self, mock_manager):
-        self.assertTrue(mock_manager.enter_called)
-        self.assertFalse(mock_manager.exit_called)
-        self.assertEqual(mock_manager.exit_args, None)
+        self.assertKweli(mock_manager.enter_called)
+        self.assertUongo(mock_manager.exit_called)
+        self.assertEqual(mock_manager.exit_args, Tupu)
 
     eleza assertAfterWithManagerInvariants(self, mock_manager, exit_args):
-        self.assertTrue(mock_manager.enter_called)
-        self.assertTrue(mock_manager.exit_called)
+        self.assertKweli(mock_manager.enter_called)
+        self.assertKweli(mock_manager.exit_called)
         self.assertEqual(mock_manager.exit_args, exit_args)
 
     eleza assertAfterWithManagerInvariantsNoError(self, mock_manager):
         self.assertAfterWithManagerInvariants(mock_manager,
-            (None, None, None))
+            (Tupu, Tupu, Tupu))
 
     eleza assertInWithGeneratorInvariants(self, mock_generator):
-        self.assertTrue(mock_generator.yielded)
-        self.assertFalse(mock_generator.stopped)
+        self.assertKweli(mock_generator.tumaed)
+        self.assertUongo(mock_generator.stopped)
 
     eleza assertAfterWithGeneratorInvariantsNoError(self, mock_generator):
-        self.assertTrue(mock_generator.yielded)
-        self.assertTrue(mock_generator.stopped)
+        self.assertKweli(mock_generator.tumaed)
+        self.assertKweli(mock_generator.stopped)
 
-    eleza raiseTestException(self):
-        raise self.TEST_EXCEPTION
+    eleza ashiriaTestException(self):
+        ashiria self.TEST_EXCEPTION
 
     eleza assertAfterWithManagerInvariantsWithError(self, mock_manager,
-                                                  exc_type=None):
-        self.assertTrue(mock_manager.enter_called)
-        self.assertTrue(mock_manager.exit_called)
-        ikiwa exc_type is None:
+                                                  exc_type=Tupu):
+        self.assertKweli(mock_manager.enter_called)
+        self.assertKweli(mock_manager.exit_called)
+        ikiwa exc_type ni Tupu:
             self.assertEqual(mock_manager.exit_args[1], self.TEST_EXCEPTION)
             exc_type = type(self.TEST_EXCEPTION)
         self.assertEqual(mock_manager.exit_args[0], exc_type)
         # Test the __exit__ arguments. Issue #7853
         self.assertIsInstance(mock_manager.exit_args[1], exc_type)
-        self.assertIsNot(mock_manager.exit_args[2], None)
+        self.assertIsNot(mock_manager.exit_args[2], Tupu)
 
     eleza assertAfterWithGeneratorInvariantsWithError(self, mock_generator):
-        self.assertTrue(mock_generator.yielded)
-        self.assertTrue(mock_generator.stopped)
+        self.assertKweli(mock_generator.tumaed)
+        self.assertKweli(mock_generator.stopped)
 
 
-kundi NonexceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin):
+kundi TupuxceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin):
     eleza testInlineGeneratorSyntax(self):
         with mock_contextmanager_generator():
-            pass
+            pita
 
     eleza testUnboundGenerator(self):
         mock = mock_contextmanager_generator()
         with mock:
-            pass
+            pita
         self.assertAfterWithManagerInvariantsNoError(mock)
 
     eleza testInlineGeneratorBoundSyntax(self):
-        with mock_contextmanager_generator() as foo:
+        with mock_contextmanager_generator() kama foo:
             self.assertInWithGeneratorInvariants(foo)
         # FIXME: In the future, we'll try to keep the bound names kutoka leaking
         self.assertAfterWithGeneratorInvariantsNoError(foo)
 
     eleza testInlineGeneratorBoundToExistingVariable(self):
-        foo = None
-        with mock_contextmanager_generator() as foo:
+        foo = Tupu
+        with mock_contextmanager_generator() kama foo:
             self.assertInWithGeneratorInvariants(foo)
         self.assertAfterWithGeneratorInvariantsNoError(foo)
 
     eleza testInlineGeneratorBoundToDottedVariable(self):
-        with mock_contextmanager_generator() as self.foo:
+        with mock_contextmanager_generator() kama self.foo:
             self.assertInWithGeneratorInvariants(self.foo)
         self.assertAfterWithGeneratorInvariantsNoError(self.foo)
 
     eleza testBoundGenerator(self):
         mock = mock_contextmanager_generator()
-        with mock as foo:
+        with mock kama foo:
             self.assertInWithGeneratorInvariants(foo)
             self.assertInWithManagerInvariants(mock)
         self.assertAfterWithGeneratorInvariantsNoError(foo)
@@ -271,9 +271,9 @@ kundi NonexceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin):
 
     eleza testNestedSingleStatements(self):
         mock_a = mock_contextmanager_generator()
-        with mock_a as foo:
+        with mock_a kama foo:
             mock_b = mock_contextmanager_generator()
-            with mock_b as bar:
+            with mock_b kama bar:
                 self.assertInWithManagerInvariants(mock_a)
                 self.assertInWithManagerInvariants(mock_b)
                 self.assertInWithGeneratorInvariants(foo)
@@ -286,17 +286,17 @@ kundi NonexceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin):
         self.assertAfterWithGeneratorInvariantsNoError(foo)
 
 
-kundi NestedNonexceptionalTestCase(unittest.TestCase,
+kundi NestedTupuxceptionalTestCase(unittest.TestCase,
     ContextmanagerAssertionMixin):
     eleza testSingleArgInlineGeneratorSyntax(self):
         with Nested(mock_contextmanager_generator()):
-            pass
+            pita
 
     eleza testSingleArgBoundToNonTuple(self):
         m = mock_contextmanager_generator()
         # This will bind all the arguments to nested() into a single list
         # assigned to foo.
-        with Nested(m) as foo:
+        with Nested(m) kama foo:
             self.assertInWithManagerInvariants(m)
         self.assertAfterWithManagerInvariantsNoError(m)
 
@@ -304,14 +304,14 @@ kundi NestedNonexceptionalTestCase(unittest.TestCase,
         m = mock_contextmanager_generator()
         # This will bind all the arguments to nested() into a single list
         # assigned to foo.
-        with Nested(m) as (foo):
+        with Nested(m) kama (foo):
             self.assertInWithManagerInvariants(m)
         self.assertAfterWithManagerInvariantsNoError(m)
 
     eleza testSingleArgBoundToMultipleElementTupleError(self):
         eleza shouldThrowValueError():
-            with Nested(mock_contextmanager_generator()) as (foo, bar):
-                pass
+            with Nested(mock_contextmanager_generator()) kama (foo, bar):
+                pita
         self.assertRaises(ValueError, shouldThrowValueError)
 
     eleza testSingleArgUnbound(self):
@@ -341,7 +341,7 @@ kundi NestedNonexceptionalTestCase(unittest.TestCase,
     eleza testMultipleArgBound(self):
         mock_nested = MockNested(mock_contextmanager_generator(),
             mock_contextmanager_generator(), mock_contextmanager_generator())
-        with mock_nested as (m, n, o):
+        with mock_nested kama (m, n, o):
             self.assertInWithGeneratorInvariants(m)
             self.assertInWithGeneratorInvariants(n)
             self.assertInWithGeneratorInvariants(o)
@@ -356,10 +356,10 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
     eleza testSingleResource(self):
         cm = mock_contextmanager_generator()
         eleza shouldThrow():
-            with cm as self.resource:
+            with cm kama self.resource:
                 self.assertInWithManagerInvariants(cm)
                 self.assertInWithGeneratorInvariants(self.resource)
-                self.raiseTestException()
+                self.ashiriaTestException()
         self.assertRaises(RuntimeError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(cm)
         self.assertAfterWithGeneratorInvariantsWithError(self.resource)
@@ -367,9 +367,9 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
     eleza testExceptionNormalized(self):
         cm = mock_contextmanager_generator()
         eleza shouldThrow():
-            with cm as self.resource:
+            with cm kama self.resource:
                 # Note this relies on the fact that 1 // 0 produces an exception
-                # that is not normalized immediately.
+                # that ni sio normalized immediately.
                 1 // 0
         self.assertRaises(ZeroDivisionError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(cm, ZeroDivisionError)
@@ -378,13 +378,13 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         mock_a = mock_contextmanager_generator()
         mock_b = mock_contextmanager_generator()
         eleza shouldThrow():
-            with mock_a as self.foo:
-                with mock_b as self.bar:
+            with mock_a kama self.foo:
+                with mock_b kama self.bar:
                     self.assertInWithManagerInvariants(mock_a)
                     self.assertInWithManagerInvariants(mock_b)
                     self.assertInWithGeneratorInvariants(self.foo)
                     self.assertInWithGeneratorInvariants(self.bar)
-                    self.raiseTestException()
+                    self.ashiriaTestException()
         self.assertRaises(RuntimeError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(mock_a)
         self.assertAfterWithManagerInvariantsWithError(mock_b)
@@ -396,13 +396,13 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         cm_b = mock_contextmanager_generator()
         mock_nested = MockNested(cm_a, cm_b)
         eleza shouldThrow():
-            with mock_nested as (self.resource_a, self.resource_b):
+            with mock_nested kama (self.resource_a, self.resource_b):
                 self.assertInWithManagerInvariants(cm_a)
                 self.assertInWithManagerInvariants(cm_b)
                 self.assertInWithManagerInvariants(mock_nested)
                 self.assertInWithGeneratorInvariants(self.resource_a)
                 self.assertInWithGeneratorInvariants(self.resource_b)
-                self.raiseTestException()
+                self.ashiriaTestException()
         self.assertRaises(RuntimeError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(cm_a)
         self.assertAfterWithManagerInvariantsWithError(cm_b)
@@ -413,35 +413,35 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
     eleza testNestedExceptionBeforeInnerStatement(self):
         mock_a = mock_contextmanager_generator()
         mock_b = mock_contextmanager_generator()
-        self.bar = None
+        self.bar = Tupu
         eleza shouldThrow():
-            with mock_a as self.foo:
+            with mock_a kama self.foo:
                 self.assertInWithManagerInvariants(mock_a)
                 self.assertInWithGeneratorInvariants(self.foo)
-                self.raiseTestException()
-                with mock_b as self.bar:
-                    pass
+                self.ashiriaTestException()
+                with mock_b kama self.bar:
+                    pita
         self.assertRaises(RuntimeError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(mock_a)
         self.assertAfterWithGeneratorInvariantsWithError(self.foo)
 
         # The inner statement stuff should never have been touched
-        self.assertEqual(self.bar, None)
-        self.assertFalse(mock_b.enter_called)
-        self.assertFalse(mock_b.exit_called)
-        self.assertEqual(mock_b.exit_args, None)
+        self.assertEqual(self.bar, Tupu)
+        self.assertUongo(mock_b.enter_called)
+        self.assertUongo(mock_b.exit_called)
+        self.assertEqual(mock_b.exit_args, Tupu)
 
     eleza testNestedExceptionAfterInnerStatement(self):
         mock_a = mock_contextmanager_generator()
         mock_b = mock_contextmanager_generator()
         eleza shouldThrow():
-            with mock_a as self.foo:
-                with mock_b as self.bar:
+            with mock_a kama self.foo:
+                with mock_b kama self.bar:
                     self.assertInWithManagerInvariants(mock_a)
                     self.assertInWithManagerInvariants(mock_b)
                     self.assertInWithGeneratorInvariants(self.foo)
                     self.assertInWithGeneratorInvariants(self.bar)
-                self.raiseTestException()
+                self.ashiriaTestException()
         self.assertRaises(RuntimeError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(mock_a)
         self.assertAfterWithManagerInvariantsNoError(mock_b)
@@ -452,11 +452,11 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1462485
         @contextmanager
         eleza cm():
-            yield
+            tuma
 
         eleza shouldThrow():
             with cm():
-                raise StopIteration("kutoka with")
+                ashiria StopIteration("kutoka with")
 
         with self.assertRaisesRegex(StopIteration, 'kutoka with'):
             shouldThrow()
@@ -465,13 +465,13 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1462485
         kundi cm(object):
             eleza __enter__(self):
-                pass
+                pita
             eleza __exit__(self, type, value, traceback):
-                pass
+                pita
 
         eleza shouldThrow():
             with cm():
-                raise StopIteration("kutoka with")
+                ashiria StopIteration("kutoka with")
 
         with self.assertRaisesRegex(StopIteration, 'kutoka with'):
             shouldThrow()
@@ -481,11 +481,11 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1705170
         @contextmanager
         eleza cm():
-            yield
+            tuma
 
         eleza shouldThrow():
             with cm():
-                raise next(iter([]))
+                ashiria next(iter([]))
 
         with self.assertRaises(StopIteration):
             shouldThrow()
@@ -494,11 +494,11 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1462485
         @contextmanager
         eleza cm():
-            yield
+            tuma
 
         eleza shouldThrow():
             with cm():
-                raise GeneratorExit("kutoka with")
+                ashiria GeneratorExit("kutoka with")
 
         self.assertRaises(GeneratorExit, shouldThrow)
 
@@ -506,18 +506,18 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         # From bug 1462485
         kundi cm (object):
             eleza __enter__(self):
-                pass
+                pita
             eleza __exit__(self, type, value, traceback):
-                pass
+                pita
 
         eleza shouldThrow():
             with cm():
-                raise GeneratorExit("kutoka with")
+                ashiria GeneratorExit("kutoka with")
 
         self.assertRaises(GeneratorExit, shouldThrow)
 
     eleza testErrorsInBool(self):
-        # issue4589: __exit__ rudisha code may raise an exception
+        # issue4589: __exit__ rudisha code may ashiria an exception
         # when looking at its truth value.
 
         kundi cm(object):
@@ -532,13 +532,13 @@ kundi ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
                 rudisha self.exit_result
 
         eleza trueAsBool():
-            with cm(lambda: True):
+            with cm(lambda: Kweli):
                 self.fail("Should NOT see this")
         trueAsBool()
 
         eleza falseAsBool():
-            with cm(lambda: False):
-                self.fail("Should raise")
+            with cm(lambda: Uongo):
+                self.fail("Should ashiria")
         self.assertRaises(AssertionError, falseAsBool)
 
         eleza failAsBool():
@@ -551,30 +551,30 @@ kundi NonLocalFlowControlTestCase(unittest.TestCase):
 
     eleza testWithBreak(self):
         counter = 0
-        while True:
+        wakati Kweli:
             counter += 1
             with mock_contextmanager_generator():
                 counter += 10
-                break
+                koma
             counter += 100 # Not reached
         self.assertEqual(counter, 11)
 
     eleza testWithContinue(self):
         counter = 0
-        while True:
+        wakati Kweli:
             counter += 1
             ikiwa counter > 2:
-                break
+                koma
             with mock_contextmanager_generator():
                 counter += 10
-                continue
+                endelea
             counter += 100 # Not reached
         self.assertEqual(counter, 12)
 
     eleza testWithReturn(self):
         eleza foo():
             counter = 0
-            while True:
+            wakati Kweli:
                 counter += 1
                 with mock_contextmanager_generator():
                     counter += 10
@@ -585,58 +585,58 @@ kundi NonLocalFlowControlTestCase(unittest.TestCase):
     eleza testWithYield(self):
         eleza gen():
             with mock_contextmanager_generator():
-                yield 12
-                yield 13
+                tuma 12
+                tuma 13
         x = list(gen())
         self.assertEqual(x, [12, 13])
 
     eleza testWithRaise(self):
         counter = 0
-        try:
+        jaribu:
             counter += 1
             with mock_contextmanager_generator():
                 counter += 10
-                raise RuntimeError
+                ashiria RuntimeError
             counter += 100 # Not reached
-        except RuntimeError:
+        tatizo RuntimeError:
             self.assertEqual(counter, 11)
-        else:
-            self.fail("Didn't raise RuntimeError")
+        isipokua:
+            self.fail("Didn't ashiria RuntimeError")
 
 
 kundi AssignmentTargetTestCase(unittest.TestCase):
 
     eleza testSingleComplexTarget(self):
         targets = {1: [0, 1, 2]}
-        with mock_contextmanager_generator() as targets[1][0]:
+        with mock_contextmanager_generator() kama targets[1][0]:
             self.assertEqual(list(targets.keys()), [1])
             self.assertEqual(targets[1][0].__class__, MockResource)
-        with mock_contextmanager_generator() as list(targets.values())[0][1]:
+        with mock_contextmanager_generator() kama list(targets.values())[0][1]:
             self.assertEqual(list(targets.keys()), [1])
             self.assertEqual(targets[1][1].__class__, MockResource)
-        with mock_contextmanager_generator() as targets[2]:
+        with mock_contextmanager_generator() kama targets[2]:
             keys = list(targets.keys())
             keys.sort()
             self.assertEqual(keys, [1, 2])
-        kundi C: pass
+        kundi C: pita
         blah = C()
-        with mock_contextmanager_generator() as blah.foo:
-            self.assertEqual(hasattr(blah, "foo"), True)
+        with mock_contextmanager_generator() kama blah.foo:
+            self.assertEqual(hasattr(blah, "foo"), Kweli)
 
     eleza testMultipleComplexTargets(self):
         kundi C:
             eleza __enter__(self): rudisha 1, 2, 3
-            eleza __exit__(self, t, v, tb): pass
+            eleza __exit__(self, t, v, tb): pita
         targets = {1: [0, 1, 2]}
-        with C() as (targets[1][0], targets[1][1], targets[1][2]):
+        with C() kama (targets[1][0], targets[1][1], targets[1][2]):
             self.assertEqual(targets, {1: [1, 2, 3]})
-        with C() as (list(targets.values())[0][2], list(targets.values())[0][1], list(targets.values())[0][0]):
+        with C() kama (list(targets.values())[0][2], list(targets.values())[0][1], list(targets.values())[0][0]):
             self.assertEqual(targets, {1: [3, 2, 1]})
-        with C() as (targets[1], targets[2], targets[3]):
+        with C() kama (targets[1], targets[2], targets[3]):
             self.assertEqual(targets, {1: 1, 2: 2, 3: 3})
-        kundi B: pass
+        kundi B: pita
         blah = B()
-        with C() as (blah.one, blah.two, blah.three):
+        with C() kama (blah.one, blah.two, blah.three):
             self.assertEqual(blah.one, 1)
             self.assertEqual(blah.two, 2)
             self.assertEqual(blah.three, 3)
@@ -644,100 +644,100 @@ kundi AssignmentTargetTestCase(unittest.TestCase):
 
 kundi ExitSwallowsExceptionTestCase(unittest.TestCase):
 
-    eleza testExitTrueSwallowsException(self):
+    eleza testExitKweliSwallowsException(self):
         kundi AfricanSwallow:
-            eleza __enter__(self): pass
-            eleza __exit__(self, t, v, tb): rudisha True
-        try:
+            eleza __enter__(self): pita
+            eleza __exit__(self, t, v, tb): rudisha Kweli
+        jaribu:
             with AfricanSwallow():
                 1/0
-        except ZeroDivisionError:
+        tatizo ZeroDivisionError:
             self.fail("ZeroDivisionError should have been swallowed")
 
-    eleza testExitFalseDoesntSwallowException(self):
+    eleza testExitUongoDoesntSwallowException(self):
         kundi EuropeanSwallow:
-            eleza __enter__(self): pass
-            eleza __exit__(self, t, v, tb): rudisha False
-        try:
+            eleza __enter__(self): pita
+            eleza __exit__(self, t, v, tb): rudisha Uongo
+        jaribu:
             with EuropeanSwallow():
                 1/0
-        except ZeroDivisionError:
-            pass
-        else:
-            self.fail("ZeroDivisionError should have been raised")
+        tatizo ZeroDivisionError:
+            pita
+        isipokua:
+            self.fail("ZeroDivisionError should have been ashiriad")
 
 
 kundi NestedWith(unittest.TestCase):
 
     kundi Dummy(object):
-        eleza __init__(self, value=None, gobble=False):
-            ikiwa value is None:
+        eleza __init__(self, value=Tupu, gobble=Uongo):
+            ikiwa value ni Tupu:
                 value = self
             self.value = value
             self.gobble = gobble
-            self.enter_called = False
-            self.exit_called = False
+            self.enter_called = Uongo
+            self.exit_called = Uongo
 
         eleza __enter__(self):
-            self.enter_called = True
+            self.enter_called = Kweli
             rudisha self.value
 
         eleza __exit__(self, *exc_info):
-            self.exit_called = True
+            self.exit_called = Kweli
             self.exc_info = exc_info
             ikiwa self.gobble:
-                rudisha True
+                rudisha Kweli
 
     kundi InitRaises(object):
-        eleza __init__(self): raise RuntimeError()
+        eleza __init__(self): ashiria RuntimeError()
 
     kundi EnterRaises(object):
-        eleza __enter__(self): raise RuntimeError()
-        eleza __exit__(self, *exc_info): pass
+        eleza __enter__(self): ashiria RuntimeError()
+        eleza __exit__(self, *exc_info): pita
 
     kundi ExitRaises(object):
-        eleza __enter__(self): pass
-        eleza __exit__(self, *exc_info): raise RuntimeError()
+        eleza __enter__(self): pita
+        eleza __exit__(self, *exc_info): ashiria RuntimeError()
 
     eleza testNoExceptions(self):
-        with self.Dummy() as a, self.Dummy() as b:
-            self.assertTrue(a.enter_called)
-            self.assertTrue(b.enter_called)
-        self.assertTrue(a.exit_called)
-        self.assertTrue(b.exit_called)
+        with self.Dummy() kama a, self.Dummy() kama b:
+            self.assertKweli(a.enter_called)
+            self.assertKweli(b.enter_called)
+        self.assertKweli(a.exit_called)
+        self.assertKweli(b.exit_called)
 
     eleza testExceptionInExprList(self):
-        try:
-            with self.Dummy() as a, self.InitRaises():
-                pass
+        jaribu:
+            with self.Dummy() kama a, self.InitRaises():
+                pita
         except:
-            pass
-        self.assertTrue(a.enter_called)
-        self.assertTrue(a.exit_called)
+            pita
+        self.assertKweli(a.enter_called)
+        self.assertKweli(a.exit_called)
 
     eleza testExceptionInEnter(self):
-        try:
-            with self.Dummy() as a, self.EnterRaises():
+        jaribu:
+            with self.Dummy() kama a, self.EnterRaises():
                 self.fail('body of bad with executed')
-        except RuntimeError:
-            pass
-        else:
-            self.fail('RuntimeError not reraised')
-        self.assertTrue(a.enter_called)
-        self.assertTrue(a.exit_called)
+        tatizo RuntimeError:
+            pita
+        isipokua:
+            self.fail('RuntimeError sio reashiriad')
+        self.assertKweli(a.enter_called)
+        self.assertKweli(a.exit_called)
 
     eleza testExceptionInExit(self):
-        body_executed = False
-        with self.Dummy(gobble=True) as a, self.ExitRaises():
-            body_executed = True
-        self.assertTrue(a.enter_called)
-        self.assertTrue(a.exit_called)
-        self.assertTrue(body_executed)
-        self.assertNotEqual(a.exc_info[0], None)
+        body_executed = Uongo
+        with self.Dummy(gobble=Kweli) kama a, self.ExitRaises():
+            body_executed = Kweli
+        self.assertKweli(a.enter_called)
+        self.assertKweli(a.exit_called)
+        self.assertKweli(body_executed)
+        self.assertNotEqual(a.exc_info[0], Tupu)
 
     eleza testEnterReturnsTuple(self):
-        with self.Dummy(value=(1,2)) as (a1, a2), \
-             self.Dummy(value=(10, 20)) as (b1, b2):
+        with self.Dummy(value=(1,2)) kama (a1, a2), \
+             self.Dummy(value=(10, 20)) kama (b1, b2):
             self.assertEqual(1, a1)
             self.assertEqual(2, a2)
             self.assertEqual(10, b1)

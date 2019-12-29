@@ -3,42 +3,42 @@
 
              tdemo_tree.py
 
-Displays a 'breadth-first-tree' - in contrast
+Displays a 'breadth-first-tree' - kwenye contrast
 to the classical Logo tree drawing programs,
 which use a depth-first-algorithm.
 
 Uses:
 (1) a tree-generator, where the drawing is
 quasi the side-effect, whereas the generator
-always yields None.
+always tumas Tupu.
 (2) Turtle-cloning: At each branching point
-the current pen is cloned. So in the end
+the current pen ni cloned. So kwenye the end
 there are 1024 turtles.
 """
 kutoka turtle agiza Turtle, mainloop
-kutoka time agiza perf_counter as clock
+kutoka time agiza perf_counter kama clock
 
 eleza tree(plist, l, a, f):
-    """ plist is list of pens
-    l is length of branch
-    a is half of the angle between 2 branches
-    f is factor by which branch is shortened
+    """ plist ni list of pens
+    l ni length of branch
+    a ni half of the angle between 2 branches
+    f ni factor by which branch ni shortened
     kutoka level to level."""
     ikiwa l > 3:
         lst = []
-        for p in plist:
+        kila p kwenye plist:
             p.forward(l)
             q = p.clone()
             p.left(a)
             q.right(a)
             lst.append(p)
             lst.append(q)
-        for x in tree(lst, l*f, a, f):
-            yield None
+        kila x kwenye tree(lst, l*f, a, f):
+            tuma Tupu
 
 eleza maketree():
     p = Turtle()
-    p.setundobuffer(None)
+    p.setundobuffer(Tupu)
     p.hideturtle()
     p.speed(0)
     p.getscreen().tracer(30,0)
@@ -47,8 +47,8 @@ eleza maketree():
     p.forward(-210)
     p.pendown()
     t = tree([p], 200, 65, 0.6375)
-    for x in t:
-        pass
+    kila x kwenye t:
+        pita
 
 eleza main():
     a=clock()

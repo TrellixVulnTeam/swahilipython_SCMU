@@ -1,10 +1,10 @@
-"""Define the menu contents, hotkeys, and event bindings.
+"""Define the menu contents, hotkeys, na event bindings.
 
-There is additional configuration information in the EditorWindow kundi (and
+There ni additional configuration information kwenye the EditorWindow kundi (and
 subclasses): the menus are created there based on the menu_specs (class)
-variable, and menus not created are silently skipped in the code here.  This
-makes it possible, for example, to define a Debug menu which is only present in
-the PythonShell window, and a Format menu which is only present in the Editor
+variable, na menus sio created are silently skipped kwenye the code here.  This
+makes it possible, kila example, to define a Debug menu which ni only present in
+the PythonShell window, na a Format menu which ni only present kwenye the Editor
 windows.
 
 """
@@ -12,11 +12,11 @@ kutoka importlib.util agiza find_spec
 
 kutoka idlelib.config agiza idleConf
 
-#   Warning: menudefs is altered in macosx.overrideRootMenu()
-#   after it is determined that an OS X Aqua Tk is in use,
-#   which cannot be done until after Tk() is first called.
-#   Do not alter the 'file', 'options', or 'help' cascades here
-#   without altering overrideRootMenu() as well.
+#   Warning: menudefs ni altered kwenye macosx.overrideRootMenu()
+#   after it ni determined that an OS X Aqua Tk ni kwenye use,
+#   which cannot be done until after Tk() ni first called.
+#   Do sio alter the 'file', 'options', ama 'help' cascades here
+#   without altering overrideRootMenu() kama well.
 #       TODO: Make this more robust
 
 menudefs = [
@@ -27,13 +27,13 @@ menudefs = [
    ('Open _Module...', '<<open-module>>'),
    ('Module _Browser', '<<open-class-browser>>'),
    ('_Path Browser', '<<open-path-browser>>'),
-   None,
+   Tupu,
    ('_Save', '<<save-window>>'),
    ('Save _As...', '<<save-window-as-file>>'),
    ('Save Cop_y As...', '<<save-copy-of-window-as-file>>'),
-   None,
+   Tupu,
    ('Prin_t Window', '<<print-window>>'),
-   None,
+   Tupu,
    ('_Close', '<<close-window>>'),
    ('E_xit', '<<close-all-windows>>'),
    ]),
@@ -41,16 +41,16 @@ menudefs = [
  ('edit', [
    ('_Undo', '<<undo>>'),
    ('_Redo', '<<redo>>'),
-   None,
+   Tupu,
    ('Cu_t', '<<cut>>'),
    ('_Copy', '<<copy>>'),
    ('_Paste', '<<paste>>'),
    ('Select _All', '<<select-all>>'),
-   None,
+   Tupu,
    ('_Find...', '<<find>>'),
    ('Find A_gain', '<<find-again>>'),
    ('Find _Selection', '<<find-selection>>'),
-   ('Find in Files...', '<<find-in-files>>'),
+   ('Find kwenye Files...', '<<find-in-files>>'),
    ('R_eplace...', '<<replace>>'),
    ('Go to _Line', '<<goto-line>>'),
    ('S_how Completions', '<<force-open-completions>>'),
@@ -82,10 +82,10 @@ menudefs = [
  ('shell', [
    ('_View Last Restart', '<<view-restart>>'),
    ('_Restart Shell', '<<restart-shell>>'),
-   None,
+   Tupu,
    ('_Previous History', '<<history-previous>>'),
    ('_Next History', '<<history-next>>'),
-   None,
+   Tupu,
    ('_Interrupt Execution', '<<interrupt-execution>>'),
    ]),
 
@@ -98,7 +98,7 @@ menudefs = [
 
  ('options', [
    ('Configure _IDLE', '<<open-config-dialog>>'),
-   None,
+   Tupu,
    ('Show _Code Context', '<<toggle-code-context>>'),
    ('Show _Line Numbers', '<<toggle-line-numbers>>'),
    ('_Zoom Height', '<<zoom-height>>'),
@@ -109,7 +109,7 @@ menudefs = [
 
  ('help', [
    ('_About IDLE', '<<about-idle>>'),
-   None,
+   Tupu,
    ('_IDLE Help', '<<help>>'),
    ('Python _Docs', '<<python-docs>>'),
    ]),

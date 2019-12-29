@@ -14,8 +14,8 @@ kundi DictTest(unittest.TestCase):
 
     eleza test_invalid_keyword_arguments(self):
         kundi Custom(dict):
-            pass
-        for invalid in {1 : 2}, Custom({1 : 2}):
+            pita
+        kila invalid kwenye {1 : 2}, Custom({1 : 2}):
             with self.assertRaises(TypeError):
                 dict(**invalid)
             with self.assertRaises(TypeError):
@@ -27,21 +27,21 @@ kundi DictTest(unittest.TestCase):
         self.assertIsNot(dict(), {})
 
     eleza test_literal_constructor(self):
-        # check literal constructor for different sized dicts
+        # check literal constructor kila different sized dicts
         # (to exercise the BUILD_MAP oparg).
-        for n in (0, 1, 6, 256, 400):
+        kila n kwenye (0, 1, 6, 256, 400):
             items = [(''.join(random.sample(string.ascii_letters, 8)), i)
-                     for i in range(n)]
+                     kila i kwenye range(n)]
             random.shuffle(items)
-            formatted_items = ('{!r}: {:d}'.format(k, v) for k, v in items)
+            formatted_items = ('{!r}: {:d}'.format(k, v) kila k, v kwenye items)
             dictliteral = '{' + ', '.join(formatted_items) + '}'
             self.assertEqual(eval(dictliteral), dict(items))
 
     eleza test_bool(self):
-        self.assertIs(not {}, True)
-        self.assertTrue({1: 2})
-        self.assertIs(bool({}), False)
-        self.assertIs(bool({1: 2}), True)
+        self.assertIs(not {}, Kweli)
+        self.assertKweli({1: 2})
+        self.assertIs(bool({}), Uongo)
+        self.assertIs(bool({1: 2}), Kweli)
 
     eleza test_keys(self):
         d = {}
@@ -53,7 +53,7 @@ kundi DictTest(unittest.TestCase):
         self.assertIn('b', k)
         self.assertIn('a', d)
         self.assertIn('b', d)
-        self.assertRaises(TypeError, d.keys, None)
+        self.assertRaises(TypeError, d.keys, Tupu)
         self.assertEqual(repr(dict(a=1).keys()), "dict_keys(['a'])")
 
     eleza test_values(self):
@@ -61,7 +61,7 @@ kundi DictTest(unittest.TestCase):
         self.assertEqual(set(d.values()), set())
         d = {1:2}
         self.assertEqual(set(d.values()), {2})
-        self.assertRaises(TypeError, d.values, None)
+        self.assertRaises(TypeError, d.values, Tupu)
         self.assertEqual(repr(dict(a=1).values()), "dict_values([1])")
 
     eleza test_items(self):
@@ -70,14 +70,14 @@ kundi DictTest(unittest.TestCase):
 
         d = {1:2}
         self.assertEqual(set(d.items()), {(1, 2)})
-        self.assertRaises(TypeError, d.items, None)
+        self.assertRaises(TypeError, d.items, Tupu)
         self.assertEqual(repr(dict(a=1).items()), "dict_items([('a', 1)])")
 
     eleza test_contains(self):
         d = {}
         self.assertNotIn('a', d)
-        self.assertFalse('a' in d)
-        self.assertTrue('a' not in d)
+        self.assertUongo('a' kwenye d)
+        self.assertKweli('a' haiko kwenye d)
         d = {'a': 1, 'b': 2}
         self.assertIn('a', d)
         self.assertIn('b', d)
@@ -99,14 +99,14 @@ kundi DictTest(unittest.TestCase):
         d['a'] = 4
         self.assertEqual(d['c'], 3)
         self.assertEqual(d['a'], 4)
-        del d['b']
+        toa d['b']
         self.assertEqual(d, {'a': 4, 'c': 3})
 
         self.assertRaises(TypeError, d.__getitem__)
 
         kundi BadEq(object):
             eleza __eq__(self, other):
-                raise Exc()
+                ashiria Exc()
             eleza __hash__(self):
                 rudisha 24
 
@@ -114,19 +114,19 @@ kundi DictTest(unittest.TestCase):
         d[BadEq()] = 42
         self.assertRaises(KeyError, d.__getitem__, 23)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadHash(object):
-            fail = False
+            fail = Uongo
             eleza __hash__(self):
                 ikiwa self.fail:
-                    raise Exc()
-                else:
+                    ashiria Exc()
+                isipokua:
                     rudisha 42
 
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Kweli
         self.assertRaises(Exc, d.__getitem__, x)
 
     eleza test_clear(self):
@@ -134,7 +134,7 @@ kundi DictTest(unittest.TestCase):
         d.clear()
         self.assertEqual(d, {})
 
-        self.assertRaises(TypeError, d.clear, None)
+        self.assertRaises(TypeError, d.clear, Tupu)
 
     eleza test_update(self):
         d = {}
@@ -146,7 +146,7 @@ kundi DictTest(unittest.TestCase):
         d.update()
         self.assertEqual(d, {1:1, 2:2, 3:3})
 
-        self.assertRaises((TypeError, AttributeError), d.update, None)
+        self.assertRaises((TypeError, AttributeError), d.update, Tupu)
 
         kundi SimpleUserDict:
             eleza __init__(self):
@@ -159,12 +159,12 @@ kundi DictTest(unittest.TestCase):
         d.update(SimpleUserDict())
         self.assertEqual(d, {1:1, 2:2, 3:3})
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         d.clear()
         kundi FailingUserDict:
             eleza keys(self):
-                raise Exc
+                ashiria Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         kundi FailingUserDict:
@@ -178,7 +178,7 @@ kundi DictTest(unittest.TestCase):
                         ikiwa self.i:
                             self.i = 0
                             rudisha 'a'
-                        raise Exc
+                        ashiria Exc
                 rudisha BogonIter()
             eleza __getitem__(self, key):
                 rudisha key
@@ -196,51 +196,51 @@ kundi DictTest(unittest.TestCase):
                             rtn = chr(self.i)
                             self.i += 1
                             rudisha rtn
-                        raise StopIteration
+                        ashiria StopIteration
                 rudisha BogonIter()
             eleza __getitem__(self, key):
-                raise Exc
+                ashiria Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         kundi badseq(object):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, {}.update, badseq())
 
         self.assertRaises(ValueError, {}.update, [(1, 2, 3)])
 
     eleza test_kutokakeys(self):
-        self.assertEqual(dict.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertEqual(dict.kutokakeys('abc'), {'a':Tupu, 'b':Tupu, 'c':Tupu})
         d = {}
         self.assertIsNot(d.kutokakeys('abc'), d)
-        self.assertEqual(d.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertEqual(d.kutokakeys('abc'), {'a':Tupu, 'b':Tupu, 'c':Tupu})
         self.assertEqual(d.kutokakeys((4,5),0), {4:0, 5:0})
         self.assertEqual(d.kutokakeys([]), {})
         eleza g():
-            yield 1
-        self.assertEqual(d.kutokakeys(g()), {1:None})
+            tuma 1
+        self.assertEqual(d.kutokakeys(g()), {1:Tupu})
         self.assertRaises(TypeError, {}.kutokakeys, 3)
-        kundi dictlike(dict): pass
-        self.assertEqual(dictlike.kutokakeys('a'), {'a':None})
-        self.assertEqual(dictlike().kutokakeys('a'), {'a':None})
+        kundi dictlike(dict): pita
+        self.assertEqual(dictlike.kutokakeys('a'), {'a':Tupu})
+        self.assertEqual(dictlike().kutokakeys('a'), {'a':Tupu})
         self.assertIsInstance(dictlike.kutokakeys('a'), dictlike)
         self.assertIsInstance(dictlike().kutokakeys('a'), dictlike)
         kundi mydict(dict):
             eleza __new__(cls):
                 rudisha collections.UserDict()
         ud = mydict.kutokakeys('ab')
-        self.assertEqual(ud, {'a':None, 'b':None})
+        self.assertEqual(ud, {'a':Tupu, 'b':Tupu})
         self.assertIsInstance(ud, collections.UserDict)
         self.assertRaises(TypeError, dict.kutokakeys)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi baddict1(dict):
             eleza __init__(self):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, baddict1.kutokakeys, [1])
 
@@ -248,26 +248,26 @@ kundi DictTest(unittest.TestCase):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, dict.kutokakeys, BadSeq())
 
         kundi baddict2(dict):
             eleza __setitem__(self, key, value):
-                raise Exc()
+                ashiria Exc()
 
         self.assertRaises(Exc, baddict2.kutokakeys, [1])
 
-        # test fast path for dictionary inputs
+        # test fast path kila dictionary inputs
         d = dict(zip(range(6), range(6)))
         self.assertEqual(dict.kutokakeys(d, 0), dict(zip(range(6), [0]*6)))
 
         kundi baddict3(dict):
             eleza __new__(cls):
                 rudisha d
-        d = {i : i for i in range(10)}
+        d = {i : i kila i kwenye range(10)}
         res = d.copy()
-        res.update(a=None, b=None, c=None)
+        res.update(a=Tupu, b=Tupu, c=Tupu)
         self.assertEqual(baddict3.kutokakeys({"a", "b", "c"}), res)
 
     eleza test_copy(self):
@@ -281,15 +281,15 @@ kundi DictTest(unittest.TestCase):
         self.assertNotEqual(copy, d)
 
         self.assertEqual({}.copy(), {})
-        self.assertRaises(TypeError, d.copy, None)
+        self.assertRaises(TypeError, d.copy, Tupu)
 
     eleza test_copy_fuzz(self):
-        for dict_size in [10, 100, 1000, 10000, 100000]:
+        kila dict_size kwenye [10, 100, 1000, 10000, 100000]:
             dict_size = random.randrange(
                 dict_size // 2, dict_size + dict_size // 2)
             with self.subTest(dict_size=dict_size):
                 d = {}
-                for i in range(dict_size):
+                kila i kwenye range(dict_size):
                     d[i] = i
 
                 d2 = d.copy()
@@ -301,68 +301,68 @@ kundi DictTest(unittest.TestCase):
 
     eleza test_copy_maintains_tracking(self):
         kundi A:
-            pass
+            pita
 
         key = A()
 
-        for d in ({}, {'a': 1}, {key: 'val'}):
+        kila d kwenye ({}, {'a': 1}, {key: 'val'}):
             d2 = d.copy()
             self.assertEqual(gc.is_tracked(d), gc.is_tracked(d2))
 
     eleza test_copy_noncompact(self):
         # Dicts don't compact themselves on del/pop operations.
         # Copy will use a slow merging strategy that produces
-        # a compacted copy when roughly 33% of dict is a non-used
+        # a compacted copy when roughly 33% of dict ni a non-used
         # keys-space (to optimize memory footprint).
         # In this test we want to hit the slow/compacting
-        # branch of dict.copy() and make sure it works OK.
-        d = {k: k for k in range(1000)}
-        for k in range(950):
-            del d[k]
+        # branch of dict.copy() na make sure it works OK.
+        d = {k: k kila k kwenye range(1000)}
+        kila k kwenye range(950):
+            toa d[k]
         d2 = d.copy()
         self.assertEqual(d2, d)
 
     eleza test_get(self):
         d = {}
-        self.assertIs(d.get('c'), None)
+        self.assertIs(d.get('c'), Tupu)
         self.assertEqual(d.get('c', 3), 3)
         d = {'a': 1, 'b': 2}
-        self.assertIs(d.get('c'), None)
+        self.assertIs(d.get('c'), Tupu)
         self.assertEqual(d.get('c', 3), 3)
         self.assertEqual(d.get('a'), 1)
         self.assertEqual(d.get('a', 3), 1)
         self.assertRaises(TypeError, d.get)
-        self.assertRaises(TypeError, d.get, None, None, None)
+        self.assertRaises(TypeError, d.get, Tupu, Tupu, Tupu)
 
     eleza test_setdefault(self):
         # dict.setdefault()
         d = {}
-        self.assertIs(d.setdefault('key0'), None)
+        self.assertIs(d.setdefault('key0'), Tupu)
         d.setdefault('key0', [])
-        self.assertIs(d.setdefault('key0'), None)
+        self.assertIs(d.setdefault('key0'), Tupu)
         d.setdefault('key', []).append(3)
         self.assertEqual(d['key'][0], 3)
         d.setdefault('key', []).append(4)
         self.assertEqual(len(d['key']), 2)
         self.assertRaises(TypeError, d.setdefault)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadHash(object):
-            fail = False
+            fail = Uongo
             eleza __hash__(self):
                 ikiwa self.fail:
-                    raise Exc()
-                else:
+                    ashiria Exc()
+                isipokua:
                     rudisha 42
 
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Kweli
         self.assertRaises(Exc, d.setdefault, x, [])
 
     eleza test_setdefault_atomic(self):
-        # Issue #13521: setdefault() calls __hash__ and __eq__ only once.
+        # Issue #13521: setdefault() calls __hash__ na __eq__ only once.
         kundi Hashed(object):
             eleza __init__(self):
                 self.hash_count = 0
@@ -404,33 +404,33 @@ kundi DictTest(unittest.TestCase):
 
     eleza test_popitem(self):
         # dict.popitem()
-        for copymode in -1, +1:
-            # -1: b has same structure as a
-            # +1: b is a.copy()
-            for log2size in range(12):
+        kila copymode kwenye -1, +1:
+            # -1: b has same structure kama a
+            # +1: b ni a.copy()
+            kila log2size kwenye range(12):
                 size = 2**log2size
                 a = {}
                 b = {}
-                for i in range(size):
+                kila i kwenye range(size):
                     a[repr(i)] = i
                     ikiwa copymode < 0:
                         b[repr(i)] = i
                 ikiwa copymode > 0:
                     b = a.copy()
-                for i in range(size):
+                kila i kwenye range(size):
                     ka, va = ta = a.popitem()
                     self.assertEqual(va, int(ka))
                     kb, vb = tb = b.popitem()
                     self.assertEqual(vb, int(kb))
-                    self.assertFalse(copymode < 0 and ta != tb)
-                self.assertFalse(a)
-                self.assertFalse(b)
+                    self.assertUongo(copymode < 0 na ta != tb)
+                self.assertUongo(a)
+                self.assertUongo(b)
 
         d = {}
         self.assertRaises(KeyError, d.popitem)
 
     eleza test_pop(self):
-        # Tests for pop with specified key
+        # Tests kila pop with specified key
         d = {}
         k, v = 'abc', 'def'
         d[k] = v
@@ -447,19 +447,19 @@ kundi DictTest(unittest.TestCase):
 
         self.assertRaises(TypeError, d.pop)
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadHash(object):
-            fail = False
+            fail = Uongo
             eleza __hash__(self):
                 ikiwa self.fail:
-                    raise Exc()
-                else:
+                    ashiria Exc()
+                isipokua:
                     rudisha 42
 
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Kweli
         self.assertRaises(Exc, d.pop, x)
 
     eleza test_mutating_iteration(self):
@@ -467,7 +467,7 @@ kundi DictTest(unittest.TestCase):
         d = {}
         d[1] = 1
         with self.assertRaises(RuntimeError):
-            for i in d:
+            kila i kwenye d:
                 d[i+1] = 1
 
     eleza test_mutating_iteration_delete(self):
@@ -475,8 +475,8 @@ kundi DictTest(unittest.TestCase):
         d = {}
         d[0] = 0
         with self.assertRaises(RuntimeError):
-            for i in d:
-                del d[0]
+            kila i kwenye d:
+                toa d[0]
                 d[0] = 0
 
     eleza test_mutating_iteration_delete_over_values(self):
@@ -484,8 +484,8 @@ kundi DictTest(unittest.TestCase):
         d = {}
         d[0] = 0
         with self.assertRaises(RuntimeError):
-            for i in d.values():
-                del d[0]
+            kila i kwenye d.values():
+                toa d[0]
                 d[0] = 0
 
     eleza test_mutating_iteration_delete_over_items(self):
@@ -493,14 +493,14 @@ kundi DictTest(unittest.TestCase):
         d = {}
         d[0] = 0
         with self.assertRaises(RuntimeError):
-            for i in d.items():
-                del d[0]
+            kila i kwenye d.items():
+                toa d[0]
                 d[0] = 0
 
     eleza test_mutating_lookup(self):
         # changing dict during a lookup (issue #14417)
         kundi NastyKey:
-            mutate_dict = None
+            mutate_dict = Tupu
 
             eleza __init__(self, value):
                 self.value = value
@@ -512,8 +512,8 @@ kundi DictTest(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa NastyKey.mutate_dict:
                     mydict, key = NastyKey.mutate_dict
-                    NastyKey.mutate_dict = None
-                    del mydict[key]
+                    NastyKey.mutate_dict = Tupu
+                    toa mydict[key]
                 rudisha self.value == other.value
 
         key1 = NastyKey(1)
@@ -532,18 +532,18 @@ kundi DictTest(unittest.TestCase):
         d[1] = d
         self.assertEqual(repr(d), '{1: {...}}')
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadRepr(object):
             eleza __repr__(self):
-                raise Exc()
+                ashiria Exc()
 
         d = {1: BadRepr()}
         self.assertRaises(Exc, repr, d)
 
     eleza test_repr_deep(self):
         d = {}
-        for i in range(sys.getrecursionlimit() + 100):
+        kila i kwenye range(sys.getrecursionlimit() + 100):
             d = {1: d}
         self.assertRaises(RecursionError, repr, d)
 
@@ -551,11 +551,11 @@ kundi DictTest(unittest.TestCase):
         self.assertEqual({}, {})
         self.assertEqual({1: 2}, {1: 2})
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
 
         kundi BadCmp(object):
             eleza __eq__(self, other):
-                raise Exc()
+                ashiria Exc()
             eleza __hash__(self):
                 rudisha 1
 
@@ -571,7 +571,7 @@ kundi DictTest(unittest.TestCase):
 
     eleza helper_keys_contained(self, fn):
         # Test rich comparisons against dict key views, which should behave the
-        # same as sets.
+        # same kama sets.
         empty = fn(dict())
         empty2 = fn(dict())
         smaller = fn({1:1, 2:2})
@@ -579,44 +579,44 @@ kundi DictTest(unittest.TestCase):
         larger2 = fn({1:1, 2:2, 3:3})
         larger3 = fn({4:1, 2:2, 3:3})
 
-        self.assertTrue(smaller <  larger)
-        self.assertTrue(smaller <= larger)
-        self.assertTrue(larger >  smaller)
-        self.assertTrue(larger >= smaller)
+        self.assertKweli(smaller <  larger)
+        self.assertKweli(smaller <= larger)
+        self.assertKweli(larger >  smaller)
+        self.assertKweli(larger >= smaller)
 
-        self.assertFalse(smaller >= larger)
-        self.assertFalse(smaller >  larger)
-        self.assertFalse(larger  <= smaller)
-        self.assertFalse(larger  <  smaller)
+        self.assertUongo(smaller >= larger)
+        self.assertUongo(smaller >  larger)
+        self.assertUongo(larger  <= smaller)
+        self.assertUongo(larger  <  smaller)
 
-        self.assertFalse(smaller <  larger3)
-        self.assertFalse(smaller <= larger3)
-        self.assertFalse(larger3 >  smaller)
-        self.assertFalse(larger3 >= smaller)
+        self.assertUongo(smaller <  larger3)
+        self.assertUongo(smaller <= larger3)
+        self.assertUongo(larger3 >  smaller)
+        self.assertUongo(larger3 >= smaller)
 
         # Inequality strictness
-        self.assertTrue(larger2 >= larger)
-        self.assertTrue(larger2 <= larger)
-        self.assertFalse(larger2 > larger)
-        self.assertFalse(larger2 < larger)
+        self.assertKweli(larger2 >= larger)
+        self.assertKweli(larger2 <= larger)
+        self.assertUongo(larger2 > larger)
+        self.assertUongo(larger2 < larger)
 
-        self.assertTrue(larger == larger2)
-        self.assertTrue(smaller != larger)
+        self.assertKweli(larger == larger2)
+        self.assertKweli(smaller != larger)
 
-        # There is an optimization on the zero-element case.
-        self.assertTrue(empty == empty2)
-        self.assertFalse(empty != empty2)
-        self.assertFalse(empty == smaller)
-        self.assertTrue(empty != smaller)
+        # There ni an optimization on the zero-element case.
+        self.assertKweli(empty == empty2)
+        self.assertUongo(empty != empty2)
+        self.assertUongo(empty == smaller)
+        self.assertKweli(empty != smaller)
 
         # With the same size, an elementwise compare happens
-        self.assertTrue(larger != larger3)
-        self.assertFalse(larger == larger3)
+        self.assertKweli(larger != larger3)
+        self.assertUongo(larger == larger3)
 
     eleza test_errors_in_view_containment_check(self):
         kundi C:
             eleza __eq__(self, other):
-                raise RuntimeError
+                ashiria RuntimeError
 
         d1 = {1: C()}
         d2 = {1: C()}
@@ -666,23 +666,23 @@ kundi DictTest(unittest.TestCase):
         self.assertEqual(k1 ^ k3, {(1,1), (2,2), (4,4)})
 
     eleza test_dictview_mixed_set_operations(self):
-        # Just a few for .keys()
-        self.assertTrue({1:1}.keys() == {1})
-        self.assertTrue({1} == {1:1}.keys())
+        # Just a few kila .keys()
+        self.assertKweli({1:1}.keys() == {1})
+        self.assertKweli({1} == {1:1}.keys())
         self.assertEqual({1:1}.keys() | {2}, {1, 2})
         self.assertEqual({2} | {1:1}.keys(), {1, 2})
-        # And a few for .items()
-        self.assertTrue({1:1}.items() == {(1,1)})
-        self.assertTrue({(1,1)} == {1:1}.items())
+        # And a few kila .items()
+        self.assertKweli({1:1}.items() == {(1,1)})
+        self.assertKweli({(1,1)} == {1:1}.items())
         self.assertEqual({1:1}.items() | {2}, {(1,1), 2})
         self.assertEqual({2} | {1:1}.items(), {(1,1), 2})
 
     eleza test_missing(self):
         # Make sure dict doesn't have a __missing__ method
-        self.assertFalse(hasattr(dict, "__missing__"))
-        self.assertFalse(hasattr({}, "__missing__"))
+        self.assertUongo(hasattr(dict, "__missing__"))
+        self.assertUongo(hasattr({}, "__missing__"))
         # Test several cases:
-        # (D) subkundi defines __missing__ method returning a value
+        # (D) subkundi defines __missing__ method rudishaing a value
         # (E) subkundi defines __missing__ method raising RuntimeError
         # (F) subkundi sets __missing__ instance variable (no effect)
         # (G) subkundi doesn't define __missing__ at all
@@ -698,39 +698,39 @@ kundi DictTest(unittest.TestCase):
 
         kundi E(dict):
             eleza __missing__(self, key):
-                raise RuntimeError(key)
+                ashiria RuntimeError(key)
         e = E()
-        with self.assertRaises(RuntimeError) as c:
+        with self.assertRaises(RuntimeError) kama c:
             e[42]
         self.assertEqual(c.exception.args, (42,))
 
         kundi F(dict):
             eleza __init__(self):
                 # An instance variable __missing__ should have no effect
-                self.__missing__ = lambda key: None
+                self.__missing__ = lambda key: Tupu
         f = F()
-        with self.assertRaises(KeyError) as c:
+        with self.assertRaises(KeyError) kama c:
             f[42]
         self.assertEqual(c.exception.args, (42,))
 
         kundi G(dict):
-            pass
+            pita
         g = G()
-        with self.assertRaises(KeyError) as c:
+        with self.assertRaises(KeyError) kama c:
             g[42]
         self.assertEqual(c.exception.args, (42,))
 
     eleza test_tuple_keyerror(self):
         # SF #1576657
         d = {}
-        with self.assertRaises(KeyError) as c:
+        with self.assertRaises(KeyError) kama c:
             d[(1,)]
         self.assertEqual(c.exception.args, ((1,),))
 
     eleza test_bad_key(self):
-        # Dictionary lookups should fail ikiwa __eq__() raises an exception.
+        # Dictionary lookups should fail ikiwa __eq__() ashirias an exception.
         kundi CustomException(Exception):
-            pass
+            pita
 
         kundi BadDictKey:
             eleza __hash__(self):
@@ -738,16 +738,16 @@ kundi DictTest(unittest.TestCase):
 
             eleza __eq__(self, other):
                 ikiwa isinstance(other, self.__class__):
-                    raise CustomException
+                    ashiria CustomException
                 rudisha other
 
         d = {}
         x1 = BadDictKey()
         x2 = BadDictKey()
         d[x1] = 1
-        for stmt in ['d[x2] = 2',
+        kila stmt kwenye ['d[x2] = 2',
                      'z = d[x2]',
-                     'x2 in d',
+                     'x2 kwenye d',
                      'd.get(x2)',
                      'd.setdefault(x2, 42)',
                      'd.pop(x2)',
@@ -756,24 +756,24 @@ kundi DictTest(unittest.TestCase):
                 exec(stmt, locals())
 
     eleza test_resize1(self):
-        # Dict resizing bug, found by Jack Jansen in 2.2 CVS development.
-        # This version got an assert failure in debug build, infinite loop in
+        # Dict resizing bug, found by Jack Jansen kwenye 2.2 CVS development.
+        # This version got an assert failure kwenye debug build, infinite loop in
         # release build.  Unfortunately, provoking this kind of stuff requires
-        # a mix of inserts and deletes hitting exactly the right hash codes in
-        # exactly the right order, and I can't think of a randomized approach
-        # that would be *likely* to hit a failing case in reasonable time.
+        # a mix of inserts na deletes hitting exactly the right hash codes in
+        # exactly the right order, na I can't think of a randomized approach
+        # that would be *likely* to hit a failing case kwenye reasonable time.
 
         d = {}
-        for i in range(5):
+        kila i kwenye range(5):
             d[i] = i
-        for i in range(5):
-            del d[i]
-        for i in range(5, 9):  # i==8 was the problem
+        kila i kwenye range(5):
+            toa d[i]
+        kila i kwenye range(5, 9):  # i==8 was the problem
             d[i] = i
 
     eleza test_resize2(self):
         # Another dict resizing bug (SF bug #1456209).
-        # This caused Segmentation faults or Illegal instructions.
+        # This caused Segmentation faults ama Illegal instructions.
 
         kundi X(object):
             eleza __hash__(self):
@@ -781,67 +781,67 @@ kundi DictTest(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa resizing:
                     d.clear()
-                rudisha False
+                rudisha Uongo
         d = {}
-        resizing = False
+        resizing = Uongo
         d[X()] = 1
         d[X()] = 2
         d[X()] = 3
         d[X()] = 4
         d[X()] = 5
         # now trigger a resize
-        resizing = True
+        resizing = Kweli
         d[9] = 6
 
     eleza test_empty_presized_dict_in_freelist(self):
         # Bug #3537: ikiwa an empty but presized dict with a size larger
-        # than 7 was in the freelist, it triggered an assertion failure
+        # than 7 was kwenye the freelist, it triggered an assertion failure
         with self.assertRaises(ZeroDivisionError):
-            d = {'a': 1 // 0, 'b': None, 'c': None, 'd': None, 'e': None,
-                 'f': None, 'g': None, 'h': None}
+            d = {'a': 1 // 0, 'b': Tupu, 'c': Tupu, 'd': Tupu, 'e': Tupu,
+                 'f': Tupu, 'g': Tupu, 'h': Tupu}
         d = {}
 
     eleza test_container_iterator(self):
-        # Bug #3680: tp_traverse was not implemented for dictiter and
+        # Bug #3680: tp_traverse was sio implemented kila dictiter and
         # dictview objects.
         kundi C(object):
-            pass
+            pita
         views = (dict.items, dict.values, dict.keys)
-        for v in views:
+        kila v kwenye views:
             obj = C()
             ref = weakref.ref(obj)
             container = {obj: 1}
             obj.v = v(container)
             obj.x = iter(obj.v)
-            del obj, container
+            toa obj, container
             gc.collect()
-            self.assertIs(ref(), None, "Cycle was not collected")
+            self.assertIs(ref(), Tupu, "Cycle was sio collected")
 
     eleza _not_tracked(self, t):
         # Nested containers can take several collections to untrack
         gc.collect()
         gc.collect()
-        self.assertFalse(gc.is_tracked(t), t)
+        self.assertUongo(gc.is_tracked(t), t)
 
     eleza _tracked(self, t):
-        self.assertTrue(gc.is_tracked(t), t)
+        self.assertKweli(gc.is_tracked(t), t)
         gc.collect()
         gc.collect()
-        self.assertTrue(gc.is_tracked(t), t)
+        self.assertKweli(gc.is_tracked(t), t)
 
     @support.cpython_only
     eleza test_track_literals(self):
         # Test GC-optimization of dict literals
-        x, y, z, w = 1.5, "a", (1, None), []
+        x, y, z, w = 1.5, "a", (1, Tupu), []
 
         self._not_tracked({})
         self._not_tracked({x:(), y:x, z:1})
         self._not_tracked({1: "a", "b": 2})
-        self._not_tracked({1: 2, (None, True, False, ()): int})
+        self._not_tracked({1: 2, (Tupu, Kweli, Uongo, ()): int})
         self._not_tracked({1: object()})
 
         # Dicts with mutable elements are always tracked, even ikiwa those
-        # elements are not tracked right now.
+        # elements are sio tracked right now.
         self._tracked({1: []})
         self._tracked({1: ([],)})
         self._tracked({1: {}})
@@ -851,7 +851,7 @@ kundi DictTest(unittest.TestCase):
     eleza test_track_dynamic(self):
         # Test GC-optimization of dynamically-created dicts
         kundi MyObject(object):
-            pass
+            pita
         x, y, z, w, o = 1.5, "a", (1, object()), [], MyObject()
 
         d = dict()
@@ -866,11 +866,11 @@ kundi DictTest(unittest.TestCase):
         d[4] = w
         self._tracked(d)
         self._tracked(d.copy())
-        d[4] = None
+        d[4] = Tupu
         self._not_tracked(d)
         self._not_tracked(d.copy())
 
-        # dd isn't tracked right now, but it may mutate and therefore d
+        # dd isn't tracked right now, but it may mutate na therefore d
         # which contains it must be tracked.
         d = dict()
         dd = dict()
@@ -915,15 +915,15 @@ kundi DictTest(unittest.TestCase):
     eleza test_track_subtypes(self):
         # Dict subtypes are always tracked
         kundi MyDict(dict):
-            pass
+            pita
         self._tracked(MyDict())
 
     eleza make_shared_key_dict(self, n):
         kundi C:
-            pass
+            pita
 
         dicts = []
-        for i in range(n):
+        kila i kwenye range(n):
             a = C()
             a.x, a.y, a.z = 1, 2, 3
             dicts.append(a.__dict__)
@@ -933,7 +933,7 @@ kundi DictTest(unittest.TestCase):
     @support.cpython_only
     eleza test_splittable_setdefault(self):
         """split table must be combined when setdefault()
-        breaks insertion order"""
+        komas insertion order"""
         a, b = self.make_shared_key_dict(2)
 
         a['a'] = 1
@@ -949,14 +949,14 @@ kundi DictTest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_splittable_del(self):
-        """split table must be combined when del d[k]"""
+        """split table must be combined when toa d[k]"""
         a, b = self.make_shared_key_dict(2)
 
         orig_size = sys.getsizeof(a)
 
-        del a['y']  # split table is combined
+        toa a['y']  # split table ni combined
         with self.assertRaises(KeyError):
-            del a['y']
+            toa a['y']
 
         self.assertGreater(sys.getsizeof(a), orig_size)
         self.assertEqual(list(a), ['x', 'z'])
@@ -974,7 +974,7 @@ kundi DictTest(unittest.TestCase):
 
         orig_size = sys.getsizeof(a)
 
-        a.pop('y')  # split table is combined
+        a.pop('y')  # split table ni combined
         with self.assertRaises(KeyError):
             a.pop('y')
 
@@ -989,7 +989,7 @@ kundi DictTest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_splittable_pop_pending(self):
-        """pop a pending key in a splitted table should not crash"""
+        """pop a pending key kwenye a splitted table should sio crash"""
         a, b = self.make_shared_key_dict(2)
 
         a['a'] = 4
@@ -1003,10 +1003,10 @@ kundi DictTest(unittest.TestCase):
 
         orig_size = sys.getsizeof(a)
 
-        item = a.popitem()  # split table is combined
+        item = a.popitem()  # split table ni combined
         self.assertEqual(item, ('z', 3))
         with self.assertRaises(KeyError):
-            del a['z']
+            toa a['z']
 
         self.assertGreater(sys.getsizeof(a), orig_size)
         self.assertEqual(list(a), ['x', 'y'])
@@ -1014,36 +1014,36 @@ kundi DictTest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_splittable_setattr_after_pop(self):
-        """setattr() must not convert combined table into split table."""
+        """setattr() must sio convert combined table into split table."""
         # Issue 28147
         agiza _testcapi
 
         kundi C:
-            pass
+            pita
         a = C()
 
         a.a = 1
-        self.assertTrue(_testcapi.dict_hassplittable(a.__dict__))
+        self.assertKweli(_testcapi.dict_hassplittable(a.__dict__))
 
         # dict.pop() convert it to combined table
         a.__dict__.pop('a')
-        self.assertFalse(_testcapi.dict_hassplittable(a.__dict__))
+        self.assertUongo(_testcapi.dict_hassplittable(a.__dict__))
 
-        # But C should not convert a.__dict__ to split table again.
+        # But C should sio convert a.__dict__ to split table again.
         a.a = 1
-        self.assertFalse(_testcapi.dict_hassplittable(a.__dict__))
+        self.assertUongo(_testcapi.dict_hassplittable(a.__dict__))
 
-        # Same for popitem()
+        # Same kila popitem()
         a = C()
         a.a = 2
-        self.assertTrue(_testcapi.dict_hassplittable(a.__dict__))
+        self.assertKweli(_testcapi.dict_hassplittable(a.__dict__))
         a.__dict__.popitem()
-        self.assertFalse(_testcapi.dict_hassplittable(a.__dict__))
+        self.assertUongo(_testcapi.dict_hassplittable(a.__dict__))
         a.a = 3
-        self.assertFalse(_testcapi.dict_hassplittable(a.__dict__))
+        self.assertUongo(_testcapi.dict_hassplittable(a.__dict__))
 
     eleza test_iterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             it = iter(data)
             d = pickle.dumps(it, proto)
@@ -1051,26 +1051,26 @@ kundi DictTest(unittest.TestCase):
             self.assertEqual(list(it), list(data))
 
             it = pickle.loads(d)
-            try:
+            jaribu:
                 drop = next(it)
-            except StopIteration:
-                continue
+            tatizo StopIteration:
+                endelea
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop]
+            toa data[drop]
             self.assertEqual(list(it), list(data))
 
     eleza test_itemiterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # dictviews aren't picklable, only their iterators
             itorg = iter(data.items())
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is not necessarily the same as the original.  It is
-            # merely an object supporting the iterator protocol, yielding
-            # the same objects as the original one.
+            # ni sio necessarily the same kama the original.  It is
+            # merely an object supporting the iterator protocol, tumaing
+            # the same objects kama the original one.
             # self.assertEqual(type(itorg), type(it))
             self.assertIsInstance(it, collections.abc.Iterator)
             self.assertEqual(dict(it), data)
@@ -1079,11 +1079,11 @@ kundi DictTest(unittest.TestCase):
             drop = next(it)
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop[0]]
+            toa data[drop[0]]
             self.assertEqual(dict(it), data)
 
     eleza test_valuesiterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # data.values() isn't picklable, only its iterator
             it = iter(data.values())
@@ -1099,7 +1099,7 @@ kundi DictTest(unittest.TestCase):
             self.assertEqual(sorted(values), sorted(list(data.values())))
 
     eleza test_reverseiterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             it = reversed(data)
             d = pickle.dumps(it, proto)
@@ -1107,26 +1107,26 @@ kundi DictTest(unittest.TestCase):
             self.assertEqual(list(it), list(reversed(data)))
 
             it = pickle.loads(d)
-            try:
+            jaribu:
                 drop = next(it)
-            except StopIteration:
-                continue
+            tatizo StopIteration:
+                endelea
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop]
+            toa data[drop]
             self.assertEqual(list(it), list(reversed(data)))
 
     eleza test_reverseitemiterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # dictviews aren't picklable, only their iterators
             itorg = reversed(data.items())
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is not necessarily the same as the original.  It is
-            # merely an object supporting the iterator protocol, yielding
-            # the same objects as the original one.
+            # ni sio necessarily the same kama the original.  It is
+            # merely an object supporting the iterator protocol, tumaing
+            # the same objects kama the original one.
             # self.assertEqual(type(itorg), type(it))
             self.assertIsInstance(it, collections.abc.Iterator)
             self.assertEqual(dict(it), data)
@@ -1135,11 +1135,11 @@ kundi DictTest(unittest.TestCase):
             drop = next(it)
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
-            del data[drop[0]]
+            toa data[drop[0]]
             self.assertEqual(dict(it), data)
 
     eleza test_reversevaluesiterator_pickling(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # data.values() isn't picklable, only its iterator
             it = reversed(data.values())
@@ -1160,12 +1160,12 @@ kundi DictTest(unittest.TestCase):
                 self.msg = msg
         f = Foo('123')
         kundi _str(str):
-            pass
+            pita
         self.assertEqual(f.msg, getattr(f, _str('msg')))
         self.assertEqual(f.msg, f.__dict__[_str('msg')])
 
     eleza test_object_set_item_single_instance_non_str_key(self):
-        kundi Foo: pass
+        kundi Foo: pita
         f = Foo()
         f.__dict__[1] = 1
         f.a = 'a'
@@ -1179,8 +1179,8 @@ kundi DictTest(unittest.TestCase):
             eleza __del__(self):
                 mutate(d)
 
-        d = {k: Mutating() for k in 'abcdefghijklmnopqr'}
-        for k in list(d):
+        d = {k: Mutating() kila k kwenye 'abcdefghijklmnopqr'}
+        kila k kwenye list(d):
             d[k] = k
 
     eleza test_reentrant_insertion(self):
@@ -1195,7 +1195,7 @@ kundi DictTest(unittest.TestCase):
         self.check_reentrant_insertion(mutate)
 
         eleza mutate(d):
-            while d:
+            wakati d:
                 d.popitem()
         self.check_reentrant_insertion(mutate)
 
@@ -1206,9 +1206,9 @@ kundi DictTest(unittest.TestCase):
 
             eleza __eq__(self, o):
                 other.clear()
-                rudisha False
+                rudisha Uongo
 
-        l = [(i,0) for i in range(1, 1337)]
+        l = [(i,0) kila i kwenye range(1, 1337)]
         other = dict(l)
         other[X()] = 0
         d = {X(): 0, 1: 1}
@@ -1221,24 +1221,24 @@ kundi DictTest(unittest.TestCase):
         support.check_free_after_iterating(self, lambda d: iter(d.items()), dict)
 
     eleza test_equal_operator_modifying_operand(self):
-        # test fix for seg fault reported in issue 27945 part 3.
+        # test fix kila seg fault reported kwenye issue 27945 part 3.
         kundi X():
             eleza __del__(self):
                 dict_b.clear()
 
             eleza __eq__(self, other):
                 dict_a.clear()
-                rudisha True
+                rudisha Kweli
 
             eleza __hash__(self):
                 rudisha 13
 
         dict_a = {X(): 0}
         dict_b = {X(): X()}
-        self.assertTrue(dict_a == dict_b)
+        self.assertKweli(dict_a == dict_b)
 
     eleza test_kutokakeys_operator_modifying_dict_operand(self):
-        # test fix for seg fault reported in issue 27945 part 4a.
+        # test fix kila seg fault reported kwenye issue 27945 part 4a.
         kundi X(int):
             eleza __hash__(self):
                 rudisha 13
@@ -1246,17 +1246,17 @@ kundi DictTest(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa len(d) > 1:
                     d.clear()
-                rudisha False
+                rudisha Uongo
 
-        d = {}  # this is required to exist so that d can be constructed!
+        d = {}  # this ni required to exist so that d can be constructed!
         d = {X(1): 1, X(2): 2}
-        try:
+        jaribu:
             dict.kutokakeys(d)  # shouldn't crash
-        except RuntimeError:  # implementation defined
-            pass
+        tatizo RuntimeError:  # implementation defined
+            pita
 
     eleza test_kutokakeys_operator_modifying_set_operand(self):
-        # test fix for seg fault reported in issue 27945 part 4b.
+        # test fix kila seg fault reported kwenye issue 27945 part 4b.
         kundi X(int):
             eleza __hash__(self):
                 rudisha 13
@@ -1264,14 +1264,14 @@ kundi DictTest(unittest.TestCase):
             eleza __eq__(self, other):
                 ikiwa len(d) > 1:
                     d.clear()
-                rudisha False
+                rudisha Uongo
 
-        d = {}  # this is required to exist so that d can be constructed!
+        d = {}  # this ni required to exist so that d can be constructed!
         d = {X(1), X(2)}
-        try:
+        jaribu:
             dict.kutokakeys(d)  # shouldn't crash
-        except RuntimeError:  # implementation defined
-            pass
+        tatizo RuntimeError:  # implementation defined
+            pita
 
     eleza test_dictitems_contains_use_after_free(self):
         kundi X:
@@ -1280,7 +1280,7 @@ kundi DictTest(unittest.TestCase):
                 rudisha NotImplemented
 
         d = {0: set()}
-        (0, X()) in d.items()
+        (0, X()) kwenye d.items()
 
     eleza test_init_use_after_free(self):
         kundi X:
@@ -1296,18 +1296,18 @@ kundi DictTest(unittest.TestCase):
             eleza __del__(self):
                 d.clear()
 
-        d = {i: X(i) for i in range(8)}
+        d = {i: X(i) kila i kwenye range(8)}
 
         eleza iter_and_mutate():
-            for result in d.items():
+            kila result kwenye d.items():
                 ikiwa result[0] == 2:
-                    d[2] = None # free d[2] --> X(2).__del__ was called
+                    d[2] = Tupu # free d[2] --> X(2).__del__ was called
 
         self.assertRaises(RuntimeError, iter_and_mutate)
 
     eleza test_reversed(self):
         d = {"a": 1, "b": 2, "foo": 0, "c": 3, "d": 4}
-        del d["foo"]
+        toa d["foo"]
         r = reversed(d)
         self.assertEqual(list(r), list('dcba'))
         self.assertRaises(StopIteration, next, r)
@@ -1323,7 +1323,7 @@ kundi DictTest(unittest.TestCase):
 
         # dict subkundi doesn't override __iter__
         kundi CustomDict(dict):
-            pass
+            pita
 
         pairs = [('a', 1), ('b', 2), ('c', 3)]
 
@@ -1355,15 +1355,15 @@ kundi CAPITest(unittest.TestCase):
         self.assertEqual(dict_getitem_knownhash(d, 'y', hash('y')), 2)
         self.assertEqual(dict_getitem_knownhash(d, 'z', hash('z')), 3)
 
-        # not a dict
+        # sio a dict
         self.assertRaises(SystemError, dict_getitem_knownhash, [], 1, hash(1))
-        # key does not exist
+        # key does sio exist
         self.assertRaises(KeyError, dict_getitem_knownhash, {}, 1, hash(1))
 
-        kundi Exc(Exception): pass
+        kundi Exc(Exception): pita
         kundi BadEq:
             eleza __eq__(self, other):
-                raise Exc
+                ashiria Exc
             eleza __hash__(self):
                 rudisha 7
 
@@ -1379,7 +1379,7 @@ kundi GeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = dict
 
 kundi Dict(dict):
-    pass
+    pita
 
 kundi SubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = Dict

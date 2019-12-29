@@ -3,7 +3,7 @@ kutoka test.test_json agiza PyTest, CTest
 # 2007-10-05
 JSONDOCS = [
     # http://json.org/JSON_checker/test/fail1.json
-    '"A JSON payload should be an object or array, not a string."',
+    '"A JSON payload should be an object ama array, sio a string."',
     # http://json.org/JSON_checker/test/fail2.json
     '["Unclosed array"',
     # http://json.org/JSON_checker/test/fail3.json
@@ -55,9 +55,9 @@ JSONDOCS = [
     # http://json.org/JSON_checker/test/fail26.json
     '["tab\\   character\\   in\\  string\\  "]',
     # http://json.org/JSON_checker/test/fail27.json
-    '["line\nbreak"]',
+    '["line\nkoma"]',
     # http://json.org/JSON_checker/test/fail28.json
-    '["line\\\nbreak"]',
+    '["line\\\nkoma"]',
     # http://json.org/JSON_checker/test/fail29.json
     '[0e]',
     # http://json.org/JSON_checker/test/fail30.json
@@ -69,38 +69,38 @@ JSONDOCS = [
     # http://json.org/JSON_checker/test/fail33.json
     '["mismatch"}',
     # http://code.google.com/p/simplejson/issues/detail?id=3
-    '["A\u001FZ control characters in string"]',
+    '["A\u001FZ control characters kwenye string"]',
 ]
 
 SKIPS = {
-    1: "why not have a string payload?",
+    1: "why sio have a string payload?",
     18: "spec doesn't specify any nesting limitations",
 }
 
 kundi TestFail:
     eleza test_failures(self):
-        for idx, doc in enumerate(JSONDOCS):
+        kila idx, doc kwenye enumerate(JSONDOCS):
             idx = idx + 1
-            ikiwa idx in SKIPS:
+            ikiwa idx kwenye SKIPS:
                 self.loads(doc)
-                continue
-            try:
+                endelea
+            jaribu:
                 self.loads(doc)
-            except self.JSONDecodeError:
-                pass
-            else:
-                self.fail("Expected failure for fail{0}.json: {1!r}".format(idx, doc))
+            tatizo self.JSONDecodeError:
+                pita
+            isipokua:
+                self.fail("Expected failure kila fail{0}.json: {1!r}".format(idx, doc))
 
     eleza test_non_string_keys_dict(self):
         data = {'a' : 1, (1, 2) : 2}
         with self.assertRaisesRegex(TypeError,
-                'keys must be str, int, float, bool or None, not tuple'):
+                'keys must be str, int, float, bool ama Tupu, sio tuple'):
             self.dumps(data)
 
     eleza test_not_serializable(self):
         agiza sys
         with self.assertRaisesRegex(TypeError,
-                'Object of type module is not JSON serializable'):
+                'Object of type module ni sio JSON serializable'):
             self.dumps(sys)
 
     eleza test_truncated_input(self):
@@ -113,20 +113,20 @@ kundi TestFail:
             ('["spam', 'Unterminated string starting at', 1),
             ('["spam"', "Expecting ',' delimiter", 7),
             ('["spam",', 'Expecting value', 8),
-            ('{', 'Expecting property name enclosed in double quotes', 1),
+            ('{', 'Expecting property name enclosed kwenye double quotes', 1),
             ('{"', 'Unterminated string starting at', 1),
             ('{"spam', 'Unterminated string starting at', 1),
             ('{"spam"', "Expecting ':' delimiter", 7),
             ('{"spam":', 'Expecting value', 8),
             ('{"spam":42', "Expecting ',' delimiter", 10),
-            ('{"spam":42,', 'Expecting property name enclosed in double quotes', 11),
+            ('{"spam":42,', 'Expecting property name enclosed kwenye double quotes', 11),
         ]
         test_cases += [
             ('"', 'Unterminated string starting at', 0),
             ('"spam', 'Unterminated string starting at', 0),
         ]
-        for data, msg, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+        kila data, msg, idx kwenye test_cases:
+            with self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -148,10 +148,10 @@ kundi TestFail:
             ('["]', 'Unterminated string starting at', 1),
             ('["spam":', "Expecting ',' delimiter", 7),
             ('["spam",]', 'Expecting value', 8),
-            ('{:', 'Expecting property name enclosed in double quotes', 1),
-            ('{,', 'Expecting property name enclosed in double quotes', 1),
-            ('{42', 'Expecting property name enclosed in double quotes', 1),
-            ('[{]', 'Expecting property name enclosed in double quotes', 2),
+            ('{:', 'Expecting property name enclosed kwenye double quotes', 1),
+            ('{,', 'Expecting property name enclosed kwenye double quotes', 1),
+            ('{42', 'Expecting property name enclosed kwenye double quotes', 1),
+            ('[{]', 'Expecting property name enclosed kwenye double quotes', 2),
             ('{"spam",', "Expecting ':' delimiter", 7),
             ('{"spam"}', "Expecting ':' delimiter", 7),
             ('[{"spam"]', "Expecting ':' delimiter", 8),
@@ -159,10 +159,10 @@ kundi TestFail:
             ('[{"spam":]', 'Expecting value', 9),
             ('{"spam":42 "ham"', "Expecting ',' delimiter", 11),
             ('[{"spam":42]', "Expecting ',' delimiter", 11),
-            ('{"spam":42,}', 'Expecting property name enclosed in double quotes', 11),
+            ('{"spam":42,}', 'Expecting property name enclosed kwenye double quotes', 11),
         ]
-        for data, msg, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+        kila data, msg, idx kwenye test_cases:
+            with self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -184,8 +184,8 @@ kundi TestFail:
             ('42,"spam"', 'Extra data', 2),
             ('"spam",42', 'Extra data', 6),
         ]
-        for data, msg, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+        kila data, msg, idx kwenye test_cases:
+            with self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -203,8 +203,8 @@ kundi TestFail:
             ('\n!', 2, 1, 1),
             ('\n  \n\n     !', 4, 6, 10),
         ]
-        for data, line, col, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+        kila data, line, col, idx kwenye test_cases:
+            with self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, 'Expecting value')
@@ -215,5 +215,5 @@ kundi TestFail:
                              'Expecting value: line %s column %d (char %d)' %
                              (line, col, idx))
 
-kundi TestPyFail(TestFail, PyTest): pass
-kundi TestCFail(TestFail, CTest): pass
+kundi TestPyFail(TestFail, PyTest): pita
+kundi TestCFail(TestFail, CTest): pita

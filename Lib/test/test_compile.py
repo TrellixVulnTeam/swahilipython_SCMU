@@ -27,8 +27,8 @@ kundi TestSpecifics(unittest.TestCase):
     eleza test_other_newlines(self):
         compile("\r\n", "<test>", "exec")
         compile("\r", "<test>", "exec")
-        compile("hi\r\nstuff\r\neleza f():\n    pass\r", "<test>", "exec")
-        compile("this_is\rreally_old_mac\releza f():\n    pass", "<test>", "exec")
+        compile("hi\r\nstuff\r\neleza f():\n    pita\r", "<test>", "exec")
+        compile("this_is\rreally_old_mac\releza f():\n    pita", "<test>", "exec")
 
     eleza test_debug_assignment(self):
         # catch assignments to __debug__
@@ -40,19 +40,19 @@ kundi TestSpecifics(unittest.TestCase):
         setattr(builtins, '__debug__', prev)
 
     eleza test_argument_handling(self):
-        # detect duplicate positional and keyword arguments
+        # detect duplicate positional na keyword arguments
         self.assertRaises(SyntaxError, eval, 'lambda a,a:0')
         self.assertRaises(SyntaxError, eval, 'lambda a,a=1:0')
         self.assertRaises(SyntaxError, eval, 'lambda a=1,a=1:0')
-        self.assertRaises(SyntaxError, exec, 'eleza f(a, a): pass')
-        self.assertRaises(SyntaxError, exec, 'eleza f(a = 0, a = 1): pass')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a, a): pita')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a = 0, a = 1): pita')
         self.assertRaises(SyntaxError, exec, 'eleza f(a): global a; a = 1')
 
     eleza test_syntax_error(self):
         self.assertRaises(SyntaxError, compile, "1+*3", "filename", "exec")
 
     eleza test_none_keyword_arg(self):
-        self.assertRaises(SyntaxError, compile, "f(None=1)", "<string>", "exec")
+        self.assertRaises(SyntaxError, compile, "f(Tupu=1)", "<string>", "exec")
 
     eleza test_duplicate_global_local(self):
         self.assertRaises(SyntaxError, exec, 'eleza f(a): global a; a = 1')
@@ -64,7 +64,7 @@ kundi TestSpecifics(unittest.TestCase):
             eleza __getitem__(self, key):
                 ikiwa key == 'a':
                     rudisha 12
-                raise KeyError
+                ashiria KeyError
             eleza __setitem__(self, key, value):
                 self.results = (key, value)
             eleza keys(self):
@@ -74,12 +74,12 @@ kundi TestSpecifics(unittest.TestCase):
         g = globals()
         exec('z = a', g, m)
         self.assertEqual(m.results, ('z', 12))
-        try:
+        jaribu:
             exec('z = b', g, m)
-        except NameError:
-            pass
-        else:
-            self.fail('Did not detect a KeyError')
+        tatizo NameError:
+            pita
+        isipokua:
+            self.fail('Did sio detect a KeyError')
         exec('z = dir()', g, m)
         self.assertEqual(m.results, ('z', list('xyz')))
         exec('z = globals()', g, m)
@@ -90,11 +90,11 @@ kundi TestSpecifics(unittest.TestCase):
 
         kundi A:
             "Non-mapping"
-            pass
+            pita
         m = A()
         self.assertRaises(TypeError, exec, 'z = a', g, m)
 
-        # Verify that dict subclasses work as well
+        # Verify that dict subclasses work kama well
         kundi D(dict):
             eleza __getitem__(self, key):
                 ikiwa key == 'a':
@@ -105,7 +105,7 @@ kundi TestSpecifics(unittest.TestCase):
         self.assertEqual(d['z'], 12)
 
     eleza test_extended_arg(self):
-        longexpr = 'x = x or ' + '-x' * 2500
+        longexpr = 'x = x ama ' + '-x' * 2500
         g = {}
         code = '''
 eleza f(x):
@@ -120,7 +120,7 @@ eleza f(x):
     %s
     %s
     # the expressions above have no effect, x == argument
-    while x:
+    wakati x:
         x -= 1
         # EXTENDED_ARG/JUMP_ABSOLUTE here
     rudisha x
@@ -129,7 +129,7 @@ eleza f(x):
         self.assertEqual(g['f'](5), 0)
 
     eleza test_argument_order(self):
-        self.assertRaises(SyntaxError, exec, 'eleza f(a=1, b): pass')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a=1, b): pita')
 
     eleza test_float_literals(self):
         # testing bad float literals
@@ -143,13 +143,13 @@ eleza f(x):
         s = """
 ikiwa 1:
     ikiwa 2:
-        pass"""
+        pita"""
         compile(s, "<string>", "exec")
 
-    # This test is probably specific to CPython and may not generalize
+    # This test ni probably specific to CPython na may sio generalize
     # to other implementations.  We are trying to ensure that when
     # the first line of code starts after 256, correct line numbers
-    # in tracebacks are still produced.
+    # kwenye tracebacks are still produced.
     eleza test_leading_newlines(self):
         s256 = "".join(["\n"] * 256 + ["spam"])
         co = compile(s256, 'fn', 'exec')
@@ -157,7 +157,7 @@ ikiwa 1:
         self.assertEqual(co.co_lnotab, bytes())
 
     eleza test_literals_with_leading_zeroes(self):
-        for arg in ["077787", "0xj", "0x.", "0e",  "090000000000000",
+        kila arg kwenye ["077787", "0xj", "0x.", "0e",  "090000000000000",
                     "080000000000000", "000000000000009", "000000000000008",
                     "0b42", "0BADCAFE", "0o123456789", "0b1.1", "0o4.2",
                     "0b101j2", "0o153j2", "0b100e1", "0o777e1", "0777",
@@ -201,7 +201,7 @@ ikiwa 1:
             all_one_bits = '0xffffffffffffffff'
             self.assertEqual(eval(all_one_bits), 18446744073709551615)
             self.assertEqual(eval("-" + all_one_bits), -18446744073709551615)
-        else:
+        isipokua:
             self.fail("How many bits *does* this machine have???")
         # Verify treatment of constant folding on -(sys.maxsize+1)
         # i.e. -2147483648 on 32 bit platforms.  Should rudisha int.
@@ -219,32 +219,32 @@ ikiwa 1:
             g = +9223372036854775807  # 1 << 63 - 1
             h = -9223372036854775807  # 1 << 63 - 1
 
-            for variable in self.test_32_63_bit_values.__code__.co_consts:
-                ikiwa variable is not None:
+            kila variable kwenye self.test_32_63_bit_values.__code__.co_consts:
+                ikiwa variable ni sio Tupu:
                     self.assertIsInstance(variable, int)
 
     eleza test_sequence_unpacking_error(self):
         # Verify sequence packing/unpacking with "or".  SF bug #757818
-        i,j = (1, -1) or (-1, 1)
+        i,j = (1, -1) ama (-1, 1)
         self.assertEqual(i, 1)
         self.assertEqual(j, -1)
 
     eleza test_none_assignment(self):
         stmts = [
-            'None = 0',
-            'None += 0',
-            '__builtins__.None = 0',
-            'eleza None(): pass',
-            'kundi None: pass',
-            '(a, None) = 0, 0',
-            'for None in range(10): pass',
-            'eleza f(None): pass',
-            'agiza None',
-            'agiza x as None',
-            'kutoka x agiza None',
-            'kutoka x agiza y as None'
+            'Tupu = 0',
+            'Tupu += 0',
+            '__builtins__.Tupu = 0',
+            'eleza Tupu(): pita',
+            'kundi Tupu: pita',
+            '(a, Tupu) = 0, 0',
+            'kila Tupu kwenye range(10): pita',
+            'eleza f(Tupu): pita',
+            'agiza Tupu',
+            'agiza x kama Tupu',
+            'kutoka x agiza Tupu',
+            'kutoka x agiza y kama Tupu'
         ]
-        for stmt in stmts:
+        kila stmt kwenye stmts:
             stmt += "\n"
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'single')
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'exec')
@@ -253,8 +253,8 @@ ikiwa 1:
         succeed = [
             'agiza sys',
             'agiza os, sys',
-            'agiza os as bar',
-            'agiza os.path as bar',
+            'agiza os kama bar',
+            'agiza os.path kama bar',
             'kutoka __future__ agiza nested_scopes, generators',
             'kutoka __future__ agiza (nested_scopes,\ngenerators)',
             'kutoka __future__ agiza (nested_scopes,\ngenerators,)',
@@ -263,9 +263,9 @@ ikiwa 1:
             'kutoka sys agiza (stdin, stderr,\nstdout,)',
             'kutoka sys agiza (stdin\n, stderr, stdout)',
             'kutoka sys agiza (stdin\n, stderr, stdout,)',
-            'kutoka sys agiza stdin as si, stdout as so, stderr as se',
-            'kutoka sys agiza (stdin as si, stdout as so, stderr as se)',
-            'kutoka sys agiza (stdin as si, stdout as so, stderr as se,)',
+            'kutoka sys agiza stdin kama si, stdout kama so, stderr kama se',
+            'kutoka sys agiza (stdin kama si, stdout kama so, stderr kama se)',
+            'kutoka sys agiza (stdin kama si, stdout kama so, stderr kama se,)',
             ]
         fail = [
             'agiza (os, sys)',
@@ -291,9 +291,9 @@ ikiwa 1:
             'kutoka sys agiza (stdin,, stdout, stderr)',
             'kutoka sys agiza (stdin, stdout),',
             ]
-        for stmt in succeed:
+        kila stmt kwenye succeed:
             compile(stmt, 'tmp', 'exec')
-        for stmt in fail:
+        kila stmt kwenye fail:
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'exec')
 
     eleza test_for_distinct_code_objects(self):
@@ -307,10 +307,10 @@ ikiwa 1:
 
     eleza test_lambda_doc(self):
         l = lambda: "foo"
-        self.assertIsNone(l.__doc__)
+        self.assertIsTupu(l.__doc__)
 
     eleza test_encoding(self):
-        code = b'# -*- coding: badencoding -*-\npass\n'
+        code = b'# -*- coding: badencoding -*-\npita\n'
         self.assertRaises(SyntaxError, compile, code, 'tmp', 'exec')
         code = '# -*- coding: badencoding -*-\n"\xc2\xa4"\n'
         compile(code, 'tmp', 'exec')
@@ -341,71 +341,71 @@ ikiwa 1:
             eleza __setitem__(self, key, value):
                 self.data[str(key)] = value
             eleza __delitem__(self, key):
-                del self.data[str(key)]
+                toa self.data[str(key)]
             eleza __contains__(self, key):
-                rudisha str(key) in self.data
+                rudisha str(key) kwenye self.data
         d = str_map()
         # Index
         d[1] = 1
         self.assertEqual(d[1], 1)
         d[1] += 1
         self.assertEqual(d[1], 2)
-        del d[1]
+        toa d[1]
         self.assertNotIn(1, d)
         # Tuple of indices
         d[1, 1] = 1
         self.assertEqual(d[1, 1], 1)
         d[1, 1] += 1
         self.assertEqual(d[1, 1], 2)
-        del d[1, 1]
+        toa d[1, 1]
         self.assertNotIn((1, 1), d)
         # Simple slice
         d[1:2] = 1
         self.assertEqual(d[1:2], 1)
         d[1:2] += 1
         self.assertEqual(d[1:2], 2)
-        del d[1:2]
+        toa d[1:2]
         self.assertNotIn(slice(1, 2), d)
         # Tuple of simple slices
         d[1:2, 1:2] = 1
         self.assertEqual(d[1:2, 1:2], 1)
         d[1:2, 1:2] += 1
         self.assertEqual(d[1:2, 1:2], 2)
-        del d[1:2, 1:2]
+        toa d[1:2, 1:2]
         self.assertNotIn((slice(1, 2), slice(1, 2)), d)
         # Extended slice
         d[1:2:3] = 1
         self.assertEqual(d[1:2:3], 1)
         d[1:2:3] += 1
         self.assertEqual(d[1:2:3], 2)
-        del d[1:2:3]
+        toa d[1:2:3]
         self.assertNotIn(slice(1, 2, 3), d)
         # Tuple of extended slices
         d[1:2:3, 1:2:3] = 1
         self.assertEqual(d[1:2:3, 1:2:3], 1)
         d[1:2:3, 1:2:3] += 1
         self.assertEqual(d[1:2:3, 1:2:3], 2)
-        del d[1:2:3, 1:2:3]
+        toa d[1:2:3, 1:2:3]
         self.assertNotIn((slice(1, 2, 3), slice(1, 2, 3)), d)
         # Ellipsis
         d[...] = 1
         self.assertEqual(d[...], 1)
         d[...] += 1
         self.assertEqual(d[...], 2)
-        del d[...]
+        toa d[...]
         self.assertNotIn(Ellipsis, d)
         # Tuple of Ellipses
         d[..., ...] = 1
         self.assertEqual(d[..., ...], 1)
         d[..., ...] += 1
         self.assertEqual(d[..., ...], 2)
-        del d[..., ...]
+        toa d[..., ...]
         self.assertNotIn((Ellipsis, Ellipsis), d)
 
     eleza test_annotation_limit(self):
         # more than 255 annotations, should compile ok
-        s = "eleza f(%s): pass"
-        s %= ', '.join('a%d:%d' % (i,i) for i in range(300))
+        s = "eleza f(%s): pita"
+        s %= ', '.join('a%d:%d' % (i,i) kila i kwenye range(300))
         compile(s, '?', 'exec')
 
     eleza test_mangling(self):
@@ -425,33 +425,33 @@ ikiwa 1:
         fname = __file__
         ikiwa fname.lower().endswith('pyc'):
             fname = fname[:-1]
-        with open(fname, 'r') as f:
+        with open(fname, 'r') kama f:
             fcontents = f.read()
         sample_code = [
             ['<assign>', 'x = 5'],
-            ['<ifblock>', """ikiwa True:\n    pass\n"""],
-            ['<forblock>', """for n in [1, 2, 3]:\n    andika(n)\n"""],
-            ['<deffunc>', """eleza foo():\n    pass\nfoo()\n"""],
+            ['<ifblock>', """ikiwa Kweli:\n    pita\n"""],
+            ['<forblock>', """kila n kwenye [1, 2, 3]:\n    andika(n)\n"""],
+            ['<deffunc>', """eleza foo():\n    pita\nfoo()\n"""],
             [fname, fcontents],
         ]
 
-        for fname, code in sample_code:
+        kila fname, code kwenye sample_code:
             co1 = compile(code, '%s1' % fname, 'exec')
             ast = compile(code, '%s2' % fname, 'exec', _ast.PyCF_ONLY_AST)
-            self.assertTrue(type(ast) == _ast.Module)
+            self.assertKweli(type(ast) == _ast.Module)
             co2 = compile(ast, '%s3' % fname, 'exec')
             self.assertEqual(co1, co2)
             # the code object's filename comes kutoka the second compilation step
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
-        # raise exception when node type doesn't match with compile mode
+        # ashiria exception when node type doesn't match with compile mode
         co1 = compile('andika(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
-        # raise exception when node type is no start node
+        # ashiria exception when node type ni no start node
         self.assertRaises(TypeError, compile, _ast.If(), '<ast>', 'exec')
 
-        # raise exception when node has invalid children
+        # ashiria exception when node has invalid children
         ast = _ast.Module()
         ast.body = [_ast.BoolOp()]
         self.assertRaises(TypeError, compile, ast, '<ast>', 'exec')
@@ -468,20 +468,20 @@ ikiwa 1:
         self.assertEqual(d, {1: 2, 3: 4})
 
     eleza test_compile_filename(self):
-        for filename in 'file.py', b'file.py':
-            code = compile('pass', filename, 'exec')
+        kila filename kwenye 'file.py', b'file.py':
+            code = compile('pita', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
-        for filename in bytearray(b'file.py'), memoryview(b'file.py'):
+        kila filename kwenye bytearray(b'file.py'), memoryview(b'file.py'):
             with self.assertWarns(DeprecationWarning):
-                code = compile('pass', filename, 'exec')
+                code = compile('pita', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
-        self.assertRaises(TypeError, compile, 'pass', list(b'file.py'), 'exec')
+        self.assertRaises(TypeError, compile, 'pita', list(b'file.py'), 'exec')
 
     @support.cpython_only
     eleza test_same_filename_used(self):
-        s = """eleza f(): pass\neleza g(): pass"""
+        s = """eleza f(): pita\neleza g(): pita"""
         c = compile(s, "myfile", "exec")
-        for obj in c.co_consts:
+        kila obj kwenye c.co_consts:
             ikiwa isinstance(obj, types.CodeType):
                 self.assertIs(obj.co_filename, c.co_filename)
 
@@ -495,17 +495,17 @@ ikiwa 1:
         self.compile_single("1 + 2 # one plus two")
         self.compile_single("1; 2")
         self.compile_single("agiza sys; sys")
-        self.compile_single("eleza f():\n   pass")
-        self.compile_single("while False:\n   pass")
+        self.compile_single("eleza f():\n   pita")
+        self.compile_single("wakati Uongo:\n   pita")
         self.compile_single("ikiwa x:\n   f(x)")
-        self.compile_single("ikiwa x:\n   f(x)\nelse:\n   g(x)")
-        self.compile_single("kundi T:\n   pass")
+        self.compile_single("ikiwa x:\n   f(x)\nisipokua:\n   g(x)")
+        self.compile_single("kundi T:\n   pita")
 
     eleza test_bad_single_statement(self):
         self.assertInvalidSingle('1\n2')
-        self.assertInvalidSingle('eleza f(): pass')
+        self.assertInvalidSingle('eleza f(): pita')
         self.assertInvalidSingle('a = 13\nb = 187')
-        self.assertInvalidSingle('del x\ndel y')
+        self.assertInvalidSingle('toa x\ntoa y')
         self.assertInvalidSingle('f()\ng()')
         self.assertInvalidSingle('f()\n# blah\nblah()')
         self.assertInvalidSingle('f()\nxy # blah\nblah()')
@@ -514,9 +514,9 @@ ikiwa 1:
     eleza test_particularly_evil_undecodable(self):
         # Issue 24022
         src = b'0000\x00\n00000000000\n\x00\n\x9e\n'
-        with tempfile.TemporaryDirectory() as tmpd:
+        with tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            with open(fn, "wb") as fp:
+            with open(fn, "wb") kama fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
@@ -524,21 +524,21 @@ ikiwa 1:
     eleza test_yet_more_evil_still_undecodable(self):
         # Issue #25388
         src = b"#\x00\n#\xfd\n"
-        with tempfile.TemporaryDirectory() as tmpd:
+        with tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            with open(fn, "wb") as fp:
+            with open(fn, "wb") kama fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
 
     @support.cpython_only
     eleza test_compiler_recursion_limit(self):
-        # Expected limit is sys.getrecursionlimit() * the scaling factor
-        # in symtable.c (currently 3)
+        # Expected limit ni sys.getrecursionlimit() * the scaling factor
+        # kwenye symtable.c (currently 3)
         # We expect to fail *at* that limit, because we use up some of
-        # the stack depth limit in the test suite code
-        # So we check the expected limit and 75% of that
-        # XXX (ncoghlan): duplicating the scaling factor here is a little
+        # the stack depth limit kwenye the test suite code
+        # So we check the expected limit na 75% of that
+        # XXX (ncoghlan): duplicating the scaling factor here ni a little
         # ugly. Perhaps it should be exposed somewhere...
         fail_depth = sys.getrecursionlimit() * 3
         success_depth = int(fail_depth * 0.75)
@@ -558,8 +558,8 @@ ikiwa 1:
         check_limit("a", "*a")
 
     eleza test_null_terminated(self):
-        # The source code is null-terminated internally, but bytes-like
-        # objects are accepted, which could be not terminated.
+        # The source code ni null-terminated internally, but bytes-like
+        # objects are accepted, which could be sio terminated.
         with self.assertRaisesRegex(ValueError, "cannot contain null"):
             compile("123\x00", "<dummy>", "eval")
         with self.assertRaisesRegex(ValueError, "cannot contain null"):
@@ -571,26 +571,26 @@ ikiwa 1:
         code = compile(memoryview(b"$23$")[1:-1], "<dummy>", "eval")
         self.assertEqual(eval(code), 23)
 
-        # Also test when eval() and exec() do the compilation step
+        # Also test when eval() na exec() do the compilation step
         self.assertEqual(eval(memoryview(b"1234")[1:-1]), 23)
         namespace = dict()
         exec(memoryview(b"ax = 123")[1:-1], namespace)
         self.assertEqual(namespace['x'], 12)
 
     eleza check_constant(self, func, expected):
-        for const in func.__code__.co_consts:
+        kila const kwenye func.__code__.co_consts:
             ikiwa repr(const) == repr(expected):
-                break
-        else:
-            self.fail("unable to find constant %r in %r"
+                koma
+        isipokua:
+            self.fail("unable to find constant %r kwenye %r"
                       % (expected, func.__code__.co_consts))
 
-    # Merging equal constants is not a strict requirement for the Python
+    # Merging equal constants ni sio a strict requirement kila the Python
     # semantics, it's a more an implementation detail.
     @support.cpython_only
     eleza test_merge_constants(self):
         # Issue #25843: compile() must merge constants which are equal
-        # and have the same type.
+        # na have the same type.
 
         eleza check_same_constant(const):
             ns = {}
@@ -602,7 +602,7 @@ ikiwa 1:
             self.check_constant(f1, const)
             self.assertEqual(repr(f1()), repr(const))
 
-        check_same_constant(None)
+        check_same_constant(Tupu)
         check_same_constant(0)
         check_same_constant(0.0)
         check_same_constant(b'abc')
@@ -615,41 +615,41 @@ ikiwa 1:
         self.check_constant(f1, Ellipsis)
         self.assertEqual(repr(f1()), repr(Ellipsis))
 
-        # Merge constants in tuple or frozenset
+        # Merge constants kwenye tuple ama frozenset
         f1, f2 = lambda: "not a name", lambda: ("not a name",)
-        f3 = lambda x: x in {("not a name",)}
+        f3 = lambda x: x kwenye {("not a name",)}
         self.assertIs(f1.__code__.co_consts[1],
                       f2.__code__.co_consts[1][0])
         self.assertIs(next(iter(f3.__code__.co_consts[1])),
                       f2.__code__.co_consts[1])
 
-        # {0} is converted to a constant frozenset({0}) by the peephole
+        # {0} ni converted to a constant frozenset({0}) by the peephole
         # optimizer
-        f1, f2 = lambda x: x in {0}, lambda x: x in {0}
+        f1, f2 = lambda x: x kwenye {0}, lambda x: x kwenye {0}
         self.assertIs(f1.__code__, f2.__code__)
         self.check_constant(f1, frozenset({0}))
-        self.assertTrue(f1(0))
+        self.assertKweli(f1(0))
 
-    # This is a regression test for a CPython specific peephole optimizer
-    # implementation bug present in a few releases.  It's assertion verifies
+    # This ni a regression test kila a CPython specific peephole optimizer
+    # implementation bug present kwenye a few releases.  It's assertion verifies
     # that peephole optimization was actually done though that isn't an
-    # indication of the bugs presence or not (crashing is).
+    # indication of the bugs presence ama sio (crashing is).
     @support.cpython_only
     eleza test_peephole_opt_unreachable_code_array_access_in_bounds(self):
-        """Regression test for issue35193 when run under clang msan."""
+        """Regression test kila issue35193 when run under clang msan."""
         eleza unused_code_at_end():
             rudisha 3
-            raise RuntimeError("unreachable")
+            ashiria RuntimeError("unreachable")
         # The above function definition will trigger the out of bounds
-        # bug in the peephole optimizer as it scans opcodes past the
-        # RETURN_VALUE opcode.  This does not always crash an interpreter.
+        # bug kwenye the peephole optimizer kama it scans opcodes past the
+        # RETURN_VALUE opcode.  This does sio always crash an interpreter.
         # When you build with the clang memory sanitizer it reliably aborts.
         self.assertEqual(
             'RETURN_VALUE',
             list(dis.get_instructions(unused_code_at_end))[-1].opname)
 
     eleza test_dont_merge_constants(self):
-        # Issue #25843: compile() must not merge constants which are equal
+        # Issue #25843: compile() must sio merge constants which are equal
         # but have a different type.
 
         eleza check_different_constants(const1, const2):
@@ -671,7 +671,7 @@ ikiwa 1:
         check_different_constants(('a',), (b'a',))
 
         # check_different_constants() cannot be used because repr(-0j) is
-        # '(-0-0j)', but when '(-0-0j)' is evaluated to 0j: we loose the sign.
+        # '(-0-0j)', but when '(-0-0j)' ni evaluated to 0j: we loose the sign.
         f1, f2 = lambda: +0.0j, lambda: -0.0j
         self.assertIsNot(f1.__code__, f2.__code__)
         self.check_constant(f1, +0.0j)
@@ -679,17 +679,17 @@ ikiwa 1:
         self.assertEqual(repr(f1()), repr(+0.0j))
         self.assertEqual(repr(f2()), repr(-0.0j))
 
-        # {0} is converted to a constant frozenset({0}) by the peephole
+        # {0} ni converted to a constant frozenset({0}) by the peephole
         # optimizer
-        f1, f2 = lambda x: x in {0}, lambda x: x in {0.0}
+        f1, f2 = lambda x: x kwenye {0}, lambda x: x kwenye {0.0}
         self.assertIsNot(f1.__code__, f2.__code__)
         self.check_constant(f1, frozenset({0}))
         self.check_constant(f2, frozenset({0.0}))
-        self.assertTrue(f1(0))
-        self.assertTrue(f2(0.0))
+        self.assertKweli(f1(0))
+        self.assertKweli(f2(0.0))
 
     eleza test_path_like_objects(self):
-        # An implicit test for PyUnicode_FSDecoder().
+        # An implicit test kila PyUnicode_FSDecoder().
         compile("42", FakePath("test_compile_pathlike"), "single")
 
     eleza test_stack_overflow(self):
@@ -697,8 +697,8 @@ ikiwa 1:
         # complex statements.
         compile("ikiwa a: b\n" * 200000, "<dummy>", "exec")
 
-    # Multiple users rely on the fact that CPython does not generate
-    # bytecode for dead code blocks. See bpo-37500 for more context.
+    # Multiple users rely on the fact that CPython does sio generate
+    # bytecode kila dead code blocks. See bpo-37500 kila more context.
     @support.cpython_only
     eleza test_dead_blocks_do_not_generate_bytecode(self):
         eleza unused_block_if():
@@ -706,54 +706,54 @@ ikiwa 1:
                 rudisha 42
 
         eleza unused_block_while():
-            while 0:
+            wakati 0:
                 rudisha 42
 
         eleza unused_block_if_else():
             ikiwa 1:
-                rudisha None
-            else:
+                rudisha Tupu
+            isipokua:
                 rudisha 42
 
         eleza unused_block_while_else():
-            while 1:
-                rudisha None
-            else:
+            wakati 1:
+                rudisha Tupu
+            isipokua:
                 rudisha 42
 
         funcs = [unused_block_if, unused_block_while,
                  unused_block_if_else, unused_block_while_else]
 
-        for func in funcs:
+        kila func kwenye funcs:
             opcodes = list(dis.get_instructions(func))
             self.assertEqual(2, len(opcodes))
             self.assertEqual('LOAD_CONST', opcodes[0].opname)
-            self.assertEqual(None, opcodes[0].argval)
+            self.assertEqual(Tupu, opcodes[0].argval)
             self.assertEqual('RETURN_VALUE', opcodes[1].opname)
 
 
 kundi TestExpressionStackSize(unittest.TestCase):
-    # These tests check that the computed stack size for a code object
-    # stays within reasonable bounds (see issue #21523 for an example
+    # These tests check that the computed stack size kila a code object
+    # stays within reasonable bounds (see issue #21523 kila an example
     # dysfunction).
     N = 100
 
     eleza check_stack_size(self, code):
-        # To assert that the alleged stack size is not O(N), we
-        # check that it is smaller than log(N).
+        # To assert that the alleged stack size ni sio O(N), we
+        # check that it ni smaller than log(N).
         ikiwa isinstance(code, str):
             code = compile(code, "<foo>", "single")
         max_size = math.ceil(math.log(len(code.co_code)))
         self.assertLessEqual(code.co_stacksize, max_size)
 
     eleza test_and(self):
-        self.check_stack_size("x and " * self.N + "x")
+        self.check_stack_size("x na " * self.N + "x")
 
     eleza test_or(self):
-        self.check_stack_size("x or " * self.N + "x")
+        self.check_stack_size("x ama " * self.N + "x")
 
     eleza test_and_or(self):
-        self.check_stack_size("x and x or " * self.N + "x")
+        self.check_stack_size("x na x ama " * self.N + "x")
 
     eleza test_chained_comparison(self):
         self.check_stack_size("x < " * self.N + "x")
@@ -766,7 +766,7 @@ kundi TestExpressionStackSize(unittest.TestCase):
 
     eleza test_func_and(self):
         code = "eleza f(x):\n"
-        code += "   x and x\n" * self.N
+        code += "   x na x\n" * self.N
         self.check_stack_size(code)
 
 
@@ -774,7 +774,7 @@ kundi TestStackSizeStability(unittest.TestCase):
     # Check that repeating certain snippets doesn't increase the stack size
     # beyond what a single snippet requires.
 
-    eleza check_stack_size(self, snippet, async_=False):
+    eleza check_stack_size(self, snippet, async_=Uongo):
         eleza compile_snippet(i):
             ns = {}
             script = """eleza func():\n""" + i * snippet
@@ -784,7 +784,7 @@ kundi TestStackSizeStability(unittest.TestCase):
             exec(code, ns, ns)
             rudisha ns['func'].__code__
 
-        sizes = [compile_snippet(i).co_stacksize for i in range(2, 5)]
+        sizes = [compile_snippet(i).co_stacksize kila i kwenye range(2, 5)]
         ikiwa len(set(sizes)) != 1:
             agiza dis, io
             out = io.StringIO()
@@ -805,14 +805,14 @@ kundi TestStackSizeStability(unittest.TestCase):
                 a
             elikiwa y:
                 b
-            else:
+            isipokua:
                 c
             """
         self.check_stack_size(snippet)
 
     eleza test_try_except_bare(self):
         snippet = """
-            try:
+            jaribu:
                 a
             except:
                 b
@@ -821,244 +821,244 @@ kundi TestStackSizeStability(unittest.TestCase):
 
     eleza test_try_except_qualified(self):
         snippet = """
-            try:
+            jaribu:
                 a
-            except ImportError:
+            tatizo ImportError:
                 b
             except:
                 c
-            else:
+            isipokua:
                 d
             """
         self.check_stack_size(snippet)
 
     eleza test_try_except_as(self):
         snippet = """
-            try:
+            jaribu:
                 a
-            except ImportError as e:
+            tatizo ImportError kama e:
                 b
             except:
                 c
-            else:
+            isipokua:
                 d
             """
         self.check_stack_size(snippet)
 
     eleza test_try_finally(self):
         snippet = """
-                try:
+                jaribu:
                     a
-                finally:
+                mwishowe:
                     b
             """
         self.check_stack_size(snippet)
 
     eleza test_with(self):
         snippet = """
-            with x as y:
+            with x kama y:
                 a
             """
         self.check_stack_size(snippet)
 
     eleza test_while_else(self):
         snippet = """
-            while x:
+            wakati x:
                 a
-            else:
+            isipokua:
                 b
             """
         self.check_stack_size(snippet)
 
     eleza test_for(self):
         snippet = """
-            for x in y:
+            kila x kwenye y:
                 a
             """
         self.check_stack_size(snippet)
 
     eleza test_for_else(self):
         snippet = """
-            for x in y:
+            kila x kwenye y:
                 a
-            else:
+            isipokua:
                 b
             """
         self.check_stack_size(snippet)
 
-    eleza test_for_break_continue(self):
+    eleza test_for_koma_endelea(self):
         snippet = """
-            for x in y:
+            kila x kwenye y:
                 ikiwa z:
-                    break
+                    koma
                 elikiwa u:
-                    continue
-                else:
+                    endelea
+                isipokua:
                     a
-            else:
+            isipokua:
                 b
             """
         self.check_stack_size(snippet)
 
-    eleza test_for_break_continue_inside_try_finally_block(self):
+    eleza test_for_koma_endelea_inside_try_finally_block(self):
         snippet = """
-            for x in y:
-                try:
+            kila x kwenye y:
+                jaribu:
                     ikiwa z:
-                        break
+                        koma
                     elikiwa u:
-                        continue
-                    else:
+                        endelea
+                    isipokua:
                         a
-                finally:
+                mwishowe:
                     f
-            else:
+            isipokua:
                 b
             """
         self.check_stack_size(snippet)
 
-    eleza test_for_break_continue_inside_finally_block(self):
+    eleza test_for_koma_endelea_inside_finally_block(self):
         snippet = """
-            for x in y:
-                try:
+            kila x kwenye y:
+                jaribu:
                     t
-                finally:
+                mwishowe:
                     ikiwa z:
-                        break
+                        koma
                     elikiwa u:
-                        continue
-                    else:
+                        endelea
+                    isipokua:
                         a
-            else:
+            isipokua:
                 b
             """
         self.check_stack_size(snippet)
 
-    eleza test_for_break_continue_inside_except_block(self):
+    eleza test_for_koma_endelea_inside_except_block(self):
         snippet = """
-            for x in y:
-                try:
+            kila x kwenye y:
+                jaribu:
                     t
                 except:
                     ikiwa z:
-                        break
+                        koma
                     elikiwa u:
-                        continue
-                    else:
+                        endelea
+                    isipokua:
                         a
-            else:
+            isipokua:
                 b
             """
         self.check_stack_size(snippet)
 
-    eleza test_for_break_continue_inside_with_block(self):
+    eleza test_for_koma_endelea_inside_with_block(self):
         snippet = """
-            for x in y:
+            kila x kwenye y:
                 with c:
                     ikiwa z:
-                        break
+                        koma
                     elikiwa u:
-                        continue
-                    else:
+                        endelea
+                    isipokua:
                         a
-            else:
+            isipokua:
                 b
             """
         self.check_stack_size(snippet)
 
-    eleza test_return_inside_try_finally_block(self):
+    eleza test_rudisha_inside_try_finally_block(self):
         snippet = """
-            try:
+            jaribu:
                 ikiwa z:
-                    return
-                else:
+                    rudisha
+                isipokua:
                     a
-            finally:
+            mwishowe:
                 f
             """
         self.check_stack_size(snippet)
 
-    eleza test_return_inside_finally_block(self):
+    eleza test_rudisha_inside_finally_block(self):
         snippet = """
-            try:
+            jaribu:
                 t
-            finally:
+            mwishowe:
                 ikiwa z:
-                    return
-                else:
+                    rudisha
+                isipokua:
                     a
             """
         self.check_stack_size(snippet)
 
-    eleza test_return_inside_except_block(self):
+    eleza test_rudisha_inside_except_block(self):
         snippet = """
-            try:
+            jaribu:
                 t
             except:
                 ikiwa z:
-                    return
-                else:
+                    rudisha
+                isipokua:
                     a
             """
         self.check_stack_size(snippet)
 
-    eleza test_return_inside_with_block(self):
+    eleza test_rudisha_inside_with_block(self):
         snippet = """
             with c:
                 ikiwa z:
-                    return
-                else:
+                    rudisha
+                isipokua:
                     a
             """
         self.check_stack_size(snippet)
 
     eleza test_async_with(self):
         snippet = """
-            async with x as y:
+            async with x kama y:
                 a
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Kweli)
 
     eleza test_async_for(self):
         snippet = """
-            async for x in y:
+            async kila x kwenye y:
                 a
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Kweli)
 
     eleza test_async_for_else(self):
         snippet = """
-            async for x in y:
+            async kila x kwenye y:
                 a
-            else:
+            isipokua:
                 b
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Kweli)
 
-    eleza test_for_break_continue_inside_async_with_block(self):
+    eleza test_for_koma_endelea_inside_async_with_block(self):
         snippet = """
-            for x in y:
+            kila x kwenye y:
                 async with c:
                     ikiwa z:
-                        break
+                        koma
                     elikiwa u:
-                        continue
-                    else:
+                        endelea
+                    isipokua:
                         a
-            else:
+            isipokua:
                 b
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Kweli)
 
-    eleza test_return_inside_async_with_block(self):
+    eleza test_rudisha_inside_async_with_block(self):
         snippet = """
             async with c:
                 ikiwa z:
-                    return
-                else:
+                    rudisha
+                isipokua:
                     a
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Kweli)
 
 
 ikiwa __name__ == "__main__":

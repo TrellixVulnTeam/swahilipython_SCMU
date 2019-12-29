@@ -31,10 +31,10 @@ class LoggingSilencer(object):
         super().tearDown()
 
     def _log(self, level, msg, args):
-        if level not in (DEBUG, INFO, WARN, ERROR, FATAL):
+        if level haiko kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
             raise ValueError('%s wrong log level' % str(level))
-        if not isinstance(msg, str):
-            raise TypeError("msg should be str, not '%.200s'"
+        if sio isinstance(msg, str):
+            raise TypeError("msg should be str, sio '%.200s'"
                             % (type(msg).__name__))
         self.logs.append((level, msg, args))
 
@@ -64,7 +64,7 @@ class TempdirManager(object):
         # on the current directory fails.
         os.chdir(self.old_cwd)
         super().tearDown()
-        while self.tempdirs:
+        wakati self.tempdirs:
             tmpdir = self.tempdirs.pop()
             test.support.rmtree(tmpdir)
 
@@ -86,9 +86,9 @@ class TempdirManager(object):
         if isinstance(path, (list, tuple)):
             path = os.path.join(*path)
         f = open(path, 'w')
-        try:
+        jaribu:
             f.write(content)
-        finally:
+        mwishowe:
             f.close()
 
     def create_dist(self, pkg_name='foo', **kw):
@@ -132,8 +132,8 @@ class EnvironGuard(object):
                 os.environ[key] = value
 
         for key in tuple(os.environ.keys()):
-            if key not in self.old_environ:
-                del os.environ[key]
+            if key haiko kwenye self.old_environ:
+                toa os.environ[key]
 
         super(EnvironGuard, self).tearDown()
 
@@ -148,7 +148,7 @@ def copy_xxmodule_c(directory):
             self.assertIn('xxmodule.c', os.listdir(self.tmpdir))
 
     If the source file can be found, it will be copied to *directory*.  If not,
-    the test will be skipped.  Errors during copy are not caught.
+    the test will be skipped.  Errors during copy are sio caught.
     """
     filename = _get_xxmodule_path()
     if filename is None:
@@ -177,12 +177,12 @@ def _get_xxmodule_path():
 def fixup_build_ext(cmd):
     """Function needed to make build_ext tests pass.
 
-    When Python was built with --enable-shared on Unix, -L. is not enough to
-    find libpython<blah>.so, because regrtest runs in a tempdir, not in the
+    When Python was built with --enable-shared on Unix, -L. ni sio enough to
+    find libpython<blah>.so, because regrtest runs in a tempdir, haiko kwenye the
     source directory where the .so lives.
 
     When Python was built with in debug mode on Windows, build_ext commands
-    need their debug attribute set, and it is not done automatically for
+    need their debug attribute set, and it ni sio done automatically for
     some reason.
 
     This function handles both of these things.  Example use:
@@ -192,7 +192,7 @@ def fixup_build_ext(cmd):
         cmd.ensure_finalized()
 
     Unlike most other Unix platforms, Mac OS X embeds absolute paths
-    to shared libraries into executables, so the fixup is not needed there.
+    to shared libraries into executables, so the fixup ni sio needed there.
     """
     if os.name == 'nt':
         cmd.debug = sys.executable.endswith('_d.exe')
@@ -203,9 +203,9 @@ def fixup_build_ext(cmd):
         runshared = sysconfig.get_config_var('RUNSHARED')
         if runshared is None:
             cmd.library_dirs = ['.']
-        else:
+        isipokua:
             if sys.platform == 'darwin':
                 cmd.library_dirs = []
-            else:
+            isipokua:
                 name, equals, value = runshared.partition('=')
                 cmd.library_dirs = [d for d in value.split(os.pathsep) if d]

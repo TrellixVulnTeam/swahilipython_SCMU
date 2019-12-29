@@ -40,8 +40,8 @@ is possible to single step through the test files.  This is useful when
 doing memory analysis on the Python interpreter, which process tends to
 consume too many resources to run the full regression test non-stop.
 
--S is used to continue running tests after an aborted run.  It will
-maintain the order a standard run (ie, this assumes -r is not used).
+-S is used to endelea running tests after an aborted run.  It will
+maintain the order a standard run (ie, this assumes -r ni sio used).
 This is useful after the tests have prematurely stopped for some external
 reason and you want to start running from where you left off rather
 than starting from the beginning.
@@ -114,8 +114,8 @@ resources to test.  Currently only the following are defined:
 
     tzdata -    Run tests that require timezone data.
 
-To enable all resources except one, use '-uall,-<resource>'.  For
-example, to run all the tests except for the gui tests, give the
+To enable all resources tatizo one, use '-uall,-<resource>'.  For
+example, to run all the tests tatizo for the gui tests, give the
 option '-uall,-gui'.
 
 --matchfile filters tests using a text file, one pattern per line.
@@ -134,7 +134,7 @@ ALL_RESOURCES = ('audio', 'curses', 'largefile', 'network',
 #
 # - extralagefile (ex: test_zipfile64): really too slow to be enabled
 #   "by default"
-# - tzdata: while needed to validate fully test_datetime, it makes
+# - tzdata: wakati needed to validate fully test_datetime, it makes
 #   test_datetime too slow (15-20 min on some buildbots) and so is disabled by
 #   default (see bpo-30822).
 RESOURCE_NAMES = ALL_RESOURCES + ('extralargefile', 'tzdata')
@@ -289,7 +289,7 @@ def relative_filename(string):
 
 def huntrleaks(string):
     args = string.split(':')
-    if len(args) not in (2, 3):
+    if len(args) haiko kwenye (2, 3):
         raise argparse.ArgumentTypeError(
             'needs 2 or 3 colon-separated arguments')
     nwarmup = int(args[0]) if args[0] else 5
@@ -302,10 +302,10 @@ def resources_list(string):
     u = [x.lower() for x in string.split(',')]
     for r in u:
         if r == 'all' or r == 'none':
-            continue
+            endelea
         if r[0] == '-':
             r = r[1:]
-        if r not in RESOURCE_NAMES:
+        if r haiko kwenye RESOURCE_NAMES:
             raise argparse.ArgumentTypeError('invalid resource: ' + r)
     return u
 
@@ -319,7 +319,7 @@ def _parse_args(args, **kwargs):
          random_seed=None, use_mp=None, verbose3=False, forever=False,
          header=False, failfast=False, match_tests=None, pgo=False)
     for k, v in kwargs.items():
-        if not hasattr(ns, k):
+        if sio hasattr(ns, k):
             raise TypeError('%r is an invalid keyword argument '
                             'for this function' % k)
         setattr(ns, k, v)
@@ -340,9 +340,9 @@ def _parse_args(args, **kwargs):
         ns.fail_env_changed = True
     if ns.single and ns.fromfile:
         parser.error("-s and -f don't go together!")
-    if ns.use_mp is not None and ns.trace:
+    if ns.use_mp ni sio None and ns.trace:
         parser.error("-T and -j don't go together!")
-    if ns.failfast and not (ns.verbose or ns.verbose3):
+    if ns.failfast and sio (ns.verbose or ns.verbose3):
         parser.error("-G/--failfast needs either -v or -W")
     if ns.pgo and (ns.verbose or ns.verbose2 or ns.verbose3):
         parser.error("--pgo/-v don't go together!")
@@ -355,10 +355,10 @@ def _parse_args(args, **kwargs):
 
     if ns.quiet:
         ns.verbose = 0
-    if ns.timeout is not None:
+    if ns.timeout ni sio None:
         if ns.timeout <= 0:
             ns.timeout = None
-    if ns.use_mp is not None:
+    if ns.use_mp ni sio None:
         if ns.use_mp <= 0:
             # Use all cores + extras for tests that like to sleep
             ns.use_mp = 2 + (os.cpu_count() or 1)
@@ -367,10 +367,10 @@ def _parse_args(args, **kwargs):
             for r in a:
                 if r == 'all':
                     ns.use_resources[:] = ALL_RESOURCES
-                    continue
+                    endelea
                 if r == 'none':
-                    del ns.use_resources[:]
-                    continue
+                    toa ns.use_resources[:]
+                    endelea
                 remove = False
                 if r[0] == '-':
                     remove = True
@@ -378,9 +378,9 @@ def _parse_args(args, **kwargs):
                 if remove:
                     if r in ns.use_resources:
                         ns.use_resources.remove(r)
-                lasivyo r not in ns.use_resources:
+                lasivyo r haiko kwenye ns.use_resources:
                     ns.use_resources.append(r)
-    if ns.random_seed is not None:
+    if ns.random_seed ni sio None:
         ns.randomize = True
     if ns.verbose:
         ns.header = True

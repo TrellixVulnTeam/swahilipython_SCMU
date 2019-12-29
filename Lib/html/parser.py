@@ -1,11 +1,11 @@
-"""A parser for HTML and XHTML."""
+"""A parser kila HTML na XHTML."""
 
-# This file is based on sgmllib.py, but the API is slightly different.
+# This file ni based on sgmllib.py, but the API ni slightly different.
 
 # XXX There should be a way to distinguish between PCDATA (parsed
 # character data -- the normal case), RCDATA (replaceable character
-# data -- only char and entity references and end tags are special)
-# and CDATA (character data -- only end tags are special).
+# data -- only char na entity references na end tags are special)
+# na CDATA (character data -- only end tags are special).
 
 
 agiza re
@@ -17,7 +17,7 @@ kutoka html agiza unescape
 
 __all__ = ['HTMLParser']
 
-# Regular expressions used for parsing
+# Regular expressions used kila parsing
 
 interesting_normal = re.compile('[&<]')
 incomplete = re.compile('&[a-zA-Z#]')
@@ -33,7 +33,7 @@ commentclose = re.compile(r'--\s*>')
 #  2) ikiwa you change tagfind/attrfind and/or locatestarttagend the parser will
 #     explode, so don't do it.
 # see http://www.w3.org/TR/html5/tokenization.html#tag-open-state
-# and http://www.w3.org/TR/html5/tokenization.html#tag-name-state
+# na http://www.w3.org/TR/html5/tokenization.html#tag-name-state
 tagfind_tolerant = re.compile(r'([a-zA-Z][^\t\n\r\f />\x00]*)(?:\s|/(?!>))*')
 attrfind_tolerant = re.compile(
     r'((?<=[\'"\s/])[^\s/>][^\s/=>]*)(\s*=+\s*'
@@ -55,13 +55,13 @@ locatestarttagend_tolerant = re.compile(r"""
 """, re.VERBOSE)
 endendtag = re.compile('>')
 # the HTML 5 spec, section 8.1.2.2, doesn't allow spaces between
-# </ and the tag name, so maybe this should be fixed
+# </ na the tag name, so maybe this should be fixed
 endtagfind = re.compile(r'</\s*([a-zA-Z][-.a-zA-Z0-9:_]*)\s*>')
 
 
 
 kundi HTMLParser(_markupbase.ParserBase):
-    """Find tags and other markup and call handler functions.
+    """Find tags na other markup na call handler functions.
 
     Usage:
         p = HTMLParser()
@@ -71,23 +71,23 @@ kundi HTMLParser(_markupbase.ParserBase):
 
     Start tags are handled by calling self.handle_starttag() or
     self.handle_startendtag(); end tags by self.handle_endtag().  The
-    data between tags is passed kutoka the parser to the derived class
-    by calling self.handle_data() with the data as argument (the data
-    may be split up in arbitrary chunks).  If convert_charrefs is
-    True the character references are converted automatically to the
-    corresponding Unicode character (and self.handle_data() is no
-    longer split in chunks), otherwise they are passed by calling
-    self.handle_entityref() or self.handle_charref() with the string
-    containing respectively the named or numeric reference as the
+    data between tags ni pitaed kutoka the parser to the derived class
+    by calling self.handle_data() with the data kama argument (the data
+    may be split up kwenye arbitrary chunks).  If convert_charrefs is
+    Kweli the character references are converted automatically to the
+    corresponding Unicode character (and self.handle_data() ni no
+    longer split kwenye chunks), otherwise they are pitaed by calling
+    self.handle_entityref() ama self.handle_charref() with the string
+    containing respectively the named ama numeric reference kama the
     argument.
     """
 
     CDATA_CONTENT_ELEMENTS = ("script", "style")
 
-    eleza __init__(self, *, convert_charrefs=True):
-        """Initialize and reset this instance.
+    eleza __init__(self, *, convert_charrefs=Kweli):
+        """Initialize na reset this instance.
 
-        If convert_charrefs is True (the default), all character references
+        If convert_charrefs ni Kweli (the default), all character references
         are automatically converted to the corresponding Unicode characters.
         """
         self.convert_charrefs = convert_charrefs
@@ -98,14 +98,14 @@ kundi HTMLParser(_markupbase.ParserBase):
         self.rawdata = ''
         self.lasttag = '???'
         self.interesting = interesting_normal
-        self.cdata_elem = None
+        self.cdata_elem = Tupu
         _markupbase.ParserBase.reset(self)
 
     eleza feed(self, data):
         r"""Feed data to the parser.
 
-        Call this as often as you want, with as little or as much text
-        as you want (may include '\n').
+        Call this kama often kama you want, with kama little ama kama much text
+        kama you want (may include '\n').
         """
         self.rawdata = self.rawdata + data
         self.goahead(0)
@@ -114,7 +114,7 @@ kundi HTMLParser(_markupbase.ParserBase):
         """Handle any buffered data."""
         self.goahead(1)
 
-    __starttag_text = None
+    __starttag_text = Tupu
 
     eleza get_starttag_text(self):
         """Return full source of start tag: '<...>'."""
@@ -126,45 +126,45 @@ kundi HTMLParser(_markupbase.ParserBase):
 
     eleza clear_cdata_mode(self):
         self.interesting = interesting_normal
-        self.cdata_elem = None
+        self.cdata_elem = Tupu
 
-    # Internal -- handle data as far as reasonable.  May leave state
-    # and data to be processed by a subsequent call.  If 'end' is
-    # true, force handling all data as ikiwa followed by EOF marker.
+    # Internal -- handle data kama far kama reasonable.  May leave state
+    # na data to be processed by a subsequent call.  If 'end' is
+    # true, force handling all data kama ikiwa followed by EOF marker.
     eleza goahead(self, end):
         rawdata = self.rawdata
         i = 0
         n = len(rawdata)
-        while i < n:
-            ikiwa self.convert_charrefs and not self.cdata_elem:
+        wakati i < n:
+            ikiwa self.convert_charrefs na sio self.cdata_elem:
                 j = rawdata.find('<', i)
                 ikiwa j < 0:
                     # ikiwa we can't find the next <, either we are at the end
-                    # or there's more text incoming.  If the latter is True,
-                    # we can't pass the text to handle_data in case we have
-                    # a charref cut in half at end.  Try to determine if
-                    # this is the case before proceeding by looking for an
-                    # & near the end and see ikiwa it's followed by a space or ;.
+                    # ama there's more text incoming.  If the latter ni Kweli,
+                    # we can't pita the text to handle_data kwenye case we have
+                    # a charref cut kwenye half at end.  Try to determine if
+                    # this ni the case before proceeding by looking kila an
+                    # & near the end na see ikiwa it's followed by a space ama ;.
                     amppos = rawdata.rfind('&', max(i, n-34))
                     ikiwa (amppos >= 0 and
-                        not re.compile(r'[\s;]').search(rawdata, amppos)):
-                        break  # wait till we get all the text
+                        sio re.compile(r'[\s;]').search(rawdata, amppos)):
+                        koma  # wait till we get all the text
                     j = n
-            else:
-                match = self.interesting.search(rawdata, i)  # < or &
+            isipokua:
+                match = self.interesting.search(rawdata, i)  # < ama &
                 ikiwa match:
                     j = match.start()
-                else:
+                isipokua:
                     ikiwa self.cdata_elem:
-                        break
+                        koma
                     j = n
             ikiwa i < j:
-                ikiwa self.convert_charrefs and not self.cdata_elem:
+                ikiwa self.convert_charrefs na sio self.cdata_elem:
                     self.handle_data(unescape(rawdata[i:j]))
-                else:
+                isipokua:
                     self.handle_data(rawdata[i:j])
             i = self.updatepos(i, j)
-            ikiwa i == n: break
+            ikiwa i == n: koma
             startswith = rawdata.startswith
             ikiwa startswith('<', i):
                 ikiwa starttagopen.match(rawdata, i): # < + letter
@@ -180,21 +180,21 @@ kundi HTMLParser(_markupbase.ParserBase):
                 elikiwa (i + 1) < n:
                     self.handle_data("<")
                     k = i + 1
-                else:
-                    break
+                isipokua:
+                    koma
                 ikiwa k < 0:
-                    ikiwa not end:
-                        break
+                    ikiwa sio end:
+                        koma
                     k = rawdata.find('>', i + 1)
                     ikiwa k < 0:
                         k = rawdata.find('<', i + 1)
                         ikiwa k < 0:
                             k = i + 1
-                    else:
+                    isipokua:
                         k += 1
-                    ikiwa self.convert_charrefs and not self.cdata_elem:
+                    ikiwa self.convert_charrefs na sio self.cdata_elem:
                         self.handle_data(unescape(rawdata[i:k]))
-                    else:
+                    isipokua:
                         self.handle_data(rawdata[i:k])
                 i = self.updatepos(i, k)
             elikiwa startswith("&#", i):
@@ -203,62 +203,62 @@ kundi HTMLParser(_markupbase.ParserBase):
                     name = match.group()[2:-1]
                     self.handle_charref(name)
                     k = match.end()
-                    ikiwa not startswith(';', k-1):
+                    ikiwa sio startswith(';', k-1):
                         k = k - 1
                     i = self.updatepos(i, k)
-                    continue
-                else:
-                    ikiwa ";" in rawdata[i:]:  # bail by consuming &#
+                    endelea
+                isipokua:
+                    ikiwa ";" kwenye rawdata[i:]:  # bail by consuming &#
                         self.handle_data(rawdata[i:i+2])
                         i = self.updatepos(i, i+2)
-                    break
+                    koma
             elikiwa startswith('&', i):
                 match = entityref.match(rawdata, i)
                 ikiwa match:
                     name = match.group(1)
                     self.handle_entityref(name)
                     k = match.end()
-                    ikiwa not startswith(';', k-1):
+                    ikiwa sio startswith(';', k-1):
                         k = k - 1
                     i = self.updatepos(i, k)
-                    continue
+                    endelea
                 match = incomplete.match(rawdata, i)
                 ikiwa match:
                     # match.group() will contain at least 2 chars
-                    ikiwa end and match.group() == rawdata[i:]:
+                    ikiwa end na match.group() == rawdata[i:]:
                         k = match.end()
                         ikiwa k <= i:
                             k = n
                         i = self.updatepos(i, i + 1)
                     # incomplete
-                    break
+                    koma
                 elikiwa (i + 1) < n:
-                    # not the end of the buffer, and can't be confused
+                    # sio the end of the buffer, na can't be confused
                     # with some other construct
                     self.handle_data("&")
                     i = self.updatepos(i, i + 1)
-                else:
-                    break
-            else:
+                isipokua:
+                    koma
+            isipokua:
                 assert 0, "interesting.search() lied"
         # end while
-        ikiwa end and i < n and not self.cdata_elem:
-            ikiwa self.convert_charrefs and not self.cdata_elem:
+        ikiwa end na i < n na sio self.cdata_elem:
+            ikiwa self.convert_charrefs na sio self.cdata_elem:
                 self.handle_data(unescape(rawdata[i:n]))
-            else:
+            isipokua:
                 self.handle_data(rawdata[i:n])
             i = self.updatepos(i, n)
         self.rawdata = rawdata[i:]
 
-    # Internal -- parse html declarations, rudisha length or -1 ikiwa not terminated
+    # Internal -- parse html declarations, rudisha length ama -1 ikiwa sio terminated
     # See w3.org/TR/html5/tokenization.html#markup-declaration-open-state
-    # See also parse_declaration in _markupbase
+    # See also parse_declaration kwenye _markupbase
     eleza parse_html_declaration(self, i):
         rawdata = self.rawdata
         assert rawdata[i:i+2] == '<!', ('unexpected call to '
                                         'parse_html_declaration()')
         ikiwa rawdata[i:i+4] == '<!--':
-            # this case is actually already handled in goahead()
+            # this case ni actually already handled kwenye goahead()
             rudisha self.parse_comment(i)
         elikiwa rawdata[i:i+3] == '<![':
             rudisha self.parse_marked_section(i)
@@ -269,14 +269,14 @@ kundi HTMLParser(_markupbase.ParserBase):
                 rudisha -1
             self.handle_decl(rawdata[i+2:gtpos])
             rudisha gtpos+1
-        else:
+        isipokua:
             rudisha self.parse_bogus_comment(i)
 
-    # Internal -- parse bogus comment, rudisha length or -1 ikiwa not terminated
+    # Internal -- parse bogus comment, rudisha length ama -1 ikiwa sio terminated
     # see http://www.w3.org/TR/html5/tokenization.html#bogus-comment-state
     eleza parse_bogus_comment(self, i, report=1):
         rawdata = self.rawdata
-        assert rawdata[i:i+2] in ('<!', '</'), ('unexpected call to '
+        assert rawdata[i:i+2] kwenye ('<!', '</'), ('unexpected call to '
                                                 'parse_comment()')
         pos = rawdata.find('>', i+2)
         ikiwa pos == -1:
@@ -285,41 +285,41 @@ kundi HTMLParser(_markupbase.ParserBase):
             self.handle_comment(rawdata[i+2:pos])
         rudisha pos + 1
 
-    # Internal -- parse processing instr, rudisha end or -1 ikiwa not terminated
+    # Internal -- parse processing instr, rudisha end ama -1 ikiwa sio terminated
     eleza parse_pi(self, i):
         rawdata = self.rawdata
         assert rawdata[i:i+2] == '<?', 'unexpected call to parse_pi()'
         match = piclose.search(rawdata, i+2) # >
-        ikiwa not match:
+        ikiwa sio match:
             rudisha -1
         j = match.start()
         self.handle_pi(rawdata[i+2: j])
         j = match.end()
         rudisha j
 
-    # Internal -- handle starttag, rudisha end or -1 ikiwa not terminated
+    # Internal -- handle starttag, rudisha end ama -1 ikiwa sio terminated
     eleza parse_starttag(self, i):
-        self.__starttag_text = None
+        self.__starttag_text = Tupu
         endpos = self.check_for_whole_start_tag(i)
         ikiwa endpos < 0:
             rudisha endpos
         rawdata = self.rawdata
         self.__starttag_text = rawdata[i:endpos]
 
-        # Now parse the data between i+1 and j into a tag and attrs
+        # Now parse the data between i+1 na j into a tag na attrs
         attrs = []
         match = tagfind_tolerant.match(rawdata, i+1)
         assert match, 'unexpected call to parse_starttag()'
         k = match.end()
         self.lasttag = tag = match.group(1).lower()
-        while k < endpos:
+        wakati k < endpos:
             m = attrfind_tolerant.match(rawdata, k)
-            ikiwa not m:
-                break
+            ikiwa sio m:
+                koma
             attrname, rest, attrvalue = m.group(1, 2, 3)
-            ikiwa not rest:
-                attrvalue = None
-            elikiwa attrvalue[:1] == '\'' == attrvalue[-1:] or \
+            ikiwa sio rest:
+                attrvalue = Tupu
+            elikiwa attrvalue[:1] == '\'' == attrvalue[-1:] ama \
                  attrvalue[:1] == '"' == attrvalue[-1:]:
                 attrvalue = attrvalue[1:-1]
             ikiwa attrvalue:
@@ -328,27 +328,27 @@ kundi HTMLParser(_markupbase.ParserBase):
             k = m.end()
 
         end = rawdata[k:endpos].strip()
-        ikiwa end not in (">", "/>"):
+        ikiwa end haiko kwenye (">", "/>"):
             lineno, offset = self.getpos()
-            ikiwa "\n" in self.__starttag_text:
+            ikiwa "\n" kwenye self.__starttag_text:
                 lineno = lineno + self.__starttag_text.count("\n")
                 offset = len(self.__starttag_text) \
                          - self.__starttag_text.rfind("\n")
-            else:
+            isipokua:
                 offset = offset + len(self.__starttag_text)
             self.handle_data(rawdata[i:endpos])
             rudisha endpos
         ikiwa end.endswith('/>'):
             # XHTML-style empty tag: <span attr="value" />
             self.handle_startendtag(tag, attrs)
-        else:
+        isipokua:
             self.handle_starttag(tag, attrs)
-            ikiwa tag in self.CDATA_CONTENT_ELEMENTS:
+            ikiwa tag kwenye self.CDATA_CONTENT_ELEMENTS:
                 self.set_cdata_mode(tag)
         rudisha endpos
 
     # Internal -- check to see ikiwa we have a complete starttag; rudisha end
-    # or -1 ikiwa incomplete.
+    # ama -1 ikiwa incomplete.
     eleza check_for_whole_start_tag(self, i):
         rawdata = self.rawdata
         m = locatestarttagend_tolerant.match(rawdata, i)
@@ -366,54 +366,54 @@ kundi HTMLParser(_markupbase.ParserBase):
                 # else bogus input
                 ikiwa j > i:
                     rudisha j
-                else:
+                isipokua:
                     rudisha i + 1
             ikiwa next == "":
                 # end of input
                 rudisha -1
-            ikiwa next in ("abcdefghijklmnopqrstuvwxyz=/"
+            ikiwa next kwenye ("abcdefghijklmnopqrstuvwxyz=/"
                         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
-                # end of input in or before attribute value, or we have the
+                # end of input kwenye ama before attribute value, ama we have the
                 # '/' kutoka a '/>' ending
                 rudisha -1
             ikiwa j > i:
                 rudisha j
-            else:
+            isipokua:
                 rudisha i + 1
-        raise AssertionError("we should not get here!")
+        ashiria AssertionError("we should sio get here!")
 
-    # Internal -- parse endtag, rudisha end or -1 ikiwa incomplete
+    # Internal -- parse endtag, rudisha end ama -1 ikiwa incomplete
     eleza parse_endtag(self, i):
         rawdata = self.rawdata
         assert rawdata[i:i+2] == "</", "unexpected call to parse_endtag"
         match = endendtag.search(rawdata, i+1) # >
-        ikiwa not match:
+        ikiwa sio match:
             rudisha -1
         gtpos = match.end()
         match = endtagfind.match(rawdata, i) # </ + tag + >
-        ikiwa not match:
-            ikiwa self.cdata_elem is not None:
+        ikiwa sio match:
+            ikiwa self.cdata_elem ni sio Tupu:
                 self.handle_data(rawdata[i:gtpos])
                 rudisha gtpos
             # find the name: w3.org/TR/html5/tokenization.html#tag-name-state
             namematch = tagfind_tolerant.match(rawdata, i+2)
-            ikiwa not namematch:
+            ikiwa sio namematch:
                 # w3.org/TR/html5/tokenization.html#end-tag-open-state
                 ikiwa rawdata[i:i+3] == '</>':
                     rudisha i+3
-                else:
+                isipokua:
                     rudisha self.parse_bogus_comment(i)
             tagname = namematch.group(1).lower()
-            # consume and ignore other stuff between the name and the >
-            # Note: this is not 100% correct, since we might have things like
-            # </tag attr=">">, but looking for > after tha name should cover
-            # most of the cases and is much simpler
+            # consume na ignore other stuff between the name na the >
+            # Note: this ni sio 100% correct, since we might have things like
+            # </tag attr=">">, but looking kila > after tha name should cover
+            # most of the cases na ni much simpler
             gtpos = rawdata.find('>', namematch.end())
             self.handle_endtag(tagname)
             rudisha gtpos+1
 
-        elem = match.group(1).lower() # script or style
-        ikiwa self.cdata_elem is not None:
+        elem = match.group(1).lower() # script ama style
+        ikiwa self.cdata_elem ni sio Tupu:
             ikiwa elem != self.cdata_elem:
                 self.handle_data(rawdata[i:gtpos])
                 rudisha gtpos
@@ -429,42 +429,42 @@ kundi HTMLParser(_markupbase.ParserBase):
 
     # Overridable -- handle start tag
     eleza handle_starttag(self, tag, attrs):
-        pass
+        pita
 
     # Overridable -- handle end tag
     eleza handle_endtag(self, tag):
-        pass
+        pita
 
     # Overridable -- handle character reference
     eleza handle_charref(self, name):
-        pass
+        pita
 
     # Overridable -- handle entity reference
     eleza handle_entityref(self, name):
-        pass
+        pita
 
     # Overridable -- handle data
     eleza handle_data(self, data):
-        pass
+        pita
 
     # Overridable -- handle comment
     eleza handle_comment(self, data):
-        pass
+        pita
 
     # Overridable -- handle declaration
     eleza handle_decl(self, decl):
-        pass
+        pita
 
     # Overridable -- handle processing instruction
     eleza handle_pi(self, data):
-        pass
+        pita
 
     eleza unknown_decl(self, data):
-        pass
+        pita
 
     # Internal -- helper to remove special character quoting
     eleza unescape(self, s):
-        warnings.warn('The unescape method is deprecated and will be removed '
+        warnings.warn('The unescape method ni deprecated na will be removed '
                       'in 3.5, use html.unescape() instead.',
                       DeprecationWarning, stacklevel=2)
         rudisha unescape(s)

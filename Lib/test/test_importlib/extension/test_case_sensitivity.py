@@ -8,7 +8,7 @@ importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 
 
-@unittest.skipIf(util.EXTENSIONS.filename is None, '_testcapi not available')
+@unittest.skipIf(util.EXTENSIONS.filename ni Tupu, '_testcapi sio available')
 @util.case_insensitive_tests
 kundi ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
 
@@ -22,18 +22,18 @@ kundi ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
         rudisha finder.find_module(bad_name)
 
     eleza test_case_sensitive(self):
-        with support.EnvironmentVarGuard() as env:
+        with support.EnvironmentVarGuard() kama env:
             env.unset('PYTHONCASEOK')
-            self.caseok_env_changed(should_exist=False)
+            self.caseok_env_changed(should_exist=Uongo)
             loader = self.find_module()
-            self.assertIsNone(loader)
+            self.assertIsTupu(loader)
 
     eleza test_case_insensitivity(self):
-        with support.EnvironmentVarGuard() as env:
+        with support.EnvironmentVarGuard() kama env:
             env.set('PYTHONCASEOK', '1')
-            self.caseok_env_changed(should_exist=True)
+            self.caseok_env_changed(should_exist=Kweli)
             loader = self.find_module()
-            self.assertTrue(hasattr(loader, 'load_module'))
+            self.assertKweli(hasattr(loader, 'load_module'))
 
 
 (Frozen_ExtensionCaseSensitivity,

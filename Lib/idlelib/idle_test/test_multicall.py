@@ -17,17 +17,17 @@ kundi MultiCallTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.mc
+        toa cls.mc
         cls.root.update_idletasks()
-##        for id in cls.root.tk.call('after', 'info'):
-##            cls.root.after_cancel(id)  # Need for EditorWindow.
+##        kila id kwenye cls.root.tk.call('after', 'info'):
+##            cls.root.after_cancel(id)  # Need kila EditorWindow.
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_creator(self):
         mc = self.mc
         self.assertIs(multicall._multicall_dict[Text], mc)
-        self.assertTrue(issubclass(mc, Text))
+        self.assertKweli(issubclass(mc, Text))
         mc2 = multicall.MultiCallCreator(Text)
         self.assertIs(mc, mc2)
 
@@ -36,8 +36,8 @@ kundi MultiCallTest(unittest.TestCase):
         self.assertIsInstance(mctext._MultiCall__binders, list)
 
     eleza test_yview(self):
-        # Added for tree.wheel_event
-        # (it depends on yview to not be overriden)
+        # Added kila tree.wheel_event
+        # (it depends on yview to sio be overriden)
         mc = self.mc
         self.assertIs(mc.yview, Text.yview)
         mctext = self.mc(self.root)

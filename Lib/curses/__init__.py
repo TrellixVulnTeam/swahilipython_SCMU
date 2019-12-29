@@ -50,9 +50,9 @@ def start_color():
 
 # Import Python has_key() implementation if _curses doesn't contain has_key()
 
-try:
+jaribu:
     has_key
-except NameError:
+tatizo NameError:
     from .has_key import has_key
 
 # Wrapper for the entire curses-based application.  Runs a function which
@@ -75,18 +75,18 @@ def wrapper(*args, **kwds):
         import warnings
         warnings.warn("Passing 'func' as keyword argument is deprecated",
                       DeprecationWarning, stacklevel=2)
-    else:
+    isipokua:
         raise TypeError('wrapper expected at least 1 positional argument, '
                         'got %d' % len(args))
 
-    try:
+    jaribu:
         # Initialize curses
         stdscr = initscr()
 
-        # Turn off echoing of keys, and enter cbreak mode,
+        # Turn off echoing of keys, and enter ckoma mode,
         # where no buffering is performed on keyboard input
         noecho()
-        cbreak()
+        ckoma()
 
         # In keypad mode, escape sequences for special keys
         # (like the cursor keys) will be interpreted and
@@ -97,17 +97,17 @@ def wrapper(*args, **kwds):
         # color; user can test with has_color() later on.  The try/catch
         # works around a minor bit of over-conscientiousness in the curses
         # module -- the error return from C start_color() is ignorable.
-        try:
+        jaribu:
             start_color()
         except:
             pass
 
         return func(stdscr, *args, **kwds)
-    finally:
+    mwishowe:
         # Set everything back to normal
         if 'stdscr' in locals():
             stdscr.keypad(0)
             echo()
-            nocbreak()
+            nockoma()
             endwin()
 wrapper.__text_signature__ = '(func, /, *args, **kwds)'

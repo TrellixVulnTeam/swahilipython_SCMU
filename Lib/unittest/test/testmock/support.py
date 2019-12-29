@@ -7,10 +7,10 @@ eleza is_instance(obj, klass):
 
 
 kundi SomeClass(object):
-    class_attribute = None
+    class_attribute = Tupu
 
-    eleza wibble(self): pass
+    eleza wibble(self): pita
 
 
 kundi X(object):
-    pass
+    pita

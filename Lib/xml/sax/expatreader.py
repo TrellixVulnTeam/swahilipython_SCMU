@@ -1,5 +1,5 @@
 """
-SAX driver for the pyexpat C module.  This driver works with
+SAX driver kila the pyexpat C module.  This driver works with
 pyexpat.__version__ == '2.22'.
 """
 
@@ -12,112 +12,112 @@ kutoka xml.sax.handler agiza feature_external_ges, feature_external_pes
 kutoka xml.sax.handler agiza feature_string_interning
 kutoka xml.sax.handler agiza property_xml_string, property_interning_dict
 
-# xml.parsers.expat does not raise ImportError in Jython
+# xml.parsers.expat does sio ashiria ImportError kwenye Jython
 agiza sys
 ikiwa sys.platform[:4] == "java":
-    raise SAXReaderNotAvailable("expat not available in Java", None)
-del sys
+    ashiria SAXReaderNotAvailable("expat sio available kwenye Java", Tupu)
+toa sys
 
-try:
+jaribu:
     kutoka xml.parsers agiza expat
-except ImportError:
-    raise SAXReaderNotAvailable("expat not supported", None)
-else:
-    ikiwa not hasattr(expat, "ParserCreate"):
-        raise SAXReaderNotAvailable("expat not supported", None)
+tatizo ImportError:
+    ashiria SAXReaderNotAvailable("expat sio supported", Tupu)
+isipokua:
+    ikiwa sio hasattr(expat, "ParserCreate"):
+        ashiria SAXReaderNotAvailable("expat sio supported", Tupu)
 kutoka xml.sax agiza xmlreader, saxutils, handler
 
 AttributesImpl = xmlreader.AttributesImpl
 AttributesNSImpl = xmlreader.AttributesNSImpl
 
 # If we're using a sufficiently recent version of Python, we can use
-# weak references to avoid cycles between the parser and content
+# weak references to avoid cycles between the parser na content
 # handler, otherwise we'll just have to pretend.
-try:
+jaribu:
     agiza _weakref
-except ImportError:
+tatizo ImportError:
     eleza _mkproxy(o):
         rudisha o
-else:
+isipokua:
     agiza weakref
     _mkproxy = weakref.proxy
-    del weakref, _weakref
+    toa weakref, _weakref
 
 kundi _ClosedParser:
-    pass
+    pita
 
 # --- ExpatLocator
 
 kundi ExpatLocator(xmlreader.Locator):
-    """Locator for use with the ExpatParser class.
+    """Locator kila use with the ExpatParser class.
 
     This uses a weak reference to the parser object to avoid creating
-    a circular reference between the parser and the content handler.
+    a circular reference between the parser na the content handler.
     """
     eleza __init__(self, parser):
         self._ref = _mkproxy(parser)
 
     eleza getColumnNumber(self):
         parser = self._ref
-        ikiwa parser._parser is None:
-            rudisha None
+        ikiwa parser._parser ni Tupu:
+            rudisha Tupu
         rudisha parser._parser.ErrorColumnNumber
 
     eleza getLineNumber(self):
         parser = self._ref
-        ikiwa parser._parser is None:
+        ikiwa parser._parser ni Tupu:
             rudisha 1
         rudisha parser._parser.ErrorLineNumber
 
     eleza getPublicId(self):
         parser = self._ref
-        ikiwa parser is None:
-            rudisha None
+        ikiwa parser ni Tupu:
+            rudisha Tupu
         rudisha parser._source.getPublicId()
 
     eleza getSystemId(self):
         parser = self._ref
-        ikiwa parser is None:
-            rudisha None
+        ikiwa parser ni Tupu:
+            rudisha Tupu
         rudisha parser._source.getSystemId()
 
 
 # --- ExpatParser
 
 kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
-    """SAX driver for the pyexpat C module."""
+    """SAX driver kila the pyexpat C module."""
 
     eleza __init__(self, namespaceHandling=0, bufsize=2**16-20):
         xmlreader.IncrementalParser.__init__(self, bufsize)
         self._source = xmlreader.InputSource()
-        self._parser = None
+        self._parser = Tupu
         self._namespaces = namespaceHandling
-        self._lex_handler_prop = None
+        self._lex_handler_prop = Tupu
         self._parsing = 0
         self._entity_stack = []
         self._external_ges = 0
-        self._interning = None
+        self._interning = Tupu
 
     # XMLReader methods
 
     eleza parse(self, source):
-        "Parse an XML document kutoka a URL or an InputSource."
+        "Parse an XML document kutoka a URL ama an InputSource."
         source = saxutils.prepare_input_source(source)
 
         self._source = source
-        try:
+        jaribu:
             self.reset()
             self._cont_handler.setDocumentLocator(ExpatLocator(self))
             xmlreader.IncrementalParser.parse(self, source)
         except:
-            # bpo-30264: Close the source on error to not leak resources:
+            # bpo-30264: Close the source on error to sio leak resources:
             # xml.sax.parse() doesn't give access to the underlying parser
             # to the caller
             self._close_source()
-            raise
+            ashiria
 
     eleza prepareParser(self, source):
-        ikiwa source.getSystemId() is not None:
+        ikiwa source.getSystemId() ni sio Tupu:
             self._parser.SetBase(source.getSystemId())
 
     # Redefined setContentHandler to allow changing handlers during parsing
@@ -131,17 +131,17 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         ikiwa name == feature_namespaces:
             rudisha self._namespaces
         elikiwa name == feature_string_interning:
-            rudisha self._interning is not None
-        elikiwa name in (feature_validation, feature_external_pes,
+            rudisha self._interning ni sio Tupu
+        elikiwa name kwenye (feature_validation, feature_external_pes,
                       feature_namespace_prefixes):
             rudisha 0
         elikiwa name == feature_external_ges:
             rudisha self._external_ges
-        raise SAXNotRecognizedException("Feature '%s' not recognized" % name)
+        ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
 
     eleza setFeature(self, name, state):
         ikiwa self._parsing:
-            raise SAXNotSupportedException("Cannot set features while parsing")
+            ashiria SAXNotSupportedException("Cannot set features wakati parsing")
 
         ikiwa name == feature_namespaces:
             self._namespaces = state
@@ -149,25 +149,25 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._external_ges = state
         elikiwa name == feature_string_interning:
             ikiwa state:
-                ikiwa self._interning is None:
+                ikiwa self._interning ni Tupu:
                     self._interning = {}
-            else:
-                self._interning = None
+            isipokua:
+                self._interning = Tupu
         elikiwa name == feature_validation:
             ikiwa state:
-                raise SAXNotSupportedException(
-                    "expat does not support validation")
+                ashiria SAXNotSupportedException(
+                    "expat does sio support validation")
         elikiwa name == feature_external_pes:
             ikiwa state:
-                raise SAXNotSupportedException(
-                    "expat does not read external parameter entities")
+                ashiria SAXNotSupportedException(
+                    "expat does sio read external parameter entities")
         elikiwa name == feature_namespace_prefixes:
             ikiwa state:
-                raise SAXNotSupportedException(
-                    "expat does not report namespace prefixes")
-        else:
-            raise SAXNotRecognizedException(
-                "Feature '%s' not recognized" % name)
+                ashiria SAXNotSupportedException(
+                    "expat does sio report namespace prefixes")
+        isipokua:
+            ashiria SAXNotRecognizedException(
+                "Feature '%s' sio recognized" % name)
 
     eleza getProperty(self, name):
         ikiwa name == handler.property_lexical_handler:
@@ -178,14 +178,14 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             ikiwa self._parser:
                 ikiwa hasattr(self._parser, "GetInputContext"):
                     rudisha self._parser.GetInputContext()
-                else:
-                    raise SAXNotRecognizedException(
-                        "This version of expat does not support getting"
+                isipokua:
+                    ashiria SAXNotRecognizedException(
+                        "This version of expat does sio support getting"
                         " the XML string")
-            else:
-                raise SAXNotSupportedException(
-                    "XML string cannot be returned when not parsing")
-        raise SAXNotRecognizedException("Property '%s' not recognized" % name)
+            isipokua:
+                ashiria SAXNotSupportedException(
+                    "XML string cannot be rudishaed when sio parsing")
+        ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
 
     eleza setProperty(self, name, value):
         ikiwa name == handler.property_lexical_handler:
@@ -195,57 +195,57 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         elikiwa name == property_interning_dict:
             self._interning = value
         elikiwa name == property_xml_string:
-            raise SAXNotSupportedException("Property '%s' cannot be set" %
+            ashiria SAXNotSupportedException("Property '%s' cannot be set" %
                                            name)
-        else:
-            raise SAXNotRecognizedException("Property '%s' not recognized" %
+        isipokua:
+            ashiria SAXNotRecognizedException("Property '%s' sio recognized" %
                                             name)
 
     # IncrementalParser methods
 
     eleza feed(self, data, isFinal = 0):
-        ikiwa not self._parsing:
+        ikiwa sio self._parsing:
             self.reset()
             self._parsing = 1
             self._cont_handler.startDocument()
 
-        try:
-            # The isFinal parameter is internal to the expat reader.
-            # If it is set to true, expat will check validity of the entire
-            # document. When feeding chunks, they are not normally final -
-            # except when invoked kutoka close.
+        jaribu:
+            # The isFinal parameter ni internal to the expat reader.
+            # If it ni set to true, expat will check validity of the entire
+            # document. When feeding chunks, they are sio normally final -
+            # tatizo when invoked kutoka close.
             self._parser.Parse(data, isFinal)
-        except expat.error as e:
+        tatizo expat.error kama e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
             # FIXME: when to invoke error()?
             self._err_handler.fatalError(exc)
 
     eleza _close_source(self):
         source = self._source
-        try:
+        jaribu:
             file = source.getCharacterStream()
-            ikiwa file is not None:
+            ikiwa file ni sio Tupu:
                 file.close()
-        finally:
+        mwishowe:
             file = source.getByteStream()
-            ikiwa file is not None:
+            ikiwa file ni sio Tupu:
                 file.close()
 
     eleza close(self):
-        ikiwa (self._entity_stack or self._parser is None or
+        ikiwa (self._entity_stack ama self._parser ni Tupu or
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
-            return
-        try:
+            rudisha
+        jaribu:
             self.feed("", isFinal = 1)
             self._cont_handler.endDocument()
             self._parsing = 0
-            # break cycle created by expat handlers pointing to our methods
-            self._parser = None
-        finally:
+            # koma cycle created by expat handlers pointing to our methods
+            self._parser = Tupu
+        mwishowe:
             self._parsing = 0
-            ikiwa self._parser is not None:
-                # Keep ErrorColumnNumber and ErrorLineNumber after closing.
+            ikiwa self._parser ni sio Tupu:
+                # Keep ErrorColumnNumber na ErrorLineNumber after closing.
                 parser = _ClosedParser()
                 parser.ErrorColumnNumber = self._parser.ErrorColumnNumber
                 parser.ErrorLineNumber = self._parser.ErrorLineNumber
@@ -260,13 +260,13 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     eleza _reset_lex_handler_prop(self):
         lex = self._lex_handler_prop
         parser = self._parser
-        ikiwa lex is None:
-            parser.CommentHandler = None
-            parser.StartCdataSectionHandler = None
-            parser.EndCdataSectionHandler = None
-            parser.StartDoctypeDeclHandler = None
-            parser.EndDoctypeDeclHandler = None
-        else:
+        ikiwa lex ni Tupu:
+            parser.CommentHandler = Tupu
+            parser.StartCdataSectionHandler = Tupu
+            parser.EndCdataSectionHandler = Tupu
+            parser.StartDoctypeDeclHandler = Tupu
+            parser.EndDoctypeDeclHandler = Tupu
+        isipokua:
             parser.CommentHandler = lex.comment
             parser.StartCdataSectionHandler = lex.startCDATA
             parser.EndCdataSectionHandler = lex.endCDATA
@@ -280,7 +280,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._parser.namespace_prefixes = 1
             self._parser.StartElementHandler = self.start_element_ns
             self._parser.EndElementHandler = self.end_element_ns
-        else:
+        isipokua:
             self._parser = expat.ParserCreate(self._source.getEncoding(),
                                               intern = self._interning)
             self._parser.StartElementHandler = self.start_element
@@ -292,18 +292,18 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         self._parser.StartNamespaceDeclHandler = self.start_namespace_decl
         self._parser.EndNamespaceDeclHandler = self.end_namespace_decl
 
-        self._decl_handler_prop = None
+        self._decl_handler_prop = Tupu
         ikiwa self._lex_handler_prop:
             self._reset_lex_handler_prop()
 #         self._parser.DefaultHandler =
 #         self._parser.DefaultHandlerExpand =
 #         self._parser.NotStandaloneHandler =
         self._parser.ExternalEntityRefHandler = self.external_entity_ref
-        try:
+        jaribu:
             self._parser.SkippedEntityHandler = self.skipped_entity_handler
-        except AttributeError:
-            # This pyexpat does not support SkippedEntity
-            pass
+        tatizo AttributeError:
+            # This pyexpat does sio support SkippedEntity
+            pita
         self._parser.SetParamEntityParsing(
             expat.XML_PARAM_ENTITY_PARSING_UNLESS_STANDALONE)
 
@@ -313,12 +313,12 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     # Locator methods
 
     eleza getColumnNumber(self):
-        ikiwa self._parser is None:
-            rudisha None
+        ikiwa self._parser ni Tupu:
+            rudisha Tupu
         rudisha self._parser.ErrorColumnNumber
 
     eleza getLineNumber(self):
-        ikiwa self._parser is None:
+        ikiwa self._parser ni Tupu:
             rudisha 1
         rudisha self._parser.ErrorLineNumber
 
@@ -339,26 +339,26 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         pair = name.split()
         ikiwa len(pair) == 1:
             # no namespace
-            pair = (None, name)
+            pair = (Tupu, name)
         elikiwa len(pair) == 3:
             pair = pair[0], pair[1]
-        else:
+        isipokua:
             # default namespace
             pair = tuple(pair)
 
         newattrs = {}
         qnames = {}
-        for (aname, value) in attrs.items():
+        kila (aname, value) kwenye attrs.items():
             parts = aname.split()
             length = len(parts)
             ikiwa length == 1:
                 # no namespace
                 qname = aname
-                apair = (None, aname)
+                apair = (Tupu, aname)
             elikiwa length == 3:
                 qname = "%s:%s" % (parts[2], parts[1])
                 apair = parts[0], parts[1]
-            else:
+            isipokua:
                 # default namespace
                 qname = parts[1]
                 apair = tuple(parts)
@@ -366,25 +366,25 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             newattrs[apair] = value
             qnames[apair] = qname
 
-        self._cont_handler.startElementNS(pair, None,
+        self._cont_handler.startElementNS(pair, Tupu,
                                           AttributesNSImpl(newattrs, qnames))
 
     eleza end_element_ns(self, name):
         pair = name.split()
         ikiwa len(pair) == 1:
-            pair = (None, name)
+            pair = (Tupu, name)
         elikiwa len(pair) == 3:
             pair = pair[0], pair[1]
-        else:
+        isipokua:
             pair = tuple(pair)
 
-        self._cont_handler.endElementNS(pair, None)
+        self._cont_handler.endElementNS(pair, Tupu)
 
-    # this is not used (call directly to ContentHandler)
+    # this ni sio used (call directly to ContentHandler)
     eleza processing_instruction(self, target, data):
         self._cont_handler.processingInstruction(target, data)
 
-    # this is not used (call directly to ContentHandler)
+    # this ni sio used (call directly to ContentHandler)
     eleza character_data(self, data):
         self._cont_handler.characters(data)
 
@@ -404,7 +404,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         self._dtd_handler.notationDecl(name, pubid, sysid)
 
     eleza external_entity_ref(self, context, base, sysid, pubid):
-        ikiwa not self._external_ges:
+        ikiwa sio self._external_ges:
             rudisha 1
 
         source = self._ent_handler.resolveEntity(pubid, sysid)
@@ -416,13 +416,13 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         self._parser = self._parser.ExternalEntityParserCreate(context)
         self._source = source
 
-        try:
+        jaribu:
             xmlreader.IncrementalParser.parse(self, source)
         except:
             rudisha 0  # FIXME: save error info here?
 
         (self._parser, self._source) = self._entity_stack[-1]
-        del self._entity_stack[-1]
+        toa self._entity_stack[-1]
         rudisha 1
 
     eleza skipped_entity_handler(self, name, is_pe):

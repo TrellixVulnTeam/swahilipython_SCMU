@@ -2,12 +2,12 @@
 Operator Interface
 
 This module exports a set of functions corresponding to the intrinsic
-operators of Python.  For example, operator.add(x, y) is equivalent
-to the expression x+y.  The function names are those used for special
-methods; variants without leading and trailing '__' are also provided
-for convenience.
+operators of Python.  For example, operator.add(x, y) ni equivalent
+to the expression x+y.  The function names are those used kila special
+methods; variants without leading na trailing '__' are also provided
+kila convenience.
 
-This is the pure Python implementation of the module.
+This ni the pure Python implementation of the module.
 """
 
 __all__ = ['abs', 'add', 'and_', 'attrgetter', 'concat', 'contains', 'countOf',
@@ -19,206 +19,206 @@ __all__ = ['abs', 'add', 'and_', 'attrgetter', 'concat', 'contains', 'countOf',
            'mul', 'ne', 'neg', 'not_', 'or_', 'pos', 'pow', 'rshift',
            'setitem', 'sub', 'truediv', 'truth', 'xor']
 
-kutoka builtins agiza abs as _abs
+kutoka builtins agiza abs kama _abs
 
 
 # Comparison Operations *******************************************************#
 
 eleza lt(a, b):
-    "Same as a < b."
+    "Same kama a < b."
     rudisha a < b
 
 eleza le(a, b):
-    "Same as a <= b."
+    "Same kama a <= b."
     rudisha a <= b
 
 eleza eq(a, b):
-    "Same as a == b."
+    "Same kama a == b."
     rudisha a == b
 
 eleza ne(a, b):
-    "Same as a != b."
+    "Same kama a != b."
     rudisha a != b
 
 eleza ge(a, b):
-    "Same as a >= b."
+    "Same kama a >= b."
     rudisha a >= b
 
 eleza gt(a, b):
-    "Same as a > b."
+    "Same kama a > b."
     rudisha a > b
 
 # Logical Operations **********************************************************#
 
 eleza not_(a):
-    "Same as not a."
-    rudisha not a
+    "Same kama sio a."
+    rudisha sio a
 
 eleza truth(a):
-    "Return True ikiwa a is true, False otherwise."
-    rudisha True ikiwa a else False
+    "Return Kweli ikiwa a ni true, Uongo otherwise."
+    rudisha Kweli ikiwa a else Uongo
 
 eleza is_(a, b):
-    "Same as a is b."
-    rudisha a is b
+    "Same kama a ni b."
+    rudisha a ni b
 
 eleza is_not(a, b):
-    "Same as a is not b."
-    rudisha a is not b
+    "Same kama a ni sio b."
+    rudisha a ni sio b
 
 # Mathematical/Bitwise Operations *********************************************#
 
 eleza abs(a):
-    "Same as abs(a)."
+    "Same kama abs(a)."
     rudisha _abs(a)
 
 eleza add(a, b):
-    "Same as a + b."
+    "Same kama a + b."
     rudisha a + b
 
 eleza and_(a, b):
-    "Same as a & b."
+    "Same kama a & b."
     rudisha a & b
 
 eleza floordiv(a, b):
-    "Same as a // b."
+    "Same kama a // b."
     rudisha a // b
 
 eleza index(a):
-    "Same as a.__index__()."
+    "Same kama a.__index__()."
     rudisha a.__index__()
 
 eleza inv(a):
-    "Same as ~a."
+    "Same kama ~a."
     rudisha ~a
 invert = inv
 
 eleza lshift(a, b):
-    "Same as a << b."
+    "Same kama a << b."
     rudisha a << b
 
 eleza mod(a, b):
-    "Same as a % b."
+    "Same kama a % b."
     rudisha a % b
 
 eleza mul(a, b):
-    "Same as a * b."
+    "Same kama a * b."
     rudisha a * b
 
 eleza matmul(a, b):
-    "Same as a @ b."
+    "Same kama a @ b."
     rudisha a @ b
 
 eleza neg(a):
-    "Same as -a."
+    "Same kama -a."
     rudisha -a
 
 eleza or_(a, b):
-    "Same as a | b."
+    "Same kama a | b."
     rudisha a | b
 
 eleza pos(a):
-    "Same as +a."
+    "Same kama +a."
     rudisha +a
 
 eleza pow(a, b):
-    "Same as a ** b."
+    "Same kama a ** b."
     rudisha a ** b
 
 eleza rshift(a, b):
-    "Same as a >> b."
+    "Same kama a >> b."
     rudisha a >> b
 
 eleza sub(a, b):
-    "Same as a - b."
+    "Same kama a - b."
     rudisha a - b
 
 eleza truediv(a, b):
-    "Same as a / b."
+    "Same kama a / b."
     rudisha a / b
 
 eleza xor(a, b):
-    "Same as a ^ b."
+    "Same kama a ^ b."
     rudisha a ^ b
 
 # Sequence Operations *********************************************************#
 
 eleza concat(a, b):
-    "Same as a + b, for a and b sequences."
-    ikiwa not hasattr(a, '__getitem__'):
+    "Same kama a + b, kila a na b sequences."
+    ikiwa sio hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
-        raise TypeError(msg)
+        ashiria TypeError(msg)
     rudisha a + b
 
 eleza contains(a, b):
-    "Same as b in a (note reversed operands)."
-    rudisha b in a
+    "Same kama b kwenye a (note reversed operands)."
+    rudisha b kwenye a
 
 eleza countOf(a, b):
-    "Return the number of times b occurs in a."
+    "Return the number of times b occurs kwenye a."
     count = 0
-    for i in a:
+    kila i kwenye a:
         ikiwa i == b:
             count += 1
     rudisha count
 
 eleza delitem(a, b):
-    "Same as del a[b]."
-    del a[b]
+    "Same kama toa a[b]."
+    toa a[b]
 
 eleza getitem(a, b):
-    "Same as a[b]."
+    "Same kama a[b]."
     rudisha a[b]
 
 eleza indexOf(a, b):
-    "Return the first index of b in a."
-    for i, j in enumerate(a):
+    "Return the first index of b kwenye a."
+    kila i, j kwenye enumerate(a):
         ikiwa j == b:
             rudisha i
-    else:
-        raise ValueError('sequence.index(x): x not in sequence')
+    isipokua:
+        ashiria ValueError('sequence.index(x): x haiko kwenye sequence')
 
 eleza setitem(a, b, c):
-    "Same as a[b] = c."
+    "Same kama a[b] = c."
     a[b] = c
 
 eleza length_hint(obj, default=0):
     """
-    Return an estimate of the number of items in obj.
-    This is useful for presizing containers when building kutoka an iterable.
+    Return an estimate of the number of items kwenye obj.
+    This ni useful kila presizing containers when building kutoka an iterable.
 
     If the object supports len(), the result will be exact. Otherwise, it may
-    over- or under-estimate by an arbitrary amount. The result will be an
+    over- ama under-estimate by an arbitrary amount. The result will be an
     integer >= 0.
     """
-    ikiwa not isinstance(default, int):
-        msg = ("'%s' object cannot be interpreted as an integer" %
+    ikiwa sio isinstance(default, int):
+        msg = ("'%s' object cannot be interpreted kama an integer" %
                type(default).__name__)
-        raise TypeError(msg)
+        ashiria TypeError(msg)
 
-    try:
+    jaribu:
         rudisha len(obj)
-    except TypeError:
-        pass
+    tatizo TypeError:
+        pita
 
-    try:
+    jaribu:
         hint = type(obj).__length_hint__
-    except AttributeError:
+    tatizo AttributeError:
         rudisha default
 
-    try:
+    jaribu:
         val = hint(obj)
-    except TypeError:
+    tatizo TypeError:
         rudisha default
-    ikiwa val is NotImplemented:
+    ikiwa val ni NotImplemented:
         rudisha default
-    ikiwa not isinstance(val, int):
-        msg = ('__length_hint__ must be integer, not %s' %
+    ikiwa sio isinstance(val, int):
+        msg = ('__length_hint__ must be integer, sio %s' %
                type(val).__name__)
-        raise TypeError(msg)
+        ashiria TypeError(msg)
     ikiwa val < 0:
         msg = '__length_hint__() should rudisha >= 0'
-        raise ValueError(msg)
+        ashiria ValueError(msg)
     rudisha val
 
 # Generalized Lookup Objects **************************************************#
@@ -226,29 +226,29 @@ eleza length_hint(obj, default=0):
 kundi attrgetter:
     """
     Return a callable object that fetches the given attribute(s) kutoka its operand.
-    After f = attrgetter('name'), the call f(r) returns r.name.
-    After g = attrgetter('name', 'date'), the call g(r) returns (r.name, r.date).
-    After h = attrgetter('name.first', 'name.last'), the call h(r) returns
+    After f = attrgetter('name'), the call f(r) rudishas r.name.
+    After g = attrgetter('name', 'date'), the call g(r) rudishas (r.name, r.date).
+    After h = attrgetter('name.first', 'name.last'), the call h(r) rudishas
     (r.name.first, r.name.last).
     """
     __slots__ = ('_attrs', '_call')
 
     eleza __init__(self, attr, *attrs):
-        ikiwa not attrs:
-            ikiwa not isinstance(attr, str):
-                raise TypeError('attribute name must be a string')
+        ikiwa sio attrs:
+            ikiwa sio isinstance(attr, str):
+                ashiria TypeError('attribute name must be a string')
             self._attrs = (attr,)
             names = attr.split('.')
             eleza func(obj):
-                for name in names:
+                kila name kwenye names:
                     obj = getattr(obj, name)
                 rudisha obj
             self._call = func
-        else:
+        isipokua:
             self._attrs = (attr,) + attrs
             getters = tuple(map(attrgetter, self._attrs))
             eleza func(obj):
-                rudisha tuple(getter(obj) for getter in getters)
+                rudisha tuple(getter(obj) kila getter kwenye getters)
             self._call = func
 
     eleza __call__(self, obj):
@@ -265,21 +265,21 @@ kundi attrgetter:
 kundi itemgetter:
     """
     Return a callable object that fetches the given item(s) kutoka its operand.
-    After f = itemgetter(2), the call f(r) returns r[2].
-    After g = itemgetter(2, 5, 3), the call g(r) returns (r[2], r[5], r[3])
+    After f = itemgetter(2), the call f(r) rudishas r[2].
+    After g = itemgetter(2, 5, 3), the call g(r) rudishas (r[2], r[5], r[3])
     """
     __slots__ = ('_items', '_call')
 
     eleza __init__(self, item, *items):
-        ikiwa not items:
+        ikiwa sio items:
             self._items = (item,)
             eleza func(obj):
                 rudisha obj[item]
             self._call = func
-        else:
+        isipokua:
             self._items = items = (item,) + items
             eleza func(obj):
-                rudisha tuple(obj[i] for i in items)
+                rudisha tuple(obj[i] kila i kwenye items)
             self._call = func
 
     eleza __call__(self, obj):
@@ -296,16 +296,16 @@ kundi itemgetter:
 kundi methodcaller:
     """
     Return a callable object that calls the given method on its operand.
-    After f = methodcaller('name'), the call f(r) returns r.name().
-    After g = methodcaller('name', 'date', foo=1), the call g(r) returns
+    After f = methodcaller('name'), the call f(r) rudishas r.name().
+    After g = methodcaller('name', 'date', foo=1), the call g(r) rudishas
     r.name('date', foo=1).
     """
     __slots__ = ('_name', '_args', '_kwargs')
 
     eleza __init__(self, name, /, *args, **kwargs):
         self._name = name
-        ikiwa not isinstance(self._name, str):
-            raise TypeError('method name must be a string')
+        ikiwa sio isinstance(self._name, str):
+            ashiria TypeError('method name must be a string')
         self._args = args
         self._kwargs = kwargs
 
@@ -315,15 +315,15 @@ kundi methodcaller:
     eleza __repr__(self):
         args = [repr(self._name)]
         args.extend(map(repr, self._args))
-        args.extend('%s=%r' % (k, v) for k, v in self._kwargs.items())
+        args.extend('%s=%r' % (k, v) kila k, v kwenye self._kwargs.items())
         rudisha '%s.%s(%s)' % (self.__class__.__module__,
                               self.__class__.__name__,
                               ', '.join(args))
 
     eleza __reduce__(self):
-        ikiwa not self._kwargs:
+        ikiwa sio self._kwargs:
             rudisha self.__class__, (self._name,) + self._args
-        else:
+        isipokua:
             kutoka functools agiza partial
             rudisha partial(self.__class__, self._name, **self._kwargs), self._args
 
@@ -331,84 +331,84 @@ kundi methodcaller:
 # In-place Operations *********************************************************#
 
 eleza iadd(a, b):
-    "Same as a += b."
+    "Same kama a += b."
     a += b
     rudisha a
 
 eleza iand(a, b):
-    "Same as a &= b."
+    "Same kama a &= b."
     a &= b
     rudisha a
 
 eleza iconcat(a, b):
-    "Same as a += b, for a and b sequences."
-    ikiwa not hasattr(a, '__getitem__'):
+    "Same kama a += b, kila a na b sequences."
+    ikiwa sio hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
-        raise TypeError(msg)
+        ashiria TypeError(msg)
     a += b
     rudisha a
 
 eleza ifloordiv(a, b):
-    "Same as a //= b."
+    "Same kama a //= b."
     a //= b
     rudisha a
 
 eleza ilshift(a, b):
-    "Same as a <<= b."
+    "Same kama a <<= b."
     a <<= b
     rudisha a
 
 eleza imod(a, b):
-    "Same as a %= b."
+    "Same kama a %= b."
     a %= b
     rudisha a
 
 eleza imul(a, b):
-    "Same as a *= b."
+    "Same kama a *= b."
     a *= b
     rudisha a
 
 eleza imatmul(a, b):
-    "Same as a @= b."
+    "Same kama a @= b."
     a @= b
     rudisha a
 
 eleza ior(a, b):
-    "Same as a |= b."
+    "Same kama a |= b."
     a |= b
     rudisha a
 
 eleza ipow(a, b):
-    "Same as a **= b."
+    "Same kama a **= b."
     a **=b
     rudisha a
 
 eleza irshift(a, b):
-    "Same as a >>= b."
+    "Same kama a >>= b."
     a >>= b
     rudisha a
 
 eleza isub(a, b):
-    "Same as a -= b."
+    "Same kama a -= b."
     a -= b
     rudisha a
 
 eleza itruediv(a, b):
-    "Same as a /= b."
+    "Same kama a /= b."
     a /= b
     rudisha a
 
 eleza ixor(a, b):
-    "Same as a ^= b."
+    "Same kama a ^= b."
     a ^= b
     rudisha a
 
 
-try:
+jaribu:
     kutoka _operator agiza *
-except ImportError:
-    pass
-else:
+tatizo ImportError:
+    pita
+isipokua:
     kutoka _operator agiza __doc__
 
 # All of these "__func__ = func" assignments have to happen after agizaing

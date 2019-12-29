@@ -2,38 +2,38 @@
 # Licensed to PSF under a Contributor Agreement.
 
 """Fixer that changes map(F, ...) into list(map(F, ...)) unless there
-exists a 'kutoka future_builtins agiza map' statement in the top-level
+exists a 'kutoka future_builtins agiza map' statement kwenye the top-level
 namespace.
 
-As a special case, map(None, X) is changed into list(X).  (This is
-necessary because the semantics are changed in this case -- the new
-map(None, X) is equivalent to [(x,) for x in X].)
+As a special case, map(Tupu, X) ni changed into list(X).  (This is
+necessary because the semantics are changed kwenye this case -- the new
+map(Tupu, X) ni equivalent to [(x,) kila x kwenye X].)
 
-We avoid the transformation (except for the special case mentioned
-above) ikiwa the map() call is directly contained in iter(<>), list(<>),
-tuple(<>), sorted(<>), ...join(<>), or for V in <>:.
+We avoid the transformation (tatizo kila the special case mentioned
+above) ikiwa the map() call ni directly contained kwenye iter(<>), list(<>),
+tuple(<>), sorted(<>), ...join(<>), ama kila V kwenye <>:.
 
-NOTE: This is still not correct ikiwa the original code was depending on
-map(F, X, Y, ...) to go on until the longest argument is exhausted,
-substituting None for missing values -- like zip(), it now stops as
-soon as the shortest argument is exhausted.
+NOTE: This ni still sio correct ikiwa the original code was depending on
+map(F, X, Y, ...) to go on until the longest argument ni exhausted,
+substituting Tupu kila missing values -- like zip(), it now stops as
+soon kama the shortest argument ni exhausted.
 """
 
 # Local agizas
 kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, ArgList, Call, ListComp, in_special_context
-kutoka ..pygram agiza python_symbols as syms
+kutoka ..pygram agiza python_symbols kama syms
 kutoka ..pytree agiza Node
 
 
 kundi FixMap(fixer_base.ConditionalFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     map_none=power<
         'map'
-        trailer< '(' arglist< 'None' ',' arg=any [','] > ')' >
+        trailer< '(' arglist< 'Tupu' ',' arg=any [','] > ')' >
         [extra_trailers=trailer*]
     >
     |
@@ -63,45 +63,45 @@ kundi FixMap(fixer_base.ConditionalFix):
 
     eleza transform(self, node, results):
         ikiwa self.should_skip(node):
-            return
+            rudisha
 
         trailers = []
-        ikiwa 'extra_trailers' in results:
-            for t in results['extra_trailers']:
+        ikiwa 'extra_trailers' kwenye results:
+            kila t kwenye results['extra_trailers']:
                 trailers.append(t.clone())
 
         ikiwa node.parent.type == syms.simple_stmt:
-            self.warning(node, "You should use a for loop here")
+            self.warning(node, "You should use a kila loop here")
             new = node.clone()
             new.prefix = ""
             new = Call(Name("list"), [new])
-        elikiwa "map_lambda" in results:
+        elikiwa "map_lambda" kwenye results:
             new = ListComp(results["xp"].clone(),
                            results["fp"].clone(),
                            results["it"].clone())
             new = Node(syms.power, [new] + trailers, prefix="")
 
-        else:
-            ikiwa "map_none" in results:
+        isipokua:
+            ikiwa "map_none" kwenye results:
                 new = results["arg"].clone()
                 new.prefix = ""
-            else:
-                ikiwa "args" in results:
+            isipokua:
+                ikiwa "args" kwenye results:
                     args = results["args"]
-                    ikiwa args.type == syms.trailer and \
-                       args.children[1].type == syms.arglist and \
-                       args.children[1].children[0].type == token.NAME and \
-                       args.children[1].children[0].value == "None":
-                        self.warning(node, "cannot convert map(None, ...) "
+                    ikiwa args.type == syms.trailer na \
+                       args.children[1].type == syms.arglist na \
+                       args.children[1].children[0].type == token.NAME na \
+                       args.children[1].children[0].value == "Tupu":
+                        self.warning(node, "cannot convert map(Tupu, ...) "
                                      "with multiple arguments because map() "
                                      "now truncates to the shortest sequence")
-                        return
+                        rudisha
 
                     new = Node(syms.power, [Name("map"), args.clone()])
                     new.prefix = ""
 
                 ikiwa in_special_context(node):
-                    rudisha None
+                    rudisha Tupu
 
             new = Node(syms.power, [Name("list"), ArgList([new])] + trailers)
             new.prefix = ""

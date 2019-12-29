@@ -1,13 +1,13 @@
 # Module 'ntpath' -- common operations on WinNT/Win95 pathnames
 """Common pathname manipulations, WindowsNT/95 version.
 
-Instead of agizaing this module directly, agiza os and refer to this
-module as os.path.
+Instead of agizaing this module directly, agiza os na refer to this
+module kama os.path.
 """
 
-# strings representing various path-related bits and pieces
-# These are primarily for export; internally, they are hardcoded.
-# Should be set before agizas for resolving cyclic dependency.
+# strings representing various path-related bits na pieces
+# These are primarily kila export; internally, they are hardcoded.
+# Should be set before agizas kila resolving cyclic dependency.
 curdir = '.'
 pardir = '..'
 extsep = '.'
@@ -34,35 +34,35 @@ __all__ = ["normcase","isabs","join","splitdrive","split","splitext",
 eleza _get_bothseps(path):
     ikiwa isinstance(path, bytes):
         rudisha b'\\/'
-    else:
+    isipokua:
         rudisha '\\/'
 
-# Normalize the case of a pathname and map slashes to backslashes.
-# Other normalizations (such as optimizing '../' away) are not done
-# (this is done by normpath).
+# Normalize the case of a pathname na map slashes to backslashes.
+# Other normalizations (such kama optimizing '../' away) are sio done
+# (this ni done by normpath).
 
 eleza normcase(s):
     """Normalize case of pathname.
 
-    Makes all characters lowercase and all slashes into backslashes."""
+    Makes all characters lowercase na all slashes into backslashes."""
     s = os.fspath(s)
     ikiwa isinstance(s, bytes):
         rudisha s.replace(b'/', b'\\').lower()
-    else:
+    isipokua:
         rudisha s.replace('/', '\\').lower()
 
 
-# Return whether a path is absolute.
-# Trivial in Posix, harder on Windows.
-# For Windows it is absolute ikiwa it starts with a slash or backslash (current
-# volume), or ikiwa a pathname after the volume-letter-and-colon or UNC-resource
-# starts with a slash or backslash.
+# Return whether a path ni absolute.
+# Trivial kwenye Posix, harder on Windows.
+# For Windows it ni absolute ikiwa it starts with a slash ama backslash (current
+# volume), ama ikiwa a pathname after the volume-letter-and-colon ama UNC-resource
+# starts with a slash ama backslash.
 
 eleza isabs(s):
-    """Test whether a path is absolute"""
+    """Test whether a path ni absolute"""
     s = os.fspath(s)
     s = splitdrive(s)[1]
-    rudisha len(s) > 0 and s[0] in _get_bothseps(s)
+    rudisha len(s) > 0 na s[0] kwenye _get_bothseps(s)
 
 
 # Join two (or more) paths.
@@ -72,64 +72,64 @@ eleza join(path, *paths):
         sep = b'\\'
         seps = b'\\/'
         colon = b':'
-    else:
+    isipokua:
         sep = '\\'
         seps = '\\/'
         colon = ':'
-    try:
-        ikiwa not paths:
-            path[:0] + sep  #23780: Ensure compatible data type even ikiwa p is null.
+    jaribu:
+        ikiwa sio paths:
+            path[:0] + sep  #23780: Ensure compatible data type even ikiwa p ni null.
         result_drive, result_path = splitdrive(path)
-        for p in map(os.fspath, paths):
+        kila p kwenye map(os.fspath, paths):
             p_drive, p_path = splitdrive(p)
-            ikiwa p_path and p_path[0] in seps:
-                # Second path is absolute
-                ikiwa p_drive or not result_drive:
+            ikiwa p_path na p_path[0] kwenye seps:
+                # Second path ni absolute
+                ikiwa p_drive ama sio result_drive:
                     result_drive = p_drive
                 result_path = p_path
-                continue
-            elikiwa p_drive and p_drive != result_drive:
+                endelea
+            elikiwa p_drive na p_drive != result_drive:
                 ikiwa p_drive.lower() != result_drive.lower():
                     # Different drives => ignore the first path entirely
                     result_drive = p_drive
                     result_path = p_path
-                    continue
-                # Same drive in different case
+                    endelea
+                # Same drive kwenye different case
                 result_drive = p_drive
-            # Second path is relative to the first
-            ikiwa result_path and result_path[-1] not in seps:
+            # Second path ni relative to the first
+            ikiwa result_path na result_path[-1] haiko kwenye seps:
                 result_path = result_path + sep
             result_path = result_path + p_path
-        ## add separator between UNC and non-absolute path
-        ikiwa (result_path and result_path[0] not in seps and
-            result_drive and result_drive[-1:] != colon):
+        ## add separator between UNC na non-absolute path
+        ikiwa (result_path na result_path[0] haiko kwenye seps and
+            result_drive na result_drive[-1:] != colon):
             rudisha result_drive + sep + result_path
         rudisha result_drive + result_path
-    except (TypeError, AttributeError, BytesWarning):
+    tatizo (TypeError, AttributeError, BytesWarning):
         genericpath._check_arg_types('join', path, *paths)
-        raise
+        ashiria
 
 
-# Split a path in a drive specification (a drive letter followed by a
-# colon) and the path specification.
-# It is always true that drivespec + pathspec == p
+# Split a path kwenye a drive specification (a drive letter followed by a
+# colon) na the path specification.
+# It ni always true that drivespec + pathspec == p
 eleza splitdrive(p):
-    """Split a pathname into drive/UNC sharepoint and relative path specifiers.
+    """Split a pathname into drive/UNC sharepoint na relative path specifiers.
     Returns a 2-tuple (drive_or_unc, path); either part may be empty.
 
     If you assign
         result = splitdrive(p)
-    It is always true that:
+    It ni always true that:
         result[0] + result[1] == p
 
     If the path contained a drive letter, drive_or_unc will contain everything
-    up to and including the colon.  e.g. splitdrive("c:/dir") returns ("c:", "/dir")
+    up to na including the colon.  e.g. splitdrive("c:/dir") rudishas ("c:", "/dir")
 
     If the path contained a UNC path, the drive_or_unc will contain the host name
-    and share up to but not including the fourth directory separator character.
-    e.g. splitdrive("//host/computer/dir") returns ("//host/computer", "/dir")
+    na share up to but sio including the fourth directory separator character.
+    e.g. splitdrive("//host/computer/dir") rudishas ("//host/computer", "/dir")
 
-    Paths cannot contain both a drive letter and a UNC path.
+    Paths cannot contain both a drive letter na a UNC path.
 
     """
     p = os.fspath(p)
@@ -138,21 +138,21 @@ eleza splitdrive(p):
             sep = b'\\'
             altsep = b'/'
             colon = b':'
-        else:
+        isipokua:
             sep = '\\'
             altsep = '/'
             colon = ':'
         normp = p.replace(altsep, sep)
-        ikiwa (normp[0:2] == sep*2) and (normp[2:3] != sep):
-            # is a UNC path:
-            # vvvvvvvvvvvvvvvvvvvv drive letter or UNC path
+        ikiwa (normp[0:2] == sep*2) na (normp[2:3] != sep):
+            # ni a UNC path:
+            # vvvvvvvvvvvvvvvvvvvv drive letter ama UNC path
             # \\machine\mountpoint\directory\etc\...
             #           directory ^^^^^^^^^^^^^^^
             index = normp.find(sep, 2)
             ikiwa index == -1:
                 rudisha p[:0], p
             index2 = normp.find(sep, index + 1)
-            # a UNC path can't have two slashes in a row
+            # a UNC path can't have two slashes kwenye a row
             # (after the initial two)
             ikiwa index2 == index + 1:
                 rudisha p[:0], p
@@ -164,39 +164,39 @@ eleza splitdrive(p):
     rudisha p[:0], p
 
 
-# Split a path in head (everything up to the last '/') and tail (the
-# rest).  After the trailing '/' is stripped, the invariant
+# Split a path kwenye head (everything up to the last '/') na tail (the
+# rest).  After the trailing '/' ni stripped, the invariant
 # join(head, tail) == p holds.
-# The resulting head won't end in '/' unless it is the root.
+# The resulting head won't end kwenye '/' unless it ni the root.
 
 eleza split(p):
     """Split a pathname.
 
-    Return tuple (head, tail) where tail is everything after the final slash.
+    Return tuple (head, tail) where tail ni everything after the final slash.
     Either part may be empty."""
     p = os.fspath(p)
     seps = _get_bothseps(p)
     d, p = splitdrive(p)
     # set i to index beyond p's last slash
     i = len(p)
-    while i and p[i-1] not in seps:
+    wakati i na p[i-1] haiko kwenye seps:
         i -= 1
     head, tail = p[:i], p[i:]  # now tail has no slashes
     # remove trailing slashes kutoka head, unless it's all slashes
-    head = head.rstrip(seps) or head
+    head = head.rstrip(seps) ama head
     rudisha d + head, tail
 
 
-# Split a path in root and extension.
-# The extension is everything starting at the last dot in the last
-# pathname component; the root is everything before that.
-# It is always true that root + ext == p.
+# Split a path kwenye root na extension.
+# The extension ni everything starting at the last dot kwenye the last
+# pathname component; the root ni everything before that.
+# It ni always true that root + ext == p.
 
 eleza splitext(p):
     p = os.fspath(p)
     ikiwa isinstance(p, bytes):
         rudisha genericpath._splitext(p, b'\\', b'/', b'.')
-    else:
+    isipokua:
         rudisha genericpath._splitext(p, '\\', '/', '.')
 splitext.__doc__ = genericpath._splitext.__doc__
 
@@ -218,24 +218,24 @@ eleza dirname(p):
 # This will always rudisha false on systems where os.lstat doesn't exist.
 
 eleza islink(path):
-    """Test whether a path is a symbolic link.
-    This will always rudisha false for Windows prior to 6.0.
+    """Test whether a path ni a symbolic link.
+    This will always rudisha false kila Windows prior to 6.0.
     """
-    try:
+    jaribu:
         st = os.lstat(path)
-    except (OSError, ValueError, AttributeError):
-        rudisha False
+    tatizo (OSError, ValueError, AttributeError):
+        rudisha Uongo
     rudisha stat.S_ISLNK(st.st_mode)
 
-# Being true for dangling symbolic links is also useful.
+# Being true kila dangling symbolic links ni also useful.
 
 eleza lexists(path):
-    """Test whether a path exists.  Returns True for broken symbolic links"""
-    try:
+    """Test whether a path exists.  Returns Kweli kila broken symbolic links"""
+    jaribu:
         st = os.lstat(path)
-    except (OSError, ValueError):
-        rudisha False
-    rudisha True
+    tatizo (OSError, ValueError):
+        rudisha Uongo
+    rudisha Kweli
 
 # Is a path a mount point?
 # Any drive letter root (eg c:\)
@@ -243,64 +243,64 @@ eleza lexists(path):
 # Any volume mounted on a filesystem folder
 #
 # No one method detects all three situations. Historically we've lexically
-# detected drive letter roots and share UNCs. The canonical approach to
-# detecting mounted volumes (querying the reparse tag) fails for the most
+# detected drive letter roots na share UNCs. The canonical approach to
+# detecting mounted volumes (querying the reparse tag) fails kila the most
 # common case: drive letter roots. The alternative which uses GetVolumePathName
-# fails ikiwa the drive letter is the result of a SUBST.
-try:
+# fails ikiwa the drive letter ni the result of a SUBST.
+jaribu:
     kutoka nt agiza _getvolumepathname
-except ImportError:
-    _getvolumepathname = None
+tatizo ImportError:
+    _getvolumepathname = Tupu
 eleza ismount(path):
-    """Test whether a path is a mount point (a drive root, the root of a
-    share, or a mounted volume)"""
+    """Test whether a path ni a mount point (a drive root, the root of a
+    share, ama a mounted volume)"""
     path = os.fspath(path)
     seps = _get_bothseps(path)
     path = abspath(path)
     root, rest = splitdrive(path)
-    ikiwa root and root[0] in seps:
-        rudisha (not rest) or (rest in seps)
-    ikiwa rest in seps:
-        rudisha True
+    ikiwa root na root[0] kwenye seps:
+        rudisha (not rest) ama (rest kwenye seps)
+    ikiwa rest kwenye seps:
+        rudisha Kweli
 
     ikiwa _getvolumepathname:
         rudisha path.rstrip(seps) == _getvolumepathname(path).rstrip(seps)
-    else:
-        rudisha False
+    isipokua:
+        rudisha Uongo
 
 
-# Expand paths beginning with '~' or '~user'.
+# Expand paths beginning with '~' ama '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
-# If the path doesn't begin with '~', or ikiwa the user or $HOME is unknown,
-# the path is returned unchanged (leaving error reporting to whatever
-# function is called with the expanded path as argument).
-# See also module 'glob' for expansion of *, ? and [...] in pathnames.
+# If the path doesn't begin with '~', ama ikiwa the user ama $HOME ni unknown,
+# the path ni rudishaed unchanged (leaving error reporting to whatever
+# function ni called with the expanded path kama argument).
+# See also module 'glob' kila expansion of *, ? na [...] kwenye pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
 
 eleza expanduser(path):
-    """Expand ~ and ~user constructs.
+    """Expand ~ na ~user constructs.
 
-    If user or $HOME is unknown, do nothing."""
+    If user ama $HOME ni unknown, do nothing."""
     path = os.fspath(path)
     ikiwa isinstance(path, bytes):
         tilde = b'~'
-    else:
+    isipokua:
         tilde = '~'
-    ikiwa not path.startswith(tilde):
+    ikiwa sio path.startswith(tilde):
         rudisha path
     i, n = 1, len(path)
-    while i < n and path[i] not in _get_bothseps(path):
+    wakati i < n na path[i] haiko kwenye _get_bothseps(path):
         i += 1
 
-    ikiwa 'USERPROFILE' in os.environ:
+    ikiwa 'USERPROFILE' kwenye os.environ:
         userhome = os.environ['USERPROFILE']
-    elikiwa not 'HOMEPATH' in os.environ:
+    elikiwa sio 'HOMEPATH' kwenye os.environ:
         rudisha path
-    else:
-        try:
+    isipokua:
+        jaribu:
             drive = os.environ['HOMEDRIVE']
-        except KeyError:
+        tatizo KeyError:
             drive = ''
         userhome = join(drive, os.environ['HOMEPATH'])
 
@@ -316,23 +316,23 @@ eleza expanduser(path):
 # Expand paths containing shell variable substitutions.
 # The following rules apply:
 #       - no expansion within single quotes
-#       - '$$' is translated into '$'
-#       - '%%' is translated into '%' ikiwa '%%' are not seen in %var1%%var2%
-#       - ${varname} is accepted.
-#       - $varname is accepted.
-#       - %varname% is accepted.
-#       - varnames can be made out of letters, digits and the characters '_-'
-#         (though is not verified in the ${varname} and %varname% cases)
-# XXX With COMMAND.COM you can use any characters in a variable name,
-# XXX except '^|<>='.
+#       - '$$' ni translated into '$'
+#       - '%%' ni translated into '%' ikiwa '%%' are sio seen kwenye %var1%%var2%
+#       - ${varname} ni accepted.
+#       - $varname ni accepted.
+#       - %varname% ni accepted.
+#       - varnames can be made out of letters, digits na the characters '_-'
+#         (though ni sio verified kwenye the ${varname} na %varname% cases)
+# XXX With COMMAND.COM you can use any characters kwenye a variable name,
+# XXX tatizo '^|<>='.
 
 eleza expandvars(path):
-    """Expand shell variables of the forms $var, ${var} and %var%.
+    """Expand shell variables of the forms $var, ${var} na %var%.
 
     Unknown variables are left unchanged."""
     path = os.fspath(path)
     ikiwa isinstance(path, bytes):
-        ikiwa b'$' not in path and b'%' not in path:
+        ikiwa b'$' haiko kwenye path na b'%' haiko kwenye path:
             rudisha path
         agiza string
         varchars = bytes(string.ascii_letters + string.digits + '_-', 'ascii')
@@ -341,9 +341,9 @@ eleza expandvars(path):
         brace = b'{'
         rbrace = b'}'
         dollar = b'$'
-        environ = getattr(os, 'environb', None)
-    else:
-        ikiwa '$' not in path and '%' not in path:
+        environ = getattr(os, 'environb', Tupu)
+    isipokua:
+        ikiwa '$' haiko kwenye path na '%' haiko kwenye path:
             rudisha path
         agiza string
         varchars = string.ascii_letters + string.digits + '_-'
@@ -356,88 +356,88 @@ eleza expandvars(path):
     res = path[:0]
     index = 0
     pathlen = len(path)
-    while index < pathlen:
+    wakati index < pathlen:
         c = path[index:index+1]
         ikiwa c == quote:   # no expansion within single quotes
             path = path[index + 1:]
             pathlen = len(path)
-            try:
+            jaribu:
                 index = path.index(c)
                 res += c + path[:index + 1]
-            except ValueError:
+            tatizo ValueError:
                 res += c + path
                 index = pathlen - 1
-        elikiwa c == percent:  # variable or '%'
+        elikiwa c == percent:  # variable ama '%'
             ikiwa path[index + 1:index + 2] == percent:
                 res += c
                 index += 1
-            else:
+            isipokua:
                 path = path[index+1:]
                 pathlen = len(path)
-                try:
+                jaribu:
                     index = path.index(percent)
-                except ValueError:
+                tatizo ValueError:
                     res += percent + path
                     index = pathlen - 1
-                else:
+                isipokua:
                     var = path[:index]
-                    try:
-                        ikiwa environ is None:
+                    jaribu:
+                        ikiwa environ ni Tupu:
                             value = os.fsencode(os.environ[os.fsdecode(var)])
-                        else:
+                        isipokua:
                             value = environ[var]
-                    except KeyError:
+                    tatizo KeyError:
                         value = percent + var + percent
                     res += value
-        elikiwa c == dollar:  # variable or '$$'
+        elikiwa c == dollar:  # variable ama '$$'
             ikiwa path[index + 1:index + 2] == dollar:
                 res += c
                 index += 1
             elikiwa path[index + 1:index + 2] == brace:
                 path = path[index+2:]
                 pathlen = len(path)
-                try:
+                jaribu:
                     index = path.index(rbrace)
-                except ValueError:
+                tatizo ValueError:
                     res += dollar + brace + path
                     index = pathlen - 1
-                else:
+                isipokua:
                     var = path[:index]
-                    try:
-                        ikiwa environ is None:
+                    jaribu:
+                        ikiwa environ ni Tupu:
                             value = os.fsencode(os.environ[os.fsdecode(var)])
-                        else:
+                        isipokua:
                             value = environ[var]
-                    except KeyError:
+                    tatizo KeyError:
                         value = dollar + brace + var + rbrace
                     res += value
-            else:
+            isipokua:
                 var = path[:0]
                 index += 1
                 c = path[index:index + 1]
-                while c and c in varchars:
+                wakati c na c kwenye varchars:
                     var += c
                     index += 1
                     c = path[index:index + 1]
-                try:
-                    ikiwa environ is None:
+                jaribu:
+                    ikiwa environ ni Tupu:
                         value = os.fsencode(os.environ[os.fsdecode(var)])
-                    else:
+                    isipokua:
                         value = environ[var]
-                except KeyError:
+                tatizo KeyError:
                     value = dollar + var
                 res += value
                 ikiwa c:
                     index -= 1
-        else:
+        isipokua:
             res += c
         index += 1
     rudisha res
 
 
-# Normalize a path, e.g. A//B, A/./B and A/foo/../B all become A\B.
+# Normalize a path, e.g. A//B, A/./B na A/foo/../B all become A\B.
 # Previously, this function also truncated pathnames to 8+3 format,
-# but as this module is called "ntpath", that's obviously wrong!
+# but kama this module ni called "ntpath", that's obviously wrong!
 
 eleza normpath(path):
     """Normalize path, eliminating double slashes, etc."""
@@ -448,17 +448,17 @@ eleza normpath(path):
         curdir = b'.'
         pardir = b'..'
         special_prefixes = (b'\\\\.\\', b'\\\\?\\')
-    else:
+    isipokua:
         sep = '\\'
         altsep = '/'
         curdir = '.'
         pardir = '..'
         special_prefixes = ('\\\\.\\', '\\\\?\\')
     ikiwa path.startswith(special_prefixes):
-        # in the case of paths with these prefixes:
+        # kwenye the case of paths with these prefixes:
         # \\.\ -> device names
         # \\?\ -> literal paths
-        # do not do any normalization, but rudisha the path
+        # do sio do any normalization, but rudisha the path
         # unchanged apart kutoka the call to os.fspath()
         rudisha path
     path = path.replace(altsep, sep)
@@ -471,63 +471,63 @@ eleza normpath(path):
 
     comps = path.split(sep)
     i = 0
-    while i < len(comps):
-        ikiwa not comps[i] or comps[i] == curdir:
-            del comps[i]
+    wakati i < len(comps):
+        ikiwa sio comps[i] ama comps[i] == curdir:
+            toa comps[i]
         elikiwa comps[i] == pardir:
-            ikiwa i > 0 and comps[i-1] != pardir:
-                del comps[i-1:i+1]
+            ikiwa i > 0 na comps[i-1] != pardir:
+                toa comps[i-1:i+1]
                 i -= 1
-            elikiwa i == 0 and prefix.endswith(sep):
-                del comps[i]
-            else:
+            elikiwa i == 0 na prefix.endswith(sep):
+                toa comps[i]
+            isipokua:
                 i += 1
-        else:
+        isipokua:
             i += 1
-    # If the path is now empty, substitute '.'
-    ikiwa not prefix and not comps:
+    # If the path ni now empty, substitute '.'
+    ikiwa sio prefix na sio comps:
         comps.append(curdir)
     rudisha prefix + sep.join(comps)
 
 eleza _abspath_fallback(path):
-    """Return the absolute version of a path as a fallback function in case
-    `nt._getfullpathname` is not available or raises OSError. See bpo-31047 for
+    """Return the absolute version of a path kama a fallback function kwenye case
+    `nt._getfullpathname` ni sio available ama ashirias OSError. See bpo-31047 for
     more.
 
     """
 
     path = os.fspath(path)
-    ikiwa not isabs(path):
+    ikiwa sio isabs(path):
         ikiwa isinstance(path, bytes):
             cwd = os.getcwdb()
-        else:
+        isipokua:
             cwd = os.getcwd()
         path = join(cwd, path)
     rudisha normpath(path)
 
 # Return an absolute path.
-try:
+jaribu:
     kutoka nt agiza _getfullpathname
 
-except ImportError: # not running on Windows - mock up something sensible
+tatizo ImportError: # sio running on Windows - mock up something sensible
     abspath = _abspath_fallback
 
-else:  # use native Windows method on Windows
+isipokua:  # use native Windows method on Windows
     eleza abspath(path):
         """Return the absolute version of a path."""
-        try:
+        jaribu:
             rudisha normpath(_getfullpathname(path))
-        except (OSError, ValueError):
+        tatizo (OSError, ValueError):
             rudisha _abspath_fallback(path)
 
-try:
-    kutoka nt agiza _getfinalpathname, readlink as _nt_readlink
-except ImportError:
-    # realpath is a no-op on systems without _getfinalpathname support.
+jaribu:
+    kutoka nt agiza _getfinalpathname, readlink kama _nt_readlink
+tatizo ImportError:
+    # realpath ni a no-op on systems without _getfinalpathname support.
     realpath = abspath
-else:
-    eleza _readlink_deep(path, seen=None):
-        ikiwa seen is None:
+isipokua:
+    eleza _readlink_deep(path, seen=Tupu):
+        ikiwa seen ni Tupu:
             seen = set()
 
         # These error codes indicate that we should stop reading links and
@@ -538,7 +538,7 @@ else:
         # 5: ERROR_ACCESS_DENIED
         # 21: ERROR_NOT_READY (implies drive with no media)
         # 32: ERROR_SHARING_VIOLATION (probably an NTFS paging file)
-        # 50: ERROR_NOT_SUPPORTED (implies no support for reparse points)
+        # 50: ERROR_NOT_SUPPORTED (implies no support kila reparse points)
         # 67: ERROR_BAD_NET_NAME (implies remote server unavailable)
         # 87: ERROR_INVALID_PARAMETER
         # 4390: ERROR_NOT_A_REPARSE_POINT
@@ -546,22 +546,22 @@ else:
         # 4393: ERROR_REPARSE_TAG_INVALID
         allowed_winerror = 1, 2, 3, 5, 21, 32, 50, 67, 87, 4390, 4392, 4393
 
-        while normcase(path) not in seen:
+        wakati normcase(path) haiko kwenye seen:
             seen.add(normcase(path))
-            try:
+            jaribu:
                 path = _nt_readlink(path)
-            except OSError as ex:
-                ikiwa ex.winerror in allowed_winerror:
-                    break
-                raise
-            except ValueError:
-                # Stop on reparse points that are not symlinks
-                break
+            tatizo OSError kama ex:
+                ikiwa ex.winerror kwenye allowed_winerror:
+                    koma
+                ashiria
+            tatizo ValueError:
+                # Stop on reparse points that are sio symlinks
+                koma
         rudisha path
 
     eleza _getfinalpathname_nonstrict(path):
         # These error codes indicate that we should stop resolving the path
-        # and rudisha the value we currently have.
+        # na rudisha the value we currently have.
         # 1: ERROR_INVALID_FUNCTION
         # 2: ERROR_FILE_NOT_FOUND
         # 3: ERROR_DIRECTORY_NOT_FOUND
@@ -576,23 +576,23 @@ else:
         # 1921: ERROR_CANT_RESOLVE_FILENAME (implies unfollowable symlink)
         allowed_winerror = 1, 2, 3, 5, 21, 32, 50, 67, 87, 123, 1920, 1921
 
-        # Non-strict algorithm is to find as much of the target directory
-        # as we can and join the rest.
+        # Non-strict algorithm ni to find kama much of the target directory
+        # kama we can na join the rest.
         tail = ''
         seen = set()
-        while path:
-            try:
+        wakati path:
+            jaribu:
                 path = _readlink_deep(path, seen)
                 path = _getfinalpathname(path)
                 rudisha join(path, tail) ikiwa tail else path
-            except OSError as ex:
-                ikiwa ex.winerror not in allowed_winerror:
-                    raise
+            tatizo OSError kama ex:
+                ikiwa ex.winerror haiko kwenye allowed_winerror:
+                    ashiria
                 path, name = split(path)
                 # TODO (bpo-38186): Request the real file name kutoka the directory
                 # entry using FindFirstFileW. For now, we will rudisha the path
-                # as best we have it
-                ikiwa path and not name:
+                # kama best we have it
+                ikiwa path na sio name:
                     rudisha abspath(path + tail)
                 tail = join(name, tail) ikiwa tail else name
         rudisha abspath(tail)
@@ -604,158 +604,158 @@ else:
             unc_prefix = b'\\\\?\\UNC\\'
             new_unc_prefix = b'\\\\'
             cwd = os.getcwdb()
-        else:
+        isipokua:
             prefix = '\\\\?\\'
             unc_prefix = '\\\\?\\UNC\\'
             new_unc_prefix = '\\\\'
             cwd = os.getcwd()
         had_prefix = path.startswith(prefix)
-        try:
+        jaribu:
             path = _getfinalpathname(path)
             initial_winerror = 0
-        except OSError as ex:
+        tatizo OSError kama ex:
             initial_winerror = ex.winerror
             path = _getfinalpathname_nonstrict(path)
-        # The path returned by _getfinalpathname will always start with \\?\ -
+        # The path rudishaed by _getfinalpathname will always start with \\?\ -
         # strip off that prefix unless it was already provided on the original
         # path.
-        ikiwa not had_prefix and path.startswith(prefix):
+        ikiwa sio had_prefix na path.startswith(prefix):
             # For UNC paths, the prefix will actually be \\?\UNC\
-            # Handle that case as well.
+            # Handle that case kama well.
             ikiwa path.startswith(unc_prefix):
                 spath = new_unc_prefix + path[len(unc_prefix):]
-            else:
+            isipokua:
                 spath = path[len(prefix):]
             # Ensure that the non-prefixed path resolves to the same path
-            try:
+            jaribu:
                 ikiwa _getfinalpathname(spath) == path:
                     path = spath
-            except OSError as ex:
-                # If the path does not exist and originally did not exist, then
+            tatizo OSError kama ex:
+                # If the path does sio exist na originally did sio exist, then
                 # strip the prefix anyway.
                 ikiwa ex.winerror == initial_winerror:
                     path = spath
         rudisha path
 
 
-# Win9x family and earlier have no Unicode filename support.
+# Win9x family na earlier have no Unicode filename support.
 supports_unicode_filenames = (hasattr(sys, "getwindowsversion") and
                               sys.getwindowsversion()[3] >= 2)
 
-eleza relpath(path, start=None):
+eleza relpath(path, start=Tupu):
     """Return a relative version of a path"""
     path = os.fspath(path)
     ikiwa isinstance(path, bytes):
         sep = b'\\'
         curdir = b'.'
         pardir = b'..'
-    else:
+    isipokua:
         sep = '\\'
         curdir = '.'
         pardir = '..'
 
-    ikiwa start is None:
+    ikiwa start ni Tupu:
         start = curdir
 
-    ikiwa not path:
-        raise ValueError("no path specified")
+    ikiwa sio path:
+        ashiria ValueError("no path specified")
 
     start = os.fspath(start)
-    try:
+    jaribu:
         start_abs = abspath(normpath(start))
         path_abs = abspath(normpath(path))
         start_drive, start_rest = splitdrive(start_abs)
         path_drive, path_rest = splitdrive(path_abs)
         ikiwa normcase(start_drive) != normcase(path_drive):
-            raise ValueError("path is on mount %r, start on mount %r" % (
+            ashiria ValueError("path ni on mount %r, start on mount %r" % (
                 path_drive, start_drive))
 
-        start_list = [x for x in start_rest.split(sep) ikiwa x]
-        path_list = [x for x in path_rest.split(sep) ikiwa x]
-        # Work out how much of the filepath is shared by start and path.
+        start_list = [x kila x kwenye start_rest.split(sep) ikiwa x]
+        path_list = [x kila x kwenye path_rest.split(sep) ikiwa x]
+        # Work out how much of the filepath ni shared by start na path.
         i = 0
-        for e1, e2 in zip(start_list, path_list):
+        kila e1, e2 kwenye zip(start_list, path_list):
             ikiwa normcase(e1) != normcase(e2):
-                break
+                koma
             i += 1
 
         rel_list = [pardir] * (len(start_list)-i) + path_list[i:]
-        ikiwa not rel_list:
+        ikiwa sio rel_list:
             rudisha curdir
         rudisha join(*rel_list)
-    except (TypeError, ValueError, AttributeError, BytesWarning, DeprecationWarning):
+    tatizo (TypeError, ValueError, AttributeError, BytesWarning, DeprecationWarning):
         genericpath._check_arg_types('relpath', path, start)
-        raise
+        ashiria
 
 
-# Return the longest common sub-path of the sequence of paths given as input.
-# The function is case-insensitive and 'separator-insensitive', i.e. ikiwa the
-# only difference between two paths is the use of '\' versus '/' as separator,
+# Return the longest common sub-path of the sequence of paths given kama input.
+# The function ni case-insensitive na 'separator-insensitive', i.e. ikiwa the
+# only difference between two paths ni the use of '\' versus '/' kama separator,
 # they are deemed to be equal.
 #
-# However, the returned path will have the standard '\' separator (even ikiwa the
-# given paths had the alternative '/' separator) and will have the case of the
-# first path given in the sequence. Additionally, any trailing separator is
-# stripped kutoka the returned path.
+# However, the rudishaed path will have the standard '\' separator (even ikiwa the
+# given paths had the alternative '/' separator) na will have the case of the
+# first path given kwenye the sequence. Additionally, any trailing separator is
+# stripped kutoka the rudishaed path.
 
 eleza commonpath(paths):
-    """Given a sequence of path names, returns the longest common sub-path."""
+    """Given a sequence of path names, rudishas the longest common sub-path."""
 
-    ikiwa not paths:
-        raise ValueError('commonpath() arg is an empty sequence')
+    ikiwa sio paths:
+        ashiria ValueError('commonpath() arg ni an empty sequence')
 
     paths = tuple(map(os.fspath, paths))
     ikiwa isinstance(paths[0], bytes):
         sep = b'\\'
         altsep = b'/'
         curdir = b'.'
-    else:
+    isipokua:
         sep = '\\'
         altsep = '/'
         curdir = '.'
 
-    try:
-        drivesplits = [splitdrive(p.replace(altsep, sep).lower()) for p in paths]
-        split_paths = [p.split(sep) for d, p in drivesplits]
+    jaribu:
+        drivesplits = [splitdrive(p.replace(altsep, sep).lower()) kila p kwenye paths]
+        split_paths = [p.split(sep) kila d, p kwenye drivesplits]
 
-        try:
-            isabs, = set(p[:1] == sep for d, p in drivesplits)
-        except ValueError:
-            raise ValueError("Can't mix absolute and relative paths") kutoka None
+        jaribu:
+            isabs, = set(p[:1] == sep kila d, p kwenye drivesplits)
+        tatizo ValueError:
+            ashiria ValueError("Can't mix absolute na relative paths") kutoka Tupu
 
-        # Check that all drive letters or UNC paths match. The check is made only
-        # now otherwise type errors for mixing strings and bytes would not be
+        # Check that all drive letters ama UNC paths match. The check ni made only
+        # now otherwise type errors kila mixing strings na bytes would sio be
         # caught.
-        ikiwa len(set(d for d, p in drivesplits)) != 1:
-            raise ValueError("Paths don't have the same drive")
+        ikiwa len(set(d kila d, p kwenye drivesplits)) != 1:
+            ashiria ValueError("Paths don't have the same drive")
 
         drive, path = splitdrive(paths[0].replace(altsep, sep))
         common = path.split(sep)
-        common = [c for c in common ikiwa c and c != curdir]
+        common = [c kila c kwenye common ikiwa c na c != curdir]
 
-        split_paths = [[c for c in s ikiwa c and c != curdir] for s in split_paths]
+        split_paths = [[c kila c kwenye s ikiwa c na c != curdir] kila s kwenye split_paths]
         s1 = min(split_paths)
         s2 = max(split_paths)
-        for i, c in enumerate(s1):
+        kila i, c kwenye enumerate(s1):
             ikiwa c != s2[i]:
                 common = common[:i]
-                break
-        else:
+                koma
+        isipokua:
             common = common[:len(s1)]
 
         prefix = drive + sep ikiwa isabs else drive
         rudisha prefix + sep.join(common)
-    except (TypeError, AttributeError):
+    tatizo (TypeError, AttributeError):
         genericpath._check_arg_types('commonpath', *paths)
-        raise
+        ashiria
 
 
-try:
-    # The genericpath.isdir implementation uses os.stat and checks the mode
-    # attribute to tell whether or not the path is a directory.
-    # This is overkill on Windows - just pass the path to GetFileAttributes
-    # and check the attribute kutoka there.
-    kutoka nt agiza _isdir as isdir
-except ImportError:
-    # Use genericpath.isdir as imported above.
-    pass
+jaribu:
+    # The genericpath.isdir implementation uses os.stat na checks the mode
+    # attribute to tell whether ama sio the path ni a directory.
+    # This ni overkill on Windows - just pita the path to GetFileAttributes
+    # na check the attribute kutoka there.
+    kutoka nt agiza _isdir kama isdir
+tatizo ImportError:
+    # Use genericpath.isdir kama imported above.
+    pita

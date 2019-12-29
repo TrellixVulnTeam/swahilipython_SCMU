@@ -34,23 +34,23 @@ kundi WierdNum(float, Enum):
 kundi TestEnum:
 
     eleza test_floats(self):
-        for enum in FloatNum:
+        kila enum kwenye FloatNum:
             self.assertEqual(self.dumps(enum), repr(enum.value))
             self.assertEqual(float(self.dumps(enum)), enum)
             self.assertEqual(self.loads(self.dumps(enum)), enum)
 
     eleza test_weird_floats(self):
-        for enum, expected in zip(WierdNum, ('Infinity', '-Infinity', 'NaN')):
+        kila enum, expected kwenye zip(WierdNum, ('Infinity', '-Infinity', 'NaN')):
             self.assertEqual(self.dumps(enum), expected)
-            ikiwa not isnan(enum):
+            ikiwa sio isnan(enum):
                 self.assertEqual(float(self.dumps(enum)), enum)
                 self.assertEqual(self.loads(self.dumps(enum)), enum)
-            else:
-                self.assertTrue(isnan(float(self.dumps(enum))))
-                self.assertTrue(isnan(self.loads(self.dumps(enum))))
+            isipokua:
+                self.assertKweli(isnan(float(self.dumps(enum))))
+                self.assertKweli(isnan(self.loads(self.dumps(enum))))
 
     eleza test_ints(self):
-        for enum in BigNum:
+        kila enum kwenye BigNum:
             self.assertEqual(self.dumps(enum), str(enum.value))
             self.assertEqual(int(self.dumps(enum)), enum)
             self.assertEqual(self.loads(self.dumps(enum)), enum)
@@ -68,7 +68,7 @@ kundi TestEnum:
                         '[Infinity, -Infinity, NaN]')
         self.assertEqual(self.loads(self.dumps(list(WierdNum)))[:2],
                          list(WierdNum)[:2])
-        self.assertTrue(isnan(self.loads(self.dumps(list(WierdNum)))[2]))
+        self.assertKweli(isnan(self.loads(self.dumps(list(WierdNum)))[2]))
 
     eleza test_dict_keys(self):
         s, b, h, r = BigNum
@@ -114,7 +114,7 @@ kundi TestEnum:
         self.assertEqual(nd['tau'], TAU)
         self.assertEqual(nd['i'], INF)
         self.assertEqual(nd['j'], NEG_INF)
-        self.assertTrue(isnan(nd['n']))
+        self.assertKweli(isnan(nd['n']))
 
-kundi TestPyEnum(TestEnum, PyTest): pass
-kundi TestCEnum(TestEnum, CTest): pass
+kundi TestPyEnum(TestEnum, PyTest): pita
+kundi TestCEnum(TestEnum, CTest): pita

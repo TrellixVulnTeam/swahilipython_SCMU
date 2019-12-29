@@ -5,7 +5,7 @@ import re, sys
 if sys.byteorder == "little":
     THIS_ENDIAN = "<"
     OTHER_ENDIAN = ">"
-else:
+isipokua:
     THIS_ENDIAN = ">"
     OTHER_ENDIAN = "<"
 
@@ -23,11 +23,11 @@ class Test(unittest.TestCase):
         for tp, fmt, shape, itemtp in native_types:
             ob = tp()
             v = memoryview(ob)
-            try:
+            jaribu:
                 self.assertEqual(normalize(v.format), normalize(fmt))
                 if shape:
                     self.assertEqual(len(v), shape[0])
-                else:
+                isipokua:
                     self.assertEqual(len(v) * sizeof(itemtp), sizeof(ob))
                 self.assertEqual(v.itemsize, sizeof(itemtp))
                 self.assertEqual(v.shape, shape)
@@ -53,11 +53,11 @@ class Test(unittest.TestCase):
         for tp, fmt, shape, itemtp in endian_types:
             ob = tp()
             v = memoryview(ob)
-            try:
+            jaribu:
                 self.assertEqual(v.format, fmt)
                 if shape:
                     self.assertEqual(len(v), shape[0])
-                else:
+                isipokua:
                     self.assertEqual(len(v) * sizeof(itemtp), sizeof(ob))
                 self.assertEqual(v.itemsize, sizeof(itemtp))
                 self.assertEqual(v.shape, shape)
@@ -184,7 +184,7 @@ native_types = [
     ## structures and unions
 
     (Point,                     "T{<l:x:<l:y:}".replace('l', s_long),  (),  Point),
-    # packed structures do not implement the pep
+    # packed structures do sio implement the pep
     (PackedPoint,               "B",                                   (),  PackedPoint),
     (Point2,                    "T{<l:x:<l:y:}".replace('l', s_long),  (),  Point2),
     (EmptyStruct,               "T{}",                                 (),  EmptyStruct),
@@ -201,12 +201,12 @@ native_types = [
     # 'Complete' is a structure that starts incomplete, but is completed after the
     # pointer type to it has been created.
     (Complete,                  "T{<l:a:}".replace('l', s_long), (), Complete),
-    # Unfortunately the pointer format string is not fixed...
+    # Unfortunately the pointer format string ni sio fixed...
     (POINTER(Complete),         "&B",                   (),           POINTER(Complete)),
 
     ## other
 
-    # function signatures are not implemented
+    # function signatures are sio implemented
     (CFUNCTYPE(None),           "X{}",                  (),           CFUNCTYPE(None)),
 
     ]

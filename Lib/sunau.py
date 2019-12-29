@@ -1,7 +1,7 @@
-"""Stuff to parse Sun and NeXT audio files.
+"""Stuff to parse Sun na NeXT audio files.
 
 An audio file consists of a header followed by the data.  The structure
-of the header is as follows.
+of the header ni kama follows.
 
         +---------------+
         | magic word    |
@@ -21,13 +21,13 @@ of the header is as follows.
         +---------------+
 
 The magic word consists of the 4 characters '.snd'.  Apart kutoka the
-info field, all header fields are 4 bytes in size.  They are all
-32-bit unsigned integers encoded in big-endian byte order.
+info field, all header fields are 4 bytes kwenye size.  They are all
+32-bit unsigned integers encoded kwenye big-endian byte order.
 
 The header size really gives the start of the data.
-The data size is the physical size of the data.  From the other
+The data size ni the physical size of the data.  From the other
 parameters the number of frames can be calculated.
-The encoding gives the way in which audio samples are encoded.
+The encoding gives the way kwenye which audio samples are encoded.
 Possible values are listed below.
 The info field currently consists of an ASCII string giving a
 human-readable description of the audio file.  The info field is
@@ -37,69 +37,69 @@ Usage.
 
 Reading audio files:
         f = sunau.open(file, 'r')
-where file is either the name of a file or an open file pointer.
-The open file pointer must have methods read(), seek(), and close().
-When the setpos() and rewind() methods are not used, the seek()
-method is not  necessary.
+where file ni either the name of a file ama an open file pointer.
+The open file pointer must have methods read(), seek(), na close().
+When the setpos() na rewind() methods are sio used, the seek()
+method ni sio  necessary.
 
-This returns an instance of a kundi with the following public methods:
-        getnchannels()  -- returns number of audio channels (1 for
-                           mono, 2 for stereo)
-        getsampwidth()  -- returns sample width in bytes
-        getframerate()  -- returns sampling frequency
-        getnframes()    -- returns number of audio frames
-        getcomptype()   -- returns compression type ('NONE' or 'ULAW')
-        getcompname()   -- returns human-readable version of
+This rudishas an instance of a kundi with the following public methods:
+        getnchannels()  -- rudishas number of audio channels (1 for
+                           mono, 2 kila stereo)
+        getsampwidth()  -- rudishas sample width kwenye bytes
+        getframerate()  -- rudishas sampling frequency
+        getnframes()    -- rudishas number of audio frames
+        getcomptype()   -- rudishas compression type ('NONE' ama 'ULAW')
+        getcompname()   -- rudishas human-readable version of
                            compression type ('not compressed' matches 'NONE')
-        getparams()     -- returns a namedtuple consisting of all of the
-                           above in the above order
-        getmarkers()    -- returns None (for compatibility with the
+        getparams()     -- rudishas a namedtuple consisting of all of the
+                           above kwenye the above order
+        getmarkers()    -- rudishas Tupu (kila compatibility with the
                            aifc module)
-        getmark(id)     -- raises an error since the mark does not
-                           exist (for compatibility with the aifc module)
-        readframes(n)   -- returns at most n frames of audio
+        getmark(id)     -- ashirias an error since the mark does not
+                           exist (kila compatibility with the aifc module)
+        readframes(n)   -- rudishas at most n frames of audio
         rewind()        -- rewind to the beginning of the audio stream
         setpos(pos)     -- seek to the specified position
         tell()          -- rudisha the current position
         close()         -- close the instance (make it unusable)
-The position returned by tell() and the position given to setpos()
-are compatible and have nothing to do with the actual position in the
+The position rudishaed by tell() na the position given to setpos()
+are compatible na have nothing to do with the actual position kwenye the
 file.
-The close() method is called automatically when the kundi instance
+The close() method ni called automatically when the kundi instance
 is destroyed.
 
 Writing audio files:
         f = sunau.open(file, 'w')
-where file is either the name of a file or an open file pointer.
+where file ni either the name of a file ama an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This returns an instance of a kundi with the following public methods:
+This rudishas an instance of a kundi with the following public methods:
         setnchannels(n) -- set the number of channels
         setsampwidth(n) -- set the sample width
         setframerate(n) -- set the frame rate
         setnframes(n)   -- set the number of frames
         setcomptype(type, name)
-                        -- set the compression type and the
+                        -- set the compression type na the
                            human-readable compression type
         setparams(tuple)-- set all parameters at once
-        tell()          -- rudisha current position in output file
+        tell()          -- rudisha current position kwenye output file
         writeframesraw(data)
                         -- write audio frames without pathing up the
                            file header
         writeframes(data)
-                        -- write audio frames and patch up the file header
-        close()         -- patch up the file header and close the
+                        -- write audio frames na patch up the file header
+        close()         -- patch up the file header na close the
                            output file
 You should set the parameters before the first writeframesraw or
-writeframes.  The total number of frames does not need to be set,
-but when it is set to the correct value, the header does not have to
+writeframes.  The total number of frames does sio need to be set,
+but when it ni set to the correct value, the header does sio have to
 be patched up.
-It is best to first set all parameters, perhaps possibly the
-compression type, and then write audio frames using writeframesraw.
+It ni best to first set all parameters, perhaps possibly the
+compression type, na then write audio frames using writeframesraw.
 When all frames have been written, either call writeframes(b'') or
-close() to patch up the sizes in the header.
-The close() method is called automatically when the kundi instance
+close() to patch up the sizes kwenye the header.
+The close() method ni called automatically when the kundi instance
 is destroyed.
 """
 
@@ -135,20 +135,20 @@ _simple_encodings = [AUDIO_FILE_ENCODING_MULAW_8,
                      AUDIO_FILE_ENCODING_ALAW_8]
 
 kundi Error(Exception):
-    pass
+    pita
 
 eleza _read_u32(file):
     x = 0
-    for i in range(4):
+    kila i kwenye range(4):
         byte = file.read(1)
-        ikiwa not byte:
-            raise EOFError
+        ikiwa sio byte:
+            ashiria EOFError
         x = x*256 + ord(byte)
     rudisha x
 
 eleza _write_u32(file, x):
     data = []
-    for i in range(4):
+    kila i kwenye range(4):
         d, m = divmod(x, 256)
         data.insert(0, int(m))
         x = d
@@ -160,9 +160,9 @@ kundi Au_read:
         ikiwa type(f) == type(''):
             agiza builtins
             f = builtins.open(f, 'rb')
-            self._opened = True
-        else:
-            self._opened = False
+            self._opened = Kweli
+        isipokua:
+            self._opened = Uongo
         self.initfp(f)
 
     eleza __del__(self):
@@ -180,19 +180,19 @@ kundi Au_read:
         self._soundpos = 0
         magic = int(_read_u32(file))
         ikiwa magic != AUDIO_FILE_MAGIC:
-            raise Error('bad magic number')
+            ashiria Error('bad magic number')
         self._hdr_size = int(_read_u32(file))
         ikiwa self._hdr_size < 24:
-            raise Error('header size too small')
+            ashiria Error('header size too small')
         ikiwa self._hdr_size > 100:
-            raise Error('header size ridiculously large')
+            ashiria Error('header size ridiculously large')
         self._data_size = _read_u32(file)
         ikiwa self._data_size != AUDIO_UNKNOWN_SIZE:
             self._data_size = int(self._data_size)
         self._encoding = int(_read_u32(file))
-        ikiwa self._encoding not in _simple_encodings:
-            raise Error('encoding not (yet) supported')
-        ikiwa self._encoding in (AUDIO_FILE_ENCODING_MULAW_8,
+        ikiwa self._encoding haiko kwenye _simple_encodings:
+            ashiria Error('encoding sio (yet) supported')
+        ikiwa self._encoding kwenye (AUDIO_FILE_ENCODING_MULAW_8,
                   AUDIO_FILE_ENCODING_ALAW_8):
             self._sampwidth = 2
             self._framesize = 1
@@ -204,22 +204,22 @@ kundi Au_read:
             self._framesize = self._sampwidth = 3
         elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_32:
             self._framesize = self._sampwidth = 4
-        else:
-            raise Error('unknown encoding')
+        isipokua:
+            ashiria Error('unknown encoding')
         self._framerate = int(_read_u32(file))
         self._nchannels = int(_read_u32(file))
-        ikiwa not self._nchannels:
-            raise Error('bad # of channels')
+        ikiwa sio self._nchannels:
+            ashiria Error('bad # of channels')
         self._framesize = self._framesize * self._nchannels
         ikiwa self._hdr_size > 24:
             self._info = file.read(self._hdr_size - 24)
             self._info, _, _ = self._info.partition(b'\0')
-        else:
+        isipokua:
             self._info = b''
-        try:
+        jaribu:
             self._data_pos = file.tell()
-        except (AttributeError, OSError):
-            self._data_pos = None
+        tatizo (AttributeError, OSError):
+            self._data_pos = Tupu
 
     eleza getfp(self):
         rudisha self._file
@@ -236,7 +236,7 @@ kundi Au_read:
     eleza getnframes(self):
         ikiwa self._data_size == AUDIO_UNKNOWN_SIZE:
             rudisha AUDIO_UNKNOWN_SIZE
-        ikiwa self._encoding in _simple_encodings:
+        ikiwa self._encoding kwenye _simple_encodings:
             rudisha self._data_size // self._framesize
         rudisha 0                # XXX--must do some arithmetic here
 
@@ -245,7 +245,7 @@ kundi Au_read:
             rudisha 'ULAW'
         elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
             rudisha 'ALAW'
-        else:
+        isipokua:
             rudisha 'NONE'
 
     eleza getcompname(self):
@@ -253,7 +253,7 @@ kundi Au_read:
             rudisha 'CCITT G.711 u-law'
         elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
             rudisha 'CCITT G.711 A-law'
-        else:
+        isipokua:
             rudisha 'not compressed'
 
     eleza getparams(self):
@@ -262,27 +262,27 @@ kundi Au_read:
                   self.getcomptype(), self.getcompname())
 
     eleza getmarkers(self):
-        rudisha None
+        rudisha Tupu
 
     eleza getmark(self, id):
-        raise Error('no marks')
+        ashiria Error('no marks')
 
     eleza readframes(self, nframes):
-        ikiwa self._encoding in _simple_encodings:
+        ikiwa self._encoding kwenye _simple_encodings:
             ikiwa nframes == AUDIO_UNKNOWN_SIZE:
                 data = self._file.read()
-            else:
+            isipokua:
                 data = self._file.read(nframes * self._framesize)
             self._soundpos += len(data) // self._framesize
             ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
                 agiza audioop
                 data = audioop.ulaw2lin(data, self._sampwidth)
             rudisha data
-        rudisha None             # XXX--not implemented yet
+        rudisha Tupu             # XXX--not implemented yet
 
     eleza rewind(self):
-        ikiwa self._data_pos is None:
-            raise OSError('cannot seek')
+        ikiwa self._data_pos ni Tupu:
+            ashiria OSError('cannot seek')
         self._file.seek(self._data_pos)
         self._soundpos = 0
 
@@ -290,17 +290,17 @@ kundi Au_read:
         rudisha self._soundpos
 
     eleza setpos(self, pos):
-        ikiwa pos < 0 or pos > self.getnframes():
-            raise Error('position not in range')
-        ikiwa self._data_pos is None:
-            raise OSError('cannot seek')
+        ikiwa pos < 0 ama pos > self.getnframes():
+            ashiria Error('position haiko kwenye range')
+        ikiwa self._data_pos ni Tupu:
+            ashiria OSError('cannot seek')
         self._file.seek(self._data_pos + pos * self._framesize)
         self._soundpos = pos
 
     eleza close(self):
         file = self._file
         ikiwa file:
-            self._file = None
+            self._file = Tupu
             ikiwa self._opened:
                 file.close()
 
@@ -310,15 +310,15 @@ kundi Au_write:
         ikiwa type(f) == type(''):
             agiza builtins
             f = builtins.open(f, 'wb')
-            self._opened = True
-        else:
-            self._opened = False
+            self._opened = Kweli
+        isipokua:
+            self._opened = Uongo
         self.initfp(f)
 
     eleza __del__(self):
         ikiwa self._file:
             self.close()
-        self._file = None
+        self._file = Tupu
 
     eleza __enter__(self):
         rudisha self
@@ -337,57 +337,57 @@ kundi Au_write:
         self._datawritten = 0
         self._datalength = 0
         self._info = b''
-        self._comptype = 'ULAW' # default is U-law
+        self._comptype = 'ULAW' # default ni U-law
 
     eleza setnchannels(self, nchannels):
         ikiwa self._nframeswritten:
-            raise Error('cannot change parameters after starting to write')
-        ikiwa nchannels not in (1, 2, 4):
-            raise Error('only 1, 2, or 4 channels supported')
+            ashiria Error('cannot change parameters after starting to write')
+        ikiwa nchannels haiko kwenye (1, 2, 4):
+            ashiria Error('only 1, 2, ama 4 channels supported')
         self._nchannels = nchannels
 
     eleza getnchannels(self):
-        ikiwa not self._nchannels:
-            raise Error('number of channels not set')
+        ikiwa sio self._nchannels:
+            ashiria Error('number of channels sio set')
         rudisha self._nchannels
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._nframeswritten:
-            raise Error('cannot change parameters after starting to write')
-        ikiwa sampwidth not in (1, 2, 3, 4):
-            raise Error('bad sample width')
+            ashiria Error('cannot change parameters after starting to write')
+        ikiwa sampwidth haiko kwenye (1, 2, 3, 4):
+            ashiria Error('bad sample width')
         self._sampwidth = sampwidth
 
     eleza getsampwidth(self):
-        ikiwa not self._framerate:
-            raise Error('sample width not specified')
+        ikiwa sio self._framerate:
+            ashiria Error('sample width sio specified')
         rudisha self._sampwidth
 
     eleza setframerate(self, framerate):
         ikiwa self._nframeswritten:
-            raise Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._framerate = framerate
 
     eleza getframerate(self):
-        ikiwa not self._framerate:
-            raise Error('frame rate not set')
+        ikiwa sio self._framerate:
+            ashiria Error('frame rate sio set')
         rudisha self._framerate
 
     eleza setnframes(self, nframes):
         ikiwa self._nframeswritten:
-            raise Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa nframes < 0:
-            raise Error('# of frames cannot be negative')
+            ashiria Error('# of frames cannot be negative')
         self._nframes = nframes
 
     eleza getnframes(self):
         rudisha self._nframeswritten
 
     eleza setcomptype(self, type, name):
-        ikiwa type in ('NONE', 'ULAW'):
+        ikiwa type kwenye ('NONE', 'ULAW'):
             self._comptype = type
-        else:
-            raise Error('unknown compression type')
+        isipokua:
+            ashiria Error('unknown compression type')
 
     eleza getcomptype(self):
         rudisha self._comptype
@@ -397,7 +397,7 @@ kundi Au_write:
             rudisha 'CCITT G.711 u-law'
         elikiwa self._comptype == 'ALAW':
             rudisha 'CCITT G.711 A-law'
-        else:
+        isipokua:
             rudisha 'not compressed'
 
     eleza setparams(self, params):
@@ -417,7 +417,7 @@ kundi Au_write:
         rudisha self._nframeswritten
 
     eleza writeframesraw(self, data):
-        ikiwa not isinstance(data, (bytes, bytearray)):
+        ikiwa sio isinstance(data, (bytes, bytearray)):
             data = memoryview(data).cast('B')
         self._ensure_header_written()
         ikiwa self._comptype == 'ULAW':
@@ -430,21 +430,21 @@ kundi Au_write:
 
     eleza writeframes(self, data):
         self.writeframesraw(data)
-        ikiwa self._nframeswritten != self._nframes or \
+        ikiwa self._nframeswritten != self._nframes ama \
                   self._datalength != self._datawritten:
             self._patchheader()
 
     eleza close(self):
         ikiwa self._file:
-            try:
+            jaribu:
                 self._ensure_header_written()
-                ikiwa self._nframeswritten != self._nframes or \
+                ikiwa self._nframeswritten != self._nframes ama \
                         self._datalength != self._datawritten:
                     self._patchheader()
                 self._file.flush()
-            finally:
+            mwishowe:
                 file = self._file
-                self._file = None
+                self._file = Tupu
                 ikiwa self._opened:
                     file.close()
 
@@ -453,13 +453,13 @@ kundi Au_write:
     #
 
     eleza _ensure_header_written(self):
-        ikiwa not self._nframeswritten:
-            ikiwa not self._nchannels:
-                raise Error('# of channels not specified')
-            ikiwa not self._sampwidth:
-                raise Error('sample width not specified')
-            ikiwa not self._framerate:
-                raise Error('frame rate not specified')
+        ikiwa sio self._nframeswritten:
+            ikiwa sio self._nchannels:
+                ashiria Error('# of channels sio specified')
+            ikiwa sio self._sampwidth:
+                ashiria Error('sample width sio specified')
+            ikiwa sio self._framerate:
+                ashiria Error('frame rate sio specified')
             self._write_header()
 
     eleza _write_header(self):
@@ -476,13 +476,13 @@ kundi Au_write:
             elikiwa self._sampwidth == 4:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_32
                 self._framesize = 4
-            else:
-                raise Error('internal error')
+            isipokua:
+                ashiria Error('internal error')
         elikiwa self._comptype == 'ULAW':
             encoding = AUDIO_FILE_ENCODING_MULAW_8
             self._framesize = 1
-        else:
-            raise Error('internal error')
+        isipokua:
+            ashiria Error('internal error')
         self._framesize = self._framesize * self._nchannels
         _write_u32(self._file, AUDIO_FILE_MAGIC)
         header_size = 25 + len(self._info)
@@ -490,12 +490,12 @@ kundi Au_write:
         _write_u32(self._file, header_size)
         ikiwa self._nframes == AUDIO_UNKNOWN_SIZE:
             length = AUDIO_UNKNOWN_SIZE
-        else:
+        isipokua:
             length = self._nframes * self._framesize
-        try:
+        jaribu:
             self._form_length_pos = self._file.tell()
-        except (AttributeError, OSError):
-            self._form_length_pos = None
+        tatizo (AttributeError, OSError):
+            self._form_length_pos = Tupu
         _write_u32(self._file, length)
         self._datalength = length
         _write_u32(self._file, encoding)
@@ -505,27 +505,27 @@ kundi Au_write:
         self._file.write(b'\0'*(header_size - len(self._info) - 24))
 
     eleza _patchheader(self):
-        ikiwa self._form_length_pos is None:
-            raise OSError('cannot seek')
+        ikiwa self._form_length_pos ni Tupu:
+            ashiria OSError('cannot seek')
         self._file.seek(self._form_length_pos)
         _write_u32(self._file, self._datawritten)
         self._datalength = self._datawritten
         self._file.seek(0, 2)
 
-eleza open(f, mode=None):
-    ikiwa mode is None:
+eleza open(f, mode=Tupu):
+    ikiwa mode ni Tupu:
         ikiwa hasattr(f, 'mode'):
             mode = f.mode
-        else:
+        isipokua:
             mode = 'rb'
-    ikiwa mode in ('r', 'rb'):
+    ikiwa mode kwenye ('r', 'rb'):
         rudisha Au_read(f)
-    elikiwa mode in ('w', 'wb'):
+    elikiwa mode kwenye ('w', 'wb'):
         rudisha Au_write(f)
-    else:
-        raise Error("mode must be 'r', 'rb', 'w', or 'wb'")
+    isipokua:
+        ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
 
-eleza openfp(f, mode=None):
-    warnings.warn("sunau.openfp is deprecated since Python 3.7. "
+eleza openfp(f, mode=Tupu):
+    warnings.warn("sunau.openfp ni deprecated since Python 3.7. "
                   "Use sunau.open instead.", DeprecationWarning, stacklevel=2)
     rudisha open(f, mode=mode)

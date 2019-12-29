@@ -6,10 +6,10 @@ kutoka idlelib agiza macosx
 
 kundi ScrolledList:
 
-    default = "(None)"
+    default = "(Tupu)"
 
     eleza __init__(self, master, **options):
-        # Create top frame, with scrollbar and listbox
+        # Create top frame, with scrollbar na listbox
         self.master = master
         self.frame = frame = Frame(master)
         self.frame.pack(fill="both", expand=1)
@@ -20,7 +20,7 @@ kundi ScrolledList:
         ikiwa options:
             listbox.configure(options)
         listbox.pack(expand=1, fill="both")
-        # Tie listbox and scrollbar together
+        # Tie listbox na scrollbar together
         vbar["command"] = listbox.yview
         listbox["yscrollcommand"] = vbar.set
         # Bind events to the list box
@@ -29,11 +29,11 @@ kundi ScrolledList:
         ikiwa macosx.isAquaTk():
             listbox.bind("<ButtonPress-2>", self.popup_event)
             listbox.bind("<Control-Button-1>", self.popup_event)
-        else:
+        isipokua:
             listbox.bind("<ButtonPress-3>", self.popup_event)
         listbox.bind("<Key-Up>", self.up_event)
         listbox.bind("<Key-Down>", self.down_event)
-        # Mark as empty
+        # Mark kama empty
         self.clear()
 
     eleza close(self):
@@ -58,25 +58,25 @@ kundi ScrolledList:
         index = self.listbox.index("active")
         self.select(index)
         self.on_select(index)
-        rudisha "break"
+        rudisha "koma"
 
     eleza double_click_event(self, event):
         index = self.listbox.index("active")
         self.select(index)
         self.on_double(index)
-        rudisha "break"
+        rudisha "koma"
 
-    menu = None
+    menu = Tupu
 
     eleza popup_event(self, event):
-        ikiwa not self.menu:
+        ikiwa sio self.menu:
             self.make_menu()
         menu = self.menu
         self.listbox.activate("@%d,%d" % (event.x, event.y))
         index = self.listbox.index("active")
         self.select(index)
         menu.tk_popup(event.x_root, event.y_root)
-        rudisha "break"
+        rudisha "koma"
 
     eleza make_menu(self):
         menu = Menu(self.listbox, tearoff=0)
@@ -87,27 +87,27 @@ kundi ScrolledList:
         index = self.listbox.index("active")
         ikiwa self.listbox.selection_includes(index):
             index = index - 1
-        else:
+        isipokua:
             index = self.listbox.size() - 1
         ikiwa index < 0:
             self.listbox.bell()
-        else:
+        isipokua:
             self.select(index)
             self.on_select(index)
-        rudisha "break"
+        rudisha "koma"
 
     eleza down_event(self, event):
         index = self.listbox.index("active")
         ikiwa self.listbox.selection_includes(index):
             index = index + 1
-        else:
+        isipokua:
             index = 0
         ikiwa index >= self.listbox.size():
             self.listbox.bell()
-        else:
+        isipokua:
             self.select(index)
             self.on_select(index)
-        rudisha "break"
+        rudisha "koma"
 
     eleza select(self, index):
         self.listbox.focus_set()
@@ -116,16 +116,16 @@ kundi ScrolledList:
         self.listbox.selection_set(index)
         self.listbox.see(index)
 
-    # Methods to override for specific actions
+    # Methods to override kila specific actions
 
     eleza fill_menu(self):
-        pass
+        pita
 
     eleza on_select(self, index):
-        pass
+        pita
 
     eleza on_double(self, index):
-        pass
+        pita
 
 
 eleza _scrolled_list(parent):  # htest #
@@ -138,7 +138,7 @@ eleza _scrolled_list(parent):  # htest #
         eleza on_double(self, index): andika("double", self.get(index))
 
     scrolled_list = MyScrolledList(top)
-    for i in range(30):
+    kila i kwenye range(30):
         scrolled_list.append("Item %02d" % i)
 
 ikiwa __name__ == '__main__':

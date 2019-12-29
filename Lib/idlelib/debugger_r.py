@@ -1,4 +1,4 @@
-"""Support for remote Python debugging.
+"""Support kila remote Python debugging.
 
 Some ASCII art to describe the structure:
 
@@ -14,9 +14,9 @@ Some ASCII art to describe the structure:
                 +------------+         #      +----------+
                 oid='idb_adapter'      #
 
-The purpose of the Proxy and Adapter classes is to translate certain
-arguments and rudisha values that cannot be transported through the RPC
-barrier, in particular frame and traceback objects.
+The purpose of the Proxy na Adapter classes ni to translate certain
+arguments na rudisha values that cannot be transported through the RPC
+barrier, kwenye particular frame na traceback objects.
 
 """
 
@@ -44,9 +44,9 @@ eleza wrap_frame(frame):
 
 eleza wrap_info(info):
     "replace info[2], a traceback instance, by its ID"
-    ikiwa info is None:
-        rudisha None
-    else:
+    ikiwa info ni Tupu:
+        rudisha Tupu
+    isipokua:
         traceback = info[2]
         assert isinstance(traceback, types.TracebackType)
         traceback_id = id(traceback)
@@ -60,9 +60,9 @@ kundi GUIProxy:
         self.conn = conn
         self.oid = gui_adap_oid
 
-    eleza interaction(self, message, frame, info=None):
+    eleza interaction(self, message, frame, info=Tupu):
         # calls rpc.SocketIO.remotecall() via run.MyHandler instance
-        # pass frame and traceback object IDs instead of the objects themselves
+        # pita frame na traceback object IDs instead of the objects themselves
         self.conn.remotecall(self.oid, "interaction",
                              (message, wrap_frame(frame), wrap_info(info)),
                              {})
@@ -80,41 +80,41 @@ kundi IdbAdapter:
     eleza set_quit(self):
         self.idb.set_quit()
 
-    eleza set_continue(self):
-        self.idb.set_continue()
+    eleza set_endelea(self):
+        self.idb.set_endelea()
 
     eleza set_next(self, fid):
         frame = frametable[fid]
         self.idb.set_next(frame)
 
-    eleza set_return(self, fid):
+    eleza set_rudisha(self, fid):
         frame = frametable[fid]
-        self.idb.set_return(frame)
+        self.idb.set_rudisha(frame)
 
     eleza get_stack(self, fid, tbid):
         frame = frametable[fid]
-        ikiwa tbid is None:
-            tb = None
-        else:
+        ikiwa tbid ni Tupu:
+            tb = Tupu
+        isipokua:
             tb = tracebacktable[tbid]
         stack, i = self.idb.get_stack(frame, tb)
-        stack = [(wrap_frame(frame2), k) for frame2, k in stack]
+        stack = [(wrap_frame(frame2), k) kila frame2, k kwenye stack]
         rudisha stack, i
 
     eleza run(self, cmd):
         agiza __main__
         self.idb.run(cmd, __main__.__dict__)
 
-    eleza set_break(self, filename, lineno):
-        msg = self.idb.set_break(filename, lineno)
+    eleza set_koma(self, filename, lineno):
+        msg = self.idb.set_koma(filename, lineno)
         rudisha msg
 
-    eleza clear_break(self, filename, lineno):
-        msg = self.idb.clear_break(filename, lineno)
+    eleza clear_koma(self, filename, lineno):
+        msg = self.idb.clear_koma(filename, lineno)
         rudisha msg
 
-    eleza clear_all_file_breaks(self, filename):
-        msg = self.idb.clear_all_file_breaks(filename)
+    eleza clear_all_file_komas(self, filename):
+        msg = self.idb.clear_all_file_komas(filename)
         rudisha msg
 
     #----------called by a FrameProxy----------
@@ -157,11 +157,11 @@ kundi IdbAdapter:
     #----------called by a DictProxy----------
 
     eleza dict_keys(self, did):
-        raise NotImplementedError("dict_keys not public or pickleable")
+        ashiria NotImplementedError("dict_keys sio public ama pickleable")
 ##         dict = dicttable[did]
 ##         rudisha dict.keys()
 
-    ### Needed until dict_keys is type is finished and pickealable.
+    ### Needed until dict_keys ni type ni finished na pickealable.
     ### Will probably need to extend rpc.py:SocketIO._proxify at that time.
     eleza dict_keys_list(self, did):
         dict = dicttable[did]
@@ -177,11 +177,11 @@ kundi IdbAdapter:
 
 
 eleza start_debugger(rpchandler, gui_adap_oid):
-    """Start the debugger and its RPC link in the Python subprocess
+    """Start the debugger na its RPC link kwenye the Python subprocess
 
-    Start the subprocess side of the split debugger and set up that side of the
-    RPC link by instantiating the GUIProxy, Idb debugger, and IdbAdapter
-    objects and linking them together.  Register the IdbAdapter with the
+    Start the subprocess side of the split debugger na set up that side of the
+    RPC link by instantiating the GUIProxy, Idb debugger, na IdbAdapter
+    objects na linking them together.  Register the IdbAdapter with the
     RPCServer to handle RPC requests kutoka the split debugger GUI via the
     IdbProxy.
 
@@ -208,7 +208,7 @@ kundi FrameProxy:
 
     eleza __getattr__(self, name):
         ikiwa name[:1] == "_":
-            raise AttributeError(name)
+            ashiria AttributeError(name)
         ikiwa name == "f_code":
             rudisha self._get_f_code()
         ikiwa name == "f_globals":
@@ -233,7 +233,7 @@ kundi FrameProxy:
         rudisha self._get_dict_proxy(did)
 
     eleza _get_dict_proxy(self, did):
-        ikiwa did in self._dictcache:
+        ikiwa did kwenye self._dictcache:
             rudisha self._dictcache[did]
         dp = DictProxy(self._conn, self._oid, did)
         self._dictcache[did] = dp
@@ -266,7 +266,7 @@ kundi DictProxy:
 ##    eleza keys(self):
 ##        rudisha self._conn.remotecall(self._oid, "dict_keys", (self._did,), {})
 
-    # 'temporary' until dict_keys is a pickleable built-in type
+    # 'temporary' until dict_keys ni a pickleable built-in type
     eleza keys(self):
         rudisha self._conn.remotecall(self._oid,
                                      "dict_keys_list", (self._did,), {})
@@ -277,7 +277,7 @@ kundi DictProxy:
 
     eleza __getattr__(self, name):
         ##andika("*** Failed DictProxy.__getattr__:", name)
-        raise AttributeError(name)
+        ashiria AttributeError(name)
 
 
 kundi GUIAdapter:
@@ -302,7 +302,7 @@ kundi IdbProxy:
     eleza call(self, methodname, /, *args, **kwargs):
         ##andika("*** IdbProxy.call %s %s %s" % (methodname, args, kwargs))
         value = self.conn.remotecall(self.oid, methodname, args, kwargs)
-        ##andika("*** IdbProxy.call %s returns %r" % (methodname, value))
+        ##andika("*** IdbProxy.call %s rudishas %r" % (methodname, value))
         rudisha value
 
     eleza run(self, cmd, locals):
@@ -311,13 +311,13 @@ kundi IdbProxy:
         self.shell.interp.active_seq = seq
 
     eleza get_stack(self, frame, tbid):
-        # passing frame and traceback IDs, not the objects themselves
+        # pitaing frame na traceback IDs, sio the objects themselves
         stack, i = self.call("get_stack", frame._fid, tbid)
-        stack = [(FrameProxy(self.conn, fid), k) for fid, k in stack]
+        stack = [(FrameProxy(self.conn, fid), k) kila fid, k kwenye stack]
         rudisha stack, i
 
-    eleza set_continue(self):
-        self.call("set_continue")
+    eleza set_endelea(self):
+        self.call("set_endelea")
 
     eleza set_step(self):
         self.call("set_step")
@@ -325,35 +325,35 @@ kundi IdbProxy:
     eleza set_next(self, frame):
         self.call("set_next", frame._fid)
 
-    eleza set_return(self, frame):
-        self.call("set_return", frame._fid)
+    eleza set_rudisha(self, frame):
+        self.call("set_rudisha", frame._fid)
 
     eleza set_quit(self):
         self.call("set_quit")
 
-    eleza set_break(self, filename, lineno):
-        msg = self.call("set_break", filename, lineno)
+    eleza set_koma(self, filename, lineno):
+        msg = self.call("set_koma", filename, lineno)
         rudisha msg
 
-    eleza clear_break(self, filename, lineno):
-        msg = self.call("clear_break", filename, lineno)
+    eleza clear_koma(self, filename, lineno):
+        msg = self.call("clear_koma", filename, lineno)
         rudisha msg
 
-    eleza clear_all_file_breaks(self, filename):
-        msg = self.call("clear_all_file_breaks", filename)
+    eleza clear_all_file_komas(self, filename):
+        msg = self.call("clear_all_file_komas", filename)
         rudisha msg
 
 eleza start_remote_debugger(rpcclt, pyshell):
-    """Start the subprocess debugger, initialize the debugger GUI and RPC link
+    """Start the subprocess debugger, initialize the debugger GUI na RPC link
 
-    Request the RPCServer start the Python subprocess debugger and link.  Set
+    Request the RPCServer start the Python subprocess debugger na link.  Set
     up the Idle side of the split debugger by instantiating the IdbProxy,
-    debugger GUI, and debugger GUIAdapter objects and linking them together.
+    debugger GUI, na debugger GUIAdapter objects na linking them together.
 
     Register the GUIAdapter with the RPCClient to handle debugger GUI
     interaction requests coming kutoka the subprocess debugger via the GUIProxy.
 
-    The IdbAdapter will pass execution and environment requests coming kutoka the
+    The IdbAdapter will pita execution na environment requests coming kutoka the
     Idle debugger GUI to the subprocess debugger via the IdbProxy.
 
     """
@@ -368,12 +368,12 @@ eleza start_remote_debugger(rpcclt, pyshell):
     rudisha gui
 
 eleza close_remote_debugger(rpcclt):
-    """Shut down subprocess debugger and Idle side of debugger RPC link
+    """Shut down subprocess debugger na Idle side of debugger RPC link
 
-    Request that the RPCServer shut down the subprocess debugger and link.
+    Request that the RPCServer shut down the subprocess debugger na link.
     Unregister the GUIAdapter, which will cause a GC on the Idle process
-    debugger and RPC link objects.  (The second reference to the debugger GUI
-    is deleted in pyshell.close_remote_debugger().)
+    debugger na RPC link objects.  (The second reference to the debugger GUI
+    ni deleted kwenye pyshell.close_remote_debugger().)
 
     """
     close_subprocess_debugger(rpcclt)
@@ -390,4 +390,4 @@ eleza restart_subprocess_debugger(rpcclt):
 
 ikiwa __name__ == "__main__":
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_debugger', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_debugger', verbosity=2, exit=Uongo)

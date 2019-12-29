@@ -154,10 +154,10 @@ agiza math as _math
 agiza numbers as _numbers
 agiza sys
 
-try:
+jaribu:
     kutoka collections agiza namedtuple as _namedtuple
     DecimalTuple = _namedtuple('DecimalTuple', 'sign digits exponent')
-except ImportError:
+tatizo ImportError:
     DecimalTuple = lambda *args: args
 
 # Rounding
@@ -176,7 +176,7 @@ if sys.maxsize == 2**63-1:
     MAX_PREC = 999999999999999999
     MAX_EMAX = 999999999999999999
     MIN_EMIN = -999999999999999999
-else:
+isipokua:
     MAX_PREC = 425000000
     MAX_EMAX = 425000000
     MIN_EMIN = -425000000
@@ -195,7 +195,7 @@ kundi DecimalException(ArithmeticError):
     anything, though.
 
     handle  -- Called when context._raise_error is called and the
-               trap_enabler is not set.  First argument is self, second is the
+               trap_enabler ni sio set.  First argument is self, second is the
                context.  More arguments can be given, those being after
                the explanation in _raise_error (For example,
                context._raise_error(NewError, '(-x)!', self._sign) would
@@ -239,7 +239,7 @@ kundi InvalidOperation(DecimalException):
     An operand is invalid
 
     The result of the operation after these is a quiet positive NaN,
-    except when the cause is a signaling NaN, in which case the result is
+    tatizo when the cause is a signaling NaN, in which case the result is
     also a quiet NaN, but with the original sign, and an optional
     diagnostic information.
     """
@@ -253,7 +253,7 @@ kundi ConversionSyntax(InvalidOperation):
     """Trying to convert badly formed string.
 
     This occurs and signals invalid-operation if a string is being
-    converted to a number and it does not conform to the numeric string
+    converted to a number and it does sio conform to the numeric string
     syntax.  The result is [0,qNaN].
     """
     def handle(self, context, *args):
@@ -265,7 +265,7 @@ kundi DivisionByZero(DecimalException, ZeroDivisionError):
     This occurs and signals division-by-zero if division of a finite number
     by zero was attempted (during a divide-integer or divide operation, or a
     power operation with negative right-hand operand), and the dividend was
-    not zero.
+    sio zero.
 
     The result of the operation is [sign,inf], where sign is the exclusive
     or of the signs of the operands for divide, or is 1 for an odd power of
@@ -301,7 +301,7 @@ kundi Inexact(DecimalException):
     """Had to round, losing information.
 
     This occurs and signals inexact whenever the result of an operation is
-    not exact (that is, it needed to be rounded and any discarded digits
+    sio exact (that is, it needed to be rounded and any discarded digits
     were non-zero), or if an overflow or underflow condition occurs.  The
     result in all cases is unchanged.
 
@@ -313,7 +313,7 @@ kundi InvalidContext(InvalidOperation):
     """Invalid context.  Unknown rounding, for example.
 
     This occurs and signals invalid-operation if an invalid context was
-    detected during an operation.  This can occur if contexts are not checked
+    detected during an operation.  This can occur if contexts are sio checked
     on creation and either the precision exceeds the capability of the
     underlying concrete representation or an unknown or unsupported rounding
     was specified.  These aspects of the context need only be checked when
@@ -350,7 +350,7 @@ kundi Overflow(Inexact, Rounded):
     """Numerical overflow.
 
     This occurs and signals overflow if the adjusted exponent of a result
-    (kutoka a conversion or kutoka an operation that is not an attempt to divide
+    (kutoka a conversion or kutoka an operation that ni sio an attempt to divide
     by zero), after rounding, would be greater than the largest value that
     can be handled by the implementation (the value Emax).
 
@@ -393,7 +393,7 @@ kundi Underflow(Inexact, Rounded, Subnormal):
     Emin).  That is, the result is both inexact and subnormal.
 
     The result after an underflow will be a subnormal number rounded, if
-    necessary, so that its exponent is not less than Etiny.  This may result
+    necessary, so that its exponent ni sio less than Etiny.  This may result
     in 0 with the sign of the intermediate result and an exponent of Etiny.
 
     In all cases, Inexact, Rounded, and Subnormal will also be raised.
@@ -402,7 +402,7 @@ kundi Underflow(Inexact, Rounded, Subnormal):
 kundi FloatOperation(DecimalException, TypeError):
     """Enable stricter semantics for mixing floats and Decimals.
 
-    If the signal is not trapped (default), mixing floats and Decimals is
+    If the signal ni sio trapped (default), mixing floats and Decimals is
     permitted in the Decimal() constructor, context.create_decimal() and
     all comparison operators. Both conversion and comparisons are exact.
     Any occurrence of a mixed operation is silently recorded by setting
@@ -440,13 +440,13 @@ _current_context_var = contextvars.ContextVar('decimal_context')
 def getcontext():
     """Returns this thread's context.
 
-    If this thread does not yet have a context, returns
+    If this thread does sio yet have a context, returns
     a new context and sets this thread's context.
     New contexts are copies of DefaultContext.
     """
-    try:
+    jaribu:
         return _current_context_var.get()
-    except LookupError:
+    tatizo LookupError:
         context = Context()
         _current_context_var.set(context)
         return context
@@ -458,7 +458,7 @@ def setcontext(context):
         context.clear_flags()
     _current_context_var.set(context)
 
-del contextvars        # Don't contaminate the namespace
+toa contextvars        # Don't contaminate the namespace
 
 def localcontext(ctx=None):
     """Return a context manager for a copy of the supplied context
@@ -502,8 +502,8 @@ def localcontext(ctx=None):
 
 ##### Decimal kundi #######################################################
 
-# Do not subkundi Decimal kutoka numbers.Real and do not register it as such
-# (because Decimals are not interoperable with floats).  See the notes in
+# Do sio subkundi Decimal kutoka numbers.Real and do sio register it as such
+# (because Decimals are sio interoperable with floats).  See the notes in
 # numbers.py for more detail.
 
 kundi Decimal(object):
@@ -514,7 +514,7 @@ kundi Decimal(object):
     #  (-1)**_sign * _int * 10**_exp
     # Special values are signified by _is_special == True
 
-    # We're immutable, so use __new__ not __init__
+    # We're immutable, so use __new__ sio __init__
     def __new__(cls, value="0", context=None):
         """Create a decimal point instance.
 
@@ -552,26 +552,26 @@ kundi Decimal(object):
 
             if m.group('sign') == "-":
                 self._sign = 1
-            else:
+            isipokua:
                 self._sign = 0
             intpart = m.group('int')
-            if intpart is not None:
+            if intpart ni sio None:
                 # finite number
                 fracpart = m.group('frac') or ''
                 exp = int(m.group('exp') or '0')
                 self._int = str(int(intpart+fracpart))
                 self._exp = exp - len(fracpart)
                 self._is_special = False
-            else:
+            isipokua:
                 diag = m.group('diag')
-                if diag is not None:
+                if diag ni sio None:
                     # NaN
                     self._int = str(int(diag or '0')).lstrip('0')
                     if m.group('signal'):
                         self._exp = 'N'
-                    else:
+                    isipokua:
                         self._exp = 'n'
-                else:
+                isipokua:
                     # infinity
                     self._int = '0'
                     self._exp = 'F'
@@ -582,7 +582,7 @@ kundi Decimal(object):
         if isinstance(value, int):
             if value >= 0:
                 self._sign = 0
-            else:
+            isipokua:
                 self._sign = 1
             self._exp = 0
             self._int = str(abs(value))
@@ -612,7 +612,7 @@ kundi Decimal(object):
                                  'kutoka list or tuple.  The list or tuple '
                                  'should have exactly three elements.')
             # process sign.  The isinstance test rejects floats
-            if not (isinstance(value[0], int) and value[0] in (0,1)):
+            if sio (isinstance(value[0], int) and value[0] in (0,1)):
                 raise ValueError("Invalid sign.  The first value in the tuple "
                                  "should be an integer; either 0 for a "
                                  "positive number or 1 for a negative number.")
@@ -622,7 +622,7 @@ kundi Decimal(object):
                 self._int = '0'
                 self._exp = value[2]
                 self._is_special = True
-            else:
+            isipokua:
                 # process and validate the digits in value[1]
                 digits = []
                 for digit in value[1]:
@@ -630,7 +630,7 @@ kundi Decimal(object):
                         # skip leading zeros
                         if digits or digit != 0:
                             digits.append(digit)
-                    else:
+                    isipokua:
                         raise ValueError("The second value in the tuple must "
                                          "be composed of integers in the range "
                                          "0 through 9.")
@@ -644,7 +644,7 @@ kundi Decimal(object):
                     self._int = ''.join(map(str, digits or [0]))
                     self._exp = value[2]
                     self._is_special = False
-                else:
+                isipokua:
                     raise ValueError("The third value in the tuple must "
                                      "be an integer, or one of the "
                                      "strings 'F', 'n', 'N'.")
@@ -669,8 +669,8 @@ kundi Decimal(object):
     def kutoka_float(cls, f):
         """Converts a float to a decimal number, exactly.
 
-        Note that Decimal.kutoka_float(0.1) is not the same as Decimal('0.1').
-        Since 0.1 is not exactly representable in binary floating point, the
+        Note that Decimal.kutoka_float(0.1) ni sio the same as Decimal('0.1').
+        Since 0.1 ni sio exactly representable in binary floating point, the
         value is stored as the nearest representable value which is
         0x1.999999999999ap-4.  The exact equivalent of the value in decimal
         is 0.1000000000000000055511151231257827021181583404541015625.
@@ -696,22 +696,22 @@ kundi Decimal(object):
                 return cls(repr(f))
             if _math.copysign(1.0, f) == 1.0:
                 sign = 0
-            else:
+            isipokua:
                 sign = 1
             n, d = abs(f).as_integer_ratio()
             k = d.bit_length() - 1
             coeff = str(n*5**k)
-        else:
+        isipokua:
             raise TypeError("argument must be int or float.")
 
         result = _dec_kutoka_triple(sign, coeff, -k)
         if cls is Decimal:
             return result
-        else:
+        isipokua:
             return cls(result)
 
     def _isnan(self):
-        """Returns whether the number is not actually one.
+        """Returns whether the number ni sio actually one.
 
         0 if a number
         1 if NaN
@@ -728,7 +728,7 @@ kundi Decimal(object):
     def _isinfinity(self):
         """Returns whether the number is infinite
 
-        0 if finite or not a number
+        0 if finite or sio a number
         1 if +INF
         -1 if -INF
         """
@@ -739,7 +739,7 @@ kundi Decimal(object):
         return 0
 
     def _check_nans(self, other=None, context=None):
-        """Returns whether the number is not actually one.
+        """Returns whether the number ni sio actually one.
 
         if self, other are sNaN, signal
         if self, other are NaN return nan
@@ -751,7 +751,7 @@ kundi Decimal(object):
         self_is_nan = self._isnan()
         if other is None:
             other_is_nan = False
-        else:
+        isipokua:
             other_is_nan = other._isnan()
 
         if self_is_nan or other_is_nan:
@@ -823,16 +823,16 @@ kundi Decimal(object):
                 return 0
             lasivyo self_inf < other_inf:
                 return -1
-            else:
+            isipokua:
                 return 1
 
         # check for zeros;  Decimal('0') == Decimal('-0')
-        if not self:
-            if not other:
+        if sio self:
+            if sio other:
                 return 0
-            else:
+            isipokua:
                 return -((-1)**other._sign)
-        if not other:
+        if sio other:
             return (-1)**self._sign
 
         # If different signs, neg one is less
@@ -850,11 +850,11 @@ kundi Decimal(object):
                 return 0
             lasivyo self_padded < other_padded:
                 return -(-1)**self._sign
-            else:
+            isipokua:
                 return (-1)**self._sign
         lasivyo self_adjusted > other_adjusted:
             return (-1)**self._sign
-        else: # self_adjusted < other_adjusted
+        isipokua: # self_adjusted < other_adjusted
             return -((-1)**self._sign)
 
     # Note: The Decimal standard doesn't cover rich comparisons for
@@ -866,10 +866,10 @@ kundi Decimal(object):
     #   != comparisons involving a quiet NaN always return True
     #   == or != comparisons involving a signaling NaN signal
     #      InvalidOperation, and return False or True as above if the
-    #      InvalidOperation is not trapped.
+    #      InvalidOperation ni sio trapped.
     #   <, >, <= and >= comparisons involving a (quiet or signaling)
     #      NaN signal InvalidOperation, and return False if the
-    #      InvalidOperation is not trapped.
+    #      InvalidOperation ni sio trapped.
     #
     # This behavior is designed to conform as closely as possible to
     # that specified by IEEE 754.
@@ -948,15 +948,15 @@ kundi Decimal(object):
                 raise TypeError('Cannot hash a signaling NaN value.')
             lasivyo self.is_nan():
                 return _PyHASH_NAN
-            else:
+            isipokua:
                 if self._sign:
                     return -_PyHASH_INF
-                else:
+                isipokua:
                     return _PyHASH_INF
 
         if self._exp >= 0:
             exp_hash = pow(10, self._exp, _PyHASH_MODULUS)
-        else:
+        isipokua:
             exp_hash = pow(_PyHASH_10INV, -self._exp, _PyHASH_MODULUS)
         hash_ = int(self._int) * exp_hash % _PyHASH_MODULUS
         ans = hash_ if self >= 0 else -hash_
@@ -986,10 +986,10 @@ kundi Decimal(object):
         if self._is_special:
             if self.is_nan():
                 raise ValueError("cannot convert NaN to integer ratio")
-            else:
+            isipokua:
                 raise OverflowError("cannot convert Infinity to integer ratio")
 
-        if not self:
+        if sio self:
             return 0, 1
 
         # Find n, d in lowest terms such that abs(self) == n / d;
@@ -998,10 +998,10 @@ kundi Decimal(object):
         if self._exp >= 0:
             # self is an integer.
             n, d = n * 10**self._exp, 1
-        else:
+        isipokua:
             # Find d2, d5 such that abs(self) = n / (2**d2 * 5**d5).
             d5 = -self._exp
-            while d5 > 0 and n % 5 == 0:
+            wakati d5 > 0 and n % 5 == 0:
                 n //= 5
                 d5 -= 1
 
@@ -1036,7 +1036,7 @@ kundi Decimal(object):
                 return sign + 'Infinity'
             lasivyo self._exp == 'n':
                 return sign + 'NaN' + self._int
-            else: # self._exp == 'N'
+            isipokua: # self._exp == 'N'
                 return sign + 'sNaN' + self._int
 
         # number of digits of self._int to left of decimal point
@@ -1048,13 +1048,13 @@ kundi Decimal(object):
         if self._exp <= 0 and leftdigits > -6:
             # no exponent required
             dotplace = leftdigits
-        lasivyo not eng:
+        lasivyo sio eng:
             # usual scientific notation: 1 digit on left of the point
             dotplace = 1
         lasivyo self._int == '0':
             # engineering notation, zero
             dotplace = (leftdigits + 1) % 3 - 1
-        else:
+        isipokua:
             # engineering notation, nonzero
             dotplace = (leftdigits - 1) % 3 + 1
 
@@ -1064,12 +1064,12 @@ kundi Decimal(object):
         lasivyo dotplace >= len(self._int):
             intpart = self._int+'0'*(dotplace-len(self._int))
             fracpart = ''
-        else:
+        isipokua:
             intpart = self._int[:dotplace]
             fracpart = '.' + self._int[dotplace:]
         if leftdigits == dotplace:
             exp = ''
-        else:
+        isipokua:
             if context is None:
                 context = getcontext()
             exp = ['e', 'E'][context.capitals] + "%+d" % (leftdigits-dotplace)
@@ -1098,11 +1098,11 @@ kundi Decimal(object):
         if context is None:
             context = getcontext()
 
-        if not self and context.rounding != ROUND_FLOOR:
-            # -Decimal('0') is Decimal('0'), not Decimal('-0'), except
+        if sio self and context.rounding != ROUND_FLOOR:
+            # -Decimal('0') is Decimal('0'), sio Decimal('-0'), except
             # in ROUND_FLOOR rounding mode.
             ans = self.copy_abs()
-        else:
+        isipokua:
             ans = self.copy_negate()
 
         return ans._fix(context)
@@ -1120,10 +1120,10 @@ kundi Decimal(object):
         if context is None:
             context = getcontext()
 
-        if not self and context.rounding != ROUND_FLOOR:
-            # + (-0) = 0, except in ROUND_FLOOR rounding mode.
+        if sio self and context.rounding != ROUND_FLOOR:
+            # + (-0) = 0, tatizo in ROUND_FLOOR rounding mode.
             ans = self.copy_abs()
-        else:
+        isipokua:
             ans = Decimal(self)
 
         return ans._fix(context)
@@ -1131,11 +1131,11 @@ kundi Decimal(object):
     def __abs__(self, round=True, context=None):
         """Returns the absolute value of self.
 
-        If the keyword argument 'round' is false, do not round.  The
+        If the keyword argument 'round' is false, do sio round.  The
         expression self.__abs__(round=False) is equivalent to
         self.copy_abs().
         """
-        if not round:
+        if sio round:
             return self.copy_abs()
 
         if self._is_special:
@@ -1145,7 +1145,7 @@ kundi Decimal(object):
 
         if self._sign:
             ans = self.__neg__(context=context)
-        else:
+        isipokua:
             ans = self.__pos__(context=context)
 
         return ans
@@ -1181,19 +1181,19 @@ kundi Decimal(object):
             # If the answer is 0, the sign should be negative, in this case.
             negativezero = 1
 
-        if not self and not other:
+        if sio self and sio other:
             sign = min(self._sign, other._sign)
             if negativezero:
                 sign = 1
             ans = _dec_kutoka_triple(sign, '0', exp)
             ans = ans._fix(context)
             return ans
-        if not self:
+        if sio self:
             exp = max(exp, other._exp - context.prec-1)
             ans = other._rescale(exp, context.rounding)
             ans = ans._fix(context)
             return ans
-        if not other:
+        if sio other:
             exp = max(exp, self._exp - context.prec-1)
             ans = self._rescale(exp, context.rounding)
             ans = ans._fix(context)
@@ -1216,19 +1216,19 @@ kundi Decimal(object):
             if op1.sign == 1:
                 result.sign = 1
                 op1.sign, op2.sign = op2.sign, op1.sign
-            else:
+            isipokua:
                 result.sign = 0
                 # So we know the sign, and op1 > 0.
         lasivyo op1.sign == 1:
             result.sign = 1
             op1.sign, op2.sign = (0, 0)
-        else:
+        isipokua:
             result.sign = 0
         # Now, op1 > abs(op2) > 0
 
         if op2.sign == 0:
             result.int = op1.int + op2.int
-        else:
+        isipokua:
             result.int = op1.int - op2.int
 
         result.exp = op1.exp
@@ -1280,19 +1280,19 @@ kundi Decimal(object):
                 return ans
 
             if self._isinfinity():
-                if not other:
+                if sio other:
                     return context._raise_error(InvalidOperation, '(+-)INF * 0')
                 return _SignedInfinity[resultsign]
 
             if other._isinfinity():
-                if not self:
+                if sio self:
                     return context._raise_error(InvalidOperation, '0 * (+-)INF')
                 return _SignedInfinity[resultsign]
 
         resultexp = self._exp + other._exp
 
         # Special case for multiplying by zero
-        if not self or not other:
+        if sio self or sio other:
             ans = _dec_kutoka_triple(resultsign, '0', resultexp)
             # Fixing in case the exponent is out of bounds
             ans = ans._fix(context)
@@ -1344,15 +1344,15 @@ kundi Decimal(object):
                 return _dec_kutoka_triple(sign, '0', context.Etiny())
 
         # Special cases for zeroes
-        if not other:
-            if not self:
+        if sio other:
+            if sio self:
                 return context._raise_error(DivisionUndefined, '0 / 0')
             return context._raise_error(DivisionByZero, 'x / 0', sign)
 
-        if not self:
+        if sio self:
             exp = self._exp - other._exp
             coeff = 0
-        else:
+        isipokua:
             # OK, so neither = 0, INF or NaN
             shift = len(other._int) - len(self._int) + context.prec + 1
             exp = self._exp - other._exp - shift
@@ -1360,16 +1360,16 @@ kundi Decimal(object):
             op2 = _WorkRep(other)
             if shift >= 0:
                 coeff, remainder = divmod(op1.int * 10**shift, op2.int)
-            else:
+            isipokua:
                 coeff, remainder = divmod(op1.int, op2.int * 10**-shift)
             if remainder:
-                # result is not exact; adjust to ensure correct rounding
+                # result ni sio exact; adjust to ensure correct rounding
                 if coeff % 5 == 0:
                     coeff += 1
-            else:
+            isipokua:
                 # result is exact; get as close to ideal exponent as possible
                 ideal_exp = self._exp - other._exp
-                while exp < ideal_exp and coeff % 10 == 0:
+                wakati exp < ideal_exp and coeff % 10 == 0:
                     coeff //= 10
                     exp += 1
 
@@ -1385,11 +1385,11 @@ kundi Decimal(object):
         sign = self._sign ^ other._sign
         if other._isinfinity():
             ideal_exp = self._exp
-        else:
+        isipokua:
             ideal_exp = min(self._exp, other._exp)
 
         expdiff = self.adjusted() - other.adjusted()
-        if not self or other._isinfinity() or expdiff <= -2:
+        if sio self or other._isinfinity() or expdiff <= -2:
             return (_dec_kutoka_triple(sign, '0', 0),
                     self._rescale(ideal_exp, context.rounding))
         if expdiff <= context.prec:
@@ -1397,7 +1397,7 @@ kundi Decimal(object):
             op2 = _WorkRep(other)
             if op1.exp >= op2.exp:
                 op1.int *= 10**(op1.exp - op2.exp)
-            else:
+            isipokua:
                 op2.int *= 10**(op2.exp - op1.exp)
             q, r = divmod(op1.int, op2.int)
             if q < 10**context.prec:
@@ -1436,15 +1436,15 @@ kundi Decimal(object):
             if other._isinfinity():
                 ans = context._raise_error(InvalidOperation, 'divmod(INF, INF)')
                 return ans, ans
-            else:
+            isipokua:
                 return (_SignedInfinity[sign],
                         context._raise_error(InvalidOperation, 'INF % x'))
 
-        if not other:
-            if not self:
+        if sio other:
+            if sio self:
                 ans = context._raise_error(DivisionUndefined, 'divmod(0, 0)')
                 return ans, ans
-            else:
+            isipokua:
                 return (context._raise_error(DivisionByZero, 'x // 0', sign),
                         context._raise_error(InvalidOperation, 'x % 0'))
 
@@ -1476,10 +1476,10 @@ kundi Decimal(object):
 
         if self._isinfinity():
             return context._raise_error(InvalidOperation, 'INF % x')
-        lasivyo not other:
+        lasivyo sio other:
             if self:
                 return context._raise_error(InvalidOperation, 'x % 0')
-            else:
+            isipokua:
                 return context._raise_error(DivisionUndefined, '0 % 0')
 
         remainder = self._divide(other, context)[1]
@@ -1512,11 +1512,11 @@ kundi Decimal(object):
                                         'remainder_near(infinity, x)')
 
         # other == 0 -> either InvalidOperation or DivisionUndefined
-        if not other:
+        if sio other:
             if self:
                 return context._raise_error(InvalidOperation,
                                             'remainder_near(x, 0)')
-            else:
+            isipokua:
                 return context._raise_error(DivisionUndefined,
                                             'remainder_near(0, 0)')
 
@@ -1527,7 +1527,7 @@ kundi Decimal(object):
 
         # self = 0 -> remainder = self, with ideal exponent
         ideal_exponent = min(self._exp, other._exp)
-        if not self:
+        if sio self:
             ans = _dec_kutoka_triple(self._sign, '0', ideal_exponent)
             return ans._fix(context)
 
@@ -1546,7 +1546,7 @@ kundi Decimal(object):
         op2 = _WorkRep(other)
         if op1.exp >= op2.exp:
             op1.int *= 10**(op1.exp - op2.exp)
-        else:
+        isipokua:
             op2.int *= 10**(op2.exp - op1.exp)
         q, r = divmod(op1.int, op2.int)
         # remainder is r*10**ideal_exponent; other is +/-op2.int *
@@ -1584,14 +1584,14 @@ kundi Decimal(object):
         if self._isinfinity():
             if other._isinfinity():
                 return context._raise_error(InvalidOperation, 'INF // INF')
-            else:
+            isipokua:
                 return _SignedInfinity[self._sign ^ other._sign]
 
-        if not other:
+        if sio other:
             if self:
                 return context._raise_error(DivisionByZero, 'x // 0',
                                             self._sign ^ other._sign)
-            else:
+            isipokua:
                 return context._raise_error(DivisionUndefined, '0 // 0')
 
         return self._divide(other, context)[0]
@@ -1609,7 +1609,7 @@ kundi Decimal(object):
             if self.is_snan():
                 raise ValueError("Cannot convert signaling NaN to float")
             s = "-nan" if self._sign else "nan"
-        else:
+        isipokua:
             s = str(self)
         return float(s)
 
@@ -1623,7 +1623,7 @@ kundi Decimal(object):
         s = (-1)**self._sign
         if self._exp >= 0:
             return s*int(self._int)*10**self._exp
-        else:
+        isipokua:
             return s*int(self._int[:self._exp] or '0')
 
     __trunc__ = __int__
@@ -1657,7 +1657,7 @@ kundi Decimal(object):
     def _fix(self, context):
         """Round if it is necessary to keep self within prec precision.
 
-        Rounds and fixes the exponent.  Does not raise on a sNaN.
+        Rounds and fixes the exponent.  Does sio raise on a sNaN.
 
         Arguments:
         self - Decimal instance
@@ -1668,7 +1668,7 @@ kundi Decimal(object):
             if self._isnan():
                 # decapitate payload if necessary
                 return self._fix_nan(context)
-            else:
+            isipokua:
                 # self is +/-Infinity; return unaltered
                 return Decimal(self)
 
@@ -1676,13 +1676,13 @@ kundi Decimal(object):
         # Emax if clamp==0, and between Etiny and Etop if clamp==1.
         Etiny = context.Etiny()
         Etop = context.Etop()
-        if not self:
+        if sio self:
             exp_max = [context.Emax, Etop][context.clamp]
             new_exp = min(max(self._exp, Etiny), exp_max)
             if new_exp != self._exp:
                 context._raise_error(Clamped)
                 return _dec_kutoka_triple(self._sign, '0', new_exp)
-            else:
+            isipokua:
                 return Decimal(self)
 
         # exp_min is the smallest allowable exponent of the result,
@@ -1717,7 +1717,7 @@ kundi Decimal(object):
             # check whether the rounding pushed the exponent out of range
             if exp_min > Etop:
                 ans = context._raise_error(Overflow, 'above Emax', self._sign)
-            else:
+            isipokua:
                 ans = _dec_kutoka_triple(self._sign, coeff, exp_min)
 
             # raise the appropriate signals, taking care to respect
@@ -1729,7 +1729,7 @@ kundi Decimal(object):
             if changed:
                 context._raise_error(Inexact)
             context._raise_error(Rounded)
-            if not ans:
+            if sio ans:
                 # raise Clamped on underflow to 0
                 context._raise_error(Clamped)
             return ans
@@ -1760,7 +1760,7 @@ kundi Decimal(object):
         """Also known as round-towards-0, truncate."""
         if _all_zeros(self._int, prec):
             return 0
-        else:
+        isipokua:
             return -1
 
     def _round_up(self, prec):
@@ -1773,14 +1773,14 @@ kundi Decimal(object):
             return 1
         lasivyo _all_zeros(self._int, prec):
             return 0
-        else:
+        isipokua:
             return -1
 
     def _round_half_down(self, prec):
         """Round 5 down"""
         if _exact_half(self._int, prec):
             return -1
-        else:
+        isipokua:
             return self._round_half_up(prec)
 
     def _round_half_even(self, prec):
@@ -1788,28 +1788,28 @@ kundi Decimal(object):
         if _exact_half(self._int, prec) and \
                 (prec == 0 or self._int[prec-1] in '02468'):
             return -1
-        else:
+        isipokua:
             return self._round_half_up(prec)
 
     def _round_ceiling(self, prec):
         """Rounds up (not away kutoka 0 if negative.)"""
         if self._sign:
             return self._round_down(prec)
-        else:
+        isipokua:
             return -self._round_down(prec)
 
     def _round_floor(self, prec):
         """Rounds down (not towards 0 if negative)"""
-        if not self._sign:
+        if sio self._sign:
             return self._round_down(prec)
-        else:
+        isipokua:
             return -self._round_down(prec)
 
     def _round_05up(self, prec):
         """Round down unless digit prec-1 is 0 or 5."""
-        if prec and self._int[prec-1] not in '05':
+        if prec and self._int[prec-1] haiko kwenye '05':
             return self._round_down(prec)
-        else:
+        isipokua:
             return -self._round_down(prec)
 
     _pick_rounding_function = dict(
@@ -1870,9 +1870,9 @@ kundi Decimal(object):
         Decimal('NaN123')
 
         """
-        if n is not None:
+        if n ni sio None:
             # two-argument form: use the equivalent quantize call
-            if not isinstance(n, int):
+            if sio isinstance(n, int):
                 raise TypeError('Second argument to round should be integral')
             exp = _dec_kutoka_triple(0, '1', -n)
             return self.quantize(exp)
@@ -1881,7 +1881,7 @@ kundi Decimal(object):
         if self._is_special:
             if self.is_nan():
                 raise ValueError("cannot round a NaN")
-            else:
+            isipokua:
                 raise OverflowError("cannot round an infinity")
         return int(self._rescale(0, ROUND_HALF_EVEN))
 
@@ -1896,7 +1896,7 @@ kundi Decimal(object):
         if self._is_special:
             if self.is_nan():
                 raise ValueError("cannot round a NaN")
-            else:
+            isipokua:
                 raise OverflowError("cannot round an infinity")
         return int(self._rescale(0, ROUND_FLOOR))
 
@@ -1911,7 +1911,7 @@ kundi Decimal(object):
         if self._is_special:
             if self.is_nan():
                 raise ValueError("cannot round a NaN")
-            else:
+            isipokua:
                 raise OverflowError("cannot round an infinity")
         return int(self._rescale(0, ROUND_CEILING))
 
@@ -1943,16 +1943,16 @@ kundi Decimal(object):
             lasivyo other._exp == 'n':
                 product = other
             lasivyo self._exp == 'F':
-                if not other:
+                if sio other:
                     return context._raise_error(InvalidOperation,
                                                 'INF * 0 in fma')
                 product = _SignedInfinity[self._sign ^ other._sign]
             lasivyo other._exp == 'F':
-                if not self:
+                if sio self:
                     return context._raise_error(InvalidOperation,
                                                 '0 * INF in fma')
                 product = _SignedInfinity[self._sign ^ other._sign]
-        else:
+        isipokua:
             product = _dec_kutoka_triple(self._sign ^ other._sign,
                                        str(int(self._int) * int(other._int)),
                                        self._exp + other._exp)
@@ -1994,17 +1994,17 @@ kundi Decimal(object):
             return modulo._fix_nan(context)
 
         # check inputs: we apply same restrictions as Python's pow()
-        if not (self._isinteger() and
+        if sio (self._isinteger() and
                 other._isinteger() and
                 modulo._isinteger()):
             return context._raise_error(InvalidOperation,
-                                        'pow() 3rd argument not allowed '
+                                        'pow() 3rd argument sio allowed '
                                         'unless all arguments are integers')
         if other < 0:
             return context._raise_error(InvalidOperation,
                                         'pow() 2nd argument cannot be '
                                         'negative when 3rd argument specified')
-        if not modulo:
+        if sio modulo:
             return context._raise_error(InvalidOperation,
                                         'pow() 3rd argument cannot be 0')
 
@@ -2013,21 +2013,21 @@ kundi Decimal(object):
         if modulo.adjusted() >= context.prec:
             return context._raise_error(InvalidOperation,
                                         'insufficient precision: pow() 3rd '
-                                        'argument must not have more than '
+                                        'argument must sio have more than '
                                         'precision digits')
 
         # define 0**0 == NaN, for consistency with two-argument pow
         # (even though it hurts!)
-        if not other and not self:
+        if sio other and sio self:
             return context._raise_error(InvalidOperation,
                                         'at least one of pow() 1st argument '
                                         'and 2nd argument must be nonzero; '
-                                        '0**0 is not defined')
+                                        '0**0 ni sio defined')
 
         # compute sign of result
         if other._iseven():
             sign = 0
-        else:
+        isipokua:
             sign = self._sign
 
         # convert modulo to a Python integer, and self and other to
@@ -2054,13 +2054,13 @@ kundi Decimal(object):
 
         Assumes that elimination of special cases has already been
         performed: self and other must both be nonspecial; self must
-        be positive and not numerically equal to 1; other must be
-        nonzero.  For efficiency, other._exp should not be too large,
+        be positive and sio numerically equal to 1; other must be
+        nonzero.  For efficiency, other._exp should sio be too large,
         so that 10**abs(other._exp) is a feasible calculation."""
 
         # In the comments below, we write x for the value of self and y for the
         # value of other.  Write x = xc*10**xe and abs(y) = yc*10**ye, with xc
-        # and yc positive integers not divisible by 10.
+        # and yc positive integers sio divisible by 10.
 
         # The main purpose of this method is to identify the *failure*
         # of x**y to be exactly representable with as little effort as
@@ -2085,9 +2085,9 @@ kundi Decimal(object):
         #      representable.
         #
         #  (2) if xe != 0, |xe|*(1/n) >= 1, so |xe|*|y| >= 1.  Hence if
-        #      |y| < 1/|xe| then the result is not representable.
+        #      |y| < 1/|xe| then the result ni sio representable.
         #
-        # Note that since x is not equal to 1, at least one of (1) and
+        # Note that since x ni sio equal to 1, at least one of (1) and
         # (2) must apply.  Now |y| < 1/nbits(xc) iff |yc|*nbits(xc) <
         # 10**-ye iff len(str(|yc|*nbits(xc)) <= -ye.
         #
@@ -2095,22 +2095,22 @@ kundi Decimal(object):
         # positive: the normalized result will have coefficient xc**y,
         # so if it's representable then xc**y < 10**p, and y <
         # p/log10(xc).  Hence if y*log10(xc) >= p then the result is
-        # not exactly representable.
+        # sio exactly representable.
 
         # if len(str(abs(yc*xe)) <= -ye then abs(yc*xe) < 10**-ye,
-        # so |y| < 1/xe and the result is not representable.
+        # so |y| < 1/xe and the result ni sio representable.
         # Similarly, len(str(abs(yc)*xc_bits)) <= -ye implies |y|
         # < 1/nbits(xc).
 
         x = _WorkRep(self)
         xc, xe = x.int, x.exp
-        while xc % 10 == 0:
+        wakati xc % 10 == 0:
             xc //= 10
             xe += 1
 
         y = _WorkRep(other)
         yc, ye = y.int, y.exp
-        while yc % 10 == 0:
+        wakati yc % 10 == 0:
             yc //= 10
             ye += 1
 
@@ -2119,7 +2119,7 @@ kundi Decimal(object):
         if xc == 1:
             xe *= yc
             # result is now 10**(xe * 10**ye);  xe * 10**ye must be integral
-            while xe % 10 == 0:
+            wakati xe % 10 == 0:
                 xe //= 10
                 ye += 1
             if ye < 0:
@@ -2131,7 +2131,7 @@ kundi Decimal(object):
             if other._isinteger() and other._sign == 0:
                 ideal_exponent = self._exp*int(other)
                 zeros = min(exponent-ideal_exponent, p-1)
-            else:
+            isipokua:
                 zeros = 0
             return _dec_kutoka_triple(0, '1' + '0'*zeros, exponent-zeros)
 
@@ -2192,7 +2192,7 @@ kundi Decimal(object):
                 xc, remainder = divmod(5**e, xc)
                 if remainder:
                     return None
-                while xc % 5 == 0:
+                wakati xc % 5 == 0:
                     xc //= 5
                     e -= 1
 
@@ -2211,7 +2211,7 @@ kundi Decimal(object):
                 if e > emax:
                     return None
                 xc = 2**e
-            else:
+            isipokua:
                 return None
 
             if xc >= 10**p:
@@ -2222,17 +2222,17 @@ kundi Decimal(object):
         # now y is positive; find m and n such that y = m/n
         if ye >= 0:
             m, n = yc*10**ye, 1
-        else:
+        isipokua:
             if xe != 0 and len(str(abs(yc*xe))) <= -ye:
                 return None
             xc_bits = _nbits(xc)
             if xc != 1 and len(str(abs(yc)*xc_bits)) <= -ye:
                 return None
             m, n = yc, 10**(-ye)
-            while m % 2 == n % 2 == 0:
+            wakati m % 2 == n % 2 == 0:
                 m //= 2
                 n //= 2
-            while m % 5 == n % 5 == 0:
+            wakati m % 5 == n % 5 == 0:
                 m //= 5
                 n //= 5
 
@@ -2248,13 +2248,13 @@ kundi Decimal(object):
 
             # compute nth root of xc using Newton's method
             a = 1 << -(-_nbits(xc)//n) # initial estimate
-            while True:
+            wakati True:
                 q, r = divmod(xc, a**(n-1))
                 if a <= q:
-                    break
-                else:
+                    koma
+                isipokua:
                     a = (a*(n-1) + q)//n
-            if not (a == q and r == 0):
+            if sio (a == q and r == 0):
                 return None
             xc = a
 
@@ -2262,7 +2262,7 @@ kundi Decimal(object):
         # compute mth power of xc*10**xe
 
         # if m > p*100//_log10_lb(xc) then m > p/log10(xc), hence xc**m >
-        # 10**p and the result is not representable.
+        # 10**p and the result ni sio representable.
         if xc > 1 and m > p*100//_log10_lb(xc):
             return None
         xc = xc**m
@@ -2277,7 +2277,7 @@ kundi Decimal(object):
         if other._isinteger() and other._sign == 0:
             ideal_exponent = self._exp*int(other)
             zeros = min(xe-ideal_exponent, p-len(str_xc))
-        else:
+        isipokua:
             zeros = 0
         return _dec_kutoka_triple(0, str_xc+'0'*zeros, xe-zeros)
 
@@ -2305,7 +2305,7 @@ kundi Decimal(object):
         efficiently.  It is always exact.
         """
 
-        if modulo is not None:
+        if modulo ni sio None:
             return self._power_modulo(other, modulo, context)
 
         other = _convert_other(other)
@@ -2321,39 +2321,39 @@ kundi Decimal(object):
             return ans
 
         # 0**0 = NaN (!), x**0 = 1 for nonzero x (including +/-Infinity)
-        if not other:
-            if not self:
+        if sio other:
+            if sio self:
                 return context._raise_error(InvalidOperation, '0 ** 0')
-            else:
+            isipokua:
                 return _One
 
         # result has sign 1 iff self._sign is 1 and other is an odd integer
         result_sign = 0
         if self._sign == 1:
             if other._isinteger():
-                if not other._iseven():
+                if sio other._iseven():
                     result_sign = 1
-            else:
+            isipokua:
                 # -ve**noninteger = NaN
                 # (-0)**noninteger = 0**noninteger
                 if self:
                     return context._raise_error(InvalidOperation,
-                        'x ** y with x negative and y not an integer')
+                        'x ** y with x negative and y sio an integer')
             # negate self, without doing any unwanted rounding
             self = self.copy_negate()
 
         # 0**(+ve or Inf)= 0; 0**(-ve or -Inf) = Infinity
-        if not self:
+        if sio self:
             if other._sign == 0:
                 return _dec_kutoka_triple(result_sign, '0', 0)
-            else:
+            isipokua:
                 return _SignedInfinity[result_sign]
 
         # Inf**(+ve or Inf) = Inf; Inf**(-ve or -Inf) = 0
         if self._isinfinity():
             if other._sign == 0:
                 return _SignedInfinity[result_sign]
-            else:
+            isipokua:
                 return _dec_kutoka_triple(result_sign, '0', 0)
 
         # 1**other = 1, but the choice of exponent and the flags
@@ -2369,14 +2369,14 @@ kundi Decimal(object):
                     multiplier = 0
                 lasivyo other > context.prec:
                     multiplier = context.prec
-                else:
+                isipokua:
                     multiplier = int(other)
 
                 exp = self._exp * multiplier
                 if exp < 1-context.prec:
                     exp = 1-context.prec
                     context._raise_error(Rounded)
-            else:
+            isipokua:
                 context._raise_error(Inexact)
                 context._raise_error(Rounded)
                 exp = 1-context.prec
@@ -2391,7 +2391,7 @@ kundi Decimal(object):
         if other._isinfinity():
             if (other._sign == 0) == (self_adj < 0):
                 return _dec_kutoka_triple(result_sign, '0', 0)
-            else:
+            isipokua:
                 return _SignedInfinity[result_sign]
 
         # kutoka here on, the result always goes through the call
@@ -2410,7 +2410,7 @@ kundi Decimal(object):
             # possibility of overflow
             if bound >= len(str(context.Emax)):
                 ans = _dec_kutoka_triple(result_sign, '1', context.Emax+1)
-        else:
+        isipokua:
             # self > 1 and other -ve, or self < 1 and other +ve
             # possibility of underflow to 0
             Etiny = context.Etiny()
@@ -2420,7 +2420,7 @@ kundi Decimal(object):
         # try for an exact result with precision +1
         if ans is None:
             ans = self._power_exact(other, context.prec + 1)
-            if ans is not None:
+            if ans ni sio None:
                 if result_sign == 1:
                     ans = _dec_kutoka_triple(1, ans._int, ans._exp)
                 exact = True
@@ -2438,10 +2438,10 @@ kundi Decimal(object):
             # compute correctly rounded result:  start with precision +3,
             # then increase precision until result is unambiguously roundable
             extra = 3
-            while True:
+            wakati True:
                 coeff, exp = _dpower(xc, xe, yc, ye, p+extra)
                 if coeff % (5*10**(len(str(coeff))-p-1)):
-                    break
+                    koma
                 extra += 3
 
             ans = _dec_kutoka_triple(result_sign, str(coeff), exp)
@@ -2449,7 +2449,7 @@ kundi Decimal(object):
         # unlike exp, ln and log10, the power function respects the
         # rounding mode; no need to switch to ROUND_HALF_EVEN here
 
-        # There's a difficulty here when 'other' is not an integer and
+        # There's a difficulty here when 'other' ni sio an integer and
         # the result is exact.  In this case, the specification
         # requires that the Inexact flag be raised (in spite of
         # exactness), but since the result is exact _fix won't do this
@@ -2459,7 +2459,7 @@ kundi Decimal(object):
         # that would violate the precedence for signals.  So we wrap
         # the ._fix call in a temporary context, and reraise
         # afterwards.
-        if exact and not other._isinteger():
+        if exact and sio other._isinteger():
             # pad with zeros up to length context.prec+1 if necessary; this
             # ensures that the Rounded signal will be raised.
             if len(ans._int) <= context.prec:
@@ -2492,7 +2492,7 @@ kundi Decimal(object):
                 if newcontext.flags[exception]:
                     context._raise_error(exception)
 
-        else:
+        isipokua:
             ans = ans._fix(context)
 
         return ans
@@ -2519,12 +2519,12 @@ kundi Decimal(object):
         if dup._isinfinity():
             return dup
 
-        if not dup:
+        if sio dup:
             return _dec_kutoka_triple(dup._sign, '0', 0)
         exp_max = [context.Emax, context.Etop()][context.clamp]
         end = len(dup._int)
         exp = dup._exp
-        while dup._int[end-1] == '0' and exp < exp_max:
+        wakati dup._int[end-1] == '0' and exp < exp_max:
             exp += 1
             end -= 1
         return _dec_kutoka_triple(dup._sign, dup._int[:end], exp)
@@ -2553,11 +2553,11 @@ kundi Decimal(object):
                                         'quantize with one INF')
 
         # exp._exp should be between Etiny and Emax
-        if not (context.Etiny() <= exp._exp <= context.Emax):
+        if sio (context.Etiny() <= exp._exp <= context.Emax):
             return context._raise_error(InvalidOperation,
                    'target exponent out of bounds in quantize')
 
-        if not self:
+        if sio self:
             ans = _dec_kutoka_triple(self._sign, '0', exp._exp)
             return ans._fix(context)
 
@@ -2618,7 +2618,7 @@ kundi Decimal(object):
         """
         if self._is_special:
             return Decimal(self)
-        if not self:
+        if sio self:
             return _dec_kutoka_triple(self._sign, '0', exp)
 
         if self._exp >= exp:
@@ -2651,7 +2651,7 @@ kundi Decimal(object):
         """
         if places <= 0:
             raise ValueError("argument should be at least 1 in _round")
-        if self._is_special or not self:
+        if self._is_special or sio self:
             return Decimal(self)
         ans = self._rescale(self.adjusted()+1-places, rounding)
         # it can happen that the rescale alters the adjusted exponent;
@@ -2670,7 +2670,7 @@ kundi Decimal(object):
         when appropriate.
 
         See also: to_integral_value, which does exactly the same as
-        this method except that it doesn't raise Inexact or Rounded.
+        this method tatizo that it doesn't raise Inexact or Rounded.
         """
         if self._is_special:
             ans = self._check_nans(context=context)
@@ -2679,7 +2679,7 @@ kundi Decimal(object):
             return Decimal(self)
         if self._exp >= 0:
             return Decimal(self)
-        if not self:
+        if sio self:
             return _dec_kutoka_triple(self._sign, '0', 0)
         if context is None:
             context = getcontext()
@@ -2704,7 +2704,7 @@ kundi Decimal(object):
             return Decimal(self)
         if self._exp >= 0:
             return Decimal(self)
-        else:
+        isipokua:
             return self._rescale(0, rounding)
 
     # the method name changed, but we provide also the old one, for compatibility
@@ -2723,7 +2723,7 @@ kundi Decimal(object):
             if self._isinfinity() and self._sign == 0:
                 return Decimal(self)
 
-        if not self:
+        if sio self:
             # exponent = self._exp // 2.  sqrt(-0) = -0
             ans = _dec_kutoka_triple(self._sign, '0', self._exp // 2)
             return ans._fix(context)
@@ -2762,7 +2762,7 @@ kundi Decimal(object):
         if op.exp & 1:
             c = op.int * 10
             l = (len(self._int) >> 1) + 1
-        else:
+        isipokua:
             c = op.int
             l = len(self._int)+1 >> 1
 
@@ -2771,18 +2771,18 @@ kundi Decimal(object):
         if shift >= 0:
             c *= 100**shift
             exact = True
-        else:
+        isipokua:
             c, remainder = divmod(c, 100**-shift)
-            exact = not remainder
+            exact = sio remainder
         e -= shift
 
         # find n = floor(sqrt(c)) using Newton's method
         n = 10**prec
-        while True:
+        wakati True:
             q = c//n
             if n <= q:
-                break
-            else:
+                koma
+            isipokua:
                 n = n + q >> 1
         exact = exact and n*n == c
 
@@ -2791,11 +2791,11 @@ kundi Decimal(object):
             if shift >= 0:
                 # assert n % 10**shift == 0
                 n //= 10**shift
-            else:
+            isipokua:
                 n *= 10**-shift
             e += shift
-        else:
-            # result is not exact; fix last digit as described above
+        isipokua:
+            # result ni sio exact; fix last digit as described above
             if n % 5 == 0:
                 n += 1
 
@@ -2812,7 +2812,7 @@ kundi Decimal(object):
     def max(self, other, context=None):
         """Returns the larger value.
 
-        Like max(self, other) except if one is not a number, returns
+        Like max(self, other) tatizo if one ni sio a number, returns
         NaN (and signals if one is sNaN).  Also rounds.
         """
         other = _convert_other(other, raiseit=True)
@@ -2846,7 +2846,7 @@ kundi Decimal(object):
 
         if c == -1:
             ans = other
-        else:
+        isipokua:
             ans = self
 
         return ans._fix(context)
@@ -2854,7 +2854,7 @@ kundi Decimal(object):
     def min(self, other, context=None):
         """Returns the smaller value.
 
-        Like min(self, other) except if one is not a number, returns
+        Like min(self, other) tatizo if one ni sio a number, returns
         NaN (and signals if one is sNaN).  Also rounds.
         """
         other = _convert_other(other, raiseit=True)
@@ -2880,7 +2880,7 @@ kundi Decimal(object):
 
         if c == -1:
             ans = self
-        else:
+        isipokua:
             ans = other
 
         return ans._fix(context)
@@ -2896,22 +2896,22 @@ kundi Decimal(object):
 
     def _iseven(self):
         """Returns True if self is even.  Assumes self is an integer."""
-        if not self or self._exp > 0:
+        if sio self or self._exp > 0:
             return True
         return self._int[-1+self._exp] in '02468'
 
     def adjusted(self):
         """Return the adjusted exponent of self"""
-        try:
+        jaribu:
             return self._exp + len(self._int) - 1
         # If NaN or Infinity, self._exp is string
-        except TypeError:
+        tatizo TypeError:
             return 0
 
     def canonical(self):
         """Returns the same Decimal object.
 
-        As we do not have different encodings for the same number, the
+        As we do sio have different encodings for the same number, the
         received object already is in its canonical form.
         """
         return self
@@ -2931,16 +2931,16 @@ kundi Decimal(object):
     def compare_total(self, other, context=None):
         """Compares self to other using the abstract representations.
 
-        This is not like the standard compare, which use their numerical
+        This ni sio like the standard compare, which use their numerical
         value. Note that a total ordering is defined for all possible abstract
         representations.
         """
         other = _convert_other(other, raiseit=True)
 
         # if one is negative and the other is positive, it's easy
-        if self._sign and not other._sign:
+        if self._sign and sio other._sign:
             return _NegativeOne
-        if not self._sign and other._sign:
+        if sio self._sign and other._sign:
             return _One
         sign = self._sign
 
@@ -2955,12 +2955,12 @@ kundi Decimal(object):
                 if self_key < other_key:
                     if sign:
                         return _One
-                    else:
+                    isipokua:
                         return _NegativeOne
                 if self_key > other_key:
                     if sign:
                         return _NegativeOne
-                    else:
+                    isipokua:
                         return _One
                 return _Zero
 
@@ -2973,7 +2973,7 @@ kundi Decimal(object):
                     return _NegativeOne
                 if other_nan == 2:
                     return _One
-            else:
+            isipokua:
                 if self_nan == 1:
                     return _One
                 if other_nan == 1:
@@ -2991,12 +2991,12 @@ kundi Decimal(object):
         if self._exp < other._exp:
             if sign:
                 return _One
-            else:
+            isipokua:
                 return _NegativeOne
         if self._exp > other._exp:
             if sign:
                 return _NegativeOne
-            else:
+            isipokua:
                 return _One
         return _Zero
 
@@ -3020,7 +3020,7 @@ kundi Decimal(object):
         """Returns a copy with the sign inverted."""
         if self._sign:
             return _dec_kutoka_triple(0, self._int, self._exp, self._is_special)
-        else:
+        isipokua:
             return _dec_kutoka_triple(1, self._int, self._exp, self._is_special)
 
     def copy_sign(self, other, context=None):
@@ -3045,7 +3045,7 @@ kundi Decimal(object):
             return _Zero
 
         # exp(0) = 1
-        if not self:
+        if sio self:
             return _One
 
         # exp(Infinity) = Infinity
@@ -3062,7 +3062,7 @@ kundi Decimal(object):
         # we only need to do any computation for quite a small range
         # of adjusted exponents---for example, -29 <= adj <= 10 for
         # the default context.  For smaller exponent the result is
-        # indistinguishable kutoka 1 at the given precision, while for
+        # indistinguishable kutoka 1 at the given precision, wakati for
         # larger exponent the result either overflows or underflows.
         if self._sign == 0 and adj > len(str((context.Emax+1)*3)):
             # overflow
@@ -3077,7 +3077,7 @@ kundi Decimal(object):
             # p+1 digits; final round will raise correct flags
             ans = _dec_kutoka_triple(0, '9'*(p+1), -p-1)
         # general case
-        else:
+        isipokua:
             op = _WorkRep(self)
             c, e = op.int, op.exp
             if op.sign == 1:
@@ -3087,16 +3087,16 @@ kundi Decimal(object):
             # 3 digits at a time until we get an unambiguously
             # roundable result
             extra = 3
-            while True:
+            wakati True:
                 coeff, exp = _dexp(c, e, p+extra)
                 if coeff % (5*10**(len(str(coeff))-p-1)):
-                    break
+                    koma
                 extra += 3
 
             ans = _dec_kutoka_triple(0, str(coeff), exp)
 
         # at this stage, ans should round correctly with *any*
-        # rounding mode, not just with ROUND_HALF_EVEN
+        # rounding mode, sio just with ROUND_HALF_EVEN
         context = context._shallow_copy()
         rounding = context._set_rounding(ROUND_HALF_EVEN)
         ans = ans._fix(context)
@@ -3118,7 +3118,7 @@ kundi Decimal(object):
         A Decimal instance is considered finite if it is neither
         infinite nor a NaN.
         """
-        return not self._is_special
+        return sio self._is_special
 
     def is_infinite(self):
         """Return True if self is infinite; otherwise return False."""
@@ -3130,7 +3130,7 @@ kundi Decimal(object):
 
     def is_normal(self, context=None):
         """Return True if self is a normal number; otherwise return False."""
-        if self._is_special or not self:
+        if self._is_special or sio self:
             return False
         if context is None:
             context = getcontext()
@@ -3150,7 +3150,7 @@ kundi Decimal(object):
 
     def is_subnormal(self, context=None):
         """Return True if self is subnormal; otherwise return False."""
-        if self._is_special or not self:
+        if self._is_special or sio self:
             return False
         if context is None:
             context = getcontext()
@@ -3158,7 +3158,7 @@ kundi Decimal(object):
 
     def is_zero(self):
         """Return True if self is a zero; otherwise return False."""
-        return not self._is_special and self._int == '0'
+        return sio self._is_special and self._int == '0'
 
     def _ln_exp_bound(self):
         """Compute a lower bound for the adjusted exponent of self.ln().
@@ -3197,7 +3197,7 @@ kundi Decimal(object):
             return ans
 
         # ln(0.0) == -Infinity
-        if not self:
+        if sio self:
             return _NegativeInfinity
 
         # ln(Infinity) = Infinity
@@ -3221,11 +3221,11 @@ kundi Decimal(object):
         # correctly rounded result: repeatedly increase precision by 3
         # until we get an unambiguously roundable result
         places = p - self._ln_exp_bound() + 2 # at least p+3 places
-        while True:
+        wakati True:
             coeff = _dlog(c, e, places)
             # assert len(str(abs(coeff)))-p >= 1
             if coeff % (5*10**(len(str(abs(coeff)))-p-1)):
-                break
+                koma
             places += 3
         ans = _dec_kutoka_triple(int(coeff<0), str(abs(coeff)), -places)
 
@@ -3277,7 +3277,7 @@ kundi Decimal(object):
             return ans
 
         # log10(0.0) == -Infinity
-        if not self:
+        if sio self:
             return _NegativeInfinity
 
         # log10(Infinity) = Infinity
@@ -3293,7 +3293,7 @@ kundi Decimal(object):
         if self._int[0] == '1' and self._int[1:] == '0'*(len(self._int) - 1):
             # answer may need rounding
             ans = Decimal(self._exp + len(self._int) - 1)
-        else:
+        isipokua:
             # result is irrational, so necessarily inexact
             op = _WorkRep(self)
             c, e = op.int, op.exp
@@ -3302,11 +3302,11 @@ kundi Decimal(object):
             # correctly rounded result: repeatedly increase precision
             # until result is unambiguously roundable
             places = p-self._log10_exp_bound()+2
-            while True:
+            wakati True:
                 coeff = _dlog10(c, e, places)
                 # assert len(str(abs(coeff)))-p >= 1
                 if coeff % (5*10**(len(str(abs(coeff)))-p-1)):
-                    break
+                    koma
                 places += 3
             ans = _dec_kutoka_triple(int(coeff<0), str(abs(coeff)), -places)
 
@@ -3321,7 +3321,7 @@ kundi Decimal(object):
 
         The result is the integer which is the exponent of the magnitude
         of the most significant digit of self (as though it were truncated
-        to a single digit while maintaining the value of that digit and
+        to a single digit wakati maintaining the value of that digit and
         without limiting the resulting exponent).
         """
         # logb(NaN) = NaN
@@ -3337,7 +3337,7 @@ kundi Decimal(object):
             return _Infinity
 
         # logb(0) = -Inf, DivisionByZero
-        if not self:
+        if sio self:
             return context._raise_error(DivisionByZero, 'logb(0)', 1)
 
         # otherwise, simply return the adjusted exponent of self, as a
@@ -3356,7 +3356,7 @@ kundi Decimal(object):
         if self._sign != 0 or self._exp != 0:
             return False
         for dig in self._int:
-            if dig not in '01':
+            if dig haiko kwenye '01':
                 return False
         return True
 
@@ -3380,7 +3380,7 @@ kundi Decimal(object):
 
         other = _convert_other(other, raiseit=True)
 
-        if not self._islogical() or not other._islogical():
+        if sio self._islogical() or sio other._islogical():
             return context._raise_error(InvalidOperation)
 
         # fill to context.prec
@@ -3404,7 +3404,7 @@ kundi Decimal(object):
 
         other = _convert_other(other, raiseit=True)
 
-        if not self._islogical() or not other._islogical():
+        if sio self._islogical() or sio other._islogical():
             return context._raise_error(InvalidOperation)
 
         # fill to context.prec
@@ -3421,7 +3421,7 @@ kundi Decimal(object):
 
         other = _convert_other(other, raiseit=True)
 
-        if not self._islogical() or not other._islogical():
+        if sio self._islogical() or sio other._islogical():
             return context._raise_error(InvalidOperation)
 
         # fill to context.prec
@@ -3456,7 +3456,7 @@ kundi Decimal(object):
 
         if c == -1:
             ans = other
-        else:
+        isipokua:
             ans = self
 
         return ans._fix(context)
@@ -3486,7 +3486,7 @@ kundi Decimal(object):
 
         if c == -1:
             ans = self
-        else:
+        isipokua:
             ans = other
 
         return ans._fix(context)
@@ -3561,7 +3561,7 @@ kundi Decimal(object):
 
         if comparison == -1:
             ans = self.next_plus(context)
-        else: # comparison == 1
+        isipokua: # comparison == 1
             ans = self.next_minus(context)
 
         # decide which flags to raise using value of ans
@@ -3578,7 +3578,7 @@ kundi Decimal(object):
             context._raise_error(Rounded)
             # if precision == 1 then we don't raise Clamped for a
             # result 0E-Etiny.
-            if not ans:
+            if sio ans:
                 context._raise_error(Clamped)
 
         return ans
@@ -3610,19 +3610,19 @@ kundi Decimal(object):
         if self.is_zero():
             if self._sign:
                 return "-Zero"
-            else:
+            isipokua:
                 return "+Zero"
         if context is None:
             context = getcontext()
         if self.is_subnormal(context=context):
             if self._sign:
                 return "-Subnormal"
-            else:
+            isipokua:
                 return "+Subnormal"
         # just a normal, regular, boring number, :)
         if self._sign:
             return "-Normal"
-        else:
+        isipokua:
             return "+Normal"
 
     def radix(self):
@@ -3642,7 +3642,7 @@ kundi Decimal(object):
 
         if other._exp != 0:
             return context._raise_error(InvalidOperation)
-        if not (-context.prec <= int(other) <= context.prec):
+        if sio (-context.prec <= int(other) <= context.prec):
             return context._raise_error(InvalidOperation)
 
         if self._isinfinity():
@@ -3677,7 +3677,7 @@ kundi Decimal(object):
             return context._raise_error(InvalidOperation)
         liminf = -2 * (context.Emax + context.prec)
         limsup =  2 * (context.Emax + context.prec)
-        if not (liminf <= int(other) <= limsup):
+        if sio (liminf <= int(other) <= limsup):
             return context._raise_error(InvalidOperation)
 
         if self._isinfinity():
@@ -3700,7 +3700,7 @@ kundi Decimal(object):
 
         if other._exp != 0:
             return context._raise_error(InvalidOperation)
-        if not (-context.prec <= int(other) <= context.prec):
+        if sio (-context.prec <= int(other) <= context.prec):
             return context._raise_error(InvalidOperation)
 
         if self._isinfinity():
@@ -3718,7 +3718,7 @@ kundi Decimal(object):
         # let's shift!
         if torot < 0:
             shifted = rotdig[:torot]
-        else:
+        isipokua:
             shifted = rotdig + '0'*torot
             shifted = shifted[-context.prec:]
 
@@ -3751,7 +3751,7 @@ kundi Decimal(object):
         value of context.capitals.
         """
 
-        # Note: PEP 3101 says that if the type is not present then
+        # Note: PEP 3101 says that if the type ni sio present then
         # there should be at least one digit after the decimal point.
         # We take the liberty of ignoring this requirement for
         # Decimal---it's presumably there to make sure that
@@ -3780,7 +3780,7 @@ kundi Decimal(object):
         # round if necessary, taking rounding mode kutoka the context
         rounding = context.rounding
         precision = spec['precision']
-        if precision is not None:
+        if precision ni sio None:
             if spec['type'] in 'eE':
                 self = self._round(precision+1, rounding)
             lasivyo spec['type'] in 'fF%':
@@ -3789,22 +3789,22 @@ kundi Decimal(object):
                 self = self._round(precision, rounding)
         # special case: zeros with a positive exponent can't be
         # represented in fixed point; rescale them to 0e0.
-        if not self and self._exp > 0 and spec['type'] in 'fF%':
+        if sio self and self._exp > 0 and spec['type'] in 'fF%':
             self = self._rescale(0, rounding)
 
         # figure out placement of the decimal point
         leftdigits = self._exp + len(self._int)
         if spec['type'] in 'eE':
-            if not self and precision is not None:
+            if sio self and precision ni sio None:
                 dotplace = 1 - precision
-            else:
+            isipokua:
                 dotplace = 1
         lasivyo spec['type'] in 'fF%':
             dotplace = leftdigits
         lasivyo spec['type'] in 'gG':
             if self._exp <= 0 and leftdigits > -6:
                 dotplace = leftdigits
-            else:
+            isipokua:
                 dotplace = 1
 
         # find digits before and after decimal point, and get exponent
@@ -3814,7 +3814,7 @@ kundi Decimal(object):
         lasivyo dotplace > len(self._int):
             intpart = self._int + '0'*(dotplace-len(self._int))
             fracpart = ''
-        else:
+        isipokua:
             intpart = self._int[:dotplace] or '0'
             fracpart = self._int[dotplace:]
         exp = leftdigits-dotplace
@@ -3840,7 +3840,7 @@ def _dec_kutoka_triple(sign, coefficient, exponent, special=False):
     return self
 
 # Register Decimal as a kind of Number (an abstract base class).
-# However, do not register it as Real (because Decimals are not
+# However, do sio register it as Real (because Decimals are not
 # interoperable with floats).
 _numbers.Number.register(Decimal)
 
@@ -3872,7 +3872,7 @@ kundi Context(object):
                     raised when it is caused.  Otherwise, a value is
                     substituted in.
     flags  - When an exception is caused, flags[exception] is set.
-             (Whether or not the trap_enabler is set)
+             (Whether or sio the trap_enabler is set)
              Should be reset by user of Decimal instance.
     Emin -   Minimum exponent
     Emax -   Maximum exponent
@@ -3884,41 +3884,41 @@ kundi Context(object):
     def __init__(self, prec=None, rounding=None, Emin=None, Emax=None,
                        capitals=None, clamp=None, flags=None, traps=None,
                        _ignored_flags=None):
-        # Set defaults; for everything except flags and _ignored_flags,
+        # Set defaults; for everything tatizo flags and _ignored_flags,
         # inherit kutoka DefaultContext.
-        try:
+        jaribu:
             dc = DefaultContext
-        except NameError:
+        tatizo NameError:
             pass
 
-        self.prec = prec if prec is not None else dc.prec
-        self.rounding = rounding if rounding is not None else dc.rounding
-        self.Emin = Emin if Emin is not None else dc.Emin
-        self.Emax = Emax if Emax is not None else dc.Emax
-        self.capitals = capitals if capitals is not None else dc.capitals
-        self.clamp = clamp if clamp is not None else dc.clamp
+        self.prec = prec if prec ni sio None else dc.prec
+        self.rounding = rounding if rounding ni sio None else dc.rounding
+        self.Emin = Emin if Emin ni sio None else dc.Emin
+        self.Emax = Emax if Emax ni sio None else dc.Emax
+        self.capitals = capitals if capitals ni sio None else dc.capitals
+        self.clamp = clamp if clamp ni sio None else dc.clamp
 
         if _ignored_flags is None:
             self._ignored_flags = []
-        else:
+        isipokua:
             self._ignored_flags = _ignored_flags
 
         if traps is None:
             self.traps = dc.traps.copy()
-        lasivyo not isinstance(traps, dict):
+        lasivyo sio isinstance(traps, dict):
             self.traps = dict((s, int(s in traps)) for s in _signals + traps)
-        else:
+        isipokua:
             self.traps = traps
 
         if flags is None:
             self.flags = dict.kutokakeys(_signals, 0)
-        lasivyo not isinstance(flags, dict):
+        lasivyo sio isinstance(flags, dict):
             self.flags = dict((s, int(s in flags)) for s in _signals + flags)
-        else:
+        isipokua:
             self.flags = flags
 
     def _set_integer_check(self, name, value, vmin, vmax):
-        if not isinstance(value, int):
+        if sio isinstance(value, int):
             raise TypeError("%s must be an integer" % name)
         if vmin == '-inf':
             if value > vmax:
@@ -3926,20 +3926,20 @@ kundi Context(object):
         lasivyo vmax == 'inf':
             if value < vmin:
                 raise ValueError("%s must be in [%d, %s]. got: %s" % (name, vmin, vmax, value))
-        else:
+        isipokua:
             if value < vmin or value > vmax:
                 raise ValueError("%s must be in [%d, %d]. got %s" % (name, vmin, vmax, value))
         return object.__setattr__(self, name, value)
 
     def _set_signal_dict(self, name, d):
-        if not isinstance(d, dict):
+        if sio isinstance(d, dict):
             raise TypeError("%s must be a signal dict" % d)
         for key in d:
-            if not key in _signals:
-                raise KeyError("%s is not a valid signal dict" % d)
+            if sio key in _signals:
+                raise KeyError("%s ni sio a valid signal dict" % d)
         for key in _signals:
-            if not key in d:
-                raise KeyError("%s is not a valid signal dict" % d)
+            if sio key in d:
+                raise KeyError("%s ni sio a valid signal dict" % d)
         return object.__setattr__(self, name, d)
 
     def __setattr__(self, name, value):
@@ -3954,7 +3954,7 @@ kundi Context(object):
         lasivyo name == 'clamp':
             return self._set_integer_check(name, value, 0, 1)
         lasivyo name == 'rounding':
-            if not value in _rounding_modes:
+            if sio value in _rounding_modes:
                 # raise TypeError even for strings to have consistency
                 # among various implementations.
                 raise TypeError("%s: invalid rounding mode" % value)
@@ -3963,7 +3963,7 @@ kundi Context(object):
             return self._set_signal_dict(name, value)
         lasivyo name == '_ignored_flags':
             return object.__setattr__(self, name, value)
-        else:
+        isipokua:
             raise AttributeError(
                 "'decimal.Context' object has no attribute '%s'" % name)
 
@@ -4031,7 +4031,7 @@ kundi Context(object):
             return error().handle(self, *args)
 
         self.flags[error] = 1
-        if not self.traps[error]:
+        if sio self.traps[error]:
             # The errors define how to handle themselves.
             return condition().handle(self, *args)
 
@@ -4045,7 +4045,7 @@ kundi Context(object):
 
     def _ignore_flags(self, *flags):
         """Ignore the flags, if they are raised"""
-        # Do not mutate-- This way, copies of a context leave the original
+        # Do sio mutate-- This way, copies of a context leave the original
         # alone.
         self._ignored_flags = (self._ignored_flags + list(flags))
         return list(flags)
@@ -4096,7 +4096,7 @@ kundi Context(object):
         if isinstance(num, str) and (num != num.strip() or '_' in num):
             return self._raise_error(ConversionSyntax,
                                      "trailing or leading whitespace and "
-                                     "underscores are not permitted.")
+                                     "underscores are sio permitted.")
 
         d = Decimal(num, context=self)
         if d._isnan() and len(d._int) > self.prec - self.clamp:
@@ -4161,7 +4161,7 @@ kundi Context(object):
         r = a.__add__(b, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def _apply(self, a):
@@ -4170,13 +4170,13 @@ kundi Context(object):
     def canonical(self, a):
         """Returns the same Decimal object.
 
-        As we do not have different encodings for the same number, the
+        As we do sio have different encodings for the same number, the
         received object already is in its canonical form.
 
         >>> ExtendedContext.canonical(Decimal('2.50'))
         Decimal('2.50')
         """
-        if not isinstance(a, Decimal):
+        if sio isinstance(a, Decimal):
             raise TypeError("canonical requires a Decimal as an argument.")
         return a.canonical()
 
@@ -4254,7 +4254,7 @@ kundi Context(object):
     def compare_total(self, a, b):
         """Compares two operands using their abstract representation.
 
-        This is not like the standard compare, which use their numerical
+        This ni sio like the standard compare, which use their numerical
         value. Note that a total ordering is defined for all possible abstract
         representations.
 
@@ -4385,7 +4385,7 @@ kundi Context(object):
         r = a.__truediv__(b, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def divide_int(self, a, b):
@@ -4408,7 +4408,7 @@ kundi Context(object):
         r = a.__floordiv__(b, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def divmod(self, a, b):
@@ -4429,7 +4429,7 @@ kundi Context(object):
         r = a.__divmod__(b, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def exp(self, a):
@@ -4488,7 +4488,7 @@ kundi Context(object):
         >>> ExtendedContext.is_canonical(Decimal('2.50'))
         True
         """
-        if not isinstance(a, Decimal):
+        if sio isinstance(a, Decimal):
             raise TypeError("is_canonical requires a Decimal as an argument.")
         return a.is_canonical()
 
@@ -4710,7 +4710,7 @@ kundi Context(object):
 
         The result is the integer which is the exponent of the magnitude
         of the most significant digit of the operand (as though the
-        operand were truncated to a single digit while maintaining the
+        operand were truncated to a single digit wakati maintaining the
         value of that digit and without limiting the resulting exponent).
 
         >>> ExtendedContext.logb(Decimal('250'))
@@ -4965,7 +4965,7 @@ kundi Context(object):
         r = a.__mul__(b, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def next_minus(self, a):
@@ -5012,7 +5012,7 @@ kundi Context(object):
         """Returns the number closest to a, in direction towards b.
 
         The result is the closest representable number kutoka the first
-        operand (but not the first operand) that is in the direction
+        operand (but sio the first operand) that is in the direction
         towards the second operand, unless the operands have the same
         value.
 
@@ -5211,7 +5211,7 @@ kundi Context(object):
         r = a.__pow__(b, modulo, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def quantize(self, a, b):
@@ -5315,7 +5315,7 @@ kundi Context(object):
         r = a.__mod__(b, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def remainder_near(self, a, b):
@@ -5506,7 +5506,7 @@ kundi Context(object):
         r = a.__sub__(b, context=self)
         if r is NotImplemented:
             raise TypeError("Unable to convert %s to Decimal" % b)
-        else:
+        isipokua:
             return r
 
     def to_eng_string(self, a):
@@ -5516,7 +5516,7 @@ kundi Context(object):
         can leave up to 3 digits to the left of the decimal place and may
         require the addition of either one or two trailing zeros.
 
-        The operation is not affected by the context.
+        The operation ni sio affected by the context.
 
         >>> ExtendedContext.to_eng_string(Decimal('123E+1'))
         '1.23E+3'
@@ -5540,7 +5540,7 @@ kundi Context(object):
     def to_sci_string(self, a):
         """Converts a number to a string, using scientific notation.
 
-        The operation is not affected by the context.
+        The operation ni sio affected by the context.
         """
         a = _convert_other(a, raiseit=True)
         return a.__str__(context=self)
@@ -5581,7 +5581,7 @@ kundi Context(object):
         When the operand has a negative exponent, the result is the same
         as using the quantize() operation using the given operand as the
         left-hand-operand, 1E+0 as the right-hand-operand, and the precision
-        of the operand as the precision setting, except that no flags will
+        of the operand as the precision setting, tatizo that no flags will
         be set.  The rounding mode is taken kutoka the context.
 
         >>> ExtendedContext.to_integral_value(Decimal('2.1'))
@@ -5622,7 +5622,7 @@ kundi _WorkRep(object):
             self.sign = value._sign
             self.int = int(value._int)
             self.exp = value._exp
-        else:
+        isipokua:
             # assert isinstance(value, tuple)
             self.sign = value[0]
             self.int = value[1]
@@ -5641,7 +5641,7 @@ def _normalize(op1, op2, prec = 0):
     if op1.exp < op2.exp:
         tmp = op2
         other = op1
-    else:
+    isipokua:
         tmp = op1
         other = op2
 
@@ -5680,7 +5680,7 @@ def _decimal_lshift_exact(n, e):
         return 0
     lasivyo e >= 0:
         return n * 10**e
-    else:
+    isipokua:
         # val_n = largest power of 10 dividing n.
         str_n = str(abs(n))
         val_n = len(str_n) - len(str_n.rstrip('0'))
@@ -5697,7 +5697,7 @@ def _sqrt_nearest(n, a):
         raise ValueError("Both arguments to _sqrt_nearest should be positive.")
 
     b=0
-    while a != b:
+    wakati a != b:
         b, a = a, a--n//a>>1
     return a
 
@@ -5750,7 +5750,7 @@ def _ilog(x, M, L = 8):
     y = x-M
     # argument reduction; R = number of reductions performed
     R = 0
-    while (R <= L and abs(y) << L-R >= M or
+    wakati (R <= L and abs(y) << L-R >= M or
            R > L and abs(y) >> R-L >= M):
         y = _div_nearest((M*y) << 1,
                          M + _sqrt_nearest(M*(M+_rshift_nearest(y, R)), M))
@@ -5768,7 +5768,7 @@ def _ilog(x, M, L = 8):
 def _dlog10(c, e, p):
     """Given integers c, e and p with c > 0, p >= 0, compute an integer
     approximation to 10**p * log10(c*10**e), with an absolute error of
-    at most 1.  Assumes that c*10**e is not exactly 1."""
+    at most 1.  Assumes that c*10**e ni sio exactly 1."""
 
     # increase precision by 2; compensate for this by dividing
     # final result by 100
@@ -5786,14 +5786,14 @@ def _dlog10(c, e, p):
         k = e+p-f
         if k >= 0:
             c *= 10**k
-        else:
+        isipokua:
             c = _div_nearest(c, 10**-k)
 
         log_d = _ilog(c, M) # error < 5 + 22 = 27
         log_10 = _log10_digits(p) # error < 1
         log_d = _div_nearest(log_d*M, log_10)
         log_tenpower = f*M # exact
-    else:
+    isipokua:
         log_d = 0  # error < 2.31
         log_tenpower = _div_nearest(f, 10**-p) # error < 0.5
 
@@ -5802,7 +5802,7 @@ def _dlog10(c, e, p):
 def _dlog(c, e, p):
     """Given integers c, e and p with c > 0, compute an integer
     approximation to 10**p * log(c*10**e), with an absolute error of
-    at most 1.  Assumes that c*10**e is not exactly 1."""
+    at most 1.  Assumes that c*10**e ni sio exactly 1."""
 
     # Increase precision by 2. The precision increase is compensated
     # for at the end with a division by 100.
@@ -5819,12 +5819,12 @@ def _dlog(c, e, p):
         k = e+p-f
         if k >= 0:
             c *= 10**k
-        else:
+        isipokua:
             c = _div_nearest(c, 10**-k)  # error of <= 0.5 in c
 
         # _ilog magnifies existing error in c by a factor of at most 10
         log_d = _ilog(c, 10**p) # error < 5 + 22 = 27
-    else:
+    isipokua:
         # p <= 0: just approximate the whole thing by 0; error < 2.31
         log_d = 0
 
@@ -5835,9 +5835,9 @@ def _dlog(c, e, p):
             # error in f * _log10_digits(p+extra) < |f| * 1 = |f|
             # after division, error < |f|/10**extra + 0.5 < 10 + 0.5 < 11
             f_log_ten = _div_nearest(f*_log10_digits(p+extra), 10**extra)
-        else:
+        isipokua:
             f_log_ten = 0
-    else:
+    isipokua:
         f_log_ten = 0
 
     # error in sum < 11+27 = 38; error after division < 0.38 + 0.5 < 1
@@ -5858,20 +5858,20 @@ kundi _Log10Memoize(object):
         # digits are stored as a string, for quick conversion to
         # integer in the case that we've already computed enough
         # digits; the stored digits should always be correct
-        # (truncated, not rounded to nearest).
+        # (truncated, sio rounded to nearest).
         if p < 0:
             raise ValueError("p should be nonnegative")
 
         if p >= len(self.digits):
-            # compute p+3, p+6, p+9, ... digits; continue until at
+            # compute p+3, p+6, p+9, ... digits; endelea until at
             # least one of the extra digits is nonzero
             extra = 3
-            while True:
+            wakati True:
                 # compute p+extra digits, correct to within 1ulp
                 M = 10**(p+extra+2)
                 digits = str(_div_nearest(_ilog(10*M, M), 100))
                 if digits[-extra:] != '0'*extra:
-                    break
+                    koma
                 extra += 3
             # keep all reliable digits so far; remove trailing zeros
             # and next nonzero digit
@@ -5928,7 +5928,7 @@ def _dexp(c, e, p):
 
     In other words, d*10**f is an approximation to exp(c*10**e) with p
     digits of precision, and with an error in d of at most 1.  This is
-    almost, but not quite, the same as the error being < 1ulp: when d
+    almost, but sio quite, the same as the error being < 1ulp: when d
     = 10**(p-1) the error could be up to 10 ulp."""
 
     # we'll call iexp with M = 10**(p+2), giving p+3 digits of precision
@@ -5943,7 +5943,7 @@ def _dexp(c, e, p):
     shift = e+q
     if shift >= 0:
         cshift = c*10**shift
-    else:
+    isipokua:
         cshift = c//10**-shift
     quot, rem = divmod(cshift, _log10_digits(q))
 
@@ -5962,10 +5962,10 @@ def _dpower(xc, xe, yc, ye, p):
 
     in other words, c*10**e is an approximation to x**y with p digits
     of precision, and with an error in c of at most 1.  (This is
-    almost, but not quite, the same as the error being < 1ulp: when c
+    almost, but sio quite, the same as the error being < 1ulp: when c
     == 10**(p-1) we can only guarantee error < 10ulp.)
 
-    We assume that: x is positive and not equal to 1, and y is nonzero.
+    We assume that: x is positive and sio equal to 1, and y is nonzero.
     """
 
     # Find b such that 10**(b-1) <= |y| <= 10**b
@@ -5978,7 +5978,7 @@ def _dpower(xc, xe, yc, ye, p):
     shift = ye-b
     if shift >= 0:
         pc = lxc*yc*10**shift
-    else:
+    isipokua:
         pc = _div_nearest(lxc*yc, 10**-shift)
 
     if pc == 0:
@@ -5986,9 +5986,9 @@ def _dpower(xc, xe, yc, ye, p):
         # easier to compute a correctly rounded result in __pow__
         if ((len(str(xc)) + xe >= 1) == (yc > 0)): # if x**y > 1:
             coeff, exp = 10**(p-1)+1, 1-p
-        else:
+        isipokua:
             coeff, exp = 10**p-1, -p
-    else:
+    isipokua:
         coeff, exp = _dexp(pc, -(p+1), p+1)
         coeff = _div_nearest(coeff, 10)
         exp += 1
@@ -6040,7 +6040,7 @@ def _convert_for_comparison(self, other, equality_op=False):
     # A NaN or infinity can be left unchanged without affecting the
     # comparison result.
     if isinstance(other, _numbers.Rational):
-        if not self._is_special:
+        if sio self._is_special:
             self = _dec_kutoka_triple(self._sign,
                                     str(int(self._int) * other.denominator),
                                     self._exp)
@@ -6055,7 +6055,7 @@ def _convert_for_comparison(self, other, equality_op=False):
         context = getcontext()
         if equality_op:
             context.flags[FloatOperation] = 1
-        else:
+        isipokua:
             context._raise_error(FloatOperation,
                 "strict semantics for mixing floats and Decimals are enabled")
         return self, Decimal.kutoka_float(other)
@@ -6156,14 +6156,14 @@ _parse_format_specifier_regex = re.compile(r"""\A
 \Z
 """, re.VERBOSE|re.DOTALL)
 
-del re
+toa re
 
 # The locale module is only needed for the 'n' format specifier.  The
 # rest of the PEP 3101 code functions quite happily without it, so we
 # don't care too much if locale isn't present.
-try:
+jaribu:
     agiza locale as _locale
-except ImportError:
+tatizo ImportError:
     pass
 
 def _parse_format_specifier(format_spec, _localeconv=None):
@@ -6196,12 +6196,12 @@ def _parse_format_specifier(format_spec, _localeconv=None):
     # is requested, the fill and align fields should be absent.
     fill = format_dict['fill']
     align = format_dict['align']
-    format_dict['zeropad'] = (format_dict['zeropad'] is not None)
+    format_dict['zeropad'] = (format_dict['zeropad'] ni sio None)
     if format_dict['zeropad']:
-        if fill is not None:
+        if fill ni sio None:
             raise ValueError("Fill character conflicts with '0'"
                              " in format specifier: " + format_spec)
-        if align is not None:
+        if align ni sio None:
             raise ValueError("Alignment conflicts with '0' in "
                              "format specifier: " + format_spec)
     format_dict['fill'] = fill or ' '
@@ -6214,9 +6214,9 @@ def _parse_format_specifier(format_spec, _localeconv=None):
     if format_dict['sign'] is None:
         format_dict['sign'] = '-'
 
-    # minimumwidth defaults to 0; precision remains None if not given
+    # minimumwidth defaults to 0; precision remains None if sio given
     format_dict['minimumwidth'] = int(format_dict['minimumwidth'] or '0')
-    if format_dict['precision'] is not None:
+    if format_dict['precision'] ni sio None:
         format_dict['precision'] = int(format_dict['precision'])
 
     # if format type is 'g' or 'G' then a precision of 0 makes little
@@ -6232,13 +6232,13 @@ def _parse_format_specifier(format_spec, _localeconv=None):
         format_dict['type'] = 'g'
         if _localeconv is None:
             _localeconv = _locale.localeconv()
-        if format_dict['thousands_sep'] is not None:
+        if format_dict['thousands_sep'] ni sio None:
             raise ValueError("Explicit thousands separator conflicts with "
                              "'n' type in format specifier: " + format_spec)
         format_dict['thousands_sep'] = _localeconv['thousands_sep']
         format_dict['grouping'] = _localeconv['grouping']
         format_dict['decimal_point'] = _localeconv['decimal_point']
-    else:
+    isipokua:
         if format_dict['thousands_sep'] is None:
             format_dict['thousands_sep'] = ''
         format_dict['grouping'] = [3, 0]
@@ -6268,7 +6268,7 @@ def _format_align(sign, body, spec):
     lasivyo align == '^':
         half = len(padding)//2
         result = padding[:half] + sign + body + padding[half:]
-    else:
+    isipokua:
         raise ValueError('Unrecognised alignment field')
 
     return result
@@ -6287,13 +6287,13 @@ def _group_lengths(grouping):
     #   (3) list of positive integers + [locale.CHAR_MAX], or
 
     kutoka itertools agiza chain, repeat
-    if not grouping:
+    if sio grouping:
         return []
     lasivyo grouping[-1] == 0 and len(grouping) >= 2:
         return chain(grouping[:-1], repeat(grouping[-2]))
     lasivyo grouping[-1] == _locale.CHAR_MAX:
         return grouping[:-1]
-    else:
+    isipokua:
         raise ValueError('unrecognised format for grouping')
 
 def _insert_thousands_sep(digits, spec, min_width=1):
@@ -6325,10 +6325,10 @@ def _insert_thousands_sep(digits, spec, min_width=1):
         groups.append('0'*(l - len(digits)) + digits[-l:])
         digits = digits[:-l]
         min_width -= l
-        if not digits and min_width <= 0:
-            break
+        if sio digits and min_width <= 0:
+            koma
         min_width -= len(sep)
-    else:
+    isipokua:
         l = max(len(digits), min_width, 1)
         groups.append('0'*(l - len(digits)) + digits[-l:])
     return sep.join(reversed(groups))
@@ -6340,7 +6340,7 @@ def _format_sign(is_negative, spec):
         return '-'
     lasivyo spec['sign'] in ' +':
         return spec['sign']
-    else:
+    isipokua:
         return ''
 
 def _format_number(is_negative, intpart, fracpart, exp, spec):
@@ -6374,7 +6374,7 @@ def _format_number(is_negative, intpart, fracpart, exp, spec):
 
     if spec['zeropad']:
         min_width = spec['minimumwidth'] - len(fracpart) - len(sign)
-    else:
+    isipokua:
         min_width = 0
     intpart = _insert_thousands_sep(intpart, spec, min_width)
 
@@ -6403,4 +6403,4 @@ _PyHASH_NAN = sys.hash_info.nan
 
 # _PyHASH_10INV is the inverse of 10 modulo the prime _PyHASH_MODULUS
 _PyHASH_10INV = pow(10, _PyHASH_MODULUS - 2, _PyHASH_MODULUS)
-del sys
+toa sys

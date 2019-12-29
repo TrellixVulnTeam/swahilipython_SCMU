@@ -23,13 +23,13 @@ kundi DbcheckError (Exception):
                            (exprstr, func, args, kwds))
 
 
-eleza dbcheck(exprstr, globals=None, locals=None):
+eleza dbcheck(exprstr, globals=Tupu, locals=Tupu):
     "Decorator to implement debugging assertions"
     eleza decorate(func):
         expr = compile(exprstr, "dbcheck-%s" % func.__name__, "eval")
         eleza check(*args, **kwds):
-            ikiwa not eval(expr, globals, locals):
-                raise DbcheckError(exprstr, func, args, kwds)
+            ikiwa sio eval(expr, globals, locals):
+                ashiria DbcheckError(exprstr, func, args, kwds)
             rudisha func(*args, **kwds)
         rudisha check
     rudisha decorate
@@ -53,13 +53,13 @@ eleza countcalls(counts):
 eleza memoize(func):
     saved = {}
     eleza call(*args):
-        try:
+        jaribu:
             rudisha saved[args]
-        except KeyError:
+        tatizo KeyError:
             res = func(*args)
             saved[args] = res
             rudisha res
-        except TypeError:
+        tatizo TypeError:
             # Unhashable argument
             rudisha func(*args)
     call.__name__ = func.__name__
@@ -90,8 +90,8 @@ kundi TestDecorators(unittest.TestCase):
         self.assertEqual(foo.author, 'Cleese')
 
     eleza test_argforms(self):
-        # A few tests of argument passing, as we use restricted form
-        # of expressions for decorators.
+        # A few tests of argument pitaing, kama we use restricted form
+        # of expressions kila decorators.
 
         eleza noteargs(*args, **kwds):
             eleza decorate(func):
@@ -113,15 +113,15 @@ kundi TestDecorators(unittest.TestCase):
                                      dict(eric='idle', john='cleese')))
 
         @noteargs(1, 2,)
-        eleza f3(): pass
+        eleza f3(): pita
         self.assertEqual(f3.dbval, ((1, 2), {}))
 
     eleza test_dbcheck(self):
-        @dbcheck('args[1] is not None')
+        @dbcheck('args[1] ni sio Tupu')
         eleza f(a, b):
             rudisha a + b
         self.assertEqual(f(1, 2), 3)
-        self.assertRaises(DbcheckError, f, 1, None)
+        self.assertRaises(DbcheckError, f, 1, Tupu)
 
     eleza test_memoize(self):
         counts = {}
@@ -143,7 +143,7 @@ kundi TestDecorators(unittest.TestCase):
         self.assertEqual(double(3), 6)
         self.assertEqual(counts['double'], 2)
 
-        # Unhashable arguments do not get memoized:
+        # Unhashable arguments do sio get memoized:
         #
         self.assertEqual(double([10]), [10, 10])
         self.assertEqual(counts['double'], 3)
@@ -153,29 +153,29 @@ kundi TestDecorators(unittest.TestCase):
     eleza test_errors(self):
         # Test syntax restrictions - these are all compile-time errors:
         #
-        for expr in [ "1+2", "x[3]", "(1, 2)" ]:
-            # Sanity check: is expr is a valid expression by itself?
+        kila expr kwenye [ "1+2", "x[3]", "(1, 2)" ]:
+            # Sanity check: ni expr ni a valid expression by itself?
             compile(expr, "testexpr", "exec")
 
-            codestr = "@%s\neleza f(): pass" % expr
+            codestr = "@%s\neleza f(): pita" % expr
             self.assertRaises(SyntaxError, compile, codestr, "test", "exec")
 
         # You can't put multiple decorators on a single line:
         #
         self.assertRaises(SyntaxError, compile,
-                          "@f1 @f2\neleza f(): pass", "test", "exec")
+                          "@f1 @f2\neleza f(): pita", "test", "exec")
 
         # Test runtime errors
 
         eleza unimp(func):
-            raise NotImplementedError
-        context = dict(nullval=None, unimp=unimp)
+            ashiria NotImplementedError
+        context = dict(nullval=Tupu, unimp=unimp)
 
-        for expr, exc in [ ("undef", NameError),
+        kila expr, exc kwenye [ ("undef", NameError),
                            ("nullval", TypeError),
                            ("nullval.attr", AttributeError),
                            ("unimp", NotImplementedError)]:
-            codestr = "@%s\neleza f(): pass\nassert f() is None" % expr
+            codestr = "@%s\neleza f(): pita\nassert f() ni Tupu" % expr
             code = compile(codestr, "test", "exec")
             self.assertRaises(exc, eval, code, context)
 
@@ -190,11 +190,11 @@ kundi TestDecorators(unittest.TestCase):
         self.assertEqual(C.foo.booh, 42)
 
     eleza test_order(self):
-        # Test that decorators are applied in the proper order to the function
+        # Test that decorators are applied kwenye the proper order to the function
         # they are decorating.
         eleza callnum(num):
-            """Decorator factory that returns a decorator that replaces the
-            passed-in function with one that returns the value of 'num'"""
+            """Decorator factory that rudishas a decorator that replaces the
+            pitaed-in function with one that rudishas the value of 'num'"""
             eleza deco(func):
                 rudisha lambda: num
             rudisha deco
@@ -202,11 +202,11 @@ kundi TestDecorators(unittest.TestCase):
         @callnum(1)
         eleza foo(): rudisha 42
         self.assertEqual(foo(), 2,
-                            "Application order of decorators is incorrect")
+                            "Application order of decorators ni incorrect")
 
     eleza test_eval_order(self):
-        # Evaluating a decorated function involves four steps for each
-        # decorator-maker (the function that returns a decorator):
+        # Evaluating a decorated function involves four steps kila each
+        # decorator-maker (the function that rudishas a decorator):
         #
         #    1: Evaluate the decorator-maker name
         #    2: Evaluate the decorator-maker arguments (ikiwa any)
@@ -214,9 +214,9 @@ kundi TestDecorators(unittest.TestCase):
         #    4: Call the decorator
         #
         # When there are multiple decorators, these steps should be
-        # performed in the above order for each decorator, but we should
-        # iterate through the decorators in the reverse of the order they
-        # appear in the source.
+        # performed kwenye the above order kila each decorator, but we should
+        # iterate through the decorators kwenye the reverse of the order they
+        # appear kwenye the source.
 
         actions = []
 
@@ -236,8 +236,8 @@ kundi TestDecorators(unittest.TestCase):
                     opname, res = ('evalname', make_decorator)
                 elikiwa fname == 'arg':
                     opname, res = ('evalargs', str(self.index))
-                else:
-                    assert False, "Unknown attrname %s" % fname
+                isipokua:
+                    assert Uongo, "Unknown attrname %s" % fname
                 actions.append('%s%d' % (opname, self.index))
                 rudisha res
 
@@ -257,7 +257,7 @@ kundi TestDecorators(unittest.TestCase):
 
         self.assertEqual(actions, expected_actions)
 
-        # Test the equivalence claim in chapter 7 of the reference manual.
+        # Test the equivalence claim kwenye chapter 7 of the reference manual.
         #
         actions = []
         eleza bar(): rudisha 42
@@ -272,7 +272,7 @@ kundi TestClassDecorators(unittest.TestCase):
             x.extra = 'Hello'
             rudisha x
         @plain
-        kundi C(object): pass
+        kundi C(object): pita
         self.assertEqual(C.extra, 'Hello')
 
     eleza test_double(self):
@@ -285,7 +285,7 @@ kundi TestClassDecorators(unittest.TestCase):
 
         @add_five
         @ten
-        kundi C(object): pass
+        kundi C(object): pita
         self.assertEqual(C.extra, 15)
 
     eleza test_order(self):
@@ -297,7 +297,7 @@ kundi TestClassDecorators(unittest.TestCase):
             rudisha x
         @applied_second
         @applied_first
-        kundi C(object): pass
+        kundi C(object): pita
         self.assertEqual(C.extra, 'second')
 
 ikiwa __name__ == "__main__":

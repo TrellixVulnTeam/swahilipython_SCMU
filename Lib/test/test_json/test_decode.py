@@ -7,12 +7,12 @@ kutoka test.test_json agiza PyTest, CTest
 kundi TestDecode:
     eleza test_decimal(self):
         rval = self.loads('1.1', parse_float=decimal.Decimal)
-        self.assertTrue(isinstance(rval, decimal.Decimal))
+        self.assertKweli(isinstance(rval, decimal.Decimal))
         self.assertEqual(rval, decimal.Decimal('1.1'))
 
     eleza test_float(self):
         rval = self.loads('1', parse_int=float)
-        self.assertTrue(isinstance(rval, float))
+        self.assertKweli(isinstance(rval, float))
         self.assertEqual(rval, 1.0)
 
     eleza test_empty_objects(self):
@@ -33,7 +33,7 @@ kundi TestDecode:
         self.assertEqual(type(od), OrderedDict)
         # the object_pairs_hook takes priority over the object_hook
         self.assertEqual(self.loads(s, object_pairs_hook=OrderedDict,
-                                    object_hook=lambda x: None),
+                                    object_hook=lambda x: Tupu),
                          OrderedDict(p))
         # check that empty object literals work (see #17368)
         self.assertEqual(self.loads('{}', object_pairs_hook=OrderedDict),
@@ -44,7 +44,7 @@ kundi TestDecode:
 
     eleza test_decoder_optimizations(self):
         # Several optimizations were made that skip over calls to
-        # the whitespace regex, so this test is designed to try and
+        # the whitespace regex, so this test ni designed to try and
         # exercise the uncommon cases. The array cases are already covered.
         rval = self.loads('{   "key"    :    "value"    ,  "k":"v"    }')
         self.assertEqual(rval, {"key":"value", "k":"v"})
@@ -60,7 +60,7 @@ kundi TestDecode:
         self.check_keys_reuse(s, self.loads)
         decoder = self.json.decoder.JSONDecoder()
         self.check_keys_reuse(s, decoder.decode)
-        self.assertFalse(decoder.memo)
+        self.assertUongo(decoder.memo)
 
     eleza test_extra_data(self):
         s = '[1, 2, 3]5'
@@ -74,19 +74,19 @@ kundi TestDecode:
 
     eleza test_invalid_input_type(self):
         msg = 'the JSON object must be str'
-        for value in [1, 3.14, [], {}, None]:
+        kila value kwenye [1, 3.14, [], {}, Tupu]:
             self.assertRaisesRegex(TypeError, msg, self.loads, value)
 
     eleza test_string_with_utf8_bom(self):
         # see #18958
         bom_json = "[1,2,3]".encode('utf-8-sig').decode('utf-8')
-        with self.assertRaises(self.JSONDecodeError) as cm:
+        with self.assertRaises(self.JSONDecodeError) kama cm:
             self.loads(bom_json)
         self.assertIn('BOM', str(cm.exception))
-        with self.assertRaises(self.JSONDecodeError) as cm:
+        with self.assertRaises(self.JSONDecodeError) kama cm:
             self.json.load(StringIO(bom_json))
         self.assertIn('BOM', str(cm.exception))
-        # make sure that the BOM is not detected in the middle of a string
+        # make sure that the BOM ni sio detected kwenye the middle of a string
         bom_in_str = '"{}"'.format(''.encode('utf-8-sig').decode('utf-8'))
         self.assertEqual(self.loads(bom_in_str), '\ufeff')
         self.assertEqual(self.json.load(StringIO(bom_in_str)), '\ufeff')
@@ -99,5 +99,5 @@ kundi TestDecode:
         with self.assertWarns(DeprecationWarning):
             self.loads('{}', encoding='fake')
 
-kundi TestPyDecode(TestDecode, PyTest): pass
-kundi TestCDecode(TestDecode, CTest): pass
+kundi TestPyDecode(TestDecode, PyTest): pita
+kundi TestCDecode(TestDecode, CTest): pita

@@ -23,7 +23,7 @@ class cleanTestCase(support.TempdirManager,
             os.mkdir(path)
             setattr(cmd, name, path)
             if name == 'build_base':
-                continue
+                endelea
             for f in ('one', 'two', 'three'):
                 self.write_file(os.path.join(path, f))
 
@@ -35,7 +35,7 @@ class cleanTestCase(support.TempdirManager,
         # make sure the files where removed
         for name, path in dirs:
             self.assertFalse(os.path.exists(path),
-                         '%s was not removed' % path)
+                         '%s was sio removed' % path)
 
         # let's run the command again (should spit warnings but succeed)
         cmd.all = 1

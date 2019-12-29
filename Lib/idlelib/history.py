@@ -12,7 +12,7 @@ kundi History:
     history_prev - Bound to <<history-prev>> event (default Alt-P).
     '''
     eleza __init__(self, text):
-        '''Initialize data attributes and bind event methods.
+        '''Initialize data attributes na bind event methods.
 
         .text - Idle wrapper of tk Text widget, with .bell().
         .history - source statements, possibly with multiple lines.
@@ -22,66 +22,66 @@ kundi History:
         '''
         self.text = text
         self.history = []
-        self.prefix = None
-        self.pointer = None
+        self.prefix = Tupu
+        self.pointer = Tupu
         self.cyclic = idleConf.GetOption("main", "History", "cyclic", 1, "bool")
         text.bind("<<history-previous>>", self.history_prev)
         text.bind("<<history-next>>", self.history_next)
 
     eleza history_next(self, event):
         "Fetch later statement; start with ealiest ikiwa cyclic."
-        self.fetch(reverse=False)
-        rudisha "break"
+        self.fetch(reverse=Uongo)
+        rudisha "koma"
 
     eleza history_prev(self, event):
         "Fetch earlier statement; start with most recent."
-        self.fetch(reverse=True)
-        rudisha "break"
+        self.fetch(reverse=Kweli)
+        rudisha "koma"
 
     eleza fetch(self, reverse):
-        '''Fetch statement and replace current line in text widget.
+        '''Fetch statement na replace current line kwenye text widget.
 
-        Set prefix and pointer as needed for successive fetches.
-        Reset them to None, None when returning to the start line.
-        Sound bell when rudisha to start line or cannot leave a line
-        because cyclic is False.
+        Set prefix na pointer kama needed kila successive fetches.
+        Reset them to Tupu, Tupu when rudishaing to the start line.
+        Sound bell when rudisha to start line ama cannot leave a line
+        because cyclic ni Uongo.
         '''
         nhist = len(self.history)
         pointer = self.pointer
         prefix = self.prefix
-        ikiwa pointer is not None and prefix is not None:
-            ikiwa self.text.compare("insert", "!=", "end-1c") or \
+        ikiwa pointer ni sio Tupu na prefix ni sio Tupu:
+            ikiwa self.text.compare("insert", "!=", "end-1c") ama \
                     self.text.get("iomark", "end-1c") != self.history[pointer]:
-                pointer = prefix = None
+                pointer = prefix = Tupu
                 self.text.mark_set("insert", "end-1c")  # != after cursor move
-        ikiwa pointer is None or prefix is None:
+        ikiwa pointer ni Tupu ama prefix ni Tupu:
             prefix = self.text.get("iomark", "end-1c")
             ikiwa reverse:
                 pointer = nhist  # will be decremented
-            else:
+            isipokua:
                 ikiwa self.cyclic:
                     pointer = -1  # will be incremented
-                else:  # abort history_next
+                isipokua:  # abort history_next
                     self.text.bell()
-                    return
+                    rudisha
         nprefix = len(prefix)
-        while 1:
+        wakati 1:
             pointer += -1 ikiwa reverse else 1
-            ikiwa pointer < 0 or pointer >= nhist:
+            ikiwa pointer < 0 ama pointer >= nhist:
                 self.text.bell()
-                ikiwa not self.cyclic and pointer < 0:  # abort history_prev
-                    return
-                else:
+                ikiwa sio self.cyclic na pointer < 0:  # abort history_prev
+                    rudisha
+                isipokua:
                     ikiwa self.text.get("iomark", "end-1c") != prefix:
                         self.text.delete("iomark", "end-1c")
                         self.text.insert("iomark", prefix)
-                    pointer = prefix = None
-                break
+                    pointer = prefix = Tupu
+                koma
             item = self.history[pointer]
-            ikiwa item[:nprefix] == prefix and len(item) > nprefix:
+            ikiwa item[:nprefix] == prefix na len(item) > nprefix:
                 self.text.delete("iomark", "end-1c")
                 self.text.insert("iomark", item)
-                break
+                koma
         self.text.see("insert")
         self.text.tag_remove("sel", "1.0", "end")
         self.pointer = pointer
@@ -92,15 +92,15 @@ kundi History:
         source = source.strip()
         ikiwa len(source) > 2:
             # avoid duplicates
-            try:
+            jaribu:
                 self.history.remove(source)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
             self.history.append(source)
-        self.pointer = None
-        self.prefix = None
+        self.pointer = Tupu
+        self.prefix = Tupu
 
 
 ikiwa __name__ == "__main__":
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_history', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_history', verbosity=2, exit=Uongo)

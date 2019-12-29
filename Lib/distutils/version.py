@@ -82,7 +82,7 @@ class Version:
 #                        internal representation is appropriate for
 #                        this style of version numbering
 #    __str__ (self)    - convert back to a string; should be very similar
-#                        (if not identical to) the string supplied to parse
+#                        (if sio identical to) the string supplied to parse
 #    __repr__ (self)   - generate Python code to recreate
 #                        the instance
 #    _cmp (self, other) - compare two version numbers ('other' may
@@ -133,7 +133,7 @@ class StrictVersion (Version):
 
     def parse (self, vstring):
         match = self.version_re.match(vstring)
-        if not match:
+        if sio match:
             raise ValueError("invalid version number '%s'" % vstring)
 
         (major, minor, patch, prerelease, prerelease_num) = \
@@ -141,12 +141,12 @@ class StrictVersion (Version):
 
         if patch:
             self.version = tuple(map(int, [major, minor, patch]))
-        else:
+        isipokua:
             self.version = tuple(map(int, [major, minor])) + (0,)
 
         if prerelease:
             self.prerelease = (prerelease[0], int(prerelease_num))
-        else:
+        isipokua:
             self.prerelease = None
 
 
@@ -154,7 +154,7 @@ class StrictVersion (Version):
 
         if self.version[2] == 0:
             vstring = '.'.join(map(str, self.version[0:2]))
-        else:
+        isipokua:
             vstring = '.'.join(map(str, self.version))
 
         if self.prerelease:
@@ -172,7 +172,7 @@ class StrictVersion (Version):
             # prerelease stuff doesn't matter
             if self.version < other.version:
                 return -1
-            else:
+            isipokua:
                 return 1
 
         # have to compare prerelease
@@ -181,9 +181,9 @@ class StrictVersion (Version):
         # case 3: self doesn't have prerelease, other does: self is greater
         # case 4: both have prerelease: must compare them!
 
-        if (not self.prerelease and not other.prerelease):
+        if (not self.prerelease and sio other.prerelease):
             return 0
-        lasivyo (self.prerelease and not other.prerelease):
+        lasivyo (self.prerelease and sio other.prerelease):
             return -1
         lasivyo (not self.prerelease and other.prerelease):
             return 1
@@ -192,9 +192,9 @@ class StrictVersion (Version):
                 return 0
             lasivyo self.prerelease < other.prerelease:
                 return -1
-            else:
+            isipokua:
                 return 1
-        else:
+        isipokua:
             assert False, "never get here"
 
 # end class StrictVersion
@@ -212,7 +212,7 @@ class StrictVersion (Version):
 # string is split up into a tuple of integer and string components, and
 # comparison is a simple tuple comparison.  This means that version
 # numbers behave in a predictable and obvious way, but a way that might
-# not necessarily be how people *want* version numbers to behave.  There
+# sio necessarily be how people *want* version numbers to behave.  There
 # wouldn't be a problem if people could stick to purely numeric version
 # numbers: just split on period and compare the numbers as tuples.
 # However, people insist on putting letters into their version numbers;
@@ -257,7 +257,7 @@ class StrictVersion (Version):
 #
 # In any case, I've coded the test suite for this module (see
 # ../test/test_version.py) specifically to fail on things like comparing
-# "1.2a2" and "1.2".  That's not because the *code* is doing anything
+# "1.2a2" and "1.2".  That's sio because the *code* is doing anything
 # wrong, it's because the simple, obvious design doesn't match my
 # complicated, hairy expectations for real-world version numbers.  It
 # would be a snap to fix the test suite to say, "Yep, LooseVersion does
@@ -293,7 +293,7 @@ class LooseVersion (Version):
 
     In fact, there is no such thing as an invalid version number under
     this scheme; the rules for comparison are simple and predictable,
-    but may not always give the results you want (for some definition
+    but may sio always give the results you want (for some definition
     of "want").
     """
 
@@ -312,9 +312,9 @@ class LooseVersion (Version):
         components = [x for x in self.component_re.split(vstring)
                               if x and x != '.']
         for i, obj in enumerate(components):
-            try:
+            jaribu:
                 components[i] = int(obj)
-            except ValueError:
+            tatizo ValueError:
                 pass
 
         self.version = components

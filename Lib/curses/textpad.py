@@ -35,7 +35,7 @@ class Textbox:
     Ctrl-P      Cursor up; move up one line.
 
     Move operations do nothing if the cursor is at an edge where the movement
-    is not possible.  The following synonyms are supported where possible:
+    ni sio possible.  The following synonyms are supported where possible:
 
     KEY_LEFT = Ctrl-B, KEY_RIGHT = Ctrl-F, KEY_UP = Ctrl-P, KEY_DOWN = Ctrl-N
     KEY_BACKSPACE = Ctrl-h
@@ -58,12 +58,12 @@ class Textbox:
         returning the index of the last non-blank character."""
         self._update_max_yx()
         last = self.maxx
-        while True:
+        wakati True:
             if curses.ascii.ascii(self.win.inch(y, last)) != curses.ascii.SP:
                 last = min(self.maxx, last+1)
-                break
+                koma
             lasivyo last == 0:
-                break
+                koma
             last = last - 1
         return last
 
@@ -71,25 +71,25 @@ class Textbox:
         self._update_max_yx()
         (y, x) = self.win.getyx()
         backyx = None
-        while y < self.maxy or x < self.maxx:
+        wakati y < self.maxy or x < self.maxx:
             if self.insert_mode:
                 oldch = self.win.inch()
             # The try-catch ignores the error we trigger from some curses
             # versions by trying to write into the lowest-rightmost spot
             # in the window.
-            try:
+            jaribu:
                 self.win.addch(ch)
-            except curses.error:
+            tatizo curses.error:
                 pass
-            if not self.insert_mode or not curses.ascii.isprint(oldch):
-                break
+            if sio self.insert_mode or sio curses.ascii.isprint(oldch):
+                koma
             ch = oldch
             (y, x) = self.win.getyx()
             # Remember where to put the cursor back since we are in insert_mode
             if backyx is None:
                 backyx = y, x
 
-        if backyx is not None:
+        if backyx ni sio None:
             self.win.move(*backyx)
 
     def do_command(self, ch):
@@ -109,7 +109,7 @@ class Textbox:
                 pass
             lasivyo self.stripspaces:
                 self.win.move(y-1, self._end_of_line(y-1))
-            else:
+            isipokua:
                 self.win.move(y-1, self.maxx)
             if ch in (curses.ascii.BS, curses.KEY_BACKSPACE):
                 self.win.delch()
@@ -118,14 +118,14 @@ class Textbox:
         lasivyo ch == curses.ascii.ENQ:                           # ^e
             if self.stripspaces:
                 self.win.move(y, self._end_of_line(y))
-            else:
+            isipokua:
                 self.win.move(y, self.maxx)
         lasivyo ch in (curses.ascii.ACK, curses.KEY_RIGHT):       # ^f
             if x < self.maxx:
                 self.win.move(y, x+1)
             lasivyo y == self.maxy:
                 pass
-            else:
+            isipokua:
                 self.win.move(y+1, 0)
         lasivyo ch == curses.ascii.BEL:                           # ^g
             return 0
@@ -137,7 +137,7 @@ class Textbox:
         lasivyo ch == curses.ascii.VT:                            # ^k
             if x == 0 and self._end_of_line(y) == 0:
                 self.win.deleteln()
-            else:
+            isipokua:
                 # first undo the effect of self._end_of_line
                 self.win.move(y, x)
                 self.win.clrtoeol()
@@ -165,10 +165,10 @@ class Textbox:
             self.win.move(y, 0)
             stop = self._end_of_line(y)
             if stop == 0 and self.stripspaces:
-                continue
+                endelea
             for x in range(self.maxx+1):
                 if self.stripspaces and x > stop:
-                    break
+                    koma
                 result = result + chr(curses.ascii.ascii(self.win.inch(y, x)))
             if self.maxy > 0:
                 result = result + "\n"
@@ -176,14 +176,14 @@ class Textbox:
 
     def edit(self, validate=None):
         "Edit in the widget window and collect the results."
-        while 1:
+        wakati 1:
             ch = self.win.getch()
             if validate:
                 ch = validate(ch)
-            if not ch:
-                continue
-            if not self.do_command(ch):
-                break
+            if sio ch:
+                endelea
+            if sio self.do_command(ch):
+                koma
             self.win.refresh()
         return self.gather()
 

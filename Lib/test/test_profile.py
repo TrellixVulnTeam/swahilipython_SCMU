@@ -1,4 +1,4 @@
-"""Test suite for the profile module."""
+"""Test suite kila the profile module."""
 
 agiza sys
 agiza pstats
@@ -34,7 +34,7 @@ kundi ProfileTest(unittest.TestCase):
         start_timer = timer()
         prof.runctx("testfunc()", globals(), locals())
         results.append(timer() - start_timer)
-        for methodname in cls.methodnames:
+        kila methodname kwenye cls.methodnames:
             s = StringIO()
             stats = pstats.Stats(prof, stream=s)
             stats.strip_dirs().sort_stats("stdname")
@@ -44,7 +44,7 @@ kundi ProfileTest(unittest.TestCase):
             # Only compare against stats originating kutoka the test file.
             # Prevents outside code (e.g., the io module) kutoka causing
             # unexpected output.
-            output = [line.rstrip() for line in output ikiwa mod_name in line]
+            output = [line.rstrip() kila line kwenye output ikiwa mod_name kwenye line]
             results.append('\n'.join(output))
         rudisha results
 
@@ -53,20 +53,20 @@ kundi ProfileTest(unittest.TestCase):
         expected = self.get_expected_output()
         self.assertEqual(results[0], 1000)
         fail = []
-        for i, method in enumerate(self.methodnames):
+        kila i, method kwenye enumerate(self.methodnames):
             a = expected[method]
             b = results[i+1]
             ikiwa a != b:
-                fail.append(f"\nStats.{method} output for "
+                fail.append(f"\nStats.{method} output kila "
                             f"{self.profilerclass.__name__} "
-                             "does not fit expectation:")
+                             "does sio fit expectation:")
                 fail.extend(unified_diff(a.split('\n'), b.split('\n'),
                             lineterm=""))
         ikiwa fail:
             self.fail("\n".join(fail))
 
     eleza test_calling_conventions(self):
-        # Issue #5330: profile and cProfile wouldn't report C functions called
+        # Issue #5330: profile na cProfile wouldn't report C functions called
         # with keyword arguments. We test all calling conventions.
         stmts = [
             "max([0])",
@@ -76,7 +76,7 @@ kundi ProfileTest(unittest.TestCase):
             "max(*([0],), key=int)",
             "max(*([0],), **dict(key=int))",
         ]
-        for stmt in stmts:
+        kila stmt kwenye stmts:
             s = StringIO()
             prof = self.profilerclass(timer, 0.001)
             prof.runctx(stmt, globals(), locals())
@@ -90,20 +90,20 @@ kundi ProfileTest(unittest.TestCase):
         with silent():
             self.profilermodule.run("int('1')")
         self.profilermodule.run("int('1')", filename=TESTFN)
-        self.assertTrue(os.path.exists(TESTFN))
+        self.assertKweli(os.path.exists(TESTFN))
 
     eleza test_runctx(self):
         with silent():
             self.profilermodule.runctx("testfunc()", globals(), locals())
         self.profilermodule.runctx("testfunc()", globals(), locals(),
                                   filename=TESTFN)
-        self.assertTrue(os.path.exists(TESTFN))
+        self.assertKweli(os.path.exists(TESTFN))
 
     eleza test_run_profile_as_module(self):
         # Test that -m switch needs an argument
         assert_python_failure('-m', self.profilermodule.__name__, '-m')
 
-        # Test failure for not-existent module
+        # Test failure kila not-existent module
         assert_python_failure('-m', self.profilermodule.__name__,
                               '-m', 'random_module_xyz')
 
@@ -118,16 +118,16 @@ eleza regenerate_expected_output(filename, cls):
     results = cls.do_profiling()
 
     newfile = []
-    with open(filename, 'r') as f:
-        for line in f:
+    with open(filename, 'r') kama f:
+        kila line kwenye f:
             newfile.append(line)
             ikiwa line.startswith('#--cut'):
-                break
+                koma
 
-    with open(filename, 'w') as f:
+    with open(filename, 'w') kama f:
         f.writelines(newfile)
         f.write("_ProfileOutput = {}\n")
-        for i, method in enumerate(cls.methodnames):
+        kila i, method kwenye enumerate(cls.methodnames):
             f.write('_ProfileOutput[%r] = """\\\n%s"""\n' % (
                     method, results[i+1]))
         f.write('\nikiwa __name__ == "__main__":\n    main()\n')
@@ -135,23 +135,23 @@ eleza regenerate_expected_output(filename, cls):
 @contextmanager
 eleza silent():
     stdout = sys.stdout
-    try:
+    jaribu:
         sys.stdout = StringIO()
-        yield
-    finally:
+        tuma
+    mwishowe:
         sys.stdout = stdout
 
 eleza test_main():
     run_unittest(ProfileTest)
 
 eleza main():
-    ikiwa '-r' not in sys.argv:
+    ikiwa '-r' haiko kwenye sys.argv:
         test_main()
-    else:
+    isipokua:
         regenerate_expected_output(__file__, ProfileTest)
 
 
-# Don't remove this comment. Everything below it is auto-generated.
+# Don't remove this comment. Everything below it ni auto-generated.
 #--cut--------------------------------------------------------------------------
 _ProfileOutput = {}
 _ProfileOutput['print_stats'] = """\

@@ -2,8 +2,8 @@ agiza io
 agiza os
 
 kutoka .context agiza reduction, set_spawning_popen
-ikiwa not reduction.HAVE_SEND_HANDLE:
-    raise ImportError('No support for sending fds between processes')
+ikiwa sio reduction.HAVE_SEND_HANDLE:
+    ashiria ImportError('No support kila sending fds between processes')
 kutoka . agiza forkserver
 kutoka . agiza popen_fork
 kutoka . agiza spawn
@@ -13,7 +13,7 @@ kutoka . agiza util
 __all__ = ['Popen']
 
 #
-# Wrapper for an fd used while launching a process
+# Wrapper kila an fd used wakati launching a process
 #
 
 kundi _DupFd(object):
@@ -42,32 +42,32 @@ kundi Popen(popen_fork.Popen):
         prep_data = spawn.get_preparation_data(process_obj._name)
         buf = io.BytesIO()
         set_spawning_popen(self)
-        try:
+        jaribu:
             reduction.dump(prep_data, buf)
             reduction.dump(process_obj, buf)
-        finally:
-            set_spawning_popen(None)
+        mwishowe:
+            set_spawning_popen(Tupu)
 
         self.sentinel, w = forkserver.connect_to_new_process(self._fds)
-        # Keep a duplicate of the data pipe's write end as a sentinel of the
+        # Keep a duplicate of the data pipe's write end kama a sentinel of the
         # parent process used by the child process.
         _parent_w = os.dup(w)
         self.finalizer = util.Finalize(self, util.close_fds,
                                        (_parent_w, self.sentinel))
-        with open(w, 'wb', closefd=True) as f:
+        with open(w, 'wb', closefd=Kweli) kama f:
             f.write(buf.getbuffer())
         self.pid = forkserver.read_signed(self.sentinel)
 
     eleza poll(self, flag=os.WNOHANG):
-        ikiwa self.returncode is None:
+        ikiwa self.returncode ni Tupu:
             kutoka multiprocessing.connection agiza wait
-            timeout = 0 ikiwa flag == os.WNOHANG else None
-            ikiwa not wait([self.sentinel], timeout):
-                rudisha None
-            try:
+            timeout = 0 ikiwa flag == os.WNOHANG else Tupu
+            ikiwa sio wait([self.sentinel], timeout):
+                rudisha Tupu
+            jaribu:
                 self.returncode = forkserver.read_signed(self.sentinel)
-            except (OSError, EOFError):
-                # This should not happen usually, but perhaps the forkserver
+            tatizo (OSError, EOFError):
+                # This should sio happen usually, but perhaps the forkserver
                 # process itself got killed
                 self.returncode = 255
 

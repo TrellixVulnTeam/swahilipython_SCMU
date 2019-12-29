@@ -19,10 +19,10 @@ kundi EditorWindowTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
+        kila id kwenye cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         e = Editor(root=self.root)
@@ -32,8 +32,8 @@ kundi EditorWindowTest(unittest.TestCase):
 
 kundi TestGetLineIndent(unittest.TestCase):
     eleza test_empty_lines(self):
-        for tabwidth in [1, 2, 4, 6, 8]:
-            for line in ['', '\n']:
+        kila tabwidth kwenye [1, 2, 4, 6, 8]:
+            kila line kwenye ['', '\n']:
                 with self.subTest(line=line, tabwidth=tabwidth):
                     self.assertEqual(
                         editor.get_line_indent(line, tabwidth=tabwidth),
@@ -47,18 +47,18 @@ kundi TestGetLineIndent(unittest.TestCase):
                  ('    space test', (4, 4)),
                  ('\ttab test', (1, 4)),
                  ('\t\tdouble tabs test', (2, 8)),
-                 # Different results when mixing tabs and spaces.
+                 # Different results when mixing tabs na spaces.
                  ('    \tmixed test', (5, 8)),
                  ('  \t  mixed test', (5, 6)),
                  ('\t    mixed test', (5, 8)),
-                 # Spaces not divisible by tabwidth.
+                 # Spaces sio divisible by tabwidth.
                  ('  \tmixed test', (3, 4)),
                  (' \t mixed test', (3, 5)),
                  ('\t  mixed test', (3, 6)),
-                 # Only checks spaces and tabs.
+                 # Only checks spaces na tabs.
                  ('\nnewline test', (0, 0)))
 
-        for line, expected in tests:
+        kila line, expected kwenye tests:
             with self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=4),
@@ -72,18 +72,18 @@ kundi TestGetLineIndent(unittest.TestCase):
                  ('        space test', (8, 8)),
                  ('\ttab test', (1, 8)),
                  ('\t\tdouble tabs test', (2, 16)),
-                 # Different results when mixing tabs and spaces.
+                 # Different results when mixing tabs na spaces.
                  ('        \tmixed test', (9, 16)),
                  ('      \t  mixed test', (9, 10)),
                  ('\t        mixed test', (9, 16)),
-                 # Spaces not divisible by tabwidth.
+                 # Spaces sio divisible by tabwidth.
                  ('  \tmixed test', (3, 8)),
                  (' \t mixed test', (3, 9)),
                  ('\t  mixed test', (3, 10)),
-                 # Only checks spaces and tabs.
+                 # Only checks spaces na tabs.
                  ('\nnewline test', (0, 0)))
 
-        for line, expected in tests:
+        kila line, expected kwenye tests:
             with self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=8),

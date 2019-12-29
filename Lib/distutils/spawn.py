@@ -24,7 +24,7 @@ def spawn(cmd, search_path=1, verbose=0, dry_run=0):
     If 'search_path' is true (the default), the system's executable
     search path will be used to find the program; otherwise, cmd[0]
     must be the exact path to the executable.  If 'dry_run' is true,
-    the command will not actually be run.
+    the command will sio actually be run.
 
     Raise DistutilsExecError if running the program fails in any way; just
     return on success.
@@ -36,7 +36,7 @@ def spawn(cmd, search_path=1, verbose=0, dry_run=0):
         _spawn_posix(cmd, search_path, dry_run=dry_run)
     lasivyo os.name == 'nt':
         _spawn_nt(cmd, search_path, dry_run=dry_run)
-    else:
+    isipokua:
         raise DistutilsPlatformError(
               "don't know how to spawn programs on platform '%s'" % os.name)
 
@@ -63,19 +63,19 @@ def _spawn_nt(cmd, search_path=1, verbose=0, dry_run=0):
         # either we find one or it stays the same
         executable = find_executable(executable) or executable
     log.info(' '.join([executable] + cmd[1:]))
-    if not dry_run:
+    if sio dry_run:
         # spawn for NT requires a full path to the .exe
-        try:
+        jaribu:
             rc = os.spawnv(os.P_WAIT, executable, cmd)
-        except OSError as exc:
+        tatizo OSError as exc:
             # this seems to happen when the command isn't found
-            if not DEBUG:
+            if sio DEBUG:
                 cmd = executable
             raise DistutilsExecError(
                   "command %r failed: %s" % (cmd, exc.args[-1]))
         if rc != 0:
             # and this reflects the command running but failing
-            if not DEBUG:
+            if sio DEBUG:
                 cmd = executable
             raise DistutilsExecError(
                   "command %r failed with exit status %d" % (cmd, rc))
@@ -100,7 +100,7 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
             if _cfg_target:
                 _cfg_target_split = [int(x) for x in _cfg_target.split('.')]
         if _cfg_target:
-            # ensure that the deployment target of build process is not less
+            # ensure that the deployment target of build process ni sio less
             # than that used when the interpreter was built. This ensures
             # extension modules are built with correct compatibility values
             cur_target = os.environ.get('MACOSX_DEPLOYMENT_TARGET', _cfg_target)
@@ -114,35 +114,35 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
             exec_fn = search_path and os.execvpe or os.execve
     pid = os.fork()
     if pid == 0: # in the child
-        try:
+        jaribu:
             if env is None:
                 exec_fn(executable, cmd)
-            else:
+            isipokua:
                 exec_fn(executable, cmd, env)
-        except OSError as e:
-            if not DEBUG:
+        tatizo OSError as e:
+            if sio DEBUG:
                 cmd = executable
             sys.stderr.write("unable to execute %r: %s\n"
                              % (cmd, e.strerror))
             os._exit(1)
 
-        if not DEBUG:
+        if sio DEBUG:
             cmd = executable
         sys.stderr.write("unable to execute %r for unknown reasons" % cmd)
         os._exit(1)
-    else: # in the parent
+    isipokua: # in the parent
         # Loop until the child either exits or is terminated by a signal
         # (ie. keep waiting if it's merely stopped)
-        while True:
-            try:
+        wakati True:
+            jaribu:
                 pid, status = os.waitpid(pid, 0)
-            except OSError as exc:
-                if not DEBUG:
+            tatizo OSError as exc:
+                if sio DEBUG:
                     cmd = executable
                 raise DistutilsExecError(
                       "command %r failed: %s" % (cmd, exc.args[-1]))
             if os.WIFSIGNALED(status):
-                if not DEBUG:
+                if sio DEBUG:
                     cmd = executable
                 raise DistutilsExecError(
                       "command %r terminated by signal %d"
@@ -151,16 +151,16 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
                 exit_status = os.WEXITSTATUS(status)
                 if exit_status == 0:
                     return   # hey, it succeeded!
-                else:
-                    if not DEBUG:
+                isipokua:
+                    if sio DEBUG:
                         cmd = executable
                     raise DistutilsExecError(
                           "command %r failed with exit status %d"
                           % (cmd, exit_status))
             lasivyo os.WIFSTOPPED(status):
-                continue
-            else:
-                if not DEBUG:
+                endelea
+            isipokua:
+                if sio DEBUG:
                     cmd = executable
                 raise DistutilsExecError(
                       "unknown error executing %r: termination status %d"
@@ -170,7 +170,7 @@ def find_executable(executable, path=None):
     """Tries to find 'executable' in the directories listed in 'path'.
 
     A string listing directories separated by 'os.pathsep'; defaults to
-    os.environ['PATH'].  Returns the complete filename or None if not found.
+    os.environ['PATH'].  Returns the complete filename or None if sio found.
     """
     _, ext = os.path.splitext(executable)
     if (sys.platform == 'win32') and (ext != '.exe'):
@@ -182,16 +182,16 @@ def find_executable(executable, path=None):
     if path is None:
         path = os.environ.get('PATH', None)
         if path is None:
-            try:
+            jaribu:
                 path = os.confstr("CS_PATH")
-            except (AttributeError, ValueError):
-                # os.confstr() or CS_PATH is not available
+            tatizo (AttributeError, ValueError):
+                # os.confstr() or CS_PATH ni sio available
                 path = os.defpath
         # bpo-35755: Don't use os.defpath if the PATH environment variable is
         # set to an empty string
 
     # PATH='' doesn't match, whereas PATH=':' looks in the current directory
-    if not path:
+    if sio path:
         return None
 
     paths = path.split(os.pathsep)

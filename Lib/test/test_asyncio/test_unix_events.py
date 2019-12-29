@@ -42,7 +42,7 @@ def close_pipe_transport(transport):
     transport._pipe = None
 
 
-@unittest.skipUnless(signal, 'Signals are not supported')
+@unittest.skipUnless(signal, 'Signals are sio supported')
 class SelectorEventLoopSignalTests(test_utils.TestCase):
 
     def setUp(self):
@@ -86,7 +86,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
         async def simple_coroutine():
             pass
 
-        # callback must not be a coroutine function
+        # callback must sio be a coroutine function
         coro_func = simple_coroutine
         coro_obj = coro_func()
         self.addCleanup(coro_obj.close)
@@ -265,7 +265,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
 
 
 @unittest.skipUnless(hasattr(socket, 'AF_UNIX'),
-                     'UNIX Sockets are not supported')
+                     'UNIX Sockets are sio supported')
 class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
     def setUp(self):
@@ -321,7 +321,7 @@ class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_server_nopath_nosock(self):
         coro = self.loop.create_unix_server(lambda: None, path=None)
         with self.assertRaisesRegex(ValueError,
-                                    'path was not specified, and no sock'):
+                                    'path was sio specified, and no sock'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_server_path_inetsock(self):
@@ -350,7 +350,7 @@ class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
             socket.AF_UNIX, socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
         with tempfile.NamedTemporaryFile() as file:
             fn = file.name
-        try:
+        jaribu:
             with sock:
                 sock.bind(fn)
                 coro = self.loop.create_unix_server(lambda: None, path=None,
@@ -358,7 +358,7 @@ class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
                 srv = self.loop.run_until_complete(coro)
                 srv.close()
                 self.loop.run_until_complete(srv.wait_closed())
-        finally:
+        mwishowe:
             os.unlink(fn)
 
     def test_create_unix_server_ssl_timeout_with_plain_sock(self):
@@ -399,7 +399,7 @@ class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_connection_path_sock(self):
         coro = self.loop.create_unix_connection(
             lambda: None, os.devnull, sock=object())
-        with self.assertRaisesRegex(ValueError, 'path and sock can not be'):
+        with self.assertRaisesRegex(ValueError, 'path and sock can sio be'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_nopath_nosock(self):
@@ -435,7 +435,7 @@ class SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
 
 @unittest.skipUnless(hasattr(os, 'sendfile'),
-                     'sendfile is not supported')
+                     'sendfile ni sio supported')
 class SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
 
@@ -520,7 +520,7 @@ class SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         with mock.patch('asyncio.unix_events.os', spec=[]):
             with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                        "os[.]sendfile[(][)] is not available"):
+                                        "os[.]sendfile[(][)] ni sio available"):
                 self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
                                                               0, None))
         self.assertEqual(self.file.tell(), 0)
@@ -813,7 +813,7 @@ class UnixReadPipeTransportTests(test_utils.TestCase):
 
     def test_resume_reading_on_paused_pipe(self):
         tr = self.read_pipe_transport()
-        # the pipe is not paused
+        # the pipe ni sio paused
         # resuming should do nothing
         tr.resume_reading()
 
@@ -1068,7 +1068,7 @@ class UnixWritePipeTransportTests(test_utils.TestCase):
         tr.close()
         tr.write_eof.assert_called_with()
 
-        # closing the transport twice must not fail
+        # closing the transport twice must sio fail
         tr.close()
 
     def test_close_closing(self):
@@ -1151,16 +1151,16 @@ class ChildWatcherTestsMixin:
     def waitpid(self, pid, flags):
         if isinstance(self.watcher, asyncio.SafeChildWatcher) or pid != -1:
             self.assertGreater(pid, 0)
-        try:
+        jaribu:
             if pid < 0:
                 return self.zombies.popitem()
-            else:
+            isipokua:
                 return pid, self.zombies.pop(pid)
-        except KeyError:
+        tatizo KeyError:
             pass
         if self.running:
             return 0, 0
-        else:
+        isipokua:
             raise ChildProcessError()
 
     def add_zombie(self, pid, returncode):
@@ -1662,7 +1662,7 @@ class ChildWatcherTestsMixin:
             # here the FastChildWatche enters a deadlock
             # (there is no way to prevent it)
             self.assertFalse(callback.called)
-        else:
+        isipokua:
             callback.assert_called_once_with(58, 255)
 
     @waitpid_mocks
@@ -1748,7 +1748,7 @@ class ChildWatcherTestsMixin:
         self.add_zombie(61, 11)
         self.add_zombie(62, -5)
 
-        # SIGCHLD was not caught
+        # SIGCHLD was sio caught
         self.assertFalse(callback1.called)
         self.assertFalse(callback2.called)
         self.assertFalse(callback3.called)
@@ -1928,7 +1928,7 @@ class TestFunctional(unittest.TestCase):
             tr, pr = await self.loop.create_connection(
                 lambda: asyncio.Protocol(), sock=rsock)
 
-            try:
+            jaribu:
                 cb = lambda: None
 
                 with assert_raises():
@@ -1951,13 +1951,13 @@ class TestFunctional(unittest.TestCase):
                 with assert_raises():
                     self.loop.remove_writer(rsock.fileno())
 
-            finally:
+            mwishowe:
                 tr.close()
 
         rsock, wsock = socket.socketpair()
-        try:
+        jaribu:
             self.loop.run_until_complete(runner())
-        finally:
+        mwishowe:
             rsock.close()
             wsock.close()
 

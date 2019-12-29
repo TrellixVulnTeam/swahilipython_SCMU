@@ -1,49 +1,49 @@
-What's New in IDLE 3.8.0 (since 3.7.0)
+What's New kwenye IDLE 3.8.0 (since 3.7.0)
 Released on 2019-10-20?
 ======================================
 
 bpo-35379: When exiting IDLE, catch any AttributeError.  One happens
-when EditorWindow.close is called twice.  Printing a traceback, when
-IDLE is run kutoka a terminal, is useless and annoying.
+when EditorWindow.close ni called twice.  Printing a traceback, when
+IDLE ni run kutoka a terminal, ni useless na annoying.
 
 bpo-38183: To avoid test issues, test_idle ignores the user config
-directory.  It no longer tries to create or access .idlerc or any files
+directory.  It no longer tries to create ama access .idlerc ama any files
 within.  Users must run IDLE to discover problems with saving settings.
 
 bpo-38077: IDLE no longer adds 'argv' to the user namespace when
-initializing it.  This bug only affected 3.7.4 and 3.8.0b2 to 3.8.0b4.
+initializing it.  This bug only affected 3.7.4 na 3.8.0b2 to 3.8.0b4.
 
 bpo-38401: Shell restart lines now fill the window width, always start
-with '=', and avoid wrapping unnecessarily. The line will still wrap
-ikiwa the included file name is long relative to the width.
+with '=', na avoid wrapping unnecessarily. The line will still wrap
+ikiwa the included file name ni long relative to the width.
 
-bpo-37092: Add mousewheel scrolling for IDLE module, path, and stack
+bpo-37092: Add mousewheel scrolling kila IDLE module, path, na stack
 browsers.  Patch by George Zhang.
 
 bpo-35771: To avoid occasional spurious test_idle failures on slower
-machines, increase the ``hover_delay`` in test_tooltip.
+machines, increase the ``hover_delay`` kwenye test_tooltip.
 
-bpo-37824: Properly handle user input warnings in IDLE shell.
+bpo-37824: Properly handle user input warnings kwenye IDLE shell.
 Cease turning SyntaxWarnings into SyntaxErrors.
 
-bpo-37929: IDLE Settings dialog now closes properly when there is no
+bpo-37929: IDLE Settings dialog now closes properly when there ni no
 shell window.
 
-bpo-37849: Fix completions list appearing too high or low when shown
+bpo-37849: Fix completions list appearing too high ama low when shown
 above the current line.
 
-bpo-36419: Refactor autocompete and improve testing.
+bpo-36419: Refactor autocompete na improve testing.
 
 bpo-37748: Reorder the Run menu.  Put the most common choice,
 Run Module, at the top.
 
 bpo-37692: Improve highlight config sample with example shell
-interaction and better labels for shell elements.
+interaction na better labels kila shell elements.
 
 bpo-37628: Settings dialog no longer expands with font size.
-The font and highlight sample boxes gain scrollbars instead.
+The font na highlight sample boxes gain scrollbars instead.
 
-bpo-17535: Add optional line numbers for IDLE editor windows.
+bpo-17535: Add optional line numbers kila IDLE editor windows.
 
 bpo-37627: Initialize the Customize Run dialog with the command line
 arguments most recently entered before.  The user can optionally edit
@@ -52,28 +52,28 @@ before submitting them.
 bpo-33610: Code context always shows the correct context when toggled on.
 
 bpo-36390: Gather Format menu functions into format.py.  Combine
-paragraph.py, rstrip.py, and format methods kutoka editor.py.
+paragraph.py, rstrip.py, na format methods kutoka editor.py.
 
 bpo-37530: Optimize code context to reduce unneeded background activity.
-Font and highlight changes now occur along with text changes instead
+Font na highlight changes now occur along with text changes instead
 of after a random delay.
 
-bpo-27452: Cleanup config.py by inlining RemoveFile and simplifying
-the handling of __file__ in CreateConfigHandlers/
+bpo-27452: Cleanup config.py by inlining RemoveFile na simplifying
+the handling of __file__ kwenye CreateConfigHandlers/
 
-bpo-26806: To compensate for stack frames added by IDLE and avoid
-possible problems with low recursion limits, add 30 to limits in the
+bpo-26806: To compensate kila stack frames added by IDLE na avoid
+possible problems with low recursion limits, add 30 to limits kwenye the
 user code execution process.  Subtract 30 when reporting recursion
 limits to make this addition mostly transparent.
 
-bpo-37325: Fix tab focus traversal order for help source and custom
+bpo-37325: Fix tab focus traversal order kila help source na custom
 run dialogs.
 
 bpo-37321: Both subprocess connection error messages now refer to
 the 'Startup failure' section of the IDLE doc.
 
 bpo-37177: Properly attach search dialogs to their main window so
-that they behave like other dialogs and do not get hidden behind
+that they behave like other dialogs na do sio get hidden behind
 their main window.
 
 bpo-37039: Adjust "Zoom Height" to individual screens by momentarily
@@ -82,23 +82,23 @@ screen settings may invalidate the saved height.  While a window is
 maximized, "Zoom Height" has no effect.
 
 bpo-35763: Make calltip reminder about '/' meaning positional-only less
-obtrusive by only adding it when there is room on the first line.
+obtrusive by only adding it when there ni room on the first line.
 
 bpo-5680: Add 'Run Customized' to the Run menu to run a module with
 customized settings. Any command line arguments entered are added
 to sys.argv. One can suppress the normal Shell main module restart.
 
 bpo-35610: Replace now redundant editor.context_use_ps1 with
-.prompt_last_line.  This finishes change started in bpo-31858.
+.prompt_last_line.  This finishes change started kwenye bpo-31858.
 
 bpo-32411: Stop sorting dict created with desired line order.
 
 bpo-37038: Make idlelib.run runnable; add test clause.
 
-bpo-36958: Print any argument other than None or int passed to
-SystemExit or sys.exit().
+bpo-36958: Print any argument other than Tupu ama int pitaed to
+SystemExit ama sys.exit().
 
-bpo-36807: When saving a file, call file.flush() and os.fsync()
+bpo-36807: When saving a file, call file.flush() na os.fsync()
 so bits are flushed to e.g. a USB drive.
 
 bpo-36429: Fix starting IDLE with pyshell.
@@ -108,12 +108,12 @@ Remove obsolete __name__=='__main__' command.
 bpo-30348: Increase test coverage of idlelib.autocomplete by 30%.
 Patch by Louie Lu.
 
-bpo-23205: Add tests and refactor grep's findfiles.
+bpo-23205: Add tests na refactor grep's findfiles.
 
-bpo-36405: Use dict unpacking in idlelib.
+bpo-36405: Use dict unpacking kwenye idlelib.
 
 bpo-36396: Remove fgBg param of idlelib.config.GetHighlight().
-This param was only used twice and changed the rudisha type.
+This param was only used twice na changed the rudisha type.
 
 bpo-23216: IDLE: Add docstrings to search modules.
 
@@ -121,9 +121,9 @@ bpo-36176: Fix IDLE autocomplete & calltip popup colors.
 Prevent conflicts with Linux dark themes
 (and slightly darken calltip background).
 
-bpo-36152: Remove colorizer.ColorDelegator.close_when_done and the
+bpo-36152: Remove colorizer.ColorDelegator.close_when_done na the
 corresponding argument of .close().  In IDLE, both have always been
-None or False since 2007.
+Tupu ama Uongo since 2007.
 
 bpo-36096: Make colorizer state variables instance-only.
 
@@ -132,40 +132,40 @@ Patch by Kevin Walzer.
 
 bpo-24310: Document settings dialog font tab sample.
 
-bpo-35689: Add docstrings and tests for colorizer.
+bpo-35689: Add docstrings na tests kila colorizer.
 
-bpo-35833: Revise IDLE doc for control codes sent to Shell.
+bpo-35833: Revise IDLE doc kila control codes sent to Shell.
 Add a code example block.
 
 bpo-35770: IDLE macosx deletes Options => Configure IDLE.
 It previously deleted Window => Zoom Height by mistake.
-(Zoom Height is now on the Options menu).  On Mac, the settings
-dialog is accessed via Preferences on the IDLE menu.
+(Zoom Height ni now on the Options menu).  On Mac, the settings
+dialog ni accessed via Preferences on the IDLE menu.
 
 bpo-35769: Change new file name kutoka 'Untitled' to 'untitled'.
 
-bpo-35660: Fix agizas in window module.
+bpo-35660: Fix agizas kwenye window module.
 
-bpo-35641: Properly format calltip for function without docstring.
+bpo-35641: Properly format calltip kila function without docstring.
 
-bpo-33987: Use ttk Frame for ttk widgets.
+bpo-33987: Use ttk Frame kila ttk widgets.
 
-bpo-34055: Fix erroneous 'smart' indents and newlines in IDLE Shell.
+bpo-34055: Fix erroneous 'smart' indents na newlines kwenye IDLE Shell.
 
 bpo-28097: Add Previous/Next History entries to Shell menu.
 
-bpo-35591: Find Selection now works when selection not found.
+bpo-35591: Find Selection now works when selection sio found.
 
-bpo-35598: Update config_key: use PEP 8 names and ttk widgets,
-make some objects global, and add tests.
+bpo-35598: Update config_key: use PEP 8 names na ttk widgets,
+make some objects global, na add tests.
 
 bpo-35196: Speed up squeezer line counting.
 
 bpo-35208: Squeezer now counts wrapped lines before newlines.
 
-bpo-35555: Gray out Code Context menu entry when it's not applicable.
+bpo-35555: Gray out Code Context menu entry when it's sio applicable.
 
-bpo-22703: Improve the Code Context and Zoom Height menu labels.
+bpo-22703: Improve the Code Context na Zoom Height menu labels.
 The Code Context menu label now toggles between Show/Hide Code Context.
 The Zoom Height menu now toggles between Zoom/Restore Height.
 Zoom Height has moved kutoka the Window menu to the Options menu.
@@ -174,53 +174,53 @@ bpo-35521: Document the editor code context feature.
 Add some internal references within the IDLE doc.
 
 bpo-34864: When starting IDLE on MacOS, warn ikiwa the system setting
-"Prefer tabs when opening documents" is "Always".  As previous
-documented for this issue, running IDLE with this setting causes
-problems.  If the setting is changed while IDLE is running,
-there will be no warning until IDLE is restarted.
+"Prefer tabs when opening documents" ni "Always".  As previous
+documented kila this issue, running IDLE with this setting causes
+problems.  If the setting ni changed wakati IDLE ni running,
+there will be no warning until IDLE ni restarted.
 
-bpo-35213: Where appropriate, use 'macOS' in idlelib.
+bpo-35213: Where appropriate, use 'macOS' kwenye idlelib.
 
 bpo-34864: Document two IDLE on MacOS issues.  The System Preferences
 Dock "prefer tabs always" setting disables some IDLE features.
-Menus are a bit different than as described for Windows and Linux.
+Menus are a bit different than kama described kila Windows na Linux.
 
-bpo-35202: Remove unused agizas in idlelib.
+bpo-35202: Remove unused agizas kwenye idlelib.
 
 bpo-33000: Document that IDLE's shell has no line limit.
 A program that runs indefinitely can overfill memory.
 
 bpo-23220: Explain how IDLE's Shell displays output.
-Add new subsection "User output in Shell".
+Add new subsection "User output kwenye Shell".
 
 bpo-35099: Improve the doc about IDLE running user code.
-"IDLE -- console differences" is renamed "Running user code".
+"IDLE -- console differences" ni renamed "Running user code".
 It mostly covers the implications of using custom sys.stdxxx objects.
 
 bpo-35097: Add IDLE doc subsection explaining editor windows.
-Topics include opening, title and status bars, .py* extension, and running.
+Topics include opening, title na status bars, .py* extension, na running.
 
-Issue 35093: Document the IDLE document viewer in the IDLE doc.
-Add a paragraph in "Help and preferences", "Help sources" subsection.
+Issue 35093: Document the IDLE document viewer kwenye the IDLE doc.
+Add a paragraph kwenye "Help na preferences", "Help sources" subsection.
 
-bpo-1529353: Explain Shell text squeezing in the IDLE doc.
+bpo-1529353: Explain Shell text squeezing kwenye the IDLE doc.
 
 bpo-35088: Update idlelib.help.copy_string docstring.
-We now use git and backporting instead of hg and forward merging.
+We now use git na backporting instead of hg na forward merging.
 
-bpo-35087: Update idlelib help files for the current doc build.
-The main change is the elimination of chapter-section numbers.
+bpo-35087: Update idlelib help files kila the current doc build.
+The main change ni the elimination of chapter-section numbers.
 
-bpo-1529353: Output over N lines (50 by default) is squeezed down to a button.
-N can be changed in the PyShell section of the General page of the
+bpo-1529353: Output over N lines (50 by default) ni squeezed down to a button.
+N can be changed kwenye the PyShell section of the General page of the
 Settings dialog.  Fewer, but possibly extra long, lines can be squeezed by
-right clicking on the output.  Squeezed output can be expanded in place
-by double-clicking the button or into the clipboard or a separate window
+right clicking on the output.  Squeezed output can be expanded kwenye place
+by double-clicking the button ama into the clipboard ama a separate window
 by right-clicking the button.
 
-bpo-34548: Use configured color theme for read-only text views.
+bpo-34548: Use configured color theme kila read-only text views.
 
-bpo-33839: Refactor ToolTip and CallTip classes; add documentation
+bpo-33839: Refactor ToolTip na CallTip classes; add documentation
 and tests.
 
 bpo-34047: Fix mouse wheel scrolling direction on macOS.
@@ -229,53 +229,53 @@ bpo-34275: Make calltips always visible on Mac.
 Patch by Kevin Walzer.
 
 bpo-34120: Fix freezing after closing some dialogs on Mac.
-This is one of multiple regressions kutoka using newer tcl/tk.
+This ni one of multiple regressions kutoka using newer tcl/tk.
 
 bpo-33975: Avoid small type when running htests.
-Since part of the purpose of human-viewed tests is to determine that
-widgets look right, it is agizaant that they look the same for
-testing as when running IDLE.
+Since part of the purpose of human-viewed tests ni to determine that
+widgets look right, it ni agizaant that they look the same for
+testing kama when running IDLE.
 
-bpo-33905: Add test for idlelib.stackview.StackBrowser.
+bpo-33905: Add test kila idlelib.stackview.StackBrowser.
 
 bpo-33924: Change mainmenu.menudefs key 'windows' to 'window'.
-Every other menueleza key is the lowercase version of the
+Every other menueleza key ni the lowercase version of the
 corresponding main menu entry (in this case, 'Window').
 
-bpo-33906: Rename idlelib.windows as window
-Match Window on the main menu and remove last plural module name.
-Change agizas, test, and attribute references to match new name.
+bpo-33906: Rename idlelib.windows kama window
+Match Window on the main menu na remove last plural module name.
+Change agizas, test, na attribute references to match new name.
 
-bpo-33917: Fix and document idlelib/idle_test/template.py.
-The revised file compiles, runs, and tests OK.  idle_test/README.txt
+bpo-33917: Fix na document idlelib/idle_test/template.py.
+The revised file compiles, runs, na tests OK.  idle_test/README.txt
 explains how to use it to create new IDLE test files.
 
-bpo-33904: In rstrip module, rename kundi RstripExtension as Rstrip.
+bpo-33904: In rstrip module, rename kundi RstripExtension kama Rstrip.
 
-bpo-33907: For consistency and clarity, rename calltip objects.
-Module calltips and its kundi CallTips are now calltip and Calltip.
-In module calltip_w, kundi CallTip is now CalltipWindow.
+bpo-33907: For consistency na clarity, rename calltip objects.
+Module calltips na its kundi CallTips are now calltip na Calltip.
+In module calltip_w, kundi CallTip ni now CalltipWindow.
 
 bpo-33855: Minimally test all IDLE modules.
 Standardize the test file format.  Add missing test files that agiza
-the tested module and perform at least one test.  Check and record the
+the tested module na perform at least one test.  Check na record the
 coverage of each test.
 
 bpo-33856: Add 'help' to Shell's initial welcome message.
 
 
-What's New in IDLE 3.7.0 (since 3.6.0)
+What's New kwenye IDLE 3.7.0 (since 3.6.0)
 Released on 2018-06-27
 ======================================
 
-bpo-33656: On Windows, add API call saying that tk scales for DPI.
-On Windows 8.1+ or 10, with DPI compatibility properties of the Python
-binary unchanged, and a monitor resolution greater than 96 DPI, this
-should make text and lines sharper and some colors brighter.
+bpo-33656: On Windows, add API call saying that tk scales kila DPI.
+On Windows 8.1+ ama 10, with DPI compatibility properties of the Python
+binary unchanged, na a monitor resolution greater than 96 DPI, this
+should make text na lines sharper na some colors brighter.
 On other systems, it should have no effect.  If you have a custom theme,
-you may want to adjust a color or two.  If perchance it make text worse
+you may want to adjust a color ama two.  If perchance it make text worse
 on your monitor, you can disable the ctypes.OleDLL call near the top of
-pyshell.py and report the problem on python-list or idle-dev@python.org.
+pyshell.py na report the problem on python-list ama idle-dev@python.org.
 
 bpo-33768: Clicking on a context line moves that line to the top
 of the editor window.
@@ -283,312 +283,312 @@ of the editor window.
 bpo-33763: Replace the code context label widget with a text widget.
 
 bpo-33664: Scroll IDLE editor text by lines.
-(Previously, the mouse wheel and scrollbar slider moved text by a fixed
-number of pixels, resulting in partial lines at the top of the editor
-box.)  This change also applies to the shell and grep output windows,
-but currently not to read-only text views.
+(Previously, the mouse wheel na scrollbar slider moved text by a fixed
+number of pixels, resulting kwenye partial lines at the top of the editor
+box.)  This change also applies to the shell na grep output windows,
+but currently sio to read-only text views.
 
-bpo-33679: Enable theme-specific color configuration for Code Context.
-(Previously, there was one code context foreground and background font
-color setting, default or custom, on the extensions tab, that applied
-to all themes.)  For built-in themes, the foreground is the same as
-normal text and the background is a contrasting gray.  Context colors for
+bpo-33679: Enable theme-specific color configuration kila Code Context.
+(Previously, there was one code context foreground na background font
+color setting, default ama custom, on the extensions tab, that applied
+to all themes.)  For built-in themes, the foreground ni the same as
+normal text na the background ni a contrasting gray.  Context colors for
 custom themes are set on the Hightlights tab along with other colors.
-When one starts IDLE kutoka a console and loads a custom theme without
-definitions for 'context', one will see a warning message on the
+When one starts IDLE kutoka a console na loads a custom theme without
+definitions kila 'context', one will see a warning message on the
 console.
 
-bpo-33642: Display up to maxlines non-blank lines for Code Context.
-If there is no current context, show a single blank line.  (Previously,
+bpo-33642: Display up to maxlines non-blank lines kila Code Context.
+If there ni no current context, show a single blank line.  (Previously,
 the Code Contex had numlines lines, usually with some blank.)  The use
 of a new option, 'maxlines' (default 15), avoids possible interference
 with user settings of the old option, 'numlines' (default 3).
 
-bpo-33628: Cleanup codecontext.py and its test.
+bpo-33628: Cleanup codecontext.py na its test.
 
-bpo-32831: Add docstrings and tests for codecontext.py.
-Coverage is 100%.  Patch by Cheryl Sabella.
+bpo-32831: Add docstrings na tests kila codecontext.py.
+Coverage ni 100%.  Patch by Cheryl Sabella.
 
-bpo-33564: Code context now recognizes async as a block opener.
+bpo-33564: Code context now recognizes async kama a block opener.
 
 bpo-21474: Update word/identifier definition kutoka ascii to unicode.
-In text and entry boxes, this affects selection by double-click,
-movement left/right by control-left/right, and deletion left/right
+In text na entry boxes, this affects selection by double-click,
+movement left/right by control-left/right, na deletion left/right
 by control-BACKSPACE/DEL.
 
 bpo-33204: Consistently color invalid string prefixes.
-A 'u' string prefix cannot be paired with either 'r' or 'f'.
-IDLE now consistently colors as much of the prefix, starting at the
-right, as is valid.  Revise and extend colorizer test.
+A 'u' string prefix cannot be paired with either 'r' ama 'f'.
+IDLE now consistently colors kama much of the prefix, starting at the
+right, kama ni valid.  Revise na extend colorizer test.
 
-bpo-32984: Set __file__ while running a startup file.
-Like Python, IDLE optionally runs 1 startup file in the Shell window
+bpo-32984: Set __file__ wakati running a startup file.
+Like Python, IDLE optionally runs 1 startup file kwenye the Shell window
 before presenting the first interactive input prompt.  For IDLE,
-option -s runs a file named in environmental variable IDLESTARTUP or
+option -s runs a file named kwenye environmental variable IDLESTARTUP or
 PYTHONSTARTUP; -r file runs file.  Python sets __file__ to the startup
-file name before running the file and unsets it before the first
+file name before running the file na unsets it before the first
 prompt.  IDLE now does the same when run normally, without the -n
 option.
 
 bpo-32940: Replace StringTranslatePseudoMapping with faster code.
 
-bpo-32916: Change 'str' to 'code' in idlelib.pyparse and users.
+bpo-32916: Change 'str' to 'code' kwenye idlelib.pyparse na users.
 
-bpo-32905: Remove unused code in pyparse module.
+bpo-32905: Remove unused code kwenye pyparse module.
 
 bpo-32874: IDLE - add pyparse tests with 97% coverage.
 
-bpo-32837: IDLE - require encoding argument for textview.view_file.
-Using the system and place-dependent default encoding for open()
-is a bad idea for IDLE's system and location-independent files.
+bpo-32837: IDLE - require encoding argument kila textview.view_file.
+Using the system na place-dependent default encoding kila open()
+is a bad idea kila IDLE's system na location-independent files.
 
-bpo-32826: Add "encoding=utf-8" to open() in IDLE's test_help_about.
+bpo-32826: Add "encoding=utf-8" to open() kwenye IDLE's test_help_about.
 GUI test test_file_buttons() only looks at initial ascii-only lines,
 but failed on systems where open() defaults to 'ascii' because
-readline() internally reads and decodes far enough ahead to encounter
-a non-ascii character in CREDITS.txt.
+readline() internally reads na decodes far enough ahead to encounter
+a non-ascii character kwenye CREDITS.txt.
 
 bpo-32765: Update configdialog General tab create page docstring.
 Add new widgets to the widget list.
 
-bpo-32207: Improve tk event exception tracebacks in IDLE.
-When tk event handling is driven by IDLE's run loop, a confusing
-and distracting queue.EMPTY traceback context is no longer added
-to tk event exception tracebacks.  The traceback is now the same
-as when event handling is driven by user code.  Patch based on
+bpo-32207: Improve tk event exception tracebacks kwenye IDLE.
+When tk event handling ni driven by IDLE's run loop, a confusing
+and distracting queue.EMPTY traceback context ni no longer added
+to tk event exception tracebacks.  The traceback ni now the same
+as when event handling ni driven by user code.  Patch based on
 a suggestion by Serhiy Storchaka.
 
 bpo-32164: Delete unused file idlelib/tabbedpages.py.
-Use of TabbedPageSet in configdialog was replaced by ttk.Notebook.
+Use of TabbedPageSet kwenye configdialog was replaced by ttk.Notebook.
 
-bpo-32100: Fix old and new bugs in pathbrowser; improve tests.
+bpo-32100: Fix old na new bugs kwenye pathbrowser; improve tests.
 Patch mostly by Cheryl Sabella.
 
-bpo-31860: The font sample in the settings dialog is now editable.
-Edits persist while IDLE remains open.
-Patch by Serhiy Storchake and Terry Jan Reedy.
+bpo-31860: The font sample kwenye the settings dialog ni now editable.
+Edits persist wakati IDLE remains open.
+Patch by Serhiy Storchake na Terry Jan Reedy.
 
 bpo-31858: Restrict shell prompt manipulation to the shell.
-Editor and output windows only see an empty last prompt line.  This
-simplifies the code and fixes a minor bug when newline is inserted.
-Sys.ps1, ikiwa present, is read on Shell start-up, but is not set or changed.
+Editor na output windows only see an empty last prompt line.  This
+simplifies the code na fixes a minor bug when newline ni inserted.
+Sys.ps1, ikiwa present, ni read on Shell start-up, but ni sio set ama changed.
 Patch by Terry Jan Reedy.
 
 bpo-28603: Fix a TypeError that caused a shell restart when printing
-a traceback that includes an exception that is unhashable.
+a traceback that includes an exception that ni unhashable.
 Patch by Zane Bitter.
 
-bpo-13802: Use non-Latin characters in the Font settings sample.
+bpo-13802: Use non-Latin characters kwenye the Font settings sample.
 Even ikiwa one selects a font that defines a limited subset of the unicode
 Basic Multilingual Plane, tcl/tk will use other fonts that define a
 character.  The expanded example give users of non-Latin characters
-a better idea of what they might see in the shell and editors.
+a better idea of what they might see kwenye the shell na editors.
 
-To make room for the expanded sample, frames on the Font tab are
+To make room kila the expanded sample, frames on the Font tab are
 re-arranged.  The Font/Tabs help explains a bit about the additions.
 Patch by Terry Jan Reedy
 
 bpo-31460: Simplify the API of IDLE's Module Browser.
 Passing a widget instead of an flist with a root widget opens the
-option of creating a browser frame that is only part of a window.
+option of creating a browser frame that ni only part of a window.
 Passing a full file name instead of pieces assumed to come kutoka a
 .py file opens the possibility of browsing python files that do not
-end in .py.
+end kwenye .py.
 
-bpo-31649: Make _htest and _utest parameters keyword-only.
-These are used to adjust code for human and unit tests.
+bpo-31649: Make _htest na _utest parameters keyword-only.
+These are used to adjust code kila human na unit tests.
 
 bpo-31459: Rename module browser kutoka Class Browser to Module Browser.
-The original module-level kundi and method browser became a module
+The original module-level kundi na method browser became a module
 browser, with the addition of module-level functions, years ago.
-Nested classes and functions were added yesterday.  For back-
+Nested classes na functions were added yesterday.  For back-
 compatibility, the virtual event <<open-class-browser>>, which
-appears on the Keys tab of the Settings dialog, is not changed.
+appears on the Keys tab of the Settings dialog, ni sio changed.
 Patch by Cheryl Sabella.
 
-bpo-1612262: Module browser now shows nested classes and functions.
-Original patches for code and tests by Guilherme Polo and
+bpo-1612262: Module browser now shows nested classes na functions.
+Original patches kila code na tests by Guilherme Polo and
 Cheryl Sabella, respectively.  Revisions by Terry Jan Reedy.
 
 bpo-31500: Tk's default fonts now are scaled on HiDPI displays.
 This affects all dialogs.  Patch by Serhiy Storchaka.
 
-bpo-31493: Fix code context update and font update timers.
+bpo-31493: Fix code context update na font update timers.
 Canceling timers prevents a warning message when test_idle completes.
 
-bpo-31488: Update non-key options in former extension classes.
-When applying configdialog changes, call .reload for each feature class.
+bpo-31488: Update non-key options kwenye former extension classes.
+When applying configdialog changes, call .reload kila each feature class.
 Change ParenMatch so updated options affect existing instances attached
 to existing editor windows.
 
-bpo-31477: Improve rstrip entry in IDLE doc.
+bpo-31477: Improve rstrip entry kwenye IDLE doc.
 Strip Trailing Whitespace strips more than blank spaces.
-Multiline string literals are not skipped.
+Multiline string literals are sio skipped.
 
-bpo-31480: fix tests to pass with zzdummy extension disabled. (#3590)
-To see the example in action, enable it on options extensions tab.
+bpo-31480: fix tests to pita with zzdummy extension disabled. (#3590)
+To see the example kwenye action, enable it on options extensions tab.
 
 bpo-31421: Document how IDLE runs tkinter programs.
-IDLE calls tcl/tk update in the background in order to make live
-interaction and experimentation with tkinter applications much easier.
+IDLE calls tcl/tk update kwenye the background kwenye order to make live
+interaction na experimentation with tkinter applications much easier.
 
 bpo-31414: Fix tk entry box tests by deleting first.
-Adding to an int entry is not the same as deleting and inserting
+Adding to an int entry ni sio the same kama deleting na inserting
 because int('') will fail.  Patch by Terry Jan Reedy.
 
 bpo-27099: Convert IDLE's built-in 'extensions' to regular features.
-  About 10 IDLE features were implemented as supposedly optional
-extensions.  Their different behavior could be confusing or worse for
-users and not good for maintenance.  Hence the conversion.
-  The main difference for users is that user configurable key bindings
-for builtin features are now handled uniformly.  Now, editing a binding
-in a keyset only affects its value in the keyset.  All bindings are
-defined together in the system-specific default keysets in config-
-extensions.def.  All custom keysets are saved as a whole in config-
-extension.cfg.  All take effect as soon as one clicks Apply or Ok.
+  About 10 IDLE features were implemented kama supposedly optional
+extensions.  Their different behavior could be confusing ama worse for
+users na sio good kila maintenance.  Hence the conversion.
+  The main difference kila users ni that user configurable key bindings
+kila builtin features are now handled uniformly.  Now, editing a binding
+in a keyset only affects its value kwenye the keyset.  All bindings are
+defined together kwenye the system-specific default keysets kwenye config-
+extensions.def.  All custom keysets are saved kama a whole kwenye config-
+extension.cfg.  All take effect kama soon kama one clicks Apply ama Ok.
    The affected events are '<<force-open-completions>>',
 '<<expand-word>>', '<<force-open-calltip>>', '<<flash-paren>>',
 '<<format-paragraph>>', '<<run-module>>', '<<check-module>>', and
 '<<zoom-height>>'.  Any (global) customizations made before 3.6.3 will
-not affect their keyset-specific customization after 3.6.3. and vice
+not affect their keyset-specific customization after 3.6.3. na vice
 versa.
   Initial patch by Charles Wohlganger, revised by Terry Jan Reedy.
 
 bpo-31051:  Rearrange condigdialog General tab.
-Sort non-Help options into Window (Shell+Editor) and Editor (only).
-Leave room for the addition of new options.
+Sort non-Help options into Window (Shell+Editor) na Editor (only).
+Leave room kila the addition of new options.
 Patch by Terry Jan Reedy.
 
-bpo-30617: Add docstrings and tests for outwin subkundi of editor.
-Move some data and functions kutoka the kundi to module level.
+bpo-30617: Add docstrings na tests kila outwin subkundi of editor.
+Move some data na functions kutoka the kundi to module level.
 Patch by Cheryl Sabella.
 
-bpo-31287: Do not modify tkinter.messagebox in test_configdialog.
+bpo-31287: Do sio modify tkinter.messagebox kwenye test_configdialog.
 Instead, mask it with an instance mock that can be deleted.
 Patch by Terry Jan Reedy.
 
-bpo-30781: Use ttk widgets in ConfigDialog pages.
+bpo-30781: Use ttk widgets kwenye ConfigDialog pages.
 These should especially look better on MacOSX.
-Patches by Terry Jan Reedy and Cheryl Sabella.
+Patches by Terry Jan Reedy na Cheryl Sabella.
 
 bpo-31206: Factor HighPage(Frame) kundi kutoka ConfigDialog.
 Patch by Cheryl Sabella.
 
-bp0-31001: Add tests for configdialog highlight tab.
+bp0-31001: Add tests kila configdialog highlight tab.
 Patch by Cheryl Sabella.
 
 bpo-31205: Factor KeysPage(Frame) kundi kutoka ConfigDialog.
-The slightly modified tests continue to pass.
+The slightly modified tests endelea to pita.
 Patch by Cheryl Sabella.
 
-bpo-31002: Add tests for configdialog keys tab.
+bpo-31002: Add tests kila configdialog keys tab.
 Patch by Cheryl Sabella.
 
 bpo-19903: Change calltipes to use inspect.signature.
 Idlelib.calltips.get_argspec now uses inspect.signature instead of
 inspect.getfullargspec, like help() does.  This improves the signature
-in the call tip in a few different cases, including builtins converted
-to provide a signature.  A message is added ikiwa the object is not
-callable, has an invalid signature, or ikiwa it has positional-only
+in the call tip kwenye a few different cases, including builtins converted
+to provide a signature.  A message ni added ikiwa the object ni not
+callable, has an invalid signature, ama ikiwa it has positional-only
 parameters.  Patch by Louie Lu.
 
-bop-31083: Add an outline of a TabPage kundi in configdialog.
-Add template as comment. Update existing classes to match outline.
+bop-31083: Add an outline of a TabPage kundi kwenye configdialog.
+Add template kama comment. Update existing classes to match outline.
 Initial patch by Cheryl Sabella.
 
 bpo-31050: Factor GenPage(Frame) kundi kutoka ConfigDialog.
-The slightly modified tests for the General tab continue to pass.
+The slightly modified tests kila the General tab endelea to pita.
 Patch by Cheryl Sabella.
 
 bpo-31004: Factor FontPage(Frame) kundi kutoka ConfigDialog.
-The slightly modified tests continue to pass. The General test
-broken by the switch to ttk.Notebook is fixed.
+The slightly modified tests endelea to pita. The General test
+broken by the switch to ttk.Notebook ni fixed.
 Patch mostly by Cheryl Sabella.
 
-bpo-30781: IDLE - Use ttk Notebook in ConfigDialog.
+bpo-30781: IDLE - Use ttk Notebook kwenye ConfigDialog.
 This improves navigation by tabbing.
 Patch by Terry Jan Reedy.
 
 bpo-31060: IDLE - Finish rearranging methods of ConfigDialog.
-Grouping methods pertaining to each tab and the buttons will aid
-writing tests and improving the tabs and will enable splitting the
+Grouping methods pertaining to each tab na the buttons will aid
+writing tests na improving the tabs na will enable splitting the
 groups into classes.
 Patch by Terry Jan Reedy.
 
 bpo-30853: IDLE -- Factor a VarTrace kundi out of ConfigDialog.
-Instance tracers manages pairs consisting of a tk variable and a
-callback function.  When tracing is turned on, setting the variable
-calls the function.  Test coverage for the new kundi is 100%.
+Instance tracers manages pairs consisting of a tk variable na a
+callback function.  When tracing ni turned on, setting the variable
+calls the function.  Test coverage kila the new kundi ni 100%.
 Patch by Terry Jan Reedy.
 
-bpo-31003: IDLE: Add more tests for General tab.
+bpo-31003: IDLE: Add more tests kila General tab.
 Patch by Terry Jan Reedy.
 
-bpo-30993: IDLE - Improve configdialog font page and tests.
-*In configdialog: Document causal pathways in create_font_tab
+bpo-30993: IDLE - Improve configdialog font page na tests.
+*In configdialog: Document causal pathways kwenye create_font_tab
 docstring.  Simplify some attribute names. Move set_samples calls to
 var_changed_font (idea kutoka Cheryl Sabella).  Move related functions to
 positions after the create widgets function.
-* In test_configdialog: Fix test_font_set so not order dependent.  Fix
+* In test_configdialog: Fix test_font_set so sio order dependent.  Fix
 renamed test_indent_scale so it tests the widget.  Adjust tests for
-movement of set_samples call.  Add tests for load functions.  Put all
-font tests in one kundi and tab indent tests in another.  Except for
+movement of set_samples call.  Add tests kila load functions.  Put all
+font tests kwenye one kundi na tab indent tests kwenye another.  Except for
 two lines, these tests completely cover the related functions.
 Patch by Terry Jan Reedy.
 
 bpo-30981: IDLE -- Add more configdialog font page tests.
 
-bpo-28523: IDLE: replace 'colour' with 'color' in configdialog.
+bpo-28523: IDLE: replace 'colour' with 'color' kwenye configdialog.
 
-bpo-30917: Add tests for idlelib.config.IdleConf.
+bpo-30917: Add tests kila idlelib.config.IdleConf.
 Increase coverage kutoka 46% to 96%.
 Patch by Louie Lu.
 
-bpo-30913: Document ConfigDialog tk Vars, methods, and widgets in docstrings
-This will facilitate improving the dialog and splitting up the class.
+bpo-30913: Document ConfigDialog tk Vars, methods, na widgets kwenye docstrings
+This will facilitate improving the dialog na splitting up the class.
 Original patch by Cheryl Sabella.
 
-bpo-30899: Add tests for ConfigParser subclasses in config.
-Coverage is 100% for those classes and ConfigChanges.
+bpo-30899: Add tests kila ConfigParser subclasses kwenye config.
+Coverage ni 100% kila those classes na ConfigChanges.
 Patch by Louie Lu.
 
 bpo-30881: Add docstrings to browser.py.
 Patch by Cheryl Sabella.
 
-bpo-30851: Remove unused tk variables in configdialog.
-One is a duplicate, one is set but cannot be altered by users.
+bpo-30851: Remove unused tk variables kwenye configdialog.
+One ni a duplicate, one ni set but cannot be altered by users.
 Patch by Cheryl Sabella.
 
-bpo-30870: Select font option with Up and Down keys, as well as with mouse.
+bpo-30870: Select font option with Up na Down keys, kama well kama with mouse.
 Added test increases configdialog coverage to 60%
 Patches mostly by Louie Lu.
 
 bpo-8231: Call config.IdleConf.GetUserCfgDir only once per process.
 
-bpo-30779: Factor ConfigChanges kundi kutoka configdialog, put in config; test.
-* In config, put dump test code in a function; run it and unittest in
+bpo-30779: Factor ConfigChanges kundi kutoka configdialog, put kwenye config; test.
+* In config, put dump test code kwenye a function; run it na unittest in
   'ikiwa __name__ == '__main__'.
 * Add kundi config.ConfigChanges based on changes_class_v4.py on bpo issue.
 * Add kundi test_config.ChangesTest, partly using configdialog_tests_v1.py.
 * Revise configdialog to use ConfigChanges; see tracker msg297804.
 * Revise test_configdialog to match configdialog changes.
-* Remove configdialog functions unused or moved to ConfigChanges.
+* Remove configdialog functions unused ama moved to ConfigChanges.
 Cheryl Sabella contributed parts of the patch.
 
-bpo-30777: Configdialog - add docstrings and improve comments.
+bpo-30777: Configdialog - add docstrings na improve comments.
 Patch by Cheryl Sabella.
 
-bpo-30495: Improve textview with docstrings, PEP8 names, and more tests.
-Split TextViewer kundi into ViewWindow, ViewFrame, and TextFrame classes
+bpo-30495: Improve textview with docstrings, PEP8 names, na more tests.
+Split TextViewer kundi into ViewWindow, ViewFrame, na TextFrame classes
 so that instances of the latter two can be placed with other widgets
 within a multiframe window.
-Patches by Cheryl Sabella and Terry Jan Reedy.
+Patches by Cheryl Sabella na Terry Jan Reedy.
 
 bpo-30723: Make several improvements to parenmatch.
-* Add 'parens' style to highlight both opener and closer.
-* Make 'default' style, which is not default, a synonym for 'opener'.
+* Add 'parens' style to highlight both opener na closer.
+* Make 'default' style, which ni sio default, a synonym kila 'opener'.
 * Make time-delay work the same with all styles.
-* Add help for config dialog extensions tab, including parenmatch.
+* Add help kila config dialog extensions tab, including parenmatch.
 * Add new tests.
 Original patch by Charles Wohlganger.  Revisions by Terry Jan Reedy
 
@@ -598,21 +598,21 @@ bpo-21519: IDLE's basic custom key entry dialog now detects
 duplicates properly. Original patch by Saimadhav Heblikar.
 
 bpo-29910: IDLE no longer deletes a character after commenting out a
-region by a key shortcut.  Add "rudisha 'break'" for this and other
-potential conflicts between IDLE and default key bindings.
+region by a key shortcut.  Add "rudisha 'koma'" kila this na other
+potential conflicts between IDLE na default key bindings.
 Patch by Serhiy Storchaka.
 
 bpo-30728: Modernize idlelib.configdialog:
 * replace agiza * with specific agizas;
-* lowercase method and attribute lines.
+* lowercase method na attribute lines.
 Patch by Cheryl Sabella.
 
 bpo-6739: Verify user-entered key sequences by trying to bind them
-with to a tk widget.  Add tests for all 3 validation functions.
+with to a tk widget.  Add tests kila all 3 validation functions.
 Original patch by G Polo.  Tests added by Cheryl Sabella.
-Code revised and more tests added by Terry Jan Reedy
+Code revised na more tests added by Terry Jan Reedy
 
-bpo-24813: Add icon to help_about and make other changes.
+bpo-24813: Add icon to help_about na make other changes.
 
 bpo-15786: Fix several problems with IDLE's autocompletion box.
 The following should now work: clicking on selection box items;
@@ -622,27 +622,27 @@ Hangs on MacOSX should no longer happen. Patch by Louie Lu.
 bpo-25514: Add doc subsubsection about IDLE failure to start.
 Popup no-connection message directs users to this section.
 
-bpo-30642: Fix reference leaks in IDLE tests.
-Patches by Louie Lu and Terry Jan Reedy.
+bpo-30642: Fix reference leaks kwenye IDLE tests.
+Patches by Louie Lu na Terry Jan Reedy.
 
-bpo-30495: Add docstrings for textview.py and use PEP8 names.
-Patches by Cheryl Sabella and Terry Jan Reedy.
+bpo-30495: Add docstrings kila textview.py na use PEP8 names.
+Patches by Cheryl Sabella na Terry Jan Reedy.
 
-bpo-30290: Help-about: use pep8 names and add tests.
+bpo-30290: Help-about: use pep8 names na add tests.
 Increase coverage to 100%.
-Patches by Louie Lu, Cheryl Sabella, and Terry Jan Reedy.
+Patches by Louie Lu, Cheryl Sabella, na Terry Jan Reedy.
 
 bpo-30303: Add _utest option to textview; add new tests.
 Increase coverage to 100%.
-Patches by Louie Lu and Terry Jan Reedy.
+Patches by Louie Lu na Terry Jan Reedy.
 
-Issue #29071: IDLE colors f-string prefixes but not invalid ur prefixes.
+Issue #29071: IDLE colors f-string prefixes but sio invalid ur prefixes.
 
 Issue #28572: Add 10% to coverage of IDLE's test_configdialog.
-Update and augment description of the configuration system.
+Update na augment description of the configuration system.
 
 
-What's New in IDLE 3.6.0 (since 3.5.0)
+What's New kwenye IDLE 3.6.0 (since 3.5.0)
 Released on 2016-12-23
 ======================================
 
@@ -651,275 +651,275 @@ Released on 2016-12-23
 
 - Issue #27922: Stop IDLE tests kutoka 'flashing' gui widgets on the screen.
 
-- Issue #27891: Consistently group and sort agizas within idlelib modules.
+- Issue #27891: Consistently group na sort agizas within idlelib modules.
 
-- Issue #17642: add larger font sizes for classroom projection.
+- Issue #17642: add larger font sizes kila classroom projection.
 
 - Add version to title of IDLE help window.
 
 - Issue #25564: In section on IDLE -- console differences, mention that
-  using exec means that __builtins__ is defined for each statement.
+  using exec means that __builtins__ ni defined kila each statement.
 
 - Issue #27821: Fix 3.6.0a3 regression that prevented custom key sets
   kutoka being selected when no custom theme was defined.
 
-- Issue #27714: text_textview and test_autocomplete now pass when re-run
-  in the same process.  This occurs when test_idle fails when run with the
+- Issue #27714: text_textview na test_autocomplete now pita when re-run
+  kwenye the same process.  This occurs when test_idle fails when run with the
   -w option but without -jn.  Fix warning kutoka test_config.
 
-- Issue #27621: Put query response validation error messages in the query
-  box itself instead of in a separate messagebox.  Redo tests to match.
+- Issue #27621: Put query response validation error messages kwenye the query
+  box itself instead of kwenye a separate messagebox.  Redo tests to match.
   Add Mac OSX refinements.  Original patch by Mark Roseman.
 
-- Issue #27620: Escape key now closes Query box as cancelled.
+- Issue #27620: Escape key now closes Query box kama cancelled.
 
 - Issue #27609: IDLE: tab after initial whitespace should tab, not
   autocomplete. This fixes problem with writing docstrings at least
   twice indented.
 
-- Issue #27609: Explicitly rudisha None when there are also non-None
-  returns. In a few cases, reverse a condition and eliminate a return.
+- Issue #27609: Explicitly rudisha Tupu when there are also non-Tupu
+  rudishas. In a few cases, reverse a condition na eliminate a rudisha.
 
 - Issue #25507: IDLE no longer runs buggy code because of its tkinter agizas.
-  Users must include the same agizas required to run directly in Python.
+  Users must include the same agizas required to run directly kwenye Python.
 
 - Issue #27173: Add 'IDLE Modern Unix' to the built-in key sets.
   Make the default key set depend on the platform.
-  Add tests for the changes to the config module.
+  Add tests kila the changes to the config module.
 
-- Issue #27452: add line counter and crc to IDLE configHandler test dump.
+- Issue #27452: add line counter na crc to IDLE configHandler test dump.
 
 - Issue #27477: IDLE search dialogs now use ttk widgets.
 
 - Issue #27173: Add 'IDLE Modern Unix' to the built-in key sets.
   Make the default key set depend on the platform.
-  Add tests for the changes to the config module.
+  Add tests kila the changes to the config module.
 
 - Issue #27452: make command line "idle-test> python test_help.py" work.
-  __file__ is relative when python is started in the file's directory.
+  __file__ ni relative when python ni started kwenye the file's directory.
 
-- Issue #27452: add line counter and crc to IDLE configHandler test dump.
+- Issue #27452: add line counter na crc to IDLE configHandler test dump.
 
-- Issue #27380: IDLE: add query.py with base Query dialog and ttk widgets.
-  Module had subclasses SectionName, ModuleName, and HelpSource, which are
-  used to get information kutoka users by configdialog and file =>Load Module.
+- Issue #27380: IDLE: add query.py with base Query dialog na ttk widgets.
+  Module had subclasses SectionName, ModuleName, na HelpSource, which are
+  used to get information kutoka users by configdialog na file =>Load Module.
   Each subkundi has itw own validity checks.  Using ModuleName allows users
   to edit bad module names instead of starting over.
-  Add tests and delete the two files combined into the new one.
+  Add tests na delete the two files combined into the new one.
 
 - Issue #27372: Test_idle no longer changes the locale.
 
-- Issue #27365: Allow non-ascii chars in IDLE NEWS.txt, for contributor names.
+- Issue #27365: Allow non-ascii chars kwenye IDLE NEWS.txt, kila contributor names.
 
-- Issue #27245: IDLE: Cleanly delete custom themes and key bindings.
-  Previously, when IDLE was started kutoka a console or by agiza, a cascade
+- Issue #27245: IDLE: Cleanly delete custom themes na key bindings.
+  Previously, when IDLE was started kutoka a console ama by agiza, a cascade
   of warnings was emitted.  Patch by Serhiy Storchaka.
 
-- Issue #24137: Run IDLE, test_idle, and htest with tkinter default root disabled.
-  Fix code and tests that fail with this restriction.
-  Fix htests to not create a second and redundant root and mainloop.
+- Issue #24137: Run IDLE, test_idle, na htest with tkinter default root disabled.
+  Fix code na tests that fail with this restriction.
+  Fix htests to sio create a second na redundant root na mainloop.
 
 - Issue #27310: Fix IDLE.app failure to launch on OS X due to vestigial agiza.
 
 - Issue #5124: Paste with text selected now replaces the selection on X11.
   This matches how paste works on Windows, Mac, most modern Linux apps,
-  and ttk widgets.  Original patch by Serhiy Storchaka.
+  na ttk widgets.  Original patch by Serhiy Storchaka.
 
-- Issue #24750: Switch all scrollbars in IDLE to ttk versions.
+- Issue #24750: Switch all scrollbars kwenye IDLE to ttk versions.
   Where needed, minimal tests are added to cover changes.
 
-- Issue #24759: IDLE requires tk 8.5 and availability ttk widgets.
-  Delete now unneeded tk version tests and code for older versions.
-  Add test for IDLE syntax colorizer.
+- Issue #24759: IDLE requires tk 8.5 na availability ttk widgets.
+  Delete now unneeded tk version tests na code kila older versions.
+  Add test kila IDLE syntax colorizer.
 
-- Issue #27239: idlelib.macosx.isXyzTk functions initialize as needed.
+- Issue #27239: idlelib.macosx.isXyzTk functions initialize kama needed.
 
 - Issue #27262: move Aqua unbinding code, which enable context menus, to macosx.
 
-- Issue #24759: Make clear in idlelib.idle_test.__init__ that the directory
-  is a private implementation of test.test_idle and tool for maintainers.
+- Issue #24759: Make clear kwenye idlelib.idle_test.__init__ that the directory
+  ni a private implementation of test.test_idle na tool kila maintainers.
 
 - Issue #27196: Stop 'ThemeChanged' warnings when running IDLE tests.
-  These persisted after other warnings were suppressed in #20567.
+  These persisted after other warnings were suppressed kwenye #20567.
   Apply Serhiy Storchaka's update_idletasks solution to four test files.
-  Record this additional advice in idle_test/README.txt
+  Record this additional advice kwenye idle_test/README.txt
 
 - Issue #20567: Revise idle_test/README.txt with advice about avoiding
   tk warning messages kutoka tests.  Apply advice to several IDLE tests.
 
 - Issue # 24225: Update idlelib/README.txt with new file names
-  and event handlers.
+  na event handlers.
 
-- Issue #27156: Remove obsolete code not used by IDLE.  Replacements:
-  1. help.txt, replaced by help.html, is out-of-date and should not be used.
-  Its dedicated viewer has be replaced by the html viewer in help.py.
-  2. 'agiza idlever; I = idlever.IDLE_VERSION' is the same as
+- Issue #27156: Remove obsolete code sio used by IDLE.  Replacements:
+  1. help.txt, replaced by help.html, ni out-of-date na should sio be used.
+  Its dedicated viewer has be replaced by the html viewer kwenye help.py.
+  2. 'agiza idlever; I = idlever.IDLE_VERSION' ni the same as
   'agiza sys; I = version[:version.index(' ')]'
   3. After 'ob = stackviewer.VariablesTreeItem(*args)',
   'ob.keys()' == 'list(ob.object.keys).
   4. In macosc, runningAsOSXAPP == isAquaTk; idCarbonAquaTk == isCarbonTk
 
-- Issue #27117: Make colorizer htest and turtledemo work with dark themes.
-  Move code for configuring text widget colors to a new function.
+- Issue #27117: Make colorizer htest na turtledemo work with dark themes.
+  Move code kila configuring text widget colors to a new function.
 
-- Issue #24225: Rename many idlelib/*.py and idle_test/test_*.py files.
+- Issue #24225: Rename many idlelib/*.py na idle_test/test_*.py files.
   Edit files to replace old names with new names when the old name
   referred to the module rather than the kundi it contained.
-  See the issue and IDLE section in What's New in 3.6 for more.
+  See the issue na IDLE section kwenye What's New kwenye 3.6 kila more.
 
-- Issue #26673: When tk reports font size as 0, change to size 10.
+- Issue #26673: When tk reports font size kama 0, change to size 10.
   Such fonts on Linux prevented the configuration dialog kutoka opening.
 
-- Issue #21939: Add test for IDLE's percolator.
+- Issue #21939: Add test kila IDLE's percolator.
   Original patch by Saimadhav Heblikar.
 
-- Issue #21676: Add test for IDLE's replace dialog.
+- Issue #21676: Add test kila IDLE's replace dialog.
   Original patch by Saimadhav Heblikar.
 
-- Issue #18410: Add test for IDLE's search dialog.
+- Issue #18410: Add test kila IDLE's search dialog.
   Original patch by Westley Martínez.
 
-- Issue #21703: Add test for undo delegator.  Patch mostly by
+- Issue #21703: Add test kila undo delegator.  Patch mostly by
   Saimadhav Heblikar .
 
 - Issue #27044: Add ConfigDialog.remove_var_callbacks to stop memory leaks.
 
 - Issue #23977: Add more asserts to test_delegator.
 
-- Issue #20640: Add tests for idlelib.configHelpSourceEdit.
+- Issue #20640: Add tests kila idlelib.configHelpSourceEdit.
   Patch by Saimadhav Heblikar.
 
 - In the 'IDLE-console differences' section of the IDLE doc, clarify
-  how running with IDLE affects sys.modules and the standard streams.
+  how running with IDLE affects sys.modules na the standard streams.
 
-- Issue #25507: fix incorrect change in IOBinding that prevented printing.
+- Issue #25507: fix incorrect change kwenye IOBinding that prevented printing.
   Augment IOBinding htest to include all major IOBinding functions.
 
 - Issue #25905: Revert unwanted conversion of ' to ’ RIGHT SINGLE QUOTATION
-  MARK in README.txt and open this and NEWS.txt with 'ascii'.
-  Re-encode CREDITS.txt to utf-8 and open it with 'utf-8'.
+  MARK kwenye README.txt na open this na NEWS.txt with 'ascii'.
+  Re-encode CREDITS.txt to utf-8 na open it with 'utf-8'.
 
-- Issue 15348: Stop the debugger engine (normally in a user process)
-  before closing the debugger window (running in the IDLE process).
-  This prevents the RuntimeErrors that were being caught and ignored.
+- Issue 15348: Stop the debugger engine (normally kwenye a user process)
+  before closing the debugger window (running kwenye the IDLE process).
+  This prevents the RuntimeErrors that were being caught na ignored.
 
-- Issue #24455: Prevent IDLE kutoka hanging when a) closing the shell while the
-  debugger is active (15347); b) closing the debugger with the [X] button
-  (15348); and c) activating the debugger when already active (24455).
+- Issue #24455: Prevent IDLE kutoka hanging when a) closing the shell wakati the
+  debugger ni active (15347); b) closing the debugger with the [X] button
+  (15348); na c) activating the debugger when already active (24455).
   The patch by Mark Roseman does this by making two changes.
-  1. Suspend and resume the gui.interaction method with the tcl vwait
-  mechanism intended for this purpose (instead of root.mainloop & .quit).
+  1. Suspend na resume the gui.interaction method with the tcl vwait
+  mechanism intended kila this purpose (instead of root.mainloop & .quit).
   2. In gui.run, allow any existing interaction to terminate first.
 
-- Change 'The program' to 'Your program' in an IDLE 'kill program?' message
-  to make it clearer that the program referred to is the currently running
-  user program, not IDLE itself.
+- Change 'The program' to 'Your program' kwenye an IDLE 'kill program?' message
+  to make it clearer that the program referred to ni the currently running
+  user program, sio IDLE itself.
 
 - Issue #24750: Improve the appearance of the IDLE editor window status bar.
   Patch by Mark Roseman.
 
 - Issue #25313: Change the handling of new built-in text color themes to better
   address the compatibility problem introduced by the addition of IDLE Dark.
-  Consistently use the revised idleConf.CurrentTheme everywhere in idlelib.
+  Consistently use the revised idleConf.CurrentTheme everywhere kwenye idlelib.
 
-- Issue #24782: Extension configuration is now a tab in the IDLE Preferences
+- Issue #24782: Extension configuration ni now a tab kwenye the IDLE Preferences
   dialog rather than a separate dialog.   The former tabs are now a sorted
   list.  Patch by Mark Roseman.
 
 - Issue #22726: Re-activate the config dialog help button with some content
-  about the other buttons and the new IDLE Dark theme.
+  about the other buttons na the new IDLE Dark theme.
 
 - Issue #24820: IDLE now has an 'IDLE Dark' built-in text color theme.
-  It is more or less IDLE Classic inverted, with a cobalt blue background.
+  It ni more ama less IDLE Classic inverted, with a cobalt blue background.
   Strings, comments, keywords, ... are still green, red, orange, ... .
   To use it with IDLEs released before November 2015, hit the
-  'Save as New Custom Theme' button and enter a new name,
-  such as 'Custom Dark'.  The custom theme will work with any IDLE
-  release, and can be modified.
+  'Save kama New Custom Theme' button na enter a new name,
+  such kama 'Custom Dark'.  The custom theme will work with any IDLE
+  release, na can be modified.
 
-- Issue #25224: README.txt is now an idlelib index for IDLE developers and
-  curious users.  The previous user content is now in the IDLE doc chapter.
-  'IDLE' now means 'Integrated Development and Learning Environment'.
+- Issue #25224: README.txt ni now an idlelib index kila IDLE developers and
+  curious users.  The previous user content ni now kwenye the IDLE doc chapter.
+  'IDLE' now means 'Integrated Development na Learning Environment'.
 
-- Issue #24820: Users can now set breakpoint colors in
+- Issue #24820: Users can now set komapoint colors in
   Settings -> Custom Highlighting.  Original patch by Mark Roseman.
 
 - Issue #24972: Inactive selection background now matches active selection
-  background, as configured by users, on all systems.  Found items are now
+  background, kama configured by users, on all systems.  Found items are now
   always highlighted on Windows.  Initial patch by Mark Roseman.
 
-- Issue #24570: Idle: make calltip and completion boxes appear on Macs
+- Issue #24570: Idle: make calltip na completion boxes appear on Macs
   affected by a tk regression.  Initial patch by Mark Roseman.
 
-- Issue #24988: Idle ScrolledList context menus (used in debugger)
+- Issue #24988: Idle ScrolledList context menus (used kwenye debugger)
   now work on Mac Aqua.  Patch by Mark Roseman.
 
-- Issue #24801: Make right-click for context menu work on Mac Aqua.
+- Issue #24801: Make right-click kila context menu work on Mac Aqua.
   Patch by Mark Roseman.
 
 - Issue #25173: Associate tkinter messageboxes with a specific widget.
   For Mac OSX, make them a 'sheet'.  Patch by Mark Roseman.
 
-- Issue #25198: Enhance the initial html viewer now used for Idle Help.
+- Issue #25198: Enhance the initial html viewer now used kila Idle Help.
   * Properly indent fixed-pitch text (patch by Mark Roseman).
   * Give code snippet a very Sphinx-like light blueish-gray background.
-  * Re-use initial width and height set by users for shell and editor.
-  * When the Table of Contents (TOC) menu is used, put the section header
+  * Re-use initial width na height set by users kila shell na editor.
+  * When the Table of Contents (TOC) menu ni used, put the section header
   at the top of the screen.
 
-- Issue #25225: Condense and rewrite Idle doc section on text colors.
+- Issue #25225: Condense na rewrite Idle doc section on text colors.
 
-- Issue #21995: Explain some differences between IDLE and console Python.
+- Issue #21995: Explain some differences between IDLE na console Python.
 
-- Issue #22820: Explain need for *print* when running file kutoka Idle editor.
+- Issue #22820: Explain need kila *print* when running file kutoka Idle editor.
 
-- Issue #25224: Doc: augment Idle feature list and no-subprocess section.
+- Issue #25224: Doc: augment Idle feature list na no-subprocess section.
 
-- Issue #25219: Update doc for Idle command line options.
-  Some were missing and notes were not correct.
+- Issue #25219: Update doc kila Idle command line options.
+  Some were missing na notes were sio correct.
 
-- Issue #24861: Most of idlelib is private and subject to change.
+- Issue #24861: Most of idlelib ni private na subject to change.
   Use idleib.idle.* to start Idle. See idlelib.__init__.__doc__.
 
-- Issue #25199: Idle: add synchronization comments for future maintainers.
+- Issue #25199: Idle: add synchronization comments kila future maintainers.
 
-- Issue #16893: Replace help.txt with help.html for Idle doc display.
-  The new idlelib/help.html is rstripped Doc/build/html/library/idle.html.
-  It looks better than help.txt and will better document Idle as released.
-  The tkinter html viewer that works for this file was written by Mark Roseman.
-  The now unused EditorWindow.HelpDialog kundi and helt.txt file are deprecated.
+- Issue #16893: Replace help.txt with help.html kila Idle doc display.
+  The new idlelib/help.html ni rstripped Doc/build/html/library/idle.html.
+  It looks better than help.txt na will better document Idle kama released.
+  The tkinter html viewer that works kila this file was written by Mark Roseman.
+  The now unused EditorWindow.HelpDialog kundi na helt.txt file are deprecated.
 
-- Issue #24199: Deprecate unused idlelib.idlever with possible removal in 3.6.
+- Issue #24199: Deprecate unused idlelib.idlever with possible removal kwenye 3.6.
 
 - Issue #24790: Remove extraneous code (which also create 2 & 3 conflicts).
 
 
-What's New in IDLE 3.5.0?
+What's New kwenye IDLE 3.5.0?
 =========================
 *Release date: 2015-09-13*
 
-- Issue #23672: Allow Idle to edit and run files with astral chars in name.
+- Issue #23672: Allow Idle to edit na run files with astral chars kwenye name.
   Patch by Mohd Sanad Zaki Rizvi.
 
 - Issue 24745: Idle editor default font. Switch kutoka Courier to
-  platform-sensitive TkFixedFont.  This should not affect current customized
-  font selections.  If there is a problem, edit $HOME/.idlerc/config-main.cfg
-  and remove 'fontxxx' entries kutoka [Editor Window].  Patch by Mark Roseman.
+  platform-sensitive TkFixedFont.  This should sio affect current customized
+  font selections.  If there ni a problem, edit $HOME/.idlerc/config-main.cfg
+  na remove 'fontxxx' entries kutoka [Editor Window].  Patch by Mark Roseman.
 
-- Issue #21192: Idle editor. When a file is run, put its name in the restart bar.
-  Do not print false prompts. Original patch by Adnan Umer.
+- Issue #21192: Idle editor. When a file ni run, put its name kwenye the restart bar.
+  Do sio print false prompts. Original patch by Adnan Umer.
 
 - Issue #13884: Idle menus. Remove tearoff lines. Patch by Roger Serwy.
 
-- Issue #23184: remove unused names and agizas in idlelib.
+- Issue #23184: remove unused names na agizas kwenye idlelib.
   Initial patch by Al Sweigart.
 
-- Issue #20577: Configuration of the max line length for the FormatParagraph
+- Issue #20577: Configuration of the max line length kila the FormatParagraph
   extension has been moved kutoka the General tab of the Idle preferences dialog
   to the FormatParagraph tab of the Config Extensions dialog.
   Patch by Tal Einat.
 
-- Issue #16893: Update Idle doc chapter to match current Idle and add new
+- Issue #16893: Update Idle doc chapter to match current Idle na add new
   information.
 
 - Issue #3068: Add Idle extension configuration dialog to Options menu.
@@ -927,16 +927,16 @@ What's New in IDLE 3.5.0?
   Original patch by Tal Einat.
 
 - Issue #16233: A module browser (File : Class Browser, Alt+C) requires an
-  editor window with a filename.  When Class Browser is requested otherwise,
-  kutoka a shell, output window, or 'Untitled' editor, Idle no longer displays
+  editor window with a filename.  When Class Browser ni requested otherwise,
+  kutoka a shell, output window, ama 'Untitled' editor, Idle no longer displays
   an error box.  It now pops up an  Open Module box (Alt+M). If a valid name
-  is entered and a module is opened, a corresponding browser is also opened.
+  ni entered na a module ni opened, a corresponding browser ni also opened.
 
 - Issue #4832: Save As to type Python files automatically adds .py to the
-  name you enter (even ikiwa your system does not display it).  Some systems
-  automatically add .txt when type is Text files.
+  name you enter (even ikiwa your system does sio display it).  Some systems
+  automatically add .txt when type ni Text files.
 
-- Issue #21986: Code objects are not normally pickled by the pickle module.
+- Issue #21986: Code objects are sio normally pickled by the pickle module.
   To match this, they are no longer pickled when running under Idle.
 
 - Issue #23180: Rename IDLE "Windows" menu item to "Window".
@@ -945,53 +945,53 @@ What's New in IDLE 3.5.0?
 - Issue #17390: Adjust Editor window title; remove 'Python',
   move version to end.
 
-- Issue #14105: Idle debugger breakpoints no longer disappear
-  when inserting or deleting lines.
+- Issue #14105: Idle debugger komapoints no longer disappear
+  when inserting ama deleting lines.
 
 - Issue #17172: Turtledemo can now be run kutoka Idle.
-  Currently, the entry is on the Help menu, but it may move to Run.
-  Patch by Ramchandra Apt and Lita Cho.
+  Currently, the entry ni on the Help menu, but it may move to Run.
+  Patch by Ramchandra Apt na Lita Cho.
 
-- Issue #21765: Add support for non-ascii identifiers to HyperParser.
+- Issue #21765: Add support kila non-ascii identifiers to HyperParser.
 
-- Issue #21940: Add unittest for WidgetRedirector. Initial patch by Saimadhav
+- Issue #21940: Add unittest kila WidgetRedirector. Initial patch by Saimadhav
   Heblikar.
 
-- Issue #18592: Add unittest for SearchDialogBase. Patch by Phil Webster.
+- Issue #18592: Add unittest kila SearchDialogBase. Patch by Phil Webster.
 
-- Issue #21694: Add unittest for ParenMatch. Patch by Saimadhav Heblikar.
+- Issue #21694: Add unittest kila ParenMatch. Patch by Saimadhav Heblikar.
 
-- Issue #21686: add unittest for HyperParser. Original patch by Saimadhav
+- Issue #21686: add unittest kila HyperParser. Original patch by Saimadhav
   Heblikar.
 
 - Issue #12387: Add missing upper(lower)case versions of default Windows key
-  bindings for Idle so Caps Lock does not disable them. Patch by Roger Serwy.
+  bindings kila Idle so Caps Lock does sio disable them. Patch by Roger Serwy.
 
-- Issue #21695: Closing a Find-in-files output window while the search is
-  still in progress no longer closes Idle.
+- Issue #21695: Closing a Find-in-files output window wakati the search is
+  still kwenye progress no longer closes Idle.
 
-- Issue #18910: Add unittest for textView. Patch by Phil Webster.
+- Issue #18910: Add unittest kila textView. Patch by Phil Webster.
 
-- Issue #18292: Add unittest for AutoExpand. Patch by Saihadhav Heblikar.
+- Issue #18292: Add unittest kila AutoExpand. Patch by Saihadhav Heblikar.
 
-- Issue #18409: Add unittest for AutoComplete. Patch by Phil Webster.
+- Issue #18409: Add unittest kila AutoComplete. Patch by Phil Webster.
 
 - Issue #21477: htest.py - Improve framework, complete set of tests.
   Patches by Saimadhav Heblikar
 
 - Issue #18104: Add idlelib/idle_test/htest.py with a few sample tests to begin
-  consolidating and improving human-validated tests of Idle. Change other files
-  as needed to work with htest.  Running the module as __main__ runs all tests.
+  consolidating na improving human-validated tests of Idle. Change other files
+  kama needed to work with htest.  Running the module kama __main__ runs all tests.
 
 - Issue #21139: Change default paragraph width to 72, the PEP 8 recommendation.
 
-- Issue #21284: Paragraph reformat test passes after user changes reformat width.
+- Issue #21284: Paragraph reformat test pitaes after user changes reformat width.
 
 - Issue #17654: Ensure IDLE menus are customized properly on OS X for
-  non-framework builds and for all variants of Tk.
+  non-framework builds na kila all variants of Tk.
 
 
-What's New in IDLE 3.4.0?
+What's New kwenye IDLE 3.4.0?
 =========================
 *Release date: 2014-03-16*
 
@@ -1000,7 +1000,7 @@ What's New in IDLE 3.4.0?
 
 - Issue #5066: Update IDLE docs. Patch by Todd Rovito.
 
-- Issue #17625: Close the replace dialog after it is used.
+- Issue #17625: Close the replace dialog after it ni used.
 
 - Issue #16226: Fix IDLE Path Browser crash.
   (Patch by Roger Serwy)
@@ -1009,86 +1009,86 @@ What's New in IDLE 3.4.0?
   with certain versions of Tk 8.5.  Initial patch by Kevin Walzer.
 
 
-What's New in IDLE 3.3.0?
+What's New kwenye IDLE 3.3.0?
 =========================
 *Release date: 2012-09-29*
 
-- Issue #17625: Close the replace dialog after it is used.
+- Issue #17625: Close the replace dialog after it ni used.
 
 - Issue #7163: Propagate rudisha value of sys.stdout.write.
 
 - Issue #15318: Prevent writing to sys.stdin.
 
 - Issue #4832: Modify IDLE to save files with .py extension by
-  default on Windows and OS X (Tk 8.5) as it already does with X11 Tk.
+  default on Windows na OS X (Tk 8.5) kama it already does with X11 Tk.
 
 - Issue #13532, #15319: Check that arguments to sys.stdout.write are strings.
 
 - Issue # 12510: Attempt to get certain tool tips no longer crashes IDLE.
-  Erroneous tool tips have been corrected. Default added for callables.
+  Erroneous tool tips have been corrected. Default added kila callables.
 
 - Issue #10365: File open dialog now works instead of crashing even when
-  parent window is closed while dialog is open.
+  parent window ni closed wakati dialog ni open.
 
-- Issue 14876: use user-selected font for highlight configuration.
+- Issue 14876: use user-selected font kila highlight configuration.
 
-- Issue #14937: Perform auto-completion of filenames in strings even for
-  non-ASCII filenames. Likewise for identifiers.
+- Issue #14937: Perform auto-completion of filenames kwenye strings even for
+  non-ASCII filenames. Likewise kila identifiers.
 
-- Issue #8515: Set __file__ when run file in IDLE.
+- Issue #8515: Set __file__ when run file kwenye IDLE.
   Initial patch by Bruce Frederiksen.
 
-- IDLE can be launched as `python -m idlelib`
+- IDLE can be launched kama `python -m idlelib`
 
-- Issue #14409: IDLE now properly executes commands in the Shell window
+- Issue #14409: IDLE now properly executes commands kwenye the Shell window
   when it cannot read the normal config files on startup and
   has to use the built-in default key bindings.
-  There was previously a bug in one of the defaults.
+  There was previously a bug kwenye one of the defaults.
 
-- Issue #3573: IDLE hangs when passing invalid command line args
+- Issue #3573: IDLE hangs when pitaing invalid command line args
   (directory(ies) instead of file(s)).
 
-- Issue #14018: Update checks for unstable system Tcl/Tk versions on OS X
-  to include versions shipped with OS X 10.7 and 10.8 in addition to 10.6.
+- Issue #14018: Update checks kila unstable system Tcl/Tk versions on OS X
+  to include versions shipped with OS X 10.7 na 10.8 kwenye addition to 10.6.
 
 
-What's New in IDLE 3.2.1?
+What's New kwenye IDLE 3.2.1?
 =========================
 *Release date: 15-May-11*
 
 - Issue #6378: Further adjust idle.bat to start associated Python
 
-- Issue #11896: Save on Close failed despite selecting "Yes" in dialog.
+- Issue #11896: Save on Close failed despite selecting "Yes" kwenye dialog.
 
 - Issue #1028: Ctrl-space binding to show completions was causing IDLE to exit.
   Tk < 8.5 was sending invalid Unicode null; replaced with valid null.
 
-- Issue #4676: <Home> toggle failing on Tk 8.5, causing IDLE exits and strange selection
+- Issue #4676: <Home> toggle failing on Tk 8.5, causing IDLE exits na strange selection
   behavior. Improve selection extension behaviour.
 
 - Issue #3851: <Home> toggle non-functional when NumLock set on Windows.
 
 
-What's New in IDLE 3.1b1?
+What's New kwenye IDLE 3.1b1?
 =========================
 *Release date: 06-May-09*
 
-- Issue #5707: Use of 'filter' in keybindingDialog.py was causing custom key assignment to
+- Issue #5707: Use of 'filter' kwenye keybindingDialog.py was causing custom key assignment to
   fail.  Patch by Amaury Forgeot d'Arc.
 
 - Issue #4815: Offer conversion to UTF-8 ikiwa source files have
-  no encoding declaration and are not encoded in UTF-8.
+  no encoding declaration na are sio encoded kwenye UTF-8.
 
 - Issue #4008: Fix problems with non-ASCII source files.
 
-- Issue #4323: Always encode source as UTF-8 without asking
-  the user (unless a different encoding is declared); remove
+- Issue #4323: Always encode source kama UTF-8 without asking
+  the user (unless a different encoding ni declared); remove
   user configuration of source encoding; all according to
   PEP 3120.
 
 - Issue #2665: On Windows, an IDLE installation upgraded kutoka an old version
-  would not start ikiwa a custom theme was defined.
+  would sio start ikiwa a custom theme was defined.
 
 ------------------------------------------------------------------------
-Refer to NEWS2x.txt and HISTORY.txt for information on earlier releases.
+Refer to NEWS2x.txt na HISTORY.txt kila information on earlier releases.
 ------------------------------------------------------------------------

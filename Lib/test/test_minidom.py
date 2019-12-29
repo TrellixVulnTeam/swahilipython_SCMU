@@ -1,4 +1,4 @@
-# test for xml.dom.minidom
+# test kila xml.dom.minidom
 
 agiza copy
 agiza pickle
@@ -22,19 +22,19 @@ sample = ("<?xml version='1.0' encoding='us-ascii'?>\n"
           "<?pi sample?> <!-- comment --> <e/> </doc>")
 
 # The tests of DocumentType agizaing use these helpers to construct
-# the documents to work with, since not all DOM builders actually
+# the documents to work with, since sio all DOM builders actually
 # create the DocumentType nodes.
-eleza create_doc_without_doctype(doctype=None):
-    rudisha getDOMImplementation().createDocument(None, "doc", doctype)
+eleza create_doc_without_doctype(doctype=Tupu):
+    rudisha getDOMImplementation().createDocument(Tupu, "doc", doctype)
 
 eleza create_nonempty_doctype():
-    doctype = getDOMImplementation().createDocumentType("doc", None, None)
+    doctype = getDOMImplementation().createDocumentType("doc", Tupu, Tupu)
     doctype.entities._seq = []
     doctype.notations._seq = []
-    notation = xml.dom.minidom.Notation("my-notation", None,
+    notation = xml.dom.minidom.Notation("my-notation", Tupu,
                                         "http://xml.python.org/notations/my")
     doctype.notations._seq.append(notation)
-    entity = xml.dom.minidom.Entity("my-entity", None,
+    entity = xml.dom.minidom.Entity("my-entity", Tupu,
                                     "http://xml.python.org/entities/my",
                                     "my-notation")
     entity.version = "1.0"
@@ -52,25 +52,25 @@ eleza create_doc_with_doctype():
 
 kundi MinidomTest(unittest.TestCase):
     eleza confirm(self, test, testname = "Test"):
-        self.assertTrue(test, testname)
+        self.assertKweli(test, testname)
 
     eleza checkWholeText(self, node, s):
         t = node.wholeText
-        self.confirm(t == s, "looking for %r, found %r" % (s, t))
+        self.confirm(t == s, "looking kila %r, found %r" % (s, t))
 
     eleza testDocumentAsyncAttr(self):
         doc = Document()
-        self.assertFalse(doc.async_)
-        self.assertFalse(Document.async_)
+        self.assertUongo(doc.async_)
+        self.assertUongo(Document.async_)
 
     eleza testParseFromBinaryFile(self):
-        with open(tstfile, 'rb') as file:
+        with open(tstfile, 'rb') kama file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
 
     eleza testParseFromTextFile(self):
-        with open(tstfile, 'r', encoding='iso-8859-1') as file:
+        with open(tstfile, 'r', encoding='iso-8859-1') kama file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
@@ -88,40 +88,40 @@ kundi MinidomTest(unittest.TestCase):
         nelem = dom.createElement("element")
         root.insertBefore(nelem, elem)
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2
-                and root.childNodes[0] is nelem
-                and root.childNodes.item(0) is nelem
-                and root.childNodes[1] is elem
-                and root.childNodes.item(1) is elem
-                and root.firstChild is nelem
-                and root.lastChild is elem
-                and root.toxml() == "<doc><element/><foo/></doc>"
-                , "testInsertBefore -- node properly placed in tree")
+                na root.childNodes.length == 2
+                na root.childNodes[0] ni nelem
+                na root.childNodes.item(0) ni nelem
+                na root.childNodes[1] ni elem
+                na root.childNodes.item(1) ni elem
+                na root.firstChild ni nelem
+                na root.lastChild ni elem
+                na root.toxml() == "<doc><element/><foo/></doc>"
+                , "testInsertBefore -- node properly placed kwenye tree")
         nelem = dom.createElement("element")
-        root.insertBefore(nelem, None)
+        root.insertBefore(nelem, Tupu)
         self.confirm(len(root.childNodes) == 3
-                and root.childNodes.length == 3
-                and root.childNodes[1] is elem
-                and root.childNodes.item(1) is elem
-                and root.childNodes[2] is nelem
-                and root.childNodes.item(2) is nelem
-                and root.lastChild is nelem
-                and nelem.previousSibling is elem
-                and root.toxml() == "<doc><element/><foo/><element/></doc>"
-                , "testInsertBefore -- node properly placed in tree")
+                na root.childNodes.length == 3
+                na root.childNodes[1] ni elem
+                na root.childNodes.item(1) ni elem
+                na root.childNodes[2] ni nelem
+                na root.childNodes.item(2) ni nelem
+                na root.lastChild ni nelem
+                na nelem.previousSibling ni elem
+                na root.toxml() == "<doc><element/><foo/><element/></doc>"
+                , "testInsertBefore -- node properly placed kwenye tree")
         nelem2 = dom.createElement("bar")
         root.insertBefore(nelem2, nelem)
         self.confirm(len(root.childNodes) == 4
-                and root.childNodes.length == 4
-                and root.childNodes[2] is nelem2
-                and root.childNodes.item(2) is nelem2
-                and root.childNodes[3] is nelem
-                and root.childNodes.item(3) is nelem
-                and nelem2.nextSibling is nelem
-                and nelem.previousSibling is nelem2
-                and root.toxml() ==
+                na root.childNodes.length == 4
+                na root.childNodes[2] ni nelem2
+                na root.childNodes.item(2) ni nelem2
+                na root.childNodes[3] ni nelem
+                na root.childNodes.item(3) ni nelem
+                na nelem2.nextSibling ni nelem
+                na nelem.previousSibling ni nelem2
+                na root.toxml() ==
                 "<doc><element/><foo/><bar/><element/></doc>"
-                , "testInsertBefore -- node properly placed in tree")
+                , "testInsertBefore -- node properly placed kwenye tree")
         dom.unlink()
 
     eleza _create_fragment_test_nodes(self):
@@ -139,10 +139,10 @@ kundi MinidomTest(unittest.TestCase):
 
     eleza testInsertBeforeFragment(self):
         dom, orig, c1, c2, c3, frag = self._create_fragment_test_nodes()
-        dom.documentElement.insertBefore(frag, None)
+        dom.documentElement.insertBefore(frag, Tupu)
         self.confirm(tuple(dom.documentElement.childNodes) ==
                      (orig, c1, c2, c3),
-                     "insertBefore(<fragment>, None)")
+                     "insertBefore(<fragment>, Tupu)")
         frag.unlink()
         dom.unlink()
 
@@ -206,9 +206,9 @@ kundi MinidomTest(unittest.TestCase):
         attrs = elem.attributes
         attrs["foo"] = "bar"
         a = attrs.item(0)
-        self.confirm(a.ownerDocument is dom,
+        self.confirm(a.ownerDocument ni dom,
                 "NamedNodeMap.__setitem__() sets ownerDocument")
-        self.confirm(a.ownerElement is elem,
+        self.confirm(a.ownerElement ni elem,
                 "NamedNodeMap.__setitem__() sets ownerElement")
         self.confirm(a.value == "bar",
                 "NamedNodeMap.__setitem__() sets value")
@@ -219,21 +219,21 @@ kundi MinidomTest(unittest.TestCase):
 
     eleza testNonZero(self):
         dom = parse(tstfile)
-        self.confirm(dom)# should not be zero
+        self.confirm(dom)# should sio be zero
         dom.appendChild(dom.createComment("foo"))
         self.confirm(not dom.childNodes[-1].childNodes)
         dom.unlink()
 
     eleza testUnlink(self):
         dom = parse(tstfile)
-        self.assertTrue(dom.childNodes)
+        self.assertKweli(dom.childNodes)
         dom.unlink()
-        self.assertFalse(dom.childNodes)
+        self.assertUongo(dom.childNodes)
 
     eleza testContext(self):
-        with parse(tstfile) as dom:
-            self.assertTrue(dom.childNodes)
-        self.assertFalse(dom.childNodes)
+        with parse(tstfile) kama dom:
+            self.assertKweli(dom.childNodes)
+        self.assertUongo(dom.childNodes)
 
     eleza testElement(self):
         dom = Document()
@@ -247,9 +247,9 @@ kundi MinidomTest(unittest.TestCase):
         el.setAttribute("spam", "jam2")
         self.confirm(el.toxml() == '<abc spam="jam2"/>', "testAAA")
         a = el.getAttributeNode("spam")
-        self.confirm(a.ownerDocument is dom,
+        self.confirm(a.ownerDocument ni dom,
                 "setAttribute() sets ownerDocument")
-        self.confirm(a.ownerElement is dom.documentElement,
+        self.confirm(a.ownerElement ni dom.documentElement,
                 "setAttribute() sets ownerElement")
         dom.unlink()
 
@@ -289,7 +289,7 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(len(child.attributes) == 0)
         child.setAttribute("def", "ghi")
         self.confirm(len(child.attributes) == 1)
-        del child.attributes["def"]
+        toa child.attributes["def"]
         self.confirm(len(child.attributes) == 0)
         dom.unlink()
 
@@ -325,10 +325,10 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(len(child.attributes) == 1)
         node = child.getAttributeNode("spam")
         self.assertRaises(xml.dom.NotFoundErr, child.removeAttributeNode,
-            None)
+            Tupu)
         self.assertIs(node, child.removeAttributeNode(node))
         self.confirm(len(child.attributes) == 0
-                and child.getAttributeNode("spam") is None)
+                na child.getAttributeNode("spam") ni Tupu)
         dom2 = Document()
         child2 = dom2.appendChild(dom2.createElement("foo"))
         node2 = child2.getAttributeNode("spam")
@@ -348,46 +348,46 @@ kundi MinidomTest(unittest.TestCase):
         el.setAttribute("spam", "jam")
         self.confirm(len(el.attributes) == 1)
         el.setAttribute("spam", "bam")
-        # Set this attribute to be an ID and make sure that doesn't change
+        # Set this attribute to be an ID na make sure that doesn't change
         # when changing the value:
         el.setIdAttribute("spam")
         self.confirm(len(el.attributes) == 1
-                and el.attributes["spam"].value == "bam"
-                and el.attributes["spam"].nodeValue == "bam"
-                and el.getAttribute("spam") == "bam"
-                and el.getAttributeNode("spam").isId)
+                na el.attributes["spam"].value == "bam"
+                na el.attributes["spam"].nodeValue == "bam"
+                na el.getAttribute("spam") == "bam"
+                na el.getAttributeNode("spam").isId)
         el.attributes["spam"] = "ham"
         self.confirm(len(el.attributes) == 1
-                and el.attributes["spam"].value == "ham"
-                and el.attributes["spam"].nodeValue == "ham"
-                and el.getAttribute("spam") == "ham"
-                and el.attributes["spam"].isId)
+                na el.attributes["spam"].value == "ham"
+                na el.attributes["spam"].nodeValue == "ham"
+                na el.getAttribute("spam") == "ham"
+                na el.attributes["spam"].isId)
         el.setAttribute("spam2", "bam")
         self.confirm(len(el.attributes) == 2
-                and el.attributes["spam"].value == "ham"
-                and el.attributes["spam"].nodeValue == "ham"
-                and el.getAttribute("spam") == "ham"
-                and el.attributes["spam2"].value == "bam"
-                and el.attributes["spam2"].nodeValue == "bam"
-                and el.getAttribute("spam2") == "bam")
+                na el.attributes["spam"].value == "ham"
+                na el.attributes["spam"].nodeValue == "ham"
+                na el.getAttribute("spam") == "ham"
+                na el.attributes["spam2"].value == "bam"
+                na el.attributes["spam2"].nodeValue == "bam"
+                na el.getAttribute("spam2") == "bam")
         el.attributes["spam2"] = "bam2"
         self.confirm(len(el.attributes) == 2
-                and el.attributes["spam"].value == "ham"
-                and el.attributes["spam"].nodeValue == "ham"
-                and el.getAttribute("spam") == "ham"
-                and el.attributes["spam2"].value == "bam2"
-                and el.attributes["spam2"].nodeValue == "bam2"
-                and el.getAttribute("spam2") == "bam2")
+                na el.attributes["spam"].value == "ham"
+                na el.attributes["spam"].nodeValue == "ham"
+                na el.getAttribute("spam") == "ham"
+                na el.attributes["spam2"].value == "bam2"
+                na el.attributes["spam2"].nodeValue == "bam2"
+                na el.getAttribute("spam2") == "bam2")
         dom.unlink()
 
     eleza testGetAttrList(self):
-        pass
+        pita
 
     eleza testGetAttrValues(self):
-        pass
+        pita
 
     eleza testGetAttrLength(self):
-        pass
+        pita
 
     eleza testGetAttribute(self):
         dom = Document()
@@ -409,7 +409,7 @@ kundi MinidomTest(unittest.TestCase):
         self.assertEqual(child2.getAttributeNS("http://www.python.org", "missing"),
                          '')
 
-    eleza testGetAttributeNode(self): pass
+    eleza testGetAttributeNode(self): pita
 
     eleza testGetElementsByTagNameNS(self):
         d="""<foo xmlns:minidom='http://pyxml.sf.net/minidom'>
@@ -419,11 +419,11 @@ kundi MinidomTest(unittest.TestCase):
         elems = dom.getElementsByTagNameNS("http://pyxml.sf.net/minidom",
                                            "myelem")
         self.confirm(len(elems) == 1
-                and elems[0].namespaceURI == "http://pyxml.sf.net/minidom"
-                and elems[0].localName == "myelem"
-                and elems[0].prefix == "minidom"
-                and elems[0].tagName == "minidom:myelem"
-                and elems[0].nodeName == "minidom:myelem")
+                na elems[0].namespaceURI == "http://pyxml.sf.net/minidom"
+                na elems[0].localName == "myelem"
+                na elems[0].prefix == "minidom"
+                na elems[0].tagName == "minidom:myelem"
+                na elems[0].nodeName == "minidom:myelem")
         dom.unlink()
 
     eleza get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(self, doc, nsuri,
@@ -471,7 +471,7 @@ kundi MinidomTest(unittest.TestCase):
         string1 = repr(el)
         string2 = str(el)
         self.confirm(string1 == string2)
-        self.confirm("slash:abc" in string1)
+        self.confirm("slash:abc" kwenye string1)
         dom.unlink()
 
     eleza testAttributeRepr(self):
@@ -481,7 +481,7 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(str(node) == repr(node))
         dom.unlink()
 
-    eleza testTextNodeRepr(self): pass
+    eleza testTextNodeRepr(self): pita
 
     eleza testWriteXML(self):
         str = '<?xml version="1.0" ?><a b="c"/>'
@@ -498,7 +498,7 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(domstr == str.replace("\n", "\r\n"))
 
     eleza test_toprettyxml_with_text_nodes(self):
-        # see issue #4147, text nodes are not indented
+        # see issue #4147, text nodes are sio indented
         decl = '<?xml version="1.0" ?>\n'
         self.assertEqual(parseString('<B>A</B>').toprettyxml(),
                          decl + '<B>A</B>\n')
@@ -524,7 +524,7 @@ kundi MinidomTest(unittest.TestCase):
 
     eleza test_toprettyxml_preserves_content_of_text_node(self):
         # see issue #4147
-        for str in ('<B>A</B>', '<A><B>C</B></A>'):
+        kila str kwenye ('<B>A</B>', '<A><B>C</B></A>'):
             dom = parseString(str)
             dom2 = parseString(dom.toprettyxml())
             self.assertEqual(
@@ -535,52 +535,52 @@ kundi MinidomTest(unittest.TestCase):
         dom = parseString('<e><?mypi \t\n data \t\n ?></e>')
         pi = dom.documentElement.firstChild
         self.confirm(pi.target == "mypi"
-                and pi.data == "data \t\n "
-                and pi.nodeName == "mypi"
-                and pi.nodeType == Node.PROCESSING_INSTRUCTION_NODE
-                and pi.attributes is None
-                and not pi.hasChildNodes()
-                and len(pi.childNodes) == 0
-                and pi.firstChild is None
-                and pi.lastChild is None
-                and pi.localName is None
-                and pi.namespaceURI == xml.dom.EMPTY_NAMESPACE)
+                na pi.data == "data \t\n "
+                na pi.nodeName == "mypi"
+                na pi.nodeType == Node.PROCESSING_INSTRUCTION_NODE
+                na pi.attributes ni Tupu
+                na sio pi.hasChildNodes()
+                na len(pi.childNodes) == 0
+                na pi.firstChild ni Tupu
+                na pi.lastChild ni Tupu
+                na pi.localName ni Tupu
+                na pi.namespaceURI == xml.dom.EMPTY_NAMESPACE)
 
-    eleza testProcessingInstructionRepr(self): pass
+    eleza testProcessingInstructionRepr(self): pita
 
-    eleza testTextRepr(self): pass
+    eleza testTextRepr(self): pita
 
-    eleza testWriteText(self): pass
+    eleza testWriteText(self): pita
 
-    eleza testDocumentElement(self): pass
+    eleza testDocumentElement(self): pita
 
     eleza testTooManyDocumentElements(self):
         doc = parseString("<doc/>")
         elem = doc.createElement("extra")
-        # Should raise an exception when adding an extra document element.
+        # Should ashiria an exception when adding an extra document element.
         self.assertRaises(xml.dom.HierarchyRequestErr, doc.appendChild, elem)
         elem.unlink()
         doc.unlink()
 
-    eleza testCreateElementNS(self): pass
+    eleza testCreateElementNS(self): pita
 
-    eleza testCreateAttributeNS(self): pass
+    eleza testCreateAttributeNS(self): pita
 
-    eleza testParse(self): pass
+    eleza testParse(self): pita
 
-    eleza testParseString(self): pass
+    eleza testParseString(self): pita
 
-    eleza testComment(self): pass
+    eleza testComment(self): pita
 
-    eleza testAttrListItem(self): pass
+    eleza testAttrListItem(self): pita
 
-    eleza testAttrListItems(self): pass
+    eleza testAttrListItems(self): pita
 
-    eleza testAttrListItemNS(self): pass
+    eleza testAttrListItemNS(self): pita
 
-    eleza testAttrListKeys(self): pass
+    eleza testAttrListKeys(self): pita
 
-    eleza testAttrListKeysNS(self): pass
+    eleza testAttrListKeysNS(self): pita
 
     eleza testRemoveNamedItem(self):
         doc = parseString("<doc a=''/>")
@@ -601,37 +601,37 @@ kundi MinidomTest(unittest.TestCase):
         self.assertRaises(xml.dom.NotFoundErr, attrs.removeNamedItemNS,
                           "http://xml.python.org/", "b")
 
-    eleza testAttrListValues(self): pass
+    eleza testAttrListValues(self): pita
 
-    eleza testAttrListLength(self): pass
+    eleza testAttrListLength(self): pita
 
-    eleza testAttrList__getitem__(self): pass
+    eleza testAttrList__getitem__(self): pita
 
-    eleza testAttrList__setitem__(self): pass
+    eleza testAttrList__setitem__(self): pita
 
-    eleza testSetAttrValueandNodeValue(self): pass
+    eleza testSetAttrValueandNodeValue(self): pita
 
-    eleza testParseElement(self): pass
+    eleza testParseElement(self): pita
 
-    eleza testParseAttributes(self): pass
+    eleza testParseAttributes(self): pita
 
-    eleza testParseElementNamespaces(self): pass
+    eleza testParseElementNamespaces(self): pita
 
-    eleza testParseAttributeNamespaces(self): pass
+    eleza testParseAttributeNamespaces(self): pita
 
-    eleza testParseProcessingInstructions(self): pass
+    eleza testParseProcessingInstructions(self): pita
 
-    eleza testChildNodes(self): pass
+    eleza testChildNodes(self): pita
 
-    eleza testFirstChild(self): pass
+    eleza testFirstChild(self): pita
 
     eleza testHasChildNodes(self):
         dom = parseString("<doc><foo/></doc>")
         doc = dom.documentElement
-        self.assertTrue(doc.hasChildNodes())
+        self.assertKweli(doc.hasChildNodes())
         dom2 = parseString("<doc/>")
         doc2 = dom2.documentElement
-        self.assertFalse(doc2.hasChildNodes())
+        self.assertUongo(doc2.hasChildNodes())
 
     eleza _testCloneElementCopiesAttributes(self, e1, e2, test):
         attrs1 = e1.attributes
@@ -641,16 +641,16 @@ kundi MinidomTest(unittest.TestCase):
         keys1.sort()
         keys2.sort()
         self.confirm(keys1 == keys2, "clone of element has same attribute keys")
-        for i in range(len(keys1)):
+        kila i kwenye range(len(keys1)):
             a1 = attrs1.item(i)
             a2 = attrs2.item(i)
-            self.confirm(a1 is not a2
-                    and a1.value == a2.value
-                    and a1.nodeValue == a2.nodeValue
-                    and a1.namespaceURI == a2.namespaceURI
-                    and a1.localName == a2.localName
+            self.confirm(a1 ni sio a2
+                    na a1.value == a2.value
+                    na a1.nodeValue == a2.nodeValue
+                    na a1.namespaceURI == a2.namespaceURI
+                    na a1.localName == a2.localName
                     , "clone of attribute node has proper attribute values")
-            self.confirm(a2.ownerElement is e2,
+            self.confirm(a2.ownerElement ni e2,
                     "clone of attribute node correctly owned")
 
     eleza _setupCloneElement(self, deep):
@@ -658,8 +658,8 @@ kundi MinidomTest(unittest.TestCase):
         root = dom.documentElement
         clone = root.cloneNode(deep)
         self._testCloneElementCopiesAttributes(
-            root, clone, "testCloneElement" + (deep and "Deep" or "Shallow"))
-        # mutilate the original so shared data is detected
+            root, clone, "testCloneElement" + (deep na "Deep" ama "Shallow"))
+        # mutilate the original so shared data ni detected
         root.tagName = root.nodeName = "MODIFIED"
         root.setAttribute("attr", "NEW VALUE")
         root.setAttribute("added", "VALUE")
@@ -668,18 +668,18 @@ kundi MinidomTest(unittest.TestCase):
     eleza testCloneElementShallow(self):
         dom, clone = self._setupCloneElement(0)
         self.confirm(len(clone.childNodes) == 0
-                and clone.childNodes.length == 0
-                and clone.parentNode is None
-                and clone.toxml() == '<doc attr="value"/>'
+                na clone.childNodes.length == 0
+                na clone.parentNode ni Tupu
+                na clone.toxml() == '<doc attr="value"/>'
                 , "testCloneElementShallow")
         dom.unlink()
 
     eleza testCloneElementDeep(self):
         dom, clone = self._setupCloneElement(1)
         self.confirm(len(clone.childNodes) == 1
-                and clone.childNodes.length == 1
-                and clone.parentNode is None
-                and clone.toxml() == '<doc attr="value"><foo/></doc>'
+                na clone.childNodes.length == 1
+                na clone.parentNode ni Tupu
+                na clone.toxml() == '<doc attr="value"><foo/></doc>'
                 , "testCloneElementDeep")
         dom.unlink()
 
@@ -691,7 +691,7 @@ kundi MinidomTest(unittest.TestCase):
                     "]>\n"
                     "<doc attr='value'/>")
         doc2 = doc.cloneNode(0)
-        self.confirm(doc2 is None,
+        self.confirm(doc2 ni Tupu,
                 "testCloneDocumentShallow:"
                 " shallow cloning of documents makes no sense!")
 
@@ -703,80 +703,80 @@ kundi MinidomTest(unittest.TestCase):
                     "]>\n"
                     "<doc attr='value'/>")
         doc2 = doc.cloneNode(1)
-        self.confirm(not (doc.isSameNode(doc2) or doc2.isSameNode(doc)),
-                "testCloneDocumentDeep: document objects not distinct")
+        self.confirm(not (doc.isSameNode(doc2) ama doc2.isSameNode(doc)),
+                "testCloneDocumentDeep: document objects sio distinct")
         self.confirm(len(doc.childNodes) == len(doc2.childNodes),
                 "testCloneDocumentDeep: wrong number of Document children")
         self.confirm(doc2.documentElement.nodeType == Node.ELEMENT_NODE,
-                "testCloneDocumentDeep: documentElement not an ELEMENT_NODE")
+                "testCloneDocumentDeep: documentElement sio an ELEMENT_NODE")
         self.confirm(doc2.documentElement.ownerDocument.isSameNode(doc2),
-            "testCloneDocumentDeep: documentElement owner is not new document")
+            "testCloneDocumentDeep: documentElement owner ni sio new document")
         self.confirm(not doc.documentElement.isSameNode(doc2.documentElement),
-                "testCloneDocumentDeep: documentElement should not be shared")
-        ikiwa doc.doctype is not None:
+                "testCloneDocumentDeep: documentElement should sio be shared")
+        ikiwa doc.doctype ni sio Tupu:
             # check the doctype iff the original DOM maintained it
             self.confirm(doc2.doctype.nodeType == Node.DOCUMENT_TYPE_NODE,
-                    "testCloneDocumentDeep: doctype not a DOCUMENT_TYPE_NODE")
+                    "testCloneDocumentDeep: doctype sio a DOCUMENT_TYPE_NODE")
             self.confirm(doc2.doctype.ownerDocument.isSameNode(doc2))
             self.confirm(not doc.doctype.isSameNode(doc2.doctype))
 
     eleza testCloneDocumentTypeDeepOk(self):
         doctype = create_nonempty_doctype()
         clone = doctype.cloneNode(1)
-        self.confirm(clone is not None
-                and clone.nodeName == doctype.nodeName
-                and clone.name == doctype.name
-                and clone.publicId == doctype.publicId
-                and clone.systemId == doctype.systemId
-                and len(clone.entities) == len(doctype.entities)
-                and clone.entities.item(len(clone.entities)) is None
-                and len(clone.notations) == len(doctype.notations)
-                and clone.notations.item(len(clone.notations)) is None
-                and len(clone.childNodes) == 0)
-        for i in range(len(doctype.entities)):
+        self.confirm(clone ni sio Tupu
+                na clone.nodeName == doctype.nodeName
+                na clone.name == doctype.name
+                na clone.publicId == doctype.publicId
+                na clone.systemId == doctype.systemId
+                na len(clone.entities) == len(doctype.entities)
+                na clone.entities.item(len(clone.entities)) ni Tupu
+                na len(clone.notations) == len(doctype.notations)
+                na clone.notations.item(len(clone.notations)) ni Tupu
+                na len(clone.childNodes) == 0)
+        kila i kwenye range(len(doctype.entities)):
             se = doctype.entities.item(i)
             ce = clone.entities.item(i)
             self.confirm((not se.isSameNode(ce))
-                    and (not ce.isSameNode(se))
-                    and ce.nodeName == se.nodeName
-                    and ce.notationName == se.notationName
-                    and ce.publicId == se.publicId
-                    and ce.systemId == se.systemId
-                    and ce.encoding == se.encoding
-                    and ce.actualEncoding == se.actualEncoding
-                    and ce.version == se.version)
-        for i in range(len(doctype.notations)):
+                    na (not ce.isSameNode(se))
+                    na ce.nodeName == se.nodeName
+                    na ce.notationName == se.notationName
+                    na ce.publicId == se.publicId
+                    na ce.systemId == se.systemId
+                    na ce.encoding == se.encoding
+                    na ce.actualEncoding == se.actualEncoding
+                    na ce.version == se.version)
+        kila i kwenye range(len(doctype.notations)):
             sn = doctype.notations.item(i)
             cn = clone.notations.item(i)
             self.confirm((not sn.isSameNode(cn))
-                    and (not cn.isSameNode(sn))
-                    and cn.nodeName == sn.nodeName
-                    and cn.publicId == sn.publicId
-                    and cn.systemId == sn.systemId)
+                    na (not cn.isSameNode(sn))
+                    na cn.nodeName == sn.nodeName
+                    na cn.publicId == sn.publicId
+                    na cn.systemId == sn.systemId)
 
     eleza testCloneDocumentTypeDeepNotOk(self):
         doc = create_doc_with_doctype()
         clone = doc.doctype.cloneNode(1)
-        self.confirm(clone is None, "testCloneDocumentTypeDeepNotOk")
+        self.confirm(clone ni Tupu, "testCloneDocumentTypeDeepNotOk")
 
     eleza testCloneDocumentTypeShallowOk(self):
         doctype = create_nonempty_doctype()
         clone = doctype.cloneNode(0)
-        self.confirm(clone is not None
-                and clone.nodeName == doctype.nodeName
-                and clone.name == doctype.name
-                and clone.publicId == doctype.publicId
-                and clone.systemId == doctype.systemId
-                and len(clone.entities) == 0
-                and clone.entities.item(0) is None
-                and len(clone.notations) == 0
-                and clone.notations.item(0) is None
-                and len(clone.childNodes) == 0)
+        self.confirm(clone ni sio Tupu
+                na clone.nodeName == doctype.nodeName
+                na clone.name == doctype.name
+                na clone.publicId == doctype.publicId
+                na clone.systemId == doctype.systemId
+                na len(clone.entities) == 0
+                na clone.entities.item(0) ni Tupu
+                na len(clone.notations) == 0
+                na clone.notations.item(0) ni Tupu
+                na len(clone.childNodes) == 0)
 
     eleza testCloneDocumentTypeShallowNotOk(self):
         doc = create_doc_with_doctype()
         clone = doc.doctype.cloneNode(0)
-        self.confirm(clone is None, "testCloneDocumentTypeShallowNotOk")
+        self.confirm(clone ni Tupu, "testCloneDocumentTypeShallowNotOk")
 
     eleza check_import_document(self, deep, testName):
         doc1 = parseString("<doc/>")
@@ -801,21 +801,21 @@ kundi MinidomTest(unittest.TestCase):
         self.assertRaises(xml.dom.NotSupportedErr, target.agizaNode,
                           src.doctype, 1)
 
-    # Testing attribute clones uses a helper, and should always be deep,
-    # even ikiwa the argument to cloneNode is false.
+    # Testing attribute clones uses a helper, na should always be deep,
+    # even ikiwa the argument to cloneNode ni false.
     eleza check_clone_attribute(self, deep, testName):
         doc = parseString("<doc attr='value'/>")
         attr = doc.documentElement.getAttributeNode("attr")
-        self.assertNotEqual(attr, None)
+        self.assertNotEqual(attr, Tupu)
         clone = attr.cloneNode(deep)
         self.confirm(not clone.isSameNode(attr))
         self.confirm(not attr.isSameNode(clone))
-        self.confirm(clone.ownerElement is None,
-                testName + ": ownerElement should be None")
+        self.confirm(clone.ownerElement ni Tupu,
+                testName + ": ownerElement should be Tupu")
         self.confirm(clone.ownerDocument.isSameNode(attr.ownerDocument),
-                testName + ": ownerDocument does not match")
+                testName + ": ownerDocument does sio match")
         self.confirm(clone.specified,
-                testName + ": cloned attribute must have specified == True")
+                testName + ": cloned attribute must have specified == Kweli")
 
     eleza testCloneAttributeShallow(self):
         self.check_clone_attribute(0, "testCloneAttributeShallow")
@@ -829,7 +829,7 @@ kundi MinidomTest(unittest.TestCase):
         self.assertEqual(pi.nodeType, Node.PROCESSING_INSTRUCTION_NODE)
         clone = pi.cloneNode(deep)
         self.confirm(clone.target == pi.target
-                and clone.data == pi.data)
+                na clone.data == pi.data)
 
     eleza testClonePIShallow(self):
         self.check_clone_pi(0, "testClonePIShallow")
@@ -838,7 +838,7 @@ kundi MinidomTest(unittest.TestCase):
         self.check_clone_pi(1, "testClonePIDeep")
 
     eleza check_clone_node_entity(self, clone_document):
-        # bpo-35052: Test user data handler in cloneNode() on a document with
+        # bpo-35052: Test user data handler kwenye cloneNode() on a document with
         # an entity
         document = xml.dom.minidom.parseString("""
             <?xml version="1.0" ?>
@@ -864,16 +864,16 @@ kundi MinidomTest(unittest.TestCase):
 
         ikiwa clone_document:
             # clone Document
-            clone = document.cloneNode(deep=True)
+            clone = document.cloneNode(deep=Kweli)
 
             self.assertEqual(clone.documentElement.firstChild.wholeText,
                              "Don't let entities make you frown ☺")
             operation = xml.dom.UserDataHandler.NODE_IMPORTED
             dst = clone.doctype.entities['smile']
-        else:
+        isipokua:
             # clone DocumentType
-            with support.swap_attr(doctype, 'ownerDocument', None):
-                clone = doctype.cloneNode(deep=True)
+            with support.swap_attr(doctype, 'ownerDocument', Tupu):
+                clone = doctype.cloneNode(deep=Kweli)
 
             operation = xml.dom.UserDataHandler.NODE_CLONED
             dst = clone.entities['smile']
@@ -885,8 +885,8 @@ kundi MinidomTest(unittest.TestCase):
         self.assertIs(handler.dst, dst)
 
     eleza testCloneNodeEntity(self):
-        self.check_clone_node_entity(False)
-        self.check_clone_node_entity(True)
+        self.check_clone_node_entity(Uongo)
+        self.check_clone_node_entity(Kweli)
 
     eleza testNormalize(self):
         doc = parseString("<doc/>")
@@ -894,13 +894,13 @@ kundi MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("first"))
         root.appendChild(doc.createTextNode("second"))
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2,
+                na root.childNodes.length == 2,
                 "testNormalize -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild is root.lastChild
-                and root.firstChild.data == "firstsecond"
+                na root.childNodes.length == 1
+                na root.firstChild ni root.lastChild
+                na root.firstChild.data == "firstsecond"
                 , "testNormalize -- result")
         doc.unlink()
 
@@ -909,7 +909,7 @@ kundi MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode(""))
         doc.normalize()
         self.confirm(len(root.childNodes) == 0
-                and root.childNodes.length == 0,
+                na root.childNodes.length == 0,
                 "testNormalize -- single empty node removed")
         doc.unlink()
 
@@ -920,17 +920,17 @@ kundi MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("second"))
         root.appendChild(doc.createElement("i"))
         self.confirm(len(root.childNodes) == 3
-                and root.childNodes.length == 3,
+                na root.childNodes.length == 3,
                 "testNormalizeCombineAndNextSibling -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2
-                and root.firstChild.data == "firstsecond"
-                and root.firstChild is not root.lastChild
-                and root.firstChild.nextSibling is root.lastChild
-                and root.firstChild.previousSibling is None
-                and root.lastChild.previousSibling is root.firstChild
-                and root.lastChild.nextSibling is None
+                na root.childNodes.length == 2
+                na root.firstChild.data == "firstsecond"
+                na root.firstChild ni sio root.lastChild
+                na root.firstChild.nextSibling ni root.lastChild
+                na root.firstChild.previousSibling ni Tupu
+                na root.lastChild.previousSibling ni root.firstChild
+                na root.lastChild.nextSibling ni Tupu
                 , "testNormalizeCombinedAndNextSibling -- result")
         doc.unlink()
 
@@ -940,15 +940,15 @@ kundi MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("first"))
         root.appendChild(doc.createTextNode(""))
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2,
+                na root.childNodes.length == 2,
                 "testNormalizeDeleteWithPrevSibling -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild.data == "first"
-                and root.firstChild is root.lastChild
-                and root.firstChild.nextSibling is None
-                and root.firstChild.previousSibling is None
+                na root.childNodes.length == 1
+                na root.firstChild.data == "first"
+                na root.firstChild ni root.lastChild
+                na root.firstChild.nextSibling ni Tupu
+                na root.firstChild.previousSibling ni Tupu
                 , "testNormalizeDeleteWithPrevSibling -- result")
         doc.unlink()
 
@@ -958,15 +958,15 @@ kundi MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode(""))
         root.appendChild(doc.createTextNode("second"))
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2,
+                na root.childNodes.length == 2,
                 "testNormalizeDeleteWithNextSibling -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild.data == "second"
-                and root.firstChild is root.lastChild
-                and root.firstChild.nextSibling is None
-                and root.firstChild.previousSibling is None
+                na root.childNodes.length == 1
+                na root.firstChild.data == "second"
+                na root.firstChild ni root.lastChild
+                na root.firstChild.nextSibling ni Tupu
+                na root.firstChild.previousSibling ni Tupu
                 , "testNormalizeDeleteWithNextSibling -- result")
         doc.unlink()
 
@@ -977,16 +977,16 @@ kundi MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode(""))
         root.appendChild(doc.createElement("i"))
         self.confirm(len(root.childNodes) == 3
-                and root.childNodes.length == 3,
+                na root.childNodes.length == 3,
                 "testNormalizeDeleteWithTwoSiblings -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2
-                and root.firstChild is not root.lastChild
-                and root.firstChild.nextSibling is root.lastChild
-                and root.firstChild.previousSibling is None
-                and root.lastChild.previousSibling is root.firstChild
-                and root.lastChild.nextSibling is None
+                na root.childNodes.length == 2
+                na root.firstChild ni sio root.lastChild
+                na root.firstChild.nextSibling ni root.lastChild
+                na root.firstChild.previousSibling ni Tupu
+                na root.lastChild.previousSibling ni root.firstChild
+                na root.lastChild.nextSibling ni Tupu
                 , "testNormalizeDeleteWithTwoSiblings -- result")
         doc.unlink()
 
@@ -999,15 +999,15 @@ kundi MinidomTest(unittest.TestCase):
         root.appendChild(doc.createTextNode("fourth"))
         root.appendChild(doc.createTextNode(""))
         self.confirm(len(root.childNodes) == 5
-                and root.childNodes.length == 5,
+                na root.childNodes.length == 5,
                 "testNormalizeDeleteAndCombine -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 1
-                and root.childNodes.length == 1
-                and root.firstChild is root.lastChild
-                and root.firstChild.data == "secondfourth"
-                and root.firstChild.previousSibling is None
-                and root.firstChild.nextSibling is None
+                na root.childNodes.length == 1
+                na root.firstChild ni root.lastChild
+                na root.firstChild.data == "secondfourth"
+                na root.firstChild.previousSibling ni Tupu
+                na root.firstChild.nextSibling ni Tupu
                 , "testNormalizeDeleteAndCombine -- result")
         doc.unlink()
 
@@ -1036,40 +1036,40 @@ kundi MinidomTest(unittest.TestCase):
         root.childNodes[1].appendChild(doc.createTextNode("x3"))
         root.appendChild(doc.createTextNode(""))
         self.confirm(len(root.childNodes) == 3
-                and root.childNodes.length == 3
-                and len(root.childNodes[0].childNodes) == 4
-                and root.childNodes[0].childNodes.length == 4
-                and len(root.childNodes[1].childNodes) == 3
-                and root.childNodes[1].childNodes.length == 3
-                and len(root.childNodes[1].childNodes[0].childNodes) == 2
-                and root.childNodes[1].childNodes[0].childNodes.length == 2
+                na root.childNodes.length == 3
+                na len(root.childNodes[0].childNodes) == 4
+                na root.childNodes[0].childNodes.length == 4
+                na len(root.childNodes[1].childNodes) == 3
+                na root.childNodes[1].childNodes.length == 3
+                na len(root.childNodes[1].childNodes[0].childNodes) == 2
+                na root.childNodes[1].childNodes[0].childNodes.length == 2
                 , "testNormalize2 -- preparation")
         doc.normalize()
         self.confirm(len(root.childNodes) == 2
-                and root.childNodes.length == 2
-                and len(root.childNodes[0].childNodes) == 2
-                and root.childNodes[0].childNodes.length == 2
-                and len(root.childNodes[1].childNodes) == 2
-                and root.childNodes[1].childNodes.length == 2
-                and len(root.childNodes[1].childNodes[0].childNodes) == 1
-                and root.childNodes[1].childNodes[0].childNodes.length == 1
+                na root.childNodes.length == 2
+                na len(root.childNodes[0].childNodes) == 2
+                na root.childNodes[0].childNodes.length == 2
+                na len(root.childNodes[1].childNodes) == 2
+                na root.childNodes[1].childNodes.length == 2
+                na len(root.childNodes[1].childNodes[0].childNodes) == 1
+                na root.childNodes[1].childNodes[0].childNodes.length == 1
                 , "testNormalize2 -- childNodes lengths")
         self.confirm(root.childNodes[0].childNodes[1].data == "tx"
-                and root.childNodes[1].childNodes[0].childNodes[0].data == "t2x2"
-                and root.childNodes[1].childNodes[1].data == "t3x3"
+                na root.childNodes[1].childNodes[0].childNodes[0].data == "t2x2"
+                na root.childNodes[1].childNodes[1].data == "t3x3"
                 , "testNormalize2 -- joined text fields")
-        self.confirm(root.childNodes[0].childNodes[1].nextSibling is None
-                and root.childNodes[0].childNodes[1].previousSibling
-                        is root.childNodes[0].childNodes[0]
-                and root.childNodes[0].childNodes[0].previousSibling is None
-                and root.childNodes[0].childNodes[0].nextSibling
-                        is root.childNodes[0].childNodes[1]
-                and root.childNodes[1].childNodes[1].nextSibling is None
-                and root.childNodes[1].childNodes[1].previousSibling
-                        is root.childNodes[1].childNodes[0]
-                and root.childNodes[1].childNodes[0].previousSibling is None
-                and root.childNodes[1].childNodes[0].nextSibling
-                        is root.childNodes[1].childNodes[1]
+        self.confirm(root.childNodes[0].childNodes[1].nextSibling ni Tupu
+                na root.childNodes[0].childNodes[1].previousSibling
+                        ni root.childNodes[0].childNodes[0]
+                na root.childNodes[0].childNodes[0].previousSibling ni Tupu
+                na root.childNodes[0].childNodes[0].nextSibling
+                        ni root.childNodes[0].childNodes[1]
+                na root.childNodes[1].childNodes[1].nextSibling ni Tupu
+                na root.childNodes[1].childNodes[1].previousSibling
+                        ni root.childNodes[1].childNodes[0]
+                na root.childNodes[1].childNodes[0].previousSibling ni Tupu
+                na root.childNodes[1].childNodes[0].nextSibling
+                        ni root.childNodes[1].childNodes[1]
                 , "testNormalize2 -- sibling pointers")
         doc.unlink()
 
@@ -1087,20 +1087,20 @@ kundi MinidomTest(unittest.TestCase):
         node = doc.documentElement
         node.childNodes[1].nodeValue = ""
         node.normalize()
-        self.confirm(node.childNodes[-1].nextSibling is None,
-                     "Final child's .nextSibling should be None")
+        self.confirm(node.childNodes[-1].nextSibling ni Tupu,
+                     "Final child's .nextSibling should be Tupu")
 
     eleza testSiblings(self):
         doc = parseString("<doc><?pi?>text?<elm/></doc>")
         root = doc.documentElement
         (pi, text, elm) = root.childNodes
 
-        self.confirm(pi.nextSibling is text and
-                pi.previousSibling is None and
-                text.nextSibling is elm and
-                text.previousSibling is pi and
-                elm.nextSibling is None and
-                elm.previousSibling is text, "testSiblings")
+        self.confirm(pi.nextSibling ni text and
+                pi.previousSibling ni Tupu and
+                text.nextSibling ni elm and
+                text.previousSibling ni pi and
+                elm.nextSibling ni Tupu and
+                elm.previousSibling ni text, "testSiblings")
 
         doc.unlink()
 
@@ -1112,22 +1112,22 @@ kundi MinidomTest(unittest.TestCase):
         (elm2a, elm2b) = elm1.childNodes
         elm3 = elm2b.childNodes[0]
 
-        self.confirm(root.parentNode is doc and
-                elm1.parentNode is root and
-                elm2a.parentNode is elm1 and
-                elm2b.parentNode is elm1 and
-                elm3.parentNode is elm2b, "testParents")
+        self.confirm(root.parentNode ni doc and
+                elm1.parentNode ni root and
+                elm2a.parentNode ni elm1 and
+                elm2b.parentNode ni elm1 and
+                elm3.parentNode ni elm2b, "testParents")
         doc.unlink()
 
     eleza testNodeListItem(self):
         doc = parseString("<doc><e/><e/></doc>")
         children = doc.childNodes
         docelem = children[0]
-        self.confirm(children[0] is children.item(0)
-                and children.item(1) is None
-                and docelem.childNodes.item(0) is docelem.childNodes[0]
-                and docelem.childNodes.item(1) is docelem.childNodes[1]
-                and docelem.childNodes.item(0).childNodes.item(0) is None,
+        self.confirm(children[0] ni children.item(0)
+                na children.item(1) ni Tupu
+                na docelem.childNodes.item(0) ni docelem.childNodes[0]
+                na docelem.childNodes.item(1) ni docelem.childNodes[1]
+                na docelem.childNodes.item(0).childNodes.item(0) ni Tupu,
                 "test NodeList.item()")
         doc.unlink()
 
@@ -1145,7 +1145,7 @@ kundi MinidomTest(unittest.TestCase):
             '<?xml version="1.0" encoding="utf-16"?>'
             '<foo>\u20ac</foo>'.encode('utf-16'))
 
-        # Verify that character decoding errors raise exceptions instead
+        # Verify that character decoding errors ashiria exceptions instead
         # of crashing
         self.assertRaises(UnicodeDecodeError, parseString,
                 b'<fran\xe7ais>Comment \xe7a va ? Tr\xe8s bien ?</fran\xe7ais>')
@@ -1156,35 +1156,35 @@ kundi MinidomTest(unittest.TestCase):
         called = 0
         eleza handle(self, operation, key, data, src, dst):
             dst.setUserData(key, data + 1, self)
-            src.setUserData(key, None, None)
+            src.setUserData(key, Tupu, Tupu)
             self.called = 1
 
     eleza testUserData(self):
         dom = Document()
         n = dom.createElement('e')
-        self.confirm(n.getUserData("foo") is None)
-        n.setUserData("foo", None, None)
-        self.confirm(n.getUserData("foo") is None)
+        self.confirm(n.getUserData("foo") ni Tupu)
+        n.setUserData("foo", Tupu, Tupu)
+        self.confirm(n.getUserData("foo") ni Tupu)
         n.setUserData("foo", 12, 12)
         n.setUserData("bar", 13, 13)
         self.confirm(n.getUserData("foo") == 12)
         self.confirm(n.getUserData("bar") == 13)
-        n.setUserData("foo", None, None)
-        self.confirm(n.getUserData("foo") is None)
+        n.setUserData("foo", Tupu, Tupu)
+        self.confirm(n.getUserData("foo") ni Tupu)
         self.confirm(n.getUserData("bar") == 13)
 
         handler = self.UserDataHandler()
         n.setUserData("bar", 12, handler)
         c = n.cloneNode(1)
         self.confirm(handler.called
-                and n.getUserData("bar") is None
-                and c.getUserData("bar") == 13)
+                na n.getUserData("bar") ni Tupu
+                na c.getUserData("bar") == 13)
         n.unlink()
         c.unlink()
         dom.unlink()
 
     eleza checkRenameNodeSharedConstraints(self, doc, node):
-        # Make sure illegal NS usage is detected:
+        # Make sure illegal NS usage ni detected:
         self.assertRaises(xml.dom.NamespaceErr, doc.renameNode, node,
                           "http://xml.python.org/ns", "xmlns:foo")
         doc2 = parseString("<doc/>")
@@ -1200,68 +1200,68 @@ kundi MinidomTest(unittest.TestCase):
         # Simple renaming
         attr = doc.renameNode(attr, xml.dom.EMPTY_NAMESPACE, "b")
         self.confirm(attr.name == "b"
-                and attr.nodeName == "b"
-                and attr.localName is None
-                and attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and attr.prefix is None
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is None
-                and elem.getAttributeNode("b").isSameNode(attr)
-                and attrmap["b"].isSameNode(attr)
-                and attr.ownerDocument.isSameNode(doc)
-                and attr.ownerElement.isSameNode(elem))
+                na attr.nodeName == "b"
+                na attr.localName ni Tupu
+                na attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                na attr.prefix ni Tupu
+                na attr.value == "v"
+                na elem.getAttributeNode("a") ni Tupu
+                na elem.getAttributeNode("b").isSameNode(attr)
+                na attrmap["b"].isSameNode(attr)
+                na attr.ownerDocument.isSameNode(doc)
+                na attr.ownerElement.isSameNode(elem))
 
         # Rename to have a namespace, no prefix
         attr = doc.renameNode(attr, "http://xml.python.org/ns", "c")
         self.confirm(attr.name == "c"
-                and attr.nodeName == "c"
-                and attr.localName == "c"
-                and attr.namespaceURI == "http://xml.python.org/ns"
-                and attr.prefix is None
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is None
-                and elem.getAttributeNode("b") is None
-                and elem.getAttributeNode("c").isSameNode(attr)
-                and elem.getAttributeNodeNS(
+                na attr.nodeName == "c"
+                na attr.localName == "c"
+                na attr.namespaceURI == "http://xml.python.org/ns"
+                na attr.prefix ni Tupu
+                na attr.value == "v"
+                na elem.getAttributeNode("a") ni Tupu
+                na elem.getAttributeNode("b") ni Tupu
+                na elem.getAttributeNode("c").isSameNode(attr)
+                na elem.getAttributeNodeNS(
                     "http://xml.python.org/ns", "c").isSameNode(attr)
-                and attrmap["c"].isSameNode(attr)
-                and attrmap[("http://xml.python.org/ns", "c")].isSameNode(attr))
+                na attrmap["c"].isSameNode(attr)
+                na attrmap[("http://xml.python.org/ns", "c")].isSameNode(attr))
 
         # Rename to have a namespace, with prefix
         attr = doc.renameNode(attr, "http://xml.python.org/ns2", "p:d")
         self.confirm(attr.name == "p:d"
-                and attr.nodeName == "p:d"
-                and attr.localName == "d"
-                and attr.namespaceURI == "http://xml.python.org/ns2"
-                and attr.prefix == "p"
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is None
-                and elem.getAttributeNode("b") is None
-                and elem.getAttributeNode("c") is None
-                and elem.getAttributeNodeNS(
-                    "http://xml.python.org/ns", "c") is None
-                and elem.getAttributeNode("p:d").isSameNode(attr)
-                and elem.getAttributeNodeNS(
+                na attr.nodeName == "p:d"
+                na attr.localName == "d"
+                na attr.namespaceURI == "http://xml.python.org/ns2"
+                na attr.prefix == "p"
+                na attr.value == "v"
+                na elem.getAttributeNode("a") ni Tupu
+                na elem.getAttributeNode("b") ni Tupu
+                na elem.getAttributeNode("c") ni Tupu
+                na elem.getAttributeNodeNS(
+                    "http://xml.python.org/ns", "c") ni Tupu
+                na elem.getAttributeNode("p:d").isSameNode(attr)
+                na elem.getAttributeNodeNS(
                     "http://xml.python.org/ns2", "d").isSameNode(attr)
-                and attrmap["p:d"].isSameNode(attr)
-                and attrmap[("http://xml.python.org/ns2", "d")].isSameNode(attr))
+                na attrmap["p:d"].isSameNode(attr)
+                na attrmap[("http://xml.python.org/ns2", "d")].isSameNode(attr))
 
         # Rename back to a simple non-NS node
         attr = doc.renameNode(attr, xml.dom.EMPTY_NAMESPACE, "e")
         self.confirm(attr.name == "e"
-                and attr.nodeName == "e"
-                and attr.localName is None
-                and attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and attr.prefix is None
-                and attr.value == "v"
-                and elem.getAttributeNode("a") is None
-                and elem.getAttributeNode("b") is None
-                and elem.getAttributeNode("c") is None
-                and elem.getAttributeNode("p:d") is None
-                and elem.getAttributeNodeNS(
-                    "http://xml.python.org/ns", "c") is None
-                and elem.getAttributeNode("e").isSameNode(attr)
-                and attrmap["e"].isSameNode(attr))
+                na attr.nodeName == "e"
+                na attr.localName ni Tupu
+                na attr.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                na attr.prefix ni Tupu
+                na attr.value == "v"
+                na elem.getAttributeNode("a") ni Tupu
+                na elem.getAttributeNode("b") ni Tupu
+                na elem.getAttributeNode("c") ni Tupu
+                na elem.getAttributeNode("p:d") ni Tupu
+                na elem.getAttributeNodeNS(
+                    "http://xml.python.org/ns", "c") ni Tupu
+                na elem.getAttributeNode("e").isSameNode(attr)
+                na attrmap["e"].isSameNode(attr))
 
         self.assertRaises(xml.dom.NamespaceErr, doc.renameNode, attr,
                           "http://xml.python.org/ns", "xmlns")
@@ -1275,47 +1275,47 @@ kundi MinidomTest(unittest.TestCase):
         # Simple renaming
         elem = doc.renameNode(elem, xml.dom.EMPTY_NAMESPACE, "a")
         self.confirm(elem.tagName == "a"
-                and elem.nodeName == "a"
-                and elem.localName is None
-                and elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and elem.prefix is None
-                and elem.ownerDocument.isSameNode(doc))
+                na elem.nodeName == "a"
+                na elem.localName ni Tupu
+                na elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                na elem.prefix ni Tupu
+                na elem.ownerDocument.isSameNode(doc))
 
         # Rename to have a namespace, no prefix
         elem = doc.renameNode(elem, "http://xml.python.org/ns", "b")
         self.confirm(elem.tagName == "b"
-                and elem.nodeName == "b"
-                and elem.localName == "b"
-                and elem.namespaceURI == "http://xml.python.org/ns"
-                and elem.prefix is None
-                and elem.ownerDocument.isSameNode(doc))
+                na elem.nodeName == "b"
+                na elem.localName == "b"
+                na elem.namespaceURI == "http://xml.python.org/ns"
+                na elem.prefix ni Tupu
+                na elem.ownerDocument.isSameNode(doc))
 
         # Rename to have a namespace, with prefix
         elem = doc.renameNode(elem, "http://xml.python.org/ns2", "p:c")
         self.confirm(elem.tagName == "p:c"
-                and elem.nodeName == "p:c"
-                and elem.localName == "c"
-                and elem.namespaceURI == "http://xml.python.org/ns2"
-                and elem.prefix == "p"
-                and elem.ownerDocument.isSameNode(doc))
+                na elem.nodeName == "p:c"
+                na elem.localName == "c"
+                na elem.namespaceURI == "http://xml.python.org/ns2"
+                na elem.prefix == "p"
+                na elem.ownerDocument.isSameNode(doc))
 
         # Rename back to a simple non-NS node
         elem = doc.renameNode(elem, xml.dom.EMPTY_NAMESPACE, "d")
         self.confirm(elem.tagName == "d"
-                and elem.nodeName == "d"
-                and elem.localName is None
-                and elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
-                and elem.prefix is None
-                and elem.ownerDocument.isSameNode(doc))
+                na elem.nodeName == "d"
+                na elem.localName ni Tupu
+                na elem.namespaceURI == xml.dom.EMPTY_NAMESPACE
+                na elem.prefix ni Tupu
+                na elem.ownerDocument.isSameNode(doc))
 
         self.checkRenameNodeSharedConstraints(doc, elem)
         doc.unlink()
 
     eleza testRenameOther(self):
-        # We have to create a comment node explicitly since not all DOM
+        # We have to create a comment node explicitly since sio all DOM
         # builders used with minidom add comments to the DOM.
         doc = xml.dom.minidom.getDOMImplementation().createDocument(
-            xml.dom.EMPTY_NAMESPACE, "e", None)
+            xml.dom.EMPTY_NAMESPACE, "e", Tupu)
         node = doc.createComment("comment")
         self.assertRaises(xml.dom.NotSupportedErr, doc.renameNode, node,
                           xml.dom.EMPTY_NAMESPACE, "foo")
@@ -1361,10 +1361,10 @@ kundi MinidomTest(unittest.TestCase):
         doc = parseString("<doc><e/></doc>")
         elem = doc.documentElement
         e = elem.firstChild
-        self.confirm(e.parentNode is elem, "Before replaceChild()")
+        self.confirm(e.parentNode ni elem, "Before replaceChild()")
         # Check that replacing a child with itself leaves the tree unchanged
         elem.replaceChild(e, e)
-        self.confirm(e.parentNode is elem, "After replaceChild()")
+        self.confirm(e.parentNode ni elem, "After replaceChild()")
 
     eleza testReplaceWholeText(self):
         eleza setup():
@@ -1392,8 +1392,8 @@ kundi MinidomTest(unittest.TestCase):
         doc, elem, text1, splitter, text2 = setup()
         text = text1.replaceWholeText("")
         self.checkWholeText(text2, "d")
-        self.confirm(text is None
-                and len(elem.childNodes) == 2)
+        self.confirm(text ni Tupu
+                na len(elem.childNodes) == 2)
 
     eleza testSchemaType(self):
         doc = parseString(
@@ -1415,49 +1415,49 @@ kundi MinidomTest(unittest.TestCase):
             "       nm='123' nms='123 abc' />")
         elem = doc.documentElement
         # We don't want to rely on any specific loader at this point, so
-        # just make sure we can get to all the names, and that the
-        # DTD-based namespace is right.  The names can vary by loader
+        # just make sure we can get to all the names, na that the
+        # DTD-based namespace ni right.  The names can vary by loader
         # since each supports a different level of DTD information.
         t = elem.schemaType
-        self.confirm(t.name is None
-                and t.namespace == xml.dom.EMPTY_NAMESPACE)
+        self.confirm(t.name ni Tupu
+                na t.namespace == xml.dom.EMPTY_NAMESPACE)
         names = "id notid text enum ref refs ent ents nm nms".split()
-        for name in names:
+        kila name kwenye names:
             a = elem.getAttributeNode(name)
             t = a.schemaType
             self.confirm(hasattr(t, "name")
-                    and t.namespace == xml.dom.EMPTY_NAMESPACE)
+                    na t.namespace == xml.dom.EMPTY_NAMESPACE)
 
     eleza testSetIdAttribute(self):
         doc = parseString("<doc a1='v' a2='w'/>")
         e = doc.documentElement
         a1 = e.getAttributeNode("a1")
         a2 = e.getAttributeNode("a2")
-        self.confirm(doc.getElementById("v") is None
-                and not a1.isId
-                and not a2.isId)
+        self.confirm(doc.getElementById("v") ni Tupu
+                na sio a1.isId
+                na sio a2.isId)
         e.setIdAttribute("a1")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and a1.isId
-                and not a2.isId)
+                na a1.isId
+                na sio a2.isId)
         e.setIdAttribute("a2")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and e.isSameNode(doc.getElementById("w"))
-                and a1.isId
-                and a2.isId)
+                na e.isSameNode(doc.getElementById("w"))
+                na a1.isId
+                na a2.isId)
         # replace the a1 node; the new node should *not* be an ID
         a3 = doc.createAttribute("a1")
         a3.value = "v"
         e.setAttributeNode(a3)
-        self.confirm(doc.getElementById("v") is None
-                and e.isSameNode(doc.getElementById("w"))
-                and not a1.isId
-                and a2.isId
-                and not a3.isId)
-        # renaming an attribute should not affect its ID-ness:
+        self.confirm(doc.getElementById("v") ni Tupu
+                na e.isSameNode(doc.getElementById("w"))
+                na sio a1.isId
+                na a2.isId
+                na sio a3.isId)
+        # renaming an attribute should sio affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
         self.confirm(e.isSameNode(doc.getElementById("w"))
-                and a2.isId)
+                na a2.isId)
 
     eleza testSetIdAttributeNS(self):
         NS1 = "http://xml.python.org/ns1"
@@ -1469,18 +1469,18 @@ kundi MinidomTest(unittest.TestCase):
         e = doc.documentElement
         a1 = e.getAttributeNodeNS(NS1, "a1")
         a2 = e.getAttributeNodeNS(NS2, "a2")
-        self.confirm(doc.getElementById("v") is None
-                and not a1.isId
-                and not a2.isId)
+        self.confirm(doc.getElementById("v") ni Tupu
+                na sio a1.isId
+                na sio a2.isId)
         e.setIdAttributeNS(NS1, "a1")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and a1.isId
-                and not a2.isId)
+                na a1.isId
+                na sio a2.isId)
         e.setIdAttributeNS(NS2, "a2")
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and e.isSameNode(doc.getElementById("w"))
-                and a1.isId
-                and a2.isId)
+                na e.isSameNode(doc.getElementById("w"))
+                na a1.isId
+                na a2.isId)
         # replace the a1 node; the new node should *not* be an ID
         a3 = doc.createAttributeNS(NS1, "a1")
         a3.value = "v"
@@ -1489,11 +1489,11 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(not a1.isId)
         self.confirm(a2.isId)
         self.confirm(not a3.isId)
-        self.confirm(doc.getElementById("v") is None)
-        # renaming an attribute should not affect its ID-ness:
+        self.confirm(doc.getElementById("v") ni Tupu)
+        # renaming an attribute should sio affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
         self.confirm(e.isSameNode(doc.getElementById("w"))
-                and a2.isId)
+                na a2.isId)
 
     eleza testSetIdAttributeNode(self):
         NS1 = "http://xml.python.org/ns1"
@@ -1505,18 +1505,18 @@ kundi MinidomTest(unittest.TestCase):
         e = doc.documentElement
         a1 = e.getAttributeNodeNS(NS1, "a1")
         a2 = e.getAttributeNodeNS(NS2, "a2")
-        self.confirm(doc.getElementById("v") is None
-                and not a1.isId
-                and not a2.isId)
+        self.confirm(doc.getElementById("v") ni Tupu
+                na sio a1.isId
+                na sio a2.isId)
         e.setIdAttributeNode(a1)
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and a1.isId
-                and not a2.isId)
+                na a1.isId
+                na sio a2.isId)
         e.setIdAttributeNode(a2)
         self.confirm(e.isSameNode(doc.getElementById("v"))
-                and e.isSameNode(doc.getElementById("w"))
-                and a1.isId
-                and a2.isId)
+                na e.isSameNode(doc.getElementById("w"))
+                na a1.isId
+                na a2.isId)
         # replace the a1 node; the new node should *not* be an ID
         a3 = doc.createAttributeNS(NS1, "a1")
         a3.value = "v"
@@ -1525,21 +1525,21 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(not a1.isId)
         self.confirm(a2.isId)
         self.confirm(not a3.isId)
-        self.confirm(doc.getElementById("v") is None)
-        # renaming an attribute should not affect its ID-ness:
+        self.confirm(doc.getElementById("v") ni Tupu)
+        # renaming an attribute should sio affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
         self.confirm(e.isSameNode(doc.getElementById("w"))
-                and a2.isId)
+                na a2.isId)
 
     eleza assert_recursive_equal(self, doc, doc2):
         stack = [(doc, doc2)]
-        while stack:
+        wakati stack:
             n1, n2 = stack.pop()
             self.assertEqual(n1.nodeType, n2.nodeType)
             self.assertEqual(len(n1.childNodes), len(n2.childNodes))
             self.assertEqual(n1.nodeName, n2.nodeName)
-            self.assertFalse(n1.isSameNode(n2))
-            self.assertFalse(n2.isSameNode(n1))
+            self.assertUongo(n1.isSameNode(n2))
+            self.assertUongo(n2.isSameNode(n1))
             ikiwa n1.nodeType == Node.DOCUMENT_TYPE_NODE:
                 len(n1.entities)
                 len(n2.entities)
@@ -1547,7 +1547,7 @@ kundi MinidomTest(unittest.TestCase):
                 len(n2.notations)
                 self.assertEqual(len(n1.entities), len(n2.entities))
                 self.assertEqual(len(n1.notations), len(n2.notations))
-                for i in range(len(n1.notations)):
+                kila i kwenye range(len(n1.notations)):
                     # XXX this loop body doesn't seem to be executed?
                     no1 = n1.notations.item(i)
                     no2 = n1.notations.item(i)
@@ -1555,7 +1555,7 @@ kundi MinidomTest(unittest.TestCase):
                     self.assertEqual(no1.publicId, no2.publicId)
                     self.assertEqual(no1.systemId, no2.systemId)
                     stack.append((no1, no2))
-                for i in range(len(n1.entities)):
+                kila i kwenye range(len(n1.entities)):
                     e1 = n1.entities.item(i)
                     e2 = n2.entities.item(i)
                     self.assertEqual(e1.notationName, e2.notationName)
@@ -1563,14 +1563,14 @@ kundi MinidomTest(unittest.TestCase):
                     self.assertEqual(e1.systemId, e2.systemId)
                     stack.append((e1, e2))
             ikiwa n1.nodeType != Node.DOCUMENT_NODE:
-                self.assertTrue(n1.ownerDocument.isSameNode(doc))
-                self.assertTrue(n2.ownerDocument.isSameNode(doc2))
-            for i in range(len(n1.childNodes)):
+                self.assertKweli(n1.ownerDocument.isSameNode(doc))
+                self.assertKweli(n2.ownerDocument.isSameNode(doc2))
+            kila i kwenye range(len(n1.childNodes)):
                 stack.append((n1.childNodes[i], n2.childNodes[i]))
 
     eleza testPickledDocument(self):
         doc = parseString(sample)
-        for proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(2, pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(doc, proto)
             doc2 = pickle.loads(s)
             self.assert_recursive_equal(doc, doc2)
@@ -1603,11 +1603,11 @@ kundi MinidomTest(unittest.TestCase):
         num_children_before = len(doc.childNodes)
         doc.removeChild(doc.childNodes[0])
         num_children_after = len(doc.childNodes)
-        self.assertTrue(num_children_after == num_children_before - 1)
+        self.assertKweli(num_children_after == num_children_before - 1)
 
     eleza testProcessingInstructionNameError(self):
-        # wrong variable in .nodeValue property will
-        # lead to "NameError: name 'data' is not defined"
+        # wrong variable kwenye .nodeValue property will
+        # lead to "NameError: name 'data' ni sio defined"
         doc = parse(tstfile)
         pi = doc.createProcessingInstruction("y", "z")
         pi.nodeValue = "crash"

@@ -24,7 +24,7 @@ class clean(Command):
         ('bdist-base=', None,
          "temporary directory for built distributions"),
         ('all', 'a',
-         "remove all build output, not just temporary by-products")
+         "remove all build output, sio just temporary by-products")
     ]
 
     boolean_options = ['all']
@@ -51,8 +51,8 @@ class clean(Command):
         # gone)
         if os.path.exists(self.build_temp):
             remove_tree(self.build_temp, dry_run=self.dry_run)
-        else:
-            log.debug("'%s' does not exist -- can't clean it",
+        isipokua:
+            log.debug("'%s' does sio exist -- can't clean it",
                       self.build_temp)
 
         if self.all:
@@ -62,15 +62,15 @@ class clean(Command):
                               self.build_scripts):
                 if os.path.exists(directory):
                     remove_tree(directory, dry_run=self.dry_run)
-                else:
-                    log.warn("'%s' does not exist -- can't clean it",
+                isipokua:
+                    log.warn("'%s' does sio exist -- can't clean it",
                              directory)
 
         # just for the heck of it, try to remove the base build directory:
-        # we might have emptied it right now, but if not we don't care
-        if not self.dry_run:
-            try:
+        # we might have emptied it right now, but if sio we don't care
+        if sio self.dry_run:
+            jaribu:
                 os.rmdir(self.build_base)
                 log.info("removing '%s'", self.build_base)
-            except OSError:
+            tatizo OSError:
                 pass

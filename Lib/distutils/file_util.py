@@ -24,41 +24,41 @@ def _copy_file_contents(src, dst, buffer_size=16*1024):
     # custom error-handling added.
     fsrc = None
     fdst = None
-    try:
-        try:
+    jaribu:
+        jaribu:
             fsrc = open(src, 'rb')
-        except OSError as e:
-            raise DistutilsFileError("could not open '%s': %s" % (src, e.strerror))
+        tatizo OSError as e:
+            raise DistutilsFileError("could sio open '%s': %s" % (src, e.strerror))
 
         if os.path.exists(dst):
-            try:
+            jaribu:
                 os.unlink(dst)
-            except OSError as e:
+            tatizo OSError as e:
                 raise DistutilsFileError(
-                      "could not delete '%s': %s" % (dst, e.strerror))
+                      "could sio delete '%s': %s" % (dst, e.strerror))
 
-        try:
+        jaribu:
             fdst = open(dst, 'wb')
-        except OSError as e:
+        tatizo OSError as e:
             raise DistutilsFileError(
-                  "could not create '%s': %s" % (dst, e.strerror))
+                  "could sio create '%s': %s" % (dst, e.strerror))
 
-        while True:
-            try:
+        wakati True:
+            jaribu:
                 buf = fsrc.read(buffer_size)
-            except OSError as e:
+            tatizo OSError as e:
                 raise DistutilsFileError(
-                      "could not read from '%s': %s" % (src, e.strerror))
+                      "could sio read from '%s': %s" % (src, e.strerror))
 
-            if not buf:
-                break
+            if sio buf:
+                koma
 
-            try:
+            jaribu:
                 fdst.write(buf)
-            except OSError as e:
+            tatizo OSError as e:
                 raise DistutilsFileError(
-                      "could not write to '%s': %s" % (dst, e.strerror))
-    finally:
+                      "could sio write to '%s': %s" % (dst, e.strerror))
+    mwishowe:
         if fdst:
             fdst.close()
         if fsrc:
@@ -73,7 +73,7 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
     whatever is analogous on the current platform) is copied.  If
     'preserve_times' is true (the default), the last-modified and
     last-access times are copied as well.  If 'update' is true, 'src' will
-    only be copied if 'dst' does not exist, or if 'dst' does exist but is
+    only be copied if 'dst' does sio exist, or if 'dst' does exist but is
     older than 'src'.
 
     'link' allows you to make hard links (os.link) or symbolic links
@@ -94,36 +94,36 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
     # copying, but blow up if linking.  Hmmm.  And I don't know what
     # macostools.copyfile() does.  Should definitely be consistent, and
     # should probably blow up if destination exists and we would be
-    # changing it (ie. it's not already a hard/soft link to src OR
+    # changing it (ie. it's sio already a hard/soft link to src OR
     # (not update) and (src newer than dst).
 
     from distutils.dep_util import newer
     from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
 
-    if not os.path.isfile(src):
+    if sio os.path.isfile(src):
         raise DistutilsFileError(
-              "can't copy '%s': doesn't exist or not a regular file" % src)
+              "can't copy '%s': doesn't exist or sio a regular file" % src)
 
     if os.path.isdir(dst):
         dir = dst
         dst = os.path.join(dst, os.path.basename(src))
-    else:
+    isipokua:
         dir = os.path.dirname(dst)
 
-    if update and not newer(src, dst):
+    if update and sio newer(src, dst):
         if verbose >= 1:
             log.debug("not copying %s (output up-to-date)", src)
         return (dst, 0)
 
-    try:
+    jaribu:
         action = _copy_action[link]
-    except KeyError:
+    tatizo KeyError:
         raise ValueError("invalid value '%s' for 'link' argument" % link)
 
     if verbose >= 1:
         if os.path.basename(dst) == os.path.basename(src):
             log.info("%s %s -> %s", action, src, dir)
-        else:
+        isipokua:
             log.info("%s %s -> %s", action, src, dst)
 
     if dry_run:
@@ -132,21 +132,21 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
     # If linking (hard or symbolic), use the appropriate system call
     # (Unix only, of course, but that's the caller's responsibility)
     lasivyo link == 'hard':
-        if not (os.path.exists(dst) and os.path.samefile(src, dst)):
-            try:
+        if sio (os.path.exists(dst) and os.path.samefile(src, dst)):
+            jaribu:
                 os.link(src, dst)
                 return (dst, 1)
-            except OSError:
+            tatizo OSError:
                 # If hard linking fails, fall back on copying file
                 # (some special filesystems don't support hard linking
                 #  even under Unix, see issue #8876).
                 pass
     lasivyo link == 'sym':
-        if not (os.path.exists(dst) and os.path.samefile(src, dst)):
+        if sio (os.path.exists(dst) and os.path.samefile(src, dst)):
             os.symlink(src, dst)
             return (dst, 1)
 
-    # Otherwise (non-Mac, not linking), copy the file contents and
+    # Otherwise (non-Mac, sio linking), copy the file contents and
     # (optionally) copy the times and mode.
     _copy_file_contents(src, dst)
     if preserve_mode or preserve_times:
@@ -183,8 +183,8 @@ def move_file (src, dst,
     if dry_run:
         return dst
 
-    if not isfile(src):
-        raise DistutilsFileError("can't move '%s': not a regular file" % src)
+    if sio isfile(src):
+        raise DistutilsFileError("can't move '%s': sio a regular file" % src)
 
     if isdir(dst):
         dst = os.path.join(dst, basename(src))
@@ -193,31 +193,31 @@ def move_file (src, dst,
               "can't move '%s': destination '%s' already exists" %
               (src, dst))
 
-    if not isdir(dirname(dst)):
+    if sio isdir(dirname(dst)):
         raise DistutilsFileError(
-              "can't move '%s': destination '%s' not a valid path" %
+              "can't move '%s': destination '%s' sio a valid path" %
               (src, dst))
 
     copy_it = False
-    try:
+    jaribu:
         os.rename(src, dst)
-    except OSError as e:
+    tatizo OSError as e:
         (num, msg) = e.args
         if num == errno.EXDEV:
             copy_it = True
-        else:
+        isipokua:
             raise DistutilsFileError(
                   "couldn't move '%s' to '%s': %s" % (src, dst, msg))
 
     if copy_it:
         copy_file(src, dst, verbose=verbose)
-        try:
+        jaribu:
             os.unlink(src)
-        except OSError as e:
+        tatizo OSError as e:
             (num, msg) = e.args
-            try:
+            jaribu:
                 os.unlink(dst)
-            except OSError:
+            tatizo OSError:
                 pass
             raise DistutilsFileError(
                   "couldn't move '%s' to '%s' by copy/delete: "
@@ -231,8 +231,8 @@ def write_file (filename, contents):
     sequence of strings without line terminators) to it.
     """
     f = open(filename, "w")
-    try:
+    jaribu:
         for line in contents:
             f.write(line + "\n")
-    finally:
+    mwishowe:
         f.close()

@@ -5,22 +5,22 @@ agiza gc
 agiza pickle
 
 # For tuple hashes, we normally only run a test to ensure that we get
-# the same results across platforms in a handful of cases.  If that's
+# the same results across platforms kwenye a handful of cases.  If that's
 # so, there's no real point to running more.  Set RUN_ALL_HASH_TESTS to
 # run more anyway.  That's usually of real interest only when analyzing,
-# or changing, the hash algorithm.  In which case it's usually also
+# ama changing, the hash algorithm.  In which case it's usually also
 # most useful to set JUST_SHOW_HASH_RESULTS, to see all the results
 # instead of wrestling with test "failures".  See the bottom of the
-# file for extensive notes on what we're testing here and why.
-RUN_ALL_HASH_TESTS = False
-JUST_SHOW_HASH_RESULTS = False # ikiwa RUN_ALL_HASH_TESTS, just display
+# file kila extensive notes on what we're testing here na why.
+RUN_ALL_HASH_TESTS = Uongo
+JUST_SHOW_HASH_RESULTS = Uongo # ikiwa RUN_ALL_HASH_TESTS, just display
 
 kundi TupleTest(seq_tests.CommonTest):
     type2test = tuple
 
     eleza test_getitem_error(self):
         t = ()
-        msg = "tuple indices must be integers or slices"
+        msg = "tuple indices must be integers ama slices"
         with self.assertRaisesRegex(TypeError, msg):
             t['a']
 
@@ -30,12 +30,12 @@ kundi TupleTest(seq_tests.CommonTest):
         self.assertEqual(tuple(), ())
         t0_3 = (0, 1, 2, 3)
         t0_3_bis = tuple(t0_3)
-        self.assertTrue(t0_3 is t0_3_bis)
+        self.assertKweli(t0_3 ni t0_3_bis)
         self.assertEqual(tuple([]), ())
         self.assertEqual(tuple([0, 1, 2, 3]), (0, 1, 2, 3))
         self.assertEqual(tuple(''), ())
         self.assertEqual(tuple('spam'), ('s', 'p', 'a', 'm'))
-        self.assertEqual(tuple(x for x in range(10) ikiwa x % 2),
+        self.assertEqual(tuple(x kila x kwenye range(10) ikiwa x % 2),
                          (1, 3, 5, 7, 9))
 
     eleza test_keyword_args(self):
@@ -44,8 +44,8 @@ kundi TupleTest(seq_tests.CommonTest):
 
     eleza test_truth(self):
         super().test_truth()
-        self.assertTrue(not ())
-        self.assertTrue((42, ))
+        self.assertKweli(not ())
+        self.assertKweli((42, ))
 
     eleza test_len(self):
         super().test_len()
@@ -58,20 +58,20 @@ kundi TupleTest(seq_tests.CommonTest):
         u = (0, 1)
         u2 = u
         u += (2, 3)
-        self.assertTrue(u is not u2)
+        self.assertKweli(u ni sio u2)
 
     eleza test_imul(self):
         super().test_imul()
         u = (0, 1)
         u2 = u
         u *= 3
-        self.assertTrue(u is not u2)
+        self.assertKweli(u ni sio u2)
 
     eleza test_tupleresizebug(self):
-        # Check that a specific bug in _PyTuple_Resize() is squashed.
+        # Check that a specific bug kwenye _PyTuple_Resize() ni squashed.
         eleza f():
-            for i in range(1000):
-                yield i
+            kila i kwenye range(1000):
+                tuma i
         self.assertEqual(list(tuple(f())), list(range(1000)))
 
     # We expect tuples whose base components have deterministic hashes to
@@ -92,8 +92,8 @@ kundi TupleTest(seq_tests.CommonTest):
         check_one_exact((0.5, (), (-2, 3, (4, 6))), 714642271,
                         -1845940830829704396)
 
-    # Various tests for hashing of tuples to check that we get few collisions.
-    # Does something only ikiwa RUN_ALL_HASH_TESTS is true.
+    # Various tests kila hashing of tuples to check that we get few collisions.
+    # Does something only ikiwa RUN_ALL_HASH_TESTS ni true.
     #
     # Earlier versions of the tuple hash algorithm had massive collisions
     # reported at:
@@ -102,14 +102,14 @@ kundi TupleTest(seq_tests.CommonTest):
     eleza test_hash_optional(self):
         kutoka itertools agiza product
 
-        ikiwa not RUN_ALL_HASH_TESTS:
-            return
+        ikiwa sio RUN_ALL_HASH_TESTS:
+            rudisha
 
-        # If specified, `expected` is a 2-tuple of expected
-        # (number_of_collisions, pileup) values, and the test fails if
+        # If specified, `expected` ni a 2-tuple of expected
+        # (number_of_collisions, pileup) values, na the test fails if
         # those aren't the values we get.  Also ikiwa specified, the test
         # fails ikiwa z > `zlimit`.
-        eleza tryone_inner(tag, nbins, hashes, expected=None, zlimit=None):
+        eleza tryone_inner(tag, nbins, hashes, expected=Tupu, zlimit=Tupu):
             kutoka collections agiza Counter
 
             nballs = len(hashes)
@@ -118,28 +118,28 @@ kundi TupleTest(seq_tests.CommonTest):
             collisions = nballs - len(c)
             z = (collisions - mean) / sdev
             pileup = max(c.values()) - 1
-            del c
+            toa c
             got = (collisions, pileup)
-            failed = False
+            failed = Uongo
             prefix = ""
-            ikiwa zlimit is not None and z > zlimit:
-                failed = True
+            ikiwa zlimit ni sio Tupu na z > zlimit:
+                failed = Kweli
                 prefix = f"FAIL z > {zlimit}; "
-            ikiwa expected is not None and got != expected:
-                failed = True
+            ikiwa expected ni sio Tupu na got != expected:
+                failed = Kweli
                 prefix += f"FAIL {got} != {expected}; "
-            ikiwa failed or JUST_SHOW_HASH_RESULTS:
+            ikiwa failed ama JUST_SHOW_HASH_RESULTS:
                 msg = f"{prefix}{tag}; pileup {pileup:,} mean {mean:.1f} "
                 msg += f"coll {collisions:,} z {z:+.1f}"
                 ikiwa JUST_SHOW_HASH_RESULTS:
                     agiza sys
                     andika(msg, file=sys.__stdout__)
-                else:
+                isipokua:
                     self.fail(msg)
 
         eleza tryone(tag, xs,
-                   native32=None, native64=None, hi32=None, lo32=None,
-                   zlimit=None):
+                   native32=Tupu, native64=Tupu, hi32=Tupu, lo32=Tupu,
+                   zlimit=Tupu):
             NHASHBITS = support.NHASHBITS
             hashes = list(map(hash, xs))
             tryone_inner(tag + f"; {NHASHBITS}-bit hash codes",
@@ -152,44 +152,44 @@ kundi TupleTest(seq_tests.CommonTest):
                 shift = NHASHBITS - 32
                 tryone_inner(tag + "; 32-bit upper hash codes",
                              1 << 32,
-                             [h >> shift for h in hashes],
+                             [h >> shift kila h kwenye hashes],
                              hi32,
                              zlimit)
 
                 mask = (1 << 32) - 1
                 tryone_inner(tag + "; 32-bit lower hash codes",
                              1 << 32,
-                             [h & mask for h in hashes],
+                             [h & mask kila h kwenye hashes],
                              lo32,
                              zlimit)
 
         # Tuples of smallish positive integers are common - nice ikiwa we
-        # get "better than random" for these.
+        # get "better than random" kila these.
         tryone("range(100) by 3", list(product(range(100), repeat=3)),
                (0, 0), (0, 0), (4, 1), (0, 0))
 
         # A previous hash had systematic problems when mixing integers of
         # similar magnitude but opposite sign, obscurely related to that
-        # j ^ -2 == -j when j is odd.
+        # j ^ -2 == -j when j ni odd.
         cands = list(range(-10, -1)) + list(range(9))
 
-        # Note:  -1 is omitted because hash(-1) == hash(-2) == -2, and
+        # Note:  -1 ni omitted because hash(-1) == hash(-2) == -2, and
         # there's nothing the tuple hash can do to avoid collisions
-        # inherited kutoka collisions in the tuple components' hashes.
+        # inherited kutoka collisions kwenye the tuple components' hashes.
         tryone("-10 .. 8 by 4", list(product(cands, repeat=4)),
                (0, 0), (0, 0), (0, 0), (0, 0))
-        del cands
+        toa cands
 
         # The hashes here are a weird mix of values where all the
-        # variation is in the lowest bits and across a single high-order
+        # variation ni kwenye the lowest bits na across a single high-order
         # bit - the middle bits are all zeroes. A decent hash has to
-        # both propagate low bits to the left and high bits to the
-        # right.  This is also complicated a bit in that there are
-        # collisions among the hashes of the integers in L alone.
-        L = [n << 60 for n in range(100)]
+        # both propagate low bits to the left na high bits to the
+        # right.  This ni also complicated a bit kwenye that there are
+        # collisions among the hashes of the integers kwenye L alone.
+        L = [n << 60 kila n kwenye range(100)]
         tryone("0..99 << 60 by 3", list(product(L, repeat=3)),
                (0, 0), (0, 0), (0, 0), (324, 1))
-        del L
+        toa L
 
         # Used to suffer a massive number of collisions.
         tryone("[-3, 3] by 18", list(product([-3, 3], repeat=18)),
@@ -200,13 +200,13 @@ kundi TupleTest(seq_tests.CommonTest):
         tryone("[0, 0.5] by 18", list(product([0, 0.5], repeat=18)),
                (5, 1), (0, 0), (9, 1), (12, 1))
 
-        # Hashes of ints and floats are the same across platforms.
+        # Hashes of ints na floats are the same across platforms.
         # String hashes vary even on a single platform across runs, due
-        # to hash randomization for strings.  So we can't say exactly
+        # to hash randomization kila strings.  So we can't say exactly
         # what this should do.  Instead we insist that the # of
-        # collisions is no more than 4 sdevs above the theoretically
+        # collisions ni no more than 4 sdevs above the theoretically
         # random mean.  Even ikiwa the tuple hash can't achieve that on its
-        # own, the string hash is trying to be decently pseudo-random
+        # own, the string hash ni trying to be decently pseudo-random
         # (in all bit positions) on _its_ own.  We can at least test
         # that the tuple hash doesn't systematically ruin that.
         tryone("4-char tuples",
@@ -214,10 +214,10 @@ kundi TupleTest(seq_tests.CommonTest):
                zlimit=4.0)
 
         # The "old tuple test".  See https://bugs.python.org/issue942952.
-        # Ensures, for example, that the hash:
-        #   is non-commutative
+        # Ensures, kila example, that the hash:
+        #   ni non-commutative
         #   spreads closely spaced values
-        #   doesn't exhibit cancellation in tuples like (x,(x,y))
+        #   doesn't exhibit cancellation kwenye tuples like (x,(x,y))
         N = 50
         base = list(range(N))
         xp = list(product(base, repeat=2))
@@ -225,14 +225,14 @@ kundi TupleTest(seq_tests.CommonTest):
                      list(product(xp, base)) + xp + list(zip(base))
         tryone("old tuple test", inps,
                (2, 1), (0, 0), (52, 49), (7, 1))
-        del base, xp, inps
+        toa base, xp, inps
 
         # The "new tuple test".  See https://bugs.python.org/issue34751.
-        # Even more tortured nesting, and a mix of signed ints of very
+        # Even more tortured nesting, na a mix of signed ints of very
         # small magnitude.
         n = 5
-        A = [x for x in range(-n, n+1) ikiwa x != -1]
-        B = A + [(a,) for a in A]
+        A = [x kila x kwenye range(-n, n+1) ikiwa x != -1]
+        B = A + [(a,) kila a kwenye A]
         L2 = list(product(A, repeat=2))
         L3 = L2 + list(product(A, repeat=3))
         L4 = L3 + list(product(A, repeat=4))
@@ -240,7 +240,7 @@ kundi TupleTest(seq_tests.CommonTest):
         # at most 2 levels deep) tuples containing at most 4 items kutoka
         # the set A.
         T = A
-        T += [(a,) for a in B + L4]
+        T += [(a,) kila a kwenye B + L4]
         T += product(L3, B)
         T += product(L2, repeat=2)
         T += product(B, L3)
@@ -267,13 +267,13 @@ kundi TupleTest(seq_tests.CommonTest):
         # Nested tuples can take several collections to untrack
         gc.collect()
         gc.collect()
-        self.assertFalse(gc.is_tracked(t), t)
+        self.assertUongo(gc.is_tracked(t), t)
 
     eleza _tracked(self, t):
-        self.assertTrue(gc.is_tracked(t), t)
+        self.assertKweli(gc.is_tracked(t), t)
         gc.collect()
         gc.collect()
-        self.assertTrue(gc.is_tracked(t), t)
+        self.assertKweli(gc.is_tracked(t), t)
 
     @support.cpython_only
     eleza test_track_literals(self):
@@ -284,12 +284,12 @@ kundi TupleTest(seq_tests.CommonTest):
         self._not_tracked((1,))
         self._not_tracked((1, 2))
         self._not_tracked((1, 2, "a"))
-        self._not_tracked((1, 2, (None, True, False, ()), int))
+        self._not_tracked((1, 2, (Tupu, Kweli, Uongo, ()), int))
         self._not_tracked((object(),))
         self._not_tracked(((1, x), y, (2, 3)))
 
         # Tuples with mutable elements are always tracked, even ikiwa those
-        # elements are not tracked right now.
+        # elements are sio tracked right now.
         self._tracked(([],))
         self._tracked(([1],))
         self._tracked(({},))
@@ -304,34 +304,34 @@ kundi TupleTest(seq_tests.CommonTest):
         check(tp([]))
         check(tp(set()))
         check(tp([1, x, y]))
-        check(tp(obj for obj in [1, x, y]))
+        check(tp(obj kila obj kwenye [1, x, y]))
         check(tp(set([1, x, y])))
-        check(tp(tuple([obj]) for obj in [1, x, y]))
-        check(tuple(tp([obj]) for obj in [1, x, y]))
+        check(tp(tuple([obj]) kila obj kwenye [1, x, y]))
+        check(tuple(tp([obj]) kila obj kwenye [1, x, y]))
 
         self._tracked(tp([z]))
         self._tracked(tp([[x, y]]))
         self._tracked(tp([{x: y}]))
-        self._tracked(tp(obj for obj in [x, y, z]))
-        self._tracked(tp(tuple([obj]) for obj in [x, y, z]))
-        self._tracked(tuple(tp([obj]) for obj in [x, y, z]))
+        self._tracked(tp(obj kila obj kwenye [x, y, z]))
+        self._tracked(tp(tuple([obj]) kila obj kwenye [x, y, z]))
+        self._tracked(tuple(tp([obj]) kila obj kwenye [x, y, z]))
 
     @support.cpython_only
     eleza test_track_dynamic(self):
         # Test GC-optimization of dynamically constructed tuples.
-        self.check_track_dynamic(tuple, False)
+        self.check_track_dynamic(tuple, Uongo)
 
     @support.cpython_only
     eleza test_track_subtypes(self):
         # Tuple subtypes must always be tracked
         kundi MyTuple(tuple):
-            pass
-        self.check_track_dynamic(MyTuple, True)
+            pita
+        self.check_track_dynamic(MyTuple, Kweli)
 
     @support.cpython_only
     eleza test_bug7466(self):
         # Trying to untrack an unfinished tuple could crash Python
-        self._not_tracked(tuple(gc.collect() for i in range(101)))
+        self._not_tracked(tuple(gc.collect() kila i kwenye range(101)))
 
     eleza test_repr_large(self):
         # Check the repr of large list objects
@@ -347,7 +347,7 @@ kundi TupleTest(seq_tests.CommonTest):
         # Userlist iterators don't support pickling yet since
         # they are based on generators.
         data = self.type2test([4, 5, 6, 7])
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             itorg = iter(data)
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
@@ -361,7 +361,7 @@ kundi TupleTest(seq_tests.CommonTest):
 
     eleza test_reversed_pickle(self):
         data = self.type2test([4, 5, 6, 7])
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             itorg = reversed(data)
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
@@ -375,9 +375,9 @@ kundi TupleTest(seq_tests.CommonTest):
 
     eleza test_no_comdat_folding(self):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
-        # optimization causes failures in code that relies on distinct
+        # optimization causes failures kwenye code that relies on distinct
         # function addresses.
-        kundi T(tuple): pass
+        kundi T(tuple): pita
         with self.assertRaises(TypeError):
             [3,] + T((1,2))
 
@@ -389,62 +389,62 @@ kundi TupleTest(seq_tests.CommonTest):
         self.assertLess(a, b)
         self.assertLess(b, c)
 
-# Notes on testing hash codes.  The primary thing is that Python doesn't
+# Notes on testing hash codes.  The primary thing ni that Python doesn't
 # care about "random" hash codes.  To the contrary, we like them to be
-# very regular when possible, so that the low-order bits are as evenly
-# distributed as possible.  For integers this is easy: hash(i) == i for
-# all not-huge i except i==-1.
+# very regular when possible, so that the low-order bits are kama evenly
+# distributed kama possible.  For integers this ni easy: hash(i) == i for
+# all not-huge i tatizo i==-1.
 #
 # For tuples of mixed type there's really no hope of that, so we want
-# "randomish" here instead.  But getting close to pseudo-random in all
-# bit positions is more expensive than we've been willing to pay for.
+# "randomish" here instead.  But getting close to pseudo-random kwenye all
+# bit positions ni more expensive than we've been willing to pay for.
 #
 # We can tolerate large deviations kutoka random - what we don't want is
 # catastrophic pileups on a relative handful of hash codes.  The dict
-# and set lookup routines remain effective provided that full-width hash
-# codes for not-equal objects are distinct.
+# na set lookup routines remain effective provided that full-width hash
+# codes kila not-equal objects are distinct.
 #
 # So we compute various statistics here based on what a "truly random"
-# hash would do, but don't automate "pass or fail" based on those
-# results.  Instead those are viewed as inputs to human judgment, and the
+# hash would do, but don't automate "pita ama fail" based on those
+# results.  Instead those are viewed kama inputs to human judgment, na the
 # automated tests merely ensure we get the _same_ results across
 # platforms.  In fact, we normally don't bother to run them at all -
 # set RUN_ALL_HASH_TESTS to force it.
 #
-# When global JUST_SHOW_HASH_RESULTS is True, the tuple hash statistics
+# When global JUST_SHOW_HASH_RESULTS ni Kweli, the tuple hash statistics
 # are just displayed to stdout.  A typical output line looks like:
 #
 # old tuple test; 32-bit upper hash codes; \
 #             pileup 49 mean 7.4 coll 52 z +16.4
 #
-# "old tuple test" is just a string name for the test being run.
+# "old tuple test" ni just a string name kila the test being run.
 #
 # "32-bit upper hash codes" means this was run under a 64-bit build and
 # we've shifted away the lower 32 bits of the hash codes.
 #
-# "pileup" is 0 ikiwa there were no collisions across those hash codes.
+# "pileup" ni 0 ikiwa there were no collisions across those hash codes.
 # It's 1 less than the maximum number of times any single hash code was
-# seen.  So in this case, there was (at least) one hash code that was
+# seen.  So kwenye this case, there was (at least) one hash code that was
 # seen 50 times:  that hash code "piled up" 49 more times than ideal.
 #
-# "mean" is the number of collisions a perfectly random hash function
-# would have yielded, on average.
+# "mean" ni the number of collisions a perfectly random hash function
+# would have tumaed, on average.
 #
-# "coll" is the number of collisions actually seen.
+# "coll" ni the number of collisions actually seen.
 #
-# "z" is "coll - mean" divided by the standard deviation of the number
+# "z" ni "coll - mean" divided by the standard deviation of the number
 # of collisions a perfectly random hash function would suffer.  A
-# positive value is "worse than random", and negative value "better than
+# positive value ni "worse than random", na negative value "better than
 # random".  Anything of magnitude greater than 3 would be highly suspect
-# for a hash function that claimed to be random.  It's essentially
+# kila a hash function that claimed to be random.  It's essentially
 # impossible that a truly random function would deliver a result 16.4
 # sdevs "worse than random".
 #
 # But we don't care here!  That's why the test isn't coded to fail.
 # Knowing something about how the high-order hash code bits behave
-# provides insight, but is irrelevant to how the dict and set lookup
+# provides insight, but ni irrelevant to how the dict na set lookup
 # code performs.  The low-order bits are much more agizaant to that,
-# and on the same test those did "just like random":
+# na on the same test those did "just like random":
 #
 # old tuple test; 32-bit lower hash codes; \
 #            pileup 1 mean 7.4 coll 7 z -0.2
@@ -454,7 +454,7 @@ kundi TupleTest(seq_tests.CommonTest):
 # 0..99 << 60 by 3; 32-bit hash codes; \
 #            pileup 0 mean 116.4 coll 0 z -10.8
 #
-# That was run under a 32-bit build, and is spectacularly "better than
+# That was run under a 32-bit build, na ni spectacularly "better than
 # random".  On a 64-bit build the wider hash codes are fine too:
 #
 # 0..99 << 60 by 3; 64-bit hash codes; \
@@ -467,11 +467,11 @@ kundi TupleTest(seq_tests.CommonTest):
 #
 # In a statistical sense that's waaaaay too many collisions, but (a) 324
 # collisions out of a million hash codes isn't anywhere near being a
-# real problem; and, (b) the worst pileup on a single hash code is a measly
-# 1 extra.  It's a relatively poor case for the tuple hash, but still
-# fine for practical use.
+# real problem; and, (b) the worst pileup on a single hash code ni a measly
+# 1 extra.  It's a relatively poor case kila the tuple hash, but still
+# fine kila practical use.
 #
-# This isn't, which is what Python 3.7.1 produced for the hashes of
+# This isn't, which ni what Python 3.7.1 produced kila the hashes of
 # itertools.product([0, 0.5], repeat=18).  Even with a fat 64-bit
 # hashcode, the highest pileup was over 16,000 - making a dict/set
 # lookup on one of the colliding values thousands of times slower (on

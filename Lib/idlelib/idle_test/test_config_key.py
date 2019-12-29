@@ -1,8 +1,8 @@
 """Test config_key, coverage 98%.
 
-Coverage is effectively 100%.  Tkinter dialog is mocked, Mac-only line
-may be skipped, and dummy function in bind test should not be called.
-Not tested: exit with 'self.advanced or self.keys_ok(keys)) ...' False.
+Coverage ni effectively 100%.  Tkinter dialog ni mocked, Mac-only line
+may be skipped, na dummy function kwenye bind test should sio be called.
+Not tested: exit with 'self.advanced ama self.keys_ok(keys)) ...' Uongo.
 """
 
 kutoka idlelib agiza config_key
@@ -35,14 +35,14 @@ kundi ValidationTest(unittest.TestCase):
         cls.root.withdraw()
         keylist = [['<Key-F12>'], ['<Control-Key-x>', '<Control-Key-X>']]
         cls.dialog = cls.Validator(
-            cls.root, 'Title', '<<Test>>', keylist, _utest=True)
+            cls.root, 'Title', '<<Test>>', keylist, _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
         cls.dialog.cancel()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.dialog, cls.root
+        toa cls.dialog, cls.root
 
     eleza setUp(self):
         self.dialog.showerror.message = ''
@@ -63,62 +63,62 @@ kundi ValidationTest(unittest.TestCase):
         self.assertEqual(self.dialog.showerror.message, '')
 
     eleza test_keys_no_ending(self):
-        self.assertFalse(self.dialog.keys_ok('<Control-Shift'))
+        self.assertUongo(self.dialog.keys_ok('<Control-Shift'))
         self.assertIn('Missing the final', self.dialog.showerror.message)
 
     eleza test_keys_no_modifier_bad(self):
         self.dialog.list_keys_final.get.result = 'A'
-        self.assertFalse(self.dialog.keys_ok('<Key-A>'))
+        self.assertUongo(self.dialog.keys_ok('<Key-A>'))
         self.assertIn('No modifier', self.dialog.showerror.message)
 
     eleza test_keys_no_modifier_ok(self):
         self.dialog.list_keys_final.get.result = 'F11'
-        self.assertTrue(self.dialog.keys_ok('<Key-F11>'))
+        self.assertKweli(self.dialog.keys_ok('<Key-F11>'))
         self.assertEqual(self.dialog.showerror.message, '')
 
     eleza test_keys_shift_bad(self):
         self.dialog.list_keys_final.get.result = 'a'
         self.dialog.get_modifiers.result = ['Shift']
-        self.assertFalse(self.dialog.keys_ok('<a>'))
+        self.assertUongo(self.dialog.keys_ok('<a>'))
         self.assertIn('shift modifier', self.dialog.showerror.message)
         self.dialog.get_modifiers.result = []
 
     eleza test_keys_dup(self):
-        for mods, final, seq in (([], 'F12', '<Key-F12>'),
+        kila mods, final, seq kwenye (([], 'F12', '<Key-F12>'),
                                  (['Control'], 'x', '<Control-Key-x>'),
                                  (['Control'], 'X', '<Control-Key-X>')):
             with self.subTest(m=mods, f=final, s=seq):
                 self.dialog.list_keys_final.get.result = final
                 self.dialog.get_modifiers.result = mods
-                self.assertFalse(self.dialog.keys_ok(seq))
-                self.assertIn('already in use', self.dialog.showerror.message)
+                self.assertUongo(self.dialog.keys_ok(seq))
+                self.assertIn('already kwenye use', self.dialog.showerror.message)
         self.dialog.get_modifiers.result = []
 
     eleza test_bind_ok(self):
-        self.assertTrue(self.dialog.bind_ok('<Control-Shift-Key-a>'))
+        self.assertKweli(self.dialog.bind_ok('<Control-Shift-Key-a>'))
         self.assertEqual(self.dialog.showerror.message, '')
 
     eleza test_bind_not_ok(self):
-        self.assertFalse(self.dialog.bind_ok('<Control-Shift>'))
+        self.assertUongo(self.dialog.bind_ok('<Control-Shift>'))
         self.assertIn('not accepted', self.dialog.showerror.message)
 
 
 kundi ToggleLevelTest(unittest.TestCase):
-    "Test toggle between Basic and Advanced frames."
+    "Test toggle between Basic na Advanced frames."
 
     @classmethod
     eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = gkd(cls.root, 'Title', '<<Test>>', [], _utest=True)
+        cls.dialog = gkd(cls.root, 'Title', '<<Test>>', [], _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
         cls.dialog.cancel()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.dialog, cls.root
+        toa cls.dialog, cls.root
 
     eleza test_toggle_level(self):
         dialog = self.dialog
@@ -126,11 +126,11 @@ kundi ToggleLevelTest(unittest.TestCase):
         eleza stackorder():
             """Get the stack order of the children of the frame.
 
-            winfo_children() stores the children in stack order, so
-            this can be used to check whether a frame is above or
+            winfo_children() stores the children kwenye stack order, so
+            this can be used to check whether a frame ni above or
             below another one.
             """
-            for index, child in enumerate(dialog.frame.winfo_children()):
+            kila index, child kwenye enumerate(dialog.frame.winfo_children()):
                 ikiwa child._name == 'keyseq_basic':
                     basic = index
                 ikiwa child._name == 'keyseq_advanced':
@@ -138,21 +138,21 @@ kundi ToggleLevelTest(unittest.TestCase):
             rudisha basic, advanced
 
         # New window starts at basic level.
-        self.assertFalse(dialog.advanced)
+        self.assertUongo(dialog.advanced)
         self.assertIn('Advanced', dialog.button_level['text'])
         basic, advanced = stackorder()
         self.assertGreater(basic, advanced)
 
         # Toggle to advanced.
         dialog.toggle_level()
-        self.assertTrue(dialog.advanced)
+        self.assertKweli(dialog.advanced)
         self.assertIn('Basic', dialog.button_level['text'])
         basic, advanced = stackorder()
         self.assertGreater(advanced, basic)
 
         # Toggle to basic.
         dialog.button_level.invoke()
-        self.assertFalse(dialog.advanced)
+        self.assertUongo(dialog.advanced)
         self.assertIn('Advanced', dialog.button_level['text'])
         basic, advanced = stackorder()
         self.assertGreater(basic, advanced)
@@ -179,14 +179,14 @@ kundi KeySelectionTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = cls.Basic(cls.root, 'Title', '<<Test>>', [], _utest=True)
+        cls.dialog = cls.Basic(cls.root, 'Title', '<<Test>>', [], _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
         cls.dialog.cancel()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.dialog, cls.root
+        toa cls.dialog, cls.root
 
     eleza setUp(self):
         self.dialog.clear_key_seq()
@@ -214,16 +214,16 @@ kundi KeySelectionTest(unittest.TestCase):
         eq = self.assertEqual
 
         key.get.result = 'a'
-        mock_modifiers.return_value = []
+        mock_modifiers.rudisha_value = []
         dialog.build_key_string()
         eq(string(), '<Key-a>')
 
-        mock_modifiers.return_value = ['mymod']
+        mock_modifiers.rudisha_value = ['mymod']
         dialog.build_key_string()
         eq(string(), '<mymod-Key-a>')
 
         key.get.result = ''
-        mock_modifiers.return_value = ['mymod', 'test']
+        mock_modifiers.rudisha_value = ['mymod', 'test']
         dialog.build_key_string()
         eq(string(), '<mymod-test>')
 
@@ -234,7 +234,7 @@ kundi KeySelectionTest(unittest.TestCase):
         string = dialog.key_string.get
         eq = self.assertEqual
 
-        mock_modifiers.return_value = ['Shift']
+        mock_modifiers.rudisha_value = ['Shift']
         key.get.result = '{'
         dialog.final_key_selected()
         eq(string(), '<Shift-Key-braceleft>')
@@ -248,14 +248,14 @@ kundi CancelTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = gkd(cls.root, 'Title', '<<Test>>', [], _utest=True)
+        cls.dialog = gkd(cls.root, 'Title', '<<Test>>', [], _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
         cls.dialog.cancel()
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.dialog, cls.root
+        toa cls.dialog, cls.root
 
     eleza test_cancel(self):
         self.assertEqual(self.dialog.winfo_class(), 'Toplevel')
@@ -283,7 +283,7 @@ kundi HelperTest(unittest.TestCase):
 
         # Convert key name to keysym.
         eq(tr('Page Up', []), 'Key-Prior')
-        # 'Shift' doesn't change case when it's not a single char.
+        # 'Shift' doesn't change case when it's sio a single char.
         eq(tr('*', ['Shift']), 'Key-asterisk')
 
 

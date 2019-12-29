@@ -10,9 +10,9 @@ import threading
 import unittest
 from unittest import mock
 from test import support
-try:
+jaribu:
     import ssl
-except ImportError:
+tatizo ImportError:
     ssl = None
 
 import asyncio
@@ -76,10 +76,10 @@ class StreamTests(test_utils.TestCase):
     def _basetest_open_connection_no_loop_ssl(self, open_connection_fut):
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
-        try:
+        jaribu:
             with self.assertWarns(DeprecationWarning):
                 reader, writer = self.loop.run_until_complete(open_connection_fut)
-        finally:
+        mwishowe:
             asyncio.set_event_loop(None)
         writer.write(b'GET / HTTP/1.0\r\n\r\n')
         f = reader.read()
@@ -171,8 +171,8 @@ class StreamTests(test_utils.TestCase):
         self.assertEqual(self.DATA, data)
         self.assertEqual(b'', stream._buffer)
 
-    def test_read_line_breaks(self):
-        # Read bytes without line breaks.
+    def test_read_line_komas(self):
+        # Read bytes without line komas.
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(b'line1')
         stream.feed_data(b'line2')
@@ -615,7 +615,7 @@ class StreamTests(test_utils.TestCase):
                 return addr
 
             def stop(self):
-                if self.server is not None:
+                if self.server ni sio None:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = None
@@ -687,7 +687,7 @@ class StreamTests(test_utils.TestCase):
                 self.server = self.loop.run_until_complete(start)
 
             def stop(self):
-                if self.server is not None:
+                if self.server ni sio None:
                     self.server.close()
                     self.loop.run_until_complete(self.server.wait_closed())
                     self.server = None
@@ -754,7 +754,7 @@ os.close(fd)
 
         watcher = asyncio.SafeChildWatcher()
         watcher.attach_loop(self.loop)
-        try:
+        jaribu:
             asyncio.set_child_watcher(watcher)
             create = asyncio.create_subprocess_exec(
                 *args,
@@ -762,7 +762,7 @@ os.close(fd)
             )
             proc = self.loop.run_until_complete(create)
             self.loop.run_until_complete(proc.wait())
-        finally:
+        mwishowe:
             asyncio.set_child_watcher(None)
 
         os.close(wfd)
@@ -774,7 +774,7 @@ os.close(fd)
         asyncio.set_event_loop(self.loop)
 
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop if the loop parameter is not set
+        # retrieves the current loop if the loop parameter ni sio set
         reader = asyncio.StreamReader()
         self.assertIs(reader._loop, self.loop)
 
@@ -783,7 +783,7 @@ os.close(fd)
         asyncio.set_event_loop(self.loop)
 
         # asyncio issue #184: Ensure that StreamReaderProtocol constructor
-        # retrieves the current loop if the loop parameter is not set
+        # retrieves the current loop if the loop parameter ni sio set
         reader = mock.Mock()
         protocol = asyncio.StreamReaderProtocol(reader)
         self.assertIs(protocol._loop, self.loop)
@@ -791,7 +791,7 @@ os.close(fd)
     def test_drain_raises(self):
         # See http://bugs.python.org/issue25441
 
-        # This test should not use asyncio for the mock server; the
+        # This test should sio use asyncio for the mock server; the
         # whole point of the test is to test for a bug in drain()
         # where it never gives up the event loop but the socket is
         # closed on the  server side.
@@ -813,7 +813,7 @@ os.close(fd)
                 reader, writer = await asyncio.open_connection(
                     host, port, loop=self.loop)
 
-            while True:
+            wakati True:
                 writer.write(b"foo\n")
                 await writer.drain()
 
@@ -823,7 +823,7 @@ os.close(fd)
         thread.start()
         addr = q.get()
 
-        # Should not be stuck in an infinite loop.
+        # Should sio be stuck in an infinite loop.
         with self.assertRaises((ConnectionResetError, ConnectionAbortedError,
                                 BrokenPipeError)):
             self.loop.run_until_complete(client(*addr))
@@ -941,8 +941,8 @@ os.close(fd)
             self.assertEqual(data, b'HTTP/1.0 200 OK\r\n')
 
             # drop refs to reader/writer
-            del rd
-            del wr
+            toa rd
+            toa wr
             gc.collect()
             # make a chance to close the socket
             test_utils.run_briefly(self.loop)
@@ -962,7 +962,7 @@ os.close(fd)
         with test_utils.run_test_server() as httpd:
             rd = asyncio.StreamReader(loop=self.loop)
             pr = asyncio.StreamReaderProtocol(rd, loop=self.loop)
-            del rd
+            toa rd
             gc.collect()
             tr, _ = self.loop.run_until_complete(
                 self.loop.create_connection(

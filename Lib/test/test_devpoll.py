@@ -1,6 +1,6 @@
-# Test case for the select.devpoll() function
+# Test case kila the select.devpoll() function
 
-# Initial tests are copied as is kutoka "test_poll.py"
+# Initial tests are copied kama ni kutoka "test_poll.py"
 
 agiza os
 agiza random
@@ -8,13 +8,13 @@ agiza select
 agiza unittest
 kutoka test.support agiza run_unittest, cpython_only
 
-ikiwa not hasattr(select, 'devpoll') :
-    raise unittest.SkipTest('test works only on Solaris OS family')
+ikiwa sio hasattr(select, 'devpoll') :
+    ashiria unittest.SkipTest('test works only on Solaris OS family')
 
 
 eleza find_ready_matching(ready, flag):
     match = []
-    for fd, mode in ready:
+    kila fd, mode kwenye ready:
         ikiwa mode & flag:
             match.append(fd)
     rudisha match
@@ -23,19 +23,19 @@ kundi DevPollTests(unittest.TestCase):
 
     eleza test_devpoll1(self):
         # Basic functional test of poll object
-        # Create a bunch of pipe and test that poll works with them.
+        # Create a bunch of pipe na test that poll works with them.
 
         p = select.devpoll()
 
         NUM_PIPES = 12
-        MSG = b" This is a test."
+        MSG = b" This ni a test."
         MSG_LEN = len(MSG)
         readers = []
         writers = []
         r2w = {}
         w2r = {}
 
-        for i in range(NUM_PIPES):
+        kila i kwenye range(NUM_PIPES):
             rd, wr = os.pipe()
             p.register(rd)
             p.modify(rd, select.POLLIN)
@@ -47,18 +47,18 @@ kundi DevPollTests(unittest.TestCase):
 
         bufs = []
 
-        while writers:
+        wakati writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
-            ikiwa not ready_writers:
-                self.fail("no pipes ready for writing")
+            ikiwa sio ready_writers:
+                self.fail("no pipes ready kila writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
-            ikiwa not ready_readers:
-                self.fail("no pipes ready for reading")
+            ikiwa sio ready_readers:
+                self.fail("no pipes ready kila reading")
             self.assertEqual([w2r[wr]], ready_readers)
             rd = ready_readers[0]
             buf = os.read(rd, MSG_LEN)
@@ -94,13 +94,13 @@ kundi DevPollTests(unittest.TestCase):
         fd = open_file.fileno()
         devpoll = select.devpoll()
 
-        # test fileno() method and closed attribute
+        # test fileno() method na closed attribute
         self.assertIsInstance(devpoll.fileno(), int)
-        self.assertFalse(devpoll.closed)
+        self.assertUongo(devpoll.closed)
 
         # test close()
         devpoll.close()
-        self.assertTrue(devpoll.closed)
+        self.assertKweli(devpoll.closed)
         self.assertRaises(ValueError, devpoll.fileno)
 
         # close() can be called more than once
@@ -115,7 +115,7 @@ kundi DevPollTests(unittest.TestCase):
     eleza test_fd_non_inheritable(self):
         devpoll = select.devpoll()
         self.addCleanup(devpoll.close)
-        self.assertEqual(os.get_inheritable(devpoll.fileno()), False)
+        self.assertEqual(os.get_inheritable(devpoll.fileno()), Uongo)
 
     eleza test_events_mask_overflow(self):
         pollster = select.devpoll()

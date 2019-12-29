@@ -6,19 +6,19 @@ class new_style_class(object):
     pass
 
 a = old_style_class()
-del a
+toa a
 gc.collect()
 b = new_style_class()
-del b
+toa b
 gc.collect()
 
 a = old_style_class()
-del old_style_class
+toa old_style_class
 gc.collect()
 b = new_style_class()
-del new_style_class
+toa new_style_class
 gc.collect()
-del a
+toa a
 gc.collect()
-del b
+toa b
 gc.collect()

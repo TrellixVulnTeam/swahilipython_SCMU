@@ -4,10 +4,10 @@
          tdemo_minimal_hanoi.py
 
 A minimal 'Towers of Hanoi' animation:
-A tower of 6 discs is transferred kutoka the
+A tower of 6 discs ni transferred kutoka the
 left to the right peg.
 
-An imho quite elegant and concise
+An imho quite elegant na concise
 implementation using a tower class, which
 is derived kutoka the built-in type list.
 
@@ -21,7 +21,7 @@ kutoka turtle agiza *
 
 kundi Disc(Turtle):
     eleza __init__(self, n):
-        Turtle.__init__(self, shape="square", visible=False)
+        Turtle.__init__(self, shape="square", visible=Uongo)
         self.pu()
         self.shapesize(1.5, n*1.5, 2) # square-->rectangle
         self.fillcolor(n/6., 0, 1-n/6.)
@@ -30,7 +30,7 @@ kundi Disc(Turtle):
 kundi Tower(list):
     "Hanoi tower, a subkundi of built-in type list"
     eleza __init__(self, x):
-        "create an empty tower. x is x-position of peg"
+        "create an empty tower. x ni x-position of peg"
         self.x = x
     eleza push(self, d):
         d.setx(self.x)
@@ -48,14 +48,14 @@ eleza hanoi(n, kutoka_, with_, to_):
         hanoi(n-1, with_, kutoka_, to_)
 
 eleza play():
-    onkey(None,"space")
+    onkey(Tupu,"space")
     clear()
-    try:
+    jaribu:
         hanoi(6, t1, t2, t3)
         write("press STOP button to exit",
               align="center", font=("Courier", 16, "bold"))
-    except Terminator:
-        pass  # turtledemo user pressed STOP
+    tatizo Terminator:
+        pita  # turtledemo user pressed STOP
 
 eleza main():
     global t1, t2, t3
@@ -64,7 +64,7 @@ eleza main():
     t2 = Tower(0)
     t3 = Tower(250)
     # make tower of 6 discs
-    for i in range(6,0,-1):
+    kila i kwenye range(6,0,-1):
         t1.push(Disc(i))
     # prepare spartanic user interface ;-)
     write("press spacebar to start game",

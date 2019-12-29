@@ -91,7 +91,7 @@ class InstallLibTestCase(support.TempdirManager,
         self.assertEqual(len(inputs), 2, inputs)
 
     def test_dont_write_bytecode(self):
-        # makes sure byte_compile is not used
+        # makes sure byte_compile ni sio used
         dist = self.create_dist()[1]
         cmd = install_lib(dist)
         cmd.compile = 1
@@ -99,9 +99,9 @@ class InstallLibTestCase(support.TempdirManager,
 
         old_dont_write_bytecode = sys.dont_write_bytecode
         sys.dont_write_bytecode = True
-        try:
+        jaribu:
             cmd.byte_compile([])
-        finally:
+        mwishowe:
             sys.dont_write_bytecode = old_dont_write_bytecode
 
         self.assertIn('byte-compiling is disabled',

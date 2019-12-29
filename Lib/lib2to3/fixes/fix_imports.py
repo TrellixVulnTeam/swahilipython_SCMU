@@ -1,4 +1,4 @@
-"""Fix incompatible agizas and module references."""
+"""Fix incompatible agizas na module references."""
 # Authors: Collin Winter, Nick Edds
 
 # Local agizas
@@ -33,7 +33,7 @@ MAPPING = {'StringIO':  'io',
            '_winreg': 'winreg',
            'thread': '_thread',
            'dummy_thread': '_dummy_thread',
-           # anydbm and whichdb are handled by fix_agizas2
+           # anydbm na whichdb are handled by fix_agizas2
            'dbhash': 'dbm.bsd',
            'dumbdbm': 'dbm.dumb',
            'dbm': 'dbm.ndbm',
@@ -63,30 +63,30 @@ eleza alternates(members):
 
 
 eleza build_pattern(mapping=MAPPING):
-    mod_list = ' | '.join(["module_name='%s'" % key for key in mapping])
+    mod_list = ' | '.join(["module_name='%s'" % key kila key kwenye mapping])
     bare_names = alternates(mapping.keys())
 
-    yield """name_agiza=import_name< 'agiza' ((%s) |
+    tuma """name_agiza=import_name< 'agiza' ((%s) |
                multiple_agizas=dotted_as_names< any* (%s) any* >) >
           """ % (mod_list, mod_list)
-    yield """import_kutoka< 'kutoka' (%s) 'agiza' ['(']
+    tuma """import_kutoka< 'kutoka' (%s) 'agiza' ['(']
               ( any | import_as_name< any 'as' any > |
                 import_as_names< any* >)  [')'] >
           """ % mod_list
-    yield """import_name< 'agiza' (dotted_as_name< (%s) 'as' any > |
+    tuma """import_name< 'agiza' (dotted_as_name< (%s) 'as' any > |
                multiple_agizas=dotted_as_names<
                  any* dotted_as_name< (%s) 'as' any > any* >) >
           """ % (mod_list, mod_list)
 
-    # Find usages of module members in code e.g. thread.foo(bar)
-    yield "power< bare_with_attr=(%s) trailer<'.' any > any* >" % bare_names
+    # Find usages of module members kwenye code e.g. thread.foo(bar)
+    tuma "power< bare_with_attr=(%s) trailer<'.' any > any* >" % bare_names
 
 
 kundi FixImports(fixer_base.BaseFix):
 
-    BM_compatible = True
-    keep_line_order = True
-    # This is overridden in fix_agizas2.
+    BM_compatible = Kweli
+    keep_line_order = Kweli
+    # This ni overridden kwenye fix_agizas2.
     mapping = MAPPING
 
     # We want to run this fixer late, so fix_agiza doesn't try to make stdlib
@@ -97,8 +97,8 @@ kundi FixImports(fixer_base.BaseFix):
         rudisha "|".join(build_pattern(self.mapping))
 
     eleza compile_pattern(self):
-        # We override this, so MAPPING can be pragmatically altered and the
-        # changes will be reflected in PATTERN.
+        # We override this, so MAPPING can be pragmatically altered na the
+        # changes will be reflected kwenye PATTERN.
         self.PATTERN = self.build_pattern()
         super(FixImports, self).compile_pattern()
 
@@ -107,13 +107,13 @@ kundi FixImports(fixer_base.BaseFix):
         match = super(FixImports, self).match
         results = match(node)
         ikiwa results:
-            # Module usage could be in the trailer of an attribute lookup, so we
-            # might have nested matches when "bare_with_attr" is present.
-            ikiwa "bare_with_attr" not in results and \
-                    any(match(obj) for obj in attr_chain(node, "parent")):
-                rudisha False
+            # Module usage could be kwenye the trailer of an attribute lookup, so we
+            # might have nested matches when "bare_with_attr" ni present.
+            ikiwa "bare_with_attr" haiko kwenye results na \
+                    any(match(obj) kila obj kwenye attr_chain(node, "parent")):
+                rudisha Uongo
             rudisha results
-        rudisha False
+        rudisha Uongo
 
     eleza start_tree(self, tree, filename):
         super(FixImports, self).start_tree(tree, filename)
@@ -125,19 +125,19 @@ kundi FixImports(fixer_base.BaseFix):
             mod_name = import_mod.value
             new_name = self.mapping[mod_name]
             import_mod.replace(Name(new_name, prefix=import_mod.prefix))
-            ikiwa "name_agiza" in results:
-                # If it's not a "kutoka x agiza x, y" or "agiza x as y" agiza,
+            ikiwa "name_agiza" kwenye results:
+                # If it's sio a "kutoka x agiza x, y" ama "agiza x kama y" agiza,
                 # marked its usage to be replaced.
                 self.replace[mod_name] = new_name
-            ikiwa "multiple_agizas" in results:
-                # This is a nasty hack to fix multiple agizas on a line (e.g.,
-                # "agiza StringIO, urlparse"). The problem is that I can't
+            ikiwa "multiple_agizas" kwenye results:
+                # This ni a nasty hack to fix multiple agizas on a line (e.g.,
+                # "agiza StringIO, urlparse"). The problem ni that I can't
                 # figure out an easy way to make a pattern recognize the keys of
-                # MAPPING randomly sprinkled in an agiza statement.
+                # MAPPING randomly sprinkled kwenye an agiza statement.
                 results = self.match(node)
                 ikiwa results:
                     self.transform(node, results)
-        else:
+        isipokua:
             # Replace usage of the module.
             bare_name = results["bare_with_attr"][0]
             new_name = self.replace.get(bare_name.value)

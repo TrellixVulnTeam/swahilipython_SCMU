@@ -7,7 +7,7 @@ from test.test_email import TestEmailBase, parameterize
 
 # Helper.
 def first(iterable):
-    return next(filter(lambda x: x is not None, iterable), None)
+    return next(filter(lambda x: x ni sio None, iterable), None)
 
 
 class Test(TestEmailBase):
@@ -301,7 +301,7 @@ class TestEmailMessageBase:
                 --===--
                 """)),
 
-        # This structure suggested by Stephen J. Turnbull...may not exist/be
+        # This structure suggested by Stephen J. Turnbull...may sio exist/be
         # supported in the wild, but we want to support it.
         'mixed_related_alternative_plain_html': (
             (1, 4, 3),
@@ -603,7 +603,7 @@ class TestEmailMessageBase:
     def _check_make_multipart(self, m, msg_headers, payload):
         count = 0
         for name, value in msg_headers:
-            if not name.lower().startswith('content-'):
+            if sio name.lower().startswith('content-'):
                 self.assertEqual(m[name], value)
                 count += 1
         self.assertEqual(len(m), count+1) # +1 for new Content-Type
@@ -630,7 +630,7 @@ class TestEmailMessageBase:
             self.assertEqual(m.items(),
                              msg_headers + [('Content-Type',
                                              'multipart/'+method)])
-        else:
+        isipokua:
             self.assertEqual(len(m.get_payload()), 1)
             self._check_make_multipart(m, msg_headers, payload)
 
@@ -677,7 +677,7 @@ class TestEmailMessageBase:
             for name, value in msg_headers:
                 self.assertEqual(m[name], value)
             part = m.get_payload()[0]
-        else:
+        isipokua:
             self.assertEqual(len(m.get_payload()), 2)
             self._check_make_multipart(m, msg_headers, payload)
             part = m.get_payload()[1]
@@ -687,7 +687,7 @@ class TestEmailMessageBase:
             self.assertEqual(part['Content-Disposition'], 'attachment')
         lasivyo method=='related':
             self.assertEqual(part['Content-Disposition'], 'inline')
-        else:
+        isipokua:
             # Otherwise we don't guess.
             self.assertIsNone(part['Content-Disposition'])
 
@@ -714,7 +714,7 @@ class TestEmailMessageBase:
     def message_as_clear_content(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         expected_headers = [h for h in m.keys()
-                            if not h.lower().startswith('content-')]
+                            if sio h.lower().startswith('content-')]
         m.clear_content()
         self.assertEqual(list(m.keys()), expected_headers)
         self.assertIsNone(m.get_payload())

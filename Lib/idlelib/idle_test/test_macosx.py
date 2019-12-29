@@ -3,8 +3,8 @@
 kutoka idlelib agiza macosx
 agiza unittest
 kutoka test.support agiza requires
-agiza tkinter as tk
-agiza unittest.mock as mock
+agiza tkinter kama tk
+agiza unittest.mock kama mock
 kutoka idlelib.filelist agiza FileList
 
 mactypes = {'carbon', 'cocoa', 'xquartz'}
@@ -26,15 +26,15 @@ kundi InitTktypeTest(unittest.TestCase):
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
         macosx.platform = cls.orig_platform
 
     eleza test_init_sets_tktype(self):
         "Test that _init_tk_type sets _tk_type according to platform."
-        for platform, types in ('darwin', alltypes), ('other', nontypes):
+        kila platform, types kwenye ('darwin', alltypes), ('other', nontypes):
             with self.subTest(platform=platform):
                 macosx.platform = platform
-                macosx._tk_type == None
+                macosx._tk_type == Tupu
                 macosx._init_tk_type()
                 self.assertIn(macosx._tk_type, types)
 
@@ -49,21 +49,21 @@ kundi IsTypeTkTest(unittest.TestCase):
 
     @mock.patch('idlelib.macosx._init_tk_type')
     eleza test_is_calls_init(self, mockinit):
-        "Test that each isTypeTk calls _init_tk_type when _tk_type is None."
-        macosx._tk_type = None
-        for func, whentrue in self.isfuncs:
+        "Test that each isTypeTk calls _init_tk_type when _tk_type ni Tupu."
+        macosx._tk_type = Tupu
+        kila func, whentrue kwenye self.isfuncs:
             with self.subTest(func=func):
                 func()
-                self.assertTrue(mockinit.called)
+                self.assertKweli(mockinit.called)
                 mockinit.reset_mock()
 
     eleza test_isfuncs(self):
         "Test that each isTypeTk rudisha correct bool."
-        for func, whentrue in self.isfuncs:
-            for tktype in alltypes:
+        kila func, whentrue kwenye self.isfuncs:
+            kila tktype kwenye alltypes:
                 with self.subTest(func=func, whentrue=whentrue, tktype=tktype):
                     macosx._tk_type = tktype
-                    (self.assertTrue ikiwa tktype in whentrue else self.assertFalse)\
+                    (self.assertKweli ikiwa tktype kwenye whentrue else self.assertUongo)\
                                      (func())
 
 
@@ -84,19 +84,19 @@ kundi SetupTest(unittest.TestCase):
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     @mock.patch('idlelib.macosx.overrideRootMenu')  #27312
     eleza test_setupapp(self, overrideRootMenu):
         "Call setupApp with each possible graphics type."
         root = self.root
         flist = FileList(root)
-        for tktype in alltypes:
+        kila tktype kwenye alltypes:
             with self.subTest(tktype=tktype):
                 macosx._tk_type = tktype
                 macosx.setupApp(root, flist)
-                ikiwa tktype in ('carbon', 'cocoa'):
-                    self.assertTrue(overrideRootMenu.called)
+                ikiwa tktype kwenye ('carbon', 'cocoa'):
+                    self.assertKweli(overrideRootMenu.called)
                 overrideRootMenu.reset_mock()
 
 

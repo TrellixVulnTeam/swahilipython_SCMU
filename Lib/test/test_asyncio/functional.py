@@ -33,7 +33,7 @@ class FunctionalTestCaseMixin:
         asyncio.events._get_running_loop = lambda: None
 
     def tearDown(self):
-        try:
+        jaribu:
             self.loop.close()
 
             if self.__unhandled_exceptions:
@@ -41,7 +41,7 @@ class FunctionalTestCaseMixin:
                 pprint.pprint(self.__unhandled_exceptions)
                 self.fail('unexpected calls to loop.call_exception_handler()')
 
-        finally:
+        mwishowe:
             asyncio.events._get_running_loop = self._old_get_running_loop
             asyncio.set_event_loop(None)
             self.loop = None
@@ -57,7 +57,7 @@ class FunctionalTestCaseMixin:
             if hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
                 with tempfile.NamedTemporaryFile() as tmp:
                     addr = tmp.name
-            else:
+            isipokua:
                 addr = ('127.0.0.1', 0)
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
@@ -86,12 +86,12 @@ class FunctionalTestCaseMixin:
             self, sock, client_prog, timeout)
 
     def unix_server(self, *args, **kwargs):
-        if not hasattr(socket, 'AF_UNIX'):
+        if sio hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
         return self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     def unix_client(self, *args, **kwargs):
-        if not hasattr(socket, 'AF_UNIX'):
+        if sio hasattr(socket, 'AF_UNIX'):
             raise NotImplementedError
         return self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
@@ -99,18 +99,18 @@ class FunctionalTestCaseMixin:
     def unix_sock_name(self):
         with tempfile.TemporaryDirectory() as td:
             fn = os.path.join(td, 'sock')
-            try:
+            jaribu:
                 yield fn
-            finally:
-                try:
+            mwishowe:
+                jaribu:
                     os.unlink(fn)
-                except OSError:
+                tatizo OSError:
                     pass
 
     def _abort_socket_test(self, ex):
-        try:
+        jaribu:
             self.loop.stop()
-        finally:
+        mwishowe:
             self.fail(ex)
 
 
@@ -126,7 +126,7 @@ class TestSocketWrapper:
 
     def recv_all(self, n):
         buf = b''
-        while len(buf) < n:
+        wakati len(buf) < n:
             data = self.recv(n - len(buf))
             if data == b'':
                 raise ConnectionAbortedError
@@ -142,12 +142,12 @@ class TestSocketWrapper:
             server_hostname=server_hostname,
             do_handshake_on_connect=False)
 
-        try:
+        jaribu:
             ssl_sock.do_handshake()
         except:
             ssl_sock.close()
             raise
-        finally:
+        mwishowe:
             self.__sock.close()
 
         self.__sock = ssl_sock
@@ -186,9 +186,9 @@ class TestThreadedClient(SocketThread):
         self._test = test
 
     def run(self):
-        try:
+        jaribu:
             self._prog(TestSocketWrapper(self._sock))
-        except Exception as ex:
+        tatizo Exception as ex:
             self._test._abort_socket_test(ex)
 
 
@@ -213,26 +213,26 @@ class TestThreadedServer(SocketThread):
         self._test = test
 
     def stop(self):
-        try:
+        jaribu:
             if self._s2 and self._s2.fileno() != -1:
-                try:
+                jaribu:
                     self._s2.send(b'stop')
-                except OSError:
+                tatizo OSError:
                     pass
-        finally:
+        mwishowe:
             super().stop()
 
     def run(self):
-        try:
+        jaribu:
             with self._sock:
                 self._sock.setblocking(0)
                 self._run()
-        finally:
+        mwishowe:
             self._s1.close()
             self._s2.close()
 
     def _run(self):
-        while self._active:
+        wakati self._active:
             if self._clients >= self._max_clients:
                 return
 
@@ -243,26 +243,26 @@ class TestThreadedServer(SocketThread):
                 return
 
             if self._sock in r:
-                try:
+                jaribu:
                     conn, addr = self._sock.accept()
-                except BlockingIOError:
-                    continue
-                except socket.timeout:
-                    if not self._active:
+                tatizo BlockingIOError:
+                    endelea
+                tatizo socket.timeout:
+                    if sio self._active:
                         return
-                    else:
+                    isipokua:
                         raise
-                else:
+                isipokua:
                     self._clients += 1
                     conn.settimeout(self._timeout)
-                    try:
+                    jaribu:
                         with conn:
                             self._handle_client(conn)
-                    except Exception as ex:
+                    tatizo Exception as ex:
                         self._active = False
-                        try:
+                        jaribu:
                             raise
-                        finally:
+                        mwishowe:
                             self._test._abort_socket_test(ex)
 
     def _handle_client(self, sock):

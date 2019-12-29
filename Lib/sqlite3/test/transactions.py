@@ -3,36 +3,36 @@
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
 #
-# This file is part of pysqlite.
+# This file ni part of pysqlite.
 #
-# This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
+# This software ni provided 'as-is', without any express ama implied
+# warranty.  In no event will the authors be held liable kila any damages
 # arising kutoka the use of this software.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
+# Permission ni granted to anyone to use this software kila any purpose,
+# including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must not be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must not
 #    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered kutoka any source distribution.
+#    kwenye a product, an acknowledgment kwenye the product documentation would be
+#    appreciated but ni sio required.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
+# 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza os, unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 eleza get_db_path():
     rudisha "sqlite_testdb"
 
 kundi TransactionTests(unittest.TestCase):
     eleza setUp(self):
-        try:
+        jaribu:
             os.remove(get_db_path())
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
         self.con1 = sqlite.connect(get_db_path(), timeout=0.1)
         self.cur1 = self.con1.cursor()
@@ -47,10 +47,10 @@ kundi TransactionTests(unittest.TestCase):
         self.cur2.close()
         self.con2.close()
 
-        try:
+        jaribu:
             os.unlink(get_db_path())
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     eleza CheckDMLDoesNotAutoCommitBefore(self):
         self.cur1.execute("create table test(i)")
@@ -98,8 +98,8 @@ kundi TransactionTests(unittest.TestCase):
     eleza CheckToggleAutoCommit(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
-        self.con1.isolation_level = None
-        self.assertEqual(self.con1.isolation_level, None)
+        self.con1.isolation_level = Tupu
+        self.assertEqual(self.con1.isolation_level, Tupu)
         self.cur2.execute("select i kutoka test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
@@ -136,7 +136,7 @@ kundi TransactionTests(unittest.TestCase):
     eleza CheckRollbackCursorConsistency(self):
         """
         Checks ikiwa cursors on the connection are set into a "reset" state
-        when a rollback is done on the connection.
+        when a rollback ni done on the connection.
         """
         con = sqlite.connect(":memory:")
         cur = con.cursor()

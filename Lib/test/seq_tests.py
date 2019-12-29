@@ -1,5 +1,5 @@
 """
-Tests common to tuple, list and UserList.UserList
+Tests common to tuple, list na UserList.UserList
 """
 
 agiza unittest
@@ -8,11 +8,11 @@ agiza pickle
 kutoka test agiza support
 
 # Various iterables
-# This is used for checking the constructor (here and in test_deque.py)
+# This ni used kila checking the constructor (here na kwenye test_deque.py)
 eleza iterfunc(seqn):
     'Regular generator'
-    for i in seqn:
-        yield i
+    kila i kwenye seqn:
+        tuma i
 
 kundi Sequence:
     'Sequence using __getitem__'
@@ -29,7 +29,7 @@ kundi IterFunc:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): raise StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -40,16 +40,16 @@ kundi IterGen:
         self.seqn = seqn
         self.i = 0
     eleza __iter__(self):
-        for val in self.seqn:
-            yield val
+        kila val kwenye self.seqn:
+            tuma val
 
 kundi IterNextOnly:
-    'Missing __getitem__ and __iter__'
+    'Missing __getitem__ na __iter__'
     eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): raise StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -75,11 +75,11 @@ kundi IterGenExc:
 kundi IterFuncStop:
     'Test immediate stop'
     eleza __init__(self, seqn):
-        pass
+        pita
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        raise StopIteration
+        ashiria StopIteration
 
 kutoka itertools agiza chain
 eleza itermulti(seqn):
@@ -88,15 +88,15 @@ eleza itermulti(seqn):
 
 kundi LyingTuple(tuple):
     eleza __iter__(self):
-        yield 1
+        tuma 1
 
 kundi LyingList(list):
     eleza __iter__(self):
-        yield 1
+        tuma 1
 
 kundi CommonTest(unittest.TestCase):
     # The type to be tested
-    type2test = None
+    type2test = Tupu
 
     eleza test_constructors(self):
         l0 = []
@@ -125,17 +125,17 @@ kundi CommonTest(unittest.TestCase):
         v0 = self.type2test(s)
         self.assertEqual(len(v0), len(s))
 
-        s = "this is also a sequence"
+        s = "this ni also a sequence"
         vv = self.type2test(s)
         self.assertEqual(len(vv), len(s))
 
         # Create kutoka various iteratables
-        for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
-            for g in (Sequence, IterFunc, IterGen,
+        kila s kwenye ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
+            kila g kwenye (Sequence, IterFunc, IterGen,
                       itermulti, iterfunc):
                 self.assertEqual(self.type2test(g(s)), self.type2test(s))
             self.assertEqual(self.type2test(IterFuncStop(s)), self.type2test())
-            self.assertEqual(self.type2test(c for c in "123"), self.type2test("123"))
+            self.assertEqual(self.type2test(c kila c kwenye "123"), self.type2test("123"))
             self.assertRaises(TypeError, self.type2test, IterNextOnly(s))
             self.assertRaises(TypeError, self.type2test, IterNoNext(s))
             self.assertRaises(ZeroDivisionError, self.type2test, IterGenExc(s))
@@ -145,15 +145,15 @@ kundi CommonTest(unittest.TestCase):
         self.assertEqual(self.type2test(LyingList([2])), self.type2test([1]))
 
     eleza test_truth(self):
-        self.assertFalse(self.type2test())
-        self.assertTrue(self.type2test([42]))
+        self.assertUongo(self.type2test())
+        self.assertKweli(self.type2test([42]))
 
     eleza test_getitem(self):
         u = self.type2test([0, 1, 2, 3, 4])
-        for i in range(len(u)):
+        kila i kwenye range(len(u)):
             self.assertEqual(u[i], i)
             self.assertEqual(u[int(i)], i)
-        for i in range(-len(u), -1):
+        kila i kwenye range(-len(u), -1):
             self.assertEqual(u[i], len(u)+i)
             self.assertEqual(u[int(i)], len(u)+i)
         self.assertRaises(IndexError, u.__getitem__, -len(u)-1)
@@ -184,8 +184,8 @@ kundi CommonTest(unittest.TestCase):
         self.assertEqual(u[-1000:1000], u)
         self.assertEqual(u[1000:-1000], self.type2test([]))
         self.assertEqual(u[:], u)
-        self.assertEqual(u[1:None], self.type2test([1, 2, 3, 4]))
-        self.assertEqual(u[None:3], self.type2test([0, 1, 2]))
+        self.assertEqual(u[1:Tupu], self.type2test([1, 2, 3, 4]))
+        self.assertEqual(u[Tupu:3], self.type2test([0, 1, 2]))
 
         # Extended slices
         self.assertEqual(u[::], u)
@@ -213,9 +213,9 @@ kundi CommonTest(unittest.TestCase):
 
     eleza test_contains(self):
         u = self.type2test([0, 1, 2])
-        for i in u:
+        kila i kwenye u:
             self.assertIn(i, u)
-        for i in min(u)-1, max(u)+1:
+        kila i kwenye min(u)-1, max(u)+1:
             self.assertNotIn(i, u)
 
         self.assertRaises(TypeError, u.__contains__)
@@ -223,23 +223,23 @@ kundi CommonTest(unittest.TestCase):
     eleza test_contains_fake(self):
         kundi AllEq:
             # Sequences must use rich comparison against each item
-            # (unless "is" is true, or an earlier item answered)
-            # So instances of AllEq must be found in all non-empty sequences.
+            # (unless "is" ni true, ama an earlier item answered)
+            # So instances of AllEq must be found kwenye all non-empty sequences.
             eleza __eq__(self, other):
-                rudisha True
-            __hash__ = None # Can't meet hash invariant requirements
+                rudisha Kweli
+            __hash__ = Tupu # Can't meet hash invariant requirements
         self.assertNotIn(AllEq(), self.type2test([]))
         self.assertIn(AllEq(), self.type2test([1]))
 
     eleza test_contains_order(self):
         # Sequences must test in-order.  If a rich comparison has side
         # effects, these will be visible to tests against later members.
-        # In this test, the "side effect" is a short-circuiting raise.
+        # In this test, the "side effect" ni a short-circuiting ashiria.
         kundi DoNotTestEq(Exception):
-            pass
+            pita
         kundi StopCompares:
             eleza __eq__(self, other):
-                raise DoNotTestEq
+                ashiria DoNotTestEq
 
         checkfirst = self.type2test([1, StopCompares()])
         self.assertIn(1, checkfirst)
@@ -280,7 +280,7 @@ kundi CommonTest(unittest.TestCase):
         self.assertEqual(u2+u2+u2, 3*u2)
 
         kundi subclass(self.type2test):
-            pass
+            pita
         u3 = subclass([0, 1])
         self.assertEqual(u3, u3*1)
         self.assertIsNot(u3, u3*1)
@@ -306,16 +306,16 @@ kundi CommonTest(unittest.TestCase):
         self.assertEqual(u, self.type2test([]))
 
     eleza test_getitemoverwriteiter(self):
-        # Verify that __getitem__ overrides are not recognized by __iter__
+        # Verify that __getitem__ overrides are sio recognized by __iter__
         kundi T(self.type2test):
             eleza __getitem__(self, key):
                 rudisha str(key) + '!!!'
         self.assertEqual(next(iter(T((1,2)))), 1)
 
     eleza test_repeat(self):
-        for m in range(4):
+        kila m kwenye range(4):
             s = tuple(range(m))
-            for n in range(-3, 5):
+            kila n kwenye range(-3, 5):
                 self.assertEqual(self.type2test(s*n), self.type2test(s)*n)
             self.assertEqual(self.type2test(s)*(-4), self.type2test([]))
             self.assertEqual(id(s), id(s*1))
@@ -353,13 +353,13 @@ kundi CommonTest(unittest.TestCase):
         self.assertRaises(TypeError, a.count)
 
         kundi BadExc(Exception):
-            pass
+            pita
 
         kundi BadCmp:
             eleza __eq__(self, other):
                 ikiwa other == 2:
-                    raise BadExc()
-                rudisha False
+                    ashiria BadExc()
+                rudisha Uongo
 
         self.assertRaises(BadExc, a.count, BadCmp())
 
@@ -381,13 +381,13 @@ kundi CommonTest(unittest.TestCase):
         self.assertRaises(TypeError, u.index)
 
         kundi BadExc(Exception):
-            pass
+            pita
 
         kundi BadCmp:
             eleza __eq__(self, other):
                 ikiwa other == 2:
-                    raise BadExc()
-                rudisha False
+                    ashiria BadExc()
+                rudisha Uongo
 
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.index, BadCmp())
@@ -407,7 +407,7 @@ kundi CommonTest(unittest.TestCase):
 
     eleza test_pickle(self):
         lst = self.type2test([4, 5, 6, 7])
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             lst2 = pickle.loads(pickle.dumps(lst, proto))
             self.assertEqual(lst2, lst)
             self.assertNotEqual(id(lst2), id(lst))

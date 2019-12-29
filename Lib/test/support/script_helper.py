@@ -26,13 +26,13 @@ def interpreter_requires_environment():
     that need to use an assert_python*() function to launch an isolated
     mode (-I) or no environment mode (-E) sub-interpreter process.
 
-    A normal build & test does not run into this situation but it can happen
+    A normal build & test does sio run into this situation but it can happen
     when trying to run the standard library test suite from an interpreter that
     doesn't have an obvious home with Python's current home finding logic.
 
     Setting PYTHONHOME is one way to get most of the testsuite to run in that
     situation.  PYTHONPATH or PYTHONUSERSITE are other common environment
-    variables that might impact whether or not the interpreter can start.
+    variables that might impact whether or sio the interpreter can start.
     """
     global __cached_interp_requires_environment
     if __cached_interp_requires_environment is None:
@@ -42,12 +42,12 @@ def interpreter_requires_environment():
             return True
 
         # Try running an interpreter with -E to see if it works or not.
-        try:
+        jaribu:
             subprocess.check_call([sys.executable, '-E',
                                    '-c', 'import sys; sys.exit(0)'])
-        except subprocess.CalledProcessError:
+        tatizo subprocess.CalledProcessError:
             __cached_interp_requires_environment = True
-        else:
+        isipokua:
             __cached_interp_requires_environment = False
 
     return __cached_interp_requires_environment
@@ -90,14 +90,14 @@ def run_python_until_end(*args, **env_vars):
     cwd = env_vars.pop('__cwd', None)
     if '__isolated' in env_vars:
         isolated = env_vars.pop('__isolated')
-    else:
-        isolated = not env_vars and not env_required
+    isipokua:
+        isolated = sio env_vars and sio env_required
     cmd_line = [sys.executable, '-X', 'faulthandler']
     if isolated:
         # isolated mode: ignore Python environment variables, ignore user
         # site-packages, and don't add the current directory to sys.path
         cmd_line.append('-I')
-    lasivyo not env_vars and not env_required:
+    lasivyo sio env_vars and sio env_required:
         # ignore Python environment variables
         cmd_line.append('-E')
 
@@ -110,16 +110,16 @@ def run_python_until_end(*args, **env_vars):
             # start Python.
             env['SYSTEMROOT'] = os.environ['SYSTEMROOT']
 
-        # Other interesting environment variables, not copied currently:
+        # Other interesting environment variables, sio copied currently:
         # COMSPEC, HOME, PATH, TEMP, TMPDIR, TMP.
-    else:
+    isipokua:
         # Need to preserve the original environment, for in-place testing of
         # shared library builds.
         env = os.environ.copy()
 
     # set TERM='' unless the TERM environment variable is passed explicitly
     # see issues #11390 and #18300
-    if 'TERM' not in env_vars:
+    if 'TERM' haiko kwenye env_vars:
         env['TERM'] = ''
 
     env.update(env_vars)
@@ -128,9 +128,9 @@ def run_python_until_end(*args, **env_vars):
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          env=env, cwd=cwd)
     with proc:
-        try:
+        jaribu:
             out, err = proc.communicate()
-        finally:
+        mwishowe:
             proc.kill()
             subprocess._cleanup()
     rc = proc.returncode
@@ -139,7 +139,7 @@ def run_python_until_end(*args, **env_vars):
 
 def _assert_python(expected_success, /, *args, **env_vars):
     res, cmd_line = run_python_until_end(*args, **env_vars)
-    if (res.rc and expected_success) or (not res.rc and not expected_success):
+    if (res.rc and expected_success) or (not res.rc and sio expected_success):
         res.fail(cmd_line)
     return res
 
@@ -152,7 +152,7 @@ def assert_python_ok(*args, **env_vars):
     If the __cleanenv keyword is set, env_vars is used as a fresh environment.
 
     Python is started in isolated mode (command line option -I),
-    except if the __isolated keyword is set to False.
+    tatizo if the __isolated keyword is set to False.
     """
     return _assert_python(True, *args, **env_vars)
 
@@ -173,7 +173,7 @@ def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     object.
     """
     cmd_line = [sys.executable]
-    if not interpreter_requires_environment():
+    if sio interpreter_requires_environment():
         cmd_line.append('-E')
     cmd_line.extend(args)
     # Under Fedora (?), GNU readline can output junk on stderr when initialized,
@@ -201,7 +201,7 @@ def kill_python(p):
 
 def make_script(script_dir, script_basename, source, omit_suffix=False):
     script_filename = script_basename
-    if not omit_suffix:
+    if sio omit_suffix:
         script_filename += os.extsep + 'py'
     script_name = os.path.join(script_dir, script_filename)
     # The script should be encoded to UTF-8, the default string encoding
@@ -220,7 +220,7 @@ def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=None):
                 legacy_pyc = make_legacy_pyc(source_from_cache(script_name))
                 name_in_zip = os.path.basename(legacy_pyc)
                 script_name = legacy_pyc
-            else:
+            isipokua:
                 name_in_zip = os.path.basename(script_name)
         zip_file.write(script_name, name_in_zip)
     #if test.support.verbose:

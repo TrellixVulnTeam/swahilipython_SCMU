@@ -1,10 +1,10 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-# Note: each test is run with Python and C versions of ABCMeta. Except for
-# test_ABC_helper(), which assures that abc.ABC is an instance of abc.ABCMeta.
+# Note: each test ni run with Python na C versions of ABCMeta. Except for
+# test_ABC_helper(), which assures that abc.ABC ni an instance of abc.ABCMeta.
 
-"""Unit tests for abc.py."""
+"""Unit tests kila abc.py."""
 
 agiza unittest
 
@@ -17,10 +17,10 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
 
         eleza test_abstractproperty_basics(self):
             @abc.abstractproperty
-            eleza foo(self): pass
-            self.assertTrue(foo.__isabstractmethod__)
-            eleza bar(self): pass
-            self.assertFalse(hasattr(bar, "__isabstractmethod__"))
+            eleza foo(self): pita
+            self.assertKweli(foo.__isabstractmethod__)
+            eleza bar(self): pita
+            self.assertUongo(hasattr(bar, "__isabstractmethod__"))
 
             kundi C(metaclass=abc_ABCMeta):
                 @abc.abstractproperty
@@ -30,15 +30,15 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
                 @property
                 eleza foo(self): rudisha super().foo
             self.assertEqual(D().foo, 3)
-            self.assertFalse(getattr(D.foo, "__isabstractmethod__", False))
+            self.assertUongo(getattr(D.foo, "__isabstractmethod__", Uongo))
 
         eleza test_abstractclassmethod_basics(self):
             @abc.abstractclassmethod
-            eleza foo(cls): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            eleza foo(cls): pita
+            self.assertKweli(foo.__isabstractmethod__)
             @classmethod
-            eleza bar(cls): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            eleza bar(cls): pita
+            self.assertUongo(getattr(bar, "__isabstractmethod__", Uongo))
 
             kundi C(metaclass=abc_ABCMeta):
                 @abc.abstractclassmethod
@@ -52,11 +52,11 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
 
         eleza test_abstractstaticmethod_basics(self):
             @abc.abstractstaticmethod
-            eleza foo(): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            eleza foo(): pita
+            self.assertKweli(foo.__isabstractmethod__)
             @staticmethod
-            eleza bar(): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            eleza bar(): pita
+            self.assertUongo(getattr(bar, "__isabstractmethod__", Uongo))
 
             kundi C(metaclass=abc_ABCMeta):
                 @abc.abstractstaticmethod
@@ -72,7 +72,7 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
     kundi TestABC(unittest.TestCase):
 
         eleza test_ABC_helper(self):
-            # create an ABC using the helper kundi and perform basic checks
+            # create an ABC using the helper kundi na perform basic checks
             kundi C(abc.ABC):
                 @classmethod
                 @abc.abstractmethod
@@ -86,18 +86,18 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
 
         eleza test_abstractmethod_basics(self):
             @abc.abstractmethod
-            eleza foo(self): pass
-            self.assertTrue(foo.__isabstractmethod__)
-            eleza bar(self): pass
-            self.assertFalse(hasattr(bar, "__isabstractmethod__"))
+            eleza foo(self): pita
+            self.assertKweli(foo.__isabstractmethod__)
+            eleza bar(self): pita
+            self.assertUongo(hasattr(bar, "__isabstractmethod__"))
 
         eleza test_abstractproperty_basics(self):
             @property
             @abc.abstractmethod
-            eleza foo(self): pass
-            self.assertTrue(foo.__isabstractmethod__)
-            eleza bar(self): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            eleza foo(self): pita
+            self.assertKweli(foo.__isabstractmethod__)
+            eleza bar(self): pita
+            self.assertUongo(getattr(bar, "__isabstractmethod__", Uongo))
 
             kundi C(metaclass=abc_ABCMeta):
                 @property
@@ -112,11 +112,11 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
         eleza test_abstractclassmethod_basics(self):
             @classmethod
             @abc.abstractmethod
-            eleza foo(cls): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            eleza foo(cls): pita
+            self.assertKweli(foo.__isabstractmethod__)
             @classmethod
-            eleza bar(cls): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            eleza bar(cls): pita
+            self.assertUongo(getattr(bar, "__isabstractmethod__", Uongo))
 
             kundi C(metaclass=abc_ABCMeta):
                 @classmethod
@@ -132,11 +132,11 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
         eleza test_abstractstaticmethod_basics(self):
             @staticmethod
             @abc.abstractmethod
-            eleza foo(): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            eleza foo(): pita
+            self.assertKweli(foo.__isabstractmethod__)
             @staticmethod
-            eleza bar(): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            eleza bar(): pita
+            self.assertUongo(getattr(bar, "__isabstractmethod__", Uongo))
 
             kundi C(metaclass=abc_ABCMeta):
                 @staticmethod
@@ -150,32 +150,32 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             self.assertEqual(D().foo(), 4)
 
         eleza test_abstractmethod_integration(self):
-            for abstractthing in [abc.abstractmethod, abc.abstractproperty,
+            kila abstractthing kwenye [abc.abstractmethod, abc.abstractproperty,
                                   abc.abstractclassmethod,
                                   abc.abstractstaticmethod]:
                 kundi C(metaclass=abc_ABCMeta):
                     @abstractthing
-                    eleza foo(self): pass  # abstract
-                    eleza bar(self): pass  # concrete
+                    eleza foo(self): pita  # abstract
+                    eleza bar(self): pita  # concrete
                 self.assertEqual(C.__abstractmethods__, {"foo"})
-                self.assertRaises(TypeError, C)  # because foo is abstract
-                self.assertTrue(isabstract(C))
+                self.assertRaises(TypeError, C)  # because foo ni abstract
+                self.assertKweli(isabstract(C))
                 kundi D(C):
-                    eleza bar(self): pass  # concrete override of concrete
+                    eleza bar(self): pita  # concrete override of concrete
                 self.assertEqual(D.__abstractmethods__, {"foo"})
-                self.assertRaises(TypeError, D)  # because foo is still abstract
-                self.assertTrue(isabstract(D))
+                self.assertRaises(TypeError, D)  # because foo ni still abstract
+                self.assertKweli(isabstract(D))
                 kundi E(D):
-                    eleza foo(self): pass
+                    eleza foo(self): pita
                 self.assertEqual(E.__abstractmethods__, set())
-                E()  # now foo is concrete, too
-                self.assertFalse(isabstract(E))
+                E()  # now foo ni concrete, too
+                self.assertUongo(isabstract(E))
                 kundi F(E):
                     @abstractthing
-                    eleza bar(self): pass  # abstract override of concrete
+                    eleza bar(self): pita  # abstract override of concrete
                 self.assertEqual(F.__abstractmethods__, {"bar"})
-                self.assertRaises(TypeError, F)  # because bar is abstract now
-                self.assertTrue(isabstract(F))
+                self.assertRaises(TypeError, F)  # because bar ni abstract now
+                self.assertKweli(isabstract(F))
 
         eleza test_descriptors_with_abstractmethod(self):
             kundi C(metaclass=abc_ABCMeta):
@@ -184,7 +184,7 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
                 eleza foo(self): rudisha 3
                 @foo.setter
                 @abc.abstractmethod
-                eleza foo(self, val): pass
+                eleza foo(self, val): pita
             self.assertRaises(TypeError, C)
             kundi D(C):
                 @C.foo.getter
@@ -192,25 +192,25 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             self.assertRaises(TypeError, D)
             kundi E(D):
                 @D.foo.setter
-                eleza foo(self, val): pass
+                eleza foo(self, val): pita
             self.assertEqual(E().foo, 3)
             # check that the property's __isabstractmethod__ descriptor does the
             # right thing when presented with a value that fails truth testing:
             kundi NotBool(object):
                 eleza __bool__(self):
-                    raise ValueError()
+                    ashiria ValueError()
                 __len__ = __bool__
             with self.assertRaises(ValueError):
                 kundi F(C):
                     eleza bar(self):
-                        pass
+                        pita
                     bar.__isabstractmethod__ = NotBool()
                     foo = property(bar)
 
 
         eleza test_customdescriptors_with_abstractmethod(self):
             kundi Descriptor:
-                eleza __init__(self, fget, fset=None):
+                eleza __init__(self, fget, fset=Tupu):
                     self._fget = fget
                     self._fset = fset
                 eleza getter(self, callable):
@@ -219,15 +219,15 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
                     rudisha Descriptor(self._fget, callable)
                 @property
                 eleza __isabstractmethod__(self):
-                    rudisha (getattr(self._fget, '__isabstractmethod__', False)
-                            or getattr(self._fset, '__isabstractmethod__', False))
+                    rudisha (getattr(self._fget, '__isabstractmethod__', Uongo)
+                            ama getattr(self._fset, '__isabstractmethod__', Uongo))
             kundi C(metaclass=abc_ABCMeta):
                 @Descriptor
                 @abc.abstractmethod
                 eleza foo(self): rudisha 3
                 @foo.setter
                 @abc.abstractmethod
-                eleza foo(self, val): pass
+                eleza foo(self, val): pita
             self.assertRaises(TypeError, C)
             kundi D(C):
                 @C.foo.getter
@@ -235,166 +235,166 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             self.assertRaises(TypeError, D)
             kundi E(D):
                 @D.foo.setter
-                eleza foo(self, val): pass
-            self.assertFalse(E.foo.__isabstractmethod__)
+                eleza foo(self, val): pita
+            self.assertUongo(E.foo.__isabstractmethod__)
 
         eleza test_metaclass_abc(self):
             # Metaclasses can be ABCs, too.
             kundi A(metaclass=abc_ABCMeta):
                 @abc.abstractmethod
                 eleza x(self):
-                    pass
+                    pita
             self.assertEqual(A.__abstractmethods__, {"x"})
             kundi meta(type, A):
                 eleza x(self):
                     rudisha 1
             kundi C(metaclass=meta):
-                pass
+                pita
 
         eleza test_registration_basics(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
+                pita
             kundi B(object):
-                pass
+                pita
             b = B()
-            self.assertFalse(issubclass(B, A))
-            self.assertFalse(issubclass(B, (A,)))
+            self.assertUongo(issubclass(B, A))
+            self.assertUongo(issubclass(B, (A,)))
             self.assertNotIsInstance(b, A)
             self.assertNotIsInstance(b, (A,))
             B1 = A.register(B)
-            self.assertTrue(issubclass(B, A))
-            self.assertTrue(issubclass(B, (A,)))
+            self.assertKweli(issubclass(B, A))
+            self.assertKweli(issubclass(B, (A,)))
             self.assertIsInstance(b, A)
             self.assertIsInstance(b, (A,))
             self.assertIs(B1, B)
             kundi C(B):
-                pass
+                pita
             c = C()
-            self.assertTrue(issubclass(C, A))
-            self.assertTrue(issubclass(C, (A,)))
+            self.assertKweli(issubclass(C, A))
+            self.assertKweli(issubclass(C, (A,)))
             self.assertIsInstance(c, A)
             self.assertIsInstance(c, (A,))
 
         eleza test_register_as_class_deco(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
+                pita
             @A.register
             kundi B(object):
-                pass
+                pita
             b = B()
-            self.assertTrue(issubclass(B, A))
-            self.assertTrue(issubclass(B, (A,)))
+            self.assertKweli(issubclass(B, A))
+            self.assertKweli(issubclass(B, (A,)))
             self.assertIsInstance(b, A)
             self.assertIsInstance(b, (A,))
             @A.register
             kundi C(B):
-                pass
+                pita
             c = C()
-            self.assertTrue(issubclass(C, A))
-            self.assertTrue(issubclass(C, (A,)))
+            self.assertKweli(issubclass(C, A))
+            self.assertKweli(issubclass(C, (A,)))
             self.assertIsInstance(c, A)
             self.assertIsInstance(c, (A,))
             self.assertIs(C, A.register(C))
 
         eleza test_isinstance_invalidation(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
+                pita
             kundi B:
-                pass
+                pita
             b = B()
-            self.assertFalse(isinstance(b, A))
-            self.assertFalse(isinstance(b, (A,)))
+            self.assertUongo(isinstance(b, A))
+            self.assertUongo(isinstance(b, (A,)))
             token_old = abc_get_cache_token()
             A.register(B)
             token_new = abc_get_cache_token()
             self.assertNotEqual(token_old, token_new)
-            self.assertTrue(isinstance(b, A))
-            self.assertTrue(isinstance(b, (A,)))
+            self.assertKweli(isinstance(b, A))
+            self.assertKweli(isinstance(b, (A,)))
 
         eleza test_registration_builtins(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
+                pita
             A.register(int)
             self.assertIsInstance(42, A)
             self.assertIsInstance(42, (A,))
-            self.assertTrue(issubclass(int, A))
-            self.assertTrue(issubclass(int, (A,)))
+            self.assertKweli(issubclass(int, A))
+            self.assertKweli(issubclass(int, (A,)))
             kundi B(A):
-                pass
+                pita
             B.register(str)
-            kundi C(str): pass
+            kundi C(str): pita
             self.assertIsInstance("", A)
             self.assertIsInstance("", (A,))
-            self.assertTrue(issubclass(str, A))
-            self.assertTrue(issubclass(str, (A,)))
-            self.assertTrue(issubclass(C, A))
-            self.assertTrue(issubclass(C, (A,)))
+            self.assertKweli(issubclass(str, A))
+            self.assertKweli(issubclass(str, (A,)))
+            self.assertKweli(issubclass(C, A))
+            self.assertKweli(issubclass(C, (A,)))
 
         eleza test_registration_edge_cases(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
-            A.register(A)  # should pass silently
+                pita
+            A.register(A)  # should pita silently
             kundi A1(A):
-                pass
-            self.assertRaises(RuntimeError, A1.register, A)  # cycles not allowed
+                pita
+            self.assertRaises(RuntimeError, A1.register, A)  # cycles sio allowed
             kundi B(object):
-                pass
+                pita
             A1.register(B)  # ok
-            A1.register(B)  # should pass silently
+            A1.register(B)  # should pita silently
             kundi C(A):
-                pass
-            A.register(C)  # should pass silently
-            self.assertRaises(RuntimeError, C.register, A)  # cycles not allowed
+                pita
+            A.register(C)  # should pita silently
+            self.assertRaises(RuntimeError, C.register, A)  # cycles sio allowed
             C.register(B)  # ok
 
         eleza test_register_non_class(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
+                pita
             self.assertRaisesRegex(TypeError, "Can only register classes",
                                    A.register, 4)
 
         eleza test_registration_transitiveness(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
-            self.assertTrue(issubclass(A, A))
-            self.assertTrue(issubclass(A, (A,)))
+                pita
+            self.assertKweli(issubclass(A, A))
+            self.assertKweli(issubclass(A, (A,)))
             kundi B(metaclass=abc_ABCMeta):
-                pass
-            self.assertFalse(issubclass(A, B))
-            self.assertFalse(issubclass(A, (B,)))
-            self.assertFalse(issubclass(B, A))
-            self.assertFalse(issubclass(B, (A,)))
+                pita
+            self.assertUongo(issubclass(A, B))
+            self.assertUongo(issubclass(A, (B,)))
+            self.assertUongo(issubclass(B, A))
+            self.assertUongo(issubclass(B, (A,)))
             kundi C(metaclass=abc_ABCMeta):
-                pass
+                pita
             A.register(B)
             kundi B1(B):
-                pass
-            self.assertTrue(issubclass(B1, A))
-            self.assertTrue(issubclass(B1, (A,)))
+                pita
+            self.assertKweli(issubclass(B1, A))
+            self.assertKweli(issubclass(B1, (A,)))
             kundi C1(C):
-                pass
+                pita
             B1.register(C1)
-            self.assertFalse(issubclass(C, B))
-            self.assertFalse(issubclass(C, (B,)))
-            self.assertFalse(issubclass(C, B1))
-            self.assertFalse(issubclass(C, (B1,)))
-            self.assertTrue(issubclass(C1, A))
-            self.assertTrue(issubclass(C1, (A,)))
-            self.assertTrue(issubclass(C1, B))
-            self.assertTrue(issubclass(C1, (B,)))
-            self.assertTrue(issubclass(C1, B1))
-            self.assertTrue(issubclass(C1, (B1,)))
+            self.assertUongo(issubclass(C, B))
+            self.assertUongo(issubclass(C, (B,)))
+            self.assertUongo(issubclass(C, B1))
+            self.assertUongo(issubclass(C, (B1,)))
+            self.assertKweli(issubclass(C1, A))
+            self.assertKweli(issubclass(C1, (A,)))
+            self.assertKweli(issubclass(C1, B))
+            self.assertKweli(issubclass(C1, (B,)))
+            self.assertKweli(issubclass(C1, B1))
+            self.assertKweli(issubclass(C1, (B1,)))
             C1.register(int)
             kundi MyInt(int):
-                pass
-            self.assertTrue(issubclass(MyInt, A))
-            self.assertTrue(issubclass(MyInt, (A,)))
+                pita
+            self.assertKweli(issubclass(MyInt, A))
+            self.assertKweli(issubclass(MyInt, (A,)))
             self.assertIsInstance(42, A)
             self.assertIsInstance(42, (A,))
 
         eleza test_issubclass_bad_arguments(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
+                pita
 
             with self.assertRaises(TypeError):
                 issubclass({}, A)  # unhashable
@@ -402,10 +402,10 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             with self.assertRaises(TypeError):
                 issubclass(42, A)  # No __mro__
 
-            # Python version supports any iterable as __mro__.
-            # But it's implementation detail and don't emulate it in C version.
+            # Python version supports any iterable kama __mro__.
+            # But it's implementation detail na don't emulate it kwenye C version.
             kundi C:
-                __mro__ = 42  # __mro__ is not tuple
+                __mro__ = 42  # __mro__ ni sio tuple
 
             with self.assertRaises(TypeError):
                 issubclass(C(), A)
@@ -413,13 +413,13 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             # bpo-34441: Check that issubclass() doesn't crash on bogus
             # classes.
             bogus_subclasses = [
-                None,
+                Tupu,
                 lambda x: [],
                 lambda: 42,
                 lambda: [42],
             ]
 
-            for i, func in enumerate(bogus_subclasses):
+            kila i, func kwenye enumerate(bogus_subclasses):
                 kundi S(metaclass=abc_ABCMeta):
                     __subclasses__ = func
 
@@ -427,35 +427,35 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
                     with self.assertRaises(TypeError):
                         issubclass(int, S)
 
-            # Also check that issubclass() propagates exceptions raised by
+            # Also check that issubclass() propagates exceptions ashiriad by
             # __subclasses__.
             exc_msg = "exception kutoka __subclasses__"
 
-            eleza raise_exc():
-                raise Exception(exc_msg)
+            eleza ashiria_exc():
+                ashiria Exception(exc_msg)
 
             kundi S(metaclass=abc_ABCMeta):
-                __subclasses__ = raise_exc
+                __subclasses__ = ashiria_exc
 
             with self.assertRaisesRegex(Exception, exc_msg):
                 issubclass(int, S)
 
         eleza test_all_new_methods_are_called(self):
             kundi A(metaclass=abc_ABCMeta):
-                pass
+                pita
             kundi B(object):
                 counter = 0
                 eleza __new__(cls):
                     B.counter += 1
                     rudisha super().__new__(cls)
             kundi C(A, B):
-                pass
+                pita
             self.assertEqual(B.counter, 0)
             C()
             self.assertEqual(B.counter, 1)
 
         eleza test_ABC_has___slots__(self):
-            self.assertTrue(hasattr(abc.ABC, '__slots__'))
+            self.assertKweli(hasattr(abc.ABC, '__slots__'))
 
         eleza test_tricky_new_works(self):
             eleza with_metaclass(meta, *bases):
@@ -466,7 +466,7 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
             kundi A: ...
             kundi B: ...
             kundi C(with_metaclass(abc_ABCMeta, A, B)):
-                pass
+                pita
             self.assertEqual(C.__class__, abc_ABCMeta)
 
 
@@ -480,7 +480,7 @@ eleza test_factory(abc_ABCMeta, abc_get_cache_token):
                     super().__init_subclass__()
                     saved_kwargs.update(kwargs)
             kundi Receiver(ReceivesClassKwargs, abc_ABC, x=1, y=2, z=3):
-                pass
+                pita
             self.assertEqual(saved_kwargs, dict(x=1, y=2, z=3))
     rudisha TestLegacyAPI, TestABC, TestABCWithInitSubclass
 

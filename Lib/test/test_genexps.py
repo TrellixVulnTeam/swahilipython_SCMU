@@ -2,30 +2,30 @@ doctests = """
 
 Test simple loop with conditional
 
-    >>> sum(i*i for i in range(100) ikiwa i&1 == 1)
+    >>> sum(i*i kila i kwenye range(100) ikiwa i&1 == 1)
     166650
 
 Test simple nesting
 
-    >>> list((i,j) for i in range(3) for j in range(4) )
+    >>> list((i,j) kila i kwenye range(3) kila j kwenye range(4) )
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
 Test nesting with the inner expression dependent on the outer
 
-    >>> list((i,j) for i in range(4) for j in range(i) )
+    >>> list((i,j) kila i kwenye range(4) kila j kwenye range(i) )
     [(1, 0), (2, 0), (2, 1), (3, 0), (3, 1), (3, 2)]
 
-Make sure the induction variable is not exposed
+Make sure the induction variable ni sio exposed
 
     >>> i = 20
-    >>> sum(i*i for i in range(100))
+    >>> sum(i*i kila i kwenye range(100))
     328350
     >>> i
     20
 
 Test first class
 
-    >>> g = (i*i for i in range(4))
+    >>> g = (i*i kila i kwenye range(4))
     >>> type(g)
     <kundi 'generator'>
     >>> list(g)
@@ -33,7 +33,7 @@ Test first class
 
 Test direct calls to next()
 
-    >>> g = (i*i for i in range(3))
+    >>> g = (i*i kila i kwenye range(3))
     >>> next(g)
     0
     >>> next(g)
@@ -42,7 +42,7 @@ Test direct calls to next()
     4
     >>> next(g)
     Traceback (most recent call last):
-      File "<pyshell#21>", line 1, in -toplevel-
+      File "<pyshell#21>", line 1, kwenye -toplevel-
         next(g)
     StopIteration
 
@@ -50,106 +50,106 @@ Does it stay stopped?
 
     >>> next(g)
     Traceback (most recent call last):
-      File "<pyshell#21>", line 1, in -toplevel-
+      File "<pyshell#21>", line 1, kwenye -toplevel-
         next(g)
     StopIteration
     >>> list(g)
     []
 
-Test running gen when defining function is out of scope
+Test running gen when defining function ni out of scope
 
     >>> eleza f(n):
-    ...     rudisha (i*i for i in range(n))
+    ...     rudisha (i*i kila i kwenye range(n))
     >>> list(f(10))
     [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
     >>> eleza f(n):
-    ...     rudisha ((i,j) for i in range(3) for j in range(n))
+    ...     rudisha ((i,j) kila i kwenye range(3) kila j kwenye range(n))
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
     >>> eleza f(n):
-    ...     rudisha ((i,j) for i in range(3) for j in range(4) ikiwa j in range(n))
+    ...     rudisha ((i,j) kila i kwenye range(3) kila j kwenye range(4) ikiwa j kwenye range(n))
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
     >>> list(f(2))
     [(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1)]
 
-Verify that parenthesis are required in a statement
+Verify that parenthesis are required kwenye a statement
 
     >>> eleza f(n):
-    ...     rudisha i*i for i in range(n)
+    ...     rudisha i*i kila i kwenye range(n)
     Traceback (most recent call last):
        ...
     SyntaxError: invalid syntax
 
-Verify that parenthesis are required when used as a keyword argument value
+Verify that parenthesis are required when used kama a keyword argument value
 
-    >>> dict(a = i for i in range(10))
+    >>> dict(a = i kila i kwenye range(10))
     Traceback (most recent call last):
        ...
     SyntaxError: invalid syntax
 
-Verify that parenthesis are required when used as a keyword argument value
+Verify that parenthesis are required when used kama a keyword argument value
 
-    >>> dict(a = (i for i in range(10))) #doctest: +ELLIPSIS
+    >>> dict(a = (i kila i kwenye range(10))) #doctest: +ELLIPSIS
     {'a': <generator object <genexpr> at ...>}
 
-Verify early binding for the outermost for-expression
+Verify early binding kila the outermost for-expression
 
     >>> x=10
-    >>> g = (i*i for i in range(x))
+    >>> g = (i*i kila i kwenye range(x))
     >>> x = 5
     >>> list(g)
     [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
 Verify that the outermost for-expression makes an immediate check
-for iterability
+kila iterability
 
-    >>> (i for i in 6)
+    >>> (i kila i kwenye 6)
     Traceback (most recent call last):
-      File "<pyshell#4>", line 1, in -toplevel-
-        (i for i in 6)
-    TypeError: 'int' object is not iterable
+      File "<pyshell#4>", line 1, kwenye -toplevel-
+        (i kila i kwenye 6)
+    TypeError: 'int' object ni sio iterable
 
-Verify late binding for the outermost if-expression
+Verify late binding kila the outermost if-expression
 
     >>> include = (2,4,6,8)
-    >>> g = (i*i for i in range(10) ikiwa i in include)
+    >>> g = (i*i kila i kwenye range(10) ikiwa i kwenye include)
     >>> include = (1,3,5,7,9)
     >>> list(g)
     [1, 9, 25, 49, 81]
 
-Verify late binding for the innermost for-expression
+Verify late binding kila the innermost for-expression
 
-    >>> g = ((i,j) for i in range(3) for j in range(x))
+    >>> g = ((i,j) kila i kwenye range(3) kila j kwenye range(x))
     >>> x = 4
     >>> list(g)
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
 Verify re-use of tuples (a side benefit of using genexps over listcomps)
 
-    >>> tupleids = list(map(id, ((i,i) for i in range(10))))
+    >>> tupleids = list(map(id, ((i,i) kila i kwenye range(10))))
     >>> int(max(tupleids) - min(tupleids))
     0
 
-Verify that syntax error's are raised for genexps used as lvalues
+Verify that syntax error's are ashiriad kila genexps used kama lvalues
 
-    >>> (y for y in (1,2)) = 10
+    >>> (y kila y kwenye (1,2)) = 10
     Traceback (most recent call last):
        ...
     SyntaxError: cannot assign to generator expression
 
-    >>> (y for y in (1,2)) += 10
+    >>> (y kila y kwenye (1,2)) += 10
     Traceback (most recent call last):
        ...
     SyntaxError: cannot assign to generator expression
 
 
-########### Tests borrowed kutoka or inspired by test_generators.py ############
+########### Tests borrowed kutoka ama inspired by test_generators.py ############
 
 Make a generator that acts like range()
 
-    >>> yrange = lambda n:  (i for i in range(n))
+    >>> yrange = lambda n:  (i kila i kwenye range(n))
     >>> list(yrange(10))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -161,7 +161,7 @@ Generators always rudisha to the most recent caller:
     ...     rudisha r
     >>> eleza caller():
     ...     r = creator()
-    ...     for i in r:
+    ...     kila i kwenye r:
     ...             andika("caller", i)
     >>> caller()
     creator 0
@@ -173,69 +173,69 @@ Generators always rudisha to the most recent caller:
 Generators can call other generators:
 
     >>> eleza zrange(n):
-    ...     for i in yrange(n):
-    ...         yield i
+    ...     kila i kwenye yrange(n):
+    ...         tuma i
     >>> list(zrange(5))
     [0, 1, 2, 3, 4]
 
 
-Verify that a gen exp cannot be resumed while it is actively running:
+Verify that a gen exp cannot be resumed wakati it ni actively running:
 
-    >>> g = (next(me) for i in range(10))
+    >>> g = (next(me) kila i kwenye range(10))
     >>> me = g
     >>> next(me)
     Traceback (most recent call last):
-      File "<pyshell#30>", line 1, in -toplevel-
+      File "<pyshell#30>", line 1, kwenye -toplevel-
         next(me)
-      File "<pyshell#28>", line 1, in <generator expression>
-        g = (next(me) for i in range(10))
+      File "<pyshell#28>", line 1, kwenye <generator expression>
+        g = (next(me) kila i kwenye range(10))
     ValueError: generator already executing
 
 Verify exception propagation
 
-    >>> g = (10 // i for i in (5, 0, 2))
+    >>> g = (10 // i kila i kwenye (5, 0, 2))
     >>> next(g)
     2
     >>> next(g)
     Traceback (most recent call last):
-      File "<pyshell#37>", line 1, in -toplevel-
+      File "<pyshell#37>", line 1, kwenye -toplevel-
         next(g)
-      File "<pyshell#35>", line 1, in <generator expression>
-        g = (10 // i for i in (5, 0, 2))
-    ZeroDivisionError: integer division or modulo by zero
+      File "<pyshell#35>", line 1, kwenye <generator expression>
+        g = (10 // i kila i kwenye (5, 0, 2))
+    ZeroDivisionError: integer division ama modulo by zero
     >>> next(g)
     Traceback (most recent call last):
-      File "<pyshell#38>", line 1, in -toplevel-
+      File "<pyshell#38>", line 1, kwenye -toplevel-
         next(g)
     StopIteration
 
-Make sure that None is a valid rudisha value
+Make sure that Tupu ni a valid rudisha value
 
-    >>> list(None for i in range(10))
-    [None, None, None, None, None, None, None, None, None, None]
+    >>> list(Tupu kila i kwenye range(10))
+    [Tupu, Tupu, Tupu, Tupu, Tupu, Tupu, Tupu, Tupu, Tupu, Tupu]
 
 Check that generator attributes are present
 
-    >>> g = (i*i for i in range(3))
+    >>> g = (i*i kila i kwenye range(3))
     >>> expected = set(['gi_frame', 'gi_running'])
-    >>> set(attr for attr in dir(g) ikiwa not attr.startswith('__')) >= expected
-    True
+    >>> set(attr kila attr kwenye dir(g) ikiwa sio attr.startswith('__')) >= expected
+    Kweli
 
     >>> kutoka test.support agiza HAVE_DOCSTRINGS
     >>> andika(g.__next__.__doc__ ikiwa HAVE_DOCSTRINGS else 'Implement next(self).')
     Implement next(self).
     >>> agiza types
     >>> isinstance(g, types.GeneratorType)
-    True
+    Kweli
 
-Check the __iter__ slot is defined to rudisha self
+Check the __iter__ slot ni defined to rudisha self
 
-    >>> iter(g) is g
-    True
+    >>> iter(g) ni g
+    Kweli
 
-Verify that the running flag is set properly
+Verify that the running flag ni set properly
 
-    >>> g = (me.gi_running for i in (0,1))
+    >>> g = (me.gi_running kila i kwenye (0,1))
     >>> me = g
     >>> me.gi_running
     0
@@ -247,10 +247,10 @@ Verify that the running flag is set properly
 Verify that genexps are weakly referencable
 
     >>> agiza weakref
-    >>> g = (i*i for i in range(4))
+    >>> g = (i*i kila i kwenye range(4))
     >>> wr = weakref.ref(g)
-    >>> wr() is g
-    True
+    >>> wr() ni g
+    Kweli
     >>> p = weakref.proxy(g)
     >>> list(p)
     [0, 1, 4, 9]
@@ -261,25 +261,25 @@ Verify that genexps are weakly referencable
 agiza sys
 
 # Trace function can throw off the tuple reuse test.
-ikiwa hasattr(sys, 'gettrace') and sys.gettrace():
+ikiwa hasattr(sys, 'gettrace') na sys.gettrace():
     __test__ = {}
-else:
+isipokua:
     __test__ = {'doctests' : doctests}
 
-eleza test_main(verbose=None):
+eleza test_main(verbose=Tupu):
     kutoka test agiza support
     kutoka test agiza test_genexps
     support.run_doctest(test_genexps, verbose)
 
     # verify reference counting
-    ikiwa verbose and hasattr(sys, "gettotalrefcount"):
+    ikiwa verbose na hasattr(sys, "gettotalrefcount"):
         agiza gc
-        counts = [None] * 5
-        for i in range(len(counts)):
+        counts = [Tupu] * 5
+        kila i kwenye range(len(counts)):
             support.run_doctest(test_genexps, verbose)
             gc.collect()
             counts[i] = sys.gettotalrefcount()
         andika(counts)
 
 ikiwa __name__ == "__main__":
-    test_main(verbose=True)
+    test_main(verbose=Kweli)

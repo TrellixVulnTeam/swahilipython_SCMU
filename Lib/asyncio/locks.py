@@ -15,13 +15,13 @@ kutoka .agiza coroutines
 kundi _ContextManager:
     """Context manager.
 
-    This enables the following idiom for acquiring and releasing a
+    This enables the following idiom kila acquiring na releasing a
     lock around a block:
 
-        with (yield kutoka lock):
+        with (tuma kutoka lock):
             <block>
 
-    while failing loudly when accidentally using:
+    wakati failing loudly when accidentally using:
 
         with lock:
             <block>
@@ -35,51 +35,51 @@ kundi _ContextManager:
         self._lock = lock
 
     eleza __enter__(self):
-        # We have no use for the "as ..."  clause in the with
-        # statement for locks.
-        rudisha None
+        # We have no use kila the "as ..."  clause kwenye the with
+        # statement kila locks.
+        rudisha Tupu
 
     eleza __exit__(self, *args):
-        try:
+        jaribu:
             self._lock.release()
-        finally:
-            self._lock = None  # Crudely prevent reuse.
+        mwishowe:
+            self._lock = Tupu  # Crudely prevent reuse.
 
 
 kundi _ContextManagerMixin:
     eleza __enter__(self):
-        raise RuntimeError(
-            '"yield kutoka" should be used as context manager expression')
+        ashiria RuntimeError(
+            '"tuma kutoka" should be used kama context manager expression')
 
     eleza __exit__(self, *args):
         # This must exist because __enter__ exists, even though that
-        # always raises; that's how the with-statement works.
-        pass
+        # always ashirias; that's how the with-statement works.
+        pita
 
     @types.coroutine
     eleza __iter__(self):
-        # This is not a coroutine.  It is meant to enable the idiom:
+        # This ni sio a coroutine.  It ni meant to enable the idiom:
         #
-        #     with (yield kutoka lock):
+        #     with (tuma kutoka lock):
         #         <block>
         #
-        # as an alternative to:
+        # kama an alternative to:
         #
-        #     yield kutoka lock.acquire()
-        #     try:
+        #     tuma kutoka lock.acquire()
+        #     jaribu:
         #         <block>
-        #     finally:
+        #     mwishowe:
         #         lock.release()
         # Deprecated, use 'async with' statement:
         #     async with lock:
         #         <block>
-        warnings.warn("'with (yield kutoka lock)' is deprecated "
+        warnings.warn("'with (tuma kutoka lock)' ni deprecated "
                       "use 'async with lock' instead",
                       DeprecationWarning, stacklevel=2)
-        yield kutoka self.acquire()
+        tuma kutoka self.acquire()
         rudisha _ContextManager(self)
 
-    # The flag is needed for legacy asyncio.iscoroutine()
+    # The flag ni needed kila legacy asyncio.iscoroutine()
     __iter__._is_coroutine = coroutines._is_coroutine
 
     async eleza __acquire_ctx(self):
@@ -87,7 +87,7 @@ kundi _ContextManagerMixin:
         rudisha _ContextManager(self)
 
     eleza __await__(self):
-        warnings.warn("'with await lock' is deprecated "
+        warnings.warn("'with await lock' ni deprecated "
                       "use 'async with lock' instead",
                       DeprecationWarning, stacklevel=2)
         # To make "with await lock" work.
@@ -95,9 +95,9 @@ kundi _ContextManagerMixin:
 
     async eleza __aenter__(self):
         await self.acquire()
-        # We have no use for the "as ..."  clause in the with
-        # statement for locks.
-        rudisha None
+        # We have no use kila the "as ..."  clause kwenye the with
+        # statement kila locks.
+        rudisha Tupu
 
     async eleza __aexit__(self, exc_type, exc, tb):
         self.release()
@@ -106,26 +106,26 @@ kundi _ContextManagerMixin:
 kundi Lock(_ContextManagerMixin):
     """Primitive lock objects.
 
-    A primitive lock is a synchronization primitive that is not owned
-    by a particular coroutine when locked.  A primitive lock is in one
-    of two states, 'locked' or 'unlocked'.
+    A primitive lock ni a synchronization primitive that ni sio owned
+    by a particular coroutine when locked.  A primitive lock ni kwenye one
+    of two states, 'locked' ama 'unlocked'.
 
-    It is created in the unlocked state.  It has two basic methods,
-    acquire() and release().  When the state is unlocked, acquire()
-    changes the state to locked and returns immediately.  When the
-    state is locked, acquire() blocks until a call to release() in
+    It ni created kwenye the unlocked state.  It has two basic methods,
+    acquire() na release().  When the state ni unlocked, acquire()
+    changes the state to locked na rudishas immediately.  When the
+    state ni locked, acquire() blocks until a call to release() in
     another coroutine changes it to unlocked, then the acquire() call
-    resets it to locked and returns.  The release() method should only
-    be called in the locked state; it changes the state to unlocked
-    and returns immediately.  If an attempt is made to release an
-    unlocked lock, a RuntimeError will be raised.
+    resets it to locked na rudishas.  The release() method should only
+    be called kwenye the locked state; it changes the state to unlocked
+    na rudishas immediately.  If an attempt ni made to release an
+    unlocked lock, a RuntimeError will be ashiriad.
 
-    When more than one coroutine is blocked in acquire() waiting for
+    When more than one coroutine ni blocked kwenye acquire() waiting for
     the state to turn to unlocked, only one coroutine proceeds when a
     release() call resets the state to unlocked; first coroutine which
-    is blocked in acquire() is being processed.
+    ni blocked kwenye acquire() ni being processed.
 
-    acquire() is a coroutine and should be called with 'await'.
+    acquire() ni a coroutine na should be called with 'await'.
 
     Locks also support the asynchronous context management protocol.
     'async with lock' statement should be used.
@@ -135,9 +135,9 @@ kundi Lock(_ContextManagerMixin):
         lock = Lock()
         ...
         await lock.acquire()
-        try:
+        jaribu:
             ...
-        finally:
+        mwishowe:
             lock.release()
 
     Context manager usage:
@@ -147,25 +147,25 @@ kundi Lock(_ContextManagerMixin):
         async with lock:
              ...
 
-    Lock objects can be tested for locking state:
+    Lock objects can be tested kila locking state:
 
-        ikiwa not lock.locked():
+        ikiwa sio lock.locked():
            await lock.acquire()
-        else:
-           # lock is acquired
+        isipokua:
+           # lock ni acquired
            ...
 
     """
 
-    eleza __init__(self, *, loop=None):
-        self._waiters = None
-        self._locked = False
-        ikiwa loop is None:
+    eleza __init__(self, *, loop=Tupu):
+        self._waiters = Tupu
+        self._locked = Uongo
+        ikiwa loop ni Tupu:
             self._loop = events.get_event_loop()
-        else:
+        isipokua:
             self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
 
     eleza __repr__(self):
@@ -176,92 +176,92 @@ kundi Lock(_ContextManagerMixin):
         rudisha f'<{res[1:-1]} [{extra}]>'
 
     eleza locked(self):
-        """Return True ikiwa lock is acquired."""
+        """Return Kweli ikiwa lock ni acquired."""
         rudisha self._locked
 
     async eleza acquire(self):
         """Acquire a lock.
 
-        This method blocks until the lock is unlocked, then sets it to
-        locked and returns True.
+        This method blocks until the lock ni unlocked, then sets it to
+        locked na rudishas Kweli.
         """
-        ikiwa (not self._locked and (self._waiters is None or
-                all(w.cancelled() for w in self._waiters))):
-            self._locked = True
-            rudisha True
+        ikiwa (not self._locked na (self._waiters ni Tupu or
+                all(w.cancelled() kila w kwenye self._waiters))):
+            self._locked = Kweli
+            rudisha Kweli
 
-        ikiwa self._waiters is None:
+        ikiwa self._waiters ni Tupu:
             self._waiters = collections.deque()
         fut = self._loop.create_future()
         self._waiters.append(fut)
 
         # Finally block should be called before the CancelledError
-        # handling as we don't want CancelledError to call
-        # _wake_up_first() and attempt to wake up itself.
-        try:
-            try:
+        # handling kama we don't want CancelledError to call
+        # _wake_up_first() na attempt to wake up itself.
+        jaribu:
+            jaribu:
                 await fut
-            finally:
+            mwishowe:
                 self._waiters.remove(fut)
-        except exceptions.CancelledError:
-            ikiwa not self._locked:
+        tatizo exceptions.CancelledError:
+            ikiwa sio self._locked:
                 self._wake_up_first()
-            raise
+            ashiria
 
-        self._locked = True
-        rudisha True
+        self._locked = Kweli
+        rudisha Kweli
 
     eleza release(self):
         """Release a lock.
 
-        When the lock is locked, reset it to unlocked, and return.
-        If any other coroutines are blocked waiting for the lock to become
+        When the lock ni locked, reset it to unlocked, na rudisha.
+        If any other coroutines are blocked waiting kila the lock to become
         unlocked, allow exactly one of them to proceed.
 
-        When invoked on an unlocked lock, a RuntimeError is raised.
+        When invoked on an unlocked lock, a RuntimeError ni ashiriad.
 
-        There is no rudisha value.
+        There ni no rudisha value.
         """
         ikiwa self._locked:
-            self._locked = False
+            self._locked = Uongo
             self._wake_up_first()
-        else:
-            raise RuntimeError('Lock is not acquired.')
+        isipokua:
+            ashiria RuntimeError('Lock ni sio acquired.')
 
     eleza _wake_up_first(self):
         """Wake up the first waiter ikiwa it isn't done."""
-        ikiwa not self._waiters:
-            return
-        try:
+        ikiwa sio self._waiters:
+            rudisha
+        jaribu:
             fut = next(iter(self._waiters))
-        except StopIteration:
-            return
+        tatizo StopIteration:
+            rudisha
 
         # .done() necessarily means that a waiter will wake up later on and
-        # either take the lock, or, ikiwa it was cancelled and lock wasn't
-        # taken already, will hit this again and wake up a new waiter.
-        ikiwa not fut.done():
-            fut.set_result(True)
+        # either take the lock, or, ikiwa it was cancelled na lock wasn't
+        # taken already, will hit this again na wake up a new waiter.
+        ikiwa sio fut.done():
+            fut.set_result(Kweli)
 
 
 kundi Event:
     """Asynchronous equivalent to threading.Event.
 
     Class implementing event objects. An event manages a flag that can be set
-    to true with the set() method and reset to false with the clear() method.
-    The wait() method blocks until the flag is true. The flag is initially
+    to true with the set() method na reset to false with the clear() method.
+    The wait() method blocks until the flag ni true. The flag ni initially
     false.
     """
 
-    eleza __init__(self, *, loop=None):
+    eleza __init__(self, *, loop=Tupu):
         self._waiters = collections.deque()
-        self._value = False
-        ikiwa loop is None:
+        self._value = Uongo
+        ikiwa loop ni Tupu:
             self._loop = events.get_event_loop()
-        else:
+        isipokua:
             self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
 
     eleza __repr__(self):
@@ -272,43 +272,43 @@ kundi Event:
         rudisha f'<{res[1:-1]} [{extra}]>'
 
     eleza is_set(self):
-        """Return True ikiwa and only ikiwa the internal flag is true."""
+        """Return Kweli ikiwa na only ikiwa the internal flag ni true."""
         rudisha self._value
 
     eleza set(self):
-        """Set the internal flag to true. All coroutines waiting for it to
+        """Set the internal flag to true. All coroutines waiting kila it to
         become true are awakened. Coroutine that call wait() once the flag is
-        true will not block at all.
+        true will sio block at all.
         """
-        ikiwa not self._value:
-            self._value = True
+        ikiwa sio self._value:
+            self._value = Kweli
 
-            for fut in self._waiters:
-                ikiwa not fut.done():
-                    fut.set_result(True)
+            kila fut kwenye self._waiters:
+                ikiwa sio fut.done():
+                    fut.set_result(Kweli)
 
     eleza clear(self):
         """Reset the internal flag to false. Subsequently, coroutines calling
-        wait() will block until set() is called to set the internal flag
+        wait() will block until set() ni called to set the internal flag
         to true again."""
-        self._value = False
+        self._value = Uongo
 
     async eleza wait(self):
-        """Block until the internal flag is true.
+        """Block until the internal flag ni true.
 
-        If the internal flag is true on entry, rudisha True
+        If the internal flag ni true on entry, rudisha Kweli
         immediately.  Otherwise, block until another coroutine calls
-        set() to set the flag to true, then rudisha True.
+        set() to set the flag to true, then rudisha Kweli.
         """
         ikiwa self._value:
-            rudisha True
+            rudisha Kweli
 
         fut = self._loop.create_future()
         self._waiters.append(fut)
-        try:
+        jaribu:
             await fut
-            rudisha True
-        finally:
+            rudisha Kweli
+        mwishowe:
             self._waiters.remove(fut)
 
 
@@ -316,28 +316,28 @@ kundi Condition(_ContextManagerMixin):
     """Asynchronous equivalent to threading.Condition.
 
     This kundi implements condition variable objects. A condition variable
-    allows one or more coroutines to wait until they are notified by another
+    allows one ama more coroutines to wait until they are notified by another
     coroutine.
 
-    A new Lock object is created and used as the underlying lock.
+    A new Lock object ni created na used kama the underlying lock.
     """
 
-    eleza __init__(self, lock=None, *, loop=None):
-        ikiwa loop is None:
+    eleza __init__(self, lock=Tupu, *, loop=Tupu):
+        ikiwa loop ni Tupu:
             self._loop = events.get_event_loop()
-        else:
+        isipokua:
             self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
 
-        ikiwa lock is None:
+        ikiwa lock ni Tupu:
             lock = Lock(loop=loop)
-        elikiwa lock._loop is not self._loop:
-            raise ValueError("loop argument must agree with lock")
+        elikiwa lock._loop ni sio self._loop:
+            ashiria ValueError("loop argument must agree with lock")
 
         self._lock = lock
-        # Export the lock's locked(), acquire() and release() methods.
+        # Export the lock's locked(), acquire() na release() methods.
         self.locked = lock.locked
         self.acquire = lock.acquire
         self.release = lock.release
@@ -354,82 +354,82 @@ kundi Condition(_ContextManagerMixin):
     async eleza wait(self):
         """Wait until notified.
 
-        If the calling coroutine has not acquired the lock when this
-        method is called, a RuntimeError is raised.
+        If the calling coroutine has sio acquired the lock when this
+        method ni called, a RuntimeError ni ashiriad.
 
-        This method releases the underlying lock, and then blocks
-        until it is awakened by a notify() or notify_all() call for
-        the same condition variable in another coroutine.  Once
-        awakened, it re-acquires the lock and returns True.
+        This method releases the underlying lock, na then blocks
+        until it ni awakened by a notify() ama notify_all() call for
+        the same condition variable kwenye another coroutine.  Once
+        awakened, it re-acquires the lock na rudishas Kweli.
         """
-        ikiwa not self.locked():
-            raise RuntimeError('cannot wait on un-acquired lock')
+        ikiwa sio self.locked():
+            ashiria RuntimeError('cannot wait on un-acquired lock')
 
         self.release()
-        try:
+        jaribu:
             fut = self._loop.create_future()
             self._waiters.append(fut)
-            try:
+            jaribu:
                 await fut
-                rudisha True
-            finally:
+                rudisha Kweli
+            mwishowe:
                 self._waiters.remove(fut)
 
-        finally:
-            # Must reacquire lock even ikiwa wait is cancelled
-            cancelled = False
-            while True:
-                try:
+        mwishowe:
+            # Must reacquire lock even ikiwa wait ni cancelled
+            cancelled = Uongo
+            wakati Kweli:
+                jaribu:
                     await self.acquire()
-                    break
-                except exceptions.CancelledError:
-                    cancelled = True
+                    koma
+                tatizo exceptions.CancelledError:
+                    cancelled = Kweli
 
             ikiwa cancelled:
-                raise exceptions.CancelledError
+                ashiria exceptions.CancelledError
 
     async eleza wait_for(self, predicate):
         """Wait until a predicate becomes true.
 
         The predicate should be a callable which result will be
-        interpreted as a boolean value.  The final predicate value is
+        interpreted kama a boolean value.  The final predicate value is
         the rudisha value.
         """
         result = predicate()
-        while not result:
+        wakati sio result:
             await self.wait()
             result = predicate()
         rudisha result
 
     eleza notify(self, n=1):
         """By default, wake up one coroutine waiting on this condition, ikiwa any.
-        If the calling coroutine has not acquired the lock when this method
-        is called, a RuntimeError is raised.
+        If the calling coroutine has sio acquired the lock when this method
+        ni called, a RuntimeError ni ashiriad.
 
-        This method wakes up at most n of the coroutines waiting for the
-        condition variable; it is a no-op ikiwa no coroutines are waiting.
+        This method wakes up at most n of the coroutines waiting kila the
+        condition variable; it ni a no-op ikiwa no coroutines are waiting.
 
-        Note: an awakened coroutine does not actually rudisha kutoka its
+        Note: an awakened coroutine does sio actually rudisha kutoka its
         wait() call until it can reacquire the lock. Since notify() does
-        not release the lock, its caller should.
+        sio release the lock, its caller should.
         """
-        ikiwa not self.locked():
-            raise RuntimeError('cannot notify on un-acquired lock')
+        ikiwa sio self.locked():
+            ashiria RuntimeError('cannot notify on un-acquired lock')
 
         idx = 0
-        for fut in self._waiters:
+        kila fut kwenye self._waiters:
             ikiwa idx >= n:
-                break
+                koma
 
-            ikiwa not fut.done():
+            ikiwa sio fut.done():
                 idx += 1
-                fut.set_result(False)
+                fut.set_result(Uongo)
 
     eleza notify_all(self):
         """Wake up all threads waiting on this condition. This method acts
         like notify(), but wakes up all waiting threads instead of one. If the
-        calling thread has not acquired the lock when this method is called,
-        a RuntimeError is raised.
+        calling thread has sio acquired the lock when this method ni called,
+        a RuntimeError ni ashiriad.
         """
         self.notify(len(self._waiters))
 
@@ -437,29 +437,29 @@ kundi Condition(_ContextManagerMixin):
 kundi Semaphore(_ContextManagerMixin):
     """A Semaphore implementation.
 
-    A semaphore manages an internal counter which is decremented by each
-    acquire() call and incremented by each release() call. The counter
-    can never go below zero; when acquire() finds that it is zero, it blocks,
+    A semaphore manages an internal counter which ni decremented by each
+    acquire() call na incremented by each release() call. The counter
+    can never go below zero; when acquire() finds that it ni zero, it blocks,
     waiting until some other thread calls release().
 
     Semaphores also support the context management protocol.
 
-    The optional argument gives the initial value for the internal
-    counter; it defaults to 1. If the value given is less than 0,
-    ValueError is raised.
+    The optional argument gives the initial value kila the internal
+    counter; it defaults to 1. If the value given ni less than 0,
+    ValueError ni ashiriad.
     """
 
-    eleza __init__(self, value=1, *, loop=None):
+    eleza __init__(self, value=1, *, loop=Tupu):
         ikiwa value < 0:
-            raise ValueError("Semaphore initial value must be >= 0")
+            ashiria ValueError("Semaphore initial value must be >= 0")
         self._value = value
         self._waiters = collections.deque()
-        ikiwa loop is None:
+        ikiwa loop ni Tupu:
             self._loop = events.get_event_loop()
-        else:
+        isipokua:
             self._loop = loop
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
 
     eleza __repr__(self):
@@ -470,42 +470,42 @@ kundi Semaphore(_ContextManagerMixin):
         rudisha f'<{res[1:-1]} [{extra}]>'
 
     eleza _wake_up_next(self):
-        while self._waiters:
+        wakati self._waiters:
             waiter = self._waiters.popleft()
-            ikiwa not waiter.done():
-                waiter.set_result(None)
-                return
+            ikiwa sio waiter.done():
+                waiter.set_result(Tupu)
+                rudisha
 
     eleza locked(self):
-        """Returns True ikiwa semaphore can not be acquired immediately."""
+        """Returns Kweli ikiwa semaphore can sio be acquired immediately."""
         rudisha self._value == 0
 
     async eleza acquire(self):
         """Acquire a semaphore.
 
-        If the internal counter is larger than zero on entry,
-        decrement it by one and rudisha True immediately.  If it is
+        If the internal counter ni larger than zero on entry,
+        decrement it by one na rudisha Kweli immediately.  If it is
         zero on entry, block, waiting until some other coroutine has
-        called release() to make it larger than 0, and then return
-        True.
+        called release() to make it larger than 0, na then rudisha
+        Kweli.
         """
-        while self._value <= 0:
+        wakati self._value <= 0:
             fut = self._loop.create_future()
             self._waiters.append(fut)
-            try:
+            jaribu:
                 await fut
             except:
-                # See the similar code in Queue.get.
+                # See the similar code kwenye Queue.get.
                 fut.cancel()
-                ikiwa self._value > 0 and not fut.cancelled():
+                ikiwa self._value > 0 na sio fut.cancelled():
                     self._wake_up_next()
-                raise
+                ashiria
         self._value -= 1
-        rudisha True
+        rudisha Kweli
 
     eleza release(self):
         """Release a semaphore, incrementing the internal counter by one.
-        When it was zero on entry and another coroutine is waiting for it to
+        When it was zero on entry na another coroutine ni waiting kila it to
         become larger than zero again, wake up that coroutine.
         """
         self._value += 1
@@ -515,14 +515,14 @@ kundi Semaphore(_ContextManagerMixin):
 kundi BoundedSemaphore(Semaphore):
     """A bounded semaphore implementation.
 
-    This raises ValueError in release() ikiwa it would increase the value
+    This ashirias ValueError kwenye release() ikiwa it would increase the value
     above the initial value.
     """
 
-    eleza __init__(self, value=1, *, loop=None):
+    eleza __init__(self, value=1, *, loop=Tupu):
         ikiwa loop:
-            warnings.warn("The loop argument is deprecated since Python 3.8, "
-                          "and scheduled for removal in Python 3.10.",
+            warnings.warn("The loop argument ni deprecated since Python 3.8, "
+                          "and scheduled kila removal kwenye Python 3.10.",
                           DeprecationWarning, stacklevel=2)
 
         self._bound_value = value
@@ -530,5 +530,5 @@ kundi BoundedSemaphore(Semaphore):
 
     eleza release(self):
         ikiwa self._value >= self._bound_value:
-            raise ValueError('BoundedSemaphore released too many times')
+            ashiria ValueError('BoundedSemaphore released too many times')
         super().release()

@@ -5,52 +5,52 @@ Basic kundi construction.
     >>> kundi C:
     ...     eleza meth(self): andika("Hello")
     ...
-    >>> C.__class__ is type
-    True
+    >>> C.__class__ ni type
+    Kweli
     >>> a = C()
-    >>> a.__class__ is C
-    True
+    >>> a.__class__ ni C
+    Kweli
     >>> a.meth()
     Hello
     >>>
 
-Use *args notation for the bases.
+Use *args notation kila the bases.
 
-    >>> kundi A: pass
-    >>> kundi B: pass
+    >>> kundi A: pita
+    >>> kundi B: pita
     >>> bases = (A, B)
-    >>> kundi C(*bases): pass
+    >>> kundi C(*bases): pita
     >>> C.__bases__ == bases
-    True
+    Kweli
     >>>
 
 Use a trivial metaclass.
 
     >>> kundi M(type):
-    ...     pass
+    ...     pita
     ...
     >>> kundi C(metaclass=M):
     ...    eleza meth(self): andika("Hello")
     ...
-    >>> C.__class__ is M
-    True
+    >>> C.__class__ ni M
+    Kweli
     >>> a = C()
-    >>> a.__class__ is C
-    True
+    >>> a.__class__ ni C
+    Kweli
     >>> a.meth()
     Hello
     >>>
 
-Use **kwds notation for the metakundi keyword.
+Use **kwds notation kila the metakundi keyword.
 
     >>> kwds = {'metaclass': M}
-    >>> kundi C(**kwds): pass
+    >>> kundi C(**kwds): pita
     ...
-    >>> C.__class__ is M
-    True
+    >>> C.__class__ ni M
+    Kweli
     >>> a = C()
-    >>> a.__class__ is C
-    True
+    >>> a.__class__ ni C
+    Kweli
     >>>
 
 Use a metakundi with a __prepare__ static method.
@@ -64,7 +64,7 @@ Use a metakundi with a __prepare__ static method.
     ...        andika("New called:", kwds)
     ...        rudisha type.__new__(cls, name, bases, namespace)
     ...    eleza __init__(cls, *args, **kwds):
-    ...        pass
+    ...        pita
     ...
     >>> kundi C(metaclass=M):
     ...     eleza meth(self): andika("Hello")
@@ -73,58 +73,58 @@ Use a metakundi with a __prepare__ static method.
     New called: {}
     >>>
 
-Also pass another keyword.
+Also pita another keyword.
 
     >>> kundi C(object, metaclass=M, other="haha"):
-    ...     pass
+    ...     pita
     ...
     Prepare called: ('C', (<kundi 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
-    >>> C.__class__ is M
-    True
+    >>> C.__class__ ni M
+    Kweli
     >>> C.__bases__ == (object,)
-    True
+    Kweli
     >>> a = C()
-    >>> a.__class__ is C
-    True
+    >>> a.__class__ ni C
+    Kweli
     >>>
 
 Check that build_kundi doesn't mutate the kwds dict.
 
     >>> kwds = {'metaclass': type}
-    >>> kundi C(**kwds): pass
+    >>> kundi C(**kwds): pita
     ...
     >>> kwds == {'metaclass': type}
-    True
+    Kweli
     >>>
 
-Use various combinations of explicit keywords and **kwds.
+Use various combinations of explicit keywords na **kwds.
 
     >>> bases = (object,)
     >>> kwds = {'metaclass': M, 'other': 'haha'}
-    >>> kundi C(*bases, **kwds): pass
+    >>> kundi C(*bases, **kwds): pita
     ...
     Prepare called: ('C', (<kundi 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
-    >>> C.__class__ is M
-    True
+    >>> C.__class__ ni M
+    Kweli
     >>> C.__bases__ == (object,)
-    True
-    >>> kundi B: pass
+    Kweli
+    >>> kundi B: pita
     >>> kwds = {'other': 'haha'}
-    >>> kundi C(B, metaclass=M, *bases, **kwds): pass
+    >>> kundi C(B, metaclass=M, *bases, **kwds): pita
     ...
     Prepare called: ('C', (<kundi 'test.test_metaclass.B'>, <kundi 'object'>)) {'other': 'haha'}
     New called: {'other': 'haha'}
-    >>> C.__class__ is M
-    True
+    >>> C.__class__ ni M
+    Kweli
     >>> C.__bases__ == (B, object)
-    True
+    Kweli
     >>>
 
-Check for duplicate keywords.
+Check kila duplicate keywords.
 
-    >>> kundi C(metaclass=type, metaclass=type): pass
+    >>> kundi C(metaclass=type, metaclass=type): pita
     ...
     Traceback (most recent call last):
     [...]
@@ -134,14 +134,14 @@ Check for duplicate keywords.
 Another way.
 
     >>> kwds = {'metaclass': type}
-    >>> kundi C(metaclass=type, **kwds): pass
+    >>> kundi C(metaclass=type, **kwds): pita
     ...
     Traceback (most recent call last):
     [...]
-    TypeError: __build_class__() got multiple values for keyword argument 'metaclass'
+    TypeError: __build_class__() got multiple values kila keyword argument 'metaclass'
     >>>
 
-Use a __prepare__ method that returns an instrumented dict.
+Use a __prepare__ method that rudishas an instrumented dict.
 
     >>> kundi LoggingDict(dict):
     ...     eleza __setitem__(self, key, value):
@@ -180,8 +180,8 @@ Use a metakundi that doesn't derive kutoka type.
     meta: C ()
     ns: [('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('a', 42), ('b', 24)]
     kw: []
-    >>> type(C) is dict
-    True
+    >>> type(C) ni dict
+    Kweli
     >>> andika(sorted(C.items()))
     [('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('a', 42), ('b', 24)]
     >>>
@@ -232,16 +232,16 @@ Make sure it works with subclassing.
     42
     >>>
 
-Test failures in looking up the __prepare__ method work.
+Test failures kwenye looking up the __prepare__ method work.
     >>> kundi ObscureException(Exception):
-    ...     pass
+    ...     pita
     >>> kundi FailDescr:
     ...     eleza __get__(self, instance, owner):
-    ...        raise ObscureException
+    ...        ashiria ObscureException
     >>> kundi Meta(type):
     ...     __prepare__ = FailDescr()
     >>> kundi X(metaclass=Meta):
-    ...     pass
+    ...     pita
     Traceback (most recent call last):
     [...]
     test.test_metaclass.ObscureException
@@ -251,15 +251,15 @@ Test failures in looking up the __prepare__ method work.
 agiza sys
 
 # Trace function introduces __locals__ which causes various tests to fail.
-ikiwa hasattr(sys, 'gettrace') and sys.gettrace():
+ikiwa hasattr(sys, 'gettrace') na sys.gettrace():
     __test__ = {}
-else:
+isipokua:
     __test__ = {'doctests' : doctests}
 
-eleza test_main(verbose=False):
+eleza test_main(verbose=Uongo):
     kutoka test agiza support
     kutoka test agiza test_metaclass
     support.run_doctest(test_metaclass, verbose)
 
 ikiwa __name__ == "__main__":
-    test_main(verbose=True)
+    test_main(verbose=Kweli)

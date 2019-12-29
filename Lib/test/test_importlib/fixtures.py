@@ -7,15 +7,15 @@ agiza tempfile
 agiza textwrap
 agiza contextlib
 
-try:
+jaribu:
     kutoka contextlib agiza ExitStack
-except ImportError:
+tatizo ImportError:
     kutoka contextlib2 agiza ExitStack
 
-try:
+jaribu:
     agiza pathlib
-except ImportError:
-    agiza pathlib2 as pathlib
+tatizo ImportError:
+    agiza pathlib2 kama pathlib
 
 
 __metaclass__ = type
@@ -24,27 +24,27 @@ __metaclass__ = type
 @contextlib.contextmanager
 eleza tempdir():
     tmpdir = tempfile.mkdtemp()
-    try:
-        yield pathlib.Path(tmpdir)
-    finally:
+    jaribu:
+        tuma pathlib.Path(tmpdir)
+    mwishowe:
         shutil.rmtree(tmpdir)
 
 
 @contextlib.contextmanager
 eleza save_cwd():
     orig = os.getcwd()
-    try:
-        yield
-    finally:
+    jaribu:
+        tuma
+    mwishowe:
         os.chdir(orig)
 
 
 @contextlib.contextmanager
 eleza tempdir_as_cwd():
-    with tempdir() as tmp:
+    with tempdir() kama tmp:
         with save_cwd():
             os.chdir(str(tmp))
-            yield tmp
+            tuma tmp
 
 
 kundi SiteDir:
@@ -59,9 +59,9 @@ kundi OnSysPath:
     @contextlib.contextmanager
     eleza add_sys_path(dir):
         sys.path[:0] = [str(dir)]
-        try:
-            yield
-        finally:
+        jaribu:
+            tuma
+        mwishowe:
             sys.path.remove(str(dir))
 
     eleza setUp(self):
@@ -162,12 +162,12 @@ kundi EggInfoFile(OnSysPath, SiteDir):
 
 
 eleza build_files(file_defs, prefix=pathlib.Path()):
-    """Build a set of files/directories, as described by the
+    """Build a set of files/directories, kama described by the
 
-    file_defs dictionary.  Each key/value pair in the dictionary is
-    interpreted as a filename/contents pair.  If the contents value is a
-    dictionary, a directory is created, and the dictionary interpreted
-    as the files within it, recursively.
+    file_defs dictionary.  Each key/value pair kwenye the dictionary is
+    interpreted kama a filename/contents pair.  If the contents value ni a
+    dictionary, a directory ni created, na the dictionary interpreted
+    kama the files within it, recursively.
 
     For example:
 
@@ -181,20 +181,20 @@ eleza build_files(file_defs, prefix=pathlib.Path()):
      }
     }
     """
-    for name, contents in file_defs.items():
+    kila name, contents kwenye file_defs.items():
         full_name = prefix / name
         ikiwa isinstance(contents, dict):
             full_name.mkdir()
             build_files(contents, prefix=full_name)
-        else:
+        isipokua:
             ikiwa isinstance(contents, bytes):
-                with full_name.open('wb') as f:
+                with full_name.open('wb') kama f:
                     f.write(contents)
-            else:
-                with full_name.open('w') as f:
+            isipokua:
+                with full_name.open('w') kama f:
                     f.write(DALS(contents))
 
 
 eleza DALS(str):
-    "Dedent and left-strip"
+    "Dedent na left-strip"
     rudisha textwrap.dedent(str).lstrip()

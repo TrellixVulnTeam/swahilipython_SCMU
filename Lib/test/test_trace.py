@@ -19,16 +19,16 @@ eleza fix_ext_py(filename):
     rudisha filename
 
 eleza my_file_and_modname():
-    """The .py file and module name of this file (__file__)"""
+    """The .py file na module name of this file (__file__)"""
     modname = os.path.splitext(os.path.basename(__file__))[0]
     rudisha fix_ext_py(__file__), modname
 
 eleza get_firstlineno(func):
     rudisha func.__code__.co_firstlineno
 
-#-------------------- Target functions for tracing ---------------------------#
+#-------------------- Target functions kila tracing ---------------------------#
 #
-# The relative line numbers of lines in these functions matter for verifying
+# The relative line numbers of lines kwenye these functions matter kila verifying
 # tracing. Please modify the appropriate tests ikiwa you change one of the
 # functions. Absolute line numbers don't matter.
 #
@@ -41,7 +41,7 @@ eleza traced_func_linear(x, y):
 
 eleza traced_func_loop(x, y):
     c = x
-    for i in range(5):
+    kila i kwenye range(5):
         c += y
     rudisha c
 
@@ -59,12 +59,12 @@ eleza traced_func_agizaing_caller(x):
 
 eleza traced_func_generator(num):
     c = 5       # executed once
-    for i in range(num):
-        yield i + c
+    kila i kwenye range(num):
+        tuma i + c
 
 eleza traced_func_calling_generator():
     k = 0
-    for i in traced_func_generator(10):
+    kila i kwenye traced_func_generator(10):
         k += i
 
 eleza traced_doubler(num):
@@ -75,7 +75,7 @@ eleza traced_capturer(*args, **kwargs):
 
 eleza traced_caller_list_comprehension():
     k = 10
-    mylist = [traced_doubler(i) for i in range(k)]
+    mylist = [traced_doubler(i) kila i kwenye range(k)]
     rudisha mylist
 
 eleza traced_decorated_function():
@@ -88,7 +88,7 @@ eleza traced_decorated_function():
     @decorator1
     @decorator_fabric()
     eleza func():
-        pass
+        pita
     func()
 
 
@@ -129,7 +129,7 @@ kundi TestLineCounts(unittest.TestCase):
         # all lines are executed once
         expected = {}
         firstlineno = get_firstlineno(traced_func_linear)
-        for i in range(1, 5):
+        kila i kwenye range(1, 5):
             expected[(self.my_py_filename, firstlineno +  i)] = 1
 
         self.assertEqual(self.tracer.results().counts, expected)
@@ -180,7 +180,7 @@ kundi TestLineCounts(unittest.TestCase):
         firstlineno_called = get_firstlineno(traced_doubler)
         expected = {
             (self.my_py_filename, firstlineno_calling + 1): 1,
-            # List compehentions work differently in 3.x, so the count
+            # List compehentions work differently kwenye 3.x, so the count
             # below changed compared to 2.x.
             (self.my_py_filename, firstlineno_calling + 2): 12,
             (self.my_py_filename, firstlineno_calling + 3): 1,
@@ -208,10 +208,10 @@ kundi TestLineCounts(unittest.TestCase):
         self.assertEqual(self.tracer.results().counts, expected)
 
     eleza test_linear_methods(self):
-        # XXX todo: later add 'static_method_linear' and 'class_method_linear'
-        # here, once issue1764286 is resolved
+        # XXX todo: later add 'static_method_linear' na 'class_method_linear'
+        # here, once issue1764286 ni resolved
         #
-        for methname in ['inst_method_linear',]:
+        kila methname kwenye ['inst_method_linear',]:
             tracer = Trace(count=1, trace=0, countfuncs=0, countcallers=0)
             traced_obj = TracedClass(25)
             method = getattr(traced_obj, methname)
@@ -248,7 +248,7 @@ kundi TestRunExecCounts(unittest.TestCase):
         # the settrace of threading, which we ignore, just making sure that the
         # counts fo traced_func_loop were right.
         #
-        for k in expected.keys():
+        kila k kwenye expected.keys():
             self.assertEqual(self.tracer.results().counts[k], expected[k])
 
 
@@ -261,7 +261,7 @@ kundi TestFuncs(unittest.TestCase):
         self._saved_tracefunc = sys.gettrace()
 
     eleza tearDown(self):
-        ikiwa self._saved_tracefunc is not None:
+        ikiwa self._saved_tracefunc ni sio Tupu:
             sys.settrace(self._saved_tracefunc)
 
     eleza test_simple_caller(self):
@@ -294,7 +294,7 @@ kundi TestFuncs(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().calledfuncs, expected)
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'pre-existing trace function throws off measurements')
     eleza test_inst_method_calling(self):
         obj = TracedClass(20)
@@ -327,7 +327,7 @@ kundi TestCallers(unittest.TestCase):
         self.tracer = Trace(count=0, trace=0, countcallers=1)
         self.filemod = my_file_and_modname()
 
-    @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
+    @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'pre-existing trace function throws off measurements')
     eleza test_loop_caller_agizaing(self):
         self.tracer.runfunc(traced_func_agizaing_caller, 1)
@@ -347,7 +347,7 @@ kundi TestCallers(unittest.TestCase):
         self.assertEqual(self.tracer.results().callers, expected)
 
 
-# Created separately for issue #3821
+# Created separately kila issue #3821
 kundi TestCoverage(unittest.TestCase):
     eleza setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -361,11 +361,11 @@ kundi TestCoverage(unittest.TestCase):
                       'test.support.run_unittest(test.test_pprint.QueryTestCase)'):
         tracer.run(cmd)
         r = tracer.results()
-        r.write_results(show_missing=True, summary=True, coverdir=TESTFN)
+        r.write_results(show_missing=Kweli, summary=Kweli, coverdir=TESTFN)
 
     eleza test_coverage(self):
         tracer = trace.Trace(trace=0, count=1)
-        with captured_stdout() as stdout:
+        with captured_stdout() kama stdout:
             self._coverage(tracer)
         stdout = stdout.getvalue()
         self.assertIn("pprint.py", stdout)
@@ -377,10 +377,10 @@ kundi TestCoverage(unittest.TestCase):
     eleza test_coverage_ignore(self):
         # Ignore all files, nothing should be traced nor printed
         libpath = os.path.normpath(os.path.dirname(os.__file__))
-        # sys.prefix does not work when running kutoka a checkout
+        # sys.prefix does sio work when running kutoka a checkout
         tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,
                              libpath], trace=0, count=1)
-        with captured_stdout() as stdout:
+        with captured_stdout() kama stdout:
             self._coverage(tracer)
         ikiwa os.path.exists(TESTFN):
             files = os.listdir(TESTFN)
@@ -389,47 +389,47 @@ kundi TestCoverage(unittest.TestCase):
     eleza test_issue9936(self):
         tracer = trace.Trace(trace=0, count=1)
         modname = 'test.tracedmodules.testmod'
-        # Ensure that the module is executed in agiza
-        ikiwa modname in sys.modules:
-            del sys.modules[modname]
-        cmd = ("agiza test.tracedmodules.testmod as t;"
+        # Ensure that the module ni executed kwenye agiza
+        ikiwa modname kwenye sys.modules:
+            toa sys.modules[modname]
+        cmd = ("agiza test.tracedmodules.testmod kama t;"
                "t.func(0); t.func2();")
-        with captured_stdout() as stdout:
+        with captured_stdout() kama stdout:
             self._coverage(tracer, cmd)
         stdout.seek(0)
         stdout.readline()
         coverage = {}
-        for line in stdout:
+        kila line kwenye stdout:
             lines, cov, module = line.split()[:3]
             coverage[module] = (int(lines), int(cov[:-1]))
-        # XXX This is needed to run regrtest.py as a script
+        # XXX This ni needed to run regrtest.py kama a script
         modname = trace._fullmodname(sys.modules[modname].__file__)
         self.assertIn(modname, coverage)
         self.assertEqual(coverage[modname], (5, 100))
 
-### Tests that don't mess with sys.settrace and can be traced
+### Tests that don't mess with sys.settrace na can be traced
 ### themselves TODO: Skip tests that do mess with sys.settrace when
-### regrtest is invoked with -T option.
+### regrtest ni invoked with -T option.
 kundi Test_Ignore(unittest.TestCase):
     eleza test_ignored(self):
         jn = os.path.join
         ignore = trace._Ignore(['x', 'y.z'], [jn('foo', 'bar')])
-        self.assertTrue(ignore.names('x.py', 'x'))
-        self.assertFalse(ignore.names('xy.py', 'xy'))
-        self.assertFalse(ignore.names('y.py', 'y'))
-        self.assertTrue(ignore.names(jn('foo', 'bar', 'baz.py'), 'baz'))
-        self.assertFalse(ignore.names(jn('bar', 'z.py'), 'z'))
+        self.assertKweli(ignore.names('x.py', 'x'))
+        self.assertUongo(ignore.names('xy.py', 'xy'))
+        self.assertUongo(ignore.names('y.py', 'y'))
+        self.assertKweli(ignore.names(jn('foo', 'bar', 'baz.py'), 'baz'))
+        self.assertUongo(ignore.names(jn('bar', 'z.py'), 'z'))
         # Matched before.
-        self.assertTrue(ignore.names(jn('bar', 'baz.py'), 'baz'))
+        self.assertKweli(ignore.names(jn('bar', 'baz.py'), 'baz'))
 
-# Created for Issue 31908 -- CLI utility not writing cover files
+# Created kila Issue 31908 -- CLI utility sio writing cover files
 kundi TestCoverageCommandLineOutput(unittest.TestCase):
 
     codefile = 'tmp.py'
     coverfile = 'tmp.cover'
 
     eleza setUp(self):
-        with open(self.codefile, 'w') as f:
+        with open(self.codefile, 'w') kama f:
             f.write(textwrap.dedent('''\
                 x = 42
                 ikiwa []:
@@ -441,7 +441,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         unlink(self.coverfile)
 
     eleza test_cover_files_written_no_highlight(self):
-        # Test also that the cover file for the trace module is not created
+        # Test also that the cover file kila the trace module ni sio created
         # (issue #34171).
         tracedir = os.path.dirname(os.path.abspath(trace.__file__))
         tracecoverpath = os.path.join(tracedir, 'trace.cover')
@@ -450,9 +450,9 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         argv = '-m trace --count'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
         self.assertEqual(stderr, b'')
-        self.assertFalse(os.path.exists(tracecoverpath))
-        self.assertTrue(os.path.exists(self.coverfile))
-        with open(self.coverfile) as f:
+        self.assertUongo(os.path.exists(tracecoverpath))
+        self.assertKweli(os.path.exists(self.coverfile))
+        with open(self.coverfile) kama f:
             self.assertEqual(f.read(),
                 "    1: x = 42\n"
                 "    1: ikiwa []:\n"
@@ -462,8 +462,8 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
     eleza test_cover_files_written_with_highlight(self):
         argv = '-m trace --count --missing'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
-        self.assertTrue(os.path.exists(self.coverfile))
-        with open(self.coverfile) as f:
+        self.assertKweli(os.path.exists(self.coverfile))
+        with open(self.coverfile) kama f:
             self.assertEqual(f.read(), textwrap.dedent('''\
                     1: x = 42
                     1: ikiwa []:
@@ -474,26 +474,26 @@ kundi TestCommandLine(unittest.TestCase):
 
     eleza test_failures(self):
         _errors = (
-            (b'progname is missing: required with the main options', '-l', '-T'),
-            (b'cannot specify both --listfuncs and (--trace or --count)', '-lc'),
-            (b'argument -R/--no-report: not allowed with argument -r/--report', '-rR'),
-            (b'must specify one of --trace, --count, --report, --listfuncs, or --trackcalls', '-g'),
+            (b'progname ni missing: required with the main options', '-l', '-T'),
+            (b'cannot specify both --listfuncs na (--trace ama --count)', '-lc'),
+            (b'argument -R/--no-report: sio allowed with argument -r/--report', '-rR'),
+            (b'must specify one of --trace, --count, --report, --listfuncs, ama --trackcalls', '-g'),
             (b'-r/--report requires -f/--file', '-r'),
-            (b'--summary can only be used with --count or --report', '-sT'),
+            (b'--summary can only be used with --count ama --report', '-sT'),
             (b'unrecognized arguments: -y', '-y'))
-        for message, *args in _errors:
+        kila message, *args kwenye _errors:
             *_, stderr = assert_python_failure('-m', 'trace', *args)
             self.assertIn(message, stderr)
 
     eleza test_listfuncs_flag_success(self):
-        with open(TESTFN, 'w') as fd:
+        with open(TESTFN, 'w') kama fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("a = 1\n")
             status, stdout, stderr = assert_python_ok('-m', 'trace', '-l', TESTFN)
             self.assertIn(b'functions called:', stdout)
 
     eleza test_sys_argv_list(self):
-        with open(TESTFN, 'w') as fd:
+        with open(TESTFN, 'w') kama fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("agiza sys\n")
             fd.write("andika(type(sys.argv))\n")
@@ -505,7 +505,7 @@ kundi TestCommandLine(unittest.TestCase):
     eleza test_count_and_summary(self):
         filename = f'{TESTFN}.py'
         coverfilename = f'{TESTFN}.cover'
-        with open(filename, 'w') as fd:
+        with open(filename, 'w') kama fd:
             self.addCleanup(unlink, filename)
             self.addCleanup(unlink, coverfilename)
             fd.write(textwrap.dedent("""\
@@ -515,7 +515,7 @@ kundi TestCommandLine(unittest.TestCase):
                 eleza f():
                     rudisha x + y
 
-                for i in range(10):
+                kila i kwenye range(10):
                     f()
             """))
         status, stdout, _ = assert_python_ok('-m', 'trace', '-cs', filename)

@@ -41,9 +41,9 @@ class StandardTtkOptionsTests(StandardOptionsTests):
     def test_style(self):
         widget = self.create()
         self.assertEqual(widget['style'], '')
-        errmsg = 'Layout Foo not found'
+        errmsg = 'Layout Foo sio found'
         if hasattr(self, 'default_orient'):
-            errmsg = ('Layout %s.Foo not found' %
+            errmsg = ('Layout %s.Foo sio found' %
                       getattr(self, 'default_orient').title())
         self.checkInvalidParam(widget, 'style', 'Foo',
                 errmsg=errmsg)
@@ -77,7 +77,7 @@ class WidgetTest(AbstractTkTest, unittest.TestCase):
 
 
     def test_widget_state(self):
-        # XXX not sure about the portability of all these tests
+        # XXX sio sure about the portability of all these tests
         self.assertEqual(self.widget.state(), ())
         self.assertEqual(self.widget.instate(['!disabled']), True)
 
@@ -333,7 +333,7 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
         if sys.platform == 'darwin':
             self.assertIn(self.entry.identify(5, 5),
                 ("textarea", "Combobox.button") )
-        else:
+        isipokua:
             self.assertEqual(self.entry.identify(5, 5), "textarea")
         self.assertEqual(self.entry.identify(-1, -1), "")
 
@@ -373,7 +373,7 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
     def test_validation(self):
         validation = []
         def validate(to_insert):
-            if not 'a' <= to_insert.lower() <= 'z':
+            if sio 'a' <= to_insert.lower() <= 'z':
                 validation.append(False)
                 return False
             validation.append(True)
@@ -391,7 +391,7 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
     def test_revalidation(self):
         def validate(content):
             for letter in content:
-                if not 'a' <= letter.lower() <= 'z':
+                if sio 'a' <= letter.lower() <= 'z':
                     return False
             return True
 
@@ -564,7 +564,7 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(str(widget2['orient']), 'horizontal')
 
     def test_add(self):
-        # attempt to add a child that is not a direct child of the paned window
+        # attempt to add a child that ni sio a direct child of the paned window
         label = ttk.Label(self.paned)
         child = ttk.Label(label)
         self.assertRaises(tkinter.TclError, self.paned.add, child)
@@ -579,7 +579,7 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
         good_child = ttk.Label(self.root)
         self.paned.add(good_child)
-        # re-adding a child is not accepted
+        # re-adding a child ni sio accepted
         self.assertRaises(tkinter.TclError, self.paned.add, good_child)
 
         other_child = ttk.Label(self.paned)
@@ -704,7 +704,7 @@ class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
 
         if self.wantobjects:
             conv = lambda x: x
-        else:
+        isipokua:
             conv = int
 
         res = cbtn.invoke()
@@ -804,7 +804,7 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
     def test_get(self):
         if self.wantobjects:
             conv = lambda x: x
-        else:
+        isipokua:
             conv = float
 
         scale_width = self.scale.winfo_width()
@@ -822,7 +822,7 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
     def test_set(self):
         if self.wantobjects:
             conv = lambda x: x
-        else:
+        isipokua:
             conv = float
 
         # set restricts the max/min values according to the current range
@@ -840,7 +840,7 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
         var.set(max + 5)
         self.assertEqual(conv(self.scale.get()), var.get())
         self.assertEqual(conv(self.scale.get()), max + 5)
-        del var
+        toa var
 
         # the same happens with the value option
         self.scale['value'] = max + 10
@@ -936,19 +936,19 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.nb.wait_visibility()
         if sys.platform == 'darwin':
             tb_idx = "@20,5"
-        else:
+        isipokua:
             tb_idx = "@5,5"
         self.assertEqual(self.nb.tab(tb_idx), self.nb.tab('current'))
 
         for i in range(5, 100, 5):
-            try:
+            jaribu:
                 if self.nb.tab('@%d, 5' % i, text=None) == 'a':
-                    break
-            except tkinter.TclError:
+                    koma
+            tatizo tkinter.TclError:
                 pass
 
-        else:
-            self.fail("Tab with text 'a' not found")
+        isipokua:
+            self.fail("Tab with text 'a' sio found")
 
 
     def test_add_and_hidden(self):
@@ -1105,7 +1105,7 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         simulate_mouse_click(self.nb, 5, 5)
         if sys.platform == 'darwin':
             self.nb.event_generate('<Option-a>')
-        else:
+        isipokua:
             self.nb.event_generate('<Alt-a>')
         self.assertEqual(self.nb.select(), str(self.child1))
 
@@ -1215,7 +1215,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.update()
         self._click_increment_arrow()
         value = self.spin.get()
-        self.assertTrue('.' not in value)
+        self.assertTrue('.' haiko kwenye value)
         self.assertEqual(len(value), 1)
 
     def test_wrap(self):
@@ -1357,7 +1357,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.column('test', width=50)
         bbox_column0 = self.tv.bbox(children[0], 0)
         root_width = self.tv.column('#0', width=None)
-        if not self.wantobjects:
+        if sio self.wantobjects:
             root_width = int(root_width)
         self.assertEqual(bbox_column0[0], bbox[0] + root_width)
 
@@ -1543,7 +1543,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         # assuming that the coords (5, 5) fall into heading #0
         simulate_heading_click(5, 5)
-        if not success:
+        if sio success:
             self.fail("The command associated to the treeview heading wasn't "
                 "invoked.")
 
@@ -1552,11 +1552,11 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.heading('#0', command=str(self.tv.heading('#0', command=None)))
         self.assertEqual(commands, self.tv.master._tclCommands)
         simulate_heading_click(5, 5)
-        if not success:
+        if sio success:
             self.fail("The command associated to the treeview heading wasn't "
                 "invoked.")
 
-        # XXX The following raises an error in a tcl interpreter, but not in
+        # XXX The following raises an error in a tcl interpreter, but sio in
         # Python
         #self.tv.heading('#0', command='I dont exist')
         #simulate_heading_click(5, 5)
@@ -1660,7 +1660,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             self.tv.insert('', 'end', text=value), text=None),
             value)
 
-        # test for values which are not None
+        # test for values which are sio None
         itemid = self.tv.insert('', 'end', 0)
         self.assertEqual(itemid, '0')
         itemid = self.tv.insert('', 'end', 0.0)
@@ -1791,9 +1791,9 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         found = set()
         for i in range(0, 100, 10):
             if len(found) == 2: # item1 and item2 already found
-                break
+                koma
             item_id = self.tv.identify_row(i)
-            if item_id and item_id not in found:
+            if item_id and item_id haiko kwenye found:
                 pos_y.add(i)
                 found.add(item_id)
 

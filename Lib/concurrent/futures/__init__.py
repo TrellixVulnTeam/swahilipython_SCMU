@@ -1,7 +1,7 @@
 # Copyright 2009 Brian Quinlan. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Execute computations asynchronously using threads or processes."""
+"""Execute computations asynchronously using threads ama processes."""
 
 __author__ = 'Brian Quinlan (brian@sweetapp.com)'
 
@@ -41,13 +41,13 @@ eleza __getattr__(name):
     global ProcessPoolExecutor, ThreadPoolExecutor
 
     ikiwa name == 'ProcessPoolExecutor':
-        kutoka .process agiza ProcessPoolExecutor as pe
+        kutoka .process agiza ProcessPoolExecutor kama pe
         ProcessPoolExecutor = pe
         rudisha pe
 
     ikiwa name == 'ThreadPoolExecutor':
-        kutoka .thread agiza ThreadPoolExecutor as te
+        kutoka .thread agiza ThreadPoolExecutor kama te
         ThreadPoolExecutor = te
         rudisha te
 
-    raise AttributeError(f"module {__name__} has no attribute {name}")
+    ashiria AttributeError(f"module {__name__} has no attribute {name}")

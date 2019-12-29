@@ -1,15 +1,15 @@
-r"""JSON (JavaScript Object Notation) <http://json.org> is a subset of
-JavaScript syntax (ECMA-262 3rd edition) used as a lightweight data
+r"""JSON (JavaScript Object Notation) <http://json.org> ni a subset of
+JavaScript syntax (ECMA-262 3rd edition) used kama a lightweight data
 interchange format.
 
 :mod:`json` exposes an API familiar to users of the standard library
-:mod:`marshal` and :mod:`pickle` modules.  It is derived kutoka a
+:mod:`marshal` na :mod:`pickle` modules.  It ni derived kutoka a
 version of the externally maintained simplejson library.
 
 Encoding basic Python object hierarchies::
 
     >>> agiza json
-    >>> json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])
+    >>> json.dumps(['foo', {'bar': ('baz', Tupu, 1.0, 2)}])
     '["foo", {"bar": ["baz", null, 1.0, 2]}]'
     >>> andika(json.dumps("\"foo\bar"))
     "\"foo\bar"
@@ -17,7 +17,7 @@ Encoding basic Python object hierarchies::
     "\u1234"
     >>> andika(json.dumps('\\'))
     "\\"
-    >>> andika(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=True))
+    >>> andika(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=Kweli))
     {"a": 0, "b": 0, "c": 0}
     >>> kutoka io agiza StringIO
     >>> io = StringIO()
@@ -35,7 +35,7 @@ Compact encoding::
 Pretty printing::
 
     >>> agiza json
-    >>> andika(json.dumps({'4': 5, '6': 7}, sort_keys=True, indent=4))
+    >>> andika(json.dumps({'4': 5, '6': 7}, sort_keys=Kweli, indent=4))
     {
         "4": 5,
         "6": 7
@@ -44,21 +44,21 @@ Pretty printing::
 Decoding JSON::
 
     >>> agiza json
-    >>> obj = ['foo', {'bar': ['baz', None, 1.0, 2]}]
+    >>> obj = ['foo', {'bar': ['baz', Tupu, 1.0, 2]}]
     >>> json.loads('["foo", {"bar":["baz", null, 1.0, 2]}]') == obj
-    True
+    Kweli
     >>> json.loads('"\\"foo\\bar"') == '"foo\x08ar'
-    True
+    Kweli
     >>> kutoka io agiza StringIO
     >>> io = StringIO('["streaming API"]')
     >>> json.load(io)[0] == 'streaming API'
-    True
+    Kweli
 
 Specializing JSON object decoding::
 
     >>> agiza json
     >>> eleza as_complex(dct):
-    ...     ikiwa '__complex__' in dct:
+    ...     ikiwa '__complex__' kwenye dct:
     ...         rudisha complex(dct['real'], dct['imag'])
     ...     rudisha dct
     ...
@@ -67,7 +67,7 @@ Specializing JSON object decoding::
     (1+2j)
     >>> kutoka decimal agiza Decimal
     >>> json.loads('1.1', parse_float=Decimal) == Decimal('1.1')
-    True
+    Kweli
 
 Specializing JSON object encoding::
 
@@ -75,8 +75,8 @@ Specializing JSON object encoding::
     >>> eleza encode_complex(obj):
     ...     ikiwa isinstance(obj, complex):
     ...         rudisha [obj.real, obj.imag]
-    ...     raise TypeError(f'Object of type {obj.__class__.__name__} '
-    ...                     f'is not JSON serializable')
+    ...     ashiria TypeError(f'Object of type {obj.__class__.__name__} '
+    ...                     f'is sio JSON serializable')
     ...
     >>> json.dumps(2 + 1j, default=encode_complex)
     '[2.0, 1.0]'
@@ -86,14 +86,14 @@ Specializing JSON object encoding::
     '[2.0, 1.0]'
 
 
-Using json.tool kutoka the shell to validate and pretty-print::
+Using json.tool kutoka the shell to validate na pretty-print::
 
     $ echo '{"json":"obj"}' | python -m json.tool
     {
         "json": "obj"
     }
     $ echo '{ 1.2:3.4}' | python -m json.tool
-    Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
+    Expecting property name enclosed kwenye double quotes: line 1 column 3 (char 2)
 """
 __version__ = '2.0.9'
 __all__ = [
@@ -108,128 +108,128 @@ kutoka .encoder agiza JSONEncoder
 agiza codecs
 
 _default_encoder = JSONEncoder(
-    skipkeys=False,
-    ensure_ascii=True,
-    check_circular=True,
-    allow_nan=True,
-    indent=None,
-    separators=None,
-    default=None,
+    skipkeys=Uongo,
+    ensure_ascii=Kweli,
+    check_circular=Kweli,
+    allow_nan=Kweli,
+    indent=Tupu,
+    separators=Tupu,
+    default=Tupu,
 )
 
-eleza dump(obj, fp, *, skipkeys=False, ensure_ascii=True, check_circular=True,
-        allow_nan=True, cls=None, indent=None, separators=None,
-        default=None, sort_keys=False, **kw):
-    """Serialize ``obj`` as a JSON formatted stream to ``fp`` (a
+eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
+        allow_nan=Kweli, cls=Tupu, indent=Tupu, separators=Tupu,
+        default=Tupu, sort_keys=Uongo, **kw):
+    """Serialize ``obj`` kama a JSON formatted stream to ``fp`` (a
     ``.write()``-supporting file-like object).
 
-    If ``skipkeys`` is true then ``dict`` keys that are not basic types
-    (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped
+    If ``skipkeys`` ni true then ``dict`` keys that are sio basic types
+    (``str``, ``int``, ``float``, ``bool``, ``Tupu``) will be skipped
     instead of raising a ``TypeError``.
 
-    If ``ensure_ascii`` is false, then the strings written to ``fp`` can
-    contain non-ASCII characters ikiwa they appear in strings contained in
-    ``obj``. Otherwise, all such characters are escaped in JSON strings.
+    If ``ensure_ascii`` ni false, then the strings written to ``fp`` can
+    contain non-ASCII characters ikiwa they appear kwenye strings contained in
+    ``obj``. Otherwise, all such characters are escaped kwenye JSON strings.
 
-    If ``check_circular`` is false, then the circular reference check
-    for container types will be skipped and a circular reference will
-    result in an ``OverflowError`` (or worse).
+    If ``check_circular`` ni false, then the circular reference check
+    kila container types will be skipped na a circular reference will
+    result kwenye an ``OverflowError`` (or worse).
 
-    If ``allow_nan`` is false, then it will be a ``ValueError`` to
+    If ``allow_nan`` ni false, then it will be a ``ValueError`` to
     serialize out of range ``float`` values (``nan``, ``inf``, ``-inf``)
-    in strict compliance of the JSON specification, instead of using the
+    kwenye strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` is a non-negative integer, then JSON array elements and
+    If ``indent`` ni a non-negative integer, then JSON array elements and
     object members will be pretty-printed with that indent level. An indent
-    level of 0 will only insert newlines. ``None`` is the most compact
+    level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` ikiwa *indent* is ``None`` and
+    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` and
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
-    ``default(obj)`` is a function that should rudisha a serializable version
-    of obj or raise TypeError. The default simply raises TypeError.
+    ``default(obj)`` ni a function that should rudisha a serializable version
+    of obj ama ashiria TypeError. The default simply ashirias TypeError.
 
-    If *sort_keys* is true (default: ``False``), then the output of
+    If *sort_keys* ni true (default: ``Uongo``), then the output of
     dictionaries will be sorted by key.
 
     To use a custom ``JSONEncoder`` subkundi (e.g. one that overrides the
     ``.default()`` method to serialize additional types), specify it with
-    the ``cls`` kwarg; otherwise ``JSONEncoder`` is used.
+    the ``cls`` kwarg; otherwise ``JSONEncoder`` ni used.
 
     """
     # cached encoder
-    ikiwa (not skipkeys and ensure_ascii and
-        check_circular and allow_nan and
-        cls is None and indent is None and separators is None and
-        default is None and not sort_keys and not kw):
+    ikiwa (not skipkeys na ensure_ascii and
+        check_circular na allow_nan and
+        cls ni Tupu na indent ni Tupu na separators ni Tupu and
+        default ni Tupu na sio sort_keys na sio kw):
         iterable = _default_encoder.iterencode(obj)
-    else:
-        ikiwa cls is None:
+    isipokua:
+        ikiwa cls ni Tupu:
             cls = JSONEncoder
         iterable = cls(skipkeys=skipkeys, ensure_ascii=ensure_ascii,
             check_circular=check_circular, allow_nan=allow_nan, indent=indent,
             separators=separators,
             default=default, sort_keys=sort_keys, **kw).iterencode(obj)
-    # could accelerate with writelines in some versions of Python, at
+    # could accelerate with writelines kwenye some versions of Python, at
     # a debuggability cost
-    for chunk in iterable:
+    kila chunk kwenye iterable:
         fp.write(chunk)
 
 
-eleza dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
-        allow_nan=True, cls=None, indent=None, separators=None,
-        default=None, sort_keys=False, **kw):
+eleza dumps(obj, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
+        allow_nan=Kweli, cls=Tupu, indent=Tupu, separators=Tupu,
+        default=Tupu, sort_keys=Uongo, **kw):
     """Serialize ``obj`` to a JSON formatted ``str``.
 
-    If ``skipkeys`` is true then ``dict`` keys that are not basic types
-    (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped
+    If ``skipkeys`` ni true then ``dict`` keys that are sio basic types
+    (``str``, ``int``, ``float``, ``bool``, ``Tupu``) will be skipped
     instead of raising a ``TypeError``.
 
-    If ``ensure_ascii`` is false, then the rudisha value can contain non-ASCII
-    characters ikiwa they appear in strings contained in ``obj``. Otherwise, all
-    such characters are escaped in JSON strings.
+    If ``ensure_ascii`` ni false, then the rudisha value can contain non-ASCII
+    characters ikiwa they appear kwenye strings contained kwenye ``obj``. Otherwise, all
+    such characters are escaped kwenye JSON strings.
 
-    If ``check_circular`` is false, then the circular reference check
-    for container types will be skipped and a circular reference will
-    result in an ``OverflowError`` (or worse).
+    If ``check_circular`` ni false, then the circular reference check
+    kila container types will be skipped na a circular reference will
+    result kwenye an ``OverflowError`` (or worse).
 
-    If ``allow_nan`` is false, then it will be a ``ValueError`` to
+    If ``allow_nan`` ni false, then it will be a ``ValueError`` to
     serialize out of range ``float`` values (``nan``, ``inf``, ``-inf``) in
     strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` is a non-negative integer, then JSON array elements and
+    If ``indent`` ni a non-negative integer, then JSON array elements and
     object members will be pretty-printed with that indent level. An indent
-    level of 0 will only insert newlines. ``None`` is the most compact
+    level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` ikiwa *indent* is ``None`` and
+    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` and
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
-    ``default(obj)`` is a function that should rudisha a serializable version
-    of obj or raise TypeError. The default simply raises TypeError.
+    ``default(obj)`` ni a function that should rudisha a serializable version
+    of obj ama ashiria TypeError. The default simply ashirias TypeError.
 
-    If *sort_keys* is true (default: ``False``), then the output of
+    If *sort_keys* ni true (default: ``Uongo``), then the output of
     dictionaries will be sorted by key.
 
     To use a custom ``JSONEncoder`` subkundi (e.g. one that overrides the
     ``.default()`` method to serialize additional types), specify it with
-    the ``cls`` kwarg; otherwise ``JSONEncoder`` is used.
+    the ``cls`` kwarg; otherwise ``JSONEncoder`` ni used.
 
     """
     # cached encoder
-    ikiwa (not skipkeys and ensure_ascii and
-        check_circular and allow_nan and
-        cls is None and indent is None and separators is None and
-        default is None and not sort_keys and not kw):
+    ikiwa (not skipkeys na ensure_ascii and
+        check_circular na allow_nan and
+        cls ni Tupu na indent ni Tupu na separators ni Tupu and
+        default ni Tupu na sio sort_keys na sio kw):
         rudisha _default_encoder.encode(obj)
-    ikiwa cls is None:
+    ikiwa cls ni Tupu:
         cls = JSONEncoder
     rudisha cls(
         skipkeys=skipkeys, ensure_ascii=ensure_ascii,
@@ -238,7 +238,7 @@ eleza dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
         **kw).encode(obj)
 
 
-_default_decoder = JSONDecoder(object_hook=None, object_pairs_hook=None)
+_default_decoder = JSONDecoder(object_hook=Tupu, object_pairs_hook=Tupu)
 
 
 eleza detect_encoding(b):
@@ -251,44 +251,44 @@ eleza detect_encoding(b):
         rudisha 'utf-8-sig'
 
     ikiwa len(b) >= 4:
-        ikiwa not b[0]:
+        ikiwa sio b[0]:
             # 00 00 -- -- - utf-32-be
             # 00 XX -- -- - utf-16-be
             rudisha 'utf-16-be' ikiwa b[1] else 'utf-32-be'
-        ikiwa not b[1]:
+        ikiwa sio b[1]:
             # XX 00 00 00 - utf-32-le
             # XX 00 00 XX - utf-16-le
             # XX 00 XX -- - utf-16-le
-            rudisha 'utf-16-le' ikiwa b[2] or b[3] else 'utf-32-le'
+            rudisha 'utf-16-le' ikiwa b[2] ama b[3] else 'utf-32-le'
     elikiwa len(b) == 2:
-        ikiwa not b[0]:
+        ikiwa sio b[0]:
             # 00 XX - utf-16-be
             rudisha 'utf-16-be'
-        ikiwa not b[1]:
+        ikiwa sio b[1]:
             # XX 00 - utf-16-le
             rudisha 'utf-16-le'
     # default
     rudisha 'utf-8'
 
 
-eleza load(fp, *, cls=None, object_hook=None, parse_float=None,
-        parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+eleza load(fp, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
+        parse_int=Tupu, parse_constant=Tupu, object_pairs_hook=Tupu, **kw):
     """Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
     a JSON document) to a Python object.
 
-    ``object_hook`` is an optional function that will be called with the
+    ``object_hook`` ni an optional function that will be called with the
     result of any object literal decode (a ``dict``). The rudisha value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC kundi hinting).
 
-    ``object_pairs_hook`` is an optional function that will be called with the
+    ``object_pairs_hook`` ni an optional function that will be called with the
     result of any object literal decoded with an ordered list of pairs.  The
     rudisha value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
-    is also defined, the ``object_pairs_hook`` takes priority.
+    ni also defined, the ``object_pairs_hook`` takes priority.
 
     To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
-    kwarg; otherwise ``JSONDecoder`` is used.
+    kwarg; otherwise ``JSONDecoder`` ni used.
     """
     rudisha loads(fp.read(),
         cls=cls, object_hook=object_hook,
@@ -296,75 +296,75 @@ eleza load(fp, *, cls=None, object_hook=None, parse_float=None,
         parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
 
 
-eleza loads(s, *, cls=None, object_hook=None, parse_float=None,
-        parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
-    """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
+eleza loads(s, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
+        parse_int=Tupu, parse_constant=Tupu, object_pairs_hook=Tupu, **kw):
+    """Deserialize ``s`` (a ``str``, ``bytes`` ama ``bytearray`` instance
     containing a JSON document) to a Python object.
 
-    ``object_hook`` is an optional function that will be called with the
+    ``object_hook`` ni an optional function that will be called with the
     result of any object literal decode (a ``dict``). The rudisha value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC kundi hinting).
 
-    ``object_pairs_hook`` is an optional function that will be called with the
+    ``object_pairs_hook`` ni an optional function that will be called with the
     result of any object literal decoded with an ordered list of pairs.  The
     rudisha value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
-    is also defined, the ``object_pairs_hook`` takes priority.
+    ni also defined, the ``object_pairs_hook`` takes priority.
 
     ``parse_float``, ikiwa specified, will be called with the string
-    of every JSON float to be decoded. By default this is equivalent to
-    float(num_str). This can be used to use another datatype or parser
-    for JSON floats (e.g. decimal.Decimal).
+    of every JSON float to be decoded. By default this ni equivalent to
+    float(num_str). This can be used to use another datatype ama parser
+    kila JSON floats (e.g. decimal.Decimal).
 
     ``parse_int``, ikiwa specified, will be called with the string
-    of every JSON int to be decoded. By default this is equivalent to
-    int(num_str). This can be used to use another datatype or parser
-    for JSON integers (e.g. float).
+    of every JSON int to be decoded. By default this ni equivalent to
+    int(num_str). This can be used to use another datatype ama parser
+    kila JSON integers (e.g. float).
 
     ``parse_constant``, ikiwa specified, will be called with one of the
     following strings: -Infinity, Infinity, NaN.
-    This can be used to raise an exception ikiwa invalid JSON numbers
+    This can be used to ashiria an exception ikiwa invalid JSON numbers
     are encountered.
 
     To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
-    kwarg; otherwise ``JSONDecoder`` is used.
+    kwarg; otherwise ``JSONDecoder`` ni used.
 
-    The ``encoding`` argument is ignored and deprecated since Python 3.1.
+    The ``encoding`` argument ni ignored na deprecated since Python 3.1.
     """
     ikiwa isinstance(s, str):
         ikiwa s.startswith('\ufeff'):
-            raise JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
+            ashiria JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
                                   s, 0)
-    else:
-        ikiwa not isinstance(s, (bytes, bytearray)):
-            raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+    isipokua:
+        ikiwa sio isinstance(s, (bytes, bytearray)):
+            ashiria TypeError(f'the JSON object must be str, bytes ama bytearray, '
                             f'not {s.__class__.__name__}')
-        s = s.decode(detect_encoding(s), 'surrogatepass')
+        s = s.decode(detect_encoding(s), 'surrogatepita')
 
-    ikiwa "encoding" in kw:
+    ikiwa "encoding" kwenye kw:
         agiza warnings
         warnings.warn(
-            "'encoding' is ignored and deprecated. It will be removed in Python 3.9",
+            "'encoding' ni ignored na deprecated. It will be removed kwenye Python 3.9",
             DeprecationWarning,
             stacklevel=2
         )
-        del kw['encoding']
+        toa kw['encoding']
 
-    ikiwa (cls is None and object_hook is None and
-            parse_int is None and parse_float is None and
-            parse_constant is None and object_pairs_hook is None and not kw):
+    ikiwa (cls ni Tupu na object_hook ni Tupu and
+            parse_int ni Tupu na parse_float ni Tupu and
+            parse_constant ni Tupu na object_pairs_hook ni Tupu na sio kw):
         rudisha _default_decoder.decode(s)
-    ikiwa cls is None:
+    ikiwa cls ni Tupu:
         cls = JSONDecoder
-    ikiwa object_hook is not None:
+    ikiwa object_hook ni sio Tupu:
         kw['object_hook'] = object_hook
-    ikiwa object_pairs_hook is not None:
+    ikiwa object_pairs_hook ni sio Tupu:
         kw['object_pairs_hook'] = object_pairs_hook
-    ikiwa parse_float is not None:
+    ikiwa parse_float ni sio Tupu:
         kw['parse_float'] = parse_float
-    ikiwa parse_int is not None:
+    ikiwa parse_int ni sio Tupu:
         kw['parse_int'] = parse_int
-    ikiwa parse_constant is not None:
+    ikiwa parse_constant ni sio Tupu:
         kw['parse_constant'] = parse_constant
     rudisha cls(**kw).decode(s)

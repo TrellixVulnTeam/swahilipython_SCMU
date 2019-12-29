@@ -8,13 +8,13 @@ agiza unittest
 kundi TestUntestedModules(unittest.TestCase):
     eleza test_untested_modules_can_be_imported(self):
         untested = ('encodings', 'formatter')
-        with support.check_warnings(quiet=True):
-            for name in untested:
-                try:
+        with support.check_warnings(quiet=Kweli):
+            kila name kwenye untested:
+                jaribu:
                     support.import_module('test.test_{}'.format(name))
-                except unittest.SkipTest:
+                tatizo unittest.SkipTest:
                     importlib.import_module(name)
-                else:
+                isipokua:
                     self.fail('{} has tests even though test_sundry claims '
                               'otherwise'.format(name))
 
@@ -26,7 +26,7 @@ kundi TestUntestedModules(unittest.TestCase):
             agiza distutils.unixccompiler
 
             agiza distutils.command.bdist_dumb
-            ikiwa sys.platform.startswith('win') and not platform.win32_is_iot():
+            ikiwa sys.platform.startswith('win') na sio platform.win32_is_iot():
                 agiza distutils.command.bdist_msi
             agiza distutils.command.bdist
             agiza distutils.command.bdist_rpm
@@ -46,9 +46,9 @@ kundi TestUntestedModules(unittest.TestCase):
 
             agiza html.entities
 
-            try:
+            jaribu:
                 agiza tty  # Not available on Windows
-            except ImportError:
+            tatizo ImportError:
                 ikiwa support.verbose:
                     andika("skipping tty")
 

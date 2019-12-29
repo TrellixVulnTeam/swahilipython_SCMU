@@ -28,10 +28,10 @@ BASE_EXEC_PREFIX = os.path.normpath(sys.base_exec_prefix)
 # set for cross builds
 if "_PYTHON_PROJECT_BASE" in os.environ:
     project_base = os.path.abspath(os.environ["_PYTHON_PROJECT_BASE"])
-else:
+isipokua:
     if sys.executable:
         project_base = os.path.dirname(os.path.abspath(sys.executable))
-    else:
+    isipokua:
         # sys.executable can be empty if argv[0] has been changed and Python is
         # unable to retrieve the real program name
         project_base = os.getcwd()
@@ -69,11 +69,11 @@ python_build = _python_build()
 # to the include and lib directories only makes sense for an installation, not
 # an in-source build.
 build_flags = ''
-try:
-    if not python_build:
+jaribu:
+    if sio python_build:
         build_flags = sys.abiflags
-except AttributeError:
-    # It's not a configure-based build, so the sys module doesn't have
+tatizo AttributeError:
+    # It's sio a configure-based build, so the sys module doesn't have
     # this attribute, which is fine.
     pass
 
@@ -102,12 +102,12 @@ def get_python_inc(plat_specific=0, prefix=None):
         if python_build:
             # Assume the executable is in the build directory.  The
             # pyconfig.h file should be in the same directory.  Since
-            # the build directory may not be the source directory, we
+            # the build directory may sio be the source directory, we
             # must use "srcdir" from the makefile to find the "Include"
             # directory.
             if plat_specific:
                 return _sys_home or project_base
-            else:
+            isipokua:
                 incdir = os.path.join(get_config_var('srcdir'), 'Include')
                 return os.path.normpath(incdir)
         python_dir = 'python' + get_python_version() + build_flags
@@ -119,7 +119,7 @@ def get_python_inc(plat_specific=0, prefix=None):
             return (os.path.join(prefix, "include") + os.path.pathsep +
                     os.path.join(prefix, "PC"))
         return os.path.join(prefix, "include")
-    else:
+    isipokua:
         raise DistutilsPlatformError(
             "I don't know where Python installs its C header files "
             "on platform '%s'" % os.name)
@@ -142,7 +142,7 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
     if prefix is None:
         if standard_lib:
             prefix = plat_specific and BASE_EXEC_PREFIX or BASE_PREFIX
-        else:
+        isipokua:
             prefix = plat_specific and EXEC_PREFIX or PREFIX
 
     if os.name == "posix":
@@ -150,14 +150,14 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
                                  "lib", "python" + get_python_version())
         if standard_lib:
             return libpython
-        else:
+        isipokua:
             return os.path.join(libpython, "site-packages")
     lasivyo os.name == "nt":
         if standard_lib:
             return os.path.join(prefix, "Lib")
-        else:
+        isipokua:
             return os.path.join(prefix, "Lib", "site-packages")
-    else:
+    isipokua:
         raise DistutilsPlatformError(
             "I don't know where Python installs its library "
             "on platform '%s'" % os.name)
@@ -178,11 +178,11 @@ def customize_compiler(compiler):
             # installers.  The kind and paths to build tools on
             # the user system may vary significantly from the system
             # that Python itself was built on.  Also the user OS
-            # version and build tools may not support the same set
+            # version and build tools may sio support the same set
             # of CPU architectures for universal builds.
             global _config_vars
             # Use get_config_var() to ensure _config_vars is initialized.
-            if not get_config_var('CUSTOMIZED_OSX_COMPILER'):
+            if sio get_config_var('CUSTOMIZED_OSX_COMPILER'):
                 agiza _osx_support
                 _osx_support.customize_compiler(_config_vars)
                 _config_vars['CUSTOMIZED_OSX_COMPILER'] = 'True'
@@ -194,7 +194,7 @@ def customize_compiler(compiler):
         if 'CC' in os.environ:
             newcc = os.environ['CC']
             if (sys.platform == 'darwin'
-                    and 'LDSHARED' not in os.environ
+                    and 'LDSHARED' haiko kwenye os.environ
                     and ldshared.startswith(cc)):
                 # On OS X, if CC is overridden, use that as the default
                 #       command for LDSHARED as well
@@ -206,8 +206,8 @@ def customize_compiler(compiler):
             ldshared = os.environ['LDSHARED']
         if 'CPP' in os.environ:
             cpp = os.environ['CPP']
-        else:
-            cpp = cc + " -E"           # not always
+        isipokua:
+            cpp = cc + " -E"           # sio always
         if 'LDFLAGS' in os.environ:
             ldshared = ldshared + ' ' + os.environ['LDFLAGS']
         if 'CFLAGS' in os.environ:
@@ -221,7 +221,7 @@ def customize_compiler(compiler):
             ar = os.environ['AR']
         if 'ARFLAGS' in os.environ:
             archiver = ar + ' ' + os.environ['ARFLAGS']
-        else:
+        isipokua:
             archiver = ar + ' ' + ar_flags
 
         cc_cmd = cc + ' ' + cflags
@@ -242,9 +242,9 @@ def get_config_h_filename():
     if python_build:
         if os.name == "nt":
             inc_dir = os.path.join(_sys_home or project_base, "PC")
-        else:
+        isipokua:
             inc_dir = _sys_home or project_base
-    else:
+    isipokua:
         inc_dir = get_python_inc(plat_specific=1)
 
     return os.path.join(inc_dir, 'pyconfig.h')
@@ -273,17 +273,17 @@ def parse_config_h(fp, g=None):
     define_rx = re.compile("#define ([A-Z][A-Za-z0-9_]+) (.*)\n")
     undef_rx = re.compile("/[*] #undef ([A-Z][A-Za-z0-9_]+) [*]/\n")
     #
-    while True:
+    wakati True:
         line = fp.readline()
-        if not line:
-            break
+        if sio line:
+            koma
         m = define_rx.match(line)
         if m:
             n, v = m.group(1, 2)
-            try: v = int(v)
-            except ValueError: pass
+            jaribu: v = int(v)
+            tatizo ValueError: pass
             g[n] = v
-        else:
+        isipokua:
             m = undef_rx.match(line)
             if m:
                 g[m.group(1)] = 0
@@ -311,10 +311,10 @@ def parse_makefile(fn, g=None):
     done = {}
     notdone = {}
 
-    while True:
+    wakati True:
         line = fp.readline()
         if line is None: # eof
-            break
+            koma
         m = _variable_rx.match(line)
         if m:
             n, v = m.group(1, 2)
@@ -324,13 +324,13 @@ def parse_makefile(fn, g=None):
 
             if "$" in tmpv:
                 notdone[n] = v
-            else:
-                try:
+            isipokua:
+                jaribu:
                     v = int(v)
-                except ValueError:
+                tatizo ValueError:
                     # insert literal `$'
                     done[n] = v.replace('$$', '$')
-                else:
+                isipokua:
                     done[n] = v
 
     # Variables with a 'PY_' prefix in the makefile. These need to
@@ -340,7 +340,7 @@ def parse_makefile(fn, g=None):
     renamed_variables = ('CFLAGS', 'LDFLAGS', 'CPPFLAGS')
 
     # do variable interpolation here
-    while notdone:
+    wakati notdone:
         for name in list(notdone):
             value = notdone[name]
             m = _findvar1_rx.search(value) or _findvar2_rx.search(value)
@@ -363,32 +363,32 @@ def parse_makefile(fn, g=None):
                     lasivyo 'PY_' + n in notdone:
                         found = False
 
-                    else:
+                    isipokua:
                         item = str(done['PY_' + n])
-                else:
+                isipokua:
                     done[n] = item = ""
                 if found:
                     after = value[m.end():]
                     value = value[:m.start()] + item + after
                     if "$" in after:
                         notdone[name] = value
-                    else:
-                        try: value = int(value)
-                        except ValueError:
+                    isipokua:
+                        jaribu: value = int(value)
+                        tatizo ValueError:
                             done[name] = value.strip()
-                        else:
+                        isipokua:
                             done[name] = value
-                        del notdone[name]
+                        toa notdone[name]
 
                         if name.startswith('PY_') \
                             and name[3:] in renamed_variables:
 
                             name = name[3:]
-                            if name not in done:
+                            if name haiko kwenye done:
                                 done[name] = value
-            else:
+            isipokua:
                 # bogus variable reference; just drop it since we can't deal
-                del notdone[name]
+                toa notdone[name]
 
     fp.close()
 
@@ -405,8 +405,8 @@ def parse_makefile(fn, g=None):
 def expand_makefile_vars(s, vars):
     """Expand Makefile-style variables -- "${foo}" or "$(foo)" -- in
     'string' according to 'vars' (a dictionary mapping variable names to
-    values).  Variables not present in 'vars' are silently expanded to the
-    empty string.  The variable values in 'vars' should not contain further
+    values).  Variables sio present in 'vars' are silently expanded to the
+    empty string.  The variable values in 'vars' should sio contain further
     variable expansions; if 'vars' is the output of 'parse_makefile()',
     you're fine.  Returns a variable-expanded version of 's'.
     """
@@ -417,13 +417,13 @@ def expand_makefile_vars(s, vars):
     # 'parse_makefile()', which takes care of such expansions eagerly,
     # according to make's variable expansion semantics.
 
-    while True:
+    wakati True:
         m = _findvar1_rx.search(s) or _findvar2_rx.search(s)
         if m:
             (beg, end) = m.span()
             s = s[0:beg] + vars.get(m.group(1)) + s[end:]
-        else:
-            break
+        isipokua:
+            koma
     return s
 
 
@@ -479,7 +479,7 @@ def get_config_vars(*args):
         func = globals().get("_init_" + os.name)
         if func:
             func()
-        else:
+        isipokua:
             _config_vars = {}
 
         # Normalized versions of prefix and exec_prefix are handy to have;
@@ -490,7 +490,7 @@ def get_config_vars(*args):
 
         # For backward compatibility, see issue19555
         SO = _config_vars.get('EXT_SUFFIX')
-        if SO is not None:
+        if SO ni sio None:
             _config_vars['SO'] = SO
 
         # Always convert srcdir to an absolute path
@@ -502,8 +502,8 @@ def get_config_vars(*args):
                 # containing Makefile.
                 base = os.path.dirname(get_makefile_filename())
                 srcdir = os.path.join(base, srcdir)
-            else:
-                # srcdir is not meaningful since the installation is
+            isipokua:
+                # srcdir ni sio meaningful since the installation is
                 # spread about the filesystem.  We choose the
                 # directory containing the Makefile since we know it
                 # exists.
@@ -518,7 +518,7 @@ def get_config_vars(*args):
             base = project_base
             if (not os.path.isabs(_config_vars['srcdir']) and
                 base != os.getcwd()):
-                # srcdir is relative and we are not in the same directory
+                # srcdir is relative and we are haiko kwenye the same directory
                 # as the executable. Assume executable is in the build
                 # directory and make srcdir absolute.
                 srcdir = os.path.join(base, _config_vars['srcdir'])
@@ -535,7 +535,7 @@ def get_config_vars(*args):
         for name in args:
             vals.append(_config_vars.get(name))
         return vals
-    else:
+    isipokua:
         return _config_vars
 
 def get_config_var(name):

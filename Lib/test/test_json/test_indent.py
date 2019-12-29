@@ -6,7 +6,7 @@ kutoka test.test_json agiza PyTest, CTest
 kundi TestIndent:
     eleza test_indent(self):
         h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh', 'i-vhbjkhnth',
-             {'nifty': 87}, {'field': 'yes', 'morefield': False} ]
+             {'nifty': 87}, {'field': 'yes', 'morefield': Uongo} ]
 
         expect = textwrap.dedent("""\
         [
@@ -30,10 +30,10 @@ kundi TestIndent:
         ]""")
 
         d1 = self.dumps(h)
-        d2 = self.dumps(h, indent=2, sort_keys=True, separators=(',', ': '))
-        d3 = self.dumps(h, indent='\t', sort_keys=True, separators=(',', ': '))
-        d4 = self.dumps(h, indent=2, sort_keys=True)
-        d5 = self.dumps(h, indent='\t', sort_keys=True)
+        d2 = self.dumps(h, indent=2, sort_keys=Kweli, separators=(',', ': '))
+        d3 = self.dumps(h, indent='\t', sort_keys=Kweli, separators=(',', ': '))
+        d4 = self.dumps(h, indent=2, sort_keys=Kweli)
+        d5 = self.dumps(h, indent='\t', sort_keys=Kweli)
 
         h1 = self.loads(d1)
         h2 = self.loads(d2)
@@ -59,9 +59,9 @@ kundi TestIndent:
 
         # indent=0 should emit newlines
         check(0, '{\n"3": 1\n}')
-        # indent=None is more compact
-        check(None, '{"3": 1}')
+        # indent=Tupu ni more compact
+        check(Tupu, '{"3": 1}')
 
 
-kundi TestPyIndent(TestIndent, PyTest): pass
-kundi TestCIndent(TestIndent, CTest): pass
+kundi TestPyIndent(TestIndent, PyTest): pita
+kundi TestCIndent(TestIndent, CTest): pita

@@ -7,42 +7,42 @@ agiza sys
 agiza unittest
 
 
-@unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
+@unittest.skipIf(util.BUILTINS.good_name ni Tupu, 'no reasonable builtin module')
 kundi FindSpecTests(abc.FinderTests):
 
-    """Test find_spec() for built-in modules."""
+    """Test find_spec() kila built-in modules."""
 
     eleza test_module(self):
         # Common case.
         with util.uncache(util.BUILTINS.good_name):
             found = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name)
-            self.assertTrue(found)
+            self.assertKweli(found)
             self.assertEqual(found.origin, 'built-in')
 
     # Built-in modules cannot be a package.
-    test_package = None
+    test_package = Tupu
 
-    # Built-in modules cannot be in a package.
-    test_module_in_package = None
-
-    # Built-in modules cannot be a package.
-    test_package_in_package = None
+    # Built-in modules cannot be kwenye a package.
+    test_module_in_package = Tupu
 
     # Built-in modules cannot be a package.
-    test_package_over_module = None
+    test_package_in_package = Tupu
+
+    # Built-in modules cannot be a package.
+    test_package_over_module = Tupu
 
     eleza test_failure(self):
         name = 'importlib'
-        assert name not in sys.builtin_module_names
+        assert name haiko kwenye sys.builtin_module_names
         spec = self.machinery.BuiltinImporter.find_spec(name)
-        self.assertIsNone(spec)
+        self.assertIsTupu(spec)
 
     eleza test_ignore_path(self):
-        # The value for 'path' should always trigger a failed agiza.
+        # The value kila 'path' should always trigger a failed agiza.
         with util.uncache(util.BUILTINS.good_name):
             spec = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name,
                                                             ['pkg'])
-            self.assertIsNone(spec)
+            self.assertIsTupu(spec)
 
 
 (Frozen_FindSpecTests,
@@ -50,35 +50,35 @@ kundi FindSpecTests(abc.FinderTests):
  ) = util.test_both(FindSpecTests, machinery=machinery)
 
 
-@unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
+@unittest.skipIf(util.BUILTINS.good_name ni Tupu, 'no reasonable builtin module')
 kundi FinderTests(abc.FinderTests):
 
-    """Test find_module() for built-in modules."""
+    """Test find_module() kila built-in modules."""
 
     eleza test_module(self):
         # Common case.
         with util.uncache(util.BUILTINS.good_name):
             found = self.machinery.BuiltinImporter.find_module(util.BUILTINS.good_name)
-            self.assertTrue(found)
-            self.assertTrue(hasattr(found, 'load_module'))
+            self.assertKweli(found)
+            self.assertKweli(hasattr(found, 'load_module'))
 
     # Built-in modules cannot be a package.
-    test_package = test_package_in_package = test_package_over_module = None
+    test_package = test_package_in_package = test_package_over_module = Tupu
 
-    # Built-in modules cannot be in a package.
-    test_module_in_package = None
+    # Built-in modules cannot be kwenye a package.
+    test_module_in_package = Tupu
 
     eleza test_failure(self):
-        assert 'importlib' not in sys.builtin_module_names
+        assert 'importlib' haiko kwenye sys.builtin_module_names
         loader = self.machinery.BuiltinImporter.find_module('importlib')
-        self.assertIsNone(loader)
+        self.assertIsTupu(loader)
 
     eleza test_ignore_path(self):
-        # The value for 'path' should always trigger a failed agiza.
+        # The value kila 'path' should always trigger a failed agiza.
         with util.uncache(util.BUILTINS.good_name):
             loader = self.machinery.BuiltinImporter.find_module(util.BUILTINS.good_name,
                                                             ['pkg'])
-            self.assertIsNone(loader)
+            self.assertIsTupu(loader)
 
 
 (Frozen_FinderTests,

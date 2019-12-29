@@ -20,9 +20,9 @@ testcfg = {
 }
 
 source = (
-    "ikiwa True: int ('1') # keyword, builtin, string, comment\n"
-    "elikiwa False: andika(0)  # 'string' in comment\n"
-    "else: float(None)  # ikiwa in comment\n"
+    "ikiwa Kweli: int ('1') # keyword, builtin, string, comment\n"
+    "elikiwa Uongo: andika(0)  # 'string' kwenye comment\n"
+    "isipokua: float(Tupu)  # ikiwa kwenye comment\n"
     "ikiwa iF + If + IF: 'keyword matching must respect case'\n"
     "if'': x or''  # valid string-keyword no-space combinations\n"
     "async eleza f(): await g()\n"
@@ -45,8 +45,8 @@ kundi FunctionTest(unittest.TestCase):
                          '(?P<test>a|b|cd)')
 
     eleza test_make_pat(self):
-        # Tested in more detail by testing prog.
-        self.assertTrue(colorizer.make_pat())
+        # Tested kwenye more detail by testing prog.
+        self.assertKweli(colorizer.make_pat())
 
     eleza test_prog(self):
         prog = colorizer.prog
@@ -66,7 +66,7 @@ kundi FunctionTest(unittest.TestCase):
     eleza test_idprog(self):
         idprog = colorizer.idprog
         m = idprog.match('nospace')
-        self.assertIsNone(m)
+        self.assertIsTupu(m)
         m = idprog.match(' space')
         self.assertEqual(m.group(0), ' space')
 
@@ -82,16 +82,16 @@ kundi ColorConfigTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text
+        toa cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_color_config(self):
         text = self.text
         eq = self.assertEqual
         colorizer.color_config(text)
-        # Uses IDLE Classic theme as default.
+        # Uses IDLE Classic theme kama default.
         eq(text['background'], '#ffffff')
         eq(text['foreground'], '#000000')
         eq(text['selectbackground'], 'gray')
@@ -111,10 +111,10 @@ kundi ColorDelegatorInstantiationTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text
+        toa cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.color = colorizer.ColorDelegator()
@@ -123,20 +123,20 @@ kundi ColorDelegatorInstantiationTest(unittest.TestCase):
         self.color.close()
         self.text.delete('1.0', 'end')
         self.color.resetcache()
-        del self.color
+        toa self.color
 
     eleza test_init(self):
         color = self.color
         self.assertIsInstance(color, colorizer.ColorDelegator)
 
     eleza test_init_state(self):
-        # init_state() is called during the instantiation of
-        # ColorDelegator in setUp().
+        # init_state() ni called during the instantiation of
+        # ColorDelegator kwenye setUp().
         color = self.color
-        self.assertIsNone(color.after_id)
-        self.assertTrue(color.allow_colorizing)
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
+        self.assertIsTupu(color.after_id)
+        self.assertKweli(color.allow_colorizing)
+        self.assertUongo(color.colorizing)
+        self.assertUongo(color.stop_colorizing)
 
 
 kundi ColorDelegatorTest(unittest.TestCase):
@@ -153,10 +153,10 @@ kundi ColorDelegatorTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.percolator.redir.close()
-        del cls.percolator, cls.text
+        toa cls.percolator, cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.color = colorizer.ColorDelegator()
@@ -168,37 +168,37 @@ kundi ColorDelegatorTest(unittest.TestCase):
         self.percolator.removefilter(self.color)
         self.text.delete('1.0', 'end')
         self.color.resetcache()
-        del self.color
+        toa self.color
 
     eleza test_setdelegate(self):
-        # Called in setUp when filter is attached to percolator.
+        # Called kwenye setUp when filter ni attached to percolator.
         color = self.color
         self.assertIsInstance(color.delegate, colorizer.Delegator)
-        # It is too late to mock notify_range, so test side effect.
+        # It ni too late to mock notify_range, so test side effect.
         self.assertEqual(self.root.tk.call(
             'after', 'info', color.after_id)[1], 'timer')
 
     eleza test_LoadTagDefs(self):
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
-        for tag, colors in self.color.tagdefs.items():
+        kila tag, colors kwenye self.color.tagdefs.items():
             with self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
-                ikiwa tag not in ('SYNC', 'TODO'):
+                ikiwa tag haiko kwenye ('SYNC', 'TODO'):
                     self.assertEqual(colors, highlight(element=tag.lower()))
 
     eleza test_config_colors(self):
         text = self.text
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
-        for tag in self.color.tagdefs:
-            for plane in ('background', 'foreground'):
+        kila tag kwenye self.color.tagdefs:
+            kila plane kwenye ('background', 'foreground'):
                 with self.subTest(tag=tag, plane=plane):
-                    ikiwa tag in ('SYNC', 'TODO'):
+                    ikiwa tag kwenye ('SYNC', 'TODO'):
                         self.assertEqual(text.tag_cget(tag, plane), '')
-                    else:
+                    isipokua:
                         self.assertEqual(text.tag_cget(tag, plane),
                                          highlight(element=tag.lower())[plane])
-        # 'sel' is marked as the highest priority.
+        # 'sel' ni marked kama the highest priority.
         self.assertEqual(text.tag_names()[-1], 'sel')
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
@@ -236,105 +236,105 @@ kundi ColorDelegatorTest(unittest.TestCase):
         # Colorizing already scheduled.
         save_id = color.after_id
         eq(self.root.tk.call('after', 'info', save_id)[1], 'timer')
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        self.assertUongo(color.colorizing)
+        self.assertUongo(color.stop_colorizing)
+        self.assertKweli(color.allow_colorizing)
 
-        # Coloring scheduled and colorizing in progress.
-        color.colorizing = True
+        # Coloring scheduled na colorizing kwenye progress.
+        color.colorizing = Kweli
         color.notify_range('1.0', 'end')
-        self.assertFalse(color.stop_colorizing)
+        self.assertUongo(color.stop_colorizing)
         eq(color.after_id, save_id)
 
-        # No colorizing scheduled and colorizing in progress.
+        # No colorizing scheduled na colorizing kwenye progress.
         text.after_cancel(save_id)
-        color.after_id = None
+        color.after_id = Tupu
         color.notify_range('1.0', '1.0+3c')
-        self.assertTrue(color.stop_colorizing)
-        self.assertIsNotNone(color.after_id)
+        self.assertKweli(color.stop_colorizing)
+        self.assertIsNotTupu(color.after_id)
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')
         # New event scheduled.
         self.assertNotEqual(color.after_id, save_id)
 
-        # No colorizing scheduled and colorizing off.
+        # No colorizing scheduled na colorizing off.
         text.after_cancel(color.after_id)
-        color.after_id = None
-        color.allow_colorizing = False
+        color.after_id = Tupu
+        color.allow_colorizing = Uongo
         color.notify_range('1.4', '1.4+10c')
-        # Nothing scheduled when colorizing is off.
-        self.assertIsNone(color.after_id)
+        # Nothing scheduled when colorizing ni off.
+        self.assertIsTupu(color.after_id)
 
     eleza test_toggle_colorize_event(self):
         color = self.color
         eq = self.assertEqual
 
-        # Starts with colorizing allowed and scheduled.
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        # Starts with colorizing allowed na scheduled.
+        self.assertUongo(color.colorizing)
+        self.assertUongo(color.stop_colorizing)
+        self.assertKweli(color.allow_colorizing)
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')
 
         # Toggle colorizing off.
         color.toggle_colorize_event()
-        self.assertIsNone(color.after_id)
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertFalse(color.allow_colorizing)
+        self.assertIsTupu(color.after_id)
+        self.assertUongo(color.colorizing)
+        self.assertUongo(color.stop_colorizing)
+        self.assertUongo(color.allow_colorizing)
 
-        # Toggle on while colorizing in progress (doesn't add timer).
-        color.colorizing = True
+        # Toggle on wakati colorizing kwenye progress (doesn't add timer).
+        color.colorizing = Kweli
         color.toggle_colorize_event()
-        self.assertIsNone(color.after_id)
-        self.assertTrue(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        self.assertIsTupu(color.after_id)
+        self.assertKweli(color.colorizing)
+        self.assertUongo(color.stop_colorizing)
+        self.assertKweli(color.allow_colorizing)
 
-        # Toggle off while colorizing in progress.
+        # Toggle off wakati colorizing kwenye progress.
         color.toggle_colorize_event()
-        self.assertIsNone(color.after_id)
-        self.assertTrue(color.colorizing)
-        self.assertTrue(color.stop_colorizing)
-        self.assertFalse(color.allow_colorizing)
+        self.assertIsTupu(color.after_id)
+        self.assertKweli(color.colorizing)
+        self.assertKweli(color.stop_colorizing)
+        self.assertUongo(color.allow_colorizing)
 
-        # Toggle on while colorizing not in progress.
-        color.colorizing = False
+        # Toggle on wakati colorizing haiko kwenye progress.
+        color.colorizing = Uongo
         color.toggle_colorize_event()
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')
-        self.assertFalse(color.colorizing)
-        self.assertTrue(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        self.assertUongo(color.colorizing)
+        self.assertKweli(color.stop_colorizing)
+        self.assertKweli(color.allow_colorizing)
 
     @mock.patch.object(colorizer.ColorDelegator, 'recolorize_main')
     eleza test_recolorize(self, mock_recmain):
         text = self.text
         color = self.color
         eq = self.assertEqual
-        # Call recolorize manually and not scheduled.
+        # Call recolorize manually na sio scheduled.
         text.after_cancel(color.after_id)
 
         # No delegate.
         save_delegate = color.delegate
-        color.delegate = None
+        color.delegate = Tupu
         color.recolorize()
         mock_recmain.assert_not_called()
         color.delegate = save_delegate
 
         # Toggle off colorizing.
-        color.allow_colorizing = False
+        color.allow_colorizing = Uongo
         color.recolorize()
         mock_recmain.assert_not_called()
-        color.allow_colorizing = True
+        color.allow_colorizing = Kweli
 
-        # Colorizing in progress.
-        color.colorizing = True
+        # Colorizing kwenye progress.
+        color.colorizing = Kweli
         color.recolorize()
         mock_recmain.assert_not_called()
-        color.colorizing = False
+        color.colorizing = Uongo
 
-        # Colorizing is done, but not completed, so rescheduled.
+        # Colorizing ni done, but sio completed, so rescheduled.
         color.recolorize()
-        self.assertFalse(color.stop_colorizing)
-        self.assertFalse(color.colorizing)
+        self.assertUongo(color.stop_colorizing)
+        self.assertUongo(color.colorizing)
         mock_recmain.assert_called()
         eq(mock_recmain.call_count, 1)
         # Rescheduled when TODO tag still exists.
@@ -343,11 +343,11 @@ kundi ColorDelegatorTest(unittest.TestCase):
         # No changes to text, so no scheduling added.
         text.tag_remove('TODO', '1.0', 'end')
         color.recolorize()
-        self.assertFalse(color.stop_colorizing)
-        self.assertFalse(color.colorizing)
+        self.assertUongo(color.stop_colorizing)
+        self.assertUongo(color.colorizing)
         mock_recmain.assert_called()
         eq(mock_recmain.call_count, 2)
-        self.assertIsNone(color.after_id)
+        self.assertIsTupu(color.after_id)
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
     eleza test_recolorize_main(self, mock_notify):
@@ -370,22 +370,22 @@ kundi ColorDelegatorTest(unittest.TestCase):
                     ('1.55', ('SYNC',)), ('2.50', ('SYNC',)), ('3.34', ('SYNC',)),
                    )
 
-        # Nothing marked to do therefore no tags in text.
+        # Nothing marked to do therefore no tags kwenye text.
         text.tag_remove('TODO', '1.0', 'end')
         color.recolorize_main()
-        for tag in text.tag_names():
+        kila tag kwenye text.tag_names():
             with self.subTest(tag=tag):
                 eq(text.tag_ranges(tag), ())
 
-        # Source marked for processing.
+        # Source marked kila processing.
         text.tag_add('TODO', '1.0', 'end')
         # Check some indexes.
         color.recolorize_main()
-        for index, expected_tags in expected:
+        kila index, expected_tags kwenye expected:
             with self.subTest(index=index):
                 eq(text.tag_names(index), expected_tags)
 
-        # Check for some tags for ranges.
+        # Check kila some tags kila ranges.
         eq(text.tag_nextrange('TODO', '1.0'), ())
         eq(text.tag_nextrange('KEYWORD', '1.0'), ('1.0', '1.2'))
         eq(text.tag_nextrange('COMMENT', '2.0'), ('2.22', '2.43'))
@@ -409,12 +409,12 @@ kundi ColorDelegatorTest(unittest.TestCase):
         text.tag_add("ERROR", "1.0")
         text.tag_add("TODO", "1.0")
         text.tag_add("hit", "1.0")
-        for tag in color.tagdefs:
+        kila tag kwenye color.tagdefs:
             with self.subTest(tag=tag):
                 self.assertNotEqual(text.tag_ranges(tag), ())
 
         color.removecolors()
-        for tag in color.tagdefs:
+        kila tag kwenye color.tagdefs:
             with self.subTest(tag=tag):
                 self.assertEqual(text.tag_ranges(tag), ())
 

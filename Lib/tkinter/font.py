@@ -67,28 +67,28 @@ class Font:
 
     def __init__(self, root=None, font=None, name=None, exists=False,
                  **options):
-        if not root:
+        if sio root:
             root = tkinter._default_root
         tk = getattr(root, 'tk', root)
         if font:
             # get actual settings corresponding to the given font
             font = tk.splitlist(tk.call("font", "actual", font))
-        else:
+        isipokua:
             font = self._set(options)
-        if not name:
+        if sio name:
             name = "font" + str(next(self.counter))
         self.name = name
 
         if exists:
             self.delete_font = False
             # confirm font exists
-            if self.name not in tk.splitlist(tk.call("font", "names")):
+            if self.name haiko kwenye tk.splitlist(tk.call("font", "names")):
                 raise tkinter._tkinter.TclError(
-                    "named font %s does not already exist" % (self.name,))
+                    "named font %s does sio already exist" % (self.name,))
             # if font config info supplied, apply it
             if font:
                 tk.call("font", "configure", self.name, *font)
-        else:
+        isipokua:
             # create new font (raises TclError if the font exists)
             tk.call("font", "create", self.name, *font)
             self.delete_font = True
@@ -109,10 +109,10 @@ class Font:
         self.configure(**{key: value})
 
     def __del__(self):
-        try:
+        jaribu:
             if self.delete_font:
                 self._call("font", "delete", self.name)
-        except Exception:
+        tatizo Exception:
             pass
 
     def copy(self):
@@ -127,7 +127,7 @@ class Font:
         if option:
             args = args + ('-' + option, )
             return self._call("font", "actual", self.name, *args)
-        else:
+        isipokua:
             return self._mkdict(
                 self._split(self._call("font", "actual", self.name, *args)))
 
@@ -140,7 +140,7 @@ class Font:
         if options:
             self._call("font", "config", self.name,
                   *self._set(options))
-        else:
+        isipokua:
             return self._mkdict(
                 self._split(self._call("font", "config", self.name)))
 
@@ -166,7 +166,7 @@ class Font:
             args = args + self._get(options)
             return self._tk.getint(
                 self._call("font", "metrics", self.name, *args))
-        else:
+        isipokua:
             res = self._split(self._call("font", "metrics", self.name, *args))
             options = {}
             for i in range(0, len(res), 2):
@@ -176,7 +176,7 @@ class Font:
 
 def families(root=None, displayof=None):
     "Get font families (as a tuple)"
-    if not root:
+    if sio root:
         root = tkinter._default_root
     args = ()
     if displayof:
@@ -186,7 +186,7 @@ def families(root=None, displayof=None):
 
 def names(root=None):
     "Get names of defined fonts (as a tuple)"
-    if not root:
+    if sio root:
         root = tkinter._default_root
     return root.tk.splitlist(root.tk.call("font", "names"))
 

@@ -39,9 +39,9 @@ class CallbackTracbackTestCase(unittest.TestCase):
         import io
         old_stderr = sys.stderr
         logger = sys.stderr = io.StringIO()
-        try:
+        jaribu:
             func(*args, **kw)
-        finally:
+        mwishowe:
             sys.stderr = old_stderr
         return logger.getvalue()
 

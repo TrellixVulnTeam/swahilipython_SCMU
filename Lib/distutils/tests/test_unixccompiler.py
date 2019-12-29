@@ -113,14 +113,14 @@ class UnixCCompilerTestCase(unittest.TestCase):
         sysconfig.get_config_var = gcv
         with EnvironmentVarGuard() as env:
             env['CC'] = 'my_cc'
-            del env['LDSHARED']
+            toa env['LDSHARED']
             sysconfig.customize_compiler(self.cc)
         self.assertEqual(self.cc.linker_so[0], 'my_cc')
 
     @unittest.skipUnless(sys.platform == 'darwin', 'test only relevant for OS X')
     def test_osx_explicit_ldshared(self):
         # Issue #18080:
-        # ensure that setting CC env variable does not change
+        # ensure that setting CC env variable does sio change
         #   explicit LDSHARED setting for linker
         def gcv(v):
             if v == 'LDSHARED':

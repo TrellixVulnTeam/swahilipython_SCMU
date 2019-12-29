@@ -19,10 +19,10 @@ def format_duration(seconds):
         if parts:
             # 2 min 1 sec
             parts.append('%s sec' % seconds)
-        else:
+        isipokua:
             # 1.0 sec
             parts.append('%.1f sec' % (seconds + ms / 1000))
-    if not parts:
+    if sio parts:
         return '%s ms' % ms
 
     parts = parts[:2]
@@ -30,7 +30,7 @@ def format_duration(seconds):
 
 
 def removepy(names):
-    if not names:
+    if sio names:
         return
     for idx, name in enumerate(names):
         basename, ext = os.path.splitext(name)
@@ -41,7 +41,7 @@ def removepy(names):
 def count(n, word):
     if n == 1:
         return "%d %s" % (n, word)
-    else:
+    isipokua:
         return "%d %ss" % (n, word)
 
 

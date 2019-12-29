@@ -1,4 +1,4 @@
-# Convenience test module to run all of the OpenSSL-related tests in the
+# Convenience test module to run all of the OpenSSL-related tests kwenye the
 # standard library.
 
 agiza ssl
@@ -19,7 +19,7 @@ eleza run_regrtests(*extra_args):
         '-Werror', '-bb',  # turn warnings into exceptions
         '-m', 'test',
     ]
-    ikiwa not extra_args:
+    ikiwa sio extra_args:
         args.extend([
             '-r',  # randomize
             '-w',  # re-run failed tests with -v
@@ -27,7 +27,7 @@ eleza run_regrtests(*extra_args):
             '-u', 'urlfetch',  # download test vectors
             '-j', '0'  # use multiple CPUs
         ])
-    else:
+    isipokua:
         args.extend(extra_args)
     args.extend(TESTS)
     result = subprocess.call(args)

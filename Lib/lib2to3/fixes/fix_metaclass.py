@@ -1,18 +1,18 @@
-"""Fixer for __metaclass__ = X -> (metaclass=X) methods.
+"""Fixer kila __metaclass__ = X -> (metaclass=X) methods.
 
    The various forms of classef (inherits nothing, inherits once, inherits
-   many) don't parse the same in the CST so we look at ALL classes for
-   a __metaclass__ and ikiwa we find one normalize the inherits to all be
+   many) don't parse the same kwenye the CST so we look at ALL classes for
+   a __metaclass__ na ikiwa we find one normalize the inherits to all be
    an arglist.
 
-   For one-liner classes ('kundi X: pass') there is no indent/dedent so
+   For one-liner classes ('kundi X: pita') there ni no indent/dedent so
    we normalize those into having a suite.
 
    Moving the __metaclass__ into the classeleza can also cause the class
-   body to be empty so there is some special casing for that as well.
+   body to be empty so there ni some special casing kila that kama well.
 
-   This fixer also tries very hard to keep original indenting and spacing
-   in all those corner cases.
+   This fixer also tries very hard to keep original indenting na spacing
+   kwenye all those corner cases.
 
 """
 # Author: Jack Diederich
@@ -29,38 +29,38 @@ eleza has_metaclass(parent):
           1)  clseleza => suite => simple_stmt => expr_stmt => Leaf('__meta')
           2)  clseleza => simple_stmt => expr_stmt => Leaf('__meta')
     """
-    for node in parent.children:
+    kila node kwenye parent.children:
         ikiwa node.type == syms.suite:
             rudisha has_metaclass(node)
-        elikiwa node.type == syms.simple_stmt and node.children:
+        elikiwa node.type == syms.simple_stmt na node.children:
             expr_node = node.children[0]
-            ikiwa expr_node.type == syms.expr_stmt and expr_node.children:
+            ikiwa expr_node.type == syms.expr_stmt na expr_node.children:
                 left_side = expr_node.children[0]
-                ikiwa isinstance(left_side, Leaf) and \
+                ikiwa isinstance(left_side, Leaf) na \
                         left_side.value == '__metaclass__':
-                    rudisha True
-    rudisha False
+                    rudisha Kweli
+    rudisha Uongo
 
 
 eleza fixup_parse_tree(cls_node):
-    """ one-line classes don't get a suite in the parse tree so we add
+    """ one-line classes don't get a suite kwenye the parse tree so we add
         one to normalize the tree
     """
-    for node in cls_node.children:
+    kila node kwenye cls_node.children:
         ikiwa node.type == syms.suite:
-            # already in the preferred format, do nothing
-            return
+            # already kwenye the preferred format, do nothing
+            rudisha
 
     # !%@#! oneliners have no suite node, we have to fake one up
-    for i, node in enumerate(cls_node.children):
+    kila i, node kwenye enumerate(cls_node.children):
         ikiwa node.type == token.COLON:
-            break
-    else:
-        raise ValueError("No kundi suite and no ':'!")
+            koma
+    isipokua:
+        ashiria ValueError("No kundi suite na no ':'!")
 
     # move everything into a suite node
     suite = Node(syms.suite, [])
-    while cls_node.children[i+1:]:
+    wakati cls_node.children[i+1:]:
         move_node = cls_node.children[i+1]
         suite.append_child(move_node.clone())
         move_node.remove()
@@ -69,20 +69,20 @@ eleza fixup_parse_tree(cls_node):
 
 
 eleza fixup_simple_stmt(parent, i, stmt_node):
-    """ ikiwa there is a semi-colon all the parts count as part of the same
+    """ ikiwa there ni a semi-colon all the parts count kama part of the same
         simple_stmt.  We just want the __metaclass__ part so we move
         everything after the semi-colon into its own simple_stmt node
     """
-    for semi_ind, node in enumerate(stmt_node.children):
+    kila semi_ind, node kwenye enumerate(stmt_node.children):
         ikiwa node.type == token.SEMI: # *sigh*
-            break
-    else:
-        return
+            koma
+    isipokua:
+        rudisha
 
     node.remove() # kill the semicolon
     new_expr = Node(syms.expr_stmt, [])
     new_stmt = Node(syms.simple_stmt, [new_expr])
-    while stmt_node.children[semi_ind:]:
+    wakati stmt_node.children[semi_ind:]:
         move_node = stmt_node.children[semi_ind]
         new_expr.append_child(move_node.clone())
         move_node.remove()
@@ -93,71 +93,71 @@ eleza fixup_simple_stmt(parent, i, stmt_node):
 
 
 eleza remove_trailing_newline(node):
-    ikiwa node.children and node.children[-1].type == token.NEWLINE:
+    ikiwa node.children na node.children[-1].type == token.NEWLINE:
         node.children[-1].remove()
 
 
 eleza find_metas(cls_node):
     # find the suite node (Mmm, sweet nodes)
-    for node in cls_node.children:
+    kila node kwenye cls_node.children:
         ikiwa node.type == syms.suite:
-            break
-    else:
-        raise ValueError("No kundi suite!")
+            koma
+    isipokua:
+        ashiria ValueError("No kundi suite!")
 
-    # look for simple_stmt[ expr_stmt[ Leaf('__metaclass__') ] ]
-    for i, simple_node in list(enumerate(node.children)):
-        ikiwa simple_node.type == syms.simple_stmt and simple_node.children:
+    # look kila simple_stmt[ expr_stmt[ Leaf('__metaclass__') ] ]
+    kila i, simple_node kwenye list(enumerate(node.children)):
+        ikiwa simple_node.type == syms.simple_stmt na simple_node.children:
             expr_node = simple_node.children[0]
-            ikiwa expr_node.type == syms.expr_stmt and expr_node.children:
-                # Check ikiwa the expr_node is a simple assignment.
+            ikiwa expr_node.type == syms.expr_stmt na expr_node.children:
+                # Check ikiwa the expr_node ni a simple assignment.
                 left_node = expr_node.children[0]
-                ikiwa isinstance(left_node, Leaf) and \
+                ikiwa isinstance(left_node, Leaf) na \
                         left_node.value == '__metaclass__':
                     # We found an assignment to __metaclass__.
                     fixup_simple_stmt(node, i, simple_node)
                     remove_trailing_newline(simple_node)
-                    yield (node, i, simple_node)
+                    tuma (node, i, simple_node)
 
 
 eleza fixup_indent(suite):
-    """ If an INDENT is followed by a thing with a prefix then nuke the prefix
-        Otherwise we get in trouble when removing __metaclass__ at suite start
+    """ If an INDENT ni followed by a thing with a prefix then nuke the prefix
+        Otherwise we get kwenye trouble when removing __metaclass__ at suite start
     """
     kids = suite.children[::-1]
     # find the first indent
-    while kids:
+    wakati kids:
         node = kids.pop()
         ikiwa node.type == token.INDENT:
-            break
+            koma
 
     # find the first Leaf
-    while kids:
+    wakati kids:
         node = kids.pop()
-        ikiwa isinstance(node, Leaf) and node.type != token.DEDENT:
+        ikiwa isinstance(node, Leaf) na node.type != token.DEDENT:
             ikiwa node.prefix:
                 node.prefix = ''
-            return
-        else:
+            rudisha
+        isipokua:
             kids.extend(node.children[::-1])
 
 
 kundi FixMetaclass(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     classdef<any*>
     """
 
     eleza transform(self, node, results):
-        ikiwa not has_metaclass(node):
-            return
+        ikiwa sio has_metaclass(node):
+            rudisha
 
         fixup_parse_tree(node)
 
         # find metaclasses, keep the last one
-        last_metakundi = None
-        for suite, i, stmt in find_metas(node):
+        last_metakundi = Tupu
+        kila suite, i, stmt kwenye find_metas(node):
             last_metakundi = stmt
             stmt.remove()
 
@@ -170,7 +170,7 @@ kundi FixMetaclass(fixer_base.BaseFix):
             ikiwa node.children[3].type == syms.arglist:
                 arglist = node.children[3]
             # Node(classdef, ['class', 'name', '(', 'Parent', ')', ':', suite])
-            else:
+            isipokua:
                 parent = node.children[3].clone()
                 arglist = Node(syms.arglist, [parent])
                 node.set_child(3, arglist)
@@ -186,10 +186,10 @@ kundi FixMetaclass(fixer_base.BaseFix):
             node.insert_child(2, Leaf(token.RPAR, ')'))
             node.insert_child(2, arglist)
             node.insert_child(2, Leaf(token.LPAR, '('))
-        else:
-            raise ValueError("Unexpected kundi definition")
+        isipokua:
+            ashiria ValueError("Unexpected kundi definition")
 
-        # now stick the metakundi in the arglist
+        # now stick the metakundi kwenye the arglist
         meta_txt = last_metaclass.children[0].children[0]
         meta_txt.value = 'metaclass'
         orig_meta_prefix = meta_txt.prefix
@@ -197,7 +197,7 @@ kundi FixMetaclass(fixer_base.BaseFix):
         ikiwa arglist.children:
             arglist.append_child(Leaf(token.COMMA, ','))
             meta_txt.prefix = ' '
-        else:
+        isipokua:
             meta_txt.prefix = ''
 
         # compact the expression "metakundi = Meta" -> "metaclass=Meta"
@@ -210,19 +210,19 @@ kundi FixMetaclass(fixer_base.BaseFix):
 
         fixup_indent(suite)
 
-        # check for empty suite
-        ikiwa not suite.children:
+        # check kila empty suite
+        ikiwa sio suite.children:
             # one-liner that was just __metaclass_
             suite.remove()
-            pass_leaf = Leaf(text_type, 'pass')
-            pass_leaf.prefix = orig_meta_prefix
-            node.append_child(pass_leaf)
+            pita_leaf = Leaf(text_type, 'pita')
+            pita_leaf.prefix = orig_meta_prefix
+            node.append_child(pita_leaf)
             node.append_child(Leaf(token.NEWLINE, '\n'))
 
-        elikiwa len(suite.children) > 1 and \
+        elikiwa len(suite.children) > 1 na \
                  (suite.children[-2].type == token.INDENT and
                   suite.children[-1].type == token.DEDENT):
-            # there was only one line in the kundi body and it was __metaclass__
-            pass_leaf = Leaf(text_type, 'pass')
-            suite.insert_child(-1, pass_leaf)
+            # there was only one line kwenye the kundi body na it was __metaclass__
+            pita_leaf = Leaf(text_type, 'pita')
+            suite.insert_child(-1, pita_leaf)
             suite.insert_child(-1, Leaf(token.NEWLINE, '\n'))

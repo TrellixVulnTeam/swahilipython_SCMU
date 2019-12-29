@@ -9,7 +9,7 @@ agiza warnings
 
 kundi FinderTests(abc.FinderTests):
 
-    """Test the finder for extension modules."""
+    """Test the finder kila extension modules."""
 
     eleza find_module(self, fullname):
         importer = self.machinery.FileFinder(util.EXTENSIONS.path,
@@ -20,19 +20,19 @@ kundi FinderTests(abc.FinderTests):
             rudisha importer.find_module(fullname)
 
     eleza test_module(self):
-        self.assertTrue(self.find_module(util.EXTENSIONS.name))
+        self.assertKweli(self.find_module(util.EXTENSIONS.name))
 
-    # No extension module as an __init__ available for testing.
-    test_package = test_package_in_package = None
+    # No extension module kama an __init__ available kila testing.
+    test_package = test_package_in_package = Tupu
 
-    # No extension module in a package available for testing.
-    test_module_in_package = None
+    # No extension module kwenye a package available kila testing.
+    test_module_in_package = Tupu
 
-    # Extension modules cannot be an __init__ for a package.
-    test_package_over_module = None
+    # Extension modules cannot be an __init__ kila a package.
+    test_package_over_module = Tupu
 
     eleza test_failure(self):
-        self.assertIsNone(self.find_module('asdfjkl;'))
+        self.assertIsTupu(self.find_module('asdfjkl;'))
 
 
 (Frozen_FinderTests,

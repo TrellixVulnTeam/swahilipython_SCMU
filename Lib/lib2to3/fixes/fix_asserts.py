@@ -6,7 +6,7 @@ kutoka ..fixer_base agiza BaseFix
 kutoka ..fixer_util agiza Name
 
 NAMES = dict(
-    assert_="assertTrue",
+    assert_="assertKweli",
     assertEquals="assertEqual",
     assertNotEquals="assertNotEqual",
     assertAlmostEquals="assertAlmostEqual",
@@ -17,9 +17,9 @@ NAMES = dict(
     failIfEqual="assertNotEqual",
     failUnlessAlmostEqual="assertAlmostEqual",
     failIfAlmostEqual="assertNotAlmostEqual",
-    failUnless="assertTrue",
+    failUnless="assertKweli",
     failUnlessRaises="assertRaises",
-    failIf="assertFalse",
+    failIf="assertUongo",
 )
 
 

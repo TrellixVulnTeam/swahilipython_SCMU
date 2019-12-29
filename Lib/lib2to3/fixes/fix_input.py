@@ -11,15 +11,15 @@ context = patcomp.compile_pattern("power< 'eval' trailer< '(' any ')' > >")
 
 
 kundi FixInput(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
               power< 'input' args=trailer< '(' [any] ')' > >
               """
 
     eleza transform(self, node, results):
-        # If we're already wrapped in an eval() call, we're done.
+        # If we're already wrapped kwenye an eval() call, we're done.
         ikiwa context.match(node.parent.parent):
-            return
+            rudisha
 
         new = node.clone()
         new.prefix = ""

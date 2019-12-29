@@ -1,22 +1,22 @@
 """
-Input for test_profile.py and test_cprofile.py.
+Input kila test_profile.py na test_cprofile.py.
 
-IMPORTANT: This stuff is touchy. If you modify anything above the
+IMPORTANT: This stuff ni touchy. If you modify anything above the
 test kundi you'll have to regenerate the stats by running the two
 test files.
 
-*ALL* NUMBERS in the expected output are relevant.  If you change
+*ALL* NUMBERS kwenye the expected output are relevant.  If you change
 the formatting of pstats, please don't just regenerate the expected
-output without checking very carefully that not a single number has
+output without checking very carefully that sio a single number has
 changed.
 """
 
 agiza sys
 
-# In order to have reproducible time, we simulate a timer in the global
-# variable 'TICKS', which represents simulated time in milliseconds.
+# In order to have reproducible time, we simulate a timer kwenye the global
+# variable 'TICKS', which represents simulated time kwenye milliseconds.
 # (We can't use a helper function increment the timer since it would be
-# included in the profile and would appear to consume all the time.)
+# included kwenye the profile na would appear to consume all the time.)
 TICKS = 42000
 
 eleza timer():
@@ -24,7 +24,7 @@ eleza timer():
 
 eleza testfunc():
     # 1 call
-    # 1000 ticks total: 270 ticks local, 730 ticks in subfunctions
+    # 1000 ticks total: 270 ticks local, 730 ticks kwenye subfunctions
     global TICKS
     TICKS += 99
     helper()                            # 300
@@ -35,13 +35,13 @@ eleza testfunc():
 eleza factorial(n):
     # 23 calls total
     # 170 ticks total, 150 ticks local
-    # 3 primitive calls, 130, 20 and 20 ticks total
+    # 3 primitive calls, 130, 20 na 20 ticks total
     # including 116, 17, 17 ticks local
     global TICKS
     ikiwa n > 0:
         TICKS += n
         rudisha mul(n, factorial(n-1))
-    else:
+    isipokua:
         TICKS += 11
         rudisha 1
 
@@ -54,7 +54,7 @@ eleza mul(a, b):
 
 eleza helper():
     # 2 calls
-    # 300 ticks total: 20 ticks local, 260 ticks in subfunctions
+    # 300 ticks total: 20 ticks local, 260 ticks kwenye subfunctions
     global TICKS
     TICKS += 1
     helper1()                           # 30
@@ -72,7 +72,7 @@ eleza helper():
 
 eleza helper1():
     # 4 calls
-    # 30 ticks total: 29 ticks local, 1 tick in subfunctions
+    # 30 ticks total: 29 ticks local, 1 tick kwenye subfunctions
     global TICKS
     TICKS += 10
     hasattr(C(), "foo")                 # 1
@@ -87,7 +87,7 @@ eleza helper2_indirect():
 
 eleza helper2():
     # 8 calls
-    # 50 ticks local: 39 ticks local, 11 ticks in subfunctions
+    # 50 ticks local: 39 ticks local, 11 ticks kwenye subfunctions
     global TICKS
     TICKS += 11
     hasattr(C(), "bar")                 # 1
@@ -97,13 +97,13 @@ eleza helper2():
 
 eleza subhelper():
     # 8 calls
-    # 10 ticks total: 8 ticks local, 2 ticks in subfunctions
+    # 10 ticks total: 8 ticks local, 2 ticks kwenye subfunctions
     global TICKS
     TICKS += 2
-    for i in range(2):                  # 0
-        try:
+    kila i kwenye range(2):                  # 0
+        jaribu:
             C().foo                     # 1 x 2
-        except AttributeError:
+        tatizo AttributeError:
             TICKS += 3                  # 3 x 2
 
 kundi C:
@@ -112,4 +112,4 @@ kundi C:
         # 1 tick, local
         global TICKS
         TICKS += 1
-        raise AttributeError
+        ashiria AttributeError

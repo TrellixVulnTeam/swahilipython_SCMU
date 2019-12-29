@@ -43,7 +43,7 @@ class C_Test(unittest.TestCase):
         b = BITS()
         name = "M"
         if func(byref(b), name.encode('ascii')) == 999:
-            self.skipTest("Compiler does not support signed short bitfields")
+            self.skipTest("Compiler does sio support signed short bitfields")
         for i in range(256):
             for name in "MNOPQRS":
                 b = BITS()
@@ -117,31 +117,31 @@ class BitFieldTest(unittest.TestCase):
                                {"_fields_": fields})
 
     def test_nonint_types(self):
-        # bit fields are not allowed on non-integer types.
+        # bit fields are sio allowed on non-integer types.
         result = self.fail_fields(("a", c_char_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type c_char_p'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type c_char_p'))
 
         result = self.fail_fields(("a", c_void_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type c_void_p'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type c_void_p'))
 
         if c_int != c_long:
             result = self.fail_fields(("a", POINTER(c_int), 1))
-            self.assertEqual(result, (TypeError, 'bit fields not allowed for type LP_c_int'))
+            self.assertEqual(result, (TypeError, 'bit fields sio allowed for type LP_c_int'))
 
         result = self.fail_fields(("a", c_char, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type c_char'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type c_char'))
 
         class Dummy(Structure):
             _fields_ = []
 
         result = self.fail_fields(("a", Dummy, 1))
-        self.assertEqual(result, (TypeError, 'bit fields not allowed for type Dummy'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type Dummy'))
 
     @need_symbol('c_wchar')
     def test_c_wchar(self):
         result = self.fail_fields(("a", c_wchar, 1))
         self.assertEqual(result,
-                (TypeError, 'bit fields not allowed for type c_wchar'))
+                (TypeError, 'bit fields sio allowed for type c_wchar'))
 
     def test_single_bitfield_size(self):
         for c_typ in int_types:
@@ -191,9 +191,9 @@ class BitFieldTest(unittest.TestCase):
 
 
     def get_except(self, func, *args, **kw):
-        try:
+        jaribu:
             func(*args, **kw)
-        except Exception as detail:
+        tatizo Exception as detail:
             return detail.__class__, str(detail)
 
     def test_mixed_1(self):
@@ -202,7 +202,7 @@ class BitFieldTest(unittest.TestCase):
                         ("b", c_int, 4)]
         if os.name == "nt":
             self.assertEqual(sizeof(X), sizeof(c_int)*2)
-        else:
+        isipokua:
             self.assertEqual(sizeof(X), sizeof(c_int))
 
     def test_mixed_2(self):
@@ -230,7 +230,7 @@ class BitFieldTest(unittest.TestCase):
         # produces code compatible with MSVC).
         if os.name == "nt":
             self.assertEqual(sizeof(X), sizeof(c_int) * 4)
-        else:
+        isipokua:
             self.assertEqual(sizeof(X), sizeof(c_int) * 2)
 
     def test_anon_bitfields(self):

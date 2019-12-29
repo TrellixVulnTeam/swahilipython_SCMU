@@ -1,7 +1,7 @@
 # Copyright 2007 Google Inc.
 #  Licensed to PSF under a Contributor Agreement.
 
-"""Unittest for ipaddress module."""
+"""Unittest kila ipaddress module."""
 
 
 agiza unittest
@@ -16,11 +16,11 @@ kutoka test.support agiza LARGEST, SMALLEST
 
 
 kundi BaseTestCase(unittest.TestCase):
-    # One big change in ipaddress over the original ipaddr module is
+    # One big change kwenye ipaddress over the original ipaddr module is
     # error reporting that tries to assume users *don't know the rules*
-    # for what constitutes an RFC compliant IP address
+    # kila what constitutes an RFC compliant IP address
 
-    # Ensuring these errors are emitted correctly in all relevant cases
+    # Ensuring these errors are emitted correctly kwenye all relevant cases
     # meant moving to a more systematic test structure that allows the
     # test structure to map more directly to the module structure
 
@@ -28,31 +28,31 @@ kundi BaseTestCase(unittest.TestCase):
     # multiple problems get classified differently, that's OK - just
     # move the affected examples to the newly appropriate test case.
 
-    # There is some duplication between the original relatively ad hoc
-    # test suite and the new systematic tests. While some redundancy in
-    # testing is considered preferable to accidentally deleting a valid
+    # There ni some duplication between the original relatively ad hoc
+    # test suite na the new systematic tests. While some redundancy in
+    # testing ni considered preferable to accidentally deleting a valid
     # test, the original test suite will likely be reduced over time as
     # redundant tests are identified.
 
     @property
     eleza factory(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     @contextlib.contextmanager
     eleza assertCleanError(self, exc_type, details, *args):
         """
-        Ensure exception does not display a context by default
+        Ensure exception does sio display a context by default
 
         Wraps unittest.TestCase.assertRaisesRegex
         """
         ikiwa args:
             details = details % args
         cm = self.assertRaisesRegex(exc_type, details)
-        with cm as exc:
-            yield exc
+        with cm kama exc:
+            tuma exc
         # Ensure we produce clean tracebacks on failure
-        ikiwa exc.exception.__context__ is not None:
-            self.assertTrue(exc.exception.__suppress_context__)
+        ikiwa exc.exception.__context__ ni sio Tupu:
+            self.assertKweli(exc.exception.__suppress_context__)
 
     eleza assertAddressError(self, details, *args):
         """Ensure a clean AddressValueError"""
@@ -80,14 +80,14 @@ kundi CommonTestMixin:
             self.factory(1.0)
 
     eleza test_not_an_index_issue15559(self):
-        # Implementing __index__ makes for a very nasty interaction with the
-        # bytes constructor. Thus, we disallow implicit use as an integer
+        # Implementing __index__ makes kila a very nasty interaction with the
+        # bytes constructor. Thus, we disallow implicit use kama an integer
         self.assertRaises(TypeError, operator.index, self.factory(1))
         self.assertRaises(TypeError, hex, self.factory(1))
         self.assertRaises(TypeError, bytes, self.factory(1))
 
     eleza pickle_test(self, addr):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.subTest(proto=proto):
                 x = self.factory(addr)
                 y = pickle.loads(pickle.dumps(x, proto))
@@ -111,19 +111,19 @@ kundi CommonTestMixin_v4(CommonTestMixin):
         self.assertInstancesEqual(bytes.kutokahex("c0a80001"), "192.168.0.1")
 
     eleza test_negative_ints_rejected(self):
-        msg = "-1 (< 0) is not permitted as an IPv4 address"
+        msg = "-1 (< 0) ni sio permitted kama an IPv4 address"
         with self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     eleza test_large_ints_rejected(self):
-        msg = "%d (>= 2**32) is not permitted as an IPv4 address"
+        msg = "%d (>= 2**32) ni sio permitted kama an IPv4 address"
         with self.assertAddressError(re.escape(msg % 2**32)):
             self.factory(2**32)
 
     eleza test_bad_packed_length(self):
         eleza assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 4) is not permitted as an IPv4 address"
+            msg = "%r (len %d != 4) ni sio permitted kama an IPv4 address"
             with self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
 
@@ -150,19 +150,19 @@ kundi CommonTestMixin_v6(CommonTestMixin):
         self.assertInstancesEqual(addr, "c0a8:1::")
 
     eleza test_negative_ints_rejected(self):
-        msg = "-1 (< 0) is not permitted as an IPv6 address"
+        msg = "-1 (< 0) ni sio permitted kama an IPv6 address"
         with self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     eleza test_large_ints_rejected(self):
-        msg = "%d (>= 2**128) is not permitted as an IPv6 address"
+        msg = "%d (>= 2**128) ni sio permitted kama an IPv6 address"
         with self.assertAddressError(re.escape(msg % 2**128)):
             self.factory(2**128)
 
     eleza test_bad_packed_length(self):
         eleza assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 16) is not permitted as an IPv6 address"
+            msg = "%r (len %d != 16) ni sio permitted kama an IPv6 address"
             with self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
                 self.factory(addr)
@@ -174,14 +174,14 @@ kundi CommonTestMixin_v6(CommonTestMixin):
 kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
     factory = ipaddress.IPv4Address
 
-    eleza test_network_passed_as_address(self):
+    eleza test_network_pitaed_as_address(self):
         addr = "127.0.0.1/24"
-        with self.assertAddressError("Unexpected '/' in %r", addr):
+        with self.assertAddressError("Unexpected '/' kwenye %r", addr):
             ipaddress.IPv4Address(addr)
 
     eleza test_bad_address_split(self):
         eleza assertBadSplit(addr):
-            with self.assertAddressError("Expected 4 octets in %r", addr):
+            with self.assertAddressError("Expected 4 octets kwenye %r", addr):
                 ipaddress.IPv4Address(addr)
 
         assertBadSplit("127.0.1")
@@ -210,7 +210,7 @@ kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 
     eleza test_empty_octet(self):
         eleza assertBadOctet(addr):
-            with self.assertAddressError("Empty octet not permitted in %r",
+            with self.assertAddressError("Empty octet sio permitted kwenye %r",
                                          addr):
                 ipaddress.IPv4Address(addr)
 
@@ -219,7 +219,7 @@ kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 
     eleza test_invalid_characters(self):
         eleza assertBadOctet(addr, octet):
-            msg = "Only decimal digits permitted in %r in %r" % (octet, addr)
+            msg = "Only decimal digits permitted kwenye %r kwenye %r" % (octet, addr)
             with self.assertAddressError(re.escape(msg)):
                 ipaddress.IPv4Address(addr)
 
@@ -235,7 +235,7 @@ kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 
     eleza test_octet_length(self):
         eleza assertBadOctet(addr, octet):
-            msg = "At most 3 characters permitted in %r in %r"
+            msg = "At most 3 characters permitted kwenye %r kwenye %r"
             with self.assertAddressError(re.escape(msg % (octet, addr))):
                 ipaddress.IPv4Address(addr)
 
@@ -244,7 +244,7 @@ kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 
     eleza test_octet_limit(self):
         eleza assertBadOctet(addr, octet):
-            msg = "Octet %d (> 255) not permitted in %r" % (octet, addr)
+            msg = "Octet %d (> 255) sio permitted kwenye %r" % (octet, addr)
             with self.assertAddressError(re.escape(msg)):
                 ipaddress.IPv4Address(addr)
 
@@ -261,14 +261,14 @@ kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     factory = ipaddress.IPv6Address
 
-    eleza test_network_passed_as_address(self):
+    eleza test_network_pitaed_as_address(self):
         addr = "::1/24"
-        with self.assertAddressError("Unexpected '/' in %r", addr):
+        with self.assertAddressError("Unexpected '/' kwenye %r", addr):
             ipaddress.IPv6Address(addr)
 
     eleza test_bad_address_split_v6_not_enough_parts(self):
         eleza assertBadSplit(addr):
-            msg = "At least 3 parts expected in %r"
+            msg = "At least 3 parts expected kwenye %r"
             with self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -278,7 +278,7 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_bad_address_split_v6_too_many_colons(self):
         eleza assertBadSplit(addr):
-            msg = "At most 8 colons permitted in %r"
+            msg = "At most 8 colons permitted kwenye %r"
             with self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -286,25 +286,25 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
         assertBadSplit("10:9:8:7:6:5:4:3:2:1")
         assertBadSplit("::8:7:6:5:4:3:2:1")
         assertBadSplit("8:7:6:5:4:3:2:1::")
-        # A trailing IPv4 address is two parts
+        # A trailing IPv4 address ni two parts
         assertBadSplit("10:9:8:7:6:5:4:3:42.42.42.42")
 
     eleza test_bad_address_split_v6_too_many_parts(self):
         eleza assertBadSplit(addr):
-            msg = "Exactly 8 parts expected without '::' in %r"
+            msg = "Exactly 8 parts expected without '::' kwenye %r"
             with self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit("3ffe:0:0:0:0:0:0:0:1")
         assertBadSplit("9:8:7:6:5:4:3:2:1")
         assertBadSplit("7:6:5:4:3:2:1")
-        # A trailing IPv4 address is two parts
+        # A trailing IPv4 address ni two parts
         assertBadSplit("9:8:7:6:5:4:3:42.42.42.42")
         assertBadSplit("7:6:5:4:3:42.42.42.42")
 
     eleza test_bad_address_split_v6_too_many_parts_with_double_colon(self):
         eleza assertBadSplit(addr):
-            msg = "Expected at most 7 other parts with '::' in %r"
+            msg = "Expected at most 7 other parts with '::' kwenye %r"
             with self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -312,7 +312,7 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_bad_address_split_v6_repeated_double_colon(self):
         eleza assertBadSplit(addr):
-            msg = "At most one '::' permitted in %r"
+            msg = "At most one '::' permitted kwenye %r"
             with self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -329,7 +329,7 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_bad_address_split_v6_leading_colon(self):
         eleza assertBadSplit(addr):
-            msg = "Leading ':' only permitted as part of '::' in %r"
+            msg = "Leading ':' only permitted kama part of '::' kwenye %r"
             with self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -340,7 +340,7 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_bad_address_split_v6_trailing_colon(self):
         eleza assertBadSplit(addr):
-            msg = "Trailing ':' only permitted as part of '::' in %r"
+            msg = "Trailing ':' only permitted kama part of '::' kwenye %r"
             with self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -351,23 +351,23 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_bad_v4_part_in(self):
         eleza assertBadAddressPart(addr, v4_error):
-            with self.assertAddressError("%s in %r", v4_error, addr):
+            with self.assertAddressError("%s kwenye %r", v4_error, addr):
                 ipaddress.IPv6Address(addr)
 
-        assertBadAddressPart("3ffe::1.net", "Expected 4 octets in '1.net'")
+        assertBadAddressPart("3ffe::1.net", "Expected 4 octets kwenye '1.net'")
         assertBadAddressPart("3ffe::127.0.1",
-                             "Expected 4 octets in '127.0.1'")
+                             "Expected 4 octets kwenye '127.0.1'")
         assertBadAddressPart("::1.2.3",
-                             "Expected 4 octets in '1.2.3'")
+                             "Expected 4 octets kwenye '1.2.3'")
         assertBadAddressPart("::1.2.3.4.5",
-                             "Expected 4 octets in '1.2.3.4.5'")
+                             "Expected 4 octets kwenye '1.2.3.4.5'")
         assertBadAddressPart("3ffe::1.1.1.net",
-                             "Only decimal digits permitted in 'net' "
+                             "Only decimal digits permitted kwenye 'net' "
                              "in '1.1.1.net'")
 
     eleza test_invalid_characters(self):
         eleza assertBadPart(addr, part):
-            msg = "Only hex digits permitted in %r in %r" % (part, addr)
+            msg = "Only hex digits permitted kwenye %r kwenye %r" % (part, addr)
             with self.assertAddressError(re.escape(msg)):
                 ipaddress.IPv6Address(addr)
 
@@ -380,7 +380,7 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_part_length(self):
         eleza assertBadPart(addr, part):
-            msg = "At most 4 characters permitted in %r in %r"
+            msg = "At most 4 characters permitted kwenye %r kwenye %r"
             with self.assertAddressError(msg, part, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -397,10 +397,10 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
 
 kundi NetmaskTestMixin_v4(CommonTestMixin_v4):
-    """Input validation on interfaces and networks is very similar"""
+    """Input validation on interfaces na networks ni very similar"""
 
     eleza test_no_mask(self):
-        for address in ('1.2.3.4', 0x01020304, b'\x01\x02\x03\x04'):
+        kila address kwenye ('1.2.3.4', 0x01020304, b'\x01\x02\x03\x04'):
             net = self.factory(address)
             self.assertEqual(str(net), '1.2.3.4/32')
             self.assertEqual(str(net.netmask), '255.255.255.255')
@@ -410,7 +410,7 @@ kundi NetmaskTestMixin_v4(CommonTestMixin_v4):
 
     eleza test_split_netmask(self):
         addr = "1.2.3.4/32/24"
-        with self.assertAddressError("Only one '/' permitted in %r" % addr):
+        with self.assertAddressError("Only one '/' permitted kwenye %r" % addr):
             self.factory(addr)
 
     eleza test_address_errors(self):
@@ -429,26 +429,26 @@ kundi NetmaskTestMixin_v4(CommonTestMixin_v4):
     eleza test_valid_netmask(self):
         self.assertEqual(str(self.factory('192.0.2.0/255.255.255.0')),
                          '192.0.2.0/24')
-        for i in range(0, 33):
-            # Generate and re-parse the CIDR format (trivial).
+        kila i kwenye range(0, 33):
+            # Generate na re-parse the CIDR format (trivial).
             net_str = '0.0.0.0/%d' % i
             net = self.factory(net_str)
             self.assertEqual(str(net), net_str)
-            # Generate and re-parse the expanded netmask.
+            # Generate na re-parse the expanded netmask.
             self.assertEqual(
                 str(self.factory('0.0.0.0/%s' % net.netmask)), net_str)
-            # Zero prefix is treated as decimal.
+            # Zero prefix ni treated kama decimal.
             self.assertEqual(str(self.factory('0.0.0.0/0%d' % i)), net_str)
-            # Generate and re-parse the expanded hostmask.  The ambiguous
-            # cases (/0 and /32) are treated as netmasks.
-            ikiwa i in (32, 0):
+            # Generate na re-parse the expanded hostmask.  The ambiguous
+            # cases (/0 na /32) are treated kama netmasks.
+            ikiwa i kwenye (32, 0):
                 net_str = '0.0.0.0/%d' % (32 - i)
             self.assertEqual(
                 str(self.factory('0.0.0.0/%s' % net.hostmask)), net_str)
 
     eleza test_netmask_errors(self):
         eleza assertBadNetmask(addr, netmask):
-            msg = "%r is not a valid netmask" % netmask
+            msg = "%r ni sio a valid netmask" % netmask
             with self.assertNetmaskError(re.escape(msg)):
                 self.factory("%s/%s" % (addr, netmask))
 
@@ -469,7 +469,7 @@ kundi NetmaskTestMixin_v4(CommonTestMixin_v4):
 
     eleza test_netmask_in_tuple_errors(self):
         eleza assertBadNetmask(addr, netmask):
-            msg = "%r is not a valid netmask" % netmask
+            msg = "%r ni sio a valid netmask" % netmask
             with self.assertNetmaskError(re.escape(msg)):
                 self.factory((addr, netmask))
         assertBadNetmask("1.1.1.1", -1)
@@ -490,37 +490,37 @@ kundi NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
 
     eleza test_subnet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('10.0.0.0/30').subnet_of(
                 self.factory('10.0.1.0/24')))
         # containee inside container
-        self.assertTrue(
+        self.assertKweli(
             self.factory('10.0.0.0/30').subnet_of(
                 self.factory('10.0.0.0/24')))
         # containee right of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('10.0.0.0/30').subnet_of(
                 self.factory('10.0.1.0/24')))
         # containee larger than container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('10.0.1.0/24').subnet_of(
                 self.factory('10.0.0.0/30')))
 
     eleza test_supernet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('10.0.0.0/30').supernet_of(
                 self.factory('10.0.1.0/24')))
         # containee inside container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('10.0.0.0/30').supernet_of(
                 self.factory('10.0.0.0/24')))
         # containee right of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('10.0.0.0/30').supernet_of(
                 self.factory('10.0.1.0/24')))
         # containee larger than container
-        self.assertTrue(
+        self.assertKweli(
             self.factory('10.0.0.0/24').supernet_of(
                 self.factory('10.0.0.0/30')))
 
@@ -540,10 +540,10 @@ kundi NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
 
 
 kundi NetmaskTestMixin_v6(CommonTestMixin_v6):
-    """Input validation on interfaces and networks is very similar"""
+    """Input validation on interfaces na networks ni very similar"""
 
     eleza test_no_mask(self):
-        for address in ('::1', 1, b'\x00'*15 + b'\x01'):
+        kila address kwenye ('::1', 1, b'\x00'*15 + b'\x01'):
             net = self.factory(address)
             self.assertEqual(str(net), '::1/128')
             self.assertEqual(str(net.netmask), 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff')
@@ -553,7 +553,7 @@ kundi NetmaskTestMixin_v6(CommonTestMixin_v6):
 
     eleza test_split_netmask(self):
         addr = "cafe:cafe::/128/190"
-        with self.assertAddressError("Only one '/' permitted in %r" % addr):
+        with self.assertAddressError("Only one '/' permitted kwenye %r" % addr):
             self.factory(addr)
 
     eleza test_address_errors(self):
@@ -569,19 +569,19 @@ kundi NetmaskTestMixin_v6(CommonTestMixin_v6):
         assertBadAddress("1234:axy::b", "Only hex digits")
 
     eleza test_valid_netmask(self):
-        # We only support CIDR for IPv6, because expanded netmasks are not
+        # We only support CIDR kila IPv6, because expanded netmasks are not
         # standard notation.
         self.assertEqual(str(self.factory('2001:db8::/32')), '2001:db8::/32')
-        for i in range(0, 129):
-            # Generate and re-parse the CIDR format (trivial).
+        kila i kwenye range(0, 129):
+            # Generate na re-parse the CIDR format (trivial).
             net_str = '::/%d' % i
             self.assertEqual(str(self.factory(net_str)), net_str)
-            # Zero prefix is treated as decimal.
+            # Zero prefix ni treated kama decimal.
             self.assertEqual(str(self.factory('::/0%d' % i)), net_str)
 
     eleza test_netmask_errors(self):
         eleza assertBadNetmask(addr, netmask):
-            msg = "%r is not a valid netmask" % netmask
+            msg = "%r ni sio a valid netmask" % netmask
             with self.assertNetmaskError(re.escape(msg)):
                 self.factory("%s/%s" % (addr, netmask))
 
@@ -599,7 +599,7 @@ kundi NetmaskTestMixin_v6(CommonTestMixin_v6):
 
     eleza test_netmask_in_tuple_errors(self):
         eleza assertBadNetmask(addr, netmask):
-            msg = "%r is not a valid netmask" % netmask
+            msg = "%r ni sio a valid netmask" % netmask
             with self.assertNetmaskError(re.escape(msg)):
                 self.factory((addr, netmask))
         assertBadNetmask("::1", -1)
@@ -620,37 +620,37 @@ kundi NetworkTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
 
     eleza test_subnet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('2000:999::/56').subnet_of(
                 self.factory('2000:aaa::/48')))
         # containee inside container
-        self.assertTrue(
+        self.assertKweli(
             self.factory('2000:aaa::/56').subnet_of(
                 self.factory('2000:aaa::/48')))
         # containee right of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('2000:bbb::/56').subnet_of(
                 self.factory('2000:aaa::/48')))
         # containee larger than container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('2000:aaa::/48').subnet_of(
                 self.factory('2000:aaa::/56')))
 
     eleza test_supernet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('2000:999::/56').supernet_of(
                 self.factory('2000:aaa::/48')))
         # containee inside container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('2000:aaa::/56').supernet_of(
                 self.factory('2000:aaa::/48')))
         # containee right of container
-        self.assertFalse(
+        self.assertUongo(
             self.factory('2000:bbb::/56').supernet_of(
                 self.factory('2000:aaa::/48')))
         # containee larger than container
-        self.assertTrue(
+        self.assertKweli(
             self.factory('2000:aaa::/48').supernet_of(
                 self.factory('2000:aaa::/56')))
 
@@ -660,7 +660,7 @@ kundi FactoryFunctionErrors(BaseTestCase):
     eleza assertFactoryError(self, factory, kind):
         """Ensure a clean ValueError with the expected message"""
         addr = "camelot"
-        msg = '%r does not appear to be an IPv4 or IPv6 %s'
+        msg = '%r does sio appear to be an IPv4 ama IPv6 %s'
         with self.assertCleanError(ValueError, msg, addr, kind):
             factory(addr)
 
@@ -698,31 +698,31 @@ kundi ComparisonTests(unittest.TestCase):
     v6intf2 = ipaddress.IPv6Interface(2)
 
     eleza test_foreign_type_equality(self):
-        # __eq__ should never raise TypeError directly
+        # __eq__ should never ashiria TypeError directly
         other = object()
-        for obj in self.objects:
+        kila obj kwenye self.objects:
             self.assertNotEqual(obj, other)
-            self.assertFalse(obj == other)
+            self.assertUongo(obj == other)
             self.assertEqual(obj.__eq__(other), NotImplemented)
             self.assertEqual(obj.__ne__(other), NotImplemented)
 
     eleza test_mixed_type_equality(self):
         # Ensure none of the internal objects accidentally
         # expose the right set of attributes to become "equal"
-        for lhs in self.objects:
-            for rhs in self.objects:
-                ikiwa lhs is rhs:
-                    continue
+        kila lhs kwenye self.objects:
+            kila rhs kwenye self.objects:
+                ikiwa lhs ni rhs:
+                    endelea
                 self.assertNotEqual(lhs, rhs)
 
     eleza test_same_type_equality(self):
-        for obj in self.objects:
+        kila obj kwenye self.objects:
             self.assertEqual(obj, obj)
             self.assertLessEqual(obj, obj)
             self.assertGreaterEqual(obj, obj)
 
     eleza test_same_type_ordering(self):
-        for lhs, rhs in (
+        kila lhs, rhs kwenye (
             (self.v4addr, self.v4addr2),
             (self.v4net, self.v4net2),
             (self.v4intf, self.v4intf2),
@@ -735,26 +735,26 @@ kundi ComparisonTests(unittest.TestCase):
             self.assertLessEqual(lhs, rhs)
             self.assertGreater(rhs, lhs)
             self.assertGreaterEqual(rhs, lhs)
-            self.assertFalse(lhs > rhs)
-            self.assertFalse(rhs < lhs)
-            self.assertFalse(lhs >= rhs)
-            self.assertFalse(rhs <= lhs)
+            self.assertUongo(lhs > rhs)
+            self.assertUongo(rhs < lhs)
+            self.assertUongo(lhs >= rhs)
+            self.assertUongo(rhs <= lhs)
 
     eleza test_containment(self):
-        for obj in self.v4_addresses:
+        kila obj kwenye self.v4_addresses:
             self.assertIn(obj, self.v4net)
-        for obj in self.v6_addresses:
+        kila obj kwenye self.v6_addresses:
             self.assertIn(obj, self.v6net)
-        for obj in self.v4_objects + [self.v6net]:
+        kila obj kwenye self.v4_objects + [self.v6net]:
             self.assertNotIn(obj, self.v6net)
-        for obj in self.v6_objects + [self.v4net]:
+        kila obj kwenye self.v6_objects + [self.v4net]:
             self.assertNotIn(obj, self.v4net)
 
     eleza test_mixed_type_ordering(self):
-        for lhs in self.objects:
-            for rhs in self.objects:
-                ikiwa isinstance(lhs, type(rhs)) or isinstance(rhs, type(lhs)):
-                    continue
+        kila lhs kwenye self.objects:
+            kila rhs kwenye self.objects:
+                ikiwa isinstance(lhs, type(rhs)) ama isinstance(rhs, type(lhs)):
+                    endelea
                 self.assertRaises(TypeError, lambda: lhs < rhs)
                 self.assertRaises(TypeError, lambda: lhs > rhs)
                 self.assertRaises(TypeError, lambda: lhs <= rhs)
@@ -762,7 +762,7 @@ kundi ComparisonTests(unittest.TestCase):
 
     eleza test_foreign_type_ordering(self):
         other = object()
-        for obj in self.objects:
+        kila obj kwenye self.objects:
             with self.assertRaises(TypeError):
                 obj < other
             with self.assertRaises(TypeError):
@@ -771,17 +771,17 @@ kundi ComparisonTests(unittest.TestCase):
                 obj <= other
             with self.assertRaises(TypeError):
                 obj >= other
-            self.assertTrue(obj < LARGEST)
-            self.assertFalse(obj > LARGEST)
-            self.assertTrue(obj <= LARGEST)
-            self.assertFalse(obj >= LARGEST)
-            self.assertFalse(obj < SMALLEST)
-            self.assertTrue(obj > SMALLEST)
-            self.assertFalse(obj <= SMALLEST)
-            self.assertTrue(obj >= SMALLEST)
+            self.assertKweli(obj < LARGEST)
+            self.assertUongo(obj > LARGEST)
+            self.assertKweli(obj <= LARGEST)
+            self.assertUongo(obj >= LARGEST)
+            self.assertUongo(obj < SMALLEST)
+            self.assertKweli(obj > SMALLEST)
+            self.assertUongo(obj <= SMALLEST)
+            self.assertKweli(obj >= SMALLEST)
 
     eleza test_mixed_type_key(self):
-        # with get_mixed_type_key, you can sort addresses and network.
+        # with get_mixed_type_key, you can sort addresses na network.
         v4_ordered = [self.v4addr, self.v4net, self.v4intf]
         v6_ordered = [self.v6addr, self.v6net, self.v6intf]
         self.assertEqual(v4_ordered,
@@ -796,7 +796,7 @@ kundi ComparisonTests(unittest.TestCase):
         self.assertEqual(NotImplemented, ipaddress.get_mixed_type_key(object))
 
     eleza test_incompatible_versions(self):
-        # These should always raise TypeError
+        # These should always ashiria TypeError
         v4addr = ipaddress.ip_address('1.1.1.1')
         v4net = ipaddress.ip_network('1.1.1.1')
         v6addr = ipaddress.ip_address('::1')
@@ -846,7 +846,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
                                                 '255.255.255.255')), net)
         self.assertEqual(ipaddress.IPv4Network((3221225985,
                                                 '255.255.255.255')), net)
-        # strict=True and host bits set
+        # strict=Kweli na host bits set
         with self.assertRaises(ValueError):
             ipaddress.IPv4Network(('192.0.2.1', 24))
         with self.assertRaises(ValueError):
@@ -859,23 +859,23 @@ kundi IpaddrUnitTest(unittest.TestCase):
             ipaddress.IPv4Network((ip, '255.255.255.0'))
         with self.assertRaises(ValueError):
             ipaddress.IPv4Network((3221225985, '255.255.255.0'))
-        # strict=False and host bits set
+        # strict=Uongo na host bits set
         net = ipaddress.IPv4Network('192.0.2.0/24')
         self.assertEqual(ipaddress.IPv4Network(('192.0.2.1', 24),
-                                               strict=False), net)
+                                               strict=Uongo), net)
         self.assertEqual(ipaddress.IPv4Network((ip, 24),
-                                               strict=False), net)
+                                               strict=Uongo), net)
         self.assertEqual(ipaddress.IPv4Network((3221225985, 24),
-                                               strict=False), net)
+                                               strict=Uongo), net)
         self.assertEqual(ipaddress.IPv4Network(('192.0.2.1',
                                                 '255.255.255.0'),
-                                               strict=False), net)
+                                               strict=Uongo), net)
         self.assertEqual(ipaddress.IPv4Network((ip,
                                                 '255.255.255.0'),
-                                               strict=False), net)
+                                               strict=Uongo), net)
         self.assertEqual(ipaddress.IPv4Network((3221225985,
                                                 '255.255.255.0'),
-                                               strict=False), net)
+                                               strict=Uongo), net)
 
         # /24
         ip = ipaddress.IPv4Address('192.0.2.0')
@@ -917,7 +917,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(ipaddress.IPv6Network((ip, '96')),
                          net)
 
-        # strict=True and host bits set
+        # strict=Kweli na host bits set
         ip = ipaddress.IPv6Address('2001:db8::1')
         with self.assertRaises(ValueError):
             ipaddress.IPv6Network(('2001:db8::1', 96))
@@ -926,16 +926,16 @@ kundi IpaddrUnitTest(unittest.TestCase):
                 42540766411282592856903984951653826561, 96))
         with self.assertRaises(ValueError):
             ipaddress.IPv6Network((ip, 96))
-        # strict=False and host bits set
+        # strict=Uongo na host bits set
         net = ipaddress.IPv6Network('2001:db8::/96')
         self.assertEqual(ipaddress.IPv6Network(('2001:db8::1', 96),
-                                               strict=False),
+                                               strict=Uongo),
                          net)
         self.assertEqual(ipaddress.IPv6Network(
                              (42540766411282592856903984951653826561, 96),
-                             strict=False),
+                             strict=Uongo),
                          net)
-        self.assertEqual(ipaddress.IPv6Network((ip, 96), strict=False),
+        self.assertEqual(ipaddress.IPv6Network((ip, 96), strict=Uongo),
                          net)
 
         # /96
@@ -1114,7 +1114,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(ipaddress.IPv6Address('2001:658:22a:cafe::1'), hosts[0])
         self.assertEqual(ipaddress.IPv6Address('2001:658:22a:cafe::ff'), hosts[-1])
 
-        # special case where only 1 bit is left for address
+        # special case where only 1 bit ni left kila address
         addrs = [ipaddress.IPv4Address('2.0.0.0'),
                  ipaddress.IPv4Address('2.0.0.1')]
         str_args = '2.0.0.0/31'
@@ -1162,25 +1162,25 @@ kundi IpaddrUnitTest(unittest.TestCase):
 
     eleza testGetSubnetForSingle32(self):
         ip = ipaddress.IPv4Network('1.2.3.4/32')
-        subnets1 = [str(x) for x in ip.subnets()]
-        subnets2 = [str(x) for x in ip.subnets(2)]
+        subnets1 = [str(x) kila x kwenye ip.subnets()]
+        subnets2 = [str(x) kila x kwenye ip.subnets(2)]
         self.assertEqual(subnets1, ['1.2.3.4/32'])
         self.assertEqual(subnets1, subnets2)
 
     eleza testGetSubnetForSingle128(self):
         ip = ipaddress.IPv6Network('::1/128')
-        subnets1 = [str(x) for x in ip.subnets()]
-        subnets2 = [str(x) for x in ip.subnets(2)]
+        subnets1 = [str(x) kila x kwenye ip.subnets()]
+        subnets2 = [str(x) kila x kwenye ip.subnets(2)]
         self.assertEqual(subnets1, ['::1/128'])
         self.assertEqual(subnets1, subnets2)
 
     eleza testSubnet2(self):
-        ips = [str(x) for x in self.ipv4_network.subnets(2)]
+        ips = [str(x) kila x kwenye self.ipv4_network.subnets(2)]
         self.assertEqual(
             ips,
             ['1.2.3.0/26', '1.2.3.64/26', '1.2.3.128/26', '1.2.3.192/26'])
 
-        ipsv6 = [str(x) for x in self.ipv6_network.subnets(2)]
+        ipsv6 = [str(x) kila x kwenye self.ipv6_network.subnets(2)]
         self.assertEqual(
             ipsv6,
             ['2001:658:22a:cafe::/66',
@@ -1189,7 +1189,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
              '2001:658:22a:cafe:c000::/66'])
 
     eleza testGetSubnets3(self):
-        subnets = [str(x) for x in self.ipv4_network.subnets(8)]
+        subnets = [str(x) kila x kwenye self.ipv4_network.subnets(8)]
         self.assertEqual(subnets[:3],
             ['1.2.3.0/32', '1.2.3.1/32', '1.2.3.2/32'])
         self.assertEqual(subnets[-3:],
@@ -1197,7 +1197,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(len(subnets), 256)
 
         ipv6_network = ipaddress.IPv6Network('2001:658:22a:cafe::/120')
-        subnets = [str(x) for x in ipv6_network.subnets(8)]
+        subnets = [str(x) kila x kwenye ipv6_network.subnets(8)]
         self.assertEqual(subnets[:3],
             ['2001:658:22a:cafe::/128',
              '2001:658:22a:cafe::1/128',
@@ -1251,12 +1251,12 @@ kundi IpaddrUnitTest(unittest.TestCase):
                       self.ipv4_network)
         self.assertNotIn(ipaddress.IPv4Interface('1.2.4.1/24'),
                          self.ipv4_network)
-        # We can test addresses and string as well.
+        # We can test addresses na string kama well.
         addr1 = ipaddress.IPv4Address('1.2.3.37')
         self.assertIn(addr1, self.ipv4_network)
         # issue 61, bad network comparison on like-ip'd network objects
         # with identical broadcast addresses.
-        self.assertFalse(ipaddress.IPv4Network('1.1.0.0/16').__contains__(
+        self.assertUongo(ipaddress.IPv4Network('1.1.0.0/16').__contains__(
                 ipaddress.IPv4Network('1.0.0.0/15')))
 
     eleza testNth(self):
@@ -1279,58 +1279,58 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(addr_list[-1], addr[-1])
 
     eleza testEqual(self):
-        self.assertTrue(self.ipv4_interface ==
+        self.assertKweli(self.ipv4_interface ==
                         ipaddress.IPv4Interface('1.2.3.4/24'))
-        self.assertFalse(self.ipv4_interface ==
+        self.assertUongo(self.ipv4_interface ==
                          ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertFalse(self.ipv4_interface ==
+        self.assertUongo(self.ipv4_interface ==
                          ipaddress.IPv6Interface('::1.2.3.4/24'))
-        self.assertFalse(self.ipv4_interface == '')
-        self.assertFalse(self.ipv4_interface == [])
-        self.assertFalse(self.ipv4_interface == 2)
+        self.assertUongo(self.ipv4_interface == '')
+        self.assertUongo(self.ipv4_interface == [])
+        self.assertUongo(self.ipv4_interface == 2)
 
-        self.assertTrue(self.ipv6_interface ==
+        self.assertKweli(self.ipv6_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/64'))
-        self.assertFalse(self.ipv6_interface ==
+        self.assertUongo(self.ipv6_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/63'))
-        self.assertFalse(self.ipv6_interface ==
+        self.assertUongo(self.ipv6_interface ==
                          ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertFalse(self.ipv6_interface == '')
-        self.assertFalse(self.ipv6_interface == [])
-        self.assertFalse(self.ipv6_interface == 2)
+        self.assertUongo(self.ipv6_interface == '')
+        self.assertUongo(self.ipv6_interface == [])
+        self.assertUongo(self.ipv6_interface == 2)
 
     eleza testNotEqual(self):
-        self.assertFalse(self.ipv4_interface !=
+        self.assertUongo(self.ipv4_interface !=
                          ipaddress.IPv4Interface('1.2.3.4/24'))
-        self.assertTrue(self.ipv4_interface !=
+        self.assertKweli(self.ipv4_interface !=
                         ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertTrue(self.ipv4_interface !=
+        self.assertKweli(self.ipv4_interface !=
                         ipaddress.IPv6Interface('::1.2.3.4/24'))
-        self.assertTrue(self.ipv4_interface != '')
-        self.assertTrue(self.ipv4_interface != [])
-        self.assertTrue(self.ipv4_interface != 2)
+        self.assertKweli(self.ipv4_interface != '')
+        self.assertKweli(self.ipv4_interface != [])
+        self.assertKweli(self.ipv4_interface != 2)
 
-        self.assertTrue(self.ipv4_address !=
+        self.assertKweli(self.ipv4_address !=
                          ipaddress.IPv4Address('1.2.3.5'))
-        self.assertTrue(self.ipv4_address != '')
-        self.assertTrue(self.ipv4_address != [])
-        self.assertTrue(self.ipv4_address != 2)
+        self.assertKweli(self.ipv4_address != '')
+        self.assertKweli(self.ipv4_address != [])
+        self.assertKweli(self.ipv4_address != 2)
 
-        self.assertFalse(self.ipv6_interface !=
+        self.assertUongo(self.ipv6_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/64'))
-        self.assertTrue(self.ipv6_interface !=
+        self.assertKweli(self.ipv6_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/63'))
-        self.assertTrue(self.ipv6_interface !=
+        self.assertKweli(self.ipv6_interface !=
                         ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertTrue(self.ipv6_interface != '')
-        self.assertTrue(self.ipv6_interface != [])
-        self.assertTrue(self.ipv6_interface != 2)
+        self.assertKweli(self.ipv6_interface != '')
+        self.assertKweli(self.ipv6_interface != [])
+        self.assertKweli(self.ipv6_interface != 2)
 
-        self.assertTrue(self.ipv6_address !=
+        self.assertKweli(self.ipv6_address !=
                         ipaddress.IPv4Address('1.2.3.4'))
-        self.assertTrue(self.ipv6_address != '')
-        self.assertTrue(self.ipv6_address != [])
-        self.assertTrue(self.ipv6_address != 2)
+        self.assertKweli(self.ipv6_address != '')
+        self.assertKweli(self.ipv6_address != [])
+        self.assertKweli(self.ipv6_address != 2)
 
     eleza testSlash32Constructor(self):
         self.assertEqual(str(ipaddress.IPv4Interface(
@@ -1359,7 +1359,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
                 [ipaddress.IPv4Network('1.1.1.0/30'),
                  ipaddress.IPv4Network('1.1.1.4/32')])
 
-        # test a mix of IP addresses and networks including some duplicates
+        # test a mix of IP addresses na networks including some duplicates
         ip1 = ipaddress.IPv4Address('1.1.1.0')
         ip2 = ipaddress.IPv4Address('1.1.1.1')
         ip3 = ipaddress.IPv4Address('1.1.1.2')
@@ -1377,7 +1377,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         ip3 = ipaddress.IPv4Network('1.1.2.0/24')
         ip4 = ipaddress.IPv4Network('1.1.3.0/24')
         ip5 = ipaddress.IPv4Network('1.1.4.0/24')
-        # stored in no particular order b/c we want CollapseAddr to call
+        # stored kwenye no particular order b/c we want CollapseAddr to call
         # [].sort
         ip6 = ipaddress.IPv4Network('1.1.0.0/22')
         # check that addresses are subsumed properly.
@@ -1419,7 +1419,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
                 (ipaddress.IPv4Network('1.1.0.0/32'),
                  ipaddress.IPv6Network('2001::/128')),
         ]
-        for ip1, ip2 in addr_tuples:
+        kila ip1, ip2 kwenye addr_tuples:
             self.assertRaises(TypeError, ipaddress.collapse_addresses,
                               [ip1, ip2])
 
@@ -1430,7 +1430,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         ip1 = ipaddress.ip_address('1.1.1.0')
         ip2 = ipaddress.ip_address('1.1.1.255')
 
-        # summarize works only for IPv4 & IPv6
+        # summarize works only kila IPv4 & IPv6
         kundi IPv7Address(ipaddress.IPv6Address):
             @property
             eleza version(self):
@@ -1442,7 +1442,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         # test that a summary over ip4 & ip6 fails
         self.assertRaises(TypeError, list,
                           summarize(ip1, ipaddress.IPv6Address('::1')))
-        # test a /24 is summarized properly
+        # test a /24 ni summarized properly
         self.assertEqual(list(summarize(ip1, ip2))[0],
                          ipaddress.ip_network('1.1.1.0/24'))
         # test an IPv4 range that isn't on a network byte boundary
@@ -1458,7 +1458,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
 
         ip1 = ipaddress.ip_address('1::')
         ip2 = ipaddress.ip_address('1:ffff:ffff:ffff:ffff:ffff:ffff:ffff')
-        # test an IPv6 is summarized properly
+        # test an IPv6 ni summarized properly
         self.assertEqual(list(summarize(ip1, ip2))[0],
                          ipaddress.ip_network('1::/16'))
         # test an IPv6 range that isn't on a network byte boundary
@@ -1467,71 +1467,71 @@ kundi IpaddrUnitTest(unittest.TestCase):
                          [ipaddress.ip_network('1::/16'),
                           ipaddress.ip_network('2::/128')])
 
-        # test exception raised when first is greater than last
+        # test exception ashiriad when first ni greater than last
         self.assertRaises(ValueError, list,
                           summarize(ipaddress.ip_address('1.1.1.0'),
                                     ipaddress.ip_address('1.1.0.0')))
-        # test exception raised when first and last aren't IP addresses
+        # test exception ashiriad when first na last aren't IP addresses
         self.assertRaises(TypeError, list,
                           summarize(ipaddress.ip_network('1.1.1.0'),
                                     ipaddress.ip_network('1.1.0.0')))
         self.assertRaises(TypeError, list,
                           summarize(ipaddress.ip_network('1.1.1.0'),
                                     ipaddress.ip_network('1.1.0.0')))
-        # test exception raised when first and last are not same version
+        # test exception ashiriad when first na last are sio same version
         self.assertRaises(TypeError, list,
                           summarize(ipaddress.ip_address('::'),
                                     ipaddress.ip_network('1.1.0.0')))
 
     eleza testAddressComparison(self):
-        self.assertTrue(ipaddress.ip_address('1.1.1.1') <=
+        self.assertKweli(ipaddress.ip_address('1.1.1.1') <=
                         ipaddress.ip_address('1.1.1.1'))
-        self.assertTrue(ipaddress.ip_address('1.1.1.1') <=
+        self.assertKweli(ipaddress.ip_address('1.1.1.1') <=
                         ipaddress.ip_address('1.1.1.2'))
-        self.assertTrue(ipaddress.ip_address('::1') <=
+        self.assertKweli(ipaddress.ip_address('::1') <=
                         ipaddress.ip_address('::1'))
-        self.assertTrue(ipaddress.ip_address('::1') <=
+        self.assertKweli(ipaddress.ip_address('::1') <=
                         ipaddress.ip_address('::2'))
 
     eleza testInterfaceComparison(self):
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') ==
+        self.assertKweli(ipaddress.ip_interface('1.1.1.1/24') ==
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/16') <
+        self.assertKweli(ipaddress.ip_interface('1.1.1.1/16') <
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') <
+        self.assertKweli(ipaddress.ip_interface('1.1.1.1/24') <
                         ipaddress.ip_interface('1.1.1.2/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.2/16') <
+        self.assertKweli(ipaddress.ip_interface('1.1.1.2/16') <
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') >
+        self.assertKweli(ipaddress.ip_interface('1.1.1.1/24') >
                         ipaddress.ip_interface('1.1.1.1/16'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.2/24') >
+        self.assertKweli(ipaddress.ip_interface('1.1.1.2/24') >
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') >
+        self.assertKweli(ipaddress.ip_interface('1.1.1.1/24') >
                         ipaddress.ip_interface('1.1.1.2/16'))
 
-        self.assertTrue(ipaddress.ip_interface('::1/64') ==
+        self.assertKweli(ipaddress.ip_interface('::1/64') ==
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') <
+        self.assertKweli(ipaddress.ip_interface('::1/64') <
                         ipaddress.ip_interface('::1/80'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') <
+        self.assertKweli(ipaddress.ip_interface('::1/64') <
                         ipaddress.ip_interface('::2/64'))
-        self.assertTrue(ipaddress.ip_interface('::2/48') <
+        self.assertKweli(ipaddress.ip_interface('::2/48') <
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/80') >
+        self.assertKweli(ipaddress.ip_interface('::1/80') >
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::2/64') >
+        self.assertKweli(ipaddress.ip_interface('::2/64') >
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') >
+        self.assertKweli(ipaddress.ip_interface('::1/64') >
                         ipaddress.ip_interface('::2/48'))
 
     eleza testNetworkComparison(self):
-        # ip1 and ip2 have the same network address
+        # ip1 na ip2 have the same network address
         ip1 = ipaddress.IPv4Network('1.1.1.0/24')
         ip2 = ipaddress.IPv4Network('1.1.1.0/32')
         ip3 = ipaddress.IPv4Network('1.1.2.0/24')
 
-        self.assertTrue(ip1 < ip3)
-        self.assertTrue(ip3 > ip2)
+        self.assertKweli(ip1 < ip3)
+        self.assertKweli(ip3 > ip2)
 
         self.assertEqual(ip1.compare_networks(ip1), 0)
 
@@ -1541,19 +1541,19 @@ kundi IpaddrUnitTest(unittest.TestCase):
 
         self.assertEqual(ip1.compare_networks(ip3), -1)
         self.assertEqual(ip3.compare_networks(ip1), 1)
-        self.assertTrue(ip1._get_networks_key() < ip3._get_networks_key())
+        self.assertKweli(ip1._get_networks_key() < ip3._get_networks_key())
 
         ip1 = ipaddress.IPv6Network('2001:2000::/96')
         ip2 = ipaddress.IPv6Network('2001:2001::/96')
         ip3 = ipaddress.IPv6Network('2001:ffff:2000::/96')
 
-        self.assertTrue(ip1 < ip3)
-        self.assertTrue(ip3 > ip2)
+        self.assertKweli(ip1 < ip3)
+        self.assertKweli(ip3 > ip2)
         self.assertEqual(ip1.compare_networks(ip3), -1)
-        self.assertTrue(ip1._get_networks_key() < ip3._get_networks_key())
+        self.assertKweli(ip1._get_networks_key() < ip3._get_networks_key())
 
         # Test comparing different protocols.
-        # Should always raise a TypeError.
+        # Should always ashiria a TypeError.
         self.assertRaises(TypeError,
                           self.ipv4_network.compare_networks,
                           self.ipv6_network)
@@ -1564,22 +1564,22 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertRaises(TypeError, ipv6.__lt__, ipv4)
         self.assertRaises(TypeError, ipv6.__gt__, ipv4)
 
-        # Regression test for issue 19.
+        # Regression test kila issue 19.
         ip1 = ipaddress.ip_network('10.1.2.128/25')
-        self.assertFalse(ip1 < ip1)
-        self.assertFalse(ip1 > ip1)
+        self.assertUongo(ip1 < ip1)
+        self.assertUongo(ip1 > ip1)
         ip2 = ipaddress.ip_network('10.1.3.0/24')
-        self.assertTrue(ip1 < ip2)
-        self.assertFalse(ip2 < ip1)
-        self.assertFalse(ip1 > ip2)
-        self.assertTrue(ip2 > ip1)
+        self.assertKweli(ip1 < ip2)
+        self.assertUongo(ip2 < ip1)
+        self.assertUongo(ip1 > ip2)
+        self.assertKweli(ip2 > ip1)
         ip3 = ipaddress.ip_network('10.1.3.0/25')
-        self.assertTrue(ip2 < ip3)
-        self.assertFalse(ip3 < ip2)
-        self.assertFalse(ip2 > ip3)
-        self.assertTrue(ip3 > ip2)
+        self.assertKweli(ip2 < ip3)
+        self.assertUongo(ip3 < ip2)
+        self.assertUongo(ip2 > ip3)
+        self.assertKweli(ip3 > ip2)
 
-        # Regression test for issue 28.
+        # Regression test kila issue 28.
         ip1 = ipaddress.ip_network('10.10.10.0/31')
         ip2 = ipaddress.ip_network('10.10.10.0')
         ip3 = ipaddress.ip_network('10.10.10.2/31')
@@ -1597,17 +1597,17 @@ kundi IpaddrUnitTest(unittest.TestCase):
                       NotImplemented)
 
         # <=, >=
-        self.assertTrue(ipaddress.ip_network('1.1.1.1') <=
+        self.assertKweli(ipaddress.ip_network('1.1.1.1') <=
                         ipaddress.ip_network('1.1.1.1'))
-        self.assertTrue(ipaddress.ip_network('1.1.1.1') <=
+        self.assertKweli(ipaddress.ip_network('1.1.1.1') <=
                         ipaddress.ip_network('1.1.1.2'))
-        self.assertFalse(ipaddress.ip_network('1.1.1.2') <=
+        self.assertUongo(ipaddress.ip_network('1.1.1.2') <=
                         ipaddress.ip_network('1.1.1.1'))
-        self.assertTrue(ipaddress.ip_network('::1') <=
+        self.assertKweli(ipaddress.ip_network('::1') <=
                         ipaddress.ip_network('::1'))
-        self.assertTrue(ipaddress.ip_network('::1') <=
+        self.assertKweli(ipaddress.ip_network('::1') <=
                         ipaddress.ip_network('::2'))
-        self.assertFalse(ipaddress.ip_network('::2') <=
+        self.assertUongo(ipaddress.ip_network('::2') <=
                          ipaddress.ip_network('::1'))
 
     eleza testStrictNetworks(self):
@@ -1618,9 +1618,9 @@ kundi IpaddrUnitTest(unittest.TestCase):
         other = ipaddress.IPv4Network('1.2.3.0/30')
         other2 = ipaddress.IPv4Network('1.2.2.0/24')
         other3 = ipaddress.IPv4Network('1.2.2.64/26')
-        self.assertTrue(self.ipv4_network.overlaps(other))
-        self.assertFalse(self.ipv4_network.overlaps(other2))
-        self.assertTrue(other2.overlaps(other3))
+        self.assertKweli(self.ipv4_network.overlaps(other))
+        self.assertUongo(self.ipv4_network.overlaps(other2))
+        self.assertKweli(other2.overlaps(other3))
 
     eleza testEmbeddedIpv4(self):
         ipv4_string = '192.168.0.1'
@@ -1632,7 +1632,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertRaises(ipaddress.AddressValueError, ipaddress.IPv6Interface,
                           '2001:1.1.1.1:1.1.1.1')
 
-    # Issue 67: IPv6 with embedded IPv4 address not recognized.
+    # Issue 67: IPv6 with embedded IPv4 address sio recognized.
     eleza testIPv6AddressTooLarge(self):
         # RFC4291 2.5.5.2
         self.assertEqual(ipaddress.ip_address('::FFFF:192.0.2.1'),
@@ -1675,159 +1675,159 @@ kundi IpaddrUnitTest(unittest.TestCase):
 
     eleza testReservedIpv4(self):
         # test networks
-        self.assertEqual(True, ipaddress.ip_interface(
+        self.assertEqual(Kweli, ipaddress.ip_interface(
                 '224.1.1.1/31').is_multicast)
-        self.assertEqual(False, ipaddress.ip_network('240.0.0.0').is_multicast)
-        self.assertEqual(True, ipaddress.ip_network('240.0.0.0').is_reserved)
+        self.assertEqual(Uongo, ipaddress.ip_network('240.0.0.0').is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_network('240.0.0.0').is_reserved)
 
-        self.assertEqual(True, ipaddress.ip_interface(
+        self.assertEqual(Kweli, ipaddress.ip_interface(
                 '192.168.1.1/17').is_private)
-        self.assertEqual(False, ipaddress.ip_network('192.169.0.0').is_private)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Uongo, ipaddress.ip_network('192.169.0.0').is_private)
+        self.assertEqual(Kweli, ipaddress.ip_network(
                 '10.255.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_network('11.0.0.0').is_private)
-        self.assertEqual(False, ipaddress.ip_network('11.0.0.0').is_reserved)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Uongo, ipaddress.ip_network('11.0.0.0').is_private)
+        self.assertEqual(Uongo, ipaddress.ip_network('11.0.0.0').is_reserved)
+        self.assertEqual(Kweli, ipaddress.ip_network(
                 '172.31.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_network('172.32.0.0').is_private)
-        self.assertEqual(True,
+        self.assertEqual(Uongo, ipaddress.ip_network('172.32.0.0').is_private)
+        self.assertEqual(Kweli,
                          ipaddress.ip_network('169.254.1.0/24').is_link_local)
 
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                           ipaddress.ip_interface(
                               '169.254.100.200/24').is_link_local)
-        self.assertEqual(False,
+        self.assertEqual(Uongo,
                           ipaddress.ip_interface(
                               '169.255.100.200/24').is_link_local)
 
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                           ipaddress.ip_network(
                               '127.100.200.254/32').is_loopback)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Kweli, ipaddress.ip_network(
                 '127.42.0.0/16').is_loopback)
-        self.assertEqual(False, ipaddress.ip_network('128.0.0.0').is_loopback)
-        self.assertEqual(False,
+        self.assertEqual(Uongo, ipaddress.ip_network('128.0.0.0').is_loopback)
+        self.assertEqual(Uongo,
                          ipaddress.ip_network('100.64.0.0/10').is_private)
-        self.assertEqual(False, ipaddress.ip_network('100.64.0.0/10').is_global)
+        self.assertEqual(Uongo, ipaddress.ip_network('100.64.0.0/10').is_global)
 
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                          ipaddress.ip_network('192.0.2.128/25').is_private)
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                          ipaddress.ip_network('192.0.3.0/24').is_global)
 
         # test addresses
-        self.assertEqual(True, ipaddress.ip_address('0.0.0.0').is_unspecified)
-        self.assertEqual(True, ipaddress.ip_address('224.1.1.1').is_multicast)
-        self.assertEqual(False, ipaddress.ip_address('240.0.0.0').is_multicast)
-        self.assertEqual(True, ipaddress.ip_address('240.0.0.1').is_reserved)
-        self.assertEqual(False,
+        self.assertEqual(Kweli, ipaddress.ip_address('0.0.0.0').is_unspecified)
+        self.assertEqual(Kweli, ipaddress.ip_address('224.1.1.1').is_multicast)
+        self.assertEqual(Uongo, ipaddress.ip_address('240.0.0.0').is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_address('240.0.0.1').is_reserved)
+        self.assertEqual(Uongo,
                          ipaddress.ip_address('239.255.255.255').is_reserved)
 
-        self.assertEqual(True, ipaddress.ip_address('192.168.1.1').is_private)
-        self.assertEqual(False, ipaddress.ip_address('192.169.0.0').is_private)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Kweli, ipaddress.ip_address('192.168.1.1').is_private)
+        self.assertEqual(Uongo, ipaddress.ip_address('192.169.0.0').is_private)
+        self.assertEqual(Kweli, ipaddress.ip_address(
                 '10.255.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_address('11.0.0.0').is_private)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Uongo, ipaddress.ip_address('11.0.0.0').is_private)
+        self.assertEqual(Kweli, ipaddress.ip_address(
                 '172.31.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_address('172.32.0.0').is_private)
+        self.assertEqual(Uongo, ipaddress.ip_address('172.32.0.0').is_private)
 
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                          ipaddress.ip_address('169.254.100.200').is_link_local)
-        self.assertEqual(False,
+        self.assertEqual(Uongo,
                          ipaddress.ip_address('169.255.100.200').is_link_local)
 
-        self.assertTrue(ipaddress.ip_address('192.0.7.1').is_global)
-        self.assertFalse(ipaddress.ip_address('203.0.113.1').is_global)
+        self.assertKweli(ipaddress.ip_address('192.0.7.1').is_global)
+        self.assertUongo(ipaddress.ip_address('203.0.113.1').is_global)
 
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                           ipaddress.ip_address('127.100.200.254').is_loopback)
-        self.assertEqual(True, ipaddress.ip_address('127.42.0.0').is_loopback)
-        self.assertEqual(False, ipaddress.ip_address('128.0.0.0').is_loopback)
-        self.assertEqual(True, ipaddress.ip_network('0.0.0.0').is_unspecified)
+        self.assertEqual(Kweli, ipaddress.ip_address('127.42.0.0').is_loopback)
+        self.assertEqual(Uongo, ipaddress.ip_address('128.0.0.0').is_loopback)
+        self.assertEqual(Kweli, ipaddress.ip_network('0.0.0.0').is_unspecified)
 
     eleza testReservedIpv6(self):
 
-        self.assertEqual(True, ipaddress.ip_network('ffff::').is_multicast)
-        self.assertEqual(True, ipaddress.ip_network(2**128 - 1).is_multicast)
-        self.assertEqual(True, ipaddress.ip_network('ff00::').is_multicast)
-        self.assertEqual(False, ipaddress.ip_network('fdff::').is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_network('ffff::').is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_network(2**128 - 1).is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_network('ff00::').is_multicast)
+        self.assertEqual(Uongo, ipaddress.ip_network('fdff::').is_multicast)
 
-        self.assertEqual(True, ipaddress.ip_network('fecf::').is_site_local)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Kweli, ipaddress.ip_network('fecf::').is_site_local)
+        self.assertEqual(Kweli, ipaddress.ip_network(
                 'feff:ffff:ffff:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_network(
+        self.assertEqual(Uongo, ipaddress.ip_network(
                 'fbf:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_network('ff00::').is_site_local)
+        self.assertEqual(Uongo, ipaddress.ip_network('ff00::').is_site_local)
 
-        self.assertEqual(True, ipaddress.ip_network('fc00::').is_private)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Kweli, ipaddress.ip_network('fc00::').is_private)
+        self.assertEqual(Kweli, ipaddress.ip_network(
                 'fc00:ffff:ffff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_network('fbff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_network('fe00::').is_private)
+        self.assertEqual(Uongo, ipaddress.ip_network('fbff:ffff::').is_private)
+        self.assertEqual(Uongo, ipaddress.ip_network('fe00::').is_private)
 
-        self.assertEqual(True, ipaddress.ip_network('fea0::').is_link_local)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Kweli, ipaddress.ip_network('fea0::').is_link_local)
+        self.assertEqual(Kweli, ipaddress.ip_network(
                 'febf:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_network(
+        self.assertEqual(Uongo, ipaddress.ip_network(
                 'fe7f:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_network('fec0::').is_link_local)
+        self.assertEqual(Uongo, ipaddress.ip_network('fec0::').is_link_local)
 
-        self.assertEqual(True, ipaddress.ip_interface('0:0::0:01').is_loopback)
-        self.assertEqual(False, ipaddress.ip_interface('::1/127').is_loopback)
-        self.assertEqual(False, ipaddress.ip_network('::').is_loopback)
-        self.assertEqual(False, ipaddress.ip_network('::2').is_loopback)
+        self.assertEqual(Kweli, ipaddress.ip_interface('0:0::0:01').is_loopback)
+        self.assertEqual(Uongo, ipaddress.ip_interface('::1/127').is_loopback)
+        self.assertEqual(Uongo, ipaddress.ip_network('::').is_loopback)
+        self.assertEqual(Uongo, ipaddress.ip_network('::2').is_loopback)
 
-        self.assertEqual(True, ipaddress.ip_network('0::0').is_unspecified)
-        self.assertEqual(False, ipaddress.ip_network('::1').is_unspecified)
-        self.assertEqual(False, ipaddress.ip_network('::/127').is_unspecified)
+        self.assertEqual(Kweli, ipaddress.ip_network('0::0').is_unspecified)
+        self.assertEqual(Uongo, ipaddress.ip_network('::1').is_unspecified)
+        self.assertEqual(Uongo, ipaddress.ip_network('::/127').is_unspecified)
 
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                          ipaddress.ip_network('2001::1/128').is_private)
-        self.assertEqual(True,
+        self.assertEqual(Kweli,
                          ipaddress.ip_network('200::1/128').is_global)
         # test addresses
-        self.assertEqual(True, ipaddress.ip_address('ffff::').is_multicast)
-        self.assertEqual(True, ipaddress.ip_address(2**128 - 1).is_multicast)
-        self.assertEqual(True, ipaddress.ip_address('ff00::').is_multicast)
-        self.assertEqual(False, ipaddress.ip_address('fdff::').is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_address('ffff::').is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_address(2**128 - 1).is_multicast)
+        self.assertEqual(Kweli, ipaddress.ip_address('ff00::').is_multicast)
+        self.assertEqual(Uongo, ipaddress.ip_address('fdff::').is_multicast)
 
-        self.assertEqual(True, ipaddress.ip_address('fecf::').is_site_local)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Kweli, ipaddress.ip_address('fecf::').is_site_local)
+        self.assertEqual(Kweli, ipaddress.ip_address(
                 'feff:ffff:ffff:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_address(
+        self.assertEqual(Uongo, ipaddress.ip_address(
                 'fbf:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_address('ff00::').is_site_local)
+        self.assertEqual(Uongo, ipaddress.ip_address('ff00::').is_site_local)
 
-        self.assertEqual(True, ipaddress.ip_address('fc00::').is_private)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Kweli, ipaddress.ip_address('fc00::').is_private)
+        self.assertEqual(Kweli, ipaddress.ip_address(
                 'fc00:ffff:ffff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_address('fbff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_address('fe00::').is_private)
+        self.assertEqual(Uongo, ipaddress.ip_address('fbff:ffff::').is_private)
+        self.assertEqual(Uongo, ipaddress.ip_address('fe00::').is_private)
 
-        self.assertEqual(True, ipaddress.ip_address('fea0::').is_link_local)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Kweli, ipaddress.ip_address('fea0::').is_link_local)
+        self.assertEqual(Kweli, ipaddress.ip_address(
                 'febf:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_address(
+        self.assertEqual(Uongo, ipaddress.ip_address(
                 'fe7f:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_address('fec0::').is_link_local)
+        self.assertEqual(Uongo, ipaddress.ip_address('fec0::').is_link_local)
 
-        self.assertEqual(True, ipaddress.ip_address('0:0::0:01').is_loopback)
-        self.assertEqual(True, ipaddress.ip_address('::1').is_loopback)
-        self.assertEqual(False, ipaddress.ip_address('::2').is_loopback)
+        self.assertEqual(Kweli, ipaddress.ip_address('0:0::0:01').is_loopback)
+        self.assertEqual(Kweli, ipaddress.ip_address('::1').is_loopback)
+        self.assertEqual(Uongo, ipaddress.ip_address('::2').is_loopback)
 
-        self.assertEqual(True, ipaddress.ip_address('0::0').is_unspecified)
-        self.assertEqual(False, ipaddress.ip_address('::1').is_unspecified)
+        self.assertEqual(Kweli, ipaddress.ip_address('0::0').is_unspecified)
+        self.assertEqual(Uongo, ipaddress.ip_address('::1').is_unspecified)
 
         # some generic IETF reserved addresses
-        self.assertEqual(True, ipaddress.ip_address('100::').is_reserved)
-        self.assertEqual(True, ipaddress.ip_network('4000::1/128').is_reserved)
+        self.assertEqual(Kweli, ipaddress.ip_address('100::').is_reserved)
+        self.assertEqual(Kweli, ipaddress.ip_network('4000::1/128').is_reserved)
 
     eleza testIpv4Mapped(self):
         self.assertEqual(
                 ipaddress.ip_address('::ffff:192.168.1.1').ipv4_mapped,
                 ipaddress.ip_address('192.168.1.1'))
-        self.assertEqual(ipaddress.ip_address('::c0a8:101').ipv4_mapped, None)
+        self.assertEqual(ipaddress.ip_address('::c0a8:101').ipv4_mapped, Tupu)
         self.assertEqual(ipaddress.ip_address('::ffff:c0a8:101').ipv4_mapped,
                          ipaddress.ip_address('192.168.1.1'))
 
@@ -1869,10 +1869,10 @@ kundi IpaddrUnitTest(unittest.TestCase):
         ip1 = ipaddress.ip_address('10.1.1.0')
         ip2 = ipaddress.ip_address('1::')
         dummy = {}
-        dummy[self.ipv4_address] = None
-        dummy[self.ipv6_address] = None
-        dummy[ip1] = None
-        dummy[ip2] = None
+        dummy[self.ipv4_address] = Tupu
+        dummy[self.ipv6_address] = Tupu
+        dummy[ip1] = Tupu
+        dummy[ip2] = Tupu
         self.assertIn(self.ipv4_address, dummy)
         self.assertIn(ip2, dummy)
 
@@ -1933,7 +1933,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
             '7:6:5:4:3:2:1::': '7:6:5:4:3:2:1:0/128',
             '0:6:5:4:3:2:1::': '0:6:5:4:3:2:1:0/128',
             }
-        for uncompressed, compressed in list(test_addresses.items()):
+        kila uncompressed, compressed kwenye list(test_addresses.items()):
             self.assertEqual(compressed, str(ipaddress.IPv6Interface(
                 uncompressed)))
 
@@ -1991,7 +1991,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertNotIn('broadcast_address', self.ipv4_network.__dict__)
         self.assertNotIn('hostmask', self.ipv4_network.__dict__)
 
-        # V4 - populate and test
+        # V4 - populate na test
         self.assertEqual(self.ipv4_network.broadcast_address,
                          ipaddress.IPv4Address('1.2.3.255'))
         self.assertEqual(self.ipv4_network.hostmask,
@@ -2005,7 +2005,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertNotIn('broadcast_address', self.ipv6_network.__dict__)
         self.assertNotIn('hostmask', self.ipv6_network.__dict__)
 
-        # V6 - populate and test
+        # V6 - populate na test
         self.assertEqual(self.ipv6_network.network_address,
                          ipaddress.IPv6Address('2001:658:22a:cafe::'))
         self.assertEqual(self.ipv6_interface.network.network_address,
@@ -2036,9 +2036,9 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertEqual((server, client),
                          ipaddress.ip_address(teredo_addr).teredo)
         bad_addr = '2000::4136:e378:8000:63bf:3fff:fdd2'
-        self.assertFalse(ipaddress.ip_address(bad_addr).teredo)
+        self.assertUongo(ipaddress.ip_address(bad_addr).teredo)
         bad_addr = '2001:0001:4136:e378:8000:63bf:3fff:fdd2'
-        self.assertFalse(ipaddress.ip_address(bad_addr).teredo)
+        self.assertUongo(ipaddress.ip_address(bad_addr).teredo)
 
         # i77
         teredo_addr = ipaddress.IPv6Address('2001:0:5ef5:79fd:0:59d:a0e5:ba1')
@@ -2051,7 +2051,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         bad_addr = ipaddress.ip_address('2000:ac1d:2d64::1')
         self.assertEqual(ipaddress.IPv4Address('172.29.45.100'),
                          sixtofouraddr.sixtofour)
-        self.assertFalse(bad_addr.sixtofour)
+        self.assertUongo(bad_addr.sixtofour)
 
 
 ikiwa __name__ == '__main__':

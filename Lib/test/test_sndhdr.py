@@ -5,7 +5,7 @@ kutoka test.support agiza findfile
 
 kundi TestFormats(unittest.TestCase):
     eleza test_data(self):
-        for filename, expected in (
+        kila filename, expected kwenye (
             ('sndhdr.8svx', ('8svx', 0, 1, 0, 8)),
             ('sndhdr.aifc', ('aifc', 44100, 2, 5, 16)),
             ('sndhdr.aiff', ('aiff', 44100, 2, 5, 16)),
@@ -17,7 +17,7 @@ kundi TestFormats(unittest.TestCase):
         ):
             filename = findfile(filename, subdir="sndhdrdata")
             what = sndhdr.what(filename)
-            self.assertNotEqual(what, None, filename)
+            self.assertNotEqual(what, Tupu, filename)
             self.assertSequenceEqual(what, expected)
             self.assertEqual(what.filetype, expected[0])
             self.assertEqual(what.framerate, expected[1])
@@ -28,7 +28,7 @@ kundi TestFormats(unittest.TestCase):
     eleza test_pickleable(self):
         filename = findfile('sndhdr.aifc', subdir="sndhdrdata")
         what = sndhdr.what(filename)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             dump = pickle.dumps(what, proto)
             self.assertEqual(pickle.loads(dump), what)
 

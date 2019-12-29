@@ -7,26 +7,26 @@ agiza random
 agiza math
 agiza array
 
-# SHIFT should match the value in longintrepr.h for best testing.
+# SHIFT should match the value kwenye longintrepr.h kila best testing.
 SHIFT = sys.int_info.bits_per_digit
 BASE = 2 ** SHIFT
 MASK = BASE - 1
 KARATSUBA_CUTOFF = 70   # kutoka longobject.c
 
-# Max number of base BASE digits to use in test cases.  Doubling
+# Max number of base BASE digits to use kwenye test cases.  Doubling
 # this will more than double the runtime.
 MAXDIGITS = 15
 
 # build some special values
 special = [0, 1, 2, BASE, BASE >> 1, 0x5555555555555555, 0xaaaaaaaaaaaaaaaa]
 #  some solid strings of one bits
-p2 = 4  # 0 and 1 already added
-for i in range(2*SHIFT):
+p2 = 4  # 0 na 1 already added
+kila i kwenye range(2*SHIFT):
     special.append(p2 - 1)
     p2 = p2 << 1
-del p2
+toa p2
 # add complements & negations
-special += [~x for x in special] + [-x for x in special]
+special += [~x kila x kwenye special] + [-x kila x kwenye special]
 
 DBL_MAX = sys.float_info.max
 DBL_MAX_EXP = sys.float_info.max_exp
@@ -41,24 +41,24 @@ eleza int_to_float(n):
     Correctly-rounded integer-to-float conversion.
 
     """
-    # Constants, depending only on the floating-point format in use.
-    # We use an extra 2 bits of precision for rounding purposes.
+    # Constants, depending only on the floating-point format kwenye use.
+    # We use an extra 2 bits of precision kila rounding purposes.
     PRECISION = sys.float_info.mant_dig + 2
     SHIFT_MAX = sys.float_info.max_exp - PRECISION
     Q_MAX = 1 << PRECISION
     ROUND_HALF_TO_EVEN_CORRECTION = [0, -1, -2, 1, 0, -1, 2, 1]
 
-    # Reduce to the case where n is positive.
+    # Reduce to the case where n ni positive.
     ikiwa n == 0:
         rudisha 0.0
     elikiwa n < 0:
         rudisha -int_to_float(-n)
 
-    # Convert n to a 'floating-point' number q * 2**shift, where q is an
+    # Convert n to a 'floating-point' number q * 2**shift, where q ni an
     # integer with 'PRECISION' significant bits.  When shifting n to create q,
-    # the least significant bit of q is treated as 'sticky'.  That is, the
-    # least significant bit of q is set ikiwa either the corresponding bit of n
-    # was already set, or any one of the bits of n lost in the shift was set.
+    # the least significant bit of q ni treated kama 'sticky'.  That is, the
+    # least significant bit of q ni set ikiwa either the corresponding bit of n
+    # was already set, ama any one of the bits of n lost kwenye the shift was set.
     shift = n.bit_length() - PRECISION
     q = n << -shift ikiwa shift < 0 else (n >> shift) | bool(n & ~(-1 << shift))
 
@@ -68,44 +68,44 @@ eleza int_to_float(n):
 
     # Detect overflow.
     ikiwa shift + (q == Q_MAX) > SHIFT_MAX:
-        raise OverflowError("integer too large to convert to float")
+        ashiria OverflowError("integer too large to convert to float")
 
-    # Checks: q is exactly representable, and q**2**shift doesn't overflow.
-    assert q % 4 == 0 and q // 4 <= 2**(sys.float_info.mant_dig)
+    # Checks: q ni exactly representable, na q**2**shift doesn't overflow.
+    assert q % 4 == 0 na q // 4 <= 2**(sys.float_info.mant_dig)
     assert q * 2**shift <= sys.float_info.max
 
-    # Some circularity here, since float(q) is doing an int-to-float
-    # conversion.  But here q is of bounded size, and is exactly representable
-    # as a float.  In a low-level C-like language, this operation would be a
+    # Some circularity here, since float(q) ni doing an int-to-float
+    # conversion.  But here q ni of bounded size, na ni exactly representable
+    # kama a float.  In a low-level C-like language, this operation would be a
     # simple cast (e.g., kutoka unsigned long long to double).
     rudisha math.ldexp(float(q), shift)
 
 
 # pure Python version of correctly-rounded true division
 eleza truediv(a, b):
-    """Correctly-rounded true division for integers."""
+    """Correctly-rounded true division kila integers."""
     negative = a^b < 0
     a, b = abs(a), abs(b)
 
     # exceptions:  division by zero, overflow
-    ikiwa not b:
-        raise ZeroDivisionError("division by zero")
+    ikiwa sio b:
+        ashiria ZeroDivisionError("division by zero")
     ikiwa a >= DBL_MIN_OVERFLOW * b:
-        raise OverflowError("int/int too large to represent as a float")
+        ashiria OverflowError("int/int too large to represent kama a float")
 
    # find integer d satisfying 2**(d - 1) <= a/b < 2**d
     d = a.bit_length() - b.bit_length()
-    ikiwa d >= 0 and a >= 2**d * b or d < 0 and a * 2**-d >= b:
+    ikiwa d >= 0 na a >= 2**d * b ama d < 0 na a * 2**-d >= b:
         d += 1
 
-    # compute 2**-exp * a / b for suitable exp
+    # compute 2**-exp * a / b kila suitable exp
     exp = max(d, DBL_MIN_EXP) - DBL_MANT_DIG
     a, b = a << max(-exp, 0), b << max(exp, 0)
     q, r = divmod(a, b)
 
-    # round-half-to-even: fractional part is r/b, which is > 0.5 iff
-    # 2*r > b, and == 0.5 iff 2*r == b.
-    ikiwa 2*r > b or 2*r == b and q % 2 == 1:
+    # round-half-to-even: fractional part ni r/b, which ni > 0.5 iff
+    # 2*r > b, na == 0.5 iff 2*r == b.
+    ikiwa 2*r > b ama 2*r == b na q % 2 == 1:
         q += 1
 
     result = math.ldexp(q, exp)
@@ -115,10 +115,10 @@ eleza truediv(a, b):
 kundi LongTest(unittest.TestCase):
 
     # Get quasi-random long consisting of ndigits digits (in base BASE).
-    # quasi == the most-significant digit will not be 0, and the number
-    # is constructed to contain long strings of 0 and 1 bits.  These are
+    # quasi == the most-significant digit will sio be 0, na the number
+    # ni constructed to contain long strings of 0 na 1 bits.  These are
     # more likely than random bits to provoke digit-boundary errors.
-    # The sign of the number is also random.
+    # The sign of the number ni also random.
 
     eleza getran(self, ndigits):
         self.assertGreater(ndigits, 0)
@@ -127,26 +127,26 @@ kundi LongTest(unittest.TestCase):
         answer = 0
         nbits = 0
         r = int(random.random() * (SHIFT * 2)) | 1  # force 1 bits to start
-        while nbits < nbits_lo:
+        wakati nbits < nbits_lo:
             bits = (r >> 1) + 1
             bits = min(bits, nbits_hi - nbits)
-            self.assertTrue(1 <= bits <= SHIFT)
+            self.assertKweli(1 <= bits <= SHIFT)
             nbits = nbits + bits
             answer = answer << bits
             ikiwa r & 1:
                 answer = answer | ((1 << bits) - 1)
             r = int(random.random() * (SHIFT * 2))
-        self.assertTrue(nbits_lo <= nbits <= nbits_hi)
+        self.assertKweli(nbits_lo <= nbits <= nbits_hi)
         ikiwa random.random() < 0.5:
             answer = -answer
         rudisha answer
 
     # Get random long consisting of ndigits random digits (relative to base
-    # BASE).  The sign bit is also random.
+    # BASE).  The sign bit ni also random.
 
     eleza getran2(ndigits):
         answer = 0
-        for i in range(ndigits):
+        kila i kwenye range(ndigits):
             answer = (answer << SHIFT) | random.randint(0, MASK)
         ikiwa random.random() < 0.5:
             answer = -answer
@@ -158,23 +158,23 @@ kundi LongTest(unittest.TestCase):
             q, r = divmod(x, y)
             q2, r2 = x//y, x%y
             pab, pba = x*y, y*x
-            eq(pab, pba, "multiplication does not commute")
-            eq(q, q2, "divmod returns different quotient than /")
-            eq(r, r2, "divmod returns different mod than %")
+            eq(pab, pba, "multiplication does sio commute")
+            eq(q, q2, "divmod rudishas different quotient than /")
+            eq(r, r2, "divmod rudishas different mod than %")
             eq(x, q*y + r, "x != q*y + r after divmod")
             ikiwa y > 0:
-                self.assertTrue(0 <= r < y, "bad mod kutoka divmod")
-            else:
-                self.assertTrue(y < r <= 0, "bad mod kutoka divmod")
+                self.assertKweli(0 <= r < y, "bad mod kutoka divmod")
+            isipokua:
+                self.assertKweli(y < r <= 0, "bad mod kutoka divmod")
 
     eleza test_division(self):
         digits = list(range(1, MAXDIGITS+1)) + list(range(KARATSUBA_CUTOFF,
                                                       KARATSUBA_CUTOFF + 14))
         digits.append(KARATSUBA_CUTOFF * 3)
-        for lenx in digits:
+        kila lenx kwenye digits:
             x = self.getran(lenx)
-            for leny in digits:
-                y = self.getran(leny) or 1
+            kila leny kwenye digits:
+                y = self.getran(leny) ama 1
                 self.check_division(x, y)
 
         # specific numbers chosen to exercise corner cases of the
@@ -211,15 +211,15 @@ kundi LongTest(unittest.TestCase):
                                                 KARATSUBA_CUTOFF + 10))
         digits.extend([KARATSUBA_CUTOFF * 10, KARATSUBA_CUTOFF * 100])
 
-        bits = [digit * SHIFT for digit in digits]
+        bits = [digit * SHIFT kila digit kwenye digits]
 
         # Test products of long strings of 1 bits -- (2**x-1)*(2**y-1) ==
-        # 2**(x+y) - 2**x - 2**y + 1, so the proper result is easy to check.
-        for abits in bits:
+        # 2**(x+y) - 2**x - 2**y + 1, so the proper result ni easy to check.
+        kila abits kwenye bits:
             a = (1 << abits) - 1
-            for bbits in bits:
+            kila bbits kwenye bits:
                 ikiwa bbits < abits:
-                    continue
+                    endelea
                 with self.subTest(abits=abits, bbits=bbits):
                     b = (1 << bbits) - 1
                     x = a * b
@@ -247,7 +247,7 @@ kundi LongTest(unittest.TestCase):
             eq(x ^ ~x, -1)
             eq(-x, 1 + ~x)
             eq(-x, ~(x-1))
-        for n in range(2*SHIFT):
+        kila n kwenye range(2*SHIFT):
             p2 = 2 ** n
             with self.subTest(x=x, n=n, p2=p2):
                 eq(x << n >> n, x)
@@ -279,13 +279,13 @@ kundi LongTest(unittest.TestCase):
             eq(x | (y & z), (x | y) & (x | z))
 
     eleza test_bitop_identities(self):
-        for x in special:
+        kila x kwenye special:
             self.check_bitop_identities_1(x)
         digits = range(1, MAXDIGITS+1)
-        for lenx in digits:
+        kila lenx kwenye digits:
             x = self.getran(lenx)
             self.check_bitop_identities_1(x)
-            for leny in digits:
+            kila leny kwenye digits:
                 y = self.getran(leny)
                 self.check_bitop_identities_2(x, y)
                 self.check_bitop_identities_3(x, y, self.getran((lenx + leny)//2))
@@ -295,17 +295,17 @@ kundi LongTest(unittest.TestCase):
         sign = 0
         ikiwa x < 0:
             sign, x = 1, -x
-        while x:
+        wakati x:
             x, r = divmod(x, base)
             digits.append(int(r))
         digits.reverse()
-        digits = digits or [0]
+        digits = digits ama [0]
         rudisha '-'[:sign] + \
                {2: '0b', 8: '0o', 10: '', 16: '0x'}[base] + \
-               "".join("0123456789abcdef"[i] for i in digits)
+               "".join("0123456789abcdef"[i] kila i kwenye digits)
 
     eleza check_format_1(self, x):
-        for base, mapper in (2, bin), (8, oct), (10, str), (10, repr), (16, hex):
+        kila base, mapper kwenye (2, bin), (8, oct), (10, str), (10, repr), (16, hex):
             got = mapper(x)
             with self.subTest(x=x, mapper=mapper.__name__):
                 expected = self.slow_format(x, base)
@@ -314,10 +314,10 @@ kundi LongTest(unittest.TestCase):
                 self.assertEqual(int(got, 0), x)
 
     eleza test_format(self):
-        for x in special:
+        kila x kwenye special:
             self.check_format_1(x)
-        for i in range(10):
-            for lenx in range(1, MAXDIGITS+1):
+        kila i kwenye range(10):
+            kila lenx kwenye range(1, MAXDIGITS+1):
                 x = self.getran(lenx)
                 self.check_format_1(x)
 
@@ -327,17 +327,17 @@ kundi LongTest(unittest.TestCase):
                 ('1' + '0'*20, 10**20),
                 ('1' + '0'*100, 10**100)
         ]
-        for s, v in LL:
-            for sign in "", "+", "-":
-                for prefix in "", " ", "\t", "  \t\t  ":
+        kila s, v kwenye LL:
+            kila sign kwenye "", "+", "-":
+                kila prefix kwenye "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    ikiwa sign == "-" and v is not ValueError:
+                    ikiwa sign == "-" na v ni sio ValueError:
                         vv = -v
-                    try:
+                    jaribu:
                         self.assertEqual(int(ss), vv)
-                    except ValueError:
-                        pass
+                    tatizo ValueError:
+                        pita
 
         # trailing L should no longer be accepted...
         self.assertRaises(ValueError, int, '123L')
@@ -370,7 +370,7 @@ kundi LongTest(unittest.TestCase):
                           2**63-1, 2**63, -2**63, -2**63-1,
                           2**100, -2**100,
                           ]
-        for base in invalid_bases:
+        kila base kwenye invalid_bases:
             self.assertRaises(ValueError, int, '42', base)
 
         # Invalid unicode string
@@ -381,13 +381,13 @@ kundi LongTest(unittest.TestCase):
     eleza test_conversion(self):
 
         kundi JustLong:
-            # test that __long__ no longer used in 3.x
+            # test that __long__ no longer used kwenye 3.x
             eleza __long__(self):
                 rudisha 42
         self.assertRaises(TypeError, int, JustLong())
 
         kundi LongTrunc:
-            # __long__ should be ignored in 3.x
+            # __long__ should be ignored kwenye 3.x
             eleza __long__(self):
                 rudisha 42
             eleza __trunc__(self):
@@ -397,17 +397,17 @@ kundi LongTest(unittest.TestCase):
     eleza check_float_conversion(self, n):
         # Check that int -> float conversion behaviour matches
         # that of the pure Python version above.
-        try:
+        jaribu:
             actual = float(n)
-        except OverflowError:
+        tatizo OverflowError:
             actual = 'overflow'
 
-        try:
+        jaribu:
             expected = int_to_float(n)
-        except OverflowError:
+        tatizo OverflowError:
             expected = 'overflow'
 
-        msg = ("Error in conversion of integer {} to float.  "
+        msg = ("Error kwenye conversion of integer {} to float.  "
                "Got {}, expected {}.".format(n, actual, expected))
         self.assertEqual(actual, expected, msg)
 
@@ -424,19 +424,19 @@ kundi LongTest(unittest.TestCase):
                          2**54-2,
                          2**54,
                          2**54+4]
-        for x in exact_values:
+        kila x kwenye exact_values:
             self.assertEqual(float(x), x)
             self.assertEqual(float(-x), -x)
 
         # test round-half-even
-        for x, y in [(1, 0), (2, 2), (3, 4), (4, 4), (5, 4), (6, 6), (7, 8)]:
-            for p in range(15):
+        kila x, y kwenye [(1, 0), (2, 2), (3, 4), (4, 4), (5, 4), (6, 6), (7, 8)]:
+            kila p kwenye range(15):
                 self.assertEqual(int(float(2**p*(2**53+x))), 2**p*(2**53+y))
 
-        for x, y in [(0, 0), (1, 0), (2, 0), (3, 4), (4, 4), (5, 4), (6, 8),
+        kila x, y kwenye [(0, 0), (1, 0), (2, 0), (3, 4), (4, 4), (5, 4), (6, 8),
                      (7, 8), (8, 8), (9, 8), (10, 8), (11, 12), (12, 12),
                      (13, 12), (14, 16), (15, 16)]:
-            for p in range(15):
+            kila p kwenye range(15):
                 self.assertEqual(int(float(2**p*(2**54+x))), 2**p*(2**54+y))
 
         # behaviour near extremes of floating-point range
@@ -456,7 +456,7 @@ kundi LongTest(unittest.TestCase):
         self.assertRaises(OverflowError, float, 2*top_power)
         self.assertRaises(OverflowError, float, top_power*top_power)
 
-        for p in range(100):
+        kila p kwenye range(100):
             x = 2**p * (2**53 + 1) + 1
             y = 2**p * (2**53 + 2)
             self.assertEqual(int(float(x)), y)
@@ -474,22 +474,22 @@ kundi LongTest(unittest.TestCase):
             2*top_power-1, 2*top_power, top_power*top_power,
         ]
         test_values.extend(exact_values)
-        for p in range(-4, 8):
-            for x in range(-128, 128):
+        kila p kwenye range(-4, 8):
+            kila x kwenye range(-128, 128):
                 test_values.append(2**(p+53) + x)
-        for value in test_values:
+        kila value kwenye test_values:
             self.check_float_conversion(value)
             self.check_float_conversion(-value)
 
     eleza test_float_overflow(self):
-        for x in -2.0, -1.0, 0.0, 1.0, 2.0:
+        kila x kwenye -2.0, -1.0, 0.0, 1.0, 2.0:
             self.assertEqual(float(int(x)), x)
 
         shuge = '12345' * 120
         huge = 1 << 30000
         mhuge = -huge
         namespace = {'huge': huge, 'mhuge': mhuge, 'shuge': shuge, 'math': math}
-        for test in ["float(huge)", "float(mhuge)",
+        kila test kwenye ["float(huge)", "float(mhuge)",
                      "complex(huge)", "complex(mhuge)",
                      "complex(huge, 1)", "complex(mhuge, 1)",
                      "complex(1, huge)", "complex(1, mhuge)",
@@ -501,21 +501,21 @@ kundi LongTest(unittest.TestCase):
                      "1. ** huge", "huge ** 1.", "1. ** mhuge", "mhuge ** 1.",
                      "math.sin(huge)", "math.sin(mhuge)",
                      "math.sqrt(huge)", "math.sqrt(mhuge)", # should do better
-                     # math.floor() of an int returns an int now
+                     # math.floor() of an int rudishas an int now
                      ##"math.floor(huge)", "math.floor(mhuge)",
                      ]:
 
             self.assertRaises(OverflowError, eval, test, namespace)
 
-        # XXX Perhaps float(shuge) can raise OverflowError on some box?
+        # XXX Perhaps float(shuge) can ashiria OverflowError on some box?
         # The comparison should not.
         self.assertNotEqual(float(shuge), int(shuge),
-            "float(shuge) should not equal int(shuge)")
+            "float(shuge) should sio equal int(shuge)")
 
     eleza test_logs(self):
         LOG10E = math.log10(math.e)
 
-        for exp in list(range(10)) + [100, 1000, 10000]:
+        kila exp kwenye list(range(10)) + [100, 1000, 10000]:
             value = 10 ** exp
             log10 = math.log10(value)
             self.assertAlmostEqual(log10, exp)
@@ -526,18 +526,18 @@ kundi LongTest(unittest.TestCase):
             log = math.log(value)
             self.assertAlmostEqual(log, expected)
 
-        for bad in -(1 << 10000), -2, 0:
+        kila bad kwenye -(1 << 10000), -2, 0:
             self.assertRaises(ValueError, math.log, bad)
             self.assertRaises(ValueError, math.log10, bad)
 
     eleza test_mixed_compares(self):
         eq = self.assertEqual
 
-        # We're mostly concerned with that mixing floats and ints does the
-        # right stuff, even when ints are too large to fit in a float.
-        # The safest way to check the results is to use an entirely different
+        # We're mostly concerned with that mixing floats na ints does the
+        # right stuff, even when ints are too large to fit kwenye a float.
+        # The safest way to check the results ni to use an entirely different
         # method, which we do here via a skeletal rational kundi (which
-        # represents all Python ints and floats exactly).
+        # represents all Python ints na floats exactly).
         kundi Rat:
             eleza __init__(self, value):
                 ikiwa isinstance(value, int):
@@ -546,16 +546,16 @@ kundi LongTest(unittest.TestCase):
                 elikiwa isinstance(value, float):
                     # Convert to exact rational equivalent.
                     f, e = math.frexp(abs(value))
-                    assert f == 0 or 0.5 <= f < 1.0
+                    assert f == 0 ama 0.5 <= f < 1.0
                     # |value| = f * 2**e exactly
 
-                    # Suck up CHUNK bits at a time; 28 is enough so that we suck
-                    # up all bits in 2 iterations for all known binary double-
-                    # precision formats, and small enough to fit in an int.
+                    # Suck up CHUNK bits at a time; 28 ni enough so that we suck
+                    # up all bits kwenye 2 iterations kila all known binary double-
+                    # precision formats, na small enough to fit kwenye an int.
                     CHUNK = 28
                     top = 0
                     # invariant: |value| = (top + f) * 2**e exactly
-                    while f:
+                    wakati f:
                         f = math.ldexp(f, CHUNK)
                         digit = int(f)
                         assert digit >> CHUNK == 0
@@ -568,7 +568,7 @@ kundi LongTest(unittest.TestCase):
                     ikiwa e >= 0:
                         n = top << e
                         d = 1
-                    else:
+                    isipokua:
                         n = top
                         d = 1 << -e
                     ikiwa value < 0:
@@ -576,11 +576,11 @@ kundi LongTest(unittest.TestCase):
                     self.n = n
                     self.d = d
                     assert float(n) / float(d) == value
-                else:
-                    raise TypeError("can't deal with %r" % value)
+                isipokua:
+                    ashiria TypeError("can't deal with %r" % value)
 
             eleza _cmp__(self, other):
-                ikiwa not isinstance(other, Rat):
+                ikiwa sio isinstance(other, Rat):
                     other = Rat(other)
                 x, y = self.n * other.d, self.d * other.n
                 rudisha (x > y) - (x < y)
@@ -596,20 +596,20 @@ kundi LongTest(unittest.TestCase):
                 rudisha self._cmp__(other) < 0
 
         cases = [0, 0.001, 0.99, 1.0, 1.5, 1e20, 1e200]
-        # 2**48 is an agizaant boundary in the internals.  2**53 is an
-        # agizaant boundary for IEEE double precision.
-        for t in 2.0**48, 2.0**50, 2.0**53:
+        # 2**48 ni an agizaant boundary kwenye the internals.  2**53 ni an
+        # agizaant boundary kila IEEE double precision.
+        kila t kwenye 2.0**48, 2.0**50, 2.0**53:
             cases.extend([t - 1.0, t - 0.3, t, t + 0.3, t + 1.0,
                           int(t-1), int(t), int(t+1)])
         cases.extend([0, 1, 2, sys.maxsize, float(sys.maxsize)])
-        # 1 << 20000 should exceed all double formats.  int(1e200) is to
+        # 1 << 20000 should exceed all double formats.  int(1e200) ni to
         # check that we get equality with 1e200 above.
         t = int(1e200)
         cases.extend([0, 1, 2, 1 << 20000, t-1, t, t+1])
-        cases.extend([-x for x in cases])
-        for x in cases:
+        cases.extend([-x kila x kwenye cases])
+        kila x kwenye cases:
             Rx = Rat(x)
-            for y in cases:
+            kila y kwenye cases:
                 Ry = Rat(y)
                 Rcmp = (Rx > Ry) - (Rx < Ry)
                 with self.subTest(x=x, y=y, Rcmp=Rcmp):
@@ -628,7 +628,7 @@ kundi LongTest(unittest.TestCase):
         self.assertEqual(format(123456789, ','), '123,456,789')
         self.assertEqual(format(123456789, '_'), '123_456_789')
 
-        # sign and aligning are interdependent
+        # sign na aligning are interdependent
         self.assertEqual(format(1, "-"), '1')
         self.assertEqual(format(-1, "-"), '-1')
         self.assertEqual(format(1, "-3"), '  1')
@@ -691,7 +691,7 @@ kundi LongTest(unittest.TestCase):
         self.assertRaises(ValueError, format, 3, "1.3")  # precision disallowed
         self.assertRaises(ValueError, format, 3, "_c")   # underscore,
         self.assertRaises(ValueError, format, 3, ",c")   # comma, and
-        self.assertRaises(ValueError, format, 3, "+c")   # sign not allowed
+        self.assertRaises(ValueError, format, 3, "+c")   # sign sio allowed
                                                          # with 'c'
 
         self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, '_,')
@@ -702,10 +702,10 @@ kundi LongTest(unittest.TestCase):
         self.assertRaisesRegex(ValueError, "Cannot specify ',' with 's'", format, 3, ',s')
         self.assertRaisesRegex(ValueError, "Cannot specify '_' with 's'", format, 3, '_s')
 
-        # ensure that only int and float type specifiers work
-        for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
-                            [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            ikiwa not format_spec in 'bcdoxXeEfFgGn%':
+        # ensure that only int na float type specifiers work
+        kila format_spec kwenye ([chr(x) kila x kwenye range(ord('a'), ord('z')+1)] +
+                            [chr(x) kila x kwenye range(ord('A'), ord('Z')+1)]):
+            ikiwa sio format_spec kwenye 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, format, 0, format_spec)
                 self.assertRaises(ValueError, format, 1, format_spec)
                 self.assertRaises(ValueError, format, -1, format_spec)
@@ -714,8 +714,8 @@ kundi LongTest(unittest.TestCase):
 
         # ensure that float type specifiers work; format converts
         #  the int to a float
-        for format_spec in 'eEfFgG%':
-            for value in [0, 1, -1, 100, -100, 1234567890, -1234567890]:
+        kila format_spec kwenye 'eEfFgG%':
+            kila value kwenye [0, 1, -1, 100, -100, 1234567890, -1234567890]:
                 self.assertEqual(format(value, format_spec),
                                  format(float(value), format_spec))
 
@@ -758,18 +758,18 @@ kundi LongTest(unittest.TestCase):
 
         namespace = {'huge': huge, 'mhuge': mhuge}
 
-        for overflow in ["float(huge)", "float(mhuge)",
+        kila overflow kwenye ["float(huge)", "float(mhuge)",
                          "huge / 1", "huge / 2", "huge / -1", "huge / -2",
                          "mhuge / 100", "mhuge / 200"]:
             self.assertRaises(OverflowError, eval, overflow, namespace)
 
-        for underflow in ["1 / huge", "2 / huge", "-1 / huge", "-2 / huge",
+        kila underflow kwenye ["1 / huge", "2 / huge", "-1 / huge", "-2 / huge",
                          "100 / mhuge", "200 / mhuge"]:
             result = eval(underflow, namespace)
             self.assertEqual(result, 0.0,
                              "expected underflow to 0 kutoka %r" % underflow)
 
-        for zero in ["huge / 0", "mhuge / 0"]:
+        kila zero kwenye ["huge / 0", "mhuge / 0"]:
             self.assertRaises(ZeroDivisionError, eval, zero, namespace)
 
     eleza test_floordiv(self):
@@ -791,31 +791,31 @@ kundi LongTest(unittest.TestCase):
         self.assertEqual(12 // -3, -4)
         self.assertEqual(12 // 3, 4)
 
-    eleza check_truediv(self, a, b, skip_small=True):
-        """Verify that the result of a/b is correctly rounded, by
+    eleza check_truediv(self, a, b, skip_small=Kweli):
+        """Verify that the result of a/b ni correctly rounded, by
         comparing it with a pure Python implementation of correctly
         rounded division.  b should be nonzero."""
 
-        # skip check for small a and b: in this case, the current
+        # skip check kila small a na b: kwenye this case, the current
         # implementation converts the arguments to float directly and
         # then applies a float division.  This can give doubly-rounded
         # results on x87-using machines (particularly 32-bit Linux).
-        ikiwa skip_small and max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
-            return
+        ikiwa skip_small na max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
+            rudisha
 
-        try:
-            # use repr so that we can distinguish between -0.0 and 0.0
+        jaribu:
+            # use repr so that we can distinguish between -0.0 na 0.0
             expected = repr(truediv(a, b))
-        except OverflowError:
+        tatizo OverflowError:
             expected = 'overflow'
-        except ZeroDivisionError:
+        tatizo ZeroDivisionError:
             expected = 'zerodivision'
 
-        try:
+        jaribu:
             got = repr(a / b)
-        except OverflowError:
+        tatizo OverflowError:
             got = 'overflow'
-        except ZeroDivisionError:
+        tatizo ZeroDivisionError:
             got = 'zerodivision'
 
         self.assertEqual(expected, got, "Incorrectly rounded division {}/{}: "
@@ -824,77 +824,77 @@ kundi LongTest(unittest.TestCase):
     @support.requires_IEEE_754
     eleza test_correctly_rounded_true_division(self):
         # more stringent tests than those above, checking that the
-        # result of true division of ints is always correctly rounded.
+        # result of true division of ints ni always correctly rounded.
         # This test should probably be considered CPython-specific.
 
-        # Exercise all the code paths not involving Gb-sized ints.
+        # Exercise all the code paths sio involving Gb-sized ints.
         # ... divisions involving zero
         self.check_truediv(123, 0)
         self.check_truediv(-456, 0)
         self.check_truediv(0, 3)
         self.check_truediv(0, -3)
         self.check_truediv(0, 0)
-        # ... overflow or underflow by large margin
+        # ... overflow ama underflow by large margin
         self.check_truediv(671 * 12345 * 2**DBL_MAX_EXP, 12345)
         self.check_truediv(12345, 345678 * 2**(DBL_MANT_DIG - DBL_MIN_EXP))
-        # ... a much larger or smaller than b
+        # ... a much larger ama smaller than b
         self.check_truediv(12345*2**100, 98765)
         self.check_truediv(12345*2**30, 98765*7**81)
         # ... a / b near a boundary: one of 1, 2**DBL_MANT_DIG, 2**DBL_MIN_EXP,
         #                 2**DBL_MAX_EXP, 2**(DBL_MIN_EXP-DBL_MANT_DIG)
         bases = (0, DBL_MANT_DIG, DBL_MIN_EXP,
                  DBL_MAX_EXP, DBL_MIN_EXP - DBL_MANT_DIG)
-        for base in bases:
-            for exp in range(base - 15, base + 15):
+        kila base kwenye bases:
+            kila exp kwenye range(base - 15, base + 15):
                 self.check_truediv(75312*2**max(exp, 0), 69187*2**max(-exp, 0))
                 self.check_truediv(69187*2**max(exp, 0), 75312*2**max(-exp, 0))
 
         # overflow corner case
-        for m in [1, 2, 7, 17, 12345, 7**100,
+        kila m kwenye [1, 2, 7, 17, 12345, 7**100,
                   -1, -2, -5, -23, -67891, -41**50]:
-            for n in range(-10, 10):
+            kila n kwenye range(-10, 10):
                 self.check_truediv(m*DBL_MIN_OVERFLOW + n, m)
                 self.check_truediv(m*DBL_MIN_OVERFLOW + n, -m)
 
-        # check detection of inexactness in shifting stage
-        for n in range(250):
+        # check detection of inexactness kwenye shifting stage
+        kila n kwenye range(250):
             # (2**DBL_MANT_DIG+1)/(2**DBL_MANT_DIG) lies halfway
-            # between two representable floats, and would usually be
+            # between two representable floats, na would usually be
             # rounded down under round-half-to-even.  The tiniest of
             # additions to the numerator should cause it to be rounded
             # up instead.
             self.check_truediv((2**DBL_MANT_DIG + 1)*12345*2**200 + 2**n,
                            2**DBL_MANT_DIG*12345)
 
-        # 1/2731 is one of the smallest division cases that's subject
+        # 1/2731 ni one of the smallest division cases that's subject
         # to double rounding on IEEE 754 machines working internally with
         # 64-bit precision.  On such machines, the next check would fail,
-        # were it not explicitly skipped in check_truediv.
+        # were it sio explicitly skipped kwenye check_truediv.
         self.check_truediv(1, 2731)
 
-        # a particularly bad case for the old algorithm:  gives an
+        # a particularly bad case kila the old algorithm:  gives an
         # error of close to 3.5 ulps.
         self.check_truediv(295147931372582273023, 295147932265116303360)
-        for i in range(1000):
+        kila i kwenye range(1000):
             self.check_truediv(10**(i+1), 10**i)
             self.check_truediv(10**i, 10**(i+1))
 
         # test round-half-to-even behaviour, normal result
-        for m in [1, 2, 4, 7, 8, 16, 17, 32, 12345, 7**100,
+        kila m kwenye [1, 2, 4, 7, 8, 16, 17, 32, 12345, 7**100,
                   -1, -2, -5, -23, -67891, -41**50]:
-            for n in range(-10, 10):
+            kila n kwenye range(-10, 10):
                 self.check_truediv(2**DBL_MANT_DIG*m + n, m)
 
         # test round-half-to-even, subnormal result
-        for n in range(-20, 20):
+        kila n kwenye range(-20, 20):
             self.check_truediv(n, 2**1076)
 
         # largeish random divisions: a/b where |a| <= |b| <=
-        # 2*|a|; |ans| is between 0.5 and 1.0, so error should
+        # 2*|a|; |ans| ni between 0.5 na 1.0, so error should
         # always be bounded by 2**-54 with equality possible only
-        # ikiwa the least significant bit of q=ans*2**53 is zero.
-        for M in [10**10, 10**100, 10**1000]:
-            for i in range(1000):
+        # ikiwa the least significant bit of q=ans*2**53 ni zero.
+        kila M kwenye [10**10, 10**100, 10**1000]:
+            kila i kwenye range(1000):
                 a = random.randrange(1, M)
                 b = random.randrange(a, 2*a+1)
                 self.check_truediv(a, b)
@@ -902,8 +902,8 @@ kundi LongTest(unittest.TestCase):
                 self.check_truediv(a, -b)
                 self.check_truediv(-a, -b)
 
-        # and some (genuinely) random tests
-        for _ in range(10000):
+        # na some (genuinely) random tests
+        kila _ kwenye range(10000):
             a_bits = random.randrange(1000)
             b_bits = random.randrange(1, 1000)
             x = random.randrange(2**a_bits)
@@ -934,14 +934,14 @@ kundi LongTest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_huge_lshift_of_zero(self):
-        # Shouldn't try to allocate memory for a huge shift. See issue #27870.
-        # Other implementations may have a different boundary for overflow,
-        # or not raise at all.
+        # Shouldn't try to allocate memory kila a huge shift. See issue #27870.
+        # Other implementations may have a different boundary kila overflow,
+        # ama sio ashiria at all.
         self.assertEqual(0 << sys.maxsize, 0)
         self.assertEqual(0 << (sys.maxsize + 1), 0)
 
     @support.cpython_only
-    @support.bigmemtest(sys.maxsize + 1000, memuse=2/15 * 2, dry_run=False)
+    @support.bigmemtest(sys.maxsize + 1000, memuse=2/15 * 2, dry_run=Uongo)
     eleza test_huge_lshift(self, size):
         self.assertEqual(1 << (sys.maxsize + 1000), 1 << 1000 << sys.maxsize)
 
@@ -950,14 +950,14 @@ kundi LongTest(unittest.TestCase):
         self.assertEqual((-42) >> (1 << 1000), -1)
 
     @support.cpython_only
-    @support.bigmemtest(sys.maxsize + 500, memuse=2/15, dry_run=False)
+    @support.bigmemtest(sys.maxsize + 500, memuse=2/15, dry_run=Uongo)
     eleza test_huge_rshift_of_huge(self, size):
         huge = ((1 << 500) + 11) << sys.maxsize
         self.assertEqual(huge >> (sys.maxsize + 1), (1 << 499) + 5)
         self.assertEqual(huge >> (sys.maxsize + 1000), 0)
 
     eleza test_small_ints(self):
-        for i in range(-5, 257):
+        kila i kwenye range(-5, 257):
             self.assertIs(i, i + 0)
             self.assertIs(i, i * 1)
             self.assertIs(i, i - 0)
@@ -976,18 +976,18 @@ kundi LongTest(unittest.TestCase):
 
     eleza test_bit_length(self):
         tiny = 1e-10
-        for x in range(-65000, 65000):
+        kila x kwenye range(-65000, 65000):
             k = x.bit_length()
             # Check equivalence with Python version
             self.assertEqual(k, len(bin(x).lstrip('-0b')))
-            # Behaviour as specified in the docs
+            # Behaviour kama specified kwenye the docs
             ikiwa x != 0:
-                self.assertTrue(2**(k-1) <= abs(x) < 2**k)
-            else:
+                self.assertKweli(2**(k-1) <= abs(x) < 2**k)
+            isipokua:
                 self.assertEqual(k, 0)
             # Alternative definition: x.bit_length() == 1 + floor(log_2(x))
             ikiwa x != 0:
-                # When x is an exact power of 2, numeric errors can
+                # When x ni an exact power of 2, numeric errors can
                 # cause floor(log(x)/log(2)) to be one too small; for
                 # small x this can be fixed by adding a small quantity
                 # to the quotient before taking the floor.
@@ -999,7 +999,7 @@ kundi LongTest(unittest.TestCase):
         self.assertEqual((-1).bit_length(), 1)
         self.assertEqual((2).bit_length(), 2)
         self.assertEqual((-2).bit_length(), 2)
-        for i in [2, 3, 15, 16, 17, 31, 32, 33, 63, 64, 234]:
+        kila i kwenye [2, 3, 15, 16, 17, 31, 32, 33, 63, 64, 234]:
             a = 2**i
             self.assertEqual((a-1).bit_length(), i)
             self.assertEqual((1-a).bit_length(), i)
@@ -1010,12 +1010,12 @@ kundi LongTest(unittest.TestCase):
 
     eleza test_round(self):
         # check round-half-even algorithm. For round to nearest ten;
-        # rounding map is invariant under adding multiples of 20
+        # rounding map ni invariant under adding multiples of 20
         test_dict = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0,
                      6:10, 7:10, 8:10, 9:10, 10:10, 11:10, 12:10, 13:10, 14:10,
                      15:20, 16:20, 17:20, 18:20, 19:20}
-        for offset in range(-520, 520, 20):
-            for k, v in test_dict.items():
+        kila offset kwenye range(-520, 520, 20):
+            kila k, v kwenye test_dict.items():
                 got = round(k+offset, -1)
                 expected = v+offset
                 self.assertEqual(got, expected)
@@ -1053,25 +1053,25 @@ kundi LongTest(unittest.TestCase):
         self.assertEqual(round(31415926535, -12), 0)
         self.assertEqual(round(31415926535, -999), 0)
 
-        # should get correct results even for huge inputs
-        for k in range(10, 100):
+        # should get correct results even kila huge inputs
+        kila k kwenye range(10, 100):
             got = round(10**k + 324678, -3)
             expect = 10**k + 325000
             self.assertEqual(got, expect)
             self.assertIs(type(got), int)
 
         # nonnegative second argument: round(x, n) should just rudisha x
-        for n in range(5):
-            for i in range(100):
+        kila n kwenye range(5):
+            kila i kwenye range(100):
                 x = random.randrange(-10000, 10000)
                 got = round(x, n)
                 self.assertEqual(got, x)
                 self.assertIs(type(got), int)
-        for huge_n in 2**31-1, 2**31, 2**63-1, 2**63, 2**100, 10**100:
+        kila huge_n kwenye 2**31-1, 2**31, 2**63-1, 2**63, 2**100, 10**100:
             self.assertEqual(round(8979323, huge_n), 8979323)
 
         # omitted second argument
-        for i in range(100):
+        kila i kwenye range(100):
             x = random.randrange(-10000, 10000)
             got = round(x)
             self.assertEqual(got, x)
@@ -1079,19 +1079,19 @@ kundi LongTest(unittest.TestCase):
 
         # bad second argument
         bad_exponents = ('brian', 2.0, 0j)
-        for e in bad_exponents:
+        kila e kwenye bad_exponents:
             self.assertRaises(TypeError, round, 3, e)
 
     eleza test_to_bytes(self):
-        eleza check(tests, byteorder, signed=False):
-            for test, expected in tests.items():
-                try:
+        eleza check(tests, byteorder, signed=Uongo):
+            kila test, expected kwenye tests.items():
+                jaribu:
                     self.assertEqual(
                         test.to_bytes(len(expected), byteorder, signed=signed),
                         expected)
-                except Exception as err:
-                    raise AssertionError(
-                        "failed to convert {0} with byteorder={1} and signed={2}"
+                tatizo Exception kama err:
+                    ashiria AssertionError(
+                        "failed to convert {0} with byteorder={1} na signed={2}"
                         .format(test, byteorder, signed)) kutoka err
 
         # Convert integers to signed big-endian byte arrays.
@@ -1114,7 +1114,7 @@ kundi LongTest(unittest.TestCase):
             -65536: b'\xff\x00\x00',
             -8388608: b'\x80\x00\x00'
         }
-        check(tests1, 'big', signed=True)
+        check(tests1, 'big', signed=Kweli)
 
         # Convert integers to signed little-endian byte arrays.
         tests2 = {
@@ -1136,7 +1136,7 @@ kundi LongTest(unittest.TestCase):
             -65536: b'\x00\x00\xff',
             -8388608: b'\x00\x00\x80'
         }
-        check(tests2, 'little', signed=True)
+        check(tests2, 'little', signed=Kweli)
 
         # Convert integers to unsigned big-endian byte arrays.
         tests3 = {
@@ -1151,7 +1151,7 @@ kundi LongTest(unittest.TestCase):
             65535: b'\xff\xff',
             65536: b'\x01\x00\x00'
         }
-        check(tests3, 'big', signed=False)
+        check(tests3, 'big', signed=Uongo)
 
         # Convert integers to unsigned little-endian byte arrays.
         tests4 = {
@@ -1166,31 +1166,31 @@ kundi LongTest(unittest.TestCase):
             65535: b'\xff\xff',
             65536: b'\x00\x00\x01'
         }
-        check(tests4, 'little', signed=False)
+        check(tests4, 'little', signed=Uongo)
 
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=False)
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=True)
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=False)
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=True)
-        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'big', signed=False)
-        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'little', signed=False)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=Uongo)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=Kweli)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=Uongo)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=Kweli)
+        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'big', signed=Uongo)
+        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'little', signed=Uongo)
         self.assertEqual((0).to_bytes(0, 'big'), b'')
         self.assertEqual((1).to_bytes(5, 'big'), b'\x00\x00\x00\x00\x01')
         self.assertEqual((0).to_bytes(5, 'big'), b'\x00\x00\x00\x00\x00')
-        self.assertEqual((-1).to_bytes(5, 'big', signed=True),
+        self.assertEqual((-1).to_bytes(5, 'big', signed=Kweli),
                          b'\xff\xff\xff\xff\xff')
         self.assertRaises(OverflowError, (1).to_bytes, 0, 'big')
 
     eleza test_kutoka_bytes(self):
-        eleza check(tests, byteorder, signed=False):
-            for test, expected in tests.items():
-                try:
+        eleza check(tests, byteorder, signed=Uongo):
+            kila test, expected kwenye tests.items():
+                jaribu:
                     self.assertEqual(
                         int.kutoka_bytes(test, byteorder, signed=signed),
                         expected)
-                except Exception as err:
-                    raise AssertionError(
-                        "failed to convert {0} with byteorder={1!r} and signed={2}"
+                tatizo Exception kama err:
+                    ashiria AssertionError(
+                        "failed to convert {0} with byteorder={1!r} na signed={2}"
                         .format(test, byteorder, signed)) kutoka err
 
         # Convert signed big-endian byte arrays to integers.
@@ -1217,7 +1217,7 @@ kundi LongTest(unittest.TestCase):
             b'\xff\x00\x00': -65536,
             b'\x80\x00\x00': -8388608
         }
-        check(tests1, 'big', signed=True)
+        check(tests1, 'big', signed=Kweli)
 
         # Convert signed little-endian byte arrays to integers.
         tests2 = {
@@ -1243,7 +1243,7 @@ kundi LongTest(unittest.TestCase):
             b'\x00\x00\xff': -65536,
             b'\x00\x00\x80': -8388608
         }
-        check(tests2, 'little', signed=True)
+        check(tests2, 'little', signed=Kweli)
 
         # Convert unsigned big-endian byte arrays to integers.
         tests3 = {
@@ -1259,7 +1259,7 @@ kundi LongTest(unittest.TestCase):
             b'\xff\xff': 65535,
             b'\x01\x00\x00': 65536,
         }
-        check(tests3, 'big', signed=False)
+        check(tests3, 'big', signed=Uongo)
 
         # Convert integers to unsigned little-endian byte arrays.
         tests4 = {
@@ -1275,44 +1275,44 @@ kundi LongTest(unittest.TestCase):
             b'\xff\xff': 65535,
             b'\x00\x00\x01': 65536,
         }
-        check(tests4, 'little', signed=False)
+        check(tests4, 'little', signed=Uongo)
 
         kundi myint(int):
-            pass
+            pita
 
         self.assertIs(type(myint.kutoka_bytes(b'\x00', 'big')), myint)
         self.assertEqual(myint.kutoka_bytes(b'\x01', 'big'), 1)
         self.assertIs(
-            type(myint.kutoka_bytes(b'\x00', 'big', signed=False)), myint)
-        self.assertEqual(myint.kutoka_bytes(b'\x01', 'big', signed=False), 1)
+            type(myint.kutoka_bytes(b'\x00', 'big', signed=Uongo)), myint)
+        self.assertEqual(myint.kutoka_bytes(b'\x01', 'big', signed=Uongo), 1)
         self.assertIs(type(myint.kutoka_bytes(b'\x00', 'little')), myint)
         self.assertEqual(myint.kutoka_bytes(b'\x01', 'little'), 1)
         self.assertIs(type(myint.kutoka_bytes(
-            b'\x00', 'little', signed=False)), myint)
-        self.assertEqual(myint.kutoka_bytes(b'\x01', 'little', signed=False), 1)
+            b'\x00', 'little', signed=Uongo)), myint)
+        self.assertEqual(myint.kutoka_bytes(b'\x01', 'little', signed=Uongo), 1)
         self.assertEqual(
-            int.kutoka_bytes([255, 0, 0], 'big', signed=True), -65536)
+            int.kutoka_bytes([255, 0, 0], 'big', signed=Kweli), -65536)
         self.assertEqual(
-            int.kutoka_bytes((255, 0, 0), 'big', signed=True), -65536)
+            int.kutoka_bytes((255, 0, 0), 'big', signed=Kweli), -65536)
         self.assertEqual(int.kutoka_bytes(
-            bytearray(b'\xff\x00\x00'), 'big', signed=True), -65536)
+            bytearray(b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
         self.assertEqual(int.kutoka_bytes(
-            bytearray(b'\xff\x00\x00'), 'big', signed=True), -65536)
+            bytearray(b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
         self.assertEqual(int.kutoka_bytes(
-            array.array('B', b'\xff\x00\x00'), 'big', signed=True), -65536)
+            array.array('B', b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
         self.assertEqual(int.kutoka_bytes(
-            memoryview(b'\xff\x00\x00'), 'big', signed=True), -65536)
+            memoryview(b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
         self.assertRaises(ValueError, int.kutoka_bytes, [256], 'big')
         self.assertRaises(ValueError, int.kutoka_bytes, [0], 'big\x00')
         self.assertRaises(ValueError, int.kutoka_bytes, [0], 'little\x00')
         self.assertRaises(TypeError, int.kutoka_bytes, "", 'big')
         self.assertRaises(TypeError, int.kutoka_bytes, "\x00", 'big')
         self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', True)
+        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', Kweli)
         self.assertRaises(TypeError, myint.kutoka_bytes, "", 'big')
         self.assertRaises(TypeError, myint.kutoka_bytes, "\x00", 'big')
         self.assertRaises(TypeError, myint.kutoka_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', True)
+        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', Kweli)
 
         kundi myint2(int):
             eleza __new__(cls, value):
@@ -1332,8 +1332,8 @@ kundi LongTest(unittest.TestCase):
         self.assertEqual(getattr(i, 'foo', 'none'), 'bar')
 
     eleza test_access_to_nonexistent_digit_0(self):
-        # http://bugs.python.org/issue14630: A bug in _PyLong_Copy meant that
-        # ob_digit[0] was being incorrectly accessed for instances of a
+        # http://bugs.python.org/issue14630: A bug kwenye _PyLong_Copy meant that
+        # ob_digit[0] was being incorrectly accessed kila instances of a
         # subkundi of int, with value 0.
         kundi Integer(int):
             eleza __new__(cls, value=0):
@@ -1341,22 +1341,22 @@ kundi LongTest(unittest.TestCase):
                 self.foo = 'foo'
                 rudisha self
 
-        integers = [Integer(0) for i in range(1000)]
-        for n in map(int, integers):
+        integers = [Integer(0) kila i kwenye range(1000)]
+        kila n kwenye map(int, integers):
             self.assertEqual(n, 0)
 
     eleza test_shift_bool(self):
-        # Issue #21422: ensure that bool << int and bool >> int rudisha int
-        for value in (True, False):
-            for shift in (0, 2):
+        # Issue #21422: ensure that bool << int na bool >> int rudisha int
+        kila value kwenye (Kweli, Uongo):
+            kila shift kwenye (0, 2):
                 self.assertEqual(type(value << shift), int)
                 self.assertEqual(type(value >> shift), int)
 
     eleza test_as_integer_ratio(self):
         kundi myint(int):
-            pass
-        tests = [10, 0, -10, 1, sys.maxsize + 1, True, False, myint(42)]
-        for value in tests:
+            pita
+        tests = [10, 0, -10, 1, sys.maxsize + 1, Kweli, Uongo, myint(42)]
+        kila value kwenye tests:
             numerator, denominator = value.as_integer_ratio()
             self.assertEqual((numerator, denominator), (int(value), 1))
             self.assertEqual(type(numerator), int)

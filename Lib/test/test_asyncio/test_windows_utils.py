@@ -23,7 +23,7 @@ class PipeTests(unittest.TestCase):
 
     def test_pipe_overlapped(self):
         h1, h2 = windows_utils.pipe(overlapped=(True, True))
-        try:
+        jaribu:
             ov1 = _overlapped.Overlapped()
             self.assertFalse(ov1.pending)
             self.assertEqual(ov1.error, 0)
@@ -32,11 +32,11 @@ class PipeTests(unittest.TestCase):
             self.assertTrue(ov1.pending)
             self.assertEqual(ov1.error, _winapi.ERROR_IO_PENDING)
             ERROR_IO_INCOMPLETE = 996
-            try:
+            jaribu:
                 ov1.getresult()
-            except OSError as e:
+            tatizo OSError as e:
                 self.assertEqual(e.winerror, ERROR_IO_INCOMPLETE)
-            else:
+            isipokua:
                 raise RuntimeError('expected ERROR_IO_INCOMPLETE')
 
             ov2 = _overlapped.Overlapped()
@@ -54,7 +54,7 @@ class PipeTests(unittest.TestCase):
             self.assertFalse(ov2.pending)
             self.assertIn(ov2.error, {0, _winapi.ERROR_IO_PENDING})
             self.assertEqual(ov1.getresult(), b"hello")
-        finally:
+        mwishowe:
             _winapi.CloseHandle(h1)
             _winapi.CloseHandle(h2)
 
@@ -68,13 +68,13 @@ class PipeTests(unittest.TestCase):
         # check garbage collection of p closes handle
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", "",  ResourceWarning)
-            del p
+            toa p
             support.gc_collect()
-        try:
+        jaribu:
             _winapi.CloseHandle(h)
-        except OSError as e:
+        tatizo OSError as e:
             self.assertEqual(e.winerror, 6)     # ERROR_INVALID_HANDLE
-        else:
+        isipokua:
             raise RuntimeError('expected ERROR_INVALID_HANDLE')
 
 

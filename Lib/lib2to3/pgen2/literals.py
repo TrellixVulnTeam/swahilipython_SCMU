@@ -20,25 +20,25 @@ eleza escape(m):
     all, tail = m.group(0, 1)
     assert all.startswith("\\")
     esc = simple_escapes.get(tail)
-    ikiwa esc is not None:
+    ikiwa esc ni sio Tupu:
         rudisha esc
     ikiwa tail.startswith("x"):
         hexes = tail[1:]
         ikiwa len(hexes) < 2:
-            raise ValueError("invalid hex string escape ('\\%s')" % tail)
-        try:
+            ashiria ValueError("invalid hex string escape ('\\%s')" % tail)
+        jaribu:
             i = int(hexes, 16)
-        except ValueError:
-            raise ValueError("invalid hex string escape ('\\%s')" % tail) kutoka None
-    else:
-        try:
+        tatizo ValueError:
+            ashiria ValueError("invalid hex string escape ('\\%s')" % tail) kutoka Tupu
+    isipokua:
+        jaribu:
             i = int(tail, 8)
-        except ValueError:
-            raise ValueError("invalid octal string escape ('\\%s')" % tail) kutoka None
+        tatizo ValueError:
+            ashiria ValueError("invalid octal string escape ('\\%s')" % tail) kutoka Tupu
     rudisha chr(i)
 
 eleza evalString(s):
-    assert s.startswith("'") or s.startswith('"'), repr(s[:1])
+    assert s.startswith("'") ama s.startswith('"'), repr(s[:1])
     q = s[0]
     ikiwa s[:3] == q*3:
         q = q*3
@@ -48,7 +48,7 @@ eleza evalString(s):
     rudisha re.sub(r"\\(\'|\"|\\|[abfnrtv]|x.{0,2}|[0-7]{1,3})", escape, s)
 
 eleza test():
-    for i in range(256):
+    kila i kwenye range(256):
         c = chr(i)
         s = repr(c)
         e = evalString(s)

@@ -1,4 +1,4 @@
-"""Tests for the gprof2html script in the Tools directory."""
+"""Tests kila the gprof2html script kwenye the Tools directory."""
 
 agiza os
 agiza sys
@@ -22,13 +22,13 @@ kundi Gprof2htmlTests(unittest.TestCase):
 
     eleza test_gprof(self):
         # Issue #14508: this used to fail with a NameError.
-        with mock.patch.object(self.gprof, 'webbrowser') as wmock, \
-                tempfile.TemporaryDirectory() as tmpdir:
+        with mock.patch.object(self.gprof, 'webbrowser') kama wmock, \
+                tempfile.TemporaryDirectory() kama tmpdir:
             fn = os.path.join(tmpdir, 'abc')
             open(fn, 'w').close()
             sys.argv = ['gprof2html', fn]
             self.gprof.main()
-        self.assertTrue(wmock.open.called)
+        self.assertKweli(wmock.open.called)
 
 
 ikiwa __name__ == '__main__':

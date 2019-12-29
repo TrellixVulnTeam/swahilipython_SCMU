@@ -35,7 +35,7 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
     def test_create_from_data(self):
@@ -49,7 +49,7 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
     def assertEqualStrList(self, actual, expected):
@@ -115,7 +115,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
     def colorlist(self, *args):
         if tkinter.TkVersion >= 8.6 and self.wantobjects:
             return args
-        else:
+        isipokua:
             return tkinter._join(args)
 
     def check_create_from_file(self, ext):
@@ -129,7 +129,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image['data'], '')
         self.assertEqual(image['file'], testfile)
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
     def check_create_from_data(self, ext):
@@ -146,7 +146,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
                                         else data.decode('latin1'))
         self.assertEqual(image['file'], '')
         self.assertIn('::img::test', self.root.image_names())
-        del image
+        toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
     def test_create_from_ppm_file(self):

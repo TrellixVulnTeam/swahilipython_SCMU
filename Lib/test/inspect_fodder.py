@@ -39,7 +39,7 @@ kundi StupidGit:
         self.argue(a, b, c)
 # line 40
     eleza argue(self, a, b, c):
-        try:
+        jaribu:
             spam(a, b, c)
         except:
             self.ex = sys.exc_info()
@@ -48,36 +48,36 @@ kundi StupidGit:
     @property
     eleza contradiction(self):
         'The automatic gainsaying.'
-        pass
+        pita
 
 # line 53
 kundi MalodorousPervert(StupidGit):
     eleza abuse(self, a, b, c):
-        pass
+        pita
 
     @property
     eleza contradiction(self):
-        pass
+        pita
 
 Tit = MalodorousPervert
 
 kundi ParrotDroppings:
-    pass
+    pita
 
 kundi FesteringGob(MalodorousPervert, ParrotDroppings):
     eleza abuse(self, a, b, c):
-        pass
+        pita
 
     @property
     eleza contradiction(self):
-        pass
+        pita
 
 async eleza lobbest(grenade):
-    pass
+    pita
 
 currentframe = inspect.currentframe()
-try:
-    raise Exception()
+jaribu:
+    ashiria Exception()
 except:
     tb = sys.exc_info()[2]
 
@@ -90,4 +90,4 @@ kundi Callable:
         rudisha MethodType(self, obj)
 
 custom_method = Callable().as_method_of(42)
-del Callable
+toa Callable

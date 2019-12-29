@@ -1,4 +1,4 @@
-"""Fix incompatible agizas and module references that must be fixed after
+"""Fix incompatible agizas na module references that must be fixed after
 fix_agizas."""
 kutoka . agiza fix_agizas
 

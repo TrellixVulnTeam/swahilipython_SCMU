@@ -38,8 +38,8 @@ SUBWARNING = 25
 LOGGER_NAME = 'multiprocessing'
 DEFAULT_LOGGING_FORMAT = '[%(levelname)s/%(processName)s] %(message)s'
 
-_logger = None
-_log_to_stderr = False
+_logger = Tupu
+_log_to_stderr = Uongo
 
 eleza sub_debug(msg, *args):
     ikiwa _logger:
@@ -65,8 +65,8 @@ eleza get_logger():
     agiza logging
 
     logging._acquireLock()
-    try:
-        ikiwa not _logger:
+    jaribu:
+        ikiwa sio _logger:
 
             _logger = logging.getLogger(LOGGER_NAME)
             _logger.propagate = 0
@@ -75,18 +75,18 @@ eleza get_logger():
             ikiwa hasattr(atexit, 'unregister'):
                 atexit.unregister(_exit_function)
                 atexit.register(_exit_function)
-            else:
+            isipokua:
                 atexit._exithandlers.remove((_exit_function, (), {}))
                 atexit._exithandlers.append((_exit_function, (), {}))
 
-    finally:
+    mwishowe:
         logging._releaseLock()
 
     rudisha _logger
 
-eleza log_to_stderr(level=None):
+eleza log_to_stderr(level=Tupu):
     '''
-    Turn on logging and add a handler which prints to stderr
+    Turn on logging na add a handler which prints to stderr
     '''
     global _log_to_stderr
     agiza logging
@@ -99,38 +99,38 @@ eleza log_to_stderr(level=None):
 
     ikiwa level:
         logger.setLevel(level)
-    _log_to_stderr = True
+    _log_to_stderr = Kweli
     rudisha _logger
 
 #
-# Function returning a temp directory which will be removed on exit
+# Function rudishaing a temp directory which will be removed on exit
 #
 
 eleza _remove_temp_dir(rmtree, tempdir):
     rmtree(tempdir)
 
     current_process = process.current_process()
-    # current_process() can be None ikiwa the finalizer is called
+    # current_process() can be Tupu ikiwa the finalizer ni called
     # late during Python finalization
-    ikiwa current_process is not None:
-        current_process._config['tempdir'] = None
+    ikiwa current_process ni sio Tupu:
+        current_process._config['tempdir'] = Tupu
 
 eleza get_temp_dir():
     # get name of a temp directory which will be automatically cleaned up
     tempdir = process.current_process()._config.get('tempdir')
-    ikiwa tempdir is None:
+    ikiwa tempdir ni Tupu:
         agiza shutil, tempfile
         tempdir = tempfile.mkdtemp(prefix='pymp-')
         info('created temp directory %s', tempdir)
         # keep a strong reference to shutil.rmtree(), since the finalizer
         # can be called late during Python shutdown
-        Finalize(None, _remove_temp_dir, args=(shutil.rmtree, tempdir),
+        Finalize(Tupu, _remove_temp_dir, args=(shutil.rmtree, tempdir),
                  exitpriority=-100)
         process.current_process()._config['tempdir'] = tempdir
     rudisha tempdir
 
 #
-# Support for reinitialization of objects when bootstrapping a child process
+# Support kila reinitialization of objects when bootstrapping a child process
 #
 
 _afterfork_registry = weakref.WeakValueDictionary()
@@ -139,11 +139,11 @@ _afterfork_counter = itertools.count()
 eleza _run_after_forkers():
     items = list(_afterfork_registry.items())
     items.sort()
-    for (index, ident, func), obj in items:
-        try:
+    kila (index, ident, func), obj kwenye items:
+        jaribu:
             func(obj)
-        except Exception as e:
-            info('after forker raised exception %s', e)
+        tatizo Exception kama e:
+            info('after forker ashiriad exception %s', e)
 
 eleza register_after_fork(obj, func):
     _afterfork_registry[(next(_afterfork_counter), id(obj), func)] = obj
@@ -160,74 +160,74 @@ kundi Finalize(object):
     '''
     Class which supports object finalization using weakrefs
     '''
-    eleza __init__(self, obj, callback, args=(), kwargs=None, exitpriority=None):
-        ikiwa (exitpriority is not None) and not isinstance(exitpriority,int):
-            raise TypeError(
-                "Exitpriority ({0!r}) must be None or int, not {1!s}".format(
+    eleza __init__(self, obj, callback, args=(), kwargs=Tupu, exitpriority=Tupu):
+        ikiwa (exitpriority ni sio Tupu) na sio isinstance(exitpriority,int):
+            ashiria TypeError(
+                "Exitpriority ({0!r}) must be Tupu ama int, sio {1!s}".format(
                     exitpriority, type(exitpriority)))
 
-        ikiwa obj is not None:
+        ikiwa obj ni sio Tupu:
             self._weakref = weakref.ref(obj, self)
-        elikiwa exitpriority is None:
-            raise ValueError("Without object, exitpriority cannot be None")
+        elikiwa exitpriority ni Tupu:
+            ashiria ValueError("Without object, exitpriority cannot be Tupu")
 
         self._callback = callback
         self._args = args
-        self._kwargs = kwargs or {}
+        self._kwargs = kwargs ama {}
         self._key = (exitpriority, next(_finalizer_counter))
         self._pid = os.getpid()
 
         _finalizer_registry[self._key] = self
 
-    eleza __call__(self, wr=None,
+    eleza __call__(self, wr=Tupu,
                  # Need to bind these locally because the globals can have
                  # been cleared at shutdown
                  _finalizer_registry=_finalizer_registry,
                  sub_debug=sub_debug, getpid=os.getpid):
         '''
-        Run the callback unless it has already been called or cancelled
+        Run the callback unless it has already been called ama cancelled
         '''
-        try:
-            del _finalizer_registry[self._key]
-        except KeyError:
+        jaribu:
+            toa _finalizer_registry[self._key]
+        tatizo KeyError:
             sub_debug('finalizer no longer registered')
-        else:
+        isipokua:
             ikiwa self._pid != getpid():
                 sub_debug('finalizer ignored because different process')
-                res = None
-            else:
-                sub_debug('finalizer calling %s with args %s and kwargs %s',
+                res = Tupu
+            isipokua:
+                sub_debug('finalizer calling %s with args %s na kwargs %s',
                           self._callback, self._args, self._kwargs)
                 res = self._callback(*self._args, **self._kwargs)
             self._weakref = self._callback = self._args = \
-                            self._kwargs = self._key = None
+                            self._kwargs = self._key = Tupu
             rudisha res
 
     eleza cancel(self):
         '''
         Cancel finalization of the object
         '''
-        try:
-            del _finalizer_registry[self._key]
-        except KeyError:
-            pass
-        else:
+        jaribu:
+            toa _finalizer_registry[self._key]
+        tatizo KeyError:
+            pita
+        isipokua:
             self._weakref = self._callback = self._args = \
-                            self._kwargs = self._key = None
+                            self._kwargs = self._key = Tupu
 
     eleza still_active(self):
         '''
-        Return whether this finalizer is still waiting to invoke callback
+        Return whether this finalizer ni still waiting to invoke callback
         '''
-        rudisha self._key in _finalizer_registry
+        rudisha self._key kwenye _finalizer_registry
 
     eleza __repr__(self):
-        try:
+        jaribu:
             obj = self._weakref()
-        except (AttributeError, TypeError):
-            obj = None
+        tatizo (AttributeError, TypeError):
+            obj = Tupu
 
-        ikiwa obj is None:
+        ikiwa obj ni Tupu:
             rudisha '<%s object, dead>' % self.__class__.__name__
 
         x = '<%s object, callback=%s' % (
@@ -237,49 +237,49 @@ kundi Finalize(object):
             x += ', args=' + str(self._args)
         ikiwa self._kwargs:
             x += ', kwargs=' + str(self._kwargs)
-        ikiwa self._key[0] is not None:
+        ikiwa self._key[0] ni sio Tupu:
             x += ', exitpriority=' + str(self._key[0])
         rudisha x + '>'
 
 
-eleza _run_finalizers(minpriority=None):
+eleza _run_finalizers(minpriority=Tupu):
     '''
-    Run all finalizers whose exit priority is not None and at least minpriority
+    Run all finalizers whose exit priority ni sio Tupu na at least minpriority
 
     Finalizers with highest priority are called first; finalizers with
-    the same priority will be called in reverse order of creation.
+    the same priority will be called kwenye reverse order of creation.
     '''
-    ikiwa _finalizer_registry is None:
+    ikiwa _finalizer_registry ni Tupu:
         # This function may be called after this module's globals are
-        # destroyed.  See the _exit_function function in this module for more
+        # destroyed.  See the _exit_function function kwenye this module kila more
         # notes.
-        return
+        rudisha
 
-    ikiwa minpriority is None:
-        f = lambda p : p[0] is not None
-    else:
-        f = lambda p : p[0] is not None and p[0] >= minpriority
+    ikiwa minpriority ni Tupu:
+        f = lambda p : p[0] ni sio Tupu
+    isipokua:
+        f = lambda p : p[0] ni sio Tupu na p[0] >= minpriority
 
-    # Careful: _finalizer_registry may be mutated while this function
-    # is running (either by a GC run or by another thread).
+    # Careful: _finalizer_registry may be mutated wakati this function
+    # ni running (either by a GC run ama by another thread).
 
     # list(_finalizer_registry) should be atomic, while
-    # list(_finalizer_registry.items()) is not.
-    keys = [key for key in list(_finalizer_registry) ikiwa f(key)]
-    keys.sort(reverse=True)
+    # list(_finalizer_registry.items()) ni not.
+    keys = [key kila key kwenye list(_finalizer_registry) ikiwa f(key)]
+    keys.sort(reverse=Kweli)
 
-    for key in keys:
+    kila key kwenye keys:
         finalizer = _finalizer_registry.get(key)
         # key may have been removed kutoka the registry
-        ikiwa finalizer is not None:
+        ikiwa finalizer ni sio Tupu:
             sub_debug('calling %s', finalizer)
-            try:
+            jaribu:
                 finalizer()
-            except Exception:
+            tatizo Exception:
                 agiza traceback
                 traceback.print_exc()
 
-    ikiwa minpriority is None:
+    ikiwa minpriority ni Tupu:
         _finalizer_registry.clear()
 
 #
@@ -288,49 +288,49 @@ eleza _run_finalizers(minpriority=None):
 
 eleza is_exiting():
     '''
-    Returns true ikiwa the process is shutting down
+    Returns true ikiwa the process ni shutting down
     '''
-    rudisha _exiting or _exiting is None
+    rudisha _exiting ama _exiting ni Tupu
 
-_exiting = False
+_exiting = Uongo
 
 eleza _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
                    active_children=process.active_children,
                    current_process=process.current_process):
-    # We hold on to references to functions in the arglist due to the
-    # situation described below, where this function is called after this
+    # We hold on to references to functions kwenye the arglist due to the
+    # situation described below, where this function ni called after this
     # module's globals are destroyed.
 
     global _exiting
 
-    ikiwa not _exiting:
-        _exiting = True
+    ikiwa sio _exiting:
+        _exiting = Kweli
 
         info('process shutting down')
         debug('running all "atexit" finalizers with priority >= 0')
         _run_finalizers(0)
 
-        ikiwa current_process() is not None:
-            # We check ikiwa the current process is None here because if
-            # it's None, any call to ``active_children()`` will raise
+        ikiwa current_process() ni sio Tupu:
+            # We check ikiwa the current process ni Tupu here because if
+            # it's Tupu, any call to ``active_children()`` will ashiria
             # an AttributeError (active_children winds up trying to
             # get attributes kutoka util._current_process).  One
-            # situation where this can happen is ikiwa someone has
+            # situation where this can happen ni ikiwa someone has
             # manipulated sys.modules, causing this module to be
-            # garbage collected.  The destructor for the module type
-            # then replaces all values in the module dict with None.
+            # garbage collected.  The destructor kila the module type
+            # then replaces all values kwenye the module dict with Tupu.
             # For instance, after setuptools runs a test it replaces
             # sys.modules with a copy created earlier.  See issues
-            # #9775 and #15881.  Also related: #4106, #9205, and
+            # #9775 na #15881.  Also related: #4106, #9205, and
             # #9207.
 
-            for p in active_children():
+            kila p kwenye active_children():
                 ikiwa p.daemon:
-                    info('calling terminate() for daemon %s', p.name)
+                    info('calling terminate() kila daemon %s', p.name)
                     p._popen.terminate()
 
-            for p in active_children():
-                info('calling join() for process %s', p.name)
+            kila p kwenye active_children():
+                info('calling join() kila process %s', p.name)
                 p.join()
 
         debug('running the remaining "atexit" finalizers')
@@ -366,76 +366,76 @@ kundi ForkAwareLocal(threading.local):
         rudisha type(self), ()
 
 #
-# Close fds except those specified
+# Close fds tatizo those specified
 #
 
-try:
+jaribu:
     MAXFD = os.sysconf("SC_OPEN_MAX")
-except Exception:
+tatizo Exception:
     MAXFD = 256
 
 eleza close_all_fds_except(fds):
     fds = list(fds) + [-1, MAXFD]
     fds.sort()
     assert fds[-1] == MAXFD, 'fd too large'
-    for i in range(len(fds) - 1):
+    kila i kwenye range(len(fds) - 1):
         os.closerange(fds[i]+1, fds[i+1])
 #
-# Close sys.stdin and replace stdin with os.devnull
+# Close sys.stdin na replace stdin with os.devnull
 #
 
 eleza _close_stdin():
-    ikiwa sys.stdin is None:
-        return
+    ikiwa sys.stdin ni Tupu:
+        rudisha
 
-    try:
+    jaribu:
         sys.stdin.close()
-    except (OSError, ValueError):
-        pass
+    tatizo (OSError, ValueError):
+        pita
 
-    try:
+    jaribu:
         fd = os.open(os.devnull, os.O_RDONLY)
-        try:
-            sys.stdin = open(fd, closefd=False)
+        jaribu:
+            sys.stdin = open(fd, closefd=Uongo)
         except:
             os.close(fd)
-            raise
-    except (OSError, ValueError):
-        pass
+            ashiria
+    tatizo (OSError, ValueError):
+        pita
 
 #
 # Flush standard streams, ikiwa any
 #
 
 eleza _flush_std_streams():
-    try:
+    jaribu:
         sys.stdout.flush()
-    except (AttributeError, ValueError):
-        pass
-    try:
+    tatizo (AttributeError, ValueError):
+        pita
+    jaribu:
         sys.stderr.flush()
-    except (AttributeError, ValueError):
-        pass
+    tatizo (AttributeError, ValueError):
+        pita
 
 #
 # Start a program with only specified fds kept open
 #
 
-eleza spawnv_passfds(path, args, passfds):
+eleza spawnv_pitafds(path, args, pitafds):
     agiza _posixsubprocess
-    passfds = tuple(sorted(map(int, passfds)))
+    pitafds = tuple(sorted(map(int, pitafds)))
     errpipe_read, errpipe_write = os.pipe()
-    try:
+    jaribu:
         rudisha _posixsubprocess.fork_exec(
-            args, [os.fsencode(path)], True, passfds, None, None,
+            args, [os.fsencode(path)], Kweli, pitafds, Tupu, Tupu,
             -1, -1, -1, -1, -1, -1, errpipe_read, errpipe_write,
-            False, False, None)
-    finally:
+            Uongo, Uongo, Tupu)
+    mwishowe:
         os.close(errpipe_read)
         os.close(errpipe_write)
 
 
 eleza close_fds(*fds):
-    """Close each file descriptor given as an argument"""
-    for fd in fds:
+    """Close each file descriptor given kama an argument"""
+    kila fd kwenye fds:
         os.close(fd)

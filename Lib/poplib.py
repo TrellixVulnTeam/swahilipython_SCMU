@@ -6,7 +6,7 @@ Based on the J. Myers POP3 draft, Jan. 96
 # Author: David Ascher <david_ascher@brown.edu>
 #         [heavily stealing kutoka nntplib.py]
 # Updated: Piers Lauder <piers@cs.su.oz.au> [Jul '97]
-# String method conversion and test jig improvements by ESR, February 2001.
+# String method conversion na test jig improvements by ESR, February 2001.
 # Added the POP3_SSL class. Methods loosely based on IMAP_SSL. Hector Urtubia <urtubia@mrbook.org> Aug 2003
 
 # Example (see the test function at the end of this file)
@@ -18,17 +18,17 @@ agiza re
 agiza socket
 agiza sys
 
-try:
+jaribu:
     agiza ssl
-    HAVE_SSL = True
-except ImportError:
-    HAVE_SSL = False
+    HAVE_SSL = Kweli
+tatizo ImportError:
+    HAVE_SSL = Uongo
 
 __all__ = ["POP3","error_proto"]
 
-# Exception raised when an error or invalid response is received:
+# Exception ashiriad when an error ama invalid response ni received:
 
-kundi error_proto(Exception): pass
+kundi error_proto(Exception): pita
 
 # Standard Port
 POP3_PORT = 110
@@ -41,7 +41,7 @@ CR = b'\r'
 LF = b'\n'
 CRLF = CR+LF
 
-# maximal line length when calling readline(). This is to prevent
+# maximal line length when calling readline(). This ni to prevent
 # reading arbitrary length lines. RFC 1939 limits POP3 line length to
 # 512 characters, including CRLF. We have selected 2048 just to be on
 # the safe side.
@@ -50,15 +50,15 @@ _MAXLINE = 2048
 
 kundi POP3:
 
-    """This kundi supports both the minimal and optional command sets.
-    Arguments can be strings or integers (where appropriate)
-    (e.g.: retr(1) and retr('1') both work equally well.
+    """This kundi supports both the minimal na optional command sets.
+    Arguments can be strings ama integers (where appropriate)
+    (e.g.: retr(1) na retr('1') both work equally well.
 
     Minimal Command Set:
             USER name               user(name)
-            PASS string             pass_(string)
+            PASS string             pita_(string)
             STAT                    stat()
-            LIST [msg]              list(msg = None)
+            LIST [msg]              list(msg = Tupu)
             RETR msg                retr(msg)
             DELE msg                dele(msg)
             NOOP                    noop()
@@ -69,7 +69,7 @@ kundi POP3:
             RPOP name               rpop(name)
             APOP name digest        apop(name, digest)
             TOP msg n               top(msg, n)
-            UIDL [msg]              uidl(msg = None)
+            UIDL [msg]              uidl(msg = Tupu)
             CAPA                    capa()
             STLS                    stls()
             UTF8                    utf8()
@@ -81,10 +81,10 @@ kundi POP3:
 
     NB:     the POP protocol locks the mailbox kutoka user
             authorization until QUIT, so be sure to get in, suck
-            the messages, and quit, each time you access the
+            the messages, na quit, each time you access the
             mailbox.
 
-            POP is a line-based protocol, which means large mail
+            POP ni a line-based protocol, which means large mail
             messages consume lots of python cycles reading them
             line-by-line.
 
@@ -99,7 +99,7 @@ kundi POP3:
                  timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         self.host = host
         self.port = port
-        self._tls_established = False
+        self._tls_established = Uongo
         sys.audit("poplib.connect", self, host, port)
         self.sock = self._create_socket(timeout)
         self.file = self.sock.makefile('rb')
@@ -124,19 +124,19 @@ kundi POP3:
 
 
     # Internal: rudisha one line kutoka the server, stripping CRLF.
-    # This is where all the CPU time of this module is consumed.
-    # Raise error_proto('-ERR EOF') ikiwa the connection is closed.
+    # This ni where all the CPU time of this module ni consumed.
+    # Raise error_proto('-ERR EOF') ikiwa the connection ni closed.
 
     eleza _getline(self):
         line = self.file.readline(_MAXLINE + 1)
         ikiwa len(line) > _MAXLINE:
-            raise error_proto('line too long')
+            ashiria error_proto('line too long')
 
         ikiwa self._debugging > 1: andika('*get*', repr(line))
-        ikiwa not line: raise error_proto('-ERR EOF')
+        ikiwa sio line: ashiria error_proto('-ERR EOF')
         octets = len(line)
         # server can send any combination of CR & LF
-        # however, 'readline()' returns lines ending in LF
+        # however, 'readline()' rudishas lines ending kwenye LF
         # so only possibilities are ...LF, ...CRLF, CR...LF
         ikiwa line[-2:] == CRLF:
             rudisha line[:-2], octets
@@ -151,8 +151,8 @@ kundi POP3:
     eleza _getresp(self):
         resp, o = self._getline()
         ikiwa self._debugging > 1: andika('*resp*', repr(resp))
-        ikiwa not resp.startswith(b'+'):
-            raise error_proto(resp)
+        ikiwa sio resp.startswith(b'+'):
+            ashiria error_proto(resp)
         rudisha resp
 
 
@@ -162,7 +162,7 @@ kundi POP3:
         resp = self._getresp()
         list = []; octets = 0
         line, o = self._getline()
-        while line != b'.':
+        wakati line != b'.':
             ikiwa line.startswith(b'..'):
                 o = o-1
                 line = line[1:]
@@ -172,14 +172,14 @@ kundi POP3:
         rudisha resp, list, octets
 
 
-    # Internal: send a command and get the response
+    # Internal: send a command na get the response
 
     eleza _shortcmd(self, line):
         self._putcmd(line)
         rudisha self._getresp()
 
 
-    # Internal: send a command and get the response plus following text
+    # Internal: send a command na get the response plus following text
 
     eleza _longcmd(self, line):
         self._putcmd(line)
@@ -201,17 +201,17 @@ kundi POP3:
     eleza user(self, user):
         """Send user name, rudisha response
 
-        (should indicate password required).
+        (should indicate pitaword required).
         """
         rudisha self._shortcmd('USER %s' % user)
 
 
-    eleza pass_(self, pswd):
-        """Send password, rudisha response
+    eleza pita_(self, pswd):
+        """Send pitaword, rudisha response
 
         (response includes message count, mailbox size).
 
-        NB: mailbox is locked by server kutoka here to 'quit()'
+        NB: mailbox ni locked by server kutoka here to 'quit()'
         """
         rudisha self._shortcmd('PASS %s' % pswd)
 
@@ -219,7 +219,7 @@ kundi POP3:
     eleza stat(self):
         """Get mailbox status.
 
-        Result is tuple of 2 ints (message count, mailbox size)
+        Result ni tuple of 2 ints (message count, mailbox size)
         """
         retval = self._shortcmd('STAT')
         rets = retval.split()
@@ -229,16 +229,16 @@ kundi POP3:
         rudisha (numMessages, sizeMessages)
 
 
-    eleza list(self, which=None):
+    eleza list(self, which=Tupu):
         """Request listing, rudisha result.
 
-        Result without a message number argument is in form
+        Result without a message number argument ni kwenye form
         ['response', ['mesg_num octets', ...], octets].
 
-        Result when a message number argument is given is a
-        single response: the "scan listing" for that message.
+        Result when a message number argument ni given ni a
+        single response: the "scan listing" kila that message.
         """
-        ikiwa which is not None:
+        ikiwa which ni sio Tupu:
             rudisha self._shortcmd('LIST %s' % which)
         rudisha self._longcmd('LIST')
 
@@ -246,7 +246,7 @@ kundi POP3:
     eleza retr(self, which):
         """Retrieve whole message number 'which'.
 
-        Result is in form ['response', ['line', ...], octets].
+        Result ni kwenye form ['response', ['line', ...], octets].
         """
         rudisha self._longcmd('RETR %s' % which)
 
@@ -254,7 +254,7 @@ kundi POP3:
     eleza dele(self, which):
         """Delete message number 'which'.
 
-        Result is 'response'.
+        Result ni 'response'.
         """
         rudisha self._shortcmd('DELE %s' % which)
 
@@ -262,13 +262,13 @@ kundi POP3:
     eleza noop(self):
         """Does nothing.
 
-        One supposes the response indicates the server is alive.
+        One supposes the response indicates the server ni alive.
         """
         rudisha self._shortcmd('NOOP')
 
 
     eleza rset(self):
-        """Unmark all messages marked for deletion."""
+        """Unmark all messages marked kila deletion."""
         rudisha self._shortcmd('RSET')
 
 
@@ -280,25 +280,25 @@ kundi POP3:
 
     eleza close(self):
         """Close the connection without assuming anything about it."""
-        try:
+        jaribu:
             file = self.file
-            self.file = None
-            ikiwa file is not None:
+            self.file = Tupu
+            ikiwa file ni sio Tupu:
                 file.close()
-        finally:
+        mwishowe:
             sock = self.sock
-            self.sock = None
-            ikiwa sock is not None:
-                try:
+            self.sock = Tupu
+            ikiwa sock ni sio Tupu:
+                jaribu:
                     sock.shutdown(socket.SHUT_RDWR)
-                except OSError as exc:
+                tatizo OSError kama exc:
                     # The server might already have closed the connection.
-                    # On Windows, this may result in WSAEINVAL (error 10022):
+                    # On Windows, this may result kwenye WSAEINVAL (error 10022):
                     # An invalid operation was attempted.
                     ikiwa (exc.errno != errno.ENOTCONN
-                       and getattr(exc, 'winerror', 0) != 10022):
-                        raise
-                finally:
+                       na getattr(exc, 'winerror', 0) != 10022):
+                        ashiria
+                mwishowe:
                     sock.close()
 
     #__del__ = quit
@@ -313,21 +313,21 @@ kundi POP3:
 
     timestamp = re.compile(br'\+OK.[^<]*(<.*>)')
 
-    eleza apop(self, user, password):
+    eleza apop(self, user, pitaword):
         """Authorisation
 
-        - only possible ikiwa server has supplied a timestamp in initial greeting.
+        - only possible ikiwa server has supplied a timestamp kwenye initial greeting.
 
         Args:
                 user     - mailbox user;
-                password - mailbox password.
+                pitaword - mailbox pitaword.
 
-        NB: mailbox is locked by server kutoka here to 'quit()'
+        NB: mailbox ni locked by server kutoka here to 'quit()'
         """
-        secret = bytes(password, self.encoding)
+        secret = bytes(pitaword, self.encoding)
         m = self.timestamp.match(self.welcome)
-        ikiwa not m:
-            raise error_proto('-ERR APOP not supported by server')
+        ikiwa sio m:
+            ashiria error_proto('-ERR APOP sio supported by server')
         agiza hashlib
         digest = m.group(1)+secret
         digest = hashlib.md5(digest).hexdigest()
@@ -336,21 +336,21 @@ kundi POP3:
 
     eleza top(self, which, howmuch):
         """Retrieve message header of message number 'which'
-        and first 'howmuch' lines of message body.
+        na first 'howmuch' lines of message body.
 
-        Result is in form ['response', ['line', ...], octets].
+        Result ni kwenye form ['response', ['line', ...], octets].
         """
         rudisha self._longcmd('TOP %s %s' % (which, howmuch))
 
 
-    eleza uidl(self, which=None):
+    eleza uidl(self, which=Tupu):
         """Return message digest (unique id) list.
 
-        If 'which', result contains unique id for that message
-        in the form 'response mesgnum uid', otherwise result is
+        If 'which', result contains unique id kila that message
+        kwenye the form 'response mesgnum uid', otherwise result is
         the list ['response', ['mesgnum uid', ...], octets]
         """
-        ikiwa which is not None:
+        ikiwa which ni sio Tupu:
             rudisha self._shortcmd('UIDL %s' % which)
         rudisha self._longcmd('UIDL')
 
@@ -362,7 +362,7 @@ kundi POP3:
 
 
     eleza capa(self):
-        """Return server capabilities (RFC 2449) as a dictionary
+        """Return server capabilities (RFC 2449) kama a dictionary
         >>> c=poplib.POP3('localhost')
         >>> c.capa()
         {'IMPLEMENTATION': ['Cyrus', 'POP3', 'server', 'v2.2.12'],
@@ -379,36 +379,36 @@ kundi POP3:
             rudisha lst[0], lst[1:]
 
         caps = {}
-        try:
+        jaribu:
             resp = self._longcmd('CAPA')
             rawcaps = resp[1]
-            for capline in rawcaps:
+            kila capline kwenye rawcaps:
                 capnm, capargs = _parsecap(capline)
                 caps[capnm] = capargs
-        except error_proto as _err:
-            raise error_proto('-ERR CAPA not supported by server')
+        tatizo error_proto kama _err:
+            ashiria error_proto('-ERR CAPA sio supported by server')
         rudisha caps
 
 
-    eleza stls(self, context=None):
-        """Start a TLS session on the active connection as specified in RFC 2595.
+    eleza stls(self, context=Tupu):
+        """Start a TLS session on the active connection kama specified kwenye RFC 2595.
 
                 context - a ssl.SSLContext
         """
-        ikiwa not HAVE_SSL:
-            raise error_proto('-ERR TLS support missing')
+        ikiwa sio HAVE_SSL:
+            ashiria error_proto('-ERR TLS support missing')
         ikiwa self._tls_established:
-            raise error_proto('-ERR TLS session already established')
+            ashiria error_proto('-ERR TLS session already established')
         caps = self.capa()
-        ikiwa not 'STLS' in caps:
-            raise error_proto('-ERR STLS not supported by server')
-        ikiwa context is None:
+        ikiwa sio 'STLS' kwenye caps:
+            ashiria error_proto('-ERR STLS sio supported by server')
+        ikiwa context ni Tupu:
             context = ssl._create_stdlib_context()
         resp = self._shortcmd('STLS')
         self.sock = context.wrap_socket(self.sock,
                                         server_hostname=self.host)
         self.file = self.sock.makefile('rb')
-        self._tls_established = True
+        self._tls_established = Kweli
         rudisha resp
 
 
@@ -417,8 +417,8 @@ ikiwa HAVE_SSL:
     kundi POP3_SSL(POP3):
         """POP3 client kundi over SSL connection
 
-        Instantiate with: POP3_SSL(hostname, port=995, keyfile=None, certfile=None,
-                                   context=None)
+        Instantiate with: POP3_SSL(hostname, port=995, keyfile=Tupu, certfile=Tupu,
+                                   context=Tupu)
 
                hostname - the hostname of the pop3 over ssl server
                port - port number
@@ -426,24 +426,24 @@ ikiwa HAVE_SSL:
                certfile - PEM formatted certificate chain file
                context - a ssl.SSLContext
 
-        See the methods of the parent kundi POP3 for more documentation.
+        See the methods of the parent kundi POP3 kila more documentation.
         """
 
-        eleza __init__(self, host, port=POP3_SSL_PORT, keyfile=None, certfile=None,
-                     timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=None):
-            ikiwa context is not None and keyfile is not None:
-                raise ValueError("context and keyfile arguments are mutually "
+        eleza __init__(self, host, port=POP3_SSL_PORT, keyfile=Tupu, certfile=Tupu,
+                     timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=Tupu):
+            ikiwa context ni sio Tupu na keyfile ni sio Tupu:
+                ashiria ValueError("context na keyfile arguments are mutually "
                                  "exclusive")
-            ikiwa context is not None and certfile is not None:
-                raise ValueError("context and certfile arguments are mutually "
+            ikiwa context ni sio Tupu na certfile ni sio Tupu:
+                ashiria ValueError("context na certfile arguments are mutually "
                                  "exclusive")
-            ikiwa keyfile is not None or certfile is not None:
+            ikiwa keyfile ni sio Tupu ama certfile ni sio Tupu:
                 agiza warnings
-                warnings.warn("keyfile and certfile are deprecated, use a "
+                warnings.warn("keyfile na certfile are deprecated, use a "
                               "custom context instead", DeprecationWarning, 2)
             self.keyfile = keyfile
             self.certfile = certfile
-            ikiwa context is None:
+            ikiwa context ni Tupu:
                 context = ssl._create_stdlib_context(certfile=certfile,
                                                      keyfile=keyfile)
             self.context = context
@@ -455,12 +455,12 @@ ikiwa HAVE_SSL:
                                             server_hostname=self.host)
             rudisha sock
 
-        eleza stls(self, keyfile=None, certfile=None, context=None):
-            """The method unconditionally raises an exception since the
+        eleza stls(self, keyfile=Tupu, certfile=Tupu, context=Tupu):
+            """The method unconditionally ashirias an exception since the
             STLS command doesn't make any sense on an already established
             SSL/TLS session.
             """
-            raise error_proto('-ERR TLS session already established')
+            ashiria error_proto('-ERR TLS session already established')
 
     __all__.append("POP3_SSL")
 
@@ -469,13 +469,13 @@ ikiwa __name__ == "__main__":
     a = POP3(sys.argv[1])
     andika(a.getwelcome())
     a.user(sys.argv[2])
-    a.pass_(sys.argv[3])
+    a.pita_(sys.argv[3])
     a.list()
     (numMsgs, totalSize) = a.stat()
-    for i in range(1, numMsgs + 1):
+    kila i kwenye range(1, numMsgs + 1):
         (header, msg, octets) = a.retr(i)
         andika("Message %d:" % i)
-        for line in msg:
+        kila line kwenye msg:
             andika('   ' + line)
         andika('-----------------------')
     a.quit()

@@ -17,21 +17,21 @@ agiza sys
 agiza threading
 agiza time
 
-try:
+jaribu:
     agiza zlib # We may need its compression method
     crc32 = zlib.crc32
-except ImportError:
+tatizo ImportError:
     zlib = None
     crc32 = binascii.crc32
 
-try:
+jaribu:
     agiza bz2 # We may need its compression method
-except ImportError:
+tatizo ImportError:
     bz2 = None
 
-try:
+jaribu:
     agiza lzma # We may need its compression method
-except ImportError:
+tatizo ImportError:
     lzma = None
 
 __all__ = ["BadZipFile", "BadZipfile", "error",
@@ -60,13 +60,13 @@ ZIP_STORED = 0
 ZIP_DEFLATED = 8
 ZIP_BZIP2 = 12
 ZIP_LZMA = 14
-# Other ZIP compression methods not supported
+# Other ZIP compression methods sio supported
 
 DEFAULT_VERSION = 20
 ZIP64_VERSION = 45
 BZIP2_VERSION = 46
 LZMA_VERSION = 63
-# we recognize (but not necessarily support) all features up to that version
+# we recognize (but sio necessarily support) all features up to that version
 MAX_EXTRACT_VERSION = 63
 
 # Below are some formats and associated data for reading/writing headers using
@@ -89,7 +89,7 @@ _ECD_ENTRIES_TOTAL = 4
 _ECD_SIZE = 5
 _ECD_OFFSET = 6
 _ECD_COMMENT_SIZE = 7
-# These last two indices are not part of the structure as defined in the
+# These last two indices are sio part of the structure as defined in the
 # spec, but they are used internally by this module as a convenience
 _ECD_COMMENT = 8
 _ECD_LOCATION = 9
@@ -172,7 +172,7 @@ def _strip_extra(extra, xids):
     modified = False
     buffer = []
     start = i = 0
-    while i + 4 <= len(extra):
+    wakati i + 4 <= len(extra):
         xid, xlen = unpack(extra[i : i + 4])
         j = i + 4 + xlen
         if xid in xids:
@@ -181,15 +181,15 @@ def _strip_extra(extra, xids):
             start = j
             modified = True
         i = j
-    if not modified:
+    if sio modified:
         return extra
     return b''.join(buffer)
 
 def _check_zipfile(fp):
-    try:
+    jaribu:
         if _EndRecData(fp):
             return True         # file has correct magic number
-    except OSError:
+    tatizo OSError:
         pass
     return False
 
@@ -199,13 +199,13 @@ def is_zipfile(filename):
     The filename argument may be a file or file-like object too.
     """
     result = False
-    try:
+    jaribu:
         if hasattr(filename, "read"):
             result = _check_zipfile(fp=filename)
-        else:
+        isipokua:
             with open(filename, "rb") as fp:
                 result = _check_zipfile(fp)
-    except OSError:
+    tatizo OSError:
         pass
     return result
 
@@ -213,10 +213,10 @@ def _EndRecData64(fpin, offset, endrec):
     """
     Read the ZIP64 end-of-archive records and use that to update endrec
     """
-    try:
+    jaribu:
         fpin.seek(offset - sizeEndCentDir64Locator, 2)
-    except OSError:
-        # If the seek fails, the file is not large enough to contain a ZIP64
+    tatizo OSError:
+        # If the seek fails, the file ni sio large enough to contain a ZIP64
         # end-of-archive record, so just return the end record we were given.
         return endrec
 
@@ -228,7 +228,7 @@ def _EndRecData64(fpin, offset, endrec):
         return endrec
 
     if diskno != 0 or disks > 1:
-        raise BadZipFile("zipfiles that span multiple disks are not supported")
+        raise BadZipFile("zipfiles that span multiple disks are sio supported")
 
     # Assume no 'zip64 extensible data'
     fpin.seek(offset - sizeEndCentDir64Locator - sizeEndCentDir64, 2)
@@ -265,9 +265,9 @@ def _EndRecData(fpin):
     # Check to see if this is ZIP file with no archive comment (the
     # "end of central directory" structure should be the last item in the
     # file if this is the case).
-    try:
+    jaribu:
         fpin.seek(-sizeEndCentDir, 2)
-    except OSError:
+    tatizo OSError:
         return None
     data = fpin.read()
     if (len(data) == sizeEndCentDir and
@@ -284,11 +284,11 @@ def _EndRecData(fpin):
         # Try to read the "Zip64 end of central directory" structure
         return _EndRecData64(fpin, -sizeEndCentDir, endrec)
 
-    # Either this is not a ZIP file, or it is a ZIP file with an archive
+    # Either this ni sio a ZIP file, or it is a ZIP file with an archive
     # comment.  Search the end of the file for the "end of central directory"
     # record signature. The comment is the last item in the ZIP file and may be
     # up to 64K long.  It is assumed that the "end of central directory" magic
-    # number does not appear in the comment.
+    # number does sio appear in the comment.
     maxCommentStart = max(filesize - (1 << 16) - sizeEndCentDir, 0)
     fpin.seek(maxCommentStart, 0)
     data = fpin.read()
@@ -357,7 +357,7 @@ kundi ZipInfo (object):
         self.date_time = date_time      # year, month, day, hour, min, sec
 
         if date_time[0] < 1980:
-            raise ValueError('ZIP does not support timestamps before 1980')
+            raise ValueError('ZIP does sio support timestamps before 1980')
 
         # Standard values:
         self.compress_type = ZIP_STORED # Type of compression for the file
@@ -366,7 +366,7 @@ kundi ZipInfo (object):
         self.extra = b""                # ZIP extra data
         if sys.platform == 'win32':
             self.create_system = 0          # System which created ZIP archive
-        else:
+        isipokua:
             # Assume everything else is unix-y
             self.create_system = 3          # System which created ZIP archive
         self.create_version = DEFAULT_VERSION  # Version which created ZIP archive
@@ -395,7 +395,7 @@ kundi ZipInfo (object):
         if lo:
             result.append(' external_attr=%#x' % lo)
         isdir = self.is_dir()
-        if not isdir or self.file_size:
+        if sio isdir or self.file_size:
             result.append(' file_size=%r' % self.file_size)
         if ((not isdir or self.compress_size) and
             (self.compress_type != ZIP_STORED or
@@ -412,7 +412,7 @@ kundi ZipInfo (object):
         if self.flag_bits & 0x08:
             # Set these to zero because we write them after the file data
             CRC = compress_size = file_size = 0
-        else:
+        isipokua:
             CRC = self.CRC
             compress_size = self.compress_size
             file_size = self.file_size
@@ -427,7 +427,7 @@ kundi ZipInfo (object):
             extra = extra + struct.pack(fmt,
                                         1, struct.calcsize(fmt)-4, file_size, compress_size)
         if file_size > ZIP64_LIMIT or compress_size > ZIP64_LIMIT:
-            if not zip64:
+            if sio zip64:
                 raise LargeZipFile("Filesize would require ZIP64 extensions")
             # File is larger than what fits into a 4 byte integer,
             # fall back to the ZIP64 extension
@@ -451,16 +451,16 @@ kundi ZipInfo (object):
         return header + filename + extra
 
     def _encodeFilenameFlags(self):
-        try:
+        jaribu:
             return self.filename.encode('ascii'), self.flag_bits
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             return self.filename.encode('utf-8'), self.flag_bits | 0x800
 
     def _decodeExtra(self):
         # Try to decode the extra field.
         extra = self.extra
         unpack = struct.unpack
-        while len(extra) >= 4:
+        wakati len(extra) >= 4:
             tp, ln = unpack('<HH', extra[:4])
             if ln+4 > len(extra):
                 raise BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
@@ -473,7 +473,7 @@ kundi ZipInfo (object):
                     counts = unpack('<Q', extra[4:12])
                 lasivyo ln == 0:
                     counts = ()
-                else:
+                isipokua:
                     raise BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
 
                 idx = 0
@@ -510,15 +510,15 @@ kundi ZipInfo (object):
         isdir = stat.S_ISDIR(st.st_mode)
         mtime = time.localtime(st.st_mtime)
         date_time = mtime[0:6]
-        if not strict_timestamps and date_time[0] < 1980:
+        if sio strict_timestamps and date_time[0] < 1980:
             date_time = (1980, 1, 1, 0, 0, 0)
-        lasivyo not strict_timestamps and date_time[0] > 2107:
+        lasivyo sio strict_timestamps and date_time[0] > 2107:
             date_time = (2107, 12, 31, 23, 59, 59)
         # Create ZipInfo instance to store file information
         if arcname is None:
             arcname = filename
         arcname = os.path.normpath(os.path.splitdrive(arcname)[1])
-        while arcname[0] in (os.sep, os.altsep):
+        wakati arcname[0] in (os.sep, os.altsep):
             arcname = arcname[1:]
         if isdir:
             arcname += '/'
@@ -527,7 +527,7 @@ kundi ZipInfo (object):
         if isdir:
             zinfo.file_size = 0
             zinfo.external_attr |= 0x10  # MS-DOS directory flag
-        else:
+        isipokua:
             zinfo.file_size = st.st_size
 
         return zinfo
@@ -546,7 +546,7 @@ def _gen_crc(crc):
     for j in range(8):
         if crc & 1:
             crc = (crc >> 1) ^ 0xEDB88320
-        else:
+        isipokua:
             crc >>= 1
     return crc
 
@@ -640,7 +640,7 @@ kundi LZMADecompressor:
                                                self._unconsumed[4:4 + psize])
             ])
             data = self._unconsumed[4 + psize:]
-            del self._unconsumed
+            toa self._unconsumed
 
         result = self._decomp.decompress(data)
         self.eof = self._decomp.eof
@@ -671,34 +671,34 @@ def _check_compression(compression):
     if compression == ZIP_STORED:
         pass
     lasivyo compression == ZIP_DEFLATED:
-        if not zlib:
+        if sio zlib:
             raise RuntimeError(
                 "Compression requires the (missing) zlib module")
     lasivyo compression == ZIP_BZIP2:
-        if not bz2:
+        if sio bz2:
             raise RuntimeError(
                 "Compression requires the (missing) bz2 module")
     lasivyo compression == ZIP_LZMA:
-        if not lzma:
+        if sio lzma:
             raise RuntimeError(
                 "Compression requires the (missing) lzma module")
-    else:
-        raise NotImplementedError("That compression method is not supported")
+    isipokua:
+        raise NotImplementedError("That compression method ni sio supported")
 
 
 def _get_compressor(compress_type, compresslevel=None):
     if compress_type == ZIP_DEFLATED:
-        if compresslevel is not None:
+        if compresslevel ni sio None:
             return zlib.compressobj(compresslevel, zlib.DEFLATED, -15)
         return zlib.compressobj(zlib.Z_DEFAULT_COMPRESSION, zlib.DEFLATED, -15)
     lasivyo compress_type == ZIP_BZIP2:
-        if compresslevel is not None:
+        if compresslevel ni sio None:
             return bz2.BZ2Compressor(compresslevel)
         return bz2.BZ2Compressor()
     # compresslevel is ignored for ZIP_LZMA
     lasivyo compress_type == ZIP_LZMA:
         return LZMACompressor()
-    else:
+    isipokua:
         return None
 
 
@@ -712,11 +712,11 @@ def _get_decompressor(compress_type):
         return bz2.BZ2Decompressor()
     lasivyo compress_type == ZIP_LZMA:
         return LZMADecompressor()
-    else:
+    isipokua:
         descr = compressor_names.get(compress_type)
         if descr:
             raise NotImplementedError("compression type %d (%s)" % (compress_type, descr))
-        else:
+        isipokua:
             raise NotImplementedError("compression type %d" % (compress_type,))
 
 
@@ -733,7 +733,7 @@ kundi _SharedFile:
     def seek(self, offset, whence=0):
         with self._lock:
             if self._writing():
-                raise ValueError("Can't reposition in the ZIP file while "
+                raise ValueError("Can't reposition in the ZIP file wakati "
                         "there is an open writing handle on it. "
                         "Close the writing handle before trying to read.")
             self._file.seek(offset, whence)
@@ -743,7 +743,7 @@ kundi _SharedFile:
     def read(self, n=-1):
         with self._lock:
             if self._writing():
-                raise ValueError("Can't read kutoka the ZIP file while there "
+                raise ValueError("Can't read kutoka the ZIP file wakati there "
                         "is an open writing handle on it. "
                         "Close the writing handle before trying to read.")
             self._file.seek(self._pos)
@@ -752,7 +752,7 @@ kundi _SharedFile:
             return data
 
     def close(self):
-        if self._file is not None:
+        if self._file ni sio None:
             fileobj = self._file
             self._file = None
             self._close(fileobj)
@@ -812,7 +812,7 @@ kundi ZipExtFile(io.BufferedIOBase):
 
         # Adjust read size for encrypted files since the first 12 bytes
         # are for the encryption/password information.
-        if self._decrypter is not None:
+        if self._decrypter ni sio None:
             self._compress_left -= 12
 
         self.mode = mode
@@ -821,30 +821,30 @@ kundi ZipExtFile(io.BufferedIOBase):
         if hasattr(zipinfo, 'CRC'):
             self._expected_crc = zipinfo.CRC
             self._running_crc = crc32(b'')
-        else:
+        isipokua:
             self._expected_crc = None
 
         self._seekable = False
-        try:
+        jaribu:
             if fileobj.seekable():
                 self._orig_compress_start = fileobj.tell()
                 self._orig_compress_size = zipinfo.compress_size
                 self._orig_file_size = zipinfo.file_size
                 self._orig_start_crc = self._running_crc
                 self._seekable = True
-        except AttributeError:
+        tatizo AttributeError:
             pass
 
     def __repr__(self):
         result = ['<%s.%s' % (self.__class__.__module__,
                               self.__class__.__qualname__)]
-        if not self.closed:
+        if sio self.closed:
             result.append(' name=%r mode=%r' % (self.name, self.mode))
             if self._compress_type != ZIP_STORED:
                 result.append(' compress_type=%s' %
                               compressor_names.get(self._compress_type,
                                                    self._compress_type))
-        else:
+        isipokua:
             result.append(' [closed]')
         result.append('>')
         return ''.join(result)
@@ -872,7 +872,7 @@ kundi ZipExtFile(io.BufferedIOBase):
             if len(chunk) > self._offset:
                 self._readbuffer = chunk + self._readbuffer[self._offset:]
                 self._offset = 0
-            else:
+            isipokua:
                 self._offset -= len(chunk)
 
         # Return up to 512 bytes to reduce allocation overhead for tight loops.
@@ -889,7 +889,7 @@ kundi ZipExtFile(io.BufferedIOBase):
             buf = self._readbuffer[self._offset:]
             self._readbuffer = b''
             self._offset = 0
-            while not self._eof:
+            wakati sio self._eof:
                 buf += self._read1(self.MAX_N)
             return buf
 
@@ -903,13 +903,13 @@ kundi ZipExtFile(io.BufferedIOBase):
         buf = self._readbuffer[self._offset:]
         self._readbuffer = b''
         self._offset = 0
-        while n > 0 and not self._eof:
+        wakati n > 0 and sio self._eof:
             data = self._read1(n)
             if n < len(data):
                 self._readbuffer = data
                 self._offset = n
                 buf += data[:n]
-                break
+                koma
             buf += data
             n -= len(data)
         return buf
@@ -931,11 +931,11 @@ kundi ZipExtFile(io.BufferedIOBase):
             buf = self._readbuffer[self._offset:]
             self._readbuffer = b''
             self._offset = 0
-            while not self._eof:
+            wakati sio self._eof:
                 data = self._read1(self.MAX_N)
                 if data:
                     buf += data
-                    break
+                    koma
             return buf
 
         end = n + self._offset
@@ -949,16 +949,16 @@ kundi ZipExtFile(io.BufferedIOBase):
         self._readbuffer = b''
         self._offset = 0
         if n > 0:
-            while not self._eof:
+            wakati sio self._eof:
                 data = self._read1(n)
                 if n < len(data):
                     self._readbuffer = data
                     self._offset = n
                     buf += data[:n]
-                    break
+                    koma
                 if data:
                     buf += data
-                    break
+                    koma
         return buf
 
     def _read1(self, n):
@@ -973,7 +973,7 @@ kundi ZipExtFile(io.BufferedIOBase):
             data = self._decompressor.unconsumed_tail
             if n > len(data):
                 data += self._read2(n - len(data))
-        else:
+        isipokua:
             data = self._read2(n)
 
         if self._compress_type == ZIP_STORED:
@@ -983,10 +983,10 @@ kundi ZipExtFile(io.BufferedIOBase):
             data = self._decompressor.decompress(data, n)
             self._eof = (self._decompressor.eof or
                          self._compress_left <= 0 and
-                         not self._decompressor.unconsumed_tail)
+                         sio self._decompressor.unconsumed_tail)
             if self._eof:
                 data += self._decompressor.flush()
-        else:
+        isipokua:
             data = self._decompressor.decompress(data)
             self._eof = self._decompressor.eof or self._compress_left <= 0
 
@@ -1006,26 +1006,26 @@ kundi ZipExtFile(io.BufferedIOBase):
 
         data = self._fileobj.read(n)
         self._compress_left -= len(data)
-        if not data:
+        if sio data:
             raise EOFError
 
-        if self._decrypter is not None:
+        if self._decrypter ni sio None:
             data = self._decrypter(data)
         return data
 
     def close(self):
-        try:
+        jaribu:
             if self._close_fileobj:
                 self._fileobj.close()
-        finally:
+        mwishowe:
             super().close()
 
     def seekable(self):
         return self._seekable
 
     def seek(self, offset, whence=0):
-        if not self._seekable:
-            raise io.UnsupportedOperation("underlying stream is not seekable")
+        if sio self._seekable:
+            raise io.UnsupportedOperation("underlying stream ni sio seekable")
         curr_pos = self.tell()
         if whence == 0: # Seek kutoka start of file
             new_pos = offset
@@ -1033,7 +1033,7 @@ kundi ZipExtFile(io.BufferedIOBase):
             new_pos = curr_pos + offset
         lasivyo whence == 2: # Seek kutoka EOF
             new_pos = self._orig_file_size + offset
-        else:
+        isipokua:
             raise ValueError("whence must be os.SEEK_SET (0), "
                              "os.SEEK_CUR (1), or os.SEEK_END (2)")
 
@@ -1062,7 +1062,7 @@ kundi ZipExtFile(io.BufferedIOBase):
             self._eof = False
             read_offset = new_pos
 
-        while read_offset > 0:
+        wakati read_offset > 0:
             read_len = min(self.MAX_SEEK_READ, read_offset)
             self.read(read_len)
             read_offset -= read_len
@@ -1070,8 +1070,8 @@ kundi ZipExtFile(io.BufferedIOBase):
         return self.tell()
 
     def tell(self):
-        if not self._seekable:
-            raise io.UnsupportedOperation("underlying stream is not seekable")
+        if sio self._seekable:
+            raise io.UnsupportedOperation("underlying stream ni sio seekable")
         filepos = self._orig_file_size - self._left - len(self._readbuffer) + self._offset
         return filepos
 
@@ -1109,7 +1109,7 @@ kundi _ZipWriteFile(io.BufferedIOBase):
     def close(self):
         if self.closed:
             return
-        try:
+        jaribu:
             super().close()
             # Flush any data kutoka the compressor, and update header info
             if self._compressor:
@@ -1117,7 +1117,7 @@ kundi _ZipWriteFile(io.BufferedIOBase):
                 self._compress_size += len(buf)
                 self._fileobj.write(buf)
                 self._zinfo.compress_size = self._compress_size
-            else:
+            isipokua:
                 self._zinfo.compress_size = self._file_size
             self._zinfo.CRC = self._crc
             self._zinfo.file_size = self._file_size
@@ -1129,8 +1129,8 @@ kundi _ZipWriteFile(io.BufferedIOBase):
                 self._fileobj.write(struct.pack(fmt, _DD_SIGNATURE, self._zinfo.CRC,
                     self._zinfo.compress_size, self._zinfo.file_size))
                 self._zipfile.start_dir = self._fileobj.tell()
-            else:
-                if not self._zip64:
+            isipokua:
+                if sio self._zip64:
                     if self._file_size > ZIP64_LIMIT:
                         raise RuntimeError(
                             'File size unexpectedly exceeded ZIP64 limit')
@@ -1149,7 +1149,7 @@ kundi _ZipWriteFile(io.BufferedIOBase):
             # Successfully written: Add file to our caches
             self._zipfile.filelist.append(self._zinfo)
             self._zipfile.NameToInfo[self._zinfo.filename] = self._zinfo
-        finally:
+        mwishowe:
             self._zipfile._writing = False
 
 
@@ -1184,7 +1184,7 @@ kundi ZipFile:
                  compresslevel=None, *, strict_timestamps=True):
         """Open the ZIP file with mode read 'r', write 'w', exclusive create 'x',
         or append 'a'."""
-        if mode not in ('r', 'w', 'x', 'a'):
+        if mode haiko kwenye ('r', 'w', 'x', 'a'):
             raise ValueError("ZipFile requires mode 'r', 'w', 'x', or 'a'")
 
         _check_compression(compression)
@@ -1211,16 +1211,16 @@ kundi ZipFile:
             modeDict = {'r' : 'rb', 'w': 'w+b', 'x': 'x+b', 'a' : 'r+b',
                         'r+b': 'w+b', 'w+b': 'wb', 'x+b': 'xb'}
             filemode = modeDict[mode]
-            while True:
-                try:
+            wakati True:
+                jaribu:
                     self.fp = io.open(file, filemode)
-                except OSError:
+                tatizo OSError:
                     if filemode in modeDict:
                         filemode = modeDict[filemode]
-                        continue
+                        endelea
                     raise
-                break
-        else:
+                koma
+        isipokua:
             self._filePassed = 1
             self.fp = file
             self.filename = getattr(file, 'name', None)
@@ -1229,40 +1229,40 @@ kundi ZipFile:
         self._seekable = True
         self._writing = False
 
-        try:
+        jaribu:
             if mode == 'r':
                 self._RealGetContents()
             lasivyo mode in ('w', 'x'):
                 # set the modified flag so central directory gets written
                 # even if no files are added to the archive
                 self._didModify = True
-                try:
+                jaribu:
                     self.start_dir = self.fp.tell()
-                except (AttributeError, OSError):
+                tatizo (AttributeError, OSError):
                     self.fp = _Tellable(self.fp)
                     self.start_dir = 0
                     self._seekable = False
-                else:
-                    # Some file-like objects can provide tell() but not seek()
-                    try:
+                isipokua:
+                    # Some file-like objects can provide tell() but sio seek()
+                    jaribu:
                         self.fp.seek(self.start_dir)
-                    except (AttributeError, OSError):
+                    tatizo (AttributeError, OSError):
                         self._seekable = False
             lasivyo mode == 'a':
-                try:
+                jaribu:
                     # See if file is a zip file
                     self._RealGetContents()
                     # seek to start of directory and overwrite
                     self.fp.seek(self.start_dir)
-                except BadZipFile:
-                    # file is not a zip file, just append
+                tatizo BadZipFile:
+                    # file ni sio a zip file, just append
                     self.fp.seek(0, 2)
 
                     # set the modified flag so central directory gets written
                     # even if no files are added to the archive
                     self._didModify = True
                     self.start_dir = self.fp.tell()
-            else:
+            isipokua:
                 raise ValueError("Mode must be 'r', 'w', 'x', or 'a'")
         except:
             fp = self.fp
@@ -1279,13 +1279,13 @@ kundi ZipFile:
     def __repr__(self):
         result = ['<%s.%s' % (self.__class__.__module__,
                               self.__class__.__qualname__)]
-        if self.fp is not None:
+        if self.fp ni sio None:
             if self._filePassed:
                 result.append(' file=%r' % self.fp)
-            lasivyo self.filename is not None:
+            lasivyo self.filename ni sio None:
                 result.append(' filename=%r' % self.filename)
             result.append(' mode=%r' % self.mode)
-        else:
+        isipokua:
             result.append(' [closed]')
         result.append('>')
         return ''.join(result)
@@ -1293,12 +1293,12 @@ kundi ZipFile:
     def _RealGetContents(self):
         """Read in the table of contents for the ZIP file."""
         fp = self.fp
-        try:
+        jaribu:
             endrec = _EndRecData(fp)
-        except OSError:
-            raise BadZipFile("File is not a zip file")
-        if not endrec:
-            raise BadZipFile("File is not a zip file")
+        tatizo OSError:
+            raise BadZipFile("File ni sio a zip file")
+        if sio endrec:
+            raise BadZipFile("File ni sio a zip file")
         if self.debug > 1:
             print(endrec)
         size_cd = endrec[_ECD_SIZE]             # bytes in central directory
@@ -1320,7 +1320,7 @@ kundi ZipFile:
         data = fp.read(size_cd)
         fp = io.BytesIO(data)
         total = 0
-        while total < size_cd:
+        wakati total < size_cd:
             centdir = fp.read(sizeCentralDir)
             if len(centdir) != sizeCentralDir:
                 raise BadZipFile("Truncated central directory")
@@ -1334,7 +1334,7 @@ kundi ZipFile:
             if flags & 0x800:
                 # UTF-8 file names extension
                 filename = filename.decode('utf-8')
-            else:
+            isipokua:
                 # Historical ZIP filename encoding
                 filename = filename.decode('cp437')
             # Create ZipInfo instance to store file information
@@ -1390,13 +1390,13 @@ kundi ZipFile:
         """Read all the files and check the CRC."""
         chunk_size = 2 ** 20
         for zinfo in self.filelist:
-            try:
+            jaribu:
                 # Read by chunks, to avoid an OverflowError or a
                 # MemoryError with very large embedded files.
                 with self.open(zinfo.filename, "r") as f:
-                    while f.read(chunk_size):     # Check CRC-32
+                    wakati f.read(chunk_size):     # Check CRC-32
                         pass
-            except BadZipFile:
+            tatizo BadZipFile:
                 return zinfo.filename
 
     def getinfo(self, name):
@@ -1410,11 +1410,11 @@ kundi ZipFile:
 
     def setpassword(self, pwd):
         """Set default password for encrypted files."""
-        if pwd and not isinstance(pwd, bytes):
+        if pwd and sio isinstance(pwd, bytes):
             raise TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
         if pwd:
             self.pwd = pwd
-        else:
+        isipokua:
             self.pwd = None
 
     @property
@@ -1424,7 +1424,7 @@ kundi ZipFile:
 
     @comment.setter
     def comment(self, comment):
-        if not isinstance(comment, bytes):
+        if sio isinstance(comment, bytes):
             raise TypeError("comment: expected bytes, got %s" % type(comment).__name__)
         # check for valid comment length
         if len(comment) > ZIP_MAX_COMMENT:
@@ -1451,18 +1451,18 @@ kundi ZipFile:
 
         pwd is the password to decrypt files (only used for reading).
 
-        When writing, if the file size is not known in advance but may exceed
+        When writing, if the file size ni sio known in advance but may exceed
         2 GiB, pass force_zip64 to use the ZIP64 format, which can handle large
         files.  If the size is known in advance, it is best to pass a ZipInfo
         instance for name, with zinfo.file_size set.
         """
-        if mode not in {"r", "w"}:
+        if mode haiko kwenye {"r", "w"}:
             raise ValueError('open() requires mode "r" or "w"')
-        if pwd and not isinstance(pwd, bytes):
+        if pwd and sio isinstance(pwd, bytes):
             raise TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
         if pwd and (mode == "w"):
             raise ValueError("pwd is only supported for reading files")
-        if not self.fp:
+        if sio self.fp:
             raise ValueError(
                 "Attempt to use ZIP archive that was already closed")
 
@@ -1474,7 +1474,7 @@ kundi ZipFile:
             zinfo = ZipInfo(name)
             zinfo.compress_type = self.compression
             zinfo._compresslevel = self.compresslevel
-        else:
+        isipokua:
             # Get info object for name
             zinfo = self.getinfo(name)
 
@@ -1482,7 +1482,7 @@ kundi ZipFile:
             return self._open_to_write(zinfo, force_zip64=force_zip64)
 
         if self._writing:
-            raise ValueError("Can't read kutoka the ZIP file while there "
+            raise ValueError("Can't read kutoka the ZIP file wakati there "
                     "is an open writing handle on it. "
                     "Close the writing handle before trying to read.")
 
@@ -1490,7 +1490,7 @@ kundi ZipFile:
         self._fileRefCnt += 1
         zef_file = _SharedFile(self.fp, zinfo.header_offset,
                                self._fpclose, self._lock, lambda: self._writing)
-        try:
+        jaribu:
             # Skip the file header:
             fheader = zef_file.read(sizeFileHeader)
             if len(fheader) != sizeFileHeader:
@@ -1514,7 +1514,7 @@ kundi ZipFile:
             if zinfo.flag_bits & 0x800:
                 # UTF-8 filename
                 fname_str = fname.decode("utf-8")
-            else:
+            isipokua:
                 fname_str = fname.decode("cp437")
 
             if fname_str != zinfo.orig_filename:
@@ -1526,16 +1526,16 @@ kundi ZipFile:
             is_encrypted = zinfo.flag_bits & 0x1
             zd = None
             if is_encrypted:
-                if not pwd:
+                if sio pwd:
                     pwd = self.pwd
-                if not pwd:
+                if sio pwd:
                     raise RuntimeError("File %r is encrypted, password "
                                        "required for extraction" % name)
 
                 zd = _ZipDecrypter(pwd)
                 # The first 12 bytes in the cypher stream is an encryption header
                 #  used to strengthen the algorithm. The first 11 bytes are
-                #  completely random, while the 12th contains the MSB of the CRC,
+                #  completely random, wakati the 12th contains the MSB of the CRC,
                 #  or the MSB of the file time depending on the header type
                 #  and is used to check the correctness of the password.
                 header = zef_file.read(12)
@@ -1543,7 +1543,7 @@ kundi ZipFile:
                 if zinfo.flag_bits & 0x8:
                     # compare against the file type kutoka extended local headers
                     check_byte = (zinfo._raw_time >> 8) & 0xff
-                else:
+                isipokua:
                     # compare against the CRC otherwise
                     check_byte = (zinfo.CRC >> 24) & 0xff
                 if h[11] != check_byte:
@@ -1555,18 +1555,18 @@ kundi ZipFile:
             raise
 
     def _open_to_write(self, zinfo, force_zip64=False):
-        if force_zip64 and not self._allowZip64:
+        if force_zip64 and sio self._allowZip64:
             raise ValueError(
                 "force_zip64 is True, but allowZip64 was False when opening "
                 "the ZIP file."
             )
         if self._writing:
-            raise ValueError("Can't write to the ZIP file while there is "
+            raise ValueError("Can't write to the ZIP file wakati there is "
                              "another write handle open on it. "
                              "Close the first handle before opening another.")
 
         # Sizes and CRC are overwritten with correct data after processing the file
-        if not hasattr(zinfo, 'file_size'):
+        if sio hasattr(zinfo, 'file_size'):
             zinfo.file_size = 0
         zinfo.compress_size = 0
         zinfo.CRC = 0
@@ -1575,10 +1575,10 @@ kundi ZipFile:
         if zinfo.compress_type == ZIP_LZMA:
             # Compressed data includes an end-of-stream (EOS) marker
             zinfo.flag_bits |= 0x02
-        if not self._seekable:
+        if sio self._seekable:
             zinfo.flag_bits |= 0x08
 
-        if not zinfo.external_attr:
+        if sio zinfo.external_attr:
             zinfo.external_attr = 0o600 << 16  # permissions: ?rw-------
 
         # Compressed size can be larger than uncompressed size
@@ -1605,7 +1605,7 @@ kundi ZipFile:
         """
         if path is None:
             path = os.getcwd()
-        else:
+        isipokua:
             path = os.fspath(path)
 
         return self._extract_member(member, path, pwd)
@@ -1621,7 +1621,7 @@ kundi ZipFile:
 
         if path is None:
             path = os.getcwd()
-        else:
+        isipokua:
             path = os.fspath(path)
 
         for zipinfo in members:
@@ -1631,7 +1631,7 @@ kundi ZipFile:
     def _sanitize_windows_name(cls, arcname, pathsep):
         """Replace bad characters and remove trailing dots kutoka parts."""
         table = cls._windows_illegal_name_trans_table
-        if not table:
+        if sio table:
             illegal = ':<>|"?*'
             table = str.maketrans(illegal, '_' * len(illegal))
             cls._windows_illegal_name_trans_table = table
@@ -1646,7 +1646,7 @@ kundi ZipFile:
         """Extract the ZipInfo object 'member' to a physical
            file on the path targetpath.
         """
-        if not isinstance(member, ZipInfo):
+        if sio isinstance(member, ZipInfo):
             member = self.getinfo(member)
 
         # build the destination pathname, replacing
@@ -1660,7 +1660,7 @@ kundi ZipFile:
         arcname = os.path.splitdrive(arcname)[1]
         invalid_path_parts = ('', os.path.curdir, os.path.pardir)
         arcname = os.path.sep.join(x for x in arcname.split(os.path.sep)
-                                   if x not in invalid_path_parts)
+                                   if x haiko kwenye invalid_path_parts)
         if os.path.sep == '\\':
             # filter illegal characters on Windows
             arcname = self._sanitize_windows_name(arcname, os.path.sep)
@@ -1670,11 +1670,11 @@ kundi ZipFile:
 
         # Create all upper directories if necessary.
         upperdirs = os.path.dirname(targetpath)
-        if upperdirs and not os.path.exists(upperdirs):
+        if upperdirs and sio os.path.exists(upperdirs):
             os.makedirs(upperdirs)
 
         if member.is_dir():
-            if not os.path.isdir(targetpath):
+            if sio os.path.isdir(targetpath):
                 os.mkdir(targetpath)
             return targetpath
 
@@ -1689,13 +1689,13 @@ kundi ZipFile:
         if zinfo.filename in self.NameToInfo:
             agiza warnings
             warnings.warn('Duplicate name: %r' % zinfo.filename, stacklevel=3)
-        if self.mode not in ('w', 'x', 'a'):
+        if self.mode haiko kwenye ('w', 'x', 'a'):
             raise ValueError("write() requires mode 'w', 'x', or 'a'")
-        if not self.fp:
+        if sio self.fp:
             raise ValueError(
                 "Attempt to write ZIP archive that was already closed")
         _check_compression(zinfo.compress_type)
-        if not self._allowZip64:
+        if sio self._allowZip64:
             requires_zip64 = None
             if len(self.filelist) >= ZIP_FILECOUNT_LIMIT:
                 requires_zip64 = "Files count"
@@ -1711,12 +1711,12 @@ kundi ZipFile:
               compress_type=None, compresslevel=None):
         """Put the bytes kutoka filename into the archive under the name
         arcname."""
-        if not self.fp:
+        if sio self.fp:
             raise ValueError(
                 "Attempt to write to ZIP archive that was already closed")
         if self._writing:
             raise ValueError(
-                "Can't write to ZIP archive while an open writing handle exists"
+                "Can't write to ZIP archive wakati an open writing handle exists"
             )
 
         zinfo = ZipInfo.kutoka_file(filename, arcname,
@@ -1725,15 +1725,15 @@ kundi ZipFile:
         if zinfo.is_dir():
             zinfo.compress_size = 0
             zinfo.CRC = 0
-        else:
-            if compress_type is not None:
+        isipokua:
+            if compress_type ni sio None:
                 zinfo.compress_type = compress_type
-            else:
+            isipokua:
                 zinfo.compress_type = self.compression
 
-            if compresslevel is not None:
+            if compresslevel ni sio None:
                 zinfo._compresslevel = compresslevel
-            else:
+            isipokua:
                 zinfo._compresslevel = self.compresslevel
 
         if zinfo.is_dir():
@@ -1752,7 +1752,7 @@ kundi ZipFile:
                 self.NameToInfo[zinfo.filename] = zinfo
                 self.fp.write(zinfo.FileHeader(False))
                 self.start_dir = self.fp.tell()
-        else:
+        isipokua:
             with open(filename, "rb") as src, self.open(zinfo, 'w') as dest:
                 shutil.copyfileobj(src, dest, 1024*8)
 
@@ -1765,7 +1765,7 @@ kundi ZipFile:
         the name of the file in the archive."""
         if isinstance(data, str):
             data = data.encode("utf-8")
-        if not isinstance(zinfo_or_arcname, ZipInfo):
+        if sio isinstance(zinfo_or_arcname, ZipInfo):
             zinfo = ZipInfo(filename=zinfo_or_arcname,
                             date_time=time.localtime(time.time())[:6])
             zinfo.compress_type = self.compression
@@ -1773,23 +1773,23 @@ kundi ZipFile:
             if zinfo.filename[-1] == '/':
                 zinfo.external_attr = 0o40775 << 16   # drwxrwxr-x
                 zinfo.external_attr |= 0x10           # MS-DOS directory flag
-            else:
+            isipokua:
                 zinfo.external_attr = 0o600 << 16     # ?rw-------
-        else:
+        isipokua:
             zinfo = zinfo_or_arcname
 
-        if not self.fp:
+        if sio self.fp:
             raise ValueError(
                 "Attempt to write to ZIP archive that was already closed")
         if self._writing:
             raise ValueError(
-                "Can't write to ZIP archive while an open writing handle exists."
+                "Can't write to ZIP archive wakati an open writing handle exists."
             )
 
-        if compress_type is not None:
+        if compress_type ni sio None:
             zinfo.compress_type = compress_type
 
-        if compresslevel is not None:
+        if compresslevel ni sio None:
             zinfo._compresslevel = compresslevel
 
         zinfo.file_size = len(data)            # Uncompressed size
@@ -1808,17 +1808,17 @@ kundi ZipFile:
             return
 
         if self._writing:
-            raise ValueError("Can't close the ZIP file while there is "
+            raise ValueError("Can't close the ZIP file wakati there is "
                              "an open writing handle on it. "
                              "Close the writing handle before closing the zip.")
 
-        try:
+        jaribu:
             if self.mode in ('w', 'x', 'a') and self._didModify: # write ending records
                 with self._lock:
                     if self._seekable:
                         self.fp.seek(self.start_dir)
                     self._write_end_record()
-        finally:
+        mwishowe:
             fp = self.fp
             self.fp = None
             self._fpclose(fp)
@@ -1835,14 +1835,14 @@ kundi ZipFile:
                 extra.append(zinfo.compress_size)
                 file_size = 0xffffffff
                 compress_size = 0xffffffff
-            else:
+            isipokua:
                 file_size = zinfo.file_size
                 compress_size = zinfo.compress_size
 
             if zinfo.header_offset > ZIP64_LIMIT:
                 extra.append(zinfo.header_offset)
                 header_offset = 0xffffffff
-            else:
+            isipokua:
                 header_offset = zinfo.header_offset
 
             extra_data = zinfo.extra
@@ -1863,7 +1863,7 @@ kundi ZipFile:
 
             extract_version = max(min_version, zinfo.extract_version)
             create_version = max(min_version, zinfo.create_version)
-            try:
+            jaribu:
                 filename, flag_bits = zinfo._encodeFilenameFlags()
                 centdir = struct.pack(structCentralDir,
                                       stringCentralDir, create_version,
@@ -1873,7 +1873,7 @@ kundi ZipFile:
                                       len(filename), len(extra_data), len(zinfo.comment),
                                       0, zinfo.internal_attr, zinfo.external_attr,
                                       header_offset)
-            except DeprecationWarning:
+            tatizo DeprecationWarning:
                 print((structCentralDir, stringCentralDir, create_version,
                        zinfo.create_system, extract_version, zinfo.reserved,
                        zinfo.flag_bits, zinfo.compress_type, dostime, dosdate,
@@ -1901,7 +1901,7 @@ kundi ZipFile:
             requires_zip64 = "Central directory size"
         if requires_zip64:
             # Need to write the ZIP64 end-of-archive records
-            if not self._allowZip64:
+            if sio self._allowZip64:
                 raise LargeZipFile(requires_zip64 +
                                    " would require ZIP64 extensions")
             zip64endrec = struct.pack(
@@ -1928,7 +1928,7 @@ kundi ZipFile:
     def _fpclose(self, fp):
         assert self._fileRefCnt > 0
         self._fileRefCnt -= 1
-        if not self._fileRefCnt and not self._filePassed:
+        if sio self._fileRefCnt and sio self._filePassed:
             fp.close()
 
 
@@ -1956,7 +1956,7 @@ kundi PyZipFile(ZipFile):
         When it is False, the file or directory is skipped.
         """
         pathname = os.fspath(pathname)
-        if filterfunc and not filterfunc(pathname):
+        if filterfunc and sio filterfunc(pathname):
             if self.debug:
                 label = 'path' if os.path.isdir(pathname) else 'file'
                 print('%s %r skipped by filterfunc' % (label, pathname))
@@ -1968,7 +1968,7 @@ kundi PyZipFile(ZipFile):
                 # This is a package directory, add it
                 if basename:
                     basename = "%s/%s" % (basename, name)
-                else:
+                isipokua:
                     basename = name
                 if self.debug:
                     print("Adding package in", pathname, "as", basename)
@@ -1988,16 +1988,16 @@ kundi PyZipFile(ZipFile):
                             self.writepy(path, basename,
                                          filterfunc=filterfunc)  # Recursive call
                     lasivyo ext == ".py":
-                        if filterfunc and not filterfunc(path):
+                        if filterfunc and sio filterfunc(path):
                             if self.debug:
                                 print('file %r skipped by filterfunc' % path)
-                            continue
+                            endelea
                         fname, arcname = self._get_codename(path[0:-3],
                                                             basename)
                         if self.debug:
                             print("Adding", arcname)
                         self.write(fname, arcname)
-            else:
+            isipokua:
                 # This is NOT a package directory, add its files at top level
                 if self.debug:
                     print("Adding files kutoka directory", pathname)
@@ -2005,16 +2005,16 @@ kundi PyZipFile(ZipFile):
                     path = os.path.join(pathname, filename)
                     root, ext = os.path.splitext(filename)
                     if ext == ".py":
-                        if filterfunc and not filterfunc(path):
+                        if filterfunc and sio filterfunc(path):
                             if self.debug:
                                 print('file %r skipped by filterfunc' % path)
-                            continue
+                            endelea
                         fname, arcname = self._get_codename(path[0:-3],
                                                             basename)
                         if self.debug:
                             print("Adding", arcname)
                         self.write(fname, arcname)
-        else:
+        isipokua:
             if pathname[-3:] != ".py":
                 raise RuntimeError(
                     'Files added with writepy() must end with ".py"')
@@ -2034,9 +2034,9 @@ kundi PyZipFile(ZipFile):
             agiza py_compile
             if self.debug:
                 print("Compiling", file)
-            try:
+            jaribu:
                 py_compile.compile(file, doraise=True, optimize=optimize)
-            except py_compile.PyCompileError as err:
+            tatizo py_compile.PyCompileError as err:
                 print(err.msg)
                 return False
             return True
@@ -2070,35 +2070,35 @@ kundi PyZipFile(ZipFile):
                 # file name in the archive.
                 fname = pycache_opt2
                 arcname = file_pyc
-            else:
+            isipokua:
                 # Compile py into PEP 3147 pyc file.
                 if _compile(file_py):
                     if sys.flags.optimize == 0:
                         fname = pycache_opt0
                     lasivyo sys.flags.optimize == 1:
                         fname = pycache_opt1
-                    else:
+                    isipokua:
                         fname = pycache_opt2
                     arcname = file_pyc
-                else:
+                isipokua:
                     fname = arcname = file_py
-        else:
+        isipokua:
             # new mode: use given optimization level
             if self._optimize == 0:
                 fname = pycache_opt0
                 arcname = file_pyc
-            else:
+            isipokua:
                 arcname = file_pyc
                 if self._optimize == 1:
                     fname = pycache_opt1
                 lasivyo self._optimize == 2:
                     fname = pycache_opt2
-                else:
+                isipokua:
                     msg = "invalid value for 'optimize': {!r}".format(self._optimize)
                     raise ValueError(msg)
-            if not (os.path.isfile(fname) and
+            if sio (os.path.isfile(fname) and
                     os.stat(fname).st_mtime >= os.stat(file_py).st_mtime):
-                if not _compile(file_py, optimize=self._optimize):
+                if sio _compile(file_py, optimize=self._optimize):
                     fname = arcname = file_py
         archivename = os.path.split(arcname)[1]
         if basename:
@@ -2116,10 +2116,10 @@ def _unique_everseen(iterable, key=None):
         for element in itertools.filterfalse(seen.__contains__, iterable):
             seen_add(element)
             yield element
-    else:
+    isipokua:
         for element in iterable:
             k = key(element)
-            if k not in seen:
+            if k haiko kwenye seen:
                 seen_add(k)
                 yield element
 
@@ -2160,7 +2160,7 @@ def _ancestry(path):
     []
     """
     path = path.rstrip(posixpath.sep)
-    while path and path != posixpath.sep:
+    wakati path and path != posixpath.sep:
         yield path
         path, tail = posixpath.split(path)
 
@@ -2259,16 +2259,16 @@ kundi Path:
         return Path(self.root, at)
 
     def is_dir(self):
-        return not self.at or self.at.endswith("/")
+        return sio self.at or self.at.endswith("/")
 
     def is_file(self):
-        return not self.is_dir()
+        return sio self.is_dir()
 
     def exists(self):
         return self.at in self._names()
 
     def iterdir(self):
-        if not self.is_dir():
+        if sio self.is_dir():
             raise ValueError("Can't listdir a file")
         subs = map(self._next, self._names())
         return filter(self._is_child, subs)
@@ -2283,7 +2283,7 @@ kundi Path:
         next = posixpath.join(self.at, add)
         next_dir = posixpath.join(self.at, add, "")
         names = self._names()
-        return self._next(next_dir if next not in names and next_dir in names else next)
+        return self._next(next_dir if next haiko kwenye names and next_dir in names else next)
 
     __truediv__ = joinpath
 
@@ -2293,7 +2293,7 @@ kundi Path:
             parent + "/"
             for name in names
             for parent in _parents(name)
-            if parent + "/" not in names
+            if parent + "/" haiko kwenye names
         )
 
     @classmethod
@@ -2329,7 +2329,7 @@ def main(args=None):
                        help='Test if a zipfile is valid')
     args = parser.parse_args(args)
 
-    if args.test is not None:
+    if args.test ni sio None:
         src = args.test
         with ZipFile(src, 'r') as zf:
             badfile = zf.testzip()
@@ -2337,17 +2337,17 @@ def main(args=None):
             print("The following enclosed file is corrupted: {!r}".format(badfile))
         print("Done testing")
 
-    lasivyo args.list is not None:
+    lasivyo args.list ni sio None:
         src = args.list
         with ZipFile(src, 'r') as zf:
             zf.printdir()
 
-    lasivyo args.extract is not None:
+    lasivyo args.extract ni sio None:
         src, curdir = args.extract
         with ZipFile(src, 'r') as zf:
             zf.extractall(curdir)
 
-    lasivyo args.create is not None:
+    lasivyo args.create ni sio None:
         zip_name = args.create.pop(0)
         files = args.create
 
@@ -2360,12 +2360,12 @@ def main(args=None):
                 for nm in sorted(os.listdir(path)):
                     addToZip(zf,
                              os.path.join(path, nm), os.path.join(zippath, nm))
-            # else: ignore
+            # isipokua: ignore
 
         with ZipFile(zip_name, 'w') as zf:
             for path in files:
                 zippath = os.path.basename(path)
-                if not zippath:
+                if sio zippath:
                     zippath = os.path.basename(os.path.dirname(path))
                 if zippath in ('', os.curdir, os.pardir):
                     zippath = ''

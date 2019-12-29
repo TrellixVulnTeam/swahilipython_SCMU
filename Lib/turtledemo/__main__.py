@@ -14,59 +14,59 @@
   (1) How to use the demo viewer.
 
   Select a demoscript kutoka the example menu.
-  The (syntax colored) source code appears in the left
+  The (syntax colored) source code appears kwenye the left
   source code window. IT CANNOT BE EDITED, but ONLY VIEWED!
 
   The demo viewer windows can be resized. The divider between text
-  and canvas can be moved by grabbing it with the mouse. The text font
-  size can be changed kutoka the menu and with Control/Command '-'/'+'.
+  na canvas can be moved by grabbing it with the mouse. The text font
+  size can be changed kutoka the menu na with Control/Command '-'/'+'.
   It can also be changed on most systems with Control-mousewheel
-  when the mouse is over the text.
+  when the mouse ni over the text.
 
   Press START button to start the demo.
   Stop execution by pressing the STOP button.
   Clear screen by pressing the CLEAR button.
   Restart by pressing the START button again.
 
-  SPECIAL demos, such as clock.py are those which run EVENTDRIVEN.
+  SPECIAL demos, such kama clock.py are those which run EVENTDRIVEN.
 
       Press START button to start the demo.
 
-      - Until the EVENTLOOP is entered everything works
-      as in an ordinary demo script.
+      - Until the EVENTLOOP ni entered everything works
+      kama kwenye an ordinary demo script.
 
-      - When the EVENTLOOP is entered, you control the
+      - When the EVENTLOOP ni entered, you control the
       application by using the mouse and/or keys (or it's
       controlled by some timer events)
-      To stop it you can and must press the STOP button.
+      To stop it you can na must press the STOP button.
 
-      While the EVENTLOOP is running, the examples menu is disabled.
+      While the EVENTLOOP ni running, the examples menu ni disabled.
 
       - Only after having pressed the STOP button, you may
-      restart it or choose another example script.
+      restart it ama choose another example script.
 
    * * * * * * * *
    In some rare situations there may occur interferences/conflicts
-   between events concerning the demo script and those concerning the
-   demo-viewer. (They run in the same process.) Strange behaviour may be
-   the consequence and in the worst case you must close and restart the
+   between events concerning the demo script na those concerning the
+   demo-viewer. (They run kwenye the same process.) Strange behaviour may be
+   the consequence na kwenye the worst case you must close na restart the
    viewer.
    * * * * * * * *
 
 
    (2) How to add your own demos to the demo repository
 
-   - Place the file in the same directory as turtledemo/__main__.py
-     IMPORTANT! When imported, the demo should not modify the system
-     by calling functions in other modules, such as sys, tkinter, or
-     turtle. Global variables should be initialized in main().
+   - Place the file kwenye the same directory kama turtledemo/__main__.py
+     IMPORTANT! When imported, the demo should sio modify the system
+     by calling functions kwenye other modules, such kama sys, tkinter, or
+     turtle. Global variables should be initialized kwenye main().
 
    - The code must contain a main() function which will
      be executed by the viewer (see provided example scripts).
-     It may rudisha a string which will be displayed in the Label below
+     It may rudisha a string which will be displayed kwenye the Label below
      the source code window (when execution has finished.)
 
-   - In order to run mydemo.py by itself, such as during development,
+   - In order to run mydemo.py by itself, such kama during development,
      add the following at the end of the file:
 
     ikiwa __name__ == '__main__':
@@ -75,15 +75,15 @@
 
     python -m turtledemo.mydemo  # will then run it
 
-   - If the demo is EVENT DRIVEN, main must rudisha the string
+   - If the demo ni EVENT DRIVEN, main must rudisha the string
      "EVENTLOOP". This informs the demo viewer that the script is
-     still running and must be stopped by the user!
+     still running na must be stopped by the user!
 
-     If an "EVENTLOOP" demo runs by itself, as with clock, which uses
-     ontimer, or minimal_hanoi, which loops by recursion, then the
+     If an "EVENTLOOP" demo runs by itself, kama with clock, which uses
+     ontimer, ama minimal_hanoi, which loops by recursion, then the
      code should catch the turtle.Terminator exception that will be
-     raised when the user presses the STOP button.  (Paint is not such
-     a demo; it only acts in response to mouse clicks and movements.)
+     ashiriad when the user presses the STOP button.  (Paint ni sio such
+     a demo; it only acts kwenye response to mouse clicks na movements.)
 """
 agiza sys
 agiza os
@@ -92,7 +92,7 @@ kutoka tkinter agiza *
 kutoka idlelib.colorizer agiza ColorDelegator, color_config
 kutoka idlelib.percolator agiza Percolator
 kutoka idlelib.textview agiza view_text
-kutoka turtledemo agiza __doc__ as about_turtledemo
+kutoka turtledemo agiza __doc__ kama about_turtledemo
 
 agiza turtle
 
@@ -114,8 +114,8 @@ MAXIMUM_FONT_SIZE = 100
 font_sizes = [8, 9, 10, 11, 12, 14, 18, 20, 22, 24, 30]
 
 eleza getExampleEntries():
-    rudisha [entry[:-3] for entry in os.listdir(demo_dir) if
-            entry.endswith(".py") and entry[0] != '_']
+    rudisha [entry[:-3] kila entry kwenye os.listdir(demo_dir) if
+            entry.endswith(".py") na entry[0] != '_']
 
 help_entries = (  # (help_label,  help_doc)
     ('Turtledemo help', __doc__),
@@ -127,7 +127,7 @@ help_entries = (  # (help_label,  help_doc)
 
 kundi DemoWindow(object):
 
-    eleza __init__(self, filename=None):
+    eleza __init__(self, filename=Tupu):
         self.root = root = turtle._root = Tk()
         root.title('Python turtle-graphics examples')
         root.wm_protocol("WM_DELETE_WINDOW", self._destroy)
@@ -141,7 +141,7 @@ kundi DemoWindow(object):
                         'osascript',
                         '-e', 'tell application "System Events"',
                         '-e', 'set frontmost of the first process whose '
-                              'unix id is {} to true'.format(os.getpid()),
+                              'unix id ni {} to true'.format(os.getpid()),
                         '-e', 'end tell',
                     ],
                     stderr=subprocess.DEVNULL,
@@ -186,8 +186,8 @@ kundi DemoWindow(object):
         self.clear_btn.grid(row=1, column=3, sticky='ew')
 
         Percolator(self.text).insertfilter(ColorDelegator())
-        self.dirty = False
-        self.exitflag = False
+        self.dirty = Uongo
+        self.exitflag = Uongo
         ikiwa filename:
             self.loadfile(filename)
         self.configGUI(DISABLED, DISABLED, DISABLED,
@@ -250,20 +250,20 @@ kundi DemoWindow(object):
         self.text['font'] = tuple(txtfont)
         self.output_lbl['text'] = 'Font size %d' % size
 
-    eleza decrease_size(self, dummy=None):
+    eleza decrease_size(self, dummy=Tupu):
         self.set_txtsize(max(txtfont[1] - 1, MINIMUM_FONT_SIZE))
-        rudisha 'break'
+        rudisha 'koma'
 
-    eleza increase_size(self, dummy=None):
+    eleza increase_size(self, dummy=Tupu):
         self.set_txtsize(min(txtfont[1] + 1, MAXIMUM_FONT_SIZE))
-        rudisha 'break'
+        rudisha 'koma'
 
     eleza update_mousewheel(self, event):
         # For wheel up, event.delta = 120 on Windows, -1 on darwin.
         # X-11 sends Control-Button-4 event instead.
         ikiwa (event.delta < 0) == (not darwin):
             rudisha self.decrease_size()
-        else:
+        isipokua:
             rudisha self.increase_size()
 
     eleza configGUI(self, start, stop, clear, txt="", color="blue"):
@@ -278,7 +278,7 @@ kundi DemoWindow(object):
     eleza makeLoadDemoMenu(self, master):
         menu = Menu(master)
 
-        for entry in getExampleEntries():
+        kila entry kwenye getExampleEntries():
             eleza load(entry=entry):
                 self.loadfile(entry)
             menu.add_command(label=entry, underline=0,
@@ -293,7 +293,7 @@ kundi DemoWindow(object):
                          font=menufont)
         menu.add_separator()
 
-        for size in font_sizes:
+        kila size kwenye font_sizes:
             eleza resize(size=size):
                 self.set_txtsize(size)
             menu.add_command(label=str(size), underline=0,
@@ -303,7 +303,7 @@ kundi DemoWindow(object):
     eleza makeHelpMenu(self, master):
         menu = Menu(master)
 
-        for help_label, help_file in help_entries:
+        kila help_label, help_file kwenye help_entries:
             eleza show(help_label=help_label, help_file=help_file):
                 view_text(self.root, help_label, help_file)
             menu.add_command(label=help_label, font=menufont, command=show)
@@ -312,15 +312,15 @@ kundi DemoWindow(object):
     eleza refreshCanvas(self):
         ikiwa self.dirty:
             self.screen.clear()
-            self.dirty=False
+            self.dirty=Uongo
 
     eleza loadfile(self, filename):
         self.clearCanvas()
-        turtle.TurtleScreen._RUNNING = False
+        turtle.TurtleScreen._RUNNING = Uongo
         modname = 'turtledemo.' + filename
         __import__(modname)
         self.module = sys.modules[modname]
-        with open(self.module.__file__, 'r') as f:
+        with open(self.module.__file__, 'r') kama f:
             chars = f.read()
         self.text.delete("1.0", "end")
         self.text.insert("1.0", chars)
@@ -331,32 +331,32 @@ kundi DemoWindow(object):
 
     eleza startDemo(self):
         self.refreshCanvas()
-        self.dirty = True
-        turtle.TurtleScreen._RUNNING = True
+        self.dirty = Kweli
+        turtle.TurtleScreen._RUNNING = Kweli
         self.configGUI(DISABLED, NORMAL, DISABLED,
                        "demo running...", "black")
         self.screen.clear()
         self.screen.mode("standard")
         self.state = RUNNING
 
-        try:
+        jaribu:
             result = self.module.main()
             ikiwa result == "EVENTLOOP":
                 self.state = EVENTDRIVEN
-            else:
+            isipokua:
                 self.state = DONE
-        except turtle.Terminator:
-            ikiwa self.root is None:
-                return
+        tatizo turtle.Terminator:
+            ikiwa self.root ni Tupu:
+                rudisha
             self.state = DONE
             result = "stopped!"
         ikiwa self.state == DONE:
             self.configGUI(NORMAL, DISABLED, NORMAL,
                            result)
         elikiwa self.state == EVENTDRIVEN:
-            self.exitflag = True
+            self.exitflag = Kweli
             self.configGUI(DISABLED, NORMAL, DISABLED,
-                           "use mouse/keys or STOP", "red")
+                           "use mouse/keys ama STOP", "red")
 
     eleza clearCanvas(self):
         self.refreshCanvas()
@@ -367,15 +367,15 @@ kundi DemoWindow(object):
     eleza stopIt(self):
         ikiwa self.exitflag:
             self.clearCanvas()
-            self.exitflag = False
+            self.exitflag = Uongo
             self.configGUI(NORMAL, DISABLED, DISABLED,
                            "STOPPED!", "red")
-        turtle.TurtleScreen._RUNNING = False
+        turtle.TurtleScreen._RUNNING = Uongo
 
     eleza _destroy(self):
-        turtle.TurtleScreen._RUNNING = False
+        turtle.TurtleScreen._RUNNING = Uongo
         self.root.destroy()
-        self.root = None
+        self.root = Tupu
 
 
 eleza main():

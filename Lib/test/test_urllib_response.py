@@ -1,4 +1,4 @@
-"""Unit tests for code in urllib.response."""
+"""Unit tests kila code kwenye urllib.response."""
 
 agiza socket
 agiza tempfile
@@ -19,25 +19,25 @@ kundi TestResponse(unittest.TestCase):
         self.assertIsInstance(addbase, tempfile._TemporaryFileWrapper)
 
         eleza f():
-            with addbase as spam:
-                pass
-        self.assertFalse(self.fp.closed)
+            with addbase kama spam:
+                pita
+        self.assertUongo(self.fp.closed)
         f()
-        self.assertTrue(self.fp.closed)
+        self.assertKweli(self.fp.closed)
         self.assertRaises(ValueError, f)
 
     eleza test_addclosehook(self):
-        closehook_called = False
+        closehook_called = Uongo
 
         eleza closehook():
             nonlocal closehook_called
-            closehook_called = True
+            closehook_called = Kweli
 
         closehook = urllib.response.addclosehook(self.fp, closehook)
         closehook.close()
 
-        self.assertTrue(self.fp.closed)
-        self.assertTrue(closehook_called)
+        self.assertKweli(self.fp.closed)
+        self.assertKweli(closehook_called)
 
     eleza test_addinfo(self):
         info = urllib.response.addinfo(self.fp, self.test_headers)

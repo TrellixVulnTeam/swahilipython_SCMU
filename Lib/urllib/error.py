@@ -1,12 +1,12 @@
-"""Exception classes raised by urllib.
+"""Exception classes ashiriad by urllib.
 
-The base exception kundi is URLError, which inherits kutoka OSError.  It
-doesn't define any behavior of its own, but is the base kundi for all
-exceptions defined in this package.
+The base exception kundi ni URLError, which inherits kutoka OSError.  It
+doesn't define any behavior of its own, but ni the base kundi kila all
+exceptions defined kwenye this package.
 
-HTTPError is an exception kundi that is also a valid HTTP response
+HTTPError ni an exception kundi that ni also a valid HTTP response
 instance.  It behaves this way because HTTP protocol errors are valid
-responses, with a status code, headers, and a body.  In some contexts,
+responses, with a status code, headers, na a body.  In some contexts,
 an application may want to handle an exception like a regular
 response.
 """
@@ -17,15 +17,15 @@ __all__ = ['URLError', 'HTTPError', 'ContentTooShortError']
 
 
 kundi URLError(OSError):
-    # URLError is a sub-type of OSError, but it doesn't share any of
-    # the implementation.  need to override __init__ and __str__.
-    # It sets self.args for compatibility with other OSError
+    # URLError ni a sub-type of OSError, but it doesn't share any of
+    # the implementation.  need to override __init__ na __str__.
+    # It sets self.args kila compatibility with other OSError
     # subclasses, but args doesn't have the typical format with errno in
-    # slot 0 and strerror in slot 1.  This may be better than nothing.
-    eleza __init__(self, reason, filename=None):
+    # slot 0 na strerror kwenye slot 1.  This may be better than nothing.
+    eleza __init__(self, reason, filename=Tupu):
         self.args = reason,
         self.reason = reason
-        ikiwa filename is not None:
+        ikiwa filename ni sio Tupu:
             self.filename = filename
 
     eleza __str__(self):
@@ -33,7 +33,7 @@ kundi URLError(OSError):
 
 
 kundi HTTPError(URLError, urllib.response.addinfourl):
-    """Raised when HTTP error occurs, but also acts like non-error return"""
+    """Raised when HTTP error occurs, but also acts like non-error rudisha"""
     __super_init = urllib.response.addinfourl.__init__
 
     eleza __init__(self, url, code, msg, hdrs, fp):
@@ -43,10 +43,10 @@ kundi HTTPError(URLError, urllib.response.addinfourl):
         self.fp = fp
         self.filename = url
         # The addinfourl classes depend on fp being a valid file
-        # object.  In some cases, the HTTPError may not have a valid
-        # file object.  If this happens, the simplest workaround is to
-        # not initialize the base classes.
-        ikiwa fp is not None:
+        # object.  In some cases, the HTTPError may sio have a valid
+        # file object.  If this happens, the simplest workaround ni to
+        # sio initialize the base classes.
+        ikiwa fp ni sio Tupu:
             self.__super_init(fp, hdrs, url, code)
 
     eleza __str__(self):
@@ -56,7 +56,7 @@ kundi HTTPError(URLError, urllib.response.addinfourl):
         rudisha '<HTTPError %s: %r>' % (self.code, self.msg)
 
     # since URLError specifies a .reason attribute, HTTPError should also
-    #  provide this attribute. See issue13211 for discussion.
+    #  provide this attribute. See issue13211 kila discussion.
     @property
     eleza reason(self):
         rudisha self.msg
@@ -71,7 +71,7 @@ kundi HTTPError(URLError, urllib.response.addinfourl):
 
 
 kundi ContentTooShortError(URLError):
-    """Exception raised when downloaded size does not match content-length."""
+    """Exception ashiriad when downloaded size does sio match content-length."""
     eleza __init__(self, message, content):
         URLError.__init__(self, message)
         self.content = content

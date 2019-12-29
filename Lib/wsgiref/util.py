@@ -28,7 +28,7 @@ kundi FileWrapper:
         data = self.filelike.read(self.blksize)
         ikiwa data:
             rudisha data
-        raise IndexError
+        ashiria IndexError
 
     eleza __iter__(self):
         rudisha self
@@ -37,76 +37,76 @@ kundi FileWrapper:
         data = self.filelike.read(self.blksize)
         ikiwa data:
             rudisha data
-        raise StopIteration
+        ashiria StopIteration
 
 eleza guess_scheme(environ):
-    """Return a guess for whether 'wsgi.url_scheme' should be 'http' or 'https'
+    """Return a guess kila whether 'wsgi.url_scheme' should be 'http' ama 'https'
     """
-    ikiwa environ.get("HTTPS") in ('yes','on','1'):
+    ikiwa environ.get("HTTPS") kwenye ('yes','on','1'):
         rudisha 'https'
-    else:
+    isipokua:
         rudisha 'http'
 
 eleza application_uri(environ):
-    """Return the application's base URI (no PATH_INFO or QUERY_STRING)"""
+    """Return the application's base URI (no PATH_INFO ama QUERY_STRING)"""
     url = environ['wsgi.url_scheme']+'://'
     kutoka urllib.parse agiza quote
 
     ikiwa environ.get('HTTP_HOST'):
         url += environ['HTTP_HOST']
-    else:
+    isipokua:
         url += environ['SERVER_NAME']
 
         ikiwa environ['wsgi.url_scheme'] == 'https':
             ikiwa environ['SERVER_PORT'] != '443':
                 url += ':' + environ['SERVER_PORT']
-        else:
+        isipokua:
             ikiwa environ['SERVER_PORT'] != '80':
                 url += ':' + environ['SERVER_PORT']
 
-    url += quote(environ.get('SCRIPT_NAME') or '/', encoding='latin1')
+    url += quote(environ.get('SCRIPT_NAME') ama '/', encoding='latin1')
     rudisha url
 
-eleza request_uri(environ, include_query=True):
+eleza request_uri(environ, include_query=Kweli):
     """Return the full request URI, optionally including the query string"""
     url = application_uri(environ)
     kutoka urllib.parse agiza quote
     path_info = quote(environ.get('PATH_INFO',''), safe='/;=,', encoding='latin1')
-    ikiwa not environ.get('SCRIPT_NAME'):
+    ikiwa sio environ.get('SCRIPT_NAME'):
         url += path_info[1:]
-    else:
+    isipokua:
         url += path_info
-    ikiwa include_query and environ.get('QUERY_STRING'):
+    ikiwa include_query na environ.get('QUERY_STRING'):
         url += '?' + environ['QUERY_STRING']
     rudisha url
 
 eleza shift_path_info(environ):
-    """Shift a name kutoka PATH_INFO to SCRIPT_NAME, returning it
+    """Shift a name kutoka PATH_INFO to SCRIPT_NAME, rudishaing it
 
-    If there are no remaining path segments in PATH_INFO, rudisha None.
-    Note: 'environ' is modified in-place; use a copy ikiwa you need to keep
-    the original PATH_INFO or SCRIPT_NAME.
+    If there are no remaining path segments kwenye PATH_INFO, rudisha Tupu.
+    Note: 'environ' ni modified in-place; use a copy ikiwa you need to keep
+    the original PATH_INFO ama SCRIPT_NAME.
 
-    Note: when PATH_INFO is just a '/', this returns '' and appends a trailing
+    Note: when PATH_INFO ni just a '/', this rudishas '' na appends a trailing
     '/' to SCRIPT_NAME, even though empty path segments are normally ignored,
-    and SCRIPT_NAME doesn't normally end in a '/'.  This is intentional
+    na SCRIPT_NAME doesn't normally end kwenye a '/'.  This ni intentional
     behavior, to ensure that an application can tell the difference between
-    '/x' and '/x/' when traversing to objects.
+    '/x' na '/x/' when traversing to objects.
     """
     path_info = environ.get('PATH_INFO','')
-    ikiwa not path_info:
-        rudisha None
+    ikiwa sio path_info:
+        rudisha Tupu
 
     path_parts = path_info.split('/')
-    path_parts[1:-1] = [p for p in path_parts[1:-1] ikiwa p and p != '.']
+    path_parts[1:-1] = [p kila p kwenye path_parts[1:-1] ikiwa p na p != '.']
     name = path_parts[1]
-    del path_parts[1]
+    toa path_parts[1]
 
     script_name = environ.get('SCRIPT_NAME','')
     script_name = posixpath.normpath(script_name+'/'+name)
     ikiwa script_name.endswith('/'):
         script_name = script_name[:-1]
-    ikiwa not name and not script_name.endswith('/'):
+    ikiwa sio name na sio script_name.endswith('/'):
         script_name += '/'
 
     environ['SCRIPT_NAME'] = script_name
@@ -116,22 +116,22 @@ eleza shift_path_info(environ):
     # because we don't strip the last element of PATH_INFO
     # ikiwa there's only one path part left.  Instead of fixing this
     # above, we fix it here so that PATH_INFO gets normalized to
-    # an empty string in the environ.
+    # an empty string kwenye the environ.
     ikiwa name=='.':
-        name = None
+        name = Tupu
     rudisha name
 
 eleza setup_testing_defaults(environ):
-    """Update 'environ' with trivial defaults for testing purposes
+    """Update 'environ' with trivial defaults kila testing purposes
 
-    This adds various parameters required for WSGI, including HTTP_HOST,
+    This adds various parameters required kila WSGI, including HTTP_HOST,
     SERVER_NAME, SERVER_PORT, REQUEST_METHOD, SCRIPT_NAME, PATH_INFO,
-    and all of the wsgi.* variables.  It only supplies default values,
-    and does not replace any existing settings for these variables.
+    na all of the wsgi.* variables.  It only supplies default values,
+    na does sio replace any existing settings kila these variables.
 
-    This routine is intended to make it easier for unit tests of WSGI
-    servers and applications to set up dummy environments.  It should *not*
-    be used by actual WSGI servers or applications, since the data is fake!
+    This routine ni intended to make it easier kila unit tests of WSGI
+    servers na applications to set up dummy environments.  It should *not*
+    be used by actual WSGI servers ama applications, since the data ni fake!
     """
 
     environ.setdefault('SERVER_NAME','127.0.0.1')
@@ -140,7 +140,7 @@ eleza setup_testing_defaults(environ):
     environ.setdefault('HTTP_HOST',environ['SERVER_NAME'])
     environ.setdefault('REQUEST_METHOD','GET')
 
-    ikiwa 'SCRIPT_NAME' not in environ and 'PATH_INFO' not in environ:
+    ikiwa 'SCRIPT_NAME' haiko kwenye environ na 'PATH_INFO' haiko kwenye environ:
         environ.setdefault('SCRIPT_NAME','')
         environ.setdefault('PATH_INFO','/')
 
@@ -168,5 +168,5 @@ _hoppish = {
 }.__contains__
 
 eleza is_hop_by_hop(header_name):
-    """Return true ikiwa 'header_name' is an HTTP/1.1 "Hop-by-Hop" header"""
+    """Return true ikiwa 'header_name' ni an HTTP/1.1 "Hop-by-Hop" header"""
     rudisha _hoppish(header_name.lower())

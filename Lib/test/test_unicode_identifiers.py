@@ -5,7 +5,7 @@ kundi PEP3131Test(unittest.TestCase):
     eleza test_valid(self):
         kundi T:
             ä = 1
-            µ = 2 # this is a compatibility character
+            µ = 2 # this ni a compatibility character
             蟒 = 3
             x󠄀 = 4
         self.assertEqual(getattr(T, "\xe4"), 1)
@@ -18,12 +18,12 @@ kundi PEP3131Test(unittest.TestCase):
         self.assertIn("Unicode", dir())
 
     eleza test_invalid(self):
-        try:
+        jaribu:
             kutoka test agiza badsyntax_3131
-        except SyntaxError as s:
+        tatizo SyntaxError kama s:
             self.assertEqual(str(s),
-              "invalid character in identifier (badsyntax_3131.py, line 2)")
-        else:
+              "invalid character kwenye identifier (badsyntax_3131.py, line 2)")
+        isipokua:
             self.fail("expected exception didn't occur")
 
 ikiwa __name__ == "__main__":

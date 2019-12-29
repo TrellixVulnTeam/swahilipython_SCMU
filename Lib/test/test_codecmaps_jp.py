@@ -1,6 +1,6 @@
 #
 # test_codecmaps_jp.py
-#   Codec mapping tests for Japanese encodings
+#   Codec mapping tests kila Japanese encodings
 #
 
 kutoka test agiza multibytecodec_support
@@ -17,7 +17,7 @@ kundi TestCP932Map(multibytecodec_support.TestBase_Mapping,
         (b'\xfe', '\uf8f2'),
         (b'\xff', '\uf8f3'),
     ]
-    for i in range(0xa1, 0xe0):
+    kila i kwenye range(0xa1, 0xe0):
         supmaps.append((bytes([i]), chr(i+0xfec0)))
 
 
@@ -33,10 +33,10 @@ kundi TestSJISCOMPATMap(multibytecodec_support.TestBase_Mapping,
     encoding = 'shift_jis'
     mapfilename = 'SHIFTJIS.TXT'
     mapfileurl = 'http://www.pythontest.net/unicode/SHIFTJIS.TXT'
-    pass_enctest = [
+    pita_enctest = [
         (b'\x81_', '\\'),
     ]
-    pass_dectest = [
+    pita_dectest = [
         (b'\\', '\xa5'),
         (b'~', '\u203e'),
         (b'\x81_', '\\'),

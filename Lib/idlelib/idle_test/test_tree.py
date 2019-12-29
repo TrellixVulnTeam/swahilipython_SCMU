@@ -17,7 +17,7 @@ kundi TreeTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         # Start with code slightly adapted kutoka htest.
@@ -25,7 +25,7 @@ kundi TreeTest(unittest.TestCase):
             self.root, bg="white", highlightthickness=0, takefocus=1)
         sc.frame.pack(expand=1, fill="both", side='left')
         item = tree.FileTreeItem(tree.ICONDIR)
-        node = tree.TreeNode(sc.canvas, None, item)
+        node = tree.TreeNode(sc.canvas, Tupu, item)
         node.expand()
 
 
@@ -40,7 +40,7 @@ kundi TestScrollEvent(unittest.TestCase):
                 self.assertTupleEqual(widget.expected, args)
         # Fake event class
         kundi _Event:
-            pass
+            pita
         #        (type, delta, num, amount)
         tests = ((EventType.MouseWheel, 120, -1, -5),
                  (EventType.MouseWheel, -120, -1, 5),
@@ -48,12 +48,12 @@ kundi TestScrollEvent(unittest.TestCase):
                  (EventType.ButtonPress, -1, 5, 5))
 
         event = _Event()
-        for ty, delta, num, amount in tests:
+        kila ty, delta, num, amount kwenye tests:
             event.type = ty
             event.delta = delta
             event.num = num
             res = tree.wheel_event(event, _Widget(SCROLL, amount, "units"))
-            self.assertEqual(res, "break")
+            self.assertEqual(res, "koma")
 
 
 ikiwa __name__ == '__main__':

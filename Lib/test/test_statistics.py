@@ -1,4 +1,4 @@
-"""Test suite for statistics module, including helper NumericTestCase and
+"""Test suite kila statistics module, including helper NumericTestCase and
 approx_equal function.
 
 """
@@ -25,45 +25,45 @@ kutoka test agiza support
 agiza statistics
 
 
-# === Helper functions and kundi ===
+# === Helper functions na kundi ===
 
 eleza sign(x):
-    """Return -1.0 for negatives, including -0.0, otherwise +1.0."""
+    """Return -1.0 kila negatives, including -0.0, otherwise +1.0."""
     rudisha math.copysign(1, x)
 
 eleza _nan_equal(a, b):
-    """Return True ikiwa a and b are both the same kind of NAN.
+    """Return Kweli ikiwa a na b are both the same kind of NAN.
 
     >>> _nan_equal(Decimal('NAN'), Decimal('NAN'))
-    True
+    Kweli
     >>> _nan_equal(Decimal('sNAN'), Decimal('sNAN'))
-    True
+    Kweli
     >>> _nan_equal(Decimal('NAN'), Decimal('sNAN'))
-    False
+    Uongo
     >>> _nan_equal(Decimal(42), Decimal('NAN'))
-    False
+    Uongo
 
     >>> _nan_equal(float('NAN'), float('NAN'))
-    True
+    Kweli
     >>> _nan_equal(float('NAN'), 0.5)
-    False
+    Uongo
 
     >>> _nan_equal(float('NAN'), Decimal('NAN'))
-    False
+    Uongo
 
-    NAN payloads are not compared.
+    NAN payloads are sio compared.
     """
-    ikiwa type(a) is not type(b):
-        rudisha False
+    ikiwa type(a) ni sio type(b):
+        rudisha Uongo
     ikiwa isinstance(a, float):
-        rudisha math.isnan(a) and math.isnan(b)
+        rudisha math.isnan(a) na math.isnan(b)
     aexp = a.as_tuple()[2]
     bexp = b.as_tuple()[2]
-    rudisha (aexp == bexp) and (aexp in ('n', 'N'))  # Both NAN or both sNAN.
+    rudisha (aexp == bexp) na (aexp kwenye ('n', 'N'))  # Both NAN ama both sNAN.
 
 
 eleza _calc_errors(actual, expected):
-    """Return the absolute and relative errors between two numbers.
+    """Return the absolute na relative errors between two numbers.
 
     >>> _calc_errors(100, 75)
     (25, 0.25)
@@ -79,105 +79,105 @@ eleza _calc_errors(actual, expected):
 
 
 eleza approx_equal(x, y, tol=1e-12, rel=1e-7):
-    """approx_equal(x, y [, tol [, rel]]) => True|False
+    """approx_equal(x, y [, tol [, rel]]) => Kweli|Uongo
 
-    Return True ikiwa numbers x and y are approximately equal, to within some
-    margin of error, otherwise rudisha False. Numbers which compare equal
+    Return Kweli ikiwa numbers x na y are approximately equal, to within some
+    margin of error, otherwise rudisha Uongo. Numbers which compare equal
     will also compare approximately equal.
 
-    x is approximately equal to y ikiwa the difference between them is less than
-    an absolute error tol or a relative error rel, whichever is bigger.
+    x ni approximately equal to y ikiwa the difference between them ni less than
+    an absolute error tol ama a relative error rel, whichever ni bigger.
 
-    If given, both tol and rel must be finite, non-negative numbers. If not
-    given, default values are tol=1e-12 and rel=1e-7.
+    If given, both tol na rel must be finite, non-negative numbers. If not
+    given, default values are tol=1e-12 na rel=1e-7.
 
     >>> approx_equal(1.2589, 1.2587, tol=0.0003, rel=0)
-    True
+    Kweli
     >>> approx_equal(1.2589, 1.2587, tol=0.0001, rel=0)
-    False
+    Uongo
 
-    Absolute error is defined as abs(x-y); ikiwa that is less than or equal to
-    tol, x and y are considered approximately equal.
+    Absolute error ni defined kama abs(x-y); ikiwa that ni less than ama equal to
+    tol, x na y are considered approximately equal.
 
-    Relative error is defined as abs((x-y)/x) or abs((x-y)/y), whichever is
-    smaller, provided x or y are not zero. If that figure is less than or
-    equal to rel, x and y are considered approximately equal.
+    Relative error ni defined kama abs((x-y)/x) ama abs((x-y)/y), whichever is
+    smaller, provided x ama y are sio zero. If that figure ni less than or
+    equal to rel, x na y are considered approximately equal.
 
-    Complex numbers are not directly supported. If you wish to compare to
-    complex numbers, extract their real and imaginary parts and compare them
+    Complex numbers are sio directly supported. If you wish to compare to
+    complex numbers, extract their real na imaginary parts na compare them
     individually.
 
     NANs always compare unequal, even with themselves. Infinities compare
-    approximately equal ikiwa they have the same sign (both positive or both
+    approximately equal ikiwa they have the same sign (both positive ama both
     negative). Infinities with different signs compare unequal; so do
     comparisons of infinities with finite numbers.
     """
-    ikiwa tol < 0 or rel < 0:
-        raise ValueError('error tolerances must be non-negative')
-    # NANs are never equal to anything, approximately or otherwise.
-    ikiwa math.isnan(x) or math.isnan(y):
-        rudisha False
+    ikiwa tol < 0 ama rel < 0:
+        ashiria ValueError('error tolerances must be non-negative')
+    # NANs are never equal to anything, approximately ama otherwise.
+    ikiwa math.isnan(x) ama math.isnan(y):
+        rudisha Uongo
     # Numbers which compare equal also compare approximately equal.
     ikiwa x == y:
         # This includes the case of two infinities with the same sign.
-        rudisha True
-    ikiwa math.isinf(x) or math.isinf(y):
+        rudisha Kweli
+    ikiwa math.isinf(x) ama math.isinf(y):
         # This includes the case of two infinities of opposite sign, or
-        # one infinity and one finite number.
-        rudisha False
+        # one infinity na one finite number.
+        rudisha Uongo
     # Two finite numbers.
     actual_error = abs(x - y)
     allowed_error = max(tol, rel*max(abs(x), abs(y)))
     rudisha actual_error <= allowed_error
 
 
-# This kundi exists only as somewhere to stick a docstring containing
-# doctests. The following docstring and tests were originally in a separate
-# module. Now that it has been merged in here, I need somewhere to hang the.
-# docstring. Ultimately, this kundi will die, and the information below will
-# either become redundant, or be moved into more appropriate places.
+# This kundi exists only kama somewhere to stick a docstring containing
+# doctests. The following docstring na tests were originally kwenye a separate
+# module. Now that it has been merged kwenye here, I need somewhere to hang the.
+# docstring. Ultimately, this kundi will die, na the information below will
+# either become redundant, ama be moved into more appropriate places.
 kundi _DoNothing:
     """
-    When doing numeric work, especially with floats, exact equality is often
-    not what you want. Due to round-off error, it is often a bad idea to try
-    to compare floats with equality. Instead the usual procedure is to test
-    them with some (hopefully small!) allowance for error.
+    When doing numeric work, especially with floats, exact equality ni often
+    sio what you want. Due to round-off error, it ni often a bad idea to try
+    to compare floats with equality. Instead the usual procedure ni to test
+    them with some (hopefully small!) allowance kila error.
 
     The ``approx_equal`` function allows you to specify either an absolute
-    error tolerance, or a relative error, or both.
+    error tolerance, ama a relative error, ama both.
 
     Absolute error tolerances are simple, but you need to know the magnitude
     of the quantities being compared:
 
     >>> approx_equal(12.345, 12.346, tol=1e-3)
-    True
-    >>> approx_equal(12.345e6, 12.346e6, tol=1e-3)  # tol is too small.
-    False
+    Kweli
+    >>> approx_equal(12.345e6, 12.346e6, tol=1e-3)  # tol ni too small.
+    Uongo
 
     Relative errors are more suitable when the values you are comparing can
-    vary in magnitude:
+    vary kwenye magnitude:
 
     >>> approx_equal(12.345, 12.346, rel=1e-4)
-    True
+    Kweli
     >>> approx_equal(12.345e6, 12.346e6, rel=1e-4)
-    True
+    Kweli
 
     but a naive implementation of relative error testing can run into trouble
     around zero.
 
-    If you supply both an absolute tolerance and a relative error, the
+    If you supply both an absolute tolerance na a relative error, the
     comparison succeeds ikiwa either individual test succeeds:
 
     >>> approx_equal(12.345e6, 12.346e6, tol=1e-3, rel=1e-4)
-    True
+    Kweli
 
     """
-    pass
+    pita
 
 
 
-# We prefer this for testing numeric values that may not be exactly equal,
-# and avoid using TestCase.assertAlmostEqual, because it sucks :-)
+# We prefer this kila testing numeric values that may sio be exactly equal,
+# na avoid using TestCase.assertAlmostEqual, because it sucks :-)
 
 py_statistics = support.import_fresh_module('statistics', blocked=['_statistics'])
 c_statistics = support.import_fresh_module('statistics', fresh=['_statistics'])
@@ -187,36 +187,36 @@ kundi TestModules(unittest.TestCase):
     func_names = ['_normal_dist_inv_cdf']
 
     eleza test_py_functions(self):
-        for fname in self.func_names:
+        kila fname kwenye self.func_names:
             self.assertEqual(getattr(py_statistics, fname).__module__, 'statistics')
 
     @unittest.skipUnless(c_statistics, 'requires _statistics')
     eleza test_c_functions(self):
-        for fname in self.func_names:
+        kila fname kwenye self.func_names:
             self.assertEqual(getattr(c_statistics, fname).__module__, '_statistics')
 
 
 kundi NumericTestCase(unittest.TestCase):
-    """Unit test kundi for numeric work.
+    """Unit test kundi kila numeric work.
 
     This subclasses TestCase. In addition to the standard method
-    ``TestCase.assertAlmostEqual``,  ``assertApproxEqual`` is provided.
+    ``TestCase.assertAlmostEqual``,  ``assertApproxEqual`` ni provided.
     """
     # By default, we expect exact equality, unless overridden.
     tol = rel = 0
 
     eleza assertApproxEqual(
-            self, first, second, tol=None, rel=None, msg=None
+            self, first, second, tol=Tupu, rel=Tupu, msg=Tupu
             ):
-        """Test passes ikiwa ``first`` and ``second`` are approximately equal.
+        """Test pitaes ikiwa ``first`` na ``second`` are approximately equal.
 
-        This test passes ikiwa ``first`` and ``second`` are equal to
-        within ``tol``, an absolute error, or ``rel``, a relative error.
+        This test pitaes ikiwa ``first`` na ``second`` are equal to
+        within ``tol``, an absolute error, ama ``rel``, a relative error.
 
-        If either ``tol`` or ``rel`` are None or not given, they default to
+        If either ``tol`` ama ``rel`` are Tupu ama sio given, they default to
         test attributes of the same name (by default, 0).
 
-        The objects may be either numbers, or sequences of numbers. Sequences
+        The objects may be either numbers, ama sequences of numbers. Sequences
         are tested element-by-element.
 
         >>> kundi MyTest(NumericTestCase):
@@ -236,50 +236,50 @@ kundi NumericTestCase(unittest.TestCase):
         <unittest.runner.TextTestResult run=2 errors=0 failures=0>
 
         """
-        ikiwa tol is None:
+        ikiwa tol ni Tupu:
             tol = self.tol
-        ikiwa rel is None:
+        ikiwa rel ni Tupu:
             rel = self.rel
         ikiwa (
                 isinstance(first, collections.abc.Sequence) and
                 isinstance(second, collections.abc.Sequence)
             ):
             check = self._check_approx_seq
-        else:
+        isipokua:
             check = self._check_approx_num
         check(first, second, tol, rel, msg)
 
     eleza _check_approx_seq(self, first, second, tol, rel, msg):
         ikiwa len(first) != len(second):
             standardMsg = (
-                "sequences differ in length: %d items != %d items"
+                "sequences differ kwenye length: %d items != %d items"
                 % (len(first), len(second))
                 )
             msg = self._formatMessage(msg, standardMsg)
-            raise self.failureException(msg)
-        for i, (a,e) in enumerate(zip(first, second)):
+            ashiria self.failureException(msg)
+        kila i, (a,e) kwenye enumerate(zip(first, second)):
             self._check_approx_num(a, e, tol, rel, msg, i)
 
-    eleza _check_approx_num(self, first, second, tol, rel, msg, idx=None):
+    eleza _check_approx_num(self, first, second, tol, rel, msg, idx=Tupu):
         ikiwa approx_equal(first, second, tol, rel):
-            # Test passes. Return early, we are done.
-            rudisha None
+            # Test pitaes. Return early, we are done.
+            rudisha Tupu
         # Otherwise we failed.
         standardMsg = self._make_std_err_msg(first, second, tol, rel, idx)
         msg = self._formatMessage(msg, standardMsg)
-        raise self.failureException(msg)
+        ashiria self.failureException(msg)
 
     @staticmethod
     eleza _make_std_err_msg(first, second, tol, rel, idx):
-        # Create the standard error message for approx_equal failures.
+        # Create the standard error message kila approx_equal failures.
         assert first != second
         template = (
             '  %r != %r\n'
-            '  values differ by more than tol=%r and rel=%r\n'
+            '  values differ by more than tol=%r na rel=%r\n'
             '  -> absolute error = %r\n'
             '  -> relative error = %r'
             )
-        ikiwa idx is not None:
+        ikiwa idx ni sio Tupu:
             header = 'numeric sequences first differ at index %d.\n' % idx
             template = header + template
         # Calculate actual errors:
@@ -299,25 +299,25 @@ kundi TestSign(unittest.TestCase):
         self.assertEqual(sign(-0.0), -1)
 
 
-# --- Tests for approx_equal ---
+# --- Tests kila approx_equal ---
 
 kundi ApproxEqualSymmetryTest(unittest.TestCase):
     # Test symmetry of approx_equal.
 
     eleza test_relative_symmetry(self):
         # Check that approx_equal treats relative error symmetrically.
-        # (a-b)/a is usually not equal to (a-b)/b. Ensure that this
+        # (a-b)/a ni usually sio equal to (a-b)/b. Ensure that this
         # doesn't matter.
         #
-        #   Note: the reason for this test is that an early version
-        #   of approx_equal was not symmetric. A relative error test
-        #   would pass, or fail, depending on which value was passed
-        #   as the first argument.
+        #   Note: the reason kila this test ni that an early version
+        #   of approx_equal was sio symmetric. A relative error test
+        #   would pita, ama fail, depending on which value was pitaed
+        #   kama the first argument.
         #
         args1 = [2456, 37.8, -12.45, Decimal('2.54'), Fraction(17, 54)]
         args2 = [2459, 37.2, -12.41, Decimal('2.59'), Fraction(15, 54)]
         assert len(args1) == len(args2)
-        for a, b in zip(args1, args2):
+        kila a, b kwenye zip(args1, args2):
             self.do_relative_symmetry(a, b)
 
     eleza do_relative_symmetry(self, a, b):
@@ -327,17 +327,17 @@ kundi ApproxEqualSymmetryTest(unittest.TestCase):
         rel_err1, rel_err2 = abs(delta/a), abs(delta/b)
         # Choose an error margin halfway between the two.
         rel = (rel_err1 + rel_err2)/2
-        # Now see that values a and b compare approx equal regardless of
-        # which is given first.
-        self.assertTrue(approx_equal(a, b, tol=0, rel=rel))
-        self.assertTrue(approx_equal(b, a, tol=0, rel=rel))
+        # Now see that values a na b compare approx equal regardless of
+        # which ni given first.
+        self.assertKweli(approx_equal(a, b, tol=0, rel=rel))
+        self.assertKweli(approx_equal(b, a, tol=0, rel=rel))
 
     eleza test_symmetry(self):
         # Test that approx_equal(a, b) == approx_equal(b, a)
         args = [-23, -2, 5, 107, 93568]
         delta = 2
-        for a in args:
-            for type_ in (int, float, Decimal, Fraction):
+        kila a kwenye args:
+            kila type_ kwenye (int, float, Decimal, Fraction):
                 x = type_(a)*100
                 y = x + delta
                 r = abs(delta/max(x, y))
@@ -357,7 +357,7 @@ kundi ApproxEqualSymmetryTest(unittest.TestCase):
                 self.do_symmetry_test(x, y, tol=0, rel=0)
 
     eleza do_symmetry_test(self, a, b, tol, rel):
-        template = "approx_equal comparisons don't match for %r"
+        template = "approx_equal comparisons don't match kila %r"
         flag1 = approx_equal(a, b, tol, rel)
         flag2 = approx_equal(b, a, tol, rel)
         self.assertEqual(flag1, flag2, template.format((a, b, tol, rel)))
@@ -365,46 +365,46 @@ kundi ApproxEqualSymmetryTest(unittest.TestCase):
 
 kundi ApproxEqualExactTest(unittest.TestCase):
     # Test the approx_equal function with exactly equal values.
-    # Equal values should compare as approximately equal.
-    # Test cases for exactly equal values, which should compare approx
+    # Equal values should compare kama approximately equal.
+    # Test cases kila exactly equal values, which should compare approx
     # equal regardless of the error tolerances given.
 
     eleza do_exactly_equal_test(self, x, tol, rel):
         result = approx_equal(x, x, tol=tol, rel=rel)
-        self.assertTrue(result, 'equality failure for x=%r' % x)
+        self.assertKweli(result, 'equality failure kila x=%r' % x)
         result = approx_equal(-x, -x, tol=tol, rel=rel)
-        self.assertTrue(result, 'equality failure for x=%r' % -x)
+        self.assertKweli(result, 'equality failure kila x=%r' % -x)
 
     eleza test_exactly_equal_ints(self):
         # Test that equal int values are exactly equal.
-        for n in [42, 19740, 14974, 230, 1795, 700245, 36587]:
+        kila n kwenye [42, 19740, 14974, 230, 1795, 700245, 36587]:
             self.do_exactly_equal_test(n, 0, 0)
 
     eleza test_exactly_equal_floats(self):
         # Test that equal float values are exactly equal.
-        for x in [0.42, 1.9740, 1497.4, 23.0, 179.5, 70.0245, 36.587]:
+        kila x kwenye [0.42, 1.9740, 1497.4, 23.0, 179.5, 70.0245, 36.587]:
             self.do_exactly_equal_test(x, 0, 0)
 
     eleza test_exactly_equal_fractions(self):
         # Test that equal Fraction values are exactly equal.
         F = Fraction
-        for f in [F(1, 2), F(0), F(5, 3), F(9, 7), F(35, 36), F(3, 7)]:
+        kila f kwenye [F(1, 2), F(0), F(5, 3), F(9, 7), F(35, 36), F(3, 7)]:
             self.do_exactly_equal_test(f, 0, 0)
 
     eleza test_exactly_equal_decimals(self):
         # Test that equal Decimal values are exactly equal.
         D = Decimal
-        for d in map(D, "8.2 31.274 912.04 16.745 1.2047".split()):
+        kila d kwenye map(D, "8.2 31.274 912.04 16.745 1.2047".split()):
             self.do_exactly_equal_test(d, 0, 0)
 
     eleza test_exactly_equal_absolute(self):
         # Test that equal values are exactly equal with an absolute error.
-        for n in [16, 1013, 1372, 1198, 971, 4]:
-            # Test as ints.
+        kila n kwenye [16, 1013, 1372, 1198, 971, 4]:
+            # Test kama ints.
             self.do_exactly_equal_test(n, 0.01, 0)
-            # Test as floats.
+            # Test kama floats.
             self.do_exactly_equal_test(n/10, 0.01, 0)
-            # Test as Fractions.
+            # Test kama Fractions.
             f = Fraction(n, 1234)
             self.do_exactly_equal_test(f, 0.01, 0)
 
@@ -415,13 +415,13 @@ kundi ApproxEqualExactTest(unittest.TestCase):
 
     eleza test_exactly_equal_relative(self):
         # Test that equal values are exactly equal with a relative error.
-        for x in [8347, 101.3, -7910.28, Fraction(5, 21)]:
+        kila x kwenye [8347, 101.3, -7910.28, Fraction(5, 21)]:
             self.do_exactly_equal_test(x, 0, 0.01)
         self.do_exactly_equal_test(Decimal("11.68"), 0, Decimal("0.01"))
 
     eleza test_exactly_equal_both(self):
-        # Test that equal values are equal when both tol and rel are given.
-        for x in [41017, 16.742, -813.02, Fraction(3, 8)]:
+        # Test that equal values are equal when both tol na rel are given.
+        kila x kwenye [41017, 16.742, -813.02, Fraction(3, 8)]:
             self.do_exactly_equal_test(x, 0.1, 0.01)
         D = Decimal
         self.do_exactly_equal_test(D("7.2"), D("0.1"), D("0.01"))
@@ -429,57 +429,57 @@ kundi ApproxEqualExactTest(unittest.TestCase):
 
 kundi ApproxEqualUnequalTest(unittest.TestCase):
     # Unequal values should compare unequal with zero error tolerances.
-    # Test cases for unequal values, with exact equality test.
+    # Test cases kila unequal values, with exact equality test.
 
     eleza do_exactly_unequal_test(self, x):
-        for a in (x, -x):
+        kila a kwenye (x, -x):
             result = approx_equal(a, a+1, tol=0, rel=0)
-            self.assertFalse(result, 'inequality failure for x=%r' % a)
+            self.assertUongo(result, 'inequality failure kila x=%r' % a)
 
     eleza test_exactly_unequal_ints(self):
         # Test unequal int values are unequal with zero error tolerance.
-        for n in [951, 572305, 478, 917, 17240]:
+        kila n kwenye [951, 572305, 478, 917, 17240]:
             self.do_exactly_unequal_test(n)
 
     eleza test_exactly_unequal_floats(self):
         # Test unequal float values are unequal with zero error tolerance.
-        for x in [9.51, 5723.05, 47.8, 9.17, 17.24]:
+        kila x kwenye [9.51, 5723.05, 47.8, 9.17, 17.24]:
             self.do_exactly_unequal_test(x)
 
     eleza test_exactly_unequal_fractions(self):
         # Test that unequal Fractions are unequal with zero error tolerance.
         F = Fraction
-        for f in [F(1, 5), F(7, 9), F(12, 11), F(101, 99023)]:
+        kila f kwenye [F(1, 5), F(7, 9), F(12, 11), F(101, 99023)]:
             self.do_exactly_unequal_test(f)
 
     eleza test_exactly_unequal_decimals(self):
         # Test that unequal Decimals are unequal with zero error tolerance.
-        for d in map(Decimal, "3.1415 298.12 3.47 18.996 0.00245".split()):
+        kila d kwenye map(Decimal, "3.1415 298.12 3.47 18.996 0.00245".split()):
             self.do_exactly_unequal_test(d)
 
 
 kundi ApproxEqualInexactTest(unittest.TestCase):
-    # Inexact test cases for approx_error.
-    # Test cases when comparing two values that are not exactly equal.
+    # Inexact test cases kila approx_error.
+    # Test cases when comparing two values that are sio exactly equal.
 
     # === Absolute error tests ===
 
     eleza do_approx_equal_abs_test(self, x, delta):
-        template = "Test failure for x={!r}, y={!r}"
-        for y in (x + delta, x - delta):
+        template = "Test failure kila x={!r}, y={!r}"
+        kila y kwenye (x + delta, x - delta):
             msg = template.format(x, y)
-            self.assertTrue(approx_equal(x, y, tol=2*delta, rel=0), msg)
-            self.assertFalse(approx_equal(x, y, tol=delta/2, rel=0), msg)
+            self.assertKweli(approx_equal(x, y, tol=2*delta, rel=0), msg)
+            self.assertUongo(approx_equal(x, y, tol=delta/2, rel=0), msg)
 
     eleza test_approx_equal_absolute_ints(self):
         # Test approximate equality of ints with an absolute error.
-        for n in [-10737, -1975, -7, -2, 0, 1, 9, 37, 423, 9874, 23789110]:
+        kila n kwenye [-10737, -1975, -7, -2, 0, 1, 9, 37, 423, 9874, 23789110]:
             self.do_approx_equal_abs_test(n, 10)
             self.do_approx_equal_abs_test(n, 2)
 
     eleza test_approx_equal_absolute_floats(self):
         # Test approximate equality of floats with an absolute error.
-        for x in [-284.126, -97.1, -3.4, -2.15, 0.5, 1.0, 7.8, 4.23, 3817.4]:
+        kila x kwenye [-284.126, -97.1, -3.4, -2.15, 0.5, 1.0, 7.8, 4.23, 3817.4]:
             self.do_approx_equal_abs_test(x, 1.5)
             self.do_approx_equal_abs_test(x, 0.01)
             self.do_approx_equal_abs_test(x, 0.0001)
@@ -488,42 +488,42 @@ kundi ApproxEqualInexactTest(unittest.TestCase):
         # Test approximate equality of Fractions with an absolute error.
         delta = Fraction(1, 29)
         numerators = [-84, -15, -2, -1, 0, 1, 5, 17, 23, 34, 71]
-        for f in (Fraction(n, 29) for n in numerators):
+        kila f kwenye (Fraction(n, 29) kila n kwenye numerators):
             self.do_approx_equal_abs_test(f, delta)
             self.do_approx_equal_abs_test(f, float(delta))
 
     eleza test_approx_equal_absolute_decimals(self):
         # Test approximate equality of Decimals with an absolute error.
         delta = Decimal("0.01")
-        for d in map(Decimal, "1.0 3.5 36.08 61.79 7912.3648".split()):
+        kila d kwenye map(Decimal, "1.0 3.5 36.08 61.79 7912.3648".split()):
             self.do_approx_equal_abs_test(d, delta)
             self.do_approx_equal_abs_test(-d, delta)
 
     eleza test_cross_zero(self):
-        # Test for the case of the two values having opposite signs.
-        self.assertTrue(approx_equal(1e-5, -1e-5, tol=1e-4, rel=0))
+        # Test kila the case of the two values having opposite signs.
+        self.assertKweli(approx_equal(1e-5, -1e-5, tol=1e-4, rel=0))
 
     # === Relative error tests ===
 
     eleza do_approx_equal_rel_test(self, x, delta):
-        template = "Test failure for x={!r}, y={!r}"
-        for y in (x*(1+delta), x*(1-delta)):
+        template = "Test failure kila x={!r}, y={!r}"
+        kila y kwenye (x*(1+delta), x*(1-delta)):
             msg = template.format(x, y)
-            self.assertTrue(approx_equal(x, y, tol=0, rel=2*delta), msg)
-            self.assertFalse(approx_equal(x, y, tol=0, rel=delta/2), msg)
+            self.assertKweli(approx_equal(x, y, tol=0, rel=2*delta), msg)
+            self.assertUongo(approx_equal(x, y, tol=0, rel=delta/2), msg)
 
     eleza test_approx_equal_relative_ints(self):
         # Test approximate equality of ints with a relative error.
-        self.assertTrue(approx_equal(64, 47, tol=0, rel=0.36))
-        self.assertTrue(approx_equal(64, 47, tol=0, rel=0.37))
+        self.assertKweli(approx_equal(64, 47, tol=0, rel=0.36))
+        self.assertKweli(approx_equal(64, 47, tol=0, rel=0.37))
         # ---
-        self.assertTrue(approx_equal(449, 512, tol=0, rel=0.125))
-        self.assertTrue(approx_equal(448, 512, tol=0, rel=0.125))
-        self.assertFalse(approx_equal(447, 512, tol=0, rel=0.125))
+        self.assertKweli(approx_equal(449, 512, tol=0, rel=0.125))
+        self.assertKweli(approx_equal(448, 512, tol=0, rel=0.125))
+        self.assertUongo(approx_equal(447, 512, tol=0, rel=0.125))
 
     eleza test_approx_equal_relative_floats(self):
         # Test approximate equality of floats with a relative error.
-        for x in [-178.34, -0.1, 0.1, 1.0, 36.97, 2847.136, 9145.074]:
+        kila x kwenye [-178.34, -0.1, 0.1, 1.0, 36.97, 2847.136, 9145.074]:
             self.do_approx_equal_rel_test(x, 0.02)
             self.do_approx_equal_rel_test(x, 0.0001)
 
@@ -531,125 +531,125 @@ kundi ApproxEqualInexactTest(unittest.TestCase):
         # Test approximate equality of Fractions with a relative error.
         F = Fraction
         delta = Fraction(3, 8)
-        for f in [F(3, 84), F(17, 30), F(49, 50), F(92, 85)]:
-            for d in (delta, float(delta)):
+        kila f kwenye [F(3, 84), F(17, 30), F(49, 50), F(92, 85)]:
+            kila d kwenye (delta, float(delta)):
                 self.do_approx_equal_rel_test(f, d)
                 self.do_approx_equal_rel_test(-f, d)
 
     eleza test_approx_equal_relative_decimals(self):
         # Test approximate equality of Decimals with a relative error.
-        for d in map(Decimal, "0.02 1.0 5.7 13.67 94.138 91027.9321".split()):
+        kila d kwenye map(Decimal, "0.02 1.0 5.7 13.67 94.138 91027.9321".split()):
             self.do_approx_equal_rel_test(d, Decimal("0.001"))
             self.do_approx_equal_rel_test(-d, Decimal("0.05"))
 
-    # === Both absolute and relative error tests ===
+    # === Both absolute na relative error tests ===
 
     # There are four cases to consider:
-    #   1) actual error <= both absolute and relative error
+    #   1) actual error <= both absolute na relative error
     #   2) actual error <= absolute error but > relative error
     #   3) actual error <= relative error but > absolute error
-    #   4) actual error > both absolute and relative error
+    #   4) actual error > both absolute na relative error
 
     eleza do_check_both(self, a, b, tol, rel, tol_flag, rel_flag):
-        check = self.assertTrue ikiwa tol_flag else self.assertFalse
+        check = self.assertKweli ikiwa tol_flag else self.assertUongo
         check(approx_equal(a, b, tol=tol, rel=0))
-        check = self.assertTrue ikiwa rel_flag else self.assertFalse
+        check = self.assertKweli ikiwa rel_flag else self.assertUongo
         check(approx_equal(a, b, tol=0, rel=rel))
-        check = self.assertTrue ikiwa (tol_flag or rel_flag) else self.assertFalse
+        check = self.assertKweli ikiwa (tol_flag ama rel_flag) else self.assertUongo
         check(approx_equal(a, b, tol=tol, rel=rel))
 
     eleza test_approx_equal_both1(self):
-        # Test actual error <= both absolute and relative error.
-        self.do_check_both(7.955, 7.952, 0.004, 3.8e-4, True, True)
-        self.do_check_both(-7.387, -7.386, 0.002, 0.0002, True, True)
+        # Test actual error <= both absolute na relative error.
+        self.do_check_both(7.955, 7.952, 0.004, 3.8e-4, Kweli, Kweli)
+        self.do_check_both(-7.387, -7.386, 0.002, 0.0002, Kweli, Kweli)
 
     eleza test_approx_equal_both2(self):
         # Test actual error <= absolute error but > relative error.
-        self.do_check_both(7.955, 7.952, 0.004, 3.7e-4, True, False)
+        self.do_check_both(7.955, 7.952, 0.004, 3.7e-4, Kweli, Uongo)
 
     eleza test_approx_equal_both3(self):
         # Test actual error <= relative error but > absolute error.
-        self.do_check_both(7.955, 7.952, 0.001, 3.8e-4, False, True)
+        self.do_check_both(7.955, 7.952, 0.001, 3.8e-4, Uongo, Kweli)
 
     eleza test_approx_equal_both4(self):
-        # Test actual error > both absolute and relative error.
-        self.do_check_both(2.78, 2.75, 0.01, 0.001, False, False)
-        self.do_check_both(971.44, 971.47, 0.02, 3e-5, False, False)
+        # Test actual error > both absolute na relative error.
+        self.do_check_both(2.78, 2.75, 0.01, 0.001, Uongo, Uongo)
+        self.do_check_both(971.44, 971.47, 0.02, 3e-5, Uongo, Uongo)
 
 
 kundi ApproxEqualSpecialsTest(unittest.TestCase):
-    # Test approx_equal with NANs and INFs and zeroes.
+    # Test approx_equal with NANs na INFs na zeroes.
 
     eleza test_inf(self):
-        for type_ in (float, Decimal):
+        kila type_ kwenye (float, Decimal):
             inf = type_('inf')
-            self.assertTrue(approx_equal(inf, inf))
-            self.assertTrue(approx_equal(inf, inf, 0, 0))
-            self.assertTrue(approx_equal(inf, inf, 1, 0.01))
-            self.assertTrue(approx_equal(-inf, -inf))
-            self.assertFalse(approx_equal(inf, -inf))
-            self.assertFalse(approx_equal(inf, 1000))
+            self.assertKweli(approx_equal(inf, inf))
+            self.assertKweli(approx_equal(inf, inf, 0, 0))
+            self.assertKweli(approx_equal(inf, inf, 1, 0.01))
+            self.assertKweli(approx_equal(-inf, -inf))
+            self.assertUongo(approx_equal(inf, -inf))
+            self.assertUongo(approx_equal(inf, 1000))
 
     eleza test_nan(self):
-        for type_ in (float, Decimal):
+        kila type_ kwenye (float, Decimal):
             nan = type_('nan')
-            for other in (nan, type_('inf'), 1000):
-                self.assertFalse(approx_equal(nan, other))
+            kila other kwenye (nan, type_('inf'), 1000):
+                self.assertUongo(approx_equal(nan, other))
 
     eleza test_float_zeroes(self):
         nzero = math.copysign(0.0, -1)
-        self.assertTrue(approx_equal(nzero, 0.0, tol=0.1, rel=0.1))
+        self.assertKweli(approx_equal(nzero, 0.0, tol=0.1, rel=0.1))
 
     eleza test_decimal_zeroes(self):
         nzero = Decimal("-0.0")
-        self.assertTrue(approx_equal(nzero, Decimal(0), tol=0.1, rel=0.1))
+        self.assertKweli(approx_equal(nzero, Decimal(0), tol=0.1, rel=0.1))
 
 
 kundi TestApproxEqualErrors(unittest.TestCase):
     # Test error conditions of approx_equal.
 
     eleza test_bad_tol(self):
-        # Test negative tol raises.
+        # Test negative tol ashirias.
         self.assertRaises(ValueError, approx_equal, 100, 100, -1, 0.1)
 
     eleza test_bad_rel(self):
-        # Test negative rel raises.
+        # Test negative rel ashirias.
         self.assertRaises(ValueError, approx_equal, 100, 100, 1, -0.1)
 
 
-# --- Tests for NumericTestCase ---
+# --- Tests kila NumericTestCase ---
 
-# The formatting routine that generates the error messages is complex enough
+# The formatting routine that generates the error messages ni complex enough
 # that it too needs testing.
 
 kundi TestNumericTestCase(unittest.TestCase):
-    # The exact wording of NumericTestCase error messages is *not* guaranteed,
+    # The exact wording of NumericTestCase error messages ni *not* guaranteed,
     # but we need to give them some sort of test to ensure that they are
-    # generated correctly. As a compromise, we look for specific substrings
+    # generated correctly. As a compromise, we look kila specific substrings
     # that are expected to be found even ikiwa the overall error message changes.
 
     eleza do_test(self, args):
         actual_msg = NumericTestCase._make_std_err_msg(*args)
         expected = self.generate_substrings(*args)
-        for substring in expected:
+        kila substring kwenye expected:
             self.assertIn(substring, actual_msg)
 
     eleza test_numerictestcase_is_testcase(self):
-        # Ensure that NumericTestCase actually is a TestCase.
-        self.assertTrue(issubclass(NumericTestCase, unittest.TestCase))
+        # Ensure that NumericTestCase actually ni a TestCase.
+        self.assertKweli(issubclass(NumericTestCase, unittest.TestCase))
 
     eleza test_error_msg_numeric(self):
-        # Test the error message generated for numeric comparisons.
-        args = (2.5, 4.0, 0.5, 0.25, None)
+        # Test the error message generated kila numeric comparisons.
+        args = (2.5, 4.0, 0.5, 0.25, Tupu)
         self.do_test(args)
 
     eleza test_error_msg_sequence(self):
-        # Test the error message generated for sequence comparisons.
+        # Test the error message generated kila sequence comparisons.
         args = (3.75, 8.25, 1.25, 0.5, 7)
         self.do_test(args)
 
     eleza generate_substrings(self, first, second, tol, rel, idx):
-        """Return substrings we expect to see in error messages."""
+        """Return substrings we expect to see kwenye error messages."""
         abs_err, rel_err = _calc_errors(first, second)
         substrings = [
                 'tol=%r' % tol,
@@ -657,13 +657,13 @@ kundi TestNumericTestCase(unittest.TestCase):
                 'absolute error = %r' % abs_err,
                 'relative error = %r' % rel_err,
                 ]
-        ikiwa idx is not None:
+        ikiwa idx ni sio Tupu:
             substrings.append('differ at index %d' % idx)
         rudisha substrings
 
 
 # =======================================
-# === Tests for the statistics module ===
+# === Tests kila the statistics module ===
 # =======================================
 
 
@@ -672,26 +672,26 @@ kundi GlobalsTest(unittest.TestCase):
     expected_metadata = ["__doc__", "__all__"]
 
     eleza test_meta(self):
-        # Test for the existence of metadata.
-        for meta in self.expected_metadata:
-            self.assertTrue(hasattr(self.module, meta),
-                            "%s not present" % meta)
+        # Test kila the existence of metadata.
+        kila meta kwenye self.expected_metadata:
+            self.assertKweli(hasattr(self.module, meta),
+                            "%s sio present" % meta)
 
     eleza test_check_all(self):
-        # Check everything in __all__ exists and is public.
+        # Check everything kwenye __all__ exists na ni public.
         module = self.module
-        for name in module.__all__:
-            # No private names in __all__:
-            self.assertFalse(name.startswith("_"),
-                             'private name "%s" in __all__' % name)
-            # And anything in __all__ must exist:
-            self.assertTrue(hasattr(module, name),
-                            'missing name "%s" in __all__' % name)
+        kila name kwenye module.__all__:
+            # No private names kwenye __all__:
+            self.assertUongo(name.startswith("_"),
+                             'private name "%s" kwenye __all__' % name)
+            # And anything kwenye __all__ must exist:
+            self.assertKweli(hasattr(module, name),
+                            'missing name "%s" kwenye __all__' % name)
 
 
 kundi DocTests(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -OO and above")
+                     "Docstrings are omitted with -OO na above")
     eleza test_doc_tests(self):
         failed, tried = doctest.testmod(statistics, optionflags=doctest.ELLIPSIS)
         self.assertGreater(tried, 0)
@@ -703,33 +703,33 @@ kundi StatisticsErrorTest(unittest.TestCase):
                 "Expected StatisticsError to be a ValueError, but got a"
                 " subkundi of %r instead."
                 )
-        self.assertTrue(hasattr(statistics, 'StatisticsError'))
-        self.assertTrue(
+        self.assertKweli(hasattr(statistics, 'StatisticsError'))
+        self.assertKweli(
                 issubclass(statistics.StatisticsError, ValueError),
                 errmsg % statistics.StatisticsError.__base__
                 )
 
 
-# === Tests for private utility functions ===
+# === Tests kila private utility functions ===
 
 kundi ExactRatioTest(unittest.TestCase):
     # Test _exact_ratio utility.
 
     eleza test_int(self):
-        for i in (-20, -3, 0, 5, 99, 10**20):
+        kila i kwenye (-20, -3, 0, 5, 99, 10**20):
             self.assertEqual(statistics._exact_ratio(i), (i, 1))
 
     eleza test_fraction(self):
         numerators = (-5, 1, 12, 38)
-        for n in numerators:
+        kila n kwenye numerators:
             f = Fraction(n, 37)
             self.assertEqual(statistics._exact_ratio(f), (n, 37))
 
     eleza test_float(self):
         self.assertEqual(statistics._exact_ratio(0.125), (1, 8))
         self.assertEqual(statistics._exact_ratio(1.125), (9, 8))
-        data = [random.uniform(-100, 100) for _ in range(100)]
-        for x in data:
+        data = [random.uniform(-100, 100) kila _ kwenye range(100)]
+        kila x kwenye data:
             num, den = statistics._exact_ratio(x)
             self.assertEqual(x, num/den)
 
@@ -743,36 +743,36 @@ kundi ExactRatioTest(unittest.TestCase):
     eleza test_inf(self):
         INF = float("INF")
         kundi MyFloat(float):
-            pass
+            pita
         kundi MyDecimal(Decimal):
-            pass
-        for inf in (INF, -INF):
-            for type_ in (float, MyFloat, Decimal, MyDecimal):
+            pita
+        kila inf kwenye (INF, -INF):
+            kila type_ kwenye (float, MyFloat, Decimal, MyDecimal):
                 x = type_(inf)
                 ratio = statistics._exact_ratio(x)
-                self.assertEqual(ratio, (x, None))
+                self.assertEqual(ratio, (x, Tupu))
                 self.assertEqual(type(ratio[0]), type_)
-                self.assertTrue(math.isinf(ratio[0]))
+                self.assertKweli(math.isinf(ratio[0]))
 
     eleza test_float_nan(self):
         NAN = float("NAN")
         kundi MyFloat(float):
-            pass
-        for nan in (NAN, MyFloat(NAN)):
+            pita
+        kila nan kwenye (NAN, MyFloat(NAN)):
             ratio = statistics._exact_ratio(nan)
-            self.assertTrue(math.isnan(ratio[0]))
-            self.assertIs(ratio[1], None)
+            self.assertKweli(math.isnan(ratio[0]))
+            self.assertIs(ratio[1], Tupu)
             self.assertEqual(type(ratio[0]), type(nan))
 
     eleza test_decimal_nan(self):
         NAN = Decimal("NAN")
         sNAN = Decimal("sNAN")
         kundi MyDecimal(Decimal):
-            pass
-        for nan in (NAN, MyDecimal(NAN), sNAN, MyDecimal(sNAN)):
+            pita
+        kila nan kwenye (NAN, MyDecimal(NAN), sNAN, MyDecimal(sNAN)):
             ratio = statistics._exact_ratio(nan)
-            self.assertTrue(_nan_equal(ratio[0], nan))
-            self.assertIs(ratio[1], None)
+            self.assertKweli(_nan_equal(ratio[0], nan))
+            self.assertIs(ratio[1], Tupu)
             self.assertEqual(type(ratio[0]), type(nan))
 
 
@@ -782,23 +782,23 @@ kundi DecimalToRatioTest(unittest.TestCase):
     eleza test_infinity(self):
         # Test that INFs are handled correctly.
         inf = Decimal('INF')
-        self.assertEqual(statistics._exact_ratio(inf), (inf, None))
-        self.assertEqual(statistics._exact_ratio(-inf), (-inf, None))
+        self.assertEqual(statistics._exact_ratio(inf), (inf, Tupu))
+        self.assertEqual(statistics._exact_ratio(-inf), (-inf, Tupu))
 
     eleza test_nan(self):
         # Test that NANs are handled correctly.
-        for nan in (Decimal('NAN'), Decimal('sNAN')):
+        kila nan kwenye (Decimal('NAN'), Decimal('sNAN')):
             num, den = statistics._exact_ratio(nan)
             # Because NANs always compare non-equal, we cannot use assertEqual.
-            # Nor can we use an identity test, as we don't guarantee anything
+            # Nor can we use an identity test, kama we don't guarantee anything
             # about the object identity.
-            self.assertTrue(_nan_equal(num, nan))
-            self.assertIs(den, None)
+            self.assertKweli(_nan_equal(num, nan))
+            self.assertIs(den, Tupu)
 
     eleza test_sign(self):
-        # Test sign is calculated correctly.
+        # Test sign ni calculated correctly.
         numbers = [Decimal("9.8765e12"), Decimal("9.8765e-12")]
-        for d in numbers:
+        kila d kwenye numbers:
             # First test positive decimals.
             assert d > 0
             num, den = statistics._exact_ratio(d)
@@ -810,17 +810,17 @@ kundi DecimalToRatioTest(unittest.TestCase):
             self.assertGreater(den, 0)
 
     eleza test_negative_exponent(self):
-        # Test result when the exponent is negative.
+        # Test result when the exponent ni negative.
         t = statistics._exact_ratio(Decimal("0.1234"))
         self.assertEqual(t, (617, 5000))
 
     eleza test_positive_exponent(self):
-        # Test results when the exponent is positive.
+        # Test results when the exponent ni positive.
         t = statistics._exact_ratio(Decimal("1.234e7"))
         self.assertEqual(t, (12340000, 1))
 
     eleza test_regression_20536(self):
-        # Regression test for issue 20536.
+        # Regression test kila issue 20536.
         # See http://bugs.python.org/issue20536
         t = statistics._exact_ratio(Decimal("1e2"))
         self.assertEqual(t, (100, 1))
@@ -832,49 +832,49 @@ kundi IsFiniteTest(unittest.TestCase):
     # Test _isfinite private function.
 
     eleza test_finite(self):
-        # Test that finite numbers are recognised as finite.
-        for x in (5, Fraction(1, 3), 2.5, Decimal("5.5")):
-            self.assertTrue(statistics._isfinite(x))
+        # Test that finite numbers are recognised kama finite.
+        kila x kwenye (5, Fraction(1, 3), 2.5, Decimal("5.5")):
+            self.assertKweli(statistics._isfinite(x))
 
     eleza test_infinity(self):
-        # Test that INFs are not recognised as finite.
-        for x in (float("inf"), Decimal("inf")):
-            self.assertFalse(statistics._isfinite(x))
+        # Test that INFs are sio recognised kama finite.
+        kila x kwenye (float("inf"), Decimal("inf")):
+            self.assertUongo(statistics._isfinite(x))
 
     eleza test_nan(self):
-        # Test that NANs are not recognised as finite.
-        for x in (float("nan"), Decimal("NAN"), Decimal("sNAN")):
-            self.assertFalse(statistics._isfinite(x))
+        # Test that NANs are sio recognised kama finite.
+        kila x kwenye (float("nan"), Decimal("NAN"), Decimal("sNAN")):
+            self.assertUongo(statistics._isfinite(x))
 
 
 kundi CoerceTest(unittest.TestCase):
     # Test that private function _coerce correctly deals with types.
 
     # The coercion rules are currently an implementation detail, although at
-    # some point that should change. The tests and comments here define the
+    # some point that should change. The tests na comments here define the
     # correct implementation.
 
     # Pre-conditions of _coerce:
     #
     #   - The first time _sum calls _coerce, the
-    #   - coerce(T, S) will never be called with bool as the first argument;
-    #     this is a pre-condition, guarded with an assertion.
+    #   - coerce(T, S) will never be called with bool kama the first argument;
+    #     this ni a pre-condition, guarded with an assertion.
 
     #
-    #   - coerce(T, T) will always rudisha T; we assume T is a valid numeric
+    #   - coerce(T, T) will always rudisha T; we assume T ni a valid numeric
     #     type. Violate this assumption at your own risk.
     #
-    #   - Apart kutoka as above, bool is treated as ikiwa it were actually int.
+    #   - Apart kutoka kama above, bool ni treated kama ikiwa it were actually int.
     #
-    #   - coerce(int, X) and coerce(X, int) rudisha X.
+    #   - coerce(int, X) na coerce(X, int) rudisha X.
     #   -
     eleza test_bool(self):
-        # bool is somewhat special, due to the pre-condition that it is
-        # never given as the first argument to _coerce, and that it cannot
+        # bool ni somewhat special, due to the pre-condition that it is
+        # never given kama the first argument to _coerce, na that it cannot
         # be subclassed. So we test it specially.
-        for T in (int, float, Fraction, Decimal):
+        kila T kwenye (int, float, Fraction, Decimal):
             self.assertIs(statistics._coerce(T, bool), T)
-            kundi MyClass(T): pass
+            kundi MyClass(T): pita
             self.assertIs(statistics._coerce(MyClass, bool), MyClass)
 
     eleza assertCoerceTo(self, A, B):
@@ -884,41 +884,41 @@ kundi CoerceTest(unittest.TestCase):
 
     eleza check_coerce_to(self, A, B):
         """Checks that type A coerces to B, including subclasses."""
-        # Assert that type A is coerced to B.
+        # Assert that type A ni coerced to B.
         self.assertCoerceTo(A, B)
         # Subclasses of A are also coerced to B.
-        kundi SubclassOfA(A): pass
+        kundi SubclassOfA(A): pita
         self.assertCoerceTo(SubclassOfA, B)
-        # A, and subclasses of A, are coerced to subclasses of B.
-        kundi SubclassOfB(B): pass
+        # A, na subclasses of A, are coerced to subclasses of B.
+        kundi SubclassOfB(B): pita
         self.assertCoerceTo(A, SubclassOfB)
         self.assertCoerceTo(SubclassOfA, SubclassOfB)
 
     eleza assertCoerceRaises(self, A, B):
-        """Assert that coercing A to B, or vice versa, raises TypeError."""
+        """Assert that coercing A to B, ama vice versa, ashirias TypeError."""
         self.assertRaises(TypeError, statistics._coerce, (A, B))
         self.assertRaises(TypeError, statistics._coerce, (B, A))
 
     eleza check_type_coercions(self, T):
         """Check that type T coerces correctly with subclasses of itself."""
-        assert T is not bool
-        # Coercing a type with itself returns the same type.
+        assert T ni sio bool
+        # Coercing a type with itself rudishas the same type.
         self.assertIs(statistics._coerce(T, T), T)
-        # Coercing a type with a subkundi of itself returns the subclass.
-        kundi U(T): pass
-        kundi V(T): pass
-        kundi W(U): pass
-        for typ in (U, V, W):
+        # Coercing a type with a subkundi of itself rudishas the subclass.
+        kundi U(T): pita
+        kundi V(T): pita
+        kundi W(U): pita
+        kila typ kwenye (U, V, W):
             self.assertCoerceTo(T, typ)
         self.assertCoerceTo(U, W)
-        # Coercing two subclasses that aren't parent/child is an error.
+        # Coercing two subclasses that aren't parent/child ni an error.
         self.assertCoerceRaises(U, V)
         self.assertCoerceRaises(V, W)
 
     eleza test_int(self):
         # Check that int coerces correctly.
         self.check_type_coercions(int)
-        for typ in (float, Fraction, Decimal):
+        kila typ kwenye (float, Fraction, Decimal):
             self.check_coerce_to(int, typ)
 
     eleza test_fraction(self):
@@ -935,14 +935,14 @@ kundi CoerceTest(unittest.TestCase):
         self.check_type_coercions(float)
 
     eleza test_non_numeric_types(self):
-        for bad_type in (str, list, type(None), tuple, dict):
-            for good_type in (int, float, Fraction, Decimal):
+        kila bad_type kwenye (str, list, type(Tupu), tuple, dict):
+            kila good_type kwenye (int, float, Fraction, Decimal):
                 self.assertCoerceRaises(good_type, bad_type)
 
     eleza test_incompatible_types(self):
-        # Test that incompatible types raise.
-        for T in (float, Fraction):
-            kundi MySubclass(T): pass
+        # Test that incompatible types ashiria.
+        kila T kwenye (float, Fraction):
+            kundi MySubclass(T): pita
             self.assertCoerceRaises(T, Decimal)
             self.assertCoerceRaises(MySubclass, Decimal)
 
@@ -951,7 +951,7 @@ kundi ConvertTest(unittest.TestCase):
     # Test private _convert function.
 
     eleza check_exact_equal(self, x, y):
-        """Check that x equals y, and has the same type as well."""
+        """Check that x equals y, na has the same type kama well."""
         self.assertEqual(x, y)
         self.assertIs(type(x), type(y))
 
@@ -959,7 +959,7 @@ kundi ConvertTest(unittest.TestCase):
         # Test conversions to int.
         x = statistics._convert(Fraction(71), int)
         self.check_exact_equal(x, 71)
-        kundi MyInt(int): pass
+        kundi MyInt(int): pita
         x = statistics._convert(Fraction(17), MyInt)
         self.check_exact_equal(x, MyInt(17))
 
@@ -994,73 +994,73 @@ kundi ConvertTest(unittest.TestCase):
         self.check_exact_equal(x, MyDecimal("-0.9375"))
 
     eleza test_inf(self):
-        for INF in (float('inf'), Decimal('inf')):
-            for inf in (INF, -INF):
+        kila INF kwenye (float('inf'), Decimal('inf')):
+            kila inf kwenye (INF, -INF):
                 x = statistics._convert(inf, type(inf))
                 self.check_exact_equal(x, inf)
 
     eleza test_nan(self):
-        for nan in (float('nan'), Decimal('NAN'), Decimal('sNAN')):
+        kila nan kwenye (float('nan'), Decimal('NAN'), Decimal('sNAN')):
             x = statistics._convert(nan, type(nan))
-            self.assertTrue(_nan_equal(x, nan))
+            self.assertKweli(_nan_equal(x, nan))
 
 
 kundi FailNegTest(unittest.TestCase):
     """Test _fail_neg private function."""
 
-    eleza test_pass_through(self):
-        # Test that values are passed through unchanged.
+    eleza test_pita_through(self):
+        # Test that values are pitaed through unchanged.
         values = [1, 2.0, Fraction(3), Decimal(4)]
         new = list(statistics._fail_neg(values))
         self.assertEqual(values, new)
 
-    eleza test_negatives_raise(self):
-        # Test that negatives raise an exception.
-        for x in [1, 2.0, Fraction(3), Decimal(4)]:
+    eleza test_negatives_ashiria(self):
+        # Test that negatives ashiria an exception.
+        kila x kwenye [1, 2.0, Fraction(3), Decimal(4)]:
             seq = [-x]
             it = statistics._fail_neg(seq)
             self.assertRaises(statistics.StatisticsError, next, it)
 
     eleza test_error_msg(self):
-        # Test that a given error message is used.
+        # Test that a given error message ni used.
         msg = "badness #%d" % random.randint(10000, 99999)
-        try:
+        jaribu:
             next(statistics._fail_neg([-1], msg))
-        except statistics.StatisticsError as e:
+        tatizo statistics.StatisticsError kama e:
             errmsg = e.args[0]
-        else:
+        isipokua:
             self.fail("expected exception, but it didn't happen")
         self.assertEqual(errmsg, msg)
 
 
-# === Tests for public functions ===
+# === Tests kila public functions ===
 
 kundi UnivariateCommonMixin:
-    # Common tests for most univariate functions that take a data argument.
+    # Common tests kila most univariate functions that take a data argument.
 
     eleza test_no_args(self):
         # Fail ikiwa given no arguments.
         self.assertRaises(TypeError, self.func)
 
     eleza test_empty_data(self):
-        # Fail when the data argument (first argument) is empty.
-        for empty in ([], (), iter([])):
+        # Fail when the data argument (first argument) ni empty.
+        kila empty kwenye ([], (), iter([])):
             self.assertRaises(statistics.StatisticsError, self.func, empty)
 
     eleza prepare_data(self):
-        """Return int data for various tests."""
+        """Return int data kila various tests."""
         data = list(range(10))
-        while data == sorted(data):
+        wakati data == sorted(data):
             random.shuffle(data)
         rudisha data
 
     eleza test_no_inplace_modifications(self):
-        # Test that the function does not modify its input data.
+        # Test that the function does sio modify its input data.
         data = self.prepare_data()
         assert len(data) != 1  # Necessary to avoid infinite loop.
         assert data != sorted(data)
         saved = data[:]
-        assert data is not saved
+        assert data ni sio saved
         _ = self.func(data)
         self.assertListEqual(data, saved, "data has been modified")
 
@@ -1069,8 +1069,8 @@ kundi UnivariateCommonMixin:
 
         # CAUTION: due to floating point rounding errors, the result actually
         # may depend on the order. Consider this test representing an ideal.
-        # To avoid this test failing, only test with exact values such as ints
-        # or Fractions.
+        # To avoid this test failing, only test with exact values such kama ints
+        # ama Fractions.
         data = [1, 2, 3, 3, 3, 4, 5, 6]*100
         expected = self.func(data)
         random.shuffle(data)
@@ -1080,14 +1080,14 @@ kundi UnivariateCommonMixin:
     eleza test_type_of_data_collection(self):
         # Test that the type of iterable data doesn't effect the result.
         kundi MyList(list):
-            pass
+            pita
         kundi MyTuple(tuple):
-            pass
+            pita
         eleza generator(data):
-            rudisha (obj for obj in data)
+            rudisha (obj kila obj kwenye data)
         data = self.prepare_data()
         expected = self.func(data)
-        for kind in (list, tuple, iter, MyList, MyTuple, generator):
+        kila kind kwenye (list, tuple, iter, MyList, MyTuple, generator):
             result = self.func(kind(data))
             self.assertEqual(result, expected)
 
@@ -1098,16 +1098,16 @@ kundi UnivariateCommonMixin:
         self.assertEqual(self.func(data), expected)
 
     eleza test_bad_arg_types(self):
-        # Test that function raises when given data of the wrong type.
+        # Test that function ashirias when given data of the wrong type.
 
         # Don't roll the following into a loop like this:
-        #   for bad in list_of_bad:
+        #   kila bad kwenye list_of_bad:
         #       self.check_for_type_error(bad)
         #
         # Since assertRaises doesn't show the arguments that caused the test
-        # failure, it is very difficult to debug these test failures when the
-        # following are in a loop.
-        self.check_for_type_error(None)
+        # failure, it ni very difficult to debug these test failures when the
+        # following are kwenye a loop.
+        self.check_for_type_error(Tupu)
         self.check_for_type_error(23)
         self.check_for_type_error(42.0)
         self.check_for_type_error(object())
@@ -1117,8 +1117,8 @@ kundi UnivariateCommonMixin:
 
     eleza test_type_of_data_element(self):
         # Check the type of data elements doesn't affect the numeric result.
-        # This is a weaker test than UnivariateTypeMixin.testTypesConserved,
-        # because it checks the numeric result by equality, but not by type.
+        # This ni a weaker test than UnivariateTypeMixin.testTypesConserved,
+        # because it checks the numeric result by equality, but sio by type.
         kundi MyFloat(float):
             eleza __truediv__(self, other):
                 rudisha type(self)(super().__truediv__(other))
@@ -1128,21 +1128,21 @@ kundi UnivariateCommonMixin:
 
         raw = self.prepare_data()
         expected = self.func(raw)
-        for kind in (float, MyFloat, Decimal, Fraction):
-            data = [kind(x) for x in raw]
+        kila kind kwenye (float, MyFloat, Decimal, Fraction):
+            data = [kind(x) kila x kwenye raw]
             result = type(expected)(self.func(data))
             self.assertEqual(result, expected)
 
 
 kundi UnivariateTypeMixin:
-    """Mixin kundi for type-conserving functions.
+    """Mixin kundi kila type-conserving functions.
 
-    This mixin kundi holds test(s) for functions which conserve the type of
+    This mixin kundi holds test(s) kila functions which conserve the type of
     individual data points. E.g. the mean of a list of Fractions should itself
     be a Fraction.
 
-    Not all tests to do with types need go in this class. Only those that
-    rely on the function returning the same type as its input data.
+    Not all tests to do with types need go kwenye this class. Only those that
+    rely on the function rudishaing the same type kama its input data.
     """
     eleza prepare_types_for_conservation_test(self):
         """Return the types which are expected to be conserved."""
@@ -1163,20 +1163,20 @@ kundi UnivariateTypeMixin:
         rudisha (float, Decimal, Fraction, MyFloat)
 
     eleza test_types_conserved(self):
-        # Test that functions keeps the same type as their data points.
-        # (Excludes mixed data types.) This only tests the type of the return
-        # result, not the value.
+        # Test that functions keeps the same type kama their data points.
+        # (Excludes mixed data types.) This only tests the type of the rudisha
+        # result, sio the value.
         data = self.prepare_data()
-        for kind in self.prepare_types_for_conservation_test():
-            d = [kind(x) for x in data]
+        kila kind kwenye self.prepare_types_for_conservation_test():
+            d = [kind(x) kila x kwenye data]
             result = self.func(d)
             self.assertIs(type(result), kind)
 
 
 kundi TestSumCommon(UnivariateCommonMixin, UnivariateTypeMixin):
-    # Common test cases for statistics._sum() function.
+    # Common test cases kila statistics._sum() function.
 
-    # This test suite looks only at the numeric value returned by _sum,
+    # This test suite looks only at the numeric value rudishaed by _sum,
     # after conversion to the appropriate type.
     eleza setUp(self):
         eleza simplified_sum(*args):
@@ -1186,16 +1186,16 @@ kundi TestSumCommon(UnivariateCommonMixin, UnivariateTypeMixin):
 
 
 kundi TestSum(NumericTestCase):
-    # Test cases for statistics._sum() function.
+    # Test cases kila statistics._sum() function.
 
-    # These tests look at the entire three value tuple returned by _sum.
+    # These tests look at the entire three value tuple rudishaed by _sum.
 
     eleza setUp(self):
         self.func = statistics._sum
 
     eleza test_empty_data(self):
-        # Override test for empty data.
-        for data in ([], (), iter([])):
+        # Override test kila empty data.
+        kila data kwenye ([], (), iter([])):
             self.assertEqual(self.func(data), (int, Fraction(0), 0))
             self.assertEqual(self.func(data, 23), (int, Fraction(23), 0))
             self.assertEqual(self.func(data, 2.3), (float, Fraction(2.3), 0))
@@ -1228,12 +1228,12 @@ kundi TestSum(NumericTestCase):
         # Compare with the math.fsum function.
         # Ideally we ought to get the exact same result, but sometimes
         # we differ by a very slight amount :-(
-        data = [random.uniform(-100, 1000) for _ in range(1000)]
+        data = [random.uniform(-100, 1000) kila _ kwenye range(1000)]
         self.assertApproxEqual(float(self.func(data)[1]), math.fsum(data), rel=2e-16)
 
     eleza test_start_argument(self):
         # Test that the optional start argument works correctly.
-        data = [random.uniform(1, 1000) for _ in range(100)]
+        data = [random.uniform(1, 1000) kila _ kwenye range(100)]
         t = self.func(data)[1]
         self.assertEqual(t+42, self.func(data, 42)[1])
         self.assertEqual(t-23, self.func(data, -23)[1])
@@ -1250,7 +1250,7 @@ kundi TestSum(NumericTestCase):
         self.assertRaises(TypeError, self.func, [1, 2, 3, b'999'])
 
     eleza test_mixed_sum(self):
-        # Mixed input types are not (currently) allowed.
+        # Mixed input types are sio (currently) allowed.
         # Check that mixed data types fail.
         self.assertRaises(TypeError, self.func, [1, 2.0, Decimal(1)])
         # And so does mixed start argument.
@@ -1259,7 +1259,7 @@ kundi TestSum(NumericTestCase):
 
 kundi SumTortureTest(NumericTestCase):
     eleza test_torture(self):
-        # Tim Peters' torture test for sum, and variants of same.
+        # Tim Peters' torture test kila sum, na variants of same.
         self.assertEqual(statistics._sum([1, 1e100, 1, -1e100]*10000),
                          (float, Fraction(20000.0), 40000))
         self.assertEqual(statistics._sum([1e100, 1, 1, -1e100]*10000),
@@ -1274,15 +1274,15 @@ kundi SumSpecialValues(NumericTestCase):
     # Test that sum works correctly with IEEE-754 special values.
 
     eleza test_nan(self):
-        for type_ in (float, Decimal):
+        kila type_ kwenye (float, Decimal):
             nan = type_('nan')
             result = statistics._sum([1, nan, 2])[1]
             self.assertIs(type(result), type_)
-            self.assertTrue(math.isnan(result))
+            self.assertKweli(math.isnan(result))
 
     eleza check_infinity(self, x, inf):
-        """Check x is an infinity of the same type and sign as inf."""
-        self.assertTrue(math.isinf(x))
+        """Check x ni an infinity of the same type na sign kama inf."""
+        self.assertKweli(math.isinf(x))
         self.assertIs(type(x), type(inf))
         self.assertEqual(x > 0, inf > 0)
         assert x == inf
@@ -1297,58 +1297,58 @@ kundi SumSpecialValues(NumericTestCase):
 
     eleza test_float_inf(self):
         inf = float('inf')
-        for sign in (+1, -1):
+        kila sign kwenye (+1, -1):
             self.do_test_inf(sign*inf)
 
     eleza test_decimal_inf(self):
         inf = Decimal('inf')
-        for sign in (+1, -1):
+        kila sign kwenye (+1, -1):
             self.do_test_inf(sign*inf)
 
     eleza test_float_mismatched_infs(self):
         # Test that adding two infinities of opposite sign gives a NAN.
         inf = float('inf')
         result = statistics._sum([1, 2, inf, 3, -inf, 4])[1]
-        self.assertTrue(math.isnan(result))
+        self.assertKweli(math.isnan(result))
 
     eleza test_decimal_extendedcontext_mismatched_infs_to_nan(self):
-        # Test adding Decimal INFs with opposite sign returns NAN.
+        # Test adding Decimal INFs with opposite sign rudishas NAN.
         inf = Decimal('inf')
         data = [1, 2, inf, 3, -inf, 4]
         with decimal.localcontext(decimal.ExtendedContext):
-            self.assertTrue(math.isnan(statistics._sum(data)[1]))
+            self.assertKweli(math.isnan(statistics._sum(data)[1]))
 
     eleza test_decimal_basiccontext_mismatched_infs_to_nan(self):
-        # Test adding Decimal INFs with opposite sign raises InvalidOperation.
+        # Test adding Decimal INFs with opposite sign ashirias InvalidOperation.
         inf = Decimal('inf')
         data = [1, 2, inf, 3, -inf, 4]
         with decimal.localcontext(decimal.BasicContext):
             self.assertRaises(decimal.InvalidOperation, statistics._sum, data)
 
-    eleza test_decimal_snan_raises(self):
-        # Adding sNAN should raise InvalidOperation.
+    eleza test_decimal_snan_ashirias(self):
+        # Adding sNAN should ashiria InvalidOperation.
         sNAN = Decimal('sNAN')
         data = [1, sNAN, 2]
         self.assertRaises(decimal.InvalidOperation, statistics._sum, data)
 
 
-# === Tests for averages ===
+# === Tests kila averages ===
 
 kundi AverageMixin(UnivariateCommonMixin):
-    # Mixin kundi holding common tests for averages.
+    # Mixin kundi holding common tests kila averages.
 
     eleza test_single_value(self):
-        # Average of a single value is the value itself.
-        for x in (23, 42.5, 1.3e15, Fraction(15, 19), Decimal('0.28')):
+        # Average of a single value ni the value itself.
+        kila x kwenye (23, 42.5, 1.3e15, Fraction(15, 19), Decimal('0.28')):
             self.assertEqual(self.func([x]), x)
 
     eleza prepare_values_for_repeated_single_test(self):
         rudisha (3.5, 17, 2.5e15, Fraction(61, 67), Decimal('4.9712'))
 
     eleza test_repeated_single_value(self):
-        # The average of a single repeated value is the value itself.
-        for x in self.prepare_values_for_repeated_single_test():
-            for count in (2, 5, 10, 20):
+        # The average of a single repeated value ni the value itself.
+        kila x kwenye self.prepare_values_for_repeated_single_test():
+            kila count kwenye (2, 5, 10, 20):
                 with self.subTest(x=x, count=count):
                     data = [x]*count
                     self.assertEqual(self.func(data), x)
@@ -1391,28 +1391,28 @@ kundi TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     eleza test_inf(self):
         # Test mean with infinities.
         raw = [1, 3, 5, 7, 9]  # Use only ints, to avoid TypeError later.
-        for kind in (float, Decimal):
-            for sign in (1, -1):
+        kila kind kwenye (float, Decimal):
+            kila sign kwenye (1, -1):
                 inf = kind("inf")*sign
                 data = raw + [inf]
                 result = self.func(data)
-                self.assertTrue(math.isinf(result))
+                self.assertKweli(math.isinf(result))
                 self.assertEqual(result, inf)
 
     eleza test_mismatched_infs(self):
         # Test mean with infinities of opposite sign.
         data = [2, 4, 6, float('inf'), 1, 3, 5, float('-inf')]
         result = self.func(data)
-        self.assertTrue(math.isnan(result))
+        self.assertKweli(math.isnan(result))
 
     eleza test_nan(self):
         # Test mean with NANs.
         raw = [1, 3, 5, 7, 9]  # Use only ints, to avoid TypeError later.
-        for kind in (float, Decimal):
+        kila kind kwenye (float, Decimal):
             inf = kind("nan")
             data = raw + [inf]
             result = self.func(data)
-            self.assertTrue(math.isnan(result))
+            self.assertKweli(math.isnan(result))
 
     eleza test_big_data(self):
         # Test adding a large constant to every data point.
@@ -1420,32 +1420,32 @@ kundi TestMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         data = [3.4, 4.5, 4.9, 6.7, 6.8, 7.2, 8.0, 8.1, 9.4]
         expected = self.func(data) + c
         assert expected != c
-        result = self.func([x+c for x in data])
+        result = self.func([x+c kila x kwenye data])
         self.assertEqual(result, expected)
 
     eleza test_doubled_data(self):
-        # Mean of [a,b,c...z] should be same as for [a,a,b,b,c,c...z,z].
-        data = [random.uniform(-3, 5) for _ in range(1000)]
+        # Mean of [a,b,c...z] should be same kama kila [a,a,b,b,c,c...z,z].
+        data = [random.uniform(-3, 5) kila _ kwenye range(1000)]
         expected = self.func(data)
         actual = self.func(data*2)
         self.assertApproxEqual(actual, expected)
 
     eleza test_regression_20561(self):
-        # Regression test for issue 20561.
+        # Regression test kila issue 20561.
         # See http://bugs.python.org/issue20561
         d = Decimal('1e4')
         self.assertEqual(statistics.mean([d]), d)
 
     eleza test_regression_25177(self):
-        # Regression test for issue 25177.
-        # Ensure very big and very small floats don't overflow.
+        # Regression test kila issue 25177.
+        # Ensure very big na very small floats don't overflow.
         # See http://bugs.python.org/issue25177.
         self.assertEqual(statistics.mean(
             [8.988465674311579e+307, 8.98846567431158e+307]),
             8.98846567431158e+307)
         big = 8.98846567431158e+307
         tiny = 5e-324
-        for n in (2, 3, 5, 200):
+        kila n kwenye (2, 3, 5, 200):
             self.assertEqual(statistics.mean([big]*n), big)
             self.assertEqual(statistics.mean([tiny]*n), tiny)
 
@@ -1465,14 +1465,14 @@ kundi TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         rudisha (3.5, 17, 2.5e15, Fraction(61, 67), Decimal('4.125'))
 
     eleza test_zero(self):
-        # Test that harmonic mean returns zero when given zero.
+        # Test that harmonic mean rudishas zero when given zero.
         values = [1, 0, 2]
         self.assertEqual(self.func(values), 0)
 
     eleza test_negative_error(self):
-        # Test that harmonic mean raises when given a negative value.
+        # Test that harmonic mean ashirias when given a negative value.
         exc = statistics.StatisticsError
-        for values in ([-1], [1, -2, 3]):
+        kila values kwenye ([-1], [1, -2, 3]):
             with self.subTest(values=values):
                 self.assertRaises(exc, self.func, values)
 
@@ -1490,8 +1490,8 @@ kundi TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         self.assertEqual(self.func([0.25, 0.5, 1.0, 1.0]), 0.5)
 
     eleza test_singleton_lists(self):
-        # Test that harmonic mean([x]) returns (approximately) x.
-        for x in range(1, 101):
+        # Test that harmonic mean([x]) rudishas (approximately) x.
+        kila x kwenye range(1, 101):
             self.assertEqual(self.func([x]), x)
 
     eleza test_decimals_exact(self):
@@ -1520,26 +1520,26 @@ kundi TestHarmonicMean(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     eleza test_nan(self):
         # Test harmonic mean with NANs.
         values = [2.0, float('nan'), 1.0]
-        self.assertTrue(math.isnan(self.func(values)))
+        self.assertKweli(math.isnan(self.func(values)))
 
     eleza test_multiply_data_points(self):
         # Test multiplying every data point by a constant.
         c = 111
         data = [3.4, 4.5, 4.9, 6.7, 6.8, 7.2, 8.0, 8.1, 9.4]
         expected = self.func(data)*c
-        result = self.func([x*c for x in data])
+        result = self.func([x*c kila x kwenye data])
         self.assertEqual(result, expected)
 
     eleza test_doubled_data(self):
-        # Harmonic mean of [a,b...z] should be same as for [a,a,b,b...z,z].
-        data = [random.uniform(1, 5) for _ in range(1000)]
+        # Harmonic mean of [a,b...z] should be same kama kila [a,a,b,b...z,z].
+        data = [random.uniform(1, 5) kila _ kwenye range(1000)]
         expected = self.func(data)
         actual = self.func(data*2)
         self.assertApproxEqual(actual, expected)
 
 
 kundi TestMedian(NumericTestCase, AverageMixin):
-    # Common tests for median and all median.* functions.
+    # Common tests kila median na all median.* functions.
     eleza setUp(self):
         self.func = statistics.median
 
@@ -1596,14 +1596,14 @@ kundi TestMedian(NumericTestCase, AverageMixin):
 
 
 kundi TestMedianDataType(NumericTestCase, UnivariateTypeMixin):
-    # Test conservation of data element type for median.
+    # Test conservation of data element type kila median.
     eleza setUp(self):
         self.func = statistics.median
 
     eleza prepare_data(self):
         data = list(range(15))
         assert len(data)%2 == 1
-        while data == sorted(data):
+        wakati data == sorted(data):
             random.shuffle(data)
         rudisha data
 
@@ -1708,8 +1708,8 @@ kundi TestMedianGrouped(TestMedian):
         # Override method kutoka AverageMixin.
         # Yet again, failure of median_grouped to conserve the data type
         # causes me headaches :-(
-        for x in (5.3, 68, 4.3e17, Fraction(29, 101), Decimal('32.9714')):
-            for count in (2, 5, 10, 20):
+        kila x kwenye (5.3, 68, 4.3e17, Fraction(29, 101), Decimal('32.9714')):
+            kila count kwenye (2, 5, 10, 20):
                 data = [x]*count
                 self.assertEqual(self.func(data), float(x))
 
@@ -1760,7 +1760,7 @@ kundi TestMedianGrouped(TestMedian):
         self.assertEqual(self.func(data, 20), 265.0)
 
     eleza test_data_type_error(self):
-        # Test median_grouped with str, bytes data types for data and interval
+        # Test median_grouped with str, bytes data types kila data na interval
         data = ["", "", ""]
         self.assertRaises(TypeError, self.func, data)
         #---
@@ -1777,7 +1777,7 @@ kundi TestMedianGrouped(TestMedian):
 
 
 kundi TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
-    # Test cases for the discrete version of mode.
+    # Test cases kila the discrete version of mode.
     eleza setUp(self):
         self.func = statistics.mode
 
@@ -1801,7 +1801,7 @@ kundi TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
     eleza test_discrete_data(self):
         # Test mode with discrete numeric data.
         data = list(range(10))
-        for i in range(10):
+        kila i kwenye range(10):
             d = data + [i]
             random.shuffle(d)
             self.assertEqual(self.func(d), i)
@@ -1820,16 +1820,16 @@ kundi TestMode(NumericTestCase, AverageMixin, UnivariateTypeMixin):
         self.assertEqual(self.func(data), 0)
 
     eleza test_none_data(self):
-        # Test that mode raises TypeError ikiwa given None as data.
+        # Test that mode ashirias TypeError ikiwa given Tupu kama data.
 
-        # This test is necessary because the implementation of mode uses
-        # collections.Counter, which accepts None and returns an empty dict.
-        self.assertRaises(TypeError, self.func, None)
+        # This test ni necessary because the implementation of mode uses
+        # collections.Counter, which accepts Tupu na rudishas an empty dict.
+        self.assertRaises(TypeError, self.func, Tupu)
 
     eleza test_counter_data(self):
-        # Test that a Counter is treated like any other iterable.
+        # Test that a Counter ni treated like any other iterable.
         data = collections.Counter([1, 1, 1, 2])
-        # Since the keys of the counter are treated as data points, not the
+        # Since the keys of the counter are treated kama data points, sio the
         # counts, this should rudisha the first mode encountered, 1
         self.assertEqual(self.func(data), 1)
 
@@ -1849,11 +1849,11 @@ kundi TestFMean(unittest.TestCase):
         fmean = statistics.fmean
         D = Decimal
         F = Fraction
-        for data, expected_mean, kind in [
+        kila data, expected_mean, kind kwenye [
             ([3.5, 4.0, 5.25], 4.25, 'floats'),
             ([D('3.5'), D('4.0'), D('5.25')], 4.25, 'decimals'),
             ([F(7, 2), F(4, 1), F(21, 4)], 4.25, 'fractions'),
-            ([True, False, True, True, False], 0.60, 'booleans'),
+            ([Kweli, Uongo, Kweli, Kweli, Uongo], 0.60, 'booleans'),
             ([3.5, 4, F(21, 4)], 4.25, 'mixed types'),
             ((3.5, 4.0, 5.25), 4.25, 'tuple'),
             (iter([3.5, 4.0, 5.25]), 4.25, 'iterator'),
@@ -1870,101 +1870,101 @@ kundi TestFMean(unittest.TestCase):
         with self.assertRaises(StatisticsError):
             fmean(iter([]))                         # empty iterator
         with self.assertRaises(TypeError):
-            fmean(None)                             # non-iterable input
+            fmean(Tupu)                             # non-iterable input
         with self.assertRaises(TypeError):
-            fmean([10, None, 20])                   # non-numeric input
+            fmean([10, Tupu, 20])                   # non-numeric input
         with self.assertRaises(TypeError):
             fmean()                                 # missing data argument
         with self.assertRaises(TypeError):
             fmean([10, 20, 60], 70)                 # too many arguments
 
     eleza test_special_values(self):
-        # Rules for special values are inherited kutoka math.fsum()
+        # Rules kila special values are inherited kutoka math.fsum()
         fmean = statistics.fmean
         NaN = float('Nan')
         Inf = float('Inf')
-        self.assertTrue(math.isnan(fmean([10, NaN])), 'nan')
-        self.assertTrue(math.isnan(fmean([NaN, Inf])), 'nan and infinity')
-        self.assertTrue(math.isinf(fmean([10, Inf])), 'infinity')
+        self.assertKweli(math.isnan(fmean([10, NaN])), 'nan')
+        self.assertKweli(math.isnan(fmean([NaN, Inf])), 'nan na infinity')
+        self.assertKweli(math.isinf(fmean([10, Inf])), 'infinity')
         with self.assertRaises(ValueError):
             fmean([Inf, -Inf])
 
 
-# === Tests for variances and standard deviations ===
+# === Tests kila variances na standard deviations ===
 
 kundi VarianceStdevMixin(UnivariateCommonMixin):
-    # Mixin kundi holding common tests for variance and std dev.
+    # Mixin kundi holding common tests kila variance na std dev.
 
-    # Subclasses should inherit kutoka this before NumericTestClass, in order
-    # to see the rel attribute below. See testShiftData for an explanation.
+    # Subclasses should inherit kutoka this before NumericTestClass, kwenye order
+    # to see the rel attribute below. See testShiftData kila an explanation.
 
     rel = 1e-12
 
     eleza test_single_value(self):
-        # Deviation of a single value is zero.
-        for x in (11, 19.8, 4.6e14, Fraction(21, 34), Decimal('8.392')):
+        # Deviation of a single value ni zero.
+        kila x kwenye (11, 19.8, 4.6e14, Fraction(21, 34), Decimal('8.392')):
             self.assertEqual(self.func([x]), 0)
 
     eleza test_repeated_single_value(self):
-        # The deviation of a single repeated value is zero.
-        for x in (7.2, 49, 8.1e15, Fraction(3, 7), Decimal('62.4802')):
-            for count in (2, 3, 5, 15):
+        # The deviation of a single repeated value ni zero.
+        kila x kwenye (7.2, 49, 8.1e15, Fraction(3, 7), Decimal('62.4802')):
+            kila count kwenye (2, 3, 5, 15):
                 data = [x]*count
                 self.assertEqual(self.func(data), 0)
 
     eleza test_domain_error_regression(self):
-        # Regression test for a domain error exception.
+        # Regression test kila a domain error exception.
         # (Thanks to Geremy Condra.)
         data = [0.123456789012345]*10000
         # All the items are identical, so variance should be exactly zero.
-        # We allow some small round-off error, but not much.
+        # We allow some small round-off error, but sio much.
         result = self.func(data)
         self.assertApproxEqual(result, 0.0, tol=5e-17)
         self.assertGreaterEqual(result, 0)  # A negative result must fail.
 
     eleza test_shift_data(self):
-        # Test that shifting the data by a constant amount does not affect
-        # the variance or stdev. Or at least not much.
+        # Test that shifting the data by a constant amount does sio affect
+        # the variance ama stdev. Or at least sio much.
 
         # Due to rounding, this test should be considered an ideal. We allow
         # some tolerance away kutoka "no change at all" by setting tol and/or rel
-        # attributes. Subclasses may set tighter or looser error tolerances.
+        # attributes. Subclasses may set tighter ama looser error tolerances.
         raw = [1.03, 1.27, 1.94, 2.04, 2.58, 3.14, 4.75, 4.98, 5.42, 6.78]
         expected = self.func(raw)
         # Don't set shift too high, the bigger it is, the more rounding error.
         shift = 1e5
-        data = [x + shift for x in raw]
+        data = [x + shift kila x kwenye raw]
         self.assertApproxEqual(self.func(data), expected)
 
     eleza test_shift_data_exact(self):
-        # Like test_shift_data, but result is always exact.
+        # Like test_shift_data, but result ni always exact.
         raw = [1, 3, 3, 4, 5, 7, 9, 10, 11, 16]
-        assert all(x==int(x) for x in raw)
+        assert all(x==int(x) kila x kwenye raw)
         expected = self.func(raw)
         shift = 10**9
-        data = [x + shift for x in raw]
+        data = [x + shift kila x kwenye raw]
         self.assertEqual(self.func(data), expected)
 
     eleza test_iter_list_same(self):
-        # Test that iter data and list data give the same result.
+        # Test that iter data na list data give the same result.
 
-        # This is an explicit test that iterators and lists are treated the
-        # same; justification for this test over and above the similar test
-        # in UnivariateCommonMixin is that an earlier design had variance and
-        # friends swap between one- and two-pass algorithms, which would
+        # This ni an explicit test that iterators na lists are treated the
+        # same; justification kila this test over na above the similar test
+        # kwenye UnivariateCommonMixin ni that an earlier design had variance and
+        # friends swap between one- na two-pita algorithms, which would
         # sometimes give different results.
-        data = [random.uniform(-3, 8) for _ in range(1000)]
+        data = [random.uniform(-3, 8) kila _ kwenye range(1000)]
         expected = self.func(data)
         self.assertEqual(self.func(iter(data)), expected)
 
 
 kundi TestPVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
-    # Tests for population variance.
+    # Tests kila population variance.
     eleza setUp(self):
         self.func = statistics.pvariance
 
     eleza test_exact_uniform(self):
-        # Test the variance against an exact result for uniform data.
+        # Test the variance against an exact result kila uniform data.
         data = list(range(10000))
         random.shuffle(data)
         expected = (10000**2 - 1)/12  # Exact value.
@@ -1996,13 +1996,13 @@ kundi TestPVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
 
 
 kundi TestVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
-    # Tests for sample variance.
+    # Tests kila sample variance.
     eleza setUp(self):
         self.func = statistics.variance
 
     eleza test_single_value(self):
         # Override method kutoka VarianceStdevMixin.
-        for x in (35, 24.7, 8.2e15, Fraction(19, 30), Decimal('4.2084')):
+        kila x kwenye (35, 24.7, 8.2e15, Fraction(19, 30), Decimal('4.2084')):
             self.assertRaises(statistics.StatisticsError, self.func, [x])
 
     eleza test_ints(self):
@@ -2031,30 +2031,30 @@ kundi TestVariance(VarianceStdevMixin, NumericTestCase, UnivariateTypeMixin):
 
 
 kundi TestPStdev(VarianceStdevMixin, NumericTestCase):
-    # Tests for population standard deviation.
+    # Tests kila population standard deviation.
     eleza setUp(self):
         self.func = statistics.pstdev
 
     eleza test_compare_to_variance(self):
-        # Test that stdev is, in fact, the square root of variance.
-        data = [random.uniform(-17, 24) for _ in range(1000)]
+        # Test that stdev is, kwenye fact, the square root of variance.
+        data = [random.uniform(-17, 24) kila _ kwenye range(1000)]
         expected = math.sqrt(statistics.pvariance(data))
         self.assertEqual(self.func(data), expected)
 
 
 kundi TestStdev(VarianceStdevMixin, NumericTestCase):
-    # Tests for sample standard deviation.
+    # Tests kila sample standard deviation.
     eleza setUp(self):
         self.func = statistics.stdev
 
     eleza test_single_value(self):
         # Override method kutoka VarianceStdevMixin.
-        for x in (81, 203.74, 3.9e14, Fraction(5, 21), Decimal('35.719')):
+        kila x kwenye (81, 203.74, 3.9e14, Fraction(5, 21), Decimal('35.719')):
             self.assertRaises(statistics.StatisticsError, self.func, [x])
 
     eleza test_compare_to_variance(self):
-        # Test that stdev is, in fact, the square root of variance.
-        data = [random.uniform(-2, 9) for _ in range(1000)]
+        # Test that stdev is, kwenye fact, the square root of variance.
+        data = [random.uniform(-2, 9) kila _ kwenye range(1000)]
         expected = math.sqrt(statistics.variance(data))
         self.assertEqual(self.func(data), expected)
 
@@ -2068,20 +2068,20 @@ kundi TestGeometricMean(unittest.TestCase):
         self.assertAlmostEqual(geometric_mean([17.625]), 17.625)
 
         random.seed(86753095551212)
-        for rng in [
+        kila rng kwenye [
                 range(1, 100),
                 range(1, 1_000),
                 range(1, 10_000),
                 range(500, 10_000, 3),
                 range(10_000, 500, -3),
                 [12, 17, 13, 5, 120, 7],
-                [random.expovariate(50.0) for i in range(1_000)],
-                [random.lognormvariate(20.0, 3.0) for i in range(2_000)],
-                [random.triangular(2000, 3000, 2200) for i in range(3_000)],
+                [random.expovariate(50.0) kila i kwenye range(1_000)],
+                [random.lognormvariate(20.0, 3.0) kila i kwenye range(2_000)],
+                [random.triangular(2000, 3000, 2200) kila i kwenye range(3_000)],
             ]:
             gm_decimal = math.prod(map(Decimal, rng)) ** (Decimal(1) / len(rng))
             gm_float = geometric_mean(rng)
-            self.assertTrue(math.isclose(gm_float, float(gm_decimal)))
+            self.assertKweli(math.isclose(gm_float, float(gm_decimal)))
 
     eleza test_various_input_types(self):
         geometric_mean = statistics.geometric_mean
@@ -2089,7 +2089,7 @@ kundi TestGeometricMean(unittest.TestCase):
         F = Fraction
         # https://www.wolframalpha.com/input/?i=geometric+mean+3.5,+4.0,+5.25
         expected_mean = 4.18886
-        for data, kind in [
+        kila data, kind kwenye [
             ([3.5, 4.0, 5.25], 'floats'),
             ([D('3.5'), D('4.0'), D('5.25')], 'decimals'),
             ([F(7, 2), F(4, 1), F(21, 4)], 'fractions'),
@@ -2107,13 +2107,13 @@ kundi TestGeometricMean(unittest.TestCase):
         # Avoid overflow to infinity
         large = 2.0 ** 1000
         big_gm = geometric_mean([54.0 * large, 24.0 * large, 36.0 * large])
-        self.assertTrue(math.isclose(big_gm, 36.0 * large))
-        self.assertFalse(math.isinf(big_gm))
+        self.assertKweli(math.isclose(big_gm, 36.0 * large))
+        self.assertUongo(math.isinf(big_gm))
 
         # Avoid underflow to zero
         small = 2.0 ** -1000
         small_gm = geometric_mean([54.0 * small, 24.0 * small, 36.0 * small])
-        self.assertTrue(math.isclose(small_gm, 36.0 * small))
+        self.assertKweli(math.isclose(small_gm, 36.0 * small))
         self.assertNotEqual(small_gm, 0.0)
 
     eleza test_error_cases(self):
@@ -2128,22 +2128,22 @@ kundi TestGeometricMean(unittest.TestCase):
         with self.assertRaises(StatisticsError):
             geometric_mean(iter([]))                # empty iterator
         with self.assertRaises(TypeError):
-            geometric_mean(None)                    # non-iterable input
+            geometric_mean(Tupu)                    # non-iterable input
         with self.assertRaises(TypeError):
-            geometric_mean([10, None, 20])          # non-numeric input
+            geometric_mean([10, Tupu, 20])          # non-numeric input
         with self.assertRaises(TypeError):
             geometric_mean()                        # missing data argument
         with self.assertRaises(TypeError):
             geometric_mean([10, 20, 60], 70)        # too many arguments
 
     eleza test_special_values(self):
-        # Rules for special values are inherited kutoka math.fsum()
+        # Rules kila special values are inherited kutoka math.fsum()
         geometric_mean = statistics.geometric_mean
         NaN = float('Nan')
         Inf = float('Inf')
-        self.assertTrue(math.isnan(geometric_mean([10, NaN])), 'nan')
-        self.assertTrue(math.isnan(geometric_mean([NaN, Inf])), 'nan and infinity')
-        self.assertTrue(math.isinf(geometric_mean([10, Inf])), 'infinity')
+        self.assertKweli(math.isnan(geometric_mean([10, NaN])), 'nan')
+        self.assertKweli(math.isnan(geometric_mean([NaN, Inf])), 'nan na infinity')
+        self.assertKweli(math.isinf(geometric_mean([10, Inf])), 'infinity')
         with self.assertRaises(ValueError):
             geometric_mean([Inf, -Inf])
 
@@ -2151,12 +2151,12 @@ kundi TestGeometricMean(unittest.TestCase):
 kundi TestQuantiles(unittest.TestCase):
 
     eleza test_specific_cases(self):
-        # Match results computed by hand and cross-checked
-        # against the PERCENTILE.EXC function in MS Excel.
+        # Match results computed by hand na cross-checked
+        # against the PERCENTILE.EXC function kwenye MS Excel.
         quantiles = statistics.quantiles
         data = [120, 200, 250, 320, 350]
         random.shuffle(data)
-        for n, expected in [
+        kila n, expected kwenye [
             (1, []),
             (2, [250.0]),
             (3, [200.0, 320.0]),
@@ -2173,16 +2173,16 @@ kundi TestQuantiles(unittest.TestCase):
             self.assertEqual(expected, quantiles(data, n=n))
             self.assertEqual(len(quantiles(data, n=n)), n - 1)
             # Preserve datatype when possible
-            for datatype in (float, Decimal, Fraction):
+            kila datatype kwenye (float, Decimal, Fraction):
                 result = quantiles(map(datatype, data), n=n)
-                self.assertTrue(all(type(x) == datatype) for x in result)
+                self.assertKweli(all(type(x) == datatype) kila x kwenye result)
                 self.assertEqual(result, list(map(datatype, expected)))
             # Quantiles should be idempotent
             ikiwa len(expected) >= 2:
                 self.assertEqual(quantiles(expected, n=n), expected)
             # Cross-check against method='inclusive' which should give
-            # the same result after adding in minimum and maximum values
-            # extrapolated kutoka the two lowest and two highest points.
+            # the same result after adding kwenye minimum na maximum values
+            # extrapolated kutoka the two lowest na two highest points.
             sdata = sorted(data)
             lo = 2 * sdata[0] - sdata[1]
             hi = 2 * sdata[-1] - sdata[-2]
@@ -2192,26 +2192,26 @@ kundi TestQuantiles(unittest.TestCase):
                 quantiles(padded_data, n=n, method='inclusive'),
                 (n, data),
             )
-            # Invariant under tranlation and scaling
+            # Invariant under tranlation na scaling
             eleza f(x):
                 rudisha 3.5 * x - 1234.675
             exp = list(map(f, expected))
             act = quantiles(map(f, data), n=n)
-            self.assertTrue(all(math.isclose(e, a) for e, a in zip(exp, act)))
+            self.assertKweli(all(math.isclose(e, a) kila e, a kwenye zip(exp, act)))
         # Q2 agrees with median()
-        for k in range(2, 60):
+        kila k kwenye range(2, 60):
             data = random.choices(range(100), k=k)
             q1, q2, q3 = quantiles(data)
             self.assertEqual(q2, statistics.median(data))
 
     eleza test_specific_cases_inclusive(self):
-        # Match results computed by hand and cross-checked
-        # against the PERCENTILE.INC function in MS Excel
-        # and against the quantile() function in SciPy.
+        # Match results computed by hand na cross-checked
+        # against the PERCENTILE.INC function kwenye MS Excel
+        # na against the quantile() function kwenye SciPy.
         quantiles = statistics.quantiles
         data = [100, 200, 400, 800]
         random.shuffle(data)
-        for n, expected in [
+        kila n, expected kwenye [
             (1, []),
             (2, [300.0]),
             (3, [200.0, 400.0]),
@@ -2228,39 +2228,39 @@ kundi TestQuantiles(unittest.TestCase):
             self.assertEqual(expected, quantiles(data, n=n, method="inclusive"))
             self.assertEqual(len(quantiles(data, n=n, method="inclusive")), n - 1)
             # Preserve datatype when possible
-            for datatype in (float, Decimal, Fraction):
+            kila datatype kwenye (float, Decimal, Fraction):
                 result = quantiles(map(datatype, data), n=n, method="inclusive")
-                self.assertTrue(all(type(x) == datatype) for x in result)
+                self.assertKweli(all(type(x) == datatype) kila x kwenye result)
                 self.assertEqual(result, list(map(datatype, expected)))
-            # Invariant under tranlation and scaling
+            # Invariant under tranlation na scaling
             eleza f(x):
                 rudisha 3.5 * x - 1234.675
             exp = list(map(f, expected))
             act = quantiles(map(f, data), n=n, method="inclusive")
-            self.assertTrue(all(math.isclose(e, a) for e, a in zip(exp, act)))
+            self.assertKweli(all(math.isclose(e, a) kila e, a kwenye zip(exp, act)))
         # Natural deciles
         self.assertEqual(quantiles([0, 100], n=10, method='inclusive'),
                          [10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0])
         self.assertEqual(quantiles(range(0, 101), n=10, method='inclusive'),
                          [10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0])
-        # Whenever n is smaller than the number of data points, running
-        # method='inclusive' should give the same result as method='exclusive'
+        # Whenever n ni smaller than the number of data points, running
+        # method='inclusive' should give the same result kama method='exclusive'
         # after the two included extreme points are removed.
-        data = [random.randrange(10_000) for i in range(501)]
+        data = [random.randrange(10_000) kila i kwenye range(501)]
         actual = quantiles(data, n=32, method='inclusive')
         data.remove(min(data))
         data.remove(max(data))
         expected = quantiles(data, n=32)
         self.assertEqual(expected, actual)
         # Q2 agrees with median()
-        for k in range(2, 60):
+        kila k kwenye range(2, 60):
             data = random.choices(range(100), k=k)
             q1, q2, q3 = quantiles(data, method='inclusive')
             self.assertEqual(q2, statistics.median(data))
 
     eleza test_equal_inputs(self):
         quantiles = statistics.quantiles
-        for n in range(2, 10):
+        kila n kwenye range(2, 10):
             data = [10.0] * n
             self.assertEqual(quantiles(data), [10.0, 10.0, 10.0])
             self.assertEqual(quantiles(data, method='inclusive'),
@@ -2269,25 +2269,25 @@ kundi TestQuantiles(unittest.TestCase):
     eleza test_equal_sized_groups(self):
         quantiles = statistics.quantiles
         total = 10_000
-        data = [random.expovariate(0.2) for i in range(total)]
-        while len(set(data)) != total:
+        data = [random.expovariate(0.2) kila i kwenye range(total)]
+        wakati len(set(data)) != total:
             data.append(random.expovariate(0.2))
         data.sort()
 
         # Cases where the group size exactly divides the total
-        for n in (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000):
+        kila n kwenye (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000):
             group_size = total // n
             self.assertEqual(
-                [bisect.bisect(data, q) for q in quantiles(data, n=n)],
+                [bisect.bisect(data, q) kila q kwenye quantiles(data, n=n)],
                 list(range(group_size, total, group_size)))
 
         # When the group sizes can't be exactly equal, they should
         # differ by no more than one
-        for n in (13, 19, 59, 109, 211, 571, 1019, 1907, 5261, 9769):
+        kila n kwenye (13, 19, 59, 109, 211, 571, 1019, 1907, 5261, 9769):
             group_sizes = {total // n, total // n + 1}
-            pos = [bisect.bisect(data, q) for q in quantiles(data, n=n)]
-            sizes = {q - p for p, q in zip(pos, pos[1:])}
-            self.assertTrue(sizes <= group_sizes)
+            pos = [bisect.bisect(data, q) kila q kwenye quantiles(data, n=n)]
+            sizes = {q - p kila p, q kwenye zip(pos, pos[1:])}
+            self.assertKweli(sizes <= group_sizes)
 
     eleza test_error_cases(self):
         quantiles = statistics.quantiles
@@ -2297,25 +2297,25 @@ kundi TestQuantiles(unittest.TestCase):
         with self.assertRaises(TypeError):
             quantiles([10, 20, 30], 13, n=4)    # Too many arguments
         with self.assertRaises(TypeError):
-            quantiles([10, 20, 30], 4)          # n is a positional argument
+            quantiles([10, 20, 30], 4)          # n ni a positional argument
         with self.assertRaises(StatisticsError):
-            quantiles([10, 20, 30], n=0)        # n is zero
+            quantiles([10, 20, 30], n=0)        # n ni zero
         with self.assertRaises(StatisticsError):
-            quantiles([10, 20, 30], n=-1)       # n is negative
+            quantiles([10, 20, 30], n=-1)       # n ni negative
         with self.assertRaises(TypeError):
-            quantiles([10, 20, 30], n=1.5)      # n is not an integer
+            quantiles([10, 20, 30], n=1.5)      # n ni sio an integer
         with self.assertRaises(ValueError):
-            quantiles([10, 20, 30], method='X') # method is unknown
+            quantiles([10, 20, 30], method='X') # method ni unknown
         with self.assertRaises(StatisticsError):
-            quantiles([10], n=4)                # not enough data points
+            quantiles([10], n=4)                # sio enough data points
         with self.assertRaises(TypeError):
-            quantiles([10, None, 30], n=4)      # data is non-numeric
+            quantiles([10, Tupu, 30], n=4)      # data ni non-numeric
 
 
 kundi TestNormalDist:
 
-    # General note on precision: The pdf(), cdf(), and overlap() methods
-    # depend on functions in the math libraries that do not make
+    # General note on precision: The pdf(), cdf(), na overlap() methods
+    # depend on functions kwenye the math libraries that do sio make
     # explicit accuracy guarantees.  Accordingly, some of the accuracy
     # tests below may fail ikiwa the underlying math functions are
     # inaccurate.  There isn't much we can do about this short of
@@ -2343,9 +2343,9 @@ kundi TestNormalDist:
         with self.assertRaises(self.module.StatisticsError):
             self.module.NormalDist(500, -10)
 
-        # verify that subkundi type is honored
+        # verify that subkundi type ni honored
         kundi NewNormalDist(self.module.NormalDist):
-            pass
+            pita
         nnd = NewNormalDist(200, 5)
         self.assertEqual(type(nnd), NewNormalDist)
 
@@ -2364,9 +2364,9 @@ kundi TestNormalDist:
         with self.assertRaises(self.module.StatisticsError):
             NormalDist.kutoka_samples([10])                    # only one input
 
-        # verify that subkundi type is honored
+        # verify that subkundi type ni honored
         kundi NewNormalDist(NormalDist):
-            pass
+            pita
         nnd = NewNormalDist.kutoka_samples(data)
         self.assertEqual(type(nnd), NewNormalDist)
 
@@ -2380,14 +2380,14 @@ kundi TestNormalDist:
         self.assertEqual(set(map(type, data)), {float})
         # mean(data) expected to fall within 8 standard deviations
         xbar = self.module.mean(data)
-        self.assertTrue(mu - sigma*8 <= xbar <= mu + sigma*8)
+        self.assertKweli(mu - sigma*8 <= xbar <= mu + sigma*8)
 
         # verify that seeding makes reproducible sequences
         n = 100
-        data1 = X.samples(n, seed='happiness and joy')
-        data2 = X.samples(n, seed='trouble and despair')
-        data3 = X.samples(n, seed='happiness and joy')
-        data4 = X.samples(n, seed='trouble and despair')
+        data1 = X.samples(n, seed='happiness na joy')
+        data2 = X.samples(n, seed='trouble na despair')
+        data3 = X.samples(n, seed='happiness na joy')
+        data4 = X.samples(n, seed='trouble na despair')
         self.assertEqual(data1, data3)
         self.assertEqual(data2, data4)
         self.assertNotEqual(data1, data2)
@@ -2399,16 +2399,16 @@ kundi TestNormalDist:
         self.assertLess(X.pdf(99), X.pdf(100))
         self.assertLess(X.pdf(101), X.pdf(100))
         # Test symmetry
-        for i in range(50):
+        kila i kwenye range(50):
             self.assertAlmostEqual(X.pdf(100 - i), X.pdf(100 + i))
         # Test vs CDF
         dx = 2.0 ** -10
-        for x in range(90, 111):
+        kila x kwenye range(90, 111):
             est_pdf = (X.cdf(x + dx) - X.cdf(x)) / dx
             self.assertAlmostEqual(X.pdf(x), est_pdf, places=4)
         # Test vs table of known values -- CRC 26th Edition
         Z = NormalDist()
-        for x, px in enumerate([
+        kila x, px kwenye enumerate([
             0.3989, 0.3989, 0.3989, 0.3988, 0.3986,
             0.3984, 0.3982, 0.3980, 0.3977, 0.3973,
             0.3970, 0.3965, 0.3961, 0.3956, 0.3951,
@@ -2422,19 +2422,19 @@ kundi TestNormalDist:
         ]):
             self.assertAlmostEqual(Z.pdf(x / 100.0), px, places=4)
             self.assertAlmostEqual(Z.pdf(-x / 100.0), px, places=4)
-        # Error case: variance is zero
+        # Error case: variance ni zero
         Y = NormalDist(100, 0)
         with self.assertRaises(self.module.StatisticsError):
             Y.pdf(90)
         # Special values
         self.assertEqual(X.pdf(float('-Inf')), 0.0)
         self.assertEqual(X.pdf(float('Inf')), 0.0)
-        self.assertTrue(math.isnan(X.pdf(float('NaN'))))
+        self.assertKweli(math.isnan(X.pdf(float('NaN'))))
 
     eleza test_cdf(self):
         NormalDist = self.module.NormalDist
         X = NormalDist(100, 15)
-        cdfs = [X.cdf(x) for x in range(1, 200)]
+        cdfs = [X.cdf(x) kila x kwenye range(1, 200)]
         self.assertEqual(set(map(type, cdfs)), {float})
         # Verify montonic
         self.assertEqual(cdfs, sorted(cdfs))
@@ -2443,7 +2443,7 @@ kundi TestNormalDist:
         # Check against a table of known values
         # https://en.wikipedia.org/wiki/Standard_normal_table#Cumulative
         Z = NormalDist()
-        for z, cum_prob in [
+        kila z, cum_prob kwenye [
             (0.00, 0.50000), (0.01, 0.50399), (0.02, 0.50798),
             (0.14, 0.55567), (0.29, 0.61409), (0.33, 0.62930),
             (0.54, 0.70540), (0.60, 0.72575), (1.17, 0.87900),
@@ -2452,14 +2452,14 @@ kundi TestNormalDist:
             ]:
             self.assertAlmostEqual(Z.cdf(z), cum_prob, places=5)
             self.assertAlmostEqual(Z.cdf(-z), 1.0 - cum_prob, places=5)
-        # Error case: variance is zero
+        # Error case: variance ni zero
         Y = NormalDist(100, 0)
         with self.assertRaises(self.module.StatisticsError):
             Y.cdf(90)
         # Special values
         self.assertEqual(X.cdf(float('-Inf')), 0.0)
         self.assertEqual(X.cdf(float('Inf')), 1.0)
-        self.assertTrue(math.isnan(X.cdf(float('NaN'))))
+        self.assertKweli(math.isnan(X.cdf(float('NaN'))))
 
     @support.skip_if_pgo_task
     eleza test_inv_cdf(self):
@@ -2479,71 +2479,71 @@ kundi TestNormalDist:
                     4.565, 5.026, 5.451, 5.847, 6.219),
               1.0: (1.282, 2.326, 3.090, 3.719, 4.265,
                     4.753, 5.199, 5.612, 5.998, 6.361)}
-        for base, row in pp.items():
-            for exp, x in enumerate(row, start=1):
+        kila base, row kwenye pp.items():
+            kila exp, x kwenye enumerate(row, start=1):
                 p = base * 10.0 ** (-exp)
                 self.assertAlmostEqual(-Z.inv_cdf(p), x, places=3)
                 p = 1.0 - p
                 self.assertAlmostEqual(Z.inv_cdf(p), x, places=3)
 
-        # Match published example for MS Excel
+        # Match published example kila MS Excel
         # https://support.office.com/en-us/article/norm-inv-function-54b30935-fee7-493c-bedb-2278a9db7e13
         self.assertAlmostEqual(NormalDist(40, 1.5).inv_cdf(0.908789), 42.000002)
 
         # One million equally spaced probabilities
         n = 2**20
-        for p in range(1, n):
+        kila p kwenye range(1, n):
             p /= n
             self.assertAlmostEqual(iq.cdf(iq.inv_cdf(p)), p)
 
         # One hundred ever smaller probabilities to test tails out to
-        # extreme probabilities: 1 / 2**50 and (2**50-1) / 2 ** 50
-        for e in range(1, 51):
+        # extreme probabilities: 1 / 2**50 na (2**50-1) / 2 ** 50
+        kila e kwenye range(1, 51):
             p = 2.0 ** (-e)
             self.assertAlmostEqual(iq.cdf(iq.inv_cdf(p)), p)
             p = 1.0 - p
             self.assertAlmostEqual(iq.cdf(iq.inv_cdf(p)), p)
 
         # Now apply cdf() first.  Near the tails, the round-trip loses
-        # precision and is ill-conditioned (small changes in the inputs
-        # give large changes in the output), so only check to 5 places.
-        for x in range(200):
+        # precision na ni ill-conditioned (small changes kwenye the inputs
+        # give large changes kwenye the output), so only check to 5 places.
+        kila x kwenye range(200):
             self.assertAlmostEqual(iq.inv_cdf(iq.cdf(x)), x, places=5)
 
         # Error cases:
         with self.assertRaises(self.module.StatisticsError):
-            iq.inv_cdf(0.0)                         # p is zero
+            iq.inv_cdf(0.0)                         # p ni zero
         with self.assertRaises(self.module.StatisticsError):
             iq.inv_cdf(-0.1)                        # p under zero
         with self.assertRaises(self.module.StatisticsError):
-            iq.inv_cdf(1.0)                         # p is one
+            iq.inv_cdf(1.0)                         # p ni one
         with self.assertRaises(self.module.StatisticsError):
             iq.inv_cdf(1.1)                         # p over one
         with self.assertRaises(self.module.StatisticsError):
-            iq = NormalDist(100, 0)                 # sigma is zero
+            iq = NormalDist(100, 0)                 # sigma ni zero
             iq.inv_cdf(0.5)
 
         # Special values
-        self.assertTrue(math.isnan(Z.inv_cdf(float('NaN'))))
+        self.assertKweli(math.isnan(Z.inv_cdf(float('NaN'))))
 
     eleza test_quantiles(self):
         # Quartiles of a standard normal distribution
         Z = self.module.NormalDist()
-        for n, expected in [
+        kila n, expected kwenye [
             (1, []),
             (2, [0.0]),
             (3, [-0.4307, 0.4307]),
             (4 ,[-0.6745, 0.0, 0.6745]),
                 ]:
             actual = Z.quantiles(n=n)
-            self.assertTrue(all(math.isclose(e, a, abs_tol=0.0001)
-                            for e, a in zip(expected, actual)))
+            self.assertKweli(all(math.isclose(e, a, abs_tol=0.0001)
+                            kila e, a kwenye zip(expected, actual)))
 
     eleza test_overlap(self):
         NormalDist = self.module.NormalDist
 
-        # Match examples kutoka Imman and Bradley
-        for X1, X2, published_result in [
+        # Match examples kutoka Imman na Bradley
+        kila X1, X2, published_result kwenye [
                 (NormalDist(0.0, 2.0), NormalDist(1.0, 2.0), 0.80258),
                 (NormalDist(0.0, 1.0), NormalDist(1.0, 2.0), 0.60993),
             ]:
@@ -2552,20 +2552,20 @@ kundi TestNormalDist:
 
         # Check against integration of the PDF
         eleza overlap_numeric(X, Y, *, steps=8_192, z=5):
-            'Numerical integration cross-check for overlap() '
+            'Numerical integration cross-check kila overlap() '
             fsum = math.fsum
             center = (X.mean + Y.mean) / 2.0
             width = z * max(X.stdev, Y.stdev)
             start = center - width
             dx = 2.0 * width / steps
-            x_arr = [start + i*dx for i in range(steps)]
+            x_arr = [start + i*dx kila i kwenye range(steps)]
             xp = list(map(X.pdf, x_arr))
             yp = list(map(Y.pdf, x_arr))
             total = max(fsum(xp), fsum(yp))
             rudisha fsum(map(min, xp, yp)) / total
 
-        for X1, X2 in [
-                # Examples kutoka Imman and Bradley
+        kila X1, X2 kwenye [
+                # Examples kutoka Imman na Bradley
                 (NormalDist(0.0, 2.0), NormalDist(1.0, 2.0)),
                 (NormalDist(0.0, 1.0), NormalDist(1.0, 2.0)),
                 # Example kutoka https://www.rasch.org/rmt/rmt101r.htm
@@ -2596,11 +2596,11 @@ kundi TestNormalDist:
         with self.assertRaises(TypeError):
             X.overlap(X, X)                         # too may arguments
         with self.assertRaises(TypeError):
-            X.overlap(None)                         # right operand not a NormalDist
+            X.overlap(Tupu)                         # right operand sio a NormalDist
         with self.assertRaises(self.module.StatisticsError):
-            X.overlap(NormalDist(1, 0))             # right operand sigma is zero
+            X.overlap(NormalDist(1, 0))             # right operand sigma ni zero
         with self.assertRaises(self.module.StatisticsError):
-            NormalDist(1, 0).overlap(X)             # left operand sigma is zero
+            NormalDist(1, 0).overlap(X)             # left operand sigma ni zero
 
     eleza test_properties(self):
         X = self.module.NormalDist(100, 15)
@@ -2665,7 +2665,7 @@ kundi TestNormalDist:
         self.assertEqual(a == nd1, 10)
 
         # All subclasses to compare equal giving the same behavior
-        # as list, tuple, int, float, complex, str, dict, set, etc.
+        # kama list, tuple, int, float, complex, str, dict, set, etc.
         kundi SizedNormalDist(NormalDist):
             eleza __init__(self, mu, sigma, n):
                 super().__init__(mu, sigma)
@@ -2703,10 +2703,10 @@ kundi TestNormalDist:
         nd = self.module.NormalDist(37.5, 5.625)
         self.assertEqual(repr(nd), 'NormalDist(mu=37.5, sigma=5.625)')
 
-# Swapping the sys.modules['statistics'] is to solving the
+# Swapping the sys.modules['statistics'] ni to solving the
 # _pickle.PicklingError:
 # Can't pickle <kundi 'statistics.NormalDist'>:
-# it's not the same object as statistics.NormalDist
+# it's sio the same object kama statistics.NormalDist
 kundi TestNormalDistPython(unittest.TestCase, TestNormalDist):
     module = py_statistics
     eleza setUp(self):
@@ -2729,7 +2729,7 @@ kundi TestNormalDistC(unittest.TestCase, TestNormalDist):
 # === Run tests ===
 
 eleza load_tests(loader, tests, ignore):
-    """Used for doctest/unittest integration."""
+    """Used kila doctest/unittest integration."""
     tests.addTests(doctest.DocTestSuite())
     rudisha tests
 

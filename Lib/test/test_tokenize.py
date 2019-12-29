@@ -1,7 +1,7 @@
 kutoka test agiza support
 kutoka tokenize agiza (tokenize, _tokenize, untokenize, NUMBER, NAME, OP,
                      STRING, ENDMARKER, ENCODING, tok_name, detect_encoding,
-                     open as tokenize_open, Untokenizer, generate_tokens,
+                     open kama tokenize_open, Untokenizer, generate_tokens,
                      NEWLINE)
 kutoka io agiza BytesIO, StringIO
 agiza unittest
@@ -19,29 +19,29 @@ agiza token
 eleza stringify_tokens_kutoka_source(token_generator, source_string):
     result = []
     num_lines = len(source_string.splitlines())
-    missing_trailing_nl = source_string[-1] not in '\r\n'
+    missing_trailing_nl = source_string[-1] haiko kwenye '\r\n'
 
-    for type, token, start, end, line in token_generator:
+    kila type, token, start, end, line kwenye token_generator:
         ikiwa type == ENDMARKER:
-            break
+            koma
         # Ignore the new line on the last line ikiwa the input lacks one
-        ikiwa missing_trailing_nl and type == NEWLINE and end[0] == num_lines:
-            continue
+        ikiwa missing_trailing_nl na type == NEWLINE na end[0] == num_lines:
+            endelea
         type = tok_name[type]
         result.append(f"    {type:10} {token!r:13} {start} {end}")
 
     rudisha result
 
 kundi TokenizeTest(TestCase):
-    # Tests for the tokenize module.
+    # Tests kila the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
     # code, print out a table with tokens. The ENDMARKER, ENCODING and
-    # final NEWLINE are omitted for brevity.
+    # final NEWLINE are omitted kila brevity.
 
     eleza check_tokenize(self, s, expected):
-        # Format the tokens in s in a table format.
-        # The ENDMARKER and final NEWLINE are omitted.
+        # Format the tokens kwenye s kwenye a table format.
+        # The ENDMARKER na final NEWLINE are omitted.
         f = BytesIO(s.encode('utf-8'))
         result = stringify_tokens_kutoka_source(tokenize(f.readline), s)
 
@@ -50,7 +50,7 @@ kundi TokenizeTest(TestCase):
                          expected.rstrip().splitlines())
 
     eleza test_implicit_newline(self):
-        # Make sure that the tokenizer puts in an implicit NEWLINE
+        # Make sure that the tokenizer puts kwenye an implicit NEWLINE
         # when the input lacks a trailing new line.
         f = BytesIO("x".encode('utf-8'))
         tokens = list(tokenize(f.readline))
@@ -63,21 +63,21 @@ kundi TokenizeTest(TestCase):
     OP         '+'           (1, 2) (1, 3)
     NUMBER     '1'           (1, 4) (1, 5)
     """)
-        self.check_tokenize("ikiwa False:\n"
+        self.check_tokenize("ikiwa Uongo:\n"
                             "    # NL\n"
                             "    \n"
-                            "    True = False # NEWLINE\n", """\
+                            "    Kweli = Uongo # NEWLINE\n", """\
     NAME       'if'          (1, 0) (1, 2)
-    NAME       'False'       (1, 3) (1, 8)
+    NAME       'Uongo'       (1, 3) (1, 8)
     OP         ':'           (1, 8) (1, 9)
     NEWLINE    '\\n'          (1, 9) (1, 10)
     COMMENT    '# NL'        (2, 4) (2, 8)
     NL         '\\n'          (2, 8) (2, 9)
     NL         '\\n'          (3, 4) (3, 5)
     INDENT     '    '        (4, 0) (4, 4)
-    NAME       'True'        (4, 4) (4, 8)
+    NAME       'Kweli'        (4, 4) (4, 8)
     OP         '='           (4, 9) (4, 10)
-    NAME       'False'       (4, 11) (4, 16)
+    NAME       'Uongo'       (4, 11) (4, 16)
     COMMENT    '# NEWLINE'   (4, 17) (4, 26)
     NEWLINE    '\\n'          (4, 26) (4, 27)
     DEDENT     ''            (5, 0) (5, 0)
@@ -89,13 +89,13 @@ eleza k(x):
 """
         readline = BytesIO(indent_error_file).readline
         with self.assertRaisesRegex(IndentationError,
-                                    "unindent does not match any "
+                                    "unindent does sio match any "
                                     "outer indentation level"):
-            for tok in tokenize(readline):
-                pass
+            kila tok kwenye tokenize(readline):
+                pita
 
     eleza test_int(self):
-        # Ordinary integers and binary operators
+        # Ordinary integers na binary operators
         self.check_tokenize("0xff <= 255", """\
     NUMBER     '0xff'        (1, 0) (1, 4)
     OP         '<='          (1, 5) (1, 7)
@@ -218,16 +218,16 @@ eleza k(x):
     eleza test_underscore_literals(self):
         eleza number_token(s):
             f = BytesIO(s.encode('utf-8'))
-            for toktype, token, start, end, line in tokenize(f.readline):
+            kila toktype, token, start, end, line kwenye tokenize(f.readline):
                 ikiwa toktype == NUMBER:
                     rudisha token
             rudisha 'invalid token'
-        for lit in VALID_UNDERSCORE_LITERALS:
-            ikiwa '(' in lit:
+        kila lit kwenye VALID_UNDERSCORE_LITERALS:
+            ikiwa '(' kwenye lit:
                 # this won't work with compound complex inputs
-                continue
+                endelea
             self.assertEqual(number_token(lit), lit)
-        for lit in INVALID_UNDERSCORE_LITERALS:
+        kila lit kwenye INVALID_UNDERSCORE_LITERALS:
             self.assertNotEqual(number_token(lit), lit)
 
     eleza test_string(self):
@@ -351,7 +351,7 @@ eleza k(x):
     OP         '+'           (1, 28) (1, 29)
     STRING     'RB"abc"'     (1, 30) (1, 37)
     """)
-        # Check 0, 1, and 2 character string prefixes.
+        # Check 0, 1, na 2 character string prefixes.
         self.check_tokenize(r'"a\
 de\
 fg"', """\
@@ -397,7 +397,7 @@ def"', """\
     """)
 
     eleza test_function(self):
-        self.check_tokenize("eleza d22(a, b, c=2, d=2, *k): pass", """\
+        self.check_tokenize("eleza d22(a, b, c=2, d=2, *k): pita", """\
     NAME       'def'         (1, 0) (1, 3)
     NAME       'd22'         (1, 4) (1, 7)
     OP         '('           (1, 7) (1, 8)
@@ -417,9 +417,9 @@ def"', """\
     NAME       'k'           (1, 25) (1, 26)
     OP         ')'           (1, 26) (1, 27)
     OP         ':'           (1, 27) (1, 28)
-    NAME       'pass'        (1, 29) (1, 33)
+    NAME       'pita'        (1, 29) (1, 33)
     """)
-        self.check_tokenize("eleza d01v_(a=1, *k, **w): pass", """\
+        self.check_tokenize("eleza d01v_(a=1, *k, **w): pita", """\
     NAME       'def'         (1, 0) (1, 3)
     NAME       'd01v_'       (1, 4) (1, 9)
     OP         '('           (1, 9) (1, 10)
@@ -434,9 +434,9 @@ def"', """\
     NAME       'w'           (1, 21) (1, 22)
     OP         ')'           (1, 22) (1, 23)
     OP         ':'           (1, 23) (1, 24)
-    NAME       'pass'        (1, 25) (1, 29)
+    NAME       'pita'        (1, 25) (1, 29)
     """)
-        self.check_tokenize("eleza d23(a: str, b: int=3) -> int: pass", """\
+        self.check_tokenize("eleza d23(a: str, b: int=3) -> int: pita", """\
     NAME       'def'         (1, 0) (1, 3)
     NAME       'd23'         (1, 4) (1, 7)
     OP         '('           (1, 7) (1, 8)
@@ -453,13 +453,13 @@ def"', """\
     OP         '->'          (1, 26) (1, 28)
     NAME       'int'         (1, 29) (1, 32)
     OP         ':'           (1, 32) (1, 33)
-    NAME       'pass'        (1, 34) (1, 38)
+    NAME       'pita'        (1, 34) (1, 38)
     """)
 
     eleza test_comparison(self):
         # Comparison
         self.check_tokenize("ikiwa 1 < 1 > 1 == 1 >= 5 <= 0x15 <= 0x12 != "
-                            "1 and 5 in 1 not in 1 is 1 or 5 is not 1: pass", """\
+                            "1 na 5 kwenye 1 haiko kwenye 1 ni 1 ama 5 ni sio 1: pita", """\
     NAME       'if'          (1, 0) (1, 2)
     NUMBER     '1'           (1, 3) (1, 4)
     OP         '<'           (1, 5) (1, 6)
@@ -491,7 +491,7 @@ def"', """\
     NAME       'not'         (1, 77) (1, 80)
     NUMBER     '1'           (1, 81) (1, 82)
     OP         ':'           (1, 82) (1, 83)
-    NAME       'pass'        (1, 84) (1, 88)
+    NAME       'pita'        (1, 84) (1, 88)
     """)
 
     eleza test_shift(self):
@@ -610,7 +610,7 @@ def"', """\
 
     eleza test_method(self):
         # Methods
-        self.check_tokenize("@staticmethod\neleza foo(x,y): pass", """\
+        self.check_tokenize("@staticmethod\neleza foo(x,y): pita", """\
     OP         '@'           (1, 0) (1, 1)
     NAME       'staticmethod' (1, 1) (1, 13)
     NEWLINE    '\\n'          (1, 13) (1, 14)
@@ -622,14 +622,14 @@ def"', """\
     NAME       'y'           (2, 10) (2, 11)
     OP         ')'           (2, 11) (2, 12)
     OP         ':'           (2, 12) (2, 13)
-    NAME       'pass'        (2, 14) (2, 18)
+    NAME       'pita'        (2, 14) (2, 18)
     """)
 
     eleza test_tabs(self):
         # Evil tabs
         self.check_tokenize("eleza f():\n"
                             "\tikiwa x\n"
-                            "        \tpass", """\
+                            "        \tpita", """\
     NAME       'def'         (1, 0) (1, 3)
     NAME       'f'           (1, 4) (1, 5)
     OP         '('           (1, 5) (1, 6)
@@ -641,7 +641,7 @@ def"', """\
     NAME       'x'           (2, 4) (2, 5)
     NEWLINE    '\\n'          (2, 5) (2, 6)
     INDENT     '        \\t'  (3, 0) (3, 9)
-    NAME       'pass'        (3, 9) (3, 13)
+    NAME       'pita'        (3, 9) (3, 13)
     DEDENT     ''            (4, 0) (4, 0)
     DEDENT     ''            (4, 0) (4, 0)
     """)
@@ -694,21 +694,21 @@ def"', """\
     OP         ')'           (1, 6) (1, 7)
     """)
 
-        self.check_tokenize("kundi async(Bar):pass", """\
+        self.check_tokenize("kundi async(Bar):pita", """\
     NAME       'class'       (1, 0) (1, 5)
     NAME       'async'       (1, 6) (1, 11)
     OP         '('           (1, 11) (1, 12)
     NAME       'Bar'         (1, 12) (1, 15)
     OP         ')'           (1, 15) (1, 16)
     OP         ':'           (1, 16) (1, 17)
-    NAME       'pass'        (1, 17) (1, 21)
+    NAME       'pita'        (1, 17) (1, 21)
     """)
 
-        self.check_tokenize("kundi async:pass", """\
+        self.check_tokenize("kundi async:pita", """\
     NAME       'class'       (1, 0) (1, 5)
     NAME       'async'       (1, 6) (1, 11)
     OP         ':'           (1, 11) (1, 12)
-    NAME       'pass'        (1, 12) (1, 16)
+    NAME       'pita'        (1, 12) (1, 16)
     """)
 
         self.check_tokenize("await = 1", """\
@@ -723,24 +723,24 @@ def"', """\
     NAME       'async'       (1, 4) (1, 9)
     """)
 
-        self.check_tokenize("async for a in b: pass", """\
+        self.check_tokenize("async kila a kwenye b: pita", """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'for'         (1, 6) (1, 9)
     NAME       'a'           (1, 10) (1, 11)
     NAME       'in'          (1, 12) (1, 14)
     NAME       'b'           (1, 15) (1, 16)
     OP         ':'           (1, 16) (1, 17)
-    NAME       'pass'        (1, 18) (1, 22)
+    NAME       'pita'        (1, 18) (1, 22)
     """)
 
-        self.check_tokenize("async with a as b: pass", """\
+        self.check_tokenize("async with a kama b: pita", """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'with'        (1, 6) (1, 10)
     NAME       'a'           (1, 11) (1, 12)
     NAME       'as'          (1, 13) (1, 15)
     NAME       'b'           (1, 16) (1, 17)
     OP         ':'           (1, 17) (1, 18)
-    NAME       'pass'        (1, 19) (1, 23)
+    NAME       'pita'        (1, 19) (1, 23)
     """)
 
         self.check_tokenize("async.foo", """\
@@ -783,14 +783,14 @@ def"', """\
     NUMBER     '1'           (1, 12) (1, 13)
     """)
 
-        self.check_tokenize("async eleza foo(): pass", """\
+        self.check_tokenize("async eleza foo(): pita", """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'def'         (1, 6) (1, 9)
     NAME       'foo'         (1, 10) (1, 13)
     OP         '('           (1, 13) (1, 14)
     OP         ')'           (1, 14) (1, 15)
     OP         ':'           (1, 15) (1, 16)
-    NAME       'pass'        (1, 17) (1, 21)
+    NAME       'pita'        (1, 17) (1, 21)
     """)
 
         self.check_tokenize('''\
@@ -839,7 +839,7 @@ async += 1
 
         self.check_tokenize('''\
 async eleza foo():
-  async for i in 1: pass''', """\
+  async kila i kwenye 1: pita''', """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'def'         (1, 6) (1, 9)
     NAME       'foo'         (1, 10) (1, 13)
@@ -854,7 +854,7 @@ async eleza foo():
     NAME       'in'          (2, 14) (2, 16)
     NUMBER     '1'           (2, 17) (2, 18)
     OP         ':'           (2, 18) (2, 19)
-    NAME       'pass'        (2, 20) (2, 24)
+    NAME       'pita'        (2, 20) (2, 24)
     DEDENT     ''            (3, 0) (3, 0)
     """)
 
@@ -872,8 +872,8 @@ async eleza foo():
         self.check_tokenize('''\
 eleza f():
 
-  eleza baz(): pass
-  async eleza bar(): pass
+  eleza baz(): pita
+  async eleza bar(): pita
 
   await = 2''', """\
     NAME       'def'         (1, 0) (1, 3)
@@ -889,7 +889,7 @@ eleza f():
     OP         '('           (3, 9) (3, 10)
     OP         ')'           (3, 10) (3, 11)
     OP         ':'           (3, 11) (3, 12)
-    NAME       'pass'        (3, 13) (3, 17)
+    NAME       'pita'        (3, 13) (3, 17)
     NEWLINE    '\\n'          (3, 17) (3, 18)
     NAME       'async'       (4, 2) (4, 7)
     NAME       'def'         (4, 8) (4, 11)
@@ -897,7 +897,7 @@ eleza f():
     OP         '('           (4, 15) (4, 16)
     OP         ')'           (4, 16) (4, 17)
     OP         ':'           (4, 17) (4, 18)
-    NAME       'pass'        (4, 19) (4, 23)
+    NAME       'pita'        (4, 19) (4, 23)
     NEWLINE    '\\n'          (4, 23) (4, 24)
     NL         '\\n'          (5, 0) (5, 1)
     NAME       'await'       (6, 2) (6, 7)
@@ -909,8 +909,8 @@ eleza f():
         self.check_tokenize('''\
 async eleza f():
 
-  eleza baz(): pass
-  async eleza bar(): pass
+  eleza baz(): pita
+  async eleza bar(): pita
 
   await = 2''', """\
     NAME       'async'       (1, 0) (1, 5)
@@ -927,7 +927,7 @@ async eleza f():
     OP         '('           (3, 9) (3, 10)
     OP         ')'           (3, 10) (3, 11)
     OP         ':'           (3, 11) (3, 12)
-    NAME       'pass'        (3, 13) (3, 17)
+    NAME       'pita'        (3, 13) (3, 17)
     NEWLINE    '\\n'          (3, 17) (3, 18)
     NAME       'async'       (4, 2) (4, 7)
     NAME       'def'         (4, 8) (4, 11)
@@ -935,7 +935,7 @@ async eleza f():
     OP         '('           (4, 15) (4, 16)
     OP         ')'           (4, 16) (4, 17)
     OP         ':'           (4, 17) (4, 18)
-    NAME       'pass'        (4, 19) (4, 23)
+    NAME       'pita'        (4, 19) (4, 23)
     NEWLINE    '\\n'          (4, 23) (4, 24)
     NL         '\\n'          (5, 0) (5, 1)
     NAME       'await'       (6, 2) (6, 7)
@@ -946,8 +946,8 @@ async eleza f():
 
 kundi GenerateTokensTest(TokenizeTest):
     eleza check_tokenize(self, s, expected):
-        # Format the tokens in s in a table format.
-        # The ENDMARKER and final NEWLINE are omitted.
+        # Format the tokens kwenye s kwenye a table format.
+        # The ENDMARKER na final NEWLINE are omitted.
         f = StringIO(s)
         result = stringify_tokens_kutoka_source(generate_tokens(f.readline), s)
         self.assertEqual(result, expected.rstrip().splitlines())
@@ -956,32 +956,32 @@ kundi GenerateTokensTest(TokenizeTest):
 eleza decistmt(s):
     result = []
     g = tokenize(BytesIO(s.encode('utf-8')).readline)   # tokenize the string
-    for toknum, tokval, _, _, _  in g:
-        ikiwa toknum == NUMBER and '.' in tokval:  # replace NUMBER tokens
+    kila toknum, tokval, _, _, _  kwenye g:
+        ikiwa toknum == NUMBER na '.' kwenye tokval:  # replace NUMBER tokens
             result.extend([
                 (NAME, 'Decimal'),
                 (OP, '('),
                 (STRING, repr(tokval)),
                 (OP, ')')
             ])
-        else:
+        isipokua:
             result.append((toknum, tokval))
     rudisha untokenize(result).decode('utf-8')
 
 kundi TestMisc(TestCase):
 
     eleza test_decistmt(self):
-        # Substitute Decimals for floats in a string of statements.
-        # This is an example kutoka the docs.
+        # Substitute Decimals kila floats kwenye a string of statements.
+        # This ni an example kutoka the docs.
 
         kutoka decimal agiza Decimal
         s = '+21.3e-5*-.1234/81.7'
         self.assertEqual(decistmt(s),
                          "+Decimal ('21.3e-5')*-Decimal ('.1234')/Decimal ('81.7')")
 
-        # The format of the exponent is inherited kutoka the platform C library.
-        # Known cases are "e-007" (Windows) and "e-07" (not Windows).  Since
-        # we're only showing 11 digits, and the 12th isn't close to 5, the
+        # The format of the exponent ni inherited kutoka the platform C library.
+        # Known cases are "e-007" (Windows) na "e-07" (not Windows).  Since
+        # we're only showing 11 digits, na the 12th isn't close to 5, the
         # rest of the output should be platform-independent.
         self.assertRegex(repr(eval(s)), '-3.2171603427[0-9]*e-0+7')
 
@@ -993,7 +993,7 @@ kundi TestMisc(TestCase):
 
 kundi TestTokenizerAdheresToPep0263(TestCase):
     """
-    Test that tokenizer adheres to the coding behaviour stipulated in PEP 0263.
+    Test that tokenizer adheres to the coding behaviour stipulated kwenye PEP 0263.
     """
 
     eleza _testFile(self, filename):
@@ -1007,9 +1007,9 @@ kundi TestTokenizerAdheresToPep0263(TestCase):
     eleza test_latin1_coding_cookie_and_utf8_bom(self):
         """
         As per PEP 0263, ikiwa a file starts with a utf-8 BOM signature, the only
-        allowed encoding for the comment is 'utf-8'.  The text file used in
-        this test starts with a BOM signature, but specifies latin1 as the
-        coding, so verify that a SyntaxError is raised, which matches the
+        allowed encoding kila the comment ni 'utf-8'.  The text file used in
+        this test starts with a BOM signature, but specifies latin1 kama the
+        coding, so verify that a SyntaxError ni ashiriad, which matches the
         behaviour of the interpreter when it encounters a similar condition.
         """
         f = 'tokenize_tests-latin1-coding-cookie-and-utf8-bom-sig.txt'
@@ -1033,37 +1033,37 @@ kundi Test_Tokenize(TestCase):
     eleza test__tokenize_decodes_with_specified_encoding(self):
         literal = '"ЉЊЈЁЂ"'
         line = literal.encode('utf-8')
-        first = False
+        first = Uongo
         eleza readline():
             nonlocal first
-            ikiwa not first:
-                first = True
+            ikiwa sio first:
+                first = Kweli
                 rudisha line
-            else:
+            isipokua:
                 rudisha b''
 
-        # skip the initial encoding token and the end tokens
+        # skip the initial encoding token na the end tokens
         tokens = list(_tokenize(readline, encoding='utf-8'))[1:-2]
         expected_tokens = [(3, '"ЉЊЈЁЂ"', (1, 0), (1, 7), '"ЉЊЈЁЂ"')]
         self.assertEqual(tokens, expected_tokens,
-                         "bytes not decoded with encoding")
+                         "bytes sio decoded with encoding")
 
     eleza test__tokenize_does_not_decode_with_encoding_none(self):
         literal = '"ЉЊЈЁЂ"'
-        first = False
+        first = Uongo
         eleza readline():
             nonlocal first
-            ikiwa not first:
-                first = True
+            ikiwa sio first:
+                first = Kweli
                 rudisha literal
-            else:
+            isipokua:
                 rudisha b''
 
         # skip the end tokens
-        tokens = list(_tokenize(readline, encoding=None))[:-2]
+        tokens = list(_tokenize(readline, encoding=Tupu))[:-2]
         expected_tokens = [(3, '"ЉЊЈЁЂ"', (1, 0), (1, 7), '"ЉЊЈЁЂ"')]
         self.assertEqual(tokens, expected_tokens,
-                         "string not tokenized when encoding is None")
+                         "string sio tokenized when encoding ni Tupu")
 
 
 kundi TestDetectEncoding(TestCase):
@@ -1073,7 +1073,7 @@ kundi TestDetectEncoding(TestCase):
         eleza readline():
             nonlocal index
             ikiwa index == len(lines):
-                raise StopIteration
+                ashiria StopIteration
             line = lines[index]
             index += 1
             rudisha line
@@ -1120,7 +1120,7 @@ kundi TestDetectEncoding(TestCase):
         self.assertEqual(encoding, 'utf-8-sig')
         self.assertEqual(consumed_lines, [b'# coding=utf-8\n'])
 
-    eleza test_mismatched_bom_and_cookie_first_line_raises_syntaxerror(self):
+    eleza test_mismatched_bom_and_cookie_first_line_ashirias_syntaxerror(self):
         lines = (
             b'\xef\xbb\xbf# vim: set fileencoding=ascii :\n',
             b'andika(something)\n',
@@ -1153,7 +1153,7 @@ kundi TestDetectEncoding(TestCase):
         self.assertEqual(consumed_lines,
                          [b'#! something\n', b'f# coding=utf-8\n'])
 
-    eleza test_mismatched_bom_and_cookie_second_line_raises_syntaxerror(self):
+    eleza test_mismatched_bom_and_cookie_second_line_ashirias_syntaxerror(self):
         lines = (
             b'\xef\xbb\xbf#! something\n',
             b'# vim: set fileencoding=ascii :\n',
@@ -1197,11 +1197,11 @@ kundi TestDetectEncoding(TestCase):
         self.assertEqual(consumed_lines, expected)
 
     eleza test_latin1_normalization(self):
-        # See get_normal_name() in tokenizer.c.
+        # See get_normal_name() kwenye tokenizer.c.
         encodings = ("latin-1", "iso-8859-1", "iso-latin-1", "latin-1-unix",
                      "iso-8859-1-unix", "iso-latin-1-mac")
-        for encoding in encodings:
-            for rep in ("-", "_"):
+        kila encoding kwenye encodings:
+            kila rep kwenye ("-", "_"):
                 enc = encoding.replace("-", rep)
                 lines = (b"#!/usr/bin/python\n",
                          b"# coding: " + enc.encode("ascii") + b"\n",
@@ -1212,7 +1212,7 @@ kundi TestDetectEncoding(TestCase):
                 self.assertEqual(found, "iso-8859-1")
 
     eleza test_syntaxerror_latin1(self):
-        # Issue 14629: need to raise SyntaxError ikiwa the first
+        # Issue 14629: need to ashiria SyntaxError ikiwa the first
         # line(s) have non-UTF-8 characters
         lines = (
             b'andika("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
@@ -1222,10 +1222,10 @@ kundi TestDetectEncoding(TestCase):
 
 
     eleza test_utf8_normalization(self):
-        # See get_normal_name() in tokenizer.c.
+        # See get_normal_name() kwenye tokenizer.c.
         encodings = ("utf-8", "utf-8-mac", "utf-8-unix")
-        for encoding in encodings:
-            for rep in ("-", "_"):
+        kila encoding kwenye encodings:
+            kila rep kwenye ("-", "_"):
                 enc = encoding.replace("-", rep)
                 lines = (b"#!/usr/bin/python\n",
                          b"# coding: " + enc.encode("ascii") + b"\n",
@@ -1258,7 +1258,7 @@ kundi TestDetectEncoding(TestCase):
         self.assertRaises(SyntaxError, detect_encoding, readline)
 
     eleza test_false_encoding(self):
-        # Issue 18873: "Encoding" detected in non-comment lines
+        # Issue 18873: "Encoding" detected kwenye non-comment lines
         readline = self.get_readline((b'andika("#coding=fake")',))
         encoding, consumed_lines = detect_encoding(readline)
         self.assertEqual(encoding, 'utf-8')
@@ -1269,23 +1269,23 @@ kundi TestDetectEncoding(TestCase):
         self.addCleanup(support.unlink, filename)
 
         # test coding cookie
-        for encoding in ('iso-8859-15', 'utf-8'):
-            with open(filename, 'w', encoding=encoding) as fp:
+        kila encoding kwenye ('iso-8859-15', 'utf-8'):
+            with open(filename, 'w', encoding=encoding) kama fp:
                 andika("# coding: %s" % encoding, file=fp)
                 andika("andika('euro:\u20ac')", file=fp)
-            with tokenize_open(filename) as fp:
+            with tokenize_open(filename) kama fp:
                 self.assertEqual(fp.encoding, encoding)
                 self.assertEqual(fp.mode, 'r')
 
         # test BOM (no coding cookie)
-        with open(filename, 'w', encoding='utf-8-sig') as fp:
+        with open(filename, 'w', encoding='utf-8-sig') kama fp:
             andika("andika('euro:\u20ac')", file=fp)
-        with tokenize_open(filename) as fp:
+        with tokenize_open(filename) kama fp:
             self.assertEqual(fp.encoding, 'utf-8-sig')
             self.assertEqual(fp.mode, 'r')
 
     eleza test_filename_in_exception(self):
-        # When possible, include the file name in the exception.
+        # When possible, include the file name kwenye the exception.
         path = 'some_file_path'
         lines = (
             b'andika("\xdf")', # Latin-1: LATIN SMALL LETTER SHARP S
@@ -1298,7 +1298,7 @@ kundi TestDetectEncoding(TestCase):
 
             eleza readline(self):
                 ikiwa self._index == len(lines):
-                    raise StopIteration
+                    ashiria StopIteration
                 line = lines[self._index]
                 self._index += 1
                 rudisha line
@@ -1306,7 +1306,7 @@ kundi TestDetectEncoding(TestCase):
         with self.assertRaises(SyntaxError):
             ins = Bunk(lines, path)
             # Make sure lacking a name isn't an issue.
-            del ins.name
+            toa ins.name
             detect_encoding(ins.readline)
         with self.assertRaisesRegex(SyntaxError, '.*{}'.format(path)):
             ins = Bunk(lines, path)
@@ -1315,17 +1315,17 @@ kundi TestDetectEncoding(TestCase):
     eleza test_open_error(self):
         # Issue #23840: open() must close the binary file on error
         m = BytesIO(b'#coding:xxx')
-        with mock.patch('tokenize._builtin_open', return_value=m):
+        with mock.patch('tokenize._builtin_open', rudisha_value=m):
             self.assertRaises(SyntaxError, tokenize_open, 'foobar')
-        self.assertTrue(m.closed)
+        self.assertKweli(m.closed)
 
 
 kundi TestTokenize(TestCase):
 
     eleza test_tokenize(self):
-        agiza tokenize as tokenize_module
+        agiza tokenize kama tokenize_module
         encoding = object()
-        encoding_used = None
+        encoding_used = Tupu
         eleza mock_detect_encoding(readline):
             rudisha encoding, [b'first', b'second']
 
@@ -1333,11 +1333,11 @@ kundi TestTokenize(TestCase):
             nonlocal encoding_used
             encoding_used = encoding
             out = []
-            while True:
+            wakati Kweli:
                 next_line = readline()
                 ikiwa next_line:
                     out.append(next_line)
-                    continue
+                    endelea
                 rudisha out
 
         counter = 0
@@ -1352,11 +1352,11 @@ kundi TestTokenize(TestCase):
         orig__tokenize = tokenize_module._tokenize
         tokenize_module.detect_encoding = mock_detect_encoding
         tokenize_module._tokenize = mock__tokenize
-        try:
+        jaribu:
             results = tokenize(mock_readline)
             self.assertEqual(list(results),
                              [b'first', b'second', b'1', b'2', b'3', b'4'])
-        finally:
+        mwishowe:
             tokenize_module.detect_encoding = orig_detect_encoding
             tokenize_module._tokenize = orig__tokenize
 
@@ -1364,15 +1364,15 @@ kundi TestTokenize(TestCase):
 
     eleza test_oneline_defs(self):
         buf = []
-        for i in range(500):
+        kila i kwenye range(500):
             buf.append('eleza i{i}(): rudisha {i}'.format(i=i))
         buf.append('OK')
         buf = '\n'.join(buf)
 
-        # Test that 500 consequent, one-line defs is OK
+        # Test that 500 consequent, one-line defs ni OK
         toks = list(tokenize(BytesIO(buf.encode('utf-8')).readline))
-        self.assertEqual(toks[-3].string, 'OK') # [-1] is always ENDMARKER
-                                                # [-2] is always NEWLINE
+        self.assertEqual(toks[-3].string, 'OK') # [-1] ni always ENDMARKER
+                                                # [-2] ni always NEWLINE
 
     eleza assertExactTypeEqual(self, opstr, *optypes):
         tokens = list(tokenize(BytesIO(opstr.encode('utf-8')).readline))
@@ -1380,7 +1380,7 @@ kundi TestTokenize(TestCase):
         self.assertEqual(len(tokens), 3 + num_optypes)
         self.assertEqual(tok_name[tokens[0].exact_type],
                          tok_name[ENCODING])
-        for i in range(num_optypes):
+        kila i kwenye range(num_optypes):
             self.assertEqual(tok_name[tokens[i + 1].exact_type],
                              tok_name[optypes[i]])
         self.assertEqual(tok_name[tokens[1 + num_optypes].exact_type],
@@ -1461,19 +1461,19 @@ kundi TestTokenize(TestCase):
 kundi UntokenizeTest(TestCase):
 
     eleza test_bad_input_order(self):
-        # raise ikiwa previous row
+        # ashiria ikiwa previous row
         u = Untokenizer()
         u.prev_row = 2
         u.prev_col = 2
-        with self.assertRaises(ValueError) as cm:
+        with self.assertRaises(ValueError) kama cm:
             u.add_whitespace((1,3))
         self.assertEqual(cm.exception.args[0],
                 'start (1,3) precedes previous end (2,2)')
-        # raise ikiwa previous column in row
+        # ashiria ikiwa previous column kwenye row
         self.assertRaises(ValueError, u.add_whitespace, (2,1))
 
     eleza test_backslash_continuation(self):
-        # The problem is that <whitespace>\<newline> leaves no token
+        # The problem ni that <whitespace>\<newline> leaves no token
         u = Untokenizer()
         u.prev_row = 1
         u.prev_col =  1
@@ -1503,34 +1503,34 @@ kundi TestRoundtrip(TestCase):
 
     eleza check_roundtrip(self, f):
         """
-        Test roundtrip for `untokenize`. `f` is an open file or a string.
-        The source code in f is tokenized to both 5- and 2-tuples.
+        Test roundtrip kila `untokenize`. `f` ni an open file ama a string.
+        The source code kwenye f ni tokenized to both 5- na 2-tuples.
         Both sequences are converted back to source code via
-        tokenize.untokenize(), and the latter tokenized again to 2-tuples.
-        The test fails ikiwa the 3 pair tokenizations do not match.
+        tokenize.untokenize(), na the latter tokenized again to 2-tuples.
+        The test fails ikiwa the 3 pair tokenizations do sio match.
 
         When untokenize bugs are fixed, untokenize with 5-tuples should
-        reproduce code that does not contain a backslash continuation
+        reproduce code that does sio contain a backslash continuation
         following spaces.  A proper test should test this.
         """
-        # Get source code and original tokenizations
+        # Get source code na original tokenizations
         ikiwa isinstance(f, str):
             code = f.encode('utf-8')
-        else:
+        isipokua:
             code = f.read()
             f.close()
-        readline = iter(code.splitlines(keepends=True)).__next__
+        readline = iter(code.splitlines(keepends=Kweli)).__next__
         tokens5 = list(tokenize(readline))
-        tokens2 = [tok[:2] for tok in tokens5]
+        tokens2 = [tok[:2] kila tok kwenye tokens5]
         # Reproduce tokens2 kutoka pairs
         bytes_kutoka2 = untokenize(tokens2)
-        readline2 = iter(bytes_kutoka2.splitlines(keepends=True)).__next__
-        tokens2_kutoka2 = [tok[:2] for tok in tokenize(readline2)]
+        readline2 = iter(bytes_kutoka2.splitlines(keepends=Kweli)).__next__
+        tokens2_kutoka2 = [tok[:2] kila tok kwenye tokenize(readline2)]
         self.assertEqual(tokens2_kutoka2, tokens2)
         # Reproduce tokens2 kutoka 5-tuples
         bytes_kutoka5 = untokenize(tokens5)
-        readline5 = iter(bytes_kutoka5.splitlines(keepends=True)).__next__
-        tokens2_kutoka5 = [tok[:2] for tok in tokenize(readline5)]
+        readline5 = iter(bytes_kutoka5.splitlines(keepends=Kweli)).__next__
+        tokens2_kutoka5 = [tok[:2] kila tok kwenye tokenize(readline5)]
         self.assertEqual(tokens2_kutoka5, tokens2)
 
     eleza test_roundtrip(self):
@@ -1538,25 +1538,25 @@ kundi TestRoundtrip(TestCase):
 
         self.check_roundtrip("ikiwa x == 1:\n"
                              "    andika(x)\n")
-        self.check_roundtrip("# This is a comment\n"
+        self.check_roundtrip("# This ni a comment\n"
                              "# This also\n")
 
         # Some people use different formatting conventions, which makes
         # untokenize a little trickier. Note that this test involves trailing
         # whitespace after the colon. Note that we use hex escapes to make the
-        # two trailing blanks apparent in the expected output.
+        # two trailing blanks apparent kwenye the expected output.
 
         self.check_roundtrip("ikiwa x == 1 : \n"
                              "  andika(x)\n")
         fn = support.findfile("tokenize_tests.txt")
-        with open(fn, 'rb') as f:
+        with open(fn, 'rb') kama f:
             self.check_roundtrip(f)
         self.check_roundtrip("ikiwa x == 1:\n"
                              "    # A comment by itself.\n"
                              "    andika(x) # Comment here, too.\n"
                              "    # Another comment.\n"
-                             "after_ikiwa = True\n")
-        self.check_roundtrip("ikiwa (x # The comments need to go in the right place\n"
+                             "after_ikiwa = Kweli\n")
+        self.check_roundtrip("ikiwa (x # The comments need to go kwenye the right place\n"
                              "    == 1):\n"
                              "    andika('x==1')\n")
         self.check_roundtrip("kundi Test: # A comment here\n"
@@ -1567,10 +1567,10 @@ kundi TestRoundtrip(TestCase):
                              "     rudisha y*4 # 3-space indent\n")
 
         # Some error-handling code
-        self.check_roundtrip("try: agiza somemodule\n"
-                             "except ImportError: # comment\n"
-                             "    andika('Can not agiza' # comment2\n)"
-                             "else:   andika('Loaded')\n")
+        self.check_roundtrip("jaribu: agiza somemodule\n"
+                             "tatizo ImportError: # comment\n"
+                             "    andika('Can sio agiza' # comment2\n)"
+                             "isipokua:   andika('Loaded')\n")
 
     eleza test_continuation(self):
         # Balancing continuation
@@ -1579,17 +1579,17 @@ kundi TestRoundtrip(TestCase):
                              "y = [3, 4,\n"
                              "5]\n"
                              "z = {'a': 5,\n"
-                             "'b':15, 'c':True}\n"
+                             "'b':15, 'c':Kweli}\n"
                              "x = len(y) + 5 - a[\n"
                              "3] - a[2]\n"
                              "+ len(z) - z[\n"
                              "'b']\n")
 
     eleza test_backslash_continuation(self):
-        # Backslash means line continuation, except for comments
+        # Backslash means line continuation, tatizo kila comments
         self.check_roundtrip("x=1+\\\n"
                              "1\n"
-                             "# This is a comment\\\n"
+                             "# This ni a comment\\\n"
                              "# This also\n")
         self.check_roundtrip("# Comment \\\n"
                              "x = 0")
@@ -1600,29 +1600,29 @@ kundi TestRoundtrip(TestCase):
 
     eleza test_random_files(self):
         # Test roundtrip on random python modules.
-        # pass the '-ucpu' option to process the full directory.
+        # pita the '-ucpu' option to process the full directory.
 
         agiza glob, random
         fn = support.findfile("tokenize_tests.txt")
-        tempdir = os.path.dirname(fn) or os.curdir
+        tempdir = os.path.dirname(fn) ama os.curdir
         testfiles = glob.glob(os.path.join(tempdir, "test*.py"))
 
-        # Tokenize is broken on test_pep3131.py because regular expressions are
-        # broken on the obscure unicode identifiers in it. *sigh*
+        # Tokenize ni broken on test_pep3131.py because regular expressions are
+        # broken on the obscure unicode identifiers kwenye it. *sigh*
         # With roundtrip extended to test the 5-tuple mode of untokenize,
-        # 7 more testfiles fail.  Remove them also until the failure is diagnosed.
+        # 7 more testfiles fail.  Remove them also until the failure ni diagnosed.
 
         testfiles.remove(os.path.join(tempdir, "test_unicode_identifiers.py"))
-        for f in ('buffer', 'builtin', 'fileio', 'inspect', 'os', 'platform', 'sys'):
+        kila f kwenye ('buffer', 'builtin', 'fileio', 'inspect', 'os', 'platform', 'sys'):
             testfiles.remove(os.path.join(tempdir, "test_%s.py") % f)
 
-        ikiwa not support.is_resource_enabled("cpu"):
+        ikiwa sio support.is_resource_enabled("cpu"):
             testfiles = random.sample(testfiles, 10)
 
-        for testfile in testfiles:
+        kila testfile kwenye testfiles:
             ikiwa support.verbose >= 2:
                 andika('tokenize', testfile)
-            with open(testfile, 'rb') as f:
+            with open(testfile, 'rb') kama f:
                 with self.subTest(file=testfile):
                     self.check_roundtrip(f)
 
@@ -1634,10 +1634,10 @@ kundi TestRoundtrip(TestCase):
 
     eleza test_indentation_semantics_retained(self):
         """
-        Ensure that although whitespace might be mutated in a roundtrip,
+        Ensure that although whitespace might be mutated kwenye a roundtrip,
         the semantic meaning of the indentation remains consistent.
         """
-        code = "ikiwa False:\n\tx=3\n\tx=3\n"
+        code = "ikiwa Uongo:\n\tx=3\n\tx=3\n"
         codelines = self.roundtrip(code).split('\n')
         self.assertEqual(codelines[1], codelines[2])
         self.check_roundtrip(code)

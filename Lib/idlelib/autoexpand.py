@@ -1,16 +1,16 @@
-'''Complete the current word before the cursor with words in the editor.
+'''Complete the current word before the cursor with words kwenye the editor.
 
-Each menu selection or shortcut key selection replaces the word with a
-different word with the same prefix. The search for matches begins
-before the target and moves toward the top of the editor. It then starts
-after the cursor and moves down. It then returns to the original word and
+Each menu selection ama shortcut key selection replaces the word with a
+different word with the same prefix. The search kila matches begins
+before the target na moves toward the top of the editor. It then starts
+after the cursor na moves down. It then rudishas to the original word and
 the cycle starts again.
 
-Changing the current text line or leaving the cursor in a different
+Changing the current text line ama leaving the cursor kwenye a different
 place before requesting the next selection causes AutoExpand to reset
 its state.
 
-There is only one instance of Autoexpand.
+There ni only one instance of Autoexpand.
 '''
 agiza re
 agiza string
@@ -22,23 +22,23 @@ kundi AutoExpand:
     eleza __init__(self, editwin):
         self.text = editwin.text
         self.bell = self.text.bell
-        self.state = None
+        self.state = Tupu
 
     eleza expand_word_event(self, event):
         "Replace the current word with the next expansion."
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
-        ikiwa not self.state:
+        ikiwa sio self.state:
             words = self.getwords()
             index = 0
-        else:
+        isipokua:
             words, index, insert, line = self.state
-            ikiwa insert != curinsert or line != curline:
+            ikiwa insert != curinsert ama line != curline:
                 words = self.getwords()
                 index = 0
-        ikiwa not words:
+        ikiwa sio words:
             self.bell()
-            rudisha "break"
+            rudisha "koma"
         word = self.getprevword()
         self.text.delete("insert - %d chars" % len(word), "insert")
         newword = words[index]
@@ -49,34 +49,34 @@ kundi AutoExpand:
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
         self.state = words, index, curinsert, curline
-        rudisha "break"
+        rudisha "koma"
 
     eleza getwords(self):
         "Return a list of words that match the prefix before the cursor."
         word = self.getprevword()
-        ikiwa not word:
+        ikiwa sio word:
             rudisha []
         before = self.text.get("1.0", "insert wordstart")
         wbefore = re.findall(r"\b" + word + r"\w+\b", before)
-        del before
+        toa before
         after = self.text.get("insert wordend", "end")
         wafter = re.findall(r"\b" + word + r"\w+\b", after)
-        del after
-        ikiwa not wbefore and not wafter:
+        toa after
+        ikiwa sio wbefore na sio wafter:
             rudisha []
         words = []
         dict = {}
         # search backwards through words before
         wbefore.reverse()
-        for w in wbefore:
+        kila w kwenye wbefore:
             ikiwa dict.get(w):
-                continue
+                endelea
             words.append(w)
             dict[w] = w
         # search onwards through words after
-        for w in wafter:
+        kila w kwenye wafter:
             ikiwa dict.get(w):
-                continue
+                endelea
             words.append(w)
             dict[w] = w
         words.append(word)
@@ -86,7 +86,7 @@ kundi AutoExpand:
         "Return the word prefix before the cursor."
         line = self.text.get("insert linestart", "insert")
         i = len(line)
-        while i > 0 and line[i-1] in self.wordchars:
+        wakati i > 0 na line[i-1] kwenye self.wordchars:
             i = i-1
         rudisha line[i:]
 

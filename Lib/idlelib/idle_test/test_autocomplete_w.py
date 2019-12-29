@@ -4,7 +4,7 @@ agiza unittest
 kutoka test.support agiza requires
 kutoka tkinter agiza Tk, Text
 
-agiza idlelib.autocomplete_w as acw
+agiza idlelib.autocomplete_w kama acw
 
 
 kundi AutoCompleteWindowTest(unittest.TestCase):
@@ -19,10 +19,10 @@ kundi AutoCompleteWindowTest(unittest.TestCase):
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.text, cls.acw
+        toa cls.text, cls.acw
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_init(self):
         self.assertEqual(self.acw.widget, self.text)

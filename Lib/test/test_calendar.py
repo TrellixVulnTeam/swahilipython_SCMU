@@ -117,7 +117,7 @@ result_2004_html = """\
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={encoding}" />
 <link rel="stylesheet" type="text/css" href="calendar.css" />
-<title>Calendar for 2004</title>
+<title>Calendar kila 2004</title>
 </head>
 <body>
 <table border="0" cellpadding="0" cellspacing="0" class="{year}">
@@ -369,19 +369,19 @@ kundi OutputTestCase(unittest.TestCase):
     eleza normalize_calendar(self, s):
         # Filters out locale dependent strings
         eleza neitherspacenordigit(c):
-            rudisha not c.isspace() and not c.isdigit()
+            rudisha sio c.isspace() na sio c.isdigit()
 
         lines = []
-        for line in s.splitlines(keepends=False):
-            # Drop texts, as they are locale dependent
-            ikiwa line and not filter(neitherspacenordigit, line):
+        kila line kwenye s.splitlines(keepends=Uongo):
+            # Drop texts, kama they are locale dependent
+            ikiwa line na sio filter(neitherspacenordigit, line):
                 lines.append(line)
         rudisha lines
 
     eleza check_htmlcalendar_encoding(self, req, res):
         cal = calendar.HTMLCalendar()
         format_ = default_format.copy()
-        format_["encoding"] = req or 'utf-8'
+        format_["encoding"] = req ama 'utf-8'
         output = cal.formatyearpage(2004, encoding=req)
         self.assertEqual(
             output,
@@ -415,13 +415,13 @@ kundi OutputTestCase(unittest.TestCase):
         self.check_htmlcalendar_encoding('utf-8', 'utf-8')
 
     eleza test_output_htmlcalendar_encoding_default(self):
-        self.check_htmlcalendar_encoding(None, sys.getdefaultencoding())
+        self.check_htmlcalendar_encoding(Tupu, sys.getdefaultencoding())
 
     eleza test_yeardatescalendar(self):
         eleza shrink(cal):
             rudisha [[[' '.join('{:02d}/{:02d}/{}'.format(
-                                d.month, d.day, str(d.year)[-2:]) for d in z)
-                            for z in y] for y in x] for x in cal]
+                                d.month, d.day, str(d.year)[-2:]) kila d kwenye z)
+                            kila z kwenye y] kila y kwenye x] kila x kwenye cal]
         self.assertEqual(
             shrink(calendar.Calendar().yeardatescalendar(2004)),
             result_2004_dates
@@ -458,41 +458,41 @@ kundi OutputTestCase(unittest.TestCase):
 
     eleza test_formatmonthname_with_year(self):
         self.assertEqual(
-            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=True),
+            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=Kweli),
             '<tr><th colspan="7" class="month">January 2004</th></tr>'
         )
 
     eleza test_formatmonthname_without_year(self):
         self.assertEqual(
-            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=False),
+            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=Uongo),
             '<tr><th colspan="7" class="month">January</th></tr>'
         )
 
     eleza test_prweek(self):
-        with support.captured_stdout() as out:
+        with support.captured_stdout() kama out:
             week = [(1,0), (2,1), (3,2), (4,3), (5,4), (6,5), (7,6)]
             calendar.TextCalendar().prweek(week, 1)
             self.assertEqual(out.getvalue(), " 1  2  3  4  5  6  7")
 
     eleza test_prmonth(self):
-        with support.captured_stdout() as out:
+        with support.captured_stdout() kama out:
             calendar.TextCalendar().prmonth(2004, 1)
             self.assertEqual(out.getvalue(), result_2004_01_text)
 
     eleza test_pryear(self):
-        with support.captured_stdout() as out:
+        with support.captured_stdout() kama out:
             calendar.TextCalendar().pryear(2004)
             self.assertEqual(out.getvalue(), result_2004_text)
 
     eleza test_format(self):
-        with support.captured_stdout() as out:
+        with support.captured_stdout() kama out:
             calendar.format(["1", "2", "3"], colwidth=3, spacing=1)
             self.assertEqual(out.getvalue().strip(), "1   2   3")
 
 kundi CalendarTestCase(unittest.TestCase):
     eleza test_isleap(self):
-        # Make sure that the rudisha is right for a few years, and
-        # ensure that the rudisha values are 1 or 0, not just true or
+        # Make sure that the rudisha ni right kila a few years, and
+        # ensure that the rudisha values are 1 ama 0, sio just true or
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
         self.assertEqual(calendar.isleap(2000), 1)
@@ -518,40 +518,40 @@ kundi CalendarTestCase(unittest.TestCase):
     eleza test_enumerate_weekdays(self):
         self.assertRaises(IndexError, calendar.day_abbr.__getitem__, -10)
         self.assertRaises(IndexError, calendar.day_name.__getitem__, 10)
-        self.assertEqual(len([d for d in calendar.day_abbr]), 7)
+        self.assertEqual(len([d kila d kwenye calendar.day_abbr]), 7)
 
     eleza test_days(self):
-        for attr in "day_name", "day_abbr":
+        kila attr kwenye "day_name", "day_abbr":
             value = getattr(calendar, attr)
             self.assertEqual(len(value), 7)
             self.assertEqual(len(value[:]), 7)
             # ensure they're all unique
             self.assertEqual(len(set(value)), 7)
-            # verify it "acts like a sequence" in two forms of iteration
+            # verify it "acts like a sequence" kwenye two forms of iteration
             self.assertEqual(value[::-1], list(reversed(value)))
 
     eleza test_months(self):
-        for attr in "month_name", "month_abbr":
+        kila attr kwenye "month_name", "month_abbr":
             value = getattr(calendar, attr)
             self.assertEqual(len(value), 13)
             self.assertEqual(len(value[:]), 13)
             self.assertEqual(value[0], "")
             # ensure they're all unique
             self.assertEqual(len(set(value)), 13)
-            # verify it "acts like a sequence" in two forms of iteration
+            # verify it "acts like a sequence" kwenye two forms of iteration
             self.assertEqual(value[::-1], list(reversed(value)))
 
     eleza test_locale_calendars(self):
         # ensure that Locale{Text,HTML}Calendar resets the locale properly
-        # (it is still not thread-safe though)
+        # (it ni still sio thread-safe though)
         old_october = calendar.TextCalendar().formatmonthname(2010, 10, 10)
-        try:
+        jaribu:
             cal = calendar.LocaleTextCalendar(locale='')
             local_weekday = cal.formatweekday(1, 10)
             local_month = cal.formatmonthname(2010, 10, 10)
-        except locale.Error:
+        tatizo locale.Error:
             # cannot set the system default locale -- skip rest of test
-            raise unittest.SkipTest('cannot set the system default locale')
+            ashiria unittest.SkipTest('cannot set the system default locale')
         self.assertIsInstance(local_weekday, str)
         self.assertIsInstance(local_month, str)
         self.assertEqual(len(local_weekday), 10)
@@ -575,10 +575,10 @@ kundi CalendarTestCase(unittest.TestCase):
         self.assertEqual(days[-1], (2001, 2, 28, 2))
 
     eleza test_itermonthdays(self):
-        for firstweekday in range(7):
+        kila firstweekday kwenye range(7):
             cal = calendar.Calendar(firstweekday)
-            # Test the extremes, see #28253 and #26650
-            for y, m in [(1, 1), (9999, 12)]:
+            # Test the extremes, see #28253 na #26650
+            kila y, m kwenye [(1, 1), (9999, 12)]:
                 days = list(cal.itermonthdays(y, m))
                 self.assertIn(len(days), (35, 42))
         # Test a short month
@@ -587,10 +587,10 @@ kundi CalendarTestCase(unittest.TestCase):
         self.assertEqual(days, list(range(1, 29)))
 
     eleza test_itermonthdays2(self):
-        for firstweekday in range(7):
+        kila firstweekday kwenye range(7):
             cal = calendar.Calendar(firstweekday)
-            # Test the extremes, see #28253 and #26650
-            for y, m in [(1, 1), (9999, 12)]:
+            # Test the extremes, see #28253 na #26650
+            kila y, m kwenye [(1, 1), (9999, 12)]:
                 days = list(cal.itermonthdays2(y, m))
                 self.assertEqual(days[0][1], firstweekday)
                 self.assertEqual(days[-1][1], (firstweekday - 1) % 7)
@@ -607,8 +607,8 @@ kundi MonthCalendarTestCase(unittest.TestCase):
     eleza check_weeks(self, year, month, weeks):
         cal = calendar.monthcalendar(year, month)
         self.assertEqual(len(cal), len(weeks))
-        for i in range(len(weeks)):
-            self.assertEqual(weeks[i], sum(day != 0 for day in cal[i]))
+        kila i kwenye range(len(weeks)):
+            self.assertEqual(weeks[i], sum(day != 0 kila day kwenye cal[i]))
 
 
 kundi MondayTestCase(MonthCalendarTestCase):
@@ -730,7 +730,7 @@ kundi TimegmTestCase(unittest.TestCase):
     TIMESTAMPS = [0, 10, 100, 1000, 10000, 100000, 1000000,
                   1234567890, 1262304000, 1275785153,]
     eleza test_timegm(self):
-        for secs in self.TIMESTAMPS:
+        kila secs kwenye self.TIMESTAMPS:
             tuple = time.gmtime(secs)
             self.assertEqual(secs, calendar.timegm(tuple))
 
@@ -744,7 +744,7 @@ kundi MonthRangeTestCase(unittest.TestCase):
         self.assertEqual(calendar.monthrange(2004,2), (6,29))
 
     eleza test_february_nonleap(self):
-        # Tests February in non-leap year.
+        # Tests February kwenye non-leap year.
         self.assertEqual(calendar.monthrange(2010,2), (0,28))
 
     eleza test_december(self):
@@ -767,19 +767,19 @@ kundi MonthRangeTestCase(unittest.TestCase):
 
 kundi LeapdaysTestCase(unittest.TestCase):
     eleza test_no_range(self):
-        # test when no range i.e. two identical years as args
+        # test when no range i.e. two identical years kama args
         self.assertEqual(calendar.leapdays(2010,2010), 0)
 
     eleza test_no_leapdays(self):
-        # test when no leap years in range
+        # test when no leap years kwenye range
         self.assertEqual(calendar.leapdays(2010,2011), 0)
 
     eleza test_no_leapdays_upper_boundary(self):
-        # test no leap years in range, when upper boundary is a leap year
+        # test no leap years kwenye range, when upper boundary ni a leap year
         self.assertEqual(calendar.leapdays(2010,2012), 0)
 
     eleza test_one_leapday_lower_boundary(self):
-        # test when one leap year in range, lower boundary is leap year
+        # test when one leap year kwenye range, lower boundary ni leap year
         self.assertEqual(calendar.leapdays(2012,2013), 1)
 
     eleza test_several_leapyears_in_range(self):
@@ -836,15 +836,15 @@ kundi CommandLineTestCase(unittest.TestCase):
         self.assertFailure('--locale')
         self.assertFailure('-L', 'en')
         lang, enc = locale.getdefaultlocale()
-        lang = lang or 'C'
-        enc = enc or 'UTF-8'
-        try:
+        lang = lang ama 'C'
+        enc = enc ama 'UTF-8'
+        jaribu:
             oldlocale = locale.getlocale(locale.LC_TIME)
-            try:
+            jaribu:
                 locale.setlocale(locale.LC_TIME, (lang, enc))
-            finally:
+            mwishowe:
                 locale.setlocale(locale.LC_TIME, oldlocale)
-        except (locale.Error, ValueError):
+        tatizo (locale.Error, ValueError):
             self.skipTest('cannot set the system default locale')
         stdout = self.run_ok('--locale', lang, '--encoding', enc, '2004')
         self.assertIn('2004'.encode(enc), stdout)
@@ -885,12 +885,12 @@ kundi CommandLineTestCase(unittest.TestCase):
         self.assertEqual(stdout, conv(result_2004_text))
         stdout = self.run_ok('--type', 'html', '2004')
         self.assertEqual(stdout[:6], b'<?xml ')
-        self.assertIn(b'<title>Calendar for 2004</title>', stdout)
+        self.assertIn(b'<title>Calendar kila 2004</title>', stdout)
 
     eleza test_html_output_current_year(self):
         stdout = self.run_ok('--type', 'html')
         year = datetime.datetime.now().year
-        self.assertIn(('<title>Calendar for %s</title>' % year).encode(),
+        self.assertIn(('<title>Calendar kila %s</title>' % year).encode(),
                       stdout)
         self.assertIn(b'<tr><th colspan="7" class="month">January</th></tr>',
                       stdout)
@@ -923,7 +923,7 @@ kundi TestSubClassingCase(unittest.TestCase):
     eleza setUp(self):
 
         kundi CustomHTMLCal(calendar.HTMLCalendar):
-            cssclasses = [style + " text-nowrap" for style in
+            cssclasses = [style + " text-nowrap" kila style in
                           calendar.HTMLCalendar.cssclasses]
             cssclasses_weekday_head = ["red", "blue", "green", "lilac",
                                        "yellow", "orange", "pink"]
@@ -948,7 +948,7 @@ kundi TestSubClassingCase(unittest.TestCase):
 
     eleza test_formatweek_head(self):
         header = self.cal.formatweekheader()
-        for color in self.cal.cssclasses_weekday_head:
+        kila color kwenye self.cal.cssclasses_weekday_head:
             self.assertIn('<th class="%s">' % color, header)
 
     eleza test_format_year(self):

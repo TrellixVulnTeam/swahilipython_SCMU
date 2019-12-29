@@ -32,7 +32,7 @@ def _splitparam(param):
     # found in the wild.  We may eventually need a full fledged parser.
     # RDM: we might have a Header here; for now just stringify it.
     a, sep, b = str(param).partition(';')
-    if not sep:
+    if sio sep:
         return a.strip(), None
     return a.strip(), b.strip()
 
@@ -45,39 +45,39 @@ def _formatparam(param, value=None, quote=True):
     be encoded according to RFC2231 rules, using the utf-8 charset and
     a null language.
     """
-    if value is not None and len(value) > 0:
+    if value ni sio None and len(value) > 0:
         # A tuple is used for RFC 2231 encoded parameter values where items
-        # are (charset, language, value).  charset is a string, not a Charset
+        # are (charset, language, value).  charset is a string, sio a Charset
         # instance.  RFC 2231 encoded values are never quoted, per RFC.
         if isinstance(value, tuple):
             # Encode as per RFC 2231
             param += '*'
             value = utils.encode_rfc2231(value[2], value[0], value[1])
             return '%s=%s' % (param, value)
-        else:
-            try:
+        isipokua:
+            jaribu:
                 value.encode('ascii')
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 param += '*'
                 value = utils.encode_rfc2231(value, 'utf-8', '')
                 return '%s=%s' % (param, value)
         # BAW: Please check this.  I think that if quote is set it should
-        # force quoting even if not necessary.
+        # force quoting even if sio necessary.
         if quote or tspecials.search(value):
             return '%s="%s"' % (param, utils.quote(value))
-        else:
+        isipokua:
             return '%s=%s' % (param, value)
-    else:
+    isipokua:
         return param
 
 def _parseparam(s):
     # RDM This might be a Header, so for now stringify it.
     s = ';' + str(s)
     plist = []
-    while s[:1] == ';':
+    wakati s[:1] == ';':
         s = s[1:]
         end = s.find(';')
-        while end > 0 and (s.count('"', 0, end) - s.count('\\"', 0, end)) % 2:
+        wakati end > 0 and (s.count('"', 0, end) - s.count('\\"', 0, end)) % 2:
             end = s.find(';', end + 1)
         if end < 0:
             end = len(s)
@@ -97,7 +97,7 @@ def _unquotevalue(value):
     # the face of RFC 2231 parameters.
     if isinstance(value, tuple):
         return value[0], value[1], utils.unquote(value[2])
-    else:
+    isipokua:
         return utils.unquote(value)
 
 
@@ -139,12 +139,12 @@ class Message:
 
         Optional 'unixfrom', when true, means include the Unix From_ envelope
         header.  For backward compatibility reasons, if maxheaderlen is
-        not specified it defaults to 0, so you must override it explicitly
+        sio specified it defaults to 0, so you must override it explicitly
         if you want a different maxheaderlen.  'policy' is passed to the
         Generator instance used to serialize the mesasge; if it is not
         specified the policy associated with the message instance is used.
 
-        If the message object contains binary data that is not encoded
+        If the message object contains binary data that ni sio encoded
         according to RFC standards, the non-compliant data will be replaced by
         unicode "unknown character" code points.
         """
@@ -168,7 +168,7 @@ class Message:
 
         Optional 'unixfrom', when true, means include the Unix From_ envelope
         header.  'policy' is passed to the BytesGenerator instance used to
-        serialize the message; if not specified the policy associated with
+        serialize the message; if sio specified the policy associated with
         the message instance is used.
         """
         from email.generator import BytesGenerator
@@ -203,11 +203,11 @@ class Message:
         """
         if self._payload is None:
             self._payload = [payload]
-        else:
-            try:
+        isipokua:
+            jaribu:
                 self._payload.append(payload)
-            except AttributeError:
-                raise TypeError("Attach is not valid on a message with a"
+            tatizo AttributeError:
+                raise TypeError("Attach ni sio valid on a message with a"
                                 " non-multipart payload")
 
     def get_payload(self, i=None, decode=False):
@@ -221,7 +221,7 @@ class Message:
         decoded or not, according to the Content-Transfer-Encoding header
         (default is False).
 
-        When True and the message is not a multipart, the payload will be
+        When True and the message ni sio a multipart, the payload will be
         decoded if this header's value is `quoted-printable' or `base64'.  If
         some other encoding is used, or the header is missing, or if the
         payload has bogus data (i.e. bogus base64 or uuencoded data), the
@@ -249,11 +249,11 @@ class Message:
                 return None
             if i is None:
                 return self._payload
-            else:
+            isipokua:
                 return self._payload[i]
         # For backward compatibility, Use isinstance and this error message
         # instead of the more logical is_multipart test.
-        if i is not None and not isinstance(self._payload, list):
+        if i ni sio None and sio isinstance(self._payload, list):
             raise TypeError('Expected list, got %s' % type(self._payload))
         payload = self._payload
         # cte might be a Header, so for now stringify it.
@@ -262,21 +262,21 @@ class Message:
         if isinstance(payload, str):
             if utils._has_surrogates(payload):
                 bpayload = payload.encode('ascii', 'surrogateescape')
-                if not decode:
-                    try:
+                if sio decode:
+                    jaribu:
                         payload = bpayload.decode(self.get_param('charset', 'ascii'), 'replace')
-                    except LookupError:
+                    tatizo LookupError:
                         payload = bpayload.decode('ascii', 'replace')
             lasivyo decode:
-                try:
+                jaribu:
                     bpayload = payload.encode('ascii')
-                except UnicodeError:
+                tatizo UnicodeError:
                     # This won't happen for RFC compliant messages (messages
                     # containing only ASCII code points in the unicode input).
                     # If it does happen, turn the string into bytes in a way
-                    # guaranteed not to fail.
+                    # guaranteed sio to fail.
                     bpayload = payload.encode('raw-unicode-escape')
-        if not decode:
+        if sio decode:
             return payload
         if cte == 'quoted-printable':
             return quopri.decodestring(bpayload)
@@ -290,10 +290,10 @@ class Message:
         lasivyo cte in ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
             in_file = BytesIO(bpayload)
             out_file = BytesIO()
-            try:
+            jaribu:
                 uu.decode(in_file, out_file, quiet=True)
                 return out_file.getvalue()
-            except uu.Error:
+            tatizo uu.Error:
                 # Some decoding problem
                 return bpayload
         if isinstance(payload, str):
@@ -310,14 +310,14 @@ class Message:
             if charset is None:
                 self._payload = payload
                 return
-            if not isinstance(charset, Charset):
+            if sio isinstance(charset, Charset):
                 charset = Charset(charset)
             payload = payload.encode(charset.output_charset)
         if hasattr(payload, 'decode'):
             self._payload = payload.decode('ascii', 'surrogateescape')
-        else:
+        isipokua:
             self._payload = payload
-        if charset is not None:
+        if charset ni sio None:
             self.set_charset(charset)
 
     def set_charset(self, charset):
@@ -338,31 +338,31 @@ class Message:
             self.del_param('charset')
             self._charset = None
             return
-        if not isinstance(charset, Charset):
+        if sio isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
-        if 'MIME-Version' not in self:
+        if 'MIME-Version' haiko kwenye self:
             self.add_header('MIME-Version', '1.0')
-        if 'Content-Type' not in self:
+        if 'Content-Type' haiko kwenye self:
             self.add_header('Content-Type', 'text/plain',
                             charset=charset.get_output_charset())
-        else:
+        isipokua:
             self.set_param('charset', charset.get_output_charset())
         if charset != charset.get_output_charset():
             self._payload = charset.body_encode(self._payload)
-        if 'Content-Transfer-Encoding' not in self:
+        if 'Content-Transfer-Encoding' haiko kwenye self:
             cte = charset.get_body_encoding()
-            try:
+            jaribu:
                 cte(self)
-            except TypeError:
+            tatizo TypeError:
                 # This 'if' is for backward compatibility, it allows unicode
                 # through even though that won't work correctly if the
                 # message is serialized.
                 payload = self._payload
                 if payload:
-                    try:
+                    jaribu:
                         payload = payload.encode('ascii', 'surrogateescape')
-                    except UnicodeError:
+                    tatizo UnicodeError:
                         payload = payload.encode(charset.output_charset)
                 self._payload = charset.body_encode(payload)
                 self.add_header('Content-Transfer-Encoding', cte)
@@ -393,7 +393,7 @@ class Message:
     def __setitem__(self, name, val):
         """Set the value of a header.
 
-        Note: this does not overwrite an existing header with the same field
+        Note: this does sio overwrite an existing header with the same field
         name.  Use __delitem__() first to delete any existing headers.
         """
         max_count = self.policy.header_max_count(name)
@@ -411,7 +411,7 @@ class Message:
     def __delitem__(self, name):
         """Delete all occurrences of a header, if present.
 
-        Does not raise an exception if the header is missing.
+        Does sio raise an exception if the header is missing.
         """
         name = name.lower()
         newheaders = []
@@ -473,11 +473,11 @@ class Message:
 
     #
     # "Internal" methods (public API, but only intended for use by a parser
-    # or generator, not normal application code.
+    # or generator, sio normal application code.
     #
 
     def set_raw(self, name, value):
-        """Store name and value in the model without modification.
+        """Store name and value in the motoa without modification.
 
         This is an "internal" API, intended only for use by a parser.
         """
@@ -508,7 +508,7 @@ class Message:
         for k, v in self._headers:
             if k.lower() == name:
                 values.append(self.policy.header_fetch_parse(k, v))
-        if not values:
+        if sio values:
             return failobj
         return values
 
@@ -536,9 +536,9 @@ class Message:
         for k, v in _params.items():
             if v is None:
                 parts.append(k.replace('_', '-'))
-            else:
+            isipokua:
                 parts.append(_formatparam(k.replace('_', '-'), v))
-        if _value is not None:
+        if _value ni sio None:
             parts.insert(0, _value)
         self[_name] = SEMISPACE.join(parts)
 
@@ -553,8 +553,8 @@ class Message:
         for i, (k, v) in zip(range(len(self._headers)), self._headers):
             if k.lower() == _name:
                 self._headers[i] = self.policy.header_store_parse(k, _value)
-                break
-        else:
+                koma
+        isipokua:
             raise KeyError(_name)
 
     #
@@ -606,7 +606,7 @@ class Message:
     def get_default_type(self):
         """Return the `default' content type.
 
-        Most messages have a default content type of text/plain, except for
+        Most messages have a default content type of text/plain, tatizo for
         messages that are subparts of multipart/digest containers.  Such
         subparts have a default content type of message/rfc822.
         """
@@ -616,7 +616,7 @@ class Message:
         """Set the `default' content type.
 
         ctype should be either "text/plain" or "message/rfc822", although this
-        is not enforced.  The default content type is not stored in the
+        ni sio enforced.  The default content type ni sio stored in the
         Content-Type header.
         """
         self._default_type = ctype
@@ -630,11 +630,11 @@ class Message:
             return failobj
         params = []
         for p in _parseparam(value):
-            try:
+            jaribu:
                 name, val = p.split('=', 1)
                 name = name.strip()
                 val = val.strip()
-            except ValueError:
+            tatizo ValueError:
                 # Must have been a bare attribute
                 name = p.strip()
                 val = ''
@@ -647,7 +647,7 @@ class Message:
 
         The elements of the returned list are 2-tuples of key/value pairs, as
         split on the `=' sign.  The left hand side of the `=' is the key,
-        while the right hand side is the value.  If there is no `=' sign in
+        wakati the right hand side is the value.  If there is no `=' sign in
         the parameter the value is the empty string.  The value is as
         described in the get_param() method.
 
@@ -661,7 +661,7 @@ class Message:
             return failobj
         if unquote:
             return [(k, _unquotevalue(v)) for k, v in params]
-        else:
+        isipokua:
             return params
 
     def get_param(self, param, failobj=None, header='content-type',
@@ -688,13 +688,13 @@ class Message:
             param = email.utils.collapse_rfc2231_value(rawparam)
 
         """
-        if header not in self:
+        if header haiko kwenye self:
             return failobj
         for k, v in self._get_params_preserve(failobj, header):
             if k.lower() == param.lower():
                 if unquote:
                     return _unquotevalue(v)
-                else:
+                isipokua:
                     return v
         return failobj
 
@@ -705,7 +705,7 @@ class Message:
         If the parameter already exists in the header, its value will be
         replaced with the new value.
 
-        If header is Content-Type and has not yet been defined for this
+        If header is Content-Type and has sio yet been defined for this
         message, it will be set to "text/plain" and the new parameter and
         value will be appended as per RFC 2045.
 
@@ -716,37 +716,37 @@ class Message:
         2231.  Optional language specifies the RFC 2231 language, defaulting
         to the empty string.  Both charset and language should be strings.
         """
-        if not isinstance(value, tuple) and charset:
+        if sio isinstance(value, tuple) and charset:
             value = (charset, language, value)
 
-        if header not in self and header.lower() == 'content-type':
+        if header haiko kwenye self and header.lower() == 'content-type':
             ctype = 'text/plain'
-        else:
+        isipokua:
             ctype = self.get(header)
-        if not self.get_param(param, header=header):
-            if not ctype:
+        if sio self.get_param(param, header=header):
+            if sio ctype:
                 ctype = _formatparam(param, value, requote)
-            else:
+            isipokua:
                 ctype = SEMISPACE.join(
                     [ctype, _formatparam(param, value, requote)])
-        else:
+        isipokua:
             ctype = ''
             for old_param, old_value in self.get_params(header=header,
                                                         unquote=requote):
                 append_param = ''
                 if old_param.lower() == param.lower():
                     append_param = _formatparam(param, value, requote)
-                else:
+                isipokua:
                     append_param = _formatparam(old_param, old_value, requote)
-                if not ctype:
+                if sio ctype:
                     ctype = append_param
-                else:
+                isipokua:
                     ctype = SEMISPACE.join([ctype, append_param])
         if ctype != self.get(header):
             if replace:
                 self.replace_header(header, ctype)
-            else:
-                del self[header]
+            isipokua:
+                toa self[header]
                 self[header] = ctype
 
     def del_param(self, param, header='content-type', requote=True):
@@ -757,18 +757,18 @@ class Message:
         False.  Optional header specifies an alternative to the Content-Type
         header.
         """
-        if header not in self:
+        if header haiko kwenye self:
             return
         new_ctype = ''
         for p, v in self.get_params(header=header, unquote=requote):
             if p.lower() != param.lower():
-                if not new_ctype:
+                if sio new_ctype:
                     new_ctype = _formatparam(p, v, requote)
-                else:
+                isipokua:
                     new_ctype = SEMISPACE.join([new_ctype,
                                                 _formatparam(p, v, requote)])
         if new_ctype != self.get(header):
-            del self[header]
+            toa self[header]
             self[header] = new_ctype
 
     def set_type(self, type, header='Content-Type', requote=True):
@@ -787,17 +787,17 @@ class Message:
         header.
         """
         # BAW: should we be strict?
-        if not type.count('/') == 1:
+        if sio type.count('/') == 1:
             raise ValueError
         # Set the Content-Type, you get a MIME-Version
         if header.lower() == 'content-type':
-            del self['mime-version']
+            toa self['mime-version']
             self['MIME-Version'] = '1.0'
-        if header not in self:
+        if header haiko kwenye self:
             self[header] = type
             return
         params = self.get_params(header=header, unquote=requote)
-        del self[header]
+        toa self[header]
         self[header] = type
         # Skip the first param; it's the old type.
         for p, v in params[1:]:
@@ -829,7 +829,7 @@ class Message:
         boundary = self.get_param('boundary', missing)
         if boundary is missing:
             return failobj
-        # RFC 2046 says that boundaries may begin but not end in w/s
+        # RFC 2046 says that boundaries may begin but sio end in w/s
         return utils.collapse_rfc2231_value(boundary).rstrip()
 
     def set_boundary(self, boundary):
@@ -854,9 +854,9 @@ class Message:
             if pk.lower() == 'boundary':
                 newparams.append(('boundary', '"%s"' % boundary))
                 foundp = True
-            else:
+            isipokua:
                 newparams.append((pk, pv))
-        if not foundp:
+        if sio foundp:
             # The original Content-Type header had no boundary attribute.
             # Tack one on the end.  BAW: should we raise an exception
             # instead???
@@ -869,12 +869,12 @@ class Message:
                 for k, v in newparams:
                     if v == '':
                         parts.append(k)
-                    else:
+                    isipokua:
                         parts.append('%s=%s' % (k, v))
                 val = SEMISPACE.join(parts)
                 newheaders.append(self.policy.header_store_parse(h, val))
 
-            else:
+            isipokua:
                 newheaders.append((h, v))
         self._headers = newheaders
 
@@ -892,20 +892,20 @@ class Message:
         if isinstance(charset, tuple):
             # RFC 2231 encoded, so decode it, and it better end up as ascii.
             pcharset = charset[0] or 'us-ascii'
-            try:
+            jaribu:
                 # LookupError will be raised if the charset isn't known to
                 # Python.  UnicodeError will be raised if the encoded text
-                # contains a character not in the charset.
+                # contains a character haiko kwenye the charset.
                 as_bytes = charset[2].encode('raw-unicode-escape')
                 charset = str(as_bytes, pcharset)
-            except (LookupError, UnicodeError):
+            tatizo (LookupError, UnicodeError):
                 charset = charset[2]
         # charset characters must be in us-ascii range
-        try:
+        jaribu:
             charset.encode('us-ascii')
-        except UnicodeError:
+        tatizo UnicodeError:
             return failobj
-        # RFC 2046, $4.1.2 says charsets are not case sensitive
+        # RFC 2046, $4.1.2 says charsets are sio case sensitive
         return charset.lower()
 
     def get_charsets(self, failobj=None):
@@ -917,8 +917,8 @@ class Message:
 
         Each item will either be a string (the value of the charset parameter
         in the Content-Type header of that part) or the value of the
-        'failobj' parameter (defaults to None), if the part does not have a
-        main MIME type of "text", or the charset is not defined.
+        'failobj' parameter (defaults to None), if the part does sio have a
+        main MIME type of "text", or the charset ni sio defined.
 
         The list will contain one string for each part of the message, plus
         one for the container message (i.e. self), so that a non-multipart
@@ -959,7 +959,7 @@ class MIMEPart(Message):
         base Message class, but defaults to None, meaning that the policy value
         for max_line_length controls the header maximum length.  'policy' is
         passed to the Generator instance used to serialize the mesasge; if it
-        is not specified the policy associated with the message instance is
+        ni sio specified the policy associated with the message instance is
         used.
         """
         policy = self.policy if policy is None else policy
@@ -996,11 +996,11 @@ class MIMEPart(Message):
             for subpart in part.iter_parts():
                 if subpart['content-id'] == start:
                     candidate = subpart
-                    break
+                    koma
         if candidate is None:
             subparts = part.get_payload()
             candidate = subparts[0] if subparts else None
-        if candidate is not None:
+        if candidate ni sio None:
             yield from self._find_body(candidate, preferencelist)
 
     def get_body(self, preferencelist=('related', 'html', 'plain')):
@@ -1009,7 +1009,7 @@ class MIMEPart(Message):
         Do a depth first search, starting with self, looking for the first part
         matching each of the items in preferencelist, and return the part
         corresponding to the first item that has a match, or None if no items
-        have a match.  If 'related' is not included in preferencelist, consider
+        have a match.  If 'related' ni sio included in preferencelist, consider
         the root part of any multipart/related encountered as a candidate
         match.  Ignore parts with 'Content-Disposition: attachment'.
         """
@@ -1020,7 +1020,7 @@ class MIMEPart(Message):
                 best_prio = prio
                 body = part
                 if prio == 0:
-                    break
+                    koma
         return body
 
     _body_types = {('text', 'plain'),
@@ -1034,7 +1034,7 @@ class MIMEPart(Message):
         multipart/related, or multipart/alternative in the multipart (unless
         they have a 'Content-Disposition: attachment' header) and include all
         remaining subparts in the returned iterator.  When applied to a
-        multipart/related, return all parts except the root part.  Return an
+        multipart/related, return all parts tatizo the root part.  Return an
         empty iterator when applied to a multipart/alternative or a
         non-multipart.
         """
@@ -1045,10 +1045,10 @@ class MIMEPart(Message):
         # Certain malformed messages can have content type set to `multipart/*`
         # but still have single part body, in which case payload.copy() can
         # fail with AttributeError.
-        try:
+        jaribu:
             parts = payload.copy()
-        except AttributeError:
-            # payload is not a list, it is most probably a string.
+        tatizo AttributeError:
+            # payload ni sio a list, it is most probably a string.
             return
 
         if maintype == 'multipart' and subtype == 'related':
@@ -1062,7 +1062,7 @@ class MIMEPart(Message):
                 for part in parts:
                     if part.get('content-id') == start:
                         found = True
-                    else:
+                    isipokua:
                         attachments.append(part)
                 if found:
                     yield from attachments
@@ -1077,9 +1077,9 @@ class MIMEPart(Message):
         for part in parts:
             maintype, subtype = part.get_content_type().split('/')
             if ((maintype, subtype) in self._body_types and
-                    not part.is_attachment() and subtype not in seen):
+                    sio part.is_attachment() and subtype haiko kwenye seen):
                 seen.append(subtype)
-                continue
+                endelea
             yield part
 
     def iter_parts(self):
@@ -1112,7 +1112,7 @@ class MIMEPart(Message):
         for name, value in self._headers:
             if name.lower().startswith('content-'):
                 part_headers.append((name, value))
-            else:
+            isipokua:
                 keep_headers.append((name, value))
         if part_headers:
             # There is existing content, move it to the first subpart.
@@ -1120,11 +1120,11 @@ class MIMEPart(Message):
             part._headers = part_headers
             part._payload = self._payload
             self._payload = [part]
-        else:
+        isipokua:
             self._payload = []
         self._headers = keep_headers
         self['Content-Type'] = 'multipart/' + subtype
-        if boundary is not None:
+        if boundary ni sio None:
             self.set_param('boundary', boundary)
 
     def make_related(self, boundary=None):
@@ -1142,7 +1142,7 @@ class MIMEPart(Message):
             getattr(self, 'make_' + _subtype)()
         part = type(self)(policy=self.policy)
         part.set_content(*args, **kw)
-        if _disp and 'content-disposition' not in part:
+        if _disp and 'content-disposition' haiko kwenye part:
             part['Content-Disposition'] = _disp
         self.attach(part)
 
@@ -1161,7 +1161,7 @@ class MIMEPart(Message):
 
     def clear_content(self):
         self._headers = [(n, v) for n, v in self._headers
-                         if not n.lower().startswith('content-')]
+                         if sio n.lower().startswith('content-')]
         self._payload = None
 
 
@@ -1169,5 +1169,5 @@ class EmailMessage(MIMEPart):
 
     def set_content(self, *args, **kw):
         super().set_content(*args, **kw)
-        if 'MIME-Version' not in self:
+        if 'MIME-Version' haiko kwenye self:
             self['MIME-Version'] = '1.0'

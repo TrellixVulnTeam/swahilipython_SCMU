@@ -1,12 +1,12 @@
-"""Internationalization and localization support.
+"""Internationalization na localization support.
 
-This module provides internationalization (I18N) and localization (L10N)
-support for your Python programs by providing an interface to the GNU gettext
+This module provides internationalization (I18N) na localization (L10N)
+support kila your Python programs by providing an interface to the GNU gettext
 message catalog library.
 
-I18N refers to the operation by which a program is made aware of multiple
+I18N refers to the operation by which a program ni made aware of multiple
 languages.  L10N refers to the adaptation of your program, once
-internationalized, to the local language and cultural habits.
+internationalized, to the local language na cultural habits.
 
 """
 
@@ -23,23 +23,23 @@ internationalized, to the local language and cultural habits.
 #
 # James Henstridge, who also wrote a gettext.py module, which has some
 # interesting, but currently unsupported experimental features: the notion of
-# a Catalog kundi and instances, and the ability to add to a catalog file via
+# a Catalog kundi na instances, na the ability to add to a catalog file via
 # a Python API.
 #
-# Barry Warsaw integrated these modules, wrote the .install() API and code,
-# and conformed all C and Python code to Python's coding standards.
+# Barry Warsaw integrated these modules, wrote the .install() API na code,
+# na conformed all C na Python code to Python's coding standards.
 #
-# Francois Pinard and Marc-Andre Lemburg also contributed valuably to this
+# Francois Pinard na Marc-Andre Lemburg also contributed valuably to this
 # module.
 #
 # J. David Ibanez implemented plural forms. Bruno Haible fixed some bugs.
 #
 # TODO:
-# - Lazy loading of .mo files.  Currently the entire catalog is loaded into
-#   memory, but that's probably bad for large translated programs.  Instead,
-#   the lexical sort of original strings in GNU .mo files should be exploited
-#   to do binary searches and lazy initializations.  Or you might want to use
-#   the undocumented double-hash algorithm for .mo files with hash tables, but
+# - Lazy loading of .mo files.  Currently the entire catalog ni loaded into
+#   memory, but that's probably bad kila large translated programs.  Instead,
+#   the lexical sort of original strings kwenye GNU .mo files should be exploited
+#   to do binary searches na lazy initializations.  Or you might want to use
+#   the undocumented double-hash algorithm kila .mo files with hash tables, but
 #   you'll need to study the GNU gettext code to do this.
 #
 # - Support Solaris .mo file formats.  Unfortunately, we've been unable to
@@ -62,43 +62,43 @@ __all__ = ['NullTranslations', 'GNUTranslations', 'Catalog',
 
 _default_localedir = os.path.join(sys.base_prefix, 'share', 'locale')
 
-# Expression parsing for plural form selection.
+# Expression parsing kila plural form selection.
 #
 # The gettext library supports a small subset of C syntax.  The only
-# incompatible difference is that integer literals starting with zero are
+# incompatible difference ni that integer literals starting with zero are
 # decimal.
 #
 # https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms
 # http://git.savannah.gnu.org/cgit/gettext.git/tree/gettext-runtime/intl/plural.y
 
 _token_pattern = re.compile(r"""
-        (?P<WHITESPACES>[ \t]+)                    | # spaces and horizontal tabs
+        (?P<WHITESPACES>[ \t]+)                    | # spaces na horizontal tabs
         (?P<NUMBER>[0-9]+\b)                       | # decimal integer
-        (?P<NAME>n\b)                              | # only n is allowed
+        (?P<NAME>n\b)                              | # only n ni allowed
         (?P<PARENTHESIS>[()])                      |
         (?P<OPERATOR>[-*/%+?:]|[><!]=?|==|&&|\|\|) | # !, *, /, %, +, -, <, >,
                                                      # <=, >=, ==, !=, &&, ||,
                                                      # ? :
-                                                     # unary and bitwise ops
-                                                     # not allowed
+                                                     # unary na bitwise ops
+                                                     # sio allowed
         (?P<INVALID>\w+|.)                           # invalid token
     """, re.VERBOSE|re.DOTALL)
 
 eleza _tokenize(plural):
-    for mo in re.finditer(_token_pattern, plural):
+    kila mo kwenye re.finditer(_token_pattern, plural):
         kind = mo.lastgroup
         ikiwa kind == 'WHITESPACES':
-            continue
+            endelea
         value = mo.group(kind)
         ikiwa kind == 'INVALID':
-            raise ValueError('invalid token in plural form: %s' % value)
-        yield value
-    yield ''
+            ashiria ValueError('invalid token kwenye plural form: %s' % value)
+        tuma value
+    tuma ''
 
 eleza _error(value):
     ikiwa value:
-        rudisha ValueError('unexpected token in plural form: %s' % value)
-    else:
+        rudisha ValueError('unexpected token kwenye plural form: %s' % value)
+    isipokua:
         rudisha ValueError('unexpected end of plural form')
 
 _binary_ops = (
@@ -109,13 +109,13 @@ _binary_ops = (
     ('+', '-'),
     ('*', '/', '%'),
 )
-_binary_ops = {op: i for i, ops in enumerate(_binary_ops, 1) for op in ops}
+_binary_ops = {op: i kila i, ops kwenye enumerate(_binary_ops, 1) kila op kwenye ops}
 _c2py_ops = {'||': 'or', '&&': 'and', '/': '//'}
 
 eleza _parse(tokens, priority=-1):
     result = ''
     nexttok = next(tokens)
-    while nexttok == '!':
+    wakati nexttok == '!':
         result += 'not '
         nexttok = next(tokens)
 
@@ -123,24 +123,24 @@ eleza _parse(tokens, priority=-1):
         sub, nexttok = _parse(tokens)
         result = '%s(%s)' % (result, sub)
         ikiwa nexttok != ')':
-            raise ValueError('unbalanced parenthesis in plural form')
+            ashiria ValueError('unbalanced parenthesis kwenye plural form')
     elikiwa nexttok == 'n':
         result = '%s%s' % (result, nexttok)
-    else:
-        try:
+    isipokua:
+        jaribu:
             value = int(nexttok, 10)
-        except ValueError:
-            raise _error(nexttok) kutoka None
+        tatizo ValueError:
+            ashiria _error(nexttok) kutoka Tupu
         result = '%s%d' % (result, value)
     nexttok = next(tokens)
 
     j = 100
-    while nexttok in _binary_ops:
+    wakati nexttok kwenye _binary_ops:
         i = _binary_ops[nexttok]
         ikiwa i < priority:
-            break
+            koma
         # Break chained comparisons
-        ikiwa i in (3, 4) and j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
+        ikiwa i kwenye (3, 4) na j kwenye (3, 4):  # '==', '!=', '<', '>', '<=', '>='
             result = '(%s)' % result
         # Replace some C operators by their Python equivalents
         op = _c2py_ops.get(nexttok, nexttok)
@@ -150,10 +150,10 @@ eleza _parse(tokens, priority=-1):
     ikiwa j == priority == 4:  # '<', '>', '<=', '>='
         result = '(%s)' % result
 
-    ikiwa nexttok == '?' and priority <= 0:
+    ikiwa nexttok == '?' na priority <= 0:
         if_true, nexttok = _parse(tokens, 0)
         ikiwa nexttok != ':':
-            raise _error(nexttok)
+            ashiria _error(nexttok)
         if_false, nexttok = _parse(tokens)
         result = '%s ikiwa %s else %s' % (if_true, result, if_false)
         ikiwa priority == 0:
@@ -162,11 +162,11 @@ eleza _parse(tokens, priority=-1):
     rudisha result, nexttok
 
 eleza _as_int(n):
-    try:
+    jaribu:
         i = round(n)
-    except TypeError:
-        raise TypeError('Plural value must be an integer, got %s' %
-                        (n.__class__.__name__,)) kutoka None
+    tatizo TypeError:
+        ashiria TypeError('Plural value must be an integer, got %s' %
+                        (n.__class__.__name__,)) kutoka Tupu
     agiza warnings
     warnings.warn('Plural value must be an integer, got %s' %
                   (n.__class__.__name__,),
@@ -174,39 +174,39 @@ eleza _as_int(n):
     rudisha n
 
 eleza c2py(plural):
-    """Gets a C expression as used in PO files for plural forms and returns a
+    """Gets a C expression kama used kwenye PO files kila plural forms na rudishas a
     Python function that implements an equivalent expression.
     """
 
     ikiwa len(plural) > 1000:
-        raise ValueError('plural form expression is too long')
-    try:
+        ashiria ValueError('plural form expression ni too long')
+    jaribu:
         result, nexttok = _parse(_tokenize(plural))
         ikiwa nexttok:
-            raise _error(nexttok)
+            ashiria _error(nexttok)
 
         depth = 0
-        for c in result:
+        kila c kwenye result:
             ikiwa c == '(':
                 depth += 1
                 ikiwa depth > 20:
-                    # Python compiler limit is about 90.
+                    # Python compiler limit ni about 90.
                     # The most complex example has 2.
-                    raise ValueError('plural form expression is too complex')
+                    ashiria ValueError('plural form expression ni too complex')
             elikiwa c == ')':
                 depth -= 1
 
         ns = {'_as_int': _as_int}
-        exec('''ikiwa True:
+        exec('''ikiwa Kweli:
             eleza func(n):
-                ikiwa not isinstance(n, int):
+                ikiwa sio isinstance(n, int):
                     n = _as_int(n)
                 rudisha int(%s)
             ''' % result, ns)
         rudisha ns['func']
-    except RecursionError:
-        # Recursion error can be raised in _parse() or exec().
-        raise ValueError('plural form expression is too complex')
+    tatizo RecursionError:
+        # Recursion error can be ashiriad kwenye _parse() ama exec().
+        ashiria ValueError('plural form expression ni too complex')
 
 
 eleza _expand_lang(loc):
@@ -221,26 +221,26 @@ eleza _expand_lang(loc):
         modifier = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_MODIFIER
-    else:
+    isipokua:
         modifier = ''
     pos = loc.find('.')
     ikiwa pos >= 0:
         codeset = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_CODESET
-    else:
+    isipokua:
         codeset = ''
     pos = loc.find('_')
     ikiwa pos >= 0:
         territory = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_TERRITORY
-    else:
+    isipokua:
         territory = ''
     language = loc
     ret = []
-    for i in range(mask+1):
-        ikiwa not (i & ~mask):  # ikiwa all components for this combo exist ...
+    kila i kwenye range(mask+1):
+        ikiwa sio (i & ~mask):  # ikiwa all components kila this combo exist ...
             val = language
             ikiwa i & COMPONENT_TERRITORY: val += territory
             ikiwa i & COMPONENT_CODESET:   val += codeset
@@ -252,21 +252,21 @@ eleza _expand_lang(loc):
 
 
 kundi NullTranslations:
-    eleza __init__(self, fp=None):
+    eleza __init__(self, fp=Tupu):
         self._info = {}
-        self._charset = None
-        self._output_charset = None
-        self._fallback = None
-        ikiwa fp is not None:
+        self._charset = Tupu
+        self._output_charset = Tupu
+        self._fallback = Tupu
+        ikiwa fp ni sio Tupu:
             self._parse(fp)
 
     eleza _parse(self, fp):
-        pass
+        pita
 
     eleza add_fallback(self, fallback):
         ikiwa self._fallback:
             self._fallback.add_fallback(fallback)
-        else:
+        isipokua:
             self._fallback = fallback
 
     eleza gettext(self, message):
@@ -276,7 +276,7 @@ kundi NullTranslations:
 
     eleza lgettext(self, message):
         agiza warnings
-        warnings.warn('lgettext() is deprecated, use gettext() instead',
+        warnings.warn('lgettext() ni deprecated, use gettext() instead',
                       DeprecationWarning, 2)
         ikiwa self._fallback:
             with warnings.catch_warnings():
@@ -292,12 +292,12 @@ kundi NullTranslations:
             rudisha self._fallback.ngettext(msgid1, msgid2, n)
         ikiwa n == 1:
             rudisha msgid1
-        else:
+        isipokua:
             rudisha msgid2
 
     eleza lngettext(self, msgid1, msgid2, n):
         agiza warnings
-        warnings.warn('lngettext() is deprecated, use ngettext() instead',
+        warnings.warn('lngettext() ni deprecated, use ngettext() instead',
                       DeprecationWarning, 2)
         ikiwa self._fallback:
             with warnings.catch_warnings():
@@ -306,7 +306,7 @@ kundi NullTranslations:
                 rudisha self._fallback.lngettext(msgid1, msgid2, n)
         ikiwa n == 1:
             tmsg = msgid1
-        else:
+        isipokua:
             tmsg = msgid2
         ikiwa self._output_charset:
             rudisha tmsg.encode(self._output_charset)
@@ -322,7 +322,7 @@ kundi NullTranslations:
             rudisha self._fallback.npgettext(context, msgid1, msgid2, n)
         ikiwa n == 1:
             rudisha msgid1
-        else:
+        isipokua:
             rudisha msgid2
 
     eleza info(self):
@@ -333,23 +333,23 @@ kundi NullTranslations:
 
     eleza output_charset(self):
         agiza warnings
-        warnings.warn('output_charset() is deprecated',
+        warnings.warn('output_charset() ni deprecated',
                       DeprecationWarning, 2)
         rudisha self._output_charset
 
     eleza set_output_charset(self, charset):
         agiza warnings
-        warnings.warn('set_output_charset() is deprecated',
+        warnings.warn('set_output_charset() ni deprecated',
                       DeprecationWarning, 2)
         self._output_charset = charset
 
-    eleza install(self, names=None):
+    eleza install(self, names=Tupu):
         agiza builtins
         builtins.__dict__['_'] = self.gettext
-        ikiwa names is not None:
+        ikiwa names ni sio Tupu:
             allowed = {'gettext', 'lgettext', 'lngettext',
                        'ngettext', 'npgettext', 'pgettext'}
-            for name in allowed & set(names):
+            kila name kwenye allowed & set(names):
                 builtins.__dict__[name] = getattr(self, name)
 
 
@@ -358,7 +358,7 @@ kundi GNUTranslations(NullTranslations):
     LE_MAGIC = 0x950412de
     BE_MAGIC = 0xde120495
 
-    # The encoding of a msgctxt and a msgid in a .mo file is
+    # The encoding of a msgctxt na a msgid kwenye a .mo file is
     # msgctxt + "\x04" + msgid (gettext version >= 0.15)
     CONTEXT = "%s\x04%s"
 
@@ -371,8 +371,8 @@ kundi GNUTranslations(NullTranslations):
 
     eleza _parse(self, fp):
         """Override this method to support alternative .mo formats."""
-        # Delay struct agiza for speeding up gettext agiza when .mo files
-        # are not used.
+        # Delay struct agiza kila speeding up gettext agiza when .mo files
+        # are sio used.
         kutoka struct agiza unpack
         filename = getattr(fp, 'name', '')
         # Parse the .mo file header, which consists of 5 little endian 32
@@ -381,7 +381,7 @@ kundi GNUTranslations(NullTranslations):
         self.plural = lambda n: int(n != 1) # germanic plural by default
         buf = fp.read()
         buflen = len(buf)
-        # Are we big endian or little endian?
+        # Are we big endian ama little endian?
         magic = unpack('<I', buf[:4])[0]
         ikiwa magic == self.LE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('<4I', buf[4:20])
@@ -389,39 +389,39 @@ kundi GNUTranslations(NullTranslations):
         elikiwa magic == self.BE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('>4I', buf[4:20])
             ii = '>II'
-        else:
-            raise OSError(0, 'Bad magic number', filename)
+        isipokua:
+            ashiria OSError(0, 'Bad magic number', filename)
 
         major_version, minor_version = self._get_versions(version)
 
-        ikiwa major_version not in self.VERSIONS:
-            raise OSError(0, 'Bad version number ' + str(major_version), filename)
+        ikiwa major_version haiko kwenye self.VERSIONS:
+            ashiria OSError(0, 'Bad version number ' + str(major_version), filename)
 
         # Now put all messages kutoka the .mo file buffer into the catalog
         # dictionary.
-        for i in range(0, msgcount):
+        kila i kwenye range(0, msgcount):
             mlen, moff = unpack(ii, buf[masteridx:masteridx+8])
             mend = moff + mlen
             tlen, toff = unpack(ii, buf[transidx:transidx+8])
             tend = toff + tlen
-            ikiwa mend < buflen and tend < buflen:
+            ikiwa mend < buflen na tend < buflen:
                 msg = buf[moff:mend]
                 tmsg = buf[toff:tend]
-            else:
-                raise OSError(0, 'File is corrupt', filename)
-            # See ikiwa we're looking at GNU .mo conventions for metadata
+            isipokua:
+                ashiria OSError(0, 'File ni corrupt', filename)
+            # See ikiwa we're looking at GNU .mo conventions kila metadata
             ikiwa mlen == 0:
                 # Catalog description
-                lastk = None
-                for b_item in tmsg.split(b'\n'):
+                lastk = Tupu
+                kila b_item kwenye tmsg.split(b'\n'):
                     item = b_item.decode().strip()
-                    ikiwa not item:
-                        continue
+                    ikiwa sio item:
+                        endelea
                     # Skip over comment lines:
-                    ikiwa item.startswith('#-#-#-#-#') and item.endswith('#-#-#-#-#'):
-                        continue
-                    k = v = None
-                    ikiwa ':' in item:
+                    ikiwa item.startswith('#-#-#-#-#') na item.endswith('#-#-#-#-#'):
+                        endelea
+                    k = v = Tupu
+                    ikiwa ':' kwenye item:
                         k, v = item.split(':', 1)
                         k = k.strip().lower()
                         v = v.strip()
@@ -435,36 +435,36 @@ kundi GNUTranslations(NullTranslations):
                         v = v.split(';')
                         plural = v[1].split('plural=')[1]
                         self.plural = c2py(plural)
-            # Note: we unconditionally convert both msgids and msgstrs to
-            # Unicode using the character encoding specified in the charset
+            # Note: we unconditionally convert both msgids na msgstrs to
+            # Unicode using the character encoding specified kwenye the charset
             # parameter of the Content-Type header.  The gettext documentation
             # strongly encourages msgids to be us-ascii, but some applications
-            # require alternative encodings (e.g. Zope's ZCML and ZPT).  For
+            # require alternative encodings (e.g. Zope's ZCML na ZPT).  For
             # traditional gettext applications, the msgid conversion will
             # cause no problems since us-ascii should always be a subset of
             # the charset encoding.  We may want to fall back to 8-bit msgids
             # ikiwa the Unicode conversion fails.
-            charset = self._charset or 'ascii'
-            ikiwa b'\x00' in msg:
+            charset = self._charset ama 'ascii'
+            ikiwa b'\x00' kwenye msg:
                 # Plural forms
                 msgid1, msgid2 = msg.split(b'\x00')
                 tmsg = tmsg.split(b'\x00')
                 msgid1 = str(msgid1, charset)
-                for i, x in enumerate(tmsg):
+                kila i, x kwenye enumerate(tmsg):
                     catalog[(msgid1, i)] = str(x, charset)
-            else:
+            isipokua:
                 catalog[str(msg, charset)] = str(tmsg, charset)
-            # advance to next entry in the seek tables
+            # advance to next entry kwenye the seek tables
             masteridx += 8
             transidx += 8
 
     eleza lgettext(self, message):
         agiza warnings
-        warnings.warn('lgettext() is deprecated, use gettext() instead',
+        warnings.warn('lgettext() ni deprecated, use gettext() instead',
                       DeprecationWarning, 2)
         missing = object()
         tmsg = self._catalog.get(message, missing)
-        ikiwa tmsg is missing:
+        ikiwa tmsg ni missing:
             ikiwa self._fallback:
                 rudisha self._fallback.lgettext(message)
             tmsg = message
@@ -474,16 +474,16 @@ kundi GNUTranslations(NullTranslations):
 
     eleza lngettext(self, msgid1, msgid2, n):
         agiza warnings
-        warnings.warn('lngettext() is deprecated, use ngettext() instead',
+        warnings.warn('lngettext() ni deprecated, use ngettext() instead',
                       DeprecationWarning, 2)
-        try:
+        jaribu:
             tmsg = self._catalog[(msgid1, self.plural(n))]
-        except KeyError:
+        tatizo KeyError:
             ikiwa self._fallback:
                 rudisha self._fallback.lngettext(msgid1, msgid2, n)
             ikiwa n == 1:
                 tmsg = msgid1
-            else:
+            isipokua:
                 tmsg = msgid2
         ikiwa self._output_charset:
             rudisha tmsg.encode(self._output_charset)
@@ -492,21 +492,21 @@ kundi GNUTranslations(NullTranslations):
     eleza gettext(self, message):
         missing = object()
         tmsg = self._catalog.get(message, missing)
-        ikiwa tmsg is missing:
+        ikiwa tmsg ni missing:
             ikiwa self._fallback:
                 rudisha self._fallback.gettext(message)
             rudisha message
         rudisha tmsg
 
     eleza ngettext(self, msgid1, msgid2, n):
-        try:
+        jaribu:
             tmsg = self._catalog[(msgid1, self.plural(n))]
-        except KeyError:
+        tatizo KeyError:
             ikiwa self._fallback:
                 rudisha self._fallback.ngettext(msgid1, msgid2, n)
             ikiwa n == 1:
                 tmsg = msgid1
-            else:
+            isipokua:
                 tmsg = msgid2
         rudisha tmsg
 
@@ -514,7 +514,7 @@ kundi GNUTranslations(NullTranslations):
         ctxt_msg_id = self.CONTEXT % (context, message)
         missing = object()
         tmsg = self._catalog.get(ctxt_msg_id, missing)
-        ikiwa tmsg is missing:
+        ikiwa tmsg ni missing:
             ikiwa self._fallback:
                 rudisha self._fallback.pgettext(context, message)
             rudisha message
@@ -522,191 +522,191 @@ kundi GNUTranslations(NullTranslations):
 
     eleza npgettext(self, context, msgid1, msgid2, n):
         ctxt_msg_id = self.CONTEXT % (context, msgid1)
-        try:
+        jaribu:
             tmsg = self._catalog[ctxt_msg_id, self.plural(n)]
-        except KeyError:
+        tatizo KeyError:
             ikiwa self._fallback:
                 rudisha self._fallback.npgettext(context, msgid1, msgid2, n)
             ikiwa n == 1:
                 tmsg = msgid1
-            else:
+            isipokua:
                 tmsg = msgid2
         rudisha tmsg
 
 
 # Locate a .mo file using the gettext strategy
-eleza find(domain, localedir=None, languages=None, all=False):
-    # Get some reasonable defaults for arguments that were not supplied
-    ikiwa localedir is None:
+eleza find(domain, localedir=Tupu, languages=Tupu, all=Uongo):
+    # Get some reasonable defaults kila arguments that were sio supplied
+    ikiwa localedir ni Tupu:
         localedir = _default_localedir
-    ikiwa languages is None:
+    ikiwa languages ni Tupu:
         languages = []
-        for envar in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
+        kila envar kwenye ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
             val = os.environ.get(envar)
             ikiwa val:
                 languages = val.split(':')
-                break
-        ikiwa 'C' not in languages:
+                koma
+        ikiwa 'C' haiko kwenye languages:
             languages.append('C')
-    # now normalize and expand the languages
+    # now normalize na expand the languages
     nelangs = []
-    for lang in languages:
-        for nelang in _expand_lang(lang):
-            ikiwa nelang not in nelangs:
+    kila lang kwenye languages:
+        kila nelang kwenye _expand_lang(lang):
+            ikiwa nelang haiko kwenye nelangs:
                 nelangs.append(nelang)
     # select a language
     ikiwa all:
         result = []
-    else:
-        result = None
-    for lang in nelangs:
+    isipokua:
+        result = Tupu
+    kila lang kwenye nelangs:
         ikiwa lang == 'C':
-            break
+            koma
         mofile = os.path.join(localedir, lang, 'LC_MESSAGES', '%s.mo' % domain)
         ikiwa os.path.exists(mofile):
             ikiwa all:
                 result.append(mofile)
-            else:
+            isipokua:
                 rudisha mofile
     rudisha result
 
 
 
-# a mapping between absolute .mo file path and Translation object
+# a mapping between absolute .mo file path na Translation object
 _translations = {}
 _unspecified = ['unspecified']
 
-eleza translation(domain, localedir=None, languages=None,
-                class_=None, fallback=False, codeset=_unspecified):
-    ikiwa class_ is None:
+eleza translation(domain, localedir=Tupu, languages=Tupu,
+                class_=Tupu, fallback=Uongo, codeset=_unspecified):
+    ikiwa class_ ni Tupu:
         class_ = GNUTranslations
-    mofiles = find(domain, localedir, languages, all=True)
-    ikiwa not mofiles:
+    mofiles = find(domain, localedir, languages, all=Kweli)
+    ikiwa sio mofiles:
         ikiwa fallback:
             rudisha NullTranslations()
         kutoka errno agiza ENOENT
-        raise FileNotFoundError(ENOENT,
-                                'No translation file found for domain', domain)
-    # Avoid opening, reading, and parsing the .mo file after it's been done
+        ashiria FileNotFoundError(ENOENT,
+                                'No translation file found kila domain', domain)
+    # Avoid opening, reading, na parsing the .mo file after it's been done
     # once.
-    result = None
-    for mofile in mofiles:
+    result = Tupu
+    kila mofile kwenye mofiles:
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
-        ikiwa t is None:
-            with open(mofile, 'rb') as fp:
+        ikiwa t ni Tupu:
+            with open(mofile, 'rb') kama fp:
                 t = _translations.setdefault(key, class_(fp))
         # Copy the translation object to allow setting fallbacks and
-        # output charset. All other instance data is shared with the
+        # output charset. All other instance data ni shared with the
         # cached object.
-        # Delay copy agiza for speeding up gettext agiza when .mo files
-        # are not used.
+        # Delay copy agiza kila speeding up gettext agiza when .mo files
+        # are sio used.
         agiza copy
         t = copy.copy(t)
-        ikiwa codeset is not _unspecified:
+        ikiwa codeset ni sio _unspecified:
             agiza warnings
-            warnings.warn('parameter codeset is deprecated',
+            warnings.warn('parameter codeset ni deprecated',
                           DeprecationWarning, 2)
             ikiwa codeset:
                 with warnings.catch_warnings():
                     warnings.filterwarnings('ignore', r'.*\bset_output_charset\b.*',
                                             DeprecationWarning)
                     t.set_output_charset(codeset)
-        ikiwa result is None:
+        ikiwa result ni Tupu:
             result = t
-        else:
+        isipokua:
             result.add_fallback(t)
     rudisha result
 
 
-eleza install(domain, localedir=None, codeset=_unspecified, names=None):
-    t = translation(domain, localedir, fallback=True, codeset=codeset)
+eleza install(domain, localedir=Tupu, codeset=_unspecified, names=Tupu):
+    t = translation(domain, localedir, fallback=Kweli, codeset=codeset)
     t.install(names)
 
 
 
-# a mapping b/w domains and locale directories
+# a mapping b/w domains na locale directories
 _localedirs = {}
-# a mapping b/w domains and codesets
+# a mapping b/w domains na codesets
 _localecodesets = {}
-# current global domain, `messages' used for compatibility w/ GNU gettext
+# current global domain, `messages' used kila compatibility w/ GNU gettext
 _current_domain = 'messages'
 
 
-eleza textdomain(domain=None):
+eleza textdomain(domain=Tupu):
     global _current_domain
-    ikiwa domain is not None:
+    ikiwa domain ni sio Tupu:
         _current_domain = domain
     rudisha _current_domain
 
 
-eleza bindtextdomain(domain, localedir=None):
+eleza bindtextdomain(domain, localedir=Tupu):
     global _localedirs
-    ikiwa localedir is not None:
+    ikiwa localedir ni sio Tupu:
         _localedirs[domain] = localedir
     rudisha _localedirs.get(domain, _default_localedir)
 
 
-eleza bind_textdomain_codeset(domain, codeset=None):
+eleza bind_textdomain_codeset(domain, codeset=Tupu):
     agiza warnings
-    warnings.warn('bind_textdomain_codeset() is deprecated',
+    warnings.warn('bind_textdomain_codeset() ni deprecated',
                   DeprecationWarning, 2)
     global _localecodesets
-    ikiwa codeset is not None:
+    ikiwa codeset ni sio Tupu:
         _localecodesets[domain] = codeset
     rudisha _localecodesets.get(domain)
 
 
 eleza dgettext(domain, message):
-    try:
-        t = translation(domain, _localedirs.get(domain, None))
-    except OSError:
+    jaribu:
+        t = translation(domain, _localedirs.get(domain, Tupu))
+    tatizo OSError:
         rudisha message
     rudisha t.gettext(message)
 
 eleza ldgettext(domain, message):
     agiza warnings
-    warnings.warn('ldgettext() is deprecated, use dgettext() instead',
+    warnings.warn('ldgettext() ni deprecated, use dgettext() instead',
                   DeprecationWarning, 2)
     codeset = _localecodesets.get(domain)
-    try:
+    jaribu:
         with warnings.catch_warnings():
             warnings.filterwarnings('ignore', r'.*\bparameter codeset\b.*',
                                     DeprecationWarning)
-            t = translation(domain, _localedirs.get(domain, None), codeset=codeset)
-    except OSError:
-        rudisha message.encode(codeset or locale.getpreferredencoding())
+            t = translation(domain, _localedirs.get(domain, Tupu), codeset=codeset)
+    tatizo OSError:
+        rudisha message.encode(codeset ama locale.getpreferredencoding())
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\blgettext\b.*',
                                 DeprecationWarning)
         rudisha t.lgettext(message)
 
 eleza dngettext(domain, msgid1, msgid2, n):
-    try:
-        t = translation(domain, _localedirs.get(domain, None))
-    except OSError:
+    jaribu:
+        t = translation(domain, _localedirs.get(domain, Tupu))
+    tatizo OSError:
         ikiwa n == 1:
             rudisha msgid1
-        else:
+        isipokua:
             rudisha msgid2
     rudisha t.ngettext(msgid1, msgid2, n)
 
 eleza ldngettext(domain, msgid1, msgid2, n):
     agiza warnings
-    warnings.warn('ldngettext() is deprecated, use dngettext() instead',
+    warnings.warn('ldngettext() ni deprecated, use dngettext() instead',
                   DeprecationWarning, 2)
     codeset = _localecodesets.get(domain)
-    try:
+    jaribu:
         with warnings.catch_warnings():
             warnings.filterwarnings('ignore', r'.*\bparameter codeset\b.*',
                                     DeprecationWarning)
-            t = translation(domain, _localedirs.get(domain, None), codeset=codeset)
-    except OSError:
+            t = translation(domain, _localedirs.get(domain, Tupu), codeset=codeset)
+    tatizo OSError:
         ikiwa n == 1:
             tmsg = msgid1
-        else:
+        isipokua:
             tmsg = msgid2
-        rudisha tmsg.encode(codeset or locale.getpreferredencoding())
+        rudisha tmsg.encode(codeset ama locale.getpreferredencoding())
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\blngettext\b.*',
                                 DeprecationWarning)
@@ -714,20 +714,20 @@ eleza ldngettext(domain, msgid1, msgid2, n):
 
 
 eleza dpgettext(domain, context, message):
-    try:
-        t = translation(domain, _localedirs.get(domain, None))
-    except OSError:
+    jaribu:
+        t = translation(domain, _localedirs.get(domain, Tupu))
+    tatizo OSError:
         rudisha message
     rudisha t.pgettext(context, message)
 
 
 eleza dnpgettext(domain, context, msgid1, msgid2, n):
-    try:
-        t = translation(domain, _localedirs.get(domain, None))
-    except OSError:
+    jaribu:
+        t = translation(domain, _localedirs.get(domain, Tupu))
+    tatizo OSError:
         ikiwa n == 1:
             rudisha msgid1
-        else:
+        isipokua:
             rudisha msgid2
     rudisha t.npgettext(context, msgid1, msgid2, n)
 
@@ -737,7 +737,7 @@ eleza gettext(message):
 
 eleza lgettext(message):
     agiza warnings
-    warnings.warn('lgettext() is deprecated, use gettext() instead',
+    warnings.warn('lgettext() ni deprecated, use gettext() instead',
                   DeprecationWarning, 2)
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\bldgettext\b.*',
@@ -749,7 +749,7 @@ eleza ngettext(msgid1, msgid2, n):
 
 eleza lngettext(msgid1, msgid2, n):
     agiza warnings
-    warnings.warn('lngettext() is deprecated, use ngettext() instead',
+    warnings.warn('lngettext() ni deprecated, use ngettext() instead',
                   DeprecationWarning, 2)
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\bldngettext\b.*',
@@ -765,7 +765,7 @@ eleza npgettext(context, msgid1, msgid2, n):
     rudisha dnpgettext(_current_domain, context, msgid1, msgid2, n)
 
 
-# dcgettext() has been deemed unnecessary and is not implemented.
+# dcgettext() has been deemed unnecessary na ni sio implemented.
 
 # James Henstridge's Catalog constructor kutoka GNOME gettext.  Documented usage
 # was:
@@ -776,7 +776,7 @@ eleza npgettext(context, msgid1, msgid2, n):
 #    print _('Hello World')
 
 # The resulting catalog object currently don't support access through a
-# dictionary API, which was supported (but apparently unused) in GNOME
+# dictionary API, which was supported (but apparently unused) kwenye GNOME
 # gettext.
 
 Catalog = translation

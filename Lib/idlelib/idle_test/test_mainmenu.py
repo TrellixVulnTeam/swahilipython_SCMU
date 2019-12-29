@@ -1,5 +1,5 @@
 "Test mainmenu, coverage 100%."
-# Reported as 88%; mocking turtledemo absence would have no point.
+# Reported kama 88%; mocking turtledemo absence would have no point.
 
 kutoka idlelib agiza mainmenu
 agiza unittest
@@ -8,7 +8,7 @@ agiza unittest
 kundi MainMenuTest(unittest.TestCase):
 
     eleza test_menudefs(self):
-        actual = [item[0] for item in mainmenu.menudefs]
+        actual = [item[0] kila item kwenye mainmenu.menudefs]
         expect = ['file', 'edit', 'format', 'run', 'shell',
                   'debug', 'options', 'window', 'help']
         self.assertEqual(actual, expect)

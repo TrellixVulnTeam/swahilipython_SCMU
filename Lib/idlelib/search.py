@@ -1,7 +1,7 @@
-"""Search dialog for Find, Find Again, and Find Selection
+"""Search dialog kila Find, Find Again, na Find Selection
    functionality.
 
-   Inherits kutoka SearchDialogBase for GUI and uses searchengine
+   Inherits kutoka SearchDialogBase kila GUI na uses searchengine
    to prepare search pattern.
 """
 kutoka tkinter agiza TclError
@@ -10,9 +10,9 @@ kutoka idlelib agiza searchengine
 kutoka idlelib.searchbase agiza SearchDialogBase
 
 eleza _setup(text):
-    """Return the new or existing singleton SearchDialog instance.
+    """Return the new ama existing singleton SearchDialog instance.
 
-    The singleton dialog saves user entries and preferences
+    The singleton dialog saves user entries na preferences
     across instances.
 
     Args:
@@ -20,7 +20,7 @@ eleza _setup(text):
     """
     root = text._root()
     engine = searchengine.get(root)
-    ikiwa not hasattr(engine, "_searchdialog"):
+    ikiwa sio hasattr(engine, "_searchdialog"):
         engine._searchdialog = SearchDialog(root, engine)
     rudisha engine._searchdialog
 
@@ -28,18 +28,18 @@ eleza find(text):
     """Open the search dialog.
 
     Module-level function to access the singleton SearchDialog
-    instance and open the dialog.  If text is selected, it is
-    used as the search phrase; otherwise, the previous entry
-    is used.  No search is done with this command.
+    instance na open the dialog.  If text ni selected, it is
+    used kama the search phrase; otherwise, the previous entry
+    ni used.  No search ni done with this command.
     """
     pat = text.get("sel.first", "sel.last")
-    rudisha _setup(text).open(text, pat)  # Open is inherited kutoka SDBase.
+    rudisha _setup(text).open(text, pat)  # Open ni inherited kutoka SDBase.
 
 eleza find_again(text):
-    """Repeat the search for the last pattern and preferences.
+    """Repeat the search kila the last pattern na preferences.
 
     Module-level function to access the singleton SearchDialog
-    instance to search again using the user entries and preferences
+    instance to search again using the user entries na preferences
     kutoka the last dialog.  If there was no prior search, open the
     search dialog; otherwise, perform the search without showing the
     dialog.
@@ -47,81 +47,81 @@ eleza find_again(text):
     rudisha _setup(text).find_again(text)
 
 eleza find_selection(text):
-    """Search for the selected pattern in the text.
+    """Search kila the selected pattern kwenye the text.
 
     Module-level function to access the singleton SearchDialog
     instance to search using the selected text.  With a text
     selection, perform the search without displaying the dialog.
-    Without a selection, use the prior entry as the search phrase
-    and don't display the dialog.  If there has been no prior
+    Without a selection, use the prior entry kama the search phrase
+    na don't display the dialog.  If there has been no prior
     search, open the search dialog.
     """
     rudisha _setup(text).find_selection(text)
 
 
 kundi SearchDialog(SearchDialogBase):
-    "Dialog for finding a pattern in text."
+    "Dialog kila finding a pattern kwenye text."
 
     eleza create_widgets(self):
-        "Create the base search dialog and add a button for Find Next."
+        "Create the base search dialog na add a button kila Find Next."
         SearchDialogBase.create_widgets(self)
-        # TODO - why is this here and not in a create_command_buttons?
-        self.make_button("Find Next", self.default_command, isdef=True)
+        # TODO - why ni this here na haiko kwenye a create_command_buttons?
+        self.make_button("Find Next", self.default_command, isdef=Kweli)
 
-    eleza default_command(self, event=None):
-        "Handle the Find Next button as the default command."
-        ikiwa not self.engine.getprog():
-            return
+    eleza default_command(self, event=Tupu):
+        "Handle the Find Next button kama the default command."
+        ikiwa sio self.engine.getprog():
+            rudisha
         self.find_again(self.text)
 
     eleza find_again(self, text):
         """Repeat the last search.
 
         If no search was previously run, open a new search dialog.  In
-        this case, no search is done.
+        this case, no search ni done.
 
         If a search was previously run, the search dialog won't be
-        shown and the options kutoka the previous search (including the
+        shown na the options kutoka the previous search (including the
         search pattern) will be used to find the next occurrence
-        of the pattern.  Next is relative based on direction.
+        of the pattern.  Next ni relative based on direction.
 
-        Position the window to display the located occurrence in the
+        Position the window to display the located occurrence kwenye the
         text.
 
-        Return True ikiwa the search was successful and False otherwise.
+        Return Kweli ikiwa the search was successful na Uongo otherwise.
         """
-        ikiwa not self.engine.getpat():
+        ikiwa sio self.engine.getpat():
             self.open(text)
-            rudisha False
-        ikiwa not self.engine.getprog():
-            rudisha False
+            rudisha Uongo
+        ikiwa sio self.engine.getprog():
+            rudisha Uongo
         res = self.engine.search_text(text)
         ikiwa res:
             line, m = res
             i, j = m.span()
             first = "%d.%d" % (line, i)
             last = "%d.%d" % (line, j)
-            try:
+            jaribu:
                 selfirst = text.index("sel.first")
                 sellast = text.index("sel.last")
-                ikiwa selfirst == first and sellast == last:
+                ikiwa selfirst == first na sellast == last:
                     self.bell()
-                    rudisha False
-            except TclError:
-                pass
+                    rudisha Uongo
+            tatizo TclError:
+                pita
             text.tag_remove("sel", "1.0", "end")
             text.tag_add("sel", first, last)
-            text.mark_set("insert", self.engine.isback() and first or last)
+            text.mark_set("insert", self.engine.isback() na first ama last)
             text.see("insert")
-            rudisha True
-        else:
+            rudisha Kweli
+        isipokua:
             self.bell()
-            rudisha False
+            rudisha Uongo
 
     eleza find_selection(self, text):
-        """Search for selected text with previous dialog preferences.
+        """Search kila selected text with previous dialog preferences.
 
-        Instead of using the same pattern for searching (as Find
+        Instead of using the same pattern kila searching (as Find
         Again does), this first resets the pattern to the currently
         selected text.  If the selected text isn't changed, then use
         the prior search phrase.
@@ -146,7 +146,7 @@ eleza _search_dialog(parent):  # htest #
     frame.pack()
     text = Text(frame, inactiveselectbackground='gray')
     text.pack()
-    text.insert("insert","This is a sample string.\n"*5)
+    text.insert("insert","This ni a sample string.\n"*5)
 
     eleza show_find():
         text.tag_add('sel', '1.0', 'end')
@@ -158,7 +158,7 @@ eleza _search_dialog(parent):  # htest #
 
 ikiwa __name__ == '__main__':
     kutoka unittest agiza main
-    main('idlelib.idle_test.test_search', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_search', verbosity=2, exit=Uongo)
 
     kutoka idlelib.idle_test.htest agiza run
     run(_search_dialog)

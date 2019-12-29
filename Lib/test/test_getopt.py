@@ -11,32 +11,32 @@ sentinel = object()
 kundi GetoptTests(unittest.TestCase):
     eleza setUp(self):
         self.env = EnvironmentVarGuard()
-        ikiwa "POSIXLY_CORRECT" in self.env:
-            del self.env["POSIXLY_CORRECT"]
+        ikiwa "POSIXLY_CORRECT" kwenye self.env:
+            toa self.env["POSIXLY_CORRECT"]
 
     eleza tearDown(self):
         self.env.__exit__()
-        del self.env
+        toa self.env
 
     eleza assertError(self, *args, **kwargs):
         self.assertRaises(getopt.GetoptError, *args, **kwargs)
 
     eleza test_short_has_arg(self):
-        self.assertTrue(getopt.short_has_arg('a', 'a:'))
-        self.assertFalse(getopt.short_has_arg('a', 'a'))
+        self.assertKweli(getopt.short_has_arg('a', 'a:'))
+        self.assertUongo(getopt.short_has_arg('a', 'a'))
         self.assertError(getopt.short_has_arg, 'a', 'b')
 
     eleza test_long_has_args(self):
         has_arg, option = getopt.long_has_args('abc', ['abc='])
-        self.assertTrue(has_arg)
+        self.assertKweli(has_arg)
         self.assertEqual(option, 'abc')
 
         has_arg, option = getopt.long_has_args('abc', ['abc'])
-        self.assertFalse(has_arg)
+        self.assertUongo(has_arg)
         self.assertEqual(option, 'abc')
 
         has_arg, option = getopt.long_has_args('abc', ['abcd'])
-        self.assertFalse(has_arg)
+        self.assertUongo(has_arg)
         self.assertEqual(option, 'abcd')
 
         self.assertError(getopt.long_has_args, 'abc', ['def'])
@@ -84,7 +84,7 @@ kundi GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('--abc', '')])
         self.assertEqual(args, [])
 
-        # Much like the preceding, except with a non-alpha character ("-") in
+        # Much like the preceding, tatizo with a non-alpha character ("-") in
         # option name that precedes "="; failed in
         # http://python.org/sf/126863
         opts, args = getopt.do_longs([], 'foo=42', ['foo-bar', 'foo=',], [])
@@ -95,7 +95,7 @@ kundi GetoptTests(unittest.TestCase):
         self.assertError(getopt.do_longs, [], 'abc', ['abc='], [])
 
     eleza test_getopt(self):
-        # note: the empty string between '-a' and '--beta' is significant:
+        # note: the empty string between '-a' na '--beta' ni significant:
         # it simulates an empty string option argument ('-a ""') on the
         # command line.
         cmdline = ['-a', '1', '-b', '--alpha=2', '--beta', '-a', '3', '-a',
@@ -105,8 +105,8 @@ kundi GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('-a', '1'), ('-b', ''),
                                 ('--alpha', '2'), ('--beta', ''),
                                 ('-a', '3'), ('-a', ''), ('--beta', '')])
-        # Note ambiguity of ('-b', '') and ('-a', '') above. This must be
-        # accounted for in the code that calls getopt().
+        # Note ambiguity of ('-b', '') na ('-a', '') above. This must be
+        # accounted kila kwenye the code that calls getopt().
         self.assertEqual(args, ['arg1', 'arg2'])
 
         self.assertError(getopt.getopt, cmdline, 'a:b', ['alpha', 'beta'])
@@ -121,7 +121,7 @@ kundi GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('-a', ''), ('-b', '1'),
                                 ('--alpha', ''), ('--beta', '2')])
 
-        # recognize "-" as an argument
+        # recognize "-" kama an argument
         opts, args = getopt.gnu_getopt(['-a', '-', '-b', '-'], 'ab:', [])
         self.assertEqual(args, ['-'])
         self.assertEqual(opts, [('-a', ''), ('-b', '-')])
@@ -154,7 +154,7 @@ kundi GetoptTests(unittest.TestCase):
         >>> args
         ['a1', 'a2']
 
-        Using long option names is equally easy:
+        Using long option names ni equally easy:
 
 
         >>> s = '--condition=foo --testing --output-file abc.eleza -x a1 a2'

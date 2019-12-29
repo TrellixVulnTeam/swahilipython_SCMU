@@ -1,7 +1,7 @@
-"""Python version compatibility support for minidom.
+"""Python version compatibility support kila minidom.
 
 This module contains internal implementation details and
-should not be imported; use xml.dom.minidom instead.
+should sio be imported; use xml.dom.minidom instead.
 """
 
 # This module should only be imported using "agiza *".
@@ -10,15 +10,15 @@ should not be imported; use xml.dom.minidom instead.
 #
 #   NodeList      -- lightest possible NodeList implementation
 #
-#   EmptyNodeList -- lightest possible NodeList that is guaranteed to
+#   EmptyNodeList -- lightest possible NodeList that ni guaranteed to
 #                    remain empty (immutable)
 #
 #   StringTypes   -- tuple of defined string types
 #
-#   defproperty   -- function used in conjunction with GetattrMagic;
-#                    using these together is needed to make them work
-#                    as efficiently as possible in both Python 2.2+
-#                    and older versions.  For example:
+#   defproperty   -- function used kwenye conjunction with GetattrMagic;
+#                    using these together ni needed to make them work
+#                    kama efficiently kama possible kwenye both Python 2.2+
+#                    na older versions.  For example:
 #
 #                        kundi MyClass(GetattrMagic):
 #                            eleza _get_myattr(self):
@@ -27,17 +27,17 @@ should not be imported; use xml.dom.minidom instead.
 #                        defproperty(MyClass, "myattr",
 #                                    "rudisha some value")
 #
-#                    For Python 2.2 and newer, this will construct a
+#                    For Python 2.2 na newer, this will construct a
 #                    property object on the class, which avoids
 #                    needing to override __getattr__().  It will only
-#                    work for read-only attributes.
+#                    work kila read-only attributes.
 #
 #                    For older versions of Python, inheriting kutoka
 #                    GetattrMagic will use the traditional
 #                    __getattr__() hackery to achieve the same effect,
 #                    but less efficiently.
 #
-#                    defproperty() should be used for each version of
+#                    defproperty() should be used kila each version of
 #                    the relevant _get_<property>() function.
 
 __all__ = ["NodeList", "EmptyNodeList", "StringTypes", "defproperty"]
@@ -58,15 +58,15 @@ kundi NodeList(list):
         rudisha len(self)
 
     eleza _set_length(self, value):
-        raise xml.dom.NoModificationAllowedErr(
+        ashiria xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
     length = property(_get_length, _set_length,
-                      doc="The number of nodes in the NodeList.")
+                      doc="The number of nodes kwenye the NodeList.")
 
     # For backward compatibility
     eleza __setstate__(self, state):
-        ikiwa state is None:
+        ikiwa state ni Tupu:
             state = []
         self[:] = state
 
@@ -85,25 +85,25 @@ kundi EmptyNodeList(tuple):
         rudisha NL
 
     eleza item(self, index):
-        rudisha None
+        rudisha Tupu
 
     eleza _get_length(self):
         rudisha 0
 
     eleza _set_length(self, value):
-        raise xml.dom.NoModificationAllowedErr(
+        ashiria xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
     length = property(_get_length, _set_length,
-                      doc="The number of nodes in the NodeList.")
+                      doc="The number of nodes kwenye the NodeList.")
 
 
 eleza defproperty(klass, name, doc):
     get = getattr(klass, ("_get_" + name))
     eleza set(self, value, name=name):
-        raise xml.dom.NoModificationAllowedErr(
+        ashiria xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute " + repr(name))
-    assert not hasattr(klass, "_set_" + name), \
-           "expected not to find _set_" + name
+    assert sio hasattr(klass, "_set_" + name), \
+           "expected sio to find _set_" + name
     prop = property(get, set, doc=doc)
     setattr(klass, name, prop)

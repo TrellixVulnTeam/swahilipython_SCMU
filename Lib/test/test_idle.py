@@ -1,24 +1,24 @@
 agiza unittest
 kutoka test.support agiza import_module
 
-# Skip test_idle ikiwa _tkinter wasn't built, ikiwa tkinter is missing,
-# ikiwa tcl/tk is not the 8.5+ needed for ttk widgets,
-# or ikiwa idlelib is missing (not installed).
+# Skip test_idle ikiwa _tkinter wasn't built, ikiwa tkinter ni missing,
+# ikiwa tcl/tk ni sio the 8.5+ needed kila ttk widgets,
+# ama ikiwa idlelib ni missing (not installed).
 tk = import_module('tkinter')  # Also agizas _tkinter.
 ikiwa tk.TkVersion < 8.5:
-    raise unittest.SkipTest("IDLE requires tk 8.5 or later.")
+    ashiria unittest.SkipTest("IDLE requires tk 8.5 ama later.")
 idlelib = import_module('idlelib')
 
-# Before agizaing and executing more of idlelib,
+# Before agizaing na executing more of idlelib,
 # tell IDLE to avoid changing the environment.
-idlelib.testing = True
+idlelib.testing = Kweli
 
-# Unittest.main and test.libregrtest.runtest.runtest_inner
+# Unittest.main na test.libregrtest.runtest.runtest_inner
 # call load_tests, when present here, to discover tests to run.
 kutoka idlelib.idle_test agiza load_tests
 
 ikiwa __name__ == '__main__':
     tk.NoDefaultRoot()
-    unittest.main(exit=False)
+    unittest.main(exit=Uongo)
     tk._support_default_root = 1
-    tk._default_root = None
+    tk._default_root = Tupu

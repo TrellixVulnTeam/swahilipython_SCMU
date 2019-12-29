@@ -7,10 +7,10 @@ __all__ = ["getcaps","findmatch"]
 
 
 eleza lineno_sort_key(entry):
-    # Sort in ascending order, with unspecified entries at the end
-    ikiwa 'lineno' in entry:
+    # Sort kwenye ascending order, with unspecified entries at the end
+    ikiwa 'lineno' kwenye enjaribu:
         rudisha 0, entry['lineno']
-    else:
+    isipokua:
         rudisha 1, 0
 
 
@@ -21,37 +21,37 @@ eleza getcaps():
 
     The dictionary maps a MIME type (in all lowercase, e.g. 'text/plain')
     to a list of dictionaries corresponding to mailcap entries.  The list
-    collects all the entries for that MIME type kutoka all available mailcap
-    files.  Each dictionary contains key-value pairs for that MIME type,
-    where the viewing command is stored with the key "view".
+    collects all the entries kila that MIME type kutoka all available mailcap
+    files.  Each dictionary contains key-value pairs kila that MIME type,
+    where the viewing command ni stored with the key "view".
 
     """
     caps = {}
     lineno = 0
-    for mailcap in listmailcapfiles():
-        try:
+    kila mailcap kwenye listmailcapfiles():
+        jaribu:
             fp = open(mailcap, 'r')
-        except OSError:
-            continue
+        tatizo OSError:
+            endelea
         with fp:
             morecaps, lineno = _readmailcapfile(fp, lineno)
-        for key, value in morecaps.items():
-            ikiwa not key in caps:
+        kila key, value kwenye morecaps.items():
+            ikiwa sio key kwenye caps:
                 caps[key] = value
-            else:
+            isipokua:
                 caps[key] = caps[key] + value
     rudisha caps
 
 eleza listmailcapfiles():
     """Return a list of all mailcap files found on the system."""
-    # This is mostly a Unix thing, but we use the OS path separator anyway
-    ikiwa 'MAILCAPS' in os.environ:
+    # This ni mostly a Unix thing, but we use the OS path separator anyway
+    ikiwa 'MAILCAPS' kwenye os.environ:
         pathstr = os.environ['MAILCAPS']
         mailcaps = pathstr.split(os.pathsep)
-    else:
-        ikiwa 'HOME' in os.environ:
+    isipokua:
+        ikiwa 'HOME' kwenye os.environ:
             home = os.environ['HOME']
-        else:
+        isipokua:
             # Don't bother with getpwuid()
             home = '.' # Last resort
         mailcaps = [home + '/.mailcap', '/etc/mailcap',
@@ -61,95 +61,95 @@ eleza listmailcapfiles():
 
 # Part 2: the parser.
 eleza readmailcapfile(fp):
-    """Read a mailcap file and rudisha a dictionary keyed by MIME type."""
-    warnings.warn('readmailcapfile is deprecated, use getcaps instead',
+    """Read a mailcap file na rudisha a dictionary keyed by MIME type."""
+    warnings.warn('readmailcapfile ni deprecated, use getcaps instead',
                   DeprecationWarning, 2)
-    caps, _ = _readmailcapfile(fp, None)
+    caps, _ = _readmailcapfile(fp, Tupu)
     rudisha caps
 
 
 eleza _readmailcapfile(fp, lineno):
-    """Read a mailcap file and rudisha a dictionary keyed by MIME type.
+    """Read a mailcap file na rudisha a dictionary keyed by MIME type.
 
-    Each MIME type is mapped to an entry consisting of a list of
+    Each MIME type ni mapped to an entry consisting of a list of
     dictionaries; the list will contain more than one such dictionary
-    ikiwa a given MIME type appears more than once in the mailcap file.
-    Each dictionary contains key-value pairs for that MIME type, where
-    the viewing command is stored with the key "view".
+    ikiwa a given MIME type appears more than once kwenye the mailcap file.
+    Each dictionary contains key-value pairs kila that MIME type, where
+    the viewing command ni stored with the key "view".
     """
     caps = {}
-    while 1:
+    wakati 1:
         line = fp.readline()
-        ikiwa not line: break
-        # Ignore comments and blank lines
-        ikiwa line[0] == '#' or line.strip() == '':
-            continue
+        ikiwa sio line: koma
+        # Ignore comments na blank lines
+        ikiwa line[0] == '#' ama line.strip() == '':
+            endelea
         nextline = line
         # Join continuation lines
-        while nextline[-2:] == '\\\n':
+        wakati nextline[-2:] == '\\\n':
             nextline = fp.readline()
-            ikiwa not nextline: nextline = '\n'
+            ikiwa sio nextline: nextline = '\n'
             line = line[:-2] + nextline
         # Parse the line
         key, fields = parseline(line)
-        ikiwa not (key and fields):
-            continue
-        ikiwa lineno is not None:
+        ikiwa sio (key na fields):
+            endelea
+        ikiwa lineno ni sio Tupu:
             fields['lineno'] = lineno
             lineno += 1
         # Normalize the key
         types = key.split('/')
-        for j in range(len(types)):
+        kila j kwenye range(len(types)):
             types[j] = types[j].strip()
         key = '/'.join(types).lower()
         # Update the database
-        ikiwa key in caps:
+        ikiwa key kwenye caps:
             caps[key].append(fields)
-        else:
+        isipokua:
             caps[key] = [fields]
     rudisha caps, lineno
 
 eleza parseline(line):
-    """Parse one entry in a mailcap file and rudisha a dictionary.
+    """Parse one entry kwenye a mailcap file na rudisha a dictionary.
 
-    The viewing command is stored as the value with the key "view",
-    and the rest of the fields produce key-value pairs in the dict.
+    The viewing command ni stored kama the value with the key "view",
+    na the rest of the fields produce key-value pairs kwenye the dict.
     """
     fields = []
     i, n = 0, len(line)
-    while i < n:
+    wakati i < n:
         field, i = parsefield(line, i, n)
         fields.append(field)
         i = i+1 # Skip semicolon
     ikiwa len(fields) < 2:
-        rudisha None, None
+        rudisha Tupu, Tupu
     key, view, rest = fields[0], fields[1], fields[2:]
     fields = {'view': view}
-    for field in rest:
+    kila field kwenye rest:
         i = field.find('=')
         ikiwa i < 0:
             fkey = field
             fvalue = ""
-        else:
+        isipokua:
             fkey = field[:i].strip()
             fvalue = field[i+1:].strip()
-        ikiwa fkey in fields:
+        ikiwa fkey kwenye fields:
             # Ignore it
-            pass
-        else:
+            pita
+        isipokua:
             fields[fkey] = fvalue
     rudisha key, fields
 
 eleza parsefield(line, i, n):
-    """Separate one key-value pair in a mailcap entry."""
+    """Separate one key-value pair kwenye a mailcap entry."""
     start = i
-    while i < n:
+    wakati i < n:
         c = line[i]
         ikiwa c == ';':
-            break
+            koma
         elikiwa c == '\\':
             i = i+2
-        else:
+        isipokua:
             i = i+1
     rudisha line[start:i].strip(), i
 
@@ -157,49 +157,49 @@ eleza parsefield(line, i, n):
 # Part 3: using the database.
 
 eleza findmatch(caps, MIMEtype, key='view', filename="/dev/null", plist=[]):
-    """Find a match for a mailcap entry.
+    """Find a match kila a mailcap entry.
 
-    Return a tuple containing the command line, and the mailcap entry
-    used; (None, None) ikiwa no match is found.  This may invoke the
+    Return a tuple containing the command line, na the mailcap entry
+    used; (Tupu, Tupu) ikiwa no match ni found.  This may invoke the
     'test' command of several matching entries before deciding which
     entry to use.
 
     """
     entries = lookup(caps, MIMEtype, key)
-    # XXX This code should somehow check for the needsterminal flag.
-    for e in entries:
-        ikiwa 'test' in e:
+    # XXX This code should somehow check kila the needsterminal flag.
+    kila e kwenye entries:
+        ikiwa 'test' kwenye e:
             test = subst(e['test'], filename, plist)
-            ikiwa test and os.system(test) != 0:
-                continue
+            ikiwa test na os.system(test) != 0:
+                endelea
         command = subst(e[key], MIMEtype, filename, plist)
         rudisha command, e
-    rudisha None, None
+    rudisha Tupu, Tupu
 
-eleza lookup(caps, MIMEtype, key=None):
+eleza lookup(caps, MIMEtype, key=Tupu):
     entries = []
-    ikiwa MIMEtype in caps:
+    ikiwa MIMEtype kwenye caps:
         entries = entries + caps[MIMEtype]
     MIMEtypes = MIMEtype.split('/')
     MIMEtype = MIMEtypes[0] + '/*'
-    ikiwa MIMEtype in caps:
+    ikiwa MIMEtype kwenye caps:
         entries = entries + caps[MIMEtype]
-    ikiwa key is not None:
-        entries = [e for e in entries ikiwa key in e]
+    ikiwa key ni sio Tupu:
+        entries = [e kila e kwenye entries ikiwa key kwenye e]
     entries = sorted(entries, key=lineno_sort_key)
     rudisha entries
 
 eleza subst(field, MIMEtype, filename, plist=[]):
-    # XXX Actually, this is Unix-specific
+    # XXX Actually, this ni Unix-specific
     res = ''
     i, n = 0, len(field)
-    while i < n:
+    wakati i < n:
         c = field[i]; i = i+1
         ikiwa c != '%':
             ikiwa c == '\\':
                 c = field[i:i+1]; i = i+1
             res = res + c
-        else:
+        isipokua:
             c = field[i]; i = i+1
             ikiwa c == '%':
                 res = res + c
@@ -209,22 +209,22 @@ eleza subst(field, MIMEtype, filename, plist=[]):
                 res = res + MIMEtype
             elikiwa c == '{':
                 start = i
-                while i < n and field[i] != '}':
+                wakati i < n na field[i] != '}':
                     i = i+1
                 name = field[start:i]
                 i = i+1
                 res = res + findparam(name, plist)
             # XXX To do:
-            # %n == number of parts ikiwa type is multipart/*
-            # %F == list of alternating type and filename for parts
-            else:
+            # %n == number of parts ikiwa type ni multipart/*
+            # %F == list of alternating type na filename kila parts
+            isipokua:
                 res = res + '%' + c
     rudisha res
 
 eleza findparam(name, plist):
     name = name.lower() + '='
     n = len(name)
-    for p in plist:
+    kila p kwenye plist:
         ikiwa p[:n].lower() == name:
             rudisha p[n:]
     rudisha ''
@@ -235,20 +235,20 @@ eleza findparam(name, plist):
 eleza test():
     agiza sys
     caps = getcaps()
-    ikiwa not sys.argv[1:]:
+    ikiwa sio sys.argv[1:]:
         show(caps)
-        return
-    for i in range(1, len(sys.argv), 2):
+        rudisha
+    kila i kwenye range(1, len(sys.argv), 2):
         args = sys.argv[i:i+2]
         ikiwa len(args) < 2:
             andika("usage: mailcap [MIMEtype file] ...")
-            return
+            rudisha
         MIMEtype = args[0]
         file = args[1]
         command, e = findmatch(caps, MIMEtype, 'view', file)
-        ikiwa not command:
+        ikiwa sio command:
             andika("No viewer found for", type)
-        else:
+        isipokua:
             andika("Executing:", command)
             sts = os.system(command)
             ikiwa sts:
@@ -256,18 +256,18 @@ eleza test():
 
 eleza show(caps):
     andika("Mailcap files:")
-    for fn in listmailcapfiles(): andika("\t" + fn)
+    kila fn kwenye listmailcapfiles(): andika("\t" + fn)
     andika()
-    ikiwa not caps: caps = getcaps()
+    ikiwa sio caps: caps = getcaps()
     andika("Mailcap entries:")
     andika()
     ckeys = sorted(caps)
-    for type in ckeys:
+    kila type kwenye ckeys:
         andika(type)
         entries = caps[type]
-        for e in entries:
+        kila e kwenye entries:
             keys = sorted(e)
-            for k in keys:
+            kila k kwenye keys:
                 andika("  %-15s" % k, e[k])
             andika()
 

@@ -50,7 +50,7 @@ testmeths = [
     "init",
     ]
 
-# These need to rudisha something other than None
+# These need to rudisha something other than Tupu
 #    "hash",
 #    "str",
 #    "repr",
@@ -96,43 +96,43 @@ eleza __float__(self, *args):
 
 @trackCall
 eleza __eq__(self, *args):
-    rudisha True
+    rudisha Kweli
 
 @trackCall
 eleza __ne__(self, *args):
-    rudisha False
+    rudisha Uongo
 
 @trackCall
 eleza __lt__(self, *args):
-    rudisha False
+    rudisha Uongo
 
 @trackCall
 eleza __le__(self, *args):
-    rudisha True
+    rudisha Kweli
 
 @trackCall
 eleza __gt__(self, *args):
-    rudisha False
+    rudisha Uongo
 
 @trackCall
 eleza __ge__(self, *args):
-    rudisha True
+    rudisha Kweli
 """
 
-# Synthesize all the other AllTests methods kutoka the names in testmeths.
+# Synthesize all the other AllTests methods kutoka the names kwenye testmeths.
 
 method_template = """\
 @trackCall
 eleza __%s__(self, *args):
-    pass
+    pita
 """
 
 d = {}
 exec(statictests, globals(), d)
-for method in testmeths:
+kila method kwenye testmeths:
     exec(method_template % method, globals(), d)
 AllTests = type("AllTests", (object,), d)
-del d, statictests, method, method_template
+toa d, statictests, method, method_template
 
 kundi ClassTests(unittest.TestCase):
     eleza setUp(self):
@@ -142,7 +142,7 @@ kundi ClassTests(unittest.TestCase):
         actualCallList = callLst[:]  # need to copy because the comparison below will add
                                      # additional calls to callLst
         ikiwa expected_calls != actualCallList:
-            self.fail("Expected call list:\n  %s\ndoes not match actual call list\n  %s" %
+            self.fail("Expected call list:\n  %s\ndoes sio match actual call list\n  %s" %
                       (expected_calls, actualCallList))
 
     eleza testInit(self):
@@ -273,16 +273,16 @@ kundi ClassTests(unittest.TestCase):
 
         # List/dict operations
 
-        kundi Empty: pass
+        kundi Empty: pita
 
-        try:
-            1 in Empty()
-            self.fail('failed, should have raised TypeError')
-        except TypeError:
-            pass
+        jaribu:
+            1 kwenye Empty()
+            self.fail('failed, should have ashiriad TypeError')
+        tatizo TypeError:
+            pita
 
         callLst[:] = []
-        1 in testme
+        1 kwenye testme
         self.assertCallStack([('__contains__', (testme, 1))])
 
         callLst[:] = []
@@ -294,21 +294,21 @@ kundi ClassTests(unittest.TestCase):
         self.assertCallStack([('__setitem__', (testme, 1, 1))])
 
         callLst[:] = []
-        del testme[1]
+        toa testme[1]
         self.assertCallStack([('__delitem__', (testme, 1))])
 
         callLst[:] = []
         testme[:42]
-        self.assertCallStack([('__getitem__', (testme, slice(None, 42)))])
+        self.assertCallStack([('__getitem__', (testme, slice(Tupu, 42)))])
 
         callLst[:] = []
         testme[:42] = "The Answer"
-        self.assertCallStack([('__setitem__', (testme, slice(None, 42),
+        self.assertCallStack([('__setitem__', (testme, slice(Tupu, 42),
                                                "The Answer"))])
 
         callLst[:] = []
-        del testme[:42]
-        self.assertCallStack([('__delitem__', (testme, slice(None, 42)))])
+        toa testme[:42]
+        self.assertCallStack([('__delitem__', (testme, slice(Tupu, 42)))])
 
         callLst[:] = []
         testme[2:1024:10]
@@ -319,26 +319,26 @@ kundi ClassTests(unittest.TestCase):
         self.assertCallStack([('__setitem__', (testme, slice(2, 1024, 10),
                                                                     "A lot"))])
         callLst[:] = []
-        del testme[2:1024:10]
+        toa testme[2:1024:10]
         self.assertCallStack([('__delitem__', (testme, slice(2, 1024, 10)))])
 
         callLst[:] = []
         testme[:42, ..., :24:, 24, 100]
-        self.assertCallStack([('__getitem__', (testme, (slice(None, 42, None),
+        self.assertCallStack([('__getitem__', (testme, (slice(Tupu, 42, Tupu),
                                                         Ellipsis,
-                                                        slice(None, 24, None),
+                                                        slice(Tupu, 24, Tupu),
                                                         24, 100)))])
         callLst[:] = []
         testme[:42, ..., :24:, 24, 100] = "Strange"
-        self.assertCallStack([('__setitem__', (testme, (slice(None, 42, None),
+        self.assertCallStack([('__setitem__', (testme, (slice(Tupu, 42, Tupu),
                                                         Ellipsis,
-                                                        slice(None, 24, None),
+                                                        slice(Tupu, 24, Tupu),
                                                         24, 100), "Strange"))])
         callLst[:] = []
-        del testme[:42, ..., :24:, 24, 100]
-        self.assertCallStack([('__delitem__', (testme, (slice(None, 42, None),
+        toa testme[:42, ..., :24:, 24, 100]
+        self.assertCallStack([('__delitem__', (testme, (slice(Tupu, 42, Tupu),
                                                         Ellipsis,
-                                                        slice(None, 24, None),
+                                                        slice(Tupu, 24, Tupu),
                                                         24, 100)))])
 
     eleza testUnaryOps(self):
@@ -424,11 +424,11 @@ kundi ClassTests(unittest.TestCase):
 
             @trackCall
             eleza __setattr__(self, *args):
-                pass
+                pita
 
             @trackCall
             eleza __delattr__(self, *args):
-                pass
+                pita
 
         testme = ExtraTests()
 
@@ -437,12 +437,12 @@ kundi ClassTests(unittest.TestCase):
         self.assertCallStack([('__getattr__', (testme, "spam"))])
 
         callLst[:] = []
-        testme.eggs = "spam, spam, spam and ham"
+        testme.eggs = "spam, spam, spam na ham"
         self.assertCallStack([('__setattr__', (testme, "eggs",
-                                               "spam, spam, spam and ham"))])
+                                               "spam, spam, spam na ham"))])
 
         callLst[:] = []
-        del testme.cardinal
+        toa testme.cardinal
         self.assertCallStack([('__delattr__', (testme, "cardinal"))])
 
     eleza testDel(self):
@@ -452,7 +452,7 @@ kundi ClassTests(unittest.TestCase):
             eleza __del__(self):
                 x.append("crab people, crab people")
         testme = DelTest()
-        del testme
+        toa testme
         agiza gc
         gc.collect()
         self.assertEqual(["crab people, crab people"], x)
@@ -461,7 +461,7 @@ kundi ClassTests(unittest.TestCase):
         # rudisha values of some method are type-checked
         kundi BadTypeClass:
             eleza __int__(self):
-                rudisha None
+                rudisha Tupu
             __float__ = __int__
             __complex__ = __int__
             __str__ = __int__
@@ -472,7 +472,7 @@ kundi ClassTests(unittest.TestCase):
         eleza index(x):
             rudisha [][x]
 
-        for f in [float, complex, str, repr, bytes, bin, oct, hex, bool, index]:
+        kila f kwenye [float, complex, str, repr, bytes, bin, oct, hex, bool, index]:
             self.assertRaises(TypeError, f, BadTypeClass())
 
     eleza testHashStuff(self):
@@ -480,9 +480,9 @@ kundi ClassTests(unittest.TestCase):
         #  no __hash__
 
         kundi C0:
-            pass
+            pita
 
-        hash(C0()) # This should work; the next two should raise TypeError
+        hash(C0()) # This should work; the next two should ashiria TypeError
 
         kundi C2:
             eleza __eq__(self, other): rudisha 1
@@ -491,33 +491,33 @@ kundi ClassTests(unittest.TestCase):
 
 
     eleza testSFBug532646(self):
-        # Test for SF bug 532646
+        # Test kila SF bug 532646
 
         kundi A:
-            pass
+            pita
         A.__call__ = A()
         a = A()
 
-        try:
-            a() # This should not segfault
-        except RecursionError:
-            pass
-        else:
-            self.fail("Failed to raise RecursionError")
+        jaribu:
+            a() # This should sio segfault
+        tatizo RecursionError:
+            pita
+        isipokua:
+            self.fail("Failed to ashiria RecursionError")
 
     eleza testForExceptionsRaisedInInstanceGetattr2(self):
-        # Tests for exceptions raised in instance_getattr2().
+        # Tests kila exceptions ashiriad kwenye instance_getattr2().
 
         eleza booh(self):
-            raise AttributeError("booh")
+            ashiria AttributeError("booh")
 
         kundi A:
             a = property(booh)
-        try:
+        jaribu:
             A().a # Raised AttributeError: A instance has no attribute 'a'
-        except AttributeError as x:
+        tatizo AttributeError kama x:
             ikiwa str(x) != "booh":
-                self.fail("attribute error for A().a got masked: %s" % x)
+                self.fail("attribute error kila A().a got masked: %s" % x)
 
         kundi E:
             __eq__ = property(booh)
@@ -525,14 +525,14 @@ kundi ClassTests(unittest.TestCase):
 
         kundi I:
             __init__ = property(booh)
-        try:
+        jaribu:
             # In debug mode, printed XXX undetected error and
-            #  raises AttributeError
+            #  ashirias AttributeError
             I()
-        except AttributeError as x:
-            pass
-        else:
-            self.fail("attribute error for I.__init__ got masked")
+        tatizo AttributeError kama x:
+            pita
+        isipokua:
+            self.fail("attribute error kila I.__init__ got masked")
 
     eleza assertNotOrderable(self, a, b):
         with self.assertRaises(TypeError):
@@ -545,55 +545,55 @@ kundi ClassTests(unittest.TestCase):
             a >= b
 
     eleza testHashComparisonOfMethods(self):
-        # Test comparison and hash of methods
+        # Test comparison na hash of methods
         kundi A:
             eleza __init__(self, x):
                 self.x = x
             eleza f(self):
-                pass
+                pita
             eleza g(self):
-                pass
+                pita
             eleza __eq__(self, other):
-                rudisha True
+                rudisha Kweli
             eleza __hash__(self):
-                raise TypeError
+                ashiria TypeError
         kundi B(A):
-            pass
+            pita
 
         a1 = A(1)
         a2 = A(1)
-        self.assertTrue(a1.f == a1.f)
-        self.assertFalse(a1.f != a1.f)
-        self.assertFalse(a1.f == a2.f)
-        self.assertTrue(a1.f != a2.f)
-        self.assertFalse(a1.f == a1.g)
-        self.assertTrue(a1.f != a1.g)
+        self.assertKweli(a1.f == a1.f)
+        self.assertUongo(a1.f != a1.f)
+        self.assertUongo(a1.f == a2.f)
+        self.assertKweli(a1.f != a2.f)
+        self.assertUongo(a1.f == a1.g)
+        self.assertKweli(a1.f != a1.g)
         self.assertNotOrderable(a1.f, a1.f)
         self.assertEqual(hash(a1.f), hash(a1.f))
 
-        self.assertFalse(A.f == a1.f)
-        self.assertTrue(A.f != a1.f)
-        self.assertFalse(A.f == A.g)
-        self.assertTrue(A.f != A.g)
-        self.assertTrue(B.f == A.f)
-        self.assertFalse(B.f != A.f)
+        self.assertUongo(A.f == a1.f)
+        self.assertKweli(A.f != a1.f)
+        self.assertUongo(A.f == A.g)
+        self.assertKweli(A.f != A.g)
+        self.assertKweli(B.f == A.f)
+        self.assertUongo(B.f != A.f)
         self.assertNotOrderable(A.f, A.f)
         self.assertEqual(hash(B.f), hash(A.f))
 
-        # the following triggers a SystemError in 2.4
+        # the following triggers a SystemError kwenye 2.4
         a = A(hash(A.f)^(-1))
         hash(a.f)
 
     eleza testSetattrWrapperNameIntern(self):
         # Issue #25794: __setattr__ should intern the attribute name
         kundi A:
-            pass
+            pita
 
         eleza add(self, other):
             rudisha 'summa'
 
         name = str(b'__add__', 'ascii')  # shouldn't be optimized
-        self.assertIsNot(name, '__add__')  # not interned
+        self.assertIsNot(name, '__add__')  # sio interned
         type.__setattr__(A, name, add)
         self.assertEqual(A() + 1, 'summa')
 
@@ -606,17 +606,17 @@ kundi ClassTests(unittest.TestCase):
 
     eleza testSetattrNonStringName(self):
         kundi A:
-            pass
+            pita
 
         with self.assertRaises(TypeError):
-            type.__setattr__(A, b'x', None)
+            type.__setattr__(A, b'x', Tupu)
 
     eleza testConstructorErrorMessages(self):
-        # bpo-31506: Improves the error message logic for object_new & object_init
+        # bpo-31506: Improves the error message logic kila object_new & object_init
 
         # Class without any method overrides
         kundi C:
-            pass
+            pita
 
         error_msg = r'C.__init__\(\) takes exactly one argument \(the instance to initialize\)'
 

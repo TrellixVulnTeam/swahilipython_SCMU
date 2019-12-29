@@ -1,7 +1,7 @@
-"""This test checks for correct fork() behavior.
+"""This test checks kila correct fork() behavior.
 """
 
-agiza _imp as imp
+agiza _imp kama imp
 agiza os
 agiza signal
 agiza sys
@@ -13,25 +13,25 @@ kutoka test.fork_wait agiza ForkWait
 kutoka test.support agiza reap_children, get_attribute, verbose
 
 
-# Skip test ikiwa fork does not exist.
+# Skip test ikiwa fork does sio exist.
 get_attribute(os, 'fork')
 
 kundi ForkTest(ForkWait):
     eleza wait_impl(self, cpid):
         deadline = time.monotonic() + 10.0
-        while time.monotonic() <= deadline:
+        wakati time.monotonic() <= deadline:
             # waitpid() shouldn't hang, but some of the buildbots seem to hang
-            # in the forking tests.  This is an attempt to fix the problem.
+            # kwenye the forking tests.  This ni an attempt to fix the problem.
             spid, status = os.waitpid(cpid, os.WNOHANG)
             ikiwa spid == cpid:
-                break
+                koma
             time.sleep(0.1)
 
         self.assertEqual(spid, cpid)
         self.assertEqual(status, 0, "cause = %d, exit = %d" % (status&0xff, status>>8))
 
     eleza test_threaded_import_lock_fork(self):
-        """Check fork() in main thread works while a subthread is doing an agiza"""
+        """Check fork() kwenye main thread works wakati a subthread ni doing an agiza"""
         import_started = threading.Event()
         fake_module_name = "fake test module"
         partial_module = "partial"
@@ -40,67 +40,67 @@ kundi ForkTest(ForkWait):
             imp.acquire_lock()
             sys.modules[fake_module_name] = partial_module
             import_started.set()
-            time.sleep(0.01) # Give the other thread time to try and acquire.
+            time.sleep(0.01) # Give the other thread time to try na acquire.
             sys.modules[fake_module_name] = complete_module
             imp.release_lock()
         t = threading.Thread(target=importer)
         t.start()
         import_started.wait()
         pid = os.fork()
-        try:
-            # PyOS_BeforeFork should have waited for the agiza to complete
+        jaribu:
+            # PyOS_BeforeFork should have waited kila the agiza to complete
             # before forking, so the child can recreate the agiza lock
             # correctly, but also won't see a partially initialised module
-            ikiwa not pid:
+            ikiwa sio pid:
                 m = __import__(fake_module_name)
                 ikiwa m == complete_module:
                     os._exit(0)
-                else:
+                isipokua:
                     ikiwa verbose > 1:
                         andika("Child encountered partial module")
                     os._exit(1)
-            else:
+            isipokua:
                 t.join()
                 # Exitcode 1 means the child got a partial module (bad.) No
-                # exitcode (but a hang, which manifests as 'got pid 0')
+                # exitcode (but a hang, which manifests kama 'got pid 0')
                 # means the child deadlocked (also bad.)
                 self.wait_impl(pid)
-        finally:
-            try:
+        mwishowe:
+            jaribu:
                 os.kill(pid, signal.SIGKILL)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
 
     eleza test_nested_import_lock_fork(self):
-        """Check fork() in main thread works while the main thread is doing an agiza"""
-        # Issue 9573: this used to trigger RuntimeError in the child process
+        """Check fork() kwenye main thread works wakati the main thread ni doing an agiza"""
+        # Issue 9573: this used to trigger RuntimeError kwenye the child process
         eleza fork_with_import_lock(level):
             release = 0
-            in_child = False
-            try:
-                try:
-                    for i in range(level):
+            in_child = Uongo
+            jaribu:
+                jaribu:
+                    kila i kwenye range(level):
                         imp.acquire_lock()
                         release += 1
                     pid = os.fork()
-                    in_child = not pid
-                finally:
-                    for i in range(release):
+                    in_child = sio pid
+                mwishowe:
+                    kila i kwenye range(release):
                         imp.release_lock()
-            except RuntimeError:
+            tatizo RuntimeError:
                 ikiwa in_child:
                     ikiwa verbose > 1:
-                        andika("RuntimeError in child")
+                        andika("RuntimeError kwenye child")
                     os._exit(1)
-                raise
+                ashiria
             ikiwa in_child:
                 os._exit(0)
             self.wait_impl(pid)
 
         # Check this works with various levels of nested
-        # agiza in the main thread
-        for level in range(5):
+        # agiza kwenye the main thread
+        kila level kwenye range(5):
             fork_with_import_lock(level)
 
 

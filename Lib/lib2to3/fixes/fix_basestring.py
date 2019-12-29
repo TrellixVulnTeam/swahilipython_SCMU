@@ -1,4 +1,4 @@
-"""Fixer for basestring -> str."""
+"""Fixer kila basestring -> str."""
 # Author: Christian Heimes
 
 # Local agizas
@@ -6,7 +6,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
 kundi FixBasestring(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = "'basestring'"
 

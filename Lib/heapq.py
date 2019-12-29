@@ -1,9 +1,9 @@
 """Heap queue algorithm (a.k.a. priority queue).
 
-Heaps are arrays for which a[k] <= a[2*k+1] and a[k] <= a[2*k+2] for
+Heaps are arrays kila which a[k] <= a[2*k+1] na a[k] <= a[2*k+2] for
 all k, counting elements kutoka 0.  For the sake of comparison,
 non-existing elements are considered to be infinite.  The interesting
-property of a heap is that a[0] is always its smallest element.
+property of a heap ni that a[0] ni always its smallest element.
 
 Usage:
 
@@ -11,36 +11,36 @@ heap = []            # creates an empty heap
 heappush(heap, item) # pushes a new item on the heap
 item = heappop(heap) # pops the smallest item kutoka the heap
 item = heap[0]       # smallest item on the heap without popping it
-heapify(x)           # transforms list into a heap, in-place, in linear time
-item = heapreplace(heap, item) # pops and returns smallest item, and adds
-                               # new item; the heap size is unchanged
+heapify(x)           # transforms list into a heap, in-place, kwenye linear time
+item = heapreplace(heap, item) # pops na rudishas smallest item, na adds
+                               # new item; the heap size ni unchanged
 
-Our API differs kutoka textbook heap algorithms as follows:
+Our API differs kutoka textbook heap algorithms kama follows:
 
 - We use 0-based indexing.  This makes the relationship between the
-  index for a node and the indexes for its children slightly less
-  obvious, but is more suitable since Python uses 0-based indexing.
+  index kila a node na the indexes kila its children slightly less
+  obvious, but ni more suitable since Python uses 0-based indexing.
 
-- Our heappop() method returns the smallest item, not the largest.
+- Our heappop() method rudishas the smallest item, sio the largest.
 
-These two make it possible to view the heap as a regular Python list
-without surprises: heap[0] is the smallest item, and heap.sort()
+These two make it possible to view the heap kama a regular Python list
+without surprises: heap[0] ni the smallest item, na heap.sort()
 maintains the heap invariant!
 """
 
-# Original code by Kevin O'Connor, augmented by Tim Peters and Raymond Hettinger
+# Original code by Kevin O'Connor, augmented by Tim Peters na Raymond Hettinger
 
 __about__ = """Heap queues
 
 [explanation by François Pinard]
 
-Heaps are arrays for which a[k] <= a[2*k+1] and a[k] <= a[2*k+2] for
+Heaps are arrays kila which a[k] <= a[2*k+1] na a[k] <= a[2*k+2] for
 all k, counting elements kutoka 0.  For the sake of comparison,
 non-existing elements are considered to be infinite.  The interesting
-property of a heap is that a[0] is always its smallest element.
+property of a heap ni that a[0] ni always its smallest element.
 
-The strange invariant above is meant to be an efficient memory
-representation for a tournament.  The numbers below are `k', not a[k]:
+The strange invariant above ni meant to be an efficient memory
+representation kila a tournament.  The numbers below are `k', sio a[k]:
 
                                    0
 
@@ -53,73 +53,73 @@ representation for a tournament.  The numbers below are `k', not a[k]:
     15 16   17 18   19 20   21 22   23 24   25 26   27 28   29 30
 
 
-In the tree above, each cell `k' is topping `2*k+1' and `2*k+2'.  In
-a usual binary tournament we see in sports, each cell is the winner
-over the two cells it tops, and we can trace the winner down the tree
-to see all opponents s/he had.  However, in many computer applications
-of such tournaments, we do not need to trace the history of a winner.
-To be more memory efficient, when a winner is promoted, we try to
-replace it by something else at a lower level, and the rule becomes
-that a cell and the two cells it tops contain three different items,
+In the tree above, each cell `k' ni topping `2*k+1' na `2*k+2'.  In
+a usual binary tournament we see kwenye sports, each cell ni the winner
+over the two cells it tops, na we can trace the winner down the tree
+to see all opponents s/he had.  However, kwenye many computer applications
+of such tournaments, we do sio need to trace the history of a winner.
+To be more memory efficient, when a winner ni promoted, we try to
+replace it by something else at a lower level, na the rule becomes
+that a cell na the two cells it tops contain three different items,
 but the top cell "wins" over the two topped cells.
 
-If this heap invariant is protected at all time, index 0 is clearly
+If this heap invariant ni protected at all time, index 0 ni clearly
 the overall winner.  The simplest algorithmic way to remove it and
-find the "next" winner is to move some loser (let's say cell 30 in the
-diagram above) into the 0 position, and then percolate this new 0 down
-the tree, exchanging values, until the invariant is re-established.
-This is clearly logarithmic on the total number of items in the tree.
+find the "next" winner ni to move some loser (let's say cell 30 kwenye the
+diagram above) into the 0 position, na then percolate this new 0 down
+the tree, exchanging values, until the invariant ni re-established.
+This ni clearly logarithmic on the total number of items kwenye the tree.
 By iterating over all items, you get an O(n ln n) sort.
 
-A nice feature of this sort is that you can efficiently insert new
-items while the sort is going on, provided that the inserted items are
+A nice feature of this sort ni that you can efficiently insert new
+items wakati the sort ni going on, provided that the inserted items are
 not "better" than the last 0'th element you extracted.  This is
-especially useful in simulation contexts, where the tree holds all
-incoming events, and the "win" condition means the smallest scheduled
-time.  When an event schedule other events for execution, they are
+especially useful kwenye simulation contexts, where the tree holds all
+incoming events, na the "win" condition means the smallest scheduled
+time.  When an event schedule other events kila execution, they are
 scheduled into the future, so they can easily go into the heap.  So, a
-heap is a good structure for implementing schedulers (this is what I
-used for my MIDI sequencer :-).
+heap ni a good structure kila implementing schedulers (this ni what I
+used kila my MIDI sequencer :-).
 
-Various structures for implementing schedulers have been extensively
-studied, and heaps are good for this, as they are reasonably speedy,
-the speed is almost constant, and the worst case is not much different
+Various structures kila implementing schedulers have been extensively
+studied, na heaps are good kila this, kama they are reasonably speedy,
+the speed ni almost constant, na the worst case ni sio much different
 than the average case.  However, there are other representations which
 are more efficient overall, yet the worst cases might be terrible.
 
-Heaps are also very useful in big disk sorts.  You most probably all
+Heaps are also very useful kwenye big disk sorts.  You most probably all
 know that a big sort implies producing "runs" (which are pre-sorted
-sequences, which size is usually related to the amount of CPU memory),
-followed by a merging passes for these runs, which merging is often
-very cleverly organised[1].  It is very agizaant that the initial
+sequences, which size ni usually related to the amount of CPU memory),
+followed by a merging pitaes kila these runs, which merging ni often
+very cleverly organised[1].  It ni very agizaant that the initial
 sort produces the longest runs possible.  Tournaments are a good way
 to that.  If, using all the memory available to hold a tournament, you
-replace and percolate items that happen to fit the current run, you'll
-produce runs which are twice the size of the memory for random input,
-and much better for input fuzzily ordered.
+replace na percolate items that happen to fit the current run, you'll
+produce runs which are twice the size of the memory kila random input,
+and much better kila input fuzzily ordered.
 
-Moreover, ikiwa you output the 0'th item on disk and get an input which
-may not fit in the current tournament (because the value "wins" over
-the last output value), it cannot fit in the heap, so the size of the
+Moreover, ikiwa you output the 0'th item on disk na get an input which
+may sio fit kwenye the current tournament (because the value "wins" over
+the last output value), it cannot fit kwenye the heap, so the size of the
 heap decreases.  The freed memory could be cleverly reused immediately
-for progressively building a second heap, which grows at exactly the
-same rate the first heap is melting.  When the first heap completely
-vanishes, you switch heaps and start a new run.  Clever and quite
+kila progressively building a second heap, which grows at exactly the
+same rate the first heap ni melting.  When the first heap completely
+vanishes, you switch heaps na start a new run.  Clever na quite
 effective!
 
 In a word, heaps are useful memory structures to know.  I use them in
-a few applications, and I think it is good to keep a `heap' module
+a few applications, na I think it ni good to keep a `heap' module
 around. :-)
 
 --------------------
 [1] The disk balancing algorithms which are current, nowadays, are
-more annoying than clever, and this is a consequence of the seeking
+more annoying than clever, na this ni a consequence of the seeking
 capabilities of the disks.  On devices which cannot seek, like big
-tape drives, the story was quite different, and one had to be very
-clever to ensure (far in advance) that each tape movement will be the
+tape drives, the story was quite different, na one had to be very
+clever to ensure (far kwenye advance) that each tape movement will be the
 most effective possible (that is, will best participate at
 "progressing" the merge).  Some tapes were even able to read
-backwards, and this was also used to avoid the rewinding time.
+backwards, na this was also used to avoid the rewinding time.
 Believe me, real good tape sorts were quite spectacular to watch!
 From all times, sorting has always been a Great Art! :-)
 """
@@ -134,110 +134,110 @@ eleza heappush(heap, item):
 
 eleza heappop(heap):
     """Pop the smallest item off the heap, maintaining the heap invariant."""
-    lastelt = heap.pop()    # raises appropriate IndexError ikiwa heap is empty
+    lastelt = heap.pop()    # ashirias appropriate IndexError ikiwa heap ni empty
     ikiwa heap:
-        returnitem = heap[0]
+        rudishaitem = heap[0]
         heap[0] = lastelt
         _siftup(heap, 0)
-        rudisha returnitem
+        rudisha rudishaitem
     rudisha lastelt
 
 eleza heapreplace(heap, item):
-    """Pop and rudisha the current smallest value, and add the new item.
+    """Pop na rudisha the current smallest value, na add the new item.
 
-    This is more efficient than heappop() followed by heappush(), and can be
+    This ni more efficient than heappop() followed by heappush(), na can be
     more appropriate when using a fixed-size heap.  Note that the value
-    returned may be larger than item!  That constrains reasonable uses of
-    this routine unless written as part of a conditional replacement:
+    rudishaed may be larger than item!  That constrains reasonable uses of
+    this routine unless written kama part of a conditional replacement:
 
         ikiwa item > heap[0]:
             item = heapreplace(heap, item)
     """
-    returnitem = heap[0]    # raises appropriate IndexError ikiwa heap is empty
+    rudishaitem = heap[0]    # ashirias appropriate IndexError ikiwa heap ni empty
     heap[0] = item
     _siftup(heap, 0)
-    rudisha returnitem
+    rudisha rudishaitem
 
 eleza heappushpop(heap, item):
     """Fast version of a heappush followed by a heappop."""
-    ikiwa heap and heap[0] < item:
+    ikiwa heap na heap[0] < item:
         item, heap[0] = heap[0], item
         _siftup(heap, 0)
     rudisha item
 
 eleza heapify(x):
-    """Transform list into a heap, in-place, in O(len(x)) time."""
+    """Transform list into a heap, in-place, kwenye O(len(x)) time."""
     n = len(x)
     # Transform bottom-up.  The largest index there's any point to looking at
-    # is the largest with a child index in-range, so must have 2*i + 1 < n,
-    # or i < (n-1)/2.  If n is even = 2*j, this is (2*j-1)/2 = j-1/2 so
-    # j-1 is the largest, which is n//2 - 1.  If n is odd = 2*j+1, this is
-    # (2*j+1-1)/2 = j so j-1 is the largest, and that's again n//2-1.
-    for i in reversed(range(n//2)):
+    # ni the largest with a child index in-range, so must have 2*i + 1 < n,
+    # ama i < (n-1)/2.  If n ni even = 2*j, this ni (2*j-1)/2 = j-1/2 so
+    # j-1 ni the largest, which ni n//2 - 1.  If n ni odd = 2*j+1, this is
+    # (2*j+1-1)/2 = j so j-1 ni the largest, na that's again n//2-1.
+    kila i kwenye reversed(range(n//2)):
         _siftup(x, i)
 
 eleza _heappop_max(heap):
     """Maxheap version of a heappop."""
-    lastelt = heap.pop()    # raises appropriate IndexError ikiwa heap is empty
+    lastelt = heap.pop()    # ashirias appropriate IndexError ikiwa heap ni empty
     ikiwa heap:
-        returnitem = heap[0]
+        rudishaitem = heap[0]
         heap[0] = lastelt
         _siftup_max(heap, 0)
-        rudisha returnitem
+        rudisha rudishaitem
     rudisha lastelt
 
 eleza _heapreplace_max(heap, item):
     """Maxheap version of a heappop followed by a heappush."""
-    returnitem = heap[0]    # raises appropriate IndexError ikiwa heap is empty
+    rudishaitem = heap[0]    # ashirias appropriate IndexError ikiwa heap ni empty
     heap[0] = item
     _siftup_max(heap, 0)
-    rudisha returnitem
+    rudisha rudishaitem
 
 eleza _heapify_max(x):
-    """Transform list into a maxheap, in-place, in O(len(x)) time."""
+    """Transform list into a maxheap, in-place, kwenye O(len(x)) time."""
     n = len(x)
-    for i in reversed(range(n//2)):
+    kila i kwenye reversed(range(n//2)):
         _siftup_max(x, i)
 
-# 'heap' is a heap at all indices >= startpos, except possibly for pos.  pos
-# is the index of a leaf with a possibly out-of-order value.  Restore the
+# 'heap' ni a heap at all indices >= startpos, tatizo possibly kila pos.  pos
+# ni the index of a leaf with a possibly out-of-order value.  Restore the
 # heap invariant.
 eleza _siftdown(heap, startpos, pos):
     newitem = heap[pos]
     # Follow the path to the root, moving parents down until finding a place
     # newitem fits.
-    while pos > startpos:
+    wakati pos > startpos:
         parentpos = (pos - 1) >> 1
         parent = heap[parentpos]
         ikiwa newitem < parent:
             heap[pos] = parent
             pos = parentpos
-            continue
-        break
+            endelea
+        koma
     heap[pos] = newitem
 
-# The child indices of heap index pos are already heaps, and we want to make
+# The child indices of heap index pos are already heaps, na we want to make
 # a heap at index pos too.  We do this by bubbling the smaller child of
 # pos up (and so on with that child's children, etc) until hitting a leaf,
 # then using _siftdown to move the oddball originally at index pos into place.
 #
-# We *could* break out of the loop as soon as we find a pos where newitem <=
-# both its children, but turns out that's not a good idea, and despite that
+# We *could* koma out of the loop kama soon kama we find a pos where newitem <=
+# both its children, but turns out that's sio a good idea, na despite that
 # many books write the algorithm that way.  During a heap pop, the last array
-# element is sifted in, and that tends to be large, so that comparing it
+# element ni sifted in, na that tends to be large, so that comparing it
 # against values starting kutoka the root usually doesn't pay (= usually doesn't
 # get us out of the loop early).  See Knuth, Volume 3, where this is
-# explained and quantified in an exercise.
+# explained na quantified kwenye an exercise.
 #
-# Cutting the # of comparisons is agizaant, since these routines have no
+# Cutting the # of comparisons ni agizaant, since these routines have no
 # way to extract "the priority" kutoka an array element, so that intelligence
-# is likely to be hiding in custom comparison methods, or in array elements
+# ni likely to be hiding kwenye custom comparison methods, ama kwenye array elements
 # storing (priority, record) tuples.  Comparisons are thus potentially
 # expensive.
 #
 # On random arrays of length 1000, making this change cut the number of
-# comparisons made by heapify() a little, and those made by exhaustive
-# heappop() a lot, in accord with theory.  Here are typical results kutoka 3
+# comparisons made by heapify() a little, na those made by exhaustive
+# heappop() a lot, kwenye accord with theory.  Here are typical results kutoka 3
 # runs (3 just to demonstrate how small the variance is):
 #
 # Compares needed by heapify     Compares needed by 1000 heappops
@@ -247,13 +247,13 @@ eleza _siftdown(heap, startpos, pos):
 # 1847 cut to 1660               15024 cut to 8703
 #
 # Building the heap by using heappush() 1000 times instead required
-# 2198, 2148, and 2219 compares:  heapify() is more efficient, when
+# 2198, 2148, na 2219 compares:  heapify() ni more efficient, when
 # you can use it.
 #
 # The total compares needed by list.sort() on the same lists were 8627,
-# 8627, and 8632 (this should be compared to the sum of heapify() and
-# heappop() compares):  list.sort() is (unsurprisingly!) more efficient
-# for sorting.
+# 8627, na 8632 (this should be compared to the sum of heapify() and
+# heappop() compares):  list.sort() ni (unsurprisingly!) more efficient
+# kila sorting.
 
 eleza _siftup(heap, pos):
     endpos = len(heap)
@@ -261,16 +261,16 @@ eleza _siftup(heap, pos):
     newitem = heap[pos]
     # Bubble up the smaller child until hitting a leaf.
     childpos = 2*pos + 1    # leftmost child position
-    while childpos < endpos:
+    wakati childpos < endpos:
         # Set childpos to index of smaller child.
         rightpos = childpos + 1
-        ikiwa rightpos < endpos and not heap[childpos] < heap[rightpos]:
+        ikiwa rightpos < endpos na sio heap[childpos] < heap[rightpos]:
             childpos = rightpos
         # Move the smaller child up.
         heap[pos] = heap[childpos]
         pos = childpos
         childpos = 2*pos + 1
-    # The leaf at pos is empty now.  Put newitem there, and bubble it up
+    # The leaf at pos ni empty now.  Put newitem there, na bubble it up
     # to its final resting place (by sifting its parents down).
     heap[pos] = newitem
     _siftdown(heap, startpos, pos)
@@ -280,14 +280,14 @@ eleza _siftdown_max(heap, startpos, pos):
     newitem = heap[pos]
     # Follow the path to the root, moving parents down until finding a place
     # newitem fits.
-    while pos > startpos:
+    wakati pos > startpos:
         parentpos = (pos - 1) >> 1
         parent = heap[parentpos]
         ikiwa parent < newitem:
             heap[pos] = parent
             pos = parentpos
-            continue
-        break
+            endelea
+        koma
     heap[pos] = newitem
 
 eleza _siftup_max(heap, pos):
@@ -297,31 +297,31 @@ eleza _siftup_max(heap, pos):
     newitem = heap[pos]
     # Bubble up the larger child until hitting a leaf.
     childpos = 2*pos + 1    # leftmost child position
-    while childpos < endpos:
+    wakati childpos < endpos:
         # Set childpos to index of larger child.
         rightpos = childpos + 1
-        ikiwa rightpos < endpos and not heap[rightpos] < heap[childpos]:
+        ikiwa rightpos < endpos na sio heap[rightpos] < heap[childpos]:
             childpos = rightpos
         # Move the larger child up.
         heap[pos] = heap[childpos]
         pos = childpos
         childpos = 2*pos + 1
-    # The leaf at pos is empty now.  Put newitem there, and bubble it up
+    # The leaf at pos ni empty now.  Put newitem there, na bubble it up
     # to its final resting place (by sifting its parents down).
     heap[pos] = newitem
     _siftdown_max(heap, startpos, pos)
 
-eleza merge(*iterables, key=None, reverse=False):
+eleza merge(*iterables, key=Tupu, reverse=Uongo):
     '''Merge multiple sorted inputs into a single sorted output.
 
-    Similar to sorted(itertools.chain(*iterables)) but returns a generator,
-    does not pull the data into memory all at once, and assumes that each of
-    the input streams is already sorted (smallest to largest).
+    Similar to sorted(itertools.chain(*iterables)) but rudishas a generator,
+    does sio pull the data into memory all at once, na assumes that each of
+    the input streams ni already sorted (smallest to largest).
 
     >>> list(merge([1,3,5,7], [0,2,4,8], [5,10,15,20], [], [25]))
     [0, 1, 2, 3, 4, 5, 5, 7, 8, 10, 15, 20, 25]
 
-    If *key* is not None, applies a key function to each element to determine
+    If *key* ni sio Tupu, applies a key function to each element to determine
     its sort order.
 
     >>> list(merge(['dog', 'horse'], ['cat', 'fish', 'kangaroo'], key=len))
@@ -337,68 +337,68 @@ eleza merge(*iterables, key=None, reverse=False):
         _heappop = _heappop_max
         _heapreplace = _heapreplace_max
         direction = -1
-    else:
+    isipokua:
         _heapify = heapify
         _heappop = heappop
         _heapreplace = heapreplace
         direction = 1
 
-    ikiwa key is None:
-        for order, it in enumerate(map(iter, iterables)):
-            try:
+    ikiwa key ni Tupu:
+        kila order, it kwenye enumerate(map(iter, iterables)):
+            jaribu:
                 next = it.__next__
                 h_append([next(), order * direction, next])
-            except StopIteration:
-                pass
+            tatizo StopIteration:
+                pita
         _heapify(h)
-        while len(h) > 1:
-            try:
-                while True:
+        wakati len(h) > 1:
+            jaribu:
+                wakati Kweli:
                     value, order, next = s = h[0]
-                    yield value
-                    s[0] = next()           # raises StopIteration when exhausted
+                    tuma value
+                    s[0] = next()           # ashirias StopIteration when exhausted
                     _heapreplace(h, s)      # restore heap condition
-            except StopIteration:
+            tatizo StopIteration:
                 _heappop(h)                 # remove empty iterator
         ikiwa h:
             # fast case when only a single iterator remains
             value, order, next = h[0]
-            yield value
-            yield kutoka next.__self__
-        return
+            tuma value
+            tuma kutoka next.__self__
+        rudisha
 
-    for order, it in enumerate(map(iter, iterables)):
-        try:
+    kila order, it kwenye enumerate(map(iter, iterables)):
+        jaribu:
             next = it.__next__
             value = next()
             h_append([key(value), order * direction, value, next])
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
     _heapify(h)
-    while len(h) > 1:
-        try:
-            while True:
+    wakati len(h) > 1:
+        jaribu:
+            wakati Kweli:
                 key_value, order, value, next = s = h[0]
-                yield value
+                tuma value
                 value = next()
                 s[0] = key(value)
                 s[2] = value
                 _heapreplace(h, s)
-        except StopIteration:
+        tatizo StopIteration:
             _heappop(h)
     ikiwa h:
         key_value, order, value, next = h[0]
-        yield value
-        yield kutoka next.__self__
+        tuma value
+        tuma kutoka next.__self__
 
 
-# Algorithm notes for nlargest() and nsmallest()
+# Algorithm notes kila nlargest() na nsmallest()
 # ==============================================
 #
-# Make a single pass over the data while keeping the k most extreme values
-# in a heap.  Memory consumption is limited to keeping k values in a list.
+# Make a single pita over the data wakati keeping the k most extreme values
+# kwenye a heap.  Memory consumption ni limited to keeping k values kwenye a list.
 #
-# Measured performance for random inputs:
+# Measured performance kila random inputs:
 #
 #                                   number of comparisons
 #    n inputs     k-extreme values  (average of 5 trials)   % more than min()
@@ -409,7 +409,7 @@ eleza merge(*iterables, key=None, reverse=False):
 #  1,000,000           100              1,007,751                 0.8%
 # 10,000,000           100             10,009,401                 0.1%
 #
-# Theoretical number of comparisons for k smallest of n random inputs:
+# Theoretical number of comparisons kila k smallest of n random inputs:
 #
 # Step   Comparisons                  Action
 # ----   --------------------------   ---------------------------
@@ -418,181 +418,181 @@ eleza merge(*iterables, key=None, reverse=False):
 #  3     k * (1 + lg2(k)) * ln(n/k)   replace the topmost value on the heap
 #  4     k * lg2(k) - (k/2)           final sort of the k most extreme values
 #
-# Combining and simplifying for a rough estimate gives:
+# Combining na simplifying kila a rough estimate gives:
 #
 #        comparisons = n + k * (log(k, 2) * log(n/k) + log(k, 2) + log(n/k))
 #
-# Computing the number of comparisons for step 3:
+# Computing the number of comparisons kila step 3:
 # -----------------------------------------------
-# * For the i-th new value kutoka the iterable, the probability of being in the
-#   k most extreme values is k/i.  For example, the probability of the 101st
-#   value seen being in the 100 most extreme values is 100/101.
-# * If the value is a new extreme value, the cost of inserting it into the
-#   heap is 1 + log(k, 2).
+# * For the i-th new value kutoka the iterable, the probability of being kwenye the
+#   k most extreme values ni k/i.  For example, the probability of the 101st
+#   value seen being kwenye the 100 most extreme values ni 100/101.
+# * If the value ni a new extreme value, the cost of inserting it into the
+#   heap ni 1 + log(k, 2).
 # * The probability times the cost gives:
 #            (k/i) * (1 + log(k, 2))
 # * Summing across the remaining n-k elements gives:
-#            sum((k/i) * (1 + log(k, 2)) for i in range(k+1, n+1))
+#            sum((k/i) * (1 + log(k, 2)) kila i kwenye range(k+1, n+1))
 # * This reduces to:
 #            (H(n) - H(k)) * k * (1 + log(k, 2))
-# * Where H(n) is the n-th harmonic number estimated by:
+# * Where H(n) ni the n-th harmonic number estimated by:
 #            gamma = 0.5772156649
 #            H(n) = log(n, e) + gamma + 1 / (2 * n)
 #   http://en.wikipedia.org/wiki/Harmonic_series_(mathematics)#Rate_of_divergence
 # * Substituting the H(n) formula:
 #            comparisons = k * (1 + log(k, 2)) * (log(n/k, e) + (1/n - 1/k) / 2)
 #
-# Worst-case for step 3:
+# Worst-case kila step 3:
 # ----------------------
-# In the worst case, the input data is reversed sorted so that every new element
-# must be inserted in the heap:
+# In the worst case, the input data ni reversed sorted so that every new element
+# must be inserted kwenye the heap:
 #
 #             comparisons = 1.66 * k + log(k, 2) * (n - k)
 #
 # Alternative Algorithms
 # ----------------------
-# Other algorithms were not used because they:
+# Other algorithms were sio used because they:
 # 1) Took much more auxiliary memory,
-# 2) Made multiple passes over the data.
-# 3) Made more comparisons in common cases (small k, large n, semi-random input).
+# 2) Made multiple pitaes over the data.
+# 3) Made more comparisons kwenye common cases (small k, large n, semi-random input).
 # See the more detailed comparison of approach at:
 # http://code.activestate.com/recipes/577573-compare-algorithms-for-heapqsmallest
 
-eleza nsmallest(n, iterable, key=None):
-    """Find the n smallest elements in a dataset.
+eleza nsmallest(n, iterable, key=Tupu):
+    """Find the n smallest elements kwenye a dataset.
 
     Equivalent to:  sorted(iterable, key=key)[:n]
     """
 
-    # Short-cut for n==1 is to use min()
+    # Short-cut kila n==1 ni to use min()
     ikiwa n == 1:
         it = iter(iterable)
         sentinel = object()
         result = min(it, default=sentinel, key=key)
-        rudisha [] ikiwa result is sentinel else [result]
+        rudisha [] ikiwa result ni sentinel else [result]
 
     # When n>=size, it's faster to use sorted()
-    try:
+    jaribu:
         size = len(iterable)
-    except (TypeError, AttributeError):
-        pass
-    else:
+    tatizo (TypeError, AttributeError):
+        pita
+    isipokua:
         ikiwa n >= size:
             rudisha sorted(iterable, key=key)[:n]
 
-    # When key is none, use simpler decoration
-    ikiwa key is None:
+    # When key ni none, use simpler decoration
+    ikiwa key ni Tupu:
         it = iter(iterable)
         # put the range(n) first so that zip() doesn't
         # consume one too many elements kutoka the iterator
-        result = [(elem, i) for i, elem in zip(range(n), it)]
-        ikiwa not result:
+        result = [(elem, i) kila i, elem kwenye zip(range(n), it)]
+        ikiwa sio result:
             rudisha result
         _heapify_max(result)
         top = result[0][0]
         order = n
         _heapreplace = _heapreplace_max
-        for elem in it:
+        kila elem kwenye it:
             ikiwa elem < top:
                 _heapreplace(result, (elem, order))
                 top, _order = result[0]
                 order += 1
         result.sort()
-        rudisha [elem for (elem, order) in result]
+        rudisha [elem kila (elem, order) kwenye result]
 
     # General case, slowest method
     it = iter(iterable)
-    result = [(key(elem), i, elem) for i, elem in zip(range(n), it)]
-    ikiwa not result:
+    result = [(key(elem), i, elem) kila i, elem kwenye zip(range(n), it)]
+    ikiwa sio result:
         rudisha result
     _heapify_max(result)
     top = result[0][0]
     order = n
     _heapreplace = _heapreplace_max
-    for elem in it:
+    kila elem kwenye it:
         k = key(elem)
         ikiwa k < top:
             _heapreplace(result, (k, order, elem))
             top, _order, _elem = result[0]
             order += 1
     result.sort()
-    rudisha [elem for (k, order, elem) in result]
+    rudisha [elem kila (k, order, elem) kwenye result]
 
-eleza nlargest(n, iterable, key=None):
-    """Find the n largest elements in a dataset.
+eleza nlargest(n, iterable, key=Tupu):
+    """Find the n largest elements kwenye a dataset.
 
-    Equivalent to:  sorted(iterable, key=key, reverse=True)[:n]
+    Equivalent to:  sorted(iterable, key=key, reverse=Kweli)[:n]
     """
 
-    # Short-cut for n==1 is to use max()
+    # Short-cut kila n==1 ni to use max()
     ikiwa n == 1:
         it = iter(iterable)
         sentinel = object()
         result = max(it, default=sentinel, key=key)
-        rudisha [] ikiwa result is sentinel else [result]
+        rudisha [] ikiwa result ni sentinel else [result]
 
     # When n>=size, it's faster to use sorted()
-    try:
+    jaribu:
         size = len(iterable)
-    except (TypeError, AttributeError):
-        pass
-    else:
+    tatizo (TypeError, AttributeError):
+        pita
+    isipokua:
         ikiwa n >= size:
-            rudisha sorted(iterable, key=key, reverse=True)[:n]
+            rudisha sorted(iterable, key=key, reverse=Kweli)[:n]
 
-    # When key is none, use simpler decoration
-    ikiwa key is None:
+    # When key ni none, use simpler decoration
+    ikiwa key ni Tupu:
         it = iter(iterable)
-        result = [(elem, i) for i, elem in zip(range(0, -n, -1), it)]
-        ikiwa not result:
+        result = [(elem, i) kila i, elem kwenye zip(range(0, -n, -1), it)]
+        ikiwa sio result:
             rudisha result
         heapify(result)
         top = result[0][0]
         order = -n
         _heapreplace = heapreplace
-        for elem in it:
+        kila elem kwenye it:
             ikiwa top < elem:
                 _heapreplace(result, (elem, order))
                 top, _order = result[0]
                 order -= 1
-        result.sort(reverse=True)
-        rudisha [elem for (elem, order) in result]
+        result.sort(reverse=Kweli)
+        rudisha [elem kila (elem, order) kwenye result]
 
     # General case, slowest method
     it = iter(iterable)
-    result = [(key(elem), i, elem) for i, elem in zip(range(0, -n, -1), it)]
-    ikiwa not result:
+    result = [(key(elem), i, elem) kila i, elem kwenye zip(range(0, -n, -1), it)]
+    ikiwa sio result:
         rudisha result
     heapify(result)
     top = result[0][0]
     order = -n
     _heapreplace = heapreplace
-    for elem in it:
+    kila elem kwenye it:
         k = key(elem)
         ikiwa top < k:
             _heapreplace(result, (k, order, elem))
             top, _order, _elem = result[0]
             order -= 1
-    result.sort(reverse=True)
-    rudisha [elem for (k, order, elem) in result]
+    result.sort(reverse=Kweli)
+    rudisha [elem kila (k, order, elem) kwenye result]
 
 # If available, use C implementation
-try:
+jaribu:
     kutoka _heapq agiza *
-except ImportError:
-    pass
-try:
+tatizo ImportError:
+    pita
+jaribu:
     kutoka _heapq agiza _heapreplace_max
-except ImportError:
-    pass
-try:
+tatizo ImportError:
+    pita
+jaribu:
     kutoka _heapq agiza _heapify_max
-except ImportError:
-    pass
-try:
+tatizo ImportError:
+    pita
+jaribu:
     kutoka _heapq agiza _heappop_max
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 
 ikiwa __name__ == "__main__":

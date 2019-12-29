@@ -1,6 +1,6 @@
 """Test help_about, coverage 100%.
 help_about.build_bits branches on sys.platform='darwin'.
-'100% combines coverage on Mac and others.
+'100% combines coverage on Mac na others.
 """
 
 kutoka idlelib agiza help_about
@@ -26,14 +26,14 @@ kundi LiveDialogTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = About(cls.root, 'About IDLE', _utest=True)
+        cls.dialog = About(cls.root, 'About IDLE', _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.dialog
+        toa cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_build_bits(self):
         self.assertIn(help_about.build_bits(), ('32', '64'))
@@ -55,14 +55,14 @@ kundi LiveDialogTest(unittest.TestCase):
                           (dialog.py_copyright, copyright, 'copyright'),
                           (dialog.py_credits, credits, 'credits')]
 
-        for button, printer, name in button_sources:
+        kila button, printer, name kwenye button_sources:
             with self.subTest(name=name):
                 printer._Printer__setup()
                 button.invoke()
                 get = dialog._current_textview.viewframe.textframe.text.get
                 lines = printer._Printer__lines
                 ikiwa len(lines) < 2:
-                    self.fail(name + ' full text was not found')
+                    self.fail(name + ' full text was sio found')
                 self.assertEqual(lines[0], get('1.0', '1.end'))
                 self.assertEqual(lines[1], get('2.0', '2.end'))
                 dialog._current_textview.destroy()
@@ -74,12 +74,12 @@ kundi LiveDialogTest(unittest.TestCase):
                           (self.dialog.idle_news, 'NEWS.txt', 'news'),
                           (self.dialog.idle_credits, 'CREDITS.txt', 'credits')]
 
-        for button, filename, name in button_sources:
+        kila button, filename, name kwenye button_sources:
             with  self.subTest(name=name):
                 button.invoke()
                 fn = findfile(filename, subdir='idlelib')
                 get = dialog._current_textview.viewframe.textframe.text.get
-                with open(fn, encoding='utf-8') as f:
+                with open(fn, encoding='utf-8') kama f:
                     self.assertEqual(f.readline().strip(), get('1.0', '1.end'))
                     f.readline()
                     self.assertEqual(f.readline().strip(), get('3.0', '3.end'))
@@ -94,14 +94,14 @@ kundi DefaultTitleTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = About(cls.root, _utest=True)
+        cls.dialog = About(cls.root, _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.dialog
+        toa cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_dialog_title(self):
         """Test about dialog title"""
@@ -118,14 +118,14 @@ kundi CloseTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = About(cls.root, 'About IDLE', _utest=True)
+        cls.dialog = About(cls.root, 'About IDLE', _utest=Kweli)
 
     @classmethod
     eleza tearDownClass(cls):
-        del cls.dialog
+        toa cls.dialog
         cls.root.update_idletasks()
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_close(self):
         self.assertEqual(self.dialog.winfo_class(), 'Toplevel')
@@ -135,20 +135,20 @@ kundi CloseTest(unittest.TestCase):
 
 
 kundi Dummy_about_dialog():
-    # Dummy kundi for testing file display functions.
+    # Dummy kundi kila testing file display functions.
     idle_credits = About.show_idle_credits
     idle_readme = About.show_readme
     idle_news = About.show_idle_news
     # Called by the above
     display_file_text = About.display_file_text
-    _utest = True
+    _utest = Kweli
 
 
 kundi DisplayFileTest(unittest.TestCase):
     """Test functions that display files.
 
     While somewhat redundant with gui-based test_file_dialog,
-    these unit tests run on all buildbots, not just a few.
+    these unit tests run on all buildbots, sio just a few.
     """
     dialog = Dummy_about_dialog()
 
@@ -167,15 +167,15 @@ kundi DisplayFileTest(unittest.TestCase):
         textview.view_text = cls.orig_view
 
     eleza test_file_display(self):
-        for handler in (self.dialog.idle_credits,
+        kila handler kwenye (self.dialog.idle_credits,
                         self.dialog.idle_readme,
                         self.dialog.idle_news):
             self.error.message = ''
-            self.view.called = False
+            self.view.called = Uongo
             with self.subTest(handler=handler):
                 handler()
                 self.assertEqual(self.error.message, '')
-                self.assertEqual(self.view.called, True)
+                self.assertEqual(self.view.called, Kweli)
 
 
 ikiwa __name__ == '__main__':

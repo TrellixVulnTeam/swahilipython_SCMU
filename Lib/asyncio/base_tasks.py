@@ -17,33 +17,33 @@ eleza _task_repr_info(task):
     coro = coroutines._format_coroutine(task._coro)
     info.insert(2, f'coro=<{coro}>')
 
-    ikiwa task._fut_waiter is not None:
+    ikiwa task._fut_waiter ni sio Tupu:
         info.insert(3, f'wait_for={task._fut_waiter!r}')
     rudisha info
 
 
 eleza _task_get_stack(task, limit):
     frames = []
-    try:
+    jaribu:
         # 'async def' coroutines
         f = task._coro.cr_frame
-    except AttributeError:
+    tatizo AttributeError:
         f = task._coro.gi_frame
-    ikiwa f is not None:
-        while f is not None:
-            ikiwa limit is not None:
+    ikiwa f ni sio Tupu:
+        wakati f ni sio Tupu:
+            ikiwa limit ni sio Tupu:
                 ikiwa limit <= 0:
-                    break
+                    koma
                 limit -= 1
             frames.append(f)
             f = f.f_back
         frames.reverse()
-    elikiwa task._exception is not None:
+    elikiwa task._exception ni sio Tupu:
         tb = task._exception.__traceback__
-        while tb is not None:
-            ikiwa limit is not None:
+        wakati tb ni sio Tupu:
+            ikiwa limit ni sio Tupu:
                 ikiwa limit <= 0:
-                    break
+                    koma
                 limit -= 1
             frames.append(tb.tb_frame)
             tb = tb.tb_next
@@ -53,26 +53,26 @@ eleza _task_get_stack(task, limit):
 eleza _task_print_stack(task, limit, file):
     extracted_list = []
     checked = set()
-    for f in task.get_stack(limit=limit):
+    kila f kwenye task.get_stack(limit=limit):
         lineno = f.f_lineno
         co = f.f_code
         filename = co.co_filename
         name = co.co_name
-        ikiwa filename not in checked:
+        ikiwa filename haiko kwenye checked:
             checked.add(filename)
             linecache.checkcache(filename)
         line = linecache.getline(filename, lineno, f.f_globals)
         extracted_list.append((filename, lineno, name, line))
 
     exc = task._exception
-    ikiwa not extracted_list:
-        andika(f'No stack for {task!r}', file=file)
-    elikiwa exc is not None:
-        andika(f'Traceback for {task!r} (most recent call last):', file=file)
-    else:
-        andika(f'Stack for {task!r} (most recent call last):', file=file)
+    ikiwa sio extracted_list:
+        andika(f'No stack kila {task!r}', file=file)
+    elikiwa exc ni sio Tupu:
+        andika(f'Traceback kila {task!r} (most recent call last):', file=file)
+    isipokua:
+        andika(f'Stack kila {task!r} (most recent call last):', file=file)
 
     traceback.print_list(extracted_list, file=file)
-    ikiwa exc is not None:
-        for line in traceback.format_exception_only(exc.__class__, exc):
+    ikiwa exc ni sio Tupu:
+        kila line kwenye traceback.format_exception_only(exc.__class__, exc):
             andika(line, file=file, end='')

@@ -1,15 +1,15 @@
-"""W3C Document Object Model implementation for Python.
+"""W3C Document Object Motoa implementation kila Python.
 
-The Python mapping of the Document Object Model is documented in the
-Python Library Reference in the section on the xml.dom package.
+The Python mapping of the Document Object Motoa ni documented kwenye the
+Python Library Reference kwenye the section on the xml.dom package.
 
 This package contains the following modules:
 
 minidom -- A simple implementation of the Level 1 DOM with namespace
-           support added (based on the Level 2 specification) and other
+           support added (based on the Level 2 specification) na other
            minor Level 2 functionality.
 
-pulldom -- DOM builder supporting on-demand tree-building for selected
+pulldom -- DOM builder supporting on-demand tree-building kila selected
            subtrees of the document.
 
 """
@@ -19,11 +19,11 @@ kundi Node:
     """Class giving the NodeType constants."""
     __slots__ = ()
 
-    # DOM implementations may use this as a base kundi for their own
+    # DOM implementations may use this kama a base kundi kila their own
     # Node implementations.  If they don't, the constants defined here
-    # should still be used as the canonical definitions as they match
-    # the values given in the W3C recommendation.  Client code can
-    # safely refer to these values in all tests of Node.nodeType
+    # should still be used kama the canonical definitions kama they match
+    # the values given kwenye the W3C recommendation.  Client code can
+    # safely refer to these values kwenye all tests of Node.nodeType
     # values.
 
     ELEMENT_NODE                = 1
@@ -60,13 +60,13 @@ VALIDATION_ERR                 = 16
 
 
 kundi DOMException(Exception):
-    """Abstract base kundi for DOM exceptions.
+    """Abstract base kundi kila DOM exceptions.
     Exceptions with specific codes are specializations of this class."""
 
     eleza __init__(self, *args, **kw):
-        ikiwa self.__class__ is DOMException:
-            raise RuntimeError(
-                "DOMException should not be instantiated directly")
+        ikiwa self.__class__ ni DOMException:
+            ashiria RuntimeError(
+                "DOMException should sio be instantiated directly")
         Exception.__init__(self, *args, **kw)
 
     eleza _get_code(self):
@@ -122,7 +122,7 @@ kundi ValidationErr(DOMException):
     code = VALIDATION_ERR
 
 kundi UserDataHandler:
-    """Class giving the operation constants for UserDataHandler.handle()."""
+    """Class giving the operation constants kila UserDataHandler.handle()."""
 
     # Based on DOM Level 3 (WD 9 April 2002)
 
@@ -134,7 +134,7 @@ kundi UserDataHandler:
 XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace"
 XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/"
 XHTML_NAMESPACE = "http://www.w3.org/1999/xhtml"
-EMPTY_NAMESPACE = None
-EMPTY_PREFIX = None
+EMPTY_NAMESPACE = Tupu
+EMPTY_PREFIX = Tupu
 
 kutoka .domreg agiza getDOMImplementation, registerDOMImplementation

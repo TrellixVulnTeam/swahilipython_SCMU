@@ -1,23 +1,23 @@
-"""Mock socket module used by the smtpd and smtplib tests.
+"""Mock socket module used by the smtpd na smtplib tests.
 """
 
-# imported for _GLOBAL_DEFAULT_TIMEOUT
-agiza socket as socket_module
+# imported kila _GLOBAL_DEFAULT_TIMEOUT
+agiza socket kama socket_module
 
 # Mock socket module
-_defaulttimeout = None
-_reply_data = None
+_defaulttimeout = Tupu
+_reply_data = Tupu
 
-# This is used to queue up data to be read through socket.makefile, typically
-# *before* the socket object is even created. It is intended to handle a single
-# line which the socket will feed on recv() or makefile().
+# This ni used to queue up data to be read through socket.makefile, typically
+# *before* the socket object ni even created. It ni intended to handle a single
+# line which the socket will feed on recv() ama makefile().
 eleza reply_with(line):
     global _reply_data
     _reply_data = line
 
 
 kundi MockFile:
-    """Mock file object returned by MockSocket.makefile().
+    """Mock file object rudishaed by MockSocket.makefile().
     """
     eleza __init__(self, lines):
         self.lines = lines
@@ -29,27 +29,27 @@ kundi MockFile:
             result = result[:limit]
         rudisha result
     eleza close(self):
-        pass
+        pita
 
 
 kundi MockSocket:
-    """Mock socket object used by smtpd and smtplib tests.
+    """Mock socket object used by smtpd na smtplib tests.
     """
-    eleza __init__(self, family=None):
+    eleza __init__(self, family=Tupu):
         global _reply_data
         self.family = family
         self.output = []
         self.lines = []
         ikiwa _reply_data:
             self.lines.append(_reply_data)
-            _reply_data = None
-        self.conn = None
-        self.timeout = None
+            _reply_data = Tupu
+        self.conn = Tupu
+        self.timeout = Tupu
 
     eleza queue_recv(self, line):
         self.lines.append(line)
 
-    eleza recv(self, bufsize, flags=None):
+    eleza recv(self, bufsize, flags=Tupu):
         data = self.lines.pop(0) + b'\r\n'
         rudisha data
 
@@ -57,22 +57,22 @@ kundi MockSocket:
         rudisha 0
 
     eleza settimeout(self, timeout):
-        ikiwa timeout is None:
+        ikiwa timeout ni Tupu:
             self.timeout = _defaulttimeout
-        else:
+        isipokua:
             self.timeout = timeout
 
     eleza gettimeout(self):
         rudisha self.timeout
 
     eleza setsockopt(self, level, optname, value):
-        pass
+        pita
 
-    eleza getsockopt(self, level, optname, buflen=None):
+    eleza getsockopt(self, level, optname, buflen=Tupu):
         rudisha 0
 
     eleza bind(self, address):
-        pass
+        pita
 
     eleza accept(self):
         self.conn = MockSocket()
@@ -82,21 +82,21 @@ kundi MockSocket:
         rudisha ('0.0.0.0', 0)
 
     eleza setblocking(self, flag):
-        pass
+        pita
 
     eleza listen(self, backlog):
-        pass
+        pita
 
     eleza makefile(self, mode='r', bufsize=-1):
         handle = MockFile(self.lines)
         rudisha handle
 
-    eleza sendall(self, buffer, flags=None):
+    eleza sendall(self, buffer, flags=Tupu):
         self.last = data
         self.output.append(data)
         rudisha len(data)
 
-    eleza send(self, data, flags=None):
+    eleza send(self, data, flags=Tupu):
         self.last = data
         self.output.append(data)
         rudisha len(data)
@@ -105,20 +105,20 @@ kundi MockSocket:
         rudisha ('peer-address', 'peer-port')
 
     eleza close(self):
-        pass
+        pita
 
 
-eleza socket(family=None, type=None, proto=None):
+eleza socket(family=Tupu, type=Tupu, proto=Tupu):
     rudisha MockSocket(family)
 
 eleza create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
-                      source_address=None):
-    try:
+                      source_address=Tupu):
+    jaribu:
         int_port = int(address[1])
-    except ValueError:
-        raise error
+    tatizo ValueError:
+        ashiria error
     ms = MockSocket()
-    ikiwa timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
+    ikiwa timeout ni socket_module._GLOBAL_DEFAULT_TIMEOUT:
         timeout = getdefaulttimeout()
     ms.settimeout(timeout)
     rudisha ms
@@ -138,7 +138,7 @@ eleza getfqdn():
 
 
 eleza gethostname():
-    pass
+    pita
 
 
 eleza gethostbyname(name):
@@ -155,5 +155,5 @@ error = socket_module.error
 AF_INET = socket_module.AF_INET
 AF_INET6 = socket_module.AF_INET6
 SOCK_STREAM = socket_module.SOCK_STREAM
-SOL_SOCKET = None
-SO_REUSEADDR = None
+SOL_SOCKET = Tupu
+SO_REUSEADDR = Tupu

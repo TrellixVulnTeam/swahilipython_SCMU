@@ -15,7 +15,7 @@ class MyProto(asyncio.Protocol):
         self.transport = None
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop is not None:
+        if loop ni sio None:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
@@ -54,7 +54,7 @@ class BaseSockTestsMixin:
 
     def tearDown(self):
         # just in case if we have transport close callbacks
-        if not self.loop.is_closed():
+        if sio self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
@@ -62,9 +62,9 @@ class BaseSockTestsMixin:
         super().tearDown()
 
     def _basetest_sock_client_ops(self, httpd, sock):
-        if not isinstance(self.loop, proactor_events.BaseProactorEventLoop):
+        if sio isinstance(self.loop, proactor_events.BaseProactorEventLoop):
             # in debug mode, socket operations must fail
-            # if the socket is not in blocking mode
+            # if the socket is haiko kwenye blocking mode
             self.loop.set_debug(True)
             sock.setblocking(True)
             with self.assertRaises(ValueError):
@@ -140,7 +140,7 @@ class BaseSockTestsMixin:
         # HTTP headers size is less than MTU,
         # they are sent by the first packet always
         self.assertTrue(data.startswith(b'HTTP/1.0 200 OK'))
-        while data.find(b'\r\n\r\n') == -1:
+        wakati data.find(b'\r\n\r\n') == -1:
             data += await self.loop.sock_recv(sock, DATA_SIZE)
         # Strip headers
         headers = data[:data.index(b'\r\n\r\n') + 4]
@@ -153,10 +153,10 @@ class BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        while True:
+        wakati True:
             data = await self.loop.sock_recv(sock, DATA_SIZE)
-            if not data:
-                break
+            if sio data:
+                koma
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
             size -= len(data)
@@ -193,7 +193,7 @@ class BaseSockTestsMixin:
         # HTTP headers size is less than MTU,
         # they are sent by the first packet always
         self.assertTrue(data.startswith(b'HTTP/1.0 200 OK'))
-        while data.find(b'\r\n\r\n') == -1:
+        wakati data.find(b'\r\n\r\n') == -1:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = bytes(buf[:nbytes])
         # Strip headers
@@ -207,11 +207,11 @@ class BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        while True:
+        wakati True:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = buf[:nbytes]
-            if not data:
-                break
+            if sio data:
+                koma
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
             size -= len(data)
@@ -236,11 +236,11 @@ class BaseSockTestsMixin:
     def test_sock_client_fail(self):
         # Make sure that we will get an unused port
         address = None
-        try:
+        jaribu:
             s = socket.socket()
             s.bind(('127.0.0.1', 0))
             address = s.getsockname()
-        finally:
+        mwishowe:
             s.close()
 
         sock = socket.socket()
@@ -274,17 +274,17 @@ class BaseSockTestsMixin:
                 self.loop.getaddrinfo(
                     *httpd.address, type=socket.SOCK_STREAM))
             for family, type, proto, cname, address in infos:
-                try:
+                jaribu:
                     sock = socket.socket(family=family, type=type, proto=proto)
                     sock.setblocking(False)
                     self.loop.run_until_complete(
                         self.loop.sock_connect(sock, address))
-                except BaseException:
+                tatizo BaseException:
                     pass
-                else:
-                    break
-            else:
-                assert False, 'Can not create socket.'
+                isipokua:
+                    koma
+            isipokua:
+                assert False, 'Can sio create socket.'
 
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop), sock=sock)
@@ -310,7 +310,7 @@ if sys.platform == 'win32':
         def create_event_loop(self):
             return asyncio.ProactorEventLoop()
 
-else:
+isipokua:
     import selectors
 
     if hasattr(selectors, 'KqueueSelector'):

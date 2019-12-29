@@ -1,4 +1,4 @@
-"""This is a test"""
+"""This ni a test"""
 "this isn't a doc string"
 kutoka __future__ agiza nested_scopes
 

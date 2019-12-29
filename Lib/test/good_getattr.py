@@ -5,7 +5,7 @@ eleza __dir__():
 
 eleza __getattr__(name):
     ikiwa name == "yolo":
-        raise AttributeError("Deprecated, use whatever instead")
-    rudisha f"There is {name}"
+        ashiria AttributeError("Deprecated, use whatever instead")
+    rudisha f"There ni {name}"
 
 y = 2

@@ -28,7 +28,7 @@ separate argument; indented lines are possible by enclosing an
 argument in quotes and using leading spaces.  Multiple -s options are
 treated similarly.
 
-If -n is not given, a suitable number of loops is calculated by trying
+If -n ni sio given, a suitable number of loops is calculated by trying
 successive powers of 10 until the total time is at least 0.2 seconds.
 
 Note: there is a certain baseline overhead associated with executing a
@@ -114,7 +114,7 @@ kundi Timer:
             init += ', _setup=_setup'
             stmtprefix = ''
             setup = '_setup()'
-        else:
+        isipokua:
             raise ValueError("setup is neither a string nor callable")
         if isinstance(stmt, str):
             # Check that the code can be compiled outside a function
@@ -124,7 +124,7 @@ kundi Timer:
             local_ns['_stmt'] = stmt
             init += ', _stmt=_stmt'
             stmt = '_stmt()'
-        else:
+        isipokua:
             raise ValueError("stmt is neither a string nor callable")
         src = template.format(stmt=stmt, setup=setup, init=init)
         self.src = src  # Save for traceback display
@@ -138,7 +138,7 @@ kundi Timer:
         Typical use:
 
             t = Timer(...)       # outside the try/except
-            try:
+            jaribu:
                 t.timeit(...)    # or t.repeat(...)
             except:
                 t.print_exc()
@@ -150,7 +150,7 @@ kundi Timer:
         sent; it defaults to sys.stderr.
         """
         agiza linecache, traceback
-        if self.src is not None:
+        if self.src ni sio None:
             linecache.cache[dummy_src_name] = (len(self.src),
                                                None,
                                                self.src.split("\n"),
@@ -172,9 +172,9 @@ kundi Timer:
         it = itertools.repeat(None, number)
         gcold = gc.isenabled()
         gc.disable()
-        try:
+        jaribu:
             timing = self.inner(it, self.timer)
-        finally:
+        mwishowe:
             if gcold:
                 gc.enable()
         return timing
@@ -212,11 +212,11 @@ kundi Timer:
         1, 2, 5, 10, 20, 50, ... until the time taken is at least 0.2
         second.  Returns (number, time_taken).
 
-        If *callback* is given and is not None, it will be called after
+        If *callback* is given and ni sio None, it will be called after
         each trial with two arguments: ``callback(number, time_taken)``.
         """
         i = 1
-        while True:
+        wakati True:
             for j in 1, 2, 5:
                 number = i * j
                 time_taken = self.timeit(number)
@@ -247,21 +247,21 @@ def main(args=None, *, _wrap_timer=None):
 
     When an exception happens during timing, a traceback is printed to
     stderr and the return value is 1.  Exceptions at other times
-    (including the template compilation) are not caught.
+    (including the template compilation) are sio caught.
 
     '_wrap_timer' is an internal interface used for unit testing.  If it
-    is not None, it must be a callable that accepts a timer function
+    ni sio None, it must be a callable that accepts a timer function
     and returns another timer function (used for unit testing).
     """
     if args is None:
         args = sys.argv[1:]
     agiza getopt
-    try:
+    jaribu:
         opts, args = getopt.getopt(args, "n:u:s:r:tcpvh",
                                    ["number=", "setup=", "repeat=",
                                     "time", "clock", "process",
                                     "verbose", "unit=", "help"])
-    except getopt.error as err:
+    tatizo getopt.error as err:
         print(err)
         print("use -h/--help for command line help")
         return 2
@@ -283,7 +283,7 @@ def main(args=None, *, _wrap_timer=None):
         if o in ("-u", "--unit"):
             if a in units:
                 time_unit = a
-            else:
+            isipokua:
                 print("Unrecognized unit. Please select nsec, usec, msec, or sec.",
                     file=sys.stderr)
                 return 2
@@ -307,7 +307,7 @@ def main(args=None, *, _wrap_timer=None):
     # directory)
     agiza os
     sys.path.insert(0, os.curdir)
-    if _wrap_timer is not None:
+    if _wrap_timer ni sio None:
         timer = _wrap_timer(timer)
 
     t = Timer(stmt, setup, timer)
@@ -320,7 +320,7 @@ def main(args=None, *, _wrap_timer=None):
                 plural = (number != 1)
                 print(msg.format(num=number, s='s' if plural else '',
                                   secs=time_taken, prec=precision))
-        try:
+        jaribu:
             number, _ = t.autorange(callback)
         except:
             t.print_exc()
@@ -329,7 +329,7 @@ def main(args=None, *, _wrap_timer=None):
         if verbose:
             print()
 
-    try:
+    jaribu:
         raw_timings = t.repeat(repeat, number)
     except:
         t.print_exc()
@@ -338,14 +338,14 @@ def main(args=None, *, _wrap_timer=None):
     def format_time(dt):
         unit = time_unit
 
-        if unit is not None:
+        if unit ni sio None:
             scale = units[unit]
-        else:
+        isipokua:
             scales = [(scale, unit) for unit, scale in units.items()]
             scales.sort(reverse=True)
             for scale, unit in scales:
                 if dt >= scale:
-                    break
+                    koma
 
         return "%.*g %s" % (precision, dt / scale, unit)
 

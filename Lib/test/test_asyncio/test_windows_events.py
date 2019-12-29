@@ -46,14 +46,14 @@ class ProactorLoopCtrlC(test_utils.TestCase):
 
         thread = threading.Thread(target=SIGINT_after_delay)
         loop = asyncio.get_event_loop()
-        try:
+        jaribu:
             # only start the loop once the event loop is running
             loop.call_soon(thread.start)
             loop.run_forever()
-            self.fail("should not fall through 'run_forever'")
-        except KeyboardInterrupt:
+            self.fail("should sio fall through 'run_forever'")
+        tatizo KeyboardInterrupt:
             pass
-        finally:
+        mwishowe:
             self.close_loop(loop)
         thread.join()
 
@@ -186,7 +186,7 @@ class ProactorTests(test_utils.TestCase):
         self.assertTrue(0 <= elapsed < 0.3, elapsed)
 
         # asyncio issue #195: cancelling a done _WaitHandleFuture
-        # must not crash
+        # must sio crash
         fut.cancel()
 
     def test_wait_for_handle_cancel(self):
@@ -204,7 +204,7 @@ class ProactorTests(test_utils.TestCase):
         self.assertTrue(0 <= elapsed < 0.1, elapsed)
 
         # asyncio issue #195: cancelling a _WaitHandleFuture twice
-        # must not crash
+        # must sio crash
         fut = self.loop._proactor.wait_for_handle(event)
         fut.cancel()
         fut.cancel()
@@ -219,11 +219,11 @@ class WinPolicyTests(test_utils.TestCase):
                 asyncio.SelectorEventLoop)
 
         old_policy = asyncio.get_event_loop_policy()
-        try:
+        jaribu:
             asyncio.set_event_loop_policy(
                 asyncio.WindowsSelectorEventLoopPolicy())
             asyncio.run(main())
-        finally:
+        mwishowe:
             asyncio.set_event_loop_policy(old_policy)
 
     def test_proactor_win_policy(self):
@@ -233,11 +233,11 @@ class WinPolicyTests(test_utils.TestCase):
                 asyncio.ProactorEventLoop)
 
         old_policy = asyncio.get_event_loop_policy()
-        try:
+        jaribu:
             asyncio.set_event_loop_policy(
                 asyncio.WindowsProactorEventLoopPolicy())
             asyncio.run(main())
-        finally:
+        mwishowe:
             asyncio.set_event_loop_policy(old_policy)
 
 

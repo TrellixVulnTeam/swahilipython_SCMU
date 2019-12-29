@@ -23,28 +23,28 @@ kundi TestContains(unittest.TestCase):
         self.assertNotIn(0, b)
         self.assertIn(1, c)
         self.assertNotIn(0, c)
-        self.assertRaises(TypeError, lambda: 1 in a)
-        self.assertRaises(TypeError, lambda: 1 not in a)
+        self.assertRaises(TypeError, lambda: 1 kwenye a)
+        self.assertRaises(TypeError, lambda: 1 haiko kwenye a)
 
-        # test char in string
+        # test char kwenye string
         self.assertIn('c', 'abc')
         self.assertNotIn('d', 'abc')
 
         self.assertIn('', '')
         self.assertIn('', 'abc')
 
-        self.assertRaises(TypeError, lambda: None in 'abc')
+        self.assertRaises(TypeError, lambda: Tupu kwenye 'abc')
 
     eleza test_builtin_sequence_types(self):
         # a collection of tests on builtin sequence types
         a = range(10)
-        for i in a:
+        kila i kwenye a:
             self.assertIn(i, a)
         self.assertNotIn(16, a)
         self.assertNotIn(a, a)
 
         a = tuple(a)
-        for i in a:
+        kila i kwenye a:
             self.assertIn(i, a)
         self.assertNotIn(16, a)
         self.assertNotIn(a, a)
@@ -52,8 +52,8 @@ kundi TestContains(unittest.TestCase):
         kundi Deviant1:
             """Behaves strangely when compared
 
-            This kundi is designed to make sure that the contains code
-            works when the list is modified during the check.
+            This kundi ni designed to make sure that the contains code
+            works when the list ni modified during the check.
             """
             aList = list(range(15))
             eleza __eq__(self, other):
@@ -66,49 +66,49 @@ kundi TestContains(unittest.TestCase):
         self.assertNotIn(Deviant1(), Deviant1.aList)
 
     eleza test_nonreflexive(self):
-        # containment and equality tests involving elements that are
-        # not necessarily equal to themselves
+        # containment na equality tests involving elements that are
+        # sio necessarily equal to themselves
 
         kundi MyNonReflexive(object):
             eleza __eq__(self, other):
-                rudisha False
+                rudisha Uongo
             eleza __hash__(self):
                 rudisha 28
 
-        values = float('nan'), 1, None, 'abc', MyNonReflexive()
+        values = float('nan'), 1, Tupu, 'abc', MyNonReflexive()
         constructors = list, tuple, dict.kutokakeys, set, frozenset, deque
-        for constructor in constructors:
+        kila constructor kwenye constructors:
             container = constructor(values)
-            for elem in container:
+            kila elem kwenye container:
                 self.assertIn(elem, container)
-            self.assertTrue(container == constructor(values))
-            self.assertTrue(container == container)
+            self.assertKweli(container == constructor(values))
+            self.assertKweli(container == container)
 
     eleza test_block_fallback(self):
-        # blocking fallback with __contains__ = None
+        # blocking fallback with __contains__ = Tupu
         kundi ByContains(object):
             eleza __contains__(self, other):
-                rudisha False
+                rudisha Uongo
         c = ByContains()
         kundi BlockContains(ByContains):
-            """Is not a container
+            """Is sio a container
 
-            This kundi is a perfectly good iterable (as tested by
-            list(bc)), as well as inheriting kutoka a perfectly good
-            container, but __contains__ = None prevents the usual
-            fallback to iteration in the container protocol. That
-            is, normally, 0 in bc would fall back to the equivalent
-            of any(x==0 for x in bc), but here it's blocked kutoka
+            This kundi ni a perfectly good iterable (as tested by
+            list(bc)), kama well kama inheriting kutoka a perfectly good
+            container, but __contains__ = Tupu prevents the usual
+            fallback to iteration kwenye the container protocol. That
+            is, normally, 0 kwenye bc would fall back to the equivalent
+            of any(x==0 kila x kwenye bc), but here it's blocked kutoka
             doing so.
             """
             eleza __iter__(self):
-                while False:
-                    yield None
-            __contains__ = None
+                wakati Uongo:
+                    tuma Tupu
+            __contains__ = Tupu
         bc = BlockContains()
-        self.assertFalse(0 in c)
-        self.assertFalse(0 in list(bc))
-        self.assertRaises(TypeError, lambda: 0 in bc)
+        self.assertUongo(0 kwenye c)
+        self.assertUongo(0 kwenye list(bc))
+        self.assertRaises(TypeError, lambda: 0 kwenye bc)
 
 ikiwa __name__ == '__main__':
     unittest.main()

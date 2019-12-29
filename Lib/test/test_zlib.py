@@ -20,10 +20,10 @@ requires_Decompress_copy = unittest.skipUnless(
 kundi VersionTestCase(unittest.TestCase):
 
     eleza test_library_version(self):
-        # Test that the major version of the actual library in use matches the
+        # Test that the major version of the actual library kwenye use matches the
         # major version that we were compiled against. We can't guarantee that
         # the minor versions will match (even on the machine on which the module
-        # was compiled), and the API is stable between minor versions, so
+        # was compiled), na the API ni stable between minor versions, so
         # testing only the major versions avoids spurious failures.
         self.assertEqual(zlib.ZLIB_RUNTIME_VERSION[0], zlib.ZLIB_VERSION[0])
 
@@ -32,7 +32,7 @@ kundi ChecksumTestCase(unittest.TestCase):
     # checksum test cases
     eleza test_crc32start(self):
         self.assertEqual(zlib.crc32(b""), zlib.crc32(b"", 0))
-        self.assertTrue(zlib.crc32(b"abc", 0xffffffff))
+        self.assertKweli(zlib.crc32(b"abc", 0xffffffff))
 
     eleza test_crc32empty(self):
         self.assertEqual(zlib.crc32(b"", 0), 0)
@@ -41,7 +41,7 @@ kundi ChecksumTestCase(unittest.TestCase):
 
     eleza test_adler32start(self):
         self.assertEqual(zlib.adler32(b""), zlib.adler32(b"", 1))
-        self.assertTrue(zlib.adler32(b"abc", 0xffffffff))
+        self.assertKweli(zlib.adler32(b"abc", 0xffffffff))
 
     eleza test_adler32empty(self):
         self.assertEqual(zlib.adler32(b"", 0), 0)
@@ -76,7 +76,7 @@ kundi ChecksumTestCase(unittest.TestCase):
 # Issue #10276 - check that inputs >=4 GiB are handled correctly.
 kundi ChecksumBigBufferTestCase(unittest.TestCase):
 
-    @bigmemtest(size=_4G + 4, memuse=1, dry_run=False)
+    @bigmemtest(size=_4G + 4, memuse=1, dry_run=Uongo)
     eleza test_big_buffer(self, size):
         data = b"nyan" * (_1G + 1)
         self.assertEqual(zlib.crc32(data), 1044521549)
@@ -87,7 +87,7 @@ kundi ExceptionTestCase(unittest.TestCase):
     # make sure we generate some expected errors
     eleza test_badlevel(self):
         # specifying compression level out of range causes an error
-        # (but -1 is Z_DEFAULT_COMPRESSION and apparently the zlib
+        # (but -1 ni Z_DEFAULT_COMPRESSION na apparently the zlib
         # accepts 0 too)
         self.assertRaises(zlib.error, zlib.compress, b'ERROR', 10)
 
@@ -96,7 +96,7 @@ kundi ExceptionTestCase(unittest.TestCase):
         self.assertRaises(TypeError, zlib.crc32)
         self.assertRaises(TypeError, zlib.compress)
         self.assertRaises(TypeError, zlib.decompress)
-        for arg in (42, None, '', 'abc', (), []):
+        kila arg kwenye (42, Tupu, '', 'abc', (), []):
             self.assertRaises(TypeError, zlib.adler32, arg)
             self.assertRaises(TypeError, zlib.crc32, arg)
             self.assertRaises(TypeError, zlib.compress, arg)
@@ -131,36 +131,36 @@ kundi ExceptionTestCase(unittest.TestCase):
 kundi BaseCompressTestCase(object):
     eleza check_big_compress_buffer(self, size, compress_func):
         _1M = 1024 * 1024
-        # Generate 10 MiB worth of random, and expand it by repeating it.
-        # The assumption is that zlib's memory is not big enough to exploit
+        # Generate 10 MiB worth of random, na expand it by repeating it.
+        # The assumption ni that zlib's memory ni sio big enough to exploit
         # such spread out redundancy.
         data = b''.join([random.getrandbits(8 * _1M).to_bytes(_1M, 'little')
-                        for i in range(10)])
+                        kila i kwenye range(10)])
         data = data * (size // len(data) + 1)
-        try:
+        jaribu:
             compress_func(data)
-        finally:
+        mwishowe:
             # Release memory
-            data = None
+            data = Tupu
 
     eleza check_big_decompress_buffer(self, size, decompress_func):
         data = b'x' * size
-        try:
+        jaribu:
             compressed = zlib.compress(data, 1)
-        finally:
+        mwishowe:
             # Release memory
-            data = None
+            data = Tupu
         data = decompress_func(compressed)
         # Sanity check
-        try:
+        jaribu:
             self.assertEqual(len(data), size)
             self.assertEqual(len(data.strip(b'x')), 0)
-        finally:
-            data = None
+        mwishowe:
+            data = Tupu
 
 
 kundi CompressTestCase(BaseCompressTestCase, unittest.TestCase):
-    # Test compression in one go (whole message compression)
+    # Test compression kwenye one go (whole message compression)
     eleza test_speech(self):
         x = zlib.compress(HAMLET_SCENE)
         self.assertEqual(zlib.decompress(x), HAMLET_SCENE)
@@ -180,14 +180,14 @@ kundi CompressTestCase(BaseCompressTestCase, unittest.TestCase):
         data = HAMLET_SCENE * 128
         x = zlib.compress(data)
         self.assertEqual(zlib.compress(bytearray(data)), x)
-        for ob in x, bytearray(x):
+        kila ob kwenye x, bytearray(x):
             self.assertEqual(zlib.decompress(ob), data)
 
     eleza test_incomplete_stream(self):
-        # A useful error message is given
+        # A useful error message ni given
         x = zlib.compress(HAMLET_SCENE)
         self.assertRaisesRegex(zlib.error,
-            "Error -5 while decompressing data: incomplete or truncated stream",
+            "Error -5 wakati decompressing data: incomplete ama truncated stream",
             zlib.decompress, x[:-1])
 
     # Memory use of the following functions takes into account overallocation
@@ -217,11 +217,11 @@ kundi CompressTestCase(BaseCompressTestCase, unittest.TestCase):
     @bigmemtest(size=_4G + 100, memuse=4)
     eleza test_64bit_compress(self, size):
         data = b'x' * size
-        try:
+        jaribu:
             comp = zlib.compress(data, 0)
             self.assertEqual(zlib.decompress(comp), data)
-        finally:
-            comp = data = None
+        mwishowe:
+            comp = data = Tupu
 
 
 kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
@@ -230,14 +230,14 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # straightforward compress/decompress objects
         datasrc = HAMLET_SCENE * 128
         datazip = zlib.compress(datasrc)
-        # should compress both bytes and bytearray data
-        for data in (datasrc, bytearray(datasrc)):
+        # should compress both bytes na bytearray data
+        kila data kwenye (datasrc, bytearray(datasrc)):
             co = zlib.compressobj()
             x1 = co.compress(data)
             x2 = co.flush()
-            self.assertRaises(zlib.error, co.flush) # second flush should not work
+            self.assertRaises(zlib.error, co.flush) # second flush should sio work
             self.assertEqual(x1 + x2, datazip)
-        for v1, v2 in ((x1, x2), (bytearray(x1), bytearray(x2))):
+        kila v1, v2 kwenye ((x1, x2), (bytearray(x1), bytearray(x2))):
             dco = zlib.decompressobj()
             y1 = dco.decompress(v1 + v2)
             y2 = dco.flush()
@@ -282,11 +282,11 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(HAMLET_SCENE, y1 + y2)
 
     eleza test_compressincremental(self):
-        # compress object in steps, decompress object as one-shot
+        # compress object kwenye steps, decompress object kama one-shot
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), 256):
+        kila i kwenye range(0, len(data), 256):
             bufs.append(co.compress(data[i:i+256]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -296,13 +296,13 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         y2 = dco.flush()
         self.assertEqual(data, y1 + y2)
 
-    eleza test_decompinc(self, flush=False, source=None, cx=256, dcx=64):
-        # compress object in steps, decompress object in steps
-        source = source or HAMLET_SCENE
+    eleza test_decompinc(self, flush=Uongo, source=Tupu, cx=256, dcx=64):
+        # compress object kwenye steps, decompress object kwenye steps
+        source = source ama HAMLET_SCENE
         data = source * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), cx):
+        kila i kwenye range(0, len(data), cx):
             bufs.append(co.compress(data[i:i+cx]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -315,39 +315,39 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
         dco = zlib.decompressobj()
         bufs = []
-        for i in range(0, len(combuf), dcx):
+        kila i kwenye range(0, len(combuf), dcx):
             bufs.append(dco.decompress(combuf[i:i+dcx]))
             self.assertEqual(b'', dco.unconsumed_tail, ########
-                             "(A) uct should be b'': not %d long" %
+                             "(A) uct should be b'': sio %d long" %
                                        len(dco.unconsumed_tail))
             self.assertEqual(b'', dco.unused_data)
         ikiwa flush:
             bufs.append(dco.flush())
-        else:
-            while True:
+        isipokua:
+            wakati Kweli:
                 chunk = dco.decompress(b'')
                 ikiwa chunk:
                     bufs.append(chunk)
-                else:
-                    break
+                isipokua:
+                    koma
         self.assertEqual(b'', dco.unconsumed_tail, ########
-                         "(B) uct should be b'': not %d long" %
+                         "(B) uct should be b'': sio %d long" %
                                        len(dco.unconsumed_tail))
         self.assertEqual(b'', dco.unused_data)
         self.assertEqual(data, b''.join(bufs))
         # Failure means: "decompressobj with init options failed"
 
     eleza test_decompincflush(self):
-        self.test_decompinc(flush=True)
+        self.test_decompinc(flush=Kweli)
 
-    eleza test_decompimax(self, source=None, cx=256, dcx=64):
-        # compress in steps, decompress in length-restricted steps
-        source = source or HAMLET_SCENE
+    eleza test_decompimax(self, source=Tupu, cx=256, dcx=64):
+        # compress kwenye steps, decompress kwenye length-restricted steps
+        source = source ama HAMLET_SCENE
         # Check a decompression object with max_length specified
         data = source * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), cx):
+        kila i kwenye range(0, len(data), cx):
             bufs.append(co.compress(data[i:i+cx]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -357,22 +357,22 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         dco = zlib.decompressobj()
         bufs = []
         cb = combuf
-        while cb:
+        wakati cb:
             #max_length = 1 + len(cb)//10
             chunk = dco.decompress(cb, dcx)
-            self.assertFalse(len(chunk) > dcx,
+            self.assertUongo(len(chunk) > dcx,
                     'chunk too big (%d>%d)' % (len(chunk), dcx))
             bufs.append(chunk)
             cb = dco.unconsumed_tail
         bufs.append(dco.flush())
         self.assertEqual(data, b''.join(bufs), 'Wrong data retrieved')
 
-    eleza test_decompressmaxlen(self, flush=False):
+    eleza test_decompressmaxlen(self, flush=Uongo):
         # Check a decompression object with max_length specified
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
-        for i in range(0, len(data), 256):
+        kila i kwenye range(0, len(data), 256):
             bufs.append(co.compress(data[i:i+256]))
         bufs.append(co.flush())
         combuf = b''.join(bufs)
@@ -382,25 +382,25 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         dco = zlib.decompressobj()
         bufs = []
         cb = combuf
-        while cb:
+        wakati cb:
             max_length = 1 + len(cb)//10
             chunk = dco.decompress(cb, max_length)
-            self.assertFalse(len(chunk) > max_length,
+            self.assertUongo(len(chunk) > max_length,
                         'chunk too big (%d>%d)' % (len(chunk),max_length))
             bufs.append(chunk)
             cb = dco.unconsumed_tail
         ikiwa flush:
             bufs.append(dco.flush())
-        else:
-            while chunk:
+        isipokua:
+            wakati chunk:
                 chunk = dco.decompress(b'', max_length)
-                self.assertFalse(len(chunk) > max_length,
+                self.assertUongo(len(chunk) > max_length,
                             'chunk too big (%d>%d)' % (len(chunk),max_length))
                 bufs.append(chunk)
         self.assertEqual(data, b''.join(bufs), 'Wrong data retrieved')
 
     eleza test_decompressmaxlenflush(self):
-        self.test_decompressmaxlen(flush=True)
+        self.test_decompressmaxlen(flush=Kweli)
 
     eleza test_maxlenmisc(self):
         # Misc tests of max_length
@@ -434,68 +434,68 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     eleza test_flushes(self):
         # Test flush() with the various options, using all the
-        # different levels in order to provide more variations.
+        # different levels kwenye order to provide more variations.
         sync_opt = ['Z_NO_FLUSH', 'Z_SYNC_FLUSH', 'Z_FULL_FLUSH',
                     'Z_PARTIAL_FLUSH']
 
-        ver = tuple(int(v) for v in zlib.ZLIB_RUNTIME_VERSION.split('.'))
+        ver = tuple(int(v) kila v kwenye zlib.ZLIB_RUNTIME_VERSION.split('.'))
         # Z_BLOCK has a known failure prior to 1.2.5.3
         ikiwa ver >= (1, 2, 5, 3):
             sync_opt.append('Z_BLOCK')
 
-        sync_opt = [getattr(zlib, opt) for opt in sync_opt
+        sync_opt = [getattr(zlib, opt) kila opt kwenye sync_opt
                     ikiwa hasattr(zlib, opt)]
         data = HAMLET_SCENE * 8
 
-        for sync in sync_opt:
-            for level in range(10):
-                try:
+        kila sync kwenye sync_opt:
+            kila level kwenye range(10):
+                jaribu:
                     obj = zlib.compressobj( level )
                     a = obj.compress( data[:3000] )
                     b = obj.flush( sync )
                     c = obj.compress( data[3000:] )
                     d = obj.flush()
                 except:
-                    andika("Error for flush mode={}, level={}"
+                    andika("Error kila flush mode={}, level={}"
                           .format(sync, level))
-                    raise
+                    ashiria
                 self.assertEqual(zlib.decompress(b''.join([a,b,c,d])),
                                  data, ("Decompress failed: flush "
                                         "mode=%i, level=%i") % (sync, level))
-                del obj
+                toa obj
 
     @unittest.skipUnless(hasattr(zlib, 'Z_SYNC_FLUSH'),
                          'requires zlib.Z_SYNC_FLUSH')
     eleza test_odd_flush(self):
-        # Test for odd flushing bugs noted in 2.0, and hopefully fixed in 2.1
+        # Test kila odd flushing bugs noted kwenye 2.0, na hopefully fixed kwenye 2.1
         agiza random
         # Testing on 17K of "random" data
 
-        # Create compressor and decompressor objects
+        # Create compressor na decompressor objects
         co = zlib.compressobj(zlib.Z_BEST_COMPRESSION)
         dco = zlib.decompressobj()
 
         # Try 17K of data
         # generate random data stream
-        try:
-            # In 2.3 and later, WichmannHill is the RNG of the bug report
+        jaribu:
+            # In 2.3 na later, WichmannHill ni the RNG of the bug report
             gen = random.WichmannHill()
-        except AttributeError:
-            try:
+        tatizo AttributeError:
+            jaribu:
                 # 2.2 called it Random
                 gen = random.Random()
-            except AttributeError:
+            tatizo AttributeError:
                 # others might simply have a single RNG
                 gen = random
         gen.seed(1)
         data = genblock(1, 17 * 1024, generator=gen)
 
-        # compress, sync-flush, and decompress
+        # compress, sync-flush, na decompress
         first = co.compress(data)
         second = co.flush(zlib.Z_SYNC_FLUSH)
         expanded = dco.decompress(first + second)
 
-        # ikiwa decompressed data is different kutoka the input data, choke.
+        # ikiwa decompressed data ni different kutoka the input data, choke.
         self.assertEqual(expanded, data, "17K random source doesn't match")
 
     eleza test_empty_flush(self):
@@ -504,13 +504,13 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # caused a core dump.)
 
         co = zlib.compressobj(zlib.Z_BEST_COMPRESSION)
-        self.assertTrue(co.flush())  # Returns a zlib header
+        self.assertKweli(co.flush())  # Returns a zlib header
         dco = zlib.decompressobj()
         self.assertEqual(dco.flush(), b"") # Returns nothing
 
     eleza test_dictionary(self):
         h = HAMLET_SCENE
-        # Build a simulated dictionary out of the words in HAMLET.
+        # Build a simulated dictionary out of the words kwenye HAMLET.
         words = h.split()
         random.shuffle(words)
         zdict = b''.join(words)
@@ -520,12 +520,12 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Verify that it will decompress with the dictionary.
         dco = zlib.decompressobj(zdict=zdict)
         self.assertEqual(dco.decompress(cd) + dco.flush(), h)
-        # Verify that it fails when not given the dictionary.
+        # Verify that it fails when sio given the dictionary.
         dco = zlib.decompressobj()
         self.assertRaises(zlib.error, dco.decompress, cd)
 
     eleza test_dictionary_streaming(self):
-        # This simulates the reuse of a compressor object for compressing
+        # This simulates the reuse of a compressor object kila compressing
         # several separate data streams.
         co = zlib.compressobj(zdict=HAMLET_SCENE)
         do = zlib.decompressobj(zdict=HAMLET_SCENE)
@@ -538,7 +538,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(do.decompress(d2), piece[:-100])
 
     eleza test_decompress_incomplete_stream(self):
-        # This is 'foo', deflated
+        # This ni 'foo', deflated
         x = b'x\x9cK\xcb\xcf\x07\x00\x02\x82\x01E'
         # For the record
         self.assertEqual(zlib.decompress(x), b'foo')
@@ -553,22 +553,22 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     eleza test_decompress_eof(self):
         x = b'x\x9cK\xcb\xcf\x07\x00\x02\x82\x01E'  # 'foo'
         dco = zlib.decompressobj()
-        self.assertFalse(dco.eof)
+        self.assertUongo(dco.eof)
         dco.decompress(x[:-5])
-        self.assertFalse(dco.eof)
+        self.assertUongo(dco.eof)
         dco.decompress(x[-5:])
-        self.assertTrue(dco.eof)
+        self.assertKweli(dco.eof)
         dco.flush()
-        self.assertTrue(dco.eof)
+        self.assertKweli(dco.eof)
 
     eleza test_decompress_eof_incomplete_stream(self):
         x = b'x\x9cK\xcb\xcf\x07\x00\x02\x82\x01E'  # 'foo'
         dco = zlib.decompressobj()
-        self.assertFalse(dco.eof)
+        self.assertUongo(dco.eof)
         dco.decompress(x[:-5])
-        self.assertFalse(dco.eof)
+        self.assertUongo(dco.eof)
         dco.flush()
-        self.assertFalse(dco.eof)
+        self.assertUongo(dco.eof)
 
     eleza test_decompress_unused_data(self):
         # Repeated calls to decompress() after EOF should accumulate data in
@@ -577,21 +577,21 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         remainder = b'0123456789'
         y = zlib.compress(source)
         x = y + remainder
-        for maxlen in 0, 1000:
-            for step in 1, 2, len(y), len(x):
+        kila maxlen kwenye 0, 1000:
+            kila step kwenye 1, 2, len(y), len(x):
                 dco = zlib.decompressobj()
                 data = b''
-                for i in range(0, len(x), step):
+                kila i kwenye range(0, len(x), step):
                     ikiwa i < len(y):
                         self.assertEqual(dco.unused_data, b'')
                     ikiwa maxlen == 0:
                         data += dco.decompress(x[i : i + step])
                         self.assertEqual(dco.unconsumed_tail, b'')
-                    else:
+                    isipokua:
                         data += dco.decompress(
                                 dco.unconsumed_tail + x[i : i + step], maxlen)
                 data += dco.flush()
-                self.assertTrue(dco.eof)
+                self.assertKweli(dco.eof)
                 self.assertEqual(data, source)
                 self.assertEqual(dco.unconsumed_tail, b'')
                 self.assertEqual(dco.unused_data, remainder)
@@ -607,13 +607,13 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     eleza test_flush_with_freed_input(self):
         # Issue #16411: decompressor accesses input to last decompress() call
-        # in flush(), even ikiwa this object has been freed in the meanwhile.
+        # kwenye flush(), even ikiwa this object has been freed kwenye the meanwhile.
         input1 = b'abcdefghijklmnopqrstuvwxyz'
         input2 = b'QWERTYUIOPASDFGHJKLZXCVBNM'
         data = zlib.compress(input1)
         dco = zlib.decompressobj()
         dco.decompress(data, 1)
-        del data
+        toa data
         data = zlib.compress(input2)
         self.assertEqual(dco.flush(), input1[1:])
 
@@ -638,7 +638,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Test copying a compression object
         data0 = HAMLET_SCENE
         data1 = bytes(str(HAMLET_SCENE, "ascii").swapcase(), "ascii")
-        for func in lambda c: c.copy(), copy.copy, copy.deepcopy:
+        kila func kwenye lambda c: c.copy(), copy.copy, copy.deepcopy:
             c0 = zlib.compressobj(zlib.Z_BEST_COMPRESSION)
             bufs0 = []
             bufs0.append(c0.compress(data0))
@@ -659,7 +659,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     @requires_Compress_copy
     eleza test_badcompresscopy(self):
-        # Test copying a compression object in an inconsistent state
+        # Test copying a compression object kwenye an inconsistent state
         c = zlib.compressobj()
         c.compress(HAMLET_SCENE)
         c.flush()
@@ -675,7 +675,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Test type of rudisha value
         self.assertIsInstance(comp, bytes)
 
-        for func in lambda c: c.copy(), copy.copy, copy.deepcopy:
+        kila func kwenye lambda c: c.copy(), copy.copy, copy.deepcopy:
             d0 = zlib.decompressobj()
             bufs0 = []
             bufs0.append(d0.decompress(comp[:32]))
@@ -694,7 +694,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     @requires_Decompress_copy
     eleza test_baddecompresscopy(self):
-        # Test copying a compression object in an inconsistent state
+        # Test copying a compression object kwenye an inconsistent state
         data = zlib.compress(HAMLET_SCENE)
         d = zlib.decompressobj()
         d.decompress(data)
@@ -704,12 +704,12 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertRaises(ValueError, copy.deepcopy, d)
 
     eleza test_compresspickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.compressobj(zlib.Z_BEST_COMPRESSION), proto)
 
     eleza test_decompresspickle(self):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.decompressobj(), proto)
 
@@ -733,12 +733,12 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         data = b'x' * size
         co = zlib.compressobj(0)
         do = zlib.decompressobj()
-        try:
+        jaribu:
             comp = co.compress(data) + co.flush()
             uncomp = do.decompress(comp) + do.flush()
             self.assertEqual(uncomp, data)
-        finally:
-            comp = uncomp = data = None
+        mwishowe:
+            comp = uncomp = data = Tupu
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
     @bigmemtest(size=_4G + 100, memuse=3)
@@ -747,34 +747,34 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         unused = b'x' * size
         comp = zlib.compress(data) + unused
         do = zlib.decompressobj()
-        try:
+        jaribu:
             uncomp = do.decompress(comp) + do.flush()
             self.assertEqual(unused, do.unused_data)
             self.assertEqual(uncomp, data)
-        finally:
-            unused = comp = do = None
+        mwishowe:
+            unused = comp = do = Tupu
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
     @bigmemtest(size=_4G + 100, memuse=5)
     eleza test_large_unconsumed_tail(self, size):
         data = b'x' * size
         do = zlib.decompressobj()
-        try:
+        jaribu:
             comp = zlib.compress(data, 0)
             uncomp = do.decompress(comp, 1) + do.flush()
             self.assertEqual(uncomp, data)
             self.assertEqual(do.unconsumed_tail, b'')
-        finally:
-            comp = uncomp = data = None
+        mwishowe:
+            comp = uncomp = data = Tupu
 
     eleza test_wbits(self):
         # wbits=0 only supported since zlib v1.2.3.5
-        # Register "1.2.3" as "1.2.3.0"
-        # or "1.2.0-linux","1.2.0.f","1.2.0.f-linux"
+        # Register "1.2.3" kama "1.2.3.0"
+        # ama "1.2.0-linux","1.2.0.f","1.2.0.f-linux"
         v = zlib.ZLIB_RUNTIME_VERSION.split('-', 1)[0].split('.')
         ikiwa len(v) < 4:
             v.append('0')
-        elikiwa not v[-1].isnumeric():
+        elikiwa sio v[-1].isnumeric():
             v[-1] = '0'
 
         v = tuple(map(int, v))
@@ -827,24 +827,24 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
 eleza genblock(seed, length, step=1024, generator=random):
     """length-byte stream of random data kutoka a seed (in step-byte blocks)."""
-    ikiwa seed is not None:
+    ikiwa seed ni sio Tupu:
         generator.seed(seed)
     randint = generator.randint
-    ikiwa length < step or step < 2:
+    ikiwa length < step ama step < 2:
         step = length
     blocks = bytes()
-    for i in range(0, length, step):
-        blocks += bytes(randint(0, 255) for x in range(step))
+    kila i kwenye range(0, length, step):
+        blocks += bytes(randint(0, 255) kila x kwenye range(step))
     rudisha blocks
 
 
 
-eleza choose_lines(source, number, seed=None, generator=random):
+eleza choose_lines(source, number, seed=Tupu, generator=random):
     """Return a list of number lines randomly chosen kutoka the source"""
-    ikiwa seed is not None:
+    ikiwa seed ni sio Tupu:
         generator.seed(seed)
     sources = source.split('\n')
-    rudisha [generator.choice(sources) for n in range(number)]
+    rudisha [generator.choice(sources) kila n kwenye range(number)]
 
 
 
@@ -856,38 +856,38 @@ LAERTES
 
        Enter POLONIUS
 
-       A double blessing is a double grace,
+       A double blessing ni a double grace,
        Occasion smiles upon a second leave.
 
 LORD POLONIUS
 
-       Yet here, Laertes! aboard, aboard, for shame!
-       The wind sits in the shoulder of your sail,
+       Yet here, Laertes! aboard, aboard, kila shame!
+       The wind sits kwenye the shoulder of your sail,
        And you are stay'd for. There; my blessing with thee!
-       And these few precepts in thy memory
+       And these few precepts kwenye thy memory
        See thou character. Give thy thoughts no tongue,
        Nor any unproportioned thought his act.
        Be thou familiar, but by no means vulgar.
-       Those friends thou hast, and their adoption tried,
+       Those friends thou hast, na their adoption tried,
        Grapple them to thy soul with hoops of steel;
-       But do not dull thy palm with entertainment
+       But do sio dull thy palm with entertainment
        Of each new-hatch'd, unfledged comrade. Beware
        Of entrance to a quarrel, but being in,
        Bear't that the opposed may beware of thee.
        Give every man thy ear, but few thy voice;
        Take each man's censure, but reserve thy judgment.
-       Costly thy habit as thy purse can buy,
-       But not express'd in fancy; rich, not gaudy;
+       Costly thy habit kama thy purse can buy,
+       But sio express'd kwenye fancy; rich, sio gaudy;
        For the apparel oft proclaims the man,
-       And they in France of the best rank and station
-       Are of a most select and generous chief in that.
+       And they kwenye France of the best rank na station
+       Are of a most select na generous chief kwenye that.
        Neither a borrower nor a lender be;
-       For loan oft loses both itself and friend,
+       For loan oft loses both itself na friend,
        And borrowing dulls the edge of husbandry.
        This above all: to thine ownself be true,
-       And it must follow, as the night the day,
-       Thou canst not then be false to any man.
-       Farewell: my blessing season this in thee!
+       And it must follow, kama the night the day,
+       Thou canst sio then be false to any man.
+       Farewell: my blessing season this kwenye thee!
 
 LAERTES
 
@@ -899,12 +899,12 @@ LORD POLONIUS
 
 LAERTES
 
-       Farewell, Ophelia; and remember well
+       Farewell, Ophelia; na remember well
        What I have said to you.
 
 OPHELIA
 
-       'Tis in my memory lock'd,
+       'Tis kwenye my memory lock'd,
        And you yourself shall keep the key of it.
 
 LAERTES

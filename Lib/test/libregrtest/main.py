@@ -102,13 +102,13 @@ class Regrtest:
         test_name = result.test_name
         ok = result.result
 
-        if ok not in (CHILD_ERROR, INTERRUPTED) and not rerun:
+        if ok haiko kwenye (CHILD_ERROR, INTERRUPTED) and sio rerun:
             self.test_times.append((result.test_time, test_name))
 
         if ok == PASSED:
             self.good.append(test_name)
         lasivyo ok in (FAILED, CHILD_ERROR):
-            if not rerun:
+            if sio rerun:
                 self.bad.append(test_name)
         lasivyo ok == ENV_CHANGED:
             self.environment_changed.append(test_name)
@@ -123,28 +123,28 @@ class Regrtest:
             self.interrupted = True
         lasivyo ok == TIMEOUT:
             self.bad.append(test_name)
-        else:
+        isipokua:
             raise ValueError("invalid test result: %r" % ok)
 
-        if rerun and ok not in {FAILED, CHILD_ERROR, INTERRUPTED}:
+        if rerun and ok haiko kwenye {FAILED, CHILD_ERROR, INTERRUPTED}:
             self.bad.remove(test_name)
 
         xml_data = result.xml_data
         if xml_data:
             import xml.etree.ElementTree as ET
             for e in xml_data:
-                try:
+                jaribu:
                     self.testsuite_xml.append(ET.fromstring(e))
-                except ET.ParseError:
+                tatizo ET.ParseError:
                     print(xml_data, file=sys.__stderr__)
                     raise
 
     def log(self, line=''):
-        empty = not line
+        empty = sio line
 
         # add the system load prefix: "load avg: 1.80 "
         load_avg = self.getloadavg()
-        if load_avg is not None:
+        if load_avg ni sio None:
             line = f"load avg: {load_avg:.2f} {line}"
 
         # add the timestamp prefix:  "0:01:05 "
@@ -164,7 +164,7 @@ class Regrtest:
         # "[ 51/405/1] test_tcl passed"
         line = f"{test_index:{self.test_count_width}}{self.test_count}"
         fails = len(self.bad) + len(self.environment_changed)
-        if fails and not self.ns.pgo:
+        if fails and sio self.ns.pgo:
             line = f"{line}/{fails}"
         self.log(f"[{line}] {text}")
 
@@ -175,7 +175,7 @@ class Regrtest:
             support.junit_xml_list = self.testsuite_xml = []
 
         worker_args = ns.worker_args
-        if worker_args is not None:
+        if worker_args ni sio None:
             from test.libregrtest.runtest_mp import parse_worker_args
             ns, test_name = parse_worker_args(ns.worker_args)
             ns.worker_args = worker_args
@@ -203,11 +203,11 @@ class Regrtest:
 
         if self.ns.single:
             self.next_single_filename = os.path.join(self.tmp_dir, 'pynexttest')
-            try:
+            jaribu:
                 with open(self.next_single_filename, 'r') as fp:
                     next_test = fp.read().strip()
                     self.tests = [next_test]
-            except OSError:
+            tatizo OSError:
                 pass
 
         if self.ns.fromfile:
@@ -220,7 +220,7 @@ class Regrtest:
                     line = line.split('#', 1)[0]
                     line = line.strip()
                     match = regex.search(line)
-                    if match is not None:
+                    if match ni sio None:
                         self.tests.append(match.group())
 
         removepy(self.tests)
@@ -238,30 +238,30 @@ class Regrtest:
                 nottests.add(arg)
             self.ns.args = []
 
-        # if testdir is set, then we are not running the python tests suite, so
+        # if testdir is set, then we are sio running the python tests suite, so
         # don't add default tests to be executed or skipped (pass empty values)
         if self.ns.testdir:
             alltests = findtests(self.ns.testdir, list(), set())
-        else:
+        isipokua:
             alltests = findtests(self.ns.testdir, stdtests, nottests)
 
-        if not self.ns.fromfile:
+        if sio self.ns.fromfile:
             self.selected = self.tests or self.ns.args or alltests
-        else:
+        isipokua:
             self.selected = self.tests
         if self.ns.single:
             self.selected = self.selected[:1]
-            try:
+            jaribu:
                 pos = alltests.index(self.selected[0])
                 self.next_single_test = alltests[pos + 1]
-            except IndexError:
+            tatizo IndexError:
                 pass
 
         # Remove all the selected tests that precede start if it's set.
         if self.ns.start:
-            try:
-                del self.selected[:self.selected.index(self.ns.start)]
-            except ValueError:
+            jaribu:
+                toa self.selected[:self.selected.index(self.ns.start)]
+            tatizo ValueError:
                 print("Couldn't find starting test (%s), using all tests"
                       % self.ns.start, file=sys.stderr)
 
@@ -278,7 +278,7 @@ class Regrtest:
     def _list_cases(self, suite):
         for test in suite:
             if isinstance(test, unittest.loader._FailedTest):
-                continue
+                endelea
             if isinstance(test, unittest.TestSuite):
                 self._list_cases(test)
             lasivyo isinstance(test, unittest.TestCase):
@@ -291,10 +291,10 @@ class Regrtest:
 
         for test_name in self.selected:
             abstest = get_abs_module(self.ns, test_name)
-            try:
+            jaribu:
                 suite = unittest.defaultTestLoader.loadTestsFromName(abstest)
                 self._list_cases(suite)
-            except unittest.SkipTest:
+            tatizo unittest.SkipTest:
                 self.skipped.append(test_name)
 
         if self.skipped:
@@ -320,7 +320,7 @@ class Regrtest:
             self.accumulate_result(result, rerun=True)
 
             if result.result == INTERRUPTED:
-                break
+                koma
 
         if self.bad:
             print(count(len(self.bad), 'test'), "failed again:")
@@ -345,11 +345,11 @@ class Regrtest:
             print(count(len(omitted), "test"), "omitted:")
             printlist(omitted)
 
-        if self.good and not self.ns.quiet:
+        if self.good and sio self.ns.quiet:
             print()
             if (not self.bad
-                and not self.skipped
-                and not self.interrupted
+                and sio self.skipped
+                and sio self.interrupted
                 and len(self.good) > 1):
                 print("All", end=' ')
             print(count(len(self.good), "test"), "OK.")
@@ -372,7 +372,7 @@ class Regrtest:
                      count(len(self.environment_changed), "test")))
             printlist(self.environment_changed)
 
-        if self.skipped and not self.ns.quiet:
+        if self.skipped and sio self.ns.quiet:
             print()
             print(count(len(self.skipped), "test"), "skipped:")
             printlist(self.skipped)
@@ -413,12 +413,12 @@ class Regrtest:
                 ns = dict(locals())
                 self.tracer.runctx(cmd, globals=globals(), locals=ns)
                 result = ns['result']
-            else:
+            isipokua:
                 result = runtest(self.ns, test_name)
                 self.accumulate_result(result)
 
             if result.result == INTERRUPTED:
-                break
+                koma
 
             previous_test = format_test_result(result)
             test_time = time.monotonic() - start_time
@@ -430,17 +430,17 @@ class Regrtest:
 
             # Unload the newly imported modules (best effort finalization)
             for module in sys.modules.keys():
-                if module not in save_modules and module.startswith("test."):
+                if module haiko kwenye save_modules and module.startswith("test."):
                     support.unload(module)
 
             if self.ns.failfast and is_failed(result, self.ns):
-                break
+                koma
 
         if previous_test:
             print(previous_test)
 
     def _test_forever(self, tests):
-        while True:
+        wakati True:
             for test_name in tests:
                 yield test_name
                 if self.bad:
@@ -467,14 +467,14 @@ class Regrtest:
             result.append("FAILURE")
         lasivyo self.ns.fail_env_changed and self.environment_changed:
             result.append("ENV CHANGED")
-        lasivyo not any((self.good, self.bad, self.skipped, self.interrupted,
+        lasivyo sio any((self.good, self.bad, self.skipped, self.interrupted,
             self.environment_changed)):
             result.append("NO TEST RUN")
 
         if self.interrupted:
             result.append("INTERRUPTED")
 
-        if not result:
+        if sio result:
             result.append("SUCCESS")
 
         result = ', '.join(result)
@@ -483,7 +483,7 @@ class Regrtest:
         return result
 
     def run_tests(self):
-        # For a partial run, we do not need to clutter the output.
+        # For a partial run, we do sio need to clutter the output.
         if (self.ns.header
             or not(self.ns.pgo or self.ns.quiet or self.ns.single
                    or self.tests or self.ns.args)):
@@ -503,7 +503,7 @@ class Regrtest:
             self.tests = self._test_forever(list(self.selected))
             self.test_count = ''
             self.test_count_width = 3
-        else:
+        isipokua:
             self.tests = iter(self.selected)
             self.test_count = '/{}'.format(len(self.selected))
             self.test_count_width = len(self.test_count) - 1
@@ -511,7 +511,7 @@ class Regrtest:
         if self.ns.use_mp:
             from test.libregrtest.runtest_mp import run_tests_multiprocess
             run_tests_multiprocess(self)
-        else:
+        isipokua:
             self.run_tests_sequential()
 
     def finalize(self):
@@ -519,7 +519,7 @@ class Regrtest:
             if self.next_single_test:
                 with open(self.next_single_filename, 'w') as fp:
                     fp.write(self.next_single_test + '\n')
-            else:
+            isipokua:
                 os.unlink(self.next_single_filename)
 
         if self.tracer:
@@ -536,7 +536,7 @@ class Regrtest:
             os.system("leaks %d" % os.getpid())
 
     def save_xml_result(self):
-        if not self.ns.xmlpath and not self.testsuite_xml:
+        if sio self.ns.xmlpath and sio self.testsuite_xml:
             return
 
         import xml.etree.ElementTree as ET
@@ -547,9 +547,9 @@ class Regrtest:
         for suite in self.testsuite_xml:
             root.append(suite)
             for k in totals:
-                try:
+                jaribu:
                     totals[k] += int(suite.get(k, 0))
-                except ValueError:
+                tatizo ValueError:
                     pass
 
         for k, v in totals.items():
@@ -564,7 +564,7 @@ class Regrtest:
         if self.ns.tempdir:
             self.tmp_dir = self.ns.tempdir
 
-        if not self.tmp_dir:
+        if sio self.tmp_dir:
             # When tests are run from the Python build directory, it is best practice
             # to keep the test files in a subfolder.  This eases the cleanup of leftover
             # files using the "make distclean" command.
@@ -577,7 +577,7 @@ class Regrtest:
                     # is read only.
                     self.tmp_dir = sysconfig.get_config_var('srcdir')
                 self.tmp_dir = os.path.join(self.tmp_dir, 'build')
-            else:
+            isipokua:
                 self.tmp_dir = tempfile.gettempdir()
 
         self.tmp_dir = os.path.abspath(self.tmp_dir)
@@ -585,13 +585,13 @@ class Regrtest:
     def create_temp_dir(self):
         os.makedirs(self.tmp_dir, exist_ok=True)
 
-        # Define a writable temp dir that will be used as cwd while running
+        # Define a writable temp dir that will be used as cwd wakati running
         # the tests. The name of the dir includes the pid to allow parallel
         # testing (see the -j option).
         pid = os.getpid()
-        if self.worker_test_name is not None:
+        if self.worker_test_name ni sio None:
             test_cwd = 'test_python_worker_{}'.format(pid)
-        else:
+        isipokua:
             test_cwd = 'test_python_{}'.format(pid)
         test_cwd = os.path.join(self.tmp_dir, test_cwd)
         return test_cwd
@@ -605,7 +605,7 @@ class Regrtest:
             if os.path.isdir(name):
                 print("Remove directory: %s" % name)
                 support.rmtree(name)
-            else:
+            isipokua:
                 print("Remove file: %s" % name)
                 support.unlink(name)
 
@@ -620,9 +620,9 @@ class Regrtest:
 
         test_cwd = self.create_temp_dir()
 
-        try:
+        jaribu:
             # Run the tests in a context manager that temporarily changes the CWD
-            # to a temporary and writable directory. If it's not possible to
+            # to a temporary and writable directory. If it's sio possible to
             # create or change the CWD, the original CWD will be used.
             # The original CWD is available from support.SAVEDCWD.
             with support.temp_cwd(test_cwd, quiet=True):
@@ -632,7 +632,7 @@ class Regrtest:
                 self.ns.tempdir = test_cwd
 
                 self._main(tests, kwargs)
-        except SystemExit as exc:
+        tatizo SystemExit as exc:
             # bpo-38203: Python can hang at exit in Py_Finalize(), especially
             # on threading._shutdown() call: put a timeout
             faulthandler.dump_traceback_later(EXIT_TIMEOUT, exit=True)
@@ -640,7 +640,7 @@ class Regrtest:
             sys.exit(exc.code)
 
     def getloadavg(self):
-        if self.win_load_tracker is not None:
+        if self.win_load_tracker ni sio None:
             return self.win_load_tracker.getloadavg()
 
         if hasattr(os, 'getloadavg'):
@@ -649,12 +649,12 @@ class Regrtest:
         return None
 
     def _main(self, tests, kwargs):
-        if self.worker_test_name is not None:
+        if self.worker_test_name ni sio None:
             from test.libregrtest.runtest_mp import run_tests_worker
             run_tests_worker(self.ns, self.worker_test_name)
 
         if self.ns.wait:
-            input("Press any key to continue...")
+            input("Press any key to endelea...")
 
         support.PGO = self.ns.pgo
         support.PGO_EXTENDED = self.ns.pgo_extended
@@ -676,21 +676,21 @@ class Regrtest:
         if sys.platform == 'win32' and self.worker_test_name is None:
             from test.libregrtest.win_utils import WindowsLoadTracker
 
-            try:
+            jaribu:
                 self.win_load_tracker = WindowsLoadTracker()
-            except FileNotFoundError as error:
-                # Windows IoT Core and Windows Nano Server do not provide
+            tatizo FileNotFoundError as error:
+                # Windows IoT Core and Windows Nano Server do sio provide
                 # typeperf.exe for x64, x86 or ARM
                 print(f'Failed to create WindowsLoadTracker: {error}')
 
-        try:
+        jaribu:
             self.run_tests()
             self.display_result()
 
             if self.ns.verbose2 and self.bad:
                 self.rerun_failed_tests()
-        finally:
-            if self.win_load_tracker is not None:
+        mwishowe:
+            if self.win_load_tracker ni sio None:
                 self.win_load_tracker.close()
                 self.win_load_tracker = None
 

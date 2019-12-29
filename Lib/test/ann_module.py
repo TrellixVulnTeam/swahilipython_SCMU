@@ -1,8 +1,8 @@
 
 
 """
-The module for testing variable annotations.
-Empty lines above are for good reason (testing for correct line numbers)
+The module kila testing variable annotations.
+Empty lines above are kila good reason (testing kila correct line numbers)
 """
 
 kutoka typing agiza Optional
@@ -11,7 +11,7 @@ __annotations__[1] = 2
 
 kundi C:
 
-    x = 5; y: Optional['C'] = None
+    x = 5; y: Optional['C'] = Tupu
 
 kutoka typing agiza Tuple
 x: int = 5; y: str = x; f: Tuple[int, int]
@@ -21,7 +21,7 @@ kundi M(type):
     __annotations__['123'] = 123
     o: type = object
 
-(pars): bool = True
+(pars): bool = Kweli
 
 kundi D(C):
     j: str = 'hi'; k: str= 'bye'
@@ -33,7 +33,7 @@ j_kundi = new_class('J')
 kundi F():
     z: int = 5
     eleza __init__(self, x):
-        pass
+        pita
 
 kundi Y(F):
     eleza __init__(self):

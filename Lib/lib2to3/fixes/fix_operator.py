@@ -1,4 +1,4 @@
-"""Fixer for operator functions.
+"""Fixer kila operator functions.
 
 operator.isCallable(obj)       -> callable(obj)
 operator.sequenceIncludes(obj) -> operator.contains(obj)
@@ -24,7 +24,7 @@ eleza invocation(s):
 
 
 kundi FixOperator(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     order = "pre"
 
     methods = """
@@ -42,7 +42,7 @@ kundi FixOperator(fixer_base.BaseFix):
 
     eleza transform(self, node, results):
         method = self._check_method(node, results)
-        ikiwa method is not None:
+        ikiwa method ni sio Tupu:
             rudisha method(node, results)
 
     @invocation("operator.contains(%s)")
@@ -80,7 +80,7 @@ kundi FixOperator(fixer_base.BaseFix):
         method.changed()
 
     eleza _handle_type2abc(self, node, results, module, abc):
-        touch_agiza(None, module, node)
+        touch_agiza(Tupu, module, node)
         obj = results["obj"]
         args = [obj.clone(), String(", " + ".".join([module, abc]))]
         rudisha Call(Name("isinstance"), args, prefix=node.prefix)
@@ -88,10 +88,10 @@ kundi FixOperator(fixer_base.BaseFix):
     eleza _check_method(self, node, results):
         method = getattr(self, "_" + results["method"][0].value)
         ikiwa isinstance(method, collections.abc.Callable):
-            ikiwa "module" in results:
+            ikiwa "module" kwenye results:
                 rudisha method
-            else:
+            isipokua:
                 sub = (str(results["obj"]),)
                 invocation_str = method.invocation % sub
                 self.warning(node, "You should use '%s' here." % invocation_str)
-        rudisha None
+        rudisha Tupu

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # There are tests here with unicode string literals and
-# identifiers. There's a code in ast.c that was added because of a
+# identifiers. There's a code kwenye ast.c that was added because of a
 # failure with a non-ascii-only expression.  So, I have tests for
-# that.  There are workarounds that would let me run tests for that
-# code without unicode identifiers and strings, but just using them
-# directly seems like the easiest and therefore safest thing to do.
-# Unicode identifiers in tests is allowed by PEP 3131.
+# that.  There are workarounds that would let me run tests kila that
+# code without unicode identifiers na strings, but just using them
+# directly seems like the easiest na therefore safest thing to do.
+# Unicode identifiers kwenye tests ni allowed by PEP 3131.
 
 agiza ast
 agiza types
@@ -14,22 +14,22 @@ agiza unittest
 
 a_global = 'global variable'
 
-# You could argue that I'm too strict in looking for specific error
+# You could argue that I'm too strict kwenye looking kila specific error
 #  values with assertRaisesRegex, but without it it's way too easy to
-#  make a syntax error in the test strings. Especially with all of the
+#  make a syntax error kwenye the test strings. Especially with all of the
 #  triple quotes, raw strings, backslashes, etc. I think it's a
-#  worthwhile tradeoff. When I switched to this method, I found many
+#  worthwakati tradeoff. When I switched to this method, I found many
 #  examples where I wasn't testing what I thought I was.
 
 kundi TestCase(unittest.TestCase):
     eleza assertAllRaise(self, exception_type, regex, error_strings):
-        for str in error_strings:
+        kila str kwenye error_strings:
             with self.subTest(str=str):
                 with self.assertRaisesRegex(exception_type, regex):
                     eval(str)
 
     eleza test__format__lookup(self):
-        # Make sure __format__ is looked up on the type, not the instance.
+        # Make sure __format__ ni looked up on the type, sio the instance.
         kundi X:
             eleza __format__(self, spec):
                 rudisha 'class'
@@ -45,13 +45,13 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(f'{y}', 'class')
         self.assertEqual(format(x), format(y))
 
-        # __format__ is not called this way, but still make sure it
-        #  returns what we expect (so we can make sure we're bypassing
+        # __format__ ni sio called this way, but still make sure it
+        #  rudishas what we expect (so we can make sure we're bypitaing
         #  it).
         self.assertEqual(x.__format__(''), 'class')
         self.assertEqual(y.__format__(''), 'instance')
 
-        # This is how __format__ is actually called.
+        # This ni how __format__ ni actually called.
         self.assertEqual(type(x).__format__(x, ''), 'class')
         self.assertEqual(type(y).__format__(y, ''), 'class')
 
@@ -59,9 +59,9 @@ kundi TestCase(unittest.TestCase):
         # Inspired by http://bugs.python.org/issue24975
         kundi X:
             eleza __init__(self):
-                self.called = False
+                self.called = Uongo
             eleza __call__(self):
-                self.called = True
+                self.called = Kweli
                 rudisha 4
         x = X()
         expr = """
@@ -70,14 +70,14 @@ f'{a * x()}'"""
         t = ast.parse(expr)
         c = compile(t, '', 'exec')
 
-        # Make sure x was not called.
-        self.assertFalse(x.called)
+        # Make sure x was sio called.
+        self.assertUongo(x.called)
 
         # Actually run the code.
         exec(c)
 
         # Make sure x was called.
-        self.assertTrue(x.called)
+        self.assertKweli(x.called)
 
     eleza test_ast_line_numbers(self):
         expr = """
@@ -210,7 +210,7 @@ f'{a * f"-{x()}-"}'"""
     eleza test_ast_line_numbers_duplicate_expression(self):
         """Duplicate expression
 
-        NOTE: this is currently broken, always sets location of the first
+        NOTE: this ni currently broken, always sets location of the first
         expression.
         """
         expr = """
@@ -262,9 +262,9 @@ f'{a * x()} {a * x()} {a * x()}'
         self.assertEqual(binop.lineno, 3)
         self.assertEqual(binop.left.lineno, 3)
         self.assertEqual(binop.right.lineno, 3)
-        self.assertEqual(binop.col_offset, 3)  # FIXME: this is wrong
-        self.assertEqual(binop.left.col_offset, 3)  # FIXME: this is wrong
-        self.assertEqual(binop.right.col_offset, 7)  # FIXME: this is wrong
+        self.assertEqual(binop.col_offset, 3)  # FIXME: this ni wrong
+        self.assertEqual(binop.left.col_offset, 3)  # FIXME: this ni wrong
+        self.assertEqual(binop.right.col_offset, 7)  # FIXME: this ni wrong
         # check the third binop location
         binop = t.body[1].value.values[4].value
         self.assertEqual(type(binop), ast.BinOp)
@@ -274,12 +274,12 @@ f'{a * x()} {a * x()} {a * x()}'
         self.assertEqual(binop.lineno, 3)
         self.assertEqual(binop.left.lineno, 3)
         self.assertEqual(binop.right.lineno, 3)
-        self.assertEqual(binop.col_offset, 3)  # FIXME: this is wrong
-        self.assertEqual(binop.left.col_offset, 3)  # FIXME: this is wrong
-        self.assertEqual(binop.right.col_offset, 7)  # FIXME: this is wrong
+        self.assertEqual(binop.col_offset, 3)  # FIXME: this ni wrong
+        self.assertEqual(binop.left.col_offset, 3)  # FIXME: this ni wrong
+        self.assertEqual(binop.right.col_offset, 7)  # FIXME: this ni wrong
 
     eleza test_ast_line_numbers_multiline_fstring(self):
-        # See bpo-30465 for details.
+        # See bpo-30465 kila details.
         expr = """
 a = 10
 f'''
@@ -314,7 +314,7 @@ non-agizaant content
         self.assertEqual(t.body[1].value.values[0].col_offset, 0)
         self.assertEqual(t.body[1].value.values[1].col_offset, 0)
         self.assertEqual(t.body[1].value.values[2].col_offset, 0)
-        # NOTE: the following lineno information and col_offset is correct for
+        # NOTE: the following lineno information na col_offset ni correct for
         # expressions within FormattedValues.
         binop = t.body[1].value.values[1].value
         self.assertEqual(type(binop), ast.BinOp)
@@ -331,14 +331,14 @@ non-agizaant content
     eleza test_docstring(self):
         eleza f():
             f'''Not a docstring'''
-        self.assertIsNone(f.__doc__)
+        self.assertIsTupu(f.__doc__)
         eleza g():
             '''Not a docstring''' \
             f''
-        self.assertIsNone(g.__doc__)
+        self.assertIsTupu(g.__doc__)
 
     eleza test_literal_eval(self):
-        with self.assertRaisesRegex(ValueError, 'malformed node or string'):
+        with self.assertRaisesRegex(ValueError, 'malformed node ama string'):
             ast.literal_eval("f'x'")
 
     eleza test_ast_compile_time_concat(self):
@@ -352,7 +352,7 @@ non-agizaant content
 
     eleza test_compile_time_concat_errors(self):
         self.assertAllRaise(SyntaxError,
-                            'cannot mix bytes and nonbytes literals',
+                            'cannot mix bytes na nonbytes literals',
                             [r"""f'' b''""",
                              r"""b'' f''""",
                              ])
@@ -372,23 +372,23 @@ non-agizaant content
 
     eleza test_mismatched_parens(self):
         self.assertAllRaise(SyntaxError, r"f-string: closing parenthesis '\}' "
-                            r"does not match opening parenthesis '\('",
+                            r"does sio match opening parenthesis '\('",
                             ["f'{((}'",
                              ])
         self.assertAllRaise(SyntaxError, r"f-string: closing parenthesis '\)' "
-                            r"does not match opening parenthesis '\['",
+                            r"does sio match opening parenthesis '\['",
                             ["f'{a[4)}'",
                             ])
         self.assertAllRaise(SyntaxError, r"f-string: closing parenthesis '\]' "
-                            r"does not match opening parenthesis '\('",
+                            r"does sio match opening parenthesis '\('",
                             ["f'{a(4]}'",
                             ])
         self.assertAllRaise(SyntaxError, r"f-string: closing parenthesis '\}' "
-                            r"does not match opening parenthesis '\['",
+                            r"does sio match opening parenthesis '\['",
                             ["f'{a[4}'",
                             ])
         self.assertAllRaise(SyntaxError, r"f-string: closing parenthesis '\}' "
-                            r"does not match opening parenthesis '\('",
+                            r"does sio match opening parenthesis '\('",
                             ["f'{a(4}'",
                             ])
         self.assertRaises(SyntaxError, eval, "f'{" + "("*500 + "}'")
@@ -425,7 +425,7 @@ non-agizaant content
         self.assertEqual(f'{"{{}}"}', '{{}}')
 
         self.assertAllRaise(TypeError, 'unhashable type',
-                            ["f'{ {{}} }'", # dict in a set
+                            ["f'{ {{}} }'", # dict kwenye a set
                              ])
 
     eleza test_compile_time_concat(self):
@@ -460,7 +460,7 @@ non-agizaant content
                              ])
 
     eleza test_comments(self):
-        # These aren't comments, since they're in strings.
+        # These aren't comments, since they're kwenye strings.
         d = {'#': 'hash'}
         self.assertEqual(f'{"#"}', '#')
         self.assertEqual(f'{d["#"]}', 'hash')
@@ -471,15 +471,15 @@ non-agizaant content
                              "f'{#}'",
                              ])
         self.assertAllRaise(SyntaxError, r"f-string: unmatched '\)'",
-                            ["f'{)#}'",   # When wrapped in parens, this becomes
+                            ["f'{)#}'",   # When wrapped kwenye parens, this becomes
                                           #  '()#)'.  Make sure that doesn't compile.
                              ])
 
     eleza test_many_expressions(self):
-        # Create a string with many expressions in it. Note that
-        #  because we have a space in here as a literal, we're actually
-        #  going to use twice as many ast nodes: one for each literal
-        #  plus one for each expression.
+        # Create a string with many expressions kwenye it. Note that
+        #  because we have a space kwenye here kama a literal, we're actually
+        #  going to use twice kama many ast nodes: one kila each literal
+        #  plus one kila each expression.
         eleza build_fstr(n, extra=''):
             rudisha "f'" + ('{x} ' * n) + extra + "'"
 
@@ -487,7 +487,7 @@ non-agizaant content
         width = 1
 
         # Test around 256.
-        for i in range(250, 260):
+        kila i kwenye range(250, 260):
             self.assertEqual(eval(build_fstr(i)), (x+' ')*i)
 
         # Test concatenating 2 largs fstrings.
@@ -496,7 +496,7 @@ non-agizaant content
         s = build_fstr(253, '{x:{width}} ')
         self.assertEqual(eval(s), (x+' ')*254)
 
-        # Test lots of expressions and constants, concatenated.
+        # Test lots of expressions na constants, concatenated.
         s = "f'{1}' 'x' 'y'" * 1024
         self.assertEqual(eval(s), '1xy' * 1024)
 
@@ -513,7 +513,7 @@ non-agizaant content
         self.assertEqual(f'{10:{"#"}1{0}{"x"}}', '       0xa')
         self.assertEqual(f'{-10:-{"#"}1{0}x}', '      -0xa')
         self.assertEqual(f'{-10:{"-"}#{1}0{"x"}}', '      -0xa')
-        self.assertEqual(f'{10:#{3 != {4:5} and width}x}', '       0xa')
+        self.assertEqual(f'{10:#{3 != {4:5} na width}x}', '       0xa')
 
         self.assertAllRaise(SyntaxError, "f-string: expecting '}'",
                             ["""f'{"s"!r{":10"}}'""",
@@ -532,8 +532,8 @@ non-agizaant content
                              ])
 
         self.assertAllRaise(SyntaxError, 'f-string: invalid conversion character',
-                            [# No expansion inside conversion or for
-                             #  the : or ! itself.
+                            [# No expansion inside conversion ama for
+                             #  the : ama ! itself.
                              """f'{"s"!{"r"}}'""",
                              ])
 
@@ -549,7 +549,7 @@ non-agizaant content
         self.assertEqual(f'{x} {x}', '1 2')
 
     eleza test_missing_expression(self):
-        self.assertAllRaise(SyntaxError, 'f-string: empty expression not allowed',
+        self.assertAllRaise(SyntaxError, 'f-string: empty expression sio allowed',
                             ["f'{}'",
                              "f'{ }'"
                              "f' {} '",
@@ -559,7 +559,7 @@ non-agizaant content
                              "f' { } '",
 
                              # The Python parser ignores also the following
-                             # whitespace characters in additional to a space.
+                             # whitespace characters kwenye additional to a space.
                              "f'''{\t\f\r\n}'''",
 
                              # Catch the empty expression before the
@@ -582,8 +582,8 @@ non-agizaant content
                              "f'{:x'",
                              ])
 
-        # Different error message is raised for other whitespace characters.
-        self.assertAllRaise(SyntaxError, 'invalid character in identifier',
+        # Different error message ni ashiriad kila other whitespace characters.
+        self.assertAllRaise(SyntaxError, 'invalid character kwenye identifier',
                             ["f'''{\xa0}'''",
                              "\xa0",
                              ])
@@ -591,20 +591,20 @@ non-agizaant content
     eleza test_parens_in_expressions(self):
         self.assertEqual(f'{3,}', '(3,)')
 
-        # Add these because when an expression is evaluated, parens
+        # Add these because when an expression ni evaluated, parens
         #  are added around it. But we shouldn't go kutoka an invalid
         #  expression to a valid one. The added parens are just
         #  supposed to allow whitespace (including newlines).
         self.assertAllRaise(SyntaxError, 'invalid syntax',
                             ["f'{,}'",
-                             "f'{,}'",  # this is (,), which is an error
+                             "f'{,}'",  # this ni (,), which ni an error
                              ])
 
         self.assertAllRaise(SyntaxError, r"f-string: unmatched '\)'",
                             ["f'{3)+(4}'",
                              ])
 
-        self.assertAllRaise(SyntaxError, 'EOL while scanning string literal',
+        self.assertAllRaise(SyntaxError, 'EOL wakati scanning string literal',
                             ["f'{\n}'",
                              ])
 
@@ -656,7 +656,7 @@ non-agizaant content
         self.assertEqual(fr'\{6*7}', '\\42')
 
         AMPERSAND = 'spam'
-        # Get the right unicode character (&), or pick up local variable
+        # Get the right unicode character (&), ama pick up local variable
         # depending on the number of backslashes.
         self.assertEqual(f'\N{AMPERSAND}', '&')
         self.assertEqual(f'\\N{AMPERSAND}', '\\Nspam')
@@ -666,7 +666,7 @@ non-agizaant content
     eleza test_misformed_unicode_character_name(self):
         # These test are needed because unicode names are parsed
         # differently inside f-strings.
-        self.assertAllRaise(SyntaxError, r"\(unicode error\) 'unicodeescape' codec can't decode bytes in position .*: malformed \\N character escape",
+        self.assertAllRaise(SyntaxError, r"\(unicode error\) 'unicodeescape' codec can't decode bytes kwenye position .*: malformed \\N character escape",
                             [r"f'\N'",
                              r"f'\N{'",
                              r"f'\N{GREEK CAPITAL LETTER DELTA'",
@@ -694,7 +694,7 @@ non-agizaant content
         """
         Only literal curly braces begin an expression.
         """
-        # \x7b is '{'.
+        # \x7b ni '{'.
         self.assertEqual(f'\x7b1+1}}', '{1+1}')
         self.assertEqual(f'\x7b1+1', '{1+1')
         self.assertEqual(f'\u007b1+1', '{1+1')
@@ -713,22 +713,22 @@ non-agizaant content
 
         # lambda doesn't work without parens, because the colon
         #  makes the parser think it's a format_spec
-        self.assertAllRaise(SyntaxError, 'unexpected EOF while parsing',
+        self.assertAllRaise(SyntaxError, 'unexpected EOF wakati parsing',
                             ["f'{lambda x:x}'",
                              ])
 
-    eleza test_yield(self):
-        # Not terribly useful, but make sure the yield turns
+    eleza test_tuma(self):
+        # Not terribly useful, but make sure the tuma turns
         #  a function into a generator
         eleza fn(y):
-            f'y:{yield y*2}'
+            f'y:{tuma y*2}'
 
         g = fn(4)
         self.assertEqual(next(g), 8)
 
-    eleza test_yield_send(self):
+    eleza test_tuma_send(self):
         eleza fn(x):
-            yield f'x:{yield (lambda i: x * i)}'
+            tuma f'x:{tuma (lambda i: x * i)}'
 
         g = fn(10)
         the_lambda = next(g)
@@ -791,7 +791,7 @@ non-agizaant content
     eleza test_missing_format_spec(self):
         kundi O:
             eleza __format__(self, spec):
-                ikiwa not spec:
+                ikiwa sio spec:
                     rudisha '*'
                 rudisha spec
 
@@ -841,7 +841,7 @@ non-agizaant content
         self.assertEqual(f'{f"{y}"*3}', '555')
 
     eleza test_invalid_string_prefixes(self):
-        self.assertAllRaise(SyntaxError, 'unexpected EOF while parsing',
+        self.assertAllRaise(SyntaxError, 'unexpected EOF wakati parsing',
                             ["fu''",
                              "uf''",
                              "Fu''",
@@ -872,26 +872,26 @@ non-agizaant content
         self.assertEqual(f'{3 }', '3')
         self.assertEqual(f'{3  }', '3')
 
-        self.assertEqual(f'expr={ {x: y for x, y in [(1, 2), ]}}',
+        self.assertEqual(f'expr={ {x: y kila x, y kwenye [(1, 2), ]}}',
                          'expr={1: 2}')
-        self.assertEqual(f'expr={ {x: y for x, y in [(1, 2), ]} }',
+        self.assertEqual(f'expr={ {x: y kila x, y kwenye [(1, 2), ]} }',
                          'expr={1: 2}')
 
     eleza test_not_equal(self):
-        # There's a special test for this because there's a special
-        #  case in the f-string parser to look for != as not ending an
-        #  expression. Normally it would, while looking for !s or !r.
+        # There's a special test kila this because there's a special
+        #  case kwenye the f-string parser to look kila != kama sio ending an
+        #  expression. Normally it would, wakati looking kila !s ama !r.
 
-        self.assertEqual(f'{3!=4}', 'True')
-        self.assertEqual(f'{3!=4:}', 'True')
-        self.assertEqual(f'{3!=4!s}', 'True')
+        self.assertEqual(f'{3!=4}', 'Kweli')
+        self.assertEqual(f'{3!=4:}', 'Kweli')
+        self.assertEqual(f'{3!=4!s}', 'Kweli')
         self.assertEqual(f'{3!=4!s:.3}', 'Tru')
 
     eleza test_equal_equal(self):
-        # Because an expression ending in = has special meaning,
-        # there's a special test for ==. Make sure it works.
+        # Because an expression ending kwenye = has special meaning,
+        # there's a special test kila ==. Make sure it works.
 
-        self.assertEqual(f'{0==1}', 'False')
+        self.assertEqual(f'{0==1}', 'Uongo')
 
     eleza test_conversions(self):
         self.assertEqual(f'{3.14:10.10}', '      3.14')
@@ -906,7 +906,7 @@ non-agizaant content
         # Not a conversion.
         self.assertEqual(f'{"a!r"}', "a!r")
 
-        # Not a conversion, but show that ! is allowed in a format spec.
+        # Not a conversion, but show that ! ni allowed kwenye a format spec.
         self.assertEqual(f'{3.14:!<10.10}', '3.14!!!!!!')
 
         self.assertAllRaise(SyntaxError, 'f-string: invalid conversion character',
@@ -935,12 +935,12 @@ non-agizaant content
 
     eleza test_del(self):
         self.assertAllRaise(SyntaxError, 'invalid syntax',
-                            ["del f''",
-                             "del '' f''",
+                            ["toa f''",
+                             "toa '' f''",
                              ])
 
     eleza test_mismatched_braces(self):
-        self.assertAllRaise(SyntaxError, "f-string: single '}' is not allowed",
+        self.assertAllRaise(SyntaxError, "f-string: single '}' ni sio allowed",
                             ["f'{{}'",
                              "f'{{}}}'",
                              "f'}'",
@@ -948,7 +948,7 @@ non-agizaant content
                              "f'x}x'",
                              r"f'\u007b}'",
 
-                             # Can't have { or } in a format spec.
+                             # Can't have { ama } kwenye a format spec.
                              "f'{3:}>10}'",
                              "f'{3:}}>10}'",
                              ])
@@ -977,15 +977,15 @@ non-agizaant content
         self.assertEqual(f'{2:{"{"}>10}', '{{{{{{{{{2')
 
     eleza test_if_conditional(self):
-        # There's special logic in compile.c to test ikiwa the
-        #  conditional for an ikiwa (and while) are constants. Exercise
+        # There's special logic kwenye compile.c to test ikiwa the
+        #  conditional kila an ikiwa (and while) are constants. Exercise
         #  that code.
 
         eleza test_fstring(x, expected):
             flag = 0
             ikiwa f'{x}':
                 flag = 1
-            else:
+            isipokua:
                 flag = 2
             self.assertEqual(flag, expected)
 
@@ -993,7 +993,7 @@ non-agizaant content
             flag = 0
             ikiwa '' f'{x}':
                 flag = 1
-            else:
+            isipokua:
                 flag = 2
             self.assertEqual(flag, expected)
 
@@ -1001,7 +1001,7 @@ non-agizaant content
             flag = 0
             ikiwa ' ' f'{x}':
                 flag = 1
-            else:
+            isipokua:
                 flag = 2
             self.assertEqual(flag, expected)
 
@@ -1044,7 +1044,7 @@ non-agizaant content
                             ])
 
     eleza test_loop(self):
-        for i in range(1000):
+        kila i kwenye range(1000):
             self.assertEqual(f'i:{i}', 'i:' + str(i))
 
     eleza test_dict(self):
@@ -1060,7 +1060,7 @@ non-agizaant content
 
     eleza test_backslash_char(self):
         # Check eval of a backslash followed by a control char.
-        # See bpo-30682: this used to raise an assert in pydebug mode.
+        # See bpo-30682: this used to ashiria an assert kwenye pydebug mode.
         self.assertEqual(eval('f"\\\n"'), '')
         self.assertEqual(eval('f"\\\r"'), '')
 
@@ -1082,18 +1082,18 @@ non-agizaant content
         x = 9
         self.assertEqual(f'{3*x+15=}', '3*x+15=42')
 
-        # There is code in ast.c that deals with non-ascii expression values.  So,
+        # There ni code kwenye ast.c that deals with non-ascii expression values.  So,
         # use a unicode identifier to trigger that.
         tenπ = 31.4
         self.assertEqual(f'{tenπ=:.2f}', 'tenπ=31.40')
 
-        # Also test with Unicode in non-identifiers.
+        # Also test with Unicode kwenye non-identifiers.
         self.assertEqual(f'{"Σ"=}', '"Σ"=\'Σ\'')
 
         # Make sure nested fstrings still work.
         self.assertEqual(f'{f"{3.1415=:.1f}":*^20}', '*****3.1415=3.1*****')
 
-        # Make sure text before and after an expression with = works
+        # Make sure text before na after an expression with = works
         # correctly.
         pi = 'π'
         self.assertEqual(f'alpha α {pi=} ω omega', "alpha α pi='π' ω omega")
@@ -1103,13 +1103,13 @@ non-agizaant content
 3
 =}''', '\n3\n=3')
 
-        # Since = is handled specially, make sure all existing uses of
+        # Since = ni handled specially, make sure all existing uses of
         # it still work.
 
-        self.assertEqual(f'{0==1}', 'False')
-        self.assertEqual(f'{0!=1}', 'True')
-        self.assertEqual(f'{0<=1}', 'True')
-        self.assertEqual(f'{0>=1}', 'False')
+        self.assertEqual(f'{0==1}', 'Uongo')
+        self.assertEqual(f'{0!=1}', 'Kweli')
+        self.assertEqual(f'{0<=1}', 'Kweli')
+        self.assertEqual(f'{0>=1}', 'Uongo')
         self.assertEqual(f'{(x:="5")}', '5')
         self.assertEqual(x, '5')
         self.assertEqual(f'{(x:=5)}', '5')
@@ -1134,7 +1134,7 @@ non-agizaant content
         self.assertEqual(f'{f(a=4)}', '3=')
         self.assertEqual(x, 4)
 
-        # Make sure __format__ is being called.
+        # Make sure __format__ ni being called.
         kundi C:
             eleza __format__(self, s):
                 rudisha f'FORMAT-{s}'
@@ -1150,7 +1150,7 @@ non-agizaant content
 
         self.assertRaises(SyntaxError, eval, "f'{C=]'")
 
-        # Make sure leading and following text works.
+        # Make sure leading na following text works.
         x = 'foo'
         self.assertEqual(f'X{x=}Y', 'Xx='+repr(x)+'Y')
 
@@ -1160,10 +1160,10 @@ non-agizaant content
         self.assertEqual(f'X{x  =  }Y', 'Xx  =  '+repr(x)+'Y')
 
         # These next lines contains tabs.  Backslash escapes don't
-        # work in f-strings.
+        # work kwenye f-strings.
         # patchcheck doesn't like these tabs.  So the only way to test
-        # this will be to dynamically created and exec the f-strings.  But
-        # that's such a hassle I'll save it for another day.  For now, convert
+        # this will be to dynamically created na exec the f-strings.  But
+        # that's such a hassle I'll save it kila another day.  For now, convert
         # the tabs to spaces just to shut up patchcheck.
         #self.assertEqual(f'X{x =}Y', 'Xx\t='+repr(x)+'Y')
         #self.assertEqual(f'X{x =       }Y', 'Xx\t=\t'+repr(x)+'Y')
@@ -1174,7 +1174,7 @@ non-agizaant content
         # spec of '=10'.
         self.assertEqual(f'{x:=10}', '        20')
 
-        # This is an assignment expression, which requires parens.
+        # This ni an assignment expression, which requires parens.
         self.assertEqual(f'{(x:=10)}', '10')
         self.assertEqual(x, 10)
 

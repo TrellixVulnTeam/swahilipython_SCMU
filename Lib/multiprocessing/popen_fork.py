@@ -14,48 +14,48 @@ kundi Popen(object):
 
     eleza __init__(self, process_obj):
         util._flush_std_streams()
-        self.returncode = None
-        self.finalizer = None
+        self.returncode = Tupu
+        self.finalizer = Tupu
         self._launch(process_obj)
 
     eleza duplicate_for_child(self, fd):
         rudisha fd
 
     eleza poll(self, flag=os.WNOHANG):
-        ikiwa self.returncode is None:
-            try:
+        ikiwa self.returncode ni Tupu:
+            jaribu:
                 pid, sts = os.waitpid(self.pid, flag)
-            except OSError as e:
-                # Child process not yet created. See #1731717
+            tatizo OSError kama e:
+                # Child process sio yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
-                rudisha None
+                rudisha Tupu
             ikiwa pid == self.pid:
                 ikiwa os.WIFSIGNALED(sts):
                     self.returncode = -os.WTERMSIG(sts)
-                else:
-                    assert os.WIFEXITED(sts), "Status is {:n}".format(sts)
+                isipokua:
+                    assert os.WIFEXITED(sts), "Status ni {:n}".format(sts)
                     self.returncode = os.WEXITSTATUS(sts)
         rudisha self.returncode
 
-    eleza wait(self, timeout=None):
-        ikiwa self.returncode is None:
-            ikiwa timeout is not None:
+    eleza wait(self, timeout=Tupu):
+        ikiwa self.returncode ni Tupu:
+            ikiwa timeout ni sio Tupu:
                 kutoka multiprocessing.connection agiza wait
-                ikiwa not wait([self.sentinel], timeout):
-                    rudisha None
-            # This shouldn't block ikiwa wait() returned successfully.
+                ikiwa sio wait([self.sentinel], timeout):
+                    rudisha Tupu
+            # This shouldn't block ikiwa wait() rudishaed successfully.
             rudisha self.poll(os.WNOHANG ikiwa timeout == 0.0 else 0)
         rudisha self.returncode
 
     eleza _send_signal(self, sig):
-        ikiwa self.returncode is None:
-            try:
+        ikiwa self.returncode ni Tupu:
+            jaribu:
                 os.kill(self.pid, sig)
-            except ProcessLookupError:
-                pass
-            except OSError:
-                ikiwa self.wait(timeout=0.1) is None:
-                    raise
+            tatizo ProcessLookupError:
+                pita
+            tatizo OSError:
+                ikiwa self.wait(timeout=0.1) ni Tupu:
+                    ashiria
 
     eleza terminate(self):
         self._send_signal(signal.SIGTERM)
@@ -69,13 +69,13 @@ kundi Popen(object):
         child_r, parent_w = os.pipe()
         self.pid = os.fork()
         ikiwa self.pid == 0:
-            try:
+            jaribu:
                 os.close(parent_r)
                 os.close(parent_w)
                 code = process_obj._bootstrap(parent_sentinel=child_r)
-            finally:
+            mwishowe:
                 os._exit(code)
-        else:
+        isipokua:
             os.close(child_w)
             os.close(child_r)
             self.finalizer = util.Finalize(self, util.close_fds,
@@ -83,5 +83,5 @@ kundi Popen(object):
             self.sentinel = parent_r
 
     eleza close(self):
-        ikiwa self.finalizer is not None:
+        ikiwa self.finalizer ni sio Tupu:
             self.finalizer()

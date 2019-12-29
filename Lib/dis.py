@@ -11,7 +11,7 @@ kutoka opcode agiza __all__ as _opcodes_all
 __all__ = ["code_info", "dis", "disassemble", "distb", "disco",
            "findlinestarts", "findlabels", "show_code",
            "get_instructions", "Instruction", "Bytecode"] + _opcodes_all
-del _opcodes_all
+toa _opcodes_all
 
 _have_code = (types.MethodType, types.FunctionType, types.CodeType,
               classmethod, staticmethod, type)
@@ -34,9 +34,9 @@ def _try_compile(source, name):
        Utility function to accept strings in functions that otherwise
        expect code objects
     """
-    try:
+    jaribu:
         c = compile(source, name, 'eval')
-    except SyntaxError:
+    tatizo SyntaxError:
         c = compile(source, name, 'exec')
     return c
 
@@ -70,9 +70,9 @@ def dis(x=None, *, file=None, depth=None):
         for name, x1 in items:
             if isinstance(x1, _have_code):
                 print("Disassembly of %s:" % name, file=file)
-                try:
+                jaribu:
                     dis(x1, file=file, depth=depth)
-                except TypeError as msg:
+                tatizo TypeError as msg:
                     print("Sorry:", msg, file=file)
                 print(file=file)
     lasivyo hasattr(x, 'co_code'): # Code object
@@ -81,18 +81,18 @@ def dis(x=None, *, file=None, depth=None):
         _disassemble_bytes(x, file=file)
     lasivyo isinstance(x, str):    # Source code
         _disassemble_str(x, file=file, depth=depth)
-    else:
+    isipokua:
         raise TypeError("don't know how to disassemble %s objects" %
                         type(x).__name__)
 
 def distb(tb=None, *, file=None):
     """Disassemble a traceback (default: last traceback)."""
     if tb is None:
-        try:
+        jaribu:
             tb = sys.last_traceback
-        except AttributeError:
+        tatizo AttributeError:
             raise RuntimeError("no last traceback to disassemble") kutoka None
-        while tb.tb_next: tb = tb.tb_next
+        wakati tb.tb_next: tb = tb.tb_next
     disassemble(tb.tb_frame.f_code, tb.tb_lasti, file=file)
 
 # The inspect module interrogates this dictionary to build its
@@ -119,9 +119,9 @@ def pretty_flags(flags):
         if flags & flag:
             names.append(COMPILER_FLAG_NAMES.get(flag, hex(flag)))
             flags ^= flag
-            if not flags:
-                break
-    else:
+            if sio flags:
+                koma
+    isipokua:
         names.append(hex(flags))
     return ", ".join(names)
 
@@ -187,7 +187,7 @@ def _format_code_info(co):
 def show_code(co, *, file=None):
     """Print details of methods, functions, or code to *file*.
 
-    If *file* is not provided, the output is printed on stdout.
+    If *file* ni sio provided, the output is printed on stdout.
     """
     print(code_info(co), file=file)
 
@@ -230,27 +230,27 @@ kundi Instruction(_Instruction):
         fields = []
         # Column: Source code line number
         if lineno_width:
-            if self.starts_line is not None:
+            if self.starts_line ni sio None:
                 lineno_fmt = "%%%dd" % lineno_width
                 fields.append(lineno_fmt % self.starts_line)
-            else:
+            isipokua:
                 fields.append(' ' * lineno_width)
         # Column: Current instruction indicator
         if mark_as_current:
             fields.append('-->')
-        else:
+        isipokua:
             fields.append('   ')
         # Column: Jump target marker
         if self.is_jump_target:
             fields.append('>>')
-        else:
+        isipokua:
             fields.append('  ')
         # Column: Instruction offset kutoka start of code sequence
         fields.append(repr(self.offset).rjust(offset_width))
         # Column: Opcode name
         fields.append(self.opname.ljust(_OPNAME_WIDTH))
         # Column: Opcode argument
-        if self.arg is not None:
+        if self.arg ni sio None:
             fields.append(repr(self.arg).rjust(_OPARG_WIDTH))
             # Column: Opcode argument details
             if self.argrepr:
@@ -264,7 +264,7 @@ def get_instructions(x, *, first_line=None):
     Generates a series of Instruction named tuples giving the details of
     each operations in the supplied code.
 
-    If *first_line* is not None, it indicates the line number that should
+    If *first_line* ni sio None, it indicates the line number that should
     be reported for the first source line in the disassembled code.
     Otherwise, the source line information (if any) is taken directly kutoka
     the disassembled code object.
@@ -272,9 +272,9 @@ def get_instructions(x, *, first_line=None):
     co = _get_code_object(x)
     cell_names = co.co_cellvars + co.co_freevars
     linestarts = dict(findlinestarts(co))
-    if first_line is not None:
+    if first_line ni sio None:
         line_offset = first_line - co.co_firstlineno
-    else:
+    isipokua:
         line_offset = 0
     return _get_instructions_bytes(co.co_code, co.co_varnames, co.co_names,
                                    co.co_consts, cell_names, linestarts,
@@ -288,7 +288,7 @@ def _get_const_info(const_index, const_list):
        Otherwise returns the constant index and its repr().
     """
     argval = const_index
-    if const_list is not None:
+    if const_list ni sio None:
         argval = const_list[const_index]
     return argval, repr(argval)
 
@@ -300,10 +300,10 @@ def _get_name_info(name_index, name_list):
        Otherwise returns the name index and its repr().
     """
     argval = name_index
-    if name_list is not None:
+    if name_list ni sio None:
         argval = name_list[name_index]
         argrepr = argval
-    else:
+    isipokua:
         argrepr = repr(argval)
     return argval, argrepr
 
@@ -321,14 +321,14 @@ def _get_instructions_bytes(code, varnames=None, names=None, constants=None,
     labels = findlabels(code)
     starts_line = None
     for offset, op, arg in _unpack_opargs(code):
-        if linestarts is not None:
+        if linestarts ni sio None:
             starts_line = linestarts.get(offset, None)
-            if starts_line is not None:
+            if starts_line ni sio None:
                 starts_line += line_offset
         is_jump_target = offset in labels
         argval = None
         argrepr = ''
-        if arg is not None:
+        if arg ni sio None:
             #  Set argval to the dereferenced value of the argument when
             #  available, and argrepr to the string representation of argval.
             #    _disassemble_bytes needs the string repr of the
@@ -372,7 +372,7 @@ def disassemble(co, lasti=-1, *, file=None):
 def _disassemble_recursive(co, *, file=None, depth=None):
     disassemble(co, file=file)
     if depth is None or depth > 0:
-        if depth is not None:
+        if depth ni sio None:
             depth = depth - 1
         for x in co.co_consts:
             if hasattr(x, 'co_code'):
@@ -384,25 +384,25 @@ def _disassemble_bytes(code, lasti=-1, varnames=None, names=None,
                        constants=None, cells=None, linestarts=None,
                        *, file=None, line_offset=0):
     # Omit the line number column entirely if we have no line number info
-    show_lineno = linestarts is not None
+    show_lineno = linestarts ni sio None
     if show_lineno:
         maxlineno = max(linestarts.values()) + line_offset
         if maxlineno >= 1000:
             lineno_width = len(str(maxlineno))
-        else:
+        isipokua:
             lineno_width = 3
-    else:
+    isipokua:
         lineno_width = 0
     maxoffset = len(code) - 2
     if maxoffset >= 10000:
         offset_width = len(str(maxoffset))
-    else:
+    isipokua:
         offset_width = 4
     for instr in _get_instructions_bytes(code, varnames, names,
                                          constants, cells, linestarts,
                                          line_offset=line_offset):
         new_source_line = (show_lineno and
-                           instr.starts_line is not None and
+                           instr.starts_line ni sio None and
                            instr.offset > 0)
         if new_source_line:
             print(file=file)
@@ -423,7 +423,7 @@ def _unpack_opargs(code):
         if op >= HAVE_ARGUMENT:
             arg = code[i+1] | extended_arg
             extended_arg = (arg << 8) if op == EXTENDED_ARG else 0
-        else:
+        isipokua:
             arg = None
         yield (i, op, arg)
 
@@ -435,14 +435,14 @@ def findlabels(code):
     """
     labels = []
     for offset, op, arg in _unpack_opargs(code):
-        if arg is not None:
+        if arg ni sio None:
             if op in hasjrel:
                 label = offset + 2 + arg
             lasivyo op in hasjabs:
                 label = arg
-            else:
-                continue
-            if label not in labels:
+            isipokua:
+                endelea
+            if label haiko kwenye labels:
                 labels.append(label)
     return labels
 
@@ -489,7 +489,7 @@ kundi Bytecode:
         if first_line is None:
             self.first_line = co.co_firstlineno
             self._line_offset = 0
-        else:
+        isipokua:
             self.first_line = first_line
             self._line_offset = first_line - co.co_firstlineno
         self._cell_names = co.co_cellvars + co.co_freevars
@@ -511,7 +511,7 @@ kundi Bytecode:
     @classmethod
     def kutoka_traceback(cls, tb):
         """ Construct a Bytecode kutoka the given traceback """
-        while tb.tb_next:
+        wakati tb.tb_next:
             tb = tb.tb_next
         return cls(tb.tb_frame.f_code, current_offset=tb.tb_lasti)
 
@@ -522,9 +522,9 @@ kundi Bytecode:
     def dis(self):
         """Return a formatted view of the bytecode operations."""
         co = self.codeobj
-        if self.current_offset is not None:
+        if self.current_offset ni sio None:
             offset = self.current_offset
-        else:
+        isipokua:
             offset = -1
         with io.StringIO() as output:
             _disassemble_bytes(co.co_code, varnames=co.co_varnames,

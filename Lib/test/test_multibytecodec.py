@@ -1,6 +1,6 @@
 #
 # test_multibytecodec.py
-#   Unit test for multibytecodec itself
+#   Unit test kila multibytecodec itself
 #
 
 kutoka test agiza support
@@ -28,13 +28,13 @@ ALL_CJKENCODINGS = [
 kundi Test_MultibyteCodec(unittest.TestCase):
 
     eleza test_nullcoding(self):
-        for enc in ALL_CJKENCODINGS:
+        kila enc kwenye ALL_CJKENCODINGS:
             self.assertEqual(b''.decode(enc), '')
             self.assertEqual(str(b'', enc), '')
             self.assertEqual(''.encode(enc), b'')
 
     eleza test_str_decode(self):
-        for enc in ALL_CJKENCODINGS:
+        kila enc kwenye ALL_CJKENCODINGS:
             self.assertEqual('abcd'.encode(enc), b'abcd')
 
     eleza test_errorcallback_longindex(self):
@@ -45,30 +45,30 @@ kundi Test_MultibyteCodec(unittest.TestCase):
                           b'apple\x92ham\x93spam', 'test.cjktest')
 
     eleza test_errorcallback_custom_ignore(self):
-        # Issue #23215: MemoryError with custom error handlers and multibyte codecs
+        # Issue #23215: MemoryError with custom error handlers na multibyte codecs
         data = 100 * "\udc00"
         codecs.register_error("test.ignore", codecs.ignore_errors)
-        for enc in ALL_CJKENCODINGS:
+        kila enc kwenye ALL_CJKENCODINGS:
             self.assertEqual(data.encode(enc, "test.ignore"), b'')
 
     eleza test_codingspec(self):
-        try:
-            for enc in ALL_CJKENCODINGS:
+        jaribu:
+            kila enc kwenye ALL_CJKENCODINGS:
                 code = '# coding: {}\n'.format(enc)
                 exec(code)
-        finally:
+        mwishowe:
             support.unlink(TESTFN)
 
     eleza test_init_segfault(self):
         # bug #3305: this used to segfault
         self.assertRaises(AttributeError,
-                          _multibytecodec.MultibyteStreamReader, None)
+                          _multibytecodec.MultibyteStreamReader, Tupu)
         self.assertRaises(AttributeError,
-                          _multibytecodec.MultibyteStreamWriter, None)
+                          _multibytecodec.MultibyteStreamWriter, Tupu)
 
     eleza test_decode_unicode(self):
-        # Trying to decode a unicode string should raise a TypeError
-        for enc in ALL_CJKENCODINGS:
+        # Trying to decode a unicode string should ashiria a TypeError
+        kila enc kwenye ALL_CJKENCODINGS:
             self.assertRaises(TypeError, codecs.getdecoder(enc), "")
 
 kundi Test_IncrementalEncoder(unittest.TestCase):
@@ -78,16 +78,16 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         encoder = codecs.getincrementalencoder('cp949')()
         self.assertEqual(encoder.encode('\ud30c\uc774\uc36c \ub9c8\uc744'),
                          b'\xc6\xc4\xc0\xcc\xbd\xe3 \xb8\xb6\xc0\xbb')
-        self.assertEqual(encoder.reset(), None)
-        self.assertEqual(encoder.encode('\u2606\u223c\u2606', True),
+        self.assertEqual(encoder.reset(), Tupu)
+        self.assertEqual(encoder.encode('\u2606\u223c\u2606', Kweli),
                          b'\xa1\xd9\xa1\xad\xa1\xd9')
-        self.assertEqual(encoder.reset(), None)
-        self.assertEqual(encoder.encode('', True), b'')
-        self.assertEqual(encoder.encode('', False), b'')
-        self.assertEqual(encoder.reset(), None)
+        self.assertEqual(encoder.reset(), Tupu)
+        self.assertEqual(encoder.encode('', Kweli), b'')
+        self.assertEqual(encoder.encode('', Uongo), b'')
+        self.assertEqual(encoder.reset(), Tupu)
 
     eleza test_stateful(self):
-        # jisx0213 encoder is stateful for a few code points. eg)
+        # jisx0213 encoder ni stateful kila a few code points. eg)
         #   U+00E6 => A9DC
         #   U+00E6 U+0300 => ABC4
         #   U+0300 => ABDC
@@ -96,14 +96,14 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         self.assertEqual(encoder.encode('\u00e6\u0300'), b'\xab\xc4')
         self.assertEqual(encoder.encode('\u00e6'), b'')
         self.assertEqual(encoder.encode('\u0300'), b'\xab\xc4')
-        self.assertEqual(encoder.encode('\u00e6', True), b'\xa9\xdc')
+        self.assertEqual(encoder.encode('\u00e6', Kweli), b'\xa9\xdc')
 
-        self.assertEqual(encoder.reset(), None)
+        self.assertEqual(encoder.reset(), Tupu)
         self.assertEqual(encoder.encode('\u0300'), b'\xab\xdc')
 
         self.assertEqual(encoder.encode('\u00e6'), b'')
-        self.assertEqual(encoder.encode('', True), b'\xa9\xdc')
-        self.assertEqual(encoder.encode('', True), b'')
+        self.assertEqual(encoder.encode('', Kweli), b'\xa9\xdc')
+        self.assertEqual(encoder.encode('', Kweli), b'')
 
     eleza test_stateful_keep_buffer(self):
         encoder = codecs.getincrementalencoder('jisx0213')()
@@ -111,14 +111,14 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         self.assertRaises(UnicodeEncodeError, encoder.encode, '\u0123')
         self.assertEqual(encoder.encode('\u0300\u00e6'), b'\xab\xc4')
         self.assertRaises(UnicodeEncodeError, encoder.encode, '\u0123')
-        self.assertEqual(encoder.reset(), None)
+        self.assertEqual(encoder.reset(), Tupu)
         self.assertEqual(encoder.encode('\u0300'), b'\xab\xdc')
         self.assertEqual(encoder.encode('\u00e6'), b'')
         self.assertRaises(UnicodeEncodeError, encoder.encode, '\u0123')
-        self.assertEqual(encoder.encode('', True), b'\xa9\xdc')
+        self.assertEqual(encoder.encode('', Kweli), b'\xa9\xdc')
 
     eleza test_state_methods_with_buffer_state(self):
-        # euc_jis_2004 stores state as a buffer of pending bytes
+        # euc_jis_2004 stores state kama a buffer of pending bytes
         encoder = codecs.getincrementalencoder('euc_jis_2004')()
 
         initial_state = encoder.getstate()
@@ -149,12 +149,12 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         encoder.setstate(en_state)
         self.assertEqual(encoder.encode('z'), b'z')
 
-    eleza test_getstate_returns_expected_value(self):
-        # Note: getstate is implemented such that these state values
+    eleza test_getstate_rudishas_expected_value(self):
+        # Note: getstate ni implemented such that these state values
         # are expected to be the same across all builds of Python,
-        # regardless of x32/64 bit, endianness and compiler.
+        # regardless of x32/64 bit, endianness na compiler.
 
-        # euc_jis_2004 stores state as a buffer of pending bytes
+        # euc_jis_2004 stores state kama a buffer of pending bytes
         buffer_state_encoder = codecs.getincrementalencoder('euc_jis_2004')()
         self.assertEqual(buffer_state_encoder.getstate(), 0)
         buffer_state_encoder.encode('\u00e6')
@@ -207,7 +207,7 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
 kundi Test_IncrementalDecoder(unittest.TestCase):
 
     eleza test_dbcs(self):
-        # cp949 decoder is simple with only 1 or 2 bytes sequences.
+        # cp949 decoder ni simple with only 1 ama 2 bytes sequences.
         decoder = codecs.getincrementaldecoder('cp949')()
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0\xcc\xbd'),
                          '\ud30c\uc774')
@@ -218,32 +218,32 @@ kundi Test_IncrementalDecoder(unittest.TestCase):
     eleza test_dbcs_keep_buffer(self):
         decoder = codecs.getincrementaldecoder('cp949')()
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0'), '\ud30c')
-        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', True)
+        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', Kweli)
         self.assertEqual(decoder.decode(b'\xcc'), '\uc774')
 
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0'), '\ud30c')
         self.assertRaises(UnicodeDecodeError, decoder.decode,
-                          b'\xcc\xbd', True)
+                          b'\xcc\xbd', Kweli)
         self.assertEqual(decoder.decode(b'\xcc'), '\uc774')
 
     eleza test_iso2022(self):
         decoder = codecs.getincrementaldecoder('iso2022-jp')()
         ESC = b'\x1b'
         self.assertEqual(decoder.decode(ESC + b'('), '')
-        self.assertEqual(decoder.decode(b'B', True), '')
+        self.assertEqual(decoder.decode(b'B', Kweli), '')
         self.assertEqual(decoder.decode(ESC + b'$'), '')
         self.assertEqual(decoder.decode(b'B@$'), '\u4e16')
         self.assertEqual(decoder.decode(b'@$@'), '\u4e16')
-        self.assertEqual(decoder.decode(b'$', True), '\u4e16')
-        self.assertEqual(decoder.reset(), None)
+        self.assertEqual(decoder.decode(b'$', Kweli), '\u4e16')
+        self.assertEqual(decoder.reset(), Tupu)
         self.assertEqual(decoder.decode(b'@$'), '@$')
         self.assertEqual(decoder.decode(ESC + b'$'), '')
-        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', True)
+        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', Kweli)
         self.assertEqual(decoder.decode(b'B@$'), '\u4e16')
 
     eleza test_decode_unicode(self):
-        # Trying to decode a unicode string should raise a TypeError
-        for enc in ALL_CJKENCODINGS:
+        # Trying to decode a unicode string should ashiria a TypeError
+        kila enc kwenye ALL_CJKENCODINGS:
             decoder = codecs.getincrementaldecoder(enc)()
             self.assertRaises(TypeError, decoder.decode, "")
 
@@ -265,7 +265,7 @@ kundi Test_IncrementalDecoder(unittest.TestCase):
         pending3, _ = decoder.getstate()
         self.assertEqual(pending3, b'')
 
-        # Jump back and decode second half of partial input sequence again
+        # Jump back na decode second half of partial input sequence again
         decoder.setstate((pending2, flags2))
         self.assertEqual(decoder.decode(b'\xa6'), '\u3046')
         pending4, _ = decoder.getstate()
@@ -284,18 +284,18 @@ kundi Test_IncrementalDecoder(unittest.TestCase):
 
 kundi Test_StreamReader(unittest.TestCase):
     eleza test_bug1728403(self):
-        try:
+        jaribu:
             f = open(TESTFN, 'wb')
-            try:
+            jaribu:
                 f.write(b'\xa1')
-            finally:
+            mwishowe:
                 f.close()
             f = codecs.open(TESTFN, encoding='cp949')
-            try:
+            jaribu:
                 self.assertRaises(UnicodeDecodeError, f.read, 2)
-            finally:
+            mwishowe:
                 f.close()
-        finally:
+        mwishowe:
             support.unlink(TESTFN)
 
 kundi Test_StreamWriter(unittest.TestCase):
@@ -336,12 +336,12 @@ kundi Test_ISO2022(unittest.TestCase):
 
     eleza test_iso2022_jp_g0(self):
         self.assertNotIn(b'\x0e', '\N{SOFT HYPHEN}'.encode('iso-2022-jp-2'))
-        for encoding in ('iso-2022-jp-2004', 'iso-2022-jp-3'):
+        kila encoding kwenye ('iso-2022-jp-2004', 'iso-2022-jp-3'):
             e = '\u3406'.encode(encoding)
-            self.assertFalse(any(x > 0x80 for x in e))
+            self.assertUongo(any(x > 0x80 kila x kwenye e))
 
     eleza test_bug1572832(self):
-        for x in range(0x10000, 0x110000):
+        kila x kwenye range(0x10000, 0x110000):
             # Any ISO 2022 codec will cause the segfault
             chr(x).encode('iso_2022_jp', 'ignore')
 
@@ -359,19 +359,19 @@ kundi TestStateful(unittest.TestCase):
         encoder = codecs.getincrementalencoder(self.encoding)()
         output = b''.join(
             encoder.encode(char)
-            for char in self.text)
+            kila char kwenye self.text)
         self.assertEqual(output, self.expected)
-        self.assertEqual(encoder.encode('', final=True), self.reset)
-        self.assertEqual(encoder.encode('', final=True), b'')
+        self.assertEqual(encoder.encode('', final=Kweli), self.reset)
+        self.assertEqual(encoder.encode('', final=Kweli), b'')
 
     eleza test_incrementalencoder_final(self):
         encoder = codecs.getincrementalencoder(self.encoding)()
         last_index = len(self.text) - 1
         output = b''.join(
             encoder.encode(char, index == last_index)
-            for index, char in enumerate(self.text))
+            kila index, char kwenye enumerate(self.text))
         self.assertEqual(output, self.expected_reset)
-        self.assertEqual(encoder.encode('', final=True), b'')
+        self.assertEqual(encoder.encode('', final=Kweli), b'')
 
 kundi TestHZStateful(TestStateful):
     text = '\u804a\u804a'

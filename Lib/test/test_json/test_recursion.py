@@ -2,67 +2,67 @@ kutoka test.test_json agiza PyTest, CTest
 
 
 kundi JSONTestObject:
-    pass
+    pita
 
 
 kundi TestRecursion:
     eleza test_listrecursion(self):
         x = []
         x.append(x)
-        try:
+        jaribu:
             self.dumps(x)
-        except ValueError:
-            pass
-        else:
-            self.fail("didn't raise ValueError on list recursion")
+        tatizo ValueError:
+            pita
+        isipokua:
+            self.fail("didn't ashiria ValueError on list recursion")
         x = []
         y = [x]
         x.append(y)
-        try:
+        jaribu:
             self.dumps(x)
-        except ValueError:
-            pass
-        else:
-            self.fail("didn't raise ValueError on alternating list recursion")
+        tatizo ValueError:
+            pita
+        isipokua:
+            self.fail("didn't ashiria ValueError on alternating list recursion")
         y = []
         x = [y, y]
-        # ensure that the marker is cleared
+        # ensure that the marker ni cleared
         self.dumps(x)
 
     eleza test_dictrecursion(self):
         x = {}
         x["test"] = x
-        try:
+        jaribu:
             self.dumps(x)
-        except ValueError:
-            pass
-        else:
-            self.fail("didn't raise ValueError on dict recursion")
+        tatizo ValueError:
+            pita
+        isipokua:
+            self.fail("didn't ashiria ValueError on dict recursion")
         x = {}
         y = {"a": x, "b": x}
-        # ensure that the marker is cleared
+        # ensure that the marker ni cleared
         self.dumps(x)
 
     eleza test_defaultrecursion(self):
         kundi RecursiveJSONEncoder(self.json.JSONEncoder):
-            recurse = False
+            recurse = Uongo
             eleza default(self, o):
-                ikiwa o is JSONTestObject:
+                ikiwa o ni JSONTestObject:
                     ikiwa self.recurse:
                         rudisha [JSONTestObject]
-                    else:
+                    isipokua:
                         rudisha 'JSONTestObject'
                 rudisha pyjson.JSONEncoder.default(o)
 
         enc = RecursiveJSONEncoder()
         self.assertEqual(enc.encode(JSONTestObject), '"JSONTestObject"')
-        enc.recurse = True
-        try:
+        enc.recurse = Kweli
+        jaribu:
             enc.encode(JSONTestObject)
-        except ValueError:
-            pass
-        else:
-            self.fail("didn't raise ValueError on default recursion")
+        tatizo ValueError:
+            pita
+        isipokua:
+            self.fail("didn't ashiria ValueError on default recursion")
 
 
     eleza test_highly_nested_objects_decoding(self):
@@ -78,7 +78,7 @@ kundi TestRecursion:
     eleza test_highly_nested_objects_encoding(self):
         # See #12051
         l, d = [], {}
-        for x in range(100000):
+        kila x kwenye range(100000):
             l, d = [l], {'k':d}
         with self.assertRaises(RecursionError):
             self.dumps(l)
@@ -89,12 +89,12 @@ kundi TestRecursion:
         # See #12051
         kundi EndlessJSONEncoder(self.json.JSONEncoder):
             eleza default(self, o):
-                """If check_circular is False, this will keep adding another list."""
+                """If check_circular ni Uongo, this will keep adding another list."""
                 rudisha [o]
 
         with self.assertRaises(RecursionError):
-            EndlessJSONEncoder(check_circular=False).encode(5j)
+            EndlessJSONEncoder(check_circular=Uongo).encode(5j)
 
 
-kundi TestPyRecursion(TestRecursion, PyTest): pass
-kundi TestCRecursion(TestRecursion, CTest): pass
+kundi TestPyRecursion(TestRecursion, PyTest): pita
+kundi TestCRecursion(TestRecursion, CTest): pita

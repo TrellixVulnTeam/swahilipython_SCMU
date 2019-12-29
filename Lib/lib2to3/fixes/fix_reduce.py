@@ -1,10 +1,10 @@
 # Copyright 2008 Armin Ronacher.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Fixer for reduce().
+"""Fixer kila reduce().
 
-Makes sure reduce() is imported kutoka the functools module ikiwa reduce is
-used in that module.
+Makes sure reduce() ni imported kutoka the functools module ikiwa reduce is
+used kwenye that module.
 """
 
 kutoka lib2to3 agiza fixer_base
@@ -14,7 +14,7 @@ kutoka lib2to3.fixer_util agiza touch_agiza
 
 kundi FixReduce(fixer_base.BaseFix):
 
-    BM_compatible = True
+    BM_compatible = Kweli
     order = "pre"
 
     PATTERN = """

@@ -1,4 +1,4 @@
-"""Tests for Lib/fractions.py."""
+"""Tests kila Lib/fractions.py."""
 
 kutoka decimal agiza Decimal
 kutoka test.support agiza requires_IEEE_754
@@ -15,11 +15,11 @@ F = fractions.Fraction
 gcd = fractions.gcd
 
 kundi DummyFloat(object):
-    """Dummy float kundi for testing comparisons with Fractions"""
+    """Dummy float kundi kila testing comparisons with Fractions"""
 
     eleza __init__(self, value):
-        ikiwa not isinstance(value, float):
-            raise TypeError("DummyFloat can only be initialized kutoka float")
+        ikiwa sio isinstance(value, float):
+            ashiria TypeError("DummyFloat can only be initialized kutoka float")
         self.value = value
 
     eleza _richcmp(self, other, op):
@@ -27,7 +27,7 @@ kundi DummyFloat(object):
             rudisha op(F.kutoka_float(self.value), other)
         elikiwa isinstance(other, DummyFloat):
             rudisha op(self.value, other.value)
-        else:
+        isipokua:
             rudisha NotImplemented
 
     eleza __eq__(self, other): rudisha self._richcmp(other, operator.eq)
@@ -38,11 +38,11 @@ kundi DummyFloat(object):
 
     # shouldn't be calling __float__ at all when doing comparisons
     eleza __float__(self):
-        assert False, "__float__ should not be invoked for comparisons"
+        assert Uongo, "__float__ should sio be invoked kila comparisons"
 
-    # same goes for subtraction
+    # same goes kila subtraction
     eleza __sub__(self, other):
-        assert False, "__sub__ should not be invoked for comparisons"
+        assert Uongo, "__sub__ should sio be invoked kila comparisons"
     __rsub__ = __sub__
 
 
@@ -58,33 +58,33 @@ kundi DummyRational(object):
         ikiwa isinstance(other, fractions.Fraction):
             rudisha (self.num == other._numerator and
                     self.den == other._denominator)
-        else:
+        isipokua:
             rudisha NotImplemented
 
     eleza __lt__(self, other):
-        return(self.num * other._denominator < self.den * other._numerator)
+        rudisha(self.num * other._denominator < self.den * other._numerator)
 
     eleza __gt__(self, other):
-        return(self.num * other._denominator > self.den * other._numerator)
+        rudisha(self.num * other._denominator > self.den * other._numerator)
 
     eleza __le__(self, other):
-        return(self.num * other._denominator <= self.den * other._numerator)
+        rudisha(self.num * other._denominator <= self.den * other._numerator)
 
     eleza __ge__(self, other):
-        return(self.num * other._denominator >= self.den * other._numerator)
+        rudisha(self.num * other._denominator >= self.den * other._numerator)
 
-    # this kundi is for testing comparisons; conversion to float
-    # should never be used for a comparison, since it loses accuracy
+    # this kundi ni kila testing comparisons; conversion to float
+    # should never be used kila a comparison, since it loses accuracy
     eleza __float__(self):
-        assert False, "__float__ should not be invoked"
+        assert Uongo, "__float__ should sio be invoked"
 
 kundi DummyFraction(fractions.Fraction):
-    """Dummy Fraction subkundi for copy and deepcopy testing."""
+    """Dummy Fraction subkundi kila copy na deepcopy testing."""
 
 kundi GcdTest(unittest.TestCase):
 
     eleza testMisc(self):
-        # fractions.gcd() is deprecated
+        # fractions.gcd() ni deprecated
         with self.assertWarnsRegex(DeprecationWarning, r'fractions\.gcd'):
             gcd(1, 1)
         with warnings.catch_warnings():
@@ -113,24 +113,24 @@ eleza _components(r):
 kundi FractionTest(unittest.TestCase):
 
     eleza assertTypedEquals(self, expected, actual):
-        """Asserts that both the types and values are the same."""
+        """Asserts that both the types na values are the same."""
         self.assertEqual(type(expected), type(actual))
         self.assertEqual(expected, actual)
 
     eleza assertTypedTupleEquals(self, expected, actual):
-        """Asserts that both the types and values in the tuples are the same."""
+        """Asserts that both the types na values kwenye the tuples are the same."""
         self.assertTupleEqual(expected, actual)
         self.assertListEqual(list(map(type, expected)), list(map(type, actual)))
 
     eleza assertRaisesMessage(self, exc_type, message,
                             callable, *args, **kwargs):
-        """Asserts that callable(*args, **kwargs) raises exc_type(message)."""
-        try:
+        """Asserts that callable(*args, **kwargs) ashirias exc_type(message)."""
+        jaribu:
             callable(*args, **kwargs)
-        except exc_type as e:
+        tatizo exc_type kama e:
             self.assertEqual(message, str(e))
-        else:
-            self.fail("%s not raised" % exc_type.__name__)
+        isipokua:
+            self.fail("%s sio ashiriad" % exc_type.__name__)
 
     eleza testInit(self):
         self.assertEqual((0, 1), _components(F()))
@@ -201,37 +201,37 @@ kundi FractionTest(unittest.TestCase):
             ZeroDivisionError, "Fraction(3, 0)",
             F, "3/0")
         self.assertRaisesMessage(
-            ValueError, "Invalid literal for Fraction: '3/'",
+            ValueError, "Invalid literal kila Fraction: '3/'",
             F, "3/")
         self.assertRaisesMessage(
-            ValueError, "Invalid literal for Fraction: '/2'",
+            ValueError, "Invalid literal kila Fraction: '/2'",
             F, "/2")
         self.assertRaisesMessage(
-            ValueError, "Invalid literal for Fraction: '3 /2'",
+            ValueError, "Invalid literal kila Fraction: '3 /2'",
             F, "3 /2")
         self.assertRaisesMessage(
             # Denominators don't need a sign.
-            ValueError, "Invalid literal for Fraction: '3/+2'",
+            ValueError, "Invalid literal kila Fraction: '3/+2'",
             F, "3/+2")
         self.assertRaisesMessage(
             # Imitate float's parsing.
-            ValueError, "Invalid literal for Fraction: '+ 3/2'",
+            ValueError, "Invalid literal kila Fraction: '+ 3/2'",
             F, "+ 3/2")
         self.assertRaisesMessage(
-            # Avoid treating '.' as a regex special character.
-            ValueError, "Invalid literal for Fraction: '3a2'",
+            # Avoid treating '.' kama a regex special character.
+            ValueError, "Invalid literal kila Fraction: '3a2'",
             F, "3a2")
         self.assertRaisesMessage(
-            # Don't accept combinations of decimals and rationals.
-            ValueError, "Invalid literal for Fraction: '3/7.2'",
+            # Don't accept combinations of decimals na rationals.
+            ValueError, "Invalid literal kila Fraction: '3/7.2'",
             F, "3/7.2")
         self.assertRaisesMessage(
-            # Don't accept combinations of decimals and rationals.
-            ValueError, "Invalid literal for Fraction: '3.2/7'",
+            # Don't accept combinations of decimals na rationals.
+            ValueError, "Invalid literal kila Fraction: '3.2/7'",
             F, "3.2/7")
         self.assertRaisesMessage(
-            # Allow 3. and .3, but not .
-            ValueError, "Invalid literal for Fraction: '.'",
+            # Allow 3. na .3, but sio .
+            ValueError, "Invalid literal kila Fraction: '.'",
             F, ".")
 
     eleza testImmutable(self):
@@ -247,7 +247,7 @@ kundi FractionTest(unittest.TestCase):
         r._numerator = 4
         r._denominator = 2
         self.assertEqual((4, 2), _components(r))
-        # Which breaks some agizaant operations:
+        # Which komas some agizaant operations:
         self.assertNotEqual(F(4, 2), r)
 
     eleza testFromFloat(self):
@@ -317,7 +317,7 @@ kundi FractionTest(unittest.TestCase):
         self.assertEqual(F(201, 200).limit_denominator(100), F(1))
         self.assertEqual(F(201, 200).limit_denominator(101), F(102, 101))
         self.assertEqual(F(0).limit_denominator(10000), F(0))
-        for i in (0, -1):
+        kila i kwenye (0, -1):
             self.assertRaisesMessage(
                 ValueError, "max_denominator should be at least 1",
                 F(1).limit_denominator, i)
@@ -334,12 +334,12 @@ kundi FractionTest(unittest.TestCase):
         self.assertTypedEquals(-2, round(F(-15, 10)))
         self.assertTypedEquals(-1, round(F(-7, 10)))
 
-        self.assertEqual(False, bool(F(0, 1)))
-        self.assertEqual(True, bool(F(3, 2)))
+        self.assertEqual(Uongo, bool(F(0, 1)))
+        self.assertEqual(Kweli, bool(F(3, 2)))
         self.assertTypedEquals(0.1, float(F(1, 10)))
 
         # Check that __float__ isn't implemented by converting the
-        # numerator and denominator to float before dividing.
+        # numerator na denominator to float before dividing.
         self.assertRaises(OverflowError, float, int('2'*400+'7'))
         self.assertAlmostEqual(2.0/3,
                                float(F(int('2'*400+'7'), int('3'*400+'1'))))
@@ -371,7 +371,7 @@ kundi FractionTest(unittest.TestCase):
         z = pow(F(-1), F(1, 2))
         self.assertAlmostEqual(z.real, 0)
         self.assertEqual(z.imag, 1)
-        # Regression test for #27539.
+        # Regression test kila #27539.
         p = F(-1, 2) ** 0
         self.assertEqual(p, F(1, 1))
         self.assertEqual(p.numerator, 1)
@@ -489,143 +489,143 @@ kundi FractionTest(unittest.TestCase):
                           F(0, 1), -2)
 
     eleza testMixingWithDecimal(self):
-        # Decimal refuses mixed arithmetic (but not mixed comparisons)
+        # Decimal refuses mixed arithmetic (but sio mixed comparisons)
         self.assertRaises(TypeError, operator.add,
                           F(3,11), Decimal('3.1415926'))
         self.assertRaises(TypeError, operator.add,
                           Decimal('3.1415926'), F(3,11))
 
     eleza testComparisons(self):
-        self.assertTrue(F(1, 2) < F(2, 3))
-        self.assertFalse(F(1, 2) < F(1, 2))
-        self.assertTrue(F(1, 2) <= F(2, 3))
-        self.assertTrue(F(1, 2) <= F(1, 2))
-        self.assertFalse(F(2, 3) <= F(1, 2))
-        self.assertTrue(F(1, 2) == F(1, 2))
-        self.assertFalse(F(1, 2) == F(1, 3))
-        self.assertFalse(F(1, 2) != F(1, 2))
-        self.assertTrue(F(1, 2) != F(1, 3))
+        self.assertKweli(F(1, 2) < F(2, 3))
+        self.assertUongo(F(1, 2) < F(1, 2))
+        self.assertKweli(F(1, 2) <= F(2, 3))
+        self.assertKweli(F(1, 2) <= F(1, 2))
+        self.assertUongo(F(2, 3) <= F(1, 2))
+        self.assertKweli(F(1, 2) == F(1, 2))
+        self.assertUongo(F(1, 2) == F(1, 3))
+        self.assertUongo(F(1, 2) != F(1, 2))
+        self.assertKweli(F(1, 2) != F(1, 3))
 
     eleza testComparisonsDummyRational(self):
-        self.assertTrue(F(1, 2) == DummyRational(1, 2))
-        self.assertTrue(DummyRational(1, 2) == F(1, 2))
-        self.assertFalse(F(1, 2) == DummyRational(3, 4))
-        self.assertFalse(DummyRational(3, 4) == F(1, 2))
+        self.assertKweli(F(1, 2) == DummyRational(1, 2))
+        self.assertKweli(DummyRational(1, 2) == F(1, 2))
+        self.assertUongo(F(1, 2) == DummyRational(3, 4))
+        self.assertUongo(DummyRational(3, 4) == F(1, 2))
 
-        self.assertTrue(F(1, 2) < DummyRational(3, 4))
-        self.assertFalse(F(1, 2) < DummyRational(1, 2))
-        self.assertFalse(F(1, 2) < DummyRational(1, 7))
-        self.assertFalse(F(1, 2) > DummyRational(3, 4))
-        self.assertFalse(F(1, 2) > DummyRational(1, 2))
-        self.assertTrue(F(1, 2) > DummyRational(1, 7))
-        self.assertTrue(F(1, 2) <= DummyRational(3, 4))
-        self.assertTrue(F(1, 2) <= DummyRational(1, 2))
-        self.assertFalse(F(1, 2) <= DummyRational(1, 7))
-        self.assertFalse(F(1, 2) >= DummyRational(3, 4))
-        self.assertTrue(F(1, 2) >= DummyRational(1, 2))
-        self.assertTrue(F(1, 2) >= DummyRational(1, 7))
+        self.assertKweli(F(1, 2) < DummyRational(3, 4))
+        self.assertUongo(F(1, 2) < DummyRational(1, 2))
+        self.assertUongo(F(1, 2) < DummyRational(1, 7))
+        self.assertUongo(F(1, 2) > DummyRational(3, 4))
+        self.assertUongo(F(1, 2) > DummyRational(1, 2))
+        self.assertKweli(F(1, 2) > DummyRational(1, 7))
+        self.assertKweli(F(1, 2) <= DummyRational(3, 4))
+        self.assertKweli(F(1, 2) <= DummyRational(1, 2))
+        self.assertUongo(F(1, 2) <= DummyRational(1, 7))
+        self.assertUongo(F(1, 2) >= DummyRational(3, 4))
+        self.assertKweli(F(1, 2) >= DummyRational(1, 2))
+        self.assertKweli(F(1, 2) >= DummyRational(1, 7))
 
-        self.assertTrue(DummyRational(1, 2) < F(3, 4))
-        self.assertFalse(DummyRational(1, 2) < F(1, 2))
-        self.assertFalse(DummyRational(1, 2) < F(1, 7))
-        self.assertFalse(DummyRational(1, 2) > F(3, 4))
-        self.assertFalse(DummyRational(1, 2) > F(1, 2))
-        self.assertTrue(DummyRational(1, 2) > F(1, 7))
-        self.assertTrue(DummyRational(1, 2) <= F(3, 4))
-        self.assertTrue(DummyRational(1, 2) <= F(1, 2))
-        self.assertFalse(DummyRational(1, 2) <= F(1, 7))
-        self.assertFalse(DummyRational(1, 2) >= F(3, 4))
-        self.assertTrue(DummyRational(1, 2) >= F(1, 2))
-        self.assertTrue(DummyRational(1, 2) >= F(1, 7))
+        self.assertKweli(DummyRational(1, 2) < F(3, 4))
+        self.assertUongo(DummyRational(1, 2) < F(1, 2))
+        self.assertUongo(DummyRational(1, 2) < F(1, 7))
+        self.assertUongo(DummyRational(1, 2) > F(3, 4))
+        self.assertUongo(DummyRational(1, 2) > F(1, 2))
+        self.assertKweli(DummyRational(1, 2) > F(1, 7))
+        self.assertKweli(DummyRational(1, 2) <= F(3, 4))
+        self.assertKweli(DummyRational(1, 2) <= F(1, 2))
+        self.assertUongo(DummyRational(1, 2) <= F(1, 7))
+        self.assertUongo(DummyRational(1, 2) >= F(3, 4))
+        self.assertKweli(DummyRational(1, 2) >= F(1, 2))
+        self.assertKweli(DummyRational(1, 2) >= F(1, 7))
 
     eleza testComparisonsDummyFloat(self):
         x = DummyFloat(1./3.)
         y = F(1, 3)
-        self.assertTrue(x != y)
-        self.assertTrue(x < y or x > y)
-        self.assertFalse(x == y)
-        self.assertFalse(x <= y and x >= y)
-        self.assertTrue(y != x)
-        self.assertTrue(y < x or y > x)
-        self.assertFalse(y == x)
-        self.assertFalse(y <= x and y >= x)
+        self.assertKweli(x != y)
+        self.assertKweli(x < y ama x > y)
+        self.assertUongo(x == y)
+        self.assertUongo(x <= y na x >= y)
+        self.assertKweli(y != x)
+        self.assertKweli(y < x ama y > x)
+        self.assertUongo(y == x)
+        self.assertUongo(y <= x na y >= x)
 
     eleza testMixedLess(self):
-        self.assertTrue(2 < F(5, 2))
-        self.assertFalse(2 < F(4, 2))
-        self.assertTrue(F(5, 2) < 3)
-        self.assertFalse(F(4, 2) < 2)
+        self.assertKweli(2 < F(5, 2))
+        self.assertUongo(2 < F(4, 2))
+        self.assertKweli(F(5, 2) < 3)
+        self.assertUongo(F(4, 2) < 2)
 
-        self.assertTrue(F(1, 2) < 0.6)
-        self.assertFalse(F(1, 2) < 0.4)
-        self.assertTrue(0.4 < F(1, 2))
-        self.assertFalse(0.5 < F(1, 2))
+        self.assertKweli(F(1, 2) < 0.6)
+        self.assertUongo(F(1, 2) < 0.4)
+        self.assertKweli(0.4 < F(1, 2))
+        self.assertUongo(0.5 < F(1, 2))
 
-        self.assertFalse(float('inf') < F(1, 2))
-        self.assertTrue(float('-inf') < F(0, 10))
-        self.assertFalse(float('nan') < F(-3, 7))
-        self.assertTrue(F(1, 2) < float('inf'))
-        self.assertFalse(F(17, 12) < float('-inf'))
-        self.assertFalse(F(144, -89) < float('nan'))
+        self.assertUongo(float('inf') < F(1, 2))
+        self.assertKweli(float('-inf') < F(0, 10))
+        self.assertUongo(float('nan') < F(-3, 7))
+        self.assertKweli(F(1, 2) < float('inf'))
+        self.assertUongo(F(17, 12) < float('-inf'))
+        self.assertUongo(F(144, -89) < float('nan'))
 
     eleza testMixedLessEqual(self):
-        self.assertTrue(0.5 <= F(1, 2))
-        self.assertFalse(0.6 <= F(1, 2))
-        self.assertTrue(F(1, 2) <= 0.5)
-        self.assertFalse(F(1, 2) <= 0.4)
-        self.assertTrue(2 <= F(4, 2))
-        self.assertFalse(2 <= F(3, 2))
-        self.assertTrue(F(4, 2) <= 2)
-        self.assertFalse(F(5, 2) <= 2)
+        self.assertKweli(0.5 <= F(1, 2))
+        self.assertUongo(0.6 <= F(1, 2))
+        self.assertKweli(F(1, 2) <= 0.5)
+        self.assertUongo(F(1, 2) <= 0.4)
+        self.assertKweli(2 <= F(4, 2))
+        self.assertUongo(2 <= F(3, 2))
+        self.assertKweli(F(4, 2) <= 2)
+        self.assertUongo(F(5, 2) <= 2)
 
-        self.assertFalse(float('inf') <= F(1, 2))
-        self.assertTrue(float('-inf') <= F(0, 10))
-        self.assertFalse(float('nan') <= F(-3, 7))
-        self.assertTrue(F(1, 2) <= float('inf'))
-        self.assertFalse(F(17, 12) <= float('-inf'))
-        self.assertFalse(F(144, -89) <= float('nan'))
+        self.assertUongo(float('inf') <= F(1, 2))
+        self.assertKweli(float('-inf') <= F(0, 10))
+        self.assertUongo(float('nan') <= F(-3, 7))
+        self.assertKweli(F(1, 2) <= float('inf'))
+        self.assertUongo(F(17, 12) <= float('-inf'))
+        self.assertUongo(F(144, -89) <= float('nan'))
 
     eleza testBigFloatComparisons(self):
-        # Because 10**23 can't be represented exactly as a float:
-        self.assertFalse(F(10**23) == float(10**23))
+        # Because 10**23 can't be represented exactly kama a float:
+        self.assertUongo(F(10**23) == float(10**23))
         # The first test demonstrates why these are agizaant.
-        self.assertFalse(1e23 < float(F(math.trunc(1e23) + 1)))
-        self.assertTrue(1e23 < F(math.trunc(1e23) + 1))
-        self.assertFalse(1e23 <= F(math.trunc(1e23) - 1))
-        self.assertTrue(1e23 > F(math.trunc(1e23) - 1))
-        self.assertFalse(1e23 >= F(math.trunc(1e23) + 1))
+        self.assertUongo(1e23 < float(F(math.trunc(1e23) + 1)))
+        self.assertKweli(1e23 < F(math.trunc(1e23) + 1))
+        self.assertUongo(1e23 <= F(math.trunc(1e23) - 1))
+        self.assertKweli(1e23 > F(math.trunc(1e23) - 1))
+        self.assertUongo(1e23 >= F(math.trunc(1e23) + 1))
 
     eleza testBigComplexComparisons(self):
-        self.assertFalse(F(10**23) == complex(10**23))
+        self.assertUongo(F(10**23) == complex(10**23))
         self.assertRaises(TypeError, operator.gt, F(10**23), complex(10**23))
         self.assertRaises(TypeError, operator.le, F(10**23), complex(10**23))
 
         x = F(3, 8)
         z = complex(0.375, 0.0)
         w = complex(0.375, 0.2)
-        self.assertTrue(x == z)
-        self.assertFalse(x != z)
-        self.assertFalse(x == w)
-        self.assertTrue(x != w)
-        for op in operator.lt, operator.le, operator.gt, operator.ge:
+        self.assertKweli(x == z)
+        self.assertUongo(x != z)
+        self.assertUongo(x == w)
+        self.assertKweli(x != w)
+        kila op kwenye operator.lt, operator.le, operator.gt, operator.ge:
             self.assertRaises(TypeError, op, x, z)
             self.assertRaises(TypeError, op, z, x)
             self.assertRaises(TypeError, op, x, w)
             self.assertRaises(TypeError, op, w, x)
 
     eleza testMixedEqual(self):
-        self.assertTrue(0.5 == F(1, 2))
-        self.assertFalse(0.6 == F(1, 2))
-        self.assertTrue(F(1, 2) == 0.5)
-        self.assertFalse(F(1, 2) == 0.4)
-        self.assertTrue(2 == F(4, 2))
-        self.assertFalse(2 == F(3, 2))
-        self.assertTrue(F(4, 2) == 2)
-        self.assertFalse(F(5, 2) == 2)
-        self.assertFalse(F(5, 2) == float('nan'))
-        self.assertFalse(float('nan') == F(3, 7))
-        self.assertFalse(F(5, 2) == float('inf'))
-        self.assertFalse(float('-inf') == F(2, 5))
+        self.assertKweli(0.5 == F(1, 2))
+        self.assertUongo(0.6 == F(1, 2))
+        self.assertKweli(F(1, 2) == 0.5)
+        self.assertUongo(F(1, 2) == 0.4)
+        self.assertKweli(2 == F(4, 2))
+        self.assertUongo(2 == F(3, 2))
+        self.assertKweli(F(4, 2) == 2)
+        self.assertUongo(F(5, 2) == 2)
+        self.assertUongo(F(5, 2) == float('nan'))
+        self.assertUongo(float('nan') == F(3, 7))
+        self.assertUongo(F(5, 2) == float('inf'))
+        self.assertUongo(float('-inf') == F(2, 5))
 
     eleza testStringification(self):
         self.assertEqual("Fraction(7, 3)", repr(F(7, 3)))
@@ -643,8 +643,8 @@ kundi FractionTest(unittest.TestCase):
         self.assertEqual(hash(10**50), hash(F(10**50)))
         self.assertNotEqual(hash(float(10**23)), hash(F(10**23)))
         self.assertEqual(hinf, hash(F(1, hmod)))
-        # Check that __hash__ produces the same value as hash(), for
-        # consistency with int and Decimal.  (See issue #10356.)
+        # Check that __hash__ produces the same value kama hash(), for
+        # consistency with int na Decimal.  (See issue #10356.)
         self.assertEqual(hash(F(-1)), F(-1).__hash__())
 
     eleza testApproximatePi(self):
@@ -652,7 +652,7 @@ kundi FractionTest(unittest.TestCase):
         # http://docs.python.org/lib/decimal-recipes.html
         three = F(3)
         lasts, t, s, n, na, d, da = 0, three, 3, 1, 0, 0, 24
-        while abs(s - lasts) > F(1, 10**9):
+        wakati abs(s - lasts) > F(1, 10**9):
             lasts = s
             n, na = n+na, na+8
             d, da = d+da, da+32
@@ -665,7 +665,7 @@ kundi FractionTest(unittest.TestCase):
         # http://docs.python.org/lib/decimal-recipes.html
         x = F(1)
         i, lasts, s, fact, num, sign = 0, 0, F(1), 1, 1, 1
-        while abs(s - lasts) > F(1, 10**9):
+        wakati abs(s - lasts) > F(1, 10**9):
             lasts = s
             i += 2
             fact *= i * (i-1)

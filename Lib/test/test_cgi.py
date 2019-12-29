@@ -8,7 +8,7 @@ kutoka io agiza StringIO, BytesIO
 kutoka test agiza support
 
 kundi HackedSysModule:
-    # The regression test will have real values in sys.argv, which
+    # The regression test will have real values kwenye sys.argv, which
     # will completely confuse the test of the cgi module
     argv = []
     stdin = sys.stdin
@@ -23,7 +23,7 @@ kundi ComparableException:
         rudisha str(self.err)
 
     eleza __eq__(self, anExc):
-        ikiwa not isinstance(anExc, Exception):
+        ikiwa sio isinstance(anExc, Exception):
             rudisha NotImplemented
         rudisha (self.err.__class__ == anExc.__class__ and
                 self.err.args == anExc.args)
@@ -34,7 +34,7 @@ kundi ComparableException:
 eleza do_test(buf, method):
     env = {}
     ikiwa method == "GET":
-        fp = None
+        fp = Tupu
         env['REQUEST_METHOD'] = 'GET'
         env['QUERY_STRING'] = buf
     elikiwa method == "POST":
@@ -42,11 +42,11 @@ eleza do_test(buf, method):
         env['REQUEST_METHOD'] = 'POST'
         env['CONTENT_TYPE'] = 'application/x-www-form-urlencoded'
         env['CONTENT_LENGTH'] = str(len(buf))
-    else:
-        raise ValueError("unknown method: %s" % method)
-    try:
+    isipokua:
+        ashiria ValueError("unknown method: %s" % method)
+    jaribu:
         rudisha cgi.parse(fp, env, strict_parsing=1)
-    except Exception as err:
+    tatizo Exception kama err:
         rudisha ComparableException(err)
 
 parse_strict_test_cases = [
@@ -100,10 +100,10 @@ eleza norm(seq):
     rudisha sorted(seq, key=repr)
 
 eleza first_elts(list):
-    rudisha [p[0] for p in list]
+    rudisha [p[0] kila p kwenye list]
 
 eleza first_second_elts(list):
-    rudisha [(p[0], p[1][0]) for p in list]
+    rudisha [(p[0], p[1][0]) kila p kwenye list]
 
 eleza gen_result(data, environ):
     encoding = 'latin-1'
@@ -112,8 +112,8 @@ eleza gen_result(data, environ):
     form = cgi.FieldStorage(fp=fake_stdin, environ=environ, encoding=encoding)
 
     result = {}
-    for k, v in dict(form).items():
-        result[k] = isinstance(v, list) and form.getlist(k) or v.value
+    kila k, v kwenye dict(form).items():
+        result[k] = isinstance(v, list) na form.getlist(k) ama v.value
 
     rudisha result
 
@@ -148,11 +148,11 @@ Content-Length: 3
 
     eleza test_fieldstorage_properties(self):
         fs = cgi.FieldStorage()
-        self.assertFalse(fs)
+        self.assertUongo(fs)
         self.assertIn("FieldStorage", repr(fs))
         self.assertEqual(list(fs), list(fs.keys()))
         fs.list.append(namedtuple('MockFieldStorage', 'name')('fieldvalue'))
-        self.assertTrue(fs)
+        self.assertKweli(fs)
 
     eleza test_fieldstorage_invalid(self):
         self.assertRaises(TypeError, cgi.FieldStorage, "not-a-file-obj",
@@ -162,7 +162,7 @@ Content-Length: 3
         self.assertRaises(TypeError, bool, fs)
 
     eleza test_strict(self):
-        for orig, expect in parse_strict_test_cases:
+        kila orig, expect kwenye parse_strict_test_cases:
             # Test basic parsing
             d = do_test(orig, "GET")
             self.assertEqual(d, expect, "Error parsing %s method GET" % repr(orig))
@@ -179,12 +179,12 @@ Content-Length: 3
                 ##self.assertEqual(norm(expect.items()), norm(fs.items()))
                 self.assertEqual(fs.getvalue("nonexistent field", "default"), "default")
                 # test individual fields
-                for key in expect.keys():
+                kila key kwenye expect.keys():
                     expect_val = expect[key]
                     self.assertIn(key, fs)
                     ikiwa len(expect_val) > 1:
                         self.assertEqual(fs.getvalue(key), expect_val)
-                    else:
+                    isipokua:
                         self.assertEqual(fs.getvalue(key), expect_val[0])
 
     eleza test_log(self):
@@ -195,7 +195,7 @@ Content-Length: 3
         cgi.log("%s", "Testing log 2")
         self.assertEqual(cgi.logfp.getvalue(), "Testing initlog 1\nTesting log 2\n")
         ikiwa os.path.exists(os.devnull):
-            cgi.logfp = None
+            cgi.logfp = Tupu
             cgi.logfile = os.devnull
             cgi.initlog("%s", "Testing log 3")
             self.addCleanup(cgi.closelog)
@@ -204,24 +204,24 @@ Content-Length: 3
     eleza test_fieldstorage_readline(self):
         # FieldStorage uses readline, which has the capacity to read all
         # contents of the input file into memory; we use readline's size argument
-        # to prevent that for files that do not contain any newlines in
+        # to prevent that kila files that do sio contain any newlines in
         # non-GET/HEAD requests
         kundi TestReadlineFile:
             eleza __init__(self, file):
                 self.file = file
                 self.numcalls = 0
 
-            eleza readline(self, size=None):
+            eleza readline(self, size=Tupu):
                 self.numcalls += 1
                 ikiwa size:
                     rudisha self.file.readline(size)
-                else:
+                isipokua:
                     rudisha self.file.readline()
 
             eleza __getattr__(self, name):
                 file = self.__dict__['file']
                 a = getattr(file, name)
-                ikiwa not isinstance(a, int):
+                ikiwa sio isinstance(a, int):
                     setattr(self, name, a)
                 rudisha a
 
@@ -232,9 +232,9 @@ Content-Length: 3
         env = {'REQUEST_METHOD':'PUT'}
         fs = cgi.FieldStorage(fp=f, environ=env)
         self.addCleanup(fs.file.close)
-        # ikiwa we're not chunking properly, readline is only called twice
+        # ikiwa we're sio chunking properly, readline ni only called twice
         # (by read_binary); ikiwa we are chunking properly, it will be called 5 times
-        # as long as the chunksize is 1 << 16.
+        # kama long kama the chunksize ni 1 << 16.
         self.assertGreater(f.numcalls, 2)
         f.close()
 
@@ -247,12 +247,12 @@ Content-Length: 3
         fp = BytesIO(POSTDATA.encode('latin-1'))
         fs = cgi.FieldStorage(fp, environ=env, encoding="latin-1")
         self.assertEqual(len(fs.list), 4)
-        expect = [{'name':'id', 'filename':None, 'value':'1234'},
-                  {'name':'title', 'filename':None, 'value':''},
+        expect = [{'name':'id', 'filename':Tupu, 'value':'1234'},
+                  {'name':'title', 'filename':Tupu, 'value':''},
                   {'name':'file', 'filename':'test.txt', 'value':b'Testing 123.\n'},
-                  {'name':'submit', 'filename':None, 'value':' Add '}]
-        for x in range(len(fs.list)):
-            for k, exp in expect[x].items():
+                  {'name':'submit', 'filename':Tupu, 'value':' Add '}]
+        kila x kwenye range(len(fs.list)):
+            kila k, exp kwenye expect[x].items():
                 got = getattr(fs.list[x], k)
                 self.assertEqual(got, exp)
 
@@ -262,16 +262,16 @@ Content-Length: 3
             'CONTENT_TYPE': 'multipart/form-data; boundary={}'.format(BOUNDARY),
             'CONTENT_LENGTH': '560'}
         # Add some leading whitespace to our post data that will cause the
-        # first line to not be the innerboundary.
+        # first line to sio be the innerboundary.
         fp = BytesIO(b"\r\n" + POSTDATA.encode('latin-1'))
         fs = cgi.FieldStorage(fp, environ=env, encoding="latin-1")
         self.assertEqual(len(fs.list), 4)
-        expect = [{'name':'id', 'filename':None, 'value':'1234'},
-                  {'name':'title', 'filename':None, 'value':''},
+        expect = [{'name':'id', 'filename':Tupu, 'value':'1234'},
+                  {'name':'title', 'filename':Tupu, 'value':''},
                   {'name':'file', 'filename':'test.txt', 'value':b'Testing 123.\n'},
-                  {'name':'submit', 'filename':None, 'value':' Add '}]
-        for x in range(len(fs.list)):
-            for k, exp in expect[x].items():
+                  {'name':'submit', 'filename':Tupu, 'value':' Add '}]
+        kila x kwenye range(len(fs.list)):
+            kila k, exp kwenye expect[x].items():
                 got = getattr(fs.list[x], k)
                 self.assertEqual(got, exp)
 
@@ -280,20 +280,20 @@ Content-Length: 3
         env = {'REQUEST_METHOD':'POST',
             'CONTENT_TYPE': 'multipart/form-data; boundary={}'.format(BOUNDARY),
             'CONTENT_LENGTH':'558'}
-        for encoding in ['iso-8859-1','utf-8']:
+        kila encoding kwenye ['iso-8859-1','utf-8']:
             fp = BytesIO(POSTDATA_NON_ASCII.encode(encoding))
             fs = cgi.FieldStorage(fp, environ=env,encoding=encoding)
             self.assertEqual(len(fs.list), 1)
-            expect = [{'name':'id', 'filename':None, 'value':'\xe7\xf1\x80'}]
-            for x in range(len(fs.list)):
-                for k, exp in expect[x].items():
+            expect = [{'name':'id', 'filename':Tupu, 'value':'\xe7\xf1\x80'}]
+            kila x kwenye range(len(fs.list)):
+                kila k, exp kwenye expect[x].items():
                     got = getattr(fs.list[x], k)
                     self.assertEqual(got, exp)
 
     eleza test_fieldstorage_multipart_maxline(self):
         # Issue #18167
         maxline = 1 << 16
-        self.maxDiff = None
+        self.maxDiff = Tupu
         eleza check(content):
             data = """---123
 Content-Disposition: form-data; name="upload"; filename="fake.txt"
@@ -327,10 +327,10 @@ Content-Type: text/plain
         self.assertEqual(fs.list[1].name, 'files')
         files = fs.list[1].value
         self.assertEqual(len(files), 2)
-        expect = [{'name': None, 'filename': 'file1.txt', 'value': b'... contents of file1.txt ...'},
-                  {'name': None, 'filename': 'file2.gif', 'value': b'...contents of file2.gif...'}]
-        for x in range(len(files)):
-            for k, exp in expect[x].items():
+        expect = [{'name': Tupu, 'filename': 'file1.txt', 'value': b'... contents of file1.txt ...'},
+                  {'name': Tupu, 'filename': 'file2.gif', 'value': b'...contents of file2.gif...'}]
+        kila x kwenye range(len(files)):
+            kila k, exp kwenye expect[x].items():
                 got = getattr(files[x], k)
                 self.assertEqual(got, exp)
 
@@ -372,10 +372,10 @@ Test
     eleza test_fieldstorage_as_context_manager(self):
         fp = BytesIO(b'x' * 10)
         env = {'REQUEST_METHOD': 'PUT'}
-        with cgi.FieldStorage(fp=fp, environ=env) as fs:
+        with cgi.FieldStorage(fp=fp, environ=env) kama fs:
             content = fs.file.read()
-            self.assertFalse(fs.file.closed)
-        self.assertTrue(fs.file.closed)
+            self.assertUongo(fs.file.closed)
+        self.assertKweli(fs.file.closed)
         self.assertEqual(content, 'x' * 10)
         with self.assertRaisesRegex(ValueError, 'I/O operation on closed file'):
             fs.file.read()
@@ -492,7 +492,7 @@ value4
 Content-Disposition: form-data; name="upload"; filename="fake.txt"
 Content-Type: text/plain
 
-this is the content of the fake file
+this ni the content of the fake file
 
 ---123--
 """
@@ -504,7 +504,7 @@ this is the content of the fake file
         }
         result = self._qs_result.copy()
         result.update({
-            'upload': b'this is the content of the fake file\n'
+            'upload': b'this ni the content of the fake file\n'
         })
         v = gen_result(data, environ)
         self.assertEqual(result, v)

@@ -14,18 +14,18 @@ kutoka tkinter agiza tix, TclError
 kundi TestTix(unittest.TestCase):
 
     eleza setUp(self):
-        try:
+        jaribu:
             self.root = tix.Tk()
-        except TclError:
+        tatizo TclError:
             ikiwa sys.platform.startswith('win'):
                 self.fail('Tix should always be available on Windows')
-            self.skipTest('Tix not available')
-        else:
+            self.skipTest('Tix sio available')
+        isipokua:
             self.addCleanup(self.root.destroy)
 
     eleza test_tix_available(self):
-        # this test is just here to make setUp run
-        pass
+        # this test ni just here to make setUp run
+        pita
 
 
 ikiwa __name__ == '__main__':

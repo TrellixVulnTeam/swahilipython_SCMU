@@ -54,8 +54,8 @@ class BuildExtTestCase(TempdirManager,
 
     def test_build_ext(self):
         cmd = support.missing_compiler_executable()
-        if cmd is not None:
-            self.skipTest('The %r command is not found' % cmd)
+        if cmd ni sio None:
+            self.skipTest('The %r command ni sio found' % cmd)
         global ALREADY_TESTED
         copy_xxmodule_c(self.tmp_dir)
         xx_c = os.path.join(self.tmp_dir, 'xxmodule.c')
@@ -68,18 +68,18 @@ class BuildExtTestCase(TempdirManager,
         cmd.build_temp = self.tmp_dir
 
         old_stdout = sys.stdout
-        if not support.verbose:
+        if sio support.verbose:
             # silence compiler output
             sys.stdout = StringIO()
-        try:
+        jaribu:
             cmd.ensure_finalized()
             cmd.run()
-        finally:
+        mwishowe:
             sys.stdout = old_stdout
 
         if ALREADY_TESTED:
             self.skipTest('Already tested in %s' % ALREADY_TESTED)
-        else:
+        isipokua:
             ALREADY_TESTED = type(self).__name__
 
         code = textwrap.dedent(f"""
@@ -120,13 +120,13 @@ class BuildExtTestCase(TempdirManager,
         from distutils.sysconfig import  _config_vars
         old_var = _config_vars.get('Py_ENABLE_SHARED')
         _config_vars['Py_ENABLE_SHARED'] = 1
-        try:
+        jaribu:
             cmd.ensure_finalized()
-        finally:
+        mwishowe:
             sys.platform = old
             if old_var is None:
-                del _config_vars['Py_ENABLE_SHARED']
-            else:
+                toa _config_vars['Py_ENABLE_SHARED']
+            isipokua:
                 _config_vars['Py_ENABLE_SHARED'] = old_var
 
         # make sure we get some library dirs under solaris
@@ -306,7 +306,7 @@ class BuildExtTestCase(TempdirManager,
 
     def test_compiler_option(self):
         # cmd.compiler is an option and
-        # should not be overridden by a compiler instance
+        # should sio be overridden by a compiler instance
         # when the command is run
         dist = Distribution()
         cmd = self.build_ext(dist)
@@ -317,8 +317,8 @@ class BuildExtTestCase(TempdirManager,
 
     def test_get_outputs(self):
         cmd = support.missing_compiler_executable()
-        if cmd is not None:
-            self.skipTest('The %r command is not found' % cmd)
+        if cmd ni sio None:
+            self.skipTest('The %r command ni sio found' % cmd)
         tmp_dir = self.mkdtemp()
         c_file = os.path.join(tmp_dir, 'foo.c')
         self.write_file(c_file, 'void PyInit_foo(void) {}\n')
@@ -338,11 +338,11 @@ class BuildExtTestCase(TempdirManager,
         other_tmp_dir = os.path.realpath(self.mkdtemp())
         old_wd = os.getcwd()
         os.chdir(other_tmp_dir)
-        try:
+        jaribu:
             cmd.inplace = 1
             cmd.run()
             so_file = cmd.get_outputs()[0]
-        finally:
+        mwishowe:
             os.chdir(old_wd)
         self.assertTrue(os.path.exists(so_file))
         ext_suffix = sysconfig.get_config_var('EXT_SUFFIX')
@@ -372,9 +372,9 @@ class BuildExtTestCase(TempdirManager,
         other_tmp_dir = os.path.realpath(self.mkdtemp())
         old_wd = os.getcwd()
         os.chdir(other_tmp_dir)
-        try:
+        jaribu:
             path = cmd.get_ext_fullpath('foo')
-        finally:
+        mwishowe:
             os.chdir(old_wd)
         # checking that the last directory is bar
         path = os.path.split(path)[0]
@@ -397,14 +397,14 @@ class BuildExtTestCase(TempdirManager,
         path = cmd.get_ext_fullpath('lxml.etree')
         self.assertEqual(wanted, path)
 
-        # building lxml.etree not inplace
+        # building lxml.etree sio inplace
         cmd.inplace = 0
         cmd.build_lib = os.path.join(curdir, 'tmpdir')
         wanted = os.path.join(curdir, 'tmpdir', 'lxml', 'etree' + ext)
         path = cmd.get_ext_fullpath('lxml.etree')
         self.assertEqual(wanted, path)
 
-        # building twisted.runner.portmap not inplace
+        # building twisted.runner.portmap sio inplace
         build_py = cmd.get_finalized_command('build_py')
         build_py.package_dir = {}
         cmd.distribution.packages = ['twisted', 'twisted.runner.portmap']
@@ -429,7 +429,7 @@ class BuildExtTestCase(TempdirManager,
 
     @unittest.skipUnless(sys.platform == 'darwin', 'test only relevant for MacOSX')
     def test_deployment_target_too_low(self):
-        # Issue 9516: Test that an extension module is not allowed to be
+        # Issue 9516: Test that an extension module ni sio allowed to be
         # compiled with a deployment target less than that of the interpreter.
         self.assertRaises(DistutilsPlatformError,
             self._try_compile_deployment_target, '>', '10.1')
@@ -454,8 +454,8 @@ class BuildExtTestCase(TempdirManager,
 
         if target is None:
             if os.environ.get('MACOSX_DEPLOYMENT_TARGET'):
-                del os.environ['MACOSX_DEPLOYMENT_TARGET']
-        else:
+                toa os.environ['MACOSX_DEPLOYMENT_TARGET']
+        isipokua:
             os.environ['MACOSX_DEPLOYMENT_TARGET'] = target
 
         deptarget_c = os.path.join(self.tmp_dir, 'deptargetmodule.c')
@@ -478,11 +478,11 @@ class BuildExtTestCase(TempdirManager,
         target = tuple(map(int, target.split('.')[0:2]))
         # format the target value as defined in the Apple
         # Availability Macros.  We can't use the macro names since
-        # at least one value we test with will not exist yet.
+        # at least one value we test with will sio exist yet.
         if target[1] < 10:
             # for 10.1 through 10.9.x -> "10n0"
             target = '%02d%01d0' % target
-        else:
+        isipokua:
             # for 10.10 and beyond -> "10nn00"
             target = '%02d%02d00' % target
         deptarget_ext = Extension(
@@ -499,18 +499,18 @@ class BuildExtTestCase(TempdirManager,
         cmd.build_lib = self.tmp_dir
         cmd.build_temp = self.tmp_dir
 
-        try:
+        jaribu:
             old_stdout = sys.stdout
-            if not support.verbose:
+            if sio support.verbose:
                 # silence compiler output
                 sys.stdout = StringIO()
-            try:
+            jaribu:
                 cmd.ensure_finalized()
                 cmd.run()
-            finally:
+            mwishowe:
                 sys.stdout = old_stdout
 
-        except CompileError:
+        tatizo CompileError:
             self.fail("Wrong deployment target during compilation")
 
 

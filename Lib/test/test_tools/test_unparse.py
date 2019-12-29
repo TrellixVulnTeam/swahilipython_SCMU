@@ -1,4 +1,4 @@
-"""Tests for the unparse.py script in the Tools/parser directory."""
+"""Tests kila the unparse.py script kwenye the Tools/parser directory."""
 
 agiza unittest
 agiza test.support
@@ -18,28 +18,28 @@ with test.support.DirsOnSysPath(parser_path):
     agiza unparse
 
 eleza read_pyfile(filename):
-    """Read and rudisha the contents of a Python source file (as a
+    """Read na rudisha the contents of a Python source file (as a
     string), taking into account the file encoding."""
-    with open(filename, "rb") as pyfile:
+    with open(filename, "rb") kama pyfile:
         encoding = tokenize.detect_encoding(pyfile.readline)[0]
-    with open(filename, "r", encoding=encoding) as pyfile:
+    with open(filename, "r", encoding=encoding) kama pyfile:
         source = pyfile.read()
     rudisha source
 
 for_else = """\
 eleza f():
-    for x in range(10):
-        break
-    else:
+    kila x kwenye range(10):
+        koma
+    isipokua:
         y = 2
     z = 3
 """
 
 while_else = """\
 eleza g():
-    while True:
-        break
-    else:
+    wakati Kweli:
+        koma
+    isipokua:
         y = 2
     z = 3
 """
@@ -47,7 +47,7 @@ eleza g():
 relative_agiza = """\
 kutoka . agiza fred
 kutoka .. agiza barney
-kutoka .australia agiza shrimp as prawns
+kutoka .australia agiza shrimp kama prawns
 """
 
 nonlocal_ex = """\
@@ -61,18 +61,18 @@ eleza f():
             nonlocal x, y
 """
 
-# also acts as test for 'except ... as ...'
-raise_kutoka = """\
-try:
+# also acts kama test kila 'tatizo ... kama ...'
+ashiria_kutoka = """\
+jaribu:
     1 / 0
-except ZeroDivisionError as e:
-    raise ArithmeticError kutoka e
+tatizo ZeroDivisionError kama e:
+    ashiria ArithmeticError kutoka e
 """
 
 class_decorator = """\
 @f1(arg)
 @f2
-kundi Foo: pass
+kundi Foo: pita
 """
 
 elif1 = """\
@@ -80,7 +80,7 @@ ikiwa cond1:
     suite1
 elikiwa cond2:
     suite2
-else:
+isipokua:
     suite3
 """
 
@@ -92,15 +92,15 @@ elikiwa cond2:
 """
 
 try_except_finally = """\
-try:
+jaribu:
     suite1
-except ex1:
+tatizo ex1:
     suite2
-except ex2:
+tatizo ex2:
     suite3
-else:
+isipokua:
     suite4
-finally:
+mwishowe:
     suite5
 """
 
@@ -110,12 +110,12 @@ with f():
 """
 
 with_as = """\
-with f() as x:
+with f() kama x:
     suite1
 """
 
 with_two_items = """\
-with f() as x, g() as y:
+with f() kama x, g() kama y:
     suite1
 """
 
@@ -132,7 +132,7 @@ kundi ASTTestCase(unittest.TestCase):
         self.assertASTEqual(ast1, ast2)
 
 kundi UnparseTestCase(ASTTestCase):
-    # Tests for specific bugs found in earlier versions of unparse
+    # Tests kila specific bugs found kwenye earlier versions of unparse
 
     eleza test_fstrings(self):
         # See issue 25180
@@ -145,7 +145,7 @@ kundi UnparseTestCase(ASTTestCase):
         self.check_roundtrip("b'foo'")
 
     eleza test_del_statement(self):
-        self.check_roundtrip("del x, y, z")
+        self.check_roundtrip("toa x, y, z")
 
     eleza test_shifts(self):
         self.check_roundtrip("45 << 2")
@@ -161,8 +161,8 @@ kundi UnparseTestCase(ASTTestCase):
         self.check_roundtrip("(-1)**7")
         self.check_roundtrip("(-1.)**8")
         self.check_roundtrip("(-1j)**6")
-        self.check_roundtrip("not True or False")
-        self.check_roundtrip("True or not False")
+        self.check_roundtrip("not Kweli ama Uongo")
+        self.check_roundtrip("Kweli ama sio Uongo")
 
     eleza test_integer_parens(self):
         self.check_roundtrip("3 .__abs__()")
@@ -188,21 +188,21 @@ kundi UnparseTestCase(ASTTestCase):
 
     eleza test_chained_comparisons(self):
         self.check_roundtrip("1 < 4 <= 5")
-        self.check_roundtrip("a is b is c is not d")
+        self.check_roundtrip("a ni b ni c ni sio d")
 
     eleza test_function_arguments(self):
-        self.check_roundtrip("eleza f(): pass")
-        self.check_roundtrip("eleza f(a): pass")
-        self.check_roundtrip("eleza f(b = 2): pass")
-        self.check_roundtrip("eleza f(a, b): pass")
-        self.check_roundtrip("eleza f(a, b = 2): pass")
-        self.check_roundtrip("eleza f(a = 5, b = 2): pass")
-        self.check_roundtrip("eleza f(*, a = 1, b = 2): pass")
-        self.check_roundtrip("eleza f(*, a = 1, b): pass")
-        self.check_roundtrip("eleza f(*, a, b = 2): pass")
-        self.check_roundtrip("eleza f(a, b = None, *, c, **kwds): pass")
-        self.check_roundtrip("eleza f(a=2, *args, c=5, d, **kwds): pass")
-        self.check_roundtrip("eleza f(*args, **kwargs): pass")
+        self.check_roundtrip("eleza f(): pita")
+        self.check_roundtrip("eleza f(a): pita")
+        self.check_roundtrip("eleza f(b = 2): pita")
+        self.check_roundtrip("eleza f(a, b): pita")
+        self.check_roundtrip("eleza f(a, b = 2): pita")
+        self.check_roundtrip("eleza f(a = 5, b = 2): pita")
+        self.check_roundtrip("eleza f(*, a = 1, b = 2): pita")
+        self.check_roundtrip("eleza f(*, a = 1, b): pita")
+        self.check_roundtrip("eleza f(*, a, b = 2): pita")
+        self.check_roundtrip("eleza f(a, b = Tupu, *, c, **kwds): pita")
+        self.check_roundtrip("eleza f(a=2, *args, c=5, d, **kwds): pita")
+        self.check_roundtrip("eleza f(*args, **kwargs): pita")
 
     eleza test_relative_agiza(self):
         self.check_roundtrip(relative_agiza)
@@ -210,33 +210,33 @@ kundi UnparseTestCase(ASTTestCase):
     eleza test_nonlocal(self):
         self.check_roundtrip(nonlocal_ex)
 
-    eleza test_raise_kutoka(self):
-        self.check_roundtrip(raise_kutoka)
+    eleza test_ashiria_kutoka(self):
+        self.check_roundtrip(ashiria_kutoka)
 
     eleza test_bytes(self):
         self.check_roundtrip("b'123'")
 
     eleza test_annotations(self):
-        self.check_roundtrip("eleza f(a : int): pass")
-        self.check_roundtrip("eleza f(a: int = 5): pass")
-        self.check_roundtrip("eleza f(*args: [int]): pass")
-        self.check_roundtrip("eleza f(**kwargs: dict): pass")
-        self.check_roundtrip("eleza f() -> None: pass")
+        self.check_roundtrip("eleza f(a : int): pita")
+        self.check_roundtrip("eleza f(a: int = 5): pita")
+        self.check_roundtrip("eleza f(*args: [int]): pita")
+        self.check_roundtrip("eleza f(**kwargs: dict): pita")
+        self.check_roundtrip("eleza f() -> Tupu: pita")
 
     eleza test_set_literal(self):
         self.check_roundtrip("{'a', 'b', 'c'}")
 
     eleza test_set_comprehension(self):
-        self.check_roundtrip("{x for x in range(5)}")
+        self.check_roundtrip("{x kila x kwenye range(5)}")
 
     eleza test_dict_comprehension(self):
-        self.check_roundtrip("{x: x*x for x in range(10)}")
+        self.check_roundtrip("{x: x*x kila x kwenye range(10)}")
 
     eleza test_class_decorators(self):
         self.check_roundtrip(class_decorator)
 
     eleza test_class_definition(self):
-        self.check_roundtrip("kundi A(metaclass=type, *[], **{}): pass")
+        self.check_roundtrip("kundi A(metaclass=type, *[], **{}): pita")
 
     eleza test_elifs(self):
         self.check_roundtrip(elif1)
@@ -267,26 +267,26 @@ kundi UnparseTestCase(ASTTestCase):
 
 
 kundi DirectoryTestCase(ASTTestCase):
-    """Test roundtrip behaviour on all files in Lib and Lib/test."""
-    NAMES = None
+    """Test roundtrip behaviour on all files kwenye Lib na Lib/test."""
+    NAMES = Tupu
 
     # test directories, relative to the root of the distribution
     test_directories = 'Lib', os.path.join('Lib', 'test')
 
     @classmethod
     eleza get_names(cls):
-        ikiwa cls.NAMES is not None:
+        ikiwa cls.NAMES ni sio Tupu:
             rudisha cls.NAMES
 
         names = []
-        for d in cls.test_directories:
+        kila d kwenye cls.test_directories:
             test_dir = os.path.join(basepath, d)
-            for n in os.listdir(test_dir):
-                ikiwa n.endswith('.py') and not n.startswith('bad'):
+            kila n kwenye os.listdir(test_dir):
+                ikiwa n.endswith('.py') na sio n.startswith('bad'):
                     names.append(os.path.join(test_dir, n))
 
-        # Test limited subset of files unless the 'cpu' resource is specified.
-        ikiwa not test.support.is_resource_enabled("cpu"):
+        # Test limited subset of files unless the 'cpu' resource ni specified.
+        ikiwa sio test.support.is_resource_enabled("cpu"):
             names = random.sample(names, 10)
         # bpo-31174: Store the names sample to always test the same files.
         # It prevents false alarms when hunting reference leaks.
@@ -297,17 +297,17 @@ kundi DirectoryTestCase(ASTTestCase):
         # get names of files to test
         names = self.get_names()
 
-        for filename in names:
+        kila filename kwenye names:
             ikiwa test.support.verbose:
                 andika('Testing %s' % filename)
 
-            # Some f-strings are not correctly round-tripped by
-            #  Tools/parser/unparse.py.  See issue 28002 for details.
+            # Some f-strings are sio correctly round-tripped by
+            #  Tools/parser/unparse.py.  See issue 28002 kila details.
             #  We need to skip files that contain such f-strings.
-            ikiwa os.path.basename(filename) in ('test_fstring.py', ):
+            ikiwa os.path.basename(filename) kwenye ('test_fstring.py', ):
                 ikiwa test.support.verbose:
                     andika(f'Skipping {filename}: see issue 28002')
-                continue
+                endelea
 
             with self.subTest(filename=filename):
                 source = read_pyfile(filename)

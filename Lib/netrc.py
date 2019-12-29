@@ -1,6 +1,6 @@
 """An object-oriented interface to .netrc files."""
 
-# Module and documentation by Eric S. Raymond, 21 Dec 1998
+# Module na documentation by Eric S. Raymond, 21 Dec 1998
 
 agiza os, shlex, stat
 
@@ -8,8 +8,8 @@ __all__ = ["netrc", "NetrcParseError"]
 
 
 kundi NetrcParseError(Exception):
-    """Exception raised on syntax errors in the .netrc file."""
-    eleza __init__(self, msg, filename=None, lineno=None):
+    """Exception ashiriad on syntax errors kwenye the .netrc file."""
+    eleza __init__(self, msg, filename=Tupu, lineno=Tupu):
         self.filename = filename
         self.lineno = lineno
         self.msg = msg
@@ -20,29 +20,29 @@ kundi NetrcParseError(Exception):
 
 
 kundi netrc:
-    eleza __init__(self, file=None):
-        default_netrc = file is None
-        ikiwa file is None:
+    eleza __init__(self, file=Tupu):
+        default_netrc = file ni Tupu
+        ikiwa file ni Tupu:
             file = os.path.join(os.path.expanduser("~"), ".netrc")
         self.hosts = {}
         self.macros = {}
-        with open(file) as fp:
+        with open(file) kama fp:
             self._parse(file, fp, default_netrc)
 
     eleza _parse(self, file, fp, default_netrc):
         lexer = shlex.shlex(fp)
         lexer.wordchars += r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
         lexer.commenters = lexer.commenters.replace('#', '')
-        while 1:
-            # Look for a machine, default, or maceleza top-level keyword
+        wakati 1:
+            # Look kila a machine, default, ama maceleza top-level keyword
             saved_lineno = lexer.lineno
             toplevel = tt = lexer.get_token()
-            ikiwa not tt:
-                break
+            ikiwa sio tt:
+                koma
             elikiwa tt[0] == '#':
-                ikiwa lexer.lineno == saved_lineno and len(tt) == 1:
+                ikiwa lexer.lineno == saved_lineno na len(tt) == 1:
                     lexer.instream.readline()
-                continue
+                endelea
             elikiwa tt == 'machine':
                 entryname = lexer.get_token()
             elikiwa tt == 'default':
@@ -51,86 +51,86 @@ kundi netrc:
                 entryname = lexer.get_token()
                 self.macros[entryname] = []
                 lexer.whitespace = ' \t'
-                while 1:
+                wakati 1:
                     line = lexer.instream.readline()
-                    ikiwa not line or line == '\012':
+                    ikiwa sio line ama line == '\012':
                         lexer.whitespace = ' \t\r\n'
-                        break
+                        koma
                     self.macros[entryname].append(line)
-                continue
-            else:
-                raise NetrcParseError(
+                endelea
+            isipokua:
+                ashiria NetrcParseError(
                     "bad toplevel token %r" % tt, file, lexer.lineno)
 
-            # We're looking at start of an entry for a named machine or default.
+            # We're looking at start of an entry kila a named machine ama default.
             login = ''
-            account = password = None
+            account = pitaword = Tupu
             self.hosts[entryname] = {}
-            while 1:
+            wakati 1:
                 tt = lexer.get_token()
                 ikiwa (tt.startswith('#') or
-                    tt in {'', 'machine', 'default', 'macdef'}):
-                    ikiwa password:
-                        self.hosts[entryname] = (login, account, password)
+                    tt kwenye {'', 'machine', 'default', 'macdef'}):
+                    ikiwa pitaword:
+                        self.hosts[entryname] = (login, account, pitaword)
                         lexer.push_token(tt)
-                        break
-                    else:
-                        raise NetrcParseError(
+                        koma
+                    isipokua:
+                        ashiria NetrcParseError(
                             "malformed %s entry %s terminated by %s"
                             % (toplevel, entryname, repr(tt)),
                             file, lexer.lineno)
-                elikiwa tt == 'login' or tt == 'user':
+                elikiwa tt == 'login' ama tt == 'user':
                     login = lexer.get_token()
                 elikiwa tt == 'account':
                     account = lexer.get_token()
-                elikiwa tt == 'password':
-                    ikiwa os.name == 'posix' and default_netrc:
+                elikiwa tt == 'pitaword':
+                    ikiwa os.name == 'posix' na default_netrc:
                         prop = os.fstat(fp.fileno())
                         ikiwa prop.st_uid != os.getuid():
                             agiza pwd
-                            try:
+                            jaribu:
                                 fowner = pwd.getpwuid(prop.st_uid)[0]
-                            except KeyError:
+                            tatizo KeyError:
                                 fowner = 'uid %s' % prop.st_uid
-                            try:
+                            jaribu:
                                 user = pwd.getpwuid(os.getuid())[0]
-                            except KeyError:
+                            tatizo KeyError:
                                 user = 'uid %s' % os.getuid()
-                            raise NetrcParseError(
-                                ("~/.netrc file owner (%s) does not match"
+                            ashiria NetrcParseError(
+                                ("~/.netrc file owner (%s) does sio match"
                                  " current user (%s)") % (fowner, user),
                                 file, lexer.lineno)
                         ikiwa (prop.st_mode & (stat.S_IRWXG | stat.S_IRWXO)):
-                            raise NetrcParseError(
+                            ashiria NetrcParseError(
                                "~/.netrc access too permissive: access"
                                " permissions must restrict access to only"
                                " the owner", file, lexer.lineno)
-                    password = lexer.get_token()
-                else:
-                    raise NetrcParseError("bad follower token %r" % tt,
+                    pitaword = lexer.get_token()
+                isipokua:
+                    ashiria NetrcParseError("bad follower token %r" % tt,
                                           file, lexer.lineno)
 
     eleza authenticators(self, host):
-        """Return a (user, account, password) tuple for given host."""
-        ikiwa host in self.hosts:
+        """Return a (user, account, pitaword) tuple kila given host."""
+        ikiwa host kwenye self.hosts:
             rudisha self.hosts[host]
-        elikiwa 'default' in self.hosts:
+        elikiwa 'default' kwenye self.hosts:
             rudisha self.hosts['default']
-        else:
-            rudisha None
+        isipokua:
+            rudisha Tupu
 
     eleza __repr__(self):
-        """Dump the kundi data in the format of a .netrc file."""
+        """Dump the kundi data kwenye the format of a .netrc file."""
         rep = ""
-        for host in self.hosts.keys():
+        kila host kwenye self.hosts.keys():
             attrs = self.hosts[host]
             rep += f"machine {host}\n\tlogin {attrs[0]}\n"
             ikiwa attrs[1]:
                 rep += f"\taccount {attrs[1]}\n"
-            rep += f"\tpassword {attrs[2]}\n"
-        for macro in self.macros.keys():
+            rep += f"\tpitaword {attrs[2]}\n"
+        kila macro kwenye self.macros.keys():
             rep += f"maceleza {macro}\n"
-            for line in self.macros[macro]:
+            kila line kwenye self.macros[macro]:
                 rep += line
             rep += "\n"
         rudisha rep

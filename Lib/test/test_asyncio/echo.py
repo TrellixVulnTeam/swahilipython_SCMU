@@ -1,8 +1,8 @@
 import os
 
 if __name__ == '__main__':
-    while True:
+    wakati True:
         buf = os.read(0, 1024)
-        if not buf:
-            break
+        if sio buf:
+            koma
         os.write(1, buf)

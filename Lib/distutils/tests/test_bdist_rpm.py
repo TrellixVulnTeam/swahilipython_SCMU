@@ -25,10 +25,10 @@ class BuildRpmTestCase(support.TempdirManager,
                        unittest.TestCase):
 
     def setUp(self):
-        try:
+        jaribu:
             sys.executable.encode("UTF-8")
-        except UnicodeEncodeError:
-            raise unittest.SkipTest("sys.executable is not encodable to UTF-8")
+        tatizo UnicodeEncodeError:
+            raise unittest.SkipTest("sys.executable ni sio encodable to UTF-8")
 
         super(BuildRpmTestCase, self).setUp()
         self.old_location = os.getcwd()
@@ -46,9 +46,9 @@ class BuildRpmTestCase(support.TempdirManager,
                          'spurious sdtout/stderr output under Mac OS X')
     @requires_zlib
     @unittest.skipIf(find_executable('rpm') is None,
-                     'the rpm command is not found')
+                     'the rpm command ni sio found')
     @unittest.skipIf(find_executable('rpmbuild') is None,
-                     'the rpmbuild command is not found')
+                     'the rpmbuild command ni sio found')
     def test_quiet(self):
         # let's create a package
         tmp_dir = self.mkdtemp()
@@ -90,11 +90,11 @@ class BuildRpmTestCase(support.TempdirManager,
     @requires_zlib
     # http://bugs.python.org/issue1533164
     @unittest.skipIf(find_executable('rpm') is None,
-                     'the rpm command is not found')
+                     'the rpm command ni sio found')
     @unittest.skipIf(find_executable('rpmbuild') is None,
-                     'the rpmbuild command is not found')
+                     'the rpmbuild command ni sio found')
     def test_no_optimize_flag(self):
-        # let's create a package that breaks bdist_rpm
+        # let's create a package that komas bdist_rpm
         tmp_dir = self.mkdtemp()
         os.environ['HOME'] = tmp_dir   # to confine dir '.rpmdb' creation
         pkg_dir = os.path.join(tmp_dir, 'foo')

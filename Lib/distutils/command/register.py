@@ -21,7 +21,7 @@ class register(PyPIRCCommand):
         ('list-classifiers', None,
          'list the valid Trove classifiers'),
         ('strict', None ,
-         'Will stop the registering if the meta-data are not fully compliant')
+         'Will stop the registering if the meta-data are sio fully compliant')
         ]
     boolean_options = PyPIRCCommand.boolean_options + [
         'verify', 'list-classifiers', 'strict']
@@ -52,7 +52,7 @@ class register(PyPIRCCommand):
             self.verify_metadata()
         lasivyo self.list_classifiers:
             self.classifiers()
-        else:
+        isipokua:
             self.send_metadata()
 
     def check_metadata(self):
@@ -75,9 +75,9 @@ class register(PyPIRCCommand):
             self.repository = config['repository']
             self.realm = config['realm']
             self.has_config = True
-        else:
-            if self.repository not in ('pypi', self.DEFAULT_REPOSITORY):
-                raise ValueError('%s not found in .pypirc' % self.repository)
+        isipokua:
+            if self.repository haiko kwenye ('pypi', self.DEFAULT_REPOSITORY):
+                raise ValueError('%s sio found in .pypirc' % self.repository)
             if self.repository == 'pypi':
                 self.repository = self.DEFAULT_REPOSITORY
             self.has_config = False
@@ -130,13 +130,13 @@ class register(PyPIRCCommand):
             choice = '1'
             username = self.username
             password = self.password
-        else:
+        isipokua:
             choice = 'x'
             username = password = ''
 
         # get the user's login info
         choices = '1 2 3 4'.split()
-        while choice not in choices:
+        wakati choice haiko kwenye choices:
             self.announce('''\
 We need to know who you are, so please choose either:
  1. use your existing login,
@@ -145,16 +145,16 @@ We need to know who you are, so please choose either:
  4. quit
 Your selection [default 1]: ''', log.INFO)
             choice = input()
-            if not choice:
+            if sio choice:
                 choice = '1'
-            lasivyo choice not in choices:
+            lasivyo choice haiko kwenye choices:
                 print('Please choose one of the four options!')
 
         if choice == '1':
             # get the username and password
-            while not username:
+            wakati sio username:
                 username = input('Username: ')
-            while not password:
+            wakati sio password:
                 password = getpass.getpass('Password: ')
 
             # set up the authentication
@@ -173,15 +173,15 @@ Your selection [default 1]: ''', log.INFO)
                     # sharing the password in the distribution instance
                     # so the upload command can reuse it
                     self.distribution.password = password
-                else:
+                isipokua:
                     self.announce(('I can store your PyPI login so future '
                                    'submissions will be faster.'), log.INFO)
                     self.announce('(the login will be stored in %s)' % \
                                   self._get_rc_file(), log.INFO)
                     choice = 'X'
-                    while choice.lower() not in 'yn':
+                    wakati choice.lower() haiko kwenye 'yn':
                         choice = input('Save your login (y/N)?')
-                        if not choice:
+                        if sio choice:
                             choice = 'n'
                     if choice.lower() == 'y':
                         self._store_pypirc(username, password)
@@ -190,30 +190,30 @@ Your selection [default 1]: ''', log.INFO)
             data = {':action': 'user'}
             data['name'] = data['password'] = data['email'] = ''
             data['confirm'] = None
-            while not data['name']:
+            wakati sio data['name']:
                 data['name'] = input('Username: ')
-            while data['password'] != data['confirm']:
-                while not data['password']:
+            wakati data['password'] != data['confirm']:
+                wakati sio data['password']:
                     data['password'] = getpass.getpass('Password: ')
-                while not data['confirm']:
+                wakati sio data['confirm']:
                     data['confirm'] = getpass.getpass(' Confirm: ')
                 if data['password'] != data['confirm']:
                     data['password'] = ''
                     data['confirm'] = None
                     print("Password and confirm don't match!")
-            while not data['email']:
+            wakati sio data['email']:
                 data['email'] = input('   EMail: ')
             code, result = self.post_to_server(data)
             if code != 200:
                 log.info('Server response (%s): %s', code, result)
-            else:
+            isipokua:
                 log.info('You will receive an email shortly.')
                 log.info(('Follow the instructions in it to '
                           'complete registration.'))
         lasivyo choice == '3':
             data = {':action': 'password_reset'}
             data['email'] = ''
-            while not data['email']:
+            wakati sio data['email']:
                 data['email'] = input('Your email address: ')
             code, result = self.post_to_server(data)
             log.info('Server response (%s): %s', code, result)
@@ -260,7 +260,7 @@ Your selection [default 1]: ''', log.INFO)
         body = io.StringIO()
         for key, value in data.items():
             # handle multiple entries for the same name
-            if type(value) not in (type([]), type( () )):
+            if type(value) haiko kwenye (type([]), type( () )):
                 value = [value]
             for value in value:
                 value = str(value)
@@ -286,15 +286,15 @@ Your selection [default 1]: ''', log.INFO)
             urllib.request.HTTPBasicAuthHandler(password_mgr=auth)
         )
         data = ''
-        try:
+        jaribu:
             result = opener.open(req)
-        except urllib.error.HTTPError as e:
+        tatizo urllib.error.HTTPError as e:
             if self.show_response:
                 data = e.fp.read()
             result = e.code, e.msg
-        except urllib.error.URLError as e:
+        tatizo urllib.error.URLError as e:
             result = 500, str(e)
-        else:
+        isipokua:
             if self.show_response:
                 data = self._read_pypi_response(result)
             result = 200, 'OK'

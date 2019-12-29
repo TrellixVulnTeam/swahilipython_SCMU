@@ -2,7 +2,7 @@
 
 Implements the Distutils 'config' command, a (mostly) empty command class
 that exists mainly to be sub-classed by specific module distributions and
-applications.  The idea is that while every "config" command is different,
+applications.  The idea is that wakati every "config" command is different,
 at least they're all named the same, and users always see "config" in the
 list of standard commands.  Also, this is a good place to put common
 configure-like tasks: "try to compile this C code", or "figure out where
@@ -93,7 +93,7 @@ class config(Command):
         # We do this late, and only on-demand, because this is an expensive
         # import.
         from distutils.ccompiler import CCompiler, new_compiler
-        if not isinstance(self.compiler, CCompiler):
+        if sio isinstance(self.compiler, CCompiler):
             self.compiler = new_compiler(compiler=self.compiler,
                                          dry_run=self.dry_run, force=1)
             customize_compiler(self.compiler)
@@ -141,21 +141,21 @@ class config(Command):
                                       library_dirs=library_dirs,
                                       target_lang=lang)
 
-        if self.compiler.exe_extension is not None:
+        if self.compiler.exe_extension ni sio None:
             prog = prog + self.compiler.exe_extension
         self.temp_files.append(prog)
 
         return (src, obj, prog)
 
     def _clean(self, *filenames):
-        if not filenames:
+        if sio filenames:
             filenames = self.temp_files
             self.temp_files = []
         log.info("removing: %s", ' '.join(filenames))
         for filename in filenames:
-            try:
+            jaribu:
                 os.remove(filename)
-            except OSError:
+            tatizo OSError:
                 pass
 
 
@@ -179,9 +179,9 @@ class config(Command):
         from distutils.ccompiler import CompileError
         self._check_compiler()
         ok = True
-        try:
+        jaribu:
             self._preprocess(body, headers, include_dirs, lang)
-        except CompileError:
+        tatizo CompileError:
             ok = False
 
         self._clean()
@@ -204,13 +204,13 @@ class config(Command):
 
         with open(out) as file:
             match = False
-            while True:
+            wakati True:
                 line = file.readline()
                 if line == '':
-                    break
+                    koma
                 if pattern.search(line):
                     match = True
-                    break
+                    koma
 
         self._clean()
         return match
@@ -221,10 +221,10 @@ class config(Command):
         """
         from distutils.ccompiler import CompileError
         self._check_compiler()
-        try:
+        jaribu:
             self._compile(body, headers, include_dirs, lang)
             ok = True
-        except CompileError:
+        tatizo CompileError:
             ok = False
 
         log.info(ok and "success!" or "failure.")
@@ -239,11 +239,11 @@ class config(Command):
         """
         from distutils.ccompiler import CompileError, LinkError
         self._check_compiler()
-        try:
+        jaribu:
             self._link(body, headers, include_dirs,
                        libraries, library_dirs, lang)
             ok = True
-        except (CompileError, LinkError):
+        tatizo (CompileError, LinkError):
             ok = False
 
         log.info(ok and "success!" or "failure.")
@@ -258,12 +258,12 @@ class config(Command):
         """
         from distutils.ccompiler import CompileError, LinkError
         self._check_compiler()
-        try:
+        jaribu:
             src, obj, exe = self._link(body, headers, include_dirs,
                                        libraries, library_dirs, lang)
             self.spawn([exe])
             ok = True
-        except (CompileError, LinkError, DistutilsExecError):
+        tatizo (CompileError, LinkError, DistutilsExecError):
             ok = False
 
         log.info(ok and "success!" or "failure.")
@@ -297,7 +297,7 @@ class config(Command):
         body.append("int main () {")
         if call:
             body.append("  %s();" % func)
-        else:
+        isipokua:
             body.append("  %s;" % func)
         body.append("}")
         body = "\n".join(body) + "\n"
@@ -331,14 +331,14 @@ class config(Command):
 def dump_file(filename, head=None):
     """Dumps a file content into log.info.
 
-    If head is not None, will be dumped before the file content.
+    If head ni sio None, will be dumped before the file content.
     """
     if head is None:
         log.info('%s', filename)
-    else:
+    isipokua:
         log.info(head)
     file = open(filename)
-    try:
+    jaribu:
         log.info(file.read())
-    finally:
+    mwishowe:
         file.close()

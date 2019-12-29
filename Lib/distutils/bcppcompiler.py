@@ -89,14 +89,14 @@ class BCPPCompiler(CCompiler) :
         compile_opts.append ('-c')
         if debug:
             compile_opts.extend (self.compile_options_debug)
-        else:
+        isipokua:
             compile_opts.extend (self.compile_options)
 
         for obj in objects:
-            try:
+            jaribu:
                 src, ext = build[obj]
-            except KeyError:
-                continue
+            tatizo KeyError:
+                endelea
             # XXX why do the normpath here?
             src = os.path.normpath(src)
             obj = os.path.normpath(obj)
@@ -106,21 +106,21 @@ class BCPPCompiler(CCompiler) :
 
             if ext == '.res':
                 # This is already a binary file -- skip it.
-                continue # the 'for' loop
+                endelea # the 'for' loop
             if ext == '.rc':
                 # This needs to be compiled to a .res file -- do it now.
-                try:
+                jaribu:
                     self.spawn (["brcc32", "-fo", obj, src])
-                except DistutilsExecError as msg:
+                tatizo DistutilsExecError as msg:
                     raise CompileError(msg)
-                continue # the 'for' loop
+                endelea # the 'for' loop
 
             # The next two are both for the real compiler.
             if ext in self._c_extensions:
                 input_opt = ""
             lasivyo ext in self._cpp_extensions:
                 input_opt = "-P"
-            else:
+            isipokua:
                 # Unknown file type -- no extra options.  The compiler
                 # will probably fail, but let it just in case this is a
                 # file the compiler recognizes even if we don't.
@@ -131,11 +131,11 @@ class BCPPCompiler(CCompiler) :
             # Compiler command line syntax is: "bcc32 [options] file(s)".
             # Note that the source file names must appear at the end of
             # the command line.
-            try:
+            jaribu:
                 self.spawn ([self.cc] + compile_opts + pp_opts +
                             [input_opt, output_opt] +
                             extra_postargs + [src])
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise CompileError(msg)
 
         return objects
@@ -158,11 +158,11 @@ class BCPPCompiler(CCompiler) :
             lib_args = [output_filename, '/u'] + objects
             if debug:
                 pass                    # XXX what goes here?
-            try:
+            jaribu:
                 self.spawn ([self.lib] + lib_args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise LibError(msg)
-        else:
+        isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
     # create_static_lib ()
@@ -194,7 +194,7 @@ class BCPPCompiler(CCompiler) :
             log.warn("I don't know what to do with 'runtime_library_dirs': %s",
                      str(runtime_library_dirs))
 
-        if output_dir is not None:
+        if output_dir ni sio None:
             output_filename = os.path.join (output_dir, output_filename)
 
         if self._need_link (objects, output_filename):
@@ -204,20 +204,20 @@ class BCPPCompiler(CCompiler) :
                 startup_obj = 'c0w32'
                 if debug:
                     ld_args = self.ldflags_exe_debug[:]
-                else:
+                isipokua:
                     ld_args = self.ldflags_exe[:]
-            else:
+            isipokua:
                 startup_obj = 'c0d32'
                 if debug:
                     ld_args = self.ldflags_shared_debug[:]
-                else:
+                isipokua:
                     ld_args = self.ldflags_shared[:]
 
 
             # Create a temporary exports file for use by the linker
             if export_symbols is None:
                 def_file = ''
-            else:
+            isipokua:
                 head, tail = os.path.split (output_filename)
                 modname, ext = os.path.splitext (tail)
                 temp_dir = os.path.dirname(objects[0]) # preserve tree structure
@@ -238,7 +238,7 @@ class BCPPCompiler(CCompiler) :
                 (base, ext) = os.path.splitext(os.path.normcase(file))
                 if ext == '.res':
                     resources.append(file)
-                else:
+                isipokua:
                     objects.append(file)
 
 
@@ -271,7 +271,7 @@ class BCPPCompiler(CCompiler) :
                 if libfile is None:
                     ld_args.append(lib)
                     # probably a BCPP internal library -- don't warn
-                else:
+                isipokua:
                     # full name which prefers bcpp_xxx.lib over xxx.lib
                     ld_args.append(libfile)
 
@@ -292,12 +292,12 @@ class BCPPCompiler(CCompiler) :
                 ld_args.extend(extra_postargs)
 
             self.mkpath (os.path.dirname (output_filename))
-            try:
+            jaribu:
                 self.spawn ([self.linker] + ld_args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise LinkError(msg)
 
-        else:
+        isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
     # link ()
@@ -318,7 +318,7 @@ class BCPPCompiler(CCompiler) :
         if debug:
             dlib = (lib + "_d")
             try_names = (dlib + "_bcpp", lib + "_bcpp", dlib, lib)
-        else:
+        isipokua:
             try_names = (lib + "_bcpp", lib)
 
         for dir in dirs:
@@ -326,7 +326,7 @@ class BCPPCompiler(CCompiler) :
                 libfile = os.path.join(dir, self.library_filename(name))
                 if os.path.exists(libfile):
                     return libfile
-        else:
+        isipokua:
             # Oops, didn't find it in *any* of 'dirs'
             return None
 
@@ -338,9 +338,9 @@ class BCPPCompiler(CCompiler) :
         if output_dir is None: output_dir = ''
         obj_names = []
         for src_name in source_filenames:
-            # use normcase to make sure '.rc' is really '.rc' and not '.RC'
+            # use normcase to make sure '.rc' is really '.rc' and sio '.RC'
             (base, ext) = os.path.splitext (os.path.normcase(src_name))
-            if ext not in (self.src_extensions + ['.rc','.res']):
+            if ext haiko kwenye (self.src_extensions + ['.rc','.res']):
                 raise UnknownFileError("unknown file type '%s' (from '%s')" % \
                       (ext, src_name))
             if strip_dir:
@@ -351,7 +351,7 @@ class BCPPCompiler(CCompiler) :
             lasivyo ext == '.rc':
                 # these need to be compiled to .res-files
                 obj_names.append (os.path.join (output_dir, base + '.res'))
-            else:
+            isipokua:
                 obj_names.append (os.path.join (output_dir,
                                             base + self.obj_extension))
         return obj_names
@@ -370,7 +370,7 @@ class BCPPCompiler(CCompiler) :
             self._fix_compile_args(None, macros, include_dirs)
         pp_opts = gen_preprocess_options(macros, include_dirs)
         pp_args = ['cpp32.exe'] + pp_opts
-        if output_file is not None:
+        if output_file ni sio None:
             pp_args.append('-o' + output_file)
         if extra_preargs:
             pp_args[:0] = extra_preargs
@@ -384,9 +384,9 @@ class BCPPCompiler(CCompiler) :
         if self.force or output_file is None or newer(source, output_file):
             if output_file:
                 self.mkpath(os.path.dirname(output_file))
-            try:
+            jaribu:
                 self.spawn(pp_args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 print(msg)
                 raise CompileError(msg)
 

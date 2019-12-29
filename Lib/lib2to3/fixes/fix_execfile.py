@@ -1,7 +1,7 @@
 # Copyright 2006 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Fixer for execfile.
+"""Fixer kila execfile.
 
 This converts usages of the execfile function into calls to the built-in
 exec() function.
@@ -13,7 +13,7 @@ kutoka ..fixer_util agiza (Comma, Name, Call, LParen, RParen, Dot, Node,
 
 
 kundi FixExecfile(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     power< 'execfile' trailer< '(' arglist< filename=any [',' globals=any [',' locals=any ] ] > ')' > >
@@ -37,8 +37,8 @@ kundi FixExecfile(fixer_base.BaseFix):
         read = [Node(syms.trailer, [Dot(), Name('read')]),
                 Node(syms.trailer, [LParen(), RParen()])]
         open_expr = [open_call] + read
-        # Wrap the open call in a compile call. This is so the filename will be
-        # preserved in the execed code.
+        # Wrap the open call kwenye a compile call. This ni so the filename will be
+        # preserved kwenye the execed code.
         filename_arg = filename.clone()
         filename_arg.prefix = " "
         exec_str = String("'exec'", " ")
@@ -46,8 +46,8 @@ kundi FixExecfile(fixer_base.BaseFix):
         compile_call = Call(Name("compile"), compile_args, "")
         # Finally, replace the execfile call with an exec call.
         args = [compile_call]
-        ikiwa globals is not None:
+        ikiwa globals ni sio Tupu:
             args.extend([Comma(), globals.clone()])
-        ikiwa locals is not None:
+        ikiwa locals ni sio Tupu:
             args.extend([Comma(), locals.clone()])
         rudisha Call(Name("exec"), args, prefix=node.prefix)

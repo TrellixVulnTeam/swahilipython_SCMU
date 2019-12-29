@@ -16,10 +16,10 @@ kundi FileListTest(unittest.TestCase):
     @classmethod
     eleza tearDownClass(cls):
         cls.root.update_idletasks()
-        for id in cls.root.tk.call('after', 'info'):
+        kila id kwenye cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza test_new_empty(self):
         flist = filelist.FileList(self.root)

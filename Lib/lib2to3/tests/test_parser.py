@@ -1,9 +1,9 @@
-"""Test suite for 2to3's parser and grammar files.
+"""Test suite kila 2to3's parser na grammar files.
 
-This is the place to add tests for changes to 2to3's grammar, such as those
-merging the grammars for Python 2 and 3. In addition to specific tests for
+This ni the place to add tests kila changes to 2to3's grammar, such kama those
+merging the grammars kila Python 2 na 3. In addition to specific tests for
 parts of the grammar we've changed, we also make sure we can parse the
-test_grammar.py files kutoka both Python 2 and Python 3.
+test_grammar.py files kutoka both Python 2 na Python 3.
 """
 
 # Testing agizas
@@ -23,10 +23,10 @@ agiza tempfile
 agiza unittest
 
 # Local agizas
-kutoka lib2to3.pgen2 agiza driver as pgen2_driver
+kutoka lib2to3.pgen2 agiza driver kama pgen2_driver
 kutoka lib2to3.pgen2 agiza tokenize
 kutoka ..pgen2.parse agiza ParseError
-kutoka lib2to3.pygram agiza python_symbols as syms
+kutoka lib2to3.pygram agiza python_symbols kama syms
 
 
 kundi TestDriver(support.TestCase):
@@ -40,31 +40,31 @@ kundi TestDriver(support.TestCase):
 
 kundi TestPgen2Caching(support.TestCase):
     eleza test_load_grammar_kutoka_txt_file(self):
-        pgen2_driver.load_grammar(support.grammar_path, save=False, force=True)
+        pgen2_driver.load_grammar(support.grammar_path, save=Uongo, force=Kweli)
 
     eleza test_load_grammar_kutoka_pickle(self):
-        # Make a copy of the grammar file in a temp directory we are
+        # Make a copy of the grammar file kwenye a temp directory we are
         # guaranteed to be able to write to.
         tmpdir = tempfile.mkdtemp()
-        try:
+        jaribu:
             grammar_copy = os.path.join(
                     tmpdir, os.path.basename(support.grammar_path))
             shutil.copy(support.grammar_path, grammar_copy)
             pickle_name = pgen2_driver._generate_pickle_name(grammar_copy)
 
-            pgen2_driver.load_grammar(grammar_copy, save=True, force=True)
-            self.assertTrue(os.path.exists(pickle_name))
+            pgen2_driver.load_grammar(grammar_copy, save=Kweli, force=Kweli)
+            self.assertKweli(os.path.exists(pickle_name))
 
             os.unlink(grammar_copy)  # Only the pickle remains...
-            pgen2_driver.load_grammar(grammar_copy, save=False, force=False)
-        finally:
+            pgen2_driver.load_grammar(grammar_copy, save=Uongo, force=Uongo)
+        mwishowe:
             shutil.rmtree(tmpdir)
 
-    @unittest.skipIf(sys.executable is None, 'sys.executable required')
+    @unittest.skipIf(sys.executable ni Tupu, 'sys.executable required')
     eleza test_load_grammar_kutoka_subprocess(self):
         tmpdir = tempfile.mkdtemp()
         tmpsubdir = os.path.join(tmpdir, 'subdir')
-        try:
+        jaribu:
             os.mkdir(tmpsubdir)
             grammar_base = os.path.basename(support.grammar_path)
             grammar_copy = os.path.join(tmpdir, grammar_base)
@@ -77,28 +77,28 @@ kundi TestPgen2Caching(support.TestCase):
             self.assertNotEqual(pickle_name, pickle_sub_name)
 
             # Generate a pickle file kutoka this process.
-            pgen2_driver.load_grammar(grammar_copy, save=True, force=True)
-            self.assertTrue(os.path.exists(pickle_name))
+            pgen2_driver.load_grammar(grammar_copy, save=Kweli, force=Kweli)
+            self.assertKweli(os.path.exists(pickle_name))
 
-            # Generate a new pickle file in a subprocess with a most likely
+            # Generate a new pickle file kwenye a subprocess with a most likely
             # different hash randomization seed.
             sub_env = dict(os.environ)
             sub_env['PYTHONHASHSEED'] = 'random'
             subprocess.check_call(
                     [sys.executable, '-c', """
-kutoka lib2to3.pgen2 agiza driver as pgen2_driver
-pgen2_driver.load_grammar(%r, save=True, force=True)
+kutoka lib2to3.pgen2 agiza driver kama pgen2_driver
+pgen2_driver.load_grammar(%r, save=Kweli, force=Kweli)
                     """ % (grammar_sub_copy,)],
                     env=sub_env)
-            self.assertTrue(os.path.exists(pickle_sub_name))
+            self.assertKweli(os.path.exists(pickle_sub_name))
 
-            with open(pickle_name, 'rb') as pickle_f_1, \
-                    open(pickle_sub_name, 'rb') as pickle_f_2:
+            with open(pickle_name, 'rb') kama pickle_f_1, \
+                    open(pickle_sub_name, 'rb') kama pickle_f_2:
                 self.assertEqual(
                     pickle_f_1.read(), pickle_f_2.read(),
                     msg='Grammar caches generated using different hash seeds'
-                    ' were not identical.')
-        finally:
+                    ' were sio identical.')
+        mwishowe:
             shutil.rmtree(tmpdir)
 
     eleza test_load_packaged_grammar(self):
@@ -120,12 +120,12 @@ kundi GrammarTest(support.TestCase):
         support.parse_string(code)
 
     eleza invalid_syntax(self, code):
-        try:
+        jaribu:
             self.validate(code)
-        except ParseError:
-            pass
-        else:
-            raise AssertionError("Syntax shouldn't have been valid")
+        tatizo ParseError:
+            pita
+        isipokua:
+            ashiria AssertionError("Syntax shouldn't have been valid")
 
 
 kundi TestMatrixMultiplication(GrammarTest):
@@ -135,10 +135,10 @@ kundi TestMatrixMultiplication(GrammarTest):
 
 
 kundi TestYieldFrom(GrammarTest):
-    eleza test_yield_kutoka(self):
-        self.validate("yield kutoka x")
-        self.validate("(yield kutoka x) + y")
-        self.invalid_syntax("yield kutoka")
+    eleza test_tuma_kutoka(self):
+        self.validate("tuma kutoka x")
+        self.validate("(tuma kutoka x) + y")
+        self.invalid_syntax("tuma kutoka")
 
 
 kundi TestAsyncAwait(GrammarTest):
@@ -148,28 +148,28 @@ kundi TestAsyncAwait(GrammarTest):
                       """)
 
         self.validate("""async eleza foo():
-                             [i async for i in b]
+                             [i async kila i kwenye b]
                       """)
 
         self.validate("""async eleza foo():
-                             {i for i in b
-                                async for i in a ikiwa await i
-                                  for b in i}
+                             {i kila i kwenye b
+                                async kila i kwenye a ikiwa await i
+                                  kila b kwenye i}
                       """)
 
         self.validate("""async eleza foo():
-                             [await i for i in b ikiwa await c]
+                             [await i kila i kwenye b ikiwa await c]
                       """)
 
         self.validate("""async eleza foo():
-                             [ i for i in b ikiwa c]
+                             [ i kila i kwenye b ikiwa c]
                       """)
 
         self.validate("""async eleza foo():
 
-            eleza foo(): pass
+            eleza foo(): pita
 
-            eleza foo(): pass
+            eleza foo(): pita
 
             await x
         """)
@@ -177,7 +177,7 @@ kundi TestAsyncAwait(GrammarTest):
         self.validate("""async eleza foo(): rudisha await a""")
 
         self.validate("""eleza foo():
-            eleza foo(): pass
+            eleza foo(): pita
             async eleza foo(): await x
         """)
 
@@ -186,62 +186,62 @@ kundi TestAsyncAwait(GrammarTest):
                                    await x""")
 
         self.invalid_syntax("""eleza foo():
-            eleza foo(): pass
-            async eleza foo(): pass
+            eleza foo(): pita
+            async eleza foo(): pita
             await x
         """)
 
     eleza test_async_var(self):
         self.validate("""async = 1""")
         self.validate("""await = 1""")
-        self.validate("""eleza async(): pass""")
+        self.validate("""eleza async(): pita""")
 
     eleza test_async_with(self):
         self.validate("""async eleza foo():
-                             async for a in b: pass""")
+                             async kila a kwenye b: pita""")
 
         self.invalid_syntax("""eleza foo():
-                                   async for a in b: pass""")
+                                   async kila a kwenye b: pita""")
 
     eleza test_async_for(self):
         self.validate("""async eleza foo():
-                             async with a: pass""")
+                             async with a: pita""")
 
         self.invalid_syntax("""eleza foo():
-                                   async with a: pass""")
+                                   async with a: pita""")
 
 
 kundi TestRaiseChanges(GrammarTest):
     eleza test_2x_style_1(self):
-        self.validate("raise")
+        self.validate("ashiria")
 
     eleza test_2x_style_2(self):
-        self.validate("raise E, V")
+        self.validate("ashiria E, V")
 
     eleza test_2x_style_3(self):
-        self.validate("raise E, V, T")
+        self.validate("ashiria E, V, T")
 
     eleza test_2x_style_invalid_1(self):
-        self.invalid_syntax("raise E, V, T, Z")
+        self.invalid_syntax("ashiria E, V, T, Z")
 
     eleza test_3x_style(self):
-        self.validate("raise E1 kutoka E2")
+        self.validate("ashiria E1 kutoka E2")
 
     eleza test_3x_style_invalid_1(self):
-        self.invalid_syntax("raise E, V kutoka E1")
+        self.invalid_syntax("ashiria E, V kutoka E1")
 
     eleza test_3x_style_invalid_2(self):
-        self.invalid_syntax("raise E kutoka E1, E2")
+        self.invalid_syntax("ashiria E kutoka E1, E2")
 
     eleza test_3x_style_invalid_3(self):
-        self.invalid_syntax("raise kutoka E1, E2")
+        self.invalid_syntax("ashiria kutoka E1, E2")
 
     eleza test_3x_style_invalid_4(self):
-        self.invalid_syntax("raise E kutoka")
+        self.invalid_syntax("ashiria E kutoka")
 
 
 # Modelled after Lib/test/test_grammar.py:TokenTests.test_funceleza issue2292
-# and Lib/test/text_parser.py test_list_displays, test_set_displays,
+# na Lib/test/text_parser.py test_list_displays, test_set_displays,
 # test_dict_displays, test_argument_unpacking, ... changes.
 kundi TestUnpackingGeneralizations(GrammarTest):
     eleza test_mid_positional_star(self):
@@ -350,29 +350,29 @@ kundi TestUnpackingGeneralizations(GrammarTest):
 # Adapted kutoka Python 3's Lib/test/test_grammar.py:GrammarTests.testFuncdef
 kundi TestFunctionAnnotations(GrammarTest):
     eleza test_1(self):
-        self.validate("""eleza f(x) -> list: pass""")
+        self.validate("""eleza f(x) -> list: pita""")
 
     eleza test_2(self):
-        self.validate("""eleza f(x:int): pass""")
+        self.validate("""eleza f(x:int): pita""")
 
     eleza test_3(self):
-        self.validate("""eleza f(*x:str): pass""")
+        self.validate("""eleza f(*x:str): pita""")
 
     eleza test_4(self):
-        self.validate("""eleza f(**x:float): pass""")
+        self.validate("""eleza f(**x:float): pita""")
 
     eleza test_5(self):
-        self.validate("""eleza f(x, y:1+2): pass""")
+        self.validate("""eleza f(x, y:1+2): pita""")
 
     eleza test_6(self):
-        self.validate("""eleza f(a, (b:1, c:2, d)): pass""")
+        self.validate("""eleza f(a, (b:1, c:2, d)): pita""")
 
     eleza test_7(self):
-        self.validate("""eleza f(a, (b:1, c:2, d), e:3=4, f=5, *g:6): pass""")
+        self.validate("""eleza f(a, (b:1, c:2, d), e:3=4, f=5, *g:6): pita""")
 
     eleza test_8(self):
         s = """eleza f(a, (b:1, c:2, d), e:3=4, f=5,
-                        *g:6, h:7, i=8, j:9=10, **k:11) -> 12: pass"""
+                        *g:6, h:7, i=8, j:9=10, **k:11) -> 12: pita"""
         self.validate(s)
 
     eleza test_9(self):
@@ -380,68 +380,68 @@ kundi TestFunctionAnnotations(GrammarTest):
           a: str,
           b: int,
           *,
-          c: bool = False,
+          c: bool = Uongo,
           **kwargs,
-        ) -> None:
+        ) -> Tupu:
             call(c=c, **kwargs,)"""
         self.validate(s)
 
     eleza test_10(self):
         s = """eleza f(
           a: str,
-        ) -> None:
+        ) -> Tupu:
             call(a,)"""
         self.validate(s)
 
     eleza test_11(self):
         s = """eleza f(
           a: str = '',
-        ) -> None:
+        ) -> Tupu:
             call(a=a,)"""
         self.validate(s)
 
     eleza test_12(self):
         s = """eleza f(
           *args: str,
-        ) -> None:
+        ) -> Tupu:
             call(*args,)"""
         self.validate(s)
 
     eleza test_13(self):
-        self.validate("eleza f(a: str, b: int) -> None: call(a, b)")
-        self.validate("eleza f(a: str, b: int,) -> None: call(a, b,)")
+        self.validate("eleza f(a: str, b: int) -> Tupu: call(a, b)")
+        self.validate("eleza f(a: str, b: int,) -> Tupu: call(a, b,)")
 
     eleza test_14(self):
-        self.validate("eleza f(a: str, *b: int) -> None: call(a, *b)")
-        self.validate("eleza f(a: str, *b: int,) -> None: call(a, *b,)")
+        self.validate("eleza f(a: str, *b: int) -> Tupu: call(a, *b)")
+        self.validate("eleza f(a: str, *b: int,) -> Tupu: call(a, *b,)")
 
     eleza test_15(self):
-        self.validate("eleza f(a: str, b: int=1) -> None: call(a, b=1)")
-        self.validate("eleza f(a: str, b: int=1,) -> None: call(a, b=1,)")
+        self.validate("eleza f(a: str, b: int=1) -> Tupu: call(a, b=1)")
+        self.validate("eleza f(a: str, b: int=1,) -> Tupu: call(a, b=1,)")
 
     eleza test_16(self):
-        self.validate("eleza f(a: str, **b: int) -> None: call(a, **b)")
-        self.validate("eleza f(a: str, **b: int,) -> None: call(a, **b,)")
+        self.validate("eleza f(a: str, **b: int) -> Tupu: call(a, **b)")
+        self.validate("eleza f(a: str, **b: int,) -> Tupu: call(a, **b,)")
 
     eleza test_17(self):
-        self.validate("eleza f(*a: str, b: int=1) -> None: call(*a, b=1)")
-        self.validate("eleza f(*a: str, b: int=1,) -> None: call(*a, b=1,)")
+        self.validate("eleza f(*a: str, b: int=1) -> Tupu: call(*a, b=1)")
+        self.validate("eleza f(*a: str, b: int=1,) -> Tupu: call(*a, b=1,)")
 
     eleza test_18(self):
-        self.validate("eleza f(*a: str, **b: int) -> None: call(*a, **b)")
-        self.validate("eleza f(*a: str, **b: int,) -> None: call(*a, **b,)")
+        self.validate("eleza f(*a: str, **b: int) -> Tupu: call(*a, **b)")
+        self.validate("eleza f(*a: str, **b: int,) -> Tupu: call(*a, **b,)")
 
     eleza test_19(self):
-        self.validate("eleza f(*, b: int=1) -> None: call(*b)")
-        self.validate("eleza f(*, b: int=1,) -> None: call(*b,)")
+        self.validate("eleza f(*, b: int=1) -> Tupu: call(*b)")
+        self.validate("eleza f(*, b: int=1,) -> Tupu: call(*b,)")
 
     eleza test_20(self):
-        self.validate("eleza f(a: str='', b: int=2) -> None: call(a=a, b=2)")
-        self.validate("eleza f(a: str='', b: int=2,) -> None: call(a=a, b=2,)")
+        self.validate("eleza f(a: str='', b: int=2) -> Tupu: call(a=a, b=2)")
+        self.validate("eleza f(a: str='', b: int=2,) -> Tupu: call(a=a, b=2,)")
 
     eleza test_21(self):
-        self.validate("eleza f(a: str='', **b: int) -> None: call(a=a, **b)")
-        self.validate("eleza f(a: str='', **b: int,) -> None: call(a=a, **b,)")
+        self.validate("eleza f(a: str='', **b: int) -> Tupu: call(a=a, **b)")
+        self.validate("eleza f(a: str='', **b: int,) -> Tupu: call(a=a, **b,)")
 
 
 # Adapted kutoka Python 3's Lib/test/test_grammar.py:GrammarTests.test_var_annot
@@ -478,17 +478,17 @@ kundi TestVarAnnotations(GrammarTest):
 kundi TestExcept(GrammarTest):
     eleza test_new(self):
         s = """
-            try:
+            jaribu:
                 x
-            except E as N:
+            tatizo E kama N:
                 y"""
         self.validate(s)
 
     eleza test_old(self):
         s = """
-            try:
+            jaribu:
                 x
-            except E, N:
+            tatizo E, N:
                 y"""
         self.validate(s)
 
@@ -507,7 +507,7 @@ kundi TestStringLiterals(GrammarTest):
         "rB'", 'rB"', "RB'", 'RB"',)
 
     eleza test_lit(self):
-        for pre in self.prefixes:
+        kila pre kwenye self.prefixes:
             single = "{p}spamspamspam{s}".format(p=pre, s=pre[-1])
             self.validate(single)
             triple = "{p}{s}{s}eggs{s}{s}{s}".format(p=pre, s=pre[-1])
@@ -551,11 +551,11 @@ kundi TestNumericLiterals(GrammarTest):
 
 kundi TestClassDef(GrammarTest):
     eleza test_new_syntax(self):
-        self.validate("kundi B(t=7): pass")
-        self.validate("kundi B(t, *args): pass")
-        self.validate("kundi B(t, **kwargs): pass")
-        self.validate("kundi B(t, *args, **kwargs): pass")
-        self.validate("kundi B(t, y=9, *args, **kwargs,): pass")
+        self.validate("kundi B(t=7): pita")
+        self.validate("kundi B(t, *args): pita")
+        self.validate("kundi B(t, **kwargs): pita")
+        self.validate("kundi B(t, *args, **kwargs): pita")
+        self.validate("kundi B(t, y=9, *args, **kwargs,): pita")
 
 
 kundi TestParserIdempotency(support.TestCase):
@@ -563,19 +563,19 @@ kundi TestParserIdempotency(support.TestCase):
     """A cut-down version of pytree_idempotency.py."""
 
     eleza test_all_project_files(self):
-        for filepath in support.all_project_files():
-            with open(filepath, "rb") as fp:
+        kila filepath kwenye support.all_project_files():
+            with open(filepath, "rb") kama fp:
                 encoding = tokenize.detect_encoding(fp.readline)[0]
-            self.assertIsNotNone(encoding,
-                                 "can't detect encoding for %s" % filepath)
-            with open(filepath, "r", encoding=encoding) as fp:
+            self.assertIsNotTupu(encoding,
+                                 "can't detect encoding kila %s" % filepath)
+            with open(filepath, "r", encoding=encoding) kama fp:
                 source = fp.read()
-            try:
+            jaribu:
                 tree = driver.parse_string(source)
-            except ParseError:
-                try:
+            tatizo ParseError:
+                jaribu:
                     tree = driver_no_print_statement.parse_string(source)
-                except ParseError as err:
+                tatizo ParseError kama err:
                     self.fail('ParseError on file %s (%s)' % (filepath, err))
             new = str(tree)
             ikiwa new != source:
@@ -586,7 +586,7 @@ kundi TestParserIdempotency(support.TestCase):
         driver.parse_string("a, *b, c = x\n")
         driver.parse_string("[*a, b] = x\n")
         driver.parse_string("(z, *y, w) = m\n")
-        driver.parse_string("for *z, m in d: pass\n")
+        driver.parse_string("kila *z, m kwenye d: pita\n")
 
 
 kundi TestLiterals(GrammarTest):
@@ -624,8 +624,8 @@ kundi TestLiterals(GrammarTest):
 
 kundi TestPickleableException(unittest.TestCase):
     eleza test_ParseError(self):
-        err = ParseError('msg', 2, None, (1, 'context'))
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        err = ParseError('msg', 2, Tupu, (1, 'context'))
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             err2 = pickle.loads(pickle.dumps(err, protocol=proto))
             self.assertEqual(err.args, err2.args)
             self.assertEqual(err.msg, err2.msg)

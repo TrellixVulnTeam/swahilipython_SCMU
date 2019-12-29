@@ -267,7 +267,7 @@ class StructureTestCase(unittest.TestCase):
         class SomeInts(Structure):
             _fields_ = [("a", c_int * 4)]
 
-        # can use tuple to initialize array (but not list!)
+        # can use tuple to initialize array (but sio list!)
         self.assertEqual(SomeInts((1, 2)).a[:], [1, 2, 0, 0])
         self.assertEqual(SomeInts((1, 2)).a[::], [1, 2, 0, 0])
         self.assertEqual(SomeInts((1, 2)).a[::-1], [0, 0, 2, 1])
@@ -277,7 +277,7 @@ class StructureTestCase(unittest.TestCase):
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[:], [1, 2, 3, 4])
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[::], [1, 2, 3, 4])
         # too long
-        # XXX Should raise ValueError?, not RuntimeError
+        # XXX Should raise ValueError?, sio RuntimeError
         self.assertRaises(RuntimeError, SomeInts, (1, 2, 3, 4, 5))
 
     def test_nested_initializers(self):
@@ -342,16 +342,16 @@ class StructureTestCase(unittest.TestCase):
                 _fields_ = [('x' * length, c_int)]
 
         for length in [10 ** i for i in range(0, 8)]:
-            try:
+            jaribu:
                 create_class(length)
-            except MemoryError:
+            tatizo MemoryError:
                 # MemoryErrors are OK, we just don't want to segfault
                 pass
 
     def get_except(self, func, *args):
-        try:
+        jaribu:
             func(*args)
-        except Exception as detail:
+        tatizo Exception as detail:
             return detail.__class__, str(detail)
 
     @unittest.skip('test disabled')
@@ -446,7 +446,7 @@ class StructureTestCase(unittest.TestCase):
         func.argtypes = (Test,)
         func.restype = None
         func(s)
-        # bpo-37140: Passing the structure by refrence must not call
+        # bpo-37140: Passing the structure by refrence must sio call
         # its finalizer!
         self.assertEqual(finalizer_calls, [])
         self.assertEqual(s.first, 1)
@@ -617,12 +617,12 @@ class TestRecursiveStructure(unittest.TestCase):
         class Recursive(Structure):
             pass
 
-        try:
+        jaribu:
             Recursive._fields_ = [("next", Recursive)]
-        except AttributeError as details:
+        tatizo AttributeError as details:
             self.assertIn("Structure or union cannot contain itself",
                           str(details))
-        else:
+        isipokua:
             self.fail("Structure or union cannot contain itself")
 
 
@@ -634,12 +634,12 @@ class TestRecursiveStructure(unittest.TestCase):
 
         First._fields_ = [("second", Second)]
 
-        try:
+        jaribu:
             Second._fields_ = [("first", First)]
-        except AttributeError as details:
+        tatizo AttributeError as details:
             self.assertIn("_fields_ is final", str(details))
-        else:
-            self.fail("AttributeError not raised")
+        isipokua:
+            self.fail("AttributeError sio raised")
 
 if __name__ == '__main__':
     unittest.main()

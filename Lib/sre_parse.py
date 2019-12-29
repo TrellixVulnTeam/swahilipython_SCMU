@@ -5,12 +5,12 @@
 #
 # Copyright (c) 1998-2001 by Secret Labs AB.  All rights reserved.
 #
-# See the sre.py file for information on usage and redistribution.
+# See the sre.py file kila information on usage na redistribution.
 #
 
-"""Internal support module for sre"""
+"""Internal support module kila sre"""
 
-# XXX: show string offset and offending character for all errors
+# XXX: show string offset na offending character kila all errors
 
 kutoka sre_constants agiza *
 
@@ -69,69 +69,69 @@ TYPE_FLAGS = SRE_FLAG_ASCII | SRE_FLAG_LOCALE | SRE_FLAG_UNICODE
 GLOBAL_FLAGS = SRE_FLAG_DEBUG | SRE_FLAG_TEMPLATE
 
 kundi Verbose(Exception):
-    pass
+    pita
 
 kundi State:
-    # keeps track of state for parsing
+    # keeps track of state kila parsing
     eleza __init__(self):
         self.flags = 0
         self.groupdict = {}
-        self.groupwidths = [None]  # group 0
-        self.lookbehindgroups = None
+        self.groupwidths = [Tupu]  # group 0
+        self.lookbehindgroups = Tupu
     @property
     eleza groups(self):
         rudisha len(self.groupwidths)
-    eleza opengroup(self, name=None):
+    eleza opengroup(self, name=Tupu):
         gid = self.groups
-        self.groupwidths.append(None)
+        self.groupwidths.append(Tupu)
         ikiwa self.groups > MAXGROUPS:
-            raise error("too many groups")
-        ikiwa name is not None:
-            ogid = self.groupdict.get(name, None)
-            ikiwa ogid is not None:
-                raise error("redefinition of group name %r as group %d; "
+            ashiria error("too many groups")
+        ikiwa name ni sio Tupu:
+            ogid = self.groupdict.get(name, Tupu)
+            ikiwa ogid ni sio Tupu:
+                ashiria error("redefinition of group name %r kama group %d; "
                             "was group %d" % (name, gid,  ogid))
             self.groupdict[name] = gid
         rudisha gid
     eleza closegroup(self, gid, p):
         self.groupwidths[gid] = p.getwidth()
     eleza checkgroup(self, gid):
-        rudisha gid < self.groups and self.groupwidths[gid] is not None
+        rudisha gid < self.groups na self.groupwidths[gid] ni sio Tupu
 
     eleza checklookbehindgroup(self, gid, source):
-        ikiwa self.lookbehindgroups is not None:
-            ikiwa not self.checkgroup(gid):
-                raise source.error('cannot refer to an open group')
+        ikiwa self.lookbehindgroups ni sio Tupu:
+            ikiwa sio self.checkgroup(gid):
+                ashiria source.error('cannot refer to an open group')
             ikiwa gid >= self.lookbehindgroups:
-                raise source.error('cannot refer to group defined in the same '
+                ashiria source.error('cannot refer to group defined kwenye the same '
                                    'lookbehind subpattern')
 
 kundi SubPattern:
-    # a subpattern, in intermediate form
-    eleza __init__(self, state, data=None):
+    # a subpattern, kwenye intermediate form
+    eleza __init__(self, state, data=Tupu):
         self.state = state
-        ikiwa data is None:
+        ikiwa data ni Tupu:
             data = []
         self.data = data
-        self.width = None
+        self.width = Tupu
 
     eleza dump(self, level=0):
-        nl = True
+        nl = Kweli
         seqtypes = (tuple, list)
-        for op, av in self.data:
+        kila op, av kwenye self.data:
             andika(level*"  " + str(op), end='')
-            ikiwa op is IN:
+            ikiwa op ni IN:
                 # member sublanguage
                 andika()
-                for op, a in av:
+                kila op, a kwenye av:
                     andika((level+1)*"  " + str(op), a)
-            elikiwa op is BRANCH:
+            elikiwa op ni BRANCH:
                 andika()
-                for i, a in enumerate(av[1]):
+                kila i, a kwenye enumerate(av[1]):
                     ikiwa i:
                         andika(level*"  " + "OR")
                     a.dump(level+1)
-            elikiwa op is GROUPREF_EXISTS:
+            elikiwa op ni GROUPREF_EXISTS:
                 condgroup, item_yes, item_no = av
                 andika('', condgroup)
                 item_yes.dump(level+1)
@@ -139,28 +139,28 @@ kundi SubPattern:
                     andika(level*"  " + "ELSE")
                     item_no.dump(level+1)
             elikiwa isinstance(av, seqtypes):
-                nl = False
-                for a in av:
+                nl = Uongo
+                kila a kwenye av:
                     ikiwa isinstance(a, SubPattern):
-                        ikiwa not nl:
+                        ikiwa sio nl:
                             andika()
                         a.dump(level+1)
-                        nl = True
-                    else:
-                        ikiwa not nl:
+                        nl = Kweli
+                    isipokua:
+                        ikiwa sio nl:
                             andika(' ', end='')
                         andika(a, end='')
-                        nl = False
-                ikiwa not nl:
+                        nl = Uongo
+                ikiwa sio nl:
                     andika()
-            else:
+            isipokua:
                 andika('', av)
     eleza __repr__(self):
         rudisha repr(self.data)
     eleza __len__(self):
         rudisha len(self.data)
     eleza __delitem__(self, index):
-        del self.data[index]
+        toa self.data[index]
     eleza __getitem__(self, index):
         ikiwa isinstance(index, slice):
             rudisha SubPattern(self.state, self.data[index])
@@ -172,51 +172,51 @@ kundi SubPattern:
     eleza append(self, code):
         self.data.append(code)
     eleza getwidth(self):
-        # determine the width (min, max) for this subpattern
-        ikiwa self.width is not None:
+        # determine the width (min, max) kila this subpattern
+        ikiwa self.width ni sio Tupu:
             rudisha self.width
         lo = hi = 0
-        for op, av in self.data:
-            ikiwa op is BRANCH:
+        kila op, av kwenye self.data:
+            ikiwa op ni BRANCH:
                 i = MAXREPEAT - 1
                 j = 0
-                for av in av[1]:
+                kila av kwenye av[1]:
                     l, h = av.getwidth()
                     i = min(i, l)
                     j = max(j, h)
                 lo = lo + i
                 hi = hi + j
-            elikiwa op is CALL:
+            elikiwa op ni CALL:
                 i, j = av.getwidth()
                 lo = lo + i
                 hi = hi + j
-            elikiwa op is SUBPATTERN:
+            elikiwa op ni SUBPATTERN:
                 i, j = av[-1].getwidth()
                 lo = lo + i
                 hi = hi + j
-            elikiwa op in _REPEATCODES:
+            elikiwa op kwenye _REPEATCODES:
                 i, j = av[2].getwidth()
                 lo = lo + i * av[0]
                 hi = hi + j * av[1]
-            elikiwa op in _UNITCODES:
+            elikiwa op kwenye _UNITCODES:
                 lo = lo + 1
                 hi = hi + 1
-            elikiwa op is GROUPREF:
+            elikiwa op ni GROUPREF:
                 i, j = self.state.groupwidths[av]
                 lo = lo + i
                 hi = hi + j
-            elikiwa op is GROUPREF_EXISTS:
+            elikiwa op ni GROUPREF_EXISTS:
                 i, j = av[1].getwidth()
-                ikiwa av[2] is not None:
+                ikiwa av[2] ni sio Tupu:
                     l, h = av[2].getwidth()
                     i = min(i, l)
                     j = max(j, h)
-                else:
+                isipokua:
                     i = 0
                 lo = lo + i
                 hi = hi + j
-            elikiwa op is SUCCESS:
-                break
+            elikiwa op ni SUCCESS:
+                koma
         self.width = min(lo, MAXREPEAT - 1), min(hi, MAXREPEAT)
         rudisha self.width
 
@@ -224,67 +224,67 @@ kundi Tokenizer:
     eleza __init__(self, string):
         self.istext = isinstance(string, str)
         self.string = string
-        ikiwa not self.istext:
+        ikiwa sio self.istext:
             string = str(string, 'latin1')
         self.decoded_string = string
         self.index = 0
-        self.next = None
+        self.next = Tupu
         self.__next()
     eleza __next(self):
         index = self.index
-        try:
+        jaribu:
             char = self.decoded_string[index]
-        except IndexError:
-            self.next = None
-            return
+        tatizo IndexError:
+            self.next = Tupu
+            rudisha
         ikiwa char == "\\":
             index += 1
-            try:
+            jaribu:
                 char += self.decoded_string[index]
-            except IndexError:
-                raise error("bad escape (end of pattern)",
-                            self.string, len(self.string) - 1) kutoka None
+            tatizo IndexError:
+                ashiria error("bad escape (end of pattern)",
+                            self.string, len(self.string) - 1) kutoka Tupu
         self.index = index + 1
         self.next = char
     eleza match(self, char):
         ikiwa char == self.next:
             self.__next()
-            rudisha True
-        rudisha False
+            rudisha Kweli
+        rudisha Uongo
     eleza get(self):
         this = self.next
         self.__next()
         rudisha this
     eleza getwhile(self, n, charset):
         result = ''
-        for _ in range(n):
+        kila _ kwenye range(n):
             c = self.next
-            ikiwa c not in charset:
-                break
+            ikiwa c haiko kwenye charset:
+                koma
             result += c
             self.__next()
         rudisha result
     eleza getuntil(self, terminator, name):
         result = ''
-        while True:
+        wakati Kweli:
             c = self.next
             self.__next()
-            ikiwa c is None:
-                ikiwa not result:
-                    raise self.error("missing " + name)
-                raise self.error("missing %s, unterminated name" % terminator,
+            ikiwa c ni Tupu:
+                ikiwa sio result:
+                    ashiria self.error("missing " + name)
+                ashiria self.error("missing %s, unterminated name" % terminator,
                                  len(result))
             ikiwa c == terminator:
-                ikiwa not result:
-                    raise self.error("missing " + name, 1)
-                break
+                ikiwa sio result:
+                    ashiria self.error("missing " + name, 1)
+                koma
             result += c
         rudisha result
     @property
     eleza pos(self):
-        rudisha self.index - len(self.next or '')
+        rudisha self.index - len(self.next ama '')
     eleza tell(self):
-        rudisha self.index - len(self.next or '')
+        rudisha self.index - len(self.next ama '')
     eleza seek(self, index):
         self.index = index
         self.__next()
@@ -298,136 +298,136 @@ eleza _class_escape(source, escape):
     ikiwa code:
         rudisha code
     code = CATEGORIES.get(escape)
-    ikiwa code and code[0] is IN:
+    ikiwa code na code[0] ni IN:
         rudisha code
-    try:
+    jaribu:
         c = escape[1:2]
         ikiwa c == "x":
             # hexadecimal escape (exactly two digits)
             escape += source.getwhile(2, HEXDIGITS)
             ikiwa len(escape) != 4:
-                raise source.error("incomplete escape %s" % escape, len(escape))
+                ashiria source.error("incomplete escape %s" % escape, len(escape))
             rudisha LITERAL, int(escape[2:], 16)
-        elikiwa c == "u" and source.istext:
+        elikiwa c == "u" na source.istext:
             # unicode escape (exactly four digits)
             escape += source.getwhile(4, HEXDIGITS)
             ikiwa len(escape) != 6:
-                raise source.error("incomplete escape %s" % escape, len(escape))
+                ashiria source.error("incomplete escape %s" % escape, len(escape))
             rudisha LITERAL, int(escape[2:], 16)
-        elikiwa c == "U" and source.istext:
+        elikiwa c == "U" na source.istext:
             # unicode escape (exactly eight digits)
             escape += source.getwhile(8, HEXDIGITS)
             ikiwa len(escape) != 10:
-                raise source.error("incomplete escape %s" % escape, len(escape))
+                ashiria source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
-            chr(c) # raise ValueError for invalid code
+            chr(c) # ashiria ValueError kila invalid code
             rudisha LITERAL, c
-        elikiwa c == "N" and source.istext:
+        elikiwa c == "N" na source.istext:
             agiza unicodedata
             # named unicode escape e.g. \N{EM DASH}
-            ikiwa not source.match('{'):
-                raise source.error("missing {")
+            ikiwa sio source.match('{'):
+                ashiria source.error("missing {")
             charname = source.getuntil('}', 'character name')
-            try:
+            jaribu:
                 c = ord(unicodedata.lookup(charname))
-            except KeyError:
-                raise source.error("undefined character name %r" % charname,
+            tatizo KeyError:
+                ashiria source.error("undefined character name %r" % charname,
                                    len(charname) + len(r'\N{}'))
             rudisha LITERAL, c
-        elikiwa c in OCTDIGITS:
+        elikiwa c kwenye OCTDIGITS:
             # octal escape (up to three digits)
             escape += source.getwhile(2, OCTDIGITS)
             c = int(escape[1:], 8)
             ikiwa c > 0o377:
-                raise source.error('octal escape value %s outside of '
+                ashiria source.error('octal escape value %s outside of '
                                    'range 0-0o377' % escape, len(escape))
             rudisha LITERAL, c
-        elikiwa c in DIGITS:
-            raise ValueError
+        elikiwa c kwenye DIGITS:
+            ashiria ValueError
         ikiwa len(escape) == 2:
-            ikiwa c in ASCIILETTERS:
-                raise source.error('bad escape %s' % escape, len(escape))
+            ikiwa c kwenye ASCIILETTERS:
+                ashiria source.error('bad escape %s' % escape, len(escape))
             rudisha LITERAL, ord(escape[1])
-    except ValueError:
-        pass
-    raise source.error("bad escape %s" % escape, len(escape))
+    tatizo ValueError:
+        pita
+    ashiria source.error("bad escape %s" % escape, len(escape))
 
 eleza _escape(source, escape, state):
-    # handle escape code in expression
+    # handle escape code kwenye expression
     code = CATEGORIES.get(escape)
     ikiwa code:
         rudisha code
     code = ESCAPES.get(escape)
     ikiwa code:
         rudisha code
-    try:
+    jaribu:
         c = escape[1:2]
         ikiwa c == "x":
             # hexadecimal escape
             escape += source.getwhile(2, HEXDIGITS)
             ikiwa len(escape) != 4:
-                raise source.error("incomplete escape %s" % escape, len(escape))
+                ashiria source.error("incomplete escape %s" % escape, len(escape))
             rudisha LITERAL, int(escape[2:], 16)
-        elikiwa c == "u" and source.istext:
+        elikiwa c == "u" na source.istext:
             # unicode escape (exactly four digits)
             escape += source.getwhile(4, HEXDIGITS)
             ikiwa len(escape) != 6:
-                raise source.error("incomplete escape %s" % escape, len(escape))
+                ashiria source.error("incomplete escape %s" % escape, len(escape))
             rudisha LITERAL, int(escape[2:], 16)
-        elikiwa c == "U" and source.istext:
+        elikiwa c == "U" na source.istext:
             # unicode escape (exactly eight digits)
             escape += source.getwhile(8, HEXDIGITS)
             ikiwa len(escape) != 10:
-                raise source.error("incomplete escape %s" % escape, len(escape))
+                ashiria source.error("incomplete escape %s" % escape, len(escape))
             c = int(escape[2:], 16)
-            chr(c) # raise ValueError for invalid code
+            chr(c) # ashiria ValueError kila invalid code
             rudisha LITERAL, c
-        elikiwa c == "N" and source.istext:
+        elikiwa c == "N" na source.istext:
             agiza unicodedata
             # named unicode escape e.g. \N{EM DASH}
-            ikiwa not source.match('{'):
-                raise source.error("missing {")
+            ikiwa sio source.match('{'):
+                ashiria source.error("missing {")
             charname = source.getuntil('}', 'character name')
-            try:
+            jaribu:
                 c = ord(unicodedata.lookup(charname))
-            except KeyError:
-                raise source.error("undefined character name %r" % charname,
+            tatizo KeyError:
+                ashiria source.error("undefined character name %r" % charname,
                                    len(charname) + len(r'\N{}'))
             rudisha LITERAL, c
         elikiwa c == "0":
             # octal escape
             escape += source.getwhile(2, OCTDIGITS)
             rudisha LITERAL, int(escape[1:], 8)
-        elikiwa c in DIGITS:
+        elikiwa c kwenye DIGITS:
             # octal escape *or* decimal group reference (sigh)
-            ikiwa source.next in DIGITS:
+            ikiwa source.next kwenye DIGITS:
                 escape += source.get()
-                ikiwa (escape[1] in OCTDIGITS and escape[2] in OCTDIGITS and
-                    source.next in OCTDIGITS):
-                    # got three octal digits; this is an octal escape
+                ikiwa (escape[1] kwenye OCTDIGITS na escape[2] kwenye OCTDIGITS and
+                    source.next kwenye OCTDIGITS):
+                    # got three octal digits; this ni an octal escape
                     escape += source.get()
                     c = int(escape[1:], 8)
                     ikiwa c > 0o377:
-                        raise source.error('octal escape value %s outside of '
+                        ashiria source.error('octal escape value %s outside of '
                                            'range 0-0o377' % escape,
                                            len(escape))
                     rudisha LITERAL, c
-            # not an octal escape, so this is a group reference
+            # sio an octal escape, so this ni a group reference
             group = int(escape[1:])
             ikiwa group < state.groups:
-                ikiwa not state.checkgroup(group):
-                    raise source.error("cannot refer to an open group",
+                ikiwa sio state.checkgroup(group):
+                    ashiria source.error("cannot refer to an open group",
                                        len(escape))
                 state.checklookbehindgroup(group, source)
                 rudisha GROUPREF, group
-            raise source.error("invalid group reference %d" % group, len(escape) - 1)
+            ashiria source.error("invalid group reference %d" % group, len(escape) - 1)
         ikiwa len(escape) == 2:
-            ikiwa c in ASCIILETTERS:
-                raise source.error("bad escape %s" % escape, len(escape))
+            ikiwa c kwenye ASCIILETTERS:
+                ashiria source.error("bad escape %s" % escape, len(escape))
             rudisha LITERAL, ord(escape[1])
-    except ValueError:
-        pass
-    raise source.error("bad escape %s" % escape, len(escape))
+    tatizo ValueError:
+        pita
+    ashiria source.error("bad escape %s" % escape, len(escape))
 
 eleza _uniq(items):
     rudisha list(dict.kutokakeys(items))
@@ -439,11 +439,11 @@ eleza _parse_sub(source, state, verbose, nested):
     itemsappend = items.append
     sourcematch = source.match
     start = source.tell()
-    while True:
+    wakati Kweli:
         itemsappend(_parse(source, state, verbose, nested + 1,
-                           not nested and not items))
-        ikiwa not sourcematch("|"):
-            break
+                           sio nested na sio items))
+        ikiwa sio sourcematch("|"):
+            koma
 
     ikiwa len(items) == 1:
         rudisha items[0]
@@ -451,46 +451,46 @@ eleza _parse_sub(source, state, verbose, nested):
     subpattern = SubPattern(state)
 
     # check ikiwa all items share a common prefix
-    while True:
-        prefix = None
-        for item in items:
-            ikiwa not item:
-                break
-            ikiwa prefix is None:
+    wakati Kweli:
+        prefix = Tupu
+        kila item kwenye items:
+            ikiwa sio item:
+                koma
+            ikiwa prefix ni Tupu:
                 prefix = item[0]
             elikiwa item[0] != prefix:
-                break
-        else:
+                koma
+        isipokua:
             # all subitems start with a common "prefix".
             # move it out of the branch
-            for item in items:
-                del item[0]
+            kila item kwenye items:
+                toa item[0]
             subpattern.append(prefix)
-            continue # check next one
-        break
+            endelea # check next one
+        koma
 
     # check ikiwa the branch can be replaced by a character set
     set = []
-    for item in items:
+    kila item kwenye items:
         ikiwa len(item) != 1:
-            break
+            koma
         op, av = item[0]
-        ikiwa op is LITERAL:
+        ikiwa op ni LITERAL:
             set.append((op, av))
-        elikiwa op is IN and av[0][0] is not NEGATE:
+        elikiwa op ni IN na av[0][0] ni sio NEGATE:
             set.extend(av)
-        else:
-            break
-    else:
-        # we can store this as a character set instead of a
+        isipokua:
+            koma
+    isipokua:
+        # we can store this kama a character set instead of a
         # branch (the compiler may optimize this even more)
         subpattern.append((IN, _uniq(set)))
         rudisha subpattern
 
-    subpattern.append((BRANCH, (None, items)))
+    subpattern.append((BRANCH, (Tupu, items)))
     rudisha subpattern
 
-eleza _parse(source, state, verbose, nested, first=False):
+eleza _parse(source, state, verbose, nested, first=Uongo):
     # parse a simple pattern
     subpattern = SubPattern(state)
 
@@ -501,31 +501,31 @@ eleza _parse(source, state, verbose, nested, first=False):
     _len = len
     _ord = ord
 
-    while True:
+    wakati Kweli:
 
         this = source.next
-        ikiwa this is None:
-            break # end of pattern
-        ikiwa this in "|)":
-            break # end of subpattern
+        ikiwa this ni Tupu:
+            koma # end of pattern
+        ikiwa this kwenye "|)":
+            koma # end of subpattern
         sourceget()
 
         ikiwa verbose:
-            # skip whitespace and comments
-            ikiwa this in WHITESPACE:
-                continue
+            # skip whitespace na comments
+            ikiwa this kwenye WHITESPACE:
+                endelea
             ikiwa this == "#":
-                while True:
+                wakati Kweli:
                     this = sourceget()
-                    ikiwa this is None or this == "\n":
-                        break
-                continue
+                    ikiwa this ni Tupu ama this == "\n":
+                        koma
+                endelea
 
         ikiwa this[0] == "\\":
             code = _escape(source, this, state)
             subpatternappend(code)
 
-        elikiwa this not in SPECIAL_CHARS:
+        elikiwa this haiko kwenye SPECIAL_CHARS:
             subpatternappend((LITERAL, _ord(this)))
 
         elikiwa this == "[":
@@ -534,7 +534,7 @@ eleza _parse(source, state, verbose, nested, first=False):
             set = []
             setappend = set.append
 ##          ikiwa sourcematch(":"):
-##              pass # handle character classes
+##              pita # handle character classes
             ikiwa source.next == '[':
                 agiza warnings
                 warnings.warn(
@@ -543,17 +543,17 @@ eleza _parse(source, state, verbose, nested, first=False):
                 )
             negate = sourcematch("^")
             # check remaining characters
-            while True:
+            wakati Kweli:
                 this = sourceget()
-                ikiwa this is None:
-                    raise source.error("unterminated character set",
+                ikiwa this ni Tupu:
+                    ashiria source.error("unterminated character set",
                                        source.tell() - here)
-                ikiwa this == "]" and set:
-                    break
+                ikiwa this == "]" na set:
+                    koma
                 elikiwa this[0] == "\\":
                     code1 = _class_escape(source, this)
-                else:
-                    ikiwa set and this in '-&~|' and source.next == this:
+                isipokua:
+                    ikiwa set na this kwenye '-&~|' na source.next == this:
                         agiza warnings
                         warnings.warn(
                             'Possible set %s at position %d' % (
@@ -568,18 +568,18 @@ eleza _parse(source, state, verbose, nested, first=False):
                 ikiwa sourcematch("-"):
                     # potential range
                     that = sourceget()
-                    ikiwa that is None:
-                        raise source.error("unterminated character set",
+                    ikiwa that ni Tupu:
+                        ashiria source.error("unterminated character set",
                                            source.tell() - here)
                     ikiwa that == "]":
-                        ikiwa code1[0] is IN:
+                        ikiwa code1[0] ni IN:
                             code1 = code1[1][0]
                         setappend(code1)
                         setappend((LITERAL, _ord("-")))
-                        break
+                        koma
                     ikiwa that[0] == "\\":
                         code2 = _class_escape(source, that)
-                    else:
+                    isipokua:
                         ikiwa that == '-':
                             agiza warnings
                             warnings.warn(
@@ -588,36 +588,36 @@ eleza _parse(source, state, verbose, nested, first=False):
                                 FutureWarning, stacklevel=nested + 6
                             )
                         code2 = LITERAL, _ord(that)
-                    ikiwa code1[0] != LITERAL or code2[0] != LITERAL:
+                    ikiwa code1[0] != LITERAL ama code2[0] != LITERAL:
                         msg = "bad character range %s-%s" % (this, that)
-                        raise source.error(msg, len(this) + 1 + len(that))
+                        ashiria source.error(msg, len(this) + 1 + len(that))
                     lo = code1[1]
                     hi = code2[1]
                     ikiwa hi < lo:
                         msg = "bad character range %s-%s" % (this, that)
-                        raise source.error(msg, len(this) + 1 + len(that))
+                        ashiria source.error(msg, len(this) + 1 + len(that))
                     setappend((RANGE, (lo, hi)))
-                else:
-                    ikiwa code1[0] is IN:
+                isipokua:
+                    ikiwa code1[0] ni IN:
                         code1 = code1[1][0]
                     setappend(code1)
 
             set = _uniq(set)
             # XXX: <fl> should move set optimization to compiler!
-            ikiwa _len(set) == 1 and set[0][0] is LITERAL:
+            ikiwa _len(set) == 1 na set[0][0] ni LITERAL:
                 # optimization
                 ikiwa negate:
                     subpatternappend((NOT_LITERAL, set[0][1]))
-                else:
+                isipokua:
                     subpatternappend(set[0])
-            else:
+            isipokua:
                 ikiwa negate:
-                    set.insert(0, (NEGATE, None))
+                    set.insert(0, (NEGATE, Tupu))
                 # charmap optimization can't be added here because
-                # global flags still are not known
+                # global flags still are sio known
                 subpatternappend((IN, set))
 
-        elikiwa this in REPEAT_CHARS:
+        elikiwa this kwenye REPEAT_CHARS:
             # repeat previous item
             here = source.tell()
             ikiwa this == "?":
@@ -630,212 +630,212 @@ eleza _parse(source, state, verbose, nested, first=False):
             elikiwa this == "{":
                 ikiwa source.next == "}":
                     subpatternappend((LITERAL, _ord(this)))
-                    continue
+                    endelea
 
                 min, max = 0, MAXREPEAT
                 lo = hi = ""
-                while source.next in DIGITS:
+                wakati source.next kwenye DIGITS:
                     lo += sourceget()
                 ikiwa sourcematch(","):
-                    while source.next in DIGITS:
+                    wakati source.next kwenye DIGITS:
                         hi += sourceget()
-                else:
+                isipokua:
                     hi = lo
-                ikiwa not sourcematch("}"):
+                ikiwa sio sourcematch("}"):
                     subpatternappend((LITERAL, _ord(this)))
                     source.seek(here)
-                    continue
+                    endelea
 
                 ikiwa lo:
                     min = int(lo)
                     ikiwa min >= MAXREPEAT:
-                        raise OverflowError("the repetition number is too large")
+                        ashiria OverflowError("the repetition number ni too large")
                 ikiwa hi:
                     max = int(hi)
                     ikiwa max >= MAXREPEAT:
-                        raise OverflowError("the repetition number is too large")
+                        ashiria OverflowError("the repetition number ni too large")
                     ikiwa max < min:
-                        raise source.error("min repeat greater than max repeat",
+                        ashiria source.error("min repeat greater than max repeat",
                                            source.tell() - here)
-            else:
-                raise AssertionError("unsupported quantifier %r" % (char,))
+            isipokua:
+                ashiria AssertionError("unsupported quantifier %r" % (char,))
             # figure out which item to repeat
             ikiwa subpattern:
                 item = subpattern[-1:]
-            else:
-                item = None
-            ikiwa not item or item[0][0] is AT:
-                raise source.error("nothing to repeat",
+            isipokua:
+                item = Tupu
+            ikiwa sio item ama item[0][0] ni AT:
+                ashiria source.error("nothing to repeat",
                                    source.tell() - here + len(this))
-            ikiwa item[0][0] in _REPEATCODES:
-                raise source.error("multiple repeat",
+            ikiwa item[0][0] kwenye _REPEATCODES:
+                ashiria source.error("multiple repeat",
                                    source.tell() - here + len(this))
-            ikiwa item[0][0] is SUBPATTERN:
+            ikiwa item[0][0] ni SUBPATTERN:
                 group, add_flags, del_flags, p = item[0][1]
-                ikiwa group is None and not add_flags and not del_flags:
+                ikiwa group ni Tupu na sio add_flags na sio del_flags:
                     item = p
             ikiwa sourcematch("?"):
                 subpattern[-1] = (MIN_REPEAT, (min, max, item))
-            else:
+            isipokua:
                 subpattern[-1] = (MAX_REPEAT, (min, max, item))
 
         elikiwa this == ".":
-            subpatternappend((ANY, None))
+            subpatternappend((ANY, Tupu))
 
         elikiwa this == "(":
             start = source.tell() - 1
-            group = True
-            name = None
+            group = Kweli
+            name = Tupu
             add_flags = 0
             del_flags = 0
             ikiwa sourcematch("?"):
                 # options
                 char = sourceget()
-                ikiwa char is None:
-                    raise source.error("unexpected end of pattern")
+                ikiwa char ni Tupu:
+                    ashiria source.error("unexpected end of pattern")
                 ikiwa char == "P":
                     # python extensions
                     ikiwa sourcematch("<"):
                         # named group: skip forward to end of name
                         name = source.getuntil(">", "group name")
-                        ikiwa not name.isidentifier():
-                            msg = "bad character in group name %r" % name
-                            raise source.error(msg, len(name) + 1)
+                        ikiwa sio name.isidentifier():
+                            msg = "bad character kwenye group name %r" % name
+                            ashiria source.error(msg, len(name) + 1)
                     elikiwa sourcematch("="):
                         # named backreference
                         name = source.getuntil(")", "group name")
-                        ikiwa not name.isidentifier():
-                            msg = "bad character in group name %r" % name
-                            raise source.error(msg, len(name) + 1)
+                        ikiwa sio name.isidentifier():
+                            msg = "bad character kwenye group name %r" % name
+                            ashiria source.error(msg, len(name) + 1)
                         gid = state.groupdict.get(name)
-                        ikiwa gid is None:
+                        ikiwa gid ni Tupu:
                             msg = "unknown group name %r" % name
-                            raise source.error(msg, len(name) + 1)
-                        ikiwa not state.checkgroup(gid):
-                            raise source.error("cannot refer to an open group",
+                            ashiria source.error(msg, len(name) + 1)
+                        ikiwa sio state.checkgroup(gid):
+                            ashiria source.error("cannot refer to an open group",
                                                len(name) + 1)
                         state.checklookbehindgroup(gid, source)
                         subpatternappend((GROUPREF, gid))
-                        continue
+                        endelea
 
-                    else:
+                    isipokua:
                         char = sourceget()
-                        ikiwa char is None:
-                            raise source.error("unexpected end of pattern")
-                        raise source.error("unknown extension ?P" + char,
+                        ikiwa char ni Tupu:
+                            ashiria source.error("unexpected end of pattern")
+                        ashiria source.error("unknown extension ?P" + char,
                                            len(char) + 2)
                 elikiwa char == ":":
                     # non-capturing group
-                    group = None
+                    group = Tupu
                 elikiwa char == "#":
                     # comment
-                    while True:
-                        ikiwa source.next is None:
-                            raise source.error("missing ), unterminated comment",
+                    wakati Kweli:
+                        ikiwa source.next ni Tupu:
+                            ashiria source.error("missing ), unterminated comment",
                                                source.tell() - start)
                         ikiwa sourceget() == ")":
-                            break
-                    continue
+                            koma
+                    endelea
 
-                elikiwa char in "=!<":
+                elikiwa char kwenye "=!<":
                     # lookahead assertions
                     dir = 1
                     ikiwa char == "<":
                         char = sourceget()
-                        ikiwa char is None:
-                            raise source.error("unexpected end of pattern")
-                        ikiwa char not in "=!":
-                            raise source.error("unknown extension ?<" + char,
+                        ikiwa char ni Tupu:
+                            ashiria source.error("unexpected end of pattern")
+                        ikiwa char haiko kwenye "=!":
+                            ashiria source.error("unknown extension ?<" + char,
                                                len(char) + 2)
                         dir = -1 # lookbehind
                         lookbehindgroups = state.lookbehindgroups
-                        ikiwa lookbehindgroups is None:
+                        ikiwa lookbehindgroups ni Tupu:
                             state.lookbehindgroups = state.groups
                     p = _parse_sub(source, state, verbose, nested + 1)
                     ikiwa dir < 0:
-                        ikiwa lookbehindgroups is None:
-                            state.lookbehindgroups = None
-                    ikiwa not sourcematch(")"):
-                        raise source.error("missing ), unterminated subpattern",
+                        ikiwa lookbehindgroups ni Tupu:
+                            state.lookbehindgroups = Tupu
+                    ikiwa sio sourcematch(")"):
+                        ashiria source.error("missing ), unterminated subpattern",
                                            source.tell() - start)
                     ikiwa char == "=":
                         subpatternappend((ASSERT, (dir, p)))
-                    else:
+                    isipokua:
                         subpatternappend((ASSERT_NOT, (dir, p)))
-                    continue
+                    endelea
 
                 elikiwa char == "(":
                     # conditional backreference group
                     condname = source.getuntil(")", "group name")
                     ikiwa condname.isidentifier():
                         condgroup = state.groupdict.get(condname)
-                        ikiwa condgroup is None:
+                        ikiwa condgroup ni Tupu:
                             msg = "unknown group name %r" % condname
-                            raise source.error(msg, len(condname) + 1)
-                    else:
-                        try:
+                            ashiria source.error(msg, len(condname) + 1)
+                    isipokua:
+                        jaribu:
                             condgroup = int(condname)
                             ikiwa condgroup < 0:
-                                raise ValueError
-                        except ValueError:
-                            msg = "bad character in group name %r" % condname
-                            raise source.error(msg, len(condname) + 1) kutoka None
-                        ikiwa not condgroup:
-                            raise source.error("bad group number",
+                                ashiria ValueError
+                        tatizo ValueError:
+                            msg = "bad character kwenye group name %r" % condname
+                            ashiria source.error(msg, len(condname) + 1) kutoka Tupu
+                        ikiwa sio condgroup:
+                            ashiria source.error("bad group number",
                                                len(condname) + 1)
                         ikiwa condgroup >= MAXGROUPS:
                             msg = "invalid group reference %d" % condgroup
-                            raise source.error(msg, len(condname) + 1)
+                            ashiria source.error(msg, len(condname) + 1)
                     state.checklookbehindgroup(condgroup, source)
                     item_yes = _parse(source, state, verbose, nested + 1)
                     ikiwa source.match("|"):
                         item_no = _parse(source, state, verbose, nested + 1)
                         ikiwa source.next == "|":
-                            raise source.error("conditional backref with more than two branches")
-                    else:
-                        item_no = None
-                    ikiwa not source.match(")"):
-                        raise source.error("missing ), unterminated subpattern",
+                            ashiria source.error("conditional backref with more than two branches")
+                    isipokua:
+                        item_no = Tupu
+                    ikiwa sio source.match(")"):
+                        ashiria source.error("missing ), unterminated subpattern",
                                            source.tell() - start)
                     subpatternappend((GROUPREF_EXISTS, (condgroup, item_yes, item_no)))
-                    continue
+                    endelea
 
-                elikiwa char in FLAGS or char == "-":
+                elikiwa char kwenye FLAGS ama char == "-":
                     # flags
                     flags = _parse_flags(source, state, char)
-                    ikiwa flags is None:  # global flags
-                        ikiwa not first or subpattern:
+                    ikiwa flags ni Tupu:  # global flags
+                        ikiwa sio first ama subpattern:
                             agiza warnings
                             warnings.warn(
-                                'Flags not at the start of the expression %r%s' % (
+                                'Flags sio at the start of the expression %r%s' % (
                                     source.string[:20],  # truncate long regexes
                                     ' (truncated)' ikiwa len(source.string) > 20 else '',
                                 ),
                                 DeprecationWarning, stacklevel=nested + 6
                             )
-                        ikiwa (state.flags & SRE_FLAG_VERBOSE) and not verbose:
-                            raise Verbose
-                        continue
+                        ikiwa (state.flags & SRE_FLAG_VERBOSE) na sio verbose:
+                            ashiria Verbose
+                        endelea
 
                     add_flags, del_flags = flags
-                    group = None
-                else:
-                    raise source.error("unknown extension ?" + char,
+                    group = Tupu
+                isipokua:
+                    ashiria source.error("unknown extension ?" + char,
                                        len(char) + 1)
 
             # parse group contents
-            ikiwa group is not None:
-                try:
+            ikiwa group ni sio Tupu:
+                jaribu:
                     group = state.opengroup(name)
-                except error as err:
-                    raise source.error(err.msg, len(name) + 1) kutoka None
-            sub_verbose = ((verbose or (add_flags & SRE_FLAG_VERBOSE)) and
-                           not (del_flags & SRE_FLAG_VERBOSE))
+                tatizo error kama err:
+                    ashiria source.error(err.msg, len(name) + 1) kutoka Tupu
+            sub_verbose = ((verbose ama (add_flags & SRE_FLAG_VERBOSE)) and
+                           sio (del_flags & SRE_FLAG_VERBOSE))
             p = _parse_sub(source, state, sub_verbose, nested + 1)
-            ikiwa not source.match(")"):
-                raise source.error("missing ), unterminated subpattern",
+            ikiwa sio source.match(")"):
+                ashiria source.error("missing ), unterminated subpattern",
                                    source.tell() - start)
-            ikiwa group is not None:
+            ikiwa group ni sio Tupu:
                 state.closegroup(group, p)
             subpatternappend((SUBPATTERN, (group, add_flags, del_flags, p)))
 
@@ -845,15 +845,15 @@ eleza _parse(source, state, verbose, nested, first=False):
         elikiwa this == "$":
             subpatternappend((AT, AT_END))
 
-        else:
-            raise AssertionError("unsupported special character %r" % (char,))
+        isipokua:
+            ashiria AssertionError("unsupported special character %r" % (char,))
 
     # unpack non-capturing groups
-    for i in range(len(subpattern))[::-1]:
+    kila i kwenye range(len(subpattern))[::-1]:
         op, av = subpattern[i]
-        ikiwa op is SUBPATTERN:
+        ikiwa op ni SUBPATTERN:
             group, add_flags, del_flags, p = av
-            ikiwa group is None and not add_flags and not del_flags:
+            ikiwa group ni Tupu na sio add_flags na sio del_flags:
                 subpattern[i: i+1] = p
 
     rudisha subpattern
@@ -863,103 +863,103 @@ eleza _parse_flags(source, state, char):
     add_flags = 0
     del_flags = 0
     ikiwa char != "-":
-        while True:
+        wakati Kweli:
             flag = FLAGS[char]
             ikiwa source.istext:
                 ikiwa char == 'L':
                     msg = "bad inline flags: cannot use 'L' flag with a str pattern"
-                    raise source.error(msg)
-            else:
+                    ashiria source.error(msg)
+            isipokua:
                 ikiwa char == 'u':
                     msg = "bad inline flags: cannot use 'u' flag with a bytes pattern"
-                    raise source.error(msg)
+                    ashiria source.error(msg)
             add_flags |= flag
-            ikiwa (flag & TYPE_FLAGS) and (add_flags & TYPE_FLAGS) != flag:
-                msg = "bad inline flags: flags 'a', 'u' and 'L' are incompatible"
-                raise source.error(msg)
+            ikiwa (flag & TYPE_FLAGS) na (add_flags & TYPE_FLAGS) != flag:
+                msg = "bad inline flags: flags 'a', 'u' na 'L' are incompatible"
+                ashiria source.error(msg)
             char = sourceget()
-            ikiwa char is None:
-                raise source.error("missing -, : or )")
-            ikiwa char in ")-:":
-                break
-            ikiwa char not in FLAGS:
-                msg = "unknown flag" ikiwa char.isalpha() else "missing -, : or )"
-                raise source.error(msg, len(char))
+            ikiwa char ni Tupu:
+                ashiria source.error("missing -, : ama )")
+            ikiwa char kwenye ")-:":
+                koma
+            ikiwa char haiko kwenye FLAGS:
+                msg = "unknown flag" ikiwa char.isalpha() else "missing -, : ama )"
+                ashiria source.error(msg, len(char))
     ikiwa char == ")":
         state.flags |= add_flags
-        rudisha None
+        rudisha Tupu
     ikiwa add_flags & GLOBAL_FLAGS:
-        raise source.error("bad inline flags: cannot turn on global flag", 1)
+        ashiria source.error("bad inline flags: cannot turn on global flag", 1)
     ikiwa char == "-":
         char = sourceget()
-        ikiwa char is None:
-            raise source.error("missing flag")
-        ikiwa char not in FLAGS:
+        ikiwa char ni Tupu:
+            ashiria source.error("missing flag")
+        ikiwa char haiko kwenye FLAGS:
             msg = "unknown flag" ikiwa char.isalpha() else "missing flag"
-            raise source.error(msg, len(char))
-        while True:
+            ashiria source.error(msg, len(char))
+        wakati Kweli:
             flag = FLAGS[char]
             ikiwa flag & TYPE_FLAGS:
-                msg = "bad inline flags: cannot turn off flags 'a', 'u' and 'L'"
-                raise source.error(msg)
+                msg = "bad inline flags: cannot turn off flags 'a', 'u' na 'L'"
+                ashiria source.error(msg)
             del_flags |= flag
             char = sourceget()
-            ikiwa char is None:
-                raise source.error("missing :")
+            ikiwa char ni Tupu:
+                ashiria source.error("missing :")
             ikiwa char == ":":
-                break
-            ikiwa char not in FLAGS:
+                koma
+            ikiwa char haiko kwenye FLAGS:
                 msg = "unknown flag" ikiwa char.isalpha() else "missing :"
-                raise source.error(msg, len(char))
+                ashiria source.error(msg, len(char))
     assert char == ":"
     ikiwa del_flags & GLOBAL_FLAGS:
-        raise source.error("bad inline flags: cannot turn off global flag", 1)
+        ashiria source.error("bad inline flags: cannot turn off global flag", 1)
     ikiwa add_flags & del_flags:
-        raise source.error("bad inline flags: flag turned on and off", 1)
+        ashiria source.error("bad inline flags: flag turned on na off", 1)
     rudisha add_flags, del_flags
 
 eleza fix_flags(src, flags):
-    # Check and fix flags according to the type of pattern (str or bytes)
+    # Check na fix flags according to the type of pattern (str ama bytes)
     ikiwa isinstance(src, str):
         ikiwa flags & SRE_FLAG_LOCALE:
-            raise ValueError("cannot use LOCALE flag with a str pattern")
-        ikiwa not flags & SRE_FLAG_ASCII:
+            ashiria ValueError("cannot use LOCALE flag with a str pattern")
+        ikiwa sio flags & SRE_FLAG_ASCII:
             flags |= SRE_FLAG_UNICODE
         elikiwa flags & SRE_FLAG_UNICODE:
-            raise ValueError("ASCII and UNICODE flags are incompatible")
-    else:
+            ashiria ValueError("ASCII na UNICODE flags are incompatible")
+    isipokua:
         ikiwa flags & SRE_FLAG_UNICODE:
-            raise ValueError("cannot use UNICODE flag with a bytes pattern")
-        ikiwa flags & SRE_FLAG_LOCALE and flags & SRE_FLAG_ASCII:
-            raise ValueError("ASCII and LOCALE flags are incompatible")
+            ashiria ValueError("cannot use UNICODE flag with a bytes pattern")
+        ikiwa flags & SRE_FLAG_LOCALE na flags & SRE_FLAG_ASCII:
+            ashiria ValueError("ASCII na LOCALE flags are incompatible")
     rudisha flags
 
-eleza parse(str, flags=0, state=None):
+eleza parse(str, flags=0, state=Tupu):
     # parse 're' pattern into list of (opcode, argument) tuples
 
     source = Tokenizer(str)
 
-    ikiwa state is None:
+    ikiwa state ni Tupu:
         state = State()
     state.flags = flags
     state.str = str
 
-    try:
+    jaribu:
         p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
-    except Verbose:
+    tatizo Verbose:
         # the VERBOSE flag was switched on inside the pattern.  to be
         # on the safe side, we'll parse the whole thing again...
         state = State()
         state.flags = flags | SRE_FLAG_VERBOSE
         state.str = str
         source.seek(0)
-        p = _parse_sub(source, state, True, 0)
+        p = _parse_sub(source, state, Kweli, 0)
 
     p.state.flags = fix_flags(str, p.state.flags)
 
-    ikiwa source.next is not None:
+    ikiwa source.next ni sio Tupu:
         assert source.next == ")"
-        raise source.error("unbalanced parenthesis")
+        ashiria source.error("unbalanced parenthesis")
 
     ikiwa flags & SRE_FLAG_DEBUG:
         p.dump()
@@ -977,78 +977,78 @@ eleza parse_template(source, state):
     lappend = literal.append
     eleza addgroup(index, pos):
         ikiwa index > state.groups:
-            raise s.error("invalid group reference %d" % index, pos)
+            ashiria s.error("invalid group reference %d" % index, pos)
         ikiwa literal:
             literals.append(''.join(literal))
-            del literal[:]
+            toa literal[:]
         groups.append((len(literals), index))
-        literals.append(None)
+        literals.append(Tupu)
     groupindex = state.groupindex
-    while True:
+    wakati Kweli:
         this = sget()
-        ikiwa this is None:
-            break # end of replacement string
+        ikiwa this ni Tupu:
+            koma # end of replacement string
         ikiwa this[0] == "\\":
             # group
             c = this[1]
             ikiwa c == "g":
                 name = ""
-                ikiwa not s.match("<"):
-                    raise s.error("missing <")
+                ikiwa sio s.match("<"):
+                    ashiria s.error("missing <")
                 name = s.getuntil(">", "group name")
                 ikiwa name.isidentifier():
-                    try:
+                    jaribu:
                         index = groupindex[name]
-                    except KeyError:
-                        raise IndexError("unknown group name %r" % name)
-                else:
-                    try:
+                    tatizo KeyError:
+                        ashiria IndexError("unknown group name %r" % name)
+                isipokua:
+                    jaribu:
                         index = int(name)
                         ikiwa index < 0:
-                            raise ValueError
-                    except ValueError:
-                        raise s.error("bad character in group name %r" % name,
-                                      len(name) + 1) kutoka None
+                            ashiria ValueError
+                    tatizo ValueError:
+                        ashiria s.error("bad character kwenye group name %r" % name,
+                                      len(name) + 1) kutoka Tupu
                     ikiwa index >= MAXGROUPS:
-                        raise s.error("invalid group reference %d" % index,
+                        ashiria s.error("invalid group reference %d" % index,
                                       len(name) + 1)
                 addgroup(index, len(name) + 1)
             elikiwa c == "0":
-                ikiwa s.next in OCTDIGITS:
+                ikiwa s.next kwenye OCTDIGITS:
                     this += sget()
-                    ikiwa s.next in OCTDIGITS:
+                    ikiwa s.next kwenye OCTDIGITS:
                         this += sget()
                 lappend(chr(int(this[1:], 8) & 0xff))
-            elikiwa c in DIGITS:
-                isoctal = False
-                ikiwa s.next in DIGITS:
+            elikiwa c kwenye DIGITS:
+                isoctal = Uongo
+                ikiwa s.next kwenye DIGITS:
                     this += sget()
-                    ikiwa (c in OCTDIGITS and this[2] in OCTDIGITS and
-                        s.next in OCTDIGITS):
+                    ikiwa (c kwenye OCTDIGITS na this[2] kwenye OCTDIGITS and
+                        s.next kwenye OCTDIGITS):
                         this += sget()
-                        isoctal = True
+                        isoctal = Kweli
                         c = int(this[1:], 8)
                         ikiwa c > 0o377:
-                            raise s.error('octal escape value %s outside of '
+                            ashiria s.error('octal escape value %s outside of '
                                           'range 0-0o377' % this, len(this))
                         lappend(chr(c))
-                ikiwa not isoctal:
+                ikiwa sio isoctal:
                     addgroup(int(this[1:]), len(this) - 1)
-            else:
-                try:
+            isipokua:
+                jaribu:
                     this = chr(ESCAPES[this][1])
-                except KeyError:
-                    ikiwa c in ASCIILETTERS:
-                        raise s.error('bad escape %s' % this, len(this))
+                tatizo KeyError:
+                    ikiwa c kwenye ASCIILETTERS:
+                        ashiria s.error('bad escape %s' % this, len(this))
                 lappend(this)
-        else:
+        isipokua:
             lappend(this)
     ikiwa literal:
         literals.append(''.join(literal))
-    ikiwa not isinstance(source, str):
-        # The tokenizer implicitly decodes bytes objects as latin-1, we must
+    ikiwa sio isinstance(source, str):
+        # The tokenizer implicitly decodes bytes objects kama latin-1, we must
         # therefore re-encode the final representation.
-        literals = [None ikiwa s is None else s.encode('latin-1') for s in literals]
+        literals = [Tupu ikiwa s ni Tupu else s.encode('latin-1') kila s kwenye literals]
     rudisha groups, literals
 
 eleza expand_template(template, match):
@@ -1056,9 +1056,9 @@ eleza expand_template(template, match):
     empty = match.string[:0]
     groups, literals = template
     literals = literals[:]
-    try:
-        for index, group in groups:
-            literals[index] = g(group) or empty
-    except IndexError:
-        raise error("invalid group reference %d" % index)
+    jaribu:
+        kila index, group kwenye groups:
+            literals[index] = g(group) ama empty
+    tatizo IndexError:
+        ashiria error("invalid group reference %d" % index)
     rudisha empty.join(literals)

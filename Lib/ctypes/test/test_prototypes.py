@@ -56,12 +56,12 @@ class CharPointersTestCase(unittest.TestCase):
         func = prototype(("_testfunc_p_p", testdll),
                          ((1, "input"),))
 
-        try:
+        jaribu:
             func()
-        except TypeError as details:
+        tatizo TypeError as details:
             self.assertEqual(str(details), "required argument 'input' missing")
-        else:
-            self.fail("TypeError not raised")
+        isipokua:
+            self.fail("TypeError sio raised")
 
         self.assertEqual(func(None), None)
         self.assertEqual(func(input=None), None)
@@ -71,7 +71,7 @@ class CharPointersTestCase(unittest.TestCase):
         func = testdll._testfunc_p_p
         if sizeof(c_longlong) == sizeof(c_void_p):
             func.restype = c_longlong
-        else:
+        isipokua:
             func.restype = c_long
         self.assertEqual(0, func(0))
 

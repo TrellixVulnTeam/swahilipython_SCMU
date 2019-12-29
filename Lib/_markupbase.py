@@ -1,7 +1,7 @@
 """Shared support for scanning document type declarations in HTML and XHTML.
 
 This module is used as a foundation for the html.parser module.  It has no
-documented public API and should not be used directly.
+documented public API and should sio be used directly.
 
 """
 
@@ -17,7 +17,7 @@ _markedsectionclose = re.compile(r']\s*]\s*>')
 
 _msmarkedsectionclose = re.compile(r']\s*>')
 
-del re
+toa re
 
 
 kundi ParserBase:
@@ -52,9 +52,9 @@ kundi ParserBase:
         nlines = rawdata.count("\n", i, j)
         if nlines:
             self.lineno = self.lineno + nlines
-            pos = rawdata.rindex("\n", i, j) # Should not fail
+            pos = rawdata.rindex("\n", i, j) # Should sio fail
             self.offset = j-(pos+1)
-        else:
+        isipokua:
             self.offset = self.offset + j-i
         return j
 
@@ -93,20 +93,20 @@ kundi ParserBase:
             # Note that this is extended by Microsoft Office "Save as Web" function
             # to include [if...] and [endif].
             return self.parse_marked_section(i)
-        else: #all other declaration elements
+        isipokua: #all other declaration elements
             decltype, j = self._scan_name(j, i)
         if j < 0:
             return j
         if decltype == "doctype":
             self._decl_otherchars = ''
-        while j < n:
+        wakati j < n:
             c = rawdata[j]
             if c == ">":
                 # end of declaration syntax
                 data = rawdata[i+2:j]
                 if decltype == "doctype":
                     self.handle_decl(data)
-                else:
+                isipokua:
                     # According to the HTML5 specs sections "8.2.4.44 Bogus
                     # comment state" and "8.2.4.45 Markup declaration open
                     # state", a comment token should be emitted.
@@ -115,7 +115,7 @@ kundi ParserBase:
                 return j + 1
             if c in "\"'":
                 m = _declstringlit_match(rawdata, j)
-                if not m:
+                if sio m:
                     return -1 # incomplete
                 j = m.end()
             lasivyo c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
@@ -127,14 +127,14 @@ kundi ParserBase:
                 if decltype == "doctype":
                     j = self._parse_doctype_subset(j + 1, i)
                 lasivyo decltype in {"attlist", "linktype", "link", "element"}:
-                    # must tolerate []'d groups in a content model in an element declaration
+                    # must tolerate []'d groups in a content motoa in an element declaration
                     # also in data attribute specifications of attlist declaration
                     # also link type declaration subsets in linktype declarations
                     # also link attribute specification lists in link declarations
                     self.error("unsupported '[' char in %s declaration" % decltype)
-                else:
+                isipokua:
                     self.error("unexpected '[' char in declaration")
-            else:
+            isipokua:
                 self.error(
                     "unexpected %r char in declaration" % rawdata[j])
             if j < 0:
@@ -155,22 +155,22 @@ kundi ParserBase:
         lasivyo sectName in {"if", "else", "endif"}:
             # look for MS Office ]> ending
             match= _msmarkedsectionclose.search(rawdata, i+3)
-        else:
+        isipokua:
             self.error('unknown status keyword %r in marked section' % rawdata[i+3:j])
-        if not match:
+        if sio match:
             return -1
         if report:
             j = match.start(0)
             self.unknown_decl(rawdata[i+3: j])
         return match.end(0)
 
-    # Internal -- parse comment, return length or -1 if not terminated
+    # Internal -- parse comment, return length or -1 if sio terminated
     def parse_comment(self, i, report=1):
         rawdata = self.rawdata
         if rawdata[i:i+4] != '<!--':
             self.error('unexpected call to parse_comment()')
         match = _commentclose.search(rawdata, i+4)
-        if not match:
+        if sio match:
             return -1
         if report:
             j = match.start(0)
@@ -183,7 +183,7 @@ kundi ParserBase:
         rawdata = self.rawdata
         n = len(rawdata)
         j = i
-        while j < n:
+        wakati j < n:
             c = rawdata[j]
             if c == "<":
                 s = rawdata[j:j+2]
@@ -203,11 +203,11 @@ kundi ParserBase:
                     j = self.parse_comment(j, report=0)
                     if j < 0:
                         return j
-                    continue
+                    endelea
                 name, j = self._scan_name(j + 2, declstartpos)
                 if j == -1:
                     return -1
-                if name not in {"attlist", "element", "entity", "notation"}:
+                if name haiko kwenye {"attlist", "element", "entity", "notation"}:
                     self.updatepos(declstartpos, j + 2)
                     self.error(
                         "unknown declaration %r in internal subset" % name)
@@ -228,18 +228,18 @@ kundi ParserBase:
                     j = j + 1
             lasivyo c == "]":
                 j = j + 1
-                while j < n and rawdata[j].isspace():
+                wakati j < n and rawdata[j].isspace():
                     j = j + 1
                 if j < n:
                     if rawdata[j] == ">":
                         return j
                     self.updatepos(declstartpos, j)
                     self.error("unexpected char after internal subset")
-                else:
+                isipokua:
                     return -1
             lasivyo c.isspace():
                 j = j + 1
-            else:
+            isipokua:
                 self.updatepos(declstartpos, j)
                 self.error("unexpected char %r in internal subset" % c)
         # end of buffer reached
@@ -265,7 +265,7 @@ kundi ParserBase:
             return -1
         if c == ">":
             return j + 1
-        while 1:
+        wakati 1:
             # scan a series of attribute descriptions; simplified:
             #   name type [value] [#constraint]
             name, j = self._scan_name(j, declstartpos)
@@ -278,26 +278,26 @@ kundi ParserBase:
                 # an enumerated type; look for ')'
                 if ")" in rawdata[j:]:
                     j = rawdata.find(")", j) + 1
-                else:
+                isipokua:
                     return -1
-                while rawdata[j:j+1].isspace():
+                wakati rawdata[j:j+1].isspace():
                     j = j + 1
-                if not rawdata[j:]:
+                if sio rawdata[j:]:
                     # end of buffer, incomplete
                     return -1
-            else:
+            isipokua:
                 name, j = self._scan_name(j, declstartpos)
             c = rawdata[j:j+1]
-            if not c:
+            if sio c:
                 return -1
             if c in "'\"":
                 m = _declstringlit_match(rawdata, j)
                 if m:
                     j = m.end()
-                else:
+                isipokua:
                     return -1
                 c = rawdata[j:j+1]
-                if not c:
+                if sio c:
                     return -1
             if c == "#":
                 if rawdata[j:] == "#":
@@ -307,7 +307,7 @@ kundi ParserBase:
                 if j < 0:
                     return j
                 c = rawdata[j:j+1]
-                if not c:
+                if sio c:
                     return -1
             if c == '>':
                 # all done
@@ -319,19 +319,19 @@ kundi ParserBase:
         if j < 0:
             return j
         rawdata = self.rawdata
-        while 1:
+        wakati 1:
             c = rawdata[j:j+1]
-            if not c:
+            if sio c:
                 # end of buffer; incomplete
                 return -1
             if c == '>':
                 return j + 1
             if c in "'\"":
                 m = _declstringlit_match(rawdata, j)
-                if not m:
+                if sio m:
                     return -1
                 j = m.end()
-            else:
+            isipokua:
                 name, j = self._scan_name(j, declstartpos)
                 if j < 0:
                     return j
@@ -341,32 +341,32 @@ kundi ParserBase:
         rawdata = self.rawdata
         if rawdata[i:i+1] == "%":
             j = i + 1
-            while 1:
+            wakati 1:
                 c = rawdata[j:j+1]
-                if not c:
+                if sio c:
                     return -1
                 if c.isspace():
                     j = j + 1
-                else:
-                    break
-        else:
+                isipokua:
+                    koma
+        isipokua:
             j = i
         name, j = self._scan_name(j, declstartpos)
         if j < 0:
             return j
-        while 1:
+        wakati 1:
             c = self.rawdata[j:j+1]
-            if not c:
+            if sio c:
                 return -1
             if c in "'\"":
                 m = _declstringlit_match(rawdata, j)
                 if m:
                     j = m.end()
-                else:
+                isipokua:
                     return -1    # incomplete
             lasivyo c == ">":
                 return j + 1
-            else:
+            isipokua:
                 name, j = self._scan_name(j, declstartpos)
                 if j < 0:
                     return j
@@ -385,7 +385,7 @@ kundi ParserBase:
             if (i + len(s)) == n:
                 return None, -1  # end of buffer
             return name.lower(), m.end()
-        else:
+        isipokua:
             self.updatepos(declstartpos, i)
             self.error("expected name token at %r"
                        % rawdata[declstartpos:declstartpos+20])

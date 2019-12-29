@@ -17,7 +17,7 @@ class BuildTestCase(support.TempdirManager,
         cmd = build(dist)
         cmd.finalize_options()
 
-        # if not specified, plat_name gets the current platform
+        # if sio specified, plat_name gets the current platform
         self.assertEqual(cmd.plat_name, get_platform())
 
         # build_purelib is build + lib

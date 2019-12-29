@@ -1,5 +1,5 @@
 #
-# Module providing manager classes for dealing
+# Module providing manager classes kila dealing
 # with shared objects
 #
 # multiprocessing/managers.py
@@ -32,29 +32,29 @@ kutoka . agiza pool
 kutoka . agiza process
 kutoka . agiza util
 kutoka . agiza get_context
-try:
+jaribu:
     kutoka . agiza shared_memory
-    HAS_SHMEM = True
-except ImportError:
-    HAS_SHMEM = False
+    HAS_SHMEM = Kweli
+tatizo ImportError:
+    HAS_SHMEM = Uongo
 
 #
-# Register some things for pickling
+# Register some things kila pickling
 #
 
 eleza reduce_array(a):
     rudisha array.array, (a.typecode, a.tobytes())
 reduction.register(array.array, reduce_array)
 
-view_types = [type(getattr({}, name)()) for name in ('items','keys','values')]
-ikiwa view_types[0] is not list:       # only needed in Py3.0
+view_types = [type(getattr({}, name)()) kila name kwenye ('items','keys','values')]
+ikiwa view_types[0] ni sio list:       # only needed kwenye Py3.0
     eleza rebuild_as_list(obj):
         rudisha list, (list(obj),)
-    for view_type in view_types:
+    kila view_type kwenye view_types:
         reduction.register(view_type, rebuild_as_list)
 
 #
-# Type for identifying shared objects
+# Type kila identifying shared objects
 #
 
 kundi Token(object):
@@ -77,32 +77,32 @@ kundi Token(object):
                (self.__class__.__name__, self.typeid, self.address, self.id)
 
 #
-# Function for communication with a manager's server process
+# Function kila communication with a manager's server process
 #
 
 eleza dispatch(c, id, methodname, args=(), kwds={}):
     '''
-    Send a message to manager using connection `c` and rudisha response
+    Send a message to manager using connection `c` na rudisha response
     '''
     c.send((id, methodname, args, kwds))
     kind, result = c.recv()
     ikiwa kind == '#RETURN':
         rudisha result
-    raise convert_to_error(kind, result)
+    ashiria convert_to_error(kind, result)
 
 eleza convert_to_error(kind, result):
     ikiwa kind == '#ERROR':
         rudisha result
-    elikiwa kind in ('#TRACEBACK', '#UNSERIALIZABLE'):
-        ikiwa not isinstance(result, str):
-            raise TypeError(
-                "Result {0!r} (kind '{1}') type is {2}, not str".format(
+    elikiwa kind kwenye ('#TRACEBACK', '#UNSERIALIZABLE'):
+        ikiwa sio isinstance(result, str):
+            ashiria TypeError(
+                "Result {0!r} (kind '{1}') type ni {2}, sio str".format(
                     result, kind, type(result)))
         ikiwa kind == '#UNSERIALIZABLE':
             rudisha RemoteError('Unserializable message: %s\n' % result)
-        else:
+        isipokua:
             rudisha RemoteError(result)
-    else:
+    isipokua:
         rudisha ValueError('Unrecognized message type {!r}'.format(kind))
 
 kundi RemoteError(Exception):
@@ -110,7 +110,7 @@ kundi RemoteError(Exception):
         rudisha ('\n' + '-'*75 + '\n' + str(self.args[0]) + '-'*75)
 
 #
-# Functions for finding the method names of an object
+# Functions kila finding the method names of an object
 #
 
 eleza all_methods(obj):
@@ -118,7 +118,7 @@ eleza all_methods(obj):
     Return a list of names of methods of `obj`
     '''
     temp = []
-    for name in dir(obj):
+    kila name kwenye dir(obj):
         func = getattr(obj, name)
         ikiwa callable(func):
             temp.append(name)
@@ -126,25 +126,25 @@ eleza all_methods(obj):
 
 eleza public_methods(obj):
     '''
-    Return a list of names of methods of `obj` which do not start with '_'
+    Return a list of names of methods of `obj` which do sio start with '_'
     '''
-    rudisha [name for name in all_methods(obj) ikiwa name[0] != '_']
+    rudisha [name kila name kwenye all_methods(obj) ikiwa name[0] != '_']
 
 #
-# Server which is run in a process controlled by a manager
+# Server which ni run kwenye a process controlled by a manager
 #
 
 kundi Server(object):
     '''
-    Server kundi which runs in a process controlled by a manager object
+    Server kundi which runs kwenye a process controlled by a manager object
     '''
     public = ['shutdown', 'create', 'accept_connection', 'get_methods',
               'debug_info', 'number_of_objects', 'dummy', 'incref', 'decref']
 
     eleza __init__(self, registry, address, authkey, serializer):
-        ikiwa not isinstance(authkey, bytes):
-            raise TypeError(
-                "Authkey {0!r} is type {1!s}, not bytes".format(
+        ikiwa sio isinstance(authkey, bytes):
+            ashiria TypeError(
+                "Authkey {0!r} ni type {1!s}, sio bytes".format(
                     authkey, type(authkey)))
         self.registry = registry
         self.authkey = process.AuthenticationString(authkey)
@@ -154,7 +154,7 @@ kundi Server(object):
         self.listener = Listener(address=address, backlog=16)
         self.address = self.listener.address
 
-        self.id_to_obj = {'0': (None, ())}
+        self.id_to_obj = {'0': (Tupu, ())}
         self.id_to_refcount = {}
         self.id_to_local_proxy_obj = {}
         self.mutex = threading.Lock()
@@ -165,16 +165,16 @@ kundi Server(object):
         '''
         self.stop_event = threading.Event()
         process.current_process()._manager_server = self
-        try:
+        jaribu:
             accepter = threading.Thread(target=self.accepter)
-            accepter.daemon = True
+            accepter.daemon = Kweli
             accepter.start()
-            try:
-                while not self.stop_event.is_set():
+            jaribu:
+                wakati sio self.stop_event.is_set():
                     self.stop_event.wait(1)
-            except (KeyboardInterrupt, SystemExit):
-                pass
-        finally:
+            tatizo (KeyboardInterrupt, SystemExit):
+                pita
+        mwishowe:
             ikiwa sys.stdout != sys.__stdout__: # what about stderr?
                 util.debug('resetting stdout, stderr')
                 sys.stdout = sys.__stdout__
@@ -182,43 +182,43 @@ kundi Server(object):
             sys.exit(0)
 
     eleza accepter(self):
-        while True:
-            try:
+        wakati Kweli:
+            jaribu:
                 c = self.listener.accept()
-            except OSError:
-                continue
+            tatizo OSError:
+                endelea
             t = threading.Thread(target=self.handle_request, args=(c,))
-            t.daemon = True
+            t.daemon = Kweli
             t.start()
 
     eleza handle_request(self, c):
         '''
         Handle a new connection
         '''
-        funcname = result = request = None
-        try:
+        funcname = result = request = Tupu
+        jaribu:
             connection.deliver_challenge(c, self.authkey)
             connection.answer_challenge(c, self.authkey)
             request = c.recv()
             ignore, funcname, args, kwds = request
-            assert funcname in self.public, '%r unrecognized' % funcname
+            assert funcname kwenye self.public, '%r unrecognized' % funcname
             func = getattr(self, funcname)
-        except Exception:
+        tatizo Exception:
             msg = ('#TRACEBACK', format_exc())
-        else:
-            try:
+        isipokua:
+            jaribu:
                 result = func(c, *args, **kwds)
-            except Exception:
+            tatizo Exception:
                 msg = ('#TRACEBACK', format_exc())
-            else:
+            isipokua:
                 msg = ('#RETURN', result)
-        try:
+        jaribu:
             c.send(msg)
-        except Exception as e:
-            try:
+        tatizo Exception kama e:
+            jaribu:
                 c.send(('#TRACEBACK', format_exc()))
-            except Exception:
-                pass
+            tatizo Exception:
+                pita
             util.info('Failure to send message: %r', msg)
             util.info(' ... request was %r', request)
             util.info(' ... exception was %r', e)
@@ -227,7 +227,7 @@ kundi Server(object):
 
     eleza serve_client(self, conn):
         '''
-        Handle requests kutoka the proxies in a particular process/thread
+        Handle requests kutoka the proxies kwenye a particular process/thread
         '''
         util.debug('starting server thread to service %r',
                    threading.current_thread().name)
@@ -236,70 +236,70 @@ kundi Server(object):
         send = conn.send
         id_to_obj = self.id_to_obj
 
-        while not self.stop_event.is_set():
+        wakati sio self.stop_event.is_set():
 
-            try:
-                methodname = obj = None
+            jaribu:
+                methodname = obj = Tupu
                 request = recv()
                 ident, methodname, args, kwds = request
-                try:
+                jaribu:
                     obj, exposed, gettypeid = id_to_obj[ident]
-                except KeyError as ke:
-                    try:
+                tatizo KeyError kama ke:
+                    jaribu:
                         obj, exposed, gettypeid = \
                             self.id_to_local_proxy_obj[ident]
-                    except KeyError as second_ke:
-                        raise ke
+                    tatizo KeyError kama second_ke:
+                        ashiria ke
 
-                ikiwa methodname not in exposed:
-                    raise AttributeError(
-                        'method %r of %r object is not in exposed=%r' %
+                ikiwa methodname haiko kwenye exposed:
+                    ashiria AttributeError(
+                        'method %r of %r object ni haiko kwenye exposed=%r' %
                         (methodname, type(obj), exposed)
                         )
 
                 function = getattr(obj, methodname)
 
-                try:
+                jaribu:
                     res = function(*args, **kwds)
-                except Exception as e:
+                tatizo Exception kama e:
                     msg = ('#ERROR', e)
-                else:
-                    typeid = gettypeid and gettypeid.get(methodname, None)
+                isipokua:
+                    typeid = gettypeid na gettypeid.get(methodname, Tupu)
                     ikiwa typeid:
                         rident, rexposed = self.create(conn, typeid, res)
                         token = Token(typeid, self.address, rident)
                         msg = ('#PROXY', (rexposed, token))
-                    else:
+                    isipokua:
                         msg = ('#RETURN', res)
 
-            except AttributeError:
-                ikiwa methodname is None:
+            tatizo AttributeError:
+                ikiwa methodname ni Tupu:
                     msg = ('#TRACEBACK', format_exc())
-                else:
-                    try:
+                isipokua:
+                    jaribu:
                         fallback_func = self.fallback_mapping[methodname]
                         result = fallback_func(
                             self, conn, ident, obj, *args, **kwds
                             )
                         msg = ('#RETURN', result)
-                    except Exception:
+                    tatizo Exception:
                         msg = ('#TRACEBACK', format_exc())
 
-            except EOFError:
+            tatizo EOFError:
                 util.debug('got EOF -- exiting thread serving %r',
                            threading.current_thread().name)
                 sys.exit(0)
 
-            except Exception:
+            tatizo Exception:
                 msg = ('#TRACEBACK', format_exc())
 
-            try:
-                try:
+            jaribu:
+                jaribu:
                     send(msg)
-                except Exception as e:
+                tatizo Exception kama e:
                     send(('#UNSERIALIZABLE', format_exc()))
-            except Exception as e:
-                util.info('exception in thread serving %r',
+            tatizo Exception kama e:
+                util.info('exception kwenye thread serving %r',
                         threading.current_thread().name)
                 util.info(' ... message was %r', msg)
                 util.info(' ... exception was %r', e)
@@ -322,7 +322,7 @@ kundi Server(object):
         }
 
     eleza dummy(self, c):
-        pass
+        pita
 
     eleza debug_info(self, c):
         '''
@@ -333,7 +333,7 @@ kundi Server(object):
             result = []
             keys = list(self.id_to_refcount.keys())
             keys.sort()
-            for ident in keys:
+            kila ident kwenye keys:
                 ikiwa ident != '0':
                     result.append('  %s:       refcount=%s\n    %s' %
                                   (ident, self.id_to_refcount[ident],
@@ -344,49 +344,49 @@ kundi Server(object):
         '''
         Number of shared objects
         '''
-        # Doesn't use (len(self.id_to_obj) - 1) as we shouldn't count ident='0'
+        # Doesn't use (len(self.id_to_obj) - 1) kama we shouldn't count ident='0'
         rudisha len(self.id_to_refcount)
 
     eleza shutdown(self, c):
         '''
         Shutdown this process
         '''
-        try:
+        jaribu:
             util.debug('manager received shutdown message')
-            c.send(('#RETURN', None))
+            c.send(('#RETURN', Tupu))
         except:
             agiza traceback
             traceback.print_exc()
-        finally:
+        mwishowe:
             self.stop_event.set()
 
     eleza create(*args, **kwds):
         '''
-        Create a new shared object and rudisha its id
+        Create a new shared object na rudisha its id
         '''
         ikiwa len(args) >= 3:
             self, c, typeid, *args = args
-        elikiwa not args:
-            raise TypeError("descriptor 'create' of 'Server' object "
+        elikiwa sio args:
+            ashiria TypeError("descriptor 'create' of 'Server' object "
                             "needs an argument")
-        else:
-            ikiwa 'typeid' not in kwds:
-                raise TypeError('create expected at least 2 positional '
+        isipokua:
+            ikiwa 'typeid' haiko kwenye kwds:
+                ashiria TypeError('create expected at least 2 positional '
                                 'arguments, got %d' % (len(args)-1))
             typeid = kwds.pop('typeid')
             ikiwa len(args) >= 2:
                 self, c, *args = args
                 agiza warnings
-                warnings.warn("Passing 'typeid' as keyword argument is deprecated",
+                warnings.warn("Passing 'typeid' kama keyword argument ni deprecated",
                               DeprecationWarning, stacklevel=2)
-            else:
-                ikiwa 'c' not in kwds:
-                    raise TypeError('create expected at least 2 positional '
+            isipokua:
+                ikiwa 'c' haiko kwenye kwds:
+                    ashiria TypeError('create expected at least 2 positional '
                                     'arguments, got %d' % (len(args)-1))
                 c = kwds.pop('c')
                 self, *args = args
                 agiza warnings
-                warnings.warn("Passing 'c' as keyword argument is deprecated",
+                warnings.warn("Passing 'c' kama keyword argument ni deprecated",
                               DeprecationWarning, stacklevel=2)
         args = tuple(args)
 
@@ -394,29 +394,29 @@ kundi Server(object):
             callable, exposed, method_to_typeid, proxytype = \
                       self.registry[typeid]
 
-            ikiwa callable is None:
-                ikiwa kwds or (len(args) != 1):
-                    raise ValueError(
+            ikiwa callable ni Tupu:
+                ikiwa kwds ama (len(args) != 1):
+                    ashiria ValueError(
                         "Without callable, must have one non-keyword argument")
                 obj = args[0]
-            else:
+            isipokua:
                 obj = callable(*args, **kwds)
 
-            ikiwa exposed is None:
+            ikiwa exposed ni Tupu:
                 exposed = public_methods(obj)
-            ikiwa method_to_typeid is not None:
-                ikiwa not isinstance(method_to_typeid, dict):
-                    raise TypeError(
-                        "Method_to_typeid {0!r}: type {1!s}, not dict".format(
+            ikiwa method_to_typeid ni sio Tupu:
+                ikiwa sio isinstance(method_to_typeid, dict):
+                    ashiria TypeError(
+                        "Method_to_typeid {0!r}: type {1!s}, sio dict".format(
                             method_to_typeid, type(method_to_typeid)))
                 exposed = list(exposed) + list(method_to_typeid)
 
             ident = '%x' % id(obj)  # convert to string because xmlrpclib
                                     # only has 32 bit signed integers
-            util.debug('%r callable returned object with id %r', typeid, ident)
+            util.debug('%r callable rudishaed object with id %r', typeid, ident)
 
             self.id_to_obj[ident] = (obj, set(exposed), method_to_typeid)
-            ikiwa ident not in self.id_to_refcount:
+            ikiwa ident haiko kwenye self.id_to_refcount:
                 self.id_to_refcount[ident] = 0
 
         self.incref(c, ident)
@@ -434,53 +434,53 @@ kundi Server(object):
         Spawn a new thread to serve this connection
         '''
         threading.current_thread().name = name
-        c.send(('#RETURN', None))
+        c.send(('#RETURN', Tupu))
         self.serve_client(c)
 
     eleza incref(self, c, ident):
         with self.mutex:
-            try:
+            jaribu:
                 self.id_to_refcount[ident] += 1
-            except KeyError as ke:
+            tatizo KeyError kama ke:
                 # If no external references exist but an internal (to the
-                # manager) still does and a new external reference is created
+                # manager) still does na a new external reference ni created
                 # kutoka it, restore the manager's tracking of it kutoka the
                 # previously stashed internal ref.
-                ikiwa ident in self.id_to_local_proxy_obj:
+                ikiwa ident kwenye self.id_to_local_proxy_obj:
                     self.id_to_refcount[ident] = 1
                     self.id_to_obj[ident] = \
                         self.id_to_local_proxy_obj[ident]
                     obj, exposed, gettypeid = self.id_to_obj[ident]
                     util.debug('Server re-enabled tracking & INCREF %r', ident)
-                else:
-                    raise ke
+                isipokua:
+                    ashiria ke
 
     eleza decref(self, c, ident):
-        ikiwa ident not in self.id_to_refcount and \
-            ident in self.id_to_local_proxy_obj:
+        ikiwa ident haiko kwenye self.id_to_refcount na \
+            ident kwenye self.id_to_local_proxy_obj:
             util.debug('Server DECREF skipping %r', ident)
-            return
+            rudisha
 
         with self.mutex:
             ikiwa self.id_to_refcount[ident] <= 0:
-                raise AssertionError(
-                    "Id {0!s} ({1!r}) has refcount {2:n}, not 1+".format(
+                ashiria AssertionError(
+                    "Id {0!s} ({1!r}) has refcount {2:n}, sio 1+".format(
                         ident, self.id_to_obj[ident],
                         self.id_to_refcount[ident]))
             self.id_to_refcount[ident] -= 1
             ikiwa self.id_to_refcount[ident] == 0:
-                del self.id_to_refcount[ident]
+                toa self.id_to_refcount[ident]
 
-        ikiwa ident not in self.id_to_refcount:
-            # Two-step process in case the object turns out to contain other
+        ikiwa ident haiko kwenye self.id_to_refcount:
+            # Two-step process kwenye case the object turns out to contain other
             # proxy objects (e.g. a managed list of managed lists).
             # Otherwise, deleting self.id_to_obj[ident] would trigger the
             # deleting of the stored value (another managed object) which would
-            # in turn attempt to acquire the mutex that is already held here.
-            self.id_to_obj[ident] = (None, (), None)  # thread-safe
+            # kwenye turn attempt to acquire the mutex that ni already held here.
+            self.id_to_obj[ident] = (Tupu, (), Tupu)  # thread-safe
             util.debug('disposing of obj with id %r', ident)
             with self.mutex:
-                del self.id_to_obj[ident]
+                toa self.id_to_obj[ident]
 
 
 #
@@ -494,7 +494,7 @@ kundi State(object):
     SHUTDOWN = 2
 
 #
-# Mapping kutoka serializer name to Listener and Client types
+# Mapping kutoka serializer name to Listener na Client types
 #
 
 listener_client = {
@@ -508,34 +508,34 @@ listener_client = {
 
 kundi BaseManager(object):
     '''
-    Base kundi for managers
+    Base kundi kila managers
     '''
     _registry = {}
     _Server = Server
 
-    eleza __init__(self, address=None, authkey=None, serializer='pickle',
-                 ctx=None):
-        ikiwa authkey is None:
+    eleza __init__(self, address=Tupu, authkey=Tupu, serializer='pickle',
+                 ctx=Tupu):
+        ikiwa authkey ni Tupu:
             authkey = process.current_process().authkey
-        self._address = address     # XXX not final address ikiwa eg ('', 0)
+        self._address = address     # XXX sio final address ikiwa eg ('', 0)
         self._authkey = process.AuthenticationString(authkey)
         self._state = State()
         self._state.value = State.INITIAL
         self._serializer = serializer
         self._Listener, self._Client = listener_client[serializer]
-        self._ctx = ctx or get_context()
+        self._ctx = ctx ama get_context()
 
     eleza get_server(self):
         '''
-        Return server object with serve_forever() method and address attribute
+        Return server object with serve_forever() method na address attribute
         '''
         ikiwa self._state.value != State.INITIAL:
             ikiwa self._state.value == State.STARTED:
-                raise ProcessError("Already started server")
+                ashiria ProcessError("Already started server")
             elikiwa self._state.value == State.SHUTDOWN:
-                raise ProcessError("Manager has shut down")
-            else:
-                raise ProcessError(
+                ashiria ProcessError("Manager has shut down")
+            isipokua:
+                ashiria ProcessError(
                     "Unknown state {!r}".format(self._state.value))
         rudisha Server(self._registry, self._address,
                       self._authkey, self._serializer)
@@ -546,27 +546,27 @@ kundi BaseManager(object):
         '''
         Listener, Client = listener_client[self._serializer]
         conn = Client(self._address, authkey=self._authkey)
-        dispatch(conn, None, 'dummy')
+        dispatch(conn, Tupu, 'dummy')
         self._state.value = State.STARTED
 
-    eleza start(self, initializer=None, initargs=()):
+    eleza start(self, initializer=Tupu, initargs=()):
         '''
-        Spawn a server process for this manager object
+        Spawn a server process kila this manager object
         '''
         ikiwa self._state.value != State.INITIAL:
             ikiwa self._state.value == State.STARTED:
-                raise ProcessError("Already started server")
+                ashiria ProcessError("Already started server")
             elikiwa self._state.value == State.SHUTDOWN:
-                raise ProcessError("Manager has shut down")
-            else:
-                raise ProcessError(
+                ashiria ProcessError("Manager has shut down")
+            isipokua:
+                ashiria ProcessError(
                     "Unknown state {!r}".format(self._state.value))
 
-        ikiwa initializer is not None and not callable(initializer):
-            raise TypeError('initializer must be a callable')
+        ikiwa initializer ni sio Tupu na sio callable(initializer):
+            ashiria TypeError('initializer must be a callable')
 
         # pipe over which we will retrieve address of server
-        reader, writer = connection.Pipe(duplex=False)
+        reader, writer = connection.Pipe(duplex=Uongo)
 
         # spawn process which runs a server
         self._process = self._ctx.Process(
@@ -574,7 +574,7 @@ kundi BaseManager(object):
             args=(self._registry, self._address, self._authkey,
                   self._serializer, writer, initializer, initargs),
             )
-        ident = ':'.join(str(i) for i in self._process._identity)
+        ident = ':'.join(str(i) kila i kwenye self._process._identity)
         self._process.name = type(self).__name__  + '-' + ident
         self._process.start()
 
@@ -594,14 +594,14 @@ kundi BaseManager(object):
 
     @classmethod
     eleza _run_server(cls, registry, address, authkey, serializer, writer,
-                    initializer=None, initargs=()):
+                    initializer=Tupu, initargs=()):
         '''
-        Create a server, report its address and run it
+        Create a server, report its address na run it
         '''
         # bpo-36368: protect server process kutoka KeyboardInterrupt signals
         signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-        ikiwa initializer is not None:
+        ikiwa initializer ni sio Tupu:
             initializer(*initargs)
 
         # create server
@@ -617,33 +617,33 @@ kundi BaseManager(object):
 
     eleza _create(self, typeid, /, *args, **kwds):
         '''
-        Create a new shared object; rudisha the token and exposed tuple
+        Create a new shared object; rudisha the token na exposed tuple
         '''
-        assert self._state.value == State.STARTED, 'server not yet started'
+        assert self._state.value == State.STARTED, 'server sio yet started'
         conn = self._Client(self._address, authkey=self._authkey)
-        try:
-            id, exposed = dispatch(conn, None, 'create', (typeid,)+args, kwds)
-        finally:
+        jaribu:
+            id, exposed = dispatch(conn, Tupu, 'create', (typeid,)+args, kwds)
+        mwishowe:
             conn.close()
         rudisha Token(typeid, self._address, id), exposed
 
-    eleza join(self, timeout=None):
+    eleza join(self, timeout=Tupu):
         '''
         Join the manager process (ikiwa it has been spawned)
         '''
-        ikiwa self._process is not None:
+        ikiwa self._process ni sio Tupu:
             self._process.join(timeout)
-            ikiwa not self._process.is_alive():
-                self._process = None
+            ikiwa sio self._process.is_alive():
+                self._process = Tupu
 
     eleza _debug_info(self):
         '''
-        Return some info about the servers shared objects and connections
+        Return some info about the servers shared objects na connections
         '''
         conn = self._Client(self._address, authkey=self._authkey)
-        try:
-            rudisha dispatch(conn, None, 'debug_info')
-        finally:
+        jaribu:
+            rudisha dispatch(conn, Tupu, 'debug_info')
+        mwishowe:
             conn.close()
 
     eleza _number_of_objects(self):
@@ -651,9 +651,9 @@ kundi BaseManager(object):
         Return the number of shared objects
         '''
         conn = self._Client(self._address, authkey=self._authkey)
-        try:
-            rudisha dispatch(conn, None, 'number_of_objects')
-        finally:
+        jaribu:
+            rudisha dispatch(conn, Tupu, 'number_of_objects')
+        mwishowe:
             conn.close()
 
     eleza __enter__(self):
@@ -661,11 +661,11 @@ kundi BaseManager(object):
             self.start()
         ikiwa self._state.value != State.STARTED:
             ikiwa self._state.value == State.INITIAL:
-                raise ProcessError("Unable to start server")
+                ashiria ProcessError("Unable to start server")
             elikiwa self._state.value == State.SHUTDOWN:
-                raise ProcessError("Manager has shut down")
-            else:
-                raise ProcessError(
+                ashiria ProcessError("Manager has shut down")
+            isipokua:
+                ashiria ProcessError(
                     "Unknown state {!r}".format(self._state.value))
         rudisha self
 
@@ -675,18 +675,18 @@ kundi BaseManager(object):
     @staticmethod
     eleza _finalize_manager(process, address, authkey, state, _Client):
         '''
-        Shutdown the manager process; will be registered as a finalizer
+        Shutdown the manager process; will be registered kama a finalizer
         '''
         ikiwa process.is_alive():
             util.info('sending shutdown message to manager')
-            try:
+            jaribu:
                 conn = _Client(address, authkey=authkey)
-                try:
-                    dispatch(conn, None, 'shutdown')
-                finally:
+                jaribu:
+                    dispatch(conn, Tupu, 'shutdown')
+                mwishowe:
                     conn.close()
-            except Exception:
-                pass
+            tatizo Exception:
+                pita
 
             process.join(timeout=1.0)
             ikiwa process.is_alive():
@@ -699,36 +699,36 @@ kundi BaseManager(object):
                         util.info('manager still alive after terminate')
 
         state.value = State.SHUTDOWN
-        try:
-            del BaseProxy._address_to_local[address]
-        except KeyError:
-            pass
+        jaribu:
+            toa BaseProxy._address_to_local[address]
+        tatizo KeyError:
+            pita
 
     @property
     eleza address(self):
         rudisha self._address
 
     @classmethod
-    eleza register(cls, typeid, callable=None, proxytype=None, exposed=None,
-                 method_to_typeid=None, create_method=True):
+    eleza register(cls, typeid, callable=Tupu, proxytype=Tupu, exposed=Tupu,
+                 method_to_typeid=Tupu, create_method=Kweli):
         '''
         Register a typeid with the manager type
         '''
-        ikiwa '_registry' not in cls.__dict__:
+        ikiwa '_registry' haiko kwenye cls.__dict__:
             cls._registry = cls._registry.copy()
 
-        ikiwa proxytype is None:
+        ikiwa proxytype ni Tupu:
             proxytype = AutoProxy
 
-        exposed = exposed or getattr(proxytype, '_exposed_', None)
+        exposed = exposed ama getattr(proxytype, '_exposed_', Tupu)
 
-        method_to_typeid = method_to_typeid or \
-                           getattr(proxytype, '_method_to_typeid_', None)
+        method_to_typeid = method_to_typeid ama \
+                           getattr(proxytype, '_method_to_typeid_', Tupu)
 
         ikiwa method_to_typeid:
-            for key, value in list(method_to_typeid.items()): # isinstance?
-                assert type(key) is str, '%r is not a string' % key
-                assert type(value) is str, '%r is not a string' % value
+            kila key, value kwenye list(method_to_typeid.items()): # isinstance?
+                assert type(key) ni str, '%r ni sio a string' % key
+                assert type(value) ni str, '%r ni sio a string' % value
 
         cls._registry[typeid] = (
             callable, exposed, method_to_typeid, proxytype
@@ -743,7 +743,7 @@ kundi BaseManager(object):
                     authkey=self._authkey, exposed=exp
                     )
                 conn = self._Client(token.address, authkey=self._authkey)
-                dispatch(conn, None, 'decref', (token.id,))
+                dispatch(conn, Tupu, 'decref', (token.id,))
                 rudisha proxy
             temp.__name__ = typeid
             setattr(cls, typeid, temp)
@@ -764,26 +764,26 @@ kundi ProcessLocalSet(set):
 
 kundi BaseProxy(object):
     '''
-    A base for proxies of shared objects
+    A base kila proxies of shared objects
     '''
     _address_to_local = {}
     _mutex = util.ForkAwareThreadLock()
 
-    eleza __init__(self, token, serializer, manager=None,
-                 authkey=None, exposed=None, incref=True, manager_owned=False):
+    eleza __init__(self, token, serializer, manager=Tupu,
+                 authkey=Tupu, exposed=Tupu, incref=Kweli, manager_owned=Uongo):
         with BaseProxy._mutex:
-            tls_idset = BaseProxy._address_to_local.get(token.address, None)
-            ikiwa tls_idset is None:
+            tls_idset = BaseProxy._address_to_local.get(token.address, Tupu)
+            ikiwa tls_idset ni Tupu:
                 tls_idset = util.ForkAwareLocal(), ProcessLocalSet()
                 BaseProxy._address_to_local[token.address] = tls_idset
 
-        # self._tls is used to record the connection used by this
+        # self._tls ni used to record the connection used by this
         # thread to communicate with the manager at token.address
         self._tls = tls_idset[0]
 
-        # self._idset is used to record the identities of all shared
-        # objects for which the current process owns references and
-        # which are in the manager at token.address
+        # self._idset ni used to record the identities of all shared
+        # objects kila which the current process owns references and
+        # which are kwenye the manager at token.address
         self._idset = tls_idset[1]
 
         self._token = token
@@ -792,17 +792,17 @@ kundi BaseProxy(object):
         self._serializer = serializer
         self._Client = listener_client[serializer][1]
 
-        # Should be set to True only when a proxy object is being created
+        # Should be set to Kweli only when a proxy object ni being created
         # on the manager server; primary use case: nested proxy objects.
-        # RebuildProxy detects when a proxy is being created on the manager
-        # and sets this value appropriately.
+        # RebuildProxy detects when a proxy ni being created on the manager
+        # na sets this value appropriately.
         self._owned_by_manager = manager_owned
 
-        ikiwa authkey is not None:
+        ikiwa authkey ni sio Tupu:
             self._authkey = process.AuthenticationString(authkey)
-        elikiwa self._manager is not None:
+        elikiwa self._manager ni sio Tupu:
             self._authkey = self._manager._authkey
-        else:
+        isipokua:
             self._authkey = process.current_process().authkey
 
         ikiwa incref:
@@ -816,17 +816,17 @@ kundi BaseProxy(object):
         ikiwa threading.current_thread().name != 'MainThread':
             name += '|' + threading.current_thread().name
         conn = self._Client(self._token.address, authkey=self._authkey)
-        dispatch(conn, None, 'accept_connection', (name,))
+        dispatch(conn, Tupu, 'accept_connection', (name,))
         self._tls.connection = conn
 
     eleza _callmethod(self, methodname, args=(), kwds={}):
         '''
-        Try to call a method of the referrent and rudisha a copy of the result
+        Try to call a method of the referrent na rudisha a copy of the result
         '''
-        try:
+        jaribu:
             conn = self._tls.connection
-        except AttributeError:
-            util.debug('thread %r does not own a connection',
+        tatizo AttributeError:
+            util.debug('thread %r does sio own a connection',
                        threading.current_thread().name)
             self._connect()
             conn = self._tls.connection
@@ -845,9 +845,9 @@ kundi BaseProxy(object):
                 authkey=self._authkey, exposed=exposed
                 )
             conn = self._Client(token.address, authkey=self._authkey)
-            dispatch(conn, None, 'decref', (token.id,))
+            dispatch(conn, Tupu, 'decref', (token.id,))
             rudisha proxy
-        raise convert_to_error(kind, result)
+        ashiria convert_to_error(kind, result)
 
     eleza _getvalue(self):
         '''
@@ -858,15 +858,15 @@ kundi BaseProxy(object):
     eleza _incref(self):
         ikiwa self._owned_by_manager:
             util.debug('owned_by_manager skipped INCREF of %r', self._token.id)
-            return
+            rudisha
 
         conn = self._Client(self._token.address, authkey=self._authkey)
-        dispatch(conn, None, 'incref', (self._id,))
+        dispatch(conn, Tupu, 'incref', (self._id,))
         util.debug('INCREF %r', self._token.id)
 
         self._idset.add(self._id)
 
-        state = self._manager and self._manager._state
+        state = self._manager na self._manager._state
 
         self._close = util.Finalize(
             self, BaseProxy._decref,
@@ -879,45 +879,45 @@ kundi BaseProxy(object):
     eleza _decref(token, authkey, state, tls, idset, _Client):
         idset.discard(token.id)
 
-        # check whether manager is still alive
-        ikiwa state is None or state.value == State.STARTED:
+        # check whether manager ni still alive
+        ikiwa state ni Tupu ama state.value == State.STARTED:
             # tell manager this process no longer cares about referent
-            try:
+            jaribu:
                 util.debug('DECREF %r', token.id)
                 conn = _Client(token.address, authkey=authkey)
-                dispatch(conn, None, 'decref', (token.id,))
-            except Exception as e:
+                dispatch(conn, Tupu, 'decref', (token.id,))
+            tatizo Exception kama e:
                 util.debug('... decref failed %s', e)
 
-        else:
+        isipokua:
             util.debug('DECREF %r -- manager already shutdown', token.id)
 
         # check whether we can close this thread's connection because
-        # the process owns no more references to objects for this manager
-        ikiwa not idset and hasattr(tls, 'connection'):
+        # the process owns no more references to objects kila this manager
+        ikiwa sio idset na hasattr(tls, 'connection'):
             util.debug('thread %r has no more proxies so closing conn',
                        threading.current_thread().name)
             tls.connection.close()
-            del tls.connection
+            toa tls.connection
 
     eleza _after_fork(self):
-        self._manager = None
-        try:
+        self._manager = Tupu
+        jaribu:
             self._incref()
-        except Exception as e:
-            # the proxy may just be for a manager which has shutdown
+        tatizo Exception kama e:
+            # the proxy may just be kila a manager which has shutdown
             util.info('incref failed: %s' % e)
 
     eleza __reduce__(self):
         kwds = {}
-        ikiwa get_spawning_popen() is not None:
+        ikiwa get_spawning_popen() ni sio Tupu:
             kwds['authkey'] = self._authkey
 
-        ikiwa getattr(self, '_isauto', False):
+        ikiwa getattr(self, '_isauto', Uongo):
             kwds['exposed'] = self._exposed_
             rudisha (RebuildProxy,
                     (AutoProxy, self._token, self._serializer, kwds))
-        else:
+        isipokua:
             rudisha (RebuildProxy,
                     (type(self), self._token, self._serializer, kwds))
 
@@ -932,34 +932,34 @@ kundi BaseProxy(object):
         '''
         Return representation of the referent (or a fall-back ikiwa that fails)
         '''
-        try:
+        jaribu:
             rudisha self._callmethod('__repr__')
-        except Exception:
+        tatizo Exception:
             rudisha repr(self)[:-1] + "; '__str__()' failed>"
 
 #
-# Function used for unpickling
+# Function used kila unpickling
 #
 
 eleza RebuildProxy(func, token, serializer, kwds):
     '''
-    Function used for unpickling proxy objects.
+    Function used kila unpickling proxy objects.
     '''
-    server = getattr(process.current_process(), '_manager_server', None)
-    ikiwa server and server.address == token.address:
+    server = getattr(process.current_process(), '_manager_server', Tupu)
+    ikiwa server na server.address == token.address:
         util.debug('Rebuild a proxy owned by manager, token=%r', token)
-        kwds['manager_owned'] = True
-        ikiwa token.id not in server.id_to_local_proxy_obj:
+        kwds['manager_owned'] = Kweli
+        ikiwa token.id haiko kwenye server.id_to_local_proxy_obj:
             server.id_to_local_proxy_obj[token.id] = \
                 server.id_to_obj[token.id]
     incref = (
-        kwds.pop('incref', True) and
-        not getattr(process.current_process(), '_inheriting', False)
+        kwds.pop('incref', Kweli) and
+        sio getattr(process.current_process(), '_inheriting', Uongo)
         )
     rudisha func(token, serializer, incref=incref, **kwds)
 
 #
-# Functions to create proxies and proxy types
+# Functions to create proxies na proxy types
 #
 
 eleza MakeProxyType(name, exposed, _cache={}):
@@ -967,14 +967,14 @@ eleza MakeProxyType(name, exposed, _cache={}):
     Return a proxy type whose methods are given by `exposed`
     '''
     exposed = tuple(exposed)
-    try:
+    jaribu:
         rudisha _cache[(name, exposed)]
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
 
     dic = {}
 
-    for meth in exposed:
+    kila meth kwenye exposed:
         exec('''eleza %s(self, /, *args, **kwds):
         rudisha self._callmethod(%r, args, kwds)''' % (meth, meth), dic)
 
@@ -984,29 +984,29 @@ eleza MakeProxyType(name, exposed, _cache={}):
     rudisha ProxyType
 
 
-eleza AutoProxy(token, serializer, manager=None, authkey=None,
-              exposed=None, incref=True):
+eleza AutoProxy(token, serializer, manager=Tupu, authkey=Tupu,
+              exposed=Tupu, incref=Kweli):
     '''
-    Return an auto-proxy for `token`
+    Return an auto-proxy kila `token`
     '''
     _Client = listener_client[serializer][1]
 
-    ikiwa exposed is None:
+    ikiwa exposed ni Tupu:
         conn = _Client(token.address, authkey=authkey)
-        try:
-            exposed = dispatch(conn, None, 'get_methods', (token,))
-        finally:
+        jaribu:
+            exposed = dispatch(conn, Tupu, 'get_methods', (token,))
+        mwishowe:
             conn.close()
 
-    ikiwa authkey is None and manager is not None:
+    ikiwa authkey ni Tupu na manager ni sio Tupu:
         authkey = manager._authkey
-    ikiwa authkey is None:
+    ikiwa authkey ni Tupu:
         authkey = process.current_process().authkey
 
     ProxyType = MakeProxyType('AutoProxy[%s]' % token.typeid, exposed)
     proxy = ProxyType(token, serializer, manager=manager, authkey=authkey,
                       incref=incref)
-    proxy._isauto = True
+    proxy._isauto = Kweli
     rudisha proxy
 
 #
@@ -1019,14 +1019,14 @@ kundi Namespace(object):
     eleza __repr__(self):
         items = list(self.__dict__.items())
         temp = []
-        for name, value in items:
-            ikiwa not name.startswith('_'):
+        kila name, value kwenye items:
+            ikiwa sio name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
         rudisha '%s(%s)' % (self.__class__.__name__, ', '.join(temp))
 
 kundi Value(object):
-    eleza __init__(self, typecode, value, lock=True):
+    eleza __init__(self, typecode, value, lock=Kweli):
         self._typecode = typecode
         self._value = value
     eleza get(self):
@@ -1037,7 +1037,7 @@ kundi Value(object):
         rudisha '%s(%r, %r)'%(type(self).__name__, self._typecode, self._value)
     value = property(get, set)
 
-eleza Array(typecode, sequence, lock=True):
+eleza Array(typecode, sequence, lock=Kweli):
     rudisha array.array(typecode, sequence)
 
 #
@@ -1060,8 +1060,8 @@ kundi IteratorProxy(BaseProxy):
 
 kundi AcquirerProxy(BaseProxy):
     _exposed_ = ('acquire', 'release')
-    eleza acquire(self, blocking=True, timeout=None):
-        args = (blocking,) ikiwa timeout is None else (blocking, timeout)
+    eleza acquire(self, blocking=Kweli, timeout=Tupu):
+        args = (blocking,) ikiwa timeout ni Tupu else (blocking, timeout)
         rudisha self._callmethod('acquire', args)
     eleza release(self):
         rudisha self._callmethod('release')
@@ -1073,26 +1073,26 @@ kundi AcquirerProxy(BaseProxy):
 
 kundi ConditionProxy(AcquirerProxy):
     _exposed_ = ('acquire', 'release', 'wait', 'notify', 'notify_all')
-    eleza wait(self, timeout=None):
+    eleza wait(self, timeout=Tupu):
         rudisha self._callmethod('wait', (timeout,))
     eleza notify(self, n=1):
         rudisha self._callmethod('notify', (n,))
     eleza notify_all(self):
         rudisha self._callmethod('notify_all')
-    eleza wait_for(self, predicate, timeout=None):
+    eleza wait_for(self, predicate, timeout=Tupu):
         result = predicate()
         ikiwa result:
             rudisha result
-        ikiwa timeout is not None:
+        ikiwa timeout ni sio Tupu:
             endtime = time.monotonic() + timeout
-        else:
-            endtime = None
-            waittime = None
-        while not result:
-            ikiwa endtime is not None:
+        isipokua:
+            endtime = Tupu
+            waittime = Tupu
+        wakati sio result:
+            ikiwa endtime ni sio Tupu:
                 waittime = endtime - time.monotonic()
                 ikiwa waittime <= 0:
-                    break
+                    koma
             self.wait(waittime)
             result = predicate()
         rudisha result
@@ -1106,13 +1106,13 @@ kundi EventProxy(BaseProxy):
         rudisha self._callmethod('set')
     eleza clear(self):
         rudisha self._callmethod('clear')
-    eleza wait(self, timeout=None):
+    eleza wait(self, timeout=Tupu):
         rudisha self._callmethod('wait', (timeout,))
 
 
 kundi BarrierProxy(BaseProxy):
     _exposed_ = ('__getattribute__', 'wait', 'abort', 'reset')
-    eleza wait(self, timeout=None):
+    eleza wait(self, timeout=Tupu):
         rudisha self._callmethod('wait', (timeout,))
     eleza abort(self):
         rudisha self._callmethod('abort')
@@ -1212,8 +1212,8 @@ kundi SyncManager(BaseManager):
     '''
     Subkundi of `BaseManager` which supports a number of shared object types.
 
-    The types registered are those intended for the synchronization
-    of threads, plus `dict`, `list` and `Namespace`.
+    The types registered are those intended kila the synchronization
+    of threads, plus `dict`, `list` na `Namespace`.
 
     The `multiprocessing.Manager()` function creates started instances of
     this class.
@@ -1236,17 +1236,17 @@ SyncManager.register('Value', Value, ValueProxy)
 SyncManager.register('Array', Array, ArrayProxy)
 SyncManager.register('Namespace', Namespace, NamespaceProxy)
 
-# types returned by methods of PoolProxy
-SyncManager.register('Iterator', proxytype=IteratorProxy, create_method=False)
-SyncManager.register('AsyncResult', create_method=False)
+# types rudishaed by methods of PoolProxy
+SyncManager.register('Iterator', proxytype=IteratorProxy, create_method=Uongo)
+SyncManager.register('AsyncResult', create_method=Uongo)
 
 #
-# Definition of SharedMemoryManager and SharedMemoryServer
+# Definition of SharedMemoryManager na SharedMemoryServer
 #
 
 ikiwa HAS_SHMEM:
     kundi _SharedMemoryTracker:
-        "Manages one or more shared memory segments."
+        "Manages one ama more shared memory segments."
 
         eleza __init__(self, name, segment_names=[]):
             self.shared_memory_context_name = name
@@ -1254,13 +1254,13 @@ ikiwa HAS_SHMEM:
 
         eleza register_segment(self, segment_name):
             "Adds the supplied shared memory block name to tracker."
-            util.debug(f"Register segment {segment_name!r} in pid {getpid()}")
+            util.debug(f"Register segment {segment_name!r} kwenye pid {getpid()}")
             self.segment_names.append(segment_name)
 
         eleza destroy_segment(self, segment_name):
             """Calls unlink() on the shared memory block with the supplied name
-            and removes it kutoka the list of blocks being tracked."""
-            util.debug(f"Destroy segment {segment_name!r} in pid {getpid()}")
+            na removes it kutoka the list of blocks being tracked."""
+            util.debug(f"Destroy segment {segment_name!r} kwenye pid {getpid()}")
             self.segment_names.remove(segment_name)
             segment = shared_memory.SharedMemory(segment_name)
             segment.close()
@@ -1268,11 +1268,11 @@ ikiwa HAS_SHMEM:
 
         eleza unlink(self):
             "Calls destroy_segment() on all tracked shared memory blocks."
-            for segment_name in self.segment_names[:]:
+            kila segment_name kwenye self.segment_names[:]:
                 self.destroy_segment(segment_name)
 
         eleza __del__(self):
-            util.debug(f"Call {self.__class__.__name__}.__del__ in {getpid()}")
+            util.debug(f"Call {self.__class__.__name__}.__del__ kwenye {getpid()}")
             self.unlink()
 
         eleza __getstate__(self):
@@ -1295,19 +1295,19 @@ ikiwa HAS_SHMEM:
 
         eleza create(*args, **kwargs):
             """Create a new distributed-shared object (not backed by a shared
-            memory block) and rudisha its id to be used in a Proxy Object."""
-            # Unless set up as a shared proxy, don't make shared_memory_context
-            # a standard part of kwargs.  This makes things easier for supplying
+            memory block) na rudisha its id to be used kwenye a Proxy Object."""
+            # Unless set up kama a shared proxy, don't make shared_memory_context
+            # a standard part of kwargs.  This makes things easier kila supplying
             # simple functions.
             ikiwa len(args) >= 3:
                 typeod = args[2]
-            elikiwa 'typeid' in kwargs:
+            elikiwa 'typeid' kwenye kwargs:
                 typeid = kwargs['typeid']
-            elikiwa not args:
-                raise TypeError("descriptor 'create' of 'SharedMemoryServer' "
+            elikiwa sio args:
+                ashiria TypeError("descriptor 'create' of 'SharedMemoryServer' "
                                 "object needs an argument")
-            else:
-                raise TypeError('create expected at least 2 positional '
+            isipokua:
+                ashiria TypeError('create expected at least 2 positional '
                                 'arguments, got %d' % (len(args)-1))
             ikiwa hasattr(self.registry[typeid][-1], "_shared_memory_proxy"):
                 kwargs['shared_memory_context'] = self.shared_memory_context
@@ -1325,33 +1325,33 @@ ikiwa HAS_SHMEM:
 
         eleza release_segment(self, c, segment_name):
             """Calls unlink() on the shared memory block with the supplied name
-            and removes it kutoka the tracker instance inside the Server."""
+            na removes it kutoka the tracker instance inside the Server."""
             self.shared_memory_context.destroy_segment(segment_name)
 
         eleza list_segments(self, c):
             """Returns a list of names of shared memory blocks that the Server
-            is currently tracking."""
+            ni currently tracking."""
             rudisha self.shared_memory_context.segment_names
 
 
     kundi SharedMemoryManager(BaseManager):
         """Like SyncManager but uses SharedMemoryServer instead of Server.
 
-        It provides methods for creating and returning SharedMemory instances
-        and for creating a list-like object (ShareableList) backed by shared
-        memory.  It also provides methods that create and rudisha Proxy Objects
+        It provides methods kila creating na rudishaing SharedMemory instances
+        na kila creating a list-like object (ShareableList) backed by shared
+        memory.  It also provides methods that create na rudisha Proxy Objects
         that support synchronization across processes (i.e. multi-process-safe
-        locks and semaphores).
+        locks na semaphores).
         """
 
         _Server = SharedMemoryServer
 
         eleza __init__(self, *args, **kwargs):
             ikiwa os.name == "posix":
-                # bpo-36867: Ensure the resource_tracker is running before
+                # bpo-36867: Ensure the resource_tracker ni running before
                 # launching the manager process, so that concurrent
-                # shared_memory manipulation both in the manager and in the
-                # current process does not create two resource_tracker
+                # shared_memory manipulation both kwenye the manager na kwenye the
+                # current process does sio create two resource_tracker
                 # processes.
                 kutoka . agiza resource_tracker
                 resource_tracker.ensure_running()
@@ -1360,17 +1360,17 @@ ikiwa HAS_SHMEM:
 
         eleza __del__(self):
             util.debug(f"{self.__class__.__name__}.__del__ by pid {getpid()}")
-            pass
+            pita
 
         eleza get_server(self):
-            'Better than monkeypatching for now; merge into Server ultimately'
+            'Better than monkeypatching kila now; merge into Server ultimately'
             ikiwa self._state.value != State.INITIAL:
                 ikiwa self._state.value == State.STARTED:
-                    raise ProcessError("Already started SharedMemoryServer")
+                    ashiria ProcessError("Already started SharedMemoryServer")
                 elikiwa self._state.value == State.SHUTDOWN:
-                    raise ProcessError("SharedMemoryManager has shut down")
-                else:
-                    raise ProcessError(
+                    ashiria ProcessError("SharedMemoryManager has shut down")
+                isipokua:
+                    ashiria ProcessError(
                         "Unknown state {!r}".format(self._state.value))
             rudisha self._Server(self._registry, self._address,
                                 self._authkey, self._serializer)
@@ -1378,23 +1378,23 @@ ikiwa HAS_SHMEM:
         eleza SharedMemory(self, size):
             """Returns a new SharedMemory instance with the specified size in
             bytes, to be tracked by the manager."""
-            with self._Client(self._address, authkey=self._authkey) as conn:
-                sms = shared_memory.SharedMemory(None, create=True, size=size)
-                try:
-                    dispatch(conn, None, 'track_segment', (sms.name,))
-                except BaseException as e:
+            with self._Client(self._address, authkey=self._authkey) kama conn:
+                sms = shared_memory.SharedMemory(Tupu, create=Kweli, size=size)
+                jaribu:
+                    dispatch(conn, Tupu, 'track_segment', (sms.name,))
+                tatizo BaseException kama e:
                     sms.unlink()
-                    raise e
+                    ashiria e
             rudisha sms
 
         eleza ShareableList(self, sequence):
             """Returns a new ShareableList instance populated with the values
             kutoka the input sequence, to be tracked by the manager."""
-            with self._Client(self._address, authkey=self._authkey) as conn:
+            with self._Client(self._address, authkey=self._authkey) kama conn:
                 sl = shared_memory.ShareableList(sequence)
-                try:
-                    dispatch(conn, None, 'track_segment', (sl.shm.name,))
-                except BaseException as e:
+                jaribu:
+                    dispatch(conn, Tupu, 'track_segment', (sl.shm.name,))
+                tatizo BaseException kama e:
                     sl.shm.unlink()
-                    raise e
+                    ashiria e
             rudisha sl

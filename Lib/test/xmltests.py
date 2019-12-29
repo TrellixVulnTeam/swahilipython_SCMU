@@ -1,4 +1,4 @@
-# Convenience test module to run all of the XML-related tests in the
+# Convenience test module to run all of the XML-related tests kwenye the
 # standard library.
 
 agiza sys

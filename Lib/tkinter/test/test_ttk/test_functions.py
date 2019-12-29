@@ -251,7 +251,7 @@ class InternalFunctionsTest(unittest.TestCase):
         self.assertEqual(ttk._format_layoutlist([])[0], '')
 
         # _format_layoutlist always expects the second item (in every item)
-        # to act like a dict (except when the value evaluates to False).
+        # to act like a dict (tatizo when the value evaluates to False).
         self.assertRaises(AttributeError,
             ttk._format_layoutlist, [('a', 'b')])
 
@@ -359,7 +359,7 @@ class InternalFunctionsTest(unittest.TestCase):
         self.assertEqual(ttk._list_from_layouttuple(tk, ('name', )),
             [('name', {})])
 
-        # not so interesting ltuple
+        # sio so interesting ltuple
         sample_ltuple = ('name', '-option', 'value')
         self.assertEqual(ttk._list_from_layouttuple(tk, sample_ltuple),
             [('name', {'option': 'value'})])

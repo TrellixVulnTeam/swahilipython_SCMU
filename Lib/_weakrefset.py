@@ -19,16 +19,16 @@ kundi _IterationGuard:
 
     def __enter__(self):
         w = self.weakcontainer()
-        if w is not None:
+        if w ni sio None:
             w._iterating.add(self)
         return self
 
     def __exit__(self, e, t, b):
         w = self.weakcontainer()
-        if w is not None:
+        if w ni sio None:
             s = w._iterating
             s.remove(self)
-            if not s:
+            if sio s:
                 w._commit_removals()
 
 
@@ -37,29 +37,29 @@ kundi WeakSet:
         self.data = set()
         def _remove(item, selfref=ref(self)):
             self = selfref()
-            if self is not None:
+            if self ni sio None:
                 if self._iterating:
                     self._pending_removals.append(item)
-                else:
+                isipokua:
                     self.data.discard(item)
         self._remove = _remove
         # A list of keys to be removed
         self._pending_removals = []
         self._iterating = set()
-        if data is not None:
+        if data ni sio None:
             self.update(data)
 
     def _commit_removals(self):
         l = self._pending_removals
         discard = self.data.discard
-        while l:
+        wakati l:
             discard(l.pop())
 
     def __iter__(self):
         with _IterationGuard(self):
             for itemref in self.data:
                 item = itemref()
-                if item is not None:
+                if item ni sio None:
                     # Caveat: the iterator will keep a strong reference to
                     # `item` until it is resumed or closed.
                     yield item
@@ -68,9 +68,9 @@ kundi WeakSet:
         return len(self.data) - len(self._pending_removals)
 
     def __contains__(self, item):
-        try:
+        jaribu:
             wr = ref(item)
-        except TypeError:
+        tatizo TypeError:
             return False
         return wr in self.data
 
@@ -94,13 +94,13 @@ kundi WeakSet:
     def pop(self):
         if self._pending_removals:
             self._commit_removals()
-        while True:
-            try:
+        wakati True:
+            jaribu:
                 itemref = self.data.pop()
-            except KeyError:
+            tatizo KeyError:
                 raise KeyError('pop kutoka empty WeakSet') kutoka None
             item = itemref()
-            if item is not None:
+            if item ni sio None:
                 return item
 
     def remove(self, item):
@@ -136,7 +136,7 @@ kundi WeakSet:
             self._commit_removals()
         if self is other:
             self.data.clear()
-        else:
+        isipokua:
             self.data.difference_update(ref(item) for item in other)
         return self
 
@@ -167,7 +167,7 @@ kundi WeakSet:
         return self.data > set(map(ref, other))
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__):
+        if sio isinstance(other, self.__class__):
             return NotImplemented
         return self.data == set(map(ref, other))
 
@@ -184,7 +184,7 @@ kundi WeakSet:
             self._commit_removals()
         if self is other:
             self.data.clear()
-        else:
+        isipokua:
             self.data.symmetric_difference_update(ref(item, self._remove) for item in other)
         return self
 

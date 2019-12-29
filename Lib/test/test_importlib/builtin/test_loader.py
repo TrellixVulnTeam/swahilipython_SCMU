@@ -7,10 +7,10 @@ agiza sys
 agiza types
 agiza unittest
 
-@unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
+@unittest.skipIf(util.BUILTINS.good_name ni Tupu, 'no reasonable builtin module')
 kundi LoaderTests(abc.LoaderTests):
 
-    """Test load_module() for built-in modules."""
+    """Test load_module() kila built-in modules."""
 
     eleza setUp(self):
         self.verification = {'__name__': 'errno', '__package__': '',
@@ -19,7 +19,7 @@ kundi LoaderTests(abc.LoaderTests):
     eleza verify(self, module):
         """Verify that the module matches against what it should have."""
         self.assertIsInstance(module, types.ModuleType)
-        for attr, value in self.verification.items():
+        kila attr, value kwenye self.verification.items():
             self.assertEqual(getattr(module, attr), value)
         self.assertIn(module.__name__, sys.modules)
 
@@ -33,13 +33,13 @@ kundi LoaderTests(abc.LoaderTests):
             self.verify(module)
 
     # Built-in modules cannot be a package.
-    test_package = test_lacking_parent = None
+    test_package = test_lacking_parent = Tupu
 
     # No way to force an agiza failure.
-    test_state_after_failure = None
+    test_state_after_failure = Tupu
 
     eleza test_module_reuse(self):
-        # Test that the same module is used in a reload.
+        # Test that the same module ni used kwenye a reload.
         with util.uncache(util.BUILTINS.good_name):
             module1 = self.load_module(util.BUILTINS.good_name)
             module2 = self.load_module(util.BUILTINS.good_name)
@@ -47,20 +47,20 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_unloadable(self):
         name = 'dssdsdfff'
-        assert name not in sys.builtin_module_names
-        with self.assertRaises(ImportError) as cm:
+        assert name haiko kwenye sys.builtin_module_names
+        with self.assertRaises(ImportError) kama cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
 
     eleza test_already_imported(self):
-        # Using the name of a module already imported but not a built-in should
+        # Using the name of a module already imported but sio a built-in should
         # still fail.
         module_name = 'builtin_reload_test'
-        assert module_name not in sys.builtin_module_names
+        assert module_name haiko kwenye sys.builtin_module_names
         with util.uncache(module_name):
             module = types.ModuleType(module_name)
             sys.modules[module_name] = module
-        with self.assertRaises(ImportError) as cm:
+        with self.assertRaises(ImportError) kama cm:
             self.load_module(module_name)
         self.assertEqual(cm.exception.name, module_name)
 
@@ -70,32 +70,32 @@ kundi LoaderTests(abc.LoaderTests):
  ) = util.test_both(LoaderTests, machinery=machinery)
 
 
-@unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
+@unittest.skipIf(util.BUILTINS.good_name ni Tupu, 'no reasonable builtin module')
 kundi InspectLoaderTests:
 
-    """Tests for InspectLoader methods for BuiltinImporter."""
+    """Tests kila InspectLoader methods kila BuiltinImporter."""
 
     eleza test_get_code(self):
-        # There is no code object.
+        # There ni no code object.
         result = self.machinery.BuiltinImporter.get_code(util.BUILTINS.good_name)
-        self.assertIsNone(result)
+        self.assertIsTupu(result)
 
     eleza test_get_source(self):
-        # There is no source.
+        # There ni no source.
         result = self.machinery.BuiltinImporter.get_source(util.BUILTINS.good_name)
-        self.assertIsNone(result)
+        self.assertIsTupu(result)
 
     eleza test_is_package(self):
         # Cannot be a package.
         result = self.machinery.BuiltinImporter.is_package(util.BUILTINS.good_name)
-        self.assertFalse(result)
+        self.assertUongo(result)
 
-    @unittest.skipIf(util.BUILTINS.bad_name is None, 'all modules are built in')
+    @unittest.skipIf(util.BUILTINS.bad_name ni Tupu, 'all modules are built in')
     eleza test_not_builtin(self):
-        # Modules not built-in should raise ImportError.
-        for meth_name in ('get_code', 'get_source', 'is_package'):
+        # Modules sio built-in should ashiria ImportError.
+        kila meth_name kwenye ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.BuiltinImporter, meth_name)
-        with self.assertRaises(ImportError) as cm:
+        with self.assertRaises(ImportError) kama cm:
             method(util.BUILTINS.bad_name)
 
 

@@ -37,7 +37,7 @@ class InstallTestCase(support.TempdirManager,
         destination = os.path.join(builddir, "installation")
 
         dist = Distribution({"name": "foopkg"})
-        # script_name need not exist, it just need to be initialized
+        # script_name need sio exist, it just need to be initialized
         dist.script_name = os.path.join(builddir, "setup.py")
         dist.command_obj["build"] = support.DummyCommand(
             build_base=builddir,
@@ -153,12 +153,12 @@ class InstallTestCase(support.TempdirManager,
         cmd = install(dist)
 
         # must supply either prefix/exec-prefix/home or
-        # install-base/install-platbase -- not both
+        # install-base/install-platbase -- sio both
         cmd.prefix = 'prefix'
         cmd.install_base = 'base'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
 
-        # must supply either home or prefix/exec-prefix -- not both
+        # must supply either home or prefix/exec-prefix -- sio both
         cmd.install_base = None
         cmd.home = 'home'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
@@ -185,9 +185,9 @@ class InstallTestCase(support.TempdirManager,
         cmd.run()
 
         f = open(cmd.record)
-        try:
+        jaribu:
             content = f.read()
-        finally:
+        mwishowe:
             f.close()
 
         found = [os.path.basename(line) for line in content.splitlines()]
@@ -198,8 +198,8 @@ class InstallTestCase(support.TempdirManager,
 
     def test_record_extensions(self):
         cmd = test_support.missing_compiler_executable()
-        if cmd is not None:
-            self.skipTest('The %r command is not found' % cmd)
+        if cmd ni sio None:
+            self.skipTest('The %r command ni sio found' % cmd)
         install_dir = self.mkdtemp()
         project_dir, dist = self.create_dist(ext_modules=[
             Extension('xx', ['xxmodule.c'])])
@@ -219,9 +219,9 @@ class InstallTestCase(support.TempdirManager,
         cmd.run()
 
         f = open(cmd.record)
-        try:
+        jaribu:
             content = f.read()
-        finally:
+        mwishowe:
             f.close()
 
         found = [os.path.basename(line) for line in content.splitlines()]
@@ -233,10 +233,10 @@ class InstallTestCase(support.TempdirManager,
         # this covers the code called when DEBUG is set
         old_logs_len = len(self.logs)
         install_module.DEBUG = True
-        try:
+        jaribu:
             with captured_stdout():
                 self.test_record()
-        finally:
+        mwishowe:
             install_module.DEBUG = False
         self.assertGreater(len(self.logs), old_logs_len)
 

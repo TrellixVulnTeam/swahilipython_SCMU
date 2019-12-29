@@ -13,42 +13,42 @@ kundi WindowList:
         self.dict[str(window)] = window
 
     eleza delete(self, window):
-        try:
-            del self.dict[str(window)]
-        except KeyError:
-            # Sometimes, destroy() is called twice
-            pass
+        jaribu:
+            toa self.dict[str(window)]
+        tatizo KeyError:
+            # Sometimes, destroy() ni called twice
+            pita
         self.call_callbacks()
 
     eleza add_windows_to_menu(self,  menu):
         list = []
-        for key in self.dict:
+        kila key kwenye self.dict:
             window = self.dict[key]
-            try:
+            jaribu:
                 title = window.get_title()
-            except TclError:
-                continue
+            tatizo TclError:
+                endelea
             list.append((title, key, window))
         list.sort()
-        for title, key, window in list:
+        kila title, key, window kwenye list:
             menu.add_command(label=title, command=window.wakeup)
 
     eleza register_callback(self, callback):
         self.callbacks.append(callback)
 
     eleza unregister_callback(self, callback):
-        try:
+        jaribu:
             self.callbacks.remove(callback)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
     eleza call_callbacks(self):
-        for callback in self.callbacks:
-            try:
+        kila callback kwenye self.callbacks:
+            jaribu:
                 callback()
             except:
                 t, v, tb = sys.exc_info()
-                andika("warning: callback failed in WindowList", t, ":", v)
+                andika("warning: callback failed kwenye WindowList", t, ":", v)
 
 
 registry = WindowList()
@@ -68,9 +68,9 @@ kundi ListedToplevel(Toplevel):
     eleza destroy(self):
         registry.delete(self)
         Toplevel.destroy(self)
-        # If this is Idle's last window then quit the mainloop
-        # (Needed for clean exit on Windows 98)
-        ikiwa not registry.dict:
+        # If this ni Idle's last window then quit the mainloop
+        # (Needed kila clean exit on Windows 98)
+        ikiwa sio registry.dict:
             self.quit()
 
     eleza update_windowlist_registry(self, window):
@@ -81,16 +81,16 @@ kundi ListedToplevel(Toplevel):
         rudisha self.wm_title()
 
     eleza wakeup(self):
-        try:
+        jaribu:
             ikiwa self.wm_state() == "iconic":
                 self.wm_withdraw()
                 self.wm_deiconify()
-            self.tkraise()
+            self.tkashiria()
             self.focused_widget.focus_set()
-        except TclError:
+        tatizo TclError:
             # This can happen when the Window menu was torn off.
             # Simply ignore it.
-            pass
+            pita
 
 
 ikiwa __name__ == "__main__":

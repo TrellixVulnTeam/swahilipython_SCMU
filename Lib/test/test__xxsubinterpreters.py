@@ -22,7 +22,7 @@ interpreters = support.import_module('_xxsubinterpreters')
 eleza powerset(*sets):
     rudisha itertools.chain.kutoka_iterable(
         combinations(sets, r)
-        for r in range(len(sets)+1))
+        kila r kwenye range(len(sets)+1))
 
 
 eleza _captured_script(script):
@@ -30,14 +30,14 @@ eleza _captured_script(script):
     indented = script.replace('\n', '\n                ')
     wrapped = dedent(f"""
         agiza contextlib
-        with open({w}, 'w') as spipe:
+        with open({w}, 'w') kama spipe:
             with contextlib.redirect_stdout(spipe):
                 {indented}
         """)
     rudisha wrapped, open(r)
 
 
-eleza _run_output(interp, request, shared=None):
+eleza _run_output(interp, request, shared=Tupu):
     script, rpipe = _captured_script(request)
     with rpipe:
         interpreters.run_string(interp, script, shared)
@@ -49,17 +49,17 @@ eleza _running(interp):
     r, w = os.pipe()
     eleza run():
         interpreters.run_string(interp, dedent(f"""
-            # wait for "signal"
-            with open({r}) as rpipe:
+            # wait kila "signal"
+            with open({r}) kama rpipe:
                 rpipe.read()
             """))
 
     t = threading.Thread(target=run)
     t.start()
 
-    yield
+    tuma
 
-    with open(w, 'w') as spipe:
+    with open(w, 'w') kama spipe:
         spipe.write('done')
     t.join()
 
@@ -70,7 +70,7 @@ eleza _running(interp):
 #        run_interp(id, source, **shared)
 #    t = threading.Thread(target=run)
 #    t.start()
-#    yield
+#    tuma
 #    t.join()
 
 
@@ -83,10 +83,10 @@ eleza _run_interp(id, source, shared, _mainns={}):
     main = interpreters.get_main()
     ikiwa main == id:
         ikiwa interpreters.get_current() != main:
-            raise RuntimeError
+            ashiria RuntimeError
         # XXX Run a func?
         exec(source, _mainns)
-    else:
+    isipokua:
         interpreters.run_string(id, source, shared)
 
 
@@ -106,100 +106,100 @@ kundi Interpreter(namedtuple('Interpreter', 'name id')):
             rudisha raw
         elikiwa isinstance(raw, str):
             rudisha cls(raw)
-        else:
-            raise NotImplementedError
+        isipokua:
+            ashiria NotImplementedError
 
-    eleza __new__(cls, name=None, id=None):
+    eleza __new__(cls, name=Tupu, id=Tupu):
         main = interpreters.get_main()
         ikiwa id == main:
-            ikiwa not name:
+            ikiwa sio name:
                 name = 'main'
             elikiwa name != 'main':
-                raise ValueError(
+                ashiria ValueError(
                     'name mismatch (expected "main", got "{}")'.format(name))
             id = main
-        elikiwa id is not None:
-            ikiwa not name:
+        elikiwa id ni sio Tupu:
+            ikiwa sio name:
                 name = 'interp'
             elikiwa name == 'main':
-                raise ValueError('name mismatch (unexpected "main")')
-            ikiwa not isinstance(id, interpreters.InterpreterID):
+                ashiria ValueError('name mismatch (unexpected "main")')
+            ikiwa sio isinstance(id, interpreters.InterpreterID):
                 id = interpreters.InterpreterID(id)
-        elikiwa not name or name == 'main':
+        elikiwa sio name ama name == 'main':
             name = 'main'
             id = main
-        else:
+        isipokua:
             id = interpreters.create()
         self = super().__new__(cls, name, id)
         rudisha self
 
 
-# XXX expect_channel_closed() is unnecessary once we improve exc propagation.
+# XXX expect_channel_closed() ni unnecessary once we improve exc propagation.
 
 @contextlib.contextmanager
 eleza expect_channel_closed():
-    try:
-        yield
-    except interpreters.ChannelClosedError:
-        pass
-    else:
-        assert False, 'channel not closed'
+    jaribu:
+        tuma
+    tatizo interpreters.ChannelClosedError:
+        pita
+    isipokua:
+        assert Uongo, 'channel sio closed'
 
 
 kundi ChannelAction(namedtuple('ChannelAction', 'action end interp')):
 
-    eleza __new__(cls, action, end=None, interp=None):
-        ikiwa not end:
+    eleza __new__(cls, action, end=Tupu, interp=Tupu):
+        ikiwa sio end:
             end = 'both'
-        ikiwa not interp:
+        ikiwa sio interp:
             interp = 'main'
         self = super().__new__(cls, action, end, interp)
         rudisha self
 
     eleza __init__(self, *args, **kwargs):
         ikiwa self.action == 'use':
-            ikiwa self.end not in ('same', 'opposite', 'send', 'recv'):
-                raise ValueError(self.end)
-        elikiwa self.action in ('close', 'force-close'):
-            ikiwa self.end not in ('both', 'same', 'opposite', 'send', 'recv'):
-                raise ValueError(self.end)
-        else:
-            raise ValueError(self.action)
-        ikiwa self.interp not in ('main', 'same', 'other', 'extra'):
-            raise ValueError(self.interp)
+            ikiwa self.end haiko kwenye ('same', 'opposite', 'send', 'recv'):
+                ashiria ValueError(self.end)
+        elikiwa self.action kwenye ('close', 'force-close'):
+            ikiwa self.end haiko kwenye ('both', 'same', 'opposite', 'send', 'recv'):
+                ashiria ValueError(self.end)
+        isipokua:
+            ashiria ValueError(self.action)
+        ikiwa self.interp haiko kwenye ('main', 'same', 'other', 'extra'):
+            ashiria ValueError(self.interp)
 
     eleza resolve_end(self, end):
         ikiwa self.end == 'same':
             rudisha end
         elikiwa self.end == 'opposite':
             rudisha 'recv' ikiwa end == 'send' else 'send'
-        else:
+        isipokua:
             rudisha self.end
 
     eleza resolve_interp(self, interp, other, extra):
         ikiwa self.interp == 'same':
             rudisha interp
         elikiwa self.interp == 'other':
-            ikiwa other is None:
-                raise RuntimeError
+            ikiwa other ni Tupu:
+                ashiria RuntimeError
             rudisha other
         elikiwa self.interp == 'extra':
-            ikiwa extra is None:
-                raise RuntimeError
+            ikiwa extra ni Tupu:
+                ashiria RuntimeError
             rudisha extra
         elikiwa self.interp == 'main':
             ikiwa interp.name == 'main':
                 rudisha interp
-            elikiwa other and other.name == 'main':
+            elikiwa other na other.name == 'main':
                 rudisha other
-            else:
-                raise RuntimeError
+            isipokua:
+                ashiria RuntimeError
         # Per __init__(), there aren't any others.
 
 
 kundi ChannelState(namedtuple('ChannelState', 'pending closed')):
 
-    eleza __new__(cls, pending=0, *, closed=False):
+    eleza __new__(cls, pending=0, *, closed=Uongo):
         self = super().__new__(cls, pending, closed)
         rudisha self
 
@@ -209,31 +209,31 @@ kundi ChannelState(namedtuple('ChannelState', 'pending closed')):
     eleza decr(self):
         rudisha type(self)(self.pending - 1, closed=self.closed)
 
-    eleza close(self, *, force=True):
+    eleza close(self, *, force=Kweli):
         ikiwa self.closed:
-            ikiwa not force or self.pending == 0:
+            ikiwa sio force ama self.pending == 0:
                 rudisha self
-        rudisha type(self)(0 ikiwa force else self.pending, closed=True)
+        rudisha type(self)(0 ikiwa force else self.pending, closed=Kweli)
 
 
-eleza run_action(cid, action, end, state, *, hideclosed=True):
+eleza run_action(cid, action, end, state, *, hideclosed=Kweli):
     ikiwa state.closed:
-        ikiwa action == 'use' and end == 'recv' and state.pending:
-            expectfail = False
-        else:
-            expectfail = True
-    else:
-        expectfail = False
+        ikiwa action == 'use' na end == 'recv' na state.pending:
+            expectfail = Uongo
+        isipokua:
+            expectfail = Kweli
+    isipokua:
+        expectfail = Uongo
 
-    try:
+    jaribu:
         result = _run_action(cid, action, end, state)
-    except interpreters.ChannelClosedError:
-        ikiwa not hideclosed and not expectfail:
-            raise
+    tatizo interpreters.ChannelClosedError:
+        ikiwa sio hideclosed na sio expectfail:
+            ashiria
         result = state.close()
-    else:
+    isipokua:
         ikiwa expectfail:
-            raise ...  # XXX
+            ashiria ...  # XXX
     rudisha result
 
 
@@ -243,52 +243,52 @@ eleza _run_action(cid, action, end, state):
             interpreters.channel_send(cid, b'spam')
             rudisha state.incr()
         elikiwa end == 'recv':
-            ikiwa not state.pending:
-                try:
+            ikiwa sio state.pending:
+                jaribu:
                     interpreters.channel_recv(cid)
-                except interpreters.ChannelEmptyError:
+                tatizo interpreters.ChannelEmptyError:
                     rudisha state
-                else:
-                    raise Exception('expected ChannelEmptyError')
-            else:
+                isipokua:
+                    ashiria Exception('expected ChannelEmptyError')
+            isipokua:
                 interpreters.channel_recv(cid)
                 rudisha state.decr()
-        else:
-            raise ValueError(end)
+        isipokua:
+            ashiria ValueError(end)
     elikiwa action == 'close':
         kwargs = {}
-        ikiwa end in ('recv', 'send'):
-            kwargs[end] = True
+        ikiwa end kwenye ('recv', 'send'):
+            kwargs[end] = Kweli
         interpreters.channel_close(cid, **kwargs)
         rudisha state.close()
     elikiwa action == 'force-close':
         kwargs = {
-            'force': True,
+            'force': Kweli,
             }
-        ikiwa end in ('recv', 'send'):
-            kwargs[end] = True
+        ikiwa end kwenye ('recv', 'send'):
+            kwargs[end] = Kweli
         interpreters.channel_close(cid, **kwargs)
-        rudisha state.close(force=True)
-    else:
-        raise ValueError(action)
+        rudisha state.close(force=Kweli)
+    isipokua:
+        ashiria ValueError(action)
 
 
 eleza clean_up_interpreters():
-    for id in interpreters.list_all():
+    kila id kwenye interpreters.list_all():
         ikiwa id == 0:  # main
-            continue
-        try:
+            endelea
+        jaribu:
             interpreters.destroy(id)
-        except RuntimeError:
-            pass  # already destroyed
+        tatizo RuntimeError:
+            pita  # already destroyed
 
 
 eleza clean_up_channels():
-    for cid in interpreters.channel_list_all():
-        try:
+    kila cid kwenye interpreters.channel_list_all():
+        jaribu:
             interpreters.channel_destroy(cid)
-        except interpreters.ChannelNotFoundError:
-            pass  # already destroyed
+        tatizo interpreters.ChannelNotFoundError:
+            pita  # already destroyed
 
 
 kundi TestBase(unittest.TestCase):
@@ -306,16 +306,16 @@ kundi IsShareableTests(unittest.TestCase):
     eleza test_default_shareables(self):
         shareables = [
                 # singletons
-                None,
+                Tupu,
                 # builtin objects
                 b'spam',
                 'spam',
                 10,
                 -10,
                 ]
-        for obj in shareables:
+        kila obj kwenye shareables:
             with self.subTest(obj):
-                self.assertTrue(
+                self.assertKweli(
                     interpreters.is_shareable(obj))
 
     eleza test_not_shareable(self):
@@ -330,24 +330,24 @@ kundi IsShareableTests(unittest.TestCase):
 
         not_shareables = [
                 # singletons
-                True,
-                False,
+                Kweli,
+                Uongo,
                 NotImplemented,
                 ...,
-                # builtin types and objects
+                # builtin types na objects
                 type,
                 object,
                 object(),
                 Exception(),
                 100.0,
-                # user-defined types and objects
+                # user-defined types na objects
                 Cheese,
                 Cheese('Wensleydale'),
                 SubBytes(b'spam'),
                 ]
-        for obj in not_shareables:
+        kila obj kwenye not_shareables:
             with self.subTest(repr(obj)):
-                self.assertFalse(
+                self.assertUongo(
                     interpreters.is_shareable(obj))
 
 
@@ -362,18 +362,18 @@ kundi ShareableTypeTests(unittest.TestCase):
         super().tearDown()
 
     eleza _assert_values(self, values):
-        for obj in values:
+        kila obj kwenye values:
             with self.subTest(obj):
                 interpreters.channel_send(self.cid, obj)
                 got = interpreters.channel_recv(self.cid)
 
                 self.assertEqual(got, obj)
                 self.assertIs(type(got), type(obj))
-                # XXX Check the following in the channel tests?
+                # XXX Check the following kwenye the channel tests?
                 #self.assertIsNot(got, obj)
 
     eleza test_singletons(self):
-        for obj in [None]:
+        kila obj kwenye [Tupu]:
             with self.subTest(obj):
                 interpreters.channel_send(self.cid, obj)
                 got = interpreters.channel_recv(self.cid)
@@ -389,8 +389,8 @@ kundi ShareableTypeTests(unittest.TestCase):
             ])
 
     eleza test_bytes(self):
-        self._assert_values(i.to_bytes(2, 'little', signed=True)
-                            for i in range(-1, 258))
+        self._assert_values(i.to_bytes(2, 'little', signed=Kweli)
+                            kila i kwenye range(-1, 258))
 
     eleza test_int(self):
         self._assert_values(itertools.chain(range(-1, 258),
@@ -402,7 +402,7 @@ kundi ShareableTypeTests(unittest.TestCase):
             -sys.maxsize - 2,
             2**1000,
         ]
-        for i in ints:
+        kila i kwenye ints:
             with self.subTest(i):
                 with self.assertRaises(OverflowError):
                     interpreters.channel_send(self.cid, i)
@@ -446,7 +446,7 @@ kundi GetCurrentTests(TestBase):
         main = interpreters.get_main()
         interp = interpreters.create()
         out = _run_output(interp, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             cur = _interpreters.get_current()
             andika(cur)
             assert isinstance(cur, _interpreters.InterpreterID)
@@ -469,7 +469,7 @@ kundi GetMainTests(TestBase):
         [expected] = interpreters.list_all()
         interp = interpreters.create()
         out = _run_output(interp, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             main = _interpreters.get_main()
             andika(main)
             assert isinstance(main, _interpreters.InterpreterID)
@@ -482,26 +482,26 @@ kundi IsRunningTests(TestBase):
 
     eleza test_main(self):
         main = interpreters.get_main()
-        self.assertTrue(interpreters.is_running(main))
+        self.assertKweli(interpreters.is_running(main))
 
     eleza test_subinterpreter(self):
         interp = interpreters.create()
-        self.assertFalse(interpreters.is_running(interp))
+        self.assertUongo(interpreters.is_running(interp))
 
         with _running(interp):
-            self.assertTrue(interpreters.is_running(interp))
-        self.assertFalse(interpreters.is_running(interp))
+            self.assertKweli(interpreters.is_running(interp))
+        self.assertUongo(interpreters.is_running(interp))
 
     eleza test_kutoka_subinterpreter(self):
         interp = interpreters.create()
         out = _run_output(interp, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             ikiwa _interpreters.is_running({interp}):
-                andika(True)
-            else:
-                andika(False)
+                andika(Kweli)
+            isipokua:
+                andika(Uongo)
             """))
-        self.assertEqual(out.strip(), 'True')
+        self.assertEqual(out.strip(), 'Kweli')
 
     eleza test_already_destroyed(self):
         interp = interpreters.create()
@@ -521,7 +521,7 @@ kundi IsRunningTests(TestBase):
 kundi InterpreterIDTests(TestBase):
 
     eleza test_with_int(self):
-        id = interpreters.InterpreterID(10, force=True)
+        id = interpreters.InterpreterID(10, force=Kweli)
 
         self.assertEqual(int(id), 10)
 
@@ -530,7 +530,7 @@ kundi InterpreterIDTests(TestBase):
             eleza __index__(self):
                 rudisha 10
 
-        id = interpreters.InterpreterID(Int(), force=True)
+        id = interpreters.InterpreterID(Int(), force=Kweli)
         self.assertEqual(int(id), 10)
 
     eleza test_bad_id(self):
@@ -547,11 +547,11 @@ kundi InterpreterIDTests(TestBase):
             interpreters.InterpreterID(int(id) + 1)  # unforced
 
     eleza test_str(self):
-        id = interpreters.InterpreterID(10, force=True)
+        id = interpreters.InterpreterID(10, force=Kweli)
         self.assertEqual(str(id), '10')
 
     eleza test_repr(self):
-        id = interpreters.InterpreterID(10, force=True)
+        id = interpreters.InterpreterID(10, force=Kweli)
         self.assertEqual(repr(id), 'InterpreterID(10)')
 
     eleza test_equality(self):
@@ -559,22 +559,22 @@ kundi InterpreterIDTests(TestBase):
         id2 = interpreters.InterpreterID(int(id1))
         id3 = interpreters.create()
 
-        self.assertTrue(id1 == id1)
-        self.assertTrue(id1 == id2)
-        self.assertTrue(id1 == int(id1))
-        self.assertTrue(int(id1) == id1)
-        self.assertTrue(id1 == float(int(id1)))
-        self.assertTrue(float(int(id1)) == id1)
-        self.assertFalse(id1 == float(int(id1)) + 0.1)
-        self.assertFalse(id1 == str(int(id1)))
-        self.assertFalse(id1 == 2**1000)
-        self.assertFalse(id1 == float('inf'))
-        self.assertFalse(id1 == 'spam')
-        self.assertFalse(id1 == id3)
+        self.assertKweli(id1 == id1)
+        self.assertKweli(id1 == id2)
+        self.assertKweli(id1 == int(id1))
+        self.assertKweli(int(id1) == id1)
+        self.assertKweli(id1 == float(int(id1)))
+        self.assertKweli(float(int(id1)) == id1)
+        self.assertUongo(id1 == float(int(id1)) + 0.1)
+        self.assertUongo(id1 == str(int(id1)))
+        self.assertUongo(id1 == 2**1000)
+        self.assertUongo(id1 == float('inf'))
+        self.assertUongo(id1 == 'spam')
+        self.assertUongo(id1 == id3)
 
-        self.assertFalse(id1 != id1)
-        self.assertFalse(id1 != id2)
-        self.assertTrue(id1 != id3)
+        self.assertUongo(id1 != id1)
+        self.assertUongo(id1 != id2)
+        self.assertKweli(id1 != id3)
 
 
 kundi CreateTests(TestBase):
@@ -588,7 +588,7 @@ kundi CreateTests(TestBase):
     @unittest.skip('enable this test when working on pystate.c')
     eleza test_unique_id(self):
         seen = set()
-        for _ in range(100):
+        kila _ kwenye range(100):
             id = interpreters.create()
             interpreters.destroy(id)
             seen.add(id)
@@ -597,7 +597,7 @@ kundi CreateTests(TestBase):
 
     eleza test_in_thread(self):
         lock = threading.Lock()
-        id = None
+        id = Tupu
         eleza f():
             nonlocal id
             id = interpreters.create()
@@ -614,7 +614,7 @@ kundi CreateTests(TestBase):
         main, = interpreters.list_all()
         id1 = interpreters.create()
         out = _run_output(id1, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             id = _interpreters.create()
             andika(id)
             assert isinstance(id, _interpreters.InterpreterID)
@@ -626,11 +626,11 @@ kundi CreateTests(TestBase):
     eleza test_in_threaded_subinterpreter(self):
         main, = interpreters.list_all()
         id1 = interpreters.create()
-        id2 = None
+        id2 = Tupu
         eleza f():
             nonlocal id2
             out = _run_output(id1, dedent("""
-                agiza _xxsubinterpreters as _interpreters
+                agiza _xxsubinterpreters kama _interpreters
                 id = _interpreters.create()
                 andika(id)
                 """))
@@ -646,11 +646,11 @@ kundi CreateTests(TestBase):
         before = set(interpreters.list_all())
         # Create 3 subinterpreters.
         ids = []
-        for _ in range(3):
+        kila _ kwenye range(3):
             id = interpreters.create()
             ids.append(id)
         # Now destroy them.
-        for id in ids:
+        kila id kwenye ids:
             interpreters.destroy(id)
         # Finally, create another.
         id = interpreters.create()
@@ -685,11 +685,11 @@ kundi DestroyTests(TestBase):
     eleza test_all(self):
         before = set(interpreters.list_all())
         ids = set()
-        for _ in range(3):
+        kila _ kwenye range(3):
             id = interpreters.create()
             ids.add(id)
         self.assertEqual(set(interpreters.list_all()), before | ids)
-        for id in ids:
+        kila id kwenye ids:
             interpreters.destroy(id)
         self.assertEqual(set(interpreters.list_all()), before)
 
@@ -724,11 +724,11 @@ kundi DestroyTests(TestBase):
         main, = interpreters.list_all()
         id = interpreters.create()
         script = dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
-            try:
+            agiza _xxsubinterpreters kama _interpreters
+            jaribu:
                 _interpreters.destroy({id})
-            except RuntimeError:
-                pass
+            tatizo RuntimeError:
+                pita
             """)
 
         interpreters.run_string(id, script)
@@ -739,7 +739,7 @@ kundi DestroyTests(TestBase):
         id1 = interpreters.create()
         id2 = interpreters.create()
         script = dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             _interpreters.destroy({id2})
             """)
         interpreters.run_string(id1, script)
@@ -761,13 +761,13 @@ kundi DestroyTests(TestBase):
         with _running(interp):
             with self.assertRaises(RuntimeError):
                 interpreters.destroy(interp)
-            self.assertTrue(interpreters.is_running(interp))
+            self.assertKweli(interpreters.is_running(interp))
 
 
 kundi RunStringTests(TestBase):
 
     SCRIPT = dedent("""
-        with open('{}', 'w') as out:
+        with open('{}', 'w') kama out:
             out.write('{}')
         """)
     FILENAME = 'spam'
@@ -775,16 +775,16 @@ kundi RunStringTests(TestBase):
     eleza setUp(self):
         super().setUp()
         self.id = interpreters.create()
-        self._fs = None
+        self._fs = Tupu
 
     eleza tearDown(self):
-        ikiwa self._fs is not None:
+        ikiwa self._fs ni sio Tupu:
             self._fs.close()
         super().tearDown()
 
     @property
     eleza fs(self):
-        ikiwa self._fs is None:
+        ikiwa self._fs ni Tupu:
             self._fs = FSFixture(self)
         rudisha self._fs
 
@@ -828,17 +828,17 @@ kundi RunStringTests(TestBase):
     @unittest.skipUnless(hasattr(os, 'fork'), "test needs os.fork()")
     eleza test_fork(self):
         agiza tempfile
-        with tempfile.NamedTemporaryFile('w+') as file:
+        with tempfile.NamedTemporaryFile('w+') kama file:
             file.write('')
             file.flush()
 
             expected = 'spam spam spam spam spam'
             script = dedent(f"""
                 agiza os
-                try:
+                jaribu:
                     os.fork()
-                except RuntimeError:
-                    with open('{file.name}', 'w') as out:
+                tatizo RuntimeError:
+                    with open('{file.name}', 'w') kama out:
                         out.write('{expected}')
                 """)
             interpreters.run_string(self.id, script)
@@ -854,7 +854,7 @@ kundi RunStringTests(TestBase):
 
     eleza test_does_not_exist(self):
         id = 0
-        while id in interpreters.list_all():
+        wakati id kwenye interpreters.list_all():
             id += 1
         with self.assertRaises(RuntimeError):
             interpreters.run_string(id, 'andika("spam")')
@@ -876,13 +876,13 @@ kundi RunStringTests(TestBase):
             interpreters.run_string(self.id, b'andika("spam")')
 
     @contextlib.contextmanager
-    eleza assert_run_failed(self, exctype, msg=None):
-        with self.assertRaises(interpreters.RunFailedError) as caught:
-            yield
-        ikiwa msg is None:
+    eleza assert_run_failed(self, exctype, msg=Tupu):
+        with self.assertRaises(interpreters.RunFailedError) kama caught:
+            tuma
+        ikiwa msg ni Tupu:
             self.assertEqual(str(caught.exception).split(':')[0],
                              str(exctype))
-        else:
+        isipokua:
             self.assertEqual(str(caught.exception),
                              "{}: {}".format(exctype, msg))
 
@@ -893,11 +893,11 @@ kundi RunStringTests(TestBase):
 
     eleza test_failure(self):
         with self.assert_run_failed(Exception, 'spam'):
-            interpreters.run_string(self.id, 'raise Exception("spam")')
+            interpreters.run_string(self.id, 'ashiria Exception("spam")')
 
     eleza test_SystemExit(self):
         with self.assert_run_failed(SystemExit, '42'):
-            interpreters.run_string(self.id, 'raise SystemExit(42)')
+            interpreters.run_string(self.id, 'ashiria SystemExit(42)')
 
     eleza test_sys_exit(self):
         with self.assert_run_failed(SystemExit):
@@ -918,7 +918,7 @@ kundi RunStringTests(TestBase):
         shared = {
                 'spam': b'ham',
                 'eggs': b'-1',
-                'cheddar': None,
+                'cheddar': Tupu,
                 }
         script = dedent(f"""
             eggs = int(eggs)
@@ -926,44 +926,44 @@ kundi RunStringTests(TestBase):
             result = spam + eggs
 
             ns = dict(vars())
-            del ns['__builtins__']
+            toa ns['__builtins__']
             agiza pickle
-            with open({w}, 'wb') as chan:
+            with open({w}, 'wb') kama chan:
                 pickle.dump(ns, chan)
             """)
         interpreters.run_string(self.id, script, shared)
-        with open(r, 'rb') as chan:
+        with open(r, 'rb') kama chan:
             ns = pickle.load(chan)
 
         self.assertEqual(ns['spam'], 42)
         self.assertEqual(ns['eggs'], -1)
         self.assertEqual(ns['result'], 41)
-        self.assertIsNone(ns['cheddar'])
+        self.assertIsTupu(ns['cheddar'])
 
     eleza test_shared_overwrites(self):
         interpreters.run_string(self.id, dedent("""
             spam = 'eggs'
             ns1 = dict(vars())
-            del ns1['__builtins__']
+            toa ns1['__builtins__']
             """))
 
         shared = {'spam': b'ham'}
         script = dedent(f"""
             ns2 = dict(vars())
-            del ns2['__builtins__']
+            toa ns2['__builtins__']
         """)
         interpreters.run_string(self.id, script, shared)
 
         r, w = os.pipe()
         script = dedent(f"""
             ns = dict(vars())
-            del ns['__builtins__']
+            toa ns['__builtins__']
             agiza pickle
-            with open({w}, 'wb') as chan:
+            with open({w}, 'wb') kama chan:
                 pickle.dump(ns, chan)
             """)
         interpreters.run_string(self.id, script)
-        with open(r, 'rb') as chan:
+        with open(r, 'rb') kama chan:
             ns = pickle.load(chan)
 
         self.assertEqual(ns['ns1']['spam'], 'eggs')
@@ -978,13 +978,13 @@ kundi RunStringTests(TestBase):
             spam = 42
 
             ns = dict(vars())
-            del ns['__builtins__']
+            toa ns['__builtins__']
             agiza pickle
-            with open({w}, 'wb') as chan:
+            with open({w}, 'wb') kama chan:
                 pickle.dump(ns, chan)
             """)
         interpreters.run_string(self.id, script, shared)
-        with open(r, 'rb') as chan:
+        with open(r, 'rb') kama chan:
             ns = pickle.load(chan)
 
         self.assertEqual(ns['__name__'], b'not __main__')
@@ -992,29 +992,29 @@ kundi RunStringTests(TestBase):
     eleza test_main_reused(self):
         r, w = os.pipe()
         interpreters.run_string(self.id, dedent(f"""
-            spam = True
+            spam = Kweli
 
             ns = dict(vars())
-            del ns['__builtins__']
+            toa ns['__builtins__']
             agiza pickle
-            with open({w}, 'wb') as chan:
+            with open({w}, 'wb') kama chan:
                 pickle.dump(ns, chan)
-            del ns, pickle, chan
+            toa ns, pickle, chan
             """))
-        with open(r, 'rb') as chan:
+        with open(r, 'rb') kama chan:
             ns1 = pickle.load(chan)
 
         r, w = os.pipe()
         interpreters.run_string(self.id, dedent(f"""
-            eggs = False
+            eggs = Uongo
 
             ns = dict(vars())
-            del ns['__builtins__']
+            toa ns['__builtins__']
             agiza pickle
-            with open({w}, 'wb') as chan:
+            with open({w}, 'wb') kama chan:
                 pickle.dump(ns, chan)
             """))
-        with open(r, 'rb') as chan:
+        with open(r, 'rb') kama chan:
             ns2 = pickle.load(chan)
 
         self.assertIn('spam', ns1)
@@ -1031,11 +1031,11 @@ kundi RunStringTests(TestBase):
             ns = dict(vars())
             ns['__builtins__'] = str(ns['__builtins__'])
             agiza pickle
-            with open({w}, 'wb') as chan:
+            with open({w}, 'wb') kama chan:
                 pickle.dump(ns, chan)
             """)
         interpreters.run_string(self.id, script)
-        with open(r, 'rb') as chan:
+        with open(r, 'rb') kama chan:
             ns = pickle.load(chan)
 
         ns.pop('__builtins__')
@@ -1043,9 +1043,9 @@ kundi RunStringTests(TestBase):
         self.assertEqual(ns, {
             '__name__': '__main__',
             '__annotations__': {},
-            '__doc__': None,
-            '__package__': None,
-            '__spec__': None,
+            '__doc__': Tupu,
+            '__package__': Tupu,
+            '__spec__': Tupu,
             'spam': 42,
             })
 
@@ -1055,21 +1055,21 @@ kundi RunStringTests(TestBase):
         script = dedent(f"""
         kutoka textwrap agiza dedent
         agiza threading
-        agiza _xxsubinterpreters as _interpreters
+        agiza _xxsubinterpreters kama _interpreters
         id = _interpreters.create()
         eleza f():
             _interpreters.run_string(id, dedent('''
                 agiza time
-                # Give plenty of time for the main interpreter to finish.
+                # Give plenty of time kila the main interpreter to finish.
                 time.sleep(1_000_000)
                 '''))
 
         t = threading.Thread(target=f)
         t.start()
         """)
-        with support.temp_dir() as dirname:
+        with support.temp_dir() kama dirname:
             filename = script_helper.make_script(dirname, 'interp', script)
-            with script_helper.spawn_python(filename) as proc:
+            with script_helper.spawn_python(filename) kama proc:
                 retcode = proc.wait()
 
         self.assertEqual(retcode, 0)
@@ -1081,25 +1081,25 @@ kundi RunStringTests(TestBase):
 kundi ChannelIDTests(TestBase):
 
     eleza test_default_kwargs(self):
-        cid = interpreters._channel_id(10, force=True)
+        cid = interpreters._channel_id(10, force=Kweli)
 
         self.assertEqual(int(cid), 10)
         self.assertEqual(cid.end, 'both')
 
     eleza test_with_kwargs(self):
-        cid = interpreters._channel_id(10, send=True, force=True)
+        cid = interpreters._channel_id(10, send=Kweli, force=Kweli)
         self.assertEqual(cid.end, 'send')
 
-        cid = interpreters._channel_id(10, send=True, recv=False, force=True)
+        cid = interpreters._channel_id(10, send=Kweli, recv=Uongo, force=Kweli)
         self.assertEqual(cid.end, 'send')
 
-        cid = interpreters._channel_id(10, recv=True, force=True)
+        cid = interpreters._channel_id(10, recv=Kweli, force=Kweli)
         self.assertEqual(cid.end, 'recv')
 
-        cid = interpreters._channel_id(10, recv=True, send=False, force=True)
+        cid = interpreters._channel_id(10, recv=Kweli, send=Uongo, force=Kweli)
         self.assertEqual(cid.end, 'recv')
 
-        cid = interpreters._channel_id(10, send=True, recv=True, force=True)
+        cid = interpreters._channel_id(10, send=Kweli, recv=Kweli, force=Kweli)
         self.assertEqual(cid.end, 'both')
 
     eleza test_coerce_id(self):
@@ -1107,7 +1107,7 @@ kundi ChannelIDTests(TestBase):
             eleza __index__(self):
                 rudisha 10
 
-        cid = interpreters._channel_id(Int(), force=True)
+        cid = interpreters._channel_id(Int(), force=Kweli)
         self.assertEqual(int(cid), 10)
 
     eleza test_bad_id(self):
@@ -1120,7 +1120,7 @@ kundi ChannelIDTests(TestBase):
 
     eleza test_bad_kwargs(self):
         with self.assertRaises(ValueError):
-            interpreters._channel_id(10, send=False, recv=False)
+            interpreters._channel_id(10, send=Uongo, recv=Uongo)
 
     eleza test_does_not_exist(self):
         cid = interpreters.channel_create()
@@ -1128,20 +1128,20 @@ kundi ChannelIDTests(TestBase):
             interpreters._channel_id(int(cid) + 1)  # unforced
 
     eleza test_str(self):
-        cid = interpreters._channel_id(10, force=True)
+        cid = interpreters._channel_id(10, force=Kweli)
         self.assertEqual(str(cid), '10')
 
     eleza test_repr(self):
-        cid = interpreters._channel_id(10, force=True)
+        cid = interpreters._channel_id(10, force=Kweli)
         self.assertEqual(repr(cid), 'ChannelID(10)')
 
-        cid = interpreters._channel_id(10, send=True, force=True)
-        self.assertEqual(repr(cid), 'ChannelID(10, send=True)')
+        cid = interpreters._channel_id(10, send=Kweli, force=Kweli)
+        self.assertEqual(repr(cid), 'ChannelID(10, send=Kweli)')
 
-        cid = interpreters._channel_id(10, recv=True, force=True)
-        self.assertEqual(repr(cid), 'ChannelID(10, recv=True)')
+        cid = interpreters._channel_id(10, recv=Kweli, force=Kweli)
+        self.assertEqual(repr(cid), 'ChannelID(10, recv=Kweli)')
 
-        cid = interpreters._channel_id(10, send=True, recv=True, force=True)
+        cid = interpreters._channel_id(10, send=Kweli, recv=Kweli, force=Kweli)
         self.assertEqual(repr(cid), 'ChannelID(10)')
 
     eleza test_equality(self):
@@ -1149,22 +1149,22 @@ kundi ChannelIDTests(TestBase):
         cid2 = interpreters._channel_id(int(cid1))
         cid3 = interpreters.channel_create()
 
-        self.assertTrue(cid1 == cid1)
-        self.assertTrue(cid1 == cid2)
-        self.assertTrue(cid1 == int(cid1))
-        self.assertTrue(int(cid1) == cid1)
-        self.assertTrue(cid1 == float(int(cid1)))
-        self.assertTrue(float(int(cid1)) == cid1)
-        self.assertFalse(cid1 == float(int(cid1)) + 0.1)
-        self.assertFalse(cid1 == str(int(cid1)))
-        self.assertFalse(cid1 == 2**1000)
-        self.assertFalse(cid1 == float('inf'))
-        self.assertFalse(cid1 == 'spam')
-        self.assertFalse(cid1 == cid3)
+        self.assertKweli(cid1 == cid1)
+        self.assertKweli(cid1 == cid2)
+        self.assertKweli(cid1 == int(cid1))
+        self.assertKweli(int(cid1) == cid1)
+        self.assertKweli(cid1 == float(int(cid1)))
+        self.assertKweli(float(int(cid1)) == cid1)
+        self.assertUongo(cid1 == float(int(cid1)) + 0.1)
+        self.assertUongo(cid1 == str(int(cid1)))
+        self.assertUongo(cid1 == 2**1000)
+        self.assertUongo(cid1 == float('inf'))
+        self.assertUongo(cid1 == 'spam')
+        self.assertUongo(cid1 == cid3)
 
-        self.assertFalse(cid1 != cid1)
-        self.assertFalse(cid1 != cid2)
-        self.assertTrue(cid1 != cid3)
+        self.assertUongo(cid1 != cid1)
+        self.assertUongo(cid1 != cid2)
+        self.assertKweli(cid1 != cid3)
 
 
 kundi ChannelTests(TestBase):
@@ -1187,7 +1187,7 @@ kundi ChannelTests(TestBase):
     eleza test_ids_global(self):
         id1 = interpreters.create()
         out = _run_output(id1, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             cid = _interpreters.channel_create()
             andika(cid)
             """))
@@ -1195,7 +1195,7 @@ kundi ChannelTests(TestBase):
 
         id2 = interpreters.create()
         out = _run_output(id2, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             cid = _interpreters.channel_create()
             andika(cid)
             """))
@@ -1217,12 +1217,12 @@ kundi ChannelTests(TestBase):
     eleza test_send_recv_same_interpreter(self):
         id1 = interpreters.create()
         out = _run_output(id1, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             cid = _interpreters.channel_create()
             orig = b'spam'
             _interpreters.channel_send(cid, orig)
             obj = _interpreters.channel_recv(cid)
-            assert obj is not orig
+            assert obj ni sio orig
             assert obj == orig
             """))
 
@@ -1230,7 +1230,7 @@ kundi ChannelTests(TestBase):
         cid = interpreters.channel_create()
         id1 = interpreters.create()
         out = _run_output(id1, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             _interpreters.channel_send({cid}, b'spam')
             """))
         obj = interpreters.channel_recv(cid)
@@ -1241,11 +1241,11 @@ kundi ChannelTests(TestBase):
         cid = interpreters.channel_create()
 
         eleza f():
-            while True:
-                try:
+            wakati Kweli:
+                jaribu:
                     obj = interpreters.channel_recv(cid)
-                    break
-                except interpreters.ChannelEmptyError:
+                    koma
+                tatizo interpreters.ChannelEmptyError:
                     time.sleep(0.1)
             interpreters.channel_send(cid, obj)
         t = threading.Thread(target=f)
@@ -1260,18 +1260,18 @@ kundi ChannelTests(TestBase):
     eleza test_send_recv_different_interpreters_and_threads(self):
         cid = interpreters.channel_create()
         id1 = interpreters.create()
-        out = None
+        out = Tupu
 
         eleza f():
             nonlocal out
             out = _run_output(id1, dedent(f"""
                 agiza time
-                agiza _xxsubinterpreters as _interpreters
-                while True:
-                    try:
+                agiza _xxsubinterpreters kama _interpreters
+                wakati Kweli:
+                    jaribu:
                         obj = _interpreters.channel_recv({cid})
-                        break
-                    except _interpreters.ChannelEmptyError:
+                        koma
+                    tatizo _interpreters.ChannelEmptyError:
                         time.sleep(0.1)
                 assert(obj == b'spam')
                 _interpreters.channel_send({cid}, b'eggs')
@@ -1303,7 +1303,7 @@ kundi ChannelTests(TestBase):
         interp = interpreters.create()
 
         out = _run_output(interp, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             andika(cid.end)
             _interpreters.channel_send(cid, b'spam')
             """),
@@ -1313,17 +1313,17 @@ kundi ChannelTests(TestBase):
         self.assertEqual(obj, b'spam')
         self.assertEqual(out.strip(), 'send')
 
-    # XXX For now there is no high-level channel into which the
+    # XXX For now there ni no high-level channel into which the
     # sent channel ID can be converted...
     # Note: this test caused crashes on some buildbots (bpo-33615).
     @unittest.skip('disabled until high-level channels exist')
     eleza test_run_string_arg_resolved(self):
         cid = interpreters.channel_create()
-        cid = interpreters._channel_id(cid, _resolve=True)
+        cid = interpreters._channel_id(cid, _resolve=Kweli)
         interp = interpreters.create()
 
         out = _run_output(interp, dedent("""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             andika(chan.id.end)
             _interpreters.channel_send(chan.id, b'spam')
             """),
@@ -1351,20 +1351,20 @@ kundi ChannelTests(TestBase):
         id1 = interpreters.create()
         id2 = interpreters.create()
         interpreters.run_string(id1, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             _interpreters.channel_send({cid}, b'spam')
             """))
         interpreters.run_string(id2, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             _interpreters.channel_recv({cid})
             """))
         interpreters.channel_close(cid)
-        with self.assertRaises(interpreters.RunFailedError) as cm:
+        with self.assertRaises(interpreters.RunFailedError) kama cm:
             interpreters.run_string(id1, dedent(f"""
                 _interpreters.channel_send({cid}, b'spam')
                 """))
         self.assertIn('ChannelClosedError', str(cm.exception))
-        with self.assertRaises(interpreters.RunFailedError) as cm:
+        with self.assertRaises(interpreters.RunFailedError) kama cm:
             interpreters.run_string(id2, dedent(f"""
                 _interpreters.channel_send({cid}, b'spam')
                 """))
@@ -1381,12 +1381,12 @@ kundi ChannelTests(TestBase):
 
     eleza test_close_empty(self):
         tests = [
-            (False, False),
-            (True, False),
-            (False, True),
-            (True, True),
+            (Uongo, Uongo),
+            (Kweli, Uongo),
+            (Uongo, Kweli),
+            (Kweli, Kweli),
             ]
-        for send, recv in tests:
+        kila send, recv kwenye tests:
             with self.subTest((send, recv)):
                 cid = interpreters.channel_create()
                 interpreters.channel_send(cid, b'spam')
@@ -1414,18 +1414,18 @@ kundi ChannelTests(TestBase):
         interpreters.channel_send(cid, b'ham')
 
         with self.assertRaises(interpreters.ChannelNotEmptyError):
-            interpreters.channel_close(cid, recv=True)
+            interpreters.channel_close(cid, recv=Kweli)
         interpreters.channel_recv(cid)
         interpreters.channel_send(cid, b'eggs')
         interpreters.channel_recv(cid)
         interpreters.channel_recv(cid)
-        interpreters.channel_close(cid, recv=True)
+        interpreters.channel_close(cid, recv=Kweli)
 
     eleza test_close_send_with_unused_items_unforced(self):
         cid = interpreters.channel_create()
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_send(cid, b'ham')
-        interpreters.channel_close(cid, send=True)
+        interpreters.channel_close(cid, send=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_send(cid, b'eggs')
@@ -1440,18 +1440,18 @@ kundi ChannelTests(TestBase):
         interpreters.channel_send(cid, b'ham')
 
         with self.assertRaises(interpreters.ChannelNotEmptyError):
-            interpreters.channel_close(cid, recv=True, send=True)
+            interpreters.channel_close(cid, recv=Kweli, send=Kweli)
         interpreters.channel_recv(cid)
         interpreters.channel_send(cid, b'eggs')
         interpreters.channel_recv(cid)
         interpreters.channel_recv(cid)
-        interpreters.channel_close(cid, recv=True)
+        interpreters.channel_close(cid, recv=Kweli)
 
     eleza test_close_recv_with_unused_items_forced(self):
         cid = interpreters.channel_create()
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_send(cid, b'ham')
-        interpreters.channel_close(cid, recv=True, force=True)
+        interpreters.channel_close(cid, recv=Kweli, force=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_send(cid, b'eggs')
@@ -1462,7 +1462,7 @@ kundi ChannelTests(TestBase):
         cid = interpreters.channel_create()
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_send(cid, b'ham')
-        interpreters.channel_close(cid, send=True, force=True)
+        interpreters.channel_close(cid, send=Kweli, force=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_send(cid, b'eggs')
@@ -1473,7 +1473,7 @@ kundi ChannelTests(TestBase):
         cid = interpreters.channel_create()
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_send(cid, b'ham')
-        interpreters.channel_close(cid, send=True, recv=True, force=True)
+        interpreters.channel_close(cid, send=Kweli, recv=Kweli, force=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_send(cid, b'eggs')
@@ -1494,8 +1494,8 @@ kundi ChannelTests(TestBase):
         interpreters.channel_send(cid, b'spam')
         interp = interpreters.create()
         interpreters.run_string(interp, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
-            _interpreters.channel_close({cid}, force=True)
+            agiza _xxsubinterpreters kama _interpreters
+            _interpreters.channel_close({cid}, force=Kweli)
             """))
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_recv(cid)
@@ -1508,7 +1508,7 @@ kundi ChannelTests(TestBase):
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_recv(cid)
-        interpreters.channel_close(cid, force=True)
+        interpreters.channel_close(cid, force=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_send(cid, b'eggs')
@@ -1518,19 +1518,19 @@ kundi ChannelTests(TestBase):
 
 kundi ChannelReleaseTests(TestBase):
 
-    # XXX Add more test coverage a la the tests for close().
+    # XXX Add more test coverage a la the tests kila close().
 
     """
     - main / interp / other
     - run in: current thread / new thread / other thread / different threads
     - end / opposite
     - force / no force
-    - used / not used  (associated / not associated)
+    - used / sio used  (associated / sio associated)
     - empty / emptied / never emptied / partly emptied
-    - closed / not closed
-    - released / not released
+    - closed / sio closed
+    - released / sio released
     - creator (interp) / other
-    - associated interpreter not running
+    - associated interpreter sio running
     - associated interpreter destroyed
     """
 
@@ -1546,24 +1546,24 @@ kundi ChannelReleaseTests(TestBase):
     release in:         main, interp1
     creator:            same, other (incl. interp2)
 
-    use:                None,send,recv,send/recv in None,same,other(incl. interp2),same+other(incl. interp2),all
-    pre-release:        None,send,recv,both in None,same,other(incl. interp2),same+other(incl. interp2),all
-    pre-release forced: None,send,recv,both in None,same,other(incl. interp2),same+other(incl. interp2),all
+    use:                Tupu,send,recv,send/recv kwenye Tupu,same,other(incl. interp2),same+other(incl. interp2),all
+    pre-release:        Tupu,send,recv,both kwenye Tupu,same,other(incl. interp2),same+other(incl. interp2),all
+    pre-release forced: Tupu,send,recv,both kwenye Tupu,same,other(incl. interp2),same+other(incl. interp2),all
 
     release:            same
     release forced:     same
 
-    use after:          None,send,recv,send/recv in None,same,other(incl. interp2),same+other(incl. interp2),all
-    release after:      None,send,recv,send/recv in None,same,other(incl. interp2),same+other(incl. interp2),all
-    check released:     send/recv for same/other(incl. interp2)
-    check closed:       send/recv for same/other(incl. interp2)
+    use after:          Tupu,send,recv,send/recv kwenye Tupu,same,other(incl. interp2),same+other(incl. interp2),all
+    release after:      Tupu,send,recv,send/recv kwenye Tupu,same,other(incl. interp2),same+other(incl. interp2),all
+    check released:     send/recv kila same/other(incl. interp2)
+    check closed:       send/recv kila same/other(incl. interp2)
     """
 
     eleza test_single_user(self):
         cid = interpreters.channel_create()
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_recv(cid)
-        interpreters.channel_release(cid, send=True, recv=True)
+        interpreters.channel_release(cid, send=Kweli, recv=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_send(cid, b'eggs')
@@ -1575,11 +1575,11 @@ kundi ChannelReleaseTests(TestBase):
         id1 = interpreters.create()
         id2 = interpreters.create()
         interpreters.run_string(id1, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             _interpreters.channel_send({cid}, b'spam')
             """))
         out = _run_output(id2, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             obj = _interpreters.channel_recv({cid})
             _interpreters.channel_release({cid})
             andika(repr(obj))
@@ -1605,16 +1605,16 @@ kundi ChannelReleaseTests(TestBase):
         cid = interpreters.channel_create()
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_recv(cid)
-        interpreters.channel_release(cid, send=True, recv=True)
+        interpreters.channel_release(cid, send=Kweli, recv=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
-            interpreters.channel_release(cid, send=True, recv=True)
+            interpreters.channel_release(cid, send=Kweli, recv=Kweli)
 
     eleza test_with_unused_items(self):
         cid = interpreters.channel_create()
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_send(cid, b'ham')
-        interpreters.channel_release(cid, send=True, recv=True)
+        interpreters.channel_release(cid, send=Kweli, recv=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_recv(cid)
@@ -1633,7 +1633,7 @@ kundi ChannelReleaseTests(TestBase):
         interpreters.channel_send(cid, b'spam')
         interp = interpreters.create()
         interpreters.run_string(interp, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             _interpreters.channel_release({cid})
             """))
         obj = interpreters.channel_recv(cid)
@@ -1644,11 +1644,11 @@ kundi ChannelReleaseTests(TestBase):
         self.assertEqual(obj, b'spam')
 
     eleza test_close_if_unassociated(self):
-        # XXX Something's not right with this test...
+        # XXX Something's sio right with this test...
         cid = interpreters.channel_create()
         interp = interpreters.create()
         interpreters.run_string(interp, dedent(f"""
-            agiza _xxsubinterpreters as _interpreters
+            agiza _xxsubinterpreters kama _interpreters
             obj = _interpreters.channel_send({cid}, b'spam')
             _interpreters.channel_release({cid})
             """))
@@ -1659,10 +1659,10 @@ kundi ChannelReleaseTests(TestBase):
     eleza test_partially(self):
         # XXX Is partial close too weird/confusing?
         cid = interpreters.channel_create()
-        interpreters.channel_send(cid, None)
+        interpreters.channel_send(cid, Tupu)
         interpreters.channel_recv(cid)
         interpreters.channel_send(cid, b'spam')
-        interpreters.channel_release(cid, send=True)
+        interpreters.channel_release(cid, send=Kweli)
         obj = interpreters.channel_recv(cid)
 
         self.assertEqual(obj, b'spam')
@@ -1673,7 +1673,7 @@ kundi ChannelReleaseTests(TestBase):
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_send(cid, b'spam')
         interpreters.channel_recv(cid)
-        interpreters.channel_release(cid, send=True, recv=True)
+        interpreters.channel_release(cid, send=Kweli, recv=Kweli)
 
         with self.assertRaises(interpreters.ChannelClosedError):
             interpreters.channel_send(cid, b'eggs')
@@ -1684,15 +1684,15 @@ kundi ChannelReleaseTests(TestBase):
 kundi ChannelCloseFixture(namedtuple('ChannelCloseFixture',
                                      'end interp other extra creator')):
 
-    # Set this to True to avoid creating interpreters, e.g. when
+    # Set this to Kweli to avoid creating interpreters, e.g. when
     # scanning through test permutations without running them.
-    QUICK = False
+    QUICK = Uongo
 
     eleza __new__(cls, end, interp, other, extra, creator):
-        assert end in ('send', 'recv')
+        assert end kwenye ('send', 'recv')
         ikiwa cls.QUICK:
             known = {}
-        else:
+        isipokua:
             interp = Interpreter.kutoka_raw(interp)
             other = Interpreter.kutoka_raw(other)
             extra = Interpreter.kutoka_raw(extra)
@@ -1701,7 +1701,7 @@ kundi ChannelCloseFixture(namedtuple('ChannelCloseFixture',
                 other.name: other,
                 extra.name: extra,
                 }
-        ikiwa not creator:
+        ikiwa sio creator:
             creator = 'same'
         self = super().__new__(cls, end, interp, other, extra, creator)
         self._prepped = set()
@@ -1715,9 +1715,9 @@ kundi ChannelCloseFixture(namedtuple('ChannelCloseFixture',
 
     @property
     eleza cid(self):
-        try:
+        jaribu:
             rudisha self._cid
-        except AttributeError:
+        tatizo AttributeError:
             creator = self._get_interpreter(self.creator)
             self._cid = self._new_channel(creator)
             rudisha self._cid
@@ -1727,11 +1727,11 @@ kundi ChannelCloseFixture(namedtuple('ChannelCloseFixture',
         self._prep_interpreter(interp)
         rudisha interp
 
-    eleza expect_closed_error(self, end=None):
-        ikiwa end is None:
+    eleza expect_closed_error(self, end=Tupu):
+        ikiwa end ni Tupu:
             end = self.end
-        ikiwa end == 'recv' and self.state.closed == 'send':
-            rudisha False
+        ikiwa end == 'recv' na self.state.closed == 'send':
+            rudisha Uongo
         rudisha bool(self.state.closed)
 
     eleza prep_interpreter(self, interp):
@@ -1749,7 +1749,7 @@ kundi ChannelCloseFixture(namedtuple('ChannelCloseFixture',
     eleza _new_channel(self, creator):
         ikiwa creator.name == 'main':
             rudisha interpreters.channel_create()
-        else:
+        isipokua:
             ch = interpreters.channel_create()
             run_interp(creator.id, f"""
                 agiza _xxsubinterpreters
@@ -1757,39 +1757,39 @@ kundi ChannelCloseFixture(namedtuple('ChannelCloseFixture',
                 # We purposefully send back an int to avoid tying the
                 # channel to the other interpreter.
                 _xxsubinterpreters.channel_send({ch}, int(cid))
-                del _xxsubinterpreters
+                toa _xxsubinterpreters
                 """)
             self._cid = interpreters.channel_recv(ch)
         rudisha self._cid
 
     eleza _get_interpreter(self, interp):
-        ikiwa interp in ('same', 'interp'):
+        ikiwa interp kwenye ('same', 'interp'):
             rudisha self.interp
         elikiwa interp == 'other':
             rudisha self.other
         elikiwa interp == 'extra':
             rudisha self.extra
-        else:
+        isipokua:
             name = interp
-            try:
+            jaribu:
                 interp = self._known[name]
-            except KeyError:
+            tatizo KeyError:
                 interp = self._known[name] = Interpreter(name)
             rudisha interp
 
     eleza _prep_interpreter(self, interp):
-        ikiwa interp.id in self._prepped:
-            return
+        ikiwa interp.id kwenye self._prepped:
+            rudisha
         self._prepped.add(interp.id)
         ikiwa interp.name == 'main':
-            return
+            rudisha
         run_interp(interp.id, f"""
-            agiza _xxsubinterpreters as interpreters
-            agiza test.test__xxsubinterpreters as helpers
+            agiza _xxsubinterpreters kama interpreters
+            agiza test.test__xxsubinterpreters kama helpers
             ChannelState = helpers.ChannelState
-            try:
+            jaribu:
                 cid
-            except NameError:
+            tatizo NameError:
                 cid = interpreters._channel_id({self.cid})
             """)
 
@@ -1802,12 +1802,12 @@ kundi ExhaustiveChannelTests(TestBase):
     - run in: current thread / new thread / other thread / different threads
     - end / opposite
     - force / no force
-    - used / not used  (associated / not associated)
+    - used / sio used  (associated / sio associated)
     - empty / emptied / never emptied / partly emptied
-    - closed / not closed
-    - released / not released
+    - closed / sio closed
+    - released / sio released
     - creator (interp) / other
-    - associated interpreter not running
+    - associated interpreter sio running
     - associated interpreter destroyed
 
     - close after unbound
@@ -1825,106 +1825,106 @@ kundi ExhaustiveChannelTests(TestBase):
     close in:         main, interp1
     creator:          same, other, extra
 
-    use:              None,send,recv,send/recv in None,same,other,same+other,all
-    pre-close:        None,send,recv in None,same,other,same+other,all
-    pre-close forced: None,send,recv in None,same,other,same+other,all
+    use:              Tupu,send,recv,send/recv kwenye Tupu,same,other,same+other,all
+    pre-close:        Tupu,send,recv kwenye Tupu,same,other,same+other,all
+    pre-close forced: Tupu,send,recv kwenye Tupu,same,other,same+other,all
 
     close:            same
     close forced:     same
 
-    use after:        None,send,recv,send/recv in None,same,other,extra,same+other,all
-    close after:      None,send,recv,send/recv in None,same,other,extra,same+other,all
-    check closed:     send/recv for same/other(incl. interp2)
+    use after:        Tupu,send,recv,send/recv kwenye Tupu,same,other,extra,same+other,all
+    close after:      Tupu,send,recv,send/recv kwenye Tupu,same,other,extra,same+other,all
+    check closed:     send/recv kila same/other(incl. interp2)
     """
 
     eleza iter_action_sets(self):
-        # - used / not used  (associated / not associated)
+        # - used / sio used  (associated / sio associated)
         # - empty / emptied / never emptied / partly emptied
-        # - closed / not closed
-        # - released / not released
+        # - closed / sio closed
+        # - released / sio released
 
         # never used
-        yield []
+        tuma []
 
         # only pre-closed (and possible used after)
-        for closeactions in self._iter_close_action_sets('same', 'other'):
-            yield closeactions
-            for postactions in self._iter_post_close_action_sets():
-                yield closeactions + postactions
-        for closeactions in self._iter_close_action_sets('other', 'extra'):
-            yield closeactions
-            for postactions in self._iter_post_close_action_sets():
-                yield closeactions + postactions
+        kila closeactions kwenye self._iter_close_action_sets('same', 'other'):
+            tuma closeactions
+            kila postactions kwenye self._iter_post_close_action_sets():
+                tuma closeactions + postactions
+        kila closeactions kwenye self._iter_close_action_sets('other', 'extra'):
+            tuma closeactions
+            kila postactions kwenye self._iter_post_close_action_sets():
+                tuma closeactions + postactions
 
         # used
-        for useactions in self._iter_use_action_sets('same', 'other'):
-            yield useactions
-            for closeactions in self._iter_close_action_sets('same', 'other'):
+        kila useactions kwenye self._iter_use_action_sets('same', 'other'):
+            tuma useactions
+            kila closeactions kwenye self._iter_close_action_sets('same', 'other'):
                 actions = useactions + closeactions
-                yield actions
-                for postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
-            for closeactions in self._iter_close_action_sets('other', 'extra'):
+                tuma actions
+                kila postactions kwenye self._iter_post_close_action_sets():
+                    tuma actions + postactions
+            kila closeactions kwenye self._iter_close_action_sets('other', 'extra'):
                 actions = useactions + closeactions
-                yield actions
-                for postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
-        for useactions in self._iter_use_action_sets('other', 'extra'):
-            yield useactions
-            for closeactions in self._iter_close_action_sets('same', 'other'):
+                tuma actions
+                kila postactions kwenye self._iter_post_close_action_sets():
+                    tuma actions + postactions
+        kila useactions kwenye self._iter_use_action_sets('other', 'extra'):
+            tuma useactions
+            kila closeactions kwenye self._iter_close_action_sets('same', 'other'):
                 actions = useactions + closeactions
-                yield actions
-                for postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
-            for closeactions in self._iter_close_action_sets('other', 'extra'):
+                tuma actions
+                kila postactions kwenye self._iter_post_close_action_sets():
+                    tuma actions + postactions
+            kila closeactions kwenye self._iter_close_action_sets('other', 'extra'):
                 actions = useactions + closeactions
-                yield actions
-                for postactions in self._iter_post_close_action_sets():
-                    yield actions + postactions
+                tuma actions
+                kila postactions kwenye self._iter_post_close_action_sets():
+                    tuma actions + postactions
 
     eleza _iter_use_action_sets(self, interp1, interp2):
         interps = (interp1, interp2)
 
         # only recv end used
-        yield [
+        tuma [
             ChannelAction('use', 'recv', interp1),
             ]
-        yield [
+        tuma [
             ChannelAction('use', 'recv', interp2),
             ]
-        yield [
+        tuma [
             ChannelAction('use', 'recv', interp1),
             ChannelAction('use', 'recv', interp2),
             ]
 
         # never emptied
-        yield [
+        tuma [
             ChannelAction('use', 'send', interp1),
             ]
-        yield [
+        tuma [
             ChannelAction('use', 'send', interp2),
             ]
-        yield [
+        tuma [
             ChannelAction('use', 'send', interp1),
             ChannelAction('use', 'send', interp2),
             ]
 
         # partially emptied
-        for interp1 in interps:
-            for interp2 in interps:
-                for interp3 in interps:
-                    yield [
+        kila interp1 kwenye interps:
+            kila interp2 kwenye interps:
+                kila interp3 kwenye interps:
+                    tuma [
                         ChannelAction('use', 'send', interp1),
                         ChannelAction('use', 'send', interp2),
                         ChannelAction('use', 'recv', interp3),
                         ]
 
         # fully emptied
-        for interp1 in interps:
-            for interp2 in interps:
-                for interp3 in interps:
-                    for interp4 in interps:
-                        yield [
+        kila interp1 kwenye interps:
+            kila interp2 kwenye interps:
+                kila interp3 kwenye interps:
+                    kila interp4 kwenye interps:
+                        tuma [
                             ChannelAction('use', 'send', interp1),
                             ChannelAction('use', 'send', interp2),
                             ChannelAction('use', 'recv', interp3),
@@ -1934,36 +1934,36 @@ kundi ExhaustiveChannelTests(TestBase):
     eleza _iter_close_action_sets(self, interp1, interp2):
         ends = ('recv', 'send')
         interps = (interp1, interp2)
-        for force in (True, False):
+        kila force kwenye (Kweli, Uongo):
             op = 'force-close' ikiwa force else 'close'
-            for interp in interps:
-                for end in ends:
-                    yield [
+            kila interp kwenye interps:
+                kila end kwenye ends:
+                    tuma [
                         ChannelAction(op, end, interp),
                         ]
-        for recvop in ('close', 'force-close'):
-            for sendop in ('close', 'force-close'):
-                for recv in interps:
-                    for send in interps:
-                        yield [
+        kila recvop kwenye ('close', 'force-close'):
+            kila sendop kwenye ('close', 'force-close'):
+                kila recv kwenye interps:
+                    kila send kwenye interps:
+                        tuma [
                             ChannelAction(recvop, 'recv', recv),
                             ChannelAction(sendop, 'send', send),
                             ]
 
     eleza _iter_post_close_action_sets(self):
-        for interp in ('same', 'extra', 'other'):
-            yield [
+        kila interp kwenye ('same', 'extra', 'other'):
+            tuma [
                 ChannelAction('use', 'recv', interp),
                 ]
-            yield [
+            tuma [
                 ChannelAction('use', 'send', interp),
                 ]
 
     eleza run_actions(self, fix, actions):
-        for action in actions:
+        kila action kwenye actions:
             self.run_action(fix, action)
 
-    eleza run_action(self, fix, action, *, hideclosed=True):
+    eleza run_action(self, fix, action, *, hideclosed=Kweli):
         end = action.resolve_end(fix.end)
         interp = action.resolve_interp(fix.interp, fix.other, fix.extra)
         fix.prep_interpreter(interp)
@@ -1976,7 +1976,7 @@ kundi ExhaustiveChannelTests(TestBase):
                 hideclosed=hideclosed,
                 )
             fix.record_action(action, result)
-        else:
+        isipokua:
             _cid = interpreters.channel_create()
             run_interp(interp.id, f"""
                 result = helpers.run_action(
@@ -2003,22 +2003,22 @@ kundi ExhaustiveChannelTests(TestBase):
             ('interp1', 'interp2', 'extra'),
             ('interp1', 'interp2', 'main'),
         ]
-        for interp, other, extra in interpreters:
-            for creator in ('same', 'other', 'creator'):
-                for end in ('send', 'recv'):
-                    yield ChannelCloseFixture(end, interp, other, extra, creator)
+        kila interp, other, extra kwenye interpreters:
+            kila creator kwenye ('same', 'other', 'creator'):
+                kila end kwenye ('send', 'recv'):
+                    tuma ChannelCloseFixture(end, interp, other, extra, creator)
 
     eleza _close(self, fix, *, force):
         op = 'force-close' ikiwa force else 'close'
         close = ChannelAction(op, fix.end, 'same')
-        ikiwa not fix.expect_closed_error():
-            self.run_action(fix, close, hideclosed=False)
-        else:
+        ikiwa sio fix.expect_closed_error():
+            self.run_action(fix, close, hideclosed=Uongo)
+        isipokua:
             with self.assertRaises(interpreters.ChannelClosedError):
-                self.run_action(fix, close, hideclosed=False)
+                self.run_action(fix, close, hideclosed=Uongo)
 
-    eleza _assert_closed_in_interp(self, fix, interp=None):
-        ikiwa interp is None or interp.name == 'main':
+    eleza _assert_closed_in_interp(self, fix, interp=Tupu):
+        ikiwa interp ni Tupu ama interp.name == 'main':
             with self.assertRaises(interpreters.ChannelClosedError):
                 interpreters.channel_recv(fix.cid)
             with self.assertRaises(interpreters.ChannelClosedError):
@@ -2026,8 +2026,8 @@ kundi ExhaustiveChannelTests(TestBase):
             with self.assertRaises(interpreters.ChannelClosedError):
                 interpreters.channel_close(fix.cid)
             with self.assertRaises(interpreters.ChannelClosedError):
-                interpreters.channel_close(fix.cid, force=True)
-        else:
+                interpreters.channel_close(fix.cid, force=Kweli)
+        isipokua:
             run_interp(interp.id, f"""
                 with helpers.expect_channel_closed():
                     interpreters.channel_recv(cid)
@@ -2042,71 +2042,71 @@ kundi ExhaustiveChannelTests(TestBase):
                 """)
             run_interp(interp.id, f"""
                 with helpers.expect_channel_closed():
-                    interpreters.channel_close(cid, force=True)
+                    interpreters.channel_close(cid, force=Kweli)
                 """)
 
     eleza _assert_closed(self, fix):
-        self.assertTrue(fix.state.closed)
+        self.assertKweli(fix.state.closed)
 
-        for _ in range(fix.state.pending):
+        kila _ kwenye range(fix.state.pending):
             interpreters.channel_recv(fix.cid)
         self._assert_closed_in_interp(fix)
 
-        for interp in ('same', 'other'):
+        kila interp kwenye ('same', 'other'):
             interp = fix.get_interpreter(interp)
             ikiwa interp.name == 'main':
-                continue
+                endelea
             self._assert_closed_in_interp(fix, interp)
 
         interp = fix.get_interpreter('fresh')
         self._assert_closed_in_interp(fix, interp)
 
-    eleza _iter_close_tests(self, verbose=False):
+    eleza _iter_close_tests(self, verbose=Uongo):
         i = 0
-        for actions in self.iter_action_sets():
+        kila actions kwenye self.iter_action_sets():
             andika()
-            for fix in self.iter_fixtures():
+            kila fix kwenye self.iter_fixtures():
                 i += 1
                 ikiwa i > 1000:
-                    return
+                    rudisha
                 ikiwa verbose:
                     ikiwa (i - 1) % 6 == 0:
                         andika()
                     andika(i, fix, '({} actions)'.format(len(actions)))
-                else:
+                isipokua:
                     ikiwa (i - 1) % 6 == 0:
                         andika(' ', end='')
                     andika('.', end=''); sys.stdout.flush()
-                yield i, fix, actions
+                tuma i, fix, actions
             ikiwa verbose:
                 andika('---')
         andika()
 
-    # This is useful for scanning through the possible tests.
+    # This ni useful kila scanning through the possible tests.
     eleza _skim_close_tests(self):
-        ChannelCloseFixture.QUICK = True
-        for i, fix, actions in self._iter_close_tests():
-            pass
+        ChannelCloseFixture.QUICK = Kweli
+        kila i, fix, actions kwenye self._iter_close_tests():
+            pita
 
     eleza test_close(self):
-        for i, fix, actions in self._iter_close_tests():
+        kila i, fix, actions kwenye self._iter_close_tests():
             with self.subTest('{} {}  {}'.format(i, fix, actions)):
                 fix.prep_interpreter(fix.interp)
                 self.run_actions(fix, actions)
 
-                self._close(fix, force=False)
+                self._close(fix, force=Uongo)
 
                 self._assert_closed(fix)
             # XXX Things slow down ikiwa we have too many interpreters.
             fix.clean_up()
 
     eleza test_force_close(self):
-        for i, fix, actions in self._iter_close_tests():
+        kila i, fix, actions kwenye self._iter_close_tests():
             with self.subTest('{} {}  {}'.format(i, fix, actions)):
                 fix.prep_interpreter(fix.interp)
                 self.run_actions(fix, actions)
 
-                self._close(fix, force=True)
+                self._close(fix, force=Kweli)
 
                 self._assert_closed(fix)
             # XXX Things slow down ikiwa we have too many interpreters.

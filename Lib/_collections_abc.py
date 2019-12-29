@@ -30,9 +30,9 @@ __name__ = "collections.abc"
 # so that they will pass tests like:
 #       it = iter(somebytearray)
 #       assert isinstance(it, Iterable)
-# Note:  in other implementations, these types might not be distinct
+# Note:  in other implementations, these types might sio be distinct
 # and they may have their own implementation specific types that
-# are not included on this list.
+# are sio included on this list.
 bytes_iterator = type(iter(b''))
 bytearray_iterator = type(iter(bytearray()))
 #callable_iterator = ???
@@ -59,12 +59,12 @@ async def _coro(): pass
 _coro = _coro()
 coroutine = type(_coro)
 _coro.close()  # Prevent ResourceWarning
-del _coro
+toa _coro
 ## asynchronous generator ##
 async def _ag(): yield
 _ag = _ag()
 async_generator = type(_ag)
-del _ag
+toa _ag
 
 
 ### ONE-TRICK PONIES ###
@@ -76,8 +76,8 @@ def _check_methods(C, *methods):
             if method in B.__dict__:
                 if B.__dict__[method] is None:
                     return NotImplemented
-                break
-        else:
+                koma
+        isipokua:
             return NotImplemented
     return True
 
@@ -131,18 +131,18 @@ kundi Coroutine(Awaitable):
             if tb is None:
                 raise typ
             val = typ()
-        if tb is not None:
+        if tb ni sio None:
             val = val.with_traceback(tb)
         raise val
 
     def close(self):
         """Raise GeneratorExit inside coroutine.
         """
-        try:
+        jaribu:
             self.throw(GeneratorExit)
-        except (GeneratorExit, StopIteration):
+        tatizo (GeneratorExit, StopIteration):
             pass
-        else:
+        isipokua:
             raise RuntimeError("coroutine ignored GeneratorExit")
 
     @classmethod
@@ -215,18 +215,18 @@ kundi AsyncGenerator(AsyncIterator):
             if tb is None:
                 raise typ
             val = typ()
-        if tb is not None:
+        if tb ni sio None:
             val = val.with_traceback(tb)
         raise val
 
     async def aclose(self):
         """Raise GeneratorExit inside coroutine.
         """
-        try:
+        jaribu:
             await self.athrow(GeneratorExit)
-        except (GeneratorExit, StopAsyncIteration):
+        tatizo (GeneratorExit, StopAsyncIteration):
             pass
-        else:
+        isipokua:
             raise RuntimeError("asynchronous generator ignored GeneratorExit")
 
     @classmethod
@@ -246,7 +246,7 @@ kundi Iterable(metaclass=ABCMeta):
 
     @abstractmethod
     def __iter__(self):
-        while False:
+        wakati False:
             yield None
 
     @classmethod
@@ -296,7 +296,7 @@ kundi Reversible(Iterable):
 
     @abstractmethod
     def __reversed__(self):
-        while False:
+        wakati False:
             yield None
 
     @classmethod
@@ -332,18 +332,18 @@ kundi Generator(Iterator):
             if tb is None:
                 raise typ
             val = typ()
-        if tb is not None:
+        if tb ni sio None:
             val = val.with_traceback(tb)
         raise val
 
     def close(self):
         """Raise GeneratorExit inside generator.
         """
-        try:
+        jaribu:
             self.throw(GeneratorExit)
-        except (GeneratorExit, StopIteration):
+        tatizo (GeneratorExit, StopIteration):
             pass
-        else:
+        isipokua:
             raise RuntimeError("generator ignored GeneratorExit")
 
     @classmethod
@@ -418,7 +418,7 @@ kundi Set(Collection):
     """A set is a finite, iterable container.
 
     This kundi provides concrete generic implementations of all
-    methods except for __contains__, __iter__ and __len__.
+    methods tatizo for __contains__, __iter__ and __len__.
 
     To override the comparisons (presumably for speed, as the
     semantics are fixed), redefine __le__ and __ge__,
@@ -428,37 +428,37 @@ kundi Set(Collection):
     __slots__ = ()
 
     def __le__(self, other):
-        if not isinstance(other, Set):
+        if sio isinstance(other, Set):
             return NotImplemented
         if len(self) > len(other):
             return False
         for elem in self:
-            if elem not in other:
+            if elem haiko kwenye other:
                 return False
         return True
 
     def __lt__(self, other):
-        if not isinstance(other, Set):
+        if sio isinstance(other, Set):
             return NotImplemented
         return len(self) < len(other) and self.__le__(other)
 
     def __gt__(self, other):
-        if not isinstance(other, Set):
+        if sio isinstance(other, Set):
             return NotImplemented
         return len(self) > len(other) and self.__ge__(other)
 
     def __ge__(self, other):
-        if not isinstance(other, Set):
+        if sio isinstance(other, Set):
             return NotImplemented
         if len(self) < len(other):
             return False
         for elem in other:
-            if elem not in self:
+            if elem haiko kwenye self:
                 return False
         return True
 
     def __eq__(self, other):
-        if not isinstance(other, Set):
+        if sio isinstance(other, Set):
             return NotImplemented
         return len(self) == len(other) and self.__le__(other)
 
@@ -467,12 +467,12 @@ kundi Set(Collection):
         '''Construct an instance of the kundi kutoka any iterable input.
 
         Must override this method if the kundi constructor signature
-        does not accept an iterable for an input.
+        does sio accept an iterable for an input.
         '''
         return cls(it)
 
     def __and__(self, other):
-        if not isinstance(other, Iterable):
+        if sio isinstance(other, Iterable):
             return NotImplemented
         return self._kutoka_iterable(value for value in other if value in self)
 
@@ -486,7 +486,7 @@ kundi Set(Collection):
         return True
 
     def __or__(self, other):
-        if not isinstance(other, Iterable):
+        if sio isinstance(other, Iterable):
             return NotImplemented
         chain = (e for s in (self, other) for e in s)
         return self._kutoka_iterable(chain)
@@ -494,24 +494,24 @@ kundi Set(Collection):
     __ror__ = __or__
 
     def __sub__(self, other):
-        if not isinstance(other, Set):
-            if not isinstance(other, Iterable):
+        if sio isinstance(other, Set):
+            if sio isinstance(other, Iterable):
                 return NotImplemented
             other = self._kutoka_iterable(other)
         return self._kutoka_iterable(value for value in self
-                                   if value not in other)
+                                   if value haiko kwenye other)
 
     def __rsub__(self, other):
-        if not isinstance(other, Set):
-            if not isinstance(other, Iterable):
+        if sio isinstance(other, Set):
+            if sio isinstance(other, Iterable):
                 return NotImplemented
             other = self._kutoka_iterable(other)
         return self._kutoka_iterable(value for value in other
-                                   if value not in self)
+                                   if value haiko kwenye self)
 
     def __xor__(self, other):
-        if not isinstance(other, Set):
-            if not isinstance(other, Iterable):
+        if sio isinstance(other, Set):
+            if sio isinstance(other, Iterable):
                 return NotImplemented
             other = self._kutoka_iterable(other)
         return (self - other) | (other - self)
@@ -521,7 +521,7 @@ kundi Set(Collection):
     def _hash(self):
         """Compute the hash value of a set.
 
-        Note that we don't define __hash__: not all sets are hashable.
+        Note that we don't define __hash__: sio all sets are hashable.
         But if you define a hashable set type, its __hash__ should
         call this function.
 
@@ -529,7 +529,7 @@ kundi Set(Collection):
 
         All sets ought to compare equal if they contain the same
         elements, regardless of how they are implemented, and
-        regardless of the order of the elements; so there's not much
+        regardless of the order of the elements; so there's sio much
         freedom for __eq__ or __hash__.  We match the algorithm used
         by the built-in frozenset type.
         """
@@ -557,7 +557,7 @@ kundi MutableSet(Set):
     """A mutable set is a finite, iterable container.
 
     This kundi provides concrete generic implementations of all
-    methods except for __contains__, __iter__, __len__,
+    methods tatizo for __contains__, __iter__, __len__,
     add(), and discard().
 
     To override the comparisons (presumably for speed, as the
@@ -574,31 +574,31 @@ kundi MutableSet(Set):
 
     @abstractmethod
     def discard(self, value):
-        """Remove an element.  Do not raise an exception if absent."""
+        """Remove an element.  Do sio raise an exception if absent."""
         raise NotImplementedError
 
     def remove(self, value):
-        """Remove an element. If not a member, raise a KeyError."""
-        if value not in self:
+        """Remove an element. If sio a member, raise a KeyError."""
+        if value haiko kwenye self:
             raise KeyError(value)
         self.discard(value)
 
     def pop(self):
         """Return the popped value.  Raise KeyError if empty."""
         it = iter(self)
-        try:
+        jaribu:
             value = next(it)
-        except StopIteration:
+        tatizo StopIteration:
             raise KeyError kutoka None
         self.discard(value)
         return value
 
     def clear(self):
         """This is slow (creates N new iterators!) but effective."""
-        try:
-            while True:
+        jaribu:
+            wakati True:
                 self.pop()
-        except KeyError:
+        tatizo KeyError:
             pass
 
     def __ior__(self, it):
@@ -614,20 +614,20 @@ kundi MutableSet(Set):
     def __ixor__(self, it):
         if it is self:
             self.clear()
-        else:
-            if not isinstance(it, Set):
+        isipokua:
+            if sio isinstance(it, Set):
                 it = self._kutoka_iterable(it)
             for value in it:
                 if value in self:
                     self.discard(value)
-                else:
+                isipokua:
                     self.add(value)
         return self
 
     def __isub__(self, it):
         if it is self:
             self.clear()
-        else:
+        isipokua:
             for value in it:
                 self.discard(value)
         return self
@@ -646,7 +646,7 @@ kundi Mapping(Collection):
     pairs.
 
     This kundi provides concrete generic implementations of all
-    methods except for __getitem__, __iter__, and __len__.
+    methods tatizo for __getitem__, __iter__, and __len__.
 
     """
 
@@ -656,17 +656,17 @@ kundi Mapping(Collection):
 
     def get(self, key, default=None):
         'D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.'
-        try:
+        jaribu:
             return self[key]
-        except KeyError:
+        tatizo KeyError:
             return default
 
     def __contains__(self, key):
-        try:
+        jaribu:
             self[key]
-        except KeyError:
+        tatizo KeyError:
             return False
-        else:
+        isipokua:
             return True
 
     def keys(self):
@@ -682,7 +682,7 @@ kundi Mapping(Collection):
         return ValuesView(self)
 
     def __eq__(self, other):
-        if not isinstance(other, Mapping):
+        if sio isinstance(other, Mapping):
             return NotImplemented
         return dict(self.items()) == dict(other.items())
 
@@ -732,11 +732,11 @@ kundi ItemsView(MappingView, Set):
 
     def __contains__(self, item):
         key, value = item
-        try:
+        jaribu:
             v = self._mapping[key]
-        except KeyError:
+        tatizo KeyError:
             return False
-        else:
+        isipokua:
             return v is value or v == value
 
     def __iter__(self):
@@ -772,7 +772,7 @@ kundi MutableMapping(Mapping):
     key/value pairs.
 
     This kundi provides concrete generic implementations of all
-    methods except for __getitem__, __setitem__, __delitem__,
+    methods tatizo for __getitem__, __setitem__, __delitem__,
     __iter__, and __len__.
 
     """
@@ -789,36 +789,36 @@ kundi MutableMapping(Mapping):
 
     def pop(self, key, default=__marker):
         '''D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
-          If key is not found, d is returned if given, otherwise KeyError is raised.
+          If key ni sio found, d is returned if given, otherwise KeyError is raised.
         '''
-        try:
+        jaribu:
             value = self[key]
-        except KeyError:
+        tatizo KeyError:
             if default is self.__marker:
                 raise
             return default
-        else:
-            del self[key]
+        isipokua:
+            toa self[key]
             return value
 
     def popitem(self):
         '''D.popitem() -> (k, v), remove and return some (key, value) pair
            as a 2-tuple; but raise KeyError if D is empty.
         '''
-        try:
+        jaribu:
             key = next(iter(self))
-        except StopIteration:
+        tatizo StopIteration:
             raise KeyError kutoka None
         value = self[key]
-        del self[key]
+        toa self[key]
         return key, value
 
     def clear(self):
         'D.clear() -> None.  Remove all items kutoka D.'
-        try:
-            while True:
+        jaribu:
+            wakati True:
                 self.popitem()
-        except KeyError:
+        tatizo KeyError:
             pass
 
     def update(self, other=(), /, **kwds):
@@ -833,17 +833,17 @@ kundi MutableMapping(Mapping):
         lasivyo hasattr(other, "keys"):
             for key in other.keys():
                 self[key] = other[key]
-        else:
+        isipokua:
             for key, value in other:
                 self[key] = value
         for key, value in kwds.items():
             self[key] = value
 
     def setdefault(self, key, default=None):
-        'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D'
-        try:
+        'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k haiko kwenye D'
+        jaribu:
             return self[key]
-        except KeyError:
+        tatizo KeyError:
             self[key] = default
         return default
 
@@ -869,12 +869,12 @@ kundi Sequence(Reversible, Collection):
 
     def __iter__(self):
         i = 0
-        try:
-            while True:
+        jaribu:
+            wakati True:
                 v = self[i]
                 yield v
                 i += 1
-        except IndexError:
+        tatizo IndexError:
             return
 
     def __contains__(self, value):
@@ -889,24 +889,24 @@ kundi Sequence(Reversible, Collection):
 
     def index(self, value, start=0, stop=None):
         '''S.index(value, [start, [stop]]) -> integer -- return first index of value.
-           Raises ValueError if the value is not present.
+           Raises ValueError if the value ni sio present.
 
            Supporting start and stop arguments is optional, but
            recommended.
         '''
-        if start is not None and start < 0:
+        if start ni sio None and start < 0:
             start = max(len(self) + start, 0)
-        if stop is not None and stop < 0:
+        if stop ni sio None and stop < 0:
             stop += len(self)
 
         i = start
-        while stop is None or i < stop:
-            try:
+        wakati stop is None or i < stop:
+            jaribu:
                 v = self[i]
                 if v is value or v == value:
                     return i
-            except IndexError:
-                break
+            tatizo IndexError:
+                koma
             i += 1
         raise ValueError
 
@@ -963,10 +963,10 @@ kundi MutableSequence(Sequence):
 
     def clear(self):
         'S.clear() -> None -- remove all items kutoka S'
-        try:
-            while True:
+        jaribu:
+            wakati True:
                 self.pop()
-        except IndexError:
+        tatizo IndexError:
             pass
 
     def reverse(self):
@@ -987,14 +987,14 @@ kundi MutableSequence(Sequence):
            Raise IndexError if list is empty or index is out of range.
         '''
         v = self[index]
-        del self[index]
+        toa self[index]
         return v
 
     def remove(self, value):
         '''S.remove(value) -- remove first occurrence of value.
-           Raise ValueError if the value is not present.
+           Raise ValueError if the value ni sio present.
         '''
-        del self[self.index(value)]
+        toa self[self.index(value)]
 
     def __iadd__(self, values):
         self.extend(values)

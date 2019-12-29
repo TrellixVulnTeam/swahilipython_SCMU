@@ -9,15 +9,15 @@ Dancing turtles have a compound shape
 consisting of a series of triangles of
 decreasing size.
 
-Turtles march along a circle while rotating
-pairwise in opposite direction, with one
-exception. Does that breaking of symmetry
+Turtles march along a circle wakati rotating
+pairwise kwenye opposite direction, with one
+exception. Does that komaing of symmetry
 enhance the attractiveness of the example?
 
 Press any key to stop the animation.
 
 Technically: demonstrates use of compound
-shapes, transformation of shapes as well as
+shapes, transformation of shapes kama well as
 cloning turtles. The animation is
 controlled through update().
 """
@@ -26,13 +26,13 @@ kutoka turtle agiza *
 
 eleza stop():
     global running
-    running = False
+    running = Uongo
 
 eleza main():
     global running
     clearscreen()
     bgcolor("gray10")
-    tracer(False)
+    tracer(Uongo)
     shape("triangle")
     f =   0.793402
     phi = 9.064678
@@ -40,7 +40,7 @@ eleza main():
     c = 1
     # create compound shape
     sh = Shape("compound")
-    for i in range(10):
+    kila i kwenye range(10):
         shapesize(s)
         p =get_shapepoly()
         s *= f
@@ -54,7 +54,7 @@ eleza main():
     pu()
     setpos(0, -200)
     dancers = []
-    for i in range(180):
+    kila i kwenye range(180):
         fd(7)
         tilt(-4)
         lt(2)
@@ -63,13 +63,13 @@ eleza main():
             dancers.append(clone())
     home()
     # dance
-    running = True
+    running = Kweli
     onkeypress(stop)
     listen()
     cs = 1
-    while running:
+    wakati running:
         ta = -4
-        for dancer in dancers:
+        kila dancer kwenye dancers:
             dancer.fd(7)
             dancer.lt(2)
             dancer.tilt(ta)

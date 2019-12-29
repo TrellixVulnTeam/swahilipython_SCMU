@@ -9,7 +9,7 @@ agiza subprocess
 agiza sys
 agiza time
 agiza unittest
-agiza unittest.mock as mock
+agiza unittest.mock kama mock
 agiza zipfile
 
 
@@ -35,43 +35,43 @@ eleza getrandbytes(size):
     rudisha getrandbits(8 * size).to_bytes(size, 'little')
 
 eleza get_files(test):
-    yield TESTFN2
-    with TemporaryFile() as f:
-        yield f
-        test.assertFalse(f.closed)
-    with io.BytesIO() as f:
-        yield f
-        test.assertFalse(f.closed)
+    tuma TESTFN2
+    with TemporaryFile() kama f:
+        tuma f
+        test.assertUongo(f.closed)
+    with io.BytesIO() kama f:
+        tuma f
+        test.assertUongo(f.closed)
 
 kundi AbstractTestsWithSourceFile:
     @classmethod
     eleza setUpClass(cls):
         cls.line_gen = [bytes("Zipfile test line %d. random float: %f\n" %
                               (i, random()), "ascii")
-                        for i in range(FIXEDTEST_SIZE)]
+                        kila i kwenye range(FIXEDTEST_SIZE)]
         cls.data = b''.join(cls.line_gen)
 
     eleza setUp(self):
         # Make a source file with some lines
-        with open(TESTFN, "wb") as fp:
+        with open(TESTFN, "wb") kama fp:
             fp.write(self.data)
 
-    eleza make_test_archive(self, f, compression, compresslevel=None):
+    eleza make_test_archive(self, f, compression, compresslevel=Tupu):
         kwargs = {'compression': compression, 'compresslevel': compresslevel}
         # Create the ZIP archive
-        with zipfile.ZipFile(f, "w", **kwargs) as zipfp:
+        with zipfile.ZipFile(f, "w", **kwargs) kama zipfp:
             zipfp.write(TESTFN, "another.name")
             zipfp.write(TESTFN, TESTFN)
             zipfp.writestr("strfile", self.data)
-            with zipfp.open('written-open-w', mode='w') as f:
-                for line in self.line_gen:
+            with zipfp.open('written-open-w', mode='w') kama f:
+                kila line kwenye self.line_gen:
                     f.write(line)
 
-    eleza zip_test(self, f, compression, compresslevel=None):
+    eleza zip_test(self, f, compression, compresslevel=Tupu):
         self.make_test_archive(f, compression, compresslevel)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) as zipfp:
+        with zipfile.ZipFile(f, "r", compression) kama zipfp:
             self.assertEqual(zipfp.read(TESTFN), self.data)
             self.assertEqual(zipfp.read("another.name"), self.data)
             self.assertEqual(zipfp.read("strfile"), self.data)
@@ -89,8 +89,8 @@ kundi AbstractTestsWithSourceFile:
 
             fn, date, time_, size = lines[1].split()
             self.assertEqual(fn, 'another.name')
-            self.assertTrue(time.strptime(date, '%Y-%m-%d'))
-            self.assertTrue(time.strptime(time_, '%H:%M:%S'))
+            self.assertKweli(time.strptime(date, '%Y-%m-%d'))
+            self.assertKweli(time.strptime(time_, '%H:%M:%S'))
             self.assertEqual(size, str(len(self.data)))
 
             # Check the namelist
@@ -103,195 +103,195 @@ kundi AbstractTestsWithSourceFile:
 
             # Check infolist
             infos = zipfp.infolist()
-            names = [i.filename for i in infos]
+            names = [i.filename kila i kwenye infos]
             self.assertEqual(len(names), 4)
             self.assertIn(TESTFN, names)
             self.assertIn("another.name", names)
             self.assertIn("strfile", names)
             self.assertIn("written-open-w", names)
-            for i in infos:
+            kila i kwenye infos:
                 self.assertEqual(i.file_size, len(self.data))
 
             # check getinfo
-            for nm in (TESTFN, "another.name", "strfile", "written-open-w"):
+            kila nm kwenye (TESTFN, "another.name", "strfile", "written-open-w"):
                 info = zipfp.getinfo(nm)
                 self.assertEqual(info.filename, nm)
                 self.assertEqual(info.file_size, len(self.data))
 
-            # Check that testzip doesn't raise an exception
+            # Check that testzip doesn't ashiria an exception
             zipfp.testzip()
 
     eleza test_basic(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_test(f, self.compression)
 
     eleza zip_open_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) as zipfp:
+        with zipfile.ZipFile(f, "r", compression) kama zipfp:
             zipdata1 = []
-            with zipfp.open(TESTFN) as zipopen1:
-                while True:
+            with zipfp.open(TESTFN) kama zipopen1:
+                wakati Kweli:
                     read_data = zipopen1.read(256)
-                    ikiwa not read_data:
-                        break
+                    ikiwa sio read_data:
+                        koma
                     zipdata1.append(read_data)
 
             zipdata2 = []
-            with zipfp.open("another.name") as zipopen2:
-                while True:
+            with zipfp.open("another.name") kama zipopen2:
+                wakati Kweli:
                     read_data = zipopen2.read(256)
-                    ikiwa not read_data:
-                        break
+                    ikiwa sio read_data:
+                        koma
                     zipdata2.append(read_data)
 
             self.assertEqual(b''.join(zipdata1), self.data)
             self.assertEqual(b''.join(zipdata2), self.data)
 
     eleza test_open(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_open_test(f, self.compression)
 
     eleza test_open_with_pathlike(self):
         path = pathlib.Path(TESTFN2)
         self.zip_open_test(path, self.compression)
-        with zipfile.ZipFile(path, "r", self.compression) as zipfp:
+        with zipfile.ZipFile(path, "r", self.compression) kama zipfp:
             self.assertIsInstance(zipfp.filename, str)
 
     eleza zip_random_open_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) as zipfp:
+        with zipfile.ZipFile(f, "r", compression) kama zipfp:
             zipdata1 = []
-            with zipfp.open(TESTFN) as zipopen1:
-                while True:
+            with zipfp.open(TESTFN) kama zipopen1:
+                wakati Kweli:
                     read_data = zipopen1.read(randint(1, 1024))
-                    ikiwa not read_data:
-                        break
+                    ikiwa sio read_data:
+                        koma
                     zipdata1.append(read_data)
 
             self.assertEqual(b''.join(zipdata1), self.data)
 
     eleza test_random_open(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_random_open_test(f, self.compression)
 
     eleza zip_read1_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r") as zipfp, \
-             zipfp.open(TESTFN) as zipopen:
+        with zipfile.ZipFile(f, "r") kama zipfp, \
+             zipfp.open(TESTFN) kama zipopen:
             zipdata = []
-            while True:
+            wakati Kweli:
                 read_data = zipopen.read1(-1)
-                ikiwa not read_data:
-                    break
+                ikiwa sio read_data:
+                    koma
                 zipdata.append(read_data)
 
         self.assertEqual(b''.join(zipdata), self.data)
 
     eleza test_read1(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_read1_test(f, self.compression)
 
     eleza zip_read1_10_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r") as zipfp, \
-             zipfp.open(TESTFN) as zipopen:
+        with zipfile.ZipFile(f, "r") kama zipfp, \
+             zipfp.open(TESTFN) kama zipopen:
             zipdata = []
-            while True:
+            wakati Kweli:
                 read_data = zipopen.read1(10)
                 self.assertLessEqual(len(read_data), 10)
-                ikiwa not read_data:
-                    break
+                ikiwa sio read_data:
+                    koma
                 zipdata.append(read_data)
 
         self.assertEqual(b''.join(zipdata), self.data)
 
     eleza test_read1_10(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_read1_10_test(f, self.compression)
 
     eleza zip_readline_read_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r") as zipfp, \
-             zipfp.open(TESTFN) as zipopen:
+        with zipfile.ZipFile(f, "r") kama zipfp, \
+             zipfp.open(TESTFN) kama zipopen:
             data = b''
-            while True:
+            wakati Kweli:
                 read = zipopen.readline()
-                ikiwa not read:
-                    break
+                ikiwa sio read:
+                    koma
                 data += read
 
                 read = zipopen.read(100)
-                ikiwa not read:
-                    break
+                ikiwa sio read:
+                    koma
                 data += read
 
         self.assertEqual(data, self.data)
 
     eleza test_readline_read(self):
         # Issue #7610: calls to readline() interleaved with calls to read().
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_readline_read_test(f, self.compression)
 
     eleza zip_readline_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r") as zipfp:
-            with zipfp.open(TESTFN) as zipopen:
-                for line in self.line_gen:
+        with zipfile.ZipFile(f, "r") kama zipfp:
+            with zipfp.open(TESTFN) kama zipopen:
+                kila line kwenye self.line_gen:
                     linedata = zipopen.readline()
                     self.assertEqual(linedata, line)
 
     eleza test_readline(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_readline_test(f, self.compression)
 
     eleza zip_readlines_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r") as zipfp:
-            with zipfp.open(TESTFN) as zipopen:
+        with zipfile.ZipFile(f, "r") kama zipfp:
+            with zipfp.open(TESTFN) kama zipopen:
                 ziplines = zipopen.readlines()
-            for line, zipline in zip(self.line_gen, ziplines):
+            kila line, zipline kwenye zip(self.line_gen, ziplines):
                 self.assertEqual(zipline, line)
 
     eleza test_readlines(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_readlines_test(f, self.compression)
 
     eleza zip_iterlines_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r") as zipfp:
-            with zipfp.open(TESTFN) as zipopen:
-                for line, zipline in zip(self.line_gen, zipopen):
+        with zipfile.ZipFile(f, "r") kama zipfp:
+            with zipfp.open(TESTFN) kama zipopen:
+                kila line, zipline kwenye zip(self.line_gen, zipopen):
                     self.assertEqual(zipline, line)
 
     eleza test_iterlines(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_iterlines_test(f, self.compression)
 
     eleza test_low_compression(self):
-        """Check for cases where compressed data is larger than original."""
+        """Check kila cases where compressed data ni larger than original."""
         # Create the ZIP archive
-        with zipfile.ZipFile(TESTFN2, "w", self.compression) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", self.compression) kama zipfp:
             zipfp.writestr("strfile", '12')
 
-        # Get an open object for strfile
-        with zipfile.ZipFile(TESTFN2, "r", self.compression) as zipfp:
-            with zipfp.open("strfile") as openobj:
+        # Get an open object kila strfile
+        with zipfile.ZipFile(TESTFN2, "r", self.compression) kama zipfp:
+            with zipfp.open("strfile") kama openobj:
                 self.assertEqual(openobj.read(1), b'1')
                 self.assertEqual(openobj.read(1), b'2')
 
@@ -312,66 +312,66 @@ kundi AbstractTestsWithSourceFile:
         self.assertEqual(a_info.compress_type, self.compression)
         self.assertEqual(a_info._compresslevel, 1)
 
-        # Compression level is overridden.
+        # Compression level ni overridden.
         b_info = zipfp.getinfo('b.txt')
         self.assertEqual(b_info.compress_type, self.compression)
         self.assertEqual(b_info._compresslevel, 2)
 
-    eleza test_read_return_size(self):
+    eleza test_read_rudisha_size(self):
         # Issue #9837: ZipExtFile.read() shouldn't rudisha more bytes
         # than requested.
-        for test_size in (1, 4095, 4096, 4097, 16384):
+        kila test_size kwenye (1, 4095, 4096, 4097, 16384):
             file_size = test_size + 1
             junk = getrandbytes(file_size)
-            with zipfile.ZipFile(io.BytesIO(), "w", self.compression) as zipf:
+            with zipfile.ZipFile(io.BytesIO(), "w", self.compression) kama zipf:
                 zipf.writestr('foo', junk)
-                with zipf.open('foo', 'r') as fp:
+                with zipf.open('foo', 'r') kama fp:
                     buf = fp.read(test_size)
                     self.assertEqual(len(buf), test_size)
 
     eleza test_truncated_zipfile(self):
         fp = io.BytesIO()
-        with zipfile.ZipFile(fp, mode='w') as zipf:
+        with zipfile.ZipFile(fp, mode='w') kama zipf:
             zipf.writestr('strfile', self.data, compress_type=self.compression)
             end_offset = fp.tell()
         zipfiledata = fp.getvalue()
 
         fp = io.BytesIO(zipfiledata)
-        with zipfile.ZipFile(fp) as zipf:
-            with zipf.open('strfile') as zipopen:
+        with zipfile.ZipFile(fp) kama zipf:
+            with zipf.open('strfile') kama zipopen:
                 fp.truncate(end_offset - 20)
                 with self.assertRaises(EOFError):
                     zipopen.read()
 
         fp = io.BytesIO(zipfiledata)
-        with zipfile.ZipFile(fp) as zipf:
-            with zipf.open('strfile') as zipopen:
+        with zipfile.ZipFile(fp) kama zipf:
+            with zipf.open('strfile') kama zipopen:
                 fp.truncate(end_offset - 20)
                 with self.assertRaises(EOFError):
-                    while zipopen.read(100):
-                        pass
+                    wakati zipopen.read(100):
+                        pita
 
         fp = io.BytesIO(zipfiledata)
-        with zipfile.ZipFile(fp) as zipf:
-            with zipf.open('strfile') as zipopen:
+        with zipfile.ZipFile(fp) kama zipf:
+            with zipf.open('strfile') kama zipopen:
                 fp.truncate(end_offset - 20)
                 with self.assertRaises(EOFError):
-                    while zipopen.read1(100):
-                        pass
+                    wakati zipopen.read1(100):
+                        pita
 
     eleza test_repr(self):
         fname = 'file.name'
-        for f in get_files(self):
-            with zipfile.ZipFile(f, 'w', self.compression) as zipfp:
+        kila f kwenye get_files(self):
+            with zipfile.ZipFile(f, 'w', self.compression) kama zipfp:
                 zipfp.write(TESTFN, fname)
                 r = repr(zipfp)
                 self.assertIn("mode='w'", r)
 
-            with zipfile.ZipFile(f, 'r') as zipfp:
+            with zipfile.ZipFile(f, 'r') kama zipfp:
                 r = repr(zipfp)
                 ikiwa isinstance(f, str):
                     self.assertIn('filename=%r' % f, r)
-                else:
+                isipokua:
                     self.assertIn('file=%r' % f, r)
                 self.assertIn("mode='r'", r)
                 r = repr(zipfp.getinfo(fname))
@@ -381,7 +381,7 @@ kundi AbstractTestsWithSourceFile:
                 ikiwa self.compression != zipfile.ZIP_STORED:
                     self.assertIn('compress_type=', r)
                     self.assertIn('compress_size=', r)
-                with zipfp.open(fname) as zipopen:
+                with zipfp.open(fname) kama zipopen:
                     r = repr(zipopen)
                     self.assertIn('name=%r' % fname, r)
                     self.assertIn("mode='r'", r)
@@ -391,13 +391,13 @@ kundi AbstractTestsWithSourceFile:
             self.assertIn('[closed]', repr(zipfp))
 
     eleza test_compresslevel_basic(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_test(f, self.compression, compresslevel=9)
 
     eleza test_per_file_compresslevel(self):
         """Check that files within a Zip archive can have different
         compression levels."""
-        with zipfile.ZipFile(TESTFN2, "w", compresslevel=1) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", compresslevel=1) kama zipfp:
             zipfp.write(TESTFN, 'compress_1')
             zipfp.write(TESTFN, 'compress_9', compresslevel=9)
             one_info = zipfp.getinfo('compress_1')
@@ -409,34 +409,34 @@ kundi AbstractTestsWithSourceFile:
         kundi BrokenFile(io.BytesIO):
             eleza write(self, data):
                 nonlocal count
-                ikiwa count is not None:
+                ikiwa count ni sio Tupu:
                     ikiwa count == stop:
-                        raise OSError
+                        ashiria OSError
                     count += 1
                 super().write(data)
 
         stop = 0
-        while True:
+        wakati Kweli:
             testfile = BrokenFile()
-            count = None
-            with zipfile.ZipFile(testfile, 'w', self.compression) as zipfp:
-                with zipfp.open('file1', 'w') as f:
+            count = Tupu
+            with zipfile.ZipFile(testfile, 'w', self.compression) kama zipfp:
+                with zipfp.open('file1', 'w') kama f:
                     f.write(b'data1')
                 count = 0
-                try:
-                    with zipfp.open('file2', 'w') as f:
+                jaribu:
+                    with zipfp.open('file2', 'w') kama f:
                         f.write(b'data2')
-                except OSError:
+                tatizo OSError:
                     stop += 1
-                else:
-                    break
-                finally:
-                    count = None
-            with zipfile.ZipFile(io.BytesIO(testfile.getvalue())) as zipfp:
+                isipokua:
+                    koma
+                mwishowe:
+                    count = Tupu
+            with zipfile.ZipFile(io.BytesIO(testfile.getvalue())) kama zipfp:
                 self.assertEqual(zipfp.namelist(), ['file1'])
                 self.assertEqual(zipfp.read('file1'), b'data1')
 
-        with zipfile.ZipFile(io.BytesIO(testfile.getvalue())) as zipfp:
+        with zipfile.ZipFile(io.BytesIO(testfile.getvalue())) kama zipfp:
             self.assertEqual(zipfp.namelist(), ['file1', 'file2'])
             self.assertEqual(zipfp.read('file1'), b'data1')
             self.assertEqual(zipfp.read('file2'), b'data2')
@@ -450,15 +450,15 @@ kundi AbstractTestsWithSourceFile:
 kundi StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
                                 unittest.TestCase):
     compression = zipfile.ZIP_STORED
-    test_low_compression = None
+    test_low_compression = Tupu
 
     eleza zip_test_writestr_permissions(self, f, compression):
-        # Make sure that writestr and open(... mode='w') create files with
-        # mode 0600, when they are passed a name rather than a ZipInfo
+        # Make sure that writestr na open(... mode='w') create files with
+        # mode 0600, when they are pitaed a name rather than a ZipInfo
         # instance.
 
         self.make_test_archive(f, compression)
-        with zipfile.ZipFile(f, "r") as zipfp:
+        with zipfile.ZipFile(f, "r") kama zipfp:
             zinfo = zipfp.getinfo('strfile')
             self.assertEqual(zinfo.external_attr, 0o600 << 16)
 
@@ -466,145 +466,145 @@ kundi StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
             self.assertEqual(zinfo2.external_attr, 0o600 << 16)
 
     eleza test_writestr_permissions(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_test_writestr_permissions(f, zipfile.ZIP_STORED)
 
     eleza test_absolute_arcnames(self):
-        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) kama zipfp:
             zipfp.write(TESTFN, "/absolute")
 
-        with zipfile.ZipFile(TESTFN2, "r", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r", zipfile.ZIP_STORED) kama zipfp:
             self.assertEqual(zipfp.namelist(), ["absolute"])
 
     eleza test_append_to_zip_file(self):
         """Test appending to an existing zipfile."""
-        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) kama zipfp:
             zipfp.write(TESTFN, TESTFN)
 
-        with zipfile.ZipFile(TESTFN2, "a", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "a", zipfile.ZIP_STORED) kama zipfp:
             zipfp.writestr("strfile", self.data)
             self.assertEqual(zipfp.namelist(), [TESTFN, "strfile"])
 
     eleza test_append_to_non_zip_file(self):
-        """Test appending to an existing file that is not a zipfile."""
+        """Test appending to an existing file that ni sio a zipfile."""
         # NOTE: this test fails ikiwa len(d) < 22 because of the first
-        # line "fpin.seek(-22, 2)" in _EndRecData
-        data = b'I am not a ZipFile!'*10
-        with open(TESTFN2, 'wb') as f:
+        # line "fpin.seek(-22, 2)" kwenye _EndRecData
+        data = b'I am sio a ZipFile!'*10
+        with open(TESTFN2, 'wb') kama f:
             f.write(data)
 
-        with zipfile.ZipFile(TESTFN2, "a", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "a", zipfile.ZIP_STORED) kama zipfp:
             zipfp.write(TESTFN, TESTFN)
 
-        with open(TESTFN2, 'rb') as f:
+        with open(TESTFN2, 'rb') kama f:
             f.seek(len(data))
-            with zipfile.ZipFile(f, "r") as zipfp:
+            with zipfile.ZipFile(f, "r") kama zipfp:
                 self.assertEqual(zipfp.namelist(), [TESTFN])
                 self.assertEqual(zipfp.read(TESTFN), self.data)
-        with open(TESTFN2, 'rb') as f:
+        with open(TESTFN2, 'rb') kama f:
             self.assertEqual(f.read(len(data)), data)
             zipfiledata = f.read()
-        with io.BytesIO(zipfiledata) as bio, zipfile.ZipFile(bio) as zipfp:
+        with io.BytesIO(zipfiledata) kama bio, zipfile.ZipFile(bio) kama zipfp:
             self.assertEqual(zipfp.namelist(), [TESTFN])
             self.assertEqual(zipfp.read(TESTFN), self.data)
 
     eleza test_read_concatenated_zip_file(self):
-        with io.BytesIO() as bio:
-            with zipfile.ZipFile(bio, 'w', zipfile.ZIP_STORED) as zipfp:
+        with io.BytesIO() kama bio:
+            with zipfile.ZipFile(bio, 'w', zipfile.ZIP_STORED) kama zipfp:
                 zipfp.write(TESTFN, TESTFN)
             zipfiledata = bio.getvalue()
-        data = b'I am not a ZipFile!'*10
-        with open(TESTFN2, 'wb') as f:
+        data = b'I am sio a ZipFile!'*10
+        with open(TESTFN2, 'wb') kama f:
             f.write(data)
             f.write(zipfiledata)
 
-        with zipfile.ZipFile(TESTFN2) as zipfp:
+        with zipfile.ZipFile(TESTFN2) kama zipfp:
             self.assertEqual(zipfp.namelist(), [TESTFN])
             self.assertEqual(zipfp.read(TESTFN), self.data)
 
     eleza test_append_to_concatenated_zip_file(self):
-        with io.BytesIO() as bio:
-            with zipfile.ZipFile(bio, 'w', zipfile.ZIP_STORED) as zipfp:
+        with io.BytesIO() kama bio:
+            with zipfile.ZipFile(bio, 'w', zipfile.ZIP_STORED) kama zipfp:
                 zipfp.write(TESTFN, TESTFN)
             zipfiledata = bio.getvalue()
-        data = b'I am not a ZipFile!'*1000000
-        with open(TESTFN2, 'wb') as f:
+        data = b'I am sio a ZipFile!'*1000000
+        with open(TESTFN2, 'wb') kama f:
             f.write(data)
             f.write(zipfiledata)
 
-        with zipfile.ZipFile(TESTFN2, 'a') as zipfp:
+        with zipfile.ZipFile(TESTFN2, 'a') kama zipfp:
             self.assertEqual(zipfp.namelist(), [TESTFN])
             zipfp.writestr('strfile', self.data)
 
-        with open(TESTFN2, 'rb') as f:
+        with open(TESTFN2, 'rb') kama f:
             self.assertEqual(f.read(len(data)), data)
             zipfiledata = f.read()
-        with io.BytesIO(zipfiledata) as bio, zipfile.ZipFile(bio) as zipfp:
+        with io.BytesIO(zipfiledata) kama bio, zipfile.ZipFile(bio) kama zipfp:
             self.assertEqual(zipfp.namelist(), [TESTFN, 'strfile'])
             self.assertEqual(zipfp.read(TESTFN), self.data)
             self.assertEqual(zipfp.read('strfile'), self.data)
 
     eleza test_ignores_newline_at_end(self):
-        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) kama zipfp:
             zipfp.write(TESTFN, TESTFN)
-        with open(TESTFN2, 'a') as f:
+        with open(TESTFN2, 'a') kama f:
             f.write("\r\n\00\00\00")
-        with zipfile.ZipFile(TESTFN2, "r") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
             self.assertIsInstance(zipfp, zipfile.ZipFile)
 
     eleza test_ignores_stuff_appended_past_comments(self):
-        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) as zipfp:
-            zipfp.comment = b"this is a comment"
+        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) kama zipfp:
+            zipfp.comment = b"this ni a comment"
             zipfp.write(TESTFN, TESTFN)
-        with open(TESTFN2, 'a') as f:
+        with open(TESTFN2, 'a') kama f:
             f.write("abcdef\r\n")
-        with zipfile.ZipFile(TESTFN2, "r") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
             self.assertIsInstance(zipfp, zipfile.ZipFile)
-            self.assertEqual(zipfp.comment, b"this is a comment")
+            self.assertEqual(zipfp.comment, b"this ni a comment")
 
     eleza test_write_default_name(self):
         """Check that calling ZipFile.write without arcname specified
         produces the expected result."""
-        with zipfile.ZipFile(TESTFN2, "w") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w") kama zipfp:
             zipfp.write(TESTFN)
-            with open(TESTFN, "rb") as f:
+            with open(TESTFN, "rb") kama f:
                 self.assertEqual(zipfp.read(TESTFN), f.read())
 
     eleza test_write_to_readonly(self):
         """Check that trying to call write() on a readonly ZipFile object
-        raises a ValueError."""
-        with zipfile.ZipFile(TESTFN2, mode="w") as zipfp:
+        ashirias a ValueError."""
+        with zipfile.ZipFile(TESTFN2, mode="w") kama zipfp:
             zipfp.writestr("somefile.txt", "bogus")
 
-        with zipfile.ZipFile(TESTFN2, mode="r") as zipfp:
+        with zipfile.ZipFile(TESTFN2, mode="r") kama zipfp:
             self.assertRaises(ValueError, zipfp.write, TESTFN)
 
-        with zipfile.ZipFile(TESTFN2, mode="r") as zipfp:
+        with zipfile.ZipFile(TESTFN2, mode="r") kama zipfp:
             with self.assertRaises(ValueError):
                 zipfp.open(TESTFN, mode='w')
 
     eleza test_add_file_before_1980(self):
-        # Set atime and mtime to 1970-01-01
+        # Set atime na mtime to 1970-01-01
         os.utime(TESTFN, (0, 0))
-        with zipfile.ZipFile(TESTFN2, "w") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w") kama zipfp:
             self.assertRaises(ValueError, zipfp.write, TESTFN)
 
-        with zipfile.ZipFile(TESTFN2, "w", strict_timestamps=False) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", strict_timestamps=Uongo) kama zipfp:
             zipfp.write(TESTFN)
             zinfo = zipfp.getinfo(TESTFN)
             self.assertEqual(zinfo.date_time, (1980, 1, 1, 0, 0, 0))
 
     eleza test_add_file_after_2107(self):
-        # Set atime and mtime to 2108-12-30
-        try:
+        # Set atime na mtime to 2108-12-30
+        jaribu:
             os.utime(TESTFN, (4386268800, 4386268800))
-        except OverflowError:
+        tatizo OverflowError:
             self.skipTest('Host fs cannot set timestamp to required value.')
 
-        with zipfile.ZipFile(TESTFN2, "w") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w") kama zipfp:
             self.assertRaises(struct.error, zipfp.write, TESTFN)
 
-        with zipfile.ZipFile(TESTFN2, "w", strict_timestamps=False) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", strict_timestamps=Uongo) kama zipfp:
             zipfp.write(TESTFN)
             zinfo = zipfp.getinfo(TESTFN)
             self.assertEqual(zinfo.date_time, (2107, 12, 31, 23, 59, 59))
@@ -618,7 +618,7 @@ kundi DeflateTestsWithSourceFile(AbstractTestsWithSourceFile,
     eleza test_per_file_compression(self):
         """Check that files within a Zip archive can have different
         compression options."""
-        with zipfile.ZipFile(TESTFN2, "w") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w") kama zipfp:
             zipfp.write(TESTFN, 'storeme', zipfile.ZIP_STORED)
             zipfp.write(TESTFN, 'deflateme', zipfile.ZIP_DEFLATED)
             sinfo = zipfp.getinfo('storeme')
@@ -639,12 +639,12 @@ kundi LzmaTestsWithSourceFile(AbstractTestsWithSourceFile,
 
 kundi AbstractTestZip64InSmallFiles:
     # These tests test the ZIP64 functionality without using large files,
-    # see test_zipfile64 for proper tests.
+    # see test_zipfile64 kila proper tests.
 
     @classmethod
     eleza setUpClass(cls):
         line_gen = (bytes("Test of zipfile line %d." % i, "ascii")
-                    for i in range(0, FIXEDTEST_SIZE))
+                    kila i kwenye range(0, FIXEDTEST_SIZE))
         cls.data = b'\n'.join(line_gen)
 
     eleza setUp(self):
@@ -654,18 +654,18 @@ kundi AbstractTestZip64InSmallFiles:
         zipfile.ZIP_FILECOUNT_LIMIT = 9
 
         # Make a source file with some lines
-        with open(TESTFN, "wb") as fp:
+        with open(TESTFN, "wb") kama fp:
             fp.write(self.data)
 
     eleza zip_test(self, f, compression):
         # Create the ZIP archive
-        with zipfile.ZipFile(f, "w", compression, allowZip64=True) as zipfp:
+        with zipfile.ZipFile(f, "w", compression, allowZip64=Kweli) kama zipfp:
             zipfp.write(TESTFN, "another.name")
             zipfp.write(TESTFN, TESTFN)
             zipfp.writestr("strfile", self.data)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) as zipfp:
+        with zipfile.ZipFile(f, "r", compression) kama zipfp:
             self.assertEqual(zipfp.read(TESTFN), self.data)
             self.assertEqual(zipfp.read("another.name"), self.data)
             self.assertEqual(zipfp.read("strfile"), self.data)
@@ -684,8 +684,8 @@ kundi AbstractTestZip64InSmallFiles:
 
             fn, date, time_, size = lines[1].split()
             self.assertEqual(fn, 'another.name')
-            self.assertTrue(time.strptime(date, '%Y-%m-%d'))
-            self.assertTrue(time.strptime(time_, '%H:%M:%S'))
+            self.assertKweli(time.strptime(date, '%Y-%m-%d'))
+            self.assertKweli(time.strptime(time_, '%H:%M:%S'))
             self.assertEqual(size, str(len(self.data)))
 
             # Check the namelist
@@ -697,52 +697,52 @@ kundi AbstractTestZip64InSmallFiles:
 
             # Check infolist
             infos = zipfp.infolist()
-            names = [i.filename for i in infos]
+            names = [i.filename kila i kwenye infos]
             self.assertEqual(len(names), 3)
             self.assertIn(TESTFN, names)
             self.assertIn("another.name", names)
             self.assertIn("strfile", names)
-            for i in infos:
+            kila i kwenye infos:
                 self.assertEqual(i.file_size, len(self.data))
 
             # check getinfo
-            for nm in (TESTFN, "another.name", "strfile"):
+            kila nm kwenye (TESTFN, "another.name", "strfile"):
                 info = zipfp.getinfo(nm)
                 self.assertEqual(info.filename, nm)
                 self.assertEqual(info.file_size, len(self.data))
 
-            # Check that testzip doesn't raise an exception
+            # Check that testzip doesn't ashiria an exception
             zipfp.testzip()
 
     eleza test_basic(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_test(f, self.compression)
 
     eleza test_too_many_files(self):
         # This test checks that more than 64k files can be added to an archive,
-        # and that the resulting archive can be read properly by ZipFile
+        # na that the resulting archive can be read properly by ZipFile
         zipf = zipfile.ZipFile(TESTFN, "w", self.compression,
-                               allowZip64=True)
+                               allowZip64=Kweli)
         zipf.debug = 100
         numfiles = 15
-        for i in range(numfiles):
+        kila i kwenye range(numfiles):
             zipf.writestr("foo%08d" % i, "%d" % (i**3 % 57))
         self.assertEqual(len(zipf.namelist()), numfiles)
         zipf.close()
 
         zipf2 = zipfile.ZipFile(TESTFN, "r", self.compression)
         self.assertEqual(len(zipf2.namelist()), numfiles)
-        for i in range(numfiles):
+        kila i kwenye range(numfiles):
             content = zipf2.read("foo%08d" % i).decode('ascii')
             self.assertEqual(content, "%d" % (i**3 % 57))
         zipf2.close()
 
     eleza test_too_many_files_append(self):
         zipf = zipfile.ZipFile(TESTFN, "w", self.compression,
-                               allowZip64=False)
+                               allowZip64=Uongo)
         zipf.debug = 100
         numfiles = 9
-        for i in range(numfiles):
+        kila i kwenye range(numfiles):
             zipf.writestr("foo%08d" % i, "%d" % (i**3 % 57))
         self.assertEqual(len(zipf.namelist()), numfiles)
         with self.assertRaises(zipfile.LargeZipFile):
@@ -751,7 +751,7 @@ kundi AbstractTestZip64InSmallFiles:
         zipf.close()
 
         zipf = zipfile.ZipFile(TESTFN, "a", self.compression,
-                               allowZip64=False)
+                               allowZip64=Uongo)
         zipf.debug = 100
         self.assertEqual(len(zipf.namelist()), numfiles)
         with self.assertRaises(zipfile.LargeZipFile):
@@ -760,18 +760,18 @@ kundi AbstractTestZip64InSmallFiles:
         zipf.close()
 
         zipf = zipfile.ZipFile(TESTFN, "a", self.compression,
-                               allowZip64=True)
+                               allowZip64=Kweli)
         zipf.debug = 100
         self.assertEqual(len(zipf.namelist()), numfiles)
         numfiles2 = 15
-        for i in range(numfiles, numfiles2):
+        kila i kwenye range(numfiles, numfiles2):
             zipf.writestr("foo%08d" % i, "%d" % (i**3 % 57))
         self.assertEqual(len(zipf.namelist()), numfiles2)
         zipf.close()
 
         zipf2 = zipfile.ZipFile(TESTFN, "r", self.compression)
         self.assertEqual(len(zipf2.namelist()), numfiles2)
-        for i in range(numfiles2):
+        kila i kwenye range(numfiles2):
             content = zipf2.read("foo%08d" % i).decode('ascii')
             self.assertEqual(content, "%d" % (i**3 % 57))
         zipf2.close()
@@ -788,39 +788,39 @@ kundi StoredTestZip64InSmallFiles(AbstractTestZip64InSmallFiles,
     compression = zipfile.ZIP_STORED
 
     eleza large_file_exception_test(self, f, compression):
-        with zipfile.ZipFile(f, "w", compression, allowZip64=False) as zipfp:
+        with zipfile.ZipFile(f, "w", compression, allowZip64=Uongo) kama zipfp:
             self.assertRaises(zipfile.LargeZipFile,
                               zipfp.write, TESTFN, "another.name")
 
     eleza large_file_exception_test2(self, f, compression):
-        with zipfile.ZipFile(f, "w", compression, allowZip64=False) as zipfp:
+        with zipfile.ZipFile(f, "w", compression, allowZip64=Uongo) kama zipfp:
             self.assertRaises(zipfile.LargeZipFile,
                               zipfp.writestr, "another.name", self.data)
 
     eleza test_large_file_exception(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.large_file_exception_test(f, zipfile.ZIP_STORED)
             self.large_file_exception_test2(f, zipfile.ZIP_STORED)
 
     eleza test_absolute_arcnames(self):
         with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED,
-                             allowZip64=True) as zipfp:
+                             allowZip64=Kweli) kama zipfp:
             zipfp.write(TESTFN, "/absolute")
 
-        with zipfile.ZipFile(TESTFN2, "r", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r", zipfile.ZIP_STORED) kama zipfp:
             self.assertEqual(zipfp.namelist(), ["absolute"])
 
     eleza test_append(self):
         # Test that appending to the Zip64 archive doesn't change
         # extra fields of existing entries.
-        with zipfile.ZipFile(TESTFN2, "w", allowZip64=True) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", allowZip64=Kweli) kama zipfp:
             zipfp.writestr("strfile", self.data)
-        with zipfile.ZipFile(TESTFN2, "r", allowZip64=True) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r", allowZip64=Kweli) kama zipfp:
             zinfo = zipfp.getinfo("strfile")
             extra = zinfo.extra
-        with zipfile.ZipFile(TESTFN2, "a", allowZip64=True) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "a", allowZip64=Kweli) kama zipfp:
             zipfp.writestr("strfile2", self.data)
-        with zipfile.ZipFile(TESTFN2, "r", allowZip64=True) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r", allowZip64=Kweli) kama zipfp:
             zinfo = zipfp.getinfo("strfile")
             self.assertEqual(zinfo.extra, extra)
 
@@ -847,22 +847,22 @@ kundi AbstractWriterTests:
 
     eleza test_close_after_close(self):
         data = b'content'
-        with zipfile.ZipFile(TESTFN2, "w", self.compression) as zipf:
+        with zipfile.ZipFile(TESTFN2, "w", self.compression) kama zipf:
             w = zipf.open('test', 'w')
             w.write(data)
             w.close()
-            self.assertTrue(w.closed)
+            self.assertKweli(w.closed)
             w.close()
-            self.assertTrue(w.closed)
+            self.assertKweli(w.closed)
             self.assertEqual(zipf.read('test'), data)
 
     eleza test_write_after_close(self):
         data = b'content'
-        with zipfile.ZipFile(TESTFN2, "w", self.compression) as zipf:
+        with zipfile.ZipFile(TESTFN2, "w", self.compression) kama zipf:
             w = zipf.open('test', 'w')
             w.write(data)
             w.close()
-            self.assertTrue(w.closed)
+            self.assertKweli(w.closed)
             self.assertRaises(ValueError, w.write, b'')
             self.assertEqual(zipf.read('test'), data)
 
@@ -884,33 +884,33 @@ kundi LzmaWriterTests(AbstractWriterTests, unittest.TestCase):
 
 kundi PyZipFileTests(unittest.TestCase):
     eleza assertCompiledIn(self, name, namelist):
-        ikiwa name + 'o' not in namelist:
+        ikiwa name + 'o' haiko kwenye namelist:
             self.assertIn(name + 'c', namelist)
 
     eleza requiresWriteAccess(self, path):
         # effective_ids unavailable on windows
-        ikiwa not os.access(path, os.W_OK,
-                         effective_ids=os.access in os.supports_effective_ids):
+        ikiwa sio os.access(path, os.W_OK,
+                         effective_ids=os.access kwenye os.supports_effective_ids):
             self.skipTest('requires write access to the installed location')
         filename = os.path.join(path, 'test_zipfile.try')
-        try:
+        jaribu:
             fd = os.open(filename, os.O_WRONLY | os.O_CREAT)
             os.close(fd)
-        except Exception:
+        tatizo Exception:
             self.skipTest('requires write access to the installed location')
         unlink(filename)
 
     eleza test_write_pyfile(self):
         self.requiresWriteAccess(os.path.dirname(__file__))
-        with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+        with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
             fn = __file__
             ikiwa fn.endswith('.pyc'):
                 path_split = fn.split(os.sep)
-                ikiwa os.altsep is not None:
+                ikiwa os.altsep ni sio Tupu:
                     path_split.extend(fn.split(os.altsep))
-                ikiwa '__pycache__' in path_split:
+                ikiwa '__pycache__' kwenye path_split:
                     fn = importlib.util.source_kutoka_cache(fn)
-                else:
+                isipokua:
                     fn = fn[:-1]
 
             zipfp.writepy(fn)
@@ -919,7 +919,7 @@ kundi PyZipFileTests(unittest.TestCase):
             self.assertNotIn(bn, zipfp.namelist())
             self.assertCompiledIn(bn, zipfp.namelist())
 
-        with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+        with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
             fn = __file__
             ikiwa fn.endswith('.pyc'):
                 fn = fn[:-1]
@@ -935,10 +935,10 @@ kundi PyZipFileTests(unittest.TestCase):
         packagedir = os.path.dirname(email.__file__)
         self.requiresWriteAccess(packagedir)
 
-        with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+        with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
             zipfp.writepy(packagedir)
 
-            # Check for a couple of modules at different levels of the
+            # Check kila a couple of modules at different levels of the
             # hierarchy
             names = zipfp.namelist()
             self.assertCompiledIn('email/__init__.py', names)
@@ -949,30 +949,30 @@ kundi PyZipFileTests(unittest.TestCase):
         packagedir = os.path.dirname(test.__file__)
         self.requiresWriteAccess(packagedir)
 
-        with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+        with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
 
             # first make sure that the test folder gives error messages
             # (on the badsyntax_... files)
-            with captured_stdout() as reportSIO:
+            with captured_stdout() kama reportSIO:
                 zipfp.writepy(packagedir)
             reportStr = reportSIO.getvalue()
-            self.assertTrue('SyntaxError' in reportStr)
+            self.assertKweli('SyntaxError' kwenye reportStr)
 
             # then check that the filter works on the whole package
-            with captured_stdout() as reportSIO:
-                zipfp.writepy(packagedir, filterfunc=lambda whatever: False)
+            with captured_stdout() kama reportSIO:
+                zipfp.writepy(packagedir, filterfunc=lambda whatever: Uongo)
             reportStr = reportSIO.getvalue()
-            self.assertTrue('SyntaxError' not in reportStr)
+            self.assertKweli('SyntaxError' haiko kwenye reportStr)
 
             # then check that the filter works on individual files
             eleza filter(path):
-                rudisha not os.path.basename(path).startswith("bad")
-            with captured_stdout() as reportSIO, self.assertWarns(UserWarning):
+                rudisha sio os.path.basename(path).startswith("bad")
+            with captured_stdout() kama reportSIO, self.assertWarns(UserWarning):
                 zipfp.writepy(packagedir, filterfunc=filter)
             reportStr = reportSIO.getvalue()
             ikiwa reportStr:
                 andika(reportStr)
-            self.assertTrue('SyntaxError' not in reportStr)
+            self.assertKweli('SyntaxError' haiko kwenye reportStr)
 
     eleza test_write_with_optimization(self):
         agiza email
@@ -981,8 +981,8 @@ kundi PyZipFileTests(unittest.TestCase):
         optlevel = 1 ikiwa __debug__ else 0
         ext = '.pyc'
 
-        with TemporaryFile() as t, \
-             zipfile.PyZipFile(t, "w", optimize=optlevel) as zipfp:
+        with TemporaryFile() kama t, \
+             zipfile.PyZipFile(t, "w", optimize=optlevel) kama zipfp:
             zipfp.writepy(packagedir)
 
             names = zipfp.namelist()
@@ -991,17 +991,17 @@ kundi PyZipFileTests(unittest.TestCase):
 
     eleza test_write_python_directory(self):
         os.mkdir(TESTFN2)
-        try:
-            with open(os.path.join(TESTFN2, "mod1.py"), "w") as fp:
+        jaribu:
+            with open(os.path.join(TESTFN2, "mod1.py"), "w") kama fp:
                 fp.write("andika(42)\n")
 
-            with open(os.path.join(TESTFN2, "mod2.py"), "w") as fp:
+            with open(os.path.join(TESTFN2, "mod2.py"), "w") kama fp:
                 fp.write("andika(42 * 42)\n")
 
-            with open(os.path.join(TESTFN2, "mod2.txt"), "w") as fp:
+            with open(os.path.join(TESTFN2, "mod2.txt"), "w") kama fp:
                 fp.write("bla bla bla\n")
 
-            with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+            with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
                 zipfp.writepy(TESTFN2)
 
                 names = zipfp.namelist()
@@ -1009,84 +1009,84 @@ kundi PyZipFileTests(unittest.TestCase):
                 self.assertCompiledIn('mod2.py', names)
                 self.assertNotIn('mod2.txt', names)
 
-        finally:
+        mwishowe:
             rmtree(TESTFN2)
 
     eleza test_write_python_directory_filtered(self):
         os.mkdir(TESTFN2)
-        try:
-            with open(os.path.join(TESTFN2, "mod1.py"), "w") as fp:
+        jaribu:
+            with open(os.path.join(TESTFN2, "mod1.py"), "w") kama fp:
                 fp.write("andika(42)\n")
 
-            with open(os.path.join(TESTFN2, "mod2.py"), "w") as fp:
+            with open(os.path.join(TESTFN2, "mod2.py"), "w") kama fp:
                 fp.write("andika(42 * 42)\n")
 
-            with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+            with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
                 zipfp.writepy(TESTFN2, filterfunc=lambda fn:
-                                                  not fn.endswith('mod2.py'))
+                                                  sio fn.endswith('mod2.py'))
 
                 names = zipfp.namelist()
                 self.assertCompiledIn('mod1.py', names)
                 self.assertNotIn('mod2.py', names)
 
-        finally:
+        mwishowe:
             rmtree(TESTFN2)
 
     eleza test_write_non_pyfile(self):
-        with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
-            with open(TESTFN, 'w') as f:
-                f.write('most definitely not a python file')
+        with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
+            with open(TESTFN, 'w') kama f:
+                f.write('most definitely sio a python file')
             self.assertRaises(RuntimeError, zipfp.writepy, TESTFN)
             unlink(TESTFN)
 
     eleza test_write_pyfile_bad_syntax(self):
         os.mkdir(TESTFN2)
-        try:
-            with open(os.path.join(TESTFN2, "mod1.py"), "w") as fp:
-                fp.write("Bad syntax in python file\n")
+        jaribu:
+            with open(os.path.join(TESTFN2, "mod1.py"), "w") kama fp:
+                fp.write("Bad syntax kwenye python file\n")
 
-            with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+            with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
                 # syntax errors are printed to stdout
-                with captured_stdout() as s:
+                with captured_stdout() kama s:
                     zipfp.writepy(os.path.join(TESTFN2, "mod1.py"))
 
                 self.assertIn("SyntaxError", s.getvalue())
 
-                # as it will not have compiled the python file, it will
-                # include the .py file not .pyc
+                # kama it will sio have compiled the python file, it will
+                # include the .py file sio .pyc
                 names = zipfp.namelist()
                 self.assertIn('mod1.py', names)
                 self.assertNotIn('mod1.pyc', names)
 
-        finally:
+        mwishowe:
             rmtree(TESTFN2)
 
     eleza test_write_pathlike(self):
         os.mkdir(TESTFN2)
-        try:
-            with open(os.path.join(TESTFN2, "mod1.py"), "w") as fp:
+        jaribu:
+            with open(os.path.join(TESTFN2, "mod1.py"), "w") kama fp:
                 fp.write("andika(42)\n")
 
-            with TemporaryFile() as t, zipfile.PyZipFile(t, "w") as zipfp:
+            with TemporaryFile() kama t, zipfile.PyZipFile(t, "w") kama zipfp:
                 zipfp.writepy(pathlib.Path(TESTFN2) / "mod1.py")
                 names = zipfp.namelist()
                 self.assertCompiledIn('mod1.py', names)
-        finally:
+        mwishowe:
             rmtree(TESTFN2)
 
 
 kundi ExtractTests(unittest.TestCase):
 
     eleza make_test_file(self):
-        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) as zipfp:
-            for fpath, fdata in SMALL_TEST_DATA:
+        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) kama zipfp:
+            kila fpath, fdata kwenye SMALL_TEST_DATA:
                 zipfp.writestr(fpath, fdata)
 
     eleza test_extract(self):
         with temp_cwd():
             self.make_test_file()
-            with zipfile.ZipFile(TESTFN2, "r") as zipfp:
-                for fpath, fdata in SMALL_TEST_DATA:
+            with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
+                kila fpath, fdata kwenye SMALL_TEST_DATA:
                     writtenfile = zipfp.extract(fpath)
 
                     # make sure it was written to the right place
@@ -1095,25 +1095,25 @@ kundi ExtractTests(unittest.TestCase):
 
                     self.assertEqual(writtenfile, correctfile)
 
-                    # make sure correct data is in correct file
-                    with open(writtenfile, "rb") as f:
+                    # make sure correct data ni kwenye correct file
+                    with open(writtenfile, "rb") kama f:
                         self.assertEqual(fdata.encode(), f.read())
 
                     unlink(writtenfile)
 
     eleza _test_extract_with_target(self, target):
         self.make_test_file()
-        with zipfile.ZipFile(TESTFN2, "r") as zipfp:
-            for fpath, fdata in SMALL_TEST_DATA:
+        with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
+            kila fpath, fdata kwenye SMALL_TEST_DATA:
                 writtenfile = zipfp.extract(fpath, target)
 
                 # make sure it was written to the right place
                 correctfile = os.path.join(target, fpath)
                 correctfile = os.path.normpath(correctfile)
-                self.assertTrue(os.path.samefile(writtenfile, correctfile), (writtenfile, target))
+                self.assertKweli(os.path.samefile(writtenfile, correctfile), (writtenfile, target))
 
-                # make sure correct data is in correct file
-                with open(writtenfile, "rb") as f:
+                # make sure correct data ni kwenye correct file
+                with open(writtenfile, "rb") kama f:
                     self.assertEqual(fdata.encode(), f.read())
 
                 unlink(writtenfile)
@@ -1121,34 +1121,34 @@ kundi ExtractTests(unittest.TestCase):
         unlink(TESTFN2)
 
     eleza test_extract_with_target(self):
-        with temp_dir() as extdir:
+        with temp_dir() kama extdir:
             self._test_extract_with_target(extdir)
 
     eleza test_extract_with_target_pathlike(self):
-        with temp_dir() as extdir:
+        with temp_dir() kama extdir:
             self._test_extract_with_target(pathlib.Path(extdir))
 
     eleza test_extract_all(self):
         with temp_cwd():
             self.make_test_file()
-            with zipfile.ZipFile(TESTFN2, "r") as zipfp:
+            with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
                 zipfp.extractall()
-                for fpath, fdata in SMALL_TEST_DATA:
+                kila fpath, fdata kwenye SMALL_TEST_DATA:
                     outfile = os.path.join(os.getcwd(), fpath)
 
-                    with open(outfile, "rb") as f:
+                    with open(outfile, "rb") kama f:
                         self.assertEqual(fdata.encode(), f.read())
 
                     unlink(outfile)
 
     eleza _test_extract_all_with_target(self, target):
         self.make_test_file()
-        with zipfile.ZipFile(TESTFN2, "r") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
             zipfp.extractall(target)
-            for fpath, fdata in SMALL_TEST_DATA:
+            kila fpath, fdata kwenye SMALL_TEST_DATA:
                 outfile = os.path.join(target, fpath)
 
-                with open(outfile, "rb") as f:
+                with open(outfile, "rb") kama f:
                     self.assertEqual(fdata.encode(), f.read())
 
                 unlink(outfile)
@@ -1156,21 +1156,21 @@ kundi ExtractTests(unittest.TestCase):
         unlink(TESTFN2)
 
     eleza test_extract_all_with_target(self):
-        with temp_dir() as extdir:
+        with temp_dir() kama extdir:
             self._test_extract_all_with_target(extdir)
 
     eleza test_extract_all_with_target_pathlike(self):
-        with temp_dir() as extdir:
+        with temp_dir() kama extdir:
             self._test_extract_all_with_target(pathlib.Path(extdir))
 
     eleza check_file(self, filename, content):
-        self.assertTrue(os.path.isfile(filename))
-        with open(filename, 'rb') as f:
+        self.assertKweli(os.path.isfile(filename))
+        with open(filename, 'rb') kama f:
             self.assertEqual(f.read(), content)
 
     eleza test_sanitize_windows_name(self):
         san = zipfile.ZipFile._sanitize_windows_name
-        # Passing pathsep in allows this test to work regardless of platform.
+        # Passing pathsep kwenye allows this test to work regardless of platform.
         self.assertEqual(san(r',,?,C:,foo,bar/z', ','), r'_,C_,foo,bar/z')
         self.assertEqual(san(r'a\b,c<d>e|f"g?h*i', ','), r'a\b,c_d_e_f_g_h_i')
         self.assertEqual(san('../../foo../../ba..r', '/'), r'foo/ba..r')
@@ -1188,9 +1188,9 @@ kundi ExtractTests(unittest.TestCase):
         ]
         self._test_extract_hackers_arcnames(common_hacknames)
 
-    @unittest.skipIf(os.path.sep != '\\', 'Requires \\ as path separator.')
+    @unittest.skipIf(os.path.sep != '\\', 'Requires \\ kama path separator.')
     eleza test_extract_hackers_arcnames_windows_only(self):
-        """Test combination of path fixing and windows name sanitization."""
+        """Test combination of path fixing na windows name sanitization."""
         windows_hacknames = [
             (r'..\foo\bar', 'foo/bar'),
             (r'..\/foo\/bar', 'foo/bar'),
@@ -1214,7 +1214,7 @@ kundi ExtractTests(unittest.TestCase):
         ]
         self._test_extract_hackers_arcnames(windows_hacknames)
 
-    @unittest.skipIf(os.path.sep != '/', r'Requires / as path separator.')
+    @unittest.skipIf(os.path.sep != '/', r'Requires / kama path separator.')
     eleza test_extract_hackers_arcnames_posix_only(self):
         posix_hacknames = [
             ('//foo/bar', 'foo/bar'),
@@ -1224,9 +1224,9 @@ kundi ExtractTests(unittest.TestCase):
         self._test_extract_hackers_arcnames(posix_hacknames)
 
     eleza _test_extract_hackers_arcnames(self, hacknames):
-        for arcname, fixedname in hacknames:
+        kila arcname, fixedname kwenye hacknames:
             content = b'foobar' + arcname.encode()
-            with zipfile.ZipFile(TESTFN2, 'w', zipfile.ZIP_STORED) as zipfp:
+            with zipfile.ZipFile(TESTFN2, 'w', zipfile.ZIP_STORED) kama zipfp:
                 zinfo = zipfile.ZipInfo()
                 # preserve backslashes
                 zinfo.filename = arcname
@@ -1237,7 +1237,7 @@ kundi ExtractTests(unittest.TestCase):
             targetpath = os.path.join('target', 'subdir', 'subsub')
             correctfile = os.path.join(targetpath, *fixedname.split('/'))
 
-            with zipfile.ZipFile(TESTFN2, 'r') as zipfp:
+            with zipfile.ZipFile(TESTFN2, 'r') kama zipfp:
                 writtenfile = zipfp.extract(arcname, targetpath)
                 self.assertEqual(writtenfile, correctfile,
                                  msg='extract %r: %r != %r' %
@@ -1245,21 +1245,21 @@ kundi ExtractTests(unittest.TestCase):
             self.check_file(correctfile, content)
             rmtree('target')
 
-            with zipfile.ZipFile(TESTFN2, 'r') as zipfp:
+            with zipfile.ZipFile(TESTFN2, 'r') kama zipfp:
                 zipfp.extractall(targetpath)
             self.check_file(correctfile, content)
             rmtree('target')
 
             correctfile = os.path.join(os.getcwd(), *fixedname.split('/'))
 
-            with zipfile.ZipFile(TESTFN2, 'r') as zipfp:
+            with zipfile.ZipFile(TESTFN2, 'r') kama zipfp:
                 writtenfile = zipfp.extract(arcname)
                 self.assertEqual(writtenfile, correctfile,
                                  msg="extract %r" % arcname)
             self.check_file(correctfile, content)
             rmtree(fixedname.split('/')[0])
 
-            with zipfile.ZipFile(TESTFN2, 'r') as zipfp:
+            with zipfile.ZipFile(TESTFN2, 'r') kama zipfp:
                 zipfp.extractall()
             self.check_file(correctfile, content)
             rmtree(fixedname.split('/')[0])
@@ -1270,55 +1270,55 @@ kundi ExtractTests(unittest.TestCase):
 kundi OtherTests(unittest.TestCase):
     eleza test_open_via_zip_info(self):
         # Create the ZIP archive
-        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) as zipfp:
+        with zipfile.ZipFile(TESTFN2, "w", zipfile.ZIP_STORED) kama zipfp:
             zipfp.writestr("name", "foo")
             with self.assertWarns(UserWarning):
                 zipfp.writestr("name", "bar")
             self.assertEqual(zipfp.namelist(), ["name"] * 2)
 
-        with zipfile.ZipFile(TESTFN2, "r") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
             infos = zipfp.infolist()
             data = b""
-            for info in infos:
-                with zipfp.open(info) as zipopen:
+            kila info kwenye infos:
+                with zipfp.open(info) kama zipopen:
                     data += zipopen.read()
             self.assertIn(data, {b"foobar", b"barfoo"})
             data = b""
-            for info in infos:
+            kila info kwenye infos:
                 data += zipfp.read(info)
             self.assertIn(data, {b"foobar", b"barfoo"})
 
     eleza test_writestr_extended_local_header_issue1202(self):
-        with zipfile.ZipFile(TESTFN2, 'w') as orig_zip:
-            for data in 'abcdefghijklmnop':
+        with zipfile.ZipFile(TESTFN2, 'w') kama orig_zip:
+            kila data kwenye 'abcdefghijklmnop':
                 zinfo = zipfile.ZipInfo(data)
                 zinfo.flag_bits |= 0x08  # Include an extended local header.
                 orig_zip.writestr(zinfo, data)
 
     eleza test_close(self):
-        """Check that the zipfile is closed after the 'with' block."""
-        with zipfile.ZipFile(TESTFN2, "w") as zipfp:
-            for fpath, fdata in SMALL_TEST_DATA:
+        """Check that the zipfile ni closed after the 'with' block."""
+        with zipfile.ZipFile(TESTFN2, "w") kama zipfp:
+            kila fpath, fdata kwenye SMALL_TEST_DATA:
                 zipfp.writestr(fpath, fdata)
-                self.assertIsNotNone(zipfp.fp, 'zipfp is not open')
-        self.assertIsNone(zipfp.fp, 'zipfp is not closed')
+                self.assertIsNotTupu(zipfp.fp, 'zipfp ni sio open')
+        self.assertIsTupu(zipfp.fp, 'zipfp ni sio closed')
 
-        with zipfile.ZipFile(TESTFN2, "r") as zipfp:
-            self.assertIsNotNone(zipfp.fp, 'zipfp is not open')
-        self.assertIsNone(zipfp.fp, 'zipfp is not closed')
+        with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
+            self.assertIsNotTupu(zipfp.fp, 'zipfp ni sio open')
+        self.assertIsTupu(zipfp.fp, 'zipfp ni sio closed')
 
     eleza test_close_on_exception(self):
-        """Check that the zipfile is closed ikiwa an exception is raised in the
+        """Check that the zipfile ni closed ikiwa an exception ni ashiriad kwenye the
         'with' block."""
-        with zipfile.ZipFile(TESTFN2, "w") as zipfp:
-            for fpath, fdata in SMALL_TEST_DATA:
+        with zipfile.ZipFile(TESTFN2, "w") kama zipfp:
+            kila fpath, fdata kwenye SMALL_TEST_DATA:
                 zipfp.writestr(fpath, fdata)
 
-        try:
-            with zipfile.ZipFile(TESTFN2, "r") as zipfp2:
-                raise zipfile.BadZipFile()
-        except zipfile.BadZipFile:
-            self.assertIsNone(zipfp2.fp, 'zipfp is not closed')
+        jaribu:
+            with zipfile.ZipFile(TESTFN2, "r") kama zipfp2:
+                ashiria zipfile.BadZipFile()
+        tatizo zipfile.BadZipFile:
+            self.assertIsTupu(zipfp2.fp, 'zipfp ni sio closed')
 
     eleza test_unsupported_version(self):
         # File has an extract_version of 120
@@ -1335,17 +1335,17 @@ kundi OtherTests(unittest.TestCase):
     eleza test_read_unicode_filenames(self):
         # bug #10801
         fname = findfile('zip_cp437_header.zip')
-        with zipfile.ZipFile(fname) as zipfp:
-            for name in zipfp.namelist():
+        with zipfile.ZipFile(fname) kama zipfp:
+            kila name kwenye zipfp.namelist():
                 zipfp.open(name).close()
 
     eleza test_write_unicode_filenames(self):
-        with zipfile.ZipFile(TESTFN, "w") as zf:
-            zf.writestr("foo.txt", "Test for unicode filename")
-            zf.writestr("\xf6.txt", "Test for unicode filename")
+        with zipfile.ZipFile(TESTFN, "w") kama zf:
+            zf.writestr("foo.txt", "Test kila unicode filename")
+            zf.writestr("\xf6.txt", "Test kila unicode filename")
             self.assertIsInstance(zf.infolist()[0].filename, str)
 
-        with zipfile.ZipFile(TESTFN, "r") as zf:
+        with zipfile.ZipFile(TESTFN, "r") kama zf:
             self.assertEqual(zf.filelist[0].filename, "foo.txt")
             self.assertEqual(zf.filelist[1].filename, "\xf6.txt")
 
@@ -1353,12 +1353,12 @@ kundi OtherTests(unittest.TestCase):
         """Test exclusive creating a new zipfile."""
         unlink(TESTFN2)
         filename = 'testfile.txt'
-        content = b'hello, world. this is some content.'
-        with zipfile.ZipFile(TESTFN2, "x", zipfile.ZIP_STORED) as zipfp:
+        content = b'hello, world. this ni some content.'
+        with zipfile.ZipFile(TESTFN2, "x", zipfile.ZIP_STORED) kama zipfp:
             zipfp.writestr(filename, content)
         with self.assertRaises(FileExistsError):
             zipfile.ZipFile(TESTFN2, "x", zipfile.ZIP_STORED)
-        with zipfile.ZipFile(TESTFN2, "r") as zipfp:
+        with zipfile.ZipFile(TESTFN2, "r") kama zipfp:
             self.assertEqual(zipfp.namelist(), [filename])
             self.assertEqual(zipfp.read(filename), content)
 
@@ -1367,182 +1367,182 @@ kundi OtherTests(unittest.TestCase):
             os.unlink(TESTFN)
 
         filename = 'testfile.txt'
-        content = b'hello, world. this is some content.'
+        content = b'hello, world. this ni some content.'
 
-        try:
-            with zipfile.ZipFile(TESTFN, 'a') as zf:
+        jaribu:
+            with zipfile.ZipFile(TESTFN, 'a') kama zf:
                 zf.writestr(filename, content)
-        except OSError:
-            self.fail('Could not append data to a non-existent zip file.')
+        tatizo OSError:
+            self.fail('Could sio append data to a non-existent zip file.')
 
-        self.assertTrue(os.path.exists(TESTFN))
+        self.assertKweli(os.path.exists(TESTFN))
 
-        with zipfile.ZipFile(TESTFN, 'r') as zf:
+        with zipfile.ZipFile(TESTFN, 'r') kama zf:
             self.assertEqual(zf.read(filename), content)
 
     eleza test_close_erroneous_file(self):
         # This test checks that the ZipFile constructor closes the file object
-        # it opens ikiwa there's an error in the file.  If it doesn't, the
+        # it opens ikiwa there's an error kwenye the file.  If it doesn't, the
         # traceback holds a reference to the ZipFile object and, indirectly,
         # the file object.
         # On Windows, this causes the os.unlink() call to fail because the
-        # underlying file is still open.  This is SF bug #412214.
+        # underlying file ni still open.  This ni SF bug #412214.
         #
-        with open(TESTFN, "w") as fp:
-            fp.write("this is not a legal zip file\n")
-        try:
+        with open(TESTFN, "w") kama fp:
+            fp.write("this ni sio a legal zip file\n")
+        jaribu:
             zf = zipfile.ZipFile(TESTFN)
-        except zipfile.BadZipFile:
-            pass
+        tatizo zipfile.BadZipFile:
+            pita
 
     eleza test_is_zip_erroneous_file(self):
         """Check that is_zipfile() correctly identifies non-zip files."""
-        # - passing a filename
-        with open(TESTFN, "w") as fp:
-            fp.write("this is not a legal zip file\n")
-        self.assertFalse(zipfile.is_zipfile(TESTFN))
-        # - passing a path-like object
-        self.assertFalse(zipfile.is_zipfile(pathlib.Path(TESTFN)))
-        # - passing a file object
-        with open(TESTFN, "rb") as fp:
-            self.assertFalse(zipfile.is_zipfile(fp))
-        # - passing a file-like object
+        # - pitaing a filename
+        with open(TESTFN, "w") kama fp:
+            fp.write("this ni sio a legal zip file\n")
+        self.assertUongo(zipfile.is_zipfile(TESTFN))
+        # - pitaing a path-like object
+        self.assertUongo(zipfile.is_zipfile(pathlib.Path(TESTFN)))
+        # - pitaing a file object
+        with open(TESTFN, "rb") kama fp:
+            self.assertUongo(zipfile.is_zipfile(fp))
+        # - pitaing a file-like object
         fp = io.BytesIO()
-        fp.write(b"this is not a legal zip file\n")
-        self.assertFalse(zipfile.is_zipfile(fp))
+        fp.write(b"this ni sio a legal zip file\n")
+        self.assertUongo(zipfile.is_zipfile(fp))
         fp.seek(0, 0)
-        self.assertFalse(zipfile.is_zipfile(fp))
+        self.assertUongo(zipfile.is_zipfile(fp))
 
     eleza test_damaged_zipfile(self):
-        """Check that zipfiles with missing bytes at the end raise BadZipFile."""
+        """Check that zipfiles with missing bytes at the end ashiria BadZipFile."""
         # - Create a valid zip file
         fp = io.BytesIO()
-        with zipfile.ZipFile(fp, mode="w") as zipf:
-            zipf.writestr("foo.txt", b"O, for a Muse of Fire!")
+        with zipfile.ZipFile(fp, mode="w") kama zipf:
+            zipf.writestr("foo.txt", b"O, kila a Muse of Fire!")
         zipfiledata = fp.getvalue()
 
-        # - Now create copies of it missing the last N bytes and make sure
-        #   a BadZipFile exception is raised when we try to open it
-        for N in range(len(zipfiledata)):
+        # - Now create copies of it missing the last N bytes na make sure
+        #   a BadZipFile exception ni ashiriad when we try to open it
+        kila N kwenye range(len(zipfiledata)):
             fp = io.BytesIO(zipfiledata[:N])
             self.assertRaises(zipfile.BadZipFile, zipfile.ZipFile, fp)
 
     eleza test_is_zip_valid_file(self):
         """Check that is_zipfile() correctly identifies zip files."""
-        # - passing a filename
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
-            zipf.writestr("foo.txt", b"O, for a Muse of Fire!")
+        # - pitaing a filename
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
+            zipf.writestr("foo.txt", b"O, kila a Muse of Fire!")
 
-        self.assertTrue(zipfile.is_zipfile(TESTFN))
-        # - passing a file object
-        with open(TESTFN, "rb") as fp:
-            self.assertTrue(zipfile.is_zipfile(fp))
+        self.assertKweli(zipfile.is_zipfile(TESTFN))
+        # - pitaing a file object
+        with open(TESTFN, "rb") kama fp:
+            self.assertKweli(zipfile.is_zipfile(fp))
             fp.seek(0, 0)
             zip_contents = fp.read()
-        # - passing a file-like object
+        # - pitaing a file-like object
         fp = io.BytesIO()
         fp.write(zip_contents)
-        self.assertTrue(zipfile.is_zipfile(fp))
+        self.assertKweli(zipfile.is_zipfile(fp))
         fp.seek(0, 0)
-        self.assertTrue(zipfile.is_zipfile(fp))
+        self.assertKweli(zipfile.is_zipfile(fp))
 
-    eleza test_non_existent_file_raises_OSError(self):
-        # make sure we don't raise an AttributeError when a partially-constructed
-        # ZipFile instance is finalized; this tests for regression on SF tracker
+    eleza test_non_existent_file_ashirias_OSError(self):
+        # make sure we don't ashiria an AttributeError when a partially-constructed
+        # ZipFile instance ni finalized; this tests kila regression on SF tracker
         # bug #403871.
 
-        # The bug we're testing for caused an AttributeError to be raised
-        # when a ZipFile instance was created for a file that did not
-        # exist; the .fp member was not initialized but was needed by the
-        # __del__() method.  Since the AttributeError is in the __del__(),
-        # it is ignored, but the user should be sufficiently annoyed by
+        # The bug we're testing kila caused an AttributeError to be ashiriad
+        # when a ZipFile instance was created kila a file that did not
+        # exist; the .fp member was sio initialized but was needed by the
+        # __del__() method.  Since the AttributeError ni kwenye the __del__(),
+        # it ni ignored, but the user should be sufficiently annoyed by
         # the message on the output that regression will be noticed
         # quickly.
         self.assertRaises(OSError, zipfile.ZipFile, TESTFN)
 
-    eleza test_empty_file_raises_BadZipFile(self):
+    eleza test_empty_file_ashirias_BadZipFile(self):
         f = open(TESTFN, 'w')
         f.close()
         self.assertRaises(zipfile.BadZipFile, zipfile.ZipFile, TESTFN)
 
-        with open(TESTFN, 'w') as fp:
+        with open(TESTFN, 'w') kama fp:
             fp.write("short file")
         self.assertRaises(zipfile.BadZipFile, zipfile.ZipFile, TESTFN)
 
-    eleza test_closed_zip_raises_ValueError(self):
+    eleza test_closed_zip_ashirias_ValueError(self):
         """Verify that testzip() doesn't swallow inappropriate exceptions."""
         data = io.BytesIO()
-        with zipfile.ZipFile(data, mode="w") as zipf:
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
+        with zipfile.ZipFile(data, mode="w") kama zipf:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
 
-        # This is correct; calling .read on a closed ZipFile should raise
-        # a ValueError, and so should calling .testzip.  An earlier
+        # This ni correct; calling .read on a closed ZipFile should ashiria
+        # a ValueError, na so should calling .testzip.  An earlier
         # version of .testzip would swallow this exception (and any other)
-        # and report that the first file in the archive was corrupt.
+        # na report that the first file kwenye the archive was corrupt.
         self.assertRaises(ValueError, zipf.read, "foo.txt")
         self.assertRaises(ValueError, zipf.open, "foo.txt")
         self.assertRaises(ValueError, zipf.testzip)
         self.assertRaises(ValueError, zipf.writestr, "bogus.txt", "bogus")
-        with open(TESTFN, 'w') as f:
+        with open(TESTFN, 'w') kama f:
             f.write('zipfile test data')
         self.assertRaises(ValueError, zipf.write, TESTFN)
 
     eleza test_bad_constructor_mode(self):
-        """Check that bad modes passed to ZipFile constructor are caught."""
+        """Check that bad modes pitaed to ZipFile constructor are caught."""
         self.assertRaises(ValueError, zipfile.ZipFile, TESTFN, "q")
 
     eleza test_bad_open_mode(self):
-        """Check that bad modes passed to ZipFile.open are caught."""
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
+        """Check that bad modes pitaed to ZipFile.open are caught."""
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
 
-        with zipfile.ZipFile(TESTFN, mode="r") as zipf:
-            # read the data to make sure the file is there
+        with zipfile.ZipFile(TESTFN, mode="r") kama zipf:
+            # read the data to make sure the file ni there
             zipf.read("foo.txt")
             self.assertRaises(ValueError, zipf.open, "foo.txt", "q")
-            # universal newlines support is removed
+            # universal newlines support ni removed
             self.assertRaises(ValueError, zipf.open, "foo.txt", "U")
             self.assertRaises(ValueError, zipf.open, "foo.txt", "rU")
 
     eleza test_read0(self):
-        """Check that calling read(0) on a ZipExtFile object returns an empty
-        string and doesn't advance file pointer."""
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
-            # read the data to make sure the file is there
-            with zipf.open("foo.txt") as f:
-                for i in range(FIXEDTEST_SIZE):
+        """Check that calling read(0) on a ZipExtFile object rudishas an empty
+        string na doesn't advance file pointer."""
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
+            # read the data to make sure the file ni there
+            with zipf.open("foo.txt") kama f:
+                kila i kwenye range(FIXEDTEST_SIZE):
                     self.assertEqual(f.read(0), b'')
 
-                self.assertEqual(f.read(), b"O, for a Muse of Fire!")
+                self.assertEqual(f.read(), b"O, kila a Muse of Fire!")
 
     eleza test_open_non_existent_item(self):
-        """Check that attempting to call open() for an item that doesn't
-        exist in the archive raises a RuntimeError."""
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
+        """Check that attempting to call open() kila an item that doesn't
+        exist kwenye the archive ashirias a RuntimeError."""
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
             self.assertRaises(KeyError, zipf.open, "foo.txt", "r")
 
     eleza test_bad_compression_mode(self):
-        """Check that bad compression methods passed to ZipFile.open are
+        """Check that bad compression methods pitaed to ZipFile.open are
         caught."""
         self.assertRaises(NotImplementedError, zipfile.ZipFile, TESTFN, "w", -1)
 
     eleza test_unsupported_compression(self):
-        # data is declared as shrunk, but actually deflated
+        # data ni declared kama shrunk, but actually deflated
         data = (b'PK\x03\x04.\x00\x00\x00\x01\x00\xe4C\xa1@\x00\x00\x00'
                 b'\x00\x02\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00x\x03\x00PK\x01'
                 b'\x02.\x03.\x00\x00\x00\x01\x00\xe4C\xa1@\x00\x00\x00\x00\x02\x00\x00'
                 b'\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
                 b'\x80\x01\x00\x00\x00\x00xPK\x05\x06\x00\x00\x00\x00\x01\x00\x01\x00'
                 b'/\x00\x00\x00!\x00\x00\x00\x00\x00')
-        with zipfile.ZipFile(io.BytesIO(data), 'r') as zipf:
+        with zipfile.ZipFile(io.BytesIO(data), 'r') kama zipf:
             self.assertRaises(NotImplementedError, zipf.open, 'x')
 
     eleza test_null_byte_in_filename(self):
-        """Check that a filename containing a null byte is properly
+        """Check that a filename containing a null byte ni properly
         terminated."""
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
-            zipf.writestr("foo.txt\x00qqq", b"O, for a Muse of Fire!")
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
+            zipf.writestr("foo.txt\x00qqq", b"O, kila a Muse of Fire!")
             self.assertEqual(zipf.namelist(), ['foo.txt'])
 
     eleza test_struct_sizes(self):
@@ -1555,100 +1555,100 @@ kundi OtherTests(unittest.TestCase):
     eleza test_comments(self):
         """Check that comments on the archive are handled properly."""
 
-        # check default comment is empty
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
+        # check default comment ni empty
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
             self.assertEqual(zipf.comment, b'')
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
 
-        with zipfile.ZipFile(TESTFN, mode="r") as zipfr:
+        with zipfile.ZipFile(TESTFN, mode="r") kama zipfr:
             self.assertEqual(zipfr.comment, b'')
 
         # check a simple short comment
         comment = b'Bravely taking to his feet, he beat a very brave retreat.'
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
             zipf.comment = comment
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
-        with zipfile.ZipFile(TESTFN, mode="r") as zipfr:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
+        with zipfile.ZipFile(TESTFN, mode="r") kama zipfr:
             self.assertEqual(zipf.comment, comment)
 
         # check a comment of max length
-        comment2 = ''.join(['%d' % (i**3 % 10) for i in range((1 << 16)-1)])
+        comment2 = ''.join(['%d' % (i**3 % 10) kila i kwenye range((1 << 16)-1)])
         comment2 = comment2.encode("ascii")
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
             zipf.comment = comment2
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
 
-        with zipfile.ZipFile(TESTFN, mode="r") as zipfr:
+        with zipfile.ZipFile(TESTFN, mode="r") kama zipfr:
             self.assertEqual(zipfr.comment, comment2)
 
-        # check a comment that is too long is truncated
-        with zipfile.ZipFile(TESTFN, mode="w") as zipf:
+        # check a comment that ni too long ni truncated
+        with zipfile.ZipFile(TESTFN, mode="w") kama zipf:
             with self.assertWarns(UserWarning):
                 zipf.comment = comment2 + b'oops'
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
-        with zipfile.ZipFile(TESTFN, mode="r") as zipfr:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
+        with zipfile.ZipFile(TESTFN, mode="r") kama zipfr:
             self.assertEqual(zipfr.comment, comment2)
 
-        # check that comments are correctly modified in append mode
-        with zipfile.ZipFile(TESTFN,mode="w") as zipf:
+        # check that comments are correctly modified kwenye append mode
+        with zipfile.ZipFile(TESTFN,mode="w") kama zipf:
             zipf.comment = b"original comment"
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
-        with zipfile.ZipFile(TESTFN,mode="a") as zipf:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
+        with zipfile.ZipFile(TESTFN,mode="a") kama zipf:
             zipf.comment = b"an updated comment"
-        with zipfile.ZipFile(TESTFN,mode="r") as zipf:
+        with zipfile.ZipFile(TESTFN,mode="r") kama zipf:
             self.assertEqual(zipf.comment, b"an updated comment")
 
-        # check that comments are correctly shortened in append mode
-        with zipfile.ZipFile(TESTFN,mode="w") as zipf:
+        # check that comments are correctly shortened kwenye append mode
+        with zipfile.ZipFile(TESTFN,mode="w") kama zipf:
             zipf.comment = b"original comment that's longer"
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
-        with zipfile.ZipFile(TESTFN,mode="a") as zipf:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
+        with zipfile.ZipFile(TESTFN,mode="a") kama zipf:
             zipf.comment = b"shorter comment"
-        with zipfile.ZipFile(TESTFN,mode="r") as zipf:
+        with zipfile.ZipFile(TESTFN,mode="r") kama zipf:
             self.assertEqual(zipf.comment, b"shorter comment")
 
     eleza test_unicode_comment(self):
-        with zipfile.ZipFile(TESTFN, "w", zipfile.ZIP_STORED) as zipf:
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
+        with zipfile.ZipFile(TESTFN, "w", zipfile.ZIP_STORED) kama zipf:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
             with self.assertRaises(TypeError):
-                zipf.comment = "this is an error"
+                zipf.comment = "this ni an error"
 
     eleza test_change_comment_in_empty_archive(self):
-        with zipfile.ZipFile(TESTFN, "a", zipfile.ZIP_STORED) as zipf:
-            self.assertFalse(zipf.filelist)
-            zipf.comment = b"this is a comment"
-        with zipfile.ZipFile(TESTFN, "r") as zipf:
-            self.assertEqual(zipf.comment, b"this is a comment")
+        with zipfile.ZipFile(TESTFN, "a", zipfile.ZIP_STORED) kama zipf:
+            self.assertUongo(zipf.filelist)
+            zipf.comment = b"this ni a comment"
+        with zipfile.ZipFile(TESTFN, "r") kama zipf:
+            self.assertEqual(zipf.comment, b"this ni a comment")
 
     eleza test_change_comment_in_nonempty_archive(self):
-        with zipfile.ZipFile(TESTFN, "w", zipfile.ZIP_STORED) as zipf:
-            zipf.writestr("foo.txt", "O, for a Muse of Fire!")
-        with zipfile.ZipFile(TESTFN, "a", zipfile.ZIP_STORED) as zipf:
-            self.assertTrue(zipf.filelist)
-            zipf.comment = b"this is a comment"
-        with zipfile.ZipFile(TESTFN, "r") as zipf:
-            self.assertEqual(zipf.comment, b"this is a comment")
+        with zipfile.ZipFile(TESTFN, "w", zipfile.ZIP_STORED) kama zipf:
+            zipf.writestr("foo.txt", "O, kila a Muse of Fire!")
+        with zipfile.ZipFile(TESTFN, "a", zipfile.ZIP_STORED) kama zipf:
+            self.assertKweli(zipf.filelist)
+            zipf.comment = b"this ni a comment"
+        with zipfile.ZipFile(TESTFN, "r") kama zipf:
+            self.assertEqual(zipf.comment, b"this ni a comment")
 
     eleza test_empty_zipfile(self):
-        # Check that creating a file in 'w' or 'a' mode and closing without
+        # Check that creating a file kwenye 'w' ama 'a' mode na closing without
         # adding any files to the archives creates a valid empty ZIP file
         zipf = zipfile.ZipFile(TESTFN, mode="w")
         zipf.close()
-        try:
+        jaribu:
             zipf = zipfile.ZipFile(TESTFN, mode="r")
-        except zipfile.BadZipFile:
-            self.fail("Unable to create empty ZIP file in 'w' mode")
+        tatizo zipfile.BadZipFile:
+            self.fail("Unable to create empty ZIP file kwenye 'w' mode")
 
         zipf = zipfile.ZipFile(TESTFN, mode="a")
         zipf.close()
-        try:
+        jaribu:
             zipf = zipfile.ZipFile(TESTFN, mode="r")
         except:
-            self.fail("Unable to create empty ZIP file in 'a' mode")
+            self.fail("Unable to create empty ZIP file kwenye 'a' mode")
 
     eleza test_open_empty_file(self):
         # Issue 1710703: Check that opening a file with less than 22 bytes
-        # raises a BadZipFile exception (rather than the previously unhelpful
+        # ashirias a BadZipFile exception (rather than the previously unhelpful
         # OSError)
         f = open(TESTFN, 'w')
         f.close()
@@ -1659,7 +1659,7 @@ kundi OtherTests(unittest.TestCase):
                           zipfile.ZipInfo, 'seventies', (1979, 1, 1, 0, 0, 0))
 
     eleza test_zipfile_with_short_extra_field(self):
-        """If an extra field in the header is less than 4 bytes, skip it."""
+        """If an extra field kwenye the header ni less than 4 bytes, skip it."""
         zipdata = (
             b'PK\x03\x04\x14\x00\x00\x00\x00\x00\x93\x9b\xad@\x8b\x9e'
             b'\xd9\xd3\x01\x00\x00\x00\x01\x00\x00\x00\x03\x00\x03\x00ab'
@@ -1669,19 +1669,19 @@ kundi OtherTests(unittest.TestCase):
             b'\x00\x00\x00abc\x00\x00PK\x05\x06\x00\x00\x00\x00'
             b'\x01\x00\x01\x003\x00\x00\x00%\x00\x00\x00\x00\x00'
         )
-        with zipfile.ZipFile(io.BytesIO(zipdata), 'r') as zipf:
-            # testzip returns the name of the first corrupt file, or None
-            self.assertIsNone(zipf.testzip())
+        with zipfile.ZipFile(io.BytesIO(zipdata), 'r') kama zipf:
+            # testzip rudishas the name of the first corrupt file, ama Tupu
+            self.assertIsTupu(zipf.testzip())
 
     eleza test_open_conflicting_handles(self):
         # It's only possible to open one writable file handle at a time
         msg1 = b"It's fun to charter an accountant!"
         msg2 = b"And sail the wide accountant sea"
         msg3 = b"To find, explore the funds offshore"
-        with zipfile.ZipFile(TESTFN2, 'w', zipfile.ZIP_STORED) as zipf:
-            with zipf.open('foo', mode='w') as w2:
+        with zipfile.ZipFile(TESTFN2, 'w', zipfile.ZIP_STORED) kama zipf:
+            with zipf.open('foo', mode='w') kama w2:
                 w2.write(msg1)
-            with zipf.open('bar', mode='w') as w1:
+            with zipf.open('bar', mode='w') kama w1:
                 with self.assertRaises(ValueError):
                     zipf.open('handle', mode='w')
                 with self.assertRaises(ValueError):
@@ -1693,10 +1693,10 @@ kundi OtherTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     zipf.close()
                 w1.write(msg2)
-            with zipf.open('baz', mode='w') as w2:
+            with zipf.open('baz', mode='w') kama w2:
                 w2.write(msg3)
 
-        with zipfile.ZipFile(TESTFN2, 'r') as zipf:
+        with zipfile.ZipFile(TESTFN2, 'r') kama zipf:
             self.assertEqual(zipf.read('foo'), msg1)
             self.assertEqual(zipf.read('bar'), msg2)
             self.assertEqual(zipf.read('baz'), msg3)
@@ -1707,10 +1707,10 @@ kundi OtherTests(unittest.TestCase):
         txt = b"Where's Bruce?"
         bloc = txt.find(b"Bruce")
         # Check seek on a file
-        with zipfile.ZipFile(TESTFN, "w") as zipf:
+        with zipfile.ZipFile(TESTFN, "w") kama zipf:
             zipf.writestr("foo.txt", txt)
-        with zipfile.ZipFile(TESTFN, "r") as zipf:
-            with zipf.open("foo.txt", "r") as fp:
+        with zipfile.ZipFile(TESTFN, "r") kama zipf:
+            with zipf.open("foo.txt", "r") kama fp:
                 fp.seek(bloc, os.SEEK_SET)
                 self.assertEqual(fp.tell(), bloc)
                 fp.seek(-bloc, os.SEEK_CUR)
@@ -1724,10 +1724,10 @@ kundi OtherTests(unittest.TestCase):
                 self.assertEqual(fp.tell(), 0)
         # Check seek on memory file
         data = io.BytesIO()
-        with zipfile.ZipFile(data, mode="w") as zipf:
+        with zipfile.ZipFile(data, mode="w") kama zipf:
             zipf.writestr("foo.txt", txt)
-        with zipfile.ZipFile(data, mode="r") as zipf:
-            with zipf.open("foo.txt", "r") as fp:
+        with zipfile.ZipFile(data, mode="r") kama zipf:
+            with zipf.open("foo.txt", "r") kama fp:
                 fp.seek(bloc, os.SEEK_SET)
                 self.assertEqual(fp.tell(), bloc)
                 fp.seek(-bloc, os.SEEK_CUR)
@@ -1744,10 +1744,10 @@ kundi OtherTests(unittest.TestCase):
     eleza test_decompress_without_3rd_party_library(self):
         data = b'PK\x05\x06\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
         zip_file = io.BytesIO(data)
-        with zipfile.ZipFile(zip_file, 'w', compression=zipfile.ZIP_BZIP2) as zf:
+        with zipfile.ZipFile(zip_file, 'w', compression=zipfile.ZIP_BZIP2) kama zf:
             zf.writestr('a.txt', b'a')
-        with mock.patch('zipfile.bz2', None):
-            with zipfile.ZipFile(zip_file) as zf:
+        with mock.patch('zipfile.bz2', Tupu):
+            with zipfile.ZipFile(zip_file) kama zf:
                 self.assertRaises(RuntimeError, zf.extract, 'a.txt')
 
     eleza tearDown(self):
@@ -1760,30 +1760,30 @@ kundi AbstractBadCrcTests:
         """Tests that files with bad CRCs rudisha their name kutoka testzip."""
         zipdata = self.zip_with_bad_crc
 
-        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") as zipf:
-            # testzip returns the name of the first corrupt file, or None
+        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") kama zipf:
+            # testzip rudishas the name of the first corrupt file, ama Tupu
             self.assertEqual('afile', zipf.testzip())
 
     eleza test_read_with_bad_crc(self):
-        """Tests that files with bad CRCs raise a BadZipFile exception when read."""
+        """Tests that files with bad CRCs ashiria a BadZipFile exception when read."""
         zipdata = self.zip_with_bad_crc
 
         # Using ZipFile.read()
-        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") as zipf:
+        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") kama zipf:
             self.assertRaises(zipfile.BadZipFile, zipf.read, 'afile')
 
         # Using ZipExtFile.read()
-        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") as zipf:
-            with zipf.open('afile', 'r') as corrupt_file:
+        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") kama zipf:
+            with zipf.open('afile', 'r') kama corrupt_file:
                 self.assertRaises(zipfile.BadZipFile, corrupt_file.read)
 
         # Same with small reads (in order to exercise the buffering logic)
-        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") as zipf:
-            with zipf.open('afile', 'r') as corrupt_file:
+        with zipfile.ZipFile(io.BytesIO(zipdata), mode="r") kama zipf:
+            with zipf.open('afile', 'r') kama corrupt_file:
                 corrupt_file.MIN_READ_SIZE = 2
                 with self.assertRaises(zipfile.BadZipFile):
-                    while corrupt_file.read(2):
-                        pass
+                    wakati corrupt_file.read(2):
+                        pita
 
 
 kundi StoredBadCrcTests(AbstractBadCrcTests, unittest.TestCase):
@@ -1869,10 +1869,10 @@ kundi DecryptionTests(unittest.TestCase):
     plain2 = b'\x00'*512
 
     eleza setUp(self):
-        with open(TESTFN, "wb") as fp:
+        with open(TESTFN, "wb") kama fp:
             fp.write(self.data)
         self.zip = zipfile.ZipFile(TESTFN, "r")
-        with open(TESTFN2, "wb") as fp:
+        with open(TESTFN2, "wb") kama fp:
             fp.write(self.data2)
         self.zip2 = zipfile.ZipFile(TESTFN2, "r")
 
@@ -1882,27 +1882,27 @@ kundi DecryptionTests(unittest.TestCase):
         self.zip2.close()
         os.unlink(TESTFN2)
 
-    eleza test_no_password(self):
-        # Reading the encrypted file without password
+    eleza test_no_pitaword(self):
+        # Reading the encrypted file without pitaword
         # must generate a RunTime exception
         self.assertRaises(RuntimeError, self.zip.read, "test.txt")
         self.assertRaises(RuntimeError, self.zip2.read, "zero")
 
-    eleza test_bad_password(self):
-        self.zip.setpassword(b"perl")
+    eleza test_bad_pitaword(self):
+        self.zip.setpitaword(b"perl")
         self.assertRaises(RuntimeError, self.zip.read, "test.txt")
-        self.zip2.setpassword(b"perl")
+        self.zip2.setpitaword(b"perl")
         self.assertRaises(RuntimeError, self.zip2.read, "zero")
 
     @requires_zlib
-    eleza test_good_password(self):
-        self.zip.setpassword(b"python")
+    eleza test_good_pitaword(self):
+        self.zip.setpitaword(b"python")
         self.assertEqual(self.zip.read("test.txt"), self.plain)
-        self.zip2.setpassword(b"12345")
+        self.zip2.setpitaword(b"12345")
         self.assertEqual(self.zip2.read("zero"), self.plain2)
 
-    eleza test_unicode_password(self):
-        self.assertRaises(TypeError, self.zip.setpassword, "unicode")
+    eleza test_unicode_pitaword(self):
+        self.assertRaises(TypeError, self.zip.setpitaword, "unicode")
         self.assertRaises(TypeError, self.zip.read, "test.txt", "python")
         self.assertRaises(TypeError, self.zip.open, "test.txt", pwd="python")
         self.assertRaises(TypeError, self.zip.extract, "test.txt", pwd="python")
@@ -1912,11 +1912,11 @@ kundi AbstractTestsWithRandomBinaryFiles:
     eleza setUpClass(cls):
         datacount = randint(16, 64)*1024 + randint(1, 1024)
         cls.data = b''.join(struct.pack('<f', random()*randint(-1000, 1000))
-                            for i in range(datacount))
+                            kila i kwenye range(datacount))
 
     eleza setUp(self):
         # Make a source file with some lines
-        with open(TESTFN, "wb") as fp:
+        with open(TESTFN, "wb") kama fp:
             fp.write(self.data)
 
     eleza tearDown(self):
@@ -1925,7 +1925,7 @@ kundi AbstractTestsWithRandomBinaryFiles:
 
     eleza make_test_archive(self, f, compression):
         # Create the ZIP archive
-        with zipfile.ZipFile(f, "w", compression) as zipfp:
+        with zipfile.ZipFile(f, "w", compression) kama zipfp:
             zipfp.write(TESTFN, "another.name")
             zipfp.write(TESTFN, TESTFN)
 
@@ -1933,35 +1933,35 @@ kundi AbstractTestsWithRandomBinaryFiles:
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) as zipfp:
+        with zipfile.ZipFile(f, "r", compression) kama zipfp:
             testdata = zipfp.read(TESTFN)
             self.assertEqual(len(testdata), len(self.data))
             self.assertEqual(testdata, self.data)
             self.assertEqual(zipfp.read("another.name"), self.data)
 
     eleza test_read(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_test(f, self.compression)
 
     eleza zip_open_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) as zipfp:
+        with zipfile.ZipFile(f, "r", compression) kama zipfp:
             zipdata1 = []
-            with zipfp.open(TESTFN) as zipopen1:
-                while True:
+            with zipfp.open(TESTFN) kama zipopen1:
+                wakati Kweli:
                     read_data = zipopen1.read(256)
-                    ikiwa not read_data:
-                        break
+                    ikiwa sio read_data:
+                        koma
                     zipdata1.append(read_data)
 
             zipdata2 = []
-            with zipfp.open("another.name") as zipopen2:
-                while True:
+            with zipfp.open("another.name") kama zipopen2:
+                wakati Kweli:
                     read_data = zipopen2.read(256)
-                    ikiwa not read_data:
-                        break
+                    ikiwa sio read_data:
+                        koma
                     zipdata2.append(read_data)
 
             testdata1 = b''.join(zipdata1)
@@ -1973,20 +1973,20 @@ kundi AbstractTestsWithRandomBinaryFiles:
             self.assertEqual(testdata2, self.data)
 
     eleza test_open(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_open_test(f, self.compression)
 
     eleza zip_random_open_test(self, f, compression):
         self.make_test_archive(f, compression)
 
         # Read the ZIP archive
-        with zipfile.ZipFile(f, "r", compression) as zipfp:
+        with zipfile.ZipFile(f, "r", compression) kama zipfp:
             zipdata1 = []
-            with zipfp.open(TESTFN) as zipopen1:
-                while True:
+            with zipfp.open(TESTFN) kama zipopen1:
+                wakati Kweli:
                     read_data = zipopen1.read(randint(1, 1024))
-                    ikiwa not read_data:
-                        break
+                    ikiwa sio read_data:
+                        koma
                     zipdata1.append(read_data)
 
             testdata = b''.join(zipdata1)
@@ -1994,7 +1994,7 @@ kundi AbstractTestsWithRandomBinaryFiles:
             self.assertEqual(testdata, self.data)
 
     eleza test_random_open(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.zip_random_open_test(f, self.compression)
 
 
@@ -2018,7 +2018,7 @@ kundi LzmaTestsWithRandomBinaryFiles(AbstractTestsWithRandomBinaryFiles,
     compression = zipfile.ZIP_LZMA
 
 
-# Provide the tell() method but not seek()
+# Provide the tell() method but sio seek()
 kundi Tellable:
     eleza __init__(self, fp):
         self.fp = fp
@@ -2047,55 +2047,55 @@ kundi Unseekable:
 
 kundi UnseekableTests(unittest.TestCase):
     eleza test_writestr(self):
-        for wrapper in (lambda f: f), Tellable, Unseekable:
+        kila wrapper kwenye (lambda f: f), Tellable, Unseekable:
             with self.subTest(wrapper=wrapper):
                 f = io.BytesIO()
                 f.write(b'abc')
                 bf = io.BufferedWriter(f)
-                with zipfile.ZipFile(wrapper(bf), 'w', zipfile.ZIP_STORED) as zipfp:
+                with zipfile.ZipFile(wrapper(bf), 'w', zipfile.ZIP_STORED) kama zipfp:
                     zipfp.writestr('ones', b'111')
                     zipfp.writestr('twos', b'222')
                 self.assertEqual(f.getvalue()[:5], b'abcPK')
-                with zipfile.ZipFile(f, mode='r') as zipf:
-                    with zipf.open('ones') as zopen:
+                with zipfile.ZipFile(f, mode='r') kama zipf:
+                    with zipf.open('ones') kama zopen:
                         self.assertEqual(zopen.read(), b'111')
-                    with zipf.open('twos') as zopen:
+                    with zipf.open('twos') kama zopen:
                         self.assertEqual(zopen.read(), b'222')
 
     eleza test_write(self):
-        for wrapper in (lambda f: f), Tellable, Unseekable:
+        kila wrapper kwenye (lambda f: f), Tellable, Unseekable:
             with self.subTest(wrapper=wrapper):
                 f = io.BytesIO()
                 f.write(b'abc')
                 bf = io.BufferedWriter(f)
-                with zipfile.ZipFile(wrapper(bf), 'w', zipfile.ZIP_STORED) as zipfp:
+                with zipfile.ZipFile(wrapper(bf), 'w', zipfile.ZIP_STORED) kama zipfp:
                     self.addCleanup(unlink, TESTFN)
-                    with open(TESTFN, 'wb') as f2:
+                    with open(TESTFN, 'wb') kama f2:
                         f2.write(b'111')
                     zipfp.write(TESTFN, 'ones')
-                    with open(TESTFN, 'wb') as f2:
+                    with open(TESTFN, 'wb') kama f2:
                         f2.write(b'222')
                     zipfp.write(TESTFN, 'twos')
                 self.assertEqual(f.getvalue()[:5], b'abcPK')
-                with zipfile.ZipFile(f, mode='r') as zipf:
-                    with zipf.open('ones') as zopen:
+                with zipfile.ZipFile(f, mode='r') kama zipf:
+                    with zipf.open('ones') kama zopen:
                         self.assertEqual(zopen.read(), b'111')
-                    with zipf.open('twos') as zopen:
+                    with zipf.open('twos') kama zopen:
                         self.assertEqual(zopen.read(), b'222')
 
     eleza test_open_write(self):
-        for wrapper in (lambda f: f), Tellable, Unseekable:
+        kila wrapper kwenye (lambda f: f), Tellable, Unseekable:
             with self.subTest(wrapper=wrapper):
                 f = io.BytesIO()
                 f.write(b'abc')
                 bf = io.BufferedWriter(f)
-                with zipfile.ZipFile(wrapper(bf), 'w', zipfile.ZIP_STORED) as zipf:
-                    with zipf.open('ones', 'w') as zopen:
+                with zipfile.ZipFile(wrapper(bf), 'w', zipfile.ZIP_STORED) kama zipf:
+                    with zipf.open('ones', 'w') kama zopen:
                         zopen.write(b'111')
-                    with zipf.open('twos', 'w') as zopen:
+                    with zipf.open('twos', 'w') kama zopen:
                         zopen.write(b'222')
                 self.assertEqual(f.getvalue()[:5], b'abcPK')
-                with zipfile.ZipFile(f) as zipf:
+                with zipfile.ZipFile(f) kama zipf:
                     self.assertEqual(zipf.read('ones'), b'111')
                     self.assertEqual(zipf.read('twos'), b'222')
 
@@ -2109,17 +2109,17 @@ kundi TestsWithMultipleOpens(unittest.TestCase):
 
     eleza make_test_archive(self, f):
         # Create the ZIP archive
-        with zipfile.ZipFile(f, "w", zipfile.ZIP_DEFLATED) as zipfp:
+        with zipfile.ZipFile(f, "w", zipfile.ZIP_DEFLATED) kama zipfp:
             zipfp.writestr('ones', self.data1)
             zipfp.writestr('twos', self.data2)
 
     eleza test_same_file(self):
-        # Verify that (when the ZipFile is in control of creating file objects)
+        # Verify that (when the ZipFile ni kwenye control of creating file objects)
         # multiple open() calls can be made without interfering with each other.
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.make_test_archive(f)
-            with zipfile.ZipFile(f, mode="r") as zipf:
-                with zipf.open('ones') as zopen1, zipf.open('ones') as zopen2:
+            with zipfile.ZipFile(f, mode="r") kama zipf:
+                with zipf.open('ones') kama zopen1, zipf.open('ones') kama zopen2:
                     data1 = zopen1.read(500)
                     data2 = zopen2.read(500)
                     data1 += zopen1.read()
@@ -2128,12 +2128,12 @@ kundi TestsWithMultipleOpens(unittest.TestCase):
                 self.assertEqual(data1, self.data1)
 
     eleza test_different_file(self):
-        # Verify that (when the ZipFile is in control of creating file objects)
+        # Verify that (when the ZipFile ni kwenye control of creating file objects)
         # multiple open() calls can be made without interfering with each other.
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.make_test_archive(f)
-            with zipfile.ZipFile(f, mode="r") as zipf:
-                with zipf.open('ones') as zopen1, zipf.open('twos') as zopen2:
+            with zipfile.ZipFile(f, mode="r") kama zipf:
+                with zipf.open('ones') kama zopen1, zipf.open('twos') kama zopen2:
                     data1 = zopen1.read(500)
                     data2 = zopen2.read(500)
                     data1 += zopen1.read()
@@ -2142,14 +2142,14 @@ kundi TestsWithMultipleOpens(unittest.TestCase):
                 self.assertEqual(data2, self.data2)
 
     eleza test_interleaved(self):
-        # Verify that (when the ZipFile is in control of creating file objects)
+        # Verify that (when the ZipFile ni kwenye control of creating file objects)
         # multiple open() calls can be made without interfering with each other.
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.make_test_archive(f)
-            with zipfile.ZipFile(f, mode="r") as zipf:
-                with zipf.open('ones') as zopen1:
+            with zipfile.ZipFile(f, mode="r") kama zipf:
+                with zipf.open('ones') kama zopen1:
                     data1 = zopen1.read(500)
-                    with zipf.open('twos') as zopen2:
+                    with zipf.open('twos') kama zopen2:
                         data2 = zopen2.read(500)
                         data1 += zopen1.read()
                         data2 += zopen2.read()
@@ -2157,10 +2157,10 @@ kundi TestsWithMultipleOpens(unittest.TestCase):
                 self.assertEqual(data2, self.data2)
 
     eleza test_read_after_close(self):
-        for f in get_files(self):
+        kila f kwenye get_files(self):
             self.make_test_archive(f)
-            with contextlib.ExitStack() as stack:
-                with zipfile.ZipFile(f, 'r') as zipf:
+            with contextlib.ExitStack() kama stack:
+                with zipfile.ZipFile(f, 'r') kama zipf:
                     zopen1 = stack.enter_context(zipf.open('ones'))
                     zopen2 = stack.enter_context(zipf.open('twos'))
                 data1 = zopen1.read(500)
@@ -2171,55 +2171,55 @@ kundi TestsWithMultipleOpens(unittest.TestCase):
             self.assertEqual(data2, self.data2)
 
     eleza test_read_after_write(self):
-        for f in get_files(self):
-            with zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        kila f kwenye get_files(self):
+            with zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED) kama zipf:
                 zipf.writestr('ones', self.data1)
                 zipf.writestr('twos', self.data2)
-                with zipf.open('ones') as zopen1:
+                with zipf.open('ones') kama zopen1:
                     data1 = zopen1.read(500)
             self.assertEqual(data1, self.data1[:500])
-            with zipfile.ZipFile(f, 'r') as zipf:
+            with zipfile.ZipFile(f, 'r') kama zipf:
                 data1 = zipf.read('ones')
                 data2 = zipf.read('twos')
             self.assertEqual(data1, self.data1)
             self.assertEqual(data2, self.data2)
 
     eleza test_write_after_read(self):
-        for f in get_files(self):
-            with zipfile.ZipFile(f, "w", zipfile.ZIP_DEFLATED) as zipf:
+        kila f kwenye get_files(self):
+            with zipfile.ZipFile(f, "w", zipfile.ZIP_DEFLATED) kama zipf:
                 zipf.writestr('ones', self.data1)
-                with zipf.open('ones') as zopen1:
+                with zipf.open('ones') kama zopen1:
                     zopen1.read(500)
                     zipf.writestr('twos', self.data2)
-            with zipfile.ZipFile(f, 'r') as zipf:
+            with zipfile.ZipFile(f, 'r') kama zipf:
                 data1 = zipf.read('ones')
                 data2 = zipf.read('twos')
             self.assertEqual(data1, self.data1)
             self.assertEqual(data2, self.data2)
 
     eleza test_many_opens(self):
-        # Verify that read() and open() promptly close the file descriptor,
-        # and don't rely on the garbage collector to free resources.
+        # Verify that read() na open() promptly close the file descriptor,
+        # na don't rely on the garbage collector to free resources.
         self.make_test_archive(TESTFN2)
-        with zipfile.ZipFile(TESTFN2, mode="r") as zipf:
-            for x in range(100):
+        with zipfile.ZipFile(TESTFN2, mode="r") kama zipf:
+            kila x kwenye range(100):
                 zipf.read('ones')
-                with zipf.open('ones') as zopen1:
-                    pass
-        with open(os.devnull) as f:
+                with zipf.open('ones') kama zopen1:
+                    pita
+        with open(os.devnull) kama f:
             self.assertLess(f.fileno(), 100)
 
     eleza test_write_while_reading(self):
-        with zipfile.ZipFile(TESTFN2, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        with zipfile.ZipFile(TESTFN2, 'w', zipfile.ZIP_DEFLATED) kama zipf:
             zipf.writestr('ones', self.data1)
-        with zipfile.ZipFile(TESTFN2, 'a', zipfile.ZIP_DEFLATED) as zipf:
-            with zipf.open('ones', 'r') as r1:
+        with zipfile.ZipFile(TESTFN2, 'a', zipfile.ZIP_DEFLATED) kama zipf:
+            with zipf.open('ones', 'r') kama r1:
                 data1 = r1.read(500)
-                with zipf.open('twos', 'w') as w1:
+                with zipf.open('twos', 'w') kama w1:
                     w1.write(self.data2)
                 data1 += r1.read()
         self.assertEqual(data1, self.data1)
-        with zipfile.ZipFile(TESTFN2) as zipf:
+        with zipfile.ZipFile(TESTFN2) kama zipf:
             self.assertEqual(zipf.read('twos'), self.data2)
 
     eleza tearDown(self):
@@ -2231,11 +2231,11 @@ kundi TestWithDirectory(unittest.TestCase):
         os.mkdir(TESTFN2)
 
     eleza test_extract_dir(self):
-        with zipfile.ZipFile(findfile("zipdir.zip")) as zipf:
+        with zipfile.ZipFile(findfile("zipdir.zip")) kama zipf:
             zipf.extractall(TESTFN2)
-        self.assertTrue(os.path.isdir(os.path.join(TESTFN2, "a")))
-        self.assertTrue(os.path.isdir(os.path.join(TESTFN2, "a", "b")))
-        self.assertTrue(os.path.exists(os.path.join(TESTFN2, "a", "b", "c")))
+        self.assertKweli(os.path.isdir(os.path.join(TESTFN2, "a")))
+        self.assertKweli(os.path.isdir(os.path.join(TESTFN2, "a", "b")))
+        self.assertKweli(os.path.exists(os.path.join(TESTFN2, "a", "b", "c")))
 
     eleza test_bug_6050(self):
         # Extraction should succeed ikiwa directories already exist
@@ -2246,43 +2246,43 @@ kundi TestWithDirectory(unittest.TestCase):
         dirpath = os.path.join(TESTFN2, "x")
         os.mkdir(dirpath)
         mode = os.stat(dirpath).st_mode & 0xFFFF
-        with zipfile.ZipFile(TESTFN, "w") as zipf:
+        with zipfile.ZipFile(TESTFN, "w") kama zipf:
             zipf.write(dirpath)
             zinfo = zipf.filelist[0]
-            self.assertTrue(zinfo.filename.endswith("/x/"))
+            self.assertKweli(zinfo.filename.endswith("/x/"))
             self.assertEqual(zinfo.external_attr, (mode << 16) | 0x10)
             zipf.write(dirpath, "y")
             zinfo = zipf.filelist[1]
-            self.assertTrue(zinfo.filename, "y/")
+            self.assertKweli(zinfo.filename, "y/")
             self.assertEqual(zinfo.external_attr, (mode << 16) | 0x10)
-        with zipfile.ZipFile(TESTFN, "r") as zipf:
+        with zipfile.ZipFile(TESTFN, "r") kama zipf:
             zinfo = zipf.filelist[0]
-            self.assertTrue(zinfo.filename.endswith("/x/"))
+            self.assertKweli(zinfo.filename.endswith("/x/"))
             self.assertEqual(zinfo.external_attr, (mode << 16) | 0x10)
             zinfo = zipf.filelist[1]
-            self.assertTrue(zinfo.filename, "y/")
+            self.assertKweli(zinfo.filename, "y/")
             self.assertEqual(zinfo.external_attr, (mode << 16) | 0x10)
             target = os.path.join(TESTFN2, "target")
             os.mkdir(target)
             zipf.extractall(target)
-            self.assertTrue(os.path.isdir(os.path.join(target, "y")))
+            self.assertKweli(os.path.isdir(os.path.join(target, "y")))
             self.assertEqual(len(os.listdir(target)), 2)
 
     eleza test_writestr_dir(self):
         os.mkdir(os.path.join(TESTFN2, "x"))
-        with zipfile.ZipFile(TESTFN, "w") as zipf:
+        with zipfile.ZipFile(TESTFN, "w") kama zipf:
             zipf.writestr("x/", b'')
             zinfo = zipf.filelist[0]
             self.assertEqual(zinfo.filename, "x/")
             self.assertEqual(zinfo.external_attr, (0o40775 << 16) | 0x10)
-        with zipfile.ZipFile(TESTFN, "r") as zipf:
+        with zipfile.ZipFile(TESTFN, "r") kama zipf:
             zinfo = zipf.filelist[0]
-            self.assertTrue(zinfo.filename.endswith("x/"))
+            self.assertKweli(zinfo.filename.endswith("x/"))
             self.assertEqual(zinfo.external_attr, (0o40775 << 16) | 0x10)
             target = os.path.join(TESTFN2, "target")
             os.mkdir(target)
             zipf.extractall(target)
-            self.assertTrue(os.path.isdir(os.path.join(target, "x")))
+            self.assertKweli(os.path.isdir(os.path.join(target, "x")))
             self.assertEqual(os.listdir(target), ["x"])
 
     eleza tearDown(self):
@@ -2295,33 +2295,33 @@ kundi ZipInfoTests(unittest.TestCase):
     eleza test_kutoka_file(self):
         zi = zipfile.ZipInfo.kutoka_file(__file__)
         self.assertEqual(posixpath.basename(zi.filename), 'test_zipfile.py')
-        self.assertFalse(zi.is_dir())
+        self.assertUongo(zi.is_dir())
         self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
     eleza test_kutoka_file_pathlike(self):
         zi = zipfile.ZipInfo.kutoka_file(pathlib.Path(__file__))
         self.assertEqual(posixpath.basename(zi.filename), 'test_zipfile.py')
-        self.assertFalse(zi.is_dir())
+        self.assertUongo(zi.is_dir())
         self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
     eleza test_kutoka_file_bytes(self):
         zi = zipfile.ZipInfo.kutoka_file(os.fsencode(__file__), 'test')
         self.assertEqual(posixpath.basename(zi.filename), 'test')
-        self.assertFalse(zi.is_dir())
+        self.assertUongo(zi.is_dir())
         self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
     eleza test_kutoka_file_fileno(self):
-        with open(__file__, 'rb') as f:
+        with open(__file__, 'rb') kama f:
             zi = zipfile.ZipInfo.kutoka_file(f.fileno(), 'test')
             self.assertEqual(posixpath.basename(zi.filename), 'test')
-            self.assertFalse(zi.is_dir())
+            self.assertUongo(zi.is_dir())
             self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
     eleza test_kutoka_dir(self):
         dirpath = os.path.dirname(os.path.abspath(__file__))
         zi = zipfile.ZipInfo.kutoka_file(dirpath, 'stdlib_tests')
         self.assertEqual(zi.filename, 'stdlib_tests/')
-        self.assertTrue(zi.is_dir())
+        self.assertKweli(zi.is_dir())
         self.assertEqual(zi.compress_type, zipfile.ZIP_STORED)
         self.assertEqual(zi.file_size, 0)
 
@@ -2348,7 +2348,7 @@ kundi CommandLineTest(unittest.TestCase):
 
     eleza test_test_command(self):
         zip_name = findfile('zipdir.zip')
-        for opt in '-t', '--test':
+        kila opt kwenye '-t', '--test':
             out = self.zipfilecmd(opt, zip_name)
             self.assertEqual(out.rstrip(), b'Done testing')
         zip_name = findfile('testtar.tar')
@@ -2358,10 +2358,10 @@ kundi CommandLineTest(unittest.TestCase):
     eleza test_list_command(self):
         zip_name = findfile('zipdir.zip')
         t = io.StringIO()
-        with zipfile.ZipFile(zip_name, 'r') as tf:
+        with zipfile.ZipFile(zip_name, 'r') kama tf:
             tf.printdir(t)
         expected = t.getvalue().encode('ascii', 'backslashreplace')
-        for opt in '-l', '--list':
+        kila opt kwenye '-l', '--list':
             out = self.zipfilecmd(opt, zip_name,
                                   PYTHONIOENCODING='ascii:backslashreplace')
             self.assertEqual(out, expected)
@@ -2369,40 +2369,40 @@ kundi CommandLineTest(unittest.TestCase):
     @requires_zlib
     eleza test_create_command(self):
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, 'w') as f:
+        with open(TESTFN, 'w') kama f:
             f.write('test 1')
         os.mkdir(TESTFNDIR)
         self.addCleanup(rmtree, TESTFNDIR)
-        with open(os.path.join(TESTFNDIR, 'file.txt'), 'w') as f:
+        with open(os.path.join(TESTFNDIR, 'file.txt'), 'w') kama f:
             f.write('test 2')
         files = [TESTFN, TESTFNDIR]
         namelist = [TESTFN, TESTFNDIR + '/', TESTFNDIR + '/file.txt']
-        for opt in '-c', '--create':
-            try:
+        kila opt kwenye '-c', '--create':
+            jaribu:
                 out = self.zipfilecmd(opt, TESTFN2, *files)
                 self.assertEqual(out, b'')
-                with zipfile.ZipFile(TESTFN2) as zf:
+                with zipfile.ZipFile(TESTFN2) kama zf:
                     self.assertEqual(zf.namelist(), namelist)
                     self.assertEqual(zf.read(namelist[0]), b'test 1')
                     self.assertEqual(zf.read(namelist[2]), b'test 2')
-            finally:
+            mwishowe:
                 unlink(TESTFN2)
 
     eleza test_extract_command(self):
         zip_name = findfile('zipdir.zip')
-        for opt in '-e', '--extract':
-            with temp_dir() as extdir:
+        kila opt kwenye '-e', '--extract':
+            with temp_dir() kama extdir:
                 out = self.zipfilecmd(opt, zip_name, extdir)
                 self.assertEqual(out, b'')
-                with zipfile.ZipFile(zip_name) as zf:
-                    for zi in zf.infolist():
+                with zipfile.ZipFile(zip_name) kama zf:
+                    kila zi kwenye zf.infolist():
                         path = os.path.join(extdir,
                                     zi.filename.replace('/', os.sep))
                         ikiwa zi.is_dir():
-                            self.assertTrue(os.path.isdir(path))
-                        else:
-                            self.assertTrue(os.path.isfile(path))
-                            with open(path, 'rb') as f:
+                            self.assertKweli(os.path.isdir(path))
+                        isipokua:
+                            self.assertKweli(os.path.isfile(path))
+                            with open(path, 'rb') kama f:
                                 self.assertEqual(f.read(), zf.read(zi))
 
 
@@ -2415,7 +2415,7 @@ eleza add_dirs(zf):
     Given a writable zip file zf, inject directory entries for
     any directories implied by the presence of children.
     """
-    for name in zipfile.Path._implied_dirs(zf.namelist()):
+    kila name kwenye zipfile.Path._implied_dirs(zf.namelist()):
         zf.writestr(name, b"")
     rudisha zf
 
@@ -2439,7 +2439,7 @@ eleza build_alpharep_fixture():
 
     - a file at the root (a)
     - a file two levels deep (b/d/e)
-    - multiple files in a directory (b/c, b/f)
+    - multiple files kwenye a directory (b/c, b/f)
     - a directory containing only a directory (g/h)
 
     "alpha" because it uses alphabet
@@ -2465,11 +2465,11 @@ kundi TestExecutablePrependedZip(unittest.TestCase):
 
     eleza _test_zip_works(self, name):
         # bpo-28494 sanity check: ensure is_zipfile works on these.
-        self.assertTrue(zipfile.is_zipfile(name),
+        self.assertKweli(zipfile.is_zipfile(name),
                         f'is_zipfile failed on {name}')
         # Ensure we can operate on these via ZipFile.
-        with zipfile.ZipFile(name) as zipfp:
-            for n in zipfp.namelist():
+        with zipfile.ZipFile(name) kama zipfp:
+            kila n kwenye zipfp.namelist():
                 data = zipfp.read(n)
                 self.assertIn(b'FAVORITE_NUMBER', data)
 
@@ -2484,14 +2484,14 @@ kundi TestExecutablePrependedZip(unittest.TestCase):
                          'Test relies on #!/bin/bash working.')
     eleza test_execute_zip2(self):
         output = subprocess.check_output([self.exe_zip, sys.executable])
-        self.assertIn(b'number in executable: 5', output)
+        self.assertIn(b'number kwenye executable: 5', output)
 
     @unittest.skipUnless(sys.executable, 'sys.executable required.')
     @unittest.skipUnless(os.access('/bin/bash', os.X_OK),
                          'Test relies on #!/bin/bash working.')
     eleza test_execute_zip64(self):
         output = subprocess.check_output([self.exe_zip64, sys.executable])
-        self.assertIn(b'number in executable: 5', output)
+        self.assertIn(b'number kwenye executable: 5', output)
 
 
 kundi TestPath(unittest.TestCase):
@@ -2501,22 +2501,22 @@ kundi TestPath(unittest.TestCase):
 
     eleza zipfile_alpharep(self):
         with self.subTest():
-            yield build_alpharep_fixture()
+            tuma build_alpharep_fixture()
         with self.subTest():
-            yield add_dirs(build_alpharep_fixture())
+            tuma add_dirs(build_alpharep_fixture())
 
     eleza zipfile_ondisk(self):
         tmpdir = pathlib.Path(self.fixtures.enter_context(temp_dir()))
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             buffer = alpharep.fp
             alpharep.close()
             path = tmpdir / alpharep.filename
-            with path.open("wb") as strm:
+            with path.open("wb") kama strm:
                 strm.write(buffer.getvalue())
-            yield path
+            tuma path
 
     eleza test_iterdir_and_types(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             assert root.is_dir()
             a, b, g = root.iterdir()
@@ -2524,7 +2524,7 @@ kundi TestPath(unittest.TestCase):
             assert b.is_dir()
             assert g.is_dir()
             c, f, d = b.iterdir()
-            assert c.is_file() and f.is_file()
+            assert c.is_file() na f.is_file()
             e, = d.iterdir()
             assert e.is_file()
             h, = g.iterdir()
@@ -2532,22 +2532,22 @@ kundi TestPath(unittest.TestCase):
             assert i.is_file()
 
     eleza test_open(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             a, b, g = root.iterdir()
-            with a.open() as strm:
+            with a.open() kama strm:
                 data = strm.read()
             assert data == b"content of a"
 
     eleza test_read(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             a, b, g = root.iterdir()
             assert a.read_text() == "content of a"
             assert a.read_bytes() == b"content of a"
 
     eleza test_joinpath(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             a = root.joinpath("a")
             assert a.is_file()
@@ -2555,7 +2555,7 @@ kundi TestPath(unittest.TestCase):
             assert e.read_text() == "content of e"
 
     eleza test_traverse_truediv(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             a = root / "a"
             assert a.is_file()
@@ -2566,29 +2566,29 @@ kundi TestPath(unittest.TestCase):
         """
         zipfile.Path should be constructable kutoka a path-like object
         """
-        for zipfile_ondisk in self.zipfile_ondisk():
+        kila zipfile_ondisk kwenye self.zipfile_ondisk():
             pathlike = pathlib.Path(str(zipfile_ondisk))
             zipfile.Path(pathlike)
 
     eleza test_traverse_pathlike(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             root / pathlib.Path("a")
 
     eleza test_parent(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             assert (root / 'a').parent.at == ''
             assert (root / 'a' / 'b').parent.at == 'a/'
 
     eleza test_dir_parent(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             assert (root / 'b').parent.at == ''
             assert (root / 'b/').parent.at == ''
 
     eleza test_missing_dir_parent(self):
-        for alpharep in self.zipfile_alpharep():
+        kila alpharep kwenye self.zipfile_alpharep():
             root = zipfile.Path(alpharep)
             assert (root / 'missing dir/').parent.at == ''
 

@@ -1,7 +1,7 @@
 @echo off
 
-rem This file is UTF-8 encoded, so we need to update the current code page while executing it
-for /f "tokens=2 delims=:." %%a in ('"%SystemRoot%\System32\chcp.com"') do (
+rem This file ni UTF-8 encoded, so we need to update the current code page wakati executing it
+kila /f "tokens=2 delims=:." %%a kwenye ('"%SystemRoot%\System32\chcp.com"') do (
     set _OLD_CODEPAGE=%%a
 )
 ikiwa defined _OLD_CODEPAGE (
@@ -10,7 +10,7 @@ ikiwa defined _OLD_CODEPAGE (
 
 set VIRTUAL_ENV=__VENV_DIR__
 
-ikiwa not defined PROMPT set PROMPT=$P$G
+ikiwa sio defined PROMPT set PROMPT=$P$G
 
 ikiwa defined _OLD_VIRTUAL_PROMPT set PROMPT=%_OLD_VIRTUAL_PROMPT%
 ikiwa defined _OLD_VIRTUAL_PYTHONHOME set PYTHONHOME=%_OLD_VIRTUAL_PYTHONHOME%
@@ -22,7 +22,7 @@ ikiwa defined PYTHONHOME set _OLD_VIRTUAL_PYTHONHOME=%PYTHONHOME%
 set PYTHONHOME=
 
 ikiwa defined _OLD_VIRTUAL_PATH set PATH=%_OLD_VIRTUAL_PATH%
-ikiwa not defined _OLD_VIRTUAL_PATH set _OLD_VIRTUAL_PATH=%PATH%
+ikiwa sio defined _OLD_VIRTUAL_PATH set _OLD_VIRTUAL_PATH=%PATH%
 
 set PATH=%VIRTUAL_ENV%\__VENV_BIN_NAME__;%PATH%
 

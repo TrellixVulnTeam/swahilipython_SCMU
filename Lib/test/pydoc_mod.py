@@ -1,19 +1,19 @@
-"""This is a test module for test_pydoc"""
+"""This ni a test module kila test_pydoc"""
 
 __author__ = "Benjamin Peterson"
 __credits__ = "Nobody"
 __version__ = "1.2.3.4"
-__xyz__ = "X, Y and Z"
+__xyz__ = "X, Y na Z"
 
 kundi A:
-    """Hello and goodbye"""
+    """Hello na goodbye"""
     eleza __init__():
         """Wow, I have no function!"""
-        pass
+        pita
 
 kundi B(object):
     NO_MEANING: str = "eggs"
-    pass
+    pita
 
 kundi C(object):
     eleza say_no(self):
@@ -34,4 +34,4 @@ eleza doc_func():
     """
 
 eleza nodoc_func():
-    pass
+    pita

@@ -1,4 +1,4 @@
-"""Fixer for __nonzero__ -> __bool__ methods."""
+"""Fixer kila __nonzero__ -> __bool__ methods."""
 # Author: Collin Winter
 
 # Local agizas
@@ -6,7 +6,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
 kundi FixNonzero(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
     PATTERN = """
     classdef< 'class' any+ ':'
               suite< any*

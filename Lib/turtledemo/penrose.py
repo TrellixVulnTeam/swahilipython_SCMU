@@ -4,11 +4,11 @@
           xtx_kites_and_darts.py
 
 Constructs two aperiodic penrose-tilings,
-consisting of kites and darts, by the method
-of inflation in six steps.
+consisting of kites na darts, by the method
+of inflation kwenye six steps.
 
 Starting points are the patterns "sun"
-consisting of five kites and "star"
+consisting of five kites na "star"
 consisting of five darts.
 
 For more information see:
@@ -17,7 +17,7 @@ For more information see:
 """
 kutoka turtle agiza *
 kutoka math agiza cos, pi
-kutoka time agiza perf_counter as clock, sleep
+kutoka time agiza perf_counter kama clock, sleep
 
 f = (5**0.5-1)/2.0   # (sqrt(5)-1)/2 -- golden ratio
 d = 2 * cos(3*pi/10)
@@ -50,8 +50,8 @@ eleza inflatekite(l, n):
     ikiwa n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
-        tiledict[(h,x,y)] = True
-        return
+        tiledict[(h,x,y)] = Kweli
+        rudisha
     fl = f * l
     lt(36)
     inflatedart(fl, n-1)
@@ -72,8 +72,8 @@ eleza inflatedart(l, n):
     ikiwa n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
-        tiledict[(h,x,y)] = False
-        return
+        tiledict[(h,x,y)] = Uongo
+        rudisha
     fl = f * l
     inflatekite(fl, n-1)
     lt(36)
@@ -91,25 +91,25 @@ eleza draw(l, n, th=2):
     clear()
     l = l * f**n
     shapesize(l/100.0, l/100.0, th)
-    for k in tiledict:
+    kila k kwenye tiledict:
         h, x, y = k
         setpos(x, y)
         setheading(h)
         ikiwa tiledict[k]:
             shape("kite")
             color("black", (0, 0.75, 0))
-        else:
+        isipokua:
             shape("dart")
             color("black", (0.75, 0, 0))
         stamp()
 
 eleza sun(l, n):
-    for i in range(5):
+    kila i kwenye range(5):
         inflatekite(l, n)
         lt(72)
 
 eleza star(l,n):
-    for i in range(5):
+    kila i kwenye range(5):
         inflatedart(l, n)
         lt(72)
 
@@ -141,13 +141,13 @@ eleza test(l=200, n=4, fun=sun, startpos=(0,0), th=2):
     fun(l, n)
     draw(l, n, th)
     tracer(1)
-    nk = len([x for x in tiledict ikiwa tiledict[x]])
-    nd = len([x for x in tiledict ikiwa not tiledict[x]])
-    andika("%d kites and %d darts = %d pieces." % (nk, nd, nk+nd))
+    nk = len([x kila x kwenye tiledict ikiwa tiledict[x]])
+    nd = len([x kila x kwenye tiledict ikiwa sio tiledict[x]])
+    andika("%d kites na %d darts = %d pieces." % (nk, nd, nk+nd))
 
 eleza demo(fun=sun):
     start()
-    for i in range(8):
+    kila i kwenye range(8):
         a = clock()
         test(300, i, fun)
         b = clock()
@@ -156,7 +156,7 @@ eleza demo(fun=sun):
             sleep(2 - t)
 
 eleza main():
-    #title("Penrose-tiling with kites and darts.")
+    #title("Penrose-tiling with kites na darts.")
     mode("logo")
     bgcolor(0.3, 0.3, 0)
     demo(sun)

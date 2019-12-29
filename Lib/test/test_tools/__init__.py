@@ -1,4 +1,4 @@
-"""Support functions for testing scripts in the Tools directory."""
+"""Support functions kila testing scripts kwenye the Tools directory."""
 agiza os
 agiza unittest
 agiza importlib
@@ -13,8 +13,8 @@ toolsdir = os.path.join(basepath, 'Tools')
 scriptsdir = os.path.join(toolsdir, 'scripts')
 
 eleza skip_if_missing():
-    ikiwa not os.path.isdir(scriptsdir):
-        raise unittest.SkipTest('scripts directory could not be found')
+    ikiwa sio os.path.isdir(scriptsdir):
+        ashiria unittest.SkipTest('scripts directory could sio be found')
 
 eleza import_tool(toolname):
     with support.DirsOnSysPath(scriptsdir):

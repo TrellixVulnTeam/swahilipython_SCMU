@@ -16,24 +16,24 @@ kundi OutputWindowTest(unittest.TestCase):
         requires('gui')
         root = cls.root = Tk()
         root.withdraw()
-        w = cls.window = outwin.OutputWindow(None, None, None, root)
+        w = cls.window = outwin.OutputWindow(Tupu, Tupu, Tupu, root)
         cls.text = w.text = Text(root)
 
     @classmethod
     eleza tearDownClass(cls):
         cls.window.close()
-        del cls.text, cls.window
+        toa cls.text, cls.window
         cls.root.destroy()
-        del cls.root
+        toa cls.root
 
     eleza setUp(self):
         self.text.delete('1.0', 'end')
 
     eleza test_ispythonsource(self):
-        # OutputWindow overrides ispythonsource to always rudisha False.
+        # OutputWindow overrides ispythonsource to always rudisha Uongo.
         w = self.window
-        self.assertFalse(w.ispythonsource('test.txt'))
-        self.assertFalse(w.ispythonsource(__file__))
+        self.assertUongo(w.ispythonsource('test.txt'))
+        self.assertUongo(w.ispythonsource(__file__))
 
     eleza test_window_title(self):
         self.assertEqual(self.window.top.title(), 'Output')
@@ -43,14 +43,14 @@ kundi OutputWindowTest(unittest.TestCase):
         eq = self.assertEqual
         w.get_saved = Func()
 
-        w.get_saved.result = False
+        w.get_saved.result = Uongo
         eq(w.maybesave(), 'no')
         eq(w.get_saved.called, 1)
 
-        w.get_saved.result = True
+        w.get_saved.result = Kweli
         eq(w.maybesave(), 'yes')
         eq(w.get_saved.called, 2)
-        del w.get_saved
+        toa w.get_saved
 
     eleza test_write(self):
         eq = self.assertEqual
@@ -77,7 +77,7 @@ kundi OutputWindowTest(unittest.TestCase):
         eq(get('1.0', '1.end'), 'test text')
         eq(get('insert linestart', 'insert lineend'), '')
 
-        # Text after new line is tagged for second line of Text widget.
+        # Text after new line ni tagged kila second line of Text widget.
         delete('1.0', 'end')
         test_text = 'test text\nLine 2'
         eq(write(test_text), len(test_text))
@@ -118,35 +118,35 @@ kundi OutputWindowTest(unittest.TestCase):
 
         # No file/line number.
         w.write('Not a file line')
-        self.assertIsNone(w.goto_file_line())
+        self.assertIsTupu(w.goto_file_line())
         eq(gfl.called, 0)
         eq(showerror.title, 'No special line')
 
         # Current file/line number.
         w.write(f'{str(__file__)}: 42: spam\n')
         w.write(f'{str(__file__)}: 21: spam')
-        self.assertIsNone(w.goto_file_line())
+        self.assertIsTupu(w.goto_file_line())
         eq(gfl.args, (str(__file__), 21))
 
         # Previous line has file/line number.
         text.delete('1.0', 'end')
         w.write(f'{str(__file__)}: 42: spam\n')
         w.write('Not a file line')
-        self.assertIsNone(w.goto_file_line())
+        self.assertIsTupu(w.goto_file_line())
         eq(gfl.args, (str(__file__), 42))
 
-        del w.flist.gotofileline, w.showerror
+        toa w.flist.gotofileline, w.showerror
 
 
 kundi ModuleFunctionTest(unittest.TestCase):
 
     @classmethod
     eleza setUp(cls):
-        outwin.file_line_progs = None
+        outwin.file_line_progs = Tupu
 
     eleza test_compile_progs(self):
         outwin.compile_progs()
-        for pat, regex in zip(outwin.file_line_pats, outwin.file_line_progs):
+        kila pat, regex kwenye zip(outwin.file_line_pats, outwin.file_line_progs):
             self.assertEqual(regex.pattern, pat)
 
     @mock.patch('builtins.open')
@@ -158,10 +158,10 @@ kundi ModuleFunctionTest(unittest.TestCase):
             (r'  testfile3  : 42: foo bar\n', ('  testfile3  ', 42)),
             (r'foo testfile4.py :1: ', ('foo testfile4.py ', 1)),
             ('testfile5: \u19D4\u19D2: ', ('testfile5', 42)),
-            (r'testfile6: 42', None),       # only one `:`
-            (r'testfile7 42 text', None)    # no separators
+            (r'testfile6: 42', Tupu),       # only one `:`
+            (r'testfile7 42 text', Tupu)    # no separators
             )
-        for line, expected_output in test_lines:
+        kila line, expected_output kwenye test_lines:
             self.assertEqual(flh(line), expected_output)
             ikiwa expected_output:
                 mock_open.assert_called_with(expected_output[0], 'r')

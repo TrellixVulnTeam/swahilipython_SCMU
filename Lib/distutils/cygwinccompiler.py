@@ -37,7 +37,7 @@ cygwin in no-cygwin mode).
 #     it tries to link against dlls instead their import libraries. (If
 #     it finds the dll first.)
 #     By specifying -static we force ld to link against the import libraries,
-#     this is windows standard and there are normally not the necessary symbols
+#     this is windows standard and there are normally sio the necessary symbols
 #     in the dlls.
 #   *** only the version of June 2000 shows these problems
 # * cygwin gcc 3.2/ld 2.13.90 works
@@ -82,7 +82,7 @@ def get_msvcr():
         lasivyo msc_ver == '1600':
             # VS2010 / MSVC 10.0
             return ['msvcr100']
-        else:
+        isipokua:
             raise ValueError("Unknown MS Compiler version %s " % msc_ver)
 
 
@@ -104,7 +104,7 @@ class CygwinCCompiler(UnixCCompiler):
         status, details = check_config_h()
         self.debug_print("Python's GCC status: %s (details: %s)" %
                          (status, details))
-        if status is not CONFIG_H_OK:
+        if status ni sio CONFIG_H_OK:
             self.warn(
                 "Python's pyconfig.h doesn't seem to support your compiler. "
                 "Reason: %s. "
@@ -125,14 +125,14 @@ class CygwinCCompiler(UnixCCompiler):
         # dllwrap 2.10.90 is buggy
         if self.ld_version >= "2.10.90":
             self.linker_dll = "gcc"
-        else:
+        isipokua:
             self.linker_dll = "dllwrap"
 
         # ld_version >= "2.13" support -shared so use it instead of
         # -mdll -static
         if self.ld_version >= "2.13":
             shared_option = "-shared"
-        else:
+        isipokua:
             shared_option = "-mdll -static"
 
         # Hard-code GCC because that's what this is all about.
@@ -151,7 +151,7 @@ class CygwinCCompiler(UnixCCompiler):
             self.dll_libraries=["msvcrt"]
             self.warn(
                 "Consider upgrading to a newer version of gcc")
-        else:
+        isipokua:
             # Include the appropriate MSVC runtime library if Python was built
             # with MSVC 7.0 or later.
             self.dll_libraries = get_msvcr()
@@ -160,15 +160,15 @@ class CygwinCCompiler(UnixCCompiler):
         """Compiles the source by spawning GCC and windres if needed."""
         if ext == '.rc' or ext == '.res':
             # gcc needs '.res' and '.rc' compiled to object files !!!
-            try:
+            jaribu:
                 self.spawn(["windres", "-i", src, "-o", obj])
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise CompileError(msg)
-        else: # for other files use the C-compiler
-            try:
+        isipokua: # for other files use the C-compiler
+            jaribu:
                 self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
                            extra_postargs)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError as msg:
                 raise CompileError(msg)
 
     def link(self, target_desc, objects, output_filename, output_dir=None,
@@ -186,12 +186,12 @@ class CygwinCCompiler(UnixCCompiler):
 
         # handle export symbols by creating a def-file
         # with executables this only works with gcc/ld as linker
-        if ((export_symbols is not None) and
+        if ((export_symbols ni sio None) and
             (target_desc != self.EXECUTABLE or self.linker_dll == "gcc")):
             # (The linker doesn't do anything if output is up-to-date.
             # So it would probably better to check if we really need this,
             # but for this we had to insert some unchanged parts of
-            # UnixCCompiler, and this is not what we want.)
+            # UnixCCompiler, and this ni sio what we want.)
 
             # we want to put some files in the same directory as the
             # object files are, build_temp doesn't help much
@@ -222,13 +222,13 @@ class CygwinCCompiler(UnixCCompiler):
                 # for dllwrap we have to use a special option
                 extra_preargs.extend(["--def", def_file])
             # we use gcc/ld here and can be sure ld is >= 2.9.10
-            else:
+            isipokua:
                 # doesn't work: bfd_close build\...\libfoo.a: Invalid operation
                 #extra_preargs.extend(["-Wl,--out-implib,%s" % lib_file])
                 # for gcc/ld the def-file is specified as any object files
                 objects.append(def_file)
 
-        #end: if ((export_symbols is not None) and
+        #end: if ((export_symbols ni sio None) and
         #        (target_desc != self.EXECUTABLE or self.linker_dll == "gcc")):
 
         # who wants symbols and a many times larger output file
@@ -237,7 +237,7 @@ class CygwinCCompiler(UnixCCompiler):
         # (On my machine: 10KiB < stripped_file < ??100KiB
         #   unstripped_file = stripped_file + XXX KiB
         #  ( XXX=254 for a typical python extension))
-        if not debug:
+        if sio debug:
             extra_preargs.append("-s")
 
         UnixCCompiler.link(self, target_desc, objects, output_filename,
@@ -255,9 +255,9 @@ class CygwinCCompiler(UnixCCompiler):
             output_dir = ''
         obj_names = []
         for src_name in source_filenames:
-            # use normcase to make sure '.rc' is really '.rc' and not '.RC'
+            # use normcase to make sure '.rc' is really '.rc' and sio '.RC'
             base, ext = os.path.splitext(os.path.normcase(src_name))
-            if ext not in (self.src_extensions + ['.rc','.res']):
+            if ext haiko kwenye (self.src_extensions + ['.rc','.res']):
                 raise UnknownFileError("unknown file type '%s' (from '%s')" % \
                       (ext, src_name))
             if strip_dir:
@@ -266,7 +266,7 @@ class CygwinCCompiler(UnixCCompiler):
                 # these need to be compiled to object files
                 obj_names.append (os.path.join(output_dir,
                                               base + ext + self.obj_extension))
-            else:
+            isipokua:
                 obj_names.append (os.path.join(output_dir,
                                                base + self.obj_extension))
         return obj_names
@@ -285,14 +285,14 @@ class Mingw32CCompiler(CygwinCCompiler):
         # -mdll -static
         if self.ld_version >= "2.13":
             shared_option = "-shared"
-        else:
+        isipokua:
             shared_option = "-mdll -static"
 
         # A real mingw32 doesn't need to specify a different entry point,
         # but cygwin 2.91.57 in no-cygwin-mode needs it.
         if self.gcc_version <= "2.91.57":
             entry_point = '--entry _DllMain@12'
-        else:
+        isipokua:
             entry_point = ''
 
         if is_cygwingcc():
@@ -334,7 +334,7 @@ def check_config_h():
 
     - CONFIG_H_OK: all is well, go ahead and compile
     - CONFIG_H_NOTOK: doesn't look good
-    - CONFIG_H_UNCERTAIN: not sure -- unable to read pyconfig.h
+    - CONFIG_H_UNCERTAIN: sio sure -- unable to read pyconfig.h
 
     'details' is a human-readable string explaining the situation.
 
@@ -343,7 +343,7 @@ def check_config_h():
     installed "pyconfig.h" contains the string "__GNUC__".
     """
 
-    # XXX since this function also checks sys.version, it's not strictly a
+    # XXX since this function also checks sys.version, it's sio strictly a
     # "pyconfig.h" check -- should probably be renamed...
 
     from distutils import sysconfig
@@ -355,16 +355,16 @@ def check_config_h():
 
     # let's see if __GNUC__ is mentioned in python.h
     fn = sysconfig.get_config_h_filename()
-    try:
+    jaribu:
         config_h = open(fn)
-        try:
+        jaribu:
             if "__GNUC__" in config_h.read():
                 return CONFIG_H_OK, "'%s' mentions '__GNUC__'" % fn
-            else:
-                return CONFIG_H_NOTOK, "'%s' does not mention '__GNUC__'" % fn
-        finally:
+            isipokua:
+                return CONFIG_H_NOTOK, "'%s' does sio mention '__GNUC__'" % fn
+        mwishowe:
             config_h.close()
-    except OSError as exc:
+    tatizo OSError as exc:
         return (CONFIG_H_UNCERTAIN,
                 "couldn't read '%s': %s" % (fn, exc.strerror))
 
@@ -373,16 +373,16 @@ RE_VERSION = re.compile(br'(\d+\.\d+(\.\d+)*)')
 def _find_exe_version(cmd):
     """Find the version of an executable by running `cmd` in the shell.
 
-    If the command is not found, or the output does not match
+    If the command ni sio found, or the output does sio match
     `RE_VERSION`, returns None.
     """
     executable = cmd.split()[0]
     if find_executable(executable) is None:
         return None
     out = Popen(cmd, shell=True, stdout=PIPE).stdout
-    try:
+    jaribu:
         out_string = out.read()
-    finally:
+    mwishowe:
         out.close()
     result = RE_VERSION.search(out_string)
     if result is None:
@@ -394,7 +394,7 @@ def _find_exe_version(cmd):
 def get_versions():
     """ Try to find out the versions of gcc, ld and dllwrap.
 
-    If not possible it returns None for it.
+    If sio possible it returns None for it.
     """
     commands = ['gcc -dumpversion', 'ld -v', 'dllwrap --version']
     return tuple([_find_exe_version(cmd) for cmd in commands])

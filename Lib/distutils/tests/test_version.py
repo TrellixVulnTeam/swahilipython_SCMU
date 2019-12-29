@@ -33,12 +33,12 @@ class VersionTestCase(unittest.TestCase):
                     ('1.13++', '5.5.kw', ValueError))
 
         for v1, v2, wanted in versions:
-            try:
+            jaribu:
                 res = StrictVersion(v1)._cmp(StrictVersion(v2))
-            except ValueError:
+            tatizo ValueError:
                 if wanted is ValueError:
-                    continue
-                else:
+                    endelea
+                isipokua:
                     raise AssertionError(("cmp(%s, %s) "
                                           "shouldn't raise ValueError")
                                             % (v1, v2))

@@ -19,7 +19,7 @@ class TestPolicy(asyncio.AbstractEventLoopPolicy):
         return self.loop_factory()
 
     def set_event_loop(self, loop):
-        if loop is not None:
+        if loop ni sio None:
             # we want to check if the loop is closed
             # in BaseTest.tearDown
             self.loop = loop
@@ -48,7 +48,7 @@ class BaseTest(unittest.TestCase):
 
     def tearDown(self):
         policy = asyncio.get_event_loop_policy()
-        if policy.loop is not None:
+        if policy.loop ni sio None:
             self.assertTrue(policy.loop.is_closed())
             self.assertTrue(policy.loop.shutdown_ag_run)
 
@@ -91,9 +91,9 @@ class RunTests(BaseTest):
     def test_asyncio_run_from_running_loop(self):
         async def main():
             coro = main()
-            try:
+            jaribu:
                 asyncio.run(coro)
-            finally:
+            mwishowe:
                 coro.close()  # Suppress ResourceWarning
 
         with self.assertRaisesRegex(RuntimeError,
@@ -119,9 +119,9 @@ class RunTests(BaseTest):
         call_exc_handler_mock = mock.Mock()
 
         async def leftover():
-            try:
+            jaribu:
                 await asyncio.sleep(0.1)
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 1 / 0
 
         async def main():
@@ -149,17 +149,17 @@ class RunTests(BaseTest):
             pass
 
         async def fidget():
-            while True:
+            wakati True:
                 yield 1
                 await asyncio.sleep(1)
 
         async def spin():
             nonlocal spinner
             spinner = fidget()
-            try:
+            jaribu:
                 async for the_meaning_of_life in spinner:  # NoQA
                     pass
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 1 / 0
 
         async def main():

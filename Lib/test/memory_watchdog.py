@@ -1,7 +1,7 @@
 """Memory watchdog: periodically read the memory usage of the main test process
 and print it out, until terminated."""
-# stdin should refer to the process' /proc/<PID>/statm: we don't pass the
-# process' PID to avoid a race condition in case of - unlikely - PID recycling.
+# stdin should refer to the process' /proc/<PID>/statm: we don't pita the
+# process' PID to avoid a race condition kwenye case of - unlikely - PID recycling.
 # If the process crashes, reading kutoka the /proc entry will fail with ESRCH.
 
 
@@ -10,15 +10,15 @@ agiza sys
 agiza time
 
 
-try:
+jaribu:
     page_size = os.sysconf('SC_PAGESIZE')
-except (ValueError, AttributeError):
-    try:
+tatizo (ValueError, AttributeError):
+    jaribu:
         page_size = os.sysconf('SC_PAGE_SIZE')
-    except (ValueError, AttributeError):
+    tatizo (ValueError, AttributeError):
         page_size = 4096
 
-while True:
+wakati Kweli:
     sys.stdin.seek(0)
     statm = sys.stdin.read()
     data = int(statm.split()[5])

@@ -7,13 +7,13 @@ agiza sys
 
 kundi TestWithAscii(unittest.TestCase):
     eleza test_one_insert(self):
-        sm = difflib.SequenceMatcher(None, 'b' * 100, 'a' + 'b' * 100)
+        sm = difflib.SequenceMatcher(Tupu, 'b' * 100, 'a' + 'b' * 100)
         self.assertAlmostEqual(sm.ratio(), 0.995, places=3)
         self.assertEqual(list(sm.get_opcodes()),
             [   ('insert', 0, 0, 0, 1),
                 ('equal', 0, 100, 1, 101)])
         self.assertEqual(sm.bpopular, set())
-        sm = difflib.SequenceMatcher(None, 'b' * 100, 'b' * 50 + 'a' + 'b' * 50)
+        sm = difflib.SequenceMatcher(Tupu, 'b' * 100, 'b' * 50 + 'a' + 'b' * 50)
         self.assertAlmostEqual(sm.ratio(), 0.995, places=3)
         self.assertEqual(list(sm.get_opcodes()),
             [   ('equal', 0, 50, 0, 50),
@@ -22,7 +22,7 @@ kundi TestWithAscii(unittest.TestCase):
         self.assertEqual(sm.bpopular, set())
 
     eleza test_one_delete(self):
-        sm = difflib.SequenceMatcher(None, 'a' * 40 + 'c' + 'b' * 40, 'a' * 40 + 'b' * 40)
+        sm = difflib.SequenceMatcher(Tupu, 'a' * 40 + 'c' + 'b' * 40, 'a' * 40 + 'b' * 40)
         self.assertAlmostEqual(sm.ratio(), 0.994, places=3)
         self.assertEqual(list(sm.get_opcodes()),
             [   ('equal', 0, 40, 0, 40),
@@ -38,25 +38,25 @@ kundi TestWithAscii(unittest.TestCase):
                 a='a' * 40 + 'b' * 40, b='a' * 44 + 'b' * 40 + ' ' * 20)
         self.assertEqual(sm.bjunk, {' '})
 
-        sm = difflib.SequenceMatcher(isjunk=lambda x: x in [' ', 'b'],
+        sm = difflib.SequenceMatcher(isjunk=lambda x: x kwenye [' ', 'b'],
                 a='a' * 40 + 'b' * 40, b='a' * 44 + 'b' * 40 + ' ' * 20)
         self.assertEqual(sm.bjunk, {' ', 'b'})
 
 
 kundi TestAutojunk(unittest.TestCase):
-    """Tests for the autojunk parameter added in 2.7"""
+    """Tests kila the autojunk parameter added kwenye 2.7"""
     eleza test_one_insert_homogenous_sequence(self):
-        # By default autojunk=True and the heuristic kicks in for a sequence
+        # By default autojunk=Kweli na the heuristic kicks kwenye kila a sequence
         # of length 200+
         seq1 = 'b' * 200
         seq2 = 'a' + 'b' * 200
 
-        sm = difflib.SequenceMatcher(None, seq1, seq2)
+        sm = difflib.SequenceMatcher(Tupu, seq1, seq2)
         self.assertAlmostEqual(sm.ratio(), 0, places=3)
         self.assertEqual(sm.bpopular, {'b'})
 
         # Now turn the heuristic off
-        sm = difflib.SequenceMatcher(None, seq1, seq2, autojunk=False)
+        sm = difflib.SequenceMatcher(Tupu, seq1, seq2, autojunk=Uongo)
         self.assertAlmostEqual(sm.ratio(), 0.9975, places=3)
         self.assertEqual(sm.bpopular, set())
 
@@ -64,21 +64,21 @@ kundi TestAutojunk(unittest.TestCase):
 kundi TestSFbugs(unittest.TestCase):
     eleza test_ratio_for_null_seqn(self):
         # Check clearing of SF bug 763023
-        s = difflib.SequenceMatcher(None, [], [])
+        s = difflib.SequenceMatcher(Tupu, [], [])
         self.assertEqual(s.ratio(), 1)
         self.assertEqual(s.quick_ratio(), 1)
         self.assertEqual(s.real_quick_ratio(), 1)
 
     eleza test_comparing_empty_lists(self):
-        # Check fix for bug #979794
-        group_gen = difflib.SequenceMatcher(None, [], []).get_grouped_opcodes()
+        # Check fix kila bug #979794
+        group_gen = difflib.SequenceMatcher(Tupu, [], []).get_grouped_opcodes()
         self.assertRaises(StopIteration, next, group_gen)
         diff_gen = difflib.unified_diff([], [])
         self.assertRaises(StopIteration, next, diff_gen)
 
     eleza test_matching_blocks_cache(self):
         # Issue #21635
-        s = difflib.SequenceMatcher(None, "abxcd", "abcd")
+        s = difflib.SequenceMatcher(Tupu, "abxcd", "abcd")
         first = s.get_matching_blocks()
         second = s.get_matching_blocks()
         self.assertEqual(second[0].size, 2)
@@ -86,7 +86,7 @@ kundi TestSFbugs(unittest.TestCase):
         self.assertEqual(second[2].size, 0)
 
     eleza test_added_tab_hint(self):
-        # Check fix for bug #1488943
+        # Check fix kila bug #1488943
         diff = list(difflib.Differ().compare(["\tI am a buggy"],["\t\tI am a bug"]))
         self.assertEqual("- \tI am a buggy", diff[0])
         self.assertEqual("? \t          --\n", diff[1])
@@ -103,36 +103,36 @@ kundi TestSFbugs(unittest.TestCase):
         # Issue #33224
         self.assertEqual(
             list(difflib._mdiff(["2"], ["3"], 1)),
-            [((1, '\x00-2\x01'), (1, '\x00+3\x01'), True)],
+            [((1, '\x00-2\x01'), (1, '\x00+3\x01'), Kweli)],
         )
 
 
 patch914575_kutoka1 = """
-   1. Beautiful is beTTer than ugly.
-   2. Explicit is better than implicit.
-   3. Simple is better than complex.
-   4. Complex is better than complicated.
+   1. Beautiful ni beTTer than ugly.
+   2. Explicit ni better than implicit.
+   3. Simple ni better than complex.
+   4. Complex ni better than complicated.
 """
 
 patch914575_to1 = """
-   1. Beautiful is better than ugly.
-   3.   Simple is better than complex.
-   4. Complicated is better than complex.
-   5. Flat is better than nested.
+   1. Beautiful ni better than ugly.
+   3.   Simple ni better than complex.
+   4. Complicated ni better than complex.
+   5. Flat ni better than nested.
 """
 
 patch914575_nonascii_kutoka1 = """
-   1. Beautiful is beTTer than ugly.
-   2. Explicit is better than ımplıcıt.
-   3. Simple is better than complex.
-   4. Complex is better than complicated.
+   1. Beautiful ni beTTer than ugly.
+   2. Explicit ni better than ımplıcıt.
+   3. Simple ni better than complex.
+   4. Complex ni better than complicated.
 """
 
 patch914575_nonascii_to1 = """
-   1. Beautiful is better than ügly.
-   3.   Sımple is better than complex.
-   4. Complicated is better than cömplex.
-   5. Flat is better than nested.
+   1. Beautiful ni better than ügly.
+   3.   Sımple ni better than complex.
+   4. Complicated ni better than cömplex.
+   5. Flat ni better than nested.
 """
 
 patch914575_kutoka2 = """
@@ -165,7 +165,7 @@ line 9
 1234567890123456789012345689012345
 short line
 just fits in!!
-just fits in two lines yup!!
+just fits kwenye two lines yup!!
 the end"""
 
 patch914575_to3 = """line 0
@@ -182,13 +182,13 @@ line 9
 1234567890
 another long line that needs to be wrapped
 just fitS in!!
-just fits in two lineS yup!!
+just fits kwenye two lineS yup!!
 the end"""
 
 kundi TestSFpatches(unittest.TestCase):
 
     eleza test_html_diff(self):
-        # Check SF patch 914575 for generating HTML differences
+        # Check SF patch 914575 kila generating HTML differences
         f1a = ((patch914575_kutoka1 + '123\n'*10)*3)
         t1a = (patch914575_to1 + '123\n'*10)*3
         f1b = '456\n'*10 + f1a
@@ -205,51 +205,51 @@ kundi TestSFpatches(unittest.TestCase):
         j = difflib.HtmlDiff(tabsize=2)
         k = difflib.HtmlDiff(wrapcolumn=14)
 
-        full = i.make_file(f1a,t1a,'kutoka','to',context=False,numlines=5)
+        full = i.make_file(f1a,t1a,'kutoka','to',context=Uongo,numlines=5)
         tables = '\n'.join(
             [
              '<h2>Context (first diff within numlines=5(default))</h2>',
-             i.make_table(f1a,t1a,'kutoka','to',context=True),
+             i.make_table(f1a,t1a,'kutoka','to',context=Kweli),
              '<h2>Context (first diff after numlines=5(default))</h2>',
-             i.make_table(f1b,t1b,'kutoka','to',context=True),
+             i.make_table(f1b,t1b,'kutoka','to',context=Kweli),
              '<h2>Context (numlines=6)</h2>',
-             i.make_table(f1a,t1a,'kutoka','to',context=True,numlines=6),
+             i.make_table(f1a,t1a,'kutoka','to',context=Kweli,numlines=6),
              '<h2>Context (numlines=0)</h2>',
-             i.make_table(f1a,t1a,'kutoka','to',context=True,numlines=0),
+             i.make_table(f1a,t1a,'kutoka','to',context=Kweli,numlines=0),
              '<h2>Same Context</h2>',
-             i.make_table(f1a,f1a,'kutoka','to',context=True),
+             i.make_table(f1a,f1a,'kutoka','to',context=Kweli),
              '<h2>Same Full</h2>',
-             i.make_table(f1a,f1a,'kutoka','to',context=False),
+             i.make_table(f1a,f1a,'kutoka','to',context=Uongo),
              '<h2>Empty Context</h2>',
-             i.make_table([],[],'kutoka','to',context=True),
+             i.make_table([],[],'kutoka','to',context=Kweli),
              '<h2>Empty Full</h2>',
-             i.make_table([],[],'kutoka','to',context=False),
+             i.make_table([],[],'kutoka','to',context=Uongo),
              '<h2>tabsize=2</h2>',
              j.make_table(f2,t2),
              '<h2>tabsize=default</h2>',
              i.make_table(f2,t2),
              '<h2>Context (wrapcolumn=14,numlines=0)</h2>',
-             k.make_table(f3.splitlines(),t3.splitlines(),context=True,numlines=0),
+             k.make_table(f3.splitlines(),t3.splitlines(),context=Kweli,numlines=0),
              '<h2>wrapcolumn=14,splitlines()</h2>',
              k.make_table(f3.splitlines(),t3.splitlines()),
-             '<h2>wrapcolumn=14,splitlines(True)</h2>',
-             k.make_table(f3.splitlines(True),t3.splitlines(True)),
+             '<h2>wrapcolumn=14,splitlines(Kweli)</h2>',
+             k.make_table(f3.splitlines(Kweli),t3.splitlines(Kweli)),
              ])
         actual = full.replace('</body>','\n%s\n</body>' % tables)
 
         # temporarily uncomment next two lines to baseline this test
-        #with open('test_difflib_expect.html','w') as fp:
+        #with open('test_difflib_expect.html','w') kama fp:
         #    fp.write(actual)
 
-        with open(findfile('test_difflib_expect.html')) as fp:
+        with open(findfile('test_difflib_expect.html')) kama fp:
             self.assertEqual(actual, fp.read())
 
     eleza test_recursion_limit(self):
-        # Check ikiwa the problem described in patch #1413711 exists.
+        # Check ikiwa the problem described kwenye patch #1413711 exists.
         limit = sys.getrecursionlimit()
-        old = [(i%2 and "K:%d" or "V:A:%d") % i for i in range(limit*2)]
-        new = [(i%2 and "K:%d" or "V:B:%d") % i for i in range(limit*2)]
-        difflib.SequenceMatcher(None, old, new).get_opcodes()
+        old = [(i%2 na "K:%d" ama "V:A:%d") % i kila i kwenye range(limit*2)]
+        new = [(i%2 na "K:%d" ama "V:B:%d") % i kila i kwenye range(limit*2)]
+        difflib.SequenceMatcher(Tupu, old, new).get_opcodes()
 
     eleza test_make_file_default_charset(self):
         html_diff = difflib.HtmlDiff()
@@ -301,8 +301,8 @@ kundi TestOutputFormat(unittest.TestCase):
              %1d", <beginning line number>  ikiwa the range contains exactly one line,
            and:
             "%1d,%1d", <beginning line number>, <number of lines> otherwise.
-           If a range is empty, its beginning line number shall be the number of
-           the line just before the range, or 0 ikiwa the empty range starts the file.
+           If a range ni empty, its beginning line number shall be the number of
+           the line just before the range, ama 0 ikiwa the empty range starts the file.
         '''
         fmt = difflib._format_range_unified
         self.assertEqual(fmt(3,3), '3,0')
@@ -314,18 +314,18 @@ kundi TestOutputFormat(unittest.TestCase):
     eleza test_range_format_context(self):
         # Per the diff spec at http://www.unix.org/single_unix_specification/
         spec = '''\
-           The range of lines in file1 shall be written in the following format
-           ikiwa the range contains two or more lines:
+           The range of lines kwenye file1 shall be written kwenye the following format
+           ikiwa the range contains two ama more lines:
                "*** %d,%d ****\n", <beginning line number>, <ending line number>
-           and the following format otherwise:
+           na the following format otherwise:
                "*** %d ****\n", <ending line number>
            The ending line number of an empty range shall be the number of the preceding line,
-           or 0 ikiwa the range is at the start of the file.
+           ama 0 ikiwa the range ni at the start of the file.
 
-           Next, the range of lines in file2 shall be written in the following format
-           ikiwa the range contains two or more lines:
+           Next, the range of lines kwenye file2 shall be written kwenye the following format
+           ikiwa the range contains two ama more lines:
                "--- %d,%d ----\n", <beginning line number>, <ending line number>
-           and the following format otherwise:
+           na the following format otherwise:
                "--- %d ----\n", <ending line number>
         '''
         fmt = difflib._format_range_context
@@ -338,10 +338,10 @@ kundi TestOutputFormat(unittest.TestCase):
 
 kundi TestBytes(unittest.TestCase):
     # don't really care about the content of the output, just the fact
-    # that it's bytes and we don't crash
+    # that it's bytes na we don't crash
     eleza check(self, diff):
         diff = list(diff)   # trigger exceptions first
-        for line in diff:
+        kila line kwenye diff:
             self.assertIsInstance(
                 line, bytes,
                 "all lines of diff should be bytes, but got: %r" % line)
@@ -358,11 +358,11 @@ kundi TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(unified, a, a))
         check(difflib.diff_bytes(unified, a, b))
 
-        # now with filenames (content and filenames are all bytes!)
+        # now with filenames (content na filenames are all bytes!)
         check(difflib.diff_bytes(unified, a, a, b'a', b'a'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b'))
 
-        # and with filenames and dates
+        # na with filenames na dates
         check(difflib.diff_bytes(unified, a, a, b'a', b'a', b'2005', b'2013'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b', b'2005', b'2013'))
 
@@ -380,8 +380,8 @@ kundi TestBytes(unittest.TestCase):
         fnb = b'\xc5\x82odz.txt'
 
         # they transcoded the content at the same time
-        a = [b'\xa3odz is a city in Poland.']
-        b = [b'\xc5\x81odz is a city in Poland.']
+        a = [b'\xa3odz ni a city kwenye Poland.']
+        b = [b'\xc5\x81odz ni a city kwenye Poland.']
 
         check = self.check
         unified = difflib.unified_diff
@@ -390,19 +390,19 @@ kundi TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, fna, fnb))
 
         eleza assertDiff(expect, actual):
-            # do not compare expect and equal as lists, because unittest
+            # do sio compare expect na equal kama lists, because unittest
             # uses difflib to report difference between lists
             actual = list(actual)
             self.assertEqual(len(expect), len(actual))
-            for e, a in zip(expect, actual):
+            kila e, a kwenye zip(expect, actual):
                 self.assertEqual(e, a)
 
         expect = [
             b'--- \xb3odz.txt',
             b'+++ \xc5\x82odz.txt',
             b'@@ -1 +1 @@',
-            b'-\xa3odz is a city in Poland.',
-            b'+\xc5\x81odz is a city in Poland.',
+            b'-\xa3odz ni a city kwenye Poland.',
+            b'+\xc5\x81odz ni a city kwenye Poland.',
         ]
         actual = difflib.diff_bytes(unified, a, b, fna, fnb, lineterm=b'')
         assertDiff(expect, actual)
@@ -414,41 +414,41 @@ kundi TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, fna, fnb, datea, dateb))
 
         expect = [
-            # note the mixed encodings here: this is deeply wrong by every
+            # note the mixed encodings here: this ni deeply wrong by every
             # tenet of Unicode, but it doesn't crash, it's parseable by
-            # patch, and it's how UNIX(tm) diff behaves
+            # patch, na it's how UNIX(tm) diff behaves
             b'--- \xb3odz.txt\t2005-03-18',
             b'+++ \xc5\x82odz.txt\t2005-03-19',
             b'@@ -1 +1 @@',
-            b'-\xa3odz is a city in Poland.',
-            b'+\xc5\x81odz is a city in Poland.',
+            b'-\xa3odz ni a city kwenye Poland.',
+            b'+\xc5\x81odz ni a city kwenye Poland.',
         ]
         actual = difflib.diff_bytes(unified, a, b, fna, fnb, datea, dateb,
                                     lineterm=b'')
         assertDiff(expect, actual)
 
     eleza test_mixed_types_content(self):
-        # type of input content must be consistent: all str or all bytes
+        # type of input content must be consistent: all str ama all bytes
         a = [b'hello']
         b = ['hello']
 
         unified = difflib.unified_diff
         context = difflib.context_diff
 
-        expect = "lines to compare must be str, not bytes (b'hello')"
+        expect = "lines to compare must be str, sio bytes (b'hello')"
         self._assert_type_error(expect, unified, a, b)
         self._assert_type_error(expect, unified, b, a)
         self._assert_type_error(expect, context, a, b)
         self._assert_type_error(expect, context, b, a)
 
-        expect = "all arguments must be bytes, not str ('hello')"
+        expect = "all arguments must be bytes, sio str ('hello')"
         self._assert_type_error(expect, difflib.diff_bytes, unified, a, b)
         self._assert_type_error(expect, difflib.diff_bytes, unified, b, a)
         self._assert_type_error(expect, difflib.diff_bytes, context, a, b)
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     eleza test_mixed_types_filenames(self):
-        # cannot pass filenames as bytes ikiwa content is str (this may not be
+        # cannot pita filenames kama bytes ikiwa content ni str (this may sio be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -466,40 +466,40 @@ kundi TestBytes(unittest.TestCase):
         datea = '1 fév'
         dateb = '3 fév'
         self._assert_type_error(
-            "all arguments must be bytes, not str ('1 fév')",
+            "all arguments must be bytes, sio str ('1 fév')",
             difflib.diff_bytes, difflib.unified_diff,
             a, b, b'a', b'b', datea, dateb)
 
-        # ikiwa input is str, non-ASCII dates are fine
+        # ikiwa input ni str, non-ASCII dates are fine
         a = ['foo\n']
         b = ['bar\n']
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
 
     eleza _assert_type_error(self, msg, generator, *args):
-        with self.assertRaises(TypeError) as ctx:
+        with self.assertRaises(TypeError) kama ctx:
             list(generator(*args))
         self.assertEqual(msg, str(ctx.exception))
 
 kundi TestJunkAPIs(unittest.TestCase):
     eleza test_is_line_junk_true(self):
-        for line in ['#', '  ', ' #', '# ', ' # ', '']:
-            self.assertTrue(difflib.IS_LINE_JUNK(line), repr(line))
+        kila line kwenye ['#', '  ', ' #', '# ', ' # ', '']:
+            self.assertKweli(difflib.IS_LINE_JUNK(line), repr(line))
 
     eleza test_is_line_junk_false(self):
-        for line in ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose is up!']:
-            self.assertFalse(difflib.IS_LINE_JUNK(line), repr(line))
+        kila line kwenye ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose ni up!']:
+            self.assertUongo(difflib.IS_LINE_JUNK(line), repr(line))
 
     eleza test_is_line_junk_REDOS(self):
         evil_input = ('\t' * 1000000) + '##'
-        self.assertFalse(difflib.IS_LINE_JUNK(evil_input))
+        self.assertUongo(difflib.IS_LINE_JUNK(evil_input))
 
     eleza test_is_character_junk_true(self):
-        for char in [' ', '\t']:
-            self.assertTrue(difflib.IS_CHARACTER_JUNK(char), repr(char))
+        kila char kwenye [' ', '\t']:
+            self.assertKweli(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
     eleza test_is_character_junk_false(self):
-        for char in ['a', '#', '\n', '\f', '\r', '\v']:
-            self.assertFalse(difflib.IS_CHARACTER_JUNK(char), repr(char))
+        kila char kwenye ['a', '#', '\n', '\f', '\r', '\v']:
+            self.assertUongo(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
 eleza test_main():
     difflib.HtmlDiff._default_prefix = 0

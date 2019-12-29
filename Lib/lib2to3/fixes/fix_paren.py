@@ -1,16 +1,16 @@
 """Fixer that addes parentheses where they are required
 
-This converts ``[x for x in 1, 2]`` to ``[x for x in (1, 2)]``."""
+This converts ``[x kila x kwenye 1, 2]`` to ``[x kila x kwenye (1, 2)]``."""
 
-# By Taek Joo Kim and Benjamin Peterson
+# By Taek Joo Kim na Benjamin Peterson
 
 # Local agizas
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza LParen, RParen
 
-# XXX This doesn't support nested for loops like [x for x in 1, 2 for x in 1, 2]
+# XXX This doesn't support nested kila loops like [x kila x kwenye 1, 2 kila x kwenye 1, 2]
 kundi FixParen(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
         atom< ('[' | '(')

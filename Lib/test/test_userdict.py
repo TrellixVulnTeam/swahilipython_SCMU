@@ -8,7 +8,7 @@ d0 = {}
 d1 = {"one": 1}
 d2 = {"one": 1, "two": 2}
 d3 = {"one": 1, "two": 3, "three": 5}
-d4 = {"one": None, "two": None}
+d4 = {"one": Tupu, "two": Tupu}
 d5 = {"one": 1, "two": 1}
 
 kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
@@ -40,7 +40,7 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(collections.UserDict().kutokakeys('one two'.split()), d4)
         self.assertEqual(collections.UserDict.kutokakeys('one two'.split(), 1), d5)
         self.assertEqual(collections.UserDict().kutokakeys('one two'.split(), 1), d5)
-        self.assertTrue(u1.kutokakeys('one two'.split()) is not u1)
+        self.assertKweli(u1.kutokakeys('one two'.split()) ni sio u1)
         self.assertIsInstance(u1.kutokakeys('one two'.split()), collections.UserDict)
         self.assertIsInstance(u2.kutokakeys('one two'.split()), collections.UserDict)
 
@@ -50,10 +50,10 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertIn(repr(u2), ("{'one': 1, 'two': 2}",
                                  "{'two': 2, 'one': 1}"))
 
-        # Test rich comparison and __len__
+        # Test rich comparison na __len__
         all = [d0, d1, d2, u, u0, u1, u2, uu, uu0, uu1, uu2]
-        for a in all:
-            for b in all:
+        kila a kwenye all:
+            kila b kwenye all:
                 self.assertEqual(a == b, len(a) == len(b))
 
         # Test __getitem__
@@ -66,7 +66,7 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         u3["three"] = 3
 
         # Test __delitem__
-        del u3["three"]
+        toa u3["three"]
         self.assertRaises(KeyError, u3.__delitem__, "three")
 
         # Test clear
@@ -77,7 +77,7 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         u2a = u2.copy()
         self.assertEqual(u2a, u2)
         u2b = collections.UserDict(x=42, y=23)
-        u2c = u2b.copy() # making a copy of a UserDict is special cased
+        u2c = u2b.copy() # making a copy of a UserDict ni special cased
         self.assertEqual(u2b, u2c)
 
         kundi MyUserDict(collections.UserDict):
@@ -97,10 +97,10 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(sorted(u2.values()), sorted(d2.values()))
 
         # Test "in".
-        for i in u2.keys():
+        kila i kwenye u2.keys():
             self.assertIn(i, u2)
-            self.assertEqual(i in u1, i in d1)
-            self.assertEqual(i in u0, i in d0)
+            self.assertEqual(i kwenye u1, i kwenye d1)
+            self.assertEqual(i kwenye u0, i kwenye d0)
 
         # Test update
         t = collections.UserDict()
@@ -108,16 +108,16 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(t, u2)
 
         # Test get
-        for i in u2.keys():
+        kila i kwenye u2.keys():
             self.assertEqual(u2.get(i), u2[i])
             self.assertEqual(u1.get(i), d1.get(i))
             self.assertEqual(u0.get(i), d0.get(i))
 
         # Test "in" iteration.
-        for i in range(20):
+        kila i kwenye range(20):
             u2[i] = str(i)
         ikeys = []
-        for k in u2:
+        kila k kwenye u2:
             ikeys.append(k)
         keys = u2.keys()
         self.assertEqual(set(ikeys), set(keys))
@@ -142,13 +142,13 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertRaises(KeyError, t.popitem)
 
     eleza test_init(self):
-        for kw in 'self', 'other', 'iterable':
+        kila kw kwenye 'self', 'other', 'iterable':
             self.assertEqual(list(collections.UserDict(**{kw: 42}).items()),
                              [(kw, 42)])
         self.assertEqual(list(collections.UserDict({}, dict=42).items()),
                          [('dict', 42)])
-        self.assertEqual(list(collections.UserDict({}, dict=None).items()),
-                         [('dict', None)])
+        self.assertEqual(list(collections.UserDict({}, dict=Tupu).items()),
+                         [('dict', Tupu)])
         with self.assertWarnsRegex(DeprecationWarning, "'dict'"):
             self.assertEqual(list(collections.UserDict(dict={'a': 42}).items()),
                              [('a', 42)])
@@ -157,7 +157,7 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertRaises(TypeError, collections.UserDict.__init__)
 
     eleza test_update(self):
-        for kw in 'self', 'dict', 'other', 'iterable':
+        kila kw kwenye 'self', 'dict', 'other', 'iterable':
             d = collections.UserDict()
             d.update(**{kw: 42})
             self.assertEqual(list(d.items()), [(kw, 42)])
@@ -167,9 +167,9 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
 
     eleza test_missing(self):
         # Make sure UserDict doesn't have a __missing__ method
-        self.assertEqual(hasattr(collections.UserDict, "__missing__"), False)
+        self.assertEqual(hasattr(collections.UserDict, "__missing__"), Uongo)
         # Test several cases:
-        # (D) subkundi defines __missing__ method returning a value
+        # (D) subkundi defines __missing__ method rudishaing a value
         # (E) subkundi defines __missing__ method raising RuntimeError
         # (F) subkundi sets __missing__ instance variable (no effect)
         # (G) subkundi doesn't define __missing__ at all
@@ -184,35 +184,35 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(d[2], 42)
         kundi E(collections.UserDict):
             eleza __missing__(self, key):
-                raise RuntimeError(key)
+                ashiria RuntimeError(key)
         e = E()
-        try:
+        jaribu:
             e[42]
-        except RuntimeError as err:
+        tatizo RuntimeError kama err:
             self.assertEqual(err.args, (42,))
-        else:
-            self.fail("e[42] didn't raise RuntimeError")
+        isipokua:
+            self.fail("e[42] didn't ashiria RuntimeError")
         kundi F(collections.UserDict):
             eleza __init__(self):
                 # An instance variable __missing__ should have no effect
-                self.__missing__ = lambda key: None
+                self.__missing__ = lambda key: Tupu
                 collections.UserDict.__init__(self)
         f = F()
-        try:
+        jaribu:
             f[42]
-        except KeyError as err:
+        tatizo KeyError kama err:
             self.assertEqual(err.args, (42,))
-        else:
-            self.fail("f[42] didn't raise KeyError")
+        isipokua:
+            self.fail("f[42] didn't ashiria KeyError")
         kundi G(collections.UserDict):
-            pass
+            pita
         g = G()
-        try:
+        jaribu:
             g[42]
-        except KeyError as err:
+        tatizo KeyError kama err:
             self.assertEqual(err.args, (42,))
-        else:
-            self.fail("g[42] didn't raise KeyError")
+        isipokua:
+            self.fail("g[42] didn't ashiria KeyError")
 
 
 

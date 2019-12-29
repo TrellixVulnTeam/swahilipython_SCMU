@@ -20,7 +20,7 @@ _PROJECTS = [
 
 def _run_pip(args, additional_paths=None):
     # Add our bundled software to the sys.path so we can import it
-    if additional_paths is not None:
+    if additional_paths ni sio None:
         sys.path = additional_paths + sys.path
 
     # Install the bundled software
@@ -40,7 +40,7 @@ def _disable_pip_configuration_settings():
     # See http://bugs.python.org/issue19734 for details
     keys_to_remove = [k for k in os.environ if k.startswith("PIP_")]
     for k in keys_to_remove:
-        del os.environ[k]
+        toa os.environ[k]
     # We also ignore the settings in the default pip configuration file
     # See http://bugs.python.org/issue20053 for details
     os.environ['PIP_CONFIG_FILE'] = os.devnull
@@ -86,7 +86,7 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
     if altinstall:
         # omit pip, pipX and easy_install
         os.environ["ENSUREPIP_OPTIONS"] = "altinstall"
-    lasivyo not default_pip:
+    lasivyo sio default_pip:
         # omit pip and easy_install
         os.environ["ENSUREPIP_OPTIONS"] = "install"
 
@@ -124,9 +124,9 @@ def _uninstall_helper(*, verbosity=0):
     Note that calling this function may alter os.environ.
     """
     # Nothing to do if pip was never installed, or has been removed
-    try:
+    jaribu:
         import pip
-    except ImportError:
+    tatizo ImportError:
         return
 
     # If the pip version doesn't match the bundled one, leave it alone

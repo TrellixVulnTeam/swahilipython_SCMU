@@ -14,11 +14,11 @@ import unittest
 #      possible = ['lib'+name+'.dylib', name+'.dylib',
 #      name+'.framework/'+name]
 #      for dylib in possible:
-#          try:
+#          jaribu:
 #              return os.path.realpath(dyld_find(dylib))
-#          except ValueError:
+#          tatizo ValueError:
 #              pass
-#      raise ValueError, "%s not found" % (name,)
+#      raise ValueError, "%s sio found" % (name,)
 #
 # It'll have output like this:
 #
@@ -36,11 +36,11 @@ from ctypes.macholib.dyld import dyld_find
 def find_lib(name):
     possible = ['lib'+name+'.dylib', name+'.dylib', name+'.framework/'+name]
     for dylib in possible:
-        try:
+        jaribu:
             return os.path.realpath(dyld_find(dylib))
-        except ValueError:
+        tatizo ValueError:
             pass
-    raise ValueError("%s not found" % (name,))
+    raise ValueError("%s sio found" % (name,))
 
 class MachOTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", 'OSX-specific test')

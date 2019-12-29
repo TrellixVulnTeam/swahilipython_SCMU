@@ -12,10 +12,10 @@ import sys, string, re
 import getopt
 from distutils.errors import *
 
-# Much like command_re in distutils.core, this is close to but not quite
+# Much like command_re in distutils.core, this is close to but sio quite
 # the same as a Python NAME -- except, in the spirit of most GNU
 # utilities, we use '-' in place of '_'.  (The spirit of LISP lives on!)
-# The similarities to NAME are again not a coincidence...
+# The similarities to NAME are again sio a coincidence...
 longopt_pat = r'[a-zA-Z](?:[a-zA-Z0-9-]*)'
 longopt_re = re.compile(r'^%s$' % longopt_pat)
 
@@ -91,7 +91,7 @@ class FancyGetopt:
         if long_option in self.option_index:
             raise DistutilsGetoptError(
                   "option conflict: already an option '%s'" % long_option)
-        else:
+        isipokua:
             option = (long_option, short_option, help_string)
             self.option_table.append(option)
             self.option_index[long_option] = option
@@ -110,12 +110,12 @@ class FancyGetopt:
     def _check_alias_dict(self, aliases, what):
         assert isinstance(aliases, dict)
         for (alias, opt) in aliases.items():
-            if alias not in self.option_index:
+            if alias haiko kwenye self.option_index:
                 raise DistutilsGetoptError(("invalid %s '%s': "
-                       "option '%s' not defined") % (what, alias, alias))
-            if opt not in self.option_index:
+                       "option '%s' sio defined") % (what, alias, alias))
+            if opt haiko kwenye self.option_index:
                 raise DistutilsGetoptError(("invalid %s '%s': "
-                       "aliased option '%s' not defined") % (what, alias, opt))
+                       "aliased option '%s' sio defined") % (what, alias, opt))
 
     def set_aliases(self, alias):
         """Set the aliases for this option parser."""
@@ -146,13 +146,13 @@ class FancyGetopt:
                 repeat = 0
             lasivyo len(option) == 4:
                 long, short, help, repeat = option
-            else:
+            isipokua:
                 # the option table is part of the code, so simply
                 # assert that it is correct
                 raise ValueError("invalid option tuple: %r" % (option,))
 
             # Type- and value-check the option names
-            if not isinstance(long, str) or len(long) < 2:
+            if sio isinstance(long, str) or len(long) < 2:
                 raise DistutilsGetoptError(("invalid long option '%s': "
                        "must be a string of length >= 2") % long)
 
@@ -168,11 +168,11 @@ class FancyGetopt:
                 if short: short = short + ':'
                 long = long[0:-1]
                 self.takes_arg[long] = 1
-            else:
+            isipokua:
                 # Is option is a "negative alias" for some other option (eg.
                 # "quiet" == "!verbose")?
                 alias_to = self.negative_alias.get(long)
-                if alias_to is not None:
+                if alias_to ni sio None:
                     if self.takes_arg[alias_to]:
                         raise DistutilsGetoptError(
                               "invalid negative alias '%s': "
@@ -185,7 +185,7 @@ class FancyGetopt:
             # If this is an alias option, make sure its "takes arg" flag is
             # the same as the option it's aliased to.
             alias_to = self.alias.get(long)
-            if alias_to is not None:
+            if alias_to ni sio None:
                 if self.takes_arg[long] != self.takes_arg[alias_to]:
                     raise DistutilsGetoptError(
                           "invalid alias '%s': inconsistent with "
@@ -197,7 +197,7 @@ class FancyGetopt:
             # later translate it to an attribute name on some object.  Have
             # to do this a bit late to make sure we've removed any trailing
             # '='.
-            if not longopt_re.match(long):
+            if sio longopt_re.match(long):
                 raise DistutilsGetoptError(
                        "invalid long option name '%s' "
                        "(must be letters, numbers, hyphens only" % long)
@@ -210,8 +210,8 @@ class FancyGetopt:
     def getopt(self, args=None, object=None):
         """Parse command-line options in args. Store as attributes on object.
 
-        If 'args' is None or not supplied, uses 'sys.argv[1:]'.  If
-        'object' is None or not supplied, creates a new OptionDummy
+        If 'args' is None or sio supplied, uses 'sys.argv[1:]'.  If
+        'object' is None or sio supplied, creates a new OptionDummy
         object, stores option values there, and returns a tuple (args,
         object).  If 'object' is supplied, it is modified in place and
         'getopt()' just returns 'args'; in both cases, the returned
@@ -223,21 +223,21 @@ class FancyGetopt:
         if object is None:
             object = OptionDummy()
             created_object = True
-        else:
+        isipokua:
             created_object = False
 
         self._grok_option_table()
 
         short_opts = ' '.join(self.short_opts)
-        try:
+        jaribu:
             opts, args = getopt.getopt(args, short_opts, self.long_opts)
-        except getopt.error as msg:
+        tatizo getopt.error as msg:
             raise DistutilsArgError(msg)
 
         for opt, val in opts:
             if len(opt) == 2 and opt[0] == '-': # it's a short option
                 opt = self.short2long[opt[1]]
-            else:
+            isipokua:
                 assert len(opt) > 2 and opt[:2] == '--'
                 opt = opt[2:]
 
@@ -245,19 +245,19 @@ class FancyGetopt:
             if alias:
                 opt = alias
 
-            if not self.takes_arg[opt]:     # boolean option?
+            if sio self.takes_arg[opt]:     # boolean option?
                 assert val == '', "boolean option can't have value"
                 alias = self.negative_alias.get(opt)
                 if alias:
                     opt = alias
                     val = 0
-                else:
+                isipokua:
                     val = 1
 
             attr = self.attr_name[opt]
             # The only repeating option at the moment is 'verbose'.
             # It has a negative option -q quiet, which should set verbose = 0.
-            if val and self.repeat.get(attr) is not None:
+            if val and self.repeat.get(attr) ni sio None:
                 val = getattr(object, attr, 0) + 1
             setattr(object, attr, val)
             self.option_order.append((opt, val))
@@ -265,7 +265,7 @@ class FancyGetopt:
         # for opts
         if created_object:
             return args, object
-        else:
+        isipokua:
             return args
 
     def get_option_order(self):
@@ -275,7 +275,7 @@ class FancyGetopt:
         """
         if self.option_order is None:
             raise RuntimeError("'getopt()' hasn't been called yet")
-        else:
+        isipokua:
             return self.option_order
 
     def generate_help(self, header=None):
@@ -293,7 +293,7 @@ class FancyGetopt:
             l = len(long)
             if long[-1] == '=':
                 l = l - 1
-            if short is not None:
+            if short ni sio None:
                 l = l + 5                   # " (-x)" where short == 'x'
             if l > max_opt:
                 max_opt = l
@@ -306,7 +306,7 @@ class FancyGetopt:
         #   --flimflam  set the flim-flam level
         # and with wrapped text:
         #   --flimflam  set the flim-flam level (must be between
-        #               0 and 100, except on Tuesdays)
+        #               0 and 100, tatizo on Tuesdays)
         # Options with short names will have the short name shown (but
         # it doesn't contribute to max_opt):
         #   --foo (-f)  controls foonabulation
@@ -327,7 +327,7 @@ class FancyGetopt:
         big_indent = ' ' * opt_width
         if header:
             lines = [header]
-        else:
+        isipokua:
             lines = ['Option summary:']
 
         for option in self.option_table:
@@ -340,17 +340,17 @@ class FancyGetopt:
             if short is None:
                 if text:
                     lines.append("  --%-*s  %s" % (max_opt, long, text[0]))
-                else:
+                isipokua:
                     lines.append("  --%-*s  " % (max_opt, long))
 
             # Case 2: we have a short option, so we have to include it
             # just after the long option
-            else:
+            isipokua:
                 opt_names = "%s (-%s)" % (long, short)
                 if text:
                     lines.append("  --%-*s  %s" %
                                  (max_opt, opt_names, text[0]))
-                else:
+                isipokua:
                     lines.append("  --%-*s" % opt_names)
 
             for l in text[1:]:
@@ -389,26 +389,26 @@ def wrap_text(text, width):
     chunks = [ch for ch in chunks if ch] # ' - ' results in empty strings
     lines = []
 
-    while chunks:
+    wakati chunks:
         cur_line = []                   # list of chunks (to-be-joined)
         cur_len = 0                     # length of current line
 
-        while chunks:
+        wakati chunks:
             l = len(chunks[0])
             if cur_len + l <= width:    # can squeeze (at least) this chunk in
                 cur_line.append(chunks[0])
-                del chunks[0]
+                toa chunks[0]
                 cur_len = cur_len + l
-            else:                       # this line is full
+            isipokua:                       # this line is full
                 # drop last chunk if all space
                 if cur_line and cur_line[-1][0] == ' ':
-                    del cur_line[-1]
-                break
+                    toa cur_line[-1]
+                koma
 
         if chunks:                      # any chunks left to process?
             # if the current line is still empty, then we had a single
-            # chunk that's too big too fit on a line -- so we break
-            # down and break it up at the line width
+            # chunk that's too big too fit on a line -- so we koma
+            # down and koma it up at the line width
             if cur_len == 0:
                 cur_line.append(chunks[0][0:width])
                 chunks[0] = chunks[0][width:]
@@ -417,7 +417,7 @@ def wrap_text(text, width):
             # (and we know from the re.split above that if a chunk has
             # *any* whitespace, it is *all* whitespace)
             if chunks[0][0] == ' ':
-                del chunks[0]
+                toa chunks[0]
 
         # and store this line in the list-of-all-lines -- as a single
         # string, of course!

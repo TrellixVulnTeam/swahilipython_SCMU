@@ -1,7 +1,7 @@
 # Copyright 2006 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Fixer for apply().
+"""Fixer kila apply().
 
 This converts apply(func, v, k) into (func)(*v, **k)."""
 
@@ -12,7 +12,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Call, Comma, parenthesize
 
 kundi FixApply(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     power< 'apply'
@@ -34,7 +34,7 @@ kundi FixApply(fixer_base.BaseFix):
         func = results["func"]
         args = results["args"]
         kwds = results.get("kwds")
-        # I feel like we should be able to express this logic in the
+        # I feel like we should be able to express this logic kwenye the
         # PATTERN above but I don't know how to do it so...
         ikiwa args:
             ikiwa args.type == self.syms.star_expr:
@@ -42,12 +42,12 @@ kundi FixApply(fixer_base.BaseFix):
             ikiwa (args.type == self.syms.argument and
                 args.children[0].value == '**'):
                 rudisha  # Make no change.
-        ikiwa kwds and (kwds.type == self.syms.argument and
+        ikiwa kwds na (kwds.type == self.syms.argument and
                      kwds.children[0].value == '**'):
             rudisha  # Make no change.
         prefix = node.prefix
         func = func.clone()
-        ikiwa (func.type not in (token.NAME, syms.atom) and
+        ikiwa (func.type haiko kwenye (token.NAME, syms.atom) and
             (func.type != syms.power or
              func.children[-2].type == token.DOUBLESTAR)):
             # Need to parenthesize
@@ -55,11 +55,11 @@ kundi FixApply(fixer_base.BaseFix):
         func.prefix = ""
         args = args.clone()
         args.prefix = ""
-        ikiwa kwds is not None:
+        ikiwa kwds ni sio Tupu:
             kwds = kwds.clone()
             kwds.prefix = ""
         l_newargs = [pytree.Leaf(token.STAR, "*"), args]
-        ikiwa kwds is not None:
+        ikiwa kwds ni sio Tupu:
             l_newargs.extend([Comma(),
                               pytree.Leaf(token.DOUBLESTAR, "**"),
                               kwds])

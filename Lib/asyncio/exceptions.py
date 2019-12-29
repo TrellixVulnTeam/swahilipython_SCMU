@@ -7,7 +7,7 @@ __all__ = ('CancelledError', 'InvalidStateError', 'TimeoutError',
 
 
 kundi CancelledError(BaseException):
-    """The Future or Task was cancelled."""
+    """The Future ama Task was cancelled."""
 
 
 kundi TimeoutError(Exception):
@@ -15,13 +15,13 @@ kundi TimeoutError(Exception):
 
 
 kundi InvalidStateError(Exception):
-    """The operation is not allowed in this state."""
+    """The operation ni sio allowed kwenye this state."""
 
 
 kundi SendfileNotAvailableError(RuntimeError):
-    """Sendfile syscall is not available.
+    """Sendfile syscall ni sio available.
 
-    Raised ikiwa OS does not support sendfile syscall for given socket or
+    Raised ikiwa OS does sio support sendfile syscall kila given socket or
     file type.
     """
 
@@ -31,7 +31,7 @@ kundi IncompleteReadError(EOFError):
     Incomplete read error. Attributes:
 
     - partial: read bytes string before the end of stream was reached
-    - expected: total number of expected bytes (or None ikiwa unknown)
+    - expected: total number of expected bytes (or Tupu ikiwa unknown)
     """
     eleza __init__(self, partial, expected):
         super().__init__(f'{len(partial)} bytes read on a total of '
@@ -44,7 +44,7 @@ kundi IncompleteReadError(EOFError):
 
 
 kundi LimitOverrunError(Exception):
-    """Reached the buffer limit while looking for a separator.
+    """Reached the buffer limit wakati looking kila a separator.
 
     Attributes:
     - consumed: total number of to be consumed bytes.

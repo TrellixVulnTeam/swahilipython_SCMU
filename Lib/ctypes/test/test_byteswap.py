@@ -46,7 +46,7 @@ class Test(unittest.TestCase):
         if sys.byteorder == "little":
             self.assertIs(c_short.__ctype_le__, c_short)
             self.assertIs(c_short.__ctype_be__.__ctype_le__, c_short)
-        else:
+        isipokua:
             self.assertIs(c_short.__ctype_be__, c_short)
             self.assertIs(c_short.__ctype_le__.__ctype_be__, c_short)
         s = c_short.__ctype_be__(0x1234)
@@ -73,7 +73,7 @@ class Test(unittest.TestCase):
         if sys.byteorder == "little":
             self.assertIs(c_int.__ctype_le__, c_int)
             self.assertIs(c_int.__ctype_be__.__ctype_le__, c_int)
-        else:
+        isipokua:
             self.assertIs(c_int.__ctype_be__, c_int)
             self.assertIs(c_int.__ctype_le__.__ctype_be__, c_int)
 
@@ -101,7 +101,7 @@ class Test(unittest.TestCase):
         if sys.byteorder == "little":
             self.assertIs(c_longlong.__ctype_le__, c_longlong)
             self.assertIs(c_longlong.__ctype_be__.__ctype_le__, c_longlong)
-        else:
+        isipokua:
             self.assertIs(c_longlong.__ctype_be__, c_longlong)
             self.assertIs(c_longlong.__ctype_le__.__ctype_be__, c_longlong)
 
@@ -129,7 +129,7 @@ class Test(unittest.TestCase):
         if sys.byteorder == "little":
             self.assertIs(c_float.__ctype_le__, c_float)
             self.assertIs(c_float.__ctype_be__.__ctype_le__, c_float)
-        else:
+        isipokua:
             self.assertIs(c_float.__ctype_be__, c_float)
             self.assertIs(c_float.__ctype_le__.__ctype_be__, c_float)
         s = c_float(math.pi)
@@ -147,7 +147,7 @@ class Test(unittest.TestCase):
         if sys.byteorder == "little":
             self.assertIs(c_double.__ctype_le__, c_double)
             self.assertIs(c_double.__ctype_be__.__ctype_le__, c_double)
-        else:
+        isipokua:
             self.assertIs(c_double.__ctype_be__, c_double)
             self.assertIs(c_double.__ctype_le__.__ctype_be__, c_double)
         s = c_double(math.pi)
@@ -173,7 +173,7 @@ class Test(unittest.TestCase):
     def test_struct_fields_1(self):
         if sys.byteorder == "little":
             base = BigEndianStructure
-        else:
+        isipokua:
             base = LittleEndianStructure
 
         class T(base):
@@ -198,7 +198,7 @@ class Test(unittest.TestCase):
                     ("a", c_int * 3 * 3 * 3)]
         T._fields_ = _fields_
 
-        # these fields do not support different byte order:
+        # these fields do sio support different byte order:
         for typ in c_wchar, c_void_p, POINTER(c_int):
             _fields_.append(("x", typ))
             class T(base):
@@ -229,7 +229,7 @@ class Test(unittest.TestCase):
                 self.assertEqual(len(data), sizeof(TestStructure))
                 ptr = POINTER(TestStructure)
                 s = cast(data, ptr)[0]
-                del ctypes._pointer_type_cache[TestStructure]
+                toa ctypes._pointer_type_cache[TestStructure]
                 self.assertEqual(s.point.x, 1)
                 self.assertEqual(s.point.y, 2)
 
@@ -242,7 +242,7 @@ class Test(unittest.TestCase):
         if sys.byteorder == "little":
             base = BigEndianStructure
             fmt = ">bxhid"
-        else:
+        isipokua:
             base = LittleEndianStructure
             fmt = "<bxhid"
 
@@ -260,7 +260,7 @@ class Test(unittest.TestCase):
         if sys.byteorder == "little":
             base = BigEndianStructure
             fmt = ">b h xi xd"
-        else:
+        isipokua:
             base = LittleEndianStructure
             fmt = "<b h xi xd"
 
@@ -287,7 +287,7 @@ class Test(unittest.TestCase):
     def test_unaligned_native_struct_fields(self):
         if sys.byteorder == "little":
             fmt = "<b h xi xd"
-        else:
+        isipokua:
             base = LittleEndianStructure
             fmt = ">b h xi xd"
 

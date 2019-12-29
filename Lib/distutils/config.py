@@ -65,8 +65,8 @@ class PyPIRCCommand(Command):
                     # nothing set, let's try to get the default pypi
                     if 'pypi' in sections:
                         _servers = ['pypi']
-                    else:
-                        # the file is not properly defined, returning
+                    isipokua:
+                        # the file ni sio properly defined, returning
                         # an empty dict
                         return {}
                 for server in _servers:
@@ -80,7 +80,7 @@ class PyPIRCCommand(Command):
                                          ('password', None)):
                         if config.has_option(server, key):
                             current[key] = config.get(server, key)
-                        else:
+                        isipokua:
                             current[key] = default
 
                     # work around people having "repository" for the "pypi"
@@ -99,7 +99,7 @@ class PyPIRCCommand(Command):
                 server = 'server-login'
                 if config.has_option(server, 'repository'):
                     repository = config.get(server, 'repository')
-                else:
+                isipokua:
                     repository = self.DEFAULT_REPOSITORY
                 return {'username': config.get(server, 'username'),
                         'password': config.get(server, 'password'),

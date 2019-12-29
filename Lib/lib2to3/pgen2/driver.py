@@ -28,23 +28,23 @@ kutoka . agiza grammar, parse, token, tokenize, pgen
 
 kundi Driver(object):
 
-    eleza __init__(self, grammar, convert=None, logger=None):
+    eleza __init__(self, grammar, convert=Tupu, logger=Tupu):
         self.grammar = grammar
-        ikiwa logger is None:
+        ikiwa logger ni Tupu:
             logger = logging.getLogger()
         self.logger = logger
         self.convert = convert
 
-    eleza parse_tokens(self, tokens, debug=False):
-        """Parse a series of tokens and rudisha the syntax tree."""
+    eleza parse_tokens(self, tokens, debug=Uongo):
+        """Parse a series of tokens na rudisha the syntax tree."""
         # XXX Move the prefix computation into a wrapper around tokenize.
         p = parse.Parser(self.grammar, self.convert)
         p.setup()
         lineno = 1
         column = 0
-        type = value = start = end = line_text = None
+        type = value = start = end = line_text = Tupu
         prefix = ""
-        for quintuple in tokens:
+        kila quintuple kwenye tokens:
             type, value, start, end, line_text = quintuple
             ikiwa start != (lineno, column):
                 assert (lineno, column) <= start, ((lineno, column), start)
@@ -56,13 +56,13 @@ kundi Driver(object):
                 ikiwa column < s_column:
                     prefix += line_text[column:s_column]
                     column = s_column
-            ikiwa type in (tokenize.COMMENT, tokenize.NL):
+            ikiwa type kwenye (tokenize.COMMENT, tokenize.NL):
                 prefix += value
                 lineno, column = end
                 ikiwa value.endswith("\n"):
                     lineno += 1
                     column = 0
-                continue
+                endelea
             ikiwa type == token.OP:
                 type = grammar.opmap[value]
             ikiwa debug:
@@ -71,34 +71,34 @@ kundi Driver(object):
             ikiwa p.addtoken(type, value, (prefix, start)):
                 ikiwa debug:
                     self.logger.debug("Stop.")
-                break
+                koma
             prefix = ""
             lineno, column = end
             ikiwa value.endswith("\n"):
                 lineno += 1
                 column = 0
-        else:
-            # We never broke out -- EOF is too soon (how can this happen???)
-            raise parse.ParseError("incomplete input",
+        isipokua:
+            # We never broke out -- EOF ni too soon (how can this happen???)
+            ashiria parse.ParseError("incomplete input",
                                    type, value, (prefix, start))
         rudisha p.rootnode
 
-    eleza parse_stream_raw(self, stream, debug=False):
-        """Parse a stream and rudisha the syntax tree."""
+    eleza parse_stream_raw(self, stream, debug=Uongo):
+        """Parse a stream na rudisha the syntax tree."""
         tokens = tokenize.generate_tokens(stream.readline)
         rudisha self.parse_tokens(tokens, debug)
 
-    eleza parse_stream(self, stream, debug=False):
-        """Parse a stream and rudisha the syntax tree."""
+    eleza parse_stream(self, stream, debug=Uongo):
+        """Parse a stream na rudisha the syntax tree."""
         rudisha self.parse_stream_raw(stream, debug)
 
-    eleza parse_file(self, filename, encoding=None, debug=False):
-        """Parse a file and rudisha the syntax tree."""
-        with io.open(filename, "r", encoding=encoding) as stream:
+    eleza parse_file(self, filename, encoding=Tupu, debug=Uongo):
+        """Parse a file na rudisha the syntax tree."""
+        with io.open(filename, "r", encoding=encoding) kama stream:
             rudisha self.parse_stream(stream, debug)
 
-    eleza parse_string(self, text, debug=False):
-        """Parse a string and rudisha the syntax tree."""
+    eleza parse_string(self, text, debug=Uongo):
+        """Parse a string na rudisha the syntax tree."""
         tokens = tokenize.generate_tokens(io.StringIO(text).readline)
         rudisha self.parse_tokens(tokens, debug)
 
@@ -110,22 +110,22 @@ eleza _generate_pickle_name(gt):
     rudisha head + tail + ".".join(map(str, sys.version_info)) + ".pickle"
 
 
-eleza load_grammar(gt="Grammar.txt", gp=None,
-                 save=True, force=False, logger=None):
+eleza load_grammar(gt="Grammar.txt", gp=Tupu,
+                 save=Kweli, force=Uongo, logger=Tupu):
     """Load the grammar (maybe kutoka a pickle)."""
-    ikiwa logger is None:
+    ikiwa logger ni Tupu:
         logger = logging.getLogger()
-    gp = _generate_pickle_name(gt) ikiwa gp is None else gp
-    ikiwa force or not _newer(gp, gt):
+    gp = _generate_pickle_name(gt) ikiwa gp ni Tupu else gp
+    ikiwa force ama sio _newer(gp, gt):
         logger.info("Generating grammar tables kutoka %s", gt)
         g = pgen.generate_grammar(gt)
         ikiwa save:
             logger.info("Writing grammar tables to %s", gp)
-            try:
+            jaribu:
                 g.dump(gp)
-            except OSError as e:
+            tatizo OSError kama e:
                 logger.info("Writing failed: %s", e)
-    else:
+    isipokua:
         g = grammar.Grammar()
         g.load(gp)
     rudisha g
@@ -133,21 +133,21 @@ eleza load_grammar(gt="Grammar.txt", gp=None,
 
 eleza _newer(a, b):
     """Inquire whether file a was written since file b."""
-    ikiwa not os.path.exists(a):
-        rudisha False
-    ikiwa not os.path.exists(b):
-        rudisha True
+    ikiwa sio os.path.exists(a):
+        rudisha Uongo
+    ikiwa sio os.path.exists(b):
+        rudisha Kweli
     rudisha os.path.getmtime(a) >= os.path.getmtime(b)
 
 
 eleza load_packaged_grammar(package, grammar_source):
     """Normally, loads a pickled grammar by doing
         pkgutil.get_data(package, pickled_grammar)
-    where *pickled_grammar* is computed kutoka *grammar_source* by adding the
-    Python version and using a ``.pickle`` extension.
+    where *pickled_grammar* ni computed kutoka *grammar_source* by adding the
+    Python version na using a ``.pickle`` extension.
 
-    However, ikiwa *grammar_source* is an extant file, load_grammar(grammar_source)
-    is called instead. This facilitates using a packaged grammar file when needed
+    However, ikiwa *grammar_source* ni an extant file, load_grammar(grammar_source)
+    ni called instead. This facilitates using a packaged grammar file when needed
     but preserves load_grammar's automatic regeneration behavior when possible.
 
     """
@@ -161,17 +161,17 @@ eleza load_packaged_grammar(package, grammar_source):
 
 
 eleza main(*args):
-    """Main program, when run as a script: produce grammar pickle files.
+    """Main program, when run kama a script: produce grammar pickle files.
 
-    Calls load_grammar for each argument, a path to a grammar text file.
+    Calls load_grammar kila each argument, a path to a grammar text file.
     """
-    ikiwa not args:
+    ikiwa sio args:
         args = sys.argv[1:]
     logging.basicConfig(level=logging.INFO, stream=sys.stdout,
                         format='%(message)s')
-    for gt in args:
-        load_grammar(gt, save=True, force=True)
-    rudisha True
+    kila gt kwenye args:
+        load_grammar(gt, save=Kweli, force=Kweli)
+    rudisha Kweli
 
 ikiwa __name__ == "__main__":
     sys.exit(int(not main()))

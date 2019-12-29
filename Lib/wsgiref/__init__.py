@@ -2,16 +2,16 @@
 
 Current Contents:
 
-* util -- Miscellaneous useful functions and wrappers
+* util -- Miscellaneous useful functions na wrappers
 
 * headers -- Manage response headers
 
-* handlers -- base classes for server/gateway implementations
+* handlers -- base classes kila server/gateway implementations
 
 * simple_server -- a simple BaseHTTPServer that supports WSGI
 
-* validate -- validation wrapper that sits between an app and a server
-  to detect errors in either
+* validate -- validation wrapper that sits between an app na a server
+  to detect errors kwenye either
 
 To-Do:
 

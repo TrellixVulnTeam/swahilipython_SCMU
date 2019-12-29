@@ -20,7 +20,7 @@ class TestBase(unittest.TestCase):
         self.root = Tcl()
 
     def tearDown(self):
-        del self.root
+        toa self.root
 
 
 class TestVariable(TestBase):
@@ -42,17 +42,17 @@ class TestVariable(TestBase):
         self.assertFalse(self.info_exists("varname"))
         v = Variable(self.root, "sample string", "varname")
         self.assertTrue(self.info_exists("varname"))
-        del v
+        toa v
         self.assertFalse(self.info_exists("varname"))
 
     def test_dont_unset_not_existing(self):
         self.assertFalse(self.info_exists("varname"))
         v1 = Variable(self.root, name="name")
         v2 = Variable(self.root, name="name")
-        del v1
+        toa v1
         self.assertFalse(self.info_exists("name"))
         # shouldn't raise exception
-        del v2
+        toa v2
         self.assertFalse(self.info_exists("name"))
 
     def test___eq__(self):
@@ -127,13 +127,13 @@ class TestVariable(TestBase):
         self.assertEqual(trace, [])
 
         trace = []
-        del write_tracer
+        toa write_tracer
         gc.collect()
         v.set('eggs')
         self.assertEqual(trace, [('write', vname, '', 'w')])
 
         trace = []
-        del v
+        toa v
         gc.collect()
         self.assertEqual(trace, [('write', vname, '', 'u')])
 
@@ -176,13 +176,13 @@ class TestVariable(TestBase):
         self.assertEqual(trace, [])
 
         trace = []
-        del write_tracer
+        toa write_tracer
         gc.collect()
         v.set('eggs')
         self.assertEqual(trace, [('write', vname, '', 'write')])
 
         trace = []
-        del v
+        toa v
         gc.collect()
         self.assertEqual(trace, [('write', vname, '', 'unset')])
 

@@ -15,7 +15,7 @@ class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
     def _log(self, msg, *args):
         if len(args) > 0:
             self._logs.append(msg % args)
-        else:
+        isipokua:
             self._logs.append(msg)
 
     def setUp(self):
@@ -34,9 +34,9 @@ class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
 
     def test_move_file_verbosity(self):
         f = open(self.source, 'w')
-        try:
+        jaribu:
             f.write('some content')
-        finally:
+        mwishowe:
             f.close()
 
         move_file(self.source, self.target, verbose=0)
@@ -80,13 +80,13 @@ class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
     def test_copy_file_hard_link(self):
         with open(self.source, 'w') as f:
             f.write('some content')
-        # Check first that copy_file() will not fall back on copying the file
+        # Check first that copy_file() will sio fall back on copying the file
         # instead of creating the hard link.
-        try:
+        jaribu:
             os.link(self.source, self.target)
-        except OSError as e:
+        tatizo OSError as e:
             self.skipTest('os.link: %s' % e)
-        else:
+        isipokua:
             unlink(self.target)
         st = os.stat(self.source)
         copy_file(self.source, self.target, link='hard')

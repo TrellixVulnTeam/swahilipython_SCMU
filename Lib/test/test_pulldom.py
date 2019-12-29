@@ -11,7 +11,7 @@ kutoka test.support agiza findfile
 
 tstfile = findfile("test.xml", subdir="xmltestdata")
 
-# A handy XML snippet, containing attributes, a namespace prefix, and a
+# A handy XML snippet, containing attributes, a namespace prefix, na a
 # self-closing tag:
 SMALL_SAMPLE = """<?xml version="1.0"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xdc="http://www.xml.com/books">
@@ -37,7 +37,7 @@ kundi PullDOMTestCase(unittest.TestCase):
         list(handler)
 
         # Test with a file object:
-        with open(tstfile, "rb") as fin:
+        with open(tstfile, "rb") kama fin:
             list(pulldom.parse(fin))
 
     eleza test_parse_semantics(self):
@@ -45,8 +45,8 @@ kundi PullDOMTestCase(unittest.TestCase):
 
         items = pulldom.parseString(SMALL_SAMPLE)
         evt, node = next(items)
-        # Just check the node is a Document:
-        self.assertTrue(hasattr(node, "createElement"))
+        # Just check the node ni a Document:
+        self.assertKweli(hasattr(node, "createElement"))
         self.assertEqual(pulldom.START_DOCUMENT, evt)
         evt, node = next(items)
         self.assertEqual(pulldom.START_ELEMENT, evt)
@@ -55,11 +55,11 @@ kundi PullDOMTestCase(unittest.TestCase):
         self.assertEqual(node.attributes.getNamedItem("xmlns:xdc").value,
               "http://www.xml.com/books")
         evt, node = next(items)
-        self.assertEqual(pulldom.CHARACTERS, evt) # Line break
+        self.assertEqual(pulldom.CHARACTERS, evt) # Line koma
         evt, node = next(items)
         # XXX - A comment should be reported here!
         # self.assertEqual(pulldom.COMMENT, evt)
-        # Line break after swallowed comment:
+        # Line koma after swallowed comment:
         self.assertEqual(pulldom.CHARACTERS, evt)
         evt, node = next(items)
         self.assertEqual("title", node.tagName)
@@ -70,7 +70,7 @@ kundi PullDOMTestCase(unittest.TestCase):
         evt, node = next(items)
         self.assertEqual(pulldom.END_ELEMENT, evt)
         self.assertEqual("title", node.tagName)
-        self.assertTrue(title_node is node)
+        self.assertKweli(title_node ni node)
         evt, node = next(items)
         self.assertEqual(pulldom.CHARACTERS, evt)
         evt, node = next(items)
@@ -98,27 +98,27 @@ kundi PullDOMTestCase(unittest.TestCase):
         self.assertEqual(pulldom.CHARACTERS, evt)
         evt, node = next(items)
         self.assertEqual(pulldom.END_ELEMENT, evt)
-        # XXX No END_DOCUMENT item is ever obtained:
+        # XXX No END_DOCUMENT item ni ever obtained:
         #evt, node = next(items)
         #self.assertEqual(pulldom.END_DOCUMENT, evt)
 
     eleza test_expandItem(self):
-        """Ensure expandItem works as expected."""
+        """Ensure expandItem works kama expected."""
         items = pulldom.parseString(SMALL_SAMPLE)
         # Loop through the nodes until we get to a "title" start tag:
-        for evt, item in items:
-            ikiwa evt == pulldom.START_ELEMENT and item.tagName == "title":
+        kila evt, item kwenye items:
+            ikiwa evt == pulldom.START_ELEMENT na item.tagName == "title":
                 items.expandNode(item)
                 self.assertEqual(1, len(item.childNodes))
-                break
-        else:
-            self.fail("No \"title\" element detected in SMALL_SAMPLE!")
+                koma
+        isipokua:
+            self.fail("No \"title\" element detected kwenye SMALL_SAMPLE!")
         # Loop until we get to the next start-element:
-        for evt, node in items:
+        kila evt, node kwenye items:
             ikiwa evt == pulldom.START_ELEMENT:
-                break
+                koma
         self.assertEqual("hr", node.tagName,
-            "expandNode did not leave DOMEventStream in the correct state.")
+            "expandNode did sio leave DOMEventStream kwenye the correct state.")
         # Attempt to expand a standalone element:
         items.expandNode(node)
         self.assertEqual(next(items)[0], pulldom.CHARACTERS)
@@ -131,32 +131,32 @@ kundi PullDOMTestCase(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(items)
         items.clear()
-        self.assertIsNone(items.parser)
-        self.assertIsNone(items.stream)
+        self.assertIsTupu(items.parser)
+        self.assertIsTupu(items.stream)
 
     @unittest.expectedFailure
     eleza test_comment(self):
-        """PullDOM does not receive "comment" events."""
+        """PullDOM does sio receive "comment" events."""
         items = pulldom.parseString(SMALL_SAMPLE)
-        for evt, _ in items:
+        kila evt, _ kwenye items:
             ikiwa evt == pulldom.COMMENT:
-                break
-        else:
+                koma
+        isipokua:
             self.fail("No comment was encountered")
 
     @unittest.expectedFailure
     eleza test_end_document(self):
-        """PullDOM does not receive "end-document" events."""
+        """PullDOM does sio receive "end-document" events."""
         items = pulldom.parseString(SMALL_SAMPLE)
-        # Read all of the nodes up to and including </html>:
-        for evt, node in items:
-            ikiwa evt == pulldom.END_ELEMENT and node.tagName == "html":
-                break
-        try:
-            # Assert that the next node is END_DOCUMENT:
+        # Read all of the nodes up to na including </html>:
+        kila evt, node kwenye items:
+            ikiwa evt == pulldom.END_ELEMENT na node.tagName == "html":
+                koma
+        jaribu:
+            # Assert that the next node ni END_DOCUMENT:
             evt, node = next(items)
             self.assertEqual(pulldom.END_DOCUMENT, evt)
-        except StopIteration:
+        tatizo StopIteration:
             self.fail(
                 "Ran out of events, but should have received END_DOCUMENT")
 
@@ -164,14 +164,14 @@ kundi PullDOMTestCase(unittest.TestCase):
         parser = pulldom.parseString(SMALL_SAMPLE)
         with self.assertWarnsRegex(DeprecationWarning,
                                    r'Use iterator protocol instead'):
-            # This should have returned 'END_ELEMENT'.
+            # This should have rudishaed 'END_ELEMENT'.
             self.assertEqual(parser[-1][0], pulldom.START_DOCUMENT)
 
     eleza test_external_ges_default(self):
         parser = pulldom.parseString(SMALL_SAMPLE)
         saxparser = parser.parser
         ges = saxparser.getFeature(feature_external_ges)
-        self.assertEqual(ges, False)
+        self.assertEqual(ges, Uongo)
 
 
 kundi ThoroughTestCase(unittest.TestCase):
@@ -179,27 +179,27 @@ kundi ThoroughTestCase(unittest.TestCase):
 
     eleza test_thorough_parse(self):
         """Test some of the hard-to-reach parts of PullDOM."""
-        self._test_thorough(pulldom.parse(None, parser=SAXExerciser()))
+        self._test_thorough(pulldom.parse(Tupu, parser=SAXExerciser()))
 
     @unittest.expectedFailure
     eleza test_sax2dom_fail(self):
         """SAX2DOM can"t handle a PI before the root element."""
-        pd = SAX2DOMTestHelper(None, SAXExerciser(), 12)
+        pd = SAX2DOMTestHelper(Tupu, SAXExerciser(), 12)
         self._test_thorough(pd)
 
     eleza test_thorough_sax2dom(self):
         """Test some of the hard-to-reach parts of SAX2DOM."""
-        pd = SAX2DOMTestHelper(None, SAX2DOMExerciser(), 12)
-        self._test_thorough(pd, False)
+        pd = SAX2DOMTestHelper(Tupu, SAX2DOMExerciser(), 12)
+        self._test_thorough(pd, Uongo)
 
-    eleza _test_thorough(self, pd, before_root=True):
+    eleza _test_thorough(self, pd, before_root=Kweli):
         """Test some of the hard-to-reach parts of the parser, using a mock
         parser."""
 
         evt, node = next(pd)
         self.assertEqual(pulldom.START_DOCUMENT, evt)
-        # Just check the node is a Document:
-        self.assertTrue(hasattr(node, "createElement"))
+        # Just check the node ni a Document:
+        self.assertKweli(hasattr(node, "createElement"))
 
         ikiwa before_root:
             evt, node = next(pd)
@@ -251,7 +251,7 @@ kundi SAXExerciser(object):
         h.startDocument()
 
         # The next two items ensure that items preceding the first
-        # start_element are properly stored and emitted:
+        # start_element are properly stored na emitted:
         h.comment("a comment")
         h.processingInstruction("target", "data")
 
@@ -268,13 +268,13 @@ kundi SAXExerciser(object):
 
     eleza stub(self, *args, **kwargs):
         """Stub method. Does nothing."""
-        pass
+        pita
     setProperty = stub
     setFeature = stub
 
 
 kundi SAX2DOMExerciser(SAXExerciser):
-    """The same as SAXExerciser, but without the processing instruction and
+    """The same kama SAXExerciser, but without the processing instruction and
     comment before the root element, because S2D can"t handle it"""
 
     eleza parse(self, _):
@@ -303,22 +303,22 @@ kundi SAX2DOMTestHelper(pulldom.DOMEventStream):
 kundi SAX2DOMTestCase(unittest.TestCase):
 
     eleza confirm(self, test, testname="Test"):
-        self.assertTrue(test, testname)
+        self.assertKweli(test, testname)
 
     eleza test_basic(self):
         """Ensure SAX2DOM can parse kutoka a stream."""
-        with io.StringIO(SMALL_SAMPLE) as fin:
+        with io.StringIO(SMALL_SAMPLE) kama fin:
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))
-            for evt, node in sd:
-                ikiwa evt == pulldom.START_ELEMENT and node.tagName == "html":
-                    break
-            # Because the buffer is the same length as the XML, all the
-            # nodes should have been parsed and added:
+            kila evt, node kwenye sd:
+                ikiwa evt == pulldom.START_ELEMENT na node.tagName == "html":
+                    koma
+            # Because the buffer ni the same length kama the XML, all the
+            # nodes should have been parsed na added:
             self.assertGreater(len(node.childNodes), 0)
 
     eleza testSAX2DOM(self):
-        """Ensure SAX2DOM expands nodes as expected."""
+        """Ensure SAX2DOM expands nodes kama expected."""
         sax2dom = pulldom.SAX2DOM()
         sax2dom.startDocument()
         sax2dom.startElement("doc", {})
@@ -335,14 +335,14 @@ kundi SAX2DOMTestCase(unittest.TestCase):
         (text1, elm1, text2) = root.childNodes
         text3 = elm1.childNodes[0]
 
-        self.assertIsNone(text1.previousSibling)
+        self.assertIsTupu(text1.previousSibling)
         self.assertIs(text1.nextSibling, elm1)
         self.assertIs(elm1.previousSibling, text1)
         self.assertIs(elm1.nextSibling, text2)
         self.assertIs(text2.previousSibling, elm1)
-        self.assertIsNone(text2.nextSibling)
-        self.assertIsNone(text3.previousSibling)
-        self.assertIsNone(text3.nextSibling)
+        self.assertIsTupu(text2.nextSibling)
+        self.assertIsTupu(text3.previousSibling)
+        self.assertIsTupu(text3.nextSibling)
 
         self.assertIs(root.parentNode, doc)
         self.assertIs(text1.parentNode, root)

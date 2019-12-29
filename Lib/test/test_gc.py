@@ -13,13 +13,13 @@ agiza threading
 agiza time
 agiza weakref
 
-try:
+jaribu:
     kutoka _testcapi agiza with_tp_del
-except ImportError:
+tatizo ImportError:
     eleza with_tp_del(cls):
         kundi C(object):
             eleza __new__(cls, *args, **kwargs):
-                raise TypeError('requires _testcapi.with_tp_del')
+                ashiria TypeError('requires _testcapi.with_tp_del')
         rudisha C
 
 ### Support code
@@ -37,13 +37,13 @@ kundi C1055820(object):
 
 kundi GC_Detector(object):
     # Create an instance I.  Then gc hasn't happened again so long as
-    # I.gc_happened is false.
+    # I.gc_happened ni false.
 
     eleza __init__(self):
-        self.gc_happened = False
+        self.gc_happened = Uongo
 
         eleza it_happened(ignored):
-            self.gc_happened = True
+            self.gc_happened = Kweli
 
         # Create a piece of cyclic trash that triggers it_happened when
         # gc collects it.
@@ -53,24 +53,24 @@ kundi GC_Detector(object):
 kundi Uncollectable(object):
     """Create a reference cycle with multiple __del__ methods.
 
-    An object in a reference cycle will never have zero references,
-    and so must be garbage collected.  If one or more objects in the
+    An object kwenye a reference cycle will never have zero references,
+    na so must be garbage collected.  If one ama more objects kwenye the
     cycle have __del__ methods, the gc refuses to guess an order,
-    and leaves the cycle uncollected."""
-    eleza __init__(self, partner=None):
-        ikiwa partner is None:
+    na leaves the cycle uncollected."""
+    eleza __init__(self, partner=Tupu):
+        ikiwa partner ni Tupu:
             self.partner = Uncollectable(partner=self)
-        else:
+        isipokua:
             self.partner = partner
     eleza __tp_del__(self):
-        pass
+        pita
 
 ikiwa sysconfig.get_config_vars().get('PY_CFLAGS', ''):
-    BUILD_WITH_NDEBUG = ('-DNDEBUG' in sysconfig.get_config_vars()['PY_CFLAGS'])
-else:
-    # Usually, sys.gettotalrefcount() is only present ikiwa Python has been
-    # compiled in debug mode. If it's missing, expect that Python has
-    # been released in release mode: with NDEBUG defined.
+    BUILD_WITH_NDEBUG = ('-DNDEBUG' kwenye sysconfig.get_config_vars()['PY_CFLAGS'])
+isipokua:
+    # Usually, sys.gettotalrefcount() ni only present ikiwa Python has been
+    # compiled kwenye debug mode. If it's missing, expect that Python has
+    # been released kwenye release mode: with NDEBUG defined.
     BUILD_WITH_NDEBUG = (not hasattr(sys, 'gettotalrefcount'))
 
 ### Tests
@@ -81,14 +81,14 @@ kundi GCTests(unittest.TestCase):
         l = []
         l.append(l)
         gc.collect()
-        del l
+        toa l
         self.assertEqual(gc.collect(), 1)
 
     eleza test_dict(self):
         d = {}
         d[1] = d
         gc.collect()
-        del d
+        toa d
         self.assertEqual(gc.collect(), 1)
 
     eleza test_tuple(self):
@@ -97,128 +97,128 @@ kundi GCTests(unittest.TestCase):
         t = (l,)
         l.append(t)
         gc.collect()
-        del t
-        del l
+        toa t
+        toa l
         self.assertEqual(gc.collect(), 2)
 
     eleza test_class(self):
         kundi A:
-            pass
+            pita
         A.a = A
         gc.collect()
-        del A
+        toa A
         self.assertNotEqual(gc.collect(), 0)
 
     eleza test_newstyleclass(self):
         kundi A(object):
-            pass
+            pita
         gc.collect()
-        del A
+        toa A
         self.assertNotEqual(gc.collect(), 0)
 
     eleza test_instance(self):
         kundi A:
-            pass
+            pita
         a = A()
         a.a = a
         gc.collect()
-        del a
+        toa a
         self.assertNotEqual(gc.collect(), 0)
 
     @requires_type_collecting
     eleza test_newinstance(self):
         kundi A(object):
-            pass
+            pita
         a = A()
         a.a = a
         gc.collect()
-        del a
+        toa a
         self.assertNotEqual(gc.collect(), 0)
         kundi B(list):
-            pass
+            pita
         kundi C(B, A):
-            pass
+            pita
         a = C()
         a.a = a
         gc.collect()
-        del a
+        toa a
         self.assertNotEqual(gc.collect(), 0)
-        del B, C
+        toa B, C
         self.assertNotEqual(gc.collect(), 0)
         A.a = A()
-        del A
+        toa A
         self.assertNotEqual(gc.collect(), 0)
         self.assertEqual(gc.collect(), 0)
 
     eleza test_method(self):
-        # Tricky: self.__init__ is a bound method, it references the instance.
+        # Tricky: self.__init__ ni a bound method, it references the instance.
         kundi A:
             eleza __init__(self):
                 self.init = self.__init__
         a = A()
         gc.collect()
-        del a
+        toa a
         self.assertNotEqual(gc.collect(), 0)
 
     @cpython_only
     eleza test_legacy_finalizer(self):
-        # A() is uncollectable ikiwa it is part of a cycle, make sure it shows up
-        # in gc.garbage.
+        # A() ni uncollectable ikiwa it ni part of a cycle, make sure it shows up
+        # kwenye gc.garbage.
         @with_tp_del
         kundi A:
-            eleza __tp_del__(self): pass
+            eleza __tp_del__(self): pita
         kundi B:
-            pass
+            pita
         a = A()
         a.a = a
         id_a = id(a)
         b = B()
         b.b = b
         gc.collect()
-        del a
-        del b
+        toa a
+        toa b
         self.assertNotEqual(gc.collect(), 0)
-        for obj in gc.garbage:
+        kila obj kwenye gc.garbage:
             ikiwa id(obj) == id_a:
-                del obj.a
-                break
-        else:
-            self.fail("didn't find obj in garbage (finalizer)")
+                toa obj.a
+                koma
+        isipokua:
+            self.fail("didn't find obj kwenye garbage (finalizer)")
         gc.garbage.remove(obj)
 
     @cpython_only
     eleza test_legacy_finalizer_newclass(self):
-        # A() is uncollectable ikiwa it is part of a cycle, make sure it shows up
-        # in gc.garbage.
+        # A() ni uncollectable ikiwa it ni part of a cycle, make sure it shows up
+        # kwenye gc.garbage.
         @with_tp_del
         kundi A(object):
-            eleza __tp_del__(self): pass
+            eleza __tp_del__(self): pita
         kundi B(object):
-            pass
+            pita
         a = A()
         a.a = a
         id_a = id(a)
         b = B()
         b.b = b
         gc.collect()
-        del a
-        del b
+        toa a
+        toa b
         self.assertNotEqual(gc.collect(), 0)
-        for obj in gc.garbage:
+        kila obj kwenye gc.garbage:
             ikiwa id(obj) == id_a:
-                del obj.a
-                break
-        else:
-            self.fail("didn't find obj in garbage (finalizer)")
+                toa obj.a
+                koma
+        isipokua:
+            self.fail("didn't find obj kwenye garbage (finalizer)")
         gc.garbage.remove(obj)
 
     eleza test_function(self):
         # Tricky: f -> d -> f, code should call d.clear() after the exec to
-        # break the cycle.
+        # koma the cycle.
         d = {}
-        exec("eleza f(): pass\n", d)
+        exec("eleza f(): pita\n", d)
         gc.collect()
-        del d
+        toa d
         self.assertEqual(gc.collect(), 2)
 
     @refcount_test
@@ -230,11 +230,11 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 1)
 
     eleza test_saveall(self):
-        # Verify that cyclic garbage like lists show up in gc.garbage ikiwa the
-        # SAVEALL option is enabled.
+        # Verify that cyclic garbage like lists show up kwenye gc.garbage ikiwa the
+        # SAVEALL option ni enabled.
 
         # First make sure we don't save away other stuff that just happens to
-        # be waiting for collection.
+        # be waiting kila collection.
         gc.collect()
         # ikiwa this fails, someone else created immortal trash
         self.assertEqual(gc.garbage, [])
@@ -245,7 +245,7 @@ kundi GCTests(unittest.TestCase):
 
         debug = gc.get_debug()
         gc.set_debug(debug | gc.DEBUG_SAVEALL)
-        del L
+        toa L
         gc.collect()
         gc.set_debug(debug)
 
@@ -263,7 +263,7 @@ kundi GCTests(unittest.TestCase):
             eleza __del__(self):
                 dir(self)
         a = A()
-        del a
+        toa a
 
         gc.disable()
         gc.set_threshold(*thresholds)
@@ -278,17 +278,17 @@ kundi GCTests(unittest.TestCase):
             eleza __del__(self):
                 dir(self)
         a = A()
-        del a
+        toa a
 
         gc.disable()
         gc.set_threshold(*thresholds)
 
     # The following two tests are fragile:
     # They precisely count the number of allocations,
-    # which is highly implementation-dependent.
-    # For example, disposed tuples are not freed, but reused.
+    # which ni highly implementation-dependent.
+    # For example, disposed tuples are sio freed, but reused.
     # To minimize variations, though, we first store the get_count() results
-    # and check them at the end.
+    # na check them at the end.
     @refcount_test
     eleza test_get_count(self):
         gc.collect()
@@ -297,7 +297,7 @@ kundi GCTests(unittest.TestCase):
         d, e, f = gc.get_count()
         self.assertEqual((b, c), (0, 0))
         self.assertEqual((e, f), (0, 0))
-        # This is less fragile than asserting that a equals 0.
+        # This ni less fragile than asserting that a equals 0.
         self.assertLess(a, 5)
         # Between the two calls to get_count(), at least one object was
         # created (the list).
@@ -310,13 +310,13 @@ kundi GCTests(unittest.TestCase):
         # each call to collect(N)
         x = []
         gc.collect(0)
-        # x is now in gen 1
+        # x ni now kwenye gen 1
         a, b, c = gc.get_count()
         gc.collect(1)
-        # x is now in gen 2
+        # x ni now kwenye gen 2
         d, e, f = gc.get_count()
         gc.collect(2)
-        # x is now in gen 3
+        # x ni now kwenye gen 3
         g, h, i = gc.get_count()
         # We don't check a, d, g since their exact values depends on
         # internal implementation details of the interpreter.
@@ -332,30 +332,30 @@ kundi GCTests(unittest.TestCase):
                 ikiwa Ouch.n % 17 == 0:
                     gc.collect()
 
-        # "trashcan" is a hack to prevent stack overflow when deallocating
-        # very deeply nested tuples etc.  It works in part by abusing the
-        # type pointer and refcount fields, and that can yield horrible
+        # "trashcan" ni a hack to prevent stack overflow when deallocating
+        # very deeply nested tuples etc.  It works kwenye part by abusing the
+        # type pointer na refcount fields, na that can tuma horrible
         # problems when gc tries to traverse the structures.
-        # If this test fails (as it does in 2.0, 2.1 and 2.2), it will
+        # If this test fails (as it does kwenye 2.0, 2.1 na 2.2), it will
         # most likely die via segfault.
 
-        # Note:  In 2.3 the possibility for compiling without cyclic gc was
-        # removed, and that in turn allows the trashcan mechanism to work
+        # Note:  In 2.3 the possibility kila compiling without cyclic gc was
+        # removed, na that kwenye turn allows the trashcan mechanism to work
         # via much simpler means (e.g., it never abuses the type pointer or
         # refcount fields anymore).  Since it's much less likely to cause a
-        # problem now, the various constants in this expensive (we force a lot
+        # problem now, the various constants kwenye this expensive (we force a lot
         # of full collections) test are cut back kutoka the 2.2 version.
         gc.enable()
         N = 150
-        for count in range(2):
+        kila count kwenye range(2):
             t = []
-            for i in range(N):
+            kila i kwenye range(N):
                 t = [t, Ouch()]
             u = []
-            for i in range(N):
+            kila i kwenye range(N):
                 u = [u, Ouch()]
             v = {}
-            for i in range(N):
+            kila i kwenye range(N):
                 v = {1: v, 2: Ouch()}
         gc.disable()
 
@@ -365,54 +365,54 @@ kundi GCTests(unittest.TestCase):
         N_THREADS = 2
 
         eleza sleeper_gen():
-            """A generator that releases the GIL when closed or dealloc'ed."""
-            try:
-                yield
-            finally:
+            """A generator that releases the GIL when closed ama dealloc'ed."""
+            jaribu:
+                tuma
+            mwishowe:
                 time.sleep(0.000001)
 
         kundi C(list):
-            # Appending to a list is atomic, which avoids the use of a lock.
+            # Appending to a list ni atomic, which avoids the use of a lock.
             inits = []
             dels = []
             eleza __init__(self, alist):
                 self[:] = alist
-                C.inits.append(None)
+                C.inits.append(Tupu)
             eleza __del__(self):
-                # This __del__ is called by subtype_dealloc().
-                C.dels.append(None)
+                # This __del__ ni called by subtype_dealloc().
+                C.dels.append(Tupu)
                 # `g` will release the GIL when garbage-collected.  This
                 # helps assert subtype_dealloc's behaviour when threads
-                # switch in the middle of it.
+                # switch kwenye the middle of it.
                 g = sleeper_gen()
                 next(g)
-                # Now that __del__ is finished, subtype_dealloc will proceed
+                # Now that __del__ ni finished, subtype_dealloc will proceed
                 # to call list_dealloc, which also uses the trashcan mechanism.
 
         eleza make_nested():
             """Create a sufficiently nested container object so that the
-            trashcan mechanism is invoked when deallocating it."""
+            trashcan mechanism ni invoked when deallocating it."""
             x = C([])
-            for i in range(NESTING):
+            kila i kwenye range(NESTING):
                 x = [C([x])]
-            del x
+            toa x
 
         eleza run_thread():
-            """Exercise make_nested() in a loop."""
-            while not exit:
+            """Exercise make_nested() kwenye a loop."""
+            wakati sio exit:
                 make_nested()
 
         old_switchinterval = sys.getswitchinterval()
         sys.setswitchinterval(1e-5)
-        try:
+        jaribu:
             exit = []
             threads = []
-            for i in range(N_THREADS):
+            kila i kwenye range(N_THREADS):
                 t = threading.Thread(target=run_thread)
                 threads.append(t)
             with start_threads(threads, lambda: exit.append(1)):
                 time.sleep(1.0)
-        finally:
+        mwishowe:
             sys.setswitchinterval(old_switchinterval)
         gc.collect()
         self.assertEqual(len(C.inits), len(C.dels))
@@ -420,8 +420,8 @@ kundi GCTests(unittest.TestCase):
     eleza test_boom(self):
         kundi Boom:
             eleza __getattr__(self, someattribute):
-                del self.attr
-                raise AttributeError
+                toa self.attr
+                ashiria AttributeError
 
         a = Boom()
         b = Boom()
@@ -430,12 +430,12 @@ kundi GCTests(unittest.TestCase):
 
         gc.collect()
         garbagelen = len(gc.garbage)
-        del a, b
-        # a<->b are in a trash cycle now.  Collection will invoke
-        # Boom.__getattr__ (to see whether a and b have __del__ methods), and
-        # __getattr__ deletes the internal "attr" attributes as a side effect.
+        toa a, b
+        # a<->b are kwenye a trash cycle now.  Collection will invoke
+        # Boom.__getattr__ (to see whether a na b have __del__ methods), and
+        # __getattr__ deletes the internal "attr" attributes kama a side effect.
         # That causes the trash cycle to get reclaimed via refcounts falling to
-        # 0, thus mutating the trash graph as a side effect of merely asking
+        # 0, thus mutating the trash graph kama a side effect of merely asking
         # whether __del__ exists.  This used to (before 2.3b1) crash Python.
         # Now __getattr__ isn't called.
         self.assertEqual(gc.collect(), 4)
@@ -449,8 +449,8 @@ kundi GCTests(unittest.TestCase):
             eleza __getattr__(self, someattribute):
                 self.x += 1
                 ikiwa self.x > 1:
-                    del self.attr
-                raise AttributeError
+                    toa self.attr
+                ashiria AttributeError
 
         a = Boom2()
         b = Boom2()
@@ -459,23 +459,23 @@ kundi GCTests(unittest.TestCase):
 
         gc.collect()
         garbagelen = len(gc.garbage)
-        del a, b
-        # Much like test_boom(), except that __getattr__ doesn't break the
-        # cycle until the second time gc checks for __del__.  As of 2.3b1,
+        toa a, b
+        # Much like test_boom(), tatizo that __getattr__ doesn't koma the
+        # cycle until the second time gc checks kila __del__.  As of 2.3b1,
         # there isn't a second time, so this simply cleans up the trash cycle.
-        # We expect a, b, a.__dict__ and b.__dict__ (4 objects) to get
+        # We expect a, b, a.__dict__ na b.__dict__ (4 objects) to get
         # reclaimed this way.
         self.assertEqual(gc.collect(), 4)
         self.assertEqual(len(gc.garbage), garbagelen)
 
     eleza test_boom_new(self):
-        # boom__new and boom2_new are exactly like boom and boom2, except use
+        # boom__new na boom2_new are exactly like boom na boom2, tatizo use
         # new-style classes.
 
         kundi Boom_New(object):
             eleza __getattr__(self, someattribute):
-                del self.attr
-                raise AttributeError
+                toa self.attr
+                ashiria AttributeError
 
         a = Boom_New()
         b = Boom_New()
@@ -484,7 +484,7 @@ kundi GCTests(unittest.TestCase):
 
         gc.collect()
         garbagelen = len(gc.garbage)
-        del a, b
+        toa a, b
         self.assertEqual(gc.collect(), 4)
         self.assertEqual(len(gc.garbage), garbagelen)
 
@@ -496,8 +496,8 @@ kundi GCTests(unittest.TestCase):
             eleza __getattr__(self, someattribute):
                 self.x += 1
                 ikiwa self.x > 1:
-                    del self.attr
-                raise AttributeError
+                    toa self.attr
+                ashiria AttributeError
 
         a = Boom2_New()
         b = Boom2_New()
@@ -506,7 +506,7 @@ kundi GCTests(unittest.TestCase):
 
         gc.collect()
         garbagelen = len(gc.garbage)
-        del a, b
+        toa a, b
         self.assertEqual(gc.collect(), 4)
         self.assertEqual(len(gc.garbage), garbagelen)
 
@@ -534,81 +534,81 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(gc.get_referents(1, 'a', 4j), [])
 
     eleza test_is_tracked(self):
-        # Atomic built-in types are not tracked, user-defined objects and
+        # Atomic built-in types are sio tracked, user-defined objects and
         # mutable containers are.
         # NOTE: types with special optimizations (e.g. tuple) have tests
-        # in their own test files instead.
-        self.assertFalse(gc.is_tracked(None))
-        self.assertFalse(gc.is_tracked(1))
-        self.assertFalse(gc.is_tracked(1.0))
-        self.assertFalse(gc.is_tracked(1.0 + 5.0j))
-        self.assertFalse(gc.is_tracked(True))
-        self.assertFalse(gc.is_tracked(False))
-        self.assertFalse(gc.is_tracked(b"a"))
-        self.assertFalse(gc.is_tracked("a"))
-        self.assertFalse(gc.is_tracked(bytearray(b"a")))
-        self.assertFalse(gc.is_tracked(type))
-        self.assertFalse(gc.is_tracked(int))
-        self.assertFalse(gc.is_tracked(object))
-        self.assertFalse(gc.is_tracked(object()))
+        # kwenye their own test files instead.
+        self.assertUongo(gc.is_tracked(Tupu))
+        self.assertUongo(gc.is_tracked(1))
+        self.assertUongo(gc.is_tracked(1.0))
+        self.assertUongo(gc.is_tracked(1.0 + 5.0j))
+        self.assertUongo(gc.is_tracked(Kweli))
+        self.assertUongo(gc.is_tracked(Uongo))
+        self.assertUongo(gc.is_tracked(b"a"))
+        self.assertUongo(gc.is_tracked("a"))
+        self.assertUongo(gc.is_tracked(bytearray(b"a")))
+        self.assertUongo(gc.is_tracked(type))
+        self.assertUongo(gc.is_tracked(int))
+        self.assertUongo(gc.is_tracked(object))
+        self.assertUongo(gc.is_tracked(object()))
 
         kundi UserClass:
-            pass
+            pita
 
         kundi UserInt(int):
-            pass
+            pita
 
-        # Base kundi is object; no extra fields.
+        # Base kundi ni object; no extra fields.
         kundi UserClassSlots:
             __slots__ = ()
 
-        # Base kundi is fixed size larger than object; no extra fields.
+        # Base kundi ni fixed size larger than object; no extra fields.
         kundi UserFloatSlots(float):
             __slots__ = ()
 
-        # Base kundi is variable size; no extra fields.
+        # Base kundi ni variable size; no extra fields.
         kundi UserIntSlots(int):
             __slots__ = ()
 
-        self.assertTrue(gc.is_tracked(gc))
-        self.assertTrue(gc.is_tracked(UserClass))
-        self.assertTrue(gc.is_tracked(UserClass()))
-        self.assertTrue(gc.is_tracked(UserInt()))
-        self.assertTrue(gc.is_tracked([]))
-        self.assertTrue(gc.is_tracked(set()))
-        self.assertFalse(gc.is_tracked(UserClassSlots()))
-        self.assertFalse(gc.is_tracked(UserFloatSlots()))
-        self.assertFalse(gc.is_tracked(UserIntSlots()))
+        self.assertKweli(gc.is_tracked(gc))
+        self.assertKweli(gc.is_tracked(UserClass))
+        self.assertKweli(gc.is_tracked(UserClass()))
+        self.assertKweli(gc.is_tracked(UserInt()))
+        self.assertKweli(gc.is_tracked([]))
+        self.assertKweli(gc.is_tracked(set()))
+        self.assertUongo(gc.is_tracked(UserClassSlots()))
+        self.assertUongo(gc.is_tracked(UserFloatSlots()))
+        self.assertUongo(gc.is_tracked(UserIntSlots()))
 
     eleza test_bug1055820b(self):
-        # Corresponds to temp2b.py in the bug report.
+        # Corresponds to temp2b.py kwenye the bug report.
 
         ouch = []
         eleza callback(ignored):
-            ouch[:] = [wr() for wr in WRs]
+            ouch[:] = [wr() kila wr kwenye WRs]
 
-        Cs = [C1055820(i) for i in range(2)]
-        WRs = [weakref.ref(c, callback) for c in Cs]
-        c = None
+        Cs = [C1055820(i) kila i kwenye range(2)]
+        WRs = [weakref.ref(c, callback) kila c kwenye Cs]
+        c = Tupu
 
         gc.collect()
         self.assertEqual(len(ouch), 0)
-        # Make the two instances trash, and collect again.  The bug was that
+        # Make the two instances trash, na collect again.  The bug was that
         # the callback materialized a strong reference to an instance, but gc
         # cleared the instance's dict anyway.
-        Cs = None
+        Cs = Tupu
         gc.collect()
         self.assertEqual(len(ouch), 2)  # else the callbacks didn't run
-        for x in ouch:
+        kila x kwenye ouch:
             # If the callback resurrected one of these guys, the instance
             # would be damaged, with an empty __dict__.
-            self.assertEqual(x, None)
+            self.assertEqual(x, Tupu)
 
     eleza test_bug21435(self):
-        # This is a poor test - its only virtue is that it happened to
-        # segfault on Tim's Windows box before the patch for 21435 was
+        # This ni a poor test - its only virtue ni that it happened to
+        # segfault on Tim's Windows box before the patch kila 21435 was
         # applied.  That's a nasty bug relying on specific pieces of cyclic
-        # trash appearing in exactly the right order in finalize_garbage()'s
+        # trash appearing kwenye exactly the right order kwenye finalize_garbage()'s
         # input list.
         # But there's no reliable way to force that order kutoka Python code,
         # so over time chances are good this test won't really be testing much
@@ -617,14 +617,14 @@ kundi GCTests(unittest.TestCase):
         gc.collect()
 
         kundi A:
-            pass
+            pita
 
         kundi B:
             eleza __init__(self, x):
                 self.x = x
 
             eleza __del__(self):
-                self.attr = None
+                self.attr = Tupu
 
         eleza do_work():
             a = A()
@@ -649,12 +649,12 @@ kundi GCTests(unittest.TestCase):
                 eleza __repr__(self):
                     rudisha "<X %%r>" %% self.name
                 eleza __tp_del__(self):
-                    pass
+                    pita
 
             x = X('first')
             x.x = x
             x.y = X('second')
-            del x
+            toa x
             gc.set_debug(%s)
         """
         eleza run_command(code):
@@ -676,18 +676,18 @@ kundi GCTests(unittest.TestCase):
         stderr = run_command(code % "gc.DEBUG_UNCOLLECTABLE")
         self.assertIn(b"ResourceWarning: gc: 2 uncollectable objects at "
                       b"shutdown", stderr)
-        self.assertTrue(
-            (b"[<X 'first'>, <X 'second'>]" in stderr) or
-            (b"[<X 'second'>, <X 'first'>]" in stderr), stderr)
+        self.assertKweli(
+            (b"[<X 'first'>, <X 'second'>]" kwenye stderr) or
+            (b"[<X 'second'>, <X 'first'>]" kwenye stderr), stderr)
         # With DEBUG_SAVEALL, no additional message should get printed
         # (because gc.garbage also contains normally reclaimable cyclic
-        # references, and its elements get printed at runtime anyway).
+        # references, na its elements get printed at runtime anyway).
         stderr = run_command(code % "gc.DEBUG_SAVEALL")
         self.assertNotIn(b"uncollectable objects at shutdown", stderr)
 
     @requires_type_collecting
     eleza test_gc_main_module_at_shutdown(self):
-        # Create a reference cycle through the __main__ module and check
+        # Create a reference cycle through the __main__ module na check
         # it gets collected at interpreter shutdown.
         code = """ikiwa 1:
             kundi C:
@@ -701,8 +701,8 @@ kundi GCTests(unittest.TestCase):
 
     @requires_type_collecting
     eleza test_gc_ordinary_module_at_shutdown(self):
-        # Same as above, but with a non-__main__ module.
-        with temp_dir() as script_dir:
+        # Same kama above, but with a non-__main__ module.
+        with temp_dir() kama script_dir:
             module = """ikiwa 1:
                 kundi C:
                     eleza __del__(self):
@@ -727,9 +727,9 @@ kundi GCTests(unittest.TestCase):
                     andika('__del__ called')
             a = ClassWithDel()
             a.link = a
-            raise SystemExit(0)"""
+            ashiria SystemExit(0)"""
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, 'w') as script:
+        with open(TESTFN, 'w') kama script:
             script.write(code)
         rc, out, err = assert_python_ok(TESTFN)
         self.assertEqual(out.strip(), b'__del__ called')
@@ -737,7 +737,7 @@ kundi GCTests(unittest.TestCase):
     eleza test_get_stats(self):
         stats = gc.get_stats()
         self.assertEqual(len(stats), 3)
-        for st in stats:
+        kila st kwenye stats:
             self.assertIsInstance(st, dict)
             self.assertEqual(set(st),
                              {"collected", "collections", "uncollectable"})
@@ -770,52 +770,52 @@ kundi GCTests(unittest.TestCase):
         gc.collect()
         l = []
         l.append(l)
-        self.assertTrue(
-                any(l is element for element in gc.get_objects(generation=0))
+        self.assertKweli(
+                any(l ni element kila element kwenye gc.get_objects(generation=0))
         )
-        self.assertFalse(
-                any(l is element for element in  gc.get_objects(generation=1))
+        self.assertUongo(
+                any(l ni element kila element kwenye  gc.get_objects(generation=1))
         )
-        self.assertFalse(
-                any(l is element for element in gc.get_objects(generation=2))
+        self.assertUongo(
+                any(l ni element kila element kwenye gc.get_objects(generation=2))
         )
         gc.collect(generation=0)
-        self.assertFalse(
-                any(l is element for element in gc.get_objects(generation=0))
+        self.assertUongo(
+                any(l ni element kila element kwenye gc.get_objects(generation=0))
         )
-        self.assertTrue(
-                any(l is element for element in  gc.get_objects(generation=1))
+        self.assertKweli(
+                any(l ni element kila element kwenye  gc.get_objects(generation=1))
         )
-        self.assertFalse(
-                any(l is element for element in gc.get_objects(generation=2))
+        self.assertUongo(
+                any(l ni element kila element kwenye gc.get_objects(generation=2))
         )
         gc.collect(generation=1)
-        self.assertFalse(
-                any(l is element for element in gc.get_objects(generation=0))
+        self.assertUongo(
+                any(l ni element kila element kwenye gc.get_objects(generation=0))
         )
-        self.assertFalse(
-                any(l is element for element in  gc.get_objects(generation=1))
+        self.assertUongo(
+                any(l ni element kila element kwenye  gc.get_objects(generation=1))
         )
-        self.assertTrue(
-                any(l is element for element in gc.get_objects(generation=2))
+        self.assertKweli(
+                any(l ni element kila element kwenye gc.get_objects(generation=2))
         )
         gc.collect(generation=2)
-        self.assertFalse(
-                any(l is element for element in gc.get_objects(generation=0))
+        self.assertUongo(
+                any(l ni element kila element kwenye gc.get_objects(generation=0))
         )
-        self.assertFalse(
-                any(l is element for element in  gc.get_objects(generation=1))
+        self.assertUongo(
+                any(l ni element kila element kwenye  gc.get_objects(generation=1))
         )
-        self.assertTrue(
-                any(l is element for element in gc.get_objects(generation=2))
+        self.assertKweli(
+                any(l ni element kila element kwenye gc.get_objects(generation=2))
         )
-        del l
+        toa l
         gc.collect()
 
     eleza test_get_objects_arguments(self):
         gc.collect()
         self.assertEqual(len(gc.get_objects()),
-                         len(gc.get_objects(generation=None)))
+                         len(gc.get_objects(generation=Tupu)))
 
         self.assertRaises(ValueError, gc.get_objects, 1000)
         self.assertRaises(ValueError, gc.get_objects, -1000)
@@ -824,8 +824,8 @@ kundi GCTests(unittest.TestCase):
 
     eleza test_38379(self):
         # When a finalizer resurrects objects, stats were reporting them as
-        # having been collected.  This affected both collect()'s return
-        # value and the dicts returned by get_stats().
+        # having been collected.  This affected both collect()'s rudisha
+        # value na the dicts rudishaed by get_stats().
         N = 100
 
         kundi A:  # simple self-loop
@@ -847,7 +847,7 @@ kundi GCTests(unittest.TestCase):
 
         # No problems ikiwa just collecting A() instances.
         oldc, oldnc = getstats()
-        for i in range(N):
+        kila i kwenye range(N):
             A()
         t = gc.collect()
         c, nc = getstats()
@@ -855,10 +855,10 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(c - oldc, 2*N)
         self.assertEqual(nc - oldnc, 0)
 
-        # But Z() is not actually collected.
+        # But Z() ni sio actually collected.
         oldc, oldnc = c, nc
         Z()
-        # Nothing is collected - Z() is merely resurrected.
+        # Nothing ni collected - Z() ni merely resurrected.
         t = gc.collect()
         c, nc = getstats()
         #self.assertEqual(t, 2)  # before
@@ -871,7 +871,7 @@ kundi GCTests(unittest.TestCase):
         # It should be possible to collect the A instances anyway, but
         # that will require non-trivial code changes.
         oldc, oldnc = c, nc
-        for i in range(N):
+        kila i kwenye range(N):
             A()
         Z()
         # Z() prevents anything kutoka being collected.
@@ -883,7 +883,7 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(c - oldc, 0)   # after
         self.assertEqual(nc - oldnc, 0)
 
-        # But the A() trash is reclaimed on the next run.
+        # But the A() trash ni reclaimed on the next run.
         oldc, oldnc = c, nc
         t = gc.collect()
         c, nc = getstats()
@@ -895,7 +895,7 @@ kundi GCTests(unittest.TestCase):
 
 kundi GCCallbackTests(unittest.TestCase):
     eleza setUp(self):
-        # Save gc state and disable it.
+        # Save gc state na disable it.
         self.enabled = gc.isenabled()
         gc.disable()
         self.debug = gc.get_debug()
@@ -906,7 +906,7 @@ kundi GCCallbackTests(unittest.TestCase):
 
     eleza tearDown(self):
         # Restore gc state
-        del self.visit
+        toa self.visit
         gc.callbacks.remove(self.cb1)
         gc.callbacks.remove(self.cb2)
         gc.set_debug(self.debug)
@@ -914,16 +914,16 @@ kundi GCCallbackTests(unittest.TestCase):
             gc.enable()
         # destroy any uncollectables
         gc.collect()
-        for obj in gc.garbage:
+        kila obj kwenye gc.garbage:
             ikiwa isinstance(obj, Uncollectable):
-                obj.partner = None
-        del gc.garbage[:]
-        del self.othergarbage
+                obj.partner = Tupu
+        toa gc.garbage[:]
+        toa self.othergarbage
         gc.collect()
 
     eleza preclean(self):
         # Remove all fluff kutoka the system.  Invoke this function
-        # manually rather than through self.setUp() for maximum
+        # manually rather than through self.setUp() kila maximum
         # safety.
         self.visit = []
         gc.collect()
@@ -936,45 +936,45 @@ kundi GCCallbackTests(unittest.TestCase):
 
     eleza cb2(self, phase, info):
         self.visit.append((2, phase, dict(info)))
-        ikiwa phase == "stop" and hasattr(self, "cleanup"):
+        ikiwa phase == "stop" na hasattr(self, "cleanup"):
             # Clean Uncollectable kutoka garbage
-            uc = [e for e in gc.garbage ikiwa isinstance(e, Uncollectable)]
-            gc.garbage[:] = [e for e in gc.garbage
-                             ikiwa not isinstance(e, Uncollectable)]
-            for e in uc:
-                e.partner = None
+            uc = [e kila e kwenye gc.garbage ikiwa isinstance(e, Uncollectable)]
+            gc.garbage[:] = [e kila e kwenye gc.garbage
+                             ikiwa sio isinstance(e, Uncollectable)]
+            kila e kwenye uc:
+                e.partner = Tupu
 
     eleza test_collect(self):
         self.preclean()
         gc.collect()
         # Algorithmically verify the contents of self.visit
-        # because it is long and tortuous.
+        # because it ni long na tortuous.
 
         # Count the number of visits to each callback
-        n = [v[0] for v in self.visit]
-        n1 = [i for i in n ikiwa i == 1]
-        n2 = [i for i in n ikiwa i == 2]
+        n = [v[0] kila v kwenye self.visit]
+        n1 = [i kila i kwenye n ikiwa i == 1]
+        n2 = [i kila i kwenye n ikiwa i == 2]
         self.assertEqual(n1, [1]*2)
         self.assertEqual(n2, [2]*2)
 
-        # Count that we got the right number of start and stop callbacks.
-        n = [v[1] for v in self.visit]
-        n1 = [i for i in n ikiwa i == "start"]
-        n2 = [i for i in n ikiwa i == "stop"]
+        # Count that we got the right number of start na stop callbacks.
+        n = [v[1] kila v kwenye self.visit]
+        n1 = [i kila i kwenye n ikiwa i == "start"]
+        n2 = [i kila i kwenye n ikiwa i == "stop"]
         self.assertEqual(n1, ["start"]*2)
         self.assertEqual(n2, ["stop"]*2)
 
-        # Check that we got the right info dict for all callbacks
-        for v in self.visit:
+        # Check that we got the right info dict kila all callbacks
+        kila v kwenye self.visit:
             info = v[2]
-            self.assertTrue("generation" in info)
-            self.assertTrue("collected" in info)
-            self.assertTrue("uncollectable" in info)
+            self.assertKweli("generation" kwenye info)
+            self.assertKweli("collected" kwenye info)
+            self.assertKweli("uncollectable" kwenye info)
 
     eleza test_collect_generation(self):
         self.preclean()
         gc.collect(2)
-        for v in self.visit:
+        kila v kwenye self.visit:
             info = v[2]
             self.assertEqual(info["generation"], 2)
 
@@ -982,31 +982,31 @@ kundi GCCallbackTests(unittest.TestCase):
     eleza test_collect_garbage(self):
         self.preclean()
         # Each of these cause four objects to be garbage: Two
-        # Uncollectables and their instance dicts.
+        # Uncollectables na their instance dicts.
         Uncollectable()
         Uncollectable()
         C1055820(666)
         gc.collect()
-        for v in self.visit:
+        kila v kwenye self.visit:
             ikiwa v[1] != "stop":
-                continue
+                endelea
             info = v[2]
             self.assertEqual(info["collected"], 2)
             self.assertEqual(info["uncollectable"], 8)
 
-        # We should now have the Uncollectables in gc.garbage
+        # We should now have the Uncollectables kwenye gc.garbage
         self.assertEqual(len(gc.garbage), 4)
-        for e in gc.garbage:
+        kila e kwenye gc.garbage:
             self.assertIsInstance(e, Uncollectable)
 
         # Now, let our callback handle the Uncollectable instances
-        self.cleanup=True
+        self.cleanup=Kweli
         self.visit = []
         gc.garbage[:] = []
         gc.collect()
-        for v in self.visit:
+        kila v kwenye self.visit:
             ikiwa v[1] != "stop":
-                continue
+                endelea
             info = v[2]
             self.assertEqual(info["collected"], 0)
             self.assertEqual(info["uncollectable"], 4)
@@ -1021,7 +1021,7 @@ kundi GCCallbackTests(unittest.TestCase):
         self.preclean()
         # Verify the "handling" of objects with broken refcounts
 
-        # Skip the test ikiwa ctypes is not available
+        # Skip the test ikiwa ctypes ni sio available
         import_module("ctypes")
 
         agiza subprocess
@@ -1054,7 +1054,7 @@ kundi GCCallbackTests(unittest.TestCase):
         self.assertRegex(stderr,
             br'gcmodule\.c:[0-9]+: gc_decref: Assertion "gc_get_refs\(g\) > 0" failed.')
         self.assertRegex(stderr,
-            br'refcount is too small')
+            br'refcount ni too small')
         self.assertRegex(stderr,
             br'object  : \[1, 2, 3\]')
         self.assertRegex(stderr,
@@ -1075,7 +1075,7 @@ kundi GCTogglingTests(unittest.TestCase):
         gc.disable()
 
     eleza test_bug1055820c(self):
-        # Corresponds to temp2c.py in the bug report.  This is pretty
+        # Corresponds to temp2c.py kwenye the bug report.  This ni pretty
         # elaborate.
 
         c0 = C1055820(0)
@@ -1084,7 +1084,7 @@ kundi GCTogglingTests(unittest.TestCase):
 
         c1 = C1055820(1)
         c1.keep_c0_alive = c0
-        del c0.loop # now only c1 keeps c0 alive
+        toa c0.loop # now only c1 keeps c0 alive
 
         c2 = C1055820(2)
         c2wr = weakref.ref(c2) # no callback!
@@ -1093,17 +1093,17 @@ kundi GCTogglingTests(unittest.TestCase):
         eleza callback(ignored):
             ouch[:] = [c2wr()]
 
-        # The callback gets associated with a wr on an object in generation 2.
+        # The callback gets associated with a wr on an object kwenye generation 2.
         c0wr = weakref.ref(c0, callback)
 
-        c0 = c1 = c2 = None
+        c0 = c1 = c2 = Tupu
 
-        # What we've set up:  c0, c1, and c2 are all trash now.  c0 is in
-        # generation 2.  The only thing keeping it alive is that c1 points to
-        # it. c1 and c2 are in generation 0, and are in self-loops.  There's a
+        # What we've set up:  c0, c1, na c2 are all trash now.  c0 ni in
+        # generation 2.  The only thing keeping it alive ni that c1 points to
+        # it. c1 na c2 are kwenye generation 0, na are kwenye self-loops.  There's a
         # global weakref to c2 (c2wr), but that weakref has no callback.
-        # There's also a global weakref to c0 (c0wr), and that does have a
-        # callback, and that callback references c2 via c2wr().
+        # There's also a global weakref to c0 (c0wr), na that does have a
+        # callback, na that callback references c2 via c2wr().
         #
         #               c0 has a wr with callback, which references c2wr
         #               ^
@@ -1117,13 +1117,13 @@ kundi GCTogglingTests(unittest.TestCase):
         #            |  |    |  |
         #            <--v    <--v
         #
-        # So this is the nightmare:  when generation 0 gets collected, we see
-        # that c2 has a callback-free weakref, and c1 doesn't even have a
-        # weakref.  Collecting generation 0 doesn't see c0 at all, and c0 is
+        # So this ni the nightmare:  when generation 0 gets collected, we see
+        # that c2 has a callback-free weakref, na c1 doesn't even have a
+        # weakref.  Collecting generation 0 doesn't see c0 at all, na c0 is
         # the only object that has a weakref with a callback.  gc clears c1
-        # and c2.  Clearing c1 has the side effect of dropping the refcount on
-        # c0 to 0, so c0 goes away (despite that it's in an older generation)
-        # and c0's wr callback triggers.  That in turn materializes a reference
+        # na c2.  Clearing c1 has the side effect of dropping the refcount on
+        # c0 to 0, so c0 goes away (despite that it's kwenye an older generation)
+        # na c0's wr callback triggers.  That kwenye turn materializes a reference
         # to c2 via c2wr(), but c2 gets cleared anyway by gc.
 
         # We want to let gc happen "naturally", to preserve the distinction
@@ -1131,7 +1131,7 @@ kundi GCTogglingTests(unittest.TestCase):
         junk = []
         i = 0
         detector = GC_Detector()
-        while not detector.gc_happened:
+        wakati sio detector.gc_happened:
             i += 1
             ikiwa i > 10000:
                 self.fail("gc didn't happen after 10000 iterations")
@@ -1139,15 +1139,15 @@ kundi GCTogglingTests(unittest.TestCase):
             junk.append([])  # this will eventually trigger gc
 
         self.assertEqual(len(ouch), 1)  # else the callback wasn't invoked
-        for x in ouch:
+        kila x kwenye ouch:
             # If the callback resurrected c2, the instance would be damaged,
             # with an empty __dict__.
-            self.assertEqual(x, None)
+            self.assertEqual(x, Tupu)
 
     eleza test_bug1055820d(self):
-        # Corresponds to temp2d.py in the bug report.  This is very much like
+        # Corresponds to temp2d.py kwenye the bug report.  This ni very much like
         # test_bug1055820c, but uses a __del__ method instead of a weakref
-        # callback to sneak in a resurrection of cyclic trash.
+        # callback to sneak kwenye a resurrection of cyclic trash.
 
         ouch = []
         kundi D(C1055820):
@@ -1160,16 +1160,16 @@ kundi GCTogglingTests(unittest.TestCase):
 
         c1 = C1055820(1)
         c1.keep_d0_alive = d0
-        del d0.loop # now only c1 keeps d0 alive
+        toa d0.loop # now only c1 keeps d0 alive
 
         c2 = C1055820(2)
         c2wr = weakref.ref(c2) # no callback!
 
-        d0 = c1 = c2 = None
+        d0 = c1 = c2 = Tupu
 
-        # What we've set up:  d0, c1, and c2 are all trash now.  d0 is in
-        # generation 2.  The only thing keeping it alive is that c1 points to
-        # it.  c1 and c2 are in generation 0, and are in self-loops.  There's
+        # What we've set up:  d0, c1, na c2 are all trash now.  d0 ni in
+        # generation 2.  The only thing keeping it alive ni that c1 points to
+        # it.  c1 na c2 are kwenye generation 0, na are kwenye self-loops.  There's
         # a global weakref to c2 (c2wr), but that weakref has no callback.
         # There are no other weakrefs.
         #
@@ -1185,12 +1185,12 @@ kundi GCTogglingTests(unittest.TestCase):
         #            |  |    |  |
         #            <--v    <--v
         #
-        # So this is the nightmare:  when generation 0 gets collected, we see
-        # that c2 has a callback-free weakref, and c1 doesn't even have a
+        # So this ni the nightmare:  when generation 0 gets collected, we see
+        # that c2 has a callback-free weakref, na c1 doesn't even have a
         # weakref.  Collecting generation 0 doesn't see d0 at all.  gc clears
-        # c1 and c2.  Clearing c1 has the side effect of dropping the refcount
-        # on d0 to 0, so d0 goes away (despite that it's in an older
-        # generation) and d0's __del__ triggers.  That in turn materializes
+        # c1 na c2.  Clearing c1 has the side effect of dropping the refcount
+        # on d0 to 0, so d0 goes away (despite that it's kwenye an older
+        # generation) na d0's __del__ triggers.  That kwenye turn materializes
         # a reference to c2 via c2wr(), but c2 gets cleared anyway by gc.
 
         # We want to let gc happen "naturally", to preserve the distinction
@@ -1198,7 +1198,7 @@ kundi GCTogglingTests(unittest.TestCase):
         detector = GC_Detector()
         junk = []
         i = 0
-        while not detector.gc_happened:
+        wakati sio detector.gc_happened:
             i += 1
             ikiwa i > 10000:
                 self.fail("gc didn't happen after 10000 iterations")
@@ -1206,30 +1206,30 @@ kundi GCTogglingTests(unittest.TestCase):
             junk.append([])  # this will eventually trigger gc
 
         self.assertEqual(len(ouch), 1)  # else __del__ wasn't invoked
-        for x in ouch:
+        kila x kwenye ouch:
             # If __del__ resurrected c2, the instance would be damaged, with an
             # empty __dict__.
-            self.assertEqual(x, None)
+            self.assertEqual(x, Tupu)
 
 eleza test_main():
     enabled = gc.isenabled()
     gc.disable()
-    assert not gc.isenabled()
+    assert sio gc.isenabled()
     debug = gc.get_debug()
-    gc.set_debug(debug & ~gc.DEBUG_LEAK) # this test is supposed to leak
+    gc.set_debug(debug & ~gc.DEBUG_LEAK) # this test ni supposed to leak
 
-    try:
+    jaribu:
         gc.collect() # Delete 2nd generation garbage
         run_unittest(GCTests, GCTogglingTests, GCCallbackTests)
-    finally:
+    mwishowe:
         gc.set_debug(debug)
-        # test gc.enable() even ikiwa GC is disabled by default
+        # test gc.enable() even ikiwa GC ni disabled by default
         ikiwa verbose:
             andika("restoring automatic collection")
         # make sure to always test gc.enable()
         gc.enable()
         assert gc.isenabled()
-        ikiwa not enabled:
+        ikiwa sio enabled:
             gc.disable()
 
 ikiwa __name__ == "__main__":

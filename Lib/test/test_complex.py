@@ -18,18 +18,18 @@ kundi ComplexTest(unittest.TestCase):
             ikiwa isinstance(b, complex):
                 unittest.TestCase.assertAlmostEqual(self, a.real, b.real)
                 unittest.TestCase.assertAlmostEqual(self, a.imag, b.imag)
-            else:
+            isipokua:
                 unittest.TestCase.assertAlmostEqual(self, a.real, b)
                 unittest.TestCase.assertAlmostEqual(self, a.imag, 0.)
-        else:
+        isipokua:
             ikiwa isinstance(b, complex):
                 unittest.TestCase.assertAlmostEqual(self, a, b.real)
                 unittest.TestCase.assertAlmostEqual(self, 0., b.imag)
-            else:
+            isipokua:
                 unittest.TestCase.assertAlmostEqual(self, a, b)
 
     eleza assertCloseAbs(self, x, y, eps=1e-9):
-        """Return true iff floats x and y "are close"."""
+        """Return true iff floats x na y "are close"."""
         # put the one with larger magnitude second
         ikiwa abs(x) > abs(y):
             x, y = y, x
@@ -38,38 +38,38 @@ kundi ComplexTest(unittest.TestCase):
         ikiwa x == 0:
             rudisha abs(y) < eps
         # check that relative difference < eps
-        self.assertTrue(abs((x-y)/y) < eps)
+        self.assertKweli(abs((x-y)/y) < eps)
 
     eleza assertFloatsAreIdentical(self, x, y):
-        """assert that floats x and y are identical, in the sense that:
-        (1) both x and y are nans, or
-        (2) both x and y are infinities, with the same sign, or
-        (3) both x and y are zeros, with the same sign, or
-        (4) x and y are both finite and nonzero, and x == y
+        """assert that floats x na y are identical, kwenye the sense that:
+        (1) both x na y are nans, or
+        (2) both x na y are infinities, with the same sign, or
+        (3) both x na y are zeros, with the same sign, or
+        (4) x na y are both finite na nonzero, na x == y
 
         """
-        msg = 'floats {!r} and {!r} are not identical'
+        msg = 'floats {!r} na {!r} are sio identical'
 
-        ikiwa isnan(x) or isnan(y):
-            ikiwa isnan(x) and isnan(y):
-                return
+        ikiwa isnan(x) ama isnan(y):
+            ikiwa isnan(x) na isnan(y):
+                rudisha
         elikiwa x == y:
             ikiwa x != 0.0:
-                return
+                rudisha
             # both zero; check that signs match
             elikiwa copysign(1.0, x) == copysign(1.0, y):
-                return
-            else:
+                rudisha
+            isipokua:
                 msg += ': zeros have different signs'
         self.fail(msg.format(x, y))
 
     eleza assertClose(self, x, y, eps=1e-9):
-        """Return true iff complexes x and y "are close"."""
+        """Return true iff complexes x na y "are close"."""
         self.assertCloseAbs(x.real, y.real, eps)
         self.assertCloseAbs(x.imag, y.imag, eps)
 
     eleza check_div(self, x, y):
-        """Compute complex z=x*y, and check that z/x==y and z/y==x."""
+        """Compute complex z=x*y, na check that z/x==y na z/y==x."""
         z = x * y
         ikiwa x != 0:
             q = z / x
@@ -83,19 +83,19 @@ kundi ComplexTest(unittest.TestCase):
             self.assertClose(q, x)
 
     eleza test_truediv(self):
-        simple_real = [float(i) for i in range(-5, 6)]
-        simple_complex = [complex(x, y) for x in simple_real for y in simple_real]
-        for x in simple_complex:
-            for y in simple_complex:
+        simple_real = [float(i) kila i kwenye range(-5, 6)]
+        simple_complex = [complex(x, y) kila x kwenye simple_real kila y kwenye simple_real]
+        kila x kwenye simple_complex:
+            kila y kwenye simple_complex:
                 self.check_div(x, y)
 
-        # A naive complex division algorithm (such as in 2.0) is very prone to
-        # nonsense errors for these (overflows and underflows).
+        # A naive complex division algorithm (such kama kwenye 2.0) ni very prone to
+        # nonsense errors kila these (overflows na underflows).
         self.check_div(complex(1e200, 1e200), 1+0j)
         self.check_div(complex(1e-200, 1e-200), 1+0j)
 
-        # Just for fun.
-        for i in range(100):
+        # Just kila fun.
+        kila i kwenye range(100):
             self.check_div(complex(random(), random()),
                            complex(random(), random()))
 
@@ -105,28 +105,28 @@ kundi ComplexTest(unittest.TestCase):
         self.assertAlmostEqual(complex.__truediv__(2+0j, 1+1j), 1-1j)
         self.assertRaises(ZeroDivisionError, complex.__truediv__, 1+1j, 0+0j)
 
-        for denom_real, denom_imag in [(0, NAN), (NAN, 0), (NAN, NAN)]:
+        kila denom_real, denom_imag kwenye [(0, NAN), (NAN, 0), (NAN, NAN)]:
             z = complex(0, 0) / complex(denom_real, denom_imag)
-            self.assertTrue(isnan(z.real))
-            self.assertTrue(isnan(z.imag))
+            self.assertKweli(isnan(z.real))
+            self.assertKweli(isnan(z.imag))
 
     eleza test_floordiv(self):
         self.assertRaises(TypeError, complex.__floordiv__, 3+0j, 1.5+0j)
         self.assertRaises(TypeError, complex.__floordiv__, 3+0j, 0+0j)
 
     eleza test_richcompare(self):
-        self.assertIs(complex.__eq__(1+1j, 1<<10000), False)
-        self.assertIs(complex.__lt__(1+1j, None), NotImplemented)
-        self.assertIs(complex.__eq__(1+1j, 1+1j), True)
-        self.assertIs(complex.__eq__(1+1j, 2+2j), False)
-        self.assertIs(complex.__ne__(1+1j, 1+1j), False)
-        self.assertIs(complex.__ne__(1+1j, 2+2j), True)
-        for i in range(1, 100):
+        self.assertIs(complex.__eq__(1+1j, 1<<10000), Uongo)
+        self.assertIs(complex.__lt__(1+1j, Tupu), NotImplemented)
+        self.assertIs(complex.__eq__(1+1j, 1+1j), Kweli)
+        self.assertIs(complex.__eq__(1+1j, 2+2j), Uongo)
+        self.assertIs(complex.__ne__(1+1j, 1+1j), Uongo)
+        self.assertIs(complex.__ne__(1+1j, 2+2j), Kweli)
+        kila i kwenye range(1, 100):
             f = i / 100.0
-            self.assertIs(complex.__eq__(f+0j, f), True)
-            self.assertIs(complex.__ne__(f+0j, f), False)
-            self.assertIs(complex.__eq__(complex(f, f), f), False)
-            self.assertIs(complex.__ne__(complex(f, f), f), True)
+            self.assertIs(complex.__eq__(f+0j, f), Kweli)
+            self.assertIs(complex.__ne__(f+0j, f), Uongo)
+            self.assertIs(complex.__eq__(complex(f, f), f), Uongo)
+            self.assertIs(complex.__ne__(complex(f, f), f), Kweli)
         self.assertIs(complex.__lt__(1+1j, 2+2j), NotImplemented)
         self.assertIs(complex.__le__(1+1j, 2+2j), NotImplemented)
         self.assertIs(complex.__gt__(1+1j, 2+2j), NotImplemented)
@@ -135,30 +135,30 @@ kundi ComplexTest(unittest.TestCase):
         self.assertRaises(TypeError, operator.le, 1+1j, 2+2j)
         self.assertRaises(TypeError, operator.gt, 1+1j, 2+2j)
         self.assertRaises(TypeError, operator.ge, 1+1j, 2+2j)
-        self.assertIs(operator.eq(1+1j, 1+1j), True)
-        self.assertIs(operator.eq(1+1j, 2+2j), False)
-        self.assertIs(operator.ne(1+1j, 1+1j), False)
-        self.assertIs(operator.ne(1+1j, 2+2j), True)
+        self.assertIs(operator.eq(1+1j, 1+1j), Kweli)
+        self.assertIs(operator.eq(1+1j, 2+2j), Uongo)
+        self.assertIs(operator.ne(1+1j, 1+1j), Uongo)
+        self.assertIs(operator.ne(1+1j, 2+2j), Kweli)
 
     eleza test_richcompare_boundaries(self):
         eleza check(n, deltas, is_equal, imag = 0.0):
-            for delta in deltas:
+            kila delta kwenye deltas:
                 i = n + delta
                 z = complex(i, imag)
                 self.assertIs(complex.__eq__(z, i), is_equal(delta))
-                self.assertIs(complex.__ne__(z, i), not is_equal(delta))
+                self.assertIs(complex.__ne__(z, i), sio is_equal(delta))
         # For IEEE-754 doubles the following should hold:
-        #    x in [2 ** (52 + i), 2 ** (53 + i + 1)] -> x mod 2 ** i == 0
-        # where the interval is representable, of course.
-        for i in range(1, 10):
+        #    x kwenye [2 ** (52 + i), 2 ** (53 + i + 1)] -> x mod 2 ** i == 0
+        # where the interval ni representable, of course.
+        kila i kwenye range(1, 10):
             pow = 52 + i
             mult = 2 ** i
             check(2 ** pow, range(1, 101), lambda delta: delta % mult == 0)
-            check(2 ** pow, range(1, 101), lambda delta: False, float(i))
-        check(2 ** 53, range(-100, 0), lambda delta: True)
+            check(2 ** pow, range(1, 101), lambda delta: Uongo, float(i))
+        check(2 ** 53, range(-100, 0), lambda delta: Kweli)
 
     eleza test_mod(self):
-        # % is no longer supported on complex numbers
+        # % ni no longer supported on complex numbers
         self.assertRaises(TypeError, (1+1j).__mod__, 0+0j)
         self.assertRaises(TypeError, lambda: (3.33+4.43j) % 0)
         self.assertRaises(TypeError, (1+1j).__mod__, 4.3j)
@@ -182,21 +182,21 @@ kundi ComplexTest(unittest.TestCase):
         self.assertEqual(3j ** 0j, 1)
         self.assertEqual(3j ** 0, 1)
 
-        try:
+        jaribu:
             0j ** a
-        except ZeroDivisionError:
-            pass
-        else:
-            self.fail("should fail 0.0 to negative or complex power")
+        tatizo ZeroDivisionError:
+            pita
+        isipokua:
+            self.fail("should fail 0.0 to negative ama complex power")
 
-        try:
+        jaribu:
             0j ** (3-2j)
-        except ZeroDivisionError:
-            pass
-        else:
-            self.fail("should fail 0.0 to negative or complex power")
+        tatizo ZeroDivisionError:
+            pita
+        isipokua:
+            self.fail("should fail 0.0 to negative ama complex power")
 
-        # The following is used to exercise certain code paths
+        # The following ni used to exercise certain code paths
         self.assertEqual(a ** 105, a ** 105)
         self.assertEqual(a ** -105, a ** -105)
         self.assertEqual(a ** -30, a ** -30)
@@ -207,9 +207,9 @@ kundi ComplexTest(unittest.TestCase):
         self.assertRaises(ValueError, pow, a, b, 0)
 
     eleza test_boolcontext(self):
-        for i in range(100):
-            self.assertTrue(complex(random() + 1e-6, random() + 1e-6))
-        self.assertTrue(not complex(0.0, 0.0))
+        kila i kwenye range(100):
+            self.assertKweli(complex(random() + 1e-6, random() + 1e-6))
+        self.assertKweli(not complex(0.0, 0.0))
 
     eleza test_conjugate(self):
         self.assertClose(complex(5.3, 9.8).conjugate(), 5.3-9.8j)
@@ -223,8 +223,8 @@ kundi ComplexTest(unittest.TestCase):
             eleza __complex__(self): rudisha self.value
         self.assertEqual(complex(OS(1+10j)), 1+10j)
         self.assertEqual(complex(NS(1+10j)), 1+10j)
-        self.assertRaises(TypeError, complex, OS(None))
-        self.assertRaises(TypeError, complex, NS(None))
+        self.assertRaises(TypeError, complex, OS(Tupu))
+        self.assertRaises(TypeError, complex, NS(Tupu))
         self.assertRaises(TypeError, complex, {})
         self.assertRaises(TypeError, complex, NS(1.5))
         self.assertRaises(TypeError, complex, NS(1))
@@ -274,18 +274,18 @@ kundi ComplexTest(unittest.TestCase):
         self.assertAlmostEqual(complex('-1e-500j'), 0.0 - 0.0j)
         self.assertAlmostEqual(complex('-1e-500+1e-500j'), -0.0 + 0.0j)
 
-        kundi complex2(complex): pass
+        kundi complex2(complex): pita
         self.assertAlmostEqual(complex(complex2(1+1j)), 1+1j)
         self.assertAlmostEqual(complex(real=17, imag=23), 17+23j)
         self.assertAlmostEqual(complex(real=17+23j), 17+23j)
         self.assertAlmostEqual(complex(real=17+23j, imag=23), 17+46j)
         self.assertAlmostEqual(complex(real=1+2j, imag=3+4j), -3+5j)
 
-        # check that the sign of a zero in the real or imaginary part
-        # is preserved when constructing kutoka two floats.  (These checks
-        # are harmless on systems without support for signed zeros.)
+        # check that the sign of a zero kwenye the real ama imaginary part
+        # ni preserved when constructing kutoka two floats.  (These checks
+        # are harmless on systems without support kila signed zeros.)
         eleza split_zeros(x):
-            """Function that produces different results for 0. and -0."""
+            """Function that produces different results kila 0. na -0."""
             rudisha atan2(x, -1.)
 
         self.assertEqual(split_zeros(complex(1., 0.).imag), split_zeros(0.))
@@ -294,22 +294,22 @@ kundi ComplexTest(unittest.TestCase):
         self.assertEqual(split_zeros(complex(-0., 1.).real), split_zeros(-0.))
 
         c = 3.14 + 1j
-        self.assertTrue(complex(c) is c)
-        del c
+        self.assertKweli(complex(c) ni c)
+        toa c
 
         self.assertRaises(TypeError, complex, "1", "1")
         self.assertRaises(TypeError, complex, 1, "1")
 
         # SF bug 543840:  complex(string) accepts strings with \0
-        # Fixed in 2.3.
+        # Fixed kwenye 2.3.
         self.assertRaises(ValueError, complex, '1+1j\0j')
 
         self.assertRaises(TypeError, int, 5+3j)
         self.assertRaises(TypeError, int, 5+3j)
         self.assertRaises(TypeError, float, 5+3j)
         self.assertRaises(ValueError, complex, "")
-        self.assertRaises(TypeError, complex, None)
-        self.assertRaisesRegex(TypeError, "not 'NoneType'", complex, None)
+        self.assertRaises(TypeError, complex, Tupu)
+        self.assertRaisesRegex(TypeError, "not 'TupuType'", complex, Tupu)
         self.assertRaises(ValueError, complex, "\0")
         self.assertRaises(ValueError, complex, "3\09")
         self.assertRaises(TypeError, complex, "1", "2")
@@ -329,11 +329,11 @@ kundi ComplexTest(unittest.TestCase):
         self.assertRaises(ValueError, complex, ")1+2j(")
         self.assertRaisesRegex(
             TypeError,
-            "first argument must be a string or a number, not 'dict'",
+            "first argument must be a string ama a number, sio 'dict'",
             complex, {1:2}, 1)
         self.assertRaisesRegex(
             TypeError,
-            "second argument must be a number, not 'dict'",
+            "second argument must be a number, sio 'dict'",
             complex, 1, {1:2})
         # the following three are accepted by Python 2.6
         self.assertRaises(ValueError, complex, "1..1j")
@@ -349,11 +349,11 @@ kundi ComplexTest(unittest.TestCase):
         self.assertRaises(ValueError, complex, '\u3053\u3093\u306b\u3061\u306f')
 
         kundi EvilExc(Exception):
-            pass
+            pita
 
         kundi evilcomplex:
             eleza __complex__(self):
-                raise EvilExc
+                ashiria EvilExc
 
         self.assertRaises(EvilExc, complex, evilcomplex())
 
@@ -365,7 +365,7 @@ kundi ComplexTest(unittest.TestCase):
 
         self.assertAlmostEqual(complex(float2(42.)), 42)
         self.assertAlmostEqual(complex(real=float2(17.), imag=float2(23.)), 17+23j)
-        self.assertRaises(TypeError, complex, float2(None))
+        self.assertRaises(TypeError, complex, float2(Tupu))
 
         kundi MyIndex:
             eleza __init__(self, value):
@@ -399,9 +399,9 @@ kundi ComplexTest(unittest.TestCase):
 
         kundi complex2(complex):
             """Make sure that __complex__() calls fail ikiwa anything other than a
-            complex is returned"""
+            complex ni rudishaed"""
             eleza __complex__(self):
-                rudisha None
+                rudisha Tupu
 
         self.assertEqual(complex(complex0(1j)), 42j)
         with self.assertWarns(DeprecationWarning):
@@ -411,9 +411,9 @@ kundi ComplexTest(unittest.TestCase):
     @support.requires_IEEE_754
     eleza test_constructor_special_numbers(self):
         kundi complex2(complex):
-            pass
-        for x in 0.0, -0.0, INF, -INF, NAN:
-            for y in 0.0, -0.0, INF, -INF, NAN:
+            pita
+        kila x kwenye 0.0, -0.0, INF, -INF, NAN:
+            kila y kwenye 0.0, -0.0, INF, -INF, NAN:
                 with self.subTest(x=x, y=y):
                     z = complex(x, y)
                     self.assertFloatsAreIdentical(z.real, x)
@@ -433,25 +433,25 @@ kundi ComplexTest(unittest.TestCase):
 
     eleza test_underscores(self):
         # check underscores
-        for lit in VALID_UNDERSCORE_LITERALS:
-            ikiwa not any(ch in lit for ch in 'xXoObB'):
+        kila lit kwenye VALID_UNDERSCORE_LITERALS:
+            ikiwa sio any(ch kwenye lit kila ch kwenye 'xXoObB'):
                 self.assertEqual(complex(lit), eval(lit))
                 self.assertEqual(complex(lit), complex(lit.replace('_', '')))
-        for lit in INVALID_UNDERSCORE_LITERALS:
-            ikiwa lit in ('0_7', '09_99'):  # octals are not recognized here
-                continue
-            ikiwa not any(ch in lit for ch in 'xXoObB'):
+        kila lit kwenye INVALID_UNDERSCORE_LITERALS:
+            ikiwa lit kwenye ('0_7', '09_99'):  # octals are sio recognized here
+                endelea
+            ikiwa sio any(ch kwenye lit kila ch kwenye 'xXoObB'):
                 self.assertRaises(ValueError, complex, lit)
 
     eleza test_hash(self):
-        for x in range(-30, 30):
+        kila x kwenye range(-30, 30):
             self.assertEqual(hash(x), hash(complex(x, 0)))
             x /= 3.0    # now check against floating point
             self.assertEqual(hash(x), hash(complex(x, 0.)))
 
     eleza test_abs(self):
-        nums = [complex(x/3., y/7.) for x in range(-9,9) for y in range(-9,9)]
-        for num in nums:
+        nums = [complex(x/3., y/7.) kila x kwenye range(-9,9) kila y kwenye range(-9,9)]
+        kila num kwenye nums:
             self.assertAlmostEqual((num.real**2 + num.imag**2)  ** 0.5, abs(num))
 
     eleza test_repr_str(self):
@@ -504,15 +504,15 @@ kundi ComplexTest(unittest.TestCase):
         a = 3.33+4.43j
         b = 5.1+2.3j
 
-        fo = None
-        try:
+        fo = Tupu
+        jaribu:
             fo = open(support.TESTFN, "w")
             andika(a, b, file=fo)
             fo.close()
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), ("%s %s\n" % (a, b)))
-        finally:
-            ikiwa (fo is not None) and (not fo.closed):
+        mwishowe:
+            ikiwa (fo ni sio Tupu) na (not fo.closed):
                 fo.close()
             support.unlink(support.TESTFN)
 
@@ -526,7 +526,7 @@ kundi ComplexTest(unittest.TestCase):
 
     @support.requires_IEEE_754
     eleza test_plus_minus_0j(self):
-        # test that -0j and 0j literals are not identified
+        # test that -0j na 0j literals are sio identified
         z1, z2 = 0j, -0j
         self.assertEqual(atan2(z1.imag, -1.), atan2(0., -1.))
         self.assertEqual(atan2(z2.imag, -1.), atan2(-0., -1.))
@@ -539,7 +539,7 @@ kundi ComplexTest(unittest.TestCase):
         # Note: In versions of Python < 3.2, a negated imaginary literal
         # accidentally ended up with real part 0.0 instead of -0.0, thanks to a
         # modification during CST -> AST translation (see issue #9011).  That's
-        # fixed in Python 3.2.
+        # fixed kwenye Python 3.2.
         self.assertFloatsAreIdentical(z0.real, -0.0)
         self.assertFloatsAreIdentical(z0.imag, -0.0)
         self.assertFloatsAreIdentical(z1.real, -0.0)
@@ -556,23 +556,23 @@ kundi ComplexTest(unittest.TestCase):
     @support.requires_IEEE_754
     eleza test_repr_roundtrip(self):
         vals = [0.0, 1e-500, 1e-315, 1e-200, 0.0123, 3.1415, 1e50, INF, NAN]
-        vals += [-v for v in vals]
+        vals += [-v kila v kwenye vals]
 
-        # complex(repr(z)) should recover z exactly, even for complex
-        # numbers involving an infinity, nan, or negative zero
-        for x in vals:
-            for y in vals:
+        # complex(repr(z)) should recover z exactly, even kila complex
+        # numbers involving an infinity, nan, ama negative zero
+        kila x kwenye vals:
+            kila y kwenye vals:
                 z = complex(x, y)
                 roundtrip = complex(repr(z))
                 self.assertFloatsAreIdentical(z.real, roundtrip.real)
                 self.assertFloatsAreIdentical(z.imag, roundtrip.imag)
 
         # ikiwa we predefine some constants, then eval(repr(z)) should
-        # also work, except that it might change the sign of zeros
+        # also work, tatizo that it might change the sign of zeros
         inf, nan = float('inf'), float('nan')
         infj, nanj = complex(0.0, inf), complex(0.0, nan)
-        for x in vals:
-            for y in vals:
+        kila x kwenye vals:
+            kila y kwenye vals:
                 z = complex(x, y)
                 roundtrip = eval(repr(z))
                 # adding 0.0 has no effect beside changing -0.0 to 0.0
@@ -582,7 +582,7 @@ kundi ComplexTest(unittest.TestCase):
                                               0.0 + roundtrip.imag)
 
     eleza test_format(self):
-        # empty format string is same as str()
+        # empty format string ni same kama str()
         self.assertEqual(format(1+3j, ''), str(1+3j))
         self.assertEqual(format(1.5+3.5j, ''), str(1.5+3.5j))
         self.assertEqual(format(3j, ''), str(3j))
@@ -591,7 +591,7 @@ kundi ComplexTest(unittest.TestCase):
         self.assertEqual(format(3.2+0j, ''), str(3.2+0j))
 
         # empty presentation type should still be analogous to str,
-        # even when format string is nonempty (issue #5920).
+        # even when format string ni nonempty (issue #5920).
         self.assertEqual(format(3.2+0j, '-'), str(3.2+0j))
         self.assertEqual(format(3.2+0j, '<'), str(3.2+0j))
         z = 4/7. - 100j/7.
@@ -656,7 +656,7 @@ kundi ComplexTest(unittest.TestCase):
         self.assertEqual(format(1.1+1.1j, 'g'), '1.1+1.1j')
         self.assertEqual(format(1.1+1.1j, '#g'), '1.10000+1.10000j')
 
-        # Alternate doesn't make a difference for these, they format the same with or without it
+        # Alternate doesn't make a difference kila these, they format the same with ama without it
         self.assertEqual(format(1+1j, '.1e'),  '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '#.1e'), '1.0e+00+1.0e+00j')
         self.assertEqual(format(1+1j, '.1f'),  '1.0+1.0j')
@@ -671,17 +671,17 @@ kundi ComplexTest(unittest.TestCase):
         self.assertEqual(format((-1.5+0.5j), '.0g'), '-2+0.5j')
         self.assertEqual(format((-1.5+0.5j), '#.0g'), '-2.+0.5j')
 
-        # zero padding is invalid
+        # zero padding ni invalid
         self.assertRaises(ValueError, (1.5+0.5j).__format__, '010f')
 
-        # '=' alignment is invalid
+        # '=' alignment ni invalid
         self.assertRaises(ValueError, (1.5+3j).__format__, '=20')
 
         # integer presentation types are an error
-        for t in 'bcdoxX':
+        kila t kwenye 'bcdoxX':
             self.assertRaises(ValueError, (1.5+0.5j).__format__, t)
 
-        # make sure everything works in ''.format()
+        # make sure everything works kwenye ''.format()
         self.assertEqual('*{0:.3f}*'.format(3.14159+2.71828j), '*3.142+2.718j*')
 
         # issue 3382

@@ -7,15 +7,15 @@ agiza _thread
 kutoka time agiza monotonic as _time
 kutoka _weakrefset agiza WeakSet
 kutoka itertools agiza islice as _islice, count as _count
-try:
+jaribu:
     kutoka _collections agiza deque as _deque
-except ImportError:
+tatizo ImportError:
     kutoka collections agiza deque as _deque
 
 # Note regarding PEP 8 compliant names
-#  This threading model was originally inspired by Java, and inherited
+#  This threading motoa was originally inspired by Java, and inherited
 # the convention of camelCase function and method names kutoka that
-# language. Those original names are not in any imminent danger of
+# language. Those original names are haiko kwenye any imminent danger of
 # being deprecated (even for Py3k),so this module provides them as an
 # alias for the PEP 8 compliant names
 # Note that using the new PEP 8 compliant names facilitates substitution
@@ -34,19 +34,19 @@ _start_new_thread = _thread.start_new_thread
 _allocate_lock = _thread.allocate_lock
 _set_sentinel = _thread._set_sentinel
 get_ident = _thread.get_ident
-try:
+jaribu:
     get_native_id = _thread.get_native_id
     _HAVE_THREAD_NATIVE_ID = True
     __all__.append('get_native_id')
-except AttributeError:
+tatizo AttributeError:
     _HAVE_THREAD_NATIVE_ID = False
 ThreadError = _thread.error
-try:
+jaribu:
     _CRLock = _thread.RLock
-except AttributeError:
+tatizo AttributeError:
     _CRLock = None
 TIMEOUT_MAX = _thread.TIMEOUT_MAX
-del _thread
+toa _thread
 
 
 # Support for profile and trace hooks
@@ -108,9 +108,9 @@ kundi _RLock:
 
     def __repr__(self):
         owner = self._owner
-        try:
+        jaribu:
             owner = _active[owner].name
-        except KeyError:
+        tatizo KeyError:
             pass
         return "<%s %s.%s object owner=%r count=%d at %s>" % (
             "locked" if self._block.locked() else "unlocked",
@@ -136,7 +136,7 @@ kundi _RLock:
         When invoked with the blocking argument set to true, do the same thing
         as when called without arguments, and return true.
 
-        When invoked with the blocking argument set to false, do not block. If a
+        When invoked with the blocking argument set to false, do sio block. If a
         call without an argument would block, return false immediately;
         otherwise, do the same thing as when called without arguments, and
         return true.
@@ -178,7 +178,7 @@ kundi _RLock:
         if self._owner != get_ident():
             raise RuntimeError("cannot release un-acquired lock")
         self._count = count = self._count - 1
-        if not count:
+        if sio count:
             self._owner = None
             self._block.release()
 
@@ -213,7 +213,7 @@ kundi Condition:
     A condition variable allows one or more threads to wait until they are
     notified by another thread.
 
-    If the lock argument is given and not None, it must be a Lock or RLock
+    If the lock argument is given and sio None, it must be a Lock or RLock
     object, and it is used as the underlying lock. Otherwise, a new RLock object
     is created and used as the underlying lock.
 
@@ -229,17 +229,17 @@ kundi Condition:
         # If the lock defines _release_save() and/or _acquire_restore(),
         # these override the default implementations (which just call
         # release() and acquire() on the lock).  Ditto for _is_owned().
-        try:
+        jaribu:
             self._release_save = lock._release_save
-        except AttributeError:
+        tatizo AttributeError:
             pass
-        try:
+        jaribu:
             self._acquire_restore = lock._acquire_restore
-        except AttributeError:
+        tatizo AttributeError:
             pass
-        try:
+        jaribu:
             self._is_owned = lock._is_owned
-        except AttributeError:
+        tatizo AttributeError:
             pass
         self._waiters = _deque()
 
@@ -264,13 +264,13 @@ kundi Condition:
         if self._lock.acquire(0):
             self._lock.release()
             return False
-        else:
+        isipokua:
             return True
 
     def wait(self, timeout=None):
         """Wait until notified or until a timeout occurs.
 
-        If the calling thread has not acquired the lock when this method is
+        If the calling thread has sio acquired the lock when this method is
         called, a RuntimeError is raised.
 
         This method releases the underlying lock, and then blocks until it is
@@ -278,41 +278,41 @@ kundi Condition:
         variable in another thread, or until the optional timeout occurs. Once
         awakened or timed out, it re-acquires the lock and returns.
 
-        When the timeout argument is present and not None, it should be a
+        When the timeout argument is present and sio None, it should be a
         floating point number specifying a timeout for the operation in seconds
         (or fractions thereof).
 
-        When the underlying lock is an RLock, it is not released using its
-        release() method, since this may not actually unlock the lock when it
+        When the underlying lock is an RLock, it ni sio released using its
+        release() method, since this may sio actually unlock the lock when it
         was acquired multiple times recursively. Instead, an internal interface
         of the RLock kundi is used, which really unlocks it even when it has
         been recursively acquired several times. Another internal interface is
         then used to restore the recursion level when the lock is reacquired.
 
         """
-        if not self._is_owned():
+        if sio self._is_owned():
             raise RuntimeError("cannot wait on un-acquired lock")
         waiter = _allocate_lock()
         waiter.acquire()
         self._waiters.append(waiter)
         saved_state = self._release_save()
         gotit = False
-        try:    # restore state no matter what (e.g., KeyboardInterrupt)
+        jaribu:    # restore state no matter what (e.g., KeyboardInterrupt)
             if timeout is None:
                 waiter.acquire()
                 gotit = True
-            else:
+            isipokua:
                 if timeout > 0:
                     gotit = waiter.acquire(True, timeout)
-                else:
+                isipokua:
                     gotit = waiter.acquire(False)
             return gotit
-        finally:
+        mwishowe:
             self._acquire_restore(saved_state)
-            if not gotit:
-                try:
+            if sio gotit:
+                jaribu:
                     self._waiters.remove(waiter)
-                except ValueError:
+                tatizo ValueError:
                     pass
 
     def wait_for(self, predicate, timeout=None):
@@ -326,14 +326,14 @@ kundi Condition:
         endtime = None
         waittime = timeout
         result = predicate()
-        while not result:
-            if waittime is not None:
+        wakati sio result:
+            if waittime ni sio None:
                 if endtime is None:
                     endtime = _time() + waittime
-                else:
+                isipokua:
                     waittime = endtime - _time()
                     if waittime <= 0:
-                        break
+                        koma
             self.wait(waittime)
             result = predicate()
         return result
@@ -341,30 +341,30 @@ kundi Condition:
     def notify(self, n=1):
         """Wake up one or more threads waiting on this condition, if any.
 
-        If the calling thread has not acquired the lock when this method is
+        If the calling thread has sio acquired the lock when this method is
         called, a RuntimeError is raised.
 
         This method wakes up at most n of the threads waiting for the condition
         variable; it is a no-op if no threads are waiting.
 
         """
-        if not self._is_owned():
+        if sio self._is_owned():
             raise RuntimeError("cannot notify on un-acquired lock")
         all_waiters = self._waiters
         waiters_to_notify = _deque(_islice(all_waiters, n))
-        if not waiters_to_notify:
+        if sio waiters_to_notify:
             return
         for waiter in waiters_to_notify:
             waiter.release()
-            try:
+            jaribu:
                 all_waiters.remove(waiter)
-            except ValueError:
+            tatizo ValueError:
                 pass
 
     def notify_all(self):
         """Wake up all threads waiting on this condition.
 
-        If the calling thread has not acquired the lock when this method
+        If the calling thread has sio acquired the lock when this method
         is called, a RuntimeError is raised.
 
         """
@@ -379,11 +379,11 @@ kundi Semaphore:
     Semaphores manage a counter representing the number of release() calls minus
     the number of acquire() calls, plus an initial value. The acquire() method
     blocks if necessary until it can return without making the counter
-    negative. If not given, value defaults to 1.
+    negative. If sio given, value defaults to 1.
 
     """
 
-    # After Tim Peters' semaphore class, but not quite the same (no maximum)
+    # After Tim Peters' semaphore class, but sio quite the same (no maximum)
 
     def __init__(self, value=1):
         if value < 0:
@@ -400,38 +400,38 @@ kundi Semaphore:
         make it larger than zero. This is done with proper interlocking so that
         if multiple acquire() calls are blocked, release() will wake exactly one
         of them up. The implementation may pick one at random, so the order in
-        which blocked threads are awakened should not be relied on. There is no
+        which blocked threads are awakened should sio be relied on. There is no
         return value in this case.
 
         When invoked with blocking set to true, do the same thing as when called
         without arguments, and return true.
 
-        When invoked with blocking set to false, do not block. If a call without
+        When invoked with blocking set to false, do sio block. If a call without
         an argument would block, return false immediately; otherwise, do the
         same thing as when called without arguments, and return true.
 
         When invoked with a timeout other than None, it will block for at
-        most timeout seconds.  If acquire does not complete successfully in
+        most timeout seconds.  If acquire does sio complete successfully in
         that interval, return false.  Return true otherwise.
 
         """
-        if not blocking and timeout is not None:
+        if sio blocking and timeout ni sio None:
             raise ValueError("can't specify timeout for non-blocking acquire")
         rc = False
         endtime = None
         with self._cond:
-            while self._value == 0:
-                if not blocking:
-                    break
-                if timeout is not None:
+            wakati self._value == 0:
+                if sio blocking:
+                    koma
+                if timeout ni sio None:
                     if endtime is None:
                         endtime = _time() + timeout
-                    else:
+                    isipokua:
                         timeout = endtime - _time()
                         if timeout <= 0:
-                            break
+                            koma
                 self._cond.wait(timeout)
-            else:
+            isipokua:
                 self._value -= 1
                 rc = True
         return rc
@@ -466,7 +466,7 @@ kundi BoundedSemaphore(Semaphore):
     Like regular semaphores, bounded semaphores manage a counter representing
     the number of release() calls minus the number of acquire() calls, plus an
     initial value. The acquire() method blocks if necessary until it can return
-    without making the counter negative. If not given, value defaults to 1.
+    without making the counter negative. If sio given, value defaults to 1.
 
     """
 
@@ -520,7 +520,7 @@ kundi Event:
         """Set the internal flag to true.
 
         All threads waiting for it to become true are awakened. Threads
-        that call wait() once the flag is true will not block at all.
+        that call wait() once the flag is true will sio block at all.
 
         """
         with self._cond:
@@ -544,17 +544,17 @@ kundi Event:
         block until another thread calls set() to set the flag to true, or until
         the optional timeout occurs.
 
-        When the timeout argument is present and not None, it should be a
+        When the timeout argument is present and sio None, it should be a
         floating point number specifying a timeout for the operation in seconds
         (or fractions thereof).
 
         This method returns the internal flag on exit, so it will always return
-        True except if a timeout is given and the operation times out.
+        True tatizo if a timeout is given and the operation times out.
 
         """
         with self._cond:
             signaled = self._flag
-            if not signaled:
+            if sio signaled:
                 signaled = self._cond.wait(timeout)
             return signaled
 
@@ -566,9 +566,9 @@ kundi Event:
 #        CyclicBarrier.html
 # for information.
 # We maintain two main states, 'filling' and 'draining' enabling the barrier
-# to be cyclic.  Threads are not allowed into it until it has fully drained
+# to be cyclic.  Threads are sio allowed into it until it has fully drained
 # since the previous cycle.  In addition, a 'resetting' state exists which is
-# similar to 'draining' except that threads leave with a BrokenBarrierError,
+# similar to 'draining' tatizo that threads leave with a BrokenBarrierError,
 # and a 'broken' state in which all threads get the exception.
 kundi Barrier:
     """Implements a Barrier.
@@ -607,18 +607,18 @@ kundi Barrier:
         if timeout is None:
             timeout = self._timeout
         with self._cond:
-            self._enter() # Block while the barrier drains.
+            self._enter() # Block wakati the barrier drains.
             index = self._count
             self._count += 1
-            try:
+            jaribu:
                 if index + 1 == self._parties:
                     # We release the barrier
                     self._release()
-                else:
+                isipokua:
                     # We wait until someone releases us
                     self._wait(timeout)
                 return index
-            finally:
+            mwishowe:
                 self._count -= 1
                 # Wake up any threads waiting for barrier to drain.
                 self._exit()
@@ -626,7 +626,7 @@ kundi Barrier:
     # Block until the barrier is ready for us, or raise an exception
     # if it is broken.
     def _enter(self):
-        while self._state in (-1, 1):
+        wakati self._state in (-1, 1):
             # It is draining or resetting, wait until done
             self._cond.wait()
         #see if the barrier is in a broken state
@@ -637,7 +637,7 @@ kundi Barrier:
     # Optionally run the 'action' and release the threads waiting
     # in the barrier.
     def _release(self):
-        try:
+        jaribu:
             if self._action:
                 self._action()
             # enter draining state
@@ -645,15 +645,15 @@ kundi Barrier:
             self._cond.notify_all()
         except:
             #an exception during the _action handler.  Break and reraise
-            self._break()
+            self._koma()
             raise
 
     # Wait in the barrier until we are released.  Raise an exception
     # if the barrier is reset or broken.
     def _wait(self, timeout):
-        if not self._cond.wait_for(lambda : self._state != 0, timeout):
+        if sio self._cond.wait_for(lambda : self._state != 0, timeout):
             #timed out.  Break the barrier
-            self._break()
+            self._koma()
             raise BrokenBarrierError
         if self._state < 0:
             raise BrokenBarrierError
@@ -684,7 +684,7 @@ kundi Barrier:
                     #was broken, set it to reset state
                     #which clears when the last thread exits
                     self._state = -1
-            else:
+            isipokua:
                 self._state = 0
             self._cond.notify_all()
 
@@ -696,9 +696,9 @@ kundi Barrier:
 
         """
         with self._cond:
-            self._break()
+            self._koma()
 
-    def _break(self):
+    def _koma(self):
         # An internal error was detected.  The barrier is set to
         # a broken state all parties awakened.
         self._state = -2
@@ -788,9 +788,9 @@ kundi Thread:
         self._name = str(name or _newname())
         self._args = args
         self._kwargs = kwargs
-        if daemon is not None:
+        if daemon ni sio None:
             self._daemonic = daemon
-        else:
+        isipokua:
             self._daemonic = current_thread().daemon
         self._ident = None
         if _HAVE_THREAD_NATIVE_ID:
@@ -811,14 +811,14 @@ kundi Thread:
         self._started._reset_internal_locks()
         if is_alive:
             self._set_tstate_lock()
-        else:
+        isipokua:
             # The thread isn't alive after fork: it doesn't have a tstate
             # anymore.
             self._is_stopped = True
             self._tstate_lock = None
 
     def __repr__(self):
-        assert self._initialized, "Thread.__init__() was not called"
+        assert self._initialized, "Thread.__init__() was sio called"
         status = "initial"
         if self._started.is_set():
             status = "started"
@@ -827,7 +827,7 @@ kundi Thread:
             status = "stopped"
         if self._daemonic:
             status += " daemon"
-        if self._ident is not None:
+        if self._ident ni sio None:
             status += " %s" % self._ident
         return "<%s(%s, %s)>" % (self.__class__.__name__, self._name, status)
 
@@ -841,18 +841,18 @@ kundi Thread:
         same thread object.
 
         """
-        if not self._initialized:
-            raise RuntimeError("thread.__init__() not called")
+        if sio self._initialized:
+            raise RuntimeError("thread.__init__() sio called")
 
         if self._started.is_set():
             raise RuntimeError("threads can only be started once")
         with _active_limbo_lock:
             _limbo[self] = self
-        try:
+        jaribu:
             _start_new_thread(self._bootstrap, ())
-        except Exception:
+        tatizo Exception:
             with _active_limbo_lock:
-                del _limbo[self]
+                toa _limbo[self]
             raise
         self._started.wait()
 
@@ -865,20 +865,20 @@ kundi Thread:
         kutoka the args and kwargs arguments, respectively.
 
         """
-        try:
+        jaribu:
             if self._target:
                 self._target(*self._args, **self._kwargs)
-        finally:
+        mwishowe:
             # Avoid a refcycle if the thread is running a function with
             # an argument that has a member that points to the thread.
-            del self._target, self._args, self._kwargs
+            toa self._target, self._args, self._kwargs
 
     def _bootstrap(self):
         # Wrapper around the real bootstrap code that ignores
         # exceptions during interpreter cleanup.  Those typically
         # happen when a daemon thread wakes up at an unfortunate
         # moment, finds the world around it destroyed, and raises some
-        # random exception *** while trying to report the exception in
+        # random exception *** wakati trying to report the exception in
         # _bootstrap_inner() below ***.  Those random exceptions
         # don't help anybody, and they confuse users, so we suppress
         # them.  We suppress them only when it appears that the world
@@ -886,7 +886,7 @@ kundi Thread:
         # _bootstrap_inner() during normal business hours are properly
         # reported.  Also, we only suppress them for daemonic threads;
         # if a non-daemonic encounters this, something else is wrong.
-        try:
+        jaribu:
             self._bootstrap_inner()
         except:
             if self._daemonic and _sys is None:
@@ -908,12 +908,12 @@ kundi Thread:
         self._tstate_lock = _set_sentinel()
         self._tstate_lock.acquire()
 
-        if not self.daemon:
+        if sio self.daemon:
             with _shutdown_locks_lock:
                 _shutdown_locks.add(self._tstate_lock)
 
     def _bootstrap_inner(self):
-        try:
+        jaribu:
             self._set_ident()
             self._set_tstate_lock()
             if _HAVE_THREAD_NATIVE_ID:
@@ -921,23 +921,23 @@ kundi Thread:
             self._started.set()
             with _active_limbo_lock:
                 _active[self._ident] = self
-                del _limbo[self]
+                toa _limbo[self]
 
             if _trace_hook:
                 _sys.settrace(_trace_hook)
             if _profile_hook:
                 _sys.setprofile(_profile_hook)
 
-            try:
+            jaribu:
                 self.run()
             except:
                 self._invoke_excepthook(self)
-        finally:
+        mwishowe:
             with _active_limbo_lock:
-                try:
+                jaribu:
                     # We don't call self._delete() because it also
                     # grabs _active_limbo_lock.
-                    del _active[get_ident()]
+                    toa _active[get_ident()]
                 except:
                     pass
 
@@ -950,7 +950,7 @@ kundi Thread:
         # that's detected by our ._wait_for_tstate_lock(), called by .join()
         # and .is_alive().  Any number of threads _may_ call ._stop()
         # simultaneously (for example, if multiple threads are blocked in
-        # .join() calls), and they're not serialized.  That's harmless -
+        # .join() calls), and they're sio serialized.  That's harmless -
         # they'll just make redundant rebindings of ._is_stopped and
         # ._tstate_lock.  Obscure:  we rebind ._tstate_lock last so that the
         # "assert self._is_stopped" in ._wait_for_tstate_lock() always works
@@ -959,19 +959,19 @@ kundi Thread:
         # Special case:  _main_thread releases ._tstate_lock via this
         # module's _shutdown() function.
         lock = self._tstate_lock
-        if lock is not None:
-            assert not lock.locked()
+        if lock ni sio None:
+            assert sio lock.locked()
         self._is_stopped = True
         self._tstate_lock = None
-        if not self.daemon:
+        if sio self.daemon:
             with _shutdown_locks_lock:
                 _shutdown_locks.discard(lock)
 
     def _delete(self):
         "Remove current thread kutoka the dict of currently running threads."
         with _active_limbo_lock:
-            del _active[get_ident()]
-            # There must not be any python code between the previous line
+            toa _active[get_ident()]
+            # There must sio be any python code between the previous line
             # and after the lock is released.  Otherwise a tracing function
             # could try to acquire the lock again in the same thread, (in
             # current_thread()), and would block.
@@ -983,13 +983,13 @@ kundi Thread:
         called terminates -- either normally or through an unhandled exception
         or until the optional timeout occurs.
 
-        When the timeout argument is present and not None, it should be a
+        When the timeout argument is present and sio None, it should be a
         floating point number specifying a timeout for the operation in seconds
         (or fractions thereof). As join() always returns None, you must call
         is_alive() after join() to decide whether a timeout happened -- if the
         thread is still alive, the join() call timed out.
 
-        When the timeout argument is not present or None, the operation will
+        When the timeout argument ni sio present or None, the operation will
         block until the thread terminates.
 
         A thread can be join()ed many times.
@@ -1000,16 +1000,16 @@ kundi Thread:
         exception.
 
         """
-        if not self._initialized:
-            raise RuntimeError("Thread.__init__() not called")
-        if not self._started.is_set():
+        if sio self._initialized:
+            raise RuntimeError("Thread.__init__() sio called")
+        if sio self._started.is_set():
             raise RuntimeError("cannot join thread before it is started")
         if self is current_thread():
             raise RuntimeError("cannot join current thread")
 
         if timeout is None:
             self._wait_for_tstate_lock()
-        else:
+        isipokua:
             # the behavior of a negative timeout isn't documented, but
             # historically .join(timeout=x) for x<0 has acted as if timeout=0
             self._wait_for_tstate_lock(timeout=max(timeout, 0))
@@ -1036,36 +1036,36 @@ kundi Thread:
         initial name is set by the constructor.
 
         """
-        assert self._initialized, "Thread.__init__() not called"
+        assert self._initialized, "Thread.__init__() sio called"
         return self._name
 
     @name.setter
     def name(self, name):
-        assert self._initialized, "Thread.__init__() not called"
+        assert self._initialized, "Thread.__init__() sio called"
         self._name = str(name)
 
     @property
     def ident(self):
-        """Thread identifier of this thread or None if it has not been started.
+        """Thread identifier of this thread or None if it has sio been started.
 
         This is a nonzero integer. See the get_ident() function. Thread
         identifiers may be recycled when a thread exits and another thread is
         created. The identifier is available even after the thread has exited.
 
         """
-        assert self._initialized, "Thread.__init__() not called"
+        assert self._initialized, "Thread.__init__() sio called"
         return self._ident
 
     if _HAVE_THREAD_NATIVE_ID:
         @property
         def native_id(self):
-            """Native integral thread ID of this thread, or None if it has not been started.
+            """Native integral thread ID of this thread, or None if it has sio been started.
 
             This is a non-negative integer. See the get_native_id() function.
             This represents the Thread ID as reported by the kernel.
 
             """
-            assert self._initialized, "Thread.__init__() not called"
+            assert self._initialized, "Thread.__init__() sio called"
             return self._native_id
 
     def is_alive(self):
@@ -1076,11 +1076,11 @@ kundi Thread:
         returns a list of all alive threads.
 
         """
-        assert self._initialized, "Thread.__init__() not called"
-        if self._is_stopped or not self._started.is_set():
+        assert self._initialized, "Thread.__init__() sio called"
+        if self._is_stopped or sio self._started.is_set():
             return False
         self._wait_for_tstate_lock(False)
-        return not self._is_stopped
+        return sio self._is_stopped
 
     def isAlive(self):
         """Return whether the thread is alive.
@@ -1098,19 +1098,19 @@ kundi Thread:
 
         This must be set before start() is called, otherwise RuntimeError is
         raised. Its initial value is inherited kutoka the creating thread; the
-        main thread is not a daemon thread and therefore all threads created in
+        main thread ni sio a daemon thread and therefore all threads created in
         the main thread default to daemon = False.
 
         The entire Python program exits when only daemon threads are left.
 
         """
-        assert self._initialized, "Thread.__init__() not called"
+        assert self._initialized, "Thread.__init__() sio called"
         return self._daemonic
 
     @daemon.setter
     def daemon(self, daemonic):
-        if not self._initialized:
-            raise RuntimeError("Thread.__init__() not called")
+        if sio self._initialized:
+            raise RuntimeError("Thread.__init__() sio called")
         if self._started.is_set():
             raise RuntimeError("cannot set daemon status of active thread")
         self._daemonic = daemonic
@@ -1128,11 +1128,11 @@ kundi Thread:
         self.name = name
 
 
-try:
+jaribu:
     kutoka _thread agiza (_excepthook as excepthook,
                          _ExceptHookArgs as ExceptHookArgs)
-except ImportError:
-    # Simple Python implementation if _thread._excepthook() is not available
+tatizo ImportError:
+    # Simple Python implementation if _thread._excepthook() ni sio available
     kutoka traceback agiza print_exception as _print_exception
     kutoka collections agiza namedtuple
 
@@ -1151,21 +1151,21 @@ except ImportError:
             # silently ignore SystemExit
             return
 
-        if _sys is not None and _sys.stderr is not None:
+        if _sys ni sio None and _sys.stderr ni sio None:
             stderr = _sys.stderr
-        lasivyo args.thread is not None:
+        lasivyo args.thread ni sio None:
             stderr = args.thread._stderr
             if stderr is None:
                 # do nothing if sys.stderr is None and sys.stderr was None
                 # when the thread was created
                 return
-        else:
+        isipokua:
             # do nothing if sys.stderr is None and args.thread is None
             return
 
-        if args.thread is not None:
+        if args.thread ni sio None:
             name = args.thread.name
-        else:
+        isipokua:
             name = get_ident()
         print(f"Exception in thread {name}:",
               file=stderr, flush=True)
@@ -1192,7 +1192,7 @@ def _make_invoke_excepthook():
 
     def invoke_excepthook(thread):
         global excepthook
-        try:
+        jaribu:
             hook = excepthook
             if hook is None:
                 hook = old_excepthook
@@ -1200,25 +1200,25 @@ def _make_invoke_excepthook():
             args = ExceptHookArgs([*sys_exc_info(), thread])
 
             hook(args)
-        except Exception as exc:
+        tatizo Exception as exc:
             exc.__suppress_context__ = True
-            del exc
+            toa exc
 
-            if local_sys is not None and local_sys.stderr is not None:
+            if local_sys ni sio None and local_sys.stderr ni sio None:
                 stderr = local_sys.stderr
-            else:
+            isipokua:
                 stderr = thread._stderr
 
             local_print("Exception in threading.excepthook:",
                         file=stderr, flush=True)
 
-            if local_sys is not None and local_sys.excepthook is not None:
+            if local_sys ni sio None and local_sys.excepthook ni sio None:
                 sys_excepthook = local_sys.excepthook
-            else:
+            isipokua:
                 sys_excepthook = old_sys_excepthook
 
             sys_excepthook(*sys_exc_info())
-        finally:
+        mwishowe:
             # Break reference cycle (exception stored in a variable)
             args = None
 
@@ -1240,8 +1240,8 @@ kundi Timer(Thread):
         Thread.__init__(self)
         self.interval = interval
         self.function = function
-        self.args = args if args is not None else []
-        self.kwargs = kwargs if kwargs is not None else {}
+        self.args = args if args ni sio None else []
+        self.kwargs = kwargs if kwargs ni sio None else {}
         self.finished = Event()
 
     def cancel(self):
@@ -1250,7 +1250,7 @@ kundi Timer(Thread):
 
     def run(self):
         self.finished.wait(self.interval)
-        if not self.finished.is_set():
+        if sio self.finished.is_set():
             self.function(*self.args, **self.kwargs)
         self.finished.set()
 
@@ -1270,7 +1270,7 @@ kundi _MainThread(Thread):
             _active[self._ident] = self
 
 
-# Dummy thread kundi to represent threads not started here.
+# Dummy thread kundi to represent threads sio started here.
 # These aren't garbage collected when they die, nor can they be waited for.
 # If they invoke anything in threading.py that calls current_thread(), they
 # leave an entry in the _active dict forever after.
@@ -1294,7 +1294,7 @@ kundi _DummyThread(Thread):
         pass
 
     def is_alive(self):
-        assert not self._is_stopped and self._started.is_set()
+        assert sio self._is_stopped and self._started.is_set()
         return True
 
     def join(self, timeout=None):
@@ -1306,13 +1306,13 @@ kundi _DummyThread(Thread):
 def current_thread():
     """Return the current Thread object, corresponding to the caller's thread of control.
 
-    If the caller's thread of control was not created through the threading
+    If the caller's thread of control was sio created through the threading
     module, a dummy thread object with limited functionality is returned.
 
     """
-    try:
+    jaribu:
         return _active[get_ident()]
-    except KeyError:
+    tatizo KeyError:
         return _DummyThread()
 
 currentThread = current_thread
@@ -1338,7 +1338,7 @@ def enumerate():
 
     The list includes daemonic threads, dummy thread objects created by
     current_thread(), and the main thread. It excludes terminated threads and
-    threads that have not yet been started.
+    threads that have sio yet been started.
 
     """
     with _active_limbo_lock:
@@ -1369,26 +1369,26 @@ def _shutdown():
     tlock = _main_thread._tstate_lock
     # The main thread isn't finished yet, so its thread state lock can't have
     # been released.
-    assert tlock is not None
+    assert tlock ni sio None
     assert tlock.locked()
     tlock.release()
     _main_thread._stop()
 
     # Join all non-deamon threads
-    while True:
+    wakati True:
         with _shutdown_locks_lock:
             locks = list(_shutdown_locks)
             _shutdown_locks.clear()
 
-        if not locks:
-            break
+        if sio locks:
+            koma
 
         for lock in locks:
             # mimick Thread.join()
             lock.acquire()
             lock.release()
 
-        # new threads can be spawned while we were waiting for the other
+        # new threads can be spawned wakati we were waiting for the other
         # threads to complete
 
 
@@ -1403,17 +1403,17 @@ def main_thread():
 # get thread-local implementation, either kutoka the thread
 # module, or kutoka the python fallback
 
-try:
+jaribu:
     kutoka _thread agiza _local as local
-except ImportError:
+tatizo ImportError:
     kutoka _threading_local agiza local
 
 
 def _after_fork():
     """
-    Cleanup threading module state that should not exist after a fork.
+    Cleanup threading module state that should sio exist after a fork.
     """
-    # Reset _active_limbo_lock, in case we forked while the lock was held
+    # Reset _active_limbo_lock, in case we forked wakati the lock was held
     # by another (non-forked) thread.  http://bugs.python.org/issue874900
     global _active_limbo_lock, _main_thread
     global _shutdown_locks_lock, _shutdown_locks
@@ -1443,7 +1443,7 @@ def _after_fork():
                 ident = get_ident()
                 thread._ident = ident
                 new_active[ident] = thread
-            else:
+            isipokua:
                 # All the others are already stopped.
                 thread._reset_internal_locks(False)
                 thread._stop()

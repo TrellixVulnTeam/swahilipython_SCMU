@@ -3,12 +3,12 @@
 
 """Fixer that changes filter(F, X) into list(filter(F, X)).
 
-We avoid the transformation ikiwa the filter() call is directly contained
+We avoid the transformation ikiwa the filter() call ni directly contained
 in iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), or
-for V in <>:.
+kila V kwenye <>:.
 
-NOTE: This is still not correct ikiwa the original code was depending on
-filter(F, X) to rudisha a string ikiwa X is a string and a tuple ikiwa X is a
+NOTE: This ni still sio correct ikiwa the original code was depending on
+filter(F, X) to rudisha a string ikiwa X ni a string na a tuple ikiwa X ni a
 tuple.  That would require type inference, which we don't do.  Let
 Python 2.6 figure it out.
 """
@@ -16,12 +16,12 @@ Python 2.6 figure it out.
 # Local agizas
 kutoka .. agiza fixer_base
 kutoka ..pytree agiza Node
-kutoka ..pygram agiza python_symbols as syms
+kutoka ..pygram agiza python_symbols kama syms
 kutoka ..fixer_util agiza Name, ArgList, ListComp, in_special_context
 
 
 kundi FixFilter(fixer_base.ConditionalFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     filter_lambda=power<
@@ -42,7 +42,7 @@ kundi FixFilter(fixer_base.ConditionalFix):
     |
     power<
         'filter'
-        trailer< '(' arglist< none='None' ',' seq=any > ')' >
+        trailer< '(' arglist< none='Tupu' ',' seq=any > ')' >
         [extra_trailers=trailer*]
     >
     |
@@ -57,30 +57,30 @@ kundi FixFilter(fixer_base.ConditionalFix):
 
     eleza transform(self, node, results):
         ikiwa self.should_skip(node):
-            return
+            rudisha
 
         trailers = []
-        ikiwa 'extra_trailers' in results:
-            for t in results['extra_trailers']:
+        ikiwa 'extra_trailers' kwenye results:
+            kila t kwenye results['extra_trailers']:
                 trailers.append(t.clone())
 
-        ikiwa "filter_lambda" in results:
+        ikiwa "filter_lambda" kwenye results:
             new = ListComp(results.get("fp").clone(),
                            results.get("fp").clone(),
                            results.get("it").clone(),
                            results.get("xp").clone())
             new = Node(syms.power, [new] + trailers, prefix="")
 
-        elikiwa "none" in results:
+        elikiwa "none" kwenye results:
             new = ListComp(Name("_f"),
                            Name("_f"),
                            results["seq"].clone(),
                            Name("_f"))
             new = Node(syms.power, [new] + trailers, prefix="")
 
-        else:
+        isipokua:
             ikiwa in_special_context(node):
-                rudisha None
+                rudisha Tupu
 
             args = results['args'].clone()
             new = Node(syms.power, [Name("filter"), args], prefix="")

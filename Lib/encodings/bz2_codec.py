@@ -12,61 +12,61 @@ import bz2 # this codec needs the optional bz2 module !
 
 ### Codec APIs
 
-def bz2_encode(input, errors='strict'):
+eleza bz2_encode(input, errors='strict'):
     assert errors == 'strict'
-    return (bz2.compress(input), len(input))
+    rudisha (bz2.compress(input), len(input))
 
-def bz2_decode(input, errors='strict'):
+eleza bz2_decode(input, errors='strict'):
     assert errors == 'strict'
-    return (bz2.decompress(input), len(input))
+    rudisha (bz2.decompress(input), len(input))
 
-class Codec(codecs.Codec):
-    def encode(self, input, errors='strict'):
-        return bz2_encode(input, errors)
-    def decode(self, input, errors='strict'):
-        return bz2_decode(input, errors)
+kundi Codec(codecs.Codec):
+    eleza encode(self, input, errors='strict'):
+        rudisha bz2_encode(input, errors)
+    eleza decode(self, input, errors='strict'):
+        rudisha bz2_decode(input, errors)
 
-class IncrementalEncoder(codecs.IncrementalEncoder):
-    def __init__(self, errors='strict'):
+kundi IncrementalEncoder(codecs.IncrementalEncoder):
+    eleza __init__(self, errors='strict'):
         assert errors == 'strict'
         self.errors = errors
         self.compressobj = bz2.BZ2Compressor()
 
-    def encode(self, input, final=False):
+    eleza encode(self, input, final=False):
         if final:
             c = self.compressobj.compress(input)
-            return c + self.compressobj.flush()
-        else:
-            return self.compressobj.compress(input)
+            rudisha c + self.compressobj.flush()
+        isipokua:
+            rudisha self.compressobj.compress(input)
 
-    def reset(self):
+    eleza reset(self):
         self.compressobj = bz2.BZ2Compressor()
 
-class IncrementalDecoder(codecs.IncrementalDecoder):
-    def __init__(self, errors='strict'):
+kundi IncrementalDecoder(codecs.IncrementalDecoder):
+    eleza __init__(self, errors='strict'):
         assert errors == 'strict'
         self.errors = errors
         self.decompressobj = bz2.BZ2Decompressor()
 
-    def decode(self, input, final=False):
-        try:
-            return self.decompressobj.decompress(input)
-        except EOFError:
-            return ''
+    eleza decode(self, input, final=False):
+        jaribu:
+            rudisha self.decompressobj.decompress(input)
+        tatizo EOFError:
+            rudisha ''
 
-    def reset(self):
+    eleza reset(self):
         self.decompressobj = bz2.BZ2Decompressor()
 
-class StreamWriter(Codec, codecs.StreamWriter):
+kundi StreamWriter(Codec, codecs.StreamWriter):
     charbuffertype = bytes
 
-class StreamReader(Codec, codecs.StreamReader):
+kundi StreamReader(Codec, codecs.StreamReader):
     charbuffertype = bytes
 
 ### encodings module API
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name="bz2",
         encode=bz2_encode,
         decode=bz2_decode,

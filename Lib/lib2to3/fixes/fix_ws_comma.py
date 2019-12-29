@@ -1,7 +1,7 @@
 """Fixer that changes 'a ,b' into 'a, b'.
 
-This also changes '{a :b}' into '{a: b}', but does not touch other
-uses of colons.  It does not touch other uses of whitespace.
+This also changes '{a :b}' into '{a: b}', but does sio touch other
+uses of colons.  It does sio touch other uses of whitespace.
 
 """
 
@@ -11,7 +11,7 @@ kutoka .. agiza fixer_base
 
 kundi FixWsComma(fixer_base.BaseFix):
 
-    explicit = True # The user must ask for this fixers
+    explicit = Kweli # The user must ask kila this fixers
 
     PATTERN = """
     any<(not(',') any)+ ',' ((not(',') any)+ ',')* [not(',') any]>
@@ -23,17 +23,17 @@ kundi FixWsComma(fixer_base.BaseFix):
 
     eleza transform(self, node, results):
         new = node.clone()
-        comma = False
-        for child in new.children:
-            ikiwa child in self.SEPS:
+        comma = Uongo
+        kila child kwenye new.children:
+            ikiwa child kwenye self.SEPS:
                 prefix = child.prefix
-                ikiwa prefix.isspace() and "\n" not in prefix:
+                ikiwa prefix.isspace() na "\n" haiko kwenye prefix:
                     child.prefix = ""
-                comma = True
-            else:
+                comma = Kweli
+            isipokua:
                 ikiwa comma:
                     prefix = child.prefix
-                    ikiwa not prefix:
+                    ikiwa sio prefix:
                         child.prefix = " "
-                comma = False
+                comma = Uongo
         rudisha new

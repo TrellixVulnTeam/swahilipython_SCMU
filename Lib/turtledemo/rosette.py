@@ -4,9 +4,9 @@
 
 This example is
 inspired by the Wikipedia article on turtle
-graphics. (See example wikipedia1 for URLs)
+graphics. (See example wikipedia1 kila URLs)
 
-First we create (ne-1) (i.e. 35 in this
+First we create (ne-1) (i.e. 35 kwenye this
 example) copies of our first turtle p.
 Then we let them perform their steps in
 parallel.
@@ -14,21 +14,21 @@ parallel.
 Followed by a complete undo().
 """
 kutoka turtle agiza Screen, Turtle, mainloop
-kutoka time agiza perf_counter as clock, sleep
+kutoka time agiza perf_counter kama clock, sleep
 
 eleza mn_eck(p, ne,sz):
     turtlelist = [p]
     #create ne-1 additional turtles
-    for i in range(1,ne):
+    kila i kwenye range(1,ne):
         q = p.clone()
         q.rt(360.0/ne)
         turtlelist.append(q)
         p = q
-    for i in range(ne):
+    kila i kwenye range(ne):
         c = abs(ne/2.0-i)/(ne*.7)
         # let those ne turtles make a step
-        # in parallel:
-        for t in turtlelist:
+        # kwenye parallel:
+        kila t kwenye turtlelist:
             t.rt(360./ne)
             t.pencolor(1-c,0,c)
             t.fd(sz)
@@ -52,8 +52,8 @@ eleza main():
     sleep(1)
 
     at = clock()
-    while any(t.undobufferentries() for t in s.turtles()):
-        for t in s.turtles():
+    wakati any(t.undobufferentries() kila t kwenye s.turtles()):
+        kila t kwenye s.turtles():
             t.undo()
     et = clock()
     rudisha "runtime: %.3f sec" % (z1+et-at)

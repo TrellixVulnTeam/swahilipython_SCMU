@@ -25,7 +25,7 @@ class _PolicyBase:
     non-default values to be set for these attributes at instance
     creation time.  The instance will be callable, taking these same
     attributes keyword arguments, and returning a new instance
-    identical to the called instance except for those values changed
+    identical to the called instance tatizo for those values changed
     by the keyword arguments.  Instances may be added, yielding new
     instances with any non-default values from the right hand
     operand overriding those in the left hand operand.  That is,
@@ -47,7 +47,7 @@ class _PolicyBase:
         for name, value in kw.items():
             if hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
-            else:
+            isipokua:
                 raise TypeError(
                     "{!r} is an invalid keyword argument for {}".format(
                         name, self.__class__.__name__))
@@ -61,14 +61,14 @@ class _PolicyBase:
         """Return a new instance with specified attributes changed.
 
         The new instance has the same attribute values as the current object,
-        except for the changes passed in as keyword arguments.
+        tatizo for the changes passed in as keyword arguments.
 
         """
         newpolicy = self.__class__.__new__(self.__class__)
         for attr, value in self.__dict__.items():
             object.__setattr__(newpolicy, attr, value)
         for attr, value in kw.items():
-            if not hasattr(self, attr):
+            if sio hasattr(self, attr):
                 raise TypeError(
                     "{!r} is an invalid keyword argument for {}".format(
                         attr, self.__class__.__name__))
@@ -78,7 +78,7 @@ class _PolicyBase:
     def __setattr__(self, name, value):
         if hasattr(self, name):
             msg = "{!r} object attribute {!r} is read-only"
-        else:
+        isipokua:
             msg = "{!r} object has no attribute {!r}"
         raise AttributeError(msg.format(self.__class__.__name__, name))
 
@@ -105,7 +105,7 @@ def _extend_docstrings(cls):
                 doc = getattr(getattr(c, name), '__doc__')
                 if doc:
                     attr.__doc__ = _append_doc(doc, attr.__doc__)
-                    break
+                    koma
     return cls
 
 
@@ -116,8 +116,8 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
     Most of the classes and many of the methods in the email package accept
     Policy objects as parameters.  A Policy object contains a set of values and
     functions that control how input is interpreted and how output is rendered.
-    For example, the parameter 'raise_on_defect' controls whether or not an RFC
-    violation results in an error being raised or not, while 'max_line_length'
+    For example, the parameter 'raise_on_defect' controls whether or sio an RFC
+    violation results in an error being raised or not, wakati 'max_line_length'
     controls the maximum length of output lines when a Message is serialized.
 
     Any valid attribute may be overridden when a Policy is created by passing
@@ -173,7 +173,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
         defect should be a Defect subclass, but in any case must be an
         Exception subclass.  obj is the object on which the defect should be
-        registered if it is not raised.  If the raise_on_defect is True, the
+        registered if it ni sio raised.  If the raise_on_defect is True, the
         defect is raised as an error, otherwise the object and the defect are
         passed to register_defect.
 
@@ -202,14 +202,14 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
         """Return the maximum allowed number of headers named 'name'.
 
         Called when a header is added to a Message object.  If the returned
-        value is not 0 or None, and there are already a number of headers with
+        value ni sio 0 or None, and there are already a number of headers with
         the name 'name' equal to the value returned, a ValueError is raised.
 
         Because the default behavior of Message's __setitem__ is to append the
         value to the list of headers, it is easy to create duplicate headers
         without realizing it.  This method allows certain headers to be limited
         in the number of instances of that header that may be added to a
-        Message programmatically.  (The limit is not observed by the parser,
+        Message programmatically.  (The limit ni sio observed by the parser,
         which will faithfully produce as many headers as exist in the message
         being parsed.)
 
@@ -240,7 +240,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
         to be returned to the application program that is requesting that
         header.  The value passed in by the email package may contain
         surrogateescaped binary data if the lines were parsed by a BytesParser.
-        The returned value should not contain any surrogateescaped data.
+        The returned value should sio contain any surrogateescaped data.
 
         """
         raise NotImplementedError
@@ -251,7 +251,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
         containing linesep characters that implement the folding of the header
         according to the policy controls.  The value passed in by the email
         package may contain surrogateescaped binary data if the lines were
-        parsed by a BytesParser.  The returned value should not contain any
+        parsed by a BytesParser.  The returned value should sio contain any
         surrogateescaped data.
 
         """
@@ -281,13 +281,13 @@ class Compat32(Policy):
     def _sanitize_header(self, name, value):
         # If the header value contains surrogates, return a Header using
         # the unknown-8bit charset to encode the bytes as encoded words.
-        if not isinstance(value, str):
+        if sio isinstance(value, str):
             # Assume it is already a header object
             return value
         if _has_surrogates(value):
             return header.Header(value, charset=_charset.UNKNOWN8BIT,
                                  header_name=name)
-        else:
+        isipokua:
             return value
 
     def header_source_parse(self, sourcelines):
@@ -318,7 +318,7 @@ class Compat32(Policy):
     def fold(self, name, value):
         """+
         Headers are folded using the Header folding algorithm, which preserves
-        existing line breaks in the value, and wraps each resulting line to the
+        existing line komas in the value, and wraps each resulting line to the
         max_line_length.  Non-ASCII binary data are CTE encoded using the
         unknown-8bit charset.
 
@@ -328,10 +328,10 @@ class Compat32(Policy):
     def fold_binary(self, name, value):
         """+
         Headers are folded using the Header folding algorithm, which preserves
-        existing line breaks in the value, and wraps each resulting line to the
+        existing line komas in the value, and wraps each resulting line to the
         max_line_length.  If cte_type is 7bit, non-ascii binary data is CTE
         encoded using the unknown-8bit charset.  Otherwise the original source
-        header is used, with its existing line breaks and/or binary data.
+        header is used, with its existing line komas and/or binary data.
 
         """
         folded = self._fold(name, value, sanitize=self.cte_type=='7bit')
@@ -346,25 +346,25 @@ class Compat32(Policy):
                     h = header.Header(value,
                                       charset=_charset.UNKNOWN8BIT,
                                       header_name=name)
-                else:
+                isipokua:
                     # If we have raw 8bit data in a byte string, we have no idea
                     # what the encoding is.  There is no safe way to split this
                     # string.  If it's ascii-subset, then we could do a normal
-                    # ascii split, but if it's multibyte then we could break the
+                    # ascii split, but if it's multibyte then we could koma the
                     # string.  There's no way to know so the least harm seems to
-                    # be to not split the string and risk it being too long.
+                    # be to sio split the string and risk it being too long.
                     parts.append(value)
                     h = None
-            else:
+            isipokua:
                 h = header.Header(value, header_name=name)
-        else:
+        isipokua:
             # Assume it is a Header-like object.
             h = value
-        if h is not None:
+        if h ni sio None:
             # The Header class interprets a value of None for maxlinelen as the
             # default value of 78, as recommended by RFC 2822.
             maxlinelen = 0
-            if self.max_line_length is not None:
+            if self.max_line_length ni sio None:
                 maxlinelen = self.max_line_length
             parts.append(h.encode(linesep=self.linesep, maxlinelen=maxlinelen))
         parts.append(self.linesep)

@@ -1,22 +1,22 @@
-"""Fixer for except statements with named exceptions.
+"""Fixer kila tatizo statements with named exceptions.
 
 The following cases will be converted:
 
-- "except E, T:" where T is a name:
+- "tatizo E, T:" where T ni a name:
 
-    except E as T:
+    tatizo E kama T:
 
-- "except E, T:" where T is not a name, tuple or list:
+- "tatizo E, T:" where T ni sio a name, tuple ama list:
 
-        except E as t:
+        tatizo E kama t:
             T = t
 
-    This is done because the target of an "except" clause must be a
+    This ni done because the target of an "except" clause must be a
     name.
 
-- "except E, T:" where T is a tuple or list literal:
+- "tatizo E, T:" where T ni a tuple ama list literal:
 
-        except E as t:
+        tatizo E kama t:
             T = t.args
 """
 # Author: Collin Winter
@@ -28,13 +28,13 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Assign, Attr, Name, is_tuple, is_list, syms
 
 eleza find_excepts(nodes):
-    for i, n in enumerate(nodes):
+    kila i, n kwenye enumerate(nodes):
         ikiwa n.type == syms.except_clause:
             ikiwa n.children[0].value == 'except':
-                yield (n, nodes[i+2])
+                tuma (n, nodes[i+2])
 
 kundi FixExcept(fixer_base.BaseFix):
-    BM_compatible = True
+    BM_compatible = Kweli
 
     PATTERN = """
     try_stmt< 'try' ':' (simple_stmt | suite)
@@ -47,47 +47,47 @@ kundi FixExcept(fixer_base.BaseFix):
     eleza transform(self, node, results):
         syms = self.syms
 
-        tail = [n.clone() for n in results["tail"]]
+        tail = [n.clone() kila n kwenye results["tail"]]
 
-        try_cleanup = [ch.clone() for ch in results["cleanup"]]
-        for except_clause, e_suite in find_excepts(try_cleanup):
+        try_cleanup = [ch.clone() kila ch kwenye results["cleanup"]]
+        kila except_clause, e_suite kwenye find_excepts(try_cleanup):
             ikiwa len(except_clause.children) == 4:
                 (E, comma, N) = except_clause.children[1:4]
                 comma.replace(Name("as", prefix=" "))
 
                 ikiwa N.type != token.NAME:
-                    # Generate a new N for the except clause
+                    # Generate a new N kila the tatizo clause
                     new_N = Name(self.new_name(), prefix=" ")
                     target = N.clone()
                     target.prefix = ""
                     N.replace(new_N)
                     new_N = new_N.clone()
 
-                    # Insert "old_N = new_N" as the first statement in
-                    #  the except body. This loop skips leading whitespace
-                    #  and indents
+                    # Insert "old_N = new_N" kama the first statement in
+                    #  the tatizo body. This loop skips leading whitespace
+                    #  na indents
                     #TODO(cwinter) suite-cleanup
                     suite_stmts = e_suite.children
-                    for i, stmt in enumerate(suite_stmts):
+                    kila i, stmt kwenye enumerate(suite_stmts):
                         ikiwa isinstance(stmt, pytree.Node):
-                            break
+                            koma
 
-                    # The assignment is different ikiwa old_N is a tuple or list
-                    # In that case, the assignment is old_N = new_N.args
-                    ikiwa is_tuple(N) or is_list(N):
+                    # The assignment ni different ikiwa old_N ni a tuple ama list
+                    # In that case, the assignment ni old_N = new_N.args
+                    ikiwa is_tuple(N) ama is_list(N):
                         assign = Assign(target, Attr(new_N, Name('args')))
-                    else:
+                    isipokua:
                         assign = Assign(target, new_N)
 
                     #TODO(cwinter) stopgap until children becomes a smart list
-                    for child in reversed(suite_stmts[:i]):
+                    kila child kwenye reversed(suite_stmts[:i]):
                         e_suite.insert_child(0, child)
                     e_suite.insert_child(i, assign)
                 elikiwa N.prefix == "":
-                    # No space after a comma is legal; no space after "as",
-                    # not so much.
+                    # No space after a comma ni legal; no space after "as",
+                    # sio so much.
                     N.prefix = " "
 
         #TODO(cwinter) fix this when children becomes a smart list
-        children = [c.clone() for c in node.children[:3]] + try_cleanup + tail
+        children = [c.clone() kila c kwenye node.children[:3]] + try_cleanup + tail
         rudisha pytree.Node(node.type, children)

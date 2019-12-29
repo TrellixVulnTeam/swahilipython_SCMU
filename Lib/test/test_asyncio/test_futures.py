@@ -31,7 +31,7 @@ def last_cb():
 
 
 class DuckFuture:
-    # Class that does not inherit from Future but aims to be duck-type
+    # Class that does sio inherit from Future but aims to be duck-type
     # compatible with it.
 
     _asyncio_future_blocking = False
@@ -50,31 +50,31 @@ class DuckFuture:
 
     def done(self):
         return (self.__cancelled
-                or self.__result is not None
-                or self.__exception is not None)
+                or self.__result ni sio None
+                or self.__exception ni sio None)
 
     def result(self):
-        assert not self.cancelled()
-        if self.__exception is not None:
+        assert sio self.cancelled()
+        if self.__exception ni sio None:
             raise self.__exception
         return self.__result
 
     def exception(self):
-        assert not self.cancelled()
+        assert sio self.cancelled()
         return self.__exception
 
     def set_result(self, result):
-        assert not self.done()
-        assert result is not None
+        assert sio self.done()
+        assert result ni sio None
         self.__result = result
 
     def set_exception(self, exception):
-        assert not self.done()
-        assert exception is not None
+        assert sio self.done()
+        assert exception ni sio None
         self.__exception = exception
 
     def __iter__(self):
-        if not self.done():
+        if sio self.done():
             self._asyncio_future_blocking = True
             yield self
         assert self.done()
@@ -180,21 +180,21 @@ class BaseFutureTests:
             fut.remove_done_callback(lambda f: None)
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
-        try:
+        jaribu:
             repr(fut)
-        except (RuntimeError, AttributeError):
+        tatizo (RuntimeError, AttributeError):
             pass
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
-        try:
+        jaribu:
             fut.__await__()
-        except RuntimeError:
+        tatizo RuntimeError:
             pass
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
-        try:
+        jaribu:
             iter(fut)
-        except RuntimeError:
+        tatizo RuntimeError:
             pass
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
@@ -263,7 +263,7 @@ class BaseFutureTests:
         self.assertEqual(next(g), f)  # First yield from f.
         f.set_result(42)
         self.assertEqual(next(g), ('B', 42))  # yield 'B', x.
-        # The second "yield from f" does not yield f.
+        # The second "yield from f" does sio yield f.
         self.assertEqual(next(g), ('C', 42))  # yield 'C', y.
 
     def test_future_repr(self):
@@ -382,7 +382,7 @@ class BaseFutureTests:
     @mock.patch('asyncio.base_events.logger')
     def test_tb_logger_abandoned(self, m_log):
         fut = self._new_future(loop=self.loop)
-        del fut
+        toa fut
         self.assertFalse(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
@@ -390,14 +390,14 @@ class BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_exception(Exception())
         fut.cancel()
-        del fut
+        toa fut
         self.assertFalse(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
     def test_tb_logger_result_unretrieved(self, m_log):
         fut = self._new_future(loop=self.loop)
         fut.set_result(42)
-        del fut
+        toa fut
         self.assertFalse(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
@@ -405,14 +405,14 @@ class BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_result(42)
         fut.result()
-        del fut
+        toa fut
         self.assertFalse(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
     def test_tb_logger_exception_unretrieved(self, m_log):
         fut = self._new_future(loop=self.loop)
         fut.set_exception(RuntimeError('boom'))
-        del fut
+        toa fut
         test_utils.run_briefly(self.loop)
         support.gc_collect()
         self.assertTrue(m_log.error.called)
@@ -422,7 +422,7 @@ class BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_exception(RuntimeError('boom'))
         fut.exception()
-        del fut
+        toa fut
         self.assertFalse(m_log.error.called)
 
     @mock.patch('asyncio.base_events.logger')
@@ -430,7 +430,7 @@ class BaseFutureTests:
         fut = self._new_future(loop=self.loop)
         fut.set_exception(RuntimeError('boom'))
         self.assertRaises(RuntimeError, fut.result)
-        del fut
+        toa fut
         self.assertFalse(m_log.error.called)
 
     def test_wrap_future(self):
@@ -496,9 +496,9 @@ class BaseFutureTests:
         self.loop.set_debug(debug)
 
         def memory_error():
-            try:
+            jaribu:
                 raise MemoryError()
-            except BaseException as exc:
+            tatizo BaseException as exc:
                 return exc
         exc = memory_error()
 
@@ -512,7 +512,7 @@ class BaseFutureTests:
             regex = f'^{self.cls.__name__} exception was never retrieved\n'
             exc_info = (type(exc), exc, exc.__traceback__)
             m_log.error.assert_called_once_with(mock.ANY, exc_info=exc_info)
-        else:
+        isipokua:
             regex = r'^Future/Task exception was never retrieved\n'
             m_log.error.assert_called_once_with(mock.ANY, exc_info=False)
         message = m_log.error.call_args[0][0]
@@ -535,11 +535,11 @@ class BaseFutureTests:
         fut.set_result((1, 2))
         fi = fut.__iter__()
         result = None
-        try:
+        jaribu:
             fi.send(None)
-        except StopIteration as ex:
+        tatizo StopIteration as ex:
             result = ex.args[0]
-        else:
+        isipokua:
             self.fail('StopIteration was expected')
         self.assertEqual(result, (1, 2))
 
@@ -565,28 +565,28 @@ class BaseFutureTests:
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
 class CFutureTests(BaseFutureTests, test_utils.TestCase):
-    try:
+    jaribu:
         cls = futures._CFuture
-    except AttributeError:
+    tatizo AttributeError:
         cls = None
 
     def test_future_del_segfault(self):
         fut = self._new_future(loop=self.loop)
         with self.assertRaises(AttributeError):
-            del fut._asyncio_future_blocking
+            toa fut._asyncio_future_blocking
         with self.assertRaises(AttributeError):
-            del fut._log_traceback
+            toa fut._log_traceback
 
 
 @unittest.skipUnless(hasattr(futures, '_CFuture'),
                      'requires the C _asyncio module')
 class CSubFutureTests(BaseFutureTests, test_utils.TestCase):
-    try:
+    jaribu:
         class CSubFuture(futures._CFuture):
             pass
 
         cls = CSubFuture
-    except AttributeError:
+    tatizo AttributeError:
         cls = None
 
 

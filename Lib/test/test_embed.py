@@ -1,4 +1,4 @@
-# Run the tests in Programs/_testembed.c (tests for the CPython embedding APIs)
+# Run the tests kwenye Programs/_testembed.c (tests kila the CPython embedding APIs)
 kutoka test agiza support
 agiza unittest
 
@@ -38,9 +38,9 @@ eleza debug_build(program):
 eleza remove_python_envvars():
     env = dict(os.environ)
     # Remove PYTHON* environment variables to get deterministic environment
-    for key in list(env):
+    kila key kwenye list(env):
         ikiwa key.startswith('PYTHON'):
-            del env[key]
+            toa env[key]
     rudisha env
 
 
@@ -53,12 +53,12 @@ kundi EmbeddingTestsMixin:
             ext = ("_d" ikiwa debug_build(sys.executable) else "") + ".exe"
             exename += ext
             exepath = os.path.dirname(sys.executable)
-        else:
+        isipokua:
             exepath = os.path.join(basepath, "Programs")
         self.test_exe = exe = os.path.join(exepath, exename)
-        ikiwa not os.path.exists(exe):
+        ikiwa sio os.path.exists(exe):
             self.skipTest("%r doesn't exist" % exe)
-        # This is needed otherwise we get a fatal error:
+        # This ni needed otherwise we get a fatal error:
         # "Py_Initialize: Unable to get the locale encoding
         # LookupError: no codec search functions registered: can't find encoding"
         self.oldcwd = os.getcwd()
@@ -67,13 +67,13 @@ kundi EmbeddingTestsMixin:
     eleza tearDown(self):
         os.chdir(self.oldcwd)
 
-    eleza run_embedded_interpreter(self, *args, env=None,
-                                 timeout=None, returncode=0, input=None,
-                                 cwd=None):
-        """Runs a test in the embedded interpreter"""
+    eleza run_embedded_interpreter(self, *args, env=Tupu,
+                                 timeout=Tupu, returncode=0, input=Tupu,
+                                 cwd=Tupu):
+        """Runs a test kwenye the embedded interpreter"""
         cmd = [self.test_exe]
         cmd.extend(args)
-        ikiwa env is not None and MS_WINDOWS:
+        ikiwa env ni sio Tupu na MS_WINDOWS:
             # Windows requires at least the SYSTEMROOT environment variable to
             # start Python.
             env = env.copy()
@@ -82,23 +82,23 @@ kundi EmbeddingTestsMixin:
         p = subprocess.Popen(cmd,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE,
-                             universal_newlines=True,
+                             universal_newlines=Kweli,
                              env=env,
                              cwd=cwd)
-        try:
+        jaribu:
             (out, err) = p.communicate(input=input, timeout=timeout)
         except:
             p.terminate()
             p.wait()
-            raise
-        ikiwa p.returncode != returncode and support.verbose:
+            ashiria
+        ikiwa p.returncode != returncode na support.verbose:
             andika(f"--- {cmd} failed ---")
             andika(f"stdout:\n{out}")
             andika(f"stderr:\n{err}")
             andika(f"------")
 
         self.assertEqual(p.returncode, returncode,
-                         "bad returncode %d, stderr is %r" %
+                         "bad returncode %d, stderr ni %r" %
                          (p.returncode, err))
         rudisha out, err
 
@@ -123,66 +123,66 @@ kundi EmbeddingTestsMixin:
 
         numloops = 0
         current_run = []
-        for line in out.splitlines():
+        kila line kwenye out.splitlines():
             ikiwa line == "--- Pass {} ---".format(numloops):
                 self.assertEqual(len(current_run), 0)
                 ikiwa support.verbose > 1:
                     andika(line)
                 numloops += 1
-                continue
+                endelea
 
             self.assertLess(len(current_run), 5)
             match = re.match(interp_pat, line)
-            ikiwa match is None:
+            ikiwa match ni Tupu:
                 self.assertRegex(line, interp_pat)
 
-            # Parse the line kutoka the loop.  The first line is the main
-            # interpreter and the 3 afterward are subinterpreters.
+            # Parse the line kutoka the loop.  The first line ni the main
+            # interpreter na the 3 afterward are subinterpreters.
             interp = Interp(*match.groups())
             ikiwa support.verbose > 1:
                 andika(interp)
-            self.assertTrue(interp.interp)
-            self.assertTrue(interp.tstate)
-            self.assertTrue(interp.modules)
+            self.assertKweli(interp.interp)
+            self.assertKweli(interp.tstate)
+            self.assertKweli(interp.modules)
             current_run.append(interp)
 
-            # The last line in the loop should be the same as the first.
+            # The last line kwenye the loop should be the same kama the first.
             ikiwa len(current_run) == 5:
                 main = current_run[0]
                 self.assertEqual(interp, main)
-                yield current_run
+                tuma current_run
                 current_run = []
 
 
 kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
     eleza test_subinterps_main(self):
-        for run in self.run_repeated_init_and_subinterpreters():
+        kila run kwenye self.run_repeated_init_and_subinterpreters():
             main = run[0]
 
             self.assertEqual(main.id, '0')
 
     eleza test_subinterps_different_ids(self):
-        for run in self.run_repeated_init_and_subinterpreters():
+        kila run kwenye self.run_repeated_init_and_subinterpreters():
             main, *subs, _ = run
 
             mainid = int(main.id)
-            for i, sub in enumerate(subs):
+            kila i, sub kwenye enumerate(subs):
                 self.assertEqual(sub.id, str(mainid + i + 1))
 
     eleza test_subinterps_distinct_state(self):
-        for run in self.run_repeated_init_and_subinterpreters():
+        kila run kwenye self.run_repeated_init_and_subinterpreters():
             main, *subs, _ = run
 
-            ikiwa '0x0' in main:
+            ikiwa '0x0' kwenye main:
                 # XXX Fix on Windows (and other platforms): something
-                # is going on with the pointers in Programs/_testembed.c.
-                # interp.interp is 0x0 and interp.modules is the same
+                # ni going on with the pointers kwenye Programs/_testembed.c.
+                # interp.interp ni 0x0 na interp.modules ni the same
                 # between interpreters.
-                raise unittest.SkipTest('platform prints pointers as 0x0')
+                ashiria unittest.SkipTest('platform prints pointers kama 0x0')
 
-            for sub in subs:
+            kila sub kwenye subs:
                 # A new subinterpreter may have the same
-                # PyInterpreterState pointer as a previous one if
+                # PyInterpreterState pointer kama a previous one if
                 # the earlier one has already been destroyed.  So
                 # we compare with the main interpreter.  The same
                 # applies to tstate.
@@ -219,7 +219,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         "stdin: iso8859-1:{errors}",
         "stdout: iso8859-1:{errors}",
         "stderr: iso8859-1:backslashreplace",
-        "--- Set encoding and errors ---",
+        "--- Set encoding na errors ---",
         "Expected encoding: iso8859-1",
         "Expected errors: replace",
         "stdin: iso8859-1:replace",
@@ -229,20 +229,20 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                                 in_encoding=expected_stream_encoding,
                                 out_encoding=expected_stream_encoding,
                                 errors=expected_errors)
-        # This is useful ikiwa we ever trip over odd platform behaviour
-        self.maxDiff = None
+        # This ni useful ikiwa we ever trip over odd platform behaviour
+        self.maxDiff = Tupu
         self.assertEqual(out.strip(), expected_output)
 
     eleza test_pre_initialization_api(self):
         """
         Checks some key parts of the C-API that need to work before the runtine
-        is initialized (via Py_Initialize()).
+        ni initialized (via Py_Initialize()).
         """
         env = dict(os.environ, PYTHONPATH=os.pathsep.join(sys.path))
         out, err = self.run_embedded_interpreter("test_pre_initialization_api", env=env)
         ikiwa MS_WINDOWS:
             expected_path = self.test_exe
-        else:
+        isipokua:
             expected_path = os.path.join(os.getcwd(), "spam")
         expected_output = f"sys.executable: {expected_path}\n"
         self.assertIn(expected_output, out)
@@ -250,8 +250,8 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_pre_initialization_sys_options(self):
         """
-        Checks that sys.warnoptions and sys._xoptions can be set before the
-        runtime is initialized (otherwise they won't be effective).
+        Checks that sys.warnoptions na sys._xoptions can be set before the
+        runtime ni initialized (otherwise they won't be effective).
         """
         env = remove_python_envvars()
         env['PYTHONPATH'] = os.pathsep.join(sys.path)
@@ -267,9 +267,9 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_bpo20891(self):
         """
-        bpo-20891: Calling PyGILState_Ensure in a non-Python thread before
-        calling PyEval_InitThreads() must not crash. PyGILState_Ensure() must
-        call PyEval_InitThreads() for us in this case.
+        bpo-20891: Calling PyGILState_Ensure kwenye a non-Python thread before
+        calling PyEval_InitThreads() must sio crash. PyGILState_Ensure() must
+        call PyEval_InitThreads() kila us kwenye this case.
         """
         out, err = self.run_embedded_interpreter("test_bpo20891")
         self.assertEqual(out, '')
@@ -286,7 +286,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_initialize_pymain(self):
         """
-        bpo-34008: Calling Py_Main() after Py_Initialize() must not fail.
+        bpo-34008: Calling Py_Main() after Py_Initialize() must sio fail.
         """
         out, err = self.run_embedded_interpreter("test_initialize_pymain")
         self.assertEqual(out.rstrip(), "Py_Main() after Py_Initialize: sys.argv=['-c', 'arg2']")
@@ -300,7 +300,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
 kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     maxDiff = 4096
-    UTF8_MODE_ERRORS = ('surrogatepass' ikiwa MS_WINDOWS else 'surrogateescape')
+    UTF8_MODE_ERRORS = ('surrogatepita' ikiwa MS_WINDOWS else 'surrogateescape')
 
     # Marker to read the default configuration: get_default_config()
     GET_DEFAULT_CONFIG = object()
@@ -363,7 +363,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'filesystem_encoding': GET_DEFAULT_CONFIG,
         'filesystem_errors': GET_DEFAULT_CONFIG,
 
-        'pycache_prefix': None,
+        'pycache_prefix': Tupu,
         'program_name': GET_DEFAULT_CONFIG,
         'parse_argv': 0,
         'argv': [""],
@@ -371,8 +371,8 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'xoptions': [],
         'warnoptions': [],
 
-        'pythonpath_env': None,
-        'home': None,
+        'pythonpath_env': Tupu,
+        'home': Tupu,
         'executable': GET_DEFAULT_CONFIG,
         'base_executable': GET_DEFAULT_CONFIG,
 
@@ -399,9 +399,9 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'stdio_errors': GET_DEFAULT_CONFIG,
 
         'skip_source_first_line': 0,
-        'run_command': None,
-        'run_module': None,
-        'run_filename': None,
+        'run_command': Tupu,
+        'run_module': Tupu,
+        'run_filename': Tupu,
 
         '_install_importlib': 1,
         'check_hash_pycs_mode': 'default',
@@ -443,23 +443,23 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         ('Py_UTF8Mode', 'utf8_mode'),
     ]
     COPY_GLOBAL_CONFIG = [
-        # Copy core config to global config for expected values
-        # True means that the core config value is inverted (0 => 1 and 1 => 0)
+        # Copy core config to global config kila expected values
+        # Kweli means that the core config value ni inverted (0 => 1 na 1 => 0)
         ('Py_BytesWarningFlag', 'bytes_warning'),
         ('Py_DebugFlag', 'parser_debug'),
-        ('Py_DontWriteBytecodeFlag', 'write_bytecode', True),
+        ('Py_DontWriteBytecodeFlag', 'write_bytecode', Kweli),
         ('Py_FileSystemDefaultEncodeErrors', 'filesystem_errors'),
         ('Py_FileSystemDefaultEncoding', 'filesystem_encoding'),
-        ('Py_FrozenFlag', 'pathconfig_warnings', True),
-        ('Py_IgnoreEnvironmentFlag', 'use_environment', True),
+        ('Py_FrozenFlag', 'pathconfig_warnings', Kweli),
+        ('Py_IgnoreEnvironmentFlag', 'use_environment', Kweli),
         ('Py_InspectFlag', 'inspect'),
         ('Py_InteractiveFlag', 'interactive'),
         ('Py_IsolatedFlag', 'isolated'),
-        ('Py_NoSiteFlag', 'site_agiza', True),
-        ('Py_NoUserSiteDirectory', 'user_site_directory', True),
+        ('Py_NoSiteFlag', 'site_agiza', Kweli),
+        ('Py_NoUserSiteDirectory', 'user_site_directory', Kweli),
         ('Py_OptimizeFlag', 'optimization_level'),
         ('Py_QuietFlag', 'quiet'),
-        ('Py_UnbufferedStdioFlag', 'buffered_stdio', True),
+        ('Py_UnbufferedStdioFlag', 'buffered_stdio', Kweli),
         ('Py_VerboseFlag', 'verbose'),
     ]
     ikiwa MS_WINDOWS:
@@ -470,21 +470,21 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             ('Py_LegacyWindowsStdioFlag', 'legacy_windows_stdio'),
         ))
 
-    EXPECTED_CONFIG = None
+    EXPECTED_CONFIG = Tupu
 
     @classmethod
     eleza tearDownClass(cls):
         # clear cache
-        cls.EXPECTED_CONFIG = None
+        cls.EXPECTED_CONFIG = Tupu
 
     eleza main_xoptions(self, xoptions_list):
         xoptions = {}
-        for opt in xoptions_list:
-            ikiwa '=' in opt:
+        kila opt kwenye xoptions_list:
+            ikiwa '=' kwenye opt:
                 key, value = opt.split('=', 1)
                 xoptions[key] = value
-            else:
-                xoptions[opt] = True
+            isipokua:
+                xoptions[opt] = Kweli
         rudisha xoptions
 
     eleza _get_expected_config_impl(self):
@@ -502,32 +502,32 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             sys.stdout.buffer.flush()
         ''')
 
-        # Use -S to not agiza the site module: get the proper configuration
-        # when test_embed is run kutoka a venv (bpo-35313)
+        # Use -S to sio agiza the site module: get the proper configuration
+        # when test_embed ni run kutoka a venv (bpo-35313)
         args = [sys.executable, '-S', '-c', code]
         proc = subprocess.run(args, env=env,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
         ikiwa proc.returncode:
-            raise Exception(f"failed to get the default config: "
+            ashiria Exception(f"failed to get the default config: "
                             f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
         stdout = proc.stdout.decode('utf-8')
         # ignore stderr
-        try:
+        jaribu:
             rudisha json.loads(stdout)
-        except json.JSONDecodeError:
+        tatizo json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {stdout!r}")
 
     eleza _get_expected_config(self):
         cls = InitConfigTests
-        ikiwa cls.EXPECTED_CONFIG is None:
+        ikiwa cls.EXPECTED_CONFIG ni Tupu:
             cls.EXPECTED_CONFIG = self._get_expected_config_impl()
 
         # get a copy
         configs = {}
-        for config_key, config_value in cls.EXPECTED_CONFIG.items():
+        kila config_key, config_value kwenye cls.EXPECTED_CONFIG.items():
             config = {}
-            for key, value in config_value.items():
+            kila key, value kwenye config_value.items():
                 ikiwa isinstance(value, list):
                     value = value.copy()
                 config[key] = value
@@ -535,82 +535,82 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         rudisha configs
 
     eleza get_expected_config(self, expected_preconfig, expected, env, api,
-                            modify_path_cb=None):
+                            modify_path_cb=Tupu):
         cls = self.__class__
         configs = self._get_expected_config()
 
         pre_config = configs['pre_config']
-        for key, value in expected_preconfig.items():
-            ikiwa value is self.GET_DEFAULT_CONFIG:
+        kila key, value kwenye expected_preconfig.items():
+            ikiwa value ni self.GET_DEFAULT_CONFIG:
                 expected_preconfig[key] = pre_config[key]
 
-        ikiwa not expected_preconfig['configure_locale'] or api == API_COMPAT:
-            # there is no easy way to get the locale encoding before
-            # setlocale(LC_CTYPE, "") is called: don't test encodings
-            for key in ('filesystem_encoding', 'filesystem_errors',
+        ikiwa sio expected_preconfig['configure_locale'] ama api == API_COMPAT:
+            # there ni no easy way to get the locale encoding before
+            # setlocale(LC_CTYPE, "") ni called: don't test encodings
+            kila key kwenye ('filesystem_encoding', 'filesystem_errors',
                         'stdio_encoding', 'stdio_errors'):
                 expected[key] = self.IGNORE_CONFIG
 
-        ikiwa not expected_preconfig['configure_locale']:
-            # UTF-8 Mode depends on the locale. There is no easy way
-            # to guess ikiwa UTF-8 Mode will be enabled or not ikiwa the locale
-            # is not configured.
+        ikiwa sio expected_preconfig['configure_locale']:
+            # UTF-8 Mode depends on the locale. There ni no easy way
+            # to guess ikiwa UTF-8 Mode will be enabled ama sio ikiwa the locale
+            # ni sio configured.
             expected_preconfig['utf8_mode'] = self.IGNORE_CONFIG
 
         ikiwa expected_preconfig['utf8_mode'] == 1:
-            ikiwa expected['filesystem_encoding'] is self.GET_DEFAULT_CONFIG:
+            ikiwa expected['filesystem_encoding'] ni self.GET_DEFAULT_CONFIG:
                 expected['filesystem_encoding'] = 'utf-8'
-            ikiwa expected['filesystem_errors'] is self.GET_DEFAULT_CONFIG:
+            ikiwa expected['filesystem_errors'] ni self.GET_DEFAULT_CONFIG:
                 expected['filesystem_errors'] = self.UTF8_MODE_ERRORS
-            ikiwa expected['stdio_encoding'] is self.GET_DEFAULT_CONFIG:
+            ikiwa expected['stdio_encoding'] ni self.GET_DEFAULT_CONFIG:
                 expected['stdio_encoding'] = 'utf-8'
-            ikiwa expected['stdio_errors'] is self.GET_DEFAULT_CONFIG:
+            ikiwa expected['stdio_errors'] ni self.GET_DEFAULT_CONFIG:
                 expected['stdio_errors'] = 'surrogateescape'
 
         ikiwa sys.platform == 'win32':
             default_executable = self.test_exe
-        elikiwa expected['program_name'] is not self.GET_DEFAULT_CONFIG:
+        elikiwa expected['program_name'] ni sio self.GET_DEFAULT_CONFIG:
             default_executable = os.path.abspath(expected['program_name'])
-        else:
+        isipokua:
             default_executable = os.path.join(os.getcwd(), '_testembed')
-        ikiwa expected['executable'] is self.GET_DEFAULT_CONFIG:
+        ikiwa expected['executable'] ni self.GET_DEFAULT_CONFIG:
             expected['executable'] = default_executable
-        ikiwa expected['base_executable'] is self.GET_DEFAULT_CONFIG:
+        ikiwa expected['base_executable'] ni self.GET_DEFAULT_CONFIG:
             expected['base_executable'] = default_executable
-        ikiwa expected['program_name'] is self.GET_DEFAULT_CONFIG:
+        ikiwa expected['program_name'] ni self.GET_DEFAULT_CONFIG:
             expected['program_name'] = './_testembed'
 
         config = configs['config']
-        for key, value in expected.items():
-            ikiwa value is self.GET_DEFAULT_CONFIG:
+        kila key, value kwenye expected.items():
+            ikiwa value ni self.GET_DEFAULT_CONFIG:
                 expected[key] = config[key]
 
         pythonpath_env = expected['pythonpath_env']
-        ikiwa pythonpath_env is not None:
+        ikiwa pythonpath_env ni sio Tupu:
             paths = pythonpath_env.split(os.path.pathsep)
             expected['module_search_paths'] = [*paths, *expected['module_search_paths']]
-        ikiwa modify_path_cb is not None:
+        ikiwa modify_path_cb ni sio Tupu:
             expected['module_search_paths'] = expected['module_search_paths'].copy()
             modify_path_cb(expected['module_search_paths'])
 
-        for key in self.COPY_PRE_CONFIG:
-            ikiwa key not in expected_preconfig:
+        kila key kwenye self.COPY_PRE_CONFIG:
+            ikiwa key haiko kwenye expected_preconfig:
                 expected_preconfig[key] = expected[key]
 
     eleza check_pre_config(self, configs, expected):
         pre_config = dict(configs['pre_config'])
-        for key, value in list(expected.items()):
-            ikiwa value is self.IGNORE_CONFIG:
-                del pre_config[key]
-                del expected[key]
+        kila key, value kwenye list(expected.items()):
+            ikiwa value ni self.IGNORE_CONFIG:
+                toa pre_config[key]
+                toa expected[key]
         self.assertEqual(pre_config, expected)
 
     eleza check_config(self, configs, expected):
         config = dict(configs['config'])
-        for key, value in list(expected.items()):
-            ikiwa value is self.IGNORE_CONFIG:
-                del config[key]
-                del expected[key]
+        kila key, value kwenye list(expected.items()):
+            ikiwa value ni self.IGNORE_CONFIG:
+                toa config[key]
+                toa expected[key]
         self.assertEqual(config, expected)
 
     eleza check_global_config(self, configs):
@@ -618,51 +618,51 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         config = configs['config']
 
         expected = dict(self.DEFAULT_GLOBAL_CONFIG)
-        for item in self.COPY_GLOBAL_CONFIG:
+        kila item kwenye self.COPY_GLOBAL_CONFIG:
             ikiwa len(item) == 3:
                 global_key, core_key, opposite = item
                 expected[global_key] = 0 ikiwa config[core_key] else 1
-            else:
+            isipokua:
                 global_key, core_key = item
                 expected[global_key] = config[core_key]
-        for item in self.COPY_GLOBAL_PRE_CONFIG:
+        kila item kwenye self.COPY_GLOBAL_PRE_CONFIG:
             ikiwa len(item) == 3:
                 global_key, core_key, opposite = item
                 expected[global_key] = 0 ikiwa pre_config[core_key] else 1
-            else:
+            isipokua:
                 global_key, core_key = item
                 expected[global_key] = pre_config[core_key]
 
         self.assertEqual(configs['global_config'], expected)
 
-    eleza check_all_configs(self, testname, expected_config=None,
-                          expected_preconfig=None, modify_path_cb=None,
-                          stderr=None, *, api, preconfig_api=None,
-                          env=None, ignore_stderr=False, cwd=None):
+    eleza check_all_configs(self, testname, expected_config=Tupu,
+                          expected_preconfig=Tupu, modify_path_cb=Tupu,
+                          stderr=Tupu, *, api, preconfig_api=Tupu,
+                          env=Tupu, ignore_stderr=Uongo, cwd=Tupu):
         new_env = remove_python_envvars()
-        ikiwa env is not None:
+        ikiwa env ni sio Tupu:
             new_env.update(env)
         env = new_env
 
-        ikiwa preconfig_api is None:
+        ikiwa preconfig_api ni Tupu:
             preconfig_api = api
         ikiwa preconfig_api == API_ISOLATED:
             default_preconfig = self.PRE_CONFIG_ISOLATED
         elikiwa preconfig_api == API_PYTHON:
             default_preconfig = self.PRE_CONFIG_PYTHON
-        else:
+        isipokua:
             default_preconfig = self.PRE_CONFIG_COMPAT
-        ikiwa expected_preconfig is None:
+        ikiwa expected_preconfig ni Tupu:
             expected_preconfig = {}
         expected_preconfig = dict(default_preconfig, **expected_preconfig)
-        ikiwa expected_config is None:
+        ikiwa expected_config ni Tupu:
             expected_config = {}
 
         ikiwa api == API_PYTHON:
             default_config = self.CONFIG_PYTHON
         elikiwa api == API_ISOLATED:
             default_config = self.CONFIG_ISOLATED
-        else:
+        isipokua:
             default_config = self.CONFIG_COMPAT
         expected_config = dict(default_config, **expected_config)
 
@@ -672,13 +672,13 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         out, err = self.run_embedded_interpreter(testname,
                                                  env=env, cwd=cwd)
-        ikiwa stderr is None and not expected_config['verbose']:
+        ikiwa stderr ni Tupu na sio expected_config['verbose']:
             stderr = ""
-        ikiwa stderr is not None and not ignore_stderr:
+        ikiwa stderr ni sio Tupu na sio ignore_stderr:
             self.assertEqual(err.rstrip(), stderr)
-        try:
+        jaribu:
             configs = json.loads(out)
-        except json.JSONDecodeError:
+        tatizo json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {out!r}")
 
         self.check_pre_config(configs, expected_preconfig)
@@ -750,7 +750,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 'default::BytesWarning',
                 'config_warnoption',
             ],
-            'run_command': 'pass\n',
+            'run_command': 'pita\n',
 
             'site_agiza': 0,
             'bytes_warning': 1,
@@ -854,7 +854,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_preinit_parse_argv(self):
         # Pre-initialize implicitly using argv: make sure that -X dev
-        # is used to configure the allocation in preinitialization
+        # ni used to configure the allocation kwenye preinitialization
         preconfig = {
             'allocator': PYMEM_ALLOCATOR_DEBUG,
         }
@@ -891,7 +891,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_isolated_flag", config, api=API_PYTHON)
 
     eleza test_preinit_isolated1(self):
-        # _PyPreConfig.isolated=1, _PyCoreConfig.isolated not set
+        # _PyPreConfig.isolated=1, _PyCoreConfig.isolated sio set
         config = {
             'isolated': 1,
             'use_environment': 0,
@@ -988,7 +988,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'parse_argv': 1,
             'argv': ['-c', 'arg1', '-v', 'arg3'],
             'program_name': './argv0',
-            'run_command': 'pass\n',
+            'run_command': 'pita\n',
             'use_environment': 0,
         }
         self.check_all_configs("test_init_parse_argv", config, api=API_PYTHON)
@@ -999,7 +999,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         config = {
             'parse_argv': 0,
-            'argv': ['./argv0', '-E', '-c', 'pass', 'arg1', '-v', 'arg3'],
+            'argv': ['./argv0', '-E', '-c', 'pita', 'arg1', '-v', 'arg3'],
             'program_name': './argv0',
         }
         self.check_all_configs("test_init_dont_parse_argv", config, pre_config,
@@ -1009,12 +1009,12 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         ikiwa MS_WINDOWS:
             program_name = 'python'
             executable = self.test_exe
-        else:
+        isipokua:
             program_name = 'python3'
             ikiwa MACOS:
                 executable = self.test_exe
-            else:
-                executable = shutil.which(program_name) or ''
+            isipokua:
+                executable = shutil.which(program_name) ama ''
         config.update({
             'program_name': program_name,
             'base_executable': executable,
@@ -1037,7 +1037,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         env = {'TESTPATH': os.path.pathsep.join(paths)}
         self.check_all_configs("test_init_setpath", config,
                                api=API_COMPAT, env=env,
-                               ignore_stderr=True)
+                               ignore_stderr=Kweli)
 
     eleza test_init_setpath_config(self):
         # Test Py_SetPath() with PyConfig
@@ -1058,17 +1058,17 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         env = {'TESTPATH': os.path.pathsep.join(paths)}
         self.check_all_configs("test_init_setpath_config", config,
-                               api=API_PYTHON, env=env, ignore_stderr=True)
+                               api=API_PYTHON, env=env, ignore_stderr=Kweli)
 
-    eleza module_search_paths(self, prefix=None, exec_prefix=None):
+    eleza module_search_paths(self, prefix=Tupu, exec_prefix=Tupu):
         config = self._get_expected_config()
-        ikiwa prefix is None:
+        ikiwa prefix ni Tupu:
             prefix = config['config']['prefix']
-        ikiwa exec_prefix is None:
+        ikiwa exec_prefix ni Tupu:
             exec_prefix = config['config']['prefix']
         ikiwa MS_WINDOWS:
             rudisha config['config']['module_search_paths']
-        else:
+        isipokua:
             ver = sys.version_info
             rudisha [
                 os.path.join(prefix, 'lib',
@@ -1082,8 +1082,8 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     @contextlib.contextmanager
     eleza tmpdir_with_python(self):
         # Temporary directory with a copy of the Python program
-        with tempfile.TemporaryDirectory() as tmpdir:
-            # bpo-38234: On macOS and FreeBSD, the temporary directory
+        with tempfile.TemporaryDirectory() kama tmpdir:
+            # bpo-38234: On macOS na FreeBSD, the temporary directory
             # can be symbolic link. For example, /tmp can be a symbolic link
             # to /var/tmp. Call realpath() to resolve all symbolic links.
             tmpdir = os.path.realpath(tmpdir)
@@ -1105,7 +1105,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             shutil.copystat(self.test_exe, exec_copy)
             self.test_exe = exec_copy
 
-            yield tmpdir
+            tuma tmpdir
 
     eleza test_init_setpythonhome(self):
         # Test Py_SetPythonHome(home) with PYTHONPATH env var
@@ -1113,14 +1113,14 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         paths = config['config']['module_search_paths']
         paths_str = os.path.pathsep.join(paths)
 
-        for path in paths:
-            ikiwa not os.path.isdir(path):
-                continue
+        kila path kwenye paths:
+            ikiwa sio os.path.isdir(path):
+                endelea
             ikiwa os.path.exists(os.path.join(path, 'os.py')):
                 home = os.path.dirname(path)
-                break
-        else:
-            self.fail(f"Unable to find home in {paths!r}")
+                koma
+        isipokua:
+            self.fail(f"Unable to find home kwenye {paths!r}")
 
         prefix = exec_prefix = home
         ver = sys.version_info
@@ -1148,19 +1148,19 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         env = {'PYTHONPATH': paths_str}
         rudisha env
 
-    @unittest.skipIf(MS_WINDOWS, 'Windows does not use pybuilddir.txt')
+    @unittest.skipIf(MS_WINDOWS, 'Windows does sio use pybuilddir.txt')
     eleza test_init_pybuilddir(self):
         # Test path configuration with pybuilddir.txt configuration file
 
-        with self.tmpdir_with_python() as tmpdir:
-            # pybuilddir.txt is a sub-directory relative to the current
+        with self.tmpdir_with_python() kama tmpdir:
+            # pybuilddir.txt ni a sub-directory relative to the current
             # directory (tmpdir)
             subdir = 'libdir'
             libdir = os.path.join(tmpdir, subdir)
             os.mkdir(libdir)
 
             filename = os.path.join(tmpdir, 'pybuilddir.txt')
-            with open(filename, "w", encoding="utf8") as fp:
+            with open(filename, "w", encoding="utf8") kama fp:
                 fp.write(subdir)
 
             module_search_paths = self.module_search_paths()
@@ -1175,40 +1175,40 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             env = self.copy_paths_by_env(config)
             self.check_all_configs("test_init_compat_config", config,
                                    api=API_COMPAT, env=env,
-                                   ignore_stderr=True, cwd=tmpdir)
+                                   ignore_stderr=Kweli, cwd=tmpdir)
 
     eleza test_init_pyvenv_cfg(self):
         # Test path configuration with pyvenv.cfg configuration file
 
-        with self.tmpdir_with_python() as tmpdir, \
-             tempfile.TemporaryDirectory() as pyvenv_home:
+        with self.tmpdir_with_python() kama tmpdir, \
+             tempfile.TemporaryDirectory() kama pyvenv_home:
             ver = sys.version_info
 
-            ikiwa not MS_WINDOWS:
+            ikiwa sio MS_WINDOWS:
                 lib_dynload = os.path.join(pyvenv_home,
                                            'lib',
                                            f'python{ver.major}.{ver.minor}',
                                            'lib-dynload')
                 os.makedirs(lib_dynload)
-            else:
+            isipokua:
                 lib_dynload = os.path.join(pyvenv_home, 'lib')
                 os.makedirs(lib_dynload)
-                # getpathp.c uses Lib\os.py as the LANDMARK
+                # getpathp.c uses Lib\os.py kama the LANDMARK
                 shutil.copyfile(os.__file__, os.path.join(lib_dynload, 'os.py'))
 
             filename = os.path.join(tmpdir, 'pyvenv.cfg')
-            with open(filename, "w", encoding="utf8") as fp:
+            with open(filename, "w", encoding="utf8") kama fp:
                 andika("home = %s" % pyvenv_home, file=fp)
                 andika("include-system-site-packages = false", file=fp)
 
             paths = self.module_search_paths()
-            ikiwa not MS_WINDOWS:
+            ikiwa sio MS_WINDOWS:
                 paths[-1] = lib_dynload
-            else:
-                for index, path in enumerate(paths):
+            isipokua:
+                kila index, path kwenye enumerate(paths):
                     ikiwa index == 0:
                         paths[index] = os.path.join(tmpdir, os.path.basename(path))
-                    else:
+                    isipokua:
                         paths[index] = os.path.join(pyvenv_home, os.path.basename(path))
                 paths[-1] = pyvenv_home
 
@@ -1227,7 +1227,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             env = self.copy_paths_by_env(config)
             self.check_all_configs("test_init_compat_config", config,
                                    api=API_COMPAT, env=env,
-                                   ignore_stderr=True, cwd=tmpdir)
+                                   ignore_stderr=Kweli, cwd=tmpdir)
 
     eleza test_global_pathconfig(self):
         # Test C API functions getting the path configuration:
@@ -1310,25 +1310,25 @@ kundi AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_audit_run_interactivehook(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
-        with open(startup, "w", encoding="utf-8") as f:
+        with open(startup, "w", encoding="utf-8") kama f:
             andika("agiza sys", file=f)
-            andika("sys.__interactivehook__ = lambda: None", file=f)
-        try:
+            andika("sys.__interactivehook__ = lambda: Tupu", file=f)
+        jaribu:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_interactivehook", timeout=5,
                                           returncode=10, env=env)
-        finally:
+        mwishowe:
             os.unlink(startup)
 
     eleza test_audit_run_startup(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
-        with open(startup, "w", encoding="utf-8") as f:
-            andika("pass", file=f)
-        try:
+        with open(startup, "w", encoding="utf-8") kama f:
+            andika("pita", file=f)
+        jaribu:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_startup", timeout=5,
                                           returncode=10, env=env)
-        finally:
+        mwishowe:
             os.unlink(startup)
 
     eleza test_audit_run_stdin(self):
